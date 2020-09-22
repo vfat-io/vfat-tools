@@ -1,0 +1,88 @@
+@media print {
+
+  // Page Breaks
+  a {
+    page-break-inside: avoid;
+  }
+
+  blockquote {
+    page-break-inside: avoid;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    page-break-after: avoid;
+    page-break-inside: avoid;
+  }
+
+  img {
+    page-break-inside: avoid;
+    page-break-after: avoid;
+  }
+
+  table,
+  pre {
+    page-break-inside: avoid;
+  }
+
+  ul,
+  ol,
+  dl {
+    page-break-before: avoid;
+  }
+
+  a:link,
+  a:visited,
+  a {
+    background: transparent;
+    color: #520;
+    font-weight: bold;
+    text-decoration: underline;
+    text-align: left;
+  }
+
+  // Links
+  a {
+    page-break-inside: avoid;
+  }
+
+  a[href^='http']:after {
+    content: ' &lt; 'attr(href) '&gt; ';
+  }
+
+  $a: after &gt;
+
+  img {
+    content: '';
+  }
+
+  article a[href^='#']:after {
+    content: '';
+  }
+
+  a:not(:local-link):after {
+    content: ' &lt; 'attr(href) '&gt; ';
+  }
+
+  // Making intergated videos disappear, and removing the iframes' whitespace to zero.
+  .entry iframe,
+  ins {
+    display: none;
+    width: 0 !important;
+    height: 0 !important;
+    overflow: hidden !important;
+    line-height: 0pt !important;
+    white-space: nowrap;
+  }
+
+  .embed-youtube,
+  .embed-responsive {
+    position: absolute;
+    height: 0;
+    overflow: hidden;
+  }
+}

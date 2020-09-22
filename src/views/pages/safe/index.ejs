@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include(`${partials}/head`); -%>
+
+<body>
+<%- include(`${partials}/header_main`); -%>
+<pre id="log">
+*************** 👨‍🌾 UNOFFICIAL DAI-SAFE YIELD FARMING CALCULATOR 👨‍🌾 ***************
+INFO  : https://yieldfarming.insure/stake
+POOL  : https://pools.balancer.exchange/#/pool/0x3031745e732dce8fecccc94aca13d5fa18f1012d/
+***************************************************************************************
+
+</pre>
+<div class="loader--1"></div>
+<%- include(`${partials}/scripts`, {scriptname: 'dai_safe'}); -%>
+</body>
+</html> 

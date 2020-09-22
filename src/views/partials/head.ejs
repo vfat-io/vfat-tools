@@ -1,0 +1,41 @@
+<head>
+    <meta charset="UTF-8">
+    <!-- Primary Meta Tags -->
+    <title>Yield Farming Info</title>
+    <meta name="title" content="Yield Farming Info">
+    <meta name="description" content="🧑‍🌾 It ain't much, but it's honest work">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://vfat.tools/">
+    <meta property="og:title" content="Yield Farming Info">
+    <meta property="og:description" content="🧑‍🌾 It ain't much, but it's honest work">
+    <meta property="og:image" content="https://yieldfarming.info/img/thumbnail.png">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://vfat.tools/">
+    <meta property="twitter:title" content="Yield Farming Info">
+    <meta property="twitter:description" content="🧑‍🌾 It ain't much, but it's honest work">
+    <meta property="twitter:image" content="https://yieldfarming.info/img/thumbnail.png">
+
+    <% if(filenameMap) { %>
+        <link rel="stylesheet" href="<%= PP %>/css/<%= filenameMap['index.css'] %>">
+        <link rel="preload" href="<%= PP %>/js/<%= filenameMap['vendor.js'] %>" as="script">
+        <link rel="prefetch" href="<%= PP %>/js/<%= filenameMap['vendor.js'] %>">
+        <link rel="preload" href="<%= PP %>/js/<%= filenameMap['app.js'] %>" as="script">
+        <link rel="prefetch" href="<%= PP %>/js/<%= filenameMap['app.js'] %>">
+    <% } else { %>
+        <link rel="stylesheet" href="<%= PP %>/css/index.css">
+        <link rel="preload" href="<%= PP %>/js/vendor.js" as="script">
+        <link rel="prefetch" href="<%= PP %>/js/vendor.js">
+        <link rel="preload" href="<%= PP %>/js/app.js" as="script">
+        <link rel="prefetch" href="<%= PP %>/js/app.js">
+    <% } %>
+
+    <meta name="theme-color" content="#ffffff">
+    <link rel="icon" href="<%= PP %>/favicon.svg">
+    <link rel="apple-touch-icon" href="<%= PP %>/apple-touch-icon.png">
+    <link rel="manifest" href="<%= PP %>/manifest.json">
+</head>
+<%- include(`${partials}/quick`); -%>

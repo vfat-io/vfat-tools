@@ -1,0 +1,11 @@
+{
+  "name": "YieldFarming Info",
+  "short_name": "YieldFarming",
+  "icons": [{
+    "src": "google-touch-icon.png",
+    "sizes": "512x512"
+  }],
+  "background_color": "#ffffff",
+  "theme_color": "#ffffff",
+  "display": "fullscreen"
+}
