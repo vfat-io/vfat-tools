@@ -25,16 +25,16 @@ $(function() {
     const YYCRV_TOKEN = new ethers.Contract(YYCRV_TOKEN_ADDR, ERC20_ABI, App.provider)
     const YAM_TOKEN = new ethers.Contract(YAM_TOKEN_ADDR, YAM_TOKEN_ABI, App.provider)
   
+    const scaling_factor = await YAM_TOKEN.yamsScalingFactor() / 1e18
+  
     const stakedYAmount = (await Y_STAKING_POOL.balanceOf(App.YOUR_ADDRESS)) / 1e18
-    const earnedYFFI = (await Y_STAKING_POOL.earned(App.YOUR_ADDRESS)) / 1e18
+    const earnedYFFI = (await Y_STAKING_POOL.earned(App.YOUR_ADDRESS)) * scaling_factor / 1e18
     const totalSupplyOfStakingToken = (await STAKING_TOKEN.totalSupply()) / 1e18
     const totalStakedYAmount = (await STAKING_TOKEN.balanceOf(rewardPoolAddr)) / 1e18
   
     // Find out reward rate
-    const weekly_reward = await get_synth_weekly_rewards(Y_STAKING_POOL)
+    const weekly_reward = await get_synth_weekly_rewards(Y_STAKING_POOL) * scaling_factor
     const nextHalving = await getPeriodFinishForReward(Y_STAKING_POOL)
-  
-    // const weekly_reward = 0;
   
     const rewardPerToken = weekly_reward / totalStakedYAmount
   
