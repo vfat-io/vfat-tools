@@ -110,7 +110,7 @@ $(function() {
   
     const timeTilHalving = nextHalving - Date.now() / 1000
   
-    _print(`Reward ending     : in ${forHumans(timeTilHalving)} \n`)
+    _print(`Period ending     : in ${forHumans(timeTilHalving)} \n`)
   
     const approveTENDAndStake = async function() {
       return rewardsContract_stake(stakingTokenAddr, rewardPoolAddr, App)
