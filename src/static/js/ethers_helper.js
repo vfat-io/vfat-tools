@@ -1,8 +1,7 @@
 async function init_ethers() {
   const App = {}
 
-  const ETHEREUM_NODE_URL = 'aHR0cHM6Ly9tYWlubmV0LmluZnVyYS5pby92My9mN2Q1YjkwMzY3MzY0YmFkYWNhZDI5Njg5OWYyMTMxYQ=='
-  const Y_STAKING_POOL_ABI = [{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"previousOwner","type":"address"},{"indexed":true,"internalType":"address","name":"newOwner","type":"address"}],"name":"OwnershipTransferred","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"reward","type":"uint256"}],"name":"RewardAdded","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"uint256","name":"reward","type":"uint256"}],"name":"RewardPaid","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"Staked","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"Withdrawn","type":"event"},{"constant":true,"inputs":[],"name":"DURATION","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"internalType":"address","name":"account","type":"address"}],"name":"balanceOf","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"internalType":"address","name":"account","type":"address"}],"name":"earned","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[],"name":"exit","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[],"name":"getReward","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"isOwner","outputs":[{"internalType":"bool","name":"","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"lastTimeRewardApplicable","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"lastUpdateTime","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"internalType":"uint256","name":"reward","type":"uint256"}],"name":"notifyRewardAmount","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"owner","outputs":[{"internalType":"address","name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"periodFinish","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[],"name":"renounceOwnership","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"rewardPerToken","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"rewardPerTokenStored","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"rewardRate","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"rewards","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"internalType":"address","name":"_rewardDistribution","type":"address"}],"name":"setRewardDistribution","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"stake","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"totalSupply","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"internalType":"address","name":"newOwner","type":"address"}],"name":"transferOwnership","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"userRewardPerTokenPaid","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"withdraw","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"y","outputs":[{"internalType":"contract IERC20","name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"yfi","outputs":[{"internalType":"contract IERC20","name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"}];
+  const ETHEREUM_NODE_URL = 'aHR0cHM6Ly9tYWlubmV0LmluZnVyYS5pby92My9hNmYzNmI4OWM0OGM0ZmE4YjE0NjYwNWY2ZDdhNWI2Zg=='
   
   let isMetaMaskInstalled = true
 
@@ -723,6 +722,34 @@ async function getErc20(app, token, address, stakingAddress) {
     return ret;
 }
 
+async function getDSToken(app, token, address, stakingAddress) {
+    const decimals = await token.decimals();
+    const staked = await token.balanceOf(stakingAddress);
+    const unstaked = await token.balanceOf(app.YOUR_ADDRESS);
+    const ret = {
+        address: address,
+        name : hex_to_ascii(await token.name()),
+        symbol : hex_to_ascii(await token.symbol()),
+        totalSupply :  await token.totalSupply(),
+        decimals : decimals,
+        staked:  staked / 10 ** decimals,
+        unstaked: unstaked  / 10 ** decimals,
+        contract: token,
+        tokens : [address]
+    };
+    return ret;
+}
+
+function hex_to_ascii(str1)
+{
+ var hex  = str1.toString();
+ var str = '';
+ for (var n = 0; n < hex.length; n += 2) {
+   str += String.fromCharCode(parseInt(hex.substr(n, 2), 16));
+ }
+ return str;
+}
+
 async function getToken(app, tokenAddress, stakingAddress) {
   const pool = new ethers.Contract(tokenAddress, UNI_ABI, app.provider);
   try {
@@ -739,7 +766,14 @@ async function getToken(app, tokenAddress, stakingAddress) {
   catch(err) {
   }
   const erc20 = new ethers.Contract(tokenAddress, ERC20_ABI, app.provider);
-  return await getErc20(app, erc20, tokenAddress, stakingAddress);
+  try {
+    const _name = await jar.name();
+    return await getErc20(app, erc20, tokenAddress, stakingAddress);
+  }
+  catch(err) {
+  }
+  const dsToken = new ethers.Contract(tokenAddress, DSTOKEN_ABI, app.provider);
+  return await getDSToken(app, dsToken, tokenAddress, stakingAddress);
 }
 
 function getParameterCaseInsensitive(object, key) {
@@ -834,7 +868,7 @@ function getWrapPrices(tokens, prices, pool)
     }
   }
   else {
-    const name = `pjar ${wrappedToken.symbol}`;
+    const name = pool.name;
     const tokenPrice = getParameterCaseInsensitive(prices, wrappedToken.address)?.usd;
     const price = (pool.balance / 10 ** wrappedToken.decimals) * tokenPrice / (pool.totalSupply / 10 ** pool.decimals);
     const tvl = pool.balance / 1e18 * price;
@@ -855,7 +889,7 @@ function getWrapPrices(tokens, prices, pool)
 
 function getErc20Prices(prices, pool) {  
   var price = getParameterCaseInsensitive(prices,pool.address)?.usd;
-  var tvl = pool.totalSupply * price;
+  var tvl = pool.totalSupply * price / 10 ** pool.decimals;
   var staked_tvl = pool.staked * price;
   return {
     staked_tvl : staked_tvl,
@@ -874,56 +908,59 @@ function getPoolPrices(tokens, prices, pool) {
   return getErc20Prices(prices, pool);
 }
 
-async function getPoolInfo(app, chefContract, chefAddress, poolIndex, pendingRewardsFunctionName) {
-  
+async function getPoolInfo(app, chefContract, chefAddress, poolIndex, pendingRewardsFunctionName) {  
   const poolInfo = await chefContract.poolInfo(poolIndex);
   const poolToken = await getToken(app, poolInfo.lpToken, chefAddress);
   const userInfo = await chefContract.userInfo(poolIndex, app.YOUR_ADDRESS);
   const pendingRewardTokens = await chefContract.callStatic[pendingRewardsFunctionName](poolIndex, app.YOUR_ADDRESS);
+  const staked = userInfo.amount / 10 ** poolToken.decimals;
+  var stakedToken;
+  var userLPStaked;
+  if (poolInfo.stakedHoldableToken != null && 
+    poolInfo.stakedHoldableToken != "0x0000000000000000000000000000000000000000") {
+    stakedToken = await getToken(app, poolInfo.stakedHoldableToken, chefAddress);
+    userLPStaked = userInfo.stakedLPAmount / 10 ** poolToken.decimals
+  }
   return {
       address: poolInfo.lpToken,
-      allocPoints: await poolInfo.allocPoint,
+      allocPoints: poolInfo.allocPoint,
       poolToken: poolToken,
-      userStaked : userInfo.amount / 10 ** poolToken.decimals,
-      pendingRewardTokens : pendingRewardTokens / 10 ** 18
+      userStaked : staked,
+      pendingRewardTokens : pendingRewardTokens / 10 ** 18,
+      stakedToken : stakedToken,
+      userLPStaked : userLPStaked,
+      lastRewardBlock : poolInfo.lastRewardBlock
   };
 }
 
-async function loadPool(App, prices, tokens, poolIndex, 
-                        chefAbi, chefContract, chefAddr, totalAllocPoints, 
-                        rewardsPerWeek, rewardTokenTicker, rewardTokenAddress, 
-                        pendingRewardsFunctionName) {  
-  const poolInfo = await getPoolInfo(App, chefContract, chefAddr, poolIndex, pendingRewardsFunctionName);
-  var newPriceAddresses = poolInfo.poolToken.tokens.filter(x => prices[x] == null);
-  var newPrices = await lookUpTokenPrices(newPriceAddresses);
-  for (const key in newPrices) {
-      prices[key] = newPrices[key];
-  }
-  var newTokenAddresses = poolInfo.poolToken.tokens.filter(x => tokens[x] == null);
-  for (const address of newTokenAddresses) {
-      tokens[address] = await getToken(App, address, chefAddr);
-  }
+function printStakedLPPrice(App, prices, tokens, poolInfo, 
+    chefAbi, chefAddr, totalAllocPoints, 
+    rewardsPerWeek, rewardTokenTicker, rewardTokenAddress, 
+    pendingRewardsFunctionName) {  
   const pp = getPoolPrices(tokens, prices, poolInfo.poolToken);
   pp.print_price();
+  const sp = getPoolPrices(tokens, prices, poolInfo.stakedToken);
+  sp.print_price();
   const rewardPrice = getParameterCaseInsensitive(prices, rewardTokenAddress)?.usd;
   var poolRewardsPerWeek = poolInfo.allocPoints / totalAllocPoints * rewardsPerWeek;
   var usdPerWeek = poolRewardsPerWeek * rewardPrice;
   _print(`${rewardTokenTicker} Per Week: ${poolRewardsPerWeek.toFixed(2)} ($${formatMoney(usdPerWeek)})`);
-  var weeklyAPY = usdPerWeek / pp.staked_tvl * 100;
+  var weeklyAPY = usdPerWeek / sp.staked_tvl * 100;
   var dailyAPY = weeklyAPY / 7;
   var yearlyAPY = weeklyAPY * 52;
   _print(`APY: Day ${dailyAPY.toFixed(2)}% Week ${weeklyAPY.toFixed(2)}% Year ${yearlyAPY.toFixed(2)}%`);
-  var userStakedPct = poolInfo.userStaked / poolInfo.poolToken.staked * 100;
-  var userStakedUsd = poolInfo.userStaked * pp.price;
-  _print(`You are staking ${poolInfo.userStaked.toFixed(2)} ${pp.stakingTokenTicker} ($${formatMoney(userStakedUsd)}), ${userStakedPct.toFixed(2)}% of the pool.`);
+  var userStaked = poolInfo.userLPStaked ?? poolInfo.userStaked;
+  var userStakedUsd = userStaked * pp.price;
+  var userStakedPct = userStaked / (poolInfo.stakedToken ?? poolInfo.poolToken).staked * 100;
+  _print(`You are staking ${userStaked.toFixed(2)} ${pp.stakingTokenTicker} ($${formatMoney(userStakedUsd)}), ${userStakedPct.toFixed(2)}% of the pool.`);
   if (poolInfo.userStaked > 0) {
       var userWeeklyRewards = userStakedPct * poolRewardsPerWeek / 100;
       var userDailyRewards = userWeeklyRewards / 7;
       var userYearlyRewards = userWeeklyRewards * 52;
       _print(`Estimated ${rewardTokenTicker} earnings:`
-           + ` Day ${userDailyRewards.toFixed(2)} ($${formatMoney(userDailyRewards*rewardPrice)})`
-           + ` Week ${userWeeklyRewards.toFixed(2)} ($${formatMoney(userWeeklyRewards*rewardPrice)})`
-           + ` Year ${userYearlyRewards.toFixed(2)} ($${formatMoney(userYearlyRewards*rewardPrice)})`);
+          + ` Day ${userDailyRewards.toFixed(2)} ($${formatMoney(userDailyRewards*rewardPrice)})`
+          + ` Week ${userWeeklyRewards.toFixed(2)} ($${formatMoney(userWeeklyRewards*rewardPrice)})`
+          + ` Year ${userYearlyRewards.toFixed(2)} ($${formatMoney(userYearlyRewards*rewardPrice)})`);
   }
   const approveAndStake = async function() {
     return chefContract_stake(chefAbi, chefAddr, poolIndex, poolInfo.address, App)
@@ -942,4 +979,66 @@ async function loadPool(App, prices, tokens, poolIndex,
   _print_link(`Claim ${poolInfo.pendingRewardTokens.toFixed(2)} ${rewardTokenTicker}`, claim)
   _print_link(`Exit`, exit)
   _print(`\n`);
+}
+
+async function loadPool(App, prices, tokens, poolIndex, 
+                        chefAbi, chefContract, chefAddr, totalAllocPoints, 
+                        rewardsPerWeek, rewardTokenTicker, rewardTokenAddress, 
+                        pendingRewardsFunctionName) {  
+  const poolInfo = await getPoolInfo(App, chefContract, chefAddr, poolIndex, pendingRewardsFunctionName);
+  var newPriceAddresses = poolInfo.poolToken.tokens.filter(x => prices[x] == null);
+  var newPrices = await lookUpTokenPrices(newPriceAddresses);
+  for (const key in newPrices) {
+      prices[key] = newPrices[key];
+  }
+  var newTokenAddresses = poolInfo.poolToken.tokens.filter(x => tokens[x] == null);
+  for (const address of newTokenAddresses) {
+      tokens[address] = await getToken(App, address, chefAddr);
+  }
+  if (poolInfo.stakedToken != null) {
+    printStakedLPPrice(App, prices, tokens, poolInfo, chefAbi, chefAddr, totalAllocPoints,
+      rewardsPerWeek, rewardTokenTicker, rewardTokenAddress, pendingRewardsFunctionName);
+  }
+  else {
+    const pp = getPoolPrices(tokens, prices, poolInfo.poolToken);
+    pp.print_price();
+    const rewardPrice = getParameterCaseInsensitive(prices, rewardTokenAddress)?.usd;
+    var poolRewardsPerWeek = poolInfo.allocPoints / totalAllocPoints * rewardsPerWeek;
+    var usdPerWeek = poolRewardsPerWeek * rewardPrice;
+    _print(`${rewardTokenTicker} Per Week: ${poolRewardsPerWeek.toFixed(2)} ($${formatMoney(usdPerWeek)})`);
+    var weeklyAPY = usdPerWeek / pp.staked_tvl * 100;
+    var dailyAPY = weeklyAPY / 7;
+    var yearlyAPY = weeklyAPY * 52;
+    _print(`APY: Day ${dailyAPY.toFixed(2)}% Week ${weeklyAPY.toFixed(2)}% Year ${yearlyAPY.toFixed(2)}%`);
+    var userStaked = poolInfo.userLPStaked ?? poolInfo.userStaked;
+    var userStakedUsd = userStaked * pp.price;
+    var userStakedPct = userStaked / (poolInfo.stakedToken ?? poolInfo.poolToken).staked * 100;
+    _print(`You are staking ${userStaked.toFixed(2)} ${pp.stakingTokenTicker} ($${formatMoney(userStakedUsd)}), ${userStakedPct.toFixed(2)}% of the pool.`);
+    if (poolInfo.userStaked > 0) {
+        var userWeeklyRewards = userStakedPct * poolRewardsPerWeek / 100;
+        var userDailyRewards = userWeeklyRewards / 7;
+        var userYearlyRewards = userWeeklyRewards * 52;
+        _print(`Estimated ${rewardTokenTicker} earnings:`
+            + ` Day ${userDailyRewards.toFixed(2)} ($${formatMoney(userDailyRewards*rewardPrice)})`
+            + ` Week ${userWeeklyRewards.toFixed(2)} ($${formatMoney(userWeeklyRewards*rewardPrice)})`
+            + ` Year ${userYearlyRewards.toFixed(2)} ($${formatMoney(userYearlyRewards*rewardPrice)})`);
+    }
+    const approveAndStake = async function() {
+      return chefContract_stake(chefAbi, chefAddr, poolIndex, poolInfo.address, App)
+    }      
+    const unstake = async function() {
+      return chefContract_unstake(chefAbi, chefAddr, poolIndex, App, pendingRewardsFunctionName)
+    }      
+    const claim = async function() {
+      return chefContract_claim(chefAbi, chefAddr, poolIndex, App, pendingRewardsFunctionName)
+    }      
+    const exit = async function() {
+      return chefContract_exit(chefAbi, chefAddr, poolIndex, App)
+    }      
+    _print_link(`Stake ${poolInfo.poolToken.unstaked.toFixed(2)} ${pp.stakingTokenTicker}`, approveAndStake)
+    _print_link(`Unstake ${poolInfo.userStaked.toFixed(2)} ${pp.stakingTokenTicker}`, unstake)
+    _print_link(`Claim ${poolInfo.pendingRewardTokens.toFixed(2)} ${rewardTokenTicker}`, claim)
+    _print_link(`Exit`, exit)
+    _print(`\n`);
+  }
 }
