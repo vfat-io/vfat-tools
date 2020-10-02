@@ -25,7 +25,7 @@ async function main() {
 
   // Look up prices
   const prices = await lookUpPrices(["tether", "yfbeta"]);
-  const USDTPrice = prices["tether"].usd * 1.05;
+  const USDTPrice = prices["tether"].usd * 1.028 * 1.005;
   const YFBetaPrice = prices["yfbeta"].usd;
 
   // Finished. Start printing

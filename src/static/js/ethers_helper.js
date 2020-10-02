@@ -936,7 +936,7 @@ async function getPoolInfo(app, chefContract, chefAddress, poolIndex, pendingRew
 function printStakedLPPrice(App, prices, tokens, poolInfo, 
     chefAbi, chefAddr, totalAllocPoints, 
     rewardsPerWeek, rewardTokenTicker, rewardTokenAddress, 
-    pendingRewardsFunctionName) {  
+    pendingRewardsFunctionName, poolIndex) {  
   const pp = getPoolPrices(tokens, prices, poolInfo.poolToken);
   pp.print_price();
   const sp = getPoolPrices(tokens, prices, poolInfo.stakedToken);
@@ -997,7 +997,7 @@ async function loadPool(App, prices, tokens, poolIndex,
   }
   if (poolInfo.stakedToken != null) {
     printStakedLPPrice(App, prices, tokens, poolInfo, chefAbi, chefAddr, totalAllocPoints,
-      rewardsPerWeek, rewardTokenTicker, rewardTokenAddress, pendingRewardsFunctionName);
+      rewardsPerWeek, rewardTokenTicker, rewardTokenAddress, pendingRewardsFunctionName, poolIndex);
   }
   else {
     const pp = getPoolPrices(tokens, prices, poolInfo.poolToken);
@@ -1035,9 +1035,9 @@ async function loadPool(App, prices, tokens, poolIndex,
     const exit = async function() {
       return chefContract_exit(chefAbi, chefAddr, poolIndex, App)
     }      
-    _print_link(`Stake ${poolInfo.poolToken.unstaked.toFixed(2)} ${pp.stakingTokenTicker}`, approveAndStake)
-    _print_link(`Unstake ${poolInfo.userStaked.toFixed(2)} ${pp.stakingTokenTicker}`, unstake)
-    _print_link(`Claim ${poolInfo.pendingRewardTokens.toFixed(2)} ${rewardTokenTicker}`, claim)
+    _print_link(`Stake ${poolInfo.poolToken.unstaked.toFixed(4)} ${pp.stakingTokenTicker}`, approveAndStake)
+    _print_link(`Unstake ${poolInfo.userStaked.toFixed(4)} ${pp.stakingTokenTicker}`, unstake)
+    _print_link(`Claim ${poolInfo.pendingRewardTokens.toFixed(4)} ${rewardTokenTicker}`, claim)
     _print_link(`Exit`, exit)
     _print(`\n`);
   }

@@ -25,6 +25,12 @@ $(function() {
     const rewardTokenAddress = await HOLY_KNIGHT.holytoken();
     const rewardsPerWeek = await HOLY_KNIGHT.holyPerBlock() / 1e18 * 604800 / 13.5;
 
+    _print(`Staking bonus for long-term holders (multiply by the below APY)`);
+    _print(`3-5  weeks: 1.25x`);
+    _print(`6-8  weeks: 1.5x`);
+    _print(`9-11 weeks: 1.75x`);
+    _print(`12   weeks: 2x`);
+
     await loadPool(App, prices, tokens, rewardTokenPoolIndex, 
              HOLY_KNIGHT_ABI, HOLY_KNIGHT, HOLY_KNIGHT_ADDR, totalAllocPoints, 
              rewardsPerWeek, rewardTokenTicker, rewardTokenAddress, "pendingHoly");

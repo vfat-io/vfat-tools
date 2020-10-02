@@ -6,7 +6,7 @@ $(function() {
   async function loadPool(App, prices, tokens, poolIndex, 
                           chefAbi, chefContract, chefAddr, totalAllocPoints, 
                           rewardsPerWeek, rewardTokenTicker, rewardTokenAddress, 
-                          pendingRewardsFunctionName, blockNumber) {  
+                          pendingRewardsFunctionName,) {  
     const poolInfo = await getPoolInfo(App, chefContract, chefAddr, poolIndex, pendingRewardsFunctionName);
     var newPriceAddresses = poolInfo.poolToken.tokens.filter(x => prices[x] == null);
     var newPrices = await lookUpTokenPrices(newPriceAddresses);
@@ -19,24 +19,24 @@ $(function() {
     }
     if (poolInfo.stakedToken != null) {
       printStakedLPPrice(App, prices, tokens, poolInfo, chefAbi, chefAddr, totalAllocPoints,
-        rewardsPerWeek, rewardTokenTicker, rewardTokenAddress, pendingRewardsFunctionName);
+        rewardsPerWeek, rewardTokenTicker, rewardTokenAddress, pendingRewardsFunctionName, poolIndex);
     }
     else {
       const pp = getPoolPrices(tokens, prices, poolInfo.poolToken);
       pp.print_price();
       const rewardPrice = getParameterCaseInsensitive(prices, rewardTokenAddress)?.usd;
-      var multiplier = await chefContract.getMultiplier(poolInfo.lastRewardBlock, blockNumber);
-      var poolRewardsPerWeek = poolInfo.allocPoints / totalAllocPoints * rewardsPerWeek * multiplier;
+      var poolRewardsPerWeek = poolInfo.allocPoints / totalAllocPoints * rewardsPerWeek;
       var usdPerWeek = poolRewardsPerWeek * rewardPrice;
       _print(`${rewardTokenTicker} Per Week: ${poolRewardsPerWeek.toFixed(2)} ($${formatMoney(usdPerWeek)})`);
       var weeklyAPY = usdPerWeek / pp.staked_tvl * 100;
       var dailyAPY = weeklyAPY / 7;
       var yearlyAPY = weeklyAPY * 52;
-      _print(`APY: Day ${dailyAPY.toFixed(2)}% Week ${weeklyAPY.toFixed(2)}% Year ${yearlyAPY.toFixed(2)}%`);
+      _print(`APY: Day ${dailyAPY.toFixed(6)}% Week ${weeklyAPY.toFixed(6)}% Year ${yearlyAPY.toFixed(6)}%`);
+      _print(`RTC APY: Day ${(dailyAPY*10000).toFixed(2)}% Week ${(weeklyAPY*10000).toFixed(2)}% Year ${(yearlyAPY*10000).toFixed(2)}%`);
       var userStaked = poolInfo.userLPStaked ?? poolInfo.userStaked;
       var userStakedUsd = userStaked * pp.price;
       var userStakedPct = userStaked / (poolInfo.stakedToken ?? poolInfo.poolToken).staked * 100;
-      _print(`You are staking ${userStaked.toFixed(2)} ${pp.stakingTokenTicker} ($${formatMoney(userStakedUsd)}), ${userStakedPct.toFixed(2)}% of the pool.`);
+      _print(`You are staking ${userStaked.toFixed(8)} ${pp.stakingTokenTicker} ($${formatMoney(userStakedUsd)}), ${userStakedPct.toFixed(2)}% of the pool.`);
       if (poolInfo.userStaked > 0) {
           var userWeeklyRewards = userStakedPct * poolRewardsPerWeek / 100;
           var userDailyRewards = userWeeklyRewards / 7;
@@ -45,6 +45,13 @@ $(function() {
               + ` Day ${userDailyRewards.toFixed(2)} ($${formatMoney(userDailyRewards*rewardPrice)})`
               + ` Week ${userWeeklyRewards.toFixed(2)} ($${formatMoney(userWeeklyRewards*rewardPrice)})`
               + ` Year ${userYearlyRewards.toFixed(2)} ($${formatMoney(userYearlyRewards*rewardPrice)})`);
+          var userWeeklyRewards = userStakedPct * poolRewardsPerWeek / 100;
+          var userDailyRewards = userWeeklyRewards / 7;
+          var userYearlyRewards = userWeeklyRewards * 52;
+              _print(`Estimated RTC earnings:`
+                  + ` Day $${formatMoney(userDailyRewards*rewardPrice*10000)}`
+                  + ` Week $${formatMoney(userWeeklyRewards*rewardPrice*10000)}`
+                  + ` Year $${formatMoney(userYearlyRewards*rewardPrice*10000)}`);
       }
       const approveAndStake = async function() {
         return chefContract_stake(chefAbi, chefAddr, poolIndex, poolInfo.address, App)
@@ -58,9 +65,9 @@ $(function() {
       const exit = async function() {
         return chefContract_exit(chefAbi, chefAddr, poolIndex, App)
       }      
-      _print_link(`Stake ${poolInfo.poolToken.unstaked.toFixed(2)} ${pp.stakingTokenTicker}`, approveAndStake)
-      _print_link(`Unstake ${poolInfo.userStaked.toFixed(2)} ${pp.stakingTokenTicker}`, unstake)
-      _print_link(`Claim ${poolInfo.pendingRewardTokens.toFixed(2)} ${rewardTokenTicker}`, claim)
+      _print_link(`Stake ${poolInfo.poolToken.unstaked.toFixed(8)} ${pp.stakingTokenTicker}`, approveAndStake)
+      _print_link(`Unstake ${poolInfo.userStaked.toFixed(8)} ${pp.stakingTokenTicker}`, unstake)
+      _print_link(`Claim ${poolInfo.pendingRewardTokens.toFixed(8)} ${rewardTokenTicker}`, claim)
       _print_link(`Exit`, exit)
       _print(`\n`);
     }
@@ -88,6 +95,9 @@ $(function() {
     const rewardTokenAddress = await CAPTAIN_COOK.swapship();
     const rewardsPerWeek = await CAPTAIN_COOK.swapshipPerBlock() / 1e18 * 604800 / 13.5;
     const blockNumber = await App.provider.getBlockNumber();
+
+    _print(`*** There is an RTC airdrop valued at 10000 times your claimed SWSH from the pool ***\n`);
+    _print(`*** Please remember to claim your SWSH in order to be eligible for each airdrop.  ***\n`);
 
     await loadPool(App, prices, tokens, rewardTokenPoolIndex, 
              CAPTAIN_COOK_ABI, CAPTAIN_COOK, CAPTAIN_COOK_ADDR, totalAllocPoints, 

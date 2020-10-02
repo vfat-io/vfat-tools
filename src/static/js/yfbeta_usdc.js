@@ -25,7 +25,7 @@ $(function() {
   
     // Look up prices
     const prices = await lookUpPrices(["usd-coin", "yfbeta"]);
-    const USDCPrice = prices["usd-coin"].usd * 1.05;
+    const USDCPrice = prices["usd-coin"].usd * 1.0259 * 1.005;
     const YFBetaPrice = prices["yfbeta"].usd;
   
     // Finished. Start printing
