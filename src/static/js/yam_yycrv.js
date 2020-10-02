@@ -133,8 +133,6 @@ $(function() {
     _print_link(`Claim ${earnedYFFI} ${rewardTokenTicker}`, claim)
     _print_link(`Exit`, exit)
   
-    await _print24HourPrice('build-finance', rewardTokenTicker)
-  
     hideLoading()
   }
   

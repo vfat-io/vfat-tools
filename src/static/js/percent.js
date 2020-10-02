@@ -3,6 +3,97 @@ $(function() {
   start(main);
 });
 
+async function loadPool(App, tokens, prices, stakingAddress, rewardTokenTicker, rewardTokenAddress) {
+  const STAKING_POOL = new ethers.Contract(stakingAddress, PCT_POOL_ABI, App.provider);
+
+  const stakeToken = await STAKING_POOL.stakeToken();
+
+  const BPT = new ethers.Contract(stakeToken, BALANCER_POOL_ABI, App.provider);
+
+  const poolTokens = await BPT.getCurrentTokens();
+
+  const totalBPTAmount = await BPT.totalSupply() / 1e18;
+  const totalStakedBPTAmount = await BPT.balanceOf(stakingAddress) / 1e18;
+  const userStaked = await STAKING_POOL.balanceOf(App.YOUR_ADDRESS) / 1e18;
+  const userUnstaked = await BPT.balanceOf(App.YOUR_ADDRESS) / 1e18;
+  const earned = await STAKING_POOL.earned(App.YOUR_ADDRESS) / 1e18;
+
+  // Find out reward rate
+  const weeklyRewards = await get_synth_weekly_rewards(STAKING_POOL);
+
+  var newPriceAddresses = poolTokens.filter(x => prices[x] == null);
+  var newPrices = await lookUpTokenPrices(newPriceAddresses);
+  for (const key in newPrices) {
+      prices[key] = newPrices[key];
+  }
+  var newTokenAddresses = poolTokens.filter(x => tokens[x] == null);
+  for (const address of newTokenAddresses) {
+      tokens[address] = await getToken(App, address, stakeToken);
+  }
+  const token0 = getParameterCaseInsensitive(tokens, poolTokens[0]);
+  const token1 = getParameterCaseInsensitive(tokens, poolTokens[1]);
+  const token0Amount = token0.staked;
+  const token1Amount = token1.staked;
+
+  const token0Price = getParameterCaseInsensitive(prices, token0.address)?.usd;
+  const token1Price = getParameterCaseInsensitive(prices, token1.address)?.usd;
+
+  const token0PerBPT = token0Amount / totalBPTAmount;
+  const token1PerBPT = token1Amount / totalBPTAmount;
+
+  const BPTPrice = token0PerBPT * token0Price + token1PerBPT * token1Price;
+
+  const tvl = totalBPTAmount * BPTPrice;
+  const staked_tvl = totalStakedBPTAmount * BPTPrice;
+
+  // Finished. Start printing
+  const poolUrl = `https://pools.balancer.exchange/#/pool/${stakeToken}/`;
+  const stakingTokenTicker = `[${token0.symbol}]-[${token1.symbol}]`;
+
+  const rewardTokenPrice = prices[rewardTokenAddress].usd;
+  const usdPerWeek = weeklyRewards * rewardTokenPrice;
+  
+  _print(`<a href='${poolUrl}' target='_blank'>${stakingTokenTicker}</a> BPT Price: $${formatMoney(BPTPrice)} TVL: $${formatMoney(tvl)}`);
+  _print(`1 BPT  = [${token0PerBPT} ${token0.symbol}, ${token1PerBPT} ${token1.symbol}]`);
+  _print(`${token0.symbol} Price: $${formatMoney(token0Price)}`)
+  _print(`${token1.symbol} Price: $${formatMoney(token1Price)}`)
+  _print(`Staked: $${formatMoney(staked_tvl)}`);
+  _print(`${rewardTokenTicker} Per Week: ${weeklyRewards.toFixed(2)} ($${formatMoney(usdPerWeek)})`);
+  var weeklyAPY = usdPerWeek / staked_tvl * 100;
+  var dailyAPY = weeklyAPY / 7;
+  var yearlyAPY = weeklyAPY * 52;
+  _print(`APY: Day ${dailyAPY.toFixed(2)}% Week ${weeklyAPY.toFixed(2)}% Year ${yearlyAPY.toFixed(2)}%`);
+  var userStakedUsd = userStaked * BPTPrice;
+  var userStakedPct = userStaked / totalStakedBPTAmount * 100;
+  _print(`You are staking ${userStaked.toFixed(2)} ${stakingTokenTicker} ($${formatMoney(userStakedUsd)}), ${userStakedPct.toFixed(2)}% of the pool.`);
+  if (userStaked > 0) {
+      var userWeeklyRewards = userStakedPct * weeklyRewards / 100;
+      var userDailyRewards = userWeeklyRewards / 7;
+      var userYearlyRewards = userWeeklyRewards * 52;
+      _print(`Estimated ${rewardTokenTicker} earnings:`
+          + ` Day ${userDailyRewards.toFixed(2)} ($${formatMoney(userDailyRewards*rewardTokenPrice)})`
+          + ` Week ${userWeeklyRewards.toFixed(2)} ($${formatMoney(userWeeklyRewards*rewardTokenPrice)})`
+          + ` Year ${userYearlyRewards.toFixed(2)} ($${formatMoney(userYearlyRewards*rewardTokenPrice)})`);
+  }
+  const approveTENDAndStake = async function() {
+    return rewardsContract_stake(stakeToken, stakingAddress, App)
+  }
+  const unstake = async function() {
+    return rewardsContract_unstake(stakingAddress, App)
+  }
+  const claim = async function() {
+    return rewardsContract_claim(stakingAddress, App)
+  }
+  const exit = async function() {
+    return rewardsContract_exit(stakingAddress, App)
+  }
+  _print_link(`Stake ${userUnstaked.toFixed(2)} ${stakingTokenTicker}`, approveTENDAndStake)
+  _print_link(`Unstake ${userStaked.toFixed(2)} ${stakingTokenTicker}`, unstake)
+  _print_link(`Claim ${earned.toFixed(2)} ${rewardTokenTicker}`, claim)
+  _print_link(`Exit`, exit)
+  _print(`\n`);
+}
+
 async function main() {
   const CONTRACTS = [
     "0x23b53026187626Ed8488e119767ACB2Fe5F8de4e",
@@ -18,70 +109,17 @@ async function main() {
   const App = await init_ethers();
 
   _print(`Initialized ${App.YOUR_ADDRESS}`);
-  _print("Reading smart contracts...");
+  _print("Reading smart contracts...\n");
 
-  const ETH_TOKEN_ADDR = "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2";
-  const PCT_TOKEN_ADDR = "0xbc16da9df0a22f01a16bc0620a27e7d6d6488550";
-  const PCT_ETH_BPT_TOKEN_ADDR = "0xeb85b2e12320a123d447ca0da26b49e666b799db";
-  const PCT_ETH_TOKEN_STAKING_ADDR = "0x23b53026187626Ed8488e119767ACB2Fe5F8de4e";
-  const PCT_ETH_BALANCER_POOL = new ethers.Contract(PCT_ETH_BPT_TOKEN_ADDR, BALANCER_POOL_ABI, App.provider);
-  const PCT_ETH_BPT_TOKEN_CONTRACT = new ethers.Contract(PCT_ETH_BPT_TOKEN_ADDR, ERC20_ABI, App.provider);
-  const BPT_STAKING_POOL = new ethers.Contract(PCT_ETH_TOKEN_STAKING_ADDR, PCT_POOL_ABI, App.provider);
+  var tokens = {};
+  var prices = {};
+
+  const rewardTokenTicker = "PCT";
+  const rewardTokenAddress = "0xbc16da9df0a22f01a16bc0620a27e7d6d6488550";
   
-  const totalBPTAmount = await PCT_ETH_BALANCER_POOL.totalSupply() / 1e18;
-  const totalStakedBPTAmount = await PCT_ETH_BPT_TOKEN_CONTRACT.balanceOf(PCT_ETH_TOKEN_STAKING_ADDR) / 1e18;
-  const yourBPTAmount = await BPT_STAKING_POOL.balanceOf(App.YOUR_ADDRESS) / 1e18;
-
-  const totalETHAmount = await PCT_ETH_BALANCER_POOL.getBalance(ETH_TOKEN_ADDR) / 1e18;
-  const totalPercentAmount = await PCT_ETH_BALANCER_POOL.getBalance(PCT_TOKEN_ADDR) / 1e18;
-
-  const ETHPerBPT = totalETHAmount / totalBPTAmount;
-  const PercentPerBPT = totalPercentAmount / totalBPTAmount;
-
-  // Find out reward rate
-  const weekly_reward = await get_synth_weekly_rewards(BPT_STAKING_POOL);
-  const PercentRewardPerBPT = weekly_reward / totalStakedBPTAmount;
-
-  _print("Finished reading smart contracts... Looking up prices... \n")
-
-  // Look up prices
-  const prices = await lookUpPrices(["ethereum", "percent"]);
-  const ETHPrice = prices["ethereum"].usd;
-  const PCTPrice = prices["percent"].usd;
-
-  const BPTPrice = ETHPerBPT * ETHPrice + PercentPerBPT * PCTPrice;
-
-  // Finished. Start printing
-
-  _print("========== PRICES ==========")
-  _print(`1 PCT = $${PCTPrice}`);
-  _print(`1 ETH  = $${ETHPrice}\n`);
-  _print(`1 BPT  = [${ETHPerBPT} ETH, ${PercentPerBPT} PCT]`);
-  _print(`       = ${toDollar(BPTPrice)}\n`);
-
-  _print("========== STAKING =========")
-  _print(`There are total   : ${totalBPTAmount} BPT issued by ETH-PCT Balancer Pool.`);
-  _print(`                  = ${toDollar(totalBPTAmount * BPTPrice)}`);
-  _print(`There are total   : ${totalStakedBPTAmount} BPT staked.`);
-  _print(`                  = ${toDollar(totalStakedBPTAmount * BPTPrice)}\n`);
-  _print(`You are staking   : ${yourBPTAmount} BPT (${toFixed(yourBPTAmount * 100 / totalStakedBPTAmount, 3)}% of the pool)`);
-  _print(`                  = [${(ETHPerBPT * yourBPTAmount).toFixed(2)} ETH, ${(PercentPerBPT * yourBPTAmount).toFixed(2)} PCT]`);
-  _print(`                  = ${toDollar(yourBPTAmount * BPTPrice)}\n`);
-
-  // PCT REWARDS
-  _print("======== PCT REWARDS ========")
-  const weeklyEstimate = PercentRewardPerBPT * yourBPTAmount;
-
-  _print(`Daily estimate    : ${toFixed(weeklyEstimate / 7, 2)} PCT = ${toDollar(weeklyEstimate * (1/7) * PCTPrice)} (out of total ${toFixed(weekly_reward / 7, 2)} PCT)`)
-  _print(`Weekly estimate   : ${toFixed(weeklyEstimate, 2)} PCT = ${toDollar(weeklyEstimate * PCTPrice)} (out of total ${weekly_reward} PCT)\n`)
-  const YFIWeeklyROI = (PercentRewardPerBPT * PCTPrice) * 100 / (BPTPrice);
-  _print(`Daily ROI in USD  : ${toFixed(YFIWeeklyROI / 7, 4)}%`)
-  _print(`Weekly ROI in USD : ${toFixed(YFIWeeklyROI, 4)}%`)
-  _print(`APY (unstable)    : ${toFixed(YFIWeeklyROI * 52, 4)}% \n`)
-
-  // BAL REWARDS
-  _print("======== BAL REWARDS ========")
-  _print_href(`Check http://www.predictions.exchange/balancer/ for accurate %`, "https://www.predictions.exchange/balancer/")
+  for (const c of CONTRACTS) {
+    await loadPool(App, tokens, prices, c, rewardTokenTicker, rewardTokenAddress);
+  }
 
   await _print24HourPrice("percent", "PCT");
 
