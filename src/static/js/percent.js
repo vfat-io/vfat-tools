@@ -32,8 +32,8 @@ async function loadPool(App, tokens, prices, stakingAddress, rewardTokenTicker, 
   }
   const token0 = getParameterCaseInsensitive(tokens, poolTokens[0]);
   const token1 = getParameterCaseInsensitive(tokens, poolTokens[1]);
-  const token0Amount = token0.staked;
-  const token1Amount = token1.staked;
+  const token0Amount = await token0.contract.balanceOf(stakeToken) / 10 ** token0.decimals;
+  const token1Amount = await token1.contract.balanceOf(stakeToken) / 10 ** token1.decimals;
 
   const token0Price = getParameterCaseInsensitive(prices, token0.address)?.usd;
   const token1Price = getParameterCaseInsensitive(prices, token1.address)?.usd;
@@ -65,7 +65,9 @@ async function loadPool(App, tokens, prices, stakingAddress, rewardTokenTicker, 
   _print(`APY: Day ${dailyAPY.toFixed(2)}% Week ${weeklyAPY.toFixed(2)}% Year ${yearlyAPY.toFixed(2)}%`);
   var userStakedUsd = userStaked * BPTPrice;
   var userStakedPct = userStaked / totalStakedBPTAmount * 100;
-  _print(`You are staking ${userStaked.toFixed(2)} ${stakingTokenTicker} ($${formatMoney(userStakedUsd)}), ${userStakedPct.toFixed(2)}% of the pool.`);
+  _print(`You are staking ${userStaked.toFixed(2)} ${stakingTokenTicker} ` +
+         `(${(token0PerBPT * userStaked).toFixed(2)} ${token0.symbol}, ${(token1PerBPT * userStaked).toFixed(2)} ${token1.symbol}), ` +
+         `$${formatMoney(userStakedUsd)} (${userStakedPct.toFixed(2)}% of the pool).`);
   if (userStaked > 0) {
       var userWeeklyRewards = userStakedPct * weeklyRewards / 100;
       var userDailyRewards = userWeeklyRewards / 7;

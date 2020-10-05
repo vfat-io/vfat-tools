@@ -686,6 +686,26 @@ async function getUniPool(app, pool, poolAddress, stakingAddress) {
   };
 }
 
+async function getBalancerPool(app, pool, poolAddress, stakingAddress, tokens) {
+  const decimals = await pool.decimals();
+  const poolTokens = await Promise.all(tokens.map(async (t) => { return {
+    address : t,
+    weight : await pool.getDenormalizedWeight(t) / 1e18,
+    balance : await pool.getBalance(t)
+  };}));
+  return { 
+      address: poolAddress,
+      poolTokens: poolTokens, //address, weight and balance
+      totalSupply: await pool.totalSupply() / 10 ** decimals,
+      stakingAddress: stakingAddress,
+      staked: await pool.balanceOf(stakingAddress) / 10 ** decimals,
+      decimals: decimals,
+      unstaked: await pool.balanceOf(app.YOUR_ADDRESS) / 10 ** decimals,
+      contract: pool,
+      tokens : tokens //just the token addresses to conform with the other pool types
+  };
+}
+
 async function getJar(app, jar, address, stakingAddress) {
     const decimals = await jar.decimals();
     const token = await jar.token();
@@ -751,23 +771,30 @@ function hex_to_ascii(str1)
 }
 
 async function getToken(app, tokenAddress, stakingAddress) {
-  const pool = new ethers.Contract(tokenAddress, UNI_ABI, app.provider);
   try {
+    const pool = new ethers.Contract(tokenAddress, UNI_ABI, app.provider);
     const _token0 = await pool.token0();
     return await getUniPool(app, pool, tokenAddress, stakingAddress);
   }
   catch(err) {
   }
-  const jar = new ethers.Contract(tokenAddress, JAR_ABI, app.provider);
   try {
+    const bal = new ethers.Contract(tokenAddress, BALANCER_POOL_ABI, app.provider);
+    const tokens = await bal.getFinalTokens();
+    return await getBalancerPool(app, bal, tokenAddress, stakingAddress, tokens);
+  }
+  catch(err) {
+  }
+  try {
+    const jar = new ethers.Contract(tokenAddress, JAR_ABI, app.provider);
     const _token = await jar.token();
     return await getJar(app, jar, tokenAddress, stakingAddress);
   }
   catch(err) {
   }
-  const erc20 = new ethers.Contract(tokenAddress, ERC20_ABI, app.provider);
   try {
-    const _name = await jar.name();
+    const erc20 = new ethers.Contract(tokenAddress, ERC20_ABI, app.provider);
+    const _name = await erc20.name();
     return await getErc20(app, erc20, tokenAddress, stakingAddress);
   }
   catch(err) {
@@ -845,6 +872,58 @@ function getUniPrices(tokens, prices, pool)
   }
 }
 
+function getBalancerPrices(tokens, prices, pool)
+{
+  if (pool.poolTokens.length > 2) {
+    throw 'Currently only works with 2 poolTokens';
+  }
+  var pt0 = pool.poolTokens[0];
+  var pt1 = pool.poolTokens[1];
+  var t0 = getParameterCaseInsensitive(tokens,pt0.address);
+  var p0 = getParameterCaseInsensitive(prices,pt0.address)?.usd;
+  var t1 = getParameterCaseInsensitive(tokens,pt1.address);
+  var p1 = getParameterCaseInsensitive(prices,pt1.address)?.usd;
+  if (p0 == null && p1 == null) {
+      return undefined;
+  }
+  var q0 = pt0.balance / 10 ** t0.decimals;
+  var q1 = pt1.balance / 10 ** t1.decimals;
+  if (p0 == null)
+  {
+      p0 = q1 * p1 / q0;
+      prices[pool.token0] = { usd : p0 };
+  }
+  if (p1 == null)
+  {
+      p1 = q0 * p0 / q1;
+      prices[pool.token1] = { usd : p1 };
+  }
+  var tvl = q0 * p0 + q1 * p1;
+  var price = tvl / pool.totalSupply;
+  prices[pool.address] = { usd : price };
+  var staked_tvl = pool.staked * price;
+  const stakingTokenTicker = `[${t0.symbol}]-[${t1.symbol}]`;
+  return {
+      t0: t0,
+      p0: p0,
+      q0  : q0,
+      t1: t1,
+      p1: p1,
+      q1  : q1,
+      price: price,
+      tvl : tvl,
+      staked_tvl : staked_tvl,
+      stakingTokenTicker : stakingTokenTicker,
+      print_price() {
+        const poolUrl = `http://pools.balancer.exchange/#/pool/${pool.address}`;
+        _print(`<a href='${poolUrl}' target='_blank'>${stakingTokenTicker}</a> BPT Price: $${formatMoney(price)} TVL: $${formatMoney(tvl)}`);
+        _print(`${t0.symbol} Price: $${formatMoney(p0)}`)
+        _print(`${t1.symbol} Price: $${formatMoney(p1)}`)
+        _print(`Staked: $${formatMoney(staked_tvl)}`);
+      }
+  }
+}
+
 function getWrapPrices(tokens, prices, pool)
 {
   const wrappedToken = getParameterCaseInsensitive(tokens, pool.token);
@@ -903,6 +982,7 @@ function getErc20Prices(prices, pool) {
 }
 
 function getPoolPrices(tokens, prices, pool) {
+  if (pool.poolTokens != null) return getBalancerPrices(tokens, prices, pool);
   if (pool.token0 != null) return getUniPrices(tokens, prices, pool);
   if (pool.token != null) return getWrapPrices(tokens, prices, pool);
   return getErc20Prices(prices, pool);
@@ -933,37 +1013,30 @@ async function getPoolInfo(app, chefContract, chefAddress, poolIndex, pendingRew
   };
 }
 
-function printStakedLPPrice(App, prices, tokens, poolInfo, 
-    chefAbi, chefAddr, totalAllocPoints, 
-    rewardsPerWeek, rewardTokenTicker, rewardTokenAddress, 
-    pendingRewardsFunctionName, poolIndex) {  
-  const pp = getPoolPrices(tokens, prices, poolInfo.poolToken);
-  pp.print_price();
-  const sp = getPoolPrices(tokens, prices, poolInfo.stakedToken);
-  sp.print_price();
-  const rewardPrice = getParameterCaseInsensitive(prices, rewardTokenAddress)?.usd;
-  var poolRewardsPerWeek = poolInfo.allocPoints / totalAllocPoints * rewardsPerWeek;
+function printApy(rewardTokenTicker, rewardPrice, poolRewardsPerWeek, 
+                  stakingTokenTicker, stakedTvl, userStaked, poolTokenPrice) {
   var usdPerWeek = poolRewardsPerWeek * rewardPrice;
   _print(`${rewardTokenTicker} Per Week: ${poolRewardsPerWeek.toFixed(2)} ($${formatMoney(usdPerWeek)})`);
-  var weeklyAPY = usdPerWeek / sp.staked_tvl * 100;
+  var weeklyAPY = usdPerWeek / stakedTvl * 100;
   var dailyAPY = weeklyAPY / 7;
   var yearlyAPY = weeklyAPY * 52;
   _print(`APY: Day ${dailyAPY.toFixed(2)}% Week ${weeklyAPY.toFixed(2)}% Year ${yearlyAPY.toFixed(2)}%`);
-  var userStaked = poolInfo.userLPStaked ?? poolInfo.userStaked;
-  var userStakedUsd = userStaked * pp.price;
-  var userStakedPct = userStaked / (poolInfo.stakedToken ?? poolInfo.poolToken).staked * 100;
-  _print(`You are staking ${userStaked.toFixed(2)} ${pp.stakingTokenTicker} ($${formatMoney(userStakedUsd)}), ${userStakedPct.toFixed(2)}% of the pool.`);
-  if (poolInfo.userStaked > 0) {
-      var userWeeklyRewards = userStakedPct * poolRewardsPerWeek / 100;
-      var userDailyRewards = userWeeklyRewards / 7;
-      var userYearlyRewards = userWeeklyRewards * 52;
-      _print(`Estimated ${rewardTokenTicker} earnings:`
-          + ` Day ${userDailyRewards.toFixed(2)} ($${formatMoney(userDailyRewards*rewardPrice)})`
-          + ` Week ${userWeeklyRewards.toFixed(2)} ($${formatMoney(userWeeklyRewards*rewardPrice)})`
-          + ` Year ${userYearlyRewards.toFixed(2)} ($${formatMoney(userYearlyRewards*rewardPrice)})`);
-  }
+  var userStakedUsd = userStaked * poolTokenPrice;
+  var userStakedPct = userStakedUsd / stakedTvl * 100;
+  _print(`You are staking ${userStaked.toFixed(2)} ${stakingTokenTicker} ($${formatMoney(userStakedUsd)}), ${userStakedPct.toFixed(2)}% of the pool.`);
+  var userWeeklyRewards = userStakedPct * poolRewardsPerWeek / 100;
+  var userDailyRewards = userWeeklyRewards / 7;
+  var userYearlyRewards = userWeeklyRewards * 52;
+  _print(`Estimated ${rewardTokenTicker} earnings:`
+      + ` Day ${userDailyRewards.toFixed(2)} ($${formatMoney(userDailyRewards*rewardPrice)})`
+      + ` Week ${userWeeklyRewards.toFixed(2)} ($${formatMoney(userWeeklyRewards*rewardPrice)})`
+      + ` Year ${userYearlyRewards.toFixed(2)} ($${formatMoney(userYearlyRewards*rewardPrice)})`);
+}
+
+function printChefContractLinks(App, chefAbi, chefAddr, poolIndex, poolAddress, pendingRewardsFunctionName,
+    rewardTokenTicker, stakingTokenTicker, unstaked, userStaked, pendingRewardTokens) {
   const approveAndStake = async function() {
-    return chefContract_stake(chefAbi, chefAddr, poolIndex, poolInfo.address, App)
+    return chefContract_stake(chefAbi, chefAddr, poolIndex, poolAddress, App)
   }      
   const unstake = async function() {
     return chefContract_unstake(chefAbi, chefAddr, poolIndex, App, pendingRewardsFunctionName)
@@ -974,17 +1047,17 @@ function printStakedLPPrice(App, prices, tokens, poolInfo,
   const exit = async function() {
     return chefContract_exit(chefAbi, chefAddr, poolIndex, App)
   }      
-  _print_link(`Stake ${poolInfo.poolToken.unstaked.toFixed(2)} ${pp.stakingTokenTicker}`, approveAndStake)
-  _print_link(`Unstake ${poolInfo.userStaked.toFixed(2)} ${pp.stakingTokenTicker}`, unstake)
-  _print_link(`Claim ${poolInfo.pendingRewardTokens.toFixed(2)} ${rewardTokenTicker}`, claim)
+  _print_link(`Stake ${unstaked.toFixed(2)} ${stakingTokenTicker}`, approveAndStake)
+  _print_link(`Unstake ${userStaked.toFixed(2)} ${stakingTokenTicker}`, unstake)
+  _print_link(`Claim ${pendingRewardTokens.toFixed(2)} ${rewardTokenTicker}`, claim)
   _print_link(`Exit`, exit)
   _print(`\n`);
 }
 
-async function loadPool(App, prices, tokens, poolIndex, 
-                        chefAbi, chefContract, chefAddr, totalAllocPoints, 
-                        rewardsPerWeek, rewardTokenTicker, rewardTokenAddress, 
-                        pendingRewardsFunctionName) {  
+async function loadChefPool(App, prices, tokens, poolIndex, 
+                            chefAbi, chefContract, chefAddr, totalAllocPoints, 
+                            rewardsPerWeek, rewardTokenTicker, rewardTokenAddress, 
+                            pendingRewardsFunctionName) {  
   const poolInfo = await getPoolInfo(App, chefContract, chefAddr, poolIndex, pendingRewardsFunctionName);
   var newPriceAddresses = poolInfo.poolToken.tokens.filter(x => prices[x] == null);
   var newPrices = await lookUpTokenPrices(newPriceAddresses);
@@ -995,50 +1068,52 @@ async function loadPool(App, prices, tokens, poolIndex,
   for (const address of newTokenAddresses) {
       tokens[address] = await getToken(App, address, chefAddr);
   }
-  if (poolInfo.stakedToken != null) {
-    printStakedLPPrice(App, prices, tokens, poolInfo, chefAbi, chefAddr, totalAllocPoints,
-      rewardsPerWeek, rewardTokenTicker, rewardTokenAddress, pendingRewardsFunctionName, poolIndex);
-  }
-  else {
-    const pp = getPoolPrices(tokens, prices, poolInfo.poolToken);
-    pp.print_price();
-    const rewardPrice = getParameterCaseInsensitive(prices, rewardTokenAddress)?.usd;
-    var poolRewardsPerWeek = poolInfo.allocPoints / totalAllocPoints * rewardsPerWeek;
-    var usdPerWeek = poolRewardsPerWeek * rewardPrice;
-    _print(`${rewardTokenTicker} Per Week: ${poolRewardsPerWeek.toFixed(2)} ($${formatMoney(usdPerWeek)})`);
-    var weeklyAPY = usdPerWeek / pp.staked_tvl * 100;
-    var dailyAPY = weeklyAPY / 7;
-    var yearlyAPY = weeklyAPY * 52;
-    _print(`APY: Day ${dailyAPY.toFixed(2)}% Week ${weeklyAPY.toFixed(2)}% Year ${yearlyAPY.toFixed(2)}%`);
-    var userStaked = poolInfo.userLPStaked ?? poolInfo.userStaked;
-    var userStakedUsd = userStaked * pp.price;
-    var userStakedPct = userStaked / (poolInfo.stakedToken ?? poolInfo.poolToken).staked * 100;
-    _print(`You are staking ${userStaked.toFixed(2)} ${pp.stakingTokenTicker} ($${formatMoney(userStakedUsd)}), ${userStakedPct.toFixed(2)}% of the pool.`);
-    if (poolInfo.userStaked > 0) {
-        var userWeeklyRewards = userStakedPct * poolRewardsPerWeek / 100;
-        var userDailyRewards = userWeeklyRewards / 7;
-        var userYearlyRewards = userWeeklyRewards * 52;
-        _print(`Estimated ${rewardTokenTicker} earnings:`
-            + ` Day ${userDailyRewards.toFixed(2)} ($${formatMoney(userDailyRewards*rewardPrice)})`
-            + ` Week ${userWeeklyRewards.toFixed(2)} ($${formatMoney(userWeeklyRewards*rewardPrice)})`
-            + ` Year ${userYearlyRewards.toFixed(2)} ($${formatMoney(userYearlyRewards*rewardPrice)})`);
+  const pp = getPoolPrices(tokens, prices, poolInfo.poolToken);
+  const sp = (poolInfo.stakedToken == null) ? null : getPoolPrices(tokens, prices, poolInfo.stakedToken);
+  var poolRewardsPerWeek = poolInfo.allocPoints / totalAllocPoints * rewardsPerWeek;
+  const userStaked = poolInfo.userLPStaked ?? poolInfo.userStaked;
+  const rewardPrice = getParameterCaseInsensitive(prices, rewardTokenAddress)?.usd;
+  const stakedTvl = sp?.staked_tvl ?? pp.staked_tvl;
+  pp.print_price();
+  sp?.print_price();
+  printApy(rewardTokenTicker, rewardPrice, poolRewardsPerWeek, pp.stakingTokenTicker, stakedTvl, userStaked, pp.price);
+  printChefContractLinks(App, chefAbi, chefAddr, poolIndex, poolInfo.address, pendingRewardsFunctionName,
+    rewardTokenTicker, pp.stakingTokenTicker, poolInfo.poolToken.unstaked, 
+    poolInfo.userStaked, poolInfo.pendingRewardTokens);
+}
+
+async function loadChefPools(App, prices, tokens, rewardTokenPoolIndex, 
+    chefAbi, chefContract, chefAddress, totalAllocPoints, 
+    rewardsPerWeek, rewardTokenTicker, rewardTokenAddress, pendingRewardsFunction, poolCount) {
+  //Loading the pool with the reward token first allows calculating the APY for the remaining ones
+  await loadChefPool(App, prices, tokens, rewardTokenPoolIndex, 
+    chefAbi, chefContract, chefAddress, totalAllocPoints, 
+    rewardsPerWeek, rewardTokenTicker, rewardTokenAddress, pendingRewardsFunction);
+  
+  for (i = 0; i < poolCount; i++) {
+    if (i != rewardTokenPoolIndex) {
+        await loadChefPool(App, prices, tokens, i,
+          chefAbi, chefContract, chefAddress, totalAllocPoints, 
+          rewardsPerWeek, rewardTokenTicker, rewardTokenAddress, pendingRewardsFunction);
     }
-    const approveAndStake = async function() {
-      return chefContract_stake(chefAbi, chefAddr, poolIndex, poolInfo.address, App)
-    }      
-    const unstake = async function() {
-      return chefContract_unstake(chefAbi, chefAddr, poolIndex, App, pendingRewardsFunctionName)
-    }      
-    const claim = async function() {
-      return chefContract_claim(chefAbi, chefAddr, poolIndex, App, pendingRewardsFunctionName)
-    }      
-    const exit = async function() {
-      return chefContract_exit(chefAbi, chefAddr, poolIndex, App)
-    }      
-    _print_link(`Stake ${poolInfo.poolToken.unstaked.toFixed(4)} ${pp.stakingTokenTicker}`, approveAndStake)
-    _print_link(`Unstake ${poolInfo.userStaked.toFixed(4)} ${pp.stakingTokenTicker}`, unstake)
-    _print_link(`Claim ${poolInfo.pendingRewardTokens.toFixed(4)} ${rewardTokenTicker}`, claim)
-    _print_link(`Exit`, exit)
-    _print(`\n`);
   }
+}
+
+async function loadChefContract(App, chefAddress, chefAbi, rewardTokenPoolIndex, rewardTokenTicker,
+    rewardTokenFunction, rewardsPerBlockFunction, pendingRewardsFunction) {    
+  const chefContract = new ethers.Contract(chefAddress, chefAbi, App.provider);
+
+  const poolCount = await chefContract.poolLength();
+  const totalAllocPoints = await chefContract.totalAllocPoint();
+
+  _print(`Found ${poolCount} pools.\n`)
+
+  var prices = {};
+  var tokens = {};
+
+  const rewardTokenAddress = await chefContract.callStatic[rewardTokenFunction]();
+  const rewardsPerWeek = await chefContract.callStatic[rewardsPerBlockFunction]() / 1e18 * 604800 / 13.5
+
+  await loadChefPools(App, prices, tokens, rewardTokenPoolIndex, chefAbi, chefContract, chefAddress,
+    totalAllocPoints, rewardsPerWeek, rewardTokenTicker, rewardTokenAddress, pendingRewardsFunction, poolCount);
 }

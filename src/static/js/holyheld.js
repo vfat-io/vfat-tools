@@ -10,38 +10,14 @@ $(function() {
     _print("Reading smart contracts...\n");
   
     const HOLY_KNIGHT_ADDR = "0x5D33dE3E540b289f9340D059907ED648c9E7AaDD";
-    const HOLY_KNIGHT = new ethers.Contract(HOLY_KNIGHT_ADDR, HOLY_KNIGHT_ABI, App.provider);
-
-    const poolCount = await HOLY_KNIGHT.poolLength();
-    const totalAllocPoints = await HOLY_KNIGHT.totalAllocPoint();
-
-    _print(`Found ${poolCount} pools.\n`)
-
-    var prices = {};
-    var tokens = {};
-
-    const rewardTokenPoolIndex = 9;
-    const rewardTokenTicker = "HOLY";
-    const rewardTokenAddress = await HOLY_KNIGHT.holytoken();
-    const rewardsPerWeek = await HOLY_KNIGHT.holyPerBlock() / 1e18 * 604800 / 13.5;
 
     _print(`Staking bonus for long-term holders (multiply by the below APY)`);
     _print(`3-5  weeks: 1.25x`);
     _print(`6-8  weeks: 1.5x`);
     _print(`9-11 weeks: 1.75x`);
-    _print(`12   weeks: 2x`);
+    _print(`12   weeks: 2x\n`);
 
-    await loadPool(App, prices, tokens, rewardTokenPoolIndex, 
-             HOLY_KNIGHT_ABI, HOLY_KNIGHT, HOLY_KNIGHT_ADDR, totalAllocPoints, 
-             rewardsPerWeek, rewardTokenTicker, rewardTokenAddress, "pendingHoly");
-
-    for (i = 0; i < poolCount; i++) {
-        if (i != rewardTokenPoolIndex) {
-            await loadPool(App, prices, tokens, i,
-                HOLY_KNIGHT_ABI, HOLY_KNIGHT, HOLY_KNIGHT_ADDR, totalAllocPoints, 
-                rewardsPerWeek, rewardTokenTicker, rewardTokenAddress, "pendingHoly");
-        }
-    }
+    await loadChefContract(App, HOLY_KNIGHT_ADDR, HOLY_KNIGHT_ABI, 9, "HOLY", "holytoken", "holyPerBlock", "pendingHoly");
   
     hideLoading();  
   }

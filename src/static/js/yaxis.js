@@ -23,19 +23,10 @@ $(function() {
     const rewardTokenPoolIndex = 6;
     const rewardTokenTicker = "YAX";
     const rewardTokenAddress = "0xb1dc9124c395c1e97773ab855d66e879f053a289"
-    const rewardsPerWeek = 200000 * 0.9;
+    const rewardsPerWeek = 150000 * 0.9;
 
-    await loadPool(App, prices, tokens, rewardTokenPoolIndex, 
-             YAXIS_CHEF_ABI, YAXIS_CHEF, YAXIS_CHEF_ADDR, totalAllocPoints, 
-             rewardsPerWeek, rewardTokenTicker, rewardTokenAddress, "pendingYaxis");
-
-    for (i = 0; i < poolCount; i++) {
-        if (i != rewardTokenPoolIndex) {
-            await loadPool(App, prices, tokens, i, 
-                YAXIS_CHEF_ABI, YAXIS_CHEF, YAXIS_CHEF_ADDR, totalAllocPoints, 
-                rewardsPerWeek, rewardTokenTicker, rewardTokenAddress, "pendingYaxis");
-        }
-    }
+    await loadChefPools(App, prices, tokens, rewardTokenPoolIndex, YAXIS_CHEF_ABI, YAXIS_CHEF, YAXIS_CHEF_ADDR,
+      totalAllocPoints, rewardsPerWeek, rewardTokenTicker, rewardTokenAddress, "pendingYaxis", poolCount);
   
     hideLoading();  
   }
