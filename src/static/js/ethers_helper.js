@@ -871,6 +871,12 @@ function getUniPrices(tokens, prices, pool)
         _print(`${t0.symbol} Price: $${formatMoney(p0)}`)
         _print(`${t1.symbol} Price: $${formatMoney(p1)}`)
         _print(`Staked: $${formatMoney(staked_tvl)}`);
+      },
+      print_contained_price(userStaked) {
+        var userPct = userStaked / pool.totalSupply;
+        var q0user = userPct * q0;
+        var q1user = userPct * q1;
+        _print(`Your LP tokens comprise of ${q0user.toFixed(2)} ${t0.symbol} + ${q1user.toFixed(2)} ${t1.symbol}`);
       }
   }
 }
@@ -923,6 +929,12 @@ function getBalancerPrices(tokens, prices, pool)
         _print(`${t0.symbol} Price: $${formatMoney(p0)}`)
         _print(`${t1.symbol} Price: $${formatMoney(p1)}`)
         _print(`Staked: $${formatMoney(staked_tvl)}`);
+      },
+      print_contained_price(userStaked) {
+        var userPct = userStaked / pool.totalSupply;
+        var q0user = userPct * q0;
+        var q1user = userPct * q1;
+        _print(`Your LP tokens comprise of ${q0user.toFixed(2)} ${t0.symbol} + ${q1user.toFixed(2)} ${t1.symbol}`);
       }
   }
 }
@@ -933,7 +945,7 @@ function getWrapPrices(tokens, prices, pool)
   if (wrappedToken.token0 != null) { //Uniswap
     const uniPrices = getUniPrices(tokens, prices, wrappedToken);
     const poolUrl = `http://uniswap.info/pair/${wrappedToken.address}`;
-    const name = `pJar UNI <a href='${poolUrl}' target='_blank'>${uniPrices.stakingTokenTicker}</a>`;
+    const name = `Wrapped UNI <a href='${poolUrl}' target='_blank'>${uniPrices.stakingTokenTicker}</a>`;
     const price = (pool.balance / 10 ** wrappedToken.decimals) * uniPrices.price / (pool.totalSupply / 10 ** pool.decimals);
     const tvl = pool.balance / 1e18 * price;
     const staked_tvl = pool.staked * price;
@@ -946,6 +958,8 @@ function getWrapPrices(tokens, prices, pool)
       print_price() {
         _print(`${name} Price: $${formatMoney(price)} TVL: $${formatMoney(tvl)}`);
         _print(`Staked: $${formatMoney(staked_tvl)}`);
+      },
+      print_contained_price(_) {
       }
     }
   }
@@ -964,6 +978,8 @@ function getWrapPrices(tokens, prices, pool)
       print_price() {
         _print(`${name} Price: $${formatMoney(price)} TVL: $${formatMoney(tvl)}`);
         _print(`Staked: $${formatMoney(staked_tvl)}`);
+      },
+      print_contained_price(_) {
       }
     }
   }
@@ -980,6 +996,8 @@ function getErc20Prices(prices, pool) {
     print_price() {
       _print(`${pool.name}</a> Price: $${formatMoney(price)} TVL: $${formatMoney(tvl)}`);
       _print(`Staked: $${formatMoney(staked_tvl)}`);
+    },
+    print_contained_price() {
     }
   }
 }
@@ -1030,10 +1048,12 @@ function printApy(rewardTokenTicker, rewardPrice, poolRewardsPerWeek,
   var userWeeklyRewards = userStakedPct * poolRewardsPerWeek / 100;
   var userDailyRewards = userWeeklyRewards / 7;
   var userYearlyRewards = userWeeklyRewards * 52;
-  _print(`Estimated ${rewardTokenTicker} earnings:`
-      + ` Day ${userDailyRewards.toFixed(2)} ($${formatMoney(userDailyRewards*rewardPrice)})`
-      + ` Week ${userWeeklyRewards.toFixed(2)} ($${formatMoney(userWeeklyRewards*rewardPrice)})`
-      + ` Year ${userYearlyRewards.toFixed(2)} ($${formatMoney(userYearlyRewards*rewardPrice)})`);
+  if (userStaked > 0) {
+    _print(`Estimated ${rewardTokenTicker} earnings:`
+        + ` Day ${userDailyRewards.toFixed(2)} ($${formatMoney(userDailyRewards*rewardPrice)})`
+        + ` Week ${userWeeklyRewards.toFixed(2)} ($${formatMoney(userWeeklyRewards*rewardPrice)})`
+        + ` Year ${userYearlyRewards.toFixed(2)} ($${formatMoney(userYearlyRewards*rewardPrice)})`);
+  }
 }
 
 function printChefContractLinks(App, chefAbi, chefAddr, poolIndex, poolAddress, pendingRewardsFunction,
@@ -1068,6 +1088,8 @@ function printChefPool(App, chefAbi, chefAddr, prices, tokens, poolInfo, poolInd
   poolPrices.print_price();
   sp?.print_price();
   printApy(rewardTokenTicker, rewardPrice, poolRewardsPerWeek, poolPrices.stakingTokenTicker, stakedTvl, userStaked, poolPrices.price);
+  if (poolInfo.userLPStaked > 0) sp?.print_contained_price(userStaked);
+  if (poolInfo.userStaked > 0) poolPrices.print_contained_price(userStaked);
   printChefContractLinks(App, chefAbi, chefAddr, poolIndex, poolInfo.address, pendingRewardsFunction,
     rewardTokenTicker, poolPrices.stakingTokenTicker, poolInfo.poolToken.unstaked, 
     poolInfo.userStaked, poolInfo.pendingRewardTokens);

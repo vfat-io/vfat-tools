@@ -17,7 +17,7 @@ $(function() {
     _print(`9-11 weeks: 1.75x`);
     _print(`12   weeks: 2x\n`);
 
-    await loadChefContract(App, HOLY_KNIGHT_ADDR, HOLY_KNIGHT_ABI, 9, "HOLY", "holytoken", "holyPerBlock", "pendingHoly");
+    await loadChefContractSecondAttempt(App, null, HOLY_KNIGHT_ADDR, HOLY_KNIGHT_ABI, "HOLY", "holytoken", "holyPerBlock", null, "pendingHoly");
   
     hideLoading();  
   }
