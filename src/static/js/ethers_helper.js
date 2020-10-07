@@ -609,12 +609,12 @@ const chefContract_stake = async function(chefAbi, chefAddress, poolIndex, staki
   }
 }
 
-const chefContract_unstake = async function(chefAbi, chefAddress, poolIndex, App, pendingRewardsFunctionName) {
+const chefContract_unstake = async function(chefAbi, chefAddress, poolIndex, App, pendingRewardsFunction) {
   const signer = App.provider.getSigner()
   const CHEF_CONTRACT = new ethers.Contract(chefAddress, chefAbi, signer)
 
   const currentStakedAmount = (await CHEF_CONTRACT.userInfo(poolIndex, App.YOUR_ADDRESS)).amount
-  const earnedTokenAmount = await CHEF_CONTRACT.callStatic[pendingRewardsFunctionName](poolIndex, App.YOUR_ADDRESS) / 1e18
+  const earnedTokenAmount = await CHEF_CONTRACT.callStatic[pendingRewardsFunction](poolIndex, App.YOUR_ADDRESS) / 1e18
 
   if (earnedTokenAmount > 0) {
     showLoading()
@@ -646,12 +646,12 @@ const chefContract_exit = async function(chefAbi, chefAddress, poolIndex, App) {
   }
 }
 
-const chefContract_claim = async function(chefAbi, chefAddress, poolIndex, App, pendingRewardsFunctionName) {
+const chefContract_claim = async function(chefAbi, chefAddress, poolIndex, App, pendingRewardsFunction) {
   const signer = App.provider.getSigner()
 
   const CHEF_CONTRACT = new ethers.Contract(chefAddress, chefAbi, signer)
 
-  const earnedTokenAmount = await CHEF_CONTRACT.callStatic[pendingRewardsFunctionName](poolIndex, App.YOUR_ADDRESS) / 1e18
+  const earnedTokenAmount = await CHEF_CONTRACT.callStatic[pendingRewardsFunction](poolIndex, App.YOUR_ADDRESS) / 1e18
 
   if (earnedTokenAmount > 0) {
     showLoading()
@@ -774,14 +774,16 @@ async function getToken(app, tokenAddress, stakingAddress) {
   try {
     const pool = new ethers.Contract(tokenAddress, UNI_ABI, app.provider);
     const _token0 = await pool.token0();
-    return await getUniPool(app, pool, tokenAddress, stakingAddress);
+    const uniPool = await getUniPool(app, pool, tokenAddress, stakingAddress);
+    return uniPool;
   }
   catch(err) {
   }
   try {
     const bal = new ethers.Contract(tokenAddress, BALANCER_POOL_ABI, app.provider);
     const tokens = await bal.getFinalTokens();
-    return await getBalancerPool(app, bal, tokenAddress, stakingAddress, tokens);
+    const balPool = await getBalancerPool(app, bal, tokenAddress, stakingAddress, tokens);
+    return balPool;
   }
   catch(err) {
   }
@@ -795,7 +797,8 @@ async function getToken(app, tokenAddress, stakingAddress) {
   try {
     const erc20 = new ethers.Contract(tokenAddress, ERC20_ABI, app.provider);
     const _name = await erc20.name();
-    return await getErc20(app, erc20, tokenAddress, stakingAddress);
+    const erc20tok = await getErc20(app, erc20, tokenAddress, stakingAddress);
+    return erc20tok;
   }
   catch(err) {
   }
@@ -988,11 +991,11 @@ function getPoolPrices(tokens, prices, pool) {
   return getErc20Prices(prices, pool);
 }
 
-async function getPoolInfo(app, chefContract, chefAddress, poolIndex, pendingRewardsFunctionName) {  
+async function getPoolInfo(app, chefContract, chefAddress, poolIndex, pendingRewardsFunction) {  
   const poolInfo = await chefContract.poolInfo(poolIndex);
   const poolToken = await getToken(app, poolInfo.lpToken, chefAddress);
   const userInfo = await chefContract.userInfo(poolIndex, app.YOUR_ADDRESS);
-  const pendingRewardTokens = await chefContract.callStatic[pendingRewardsFunctionName](poolIndex, app.YOUR_ADDRESS);
+  const pendingRewardTokens = await chefContract.callStatic[pendingRewardsFunction](poolIndex, app.YOUR_ADDRESS);
   const staked = userInfo.amount / 10 ** poolToken.decimals;
   var stakedToken;
   var userLPStaked;
@@ -1033,16 +1036,16 @@ function printApy(rewardTokenTicker, rewardPrice, poolRewardsPerWeek,
       + ` Year ${userYearlyRewards.toFixed(2)} ($${formatMoney(userYearlyRewards*rewardPrice)})`);
 }
 
-function printChefContractLinks(App, chefAbi, chefAddr, poolIndex, poolAddress, pendingRewardsFunctionName,
+function printChefContractLinks(App, chefAbi, chefAddr, poolIndex, poolAddress, pendingRewardsFunction,
     rewardTokenTicker, stakingTokenTicker, unstaked, userStaked, pendingRewardTokens) {
   const approveAndStake = async function() {
     return chefContract_stake(chefAbi, chefAddr, poolIndex, poolAddress, App)
   }      
   const unstake = async function() {
-    return chefContract_unstake(chefAbi, chefAddr, poolIndex, App, pendingRewardsFunctionName)
+    return chefContract_unstake(chefAbi, chefAddr, poolIndex, App, pendingRewardsFunction)
   }      
   const claim = async function() {
-    return chefContract_claim(chefAbi, chefAddr, poolIndex, App, pendingRewardsFunctionName)
+    return chefContract_claim(chefAbi, chefAddr, poolIndex, App, pendingRewardsFunction)
   }      
   const exit = async function() {
     return chefContract_exit(chefAbi, chefAddr, poolIndex, App)
@@ -1054,32 +1057,42 @@ function printChefContractLinks(App, chefAbi, chefAddr, poolIndex, poolAddress, 
   _print(`\n`);
 }
 
+function printChefPool(App, chefAbi, chefAddr, prices, tokens, poolInfo, poolIndex, poolPrices, 
+                       totalAllocPoints, rewardsPerWeek, rewardTokenTicker, rewardTokenAddress,
+                       pendingRewardsFunction) {  
+  const sp = (poolInfo.stakedToken == null) ? null : getPoolPrices(tokens, prices, poolInfo.stakedToken);
+  var poolRewardsPerWeek = poolInfo.allocPoints / totalAllocPoints * rewardsPerWeek;
+  const userStaked = poolInfo.userLPStaked ?? poolInfo.userStaked;
+  const rewardPrice = getParameterCaseInsensitive(prices, rewardTokenAddress)?.usd;
+  const stakedTvl = sp?.staked_tvl ?? poolPrices.staked_tvl;
+  poolPrices.print_price();
+  sp?.print_price();
+  printApy(rewardTokenTicker, rewardPrice, poolRewardsPerWeek, poolPrices.stakingTokenTicker, stakedTvl, userStaked, poolPrices.price);
+  printChefContractLinks(App, chefAbi, chefAddr, poolIndex, poolInfo.address, pendingRewardsFunction,
+    rewardTokenTicker, poolPrices.stakingTokenTicker, poolInfo.poolToken.unstaked, 
+    poolInfo.userStaked, poolInfo.pendingRewardTokens);
+}
+
 async function loadChefPool(App, prices, tokens, poolIndex, 
                             chefAbi, chefContract, chefAddr, totalAllocPoints, 
                             rewardsPerWeek, rewardTokenTicker, rewardTokenAddress, 
-                            pendingRewardsFunctionName) {  
-  const poolInfo = await getPoolInfo(App, chefContract, chefAddr, poolIndex, pendingRewardsFunctionName);
+                            pendingRewardsFunction) {  
+  const poolInfo = await getPoolInfo(App, chefContract, chefAddr, poolIndex, pendingRewardsFunction);
   var newPriceAddresses = poolInfo.poolToken.tokens.filter(x => prices[x] == null);
   var newPrices = await lookUpTokenPrices(newPriceAddresses);
   for (const key in newPrices) {
       prices[key] = newPrices[key];
   }
   var newTokenAddresses = poolInfo.poolToken.tokens.filter(x => tokens[x] == null);
-  for (const address of newTokenAddresses) {
+  await Promise.all(newTokenAddresses.map(async (address) => {
       tokens[address] = await getToken(App, address, chefAddr);
-  }
-  const pp = getPoolPrices(tokens, prices, poolInfo.poolToken);
-  const sp = (poolInfo.stakedToken == null) ? null : getPoolPrices(tokens, prices, poolInfo.stakedToken);
-  var poolRewardsPerWeek = poolInfo.allocPoints / totalAllocPoints * rewardsPerWeek;
-  const userStaked = poolInfo.userLPStaked ?? poolInfo.userStaked;
-  const rewardPrice = getParameterCaseInsensitive(prices, rewardTokenAddress)?.usd;
-  const stakedTvl = sp?.staked_tvl ?? pp.staked_tvl;
-  pp.print_price();
-  sp?.print_price();
-  printApy(rewardTokenTicker, rewardPrice, poolRewardsPerWeek, pp.stakingTokenTicker, stakedTvl, userStaked, pp.price);
-  printChefContractLinks(App, chefAbi, chefAddr, poolIndex, poolInfo.address, pendingRewardsFunctionName,
-    rewardTokenTicker, pp.stakingTokenTicker, poolInfo.poolToken.unstaked, 
-    poolInfo.userStaked, poolInfo.pendingRewardTokens);
+  }));
+
+  const poolPrices = getPoolPrices(tokens, prices, poolInfo);
+
+  printChefPool(App, chefAbi, chefAddr, prices, tokens, poolInfo, poolIndex, poolPrices,
+   totalAllocPoints, rewardsPerWeek, rewardTokenTicker, rewardTokenAddress,
+   pendingRewardsFunction);
 }
 
 async function loadChefPools(App, prices, tokens, rewardTokenPoolIndex, 
@@ -1116,4 +1129,40 @@ async function loadChefContract(App, chefAddress, chefAbi, rewardTokenPoolIndex,
 
   await loadChefPools(App, prices, tokens, rewardTokenPoolIndex, chefAbi, chefContract, chefAddress,
     totalAllocPoints, rewardsPerWeek, rewardTokenTicker, rewardTokenAddress, pendingRewardsFunction, poolCount);
+}
+
+async function loadChefContractSecondAttempt(App, chef, chefAddress, chefAbi, rewardTokenTicker,
+    rewardTokenFunction, rewardsPerBlockFunction, rewardsPerWeekFixed, pendingRewardsFunction) {
+  const chefContract = chef ?? new ethers.Contract(chefAddress, chefAbi, App.provider);
+
+  const poolCount = parseInt(await chefContract.poolLength(), 10);
+  const totalAllocPoints = await chefContract.totalAllocPoint();
+
+  _print(`Found ${poolCount} pools.\n`)
+
+  var tokens = {};
+
+  const rewardTokenAddress = await chefContract.callStatic[rewardTokenFunction]();
+  const rewardsPerWeek = rewardsPerWeekFixed ?? 
+    await chefContract.callStatic[rewardsPerBlockFunction]() / 1e18 * 604800 / 13.5
+
+  const poolInfos = await Promise.all([...Array(poolCount).keys()].map(async (x) =>
+    await getPoolInfo(App, chefContract, chefAddress, x, pendingRewardsFunction)));
+  
+  var tokenAddresses = [].concat.apply([], poolInfos.map(x => x.poolToken.tokens));
+  var prices = await lookUpTokenPrices(tokenAddresses);
+  
+  await Promise.all(tokenAddresses.map(async (address) => {
+      tokens[address] = await getToken(App, address, chefAddress);
+  }));
+
+  const poolPrices = poolInfos.map(poolInfo => getPoolPrices(tokens, prices, poolInfo.poolToken));
+
+  _print("Finished reading smart contracts.\n");
+    
+  for (i = 0; i < poolCount; i++) {
+    printChefPool(App, chefAbi, chefAddress, prices, tokens, poolInfos[i], i, poolPrices[i],
+      totalAllocPoints, rewardsPerWeek, rewardTokenTicker, rewardTokenAddress,
+      pendingRewardsFunction);
+  }
 }
