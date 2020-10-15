@@ -628,24 +628,6 @@ const chefContract_unstake = async function(chefAbi, chefAddress, poolIndex, App
   }
 }
 
-const chefContract_exit = async function(chefAbi, chefAddress, poolIndex, App) {
-  const signer = App.provider.getSigner()
-
-  const CHEF_CONTRACT = new ethers.Contract(chefAddress, chefAbi, signer);
-  const currentStakedAmount = (await CHEF_CONTRACT.userInfo(poolIndex, App.YOUR_ADDRESS)).amount / 1e18
-
-  if (currentStakedAmount > 0) {
-    showLoading()
-    CHEF_CONTRACT.emergencyWithdraw(poolIndex, {gasLimit: 250000})
-      .then(function(t) {
-        return App.provider.waitForTransaction(t.hash)
-      })
-      .catch(function() {
-        hideLoading()
-      })
-  }
-}
-
 const chefContract_claim = async function(chefAbi, chefAddress, poolIndex, App, pendingRewardsFunction) {
   const signer = App.provider.getSigner()
 
@@ -964,7 +946,6 @@ function getWrapPrices(tokens, prices, pool)
     }
   }
   else {
-    const name = pool.name;
     const tokenPrice = getParameterCaseInsensitive(prices, wrappedToken.address)?.usd;
     const price = (pool.balance / 10 ** wrappedToken.decimals) * tokenPrice / (pool.totalSupply / 10 ** pool.decimals);
     const tvl = pool.balance / 1e18 * price;
@@ -976,7 +957,7 @@ function getWrapPrices(tokens, prices, pool)
       price : price,
       stakingTokenTicker : pool.symbol,
       print_price() {
-        _print(`${name} Price: $${formatMoney(price)} TVL: $${formatMoney(tvl)}`);
+        _print(`${pool.symbol} Price: $${formatMoney(price)} TVL: $${formatMoney(tvl)}`);
         _print(`Staked: $${formatMoney(staked_tvl)}`);
       },
       print_contained_price(_) {
@@ -994,7 +975,7 @@ function getErc20Prices(prices, pool) {
     price : price,
     stakingTokenTicker : pool.symbol,
     print_price() {
-      _print(`${pool.name}</a> Price: $${formatMoney(price)} TVL: $${formatMoney(tvl)}`);
+      _print(`${pool.symbol}</a> Price: $${formatMoney(price)} TVL: $${formatMoney(tvl)}`);
       _print(`Staked: $${formatMoney(staked_tvl)}`);
     },
     print_contained_price() {
@@ -1066,14 +1047,11 @@ function printChefContractLinks(App, chefAbi, chefAddr, poolIndex, poolAddress, 
   }      
   const claim = async function() {
     return chefContract_claim(chefAbi, chefAddr, poolIndex, App, pendingRewardsFunction)
-  }      
-  const exit = async function() {
-    return chefContract_exit(chefAbi, chefAddr, poolIndex, App)
-  }      
+  }    
   _print_link(`Stake ${unstaked.toFixed(2)} ${stakingTokenTicker}`, approveAndStake)
   _print_link(`Unstake ${userStaked.toFixed(2)} ${stakingTokenTicker}`, unstake)
   _print_link(`Claim ${pendingRewardTokens.toFixed(2)} ${rewardTokenTicker}`, claim)
-  _print_link(`Exit`, exit)
+  _print(`Staking or unstaking also claims rewards.`)
   _print(`\n`);
 }
 
@@ -1159,6 +1137,10 @@ async function loadChefContractSecondAttempt(App, chef, chefAddress, chefAbi, re
 
   const poolCount = parseInt(await chefContract.poolLength(), 10);
   const totalAllocPoints = await chefContract.totalAllocPoint();
+
+  _print(`*** BUG IN EXIT FUNCTION ***`)
+  _print(`The exit function on this website in MasterChef contracts was wrong, it did not claim rewards but it zeroed them instead.`)
+  _print(`If you have used the exit function please contact me on discord or telegram (vfat) with your transaction ID.\n`)
 
   _print(`Found ${poolCount} pools.\n`)
 
