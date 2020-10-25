@@ -28,8 +28,7 @@ $(function() {
     }
     const rewardToken = getParameterCaseInsensitive(tokens, rewardTokenAddress);
 
-    const rewardScalingFactor = 
-      rewardToken.totalSupply / await STAKING_POOL.origTotalSupply();
+    const rewardScalingFactor = rewardToken.totalSupply / await STAKING_POOL.origTotalSupply();
     
     const stakeScalingFactor = getParameterCaseInsensitive(scalingFactors, stakeTokenAddress) ?? 1;
     if (stakeScalingFactor != 1) {

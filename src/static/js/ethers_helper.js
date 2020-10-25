@@ -690,7 +690,7 @@ async function getBalancerPool(app, pool, poolAddress, stakingAddress, tokens) {
 
 async function getJar(app, jar, address, stakingAddress) {
     const decimals = await jar.decimals();
-    const token = await jar.token();
+    const token = await getToken(app, await jar.token(), address);
     return {
       address: address,
       name : await jar.name(),
@@ -702,7 +702,7 @@ async function getJar(app, jar, address, stakingAddress) {
       token: token,
       balance : await jar.balance(),
       contract: jar,
-      tokens : [token]
+      tokens : token.tokens
     }
 }
 
@@ -923,7 +923,7 @@ function getBalancerPrices(tokens, prices, pool)
 
 function getWrapPrices(tokens, prices, pool)
 {
-  const wrappedToken = getParameterCaseInsensitive(tokens, pool.token);
+  const wrappedToken = pool.token;
   if (wrappedToken.token0 != null) { //Uniswap
     const uniPrices = getUniPrices(tokens, prices, wrappedToken);
     const poolUrl = `http://uniswap.info/pair/${wrappedToken.address}`;
