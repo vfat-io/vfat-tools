@@ -477,7 +477,7 @@ const rewardsContract_stake = async function(stakingTokenAddr, rewardPoolAddr, A
     showLoading()
     allow
       .then(async function() {
-        WEEBTEND_V2_TOKEN.stake(currentTEND, {gasLimit: 250000})
+        WEEBTEND_V2_TOKEN.stake(currentTEND, {gasLimit: 500000})
           .then(function(t) {
             App.provider.waitForTransaction(t.hash).then(function() {
               hideLoading()
@@ -1137,10 +1137,6 @@ async function loadChefContractSecondAttempt(App, chef, chefAddress, chefAbi, re
 
   const poolCount = parseInt(await chefContract.poolLength(), 10);
   const totalAllocPoints = await chefContract.totalAllocPoint();
-
-  _print(`*** BUG IN EXIT FUNCTION ***`)
-  _print(`The exit function on this website in MasterChef contracts was wrong, it did not claim rewards but it zeroed them instead.`)
-  _print(`If you have used the exit function please contact me on discord or telegram (vfat) with your transaction ID.\n`)
 
   _print(`Found ${poolCount} pools.\n`)
 

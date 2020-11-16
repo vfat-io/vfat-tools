@@ -92,6 +92,9 @@ $(function() {
     const CONTRACTS = [
       "0xc0baeacc6ed67aff27ec55b238fc2fc2b5fa50d0",
       "0x6d9438cd0df10a78de373f5d9b5b5e7227e3822d",
+      "0xA451C734F29711aDA1CFc3b4D71eA803737bc7e7",
+      "0x859a9d0d8bBF57C390A0BD8Fb4f5DE617e1De535",
+      "0xfd15657341492d1918E3A8B7421e9627d52056E9"
     ];
   
     const App = await init_ethers();

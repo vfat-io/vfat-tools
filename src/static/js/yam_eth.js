@@ -6,11 +6,12 @@ $(function() {
   async function main() {
     print_warning()
     
-    const stakingTokenAddr = '0xb93cc05334093c6b3b8bfd29933bb8d5c031cabc'
-    const stakingTokenTicker = 'UNIV2'
-    const rewardPoolAddr = '0x5b0501f7041120d36bc8c6dc3faea0b74b32a0ed'
+    const stakingTokenAddr = '0x0f82e57804d0b1f6fab2370a43dcfad3c7cb239c'
+    const stakingTokenTicker = 'SLP'
+    const rewardPoolAddr = '0xD67c05523D8ec1c60760Fd017Ef006b9F6e496D0'
     const rewardTokenAddr = YAM_TOKEN_ADDR
     const rewardTokenTicker = 'YAM'
+    const masterchefAddr = '0xc2edad668740f1aa35e4d8f227fb8e17dca888cd';
   
     const App = await init_ethers()
   
@@ -19,22 +20,25 @@ $(function() {
     _print(`${rewardTokenTicker} Address: ${rewardTokenAddr}`)
     _print(`Reward Pool Address: ${rewardPoolAddr}\n`)
   
-    const Y_STAKING_POOL = new ethers.Contract(rewardPoolAddr, Y_STAKING_POOL_ABI, App.provider)
+    const YAM_INCENTIVIZER = new ethers.Contract(rewardPoolAddr, YAM_INCENTIVIZER_ABI, App.provider)
     const STAKING_TOKEN = new ethers.Contract(stakingTokenAddr, ERC20_ABI, App.provider)
   
-    const YYCRV_TOKEN = new ethers.Contract(YYCRV_TOKEN_ADDR, ERC20_ABI, App.provider)
+    const WETH_TOKEN = new ethers.Contract(WETH_TOKEN_ADDR, ERC20_ABI, App.provider)
     const YAM_TOKEN = new ethers.Contract(YAM_TOKEN_ADDR, YAM_TOKEN_ABI, App.provider)
+
+    const MASTERCHEF = new ethers.Contract(masterchefAddr, MASTERCHEF_ABI, App.provider)
   
     const scaling_factor = await YAM_TOKEN.yamsScalingFactor() / 1e18
   
-    const stakedYAmount = (await Y_STAKING_POOL.balanceOf(App.YOUR_ADDRESS)) / 1e18
-    const earnedYFFI = (await Y_STAKING_POOL.earned(App.YOUR_ADDRESS)) * scaling_factor / 1e18
+    const stakedYAmount = (await YAM_INCENTIVIZER.balanceOf(App.YOUR_ADDRESS)) / 1e18
+    const earnedYFFI = (await YAM_INCENTIVIZER.earned(App.YOUR_ADDRESS)) * scaling_factor / 1e18
     const totalSupplyOfStakingToken = (await STAKING_TOKEN.totalSupply()) / 1e18
-    const totalStakedYAmount = (await STAKING_TOKEN.balanceOf(rewardPoolAddr)) / 1e18
+    const pid = await YAM_INCENTIVIZER.pid();
+    const totalStakedYAmount = (await MASTERCHEF.userInfo(pid, rewardPoolAddr)).amount / 1e18
   
     // Find out reward rate
-    const weekly_reward = await get_synth_weekly_rewards(Y_STAKING_POOL) * scaling_factor
-    const nextHalving = await getPeriodFinishForReward(Y_STAKING_POOL)
+    const weekly_reward = await get_synth_weekly_rewards(YAM_INCENTIVIZER) * scaling_factor
+    const nextHalving = await getPeriodFinishForReward(YAM_INCENTIVIZER)
   
     const rewardPerToken = weekly_reward / totalStakedYAmount
   
@@ -43,7 +47,7 @@ $(function() {
     const unstakedY = (await STAKING_TOKEN.balanceOf(App.YOUR_ADDRESS)) / 1e18
   
     const yamAmount = (await YAM_TOKEN.balanceOf(stakingTokenAddr)) / 1e18
-    const YYCRVAmount = (await YYCRV_TOKEN.balanceOf(stakingTokenAddr)) / 1e18
+    const wETHAmount = (await WETH_TOKEN.balanceOf(stakingTokenAddr)) / 1e18
     const totalUNIV2Amount = (await STAKING_TOKEN.totalSupply()) / 1e18
   
     _print('Finished reading smart contracts... Looking up prices... \n')
@@ -51,9 +55,9 @@ $(function() {
     // Look up prices
     // const prices = await lookUpPrices(["yearn-finance"]);
     // const YFIPrice = prices["yearn-finance"].usd;
-    const prices = await lookUpPrices(['yam-2', 'yvault-lp-ycurve'])
+    const prices = await lookUpPrices(['yam-2', 'ethereum'])
     const stakingTokenPrice =
-      (prices['yam-2'].usd * yamAmount + prices['yvault-lp-ycurve'].usd * YYCRVAmount) / totalUNIV2Amount
+      (prices['yam-2'].usd * yamAmount + prices['ethereum'].usd * wETHAmount) / totalUNIV2Amount
   
     // const rewardTokenPrice = (await YFFI_DAI_BALANCER_POOL.getSpotPrice(LINK_TOKEN_ADDR, rewardTokenAddr) / 1e18) * stakingTokenPrice;
     const rewardTokenPrice = prices['yam-2'].usd
@@ -65,13 +69,13 @@ $(function() {
     _print(`1 ${stakingTokenTicker}  = $${stakingTokenPrice}\n`)
   
     _print('========== STAKING =========')
-    _print(`There are total   : ${totalSupplyOfStakingToken} ${stakingTokenTicker}.`)
+    _print(`There are total   : ${toFixed(totalSupplyOfStakingToken, 8)} ${stakingTokenTicker}.`)
     _print(
-      `There are total   : ${totalStakedYAmount} ${stakingTokenTicker} staked in ${rewardTokenTicker}'s ${stakingTokenTicker} staking pool.`
+      `There are total   : ${toFixed(totalStakedYAmount, 8)} ${stakingTokenTicker} staked in ${rewardTokenTicker}'s ${stakingTokenTicker} staking pool.`
     )
     _print(`                  = ${toDollar(totalStakedYAmount * stakingTokenPrice)}\n`)
     _print(
-      `You are staking   : ${stakedYAmount} ${stakingTokenTicker} (${toFixed(
+      `You are staking   : ${toFixed(stakedYAmount, 8)} ${stakingTokenTicker} (${toFixed(
         (stakedYAmount * 100) / totalStakedYAmount,
         3
       )}% of the pool)`
