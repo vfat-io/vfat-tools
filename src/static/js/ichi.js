@@ -3,7 +3,8 @@ $(function() {
     start(main);
   });
 
-  async function getIchiPoolInfo(app, chefContract, chefAddress, poolIndex, pendingRewardsFunction) {  
+  async function getIchiPoolInfo(app, chefContract, chefAddress, poolIndex, pendingRewardsFunction,
+      rewardTokenDecimals) {  
     const lpToken = await chefContract.getPoolToken(poolIndex);
     const allocPoint = await chefContract.getAllocPoint(poolIndex);
     const lastRewardBlock = await chefContract.lastRewardsBlock(poolIndex);
@@ -18,7 +19,7 @@ $(function() {
         allocPoints: allocPoint,
         poolToken: poolToken,
         userStaked : staked,
-        pendingRewardTokens : pendingRewardTokens / 10 ** 18,
+        pendingRewardTokens : pendingRewardTokens / 10 ** rewardTokenDecimals,
         stakedToken : stakedToken,
         userLPStaked : userLPStaked,
         lastRewardBlock : lastRewardBlock
@@ -40,7 +41,7 @@ $(function() {
     const rewardsPerWeek = await chefContract.callStatic[rewardsPerBlockFunction]() * 604800 / 13.5
   
     const poolInfos = await Promise.all([...Array(poolCount).keys()].map(async (x) =>
-      await getIchiPoolInfo(App, chefContract, chefAddress, x, pendingRewardsFunction)));
+      await getIchiPoolInfo(App, chefContract, chefAddress, x, pendingRewardsFunction, 9)));
     
     var tokenAddresses = [].concat.apply([], poolInfos.map(x => x.poolToken.tokens));
     var prices = await lookUpTokenPrices(tokenAddresses);
