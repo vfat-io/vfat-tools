@@ -1016,29 +1016,32 @@ async function getPoolInfo(app, chefContract, chefAddress, poolIndex, pendingRew
 }
 
 function printApy(rewardTokenTicker, rewardPrice, poolRewardsPerWeek, 
-                  stakingTokenTicker, stakedTvl, userStaked, poolTokenPrice) {
+                  stakingTokenTicker, stakedTvl, userStaked, poolTokenPrice,
+                  fixedDecimals) {
   var usdPerWeek = poolRewardsPerWeek * rewardPrice;
-  _print(`${rewardTokenTicker} Per Week: ${poolRewardsPerWeek.toFixed(2)} ($${formatMoney(usdPerWeek)})`);
+  fixedDecimals = fixedDecimals ?? 2;
+  _print(`${rewardTokenTicker} Per Week: ${poolRewardsPerWeek.toFixed(fixedDecimals)} ($${formatMoney(usdPerWeek)})`);
   var weeklyAPY = usdPerWeek / stakedTvl * 100;
   var dailyAPY = weeklyAPY / 7;
   var yearlyAPY = weeklyAPY * 52;
   _print(`APY: Day ${dailyAPY.toFixed(2)}% Week ${weeklyAPY.toFixed(2)}% Year ${yearlyAPY.toFixed(2)}%`);
   var userStakedUsd = userStaked * poolTokenPrice;
   var userStakedPct = userStakedUsd / stakedTvl * 100;
-  _print(`You are staking ${userStaked.toFixed(2)} ${stakingTokenTicker} ($${formatMoney(userStakedUsd)}), ${userStakedPct.toFixed(2)}% of the pool.`);
+  _print(`You are staking ${userStaked.toFixed(fixedDecimals)} ${stakingTokenTicker} ($${formatMoney(userStakedUsd)}), ${userStakedPct.toFixed(2)}% of the pool.`);
   var userWeeklyRewards = userStakedPct * poolRewardsPerWeek / 100;
   var userDailyRewards = userWeeklyRewards / 7;
   var userYearlyRewards = userWeeklyRewards * 52;
   if (userStaked > 0) {
     _print(`Estimated ${rewardTokenTicker} earnings:`
-        + ` Day ${userDailyRewards.toFixed(2)} ($${formatMoney(userDailyRewards*rewardPrice)})`
-        + ` Week ${userWeeklyRewards.toFixed(2)} ($${formatMoney(userWeeklyRewards*rewardPrice)})`
-        + ` Year ${userYearlyRewards.toFixed(2)} ($${formatMoney(userYearlyRewards*rewardPrice)})`);
+        + ` Day ${userDailyRewards.toFixed(fixedDecimals)} ($${formatMoney(userDailyRewards*rewardPrice)})`
+        + ` Week ${userWeeklyRewards.toFixed(fixedDecimals)} ($${formatMoney(userWeeklyRewards*rewardPrice)})`
+        + ` Year ${userYearlyRewards.toFixed(fixedDecimals)} ($${formatMoney(userYearlyRewards*rewardPrice)})`);
   }
 }
 
 function printChefContractLinks(App, chefAbi, chefAddr, poolIndex, poolAddress, pendingRewardsFunction,
-    rewardTokenTicker, stakingTokenTicker, unstaked, userStaked, pendingRewardTokens) {
+    rewardTokenTicker, stakingTokenTicker, unstaked, userStaked, pendingRewardTokens, fixedDecimals) {
+      fixedDecimals = fixedDecimals ?? 2;
   const approveAndStake = async function() {
     return chefContract_stake(chefAbi, chefAddr, poolIndex, poolAddress, App)
   }      
@@ -1048,16 +1051,17 @@ function printChefContractLinks(App, chefAbi, chefAddr, poolIndex, poolAddress, 
   const claim = async function() {
     return chefContract_claim(chefAbi, chefAddr, poolIndex, App, pendingRewardsFunction)
   }    
-  _print_link(`Stake ${unstaked.toFixed(2)} ${stakingTokenTicker}`, approveAndStake)
-  _print_link(`Unstake ${userStaked.toFixed(2)} ${stakingTokenTicker}`, unstake)
-  _print_link(`Claim ${pendingRewardTokens.toFixed(2)} ${rewardTokenTicker}`, claim)
+  _print_link(`Stake ${unstaked.toFixed(fixedDecimals)} ${stakingTokenTicker}`, approveAndStake)
+  _print_link(`Unstake ${userStaked.toFixed(fixedDecimals)} ${stakingTokenTicker}`, unstake)
+  _print_link(`Claim ${pendingRewardTokens.toFixed(fixedDecimals)} ${rewardTokenTicker}`, claim)
   _print(`Staking or unstaking also claims rewards.`)
   _print(`\n`);
 }
 
 function printChefPool(App, chefAbi, chefAddr, prices, tokens, poolInfo, poolIndex, poolPrices, 
                        totalAllocPoints, rewardsPerWeek, rewardTokenTicker, rewardTokenAddress,
-                       pendingRewardsFunction) {  
+                       pendingRewardsFunction, fixedDecimals) {  
+  fixedDecimals = fixedDecimals ?? 2;
   const sp = (poolInfo.stakedToken == null) ? null : getPoolPrices(tokens, prices, poolInfo.stakedToken);
   var poolRewardsPerWeek = poolInfo.allocPoints / totalAllocPoints * rewardsPerWeek;
   const userStaked = poolInfo.userLPStaked ?? poolInfo.userStaked;
@@ -1065,12 +1069,13 @@ function printChefPool(App, chefAbi, chefAddr, prices, tokens, poolInfo, poolInd
   const stakedTvl = sp?.staked_tvl ?? poolPrices.staked_tvl;
   poolPrices.print_price();
   sp?.print_price();
-  printApy(rewardTokenTicker, rewardPrice, poolRewardsPerWeek, poolPrices.stakingTokenTicker, stakedTvl, userStaked, poolPrices.price);
+  printApy(rewardTokenTicker, rewardPrice, poolRewardsPerWeek, poolPrices.stakingTokenTicker, 
+    stakedTvl, userStaked, poolPrices.price, fixedDecimals);
   if (poolInfo.userLPStaked > 0) sp?.print_contained_price(userStaked);
   if (poolInfo.userStaked > 0) poolPrices.print_contained_price(userStaked);
   printChefContractLinks(App, chefAbi, chefAddr, poolIndex, poolInfo.address, pendingRewardsFunction,
     rewardTokenTicker, poolPrices.stakingTokenTicker, poolInfo.poolToken.unstaked, 
-    poolInfo.userStaked, poolInfo.pendingRewardTokens);
+    poolInfo.userStaked, poolInfo.pendingRewardTokens, fixedDecimals);
 }
 
 async function loadChefPool(App, prices, tokens, poolIndex, 
