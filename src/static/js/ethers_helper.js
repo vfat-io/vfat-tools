@@ -628,7 +628,8 @@ const chefContract_unstake = async function(chefAbi, chefAddress, poolIndex, App
   }
 }
 
-const chefContract_claim = async function(chefAbi, chefAddress, poolIndex, App, pendingRewardsFunction) {
+const chefContract_claim = async function(chefAbi, chefAddress, poolIndex, App, 
+    pendingRewardsFunction, claimFunction) {
   const signer = App.provider.getSigner()
 
   const CHEF_CONTRACT = new ethers.Contract(chefAddress, chefAbi, signer)
@@ -637,13 +638,21 @@ const chefContract_claim = async function(chefAbi, chefAddress, poolIndex, App, 
 
   if (earnedTokenAmount > 0) {
     showLoading()
-    CHEF_CONTRACT.deposit(poolIndex, 0, {gasLimit: 250000})
-      .then(function(t) {
-        return App.provider.waitForTransaction(t.hash)
-      })
-      .catch(function() {
-        hideLoading()
-      })
+    if (claimFunction) {
+      claimFunction(poolIndex, {gasLimit: 250000})
+        .then(function(t) {
+          return App.provider.waitForTransaction(t.hash)
+        })
+    }
+    else {
+      CHEF_CONTRACT.deposit(poolIndex, 0, {gasLimit: 250000})
+        .then(function(t) {
+          return App.provider.waitForTransaction(t.hash)
+        })
+        .catch(function() {
+          hideLoading()
+        })
+    }
   }
 }
 
@@ -1040,7 +1049,8 @@ function printApy(rewardTokenTicker, rewardPrice, poolRewardsPerWeek,
 }
 
 function printChefContractLinks(App, chefAbi, chefAddr, poolIndex, poolAddress, pendingRewardsFunction,
-    rewardTokenTicker, stakingTokenTicker, unstaked, userStaked, pendingRewardTokens, fixedDecimals) {
+    rewardTokenTicker, stakingTokenTicker, unstaked, userStaked, pendingRewardTokens, fixedDecimals,
+    claimFunction) {
       fixedDecimals = fixedDecimals ?? 2;
   const approveAndStake = async function() {
     return chefContract_stake(chefAbi, chefAddr, poolIndex, poolAddress, App)
@@ -1049,7 +1059,7 @@ function printChefContractLinks(App, chefAbi, chefAddr, poolIndex, poolAddress, 
     return chefContract_unstake(chefAbi, chefAddr, poolIndex, App, pendingRewardsFunction)
   }      
   const claim = async function() {
-    return chefContract_claim(chefAbi, chefAddr, poolIndex, App, pendingRewardsFunction)
+    return chefContract_claim(chefAbi, chefAddr, poolIndex, App, pendingRewardsFunction, claimFunction)
   }    
   _print_link(`Stake ${unstaked.toFixed(fixedDecimals)} ${stakingTokenTicker}`, approveAndStake)
   _print_link(`Unstake ${userStaked.toFixed(fixedDecimals)} ${stakingTokenTicker}`, unstake)
@@ -1060,7 +1070,7 @@ function printChefContractLinks(App, chefAbi, chefAddr, poolIndex, poolAddress, 
 
 function printChefPool(App, chefAbi, chefAddr, prices, tokens, poolInfo, poolIndex, poolPrices, 
                        totalAllocPoints, rewardsPerWeek, rewardTokenTicker, rewardTokenAddress,
-                       pendingRewardsFunction, fixedDecimals) {  
+                       pendingRewardsFunction, fixedDecimals, claimFunction) {  
   fixedDecimals = fixedDecimals ?? 2;
   const sp = (poolInfo.stakedToken == null) ? null : getPoolPrices(tokens, prices, poolInfo.stakedToken);
   var poolRewardsPerWeek = poolInfo.allocPoints / totalAllocPoints * rewardsPerWeek;
@@ -1075,7 +1085,7 @@ function printChefPool(App, chefAbi, chefAddr, prices, tokens, poolInfo, poolInd
   if (poolInfo.userStaked > 0) poolPrices.print_contained_price(userStaked);
   printChefContractLinks(App, chefAbi, chefAddr, poolIndex, poolInfo.address, pendingRewardsFunction,
     rewardTokenTicker, poolPrices.stakingTokenTicker, poolInfo.poolToken.unstaked, 
-    poolInfo.userStaked, poolInfo.pendingRewardTokens, fixedDecimals);
+    poolInfo.userStaked, poolInfo.pendingRewardTokens, fixedDecimals, claimFunction);
 }
 
 async function loadChefPool(App, prices, tokens, poolIndex, 
