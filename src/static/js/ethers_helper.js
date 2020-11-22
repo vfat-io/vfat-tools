@@ -872,10 +872,81 @@ function getUniPrices(tokens, prices, pool)
   }
 }
 
+function getTriadBalancerPrices(tokens, prices, pool) {
+  var pt0 = pool.poolTokens[0];
+  var pt1 = pool.poolTokens[1];
+  var pt2 = pool.poolTokens[2];
+
+  var t0 = getParameterCaseInsensitive(tokens,pt0.address);
+  var p0 = getParameterCaseInsensitive(prices,pt0.address)?.usd;
+  var t1 = getParameterCaseInsensitive(tokens,pt1.address);
+  var p1 = getParameterCaseInsensitive(prices,pt1.address)?.usd;
+  var t2 = getParameterCaseInsensitive(tokens,pt2.address);
+  var p2 = getParameterCaseInsensitive(prices,pt2.address)?.usd;
+  if (p0 == null && p1 == null) {
+      return undefined;
+  }
+  var q0 = pt0.balance / 10 ** t0.decimals;
+  var q1 = pt1.balance / 10 ** t1.decimals;
+  var q2 = pt2.balance / 10 ** t2.decimals
+  if (p0 == null)
+  {
+      p0 = (q1 * p1 + q2 * p2) / q0;
+      prices[pool.token0] = { usd : p0 };
+  }
+  if (p1 == null)
+  {
+      p1 = (q0 * p0 + q2 * p2) / q1;
+      prices[pool.token1] = { usd : p1 };
+  }
+  if (p2 == null)
+  {
+      p2 = (q0 * p0 + q1 * p1) / q2;
+      prices[pool.token2] = { usd : p2 };
+  }
+  var tvl = q0 * p0 + q1 * p1 + q2 * p2;
+  var price = tvl / pool.totalSupply;
+  prices[pool.address] = { usd : price };
+  var staked_tvl = pool.staked * price;
+  const stakingTokenTicker = `[${t0.symbol}]-[${t1.symbol}]-[${t2.symbol}]`;
+  return {
+      t0,
+      p0,
+      q0,
+      t1,
+      p1,
+      q1,
+      p2,
+      q2,
+      price,
+      tvl,
+      staked_tvl,
+      stakingTokenTicker,
+      print_price() {
+        const poolUrl = `http://pools.balancer.exchange/#/pool/${pool.address}`;
+        _print(`<a href='${poolUrl}' target='_blank'>${stakingTokenTicker}</a> BPT Price: $${formatMoney(price)} TVL: $${formatMoney(tvl)}`);
+        _print(`${t0.symbol} Price: $${formatMoney(p0)}`)
+        _print(`${t1.symbol} Price: $${formatMoney(p1)}`)
+        _print(`${t2.symbol} Price: $${formatMoney(p2)}`)
+        _print(`Staked: $${formatMoney(staked_tvl)}`);
+      },
+      print_contained_price(userStaked) {
+        var userPct = userStaked / pool.totalSupply;
+        var q0user = userPct * q0;
+        var q1user = userPct * q1;
+        var q2user = userPct * q2;
+        _print(`Your LP tokens comprise of ${q0user.toFixed(2)} ${t0.symbol} + ${q1user.toFixed(2)} ${t1.symbol} + ${q2user.toFixed(2)} ${t2.symbol}`);
+      }
+  }
+}
+
 function getBalancerPrices(tokens, prices, pool)
 {
-  if (pool.poolTokens.length > 2) {
-    throw 'Currently only works with 2 poolTokens';
+  if (pool.poolTokens.length > 3) {
+    throw 'Currently only works with 2 or 3 poolTokens';
+  }
+  if (pool.poolTokens.length == 3) {
+    return getTriadBalancerPrices(tokens,prices,pool);
   }
   var pt0 = pool.poolTokens[0];
   var pt1 = pool.poolTokens[1];
