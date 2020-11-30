@@ -120,9 +120,11 @@ $(function() {
     _print("Finished reading smart contracts.\n");
       
     for (i = 0; i < poolCount; i++) {
-      printIchiPool(App, chefAbi, chefAddress, prices, tokens, poolInfos[i], i, poolPrices[i],
-        totalAllocPoints, rewardsPerWeek, rewardTokenTicker, rewardTokenAddress,
-        pendingRewardsFunction, 10, chefContract.claimRewards);
+      if (i != 6) {
+        printIchiPool(App, chefAbi, chefAddress, prices, tokens, poolInfos[i], i, poolPrices[i],
+          totalAllocPoints, rewardsPerWeek, rewardTokenTicker, rewardTokenAddress,
+          pendingRewardsFunction, 10, chefContract.claimRewards);
+      }
     }
   }
   

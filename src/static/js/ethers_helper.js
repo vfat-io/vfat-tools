@@ -450,13 +450,15 @@ const trimOrFillTo = function(str, n) {
   return str
 }
 
-const rewardsContract_stake = async function(stakingTokenAddr, rewardPoolAddr, App) {
+const rewardsContract_stake = async function(stakingTokenAddr, rewardPoolAddr, App, maxAllowance) {
   const signer = App.provider.getSigner()
 
   const TEND_TOKEN = new ethers.Contract(stakingTokenAddr, ERC20_ABI, signer)
   const WEEBTEND_V2_TOKEN = new ethers.Contract(rewardPoolAddr, YFFI_REWARD_CONTRACT_ABI, signer)
 
-  const currentTEND = await TEND_TOKEN.balanceOf(App.YOUR_ADDRESS)
+  const balanceOf = await TEND_TOKEN.balanceOf(App.YOUR_ADDRESS)
+  const currentTEND =  maxAllowance ? (maxAllowance / 1e18 < balanceOf / 1e18 
+    ? maxAllowance : balanceOf) : balanceOf
   const allowedTEND = await TEND_TOKEN.allowance(App.YOUR_ADDRESS, rewardPoolAddr)
 
   let allow = Promise.resolve()
@@ -483,13 +485,15 @@ const rewardsContract_stake = async function(stakingTokenAddr, rewardPoolAddr, A
               hideLoading()
             })
           })
-          .catch(function() {
+          .catch(x => {
             hideLoading()
+            console.log(x);
             _print('Something went wrong.')
           })
       })
-      .catch(function() {
+      .catch(x => {
         hideLoading()
+        console.log(x);
         _print('Something went wrong.')
       })
   } else {
@@ -1229,8 +1233,10 @@ async function loadChefContractSecondAttempt(App, chef, chefAddress, chefAbi, re
   var tokens = {};
 
   const rewardTokenAddress = await chefContract.callStatic[rewardTokenFunction]();
+  const rewardToken = await getToken(App, rewardTokenAddress, chefAddress);
   const rewardsPerWeek = rewardsPerWeekFixed ?? 
-    await chefContract.callStatic[rewardsPerBlockFunction]() / 1e18 * 604800 / 13.5
+    await chefContract.callStatic[rewardsPerBlockFunction]() 
+    / 10 ** rewardToken.decimals * 604800 / 13.5
 
   const poolInfos = await Promise.all([...Array(poolCount).keys()].map(async (x) =>
     await getPoolInfo(App, chefContract, chefAddress, x, pendingRewardsFunction)));

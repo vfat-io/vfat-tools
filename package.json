@@ -55,6 +55,7 @@
     "asciichart": "^1.5.24",
     "diff": "^4.0.2",
     "dompurify": "^2.0.8",
+    "ethcall": "^3.0.0",
     "ethers": "^5.0.8",
     "fuse.js": "^6.4.1",
     "jquery": "^3.5.1",
