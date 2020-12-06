@@ -60,7 +60,7 @@ window.onload = () => {
         quickEl.style.display = "none";
     }
     })
-    quickInputEl.addEventListener("input", (event) => {
+    quickInputEl?.addEventListener("input", (event) => {
         const data = String(event.target.value).toLowerCase();
         quickDropdownEl.innerHTML = fuse.search(data)
             .map(
@@ -69,7 +69,7 @@ window.onload = () => {
             ).join("");
     })
     let currentIndex = null;
-    quickInputEl.addEventListener("keydown", (event) => {
+    quickInputEl?.addEventListener("keydown", (event) => {
         if (event.which === enterKey) {
             quickDropdownEl.querySelector(".active a").click();
             return;
@@ -107,7 +107,7 @@ window.onload = () => {
             selectedEl.focus()
         }
     });
-    quickFormEl.addEventListener("submit", (event) => {
+    quickFormEl?.addEventListener("submit", (event) => {
         event.preventDefault();
     })
 }
