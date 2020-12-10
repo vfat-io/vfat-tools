@@ -595,7 +595,7 @@ const chefContract_stake = async function(chefAbi, chefAddress, poolIndex, staki
     showLoading()
     allow
       .then(async function() {
-          CHEF_CONTRACT.deposit(poolIndex, currentTokens, {gasLimit: 250000})
+          CHEF_CONTRACT.deposit(poolIndex, currentTokens, {gasLimit: 500000})
           .then(function(t) {
             App.provider.waitForTransaction(t.hash).then(function() {
               hideLoading()
@@ -624,7 +624,7 @@ const chefContract_unstake = async function(chefAbi, chefAddress, poolIndex, App
 
   if (earnedTokenAmount > 0) {
     showLoading()
-    CHEF_CONTRACT.withdraw(poolIndex, currentStakedAmount, {gasLimit: 250000})
+    CHEF_CONTRACT.withdraw(poolIndex, currentStakedAmount, {gasLimit: 500000})
       .then(function(t) {
         return App.provider.waitForTransaction(t.hash)
       })
@@ -645,13 +645,13 @@ const chefContract_claim = async function(chefAbi, chefAddress, poolIndex, App,
   if (earnedTokenAmount > 0) {
     showLoading()
     if (claimFunction) {
-      claimFunction(poolIndex, {gasLimit: 250000})
+      claimFunction(poolIndex, {gasLimit: 500000})
         .then(function(t) {
           return App.provider.waitForTransaction(t.hash)
         })
     }
     else {
-      CHEF_CONTRACT.deposit(poolIndex, 0, {gasLimit: 250000})
+      CHEF_CONTRACT.deposit(poolIndex, 0, {gasLimit: 500000})
         .then(function(t) {
           return App.provider.waitForTransaction(t.hash)
         })
