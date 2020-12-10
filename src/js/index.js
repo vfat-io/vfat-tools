@@ -7,6 +7,7 @@
  */
 import $ from "jquery";
 import { ethers } from "ethers";
+import * as ethcall from "ethcall";
 
 //import dompurify from 'dompurify'
 
@@ -17,6 +18,7 @@ import 'utils/quick'
 
 window.$ = $;
 window.ethers = ethers;
+window.ethcall = ethcall;
 window.asciichart = require("asciichart");
 window.Diff = require("diff");
 

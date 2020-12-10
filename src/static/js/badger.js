@@ -186,7 +186,11 @@ async function main() {
     _print(`You have ${userUnstaked} bUNI-V2 unstaked`);
 
     const BADGER_GEYSER = new ethers.Contract(BADGER_GEYSER_ADDRESS, BADGER_GEYSER_ABI, App.provider);
-    const userStaked = await BADGER_GEYSER.totalStakedFor(App.YOUR_ADDRESS) / 1e18;
+
+    const totalStaked = await BADGER_GEYSER.totalStaked() ;
+    const totalUniInBUni = await B_BADGER_WBTC_UNI_V2.balance();
+    const ratio = totalUniInBUni / totalStaked;
+    const userStaked = await BADGER_GEYSER.totalStakedFor(App.YOUR_ADDRESS) / 1e18 * ratio;
 
     const rewardTokenAddress = (await BADGER_GEYSER.getDistributionTokens())[0];
 
@@ -196,7 +200,7 @@ async function main() {
   
     const usdPerWeek = weeklyRewards * rewardTokenPrice;
   
-    const staked_tvl = await BADGER_GEYSER.totalStaked() / 1e18 * poolPrices.price;
+    const staked_tvl = totalStaked / 1e18 * ratio * poolPrices.price;
 
     
     poolPrices.print_price();

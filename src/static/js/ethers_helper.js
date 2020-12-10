@@ -30,6 +30,8 @@ async function init_ethers() {
     )
     sleep(10)
   }
+  App.ethcallProvider = new ethcall.Provider();
+  await App.ethcallProvider.init(App.provider);
 
   let addr = getUrlParameter('addr')
 
@@ -685,10 +687,12 @@ async function getBalancerPool(app, pool, poolAddress, stakingAddress, tokens) {
   const decimals = await pool.decimals();
   const poolTokens = await Promise.all(tokens.map(async (t) => { return {
     address : t,
-    weight : await pool.getDenormalizedWeight(t) / 1e18,
+    weight : await pool.getNormalizedWeight(t) / 1e18,
     balance : await pool.getBalance(t)
   };}));
   return { 
+      symbol : await pool.symbol(),
+      name : await pool.name(),
       address: poolAddress,
       poolTokens: poolTokens, //address, weight and balance
       totalSupply: await pool.totalSupply() / 10 ** decimals,
@@ -871,120 +875,40 @@ function getUniPrices(tokens, prices, pool)
         var userPct = userStaked / pool.totalSupply;
         var q0user = userPct * q0;
         var q1user = userPct * q1;
-        _print(`Your LP tokens comprise of ${q0user.toFixed(2)} ${t0.symbol} + ${q1user.toFixed(2)} ${t1.symbol}`);
-      }
-  }
-}
-
-function getTriadBalancerPrices(tokens, prices, pool) {
-  var pt0 = pool.poolTokens[0];
-  var pt1 = pool.poolTokens[1];
-  var pt2 = pool.poolTokens[2];
-
-  var t0 = getParameterCaseInsensitive(tokens,pt0.address);
-  var p0 = getParameterCaseInsensitive(prices,pt0.address)?.usd;
-  var t1 = getParameterCaseInsensitive(tokens,pt1.address);
-  var p1 = getParameterCaseInsensitive(prices,pt1.address)?.usd;
-  var t2 = getParameterCaseInsensitive(tokens,pt2.address);
-  var p2 = getParameterCaseInsensitive(prices,pt2.address)?.usd;
-  if (p0 == null && p1 == null) {
-      return undefined;
-  }
-  var q0 = pt0.balance / 10 ** t0.decimals;
-  var q1 = pt1.balance / 10 ** t1.decimals;
-  var q2 = pt2.balance / 10 ** t2.decimals
-  if (p0 == null)
-  {
-      p0 = (q1 * p1 + q2 * p2) / q0;
-      prices[pool.token0] = { usd : p0 };
-  }
-  if (p1 == null)
-  {
-      p1 = (q0 * p0 + q2 * p2) / q1;
-      prices[pool.token1] = { usd : p1 };
-  }
-  if (p2 == null)
-  {
-      p2 = (q0 * p0 + q1 * p1) / q2;
-      prices[pool.token2] = { usd : p2 };
-  }
-  var tvl = q0 * p0 + q1 * p1 + q2 * p2;
-  var price = tvl / pool.totalSupply;
-  prices[pool.address] = { usd : price };
-  var staked_tvl = pool.staked * price;
-  const stakingTokenTicker = `[${t0.symbol}]-[${t1.symbol}]-[${t2.symbol}]`;
-  return {
-      t0,
-      p0,
-      q0,
-      t1,
-      p1,
-      q1,
-      p2,
-      q2,
-      price,
-      tvl,
-      staked_tvl,
-      stakingTokenTicker,
-      print_price() {
-        const poolUrl = `http://pools.balancer.exchange/#/pool/${pool.address}`;
-        _print(`<a href='${poolUrl}' target='_blank'>${stakingTokenTicker}</a> BPT Price: $${formatMoney(price)} TVL: $${formatMoney(tvl)}`);
-        _print(`${t0.symbol} Price: $${formatMoney(p0)}`)
-        _print(`${t1.symbol} Price: $${formatMoney(p1)}`)
-        _print(`${t2.symbol} Price: $${formatMoney(p2)}`)
-        _print(`Staked: $${formatMoney(staked_tvl)}`);
-      },
-      print_contained_price(userStaked) {
-        var userPct = userStaked / pool.totalSupply;
-        var q0user = userPct * q0;
-        var q1user = userPct * q1;
-        var q2user = userPct * q2;
-        _print(`Your LP tokens comprise of ${q0user.toFixed(2)} ${t0.symbol} + ${q1user.toFixed(2)} ${t1.symbol} + ${q2user.toFixed(2)} ${t2.symbol}`);
+        _print(`Your LP tokens comprise of ${q0user.toFixed(4)} ${t0.symbol} + ${q1user.toFixed(4)} ${t1.symbol}`);
       }
   }
 }
 
 function getBalancerPrices(tokens, prices, pool)
 {
-  if (pool.poolTokens.length > 3) {
-    throw 'Currently only works with 2 or 3 poolTokens';
+  var poolTokens = pool.poolTokens.map(t => getParameterCaseInsensitive(tokens, t.address));
+  var poolPrices = pool.poolTokens.map(t => getParameterCaseInsensitive(prices, t.address)?.usd);
+  var quantities = poolTokens.map((t, i) => pool.poolTokens[i].balance / 10 ** t.decimals);
+  var missing = poolPrices.filter(x => !x);
+  if (missing.length == poolPrices.length) {
+    throw 'Every price is missing';
   }
-  if (pool.poolTokens.length == 3) {
-    return getTriadBalancerPrices(tokens,prices,pool);
-  }
-  var pt0 = pool.poolTokens[0];
-  var pt1 = pool.poolTokens[1];
-  var t0 = getParameterCaseInsensitive(tokens,pt0.address);
-  var p0 = getParameterCaseInsensitive(prices,pt0.address)?.usd;
-  var t1 = getParameterCaseInsensitive(tokens,pt1.address);
-  var p1 = getParameterCaseInsensitive(prices,pt1.address)?.usd;
-  if (p0 == null && p1 == null) {
-      return undefined;
-  }
-  var q0 = pt0.balance / 10 ** t0.decimals;
-  var q1 = pt1.balance / 10 ** t1.decimals;
-  if (p0 == null)
-  {
-      p0 = q1 * p1 / q0;
-      prices[pool.token0] = { usd : p0 };
-  }
-  if (p1 == null)
-  {
-      p1 = q0 * p0 / q1;
-      prices[pool.token1] = { usd : p1 };
-  }
-  var tvl = q0 * p0 + q1 * p1;
+  var notMissing = poolPrices.findIndex(p => p);
+  const getMissingPrice = (missingQuantity, missingWeight) =>
+    quantities[notMissing] * poolPrices[notMissing] * missingWeight
+     / pool.poolTokens[notMissing].weight / missingQuantity;
+  missing.map((_, i) => {
+    const newPrice = getMissingPrice(quantities[i], pool.poolTokens[i].weight);
+    poolPrices[i] = newPrice;
+    prices[poolTokens[i].address] = { usd : newPrice };
+  });
+  
+  var tvl = poolPrices.map((p, i) => p * quantities[i]).reduce((x,y)=>x+y, 0);
   var price = tvl / pool.totalSupply;
   prices[pool.address] = { usd : price };
   var staked_tvl = pool.staked * price;
-  const stakingTokenTicker = `[${t0.symbol}]-[${t1.symbol}]`;
+  var tickers = pool.poolTokens.map((pt, i) => `[${poolTokens[i].symbol} ${pt.weight*100}%]`)
+  const stakingTokenTicker = tickers.join('-');
   return {
-      t0: t0,
-      p0: p0,
-      q0  : q0,
-      t1: t1,
-      p1: p1,
-      q1  : q1,
+      tokens : poolTokens,
+      prices : poolPrices,
+      quantities : quantities,
       price: price,
       tvl : tvl,
       staked_tvl : staked_tvl,
@@ -992,15 +916,15 @@ function getBalancerPrices(tokens, prices, pool)
       print_price() {
         const poolUrl = `http://pools.balancer.exchange/#/pool/${pool.address}`;
         _print(`<a href='${poolUrl}' target='_blank'>${stakingTokenTicker}</a> BPT Price: $${formatMoney(price)} TVL: $${formatMoney(tvl)}`);
-        _print(`${t0.symbol} Price: $${formatMoney(p0)}`)
-        _print(`${t1.symbol} Price: $${formatMoney(p1)}`)
+        poolPrices.forEach((p, i) => 
+          _print(`${poolTokens[i].symbol} Price: $${formatMoney(p)}`)
+        );
         _print(`Staked: $${formatMoney(staked_tvl)}`);
       },
       print_contained_price(userStaked) {
         var userPct = userStaked / pool.totalSupply;
-        var q0user = userPct * q0;
-        var q1user = userPct * q1;
-        _print(`Your LP tokens comprise of ${q0user.toFixed(2)} ${t0.symbol} + ${q1user.toFixed(2)} ${t1.symbol}`);
+        var userQs = quantities.map((q, i) => `${(q * userPct).toFixed(4)} ${poolTokens[i].symbol}`);
+        _print(`Your LP tokens comprise of ${userQs.join(' + ')}`);
       }
   }
 }
@@ -1149,6 +1073,7 @@ function printChefPool(App, chefAbi, chefAddr, prices, tokens, poolInfo, poolInd
   fixedDecimals = fixedDecimals ?? 2;
   const sp = (poolInfo.stakedToken == null) ? null : getPoolPrices(tokens, prices, poolInfo.stakedToken);
   var poolRewardsPerWeek = poolInfo.allocPoints / totalAllocPoints * rewardsPerWeek;
+  if (poolRewardsPerWeek == 0) return;
   const userStaked = poolInfo.userLPStaked ?? poolInfo.userStaked;
   const rewardPrice = getParameterCaseInsensitive(prices, rewardTokenAddress)?.usd;
   const stakedTvl = sp?.staked_tvl ?? poolPrices.staked_tvl;
@@ -1229,6 +1154,8 @@ async function loadChefContractSecondAttempt(App, chef, chefAddress, chefAbi, re
   const totalAllocPoints = await chefContract.totalAllocPoint();
 
   _print(`Found ${poolCount} pools.\n`)
+
+  _print(`Showing incentivized pools only.\n`);
 
   var tokens = {};
 
