@@ -27,7 +27,8 @@ $(function() {
     for (const address of newTokenAddresses) {
         tokens[address] = await getToken(App, address, stakingAddress);
     }
-    const rewardToken = getParameterCaseInsensitive(tokens, rewardTokenAddress);
+    const rewardToken = getParameterCaseInsensitive(tokens, rewardTokenAddress) ?? 
+      await getToken(App, rewardTokenAddress, stakingAddress);
 
     const rewardTokenTicker = rewardToken.symbol;
     
@@ -57,22 +58,19 @@ $(function() {
     _print(`You are staking ${userStaked.toFixed(6)} ${stakingTokenTicker} ` +
            `$${formatMoney(userStakedUsd)} (${userStakedPct.toFixed(2)}% of the pool).`);
     if (userStaked > 0) poolPrices.print_contained_price(userStaked);
-    printAPY = () => {
-        const weeklyAPY = usdPerWeek / staked_tvl * 100;
-        const dailyAPY = weeklyAPY / 7;
-        const yearlyAPY = weeklyAPY * 52;      
-        _print(`APY: Day ${dailyAPY.toFixed(2)}% Week ${weeklyAPY.toFixed(2)}% Year ${yearlyAPY.toFixed(2)}%`);
-        const userStakedUsd = userStaked * stakeTokenPrice;
-        const userStakedPct = userStakedUsd / staked_tvl * 100;
-        if (userStaked > 0) {
-            const userWeeklyRewards = userStakedPct * weeklyRewards / 100;
-            const userDailyRewards = userWeeklyRewards / 7;
-            const userYearlyRewards = userWeeklyRewards * 52;
-            _print(`Estimated ${rewardTokenTicker} earnings:`
-                + ` Day ${userDailyRewards.toFixed(2)} ($${formatMoney(userDailyRewards*rewardTokenPrice)})`
-                + ` Week ${userWeeklyRewards.toFixed(2)} ($${formatMoney(userWeeklyRewards*rewardTokenPrice)})`
-                + ` Year ${userYearlyRewards.toFixed(2)} ($${formatMoney(userYearlyRewards*rewardTokenPrice)})`);
-        }
+
+    const weeklyAPY = usdPerWeek / staked_tvl * 100;
+    const dailyAPY = weeklyAPY / 7;
+    const yearlyAPY = weeklyAPY * 52;      
+    _print(`APY: Day ${dailyAPY.toFixed(2)}% Week ${weeklyAPY.toFixed(2)}% Year ${yearlyAPY.toFixed(2)}%`);
+    if (userStaked > 0) {
+        const userWeeklyRewards = userStakedPct * weeklyRewards / 100;
+        const userDailyRewards = userWeeklyRewards / 7;
+        const userYearlyRewards = userWeeklyRewards * 52;
+        _print(`Estimated ${rewardTokenTicker} earnings:`
+            + ` Day ${userDailyRewards.toFixed(2)} ($${formatMoney(userDailyRewards*rewardTokenPrice)})`
+            + ` Week ${userWeeklyRewards.toFixed(2)} ($${formatMoney(userWeeklyRewards*rewardTokenPrice)})`
+            + ` Year ${userYearlyRewards.toFixed(2)} ($${formatMoney(userYearlyRewards*rewardTokenPrice)})`);
     }
     const approveTENDAndStake = async function() {
       return rewardsContract_stake(stakeTokenAddress, stakingAddress, App)
@@ -96,7 +94,8 @@ $(function() {
   async function main() {
 
     const CONTRACTS = [
-      "0xaE38D486aF40a402a4Aa1e4D5F4a7e07791eC04F",
+      "0xcf7209fd19a29267ece09ff99831ae44635c6db4",
+      "0x4573dFfca2Fd899793ab2f50B5E4D86cC7Dc28a3"
     ];
   
     const App = await init_ethers();

@@ -668,6 +668,8 @@ async function getUniPool(app, pool, poolAddress, stakingAddress) {
   const token0 = await pool.token0();
   const token1 = await pool.token1();
   return { 
+      symbol : await pool.symbol(),
+      name : await pool.name(),
       address: poolAddress,
       token0: token0,
       q0    : reserves._reserve0,
