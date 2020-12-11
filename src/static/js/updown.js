@@ -2,9 +2,6 @@ $(function() {
     consoleInit();
     start(main);
 });
-
-  var printAPY;
-
   async function loadPool(App, tokens, prices, stakingAddress) {
     const STAKING_POOL = new ethers.Contract(stakingAddress, HYPE_ABI, App.provider);
   
@@ -84,6 +81,8 @@ $(function() {
     const exit = async function() {
       return rewardsContract_exit(stakingAddress, App)
     }
+    const etherscanUrl = `<a href='https://etherscan.io/address/${stakingAddress}' target='_blank'>Staking Contract</a>`;
+    _print(etherscanUrl);
     _print_link(`Stake ${userUnstaked.toFixed(6)} ${stakingTokenTicker}`, approveTENDAndStake)
     _print_link(`Unstake ${userStaked.toFixed(6)} ${stakingTokenTicker}`, unstake)
     _print_link(`Claim ${earned.toFixed(6)} ${rewardTokenTicker}`, claim)

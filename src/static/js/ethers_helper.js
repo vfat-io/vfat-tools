@@ -351,7 +351,7 @@ const get_synth_weekly_rewards = async function(synth_contract_instance) {
   }
 
   const rewardRate = await synth_contract_instance.rewardRate()
-  return Math.round((rewardRate / 1e18) * 604800)
+  return rewardRate / 1e18 * 604800;
 }
 
 const isRewardPeriodOver = async function(reward_contract_instance) {
@@ -980,12 +980,14 @@ function getErc20Prices(prices, pool) {
   var price = getParameterCaseInsensitive(prices,pool.address)?.usd;
   var tvl = pool.totalSupply * price / 10 ** pool.decimals;
   var staked_tvl = pool.staked * price;
+  const poolUrl = `https://etherscan.io/token/${pool.address}`;
+  const name = `<a href='${poolUrl}' target='_blank'>${pool.symbol}</a>`;
   return {
     staked_tvl : staked_tvl,
     price : price,
     stakingTokenTicker : pool.symbol,
     print_price() {
-      _print(`${pool.symbol}</a> Price: $${formatMoney(price)} TVL: $${formatMoney(tvl)}`);
+      _print(`${name} Price: $${formatMoney(price)} TVL: $${formatMoney(tvl)}`);
       _print(`Staked: $${formatMoney(staked_tvl)}`);
     },
     print_contained_price() {
@@ -1062,6 +1064,8 @@ function printChefContractLinks(App, chefAbi, chefAddr, poolIndex, poolAddress, 
   const claim = async function() {
     return chefContract_claim(chefAbi, chefAddr, poolIndex, App, pendingRewardsFunction, claimFunction)
   }    
+  const etherscanUrl = `<a href='https://etherscan.io/address/${poolAddress}' target='_blank'>Staking Contract</a>`;
+  _print(etherscanUrl);
   _print_link(`Stake ${unstaked.toFixed(fixedDecimals)} ${stakingTokenTicker}`, approveAndStake)
   _print_link(`Unstake ${userStaked.toFixed(fixedDecimals)} ${stakingTokenTicker}`, unstake)
   _print_link(`Claim ${pendingRewardTokens.toFixed(fixedDecimals)} ${rewardTokenTicker}`, claim)

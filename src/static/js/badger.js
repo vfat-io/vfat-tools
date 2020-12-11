@@ -145,7 +145,10 @@ const geyserContract_stake = async function(stakingTokenAddr, rewardPoolAddr, Ap
   }
 
 async function printPool(App, tokens, prices, pool) {
-  _print(pool.name);
+  const tokenUrl = `<a href='https://etherscan.io/address/${pool.tokenAddress}' target='_blank'>Underlying</a>`;
+  const settUrl = `<a href='https://etherscan.io/address/${pool.settAddress}' target='_blank'>Sett</a>`;
+  const geyserUrl = `<a href='https://etherscan.io/address/${pool.geyserAddress}' target='_blank'>Geyser</a>`;
+  _print(`${pool.name} - ${tokenUrl} - ${settUrl} - ${geyserUrl}`);
   const tokenAddress = pool.tokenAddress;
   const settAddress = pool.settAddress;
   const geyserAddress = pool.geyserAddress;
@@ -170,6 +173,13 @@ async function printPool(App, tokens, prices, pool) {
   }
 
   const poolPrices = getPoolPrices(tokens, prices, lpToken);
+
+  if (!poolPrices.price) {
+    const swapContract = new ethers.Contract(pool.swapAddress, CURVE_SWAP_ABI, App.provider);
+    const virtualPrice = await swapContract.get_virtual_price() / 1e18;
+    const underlyingPrice = getParameterCaseInsensitive(prices, pool.baseToken).usd;
+    poolPrices.price = underlyingPrice * virtualPrice;
+  }
 
   const stakeTokenPrice = poolPrices.price;
   prices[settAddress] = stakeTokenPrice;
@@ -271,11 +281,13 @@ const pools = [
     badgerPerWeek : 85937
   },
   {
-    name : "curve.fi / tBTC *** Price not working ***",
+    name : "curve.fi / tBTC",
     tokenAddress : "0x64eda51d3ad40d56b9dfc5554e06f94e1dd786fd",
     settAddress : "0xb9D076fDe463dbc9f915E5392F807315Bf940334",
     geyserAddress : "0x085A9340ff7692Ab6703F17aB5FfC917B580a6FD",
-    badgerPerWeek : 85937
+    badgerPerWeek : 85937,
+    swapAddress : "c25099792e9349c7dd09759744ea681c7de2cb66",
+    baseToken : "0x2260fac5e5542a773aa44fbcfedf7c193bc2c599" //wBTC
   },
   {
     name : "harvest.finance / renBTC",
