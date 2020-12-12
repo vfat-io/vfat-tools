@@ -181,9 +181,6 @@ async function printPool(App, tokens, prices, pool) {
     poolPrices.price = underlyingPrice * virtualPrice;
   }
 
-  const stakeTokenPrice = poolPrices.price;
-  prices[settAddress] = stakeTokenPrice;
-
   const SETT_CONTRACT = new ethers.Contract(settAddress, BADGER_UNI_ABI, App.provider);
   const userUnstaked = await SETT_CONTRACT.balanceOf(App.YOUR_ADDRESS) / 1e18;
   const settToken = await getToken(App, settAddress, geyserAddress);
@@ -196,6 +193,9 @@ async function printPool(App, tokens, prices, pool) {
   const ratio = totalUniInBUni / totalStaked;
   const userStaked = await BADGER_GEYSER.totalStakedFor(App.YOUR_ADDRESS) / 1e18;
   const userUnderlyingStaked = userStaked * ratio;
+
+  const stakeTokenPrice = poolPrices.price * ratio;
+  prices[settAddress] = stakeTokenPrice;
 
   const rewardTokenAddress = (await BADGER_GEYSER.getDistributionTokens())[0];
 
