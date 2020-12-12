@@ -194,7 +194,8 @@ async function printPool(App, tokens, prices, pool) {
   const totalStaked = await BADGER_GEYSER.totalStaked();
   const totalUniInBUni = await SETT_CONTRACT.balance();
   const ratio = totalUniInBUni / totalStaked;
-  const userStaked = await BADGER_GEYSER.totalStakedFor(App.YOUR_ADDRESS) / 1e18 * ratio;
+  const userStaked = await BADGER_GEYSER.totalStakedFor(App.YOUR_ADDRESS) / 1e18;
+  const userUnderlyingStaked = userStaked * ratio;
 
   const rewardTokenAddress = (await BADGER_GEYSER.getDistributionTokens())[0];
 
@@ -216,7 +217,7 @@ async function printPool(App, tokens, prices, pool) {
   _print(`APY: Day ${dailyAPY.toFixed(2)}% Week ${weeklyAPY.toFixed(2)}% Year ${yearlyAPY.toFixed(2)}%`);
   const userStakedUsd = userStaked * stakeTokenPrice;
   const userStakedPct = userStakedUsd / staked_tvl * 100;
-  _print(`You are staking ${userStaked.toFixed(6)} ${settToken.symbol} ` +
+  _print(`You are staking ${userStaked.toFixed(6)} ${settToken.symbol} (${userUnderlyingStaked.toFixed(6)} ${lpToken.symbol}) ` +
          `$${formatMoney(userStakedUsd)} (${userStakedPct.toFixed(2)}% of the pool).`);
   if (userStaked > 0) {
       poolPrices.print_contained_price(userStaked);
