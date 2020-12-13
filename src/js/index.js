@@ -13,7 +13,9 @@ import { ethers } from "ethers";
 import 'picturefill'
 import 'utils/errors'
 import 'utils/validation'
-import 'utils/quick'
+import 'utils/quick';
+import "core-js/stable";
+import "regenerator-runtime/runtime";
 
 window.$ = $;
 window.ethers = ethers;
