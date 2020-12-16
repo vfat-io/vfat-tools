@@ -1017,7 +1017,7 @@ async function getPoolInfo(app, chefContract, chefAddress, poolIndex, pendingRew
   }
   return {
       address: poolInfo.lpToken,
-      allocPoints: poolInfo.allocPoint,
+      allocPoints: poolInfo.allocPoint ?? 1,
       poolToken: poolToken,
       userStaked : staked,
       pendingRewardTokens : pendingRewardTokens / 10 ** 18,
