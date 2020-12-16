@@ -1191,3 +1191,144 @@ async function loadChefContractSecondAttempt(App, chef, chefAddress, chefAbi, re
       pendingRewardsFunction);
   }
 }
+
+async function loadFluidStatus(App, LP, fluidEpochs, epoch) {  
+  const unbondFilter = LP.filters.Unbond(App.YOUR_ADDRESS);
+  const unbonds = await LP.queryFilter(unbondFilter);
+  const bondFilter = LP.filters.Bond(App.YOUR_ADDRESS);
+  const bonds = await LP.queryFilter(bondFilter);
+  if (unbonds?.length ?? 0 + deposits?.length ?? 0 > 0) {
+      const lastUnbond = Math.max(...unbonds.map(u => u.args.start / 1));
+      const lastBond = Math.max(...bonds.map(d => d.args.start / 1));
+      const fluidEpoch = Math.max(lastUnbond, lastBond);
+      _print(`You unbonded at epoch ${fluidEpoch}.`)
+      _print(`You will become Frozen in ${fluidEpoch + fluidEpochs - epoch} epochs.`);
+  }
+}
+
+async function loadEmptySetLP(App, LP, stakeTokenAddress, stakeTokenTicker, fluidEpochs, epoch, rewardTicker) {
+  const stakeToken = new ethers.Contract(stakeTokenAddress, ERC20_ABI, App.provider);
+  const unstaked = await stakeToken.balanceOf(App.YOUR_ADDRESS) / 1e18;
+
+  const staged = await LP.balanceOfStaged(App.YOUR_ADDRESS) / 1e18;
+  const bonded = await LP.balanceOfBonded(App.YOUR_ADDRESS) / 1e18;
+  const rewarded = await LP.balanceOfClaimable(App.YOUR_ADDRESS) / 1e18;
+  const claimable = await LP.balanceOfRewarded(App.YOUR_ADDRESS) / 1e18;
+  const status = await LP.statusOf(App.YOUR_ADDRESS) ? "Fluid" : "Frozen";
+  
+  _print(`Your LP status is ${status}`);
+  _print(`You have ${unstaked.toFixed(8)} unstaked ${stakeTokenTicker} LP`);
+  _print(`You have ${staged.toFixed(8)} staged ${stakeTokenTicker} LP`);
+  _print(`You have ${bonded.toFixed(8)} bonded ${stakeTokenTicker} LP`);
+  _print(`You have ${rewarded.toFixed(2)} rewarded ${rewardTicker}`);
+  _print(`You have ${claimable.toFixed(2)} claimable ${rewardTicker}`);
+  
+  if (status == "Fluid") await loadFluidStatus(App, LP, fluidEpochs, epoch);
+  const approveAndDeposit = async function() {
+    return rewardsContract_stake(stakeTokenAddress, LP.address, App)
+  }
+  const withdraw = async () => esd_withdraw(LP, App); 
+  const bond = async () => esd_bond(LP, App); 
+  const unbond = async () => esd_unbond(LP, App); 
+
+  _print_link(`Deposit ${unstaked.toFixed(6)} ${stakeTokenTicker}`, approveAndDeposit)
+  _print_link(`Withdraw ${staged.toFixed(6)} ${stakeTokenTicker}`, withdraw);
+  _print_link(`Bond ${staged.toFixed(6)} ${stakeTokenTicker}`, bond);
+  _print_link(`Unbond ${bonded.toFixed(6)} ${stakeTokenTicker}`, unbond);
+  _print('');   
+}
+
+const esd_withdraw = async function(DAO, App) {
+  const signer = App.provider.getSigner()
+
+  const REWARD_POOL = DAO.connect(signer);
+  const currentStakedAmount = await REWARD_POOL.balanceOfStaged(App.YOUR_ADDRESS)
+
+  if (currentStakedAmount > 0) {
+    showLoading()
+    REWARD_POOL.withdraw(currentStakedAmount, {gasLimit: 250000})
+      .then(function(t) {
+        return App.provider.waitForTransaction(t.hash)
+      })
+      .catch(function() {
+        hideLoading()
+      })
+  }
+}
+
+const esd_unbond = async function(DAO, App) {
+  const signer = App.provider.getSigner()
+
+  const REWARD_POOL = DAO.connect(signer);
+  const currentStakedAmount = await REWARD_POOL.balanceOfBonded(App.YOUR_ADDRESS)
+
+  if (currentStakedAmount > 0) {
+    showLoading()
+    REWARD_POOL.unbond(currentStakedAmount, {gasLimit: 250000})
+      .then(function(t) {
+        return App.provider.waitForTransaction(t.hash)
+      })
+      .catch(function() {
+        hideLoading()
+      })
+  }
+}
+
+const esd_bond = async function(DAO, App) {
+  const signer = App.provider.getSigner()
+
+  const REWARD_POOL = DAO.connect(signer);
+  const currentStakedAmount = await REWARD_POOL.balanceOfStaged(App.YOUR_ADDRESS)
+
+  if (currentStakedAmount > 0) {
+    showLoading()
+    REWARD_POOL.bond(currentStakedAmount, {gasLimit: 250000})
+      .then(function(t) {
+        return App.provider.waitForTransaction(t.hash)
+      })
+      .catch(function() {
+        hideLoading()
+      })
+  }
+}
+
+const calculateTwap = async (oldPrice0, oldTimestamp, price0, timestamp) => {
+    // Convert Prices to BN
+    const price0CumulativeLast = ethers.BigNumber.from(oldPrice0)
+    let price0Cumulative = ethers.BigNumber.from(price0)
+  
+    // Convert timestamps to BN
+    const latest = ethers.BigNumber.from(timestamp) // Current Uniswap contract timestamp
+    const blockTimestamp = latest.mod(ethers.BigNumber.from(2).pow(32))
+    const blockTimestampLast = ethers.BigNumber.from(oldTimestamp) // Saved Uniswap timestamp
+  
+    // Sub the timestamps to get distance
+    const timeElapsed = blockTimestamp.sub(blockTimestampLast)
+  
+    // If subbing timestamps equals 0: no new trades have happened so use the Spot Price
+    // Returning 0 here so it can be handled else where
+    if (timeElapsed.toNumber() === 0) return 0
+  
+    // Do the TWAP calc
+    const price0Average = price0Cumulative
+      .sub(price0CumulativeLast)
+      .div(timeElapsed)
+  
+    // Shifting the base to match the right numbers
+    // Adjust the number of 0s as necessary.
+    const targetRate = ethers.utils.parseEther('1000000000000')
+    const exchangeRate0 = price0Average
+      .mul(targetRate)
+      .div(ethers.BigNumber.from(2).pow(112))
+  
+    // Returnthe Float of the TWAP 
+    return parseFloat(ethers.utils.formatEther(exchangeRate0))
+}
+
+const getCurrentPriceAndTimestamp = async (App, address) => {
+    const UNI = new ethers.Contract(address, UNI_ABI, App.provider);
+    const price0 = await UNI.price0CumulativeLast();
+    const price1 = await UNI.price1CumulativeLast();
+    const { _blockTimestampLast } = await UNI.getReserves()
+    return [ price0, price1, _blockTimestampLast ]
+}

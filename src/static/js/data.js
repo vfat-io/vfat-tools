@@ -115,7 +115,7 @@ const Contracts = {
         Oracle : {
             address : "0xea9f8bb8B5e8BA3D38628f0E18Ee82300eddBa0E"
         },
-        Uniswap_USDC_ESD : {
+        Uniswap_ESD_USDC : {
             address : "0x88ff79eB2Bc5850F27315415da8685282C7610F9"
         },
         LPIncentivizationPool : {
