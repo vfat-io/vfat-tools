@@ -101,7 +101,8 @@ $(function() {
     const CONTRACTS = [
       contracts.debaseDaiLpPool,
       contracts.debaseDaiPool,
-      contracts.degovDaiLpPool
+      contracts.degovDaiLpPool,
+      contracts.stabilizerPool
     ];
   
     const App = await init_ethers();
@@ -132,5 +133,5 @@ const contracts = {
 	"dai": "0x6b175474e89094c44da98b954eedeac495271d0f",
 	"debaseDaiLp": "0xE98f89a2B3AeCDBE2118202826478Eb02434459A",
 	"oracle": "0xb1Df2F0C76074eD466510F4440772Cc7b3D5337C",
-	"stabilizerPool": "0x99d6EB950F9719d7b883a2c67735ecA6A91d6EaD"
+	"stabilizerPool": "0x800479a76dc74c3a9FAAE25320A0EE4E8740996b"
 }
