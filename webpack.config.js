@@ -11,7 +11,7 @@ module.exports = (env = {}) => {
   return {
     entry: {
       vendor: ['lodash.throttle', 'lodash.debounce', 'dompurify', 'picturefill'],
-      app: ['./src/js/index.js'],
+      app: ["babel-polyfill", './src/js/index.js'],
     },
     output: {
       filename: isProduction ? '[name].[chunkhash].js' : '[name].js',

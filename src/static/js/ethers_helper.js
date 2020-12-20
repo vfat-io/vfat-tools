@@ -30,6 +30,8 @@ async function init_ethers() {
     )
     sleep(10)
   }
+  App.ethcallProvider = new ethcall.Provider();
+  await App.ethcallProvider.init(App.provider);
 
   let addr = getUrlParameter('addr')
 
@@ -349,7 +351,7 @@ const get_synth_weekly_rewards = async function(synth_contract_instance) {
   }
 
   const rewardRate = await synth_contract_instance.rewardRate()
-  return Math.round((rewardRate / 1e18) * 604800)
+  return rewardRate / 1e18 * 604800;
 }
 
 const isRewardPeriodOver = async function(reward_contract_instance) {
@@ -593,7 +595,7 @@ const chefContract_stake = async function(chefAbi, chefAddress, poolIndex, staki
     showLoading()
     allow
       .then(async function() {
-          CHEF_CONTRACT.deposit(poolIndex, currentTokens, {gasLimit: 250000})
+          CHEF_CONTRACT.deposit(poolIndex, currentTokens, {gasLimit: 500000})
           .then(function(t) {
             App.provider.waitForTransaction(t.hash).then(function() {
               hideLoading()
@@ -622,7 +624,7 @@ const chefContract_unstake = async function(chefAbi, chefAddress, poolIndex, App
 
   if (earnedTokenAmount > 0) {
     showLoading()
-    CHEF_CONTRACT.withdraw(poolIndex, currentStakedAmount, {gasLimit: 250000})
+    CHEF_CONTRACT.withdraw(poolIndex, currentStakedAmount, {gasLimit: 500000})
       .then(function(t) {
         return App.provider.waitForTransaction(t.hash)
       })
@@ -643,13 +645,13 @@ const chefContract_claim = async function(chefAbi, chefAddress, poolIndex, App,
   if (earnedTokenAmount > 0) {
     showLoading()
     if (claimFunction) {
-      claimFunction(poolIndex, {gasLimit: 250000})
+      claimFunction(poolIndex, {gasLimit: 500000})
         .then(function(t) {
           return App.provider.waitForTransaction(t.hash)
         })
     }
     else {
-      CHEF_CONTRACT.deposit(poolIndex, 0, {gasLimit: 250000})
+      CHEF_CONTRACT.deposit(poolIndex, 0, {gasLimit: 500000})
         .then(function(t) {
           return App.provider.waitForTransaction(t.hash)
         })
@@ -666,6 +668,8 @@ async function getUniPool(app, pool, poolAddress, stakingAddress) {
   const token0 = await pool.token0();
   const token1 = await pool.token1();
   return { 
+      symbol : await pool.symbol(),
+      name : await pool.name(),
       address: poolAddress,
       token0: token0,
       q0    : reserves._reserve0,
@@ -685,10 +689,12 @@ async function getBalancerPool(app, pool, poolAddress, stakingAddress, tokens) {
   const decimals = await pool.decimals();
   const poolTokens = await Promise.all(tokens.map(async (t) => { return {
     address : t,
-    weight : await pool.getDenormalizedWeight(t) / 1e18,
+    weight : await pool.getNormalizedWeight(t) / 1e18,
     balance : await pool.getBalance(t)
   };}));
   return { 
+      symbol : await pool.symbol(),
+      name : await pool.name(),
       address: poolAddress,
       poolTokens: poolTokens, //address, weight and balance
       totalSupply: await pool.totalSupply() / 10 ** decimals,
@@ -871,120 +877,40 @@ function getUniPrices(tokens, prices, pool)
         var userPct = userStaked / pool.totalSupply;
         var q0user = userPct * q0;
         var q1user = userPct * q1;
-        _print(`Your LP tokens comprise of ${q0user.toFixed(2)} ${t0.symbol} + ${q1user.toFixed(2)} ${t1.symbol}`);
-      }
-  }
-}
-
-function getTriadBalancerPrices(tokens, prices, pool) {
-  var pt0 = pool.poolTokens[0];
-  var pt1 = pool.poolTokens[1];
-  var pt2 = pool.poolTokens[2];
-
-  var t0 = getParameterCaseInsensitive(tokens,pt0.address);
-  var p0 = getParameterCaseInsensitive(prices,pt0.address)?.usd;
-  var t1 = getParameterCaseInsensitive(tokens,pt1.address);
-  var p1 = getParameterCaseInsensitive(prices,pt1.address)?.usd;
-  var t2 = getParameterCaseInsensitive(tokens,pt2.address);
-  var p2 = getParameterCaseInsensitive(prices,pt2.address)?.usd;
-  if (p0 == null && p1 == null) {
-      return undefined;
-  }
-  var q0 = pt0.balance / 10 ** t0.decimals;
-  var q1 = pt1.balance / 10 ** t1.decimals;
-  var q2 = pt2.balance / 10 ** t2.decimals
-  if (p0 == null)
-  {
-      p0 = (q1 * p1 + q2 * p2) / q0;
-      prices[pool.token0] = { usd : p0 };
-  }
-  if (p1 == null)
-  {
-      p1 = (q0 * p0 + q2 * p2) / q1;
-      prices[pool.token1] = { usd : p1 };
-  }
-  if (p2 == null)
-  {
-      p2 = (q0 * p0 + q1 * p1) / q2;
-      prices[pool.token2] = { usd : p2 };
-  }
-  var tvl = q0 * p0 + q1 * p1 + q2 * p2;
-  var price = tvl / pool.totalSupply;
-  prices[pool.address] = { usd : price };
-  var staked_tvl = pool.staked * price;
-  const stakingTokenTicker = `[${t0.symbol}]-[${t1.symbol}]-[${t2.symbol}]`;
-  return {
-      t0,
-      p0,
-      q0,
-      t1,
-      p1,
-      q1,
-      p2,
-      q2,
-      price,
-      tvl,
-      staked_tvl,
-      stakingTokenTicker,
-      print_price() {
-        const poolUrl = `http://pools.balancer.exchange/#/pool/${pool.address}`;
-        _print(`<a href='${poolUrl}' target='_blank'>${stakingTokenTicker}</a> BPT Price: $${formatMoney(price)} TVL: $${formatMoney(tvl)}`);
-        _print(`${t0.symbol} Price: $${formatMoney(p0)}`)
-        _print(`${t1.symbol} Price: $${formatMoney(p1)}`)
-        _print(`${t2.symbol} Price: $${formatMoney(p2)}`)
-        _print(`Staked: $${formatMoney(staked_tvl)}`);
-      },
-      print_contained_price(userStaked) {
-        var userPct = userStaked / pool.totalSupply;
-        var q0user = userPct * q0;
-        var q1user = userPct * q1;
-        var q2user = userPct * q2;
-        _print(`Your LP tokens comprise of ${q0user.toFixed(2)} ${t0.symbol} + ${q1user.toFixed(2)} ${t1.symbol} + ${q2user.toFixed(2)} ${t2.symbol}`);
+        _print(`Your LP tokens comprise of ${q0user.toFixed(4)} ${t0.symbol} + ${q1user.toFixed(4)} ${t1.symbol}`);
       }
   }
 }
 
 function getBalancerPrices(tokens, prices, pool)
 {
-  if (pool.poolTokens.length > 3) {
-    throw 'Currently only works with 2 or 3 poolTokens';
+  var poolTokens = pool.poolTokens.map(t => getParameterCaseInsensitive(tokens, t.address));
+  var poolPrices = pool.poolTokens.map(t => getParameterCaseInsensitive(prices, t.address)?.usd);
+  var quantities = poolTokens.map((t, i) => pool.poolTokens[i].balance / 10 ** t.decimals);
+  var missing = poolPrices.filter(x => !x);
+  if (missing.length == poolPrices.length) {
+    throw 'Every price is missing';
   }
-  if (pool.poolTokens.length == 3) {
-    return getTriadBalancerPrices(tokens,prices,pool);
-  }
-  var pt0 = pool.poolTokens[0];
-  var pt1 = pool.poolTokens[1];
-  var t0 = getParameterCaseInsensitive(tokens,pt0.address);
-  var p0 = getParameterCaseInsensitive(prices,pt0.address)?.usd;
-  var t1 = getParameterCaseInsensitive(tokens,pt1.address);
-  var p1 = getParameterCaseInsensitive(prices,pt1.address)?.usd;
-  if (p0 == null && p1 == null) {
-      return undefined;
-  }
-  var q0 = pt0.balance / 10 ** t0.decimals;
-  var q1 = pt1.balance / 10 ** t1.decimals;
-  if (p0 == null)
-  {
-      p0 = q1 * p1 / q0;
-      prices[pool.token0] = { usd : p0 };
-  }
-  if (p1 == null)
-  {
-      p1 = q0 * p0 / q1;
-      prices[pool.token1] = { usd : p1 };
-  }
-  var tvl = q0 * p0 + q1 * p1;
+  var notMissing = poolPrices.findIndex(p => p);
+  const getMissingPrice = (missingQuantity, missingWeight) =>
+    quantities[notMissing] * poolPrices[notMissing] * missingWeight
+     / pool.poolTokens[notMissing].weight / missingQuantity;
+  missing.map((_, i) => {
+    const newPrice = getMissingPrice(quantities[i], pool.poolTokens[i].weight);
+    poolPrices[i] = newPrice;
+    prices[poolTokens[i].address] = { usd : newPrice };
+  });
+  
+  var tvl = poolPrices.map((p, i) => p * quantities[i]).reduce((x,y)=>x+y, 0);
   var price = tvl / pool.totalSupply;
   prices[pool.address] = { usd : price };
   var staked_tvl = pool.staked * price;
-  const stakingTokenTicker = `[${t0.symbol}]-[${t1.symbol}]`;
+  var tickers = pool.poolTokens.map((pt, i) => `[${poolTokens[i].symbol} ${pt.weight*100}%]`)
+  const stakingTokenTicker = tickers.join('-');
   return {
-      t0: t0,
-      p0: p0,
-      q0  : q0,
-      t1: t1,
-      p1: p1,
-      q1  : q1,
+      tokens : poolTokens,
+      prices : poolPrices,
+      quantities : quantities,
       price: price,
       tvl : tvl,
       staked_tvl : staked_tvl,
@@ -992,15 +918,15 @@ function getBalancerPrices(tokens, prices, pool)
       print_price() {
         const poolUrl = `http://pools.balancer.exchange/#/pool/${pool.address}`;
         _print(`<a href='${poolUrl}' target='_blank'>${stakingTokenTicker}</a> BPT Price: $${formatMoney(price)} TVL: $${formatMoney(tvl)}`);
-        _print(`${t0.symbol} Price: $${formatMoney(p0)}`)
-        _print(`${t1.symbol} Price: $${formatMoney(p1)}`)
+        poolPrices.forEach((p, i) => 
+          _print(`${poolTokens[i].symbol} Price: $${formatMoney(p)}`)
+        );
         _print(`Staked: $${formatMoney(staked_tvl)}`);
       },
       print_contained_price(userStaked) {
         var userPct = userStaked / pool.totalSupply;
-        var q0user = userPct * q0;
-        var q1user = userPct * q1;
-        _print(`Your LP tokens comprise of ${q0user.toFixed(2)} ${t0.symbol} + ${q1user.toFixed(2)} ${t1.symbol}`);
+        var userQs = quantities.map((q, i) => `${(q * userPct).toFixed(4)} ${poolTokens[i].symbol}`);
+        _print(`Your LP tokens comprise of ${userQs.join(' + ')}`);
       }
   }
 }
@@ -1054,12 +980,14 @@ function getErc20Prices(prices, pool) {
   var price = getParameterCaseInsensitive(prices,pool.address)?.usd;
   var tvl = pool.totalSupply * price / 10 ** pool.decimals;
   var staked_tvl = pool.staked * price;
+  const poolUrl = `https://etherscan.io/token/${pool.address}`;
+  const name = `<a href='${poolUrl}' target='_blank'>${pool.symbol}</a>`;
   return {
     staked_tvl : staked_tvl,
     price : price,
     stakingTokenTicker : pool.symbol,
     print_price() {
-      _print(`${pool.symbol}</a> Price: $${formatMoney(price)} TVL: $${formatMoney(tvl)}`);
+      _print(`${name} Price: $${formatMoney(price)} TVL: $${formatMoney(tvl)}`);
       _print(`Staked: $${formatMoney(staked_tvl)}`);
     },
     print_contained_price() {
@@ -1089,7 +1017,7 @@ async function getPoolInfo(app, chefContract, chefAddress, poolIndex, pendingRew
   }
   return {
       address: poolInfo.lpToken,
-      allocPoints: poolInfo.allocPoint,
+      allocPoints: poolInfo.allocPoint ?? 1,
       poolToken: poolToken,
       userStaked : staked,
       pendingRewardTokens : pendingRewardTokens / 10 ** 18,
@@ -1136,6 +1064,8 @@ function printChefContractLinks(App, chefAbi, chefAddr, poolIndex, poolAddress, 
   const claim = async function() {
     return chefContract_claim(chefAbi, chefAddr, poolIndex, App, pendingRewardsFunction, claimFunction)
   }    
+  const etherscanUrl = `<a href='https://etherscan.io/address/${poolAddress}' target='_blank'>Staking Contract</a>`;
+  _print(etherscanUrl);
   _print_link(`Stake ${unstaked.toFixed(fixedDecimals)} ${stakingTokenTicker}`, approveAndStake)
   _print_link(`Unstake ${userStaked.toFixed(fixedDecimals)} ${stakingTokenTicker}`, unstake)
   _print_link(`Claim ${pendingRewardTokens.toFixed(fixedDecimals)} ${rewardTokenTicker}`, claim)
@@ -1149,6 +1079,7 @@ function printChefPool(App, chefAbi, chefAddr, prices, tokens, poolInfo, poolInd
   fixedDecimals = fixedDecimals ?? 2;
   const sp = (poolInfo.stakedToken == null) ? null : getPoolPrices(tokens, prices, poolInfo.stakedToken);
   var poolRewardsPerWeek = poolInfo.allocPoints / totalAllocPoints * rewardsPerWeek;
+  if (poolRewardsPerWeek == 0) return;
   const userStaked = poolInfo.userLPStaked ?? poolInfo.userStaked;
   const rewardPrice = getParameterCaseInsensitive(prices, rewardTokenAddress)?.usd;
   const stakedTvl = sp?.staked_tvl ?? poolPrices.staked_tvl;
@@ -1230,6 +1161,8 @@ async function loadChefContractSecondAttempt(App, chef, chefAddress, chefAbi, re
 
   _print(`Found ${poolCount} pools.\n`)
 
+  _print(`Showing incentivized pools only.\n`);
+
   var tokens = {};
 
   const rewardTokenAddress = await chefContract.callStatic[rewardTokenFunction]();
@@ -1257,4 +1190,145 @@ async function loadChefContractSecondAttempt(App, chef, chefAddress, chefAbi, re
       totalAllocPoints, rewardsPerWeek, rewardTokenTicker, rewardTokenAddress,
       pendingRewardsFunction);
   }
+}
+
+async function loadFluidStatus(App, LP, fluidEpochs, epoch) {  
+  const unbondFilter = LP.filters.Unbond(App.YOUR_ADDRESS);
+  const unbonds = await LP.queryFilter(unbondFilter);
+  const bondFilter = LP.filters.Bond(App.YOUR_ADDRESS);
+  const bonds = await LP.queryFilter(bondFilter);
+  if (unbonds?.length ?? 0 + deposits?.length ?? 0 > 0) {
+      const lastUnbond = Math.max(...unbonds.map(u => u.args.start / 1));
+      const lastBond = Math.max(...bonds.map(d => d.args.start / 1));
+      const fluidEpoch = Math.max(lastUnbond, lastBond);
+      _print(`You unbonded at epoch ${fluidEpoch}.`)
+      _print(`You will become Frozen in ${fluidEpoch + fluidEpochs - epoch} epochs.`);
+  }
+}
+
+async function loadEmptySetLP(App, LP, stakeTokenAddress, stakeTokenTicker, fluidEpochs, epoch, rewardTicker) {
+  const stakeToken = new ethers.Contract(stakeTokenAddress, ERC20_ABI, App.provider);
+  const unstaked = await stakeToken.balanceOf(App.YOUR_ADDRESS) / 1e18;
+
+  const staged = await LP.balanceOfStaged(App.YOUR_ADDRESS) / 1e18;
+  const bonded = await LP.balanceOfBonded(App.YOUR_ADDRESS) / 1e18;
+  const rewarded = await LP.balanceOfClaimable(App.YOUR_ADDRESS) / 1e18;
+  const claimable = await LP.balanceOfRewarded(App.YOUR_ADDRESS) / 1e18;
+  const status = await LP.statusOf(App.YOUR_ADDRESS) ? "Fluid" : "Frozen";
+  
+  _print(`Your LP status is ${status}`);
+  _print(`You have ${unstaked.toFixed(8)} unstaked ${stakeTokenTicker} LP`);
+  _print(`You have ${staged.toFixed(8)} staged ${stakeTokenTicker} LP`);
+  _print(`You have ${bonded.toFixed(8)} bonded ${stakeTokenTicker} LP`);
+  _print(`You have ${rewarded.toFixed(2)} rewarded ${rewardTicker}`);
+  _print(`You have ${claimable.toFixed(2)} claimable ${rewardTicker}`);
+  
+  if (status == "Fluid") await loadFluidStatus(App, LP, fluidEpochs, epoch);
+  const approveAndDeposit = async function() {
+    return rewardsContract_stake(stakeTokenAddress, LP.address, App)
+  }
+  const withdraw = async () => esd_withdraw(LP, App); 
+  const bond = async () => esd_bond(LP, App); 
+  const unbond = async () => esd_unbond(LP, App); 
+
+  _print_link(`Deposit ${unstaked.toFixed(6)} ${stakeTokenTicker}`, approveAndDeposit)
+  _print_link(`Withdraw ${staged.toFixed(6)} ${stakeTokenTicker}`, withdraw);
+  _print_link(`Bond ${staged.toFixed(6)} ${stakeTokenTicker}`, bond);
+  _print_link(`Unbond ${bonded.toFixed(6)} ${stakeTokenTicker}`, unbond);
+  _print('');   
+}
+
+const esd_withdraw = async function(DAO, App) {
+  const signer = App.provider.getSigner()
+
+  const REWARD_POOL = DAO.connect(signer);
+  const currentStakedAmount = await REWARD_POOL.balanceOfStaged(App.YOUR_ADDRESS)
+
+  if (currentStakedAmount > 0) {
+    showLoading()
+    REWARD_POOL.withdraw(currentStakedAmount, {gasLimit: 250000})
+      .then(function(t) {
+        return App.provider.waitForTransaction(t.hash)
+      })
+      .catch(function() {
+        hideLoading()
+      })
+  }
+}
+
+const esd_unbond = async function(DAO, App) {
+  const signer = App.provider.getSigner()
+
+  const REWARD_POOL = DAO.connect(signer);
+  const currentStakedAmount = await REWARD_POOL.balanceOfBonded(App.YOUR_ADDRESS)
+
+  if (currentStakedAmount > 0) {
+    showLoading()
+    REWARD_POOL.unbond(currentStakedAmount, {gasLimit: 250000})
+      .then(function(t) {
+        return App.provider.waitForTransaction(t.hash)
+      })
+      .catch(function() {
+        hideLoading()
+      })
+  }
+}
+
+const esd_bond = async function(DAO, App) {
+  const signer = App.provider.getSigner()
+
+  const REWARD_POOL = DAO.connect(signer);
+  const currentStakedAmount = await REWARD_POOL.balanceOfStaged(App.YOUR_ADDRESS)
+
+  if (currentStakedAmount > 0) {
+    showLoading()
+    REWARD_POOL.bond(currentStakedAmount, {gasLimit: 250000})
+      .then(function(t) {
+        return App.provider.waitForTransaction(t.hash)
+      })
+      .catch(function() {
+        hideLoading()
+      })
+  }
+}
+
+const calculateTwap = async (oldPrice0, oldTimestamp, price0, timestamp) => {
+    // Convert Prices to BN
+    const price0CumulativeLast = ethers.BigNumber.from(oldPrice0)
+    let price0Cumulative = ethers.BigNumber.from(price0)
+  
+    // Convert timestamps to BN
+    const latest = ethers.BigNumber.from(timestamp) // Current Uniswap contract timestamp
+    const blockTimestamp = latest.mod(ethers.BigNumber.from(2).pow(32))
+    const blockTimestampLast = ethers.BigNumber.from(oldTimestamp) // Saved Uniswap timestamp
+  
+    // Sub the timestamps to get distance
+    const timeElapsed = blockTimestamp.sub(blockTimestampLast)
+  
+    // If subbing timestamps equals 0: no new trades have happened so use the Spot Price
+    // Returning 0 here so it can be handled else where
+    if (timeElapsed.toNumber() === 0) return 0
+  
+    // Do the TWAP calc
+    const price0Average = price0Cumulative
+      .sub(price0CumulativeLast)
+      .div(timeElapsed)
+  
+    // Shifting the base to match the right numbers
+    // Adjust the number of 0s as necessary.
+    const targetRate = ethers.utils.parseEther('1000000000000')
+    const exchangeRate0 = price0Average
+      .mul(targetRate)
+      .div(ethers.BigNumber.from(2).pow(112))
+  
+    // Returnthe Float of the TWAP 
+    return parseFloat(ethers.utils.formatEther(exchangeRate0))
+}
+
+const getCurrentPriceAndTimestamp = async (App, address) => {
+    const UNI = new ethers.Contract(address, UNI_ABI, App.provider);
+    const price0 = await UNI.price0CumulativeLast();
+    const price1 = await UNI.price1CumulativeLast();
+    const { _blockTimestampLast } = await UNI.getReserves()
+    return [ price0, price1, _blockTimestampLast ]
 }

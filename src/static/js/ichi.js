@@ -3,26 +3,29 @@ $(function() {
     start(main);
   });
 
-  async function getIchiPoolInfo(app, chefContract, chefAddress, poolIndex, pendingRewardsFunction,
-      rewardTokenDecimals) {  
-    const lpToken = await chefContract.getPoolToken(poolIndex);
-    const allocPoint = await chefContract.getAllocPoint(poolIndex);
-    const lastRewardBlock = await chefContract.lastRewardsBlock(poolIndex);
+  async function getIchiPoolInfo(app, chefAbi, chefAddress, poolIndex, rewardTokenDecimals) {  
+    const chef = new ethcall.Contract(chefAddress, chefAbi);
+    const calls = 
+        [ chef.getPoolToken(poolIndex), chef.getAllocPoint(poolIndex), chef.lastRewardsBlock(poolIndex),
+          chef.getBonusToRealRatio(poolIndex), chef.userInfo(poolIndex, app.YOUR_ADDRESS),
+          chef.pendingIchi(poolIndex, app.YOUR_ADDRESS)]
+    const [ lpToken, allocPoint, lastRewardBlock, bonusToRealRatio, userInfo, pendingRewardTokens ] =
+          await app.ethcallProvider.all(calls);
     const poolToken = await getToken(app, lpToken, chefAddress);
-    const userInfo = await chefContract.userInfo(poolIndex, app.YOUR_ADDRESS);
-    const pendingRewardTokens = await chefContract.callStatic[pendingRewardsFunction](poolIndex, app.YOUR_ADDRESS);
     const staked = userInfo.amount / 10 ** poolToken.decimals;
     var stakedToken;
     var userLPStaked;
+    const pendingRewards = pendingRewardTokens / 10 ** rewardTokenDecimals * (1 - bonusToRealRatio / 100);
     return {
         address: lpToken,
         allocPoints: allocPoint,
         poolToken: poolToken,
         userStaked : staked,
-        pendingRewardTokens : pendingRewardTokens / 10 ** rewardTokenDecimals,
+        pendingRewardTokens : pendingRewards,
         stakedToken : stakedToken,
         userLPStaked : userLPStaked,
-        lastRewardBlock : lastRewardBlock
+        lastRewardBlock : lastRewardBlock,
+        bonusToRealRatio : bonusToRealRatio
     };
   }
 
@@ -75,7 +78,8 @@ $(function() {
                          pendingRewardsFunction, fixedDecimals, claimFunction) {  
     fixedDecimals = fixedDecimals ?? 2;
     const sp = (poolInfo.stakedToken == null) ? null : getPoolPrices(tokens, prices, poolInfo.stakedToken);
-    var poolRewardsPerWeek = poolInfo.allocPoints / totalAllocPoints * rewardsPerWeek;
+    const ratio = 1 - poolInfo.bonusToRealRatio / 100;
+    var poolRewardsPerWeek = poolInfo.allocPoints / totalAllocPoints * rewardsPerWeek * ratio;
     const userStaked = poolInfo.userLPStaked ?? poolInfo.userStaked;
     const rewardPrice = getParameterCaseInsensitive(prices, rewardTokenAddress)?.usd;
     const stakedTvl = sp?.staked_tvl ?? poolPrices.staked_tvl;
@@ -106,7 +110,7 @@ $(function() {
     const rewardsPerWeek = await chefContract.callStatic[rewardsPerBlockFunction]() * 604800 / 13.5
   
     const poolInfos = await Promise.all([...Array(poolCount).keys()].map(async (x) =>
-      await getIchiPoolInfo(App, chefContract, chefAddress, x, pendingRewardsFunction, 9)));
+      await getIchiPoolInfo(App, chefAbi, chefAddress, x, 9)));
     
     var tokenAddresses = [].concat.apply([], poolInfos.map(x => x.poolToken.tokens));
     var prices = await lookUpTokenPrices(tokenAddresses);
