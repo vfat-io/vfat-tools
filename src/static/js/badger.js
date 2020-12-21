@@ -172,25 +172,32 @@ async function printPool(App, tokens, prices, pool) {
       tokens[address] = await getToken(App, address, tokenAddress);
   }
 
-  const poolPrices = getPoolPrices(tokens, prices, lpToken);
-
-  if (!poolPrices.price) {
-    const swapContract = new ethers.Contract(pool.swapAddress, CURVE_SWAP_ABI, App.provider);
-    const virtualPrice = await swapContract.get_virtual_price() / 1e18;
-    const underlyingPrice = getParameterCaseInsensitive(prices, pool.baseToken).usd;
-    poolPrices.price = underlyingPrice * virtualPrice;
-  }
-
   const SETT_CONTRACT = new ethers.Contract(settAddress, BADGER_UNI_ABI, App.provider);
   const userUnstaked = await SETT_CONTRACT.balanceOf(App.YOUR_ADDRESS) / 1e18;
   const settToken = await getToken(App, settAddress, geyserAddress);
   _print(`You have ${userUnstaked} ${settToken.symbol}`);
 
+  let poolPrices = getPoolPrices(tokens, prices, lpToken);
+
+  if (!poolPrices.price) {
+    const swapContract = new ethers.Contract(pool.swapAddress, CURVE_SWAP_ABI, App.provider);
+    const virtualPrice = await swapContract.get_virtual_price() / 1e18;
+    const underlyingPrice = getParameterCaseInsensitive(prices, pool.baseToken).usd;
+    const poolPrice = underlyingPrice * virtualPrice; 
+    const pool_tvl = lpToken.balance / 1e18 * poolPrice;
+    const pool_staked_tvl = lpToken.staked * poolPrice;
+    poolPrices.price = poolPrice;
+    _print(`${pool.symbol} Price: $${formatMoney(poolPrice)} TVL: $${formatMoney(pool_tvl)}`);
+    _print(`Staked: $${formatMoney(pool_staked_tvl)}`);
+  } 
+  else {
+    poolPrices.print_price();
+  }
+
   const BADGER_GEYSER = new ethers.Contract(geyserAddress, BADGER_GEYSER_ABI, App.provider);
 
   const totalStaked = await BADGER_GEYSER.totalStaked();
-  const totalUniInBUni = await SETT_CONTRACT.balance();
-  const ratio = totalUniInBUni / totalStaked;
+  const ratio = await SETT_CONTRACT.getPricePerFullShare() / 1e18;
   const userStaked = await BADGER_GEYSER.totalStakedFor(App.YOUR_ADDRESS) / 1e18;
   const userUnderlyingStaked = userStaked * ratio;
 
@@ -208,7 +215,6 @@ async function printPool(App, tokens, prices, pool) {
   const staked_tvl = totalStaked / 1e18 * ratio * poolPrices.price;
 
   
-  poolPrices.print_price();
   _print(`Staked in Geyser: $${formatMoney(staked_tvl)}`);
   _print(`BADGER Per Week: ${weeklyRewards.toFixed(2)} ($${formatMoney(usdPerWeek)})`);
   const weeklyAPY = usdPerWeek / staked_tvl * 100;
