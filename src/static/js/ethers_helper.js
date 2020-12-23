@@ -1206,7 +1206,7 @@ async function loadFluidStatus(App, LP, fluidEpochs, epoch) {
   }
 }
 
-async function loadEmptySetLP(App, LP, stakeTokenAddress, stakeTokenTicker, fluidEpochs, epoch, rewardTicker) {
+async function loadEmptySetLP(App, LP, stakeTokenAddress, stakeTokenTicker, fluidEpochs, epoch, rewardTicker, uniPrices) {
   const stakeToken = new ethers.Contract(stakeTokenAddress, ERC20_ABI, App.provider);
   const unstaked = await stakeToken.balanceOf(App.YOUR_ADDRESS) / 1e18;
 
@@ -1218,8 +1218,11 @@ async function loadEmptySetLP(App, LP, stakeTokenAddress, stakeTokenTicker, flui
   
   _print(`Your LP status is ${status}`);
   _print(`You have ${unstaked.toFixed(8)} unstaked ${stakeTokenTicker} LP`);
+  if (unstaked > 0) uniPrices.print_contained_price(unstaked);
   _print(`You have ${staged.toFixed(8)} staged ${stakeTokenTicker} LP`);
+  if (staged > 0) uniPrices.print_contained_price(staged);
   _print(`You have ${bonded.toFixed(8)} bonded ${stakeTokenTicker} LP`);
+  if (bonded > 0) uniPrices.print_contained_price(bonded);
   _print(`You have ${rewarded.toFixed(2)} rewarded ${rewardTicker}`);
   _print(`You have ${claimable.toFixed(2)} claimable ${rewardTicker}`);
   

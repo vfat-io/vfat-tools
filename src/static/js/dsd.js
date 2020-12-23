@@ -38,11 +38,22 @@ async function main() {
     _print_link(`Bond ${staged.toFixed(2)} DSD`, bond);
     _print_link(`Unbond ${bonded.toFixed(2)} DSD`, unbond);
     _print(''); 
+    var prices = {};
+    var tokens = {};
+    const uniPool = await getToken(App,Contracts.DSD.Uniswap_DSD_USDC.address, Contracts.DSD.LPIncentivizationPool.address);  
+    var newPrices = await lookUpTokenPrices(uniPool.tokens);
+    for (const key in newPrices) {
+        prices[key] = newPrices[key];
+    }
+    await Promise.all(uniPool.tokens.map(async (address) => {
+        tokens[address] = await getToken(App, address, uniPool.address);
+    }));
+    const uniPrices = getPoolPrices(tokens, prices, uniPool);
 
     const LP = new ethers.Contract(Contracts.DSD.LPIncentivizationPool.address,
         Contracts.DSD.LPIncentivizationPool.abi, App.provider);
     await loadEmptySetLP(App, LP, Contracts.DSD.Uniswap_DSD_USDC.address, 
-        "DSD-USDC LP",5, epoch, "DSD", "USDC-DSD");
+        "DSD-USDC LP",5, epoch, "DSD", uniPrices);
 
     const couponFilter = DAO.filters.CouponPurchase(App.YOUR_ADDRESS);
     const coupons = await DAO.queryFilter(couponFilter);
@@ -92,17 +103,6 @@ async function main() {
                 _print(`DAO APR: Day 0% Week 0% Year 0%`)
             }
             // Calculate total rewards allocated to LP
-            var prices = {};
-            var tokens = {};
-            const uniPool = await getToken(App,Contracts.DSD.Uniswap_DSD_USDC.address, Contracts.DSD.LPIncentivizationPool.address);  
-            var newPrices = await lookUpTokenPrices(uniPool.tokens);
-            for (const key in newPrices) {
-                prices[key] = newPrices[key];
-            }
-            await Promise.all(uniPool.tokens.map(async (address) => {
-                tokens[address] = await getToken(App, address, uniPool.address);
-            }));
-            const uniPrices = getPoolPrices(tokens, prices, uniPool);
             const lpRewards = totalNet * calcPrice * lpReward
             const price = getParameterCaseInsensitive(prices, DOLLAR.address).usd;
             const lpReturn = lpRewards * price * epochsPerDay/ uniPrices.staked_tvl * 100

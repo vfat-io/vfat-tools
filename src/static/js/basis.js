@@ -79,7 +79,8 @@ $(function() {
             + ` Week ${userWeeklyRewards.toFixed(2)} ($${formatMoney(userWeeklyRewards*rewardTokenPrice)})`
             + ` Year ${userYearlyRewards.toFixed(2)} ($${formatMoney(userYearlyRewards*rewardTokenPrice)})`);
     }
-    const allowance = Math.min(20000 - userStaked, userUnstaked);
+    const allowance = 
+        stakeTokenFunction == "lpt" ? userUnstaked : Math.min(20000 - userStaked, userUnstaked);
     const maxAllowance = 
         stakeTokenFunction == "lpt" ? null : ethers.BigNumber.from(20000).pow(stakeToken.decimals);
     const approveTENDAndStake = async function() {

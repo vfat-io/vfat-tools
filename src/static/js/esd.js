@@ -60,10 +60,23 @@ async function main() {
     _print_link(`Unbond ${bonded.toFixed(2)} ESD`, unbond);
     _print('');   
 
+    var prices = {};
+    var tokens = {};
+    const uniPool = await getToken(App,Contracts.ESD.Uniswap_ESD_USDC.address, Contracts.ESD.LPIncentivizationPool.address);  
+    var newPrices = await lookUpTokenPrices(uniPool.tokens);
+    for (const key in newPrices) {
+        prices[key] = newPrices[key];
+    }
+    await Promise.all(uniPool.tokens.map(async (address) => {
+        tokens[address] = await getToken(App, address, uniPool.address);
+    }));
+
+    const uniPrices = getPoolPrices(tokens, prices, uniPool);
+
     const LP = new ethers.Contract(Contracts.ESD.LPIncentivizationPool.address,
         Contracts.ESD.LPIncentivizationPool.abi, App.provider);
     await loadEmptySetLP(App, LP, Contracts.ESD.Uniswap_ESD_USDC.address, 
-        "ESD-USDC LP", 5, epoch, "ESD");
+        "ESD-USDC LP", 5, epoch, "ESD", uniPrices);
 
     const couponFilter = DAO.filters.CouponPurchase(App.YOUR_ADDRESS);
     const coupons = await DAO.queryFilter(couponFilter);
@@ -111,17 +124,6 @@ async function main() {
                 _print(`DAO APR: Day 0% Week 0% Year 0%`)
             }
             // Calculate total rewards allocated to LP
-            var prices = {};
-            var tokens = {};
-            const uniPool = await getToken(App,Contracts.ESD.Uniswap_ESD_USDC.address, Contracts.ESD.LPIncentivizationPool.address);  
-            var newPrices = await lookUpTokenPrices(uniPool.tokens);
-            for (const key in newPrices) {
-                prices[key] = newPrices[key];
-            }
-            await Promise.all(uniPool.tokens.map(async (address) => {
-                tokens[address] = await getToken(App, address, uniPool.address);
-            }));
-            const uniPrices = getPoolPrices(tokens, prices, uniPool);
             const lpRewards = totalNet * calcPrice * lpReward
             const price = getParameterCaseInsensitive(prices, DOLLAR.address).usd;
             const lpReturn = lpRewards * price / uniPrices.staked_tvl * 100
