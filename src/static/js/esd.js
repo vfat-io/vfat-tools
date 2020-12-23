@@ -94,20 +94,22 @@ async function main() {
             const daoReward = 0.775
             // Get price
             const calcPrice = calculateChange(twap, totalCoupons, totalRedeemable)
-        
+    
             // Calulcate the outstanding commitments so we can remove it from the rewards
             const totalOutstanding = totalCoupons - totalRedeemable
-            const percentOutstanding = totalOutstanding / totalNet
-        
-            // Calculate the total reward emission then take the outstanding debt&coupons
-            const totalRewards = totalNet * (calcPrice - percentOutstanding)
-        
-            // Calculate bonded return per epoch
-            const bondedRewards = totalRewards * daoReward
-            const bondedReturn = bondedRewards / totalBonded * 100;
 
-            _print(`DAO APR: Day ${(bondedReturn * 3).toFixed(2)}% Week ${(bondedReturn * 3 * 7).toFixed(2)}% Year ${(bondedReturn * 3 * 365).toFixed(2)}%`)
-        
+            const maxRewards = totalNet * calcPrice * daoReward;
+
+            const daoRewards = maxRewards - totalOutstanding
+
+            if (daoRewards > 0) {
+                const bondedReturn = daoRewards / totalBonded * 100;
+
+                _print(`DAO APR: Day ${(bondedReturn * 3).toFixed(2)}% Week ${(bondedReturn * 3 * 7).toFixed(2)}% Year ${(bondedReturn * 3 * 365).toFixed(2)}%`)
+
+            } else {
+                _print(`DAO APR: Day 0% Week 0% Year 0%`)
+            }
             // Calculate total rewards allocated to LP
             var prices = {};
             var tokens = {};
@@ -120,7 +122,7 @@ async function main() {
                 tokens[address] = await getToken(App, address, uniPool.address);
             }));
             const uniPrices = getPoolPrices(tokens, prices, uniPool);
-            const lpRewards = totalRewards * lpReward
+            const lpRewards = totalNet * calcPrice * lpReward
             const price = getParameterCaseInsensitive(prices, DOLLAR.address).usd;
             const lpReturn = lpRewards * price / uniPrices.staked_tvl * 100
 

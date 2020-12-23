@@ -3,24 +3,6 @@ $(function() {
     start(main);
 });
 
-const calculateChange = (price, totalCoupons, totalRedeemable) => {
-    if (price > 1.06 && totalCoupons > totalRedeemable) {
-        return 0.06
-    } else if (
-        1.06 >= price &&
-        price > 1.03 &&
-        totalCoupons > totalRedeemable
-    ) {
-        return Math.abs(price - 1)
-    } else if (price > 1.03) {
-        return 0.03
-    } else if (price < 0.97) {
-        return 0.03
-    } else {
-        return Math.abs(price - 1)
-    }
-}
-
 async function main() {  
     const App = await init_ethers();
 
@@ -80,30 +62,35 @@ async function main() {
         const [, price1, timestamp] = await getCurrentPriceAndTimestamp(App, Contracts.DSD.Uniswap_DSD_USDC.address);
         const twap = await calculateTwap(oldPrice1, oldTimestamp, price1, timestamp);
         _print(`TWAP: ${twap}\n`);
-        if (twap > 1.05) {
+        if (twap > 1) {
             const totalCoupons = await DAO.totalCoupons() / 1e18;
             const totalRedeemable = await DAO.totalRedeemable() / 1e18;
             const totalNet = await DAO.totalNet() / 1e18;
             const totalBonded = await DAO.totalBonded() / 1e18;
     
-            const lpReward = 0.2
-            const daoReward = 0.775
+            const lpReward = 0.4
+            const daoReward = 0.6
             // Get price
-            const calcPrice = calculateChange(twap, totalCoupons, totalRedeemable)
+            const calcPrice = Math.min((twap - 1) / 12, 0.1)
     
     
             // Calulcate the outstanding commitments so we can remove it from the rewards
             const totalOutstanding = totalCoupons - totalRedeemable
-            const percentOutstanding = totalOutstanding / totalNet
-        
-            // Calculate the total reward emission then take the outstanding debt&coupons
-            const totalRewards = totalNet * (calcPrice - percentOutstanding)
-        
-            // Calculate bonded return per epoch
-            const bondedRewards = totalRewards * daoReward
-            const bondedReturn = bondedRewards / totalBonded * 100;
 
-            _print(`DAO APR: Day ${(bondedReturn * 3).toFixed(2)}% Week ${(bondedReturn * 3 * 7).toFixed(2)}% Year ${(bondedReturn * 3 * 365).toFixed(2)}%`)
+            const maxRewards = totalNet * calcPrice * daoReward;
+
+            const daoRewards = maxRewards - totalOutstanding
+
+            const epochsPerDay = 12;
+
+            if (daoRewards > 0) {
+                const bondedReturn = daoRewards * epochsPerDay / totalBonded * 100;
+
+                _print(`DAO APR: Day ${(bondedReturn * 3).toFixed(2)}% Week ${(bondedReturn * 3 * 7).toFixed(2)}% Year ${(bondedReturn * 3 * 365).toFixed(2)}%`)
+
+            } else {
+                _print(`DAO APR: Day 0% Week 0% Year 0%`)
+            }
             // Calculate total rewards allocated to LP
             var prices = {};
             var tokens = {};
@@ -116,11 +103,11 @@ async function main() {
                 tokens[address] = await getToken(App, address, uniPool.address);
             }));
             const uniPrices = getPoolPrices(tokens, prices, uniPool);
-            const lpRewards = totalRewards * lpReward
+            const lpRewards = totalNet * calcPrice * lpReward
             const price = getParameterCaseInsensitive(prices, DOLLAR.address).usd;
-            const lpReturn = lpRewards * price / uniPrices.staked_tvl * 100
+            const lpReturn = lpRewards * price * epochsPerDay/ uniPrices.staked_tvl * 100
             
-            _print(`LP  APR: Day ${(lpReturn * 3).toFixed(2)}% Week ${(lpReturn * 3 * 7).toFixed(2)}% Year ${(lpReturn * 3 * 365).toFixed(2)}%`)
+            _print(`LP  APR: Day ${(lpReturn).toFixed(2)}% Week ${(lpReturn * 7).toFixed(2)}% Year ${(lpReturn * 365).toFixed(2)}%`)
         
         }
         else {
