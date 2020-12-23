@@ -97,7 +97,7 @@ async function main() {
             if (daoRewards > 0) {
                 const bondedReturn = daoRewards * epochsPerDay / totalBonded * 100;
 
-                _print(`DAO APR: Day ${(bondedReturn * 3).toFixed(2)}% Week ${(bondedReturn * 3 * 7).toFixed(2)}% Year ${(bondedReturn * 3 * 365).toFixed(2)}%`)
+                _print(`DAO APR: Day ${(bondedReturn).toFixed(2)}% Week ${(bondedReturn * 7).toFixed(2)}% Year ${(bondedReturn * 365).toFixed(2)}%`)
 
             } else {
                 _print(`DAO APR: Day 0% Week 0% Year 0%`)
