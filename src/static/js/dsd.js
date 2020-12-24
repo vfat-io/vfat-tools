@@ -53,7 +53,7 @@ async function main() {
     const LP = new ethers.Contract(Contracts.DSD.LPIncentivizationPool.address,
         Contracts.DSD.LPIncentivizationPool.abi, App.provider);
     await loadEmptySetLP(App, LP, Contracts.DSD.Uniswap_DSD_USDC.address, 
-        "DSD-USDC LP",5, epoch, "DSD", uniPrices);
+        "DSD-USDC LP",12, epoch, "DSD", uniPrices);
 
     const couponFilter = DAO.filters.CouponPurchase(App.YOUR_ADDRESS);
     const coupons = await DAO.queryFilter(couponFilter);

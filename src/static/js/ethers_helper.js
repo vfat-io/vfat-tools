@@ -508,9 +508,8 @@ const rewardsContract_unstake = async function(rewardPoolAddr, App) {
 
   const REWARD_POOL = new ethers.Contract(rewardPoolAddr, Y_STAKING_POOL_ABI, signer)
   const currentStakedAmount = await REWARD_POOL.balanceOf(App.YOUR_ADDRESS)
-  const earnedTokenAmount = (await REWARD_POOL.earned(App.YOUR_ADDRESS)) / 1e18
 
-  if (earnedTokenAmount > 0) {
+  if (currentStakedAmount > 0) {
     showLoading()
     REWARD_POOL.withdraw(currentStakedAmount, {gasLimit: 250000})
       .then(function(t) {
