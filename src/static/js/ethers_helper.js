@@ -662,25 +662,39 @@ const chefContract_claim = async function(chefAbi, chefAddress, poolIndex, App,
 }
 
 async function getUniPool(app, pool, poolAddress, stakingAddress) {
-  const reserves = await pool.getReserves();
   const decimals = await pool.decimals();
   const token0 = await pool.token0();
   const token1 = await pool.token1();
+  let q0, q1, is1inch;
+  try {
+    const reserves = await pool.getReserves();
+    q0 = reserves._reserve0;
+    q1 = reserves._reserve1;
+    is1inch = false;
+  }
+  catch { //for 1inch
+    const c0 = new ethers.Contract(token0, ERC20_ABI, app.provider);
+    const c1 = new ethers.Contract(token1, ERC20_ABI, app.provider);
+    q0 = await c0.balanceOf(poolAddress);
+    q1 = await c1.balanceOf(poolAddress);
+    is1inch = true;
+  }
   return { 
       symbol : await pool.symbol(),
       name : await pool.name(),
       address: poolAddress,
       token0: token0,
-      q0    : reserves._reserve0,
+      q0,
       token1: token1,
-      q1    : reserves._reserve1,
+      q1,
       totalSupply: await pool.totalSupply() / 10 ** decimals,
       stakingAddress: stakingAddress,
       staked: await pool.balanceOf(stakingAddress) / 10 ** decimals,
       decimals: decimals,
       unstaked: await pool.balanceOf(app.YOUR_ADDRESS) / 10 ** decimals,
       contract: pool,
-      tokens : [token0, token1]
+      tokens : [token0, token1],
+      is1inch
   };
 }
 
@@ -866,8 +880,8 @@ function getUniPrices(tokens, prices, pool)
       staked_tvl : staked_tvl,
       stakingTokenTicker : stakingTokenTicker,
       print_price() {
-        const poolUrl = `http://uniswap.info/pair/${pool.address}`;
-        _print(`<a href='${poolUrl}' target='_blank'>${stakingTokenTicker}</a> UNI Price: $${formatMoney(price)} TVL: $${formatMoney(tvl)}`);
+        const poolUrl = pool.is1inch ? "https://1inch.exchange/#/dao/pools" : `http://uniswap.info/pair/${pool.address}`;
+        _print(`<a href='${poolUrl}' target='_blank'>${stakingTokenTicker}</a> LP Price: $${formatMoney(price)} TVL: $${formatMoney(tvl)}`);
         _print(`${t0.symbol} Price: $${formatMoney(p0)}`)
         _print(`${t1.symbol} Price: $${formatMoney(p1)}`)
         _print(`Staked: $${formatMoney(staked_tvl)}`);
