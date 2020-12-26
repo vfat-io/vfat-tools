@@ -106,6 +106,7 @@ $(function() {
     ];
   
     const App = await init_ethers();
+    _print("Beta Version: APY is not being calculated for the Stabilizer pool.\n");
   
     _print(`Initialized ${App.YOUR_ADDRESS}`);
     _print("Reading smart contracts...\n");
