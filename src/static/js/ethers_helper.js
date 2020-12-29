@@ -880,8 +880,22 @@ function getUniPrices(tokens, prices, pool)
       staked_tvl : staked_tvl,
       stakingTokenTicker : stakingTokenTicker,
       print_price() {
-        const poolUrl = pool.is1inch ? "https://1inch.exchange/#/dao/pools" : `http://uniswap.info/pair/${pool.address}`;
-        _print(`<a href='${poolUrl}' target='_blank'>${stakingTokenTicker}</a> LP Price: $${formatMoney(price)} TVL: $${formatMoney(tvl)}`);
+        const poolUrl = pool.is1inch ? "https://1inch.exchange/#/dao/pools" :
+          pool.symbol.includes("SLP") ?  `http://sushiswap.vision/pair/${pool.address}`
+            : `http://uniswap.info/pair/${pool.address}`;
+        const t0address = t0.symbol == "ETH" ? "ETH" : t0.address;
+        const t1address = t1.symbol == "ETH" ? "ETH" : t1.address;
+        const helperUrls = pool.is1inch ? [] :
+          pool.symbol.includes("SLP") ? 
+          [ `https://exchange.sushiswapclassic.org/#/add/${t0address}/${t1address}`,
+            `https://exchange.sushiswapclassic.org/#/remove/${t0address}/${t1address}`,
+            `https://exchange.sushiswapclassic.org/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}` ] :
+          [ `https://app.uniswap.org/#/add/${t0address}/${t1address}`,
+            `https://app.uniswap.org/#/remove/${t0address}/${t1address}`,
+            `https://app.uniswap.org/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}` ]
+        const helperHrefs = helperUrls.length == 0 ? "" :
+          ` <a href='${helperUrls[0]}' target='_blank'>[+]</a> <a href='${helperUrls[1]}' target='_blank'>[-]</a> <a href='${helperUrls[2]}' target='_blank'>[<=>]</a>`
+        _print(`<a href='${poolUrl}' target='_blank'>${stakingTokenTicker}</a>${helperHrefs} LP Price: $${formatMoney(price)} TVL: $${formatMoney(tvl)}`);
         _print(`${t0.symbol} Price: $${formatMoney(p0)}`)
         _print(`${t1.symbol} Price: $${formatMoney(p1)}`)
         _print(`Staked: $${formatMoney(staked_tvl)}`);
@@ -1433,7 +1447,7 @@ async function printDaoUnbonds(provider, DAO, epoch, fluidEpochs, epochTimeSec) 
     for (let i = 0; i < fluidEpochs; i++) {
         let filtered = unbonds.filter(u => epoch + i + 1 - fluidEpochs == u.args?.start / 1);
         let unbonding = filtered.map(u => u.args?.valueUnderlying / 1e18).reduce((x, y) => x+y,0);
-        _print(`Unbonding at epoch ${epoch+i}: ${unbonding}`)
+        _print(`Unbonding at epoch ${epoch+i}: ${formatMoney(unbonding)}`)
     }
 }
 
@@ -1445,6 +1459,6 @@ async function printLPUnbonds(provider, DAO, epoch, fluidEpochs, epochTimeSec) {
         let filtered = unbonds.filter(u => epoch + i + 1 - fluidEpochs == u.args?.start / 1);
         let unbonding = filtered.map(u => u.args?.value / 1e18).reduce((x, y) => x+y,0);
         let claimable = filtered.map(u => u.args?.newClaimable / 1e18).reduce((x, y) => x+y,0);
-        _print(`Unbonding at epoch ${epoch+i}: ${unbonding} - Claimable: ${claimable}`);
+        _print(`Unbonding at epoch ${epoch+i}: ${unbonding.toFixed(8)} - Claimable: ${formatMoney(claimable)}`);
     }
 }
