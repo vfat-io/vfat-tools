@@ -90,6 +90,8 @@ async function main() {
     
     }
     _print(`\nDAO Unbonds`)
-    await printUnbonds(App.provider, DAO, epoch + 1, 15, 8 * 60 * 60);
+    await printDaoUnbonds(App.provider, DAO, epoch + 1, 15, 8 * 60 * 60);
+    _print(`\LP Unbonds`)
+    await printLPUnbonds(App.provider, LP, epoch + 1, 5, 8 * 60 * 60);
     hideLoading();  
 }

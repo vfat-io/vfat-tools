@@ -18,12 +18,12 @@ async function main() {
     var tokens = {};
 
     const [epoch, uniPrices, totalBonded] = await loadDAO(App, DAO, DOLLAR, Contracts.ZAI.Uniswap_DAI_ZAI.address,
-        Contracts.ZAI.LPIncentivizationPool.address, tokens, prices, 36);
+        Contracts.ZAI.LPIncentivizationPool.address, tokens, prices, 240);
 
     const LP = new ethers.Contract(Contracts.ZAI.LPIncentivizationPool.address,
         Contracts.ZAI.LPIncentivizationPool.abi, App.provider);
     await loadEmptySetLP(App, LP, Contracts.ZAI.Uniswap_DAI_ZAI.address, 
-        "DAI-ZAI LP",12, epoch, "ZAI", uniPrices);
+        "DAI-ZAI LP",144, epoch, "ZAI", uniPrices);
 
     const resp = await fetch('https://api.vfat.tools/twap/' + Contracts.ZAI.Uniswap_DAI_ZAI.address);
     const text = await resp.text();
@@ -74,7 +74,9 @@ async function main() {
             _print(`LP APR: Day 0% Week 0% Year 0%`)
         }
         _print(`\nDAO Unbonds`)
-        await printUnbonds(App.provider, DAO, epoch + 1, 48, 30 * 60);
+        await printDaoUnbonds(App.provider, DAO, epoch + 1, 240, 30 * 60);
+        _print(`\LP Unbonds`)
+        await printLPUnbonds(App.provider, LP, epoch + 1, 144, 30 * 60);
         hideLoading();
     }
 }

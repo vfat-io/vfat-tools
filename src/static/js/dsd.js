@@ -74,9 +74,9 @@ async function main() {
         }
     }
     _print(`\nDAO Unbonds`)
-    await printUnbonds(App.provider, DAO, epoch + 1, 36, 2 * 60 * 60);
-    //_print(`\nLP Unbonds`)
-    //await printUnbonds(App.provider, LP, epoch + 1, 12, 2 * 60 * 60);
+    await printDaoUnbonds(App.provider, DAO, epoch + 1, 36, 2 * 60 * 60);
+    _print(`\LP Unbonds`)
+    await printLPUnbonds(App.provider, LP, epoch + 1, 12, 2 * 60 * 60);
 
     hideLoading();
 }

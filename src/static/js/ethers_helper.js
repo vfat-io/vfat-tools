@@ -1426,7 +1426,7 @@ const getBasisCurrentPriceAndTimestamp = async (App, address) => {
     return [ price0, price1, blockTimestampLast ]
 }
 
-async function printUnbonds(provider, DAO, epoch, fluidEpochs, epochTimeSec) {
+async function printDaoUnbonds(provider, DAO, epoch, fluidEpochs, epochTimeSec) {
     const fluidBlocks = fluidEpochs * epochTimeSec / 13.5 * 1.1; //10% leeway
     const blockNumber = await provider.getBlockNumber();
     const unbonds = await DAO.queryFilter(DAO.filters.Unbond(), blockNumber-fluidBlocks, blockNumber);
@@ -1434,5 +1434,17 @@ async function printUnbonds(provider, DAO, epoch, fluidEpochs, epochTimeSec) {
         let filtered = unbonds.filter(u => epoch + i + 1 - fluidEpochs == u.args?.start / 1);
         let unbonding = filtered.map(u => u.args?.valueUnderlying / 1e18).reduce((x, y) => x+y,0);
         _print(`Unbonding at epoch ${epoch+i}: ${unbonding}`)
+    }
+}
+
+async function printLPUnbonds(provider, DAO, epoch, fluidEpochs, epochTimeSec) {
+    const fluidBlocks = Math.round(fluidEpochs * epochTimeSec / 13.5 * 1.1); //10% leeway
+    const blockNumber = await provider.getBlockNumber();
+    const unbonds = await DAO.queryFilter(DAO.filters.Unbond(), blockNumber-fluidBlocks, blockNumber);
+    for (let i = 0; i < fluidEpochs; i++) {
+        let filtered = unbonds.filter(u => epoch + i + 1 - fluidEpochs == u.args?.start / 1);
+        let unbonding = filtered.map(u => u.args?.value / 1e18).reduce((x, y) => x+y,0);
+        let claimable = filtered.map(u => u.args?.newClaimable / 1e18).reduce((x, y) => x+y,0);
+        _print(`Unbonding at epoch ${epoch+i}: ${unbonding} - Claimable: ${claimable}`);
     }
 }
