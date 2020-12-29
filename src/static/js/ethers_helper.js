@@ -1014,7 +1014,7 @@ function getErc20Prices(prices, pool) {
     price : price,
     stakingTokenTicker : pool.symbol,
     print_price() {
-      _print(`${name} Price: $${formatMoney(price)} TVL: $${formatMoney(tvl)}`);
+      _print(`${name} Price: $${formatMoney(price)} Market Cap: $${formatMoney(tvl)}`);
       _print(`Staked: $${formatMoney(staked_tvl)}`);
     },
     print_contained_price() {

@@ -79,12 +79,8 @@ async function loadPool(App, tokens, prices, stakingAbi, stakingAddress,
             + ` Week ${userWeeklyRewards.toFixed(2)} ($${formatMoney(userWeeklyRewards*rewardTokenPrice)})`
             + ` Year ${userYearlyRewards.toFixed(2)} ($${formatMoney(userYearlyRewards*rewardTokenPrice)})`);
     }
-    const allowance =
-        stakeTokenFunction === "lpt" ? userUnstaked : Math.min(20000 - userStaked, userUnstaked);
-    const maxAllowance =
-        stakeTokenFunction === "lpt" ? null : ethers.BigNumber.from(20000).pow(stakeToken.decimals);
     const approveTENDAndStake = async function() {
-      return rewardsContract_stake(stakeTokenAddress, stakingAddress, App, maxAllowance)
+      return rewardsContract_stake(stakeTokenAddress, stakingAddress, App)
     }
     const unstake = async function() {
       return rewardsContract_unstake(stakingAddress, App)
@@ -98,7 +94,7 @@ async function loadPool(App, tokens, prices, stakingAbi, stakingAddress,
     const revoke = async function() {
       return rewardsContract_resetApprove(stakeTokenAddress, stakingAddress, App)
     }
-    _print_link(`Stake ${allowance.toFixed(6)} ${stakingTokenTicker}`, approveTENDAndStake)
+    _print_link(`Stake ${userUnstaked.toFixed(6)} ${stakingTokenTicker}`, approveTENDAndStake)
     _print_link(`Unstake ${userStaked.toFixed(6)} ${stakingTokenTicker}`, unstake)
     _print_link(`Claim ${earned.toFixed(6)} ${rewardTokenTicker}`, claim)
     _print_link(`Revoke (set approval to 0)`, revoke)
