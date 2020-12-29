@@ -9,38 +9,39 @@ async function main() {
     _print(`Initialized ${App.YOUR_ADDRESS}\n`);
     _print("Reading smart contracts...\n");
 
-    const DAO = new ethers.Contract(Contracts.DSD.DAO.address, 
-        Contracts.DSD.DAO.abi, App.provider);
-    const DOLLAR = new ethers.Contract(Contracts.DSD.DSD.address,
+    const DAO = new ethers.Contract(Contracts.ZAI.DAO.address, 
+        Contracts.ZAI.DAO.abi, App.provider);
+    const DOLLAR = new ethers.Contract(Contracts.ZAI.ZAI.address,
         ERC20_ABI, App.provider);
+
     var prices = {};
     var tokens = {};
 
-    const [epoch, uniPrices, totalBonded] = await loadDAO(App, DAO, DOLLAR, Contracts.DSD.Uniswap_DSD_USDC.address,
-        Contracts.DSD.LPIncentivizationPool.address, tokens, prices, 15);
+    const [epoch, uniPrices, totalBonded] = await loadDAO(App, DAO, DOLLAR, Contracts.ZAI.Uniswap_DAI_ZAI.address,
+        Contracts.ZAI.LPIncentivizationPool.address, tokens, prices, 36);
 
-    const LP = new ethers.Contract(Contracts.DSD.LPIncentivizationPool.address,
-        Contracts.DSD.LPIncentivizationPool.abi, App.provider);
-    await loadEmptySetLP(App, LP, Contracts.DSD.Uniswap_DSD_USDC.address, 
-        "DSD-USDC LP",12, epoch, "DSD", uniPrices);
+    const LP = new ethers.Contract(Contracts.ZAI.LPIncentivizationPool.address,
+        Contracts.ZAI.LPIncentivizationPool.abi, App.provider);
+    await loadEmptySetLP(App, LP, Contracts.ZAI.Uniswap_DAI_ZAI.address, 
+        "DAI-ZAI LP",12, epoch, "ZAI", uniPrices);
 
-    const resp = await fetch('https://api.vfat.tools/twap/' + Contracts.DSD.Uniswap_DSD_USDC.address);
+    const resp = await fetch('https://api.vfat.tools/twap/' + Contracts.ZAI.Uniswap_DAI_ZAI.address);
     const text = await resp.text();
     const array = text.split("\n");
     if (array.length > 0 && array[0][0] != '<') {
         const [, oldPrice1, oldTimestamp] = array[array.length - 2].split(' ') //last line is blank
-        const [, price1, timestamp] = await getCurrentPriceAndTimestamp(App, Contracts.DSD.Uniswap_DSD_USDC.address);
-        const twap = await calculateTwap(oldPrice1, oldTimestamp, price1, timestamp, 12);
+        const [, price1, timestamp] = await getCurrentPriceAndTimestamp(App, Contracts.ZAI.Uniswap_DAI_ZAI.address);
+        const twap = await calculateTwap(oldPrice1, oldTimestamp, price1, timestamp, 0);
         _print(`TWAP: ${twap}\n`);
         if (twap > 1) {
             const totalCoupons = await DAO.totalCoupons() / 1e18;
             const totalRedeemable = await DAO.totalRedeemable() / 1e18;
             const totalNet = await DAO.totalNet() / 1e18;
     
-            const lpReward = 0.4
-            const daoReward = 0.6
+            const lpReward = 0.5
+            const daoReward = 0.5
             // Get price
-            const calcPrice = Math.min((twap - 1) / 12, 0.1)
+            const calcPrice = Math.min((twap - 1) / 12, 0.01)
     
     
             // Calulcate the outstanding commitments so we can remove it from the rewards
@@ -50,7 +51,7 @@ async function main() {
 
             const daoRewards = maxRewards - totalOutstanding
 
-            const epochsPerDay = 12;
+            const epochsPerDay = 48;
 
             if (daoRewards > 0) {
                 const bondedReturn = daoRewards * epochsPerDay / totalBonded * 100;
@@ -72,11 +73,8 @@ async function main() {
             _print(`DAO APR: Day 0% Week 0% Year 0%`)
             _print(`LP APR: Day 0% Week 0% Year 0%`)
         }
+        _print(`\nDAO Unbonds`)
+        await printUnbonds(App.provider, DAO, epoch + 1, 48, 30 * 60);
+        hideLoading();
     }
-    _print(`\nDAO Unbonds`)
-    await printUnbonds(App.provider, DAO, epoch + 1, 36, 2 * 60 * 60);
-    //_print(`\nLP Unbonds`)
-    //await printUnbonds(App.provider, LP, epoch + 1, 12, 2 * 60 * 60);
-
-    hideLoading();
 }

@@ -223,7 +223,7 @@ async function printPool(App, tokens, prices, pool) {
   _print(`APY: Day ${dailyAPY.toFixed(2)}% Week ${weeklyAPY.toFixed(2)}% Year ${yearlyAPY.toFixed(2)}%`);
   const userStakedUsd = userStaked * stakeTokenPrice;
   const userStakedPct = userStakedUsd / staked_tvl * 100;
-  _print(`You are staking ${userStaked.toFixed(6)} ${settToken.symbol} (${userUnderlyingStaked.toFixed(6)} ${lpToken.symbol}) ` +
+  _print(`You are staking ${userStaked.toFixed(8)} ${settToken.symbol} (${userUnderlyingStaked.toFixed(8)} ${lpToken.symbol}) ` +
          `$${formatMoney(userStakedUsd)} (${userStakedPct.toFixed(2)}% of the pool).`);
   if (userStaked > 0) {
       poolPrices.print_contained_price(userStaked * ratio);
@@ -250,49 +250,63 @@ async function printPool(App, tokens, prices, pool) {
   const revoke = async function() {
       return rewardsContract_resetApprove(settAddress, geyserAddress, App)
   }
-  _print_link(`Stake ${userTotallyUnstaked.toFixed(6)} ${lpToken.symbol}`, approveUNIAndStake)
-  _print_link(`Unstake ${userUnstaked.toFixed(6)} ${lpToken.symbol}`, unstakeUNI)
-  _print_link(`Stake ${userUnstaked.toFixed(6)} ${settToken.symbol}`, approveTENDAndStake)
-  _print_link(`Unstake ${userStaked.toFixed(6)} ${settToken.symbol}`, unstake)
+  _print_link(`Stake ${userTotallyUnstaked.toFixed(8)} ${lpToken.symbol}`, approveUNIAndStake)
+  _print_link(`Unstake ${userUnstaked.toFixed(8)} ${lpToken.symbol}`, unstakeUNI)
+  _print_link(`Stake ${userUnstaked.toFixed(8)} ${settToken.symbol}`, approveTENDAndStake)
+  _print_link(`Unstake ${userStaked.toFixed(8)} ${settToken.symbol}`, unstake)
   _print_link(`Revoke (set approval to 0)`, revoke)
   _print(`\n`);
 }
 
 const pools = [ 
   {
+    name : "Badger/wBTC Sushi-LP",
+    tokenAddress : "0x110492b31c59716ac47337e616804e3e3adc0b4a",
+    settAddress : "0x1862A18181346EBd9EdAf800804f89190DeF24a5",
+    geyserAddress : "0xB5b654efBA23596Ed49FAdE44F7e67E23D6712e7",
+    badgerPerWeek : 70000
+  },
+  {
+    name : "ETH/wBTC Sushi-LP",
+    tokenAddress : "0xceff51756c56ceffca006cd410b03ffc46dd3a58",
+    settAddress : "0x758a43ee2bff8230eeb784879cdcff4828f2544d",
+    geyserAddress : "0x612f681BCd12A0b284518D42D2DBcC73B146eb65",
+    badgerPerWeek : 80000
+  },
+  {
     name : "Badger/wBTC Uni-LP",
     tokenAddress : "0xcd7989894bc033581532d2cd88da5db0a4b12859",
     settAddress : "0x235c9e24D3FB2FAFd58a2E49D454Fdcd2DBf7FF1",
     geyserAddress : "0xA207D69Ea6Fb967E54baA8639c408c31767Ba62D",
-    badgerPerWeek : 150000
+    badgerPerWeek : 90000
   },
   {
     name : "Badger",
     tokenAddress : "0x3472A5A71965499acd81997a54BBA8D852C6E53d",
     settAddress : "0x19D97D8fA813EE2f51aD4B4e04EA08bAf4DFfC28",
     geyserAddress : "0xa9429271a28F8543eFFfa136994c0839E7d7bF77",
-    badgerPerWeek : 110000
+    badgerPerWeek : 50000
   },
   {
     name : "curve.fi / renBTC",
     tokenAddress : "0x49849c98ae39fff122806c06791fa73784fb3675",
     settAddress : "0x6dEf55d2e18486B9dDfaA075bc4e4EE0B28c1545",
     geyserAddress : "0x2296f174374508278DC12b806A7f27c87D53Ca15",
-    badgerPerWeek : 85937
+    badgerPerWeek :  83437.5 
   },
   {
     name : "curve.fi / sBTC",
     tokenAddress : "0x075b1bb99792c9e1041ba13afef80c91a1e70fb3",
     settAddress : "0xd04c48A53c111300aD41190D63681ed3dAd998eC",
     geyserAddress : "0x10fC82867013fCe1bD624FafC719Bb92Df3172FC",
-    badgerPerWeek : 85937
+    badgerPerWeek :  83437.5 
   },
   {
     name : "curve.fi / tBTC",
     tokenAddress : "0x64eda51d3ad40d56b9dfc5554e06f94e1dd786fd",
     settAddress : "0xb9D076fDe463dbc9f915E5392F807315Bf940334",
     geyserAddress : "0x085A9340ff7692Ab6703F17aB5FfC917B580a6FD",
-    badgerPerWeek : 85937,
+    badgerPerWeek :  83437.5,
     swapAddress : "c25099792e9349c7dd09759744ea681c7de2cb66",
     baseToken : "0x2260fac5e5542a773aa44fbcfedf7c193bc2c599" //wBTC
   },
@@ -301,7 +315,7 @@ const pools = [
     tokenAddress : "0x49849c98ae39fff122806c06791fa73784fb3675",
     settAddress : "0xAf5A1DECfa95BAF63E0084a35c62592B774A2A87",
     geyserAddress : "0xeD0B7f5d9F6286d00763b0FFCbA886D8f9d56d5e",
-    badgerPerWeek : 85937
+    badgerPerWeek :  83437.5 
   },
 ];
 

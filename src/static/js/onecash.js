@@ -107,10 +107,9 @@ async function loadPool(App, tokens, prices, stakingAbi, stakingAddress,
 }
 
 async function loadBoardroom(App, tokens, prices) {
-    const BOARDROOM_ADDRESS = "0x4B182469337d46E6603ed7e26BA60c56930a342c";
-    //const ORACLE_ADDRESS = "0x8a573cb5234657c8bf054da2ebe63b66fb1f9502";
-    const REWARD_TOKEN_ADDRESS = "0x3449fc1cd036255ba1eb19d65ff4ba2b8903a69a";
-    const BAC_DAI_ADDRESS = "0xd4405F0704621DBe9d4dEA60E128E0C3b26bddbD"
+    const BOARDROOM_ADDRESS = "0xFD35C0e9706A669d7be9B2D9C69AE2927F1071dB";
+    const DAI_ONC_ADDRESS = "0x3Ba3C8fB0142A6f2bf3e2990A08957866203f961"
+    const REWARD_TOKEN_ADDRESS = "0xD90E69f67203EBE02c917B5128629E77B4cd92dc";
     const BOARDROOM = new ethers.Contract(BOARDROOM_ADDRESS, BOARDROOM_ABI, App.provider);
     const share = await BOARDROOM.share();
     const SHARE = new ethers.Contract(share, ERC20_ABI, App.provider);
@@ -123,37 +122,38 @@ async function loadBoardroom(App, tokens, prices) {
     const userPct = userStaked / totalStaked * 100;
     const earned = await BOARDROOM.earned(App.YOUR_ADDRESS) / 1e18;
     _print(`Boardroom`);
-    _print(`There is a total ${totalStaked.toFixed(2)} BAS ($${formatMoney(totalStakedUsd)}) staked in the Boardroom.`)
-    _print(`You are staking ${userStaked} BAS ($${formatMoney(userStakedUsd)}), ${userPct.toFixed(2)}% of the pool.`);
+    _print(`There is a total ${totalStaked.toFixed(2)} ONS ($${formatMoney(totalStakedUsd)}) staked in the Boardroom.`)
+    _print(`You are staking ${userStaked} ONS ($${formatMoney(userStakedUsd)}), ${userPct.toFixed(2)}% of the pool.`);
 
-    const resp = await fetch('https://api.vfat.tools/twap/' + BAC_DAI_ADDRESS);
+    const resp = await fetch('https://api.vfat.tools/twap/' + DAI_ONC_ADDRESS);
     const text = await resp.text();
     const array = text.split("\n");
     if (array.length > 0 && array[0][0] != '<') {
-        const [oldPrice0, , oldTimestamp] = array[array.length - 2].split(' ') //last line is blank
-        const [price0, , timestamp] = await getCurrentPriceAndTimestamp(App, BAC_DAI_ADDRESS);
-        const twap = await calculateTwap(oldPrice0, oldTimestamp, price0, timestamp, 0);
+        const [, oldPrice1, oldTimestamp] = array[array.length - 2].split(' ') //last line is blank
+        const [, price1 , timestamp] = await getCurrentPriceAndTimestamp(App, DAI_ONC_ADDRESS);
+        const twap = await calculateTwap(oldPrice1, oldTimestamp, price1, timestamp, 0);
         _print(`TWAP: ${twap}`);
         if (twap > 1.05) {
             const REWARD_TOKEN = new ethers.Contract(REWARD_TOKEN_ADDRESS, ERC20_ABI, App.provider);
             const totalSupply = await REWARD_TOKEN.totalSupply() / 1e18;
-            const newTokens = totalSupply * (twap - 1);
+            const newTokens = totalSupply *  Math.min(twap - 1, 0.1);
             _print(`The following figures are approximate as they are not using the official TWAP.`);
-            _print(`There will be ${newTokens.toFixed(2)} BAC issued at next expansion.`);
+            _print(`There will be ${newTokens.toFixed(2)} ONC issued at next expansion.`);
             const rewardPrice = getParameterCaseInsensitive(prices, REWARD_TOKEN_ADDRESS).usd;
-            const boardReturn = newTokens * rewardPrice / totalStakedUsd * 100; 
+            const boardReturn = newTokens * rewardPrice / totalStakedUsd * 100 * 3; //3 times a day
             _print(`Boardroom APR: Day ${(boardReturn).toFixed(2)}% Week ${(boardReturn * 7).toFixed(2)}% Year ${(boardReturn * 365).toFixed(2)}%`)
         }
     }
+        
     const approveTENDAndStake = async () => rewardsContract_stake(share, BOARDROOM_ADDRESS, App);
     const unstake = async () => rewardsContract_unstake(BOARDROOM_ADDRESS, App);
     const claim = async () => rewardsContract_claim(BOARDROOM_ADDRESS, App);
     const exit = async () =>  rewardsContract_exit(BOARDROOM_ADDRESS, App);
     const revoke = async () => rewardsContract_resetApprove(share, BOARDROOM_ADDRESS, App);
 
-    _print_link(`Stake ${userUnstaked.toFixed(2)} BAS`, approveTENDAndStake)
-    _print_link(`Unstake ${userStaked.toFixed(2)} BAS`, unstake)
-    _print_link(`Claim ${earned.toFixed(2)} BAC`, claim)
+    _print_link(`Stake ${userUnstaked.toFixed(2)} ONS`, approveTENDAndStake)
+    _print_link(`Unstake ${userStaked.toFixed(2)} ONS`, unstake)
+    _print_link(`Claim ${earned.toFixed(2)} ONC`, claim)
     _print_link(`Revoke (set approval to 0)`, revoke)
     _print_link(`Exit`, exit)
     _print(`\n`);
@@ -162,13 +162,8 @@ async function loadBoardroom(App, tokens, prices) {
 async function main() {
 
     const CONTRACTS = [      
-        { address: "0x9569d4CD7AC5B010DA5697E952EFB1EC0Efb0D0a", abi : BASIS_DAIBAC_ABI, rewardToken: "basisShare", stakeToken: "lpt"},
-        { address: "0x067d4D3CE63450E74F880F86b5b52ea3edF9Db0f", abi : BASIS_DAIBAC_ABI, rewardToken: "basisShare", stakeToken: "lpt"},
-        //{ address: "0xEBd12620E29Dc6c452dB7B96E1F190F3Ee02BDE8", abi : BASIS_DAI_ABI, rewardToken: "basisCash", stakeToken: "dai"},
-        //{ address: "0xDc42a21e38C3b8028b01A6B00D8dBC648f93305C", abi : BASIS_SUSD_ABI, rewardToken: "basisCash", stakeToken: "SUSD"},
-        //{ address: "0x51882184b7F9BEEd6Db9c617846140DA1d429fD4", abi : BASIS_USDC_ABI, rewardToken: "basisCash", stakeToken: "usdc"},
-        //{ address: "0x2833bdc5B31269D356BDf92d0fD8f3674E877E44", abi : BASIS_USDT_ABI, rewardToken: "basisCash", stakeToken: "usdt"},
-        //{ address: "0xC462d8ee54953E7d7bF276612b75387Ea114c3bf", abi : BASIS_YCRV_ABI, rewardToken: "basisCash", stakeToken: "ycrv"}
+        { address: "0x11dAb122FA5ab4D407521Ae1CA416dEFF198b688", abi : ONECASH_ABI, rewardToken: "oneShare", stakeToken: "lpt"},
+        { address: "0x78A05fDA97C8458F07e03583fdaf05Ff6ee4f6C9", abi : ONECASH_ABI, rewardToken: "oneShare", stakeToken: "lpt"}
     ];
   
     const App = await init_ethers();

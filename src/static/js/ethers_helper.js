@@ -1210,7 +1210,7 @@ async function loadFluidStatus(App, LP, fluidEpochs, epoch) {
   const unbonds = await LP.queryFilter(unbondFilter);
   const bondFilter = LP.filters.Bond(App.YOUR_ADDRESS);
   const bonds = await LP.queryFilter(bondFilter);
-  if (unbonds?.length ?? 0 + deposits?.length ?? 0 > 0) {
+  if (unbonds.length + bonds.length > 0) {
       const lastUnbond = Math.max(...unbonds.map(u => u.args.start / 1));
       const lastBond = Math.max(...bonds.map(d => d.args.start / 1));
       const fluidEpoch = Math.max(lastUnbond, lastBond);
@@ -1219,9 +1219,72 @@ async function loadFluidStatus(App, LP, fluidEpochs, epoch) {
   }
 }
 
+const loadDAO = async (App, DAO, DOLLAR, uniswapAddress, liquidityPoolAddress, tokens, prices, fluidEpochs) => {
+    const unstaked = await DOLLAR.balanceOf(App.YOUR_ADDRESS) / 1e18;
+    const totalSupply = await DOLLAR.totalSupply() / 1e18;
+    const dollar = await DOLLAR.symbol();
+
+    const uniPool = await getToken(App, uniswapAddress, liquidityPoolAddress);  
+    var newPrices = await lookUpTokenPrices(uniPool.tokens);
+    for (const key in newPrices) {
+        prices[key] = newPrices[key];
+    }
+    await Promise.all(uniPool.tokens.map(async (address) => {
+        tokens[address] = await getToken(App, address, uniPool.address);
+    }));
+    const uniPrices = getPoolPrices(tokens, prices, uniPool);
+
+    const zaiPrice = getParameterCaseInsensitive(prices, DOLLAR.address).usd;
+
+    const totalBonded = await DAO.totalBonded() / 1e18;
+    const totalStaged = await DAO.totalStaged() / 1e18;
+    const bonded = await DAO.balanceOfBonded(App.YOUR_ADDRESS) / 1e18;
+    const staged = await DAO.balanceOfStaged(App.YOUR_ADDRESS) / 1e18;
+    const status = await DAO.statusOf(App.YOUR_ADDRESS) ? "Fluid" : "Frozen";
+    const epoch = await DAO.epoch() / 1;
+    _print(`Current Epoch: ${epoch}\n`);
+    _print(`${dollar} Price: ${formatMoney(zaiPrice)}\n`);
+    
+    _print(`${dollar} Total Supply: ${totalSupply.toFixed(2)}, $${formatMoney(totalSupply * zaiPrice)}`);
+    _print(`${dollar} Total Staged: ${totalStaged.toFixed(2)}, $${formatMoney(totalStaged * zaiPrice)}`);
+    _print(`${dollar} Total Bonded: ${totalBonded.toFixed(2)}, $${formatMoney(totalBonded * zaiPrice)}`);
+    _print(`Your DAO status is ${status}`);
+    _print(`You have ${unstaked.toFixed(2)} unstaked ${dollar}, $${formatMoney(unstaked*zaiPrice)}`);
+    _print(`You have ${staged.toFixed(2)} staged ${dollar}, $${formatMoney(staged*zaiPrice)}, ${(staged/totalStaged).toFixed(4)}% of the pool`);
+    _print(`You have ${bonded.toFixed(2)} bonded ${dollar}, $${formatMoney(bonded*zaiPrice)}, ${(bonded/totalBonded).toFixed(4)}% of the pool`);
+    if (status == "Fluid") await loadFluidStatus(App, DAO, fluidEpochs, epoch);
+    const approveAndDeposit = async function() {
+      return rewardsContract_stake(DOLLAR.address, DAO.address, App)
+    }
+    const withdraw = async () => esd_withdraw(DAO, App); 
+    const bond = async () => esd_bond(DAO, App); 
+    const unbond = async () => esd_unbond(DAO, App); 
+
+    _print_link(`Deposit ${unstaked.toFixed(2)} ${dollar}`, approveAndDeposit)
+    _print_link(`Withdraw ${staged.toFixed(2)} ${dollar}`, withdraw);
+    _print_link(`Bond ${staged.toFixed(2)} ${dollar}`, bond);
+    _print_link(`Unbond ${bonded.toFixed(2)} ${dollar}`, unbond);
+    _print(''); 
+
+    const couponFilter = DAO.filters.CouponPurchase(App.YOUR_ADDRESS);
+    const coupons = await DAO.queryFilter(couponFilter);
+    for (const c of coupons) {
+        const dollarAmount = c.args.dollarAmount / 1e18;
+        const couponCount = c.args.couponAmount / 1e18;
+        const couponEpoch = c.args.epoch / 1;
+        _print(`You purchased ${couponCount} coupons worth $${dollarAmount} at epoch ${couponEpoch}`)
+    }
+    _print('');
+
+    return [epoch, uniPrices, totalBonded];
+}
+
 async function loadEmptySetLP(App, LP, stakeTokenAddress, stakeTokenTicker, fluidEpochs, epoch, rewardTicker, uniPrices) {
   const stakeToken = new ethers.Contract(stakeTokenAddress, ERC20_ABI, App.provider);
   const unstaked = await stakeToken.balanceOf(App.YOUR_ADDRESS) / 1e18;
+
+  const totalBonded = await LP.totalBonded() / 1e18;
+  const totalStaged = await LP.totalStaged() / 1e18;
 
   const staged = await LP.balanceOfStaged(App.YOUR_ADDRESS) / 1e18;
   const bonded = await LP.balanceOfBonded(App.YOUR_ADDRESS) / 1e18;
@@ -1229,12 +1292,17 @@ async function loadEmptySetLP(App, LP, stakeTokenAddress, stakeTokenTicker, flui
   const claimable = await LP.balanceOfRewarded(App.YOUR_ADDRESS) / 1e18;
   const status = await LP.statusOf(App.YOUR_ADDRESS) ? "Fluid" : "Frozen";
   
+  const lpPrice = uniPrices.price;
+  uniPrices.print_price();    
+  //_print(`${stakeTokenTicker} Total Supply: ${uniPrices.totalSupply.toFixed(2)}, $${formatMoney(uniPrices.totalSupply * zaiPrice)}`);
+  _print(`${stakeTokenTicker} Total Staged: ${totalStaged.toFixed(2)}, $${formatMoney(totalStaged * lpPrice)}`);
+  _print(`${stakeTokenTicker} Total Bonded: ${totalBonded.toFixed(2)}, $${formatMoney(totalBonded * lpPrice)}`);
   _print(`Your LP status is ${status}`);
-  _print(`You have ${unstaked.toFixed(8)} unstaked ${stakeTokenTicker} LP`);
+  _print(`You have ${unstaked.toFixed(8)} unstaked ${stakeTokenTicker} LP, $${formatMoney(unstaked * lpPrice)}`);
   if (unstaked > 0) uniPrices.print_contained_price(unstaked);
-  _print(`You have ${staged.toFixed(8)} staged ${stakeTokenTicker} LP`);
+  _print(`You have ${staged.toFixed(8)} staged ${stakeTokenTicker} LP, $${formatMoney(staged * lpPrice)}, ${(staged/totalStaged).toFixed(4)}% of the pool`);
   if (staged > 0) uniPrices.print_contained_price(staged);
-  _print(`You have ${bonded.toFixed(8)} bonded ${stakeTokenTicker} LP`);
+  _print(`You have ${bonded.toFixed(8)} bonded ${stakeTokenTicker} LP, $${formatMoney(bonded * lpPrice)}, ${(bonded/totalBonded).toFixed(4)}% of the pool`);
   if (bonded > 0) uniPrices.print_contained_price(bonded);
   _print(`You have ${rewarded.toFixed(2)} rewarded ${rewardTicker}`);
   _print(`You have ${claimable.toFixed(2)} claimable ${rewardTicker}`);
@@ -1308,7 +1376,8 @@ const esd_bond = async function(DAO, App) {
   }
 }
 
-const calculateTwap = async (oldPrice0, oldTimestamp, price0, timestamp) => {
+///targetMantissa should be 12 for USDC based, 24 for DAI based
+const calculateTwap = async (oldPrice0, oldTimestamp, price0, timestamp, targetMantissa) => {
     // Convert Prices to BN
     const price0CumulativeLast = ethers.BigNumber.from(oldPrice0)
     let price0Cumulative = ethers.BigNumber.from(price0)
@@ -1332,13 +1401,13 @@ const calculateTwap = async (oldPrice0, oldTimestamp, price0, timestamp) => {
   
     // Shifting the base to match the right numbers
     // Adjust the number of 0s as necessary.
-    const targetRate = ethers.utils.parseEther('1000000000000')
     const exchangeRate0 = price0Average
-      .mul(targetRate)
-      .div(ethers.BigNumber.from(2).pow(112))
-  
+    .mul(ethers.BigNumber.from(10).pow(18))
+    .mul(ethers.BigNumber.from(10).pow(targetMantissa))
+    .div(ethers.BigNumber.from(2).pow(112))
+
     // Returnthe Float of the TWAP 
-    return parseFloat(ethers.utils.formatEther(exchangeRate0))
+    return exchangeRate0 / 1e18;
 }
 
 const getCurrentPriceAndTimestamp = async (App, address) => {
@@ -1347,4 +1416,23 @@ const getCurrentPriceAndTimestamp = async (App, address) => {
     const price1 = await UNI.price1CumulativeLast();
     const { _blockTimestampLast } = await UNI.getReserves()
     return [ price0, price1, _blockTimestampLast ]
+}
+
+const getBasisCurrentPriceAndTimestamp = async (App, address) => {
+    const ORACLE = new ethers.Contract(address, BASIS_ORACLE_ABI, App.provider);
+    const price0 = await ORACLE.price0CumulativeLast();
+    const price1 = await ORACLE.price1CumulativeLast();
+    const blockTimestampLast = await ORACLE.blockTimestampLast()
+    return [ price0, price1, blockTimestampLast ]
+}
+
+async function printUnbonds(provider, DAO, epoch, fluidEpochs, epochTimeSec) {
+    const fluidBlocks = fluidEpochs * epochTimeSec / 13.5 * 1.1; //10% leeway
+    const blockNumber = await provider.getBlockNumber();
+    const unbonds = await DAO.queryFilter(DAO.filters.Unbond(), blockNumber-fluidBlocks, blockNumber);
+    for (let i = 0; i < fluidEpochs; i++) {
+        let filtered = unbonds.filter(u => epoch + i + 1 - fluidEpochs == u.args?.start / 1);
+        let unbonding = filtered.map(u => u.args?.valueUnderlying / 1e18).reduce((x, y) => x+y,0);
+        _print(`Unbonding at epoch ${epoch+i}: ${unbonding}`)
+    }
 }
