@@ -94,7 +94,9 @@ async function loadPool(App, tokens, prices, stakingAbi, stakingAddress,
     const revoke = async function() {
       return rewardsContract_resetApprove(stakeTokenAddress, stakingAddress, App)
     }
-    _print_link(`Stake ${userUnstaked.toFixed(6)} ${stakingTokenTicker}`, approveTENDAndStake)
+    if (stakeTokenFunction !== "mith") {
+        _print_link(`Stake ${userUnstaked.toFixed(6)} ${stakingTokenTicker}`, approveTENDAndStake)
+    }
     _print_link(`Unstake ${userStaked.toFixed(6)} ${stakingTokenTicker}`, unstake)
     _print_link(`Claim ${earned.toFixed(6)} ${rewardTokenTicker}`, claim)
     _print_link(`Revoke (set approval to 0)`, revoke)
@@ -137,6 +139,7 @@ async function main() {
     const CONTRACTS = [
         { address: "0x9D9418803F042CCd7647209b0fFd617981D5c619", abi : MITH_USDTMIC_ABI, rewardToken: "mithShare", stakeToken: "lpt"},
         { address: "0x14E33e1D6Cc4D83D7476492C0A52b3d4F869d892", abi : MITH_USDTMIC_ABI, rewardToken: "mithShare", stakeToken: "lpt"},
+        { address: "0xd91121Ba462311626dA546C529b8F07c84805346", abi : MIC_MITH_ABI, rewardToken: "mithCash", stakeToken: "mith"},
         { address: "0xcE0058827e6c89E625e524D2fE6E3EF3d9BB6A0c", abi : MIC_DAI_ABI, rewardToken: "mithCash", stakeToken: "dai"},
         { address: "0xFEf1Bcc7097dD184b2Cdb574068CF01b7B437694", abi : MIC_YFI_ABI, rewardToken: "mithCash", stakeToken: "YFI"},
         { address: "0xFb64597ddA1345317A4f4f5DBA2425384bC5fA7B", abi : MIC_USDT_ABI, rewardToken: "mithCash", stakeToken: "usdt"},
