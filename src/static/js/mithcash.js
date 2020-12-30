@@ -102,6 +102,10 @@ async function loadPool(App, tokens, prices, stakingAbi, stakingAddress,
     _print_link(`Revoke (set approval to 0)`, revoke)
     _print_link(`Exit`, exit)
     _print(`\n`);
+
+    return {
+        staked_tvl: poolPrices.staked_tvl,
+    }
 }
 
 async function loadBoardroom(App, tokens, prices) {
@@ -164,17 +168,20 @@ async function main() {
 
     var tokens = {};
     var prices = {};
+    var totalStaked = 0;
 
     for (const c of CONTRACTS) {
         try {
-            await loadPool(App, tokens, prices, c.abi, c.address, c.rewardToken, c.stakeToken);
+            const { staked_tvl } = await loadPool(App, tokens, prices, c.abi, c.address, c.rewardToken, c.stakeToken);
+            totalStaked += staked_tvl;
         }
         catch (ex) {
             console.error(ex);
         }
     }
-
     await loadBoardroom(App, tokens, prices);
+
+    _print_bold(`Total staked: $${formatMoney(totalStaked)}`)
 
     hideLoading();
 }
