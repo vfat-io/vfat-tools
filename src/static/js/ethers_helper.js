@@ -1228,7 +1228,7 @@ async function loadFluidStatus(App, LP, fluidEpochs, epoch) {
       const lastUnbond = Math.max(...unbonds.map(u => u.args.start / 1));
       const lastBond = Math.max(...bonds.map(d => d.args.start / 1));
       const fluidEpoch = Math.max(lastUnbond, lastBond);
-      _print(`You unbonded at epoch ${fluidEpoch}.`)
+      _print(`You last bonded or unbonded at epoch ${fluidEpoch}.`)
       _print(`You will become Frozen in ${fluidEpoch + fluidEpochs - epoch} epochs.`);
   }
 }
@@ -1302,8 +1302,8 @@ async function loadEmptySetLP(App, LP, stakeTokenAddress, stakeTokenTicker, flui
 
   const staged = await LP.balanceOfStaged(App.YOUR_ADDRESS) / 1e18;
   const bonded = await LP.balanceOfBonded(App.YOUR_ADDRESS) / 1e18;
-  const rewarded = await LP.balanceOfClaimable(App.YOUR_ADDRESS) / 1e18;
-  const claimable = await LP.balanceOfRewarded(App.YOUR_ADDRESS) / 1e18;
+  const claimable = await LP.balanceOfClaimable(App.YOUR_ADDRESS) / 1e18;
+  const rewarded = await LP.balanceOfRewarded(App.YOUR_ADDRESS) / 1e18;
   const status = await LP.statusOf(App.YOUR_ADDRESS) ? "Fluid" : "Frozen";
   
   const lpPrice = uniPrices.price;
@@ -1312,11 +1312,11 @@ async function loadEmptySetLP(App, LP, stakeTokenAddress, stakeTokenTicker, flui
   _print(`${stakeTokenTicker} Total Staged: ${totalStaged.toFixed(2)}, $${formatMoney(totalStaged * lpPrice)}`);
   _print(`${stakeTokenTicker} Total Bonded: ${totalBonded.toFixed(2)}, $${formatMoney(totalBonded * lpPrice)}`);
   _print(`Your LP status is ${status}`);
-  _print(`You have ${unstaked.toFixed(8)} unstaked ${stakeTokenTicker} LP, $${formatMoney(unstaked * lpPrice)}`);
+  _print(`You have ${unstaked.toFixed(8)} unstaked ${stakeTokenTicker}, $${formatMoney(unstaked * lpPrice)}`);
   if (unstaked > 0) uniPrices.print_contained_price(unstaked);
-  _print(`You have ${staged.toFixed(8)} staged ${stakeTokenTicker} LP, $${formatMoney(staged * lpPrice)}, ${(staged/totalStaged).toFixed(4)}% of the pool`);
+  _print(`You have ${staged.toFixed(8)} staged ${stakeTokenTicker}, $${formatMoney(staged * lpPrice)}, ${(staged/totalStaged).toFixed(4)}% of the pool`);
   if (staged > 0) uniPrices.print_contained_price(staged);
-  _print(`You have ${bonded.toFixed(8)} bonded ${stakeTokenTicker} LP, $${formatMoney(bonded * lpPrice)}, ${(bonded/totalBonded).toFixed(4)}% of the pool`);
+  _print(`You have ${bonded.toFixed(8)} bonded ${stakeTokenTicker}, $${formatMoney(bonded * lpPrice)}, ${(bonded/totalBonded).toFixed(4)}% of the pool`);
   if (bonded > 0) uniPrices.print_contained_price(bonded);
   _print(`You have ${rewarded.toFixed(2)} rewarded ${rewardTicker}`);
   _print(`You have ${claimable.toFixed(2)} claimable ${rewardTicker}`);

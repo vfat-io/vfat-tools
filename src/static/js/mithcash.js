@@ -135,8 +135,8 @@ async function loadBoardroom(App, tokens, prices) {
 
 async function main() {
     const CONTRACTS = [
-        { address: "0x9D9418803F042CCd7647209b0fFd617981D5c619", abi : MITH_USDTMIC_ABI, rewardToken: "mithShare", stakeToken: "lpt"},
         { address: "0x14E33e1D6Cc4D83D7476492C0A52b3d4F869d892", abi : MITH_USDTMIC_ABI, rewardToken: "mithShare", stakeToken: "lpt"},
+        { address: "0x9D9418803F042CCd7647209b0fFd617981D5c619", abi : MITH_USDTMIC_ABI, rewardToken: "mithShare", stakeToken: "lpt"},
         { address: "0xcE0058827e6c89E625e524D2fE6E3EF3d9BB6A0c", abi : MIC_DAI_ABI, rewardToken: "mithCash", stakeToken: "dai"},
         { address: "0xFEf1Bcc7097dD184b2Cdb574068CF01b7B437694", abi : MIC_YFI_ABI, rewardToken: "mithCash", stakeToken: "YFI"},
         { address: "0xFb64597ddA1345317A4f4f5DBA2425384bC5fA7B", abi : MIC_USDT_ABI, rewardToken: "mithCash", stakeToken: "usdt"},
