@@ -18,7 +18,7 @@ async function main() {
     var tokens = {};
 
     const [epoch, uniPrices, totalBonded] = await loadDAO(App, DAO, DOLLAR, Contracts.ZAI.Uniswap_DAI_ZAI.address,
-        Contracts.ZAI.LPIncentivizationPool.address, tokens, prices, 240);
+        Contracts.ZAI.LPIncentivizationPool.address, tokens, prices, 240, true);
 
     const LP = new ethers.Contract(Contracts.ZAI.LPIncentivizationPool.address,
         Contracts.ZAI.LPIncentivizationPool.abi, App.provider);

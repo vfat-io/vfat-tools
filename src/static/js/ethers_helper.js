@@ -1233,7 +1233,8 @@ async function loadFluidStatus(App, LP, fluidEpochs, epoch) {
   }
 }
 
-const loadDAO = async (App, DAO, DOLLAR, uniswapAddress, liquidityPoolAddress, tokens, prices, fluidEpochs) => {
+const loadDAO = async (App, DAO, DOLLAR, uniswapAddress, liquidityPoolAddress, tokens, prices, fluidEpochs,
+  isBuggyDAO) => {
     const unstaked = await DOLLAR.balanceOf(App.YOUR_ADDRESS) / 1e18;
     const totalSupply = await DOLLAR.totalSupply() / 1e18;
     const dollar = await DOLLAR.symbol();
@@ -1272,7 +1273,7 @@ const loadDAO = async (App, DAO, DOLLAR, uniswapAddress, liquidityPoolAddress, t
     }
     const withdraw = async () => esd_withdraw(DAO, App); 
     const bond = async () => esd_bond(DAO, App); 
-    const unbond = async () => esd_unbond(DAO, App); 
+    const unbond = async () => isBuggyDAO ? buggy_dao_unbond(DAO,App) : esd_unbond(DAO, App); 
 
     _print_link(`Deposit ${unstaked.toFixed(2)} ${dollar}`, approveAndDeposit)
     _print_link(`Withdraw ${staged.toFixed(2)} ${dollar}`, withdraw);
@@ -1381,6 +1382,24 @@ const esd_bond = async function(DAO, App) {
   if (currentStakedAmount > 0) {
     showLoading()
     REWARD_POOL.bond(currentStakedAmount, {gasLimit: 250000})
+      .then(function(t) {
+        return App.provider.waitForTransaction(t.hash)
+      })
+      .catch(function() {
+        hideLoading()
+      })
+  }
+}
+
+const buggy_dao_unbond = async function(DAO, App) {
+  const signer = App.provider.getSigner()
+
+  const REWARD_POOL = DAO.connect(signer);
+  const currentStakedAmount = await REWARD_POOL.balanceOf(App.YOUR_ADDRESS)
+
+  if (currentStakedAmount > 0) {
+    showLoading()
+    REWARD_POOL.unbond(currentStakedAmount, {gasLimit: 250000})
       .then(function(t) {
         return App.provider.waitForTransaction(t.hash)
       })
