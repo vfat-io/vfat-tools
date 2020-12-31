@@ -539,7 +539,7 @@ const rewardsContract_exit = async function(rewardPoolAddr, App) {
   }
 }
 
-const rewardsContract_claim = async function(rewardPoolAddr, App) {
+const rewardsContract_claim = async function(rewardPoolAddr, App, rewardsFunc) {
   const signer = App.provider.getSigner()
 
   const REWARD_POOL = new ethers.Contract(rewardPoolAddr, Y_STAKING_POOL_ABI, signer)

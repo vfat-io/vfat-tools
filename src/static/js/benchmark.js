@@ -9,7 +9,7 @@ $(function() {
     _print(`Initialized ${App.YOUR_ADDRESS}\n`);
     _print("Reading smart contracts...\n");
   
-    const MARK_FAUCET_ADDR = "0x6544b1cd2d28c6c53b52a1ffb8e547740e426b33";
+    const MARK_FAUCET_ADDR = "0x5D9972dD3Ba5602574ABeA6bF9E1713568D49903";
 
     await loadChefContractSecondAttempt(App, null, MARK_FAUCET_ADDR, MARK_FAUCET_ABI, "MARK",
         "MARK", "markPerBlock", null, "pendingMark");
