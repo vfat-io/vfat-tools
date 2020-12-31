@@ -1523,3 +1523,35 @@ async function printLPUnbonds(provider, DAO, epoch, fluidEpochs, epochTimeSec) {
         _print(`Unbonding at epoch ${epoch+i}: ${unbonding.toFixed(8)} - Claimable: ${formatMoney(claimable)}`);
     }
 }
+
+async function calculateDollarAPR(DAO, parameters, twap, dollarPrice, uniPrices, totalBonded, calculateChange) {
+    const totalCoupons = await DAO.totalCoupons() / 1e18;
+    const totalRedeemable = await DAO.totalRedeemable() / 1e18;
+    const totalNet = await DAO.totalNet() / 1e18;
+
+    const lpReward = parameters.PoolRatio;
+    const daoReward = parameters.DaoRatio;
+    // Get price
+    const calcPrice = calculateChange(twap, totalCoupons, totalRedeemable)
+
+    // Calulcate the outstanding commitments so we can remove it from the rewards
+    const totalOutstanding = totalCoupons - totalRedeemable
+
+    const maxRewards = totalNet * calcPrice * daoReward;
+
+    const daoRewards = maxRewards - totalOutstanding
+
+    if (daoRewards > 0) {
+        const bondedReturn = daoRewards / totalBonded * 100 * 24; //24 epochs per day
+
+        _print(`DAO APR: Day ${bondedReturn.toFixed(2)}% Week ${(bondedReturn * 7).toFixed(2)}% Year ${(bondedReturn * 365).toFixed(2)}%`)
+
+    } else {
+        _print(`DAO APR: Day 0% Week 0% Year 0%`)
+    }
+    // Calculate total rewards allocated to LP
+    const lpRewards = totalNet * calcPrice * lpReward
+    const lpReturn = lpRewards * dollarPrice / uniPrices.staked_tvl * 100 * 24;
+
+    _print(`LP  APR: Day ${lpReturn.toFixed(2)}% Week ${(lpReturn * 7).toFixed(2)}% Year ${(lpReturn * 365).toFixed(2)}%`)  
+}
