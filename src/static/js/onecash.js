@@ -107,32 +107,11 @@ async function loadPool(App, tokens, prices, stakingAbi, stakingAddress,
     _print(`\n`);
 }
 
-const rewardsContract_claimReward = async function(rewardPoolAddr, App, rewardsFunc) {
-  const signer = App.provider.getSigner()
-
-  const REWARD_POOL = new ethers.Contract(rewardPoolAddr, Y_STAKING_POOL_ABI, signer)
-
-  console.log(App.YOUR_ADDRESS)
-
-  const earnedYFFI = (await REWARD_POOL.earned(App.YOUR_ADDRESS)) / 1e18
-
-  if (earnedYFFI > 0) {
-    showLoading()
-    REWARD_POOL.claimReward({gasLimit: 250000})
-      .then(function(t) {
-        return App.provider.waitForTransaction(t.hash)
-      })
-      .catch(function() {
-        hideLoading()
-      })
-  }
-}
-
 async function loadBoardroom(App, tokens, prices) {
     const BOARDROOM_ADDRESS = "0xFD35C0e9706A669d7be9B2D9C69AE2927F1071dB";
     const DAI_ONC_ADDRESS = "0x3Ba3C8fB0142A6f2bf3e2990A08957866203f961"
     const REWARD_TOKEN_ADDRESS = "0xD90E69f67203EBE02c917B5128629E77B4cd92dc";
-    const BOARDROOM = new ethers.Contract(BOARDROOM_ADDRESS, BOARDROOM_ABI, App.provider);
+    const BOARDROOM = new ethers.Contract(BOARDROOM_ADDRESS, ONECASH_BOARDROOM_ABI, App.provider);
     const share = await BOARDROOM.share();
     const SHARE = new ethers.Contract(share, ERC20_ABI, App.provider);
     const userUnstaked = await SHARE.balanceOf(App.YOUR_ADDRESS) / 1e18;
@@ -169,7 +148,7 @@ async function loadBoardroom(App, tokens, prices) {
         
     const approveTENDAndStake = async () => rewardsContract_stake(share, BOARDROOM_ADDRESS, App);
     const unstake = async () => rewardsContract_unstake(BOARDROOM_ADDRESS, App);
-    const claim = async () => rewardsContract_claimReward(BOARDROOM_ADDRESS, App);
+    const claim = async () => boardroom_claim(BOARDROOM_ADDRESS, App);
     const exit = async () =>  rewardsContract_exit(BOARDROOM_ADDRESS, App);
     const revoke = async () => rewardsContract_resetApprove(share, BOARDROOM_ADDRESS, App);
 

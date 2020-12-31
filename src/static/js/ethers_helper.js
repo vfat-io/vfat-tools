@@ -452,6 +452,30 @@ const trimOrFillTo = function(str, n) {
   return str
 }
 
+const dao_deposit = async (App, DAO, DOLLAR) => {
+  const signer = App.provider.getSigner();
+  const balance = await DOLLAR.balanceOf(App.YOUR_ADDRESS);
+  const allowed = await DOLLAR.allowance(App.YOUR_ADDRESS, DAO.address);
+  if (allowed < balance) {
+    showLoading();
+    const tx = await DOLLAR.connect(signer).approve(DAO.address, ethers.constants.MaxUint256);
+    await tx.wait();
+  }
+  if (balance > 0) {
+    try {
+      await DAO.connect(signer).deposit(balance, {gasLimit: 500000});
+      hideLoading();
+    }
+    catch (ex) {
+      hideLoading();
+      console.log(ex);
+      _print('Something went wrong.');
+    }
+  } else {
+    alaert(`You have no tokens to deposit!`);
+  }
+}
+
 const rewardsContract_stake = async function(stakingTokenAddr, rewardPoolAddr, App, maxAllowance) {
   const signer = App.provider.getSigner()
 
@@ -539,10 +563,31 @@ const rewardsContract_exit = async function(rewardPoolAddr, App) {
   }
 }
 
-const rewardsContract_claim = async function(rewardPoolAddr, App, rewardsFunc) {
+const rewardsContract_claim = async function(rewardPoolAddr, App) {
   const signer = App.provider.getSigner()
 
   const REWARD_POOL = new ethers.Contract(rewardPoolAddr, Y_STAKING_POOL_ABI, signer)
+
+  console.log(App.YOUR_ADDRESS)
+
+  const earnedYFFI = (await REWARD_POOL.earned(App.YOUR_ADDRESS)) / 1e18
+
+  if (earnedYFFI > 0) {
+    showLoading()
+    REWARD_POOL.getReward({gasLimit: 250000})
+      .then(function(t) {
+        return App.provider.waitForTransaction(t.hash)
+      })
+      .catch(function() {
+        hideLoading()
+      })
+  }
+}
+
+const boardroom_claim = async function(rewardPoolAddr, App) {
+  const signer = App.provider.getSigner()
+
+  const REWARD_POOL = new ethers.Contract(rewardPoolAddr, BOARDROOM_ABI, signer)
 
   console.log(App.YOUR_ADDRESS)
 
@@ -1268,9 +1313,8 @@ const loadDAO = async (App, DAO, DOLLAR, uniswapAddress, liquidityPoolAddress, t
     _print(`You have ${staged.toFixed(2)} staged ${dollar}, $${formatMoney(staged*zaiPrice)}, ${(staged/totalStaged).toFixed(4)}% of the pool`);
     _print(`You have ${bonded.toFixed(2)} bonded ${dollar}, $${formatMoney(bonded*zaiPrice)}, ${(bonded/totalBonded).toFixed(4)}% of the pool`);
     if (status == "Fluid") await loadFluidStatus(App, DAO, fluidEpochs, epoch);
-    const approveAndDeposit = async function() {
-      return rewardsContract_stake(DOLLAR.address, DAO.address, App)
-    }
+    
+    const approveAndDeposit = async () => dao_deposit(App, DAO, DOLLAR);
     const withdraw = async () => esd_withdraw(DAO, App); 
     const bond = async () => esd_bond(DAO, App); 
     const unbond = async () => isBuggyDAO ? buggy_dao_unbond(DAO,App) : esd_unbond(DAO, App); 
@@ -1323,9 +1367,7 @@ async function loadEmptySetLP(App, LP, stakeTokenAddress, stakeTokenTicker, flui
   _print(`You have ${claimable.toFixed(2)} claimable ${rewardTicker}`);
   
   if (status == "Fluid") await loadFluidStatus(App, LP, fluidEpochs, epoch);
-  const approveAndDeposit = async function() {
-    return rewardsContract_stake(stakeTokenAddress, LP.address, App)
-  }
+  const approveAndDeposit = async () => dao_deposit(App, LP, stakeToken);
   const withdraw = async () => esd_withdraw(LP, App); 
   const bond = async () => esd_bond(LP, App); 
   const unbond = async () => esd_unbond(LP, App); 

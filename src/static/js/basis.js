@@ -148,7 +148,7 @@ async function loadBoardroom(App, tokens, prices) {
     }
     const approveTENDAndStake = async () => rewardsContract_stake(share, BOARDROOM_ADDRESS, App);
     const unstake = async () => rewardsContract_unstake(BOARDROOM_ADDRESS, App);
-    const claim = async () => rewardsContract_claim(BOARDROOM_ADDRESS, App);
+    const claim = async () => boardroom_claim(BOARDROOM_ADDRESS, App);
     const exit = async () =>  rewardsContract_exit(BOARDROOM_ADDRESS, App);
     const revoke = async () => rewardsContract_resetApprove(share, BOARDROOM_ADDRESS, App);
 
