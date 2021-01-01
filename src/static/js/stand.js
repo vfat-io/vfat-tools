@@ -52,7 +52,10 @@ async function loadPool(App, tokens, prices, stakingAbi, stakingAddress,
   
     const usdPerWeek = weeklyRewards * rewardTokenPrice;
   
-    const staked_tvl = poolPrices.staked_tvl;
+    let staked_tvl = poolPrices.staked_tvl;
+    if (staked_tvl === 0) {
+        staked_tvl = 100000;
+    }
     
     const userStaked = await STAKING_POOL.balanceOf(App.YOUR_ADDRESS) / 10 ** stakeToken.decimals;
   
@@ -126,25 +129,31 @@ async function loadBoardroom(App, tokens, prices) {
     _print(`There is a total ${totalStaked.toFixed(2)} SAS ($${formatMoney(totalStakedUsd)}) staked in the Boardroom.`)
     _print(`You are staking ${userStaked} SAS ($${formatMoney(userStakedUsd)}), ${userPct.toFixed(2)}% of the pool.`);
 
-    const resp = await fetch('https://api.vfat.tools/twap/' + SAC_USDT_ADDRESS);
-    const text = await resp.text();
-    const array = text.split("\n");
-    if (array.length > 0 && array[0][0] != '<') {
-        const [oldPrice0, , oldTimestamp] = array[array.length - 2].split(' ') //last line is blank
-        const [price0, , timestamp] = await getCurrentPriceAndTimestamp(App, SAC_USDT_ADDRESS);
-        const twap = await calculateTwap(oldPrice0, oldTimestamp, price0, timestamp, 0);
-        _print(`TWAP: ${twap}`);
-        if (twap > 1.05) {
-            const REWARD_TOKEN = new ethers.Contract(REWARD_TOKEN_ADDRESS, ERC20_ABI, App.provider);
-            const totalSupply = await REWARD_TOKEN.totalSupply() / 1e18;
-            const newTokens = totalSupply * (twap - 1);
-            _print(`The following figures are approximate as they are not using the official TWAP.`);
-            _print(`There will be ${newTokens.toFixed(2)} SAC issued at next expansion.`);
-            const rewardPrice = getParameterCaseInsensitive(prices, REWARD_TOKEN_ADDRESS).usd;
-            const boardReturn = newTokens * rewardPrice / totalStakedUsd * 100; 
-            _print(`Boardroom APR: Day ${(boardReturn).toFixed(2)}% Week ${(boardReturn * 7).toFixed(2)}% Year ${(boardReturn * 365).toFixed(2)}%`)
+    
+    try {
+        const resp = await fetch('https://api.vfat.tools/twap/' + SAC_USDT_ADDRESS);
+        const text = await resp.text();
+        const array = text.split("\n");
+        if (array.length > 0 && array[0][0] != '<') {
+            const [oldPrice0, , oldTimestamp] = array[array.length - 2].split(' ') //last line is blank
+            const [price0, , timestamp] = await getCurrentPriceAndTimestamp(App, SAC_USDT_ADDRESS);
+            const twap = await calculateTwap(oldPrice0, oldTimestamp, price0, timestamp, 0);
+            _print(`TWAP: ${twap}`);
+            if (twap > 1.05) {
+                const REWARD_TOKEN = new ethers.Contract(REWARD_TOKEN_ADDRESS, ERC20_ABI, App.provider);
+                const totalSupply = await REWARD_TOKEN.totalSupply() / 1e18;
+                const newTokens = totalSupply * (twap - 1);
+                _print(`The following figures are approximate as they are not using the official TWAP.`);
+                _print(`There will be ${newTokens.toFixed(2)} SAC issued at next expansion.`);
+                const rewardPrice = getParameterCaseInsensitive(prices, REWARD_TOKEN_ADDRESS).usd;
+                const boardReturn = newTokens * rewardPrice / totalStakedUsd * 100; 
+                _print(`Boardroom APR: Day ${(boardReturn).toFixed(2)}% Week ${(boardReturn * 7).toFixed(2)}% Year ${(boardReturn * 365).toFixed(2)}%`)
+            }
         }
+    } catch (e) {
+        console.log(e)
     }
+
     const approveTENDAndStake = async () => rewardsContract_stake(share, BOARDROOM_ADDRESS, App);
     const unstake = async () => rewardsContract_unstake(BOARDROOM_ADDRESS, App);
     const claim = async () => rewardsContract_claim(BOARDROOM_ADDRESS, App);
