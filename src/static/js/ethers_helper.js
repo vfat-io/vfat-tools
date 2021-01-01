@@ -595,7 +595,7 @@ const boardroom_claim = async function(rewardPoolAddr, App) {
 
   if (earnedYFFI > 0) {
     showLoading()
-    REWARD_POOL.getReward({gasLimit: 250000})
+    REWARD_POOL.claimReward({gasLimit: 250000})
       .then(function(t) {
         return App.provider.waitForTransaction(t.hash)
       })
@@ -1310,8 +1310,8 @@ const loadDAO = async (App, DAO, DOLLAR, uniswapAddress, liquidityPoolAddress, t
     _print(`${dollar} Total Bonded: ${totalBonded.toFixed(2)}, $${formatMoney(totalBonded * zaiPrice)}`);
     _print(`Your DAO status is ${status}`);
     _print(`You have ${unstaked.toFixed(2)} unstaked ${dollar}, $${formatMoney(unstaked*zaiPrice)}`);
-    _print(`You have ${staged.toFixed(2)} staged ${dollar}, $${formatMoney(staged*zaiPrice)}, ${(staged/totalStaged).toFixed(4)}% of the pool`);
-    _print(`You have ${bonded.toFixed(2)} bonded ${dollar}, $${formatMoney(bonded*zaiPrice)}, ${(bonded/totalBonded).toFixed(4)}% of the pool`);
+    _print(`You have ${staged.toFixed(2)} staged ${dollar}, $${formatMoney(staged*zaiPrice)}, ${(staged/totalStaged*100).toFixed(4)}% of the pool`);
+    _print(`You have ${bonded.toFixed(2)} bonded ${dollar}, $${formatMoney(bonded*zaiPrice)}, ${(bonded/totalBonded*100).toFixed(4)}% of the pool`);
     if (status == "Fluid") await loadFluidStatus(App, DAO, fluidEpochs, epoch);
     
     const approveAndDeposit = async () => dao_deposit(App, DAO, DOLLAR);
@@ -1359,9 +1359,9 @@ async function loadEmptySetLP(App, LP, stakeTokenAddress, stakeTokenTicker, flui
   _print(`Your LP status is ${status}`);
   _print(`You have ${unstaked.toFixed(8)} unstaked ${stakeTokenTicker}, $${formatMoney(unstaked * lpPrice)}`);
   if (unstaked > 0) uniPrices.print_contained_price(unstaked);
-  _print(`You have ${staged.toFixed(8)} staged ${stakeTokenTicker}, $${formatMoney(staged * lpPrice)}, ${(staged/totalStaged).toFixed(4)}% of the pool`);
+  _print(`You have ${staged.toFixed(8)} staged ${stakeTokenTicker}, $${formatMoney(staged * lpPrice)}, ${(staged/totalStaged*100).toFixed(4)}% of the pool`);
   if (staged > 0) uniPrices.print_contained_price(staged);
-  _print(`You have ${bonded.toFixed(8)} bonded ${stakeTokenTicker}, $${formatMoney(bonded * lpPrice)}, ${(bonded/totalBonded).toFixed(4)}% of the pool`);
+  _print(`You have ${bonded.toFixed(8)} bonded ${stakeTokenTicker}, $${formatMoney(bonded * lpPrice)}, ${(bonded/totalBonded*100).toFixed(4)}% of the pool`);
   if (bonded > 0) uniPrices.print_contained_price(bonded);
   _print(`You have ${rewarded.toFixed(2)} rewarded ${rewardTicker}`);
   _print(`You have ${claimable.toFixed(2)} claimable ${rewardTicker}`);
@@ -1371,11 +1371,13 @@ async function loadEmptySetLP(App, LP, stakeTokenAddress, stakeTokenTicker, flui
   const withdraw = async () => esd_withdraw(LP, App); 
   const bond = async () => esd_bond(LP, App); 
   const unbond = async () => esd_unbond(LP, App); 
+  const claim = async () => esd_claim(LP, App);
 
   _print_link(`Deposit ${unstaked.toFixed(6)} ${stakeTokenTicker}`, approveAndDeposit)
   _print_link(`Withdraw ${staged.toFixed(6)} ${stakeTokenTicker}`, withdraw);
   _print_link(`Bond ${staged.toFixed(6)} ${stakeTokenTicker}`, bond);
   _print_link(`Unbond ${bonded.toFixed(6)} ${stakeTokenTicker}`, unbond);
+  _print_link(`Claim ${claimable.toFixed(6)} ${rewardTicker}`, claim);
   _print('');   
 }
 
@@ -1388,6 +1390,23 @@ const esd_withdraw = async function(DAO, App) {
   if (currentStakedAmount > 0) {
     showLoading()
     REWARD_POOL.withdraw(currentStakedAmount, {gasLimit: 250000})
+      .then(function(t) {
+        return App.provider.waitForTransaction(t.hash)
+      })
+      .catch(function() {
+        hideLoading()
+      })
+  }
+}
+
+const esd_claim = async function(LP, App) {
+  const signer = App.provider.getSigner()
+
+  const claimable = await LP.balanceOfClaimable(App.YOUR_ADDRESS)
+
+  if (claimable > 0) {
+    showLoading()
+    LP.connect(signer).claim(claimable, {gasLimit: 250000})
       .then(function(t) {
         return App.provider.waitForTransaction(t.hash)
       })

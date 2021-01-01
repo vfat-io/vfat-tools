@@ -45,7 +45,7 @@ async function main() {
 
     if (epoch < params.BootstrappingPeriod) { //bootstrapping
         const twap = params.BootstrappingPrice;      
-        await calculateAPR(DAO, params, twap, dollarPrice, uniPrices, totalBonded, calcPrice);
+        await calculateDollarAPR(DAO, params, twap, dollarPrice, uniPrices, totalBonded, calcPrice);
     }
     else {
         const resp = await fetch('https://api.vfat.tools/twap/' + Contracts.ZSD.UniswapLP.address);
@@ -58,7 +58,7 @@ async function main() {
             _print(`TWAP: ${twap}\n`);
 
             if (twap > 1.05) {
-                await calculateAPR(DAO, Contracts.ZSD.Parameters, twap, dollarPrice, uniPrices, calcPrice);
+                await calculateDollarAPR(DAO, Contracts.ZSD.Parameters, twap, dollarPrice, uniPrices, calcPrice);
             }
             else {
                 _print(`DAO APR: Day 0% Week 0% Year 0%`)
