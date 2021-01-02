@@ -80,10 +80,11 @@ async function loadPool(App, tokens, prices, stakingAbi, stakingAddress,
             + ` Week ${userWeeklyRewards.toFixed(2)} ($${formatMoney(userWeeklyRewards*rewardTokenPrice)})`
             + ` Year ${userYearlyRewards.toFixed(2)} ($${formatMoney(userYearlyRewards*rewardTokenPrice)})`);
     }
+    const tokenMax = stakingTokenTicker == "ankrETH" ? 80 : 20000;
     const allowance = 
-        stakeTokenFunction == "lpt" ? userUnstaked : Math.min(20000 - userStaked, userUnstaked);
+        stakeTokenFunction == "lpt" ? userUnstaked : Math.min(tokenMax - userStaked, userUnstaked);
     const maxAllowance = 
-        stakeTokenFunction == "lpt" ? null : ethers.BigNumber.from(20000).pow(stakeToken.decimals);
+        stakeTokenFunction == "lpt" ? null : ethers.BigNumber.from(tokenMax).pow(stakeToken.decimals);
     const approveTENDAndStake = async function() {
       return rewardsContract_stake(stakeTokenAddress, stakingAddress, App, maxAllowance)
     }

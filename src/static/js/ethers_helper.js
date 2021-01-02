@@ -1348,8 +1348,16 @@ async function loadEmptySetLP(App, LP, stakeTokenAddress, stakeTokenTicker, flui
   const staged = await LP.balanceOfStaged(App.YOUR_ADDRESS) / 1e18;
   const bonded = await LP.balanceOfBonded(App.YOUR_ADDRESS) / 1e18;
   const claimable = await LP.balanceOfClaimable(App.YOUR_ADDRESS) / 1e18;
-  const rewarded = await LP.balanceOfRewarded(App.YOUR_ADDRESS) / 1e18;
-  const status = await LP.statusOf(App.YOUR_ADDRESS) ? "Fluid" : "Frozen";
+  const rewarded = 
+    (rewardTicker == "ESG" 
+      ? await LP.balanceOfRewarded(App.YOUR_ADDRESS, Contracts.ESG.Dollar.address)
+      : await LP.balanceOfRewarded(App.YOUR_ADDRESS))
+     / 1e18;
+  const status =
+    (rewardTicker == "ESG" 
+      ? await LP.statusOf(App.YOUR_ADDRESS, epoch) 
+      : await LP.statusOf(App.YOUR_ADDRESS)) 
+        ? "Fluid" : "Frozen";
   
   const lpPrice = uniPrices.price;
   uniPrices.print_price();    
