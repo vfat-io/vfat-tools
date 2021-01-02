@@ -52,10 +52,7 @@ async function loadPool(App, tokens, prices, stakingAbi, stakingAddress,
   
     const usdPerWeek = weeklyRewards * rewardTokenPrice;
   
-    let staked_tvl = poolPrices.staked_tvl;
-    if (staked_tvl === 0) {
-        staked_tvl = 100000;
-    }
+    const staked_tvl = poolPrices.staked_tvl;
     
     const userStaked = await STAKING_POOL.balanceOf(App.YOUR_ADDRESS) / 10 ** stakeToken.decimals;
   
