@@ -1636,3 +1636,21 @@ async function loadDollar(contractInfo, calcPrice) {
   await printLPUnbonds(App.provider, LP, epoch + 1, params.PoolLockupPeriods, params.EpochPeriod);
   hideLoading();  
 }
+
+const calculateEmptySetChange = (params, totalCoupons, totalRedeemable, price) => {
+  if (price > 1 + params.CouponSupplychangeLimit && totalCoupons > totalRedeemable) {
+      return params.CouponSupplychangeLimit
+  } else if (
+      1 + params.CouponSupplychangeLimit >= price &&
+      price > 1 + params.SupplyChangeLimit &&
+      totalCoupons > totalRedeemable
+  ) {
+      return Math.abs(price - 1)
+  } else if (price > 1 + params.SupplyChangeLimit) {
+      return params.SupplyChangeLimit
+  } else if (price < 1 - params.SupplyChangeLimit) {
+      return params.SupplyChangeLimit
+  } else {
+      return Math.abs(price - 1)
+  }
+}
