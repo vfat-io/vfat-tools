@@ -107,7 +107,7 @@ async function loadPool(App, tokens, prices, stakingAbi, stakingAddress,
     _print(`\n`);
 }
 
-async function loadBoardroom(App, prices, address, stakeTicker) {
+async function loadBoardroom(App, prices, address, stakeTicker, ratio) {
     const BOARDROOM_ADDRESS = address;
     const DAI_ONC_ADDRESS = "0x3Ba3C8fB0142A6f2bf3e2990A08957866203f961"
     const REWARD_TOKEN_ADDRESS = "0xD90E69f67203EBE02c917B5128629E77B4cd92dc";
@@ -137,7 +137,7 @@ async function loadBoardroom(App, prices, address, stakeTicker) {
         if (twap > 1.05) {
             const REWARD_TOKEN = new ethers.Contract(REWARD_TOKEN_ADDRESS, ERC20_ABI, App.provider);
             const totalSupply = await REWARD_TOKEN.totalSupply() / 1e18;
-            const newTokens = totalSupply *  Math.min(twap - 1, 0.1) / 2; //half each to share/lp
+            const newTokens = totalSupply *  Math.min(twap - 1, 0.1)  * ratio;
             _print(`The following figures are approximate as they are not using the official TWAP.`);
             _print(`There will be ${newTokens.toFixed(2)} ONC issued at next expansion.`);
             const rewardPrice = getParameterCaseInsensitive(prices, REWARD_TOKEN_ADDRESS).usd;
@@ -183,8 +183,8 @@ async function main() {
         }
     }
 
-    await loadBoardroom(App, prices, "0x8eeBDFc76a9f98d0b36b107A940ADAdBA8C8df27", "ONS");
-    await loadBoardroom(App, prices, "0xd22C1549017Cf96eAA093ad47Da0CF62f42b0562", "ONS-DAI LP");
+    await loadBoardroom(App, prices, "0x8eeBDFc76a9f98d0b36b107A940ADAdBA8C8df27", "ONS", 0.4);
+    await loadBoardroom(App, prices, "0xd22C1549017Cf96eAA093ad47Da0CF62f42b0562", "ONS-DAI LP", 0.6);
   
     hideLoading();
   }
