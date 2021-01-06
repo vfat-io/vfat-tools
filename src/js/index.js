@@ -17,7 +17,6 @@ import 'utils/validation'
 import 'utils/quick';
 import "core-js/stable";
 import "regenerator-runtime/runtime";
-import { windowSize } from "cli-color";
 
 window.$ = $;
 window.ethers = ethers;
