@@ -54,7 +54,6 @@
     "webpack-cli": "^3.3.11"
   },
   "dependencies": {
-    "ascii-table": "0.0.9",
     "asciichart": "^1.5.24",
     "clear": "^0.1.0",
     "cli-color": "^2.0.0",
