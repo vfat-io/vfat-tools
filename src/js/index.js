@@ -17,12 +17,13 @@ import 'utils/validation'
 import 'utils/quick';
 import "core-js/stable";
 import "regenerator-runtime/runtime";
+import { windowSize } from "cli-color";
 
 window.$ = $;
 window.ethers = ethers;
 window.ethcall = ethcall;
 window.asciichart = require("asciichart");
-window.AsciiTable = require("ascii-table");
+window.AsciiTable = require("./ascii-table");
 window.Diff = require("diff");
 
 // eslint-disable-next-line no-console
