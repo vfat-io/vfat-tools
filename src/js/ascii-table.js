@@ -523,10 +523,8 @@ AsciiTable.prototype.toString = function() {
     total += justify ? justify : x + self.__spacing
   })
   
-  //console.log(max)
   justify && (total += max.length)
   total -= this.__spacing
-  console.log(total)
 
   // Heading
   border && body.push(this._seperator(total - mLen + 1, this.__top))
