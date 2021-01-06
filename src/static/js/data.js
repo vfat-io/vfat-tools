@@ -469,7 +469,8 @@ const Contracts = {
         },
         Dollar : {
             address : "0x5cf9242493be1411b93d064ca2e468961bbb5924",
-            ticker  : "ESG"
+            ticker  : "ESG",
+            displayDecimals : 4
         },
         Oracle : {
             address : "0x6944eb48b1760c6613d54e4fa0d892154c76aea7"

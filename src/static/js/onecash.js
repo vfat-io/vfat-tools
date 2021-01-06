@@ -183,8 +183,8 @@ async function main() {
         }
     }
 
-    await loadBoardroom(App, prices, "0x8eeBDFc76a9f98d0b36b107A940ADAdBA8C8df27", "ONS", 0.4);
-    await loadBoardroom(App, prices, "0xd22C1549017Cf96eAA093ad47Da0CF62f42b0562", "ONS-DAI LP", 0.6);
+    await loadBoardroom(App, prices, "0x8eeBDFc76a9f98d0b36b107A940ADAdBA8C8df27", "ONS", 0.6);
+    await loadBoardroom(App, prices, "0xd22C1549017Cf96eAA093ad47Da0CF62f42b0562", "ONS-DAI LP", 0.4);
   
     hideLoading();
   }

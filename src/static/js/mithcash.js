@@ -137,12 +137,15 @@ async function loadBoardroom(App, tokens, prices) {
     _print_link(`Revoke (set approval to 0)`, revoke)
     _print_link(`Exit`, exit)
     _print(`\n`);
+
+    return totalStakedUsd;
 }
 
 async function main() {
     const CONTRACTS = [
         { address: "0x14E33e1D6Cc4D83D7476492C0A52b3d4F869d892", abi : MITH_USDTMIC_ABI, rewardToken: "mithShare", stakeToken: "lpt"},
         { address: "0x9D9418803F042CCd7647209b0fFd617981D5c619", abi : MITH_USDTMIC_ABI, rewardToken: "mithShare", stakeToken: "lpt"},
+        /*
         { address: "0xd91121Ba462311626dA546C529b8F07c84805346", abi : MIC_MITH_ABI, rewardToken: "mithCash", stakeToken: "mith"},
         { address: "0xcE0058827e6c89E625e524D2fE6E3EF3d9BB6A0c", abi : MIC_DAI_ABI, rewardToken: "mithCash", stakeToken: "dai"},
         { address: "0xFEf1Bcc7097dD184b2Cdb574068CF01b7B437694", abi : MIC_YFI_ABI, rewardToken: "mithCash", stakeToken: "YFI"},
@@ -159,6 +162,7 @@ async function main() {
         { address: "0xd1DE064281745F576eBa9cBff251aB031A0B8e99", abi : MIC_SUSHI_ABI, rewardToken: "mithCash", stakeToken: "sushi"},
         { address: "0x52cC1501f081ba069EEDa35eE91E7bbeEdcca965", abi : MIC_SUSD_ABI, rewardToken: "mithCash", stakeToken: "susd"},
         { address: "0x27392910FC7921aC3B451E6a4568906371941df8", abi : MIC_USDC_ABI, rewardToken: "mithCash", stakeToken: "usdc"},
+        */
     ];
 
     const App = await init_ethers();
@@ -179,7 +183,7 @@ async function main() {
             console.error(ex);
         }
     }
-    await loadBoardroom(App, tokens, prices);
+    totalStaked += await loadBoardroom(App, tokens, prices);
 
     _print_bold(`Total staked: $${formatMoney(totalStaked)}`)
 

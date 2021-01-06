@@ -10,7 +10,8 @@ async function init_ethers() {
     App.web3Provider = window.ethereum
     try {
       // Request account access
-      await window.ethereum.enable()
+      const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' })
+      App.YOUR_ADDRESS = accounts[0];
     } catch (error) {
       // User denied account access...
       console.error('User denied account access')
@@ -45,8 +46,8 @@ async function init_ethers() {
       "Could not initialize your ENS domain.\n"
       )
     }
+    App.YOUR_ADDRESS = addr
   }
-  App.YOUR_ADDRESS = addr
 
   // Could not load URL parameter
   if (!App.YOUR_ADDRESS) {
@@ -1279,7 +1280,7 @@ async function loadFluidStatus(App, LP, fluidEpochs, epoch) {
 }
 
 const loadDAO = async (App, DAO, DOLLAR, uniswapAddress, liquidityPoolAddress, tokens, prices, fluidEpochs,
-  isBuggyDAO) => {
+  isBuggyDAO, displayDecimals) => {
     const unstaked = await DOLLAR.balanceOf(App.YOUR_ADDRESS) / 1e18;
     const totalSupply = await DOLLAR.totalSupply() / 1e18;
     const dollar = await DOLLAR.symbol();
@@ -1296,6 +1297,8 @@ const loadDAO = async (App, DAO, DOLLAR, uniswapAddress, liquidityPoolAddress, t
 
     const zaiPrice = getParameterCaseInsensitive(prices, DOLLAR.address).usd;
 
+    const decimals = displayDecimals ?? 2;
+
     const totalBonded = await DAO.totalBonded() / 1e18;
     const totalStaged = await DAO.totalStaged() / 1e18;
     const bonded = await DAO.balanceOfBonded(App.YOUR_ADDRESS) / 1e18;
@@ -1305,13 +1308,13 @@ const loadDAO = async (App, DAO, DOLLAR, uniswapAddress, liquidityPoolAddress, t
     _print(`Current Epoch: ${epoch}\n`);
     _print(`${dollar} Price: ${formatMoney(zaiPrice)}\n`);
     
-    _print(`${dollar} Total Supply: ${totalSupply.toFixed(2)}, $${formatMoney(totalSupply * zaiPrice)}`);
-    _print(`${dollar} Total Staged: ${totalStaged.toFixed(2)}, $${formatMoney(totalStaged * zaiPrice)}`);
-    _print(`${dollar} Total Bonded: ${totalBonded.toFixed(2)}, $${formatMoney(totalBonded * zaiPrice)}`);
+    _print(`${dollar} Total Supply: ${totalSupply.toFixed(decimals)}, $${formatMoney(totalSupply * zaiPrice)}`);
+    _print(`${dollar} Total Staged: ${totalStaged.toFixed(decimals)}, $${formatMoney(totalStaged * zaiPrice)}`);
+    _print(`${dollar} Total Bonded: ${totalBonded.toFixed(decimals)}, $${formatMoney(totalBonded * zaiPrice)}`);
     _print(`Your DAO status is ${status}`);
-    _print(`You have ${unstaked.toFixed(2)} unstaked ${dollar}, $${formatMoney(unstaked*zaiPrice)}`);
-    _print(`You have ${staged.toFixed(2)} staged ${dollar}, $${formatMoney(staged*zaiPrice)}, ${(staged/totalStaged*100).toFixed(4)}% of the pool`);
-    _print(`You have ${bonded.toFixed(2)} bonded ${dollar}, $${formatMoney(bonded*zaiPrice)}, ${(bonded/totalBonded*100).toFixed(4)}% of the pool`);
+    _print(`You have ${unstaked.toFixed(decimals)} unstaked ${dollar}, $${formatMoney(unstaked*zaiPrice)}`);
+    _print(`You have ${staged.toFixed(decimals)} staged ${dollar}, $${formatMoney(staged*zaiPrice)}, ${(staged/totalStaged*100).toFixed(4)}% of the pool`);
+    _print(`You have ${bonded.toFixed(decimals)} bonded ${dollar}, $${formatMoney(bonded*zaiPrice)}, ${(bonded/totalBonded*100).toFixed(4)}% of the pool`);
     if (status == "Fluid") await loadFluidStatus(App, DAO, fluidEpochs, epoch);
     
     const approveAndDeposit = async () => dao_deposit(App, DAO, DOLLAR);
@@ -1319,10 +1322,10 @@ const loadDAO = async (App, DAO, DOLLAR, uniswapAddress, liquidityPoolAddress, t
     const bond = async () => esd_bond(DAO, App); 
     const unbond = async () => isBuggyDAO ? buggy_dao_unbond(DAO,App) : esd_unbond(DAO, App); 
 
-    _print_link(`Deposit ${unstaked.toFixed(2)} ${dollar}`, approveAndDeposit)
-    _print_link(`Withdraw ${staged.toFixed(2)} ${dollar}`, withdraw);
-    _print_link(`Bond ${staged.toFixed(2)} ${dollar}`, bond);
-    _print_link(`Unbond ${bonded.toFixed(2)} ${dollar}`, unbond);
+    _print_link(`Deposit ${unstaked.toFixed(decimals)} ${dollar}`, approveAndDeposit)
+    _print_link(`Withdraw ${staged.toFixed(decimals)} ${dollar}`, withdraw);
+    _print_link(`Bond ${staged.toFixed(decimals)} ${dollar}`, bond);
+    _print_link(`Unbond ${bonded.toFixed(decimals)} ${dollar}`, unbond);
     _print(''); 
 
     const couponFilter = DAO.filters.CouponPurchase(App.YOUR_ADDRESS);
@@ -1338,7 +1341,8 @@ const loadDAO = async (App, DAO, DOLLAR, uniswapAddress, liquidityPoolAddress, t
     return [epoch, uniPrices, totalBonded];
 }
 
-async function loadEmptySetLP(App, LP, stakeTokenAddress, stakeTokenTicker, fluidEpochs, epoch, rewardTicker, uniPrices) {
+async function loadEmptySetLP(App, LP, stakeTokenAddress, stakeTokenTicker, fluidEpochs, epoch, rewardTicker, uniPrices,
+    displayDecimals) {
   const stakeToken = new ethers.Contract(stakeTokenAddress, ERC20_ABI, App.provider);
   const unstaked = await stakeToken.balanceOf(App.YOUR_ADDRESS) / 1e18;
 
@@ -1371,8 +1375,10 @@ async function loadEmptySetLP(App, LP, stakeTokenAddress, stakeTokenTicker, flui
   if (staged > 0) uniPrices.print_contained_price(staged);
   _print(`You have ${bonded.toFixed(8)} bonded ${stakeTokenTicker}, $${formatMoney(bonded * lpPrice)}, ${(bonded/totalBonded*100).toFixed(4)}% of the pool`);
   if (bonded > 0) uniPrices.print_contained_price(bonded);
-  _print(`You have ${rewarded.toFixed(2)} rewarded ${rewardTicker}`);
-  _print(`You have ${claimable.toFixed(2)} claimable ${rewardTicker}`);
+
+  const decimals = displayDecimals ?? 2;
+  _print(`You have ${rewarded.toFixed(decimals)} rewarded ${rewardTicker}`);
+  _print(`You have ${claimable.toFixed(decimals)} claimable ${rewardTicker}`);
   
   if (status == "Fluid") await loadFluidStatus(App, LP, fluidEpochs, epoch);
   const approveAndDeposit = async () => dao_deposit(App, LP, stakeToken);
@@ -1597,13 +1603,14 @@ async function loadDollar(contractInfo, calcPrice) {
   var tokens = {};
 
   const [epoch, uniPrices, totalBonded] = await loadDAO(App, DAO, DOLLAR, contractInfo.UniswapLP.address,
-      contractInfo.LPIncentivizationPool.address, tokens, prices, params.DaoLockupPeriods);
+      contractInfo.LPIncentivizationPool.address, tokens, prices, params.DaoLockupPeriods, false,
+      contractInfo.Dollar.displayDecimals);
 
   const LP = new ethers.Contract(contractInfo.LPIncentivizationPool.address,
       contractInfo.LPIncentivizationPool.abi, App.provider);
   await loadEmptySetLP(App, LP, contractInfo.UniswapLP.address, 
       contractInfo.LPIncentivizationPool.ticker, params.PoolLockupPeriods, 
-      epoch, contractInfo.Dollar.ticker, uniPrices);
+      epoch, contractInfo.Dollar.ticker, uniPrices, contractInfo.Dollar.displayDecimals);
   
   const dollarPrice = getParameterCaseInsensitive(prices, DOLLAR.address).usd;
 
