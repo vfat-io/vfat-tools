@@ -64,7 +64,6 @@ async function main() {
         ] )
     )
     var table2 = new AsciiTable().fromJSON(asdf);
-    console.log(table2)
     logger.innerHTML += table2 + '<br />';
 
     ////////////////
