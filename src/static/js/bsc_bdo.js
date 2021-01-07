@@ -69,6 +69,7 @@ async function main() {
 
 	_print('Pool: ' + key)
 	_print(`Total Value Locked: $${formatMoney(data.poolInfos[key].tvl)}`)
+	_print(`APY ${parseFloat(data.poolInfos[key].apy).toFixed(2)} %`)
 	_print(`You are staking ${userStaked} ${stakingTokenTicker} ($${formatMoney(userStakedUsd)}), ${userStakedPct.toFixed(2)}% of the pool.`);
    	_print_link(`Claim ${pendingHarvest.toFixed(6)} ${rewardToken}`, claim)
     	_print_link(`Exit`, exit)
