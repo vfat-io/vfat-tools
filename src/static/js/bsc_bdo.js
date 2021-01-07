@@ -24,7 +24,7 @@ async function main() {
     _print(`Initialized ${App.YOUR_ADDRESS}\n`);
     _print("Reading smart contracts...\n");
     
-
+    const prices = {BDO: BDOTokenInfo.price, sBDO: sBDOTokenInfo.price, bBDO: bBDOTokenInfo.price}
     let raw = await fetch('https://api.bdollar.fi/api/bdollar/get-pool-infos')
     let data = JSON.parse(await raw.text()).data
 
@@ -69,9 +69,13 @@ async function main() {
 
 	_print('Pool: ' + key)
 	_print(`Total Value Locked: $${formatMoney(data.poolInfos[key].tvl)}`)
+	_print(`${stakingTokenTicker} Price: $${parseFloat(tokenPrice).toFixed(2)}`)
 	_print(`APY ${parseFloat(data.poolInfos[key].apy).toFixed(2)} %`)
-	_print(`You are staking ${userStaked} ${stakingTokenTicker} ($${formatMoney(userStakedUsd)}), ${userStakedPct.toFixed(2)}% of the pool.`);
-   	_print_link(`Claim ${pendingHarvest.toFixed(6)} ${rewardToken}`, claim)
+	_print(`You are staking ${parseFloat(userStaked).toFixed(2)} ${stakingTokenTicker} ($${formatMoney(userStakedUsd)}), ${userStakedPct.toFixed(2)}% of the pool.`);
+   	if (userStaked > 0) {
+                _print(`Est earning: Daily ${parseFloat(userStakedUsd * data.poolInfos[key].apy / 100 / 365/ prices[rewardToken]).toFixed(2)} ${rewardToken}  ($${formatMoney(parseFloat(userStakedUsd * data.poolInfos[key].apy / 100 / 365))})  Monthly: ${parseFloat(userStakedUsd * data.poolInfos[key].apy / 100 / 12 / prices[rewardToken]).toFixed(2)} ${rewardToken} ($${formatMoney(parseFloat(userStakedUsd * data.poolInfos[key].apy / 100 / 12))})  Yearly: ${parseFloat(userStakedUsd * data.poolInfos[key].apy / 100 / prices[rewardToken]).toFixed(2)} ${rewardToken} ($${formatMoney(parseFloat(userStakedUsd * data.poolInfos[key].apy / 100 ))}) `)
+        }
+	_print_link(`Claim ${pendingHarvest.toFixed(6)} ${rewardToken}`, claim)
     	_print_link(`Exit`, exit)
 	_print(' ')
 	hideLoading();
@@ -83,6 +87,7 @@ async function main() {
 	const boardRoomKey = 'Boardroom'
 	const proxyBoardRoomContract = new ethers.Contract(Contracts.BDOLLAR[boardRoomKey].address, Contracts.BDOLLAR[boardRoomKey].abi, App.provider.getSigner())
 	const inBoardRoom = (await proxyBoardRoomContract.balanceOf(App.YOUR_ADDRESS)) / 10 ** 18
+	const inBoardRoomUsd = parseFloat(sBDOTokenInfo.price) * parseFloat(inBoardRoom)
 	const b = data.poolInfos[boardRoomKey]
 	const boardRoomEarned = (await proxyBoardRoomContract.earned(App.YOUR_ADDRESS)) / 10 ** 18
 	const claimBoardRoomReward = async function() {
@@ -98,7 +103,10 @@ async function main() {
 	 _print(`Total Value Locked: $${formatMoney(b.tvl)}`)
 	const apy = parseInt(parseFloat(b.apy)*100)
 	_print(`APY ${apy} %`)
-	_print(`You are staking ${inBoardRoom.toFixed(2)} sBDO in boardroom, ${parseFloat(inBoardRoom*100/b.bsdsLocked).toFixed(2)}% of the pool`)
+	_print(`You are staking ${inBoardRoom.toFixed(2)} sBDO ($${formatMoney(inBoardRoomUsd)}) in boardroom, ${parseFloat(inBoardRoom*100/b.bsdsLocked).toFixed(2)}% of the pool`)
+	if (inBoardRoom > 0) {
+                _print(`Est earning: Daily ${parseFloat(inBoardRoomUsd * apy / 100 / 365/ prices['BDO']).toFixed(2)} BDO ($${formatMoney(parseFloat(inBoardRoomUsd * apy / 100 / 365))})  Monthly:  ${parseFloat(inBoardRoomUsd * apy / 100 / 12 / prices['BDO']).toFixed(2)} BDO ($${formatMoney(parseFloat(inBoardRoomUsd * apy / 100 / 12))})  Yearly: ${parseFloat(inBoardRoomUsd * apy / 100 / prices['BDO']).toFixed(2)} BDO ($${formatMoney(parseFloat(inBoardRoomUsd * apy / 100 ))}) `)
+        }
 	_print_link(`Claim ${boardRoomEarned.toFixed(6)} BDO`, claimBoardRoomReward)
 	_print_link(`Exit`, exitBR)
 }
