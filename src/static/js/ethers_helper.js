@@ -10,7 +10,8 @@ async function init_ethers() {
     App.web3Provider = window.ethereum
     try {
       // Request account access
-      await window.ethereum.enable()
+      const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' })
+      App.YOUR_ADDRESS = accounts[0];
     } catch (error) {
       // User denied account access...
       console.error('User denied account access')
@@ -45,8 +46,8 @@ async function init_ethers() {
       "Could not initialize your ENS domain.\n"
       )
     }
+    App.YOUR_ADDRESS = addr
   }
-  App.YOUR_ADDRESS = addr
 
   // Could not load URL parameter
   if (!App.YOUR_ADDRESS) {
@@ -1279,7 +1280,7 @@ async function loadFluidStatus(App, LP, fluidEpochs, epoch) {
 }
 
 const loadDAO = async (App, DAO, DOLLAR, uniswapAddress, liquidityPoolAddress, tokens, prices, fluidEpochs,
-  isBuggyDAO) => {
+  isBuggyDAO, displayDecimals) => {
     const unstaked = await DOLLAR.balanceOf(App.YOUR_ADDRESS) / 1e18;
     const totalSupply = await DOLLAR.totalSupply() / 1e18;
     const dollar = await DOLLAR.symbol();
@@ -1296,6 +1297,8 @@ const loadDAO = async (App, DAO, DOLLAR, uniswapAddress, liquidityPoolAddress, t
 
     const zaiPrice = getParameterCaseInsensitive(prices, DOLLAR.address).usd;
 
+    const decimals = displayDecimals ?? 2;
+
     const totalBonded = await DAO.totalBonded() / 1e18;
     const totalStaged = await DAO.totalStaged() / 1e18;
     const bonded = await DAO.balanceOfBonded(App.YOUR_ADDRESS) / 1e18;
@@ -1305,13 +1308,13 @@ const loadDAO = async (App, DAO, DOLLAR, uniswapAddress, liquidityPoolAddress, t
     _print(`Current Epoch: ${epoch}\n`);
     _print(`${dollar} Price: ${formatMoney(zaiPrice)}\n`);
     
-    _print(`${dollar} Total Supply: ${totalSupply.toFixed(2)}, $${formatMoney(totalSupply * zaiPrice)}`);
-    _print(`${dollar} Total Staged: ${totalStaged.toFixed(2)}, $${formatMoney(totalStaged * zaiPrice)}`);
-    _print(`${dollar} Total Bonded: ${totalBonded.toFixed(2)}, $${formatMoney(totalBonded * zaiPrice)}`);
+    _print(`${dollar} Total Supply: ${totalSupply.toFixed(decimals)}, $${formatMoney(totalSupply * zaiPrice)}`);
+    _print(`${dollar} Total Staged: ${totalStaged.toFixed(decimals)}, $${formatMoney(totalStaged * zaiPrice)}`);
+    _print(`${dollar} Total Bonded: ${totalBonded.toFixed(decimals)}, $${formatMoney(totalBonded * zaiPrice)}`);
     _print(`Your DAO status is ${status}`);
-    _print(`You have ${unstaked.toFixed(2)} unstaked ${dollar}, $${formatMoney(unstaked*zaiPrice)}`);
-    _print(`You have ${staged.toFixed(2)} staged ${dollar}, $${formatMoney(staged*zaiPrice)}, ${(staged/totalStaged*100).toFixed(4)}% of the pool`);
-    _print(`You have ${bonded.toFixed(2)} bonded ${dollar}, $${formatMoney(bonded*zaiPrice)}, ${(bonded/totalBonded*100).toFixed(4)}% of the pool`);
+    _print(`You have ${unstaked.toFixed(decimals)} unstaked ${dollar}, $${formatMoney(unstaked*zaiPrice)}`);
+    _print(`You have ${staged.toFixed(decimals)} staged ${dollar}, $${formatMoney(staged*zaiPrice)}, ${(staged/totalStaged*100).toFixed(4)}% of the pool`);
+    _print(`You have ${bonded.toFixed(decimals)} bonded ${dollar}, $${formatMoney(bonded*zaiPrice)}, ${(bonded/totalBonded*100).toFixed(4)}% of the pool`);
     if (status == "Fluid") await loadFluidStatus(App, DAO, fluidEpochs, epoch);
     
     const approveAndDeposit = async () => dao_deposit(App, DAO, DOLLAR);
@@ -1319,10 +1322,10 @@ const loadDAO = async (App, DAO, DOLLAR, uniswapAddress, liquidityPoolAddress, t
     const bond = async () => esd_bond(DAO, App); 
     const unbond = async () => isBuggyDAO ? buggy_dao_unbond(DAO,App) : esd_unbond(DAO, App); 
 
-    _print_link(`Deposit ${unstaked.toFixed(2)} ${dollar}`, approveAndDeposit)
-    _print_link(`Withdraw ${staged.toFixed(2)} ${dollar}`, withdraw);
-    _print_link(`Bond ${staged.toFixed(2)} ${dollar}`, bond);
-    _print_link(`Unbond ${bonded.toFixed(2)} ${dollar}`, unbond);
+    _print_link(`Deposit ${unstaked.toFixed(decimals)} ${dollar}`, approveAndDeposit)
+    _print_link(`Withdraw ${staged.toFixed(decimals)} ${dollar}`, withdraw);
+    _print_link(`Bond ${staged.toFixed(decimals)} ${dollar}`, bond);
+    _print_link(`Unbond ${bonded.toFixed(decimals)} ${dollar}`, unbond);
     _print(''); 
 
     const couponFilter = DAO.filters.CouponPurchase(App.YOUR_ADDRESS);
@@ -1338,7 +1341,8 @@ const loadDAO = async (App, DAO, DOLLAR, uniswapAddress, liquidityPoolAddress, t
     return [epoch, uniPrices, totalBonded];
 }
 
-async function loadEmptySetLP(App, LP, stakeTokenAddress, stakeTokenTicker, fluidEpochs, epoch, rewardTicker, uniPrices) {
+async function loadEmptySetLP(App, LP, stakeTokenAddress, stakeTokenTicker, fluidEpochs, epoch, rewardTicker, uniPrices,
+    displayDecimals) {
   const stakeToken = new ethers.Contract(stakeTokenAddress, ERC20_ABI, App.provider);
   const unstaked = await stakeToken.balanceOf(App.YOUR_ADDRESS) / 1e18;
 
@@ -1371,8 +1375,10 @@ async function loadEmptySetLP(App, LP, stakeTokenAddress, stakeTokenTicker, flui
   if (staged > 0) uniPrices.print_contained_price(staged);
   _print(`You have ${bonded.toFixed(8)} bonded ${stakeTokenTicker}, $${formatMoney(bonded * lpPrice)}, ${(bonded/totalBonded*100).toFixed(4)}% of the pool`);
   if (bonded > 0) uniPrices.print_contained_price(bonded);
-  _print(`You have ${rewarded.toFixed(2)} rewarded ${rewardTicker}`);
-  _print(`You have ${claimable.toFixed(2)} claimable ${rewardTicker}`);
+
+  const decimals = displayDecimals ?? 2;
+  _print(`You have ${rewarded.toFixed(decimals)} rewarded ${rewardTicker}`);
+  _print(`You have ${claimable.toFixed(decimals)} claimable ${rewardTicker}`);
   
   if (status == "Fluid") await loadFluidStatus(App, LP, fluidEpochs, epoch);
   const approveAndDeposit = async () => dao_deposit(App, LP, stakeToken);
@@ -1551,6 +1557,8 @@ async function printLPUnbonds(provider, DAO, epoch, fluidEpochs, epochTimeSec) {
     }
 }
 
+const SecondsPerDay = 86400;
+
 async function calculateDollarAPR(DAO, parameters, twap, dollarPrice, uniPrices, totalBonded, calculateChange) {
     const totalCoupons = await DAO.totalCoupons() / 1e18;
     const totalRedeemable = await DAO.totalRedeemable() / 1e18;
@@ -1569,7 +1577,7 @@ async function calculateDollarAPR(DAO, parameters, twap, dollarPrice, uniPrices,
     const daoRewards = maxRewards - totalOutstanding
 
     if (daoRewards > 0) {
-        const bondedReturn = daoRewards / totalBonded * 100 * 24; //24 epochs per day
+        const bondedReturn = daoRewards / totalBonded * 100 * SecondsPerDay / parameters.EpochPeriod;
 
         _print(`DAO APR: Day ${bondedReturn.toFixed(2)}% Week ${(bondedReturn * 7).toFixed(2)}% Year ${(bondedReturn * 365).toFixed(2)}%`)
 
@@ -1578,7 +1586,7 @@ async function calculateDollarAPR(DAO, parameters, twap, dollarPrice, uniPrices,
     }
     // Calculate total rewards allocated to LP
     const lpRewards = totalNet * calcPrice * lpReward
-    const lpReturn = lpRewards * dollarPrice / uniPrices.staked_tvl * 100 * 24;
+    const lpReturn = lpRewards * dollarPrice / uniPrices.staked_tvl * 100 * SecondsPerDay / parameters.EpochPeriod;
 
     _print(`LP  APR: Day ${lpReturn.toFixed(2)}% Week ${(lpReturn * 7).toFixed(2)}% Year ${(lpReturn * 365).toFixed(2)}%`)  
 }
@@ -1597,13 +1605,14 @@ async function loadDollar(contractInfo, calcPrice) {
   var tokens = {};
 
   const [epoch, uniPrices, totalBonded] = await loadDAO(App, DAO, DOLLAR, contractInfo.UniswapLP.address,
-      contractInfo.LPIncentivizationPool.address, tokens, prices, params.DaoLockupPeriods);
+      contractInfo.LPIncentivizationPool.address, tokens, prices, params.DaoLockupPeriods, false,
+      contractInfo.Dollar.displayDecimals);
 
   const LP = new ethers.Contract(contractInfo.LPIncentivizationPool.address,
       contractInfo.LPIncentivizationPool.abi, App.provider);
   await loadEmptySetLP(App, LP, contractInfo.UniswapLP.address, 
       contractInfo.LPIncentivizationPool.ticker, params.PoolLockupPeriods, 
-      epoch, contractInfo.Dollar.ticker, uniPrices);
+      epoch, contractInfo.Dollar.ticker, uniPrices, contractInfo.Dollar.displayDecimals);
   
   const dollarPrice = getParameterCaseInsensitive(prices, DOLLAR.address).usd;
 
@@ -1653,4 +1662,166 @@ const calculateEmptySetChange = (params, totalCoupons, totalRedeemable, price) =
   } else {
       return Math.abs(price - 1)
   }
+}
+
+//ratio is used for multi-boardroom setups
+async function loadBoardroom(App, prices, boardroomAddress, oracleAddress, lptAddress, rewardTokenAddress, stakeTicker, rewardTicker,
+        epochsPerDay, maxSupplyIncrease, decimals, ratio, targetMantissa) {
+    const BOARDROOM = new ethers.Contract(boardroomAddress, BOARDROOM_ABI, App.provider);
+    const ORACLE = new ethers.Contract(oracleAddress, BASIS_ORACLE_ABI, App.provider);
+    const share = await BOARDROOM.share();
+    const SHARE = new ethers.Contract(share, ERC20_ABI, App.provider);
+    const userUnstaked = await SHARE.balanceOf(App.YOUR_ADDRESS) / 1e18;
+    const sharePrice = getParameterCaseInsensitive(prices, share)?.usd;
+    const userStaked = await BOARDROOM.balanceOf(App.YOUR_ADDRESS) / 1e18;
+    const userStakedUsd = userStaked * sharePrice;
+    const totalStaked = await BOARDROOM.totalSupply() / 1e18;
+    const totalStakedUsd = totalStaked * sharePrice;
+    const userPct = userStaked / totalStaked * 100;
+    const earned = await BOARDROOM.earned(App.YOUR_ADDRESS) / 1e18;
+    _print(`Boardroom`);
+    _print(`There is a total ${totalStaked.toFixed(2)} ${stakeTicker} ($${formatMoney(totalStakedUsd)}) staked in the Boardroom.`)
+    _print(`You are staking ${userStaked} ${stakeTicker} ($${formatMoney(userStakedUsd)}), ${userPct.toFixed(2)}% of the pool.`);
+
+    const oldTimestamp = await ORACLE.blockTimestampLast();
+    const token0 = await ORACLE.token0();
+    const token1 = await ORACLE.token1();
+    let twap;
+    if (token0.toLowerCase() == rewardTokenAddress.toLowerCase()) {
+        const oldPrice0 = await ORACLE.price0CumulativeLast();
+        const [price0, , timestamp] = await getCurrentPriceAndTimestamp(App, lptAddress);
+        twap = await calculateTwap(oldPrice0, oldTimestamp, price0, timestamp, targetMantissa);
+    } 
+    else if (token1.toLowerCase() == rewardTokenAddress.toLowerCase()) {
+        const oldPrice1 = await ORACLE.price1CumulativeLast();
+        const [, price1, timestamp] = await getCurrentPriceAndTimestamp(App, lptAddress);
+        twap = await calculateTwap(oldPrice1, oldTimestamp, price1, timestamp, targetMantissa);
+    }
+    if (twap > 1) {
+        const REWARD_TOKEN = new ethers.Contract(rewardTokenAddress, ERC20_ABI, App.provider);
+        const totalSupply = await REWARD_TOKEN.totalSupply() / (10 ** await REWARD_TOKEN.decimals());
+        const newTokens = totalSupply *  Math.min(twap - 1, maxSupplyIncrease)  * ratio;
+        _print(`The following figures are approximate as they are not using the official TWAP.`);
+        _print(`There will be ${newTokens.toFixed(decimals)} ${rewardTicker} issued at next expansion.`);
+        const rewardPrice = getParameterCaseInsensitive(prices, rewardTokenAddress).usd;
+        const boardReturn = newTokens * rewardPrice / totalStakedUsd * 100 * epochsPerDay;
+        _print(`Boardroom APR: Day ${(boardReturn).toFixed(2)}% Week ${(boardReturn * 7).toFixed(2)}% Year ${(boardReturn * 365).toFixed(2)}%`)
+    }
+
+    const approveTENDAndStake = async () => rewardsContract_stake(share, boardroomAddress, App);
+    const unstake = async () => rewardsContract_unstake(boardroomAddress, App);
+    const claim = async () => rewardsContract_claim(boardroomAddress, App);
+    const exit = async () =>  rewardsContract_exit(boardroomAddress, App);
+    const revoke = async () => rewardsContract_resetApprove(share, boardroomAddress, App);
+
+    _print_link(`Stake ${userUnstaked.toFixed(decimals)} ${stakeTicker}`, approveTENDAndStake)
+    _print_link(`Unstake ${userStaked.toFixed(decimals)} ${stakeTicker}`, unstake)
+    _print_link(`Claim ${earned.toFixed(decimals)} ${rewardTicker}`, claim)
+    _print_link(`Revoke (set approval to 0)`, revoke)
+    _print_link(`Exit`, exit)
+    _print(`\n`);
+
+    return { stakedTvl : totalStakedUsd };
+}
+
+async function loadSynthetixPool(App, tokens, prices, stakingAbi, stakingAddress,
+        rewardTokenFunction, stakeTokenFunction) {
+    const STAKING_POOL = new ethers.Contract(stakingAddress, stakingAbi, App.provider);
+
+    const stakeTokenAddress = await STAKING_POOL.callStatic[stakeTokenFunction]();
+
+    const rewardTokenAddress = await STAKING_POOL.callStatic[rewardTokenFunction]();
+
+    var stakeToken = await getToken(App, stakeTokenAddress, stakingAddress);
+
+    if (stakeTokenAddress.toLowerCase() === rewardTokenAddress.toLowerCase()) {
+        stakeToken.staked = await STAKING_POOL.totalSupply() / 10 ** stakeToken.decimals;
+    }
+
+    var newPriceAddresses = stakeToken.tokens.filter(x =>
+        !getParameterCaseInsensitive(prices, x));
+    var newPrices = await lookUpTokenPrices(newPriceAddresses);
+    for (const key in newPrices) {
+        if (newPrices[key])
+            prices[key] = newPrices[key];
+    }
+    var newTokenAddresses = stakeToken.tokens.filter(x =>
+        !getParameterCaseInsensitive(tokens,x));
+    for (const address of newTokenAddresses) {
+        tokens[address] = await getToken(App, address, stakingAddress);
+    }
+    if (!getParameterCaseInsensitive(tokens, rewardTokenAddress)) {
+        tokens[rewardTokenAddress] = await getToken(App, rewardTokenAddress, stakingAddress);
+    }
+    const rewardToken = getParameterCaseInsensitive(tokens, rewardTokenAddress);
+
+    const rewardTokenTicker = rewardToken.symbol;
+
+    const poolPrices = getPoolPrices(tokens, prices, stakeToken);
+
+    const stakingTokenTicker = poolPrices.stakingTokenTicker;
+
+    const stakeTokenPrice =
+        prices[stakeTokenAddress]?.usd ?? getParameterCaseInsensitive(prices, stakeTokenAddress)?.usd;
+    const rewardTokenPrice = getParameterCaseInsensitive(prices, rewardTokenAddress)?.usd;
+
+    // Find out reward rate
+    const weeklyRewards = await get_synth_weekly_rewards(STAKING_POOL);
+
+    const usdPerWeek = weeklyRewards * rewardTokenPrice;
+
+    const staked_tvl = poolPrices.staked_tvl;
+
+    const userStaked = await STAKING_POOL.balanceOf(App.YOUR_ADDRESS) / 10 ** stakeToken.decimals;
+
+    const userUnstaked = stakeToken.unstaked;
+
+    const earned = await STAKING_POOL.earned(App.YOUR_ADDRESS) / 10 ** rewardToken.decimals;
+
+    poolPrices.print_price();
+    _print(`${rewardTokenTicker} Per Week: ${weeklyRewards.toFixed(2)} ($${formatMoney(usdPerWeek)})`);
+    const weeklyAPY = usdPerWeek / staked_tvl * 100;
+    const dailyAPY = weeklyAPY / 7;
+    const yearlyAPY = weeklyAPY * 52;
+    _print(`APY: Day ${dailyAPY.toFixed(2)}% Week ${weeklyAPY.toFixed(2)}% Year ${yearlyAPY.toFixed(2)}%`);
+    const userStakedUsd = userStaked * stakeTokenPrice;
+    const userStakedPct = userStakedUsd / staked_tvl * 100;
+    _print(`You are staking ${userStaked.toFixed(6)} ${stakingTokenTicker} ` +
+           `$${formatMoney(userStakedUsd)} (${userStakedPct.toFixed(2)}% of the pool).`);
+    if (userStaked > 0) {
+        const userWeeklyRewards = userStakedPct * weeklyRewards / 100;
+        const userDailyRewards = userWeeklyRewards / 7;
+        const userYearlyRewards = userWeeklyRewards * 52;
+        _print(`Estimated ${rewardTokenTicker} earnings:`
+            + ` Day ${userDailyRewards.toFixed(2)} ($${formatMoney(userDailyRewards*rewardTokenPrice)})`
+            + ` Week ${userWeeklyRewards.toFixed(2)} ($${formatMoney(userWeeklyRewards*rewardTokenPrice)})`
+            + ` Year ${userYearlyRewards.toFixed(2)} ($${formatMoney(userYearlyRewards*rewardTokenPrice)})`);
+    }
+    const approveTENDAndStake = async function() {
+      return rewardsContract_stake(stakeTokenAddress, stakingAddress, App)
+    }
+    const unstake = async function() {
+      return rewardsContract_unstake(stakingAddress, App)
+    }
+    const claim = async function() {
+      return rewardsContract_claim(stakingAddress, App)
+    }
+    const exit = async function() {
+      return rewardsContract_exit(stakingAddress, App)
+    }
+    const revoke = async function() {
+      return rewardsContract_resetApprove(stakeTokenAddress, stakingAddress, App)
+    }
+    if (stakeTokenFunction !== "mith") {
+        _print_link(`Stake ${userUnstaked.toFixed(6)} ${stakingTokenTicker}`, approveTENDAndStake)
+    }
+    _print_link(`Unstake ${userStaked.toFixed(6)} ${stakingTokenTicker}`, unstake)
+    _print_link(`Claim ${earned.toFixed(6)} ${rewardTokenTicker}`, claim)
+    _print_link(`Revoke (set approval to 0)`, revoke)
+    _print_link(`Exit`, exit)
+    _print(`\n`);
+
+    return {
+        staked_tvl: poolPrices.staked_tvl,
+    }
 }

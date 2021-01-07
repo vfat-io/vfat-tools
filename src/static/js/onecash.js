@@ -107,8 +107,8 @@ async function loadPool(App, tokens, prices, stakingAbi, stakingAddress,
     _print(`\n`);
 }
 
-async function loadBoardroom(App, tokens, prices) {
-    const BOARDROOM_ADDRESS = "0xFD35C0e9706A669d7be9B2D9C69AE2927F1071dB";
+async function loadBoardroom(App, prices, address, stakeTicker, ratio) {
+    const BOARDROOM_ADDRESS = address;
     const DAI_ONC_ADDRESS = "0x3Ba3C8fB0142A6f2bf3e2990A08957866203f961"
     const REWARD_TOKEN_ADDRESS = "0xD90E69f67203EBE02c917B5128629E77B4cd92dc";
     const BOARDROOM = new ethers.Contract(BOARDROOM_ADDRESS, ONECASH_BOARDROOM_ABI, App.provider);
@@ -123,8 +123,8 @@ async function loadBoardroom(App, tokens, prices) {
     const userPct = userStaked / totalStaked * 100;
     const earned = await BOARDROOM.earned(App.YOUR_ADDRESS) / 1e18;
     _print(`Boardroom`);
-    _print(`There is a total ${totalStaked.toFixed(2)} ONS ($${formatMoney(totalStakedUsd)}) staked in the Boardroom.`)
-    _print(`You are staking ${userStaked} ONS ($${formatMoney(userStakedUsd)}), ${userPct.toFixed(2)}% of the pool.`);
+    _print(`There is a total ${totalStaked.toFixed(2)} ${stakeTicker} ($${formatMoney(totalStakedUsd)}) staked in the Boardroom.`)
+    _print(`You are staking ${userStaked} ${stakeTicker} ($${formatMoney(userStakedUsd)}), ${userPct.toFixed(2)}% of the pool.`);
 
     const resp = await fetch('https://api.vfat.tools/twap/' + DAI_ONC_ADDRESS);
     const text = await resp.text();
@@ -137,7 +137,7 @@ async function loadBoardroom(App, tokens, prices) {
         if (twap > 1.05) {
             const REWARD_TOKEN = new ethers.Contract(REWARD_TOKEN_ADDRESS, ERC20_ABI, App.provider);
             const totalSupply = await REWARD_TOKEN.totalSupply() / 1e18;
-            const newTokens = totalSupply *  Math.min(twap - 1, 0.1);
+            const newTokens = totalSupply *  Math.min(twap - 1, 0.1)  * ratio;
             _print(`The following figures are approximate as they are not using the official TWAP.`);
             _print(`There will be ${newTokens.toFixed(2)} ONC issued at next expansion.`);
             const rewardPrice = getParameterCaseInsensitive(prices, REWARD_TOKEN_ADDRESS).usd;
@@ -159,7 +159,6 @@ async function loadBoardroom(App, tokens, prices) {
     _print_link(`Exit`, exit)
     _print(`\n`);
 }
-
 async function main() {
 
     const CONTRACTS = [      
@@ -184,7 +183,8 @@ async function main() {
         }
     }
 
-    await loadBoardroom(App, tokens, prices);
+    await loadBoardroom(App, prices, "0x8eeBDFc76a9f98d0b36b107A940ADAdBA8C8df27", "ONS", 0.6);
+    await loadBoardroom(App, prices, "0xd22C1549017Cf96eAA093ad47Da0CF62f42b0562", "ONS-DAI LP", 0.4);
   
     hideLoading();
   }
