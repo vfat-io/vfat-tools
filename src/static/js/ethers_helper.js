@@ -1280,7 +1280,7 @@ async function loadFluidStatus(App, LP, fluidEpochs, epoch) {
 }
 
 const loadDAO = async (App, DAO, DOLLAR, uniswapAddress, liquidityPoolAddress, tokens, prices, fluidEpochs,
-  isBuggyDAO, displayDecimals) => {
+  isBuggyDAO, displayDecimals, epochSec) => {
     const unstaked = await DOLLAR.balanceOf(App.YOUR_ADDRESS) / 1e18;
     const totalSupply = await DOLLAR.totalSupply() / 1e18;
     const dollar = await DOLLAR.symbol();
@@ -1305,7 +1305,8 @@ const loadDAO = async (App, DAO, DOLLAR, uniswapAddress, liquidityPoolAddress, t
     const staged = await DAO.balanceOfStaged(App.YOUR_ADDRESS) / 1e18;
     const status = await DAO.statusOf(App.YOUR_ADDRESS) ? "Fluid" : "Frozen";
     const epoch = await DAO.epoch() / 1;
-    _print(`Current Epoch: ${epoch}\n`);
+    _print(`Current Epoch: ${epoch}`);
+    if (epochSec) _print(`Epoch Period: ${new Date(epochSec * 1000).toISOString().substr(11, 8)}`)
     _print(`${dollar} Price: ${formatMoney(zaiPrice)}\n`);
     
     _print(`${dollar} Total Supply: ${totalSupply.toFixed(decimals)}, $${formatMoney(totalSupply * zaiPrice)}`);
@@ -1606,7 +1607,7 @@ async function loadDollar(contractInfo, calcPrice) {
 
   const [epoch, uniPrices, totalBonded] = await loadDAO(App, DAO, DOLLAR, contractInfo.UniswapLP.address,
       contractInfo.LPIncentivizationPool.address, tokens, prices, params.DaoLockupPeriods, false,
-      contractInfo.Dollar.displayDecimals);
+      contractInfo.Dollar.displayDecimals, params.EpochPeriod);
 
   const LP = new ethers.Contract(contractInfo.LPIncentivizationPool.address,
       contractInfo.LPIncentivizationPool.abi, App.provider);
