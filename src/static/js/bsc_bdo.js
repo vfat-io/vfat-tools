@@ -270,7 +270,7 @@ const unstake = async (contract, poolId, amount, App) => {
 }
 
 const stakeBR = async (contract, amount, App) => {
-    contract.deposit(amount, {
+    contract.stake(amount, {
             gasLimit: 250000
         })
         .then(function(t) {
