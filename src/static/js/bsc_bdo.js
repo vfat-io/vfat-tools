@@ -7,12 +7,16 @@ async function main() {
     _print(`TOKEN INFORMATION`)
     const BDOTokenInfo = await getTokenInfo('BDO')
     _print(`BDO price $${formatMoney(BDOTokenInfo.price)}`)
+    _print(`BDO Circulating ${BDOTokenInfo.circulatingSupply}`)
+    _print(`Marketcap: $${formatMoney(BDOTokenInfo.price * BDOTokenInfo.circulatingSupply)}`)
     _print(`BDO totalSupply ${BDOTokenInfo.totalSupply}`)
     _print(`Fully diluted marketcap: $${formatMoney(BDOTokenInfo.price * BDOTokenInfo.totalSupply)}`)
     _print(' ')
 
     const sBDOTokenInfo = await getTokenInfo('sBDO')
     _print(`sBDO price $${formatMoney(sBDOTokenInfo.price)}`)
+    _print(`sBDO Circulating ${sBDOTokenInfo.circulatingSupply}`)
+    _print(`Marketcap: $${formatMoney(sBDOTokenInfo.price * sBDOTokenInfo.circulatingSupply)}`)
     _print(`sBDO totalSupply ${sBDOTokenInfo.totalSupply}`)
     _print(`Fully diluted marketcap: $${formatMoney(sBDOTokenInfo.price * sBDOTokenInfo.totalSupply)}`)
     _print(' ')
@@ -222,7 +226,7 @@ const exitBoardRoom = async (contract, App) => {
 }
 
 const approve = async (contract, spender, amount, App) => {
-	contract.approve(spender, amount, {
+    contract.approve(spender, amount, {
             gasLimit: 250000
         })
         .then(function(t) {
