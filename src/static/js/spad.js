@@ -15,7 +15,7 @@ Parameters : {
             DaoRatio : 0.755,
             SupplyChangeLimit : 0.03,
             CouponSupplyChangeLimit : 0.06,
-            GrowthThreshold : 0
+            GrowthThreshold : 1.0
 }
 */
 

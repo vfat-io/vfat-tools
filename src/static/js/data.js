@@ -369,7 +369,8 @@ const Contracts = {
             DaoRatio : 0.755,
             SupplyChangeLimit : 0.03,
             CouponSupplyChangeLimit : 0.06,
-            GrowthThreshold : 0
+            GrowthThreshold : 1.0,
+            BaseTokenDecimals : 6
         }
     },
     BSC_SPAD : { //Binance Smart Chain Spacedollar
@@ -401,7 +402,8 @@ const Contracts = {
             DaoRatio : 0.755,
             SupplyChangeLimit : 0.03,
             CouponSupplyChangeLimit : 0.06,
-            GrowthThreshold : 0
+            GrowthThreshold : 1.0,
+            BaseTokenDecimals : 6
         }
     },
     ZSD : { //Zeroset
@@ -431,7 +433,8 @@ const Contracts = {
             PoolRatio : 0.3,
             DaoRatio : 0.7,
             SupplyChangeLimit : 0.06,
-            SupplyChangeDivisor : 9
+            SupplyChangeDivisor : 9,
+            BaseTokenDecimals : 6
         }
     }, 
     FSD : { //Freq Set Dollar
@@ -463,7 +466,8 @@ const Contracts = {
             PoolRatio : 0.5,
             DaoRatio : 0.5,
             SupplyChangeLimit : 0.1,
-            SupplyChangeDivisor : 24
+            SupplyChangeDivisor : 24,
+            BaseTokenDecimals : 6
         }
     },
     PEN : { //Penny 
@@ -496,7 +500,8 @@ const Contracts = {
             DaoRatio : 0.5,
             SupplyChangeLimit : 0.02,
             CouponSupplyChangeLimit : 0.06,
-            GrowthThreshold : 0
+            GrowthThreshold : 1.0,
+            BaseTokenDecimals : 6
         }
     },
     TSD : { //TrueDollar
@@ -529,7 +534,8 @@ const Contracts = {
             DaoRatio : 0.6,
             SupplyChangeLimit : 0.04,
             SupplyChangeDivisor : 10,
-            GrowCutoff : 1.0
+            GrowthThreshold : 1.0,
+            BaseTokenDecimals : 6
         }
     },
     PSD : {
@@ -581,7 +587,8 @@ const Contracts = {
             DaoRatio : 0.6,
             SupplyChangeLimit : 0.1,
             SupplyChangeDivisor : 12,
-            GrowCutoff : 1.0
+            GrowthThreshold : 1.0,
+            BaseTokenDecimals : 6
         }
     },
     _1SD : {
@@ -614,7 +621,8 @@ const Contracts = {
             DaoRatio : 0.595,
             SupplyChangeLimit : 0.03,
             CouponSupplyChangeLimit : 0.06,
-            GrowthThreshold : 0
+            GrowthThreshold : 1.0,
+            BaseTokenDecimals : 6
         }
     },
     ESG : {
@@ -648,7 +656,8 @@ const Contracts = {
             DaoRatio : 0.775,
             SupplyChangeLimit : 0.1,
             CouponSupplyChangeLimit : 0.06,
-            GrowthThreshold : 0
+            GrowthThreshold : 1.0,
+            BaseTokenDecimals : 18
         }
     },
     DCC : {
@@ -853,7 +862,7 @@ const Dollars =
             DaoRatio : 0.775,
             SupplyChangeLimit : 0.1,
             CouponSupplyChangeLimit : 0.06,
-            GrowthThreshold : 0
+            GrowthThreshold : 1.0
         }
     },
     FSD : { //Freq Set Dollar
@@ -924,7 +933,7 @@ const Dollars =
             DaoRatio : 0.5,
             SupplyChangeLimit : 0.02,
             CouponSupplyChangeLimit : 0.06,
-            GrowthThreshold : 0
+            GrowthThreshold : 1.0
         }
     },
     TSD : { //TrueDollar
@@ -960,7 +969,7 @@ const Dollars =
             DaoRatio : 0.6,
             SupplyChangeLimit : 0.04,
             SupplyChangeDivisor : 10,
-            GrowCutoff : 1.0
+            GrowthThreshold : 1.0
         }
     },
     SDP : {
@@ -996,7 +1005,7 @@ const Dollars =
             DaoRatio : 0.6,
             SupplyChangeLimit : 0.1,
             SupplyChangeDivisor : 12,
-            GrowCutoff : 1.0
+            GrowthThreshold : 1.0
         }
     },
     _1SD : {
@@ -1032,7 +1041,7 @@ const Dollars =
             DaoRatio : 0.595,
             SupplyChangeLimit : 0.03,
             CouponSupplyChangeLimit : 0.06,
-            GrowthThreshold : 0
+            GrowthThreshold : 1.0
         }
     },
 }

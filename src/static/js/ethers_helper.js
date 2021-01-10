@@ -1286,7 +1286,8 @@ const loadDAO = async (App, DAO, DOLLAR, uniswapAddress, liquidityPoolAddress, t
     const dollar = await DOLLAR.symbol();
 
     const uniPool = await getToken(App, uniswapAddress, liquidityPoolAddress);  
-    var newPrices = await lookUpTokenPrices(uniPool.tokens);
+    var newPrices = await lookUpTokenPrices(uniPool.tokens.filter(t => 
+      t.toLowerCase() != "0x5cf9242493be1411b93d064ca2e468961bbb5924")); //Exception for ESG due to coingecko bug
     for (const key in newPrices) {
         prices[key] = newPrices[key];
     }
@@ -1307,7 +1308,7 @@ const loadDAO = async (App, DAO, DOLLAR, uniswapAddress, liquidityPoolAddress, t
     const epoch = await DAO.epoch() / 1;
     _print(`Current Epoch: ${epoch}`);
     if (epochSec) _print(`Epoch Period: ${new Date(epochSec * 1000).toISOString().substr(11, 8)}`)
-    _print(`${dollar} Price: ${formatMoney(zaiPrice)}\n`);
+    _print(`${dollar} Price: $${formatMoney(zaiPrice)}\n`);
     
     _print(`${dollar} Total Supply: ${totalSupply.toFixed(decimals)}, $${formatMoney(totalSupply * zaiPrice)}`);
     _print(`${dollar} Total Staged: ${totalStaged.toFixed(decimals)}, $${formatMoney(totalStaged * zaiPrice)}`);
@@ -1485,7 +1486,7 @@ const buggy_dao_unbond = async function(DAO, App) {
   }
 }
 
-///targetMantissa should be 12 for USDC based, 24 for DAI based
+///targetMantissa should be 12 for USDC based, 0 for DAI based
 const calculateTwap = async (oldPrice0, oldTimestamp, price0, timestamp, targetMantissa) => {
     // Convert Prices to BN
     const price0CumulativeLast = ethers.BigNumber.from(oldPrice0)
@@ -1524,7 +1525,8 @@ const getCurrentPriceAndTimestamp = async (App, address) => {
     const price0 = await UNI.price0CumulativeLast();
     const price1 = await UNI.price1CumulativeLast();
     const { _blockTimestampLast } = await UNI.getReserves()
-    return [ price0, price1, _blockTimestampLast ]
+    const token0 = await UNI.token0();
+    return [ price0, price1, _blockTimestampLast, token0 ]
 }
 
 const getBasisCurrentPriceAndTimestamp = async (App, address) => {
@@ -1626,13 +1628,20 @@ async function loadDollar(contractInfo, calcPrice) {
       const text = await resp.text();
       const array = text.split("\n");
       if (array.length > 0) {
-          const [oldPrice0, , oldTimestamp] = array[array.length - 2].split(' ') //last line is blank
-          const [price0, , timestamp] = await getCurrentPriceAndTimestamp(App, contractInfo.UniswapLP.address);
-          const twap = await calculateTwap(oldPrice0, oldTimestamp, price0, timestamp, 12);
-          _print(`TWAP: ${twap}\n`);
+          const [oldPrice0, oldPrice1, oldTimestamp] = array[array.length - 2].split(' ') //last line is blank
+          const [price0, price1, timestamp, token0] = await getCurrentPriceAndTimestamp(App, contractInfo.UniswapLP.address);
+          const targetMantissa = 18 - (params.BaseTokenDecimals ?? 6); //default USDC
+          let twap;
+          if (token0.toLowerCase() == DOLLAR.address.toLowerCase()) {
+            twap = await calculateTwap(oldPrice0, oldTimestamp, price0, timestamp, targetMantissa);
+          }
+          else {
+            twap = await calculateTwap(oldPrice1, oldTimestamp, price1, timestamp, targetMantissa);
+          }
+          _print(`TWAP (using vfat oracle): ${twap}\n`);
 
-          if (twap > params.GrowCutoff ?? 1) {
-              await calculateDollarAPR(DAO, contractInfo.Parameters, twap, dollarPrice, uniPrices, calcPrice);
+          if (twap > params.GrowthThreshold ?? 1) {
+              await calculateDollarAPR(DAO, contractInfo.Parameters, twap, dollarPrice, uniPrices, totalBonded, calcPrice);
           }
           else {
               _print(`DAO APR: Day 0% Week 0% Year 0%`)
