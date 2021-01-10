@@ -1658,26 +1658,23 @@ async function loadDollar(contractInfo, calcPrice) {
   
   const dollarPrice = getParameterCaseInsensitive(prices, DOLLAR.address).usd;
 
-  if (epoch < params.BootstrappingPeriod) { //bootstrapping
+  if (epoch < params.BootstrappingPeriod) { 
       const twap = params.BootstrappingPrice;      
       await calculateDollarAPR(DAO, params, twap, dollarPrice, uniPrices, totalBonded, calcPrice);
   }
   else {
-      const resp = await fetch('https://api.vfat.tools/twap/' + contractInfo.UniswapLP.address);
-      const text = await resp.text();
-      const array = text.split("\n");
-      let twap = getTwap(App, contractInfo.UniswapLP.address, DOLLAR.address, params.BaseTokenDecimals);
-      if (twap) {
-          _print(`TWAP (using vfat oracle): ${twap}\n`);
+    let twap = await getTWAP(App, contractInfo.UniswapLP.address, DOLLAR.address, params.BaseTokenDecimals);
+    if (twap) {
+        _print(`TWAP (using vfat oracle): ${twap}\n`);
 
-          if (twap > params.GrowthThreshold ?? 1) {
-              await calculateDollarAPR(DAO, contractInfo.Parameters, twap, dollarPrice, uniPrices, totalBonded, calcPrice);
-          }
-          else {
-              _print(`DAO APR: Day 0% Week 0% Year 0%`)
-              _print(`LP APR: Day 0% Week 0% Year 0%`)
-          }        
-      }
+        if (twap > params.GrowthThreshold ?? 1) {
+            await calculateDollarAPR(DAO, contractInfo.Parameters, twap, dollarPrice, uniPrices, totalBonded, calcPrice);
+        }
+        else {
+            _print(`DAO APR: Day 0% Week 0% Year 0%`)
+            _print(`LP APR: Day 0% Week 0% Year 0%`)
+        }        
+    }
   }
   _print(`\nDAO Unbonds`)
   await printDaoUnbonds(App.provider, DAO, epoch + 1, params.DaoLockupPeriods, params.EpochPeriod);
