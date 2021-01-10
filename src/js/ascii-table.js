@@ -514,7 +514,8 @@ AsciiTable.prototype.toString = function() {
       max[k] = Math.max(max[k], cell ? cell.toString().length : 0)
     }
   }
-  max[3] = 42 //#EYO hacky fix col3 length - this is returning the length of the whole html string not just the resulting link text
+  if (this.__title == "new uni pools") 
+    max[3] = 42 //#EYO hacky fix col3 length - this is returning the length of the whole html string not just the resulting link text
   this.__colMaxes = max
   justify = this.__justify ? Math.max.apply(null, max) : 0
 

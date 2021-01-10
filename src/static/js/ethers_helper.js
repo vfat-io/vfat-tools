@@ -1612,6 +1612,25 @@ async function calculateDollarAPR(DAO, parameters, twap, dollarPrice, uniPrices,
     _print(`LP  APR: Day ${lpReturn.toFixed(2)}% Week ${(lpReturn * 7).toFixed(2)}% Year ${(lpReturn * 365).toFixed(2)}%`)  
 }
 
+async function getTWAP(App, lpAddress, dollarAddress, baseTokenDecimals) {  
+  const resp = await fetch('https://api.vfat.tools/twap/' + lpAddress);
+  const text = await resp.text();
+  const array = text.split("\n");
+  let twap;
+  if (array.length > 0) {
+      const [oldPrice0, oldPrice1, oldTimestamp] = array[array.length - 2].split(' ') //last line is blank
+      const [price0, price1, timestamp, token0] = await getCurrentPriceAndTimestamp(App, lpAddress);
+      const targetMantissa = 18 - (baseTokenDecimals ?? 6); //default USDC
+      if (token0.toLowerCase() == dollarAddress.toLowerCase()) {
+        twap = await calculateTwap(oldPrice0, oldTimestamp, price0, timestamp, targetMantissa);
+      }
+      else {
+        twap = await calculateTwap(oldPrice1, oldTimestamp, price1, timestamp, targetMantissa);
+      }
+  }
+  return twap;
+}
+
 async function loadDollar(contractInfo, calcPrice) {
   const params = contractInfo.Parameters;
   
@@ -1647,17 +1666,8 @@ async function loadDollar(contractInfo, calcPrice) {
       const resp = await fetch('https://api.vfat.tools/twap/' + contractInfo.UniswapLP.address);
       const text = await resp.text();
       const array = text.split("\n");
-      if (array.length > 0) {
-          const [oldPrice0, oldPrice1, oldTimestamp] = array[array.length - 2].split(' ') //last line is blank
-          const [price0, price1, timestamp, token0] = await getCurrentPriceAndTimestamp(App, contractInfo.UniswapLP.address);
-          const targetMantissa = 18 - (params.BaseTokenDecimals ?? 6); //default USDC
-          let twap;
-          if (token0.toLowerCase() == DOLLAR.address.toLowerCase()) {
-            twap = await calculateTwap(oldPrice0, oldTimestamp, price0, timestamp, targetMantissa);
-          }
-          else {
-            twap = await calculateTwap(oldPrice1, oldTimestamp, price1, timestamp, targetMantissa);
-          }
+      let twap = getTwap(App, contractInfo.UniswapLP.address, DOLLAR.address, params.BaseTokenDecimals);
+      if (twap) {
           _print(`TWAP (using vfat oracle): ${twap}\n`);
 
           if (twap > params.GrowthThreshold ?? 1) {

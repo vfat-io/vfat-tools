@@ -8,8 +8,9 @@ const getDollars = async (App) => {
     const results = await Promise.all(Object.entries(Dollars).map(async ([,v]) => {
         const uni = new ethcall.Contract(v.UniswapLP.address, ABI.UNI_V2);
         const dol = new ethers.Contract(v.Dollar.address, ABI.ERC20, App.provider);
+        const dao = new ethers.Contract(v.DAO.address, v.DAO.abi, App.provider);
         const [t0, res] = await App.ethcallProvider.all([uni.token0(), uni.getReserves()]);
-        return [t0, res, await dol.totalSupply()]
+        return [t0, res, await dol.totalSupply(), await dao.epoch()]
     }));
     let dollars = []
     let i = 0;
@@ -26,11 +27,23 @@ const getDollars = async (App) => {
             price = _reserve0 / 10 ** v.UniswapLP.baseDecimals * basePrice / (_reserve1 / 1e18)
         }
         const marketCap = results[i][2] / 1e18 * price;
+        const epoch = results[i][3];
+        let twap; 
+        try {
+            twap = await getTWAP(App, v.UniswapLP.address, v.Dollar.address, v.UniswapLP.baseDecimals);
+        }
+        catch {}
+        const status =
+            epoch <= (v.Parameters?.BootstrappingPeriod ?? 0) ? "Bootstrap" 
+                : (twap > 1 ? "Expansion" : "Contraction");
         const result = {
             page : v.Page,
             name : v.Dollar.ticker,
             lpToken : v.UniswapLP.ticker,
-            price,            
+            epoch,
+            price,       
+            twap,   
+            status,  
             marketCap
         }
         dollars.push(result);
@@ -45,7 +58,7 @@ const main = async() => {
     
     var tableData = {
         "title":"Seigniorage Tokens",
-        "heading":["Ticker","Pool", "Price", "Market Cap"],
+        "heading":["Ticker","Pool", "Epoch", "Price", "TWAP", "Status", "Market Cap"],
         "rows": []
     }
     dollars.sort((a, b) => b.marketCap - a.marketCap);
@@ -54,7 +67,10 @@ const main = async() => {
             //`<a href='/${d.page}/'>${d.name}</a>`,
             d.name,
             d.lpToken,
+            d.epoch,
             `$${formatMoney(d.price)}`,
+            d.twap?.toFixed(2),
+            d.status,
             `$${formatMoney(d.marketCap)}`
         ] )
     }
