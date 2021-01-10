@@ -39,7 +39,7 @@ async function main() {
             console.error(ex);
         }
     }
-    const BOARDROOM_ADDRESS = "0x4c8C0F47CA9A1888539Bbb59DdeF8550F329f866";
+    const BOARDROOM_ADDRESS = "0x175B1A116028508aC3A4e4B62722b845C3bD1ab3";
     const ORACLE_ADDRESS = "0x3a9a1cec3546b4fb810756cd3ad072a3d6345a8a"
     const DAI_DST_ADDRESS = "0x706b21bf60adb79d2326d39086e4c27766193185"
     const REWARD_TOKEN_ADDRESS = "0xfa9c3dc54baa9eefbe9453b1f3b3b93ad2af0a77";
