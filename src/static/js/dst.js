@@ -46,7 +46,7 @@ async function main() {
 
     const br_tvl = await loadBoardroom(App, prices, BOARDROOM_ADDRESS, ORACLE_ADDRESS, DAI_DST_ADDRESS, REWARD_TOKEN_ADDRESS,
         "DSTR", "DST", 4, 0.1, 2, 1, 24);
-    tvl += br_tvl.stakedTvl;
+    tvl += br_tvl.staked_tvl;
     _print_bold(`Total staked: $${formatMoney(tvl)}`);
 
     hideLoading();

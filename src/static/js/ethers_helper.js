@@ -1101,17 +1101,17 @@ async function getPoolInfo(app, chefContract, chefAddress, poolIndex, pendingRew
 }
 
 function printApy(rewardTokenTicker, rewardPrice, poolRewardsPerWeek, 
-                  stakingTokenTicker, stakedTvl, userStaked, poolTokenPrice,
+                  stakingTokenTicker, staked_tvl, userStaked, poolTokenPrice,
                   fixedDecimals) {
   var usdPerWeek = poolRewardsPerWeek * rewardPrice;
   fixedDecimals = fixedDecimals ?? 2;
   _print(`${rewardTokenTicker} Per Week: ${poolRewardsPerWeek.toFixed(fixedDecimals)} ($${formatMoney(usdPerWeek)})`);
-  var weeklyAPY = usdPerWeek / stakedTvl * 100;
+  var weeklyAPY = usdPerWeek / staked_tvl * 100;
   var dailyAPY = weeklyAPY / 7;
   var yearlyAPY = weeklyAPY * 52;
   _print(`APY: Day ${dailyAPY.toFixed(2)}% Week ${weeklyAPY.toFixed(2)}% Year ${yearlyAPY.toFixed(2)}%`);
   var userStakedUsd = userStaked * poolTokenPrice;
-  var userStakedPct = userStakedUsd / stakedTvl * 100;
+  var userStakedPct = userStakedUsd / staked_tvl * 100;
   _print(`You are staking ${userStaked.toFixed(fixedDecimals)} ${stakingTokenTicker} ($${formatMoney(userStakedUsd)}), ${userStakedPct.toFixed(2)}% of the pool.`);
   var userWeeklyRewards = userStakedPct * poolRewardsPerWeek / 100;
   var userDailyRewards = userWeeklyRewards / 7;
@@ -1155,11 +1155,11 @@ function printChefPool(App, chefAbi, chefAddr, prices, tokens, poolInfo, poolInd
   if (poolRewardsPerWeek == 0) return;
   const userStaked = poolInfo.userLPStaked ?? poolInfo.userStaked;
   const rewardPrice = getParameterCaseInsensitive(prices, rewardTokenAddress)?.usd;
-  const stakedTvl = sp?.staked_tvl ?? poolPrices.staked_tvl;
+  const staked_tvl = sp?.staked_tvl ?? poolPrices.staked_tvl;
   poolPrices.print_price();
   sp?.print_price();
   printApy(rewardTokenTicker, rewardPrice, poolRewardsPerWeek, poolPrices.stakingTokenTicker, 
-    stakedTvl, userStaked, poolPrices.price, fixedDecimals);
+    staked_tvl, userStaked, poolPrices.price, fixedDecimals);
   if (poolInfo.userLPStaked > 0) sp?.print_contained_price(userStaked);
   if (poolInfo.userStaked > 0) poolPrices.print_contained_price(userStaked);
   printChefContractLinks(App, chefAbi, chefAddr, poolIndex, poolInfo.address, pendingRewardsFunction,
@@ -1386,7 +1386,7 @@ async function loadEmptySetLP(App, LP, stakeTokenAddress, stakeTokenTicker, flui
   const approveAndDeposit = async () => dao_deposit(App, LP, stakeToken);
   const withdraw = async () => esd_withdraw(LP, App); 
   const bond = async () => esd_bond(LP, App); 
-  const unbond = async () => esd_unbond(LP, App); 
+  const unbond = async () => esd_unbond_pool(LP, App); 
   const claim = async () => esd_claim(LP, App);
 
   _print_link(`Deposit ${unstaked.toFixed(6)} ${stakeTokenTicker}`, approveAndDeposit)
@@ -1433,6 +1433,24 @@ const esd_claim = async function(LP, App) {
 }
 
 const esd_unbond = async function(DAO, App) {
+  const signer = App.provider.getSigner()
+
+  const REWARD_POOL = DAO.connect(signer);
+  const currentStakedAmount = await REWARD_POOL.balanceOfBonded(App.YOUR_ADDRESS)
+
+  if (currentStakedAmount > 0) {
+    showLoading()
+    REWARD_POOL.unbondUnderlying(currentStakedAmount, {gasLimit: 250000})
+      .then(function(t) {
+        return App.provider.waitForTransaction(t.hash)
+      })
+      .catch(function() {
+        hideLoading()
+      })
+  }
+}
+
+const esd_unbond_pool = async function(DAO, App) {
   const signer = App.provider.getSigner()
 
   const REWARD_POOL = DAO.connect(signer);
@@ -1607,14 +1625,16 @@ async function loadDollar(contractInfo, calcPrice) {
   var prices = {};
   var tokens = {};
 
+  const poolInfo = contractInfo.LPIncentivizationPool ?? contractInfo.Pool;
+
   const [epoch, uniPrices, totalBonded] = await loadDAO(App, DAO, DOLLAR, contractInfo.UniswapLP.address,
-      contractInfo.LPIncentivizationPool.address, tokens, prices, params.DaoLockupPeriods, false,
+    poolInfo.address, tokens, prices, params.DaoLockupPeriods, false,
       contractInfo.Dollar.displayDecimals, params.EpochPeriod);
 
-  const LP = new ethers.Contract(contractInfo.LPIncentivizationPool.address,
-      contractInfo.LPIncentivizationPool.abi, App.provider);
+  const LP = new ethers.Contract(poolInfo.address, poolInfo.abi, App.provider);
   await loadEmptySetLP(App, LP, contractInfo.UniswapLP.address, 
-      contractInfo.LPIncentivizationPool.ticker, params.PoolLockupPeriods, 
+      poolInfo.ticker ?? contractInfo.UniswapLP.ticker, 
+      params.PoolLockupPeriods, 
       epoch, contractInfo.Dollar.ticker, uniPrices, contractInfo.Dollar.displayDecimals);
   
   const dollarPrice = getParameterCaseInsensitive(prices, DOLLAR.address).usd;
@@ -1711,7 +1731,6 @@ async function loadBoardroom(App, prices, boardroomAddress, oracleAddress, lptAd
         const REWARD_TOKEN = new ethers.Contract(rewardTokenAddress, ERC20_ABI, App.provider);
         const totalSupply = await REWARD_TOKEN.totalSupply() / (10 ** await REWARD_TOKEN.decimals());
         const newTokens = totalSupply *  Math.min(twap - 1, maxSupplyIncrease)  * ratio;
-        _print(`The following figures are approximate as they are not using the official TWAP.`);
         _print(`There will be ${newTokens.toFixed(decimals)} ${rewardTicker} issued at next expansion.`);
         const rewardPrice = getParameterCaseInsensitive(prices, rewardTokenAddress).usd;
         const boardReturn = newTokens * rewardPrice / totalStakedUsd * 100 * epochsPerDay;
@@ -1731,7 +1750,7 @@ async function loadBoardroom(App, prices, boardroomAddress, oracleAddress, lptAd
     _print_link(`Exit`, exit)
     _print(`\n`);
 
-    return { stakedTvl : totalStakedUsd };
+    return { staked_tvl : totalStakedUsd };
 }
 
 async function loadSynthetixPool(App, tokens, prices, stakingAbi, stakingAddress,
@@ -1834,4 +1853,42 @@ async function loadSynthetixPool(App, tokens, prices, stakingAbi, stakingAddress
     return {
         staked_tvl: poolPrices.staked_tvl,
     }
+}
+
+async function loadBasisFork(data) {
+    const App = await init_ethers();
+
+    _print(`Initialized ${App.YOUR_ADDRESS}`);
+    _print("Reading smart contracts...\n");
+
+    var tokens = {};
+    var prices = {};
+    var totalStaked = 0;
+
+    let p1 = await loadSynthetixPool(App, tokens, prices, data.PoolABI, 
+        data.SharePool.address, data.SharePool.rewardToken, data.SharePool.stakeToken);
+    totalStaked += p1.staked_tvl;
+
+    let p2 = await loadSynthetixPool(App, tokens, prices, data.PoolABI, 
+        data.CashPool.address, data.CashPool.rewardToken, data.CashPool.stakeToken);
+    totalStaked += p2.staked_tvl;
+
+    if (data.Boardrooms) {
+      for (const boardroom of data.Boardrooms) {
+        let br = await loadBoardroom(App, prices, boardroom.address, data.Oracle, data.UniswapLP, data.Cash,
+            data.ShareTicker, data.CashTicker, data.ExpansionsPerDay, data.MaximumExpansion, 
+            data.Decimals, boardroom.ratio, data.TargetMantissa);
+        totalStaked += br.staked_tvl;
+      }
+    }
+    else {
+      let br = await loadBoardroom(App, prices, data.Boardroom, data.Oracle, data.UniswapLP, data.Cash,
+          data.ShareTicker, data.CashTicker, data.ExpansionsPerDay, data.MaximumExpansion, 
+          data.Decimals, 1, data.TargetMantissa);
+      totalStaked += br.staked_tvl;
+    }
+
+    _print_bold(`Total staked: $${formatMoney(totalStaked)}`)
+
+    hideLoading();
 }

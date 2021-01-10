@@ -30,17 +30,17 @@ $(function() {
   }
 
   function printApy(rewardTokenTicker, rewardPrice, poolRewardsPerWeek, 
-                    stakingTokenTicker, stakedTvl, userStaked, poolTokenPrice,
+                    stakingTokenTicker, staked_tvl, userStaked, poolTokenPrice,
                     fixedDecimals) {
     var usdPerWeek = poolRewardsPerWeek * rewardPrice;
     fixedDecimals = fixedDecimals ?? 2;
     _print(`${rewardTokenTicker} Per Week: ${poolRewardsPerWeek.toFixed(fixedDecimals)} ($${formatMoney(usdPerWeek)})`);
-    var weeklyAPY = usdPerWeek / stakedTvl * 100;
+    var weeklyAPY = usdPerWeek / staked_tvl * 100;
     var dailyAPY = weeklyAPY / 7;
     var yearlyAPY = weeklyAPY * 52;
     _print(`APY: Day ${dailyAPY.toFixed(2)}% Week ${weeklyAPY.toFixed(2)}% Year ${yearlyAPY.toFixed(2)}%`);
     var userStakedUsd = userStaked * poolTokenPrice;
-    var userStakedPct = userStakedUsd / stakedTvl * 100;
+    var userStakedPct = userStakedUsd / staked_tvl * 100;
     _print(`You are staking ${userStaked.toFixed(fixedDecimals)} ${stakingTokenTicker} ($${formatMoney(userStakedUsd)}), ${userStakedPct.toFixed(2)}% of the pool.`);
     var userWeeklyRewards = userStakedPct * poolRewardsPerWeek / 100;
     var userDailyRewards = userWeeklyRewards / 7;
@@ -82,11 +82,11 @@ $(function() {
     var poolRewardsPerWeek = poolInfo.allocPoints / totalAllocPoints * rewardsPerWeek * ratio;
     const userStaked = poolInfo.userLPStaked ?? poolInfo.userStaked;
     const rewardPrice = getParameterCaseInsensitive(prices, rewardTokenAddress)?.usd;
-    const stakedTvl = sp?.staked_tvl ?? poolPrices.staked_tvl;
+    const staked_tvl = sp?.staked_tvl ?? poolPrices.staked_tvl;
     poolPrices.print_price();
     sp?.print_price();
     printApy(rewardTokenTicker, rewardPrice, poolRewardsPerWeek, poolPrices.stakingTokenTicker, 
-      stakedTvl, userStaked, poolPrices.price, fixedDecimals);
+      staked_tvl, userStaked, poolPrices.price, fixedDecimals);
     if (poolInfo.userLPStaked > 0) sp?.print_contained_price(userStaked);
     if (poolInfo.userStaked > 0) poolPrices.print_contained_price(userStaked);
     printIchiContractLinks(App, chefAbi, chefAddr, poolIndex, poolInfo.address, pendingRewardsFunction,
