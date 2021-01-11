@@ -21,7 +21,8 @@ const getDollar = async (App, basePrices, v) => {
         v.UniswapLP.baseCoin, v.UniswapLP.baseDecimals);
     const dol = new ethers.Contract(v.Dollar.address, ABI.ERC20, App.provider);
     const dao = new ethers.Contract(v.DAO.address, v.DAO.abi, App.provider);
-    const marketCap = await dol.totalSupply() / 1e18 * price;
+    const totalSupply = await dol.totalSupply() / 1e18
+    const marketCap = totalSupply * price;
     const epoch = await dao.epoch();
     let twap; 
     try {
@@ -40,6 +41,7 @@ const getDollar = async (App, basePrices, v) => {
         price,       
         twap,   
         status,  
+        totalSupply,
         marketCap
     }
 }
@@ -75,7 +77,7 @@ const main = async() => {
     
     var tableData = {
         "title":"Self-Stabilizing Dollars",
-        "heading":["Ticker","Pool", "Epoch", "Price", "TWAP", "Status", "Combined Market Cap"],
+        "heading":["Ticker","Pool", "Epoch", "Price", "TWAP", "Status", "Supply", "Market Cap"],
         "rows": []
     }
     //esb is not production ready yet
@@ -89,6 +91,7 @@ const main = async() => {
             `$${formatMoney(d.price)}`,
             d.twap?.toFixed(2),
             d.status,
+            formatMoney(d.totalSupply),
             `$${formatMoney(d.marketCap)}`
         ] )
     }
@@ -99,7 +102,7 @@ const main = async() => {
 
     var table2Data = {
         "title":"Seigniorage Shares",
-        "heading":["Cash","Share", "Cash Price", "Share Price", "Market Cap"],
+        "heading":["Cash","Share", "Cash Price", "Share Price", "Combined Market Cap"],
         "rows": basisForks.sort((a, b) => b.marketCap - a.marketCap).map(b => [
             b.cash, 
             b.share, 
