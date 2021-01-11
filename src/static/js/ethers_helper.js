@@ -1287,7 +1287,8 @@ const loadDAO = async (App, DAO, DOLLAR, uniswapAddress, liquidityPoolAddress, t
 
     const uniPool = await getToken(App, uniswapAddress, liquidityPoolAddress);  
     var newPrices = await lookUpTokenPrices(uniPool.tokens.filter(t => 
-      t.toLowerCase() != "0x5cf9242493be1411b93d064ca2e468961bbb5924")); //Exception for ESG due to coingecko bug
+      t.toLowerCase() != "0x5cf9242493be1411b93d064ca2e468961bbb5924"
+      && t.toLowerCase() != "0xf0e3543744afced8042131582f2a19b6aeb82794")); //Exceptions for ESG and VTD due to coingecko bug
     for (const key in newPrices) {
         prices[key] = newPrices[key];
     }
@@ -1556,7 +1557,7 @@ const getBasisCurrentPriceAndTimestamp = async (App, address) => {
 }
 
 async function printDaoUnbonds(provider, DAO, epoch, fluidEpochs, epochTimeSec) {
-    const fluidBlocks = fluidEpochs * epochTimeSec / 13.5 * 1.1; //10% leeway
+    const fluidBlocks = Math.round(fluidEpochs * epochTimeSec / 13.5 * 1.1); //10% leeway
     const blockNumber = await provider.getBlockNumber();
     const unbonds = await DAO.queryFilter(DAO.filters.Unbond(), blockNumber-fluidBlocks, blockNumber);
     for (let i = 0; i < fluidEpochs; i++) {
@@ -1580,7 +1581,8 @@ async function printLPUnbonds(provider, DAO, epoch, fluidEpochs, epochTimeSec) {
 
 const SecondsPerDay = 86400;
 
-async function calculateDollarAPR(DAO, parameters, twap, dollarPrice, uniPrices, totalBonded, calculateChange) {
+//If the epochPeriod is dynamic, it has to be passed in
+async function calculateDollarAPR(DAO, parameters, twap, dollarPrice, uniPrices, totalBonded, calculateChange, epochPeriod_) {
     const totalCoupons = await DAO.totalCoupons() / 1e18;
     const totalRedeemable = await DAO.totalRedeemable() / 1e18;
     const totalNet = await DAO.totalNet() / 1e18;
@@ -1597,8 +1599,9 @@ async function calculateDollarAPR(DAO, parameters, twap, dollarPrice, uniPrices,
 
     const daoRewards = maxRewards - totalOutstanding
 
+    const epochPeriod = parameters.EpochPeriod ?? epochPeriod_;
     if (daoRewards > 0) {
-        const bondedReturn = daoRewards / totalBonded * 100 * SecondsPerDay / parameters.EpochPeriod;
+        const bondedReturn = daoRewards / totalBonded * 100 * SecondsPerDay / epochPeriod;
 
         _print(`DAO APR: Day ${bondedReturn.toFixed(2)}% Week ${(bondedReturn * 7).toFixed(2)}% Year ${(bondedReturn * 365).toFixed(2)}%`)
 
@@ -1607,7 +1610,7 @@ async function calculateDollarAPR(DAO, parameters, twap, dollarPrice, uniPrices,
     }
     // Calculate total rewards allocated to LP
     const lpRewards = totalNet * calcPrice * lpReward
-    const lpReturn = lpRewards * dollarPrice / uniPrices.staked_tvl * 100 * SecondsPerDay / parameters.EpochPeriod;
+    const lpReturn = lpRewards * dollarPrice / uniPrices.staked_tvl * 100 * SecondsPerDay / epochPeriod;
 
     _print(`LP  APR: Day ${lpReturn.toFixed(2)}% Week ${(lpReturn * 7).toFixed(2)}% Year ${(lpReturn * 365).toFixed(2)}%`)  
 }
@@ -1631,7 +1634,7 @@ async function getTWAP(App, lpAddress, dollarAddress, baseTokenDecimals) {
   return twap;
 }
 
-async function loadDollar(contractInfo, calcPrice) {
+async function loadDollar(contractInfo, calcPrice, getEpochPeriod, getTwap) {
   const params = contractInfo.Parameters;
   
   const App = await init_ethers();
@@ -1646,9 +1649,11 @@ async function loadDollar(contractInfo, calcPrice) {
 
   const poolInfo = contractInfo.LPIncentivizationPool ?? contractInfo.Pool;
 
+  let epochPeriod = params.EpochPeriod;
+  if (!epochPeriod) epochPeriod = await getEpochPeriod(DAO);
   const [epoch, uniPrices, totalBonded] = await loadDAO(App, DAO, DOLLAR, contractInfo.UniswapLP.address,
     poolInfo.address, tokens, prices, params.DaoLockupPeriods, false,
-      contractInfo.Dollar.displayDecimals, params.EpochPeriod);
+      contractInfo.Dollar.displayDecimals, epochPeriod);
 
   const LP = new ethers.Contract(poolInfo.address, poolInfo.abi, App.provider);
   await loadEmptySetLP(App, LP, contractInfo.UniswapLP.address, 
@@ -1663,23 +1668,32 @@ async function loadDollar(contractInfo, calcPrice) {
       await calculateDollarAPR(DAO, params, twap, dollarPrice, uniPrices, totalBonded, calcPrice);
   }
   else {
-    let twap = await getTWAP(App, contractInfo.UniswapLP.address, DOLLAR.address, params.BaseTokenDecimals);
+    let twap;
+    try {
+      twap = getTwap ? await getTwap(DAO) :
+                       await getTWAP(App, contractInfo.UniswapLP.address, DOLLAR.address, params.BaseTokenDecimals);
+    }
+    catch {}
     if (twap) {
         _print(`TWAP (using vfat oracle): ${twap}\n`);
 
-        if (twap > params.GrowthThreshold ?? 1) {
-            await calculateDollarAPR(DAO, contractInfo.Parameters, twap, dollarPrice, uniPrices, totalBonded, calcPrice);
+        if (twap > (params.GrowthThreshold ?? 1)) {
+            await calculateDollarAPR(DAO, contractInfo.Parameters, twap, dollarPrice, uniPrices, totalBonded, calcPrice, epochPeriod);
         }
         else {
             _print(`DAO APR: Day 0% Week 0% Year 0%`)
             _print(`LP APR: Day 0% Week 0% Year 0%`)
         }        
     }
+    else {
+      _print(`DAO APR: Day 0% Week 0% Year 0%`)
+      _print(`LP APR: Day 0% Week 0% Year 0%`)
+    }   
   }
   _print(`\nDAO Unbonds`)
-  await printDaoUnbonds(App.provider, DAO, epoch + 1, params.DaoLockupPeriods, params.EpochPeriod);
+  await printDaoUnbonds(App.provider, DAO, epoch + 1, params.DaoLockupPeriods, epochPeriod);
   _print(`\LP Unbonds`)
-  await printLPUnbonds(App.provider, LP, epoch + 1, params.PoolLockupPeriods, params.EpochPeriod);
+  await printLPUnbonds(App.provider, LP, epoch + 1, params.PoolLockupPeriods, epochPeriod);
   hideLoading();  
 }
 
@@ -1898,4 +1912,16 @@ async function loadBasisFork(data) {
     _print_bold(`Total staked: $${formatMoney(totalStaked)}`)
 
     hideLoading();
+}
+
+const getVTDtwap = async (DAO) => {
+    const supplyIncrease = DAO.filters.SupplyIncrease();
+    const supplyDecrease = DAO.filters.SupplyDecrease();
+    const supplyNeutral  = DAO.filters.SupplyNeutral();
+    const increases = await DAO.queryFilter(supplyIncrease, -10000);
+    const decreases = await DAO.queryFilter(supplyDecrease, -10000);
+    const neutral = await DAO.queryFilter(supplyNeutral, -10000);
+    const events = increases.concat(decreases, neutral);
+    events.sort((e1, e2) => e2.args.epoch - e1.args.epoch);
+    return events[0].args.price / 1e18;
 }

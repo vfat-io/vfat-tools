@@ -25,7 +25,8 @@ const getDollar = async (App, basePrices, v) => {
     const epoch = await dao.epoch();
     let twap; 
     try {
-        twap = await getTWAP(App, v.UniswapLP.address, v.Dollar.address, v.UniswapLP.baseDecimals);
+        if (v.Dollar.ticker == "VTD") twap = await getVTDtwap(dao);
+        else twap = await getTWAP(App, v.UniswapLP.address, v.Dollar.address, v.UniswapLP.baseDecimals);
     }
     catch {}
     const status =
@@ -77,8 +78,9 @@ const main = async() => {
         "heading":["Ticker","Pool", "Epoch", "Price", "TWAP", "Status", "Combined Market Cap"],
         "rows": []
     }
+    //esb is not production ready yet
     dollars.sort((a, b) => b.marketCap - a.marketCap);
-    for (const d of dollars) {
+    for (const d of dollars.filter(d => d.name !== "ESB")) {
         tableData.rows.push( [
             //`<a href='/${d.page}/'>${d.name}</a>`,
             d.name,
