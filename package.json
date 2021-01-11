@@ -67,7 +67,6 @@
     "lodash": "^4.17.20",
     "lodash.debounce": "^4.0.8",
     "lodash.throttle": "^4.1.1",
-    "node-fetch": "^2.6.1",
     "numbro": "^2.3.2",
     "picturefill": "^3.0.3"
   },
