@@ -82,7 +82,7 @@ const main = async() => {
     }
     //esb is not production ready yet
     dollars.sort((a, b) => b.marketCap - a.marketCap);
-    for (const d of dollars.filter(d => d.name !== "ESB")) {
+    for (const d of dollars) {
         tableData.rows.push( [
             //`<a href='/${d.page}/'>${d.name}</a>`,
             d.name,

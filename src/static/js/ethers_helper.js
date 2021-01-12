@@ -1344,8 +1344,8 @@ const loadDAO = async (App, DAO, DOLLAR, uniswapAddress, liquidityPoolAddress, t
     return [epoch, uniPrices, totalBonded];
 }
 
-async function loadEmptySetLP(App, LP, stakeTokenAddress, stakeTokenTicker, fluidEpochs, epoch, rewardTicker, uniPrices,
-    displayDecimals) {
+async function loadEmptySetLP(App, LP, stakeTokenAddress, stakeTokenTicker, fluidEpochs, epoch, rewardTicker, uniPrices, 
+    dollarPrice, displayDecimals) {
   const stakeToken = new ethers.Contract(stakeTokenAddress, ERC20_ABI, App.provider);
   const unstaked = await stakeToken.balanceOf(App.YOUR_ADDRESS) / 1e18;
 
@@ -1356,12 +1356,12 @@ async function loadEmptySetLP(App, LP, stakeTokenAddress, stakeTokenTicker, flui
   const bonded = await LP.balanceOfBonded(App.YOUR_ADDRESS) / 1e18;
   const claimable = await LP.balanceOfClaimable(App.YOUR_ADDRESS) / 1e18;
   const rewarded = 
-    (rewardTicker == "ESG" 
-      ? await LP.balanceOfRewarded(App.YOUR_ADDRESS, Contracts.ESG.Dollar.address)
+    ((rewardTicker == "ESG" || rewardTicker == "ESB")
+      ? await LP.balanceOfRewarded(App.YOUR_ADDRESS, Dollars[rewardTicker].Dollar.address)
       : await LP.balanceOfRewarded(App.YOUR_ADDRESS))
      / 1e18;
   const status =
-    (rewardTicker == "ESG" 
+    ((rewardTicker == "ESG" || rewardTicker == "ESB")
       ? await LP.statusOf(App.YOUR_ADDRESS, epoch) 
       : await LP.statusOf(App.YOUR_ADDRESS)) 
         ? "Fluid" : "Frozen";
@@ -1380,8 +1380,8 @@ async function loadEmptySetLP(App, LP, stakeTokenAddress, stakeTokenTicker, flui
   if (bonded > 0) uniPrices.print_contained_price(bonded);
 
   const decimals = displayDecimals ?? 2;
-  _print(`You have ${rewarded.toFixed(decimals)} rewarded ${rewardTicker}`);
-  _print(`You have ${claimable.toFixed(decimals)} claimable ${rewardTicker}`);
+  _print(`You have ${rewarded.toFixed(decimals)} rewarded ${rewardTicker} ($${formatMoney(rewarded*dollarPrice)})`);
+  _print(`You have ${claimable.toFixed(decimals)} claimable ${rewardTicker} ($${formatMoney(claimable*dollarPrice)})`);
   
   if (status == "Fluid") await loadFluidStatus(App, LP, fluidEpochs, epoch);
   const approveAndDeposit = async () => dao_deposit(App, LP, stakeToken);
@@ -1556,18 +1556,18 @@ const getBasisCurrentPriceAndTimestamp = async (App, address) => {
     return [ price0, price1, blockTimestampLast ]
 }
 
-async function printDaoUnbonds(provider, DAO, epoch, fluidEpochs, epochTimeSec) {
+async function printDaoUnbonds(provider, DAO, epoch, fluidEpochs, epochTimeSec, price, displayDecimals) {
     const fluidBlocks = Math.round(fluidEpochs * epochTimeSec / 13.5 * 1.1); //10% leeway
     const blockNumber = await provider.getBlockNumber();
     const unbonds = await DAO.queryFilter(DAO.filters.Unbond(), blockNumber-fluidBlocks, blockNumber);
     for (let i = 0; i < fluidEpochs; i++) {
         let filtered = unbonds.filter(u => epoch + i + 1 - fluidEpochs == u.args?.start / 1);
         let unbonding = filtered.map(u => u.args?.valueUnderlying / 1e18).reduce((x, y) => x+y,0);
-        _print(`Unbonding at epoch ${epoch+i}: ${formatMoney(unbonding)}`)
+        _print(`Unbonding at epoch ${epoch+i}: ${unbonding.toFixed(displayDecimals ?? 2)} ($${formatMoney(unbonding*price)})`)
     }
 }
 
-async function printLPUnbonds(provider, DAO, epoch, fluidEpochs, epochTimeSec) {
+async function printLPUnbonds(provider, DAO, epoch, fluidEpochs, epochTimeSec, price, displayDecimals) {
     const fluidBlocks = Math.round(fluidEpochs * epochTimeSec / 13.5 * 1.1); //10% leeway
     const blockNumber = await provider.getBlockNumber();
     const unbonds = await DAO.queryFilter(DAO.filters.Unbond(), blockNumber-fluidBlocks, blockNumber);
@@ -1575,7 +1575,7 @@ async function printLPUnbonds(provider, DAO, epoch, fluidEpochs, epochTimeSec) {
         let filtered = unbonds.filter(u => epoch + i + 1 - fluidEpochs == u.args?.start / 1);
         let unbonding = filtered.map(u => u.args?.value / 1e18).reduce((x, y) => x+y,0);
         let claimable = filtered.map(u => u.args?.newClaimable / 1e18).reduce((x, y) => x+y,0);
-        _print(`Unbonding at epoch ${epoch+i}: ${unbonding.toFixed(8)} - Claimable: ${formatMoney(claimable)}`);
+        _print(`Unbonding at epoch ${epoch+i}: ${unbonding.toFixed(12)} - Claimable: ${claimable.toFixed(displayDecimals ?? 2)} ($${formatMoney(claimable*price)})`);
     }
 }
 
@@ -1602,8 +1602,9 @@ async function calculateDollarAPR(DAO, parameters, twap, dollarPrice, uniPrices,
     const epochPeriod = parameters.EpochPeriod ?? epochPeriod_;
     if (daoRewards > 0) {
         const bondedReturn = daoRewards / totalBonded * 100 * SecondsPerDay / epochPeriod;
-
+        const apy = (1 + daoRewards / totalBonded) ^ (SecondsPerDay / epochPeriod) * 100;
         _print(`DAO APR: Day ${bondedReturn.toFixed(2)}% Week ${(bondedReturn * 7).toFixed(2)}% Year ${(bondedReturn * 365).toFixed(2)}%`)
+        _print(`DAO APY: Day ${apy.toFixed(2)}%`);
 
     } else {
         _print(`DAO APR: Day 0% Week 0% Year 0%`)
@@ -1654,14 +1655,15 @@ async function loadDollar(contractInfo, calcPrice, getEpochPeriod, getTwap) {
   const [epoch, uniPrices, totalBonded] = await loadDAO(App, DAO, DOLLAR, contractInfo.UniswapLP.address,
     poolInfo.address, tokens, prices, params.DaoLockupPeriods, false,
       contractInfo.Dollar.displayDecimals, epochPeriod);
+  
+  const dollarPrice = getParameterCaseInsensitive(prices, DOLLAR.address).usd;
 
   const LP = new ethers.Contract(poolInfo.address, poolInfo.abi, App.provider);
   await loadEmptySetLP(App, LP, contractInfo.UniswapLP.address, 
       poolInfo.ticker ?? contractInfo.UniswapLP.ticker, 
       params.PoolLockupPeriods, 
-      epoch, contractInfo.Dollar.ticker, uniPrices, contractInfo.Dollar.displayDecimals);
-  
-  const dollarPrice = getParameterCaseInsensitive(prices, DOLLAR.address).usd;
+      epoch, contractInfo.Dollar.ticker, uniPrices, 
+      dollarPrice, contractInfo.Dollar.displayDecimals);
 
   if (epoch < params.BootstrappingPeriod) { 
       const twap = params.BootstrappingPrice;      
@@ -1691,9 +1693,9 @@ async function loadDollar(contractInfo, calcPrice, getEpochPeriod, getTwap) {
     }   
   }
   _print(`\nDAO Unbonds`)
-  await printDaoUnbonds(App.provider, DAO, epoch + 1, params.DaoLockupPeriods, epochPeriod);
+  await printDaoUnbonds(App.provider, DAO, epoch + 1, params.DaoLockupPeriods, epochPeriod, dollarPrice, contractInfo.Dollar.displayDecimals);
   _print(`\LP Unbonds`)
-  await printLPUnbonds(App.provider, LP, epoch + 1, params.PoolLockupPeriods, epochPeriod);
+  await printLPUnbonds(App.provider, LP, epoch + 1, params.PoolLockupPeriods, epochPeriod, dollarPrice, contractInfo.Dollar.displayDecimals);
   hideLoading();  
 }
 

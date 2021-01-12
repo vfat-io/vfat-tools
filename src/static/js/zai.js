@@ -74,7 +74,7 @@ async function main() {
             _print(`LP APR: Day 0% Week 0% Year 0%`)
         }
         _print(`\nDAO Unbonds`)
-        await printDaoUnbonds(App.provider, DAO, epoch + 1, 240, 30 * 60);
+        await printDaoUnbonds(App.provider, DAO, epoch + 1, 240, 30 * 60,);
         _print(`\LP Unbonds`)
         await printLPUnbonds(App.provider, LP, epoch + 1, 144, 30 * 60);
         hideLoading();
