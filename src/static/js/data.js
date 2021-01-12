@@ -1097,7 +1097,8 @@ const Dollars =
             address : "0x10a0A9EF463bDE88A22137aD1e32240ea9CD559D",
             ticker  : "WBTC-ESB LP",
             baseCoin : "0x2260fac5e5542a773aa44fbcfedf7c193bc2c599",
-            baseDecimals : 8
+            baseDecimals : 8,
+            displayDecimals : 12
         },
         Pool : {
             address : "0x41d31061413b2f4613ab213961ee04d95b26e8c4",
@@ -1167,7 +1168,8 @@ const Dollars =
             address : "0x26B4B107dCe673C00D59D71152136327cF6dFEBf",
             ticker  : "DAI-DAIQ LP",
             baseCoin : "0x6b175474e89094c44da98b954eedeac495271d0f",
-            baseDecimals : 18
+            baseDecimals : 18,
+            displayDecimals : 2
         },
         Pool : {
             address : "0x7D9A429e8EBecD2726BD2bc0B843864ba075F0b4",
