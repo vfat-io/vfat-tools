@@ -7,12 +7,16 @@ async function main() {
     _print(`TOKEN INFORMATION`)
     const BDOTokenInfo = await getTokenInfo('BDO')
     _print(`BDO price $${formatMoney(BDOTokenInfo.price)}`)
+    _print(`BDO Circulating ${BDOTokenInfo.circulatingSupply}`)
+    _print(`Marketcap: $${formatMoney(BDOTokenInfo.price * BDOTokenInfo.circulatingSupply)}`)
     _print(`BDO totalSupply ${BDOTokenInfo.totalSupply}`)
     _print(`Fully diluted marketcap: $${formatMoney(BDOTokenInfo.price * BDOTokenInfo.totalSupply)}`)
     _print(' ')
 
     const sBDOTokenInfo = await getTokenInfo('sBDO')
     _print(`sBDO price $${formatMoney(sBDOTokenInfo.price)}`)
+    _print(`sBDO Circulating ${sBDOTokenInfo.circulatingSupply}`)
+    _print(`Marketcap: $${formatMoney(sBDOTokenInfo.price * sBDOTokenInfo.circulatingSupply)}`)
     _print(`sBDO totalSupply ${sBDOTokenInfo.totalSupply}`)
     _print(`Fully diluted marketcap: $${formatMoney(sBDOTokenInfo.price * sBDOTokenInfo.totalSupply)}`)
     _print(' ')
@@ -91,6 +95,7 @@ async function main() {
         _print(`${key}`)
         _print(`Total Value Locked: $${formatMoney(data.poolInfos[key].tvl)}`)
         _print(`${stakingTokenTicker} Price: $${parseFloat(tokenPrice).toFixed(2)}`)
+	_print(`Reward token: ${rewardToken}`)
         _print(`APY ${parseFloat(data.poolInfos[key].apy).toFixed(2)} %`)
         _print(`You are staking ${parseFloat(userStaked).toFixed(2)} ${stakingTokenTicker} ($${formatMoney(userStakedUsd)}), ${userStakedPct.toFixed(2)}% of the pool.`);
         if (userStaked > 0) {
@@ -146,8 +151,9 @@ async function main() {
     }
 
     _print(`BOARD ROOM INFORMATION`)
-    _print(`There are ${b.bsdsLocked} sBDO in boardroom`)
+    _print(`There are ${b.bsdsLocked} sBDO in boardroom, ${parseFloat(b.bsdsLocked * 100/sBDOTokenInfo.circulatingSupply).toFixed(2)}% of circulating`)
     _print(`Total Value Locked: $${formatMoney(b.tvl)}`)
+    _print(`Reward token: BDO`)
     const apy = parseInt(parseFloat(b.apy) * 100)
     _print(`APY ${apy} %`)
     _print(`You are staking ${inBoardRoom.toFixed(2)} sBDO ($${formatMoney(inBoardRoomUsd)}) in boardroom, ${parseFloat(inBoardRoom*100/b.bsdsLocked).toFixed(2)}% of the pool`)
@@ -222,7 +228,7 @@ const exitBoardRoom = async (contract, App) => {
 }
 
 const approve = async (contract, spender, amount, App) => {
-	contract.approve(spender, amount, {
+    contract.approve(spender, amount, {
             gasLimit: 250000
         })
         .then(function(t) {
