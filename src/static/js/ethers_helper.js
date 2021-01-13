@@ -1308,7 +1308,10 @@ const loadDAO = async (App, DAO, DOLLAR, uniswapAddress, liquidityPoolAddress, t
     const status = await DAO.statusOf(App.YOUR_ADDRESS) ? "Fluid" : "Frozen";
     const epoch = await DAO.epoch() / 1;
     _print(`Current Epoch: ${epoch}`);
-    if (epochSec) _print(`Epoch Period: ${new Date(epochSec * 1000).toISOString().substr(11, 8)}`)
+    if (epochSec) {
+      _print(`Epoch Period: ${new Date(epochSec * 1000).toISOString().substr(11, 8)}`)
+    } 
+    if (DAO.callStatic["nextEpochStart"]) _print(`Next Epoch at: ${new Date(await DAO.nextEpochStart() * 1000).toString()}`);
     _print(`${dollar} Price: $${formatMoney(zaiPrice)}\n`);
     
     _print(`${dollar} Total Supply: ${totalSupply.toFixed(decimals)}, $${formatMoney(totalSupply * zaiPrice)}`);
@@ -1443,7 +1446,7 @@ const esd_provide = async (LP, App, baseTokenAddress, extraParam) => {
   const baseToken = new ethers.Contract(baseTokenAddress, ERC20_ABI, App.provider);
   const balance = await baseToken.balanceOf(App.YOUR_ADDRESS);
   const allowed = await baseToken.allowance(App.YOUR_ADDRESS, LP.address);
-  if (allowed < balance) {
+  if (allowed / 1e18 < balance / 1e18) {
     showLoading();
     const tx = await baseToken.connect(signer).approve(LP.address, ethers.constants.MaxUint256);
     await tx.wait();
