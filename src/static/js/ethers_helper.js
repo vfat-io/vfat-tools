@@ -1889,6 +1889,7 @@ async function loadSynthetixPool(App, tokens, prices, stakingAbi, stakingAddress
     _print(`You are staking ${userStaked.toFixed(6)} ${stakingTokenTicker} ` +
            `$${formatMoney(userStakedUsd)} (${userStakedPct.toFixed(2)}% of the pool).`);
     if (userStaked > 0) {
+        poolPrices.print_contained_price(userStaked);
         const userWeeklyRewards = userStakedPct * weeklyRewards / 100;
         const userDailyRewards = userWeeklyRewards / 7;
         const userYearlyRewards = userWeeklyRewards * 52;
