@@ -1917,7 +1917,7 @@ async function loadSynthetixPool(App, tokens, prices, stakingAbi, stakingAddress
         _print_link(`Stake ${userUnstaked.toFixed(6)} ${stakingTokenTicker}`, approveTENDAndStake)
     }
     _print_link(`Unstake ${userStaked.toFixed(6)} ${stakingTokenTicker}`, unstake)
-    _print_link(`Claim ${earned.toFixed(6)} ${rewardTokenTicker}`, claim)
+    _print_link(`Claim ${earned.toFixed(6)} ${rewardTokenTicker} ($${formatMoney(earned*rewardTokenPrice)})`, claim)
     _print_link(`Revoke (set approval to 0)`, revoke)
     _print_link(`Exit`, exit)
     _print(`\n`);
