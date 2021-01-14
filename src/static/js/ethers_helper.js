@@ -1912,6 +1912,7 @@ async function loadSynthetixPool(App, tokens, prices, stakingAbi, stakingAddress
     const revoke = async function() {
       return rewardsContract_resetApprove(stakeTokenAddress, stakingAddress, App)
     }
+    _print(`<a target="_blank" href="https://etherscan.io/address/${stakingAddress}#code">Etherscan</a>`);
     if (stakeTokenFunction !== "mith") {
         _print_link(`Stake ${userUnstaked.toFixed(6)} ${stakingTokenTicker}`, approveTENDAndStake)
     }
