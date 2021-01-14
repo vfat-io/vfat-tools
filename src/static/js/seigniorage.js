@@ -103,7 +103,9 @@ const main = async() => {
     var table2Data = {
         "title":"Seigniorage Shares",
         "heading":["Cash","Share", "Cash Price", "Share Price", "Combined Market Cap"],
-        "rows": basisForks.sort((a, b) => b.marketCap - a.marketCap).map(b => [
+        "rows": basisForks.sort((a, b) => b.marketCap - a.marketCap)
+                .filter(b => b.cash !== "BSG")
+                .map(b => [
             b.cash, 
             b.share, 
             `$${formatMoney(b.cashPrice)}`,

@@ -1944,20 +1944,31 @@ async function loadBasisFork(data) {
         data.CashPool.address, data.CashPool.rewardToken, data.CashPool.stakeToken);
     totalStaked += p2.staked_tvl;
 
-    if (data.Boardrooms) {
-      for (const boardroom of data.Boardrooms) {
-        let br = await loadBoardroom(App, prices, boardroom.address, data.Oracle, data.UniswapLP, data.Cash,
-            data.ShareTicker, data.CashTicker, data.ExpansionsPerDay, data.MaximumExpansion, 
-            data.Decimals, boardroom.ratio, data.TargetMantissa);
-        totalStaked += br.staked_tvl;
+    if (data.SeedBanks) {
+      for (const bank of data.SeedBanks) {
+        let p = await loadSynthetixPool(App, tokens, prices, bank.abi, 
+            bank.address, data.SeedBankRewardTokenFunction, bank.stakeTokenFunction);
+        totalStaked += p.staked_tvl;
       }
     }
-    else {
-      let br = await loadBoardroom(App, prices, data.Boardroom, data.Oracle, data.UniswapLP, data.Cash,
-          data.ShareTicker, data.CashTicker, data.ExpansionsPerDay, data.MaximumExpansion, 
-          data.Decimals, 1, data.TargetMantissa);
-      totalStaked += br.staked_tvl;
-    }
+
+    if (!data.SeedBanks)
+    {
+      if (data.Boardrooms) {
+        for (const boardroom of data.Boardrooms) {
+          let br = await loadBoardroom(App, prices, boardroom.address, data.Oracle, data.UniswapLP, data.Cash,
+              data.ShareTicker, data.CashTicker, data.ExpansionsPerDay, data.MaximumExpansion, 
+              data.Decimals, boardroom.ratio, data.TargetMantissa);
+          totalStaked += br.staked_tvl;
+        }
+      }
+      else {
+        let br = await loadBoardroom(App, prices, data.Boardroom, data.Oracle, data.UniswapLP, data.Cash,
+            data.ShareTicker, data.CashTicker, data.ExpansionsPerDay, data.MaximumExpansion, 
+            data.Decimals, 1, data.TargetMantissa);
+        totalStaked += br.staked_tvl;
+      }
+    } 
 
     _print_bold(`Total staked: $${formatMoney(totalStaked)}`)
 
