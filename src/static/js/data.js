@@ -268,60 +268,6 @@ const Contracts = {
 			abi: [{"inputs":[{"internalType":"address","name":"_sbdo","type":"address"},{"internalType":"uint256","name":"_startBlock","type":"uint256"}],"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":true,"internalType":"uint256","name":"pid","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"Deposit","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":true,"internalType":"uint256","name":"pid","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"EmergencyWithdraw","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"RewardPaid","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":true,"internalType":"uint256","name":"pid","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"Withdraw","type":"event"},{"inputs":[],"name":"BLOCKS_PER_WEEK","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"TOTAL_REWARDS","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"_allocPoint","type":"uint256"},{"internalType":"contract IERC20","name":"_lpToken","type":"address"},{"internalType":"bool","name":"_withUpdate","type":"bool"},{"internalType":"uint256","name":"_lastRewardBlock","type":"uint256"}],"name":"add","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_pid","type":"uint256"},{"internalType":"uint256","name":"_amount","type":"uint256"}],"name":"deposit","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_pid","type":"uint256"}],"name":"emergencyWithdraw","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"endBlock","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"_from","type":"uint256"},{"internalType":"uint256","name":"_to","type":"uint256"}],"name":"getGeneratedReward","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"contract IERC20","name":"_token","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"},{"internalType":"address","name":"to","type":"address"}],"name":"governanceRecoverUnsupported","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"massUpdatePools","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"operator","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"_pid","type":"uint256"},{"internalType":"address","name":"_user","type":"address"}],"name":"pendingShare","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"","type":"uint256"}],"name":"poolInfo","outputs":[{"internalType":"contract IERC20","name":"lpToken","type":"address"},{"internalType":"uint256","name":"allocPoint","type":"uint256"},{"internalType":"uint256","name":"lastRewardBlock","type":"uint256"},{"internalType":"uint256","name":"accSbdoPerShare","type":"uint256"},{"internalType":"bool","name":"isStarted","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"runningBlocks","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"sbdo","outputs":[{"internalType":"contract IERC20","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"sbdoPerBlock","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"_pid","type":"uint256"},{"internalType":"uint256","name":"_allocPoint","type":"uint256"}],"name":"set","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"_operator","type":"address"}],"name":"setOperator","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"startBlock","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"totalAllocPoint","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"_pid","type":"uint256"}],"name":"updatePool","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"","type":"uint256"},{"internalType":"address","name":"","type":"address"}],"name":"userInfo","outputs":[{"internalType":"uint256","name":"amount","type":"uint256"},{"internalType":"uint256","name":"rewardDebt","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"_pid","type":"uint256"},{"internalType":"uint256","name":"_amount","type":"uint256"}],"name":"withdraw","outputs":[],"stateMutability":"nonpayable","type":"function"}]
 		}
 	    },
-	    BUSDPool: {
-		reward: 'BDO', // farm BDO
-		address: '0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56',
-		symbol: 'BUSD',
-		index: 0
-	    },
-            DAIPool: {
-                reward: 'BDO', // farm BDO
-                address: '0x1AF3F329e8BE154074D8769D1FFa4eE058B1DBc3',
-                symbol: 'DAI',
-                index: 1
-	    },
-            CAKEPool: {
-                reward: 'BDO', // farm BDO
-                address: '0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82',
-                symbol: 'CAKE',
-		index: 2
-	    },
-            BFIPool: {
-                reward: 'BDO', // farm BDO
-		address: '0x81859801b01764D4f0Fa5E64729f5a6C3b91435b',
-		symbol: 'BFI',
-                index: 3
-	    },
-            CakeLPBDOBNB: {
-                reward: 'BDO', // farm BDO
-                address: '0x74690f829fec83ea424ee1F1654041b2491A7bE9',
-                symbol: 'CakeLPBDOBNB',
-                index: 4
-	    },
-            CakeLPBDOBFI: {
-                reward: 'BDO', // farm BDO
-                address: '0x6078f00B020bd22e6bc0883F70CD4574A477feDb',
-                symbol: 'CakeLPBDOBFI',
-                index: 5
-	    },
-            DOTPool: {
-                reward: 'BDO', // farm BDO
-                address: '0x7083609fCE4d1d8Dc0C979AAb8c869Ea2C873402',
-                symbol: 'DOT',
-                index: 6
-            },
-            LINKPool: {
-                reward: 'BDO', // farm BDO
-                address: '0xF8A0BF9cF54Bb92F17374d9e9A321E6a111a51bD',
-                symbol: 'LINK',
-                index: 7
-            },
-            VALUEBPool: {
-                reward: 'BDO', // farm BDO
-                address: '0xf8397E7c7eB51D1d417C23201E8e95238B791d8c',
-                symbol: 'VALUEB',
-                index: 8
-            },
             CakeLPBDOBUSD: {
                 reward: 'sBDO', // farm sBDO
                 address: '0xc5b0d73A7c0E4eaF66baBf7eE16A2096447f7aD6',
@@ -334,6 +280,12 @@ const Contracts = {
                 symbol: 'CakeLPsBDOBUSD',
                 index: 1,
 	   },
+            CakeLPsBDOBNB: {
+                reward: 'sBDO', // farm sBDO
+                address: '0x74690f829fec83ea424ee1F1654041b2491A7bE9',
+                symbol: 'CakeLPsBDOBNB',
+                index: 2,
+           },
             Boardroom: {
 		address: '0x9D39cd20901c88030032073Fb014AaF79D84d2C5',
                 proxyaddress: "0xCE1a28Db18415Ec1947Bd79865A4dEeC96ca7248", // proxy boardroom
