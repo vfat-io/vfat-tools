@@ -1840,6 +1840,7 @@ async function loadSynthetixPoolInfo(App, tokens, prices, stakingAbi, stakingAdd
     }
 
     var newPriceAddresses = stakeToken.tokens.filter(x =>
+        x.toLowerCase() !=  "0xb34ab2f65c6e4f764ffe740ab83f982021faed6d" && //BSG can't be retrieved from Coingecko
         !getParameterCaseInsensitive(prices, x));
     var newPrices = await lookUpTokenPrices(newPriceAddresses);
     for (const key in newPrices) {
