@@ -26,27 +26,27 @@ async function main() {
     const BTB_totalSupply = (await BTBToken.totalSupply()) / 1e18;
     const BTB_price = BTD_price*BTD_price;
 
-    let table = `<table><tbody><tr>`
-    +`<td style="width:40px"><img src="https://batdollar.fi/static/media/btd.2d4f5bd1.png"/></td>`
-    +`<td>Total Supply: ${parseFloat(BTD_totalSupply).toFixed(0)} BTD`
+    let table = `<table style="width:400px"><tbody><tr>`
+    +`<td style="width:100px"><img src="https://batdollar.fi/static/media/btd.2d4f5bd1.png"/></td>`
+    +`<td style="width:300px">Total Supply: ${parseFloat(BTD_totalSupply).toFixed(0)} BTD`
     +`<br>Fully diluted marketcap: $${formatMoney(BTD_price * BTD_totalSupply)}`
     +`<br><b>Price: 1 BTD = $${parseFloat(BTD_price).toFixed(4)}</b>`
     +`<br>Your balance: <b>${parseFloat(BTD_balance).toFixed(2)} BTD = $${formatMoney(BTD_balance*BTD_price)}</b>`
     +`</td></tr></tbody></table>`;
     _print(table)
 
-    table = `<table><tbody><tr>`
-    +`<td style="width:40px"><img src="https://batdollar.fi/static/media/bts.e00e1ef9.png"/></td>`
-    +`<td>Total Supply: ${parseFloat(BTS_totalSupply).toFixed(0)} BTS`
+    table = `<table style="width:400px"><tbody><tr>`
+    +`<td style="width:100px"><img src="https://batdollar.fi/static/media/bts.e00e1ef9.png"/></td>`
+    +`<td style="width:300px">Total Supply: ${parseFloat(BTS_totalSupply).toFixed(0)} BTS`
     +`<br>Fully diluted marketcap: $${formatMoney(BTS_price * BTS_totalSupply)}`
     +`<br><b>Price: 1 BTS = $${parseFloat(BTS_price).toFixed(4)}</b>`
     +`<br>Your balance: <b>${parseFloat(BTS_balance).toFixed(2)} BTS =  $${formatMoney(BTS_balance*BTS_price)}</b>`
     +`</td></tr></tbody></table>`
     _print(table)
 
-    table = `<table><tbody><tr>`
-    +`<td style="width:40px"><img src="https://batdollar.fi/static/media/btb.4beb344c.png"/></td>`
-    +`<td>Total Supply: ${parseFloat(BTB_totalSupply).toFixed(0)} BTB`
+    table = `<table style="width:400px"><tbody><tr>`
+    +`<td style="width:100px"><img src="https://batdollar.fi/static/media/btb.4beb344c.png"/></td>`
+    +`<td style="width:400px">Total Supply: ${parseFloat(BTB_totalSupply).toFixed(0)} BTB`
     +`<br>Fully diluted marketcap: $${formatMoney(BTB_price * BTB_totalSupply)}`
     +`<br><b>Price: 1 BTB = $${parseFloat(BTB_price).toFixed(4)}</b>`
     +`<br>Your balance: <b>${parseFloat(BTB_balance).toFixed(2)} BTB =  $${formatMoney(BTB_balance*BTB_price)}</b>`
