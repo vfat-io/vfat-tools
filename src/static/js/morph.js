@@ -13,5 +13,5 @@ Seignoriage Oracle (8h): 0xC1f71859862a73193bF6c94805b2d6b0CB783Eb3
 */
 
 async function main() {
-    await loadBasisFork(Basis.DST);
+    await loadBasisFork(Basis.Morph);
 }
