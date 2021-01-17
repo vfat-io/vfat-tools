@@ -1280,12 +1280,12 @@ async function loadFluidStatus(App, LP, fluidEpochs, epoch) {
 }
 
 const loadDAO = async (App, DAO, DOLLAR, uniswapAddress, liquidityPoolAddress, tokens, prices, fluidEpochs,
-  isBuggyDAO, displayDecimals, epochSec) => {
+  isBuggyDAO, displayDecimals, epochSec, stakingPoolAddress) => {
     const unstaked = await DOLLAR.balanceOf(App.YOUR_ADDRESS) / 1e18;
     const totalSupply = await DOLLAR.totalSupply() / 1e18;
     const dollar = await DOLLAR.symbol();
 
-    const uniPool = await getToken(App, uniswapAddress, liquidityPoolAddress);  
+    const uniPool = await getToken(App, uniswapAddress, liquidityPoolAddress ?? stakingPoolAddress);  
     var newPrices = await lookUpTokenPrices(uniPool.tokens.filter(t => 
       t.toLowerCase() != "0x5cf9242493be1411b93d064ca2e468961bbb5924"
       && t.toLowerCase() != "0xf0e3543744afced8042131582f2a19b6aeb82794")); //Exceptions for ESG and VTD due to coingecko bug
@@ -1654,6 +1654,7 @@ async function calculateDollarAPR(DAO, parameters, twap, dollarPrice, uniPrices,
     } else {
         _print(`DAO APR: Day 0% Week 0% Year 0%`)
     }
+
     // Calculate total rewards allocated to LP
     const lpRewards = totalNet * calcPrice * lpReward
     const lpReturn = lpRewards * dollarPrice / uniPrices.staked_tvl * 100 * SecondsPerDay / epochPeriod;
@@ -1698,20 +1699,26 @@ async function loadDollar(contractInfo, calcPrice, getEpochPeriod, getTwap) {
   let epochPeriod = params.EpochPeriod;
   if (!epochPeriod) epochPeriod = await getEpochPeriod(DAO);
   const [epoch, uniPrices, totalBonded] = await loadDAO(App, DAO, DOLLAR, contractInfo.UniswapLP.address,
-    poolInfo.address, tokens, prices, params.DaoLockupPeriods, false,
-      contractInfo.Dollar.displayDecimals, epochPeriod);
+    poolInfo?.address, tokens, prices, params.DaoLockupPeriods, false,
+      contractInfo.Dollar.displayDecimals, epochPeriod, contractInfo.StakingPool?.address);
   
   const dollarPrice = getParameterCaseInsensitive(prices, DOLLAR.address).usd;
 
   const baseTokenAddress = Object.entries(tokens).filter(([k,])=>k.toLowerCase() !== DOLLAR.address.toLowerCase())[0][1].address
 
-  const LP = new ethers.Contract(poolInfo.address, poolInfo.abi, App.provider);
-  await loadEmptySetLP(App, LP, contractInfo.UniswapLP.address, 
-      poolInfo.ticker ?? contractInfo.UniswapLP.ticker, params.PoolLockupPeriods, 
-      epoch, contractInfo.Dollar.ticker, uniPrices, baseTokenAddress,
-      dollarPrice, contractInfo.Dollar.displayDecimals, 
-      contractInfo.UniswapLP.displayDecimals);
-
+  let LP;
+  if (poolInfo) {
+    LP = new ethers.Contract(poolInfo.address, poolInfo.abi, App.provider);
+    await loadEmptySetLP(App, LP, contractInfo.UniswapLP.address, 
+        poolInfo.ticker ?? contractInfo.UniswapLP.ticker, params.PoolLockupPeriods, 
+        epoch, contractInfo.Dollar.ticker, uniPrices, baseTokenAddress,
+        dollarPrice, contractInfo.Dollar.displayDecimals, 
+        contractInfo.UniswapLP.displayDecimals);
+  }
+  if (contractInfo.StakingPool) {
+    const sp = contractInfo.StakingPool;
+    await loadSynthetixPool(App, tokens, prices, sp.abi, sp.address, sp.rewardTokenFunction, sp.stakeTokenFunction);
+  }
   if (epoch < params.BootstrappingPeriod) { 
       const twap = params.BootstrappingPrice;      
       await calculateDollarAPR(DAO, params, twap, dollarPrice, uniPrices, totalBonded, calcPrice);
@@ -1731,19 +1738,21 @@ async function loadDollar(contractInfo, calcPrice, getEpochPeriod, getTwap) {
         }
         else {
             _print(`DAO APR: Day 0% Week 0% Year 0%`)
-            _print(`LP APR: Day 0% Week 0% Year 0%`)
+            if (poolInfo) _print(`LP APR: Day 0% Week 0% Year 0%`)
         }        
     }
     else {
       _print(`DAO APR: Day 0% Week 0% Year 0%`)
-      _print(`LP APR: Day 0% Week 0% Year 0%`)
+      if (poolInfo) _print(`LP APR: Day 0% Week 0% Year 0%`)
     }   
   }
   _print(`\nDAO Unbonds`)
   await printDaoUnbonds(App.provider, DAO, epoch + 1, params.DaoLockupPeriods, epochPeriod, dollarPrice, contractInfo.Dollar.displayDecimals);
-  _print(`\nLP Unbonds`)
-  await printLPUnbonds(App.provider, LP, epoch + 1, params.PoolLockupPeriods, epochPeriod, dollarPrice, contractInfo.Dollar.ticker, 
-    contractInfo.Dollar.displayDecimals, contractInfo.UniswapLP.displayDecimals);
+  if (poolInfo) {
+    _print(`\nLP Unbonds`)
+    await printLPUnbonds(App.provider, LP, epoch + 1, params.PoolLockupPeriods, epochPeriod, dollarPrice, contractInfo.Dollar.ticker, 
+      contractInfo.UniswapLP.displayDecimals);
+  }
   hideLoading();  
 }
 
