@@ -42,7 +42,7 @@ async function main() {
     const params = Contracts.BDOLLAR.Parameters
 
     for (const key in data.poolInfos) {
-        if (key == 'Boardroom') {
+        if (key == 'Boardroom' || !data.poolInfos[key].apy) {
             continue
         }
         showLoading()
