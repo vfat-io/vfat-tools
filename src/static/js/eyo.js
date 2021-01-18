@@ -10,14 +10,12 @@ async function main() {
 
     let getlp = getUrlParameter('lp')
     const lp = getlp ? getlp : "uniswap"
-    console.log("lp = " + lp)
 
     const urls = {
         sushiswap: "https://api.thegraph.com/subgraphs/name/croco-finance/sushiswap",
         uniswap: "https://api.thegraph.com/subgraphs/name/uniswap/uniswap-v2"
     }
     const url = urls[lp]
-    console.log(url)
 
     const query = `
     {
