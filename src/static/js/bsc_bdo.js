@@ -151,12 +151,12 @@ async function main() {
     }
 
     _print(`BOARD ROOM INFORMATION`)
-    _print(`There are ${b.bsdsLocked} sBDO in boardroom, ${parseFloat(b.bsdsLocked * 100/sBDOTokenInfo.circulatingSupply).toFixed(2)}% of circulating`)
+    _print(`There are ${b.sbdoLocked} sBDO in boardroom, ${parseFloat(b.sbdoLocked * 100/sBDOTokenInfo.circulatingSupply).toFixed(2)}% of circulating`)
     _print(`Total Value Locked: $${formatMoney(b.tvl)}`)
     _print(`Reward token: BDO`)
     const apy = parseInt(parseFloat(b.apy) * 100)
     _print(`APY ${apy} %`)
-    _print(`You are staking ${inBoardRoom.toFixed(2)} sBDO ($${formatMoney(inBoardRoomUsd)}) in boardroom, ${parseFloat(inBoardRoom*100/b.bsdsLocked).toFixed(2)}% of the pool`)
+    _print(`You are staking ${inBoardRoom.toFixed(2)} sBDO ($${formatMoney(inBoardRoomUsd)}) in boardroom, ${parseFloat(inBoardRoom*100/b.sbdoLocked).toFixed(2)}% of the pool`)
     if (inBoardRoom > 0) {
         let dailyReward = parseFloat(inBoardRoomUsd * apy / 100 / 365),
             monthlyReward = parseFloat(inBoardRoomUsd * apy / 100 / 12),
