@@ -1984,6 +1984,8 @@ async function printSynthetixPool(App, info) {
 
     return {
         staked_tvl: info.poolPrices.staked_tvl,
+        userStaked : userStakedUsd,
+        apy : yearlyAPY
     }
 }
 
@@ -1993,14 +1995,19 @@ async function loadSynthetixPool(App, tokens, prices, abi, address, rewardTokenF
 }
 
 async function loadMultipleSynthetixPools(App, tokens, prices, pools) {
-  let totalStaked  = 0;
+  let totalStaked  = 0, totalUserStaked = 0, individualAPYs = [];
   const infos = await Promise.all(pools.map(p => 
     loadSynthetixPoolInfo(App, tokens, prices, p.abi, p.address, p.rewardTokenFunction, p.stakeTokenFunction)));
   for (const i of infos) {
     let p = await printSynthetixPool(App, i);
     totalStaked += p.staked_tvl;
+    totalUserStaked += p.userStaked;
+    if (p.userStaked > 0) {
+      individualAPYs.push(p.userStaked * p.apy / 100);
+    }
   }
-  return { staked_tvl : totalStaked };
+  let totalApy = totalUserStaked == 0 ? 0 : individualAPYs.reduce((x,y)=>x+y, 0) / totalUserStaked;
+  return { staked_tvl : totalStaked, totalUserStaked, totalApy };
 }
 
 async function loadBasisFork(data) {
@@ -2024,6 +2031,9 @@ async function loadBasisFork(data) {
     if (data.SeedBanks) {
       let p = await loadMultipleSynthetixPools(App, tokens, prices, data.SeedBanks)
       totalStaked += p.staked_tvl;
+      if (p.totalUserStaked > 0) {
+        _print(`You are staking a total of $${formatMoney(p.totalUserStaked)} at an APY of ${(p.totalApy * 100).toFixed(2)}%\n`);
+      }
     }
 
     if (!data.SeedBanks)
