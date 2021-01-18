@@ -30,7 +30,7 @@ async function loadPool(App, tokens, prices, stakingAddress, ps=false) {
   //Get prices from pools
   const poolPrices = getPoolPrices(tokens, prices, VAULT);
 
-  const stakingTokenTicker = poolPrices.stakingTokenTicker;  
+  const stakingTokenTicker = poolPrices.stakeTokenTicker;  
   const stakeTokenPrice =  poolPrices.price;
   const rewardTokenPrice = getParameterCaseInsensitive(prices, rewardTokenAddress).usd;
   
@@ -137,6 +137,7 @@ async function main() {
 
   _print(`Initialized ${App.YOUR_ADDRESS}`);
   _print("Reading smart contracts...\n");
+  _print("The APY shown only contains the FARM rewards, the native APY from other protocols is not added.\n")
 
   var tokens = {};
   var prices = {};
