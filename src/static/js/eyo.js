@@ -8,8 +8,16 @@ async function main() {
     const App = await init_ethers()
     //_print(`Initialized ${App.YOUR_ADDRESS}`)
 
-    let newurl = NaN //getUrlParameter('url')    //TODO
-    const url = newurl ? newurl : "https://api.thegraph.com/subgraphs/name/uniswap/uniswap-v2"
+    let getlp = getUrlParameter('lp')
+    const lp = getlp ? getlp : "uniswap"
+    console.log("lp = " + lp)
+
+    const urls = {
+        sushiswap: "https://api.thegraph.com/subgraphs/name/croco-finance/sushiswap",
+        uniswap: "https://api.thegraph.com/subgraphs/name/uniswap/uniswap-v2"
+    }
+    const url = urls[lp]
+    console.log(url)
 
     const query = `
     {
@@ -26,7 +34,6 @@ async function main() {
         }
     }
     `
-    //const url = "https://api.thegraph.com/subgraphs/name/uniswap/uniswap-v2" 
     const opts = {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -50,7 +57,7 @@ async function main() {
         currency: 'USD',
       });
     var asdf = {
-        "title":"new uni pools",
+        "title":"new pools",
         "heading":["timestamp","pair", "liquidity in usd", "pair addr"],
         "rows": []
     }
