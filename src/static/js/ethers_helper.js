@@ -1034,17 +1034,12 @@ function getWrapPrices(tokens, prices, pool)
   const wrappedToken = pool.token;
   if (wrappedToken.token0 != null) { //Uniswap
     const uniPrices = getUniPrices(tokens, prices, wrappedToken);
-<<<<<<< HEAD
     const poolUrl = pool.is1inch ? "https://1inch.exchange/#/dao/pools" :
     pool.symbol.includes("SLP") ?  `http://sushiswap.vision/pair/${wrappedToken.address}`
       : `http://uniswap.info/pair/${wrappedToken.address}`;
     const name = pool.is1inch ? `Wrapped 1inch<a href='${poolUrl}' target='_blank'>${uniPrices.stakingTokenTicker}</a>` :
     pool.symbol.includes("SLP") ?  `Wrapped SUSHI <a href='${poolUrl}' target='_blank'>${uniPrices.stakingTokenTicker}</a>`
       : `Wrapped UNI <a href='${poolUrl}' target='_blank'>${uniPrices.stakingTokenTicker}</a>`;;
-=======
-    const poolUrl = `http://uniswap.info/pair/${wrappedToken.address}`;
-    const name = `Wrapped UNI <a href='${poolUrl}' target='_blank'>${uniPrices.stakeTokenTicker}</a>`;
->>>>>>> 5c30dc05ba9e2aecfe855bfad60420ae40a435e2
     const price = (pool.balance / 10 ** wrappedToken.decimals) * uniPrices.price / (pool.totalSupply / 10 ** pool.decimals);
     const tvl = pool.balance / 1e18 * price;
     const staked_tvl = pool.staked * price;
