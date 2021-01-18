@@ -820,6 +820,24 @@ async function getDSToken(app, token, address, stakingAddress) {
     return ret;
 }
 
+async function getVault(app, vault, address, stakingAddress) {
+  const decimals = await vault.decimals();
+  const token = await getToken(app, await vault.underlying(), address);
+  return {
+    address: address,
+    name : await vault.name(),
+    symbol : await vault.symbol(),
+    totalSupply :  await vault.totalSupply(),
+    decimals : decimals,
+    staked: await vault.balanceOf(stakingAddress) / 10 ** decimals,
+    unstaked: await vault.balanceOf(app.YOUR_ADDRESS) / 10 ** decimals,
+    token: token,
+    balance: await vault.underlyingBalanceWithInvestment(),
+    contract: vault,
+    tokens : token.tokens
+  }
+}
+
 function hex_to_ascii(str1)
 {
  var hex  = str1.toString();
@@ -851,6 +869,13 @@ async function getToken(app, tokenAddress, stakingAddress) {
     const jar = new ethers.Contract(tokenAddress, JAR_ABI, app.provider);
     const _token = await jar.token();
     return await getJar(app, jar, tokenAddress, stakingAddress);
+  }
+  catch(err) {
+  }
+  try {
+    const vault = new ethers.Contract(tokenAddress, HARVEST_VAULT_ABI, app.provider);
+    const _token = await vault.underlying();
+    return await getVault(app, vault, tokenAddress, stakingAddress);
   }
   catch(err) {
   }
@@ -1009,8 +1034,12 @@ function getWrapPrices(tokens, prices, pool)
   const wrappedToken = pool.token;
   if (wrappedToken.token0 != null) { //Uniswap
     const uniPrices = getUniPrices(tokens, prices, wrappedToken);
-    const poolUrl = `http://uniswap.info/pair/${wrappedToken.address}`;
-    const name = `Wrapped UNI <a href='${poolUrl}' target='_blank'>${uniPrices.stakingTokenTicker}</a>`;
+    const poolUrl = pool.is1inch ? "https://1inch.exchange/#/dao/pools" :
+    pool.symbol.includes("SLP") ?  `http://sushiswap.vision/pair/${wrappedToken.address}`
+      : `http://uniswap.info/pair/${wrappedToken.address}`;
+    const name = pool.is1inch ? `Wrapped 1inch<a href='${poolUrl}' target='_blank'>${uniPrices.stakingTokenTicker}</a>` :
+    pool.symbol.includes("SLP") ?  `Wrapped SUSHI <a href='${poolUrl}' target='_blank'>${uniPrices.stakingTokenTicker}</a>`
+      : `Wrapped UNI <a href='${poolUrl}' target='_blank'>${uniPrices.stakingTokenTicker}</a>`;;
     const price = (pool.balance / 10 ** wrappedToken.decimals) * uniPrices.price / (pool.totalSupply / 10 ** pool.decimals);
     const tvl = pool.balance / 1e18 * price;
     const staked_tvl = pool.staked * price;

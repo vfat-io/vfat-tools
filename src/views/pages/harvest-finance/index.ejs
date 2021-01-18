@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include(`${partials}/head`); -%>
+
+<body>
+<%- include(`${partials}/header_main`); -%>
+<pre id="log">
+*************** 👨‍🌾 UNOFFICIAL HARVEST FINANCE FARMING CALCULATOR 👨‍🌾 ***************
+INFO  : https://harvest.finance/
+**************************************************************************
+
+</pre>
+<div class="loader--1"></div>
+<%- include(`${partials}/scripts`, {scriptname: 'harvest_finance'}); -%>
+</body>
+</html> 
