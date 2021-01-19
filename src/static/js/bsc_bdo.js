@@ -45,6 +45,10 @@ async function main() {
         if (key == 'Boardroom' || !data.poolInfos[key].apy) {
             continue
         }
+	if (key == 'CakeLPBDOTEN') {
+	    _print(`Ignore BDOTEN pool until smartcontract is verified on bscscan \n\n`)
+	    continue
+	}
         showLoading()
 
         // calculations
