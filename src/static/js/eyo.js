@@ -9,7 +9,7 @@ async function main() {
     //_print(`Initialized ${App.YOUR_ADDRESS}`)
 
     let getlp = getUrlParameter('lp')
-    const lp = getlp ? getlp : "uniswap"
+    let lp = getlp ? getlp : "uniswap"
 
     const urls = {
         sushiswap: "https://api.thegraph.com/subgraphs/name/croco-finance/sushiswap",
@@ -59,13 +59,19 @@ async function main() {
         "heading":["timestamp","pair", "liquidity in usd", "pair addr"],
         "rows": []
     }
-    //https://info.uniswap.org/pair/0xffd5045bd5139bd2865c126391a7ff3c06916051
+    let turl; 
+    if (lp == "sushiswap") {
+        turl = 'https://sushiswap.vision/pair/'
+    } 
+    else if (lp == 'uniswap') {
+        turl = 'https://info.uniswap.org/pair/'
+    }
     rezz.data.pairs.map(x => 
         asdf.rows.push( [
             convertTimestamptoTime(x.createdAtTimestamp),
             `${x.token0.symbol}-${x.token1.symbol}`,
             formatter.format(x.reserveUSD.substr(0,10)),
-            `<a href='https://info.uniswap.org/pair/${x.id}'>${x.id}</a>` 
+            `<a target='_blank' href='${turl}${x.id}'>${x.id}</a>` 
         ] )
     )
     var table2 = new AsciiTable().fromJSON(asdf);
