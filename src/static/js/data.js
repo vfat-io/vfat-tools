@@ -1390,7 +1390,7 @@ const Dollars =
             PoolLockupPeriods : 144,
             PoolRatio : 0.5,
             DaoRatio : 0.5,
-            SupplyChangeLimit : 0.1,
+            SupplyChangeLimit : 0.01,
             CouponSupplyChangeLimit : 0.02,
             GrowthThreshold : 1.0
         }
