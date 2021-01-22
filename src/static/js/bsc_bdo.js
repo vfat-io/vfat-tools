@@ -158,7 +158,7 @@ async function main() {
     _print(`There are ${b.sbdoLocked} sBDO in boardroom, ${parseFloat(b.sbdoLocked * 100/sBDOTokenInfo.circulatingSupply).toFixed(2)}% of circulating`)
     _print(`Total Value Locked: $${formatMoney(b.tvl)}`)
     _print(`Reward token: BDO`)
-    const apy = parseInt(parseFloat(b.apy) * 100)
+    const apy = parseFloat(b.apy).toFixed(2)
     _print(`APY ${apy} %`)
     _print(`You are staking ${inBoardRoom.toFixed(2)} sBDO ($${formatMoney(inBoardRoomUsd)}) in boardroom, ${parseFloat(inBoardRoom*100/b.sbdoLocked).toFixed(2)}% of the pool`)
     if (inBoardRoom > 0) {
