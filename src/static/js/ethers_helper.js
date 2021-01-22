@@ -838,6 +838,24 @@ async function getVault(app, vault, address, stakingAddress) {
   }
 }
 
+async function getCToken(app, cToken, address, stakingAddress) {
+  const decimals = await cToken.decimals();
+  const token = await getToken(app, await cToken.underlying(), address);
+  return {
+    address: address,
+    name : await cToken.name(),
+    symbol : await cToken.symbol(),
+    totalSupply :  await cToken.totalSupply(),
+    decimals : decimals,
+    staked: await cToken.balanceOf(stakingAddress) / 10 ** decimals,
+    unstaked: await cToken.balanceOf(app.YOUR_ADDRESS) / 10 ** decimals,
+    token: token,
+    balance: await cToken.getCash(),
+    contract: cToken,
+    tokens : token.tokens
+  }
+}
+
 function hex_to_ascii(str1)
 {
  var hex  = str1.toString();
@@ -869,6 +887,13 @@ async function getToken(app, tokenAddress, stakingAddress) {
     const jar = new ethers.Contract(tokenAddress, JAR_ABI, app.provider);
     const _token = await jar.token();
     return await getJar(app, jar, tokenAddress, stakingAddress);
+  }
+  catch(err) {
+  }
+  try {
+    const cToken = new ethers.Contract(tokenAddress, CTOKEN_ABI, app.provider);
+    const _token = await cToken.underlying();
+    return await getCToken(app, cToken, tokenAddress, stakingAddress);
   }
   catch(err) {
   }
