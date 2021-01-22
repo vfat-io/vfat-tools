@@ -841,18 +841,19 @@ async function getVault(app, vault, address, stakingAddress) {
 async function getCToken(app, cToken, address, stakingAddress) {
   const decimals = await cToken.decimals();
   const token = await getToken(app, await cToken.underlying(), address);
+  const totalSupply = await cToken.totalSupply();
   return {
     address: address,
     name : await cToken.name(),
     symbol : await cToken.symbol(),
-    totalSupply :  await cToken.totalSupply(),
+    totalSupply : totalSupply,
     decimals : decimals,
     staked: await cToken.balanceOf(stakingAddress) / 10 ** decimals,
     unstaked: await cToken.balanceOf(app.YOUR_ADDRESS) / 10 ** decimals,
     token: token,
-    balance: await cToken.getCash(),
+    balance: totalSupply * (await cToken.exchangeRateStored() / 1e18),
     contract: cToken,
-    tokens : token.tokens
+    tokens : [address].concat(token.tokens)
   }
 }
 
@@ -1066,7 +1067,7 @@ function getWrapPrices(tokens, prices, pool)
     pool.symbol.includes("SLP") ?  `Wrapped SUSHI <a href='${poolUrl}' target='_blank'>${uniPrices.stakeTokenTicker}</a>`
       : `Wrapped UNI <a href='${poolUrl}' target='_blank'>${uniPrices.stakeTokenTicker}</a>`;;
     const price = (pool.balance / 10 ** wrappedToken.decimals) * uniPrices.price / (pool.totalSupply / 10 ** pool.decimals);
-    const tvl = pool.balance / 1e18 * price;
+    const tvl = pool.balance / 10 ** wrappedToken.decimals * price;
     const staked_tvl = pool.staked * price;
     
     return {
@@ -1085,7 +1086,7 @@ function getWrapPrices(tokens, prices, pool)
   else {
     const tokenPrice = getParameterCaseInsensitive(prices, wrappedToken.address)?.usd;
     const price = (pool.balance / 10 ** wrappedToken.decimals) * tokenPrice / (pool.totalSupply / 10 ** pool.decimals);
-    const tvl = pool.balance / 1e18 * price;
+    const tvl = pool.balance / 10 ** wrappedToken.decimals * price;
     const staked_tvl = pool.staked * price;
     
     return {
