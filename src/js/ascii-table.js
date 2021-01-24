@@ -506,19 +506,23 @@ AsciiTable.prototype.toString = function() {
         ? [this.__heading].concat(rows)
         : rows
   
-  // Calculate max table cell lengths across all rows
-  for (var i = 0; i < all.length; i++) {
+   // Calculate max table cell lengths across all rows
+   for (var i = 0; i < all.length; i++) {
     var row = all[i]
     for (var k = 0; k < mLen; k++) {
       var cell = row[k]
+      try {
+        if (cell.includes("href")) {  // #eyo fix for href cell len
+          cell = row[k].toString().match(/\'\>([^\<\/a\>]+)/i)[1]
+          console.log(cell)
+        } // else {cell = row[k]}
+      } catch(err) { cell = row[k] }
       max[k] = Math.max(max[k], cell ? cell.toString().length : 0)
     }
   }
-  if (this.__title == "new uni pools") 
-    max[3] = 42 //#EYO hacky fix col3 length - this is returning the length of the whole html string not just the resulting link text
   this.__colMaxes = max
   justify = this.__justify ? Math.max.apply(null, max) : 0
-
+  
   // Get 
   max.forEach(function(x) {
     total += justify ? justify : x + self.__spacing
