@@ -1682,7 +1682,7 @@ async function printLPUnbonds(provider, LP, epoch, fluidEpochs, epochTimeSec, pr
 const SecondsPerDay = 86400;
 
 //If the epochPeriod is dynamic, it has to be passed in
-async function calculateDollarAPR(DAO, parameters, twap, dollarPrice, uniPrices, totalBonded, calculateChange, epochPeriod_) {
+async function calculateDollarAPR(DAO, parameters, twap, dollarPrice, uniPrices, totalBonded, calculateChange, epochPeriod_, epoch) {
     const totalCoupons = await DAO.totalCoupons() / 1e18;
     const totalRedeemable = await DAO.totalRedeemable() / 1e18;
     const totalNet = await DAO.totalNet() / 1e18;
@@ -1690,7 +1690,7 @@ async function calculateDollarAPR(DAO, parameters, twap, dollarPrice, uniPrices,
     const lpReward = parameters.PoolRatio;
     const daoReward = parameters.DaoRatio;
     // Get price
-    const calcPrice = calculateChange(twap, totalCoupons, totalRedeemable)
+    const calcPrice = calculateChange(twap, totalCoupons, totalRedeemable, epoch)
 
     // Calulcate the outstanding commitments so we can remove it from the rewards
     const totalOutstanding = totalCoupons - totalRedeemable
@@ -1776,7 +1776,7 @@ async function loadDollar(contractInfo, calcPrice, getEpochPeriod, getTwap) {
   }
   if (epoch < params.BootstrappingPeriod) { 
       const twap = params.BootstrappingPrice;      
-      await calculateDollarAPR(DAO, params, twap, dollarPrice, uniPrices, totalBonded, calcPrice);
+      await calculateDollarAPR(DAO, params, twap, dollarPrice, uniPrices, totalBonded, calcPrice, epochPeriod, epoch);
   }
   else {
     let twap;
@@ -1789,7 +1789,7 @@ async function loadDollar(contractInfo, calcPrice, getEpochPeriod, getTwap) {
         _print(`TWAP (using vfat oracle): ${twap}\n`);
 
         if (twap > (params.GrowthThreshold ?? 1)) {
-            await calculateDollarAPR(DAO, contractInfo.Parameters, twap, dollarPrice, uniPrices, totalBonded, calcPrice, epochPeriod);
+            await calculateDollarAPR(DAO, contractInfo.Parameters, twap, dollarPrice, uniPrices, totalBonded, calcPrice, epochPeriod, epoch);
         }
         else {
             _print(`DAO APR: Day 0% Week 0% Year 0%`)

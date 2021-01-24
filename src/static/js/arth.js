@@ -37,7 +37,7 @@ async function main() {
 
     for (const b of Boardrooms)  {
         const bp = await loadBoardroom(App, prices, b.address, ORACLE_ADDRESS,
-            b.lpt, ARTH_ADDRESS, b.stakeTokenTicker, "ARTH", 2, Infinity, 2, b.ratio, 0);
+            b.lpt, ARTH_ADDRESS, b.stakeTokenTicker, "ARTH", 2, 0.3, 2, b.ratio, 0);
         totalStaked += bp.staked_tvl;
     }   
 

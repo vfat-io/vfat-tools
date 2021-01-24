@@ -5,7 +5,10 @@ $(function() {
 
 async function main() {  
     const params = Dollars.eEUR.Parameters;
-    const calcPrice = (twap, totalCoupons, totalRedeemable) => calculateEmptySetChange(params, totalCoupons, totalRedeemable, twap)
+    const calcPrice = (twap, totalCoupons, totalRedeemable, epoch) => 
+        (epoch < params.BootstrappingPeriod) 
+            ? params.BootstrappingPrice - 1
+            : calculateEmptySetChange(params, totalCoupons, totalRedeemable, twap)
     
     loadDollar(Dollars.eEUR, calcPrice);
 }
