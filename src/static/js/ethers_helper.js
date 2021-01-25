@@ -1132,6 +1132,18 @@ function getPoolPrices(tokens, prices, pool) {
 
 async function getPoolInfo(app, chefContract, chefAddress, poolIndex, pendingRewardsFunction) {  
   const poolInfo = await chefContract.poolInfo(poolIndex);
+  if (poolInfo.allocPoint == 0) {
+    return {
+      address: poolInfo.lpToken,
+      allocPoints: poolInfo.allocPoint ?? 1,
+      poolToken: null,
+      userStaked : 0,
+      pendingRewardTokens : 0,
+      stakedToken : null,
+      userLPStaked : 0,
+      lastRewardBlock : poolInfo.lastRewardBlock
+    };
+  }
   const poolToken = await getToken(app, poolInfo.lpToken, chefAddress);
   const userInfo = await chefContract.userInfo(poolIndex, app.YOUR_ADDRESS);
   const pendingRewardTokens = await chefContract.callStatic[pendingRewardsFunction](poolIndex, app.YOUR_ADDRESS);
@@ -1302,21 +1314,23 @@ async function loadChefContractSecondAttempt(App, chef, chefAddress, chefAbi, re
   const poolInfos = await Promise.all([...Array(poolCount).keys()].map(async (x) =>
     await getPoolInfo(App, chefContract, chefAddress, x, pendingRewardsFunction)));
   
-  var tokenAddresses = [].concat.apply([], poolInfos.map(x => x.poolToken.tokens));
+  var tokenAddresses = [].concat.apply([], poolInfos.filter(x => x.poolToken).map(x => x.poolToken.tokens));
   var prices = await lookUpTokenPrices(tokenAddresses);
   
   await Promise.all(tokenAddresses.map(async (address) => {
       tokens[address] = await getToken(App, address, chefAddress);
   }));
 
-  const poolPrices = poolInfos.map(poolInfo => getPoolPrices(tokens, prices, poolInfo.poolToken));
+  const poolPrices = poolInfos.map(poolInfo => poolInfo.poolToken ? getPoolPrices(tokens, prices, poolInfo.poolToken) : undefined);
 
   _print("Finished reading smart contracts.\n");
     
   for (i = 0; i < poolCount; i++) {
-    printChefPool(App, chefAbi, chefAddress, prices, tokens, poolInfos[i], i, poolPrices[i],
-      totalAllocPoints, rewardsPerWeek, rewardTokenTicker, rewardTokenAddress,
-      pendingRewardsFunction);
+    if (poolPrices[i]) {
+      printChefPool(App, chefAbi, chefAddress, prices, tokens, poolInfos[i], i, poolPrices[i],
+        totalAllocPoints, rewardsPerWeek, rewardTokenTicker, rewardTokenAddress,
+        pendingRewardsFunction);
+    }
   }
 }
 
@@ -2026,8 +2040,8 @@ async function loadMultipleSynthetixPools(App, tokens, prices, pools) {
     loadSynthetixPoolInfo(App, tokens, prices, p.abi, p.address, p.rewardTokenFunction, p.stakeTokenFunction)));
   for (const i of infos) {
     let p = await printSynthetixPool(App, i);
-    totalStaked += p.staked_tvl;
-    totalUserStaked += p.userStaked;
+    totalStaked += p.staked_tvl || 0;
+    totalUserStaked += p.userStaked || 0;
     if (p.userStaked > 0) {
       individualAPYs.push(p.userStaked * p.apy / 100);
     }
