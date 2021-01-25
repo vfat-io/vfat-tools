@@ -708,36 +708,49 @@ const chefContract_claim = async function(chefAbi, chefAddress, poolIndex, App,
 }
 
 async function getUniPool(app, pool, poolAddress, stakingAddress) {
-  const decimals = await pool.decimals();
-  const token0 = await pool.token0();
-  const token1 = await pool.token1();
+  const calls = [
+    pool.decimals(), pool.token0(), pool.token1(), pool.symbol(), pool.name(),
+    pool.totalSupply(), pool.balanceOf(stakingAddress), pool.balanceOf(app.YOUR_ADDRESS)
+  ];
+  const [decimals, token0, token1, symbol, name, totalSupply, staked, unstaked] 
+    = await app.ethcallProvider.all(calls);
   let q0, q1, is1inch;
   try {
-    const reserves = await pool.getReserves();
+    const [reserves] = await app.ethcallProvider.all([pool.getReserves()]);
     q0 = reserves._reserve0;
     q1 = reserves._reserve1;
     is1inch = false;
   }
   catch { //for 1inch
-    const c0 = new ethers.Contract(token0, ERC20_ABI, app.provider);
-    const c1 = new ethers.Contract(token1, ERC20_ABI, app.provider);
-    q0 = await c0.balanceOf(poolAddress);
-    q1 = await c1.balanceOf(poolAddress);
+    if (token0 == "0x0000000000000000000000000000000000000000") {
+      q0 = await app.provider.getBalance(poolAddress);
+    }
+    else {
+      const c0 = new ethers.Contract(token0, ERC20_ABI, app.provider);
+      q0 = await c0.balanceOf(poolAddress);
+    }
+    if (token1 == "0x0000000000000000000000000000000000000000") {
+      q1 = await app.provider.getBalance(poolAddress);
+    }
+    else {
+      const c1 = new ethers.Contract(token1, ERC20_ABI, app.provider);
+      q1 = await c1.balanceOf(poolAddress);
+    }
     is1inch = true;
   }
   return { 
-      symbol : await pool.symbol(),
-      name : await pool.name(),
+      symbol,
+      name,
       address: poolAddress,
       token0: token0,
       q0,
       token1: token1,
       q1,
-      totalSupply: await pool.totalSupply() / 10 ** decimals,
+      totalSupply: totalSupply / 10 ** decimals,
       stakingAddress: stakingAddress,
-      staked: await pool.balanceOf(stakingAddress) / 10 ** decimals,
+      staked: staked / 10 ** decimals,
       decimals: decimals,
-      unstaked: await pool.balanceOf(app.YOUR_ADDRESS) / 10 ** decimals,
+      unstaked: unstaked / 10 ** decimals,
       contract: pool,
       tokens : [token0, token1],
       is1inch
@@ -745,113 +758,144 @@ async function getUniPool(app, pool, poolAddress, stakingAddress) {
 }
 
 async function getBalancerPool(app, pool, poolAddress, stakingAddress, tokens) {
-  const decimals = await pool.decimals();
-  const poolTokens = await Promise.all(tokens.map(async (t) => { return {
-    address : t,
-    weight : await pool.getNormalizedWeight(t) / 1e18,
-    balance : await pool.getBalance(t)
-  };}));
+  const tokenCalls = tokens.map(t => [pool.getNormalizedWeight(t), pool.getBalance(t)]).flat();
+  const calls = [pool.decimals(), pool.symbol(), pool.name(), pool.totalSupply(),
+    pool.balanceOf(stakingAddress), pool.balanceOf(app.YOUR_ADDRESS)].concat(tokenCalls);
+  const results = await app.ethcallProvider.all(calls);
+  const [decimals, symbol, name, totalSupply, staked, unstaked, ] = results
+  let poolTokens = [];
+  let j = 0;
+  for (i = 6; i < results.length; i+=2) {
+    poolTokens.push({
+      address : tokens[j],
+      weight: results[i] / 1e18,
+      balance : results[i+1]
+    })
+    j++;
+  };
   return { 
-      symbol : await pool.symbol(),
-      name : await pool.name(),
+      symbol,
+      name,
       address: poolAddress,
-      poolTokens: poolTokens, //address, weight and balance
-      totalSupply: await pool.totalSupply() / 10 ** decimals,
-      stakingAddress: stakingAddress,
-      staked: await pool.balanceOf(stakingAddress) / 10 ** decimals,
+      poolTokens, //address, weight and balance
+      totalSupply: totalSupply / 10 ** decimals,
+      stakingAddress,
+      staked: staked / 10 ** decimals,
       decimals: decimals,
-      unstaked: await pool.balanceOf(app.YOUR_ADDRESS) / 10 ** decimals,
+      unstaked: unstaked / 10 ** decimals,
       contract: pool,
-      tokens : tokens //just the token addresses to conform with the other pool types
+      tokens
   };
 }
 
 async function getJar(app, jar, address, stakingAddress) {
-    const decimals = await jar.decimals();
-    const token = await getToken(app, await jar.token(), address);
-    return {
-      address: address,
-      name : await jar.name(),
-      symbol : await jar.symbol(),
-      totalSupply :  await jar.totalSupply(),
-      decimals : decimals,
-      staked: await jar.balanceOf(stakingAddress) / 10 ** decimals,
-      unstaked: await jar.balanceOf(app.YOUR_ADDRESS) / 10 ** decimals,
-      token: token,
-      balance : await jar.balance(),
-      contract: jar,
-      tokens : token.tokens
-    }
+  const calls = [jar.decimals(), jar.token(), jar.name(), jar.symbol(), jar.totalSupply(),
+    jar.balanceOf(stakingAddress, jar.balanceOf(app.YOUR_ADDRESS))];
+  const [decimals, token_, name, symbol, totalSupply, staked, unstaked] =
+    await app.ethcallProvider.all(calls);
+  const token = await getToken(app, token_, address);
+  return {
+    address,
+    name,
+    symbol,
+    totalSupply,
+    decimals : decimals,
+    staked: staked / 10 ** decimals,
+    unstaked: unstaked / 10 ** decimals,
+    token: token,
+    balance : balance,
+    contract: jar,
+    tokens : token.tokens
+  }
 }
 
 async function getErc20(app, token, address, stakingAddress) {
-    const decimals = await token.decimals();
-    const staked = await token.balanceOf(stakingAddress);
-    const unstaked = await token.balanceOf(app.YOUR_ADDRESS);
-    const ret = {
-        address: address,
-        name : await token.name(),
-        symbol : await token.symbol(),
-        totalSupply :  await token.totalSupply(),
-        decimals : decimals,
-        staked:  staked / 10 ** decimals,
-        unstaked: unstaked  / 10 ** decimals,
-        contract: token,
-        tokens : [address]
-    };
-    return ret;
+  if (address == "0x0000000000000000000000000000000000000000") {
+    return {
+      address,
+      name : "Ethereum",
+      symbol : "ETH",
+      totalSupply: 1e8,
+      decimals: 18,
+      staked: 0,
+      unstaked: 0,
+      contract: null,
+      tokens:[address]
+    }
+  }
+  const calls = [token.decimals(), token.balanceOf(stakingAddress), token.balanceOf(app.YOUR_ADDRESS),
+    token.name(), token.symbol(), token.totalSupply()];
+  const [decimals, staked, unstaked, name, symbol, totalSupply] = await app.ethcallProvider.all(calls);
+  return {
+      address,
+      name,
+      symbol,
+      totalSupply,
+      decimals : decimals,
+      staked:  staked / 10 ** decimals,
+      unstaked: unstaked  / 10 ** decimals,
+      contract: token,
+      tokens : [address]
+  };
 }
 
 async function getDSToken(app, token, address, stakingAddress) {
-    const decimals = await token.decimals();
-    const staked = await token.balanceOf(stakingAddress);
-    const unstaked = await token.balanceOf(app.YOUR_ADDRESS);
-    const ret = {
-        address: address,
-        name : hex_to_ascii(await token.name()),
-        symbol : hex_to_ascii(await token.symbol()),
-        totalSupply :  await token.totalSupply(),
-        decimals : decimals,
-        staked:  staked / 10 ** decimals,
-        unstaked: unstaked  / 10 ** decimals,
-        contract: token,
-        tokens : [address]
-    };
-    return ret;
+  const calls = [token.decimals(), token.balanceOf(stakingAddress), token.balanceOf(app.YOUR_ADDRESS),
+    token.name(), token.symbol(), token.totalSupply()];
+  const [decimals, staked, unstaked, name, symbol, totalSupply] =
+    await app.ethcallProvider.all(calls);
+  return {
+    address,
+    name : hex_to_ascii(name),
+    symbol : hex_to_ascii(symbol),
+    totalSupply : totalSupply,
+    decimals : decimals,
+    staked:  staked / 10 ** decimals,
+    unstaked: unstaked  / 10 ** decimals,
+    contract: token,
+    tokens : [address]
+  };
 }
 
 async function getVault(app, vault, address, stakingAddress) {
-  const decimals = await vault.decimals();
-  const token = await getToken(app, await vault.underlying(), address);
+  const calls = [vault.decimals(), vault.underlying(), vault.name(), vault.symbol(),
+    vault.totalSupply(), vault.balanceOf(stakingAddress), vault.balanceOf(app.YOUR_ADDRESS),
+    vault.underlyingBalanceWithInvestment()];
+  const [ decimals, underlying, name, symbol, totalSupply, staked, unstaked, balance] =
+    await app.ethcallProvider.all(calls);
+  const token = await getToken(app, underlying, address);
   return {
-    address: address,
-    name : await vault.name(),
-    symbol : await vault.symbol(),
-    totalSupply :  await vault.totalSupply(),
-    decimals : decimals,
-    staked: await vault.balanceOf(stakingAddress) / 10 ** decimals,
-    unstaked: await vault.balanceOf(app.YOUR_ADDRESS) / 10 ** decimals,
+    address,
+    name,
+    symbol,
+    totalSupply,
+    decimals,
+    staked: staked / 10 ** decimals,
+    unstaked: unstaked / 10 ** decimals,
     token: token,
-    balance: await vault.underlyingBalanceWithInvestment(),
+    balance,
     contract: vault,
     tokens : token.tokens
   }
 }
 
 async function getCToken(app, cToken, address, stakingAddress) {
-  const decimals = await cToken.decimals();
-  const token = await getToken(app, await cToken.underlying(), address);
-  const totalSupply = await cToken.totalSupply();
+  const calls = [cToken.decimals(), cToken.underlying(), cToken.totalSupply(),
+    cToken.name(), cToken.symbol(), cToken.balanceOf(stakingAddress),
+    CToken.balanceOf(app.YOUR_ADDRESS), cToken.exchangeRateStored()];
+  const [decimals, underlying, totalSupply, name, symbol, staked, unstaked, exchangeRate] =
+    await app.ethcallProvider.all(calls);
+  const token = await getToken(app, underlying, address);
   return {
-    address: address,
-    name : await cToken.name(),
-    symbol : await cToken.symbol(),
-    totalSupply : totalSupply,
-    decimals : decimals,
-    staked: await cToken.balanceOf(stakingAddress) / 10 ** decimals,
-    unstaked: await cToken.balanceOf(app.YOUR_ADDRESS) / 10 ** decimals,
+    address,
+    name,
+    symbol,
+    totalSupply,
+    decimals,
+    staked: staked / 10 ** decimals,
+    unstaked: unstaked / 10 ** decimals,
     token: token,
-    balance: totalSupply * (await cToken.exchangeRateStored() / 1e18),
+    balance: totalSupply * (exchangeRate / 1e18),
     contract: cToken,
     tokens : [address].concat(token.tokens)
   }
@@ -867,54 +911,102 @@ function hex_to_ascii(str1)
  return str;
 }
 
+async function getStoredToken(app, tokenAddress, stakingAddress, type) {
+  switch (type) {
+    case "uniswap": 
+      const pool = new ethcall.Contract(tokenAddress, UNI_ABI);
+      return await getUniPool(app, pool, tokenAddress, stakingAddress);
+    case "balancer": 
+      const bal = new ethcall.Contract(tokenAddress, BALANCER_POOL_ABI);
+      const [tokens] = await app.ethcallProvider.all([bal.getFinalTokens()]);
+      return await getBalancerPool(app, bal, tokenAddress, stakingAddress, tokens);
+    case "jar": 
+      const jar = new ethcall.Contract(tokenAddress, JAR_ABI);
+      return await getJar(app, jar, tokenAddress, stakingAddress);
+    case "cToken": 
+      const cToken = new ethcall.Contract(tokenAddress, CTOKEN_ABI);
+      return await getCToken(app, cToken, tokenAddress, stakingAddress);
+    case "vault":
+      const vault = new ethcall.Contract(tokenAddress, HARVEST_VAULT_ABI);
+      return await getVault(app, vault, tokenAddress, stakingAddress);
+    case "erc20":
+      const erc20 = new ethcall.Contract(tokenAddress, ERC20_ABI);
+      return await getErc20(app, erc20, tokenAddress, stakingAddress);;
+    case "dsToken":
+      const dsToken = new ethcall.Contract(tokenAddress, DSTOKEN_ABI);
+      return await getDSToken(app, dsToken, tokenAddress, stakingAddress);
+  }
+}
+
 async function getToken(app, tokenAddress, stakingAddress) {
+  if (tokenAddress == "0x0000000000000000000000000000000000000000") {
+    return getErc20(app, null, tokenAddress, "")
+  }
+  const type = window.localStorage.getItem(tokenAddress);
+  if (type) return getStoredToken(app, tokenAddress, stakingAddress, type);
   try {
-    const pool = new ethers.Contract(tokenAddress, UNI_ABI, app.provider);
-    const _token0 = await pool.token0();
+    const pool = new ethcall.Contract(tokenAddress, UNI_ABI);
+    const _token0 = await app.ethcallProvider.all([pool.token0()]);
     const uniPool = await getUniPool(app, pool, tokenAddress, stakingAddress);
+    window.localStorage.setItem(tokenAddress, "uniswap");
     return uniPool;
   }
   catch(err) {
   }
   try {
-    const bal = new ethers.Contract(tokenAddress, BALANCER_POOL_ABI, app.provider);
-    const tokens = await bal.getFinalTokens();
+    const bal = new ethcall.Contract(tokenAddress, BALANCER_POOL_ABI);
+    const [tokens] = await app.ethcallProvider.all([bal.getFinalTokens()]);
     const balPool = await getBalancerPool(app, bal, tokenAddress, stakingAddress, tokens);
+    window.localStorage.setItem(tokenAddress, "balancer");
     return balPool;
   }
   catch(err) {
   }
   try {
-    const jar = new ethers.Contract(tokenAddress, JAR_ABI, app.provider);
-    const _token = await jar.token();
-    return await getJar(app, jar, tokenAddress, stakingAddress);
+    const jar = new ethcall.Contract(tokenAddress, JAR_ABI);
+    const _token = await app.ethcallProvider.all([jar.token()]);
+    const res = await getJar(app, jar, tokenAddress, stakingAddress);
+    window.localStorage.setItem(tokenAddress, "jar");
+    return res;
   }
   catch(err) {
   }
   try {
-    const cToken = new ethers.Contract(tokenAddress, CTOKEN_ABI, app.provider);
-    const _token = await cToken.underlying();
-    return await getCToken(app, cToken, tokenAddress, stakingAddress);
+    const cToken = new ethcall.Contract(tokenAddress, CTOKEN_ABI);
+    const _token = await app.ethcallProvider.all([cToken.underlying()]);
+    const res = await getCToken(app, cToken, tokenAddress, stakingAddress);
+    window.localStorage.setItem(tokenAddress, "cToken");
+    return res;
   }
   catch(err) {
   }
   try {
-    const vault = new ethers.Contract(tokenAddress, HARVEST_VAULT_ABI, app.provider);
-    const _token = await vault.underlying();
-    return await getVault(app, vault, tokenAddress, stakingAddress);
+    const vault = new ethcall.Contract(tokenAddress, HARVEST_VAULT_ABI);
+    const _token = await app.ethcallProvider.all([vault.underlying()]);
+    const res = await getVault(app, vault, tokenAddress, stakingAddress);
+    window.localStorage.setItem(tokenAddress, "vault");
+    return res;
   }
   catch(err) {
   }
   try {
-    const erc20 = new ethers.Contract(tokenAddress, ERC20_ABI, app.provider);
-    const _name = await erc20.name();
+    const erc20 = new ethcall.Contract(tokenAddress, ERC20_ABI);
+    const _name = await app.ethcallProvider.all([erc20.name()]);
     const erc20tok = await getErc20(app, erc20, tokenAddress, stakingAddress);
+    window.localStorage.setItem(tokenAddress, "erc20");
     return erc20tok;
   }
   catch(err) {
   }
-  const dsToken = new ethers.Contract(tokenAddress, DSTOKEN_ABI, app.provider);
-  return await getDSToken(app, dsToken, tokenAddress, stakingAddress);
+  try {
+    const dsToken = new ethcall.Contract(tokenAddress, DSTOKEN_ABI);
+    const res = await getDSToken(app, dsToken, tokenAddress, stakingAddress);
+    window.localStorage.setItem(tokenAddress, "dsToken");
+    return res;
+  }
+  catch(err) {
+    console.log(`Couldn't match ${tokenAddress} to any known token type.`);
+  }
 }
 
 function getParameterCaseInsensitive(object, key) {
@@ -964,7 +1056,10 @@ function getUniPrices(tokens, prices, pool)
   var price = tvl / pool.totalSupply;
   prices[pool.address] = { usd : price };
   var staked_tvl = pool.staked * price;
-  const stakeTokenTicker = `[${t0.symbol}]-[${t1.symbol}]`;
+  let stakeTokenTicker = `[${t0.symbol}]-[${t1.symbol}]`;
+  if (pool.is1inch) stakeTokenTicker += " 1INCH LP";
+  else if (pool.symbol.includes("SLP")) stakeTokenTicker += " SLP";
+  else stakeTokenTicker += " Uni LP";
   return {
       t0: t0,
       p0: p0,
@@ -992,7 +1087,7 @@ function getUniPrices(tokens, prices, pool)
             `https://app.uniswap.org/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}` ]
         const helperHrefs = helperUrls.length == 0 ? "" :
           ` <a href='${helperUrls[0]}' target='_blank'>[+]</a> <a href='${helperUrls[1]}' target='_blank'>[-]</a> <a href='${helperUrls[2]}' target='_blank'>[<=>]</a>`
-        _print(`<a href='${poolUrl}' target='_blank'>${stakeTokenTicker}</a>${helperHrefs} LP Price: $${formatMoney(price)} TVL: $${formatMoney(tvl)}`);
+        _print(`<a href='${poolUrl}' target='_blank'>${stakeTokenTicker}</a>${helperHrefs} Price: $${formatMoney(price)} TVL: $${formatMoney(tvl)}`);
         _print(`${t0.symbol} Price: $${formatMoney(p0)}`)
         _print(`${t1.symbol} Price: $${formatMoney(p1)}`)
         _print(`Staked: $${formatMoney(staked_tvl)}`);
@@ -1918,15 +2013,15 @@ async function loadSynthetixPoolInfo(App, tokens, prices, stakingAbi, stakingAdd
     }
 
     var newPriceAddresses = stakeToken.tokens.filter(x =>
-        x.toLowerCase() !=  "0xb34ab2f65c6e4f764ffe740ab83f982021faed6d" && //BSG can't be retrieved from Coingecko
-        !getParameterCaseInsensitive(prices, x));
+      x.toLowerCase() !=  "0xb34ab2f65c6e4f764ffe740ab83f982021faed6d" && //BSG can't be retrieved from Coingecko
+      !getParameterCaseInsensitive(prices, x));
     var newPrices = await lookUpTokenPrices(newPriceAddresses);
     for (const key in newPrices) {
-        if (newPrices[key])
-            prices[key] = newPrices[key];
+      if (newPrices[key])
+          prices[key] = newPrices[key];
     }
     var newTokenAddresses = stakeToken.tokens.filter(x =>
-        !getParameterCaseInsensitive(tokens,x));
+      !getParameterCaseInsensitive(tokens,x));
     for (const address of newTokenAddresses) {
         tokens[address] = await getToken(App, address, stakingAddress);
     }
