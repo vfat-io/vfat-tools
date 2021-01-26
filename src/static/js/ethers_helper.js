@@ -790,8 +790,8 @@ async function getBalancerPool(app, pool, poolAddress, stakingAddress, tokens) {
 
 async function getJar(app, jar, address, stakingAddress) {
   const calls = [jar.decimals(), jar.token(), jar.name(), jar.symbol(), jar.totalSupply(),
-    jar.balanceOf(stakingAddress, jar.balanceOf(app.YOUR_ADDRESS))];
-  const [decimals, token_, name, symbol, totalSupply, staked, unstaked] =
+    jar.balanceOf(stakingAddress), jar.balanceOf(app.YOUR_ADDRESS), jar.balance()];
+  const [decimals, token_, name, symbol, totalSupply, staked, unstaked, balance] =
     await app.ethcallProvider.all(calls);
   const token = await getToken(app, token_, address);
   return {
@@ -970,6 +970,7 @@ async function getToken(app, tokenAddress, stakingAddress) {
     return res;
   }
   catch(err) {
+    console.log(err);
   }
   try {
     const cToken = new ethcall.Contract(tokenAddress, CTOKEN_ABI);
@@ -988,6 +989,7 @@ async function getToken(app, tokenAddress, stakingAddress) {
     return res;
   }
   catch(err) {
+    console.log(err);
   }
   try {
     const erc20 = new ethcall.Contract(tokenAddress, ERC20_ABI);
