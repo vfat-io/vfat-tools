@@ -8,5 +8,9 @@ async function main() {
 
     const calcPrice = twap => Math.min((twap - 1) / params.SupplyChangeDivisor, params.SupplyChangeLimit);
     
-    loadDollar(Dollars.DAIQ, calcPrice);
+    const getEpochPeriod = async (DAO) => await DAO.nextEpochStart() - await DAO.currentEpochStart();
+
+    const getTwap = async (DAO, epoch) => await DAO.twapAtEpoch(epoch) / 1e18;
+    
+    loadDollar(Dollars.DAIQ, calcPrice, getEpochPeriod, getTwap);
 }
