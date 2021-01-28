@@ -805,7 +805,7 @@ async function getJar(app, jar, address, stakingAddress) {
     token: token,
     balance : balance,
     contract: jar,
-    tokens : token.tokens
+    tokens : [address].concat(token.tokens)
   }
 }
 
@@ -1167,6 +1167,7 @@ function getWrapPrices(tokens, prices, pool)
     const tvl = pool.balance / 10 ** wrappedToken.decimals * price;
     const staked_tvl = pool.staked * price;
     
+    prices[pool.address] = { usd : price };
     return {
       tvl : tvl,
       staked_tvl : staked_tvl,
@@ -1185,7 +1186,7 @@ function getWrapPrices(tokens, prices, pool)
     const price = (pool.balance / 10 ** wrappedToken.decimals) * tokenPrice / (pool.totalSupply / 10 ** pool.decimals);
     const tvl = pool.balance / 10 ** wrappedToken.decimals * price;
     const staked_tvl = pool.staked * price;
-    
+    prices[pool.address] = { usd : price };
     return {
       tvl : tvl,
       staked_tvl : staked_tvl,
@@ -1477,7 +1478,7 @@ async function loadBoardroom(App, prices, boardroomAddress, oracleAddress, lptAd
 
     const approveTENDAndStake = async () => rewardsContract_stake(share, boardroomAddress, App);
     const unstake = async () => rewardsContract_unstake(boardroomAddress, App);
-    const claim = async () => rewardsContract_claim(boardroomAddress, App);
+    const claim = async () => boardroom_claim(boardroomAddress, App);
     const exit = async () =>  rewardsContract_exit(boardroomAddress, App);
     const revoke = async () => rewardsContract_resetApprove(share, boardroomAddress, App);
 
@@ -1511,7 +1512,7 @@ async function loadSynthetixPoolInfo(App, tokens, prices, stakingAbi, stakingAdd
       !getParameterCaseInsensitive(prices, x));
     var newPrices = await lookUpTokenPrices(newPriceAddresses);
     for (const key in newPrices) {
-      if (newPrices[key])
+      if (newPrices[key]?.usd)
           prices[key] = newPrices[key];
     }
     var newTokenAddresses = stakeToken.tokens.filter(x =>
@@ -1648,7 +1649,7 @@ async function loadBasisFork(data) {
     var tokens = {};
     var prices = {};
     var totalStaked = 0;
-
+    
     let p1 = await loadSynthetixPool(App, tokens, prices, data.PoolABI, 
         data.SharePool.address, data.SharePool.rewardToken, data.SharePool.stakeToken);
     totalStaked += p1.staked_tvl;
