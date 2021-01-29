@@ -255,6 +255,9 @@ const getRewards = async (geyser, rewardTokenAddress, prices, poolPrices, totalS
   const staked_tvl = totalStaked / 1e18 * ratio * poolPrices.price;
   const userUnderlyingStaked = userStaked * ratio;
 
+  if (index == 0) {
+    _print(`Staked in Geyser: $${formatMoney(staked_tvl)}`);
+  }
   _print(`${rewardTokenTicker} Per Week: ${weeklyRewards.toFixed(2)} ($${formatMoney(usdPerWeek)})`);
   const weeklyAPY = usdPerWeek / staked_tvl * 100;
   const dailyAPY = weeklyAPY / 7;
@@ -264,7 +267,6 @@ const getRewards = async (geyser, rewardTokenAddress, prices, poolPrices, totalS
   const userStakedPct = userStakedUsd / staked_tvl * 100;
   if (userStaked > 0) {
     if (index == 0) {
-      _print(`Staked in Geyser: $${formatMoney(staked_tvl)}`);
       _print(`You are staking ${userStaked.toFixed(8)} ${settToken.symbol} (${userUnderlyingStaked.toFixed(8)} ${lpToken.symbol}) ` +
        `$${formatMoney(userStakedUsd)} (${userStakedPct.toFixed(2)}% of the pool).`);
     }
