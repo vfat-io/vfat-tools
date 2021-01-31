@@ -79,6 +79,11 @@ async function main() {
   var tokens = {};
   var prices = {};
 
-  await loadMultipleSynthetixPools(App, tokens, prices, Pools)
+  let p = await loadMultipleSynthetixPools(App, tokens, prices, Pools)
+  _print_bold(`Total staked: $${formatMoney(p.staked_tvl)}`);
+  if (p.totalUserStaked > 0) {
+    _print(`You are staking a total of $${formatMoney(p.totalUserStaked)} at an APY of ${(p.totalApy * 100).toFixed(2)}%\n`);
+  }
+  
   hideLoading();
 }
