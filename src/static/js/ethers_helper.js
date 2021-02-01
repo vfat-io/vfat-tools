@@ -1497,6 +1497,9 @@ async function loadSynthetixPoolInfo(App, tokens, prices, stakingAbi, stakingAdd
     const STAKING_POOL = new ethers.Contract(stakingAddress, stakingAbi, App.provider);
     const STAKING_MULTI = new ethcall.Contract(stakingAddress, stakingAbi);
 
+    if (!STAKING_POOL.callStatic[stakeTokenFunction]) {
+      console.log("Couldn't find stake function ", stakeTokenFunction);
+    }
     const stakeTokenAddress = await STAKING_POOL.callStatic[stakeTokenFunction]();
 
     const rewardTokenAddress = await STAKING_POOL.callStatic[rewardTokenFunction]();
