@@ -219,10 +219,10 @@ async function printPool(App, tokens, prices, pool, sharesPerFragment) {
   const unstake = async () => geyserContract_unstake(geyserAddress, App);
   const revoke = async () => rewardsContract_resetApprove(settAddress, geyserAddress, App);
 
-  _print_link(`Stake ${userTotallyUnstaked.toFixed(8)} ${lpToken.symbol}`, approveUNIAndStake)
-  _print_link(`Unstake ${userUnstaked.toFixed(8)} ${lpToken.symbol}`, unstakeUNI)
-  _print_link(`Stake ${userUnstaked.toFixed(8)} ${settToken.symbol}`, approveTENDAndStake)
-  _print_link(`Unstake ${userStaked.toFixed(8)} ${settToken.symbol}`, unstake)
+  _print_link(`Stake ${userTotallyUnstaked.toFixed(12)} ${lpToken.symbol}`, approveUNIAndStake)
+  _print_link(`Unstake ${userUnstaked.toFixed(12)} ${lpToken.symbol}`, unstakeUNI)
+  _print_link(`Stake ${userUnstaked.toFixed(12)} ${settToken.symbol}`, approveTENDAndStake)
+  _print_link(`Unstake ${userStaked.toFixed(12)} ${settToken.symbol}`, unstake)
   _print_link(`Revoke (set approval to 0)`, revoke)
   _print(`\n`);
 }
@@ -236,14 +236,16 @@ const getRewards = async (geyser, rewardTokenAddress, prices, poolPrices, totalS
   }
   let [amount, , period, ] = unlockSchedules[unlockSchedules.length - 1];
 
-  let rewardTokenTicker;
+  let rewardTokenTicker, displayDecimals;
   if (rewardTokenAddress.toLowerCase() == "0x798d1be841a82a273720ce31c822c61a67a601c3") {
     amount = amount.div(sharesPerFragment) / 1e9
     rewardTokenTicker = "DIGG"
+    displayDecimals = 4
   }
   else {
     amount = amount / 1e18
     rewardTokenTicker = "BADGER"
+    displayDecimals = 2
   }
 
   const weeklyRewards = amount / period * 604800;
@@ -267,16 +269,16 @@ const getRewards = async (geyser, rewardTokenAddress, prices, poolPrices, totalS
   const userStakedPct = userStakedUsd / staked_tvl * 100;
   if (userStaked > 0) {
     if (index == 0) {
-      _print(`You are staking ${userStaked.toFixed(8)} ${settToken.symbol} (${userUnderlyingStaked.toFixed(8)} ${lpToken.symbol}) ` +
+      _print(`You are staking ${userStaked.toFixed(12)} ${settToken.symbol} (${userUnderlyingStaked.toFixed(12)} ${lpToken.symbol}) ` +
        `$${formatMoney(userStakedUsd)} (${userStakedPct.toFixed(2)}% of the pool).`);
     }
     const userWeeklyRewards = userStakedPct * weeklyRewards / 100;
     const userDailyRewards = userWeeklyRewards / 7;
     const userYearlyRewards = userWeeklyRewards * 52;
     _print(`Estimated ${rewardTokenTicker} earnings:`
-        + ` Day ${userDailyRewards.toFixed(2)} ($${formatMoney(userDailyRewards*rewardTokenPrice)})`
-        + ` Week ${userWeeklyRewards.toFixed(2)} ($${formatMoney(userWeeklyRewards*rewardTokenPrice)})`
-        + ` Year ${userYearlyRewards.toFixed(2)} ($${formatMoney(userYearlyRewards*rewardTokenPrice)})`);
+        + ` Day ${userDailyRewards.toFixed(displayDecimals)} ($${formatMoney(userDailyRewards*rewardTokenPrice)})`
+        + ` Week ${userWeeklyRewards.toFixed(displayDecimals)} ($${formatMoney(userWeeklyRewards*rewardTokenPrice)})`
+        + ` Year ${userYearlyRewards.toFixed(displayDecimals)} ($${formatMoney(userYearlyRewards*rewardTokenPrice)})`);
   }
   return true;
 }
