@@ -1060,6 +1060,7 @@ function getUniPrices(tokens, prices, pool)
   var staked_tvl = pool.staked * price;
   let stakeTokenTicker = `[${t0.symbol}]-[${t1.symbol}]`;
   if (pool.is1inch) stakeTokenTicker += " 1INCH LP";
+  else if (pool.symbol.includes("LSLP")) stakeTokenTicker += " LSLP";
   else if (pool.symbol.includes("SLP")) stakeTokenTicker += " SLP";
   else stakeTokenTicker += " Uni LP";
   return {
@@ -1075,12 +1076,18 @@ function getUniPrices(tokens, prices, pool)
       stakeTokenTicker : stakeTokenTicker,
       print_price() {
         const poolUrl = pool.is1inch ? "https://1inch.exchange/#/dao/pools" :
-          pool.symbol.includes("SLP") ?  `http://sushiswap.vision/pair/${pool.address}`
-            : `http://uniswap.info/pair/${pool.address}`;
+        pool.symbol.includes("LSLP") ? `https://info.linkswap.app/pair/${pool.address}` :
+          pool.symbol.includes("SLP") ?  `http://sushiswap.vision/pair/${pool.address}` :
+          `http://uniswap.info/pair/${pool.address}`;
         const t0address = t0.symbol == "ETH" ? "ETH" : t0.address;
         const t1address = t1.symbol == "ETH" ? "ETH" : t1.address;
         const helperUrls = pool.is1inch ? [] :
-          pool.symbol.includes("SLP") ? 
+        pool.symbol.includes("LSLP") ? [
+          `https://linkswap.app/#/add/${t0address}/${t1address}`,
+          `https://linkswap.app/#/remove/${t0address}/${t1address}`,
+          `https://linkswap.app/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+        ] :
+        pool.symbol.includes("SLP") ? 
           [ `https://exchange.sushiswapclassic.org/#/add/${t0address}/${t1address}`,
             `https://exchange.sushiswapclassic.org/#/remove/${t0address}/${t1address}`,
             `https://exchange.sushiswapclassic.org/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}` ] :
