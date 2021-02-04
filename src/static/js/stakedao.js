@@ -14,7 +14,7 @@ $(function() {
     const rewardTokenTicker = "SDT";
     const SDT_CHEF = new ethers.Contract(SDT_CHEF_ADDR, SDT_CHEF_ABI, App.provider);
     const rewardsPerWeek = await SDT_CHEF.sdtPerBlock() / 1e18
-        * 604800 / 13.5 * 2; //2x bonus
+        * 604800 / 13.5; //2x bonus
 
     await loadChefContractSecondAttempt(App, SDT_CHEF, SDT_CHEF_ADDR, SDT_CHEF_ABI, rewardTokenTicker,
         "sdt", null, rewardsPerWeek, "pendingSdt");
