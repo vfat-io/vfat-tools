@@ -67,13 +67,15 @@ const loadDAO = async (App, DAO, DOLLAR, uniswapAddress, liquidityPoolAddress, t
     _print_link(`Unbond ${bonded.toFixed(decimals)} ${dollar}`, unbond);
     _print(''); 
 
-    const couponFilter = DAO.filters.CouponPurchase(App.YOUR_ADDRESS);
-    const coupons = await DAO.queryFilter(couponFilter);
-    for (const c of coupons) {
-        const dollarAmount = c.args.dollarAmount / 1e18;
-        const couponCount = c.args.couponAmount / 1e18;
-        const couponEpoch = c.args.epoch / 1;
-        _print(`You purchased ${couponCount} coupons worth $${dollarAmount} at epoch ${couponEpoch}`)
+    if (DAO.filters.CouponPurchase) {
+      const couponFilter = DAO.filters.CouponPurchase(App.YOUR_ADDRESS);
+      const coupons = await DAO.queryFilter(couponFilter);
+      for (const c of coupons) {
+          const dollarAmount = c.args.dollarAmount / 1e18;
+          const couponCount = c.args.couponAmount / 1e18;
+          const couponEpoch = c.args.epoch / 1;
+          _print(`You purchased ${couponCount} coupons worth $${dollarAmount} at epoch ${couponEpoch}`)
+      }
     }
     _print('');
 
@@ -361,8 +363,8 @@ const SecondsPerDay = 86400;
 
 //If the epochPeriod is dynamic, it has to be passed in
 async function calculateDollarAPR(DAO, parameters, twap, dollarPrice, uniPrices, totalBonded, calculateChange, epochPeriod_, epoch) {
-    const totalCoupons = await DAO.totalCoupons() / 1e18;
-    const totalRedeemable = await DAO.totalRedeemable() / 1e18;
+    const totalCoupons = DAO.totalCoupons ? (await DAO.totalCoupons() / 1e18) : 0;
+    const totalRedeemable = DAO.totalRedeemable ? await DAO.totalRedeemable() / 1e18 : 0;
     const totalNet = await DAO.totalNet() / 1e18;
 
     const lpReward = parameters.PoolRatio;

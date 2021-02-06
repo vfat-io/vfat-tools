@@ -47,22 +47,27 @@ const getDollar = async (App, basePrices, v) => {
 }
 
 const getBasisFork = async (App, basePrices, v) => {
-    const getPrice = (lp, token) => getPriceFromUniswap(App, basePrices, lp, token, v.CashPool.baseCoin, v.CashPool.baseDecimals)
-    const sharePrice = await getPrice(v.ShareLP, v.Share);
-    const cashPrice = await getPrice(v.UniswapLP, v.Cash);
-    const share = new ethcall.Contract(v.Share, ABI.ERC20);
-    const [totalSupply, pool1, pool2] = await App.ethcallProvider.all([share.totalSupply(),
-        share.balanceOf(v.CashPool.address), share.balanceOf(v.SharePool.address)]);
-    const cash = new ethers.Contract(v.Cash, ABI.ERC20, App.provider);
-    const shareMarketCap = (totalSupply - pool1 - pool2) / 1e18 * sharePrice;
-    const cashMarketCap = await cash.totalSupply() / 1e18 * cashPrice;
-    return { 
-        page : v.Page,
-        cash : v.CashTicker,
-        share : v.ShareTicker,
-        cashPrice,
-        sharePrice,
-        marketCap : cashMarketCap + shareMarketCap
+    try {
+        const getPrice = (lp, token) => getPriceFromUniswap(App, basePrices, lp, token, v.CashPool.baseCoin, v.CashPool.baseDecimals)
+        const sharePrice = await getPrice(v.ShareLP, v.Share);
+        const cashPrice = await getPrice(v.UniswapLP, v.Cash);
+        const share = new ethcall.Contract(v.Share, ABI.ERC20);
+        const [totalSupply, pool1, pool2] = await App.ethcallProvider.all([share.totalSupply(),
+            share.balanceOf(v.CashPool.address), share.balanceOf(v.SharePool.address)]);
+        const cash = new ethers.Contract(v.Cash, ABI.ERC20, App.provider);
+        const shareMarketCap = (totalSupply - pool1 - pool2) / 1e18 * sharePrice;
+        const cashMarketCap = await cash.totalSupply() / 1e18 * cashPrice;
+        return { 
+            page : v.Page,
+            cash : v.CashTicker,
+            share : v.ShareTicker,
+            cashPrice,
+            sharePrice,
+            marketCap : cashMarketCap + shareMarketCap
+        }
+    }
+    catch (ex) {
+        console.log(v.CashTicker, ex);
     }
 }
 
@@ -73,7 +78,7 @@ const main = async() => {
     const uniqueBaseCoins = dollarBaseCoins.concat(basisBaseCoins).filter((v, i, a) => a.indexOf(v) === i);
     const basePrices = await lookUpTokenPrices(uniqueBaseCoins);
     const dollars = await Promise.all(Object.entries(Dollars).map(([,v]) => getDollar(App, basePrices, v)));
-    const basisForks = await Promise.all(Object.entries(Basis).map(([,v]) => getBasisFork(App, basePrices, v)));
+    const basisForks = (await Promise.all(Object.entries(Basis).map(([,v]) => getBasisFork(App, basePrices, v)))).filter(x => x);
     
     var tableData = {
         "title":"Self-Stabilizing Dollars",

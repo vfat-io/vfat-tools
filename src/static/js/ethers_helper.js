@@ -1663,6 +1663,12 @@ async function loadBasisFork(data) {
     let p1 = await loadSynthetixPool(App, tokens, prices, data.PoolABI, 
         data.SharePool.address, data.SharePool.rewardToken, data.SharePool.stakeToken);
     totalStaked += p1.staked_tvl;
+    
+    if (data.SharePool2) {
+      let p3 = await loadSynthetixPool(App, tokens, prices, data.PoolABI, 
+          data.SharePool2.address, data.SharePool2.rewardToken, data.SharePool2.stakeToken);
+      totalStaked += p3.staked_tvl;
+    }
 
     let p2 = await loadSynthetixPool(App, tokens, prices, data.PoolABI, 
         data.CashPool.address, data.CashPool.rewardToken, data.CashPool.stakeToken);
