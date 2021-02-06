@@ -1077,7 +1077,7 @@ function getUniPrices(tokens, prices, pool)
       print_price() {
         const poolUrl = pool.is1inch ? "https://1inch.exchange/#/dao/pools" :
         pool.symbol.includes("LSLP") ? `https://info.linkswap.app/pair/${pool.address}` :
-          pool.symbol.includes("SLP") ?  `http://sushiswap.vision/pair/${pool.address}` :
+          pool.symbol.includes("SLP") ?  `http://sushiswap.fi/pair/${pool.address}` :
           `http://uniswap.info/pair/${pool.address}`;
         const t0address = t0.symbol == "ETH" ? "ETH" : t0.address;
         const t1address = t1.symbol == "ETH" ? "ETH" : t1.address;
@@ -1165,7 +1165,7 @@ function getWrapPrices(tokens, prices, pool)
   if (wrappedToken.token0 != null) { //Uniswap
     const uniPrices = getUniPrices(tokens, prices, wrappedToken);
     const poolUrl = pool.is1inch ? "https://1inch.exchange/#/dao/pools" :
-    pool.symbol.includes("SLP") ?  `http://sushiswap.vision/pair/${wrappedToken.address}`
+    pool.symbol.includes("SLP") ?  `http://sushiswap.fi/pair/${wrappedToken.address}`
       : `http://uniswap.info/pair/${wrappedToken.address}`;
     const name = pool.is1inch ? `Wrapped 1inch<a href='${poolUrl}' target='_blank'>${uniPrices.stakeTokenTicker}</a>` :
     pool.symbol.includes("SLP") ?  `Wrapped SUSHI <a href='${poolUrl}' target='_blank'>${uniPrices.stakeTokenTicker}</a>`

@@ -61,7 +61,7 @@ async function main() {
     }
     let turl; 
     if (lp == "sushiswap") {
-        turl = 'https://sushiswap.vision/pair/'
+        turl = 'https://sushiswap.fi/pair/'
     } 
     else if (lp == 'uniswap') {
         turl = 'https://info.uniswap.org/pair/'
