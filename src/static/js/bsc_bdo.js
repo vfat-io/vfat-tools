@@ -42,13 +42,10 @@ async function main() {
     const params = Contracts.BDOLLAR.Parameters
 
     for (const key in data.poolInfos) {
+	try {
         if (key == 'Boardroom' || !data.poolInfos[key].apy) {
             continue
         }
-	if (key == 'CakeLPBDOTEN') {
-	    _print(`Ignore BDOTEN pool until smartcontract is verified on bscscan \n\n`)
-	    continue
-	}
         showLoading()
 
         // calculations
@@ -120,6 +117,7 @@ async function main() {
         _print('-------------------------------------------------')
         _print('')
         hideLoading();
+	} catch(err) {continue}
     }
 
 
