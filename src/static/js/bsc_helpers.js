@@ -53,7 +53,7 @@ async function getBep20(App, token, address, stakingAddress) {
     };
 }
 
-async function getStoredBscToken(App, tokenAddress, stakingAddress, type) {
+async function getBscStoredToken(App, tokenAddress, stakingAddress, type) {
   switch (type) {
     case "uniswap": 
       const pool = new ethers.Contract(tokenAddress, UNI_ABI, App.provider);
@@ -69,7 +69,7 @@ async function getBscToken(App, tokenAddress, stakingAddress) {
       return getBep20(App, null, tokenAddress, "")
     }
     const type = window.localStorage.getItem(tokenAddress);
-    if (type) return getStoredToken(App, tokenAddress, stakingAddress, type);
+    if (type) return getBscStoredToken(App, tokenAddress, stakingAddress, type);
     try {
       const pool = new ethers.Contract(tokenAddress, UNI_ABI, App.provider);
       const _token0 = await pool.token0();
@@ -180,7 +180,7 @@ async function loadBscBasisFork(data) {
     _print("Reading smart contracts...\n");
 
     var tokens = {};
-    var prices = {};
+    var prices = {"0x55d398326f99059ff775485246999027b3197955" : { usd : 1 }};
     var totalStaked = 0;
     
     let p1 = await loadBscSynthetixPool(App, tokens, prices, data.PoolABI, 
@@ -209,14 +209,14 @@ async function loadBscBasisFork(data) {
     {
       if (data.Boardrooms) {
         for (const boardroom of data.Boardrooms) {
-          let br = await loadBscBoardroom(App, prices, boardroom.address, data.Oracle, data.UniswapLP, data.Cash,
+          let br = await loadBoardroom(App, prices, boardroom.address, data.Oracle, data.UniswapLP, data.Cash,
               data.ShareTicker, data.CashTicker, data.ExpansionsPerDay, data.MaximumExpansion, 
               data.Decimals, boardroom.ratio, data.TargetMantissa);
           totalStaked += br.staked_tvl;
         }
       }
       else {
-        let br = await loadBscBoardroom(App, prices, data.Boardroom, data.Oracle, data.UniswapLP, data.Cash,
+        let br = await loadBoardroom(App, prices, data.Boardroom, data.Oracle, data.UniswapLP, data.Cash,
             data.ShareTicker, data.CashTicker, data.ExpansionsPerDay, data.MaximumExpansion, 
             data.Decimals, 1, data.TargetMantissa);
         totalStaked += br.staked_tvl;
