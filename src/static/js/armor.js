@@ -21,7 +21,9 @@ const Pools =  [
     { name : "arNXM:ETH Uniswap", address: "0x24ae7bdf4a9dee4d409503ffcfd5bc694e2c8a12" },
     { name : "arNXM:ETH Sushiswap", address: "0xcd1f8cda8be6a8c306a5b0ee759bad46a6f60cad" },
     { name : "arNXM:ETH 1inch", address: "0x07aFD11985bFcAA8016eEb9b00534c0B3A70CCaC" },
-    { name : "arNXM:ETH Balancer", address: "0x008F3DDE2Ed44BdC72800108d8309D16d55d6dD5" }
+    { name : "arNXM:ETH Balancer", address: "0x008F3DDE2Ed44BdC72800108d8309D16d55d6dD5" },
+    { name : "wNXM:arNXM Uniswap", address: "0x40996bFF03bEe49BbcE8DCB234eBD9aFD723AbB0" },
+    { name : "wNXM:arNXM Sushiswap", address: "0xfE34bc5b271E704aA2a4AEB71b2332C8DCDA80cE" }
 ].map(p => { return { name : p.name, address : p.address, abi : ARMOR_STAKING_ABI,
                       stakeTokenFunction : "stakeToken", rewardTokenFunction : "rewardToken" }})
 
