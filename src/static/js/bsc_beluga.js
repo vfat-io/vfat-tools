@@ -89,7 +89,7 @@ $(function() {
       //BELUGA LP
       "0xF25E3C74e1BE871471f876CaC5c8e3EC94293879",
       //MAIN_PAGE
-      "0x3DA9D911301f8144bdF5c3c67886e5373DCdff8e",
+      "0xD6dB83d2c3207347709a31C9b1b14F59F4F4ffF7",
     ];
 
     const App = await init_ethers();
