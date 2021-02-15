@@ -42,12 +42,8 @@ async function main() {
     const rewardsPerWeek = await ysO_CHEF.oxygenPerBlock() / 1e18
         * 604800 / 13.5;
 
-    const idPrices = await lookUpPrices(bscTokens.map(x => x.id));
-    const prices = {}
-    const tokens = {}
-    for (const bt of bscTokens)
-        if (idPrices[bt.id])
-            prices[bt.contract] = idPrices[bt.id];
+    const tokens = {};
+    const prices = await getBscPrices();
 
     await loadBscChefContract(App, tokens, prices, ysO_CHEF, ysO_CHEF_ADDR, oxygenChef_ABI, rewardTokenTicker,
         "oxygen", null, rewardsPerWeek, "pendingTokens", [10,11,12]);

@@ -12,13 +12,6 @@ $(function() {
     const VAULT = await getBscToken(App, vaultAddress, stakingAddress);
     const stakeTokenAddress = vaultAddress;
 
-
-    var newPriceAddresses = VAULT.tokens.filter(x => prices[x] == null);
-    var newPrices = await lookUpTokenPrices(newPriceAddresses);
-    for (const key in newPrices) {
-        prices[key] = newPrices[key];
-    }
-
     var newTokenAddresses = VAULT.tokens.filter(x => tokens[x] == null);
     for (const address of newTokenAddresses) {
         tokens[address] = await getBscToken(App, address, stakingAddress);
@@ -98,8 +91,8 @@ $(function() {
     _print("Reading smart contracts...\n");
     _print("The APY shown only contains the APY from BELUGA emissions, the native returns from vaults are not added.\n")
 
-    var tokens = {};
-    var prices = {};
+    const tokens = {};
+    const prices = await getBscPrices();
 
     await loadPool(App, tokens, prices, PS[0], ps=true)
     for (const c of CONTRACTS) {
