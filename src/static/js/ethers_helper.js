@@ -809,6 +809,28 @@ async function getJar(app, jar, address, stakingAddress) {
   }
 }
 
+async function getCurveToken(app, curve, address, stakingAddress, minterAddress) {
+  const minter = new ethcall.Contract(minterAddress, MINTER_ABI)
+  const [virtualPrice, coin0] = await app.ethcallProvider.all([minter.get_virtual_price(), minter.coins(0)]);
+  const token = await getToken(app, coin0, address);
+  const calls = [curve.decimals(), curve.balanceOf(stakingAddress), curve.balanceOf(app.YOUR_ADDRESS),
+    curve.name(), curve.symbol(), curve.totalSupply()];
+  const [decimals, staked, unstaked, name, symbol, totalSupply] = await app.ethcallProvider.all(calls);
+  return {
+      address,
+      name,
+      symbol,
+      totalSupply,
+      decimals : decimals,
+      staked:  staked / 10 ** decimals,
+      unstaked: unstaked  / 10 ** decimals,
+      contract: curve,
+      tokens : [address, coin0],
+      token,
+      virtualPrice
+  };
+}
+
 async function getErc20(app, token, address, stakingAddress) {
   if (address == "0x0000000000000000000000000000000000000000") {
     return {
@@ -931,10 +953,14 @@ async function getStoredToken(app, tokenAddress, stakingAddress, type) {
       return await getVault(app, vault, tokenAddress, stakingAddress);
     case "erc20":
       const erc20 = new ethcall.Contract(tokenAddress, ERC20_ABI);
-      return await getErc20(app, erc20, tokenAddress, stakingAddress);;
+      return await getErc20(app, erc20, tokenAddress, stakingAddress);
     case "dsToken":
       const dsToken = new ethcall.Contract(tokenAddress, DSTOKEN_ABI);
       return await getDSToken(app, dsToken, tokenAddress, stakingAddress);
+    case "curve":
+      const crv = new ethcall.Contract(tokenAddress, CURVE_ABI);
+      const [minter] = await app.ethcallProvider.all([crv.minter()]);
+      return await getCurveToken(app, crv, tokenAddress, stakingAddress, minter);
   }
 }
 
@@ -990,6 +1016,15 @@ async function getToken(app, tokenAddress, stakingAddress) {
   }
   catch(err) {
     console.log(err);
+  }
+  try {
+    const crv = new ethcall.Contract(tokenAddress, CURVE_ABI);
+    const [minter] = await app.ethcallProvider.all([crv.minter()]);
+    const res = await getCurveToken(app, crv, tokenAddress, stakingAddress, minter);
+    window.localStorage.setItem(tokenAddress, "curve");
+    return res;
+  }
+  catch(err) {
   }
   try {
     const erc20 = new ethcall.Contract(tokenAddress, ERC20_ABI);
@@ -1189,7 +1224,14 @@ function getWrapPrices(tokens, prices, pool)
     }
   }
   else {
-    const tokenPrice = getParameterCaseInsensitive(prices, wrappedToken.address)?.usd;
+    let tokenPrice = 0;
+    if (wrappedToken.token != null) { //e.g. stakedao crv token vault
+      const pp = getPoolPrices(tokens, prices, wrappedToken.token)
+      tokenPrice = pp.price;
+    }
+    else {
+      tokenPrice = getParameterCaseInsensitive(prices, wrappedToken.address)?.usd;
+    }
     const price = (pool.balance / 10 ** wrappedToken.decimals) * tokenPrice / (pool.totalSupply / 10 ** pool.decimals);
     const tvl = pool.balance / 10 ** wrappedToken.decimals * price;
     const staked_tvl = pool.staked * price;
@@ -1228,9 +1270,29 @@ function getErc20Prices(prices, pool) {
   }
 }
 
+function getCurvePrices(prices, pool) {  
+  var price = getParameterCaseInsensitive(prices,pool.token.address)?.usd * pool.virtualPrice;
+  var tvl = pool.totalSupply * price / 10 ** pool.decimals;
+  var staked_tvl = pool.staked * price;
+  const poolUrl = `https://etherscan.io/token/${pool.address}`;
+  const name = `<a href='${poolUrl}' target='_blank'>${pool.symbol}</a>`;
+  return {
+    staked_tvl : staked_tvl,
+    price : price,
+    stakeTokenTicker : pool.symbol,
+    print_price() {
+      _print(`${name} Price: $${formatMoney(price)} Market Cap: $${formatMoney(tvl)}`);
+      _print(`Staked: $${formatMoney(staked_tvl)}`);
+    },
+    print_contained_price() {
+    }
+  }
+}
+
 function getPoolPrices(tokens, prices, pool) {
   if (pool.poolTokens != null) return getBalancerPrices(tokens, prices, pool);
   if (pool.token0 != null) return getUniPrices(tokens, prices, pool);
+  if (pool.virtualPrice != null) return getCurvePrices(prices, pool);
   if (pool.token != null) return getWrapPrices(tokens, prices, pool);
   return getErc20Prices(prices, pool);
 }
@@ -1421,7 +1483,7 @@ async function loadChefContractSecondAttempt(App, chef, chefAddress, chefAbi, re
   
   var tokenAddresses = [].concat.apply([], poolInfos.filter(x => x.poolToken).map(x => x.poolToken.tokens));
   var prices = await lookUpTokenPrices(tokenAddresses);
-  prices["0x194ebd173f6cdace046c53eacce9b953f28411d1"] = { usd : 1.22 } //"temporary" solution
+  //prices["0x194ebd173f6cdace046c53eacce9b953f28411d1"] = { usd : 1.22 } //"temporary" solution
   
   await Promise.all(tokenAddresses.map(async (address) => {
       tokens[address] = await getToken(App, address, chefAddress);
