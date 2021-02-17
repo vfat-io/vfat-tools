@@ -1113,6 +1113,7 @@ function getUniPrices(tokens, prices, pool)
         const poolUrl = pool.is1inch ? "https://1inch.exchange/#/dao/pools" :
         pool.symbol.includes("LSLP") ? `https://info.linkswap.app/pair/${pool.address}` :
           pool.symbol.includes("SLP") ?  `http://sushiswap.fi/pair/${pool.address}` :
+            pool.symbol.includes("Cake-LP") ?  `https://pancakeswap.info/pair/${pool.address}` :  
           `http://uniswap.info/pair/${pool.address}`;
         const t0address = t0.symbol == "ETH" ? "ETH" : t0.address;
         const t1address = t1.symbol == "ETH" ? "ETH" : t1.address;
@@ -1121,6 +1122,11 @@ function getUniPrices(tokens, prices, pool)
           `https://linkswap.app/#/add/${t0address}/${t1address}`,
           `https://linkswap.app/#/remove/${t0address}/${t1address}`,
           `https://linkswap.app/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+        ] :
+        pool.symbol.includes("Cake-LP") ? [
+          `https://exchange.pancakeswap.finance/#/add/${t0address}/${t1address}`, 
+          `https://exchange.pancakeswap.finance/#/remove/${t0address}/${t1address}`, 
+          `https://exchange.pancakeswap.finance/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}` 
         ] :
         pool.symbol.includes("SLP") ? 
           [ `https://exchange.sushiswapclassic.org/#/add/${t0address}/${t1address}`,
