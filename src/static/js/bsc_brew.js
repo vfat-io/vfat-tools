@@ -17,7 +17,7 @@ async function main() {
    const BREW_CHEF = new ethers.Contract(BREW_CHEF_ADDR, BREW_CHEF_ABI, App.provider);
 
    const rewardsPerWeek = await BREW_CHEF.cakePerBlock() /1e18
-        * 604800 / 13.5;
+        * 604800 / 3;
 
     const tokens = {};
     const prices = await getBscPrices();

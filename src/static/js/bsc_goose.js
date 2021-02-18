@@ -17,7 +17,7 @@ async function main() {
    const GOOSE_CHEF = new ethers.Contract(GOOSE_CHEF_ADDR, GOOSE_CHEF_ABI, App.provider);
 
    const rewardsPerWeek = await GOOSE_CHEF.eggPerBlock() /1e18
-        * 604800 / 13.5;
+        * 604800 / 3;
 
     const tokens = {};
     const prices = await getBscPrices();

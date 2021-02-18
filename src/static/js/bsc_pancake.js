@@ -17,7 +17,7 @@ async function main() {
    const PANCAKE_CHEF = new ethers.Contract(PANCAKE_CHEF_ADDR, PANCAKE_CHEF_ABI, App.provider);
 
    const rewardsPerWeek = await PANCAKE_CHEF.cakePerBlock() /1e18
-        * 604800 / 13.5;
+        * 604800 / 3;
 
     const tokens = {};
     const prices = await getBscPrices();
