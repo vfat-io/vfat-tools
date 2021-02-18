@@ -284,7 +284,7 @@ async function loadBscChefContract(App, tokens, prices, chef, chefAddress, chefA
   const rewardToken = await getBscToken(App, rewardTokenAddress, chefAddress);
   const rewardsPerWeek = rewardsPerWeekFixed ?? 
     await chefContract.callStatic[rewardsPerBlockFunction]() 
-    / 10 ** rewardToken.decimals * 604800 / 13.5
+    / 10 ** rewardToken.decimals * 604800 / 3
 
   const poolInfos = await Promise.all([...Array(poolCount).keys()].map(async (x) =>
     await getBscPoolInfo(App, chefContract, chefAddress, x, pendingRewardsFunction)));

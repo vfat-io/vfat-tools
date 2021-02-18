@@ -17,7 +17,7 @@ async function main() {
  const RAMEN_CHEF = new ethers.Contract(RAMEN_CHEF_ADDR, RAMEN_CHEF_ABI, App.provider);
 
  const rewardsPerWeek = await RAMEN_CHEF.cakePerBlock() /1e18
-      * 604800 / 13.5;
+      * 604800 / 3;
 
   const tokens = {};
   const prices = await getBscPrices();
