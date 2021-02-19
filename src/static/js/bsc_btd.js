@@ -27,7 +27,7 @@ async function main() {
     const BTB_price = BTD_price*BTD_price;
 
     let table = `<table style="width:400px"><tbody><tr>`
-    +`<td style="width:100px"><img src="https://batdollar.fi/static/media/btd.2d4f5bd1.png"/></td>`
+    +`<td style="width:100px"><img src="https://boltdollar.finance/static/media/btd.2d4f5bd1.png" style="height:64px"/></td>`
     +`<td style="width:300px">Total Supply: ${parseFloat(BTD_totalSupply).toFixed(0)} BTD`
     +`<br>Fully diluted marketcap: $${formatMoney(BTD_price * BTD_totalSupply)}`
     +`<br><b>Price: 1 BTD = $${parseFloat(BTD_price).toFixed(4)}</b>`
@@ -36,7 +36,7 @@ async function main() {
     _print(table)
 
     table = `<table style="width:400px"><tbody><tr>`
-    +`<td style="width:100px"><img src="https://batdollar.fi/static/media/bts.e00e1ef9.png"/></td>`
+    +`<td style="width:100px"><img src="https://boltdollar.finance/static/media/bts.e00e1ef9.png" style="height:64px"/></td>`
     +`<td style="width:300px">Total Supply: ${parseFloat(BTS_totalSupply).toFixed(0)} BTS`
     +`<br>Fully diluted marketcap: $${formatMoney(BTS_price * BTS_totalSupply)}`
     +`<br><b>Price: 1 BTS = $${parseFloat(BTS_price).toFixed(4)}</b>`
@@ -45,7 +45,7 @@ async function main() {
     _print(table)
 
     table = `<table style="width:400px"><tbody><tr>`
-    +`<td style="width:100px"><img src="https://batdollar.fi/static/media/btb.4beb344c.png"/></td>`
+    +`<td style="width:100px"><img src="https://boltdollar.finance/static/media/btb.4beb344c.png" style="height:64px"/></td>`
     +`<td style="width:400px">Total Supply: ${parseFloat(BTB_totalSupply).toFixed(0)} BTB`
     +`<br>Fully diluted marketcap: $${formatMoney(BTB_price * BTB_totalSupply)}`
     +`<br><b>Price: 1 BTB = $${parseFloat(BTB_price).toFixed(4)}</b>`
@@ -129,9 +129,10 @@ async function main() {
         //const tokenInfo = await getTokenInfo(stakingTokenTicker)
 
 ///////////////////////////
-        var tokensInPool = userStaked / decimal;
         var pair_address = stakedTokenAddress;
         var pairContract = stakedToken;
+        var token = (pool_nr==0) ? BTDToken : BTSToken;
+        var tokensInPool = (await token.balanceOf(pair_address))/ 1e18;
         console.log('tokens in pancakeswap pool = '+tokensInPool);
         const busdContract = new ethers.Contract(params['BUSD'].address, params['BUSD'].abi, App.provider.getSigner())
         var busdInPool = (await busdContract.balanceOf(pair_address)) / 1e18;
@@ -181,7 +182,7 @@ async function main() {
         _print(`Total shares distributed per day = ${parseFloat(share_per_year/365).toFixed(0)} ($${formatMoney(share_per_year/365*BTS_price)})`)
         _print(`Total shares distributed per epoch = ${parseFloat(share_per_year/365/(24/period)).toFixed(0)} ($${formatMoney(share_per_year/365/(24/period)*BTS_price)})`)
 */        
-        let epochRewardsPerLP = share_per_year/365/(24/period)/total_supply;
+        let epochRewardsPerLP = share_per_year/365/4/(24/period)/total_supply;
         let yourRewardPerEpoch = epochRewardsPerLP * userStaked;
         
         let apr = epochRewardsPerLP*(24/period)*365*BTS_price *100 / tokenPrice;
@@ -304,7 +305,8 @@ async function main() {
 
     +`</tbody></table>`;
     _print(table);
-    
+
+    _print(`You have staked <b>${parseFloat(inBoardRoom).toFixed(4)} BTS ($${formatMoney(BTS_price*inBoardRoom)})</b>`)
     if (epochs_since_last_action<3) {
        _print(`You have to wait ${3-epochs_since_last_action} more epochs to be able to claim rewards!`)
     }
