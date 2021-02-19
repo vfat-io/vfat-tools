@@ -20,13 +20,13 @@ async function main() {
     const prices = await getBscPrices();
 
     await loadBscKimochiChefContract(App, tokens, prices, KIMOCHI_CHEF, KIMOCHI_CHEF_ADDR, KIMOCHI_CHEF_ABI, rewardTokenTicker,
-        null, "pendingReward");
+        "pendingReward", [0]);
 
     hideLoading();  
   }
 
   async function loadBscKimochiChefContract(App, tokens, prices, chef, chefAddress, chefAbi, rewardTokenTicker,
-    rewardsPerBlockFunction, pendingRewardsFunction, deathPoolIndices) {
+    pendingRewardsFunction, deathPoolIndices) {
     const chefContract = chef ?? new ethers.Contract(chefAddress, chefAbi, App.provider);
   
     const poolCount = parseInt(await chefContract.poolLength(), 10);
@@ -75,6 +75,7 @@ async function main() {
     const rewardsPerWeek = poolInfo.rewardPerBlock / 10 ** rewardToken.decimals * 604800 / 3
     const staked = userInfo.amount / 10 ** poolToken.decimals;
     return {
+        allocPoints: 1000,
         address: poolInfo.lpToken,
         rewardToken: rewardToken,
         poolToken: poolToken,
