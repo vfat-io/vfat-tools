@@ -68,6 +68,18 @@ async function main() {
 
   async function getKimochiPoolInfo(app, chefContract, chefAddress, poolIndex, pendingRewardsFunction) {  
     const poolInfo = await chefContract.poolInfo(poolIndex);
+    if(poolInfo.allocPoint == 0)
+    {
+        return {
+          allocPoints: poolInfo.allocPoint ?? 1,
+          address: poolInfo.lpToken,
+          rewardToken: null,
+          poolToken: null,
+          userStaked : 0,
+          pendingRewardTokens : 0,
+          rewardsPerWeek : 0
+      };
+    }
     const poolToken = await getBscToken(app, poolInfo.lpToken, chefAddress);
     const userInfo = await chefContract.userInfo(poolIndex, app.YOUR_ADDRESS);
     const pendingRewardTokens = await chefContract.callStatic[pendingRewardsFunction](poolIndex, app.YOUR_ADDRESS);

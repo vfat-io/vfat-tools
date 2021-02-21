@@ -78,6 +78,7 @@ async function getBscToken(App, tokenAddress, stakingAddress) {
       return uniPool;
     }
     catch(err) {
+      console.log(err);
     }
     try {
       const bep20 = new ethers.Contract(tokenAddress, ERC20_ABI, App.provider);
