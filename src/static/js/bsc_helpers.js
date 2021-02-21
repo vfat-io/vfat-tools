@@ -341,3 +341,19 @@ async function getBscPrices() {
           prices[bt.contract] = idPrices[bt.id];
   return prices;
 }
+
+async function loadMultipleBscSynthetixPools(App, tokens, prices, pools) {
+  let totalStaked  = 0, totalUserStaked = 0, individualAPYs = [];
+  const infos = await Promise.all(pools.map(p => 
+    loadBscSynthetixPoolInfo(App, tokens, prices, p.abi, p.address, p.rewardTokenFunction, p.stakeTokenFunction)));
+  for (const i of infos) {
+    let p = await printSynthetixPool(App, i);
+    totalStaked += p.staked_tvl || 0;
+    totalUserStaked += p.userStaked || 0;
+    if (p.userStaked > 0) {
+      individualAPYs.push(p.userStaked * p.apy / 100);
+    }
+  }
+  let totalApy = totalUserStaked == 0 ? 0 : individualAPYs.reduce((x,y)=>x+y, 0) / totalUserStaked;
+  return { staked_tvl : totalStaked, totalUserStaked, totalApy };
+}
