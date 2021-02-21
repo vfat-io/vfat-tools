@@ -23,7 +23,7 @@ async function main() {
   var tokens = {};
   var prices = {};
 
-  let p = await loadWowsPoolInfo(App, tokens, prices, WOWS_FARMING_ABI, Pool.abi, Pool.address,
+  let p = await loadWowsPool(App, tokens, prices, Pool.abi, Pool.address,
     Pool.rewardTokenAddress, Pool.stakeTokenFunction)
   _print_bold(`Total staked: $${formatMoney(p.staked_tvl)}`);
   if (p.totalUserStaked > 0) {
@@ -31,6 +31,11 @@ async function main() {
   }
   
   hideLoading();
+}
+
+async function loadWowsPool(App, tokens, prices, abi, address, rewardTokenFunction, stakeTokenFunction) {
+  const info = await loadWowsPoolInfo(App, tokens, prices, abi, address, rewardTokenFunction, stakeTokenFunction);
+  return await printSynthetixPool(App, info);
 }
 
 async function loadWowsPoolInfo(App, tokens, prices, stakingAbi, stakingAddress,
