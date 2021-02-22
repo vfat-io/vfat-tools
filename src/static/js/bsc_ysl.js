@@ -13,7 +13,7 @@ async function loadHydrogen(App, tokens, prices) {
     const ysH_CHEF = new ethers.Contract(ysH_CHEF_ADDR, hydrogenChef_ABI, App.provider);
  
      const rewardsPerWeek = await ysH_CHEF.hydrogenPerBlock() / 1e18
-         * 604800 / 13.5; 
+         * 604800 / 3; 
  
      await loadBscChefContract(App, tokens, prices, ysH_CHEF, ysH_CHEF_ADDR, hydrogenChef_ABI, rewardTokenTicker,
          "hydrogen", null, rewardsPerWeek, "pendingTokens", [10,11,12]);
@@ -30,7 +30,7 @@ async function main() {
    const ysO_CHEF = new ethers.Contract(ysO_CHEF_ADDR, oxygenChef_ABI, App.provider);
 
     const rewardsPerWeek = await ysO_CHEF.oxygenPerBlock() / 1e18
-        * 604800 / 13.5;
+        * 604800 / 3;
 
     const tokens = {};
     const prices = await getBscPrices();
