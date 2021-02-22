@@ -26,8 +26,7 @@
     rewardTokenFunction, rewardsPerBlockFunction, rewardsPerWeekFixed, pendingRewardsFunction) {
     const chefContract = chef ?? new ethers.Contract(chefAddress, chefAbi, App.provider);
 
-    //const poolCount = await chefContract.numberOfPools();
-    const poolCount = 10;
+    const poolCount = await chefContract.numberOfPools() / 1;
     const totalAllocPoints = await chefContract.totalAllocPoint();
 
     _print(`Found ${poolCount} pools.\n`)
@@ -52,12 +51,13 @@
         tokens[address] = await getToken(App, address, chefAddress);
     }));
 
-    const poolPrices = poolInfos.map(poolInfo => poolInfo.poolToken ? getPoolPrices(tokens, prices, poolInfo.poolToken) : undefined);
+    const poolPrices = poolInfos
+        .map(poolInfo => poolInfo.poolToken ? getPoolPrices(tokens, prices, poolInfo.poolToken) : undefined);
 
     _print("Finished reading smart contracts.\n");
 
     for (i = 0; i < poolCount; i++) {
-        if (poolPrices[i]) {
+        if (poolPrices[i]?.price > 0) {
             printChefPool(App, chefAbi, chefAddress, prices, tokens, poolInfos[i], i, poolPrices[i],
                 totalAllocPoints, rewardsPerWeek, rewardTokenTicker, rewardTokenAddress,
                 pendingRewardsFunction);
@@ -67,7 +67,8 @@
 
 async function getLpoolInfo(app, chefContract, chefAddress, poolIndex, pendingRewardsFunction) {
     const poolInfo = await chefContract.poolInfo(poolIndex);
-    if (poolInfo.allocPoint == 0) {
+    const poolToken = await getToken(app, poolInfo.erc20Token, chefAddress);
+    if (poolInfo.allocPoint == 0 || /^LP\d+$/.test(poolToken.symbol)) { //LP1 etc
         return {
             address: poolInfo.erc20Token,
             allocPoints: poolInfo.allocPoint ?? 1,
@@ -79,25 +80,17 @@ async function getLpoolInfo(app, chefContract, chefAddress, poolIndex, pendingRe
             lastRewardBlock: poolInfo.lastRewardBlock
         };
     }
-    const poolToken = await getToken(app, poolInfo.erc20Token, chefAddress);
     const userInfo = await chefContract.userInfo(poolIndex, app.YOUR_ADDRESS);
     const pendingRewardTokens = await chefContract.callStatic[pendingRewardsFunction](poolIndex, app.YOUR_ADDRESS);
     const staked = userInfo.amount / 10 ** poolToken.decimals;
-    var stakedToken;
-    var userLPStaked;
-    if (poolInfo.stakedHoldableToken != null &&
-        poolInfo.stakedHoldableToken != "0x0000000000000000000000000000000000000000") {
-        stakedToken = await getToken(app, poolInfo.stakedHoldableToken, chefAddress);
-        userLPStaked = userInfo.stakedLPAmount / 10 ** poolToken.decimals
-    }
     return {
         address: poolInfo.erc20Token,
         allocPoints: poolInfo.allocPoint ?? 1,
         poolToken: poolToken,
         userStaked: staked,
         pendingRewardTokens: pendingRewardTokens / 10 ** 18,
-        stakedToken: stakedToken,
-        userLPStaked: userLPStaked,
+        stakedToken: null,
+        userLPStaked: null,
         lastRewardBlock: poolInfo.lastRewardBlock
     };
 }

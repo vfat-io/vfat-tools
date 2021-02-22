@@ -1366,8 +1366,8 @@ function printApy(rewardTokenTicker, rewardPrice, poolRewardsPerWeek,
 
 function printChefContractLinks(App, chefAbi, chefAddr, poolIndex, poolAddress, pendingRewardsFunction,
     rewardTokenTicker, stakeTokenTicker, unstaked, userStaked, pendingRewardTokens, fixedDecimals,
-    claimFunction) {
-      fixedDecimals = fixedDecimals ?? 2;
+    claimFunction, rewardTokenPrice) {
+  fixedDecimals = fixedDecimals ?? 2;
   const approveAndStake = async function() {
     return chefContract_stake(chefAbi, chefAddr, poolIndex, poolAddress, App)
   }      
@@ -1381,7 +1381,7 @@ function printChefContractLinks(App, chefAbi, chefAddr, poolIndex, poolAddress, 
   _print(etherscanUrl);
   _print_link(`Stake ${unstaked.toFixed(fixedDecimals)} ${stakeTokenTicker}`, approveAndStake)
   _print_link(`Unstake ${userStaked.toFixed(fixedDecimals)} ${stakeTokenTicker}`, unstake)
-  _print_link(`Claim ${pendingRewardTokens.toFixed(fixedDecimals)} ${rewardTokenTicker}`, claim)
+  _print_link(`Claim ${pendingRewardTokens.toFixed(fixedDecimals)} ${rewardTokenTicker} ($${formatMoney(pendingRewardTokens*rewardTokenPrice)})`, claim)
   _print(`Staking or unstaking also claims rewards.`)
   _print(`\n`);
 }
@@ -1404,7 +1404,7 @@ function printChefPool(App, chefAbi, chefAddr, prices, tokens, poolInfo, poolInd
   if (poolInfo.userStaked > 0) poolPrices.print_contained_price(userStaked);
   printChefContractLinks(App, chefAbi, chefAddr, poolIndex, poolInfo.address, pendingRewardsFunction,
     rewardTokenTicker, poolPrices.stakeTokenTicker, poolInfo.poolToken.unstaked, 
-    poolInfo.userStaked, poolInfo.pendingRewardTokens, fixedDecimals, claimFunction);
+    poolInfo.userStaked, poolInfo.pendingRewardTokens, fixedDecimals, claimFunction, rewardPrice);
 }
 
 async function loadChefPool(App, prices, tokens, poolIndex, 
@@ -1527,6 +1527,7 @@ async function loadBoardroom(App, prices, boardroomAddress, oracleAddress, lptAd
     _print(`There is a total ${totalStaked.toFixed(2)} ${stakeTicker} ($${formatMoney(totalStakedUsd)}) staked in the Boardroom.`)
     _print(`You are staking ${userStaked} ${stakeTicker} ($${formatMoney(userStakedUsd)}), ${userPct.toFixed(2)}% of the pool.`);
 
+    const rewardPrice = getParameterCaseInsensitive(prices, rewardTokenAddress).usd;
     const oldTimestamp = await ORACLE.blockTimestampLast();
     const token0 = await ORACLE.token0();
     const token1 = await ORACLE.token1();
@@ -1546,7 +1547,6 @@ async function loadBoardroom(App, prices, boardroomAddress, oracleAddress, lptAd
         const totalSupply = await REWARD_TOKEN.totalSupply() / (10 ** await REWARD_TOKEN.decimals());
         const newTokens = totalSupply *  Math.min(twap - 1, maxSupplyIncrease)  * ratio;
         _print(`There will be ${newTokens.toFixed(decimals)} ${rewardTicker} issued at next expansion.`);
-        const rewardPrice = getParameterCaseInsensitive(prices, rewardTokenAddress).usd;
         const boardReturn = newTokens * rewardPrice / totalStakedUsd * 100 * epochsPerDay;
         _print(`Boardroom APR: Day ${(boardReturn).toFixed(2)}% Week ${(boardReturn * 7).toFixed(2)}% Year ${(boardReturn * 365).toFixed(2)}%`)
     }
@@ -1559,7 +1559,7 @@ async function loadBoardroom(App, prices, boardroomAddress, oracleAddress, lptAd
 
     _print_link(`Stake ${userUnstaked.toFixed(decimals)} ${stakeTicker}`, approveTENDAndStake)
     _print_link(`Unstake ${userStaked.toFixed(decimals)} ${stakeTicker}`, unstake)
-    _print_link(`Claim ${earned.toFixed(decimals)} ${rewardTicker}`, claim)
+    _print_link(`Claim ${earned.toFixed(decimals)} ${rewardTicker} ($${formatMoney(earned*rewardPrice)})`, claim)
     _print_link(`Revoke (set approval to 0)`, revoke)
     _print_link(`Exit`, exit)
     _print(`\n`);
