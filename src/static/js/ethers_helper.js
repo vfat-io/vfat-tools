@@ -176,20 +176,36 @@ const sleep = function(milliseconds) {
   } while (currentDate - date < milliseconds)
 }
 
+const chunk = (arr, n) => arr.length ? [arr.slice(0, n), ...chunk(arr.slice(n), n)] : []
+
 const lookUpPrices = async function(id_array) {
-  let ids = id_array.join('%2C')
-  return $.ajax({
-    url: 'https://api.coingecko.com/api/v3/simple/price?ids=' + ids + '&vs_currencies=usd',
-    type: 'GET',
-  })
+  const prices = {}
+  for (const id_chunk of chunk(id_array, 50)) {
+    let ids = id_chunk.join('%2C')
+    let res = await $.ajax({
+      url: 'https://api.coingecko.com/api/v3/simple/price?ids=' + ids + '&vs_currencies=usd',
+      type: 'GET',
+    })
+    for (const [key, v] of Object.entries(res)) {
+      if (v.usd) prices[key] = v;
+    }
+  }
+  return prices
 }
 
 const lookUpTokenPrices = async function(id_array) {
-  let ids = id_array.join('%2C')
-  return $.ajax({
-    url: 'https://api.coingecko.com/api/v3/simple/token_price/ethereum?contract_addresses=' + ids + '&vs_currencies=usd',
-    type: 'GET',
-  })
+  const prices = {}
+  for (const id_chunk of chunk(id_array, 50)) {
+    let ids = id_chunk.join('%2C')
+    let res = await $.ajax({
+      url: 'https://api.coingecko.com/api/v3/simple/token_price/ethereum?contract_addresses=' + ids + '&vs_currencies=usd',
+      type: 'GET',
+    })
+    for (const [key, v] of Object.entries(res)) {
+      if (v.usd) prices[key] = v;
+    }
+  }
+  return prices
 }
 
 const lookUpPricesHistorical = async function(id, from, to) {
