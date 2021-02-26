@@ -10,32 +10,15 @@ async function main() {
   const App = await init_ethers();
 
   const XSIGMA_CHEF_ADDR = "0x98C32b59a0AC00Cd33750427b1A317eBcf84D0F7";
+  const XSIGMA_CHEF = new ethers.Contract(XSIGMA_CHEF_ADDR, XSIGMA_CHEF_ABI, App.provider)
   const rewardTokenTicker = "SIG";
   const rewardsPerWeek = 25 * 604800 / 13.5;
 
   _print(`Initialized ${App.YOUR_ADDRESS}`);
   _print("Reading smart contracts...\n");
 
-  await loadXsigmaChefContract(App, XSIGMA_CHEF_ADDR, XSIGMA_CHEF_ABI, [1], rewardTokenTicker,
-    "sushi", rewardsPerWeek, "pendingSushi");
+  await loadChefContractSecondAttempt(App, XSIGMA_CHEF, XSIGMA_CHEF_ADDR, XSIGMA_CHEF_ABI, rewardTokenTicker,
+    "sushi", null, rewardsPerWeek, "pendingSushi");
   
   hideLoading();
-}
-
-async function loadXsigmaChefContract(App, chefAddress, chefAbi, rewardTokenPoolIndex, rewardTokenTicker,
-  rewardTokenFunction, rewardsPerWeek, pendingRewardsFunction) {    
-const chefContract = new ethers.Contract(chefAddress, chefAbi, App.provider);
-
-const poolCount = await chefContract.poolLength();
-const totalAllocPoints = await chefContract.totalAllocPoint();
-
-_print(`Found ${poolCount} pools.\n`)
-
-var prices = {};
-var tokens = {};
-
-const rewardTokenAddress = await chefContract.callStatic[rewardTokenFunction]();
-
-await loadChefPools(App, prices, tokens, rewardTokenPoolIndex, chefAbi, chefContract, chefAddress,
-  totalAllocPoints, rewardsPerWeek, rewardTokenTicker, rewardTokenAddress, pendingRewardsFunction, poolCount);
 }
