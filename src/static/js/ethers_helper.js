@@ -958,6 +958,11 @@ async function getStoredToken(app, tokenAddress, stakingAddress, type) {
       const bal = new ethcall.Contract(tokenAddress, BALANCER_POOL_ABI);
       const [tokens] = await app.ethcallProvider.all([bal.getFinalTokens()]);
       return await getBalancerPool(app, bal, tokenAddress, stakingAddress, tokens);
+    case "balancerSmart":
+      const sbal = new ethcall.Contract(tokenAddress, BALANCER_SMART_POOL_ABI);
+      const bPool = await app.ethcallProvider.all([sbal.bPool()]);
+      const bal = new ethcall.Contract(bPool, BALANCER_POOL_ABI);
+      return await getBalancerPool(app, bal, tokenAddress, stakingAddress, tokens);
     case "jar": 
       const jar = new ethcall.Contract(tokenAddress, JAR_ABI);
       return await getJar(app, jar, tokenAddress, stakingAddress);
@@ -1004,6 +1009,16 @@ async function getToken(app, tokenAddress, stakingAddress) {
     const [tokens] = await app.ethcallProvider.all([bal.getFinalTokens()]);
     const balPool = await getBalancerPool(app, bal, tokenAddress, stakingAddress, tokens);
     window.localStorage.setItem(tokenAddress, "balancer");
+    return balPool;
+  }
+  catch(err) {
+  }
+  try {
+    const sbal = new ethcall.Contract(tokenAddress, BALANCER_SMART_POOL_ABI);
+    const bPool = await app.ethcallProvider.all([sbal.bPool()]);
+    const bal = new ethcall.Contract(bPool, BALANCER_POOL_ABI);
+    const balPool = await getBalancerPool(app, bal, tokenAddress, stakingAddress, tokens);
+    window.localStorage.setItem(tokenAddress, "balancerSmart");
     return balPool;
   }
   catch(err) {
