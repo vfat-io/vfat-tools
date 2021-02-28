@@ -8,7 +8,7 @@ const ALCX_POOL_ABI = [{"inputs":[{"internalType":"contract IMintableERC20","nam
 async function getAlcxPoolInfo(App, pool, poolIndex) {
   const [token, rewardRate, totalDeposited, userStaked, userUnclaimed] =
     await App.ethcallProvider.all([
-      pool.getPoolToken(poolIndex), pool.getPoolRewardWeight(poolIndex),
+      pool.getPoolToken(poolIndex), pool.getPoolRewardRate(poolIndex),
       pool.getPoolTotalDeposited(poolIndex), pool.getStakeTotalDeposited(App.YOUR_ADDRESS, poolIndex),
       pool.getStakeTotalUnclaimed(App.YOUR_ADDRESS, poolIndex)
     ]);
