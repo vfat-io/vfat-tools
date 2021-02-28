@@ -79,7 +79,8 @@ async function main() {
    const rewardTokenTicker = "ALPACA";
    const ALPACA_CHEF = new ethers.Contract(ALPACA_CHEF_ADDR, ALPACA_CHEF_ABI, App.provider);
 
-   const rewardsPerWeek = await ALPACA_CHEF.alpacaPerBlock() /1e18 * 604800 / 3;
+   const rewardsPerWeek = await ALPACA_CHEF.alpacaPerBlock() /1e18 * 604800 / 3
+    * 7; //bonus multiplier
 
     const tokens = {};
     const prices = await getBscPrices();
