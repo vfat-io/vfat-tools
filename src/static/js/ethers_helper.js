@@ -843,7 +843,7 @@ async function getCurveToken(app, curve, address, stakingAddress, minterAddress)
       contract: curve,
       tokens : [address, coin0],
       token,
-      virtualPrice
+      virtualPrice : virtualPrice / 1e18
   };
 }
 
@@ -958,6 +958,11 @@ async function getStoredToken(app, tokenAddress, stakingAddress, type) {
       const bal = new ethcall.Contract(tokenAddress, BALANCER_POOL_ABI);
       const [tokens] = await app.ethcallProvider.all([bal.getFinalTokens()]);
       return await getBalancerPool(app, bal, tokenAddress, stakingAddress, tokens);
+    case "balancerSmart":
+      const sbal = new ethcall.Contract(tokenAddress, BALANCER_SMART_POOL_ABI);
+      const bPool = await app.ethcallProvider.all([sbal.bPool()]);
+      const bal = new ethcall.Contract(bPool, BALANCER_POOL_ABI);
+      return await getBalancerPool(app, bal, tokenAddress, stakingAddress, tokens);
     case "jar": 
       const jar = new ethcall.Contract(tokenAddress, JAR_ABI);
       return await getJar(app, jar, tokenAddress, stakingAddress);
@@ -975,6 +980,10 @@ async function getStoredToken(app, tokenAddress, stakingAddress, type) {
       return await getDSToken(app, dsToken, tokenAddress, stakingAddress);
     case "curve":
       const crv = new ethcall.Contract(tokenAddress, CURVE_ABI);
+      if (tokenAddress.toLowerCase() == "0x88E11412BB21d137C217fd8b73982Dc0ED3665d7".toLowerCase()) {
+        const minter = "0x3333333ACdEdBbC9Ad7bda0876e60714195681c5";
+        return await getCurveToken(app, crv, tokenAddress, stakingAddress, minter);
+      }
       const [minter] = await app.ethcallProvider.all([crv.minter()]);
       return await getCurveToken(app, crv, tokenAddress, stakingAddress, minter);
   }
@@ -1000,6 +1009,16 @@ async function getToken(app, tokenAddress, stakingAddress) {
     const [tokens] = await app.ethcallProvider.all([bal.getFinalTokens()]);
     const balPool = await getBalancerPool(app, bal, tokenAddress, stakingAddress, tokens);
     window.localStorage.setItem(tokenAddress, "balancer");
+    return balPool;
+  }
+  catch(err) {
+  }
+  try {
+    const sbal = new ethcall.Contract(tokenAddress, BALANCER_SMART_POOL_ABI);
+    const bPool = await app.ethcallProvider.all([sbal.bPool()]);
+    const bal = new ethcall.Contract(bPool, BALANCER_POOL_ABI);
+    const balPool = await getBalancerPool(app, bal, tokenAddress, stakingAddress, tokens);
+    window.localStorage.setItem(tokenAddress, "balancerSmart");
     return balPool;
   }
   catch(err) {
@@ -1035,6 +1054,12 @@ async function getToken(app, tokenAddress, stakingAddress) {
   }
   try {
     const crv = new ethcall.Contract(tokenAddress, CURVE_ABI);
+    if (tokenAddress.toLowerCase() == "0x88E11412BB21d137C217fd8b73982Dc0ED3665d7".toLowerCase()) {
+      const minter = "0x3333333ACdEdBbC9Ad7bda0876e60714195681c5";
+      const res = await getCurveToken(app, crv, tokenAddress, stakingAddress, minter);
+      window.localStorage.setItem(tokenAddress, "curve");
+      return res;
+    }
     const [minter] = await app.ethcallProvider.all([crv.minter()]);
     const res = await getCurveToken(app, crv, tokenAddress, stakingAddress, minter);
     window.localStorage.setItem(tokenAddress, "curve");
@@ -1156,7 +1181,7 @@ function getUniPrices(tokens, prices, pool)
         _print(`<a href='${poolUrl}' target='_blank'>${stakeTokenTicker}</a>${helperHrefs} Price: $${formatMoney(price)} TVL: $${formatMoney(tvl)}`);
         _print(`${t0.symbol} Price: $${formatMoney(p0)}`)
         _print(`${t1.symbol} Price: $${formatMoney(p1)}`)
-        _print(`Staked: $${formatMoney(staked_tvl)}`);
+        _print(`Staked: ${pool.staked.toFixed(4)} ${pool.symbol} ($${formatMoney(staked_tvl)})`);
       },
       print_contained_price(userStaked) {
         var userPct = userStaked / pool.totalSupply;
@@ -1206,7 +1231,7 @@ function getBalancerPrices(tokens, prices, pool)
         poolPrices.forEach((p, i) => 
           _print(`${poolTokens[i].symbol} Price: $${formatMoney(p)}`)
         );
-        _print(`Staked: $${formatMoney(staked_tvl)}`);
+        _print(`Staked: ${pool.staked.toFixed(4)} ${stakeTokenTicker} ($${formatMoney(staked_tvl)})`);
       },
       print_contained_price(userStaked) {
         var userPct = userStaked / pool.totalSupply;
@@ -1239,7 +1264,7 @@ function getWrapPrices(tokens, prices, pool)
       stakeTokenTicker : pool.symbol,
       print_price() {
         _print(`${name} Price: $${formatMoney(price)} TVL: $${formatMoney(tvl)}`);
-        _print(`Staked: $${formatMoney(staked_tvl)}`);
+        _print(`Staked: ${pool.staked.toFixed(4)} ${pool.symbol} ($${formatMoney(staked_tvl)})`);
       },
       print_contained_price(_) {
       }
@@ -1265,7 +1290,7 @@ function getWrapPrices(tokens, prices, pool)
       stakeTokenTicker : pool.symbol,
       print_price() {
         _print(`${pool.symbol} Price: $${formatMoney(price)} TVL: $${formatMoney(tvl)}`);
-        _print(`Staked: $${formatMoney(staked_tvl)}`);
+        _print(`Staked: ${pool.staked.toFixed(4)} ${pool.symbol} ($${formatMoney(staked_tvl)})`);
       },
       print_contained_price(_) {
       }
@@ -1285,7 +1310,7 @@ function getErc20Prices(prices, pool) {
     stakeTokenTicker : pool.symbol,
     print_price() {
       _print(`${name} Price: $${formatMoney(price)} Market Cap: $${formatMoney(tvl)}`);
-      _print(`Staked: $${formatMoney(staked_tvl)}`);
+      _print(`Staked: ${pool.staked.toFixed(4)} ${pool.symbol} ($${formatMoney(staked_tvl)})`);
     },
     print_contained_price() {
     }
@@ -1304,7 +1329,7 @@ function getCurvePrices(prices, pool) {
     stakeTokenTicker : pool.symbol,
     print_price() {
       _print(`${name} Price: $${formatMoney(price)} Market Cap: $${formatMoney(tvl)}`);
-      _print(`Staked: $${formatMoney(staked_tvl)}`);
+      _print(`Staked: ${pool.staked.toFixed(4)} ${pool.symbol} ($${formatMoney(staked_tvl)})`);
     },
     print_contained_price() {
     }
@@ -1516,7 +1541,7 @@ async function loadChefContractSecondAttempt(App, chef, chefAddress, chefAbi, re
   _print("Finished reading smart contracts.\n");
     
   for (i = 0; i < poolCount; i++) {
-    if (poolPrices[i]) {
+    if (poolPrices[i] && poolPrices[i].price) {
       printChefPool(App, chefAbi, chefAddress, prices, tokens, poolInfos[i], i, poolPrices[i],
         totalAllocPoints, rewardsPerWeek, rewardTokenTicker, rewardTokenAddress,
         pendingRewardsFunction);
