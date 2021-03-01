@@ -26,6 +26,7 @@ async function main() {
   var prices = {};
 
   await loadBasisFork(Basis.MITH);
+  _print();
   let p = await loadMultipleSynthetixPools(App, tokens, prices, Pools)
   _print_bold(`Total staked: $${formatMoney(p.staked_tvl)}`);
   if (p.totalUserStaked > 0) {
