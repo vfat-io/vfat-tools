@@ -27,6 +27,9 @@ async function main() {
 
   const App = await init_ethers();
 
+  _print("*** Important ***");
+  _print("Please do not use the Claim function as it will fail. To claim your rewards you need to use Exit, you can then Stake again.\n");
+
   _print(`Initialized ${App.YOUR_ADDRESS}`);
   _print("Reading smart contracts...\n");
 
