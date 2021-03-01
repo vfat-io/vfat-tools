@@ -117,7 +117,7 @@ async function loadMythicContract(App, tokens, prices, contract, contractAddress
     poolPrices.print_price();
     printApy(rewardTokenTicker, rewardPrice, rewardsPerWeek, poolPrices.stakeTokenTicker, 
       poolPrices.staked_tvl, poolInfo.userStaked, poolPrices.price, 2);
-    if (poolInfo.userStaked > 0) poolPrices.print_contained_price(userStaked);
+    if (poolInfo.userStaked > 0) poolPrices.print_contained_price(poolInfo.userStaked);
   }
 
   async function getBscMagicPoolInfo(app, chefContract, chefAddress, poolIndex, pendingRewardsFunction) {  

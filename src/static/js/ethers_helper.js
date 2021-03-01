@@ -851,6 +851,27 @@ async function getCurveToken(app, curve, address, stakingAddress, minterAddress)
   };
 }
 
+async function getStableswapToken(app, stable, address, stakingAddress) {
+  const calls = [stable.decimals(), stable.balanceOf(stakingAddress), stable.balanceOf(app.YOUR_ADDRESS),
+    stable.name(), stable.symbol(), stable.totalSupply(), stable.get_virtual_price(), stable.coins(0)];
+  const [decimals, staked, unstaked, name, symbol, totalSupply, virtualPrice, coin0] 
+    = await app.ethcallProvider.all(calls);
+  const token = await getToken(app, coin0, address);
+  return {
+      address,
+      name,
+      symbol,
+      totalSupply,
+      decimals : decimals,
+      staked:  staked / 10 ** decimals,
+      unstaked: unstaked  / 10 ** decimals,
+      contract: stable,
+      tokens : [address, coin0],
+      token,
+      virtualPrice : virtualPrice / 1e18
+  };
+}
+
 async function getErc20(app, token, address, stakingAddress) {
   if (address == "0x0000000000000000000000000000000000000000") {
     return {
@@ -991,6 +1012,9 @@ async function getStoredToken(app, tokenAddress, stakingAddress, type) {
       }
       const [minter] = await app.ethcallProvider.all([crv.minter()]);
       return await getCurveToken(app, crv, tokenAddress, stakingAddress, minter);
+    case "stableswap":
+      const stable = new ethcall.Contract(tokenAddress, STABLESWAP_ABI);
+      return await getStableswapToken(app, stable, tokenAddress, stakingAddress);
   }
 }
 
@@ -1072,6 +1096,14 @@ async function getToken(app, tokenAddress, stakingAddress) {
     return res;
   }
   catch(err) {
+  }
+  try {
+    const stable = new ethcall.Contract(tokenAddress, STABLESWAP_ABI);
+    const _coin0 = await app.ethcallProvider.all([stable.coins(0)]);
+    window.localStorage.setItem(tokenAddress, "stableswap");
+    return await getStableswapToken(app, stable, tokenAddress, stakingAddress);
+  }
+  catch (err) {
   }
   try {
     const erc20 = new ethcall.Contract(tokenAddress, ERC20_ABI);
