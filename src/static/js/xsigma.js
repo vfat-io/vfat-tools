@@ -17,7 +17,7 @@ async function main() {
   _print(`Initialized ${App.YOUR_ADDRESS}`);
   _print("Reading smart contracts...\n");
 
-  await loadChefContractSecondAttempt(App, XSIGMA_CHEF, XSIGMA_CHEF_ADDR, XSIGMA_CHEF_ABI, rewardTokenTicker,
+  await loadChefContract(App, XSIGMA_CHEF, XSIGMA_CHEF_ADDR, XSIGMA_CHEF_ABI, rewardTokenTicker,
     "sushi", null, rewardsPerWeek, "pendingSushi");
   
   hideLoading();

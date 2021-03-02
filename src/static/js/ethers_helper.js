@@ -1176,6 +1176,7 @@ function getUniPrices(tokens, prices, pool)
   if (pool.is1inch) stakeTokenTicker += " 1INCH LP";
   else if (pool.symbol.includes("LSLP")) stakeTokenTicker += " LSLP";
   else if (pool.symbol.includes("SLP")) stakeTokenTicker += " SLP";
+  else if (pool.symbol.includes("Cake")) stakeTokenTicker += " Cake LP";
   else stakeTokenTicker += " Uni LP";
   return {
       t0: t0,
@@ -1285,11 +1286,10 @@ function getWrapPrices(tokens, prices, pool)
   if (wrappedToken.token0 != null) { //Uniswap
     const uniPrices = getUniPrices(tokens, prices, wrappedToken);
     const poolUrl = pool.is1inch ? "https://1inch.exchange/#/dao/pools" :
-    pool.symbol.includes("SLP") ?  `http://sushiswap.fi/pair/${wrappedToken.address}`
+    pool.symbol.includes("SLP") ?  `http://sushiswap.fi/pair/${wrappedToken.address}` :
+    pool.symbol.includes("Cake") ?  `http://pancakeswap.info/pair/${wrappedToken.address}`
       : `http://uniswap.info/pair/${wrappedToken.address}`;
-    const name = pool.is1inch ? `Wrapped 1inch<a href='${poolUrl}' target='_blank'>${uniPrices.stakeTokenTicker}</a>` :
-    pool.symbol.includes("SLP") ?  `Wrapped SUSHI <a href='${poolUrl}' target='_blank'>${uniPrices.stakeTokenTicker}</a>`
-      : `Wrapped UNI <a href='${poolUrl}' target='_blank'>${uniPrices.stakeTokenTicker}</a>`;;
+    const name = `Wrapped <a href='${poolUrl}' target='_blank'>${uniPrices.stakeTokenTicker}</a>`;
     const price = (pool.balance / 10 ** wrappedToken.decimals) * uniPrices.price / (pool.totalSupply / 10 ** pool.decimals);
     const tvl = pool.balance / 10 ** wrappedToken.decimals * price;
     const staked_tvl = pool.staked * price;
@@ -1336,11 +1336,11 @@ function getWrapPrices(tokens, prices, pool)
   }
 }
 
-function getErc20Prices(prices, pool) {  
+function getErc20Prices(prices, pool, isBsc = false) {  
   var price = getParameterCaseInsensitive(prices,pool.address)?.usd;
   var tvl = pool.totalSupply * price / 10 ** pool.decimals;
   var staked_tvl = pool.staked * price;
-  const poolUrl = `https://etherscan.io/token/${pool.address}`;
+  const poolUrl = isBsc ?  `https://bscscan.com/token/${pool.address}` : `https://etherscan.io/token/${pool.address}`;
   const name = `<a href='${poolUrl}' target='_blank'>${pool.symbol}</a>`;
   return {
     staked_tvl : staked_tvl,
@@ -1374,12 +1374,12 @@ function getCurvePrices(prices, pool) {
   }
 }
 
-function getPoolPrices(tokens, prices, pool) {
+function getPoolPrices(tokens, prices, pool, isBsc = false) {
   if (pool.poolTokens != null) return getBalancerPrices(tokens, prices, pool);
   if (pool.token0 != null) return getUniPrices(tokens, prices, pool);
   if (pool.virtualPrice != null) return getCurvePrices(prices, pool);
   if (pool.token != null) return getWrapPrices(tokens, prices, pool);
-  return getErc20Prices(prices, pool);
+  return getErc20Prices(prices, pool, isBsc);
 }
 
 async function getPoolInfo(app, chefContract, chefAddress, poolIndex, pendingRewardsFunction) {  
@@ -1455,9 +1455,7 @@ function printChefContractLinks(App, chefAbi, chefAddr, poolIndex, poolAddress, 
   }      
   const claim = async function() {
     return chefContract_claim(chefAbi, chefAddr, poolIndex, App, pendingRewardsFunction, claimFunction)
-  }    
-  const etherscanUrl = `<a href='https://etherscan.io/address/${poolAddress}' target='_blank'>Staking Contract</a>`;
-  _print(etherscanUrl);
+  }
   _print_link(`Stake ${unstaked.toFixed(fixedDecimals)} ${stakeTokenTicker}`, approveAndStake)
   _print_link(`Unstake ${userStaked.toFixed(fixedDecimals)} ${stakeTokenTicker}`, unstake)
   _print_link(`Claim ${pendingRewardTokens.toFixed(fixedDecimals)} ${rewardTokenTicker} ($${formatMoney(pendingRewardTokens*rewardTokenPrice)})`, claim)
@@ -1467,7 +1465,7 @@ function printChefContractLinks(App, chefAbi, chefAddr, poolIndex, poolAddress, 
 
 function printChefPool(App, chefAbi, chefAddr, prices, tokens, poolInfo, poolIndex, poolPrices, 
                        totalAllocPoints, rewardsPerWeek, rewardTokenTicker, rewardTokenAddress,
-                       pendingRewardsFunction, fixedDecimals, claimFunction) {  
+                       pendingRewardsFunction, fixedDecimals, claimFunction, isBsc = false) {  
   fixedDecimals = fixedDecimals ?? 2;
   const sp = (poolInfo.stakedToken == null) ? null : getPoolPrices(tokens, prices, poolInfo.stakedToken);
   var poolRewardsPerWeek = poolInfo.allocPoints / totalAllocPoints * rewardsPerWeek;
@@ -1483,74 +1481,17 @@ function printChefPool(App, chefAbi, chefAddr, prices, tokens, poolInfo, poolInd
   if (poolInfo.userStaked > 0) poolPrices.print_contained_price(userStaked);
   printChefContractLinks(App, chefAbi, chefAddr, poolIndex, poolInfo.address, pendingRewardsFunction,
     rewardTokenTicker, poolPrices.stakeTokenTicker, poolInfo.poolToken.unstaked, 
-    poolInfo.userStaked, poolInfo.pendingRewardTokens, fixedDecimals, claimFunction, rewardPrice);
+    poolInfo.userStaked, poolInfo.pendingRewardTokens, fixedDecimals, claimFunction, rewardPrice, isBsc);
 }
 
-async function loadChefPool(App, prices, tokens, poolIndex, 
-                            chefAbi, chefContract, chefAddr, totalAllocPoints, 
-                            rewardsPerWeek, rewardTokenTicker, rewardTokenAddress, 
-                            pendingRewardsFunction) {  
-  const poolInfo = await getPoolInfo(App, chefContract, chefAddr, poolIndex, pendingRewardsFunction);
-  var newPriceAddresses = poolInfo.poolToken.tokens.filter(x => prices[x] == null);
-  var newPrices = await lookUpTokenPrices(newPriceAddresses);
-  for (const key in newPrices) {
-      prices[key] = newPrices[key];
-  }
-  var newTokenAddresses = poolInfo.poolToken.tokens.filter(x => tokens[x] == null);
-  await Promise.all(newTokenAddresses.map(async (address) => {
-      tokens[address] = await getToken(App, address, chefAddr);
-  }));
-
-  const poolPrices = getPoolPrices(tokens, prices, poolInfo);
-
-  printChefPool(App, chefAbi, chefAddr, prices, tokens, poolInfo, poolIndex, poolPrices,
-   totalAllocPoints, rewardsPerWeek, rewardTokenTicker, rewardTokenAddress,
-   pendingRewardsFunction);
-}
-
-async function loadChefPools(App, prices, tokens, rewardTokenPoolIndex, 
-    chefAbi, chefContract, chefAddress, totalAllocPoints, 
-    rewardsPerWeek, rewardTokenTicker, rewardTokenAddress, pendingRewardsFunction, poolCount) {
-  //Loading the pool with the reward token first allows calculating the APY for the remaining ones
-  await loadChefPool(App, prices, tokens, rewardTokenPoolIndex, 
-    chefAbi, chefContract, chefAddress, totalAllocPoints, 
-    rewardsPerWeek, rewardTokenTicker, rewardTokenAddress, pendingRewardsFunction);
-  
-  for (i = 0; i < poolCount; i++) {
-    if (i != rewardTokenPoolIndex) {
-        await loadChefPool(App, prices, tokens, i,
-          chefAbi, chefContract, chefAddress, totalAllocPoints, 
-          rewardsPerWeek, rewardTokenTicker, rewardTokenAddress, pendingRewardsFunction);
-    }
-  }
-}
-
-async function loadChefContract(App, chefAddress, chefAbi, rewardTokenPoolIndex, rewardTokenTicker,
-    rewardTokenFunction, rewardsPerBlockFunction, pendingRewardsFunction) {    
-  const chefContract = new ethers.Contract(chefAddress, chefAbi, App.provider);
-
-  const poolCount = await chefContract.poolLength();
-  const totalAllocPoints = await chefContract.totalAllocPoint();
-
-  _print(`Found ${poolCount} pools.\n`)
-
-  var prices = {};
-  var tokens = {};
-
-  const rewardTokenAddress = await chefContract.callStatic[rewardTokenFunction]();
-  const rewardsPerWeek = await chefContract.callStatic[rewardsPerBlockFunction]() / 1e18 * 604800 / 13.5
-
-  await loadChefPools(App, prices, tokens, rewardTokenPoolIndex, chefAbi, chefContract, chefAddress,
-    totalAllocPoints, rewardsPerWeek, rewardTokenTicker, rewardTokenAddress, pendingRewardsFunction, poolCount);
-}
-
-async function loadChefContractSecondAttempt(App, chef, chefAddress, chefAbi, rewardTokenTicker,
+async function loadChefContract(App, chef, chefAddress, chefAbi, rewardTokenTicker,
     rewardTokenFunction, rewardsPerBlockFunction, rewardsPerWeekFixed, pendingRewardsFunction) {
   const chefContract = chef ?? new ethers.Contract(chefAddress, chefAbi, App.provider);
 
   const poolCount = parseInt(await chefContract.poolLength(), 10);
   const totalAllocPoints = await chefContract.totalAllocPoint();
 
+  _print(`<a href='https://etherscan.io/address/${chefAddress}' target='_blank'>Staking Contract</a>`);
   _print(`Found ${poolCount} pools.\n`)
 
   _print(`Showing incentivized pools only.\n`);

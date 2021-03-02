@@ -13,7 +13,7 @@ $(function() {
     const rewardTokenTicker = "YAX";
     const rewardsPerWeek = 4000 * 0.9;
 
-    await loadChefContractSecondAttempt(App, null, YAXIS_CHEF_ADDR, YAXIS_CHEF_ABI, rewardTokenTicker,
+    await loadChefContract(App, null, YAXIS_CHEF_ADDR, YAXIS_CHEF_ABI, rewardTokenTicker,
         "yax", null, rewardsPerWeek, "pendingYaxis");
 
     hideLoading();  
