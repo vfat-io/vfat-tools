@@ -13,23 +13,18 @@ async function main() {
 
  const ACRYPTOS_CHEF_ADDR0 = "0xeaE1425d8ed46554BF56968960e2E567B49D0BED";
  const ACRYPTOS_CHEF_ADDR1 = "0x96c8390BA28eB083A784280227C37b853bc408B7";
- const rewardTokenTicker = "ASC";
+ const rewardTokenTicker = "ACS";
  const ACRYPTOS_CHEF0 = new ethers.Contract(ACRYPTOS_CHEF_ADDR0, ACRYPTOS_CHEF_POOLS_ABI, App.provider);
  const ACRYPTOS_CHEF1 = new ethers.Contract(ACRYPTOS_CHEF_ADDR1, ACRYPTOS_CHEF_POOLS_ABI, App.provider);
-
- const rewardsPerWeek0 = await ACRYPTOS_CHEF0.sushiPerBlock() /1e18
-      * 604800 / 3;
-  const rewardsPerWeek1 = await ACRYPTOS_CHEF0.sushiPerBlock() /1e18
-      * 604800 / 3;
 
   const tokens = {};
   const prices = await getBscPrices();
 
   await loadBscChefContract(App, tokens, prices, ACRYPTOS_CHEF0, ACRYPTOS_CHEF_ADDR0, ACRYPTOS_CHEF_POOLS_ABI, rewardTokenTicker,
-    "sushi", null, rewardsPerWeek0, "pendingSushi");
+    "sushi", "sushiPerBlock", null, "pendingSushi");
 
   await loadBscChefContract(App, tokens, prices, ACRYPTOS_CHEF1, ACRYPTOS_CHEF_ADDR1, ACRYPTOS_CHEF_POOLS_ABI, rewardTokenTicker,
-      "sushi", null, rewardsPerWeek1, "pendingSushi");
+      "sushi", "sushiPerBlock", null, "pendingSushi");
 
   hideLoading();  
 }
