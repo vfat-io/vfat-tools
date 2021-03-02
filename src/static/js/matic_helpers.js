@@ -1,4 +1,4 @@
-async function getHecoUniPool(App, pool, poolAddress, stakingAddress) {    
+async function getMaticUniPool(App, pool, poolAddress, stakingAddress) {    
     let q0, q1;
     const reserves = await pool.getReserves();
     q0 = reserves._reserve0;
@@ -25,12 +25,12 @@ async function getHecoUniPool(App, pool, poolAddress, stakingAddress) {
     };
 }
 
-async function getHec20(App, token, address, stakingAddress) {
+async function getMatic20(App, token, address, stakingAddress) {
     if (address == "0x0000000000000000000000000000000000000000") {
       return {
         address,
-        name : "Huobi Token",
-        symbol : "HT",
+        name : "Matic",
+        symbol : "MATIC",
         totalSupply: 1e8,
         decimals: 18,
         staked: 0,
@@ -53,38 +53,38 @@ async function getHec20(App, token, address, stakingAddress) {
     };
 }
 
-async function getHecoStoredToken(App, tokenAddress, stakingAddress, type) {
+async function getMaticStoredToken(App, tokenAddress, stakingAddress, type) {
   switch (type) {
     case "uniswap": 
       const pool = new ethers.Contract(tokenAddress, UNI_ABI, App.provider);
-      return await getHecoUniPool(App, pool, tokenAddress, stakingAddress);
-    case "hrc20":
-      const hrc20 = new ethers.Contract(tokenAddress, ERC20_ABI, App.provider);
-      return await getHec20(App, hrc20, tokenAddress, stakingAddress);
+      return await getMaticUniPool(App, pool, tokenAddress, stakingAddress);
+    case "matic20":
+      const matic20 = new ethers.Contract(tokenAddress, ERC20_ABI, App.provider);
+      return await getMatic20(App, matic20, tokenAddress, stakingAddress);
   }
 }
 
-async function getHecoToken(App, tokenAddress, stakingAddress) {
+async function getMaticToken(App, tokenAddress, stakingAddress) {
     if (tokenAddress == "0x0000000000000000000000000000000000000000") {
-      return getHec20(App, null, tokenAddress, "")
+      return getMatic20(App, null, tokenAddress, "")
     }
     const type = window.localStorage.getItem(tokenAddress);
-    if (type) return getHecoStoredToken(App, tokenAddress, stakingAddress, type);
+    if (type) return getMaticStoredToken(App, tokenAddress, stakingAddress, type);
     try {
       const pool = new ethers.Contract(tokenAddress, UNI_ABI, App.provider);
       const _token0 = await pool.token0();
-      const uniPool = await getHecoUniPool(App, pool, tokenAddress, stakingAddress);
+      const uniPool = await getMaticUniPool(App, pool, tokenAddress, stakingAddress);
       window.localStorage.setItem(tokenAddress, "uniswap");
       return uniPool;
     }
     catch(err) {
     }
     try {
-      const hrc20 = new ethers.Contract(tokenAddress, ERC20_ABI, App.provider);
-      const _name = await hrc20.name();
-      const hrc20tok = await getHec20(App, hrc20, tokenAddress, stakingAddress);
-      window.localStorage.setItem(tokenAddress, "hrc20");
-      return hrc20tok;
+      const matic20 = new ethers.Contract(tokenAddress, ERC20_ABI, App.provider);
+      const _name = await matic20.name();
+      const matic20tok = await getMatic20(App, matic20, tokenAddress, stakingAddress);
+      window.localStorage.setItem(tokenAddress, "matic20");
+      return matic20tok;
     }
     catch(err) {
       console.log(err);
@@ -92,7 +92,7 @@ async function getHecoToken(App, tokenAddress, stakingAddress) {
     }
   }
 
-async function loadHecoSynthetixPoolInfo(App, tokens, prices, stakingAbi, stakingAddress,
+async function loadMaticSynthetixPoolInfo(App, tokens, prices, stakingAbi, stakingAddress,
     rewardTokenFunction, stakeTokenFunction) {
       const STAKING_POOL = new ethers.Contract(stakingAddress, stakingAbi, App.provider);
   
@@ -103,14 +103,13 @@ async function loadHecoSynthetixPoolInfo(App, tokens, prices, stakingAbi, stakin
   
       const rewardTokenAddress = await STAKING_POOL.callStatic[rewardTokenFunction]();
   
-      var stakeToken = await getHecoToken(App, stakeTokenAddress, stakingAddress);
+      var stakeToken = await getMaticToken(App, stakeTokenAddress, stakingAddress);
   
       if (stakeTokenAddress.toLowerCase() === rewardTokenAddress.toLowerCase()) {
         stakeToken.staked = await STAKING_POOL.totalSupply() / 10 ** stakeToken.decimals;
       }
   
       var newPriceAddresses = stakeToken.tokens.filter(x =>
-        x.toLowerCase() !=  "0xb34ab2f65c6e4f764ffe740ab83f982021faed6d" && //BSG can't be retrieved from Coingecko
         !getParameterCaseInsensitive(prices, x));
       var newPrices = await lookUpTokenPrices(newPriceAddresses);
       for (const key in newPrices) {
@@ -120,16 +119,16 @@ async function loadHecoSynthetixPoolInfo(App, tokens, prices, stakingAbi, stakin
       var newTokenAddresses = stakeToken.tokens.filter(x =>
         !getParameterCaseInsensitive(tokens,x));
       for (const address of newTokenAddresses) {
-          tokens[address] = await getHecoToken(App, address, stakingAddress);
+          tokens[address] = await getMaticToken(App, address, stakingAddress);
       }
       if (!getParameterCaseInsensitive(tokens, rewardTokenAddress)) {
-          tokens[rewardTokenAddress] = await getHecoToken(App, rewardTokenAddress, stakingAddress);
+          tokens[rewardTokenAddress] = await getMaticToken(App, rewardTokenAddress, stakingAddress);
       }
       const rewardToken = getParameterCaseInsensitive(tokens, rewardTokenAddress);
   
       const rewardTokenTicker = rewardToken.symbol;
   
-      const poolPrices = getPoolPrices(tokens, prices, stakeToken, "heco");
+      const poolPrices = getPoolPrices(tokens, prices, stakeToken, "matic");
   
       const stakeTokenTicker = poolPrices.stakeTokenTicker;
   
@@ -169,37 +168,37 @@ async function loadHecoSynthetixPoolInfo(App, tokens, prices, stakingAbi, stakin
       }
 }
 
-async function loadHecoSynthetixPool(App, tokens, prices, abi, address, rewardTokenFunction, stakeTokenFunction) {
-    const info = await loadHecoSynthetixPoolInfo(App, tokens, prices, abi, address, rewardTokenFunction, stakeTokenFunction);
-    return await printSynthetixPool(App, info, "heco");
+async function loadMaticSynthetixPool(App, tokens, prices, abi, address, rewardTokenFunction, stakeTokenFunction) {
+    const info = await loadMaticSynthetixPoolInfo(App, tokens, prices, abi, address, rewardTokenFunction, stakeTokenFunction);
+    return await printSynthetixPool(App, info, "matic");
 }
 
-async function loadHecoBasisFork(data) {
+async function loadMaticBasisFork(data) {
     const App = await init_ethers();
 
     _print(`Initialized ${App.YOUR_ADDRESS}`);
     _print("Reading smart contracts...\n");
 
     var tokens = {};
-    var prices = {"0x55d398326f99059ff775485246999027b3197955" : { usd : 1 }};
+    var prices = {};
     var totalStaked = 0;
     
-    let p1 = await loadHecoSynthetixPool(App, tokens, prices, data.PoolABI, 
+    let p1 = await loadMaticSynthetixPool(App, tokens, prices, data.PoolABI, 
         data.SharePool.address, data.SharePool.rewardToken, data.SharePool.stakeToken);
     totalStaked += p1.staked_tvl;
     
     if (data.SharePool2) {
-      let p3 = await loadHecoSynthetixPool(App, tokens, prices, data.PoolABI, 
+      let p3 = await loadMaticSynthetixPool(App, tokens, prices, data.PoolABI, 
           data.SharePool2.address, data.SharePool2.rewardToken, data.SharePool2.stakeToken);
       totalStaked += p3.staked_tvl;
     }
 
-    let p2 = await loadHecoSynthetixPool(App, tokens, prices, data.PoolABI, 
+    let p2 = await loadMaticSynthetixPool(App, tokens, prices, data.PoolABI, 
         data.CashPool.address, data.CashPool.rewardToken, data.CashPool.stakeToken);
     totalStaked += p2.staked_tvl;
 
     if (data.SeedBanks) {
-      let p = await loadMultipleHecoSynthetixPools(App, tokens, prices, data.SeedBanks)
+      let p = await loadMultipleMaticSynthetixPools(App, tokens, prices, data.SeedBanks)
       totalStaked += p.staked_tvl;
       if (p.totalUserStaked > 0) {
         _print(`You are staking a total of $${formatMoney(p.totalUserStaked)} at an APY of ${(p.totalApy * 100).toFixed(2)}%\n`);
@@ -230,7 +229,7 @@ async function loadHecoBasisFork(data) {
 }
 
 
-async function getHecoPoolInfo(app, chefContract, chefAddress, poolIndex, pendingRewardsFunction) {  
+async function getMaticPoolInfo(app, chefContract, chefAddress, poolIndex, pendingRewardsFunction) {  
   const poolInfo = await chefContract.poolInfo(poolIndex);
   if (poolInfo.allocPoint == 0) {
     return {
@@ -241,7 +240,7 @@ async function getHecoPoolInfo(app, chefContract, chefAddress, poolIndex, pendin
       pendingRewardTokens : 0,
     };
   }
-  const poolToken = await getHecoToken(app, poolInfo.lpToken, chefAddress);
+  const poolToken = await getMaticToken(app, poolInfo.lpToken, chefAddress);
   const userInfo = await chefContract.userInfo(poolIndex, app.YOUR_ADDRESS);
   const pendingRewardTokens = await chefContract.callStatic[pendingRewardsFunction](poolIndex, app.YOUR_ADDRESS);
   const staked = userInfo.amount / 10 ** poolToken.decimals;
@@ -254,7 +253,7 @@ async function getHecoPoolInfo(app, chefContract, chefAddress, poolIndex, pendin
   };
 }
 
-async function loadHecoChefContract(App, tokens, prices, chef, chefAddress, chefAbi, rewardTokenTicker,
+async function loadMaticChefContract(App, tokens, prices, chef, chefAddress, chefAbi, rewardTokenTicker,
   rewardTokenFunction, rewardsPerBlockFunction, rewardsPerWeekFixed, pendingRewardsFunction,
   deathPoolIndices) {
   const chefContract = chef ?? new ethers.Contract(chefAddress, chefAbi, App.provider);
@@ -269,27 +268,27 @@ async function loadHecoChefContract(App, tokens, prices, chef, chefAddress, chef
   var tokens = {};
 
   const rewardTokenAddress = await chefContract.callStatic[rewardTokenFunction]();
-  const rewardToken = await getHecoToken(App, rewardTokenAddress, chefAddress);
+  const rewardToken = await getMaticToken(App, rewardTokenAddress, chefAddress);
   const rewardsPerWeek = rewardsPerWeekFixed ?? 
     await chefContract.callStatic[rewardsPerBlockFunction]() 
     / 10 ** rewardToken.decimals * 604800 / 3
 
   const poolInfos = await Promise.all([...Array(poolCount).keys()].map(async (x) =>
-    await getHecoPoolInfo(App, chefContract, chefAddress, x, pendingRewardsFunction)));
+    await getMaticPoolInfo(App, chefContract, chefAddress, x, pendingRewardsFunction)));
 
   var tokenAddresses = [].concat.apply([], poolInfos.filter(x => x.poolToken).map(x => x.poolToken.tokens));
 
   await Promise.all(tokenAddresses.map(async (address) => {
-      tokens[address] = await getHecoToken(App, address, chefAddress);
+      tokens[address] = await getMaticToken(App, address, chefAddress);
   }));
 
   if (deathPoolIndices) {   //load prices for the deathpool assets
     deathPoolIndices.map(i => poolInfos[i])
                      .map(poolInfo => 
-      poolInfo.poolToken ? getPoolPrices(tokens, prices, poolInfo.poolToken, "heco") : undefined);
+      poolInfo.poolToken ? getPoolPrices(tokens, prices, poolInfo.poolToken, "matic") : undefined);
   }
 
-  const poolPrices = poolInfos.map(poolInfo => poolInfo.poolToken ? getPoolPrices(tokens, prices, poolInfo.poolToken, "heco") : undefined);
+  const poolPrices = poolInfos.map(poolInfo => poolInfo.poolToken ? getPoolPrices(tokens, prices, poolInfo.poolToken, "matic") : undefined);
 
 
   _print("Finished reading smart contracts.\n");
@@ -298,36 +297,36 @@ async function loadHecoChefContract(App, tokens, prices, chef, chefAddress, chef
     if (poolPrices[i]) {
       printChefPool(App, chefAbi, chefAddress, prices, tokens, poolInfos[i], i, poolPrices[i],
         totalAllocPoints, rewardsPerWeek, rewardTokenTicker, rewardTokenAddress,
-        pendingRewardsFunction, "heco");
+        pendingRewardsFunction, "matic");
     }
   }
 }
 
-
-const hrcTokens = [ 
-  { "id": "huobi-token","symbol": "HT","contract":"0x5545153ccfca01fbd7dd11c0b23ba694d9509a6f" },
-  { "id": "mdex","symbol": "MDX","contract":"0x25d2e80cb6b86881fd7e07dd263fb79f4abe033c" }, 
-  { "id": "tether","symbol": "USDT", "contract": "0xa71edc38d189767582c38a3145b5873052c3e47a" },
-  { "id": "ethereum","symbol": "ETH", "contract": "0xb55569893b397324c0d048c9709f40c23445540e" },
-  { "id": "bitcoin","symbol": "HBTC", "contract": "0x66a79d23e58475d2738179ca52cd0b41d73f0bea" },
-  { "id": "ethereum","symbol": "HETH", "contract": "0x64FF637fB478863B7468bc97D30a5bF3A428a1fD" },
+const maticTokens = [ 
+  { "id": "matic","symbol": "MATIC","contract": "0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270" },
+  { "id": "tether","symbol": "USDT", "contract": "0xc2132D05D31c914a87C6611C10748AEb04B58e8F" },
+  { "id": "bitcoin","symbol": "WBTC", "contract": "0x1BFD67037B42Cf73acF2047067bd4F2C47D9BfD6" },
+  { "id": "ethereum", "symbol": "WETH", "contract": "0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619" },
+  { "id": "usdc","symbol": "USDC", "contract": "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174" },
+  { "id": "dai","symbol": "DAI", "contract": "0x8f3Cf7ad23Cd3CaDbD9735AFf958023239c6A063" },
+  { "id": "quick","symbol": "QUICK", "contract": "0x831753DD7087CaC61aB5644b308642cc1c33Dc13" },	
 ]
 
-async function getHecoPrices() {
-  const idPrices = await lookUpPrices(hrcTokens.map(x => x.id));
+async function getMaticPrices() {
+  const idPrices = await lookUpPrices(maticTokens.map(x => x.id));
   const prices = {}
-  for (const bt of hrcTokens)
+  for (const bt of maticTokens)
       if (idPrices[bt.id])
           prices[bt.contract] = idPrices[bt.id];
   return prices;
 }
 
-async function loadMultipleHecoSynthetixPools(App, tokens, prices, pools) {
+async function loadMultipleMaticSynthetixPools(App, tokens, prices, pools) {
   let totalStaked  = 0, totalUserStaked = 0, individualAPYs = [];
   const infos = await Promise.all(pools.map(p => 
-    loadHecoSynthetixPoolInfo(App, tokens, prices, p.abi, p.address, p.rewardTokenFunction, p.stakeTokenFunction)));
+    loadMaticSynthetixPoolInfo(App, tokens, prices, p.abi, p.address, p.rewardTokenFunction, p.stakeTokenFunction)));
   for (const i of infos) {
-    let p = await printSynthetixPool(App, i, "heco");
+    let p = await printSynthetixPool(App, i, "matic");
     totalStaked += p.staked_tvl || 0;
     totalUserStaked += p.userStaked || 0;
     if (p.userStaked > 0) {

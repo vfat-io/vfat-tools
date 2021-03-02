@@ -163,7 +163,7 @@ async function loadBscSynthetixPoolInfo(App, tokens, prices, stakingAbi, staking
   
       const rewardTokenTicker = rewardToken.symbol;
   
-      const poolPrices = getPoolPrices(tokens, prices, stakeToken, true);
+      const poolPrices = getPoolPrices(tokens, prices, stakeToken, "bsc");
   
       const stakeTokenTicker = poolPrices.stakeTokenTicker;
   
@@ -205,7 +205,7 @@ async function loadBscSynthetixPoolInfo(App, tokens, prices, stakingAbi, staking
 
 async function loadBscSynthetixPool(App, tokens, prices, abi, address, rewardTokenFunction, stakeTokenFunction) {
     const info = await loadBscSynthetixPoolInfo(App, tokens, prices, abi, address, rewardTokenFunction, stakeTokenFunction);
-    return await printSynthetixPool(App, info);
+    return await printSynthetixPool(App, info, "bsc");
 }
 
 async function loadBscBasisFork(data) {
@@ -334,10 +334,10 @@ async function loadBscChefContract(App, tokens, prices, chef, chefAddress, chefA
   if (deathPoolIndices) {   //load prices for the deathpool assets
     deathPoolIndices.map(i => poolInfos[i])
                      .map(poolInfo => 
-      poolInfo.poolToken ? getPoolPrices(tokens, prices, poolInfo.poolToken, true) : undefined);
+      poolInfo.poolToken ? getPoolPrices(tokens, prices, poolInfo.poolToken, "bsc") : undefined);
   }
 
-  const poolPrices = poolInfos.map(poolInfo => poolInfo.poolToken ? getPoolPrices(tokens, prices, poolInfo.poolToken, true) : undefined);
+  const poolPrices = poolInfos.map(poolInfo => poolInfo.poolToken ? getPoolPrices(tokens, prices, poolInfo.poolToken, "bsc") : undefined);
 
 
   _print("Finished reading smart contracts.\n");
@@ -346,7 +346,7 @@ async function loadBscChefContract(App, tokens, prices, chef, chefAddress, chefA
     if (poolPrices[i]) {
       printChefPool(App, chefAbi, chefAddress, prices, tokens, poolInfos[i], i, poolPrices[i],
         totalAllocPoints, rewardsPerWeek, rewardTokenTicker, rewardTokenAddress,
-        pendingRewardsFunction, true);
+        pendingRewardsFunction, "bsc");
     }
   }
 }
@@ -389,7 +389,7 @@ async function loadMultipleBscSynthetixPools(App, tokens, prices, pools) {
   const infos = await Promise.all(pools.map(p => 
     loadBscSynthetixPoolInfo(App, tokens, prices, p.abi, p.address, p.rewardTokenFunction, p.stakeTokenFunction)));
   for (const i of infos) {
-    let p = await printSynthetixPool(App, i);
+    let p = await printSynthetixPool(App, i, "bsc");
     totalStaked += p.staked_tvl || 0;
     totalUserStaked += p.userStaked || 0;
     if (p.userStaked > 0) {

@@ -1336,11 +1336,25 @@ function getWrapPrices(tokens, prices, pool)
   }
 }
 
-function getErc20Prices(prices, pool, isBsc = false) {  
+function getErc20Prices(prices, pool, chain="eth") {  
   var price = getParameterCaseInsensitive(prices,pool.address)?.usd;
   var tvl = pool.totalSupply * price / 10 ** pool.decimals;
   var staked_tvl = pool.staked * price;
-  const poolUrl = isBsc ?  `https://bscscan.com/token/${pool.address}` : `https://etherscan.io/token/${pool.address}`;
+  let poolUrl;
+  switch (chain) {
+    case "eth": 
+      poolUrl=`https://etherscan.io/token/${pool.address}`;
+      break;
+    case "bsc":
+      poolUrl=`https://bscscan.com/token/${pool.address}`;
+      break;
+    case "heco":
+      poolUrl=`https://scan.hecochain.com/token/${pool.address}`;
+      break;
+    case "matic":
+      poolUrl=`https://explorer-mainnet.maticvigil.com/token/${pool.address}`;
+      break;
+  }
   const name = `<a href='${poolUrl}' target='_blank'>${pool.symbol}</a>`;
   return {
     staked_tvl : staked_tvl,
@@ -1374,12 +1388,12 @@ function getCurvePrices(prices, pool) {
   }
 }
 
-function getPoolPrices(tokens, prices, pool, isBsc = false) {
+function getPoolPrices(tokens, prices, pool, chain = "eth") {
   if (pool.poolTokens != null) return getBalancerPrices(tokens, prices, pool);
   if (pool.token0 != null) return getUniPrices(tokens, prices, pool);
   if (pool.virtualPrice != null) return getCurvePrices(prices, pool);
   if (pool.token != null) return getWrapPrices(tokens, prices, pool);
-  return getErc20Prices(prices, pool, isBsc);
+  return getErc20Prices(prices, pool, chain);
 }
 
 async function getPoolInfo(app, chefContract, chefAddress, poolIndex, pendingRewardsFunction) {  
@@ -1465,7 +1479,7 @@ function printChefContractLinks(App, chefAbi, chefAddr, poolIndex, poolAddress, 
 
 function printChefPool(App, chefAbi, chefAddr, prices, tokens, poolInfo, poolIndex, poolPrices, 
                        totalAllocPoints, rewardsPerWeek, rewardTokenTicker, rewardTokenAddress,
-                       pendingRewardsFunction, fixedDecimals, claimFunction, isBsc = false) {  
+                       pendingRewardsFunction, fixedDecimals, claimFunction, chain="eth") {  
   fixedDecimals = fixedDecimals ?? 2;
   const sp = (poolInfo.stakedToken == null) ? null : getPoolPrices(tokens, prices, poolInfo.stakedToken);
   var poolRewardsPerWeek = poolInfo.allocPoints / totalAllocPoints * rewardsPerWeek;
@@ -1481,7 +1495,7 @@ function printChefPool(App, chefAbi, chefAddr, prices, tokens, poolInfo, poolInd
   if (poolInfo.userStaked > 0) poolPrices.print_contained_price(userStaked);
   printChefContractLinks(App, chefAbi, chefAddr, poolIndex, poolInfo.address, pendingRewardsFunction,
     rewardTokenTicker, poolPrices.stakeTokenTicker, poolInfo.poolToken.unstaked, 
-    poolInfo.userStaked, poolInfo.pendingRewardTokens, fixedDecimals, claimFunction, rewardPrice, isBsc);
+    poolInfo.userStaked, poolInfo.pendingRewardTokens, fixedDecimals, claimFunction, rewardPrice, chain);
 }
 
 async function loadChefContract(App, chef, chefAddress, chefAbi, rewardTokenTicker,
@@ -1666,7 +1680,7 @@ async function loadSynthetixPoolInfo(App, tokens, prices, stakingAbi, stakingAdd
     }
 }
 
-async function printSynthetixPool(App, info) {
+async function printSynthetixPool(App, info, chain="eth") {
     info.poolPrices.print_price();
     _print(`${info.rewardTokenTicker} Per Week: ${info.weeklyRewards.toFixed(2)} ($${formatMoney(info.usdPerWeek)})`);
     const weeklyAPY = info.usdPerWeek / info.staked_tvl * 100;
@@ -1702,7 +1716,20 @@ async function printSynthetixPool(App, info) {
     const revoke = async function() {
       return rewardsContract_resetApprove(info.stakeTokenAddress, info.stakingAddress, App)
     }
-    _print(`<a target="_blank" href="https://etherscan.io/address/${info.stakingAddress}#code">Etherscan</a>`);
+    switch (chain) {
+      case "eth":
+        _print(`<a target="_blank" href="https://etherscan.io/address/${info.stakingAddress}#code">Etherscan</a>`);
+        break;
+      case "heco":
+        _print(`<a target="_blank" href="https://bscscan.com/address/${info.stakingAddress}#code">BSC Scan</a>`);
+        break;
+      case "bsc":
+        _print(`<a target="_blank" href="https://scan.hecochain.com/address/${info.stakingAddress}#code">Heco Scan</a>`);
+        break;
+      case "matic":
+        _print(`<a target="_blank" href="https://explorer-mainnet.maticvigil.com/address/${info.stakingAddress}#code">Matic Explorer</a>`);
+        break;
+    }
     _print_link(`Stake ${info.userUnstaked.toFixed(6)} ${info.stakeTokenTicker}`, approveTENDAndStake)
     _print_link(`Unstake ${info.userStaked.toFixed(6)} ${info.stakeTokenTicker}`, unstake)
     _print_link(`Claim ${info.earned.toFixed(6)} ${info.rewardTokenTicker} ($${formatMoney(info.earned*info.rewardTokenPrice)})`, claim)

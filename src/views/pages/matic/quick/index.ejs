@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include(`${partials}/head`); -%>
+
+<body>
+<%- include(`${partials}/header_main`); -%>
+<pre id="log">
+***************************** MATIC NETWORK *****************************
+    
+*************** 👨‍🌾 UNOFFICIAL QUICKSWAP CALCULATOR 👨‍🌾 ******************
+INFO  : https://quickswap.exchange/#/quick
+*************************************************************************
+
+</pre>
+<div class="loader--1"></div>
+<%- include(`${partials}/scripts`, {scriptname: 'matic_quick'}); -%>
+</body>
+</html> 
