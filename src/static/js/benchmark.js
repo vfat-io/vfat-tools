@@ -11,7 +11,7 @@ $(function() {
   
     const MARK_FAUCET_ADDR = "0x5D9972dD3Ba5602574ABeA6bF9E1713568D49903";
 
-    await loadChefContractSecondAttempt(App, null, MARK_FAUCET_ADDR, MARK_FAUCET_ABI, "MARK",
+    await loadChefContract(App, null, MARK_FAUCET_ADDR, MARK_FAUCET_ABI, "MARK",
         "MARK", "markPerBlock", null, "pendingMark");
 
     hideLoading();  

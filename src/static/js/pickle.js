@@ -15,7 +15,7 @@ $(function() {
     const rewardsPerWeek = await PICKLE_CHEF.picklePerBlock() / 1e18
         * 604800 / 13.5;
 
-    await loadChefContractSecondAttempt(App, PICKLE_CHEF, PICKLE_CHEF_ADDR, PICKLE_CHEF_ABI, rewardTokenTicker,
+    await loadChefContract(App, PICKLE_CHEF, PICKLE_CHEF_ADDR, PICKLE_CHEF_ABI, rewardTokenTicker,
         "pickle", null, rewardsPerWeek, "pendingPickle");
 
     hideLoading();  

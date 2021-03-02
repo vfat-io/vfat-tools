@@ -19,7 +19,7 @@ $(function() {
     _print(`Program ends approximately January 19, some time after which the HOLY token will be migrating to HH.\n`)
     _print(`*** Please note you will need to migrate 1 Holy to HH for each Holy you earned, in order to claim the staking bonus. ***\n`)
 
-    await loadChefContractSecondAttempt(App, null, HOLY_KNIGHT_ADDR, HOLY_KNIGHT_ABI, "HOLY", "holytoken", "holyPerBlock", null, "pendingHoly");
+    await loadChefContract(App, null, HOLY_KNIGHT_ADDR, HOLY_KNIGHT_ABI, "HOLY", "holytoken", "holyPerBlock", null, "pendingHoly");
   
     hideLoading();  
   }

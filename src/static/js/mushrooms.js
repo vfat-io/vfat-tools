@@ -14,7 +14,7 @@ async function main() {
     const MM_CHEF = new ethers.Contract(MM_CHEF_ADDR, MM_CHEF_ABI, App.provider);
     const rewardsPerWeek = await MM_CHEF.mmPerBlock() / 1e18 * 604800 / 13.5;
 
-    await loadChefContractSecondAttempt(App, MM_CHEF, MM_CHEF_ADDR, MM_CHEF_ABI, rewardTokenTicker, "mm", null, rewardsPerWeek, "pendingMM");
+    await loadChefContract(App, MM_CHEF, MM_CHEF_ADDR, MM_CHEF_ABI, rewardTokenTicker, "mm", null, rewardsPerWeek, "pendingMM");
 
     hideLoading();  
 }

@@ -16,7 +16,7 @@ $(function() {
     const rewardsPerWeek = await NAWA_CHEF.narwhalePerBlock() / 1e18
         * 604800 / 13.5 * 10;
 
-    await loadChefContractSecondAttempt(App, NAWA_CHEF, NAWA_CHEF_ADDR, NAWA_CHEF_ABI, rewardTokenTicker,
+    await loadChefContract(App, NAWA_CHEF, NAWA_CHEF_ADDR, NAWA_CHEF_ABI, rewardTokenTicker,
         "narwhale", null, rewardsPerWeek, "pendingNarwhale");
 
     hideLoading();  
