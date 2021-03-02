@@ -19,17 +19,14 @@ const Pools = [
 })
 
 async function main() {
-
     const App = await init_ethers();
-
-  var tokens = {};
-  var prices = {};
-
-  await loadBasisFork(Basis.MITH);
-  _print();
-  let p = await loadMultipleSynthetixPools(App, tokens, prices, Pools)
-  _print_bold(`Total staked: $${formatMoney(p.staked_tvl)}`);
-  if (p.totalUserStaked > 0) {
+    var tokens = {};
+    var prices = {};
+    let p = await loadMultipleSynthetixPools(App, tokens, prices, Pools)
+    _print_bold(`Total staked: $${formatMoney(p.staked_tvl)}`);
+    if (p.totalUserStaked > 0) {
     _print(`You are staking a total of $${formatMoney(p.totalUserStaked)} at an APY of ${(p.totalApy * 100).toFixed(2)}%\n`);
-  }
+    }
+    _print("");
+    await loadBasisFork(Basis.MITH);
 }

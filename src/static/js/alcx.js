@@ -106,7 +106,7 @@ function printAlcxContractLinks(App, alcxAbi, alcxAddr, poolIndex, poolAddress,
     return alcxContract_withdraw(alcxAbi, alcxAddr, poolIndex, App)
   }      
   const claim = async function() {
-    return alcxContract_claim(alcxAbi, alcxAddr, poolIndex, App, pendingRewardsFunction)
+    return alcxContract_claim(alcxAbi, alcxAddr, poolIndex, App)
   }    
   const etherscanUrl = `<a href='https://etherscan.io/address/${poolAddress}' target='_blank'>Staking Contract</a>`;
   _print(etherscanUrl);
