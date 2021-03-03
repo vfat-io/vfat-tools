@@ -166,7 +166,7 @@ function printWaultPool(prices, poolInfo, poolPrices, rewardsPerWeek, rewardToke
   poolPrices.print_price();
   printApy(rewardTokenTicker, rewardPrice, rewardsPerWeek, poolPrices.stakeTokenTicker, 
     poolPrices.staked_tvl, poolInfo.userStaked, poolPrices.price, 2);
-  if (poolInfo.userStaked > 0) poolPrices.print_contained_price(userStaked);
+  if (poolInfo.userStaked > 0) poolPrices.print_contained_price(poolInfo.userStaked);
 }
 
 async function getBscWaultLpStakePoolInfo(app, chefContract, chefAddress, pendingRewardsFunction) {  
