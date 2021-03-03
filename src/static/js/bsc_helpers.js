@@ -59,6 +59,7 @@ async function getBscVault(app, vault, address, stakingAddress) {
   const decimals = await vault.decimals();
   const token_ = await vault.token();
   const token = await getBscToken(app, token_, address);
+  const ppfs = vault.getPricePerFullShare ? await vault.getPricePerFullShare() / 1e18 : null;
   return {
     address,
     name : await vault.name(),
@@ -71,7 +72,7 @@ async function getBscVault(app, vault, address, stakingAddress) {
     balance : await vault.balance(),
     contract: vault,
     tokens : [address].concat(token.tokens),
-    pricePerFullShare : await vault.getPricePerFullShare() / 1e18
+    pricePerFullShare : ppfs;
   }
 }
 
