@@ -129,6 +129,12 @@ async function loadMaticSynthetixPoolInfo(App, tokens, prices, stakingAbi, staki
       const rewardTokenTicker = rewardToken.symbol;
   
       const poolPrices = getPoolPrices(tokens, prices, stakeToken, "matic");
+
+      if (!poolPrices) 
+      {
+        console.log(`Couldn't calculate prices for pool ${stakeTokenAddress}`);
+        return null;
+      }
   
       const stakeTokenTicker = poolPrices.stakeTokenTicker;
   
@@ -170,6 +176,7 @@ async function loadMaticSynthetixPoolInfo(App, tokens, prices, stakingAbi, staki
 
 async function loadMaticSynthetixPool(App, tokens, prices, abi, address, rewardTokenFunction, stakeTokenFunction) {
     const info = await loadMaticSynthetixPoolInfo(App, tokens, prices, abi, address, rewardTokenFunction, stakeTokenFunction);
+    if (!info) return null;
     return await printSynthetixPool(App, info, "matic");
 }
 
@@ -307,7 +314,7 @@ const maticTokens = [
   { "id": "tether","symbol": "USDT", "contract": "0xc2132D05D31c914a87C6611C10748AEb04B58e8F" },
   { "id": "bitcoin","symbol": "WBTC", "contract": "0x1BFD67037B42Cf73acF2047067bd4F2C47D9BfD6" },
   { "id": "ethereum", "symbol": "WETH", "contract": "0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619" },
-  { "id": "usdc","symbol": "USDC", "contract": "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174" },
+  { "id": "usd-coin","symbol": "USDC", "contract": "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174" },
   { "id": "dai","symbol": "DAI", "contract": "0x8f3Cf7ad23Cd3CaDbD9735AFf958023239c6A063" },
   { "id": "quick","symbol": "QUICK", "contract": "0x831753DD7087CaC61aB5644b308642cc1c33Dc13" },	
 ]
@@ -324,13 +331,28 @@ async function getMaticPrices() {
 async function loadMultipleMaticSynthetixPools(App, tokens, prices, pools) {
   let totalStaked  = 0, totalUserStaked = 0, individualAPYs = [];
   const infos = await Promise.all(pools.map(p => 
-    loadMaticSynthetixPoolInfo(App, tokens, prices, p.abi, p.address, p.rewardTokenFunction, p.stakeTokenFunction)));
+      loadMaticSynthetixPoolInfo(App, tokens, prices, p.abi, p.address, p.rewardTokenFunction, p.stakeTokenFunction)));
   for (const i of infos) {
     let p = await printSynthetixPool(App, i, "matic");
     totalStaked += p.staked_tvl || 0;
     totalUserStaked += p.userStaked || 0;
     if (p.userStaked > 0) {
       individualAPYs.push(p.userStaked * p.apy / 100);
+    }
+  }
+  let totalApy = totalUserStaked == 0 ? 0 : individualAPYs.reduce((x,y)=>x+y, 0) / totalUserStaked;
+  return { staked_tvl : totalStaked, totalUserStaked, totalApy };
+}
+
+async function loadMultipleMaticSynthetixPoolsSequential(App, tokens, prices, pools) {
+  let totalStaked  = 0, totalUserStaked = 0, individualAPYs = [];
+  for (const p of pools) {
+    let res = await loadMaticSynthetixPool(App, tokens, prices, p.abi, p.address, p.rewardTokenFunction, p.stakeTokenFunction);
+    if (!res) continue;
+    totalStaked += res.staked_tvl || 0;
+    totalUserStaked += res.userStaked || 0;
+    if (res.userStaked > 0) {
+      individualAPYs.push(res.userStaked * res.apy / 100);
     }
   }
   let totalApy = totalUserStaked == 0 ? 0 : individualAPYs.reduce((x,y)=>x+y, 0) / totalUserStaked;

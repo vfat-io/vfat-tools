@@ -1189,11 +1189,12 @@ function getUniPrices(tokens, prices, pool)
       tvl : tvl,
       staked_tvl : staked_tvl,
       stakeTokenTicker : stakeTokenTicker,
-      print_price() {
+      print_price(chain="eth") {
         const poolUrl = pool.is1inch ? "https://1inch.exchange/#/dao/pools" :
         pool.symbol.includes("LSLP") ? `https://info.linkswap.app/pair/${pool.address}` :
           pool.symbol.includes("SLP") ?  `http://sushiswap.fi/pair/${pool.address}` :
             pool.symbol.includes("Cake-LP") ?  `https://pancakeswap.info/pair/${pool.address}` :  
+            chain == "matic" ? `https://info.quickswap.exchange/pair/${pool.address}` :
           `http://uniswap.info/pair/${pool.address}`;
         const t0address = t0.symbol == "ETH" ? "ETH" : t0.address;
         const t1address = t1.symbol == "ETH" ? "ETH" : t1.address;
@@ -1352,7 +1353,7 @@ function getErc20Prices(prices, pool, chain="eth") {
       poolUrl=`https://scan.hecochain.com/token/${pool.address}`;
       break;
     case "matic":
-      poolUrl=`https://explorer-mainnet.maticvigil.com/token/${pool.address}`;
+      poolUrl=`https://explorer-mainnet.maticvigil.com/address/${pool.address}`;
       break;
   }
   const name = `<a href='${poolUrl}' target='_blank'>${pool.symbol}</a>`;
@@ -1681,7 +1682,7 @@ async function loadSynthetixPoolInfo(App, tokens, prices, stakingAbi, stakingAdd
 }
 
 async function printSynthetixPool(App, info, chain="eth") {
-    info.poolPrices.print_price();
+    info.poolPrices.print_price(chain);
     _print(`${info.rewardTokenTicker} Per Week: ${info.weeklyRewards.toFixed(2)} ($${formatMoney(info.usdPerWeek)})`);
     const weeklyAPY = info.usdPerWeek / info.staked_tvl * 100;
     const dailyAPY = weeklyAPY / 7;
