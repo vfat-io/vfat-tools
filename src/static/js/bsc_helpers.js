@@ -72,7 +72,7 @@ async function getBscVault(app, vault, address, stakingAddress) {
     balance : await vault.balance(),
     contract: vault,
     tokens : [address].concat(token.tokens),
-    pricePerFullShare : ppfs;
+    pricePerFullShare : ppfs
   }
 }
 
