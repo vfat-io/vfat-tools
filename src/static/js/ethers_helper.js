@@ -1193,7 +1193,7 @@ function getUniPrices(tokens, prices, pool)
         const poolUrl = pool.is1inch ? "https://1inch.exchange/#/dao/pools" :
         pool.symbol.includes("LSLP") ? `https://info.linkswap.app/pair/${pool.address}` :
           pool.symbol.includes("SLP") ?  `http://sushiswap.fi/pair/${pool.address}` :
-            pool.symbol.includes("Cake-LP") ?  `https://pancakeswap.info/pair/${pool.address}` :  
+            pool.symbol.includes("Cake") ?  `https://pancakeswap.info/pair/${pool.address}` :  
             chain == "matic" ? `https://info.quickswap.exchange/pair/${pool.address}` :
           `http://uniswap.info/pair/${pool.address}`;
         const t0address = t0.symbol == "ETH" ? "ETH" : t0.address;
@@ -1288,7 +1288,7 @@ function getWrapPrices(tokens, prices, pool)
     const uniPrices = getUniPrices(tokens, prices, wrappedToken);
     const poolUrl = pool.is1inch ? "https://1inch.exchange/#/dao/pools" :
     pool.symbol.includes("SLP") ?  `http://sushiswap.fi/pair/${wrappedToken.address}` :
-    pool.symbol.includes("Cake") ?  `http://pancakeswap.info/pair/${wrappedToken.address}`
+    (pool.symbol.includes("Cake") || pool.symbol.includes("Pancake")) ?  `http://pancakeswap.info/pair/${wrappedToken.address}`
       : `http://uniswap.info/pair/${wrappedToken.address}`;
     const name = `Wrapped <a href='${poolUrl}' target='_blank'>${uniPrices.stakeTokenTicker}</a>`;
     const price = (pool.balance / 10 ** wrappedToken.decimals) * uniPrices.price / (pool.totalSupply / 10 ** pool.decimals);
@@ -1297,6 +1297,7 @@ function getWrapPrices(tokens, prices, pool)
     
     prices[pool.address] = { usd : price };
     return {
+      name : name,
       tvl : tvl,
       staked_tvl : staked_tvl,
       price : price,
@@ -1323,6 +1324,7 @@ function getWrapPrices(tokens, prices, pool)
     const staked_tvl = pool.staked * price;
     prices[pool.address] = { usd : price };
     return {
+      name: pool.symbol,
       tvl : tvl,
       staked_tvl : staked_tvl,
       price : price,
