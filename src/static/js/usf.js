@@ -26,6 +26,10 @@ async function main() {
   _print("Finished reading smart contracts.\n");
   
   poolPrices.print_price();
+  var userPct = lpToken.unstaked / lpToken.totalSupply;
+  var q0user = userPct * lpToken.q0 / 1e18;
+  var q1user = userPct * lpToken.q1 / 1e18;
+  _print(`Your LP tokens comprise of ${q0user.toFixed(2)} ${poolPrices.t0.symbol} + ${q1user.toFixed(2)} ${poolPrices.t1.symbol}`);
 
   const USF_PER_BLOCK = 2.2
   const rewardsPerWeek = USF_PER_BLOCK * SecondsPerDay * 7 / 13.5;
