@@ -61,7 +61,7 @@ async function main() {
                 await calculateDollarAPR(DAO, Contracts.ZSD.Parameters, twap, dollarPrice, uniPrices, calcPrice);
             }
             else {
-                _print(`DAO APR: Day 0% Week 0% Year 0%`)
+                _print(`DAO APY: Day 0% Week 0% Year 0%`)
                 _print(`LP APR: Day 0% Week 0% Year 0%`)
             }        
         }

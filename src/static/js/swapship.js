@@ -28,11 +28,11 @@ $(function() {
       var poolRewardsPerWeek = poolInfo.allocPoints / totalAllocPoints * rewardsPerWeek;
       var usdPerWeek = poolRewardsPerWeek * rewardPrice;
       _print(`${rewardTokenTicker} Per Week: ${poolRewardsPerWeek.toFixed(2)} ($${formatMoney(usdPerWeek)})`);
-      var weeklyAPY = usdPerWeek / pp.staked_tvl * 100;
-      var dailyAPY = weeklyAPY / 7;
-      var yearlyAPY = weeklyAPY * 52;
-      _print(`APY: Day ${dailyAPY.toFixed(6)}% Week ${weeklyAPY.toFixed(6)}% Year ${yearlyAPY.toFixed(6)}%`);
-      _print(`RTC APY: Day ${(dailyAPY*10000).toFixed(2)}% Week ${(weeklyAPY*10000).toFixed(2)}% Year ${(yearlyAPY*10000).toFixed(2)}%`);
+      var weeklyAPR = usdPerWeek / pp.staked_tvl * 100;
+      var dailyAPR = weeklyAPR / 7;
+      var yearlyAPR = weeklyAPR * 52;
+      _print(`APR: Day ${dailyAPR.toFixed(6)}% Week ${weeklyAPR.toFixed(6)}% Year ${yearlyAPR.toFixed(6)}%`);
+      _print(`RTC APR: Day ${(dailyAPR*10000).toFixed(2)}% Week ${(weeklyAPR*10000).toFixed(2)}% Year ${(yearlyAPR*10000).toFixed(2)}%`);
       var userStaked = poolInfo.userLPStaked ?? poolInfo.userStaked;
       var userStakedUsd = userStaked * pp.price;
       var userStakedPct = userStaked / (poolInfo.stakedToken ?? poolInfo.poolToken).staked * 100;

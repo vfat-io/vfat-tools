@@ -29,16 +29,16 @@ $(function() {
     };
   }
 
-  function printApy(rewardTokenTicker, rewardPrice, poolRewardsPerWeek, 
+  function printAPR(rewardTokenTicker, rewardPrice, poolRewardsPerWeek, 
                     stakingTokenTicker, staked_tvl, userStaked, poolTokenPrice,
                     fixedDecimals) {
     var usdPerWeek = poolRewardsPerWeek * rewardPrice;
     fixedDecimals = fixedDecimals ?? 2;
     _print(`${rewardTokenTicker} Per Week: ${poolRewardsPerWeek.toFixed(fixedDecimals)} ($${formatMoney(usdPerWeek)})`);
-    var weeklyAPY = usdPerWeek / staked_tvl * 100;
-    var dailyAPY = weeklyAPY / 7;
-    var yearlyAPY = weeklyAPY * 52;
-    _print(`APY: Day ${dailyAPY.toFixed(2)}% Week ${weeklyAPY.toFixed(2)}% Year ${yearlyAPY.toFixed(2)}%`);
+    var weeklyAPR = usdPerWeek / staked_tvl * 100;
+    var dailyAPR = weeklyAPR / 7;
+    var yearlyAPR = weeklyAPR * 52;
+    _print(`APR: Day ${dailyAPR.toFixed(2)}% Week ${weeklyAPR.toFixed(2)}% Year ${yearlyAPR.toFixed(2)}%`);
     var userStakedUsd = userStaked * poolTokenPrice;
     var userStakedPct = userStakedUsd / staked_tvl * 100;
     _print(`You are staking ${userStaked.toFixed(fixedDecimals)} ${stakingTokenTicker} ($${formatMoney(userStakedUsd)}), ${userStakedPct.toFixed(2)}% of the pool.`);
@@ -85,7 +85,7 @@ $(function() {
     const staked_tvl = sp?.staked_tvl ?? poolPrices.staked_tvl;
     poolPrices.print_price();
     sp?.print_price();
-    printApy(rewardTokenTicker, rewardPrice, poolRewardsPerWeek, poolPrices.stakingTokenTicker, 
+    printAPR(rewardTokenTicker, rewardPrice, poolRewardsPerWeek, poolPrices.stakingTokenTicker, 
       staked_tvl, userStaked, poolPrices.price, fixedDecimals);
     if (poolInfo.userLPStaked > 0) sp?.print_contained_price(userStaked);
     if (poolInfo.userStaked > 0) poolPrices.print_contained_price(userStaked);

@@ -121,7 +121,7 @@ const rewardPrice = getParameterCaseInsensitive(prices, rewardTokenAddress)?.usd
 const staked_tvl = sp?.staked_tvl ?? poolPrices.staked_tvl;
 poolPrices.print_price();
 sp?.print_price();
-printApy(rewardTokenTicker, rewardPrice, poolRewardsPerWeek, poolPrices.stakeTokenTicker, 
+printAPR(rewardTokenTicker, rewardPrice, poolRewardsPerWeek, poolPrices.stakeTokenTicker, 
 staked_tvl, userStaked, poolPrices.price, fixedDecimals);
 if (poolInfo.userLPStaked > 0) sp?.print_contained_price(userStaked);
 if (poolInfo.userStaked > 0) poolPrices.print_contained_price(userStaked);

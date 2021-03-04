@@ -27,10 +27,10 @@ $(function() {
     var poolRewardsPerWeek = rewardRate / 1e18 * 604800; //rewardRate is STBZ per second
     var usdPerWeek = poolRewardsPerWeek * rewardPrice;
     _print(`${rewardTokenTicker} Per Week: ${poolRewardsPerWeek.toFixed(2)} ($${formatMoney(usdPerWeek)})`);
-    var weeklyAPY = usdPerWeek / pp.staked_tvl * 100;
-    var dailyAPY = weeklyAPY / 7;
-    var yearlyAPY = weeklyAPY * 52;
-    _print(`APY: Day ${dailyAPY.toFixed(2)}% Week ${weeklyAPY.toFixed(2)}% Year ${yearlyAPY.toFixed(2)}%`);
+    var weeklyAPR = usdPerWeek / pp.staked_tvl * 100;
+    var dailyAPR = weeklyAPR / 7;
+    var yearlyAPR = weeklyAPR * 52;
+    _print(`APR: Day ${dailyAPR.toFixed(2)}% Week ${weeklyAPR.toFixed(2)}% Year ${yearlyAPR.toFixed(2)}%`);
     var userStaked = poolBalance / 10 ** poolToken.decimals;
     var userStakedUsd = userStaked * pp.price;
     var userStakedPct = userStaked / poolToken.staked * 100;
