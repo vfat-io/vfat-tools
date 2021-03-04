@@ -32,15 +32,17 @@ async function main() {
   const rewardsSoupsPerWeek = await SOUPS_CHEF.soupsPerBlock() /1e18
       * 604800 / 3;
 
+  const currentEpoch = await SOUP_BOARDROOM.epoch();
+  const maxSupplyIncrease = currentEpoch < 12 ? 0.045 : 0.03;
+
   const SOUP_BOARDROOM_ORACLE_ADDR = "0x6D1B7249f83f73c71Cd96CD781166a0be15e3CD5";
   const rewardTokenAddress = await SOUP_BOARDROOM.dollar();
   const lptAddress = "0x284A5D8712C351Ca28417d131003120808dcE48B";
   const stakeTicker = "SOUPS";
   const rewardTicker = "SOUP";
   const epochsPerDay = 4;
-  const maxSupplyIncrease = 0.045;
   const decimals = 2;
-  const ratio = 0.75;
+  const ratio = 1.0;
   const targetMantissa = 12;
 
   const tokens = {};
