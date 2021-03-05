@@ -20,7 +20,7 @@ var slice = Array.prototype.slice
  *
  * @param {String|Object} title or JSON table
  * @param {Object} table options
- *  - `prefix` - string prefix added to each line on render
+ * - `prefix` - string prefix added to each line on render
  * @constructor
  * @api public
  */
