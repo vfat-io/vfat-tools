@@ -17,7 +17,7 @@ async function loadAMM(App, tokens, ammAddress) {
   const collatTokenAddress = await amm.collateralToken();
   const lpTokenAddresss = await amm.lpToken();
   const lpToken = new ethers.Contract(lpTokenAddresss, ERC20_ABI, App.provider)
-  const userStaked = await lpToken.balanceOf(App.YOUR_ADDRESS) / 1e18
+  const userStaked = await lpToken.balanceOf(App.YOUR_ADDRESS) / 10 ** await lpToken.decimals()
   const collatToken = await getToken(App, collatTokenAddress, ammAddress);
   tokens[collatTokenAddress] = collatToken;
   return { amm, collatToken, collatTokenAddress, lpToken, userStaked }
