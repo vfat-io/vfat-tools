@@ -1537,7 +1537,7 @@ async function loadChefContract(App, chef, chefAddress, chefAbi, rewardTokenTick
   _print("Finished reading smart contracts.\n");
     
   for (i = 0; i < poolCount; i++) {
-    if (poolPrices[i] && poolPrices[i].price) {
+    if (poolPrices[i]) {
       printChefPool(App, chefAbi, chefAddress, prices, tokens, poolInfos[i], i, poolPrices[i],
         totalAllocPoints, rewardsPerWeek, rewardTokenTicker, rewardTokenAddress,
         pendingRewardsFunction);
