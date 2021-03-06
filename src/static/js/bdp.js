@@ -16,16 +16,16 @@ $(function() {
     let halvingAt = 0;
     let rewardMultiplier = 0
     for (i =0; halvingAt < blockNum; i++) {
-      halvingAt = await bALPHA_CHEF.HALVING_AT_BLOCK(i)
-      rewardMultiplier = await bALPHA_CHEF.REWARD_MULTIPLIER(i)
+      halvingAt = await bALPHA_CHEF.HALVING_AT_BLOCK(i) / 1
+      rewardMultiplier = await bALPHA_CHEF.REWARD_MULTIPLIER(i) / 100
     }
-    const weeklyRewards = await bALPHA_CHEF.REWARDS_PER_BLOCK / 1e18 * rewardMultiplier * 604800 / 13.5
-    await loadChefContract(App, bALPHA_CHEF, bALPHA_CHEF_ADDR, bALPHA_CHEF_ABI, "bALPHA",
+    const weeklyRewards = await bALPHA_CHEF.REWARD_PER_BLOCK() / 1e18 * rewardMultiplier * 604800 / 13.5
+    const { prices } = await loadChefContract(App, bALPHA_CHEF, bALPHA_CHEF_ADDR, bALPHA_CHEF_ABI, "bALPHA",
         "bAlpha", null, weeklyRewards, "pendingReward");
 
     const BDP_CHEF_ADDR = "0x0De845955E2bF089012F682fE9bC81dD5f11B372";
     const BDP_CHEF = new ethers.Contract(BDP_CHEF_ADDR, BDP_CHEF_ABI, App.provider);
     await loadChefContract(App, BDP_CHEF, BDP_CHEF_ADDR, BDP_CHEF_ABI, "BDP",
-        "BDP", "REWARD_PER_BLOCK", null, "pendingReward");
+        "BDP", "REWARD_PER_BLOCK", null, "pendingReward", prices);
     hideLoading();  
   }
