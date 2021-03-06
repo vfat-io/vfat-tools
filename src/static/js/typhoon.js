@@ -102,14 +102,14 @@ async function loadSynthetixPoolInfo_(App, tokens, prices, stakingAbi, stakingAd
       _print(info.name);
       info.poolPrices.print_price();
       _print(`${info.rewardTokenTicker} Per Week: ${info.weeklyRewards.toFixed(2)} ($${formatMoney(info.usdPerWeek)})`);
-      const weeklyAPY = info.usdPerWeek / info.staked_tvl * 100;
-      const dailyAPY = weeklyAPY / 7;
-      const yearlyAPY = weeklyAPY * 52;
-      _print(`APY: Day ${dailyAPY.toFixed(2)}% Week ${weeklyAPY.toFixed(2)}% Year ${yearlyAPY.toFixed(2)}%`);
+      const weeklyAPR = info.usdPerWeek / info.staked_tvl * 100;
+      const dailyAPR = weeklyAPR / 7;
+      const yearlyAPR = weeklyAPR * 52;
+      _print(`APR: Day ${dailyAPR.toFixed(2)}% Week ${weeklyAPR.toFixed(2)}% Year ${yearlyAPR.toFixed(2)}%`);
       _print(`<a target="_blank" href="https://etherscan.io/address/${info.stakingAddress}#code">Etherscan</a>\n`);
       return {
           staked_tvl: info.poolPrices.staked_tvl,
-          apy : yearlyAPY
+          apr : yearlyAPR
       }
   }
 

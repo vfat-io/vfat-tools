@@ -44,7 +44,7 @@ async function loadStrudelChefContract(App, chefAddress, chefAbi, chefContract, 
 async function loadStrudelChefPools(App, prices, tokens, rewardTokenPoolIndex, 
   chefAbi, chefContract, chefAddress, totalAllocPoints, 
   rewardsPerWeek, rewardTokenTicker, rewardTokenAddress, pendingRewardsFunction, poolCount) {
-//Loading the pool with the reward token first allows calculating the APY for the remaining ones
+//Loading the pool with the reward token first allows calculating the APR for the remaining ones
 await loadStrudelChefPool(App, prices, tokens, rewardTokenPoolIndex, 
   chefAbi, chefContract, chefAddress, totalAllocPoints, 
   rewardsPerWeek, rewardTokenTicker, rewardTokenAddress, pendingRewardsFunction);

@@ -234,7 +234,7 @@ async function loadBscBasisFork(data) {
       let p = await loadMultipleBscSynthetixPools(App, tokens, prices, data.SeedBanks)
       totalStaked += p.staked_tvl;
       if (p.totalUserStaked > 0) {
-        _print(`You are staking a total of $${formatMoney(p.totalUserStaked)} at an APY of ${(p.totalApy * 100).toFixed(2)}%\n`);
+        _print(`You are staking a total of $${formatMoney(p.totalUserStaked)} at an APR of ${(p.totalAPR * 100).toFixed(2)}%\n`);
       }
     }
 
@@ -385,7 +385,7 @@ async function getBscPrices() {
 }
 
 async function loadMultipleBscSynthetixPools(App, tokens, prices, pools) {
-  let totalStaked  = 0, totalUserStaked = 0, individualAPYs = [];
+  let totalStaked  = 0, totalUserStaked = 0, individualAPRs = [];
   const infos = await Promise.all(pools.map(p => 
     loadBscSynthetixPoolInfo(App, tokens, prices, p.abi, p.address, p.rewardTokenFunction, p.stakeTokenFunction)));
   for (const i of infos) {
@@ -393,9 +393,9 @@ async function loadMultipleBscSynthetixPools(App, tokens, prices, pools) {
     totalStaked += p.staked_tvl || 0;
     totalUserStaked += p.userStaked || 0;
     if (p.userStaked > 0) {
-      individualAPYs.push(p.userStaked * p.apy / 100);
+      individualAPRs.push(p.userStaked * p.apr / 100);
     }
   }
-  let totalApy = totalUserStaked == 0 ? 0 : individualAPYs.reduce((x,y)=>x+y, 0) / totalUserStaked;
-  return { staked_tvl : totalStaked, totalUserStaked, totalApy };
+  let totalAPR = totalUserStaked == 0 ? 0 : individualAPRs.reduce((x,y)=>x+y, 0) / totalUserStaked;
+  return { staked_tvl : totalStaked, totalUserStaked, totalAPR };
 }

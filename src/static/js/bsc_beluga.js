@@ -48,7 +48,7 @@ $(function() {
 
     poolPrices.print_price();
 
-    printApy(rewardTokenTicker, rewardTokenPrice, weeklyRewards,
+    printAPR(rewardTokenTicker, rewardTokenPrice, weeklyRewards,
       stakingTokenTicker, staked_tvl, userStaked, stakeTokenPrice, null);
 
     const approveTENDAndStake = async function() {
@@ -89,7 +89,7 @@ $(function() {
 
     _print(`Initialized ${App.YOUR_ADDRESS}`);
     _print("Reading smart contracts...\n");
-    _print("The APY shown only contains the APY from BELUGA emissions, the native returns from vaults are not added.\n")
+    _print("The APR shown only contains the APR from BELUGA emissions, the native returns from vaults are not added.\n")
 
     const tokens = {};
     const prices = await getBscPrices();

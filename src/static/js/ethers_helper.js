@@ -1436,16 +1436,16 @@ async function getPoolInfo(app, chefContract, chefAddress, poolIndex, pendingRew
   };
 }
 
-function printApy(rewardTokenTicker, rewardPrice, poolRewardsPerWeek, 
+function printAPR(rewardTokenTicker, rewardPrice, poolRewardsPerWeek, 
                   stakeTokenTicker, staked_tvl, userStaked, poolTokenPrice,
                   fixedDecimals) {
   var usdPerWeek = poolRewardsPerWeek * rewardPrice;
   fixedDecimals = fixedDecimals ?? 2;
   _print(`${rewardTokenTicker} Per Week: ${poolRewardsPerWeek.toFixed(fixedDecimals)} ($${formatMoney(usdPerWeek)})`);
-  var weeklyAPY = usdPerWeek / staked_tvl * 100;
-  var dailyAPY = weeklyAPY / 7;
-  var yearlyAPY = weeklyAPY * 52;
-  _print(`APY: Day ${dailyAPY.toFixed(2)}% Week ${weeklyAPY.toFixed(2)}% Year ${yearlyAPY.toFixed(2)}%`);
+  var weeklyAPR = usdPerWeek / staked_tvl * 100;
+  var dailyAPR = weeklyAPR / 7;
+  var yearlyAPR = weeklyAPR * 52;
+  _print(`APR: Day ${dailyAPR.toFixed(2)}% Week ${weeklyAPR.toFixed(2)}% Year ${yearlyAPR.toFixed(2)}%`);
   var userStakedUsd = userStaked * poolTokenPrice;
   var userStakedPct = userStakedUsd / staked_tvl * 100;
   _print(`You are staking ${userStaked.toFixed(fixedDecimals)} ${stakeTokenTicker} ($${formatMoney(userStakedUsd)}), ${userStakedPct.toFixed(2)}% of the pool.`);
@@ -1492,7 +1492,7 @@ function printChefPool(App, chefAbi, chefAddr, prices, tokens, poolInfo, poolInd
   const staked_tvl = sp?.staked_tvl ?? poolPrices.staked_tvl;
   poolPrices.print_price();
   sp?.print_price();
-  printApy(rewardTokenTicker, rewardPrice, poolRewardsPerWeek, poolPrices.stakeTokenTicker, 
+  printAPR(rewardTokenTicker, rewardPrice, poolRewardsPerWeek, poolPrices.stakeTokenTicker, 
     staked_tvl, userStaked, poolPrices.price, fixedDecimals);
   if (poolInfo.userLPStaked > 0) sp?.print_contained_price(userStaked);
   if (poolInfo.userStaked > 0) poolPrices.print_contained_price(userStaked);
@@ -1686,10 +1686,10 @@ async function loadSynthetixPoolInfo(App, tokens, prices, stakingAbi, stakingAdd
 async function printSynthetixPool(App, info, chain="eth") {
     info.poolPrices.print_price(chain);
     _print(`${info.rewardTokenTicker} Per Week: ${info.weeklyRewards.toFixed(2)} ($${formatMoney(info.usdPerWeek)})`);
-    const weeklyAPY = info.usdPerWeek / info.staked_tvl * 100;
-    const dailyAPY = weeklyAPY / 7;
-    const yearlyAPY = weeklyAPY * 52;
-    _print(`APY: Day ${dailyAPY.toFixed(2)}% Week ${weeklyAPY.toFixed(2)}% Year ${yearlyAPY.toFixed(2)}%`);
+    const weeklyAPR = info.usdPerWeek / info.staked_tvl * 100;
+    const dailyAPR = weeklyAPR / 7;
+    const yearlyAPR = weeklyAPR * 52;
+    _print(`APR: Day ${dailyAPR.toFixed(2)}% Week ${weeklyAPR.toFixed(2)}% Year ${yearlyAPR.toFixed(2)}%`);
     const userStakedUsd = info.userStaked * info.stakeTokenPrice;
     const userStakedPct = userStakedUsd / info.staked_tvl * 100;
     _print(`You are staking ${info.userStaked.toFixed(6)} ${info.stakeTokenTicker} ` +
@@ -1743,7 +1743,7 @@ async function printSynthetixPool(App, info, chain="eth") {
     return {
         staked_tvl: info.poolPrices.staked_tvl,
         userStaked : userStakedUsd,
-        apy : yearlyAPY
+        apr : yearlyAPR
     }
 }
 
@@ -1753,7 +1753,7 @@ async function loadSynthetixPool(App, tokens, prices, abi, address, rewardTokenF
 }
 
 async function loadMultipleSynthetixPools(App, tokens, prices, pools) {
-  let totalStaked  = 0, totalUserStaked = 0, individualAPYs = [];
+  let totalStaked  = 0, totalUserStaked = 0, individualAPRs = [];
   const infos = await Promise.all(pools.map(p => 
     loadSynthetixPoolInfo(App, tokens, prices, p.abi, p.address, p.rewardTokenFunction, p.stakeTokenFunction)));
   for (const i of infos) {
@@ -1761,11 +1761,11 @@ async function loadMultipleSynthetixPools(App, tokens, prices, pools) {
     totalStaked += p.staked_tvl || 0;
     totalUserStaked += p.userStaked || 0;
     if (p.userStaked > 0) {
-      individualAPYs.push(p.userStaked * p.apy / 100);
+      individualAPRs.push(p.userStaked * p.apr / 100);
     }
   }
-  let totalApy = totalUserStaked == 0 ? 0 : individualAPYs.reduce((x,y)=>x+y, 0) / totalUserStaked;
-  return { staked_tvl : totalStaked, totalUserStaked, totalApy };
+  let totalAPR = totalUserStaked == 0 ? 0 : individualAPRs.reduce((x,y)=>x+y, 0) / totalUserStaked;
+  return { staked_tvl : totalStaked, totalUserStaked, totalAPR };
 }
 
 async function loadBasisFork(data) {
@@ -1796,7 +1796,7 @@ async function loadBasisFork(data) {
       let p = await loadMultipleSynthetixPools(App, tokens, prices, data.SeedBanks)
       totalStaked += p.staked_tvl;
       if (p.totalUserStaked > 0) {
-        _print(`You are staking a total of $${formatMoney(p.totalUserStaked)} at an APY of ${(p.totalApy * 100).toFixed(2)}%\n`);
+        _print(`You are staking a total of $${formatMoney(p.totalUserStaked)} at an APR of ${(p.totalAPR * 100).toFixed(2)}%\n`);
       }
     }
 

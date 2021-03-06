@@ -11,7 +11,7 @@ $(function() {
   
     const HOLY_KNIGHT_ADDR = "0x5D33dE3E540b289f9340D059907ED648c9E7AaDD";
 
-    _print(`Staking bonus for long-term holders (multiply by the below APY)\n`);
+    _print(`Staking bonus for long-term holders (multiply by the below APR)\n`);
     _print(`3-5  weeks: 3.125x (Stake before Dec 29)`);
     _print(`<s>6-8  weeks: 3.75x  (Stake before Dec  8)</s>`);
     _print(`<s>9-11 weeks: 4.375x (Stake before Nov 17)</s>`);

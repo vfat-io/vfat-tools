@@ -23,7 +23,7 @@ async function main() {
     const prices = await getBscPrices();
 
     await loadBscChefContract(App, tokens, prices, CRL_CHEF, CRL_CHEF_ADDR, CRL_CHEF_ABI, rewardTokenTicker,
-        "crl", null, rewardsPerWeek, "pendingCrl");
+        "crl", null, rewardsPerWeek, "pendingCrl", [1]);
 
     hideLoading();  
   }

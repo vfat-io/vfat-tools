@@ -77,12 +77,12 @@ async function main() {
         _print(`Total Value Locked: $${formatMoney(pool.totalSupplyUSD)}`)
         _print(`${stakingTokenTicker} Price: $${parseFloat(tokenPrice).toFixed(2)}`)
 	_print(`Reward token: ${rewardToken}`)
-        _print(`APY ${parseFloat(pool.roi.apy).toFixed(2)} %`)
+        _print(`APR ${parseFloat(pool.roi.apr).toFixed(2)} %`)
         _print(`You are staking ${parseFloat(userStaked).toFixed(2)} ${stakingTokenTicker} ($${formatMoney(userStakedUsd)}), ${userStakedPct.toFixed(2)}% of the pool.`);
         if (userStaked > 0) {
-            let dailyReward = parseFloat(userStakedUsd * pool.roi.apy / 100 / 365),
-                monthlyReward = parseFloat(userStakedUsd * pool.roi.apy / 100 / 12),
-                yearlyReward = parseFloat(userStakedUsd * pool.roi.apy / 100)
+            let dailyReward = parseFloat(userStakedUsd * pool.roi.apr / 100 / 365),
+                monthlyReward = parseFloat(userStakedUsd * pool.roi.apr / 100 / 12),
+                yearlyReward = parseFloat(userStakedUsd * pool.roi.apr / 100)
             _print(`Est earning: ` +
                 `Daily ${parseFloat(dailyReward/ vBSWAPTokenInfo.price).toFixed(8)} ${rewardToken}  ($${formatMoney(dailyReward)})  ` +
                 `Monthly: ${parseFloat(monthlyReward / vBSWAPTokenInfo.price).toFixed(8)} ${rewardToken} ($${formatMoney(monthlyReward)})  ` +
@@ -148,11 +148,11 @@ async function main() {
         _print(' ')
         _print(`Total Value Locked: $${formatMoney(pool.tvl)}`)
         _print(`${stakingTokenTicker} Price: $${parseFloat(tokenPrice).toFixed(2)}`)
-        _print(`Daily ${parseFloat(pool.dailyApy).toFixed(2)} %. Yearly ${parseFloat(pool.apy).toFixed(2)} %.`)
+        _print(`Daily ${parseFloat(pool.dailyAPR).toFixed(2)} %. Yearly ${parseFloat(pool.apr).toFixed(2)} %.`)
         _print(`You are staking ${parseFloat(userStaked).toFixed(2)} ${stakingTokenTicker} ($${formatMoney(userStakedUsd)}), ${userStakedPct.toFixed(2)}% of the pool.`);
         if (userStaked > 0) {
-            let dailyReward = parseFloat(userStakedUsd * pool.dailyApy / 100 ),
-                yearlyReward = parseFloat(userStakedUsd * pool.apy / 100)
+            let dailyReward = parseFloat(userStakedUsd * pool.dailyAPR / 100 ),
+                yearlyReward = parseFloat(userStakedUsd * pool.apr / 100)
             _print(`Est earning: ` +
 		`Daily  $${formatMoney(dailyReward)}  ` +
                 `Yearly $${formatMoney(yearlyReward)} `)

@@ -59,10 +59,10 @@ async function loadPool(App, tokens, prices, stakingAddress, rewardTokenTicker, 
   _print(`${token1.symbol} Price: $${formatMoney(token1Price)}`)
   _print(`Staked: $${formatMoney(staked_tvl)}`);
   _print(`${rewardTokenTicker} Per Week: ${weeklyRewards.toFixed(2)} ($${formatMoney(usdPerWeek)})`);
-  var weeklyAPY = usdPerWeek / staked_tvl * 100;
-  var dailyAPY = weeklyAPY / 7;
-  var yearlyAPY = weeklyAPY * 52;
-  _print(`APY: Day ${dailyAPY.toFixed(2)}% Week ${weeklyAPY.toFixed(2)}% Year ${yearlyAPY.toFixed(2)}%`);
+  var weeklyAPR = usdPerWeek / staked_tvl * 100;
+  var dailyAPR = weeklyAPR / 7;
+  var yearlyAPR = weeklyAPR * 52;
+  _print(`APR: Day ${dailyAPR.toFixed(2)}% Week ${weeklyAPR.toFixed(2)}% Year ${yearlyAPR.toFixed(2)}%`);
   var userStakedUsd = userStaked * BPTPrice;
   var userStakedPct = userStaked / totalStakedBPTAmount * 100;
   _print(`You are staking ${userStaked.toFixed(2)} ${stakingTokenTicker} ` +
