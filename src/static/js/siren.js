@@ -36,7 +36,7 @@ async function main() {
   for (const amm of AMMs) {
     const poolPrices = getPoolPrices(tokens, prices, amm.collatToken, "eth")
     poolPrices.print_price();  
-    printAPR("SI", rewardPrice, 31200, amm.collatToken.symbol, poolPrices.staked_tvl, amm.userStaked, poolPrices.price, 4);
+    printAPR("SI", rewardPrice, 31250, amm.collatToken.symbol, poolPrices.staked_tvl, amm.userStaked, poolPrices.price, 4);
     _print("");
   }
   hideLoading();  
