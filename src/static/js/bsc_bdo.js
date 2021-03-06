@@ -43,7 +43,7 @@ async function main() {
 
     for (const key in data.poolInfos) {
 	try {
-        if (key == 'Boardroom' || !data.poolInfos[key].apy) {
+        if (key == 'Boardroom' || !data.poolInfos[key].apr) {
             continue
         }
         showLoading()
@@ -97,12 +97,12 @@ async function main() {
         _print(`Total Value Locked: $${formatMoney(data.poolInfos[key].tvl)}`)
         _print(`${stakingTokenTicker} Price: $${parseFloat(tokenPrice).toFixed(2)}`)
 	_print(`Reward token: ${rewardToken}`)
-        _print(`APY ${parseFloat(data.poolInfos[key].apy).toFixed(2)} %`)
+        _print(`APR ${parseFloat(data.poolInfos[key].apr).toFixed(2)} %`)
         _print(`You are staking ${parseFloat(userStaked).toFixed(2)} ${stakingTokenTicker} ($${formatMoney(userStakedUsd)}), ${userStakedPct.toFixed(2)}% of the pool.`);
         if (userStaked > 0) {
-            let dailyReward = parseFloat(userStakedUsd * data.poolInfos[key].apy / 100 / 365),
-                monthlyReward = parseFloat(userStakedUsd * data.poolInfos[key].apy / 100 / 12),
-                yearlyReward = parseFloat(userStakedUsd * data.poolInfos[key].apy / 100)
+            let dailyReward = parseFloat(userStakedUsd * data.poolInfos[key].apr / 100 / 365),
+                monthlyReward = parseFloat(userStakedUsd * data.poolInfos[key].apr / 100 / 12),
+                yearlyReward = parseFloat(userStakedUsd * data.poolInfos[key].apr / 100)
             _print(`Est earning: ` +
                 `Daily ${parseFloat(dailyReward/ prices[rewardToken]).toFixed(2)} ${rewardToken}  ($${formatMoney(dailyReward)})  ` +
                 `Monthly: ${parseFloat(monthlyReward / prices[rewardToken]).toFixed(2)} ${rewardToken} ($${formatMoney(monthlyReward)})  ` +
@@ -156,13 +156,13 @@ async function main() {
     _print(`There are ${b.sbdoLocked} sBDO in boardroom, ${parseFloat(b.sbdoLocked * 100/sBDOTokenInfo.circulatingSupply).toFixed(2)}% of circulating`)
     _print(`Total Value Locked: $${formatMoney(b.tvl)}`)
     _print(`Reward token: BDO`)
-    const apy = parseFloat(b.apy).toFixed(2)
-    _print(`APY ${apy} %`)
+    const apr = parseFloat(b.apr).toFixed(2)
+    _print(`APR ${apr} %`)
     _print(`You are staking ${inBoardRoom.toFixed(2)} sBDO ($${formatMoney(inBoardRoomUsd)}) in boardroom, ${parseFloat(inBoardRoom*100/b.sbdoLocked).toFixed(2)}% of the pool`)
     if (inBoardRoom > 0) {
-        let dailyReward = parseFloat(inBoardRoomUsd * apy / 100 / 365),
-            monthlyReward = parseFloat(inBoardRoomUsd * apy / 100 / 12),
-            yearlyReward = parseFloat(inBoardRoomUsd * apy / 100)
+        let dailyReward = parseFloat(inBoardRoomUsd * apr / 100 / 365),
+            monthlyReward = parseFloat(inBoardRoomUsd * apr / 100 / 12),
+            yearlyReward = parseFloat(inBoardRoomUsd * apr / 100)
 
         _print(`Est earning: ` +
             `Daily ${parseFloat(dailyReward / prices['BDO']).toFixed(2)} BDO ($${formatMoney(dailyReward)})  ` +
