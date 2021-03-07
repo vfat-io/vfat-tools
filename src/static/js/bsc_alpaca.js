@@ -73,10 +73,10 @@ async function loadAlpacaBscChefContract(App, tokens, prices, chef, chefAddress,
   }
   let totalUserStaked=0, totalStaked=0, averageApr=0;
   for (const a of aprs) {
-    if (!isNaN(a.totalStakedUsd)) {
+    if (a && !isNaN(a.totalStakedUsd)) {
       totalStaked += a.totalStakedUsd;
     }
-    if (a.userStakedUsd > 0) {
+    if (a && a.userStakedUsd > 0) {
       totalUserStaked += a.userStakedUsd;
       averageApr += a.userStakedUsd * a.yearlyAPR / 100;
     }
