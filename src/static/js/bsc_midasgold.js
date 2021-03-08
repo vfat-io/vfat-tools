@@ -26,17 +26,17 @@ async function main() {
     const prices = await getBscPrices();
 
     await loadBscMidasgoldContract(App, tokens, prices, MIDASGOLD_CHEF, MIDASGOLD_CHEF_ADDR, MIDASGOLD_CHEF_ABI, rewardTokenTickers,
-      rewardTokenFunctions, null, rewardsPerWeek, pendingRewardFunctions);
+      rewardTokenFunctions, rewardsPerWeek, pendingRewardFunctions);
 
     hideLoading();  
   }
 
 async function loadBscMidasgoldContract(App, tokens, prices, chef, chefAddress, chefAbi, rewardTokenTickers,
-  rewardTokenFunctions, rewardsPerWeekFixed, pendingRewardsFunctions,
+  rewardTokenFunctions, rewardsPerWeekFixed, pendingRewardFunctions,
   deathPoolIndices) {
   const chefContract = chef ?? new ethers.Contract(chefAddress, chefAbi, App.provider);
 
-  const poolCount = parseInt(await chefContract.poolLength(), 10);
+  const poolCount = 21;
   const totalAllocPoints = await chefContract.totalAllocPoint();
     
   _print(`<a href='https://bscscan.com/address/${chefAddress}' target='_blank'>Staking Contract</a>`);
@@ -48,11 +48,10 @@ async function loadBscMidasgoldContract(App, tokens, prices, chef, chefAddress, 
   
   let rewardTokenAddresses = [];
   let rewardTokens = [];
-  let poolInfos = [];
 
   for(rewardTokenFunction of rewardTokenFunctions)
   {
-    let tokenAddress = await chefContract.callStatic[rewardTokenFunction];
+    let tokenAddress = await chefContract.callStatic[rewardTokenFunction]();
     rewardTokenAddresses.push(tokenAddress);
   }
 
@@ -64,12 +63,8 @@ async function loadBscMidasgoldContract(App, tokens, prices, chef, chefAddress, 
 
   const rewardsPerWeek = rewardsPerWeekFixed;
 
-  for(const pendingRewardsFunction of pendingRewardsFunctions)
-  {
-    let poolInfo = await Promise.all([...Array(poolCount).keys()].map(async (x) =>
-      await getBscPoolInfo(App, chefContract, chefAddress, x, pendingRewardsFunction)));
-    poolInfos.push(poolInfo);
-  }
+  let poolInfos = await Promise.all([...Array(poolCount).keys()].map(async (x) =>
+      await getMidasGoldPoolInfo(App, chefContract, chefAddress, x, pendingRewardFunctions)));
 
   var tokenAddresses = [].concat.apply([], poolInfos.filter(x => x.poolToken).map(x => x.poolToken.tokens));
 
@@ -88,33 +83,177 @@ async function loadBscMidasgoldContract(App, tokens, prices, chef, chefAddress, 
 
   _print("Finished reading smart contracts.\n");
     
-  for (i = 0; i < poolCount; i++) {
+  for (let i = 0; i < poolCount; i++) {
     if (poolPrices[i]) {
       printMidasGoldPool(App, chefAbi, chefAddress, prices, tokens, poolInfos[i], i, poolPrices[i],
         totalAllocPoints, rewardsPerWeek, rewardTokenTickers, rewardTokenAddresses,
-        pendingRewardFunctions, "bsc"); //thelei allagi i printChefPool(rewardsPerWeek[], rewardTokenTickers[], rewardTokenAddresses[])
+        pendingRewardFunctions, "bsc");
     }
   }
 }
 
-//Auti den einai sigouro an tha tin allaksw
+async function getMidasGoldPoolInfo(app, chefContract, chefAddress, poolIndex, pendingRewardFunctions) {  
+  const poolInfo = await chefContract.poolInfo(poolIndex);
+  if (poolInfo.allocPoint == 0) {
+    return {
+      address: poolInfo.lpToken,
+      allocPoints: poolInfo.allocPoint ?? 1,
+      poolToken: null,
+      userStaked : 0,
+      pendingRewardTokens : 0,
+      stakedToken : null,
+      userLPStaked : 0,
+      lastRewardBlock : poolInfo.lastRewardBlock
+    };
+  }
+  const poolToken = await getBscToken(app, poolInfo.lpToken, chefAddress);
+  const userInfo = await chefContract.userInfo(poolIndex, app.YOUR_ADDRESS);
+  let pendingRewardTokens = await Promise.all(pendingRewardFunctions.map(f => 
+    chefContract.callStatic[f](poolIndex, app.YOUR_ADDRESS)));
+  const staked = userInfo.amount / 10 ** poolToken.decimals;
+  var stakedToken;
+  var userLPStaked;
+  if (poolInfo.stakedHoldableToken != null && 
+    poolInfo.stakedHoldableToken != "0x0000000000000000000000000000000000000000") {
+    stakedToken = await getBscToken(app, poolInfo.stakedHoldableToken, chefAddress);
+    userLPStaked = userInfo.stakedLPAmount / 10 ** poolToken.decimals
+  }
+  return {
+      address: poolInfo.lpToken,
+      allocPoints: poolInfo.allocPoint ?? 1,
+      poolToken: poolToken,
+      userStaked : staked,
+      pendingRewardTokens : pendingRewardTokens / 10 ** 18,
+      stakedToken : stakedToken,
+      userLPStaked : userLPStaked,
+      lastRewardBlock : poolInfo.lastRewardBlock
+  };
+}
+
 function printMidasGoldPool(App, chefAbi, chefAddr, prices, tokens, poolInfo, poolIndex, poolPrices, 
-  totalAllocPoints, rewardsPerWeek, rewardTokenTicker, rewardTokenAddress,
-  pendingRewardsFunction, fixedDecimals, claimFunction, chain="eth") {  
-fixedDecimals = fixedDecimals ?? 2;
-const sp = (poolInfo.stakedToken == null) ? null : getPoolPrices(tokens, prices, poolInfo.stakedToken);
-var poolRewardsPerWeek = poolInfo.allocPoints / totalAllocPoints * rewardsPerWeek;
-if (poolRewardsPerWeek == 0) return;
-const userStaked = poolInfo.userLPStaked ?? poolInfo.userStaked;
-const rewardPrice = getParameterCaseInsensitive(prices, rewardTokenAddress)?.usd;
-const staked_tvl = sp?.staked_tvl ?? poolPrices.staked_tvl;
-poolPrices.print_price();
-sp?.print_price();
-printApy(rewardTokenTicker, rewardPrice, poolRewardsPerWeek, poolPrices.stakeTokenTicker, 
-staked_tvl, userStaked, poolPrices.price, fixedDecimals);
-if (poolInfo.userLPStaked > 0) sp?.print_contained_price(userStaked);
-if (poolInfo.userStaked > 0) poolPrices.print_contained_price(userStaked);
-printChefContractLinks(App, chefAbi, chefAddr, poolIndex, poolInfo.address, pendingRewardsFunction,
-rewardTokenTicker, poolPrices.stakeTokenTicker, poolInfo.poolToken.unstaked, 
-poolInfo.userStaked, poolInfo.pendingRewardTokens, fixedDecimals, claimFunction, rewardPrice, chain);
+  totalAllocPoints, rewardsPerWeek, rewardTokenTickers, rewardTokenAddresses,
+  pendingRewardFunctions, fixedDecimals, claimFunction, chain="eth") {  
+    fixedDecimals = fixedDecimals ?? 2;
+    const sp = (poolInfo.stakedToken == null) ? null : getPoolPrices(tokens, prices, poolInfo.stakedToken);
+    let poolRewardsPerWeek = rewardsPerWeek.map(rpw => 
+      poolInfo.allocPoints / totalAllocPoints * rpw);
+    if (poolRewardsPerWeek == 0) return;
+    const userStaked = poolInfo.userLPStaked ?? poolInfo.userStaked;
+    let rewardPrices = rewardTokenAddresses.map(a => getParameterCaseInsensitive(prices, a)?.usd);
+    const staked_tvl = sp?.staked_tvl ?? poolPrices.staked_tvl;
+    poolPrices.print_price();
+    sp?.print_price();
+
+    printMidasGoldApr(rewardTokenTickers, rewardPrices, poolRewardsPerWeek, poolPrices.stakeTokenTicker, 
+      staked_tvl, userStaked, poolPrices.price, fixedDecimals);
+    if (poolInfo.userLPStaked > 0) sp?.print_contained_price(userStaked);
+    if (poolInfo.userStaked > 0) poolPrices.print_contained_price(userStaked);
+
+    printMidasgoldContractLinks(App, chefAbi, chefAddr, poolIndex, poolInfo.address, pendingRewardFunctions,
+      rewardTokenTickers, poolPrices.stakeTokenTicker, poolInfo.poolToken.unstaked, 
+    poolInfo.userStaked, poolInfo.pendingRewardTokens, fixedDecimals, claimFunction, rewardPrices, chain);
+}
+
+function printMidasGoldApr(rewardTokenTickers, rewardPrices, poolRewardsPerWeek, 
+  stakeTokenTicker, staked_tvl, userStaked, poolTokenPrice,
+  fixedDecimals) {
+  fixedDecimals = fixedDecimals ?? 2;
+  let totalUsdPerWeek = 0;
+  let totalDailyRewards = 0;
+  let totalWeeklyRewards = 0;
+  let totalYearlyRewards = 0;
+  for(let i = 0; i < poolRewardsPerWeek.length; i++){
+    let usdPerWeek = poolRewardsPerWeek[i] * rewardPrices[i]
+    _print(`${rewardTokenTickers[i]} Per Week: ${poolRewardsPerWeek[i].toFixed(fixedDecimals)} ($${formatMoney(usdPerWeek)})`);
+    totalUsdPerWeek += usdPerWeek;
+  }
+  var weeklyAPR = totalUsdPerWeek / staked_tvl * 100;
+  var dailyAPR = weeklyAPR / 7;
+  var yearlyAPR = weeklyAPR * 52;
+  _print(`APR: Day ${dailyAPR.toFixed(2)}% Week ${weeklyAPR.toFixed(2)}% Year ${yearlyAPR.toFixed(2)}%`);
+  var userStakedUsd = userStaked * poolTokenPrice;
+  var userStakedPct = userStakedUsd / staked_tvl * 100;
+  _print(`You are staking ${userStaked.toFixed(fixedDecimals)} ${stakeTokenTicker} ($${formatMoney(userStakedUsd)}), ${userStakedPct.toFixed(2)}% of the pool.`);
+  if (userStaked > 0) {
+    for(let i = 0; i < rewardTokenTickers.length; i++){
+      var userWeeklyRewards = userStakedPct * poolRewardsPerWeek[i] / 100;
+      var userDailyRewards = userWeeklyRewards / 7;
+      var userYearlyRewards = userWeeklyRewards * 52;
+      _print(`Estimated ${rewardTokenTickers[i]} earnings:`
+  + ` Day ${userDailyRewards.toFixed(fixedDecimals)} ($${formatMoney(userDailyRewards*rewardPrices[i])})`
+  + ` Week ${userWeeklyRewards.toFixed(fixedDecimals)} ($${formatMoney(userWeeklyRewards*rewardPrices[i])})`
+  + ` Year ${userYearlyRewards.toFixed(fixedDecimals)} ($${formatMoney(userYearlyRewards*rewardPrices[i])})`);
+      totalDailyRewards += userDailyRewards * rewardPrices[i];
+      totalWeeklyRewards += userWeeklyRewards * rewardPrices[i];
+      totalYearlyRewards += userYearlyRewards * rewardPrices[i];
+    }
+    _print(`Estimated total earnings:`
+    + `Day $${formatMoney(totalDailyRewards)}`
+    + `Week $${formatMoney(totalWeeklyRewards)}`
+    + `Year $${formatMoney(totalYearlyRewards)}`);
+  }
+}
+
+function printMidasgoldContractLinks(App, chefAbi, chefAddr, poolIndex, poolAddress, pendingRewardsFunctions,
+  rewardTokenTickers, stakeTokenTicker, unstaked, userStaked, pendingRewardTokens, fixedDecimals,
+  claimFunction, rewardTokenPrices) {
+  fixedDecimals = fixedDecimals ?? 2;
+  const approveAndStake = async function() {
+  return chefContract_stake(chefAbi, chefAddr, poolIndex, poolAddress, App)
+  }      
+  const unstake = async function() {
+  return midasgoldContract_unstake(chefAbi, chefAddr, poolIndex, App)
+  }      
+  const claim = async function() {
+  return midasgoldContract_claim(chefAbi, chefAddr, poolIndex, App, pendingRewardsFunctions, claimFunction)
+  }
+  let totalToClaim = 0, rewardTokens = "";
+  for(let i = 0; i < rewardTokenPrices; i++){
+    totalToClaim += pendingRewardTokens[i] * rewardTokenPrice[i];
+    rewardTokens = rewardTokenTickers[i] + "-";
+  }
+  _print_link(`Stake ${unstaked.toFixed(fixedDecimals)} ${stakeTokenTicker}`, approveAndStake)
+  _print_link(`Unstake ${userStaked.toFixed(fixedDecimals)} ${stakeTokenTicker}`, unstake)
+  //_print_link(`Claim ${pendingRewardTokens.toFixed(fixedDecimals)} ${rewardTokenTicker} ($${formatMoney(pendingRewardTokens*rewardTokenPrice)})`, claim)
+  _print_link(`Claim ${totalToClaim.toFixed(fixedDecimals)} ${rewardTokens} ($${formatMoney(totalToClaim)})`, claim)
+  _print(`Staking or unstaking also claims rewards.`)
+  _print(`\n`);
+}
+
+const midasgoldContract_unstake = async function(chefAbi, chefAddress, poolIndex, App) {
+  const signer = App.provider.getSigner()
+  const CHEF_CONTRACT = new ethers.Contract(chefAddress, chefAbi, signer)
+
+  const currentStakedAmount = (await CHEF_CONTRACT.userInfo(poolIndex, App.YOUR_ADDRESS)).amount
+
+  if (currentStakedAmount > 0) {
+    showLoading()
+    CHEF_CONTRACT.withdraw(poolIndex, currentStakedAmount, {gasLimit: 500000})
+      .then(function(t) {
+        return App.provider.waitForTransaction(t.hash)
+      })
+      .catch(function() {
+        hideLoading()
+      })
+  }
+}
+
+const midasgoldContract_claim = async function(chefAbi, chefAddress, poolIndex, App, 
+  pendingRewardsFunctions) {
+  const signer = App.provider.getSigner()
+
+  const CHEF_CONTRACT = new ethers.Contract(chefAddress, chefAbi, signer)
+
+  let earnedTokenAmounts = await Promise.all(pendingRewardsFunctions.map(pf => 
+    CHEF_CONTRACT.callStatic[pf](poolIndex, app.YOUR_ADDRESS)));
+
+    if (earnedTokenAmounts.some(amount => amount > 0)) {
+      CHEF_CONTRACT.deposit(poolIndex, 0, {gasLimit: 500000})
+          .then(function(t) {
+            return App.provider.waitForTransaction(t.hash)
+          })
+          .catch(function() {
+            hideLoading()
+          })
+    }
 }
