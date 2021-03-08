@@ -121,7 +121,7 @@ async function main() {
         const stakedTokenAddress = pool.wantTokenAddress
         const stakedToken = new ethers.Contract(stakedTokenAddress, BEP20_ABI, App.provider.getSigner())
         const decimal = await stakedToken.decimals()
-        const stakingTokenTicker = await stakedToken.symbol()
+        const stakingTokenTicker = pool.wantTokenName
         const stakedTokenBalance = await stakedToken.balanceOf(App.YOUR_ADDRESS)
         let userStakedAmount = await vSafeContract.balanceOf(App.YOUR_ADDRESS)
         let userStaked = userStakedAmount / 10 ** decimal
@@ -148,14 +148,12 @@ async function main() {
         _print(' ')
         _print(`Total Value Locked: $${formatMoney(pool.tvl)}`)
         _print(`${stakingTokenTicker} Price: $${parseFloat(tokenPrice).toFixed(2)}`)
-        _print(`APR: Hourly ${parseFloat(pool.aprDetails.apr.hourlyApr).toFixed(2)} %. Daily ${parseFloat(pool.aprDetails.apr.dailyApr).toFixed(2)} %. Yearly ${parseFloat(pool.aprDetails.apr.apr).toFixed(2)} %.`)
+        _print(`Daily ${parseFloat(pool.dailyAPR).toFixed(2)} %. Yearly ${parseFloat(pool.apr).toFixed(2)} %.`)
         _print(`You are staking ${parseFloat(userStaked).toFixed(2)} ${stakingTokenTicker} ($${formatMoney(userStakedUsd)}), ${userStakedPct.toFixed(2)}% of the pool.`);
         if (userStaked > 0) {
-            let hourlyReward = parseFloat(userStakedUsd * pool.aprDetails.apr.hourlyApr / 100 ),
-		dailyReward = parseFloat(userStakedUsd * pool.aprDetails.apr.dailyApr / 100 ),
-                yearlyReward = parseFloat(userStakedUsd * pool.aprDetails.apr.apr / 100)
+            let dailyReward = parseFloat(userStakedUsd * pool.dailyAPR / 100 ),
+                yearlyReward = parseFloat(userStakedUsd * pool.apr / 100)
             _print(`Est earning: ` +
-                `Hourly  $${formatMoney(hourlyReward)}  ` +
 		`Daily  $${formatMoney(dailyReward)}  ` +
                 `Yearly $${formatMoney(yearlyReward)} `)
         }

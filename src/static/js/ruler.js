@@ -72,7 +72,7 @@ const rulerContract_withdraw = async function(rulerAbi, rulerAddress, lpAddress,
   const signer = App.provider.getSigner()
   const RULER_CONTRACT = new ethers.Contract(rulerAddress, rulerAbi, signer)
 
-  const userInfo = await RULER_CONTRACT.getUser(lpAddress, App.YOUR_ADDRESS)
+  const [userInfo] = await RULER_CONTRACT.getUser(lpAddress, App.YOUR_ADDRESS)
 
   if (userInfo.amount / 1e18 > 0) {
     showLoading()

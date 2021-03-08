@@ -382,9 +382,9 @@ async function calculateDollarAPR(DAO, parameters, twap, dollarPrice, uniPrices,
     const epochPeriod = parameters.EpochPeriod ?? epochPeriod_;
     if (daoRewards > 0) {
         const bondedReturn = daoRewards / totalBonded * 100 * SecondsPerDay / epochPeriod;
-        const apy = ((1 + daoRewards / totalBonded) ** (SecondsPerDay / epochPeriod) - 1) * 100;
+        const apr = ((1 + daoRewards / totalBonded) ** (SecondsPerDay / epochPeriod) - 1) * 100;
         _print(`DAO APY: Day ${bondedReturn.toFixed(2)}% Week ${(bondedReturn * 7).toFixed(2)}% Year ${(bondedReturn * 365).toFixed(2)}%`)
-        _print(`DAO APY: Day ${apy.toFixed(2)}%`);
+        _print(`DAO APY: Day ${apr.toFixed(2)}%`);
 
     } else {
         _print(`DAO APY: Day 0% Week 0% Year 0%`)

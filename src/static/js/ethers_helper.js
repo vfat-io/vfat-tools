@@ -1458,6 +1458,13 @@ function printAPR(rewardTokenTicker, rewardPrice, poolRewardsPerWeek,
         + ` Week ${userWeeklyRewards.toFixed(fixedDecimals)} ($${formatMoney(userWeeklyRewards*rewardPrice)})`
         + ` Year ${userYearlyRewards.toFixed(fixedDecimals)} ($${formatMoney(userYearlyRewards*rewardPrice)})`);
   }
+  return { 
+    userStakedUsd, 
+    totalStakedUsd : staked_tvl, 
+    userStakedPct, 
+    yearlyAPR, 
+    userYearlyUsd : userYearlyRewards * rewardPrice 
+  }
 }
 
 function printChefContractLinks(App, chefAbi, chefAddr, poolIndex, poolAddress, pendingRewardsFunction,
@@ -1492,17 +1499,18 @@ function printChefPool(App, chefAbi, chefAddr, prices, tokens, poolInfo, poolInd
   const staked_tvl = sp?.staked_tvl ?? poolPrices.staked_tvl;
   poolPrices.print_price();
   sp?.print_price();
-  printAPR(rewardTokenTicker, rewardPrice, poolRewardsPerWeek, poolPrices.stakeTokenTicker, 
+  const apr = printAPR(rewardTokenTicker, rewardPrice, poolRewardsPerWeek, poolPrices.stakeTokenTicker, 
     staked_tvl, userStaked, poolPrices.price, fixedDecimals);
   if (poolInfo.userLPStaked > 0) sp?.print_contained_price(userStaked);
   if (poolInfo.userStaked > 0) poolPrices.print_contained_price(userStaked);
   printChefContractLinks(App, chefAbi, chefAddr, poolIndex, poolInfo.address, pendingRewardsFunction,
     rewardTokenTicker, poolPrices.stakeTokenTicker, poolInfo.poolToken.unstaked, 
     poolInfo.userStaked, poolInfo.pendingRewardTokens, fixedDecimals, claimFunction, rewardPrice, chain);
+  return apr;
 }
 
 async function loadChefContract(App, chef, chefAddress, chefAbi, rewardTokenTicker,
-    rewardTokenFunction, rewardsPerBlockFunction, rewardsPerWeekFixed, pendingRewardsFunction) {
+    rewardTokenFunction, rewardsPerBlockFunction, rewardsPerWeekFixed, pendingRewardsFunction, extraPrices) {
   const chefContract = chef ?? new ethers.Contract(chefAddress, chefAbi, App.provider);
 
   const poolCount = parseInt(await chefContract.poolLength(), 10);
@@ -1526,6 +1534,13 @@ async function loadChefContract(App, chef, chefAddress, chefAbi, rewardTokenTick
   
   var tokenAddresses = [].concat.apply([], poolInfos.filter(x => x.poolToken).map(x => x.poolToken.tokens));
   var prices = await lookUpTokenPrices(tokenAddresses);
+  if (extraPrices) {
+    for (const [k,v] of Object.entries(extraPrices)) {
+      if (v.usd) {
+        prices[k] = v
+      }
+    }
+  }
   //prices["0x194ebd173f6cdace046c53eacce9b953f28411d1"] = { usd : 1.22 } //"temporary" solution
   
   await Promise.all(tokenAddresses.map(async (address) => {
@@ -1536,13 +1551,35 @@ async function loadChefContract(App, chef, chefAddress, chefAbi, rewardTokenTick
 
   _print("Finished reading smart contracts.\n");
     
+  let aprs = []
   for (i = 0; i < poolCount; i++) {
-    if (poolPrices[i] && poolPrices[i].price) {
-      printChefPool(App, chefAbi, chefAddress, prices, tokens, poolInfos[i], i, poolPrices[i],
+    if (poolPrices[i]) {
+      const apr = printChefPool(App, chefAbi, chefAddress, prices, tokens, poolInfos[i], i, poolPrices[i],
         totalAllocPoints, rewardsPerWeek, rewardTokenTicker, rewardTokenAddress,
-        pendingRewardsFunction);
+        pendingRewardsFunction)
+      aprs.push(apr);
     }
   }
+  let totalUserStaked=0, totalStaked=0, averageApr=0;
+  for (const a of aprs) {
+    if (a && !isNaN(a.totalStakedUsd)) {
+      totalStaked += a.totalStakedUsd;
+    }
+    if (a && a.userStakedUsd > 0) {
+      totalUserStaked += a.userStakedUsd;
+      averageApr += a.userStakedUsd * a.yearlyAPR / 100;
+    }
+  }
+  averageApr = averageApr / totalUserStaked;
+  _print_bold(`Total Staked: $${formatMoney(totalStaked)}`);
+  if (totalUserStaked > 0) {
+    _print_bold(`\nYou are staking a total of $${formatMoney(totalUserStaked)} at an average APR of ${(averageApr * 100).toFixed(2)}%`)
+    _print(`Estimated earnings:`
+        + ` Day $${formatMoney(totalUserStaked*averageApr/365)}`
+        + ` Week $${formatMoney(totalUserStaked*averageApr/52)}`
+        + ` Year $${formatMoney(totalUserStaked*averageApr)}\n`);
+  }
+  return { prices, totalUserStaked, totalStaked, averageApr }
 }
 
 //ratio is used for multi-boardroom setups
@@ -1764,8 +1801,8 @@ async function loadMultipleSynthetixPools(App, tokens, prices, pools) {
       individualAPRs.push(p.userStaked * p.apr / 100);
     }
   }
-  let totalApr = totalUserStaked == 0 ? 0 : individualAPRs.reduce((x,y)=>x+y, 0) / totalUserStaked;
-  return { staked_tvl : totalStaked, totalUserStaked, totalApr };
+  let totalAPR = totalUserStaked == 0 ? 0 : individualAPRs.reduce((x,y)=>x+y, 0) / totalUserStaked;
+  return { staked_tvl : totalStaked, totalUserStaked, totalAPR };
 }
 
 async function loadBasisFork(data) {
@@ -1796,7 +1833,7 @@ async function loadBasisFork(data) {
       let p = await loadMultipleSynthetixPools(App, tokens, prices, data.SeedBanks)
       totalStaked += p.staked_tvl;
       if (p.totalUserStaked > 0) {
-        _print(`You are staking a total of $${formatMoney(p.totalUserStaked)} at an APR of ${(p.totalApr * 100).toFixed(2)}%\n`);
+        _print(`You are staking a total of $${formatMoney(p.totalUserStaked)} at an APR of ${(p.totalAPR * 100).toFixed(2)}%\n`);
       }
     }
 
