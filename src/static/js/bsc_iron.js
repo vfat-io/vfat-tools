@@ -74,7 +74,7 @@ async function main() {
       let pendingHarvest
       pendingHarvest = (await STAKING_POOL.pendingReward(poolId, App.YOUR_ADDRESS)) / 10 ** decimal
       const claimFunc = async function() {
-        return harvest(STAKING_POOL, poolId, App)
+        return harvest(STAKING_POOL, App)
       }
       const userInfo = await STAKING_POOL.getUserInfo(poolId, App.YOUR_ADDRESS)
       const userStaked = userInfo.amount / 10 ** decimal
@@ -83,7 +83,7 @@ async function main() {
       const userStakedPct = (userStakedUsd * 100) / parseFloat(pool.totalSupplyUSD)
 
       const exitFunc = async function() {
-        return exitFarming(STAKING_POOL, poolId, userInfo.amount, App)
+        return exitFarming(STAKING_POOL, userInfo.amount, App)
       }
       const approveFunc = async function() {
         return approve(stakedToken, stakingAddress, stakedTokenBalance, App)
@@ -92,10 +92,10 @@ async function main() {
         return revoke(stakedToken, stakingAddress, App)
       }
       const stakeFunc = async function() {
-        return stake(STAKING_POOL, poolId, stakedTokenBalance, App)
+        return stake(STAKING_POOL, stakedTokenBalance, App)
       }
       const unstakeFunc = async function() {
-        return unstake(STAKING_POOL, poolId, userInfo.amount, App)
+        return unstake(STAKING_POOL, userInfo.amount, App)
       }
 
       let rewardToken = Object.keys(pool.rewards)[0]
@@ -155,9 +155,9 @@ const getTokenInfo = async symbol => {
   let raw = await fetch('https://api.vswap.fi/api/price/get-price?token=' + symbol)
   return JSON.parse(await raw.text()).data
 }
-const harvest = async (stakingContract, poolId, App) => {
+const harvest = async (stakingContract, App) => {
   stakingContract
-    .withdraw(poolId, 0, {
+    .claimReward({
       gasLimit: 250000,
     })
     .then(function(t) {
@@ -168,9 +168,9 @@ const harvest = async (stakingContract, poolId, App) => {
     })
 }
 
-const exitFarming = async (stakingContract, poolId, amount, App) => {
+const exitFarming = async (stakingContract, amount, App) => {
   stakingContract
-    .withdraw(poolId, amount, {
+    .withdraw(amount, {
       gasLimit: 250000,
     })
     .then(function(t) {
@@ -207,9 +207,9 @@ const revoke = async (contract, spender, App) => {
     })
 }
 
-const stake = async (contract, poolId, amount, App) => {
+const stake = async (contract, amount, App) => {
   contract
-    .deposit(poolId, amount, {
+    .stake(amount, {
       gasLimit: 250000,
     })
     .then(function(t) {
@@ -220,9 +220,9 @@ const stake = async (contract, poolId, amount, App) => {
     })
 }
 
-const unstake = async (contract, poolId, amount, App) => {
+const unstake = async (contract, amount, App) => {
   contract
-    .withdraw(poolId, amount, {
+    .withdraw(amount, {
       gasLimit: 250000,
     })
     .then(function(t) {
