@@ -276,17 +276,10 @@ function getABI(address) {
 
 async function main() {
   const vBSWAPTokenInfo = await getTokenInfo('vBSWAP')
-  _print('-------------------------------------------------')
-  _print(`vBSWAP price $${formatMoney(vBSWAPTokenInfo.price)}`)
-  _print('-------------------------------------------------')
-  _print(' ')
-
   const App = await init_ethers()
   _print(`Initialized ${App.YOUR_ADDRESS}\n`)
   _print('Reading smart contracts...\n')
 
-  _print('-------------------------------------------------')
-  _print('\nvFARM: https://bsc.valuedefi.io/#/vfarm \n\n')
   _print('-------------------------------------------------')
   let raw = await fetch('https://api.vswap.fi/api/faas/get-stats?whitelistedBy=ALL')
   let data = JSON.parse(await raw.text()).data.filter(t => pools.indexOf(t.contractAddress) > -1)
