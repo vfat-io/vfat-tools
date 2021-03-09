@@ -53,11 +53,7 @@ async function loadBscMidasgoldContract(App, tokens, prices, chef, chefAddress, 
   {
     let tokenAddress = await chefContract.callStatic[rewardTokenFunction]();
     rewardTokenAddresses.push(tokenAddress);
-  }
-
-  for(rewardTokenAddress of rewardTokenAddresses)
-  {
-    let rewardToken = await getBscToken(App, rewardTokenAddress, chefAddress);
+    let rewardToken = await getBscToken(App, tokenAddress, chefAddress);
     rewardTokens.push(rewardToken);
   }
 
@@ -94,41 +90,18 @@ async function loadBscMidasgoldContract(App, tokens, prices, chef, chefAddress, 
 
 async function getMidasGoldPoolInfo(app, chefContract, chefAddress, poolIndex, pendingRewardFunctions) {  
   const poolInfo = await chefContract.poolInfo(poolIndex);
-  if (poolInfo.allocPoint == 0) {
-    return {
-      address: poolInfo.lpToken,
-      allocPoints: poolInfo.allocPoint ?? 1,
-      poolToken: null,
-      userStaked : 0,
-      claimableRewards : 0,
-      stakedToken : null,
-      userLPStaked : 0,
-      lastRewardBlock : poolInfo.lastRewardBlock
-    };
-  }
   const poolToken = await getBscToken(app, poolInfo.lpToken, chefAddress);
   const userInfo = await chefContract.userInfo(poolIndex, app.YOUR_ADDRESS);
   let pendingRewardTokensArray = await Promise.all(pendingRewardFunctions.map(f => 
     chefContract.callStatic[f](poolIndex, app.YOUR_ADDRESS)));
-  let claimableRewards = pendingRewardTokensArray.map(rt => 
-    rt / 10 ** 18);
+  let claimableRewards = pendingRewardTokensArray.map(rt => rt / 1e18);
   const staked = userInfo.amount / 10 ** poolToken.decimals;
-  var stakedToken;
-  var userLPStaked;
-  if (poolInfo.stakedHoldableToken != null && 
-    poolInfo.stakedHoldableToken != "0x0000000000000000000000000000000000000000") {
-    stakedToken = await getBscToken(app, poolInfo.stakedHoldableToken, chefAddress);
-    userLPStaked = userInfo.stakedLPAmount / 10 ** poolToken.decimals
-  }
   return {
       address: poolInfo.lpToken,
       allocPoints: poolInfo.allocPoint ?? 1,
       poolToken: poolToken,
       userStaked : staked,
-      claimableRewards : claimableRewards,
-      stakedToken : stakedToken,
-      userLPStaked : userLPStaked,
-      lastRewardBlock : poolInfo.lastRewardBlock
+      claimableRewards : claimableRewards
   };
 }
 
@@ -136,24 +109,20 @@ function printMidasGoldPool(App, chefAbi, chefAddr, prices, tokens, poolInfo, po
   totalAllocPoints, rewardsPerWeek, rewardTokenTickers, rewardTokenAddresses,
   pendingRewardFunctions, fixedDecimals, claimFunction, chain="eth") {  
     fixedDecimals = fixedDecimals ?? 2;
-    const sp = (poolInfo.stakedToken == null) ? null : getPoolPrices(tokens, prices, poolInfo.stakedToken);
-    let poolRewardsPerWeek = rewardsPerWeek.map(rpw => 
-      poolInfo.allocPoints / totalAllocPoints * rpw);
+    let poolRewardsPerWeek = rewardsPerWeek.map(rpw => poolInfo.allocPoints / totalAllocPoints * rpw);
     if (poolRewardsPerWeek == 0) return;
-    const userStaked = poolInfo.userLPStaked ?? poolInfo.userStaked;
+    const userStaked = poolInfo.userStaked;
     let rewardPrices = rewardTokenAddresses.map(a => getParameterCaseInsensitive(prices, a)?.usd);
-    const staked_tvl = sp?.staked_tvl ?? poolPrices.staked_tvl;
+    const staked_tvl = poolPrices.staked_tvl;
     poolPrices.print_price();
-    sp?.print_price();
 
     printMidasGoldApr(rewardTokenTickers, rewardPrices, poolRewardsPerWeek, poolPrices.stakeTokenTicker, 
       staked_tvl, userStaked, poolPrices.price, fixedDecimals);
-    if (poolInfo.userLPStaked > 0) sp?.print_contained_price(userStaked);
     if (poolInfo.userStaked > 0) poolPrices.print_contained_price(userStaked);
 
     printMidasgoldContractLinks(App, chefAbi, chefAddr, poolIndex, poolInfo.address, pendingRewardFunctions,
       rewardTokenTickers, poolPrices.stakeTokenTicker, poolInfo.poolToken.unstaked, 
-    poolInfo.userStaked, poolInfo.claimableRewards, fixedDecimals, claimFunction, rewardPrices, chain);
+      poolInfo.userStaked, poolInfo.claimableRewards, fixedDecimals, claimFunction, rewardPrices, chain);
 }
 
 function printMidasGoldApr(rewardTokenTickers, rewardPrices, poolRewardsPerWeek, 
