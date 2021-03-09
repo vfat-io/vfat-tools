@@ -382,12 +382,12 @@ async function calculateDollarAPR(DAO, parameters, twap, dollarPrice, uniPrices,
     const epochPeriod = parameters.EpochPeriod ?? epochPeriod_;
     if (daoRewards > 0) {
         const bondedReturn = daoRewards / totalBonded * 100 * SecondsPerDay / epochPeriod;
-        const apy = ((1 + daoRewards / totalBonded) ** (SecondsPerDay / epochPeriod) - 1) * 100;
-        _print(`DAO APR: Day ${bondedReturn.toFixed(2)}% Week ${(bondedReturn * 7).toFixed(2)}% Year ${(bondedReturn * 365).toFixed(2)}%`)
-        _print(`DAO APY: Day ${apy.toFixed(2)}%`);
+        const apr = ((1 + daoRewards / totalBonded) ** (SecondsPerDay / epochPeriod) - 1) * 100;
+        _print(`DAO APY: Day ${bondedReturn.toFixed(2)}% Week ${(bondedReturn * 7).toFixed(2)}% Year ${(bondedReturn * 365).toFixed(2)}%`)
+        _print(`DAO APY: Day ${apr.toFixed(2)}%`);
 
     } else {
-        _print(`DAO APR: Day 0% Week 0% Year 0%`)
+        _print(`DAO APY: Day 0% Week 0% Year 0%`)
     }
 
     // Calculate total rewards allocated to LP
@@ -472,12 +472,12 @@ async function loadDollar(contractInfo, calcPrice, getEpochPeriod, getTwap) {
             await calculateDollarAPR(DAO, contractInfo.Parameters, twap, dollarPrice, uniPrices, totalBonded, calcPrice, epochPeriod, epoch);
         }
         else {
-            _print(`DAO APR: Day 0% Week 0% Year 0%`)
+            _print(`DAO APY: Day 0% Week 0% Year 0%`)
             if (poolInfo) _print(`LP APR: Day 0% Week 0% Year 0%`)
         }        
     }
     else {
-      _print(`DAO APR: Day 0% Week 0% Year 0%`)
+      _print(`DAO APY: Day 0% Week 0% Year 0%`)
       if (poolInfo) _print(`LP APR: Day 0% Week 0% Year 0%`)
     }   
   }

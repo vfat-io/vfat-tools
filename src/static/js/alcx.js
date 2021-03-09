@@ -121,7 +121,7 @@ function printAlcxPool(App, alcxAbi, alcxAddr, prices, poolInfo, poolIndex, pool
                        rewardTokenTicker, rewardTokenAddress) { 
   const rewardPrice = getParameterCaseInsensitive(prices, rewardTokenAddress)?.usd;
   poolPrices.print_price();
-  printApy(rewardTokenTicker, rewardPrice, poolInfo.rewardsPerWeek, poolPrices.stakeTokenTicker, 
+  printAPR(rewardTokenTicker, rewardPrice, poolInfo.rewardsPerWeek, poolPrices.stakeTokenTicker, 
     poolPrices.staked_tvl, poolInfo.userStaked, poolPrices.price, 2);
   if (poolInfo.userStaked > 0) poolPrices.print_contained_price(poolInfo.userStaked);
   printAlcxContractLinks(App, alcxAbi, alcxAddr, poolIndex, poolInfo.poolToken.address,

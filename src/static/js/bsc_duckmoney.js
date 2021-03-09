@@ -22,8 +22,60 @@ async function main() {
     const tokens = {};
     const prices = await getBscPrices();
 
-    await loadBscChefContract(App, tokens, prices, DUCK_CHEF, DUCK_CHEF_ADDR, DUCK_CHEF_ABI, rewardTokenTicker,
+    await loadDuckChefContract(App, tokens, prices, DUCK_CHEF, DUCK_CHEF_ADDR, DUCK_CHEF_ABI, rewardTokenTicker,
         "duck", null, rewardsPerWeek, "pendingDuck");
 
     hideLoading();  
+  }
+
+
+  async function loadDuckChefContract(App, tokens, prices, chef, chefAddress, chefAbi, rewardTokenTicker,
+    rewardTokenFunction, rewardsPerBlockFunction, rewardsPerWeekFixed, pendingRewardsFunction,
+    deathPoolIndices) {
+    const chefContract = chef ?? new ethers.Contract(chefAddress, chefAbi, App.provider);
+  
+    const poolCount = parseInt(await chefContract.poolLength(), 10);
+    const totalAllocPoints = await chefContract.totalAllocPoint();
+      
+    _print(`<a href='https://bscscan.com/address/${chefAddress}' target='_blank'>Staking Contract</a>`);
+    _print(`Found ${poolCount} pools.\n`)
+  
+    _print(`Showing incentivized pools only.\n`);
+  
+    var tokens = {};
+  
+    const rewardTokenAddress = await chefContract.callStatic[rewardTokenFunction]();
+    const rewardToken = await getBscToken(App, rewardTokenAddress, chefAddress);
+    const rewardsPerWeek = rewardsPerWeekFixed ?? 
+      await chefContract.callStatic[rewardsPerBlockFunction]() 
+      / 10 ** rewardToken.decimals * 604800 / 3
+  
+    const poolInfos = await Promise.all([...Array(poolCount).keys()].map(async (x) =>
+     x == 0 ? null : 
+      await getBscPoolInfo(App, chefContract, chefAddress, x, pendingRewardsFunction)));
+  
+    var tokenAddresses = [].concat.apply([], poolInfos.filter(x => x?.poolToken).map(x => x.poolToken.tokens));
+  
+    await Promise.all(tokenAddresses.map(async (address) => {
+        tokens[address] = await getBscToken(App, address, chefAddress);
+    }));
+  
+    if (deathPoolIndices) {   //load prices for the deathpool assets
+      deathPoolIndices.map(i => poolInfos[i])
+                       .map(poolInfo => 
+        poolInfo?.poolToken ? getPoolPrices(tokens, prices, poolInfo.poolToken, "bsc") : undefined);
+    }
+  
+    const poolPrices = poolInfos.map(poolInfo => poolInfo?.poolToken ? getPoolPrices(tokens, prices, poolInfo.poolToken, "bsc") : undefined);
+  
+  
+    _print("Finished reading smart contracts.\n");
+      
+    for (i = 0; i < poolCount; i++) {
+      if (poolPrices[i]) {
+        printChefPool(App, chefAbi, chefAddress, prices, tokens, poolInfos[i], i, poolPrices[i],
+          totalAllocPoints, rewardsPerWeek, rewardTokenTicker, rewardTokenAddress,
+          pendingRewardsFunction, "bsc");
+      }
+    }
   }
