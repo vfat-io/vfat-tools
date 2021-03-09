@@ -44,8 +44,6 @@ async function loadBscMidasgoldContract(App, tokens, prices, chef, chefAddress, 
   _print(`Found ${poolCount} pools.\n`)
 
   _print(`Showing incentivized pools only.\n`);
-
-  var tokens = {};
   
   let rewardTokenAddresses = [];
   let rewardTokens = [];
