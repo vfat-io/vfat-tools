@@ -14,8 +14,8 @@ async function main() {
 
    const MIDASGOLD_CHEF_ADDR = "0x8f0A813D39F019a2A98958eDbf5150d3a06Cd20f";
    const rewardTokenTickers = ["MDG", "BCASH", "MDO"]
-   const rewardTokenFunctions = ["bcash", "mdg", "mdo"]
-   const pendingRewardFunctions = ["pendingBcash", "pendingMdo", "pendingReward"]
+   const rewardTokenFunctions = ["mdg", "bcash", "mdo"]
+   const pendingRewardFunctions = ["pendingReward", "pendingBcash", "pendingMdo"]
    const MIDASGOLD_CHEF = new ethers.Contract(MIDASGOLD_CHEF_ADDR, MIDASGOLD_CHEF_ABI, App.provider);
 
    const rewardsPerWeek = [await MIDASGOLD_CHEF.bcashPerBlock() /1e18 * 604800 / 3,
@@ -100,7 +100,7 @@ async function getMidasGoldPoolInfo(app, chefContract, chefAddress, poolIndex, p
       allocPoints: poolInfo.allocPoint ?? 1,
       poolToken: null,
       userStaked : 0,
-      pendingRewardTokens : 0,
+      claimableRewards : 0,
       stakedToken : null,
       userLPStaked : 0,
       lastRewardBlock : poolInfo.lastRewardBlock
@@ -108,8 +108,10 @@ async function getMidasGoldPoolInfo(app, chefContract, chefAddress, poolIndex, p
   }
   const poolToken = await getBscToken(app, poolInfo.lpToken, chefAddress);
   const userInfo = await chefContract.userInfo(poolIndex, app.YOUR_ADDRESS);
-  let pendingRewardTokens = await Promise.all(pendingRewardFunctions.map(f => 
+  let pendingRewardTokensArray = await Promise.all(pendingRewardFunctions.map(f => 
     chefContract.callStatic[f](poolIndex, app.YOUR_ADDRESS)));
+  let claimableRewards = pendingRewardTokensArray.map(rt => 
+    rt / 10 ** 18);
   const staked = userInfo.amount / 10 ** poolToken.decimals;
   var stakedToken;
   var userLPStaked;
@@ -123,7 +125,7 @@ async function getMidasGoldPoolInfo(app, chefContract, chefAddress, poolIndex, p
       allocPoints: poolInfo.allocPoint ?? 1,
       poolToken: poolToken,
       userStaked : staked,
-      pendingRewardTokens : pendingRewardTokens / 10 ** 18,
+      claimableRewards : claimableRewards,
       stakedToken : stakedToken,
       userLPStaked : userLPStaked,
       lastRewardBlock : poolInfo.lastRewardBlock
@@ -151,7 +153,7 @@ function printMidasGoldPool(App, chefAbi, chefAddr, prices, tokens, poolInfo, po
 
     printMidasgoldContractLinks(App, chefAbi, chefAddr, poolIndex, poolInfo.address, pendingRewardFunctions,
       rewardTokenTickers, poolPrices.stakeTokenTicker, poolInfo.poolToken.unstaked, 
-    poolInfo.userStaked, poolInfo.pendingRewardTokens, fixedDecimals, claimFunction, rewardPrices, chain);
+    poolInfo.userStaked, poolInfo.claimableRewards, fixedDecimals, claimFunction, rewardPrices, chain);
 }
 
 function printMidasGoldApr(rewardTokenTickers, rewardPrices, poolRewardsPerWeek, 
@@ -164,7 +166,7 @@ function printMidasGoldApr(rewardTokenTickers, rewardPrices, poolRewardsPerWeek,
   let totalYearlyRewards = 0;
   for(let i = 0; i < poolRewardsPerWeek.length; i++){
     let usdPerWeek = poolRewardsPerWeek[i] * rewardPrices[i]
-    _print(`${rewardTokenTickers[i]} Per Week: ${poolRewardsPerWeek[i].toFixed(fixedDecimals)} ($${formatMoney(usdPerWeek)})`);
+    _print(`${rewardTokenTickers[i]} Per Week: ${poolRewardsPerWeek[i].toFixed(2)} ($${formatMoney(usdPerWeek)})`);
     totalUsdPerWeek += usdPerWeek;
   }
   var weeklyAPR = totalUsdPerWeek / staked_tvl * 100;
@@ -173,16 +175,16 @@ function printMidasGoldApr(rewardTokenTickers, rewardPrices, poolRewardsPerWeek,
   _print(`APR: Day ${dailyAPR.toFixed(2)}% Week ${weeklyAPR.toFixed(2)}% Year ${yearlyAPR.toFixed(2)}%`);
   var userStakedUsd = userStaked * poolTokenPrice;
   var userStakedPct = userStakedUsd / staked_tvl * 100;
-  _print(`You are staking ${userStaked.toFixed(fixedDecimals)} ${stakeTokenTicker} ($${formatMoney(userStakedUsd)}), ${userStakedPct.toFixed(2)}% of the pool.`);
+  _print(`You are staking ${userStaked.toFixed(2)} ${stakeTokenTicker} ($${formatMoney(userStakedUsd)}), ${userStakedPct.toFixed(2)}% of the pool.`);
   if (userStaked > 0) {
     for(let i = 0; i < rewardTokenTickers.length; i++){
       var userWeeklyRewards = userStakedPct * poolRewardsPerWeek[i] / 100;
       var userDailyRewards = userWeeklyRewards / 7;
       var userYearlyRewards = userWeeklyRewards * 52;
       _print(`Estimated ${rewardTokenTickers[i]} earnings:`
-  + ` Day ${userDailyRewards.toFixed(fixedDecimals)} ($${formatMoney(userDailyRewards*rewardPrices[i])})`
-  + ` Week ${userWeeklyRewards.toFixed(fixedDecimals)} ($${formatMoney(userWeeklyRewards*rewardPrices[i])})`
-  + ` Year ${userYearlyRewards.toFixed(fixedDecimals)} ($${formatMoney(userYearlyRewards*rewardPrices[i])})`);
+  + ` Day ${userDailyRewards.toFixed(2)} ($${formatMoney(userDailyRewards*rewardPrices[i])})`
+  + ` Week ${userWeeklyRewards.toFixed(2)} ($${formatMoney(userWeeklyRewards*rewardPrices[i])})`
+  + ` Year ${userYearlyRewards.toFixed(2)} ($${formatMoney(userYearlyRewards*rewardPrices[i])})`);
       totalDailyRewards += userDailyRewards * rewardPrices[i];
       totalWeeklyRewards += userWeeklyRewards * rewardPrices[i];
       totalYearlyRewards += userYearlyRewards * rewardPrices[i];
@@ -194,8 +196,8 @@ function printMidasGoldApr(rewardTokenTickers, rewardPrices, poolRewardsPerWeek,
   }
 }
 
-function printMidasgoldContractLinks(App, chefAbi, chefAddr, poolIndex, poolAddress, pendingRewardsFunctions,
-  rewardTokenTickers, stakeTokenTicker, unstaked, userStaked, pendingRewardTokens, fixedDecimals,
+function printMidasgoldContractLinks(App, chefAbi, chefAddr, poolIndex, poolAddress, pendingRewardFunctions,
+  rewardTokenTickers, stakeTokenTicker, unstaked, userStaked, claimableRewards, fixedDecimals,
   claimFunction, rewardTokenPrices) {
   fixedDecimals = fixedDecimals ?? 2;
   const approveAndStake = async function() {
@@ -205,17 +207,20 @@ function printMidasgoldContractLinks(App, chefAbi, chefAddr, poolIndex, poolAddr
   return midasgoldContract_unstake(chefAbi, chefAddr, poolIndex, App)
   }      
   const claim = async function() {
-  return midasgoldContract_claim(chefAbi, chefAddr, poolIndex, App, pendingRewardsFunctions, claimFunction)
+  return midasgoldContract_claim(chefAbi, chefAddr, poolIndex, App, pendingRewardFunctions, claimFunction)
   }
-  let totalToClaim = 0, rewardTokens = "";
-  for(let i = 0; i < rewardTokenPrices; i++){
-    totalToClaim += pendingRewardTokens[i] * rewardTokenPrice[i];
-    rewardTokens = rewardTokenTickers[i] + "-";
+  let rewards = "";
+  let totalRewardUsd = 0
+  for(let i = 0; i < claimableRewards.length; i++){
+    const rewardPrice = claimableRewards[i];
+    const rewardUsd = rewardTokenPrices[i] * rewardPrice;
+    totalRewardUsd += rewardUsd;
+    rewards += `${claimableRewards[i].toFixed(4)} ${rewardTokenTickers[i]} ($${formatMoney(rewardUsd)}) `;
   }
-  _print_link(`Stake ${unstaked.toFixed(fixedDecimals)} ${stakeTokenTicker}`, approveAndStake)
-  _print_link(`Unstake ${userStaked.toFixed(fixedDecimals)} ${stakeTokenTicker}`, unstake)
-  //_print_link(`Claim ${pendingRewardTokens.toFixed(fixedDecimals)} ${rewardTokenTicker} ($${formatMoney(pendingRewardTokens*rewardTokenPrice)})`, claim)
-  _print_link(`Claim ${totalToClaim.toFixed(fixedDecimals)} ${rewardTokens} ($${formatMoney(totalToClaim)})`, claim)
+  totalToClaim = `- Total $${formatMoney(totalRewardUsd)}`
+  _print_link(`Claim ${rewards} ${totalToClaim}`, claim)
+  _print_link(`Stake ${unstaked.toFixed(2)} ${stakeTokenTicker}`, approveAndStake)
+  _print_link(`Unstake ${userStaked.toFixed(2)} ${stakeTokenTicker}`, unstake)
   _print(`Staking or unstaking also claims rewards.`)
   _print(`\n`);
 }
