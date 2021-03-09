@@ -24,6 +24,7 @@ async function main() {
 
     const tokens = {};
     const prices = await getBscPrices();
+    prices["0x3F6ad3c13E3a6bB5655F09A95cA05B6FF4c3DCd6"] = { usd : 1 } //vDOLLAR
 
     await loadBscMidasgoldContract(App, tokens, prices, MIDASGOLD_CHEF, MIDASGOLD_CHEF_ADDR, MIDASGOLD_CHEF_ABI, rewardTokenTickers,
       rewardTokenFunctions, rewardsPerWeek, pendingRewardFunctions);

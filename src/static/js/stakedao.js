@@ -16,8 +16,11 @@ $(function() {
     const rewardsPerWeek = await SDT_CHEF.sdtPerBlock() / 1e18
         * 604800 / 13.5; //2x bonus
 
+    //using the CRV price for sdve-CRV
+    const extraPrices = await lookUpTokenPrices(["0xd533a949740bb3306d119cc777fa900ba034cd52"]);
+    extraPrices["0x478bBC744811eE8310B461514BDc29D03739084D"] = extraPrices["0xd533a949740bb3306d119cc777fa900ba034cd52"]
     await loadChefContract(App, SDT_CHEF, SDT_CHEF_ADDR, SDT_CHEF_ABI, rewardTokenTicker,
-        "sdt", null, rewardsPerWeek, "pendingSdt");
+        "sdt", null, rewardsPerWeek, "pendingSdt", extraPrices);
 
     hideLoading();  
   }
