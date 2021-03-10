@@ -1179,6 +1179,7 @@ function getUniPrices(tokens, prices, pool)
   else if (pool.symbol.includes("SLP")) stakeTokenTicker += " SLP";
   else if (pool.symbol.includes("Cake")) stakeTokenTicker += " Cake LP";
   else if (pool.name.includes("Value LP")) stakeTokenTicker += " Value LP";
+  else if (pool.symbol.includes("PGL")) stakeTokenTicker += " PGL"
   else stakeTokenTicker += " Uni LP";
   return {
       t0: t0,
@@ -1196,6 +1197,7 @@ function getUniPrices(tokens, prices, pool)
         pool.symbol.includes("LSLP") ? `https://info.linkswap.app/pair/${pool.address}` :
           pool.symbol.includes("SLP") ?  `http://sushiswap.fi/pair/${pool.address}` :
             pool.symbol.includes("Cake") ?  `https://pancakeswap.info/pair/${pool.address}` :  
+            pool.symbol.includes("PGL") ?  `https://info.pangolin.exchange/#/pair/${pool.address}` :  
             pool.name.includes("Value LP") ?  `https://info.vswap.fi/pool/${pool.address}` :  
             chain == "matic" ? `https://info.quickswap.exchange/pair/${pool.address}` :
           `http://uniswap.info/pair/${pool.address}`;
@@ -1217,13 +1219,19 @@ function getUniPrices(tokens, prices, pool)
           `https://bsc.valuedefi.io/#/remove/${t0address}/${t1address}`, 
           `https://bsc.valuedefi.io/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}` 
         ] :
-        pool.symbol.includes("SLP") ? 
-          [ `https://exchange.sushiswapclassic.org/#/add/${t0address}/${t1address}`,
-            `https://exchange.sushiswapclassic.org/#/remove/${t0address}/${t1address}`,
-            `https://exchange.sushiswapclassic.org/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}` ] :
-          [ `https://app.uniswap.org/#/add/${t0address}/${t1address}`,
-            `https://app.uniswap.org/#/remove/${t0address}/${t1address}`,
-            `https://app.uniswap.org/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}` ]
+        pool.symbol.includes("PGL") ? [
+          `https://app.pangolin.exchange/#/add/${t0address}/${t1address}`, 
+          `https://app.pangolin.exchange/#/remove/${t0address}/${t1address}`, 
+          `https://app.pangolin.exchange/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}` 
+        ] :
+        pool.symbol.includes("SLP") ? [ 
+          `https://exchange.sushiswapclassic.org/#/add/${t0address}/${t1address}`,
+          `https://exchange.sushiswapclassic.org/#/remove/${t0address}/${t1address}`,
+          `https://exchange.sushiswapclassic.org/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}` 
+        ] :
+        [ `https://app.uniswap.org/#/add/${t0address}/${t1address}`,
+          `https://app.uniswap.org/#/remove/${t0address}/${t1address}`,
+          `https://app.uniswap.org/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}` ]
         const helperHrefs = helperUrls.length == 0 ? "" :
           ` <a href='${helperUrls[0]}' target='_blank'>[+]</a> <a href='${helperUrls[1]}' target='_blank'>[-]</a> <a href='${helperUrls[2]}' target='_blank'>[<=>]</a>`
         _print(`<a href='${poolUrl}' target='_blank'>${stakeTokenTicker}</a>${helperHrefs} Price: $${formatMoney(price)} TVL: $${formatMoney(tvl)}`);
@@ -1422,6 +1430,9 @@ function getErc20Prices(prices, pool, chain="eth") {
       break;
     case "matic":
       poolUrl=`https://explorer-mainnet.maticvigil.com/address/${pool.address}`;
+      break;
+    case "avax":
+      poolUrl=`https://cchain.explorer.avax.network/address/${pool.address}`;
       break;
   }
   const name = `<a href='${poolUrl}' target='_blank'>${pool.symbol}</a>`;
@@ -1826,6 +1837,9 @@ async function printSynthetixPool(App, info, chain="eth") {
     switch (chain) {
       case "eth":
         _print(`<a target="_blank" href="https://etherscan.io/address/${info.stakingAddress}#code">Etherscan</a>`);
+        break;
+      case "avax":
+        _print(`<a target="_blank" href="https://cchain.explorer.avax.network/address/${info.stakingAddress}#code">Explorer</a>`);
         break;
       case "bsc":
         _print(`<a target="_blank" href="https://bscscan.com/address/${info.stakingAddress}#code">BSC Scan</a>`);
