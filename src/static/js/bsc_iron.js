@@ -11,15 +11,13 @@ const ironPools = [
   '0xe20096c1a803fbeaced072cb972f36dbfdf5ca82',
   '0xf8a5f67a4bef2ec2cf7bd973d63ad8fb64a74735',
   '0xf7610d0ee0fb20589d7e9241269b67c461908e4e',
-  '0x41bc69667ac3f764c718c2b666c514b439be9c2e',
-  '0x141cdc5319eb12ca2136a237f0affd7691412bcc'
 ]
 
 async function loadPoolInfo(vSwapTokenInfo, pool, STAKING_POOL, stakedToken, App) {
     const poolId = 0
     const decimal = pool.stakeToken.decimals
     const stakingTokenTicker = pool.stakeToken.symbol
-    const stakingTokenRatio = `${pool.poolTokens[0].ratio}% - ${pool.poolTokens[1].ratio}%`
+    const stakingTokenRatio = `${pool.poolTokens[0].ratio}% ${pool.poolTokens[0].symbol} - ${pool.poolTokens[1].ratio}% ${pool.poolTokens[1].symbol}`
     const stakedTokenBalance = await stakedToken.balanceOf(App.YOUR_ADDRESS)
     let pendingHarvest
     pendingHarvest = (await STAKING_POOL.pendingReward(poolId, App.YOUR_ADDRESS)) / 10 ** decimal
@@ -51,7 +49,7 @@ async function loadPoolInfo(vSwapTokenInfo, pool, STAKING_POOL, stakedToken, App
     let rewardToken = Object.keys(pool.rewards)[0]
 
     // DISPLAY POOL INFORMATION
-    _print(`Pool: ${stakingTokenTicker} | ${stakingTokenRatio}`)
+    _print(`Pool: ${stakingTokenRatio}`)
     _print(' ')
     _print(`Total Value Locked: $${formatMoney(pool.totalSupplyUSD)}`)
     _print(`${stakingTokenTicker} Price: $${parseFloat(tokenPrice).toFixed(2)}`)
