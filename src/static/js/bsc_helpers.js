@@ -236,7 +236,7 @@ async function loadBscSynthetixPoolInfo(App, tokens, prices, stakingAbi, staking
           tokens[address] = await getBscToken(App, address, stakingAddress);
       }
       if (!getParameterCaseInsensitive(tokens, rewardTokenAddress)) {
-          tokens[rewardTokenAddress] = await getBScToken(App, rewardTokenAddress, stakingAddress);
+          tokens[rewardTokenAddress] = await getBscToken(App, rewardTokenAddress, stakingAddress);
       }
       const rewardToken = getParameterCaseInsensitive(tokens, rewardTokenAddress);
   
