@@ -29,7 +29,6 @@ async function main() {
     const chefContract = chef ?? new ethers.Contract(chefAddress, chefAbi, App.provider);
   
     const poolCount = parseInt(await chefContract.poolLength(), 10);
-    const totalAllocPoints = await chefContract.totalAllocPoint();
     const poolInfos = await Promise.all([...Array(poolCount).keys()].map(async (x) =>
       await getBerryPoolInfo(App, chefContract, chefAddress, x, pendingRewardsFunction)));
       
@@ -38,8 +37,6 @@ async function main() {
   
     _print(`Showing incentivized pools only.\n`);
 
-    //const rewardToken = await getBscToken(App, rewardTokenAddress, chefAddress);  //auto thelei na tou dosw rewardTokenAddress pou einai sto poolInfo
-  
     var tokenAddresses = [].concat.apply([], poolInfos.filter(x => x.poolToken).map(x => x.poolToken.tokens));
   
     await Promise.all(tokenAddresses.map(async (address) => {
@@ -54,8 +51,8 @@ async function main() {
     let aprs = []
     for (i = 0; i < poolCount; i++) {
       if (poolPrices[i]) {
-        const apr = printChefPool(App, chefAbi, chefAddress, prices, tokens, poolInfos[i], i, poolPrices[i],
-          totalAllocPoints, poolInfos[i].rewardsPerWeek, rewardTokenTicker, poolInfos[i].rewardTokenAddress,
+        const apr = printBerryPool(App, chefAbi, chefAddress, prices, tokens, poolInfos[i], i, poolPrices[i],
+          poolInfos[i].rewardsPerWeek, rewardTokenTicker, poolInfos[i].rewardTokenAddress,
           pendingRewardsFunction, null, null, "bsc")
         aprs.push(apr);
       }
@@ -89,23 +86,35 @@ async function main() {
     const userInfo = await chefContract.userInfo(poolIndex, App.YOUR_ADDRESS);
     const pendingRewardTokens = await chefContract.callStatic[pendingRewardsFunction](poolIndex, App.YOUR_ADDRESS);
     const staked = userInfo.amount / 10 ** poolToken.decimals;
-    var stakedToken;
-    var userLPStaked;
-    if (poolInfo.stakedHoldableToken != null && 
-      poolInfo.stakedHoldableToken != "0x0000000000000000000000000000000000000000") {
-      stakedToken = await getBscToken(App, poolInfo.stakedHoldableToken, chefAddress);
-      userLPStaked = userInfo.stakedLPAmount / 10 ** poolToken.decimals
-    }
+    const bonusMultipler = poolInfo.tokenBonusMultipler;
     return {
         address: poolInfo.lpToken,
-        allocPoints: poolInfo.allocPoint ?? 1,
         poolToken: poolToken,
         userStaked : staked,
         pendingRewardTokens : pendingRewardTokens / 10 ** 18,
-        stakedToken : stakedToken,
-        userLPStaked : userLPStaked,
-        lastRewardBlock : poolInfo.lastRewardBlock,
         rewardTokenAddress : poolInfo.tokenAddr,
-        rewardsPerWeek : poolInfo.tokenPerBlock /1e18 * 604800 / 3
+        rewardsPerWeek : poolInfo.tokenPerBlock * bonusMultipler /1e18 * 604800 / 3
     };
   }
+  
+function printBerryPool(App, chefAbi, chefAddr, prices, tokens, poolInfo, poolIndex, poolPrices, 
+                       rewardsPerWeek, rewardTokenTicker, rewardTokenAddress,
+                       pendingRewardsFunction, fixedDecimals, claimFunction, chain="eth") {  
+  fixedDecimals = fixedDecimals ?? 2;
+  const sp = (poolInfo.stakedToken == null) ? null : getPoolPrices(tokens, prices, poolInfo.stakedToken);
+  var poolRewardsPerWeek = rewardsPerWeek;
+  if (poolRewardsPerWeek == 0) return;
+  const userStaked = poolInfo.userLPStaked ?? poolInfo.userStaked;
+  const rewardPrice = getParameterCaseInsensitive(prices, rewardTokenAddress)?.usd;
+  const staked_tvl = sp?.staked_tvl ?? poolPrices.staked_tvl;
+  poolPrices.print_price();
+  sp?.print_price();
+  const apr = printAPR(rewardTokenTicker, rewardPrice, poolRewardsPerWeek, poolPrices.stakeTokenTicker, 
+    staked_tvl, userStaked, poolPrices.price, fixedDecimals);
+  if (poolInfo.userLPStaked > 0) sp?.print_contained_price(userStaked);
+  if (poolInfo.userStaked > 0) poolPrices.print_contained_price(userStaked);
+  printChefContractLinks(App, chefAbi, chefAddr, poolIndex, poolInfo.address, pendingRewardsFunction,
+    rewardTokenTicker, poolPrices.stakeTokenTicker, poolInfo.poolToken.unstaked, 
+    poolInfo.userStaked, poolInfo.pendingRewardTokens, fixedDecimals, claimFunction, rewardPrice, chain);
+  return apr;
+}

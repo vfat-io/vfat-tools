@@ -18,9 +18,9 @@ async function main() {
    const pendingRewardFunctions = ["pendingReward", "pendingBcash", "pendingMdo"]
    const MIDASGOLD_CHEF = new ethers.Contract(MIDASGOLD_CHEF_ADDR, MIDASGOLD_CHEF_ABI, App.provider);
 
-   const rewardsPerWeek = [await MIDASGOLD_CHEF.bcashPerBlock() /1e18 * 604800 / 3,
-                           await MIDASGOLD_CHEF.mdoPerBlock() /1e18 * 604800 / 3,
-                           await MIDASGOLD_CHEF.rewardPerBlock() /1e18 * 604800 / 3 ]
+   const rewardsPerWeek = [await MIDASGOLD_CHEF.rewardPerBlock() /1e18 * 604800 / 3 ,
+                           await MIDASGOLD_CHEF.bcashPerBlock() /1e18 * 604800 / 3,
+                           await MIDASGOLD_CHEF.mdoPerBlock() /1e18 * 604800 / 3]
 
     const tokens = {};
     const prices = await getBscPrices();
