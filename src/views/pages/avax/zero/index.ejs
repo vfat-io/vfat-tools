@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include(`${partials}/head`); -%>
+
+<body>
+<%- include(`${partials}/header_main`); -%>
+<pre id="log">
+***************************** AVALANCHE *********************************
+    
+*************** 👨‍🌾 UNOFFICIAL ZERO FARMING CALCULATOR 👨‍🌾 ***********
+INFO  : https://app.zero.exchange
+*********************************************************************
+
+</pre>
+<div class="loader--1"></div>
+<%- include(`${partials}/scripts`, {scriptname: 'avax_zero'}); -%>
+</body>
+</html> 
