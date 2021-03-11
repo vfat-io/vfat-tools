@@ -49,10 +49,10 @@ async function main() {
         if (daoRewards > 0) {
             const bondedReturn = daoRewards * epochsPerDay / totalBonded * 100;
 
-            _print(`DAO APR: Day ${(bondedReturn).toFixed(2)}% Week ${(bondedReturn * 7).toFixed(2)}% Year ${(bondedReturn * 365).toFixed(2)}%`)
+            _print(`DAO APY: Day ${(bondedReturn).toFixed(2)}% Week ${(bondedReturn * 7).toFixed(2)}% Year ${(bondedReturn * 365).toFixed(2)}%`)
 
         } else {
-            _print(`DAO APR: Day 0% Week 0% Year 0%`)
+            _print(`DAO APY: Day 0% Week 0% Year 0%`)
         }
         // Calculate total rewards allocated to LP
         const lpRewards = totalNet * calcPrice * lpReward
@@ -84,10 +84,10 @@ async function main() {
             if (daoRewards > 0) {
                 const bondedReturn = daoRewards * epochsPerDay / totalBonded * 100;
 
-                _print(`DAO APR: Day ${(bondedReturn).toFixed(2)}% Week ${(bondedReturn * 7).toFixed(2)}% Year ${(bondedReturn * 365).toFixed(2)}%`)
+                _print(`DAO APY: Day ${(bondedReturn).toFixed(2)}% Week ${(bondedReturn * 7).toFixed(2)}% Year ${(bondedReturn * 365).toFixed(2)}%`)
 
             } else {
-                _print(`DAO APR: Day 0% Week 0% Year 0%`)
+                _print(`DAO APY: Day 0% Week 0% Year 0%`)
             }
             // Calculate total rewards allocated to LP
             const lpRewards = totalNet * calcPrice * lpReward
@@ -98,7 +98,7 @@ async function main() {
         
         }
         else {
-            _print(`DAO APR: Day 0% Week 0% Year 0%`)
+            _print(`DAO APY: Day 0% Week 0% Year 0%`)
             _print(`LP APR: Day 0% Week 0% Year 0%`)
         }
     }

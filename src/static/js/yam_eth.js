@@ -110,7 +110,7 @@ $(function() {
     _print(`\nHourly ROI in USD : ${toFixed(YFIWeeklyROI / 7 / 24, 4)}%`)
     _print(`Daily ROI in USD  : ${toFixed(YFIWeeklyROI / 7, 4)}%`)
     _print(`Weekly ROI in USD : ${toFixed(YFIWeeklyROI, 4)}%`)
-    _print(`APY (unstable)    : ${toFixed(YFIWeeklyROI * 52, 4)}% \n`)
+    _print(`APR (unstable)    : ${toFixed(YFIWeeklyROI * 52, 4)}% \n`)
   
     const timeTilHalving = nextHalving - Date.now() / 1000
   

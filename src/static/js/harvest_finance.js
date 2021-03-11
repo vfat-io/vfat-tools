@@ -55,7 +55,7 @@ async function loadPool(App, tokens, prices, stakingAddress, ps=false) {
 
   poolPrices.print_price();
 
-  printApy(rewardTokenTicker, rewardTokenPrice, weeklyRewards, 
+  printAPR(rewardTokenTicker, rewardTokenPrice, weeklyRewards, 
     stakingTokenTicker, staked_tvl, userStaked, stakeTokenPrice, null);
 
   const approveTENDAndStake = async function() {
@@ -137,7 +137,7 @@ async function main() {
 
   _print(`Initialized ${App.YOUR_ADDRESS}`);
   _print("Reading smart contracts...\n");
-  _print("The APY shown only contains the FARM rewards, the native APY from other protocols is not added.\n")
+  _print("The APR shown only contains the FARM rewards, the native APR from other protocols is not added.\n")
 
   var tokens = {};
   var prices = {};

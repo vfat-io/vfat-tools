@@ -106,7 +106,7 @@ function printAlcxContractLinks(App, alcxAbi, alcxAddr, poolIndex, poolAddress,
     return alcxContract_withdraw(alcxAbi, alcxAddr, poolIndex, App)
   }      
   const claim = async function() {
-    return alcxContract_claim(alcxAbi, alcxAddr, poolIndex, App)
+    return alcxContract_claim(alcxAbi, alcxAddr, poolIndex, App, pendingRewardsFunction)
   }    
   const etherscanUrl = `<a href='https://etherscan.io/address/${poolAddress}' target='_blank'>Staking Contract</a>`;
   _print(etherscanUrl);
@@ -121,7 +121,7 @@ function printAlcxPool(App, alcxAbi, alcxAddr, prices, poolInfo, poolIndex, pool
                        rewardTokenTicker, rewardTokenAddress) { 
   const rewardPrice = getParameterCaseInsensitive(prices, rewardTokenAddress)?.usd;
   poolPrices.print_price();
-  printApy(rewardTokenTicker, rewardPrice, poolInfo.rewardsPerWeek, poolPrices.stakeTokenTicker, 
+  printAPR(rewardTokenTicker, rewardPrice, poolInfo.rewardsPerWeek, poolPrices.stakeTokenTicker, 
     poolPrices.staked_tvl, poolInfo.userStaked, poolPrices.price, 2);
   if (poolInfo.userStaked > 0) poolPrices.print_contained_price(poolInfo.userStaked);
   printAlcxContractLinks(App, alcxAbi, alcxAddr, poolIndex, poolInfo.poolToken.address,
@@ -157,9 +157,11 @@ async function main() {
 
   _print("Finished reading smart contracts.\n");
     
-  for (i = 2; i > -1; i--) {
+  for (i = 0; i < poolCount; i++) {
+    if (i != 3) { //TIME pool
       printAlcxPool(App, ALCX_POOL_ABI, ALCX_POOL_ADDRESS, prices, 
         poolInfos[i], i, poolPrices[i], rewardTokenTicker, rewardTokenAddress);
+    }
   }
   
   hideLoading();  

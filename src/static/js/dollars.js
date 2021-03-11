@@ -689,7 +689,8 @@ const Dollars =
             TreasuryRatio : 0.0225,
             SupplyChangeLimit : 0.015,
             CouponSupplyChangeLimit : 0.06,
-            GrowthThreshold : 1.0
+            GrowthThreshold : 1.0,
+            BaseTokenDecimals: 18
         }
     }
 }
