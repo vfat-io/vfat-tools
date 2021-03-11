@@ -1827,10 +1827,10 @@ async function printSynthetixPool(App, info, chain="eth") {
       case "eth":
         _print(`<a target="_blank" href="https://etherscan.io/address/${info.stakingAddress}#code">Etherscan</a>`);
         break;
-      case "heco":
+      case "bsc":
         _print(`<a target="_blank" href="https://bscscan.com/address/${info.stakingAddress}#code">BSC Scan</a>`);
         break;
-      case "bsc":
+      case "heco":
         _print(`<a target="_blank" href="https://scan.hecochain.com/address/${info.stakingAddress}#code">Heco Scan</a>`);
         break;
       case "matic":
