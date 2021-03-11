@@ -17,17 +17,8 @@ async function main() {
     _print("Reading smart contracts...\n");
 
     var tokens = {};
-    var prices = await lookUpTokenPrices(["0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"]); //WETH
+    var prices = {};
     
-    const UNI_POOL_ADDRESS = "0x8bd78ad73ee85dfc1395a0ce3e90ef061ae6017c"
-    const uni = await getToken(App, UNI_POOL_ADDRESS, App.YOUR_ADDRESS);
-    for (const address of uni.tokens) {
-        tokens[address] = await getToken(App, address, UNI_POOL_ADDRESS);
-    }
-    const pp = getPoolPrices(tokens, prices, uni);
-    pp.print_price();
-    _print('');
-  
     const p = await loadMultipleSynthetixPools(App, tokens, prices, Pools);
 
     _print_bold(`Total staked: $${formatMoney(p.staked_tvl)}`)
