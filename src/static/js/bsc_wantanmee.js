@@ -54,7 +54,7 @@ async function main() {
     "mee", null, rewardsWantanmeePerWeek, "pendingReward", null, 7);
   
   await loadChefContract(App, tokens, prices, WANTANMEES_CHEF, WANTANMEES_CHEF_ADDR, WANTANMEES_CHEF_ABI, rewardWantanmeeShareTokenTicker,
-    "mes", null, rewardsWantanmeeSharePerWeek, "pendingReward", null, 2);
+    "mes", null, rewardsWantanmeeSharePerWeek, "pendingReward", null, 3);
 
  let br = await loadBoardroom(App, prices, WANTANMEES_BOARDROOM_ADDR, WANTANMEE_BOARDROOM_ORACLE_ADDR, lptAddress, 
    rewardTokenAddress, stakeTicker, rewardTicker, epochsPerDay, maxSupplyIncrease, decimals, ratio, targetMantissa)
