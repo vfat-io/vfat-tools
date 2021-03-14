@@ -96,18 +96,21 @@ async function loadSynthetixRoomPoolInfo(App, tokens, prices, stakingAbi, stakin
 
     const stakeTokenTicker = poolPrices.stakeTokenTicker;
 
+    const currentBlock = await App.provider.getBlockNumber();
+
     const stakeTokenPrice =
         prices[stakeTokenAddress]?.usd ?? getParameterCaseInsensitive(prices, stakeTokenAddress)?.usd;
     const rewardTokenPrice = getParameterCaseInsensitive(prices, rewardTokenAddress)?.usd;
 
-    const rewardsInfo = await STAKING_POOL.incvRewardInfo();
+    const calls = [STAKING_MULTI.incvFinishBlock(), STAKING_MULTI.balanceOf(App.YOUR_ADDRESS),
+      STAKING_MULTI.incvRewardInfo(), STAKING_MULTI.rewards(App.YOUR_ADDRESS)]
+    const [periodFinish, balance, rewardsInfo, rewards] = await App.ethcallProvider.all(calls);
 
     const rewardRate = rewardsInfo.incvRewardPerBlock / 13.5;
 
-    const calls = [STAKING_MULTI.incvFinishBlock(), STAKING_MULTI.balanceOf(App.YOUR_ADDRESS), 
-      STAKING_MULTI.rewards(App.YOUR_ADDRESS)]  //edw to rewards exei 2 values mesa na dw poio thelw
-    const [periodFinish, balance, earned_] = await App.ethcallProvider.all(calls);
-    const weeklyRewards = (Date.now() / 1000 > periodFinish) ? 0 : rewardRate / 1e18 * 604800;
+    const weeklyRewards = (currentBlock > periodFinish) ? 0 : rewardRate / 1e18 * 604800;
+
+    const earned_ = rewards.incvReward;
 
     const usdPerWeek = weeklyRewards * rewardTokenPrice;
 
