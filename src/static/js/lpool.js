@@ -93,8 +93,6 @@
   }));
 
   const poolPrices = poolInfos.map(poolInfo => poolInfo.poolToken ? getPoolPrices(tokens, prices, poolInfo.poolToken) : undefined);
-
-  _print("Finished reading smart contracts.\n");
     
   let aprs = []
   for (i = 0; i < poolCount; i++) {

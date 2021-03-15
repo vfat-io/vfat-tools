@@ -32,6 +32,10 @@ async function main() {
   if (p.totalUserStaked > 0) {
     _print(`You are staking a total of $${formatMoney(p.totalUserStaked)} at an APR of ${(p.totalAPR * 100).toFixed(2)}%\n`);
   }
-  
+
+  _print_bold(`\n*** Participant Rewards ***`)
+  _print(`By validating your profile you will earn 1 UBI/hr.`)
+  const dailyUBI = getParameterCaseInsensitive(prices, "0xDd1Ad9A21Ce722C151A836373baBe42c868cE9a4").usd * 24
+  _print(`Estimated earnings: Day $${formatMoney(dailyUBI)}, Week $${formatMoney(dailyUBI*7)}, Year $${formatMoney(dailyUBI*365)}`)
   hideLoading();
 }
