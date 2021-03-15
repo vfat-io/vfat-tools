@@ -311,6 +311,9 @@ const hrcTokens = [
   { "id": "ethereum","symbol": "ETH", "contract": "0xb55569893b397324c0d048c9709f40c23445540e" },
   { "id": "bitcoin","symbol": "HBTC", "contract": "0x66a79d23e58475d2738179ca52cd0b41d73f0bea" },
   { "id": "ethereum","symbol": "HETH", "contract": "0x64FF637fB478863B7468bc97D30a5bF3A428a1fD" },
+  { "id": "hoo-token","symbol": "HOO", "contract": "0xE1d1F66215998786110Ba0102ef558b22224C016" },
+  { "id": "gene","symbol": "GENE", "contract": "0x2CFa849e8506910b2564aFE5BdEF33Ba66C730Aa" },
+  { "id": "husd","symbol": "HUSD", "contract": "0x0298c2b32eaE4da002a15f36fdf7615BEa3DA047" }
 ]
 
 async function getHecoPrices() {
