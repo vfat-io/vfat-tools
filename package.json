@@ -4,6 +4,7 @@
   "description": "Boilerplate for a Static website using EJS and SASS",
   "main": "index.js",
   "scripts": {
+    "cp": "npx cpx 'src/static/js/vsd.js' dist/js -w",
     "start": "browser-sync start -s 'dist' -f 'dist' --no-open --no-notify --reload-debounce 50",
     "setup-for-dev": "NODE_ENV=development npm-run-all --sequential rmprod copy-to-dist build:html",
     "dev": "npm run setup-for-dev && npm-run-all --parallel start watch:*",
@@ -51,16 +52,18 @@
     "prettier": "^1.19.1",
     "rimraf": "^2.7.1",
     "webpack": "^4.42.0",
-    "webpack-cli": "^3.3.11"
+    "webpack-cli": "^3.3.11",
+    "cpx": "^1.5.0"
   },
   "dependencies": {
     "asciichart": "^1.5.24",
     "clear": "^0.1.0",
     "cli-color": "^2.0.0",
     "console-table-printer": "^2.7.3",
+    "core-js": "^3.9.1",
     "diff": "^4.0.2",
     "dompurify": "^2.0.8",
-    "ethcall": "^3.0.0",
+    "ethcall": "~3.0.0",
     "ethers": "^5.0.8",
     "fuse.js": "^6.4.1",
     "jquery": "^3.5.1",
@@ -68,7 +71,8 @@
     "lodash.debounce": "^4.0.8",
     "lodash.throttle": "^4.1.1",
     "numbro": "^2.3.2",
-    "picturefill": "^3.0.3"
+    "picturefill": "^3.0.3",
+    "regenerator-runtime": "^0.13.7"
   },
   "browserslist": [
     "last 1 version",
