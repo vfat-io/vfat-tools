@@ -58,7 +58,7 @@ $(function() {
       tokens[address] = await getToken(App, address, chefAddress);
   }));
 
-  const poolPrices = poolInfos.map(poolInfo => poolInfo?.poolToken ? getBaoPoolPrices(tokens, prices, poolInfo.poolToken) : undefined);
+  const poolPrices = poolInfos.map(poolInfo => poolInfo?.poolToken ? getPoolPrices(tokens, prices, poolInfo.poolToken) : undefined);
 
   _print("Finished reading smart contracts.\n");
     
@@ -103,30 +103,12 @@ async function getBaoPoolInfo(app, chefContract, chefAddress, poolIndex, pending
   const userInfo = await chefContract.userInfo(poolIndex, app.YOUR_ADDRESS);
   const pendingRewardTokens = await chefContract.callStatic[pendingRewardsFunction](poolIndex, app.YOUR_ADDRESS);
   const staked = userInfo.amount / 10 ** poolToken.decimals;
-  var stakedToken;
-  var userLPStaked;
-  if (poolInfo.stakedHoldableToken != null && 
-    poolInfo.stakedHoldableToken != "0x0000000000000000000000000000000000000000") {
-    stakedToken = await getToken(app, poolInfo.stakedHoldableToken, chefAddress);
-    userLPStaked = userInfo.stakedLPAmount / 10 ** poolToken.decimals
-  }
   return {
       address: poolInfo.lpToken,
       allocPoints: poolInfo.allocPoint ?? 1,
       poolToken: poolToken,
       userStaked : staked,
       pendingRewardTokens : pendingRewardTokens / 10 ** 18,
-      stakedToken : stakedToken,
-      userLPStaked : userLPStaked,
       lastRewardBlock : poolInfo.lastRewardBlock
   };
-}
-
-function getBaoPoolPrices(tokens, prices, pool, chain = "eth") {
-  if (pool.w0 != null) return getValuePrices(tokens, prices, pool);
-  if (pool.poolTokens != null) return getBalancerPrices(tokens, prices, pool);
-  if (pool.token0 != null) return getUniPrices(tokens, prices, pool);
-  if (pool.virtualPrice != null) return getCurvePrices(prices, pool);
-  if (pool.token != null) return getWrapPrices(tokens, prices, pool);
-  return getErc20Prices(prices, pool, chain);
 }
