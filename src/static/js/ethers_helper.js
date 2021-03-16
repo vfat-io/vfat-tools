@@ -1884,7 +1884,7 @@ async function printSynthetixPool(App, info, chain="eth") {
     _print_link(`Claim ${info.earned.toFixed(6)} ${info.rewardTokenTicker} ($${formatMoney(info.earned*info.rewardTokenPrice)})`, claim)
     _print_link(`Revoke (set approval to 0)`, revoke)
     _print_link(`Exit`, exit)
-    _print(`\n`);
+    _print("");
 
     return {
         staked_tvl: info.poolPrices.staked_tvl,
