@@ -92,29 +92,21 @@ async function main() {
   }
 
   async function getMeerkatPoolInfo(App, chefContract, chefAddress, poolIndex, pendingRewardsFunction) {  
+    const rewardPerBlock = await chefContract.getNewRewardPerBlock(poolIndex);
     const poolInfo = await chefContract.poolInfo(poolIndex);
     const rewardTokenAddress = poolInfo.rewardToken;
     const rewardToken = await getBscToken(App, rewardTokenAddress, chefAddress);
-    const rewardsPerWeek = poolInfo.rewardPerBlock / 10 ** rewardToken.decimals * 604800 / 3
+    const rewardsPerWeek = rewardPerBlock / 10 ** rewardToken.decimals * 604800 / 3
     const poolToken = await getBscToken(App, poolInfo.lpToken, chefAddress);
     const userInfo = await chefContract.userInfo(poolIndex, App.YOUR_ADDRESS);
     const pendingRewardTokens = await chefContract.callStatic[pendingRewardsFunction](poolIndex, App.YOUR_ADDRESS);
     const staked = userInfo.amount / 10 ** poolToken.decimals;
-    var stakedToken;
-    var userLPStaked;
-    if (poolInfo.stakedHoldableToken != null && 
-      poolInfo.stakedHoldableToken != "0x0000000000000000000000000000000000000000") {
-      stakedToken = await getBscToken(App, poolInfo.stakedHoldableToken, chefAddress);
-      userLPStaked = userInfo.stakedLPAmount / 10 ** poolToken.decimals
-    }
     return {
         address: poolInfo.lpToken,
         allocPoints: poolInfo.allocPoint ?? 1,
         poolToken: poolToken,
         userStaked : staked,
         pendingRewardTokens : pendingRewardTokens / 10 ** 18,
-        stakedToken : stakedToken,
-        userLPStaked : userLPStaked,
         lastRewardBlock : poolInfo.lastRewardBlock,
         rewardsPerWeek: rewardsPerWeek,
         rewardTokenAddress: rewardTokenAddress
