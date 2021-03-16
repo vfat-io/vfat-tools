@@ -14,8 +14,119 @@ $(function() {
     const BAO_CHEF = new ethers.Contract(BAO_CHEF_ADDR, BAO_CHEF_ABI, App.provider);
     const rewardsPerWeek = await BAO_CHEF.REWARD_PER_BLOCK() / 1e18 * 604800 / 13.5;
 
-    await loadChefContract(App, BAO_CHEF, BAO_CHEF_ADDR, BAO_CHEF_ABI, 
+    await loadChefBaoContract(App, BAO_CHEF, BAO_CHEF_ADDR, BAO_CHEF_ABI, 
         "BAO", "Bao", null, rewardsPerWeek, "pendingReward");
 
     hideLoading();  
   }
+
+  async function loadChefBaoContract(App, chef, chefAddress, chefAbi, rewardTokenTicker,
+    rewardTokenFunction, rewardsPerBlockFunction, rewardsPerWeekFixed, pendingRewardsFunction, extraPrices) {
+  const chefContract = chef ?? new ethers.Contract(chefAddress, chefAbi, App.provider);
+
+  const poolCount = parseInt(await chefContract.poolLength(), 10);
+  const totalAllocPoints = await chefContract.totalAllocPoint();
+
+  _print(`<a href='https://etherscan.io/address/${chefAddress}' target='_blank'>Staking Contract</a>`);
+  _print(`Found ${poolCount} pools.\n`)
+
+  _print(`Showing incentivized pools only.\n`);
+
+  var tokens = {};
+
+  const rewardTokenAddress = await chefContract.callStatic[rewardTokenFunction]();
+  const rewardToken = await getToken(App, rewardTokenAddress, chefAddress);
+  const rewardsPerWeek = rewardsPerWeekFixed ?? 
+    await chefContract.callStatic[rewardsPerBlockFunction]() 
+    / 10 ** rewardToken.decimals * 604800 / 13.5
+
+  const poolInfos = await Promise.all([...Array(poolCount).keys()].map(async (x) =>
+    await getBaoPoolInfo(App, chefContract, chefAddress, x, pendingRewardsFunction)));
+    //have to add an if here or in getBaoPoolInfo
+
+  var tokenAddresses = [].concat.apply([], poolInfos.filter(x => x.poolToken).map(x => x.poolToken.tokens));
+  var prices = await lookUpTokenPrices(tokenAddresses);
+  if (extraPrices) {
+    for (const [k,v] of Object.entries(extraPrices)) {
+      if (v.usd) {
+        prices[k] = v
+      }
+    }
+  }
+  //prices["0x194ebd173f6cdace046c53eacce9b953f28411d1"] = { usd : 1.22 } //"temporary" solution
+  
+  await Promise.all(tokenAddresses.map(async (address) => {
+      tokens[address] = await getToken(App, address, chefAddress);
+  }));
+
+  const poolPrices = poolInfos.map(poolInfo => poolInfo.poolToken ? getPoolPrices(tokens, prices, poolInfo.poolToken) : undefined);
+
+  _print("Finished reading smart contracts.\n");
+    
+  let aprs = []
+  for (i = 0; i < poolCount; i++) {
+    if (poolPrices[i]) {
+      const apr = printChefPool(App, chefAbi, chefAddress, prices, tokens, poolInfos[i], i, poolPrices[i],
+        totalAllocPoints, rewardsPerWeek, rewardTokenTicker, rewardTokenAddress,
+        pendingRewardsFunction)
+      aprs.push(apr);
+    }
+  }
+  let totalUserStaked=0, totalStaked=0, averageApr=0;
+  for (const a of aprs) {
+    if (a && !isNaN(a.totalStakedUsd)) {
+      totalStaked += a.totalStakedUsd;
+    }
+    if (a && a.userStakedUsd > 0) {
+      totalUserStaked += a.userStakedUsd;
+      averageApr += a.userStakedUsd * a.yearlyAPR / 100;
+    }
+  }
+  averageApr = averageApr / totalUserStaked;
+  _print_bold(`Total Staked: $${formatMoney(totalStaked)}`);
+  if (totalUserStaked > 0) {
+    _print_bold(`\nYou are staking a total of $${formatMoney(totalUserStaked)} at an average APR of ${(averageApr * 100).toFixed(2)}%`)
+    _print(`Estimated earnings:`
+        + ` Day $${formatMoney(totalUserStaked*averageApr/365)}`
+        + ` Week $${formatMoney(totalUserStaked*averageApr/52)}`
+        + ` Year $${formatMoney(totalUserStaked*averageApr)}\n`);
+  }
+  return { prices, totalUserStaked, totalStaked, averageApr }
+}
+
+async function getBaoPoolInfo(app, chefContract, chefAddress, poolIndex, pendingRewardsFunction) {  
+  const poolInfo = await chefContract.poolInfo(poolIndex);
+  if (poolInfo.allocPoint == 0) {
+    return {
+      address: poolInfo.lpToken,
+      allocPoints: poolInfo.allocPoint ?? 1,
+      poolToken: null,
+      userStaked : 0,
+      pendingRewardTokens : 0,
+      stakedToken : null,
+      userLPStaked : 0,
+      lastRewardBlock : poolInfo.lastRewardBlock
+    };
+  }
+  const poolToken = await getToken(app, poolInfo.lpToken, chefAddress);
+  const userInfo = await chefContract.userInfo(poolIndex, app.YOUR_ADDRESS);
+  const pendingRewardTokens = await chefContract.callStatic[pendingRewardsFunction](poolIndex, app.YOUR_ADDRESS);
+  const staked = userInfo.amount / 10 ** poolToken.decimals;
+  var stakedToken;
+  var userLPStaked;
+  if (poolInfo.stakedHoldableToken != null && 
+    poolInfo.stakedHoldableToken != "0x0000000000000000000000000000000000000000") {
+    stakedToken = await getToken(app, poolInfo.stakedHoldableToken, chefAddress);
+    userLPStaked = userInfo.stakedLPAmount / 10 ** poolToken.decimals
+  }
+  return {
+      address: poolInfo.lpToken,
+      allocPoints: poolInfo.allocPoint ?? 1,
+      poolToken: poolToken,
+      userStaked : staked,
+      pendingRewardTokens : pendingRewardTokens / 10 ** 18,
+      stakedToken : stakedToken,
+      userLPStaked : userLPStaked,
+      lastRewardBlock : poolInfo.lastRewardBlock
+  };
+}
