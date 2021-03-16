@@ -47,9 +47,8 @@ async function main() {
   const poolInfos = await Promise.all([...Array(poolCount).keys()].map(async (x) =>
     await getBellaPoolInfo(App, chefContract, chefAddress, x, pendingRewardsFunction)));
   
-  var tokenAddresses = [].concat.apply([], poolInfos.filter(x => x.poolToken).map(x => x.poolToken.tokens));
+  var tokenAddresses = [].concat.apply(["0xa91ac63d040deb1b7a5e4d4134ad23eb0ba07e14"], poolInfos.filter(x => x.poolToken).map(x => x.poolToken.tokens));
   var prices = await lookUpTokenPrices(tokenAddresses);
-  //prices["0x194ebd173f6cdace046c53eacce9b953f28411d1"] = { usd : 1.22 } //"temporary" solution
   
   await Promise.all(tokenAddresses.map(async (address) => {
       tokens[address] = await getToken(App, address, chefAddress);
