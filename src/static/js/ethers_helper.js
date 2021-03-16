@@ -723,6 +723,25 @@ const chefContract_claim = async function(chefAbi, chefAddress, poolIndex, App,
   }
 }
 
+const chefContract_emergencyWithdraw = async function(chefAbi, chefAddress, poolIndex, App) {
+  const signer = App.provider.getSigner()
+
+  const CHEF_CONTRACT = new ethers.Contract(chefAddress, chefAbi, signer)
+
+  const currentStakedAmount = (await CHEF_CONTRACT.userInfo(poolIndex, App.YOUR_ADDRESS)).amount
+
+  if (currentStakedAmount > 0) {
+    showLoading()
+    CHEF_CONTRACT.emergencyWithdraw(poolIndex, {gasLimit: 500000})
+      .then(function(t) {
+        return App.provider.waitForTransaction(t.hash)
+      })
+      .catch(function() {
+        hideLoading()
+      })
+  }
+}
+
 async function getUniPool(app, pool, poolAddress, stakingAddress) {
   const calls = [
     pool.decimals(), pool.token0(), pool.token1(), pool.symbol(), pool.name(),
@@ -1023,6 +1042,7 @@ async function getToken(app, tokenAddress, stakingAddress) {
     return getErc20(app, null, tokenAddress, "")
   }
   const type = window.localStorage.getItem(tokenAddress);
+  //getTokenWeights
   if (type) return getStoredToken(app, tokenAddress, stakingAddress, type);
   try {
     const pool = new ethcall.Contract(tokenAddress, UNI_ABI);
@@ -1177,6 +1197,8 @@ function getUniPrices(tokens, prices, pool)
   else if (pool.symbol.includes("LSLP")) stakeTokenTicker += " LSLP";
   else if (pool.symbol.includes("SLP")) stakeTokenTicker += " SLP";
   else if (pool.symbol.includes("Cake")) stakeTokenTicker += " Cake LP";
+  else if (pool.name.includes("Value LP")) stakeTokenTicker += " Value LP";
+  else if (pool.symbol.includes("PGL")) stakeTokenTicker += " PGL"
   else stakeTokenTicker += " Uni LP";
   return {
       t0: t0,
@@ -1194,6 +1216,8 @@ function getUniPrices(tokens, prices, pool)
         pool.symbol.includes("LSLP") ? `https://info.linkswap.app/pair/${pool.address}` :
           pool.symbol.includes("SLP") ?  `http://sushiswap.fi/pair/${pool.address}` :
             pool.symbol.includes("Cake") ?  `https://pancakeswap.info/pair/${pool.address}` :  
+            pool.symbol.includes("PGL") ?  `https://info.pangolin.exchange/#/pair/${pool.address}` :  
+            pool.name.includes("Value LP") ?  `https://info.vswap.fi/pool/${pool.address}` :  
             chain == "matic" ? `https://info.quickswap.exchange/pair/${pool.address}` :
           `http://uniswap.info/pair/${pool.address}`;
         const t0address = t0.symbol == "ETH" ? "ETH" : t0.address;
@@ -1204,18 +1228,87 @@ function getUniPrices(tokens, prices, pool)
           `https://linkswap.app/#/remove/${t0address}/${t1address}`,
           `https://linkswap.app/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
         ] :
-        pool.symbol.includes("Cake-LP") ? [
+        pool.symbol.includes("Cake") ? [
           `https://exchange.pancakeswap.finance/#/add/${t0address}/${t1address}`, 
           `https://exchange.pancakeswap.finance/#/remove/${t0address}/${t1address}`, 
           `https://exchange.pancakeswap.finance/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}` 
         ] :
-        pool.symbol.includes("SLP") ? 
-          [ `https://exchange.sushiswapclassic.org/#/add/${t0address}/${t1address}`,
-            `https://exchange.sushiswapclassic.org/#/remove/${t0address}/${t1address}`,
-            `https://exchange.sushiswapclassic.org/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}` ] :
-          [ `https://app.uniswap.org/#/add/${t0address}/${t1address}`,
-            `https://app.uniswap.org/#/remove/${t0address}/${t1address}`,
-            `https://app.uniswap.org/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}` ]
+        pool.name.includes("Value LP") ? [
+          `https://bsc.valuedefi.io/#/add/${t0address}/${t1address}`, 
+          `https://bsc.valuedefi.io/#/remove/${t0address}/${t1address}`, 
+          `https://bsc.valuedefi.io/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}` 
+        ] :
+        pool.symbol.includes("PGL") ? [
+          `https://app.pangolin.exchange/#/add/${t0address}/${t1address}`, 
+          `https://app.pangolin.exchange/#/remove/${t0address}/${t1address}`, 
+          `https://app.pangolin.exchange/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}` 
+        ] :
+        pool.symbol.includes("SLP") ? [ 
+          `https://exchange.sushiswapclassic.org/#/add/${t0address}/${t1address}`,
+          `https://exchange.sushiswapclassic.org/#/remove/${t0address}/${t1address}`,
+          `https://exchange.sushiswapclassic.org/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}` 
+        ] :
+        [ `https://app.uniswap.org/#/add/${t0address}/${t1address}`,
+          `https://app.uniswap.org/#/remove/${t0address}/${t1address}`,
+          `https://app.uniswap.org/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}` ]
+        const helperHrefs = helperUrls.length == 0 ? "" :
+          ` <a href='${helperUrls[0]}' target='_blank'>[+]</a> <a href='${helperUrls[1]}' target='_blank'>[-]</a> <a href='${helperUrls[2]}' target='_blank'>[<=>]</a>`
+        _print(`<a href='${poolUrl}' target='_blank'>${stakeTokenTicker}</a>${helperHrefs} Price: $${formatMoney(price)} TVL: $${formatMoney(tvl)}`);
+        _print(`${t0.symbol} Price: $${formatMoney(p0)}`)
+        _print(`${t1.symbol} Price: $${formatMoney(p1)}`)
+        _print(`Staked: ${pool.staked.toFixed(4)} ${pool.symbol} ($${formatMoney(staked_tvl)})`);
+      },
+      print_contained_price(userStaked) {
+        var userPct = userStaked / pool.totalSupply;
+        var q0user = userPct * q0;
+        var q1user = userPct * q1;
+        _print(`Your LP tokens comprise of ${q0user.toFixed(4)} ${t0.symbol} + ${q1user.toFixed(4)} ${t1.symbol}`);
+      }
+  }
+}
+
+function getValuePrices(tokens, prices, pool)
+{
+  var t0 = getParameterCaseInsensitive(tokens,pool.token0);
+  var p0 = getParameterCaseInsensitive(prices,pool.token0)?.usd;
+  var t1 = getParameterCaseInsensitive(tokens,pool.token1);
+  var p1 = getParameterCaseInsensitive(prices,pool.token1)?.usd;
+  if (p0 == null && p1 == null) {
+      return undefined;
+  }
+  var q0 = pool.q0 / 10 ** t0.decimals;
+  var q1 = pool.q1 / 10 ** t1.decimals;
+  if (p0 == null)
+  {
+      p0 = q1 * p1 / pool.w1 / q0 * pool.w0;
+      prices[pool.token0] = { usd : p0 };
+  }
+  if (p1 == null)
+  {
+      p1 = q0 * p0 / pool.w0 / q1 * pool.w1;
+      prices[pool.token1] = { usd : p1 };
+  }
+  var tvl = q0 * p0 + q1 * p1;
+  var price = tvl / pool.totalSupply;
+  prices[pool.address] = { usd : price };
+  var staked_tvl = pool.staked * price;
+  let stakeTokenTicker = `[${t0.symbol} ${pool.w0}%]-[${t1.symbol} ${pool.w1}%] Value-LP`;
+  return {
+      t0, p0, q0, w0 : pool.w0,
+      t1, p1, q1, w1 : pool.w1,
+      price: price,
+      tvl : tvl,
+      staked_tvl : staked_tvl,
+      stakeTokenTicker : stakeTokenTicker,
+      print_price() {
+        const poolUrl = `https://info.vswap.fi/pool/${pool.address}` 
+        const t0address = t0.address;
+        const t1address =  t1.address;
+        const helperUrls = [
+          `https://bsc.valuedefi.io/#/add/${pool.address}`, 
+          `https://bsc.valuedefi.io/#/remove/${pool.address}`, 
+          `https://bsc.valuedefi.io/#/vswap?inputCurrency=${t0address}&outputCurrency=${t1address}` 
+        ]
         const helperHrefs = helperUrls.length == 0 ? "" :
           ` <a href='${helperUrls[0]}' target='_blank'>[+]</a> <a href='${helperUrls[1]}' target='_blank'>[-]</a> <a href='${helperUrls[2]}' target='_blank'>[<=>]</a>`
         _print(`<a href='${poolUrl}' target='_blank'>${stakeTokenTicker}</a>${helperHrefs} Price: $${formatMoney(price)} TVL: $${formatMoney(tvl)}`);
@@ -1357,6 +1450,9 @@ function getErc20Prices(prices, pool, chain="eth") {
     case "matic":
       poolUrl=`https://explorer-mainnet.maticvigil.com/address/${pool.address}`;
       break;
+    case "avax":
+      poolUrl=`https://cchain.explorer.avax.network/address/${pool.address}`;
+      break;
   }
   const name = `<a href='${poolUrl}' target='_blank'>${pool.symbol}</a>`;
   return {
@@ -1392,6 +1488,7 @@ function getCurvePrices(prices, pool) {
 }
 
 function getPoolPrices(tokens, prices, pool, chain = "eth") {
+  if (pool.w0 != null) return getValuePrices(tokens, prices, pool);
   if (pool.poolTokens != null) return getBalancerPrices(tokens, prices, pool);
   if (pool.token0 != null) return getUniPrices(tokens, prices, pool);
   if (pool.virtualPrice != null) return getCurvePrices(prices, pool);
@@ -1436,16 +1533,16 @@ async function getPoolInfo(app, chefContract, chefAddress, poolIndex, pendingRew
   };
 }
 
-function printApy(rewardTokenTicker, rewardPrice, poolRewardsPerWeek, 
+function printAPR(rewardTokenTicker, rewardPrice, poolRewardsPerWeek, 
                   stakeTokenTicker, staked_tvl, userStaked, poolTokenPrice,
                   fixedDecimals) {
   var usdPerWeek = poolRewardsPerWeek * rewardPrice;
   fixedDecimals = fixedDecimals ?? 2;
   _print(`${rewardTokenTicker} Per Week: ${poolRewardsPerWeek.toFixed(fixedDecimals)} ($${formatMoney(usdPerWeek)})`);
-  var weeklyAPY = usdPerWeek / staked_tvl * 100;
-  var dailyAPY = weeklyAPY / 7;
-  var yearlyAPY = weeklyAPY * 52;
-  _print(`APY: Day ${dailyAPY.toFixed(2)}% Week ${weeklyAPY.toFixed(2)}% Year ${yearlyAPY.toFixed(2)}%`);
+  var weeklyAPR = usdPerWeek / staked_tvl * 100;
+  var dailyAPR = weeklyAPR / 7;
+  var yearlyAPR = weeklyAPR * 52;
+  _print(`APR: Day ${dailyAPR.toFixed(2)}% Week ${weeklyAPR.toFixed(2)}% Year ${yearlyAPR.toFixed(2)}%`);
   var userStakedUsd = userStaked * poolTokenPrice;
   var userStakedPct = userStakedUsd / staked_tvl * 100;
   _print(`You are staking ${userStaked.toFixed(fixedDecimals)} ${stakeTokenTicker} ($${formatMoney(userStakedUsd)}), ${userStakedPct.toFixed(2)}% of the pool.`);
@@ -1457,6 +1554,13 @@ function printApy(rewardTokenTicker, rewardPrice, poolRewardsPerWeek,
         + ` Day ${userDailyRewards.toFixed(fixedDecimals)} ($${formatMoney(userDailyRewards*rewardPrice)})`
         + ` Week ${userWeeklyRewards.toFixed(fixedDecimals)} ($${formatMoney(userWeeklyRewards*rewardPrice)})`
         + ` Year ${userYearlyRewards.toFixed(fixedDecimals)} ($${formatMoney(userYearlyRewards*rewardPrice)})`);
+  }
+  return { 
+    userStakedUsd, 
+    totalStakedUsd : staked_tvl, 
+    userStakedPct, 
+    yearlyAPR, 
+    userYearlyUsd : userYearlyRewards * rewardPrice 
   }
 }
 
@@ -1477,6 +1581,15 @@ function printChefContractLinks(App, chefAbi, chefAddr, poolIndex, poolAddress, 
   _print_link(`Unstake ${userStaked.toFixed(fixedDecimals)} ${stakeTokenTicker}`, unstake)
   _print_link(`Claim ${pendingRewardTokens.toFixed(fixedDecimals)} ${rewardTokenTicker} ($${formatMoney(pendingRewardTokens*rewardTokenPrice)})`, claim)
   _print(`Staking or unstaking also claims rewards.`)
+  if  (chefAddr == "0x0De845955E2bF089012F682fE9bC81dD5f11B372") {
+    const emergencyWithdraw = async function() {
+      return chefContract_emergencyWithdraw(chefAbi, chefAddr, poolIndex, App)
+    }      
+    _print('***')
+    _print_link(`EMERGENCY WITHDRAW ${userStaked.toFixed(fixedDecimals)} ${stakeTokenTicker}`, emergencyWithdraw)  
+    _print('This will forfeit your rewards but retrieve your capital')
+    _print('***')
+  }
   _print(`\n`);
 }
 
@@ -1492,17 +1605,18 @@ function printChefPool(App, chefAbi, chefAddr, prices, tokens, poolInfo, poolInd
   const staked_tvl = sp?.staked_tvl ?? poolPrices.staked_tvl;
   poolPrices.print_price();
   sp?.print_price();
-  printApy(rewardTokenTicker, rewardPrice, poolRewardsPerWeek, poolPrices.stakeTokenTicker, 
+  const apr = printAPR(rewardTokenTicker, rewardPrice, poolRewardsPerWeek, poolPrices.stakeTokenTicker, 
     staked_tvl, userStaked, poolPrices.price, fixedDecimals);
   if (poolInfo.userLPStaked > 0) sp?.print_contained_price(userStaked);
   if (poolInfo.userStaked > 0) poolPrices.print_contained_price(userStaked);
   printChefContractLinks(App, chefAbi, chefAddr, poolIndex, poolInfo.address, pendingRewardsFunction,
     rewardTokenTicker, poolPrices.stakeTokenTicker, poolInfo.poolToken.unstaked, 
     poolInfo.userStaked, poolInfo.pendingRewardTokens, fixedDecimals, claimFunction, rewardPrice, chain);
+  return apr;
 }
 
 async function loadChefContract(App, chef, chefAddress, chefAbi, rewardTokenTicker,
-    rewardTokenFunction, rewardsPerBlockFunction, rewardsPerWeekFixed, pendingRewardsFunction) {
+    rewardTokenFunction, rewardsPerBlockFunction, rewardsPerWeekFixed, pendingRewardsFunction, extraPrices) {
   const chefContract = chef ?? new ethers.Contract(chefAddress, chefAbi, App.provider);
 
   const poolCount = parseInt(await chefContract.poolLength(), 10);
@@ -1526,6 +1640,13 @@ async function loadChefContract(App, chef, chefAddress, chefAbi, rewardTokenTick
   
   var tokenAddresses = [].concat.apply([], poolInfos.filter(x => x.poolToken).map(x => x.poolToken.tokens));
   var prices = await lookUpTokenPrices(tokenAddresses);
+  if (extraPrices) {
+    for (const [k,v] of Object.entries(extraPrices)) {
+      if (v.usd) {
+        prices[k] = v
+      }
+    }
+  }
   //prices["0x194ebd173f6cdace046c53eacce9b953f28411d1"] = { usd : 1.22 } //"temporary" solution
   
   await Promise.all(tokenAddresses.map(async (address) => {
@@ -1536,13 +1657,35 @@ async function loadChefContract(App, chef, chefAddress, chefAbi, rewardTokenTick
 
   _print("Finished reading smart contracts.\n");
     
+  let aprs = []
   for (i = 0; i < poolCount; i++) {
-    if (poolPrices[i] && poolPrices[i].price) {
-      printChefPool(App, chefAbi, chefAddress, prices, tokens, poolInfos[i], i, poolPrices[i],
+    if (poolPrices[i]) {
+      const apr = printChefPool(App, chefAbi, chefAddress, prices, tokens, poolInfos[i], i, poolPrices[i],
         totalAllocPoints, rewardsPerWeek, rewardTokenTicker, rewardTokenAddress,
-        pendingRewardsFunction);
+        pendingRewardsFunction)
+      aprs.push(apr);
     }
   }
+  let totalUserStaked=0, totalStaked=0, averageApr=0;
+  for (const a of aprs) {
+    if (a && !isNaN(a.totalStakedUsd)) {
+      totalStaked += a.totalStakedUsd;
+    }
+    if (a && a.userStakedUsd > 0) {
+      totalUserStaked += a.userStakedUsd;
+      averageApr += a.userStakedUsd * a.yearlyAPR / 100;
+    }
+  }
+  averageApr = averageApr / totalUserStaked;
+  _print_bold(`Total Staked: $${formatMoney(totalStaked)}`);
+  if (totalUserStaked > 0) {
+    _print_bold(`\nYou are staking a total of $${formatMoney(totalUserStaked)} at an average APR of ${(averageApr * 100).toFixed(2)}%`)
+    _print(`Estimated earnings:`
+        + ` Day $${formatMoney(totalUserStaked*averageApr/365)}`
+        + ` Week $${formatMoney(totalUserStaked*averageApr/52)}`
+        + ` Year $${formatMoney(totalUserStaked*averageApr)}\n`);
+  }
+  return { prices, totalUserStaked, totalStaked, averageApr }
 }
 
 //ratio is used for multi-boardroom setups
@@ -1686,10 +1829,10 @@ async function loadSynthetixPoolInfo(App, tokens, prices, stakingAbi, stakingAdd
 async function printSynthetixPool(App, info, chain="eth") {
     info.poolPrices.print_price(chain);
     _print(`${info.rewardTokenTicker} Per Week: ${info.weeklyRewards.toFixed(2)} ($${formatMoney(info.usdPerWeek)})`);
-    const weeklyAPY = info.usdPerWeek / info.staked_tvl * 100;
-    const dailyAPY = weeklyAPY / 7;
-    const yearlyAPY = weeklyAPY * 52;
-    _print(`APY: Day ${dailyAPY.toFixed(2)}% Week ${weeklyAPY.toFixed(2)}% Year ${yearlyAPY.toFixed(2)}%`);
+    const weeklyAPR = info.usdPerWeek / info.staked_tvl * 100;
+    const dailyAPR = weeklyAPR / 7;
+    const yearlyAPR = weeklyAPR * 52;
+    _print(`APR: Day ${dailyAPR.toFixed(2)}% Week ${weeklyAPR.toFixed(2)}% Year ${yearlyAPR.toFixed(2)}%`);
     const userStakedUsd = info.userStaked * info.stakeTokenPrice;
     const userStakedPct = userStakedUsd / info.staked_tvl * 100;
     _print(`You are staking ${info.userStaked.toFixed(6)} ${info.stakeTokenTicker} ` +
@@ -1723,10 +1866,13 @@ async function printSynthetixPool(App, info, chain="eth") {
       case "eth":
         _print(`<a target="_blank" href="https://etherscan.io/address/${info.stakingAddress}#code">Etherscan</a>`);
         break;
-      case "heco":
-        _print(`<a target="_blank" href="https://bscscan.com/address/${info.stakingAddress}#code">BSC Scan</a>`);
+      case "avax":
+        _print(`<a target="_blank" href="https://cchain.explorer.avax.network/address/${info.stakingAddress}#code">Explorer</a>`);
         break;
       case "bsc":
+        _print(`<a target="_blank" href="https://bscscan.com/address/${info.stakingAddress}#code">BSC Scan</a>`);
+        break;
+      case "heco":
         _print(`<a target="_blank" href="https://scan.hecochain.com/address/${info.stakingAddress}#code">Heco Scan</a>`);
         break;
       case "matic":
@@ -1738,12 +1884,12 @@ async function printSynthetixPool(App, info, chain="eth") {
     _print_link(`Claim ${info.earned.toFixed(6)} ${info.rewardTokenTicker} ($${formatMoney(info.earned*info.rewardTokenPrice)})`, claim)
     _print_link(`Revoke (set approval to 0)`, revoke)
     _print_link(`Exit`, exit)
-    _print(`\n`);
+    _print("");
 
     return {
         staked_tvl: info.poolPrices.staked_tvl,
         userStaked : userStakedUsd,
-        apy : yearlyAPY
+        apr : yearlyAPR
     }
 }
 
@@ -1753,7 +1899,7 @@ async function loadSynthetixPool(App, tokens, prices, abi, address, rewardTokenF
 }
 
 async function loadMultipleSynthetixPools(App, tokens, prices, pools) {
-  let totalStaked  = 0, totalUserStaked = 0, individualAPYs = [];
+  let totalStaked  = 0, totalUserStaked = 0, individualAPRs = [];
   const infos = await Promise.all(pools.map(p => 
     loadSynthetixPoolInfo(App, tokens, prices, p.abi, p.address, p.rewardTokenFunction, p.stakeTokenFunction)));
   for (const i of infos) {
@@ -1761,11 +1907,11 @@ async function loadMultipleSynthetixPools(App, tokens, prices, pools) {
     totalStaked += p.staked_tvl || 0;
     totalUserStaked += p.userStaked || 0;
     if (p.userStaked > 0) {
-      individualAPYs.push(p.userStaked * p.apy / 100);
+      individualAPRs.push(p.userStaked * p.apr / 100);
     }
   }
-  let totalApy = totalUserStaked == 0 ? 0 : individualAPYs.reduce((x,y)=>x+y, 0) / totalUserStaked;
-  return { staked_tvl : totalStaked, totalUserStaked, totalApy };
+  let totalAPR = totalUserStaked == 0 ? 0 : individualAPRs.reduce((x,y)=>x+y, 0) / totalUserStaked;
+  return { staked_tvl : totalStaked, totalUserStaked, totalAPR };
 }
 
 async function loadBasisFork(data) {
@@ -1796,7 +1942,7 @@ async function loadBasisFork(data) {
       let p = await loadMultipleSynthetixPools(App, tokens, prices, data.SeedBanks)
       totalStaked += p.staked_tvl;
       if (p.totalUserStaked > 0) {
-        _print(`You are staking a total of $${formatMoney(p.totalUserStaked)} at an APY of ${(p.totalApy * 100).toFixed(2)}%\n`);
+        _print(`You are staking a total of $${formatMoney(p.totalUserStaked)} at an APR of ${(p.totalAPR * 100).toFixed(2)}%\n`);
       }
     }
 

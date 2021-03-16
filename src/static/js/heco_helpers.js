@@ -202,7 +202,7 @@ async function loadHecoBasisFork(data) {
       let p = await loadMultipleHecoSynthetixPools(App, tokens, prices, data.SeedBanks)
       totalStaked += p.staked_tvl;
       if (p.totalUserStaked > 0) {
-        _print(`You are staking a total of $${formatMoney(p.totalUserStaked)} at an APY of ${(p.totalApy * 100).toFixed(2)}%\n`);
+        _print(`You are staking a total of $${formatMoney(p.totalUserStaked)} at an APR of ${(p.totalAPR * 100).toFixed(2)}%\n`);
       }
     }
 
@@ -311,6 +311,9 @@ const hrcTokens = [
   { "id": "ethereum","symbol": "ETH", "contract": "0xb55569893b397324c0d048c9709f40c23445540e" },
   { "id": "bitcoin","symbol": "HBTC", "contract": "0x66a79d23e58475d2738179ca52cd0b41d73f0bea" },
   { "id": "ethereum","symbol": "HETH", "contract": "0x64FF637fB478863B7468bc97D30a5bF3A428a1fD" },
+  { "id": "hoo-token","symbol": "HOO", "contract": "0xE1d1F66215998786110Ba0102ef558b22224C016" },
+  { "id": "gene","symbol": "GENE", "contract": "0x2CFa849e8506910b2564aFE5BdEF33Ba66C730Aa" },
+  { "id": "husd","symbol": "HUSD", "contract": "0x0298c2b32eaE4da002a15f36fdf7615BEa3DA047" }
 ]
 
 async function getHecoPrices() {
@@ -323,7 +326,7 @@ async function getHecoPrices() {
 }
 
 async function loadMultipleHecoSynthetixPools(App, tokens, prices, pools) {
-  let totalStaked  = 0, totalUserStaked = 0, individualAPYs = [];
+  let totalStaked  = 0, totalUserStaked = 0, individualAPRs = [];
   const infos = await Promise.all(pools.map(p => 
     loadHecoSynthetixPoolInfo(App, tokens, prices, p.abi, p.address, p.rewardTokenFunction, p.stakeTokenFunction)));
   for (const i of infos) {
@@ -331,9 +334,9 @@ async function loadMultipleHecoSynthetixPools(App, tokens, prices, pools) {
     totalStaked += p.staked_tvl || 0;
     totalUserStaked += p.userStaked || 0;
     if (p.userStaked > 0) {
-      individualAPYs.push(p.userStaked * p.apy / 100);
+      individualAPRs.push(p.userStaked * p.apr / 100);
     }
   }
-  let totalApy = totalUserStaked == 0 ? 0 : individualAPYs.reduce((x,y)=>x+y, 0) / totalUserStaked;
-  return { staked_tvl : totalStaked, totalUserStaked, totalApy };
+  let totalAPR = totalUserStaked == 0 ? 0 : individualAPRs.reduce((x,y)=>x+y, 0) / totalUserStaked;
+  return { staked_tvl : totalStaked, totalUserStaked, totalAPR };
 }

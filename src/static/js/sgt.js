@@ -33,7 +33,7 @@ async function main() {
   let p = await loadMultipleSynthetixPools(App, tokens, prices, Pools.slice(1))
   _print_bold(`Total staked: $${formatMoney(p0.staked_tvl + p.staked_tvl)}`);
   if (p.totalUserStaked > 0) {
-    _print(`You are staking a total of $${formatMoney(p.totalUserStaked)} at an APY of ${(p.totalApy * 100).toFixed(2)}%\n`);
+    _print(`You are staking a total of $${formatMoney(p.totalUserStaked)} at an APR of ${(p.totalAPR * 100).toFixed(2)}%\n`);
   }
   
   hideLoading();

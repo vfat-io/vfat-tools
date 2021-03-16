@@ -32,7 +32,7 @@ async function main() {
     const p = await loadMultipleSynthetixPools(App, tokens, prices, [ARTHContracts[0], ARTHContracts[2]]);
 
     if (p.totalUserStaked > 0) {
-        _print(`You are staking a total of $${formatMoney(p.totalUserStaked)} at an APY of ${(p.totalApy * 100).toFixed(2)}%\n`);
+        _print(`You are staking a total of $${formatMoney(p.totalUserStaked)} at an APR of ${(p.totalAPR * 100).toFixed(2)}%\n`);
     }
 
     for (const b of Boardrooms)  {
