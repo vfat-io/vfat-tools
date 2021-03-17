@@ -16,14 +16,11 @@ async function main() {
    const rewardTokenTicker = "TAO";
    const TAO_CHEF = new ethers.Contract(TAO_CHEF_ADDR, TAO_CHEF_ABI, App.provider);
 
-   const rewardsPerWeek = await TAO_CHEF.taoPerBlock() /1e18
-        * 604800 / 3;
+   const tokens = {};
+   const prices = await getBscPrices();
 
-    const tokens = {};
-    const prices = await getBscPrices();
-
-    await loadBscChefContract(App, tokens, prices, TAO_CHEF, TAO_CHEF_ADDR, TAO_CHEF_ABI, rewardTokenTicker,
-        "TAO", null, rewardsPerWeek, "pendingTao");
+   await loadBscChefContract(App, tokens, prices, TAO_CHEF, TAO_CHEF_ADDR, TAO_CHEF_ABI, rewardTokenTicker,
+       "TAO", "taoPerBlock", null, "pendingTao");
 
     hideLoading();  
   }
