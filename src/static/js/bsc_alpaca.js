@@ -31,6 +31,7 @@ async function loadAlpacaBscChefContract(App, tokens, prices, chef, chefAddress,
 
   const poolCount = parseInt(await chefContract.poolLength(), 10);
   const totalAllocPoints = await chefContract.totalAllocPoint();
+  _print(`<a href='https://bscscan.com/address/${chefAddress}' target='_blank'>Staking Contract</a>\n`);
 
   _print(`Found ${poolCount} pools.\n`)
 
@@ -56,9 +57,10 @@ async function loadAlpacaBscChefContract(App, tokens, prices, chef, chefAddress,
   if (deathPoolIndices) {   //load prices for the deathpool assets
     deathPoolIndices.map(i => poolInfos[i])
                      .map(poolInfo => 
-      poolInfo.poolToken ? getPoolPrices(tokens, prices, poolInfo.poolToken) : undefined);
+      poolInfo.poolToken ? getPoolPrices(tokens, prices, poolInfo.poolToken, "bsc") : undefined);
   }
-  const poolPrices = poolInfos.map(poolInfo => poolInfo.poolToken ? getPoolPrices(tokens, prices, poolInfo.poolToken) : undefined);
+  prices["0x6F695Bd5FFD25149176629f8491A5099426Ce7a7"] = getParameterCaseInsensitive(prices, "0x8F0528cE5eF7B51152A59745bEfDD91D97091d2F")
+  const poolPrices = poolInfos.map(poolInfo => poolInfo.poolToken ? getPoolPrices(tokens, prices, poolInfo.poolToken, "bsc") : undefined);
 
   _print("Finished reading smart contracts.\n");
     
@@ -103,8 +105,7 @@ async function main() {
    const rewardTokenTicker = "ALPACA";
    const ALPACA_CHEF = new ethers.Contract(ALPACA_CHEF_ADDR, ALPACA_CHEF_ABI, App.provider);
 
-   const rewardsPerWeek = await ALPACA_CHEF.alpacaPerBlock() /1e18 * 604800 / 3
-    * 7; //bonus multiplier
+   const rewardsPerWeek = await ALPACA_CHEF.alpacaPerBlock() /1e18 * 604800 / 3; //bonus multiplier
 
     const tokens = {};
     const prices = await getBscPrices();
@@ -112,7 +113,7 @@ async function main() {
     prices["0x7C9e73d4C71dae564d41F78d56439bB4ba87592f"] = { usd : 1 };
 
     await loadAlpacaBscChefContract(App, tokens, prices, ALPACA_CHEF, ALPACA_CHEF_ADDR, ALPACA_CHEF_ABI, rewardTokenTicker,
-        "alpaca", null, rewardsPerWeek, "pendingAlpaca");
+        "alpaca", null, rewardsPerWeek, "pendingAlpaca", [4]);
 
     hideLoading(); 
   }
