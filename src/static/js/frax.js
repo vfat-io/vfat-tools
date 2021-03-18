@@ -24,18 +24,12 @@ $(function() {
         }
     }
     
-    const Pool0 = {
+    const Pool = {
       address : "0xdFb6ef63eA2753C6598fcA1b220358F17E4d137e",
       abi : FRAX_STAKING_ABI,
       stakingTokenFunction : "stakingToken",
-      RewardTokenFunction : "rewardsToken0"
-    };
-
-    const Pool1 = {
-      address : "0xdFb6ef63eA2753C6598fcA1b220358F17E4d137e",
-      abi : FRAX_STAKING_ABI,
-      stakingTokenFunction : "stakingToken",
-      RewardTokenFunction : "rewardsToken1"
+      RewardTokenFunction0 : "rewardsToken0",
+      RewardTokenFunction1 : "rewardsToken1"
     };
   
     const App = await init_ethers();
@@ -46,81 +40,75 @@ $(function() {
     var tokens = {};
     var prices = {};
   
-    /*for (const [,address] of Object.entries(Contracts.Staking)) {
+    for (const [,address] of Object.entries(Contracts.Staking)) {
       await loadSynthetixPool(App, tokens, prices, FRAX_STAKING_POOL_ABI, address, "rewardsToken", "stakingToken");
-    }*/
+    }
 
-    let p0 = await loadSynthetixPool0(App, tokens, prices, Pool0.abi, Pool0.address, Pool0.RewardTokenFunction,
-      Pool0.stakingTokenFunction)
-
-    /*let p1 = await loadSynthetixPool1(App, tokens, prices, Pool1.abi, Pool1.address, Pool1.RewardTokenFunction,
-      Pool1.stakingTokenFunction)*/
+    let p = await loadFraxSynthetixPools(App, tokens, prices, Pool.abi, Pool.address, Pool.RewardTokenFunction0,
+      Pool.RewardTokenFunction1, Pool.stakingTokenFunction)
   
     hideLoading();
   }
 
-async function loadSynthetixPool0(App, tokens, prices, abi, address, rewardTokenFunction, stakeTokenFunction) {
-    const info = await loadSynthetixPoolInfo0(App, tokens, prices, abi, address, rewardTokenFunction, stakeTokenFunction);
-    return await printSynthetixPool(App, info);
+async function loadFraxSynthetixPools(App, tokens, prices, abi, address) {
+    const info = await loadFraxSynthetixPoolsInfo(App, tokens, prices, abi, address);
+    return await printFraxSynthetixPool(App, info);
 }
 
-async function loadSynthetixPool1(App, tokens, prices, abi, address, rewardTokenFunction, stakeTokenFunction) {
-  const info = await loadSynthetixPoolInfo1(App, tokens, prices, abi, address, rewardTokenFunction, stakeTokenFunction);
-    return await printSynthetixPool(App, info);
-}
-
-async function loadSynthetixPoolInfo0(App, tokens, prices, stakingAbi, stakingAddress,
-  rewardTokenFunction, stakeTokenFunction) {
-    const STAKING_POOL = new ethers.Contract(stakingAddress, stakingAbi, App.provider);
+async function loadFraxSynthetixPoolsInfo(App, tokens, prices, stakingAbi, stakingAddress) {
     const STAKING_MULTI = new ethcall.Contract(stakingAddress, stakingAbi);
 
-    if (!STAKING_POOL.callStatic[stakeTokenFunction]) {
-      console.log("Couldn't find stake function ", stakeTokenFunction);
-    }
-    const stakeTokenAddress = await STAKING_POOL.callStatic[stakeTokenFunction]();
+    const calls = [STAKING_MULTI.stakingToken(), STAKING_MULTI.rewardsToken0(),
+                   STAKING_MULTI.rewardsToken1(), STAKING_MULTI.periodFinish(),
+                   STAKING_MULTI.rewardRate0(), STAKING_MULTI.rewardRate1(),
+                   STAKING_MULTI.balanceOf(App.YOUR_ADDRESS), 
+                   STAKING_MULTI.rewards0(App.YOUR_ADDRESS), STAKING_MULTI.rewards1(App.YOUR_ADDRESS)]
+    const [stakeTokenAddress, rewardTokenAddress0, rewardTokenAddress1,
+           periodFinish, rewardRate0, rewardRate1, balance,
+           earned_0, earned_1] = await App.ethcallProvider.all(calls)
 
-    const rewardTokenAddress = await STAKING_POOL.callStatic[rewardTokenFunction]();
+    let stakeToken = await getToken(App, stakeTokenAddress, stakingAddress);
 
-    var stakeToken = await getToken(App, stakeTokenAddress, stakingAddress);
-
-    if (stakeTokenAddress.toLowerCase() === rewardTokenAddress.toLowerCase()) {
-      stakeToken.staked = await STAKING_POOL.totalSupply() / 10 ** stakeToken.decimals;
-    }
-
-    var newPriceAddresses = stakeToken.tokens.filter(x =>
-      x.toLowerCase() !=  "0xb34ab2f65c6e4f764ffe740ab83f982021faed6d" && //BSG can't be retrieved from Coingecko
-      !getParameterCaseInsensitive(prices, x));
-    var newPrices = await lookUpTokenPrices(newPriceAddresses);
+      let newPriceAddresses = stakeToken.tokens.filter(x =>
+        !getParameterCaseInsensitive(prices, x)).concat([rewardTokenAddress0, rewardTokenAddress1])
+    let newPrices = await lookUpTokenPrices(newPriceAddresses);
     for (const key in newPrices) {
       if (newPrices[key]?.usd)
           prices[key] = newPrices[key];
     }
-    var newTokenAddresses = stakeToken.tokens.filter(x =>
+    let newTokenAddresses = stakeToken.tokens.filter(x =>
       !getParameterCaseInsensitive(tokens,x));
     for (const address of newTokenAddresses) {
         tokens[address] = await getToken(App, address, stakingAddress);
     }
-    if (!getParameterCaseInsensitive(tokens, rewardTokenAddress)) {
-        tokens[rewardTokenAddress] = await getToken(App, rewardTokenAddress, stakingAddress);
-    }
-    const rewardToken = getParameterCaseInsensitive(tokens, rewardTokenAddress);
 
-    const rewardTokenTicker = rewardToken.symbol;
+    if (!getParameterCaseInsensitive(tokens, rewardTokenAddress0)) {
+        tokens[rewardTokenAddress0] = await getToken(App, rewardTokenAddress0, stakingAddress);
+    }
+    if (!getParameterCaseInsensitive(tokens, rewardTokenAddress1)) {
+        tokens[rewardTokenAddress1] = await getToken(App, rewardTokenAddress1, stakingAddress);
+    }
+
+    const rewardToken0 = getParameterCaseInsensitive(tokens, rewardTokenAddress0);
+    const rewardToken1 = getParameterCaseInsensitive(tokens, rewardTokenAddress1);
+
+    const rewardTokenTicker0 = rewardToken0.symbol;
+    const rewardTokenTicker1 = rewardToken1.symbol;
 
     const poolPrices = getPoolPrices(tokens, prices, stakeToken);
 
     const stakeTokenTicker = poolPrices.stakeTokenTicker;
 
-    const stakeTokenPrice =
-        prices[stakeTokenAddress]?.usd ?? getParameterCaseInsensitive(prices, stakeTokenAddress)?.usd;
-    const rewardTokenPrice = getParameterCaseInsensitive(prices, rewardTokenAddress)?.usd;
+    const stakeTokenPrice = poolPrices.price;
 
-    const calls = [STAKING_MULTI.periodFinish(), STAKING_MULTI.rewardRate0(), 
-      STAKING_MULTI.boostedBalanceOf(App.YOUR_ADDRESS), STAKING_MULTI.rewards0(App.YOUR_ADDRESS)]
-    const [periodFinish, rewardRate, balance, earned_] = await App.ethcallProvider.all(calls);
-    const weeklyRewards = (Date.now() / 1000 > periodFinish) ? 0 : rewardRate / 1e18 * 604800;
+    const rewardTokenPrice0 = getParameterCaseInsensitive(prices, rewardTokenAddress0)?.usd;
+    const rewardTokenPrice1 = getParameterCaseInsensitive(prices, rewardTokenAddress1)?.usd;
 
-    const usdPerWeek = weeklyRewards * rewardTokenPrice;
+    const weeklyRewards0 = (Date.now() / 1000 > periodFinish) ? 0 : rewardRate0 / 1e18 * 604800;
+    const weeklyRewards1 = (Date.now() / 1000 > periodFinish) ? 0 : rewardRate1 / 1e18 * 604800;
+
+    const usdPerWeek0 = weeklyRewards0 * rewardTokenPrice0;
+    const usdPerWeek1 = weeklyRewards1 * rewardTokenPrice1;
 
     const staked_tvl = poolPrices.staked_tvl;
 
@@ -128,101 +116,108 @@ async function loadSynthetixPoolInfo0(App, tokens, prices, stakingAbi, stakingAd
 
     const userUnstaked = stakeToken.unstaked;
 
-    const earned = earned_ / 10 ** rewardToken.decimals;
+    const earned0 = earned_0 / 10 ** rewardToken0.decimals;
+    const earned1 = earned_1 / 10 ** rewardToken1.decimals;
 
     return  {
       stakingAddress,
       poolPrices,
       stakeTokenAddress,
-      rewardTokenAddress,
+      rewardTokenAddress0,
+      rewardTokenAddress1,
       stakeTokenTicker,
-      rewardTokenTicker,
+      rewardTokenTicker0,
+      rewardTokenTicker1,
       stakeTokenPrice,
-      rewardTokenPrice,
-      weeklyRewards,
-      usdPerWeek,
+      rewardTokenPrice0,
+      rewardTokenPrice1,
+      weeklyRewards0,
+      weeklyRewards1,
+      usdPerWeek0,
+      usdPerWeek1,
       staked_tvl,
       userStaked,
       userUnstaked,
-      earned
+      earned0,
+      earned1
     }
 }
 
-async function loadSynthetixPoolInfo1(App, tokens, prices, stakingAbi, stakingAddress,
-  rewardTokenFunction, stakeTokenFunction) {
-    const STAKING_POOL = new ethers.Contract(stakingAddress, stakingAbi, App.provider);
-    const STAKING_MULTI = new ethcall.Contract(stakingAddress, stakingAbi);
+async function printFraxSynthetixPool(App, info, chain="eth") {
+  info.poolPrices.print_price(chain);
+  _print(`${info.rewardTokenTicker0} Per Week: ${info.weeklyRewards0.toFixed(2)} ($${formatMoney(info.usdPerWeek0)})`);
+  const weeklyAPR0 = info.usdPerWeek0 / info.staked_tvl * 100;
+  const dailyAPR0 = weeklyAPR0 / 7;
+  const yearlyAPR0 = weeklyAPR0 * 52;
+  _print(`${info.rewardTokenTicker0} APR: Day ${dailyAPR0.toFixed(2)}% Week ${weeklyAPR0.toFixed(2)}% Year ${yearlyAPR0.toFixed(2)}%`);
+  _print(`${info.rewardTokenTicker1} Per Week: ${info.weeklyRewards1.toFixed(2)} ($${formatMoney(info.usdPerWeek1)})`);
+  const weeklyAPR1 = info.usdPerWeek1 / info.staked_tvl * 100;
+  const dailyAPR1 = weeklyAPR1 / 7;
+  const yearlyAPR1 = weeklyAPR1 * 52;
+  _print(`${info.rewardTokenTicker1} APR: Day ${dailyAPR1.toFixed(2)}% Week ${weeklyAPR1.toFixed(2)}% Year ${yearlyAPR1.toFixed(2)}%`);
+  const userStakedUsd = info.userStaked * info.stakeTokenPrice;
+  const userStakedPct = userStakedUsd / info.staked_tvl * 100;
+  _print(`You are staking ${info.userStaked.toFixed(6)} ${info.stakeTokenTicker} ` +
+         `$${formatMoney(userStakedUsd)} (${userStakedPct.toFixed(2)}% of the pool).`);
+  if (info.userStaked > 0) {
+    info.poolPrices.print_contained_price(info.userStaked);
+      const userWeeklyRewards0 = userStakedPct * info.weeklyRewards0 / 100;
+      const userWeeklyRewards1 = userStakedPct * info.weeklyRewards1 / 100;
+      const userDailyRewards0 = userWeeklyRewards0 / 7;
+      const userDailyRewards1 = userWeeklyRewards1 / 7;
+      const userYearlyRewards0 = userWeeklyRewards0 * 52;
+      const userYearlyRewards1 = userWeeklyRewards1 * 52;
+      _print(`Estimated ${info.rewardTokenTicker0} earnings:`
+          + ` Day ${userDailyRewards0.toFixed(2)} ($${formatMoney(userDailyRewards0*info.rewardTokenPrice0)})`
+          + ` Week ${userWeeklyRewards0.toFixed(2)} ($${formatMoney(userWeeklyRewards0*info.rewardTokenPrice0)})`
+          + ` Year ${userYearlyRewards0.toFixed(2)} ($${formatMoney(userYearlyRewards0*info.rewardTokenPrice0)})`);
+      _print(`Estimated ${info.rewardTokenTicker1} earnings:`
+          + ` Day ${userDailyRewards1.toFixed(2)} ($${formatMoney(userDailyRewards1*info.rewardTokenPrice1)})`
+          + ` Week ${userWeeklyRewards1.toFixed(2)} ($${formatMoney(userWeeklyRewards1*info.rewardTokenPrice1)})`
+          + ` Year ${userYearlyRewards1.toFixed(2)} ($${formatMoney(userYearlyRewards1*info.rewardTokenPrice1)})`);
+  }
+  const approveTENDAndStake = async function() {
+    return rewardsContract_stake(info.stakeTokenAddress, info.stakingAddress, App)
+  }
+  const unstake = async function() {
+    return rewardsContract_unstake(info.stakingAddress, App)
+  }
+  const claim = async function() {
+    return rewardsContract_claim(info.stakingAddress, App)
+  }
+  const exit = async function() {
+    return rewardsContract_exit(info.stakingAddress, App)
+  }
+  const revoke = async function() {
+    return rewardsContract_resetApprove(info.stakeTokenAddress, info.stakingAddress, App)
+  }
+  switch (chain) {
+    case "eth":
+      _print(`<a target="_blank" href="https://etherscan.io/address/${info.stakingAddress}#code">Etherscan</a>`);
+      break;
+    case "avax":
+      _print(`<a target="_blank" href="https://cchain.explorer.avax.network/address/${info.stakingAddress}#code">Explorer</a>`);
+      break;
+    case "bsc":
+      _print(`<a target="_blank" href="https://bscscan.com/address/${info.stakingAddress}#code">BSC Scan</a>`);
+      break;
+    case "heco":
+      _print(`<a target="_blank" href="https://scan.hecochain.com/address/${info.stakingAddress}#code">Heco Scan</a>`);
+      break;
+    case "matic":
+      _print(`<a target="_blank" href="https://explorer-mainnet.maticvigil.com/address/${info.stakingAddress}#code">Matic Explorer</a>`);
+      break;
+  }
+  _print_link(`Stake ${info.userUnstaked.toFixed(6)} ${info.stakeTokenTicker}`, approveTENDAndStake)
+  _print_link(`Unstake ${info.userStaked.toFixed(6)} ${info.stakeTokenTicker}`, unstake)
+  _print_link(`Claim ${info.earned0.toFixed(6)} ${info.rewardTokenTicker0} ($${formatMoney(info.earned0*info.rewardTokenPrice0)})`, claim)
+  _print_link(`Revoke (set approval to 0)`, revoke)
+  _print_link(`Exit`, exit)
+  _print("");
 
-    if (!STAKING_POOL.callStatic[stakeTokenFunction]) {
-      console.log("Couldn't find stake function ", stakeTokenFunction);
-    }
-    const stakeTokenAddress = await STAKING_POOL.callStatic[stakeTokenFunction]();
-
-    const rewardTokenAddress = await STAKING_POOL.callStatic[rewardTokenFunction]();
-
-    var stakeToken = await getToken(App, stakeTokenAddress, stakingAddress);
-
-    if (stakeTokenAddress.toLowerCase() === rewardTokenAddress.toLowerCase()) {
-      stakeToken.staked = await STAKING_POOL.totalSupply() / 10 ** stakeToken.decimals;
-    }
-
-    var newPriceAddresses = stakeToken.tokens.filter(x =>
-      x.toLowerCase() !=  "0xb34ab2f65c6e4f764ffe740ab83f982021faed6d" && //BSG can't be retrieved from Coingecko
-      !getParameterCaseInsensitive(prices, x));
-    var newPrices = await lookUpTokenPrices(newPriceAddresses);
-    for (const key in newPrices) {
-      if (newPrices[key]?.usd)
-          prices[key] = newPrices[key];
-    }
-    var newTokenAddresses = stakeToken.tokens.filter(x =>
-      !getParameterCaseInsensitive(tokens,x));
-    for (const address of newTokenAddresses) {
-        tokens[address] = await getToken(App, address, stakingAddress);
-    }
-    if (!getParameterCaseInsensitive(tokens, rewardTokenAddress)) {
-        tokens[rewardTokenAddress] = await getToken(App, rewardTokenAddress, stakingAddress);
-    }
-    const rewardToken = getParameterCaseInsensitive(tokens, rewardTokenAddress);
-
-    const rewardTokenTicker = rewardToken.symbol;
-
-    const poolPrices = getPoolPrices(tokens, prices, stakeToken);
-
-    const stakeTokenTicker = poolPrices.stakeTokenTicker;
-
-    const stakeTokenPrice =
-        prices[stakeTokenAddress]?.usd ?? getParameterCaseInsensitive(prices, stakeTokenAddress)?.usd;
-    const rewardTokenPrice = getParameterCaseInsensitive(prices, rewardTokenAddress)?.usd;
-
-    const calls = [STAKING_MULTI.periodFinish(), STAKING_MULTI.rewardRate1(), 
-      STAKING_MULTI.balanceOf(App.YOUR_ADDRESS), STAKING_MULTI.earned(App.YOUR_ADDRESS)]
-    const [periodFinish, rewardRate, balance, earned_] = await App.ethcallProvider.all(calls);
-    const weeklyRewards = (Date.now() / 1000 > periodFinish) ? 0 : rewardRate / 1e18 * 604800;  //exw rewardsRate 0 edw
-
-    const usdPerWeek = weeklyRewards * rewardTokenPrice;
-
-    const staked_tvl = poolPrices.staked_tvl;
-
-    const userStaked = balance / 10 ** stakeToken.decimals;
-
-    const userUnstaked = stakeToken.unstaked;
-
-    const earned = earned_ / 10 ** rewardToken.decimals;
-
-    return  {
-      stakingAddress,
-      poolPrices,
-      stakeTokenAddress,
-      rewardTokenAddress,
-      stakeTokenTicker,
-      rewardTokenTicker,
-      stakeTokenPrice,
-      rewardTokenPrice,
-      weeklyRewards,
-      usdPerWeek,
-      staked_tvl,
-      userStaked,
-      userUnstaked,
-      earned
-    }
+  return {
+      staked_tvl: info.poolPrices.staked_tvl,
+      userStaked : userStakedUsd,
+      apr : (yearlyAPR0 + yearlyAPR1)
+  }
 }
