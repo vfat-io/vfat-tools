@@ -131,10 +131,15 @@ async function main() {
 
   const rewardTokenTicker = "STEEL";
 
+  let totalStaked = 0;
+
   for(const a of SteelPoolAddresses){
     let STEEL_CHEF = new ethers.Contract(a, STEEL_STAKING_ABI, App.provider);
-    await loadSteelChefContract(App, tokens, prices, STEEL_CHEF, a, STEEL_STAKING_ABI, rewardTokenTicker, "pendingReward");
+    let p = 
+      await loadSteelChefContract(App, tokens, prices, STEEL_CHEF, a, STEEL_STAKING_ABI, rewardTokenTicker, "pendingReward");
+    totalStaked += p.totalStaked;
   }
+  _print_bold(`Total Staked: $${formatMoney(totalStaked)}`);
 }
 
 async function loadSteelChefContract(App, tokens, prices, chef, chefAddress, chefAbi, rewardTokenTicker, pendingRewardsFunction,
@@ -143,7 +148,7 @@ async function loadSteelChefContract(App, tokens, prices, chef, chefAddress, che
 
   const poolCount = 1;
     
-  _print(`\n<a href='https://bscscan.com/address/${chefAddress}' target='_blank'>Staking Contract</a>`);
+  _print(`<a href='https://bscscan.com/address/${chefAddress}' target='_blank'>Staking Contract</a>`);
 
   const poolInfos = await Promise.all([...Array(poolCount).keys()].map(async (x) =>
     await getBscSteelPoolInfo(App, chefContract, chefAddress, x, pendingRewardsFunction)));
@@ -182,14 +187,6 @@ async function loadSteelChefContract(App, tokens, prices, chef, chefAddress, che
     }
   }
   averageApr = averageApr / totalUserStaked;
-  _print_bold(`Total Staked: $${formatMoney(totalStaked)}`);
-  if (totalUserStaked > 0) {
-    _print_bold(`\nYou are staking a total of $${formatMoney(totalUserStaked)} at an average APR of ${(averageApr * 100).toFixed(2)}%`)
-    _print(`Estimated earnings:`
-        + ` Day $${formatMoney(totalUserStaked*averageApr/365)}`
-        + ` Week $${formatMoney(totalUserStaked*averageApr/52)}`
-        + ` Year $${formatMoney(totalUserStaked*averageApr)}\n`);
-  }
   return { prices, totalUserStaked, totalStaked, averageApr }
 
 }
