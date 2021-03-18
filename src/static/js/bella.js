@@ -16,7 +16,7 @@ async function main() {
     const rewardTokenTicker = "BEL";
     const BELLA_CONTRACT = new ethers.Contract(BELLA_CONTRACT_ADDR, BELLA_CONTRACT_ABI, App.provider);
 
-    const rewardsPerWeek = await BELLA_CONTRACT.bellaPerSecond() /1e18 * 604800;
+    const rewardsPerWeek = await BELLA_CONTRACT.bellaPerSecond() / 1e18 * 604800;
 
     await loadBellaContract(App, BELLA_CONTRACT, BELLA_CONTRACT_ADDR, BELLA_CONTRACT_ABI, rewardTokenTicker,
         "bella", null, rewardsPerWeek, "earnedBellaAll");
