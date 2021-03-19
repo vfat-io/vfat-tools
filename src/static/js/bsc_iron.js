@@ -136,10 +136,10 @@ function printIronChefContractLinks(App, chefAbi, chefAddr, poolIndex, poolAddre
     return ironChefContract_stake(chefAbi, chefAddr, poolIndex, poolAddress, App)
   }      
   const unstake = async function() {
-    return chefContract_unstake(chefAbi, chefAddr, poolIndex, App, pendingRewardsFunction)
+    return ironChefContract_unstake(chefAbi, chefAddr, poolIndex, App)
   }      
   const claim = async function() {
-    return chefContract_claim(chefAbi, chefAddr, poolIndex, App, pendingRewardsFunction, claimFunction)
+    return ironChefContract_claim(chefAbi, chefAddr, poolIndex, App)
   }
   _print_link(`Stake ${unstaked.toFixed(fixedDecimals)} ${stakeTokenTicker}`, approveAndStake)
   _print_link(`Unstake ${userStaked.toFixed(fixedDecimals)} ${stakeTokenTicker}`, unstake)
@@ -201,5 +201,44 @@ const ironChefContract_stake = async function(chefAbi, chefAddress, poolIndex, s
       })
   } else {
     alert('You have no tokens to stake!!')
+  }
+}
+
+const ironChefContract_unstake = async function(chefAbi, chefAddress, poolIndex, App) {
+  const signer = App.provider.getSigner()
+  const CHEF_CONTRACT = new ethers.Contract(chefAddress, chefAbi, signer)
+
+  const currentStakedAmount = (await CHEF_CONTRACT.userInfo(poolIndex, App.YOUR_ADDRESS)).amount
+  const earnedTokenAmount = await CHEF_CONTRACT.pendingReward(poolIndex, App.YOUR_ADDRESS) / 1e18
+
+  if (earnedTokenAmount > 0) {
+    showLoading()
+    CHEF_CONTRACT.withdraw(currentStakedAmount, {gasLimit: 500000})
+      .then(function(t) {
+        return App.provider.waitForTransaction(t.hash)
+      })
+      .catch(function() {
+        hideLoading()
+      })
+  }
+}
+
+const ironChefContract_claim = async function(chefAbi, chefAddress, poolIndex, App) {
+  const signer = App.provider.getSigner()
+
+  const CHEF_CONTRACT = new ethers.Contract(chefAddress, chefAbi, signer)
+
+  const earnedTokenAmount = await CHEF_CONTRACT.pendingReward(poolIndex, App.YOUR_ADDRESS) / 1e18
+
+  if (earnedTokenAmount > 0) {
+    showLoading()
+
+    CHEF_CONTRACT.claimReward({gasLimit: 500000})
+        .then(function(t) {
+          return App.provider.waitForTransaction(t.hash)
+        })
+        .catch(function() {
+          hideLoading()
+        })
   }
 }

@@ -36,17 +36,28 @@
     const rewardsPerWeek2 = await LAUNCHPOOL_CONTRACT2.lptPerBlock() / 1e18 * 604800 / 13.5;
     const rewardsPerWeek3 = await LAUNCHPOOL_CONTRACT3.rewardPerBlock() / 1e18 * 604800 / 13.5;
 
-    await loadLaunchpoolChefContract(App, LAUNCHPOOL_CONTRACT3, LAUNCHPOOL_CHEF_ADDR3, LAUNCHPOOL_STAKING_ABI0,
+    let totalStaked = 0, totalUserStaked = 0, averageApr = 0;
+
+    let p0 = await loadLaunchpoolChefContract(App, LAUNCHPOOL_CONTRACT3, LAUNCHPOOL_CHEF_ADDR3, LAUNCHPOOL_STAKING_ABI0,
       launchpoolRewardTokenTicker, tokenRewardAddress, null, rewardsPerWeek3, "pendingRewards")
 
-    await loadLaunchpoolChefContract(App, LAUNCHPOOL_CONTRACT0, LAUNCHPOOL_CHEF_ADDR0, LAUNCHPOOL_STAKING_ABI0,
-        launchpoolRewardTokenTicker, tokenRewardAddress, null, rewardsPerWeek0, "pendingRewards")
+    let p1 =await loadLaunchpoolChefContract(App, LAUNCHPOOL_CONTRACT0, LAUNCHPOOL_CHEF_ADDR0, LAUNCHPOOL_STAKING_ABI0,
+      launchpoolRewardTokenTicker, tokenRewardAddress, null, rewardsPerWeek0, "pendingRewards")
 
-    await loadLaunchpoolChefContract(App, LAUNCHPOOL_CONTRACT1, LAUNCHPOOL_CHEF_ADDR1, LAUNCHPOOL_STAKING_ABI0,
-        launchpoolRewardTokenTicker, tokenRewardAddress, null, rewardsPerWeek1, "pendingRewards")
+    let p2 =await loadLaunchpoolChefContract(App, LAUNCHPOOL_CONTRACT1, LAUNCHPOOL_CHEF_ADDR1, LAUNCHPOOL_STAKING_ABI0,
+      launchpoolRewardTokenTicker, tokenRewardAddress, null, rewardsPerWeek1, "pendingRewards")
     
-    await loadLaunchpoolChefContract(App, LAUNCHPOOL_CONTRACT2, LAUNCHPOOL_CHEF_ADDR2, LAUNCHPOOL_STAKING_ABI1,
-        launchpoolRewardTokenTicker, tokenRewardAddress, null, rewardsPerWeek2, "pendingLpt")
+    let p3 =await loadLaunchpoolChefContract(App, LAUNCHPOOL_CONTRACT2, LAUNCHPOOL_CHEF_ADDR2, LAUNCHPOOL_STAKING_ABI1,
+      launchpoolRewardTokenTicker, tokenRewardAddress, null, rewardsPerWeek2, "pendingLpt")
+
+    totalStaked = p0.totalStaked + p1.totalStaked + p2.totalStaked + p3.totalStaked;
+    totalUserStaked = p0.totalUserStaked + p1.totalUserStaked + p2.totalUserStaked + p3.totalUserStaked;
+    averageApr = p0.averageApr + p1.averageApr + p2.averageApr + p3.averageApr;
+
+    _print_bold(`Total Staked: $${formatMoney(totalStaked)}\n`);
+    if(totalUserStaked > 0){
+      _print_bold(`You are staking a total of $${formatMoney(totalUserStaked)} at an average APR of ${(averageApr * 100).toFixed(2)}%\n`)
+    }
 
     await loadLpoolChefContract(App, LPOOL_CHEF, LPOOL_CHEF_ADDR, LPOOL_STAKE_FARMING_ABI, rewardTokenTicker,
         "lpt", null, rewardsPerWeek, "pendingLpt");
@@ -62,9 +73,6 @@
   const totalAllocPoints = await chefContract.totalAllocPoint();
 
   _print(`<a href='https://etherscan.io/address/${chefAddress}' target='_blank'>Staking Contract</a>`);
-  _print(`Found ${poolCount} pools.\n`)
-
-  _print(`Showing incentivized pools only.\n`);
 
   var tokens = {};
 
@@ -86,8 +94,7 @@
       }
     }
   }
-  //prices["0x194ebd173f6cdace046c53eacce9b953f28411d1"] = { usd : 1.22 } //"temporary" solution
-  
+
   await Promise.all(tokenAddresses.map(async (address) => {
       tokens[address] = await getToken(App, address, chefAddress);
   }));
@@ -114,7 +121,6 @@
     }
   }
   averageApr = averageApr / totalUserStaked;
-  _print_bold(`Total Staked: $${formatMoney(totalStaked)}`);
   if (totalUserStaked > 0) {
     _print_bold(`\nYou are staking a total of $${formatMoney(totalUserStaked)} at an average APR of ${(averageApr * 100).toFixed(2)}%`)
     _print(`Estimated earnings:`
