@@ -1590,7 +1590,7 @@ function printChefContractLinks(App, chefAbi, chefAddr, poolIndex, poolAddress, 
     _print('This will forfeit your rewards but retrieve your capital')
     _print('***')
   }
-  _print(`\n`);
+  _print("");
 }
 
 function printChefPool(App, chefAbi, chefAddr, prices, tokens, poolInfo, poolIndex, poolPrices, 
