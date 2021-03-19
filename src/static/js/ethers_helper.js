@@ -37,14 +37,14 @@ async function init_ethers() {
   let addr = getUrlParameter('addr')
 
   //resolve ENS domain if possible
-  if(typeof addr !== "undefined" && addr.includes('.eth')) 
+  if(typeof addr !== "undefined") 
   {
-    addr = await App.provider.resolveName(addr)
-    if(addr == null)
-    {
-      _print(
-      "Could not initialize your ENS domain.\n"
-      )
+    if (addr.includes('.eth')) {
+      addr = await App.provider.resolveName(addr)
+      if(addr == null)
+      {
+        _print("Could not initialize your ENS domain.\n")
+      }
     }
     App.YOUR_ADDRESS = addr
   }
