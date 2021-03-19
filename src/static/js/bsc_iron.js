@@ -122,8 +122,84 @@ function printSteelChefPool(App, chefAbi, chefAddr, prices, tokens, poolInfo, po
     staked_tvl, userStaked, poolPrices.price, fixedDecimals);
   if (poolInfo.userLPStaked > 0) sp?.print_contained_price(userStaked);
   if (poolInfo.userStaked > 0) poolPrices.print_contained_price(userStaked);
-  printChefContractLinks(App, chefAbi, chefAddr, poolIndex, poolInfo.address, pendingRewardsFunction,
+  printIronChefContractLinks(App, chefAbi, chefAddr, poolIndex, poolInfo.address, pendingRewardsFunction,
     rewardTokenTicker, poolPrices.stakeTokenTicker, poolInfo.poolToken.unstaked, 
     poolInfo.userStaked, poolInfo.pendingRewardTokens, fixedDecimals, claimFunction, rewardPrice, chain);
   return apr;
+}
+
+function printIronChefContractLinks(App, chefAbi, chefAddr, poolIndex, poolAddress, pendingRewardsFunction,
+  rewardTokenTicker, stakeTokenTicker, unstaked, userStaked, pendingRewardTokens, fixedDecimals,
+  claimFunction, rewardTokenPrice) {
+  fixedDecimals = fixedDecimals ?? 2;
+  const approveAndStake = async function() {
+    return ironChefContract_stake(chefAbi, chefAddr, poolIndex, poolAddress, App)
+  }      
+  const unstake = async function() {
+    return chefContract_unstake(chefAbi, chefAddr, poolIndex, App, pendingRewardsFunction)
+  }      
+  const claim = async function() {
+    return chefContract_claim(chefAbi, chefAddr, poolIndex, App, pendingRewardsFunction, claimFunction)
+  }
+  _print_link(`Stake ${unstaked.toFixed(fixedDecimals)} ${stakeTokenTicker}`, approveAndStake)
+  _print_link(`Unstake ${userStaked.toFixed(fixedDecimals)} ${stakeTokenTicker}`, unstake)
+  _print_link(`Claim ${pendingRewardTokens.toFixed(fixedDecimals)} ${rewardTokenTicker} ($${formatMoney(pendingRewardTokens*rewardTokenPrice)})`, claim)
+  _print(`Staking or unstaking also claims rewards.`)
+  if  (chefAddr == "0x0De845955E2bF089012F682fE9bC81dD5f11B372") {
+    const emergencyWithdraw = async function() {
+      return chefContract_emergencyWithdraw(chefAbi, chefAddr, poolIndex, App)
+    }      
+    _print('***')
+    _print_link(`EMERGENCY WITHDRAW ${userStaked.toFixed(fixedDecimals)} ${stakeTokenTicker}`, emergencyWithdraw)  
+    _print('This will forfeit your rewards but retrieve your capital')
+    _print('***')
+  }
+  _print(`\n`);
+}
+
+const ironChefContract_stake = async function(chefAbi, chefAddress, poolIndex, stakeTokenAddr, App) {
+  const signer = App.provider.getSigner()
+
+  const STAKING_TOKEN = new ethers.Contract(stakeTokenAddr, ERC20_ABI, signer)
+  const CHEF_CONTRACT = new ethers.Contract(chefAddress, chefAbi, signer)
+
+  const currentTokens = await STAKING_TOKEN.balanceOf(App.YOUR_ADDRESS)
+  const allowedTokens = await STAKING_TOKEN.allowance(App.YOUR_ADDRESS, chefAddress)
+
+  let allow = Promise.resolve()
+
+  if (allowedTokens / 1e18 < currentTokens / 1e18) {
+    showLoading()
+    allow = STAKING_TOKEN.approve(chefAddress, ethers.constants.MaxUint256)
+      .then(function(t) {
+        return App.provider.waitForTransaction(t.hash)
+      })
+      .catch(function() {
+        hideLoading()
+        alert('Try resetting your approval to 0 first')
+      })
+  }
+
+  if (currentTokens / 1e18 > 0) {
+    showLoading()
+    allow
+      .then(async function() {
+          CHEF_CONTRACT.stake(currentTokens, {gasLimit: 500000})
+          .then(function(t) {
+            App.provider.waitForTransaction(t.hash).then(function() {
+              hideLoading()
+            })
+          })
+          .catch(function(err) {
+            hideLoading()
+            console.log(err);
+          })
+      })
+      .catch(function(err) {
+        hideLoading()
+        console.log(err);
+      })
+  } else {
+    alert('You have no tokens to stake!!')
+  }
 }
