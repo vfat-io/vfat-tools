@@ -70,7 +70,7 @@ async function loadSoupExpiredChefContract(App, tokens, prices, chef, chefAddres
 
   _print(`* Expired *\n`)
 
-  _print(`Please remove tour funds\n`);
+  _print(`Please remove your funds\n`);
 
   var tokens = {};
 
