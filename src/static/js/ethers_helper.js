@@ -899,8 +899,8 @@ async function getErc20(app, token, address, stakingAddress) {
       symbol : "ETH",
       totalSupply: 1e8,
       decimals: 18,
-      staked: 0,
-      unstaked: 0,
+      staked: await app.provider.getBalance(stakingAddress) / 1e18,
+      unstaked: await app.provider.getBalance(app.YOUR_ADDRESS) / 1e18,
       contract: null,
       tokens:[address]
     }
@@ -1039,7 +1039,7 @@ async function getStoredToken(app, tokenAddress, stakingAddress, type) {
 
 async function getToken(app, tokenAddress, stakingAddress) {
   if (tokenAddress == "0x0000000000000000000000000000000000000000") {
-    return getErc20(app, null, tokenAddress, "")
+    return getErc20(app, null, tokenAddress, stakingAddress)
   }
   const type = window.localStorage.getItem(tokenAddress);
   //getTokenWeights
@@ -1879,10 +1879,17 @@ async function printSynthetixPool(App, info, chain="eth") {
         _print(`<a target="_blank" href="https://explorer-mainnet.maticvigil.com/address/${info.stakingAddress}#code">Matic Explorer</a>`);
         break;
     }
-    _print_link(`Stake ${info.userUnstaked.toFixed(6)} ${info.stakeTokenTicker}`, approveTENDAndStake)
+    if (info.stakeTokenTicker != "ETH") {
+      _print_link(`Stake ${info.userUnstaked.toFixed(6)} ${info.stakeTokenTicker}`, approveTENDAndStake)
+    }
+    else {
+      _print("Please use the official website to stake ETH.");
+    }
     _print_link(`Unstake ${info.userStaked.toFixed(6)} ${info.stakeTokenTicker}`, unstake)
     _print_link(`Claim ${info.earned.toFixed(6)} ${info.rewardTokenTicker} ($${formatMoney(info.earned*info.rewardTokenPrice)})`, claim)
-    _print_link(`Revoke (set approval to 0)`, revoke)
+    if (info.stakeTokenTicker != "ETH") {
+      _print_link(`Revoke (set approval to 0)`, revoke)
+    }
     _print_link(`Exit`, exit)
     _print("");
 
