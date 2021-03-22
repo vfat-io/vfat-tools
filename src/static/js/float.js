@@ -7,9 +7,9 @@ const FLOAT_STAKING_ABI = [{"inputs":[{"internalType":"address","name":"_admin",
 
 const Pools =  [
     { name: "SushiSwap LP (BANK-ETH)", address: "0xd04F4759A2cc28A5AE33287534CAA4dfcE90B9C3" },
-    { name: "USDC", address: "0x73139212d0f62c6ddb6514c6a55c3778eb798d72" },
-    { name: "DAI", address: "0xf5ab36def38e2635342e93895fedbd93c8ebb715" },
-    { name: "USDT", address: "0x8f2528ee4878c70c82d15903ae9f042a09e9d8f7" },
+    //{ name: "USDC", address: "0x73139212d0f62c6ddb6514c6a55c3778eb798d72" },
+    //{ name: "DAI", address: "0xf5ab36def38e2635342e93895fedbd93c8ebb715" },
+    //{ name: "USDT", address: "0x8f2528ee4878c70c82d15903ae9f042a09e9d8f7" },
     { name: "DAI", address: "0xAB768db196514DF35722A99c37C8ae3581d6352B" },
     { name: "USDC", address: "0xeD7df34c629F46de7C31069C7816dD6D8654DD17" },
     { name: "USDT", address: "0xC6D58F8c684F0F2992bA613d209209897c298E44" },

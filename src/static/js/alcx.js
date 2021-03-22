@@ -147,7 +147,7 @@ async function main() {
   
   var tokenAddresses = [].concat.apply([], poolInfos.filter(x => x.poolToken).map(x => x.poolToken.tokens));
   var prices = await lookUpTokenPrices(tokenAddresses);
-  prices["0xBC6DA0FE9aD5f3b0d58160288917AA56653660E9"] = { usd : 1 } //temporary of course
+  getParameterCaseInsensitive(prices, "0xBC6DA0FE9aD5f3b0d58160288917AA56653660E9").usd = 1
 
   await Promise.all(tokenAddresses.map(async (address) => {
       tokens[address] = await getToken(App, address, ALCX_POOL_ADDRESS);
