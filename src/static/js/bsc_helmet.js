@@ -11,10 +11,7 @@ async function main() {
 
     const Pool0 = {
       address : "0xb22425206D40605E9bE5a5460786DBaB5aBA9485",
-      abi : HELMET_CHEF_ABI0,
-      stakingTokenFunction : "stakingToken",
-      RewardTokenFunction0 : "rewardsToken",
-      RewardTokenFunction1 : "rewardsToken2"
+      abi : HELMET_CHEF_ABI0
     };
   
     _print(`Initialized ${App.YOUR_ADDRESS}\n`);
@@ -23,8 +20,7 @@ async function main() {
     const tokens = {};
     const prices = await getBscPrices();
 
-    let p0 = await loadHelmetSynthetixPools(App, tokens, prices, Pool0.abi, Pool0.address, Pool0.RewardTokenFunction0,
-      Pool0.RewardTokenFunction1, Pool0.stakingTokenFunction)
+    let p0 = await loadHelmetSynthetixPools(App, tokens, prices, Pool0.abi, Pool0.address)
 
     hideLoading();  
   }
