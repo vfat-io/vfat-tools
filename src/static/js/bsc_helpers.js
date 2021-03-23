@@ -345,7 +345,7 @@ async function loadBscBasisFork(data) {
 
 async function getBscPoolInfo(App, chefContract, chefAddress, poolIndex, pendingRewardsFunction) {  
   const poolInfo = await chefContract.poolInfo(poolIndex);
-  if (poolInfo.allocPoint == 0) {
+  if (poolInfo.allocPoint == 0 || poolIndex == 105) {
     return {
       address: poolInfo.lpToken,
       allocPoints: poolInfo.allocPoint ?? 1,
