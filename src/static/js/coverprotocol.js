@@ -43,7 +43,7 @@ async function main() {
   }
 
 
-  let p = await loadCoverprotocolContracts(App, tokens, prices, pools)
+  let p = await loadCoverprotocolContracts(App, tokens, prices, pools, COVER_CONTRACT)
   _print_bold(`Total staked: $${formatMoney(p.staked_tvl)}`);
   if (p.totalUserStaked > 0) {
     _print(`You are staking a total of $${formatMoney(p.totalUserStaked)} at an APR of ${(p.totalAPR * 100).toFixed(2)}%\n`);
@@ -52,11 +52,11 @@ async function main() {
   hideLoading();
 }
 
-async function loadCoverprotocolContracts(App, tokens, prices, pools) {
+async function loadCoverprotocolContracts(App, tokens, prices, pools, coverContract) {
   let totalStaked  = 0, totalUserStaked = 0, individualAPRs = [];
   const infos = await Promise.all(pools.map(p => 
     loadCoverprotocolPoolInfo(App, tokens, prices, p.abi, p.address, p.stakedToken,
-      p.rewards)));
+      p.rewards, coverContract)));
   for (const i of infos) {
     let p = await printSynthetixPool(App, i);
     totalStaked += p.staked_tvl || 0;
@@ -70,17 +70,16 @@ async function loadCoverprotocolContracts(App, tokens, prices, pools) {
 }
 
 async function loadCoverprotocolPoolInfo(App, tokens, prices, stakingAbi, stakingAddress, stakeTokenAddress,
-  rewards) {
-    const STAKING_CONTRACT = new ethers.Contract(stakingAddress, stakingAbi, App.YOUR_ADDRESS);
+  rewards, coverContract) {
 
-    const rewardTokens = rewards.map(r => {
+    const rewardTokens = await Promise.all(rewards.map(async r => {
       let rewardTokenPrice = getParameterCaseInsensitive(prices, r.rewardToken)?.usd;
       if (!getParameterCaseInsensitive(tokens, r.rewardToken)) {
-        tokens[r.rewardToken] = await getToken(App, rewardTokenAddress, stakingAddress);
+        tokens[r.rewardToken] = await getToken(App, r.rewardToken, stakingAddress);
       }
       let rewardToken = getParameterCaseInsensitive(tokens, r.rewardToken);
       let rewardTokenTicker = rewardToken.symbol;
-      let userInfos = await STAKING_CONTRACT.getUser(stakeTokenAddress, App.YOUR_ADDRESS);
+      let userInfos = await coverContract.getUser(stakeTokenAddress, App.YOUR_ADDRESS);
       let earned = r.pendingRewards / 10 ** rewardToken.decimals;
       return {
         address : r.rewardToken,
@@ -91,7 +90,7 @@ async function loadCoverprotocolPoolInfo(App, tokens, prices, stakingAbi, stakin
         usersBalance : userInfos[0].amount,
         earned : earned
       }
-    });
+    }));
 
     let stakeToken = await getToken(App, stakeTokenAddress, stakingAddress);
 
@@ -114,7 +113,6 @@ async function loadCoverprotocolPoolInfo(App, tokens, prices, stakingAbi, stakin
 
     const stakeTokenPrice =
         prices[stakeTokenAddress]?.usd ?? getParameterCaseInsensitive(prices, stakeTokenAddress)?.usd;
-    const rewardTokenPrice = getParameterCaseInsensitive(prices, rewardTokenAddress)?.usd;
 
     const staked_tvl = poolPrices.staked_tvl;
 
