@@ -1469,7 +1469,7 @@ function getErc20Prices(prices, pool, chain="eth") {
 }
 
 function getCurvePrices(prices, pool) {  
-  var price = getParameterCaseInsensitive(prices,pool.token.address)?.usd * pool.virtualPrice;
+  var price = (getParameterCaseInsensitive(prices,pool.token.address)?.usd ?? 1) * pool.virtualPrice;
   var tvl = pool.totalSupply * price / 10 ** pool.decimals;
   var staked_tvl = pool.staked * price;
   const poolUrl = `https://etherscan.io/token/${pool.address}`;
