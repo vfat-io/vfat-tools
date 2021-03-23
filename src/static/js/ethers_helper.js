@@ -1975,3 +1975,18 @@ async function loadBasisFork(data) {
 
     hideLoading();
 }
+
+async function getNewPricesAndTokens(tokens, prices, newAddresses) {
+  var newPriceAddresses = newAddresses.filter(x => 
+    !getParameterCaseInsensitive(prices, x));
+  var newPrices = await lookUpTokenPrices(newPriceAddresses);
+  for (const key in newPrices) {
+      if (newPrices[key])
+          prices[key] = newPrices[key];
+  }
+  var newTokenAddresses = newAddresses.filter(x => 
+      !getParameterCaseInsensitive(tokens,x));
+  for (const address of newTokenAddresses) {
+      tokens[address] = await getToken(App, address, tokenAddress);
+  }
+}
