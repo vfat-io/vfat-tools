@@ -3,6 +3,8 @@ $(function() {
     start(main);
 });
 
+const DIGG_STRATEGY_ABI = [{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"harvested","type":"uint256"},{"indexed":true,"internalType":"uint256","name":"blockNumber","type":"uint256"}],"name":"Harvest","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"totalDigg","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"totalShares","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"totalScaledShares","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"diggIncrease","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"sharesIncrease","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"scaledSharesIncrease","type":"uint256"}],"name":"HarvestState","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"account","type":"address"}],"name":"Paused","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"controller","type":"address"}],"name":"SetController","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"governance","type":"address"}],"name":"SetGovernance","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"performanceFeeGovernance","type":"uint256"}],"name":"SetPerformanceFeeGovernance","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"performanceFeeStrategist","type":"uint256"}],"name":"SetPerformanceFeeStrategist","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"strategist","type":"address"}],"name":"SetStrategist","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"withdrawalFee","type":"uint256"}],"name":"SetWithdrawalFee","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"tended","type":"uint256"}],"name":"Tend","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"account","type":"address"}],"name":"Unpaused","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"Withdraw","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"balance","type":"uint256"}],"name":"WithdrawAll","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"token","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"WithdrawOther","type":"event"},{"inputs":[],"name":"MAX_FEE","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"_governance","type":"address"},{"internalType":"address","name":"_strategist","type":"address"},{"internalType":"address","name":"_controller","type":"address"},{"internalType":"address","name":"_keeper","type":"address"},{"internalType":"address","name":"_guardian","type":"address"}],"name":"__BaseStrategy_init","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"balanceOf","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"balanceOfPool","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"balanceOfWant","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"baseStrategyVersion","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"controller","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"deposit","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"diggFaucet","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getName","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"pure","type":"function"},{"inputs":[],"name":"getProtectedTokens","outputs":[{"internalType":"address[]","name":"","type":"address[]"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"governance","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"guardian","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"harvest","outputs":[{"components":[{"internalType":"uint256","name":"totalDigg","type":"uint256"},{"internalType":"uint256","name":"totalShares","type":"uint256"},{"internalType":"uint256","name":"totalScaledShares","type":"uint256"},{"internalType":"uint256","name":"diggIncrease","type":"uint256"},{"internalType":"uint256","name":"sharesIncrease","type":"uint256"},{"internalType":"uint256","name":"scaledSharesIncrease","type":"uint256"}],"internalType":"struct StrategyDiggRewards.HarvestData","name":"","type":"tuple"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"_governance","type":"address"},{"internalType":"address","name":"_strategist","type":"address"},{"internalType":"address","name":"_controller","type":"address"},{"internalType":"address","name":"_keeper","type":"address"},{"internalType":"address","name":"_guardian","type":"address"},{"internalType":"address[2]","name":"_wantConfig","type":"address[2]"},{"internalType":"uint256[3]","name":"_feeConfig","type":"uint256[3]"}],"name":"initialize","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"isTendable","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"keeper","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"pause","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"paused","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"performanceFeeGovernance","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"performanceFeeStrategist","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"_controller","type":"address"}],"name":"setController","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"_governance","type":"address"}],"name":"setGovernance","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"_guardian","type":"address"}],"name":"setGuardian","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"_keeper","type":"address"}],"name":"setKeeper","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_performanceFeeGovernance","type":"uint256"}],"name":"setPerformanceFeeGovernance","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_performanceFeeStrategist","type":"uint256"}],"name":"setPerformanceFeeStrategist","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"_strategist","type":"address"}],"name":"setStrategist","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_withdrawalFee","type":"uint256"}],"name":"setWithdrawalFee","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_threshold","type":"uint256"}],"name":"setWithdrawalMaxDeviationThreshold","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"sharesOf","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"sharesOfPool","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"sharesOfWant","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"strategist","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"uniswap","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"unpause","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"version","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"pure","type":"function"},{"inputs":[],"name":"want","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"_amount","type":"uint256"}],"name":"withdraw","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"withdrawAll","outputs":[{"internalType":"uint256","name":"balance","type":"uint256"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"_asset","type":"address"}],"name":"withdrawOther","outputs":[{"internalType":"uint256","name":"balance","type":"uint256"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"withdrawalFee","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"withdrawalMaxDeviationThreshold","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"}]
+
 const bUniContract_stake = async function (stakingTokenAddr, rewardPoolAddr, App, maxAllowance) {
     const signer = App.provider.getSigner()
   
@@ -144,6 +146,58 @@ const geyserContract_stake = async function(stakingTokenAddr, rewardPoolAddr, Ap
       }
   }
 
+async function printNonGeyserPool(App, tokens, prices, pool, sharesPerFragment) {
+  const tokenUrl = `<a href='https://etherscan.io/address/${pool.tokenAddress}' target='_blank'>Underlying</a>`;
+  const settUrl = `<a href='https://etherscan.io/address/${pool.settAddress}' target='_blank'>Sett</a>`;
+  _print(`${pool.name} - ${tokenUrl} - ${settUrl}`);
+  const tokenAddress = pool.tokenAddress;
+  const settAddress = pool.settAddress;
+  const strategyAddress = pool.strategyAddress;
+
+  const TOKEN_CONTRACT = new ethers.Contract(tokenAddress, ERC20_ABI, App.provider);
+  const userTotallyUnstaked = await TOKEN_CONTRACT.balanceOf(App.YOUR_ADDRESS) / 1e18;
+
+  const lpToken = await getToken(App, tokenAddress, strategyAddress);
+  _print(`You have ${userTotallyUnstaked} ${lpToken.symbol}`);
+
+  var newPriceAddresses = lpToken.tokens.filter(x => 
+      !getParameterCaseInsensitive(prices, x));
+  var newPrices = await lookUpTokenPrices(newPriceAddresses);
+  for (const key in newPrices) {
+      if (newPrices[key])
+          prices[key] = newPrices[key];
+  }
+  var newTokenAddresses = lpToken.tokens.filter(x => 
+      !getParameterCaseInsensitive(tokens,x));
+  for (const address of newTokenAddresses) {
+      tokens[address] = await getToken(App, address, tokenAddress);
+  }
+
+  const SETT_CONTRACT = new ethers.Contract(settAddress, BADGER_UNI_ABI, App.provider);
+  const userUnstaked = await SETT_CONTRACT.balanceOf(App.YOUR_ADDRESS) / 1e18;
+  const settToken = await getToken(App, settAddress, strategyAddress);
+  _print(`You have ${userUnstaked} ${settToken.symbol}`);
+
+  let poolPrices = getPoolPrices(tokens, prices, lpToken);
+
+  poolPrices.print_price();
+
+  const ratio = await SETT_CONTRACT.getPricePerFullShare() / 1e18;
+
+  const stakeTokenPrice = poolPrices.price * ratio;
+  prices[settAddress] = stakeTokenPrice;
+
+  if (userUnstaked > 0) poolPrices.print_contained_price(userUnstaked * ratio);
+
+  const approveUNIAndStake = async () => bUniContract_stake(tokenAddress, settAddress, App);
+  const unstakeUNI = async () => bUniContract_unstake(settAddress, App);
+
+  _print_link(`Stake ${userTotallyUnstaked.toFixed(12)} ${lpToken.symbol}`, approveUNIAndStake)
+  _print_link(`Unstake ${userUnstaked.toFixed(12)} ${lpToken.symbol}`, unstakeUNI)
+  _print(`\n`);
+}
+
+  
 async function printPool(App, tokens, prices, pool, sharesPerFragment) {
   const tokenUrl = `<a href='https://etherscan.io/address/${pool.tokenAddress}' target='_blank'>Underlying</a>`;
   const settUrl = `<a href='https://etherscan.io/address/${pool.settAddress}' target='_blank'>Sett</a>`;
@@ -315,6 +369,12 @@ const pools = [
     geyserAddress : "0xa9429271a28F8543eFFfa136994c0839E7d7bF77"
   },
   {
+    name : "DIGG",
+    tokenAddress : "0x798D1bE841a82a273720CE31c822C61a67a601C3",
+    settAddress : "0x7e7E112A68d8D2E221E11047a72fFC1065c38e1a",
+    strategyAddress : "0x4a8651f2edd68850b944ad93f2c67af817f39f62"
+  },
+  {
     name : "ETH/wBTC Sushi-LP",
     tokenAddress : "0xceff51756c56ceffca006cd410b03ffc46dd3a58",
     settAddress : "0x758a43ee2bff8230eeb784879cdcff4828f2544d",
@@ -366,8 +426,13 @@ async function main() {
     for (const key in newPrices) {
         prices[key] = newPrices[key];
     }
-    for (const p of pools)
-      await printPool(App, tokens, prices, p, sharesPerFragment);
-
+    for (const p of pools) {
+      if (p.geyserAddress) {
+        await printPool(App, tokens, prices, p, sharesPerFragment);
+      }
+      else {
+        await printNonGeyserPool(App, tokens, prices, p, sharesPerFragment);  
+      }
+    }
     hideLoading();
 }
