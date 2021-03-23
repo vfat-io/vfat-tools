@@ -28,18 +28,22 @@ async function main() {
       let rewards = []
       let pendingRewards = await COVER_CONTRACT.viewRewards(poolAddress, App.YOUR_ADDRESS);
       for(let i = 0; i < pool.bonuses.length; i++){
+        if(Date.now() / 1000 < pool.bonuses[i].endTime){
           rewards.push({
-              rewardToken: pool.bonuses[i].bonusTokenAddr,
-              weeklyRewards: pool.bonuses[i].weeklyRewards,
-              pendingRewards : pendingRewards[i]
-          });
+            rewardToken: pool.bonuses[i].bonusTokenAddr,
+            weeklyRewards: pool.bonuses[i].weeklyRewards,
+            pendingRewards : pendingRewards[i]
+        });
+        }
       }
-      pools.push({
+      if(rewards != []){
+        pools.push({
           abi : COVER_CONTRACT_ABI,
           address : COVER_CONTRACT_ADDR,
           stakedToken : poolAddress,
           rewards : rewards
       });
+      }
   }
 
 
@@ -57,12 +61,14 @@ async function loadCoverprotocolContracts(App, tokens, prices, pools, coverContr
   const infos = await Promise.all(pools.map(p => 
     loadCoverprotocolPoolInfo(App, tokens, prices, p.abi, p.address, p.stakedToken,
       p.rewards, coverContract)));
-  for (const i of infos) {
-    let p = await printSynthetixPool(App, i);
-    totalStaked += p.staked_tvl || 0;
-    totalUserStaked += p.userStaked || 0;
-    if (p.userStaked > 0) {
-      individualAPRs.push(p.userStaked * p.apr / 100);
+  for (const info of infos) {
+    if(info.rewardTokens != []){
+      let p = await printCoverSynthetixPool(App, info);
+      totalStaked += p.staked_tvl || 0;
+      totalUserStaked += p.userStaked || 0;
+      if (p.userStaked > 0) {
+        individualAPRs.push(p.userStaked * p.apr / 100);
+      }
     }
   }
   let totalAPR = totalUserStaked == 0 ? 0 : individualAPRs.reduce((x,y)=>x+y, 0) / totalUserStaked;
@@ -72,6 +78,8 @@ async function loadCoverprotocolContracts(App, tokens, prices, pools, coverContr
 async function loadCoverprotocolPoolInfo(App, tokens, prices, stakingAbi, stakingAddress, stakeTokenAddress,
   rewards, coverContract) {
 
+    await getNewPricesAndTokens(App, tokens, prices, rewards.map(r => r.rewardToken), stakingAddress);
+
     const rewardTokens = await Promise.all(rewards.map(async r => {
       let rewardTokenPrice = getParameterCaseInsensitive(prices, r.rewardToken)?.usd;
       if (!getParameterCaseInsensitive(tokens, r.rewardToken)) {
@@ -79,33 +87,21 @@ async function loadCoverprotocolPoolInfo(App, tokens, prices, stakingAbi, stakin
       }
       let rewardToken = getParameterCaseInsensitive(tokens, r.rewardToken);
       let rewardTokenTicker = rewardToken.symbol;
-      let userInfos = await coverContract.getUser(stakeTokenAddress, App.YOUR_ADDRESS);
       let earned = r.pendingRewards / 10 ** rewardToken.decimals;
+      let _weeklyRewards = r.weeklyRewards / 10 ** rewardToken.decimals;
       return {
         address : r.rewardToken,
-        weeklyRewards : r.weeklyRewards,
-        usdPerWeek : r.weeklyRewards * rewardTokenPrice,
+        weeklyRewards : _weeklyRewards,
+        usdPerWeek : _weeklyRewards * rewardTokenPrice,
         rewardToken : rewardToken,
         rewardTokenTicker : rewardTokenTicker,
-        usersBalance : userInfos[0].amount,
         earned : earned
       }
     }));
 
     let stakeToken = await getToken(App, stakeTokenAddress, stakingAddress);
 
-    let newPriceAddresses = stakeToken.tokens.filter(x =>
-      !getParameterCaseInsensitive(prices, x));
-    let newPrices = await lookUpTokenPrices(newPriceAddresses);
-    for (const key in newPrices) {
-      if (newPrices[key]?.usd)
-          prices[key] = newPrices[key];
-    }
-    let newTokenAddresses = stakeToken.tokens.filter(x =>
-      !getParameterCaseInsensitive(tokens,x));
-    for (const address of newTokenAddresses) {
-        tokens[address] = await getToken(App, address, stakingAddress);
-    }
+    await getNewPricesAndTokens(App, tokens, prices, stakeToken.tokens, stakeTokenAddress);
 
     const poolPrices = getPoolPrices(tokens, prices, stakeToken);
 
@@ -114,9 +110,11 @@ async function loadCoverprotocolPoolInfo(App, tokens, prices, stakingAbi, stakin
     const stakeTokenPrice =
         prices[stakeTokenAddress]?.usd ?? getParameterCaseInsensitive(prices, stakeTokenAddress)?.usd;
 
+    const userInfos = await coverContract.getUser(stakeTokenAddress, App.YOUR_ADDRESS);
+
     const staked_tvl = poolPrices.staked_tvl;
 
-    const userStaked = rewardTokens.usersBalance / 10 ** stakeToken.decimals;
+    const userStaked = userInfos[0].amount / 10 ** stakeToken.decimals;
 
     const userUnstaked = stakeToken.unstaked;
 
@@ -133,10 +131,14 @@ async function loadCoverprotocolPoolInfo(App, tokens, prices, stakingAbi, stakin
     }
 }
 
-/**async function printSynthetixPool(App, info, chain="eth") {
+async function printCoverSynthetixPool(App, info, chain="eth") {
     info.poolPrices.print_price(chain);
-    _print(`${info.rewardTokenTicker} Per Week: ${info.weeklyRewards.toFixed(2)} ($${formatMoney(info.usdPerWeek)})`);
-    const weeklyAPR = info.usdPerWeek / info.staked_tvl * 100;
+    let weeklyAPRs = 0
+    for(const rewardToken of info.rewardTokens){
+      _print(`${rewardToken.rewardTokenTicker} Per Week: ${rewardToken.weeklyRewards.toFixed(2)} ($${formatMoney(rewardToken.usdPerWeek)})`);
+      weeklyAPRs += rewardToken.usdPerWeek;
+    }
+    const weeklyAPR = weeklyAPRs / info.staked_tvl * 100;
     const dailyAPR = weeklyAPR / 7;
     const yearlyAPR = weeklyAPR * 52;
     _print(`APR: Day ${dailyAPR.toFixed(2)}% Week ${weeklyAPR.toFixed(2)}% Year ${yearlyAPR.toFixed(2)}%`);
@@ -188,7 +190,9 @@ async function loadCoverprotocolPoolInfo(App, tokens, prices, stakingAbi, stakin
     }
     _print_link(`Stake ${info.userUnstaked.toFixed(6)} ${info.stakeTokenTicker}`, approveTENDAndStake)
     _print_link(`Unstake ${info.userStaked.toFixed(6)} ${info.stakeTokenTicker}`, unstake)
-    _print_link(`Claim ${info.earned.toFixed(6)} ${info.rewardTokenTicker} ($${formatMoney(info.earned*info.rewardTokenPrice)})`, claim)
+    for(const rewardToken of info.rewardTokens){
+      _print_link(`Claim ${rewardToken.earned.toFixed(6)} ${rewardToken.rewardTokenTicker} ($${formatMoney(rewardToken.earned*rewardToken.rewardTokenPrice)})`, claim)
+    }
     _print_link(`Revoke (set approval to 0)`, revoke)
     _print_link(`Exit`, exit)
     _print("");
@@ -198,4 +202,4 @@ async function loadCoverprotocolPoolInfo(App, tokens, prices, stakingAbi, stakin
         userStaked : userStakedUsd,
         apr : yearlyAPR
     }
-} */
+}
