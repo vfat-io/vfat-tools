@@ -77,7 +77,7 @@ const getUrlParameter = function(sParam) {
     sParameterName,
     i
 
-  for (i = 0; i < sURLVariables.length; i++) {
+  for (let i = 0; i < sURLVariables.length; i++) {
     sParameterName = sURLVariables[i].split('=')
 
     if (sParameterName[0] === sParam) {
@@ -800,7 +800,7 @@ async function getBalancerPool(app, pool, poolAddress, stakingAddress, tokens, s
   let [decimals, symbol, name, totalSupply, staked, unstaked, ] = results
   let poolTokens = [];
   let j = 0;
-  for (i = 6; i < results.length; i+=2) {
+  for (let i = 6; i < results.length; i+=2) {
     poolTokens.push({
       address : tokens[j],
       weight: results[i] / 1e18,
@@ -1330,7 +1330,7 @@ function getBalancerPrices(tokens, prices, pool)
   var poolTokens = pool.poolTokens.map(t => getParameterCaseInsensitive(tokens, t.address));
   var poolPrices = pool.poolTokens.map(t => getParameterCaseInsensitive(prices, t.address)?.usd);
   var quantities = poolTokens.map((t, i) => pool.poolTokens[i].balance / 10 ** t.decimals);
-  var missing = poolPrices.filter(x => !x);
+  var missing = poolPrices.map((x, i) => x ? -1 : i).filter(x => x >= 0);
   if (missing.length == poolPrices.length) {
     throw 'Every price is missing';
   }
@@ -1338,7 +1338,7 @@ function getBalancerPrices(tokens, prices, pool)
   const getMissingPrice = (missingQuantity, missingWeight) =>
     quantities[notMissing] * poolPrices[notMissing] * missingWeight
      / pool.poolTokens[notMissing].weight / missingQuantity;
-  missing.map((_, i) => {
+  missing.map(i => {
     const newPrice = getMissingPrice(quantities[i], pool.poolTokens[i].weight);
     poolPrices[i] = newPrice;
     prices[poolTokens[i].address] = { usd : newPrice };
@@ -1658,7 +1658,7 @@ async function loadChefContract(App, chef, chefAddress, chefAbi, rewardTokenTick
   _print("Finished reading smart contracts.\n");
     
   let aprs = []
-  for (i = 0; i < poolCount; i++) {
+  for (let i = 0; i < poolCount; i++) {
     if (poolPrices[i]) {
       const apr = printChefPool(App, chefAbi, chefAddress, prices, tokens, poolInfos[i], i, poolPrices[i],
         totalAllocPoints, rewardsPerWeek, rewardTokenTicker, rewardTokenAddress,
@@ -1976,7 +1976,7 @@ async function loadBasisFork(data) {
     hideLoading();
 }
 
-async function getNewPricesAndTokens(tokens, prices, newAddresses) {
+async function getNewPricesAndTokens(App, tokens, prices, newAddresses, stakingAddress) {
   var newPriceAddresses = newAddresses.filter(x => 
     !getParameterCaseInsensitive(prices, x));
   var newPrices = await lookUpTokenPrices(newPriceAddresses);
@@ -1987,6 +1987,6 @@ async function getNewPricesAndTokens(tokens, prices, newAddresses) {
   var newTokenAddresses = newAddresses.filter(x => 
       !getParameterCaseInsensitive(tokens,x));
   for (const address of newTokenAddresses) {
-      tokens[address] = await getToken(App, address, tokenAddress);
+      tokens[address] = await getToken(App, address, stakingAddress);
   }
 }
