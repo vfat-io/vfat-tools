@@ -19,6 +19,93 @@ $(function() {
     };
   }
 
+  const gaia_withdraw = async function(chefAbi, chefAddress, poolIndex, App) {
+    const signer = App.provider.getSigner()
+    const CHEF_CONTRACT = new ethers.Contract(chefAddress, chefAbi, signer)
+  
+    const currentStakedAmount = (await CHEF_CONTRACT.userInfo(poolIndex, App.YOUR_ADDRESS)).amount
+  
+    if (currentStakedAmount > 0) {
+      showLoading()
+      CHEF_CONTRACT.withdraw(poolIndex, {gasLimit: 500000})
+        .then(function(t) {
+          return App.provider.waitForTransaction(t.hash)
+        })
+        .catch(function() {
+          hideLoading()
+        })
+    }
+  }
+
+  const gaia_claim = async function(chefAbi, chefAddress, poolIndex, App) {
+    const signer = App.provider.getSigner()
+  
+    const CHEF_CONTRACT = new ethers.Contract(chefAddress, chefAbi, signer)
+  
+    const earnedTokenAmount = await CHEF_CONTRACT.pendingGaia(poolIndex, App.YOUR_ADDRESS) / 1e18
+  
+    if (earnedTokenAmount > 0) {
+        showLoading()
+        CHEF_CONTRACT.claimRewards(poolIndex, {gasLimit: 500000})
+            .then(function(t) {
+                return App.provider.waitForTransaction(t.hash)
+            })
+            .catch(function() {
+               hideLoading()
+            })
+        }
+  }
+
+  function printGaiaContractLinks(App, chefAbi, chefAddr, poolIndex, poolAddress, rewardTokenTicker, stakeTokenTicker, 
+    unstaked, userStaked, pendingRewardTokens, fixedDecimals, rewardTokenPrice) {
+    fixedDecimals = fixedDecimals ?? 2;
+    const approveAndStake = async function() {
+      return chefContract_stake(chefAbi, chefAddr, poolIndex, poolAddress, App)
+    }      
+    const unstake = async function() {
+      return gaia_withdraw(chefAbi, chefAddr, poolIndex, App)
+    }      
+    const claim = async function() {
+      return gaia_claim(chefAbi, chefAddr, poolIndex, App)
+    }
+    _print_link(`Stake ${unstaked.toFixed(fixedDecimals)} ${stakeTokenTicker}`, approveAndStake)
+    _print_link(`Unstake ${userStaked.toFixed(fixedDecimals)} ${stakeTokenTicker}`, unstake)
+    _print_link(`Claim ${pendingRewardTokens.toFixed(fixedDecimals)} ${rewardTokenTicker} ($${formatMoney(pendingRewardTokens*rewardTokenPrice)})`, claim)
+    _print(`Staking or unstaking also claims rewards.`)
+    if  (chefAddr == "0x0De845955E2bF089012F682fE9bC81dD5f11B372") {
+      const emergencyWithdraw = async function() {
+        return chefContract_emergencyWithdraw(chefAbi, chefAddr, poolIndex, App)
+      }      
+      _print('***')
+      _print_link(`EMERGENCY WITHDRAW ${userStaked.toFixed(fixedDecimals)} ${stakeTokenTicker}`, emergencyWithdraw)  
+      _print('This will forfeit your rewards but retrieve your capital')
+      _print('***')
+    }
+    _print("");
+  }
+  
+  function printGaiaPool(App, chefAbi, chefAddr, prices, tokens, poolInfo, poolIndex, poolPrices, 
+                         totalAllocPoints, rewardsPerWeek, rewardTokenTicker, rewardTokenAddress,
+                         fixedDecimals, chain="eth") {  
+    fixedDecimals = fixedDecimals ?? 2;
+    const sp = (poolInfo.stakedToken == null) ? null : getPoolPrices(tokens, prices, poolInfo.stakedToken);
+    var poolRewardsPerWeek = poolInfo.allocPoints / totalAllocPoints * rewardsPerWeek;
+    if (poolRewardsPerWeek == 0) return;
+    const userStaked = poolInfo.userLPStaked ?? poolInfo.userStaked;
+    const rewardPrice = getParameterCaseInsensitive(prices, rewardTokenAddress)?.usd;
+    const staked_tvl = sp?.staked_tvl ?? poolPrices.staked_tvl;
+    poolPrices.print_price();
+    sp?.print_price();
+    const apr = printAPR(rewardTokenTicker, rewardPrice, poolRewardsPerWeek, poolPrices.stakeTokenTicker, 
+      staked_tvl, userStaked, poolPrices.price, fixedDecimals);
+    if (poolInfo.userLPStaked > 0) sp?.print_contained_price(userStaked);
+    if (poolInfo.userStaked > 0) poolPrices.print_contained_price(userStaked);
+    printGaiaContractLinks(App, chefAbi, chefAddr, poolIndex, poolInfo.address,
+      rewardTokenTicker, poolPrices.stakeTokenTicker, poolInfo.poolToken.unstaked, 
+      poolInfo.userStaked, poolInfo.pendingRewardTokens, fixedDecimals, rewardPrice, chain);
+    return apr;
+  }
+
   async function loadGaiaContract(App, chef, chefAddress, chefAbi, rewardTokenTicker) {
     const chefContract = chef ?? new ethers.Contract(chefAddress, chefAbi, App.provider);
   
@@ -53,8 +140,8 @@ $(function() {
     let aprs = []
     for (i = 0; i < poolCount; i++) {
       if (poolPrices[i]) {
-        const apr = printChefPool(App, chefAbi, chefAddress, prices, tokens, poolInfos[i], i, poolPrices[i],
-          totalAllocPoints, rewardsPerWeek, rewardTokenTicker, rewardTokenAddress, "pendingGaia", 6, chef.claimRewards)
+        const apr = printGaiaPool(App, chefAbi, chefAddress, prices, tokens, poolInfos[i], i, poolPrices[i],
+          totalAllocPoints, rewardsPerWeek, rewardTokenTicker, rewardTokenAddress, 6)
         aprs.push(apr);
       }
     }
