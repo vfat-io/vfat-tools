@@ -36,7 +36,7 @@ async function main() {
         });
         }
       }
-      if(rewards != []){
+      if(rewards.length > 0){
         pools.push({
           abi : COVER_CONTRACT_ABI,
           address : COVER_CONTRACT_ADDR,
@@ -59,60 +59,47 @@ async function main() {
 async function loadCoverprotocolContracts(App, tokens, prices, pools, coverContract) {
   let totalStaked  = 0, totalUserStaked = 0, individualAPRs = [];
   const infos = await Promise.all(pools.map(p => 
-    loadCoverprotocolPoolInfo(App, tokens, prices, p.abi, p.address, p.stakedToken,
-      p.rewards, coverContract)));
+    loadCoverprotocolPoolInfo(App, tokens, p.address, p.stakedToken, p.rewards, coverContract)));
+  let tokenAddresses = []
   for (const info of infos) {
-    if(info.rewardTokens != []){
-      let p = await printCoverSynthetixPool(App, info);
-      totalStaked += p.staked_tvl || 0;
-      totalUserStaked += p.userStaked || 0;
-      if (p.userStaked > 0) {
-        individualAPRs.push(p.userStaked * p.apr / 100);
-      }
+    info.stakeToken.tokens.forEach(t => tokenAddresses.push(t));
+    info.rewardTokens.forEach(r => r.rewardToken.tokens.forEach(rt => tokenAddresses.push(rt)));
+  }
+  await getNewPricesAndTokens(App, tokens, prices, tokenAddresses, coverContract.address)
+  for (const info of infos) {
+    let p = await printCoverSynthetixPool(App, tokens, prices, info);
+    totalStaked += p.staked_tvl || 0;
+    totalUserStaked += p.userStaked || 0;
+    if (p.userStaked > 0) {
+      individualAPRs.push(p.userStaked * p.apr / 100);
     }
   }
   let totalAPR = totalUserStaked == 0 ? 0 : individualAPRs.reduce((x,y)=>x+y, 0) / totalUserStaked;
   return { staked_tvl : totalStaked, totalUserStaked, totalAPR };
 }
 
-async function loadCoverprotocolPoolInfo(App, tokens, prices, stakingAbi, stakingAddress, stakeTokenAddress,
+async function loadCoverprotocolPoolInfo(App, tokens, stakingAddress, stakeTokenAddress,
   rewards, coverContract) {
-
-    await getNewPricesAndTokens(App, tokens, prices, rewards.map(r => r.rewardToken), stakingAddress);
-
     const rewardTokens = await Promise.all(rewards.map(async r => {
-      let rewardTokenPrice = getParameterCaseInsensitive(prices, r.rewardToken)?.usd;
       if (!getParameterCaseInsensitive(tokens, r.rewardToken)) {
         tokens[r.rewardToken] = await getToken(App, r.rewardToken, stakingAddress);
       }
-      let rewardToken = getParameterCaseInsensitive(tokens, r.rewardToken);
-      let rewardTokenTicker = rewardToken.symbol;
-      let earned = r.pendingRewards / 10 ** rewardToken.decimals;
-      let _weeklyRewards = r.weeklyRewards / 10 ** rewardToken.decimals;
+      const rewardToken = getParameterCaseInsensitive(tokens, r.rewardToken);
+      const rewardTokenTicker = rewardToken.symbol;
+      const earned = r.pendingRewards / 10 ** rewardToken.decimals;
+      const _weeklyRewards = r.weeklyRewards / 10 ** rewardToken.decimals;
       return {
         address : r.rewardToken,
         weeklyRewards : _weeklyRewards,
-        usdPerWeek : _weeklyRewards * rewardTokenPrice,
         rewardToken : rewardToken,
         rewardTokenTicker : rewardTokenTicker,
         earned : earned
       }
     }));
 
-    let stakeToken = await getToken(App, stakeTokenAddress, stakingAddress);
-
-    await getNewPricesAndTokens(App, tokens, prices, stakeToken.tokens, stakeTokenAddress);
-
-    const poolPrices = getPoolPrices(tokens, prices, stakeToken);
-
-    const stakeTokenTicker = poolPrices.stakeTokenTicker;
-
-    const stakeTokenPrice =
-        prices[stakeTokenAddress]?.usd ?? getParameterCaseInsensitive(prices, stakeTokenAddress)?.usd;
+    const stakeToken = await getToken(App, stakeTokenAddress, stakingAddress);
 
     const userInfos = await coverContract.getUser(stakeTokenAddress, App.YOUR_ADDRESS);
-
-    const staked_tvl = poolPrices.staked_tvl;
 
     const userStaked = userInfos[0].amount / 10 ** stakeToken.decimals;
 
@@ -120,21 +107,25 @@ async function loadCoverprotocolPoolInfo(App, tokens, prices, stakingAbi, stakin
 
     return {
       stakingAddress,
-      poolPrices,
       stakeTokenAddress,
       rewardTokens,
-      stakeTokenTicker,
-      stakeTokenPrice,
-      staked_tvl,
       userStaked,
-      userUnstaked
+      userUnstaked,
+      stakeToken
     }
 }
 
-async function printCoverSynthetixPool(App, info, chain="eth") {
+async function printCoverSynthetixPool(App, tokens, prices, info, chain="eth") {
+    info.poolPrices = getPoolPrices(tokens, prices, info.stakeToken);
+    info.stakeTokenPrice = getParameterCaseInsensitive(prices, info.stakeTokenAddress)?.usd;
+    info.stakeTokenTicker = info.poolPrices.stakeTokenTicker;
+    info.staked_tvl = info.poolPrices.staked_tvl;
+    info.rewardTokenPrice = getParameterCaseInsensitive
     info.poolPrices.print_price(chain);
     let weeklyAPRs = 0
     for(const rewardToken of info.rewardTokens){
+      const rewardTokenPrice = getParameterCaseInsensitive(prices, rewardToken.address)?.usd ?? 0;
+      rewardToken.usdPerWeek = rewardToken.weeklyRewards * rewardTokenPrice;
       _print(`${rewardToken.rewardTokenTicker} Per Week: ${rewardToken.weeklyRewards.toFixed(2)} ($${formatMoney(rewardToken.usdPerWeek)})`);
       weeklyAPRs += rewardToken.usdPerWeek;
     }
@@ -146,16 +137,6 @@ async function printCoverSynthetixPool(App, info, chain="eth") {
     const userStakedPct = userStakedUsd / info.staked_tvl * 100;
     _print(`You are staking ${info.userStaked.toFixed(6)} ${info.stakeTokenTicker} ` +
            `$${formatMoney(userStakedUsd)} (${userStakedPct.toFixed(2)}% of the pool).`);
-    if (info.userStaked > 0) {
-      info.poolPrices.print_contained_price(info.userStaked);
-        const userWeeklyRewards = userStakedPct * info.weeklyRewards / 100;
-        const userDailyRewards = userWeeklyRewards / 7;
-        const userYearlyRewards = userWeeklyRewards * 52;
-        _print(`Estimated ${info.rewardTokenTicker} earnings:`
-            + ` Day ${userDailyRewards.toFixed(2)} ($${formatMoney(userDailyRewards*info.rewardTokenPrice)})`
-            + ` Week ${userWeeklyRewards.toFixed(2)} ($${formatMoney(userWeeklyRewards*info.rewardTokenPrice)})`
-            + ` Year ${userYearlyRewards.toFixed(2)} ($${formatMoney(userYearlyRewards*info.rewardTokenPrice)})`);
-    }
     const approveTENDAndStake = async function() {
       return rewardsContract_stake(info.stakeTokenAddress, info.stakingAddress, App)
     }
@@ -171,23 +152,7 @@ async function printCoverSynthetixPool(App, info, chain="eth") {
     const revoke = async function() {
       return rewardsContract_resetApprove(info.stakeTokenAddress, info.stakingAddress, App)
     }
-    switch (chain) {
-      case "eth":
-        _print(`<a target="_blank" href="https://etherscan.io/address/${info.stakingAddress}#code">Etherscan</a>`);
-        break;
-      case "avax":
-        _print(`<a target="_blank" href="https://cchain.explorer.avax.network/address/${info.stakingAddress}#code">Explorer</a>`);
-        break;
-      case "bsc":
-        _print(`<a target="_blank" href="https://bscscan.com/address/${info.stakingAddress}#code">BSC Scan</a>`);
-        break;
-      case "heco":
-        _print(`<a target="_blank" href="https://scan.hecochain.com/address/${info.stakingAddress}#code">Heco Scan</a>`);
-        break;
-      case "matic":
-        _print(`<a target="_blank" href="https://explorer-mainnet.maticvigil.com/address/${info.stakingAddress}#code">Matic Explorer</a>`);
-        break;
-    }
+    _print(`<a target="_blank" href="https://etherscan.io/address/${info.stakingAddress}#code">Etherscan</a>`);
     _print_link(`Stake ${info.userUnstaked.toFixed(6)} ${info.stakeTokenTicker}`, approveTENDAndStake)
     _print_link(`Unstake ${info.userStaked.toFixed(6)} ${info.stakeTokenTicker}`, unstake)
     for(const rewardToken of info.rewardTokens){
