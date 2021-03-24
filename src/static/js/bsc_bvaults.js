@@ -52,13 +52,14 @@ async function loadBscBvaultsContract(App, tokens, prices, chef, chefAddress, ch
   const poolInfos = await Promise.all([...Array(poolCount).keys()].map(async (i) =>
     await getBvaultsPoolInfo(App, chefContract, chefAddress, i, rewardPools)));
 
-  var tokenAddresses = [].concat.apply([], poolInfos.filter(x => x.poolToken).map(x => x.poolToken.tokens));
+  var tokenAddresses = [].concat.apply([], poolInfos.filter(x => x?.poolToken).map(x => x.poolToken.tokens));
 
   await Promise.all(tokenAddresses.map(async (address) => {
       tokens[address] = await getBscToken(App, address, chefAddress);
   }));
 
-  const poolPrices = poolInfos.map(poolInfo => getPoolPrices(tokens, prices, poolInfo.poolToken, "bsc"));
+  const poolPrices = poolInfos.map(poolInfo =>
+    poolInfo?.poolToken ? getPoolPrices(tokens, prices, poolInfo.poolToken, "bsc") : null);
 
 
   _print("Finished reading smart contracts.\n");
@@ -74,6 +75,10 @@ async function getBvaultsPoolInfo(App, chefContract, chefAddress, poolIndex, rew
   const poolInfo = await chefContract.poolInfo(poolIndex);
   const STRATEGY = new ethers.Contract(poolInfo.strategy, BVAULTS_STRATEGY_ABI, App.provider)
   const poolToken = await getBscToken(App, poolInfo.want, chefAddress);
+  if (!poolToken) {
+    console.log(`Error loading ${poolInfo.want} pool.`);
+    return null;
+  }
   const pendingRewards = 
     await Promise.all(rewardPools.map(async (v, i) => { 
       const pendingReward = await chefContract.pendingReward(poolIndex, i, App.YOUR_ADDRESS) / 1e18
