@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include(`${partials}/head`); -%>
+
+<body>
+<%- include(`${partials}/header_main`); -%>
+<pre id="log">
+*************** 👨‍🌾 UNOFFICIAL BADGER FARMING CALCULATOR 👨‍🌾 ***************
+INFO  : https://app.badger.finance
+***************************************************************************
+
+Please note 50% of your rewards in the Badger geysers are automatically reinvested into your LP stake.
+
+The below APRs do not include underlying rewards such as from curve, sushi or fees. They are only BADGER/DIGG farming APRs.
+
+</pre>
+<div class="loader--1"></div>
+<%- include(`${partials}/scripts`, {scriptname: 'badger'}); -%>
+</body>
+</html> 

@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include(`${partials}/head`); -%>
+
+<body>
+<%- include(`${partials}/header_main`); -%>
+<pre id="log">
+*************** 👨‍🌾 UNOFFICIAL YAM-ETH SLP YIELD FARMING CALCULATOR 👨‍🌾 ***************
+INFO  : https://yam.finance/farm
+POOL  : https://sushiswap.fi/pair/0x0f82e57804d0b1f6fab2370a43dcfad3c7cb239c
+***************************************************************************************
+
+</pre>
+<div class="loader--1"></div>
+<%- include(`${partials}/scripts`, {scriptname: 'yam_eth'}); -%>
+</body>
+</html> 

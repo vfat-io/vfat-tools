@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include(`${partials}/head`); -%>
+
+<body>
+<%- include(`${partials}/header_main`); -%>
+<pre id="log">
+*************** 👨‍🌾 UNOFFICIAL BENCHMARK FARMING CALCULATOR 👨‍🌾 ***************
+INFO  : https://launchpad.benchmarkprotocol.finance/pools
+******************************************************************************
+
+Benchmark is now also on BSC and MATIC as xMARK, please check the <a href='../bsc/pancake/'>Pancake</a> and <a href='../matic/quick/'>Quick</a> pages.
+
+You will need to set your Metamask to the BSC or MATIC network for those to work.
+
+</pre>
+<div class="loader--1"></div>
+<%- include(`${partials}/scripts`, {scriptname: 'benchmark'}); -%>
+</body>
+</html> 
