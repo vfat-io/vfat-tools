@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include(`${partials}/head`); -%>
+
+<body>
+<%- include(`${partials}/header_main`); -%>
+<pre id="log">
+***************************** MATIC NETWORK *****************************
+    
+*************** 👨‍🌾 UNOFFICIAL COMETH SWAP CALCULATOR 👨‍🌾 ****************
+INFO  : https://swap.cometh.io/#/stake
+*************************************************************************
+
+</pre>
+<div class="loader--1"></div>
+<%- include(`${partials}/scripts`, {scriptname: 'matic_cometh'}); -%>
+</body>
+</html> 
