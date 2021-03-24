@@ -361,22 +361,12 @@ async function getBscPoolInfo(App, chefContract, chefAddress, poolIndex, pending
   const userInfo = await chefContract.userInfo(poolIndex, App.YOUR_ADDRESS);
   const pendingRewardTokens = await chefContract.callStatic[pendingRewardsFunction](poolIndex, App.YOUR_ADDRESS);
   const staked = userInfo.amount / 10 ** poolToken.decimals;
-  var stakedToken;
-  var userLPStaked;
-  if (poolInfo.stakedHoldableToken != null && 
-    poolInfo.stakedHoldableToken != "0x0000000000000000000000000000000000000000") {
-    stakedToken = await getBscToken(App, poolInfo.stakedHoldableToken, chefAddress);
-    userLPStaked = userInfo.stakedLPAmount / 10 ** poolToken.decimals
-  }
   return {
       address: poolInfo.lpToken,
       allocPoints: poolInfo.allocPoint ?? 1,
       poolToken: poolToken,
       userStaked : staked,
       pendingRewardTokens : pendingRewardTokens / 10 ** 18,
-      stakedToken : stakedToken,
-      userLPStaked : userLPStaked,
-      lastRewardBlock : poolInfo.lastRewardBlock
   };
 }
 
