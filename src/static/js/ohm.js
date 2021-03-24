@@ -130,3 +130,88 @@ const ohmPoolContract_stake = async function(App, ohmPoolAbi, ohmPoolAddress, lp
         })
     }
   }
+
+  
+  const ohmDaoContract_stake = async function(App, ohmDaoAbi, ohmDaoAddress, ohmAddress) {
+      const signer = App.provider.getSigner()
+    
+      const STAKING_TOKEN = new ethers.Contract(ohmAddress, ERC20_ABI, signer)
+      const OHM_DAO_CONTRACT = new ethers.Contract(ohmDaoAddress, ohmDaoAbi, signer)
+    
+      const currentTokens = await STAKING_TOKEN.balanceOf(App.YOUR_ADDRESS)
+      const allowedTokens = await STAKING_TOKEN.allowance(App.YOUR_ADDRESS, ohmDaoAddress)
+    
+      let allow = Promise.resolve()
+    
+      if (allowedTokens / 1 < currentTokens / 1) {
+        showLoading()
+        allow = STAKING_TOKEN.approve(ohmDaoAddress, ethers.constants.MaxUint256)
+          .then(function(t) {
+            return App.provider.waitForTransaction(t.hash)
+          })
+          .catch(function() {
+            hideLoading()
+            alert('Try resetting your approval to 0 first')
+          })
+      }
+    
+      if (currentTokens / 1 > 0) {
+        showLoading()
+        allow
+          .then(async function() {
+              OHM_DAO_CONTRACT.stakeOHM(currentTokens, {gasLimit: 500000})
+              .then(function(t) {
+                App.provider.waitForTransaction(t.hash).then(function() {
+                  hideLoading()
+                })
+              })
+              .catch(function() {
+                hideLoading()
+                _print('Something went wrong.')
+              })
+          })
+          .catch(function() {
+            hideLoading()
+            _print('Something went wrong.')
+          })
+      } else {
+        alert('You have no tokens to stake!!')
+      }
+    }
+    
+    const ohmDaoContract_unstake = async function(App, ohmDaoAbi, ohmDaoAddress) {
+      const signer = App.provider.getSigner()
+      const OHM_DAO_CONTRACT = new ethers.Contract(ohmDaoAddress, ohmDaoAbi, signer)
+    
+      const currentStakedAmount = await OHM_DAO_CONTRACT.getUserBalance(App.YOUR_ADDRESS)
+    
+      if (currentStakedAmount > 0) {
+        showLoading()
+        OHM_DAO_CONTRACT.unstakeOHM({gasLimit: 500000})
+          .then(function(t) {
+            return App.provider.waitForTransaction(t.hash)
+          })
+          .catch(function() {
+            hideLoading()
+          })
+      }
+    }
+    
+    const ohmDaoContract_claim = async function(App, ohmDaoAbi, ohmDaoAddress) {
+      const signer = App.provider.getSigner()
+    
+      const OHM_DAO_CONTRACT = new ethers.Contract(ohmDaoAddress, ohmDaoAbi, signer)
+    
+      const currentEarnedAmount = await OHM_DAO_CONTRACT.pendingRewards(App.YOUR_ADDRESS)
+    
+      if (currentEarnedAmount > 0) {
+        showLoading()
+        OHM_DAO_CONTRACT.claimRewards({gasLimit: 500000})
+          .then(function(t) {
+            return App.provider.waitForTransaction(t.hash)
+          })
+          .catch(function() {
+            hideLoading()
+          })
+      }
+    }
