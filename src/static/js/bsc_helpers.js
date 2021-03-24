@@ -125,6 +125,29 @@ async function getBscSwapPool(App, _3pool, address, stakingAddress, swapAddress)
   };
 }
 
+async function getBscCurveToken(App, curve, address, stakingAddress, minterAddress) {
+  const minter = new ethers.Contract(minterAddress, MINTER_ABI, App.provider)
+  const virtualPrice = await minter.get_virtual_price();
+  const coin0 = await minter.coins(0);
+  const token = await getBscToken(App, coin0, address);
+  const decimals = await curve.decimals();
+  const staked = await curve.balanceOf(stakingAddress);
+  const unstaked = await curve.balanceOf(App.YOUR_ADDRESS)
+  return {
+      address,
+      name : await curve.name(),
+      symbol : await curve.symbol(),
+      totalSupply : await curve.totalSupply(),
+      decimals : decimals,
+      staked:  staked / 10 ** decimals,
+      unstaked: unstaked  / 10 ** decimals,
+      contract: curve,
+      tokens : [address, coin0],
+      token,
+      virtualPrice : virtualPrice / 1e18
+  };
+}
+
 async function getBscStoredToken(App, tokenAddress, stakingAddress, type) {
   switch (type) {
     case "uniswap": 
@@ -144,6 +167,10 @@ async function getBscStoredToken(App, tokenAddress, stakingAddress, type) {
     case "bscVault":
       const vault = new ethers.Contract(tokenAddress, BSC_VAULT_ABI, App.provider);
       return await getBscVault(App, vault, tokenAddress, stakingAddress);
+    case "bscCurve":
+      const crv = new ethers.Contract(tokenAddress, CURVE_ABI, App.provider);
+      const minter = await crv.minter();
+      return await getBscCurveToken(App, crv, tokenAddress, stakingAddress, minter);
   }
 }
 
@@ -182,7 +209,6 @@ async function getBscToken(App, tokenAddress, stakingAddress) {
       return res;
     }
     catch(err) {
-      console.log(err)
     }
     try {
       const VAULT = new ethers.Contract(tokenAddress, BSC_VAULT_ABI, App.provider);
@@ -192,6 +218,16 @@ async function getBscToken(App, tokenAddress, stakingAddress) {
       return vault;
     }
     catch(err) {
+    }
+    try {
+      const crv = new ethers.Contract(tokenAddress, CURVE_ABI, App.provider);
+      const minter = await crv.minter()
+      const res = await getBscCurveToken(App, crv, tokenAddress, stakingAddress, minter);
+      window.localStorage.setItem(tokenAddress, "bscCurve");
+      return res;
+    }
+    catch(err) {
+      console.log(err)
     }
     try {
       const bep20 = new ethers.Contract(tokenAddress, ERC20_ABI, App.provider);
