@@ -1254,7 +1254,11 @@ function getUniPrices(tokens, prices, pool)
         const helperHrefs = helperUrls.length == 0 ? "" :
           ` <a href='${helperUrls[0]}' target='_blank'>[+]</a> <a href='${helperUrls[1]}' target='_blank'>[-]</a> <a href='${helperUrls[2]}' target='_blank'>[<=>]</a>`
         _print(`<a href='${poolUrl}' target='_blank'>${stakeTokenTicker}</a>${helperHrefs} Price: $${formatMoney(price)} TVL: $${formatMoney(tvl)}`);
-        _print(`${t0.symbol} Price: $${formatMoney(p0)}`)
+        if(p0 < 0.01){
+          _print(`${t0.symbol} Price: $${p0.toFixed(5)}`)
+        }else{
+          _print(`${t0.symbol} Price: $${formatMoney(p0)}`)
+        }
         _print(`${t1.symbol} Price: $${formatMoney(p1)}`)
         _print(`Staked: ${pool.staked.toFixed(4)} ${pool.symbol} ($${formatMoney(staked_tvl)})`);
       },
