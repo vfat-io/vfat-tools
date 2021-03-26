@@ -14,10 +14,11 @@ async function getRulerPoolInfo(App, pool, lpAddress) {
     const poolToken = await getToken(App, lpAddress, pool.address);
     return { 
       poolToken, 
-      rewardsPerWeek : poolInfo.bonuses[0].weeklyRewards / 1e18, 
+      rewardsPerWeek : poolInfo.bonuses.map(b => b.weeklyRewards / 1e18), 
+      rewardTokenAddresses : poolInfo.bonuses.map(b => b.bonusTokenAddr),
       totalDeposited : poolToken.staked, 
       userStaked : userInfo.amount / 1e18, 
-      userUnclaimed : rewards[0] / 1e18
+      userUnclaimed : rewards.map(r =>  r / 1e18)
     }
 }
 
@@ -156,7 +157,8 @@ const xRuler_withdraw = async function(xRulerAbi, xRulerAddress, App) {
 }
 
 function printRulerContractLinks(App, rulerAbi, rulerAddr, lpAddress, lpAddress,
-    rewardTokenTicker, stakeTokenTicker, unstaked, userStaked, pendingRewardTokens, rewardTokenPrice) {
+    rewardTokenTickers, stakeTokenTicker, unstaked, userStaked, 
+    earnedTokens, rewardTokenPrices) {
   let fixedDecimals = 2;
   const approveAndDeposit = async function() {
     return rulerContract_deposit(rulerAbi, rulerAddr, lpAddress, lpAddress, App)
@@ -171,21 +173,27 @@ function printRulerContractLinks(App, rulerAbi, rulerAddr, lpAddress, lpAddress,
   _print(etherscanUrl);
   _print_link(`Deposit ${unstaked.toFixed(fixedDecimals)} ${stakeTokenTicker}`, approveAndDeposit)
   _print_link(`Withdraw ${userStaked.toFixed(fixedDecimals)} ${stakeTokenTicker}`, withdraw)
-  _print_link(`Claim ${pendingRewardTokens.toFixed(fixedDecimals)} ${rewardTokenTicker} ($${formatMoney(pendingRewardTokens*rewardTokenPrice)})`, claim)
+  let claimText = "";
+  for (let i = 0; i < rewardTokenTickers.length; i++) {
+    claimText += `${earnedTokens[i].toFixed(fixedDecimals)} ${rewardTokenTickers[i]} ($${formatMoney(earnedTokens[i]*rewardTokenPrices[i])}`
+  }
+  _print_link(`Claim ${claimText}`, claim);
   _print(`Staking or unstaking also claims rewards.`)
   _print(`\n`);
 }
 
-function printRulerPool(App, rulerAbi, rulerAddr, prices, poolInfo, lpAddress, poolPrices, 
-                       rewardTokenTicker, rewardTokenAddress) { 
-  const rewardPrice = getParameterCaseInsensitive(prices, rewardTokenAddress)?.usd;
+function printRulerPool(App, rulerAbi, rulerAddr, tokens, prices, poolInfo, lpAddress, poolPrices) { 
+  const rewardPrices = poolInfo.rewardTokenAddresses.map(a => getParameterCaseInsensitive(prices, a)?.usd);
+  const rewardTokenTickers = poolInfo.rewardTokenAddresses.map( a => getParameterCaseInsensitive(tokens, a).symbol);
   poolPrices.print_price();
-  printAPR(rewardTokenTicker, rewardPrice, poolInfo.rewardsPerWeek, poolPrices.stakeTokenTicker, 
-    poolPrices.staked_tvl, poolInfo.userStaked, poolPrices.price, 2);
+  for (let i = 0; i < rewardTokenTickers.length; i++) {
+    printAPR(rewardTokenTickers[i], rewardPrices[i], poolInfo.rewardsPerWeek[i], poolPrices.stakeTokenTicker, 
+      poolPrices.staked_tvl, poolInfo.userStaked, poolPrices.price, 2);
+  }
   if (poolInfo.userStaked > 0) poolPrices.print_contained_price(poolInfo.userStaked);
   printRulerContractLinks(App, rulerAbi, rulerAddr, lpAddress, poolInfo.poolToken.address,
-    rewardTokenTicker, poolPrices.stakeTokenTicker, poolInfo.poolToken.unstaked, 
-    poolInfo.userStaked, poolInfo.userUnclaimed, rewardPrice);
+    rewardTokenTickers, poolPrices.stakeTokenTicker, poolInfo.poolToken.unstaked, 
+    poolInfo.userStaked, poolInfo.userUnclaimed, rewardPrices);
 }
 
 async function loadXRuler(App, tokens, prices) {
@@ -217,35 +225,30 @@ async function loadXRuler(App, tokens, prices) {
 
 async function main() {  
   const App = await init_ethers();
-  const tokens = {}
+  const tokens = {};
+  const prices = {};
 
   _print(`Initialized ${App.YOUR_ADDRESS}\n`);
   _print("Reading smart contracts...\n");
 
   const RULER_POOL_ADDRESS = "0x3423c8Af3a95D9FEE7Ec06c4e0E905D4fd559F89";
-  const rewardTokenTicker = "RULER";
-  const rewardTokenAddress = "0x2aECCB42482cc64E087b6D2e5Da39f5A7A7001f8";
   const RULER_POOL = new ethcall.Contract(RULER_POOL_ADDRESS, RULER_POOL_ABI);
   const [lpAddresses] = await App.ethcallProvider.all([RULER_POOL.getPoolList()]);
 
   const poolInfos = await Promise.all(lpAddresses.map(async (x) =>
     await getRulerPoolInfo(App, RULER_POOL, x)));
   
-  var tokenAddresses = [].concat.apply([], poolInfos.filter(x => x.poolToken).map(x => x.poolToken.tokens));
-  var prices = await lookUpTokenPrices(tokenAddresses);
-
-  await Promise.all(tokenAddresses.map(async (address) => {
-      tokens[address] = await getToken(App, address, RULER_POOL_ADDRESS);
-  }));
+  var tokenAddresses = [].concat.apply([], poolInfos.filter(x => x.poolToken).map(x => 
+    x.poolToken.tokens.concat(x.rewardTokenAddresses)));
+  await getNewPricesAndTokens(App, tokens, prices, tokenAddresses, RULER_POOL_ADDRESS);
 
   const poolPrices = poolInfos.map(poolInfo => getPoolPrices(tokens, prices, poolInfo.poolToken));
 
   _print("Finished reading smart contracts.\n");
     
   for (i = 0; i < poolPrices.length; i++) {
-      printRulerPool(App, RULER_POOL_ABI, RULER_POOL_ADDRESS, prices, 
-        poolInfos[i], lpAddresses[i], poolPrices[i], 
-        rewardTokenTicker, rewardTokenAddress);
+      printRulerPool(App, RULER_POOL_ABI, RULER_POOL_ADDRESS, tokens, prices, 
+        poolInfos[i], lpAddresses[i], poolPrices[i]);
   }
 
   await loadXRuler(App, tokens, prices);
