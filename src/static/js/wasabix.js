@@ -169,7 +169,7 @@ async function main() {
   _print("Finished reading smart contracts.\n");
     
   for (i = 0; i < poolCount; i++) {
-    if (i != 2 && i != 3) {
+    if (i != 2 && i != 3 && i != 6) {
       printWasabixPool(App, WASABIX_POOL_ABI, WASABIX_POOL_ADDRESS, prices, 
         poolInfos[i], i, poolPrices[i], rewardTokenTicker, rewardTokenAddress);
     }
