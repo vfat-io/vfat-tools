@@ -12,18 +12,14 @@ async function main() {
     _print(`Initialized ${App.YOUR_ADDRESS}\n`);
     _print("Reading smart contracts...\n");
 
-   const POLAR_CHEF_ADDR = "0xAFf5F0BAb9F5BF395d7fd3327aC8a9344E4cc238";
-   const rewardTokenTicker = "POLAR";
+   const POLAR_CHEF_ADDR = "0x69c77aca910851e61a64b855116888f1c5ed3b75";
    const POLAR_CHEF = new ethers.Contract(POLAR_CHEF_ADDR, POLAR_CHEF_ABI, App.provider);
-
-   const rewardsPerWeek = await POLAR_CHEF.polarPerBlock() /1e18
-        * 604800 / 3;
 
     const tokens = {};
     const prices = await getBscPrices();
 
-    await loadBscChefContract(App, tokens, prices, POLAR_CHEF, POLAR_CHEF_ADDR, POLAR_CHEF_ABI, rewardTokenTicker,
-        "polar", null, rewardsPerWeek, "pendingPolar", [1]);
+    await loadBscChefContract(App, tokens, prices, POLAR_CHEF, POLAR_CHEF_ADDR, POLAR_CHEF_ABI, "POLAR",
+        "polar", "polarPerBlock", null, "pendingPolar", [1]);
 
     hideLoading();  
   }
