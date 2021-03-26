@@ -12,7 +12,7 @@ async function main() {
     _print(`Initialized ${App.YOUR_ADDRESS}\n`);
     _print("Reading smart contracts...\n");
 
-   const POOP_CHEF_ADDR = "0x94fDB043Da85474B8118C62BFF916405f13eC5c3";
+   const POOP_CHEF_ADDR = "0xc86654Ce1d9565d3a049BD0eDe32547796C46819";
    const rewardTokenTicker = "POOP";
    const POOP_CHEF = new ethers.Contract(POOP_CHEF_ADDR, POOP_CHEF_ABI, App.provider);
 
