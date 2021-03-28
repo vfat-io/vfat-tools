@@ -214,6 +214,7 @@ async function printPool(App, tokens, prices, pool, sharesPerFragment) {
   _print(`You have ${userTotallyUnstaked} ${lpToken.symbol}`);
 
   var newPriceAddresses = lpToken.tokens.filter(x => 
+      x.toLowerCase() !== "0x075b1bb99792c9e1041ba13afef80c91a1e70fb3" && //curve sBTC
       !getParameterCaseInsensitive(prices, x));
   var newPrices = await lookUpTokenPrices(newPriceAddresses);
   for (const key in newPrices) {
@@ -238,10 +239,10 @@ async function printPool(App, tokens, prices, pool, sharesPerFragment) {
     const virtualPrice = await swapContract.get_virtual_price() / 1e18;
     const underlyingPrice = getParameterCaseInsensitive(prices, pool.baseToken).usd;
     const poolPrice = underlyingPrice * virtualPrice; 
-    const pool_tvl = lpToken.balance / 1e18 * poolPrice;
+    const pool_tvl = lpToken.totalSupply / 1e18 * poolPrice;
     const pool_staked_tvl = lpToken.staked * poolPrice;
     poolPrices.price = poolPrice;
-    _print(`${pool.symbol} Price: $${formatMoney(poolPrice)} TVL: $${formatMoney(pool_tvl)}`);
+    _print(`${lpToken.symbol} Price: $${formatMoney(poolPrice)} TVL: $${formatMoney(pool_tvl)}`);
     _print(`Staked: $${formatMoney(pool_staked_tvl)}`);
   } 
   else {
@@ -390,7 +391,9 @@ const pools = [
     name : "curve.fi / sBTC",
     tokenAddress : "0x075b1bb99792c9e1041ba13afef80c91a1e70fb3",
     settAddress : "0xd04c48A53c111300aD41190D63681ed3dAd998eC",
-    geyserAddress : "0x10fC82867013fCe1bD624FafC719Bb92Df3172FC"
+    geyserAddress : "0x10fC82867013fCe1bD624FafC719Bb92Df3172FC",
+    swapAddress : "0x7fc77b5c7614e1533320ea6ddc2eb61fa00a9714",
+    baseToken : "0x2260fac5e5542a773aa44fbcfedf7c193bc2c599" //wBTC
   },
   {
     name : "curve.fi / tBTC",
