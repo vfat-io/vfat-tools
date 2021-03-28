@@ -363,7 +363,7 @@ async function printHelmetSynthetixPool(App, info, chain="bsc") {
     return rewardsContract_unstake(info.stakingAddress, App)
   }
   const claim = async function() {
-    return rewardsContract_claim(info.stakingAddress, App)
+    return rewardsHelmetContract_claim(info.stakingAddress, App)
   }
   const exit = async function() {
     return rewardsContract_exit(info.stakingAddress, App)
@@ -401,5 +401,26 @@ async function printHelmetSynthetixPool(App, info, chain="bsc") {
       staked_tvl: info.poolPrices.staked_tvl,
       userStaked : userStakedUsd,
       apr : (yearlyAPR0 + yearlyAPR1)
+  }
+}
+
+const rewardsHelmetContract_claim = async function(rewardPoolAddr, App) {
+  const signer = App.provider.getSigner()
+
+  const REWARD_POOL = new ethers.Contract(rewardPoolAddr, Y_STAKING_POOL_ABI, signer)
+
+  console.log(App.YOUR_ADDRESS)
+
+  const earnedYFFI = (await REWARD_POOL.earned(App.YOUR_ADDRESS)) / 1e18
+
+  if (earnedYFFI > 0) {
+    showLoading()
+    REWARD_POOL.getDoubleReward({gasLimit: 250000})
+      .then(function(t) {
+        return App.provider.waitForTransaction(t.hash)
+      })
+      .catch(function() {
+        hideLoading()
+      })
   }
 }
