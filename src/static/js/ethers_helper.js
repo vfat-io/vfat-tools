@@ -1081,7 +1081,6 @@ async function getToken(app, tokenAddress, stakingAddress) {
     return res;
   }
   catch(err) {
-    console.log(err);
   }
   try {
     const cToken = new ethcall.Contract(tokenAddress, CTOKEN_ABI);
@@ -1100,7 +1099,6 @@ async function getToken(app, tokenAddress, stakingAddress) {
     return res;
   }
   catch(err) {
-    console.log(err);
   }
   try {
     const crv = new ethcall.Contract(tokenAddress, CURVE_ABI);
@@ -1174,7 +1172,16 @@ function getUniPrices(tokens, prices, pool)
   var t1 = getParameterCaseInsensitive(tokens,pool.token1);
   var p1 = getParameterCaseInsensitive(prices,pool.token1)?.usd;
   if (p0 == null && p1 == null) {
-      return undefined;
+    console.log(`Missing prices for tokens ${pool.token0} and ${pool.token1}.`);
+    return undefined;
+  }
+  if (t0?.decimals == null) {
+    console.log(`Missing information for token ${pool.token0}.`);
+    return undefined;
+  }
+  if (t1?.decimals == null) {
+    console.log(`Missing information for token ${pool.token1}.`);
+    return undefined;
   }
   var q0 = pool.q0 / 10 ** t0.decimals;
   var q1 = pool.q1 / 10 ** t1.decimals;
@@ -1690,6 +1697,32 @@ async function loadChefContract(App, chef, chefAddress, chefAbi, rewardTokenTick
         + ` Year $${formatMoney(totalUserStaked*averageApr)}\n`);
   }
   return { prices, totalUserStaked, totalStaked, averageApr }
+}
+
+async function loadSingleChefPool(App, tokens, prices, chef, chefAddress, chefAbi, rewardTokenTicker,
+    rewardTokenFunction, rewardsPerBlockFunction, rewardsPerWeekFixed, pendingRewardsFunction, poolIndex) {
+  const chefContract = chef ?? new ethers.Contract(chefAddress, chefAbi, App.provider);
+
+  const totalAllocPoints = await chefContract.totalAllocPoint();
+
+  _print(`<a href='https://etherscan.io/address/${chefAddress}' target='_blank'>Staking Contract</a>`);
+  _print(`Showing pool ${poolIndex} only.\n`);
+
+  const rewardTokenAddress = await chefContract.callStatic[rewardTokenFunction]();
+  const rewardToken = await getToken(App, rewardTokenAddress, chefAddress);
+  const rewardsPerWeek = rewardsPerWeekFixed ?? 
+    await chefContract.callStatic[rewardsPerBlockFunction]() 
+    / 10 ** rewardToken.decimals * 604800 / 13.5
+
+  const poolInfo = await getPoolInfo(App, chefContract, chefAddress, poolIndex, pendingRewardsFunction);
+  
+  await getNewPricesAndTokens(App, tokens, prices, poolInfo.poolToken.tokens.concat([rewardTokenAddress]), chefAddress);
+
+  const poolPrices = getPoolPrices(tokens, prices, poolInfo.poolToken);
+    
+  printChefPool(App, chefAbi, chefAddress, prices, tokens, poolInfo, poolIndex, poolPrices,
+        totalAllocPoints, rewardsPerWeek, rewardTokenTicker, rewardTokenAddress,
+        pendingRewardsFunction);
 }
 
 //ratio is used for multi-boardroom setups
