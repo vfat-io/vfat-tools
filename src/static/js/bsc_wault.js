@@ -15,13 +15,17 @@ async function main() {
 
  const WAULT_ADDR = "0x52a2B3BEAfA46BA51A4792793a7447396D09423f";
  const WAULT_ADDR_LP_STAKE = "0x6F7a2b868a3BABD26415Fd4E8e2Fee2630C9A74d";
+ const WAULT_ADDR_LP_STAKE2 = "0xaBA8E6E7bC56973b723b7B2B14Ec11d64A7c3E92";
  const rewardTokenTicker = "WAULT";
  const WAULT_CONTRACT = new ethers.Contract(WAULT_ADDR, WAULT_ABI, App.provider);
  const WAULT_LP_STAKE_CONTRACT = new ethers.Contract(WAULT_ADDR_LP_STAKE, WAULT_LP_STAKE_ABI, App.provider);
+ const WAULT_LP_STAKE_CONTRACT2 = new ethers.Contract(WAULT_ADDR_LP_STAKE2, WAULT_LP_STAKE_ABI, App.provider);
 
  const rewardsPerWeek = await WAULT_CONTRACT.waultPerBlock() /1e18
       * 604800 / 3;
   const rewardsPerWeekLpStake = await WAULT_LP_STAKE_CONTRACT.waultPerBlock() /1e18
+      * 604800 / 3;
+  const rewardsPerWeekLpStake2 = await WAULT_LP_STAKE_CONTRACT2.waultPerBlock() /1e18
       * 604800 / 3;
 
   const tokens = {};
@@ -29,6 +33,11 @@ async function main() {
 
   await loadBscWaultContract(App, tokens, prices, WAULT_CONTRACT, WAULT_ADDR, WAULT_ABI, rewardTokenTicker,
       "wault", null, rewardsPerWeek, "pendingRewards");
+
+  await loadBscWaultLpStakeContract(App, tokens, prices, WAULT_LP_STAKE_CONTRACT2, WAULT_ADDR_LP_STAKE2, WAULT_LP_STAKE_ABI, rewardTokenTicker,
+      "wault", null, rewardsPerWeekLpStake2, "pendingRewards");
+
+  _print(`\n`)
 
   await loadBscWaultLpStakeContract(App, tokens, prices, WAULT_LP_STAKE_CONTRACT, WAULT_ADDR_LP_STAKE, WAULT_LP_STAKE_ABI, rewardTokenTicker,
       "wault", null, rewardsPerWeekLpStake, "pendingRewards");
@@ -47,6 +56,8 @@ async function loadBscWaultContract(App, tokens, prices, chef, chefAddress, chef
   _print(`Found ${poolCount} pools.\n`)
 
   _print(`Showing incentivized pools only.\n`);
+
+  _print(`There is a locking period for some pools, please check the site.\n`)
 
   var tokens = {};
 
@@ -127,12 +138,6 @@ async function loadBscWaultLpStakeContract(App, tokens, prices, chef, chefAddres
   rewardTokenFunction, rewardsPerBlockFunction, rewardsPerWeekFixed, pendingRewardsFunction,
   deathPoolIndices) {
   const chefContract = chef ?? new ethers.Contract(chefAddress, chefAbi, App.provider);
-
-  const totalAllocPoints = 1000;  //den exei sto contract check meta
-
-  _print(`Found 1 pools.\n`)
-
-  _print(`Showing incentivized pools only.\n`);
 
   var tokens = {};
 
