@@ -92,5 +92,13 @@ const ComethStakingContracts =  [
   {
     //tokens: [SUSHI, MUST],
     stakingRewardAddress: '0xFAd897402C0A70440e79A9Da6aAfb8a19D94D5eA'
+  },
+  {
+    //tokens: [WETH, WBTC],
+    stakingRewardAddress: '0xd6161AdBf80602f0ecf74F92ce0271556ddbf98B'
+  },
+  {
+    //tokens: [MUST, MATIC],
+    stakingRewardAddress: '0x449A45A2Db94Fb4cD14f7Af4FD2322649492225A'
   }
 ]
