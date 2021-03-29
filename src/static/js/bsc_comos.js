@@ -16,7 +16,7 @@ async function main() {
    const rewardTokenTicker = "COMOS";
    const CHEF = new ethers.Contract(CHEF_ADDR, CHEF_ABI, App.provider);
 
-   const rewardsPerWeek = await CHEF.royalPerBlock() /1e18
+   const rewardsPerWeek = await CHEF.comosPerBlock() /1e18
         * 604800 / 3;
 
     const tokens = {};
