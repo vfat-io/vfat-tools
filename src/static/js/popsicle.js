@@ -27,9 +27,9 @@ $(function() {
     if (p0.totalUserStaked > 0 || p1.totalUserStaked > 0) {
       _print_bold(`\nYou are staking a total of $${formatMoney(p0.totalUserStaked + p1.totalUserStaked)} at an average APR of ${(p0.averageApr + p1.averageApr * 100).toFixed(2)}%`)
       _print(`Estimated earnings:`
-          + ` Day $${formatMoney(p0.totalUserStaked + p1.totalUserStaked*(p0.averageApr + p1.averageApr)/365)}`
-          + ` Week $${formatMoney(p0.totalUserStaked + p1.totalUserStaked*(p0.averageApr + p1.averageApr)/52)}`
-          + ` Year $${formatMoney(p0.totalUserStaked + p1.totalUserStaked*(p0.averageApr + p1.averageApr))}\n`);
+        + ` Day $${formatMoney(p0.totalUserStaked*p0.averageApr/365 + p1.totalUserStaked*p1.averageApr/365)}`
+        + ` Week $${formatMoney(p0.totalUserStaked*p0.averageApr/52 + p1.totalUserStaked*p1.averageApr/52)}`
+        + ` Year $${formatMoney(p0.totalUserStaked*p0.averageApr + p1.totalUserStaked*p1.averageApr)}\n`);
     }
 
     hideLoading();
