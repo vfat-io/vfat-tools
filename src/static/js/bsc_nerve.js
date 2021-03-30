@@ -96,7 +96,7 @@ async function main() {
     const tokens = {};
     const prices = await getBscPrices();
 
-    _print("*** 2/3rds of rewards are vesting over 6 months, so the immediate APR is 1/3rd of the listed one. ***\n")
+    _print("*** The APR listed is for immediate rewards, which is 1/3rd of the total rewards. The extra 2/3rds vest over 6 months. ***\n")
 
     await loadNerveChefContract(App, tokens, prices, NERVE_CHEF, NERVE_CHEF_ADDR, NERVE_CHEF_ABI, rewardTokenTicker,
         "nerve", null, rewardsPerWeek, "pendingNerve");
