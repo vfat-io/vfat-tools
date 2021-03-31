@@ -22,7 +22,7 @@ async function main() {
     const prices = await getBscPrices();
 
     await loadBscChefContract(App, tokens, prices, TOAD_CHEF, TOAD_CHEF_ADDR, TOAD_CHEF_ABI, rewardTokenTicker,
-        "toad", null, rewardsPerWeek, "pendingToad");
+        "toad", null, rewardsPerWeek, "pendingToad", [4]);
 
     hideLoading();  
   }
