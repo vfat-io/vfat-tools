@@ -13,7 +13,7 @@ async function main() {
     _print("Reading smart contracts...\n");
 
    const PIANO_CHEF_ADDR = "0x2AED73484814e67F8b795Fc38Af71E2CEc429d0f";
-   const rewardTokenTicker = "CAKE";
+   const rewardTokenTicker = "PIANO";
    const PIANO_CHEF = new ethers.Contract(PIANO_CHEF_ADDR, PIANO_CHEF_ABI, App.provider);
 
    const rewardsPerWeek = await PIANO_CHEF.pianoPerBlock() /1e18
