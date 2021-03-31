@@ -870,6 +870,28 @@ async function getCurveToken(app, curve, address, stakingAddress, minterAddress)
   };
 }
 
+async function getSaddleToken(app, saddle, address, stakingAddress, swapAddress) {
+  const swap = new ethcall.Contract(swapAddress, SADDLE_SWAP_ABI)
+  const [virtualPrice, coin0] = await app.ethcallProvider.all([swap.getVirtualPrice(), swap.getToken(0)]);
+  const token = await getToken(app, coin0, address);
+  const calls = [saddle.decimals(), saddle.balanceOf(stakingAddress), saddle.balanceOf(app.YOUR_ADDRESS),
+    saddle.name(), saddle.symbol(), saddle.totalSupply()];
+  const [decimals, staked, unstaked, name, symbol, totalSupply] = await app.ethcallProvider.all(calls);
+  return {
+      address,
+      name,
+      symbol,
+      totalSupply,
+      decimals : decimals,
+      staked:  staked / 10 ** decimals,
+      unstaked: unstaked  / 10 ** decimals,
+      contract: saddle,
+      tokens : [address, coin0],
+      token,
+      virtualPrice : virtualPrice / 1e18
+  };
+}
+
 async function getStableswapToken(app, stable, address, stakingAddress) {
   const calls = [stable.decimals(), stable.balanceOf(stakingAddress), stable.balanceOf(app.YOUR_ADDRESS),
     stable.name(), stable.symbol(), stable.totalSupply(), stable.get_virtual_price(), stable.coins(0)];
@@ -1024,6 +1046,10 @@ async function getStoredToken(app, tokenAddress, stakingAddress, type) {
     case "dsToken":
       const dsToken = new ethcall.Contract(tokenAddress, DSTOKEN_ABI);
       return await getDSToken(app, dsToken, tokenAddress, stakingAddress);
+    case "saddle":
+      const saddle = new ethcall.Contract(tokenAddress, SADDLE_LP_TOKEN_ABI);
+      const [swap] = await app.ethcallProvider.all([saddle.swap()]);
+      return await getSaddleToken(app, saddle, tokenAddress, stakingAddress, swap);
     case "curve":
       const crv = new ethcall.Contract(tokenAddress, CURVE_ABI);
       if (tokenAddress.toLowerCase() == "0x88E11412BB21d137C217fd8b73982Dc0ED3665d7".toLowerCase()) {
@@ -1097,6 +1123,15 @@ async function getToken(app, tokenAddress, stakingAddress) {
     const _token = await app.ethcallProvider.all([vault.underlying()]);
     const res = await getVault(app, vault, tokenAddress, stakingAddress);
     window.localStorage.setItem(tokenAddress, "vault");
+    return res;
+  }
+  catch(err) {
+  }
+  try {
+    const saddle = new ethcall.Contract(tokenAddress, SADDLE_LP_TOKEN_ABI);
+    const [swap] = await app.ethcallProvider.all([saddle.swap()]);
+    const res = await getSaddleToken(app, saddle, tokenAddress, stakingAddress, swap);
+    window.localStorage.setItem(tokenAddress, "saddle");
     return res;
   }
   catch(err) {
@@ -1482,6 +1517,9 @@ function getErc20Prices(prices, pool, chain="eth") {
 
 function getCurvePrices(prices, pool) {  
   var price = (getParameterCaseInsensitive(prices,pool.token.address)?.usd ?? 1) * pool.virtualPrice;
+  if (getParameterCaseInsensitive(prices, pool.address)?.usd ?? 0 == 0) {
+    prices[pool.address] = { usd : price };
+  }
   var tvl = pool.totalSupply * price / 10 ** pool.decimals;
   var staked_tvl = pool.staked * price;
   const poolUrl = `https://etherscan.io/token/${pool.address}`;
@@ -1503,7 +1541,7 @@ function getPoolPrices(tokens, prices, pool, chain = "eth") {
   if (pool.w0 != null) return getValuePrices(tokens, prices, pool);
   if (pool.poolTokens != null) return getBalancerPrices(tokens, prices, pool);
   if (pool.token0 != null) return getUniPrices(tokens, prices, pool);
-  if (pool.virtualPrice != null) return getCurvePrices(prices, pool);
+  if (pool.virtualPrice != null) return getCurvePrices(prices, pool); //should work for saddle too
   if (pool.token != null) return getWrapPrices(tokens, prices, pool);
   return getErc20Prices(prices, pool, chain);
 }
