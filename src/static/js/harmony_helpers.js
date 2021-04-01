@@ -1,12 +1,6 @@
 const HarmonyTokens = [ 
-  { "id": "tether", "symbol": "1USDT", "contract": "0x3C2B8Be99c50593081EAA2A724F0B8285F5aba8f"},
-  //{ "id": "harmony", "symbol": "ONE", "contract": ""},
   { "id": "binance-usd", "symbol": "bscBUSD", "contract": "0x0aB43550A6915F9f67d0c454C2E90385E6497EaA"},
-  { "id": "binance-usd", "symbol": "BUSD", "contract": "0xE176EBE47d621b984a73036B9DA5d834411ef734"},
-  { "id": "mochiswap", "symbol": "MOCHI", "contract": "0xda73f5C25C0D644Afd20dA5535558956B192b262"},
-  { "id": "mochiswap", "symbol": "hMOCHI", "contract": "0x0dD740Db89B9fDA3Baadf7396DdAD702b6E8D6f5"},
-  { "id": "ApeSox", "symbol": "APESOX", "contract": "0x53051d5545745F600232a885a65479cA832198fb"},
-  //{ "id": "mochiswap", "symbol": "BNB", "contract": ""},
+  { "id": "tether", "symbol": "1USDT", "contract": "0x3C2B8Be99c50593081EAA2A724F0B8285F5aba8f"}
 ];
 
 async function getHarmonyPrices() {
@@ -321,13 +315,35 @@ async function loadHarmonyChefContract(App, tokens, prices, chef, chefAddress, c
 
   _print("Finished reading smart contracts.\n");
     
+  let aprs = []
   for (i = 0; i < poolCount; i++) {
     if (poolPrices[i]) {
-      printChefPool(App, chefAbi, chefAddress, prices, tokens, poolInfos[i], i, poolPrices[i],
+      const apr = printChefPool(App, chefAbi, chefAddress, prices, tokens, poolInfos[i], i, poolPrices[i],
         totalAllocPoints, rewardsPerWeek, rewardTokenTicker, rewardTokenAddress,
-        pendingRewardsFunction, "Harmony");
+        pendingRewardsFunction, null, null, "bsc")
+      aprs.push(apr);
     }
   }
+  let totalUserStaked=0, totalStaked=0, averageApr=0;
+  for (const a of aprs) {
+    if (!isNaN(a.totalStakedUsd)) {
+      totalStaked += a.totalStakedUsd;
+    }
+    if (a.userStakedUsd > 0) {
+      totalUserStaked += a.userStakedUsd;
+      averageApr += a.userStakedUsd * a.yearlyAPR / 100;
+    }
+  }
+  averageApr = averageApr / totalUserStaked;
+  _print_bold(`Total Staked: $${formatMoney(totalStaked)}`);
+  if (totalUserStaked > 0) {
+    _print_bold(`\nYou are staking a total of $${formatMoney(totalUserStaked)} at an average APR of ${(averageApr * 100).toFixed(2)}%`)
+    _print(`Estimated earnings:`
+        + ` Day $${formatMoney(totalUserStaked*averageApr/365)}`
+        + ` Week $${formatMoney(totalUserStaked*averageApr/52)}`
+        + ` Year $${formatMoney(totalUserStaked*averageApr)}\n`);
+  }
+  return { prices, totalUserStaked, totalStaked, averageApr }
 }
 
 async function loadMultipleHarmonySynthetixPools(App, tokens, prices, pools) {
