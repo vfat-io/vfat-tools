@@ -26,7 +26,7 @@ async function main() {
     const prices = await getHarmonyPrices();
 
     await loadHarmonyChefContract(App, tokens, prices, MOCHI_CHEF, MOCHI_CHEF_ADDR, MOCHI_CHEF_ABI, rewardTokenTicker,
-        "mochi", null, rewardsPerWeek, "pendingMochi");
+        "mochi", null, rewardsPerWeek, "pendingMochi", [0,1,2,3,4,5,6]);
 
     hideLoading();  
   }
