@@ -24,7 +24,7 @@ async function main() {
     const prices = await getBscPrices();
 
     await loadBscSwampContract(App, tokens, prices, SWAMP_CHEF, SWAMP_CHEF_ADDR, SWAMP_CHEF_ABI, rewardTokenTicker,
-        "NATIVE", null, rewardsPerWeek, "pendingNATIVE");
+        "NATIVE", null, rewardsPerWeek, "pendingNATIVE", [3]);
 
     hideLoading();  
   }
