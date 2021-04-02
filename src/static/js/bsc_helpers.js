@@ -519,7 +519,7 @@ const bscTokens = [
   { "id": "cryptex", "symbol": "CRX", "contract": "0x97a30C692eCe9C317235d48287d23d358170FC40"},
   { "id": "polis", "symbol": "POLIS", "contract": "0xb5bea8a26d587cf665f2d78f077cca3c7f6341bd"},
   { "id": "tether", "symbol": "USDT", "contract": "0x049d68029688eAbF473097a2fC38ef61633A3C7A"},
-  { "id": "swirl-cash", "symbol": "SWIRL", "contract": "0x52d86850bc8207b520340b7e39cdaf22561b9e56"}
+  { "id": "swirl-cash", "symbol": "SWIRL", "contract": "0x52d86850bc8207b520340b7e39cdaf22561b9e56"},
   { "id": "squirrel-finance", "symbol": "NUTS", "contract": "0x8893D5fA71389673C5c4b9b3cb4EE1ba71207556"}
 ]
 
