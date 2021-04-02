@@ -39,18 +39,12 @@ async function main() {
   let tokens = {};
   let prices = await getAvaxPrices();
 
-  let totalUserStaked = 0;
-  let totalAPR = 0;
-  let staked_tvl = 0;
-  for(const pool of Pools){
-    let p = await loadAvaxSynthetixPool(App, tokens, prices, pool.abi, pool.address, pool.rewardTokenFunction, pool.stakeTokenFunction);
-    totalUserStaked += p.totalUserStaked;
-    staked_tvl += p.staked_tvl;
-    totalAPR += p.totalAPR;
-  }
-  _print_bold(`Total staked: $${formatMoney(staked_tvl)}`);
-  if (totalUserStaked > 0) {
-    _print(`You are staking a total of $${formatMoney(totalUserStaked)} at an APR of ${(totalAPR * 100).toFixed(2)}%\n`);
+  await loadAvaxSynthetixPoolInfo(App, tokens, prices, Pools[0].abi, Pools[0].address, Pools[0].rewardTokenFunction, Pools[0].stakeTokenFunction);
+
+  let p = await loadMultipleAvaxSynthetixPools(App, tokens, prices, Pools)
+  _print_bold(`Total staked: $${formatMoney(p.staked_tvl)}`);
+  if (p.totalUserStaked > 0) {
+    _print(`You are staking a total of $${formatMoney(p.totalUserStaked)} at an APR of ${(p.totalAPR * 100).toFixed(2)}%\n`);
   }
   
   hideLoading();
