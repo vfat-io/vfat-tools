@@ -1707,7 +1707,7 @@ async function loadChefContract(App, chef, chefAddress, chefAbi, rewardTokenTick
   if (deathPoolIndices) {   //load prices for the deathpool assets
     deathPoolIndices.map(i => poolInfos[i])
                      .map(poolInfo => 
-      poolInfo.poolToken ? getPoolPrices(tokens, prices, poolInfo.poolToken, "avax") : undefined);
+      poolInfo.poolToken ? getPoolPrices(tokens, prices, poolInfo.poolToken, "eth") : undefined);
   }
 
   const poolPrices = poolInfos.map(poolInfo => poolInfo.poolToken ? getPoolPrices(tokens, prices, poolInfo.poolToken) : undefined);
