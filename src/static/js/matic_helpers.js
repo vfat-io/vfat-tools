@@ -109,13 +109,6 @@ async function loadMaticSynthetixPoolInfo(App, tokens, prices, stakingAbi, staki
         stakeToken.staked = await STAKING_POOL.totalSupply() / 10 ** stakeToken.decimals;
       }
   
-      var newPriceAddresses = stakeToken.tokens.filter(x =>
-        !getParameterCaseInsensitive(prices, x));
-      var newPrices = await lookUpTokenPrices(newPriceAddresses);
-      for (const key in newPrices) {
-        if (newPrices[key]?.usd)
-            prices[key] = newPrices[key];
-      }
       var newTokenAddresses = stakeToken.tokens.filter(x =>
         !getParameterCaseInsensitive(tokens,x));
       for (const address of newTokenAddresses) {
@@ -333,7 +326,7 @@ async function loadMultipleMaticSynthetixPools(App, tokens, prices, pools) {
   let totalStaked  = 0, totalUserStaked = 0, individualAPRs = [];
   const infos = await Promise.all(pools.map(p => 
       loadMaticSynthetixPoolInfo(App, tokens, prices, p.abi, p.address, p.rewardTokenFunction, p.stakeTokenFunction)));
-  for (const i of infos) {
+  for (const i of infos.filter(i => i?.poolPrices)) {
     let p = await printSynthetixPool(App, i, "matic");
     totalStaked += p.staked_tvl || 0;
     totalUserStaked += p.userStaked || 0;
