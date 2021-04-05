@@ -3,7 +3,7 @@ async function init_ethers() {
 
   let isMetaMaskInstalled = false
 
-  App.provider = new ethers.providers.JsonRpcProvider("https://bsc-dataseed.binance.org/")
+  App.provider = new ethers.providers.WebSocketProvider("wss://bsc-ws-node.nariox.org:443")
   sleep(10)
 
   App.ethcallProvider = new ethcall.Provider();
