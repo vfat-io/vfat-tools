@@ -15,7 +15,7 @@ $(function() {
     const rewardsPerWeek = await BASK_CHEF.basketPerBlock() / 1e18 * 604800 / 13.5;
 
     await loadChefContract(App, BASK_CHEF, BASK_CHEF_ADDR, BASK_CHEF_ABI, 
-        "BASK", "basket", null, rewardsPerWeek, "pendingBasket", null, [2]);
+        "BASK", "basket", null, rewardsPerWeek, "pendingBasket", null, [1,2]);
 
     hideLoading();  
   }
