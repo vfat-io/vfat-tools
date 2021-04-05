@@ -42,6 +42,12 @@ async function loadBscChefContract(App, tokens, prices, chef, chefAddress, chefA
   _print(`Showing incentivized pools only.\n`);
 
   var tokens = {};
+  prices["0xa900A6291d3A49B1b555b40bd6277D56228B690b"] = 
+    getParameterCaseInsensitive(prices, "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c") //flexBNB price
+  prices["0xC37d72b7A3363d418e9374d73151164AB588406D"] = 
+    getParameterCaseInsensitive(prices, "0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56") //flexBUSD price
+  prices["0xC82d3404fFC5f51F3E67BC9846ff0180d3c48178"] = 
+    getParameterCaseInsensitive(prices, "0x7130d2A12B9BCbFAe4f2634d864A1Ee1Ce3Ead9c") //flexBTCB price
 
   const rewardTokenAddress = await chefContract.callStatic[rewardTokenFunction]();
   const rewardToken = await getBscToken(App, rewardTokenAddress, chefAddress);
