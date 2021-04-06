@@ -20,7 +20,7 @@ $(function() {
     _print("Reading smart contracts...\n");
   
     var tokens = {};
-    var prices = {};
+    const prices = await lookUpTokenPrices(["0x6DEA81C8171D0bA574754EF6F8b412F2Ed88c54D"]);
 
     let p = await loadLiquityPool(App, tokens, prices, Pool.abi, Pool.address, Pool.rewardTokenFunction, Pool.stakeTokenFunction);
     _print_bold(`Total staked: $${formatMoney(p.staked_tvl)}`);
@@ -70,11 +70,6 @@ async function loadLiquityPoolInfo(App, tokens, prices, stakingAbi, stakingAddre
         tokens[rewardTokenAddress] = await getToken(App, rewardTokenAddress, stakingAddress);
     }
     const rewardToken = getParameterCaseInsensitive(tokens, rewardTokenAddress);
-
-    //get reward token to prices
-    const rewardPrice = await lookUpTokenPrices([rewardTokenAddress]);
-
-    prices[rewardTokenAddress] = { usd : rewardPrice.usd };
 
     const rewardTokenTicker = rewardToken.symbol;
 
