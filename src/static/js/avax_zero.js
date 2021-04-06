@@ -8,20 +8,29 @@ const ZERO_STAKING_ABI = [{"inputs":[{"internalType":"address","name":"_rewardsT
 
 const zeroStakingContracts= [
     {
-        stakingRewardAddress: '0x7b35150abde10F98f44DEd0d02e7E942321fbbe0' //zZERO, zETH
+        stakingRewardAddress: '0x617EE464d13F871FAdd6d3BE428cf452299F7a3b' //[ZERO]-[zUSDC]
     },
     {
-        stakingRewardAddress: '0xfA2c38470aD0a970240cF1afD35Cd04d9e994e76' //zZERO, zUSDC
+        stakingRewardAddress: '0x45eD4A1f9D573A6bFec9B9fDCE2954aDD62D8e77' //[ZERO]-[WAVAX]
     },
     {
-        stakingRewardAddress: '0x60F19487bdA9c2F8336784110dc5c4d66425402d' //zZERO, WAVAX
+        stakingRewardAddress: '0x869bE5d543226e0Cda93416aaC093b472c99c3A8' //[ZERO]-[zETH]
     },
     {
-        stakingRewardAddress: '0xD3694aeB35db0d73a4d1e83Ffe8f462E8202eD0f' //WAVAX, zETH
+        stakingRewardAddress: '0xA8AA762a6529d7A875d0195FAd8572aAd5c697bC' //[ZERO]-[zUSDT]
     },
     {
-        stakingRewardAddress: '0x8754699cf9f32B56654F7dA44fF580BdF09f3526' //WAVAX, zUSDC
-    }
+        stakingRewardAddress: '0x1CD4C57f93784a4aba52B86a01E5d821B352BA73' //[ZERO]-[zBTC]
+    },
+    {
+        stakingRewardAddress: '0xcE64d9454246e690e005AC6371aF9FeD88134425' //[ZERO]-[zUNI]
+    },
+    {
+        stakingRewardAddress: '0x46609d1A08fAd26A52f4D84bB58523C6598352a5' //[ZERO]-[zSUSHI]
+    },
+    {
+        stakingRewardAddress: '0xAfE2d3154bd3eC5601b610145923cb0ECA1937De' //[ZERO]-[zDAI]
+    },
 ]
 
 async function main() {  
@@ -40,6 +49,8 @@ async function main() {
         rewardTokenFunction: "rewardsToken"
     }})
 
+    await loadAvaxSynthetixPoolInfo(App, tokens, prices, ZERO_STAKING_ABI, "0x45eD4A1f9D573A6bFec9B9fDCE2954aDD62D8e77",
+        "rewardsToken", "stakingToken");
 
     let p = await loadMultipleAvaxSynthetixPools(App, tokens, prices, pools)
     _print_bold(`Total staked: $${formatMoney(p.staked_tvl)}`);
