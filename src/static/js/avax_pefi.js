@@ -59,6 +59,8 @@ async function loadXPefi(app, prices){
     return contract_unstake(xPEFI_ABI, xPEFI_ADDR, totalOwnedXPefi, App)
   }
   _print_link(`Stake ${totalOwnedPefi.toFixed(2)} ${stakeTicker}`, approveAndStake)
+  _print_link(`*** Paper hands penalty ***`);
+  _print_link(`Unstaking currently incurs a 25% fee.`);
   _print_link(`Unstake ${totalOwnedXPefi.toFixed(2)} ${rewardTicker}`, unstake)
 }
 
