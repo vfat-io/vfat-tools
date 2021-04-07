@@ -13,15 +13,16 @@ $(function() {
     _print("Reading smart contracts...\n");
   
     const MIMO_STAKING_ADDR = "0x9DD8C3d3E3ec1569e3eE22C4ef26581619ab4222";
-    const MIMO_STAKING_CONTRACT = new ethers.Contract()
+    const MIMO_STAKING_CONTRACT = new ethers.Contract(MIMO_STAKING_ADDR, MIMO_STAKING_ABI, App.provider);
 
-    //pending mimo (PendingMIMO)
-    //staking token (token)
-    //users staked (stake)
-    //total staked (totalStake)
-    //user info gives me a tuple
+    const pendingMimo = await MIMO_STAKING_CONTRACT.pendingMIMO(App.YOUR_ADDRESS);
+    const rewardTokenAddr = "0x90B831fa3Bebf58E9744A14D638E25B4eE06f9Bc";
+    const stakingTokenAddr = await MIMO_STAKING_CONTRACT.token();
+    const userStaked = await MIMO_STAKING_CONTRACT.stake(App.YOUR_ADDRESS) / 1e18;
+    const totalStaked = await MIMO_STAKING_CONTRACT.totalStaked() / 1e18;
+    const usersPercentage = userStaked / totalStaked * 100;
 
-    await loadChefContract(App, PICKLE_CHEF, PICKLE_CHEF_ADDR, PICKLE_CHEF_ABI, rewardTokenTicker,
+    await loadMimoContract(App, PICKLE_CHEF, PICKLE_CHEF_ADDR, PICKLE_CHEF_ABI, rewardTokenTicker,
         "pickle", null, rewardsPerWeek, "pendingPickle");
 
     hideLoading();  
