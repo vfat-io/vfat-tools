@@ -100,9 +100,10 @@ async function loadPenguinPoolInfo(App, tokens, prices, stakingAbi, stakingAddre
         prices[stakeTokenAddress]?.usd ?? getParameterCaseInsensitive(prices, stakeTokenAddress)?.usd;
     const rewardTokenPrice = getParameterCaseInsensitive(prices, rewardTokenAddress)?.usd;
 
-    const calls = [STAKING_MULTI.periodFinish(), STAKING_MULTI.rewardRate(), 
-      STAKING_MULTI.balanceOf(App.YOUR_ADDRESS), STAKING_MULTI.earned(App.YOUR_ADDRESS)]
-    const [periodFinish, rewardRate, balance, earned_] = await App.ethcallProvider.all(calls);
+    const calls = [STAKING_MULTI.balanceOf(App.YOUR_ADDRESS), STAKING_MULTI.earned(App.YOUR_ADDRESS)]
+    const [balance, earned_] = await App.ethcallProvider.all(calls);
+    const periodFinish = 1625458260;
+    const rewardRate = 78125000000000000 / 243;
     const weeklyRewards = (Date.now() / 1000 > periodFinish) ? 0 : rewardRate / 1e18 * 604800;
 
     const usdPerWeek = weeklyRewards * rewardTokenPrice;
