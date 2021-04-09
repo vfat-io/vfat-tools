@@ -23,7 +23,7 @@ async function main() {
 
    const blocksPerSeconds = await getAverageBlockTime(App);
 
-   const rewardsPerWeek = await PEFI_CHEF.snowballPerBlock() /1e18
+   const rewardsPerWeek = await SNOB_CHEF.snowballPerBlock() /1e18
         * 604800 / blocksPerSeconds * multiplier;
 
     const tokens = {};

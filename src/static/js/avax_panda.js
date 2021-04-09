@@ -18,7 +18,7 @@ async function main() {
 
    const blocksPerSeconds = await getAverageBlockTime(App);
 
-   const rewardsPerWeek = await PEFI_CHEF.bambooPerBlock() /1e18
+   const rewardsPerWeek = await BAMBOO_CHEF.bambooPerBlock() /1e18
         * 604800 / blocksPerSeconds;
 
     const tokens = {};
