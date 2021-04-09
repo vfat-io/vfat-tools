@@ -34,8 +34,9 @@ async function main() {
       await loadDiamondChefContract(App, tokens, prices, DIAMOND_CHEF, a, DIAMOND_STAKING_ABI, rewardTokenTicker, "pendingReward");
     totalStaked += p.totalStaked;
     totalUserStaked += p.totalUserStaked;
-    averageApr += p.averageApr;
+    averageApr += p.averageApr * p.totalUserStaked;
   }
+  averageApr = averageApr / totalUserStaked;
   _print_bold(`Total Staked: $${formatMoney(totalStaked)}`);
     if (totalUserStaked > 0) {
       _print_bold(`\nYou are staking a total of $${formatMoney(totalUserStaked)} at an average APR of ${(averageApr * 100).toFixed(2)}%`)
