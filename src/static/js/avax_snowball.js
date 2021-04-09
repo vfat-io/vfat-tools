@@ -20,8 +20,11 @@ async function main() {
 
    const blockNum = await App.provider.getBlockNumber();
    const multiplier = await SNOB_CHEF.getMultiplier(blockNum, blockNum + 1);
-   const rewardsPerWeek = await SNOB_CHEF.snowballPerBlock() /1e18
-        * 604800 / 3 * multiplier;
+
+   const blocksPerSeconds = await getAverageBlockTime(App);
+
+   const rewardsPerWeek = await PEFI_CHEF.snowballPerBlock() /1e18
+        * 604800 / blocksPerSeconds * multiplier;
 
     const tokens = {};
     const prices = await getAvaxPrices();
