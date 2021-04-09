@@ -1,4 +1,3 @@
-
 $(function() {
   consoleInit()
   start(main)
@@ -20,6 +19,8 @@ async function main() {
 
   const tokens = {};
   const prices = await getBscPrices();
+  prices["0x4101fe75f547a65f6bb054a35f027c16562a45c3"] = getParameterCaseInsensitive(prices, "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c") //dBNB
+  prices["0x6b77f51d4c474efb15b72b829e6a0806bbc33724"] = getParameterCaseInsensitive(prices, "0x7130d2A12B9BCbFAe4f2634d864A1Ee1Ce3Ead9c") //dBTC
 
   const rewardTokenTicker = "DND";
 
