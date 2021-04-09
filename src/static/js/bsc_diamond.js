@@ -25,14 +25,25 @@ async function main() {
   const rewardTokenTicker = "DND";
 
   let totalStaked = 0;
+  let totalUserStaked = 0;
+  let averageApr = 0;
 
   for(const a of diamondPoolAddresses){
     let DIAMOND_CHEF = new ethers.Contract(a, DIAMOND_STAKING_ABI, App.provider);
     let p = 
       await loadDiamondChefContract(App, tokens, prices, DIAMOND_CHEF, a, DIAMOND_STAKING_ABI, rewardTokenTicker, "pendingReward");
     totalStaked += p.totalStaked;
+    totalUserStaked += p.totalUserStaked;
+    averageApr += p.averageApr;
   }
   _print_bold(`Total Staked: $${formatMoney(totalStaked)}`);
+    if (totalUserStaked > 0) {
+      _print_bold(`\nYou are staking a total of $${formatMoney(totalUserStaked)} at an average APR of ${(averageApr * 100).toFixed(2)}%`)
+      _print(`Estimated earnings:`
+          + ` Day $${formatMoney(totalUserStaked * averageApr/365)}`
+          + ` Week $${formatMoney(totalUserStaked * averageApr/52)}`
+          + ` Year $${formatMoney(totalUserStaked * averageApr)}`);
+    }
   
   hideLoading()
 }
