@@ -2073,3 +2073,11 @@ async function getNewPricesAndTokens(App, tokens, prices, newAddresses, stakingA
       tokens[address] = await getToken(App, address, stakingAddress);
   }
 }
+
+async function getAverageBlockTime(App){
+  const currentBlockNumber = await App.provider.getBlockNumber();
+  const currentBlock = await App.provider.getBlock(currentBlockNumber);
+  const previousBlock = await App.provider.getBlock(currentBlockNumber - 15000);
+  const differenceTimestamp = currentBlock.timestamp - previousBlock.timestamp;
+  return differenceTimestamp / 15000;
+}

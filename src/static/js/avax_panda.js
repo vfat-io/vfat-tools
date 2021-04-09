@@ -16,8 +16,10 @@ async function main() {
    const rewardTokenTicker = "BAMBOO";
    const BAMBOO_CHEF = new ethers.Contract(BAMBOO_CHEF_ADDR, BAMBOO_CHEF_ABI, App.provider);
 
-   const rewardsPerWeek = await BAMBOO_CHEF.bambooPerBlock() /1e18
-        * 604800 / 3;
+   const blocksPerSeconds = await getAverageBlockTime(App);
+
+   const rewardsPerWeek = await PEFI_CHEF.bambooPerBlock() /1e18
+        * 604800 / blocksPerSeconds;
 
     const tokens = {};
     const prices = await getAvaxPrices();

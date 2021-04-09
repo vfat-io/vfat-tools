@@ -18,8 +18,10 @@ async function main() {
    const rewardTokenTicker = "PEFI";
    const PEFI_CHEF = new ethers.Contract(PEFI_CHEF_ADDR, PEFI_CHEF_ABI, App.provider);
 
+   const blocksPerSeconds = await getAverageBlockTime(App);
+
    const rewardsPerWeek = await PEFI_CHEF.pefiPerBlock() /1e18
-        * 604800 / 3;
+        * 604800 / blocksPerSeconds;
 
     const tokens = {};
     const prices = await getAvaxPrices();
@@ -31,11 +33,11 @@ async function main() {
     hideLoading();  
   }
 
-async function loadXPefi(app, prices){
+async function loadXPefi(App, prices){
   const xPEFI_ADDR = "0xD79A36056c271B988C5F1953e664E61416A9820F";
   const PEFI_ADDR = "0xe896CDeaAC9615145c0cA09C8Cd5C25bced6384c";
-  const xPEFI_CONTRACT = new ethers.Contract(xPEFI_ADDR, xPEFI_ABI, app.provider);
-  const PEFI_CONTRACT = new ethers.Contract(PEFI_ADDR, PEFI_ABI, app.provider);
+  const xPEFI_CONTRACT = new ethers.Contract(xPEFI_ADDR, xPEFI_ABI, App.provider);
+  const PEFI_CONTRACT = new ethers.Contract(PEFI_ADDR, PEFI_ABI, App.provider);
   const totalDepositedPefis = await PEFI_CONTRACT.balanceOf(xPEFI_ADDR) / 1e18;
   const totalXpefiTokens = await xPEFI_CONTRACT.totalSupply() / 1e18;
   const virtualPrice = totalDepositedPefis / totalXpefiTokens;
@@ -43,7 +45,7 @@ async function loadXPefi(app, prices){
   const xPefiPrice = pefiPrice * virtualPrice;
   const rewardTicker = await xPEFI_CONTRACT.symbol();
   const stakeTicker = await PEFI_CONTRACT.symbol();
-  const totalOwnedXPefi = await xPEFI_CONTRACT.balanceOf(app.YOUR_ADDRESS) / 1e18;
+  const totalOwnedXPefi = await xPEFI_CONTRACT.balanceOf(App.YOUR_ADDRESS) / 1e18;
   const totalOwnedPefi = totalOwnedXPefi * virtualPrice;
   const tvl = totalDepositedPefis * pefiPrice
   const usersPercentage = totalOwnedXPefi / totalXpefiTokens * 100;
@@ -53,7 +55,7 @@ async function loadXPefi(app, prices){
   _print(`There is a total of ${toFixed(totalDepositedPefis, 2)} PEFI staked in xPEFI`);
   _print(`Your balance is ${totalOwnedXPefi.toFixed(2)} ${rewardTicker} (${totalOwnedPefi.toFixed(2)} ${stakeTicker}), $${formatMoney(usersXPefiUsd)}, ${usersPercentage.toFixed(2)}% of the pool`);
   const approveAndStake = async function() {
-    return contract_stake(xPEFI_ABI, xPEFI_ADDR, totalOwnedPefi, App, PEFI_CONTRACT, PEFI_ABI)
+    return contract_stake(xPEFI_ABI, xPEFI_ADDR, App, PEFI_ADDR)
   }      
   const unstake = async function() {
     return contract_unstake(xPEFI_ABI, xPEFI_ADDR, totalOwnedXPefi, App)
@@ -64,15 +66,19 @@ async function loadXPefi(app, prices){
   _print_link(`Unstake ${totalOwnedXPefi.toFixed(2)} ${rewardTicker}`, unstake)
 }
 
-const contract_stake = async function(abi, contractAddress, currentAmount, App, stakeTokenAddress, stakeTokenAbi) {
+const contract_stake = async function(abi, contractAddress, App, stakeTokenAddr) {
   const signer = App.provider.getSigner()
 
-  const STAKING_TOKEN = new ethers.Contract(stakeTokenAddress, stakeTokenAbi, signer)
-  const xPEFI_WRITE_CONTRACT = new ethers.Contract(contractAddress, abi, signer)
+  const STAKING_TOKEN = new ethers.Contract(stakeTokenAddr, ERC20_ABI, signer)
+  const CHEF_CONTRACT = new ethers.Contract(contractAddress, abi, signer)
+
+  const currentTokens = await STAKING_TOKEN.balanceOf(App.YOUR_ADDRESS)
+  const allowedTokens = await STAKING_TOKEN.allowance(App.YOUR_ADDRESS, contractAddress)
 
   let allow = Promise.resolve()
 
-  showLoading()
+  if (allowedTokens / 1e18 < currentTokens / 1e18) {
+    showLoading()
     allow = STAKING_TOKEN.approve(contractAddress, ethers.constants.MaxUint256)
       .then(function(t) {
         return App.provider.waitForTransaction(t.hash)
@@ -81,12 +87,13 @@ const contract_stake = async function(abi, contractAddress, currentAmount, App, 
         hideLoading()
         alert('Try resetting your approval to 0 first')
       })
+  }
 
-  if (currentAmount / 1e18 > 0) {
+  if (currentTokens / 1e18 > 0) {
     showLoading()
     allow
       .then(async function() {
-        xPEFI_WRITE_CONTRACT.enter(currentAmount, {gasLimit: 500000})
+          CHEF_CONTRACT.enter(currentTokens, {gasLimit: 500000})
           .then(function(t) {
             App.provider.waitForTransaction(t.hash).then(function() {
               hideLoading()
