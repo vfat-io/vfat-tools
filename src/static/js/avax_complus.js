@@ -16,8 +16,10 @@ async function main() {
    const rewardTokenTicker = "COM";
    const COM_CHEF = new ethers.Contract(COM_CHEF_ADDR, COM_CHEF_ABI, App.provider);
 
+   const blocksPerSeconds = await getAverageBlockTime(App);
+
    const rewardsPerWeek = await COM_CHEF.comPerBlock() /1e18
-        * 604800 / 3;
+        * 604800 / blocksPerSeconds;
 
     const tokens = {};
     const prices = await getAvaxPrices();
