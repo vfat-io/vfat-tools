@@ -17,7 +17,8 @@ async function main() {
    const BGOV_CHEF = new ethers.Contract(BGOV_CHEF_ADDR, BGOV_CHEF_ABI, App.provider);
 
    const rewardsPerWeek = await BGOV_CHEF.BGOVPerBlock() /1e18
-        * 604800 / 3;
+        * 604800 / 3
+        * 10; // rewards are 10x the first two weeks (bonusEndBlock: 6774870, BONUS_MULTIPLIER: 10)
 
     const tokens = {};
     const prices = await getBscPrices();
