@@ -16,8 +16,18 @@ async function main() {
    const rewardTokenTicker = "BGOV";
    const BGOV_CHEF = new ethers.Contract(BGOV_CHEF_ADDR, BGOV_CHEF_ABI, App.provider);
 
-   const rewardsPerWeek = await BGOV_CHEF.BGOVPerBlock() /1e18
-        * 604800 / 3;
+   const bonusMultiplier = await BGOV_CHEF.BONUS_MULTIPLIER();
+   const bonusEndBlock = await BGOV_CHEF.bonusEndBlock();
+   const currentBlock = await App.provider.getBlockNumber();
+   let rewardsPerWeek = 0;
+
+   if(currentBlock < bonusEndBlock){
+    rewardsPerWeek = await BGOV_CHEF.BGOVPerBlock() * bonusMultiplier /1e18
+      * 604800 / 3;
+   }else{
+    rewardsPerWeek = await BGOV_CHEF.BGOVPerBlock() /1e18
+    * 604800 / 3;
+   }
 
     const tokens = {};
     const prices = await getBscPrices();
