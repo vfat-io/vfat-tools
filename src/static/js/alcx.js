@@ -121,12 +121,13 @@ function printAlcxPool(App, alcxAbi, alcxAddr, prices, poolInfo, poolIndex, pool
                        rewardTokenTicker, rewardTokenAddress) { 
   const rewardPrice = getParameterCaseInsensitive(prices, rewardTokenAddress)?.usd;
   poolPrices.print_price();
-  printAPR(rewardTokenTicker, rewardPrice, poolInfo.rewardsPerWeek, poolPrices.stakeTokenTicker, 
+  const apr = printAPR(rewardTokenTicker, rewardPrice, poolInfo.rewardsPerWeek, poolPrices.stakeTokenTicker, 
     poolPrices.staked_tvl, poolInfo.userStaked, poolPrices.price, 2);
   if (poolInfo.userStaked > 0) poolPrices.print_contained_price(poolInfo.userStaked);
   printAlcxContractLinks(App, alcxAbi, alcxAddr, poolIndex, poolInfo.poolToken.address,
     rewardTokenTicker, poolPrices.stakeTokenTicker, poolInfo.poolToken.unstaked, 
     poolInfo.userStaked, poolInfo.userUnclaimed, rewardPrice);
+  return apr;
 }
 
 async function main() {  
@@ -156,12 +157,33 @@ async function main() {
   const poolPrices = poolInfos.map(poolInfo => getPoolPrices(tokens, prices, poolInfo.poolToken));
 
   _print("Finished reading smart contracts.\n");
-    
+  
+  let aprs = []
   for (i = 0; i < poolCount; i++) {
     if (i != 3) { //TIME pool
-      printAlcxPool(App, ALCX_POOL_ABI, ALCX_POOL_ADDRESS, prices, 
+      const apr = printAlcxPool(App, ALCX_POOL_ABI, ALCX_POOL_ADDRESS, prices, 
         poolInfos[i], i, poolPrices[i], rewardTokenTicker, rewardTokenAddress);
+      aprs.push(apr);
     }
+  }
+  let totalUserStaked=0, totalStaked=0, averageApr=0;
+  for (const a of aprs) {
+    if (!isNaN(a.totalStakedUsd)) {
+      totalStaked += a.totalStakedUsd;
+    }
+    if (a.userStakedUsd > 0) {
+      totalUserStaked += a.userStakedUsd;
+      averageApr += a.userStakedUsd * a.yearlyAPR / 100;
+    }
+  }
+  averageApr = averageApr / totalUserStaked;
+  _print_bold(`Total Staked: $${formatMoney(totalStaked)}`);
+  if (totalUserStaked > 0) {
+    _print_bold(`\nYou are staking a total of $${formatMoney(totalUserStaked)} at an average APR of ${(averageApr * 100).toFixed(2)}%`)
+    _print(`Estimated earnings:`
+        + ` Day $${formatMoney(totalUserStaked*averageApr/365)}`
+        + ` Week $${formatMoney(totalUserStaked*averageApr/52)}`
+        + ` Year $${formatMoney(totalUserStaked*averageApr)}\n`);
   }
   
   hideLoading();  
