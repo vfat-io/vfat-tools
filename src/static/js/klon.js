@@ -7,7 +7,8 @@ const KLON_POOLS_STAKING_ABI = [{"inputs":[{"internalType":"string","name":"_nam
 
 const Pools = [
     "0x2B01d3e34259D40Cf2fF3b34A28D7c80d6319Cb0",
-    "0x185bDc02aAFbEcDc8DC574e8319228B586764415"
+    "0x185bDc02aAFbEcDc8DC574e8319228B586764415",
+    "0xe301f632e573a3f8bd06fe623e4440560ab08692"
 ].map(a => {
     return {
         address : a,
