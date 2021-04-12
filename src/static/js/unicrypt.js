@@ -156,7 +156,7 @@ async function loadUnicryptPoolInfo(App, tokens, prices, stakingAbi, stakingAddr
 
   const earned = pendingRewards / 10 ** rewardToken.decimals;
 
-  const endBlockNumber = await farmInfos.lastRewardBlock * 1;
+  const endBlockNumber = await farmInfos.endBlock * 1;
 
   return  {
     stakingAddress,
