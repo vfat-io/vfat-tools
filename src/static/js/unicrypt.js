@@ -76,21 +76,25 @@ $(function() {
     let tokens = {};
     let prices = {};
 
-    await loadMultipleUnicryptPools(App, tokens, prices, Pools);
+    const currentBlockNumber = await App.provider.getBlockNumber();
+
+    await loadMultipleUnicryptPools(App, tokens, prices, Pools, currentBlockNumber);
 
     hideLoading();  
   }
 
-async function loadMultipleUnicryptPools(App, tokens, prices, pools) {
+async function loadMultipleUnicryptPools(App, tokens, prices, pools, currentBlockNumber) {
   let totalStaked  = 0, totalUserStaked = 0, individualAPRs = [];
   const infos = await Promise.all(pools.map(p => 
     loadUnicryptPoolInfo(App, tokens, prices, p.abi, p.address)));
-  for (const i of infos) {
-    let p = await printUnicryptPool(App, i);
-    totalStaked += p.staked_tvl || 0;
-    totalUserStaked += p.userStaked || 0;
-    if (p.userStaked > 0) {
-      individualAPRs.push(p.userStaked * p.apr / 100);
+  for (const info of infos) {
+    if(currentBlockNumber < info.endBlockNumber){
+      let p = await printUnicryptPool(App, info);
+      totalStaked += p.staked_tvl || 0;
+      totalUserStaked += p.userStaked || 0;
+      if (p.userStaked > 0) {
+        individualAPRs.push(p.userStaked * p.apr / 100);
+      }
     }
   }
   let totalAPR = totalUserStaked == 0 ? 0 : individualAPRs.reduce((x,y)=>x+y, 0) / totalUserStaked;
@@ -110,11 +114,10 @@ async function loadUnicryptPoolInfo(App, tokens, prices, stakingAbi, stakingAddr
   let stakeToken = await getToken(App, stakeTokenAddress, stakingAddress);
 
   if (stakeTokenAddress.toLowerCase() === rewardTokenAddress.toLowerCase()) {
-    stakeToken.staked = await STAKING_POOL.totalSupply() / 10 ** stakeToken.decimals;
+    stakeToken.staked = await UNCX_CONTRACT.totalSupply() / 10 ** stakeToken.decimals;
   }
 
   let newPriceAddresses = stakeToken.tokens.filter(x =>
-    x.toLowerCase() !=  "0xb34ab2f65c6e4f764ffe740ab83f982021faed6d" && //BSG can't be retrieved from Coingecko
     !getParameterCaseInsensitive(prices, x));
   let newPrices = await lookUpTokenPrices(newPriceAddresses);
   for (const key in newPrices) {
@@ -153,6 +156,8 @@ async function loadUnicryptPoolInfo(App, tokens, prices, stakingAbi, stakingAddr
 
   const earned = pendingRewards / 10 ** rewardToken.decimals;
 
+  const endBlockNumber = await farmInfos.lastRewardBlock * 1;
+
   return  {
     stakingAddress,
     poolPrices,
@@ -167,7 +172,8 @@ async function loadUnicryptPoolInfo(App, tokens, prices, stakingAbi, stakingAddr
     staked_tvl,
     userStaked,
     userUnstaked,
-    earned
+    earned,
+    endBlockNumber
   }
 }
 
