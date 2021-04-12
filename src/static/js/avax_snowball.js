@@ -1,4 +1,3 @@
-
 $(function() {
     consoleInit();
     start(main);
@@ -19,14 +18,19 @@ async function main() {
    const rewardTokenTicker = "SNOB";
    const SNOB_CHEF = new ethers.Contract(SNOB_CHEF_ADDR, SNOB_CHEF_ABI, App.provider);
 
+   const blockNum = await App.provider.getBlockNumber();
+   const multiplier = await SNOB_CHEF.getMultiplier(blockNum, blockNum + 1);
+
+   const blocksPerSeconds = await getAverageBlockTime(App);
+
    const rewardsPerWeek = await SNOB_CHEF.snowballPerBlock() /1e18
-        * 604800 / 3;
+        * 604800 / blocksPerSeconds * multiplier;
 
     const tokens = {};
     const prices = await getAvaxPrices();
 
     await loadAvaxChefContract(App, tokens, prices, SNOB_CHEF, SNOB_CHEF_ADDR, SNOB_CHEF_ABI, rewardTokenTicker,
-        "snowball", null, rewardsPerWeek, "pendingSnowball");
+        "snowball", null, rewardsPerWeek, "pendingSnowball", null, [0]);
 
     hideLoading();  
   }

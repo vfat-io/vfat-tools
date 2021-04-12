@@ -205,7 +205,7 @@ async function loadXRuler(App, tokens, prices) {
   ])
   const ruler = await getToken(App, rulerAddress, XRULER_ADDRESS);
   const poolPrices = getPoolPrices(tokens, prices, ruler);
-  const weeklyRewards =  40 * 7 //40 RULER per day
+  const weeklyRewards =  100 * 7 //40 RULER per day
   const rulerPrice = getParameterCaseInsensitive(prices, rulerAddress).usd
   poolPrices.print_price();
   const userStaked = userBalance / 10 ** ruler.decimals

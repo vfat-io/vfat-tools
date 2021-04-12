@@ -33,7 +33,7 @@ async function main() {
 }
 
 const YetiStakingContracts= [
-    {
+    /*{
         stakingRewardAddress: '0xf164af933a0c4399bd4634a01e93c97bee53a1ea'
     },
     {
@@ -74,5 +74,24 @@ const YetiStakingContracts= [
     },
     {
         stakingRewardAddress: '0xe228529307cd59d8b3aa3c37e5dd790a0ccf4a99'
+    }*/
+    {
+        stakingRewardAddress: '0xbc86bA14027d4fF47a9FC1Ed333c0a9c5635036F'
+    },
+    {
+        stakingRewardAddress: '0x2b5D69Ea9c586219e98b4F993488c143c338B271'
+    },
+    {
+        stakingRewardAddress: '0xACbB495B4eC7c6d8b71031d37f4EB313EC7C8513'
+    },
+    {
+        stakingRewardAddress: '0x75988c672BcbA03741A1612B6Ea5Eb2AEB10B630'
+    },
+    {
+        stakingRewardAddress: '0x6fCa841F1343406B4bb6E894E3812754235E2777'
+    },
+    {
+        stakingRewardAddress: '0xa3CB9e0f8E49Cb42AE93A3BA9a2DB4C337502096'
     }
+
 ]

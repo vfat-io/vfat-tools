@@ -1535,7 +1535,7 @@ async function getPoolInfo(app, chefContract, chefAddress, poolIndex, pendingRew
       lastRewardBlock : poolInfo.lastRewardBlock
     };
   }
-  const poolToken = await getToken(app, poolInfo.lpToken, chefAddress);
+  const poolToken = await getToken(app, poolInfo.lpToken ?? poolInfo.stakingToken, chefAddress);
   const userInfo = await chefContract.userInfo(poolIndex, app.YOUR_ADDRESS);
   const pendingRewardTokens = await chefContract.callStatic[pendingRewardsFunction](poolIndex, app.YOUR_ADDRESS);
   const staked = userInfo.amount / 10 ** poolToken.decimals;
@@ -1547,7 +1547,7 @@ async function getPoolInfo(app, chefContract, chefAddress, poolIndex, pendingRew
     userLPStaked = userInfo.stakedLPAmount / 10 ** poolToken.decimals
   }
   return {
-      address: poolInfo.lpToken,
+      address: poolInfo.lpToken ?? poolInfo.stakingToken,
       allocPoints: poolInfo.allocPoint ?? 1,
       poolToken: poolToken,
       userStaked : staked,
@@ -1624,7 +1624,7 @@ function printChefPool(App, chefAbi, chefAddr, prices, tokens, poolInfo, poolInd
   fixedDecimals = fixedDecimals ?? 2;
   const sp = (poolInfo.stakedToken == null) ? null : getPoolPrices(tokens, prices, poolInfo.stakedToken);
   var poolRewardsPerWeek = poolInfo.allocPoints / totalAllocPoints * rewardsPerWeek;
-  if (poolRewardsPerWeek == 0) return;
+  if (poolRewardsPerWeek == 0 && rewardsPerWeek != 0) return;
   const userStaked = poolInfo.userLPStaked ?? poolInfo.userStaked;
   const rewardPrice = getParameterCaseInsensitive(prices, rewardTokenAddress)?.usd;
   const staked_tvl = sp?.staked_tvl ?? poolPrices.staked_tvl;
@@ -2047,4 +2047,12 @@ async function getNewPricesAndTokens(App, tokens, prices, newAddresses, stakingA
   for (const address of newTokenAddresses) {
       tokens[address] = await getToken(App, address, stakingAddress);
   }
+}
+
+async function getAverageBlockTime(App){
+  const currentBlockNumber = await App.provider.getBlockNumber();
+  const currentBlock = await App.provider.getBlock(currentBlockNumber);
+  const previousBlock = await App.provider.getBlock(currentBlockNumber - 15000);
+  const differenceTimestamp = currentBlock.timestamp - previousBlock.timestamp;
+  return differenceTimestamp / 15000;
 }
