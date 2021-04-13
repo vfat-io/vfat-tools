@@ -87,9 +87,22 @@ async function loadMultipleUnicryptPools(App, tokens, prices, pools, currentBloc
   let totalStaked  = 0, totalUserStaked = 0, individualAPRs = [];
   const infos = await Promise.all(pools.map(p => 
     loadUnicryptPoolInfo(App, tokens, prices, p.abi, p.address)));
-  for (const info of infos) {
-    if(currentBlockNumber < info.endBlockNumber){
-      let p = await printUnicryptPool(App, info);
+  let tokenAddresses = [].concat.apply([], infos.filter(x => x.stakeToken).map(x => x.stakeToken.tokens));
+  let newPrices = await lookUpTokenPrices(tokenAddresses);
+  for (const key in newPrices) {
+    if (newPrices[key]?.usd)
+        prices[key] = newPrices[key];
+  }
+  const poolPrices = infos.map(poolInfo => poolInfo.stakeToken ? getPoolPrices(tokens, prices, poolInfo.stakeToken) : undefined);
+  for (let i = 0; i < infos.length; i++) {
+    if(currentBlockNumber < infos[i].endBlockNumber){
+      const rewardTokenPrice = getParameterCaseInsensitive(prices, infos[i].rewardTokenAddress)?.usd;
+      const usdPerWeek = infos[i].weeklyRewards * rewardTokenPrice;
+      const stakeTokenTicker = poolPrices[i].stakeTokenTicker;
+      const staked_tvl = poolPrices[i].staked_tvl;
+      const stakeTokenPrice = getParameterCaseInsensitive(prices, infos[i].stakeTokenAddress)?.usd;
+      let p = await printUnicryptPool(App, infos[i], poolPrices[i], stakeTokenTicker, staked_tvl, stakeTokenPrice, rewardTokenPrice,
+        usdPerWeek);
       totalStaked += p.staked_tvl || 0;
       totalUserStaked += p.userStaked || 0;
       if (p.userStaked > 0) {
@@ -117,13 +130,6 @@ async function loadUnicryptPoolInfo(App, tokens, prices, stakingAbi, stakingAddr
     stakeToken.staked = await UNCX_CONTRACT.totalSupply() / 10 ** stakeToken.decimals;
   }
 
-  let newPriceAddresses = stakeToken.tokens.filter(x =>
-    !getParameterCaseInsensitive(prices, x));
-  let newPrices = await lookUpTokenPrices(newPriceAddresses);
-  for (const key in newPrices) {
-    if (newPrices[key]?.usd)
-        prices[key] = newPrices[key];
-  }
   let newTokenAddresses = stakeToken.tokens.filter(x =>
     !getParameterCaseInsensitive(tokens,x));
   for (const address of newTokenAddresses) {
@@ -137,19 +143,6 @@ async function loadUnicryptPoolInfo(App, tokens, prices, stakingAbi, stakingAddr
 
   const rewardTokenTicker = rewardToken.symbol;
 
-  const poolPrices = getPoolPrices(tokens, prices, stakeToken);
-
-  const stakeTokenTicker = poolPrices.stakeTokenTicker;
-
-  const stakeTokenPrice =
-        prices[stakeTokenAddress]?.usd ?? getParameterCaseInsensitive(prices, stakeTokenAddress)?.usd;
-  
-  const rewardTokenPrice = getParameterCaseInsensitive(prices, rewardTokenAddress)?.usd;
-
-  const usdPerWeek = weeklyRewards * rewardTokenPrice;
-
-  const staked_tvl = poolPrices.staked_tvl;
-
   const userStaked = userInfo.amount / 10 ** stakeToken.decimals;
 
   const userUnstaked = stakeToken.unstaked;
@@ -160,33 +153,29 @@ async function loadUnicryptPoolInfo(App, tokens, prices, stakingAbi, stakingAddr
 
   return  {
     stakingAddress,
-    poolPrices,
     stakeTokenAddress,
     rewardTokenAddress,
-    stakeTokenTicker,
     rewardTokenTicker,
-    stakeTokenPrice,
-    rewardTokenPrice,
     weeklyRewards,
-    usdPerWeek,
-    staked_tvl,
     userStaked,
     userUnstaked,
     earned,
-    endBlockNumber
+    endBlockNumber,
+    stakeToken
   }
 }
 
-async function printUnicryptPool(App, info, chain="eth") {
-    info.poolPrices.print_price(chain, 8);
+async function printUnicryptPool(App, info, poolPrices, stakeTokenTicker, staked_tvl, stakeTokenPrice, rewardTokenPrice,
+  usdPerWeek) {
+    poolPrices.print_price("eth", 8);
     _print(`${info.rewardTokenTicker} Per Week: ${info.weeklyRewards.toFixed(2)} ($${formatMoney(info.usdPerWeek)})`);
-    const weeklyAPR = info.usdPerWeek / info.staked_tvl * 100;
+    const weeklyAPR = usdPerWeek / staked_tvl * 100;
     const dailyAPR = weeklyAPR / 7;
     const yearlyAPR = weeklyAPR * 52;
     _print(`APR: Day ${dailyAPR.toFixed(2)}% Week ${weeklyAPR.toFixed(2)}% Year ${yearlyAPR.toFixed(2)}%`);
-    const userStakedUsd = info.userStaked * info.stakeTokenPrice;
-    const userStakedPct = userStakedUsd / info.staked_tvl * 100;
-    _print(`You are staking ${info.userStaked.toFixed(8)} ${info.stakeTokenTicker} ` +
+    const userStakedUsd = info.userStaked * stakeTokenPrice;
+    const userStakedPct = userStakedUsd / staked_tvl * 100;
+    _print(`You are staking ${info.userStaked.toFixed(8)} ${stakeTokenTicker} ` +
            `$${formatMoney(userStakedUsd)} (${userStakedPct.toFixed(2)}% of the pool).`);
     if (info.userStaked > 0) {
       info.poolPrices.print_contained_price(info.userStaked);
@@ -194,9 +183,9 @@ async function printUnicryptPool(App, info, chain="eth") {
         const userDailyRewards = userWeeklyRewards / 7;
         const userYearlyRewards = userWeeklyRewards * 52;
         _print(`Estimated ${info.rewardTokenTicker} earnings:`
-            + ` Day ${userDailyRewards.toFixed(2)} ($${formatMoney(userDailyRewards*info.rewardTokenPrice)})`
-            + ` Week ${userWeeklyRewards.toFixed(2)} ($${formatMoney(userWeeklyRewards*info.rewardTokenPrice)})`
-            + ` Year ${userYearlyRewards.toFixed(2)} ($${formatMoney(userYearlyRewards*info.rewardTokenPrice)})`);
+            + ` Day ${userDailyRewards.toFixed(2)} ($${formatMoney(userDailyRewards*rewardTokenPrice)})`
+            + ` Week ${userWeeklyRewards.toFixed(2)} ($${formatMoney(userWeeklyRewards*rewardTokenPrice)})`
+            + ` Year ${userYearlyRewards.toFixed(2)} ($${formatMoney(userYearlyRewards*rewardTokenPrice)})`);
     }
     const approveTENDAndStake = async function() {
       return rewardsContract_stake(info.stakeTokenAddress, info.stakingAddress, App)
@@ -213,7 +202,7 @@ async function printUnicryptPool(App, info, chain="eth") {
     const revoke = async function() {
       return rewardsContract_resetApprove(info.stakeTokenAddress, info.stakingAddress, App)
     }
-    switch (chain) {
+    switch ("eth") {
       case "eth":
         _print(`<a target="_blank" href="https://etherscan.io/address/${info.stakingAddress}#code">Etherscan</a>`);
         break;
@@ -230,22 +219,22 @@ async function printUnicryptPool(App, info, chain="eth") {
         _print(`<a target="_blank" href="https://explorer-mainnet.maticvigil.com/address/${info.stakingAddress}#code">Matic Explorer</a>`);
         break;
     }
-    if (info.stakeTokenTicker != "ETH") {
-      _print_link(`Stake ${info.userUnstaked.toFixed(8)} ${info.stakeTokenTicker}`, approveTENDAndStake)
+    if (stakeTokenTicker != "ETH") {
+      _print_link(`Stake ${info.userUnstaked.toFixed(8)} ${stakeTokenTicker}`, approveTENDAndStake)
     }
     else {
       _print("Please use the official website to stake ETH.");
     }
-    _print_link(`Unstake ${info.userStaked.toFixed(8)} ${info.stakeTokenTicker}`, unstake)
-    _print_link(`Claim ${info.earned.toFixed(8)} ${info.rewardTokenTicker} ($${formatMoney(info.earned*info.rewardTokenPrice)})`, claim)
-    if (info.stakeTokenTicker != "ETH") {
+    _print_link(`Unstake ${info.userStaked.toFixed(8)} ${stakeTokenTicker}`, unstake)
+    _print_link(`Claim ${info.earned.toFixed(8)} ${info.rewardTokenTicker} ($${formatMoney(info.earned*rewardTokenPrice)})`, claim)
+    if (stakeTokenTicker != "ETH") {
       _print_link(`Revoke (set approval to 0)`, revoke)
     }
     _print_link(`Exit`, exit)
     _print("");
 
     return {
-        staked_tvl: info.poolPrices.staked_tvl,
+        staked_tvl: poolPrices.staked_tvl,
         userStaked : userStakedUsd,
         apr : yearlyAPR
     }
