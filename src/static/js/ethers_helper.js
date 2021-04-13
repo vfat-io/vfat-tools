@@ -1229,7 +1229,7 @@ function getUniPrices(tokens, prices, pool)
       tvl : tvl,
       staked_tvl : staked_tvl,
       stakeTokenTicker : stakeTokenTicker,
-      print_price(chain="eth") {
+      print_price(chain="eth", decimals) {
         const poolUrl = pool.is1inch ? "https://1inch.exchange/#/dao/pools" :
         pool.symbol.includes("LSLP") ? `https://info.linkswap.app/pair/${pool.address}` :
           pool.symbol.includes("SLP") ?  `http://app.sushi.com/pair/${pool.address}` :
@@ -1278,7 +1278,7 @@ function getUniPrices(tokens, prices, pool)
           _print(`${t0.symbol} Price: $${formatMoney(p0)}`)
         }
         _print(`${t1.symbol} Price: $${formatMoney(p1)}`)
-        _print(`Staked: ${pool.staked.toFixed(4)} ${pool.symbol} ($${formatMoney(staked_tvl)})`);
+        _print(`Staked: ${pool.staked.toFixed(decimals ?? 4)} ${pool.symbol} ($${formatMoney(staked_tvl)})`);
       },
       print_contained_price(userStaked) {
         var userPct = userStaked / pool.totalSupply;
