@@ -148,7 +148,7 @@ function printDiamondChefContractLinks(App, chefAbi, chefAddr, poolIndex, poolAd
     return diamondChefContract_stake(chefAbi, chefAddr, poolIndex, poolAddress, App)
   }      
   const unstake = async function() {
-    return diamondChefContract_unstake(chefAbi, chefAddr, poolIndex, App)
+    return diamondChefContract_unstake(chefAbi, chefAddr, App)
   }      
   const claim = async function() {
     return diamondChefContract_claim(chefAbi, chefAddr, poolIndex, App)
@@ -216,12 +216,12 @@ const diamondChefContract_stake = async function(chefAbi, chefAddress, poolIndex
   }
 }
 
-const diamondChefContract_unstake = async function(chefAbi, chefAddress, poolIndex, App) {
+const diamondChefContract_unstake = async function(chefAbi, chefAddress, App) {
   const signer = App.provider.getSigner()
   const CHEF_CONTRACT = new ethers.Contract(chefAddress, chefAbi, signer)
 
-  const currentStakedAmount = (await CHEF_CONTRACT.userInfo(poolIndex, App.YOUR_ADDRESS)).amount
-  const earnedTokenAmount = await CHEF_CONTRACT.pendingReward(poolIndex, App.YOUR_ADDRESS) / 1e18
+  const currentStakedAmount = (await CHEF_CONTRACT.userInfo(App.YOUR_ADDRESS)).amount
+  const earnedTokenAmount = await CHEF_CONTRACT.pendingReward(App.YOUR_ADDRESS) / 1e18
 
   if (earnedTokenAmount > 0) {
     showLoading()
