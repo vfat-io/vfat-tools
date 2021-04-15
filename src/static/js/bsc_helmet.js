@@ -36,7 +36,6 @@ async function main() {
     const prices = await getBscPrices();
 
     let p0 = await loadHelmetSynthetixPools0(App, tokens, prices, Pool0.abi, Pool0.address)
-    //let p1 = await loadHelmetSynthetixPools1(App, tokens, prices, Pool1.abi, Pool1.address)
     let p2 = await loadHelmetSynthetixPools2(App, tokens, prices, Pool2.abi, Pool2.address)
     _print_bold(`Total staked: $${formatMoney(p0.staked_tvl + p2.staked_tvl)}\n`);
 
@@ -45,11 +44,6 @@ async function main() {
 
   async function loadHelmetSynthetixPools0(App, tokens, prices, abi, address) {
     const info = await loadHelmetSynthetixPoolsInfo0(App, tokens, prices, abi, address);
-    return await printHelmetSynthetixPool(App, info);
-}
-
-async function loadHelmetSynthetixPools1(App, tokens, prices, abi, address) {
-    const info = await loadHelmetSynthetixPoolsInfo1(App, tokens, prices, abi, address);
     return await printHelmetSynthetixPool(App, info);
 }
 
@@ -158,102 +152,6 @@ async function loadHelmetSynthetixPoolsInfo0(App, tokens, prices, stakingAbi, st
   }
 }
 
-async function loadHelmetSynthetixPoolsInfo1(App, tokens, prices, stakingAbi, stakingAddress) {
-  const HELMET_CONTRACT = new ethers.Contract(stakingAddress, stakingAbi, App.provider);
-  const DODO_CONTRACT_ADDR = await HELMET_CONTRACT.stakingPool2();
-  const DODO_CONTRACT = new ethers.Contract(DODO_CONTRACT_ADDR, DODO_CHEF_ABI, App.provider);
-
-  const stakeTokenAddress = await HELMET_CONTRACT.stakingToken();
-  const rewardTokenAddress0 = await HELMET_CONTRACT.rewardsToken();
-  const rewardTokenAddress1 = await HELMET_CONTRACT.rewardsToken2();
-  const rewardsDuration = await HELMET_CONTRACT.rewardsDuration();
-  const rewardsDuration1 = await DODO_CONTRACT.rewardsDuration();
-  const getRewardForDuration = await HELMET_CONTRACT.getRewardForDuration();
-  const getRewardForDuration1 = await DODO_CONTRACT.getRewardForDuration();
-  const weeklyHelmetRewards = getRewardForDuration / 1e18 / rewardsDuration * 604800;
-  const weeklyRewards1 = getRewardForDuration1 / 1e18 / rewardsDuration1 * 604800;
-  const balance = await HELMET_CONTRACT.balanceOf(App.YOUR_ADDRESS);
-  const totalStakedLPs = await DODO_CONTRACT.balanceOf(App.YOUR_ADDRESS);
-  const earned_0 = await HELMET_CONTRACT.earned(App.YOUR_ADDRESS);
-  const earned_1 = await HELMET_CONTRACT.earned2(App.YOUR_ADDRESS);
-
-  let stakeToken = await getBscToken(App, stakeTokenAddress, DODO_CONTRACT_ADDR);
-  const totalStakedInDodo = stakeToken.staked;
-  stakeToken.staked = totalStakedLPs.amount / 1e18;
-
-    let newPriceAddresses = stakeToken.tokens.filter(x =>
-      !getParameterCaseInsensitive(prices, x)).concat([rewardTokenAddress0, rewardTokenAddress1])
-  let newPrices = await lookUpTokenPrices(newPriceAddresses);
-  for (const key in newPrices) {
-    if (newPrices[key]?.usd)
-        prices[key] = newPrices[key];
-  }
-  let newTokenAddresses = stakeToken.tokens.filter(x =>
-    !getParameterCaseInsensitive(tokens,x));
-  for (const address of newTokenAddresses) {
-      tokens[address] = await getBscToken(App, address, stakingAddress);
-  }
-
-  if (!getParameterCaseInsensitive(tokens, rewardTokenAddress0)) {
-      tokens[rewardTokenAddress0] = await getBscToken(App, rewardTokenAddress0, stakingAddress);
-  }
-  if (!getParameterCaseInsensitive(tokens, rewardTokenAddress1)) {
-      tokens[rewardTokenAddress1] = await getBscToken(App, rewardTokenAddress1, stakingAddress);
-  }
-
-  const rewardToken0 = getParameterCaseInsensitive(tokens, rewardTokenAddress0);
-  const rewardToken1 = getParameterCaseInsensitive(tokens, rewardTokenAddress1);
-
-  const rewardTokenTicker0 = rewardToken0.symbol;
-  const rewardTokenTicker1 = rewardToken1.symbol;
-
-  const poolPrices = getPoolPrices(tokens, prices, stakeToken);
-
-  const stakeTokenTicker = poolPrices.stakeTokenTicker;
-
-  const stakeTokenPrice = poolPrices.price;
-
-  const rewardTokenPrice0 = getParameterCaseInsensitive(prices, rewardTokenAddress0)?.usd;
-  const rewardTokenPrice1 = getParameterCaseInsensitive(prices, rewardTokenAddress1)?.usd;
-
-  const usdPerWeek0 = weeklyHelmetRewards * rewardTokenPrice0;
-  const usdPerWeek1 = weeklyRewards1 * rewardTokenPrice1;
-
-  const staked_tvl0 = poolPrices.staked_tvl;
-  const staked_tvl1 = totalStakedInDodo * poolPrices.price
-
-  const userStaked = balance / 10 ** stakeToken.decimals;
-
-  const userUnstaked = stakeToken.unstaked;
-
-  const earned0 = earned_0 / 10 ** rewardToken0.decimals;
-  const earned1 = earned_1 / 10 ** rewardToken1.decimals;
-
-  return  {
-    stakingAddress,
-    poolPrices,
-    stakeTokenAddress,
-    rewardTokenAddress0,
-    rewardTokenAddress1,
-    stakeTokenTicker,
-    rewardTokenTicker0,
-    rewardTokenTicker1,
-    stakeTokenPrice,
-    rewardTokenPrice0,
-    rewardTokenPrice1,
-    weeklyHelmetRewards,
-    weeklyRewards1,
-    usdPerWeek0,
-    usdPerWeek1,
-    staked_tvl0,
-    staked_tvl1,
-    userStaked,
-    userUnstaked,
-    earned0,
-    earned1
-  }
-}
-
 async function loadHelmetSynthetixPoolsInfo2(App, tokens, prices, stakingAbi, stakingAddress) {
   const HELMET_CONTRACT = new ethers.Contract(stakingAddress, stakingAbi, App.provider);
 
@@ -265,7 +163,8 @@ async function loadHelmetSynthetixPoolsInfo2(App, tokens, prices, stakingAbi, st
   const balance = await HELMET_CONTRACT.balanceOf(App.YOUR_ADDRESS);
   const _earned = await HELMET_CONTRACT.earned(App.YOUR_ADDRESS);
 
-  let stakeToken = await getBscToken(App, stakeTokenAddress, stakingAddress);
+  const stakedHelmetAddress = "0xc48FE252Aa631017dF253578B1405ea399728A50";
+  let stakeToken = await getBscToken(App, stakeTokenAddress, stakedHelmetAddress);
 
   let newPriceAddresses = stakeToken.tokens.filter(x =>
     !getParameterCaseInsensitive(prices, x));
