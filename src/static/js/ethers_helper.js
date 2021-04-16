@@ -1492,7 +1492,7 @@ function getErc20Prices(prices, pool, chain="eth") {
       poolUrl=`https://bscscan.com/token/${pool.address}`;
       break;
     case "heco":
-      poolUrl=`https://scan.hecochain.com/token/${pool.address}`;
+      poolUrl=`https://hecoinfo.com//token/${pool.address}`;
       break;
     case "matic":
       poolUrl=`https://explorer-mainnet.maticvigil.com/address/${pool.address}`;
@@ -1956,7 +1956,7 @@ async function printSynthetixPool(App, info, chain="eth") {
         _print(`<a target="_blank" href="https://bscscan.com/address/${info.stakingAddress}#code">BSC Scan</a>`);
         break;
       case "heco":
-        _print(`<a target="_blank" href="https://scan.hecochain.com/address/${info.stakingAddress}#code">Heco Scan</a>`);
+        _print(`<a target="_blank" href="https://hecoinfo.com/address/${info.stakingAddress}#code">Heco Scan</a>`);
         break;
       case "matic":
         _print(`<a target="_blank" href="https://explorer-mainnet.maticvigil.com/address/${info.stakingAddress}#code">Matic Explorer</a>`);
