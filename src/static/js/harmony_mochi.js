@@ -12,7 +12,7 @@ async function main() {
     _print(`Initialized ${App.YOUR_ADDRESS}\n`);
     _print("Reading smart contracts...\n");
 
-   const MOCHI_CHEF_ADDR = "0x55E805E0fc64E1F3f771F9afaADb325F48dfadfA";
+   const MOCHI_CHEF_ADDR = "0xAB466B0656725bE5B0fD950668884E6A893bd859";
    const rewardTokenTicker = "hMOCHI";
    const MOCHI_CHEF = new ethers.Contract(MOCHI_CHEF_ADDR, MOCHI_CHEF_ABI, App.provider);
 
