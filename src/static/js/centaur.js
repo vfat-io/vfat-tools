@@ -24,7 +24,7 @@ $(function() {
         * 604800 / 13.5;
 
     await loadWheyContract(App, WHEY_CHEF, WHEY_CHEF_ADDR, WHEY_CHEF_ABI, rewardTokenTicker,
-        "whey", null, rewardsPerWeek, "pendingWhey", [1]);
+        "whey", null, rewardsPerWeek, "pendingWhey", null, [1]);
 
     hideLoading();  
   }
