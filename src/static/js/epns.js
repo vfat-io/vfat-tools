@@ -91,8 +91,8 @@ async function loadEpnsPoolInfo(App, tokens, prices, stakingAbi, stakingAddress,
 
     const balance = await STAKING_POOL.balanceOf(App.YOUR_ADDRESS, stakeTokenAddress);
 
-    let weeklyRewards = 0;
-    stakeTokenAddress == "0xaf31fd9c3b0350424bf96e551d2d1264d8466205" ? weeklyRewards = 35000 : weeklyRewards = 3000;
+    const weeklyRewards = 
+      stakeTokenAddress == "0xaf31fd9c3b0350424bf96e551d2d1264d8466205" ? 35000 : 30000;
 
     const usdPerWeek = weeklyRewards * rewardTokenPrice;
 
