@@ -29,9 +29,6 @@ async function loadUraniumChefContract(App, tokens, prices, chef, chefAddress, c
 
   const poolCount = parseInt(await chefContract.poolLength(), 10);
   const totalAllocPoints = await chefContract.totalAllocPoint();
-
-  //await getNewPricesAndTokens(App, tokens, prices, newAddresses, stakingAddress)
-  //const rewardPrice = getParameterCaseInsensitive(prices, rewardTokenAddress)?.usd;
     
   _print(`<a href='https://bscscan.com/address/${chefAddress}' target='_blank'>Staking Contract</a>`);
   _print(`Found ${poolCount} pools.\n`)
