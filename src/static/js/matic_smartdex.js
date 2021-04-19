@@ -54,5 +54,13 @@ const SmartdexStakingContracts =  [
   {
     //GLQ/WETH
     stakingRewardAddress: '0x0de7482edc5aa30e96f81642cbdad75e550c6fd4'
+  },
+  {
+    //ALOHA/NIOX
+    stakingRewardAddress: '0xaec962e533a350495c38507dd0ef1becc138af66'
+  },
+  {
+    //AGI/NIOX 
+    stakingRewardAddress: '0x9b68938a1bbe47d87cc36cfccb1f200459f4c46b'
   }
 ]

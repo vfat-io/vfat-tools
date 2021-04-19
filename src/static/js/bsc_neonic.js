@@ -9,6 +9,9 @@ const NEONIC_CHEF_ABI = [{"inputs":[{"internalType":"contract NeonToken","name":
 async function main() {
     const App = await init_ethers();
 
+    _print('*** Warning ***')
+    _print('Pool 14 has been initialized with a 99.99% deposit fee. Please take caution when using this protocol.\n')
+
     _print(`Initialized ${App.YOUR_ADDRESS}\n`);
     _print("Reading smart contracts...\n");
 
