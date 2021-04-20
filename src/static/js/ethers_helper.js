@@ -1546,9 +1546,9 @@ function getPoolPrices(tokens, prices, pool, chain = "eth") {
   return getErc20Prices(prices, pool, chain);
 }
 
-async function getPoolInfo(app, chefContract, chefAddress, poolIndex, pendingRewardsFunction) {  
+async function getPoolInfo(app, chefContract, chefAddress, poolIndex, pendingRewardsFunction, showAll=false) {  
   const poolInfo = await chefContract.poolInfo(poolIndex);
-  if (poolInfo.allocPoint == 0) {
+  if (poolInfo.allocPoint == 0 && !showAll) {
     return {
       address: poolInfo.lpToken,
       allocPoints: poolInfo.allocPoint ?? 1,
@@ -1667,7 +1667,7 @@ function printChefPool(App, chefAbi, chefAddr, prices, tokens, poolInfo, poolInd
 
 async function loadChefContract(App, chef, chefAddress, chefAbi, rewardTokenTicker,
     rewardTokenFunction, rewardsPerBlockFunction, rewardsPerWeekFixed, pendingRewardsFunction, 
-    extraPrices, deathPoolIndices) {
+    extraPrices, deathPoolIndices, showAll) {
   const chefContract = chef ?? new ethers.Contract(chefAddress, chefAbi, App.provider);
 
   const poolCount = parseInt(await chefContract.poolLength(), 10);
@@ -1687,7 +1687,7 @@ async function loadChefContract(App, chef, chefAddress, chefAbi, rewardTokenTick
     / 10 ** rewardToken.decimals * 604800 / 13.5
 
   const poolInfos = await Promise.all([...Array(poolCount).keys()].map(async (x) =>
-    await getPoolInfo(App, chefContract, chefAddress, x, pendingRewardsFunction)));
+    await getPoolInfo(App, chefContract, chefAddress, x, pendingRewardsFunction, showAll)));
   
   var tokenAddresses = [].concat.apply([], poolInfos.filter(x => x.poolToken).map(x => x.poolToken.tokens));
   var prices = await lookUpTokenPrices(tokenAddresses);

@@ -103,7 +103,7 @@ async function loadOliveChefContract(App, tokens, prices, chef, chefAddress, che
 
 async function getOlivePoolInfo(App, chefContract, chefAddress, poolIndex, pendingRewardsFunction) {  
   const poolInfo = await chefContract.poolInfo(poolIndex);
-  if (poolInfo.allocPoint == 0 || poolIndex == 0) {
+  if (poolInfo.allocPoint == 0) {
     return {
       address: poolInfo.lpToken,
       allocPoints: poolInfo.allocPoint ?? 1,
