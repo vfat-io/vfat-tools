@@ -23,7 +23,7 @@ async function main() {
     const prices = await getBscPrices();
 
     await loadOliveChefContract(App, tokens, prices, OLIVE_CHEF, OLIVE_CHEF_ADDR, OLIVE_CHEF_ABI, rewardTokenTicker,
-        "olive", null, rewardsPerWeek, "pendingOlive", [2]);
+        "olive", null, rewardsPerWeek, "pendingOlive", [3]);
 
     hideLoading();  
   }

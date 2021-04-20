@@ -294,18 +294,40 @@ async function loadHecoChefContract(App, tokens, prices, chef, chefAddress, chef
 
   _print("Finished reading smart contracts.\n");
     
+  let aprs = []
   for (i = 0; i < poolCount; i++) {
     if (poolPrices[i]) {
-      printChefPool(App, chefAbi, chefAddress, prices, tokens, poolInfos[i], i, poolPrices[i],
+      const apr = printChefPool(App, chefAbi, chefAddress, prices, tokens, poolInfos[i], i, poolPrices[i],
         totalAllocPoints, rewardsPerWeek, rewardTokenTicker, rewardTokenAddress,
-        pendingRewardsFunction, "heco");
+        pendingRewardsFunction, null, null, "heco")
+      aprs.push(apr);
     }
   }
+  let totalUserStaked=0, totalStaked=0, averageApr=0;
+  for (const a of aprs) {
+    if (!isNaN(a.totalStakedUsd)) {
+      totalStaked += a.totalStakedUsd;
+    }
+    if (a.userStakedUsd > 0) {
+      totalUserStaked += a.userStakedUsd;
+      averageApr += a.userStakedUsd * a.yearlyAPR / 100;
+    }
+  }
+  averageApr = averageApr / totalUserStaked;
+  _print_bold(`Total Staked: $${formatMoney(totalStaked)}`);
+  if (totalUserStaked > 0) {
+    _print_bold(`\nYou are staking a total of $${formatMoney(totalUserStaked)} at an average APR of ${(averageApr * 100).toFixed(2)}%`)
+    _print(`Estimated earnings:`
+        + ` Day $${formatMoney(totalUserStaked*averageApr/365)}`
+        + ` Week $${formatMoney(totalUserStaked*averageApr/52)}`
+        + ` Year $${formatMoney(totalUserStaked*averageApr)}\n`);
+  }
+  return { prices, totalUserStaked, totalStaked, averageApr }
 }
 
 
 const hrcTokens = [ 
-  { "id": "huobi-token","symbol": "HT","contract":"0x5545153ccfca01fbd7dd11c0b23ba694d9509a6f" },
+  { "id": "huobi-token","symbol": "HT","contract":"0x6f259637dcd74c767781e37bc6133cd6a68aa161" },
   { "id": "mdex","symbol": "MDX","contract":"0x25d2e80cb6b86881fd7e07dd263fb79f4abe033c" }, 
   { "id": "tether","symbol": "USDT", "contract": "0xa71edc38d189767582c38a3145b5873052c3e47a" },
   { "id": "ethereum","symbol": "ETH", "contract": "0xb55569893b397324c0d048c9709f40c23445540e" },
@@ -313,7 +335,8 @@ const hrcTokens = [
   { "id": "ethereum","symbol": "HETH", "contract": "0x64FF637fB478863B7468bc97D30a5bF3A428a1fD" },
   { "id": "hoo-token","symbol": "HOO", "contract": "0xE1d1F66215998786110Ba0102ef558b22224C016" },
   { "id": "gene","symbol": "GENE", "contract": "0x2CFa849e8506910b2564aFE5BdEF33Ba66C730Aa" },
-  { "id": "husd","symbol": "HUSD", "contract": "0x0298c2b32eaE4da002a15f36fdf7615BEa3DA047" }
+  { "id": "husd","symbol": "HUSD", "contract": "0x0298c2b32eaE4da002a15f36fdf7615BEa3DA047" },
+  { "id": "huobi-btc","symbol": "HBTC", "contract": "0x0316eb71485b0ab14103307bf65a021042c6d380" }
 ]
 
 async function getHecoPrices() {
