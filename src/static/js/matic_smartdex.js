@@ -49,10 +49,10 @@ const SmartdexStakingContracts =  [
   },
   {
     //WETH/USDC
-    stakingRewardAddress: '0x16c88e00f414436d4abbc859e5d99ec1868474af'
+    stakingRewardAddress: '0xae4a735567bb1b351bebaa252c88d2ebc2fa7e56'
   },
   {
     //GLQ/WETH
-    stakingRewardAddress: '0x16c88e00f414436d4abbc859e5d99ec1868474af'
+    stakingRewardAddress: '0x0de7482edc5aa30e96f81642cbdad75e550c6fd4'
   }
 ]
