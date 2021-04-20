@@ -57,10 +57,7 @@ async function loadEpnsPoolInfo(App, tokens, prices, stakingAbi, stakingAddress,
   rewardTokenAddress, stakeTokenAddress) {
     const STAKING_POOL = new ethers.Contract(stakingAddress, stakingAbi, App.provider);
 
-    const currentEpoch = await STAKING_POOL.getCurrentEpoch();
-
     let stakeToken = await getToken(App, stakeTokenAddress, stakingAddress);
-    stakeToken.staked = await STAKING_POOL.getEpochPoolSize(stakeTokenAddress, currentEpoch) / 10 ** 18;
 
     var newPriceAddresses = stakeToken.tokens.filter(x =>
       !getParameterCaseInsensitive(prices, x));
