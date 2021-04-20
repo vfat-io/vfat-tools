@@ -12,7 +12,7 @@ async function main() {
     _print(`Initialized ${App.YOUR_ADDRESS}\n`);
     _print("Reading smart contracts...\n");
 
-   const RUNE_CHEF_ADDR = "0xfa0235fe0f2b684221a18a0220ca30170455790c";
+   const RUNE_CHEF_ADDR = "0x6bf051ce847a0ebbc10fa22884c01d550bd40269";
    const rewardTokenTicker = "NEF";
    const RUNE_CHEF = new ethers.Contract(RUNE_CHEF_ADDR, RUNE_CHEF_ABI, App.provider);
 
