@@ -10,6 +10,7 @@ const Pools =  [
     { name: "BUSD", address: "0xb57Ae30a038acA531dC451d544EbBE3f8733fc19" },
     { name: "USDC", address: "0x944c82294F0fF674Da67F9B4145C74cC866bcC46" },
     { name: "USDT", address: "0x230f3cae3241dA410B3E4CFf724ab6Af7551FAA1" },
+    { name: "FLEX-BUSD", address: "0x35B3f7954DE24FCCadB1B23766fc5305A6fA52E3" }
 ].map(p => { 
     return { 
         name : p.name, 
@@ -41,27 +42,11 @@ async function main() {
 
     _print_bold(`****** Flex Token price: $${formatMoney(flexPrice)} ******\n`);
 
-    let totalStaked = 0;
-    let totalUserStaked = 0;
-  
-    for(let i = 0; i < Pools.length; i++){
-      let p = await loadBscSynthetixPool(App, tokens, prices, Pools[i].abi, Pools[i].address, Pools[i].rewardTokenFunction,
-        Pools[i].stakeTokenFunction);
-        totalStaked += p.staked_tvl;
-        totalUserStaked += p.totalUserStaked;
-    }
-    _print_bold(`Total staked: $${formatMoney(totalStaked)}`);
-    if (totalUserStaked > 0) {
-      _print(`You are staking a total of $${formatMoney(totalUserStaked)}`);
+    let p = await loadMultipleBscSynthetixPools(App, tokens, prices, Pools);
+    _print_bold(`Total staked: $${formatMoney(p.staked_tvl)}`);
+    if (p.totalUserStaked > 0) {
+      _print(`You are staking a total of $${formatMoney(p.totalUserStaked)} at an APR of ${(p.totalAPR * 100).toFixed(2)}%\n`);
     }
   
     hideLoading();
   }
-
-  // async function flexPrice(){
-  //   const FLEX_ADDRESS = "0xD383222B0C980dD3ed42E2f72D9CDE16FC28FB88";
-  //   const DASH_ADDRESS = "0xaC403946483F831Bc0f19183E421320311EAA300";
-
-  //   const DASHBORAD = new ethers.Contract(DASH_ADDRESS, DASHBORAD_ABI, App.provider);
-  //   return await DASHBORAD.priceOfAsset(FLEX_ADDRESS) / 1e18;
-  // }
