@@ -10,6 +10,7 @@ const Pools =  [
     { name: "BUSD", address: "0xb57Ae30a038acA531dC451d544EbBE3f8733fc19" },
     { name: "USDC", address: "0x944c82294F0fF674Da67F9B4145C74cC866bcC46" },
     { name: "USDT", address: "0x230f3cae3241dA410B3E4CFf724ab6Af7551FAA1" },
+    { name: "FLEX-BUSD", address: "0x35B3f7954DE24FCCadB1B23766fc5305A6fA52E3" }
 ].map(p => { 
     return { 
         name : p.name, 
