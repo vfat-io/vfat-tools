@@ -1257,7 +1257,7 @@ function getUniPrices(tokens, prices, pool)
       print_price(chain="eth", decimals) {
         const poolUrl = pool.is1inch ? "https://1inch.exchange/#/dao/pools" :
         pool.symbol.includes("LSLP") ? `https://info.linkswap.app/pair/${pool.address}` :
-          pool.symbol.includes("SLP") ?  `http://app.sushi.com/pair/${pool.address}` :
+          pool.symbol.includes("SLP") ?  `http://analytics.sushi.com/pairs/${pool.address}` :
             pool.symbol.includes("Cake") ?  `https://pancakeswap.info/pair/${pool.address}` :  
             pool.symbol.includes("PGL") ?  `https://info.pangolin.exchange/#/pair/${pool.address}` :  
             pool.name.includes("Value LP") ?  `https://info.vswap.fi/pool/${pool.address}` :  
@@ -1287,9 +1287,9 @@ function getUniPrices(tokens, prices, pool)
           `https://app.pangolin.exchange/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}` 
         ] :
         pool.symbol.includes("SLP") ? [ 
-          `https://exchange.sushiswapclassic.org/#/add/${t0address}/${t1address}`,
-          `https://exchange.sushiswapclassic.org/#/remove/${t0address}/${t1address}`,
-          `https://exchange.sushiswapclassic.org/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}` 
+          `https://app.sushi.com/add/${t0address}/${t1address}`,
+          `https://app.sushi.com/remove/${t0address}/${t1address}`,
+          `https://app.sushi.com/swap?inputCurrency=${t0address}&outputCurrency=${t1address}` 
         ] :
         [ `https://app.uniswap.org/#/add/${t0address}/${t1address}`,
           `https://app.uniswap.org/#/remove/${t0address}/${t1address}`,
@@ -1427,7 +1427,7 @@ function getWrapPrices(tokens, prices, pool)
   if (wrappedToken.token0 != null) { //Uniswap
     const uniPrices = getUniPrices(tokens, prices, wrappedToken);
     const poolUrl = pool.is1inch ? "https://1inch.exchange/#/dao/pools" :
-    pool.symbol.includes("SLP") ?  `http://app.sushi.com/pair/${wrappedToken.address}` :
+    pool.symbol.includes("SLP") ?  `http://analytics.sushi.com/pairs/${wrappedToken.address}` :
     (pool.symbol.includes("Cake") || pool.symbol.includes("Pancake")) ?  `http://pancakeswap.info/pair/${wrappedToken.address}`
       : `http://uniswap.info/pair/${wrappedToken.address}`;
     const name = `Wrapped <a href='${poolUrl}' target='_blank'>${uniPrices.stakeTokenTicker}</a>`;
@@ -1492,7 +1492,7 @@ function getErc20Prices(prices, pool, chain="eth") {
       poolUrl=`https://bscscan.com/token/${pool.address}`;
       break;
     case "heco":
-      poolUrl=`https://scan.hecochain.com/token/${pool.address}`;
+      poolUrl=`https://hecoinfo.com//token/${pool.address}`;
       break;
     case "matic":
       poolUrl=`https://explorer-mainnet.maticvigil.com/address/${pool.address}`;
@@ -1546,9 +1546,9 @@ function getPoolPrices(tokens, prices, pool, chain = "eth") {
   return getErc20Prices(prices, pool, chain);
 }
 
-async function getPoolInfo(app, chefContract, chefAddress, poolIndex, pendingRewardsFunction) {  
+async function getPoolInfo(app, chefContract, chefAddress, poolIndex, pendingRewardsFunction, showAll=false) {  
   const poolInfo = await chefContract.poolInfo(poolIndex);
-  if (poolInfo.allocPoint == 0) {
+  if (poolInfo.allocPoint == 0 && !showAll) {
     return {
       address: poolInfo.lpToken,
       allocPoints: poolInfo.allocPoint ?? 1,
@@ -1667,7 +1667,7 @@ function printChefPool(App, chefAbi, chefAddr, prices, tokens, poolInfo, poolInd
 
 async function loadChefContract(App, chef, chefAddress, chefAbi, rewardTokenTicker,
     rewardTokenFunction, rewardsPerBlockFunction, rewardsPerWeekFixed, pendingRewardsFunction, 
-    extraPrices, deathPoolIndices) {
+    extraPrices, deathPoolIndices, showAll) {
   const chefContract = chef ?? new ethers.Contract(chefAddress, chefAbi, App.provider);
 
   const poolCount = parseInt(await chefContract.poolLength(), 10);
@@ -1686,10 +1686,17 @@ async function loadChefContract(App, chef, chefAddress, chefAbi, rewardTokenTick
     await chefContract.callStatic[rewardsPerBlockFunction]() 
     / 10 ** rewardToken.decimals * 604800 / 13.5
 
-  const poolInfos = await Promise.all([...Array(poolCount).keys()].map(async (x) =>
-    await getPoolInfo(App, chefContract, chefAddress, x, pendingRewardsFunction)));
+  const poolInfos = await Promise.all([...Array(poolCount).keys()].map(async (x) => {
+    try {
+      return await getPoolInfo(App, chefContract, chefAddress, x, pendingRewardsFunction, showAll);
+    }
+    catch (ex) {
+      console.log(`Error loading pool ${x}: ${ex}`);
+      return null;
+    }
+  }));
   
-  var tokenAddresses = [].concat.apply([], poolInfos.filter(x => x.poolToken).map(x => x.poolToken.tokens));
+  var tokenAddresses = [].concat.apply([], poolInfos.filter(x => x?.poolToken).map(x => x.poolToken.tokens));
   var prices = await lookUpTokenPrices(tokenAddresses);
   if (extraPrices) {
     for (const [k,v] of Object.entries(extraPrices)) {
@@ -1710,7 +1717,7 @@ async function loadChefContract(App, chef, chefAddress, chefAbi, rewardTokenTick
       poolInfo.poolToken ? getPoolPrices(tokens, prices, poolInfo.poolToken, "eth") : undefined);
   }
 
-  const poolPrices = poolInfos.map(poolInfo => poolInfo.poolToken ? getPoolPrices(tokens, prices, poolInfo.poolToken) : undefined);
+  const poolPrices = poolInfos.map(poolInfo => poolInfo?.poolToken ? getPoolPrices(tokens, prices, poolInfo.poolToken) : undefined);
 
   _print("Finished reading smart contracts.\n");
     
@@ -1956,7 +1963,7 @@ async function printSynthetixPool(App, info, chain="eth") {
         _print(`<a target="_blank" href="https://bscscan.com/address/${info.stakingAddress}#code">BSC Scan</a>`);
         break;
       case "heco":
-        _print(`<a target="_blank" href="https://scan.hecochain.com/address/${info.stakingAddress}#code">Heco Scan</a>`);
+        _print(`<a target="_blank" href="https://hecoinfo.com/address/${info.stakingAddress}#code">Heco Scan</a>`);
         break;
       case "matic":
         _print(`<a target="_blank" href="https://explorer-mainnet.maticvigil.com/address/${info.stakingAddress}#code">Matic Explorer</a>`);

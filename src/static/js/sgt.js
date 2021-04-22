@@ -9,6 +9,8 @@ const Pools = [
   "0x64A1DB33f68695df773924682D2EFb1161B329e8", //SGT-ETH farm  
   "0xc637dB981e417869814B2Ea2F1bD115d2D993597", //SGT farm
   "0xA919D7a5fb7ad4ab6F2aae82b6F39d181A027d35", //ETH2 farm  
+  "0x53dc9d5deb3b7f5cd9a3e4d19a2becda559d57aa", //ETH2-SGT farm 
+  "0xCF91812631e37C01c443a4fa02DfB59ee2DDbA7c", //ETH2-ETH farm 
 ].map(a => { 
   return {
     address: a,

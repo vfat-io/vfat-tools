@@ -22,6 +22,12 @@ async function main() {
     rewardTokenFunction: "rewardsToken"
   }})
 
+  let poolInfo = await loadMaticSynthetixPoolInfo(App, tokens, prices, pools[0].abi, pools[0].address,
+    pools[0].rewardTokenFunction, pools[0].stakeTokenFunction)
+  if(poolInfo.staked_tvl == 0){
+    _print(`Rewards start at 2021-04-20 17:00 UTC.\n`);
+  }
+
 
   let p = await loadMultipleMaticSynthetixPools(App, tokens, prices, pools)
   _print_bold(`Total staked: $${formatMoney(p.staked_tvl)}`);
@@ -34,11 +40,27 @@ async function main() {
 
 const SmartdexStakingContracts =  [
   {
-    //tokens: [NIOX - USDC],
-    stakingRewardAddress: '0xa54db7a2ce0b1d802552c655b36672bcfe2c538d'
+    //NIOX/USDC
+    stakingRewardAddress: '0x9c0ef78a30aa2d43f6f1aac677e227c43eb35356'
   },
   {
-    //tokens: [MATIC - USDC],
-    stakingRewardAddress: '0xf40324f73991d02c7672f6ee6b1eb94b3eb3e40c'
+    //WMATIC/USDC
+    stakingRewardAddress: '0x16c88e00f414436d4abbc859e5d99ec1868474af'
+  },
+  {
+    //WETH/USDC
+    stakingRewardAddress: '0xae4a735567bb1b351bebaa252c88d2ebc2fa7e56'
+  },
+  {
+    //GLQ/WETH
+    stakingRewardAddress: '0x0de7482edc5aa30e96f81642cbdad75e550c6fd4'
+  },
+  {
+    //ALOHA/NIOX
+    stakingRewardAddress: '0xaec962e533a350495c38507dd0ef1becc138af66'
+  },
+  {
+    //AGI/NIOX 
+    stakingRewardAddress: '0xaec962e533a350495c38507dd0ef1becc138af66'
   }
 ]

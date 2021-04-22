@@ -7,8 +7,9 @@ $(function() {
   
   async function main() {
 
-    const Pool0 = [
-      "0xc8BB1cd417D20116387a5e0603e195cA4f3Cf59A"
+    const Pools = [
+      "0xc8BB1cd417D20116387a5e0603e195cA4f3Cf59A",
+      "0xdC4cDd5dB9EE777EFD891690dc283638CB3A5f94"
     ].map(a => { 
       return {
         address: a,
@@ -42,7 +43,12 @@ $(function() {
     var tokens = {};
     var prices = {};
 
-    let p0 = await loadMultipleSynthetixPools(App, tokens, prices, Pool0)
+    await loadSynthetixPoolInfo(App, tokens, prices, Pools[1].abi, 
+                                                     Pools[1].address, 
+                                                     Pools[1].rewardTokenFunction, 
+                                                     Pools[1].stakeTokenFunction);
+
+    let p0 = await loadMultipleSynthetixPools(App, tokens, prices, Pools)
     let p1 = await loadCryptexSynthetixPool1(App, tokens, prices, Pool1.abi, Pool1.address, Pool1.rewardTokenFunction,
       Pool1.stakeTokenAddress, Pool1.vaultAddress)
     let p2 = await loadCryptexSynthetixPool1(App, tokens, prices, Pool2.abi, Pool2.address, Pool2.rewardTokenFunction,
