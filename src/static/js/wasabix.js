@@ -165,10 +165,13 @@ async function main() {
   }));
 
   prices["0xc2db4c131ADaF01c15a1DB654c040c8578929D55"] = {};
-  prices["0xc2db4c131ADaF01c15a1DB654c040c8578929D55"]["usd"] = 1;
+  prices["0xc2db4c131ADaF01c15a1DB654c040c8578929D55"]["usd"] = 1; //waUSD
 
   prices["0xfd8e70e83e399307db3978d3f34b060a06792c36"] = {};
   prices["0xfd8e70e83e399307db3978d3f34b060a06792c36"]["usd"] = wbtcPrice["0x2260fac5e5542a773aa44fbcfedf7c193bc2c599"]["usd"];
+
+  prices["0xcbf335Bb8eE86A5A88bEbCda4506a665aA8d7022"] = {};
+  prices["0xcbf335Bb8eE86A5A88bEbCda4506a665aA8d7022"]["usd"] = 1; //waLUSD
 
   const poolPrices = poolInfos.map(poolInfo => getPoolPrices(tokens, prices, poolInfo.poolToken));
 
