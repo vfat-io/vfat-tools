@@ -72,6 +72,49 @@ $(function() {
     _print(`\n`);
   }
 
+  async function loadVault(App, tokens, prices, vaultAddress) {
+    const VAULT_CONTRACT = new ethers.Contract(vaultAddress, HARVEST_VAULT_ABI, App.provider)
+    const VAULT = await getBscToken(App, vaultAddress, vaultAddress);
+
+    var newTokenAddresses = VAULT.tokens.filter(x => tokens[x] == null);
+    for (const address of newTokenAddresses) {
+        tokens[address] = await getBscToken(App, address, stakingAddress);
+    }
+
+    const poolPrices = getPoolPrices(tokens, prices, VAULT);
+    const staked_tvl = poolPrices.staked_tvl;
+
+    _print(`TVL: ${staked_tvl}`)
+
+    const now = Math.round(Date.now() / 1000);
+    const oneDayAgoBlockNumber = parseInt(await getBlockNumberFromTimestamp(now - 60 * 60 * 24));
+    const oneWeekAgoBlockNumber = parseInt(await getBlockNumberFromTimestamp(now - 60 * 60 * 24 * 7));
+
+    const currentSharePrice = await VAULT_CONTRACT.getPricePerFullShare()
+    let ROI_DAILY = 0
+    let ROI_WEEKLY = 0
+
+    try {
+        const pastSharePrice = await VAULT_CONTRACT.getPricePerFullShare({blockTag: oneDayAgoBlockNumber})
+        ROI_DAILY = (currentSharePrice / pastSharePrice -1) * 100
+    } catch (e) {
+        console.error(e)
+    }
+
+    try {
+        const pastSharePrice = await VAULT_CONTRACT.getPricePerFullShare({blockTag: oneWeekAgoBlockNumber})
+        ROI_WEEKLY = (currentSharePrice / pastSharePrice -1) * 100
+    } catch (e) {
+        console.error(e)
+    }
+
+    _print(`APY (daily)       : ${toFixed(((1 + (ROI_DAILY / 100))**365 - 1) * 100, 4)}%`);
+    _print(`APY (weekly)      : ${toFixed(((1 + (ROI_WEEKLY / 100))**52 - 1) * 100, 4)}% \n\n`);
+
+    const bscscanUrl = `<a href='https://bscscan.com/address/' target='_blank'>Vault Contract</a>`;
+    _print(bscscanUrl)
+  }
+
 
   async function main() {
     const PS = [
@@ -84,6 +127,10 @@ $(function() {
       //MAIN_PAGE
       "0xD6dB83d2c3207347709a31C9b1b14F59F4F4ffF7",
     ];
+    const VAULTS = [
+        "0x47947CA6D6e49246409238A35ae159996a2a1032",
+        "0x095EB886997d752C78Fe5F731d5B0C1D90b29EF4"
+    ]
 
     const App = await init_ethers();
 
@@ -92,11 +139,17 @@ $(function() {
     _print("The APR shown only contains the APR from BELUGA emissions, the native returns from vaults are not added.\n")
 
     const tokens = {};
+    const vaultTokens = {}
     const prices = await getBscPrices();
 
     await loadPool(App, tokens, prices, PS[0], ps=true)
     for (const c of CONTRACTS) {
       await loadPool(App, tokens, prices, c);
+    }
+
+    _print("BELUGA VAULTS\n")
+    for (const c of CONTRACTS) {
+        await loadVault(App, vaultTokens, prices, c)
     }
 
     hideLoading();
