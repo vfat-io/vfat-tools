@@ -61,6 +61,6 @@ const SmartdexStakingContracts =  [
   },
   {
     //AGI/NIOX 
-    stakingRewardAddress: '0xaec962e533a350495c38507dd0ef1becc138af66'
+    stakingRewardAddress: '0x4e59aa8fe2ad4374467f7e2edb75ebc6a1002d92'
   }
 ]
