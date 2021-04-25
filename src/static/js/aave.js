@@ -128,10 +128,10 @@ async function loadAaveData(App, aTokenAddress, bTokenAddress, lendingAddress, a
   const yearlyBorrowAPR = borrowWeeklyAPR * 52;
   const supplyNetAPR = supplyRate + yearlySupplyAPR
   const borrowNetAPR = yearlyBorrowAPR - borrowRate
-  const aUsdPerYear = aBalanceOf * underlyingPrice * supplyNetAPR;
+  const aUsdPerYear = aBalanceOf * underlyingPrice * supplyNetAPR / 100;
   const aUsdPerWeek = aUsdPerYear / 52;
   const aUsdPerDay = aUsdPerYear / 365;
-  const bUsdPerYear = bBalanceOf * underlyingPrice * borrowNetAPR;
+  const bUsdPerYear = bBalanceOf * underlyingPrice * borrowNetAPR / 100;
   const bUsdPerWeek = bUsdPerYear / 52;
   const bUsdPerDay = bUsdPerYear / 365;
   _print_bold(`${uSymbol} ($${formatMoney(underlyingPrice)})`);
