@@ -24,7 +24,7 @@ async function main() {
      _print(`Rewards start at block ${startBlock}\n`);
    }else{
     rewardsPerWeek = await KRILL_CHEF.krillPerBlock() /1e18
-      * 604800 / 3;
+      * 604800 / 2.1;
    }
 
     const tokens = {};
