@@ -85,9 +85,11 @@ async function main() {
 async function loadAaveData(App, aTokenAddress, bTokenAddress, lendingAddress, assetAddress, 
                             aTokenAbi, bTokenAbi, lendingAbi, assetAbi, 
                             tokens, prices){
-  const ATOKEN_CONTRACT = new ethers.Contract(aTokenAddress, aTokenAbi, App.provider);
+  const ATOKEN_CONTRACT = new ethcall.Contract(aTokenAddress, aTokenAbi, App.provider);
+  const [underlyingTokenAddress, aDecimals, aTotalSupply_, aBalanceOf_] = await App.ethcallProvider.all([
+    ATOKEN_CONTRACT.UNDERLYING_ASSET_ADDRESS(), ATOKEN_CONTRACT.decimals(), 
+    ATOKEN_CONTRACT.totalSupply(), ATOKEN_CONTRACT.balanceOf(App.YOUR_ADDRESS)]);
   const BTOKEN_CONTRACT = new ethers.Contract(bTokenAddress, bTokenAbi, App.provider);
-  const underlyingTokenAddress = await ATOKEN_CONTRACT.UNDERLYING_ASSET_ADDRESS();
   await getNewPricesAndTokens(App, tokens, prices, [underlyingTokenAddress], underlyingTokenAddress);
   const UNDERLYING_CONTRACT = new ethers.Contract(underlyingTokenAddress, aTokenAbi, App.provider);
   const ASSET_CONTRACT = new ethers.Contract(assetAddress, assetAbi, App.provider);
@@ -103,9 +105,8 @@ async function loadAaveData(App, aTokenAddress, bTokenAddress, lendingAddress, a
   }
   const uDecimals = await UNDERLYING_CONTRACT.decimals();
   const uTotalSupply = await UNDERLYING_CONTRACT.balanceOf(aTokenAddress) / 10 ** uDecimals;
-  const aDecimals = await ATOKEN_CONTRACT.decimals();
-  const aTotalSupply = await ATOKEN_CONTRACT.totalSupply() / 10 ** aDecimals;
-  const aBalanceOf = await ATOKEN_CONTRACT.balanceOf(App.YOUR_ADDRESS) / 10 ** aDecimals;
+  const aTotalSupply = aTotalSupply_ / 10 ** aDecimals;
+  const aBalanceOf = aBalanceOf_ / 10 ** aDecimals;
   const aPct = aBalanceOf / aTotalSupply * 100;
   const bDecimals = await BTOKEN_CONTRACT.decimals();
   const bTotalSupply = await BTOKEN_CONTRACT.totalSupply() / 10 ** bDecimals;
