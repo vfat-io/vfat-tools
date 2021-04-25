@@ -86,31 +86,33 @@ async function loadAaveData(App, aTokenAddress, bTokenAddress, lendingAddress, a
                             aTokenAbi, bTokenAbi, lendingAbi, assetAbi, 
                             tokens, prices){
   const ATOKEN_CONTRACT = new ethcall.Contract(aTokenAddress, aTokenAbi, App.provider);
-  const [underlyingTokenAddress, aDecimals, aTotalSupply_, aBalanceOf_] = await App.ethcallProvider.all([
+  const BTOKEN_CONTRACT = new ethcall.Contract(bTokenAddress, bTokenAbi, App.provider);
+  const [underlyingTokenAddress, aDecimals, aTotalSupply_, aBalanceOf_,
+         bDecimals, bTotalSupply_, bBalanceOf_] = await App.ethcallProvider.all([
     ATOKEN_CONTRACT.UNDERLYING_ASSET_ADDRESS(), ATOKEN_CONTRACT.decimals(), 
-    ATOKEN_CONTRACT.totalSupply(), ATOKEN_CONTRACT.balanceOf(App.YOUR_ADDRESS)]);
-  const BTOKEN_CONTRACT = new ethers.Contract(bTokenAddress, bTokenAbi, App.provider);
+    ATOKEN_CONTRACT.totalSupply(), ATOKEN_CONTRACT.balanceOf(App.YOUR_ADDRESS),
+    BTOKEN_CONTRACT.decimals(), BTOKEN_CONTRACT.totalSupply(), 
+    BTOKEN_CONTRACT.balanceOf(App.YOUR_ADDRESS)]);
   await getNewPricesAndTokens(App, tokens, prices, [underlyingTokenAddress], underlyingTokenAddress);
-  const UNDERLYING_CONTRACT = new ethers.Contract(underlyingTokenAddress, aTokenAbi, App.provider);
-  const ASSET_CONTRACT = new ethers.Contract(assetAddress, assetAbi, App.provider);
-  const assetDataSupply = await ASSET_CONTRACT.assets(aTokenAddress);
-  const assetDataBorrow = await ASSET_CONTRACT.assets(bTokenAddress);
-  const LENDING_CONTRACT = new ethers.Contract(lendingAddress, lendingAbi, App.provider);
-  const lendingData = await LENDING_CONTRACT.getReserveData(underlyingTokenAddress);
+  const UNDERLYING_CONTRACT = new ethcall.Contract(underlyingTokenAddress, aTokenAbi, App.provider);
+  const ASSET_CONTRACT = new ethcall.Contract(assetAddress, assetAbi, App.provider);
+  const LENDING_CONTRACT = new ethcall.Contract(lendingAddress, lendingAbi, App.provider);
+  const [assetDataSupply, assetDataBorrow, lendingData, uDecimals, uReserves_] =
+      await App.ethcallProvider.all([ASSET_CONTRACT.assets(aTokenAddress), 
+        ASSET_CONTRACT.assets(bTokenAddress), LENDING_CONTRACT.getReserveData(underlyingTokenAddress),
+        UNDERLYING_CONTRACT.decimals(), UNDERLYING_CONTRACT.balanceOf(aTokenAddress)])
   let uSymbol = "";
   if(underlyingTokenAddress == "0x9f8F72aA9304c8B593d555F12eF6589cC3A579A2"){
     uSymbol = "MKR"
   }else{
-    uSymbol = await UNDERLYING_CONTRACT.symbol();
+    [uSymbol] = await App.ethcallProvider.all([UNDERLYING_CONTRACT.symbol()]);
   }
-  const uDecimals = await UNDERLYING_CONTRACT.decimals();
-  const uTotalSupply = await UNDERLYING_CONTRACT.balanceOf(aTokenAddress) / 10 ** uDecimals;
+  const uReserves = uReserves_ / 10 ** uDecimals;
   const aTotalSupply = aTotalSupply_ / 10 ** aDecimals;
   const aBalanceOf = aBalanceOf_ / 10 ** aDecimals;
   const aPct = aBalanceOf / aTotalSupply * 100;
-  const bDecimals = await BTOKEN_CONTRACT.decimals();
-  const bTotalSupply = await BTOKEN_CONTRACT.totalSupply() / 10 ** bDecimals;
-  const bBalanceOf = await BTOKEN_CONTRACT.balanceOf(App.YOUR_ADDRESS) / 10 ** bDecimals;
+  const bTotalSupply = bTotalSupply_ / 10 ** bDecimals;
+  const bBalanceOf = bBalanceOf_ / 10 ** bDecimals;
   const bPct = bBalanceOf / bTotalSupply * 100;
   const underlyingPrice = getParameterCaseInsensitive(prices, underlyingTokenAddress)?.usd;
   const rewardTokenPrice = getParameterCaseInsensitive(prices, "0x7Fc66500c84A76Ad7e9c93437bFc5Ac33E2DDaE9")?.usd;
@@ -135,7 +137,7 @@ async function loadAaveData(App, aTokenAddress, bTokenAddress, lendingAddress, a
   _print_bold(`${uSymbol} ($${formatMoney(underlyingPrice)})`);
   _print(`Supplied : ${formatMoney(aTotalSupply)} ($${formatMoney(aTotalSupply * underlyingPrice)}) at ${supplyRate.toFixed(2)}% APR`)
   _print(`Borrowed : ${formatMoney(bTotalSupply)} ($${formatMoney(bTotalSupply * underlyingPrice)}) at ${borrowRate.toFixed(2)}% APR`)
-  _print(`Reserves : ${formatMoney(uTotalSupply)} ($${formatMoney(uTotalSupply * underlyingPrice)})`);
+  _print(`Reserves : ${formatMoney(uReserves)} ($${formatMoney(uReserves * underlyingPrice)})`);
   _print(`Farming APR Supply ${yearlySupplyAPR.toFixed(2)}% Borrow ${yearlyBorrowAPR.toFixed(2)}%`);
   _print(`Net APR Supply ${supplyNetAPR.toFixed(2)}% Borrow ${borrowNetAPR.toFixed(2)}%`);
   _print(`You are supplying ${formatMoney(aBalanceOf)} ${uSymbol} ($${formatMoney(aBalanceOf * underlyingPrice)}), ${aPct.toFixed(2)}% of the pool.`)
