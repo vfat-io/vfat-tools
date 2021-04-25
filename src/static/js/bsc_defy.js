@@ -16,7 +16,7 @@ async function main() {
    const rewardTokenTicker = "DEFY";
    const DEFY_CHEF = new ethers.Contract(DEFY_CHEF_ADDR, DEFY_CHEF_ABI, App.provider);
 
-   const rewardsPerWeek = await DEFY_CHEF.defyPerBlock() /1e18
+   const rewardsPerWeek = await DEFY_CHEF.defyPerBlock() /1e8
         * 604800 / 3;
 
     const tokens = {};
