@@ -17,7 +17,7 @@ async function main() {
    const DARK_CHEF = new ethers.Contract(DARK_CHEF_ADDR, DARK_CHEF_ABI, App.provider);
 
    const rewardsPerWeek = await DARK_CHEF.sakePerBlock() /1e18
-        * 604800 / 3;
+        * 604800 / 2.1;
 
     const tokens = {};
     const prices = await getMaticPrices();
