@@ -334,7 +334,8 @@ const maticTokens = [
   { "id": "dai","symbol": "DAI", "contract": "0x8f3Cf7ad23Cd3CaDbD9735AFf958023239c6A063" },
   { "id": "quick","symbol": "QUICK", "contract": "0x831753DD7087CaC61aB5644b308642cc1c33Dc13" },
   { "id": "stake-dao", "symbol": "SDT", "contract": "0x361A5a4993493cE00f61C32d4EcCA5512b82CE90" },
-  { "id": "yield-app", "symbol": "YLD", "contract": "0x4CEBdBCB286101A17D3eA1f7fe7bbDeD2B2053dd" }
+  { "id": "yield-app", "symbol": "YLD", "contract": "0x4CEBdBCB286101A17D3eA1f7fe7bbDeD2B2053dd" },
+  { "id": "aave", "symbol": "AAVE", "contract": "0xD6DF932A45C0f255f85145f286eA0b292B21C90B" }
 ]
 
 async function getMaticPrices() {
