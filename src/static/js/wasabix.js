@@ -173,6 +173,9 @@ async function main() {
   prices["0xcbf335Bb8eE86A5A88bEbCda4506a665aA8d7022"] = {};
   prices["0xcbf335Bb8eE86A5A88bEbCda4506a665aA8d7022"]["usd"] = 1; //waLUSD
 
+  prices["0x6a1fbefdF67445C7F531b4F3e04Ffb37b7b13794"] = {};
+  prices["0x6a1fbefdF67445C7F531b4F3e04Ffb37b7b13794"]["usd"] = prices["0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"]["usd"];; //waLUSD
+
   const poolPrices = poolInfos.map(poolInfo => getPoolPrices(tokens, prices, poolInfo.poolToken));
 
   _print("Finished reading smart contracts.\n");
