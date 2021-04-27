@@ -8,6 +8,8 @@ const PNDA_CHEF_ABI = [{"inputs":[{"internalType":"contract BaoToken","name":"_B
 
 async function main() {  
     const App = await init_ethers();
+    _print(`*** Read before depositing ***`);
+    _print("https://docs.bao.finance/franchises/panda/pandaswap-fees-penalties\n");
   
     _print(`Initialized ${App.YOUR_ADDRESS}\n`);
     _print("Reading smart contracts...\n");
