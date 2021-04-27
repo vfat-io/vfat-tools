@@ -27,6 +27,33 @@ async function main() {
       const tokens = {};
       tokens["0x8893D5fA71389673C5c4b9b3cb4EE1ba71207556"] = await getBscToken(App, "0x8893D5fA71389673C5c4b9b3cb4EE1ba71207556", "0x03d9d14367127d477e6f340c59e57ab088220187");
       tokens["0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c"] = await getBscToken(App, "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c", "0x03d9d14367127d477e6f340c59e57ab088220187");
+      tokens["0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56"] = await getBscToken(App, "0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56", "0x4b18231508a75645cd07faa0f9025808a0b9799a");
+
+      // NUTS-BNB APE LP FARM
+      const apeLpPool = await getBscToken(App, "0x789fd04BFbC64169104466Ee0d48716E0452Bcf6", "0xa998b89e50dfed569ac41dbac5f2e4edb2567251");
+      const apeLpPrices = await getPoolPrices(tokens, prices, apeLpPool, "bsc");
+      apeLpPrices.print_price();
+
+      const signer = App.provider.getSigner();
+      const NUTS_APE_LP_POOL = new ethers.Contract("0xa998b89e50dfed569ac41dbac5f2e4edb2567251", FARM_ABI, signer);
+      const userApeStaked = await NUTS_APE_LP_POOL.balances(App.YOUR_ADDRESS) / 1e18;
+      const nutsPrice = prices["0x8893D5fA71389673C5c4b9b3cb4EE1ba71207556"].usd;
+      printAPR("NUTS", nutsPrice, 11000, apeLpPrices.stakeTokenTicker, apeLpPrices.staked_tvl, userApeStaked, apeLpPrices.price);
+
+      const NUTS_APE_LP_TOKEN = new ethers.Contract("0x789fd04BFbC64169104466Ee0d48716E0452Bcf6", TOKEN_ABI, signer);
+      printFarmActions(App, NUTS_APE_LP_POOL, NUTS_APE_LP_TOKEN, userApeStaked, apeLpPrices.stakeTokenTicker, nutsPrice, false, false);
+
+      // NUTS-BUSD LP FARM
+      const busdLpPool = await getBscToken(App, "0xaff9731Ec354Fc414276C4921475FF09A85AD873", "0x4b18231508a75645cd07faa0f9025808a0b9799a");
+      const busdLpPrices = await getPoolPrices(tokens, prices, busdLpPool, "bsc");
+      busdLpPrices.print_price();
+
+      const NUTS_BUSD_LP_POOL = new ethers.Contract("0x4b18231508a75645cd07faa0f9025808a0b9799a", FARM_ABI, signer);
+      const userBusdStaked = await NUTS_BUSD_LP_POOL.balances(App.YOUR_ADDRESS) / 1e18;
+      printAPR("NUTS", nutsPrice, 9000, busdLpPrices.stakeTokenTicker, busdLpPrices.staked_tvl, userBusdStaked, busdLpPrices.price);
+
+      const NUTS_BUSD_LP_TOKEN = new ethers.Contract("0xaff9731Ec354Fc414276C4921475FF09A85AD873", TOKEN_ABI, signer);
+      printFarmActions(App, NUTS_BUSD_LP_POOL, NUTS_BUSD_LP_TOKEN, userBusdStaked, busdLpPrices.stakeTokenTicker, nutsPrice, false, false);
 
 
       // NUTS-BNB LP FARM
@@ -34,11 +61,9 @@ async function main() {
       const lpPrices = await getPoolPrices(tokens, prices, lpPool, "bsc");
       lpPrices.print_price();
 
-      const signer = App.provider.getSigner();
       const NUTS_LP_POOL = new ethers.Contract("0x03d9d14367127d477e6f340c59e57ab088220187", FARM_ABI, signer);
       const userStaked = await NUTS_LP_POOL.balances(App.YOUR_ADDRESS) / 1e18;
-      const nutsPrice = prices["0x8893D5fA71389673C5c4b9b3cb4EE1ba71207556"].usd;
-      printAPR("NUTS", nutsPrice, 12000, lpPrices.stakeTokenTicker, lpPrices.staked_tvl, userStaked, lpPrices.price);
+      printAPR("NUTS", nutsPrice, 0, lpPrices.stakeTokenTicker, lpPrices.staked_tvl, userStaked, lpPrices.price);
 
       const NUTS_LP_TOKEN = new ethers.Contract("0x034c9e6b08c09a6144e0d0e52161338fb105e656", TOKEN_ABI, signer);
       printFarmActions(App, NUTS_LP_POOL, NUTS_LP_TOKEN, userStaked, lpPrices.stakeTokenTicker, nutsPrice, false, false);
@@ -48,7 +73,7 @@ async function main() {
       const nutsPool = await getBscToken(App, "0x8893D5fA71389673C5c4b9b3cb4EE1ba71207556", "0x45c12738c089224f66cd7a1c85301d79c45e2ded");
       const nutsPrices = await getPoolPrices(tokens, prices, nutsPool, "bsc");
       nutsPrices.print_price();
-      _print(`Estimated APR: 300% (varies from TVL & NUTS price)`)
+      _print(`Estimated APR: 100% (varies from TVL & NUTS price)`)
 
       const NUTS_POOL = new ethers.Contract("0x45c12738c089224f66cd7a1c85301d79c45e2ded", FARM_ABI, signer);
       const userNutsStaked = await NUTS_POOL.balances(App.YOUR_ADDRESS) / 1e18;
@@ -61,19 +86,22 @@ async function main() {
 
 
       // OTHER FARMS
-      await outputVault(App, tokens, prices, signer, nutsPrice, "0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82", "0xdfd040cd6b1d7f15cad3094e3b49dc542fea77c1", "0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82",  110, "CAKE", true);
-      await outputVault(App, tokens, prices, signer, nutsPrice, "0x603c7f932ED1fc6575303D8Fb018fDCBb0f39a95", "0x31fe02b9ea5501bfe8a872e205dfe6b6a79435ed", "0xF397A390f008dbfC0fE995d9754acd8d137AA8dd",  240, "BANANA", true);
-      await outputVault(App, tokens, prices, signer, nutsPrice, "0x7979F6C54ebA05E18Ded44C4F986F49a5De551c2", "0x55d1905c72365dcef69f9a7c890a26a2e3fc4c41", "0x25fd42D82d5c238ee7AA277261AA6CA5BDFE5CD4",  160, "KEBAB", true);
+      await outputVault(App, tokens, prices, signer, nutsPrice, "0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82", "0xdfd040cd6b1d7f15cad3094e3b49dc542fea77c1", "0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82", 5000, 90, "CAKE", true);
+      await outputVault(App, tokens, prices, signer, nutsPrice, "0x603c7f932ED1fc6575303D8Fb018fDCBb0f39a95", "0x31fe02b9ea5501bfe8a872e205dfe6b6a79435ed", "0xF397A390f008dbfC0fE995d9754acd8d137AA8dd", 4000, 180, "BANANA", true);
+      await outputVault(App, tokens, prices, signer, nutsPrice, "0x7979F6C54ebA05E18Ded44C4F986F49a5De551c2", "0x55d1905c72365dcef69f9a7c890a26a2e3fc4c41", "0x25fd42D82d5c238ee7AA277261AA6CA5BDFE5CD4", 3000, 120, "KEBAB", true);
+      await outputVault(App, tokens, prices, signer, nutsPrice, "0xF952Fc3ca7325Cc27D15885d37117676d25BfdA6", "0x21573eee28112c05b355807baf5138ca59dfa424", "0xf952fc3ca7325cc27d15885d37117676d25bfda6", 3000, 120, "EGG", true);
 
-      await outputFarm(App, tokens, prices, signer, nutsPrice, "0xa184088a740c695E156F91f5cC086a06bb78b827", "0x968c84d90bd4e1307333c7f98074d1b7caac497b", "0x4d0228EBEB39f6d2f29bA528e2d15Fc9121Ead56", 200, "AUTO", false);
-      await outputFarm(App, tokens, prices, signer, nutsPrice, "0xE02dF9e3e622DeBdD69fb838bB799E3F168902c5", "0xa9c72f556c1059500cf514ed10955bceaf227c4c", "0xc2Eed0F5a0dc28cfa895084bC0a9B8B8279aE492", 100, "BAKE", false);
+      await outputFarm(App, tokens, prices, signer, nutsPrice, "0xa184088a740c695E156F91f5cC086a06bb78b827", "0x968c84d90bd4e1307333c7f98074d1b7caac497b", "0x4d0228EBEB39f6d2f29bA528e2d15Fc9121Ead56", 3000, 200, "AUTO", false);
+      await outputFarm(App, tokens, prices, signer, nutsPrice, "0xE02dF9e3e622DeBdD69fb838bB799E3F168902c5", "0xa9c72f556c1059500cf514ed10955bceaf227c4c", "0xc2Eed0F5a0dc28cfa895084bC0a9B8B8279aE492", 3000, 40, "BAKE", false);
 
-      await outputFarm(App, tokens, prices, signer, nutsPrice, "0xF952Fc3ca7325Cc27D15885d37117676d25BfdA6", "0x7456d4bda37d2aa5177ca1d8a494a318633b1fef", "0xF952Fc3ca7325Cc27D15885d37117676d25BfdA6",  180, "EGG", true);
-      await outputFarm(App, tokens, prices, signer, nutsPrice, "0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82", "0x4d41a547cce57348e83493be0f4552a924e623a1", "0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82",  100, "BRY", false);
+      await outputFarm(App, tokens, prices, signer, nutsPrice, "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c", "0x868429ffa5eddeaea8e2b8eaea4fca9c33516568", "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c", 5000, 140, "WBNB", false);
+      await outputFarm(App, tokens, prices, signer, nutsPrice, "0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82", "0x0fe7792ceb507e32ecb250a6e308a02c664cfba2", "0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82", 4000, 60, "EPS", false);
+      await outputFarm(App, tokens, prices, signer, nutsPrice, "0xF952Fc3ca7325Cc27D15885d37117676d25BfdA6", "0x7456d4bda37d2aa5177ca1d8a494a318633b1fef", "0xF952Fc3ca7325Cc27D15885d37117676d25BfdA6", 0, 0, "EGG", true);
+      await outputFarm(App, tokens, prices, signer, nutsPrice, "0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82", "0x4d41a547cce57348e83493be0f4552a924e623a1", "0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82", 0, 0, "BRY", false);
   }
 
 
-  async function outputVault(App, tokens, prices, signer, nutsPrice, token, pool, lpToken, nativeAPR, nativeRewardTicker, canCompound) {
+  async function outputVault(App, tokens, prices, signer, nutsPrice, token, pool, lpToken, weeklyNuts, nativeAPR, nativeRewardTicker, canCompound) {
       tokens[token] = await getBscToken(App, token, pool);
 
       if (lpToken != token) { // Load some missing tokens price from LP
@@ -88,14 +116,14 @@ async function main() {
       tokenPrices.print_price();
 
       const userStaked = await POOL.cakeBalance(App.YOUR_ADDRESS) / 1e18;
-      printCombinedAPR(nutsPrice, 5000, tokenPrices.stakeTokenTicker, tokenPrices.staked_tvl, userStaked, tokenPrices.price, nativeAPR, nativeRewardTicker);
+      printCombinedAPR(nutsPrice, weeklyNuts, tokenPrices.stakeTokenTicker, tokenPrices.staked_tvl, userStaked, tokenPrices.price, nativeAPR, nativeRewardTicker);
 
       const TOKEN = new ethers.Contract(token, TOKEN_ABI, signer);
       printFarmActions(App, POOL, TOKEN, userStaked, tokenPrices.stakeTokenTicker, nutsPrice, canCompound, false, true, 2, nativeRewardTicker);
   }
 
 
-  async function outputFarm(App, tokens, prices, signer, nutsPrice, token, lpPool, lpToken, nativeAPR, nativeRewardTicker, canCompound) {
+  async function outputFarm(App, tokens, prices, signer, nutsPrice, token, lpPool, lpToken, weeklyNuts, nativeAPR, nativeRewardTicker, canCompound) {
       tokens[token] = await getBscToken(App, token, lpPool);
       const lpPoolData = await getBscToken(App, lpToken, lpPool);
 
@@ -106,7 +134,7 @@ async function main() {
       lpPrices.print_price();
 
       const userStaked = await LP_POOL.balances(App.YOUR_ADDRESS) / 1e18;
-      printCombinedAPR(nutsPrice, 5000, lpPrices.stakeTokenTicker, lpPrices.staked_tvl, userStaked, lpPrices.price, nativeAPR, nativeRewardTicker);
+      printCombinedAPR(nutsPrice, weeklyNuts, lpPrices.stakeTokenTicker, lpPrices.staked_tvl, userStaked, lpPrices.price, nativeAPR, nativeRewardTicker);
 
       const LP_TOKEN = new ethers.Contract(lpToken, TOKEN_ABI, signer);
       printFarmActions(App, LP_POOL, LP_TOKEN, userStaked, lpPrices.stakeTokenTicker, nutsPrice, canCompound, false, false, 1, nativeRewardTicker);

@@ -1257,7 +1257,7 @@ function getUniPrices(tokens, prices, pool)
       print_price(chain="eth", decimals) {
         const poolUrl = pool.is1inch ? "https://1inch.exchange/#/dao/pools" :
         pool.symbol.includes("LSLP") ? `https://info.linkswap.app/pair/${pool.address}` :
-          pool.symbol.includes("SLP") ?  `http://app.sushi.com/pair/${pool.address}` :
+          pool.symbol.includes("SLP") ?  `http://analytics.sushi.com/pairs/${pool.address}` :
             pool.symbol.includes("Cake") ?  `https://pancakeswap.info/pair/${pool.address}` :  
             pool.symbol.includes("PGL") ?  `https://info.pangolin.exchange/#/pair/${pool.address}` :  
             pool.name.includes("Value LP") ?  `https://info.vswap.fi/pool/${pool.address}` :  
@@ -1287,9 +1287,9 @@ function getUniPrices(tokens, prices, pool)
           `https://app.pangolin.exchange/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}` 
         ] :
         pool.symbol.includes("SLP") ? [ 
-          `https://exchange.sushiswapclassic.org/#/add/${t0address}/${t1address}`,
-          `https://exchange.sushiswapclassic.org/#/remove/${t0address}/${t1address}`,
-          `https://exchange.sushiswapclassic.org/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}` 
+          `https://app.sushi.com/add/${t0address}/${t1address}`,
+          `https://app.sushi.com/remove/${t0address}/${t1address}`,
+          `https://app.sushi.com/swap?inputCurrency=${t0address}&outputCurrency=${t1address}` 
         ] :
         [ `https://app.uniswap.org/#/add/${t0address}/${t1address}`,
           `https://app.uniswap.org/#/remove/${t0address}/${t1address}`,
@@ -1298,7 +1298,7 @@ function getUniPrices(tokens, prices, pool)
           ` <a href='${helperUrls[0]}' target='_blank'>[+]</a> <a href='${helperUrls[1]}' target='_blank'>[-]</a> <a href='${helperUrls[2]}' target='_blank'>[<=>]</a>`
         _print(`<a href='${poolUrl}' target='_blank'>${stakeTokenTicker}</a>${helperHrefs} Price: $${formatMoney(price)} TVL: $${formatMoney(tvl)}`);
         if(p0 < 0.01){
-          _print(`${t0.symbol} Price: $${p0.toFixed(5)}`)
+          _print(`${t0.symbol} Price: $${p0.toFixed(8)}`)
         }else{
           _print(`${t0.symbol} Price: $${formatMoney(p0)}`)
         }
@@ -1427,7 +1427,7 @@ function getWrapPrices(tokens, prices, pool)
   if (wrappedToken.token0 != null) { //Uniswap
     const uniPrices = getUniPrices(tokens, prices, wrappedToken);
     const poolUrl = pool.is1inch ? "https://1inch.exchange/#/dao/pools" :
-    pool.symbol.includes("SLP") ?  `http://app.sushi.com/pair/${wrappedToken.address}` :
+    pool.symbol.includes("SLP") ?  `http://analytics.sushi.com/pairs/${wrappedToken.address}` :
     (pool.symbol.includes("Cake") || pool.symbol.includes("Pancake")) ?  `http://pancakeswap.info/pair/${wrappedToken.address}`
       : `http://uniswap.info/pair/${wrappedToken.address}`;
     const name = `Wrapped <a href='${poolUrl}' target='_blank'>${uniPrices.stakeTokenTicker}</a>`;
@@ -1499,6 +1499,9 @@ function getErc20Prices(prices, pool, chain="eth") {
       break;
     case "avax":
       poolUrl=`https://cchain.explorer.avax.network/address/${pool.address}`;
+      break;
+    case "fantom": 
+      poolUrl=`https://ftmscan.com/token/${pool.address}`;
       break;
   }
   const name = `<a href='${poolUrl}' target='_blank'>${pool.symbol}</a>`;
@@ -1653,8 +1656,8 @@ function printChefPool(App, chefAbi, chefAddr, prices, tokens, poolInfo, poolInd
   const userStaked = poolInfo.userLPStaked ?? poolInfo.userStaked;
   const rewardPrice = getParameterCaseInsensitive(prices, rewardTokenAddress)?.usd;
   const staked_tvl = sp?.staked_tvl ?? poolPrices.staked_tvl;
-  poolPrices.print_price();
-  sp?.print_price();
+  poolPrices.print_price(chain);
+  sp?.print_price(chain);
   const apr = printAPR(rewardTokenTicker, rewardPrice, poolRewardsPerWeek, poolPrices.stakeTokenTicker, 
     staked_tvl, userStaked, poolPrices.price, fixedDecimals);
   if (poolInfo.userLPStaked > 0) sp?.print_contained_price(userStaked);
@@ -1686,10 +1689,17 @@ async function loadChefContract(App, chef, chefAddress, chefAbi, rewardTokenTick
     await chefContract.callStatic[rewardsPerBlockFunction]() 
     / 10 ** rewardToken.decimals * 604800 / 13.5
 
-  const poolInfos = await Promise.all([...Array(poolCount).keys()].map(async (x) =>
-    await getPoolInfo(App, chefContract, chefAddress, x, pendingRewardsFunction, showAll)));
+  const poolInfos = await Promise.all([...Array(poolCount).keys()].map(async (x) => {
+    try {
+      return await getPoolInfo(App, chefContract, chefAddress, x, pendingRewardsFunction, showAll);
+    }
+    catch (ex) {
+      console.log(`Error loading pool ${x}: ${ex}`);
+      return null;
+    }
+  }));
   
-  var tokenAddresses = [].concat.apply([], poolInfos.filter(x => x.poolToken).map(x => x.poolToken.tokens));
+  var tokenAddresses = [].concat.apply([], poolInfos.filter(x => x?.poolToken).map(x => x.poolToken.tokens));
   var prices = await lookUpTokenPrices(tokenAddresses);
   if (extraPrices) {
     for (const [k,v] of Object.entries(extraPrices)) {
@@ -1710,7 +1720,7 @@ async function loadChefContract(App, chef, chefAddress, chefAbi, rewardTokenTick
       poolInfo.poolToken ? getPoolPrices(tokens, prices, poolInfo.poolToken, "eth") : undefined);
   }
 
-  const poolPrices = poolInfos.map(poolInfo => poolInfo.poolToken ? getPoolPrices(tokens, prices, poolInfo.poolToken) : undefined);
+  const poolPrices = poolInfos.map(poolInfo => poolInfo?.poolToken ? getPoolPrices(tokens, prices, poolInfo.poolToken) : undefined);
 
   _print("Finished reading smart contracts.\n");
     
@@ -1960,6 +1970,9 @@ async function printSynthetixPool(App, info, chain="eth") {
         break;
       case "matic":
         _print(`<a target="_blank" href="https://explorer-mainnet.maticvigil.com/address/${info.stakingAddress}#code">Matic Explorer</a>`);
+        break;
+      case "fantom":
+        _print(`<a target="_blank" href="https://ftmscan.com/address/${info.stakingAddress}#code">FTM Scan</a>`);
         break;
     }
     if (info.stakeTokenTicker != "ETH") {

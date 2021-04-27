@@ -13,21 +13,18 @@ async function main() {
     _print("Reading smart contracts...\n");
 
    const FANTOM_ICE_CHEF_ADDR0 = "0x05200cB2Cee4B6144B2B2984E246B52bB1afcBD0";
-   const FANTOM_ICE_CHEF_ADDR1 = "0x2ccE22c7A4A9f66ee589464D883e85D91F35DD6b";
+   //const FANTOM_ICE_CHEF_ADDR1 = "0x2ccE22c7A4A9f66ee589464D883e85D91F35DD6b";
    const rewardTokenTicker = "ICE";
    const FANTOM_ICE_CHEF0 = new ethers.Contract(FANTOM_ICE_CHEF_ADDR0, FANTOM_ICE_CHEF_ABI, App.provider);
-   const FANTOM_ICE_CHEF1 = new ethers.Contract(FANTOM_ICE_CHEF_ADDR1, FANTOM_ICE_CHEF_ABI, App.provider);
 
    const rewardsPerWeek0 = await FANTOM_ICE_CHEF0.icePerSecond() /1e18 * 604800;
-   const rewardsPerWeek1 = await FANTOM_ICE_CHEF1.icePerSecond() /1e18 * 604800;
 
     const tokens = {};
     const prices = await getFantomPrices();
+    prices["0x92D5ebF3593a92888C25C0AbEF126583d4b5312E"] = { usd: 1};
 
     await loadFantomPopsicleContract(App, tokens, prices, FANTOM_ICE_CHEF0, FANTOM_ICE_CHEF_ADDR0, FANTOM_ICE_CHEF_ABI, rewardTokenTicker,
       "ice", null, rewardsPerWeek0, "pendingIce");
-    await loadFantomPopsicleContract(App, tokens, prices, FANTOM_ICE_CHEF1, FANTOM_ICE_CHEF_ADDR1, FANTOM_ICE_CHEF_ABI, rewardTokenTicker,
-      "ice", null, rewardsPerWeek1, "pendingIce");
 
     hideLoading();  
   }
@@ -58,10 +55,10 @@ async function main() {
     if (deathPoolIndices) {   //load prices for the deathpool assets
       deathPoolIndices.map(i => poolInfos[i])
                        .map(poolInfo => 
-        poolInfo.poolToken ? getPoolPrices(tokens, prices, poolInfo.poolToken, "Fantom") : undefined);
+        poolInfo.poolToken ? getPoolPrices(tokens, prices, poolInfo.poolToken, "fantom") : undefined);
     }
   
-    const poolPrices = poolInfos.map(poolInfo => poolInfo.poolToken ? getPoolPrices(tokens, prices, poolInfo.poolToken, "Fantom") : undefined);
+    const poolPrices = poolInfos.map(poolInfo => poolInfo.poolToken ? getPoolPrices(tokens, prices, poolInfo.poolToken, "fantom") : undefined);
   
   
     _print("Finished reading smart contracts.\n");
@@ -70,7 +67,7 @@ async function main() {
       if (poolPrices[i]) {
         printChefPool(App, chefAbi, chefAddress, prices, tokens, poolInfos[i], i, poolPrices[i],
           totalAllocPoints, rewardsPerWeek, rewardTokenTicker, rewardTokenAddress,
-          pendingRewardsFunction, "Fantom");
+          pendingRewardsFunction, "fantom");
       }
     }
   }

@@ -63,10 +63,17 @@ $(function() {
     await chefContract.callStatic[rewardsPerBlockFunction]() 
     / 10 ** rewardToken.decimals * 604800 / 13.5
 
-  const poolInfos = await Promise.all([...Array(poolCount).keys()].map(async (x) =>
-    await getXdefiPoolInfo(App, chefContract, chefAddress, x, pendingRewardsFunction)));
+  const poolInfos = await Promise.all([...Array(poolCount).keys()].map(async (x) => {
+    try {
+      return await getXdefiPoolInfo(App, chefContract, chefAddress, x, pendingRewardsFunction)
+    }
+    catch (ex) {
+      console.log(`Error loading pool ${x}: ${ex}`);
+      return null;
+    }
+  }));
   
-  var tokenAddresses = [].concat.apply([], poolInfos.filter(x => x.poolToken).map(x => x.poolToken.tokens));
+  var tokenAddresses = [].concat.apply([], poolInfos.filter(x => x?.poolToken).map(x => x.poolToken.tokens));
   var prices = await lookUpTokenPrices(tokenAddresses);
   if (extraPrices) {
     for (const [k,v] of Object.entries(extraPrices)) {
@@ -80,7 +87,7 @@ $(function() {
       tokens[address] = await getToken(App, address, chefAddress);
   }));
 
-  const poolPrices = poolInfos.map(poolInfo => poolInfo.poolToken ? getPoolPrices(tokens, prices, poolInfo.poolToken) : undefined);
+  const poolPrices = poolInfos.map(poolInfo => poolInfo?.poolToken ? getPoolPrices(tokens, prices, poolInfo.poolToken) : undefined);
 
   _print("Finished reading smart contracts.\n");
     

@@ -202,23 +202,7 @@ async function printUnicryptPool(App, info, poolPrices, stakeTokenTicker, staked
     const revoke = async function() {
       return rewardsContract_resetApprove(info.stakeTokenAddress, info.stakingAddress, App)
     }
-    switch ("eth") {
-      case "eth":
-        _print(`<a target="_blank" href="https://etherscan.io/address/${info.stakingAddress}#code">Etherscan</a>`);
-        break;
-      case "avax":
-        _print(`<a target="_blank" href="https://cchain.explorer.avax.network/address/${info.stakingAddress}#code">Explorer</a>`);
-        break;
-      case "bsc":
-        _print(`<a target="_blank" href="https://bscscan.com/address/${info.stakingAddress}#code">BSC Scan</a>`);
-        break;
-      case "heco":
-        _print(`<a target="_blank" href="https://scan.hecochain.com/address/${info.stakingAddress}#code">Heco Scan</a>`);
-        break;
-      case "matic":
-        _print(`<a target="_blank" href="https://explorer-mainnet.maticvigil.com/address/${info.stakingAddress}#code">Matic Explorer</a>`);
-        break;
-    }
+    _print(`<a target="_blank" href="https://etherscan.io/address/${info.stakingAddress}#code">Etherscan</a>`);
     if (stakeTokenTicker != "ETH") {
       _print_link(`Stake ${info.userUnstaked.toFixed(8)} ${stakeTokenTicker}`, approveTENDAndStake)
     }
