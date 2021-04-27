@@ -1298,7 +1298,7 @@ function getUniPrices(tokens, prices, pool)
           ` <a href='${helperUrls[0]}' target='_blank'>[+]</a> <a href='${helperUrls[1]}' target='_blank'>[-]</a> <a href='${helperUrls[2]}' target='_blank'>[<=>]</a>`
         _print(`<a href='${poolUrl}' target='_blank'>${stakeTokenTicker}</a>${helperHrefs} Price: $${formatMoney(price)} TVL: $${formatMoney(tvl)}`);
         if(p0 < 0.01){
-          _print(`${t0.symbol} Price: $${p0.toFixed(5)}`)
+          _print(`${t0.symbol} Price: $${p0.toFixed(8)}`)
         }else{
           _print(`${t0.symbol} Price: $${formatMoney(p0)}`)
         }
@@ -1500,6 +1500,9 @@ function getErc20Prices(prices, pool, chain="eth") {
     case "avax":
       poolUrl=`https://cchain.explorer.avax.network/address/${pool.address}`;
       break;
+    case "fantom": 
+      poolUrl=`https://ftmscan.com/token/${pool.address}`;
+      break;
   }
   const name = `<a href='${poolUrl}' target='_blank'>${pool.symbol}</a>`;
   return {
@@ -1653,8 +1656,8 @@ function printChefPool(App, chefAbi, chefAddr, prices, tokens, poolInfo, poolInd
   const userStaked = poolInfo.userLPStaked ?? poolInfo.userStaked;
   const rewardPrice = getParameterCaseInsensitive(prices, rewardTokenAddress)?.usd;
   const staked_tvl = sp?.staked_tvl ?? poolPrices.staked_tvl;
-  poolPrices.print_price();
-  sp?.print_price();
+  poolPrices.print_price(chain);
+  sp?.print_price(chain);
   const apr = printAPR(rewardTokenTicker, rewardPrice, poolRewardsPerWeek, poolPrices.stakeTokenTicker, 
     staked_tvl, userStaked, poolPrices.price, fixedDecimals);
   if (poolInfo.userLPStaked > 0) sp?.print_contained_price(userStaked);
@@ -1967,6 +1970,9 @@ async function printSynthetixPool(App, info, chain="eth") {
         break;
       case "matic":
         _print(`<a target="_blank" href="https://explorer-mainnet.maticvigil.com/address/${info.stakingAddress}#code">Matic Explorer</a>`);
+        break;
+      case "fantom":
+        _print(`<a target="_blank" href="https://ftmscan.com/address/${info.stakingAddress}#code">FTM Scan</a>`);
         break;
     }
     if (info.stakeTokenTicker != "ETH") {
