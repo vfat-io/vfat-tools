@@ -48,11 +48,16 @@ async function loadAaveDetails(App, aTokenAddress, borrowedTokenAddress, tokenAb
   const aSymbol = await ATOKEN_CONTRACT.symbol();
   const aDecimals = await ATOKEN_CONTRACT.decimals();
   const aTotalSupply = await ATOKEN_CONTRACT.totalSupply() / 10 ** aDecimals;
-  const aBalanceOf = await ATOKEN_CONTRACT.balanceOf(App.YOUR_ADDRESS);
+  const aBalanceOf = await ATOKEN_CONTRACT.balanceOf(App.YOUR_ADDRESS) / 10 ** aDecimals;
+  const aPct = aBalanceOf / aTotalSupply * 100;
   const bSymbol = await BTOKEN_CONTRACT.symbol();
   const bDecimals = await BTOKEN_CONTRACT.decimals();
   const bTotalSupply = await BTOKEN_CONTRACT.totalSupply() / 10 ** bDecimals;
-  const bBalanceOf = await BTOKEN_CONTRACT.balanceOf(App.YOUR_ADDRESS);
-  _print(`LENDING: ${aSymbol} Total Supply: (${formatMoney(aTotalSupply)}) Users Balance: ${formatMoney(aBalanceOf)}`);
-  _print(`BORROWED: ${bSymbol} Total Supply: (${formatMoney(bTotalSupply)}) Users Balance: ${formatMoney(bBalanceOf)}\n`);
+  const bBalanceOf = await BTOKEN_CONTRACT.balanceOf(App.YOUR_ADDRESS) / 10 ** bDecimals;
+  const bPct = bBalanceOf / bTotalSupply * 100;
+  _print(`${aSymbol} - ${bSymbol}`);
+  _print(`There is a total of ${formatMoney(aTotalSupply)} ${aSymbol} supplied.`);
+  _print(`You are supplying ${formatMoney(aBalanceOf)} ${aSymbol}, ${aPct.toFixed(2)}% of the pool.`)
+  _print(`There is a total of ${formatMoney(bTotalSupply)} ${bSymbol} borrowed.`);
+  _print(`You are borrowing ${formatMoney(bBalanceOf)} ${bSymbol}, ${bPct.toFixed(2)}% of the pool.\n`)
 }
