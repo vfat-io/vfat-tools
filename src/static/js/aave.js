@@ -138,11 +138,12 @@ async function loadAaveData(App, aTokenAddress, bTokenAddress, lendingAddress, a
   _print(`Farming APR Supply ${yearlySupplyAPR.toFixed(2)}% Borrow ${yearlyBorrowAPR.toFixed(2)}%`);
   _print(`Net APR Supply ${supplyNetAPR.toFixed(2)}% Borrow ${borrowNetAPR.toFixed(2)}%`);
   _print(`You are supplying ${formatMoney(aBalanceOf)} ${uSymbol} ($${formatMoney(aBalanceOf * underlyingPrice)}), ${aPct.toFixed(2)}% of the pool.`)
-  _print(`You are borrowing ${formatMoney(bBalanceOf)} ${uSymbol} ($${formatMoney(bBalanceOf * underlyingPrice)}), ${bPct.toFixed(2)}% of the pool.`)
-  if(aBalanceOf > 0 || bBalanceOf > 0){
+  if(aBalanceOf > 0){
     _print(`Estimated Supply earnings: Day ($${formatMoney(aUsdPerDay)}) Week ($${formatMoney(aUsdPerWeek)}) Year: ($${formatMoney(aUsdPerYear)})`);
-    _print(`Estimated Borrow earnings: Day ($${formatMoney(bUsdPerDay)}) Week ($${formatMoney(bUsdPerWeek)}) Year: ($${formatMoney(bUsdPerYear)})\n`);
-  }else{
-    _print(`\n`);
   }
+  _print(`You are borrowing ${formatMoney(bBalanceOf)} ${uSymbol} ($${formatMoney(bBalanceOf * underlyingPrice)}), ${bPct.toFixed(2)}% of the pool.`)
+  if(bBalanceOf > 0){
+    _print(`Estimated Borrow earnings: Day ($${formatMoney(bUsdPerDay)}) Week ($${formatMoney(bUsdPerWeek)}) Year: ($${formatMoney(bUsdPerYear)})`);
+  }
+  _print(`\n`);
 }
