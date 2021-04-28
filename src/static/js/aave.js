@@ -73,10 +73,12 @@ async function main() {
     const LENDING_CONTRACT_ADDR = "0x7d2768dE32b0b80b7a3454c06BdAc94A69DDc7A9";
     const ASSET_CONTRACT_ADDR = "0xd784927Ff2f95ba542BfC824c8a8a98F3495f6b5";
 
-    for(let i = 0; i < ATokenAddresses.length; i++){
-      await loadAaveData(App, ATokenAddresses[i], BTokenAddresses[i], 
-                            LENDING_CONTRACT_ADDR, ASSET_CONTRACT_ADDR, A_TOKEN_ABI, B_TOKEN_ABI, LENDING_ABI, ASSET_ABI,
-                            tokens, prices);
+    const data = await Promise.all([...Array(ATokenAddresses.length).keys()].map(x =>
+      loadAaveData(App, ATokenAddresses[x], BTokenAddresses[x], LENDING_CONTRACT_ADDR, ASSET_CONTRACT_ADDR, A_TOKEN_ABI, B_TOKEN_ABI, LENDING_ABI, ASSET_ABI,
+        tokens, prices)))
+
+    for(const pool of data){
+      printAaveData(pool);
     }
     
     hideLoading();
@@ -134,19 +136,45 @@ async function loadAaveData(App, aTokenAddress, bTokenAddress, lendingAddress, a
   const bUsdPerYear = bBalanceOf * underlyingPrice * borrowNetAPR / 100;
   const bUsdPerWeek = bUsdPerYear / 52;
   const bUsdPerDay = bUsdPerYear / 365;
-  _print_bold(`${uSymbol} ($${formatMoney(underlyingPrice)})`);
-  _print(`Supplied : ${formatMoney(aTotalSupply)} ($${formatMoney(aTotalSupply * underlyingPrice)}) at ${supplyRate.toFixed(2)}% APR`)
-  _print(`Borrowed : ${formatMoney(bTotalSupply)} ($${formatMoney(bTotalSupply * underlyingPrice)}) at ${borrowRate.toFixed(2)}% APR`)
-  _print(`Reserves : ${formatMoney(uReserves)} ($${formatMoney(uReserves * underlyingPrice)})`);
-  _print(`Farming APR Supply ${yearlySupplyAPR.toFixed(2)}% Borrow ${yearlyBorrowAPR.toFixed(2)}%`);
-  _print(`Net APR Supply ${supplyNetAPR.toFixed(2)}% Borrow ${borrowNetAPR.toFixed(2)}%`);
-  _print(`You are supplying ${formatMoney(aBalanceOf)} ${uSymbol} ($${formatMoney(aBalanceOf * underlyingPrice)}), ${aPct.toFixed(2)}% of the pool.`)
-  if(aBalanceOf > 0){
-    _print(`Estimated Supply earnings: Day ($${formatMoney(aUsdPerDay)}) Week ($${formatMoney(aUsdPerWeek)}) Year: ($${formatMoney(aUsdPerYear)})`);
+  return{
+    uSymbol,
+    underlyingPrice,
+    aTotalSupply,
+    bTotalSupply,
+    uReserves,
+    yearlySupplyAPR,
+    yearlyBorrowAPR,
+    supplyNetAPR,
+    borrowNetAPR,
+    aBalanceOf,
+    aUsdPerDay,
+    aUsdPerWeek,
+    aUsdPerYear,
+    bBalanceOf,
+    bUsdPerDay,
+    bUsdPerWeek,
+    bUsdPerYear,
+    supplyRate,
+    borrowRate,
+    aPct,
+    bPct
   }
-  _print(`You are borrowing ${formatMoney(bBalanceOf)} ${uSymbol} ($${formatMoney(bBalanceOf * underlyingPrice)}), ${bPct.toFixed(2)}% of the pool.`)
-  if(bBalanceOf > 0){
-    _print(`Estimated Borrow earnings: Day ($${formatMoney(bUsdPerDay)}) Week ($${formatMoney(bUsdPerWeek)}) Year: ($${formatMoney(bUsdPerYear)})`);
+}
+
+async function printAaveData(data){
+  _print_bold(`${data.uSymbol} ($${formatMoney(data.underlyingPrice)})`);
+  _print(`Supplied : ${formatMoney(data.aTotalSupply)} ($${formatMoney(data.aTotalSupply * data.underlyingPrice)}) at ${data.supplyRate.toFixed(2)}% APR`)
+  _print(`Borrowed : ${formatMoney(data.bTotalSupply)} ($${formatMoney(data.bTotalSupply * data.underlyingPrice)}) at ${data.borrowRate.toFixed(2)}% APR`)
+  _print(`Reserves : ${formatMoney(data.uReserves)} ($${formatMoney(data.uReserves * data.underlyingPrice)})`);
+  _print(`Farming APR Supply ${data.yearlySupplyAPR.toFixed(2)}% Borrow ${data.yearlyBorrowAPR.toFixed(2)}%`);
+  _print(`Net APR Supply ${data.supplyNetAPR.toFixed(2)}% Borrow ${data.borrowNetAPR.toFixed(2)}%`);
+  if(data.aBalanceOf > 0){
+    _print(`You are supplying ${formatMoney(data.aBalanceOf)} ${data.uSymbol} ($${formatMoney(data.aBalanceOf * data.underlyingPrice)}), ${(data.aPct).toFixed(2)}% of the pool.`)
+    _print(`Estimated Supply earnings: Day ($${formatMoney(data.aUsdPerDay)}) Week ($${formatMoney(data.aUsdPerWeek)}) Year: ($${formatMoney(data.aUsdPerYear)})`);
   }
-  _print(`\n`);
+  if(data.bBalanceOf > 0){
+    _print(`You are borrowing ${formatMoney(data.bBalanceOf)} ${data.uSymbol} ($${formatMoney(data.bBalanceOf * data.underlyingPrice)}), ${(data.bPct).toFixed(2)}% of the pool.`)
+    _print(`Estimated Borrow earnings: Day ($${formatMoney(data.bUsdPerDay)}) Week ($${formatMoney(data.bUsdPerWeek)}) Year: ($${formatMoney(data.bUsdPerYear)})`);
+  }
+  _print("");
 }
