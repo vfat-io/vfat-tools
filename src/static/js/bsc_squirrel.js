@@ -94,14 +94,15 @@ async function main() {
       await outputFarm(App, tokens, prices, signer, nutsPrice, "0xa184088a740c695E156F91f5cC086a06bb78b827", "0x968c84d90bd4e1307333c7f98074d1b7caac497b", "0x4d0228EBEB39f6d2f29bA528e2d15Fc9121Ead56", 3000, 200, "AUTO", false);
       await outputFarm(App, tokens, prices, signer, nutsPrice, "0xE02dF9e3e622DeBdD69fb838bB799E3F168902c5", "0xa9c72f556c1059500cf514ed10955bceaf227c4c", "0xc2Eed0F5a0dc28cfa895084bC0a9B8B8279aE492", 3000, 40, "BAKE", false);
 
-      await outputFarm(App, tokens, prices, signer, nutsPrice, "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c", "0x868429ffa5eddeaea8e2b8eaea4fca9c33516568", "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c", 5000, 140, "WBNB", false);
-      await outputFarm(App, tokens, prices, signer, nutsPrice, "0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82", "0x0fe7792ceb507e32ecb250a6e308a02c664cfba2", "0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82", 4000, 60, "EPS", false);
+      await outputFarm(App, tokens, prices, signer, nutsPrice, "0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82", "0x593fcE210368f4dFe177058C1437D7f893670503", "0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82", 4000, 80, "TLM", false, 1e4);
+      await outputFarm(App, tokens, prices, signer, nutsPrice, "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c", "0x868429ffa5eddeaea8e2b8eaea4fca9c33516568", "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c", 4500, 140, "WBNB", false);
+      await outputFarm(App, tokens, prices, signer, nutsPrice, "0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82", "0x0fe7792ceb507e32ecb250a6e308a02c664cfba2", "0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82", 0, 0, "EPS", false);
       await outputFarm(App, tokens, prices, signer, nutsPrice, "0xF952Fc3ca7325Cc27D15885d37117676d25BfdA6", "0x7456d4bda37d2aa5177ca1d8a494a318633b1fef", "0xF952Fc3ca7325Cc27D15885d37117676d25BfdA6", 0, 0, "EGG", true);
       await outputFarm(App, tokens, prices, signer, nutsPrice, "0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82", "0x4d41a547cce57348e83493be0f4552a924e623a1", "0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82", 0, 0, "BRY", false);
   }
 
 
-  async function outputVault(App, tokens, prices, signer, nutsPrice, token, pool, lpToken, weeklyNuts, nativeAPR, nativeRewardTicker, canCompound) {
+  async function outputVault(App, tokens, prices, signer, nutsPrice, token, pool, lpToken, weeklyNuts, nativeAPR, nativeRewardTicker, canCompound, nativeRewardDecimals=1e18) {
       tokens[token] = await getBscToken(App, token, pool);
 
       if (lpToken != token) { // Load some missing tokens price from LP
@@ -119,11 +120,11 @@ async function main() {
       printCombinedAPR(nutsPrice, weeklyNuts, tokenPrices.stakeTokenTicker, tokenPrices.staked_tvl, userStaked, tokenPrices.price, nativeAPR, nativeRewardTicker);
 
       const TOKEN = new ethers.Contract(token, TOKEN_ABI, signer);
-      printFarmActions(App, POOL, TOKEN, userStaked, tokenPrices.stakeTokenTicker, nutsPrice, canCompound, false, true, 2, nativeRewardTicker);
+      printFarmActions(App, POOL, TOKEN, userStaked, tokenPrices.stakeTokenTicker, nutsPrice, canCompound, false, true, 2, nativeRewardTicker, nativeRewardDecimals);
   }
 
 
-  async function outputFarm(App, tokens, prices, signer, nutsPrice, token, lpPool, lpToken, weeklyNuts, nativeAPR, nativeRewardTicker, canCompound) {
+  async function outputFarm(App, tokens, prices, signer, nutsPrice, token, lpPool, lpToken, weeklyNuts, nativeAPR, nativeRewardTicker, canCompound, nativeRewardDecimals=1e18) {
       tokens[token] = await getBscToken(App, token, lpPool);
       const lpPoolData = await getBscToken(App, lpToken, lpPool);
 
@@ -137,18 +138,18 @@ async function main() {
       printCombinedAPR(nutsPrice, weeklyNuts, lpPrices.stakeTokenTicker, lpPrices.staked_tvl, userStaked, lpPrices.price, nativeAPR, nativeRewardTicker);
 
       const LP_TOKEN = new ethers.Contract(lpToken, TOKEN_ABI, signer);
-      printFarmActions(App, LP_POOL, LP_TOKEN, userStaked, lpPrices.stakeTokenTicker, nutsPrice, canCompound, false, false, 1, nativeRewardTicker);
+      printFarmActions(App, LP_POOL, LP_TOKEN, userStaked, lpPrices.stakeTokenTicker, nutsPrice, canCompound, false, false, 1, nativeRewardTicker, nativeRewardDecimals);
   }
 
 
-  async function printFarmActions(App, farm, token, userStaked, poolTicker, nutsPrice, canCompound, canApproveAndCall, isVault, rewardStructure, nativeRewardTicker) {
+  async function printFarmActions(App, farm, token, userStaked, poolTicker, nutsPrice, canCompound, canApproveAndCall, isVault, rewardStructure, nativeRewardTicker, nativeRewardDecimals=1e18) {
       const usersBalance = await token.balanceOf(App.YOUR_ADDRESS);
 
       var pendingReward;
       if (rewardStructure == 2) {
           pendingReward = await farm.nutsDividendsOf(App.YOUR_ADDRESS) / 1e18;
       } else {
-          pendingReward = await farm.dividendsOf(App.YOUR_ADDRESS) / 1e18;
+          pendingReward = await farm.dividendsOf(App.YOUR_ADDRESS) / nativeRewardDecimals;
       }
 
       const approveAndStake = async function() {
