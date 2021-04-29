@@ -59,8 +59,8 @@ async function main() {
       
     for (i = 0; i < poolCount; i++) {
       if (poolPrices[i]) {
-        printChefPool(App, chefAbi, chefAddress, prices, tokens, poolInfos[i], i, poolPrices[i],
-          1000, poolInfos[i].rewardsPerWeek, rewardTokenTicker, poolInfos[i].rewardToken.address,
+        printKimochiPool(App, chefAbi, chefAddress, prices, tokens, poolInfos[i], i, poolPrices[i],
+          poolInfos[i].rewardsPerWeek, rewardTokenTicker, poolInfos[i].rewardToken.address,
           pendingRewardsFunction);
       }
     }
@@ -80,19 +80,51 @@ async function main() {
           rewardsPerWeek : 0
       };
     }
+    let epoch = 0
+    const currentBlock = await app.provider.getBlockNumber();
+    let epochEndBlock = await chefContract.halvingAtBlocks(poolIndex, epoch)
+    while (epochEndBlock < currentBlock) {
+      epoch++
+      epochEndBlock = await chefContract.halvingAtBlocks(poolIndex, epoch)
+    }
+    const totalAllocPoints = await chefContract.totalAllocPoints(poolInfo.rewardToken);
+    const allocPoint = poolInfo.allocPoint;
+    const multiplier = await chefContract.rewardMultipliers(poolIndex, epoch);
     const poolToken = await getBscToken(app, poolInfo.lpToken, chefAddress);
     const userInfo = await chefContract.userInfo(poolIndex, app.YOUR_ADDRESS);
     const pendingRewardTokens = await chefContract.callStatic[pendingRewardsFunction](poolIndex, app.YOUR_ADDRESS);
     const rewardToken = await getBscToken(app, poolInfo.rewardToken, app.YOUR_ADDRESS);
-    const rewardsPerWeek = poolInfo.rewardPerBlock / 10 ** rewardToken.decimals * 604800 / 3
+    const rewardsPerWeek = poolInfo.rewardPerBlock / 10 ** rewardToken.decimals * 604800 / 3 * multiplier;
     const staked = userInfo.amount / 10 ** poolToken.decimals;
     return {
-        allocPoints: 1000,
+        allocPoints: allocPoint,
         address: poolInfo.lpToken,
         rewardToken: rewardToken,
         poolToken: poolToken,
         userStaked : staked,
         pendingRewardTokens : pendingRewardTokens / 10 ** 18,
-        rewardsPerWeek : rewardsPerWeek
+        rewardsPerWeek : rewardsPerWeek * allocPoint / totalAllocPoints
     };
   }
+
+function printKimochiPool(App, chefAbi, chefAddr, prices, tokens, poolInfo, poolIndex, poolPrices, 
+                       rewardsPerWeek, rewardTokenTicker, rewardTokenAddress,
+                       pendingRewardsFunction, fixedDecimals, claimFunction, chain="eth") {  
+  fixedDecimals = fixedDecimals ?? 2;
+  const sp = (poolInfo.stakedToken == null) ? null : getPoolPrices(tokens, prices, poolInfo.stakedToken);
+  var poolRewardsPerWeek = rewardsPerWeek
+  if (poolRewardsPerWeek == 0 && rewardsPerWeek != 0) return;
+  const userStaked = poolInfo.userLPStaked ?? poolInfo.userStaked;
+  const rewardPrice = getParameterCaseInsensitive(prices, rewardTokenAddress)?.usd;
+  const staked_tvl = sp?.staked_tvl ?? poolPrices.staked_tvl;
+  poolPrices.print_price(chain);
+  sp?.print_price(chain);
+  const apr = printAPR(rewardTokenTicker, rewardPrice, poolRewardsPerWeek, poolPrices.stakeTokenTicker, 
+    staked_tvl, userStaked, poolPrices.price, fixedDecimals);
+  if (poolInfo.userLPStaked > 0) sp?.print_contained_price(userStaked);
+  if (poolInfo.userStaked > 0) poolPrices.print_contained_price(userStaked);
+  printChefContractLinks(App, chefAbi, chefAddr, poolIndex, poolInfo.address, pendingRewardsFunction,
+    rewardTokenTicker, poolPrices.stakeTokenTicker, poolInfo.poolToken.unstaked, 
+    poolInfo.userStaked, poolInfo.pendingRewardTokens, fixedDecimals, claimFunction, rewardPrice, chain);
+  return apr;
+}
