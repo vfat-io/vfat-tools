@@ -52,6 +52,16 @@ const QuickStakingContracts =[
     rate: 75
   },
   {
+    //tokens: [ETHER,USDT],
+    stakingRewardAddress: '0xB26bfcD52D997211C13aE4C35E82ced65AF32A02',
+    ended: false,
+    lp: '',
+    name: '',
+    //baseToken: ETHER,
+    rate: 65,
+    pair: '0xf6422b997c7f54d1c6a6e103bcb1499eea0a7046'
+  },
+  {
     //tokens: [GHST,QUICK],
     stakingRewardAddress: '0xa132faD61EDe08f1f288a35ff4c10dcD1cB9E107',
     ended: false,
