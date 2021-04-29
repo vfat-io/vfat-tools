@@ -16,8 +16,16 @@ async function main() {
    const rewardTokenTicker = "FOX";
    const FOX_CHEF = new ethers.Contract(FOX_CHEF_ADDR, FOX_CHEF_ABI, App.provider);
 
-   const rewardsPerWeek = await FOX_CHEF.foxPerBlock() /1e18
-        * 604800 / 2.1;
+   const startBlock = await FOX_CHEF.startBlock();
+   const currentBlock = await App.provider.getBlockNumber();
+
+   let rewardsPerWeek = 0
+   if(currentBlock < startBlock){
+     _print(`Rewards start at block ${startBlock}\n`);
+   }else{
+    rewardsPerWeek = await FOX_CHEF.krillPerBlock() /1e18
+      * 604800 / 2.1;
+   }
 
     const tokens = {};
     const prices = await getMaticPrices();
