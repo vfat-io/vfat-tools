@@ -53,7 +53,7 @@ async function loadAaveDetails(App, aTokenAddress, bTokenAddress, lendingAddress
   assetAbi, prices){
     const ATOKEN_CONTRACT = new ethers.Contract(aTokenAddress, aTokenAbi, App.provider);
     const BTOKEN_CONTRACT = new ethers.Contract(bTokenAddress, bTokenAbi, App.provider);
-    const underlyingTokenAddress = ATOKEN_CONTRACT.UNDERLYING_ASSET_ADDRESS();
+    const underlyingTokenAddress = await ATOKEN_CONTRACT.UNDERLYING_ASSET_ADDRESS();
     const aDecimals = await ATOKEN_CONTRACT.decimals()
     const aTotalSupply_ = await ATOKEN_CONTRACT.totalSupply()
     const aBalanceOf_ = await ATOKEN_CONTRACT.balanceOf(App.YOUR_ADDRESS)
