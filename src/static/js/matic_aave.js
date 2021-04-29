@@ -49,51 +49,66 @@ async function main() {
   hideLoading();
 }
 
-async function loadAaveDetails(App, aTokenAddress, borrowedTokenAddress, lendingAddress, assetAddress, aTokenAbi, bTokenAbi, lendingAbi,
+async function loadAaveDetails(App, aTokenAddress, bTokenAddress, lendingAddress, assetAddress, aTokenAbi, bTokenAbi, lendingAbi,
   assetAbi, prices){
-  const ATOKEN_CONTRACT = new ethers.Contract(aTokenAddress, aTokenAbi, App.provider);
-  const BTOKEN_CONTRACT = new ethers.Contract(borrowedTokenAddress, bTokenAbi, App.provider);
-  const underlyingTokenAddress = await ATOKEN_CONTRACT.UNDERLYING_ASSET_ADDRESS();
-  const UNDERLYING_CONTRACT = new ethers.Contract(underlyingTokenAddress, aTokenAbi, App.provider);
-  const LENDING_CONTRACT = new ethers.Contract(lendingAddress, lendingAbi, App.provider);
-  const lendingData = await LENDING_CONTRACT.getReserveData(underlyingTokenAddress);
-  const ASSET_CONTRACT = new ethers.Contract(assetAddress, assetAbi, App.provider);
-  //const assetDataSupply = await ASSET_CONTRACT.getAssetData(aTokenAddress);
-  //const assetDataBorrow = await ASSET_CONTRACT.getAssetData(borrowedTokenAddress);
-  const uSymbol = await UNDERLYING_CONTRACT.symbol();
-  const uDecimals = await UNDERLYING_CONTRACT.decimals();
-  const uTotalSupply = await UNDERLYING_CONTRACT.balanceOf(aTokenAddress) / 10 ** uDecimals;
-  const aDecimals = await ATOKEN_CONTRACT.decimals();
-  const aTotalSupply = await ATOKEN_CONTRACT.totalSupply() / 10 ** aDecimals;
-  const aBalanceOf = await ATOKEN_CONTRACT.balanceOf(App.YOUR_ADDRESS) / 10 ** aDecimals;
-  const aPct = aBalanceOf / aTotalSupply * 100;
-  const bDecimals = await BTOKEN_CONTRACT.decimals();
-  const bTotalSupply = await BTOKEN_CONTRACT.totalSupply() / 10 ** bDecimals;
-  const bBalanceOf = await BTOKEN_CONTRACT.balanceOf(App.YOUR_ADDRESS) / 10 ** bDecimals;
-  const bPct = bBalanceOf / bTotalSupply * 100;
-  const underlyingPrice = getParameterCaseInsensitive(prices, underlyingTokenAddress)?.usd;
-  const supplyRate = lendingData.currentLiquidityRate / 1e27 * 100;
-  const borrowRate = lendingData.currentVariableBorrowRate / 1e27 * 100;
-  /*const rewardsSupplyPerWeek = assetDataSupply.emissionPerSecond / 1e18 * 604800;
-  const rewardsBorrowPerWeek = assetDataBorrow.emissionPerSecond / 1e18 * 604800;
-  const usdPerSupplyWeek = rewardsSupplyPerWeek * underlyingPrice;
-  const usdPerBorrowWeek = rewardsBorrowPerWeek * underlyingPrice;
-  const supplyWeeklyAPR = usdPerSupplyWeek / (aTotalSupply * underlyingPrice) * 100;
-  const borrowWeeklyAPR = usdPerBorrowWeek / (bTotalSupply * underlyingPrice) * 100;
-  const dailySupplyAPR = supplyWeeklyAPR / 7;
-  const dailyBorrowAPR = borrowWeeklyAPR / 7;
-  const yearlySupplyAPR = supplyWeeklyAPR * 52;
-  const yearlyBorrowAPR = borrowWeeklyAPR * 52;*/
+    const ATOKEN_CONTRACT = new ethers.Contract(aTokenAddress, aTokenAbi, App.provider);
+    const BTOKEN_CONTRACT = new ethers.Contract(bTokenAddress, bTokenAbi, App.provider);
+    const underlyingTokenAddress = ATOKEN_CONTRACT.UNDERLYING_ASSET_ADDRESS();
+    const aDecimals = await ATOKEN_CONTRACT.decimals()
+    const aTotalSupply_ = await ATOKEN_CONTRACT.totalSupply()
+    const aBalanceOf_ = await ATOKEN_CONTRACT.balanceOf(App.YOUR_ADDRESS)
+    const bDecimals = await BTOKEN_CONTRACT.decimals()
+    const bTotalSupply_ = await BTOKEN_CONTRACT.totalSupply()
+    const bBalanceOf_ = await BTOKEN_CONTRACT.balanceOf(App.YOUR_ADDRESS)
+    const UNDERLYING_CONTRACT = new ethers.Contract(underlyingTokenAddress, aTokenAbi, App.provider);
+    const ASSET_CONTRACT = new ethers.Contract(assetAddress, assetAbi, App.provider);
+    const LENDING_CONTRACT = new ethers.Contract(lendingAddress, lendingAbi, App.provider);
+    const assetDataSupply = await ASSET_CONTRACT.assets(aTokenAddress)
+    const assetDataBorrow = await ASSET_CONTRACT.assets(bTokenAddress)
+    const lendingData = await LENDING_CONTRACT.getReserveData(underlyingTokenAddress)
+    const uDecimals = await UNDERLYING_CONTRACT.decimals()
+    const uReserves_ = await UNDERLYING_CONTRACT.balanceOf(aTokenAddress)
+    const uSymbol = await UNDERLYING_CONTRACT.symbol();
+    const uReserves = uReserves_ / 10 ** uDecimals;
+    const aTotalSupply = aTotalSupply_ / 10 ** aDecimals;
+    const aBalanceOf = aBalanceOf_ / 10 ** aDecimals;
+    const aPct = aBalanceOf / aTotalSupply * 100;
+    const bTotalSupply = bTotalSupply_ / 10 ** bDecimals;
+    const bBalanceOf = bBalanceOf_ / 10 ** bDecimals;
+    const bPct = bBalanceOf / bTotalSupply * 100;
+    const underlyingPrice = getParameterCaseInsensitive(prices, underlyingTokenAddress)?.usd;
+    const rewardTokenPrice = getParameterCaseInsensitive(prices, "0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270")?.usd;
+    const supplyRate = lendingData.currentLiquidityRate / 1e27 * 100;
+    const borrowRate = lendingData.currentVariableBorrowRate / 1e27 * 100;
+    const rewardsSupplyPerWeek = assetDataSupply.emissionPerSecond / 1e18 * 604800;
+    const rewardsBorrowPerWeek = assetDataBorrow.emissionPerSecond / 1e18 * 604800;
+    const usdPerSupplyWeek = rewardsSupplyPerWeek * rewardTokenPrice;
+    const usdPerBorrowWeek = rewardsBorrowPerWeek * rewardTokenPrice;
+    const supplyWeeklyAPR = usdPerSupplyWeek / (aTotalSupply * underlyingPrice) * 100;
+    const borrowWeeklyAPR = usdPerBorrowWeek / (bTotalSupply * underlyingPrice) * 100;
+    const yearlySupplyAPR = supplyWeeklyAPR * 52;
+    const yearlyBorrowAPR = borrowWeeklyAPR * 52;
+    const supplyNetAPR = supplyRate + yearlySupplyAPR
+    const borrowNetAPR = yearlyBorrowAPR - borrowRate
+    const aUsdPerYear = aBalanceOf * underlyingPrice * supplyNetAPR / 100;
+    const aUsdPerWeek = aUsdPerYear / 52;
+    const aUsdPerDay = aUsdPerYear / 365;
+    const bUsdPerYear = bBalanceOf * underlyingPrice * borrowNetAPR / 100;
+    const bUsdPerWeek = bUsdPerYear / 52;
+    const bUsdPerDay = bUsdPerYear / 365;
   _print_bold(`${uSymbol} ($${formatMoney(underlyingPrice)})`);
   _print(`Supplied : ${formatMoney(aTotalSupply)} ($${formatMoney(aTotalSupply * underlyingPrice)}) at ${supplyRate.toFixed(2)}% APR`)
   _print(`Borrowed : ${formatMoney(bTotalSupply)} ($${formatMoney(bTotalSupply * underlyingPrice)}) at ${borrowRate.toFixed(2)}% APR`)
-  _print(`Reserves : ${formatMoney(uTotalSupply)} ($${formatMoney(uTotalSupply * underlyingPrice)})`);
-  _print(`You are supplying ${formatMoney(aBalanceOf)} ${uSymbol} ($${formatMoney(aBalanceOf * underlyingPrice)}), ${aPct.toFixed(2)}% of the pool.`)
-  _print(`You are borrowing ${formatMoney(bBalanceOf)} ${uSymbol} ($${formatMoney(bBalanceOf * underlyingPrice)}), ${bPct.toFixed(2)}% of the pool.\n`)
-  /*_print(`Supply Daily APR : ${dailySupplyAPR.toFixed(2)}`)
-  _print(`Supply Weekly APR : ${supplyWeeklyAPR.toFixed(2)}`)
-  _print(`Supply Yearly APR : ${yearlySupplyAPR.toFixed(2)}`)
-  _print(`Borrow Daily APR : ${dailyBorrowAPR.toFixed(2)}`)
-  _print(`Borrow Weekly APR : ${borrowWeeklyAPR.toFixed(2)}`)
-  _print(`Borrow Yearly APR : ${yearlyBorrowAPR.toFixed(2)}`)*/
+  _print(`Reserves : ${formatMoney(uReserves)} ($${formatMoney(uReserves * underlyingPrice)})`);
+  _print(`Farming APR Supply ${yearlySupplyAPR.toFixed(2)}% Borrow ${yearlyBorrowAPR.toFixed(2)}%`);
+  _print(`Net APR Supply ${supplyNetAPR.toFixed(2)}% Borrow ${borrowNetAPR.toFixed(2)}%`);
+  if(aBalanceOf > 0){
+    _print(`You are supplying ${formatMoney(aBalanceOf)} ${uSymbol} ($${formatMoney(aBalanceOf * underlyingPrice)}), ${(aPct).toFixed(2)}% of the pool.`)
+    _print(`Estimated Supply earnings: Day ($${formatMoney(aUsdPerDay)}) Week ($${formatMoney(aUsdPerWeek)}) Year: ($${formatMoney(aUsdPerYear)})`);
+  }
+  if(bBalanceOf > 0){
+    _print(`You are borrowing ${formatMoney(bBalanceOf)} ${uSymbol} ($${formatMoney(bBalanceOf * underlyingPrice)}), ${(bPct).toFixed(2)}% of the pool.`)
+    _print(`Estimated Borrow earnings: Day ($${formatMoney(bUsdPerDay)}) Week ($${formatMoney(bUsdPerWeek)}) Year: ($${formatMoney(bUsdPerYear)})`);
+  }
+  _print("");
 }
