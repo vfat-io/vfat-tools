@@ -109,8 +109,14 @@ async function main() {
 
     const tokens = {};
     const prices = await getBscPrices();
-    prices["0xd7d069493685a581d27824fc46eda46b7efc0063"] = prices["0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c"] ///ibBNB-wBNB
-    prices["0x7C9e73d4C71dae564d41F78d56439bB4ba87592f"] = { usd : 1 };
+    prices["0xd7d069493685a581d27824fc46eda46b7efc0063"] = prices["0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c"] //ibBNB-wBNB
+    prices["0x6A3487CE84FD83c66B83e598b18412bD1D2A55F9"] = prices["0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c"] //debtIbBNB_V2-wBNB
+    prices["0xbfF4a34A4644a113E8200D7F1D79b3555f723AfE"] = prices["0x2170Ed0880ac9A755fd29B2688956BD959F933F8"] //ibETH-wETH
+    prices["0xf1bE8ecC990cBcb90e166b71E368299f0116d421"] = prices["0x8f0528ce5ef7b51152a59745befdd91d97091d2f"] //ibALPACA-ALPACA
+    prices["0x11362eA137A799298306123EEa014b7809A9DB40"] = prices["0x8f0528ce5ef7b51152a59745befdd91d97091d2f"] //debtibALPACA_V2-ALPACA
+    prices["0x7C9e73d4C71dae564d41F78d56439bB4ba87592f"] = { usd : 1 }; //ibUSD
+    prices["0x02dA7035beD00ae645516bDb0c282A7fD4AA7442"] = { usd : 1 }; //debtIbBUSD_V2
+    prices["0x92110af24d280E412b3a89691f6B0B9E09258fe6"] = prices["0x2170Ed0880ac9A755fd29B2688956BD959F933F8"] //debtibETH_V2-wETH
 
     await loadAlpacaBscChefContract(App, tokens, prices, ALPACA_CHEF, ALPACA_CHEF_ADDR, ALPACA_CHEF_ABI, rewardTokenTicker,
         "alpaca", null, rewardsPerWeek, "pendingAlpaca", [4]);
