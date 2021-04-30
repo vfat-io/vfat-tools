@@ -22,11 +22,11 @@ async function main() {
     rewardTokenFunction: "rewardsToken"
   }})
 
-  let poolInfo = await loadMaticSynthetixPoolInfo(App, tokens, prices, pools[0].abi, pools[0].address,
+  /*let poolInfo = await loadMaticSynthetixPoolInfo(App, tokens, prices, pools[0].abi, pools[0].address,
     pools[0].rewardTokenFunction, pools[0].stakeTokenFunction)
   if(poolInfo.staked_tvl == 0){
     _print(`Rewards start at 2021-04-20 17:00 UTC.\n`);
-  }
+  }*/
 
 
   let p = await loadMultipleMaticSynthetixPools(App, tokens, prices, pools)
@@ -39,28 +39,36 @@ async function main() {
 }
 
 const SmartdexStakingContracts =  [
-  {
-    //NIOX/USDC
-    stakingRewardAddress: '0x9c0ef78a30aa2d43f6f1aac677e227c43eb35356'
+  /*{
+    //tokens: [ALOHA, NIOX],
+    stakingRewardAddress: '0x7e1c71c123aedd1c6a0300fc88955c0fd6c296d7',
   },
   {
-    //WMATIC/USDC
-    stakingRewardAddress: '0x16c88e00f414436d4abbc859e5d99ec1868474af'
+    //tokens: [GLQ, ETHER],
+    stakingRewardAddress: '0x9fd5dd6b89795ef5fc4ad582c73463693f576619',
+  },*/
+  {
+    //tokens: [NIOX, USDC],
+    stakingRewardAddress: '0xa54db7a2ce0b1d802552c655b36672bcfe2c538d',
   },
   {
-    //WETH/USDC
-    stakingRewardAddress: '0xae4a735567bb1b351bebaa252c88d2ebc2fa7e56'
+    //tokens: [WMATIC, USDC],
+    stakingRewardAddress: '0xf40324f73991d02c7672f6ee6b1eb94b3eb3e40c',
   },
   {
-    //GLQ/WETH
-    stakingRewardAddress: '0x0de7482edc5aa30e96f81642cbdad75e550c6fd4'
+    //tokens: [MaticWETH, USDC],
+    stakingRewardAddress: '0xae4a735567bb1b351bebaa252c88d2ebc2fa7e56',
   },
   {
-    //ALOHA/NIOX
-    stakingRewardAddress: '0xaec962e533a350495c38507dd0ef1becc138af66'
+    //tokens: [AGI, NIOX],
+    stakingRewardAddress: '0x4e59aa8fe2ad4374467f7e2edb75ebc6a1002d92',
   },
   {
-    //AGI/NIOX 
-    stakingRewardAddress: '0x4e59aa8fe2ad4374467f7e2edb75ebc6a1002d92'
+    //tokens: [GLQ, MaticWETH],
+    stakingRewardAddress: '0x0de7482edc5aa30e96f81642cbdad75e550c6fd4',
+  },
+  {
+    //tokens: [ALOHA, NIOX],
+    stakingRewardAddress: '0xaec962e533a350495c38507dd0ef1becc138af66',
   }
 ]
