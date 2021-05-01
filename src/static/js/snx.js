@@ -80,6 +80,8 @@ async function main() {
   
     let p0 = await loadMultipleSynthetixPools(App, tokens, prices, Pools0)
     let p1 = await loadMultipleSynthetixPools(App, tokens, prices, Pools1)
+    _print("Short Rewards");
+    _print("");
     let p2 = await loadSnxShortPool(App, tokens, prices, Pool2[0].abi, 
                                                          Pool2[0].address, 
                                                          Pool2[0].rewardTokenFunction, 
@@ -98,7 +100,7 @@ async function main() {
 
 async function loadSnxShortPool(App, tokens, prices, abi, address, rewardTokenFunction, stakeTokenAddress) {
   const info = await loadSnxShortPoolInfo(App, tokens, prices, abi, address, rewardTokenFunction, stakeTokenAddress);
-  return await printSynthetixPool(App, info);
+  return await printSnxPool(App, info);
 }
 
 async function loadSnxShortPoolInfo(App, tokens, prices, stakingAbi, stakingAddress,
@@ -108,7 +110,8 @@ async function loadSnxShortPoolInfo(App, tokens, prices, stakingAbi, stakingAddr
 
     const rewardTokenAddress = await STAKING_POOL.callStatic[rewardTokenFunction]();
 
-    var stakeToken = await getToken(App, stakeTokenAddress, stakingAddress);
+    let stakeToken = await getToken(App, stakeTokenAddress, stakingAddress);
+    stakeToken.staked = await STAKING_POOL.totalSupply() / 1e18;
 
     if (stakeTokenAddress.toLowerCase() === rewardTokenAddress.toLowerCase()) {
       stakeToken.staked = await STAKING_POOL.totalSupply() / 10 ** stakeToken.decimals;
@@ -172,5 +175,50 @@ async function loadSnxShortPoolInfo(App, tokens, prices, stakingAbi, stakingAddr
       userStaked,
       userUnstaked,
       earned
+    }
+}
+
+async function printSnxPool(App, info, chain="eth") {
+    info.poolPrices.print_price(chain);
+    _print(`${info.rewardTokenTicker} Per Week: ${info.weeklyRewards.toFixed(2)} ($${formatMoney(info.usdPerWeek)})`);
+    const weeklyAPR = info.usdPerWeek / info.staked_tvl * 100;
+    const dailyAPR = weeklyAPR / 7;
+    const yearlyAPR = weeklyAPR * 52;
+    _print(`APR: Day ${dailyAPR.toFixed(2)}% Week ${weeklyAPR.toFixed(2)}% Year ${yearlyAPR.toFixed(2)}%`);
+    const userStakedUsd = info.userStaked * info.stakeTokenPrice;
+    const userStakedPct = userStakedUsd / info.staked_tvl * 100;
+    _print(`You are staking ${info.userStaked.toFixed(6)} ${info.stakeTokenTicker} ` +
+           `$${formatMoney(userStakedUsd)} (${userStakedPct.toFixed(2)}% of the pool).`);
+    if (info.userStaked > 0) {
+      info.poolPrices.print_contained_price(info.userStaked);
+        const userWeeklyRewards = userStakedPct * info.weeklyRewards / 100;
+        const userDailyRewards = userWeeklyRewards / 7;
+        const userYearlyRewards = userWeeklyRewards * 52;
+        _print(`Estimated ${info.rewardTokenTicker} earnings:`
+            + ` Day ${userDailyRewards.toFixed(2)} ($${formatMoney(userDailyRewards*info.rewardTokenPrice)})`
+            + ` Week ${userWeeklyRewards.toFixed(2)} ($${formatMoney(userWeeklyRewards*info.rewardTokenPrice)})`
+            + ` Year ${userYearlyRewards.toFixed(2)} ($${formatMoney(userYearlyRewards*info.rewardTokenPrice)})`);
+    }
+    const claim = async function() {
+      return rewardsContract_claim(info.stakingAddress, App)
+    }
+    /*const exit = async function() {
+      return rewardsContract_exit(info.stakingAddress, App)
+    }
+    const revoke = async function() {
+      return rewardsContract_resetApprove(info.stakeTokenAddress, info.stakingAddress, App)
+    }*/
+    _print(`<a target="_blank" href="https://etherscan.io/address/${info.stakingAddress}#code">Etherscan</a>`);
+    _print_link(`Claim ${info.earned.toFixed(6)} ${info.rewardTokenTicker} ($${formatMoney(info.earned*info.rewardTokenPrice)})`, claim)
+    /*if (info.stakeTokenTicker != "ETH") {
+      _print_link(`Revoke (set approval to 0)`, revoke)
+    }
+    _print_link(`Exit`, exit)*/
+    _print("");
+
+    return {
+        staked_tvl: info.poolPrices.staked_tvl,
+        userStaked : userStakedUsd,
+        apr : yearlyAPR
     }
 }
