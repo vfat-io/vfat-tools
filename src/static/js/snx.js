@@ -44,23 +44,23 @@ const Pools1 = [
 })
 
 const Pool2 = [
-    "0xfe18be6b3bd88a2d2a7f928d00292e7a9963cfc6"   //sBTC
+    "0xCed4055b47cfD0421f3727a35F69CE659c8bAF7a"   //sBTC
 ].map(a => {
     return {
         address : a,
         abi : SNX_STAKING_ABI2,
-        stakeTokenAddress : "0xd6014ea05bde904448b743833ddf07c3c7837481",
+        stakeTokenAddress : "0xfe18be6b3bd88a2d2a7f928d00292e7a9963cfc6",
         rewardTokenFunction : "rewardsToken"
     }
 })
 
 const Pool3 = [
-    "0x5e74c9036fb86bd7ecdcb084a0673efc32ea31cb"    //sETH
+    "0x12DC1273915A16ab8BD47bA7866B240c253e4c12"    //sETH
 ].map(a => {
     return {
         address : a,
         abi : SNX_STAKING_ABI2,
-        stakeTokenAddress : "0xa9859874e1743a32409f75bb11549892138bba1e",
+        stakeTokenAddress : "0x5e74c9036fb86bd7ecdcb084a0673efc32ea31cb",
         rewardTokenFunction : "rewardsToken"
     }
 })
