@@ -171,11 +171,13 @@ $(function() {
   
   async function main() {  
     const App = await init_ethers();
-  
+    const startBlock = 12341940;
+
     _print(`Initialized ${App.YOUR_ADDRESS}\n`);
     _print("Reading smart contracts...\n");
-  
-    const GAIA_CHEF_ADDR = "0xa66949e08612a5e89f8a35301e2b8537f4ee996b";
+    _print(`Rewards start at block ${startBlock}\n`);
+
+    const GAIA_CHEF_ADDR = "0x8f8ff7757503e70621e4ff5c09537ffbc3fdd28d";
     const rewardTokenTicker = "GAIA";
     const GAIA_CHEF = new ethers.Contract(GAIA_CHEF_ADDR, GAIA_CHEF_ABI, App.provider);
 
