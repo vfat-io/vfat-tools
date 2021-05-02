@@ -23,7 +23,7 @@ async function main() {
    if(currentBlock < startBlock){
      _print(`Rewards start at block ${startBlock}\n`);
    }else{
-    rewardsPerWeek = await FOX_CHEF.krillPerBlock() /1e18
+    rewardsPerWeek = await FOX_CHEF.foxPerBlock() /1e18
       * 604800 / 2.1;
    }
 
