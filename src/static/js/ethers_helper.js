@@ -1276,6 +1276,11 @@ function getUniPrices(tokens, prices, pool)
           `https://exchange.pancakeswap.finance/#/remove/${t0address}/${t1address}`, 
           `https://exchange.pancakeswap.finance/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}` 
         ] :
+        chain=='matic'? [ 
+          `https://quickswap.exchange/#/add/${t0address}/${t1address}`,
+          `https://quickswap.exchange/#/remove/${t0address}/${t1address}`,
+          `https://quickswap.exchange/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}` 
+        ] :
         pool.name.includes("Value LP") ? [
           `https://bsc.valuedefi.io/#/add/${t0address}/${t1address}`, 
           `https://bsc.valuedefi.io/#/remove/${t0address}/${t1address}`, 
