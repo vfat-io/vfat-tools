@@ -1,5 +1,6 @@
 const FantomTokens = [ 
   { "id": "tether", "symbol": "USDT", "contract": "0x049d68029688eAbF473097a2fC38ef61633A3C7A"},
+  { "id": "usd-coin", "symbol": "USDC", "contract": "0x50Cc648E45B84D68405BA0707e94c507b08e593d"},
   { "id": "fantom", "symbol": "FTM", "contract": "0x21be370D5312f44cB42ce377BC9b8a0cEF1A4C83"},
   { "id": "ethereum", "symbol": "ETH", "contract": "0x74b23882a30290451A17c44f4F05243b6b58C76d"},
   { "id": "yearn-finance", "symbol": "YFI", "contract": "0x29b0Da86e484E1C0029B56e817912d778aC0EC69"},
