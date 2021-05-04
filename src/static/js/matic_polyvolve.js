@@ -162,7 +162,7 @@ function printVolveContractLinks(App, chefAbi, chefAddr, poolIndex, poolAddress,
   if(fee == 0){
     _print_link(`Stake ${unstaked.toFixed(fixedDecimals)} ${stakeTokenTicker}`, approveAndStake)
   }else{
-    _print_link(`Stake ${unstaked.toFixed(fixedDecimals)} ${stakeTokenTicker} + fee ${fee.toFixed(2)}%`, approveAndStake)
+    _print_link(`Stake ${unstaked.toFixed(fixedDecimals)} ${stakeTokenTicker} - Fee ${fee.toFixed(2)}%`, approveAndStake)
   }
   _print_link(`Unstake ${userStaked.toFixed(fixedDecimals)} ${stakeTokenTicker}`, unstake)
   _print_link(`Claim ${pendingRewardTokens.toFixed(fixedDecimals)} ${rewardTokenTicker} ($${formatMoney(pendingRewardTokens*rewardTokenPrice)})`, claim)
