@@ -1,5 +1,13 @@
 const FantomTokens = [ 
   { "id": "tether", "symbol": "USDT", "contract": "0x049d68029688eAbF473097a2fC38ef61633A3C7A"},
+  { "id": "fantom", "symbol": "FTM", "contract": "0x21be370D5312f44cB42ce377BC9b8a0cEF1A4C83"},
+  { "id": "ethereum", "symbol": "ETH", "contract": "0x74b23882a30290451A17c44f4F05243b6b58C76d"},
+  { "id": "yearn-finance", "symbol": "YFI", "contract": "0x29b0Da86e484E1C0029B56e817912d778aC0EC69"},
+  { "id": "chainlink", "symbol": "LINK", "contract": "0xb3654dc3D10Ea7645f8319668E8F54d2574FBdC8"},
+  { "id": "cream", "symbol": "CREAM", "contract": "0x657A1861c15A3deD9AF0B6799a195a249ebdCbc6"},
+  { "id": "dai", "symbol": "DAI", "contract": "0x8D11eC38a3EB5E956B052f67Da8Bdc9bef8Abf3E"},
+  { "id": "synthetix-network-token", "symbol": "SNX", "contract": "0x56ee926bD8c72B2d5fa1aF4d9E4Cbb515a1E3Adc"},
+  { "id": "sushi", "symbol": "SUSHI", "contract": "0xae75A438b2E0cB8Bb01Ec1E1e376De11D44477CC"},
   { "id": "ice-token", "symbol": "ICE", "contract": "0xf16e81dce15b08f326220742020379b855b87df9"}
 ];
 
