@@ -1,5 +1,7 @@
 const FantomTokens = [ 
   { "id": "tether", "symbol": "USDT", "contract": "0x049d68029688eAbF473097a2fC38ef61633A3C7A"},
+  { "id": "usd-coin", "symbol": "USDC", "contract": "0x50Cc648E45B84D68405BA0707e94c507b08e593d"},
+  { "id": "fantom", "symbol": "WFTM", "contract": "0xc81a9cE5Be68dF6A52F82D83398420D8A1C245c2"},
   { "id": "ice-token", "symbol": "ICE", "contract": "0xf16e81dce15b08f326220742020379b855b87df9"}
 ];
 
