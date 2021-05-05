@@ -22,14 +22,11 @@ async function main() {
     rewardTokenFunction: "rewardsToken"
   }})
 
-  let poolInfo = await loadMaticSynthetixPoolInfo(App, tokens, prices, pools[0].abi, pools[0].address,
+  await loadMaticSynthetixPoolInfo(App, tokens, prices, pools[0].abi, pools[0].address,
     pools[0].rewardTokenFunction, pools[0].stakeTokenFunction)
-  if(poolInfo.staked_tvl == 0){
-    _print(`Rewards start at 2021-04-20 17:00 UTC.\n`);
-  }
 
 
-  let p = await loadMultipleMaticSynthetixPools(App, tokens, prices, pools)
+  let p = await loadMultipleSmartdexSynthetixPools(App, tokens, prices, pools)
   _print_bold(`Total staked: $${formatMoney(p.staked_tvl)}`);
   if (p.totalUserStaked > 0) {
     _print(`You are staking a total of $${formatMoney(p.totalUserStaked)} at an APR of ${(p.totalAPR * 100).toFixed(2)}%\n`);
@@ -38,29 +35,120 @@ async function main() {
   hideLoading();
 }
 
+async function loadMultipleSmartdexSynthetixPools(App, tokens, prices, pools) {
+  let totalStaked  = 0, totalUserStaked = 0, individualAPRs = [];
+  const infos = await Promise.all(pools.map(p => 
+    loadSmartdexSynthetixPoolInfo(App, tokens, prices, p.abi, p.address, p.rewardTokenFunction, p.stakeTokenFunction)));
+  for (const i of infos.filter(i => i?.poolPrices)) {
+    let p = await printSynthetixPool(App, i, "matic");
+    totalStaked += p.staked_tvl || 0;
+    totalUserStaked += p.userStaked || 0;
+    if (p.userStaked > 0) {
+      individualAPRs.push(p.userStaked * p.apr / 100);
+    }
+  }
+  let totalAPR = totalUserStaked == 0 ? 0 : individualAPRs.reduce((x,y)=>x+y, 0) / totalUserStaked;
+  return { staked_tvl : totalStaked, totalUserStaked, totalAPR };
+}
+
+async function loadSmartdexSynthetixPoolInfo(App, tokens, prices, stakingAbi, stakingAddress,
+  rewardTokenFunction, stakeTokenFunction) {
+    const STAKING_POOL = new ethers.Contract(stakingAddress, stakingAbi, App.provider);
+
+    if (!STAKING_POOL.callStatic[stakeTokenFunction]) {
+      console.log("Couldn't find stake function ", stakeTokenFunction);
+    }
+    const stakeTokenAddress = await STAKING_POOL.callStatic[stakeTokenFunction]();
+
+    const rewardTokenAddress = await STAKING_POOL.callStatic[rewardTokenFunction]();
+
+    var stakeToken = await getMaticToken(App, stakeTokenAddress, stakingAddress);
+
+    if (stakeTokenAddress.toLowerCase() === rewardTokenAddress.toLowerCase()) {
+      stakeToken.staked = await STAKING_POOL.totalSupply() / 10 ** stakeToken.decimals;
+    }
+
+    var newTokenAddresses = stakeToken.tokens.filter(x =>
+      !getParameterCaseInsensitive(tokens,x));
+    for (const address of newTokenAddresses) {
+        tokens[address] = await getMaticToken(App, address, stakingAddress);
+    }
+    if (!getParameterCaseInsensitive(tokens, rewardTokenAddress)) {
+        tokens[rewardTokenAddress] = await getMaticToken(App, rewardTokenAddress, stakingAddress);
+    }
+    const rewardToken = getParameterCaseInsensitive(tokens, rewardTokenAddress);
+
+    const rewardTokenTicker = rewardToken.symbol;
+
+    const poolPrices = getPoolPrices(tokens, prices, stakeToken, "matic");
+
+    if (!poolPrices) 
+    {
+      console.log(`Couldn't calculate prices for pool ${stakeTokenAddress}`);
+      return null;
+    }
+
+    const stakeTokenTicker = poolPrices.stakeTokenTicker;
+
+    const stakeTokenPrice =
+        prices[stakeTokenAddress]?.usd ?? getParameterCaseInsensitive(prices, stakeTokenAddress)?.usd;
+    const rewardTokenPrice = getParameterCaseInsensitive(prices, rewardTokenAddress)?.usd;
+
+    const periodFinish = await STAKING_POOL.periodFinish();
+    const rewardRate = await STAKING_POOL.rewardRate();
+    const weeklyRewards = (Date.now() / 1000 > periodFinish) ? 0 : rewardRate / 10 ** rewardToken.decimals * 604800;
+
+    const usdPerWeek = weeklyRewards * rewardTokenPrice;
+
+    const staked_tvl = poolPrices.staked_tvl;
+
+    const userStaked = await STAKING_POOL.balanceOf(App.YOUR_ADDRESS) / 10 ** stakeToken.decimals;
+
+    const userUnstaked = stakeToken.unstaked;
+
+    const earned = await STAKING_POOL.earned(App.YOUR_ADDRESS) / 10 ** rewardToken.decimals;
+
+    return  {
+      stakingAddress,
+      poolPrices,
+      stakeTokenAddress,
+      rewardTokenAddress,
+      stakeTokenTicker,
+      rewardTokenTicker,
+      stakeTokenPrice,
+      rewardTokenPrice,
+      weeklyRewards,
+      usdPerWeek,
+      staked_tvl,
+      userStaked,
+      userUnstaked,
+      earned
+    }
+}
+
 const SmartdexStakingContracts =  [
   {
-    //NIOX/USDC
-    stakingRewardAddress: '0x9c0ef78a30aa2d43f6f1aac677e227c43eb35356'
+    //tokens: [NIOX, USDC],
+    stakingRewardAddress: '0x7a1137cee3714d8b31bf2e9ba460e61ccd54fab4',
   },
   {
-    //WMATIC/USDC
-    stakingRewardAddress: '0x16c88e00f414436d4abbc859e5d99ec1868474af'
+    //tokens: [WMATIC, USDC],
+    stakingRewardAddress: '0xe0af829866c719aaa88165323fcd8487b981fd3f',
   },
   {
-    //WETH/USDC
-    stakingRewardAddress: '0xae4a735567bb1b351bebaa252c88d2ebc2fa7e56'
+    //tokens: [MaticWETH, USDC],
+    stakingRewardAddress: '0x73eb490b3acd5e36a365bb6f934bd85977ad7068',
   },
   {
-    //GLQ/WETH
-    stakingRewardAddress: '0x0de7482edc5aa30e96f81642cbdad75e550c6fd4'
+    //tokens: [AGI, NIOX],
+    stakingRewardAddress: '0xa79374bf7c8b9297b20789375fc7ef2c72c32dbf',
   },
   {
-    //ALOHA/NIOX
-    stakingRewardAddress: '0xaec962e533a350495c38507dd0ef1becc138af66'
+    //tokens: [GLQ, MaticWETH],
+    stakingRewardAddress: '0x96d287d25bbbd87910fd28f21fbfa590dfb33b96',
   },
   {
-    //AGI/NIOX 
-    stakingRewardAddress: '0x4e59aa8fe2ad4374467f7e2edb75ebc6a1002d92'
+    //tokens: [ALOHA, NIOX],
+    stakingRewardAddress: '0x317875cbe5f64f14d7e9343703cac9c1501ddb05',
   }
 ]
