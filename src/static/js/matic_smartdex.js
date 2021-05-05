@@ -39,36 +39,28 @@ async function main() {
 }
 
 const SmartdexStakingContracts =  [
-  /*{
-    //tokens: [ALOHA, NIOX],
-    stakingRewardAddress: '0x7e1c71c123aedd1c6a0300fc88955c0fd6c296d7',
-  },
-  {
-    //tokens: [GLQ, ETHER],
-    stakingRewardAddress: '0x9fd5dd6b89795ef5fc4ad582c73463693f576619',
-  },*/
   {
     //tokens: [NIOX, USDC],
-    stakingRewardAddress: '0xa54db7a2ce0b1d802552c655b36672bcfe2c538d',
+    stakingRewardAddress: '0x7a1137cee3714d8b31bf2e9ba460e61ccd54fab4',
   },
   {
     //tokens: [WMATIC, USDC],
-    stakingRewardAddress: '0xf40324f73991d02c7672f6ee6b1eb94b3eb3e40c',
+    stakingRewardAddress: '0xe0af829866c719aaa88165323fcd8487b981fd3f',
   },
   {
     //tokens: [MaticWETH, USDC],
-    stakingRewardAddress: '0xae4a735567bb1b351bebaa252c88d2ebc2fa7e56',
+    stakingRewardAddress: '0x73eb490b3acd5e36a365bb6f934bd85977ad7068',
   },
   {
     //tokens: [AGI, NIOX],
-    stakingRewardAddress: '0x4e59aa8fe2ad4374467f7e2edb75ebc6a1002d92',
+    stakingRewardAddress: '0xa79374bf7c8b9297b20789375fc7ef2c72c32dbf',
   },
   {
     //tokens: [GLQ, MaticWETH],
-    stakingRewardAddress: '0x0de7482edc5aa30e96f81642cbdad75e550c6fd4',
+    stakingRewardAddress: '0x96d287d25bbbd87910fd28f21fbfa590dfb33b96',
   },
   {
     //tokens: [ALOHA, NIOX],
-    stakingRewardAddress: '0xaec962e533a350495c38507dd0ef1becc138af66',
+    stakingRewardAddress: '0x317875cbe5f64f14d7e9343703cac9c1501ddb05',
   }
 ]
