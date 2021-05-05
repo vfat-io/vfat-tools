@@ -175,7 +175,7 @@ function printRulerContractLinks(App, rulerAbi, rulerAddr, lpAddress, lpAddress,
   _print_link(`Withdraw ${userStaked.toFixed(fixedDecimals)} ${stakeTokenTicker}`, withdraw)
   let claimText = "";
   for (let i = 0; i < rewardTokenTickers.length; i++) {
-    claimText += `${earnedTokens[i].toFixed(fixedDecimals)} ${rewardTokenTickers[i]} ($${formatMoney(earnedTokens[i]*rewardTokenPrices[i])}`
+    claimText += `${earnedTokens[i].toFixed(fixedDecimals)} ${rewardTokenTickers[i]} ($${formatMoney(earnedTokens[i]*rewardTokenPrices[i])}) `
   }
   _print_link(`Claim ${claimText}`, claim);
   _print(`Staking or unstaking also claims rewards.`)
@@ -235,20 +235,29 @@ async function main() {
   const RULER_POOL = new ethcall.Contract(RULER_POOL_ADDRESS, RULER_POOL_ABI);
   const [lpAddresses] = await App.ethcallProvider.all([RULER_POOL.getPoolList()]);
 
-  const poolInfos = await Promise.all(lpAddresses.map(async (x) =>
-    await getRulerPoolInfo(App, RULER_POOL, x)));
+  const poolInfos = await Promise.all(lpAddresses.map(async (x) => {
+    try {
+      return await getRulerPoolInfo(App, RULER_POOL, x)
+    }
+    catch (ex) {
+      console.log(`Error loading pool ${x}, ${ex}`);
+      return null;
+    }
+  }));
   
-  var tokenAddresses = [].concat.apply([], poolInfos.filter(x => x.poolToken).map(x => 
+  var tokenAddresses = [].concat.apply([], poolInfos.filter(x => x?.poolToken).map(x => 
     x.poolToken.tokens.concat(x.rewardTokenAddresses)));
   await getNewPricesAndTokens(App, tokens, prices, tokenAddresses, RULER_POOL_ADDRESS);
 
-  const poolPrices = poolInfos.map(poolInfo => getPoolPrices(tokens, prices, poolInfo.poolToken));
+  const poolPrices = poolInfos.map(poolInfo => poolInfo?.poolToken ? getPoolPrices(tokens, prices, poolInfo.poolToken) : null);
 
   _print("Finished reading smart contracts.\n");
     
   for (i = 0; i < poolPrices.length; i++) {
+    if (poolPrices[i]) {
       printRulerPool(App, RULER_POOL_ABI, RULER_POOL_ADDRESS, tokens, prices, 
         poolInfos[i], lpAddresses[i], poolPrices[i]);
+    }
   }
 
   await loadXRuler(App, tokens, prices);

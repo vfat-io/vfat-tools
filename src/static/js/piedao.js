@@ -160,11 +160,9 @@ async function main() {
   
   let aprs = []
   for (i = 0; i < poolCount; i++) {
-    if (i != 3) { //TIME pool
-      const apr = printPiedaoPool(App, PIEDAO_POOL_ABI, PIEDAO_POOL_ADDRESS, prices, 
-        poolInfos[i], i, poolPrices[i], rewardTokenTicker, rewardTokenAddress);
-      aprs.push(apr);
-    }
+    const apr = printPiedaoPool(App, PIEDAO_POOL_ABI, PIEDAO_POOL_ADDRESS, prices, 
+      poolInfos[i], i, poolPrices[i], rewardTokenTicker, rewardTokenAddress);
+    aprs.push(apr);
   }
   let totalUserStaked=0, totalStaked=0, averageApr=0;
   for (const a of aprs) {

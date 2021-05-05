@@ -60,17 +60,17 @@ $(function() {
     }
   }
   
-  await Promise.all(tokenAddresses.map(async (address) => {
+  const newTokens = await Promise.all(tokenAddresses.map(async (address) => {
       tokens[address] = await getToken(App, address, chefAddress);
   }));
 
   if (deathPoolIndices) {   //load prices for the deathpool assets
     deathPoolIndices.map(i => poolInfos[i])
                      .map(poolInfo => 
-      poolInfo.poolToken ? getPoolPrices(tokens, prices, poolInfo.poolToken, "eth") : undefined);
+      poolInfo.poolToken ? getPoolBagPrices(tokens, prices, poolInfo.poolToken, poolInfo.poolTotalStaked) : undefined);
   }
 
-  const poolPrices = poolInfos.map(poolInfo => poolInfo.poolToken ? getPoolPrices(tokens, prices, poolInfo.poolToken) : undefined);
+  const poolPrices = poolInfos.map(poolInfo => poolInfo.poolToken ? getPoolBagPrices(tokens, prices, poolInfo.poolToken, poolInfo.poolTotalStaked) : undefined);
 
   _print("Finished reading smart contracts.\n");
     
@@ -110,11 +110,12 @@ async function getBagPoolInfo(app, chefContract, chefAddress, poolIndex, pending
   const poolToken = await getToken(app, poolInfo.stakingToken, chefAddress);
   const userInfo = await chefContract.userInfo(poolIndex, app.YOUR_ADDRESS);
   const pendingRewardTokens = await chefContract.callStatic[pendingRewardsFunction](poolIndex, app.YOUR_ADDRESS);
-  const staked = userInfo.amount / 10 ** poolToken.decimals;
+  const staked = userInfo.staked / 10 ** poolToken.decimals;
   const rewardTokenAddress = await chefContract.goldToken();
   const rewardToken = await getToken(app, rewardTokenAddress, chefAddress);
   const rewardsPerWeek =  poolInfo.goldPerBlock
     / 10 ** rewardToken.decimals * 604800 / 13.5
+  const poolTotalStaked = poolInfo.totalStaked;
   return {
       address: poolInfo.stakingToken,
       allocPoints: poolInfo.allocPoint ?? 1,
@@ -123,28 +124,58 @@ async function getBagPoolInfo(app, chefContract, chefAddress, poolIndex, pending
       pendingRewardTokens : pendingRewardTokens / 10 ** 18,
       lastRewardBlock : poolInfo.lastRewardBlock,
       rewardsPerWeek : rewardsPerWeek,
-      rewardTokenAddress : rewardTokenAddress
+      rewardTokenAddress : rewardTokenAddress,
+      poolTotalStaked : poolTotalStaked / 1e18
   };
 }
 
 function printBagPool(App, chefAbi, chefAddr, prices, tokens, poolInfo, poolIndex, poolPrices, 
   rewardsPerWeek, rewardTokenTicker, rewardTokenAddress,
   pendingRewardsFunction, fixedDecimals, claimFunction, chain="eth") {  
-fixedDecimals = fixedDecimals ?? 2;
-const sp = (poolInfo.stakedToken == null) ? null : getPoolPrices(tokens, prices, poolInfo.stakedToken);
-var poolRewardsPerWeek = rewardsPerWeek;
-if (poolRewardsPerWeek == 0 && rewardsPerWeek != 0) return;
-const userStaked = poolInfo.userLPStaked ?? poolInfo.userStaked;
-const rewardPrice = getParameterCaseInsensitive(prices, rewardTokenAddress)?.usd;
-const staked_tvl = sp?.staked_tvl ?? poolPrices.staked_tvl;
-poolPrices.print_price();
-sp?.print_price();
-const apr = printAPR(rewardTokenTicker, rewardPrice, poolRewardsPerWeek, poolPrices.stakeTokenTicker, 
-staked_tvl, userStaked, poolPrices.price, fixedDecimals);
-if (poolInfo.userLPStaked > 0) sp?.print_contained_price(userStaked);
-if (poolInfo.userStaked > 0) poolPrices.print_contained_price(userStaked);
-printChefContractLinks(App, chefAbi, chefAddr, poolIndex, poolInfo.address, pendingRewardsFunction,
-rewardTokenTicker, poolPrices.stakeTokenTicker, poolInfo.poolToken.unstaked, 
-poolInfo.userStaked, poolInfo.pendingRewardTokens, fixedDecimals, claimFunction, rewardPrice, chain);
-return apr;
+  fixedDecimals = fixedDecimals ?? 2;
+  const sp = (poolInfo.stakedToken == null) ? null : getPoolBagPrices(tokens, prices, poolInfo.stakedToken, poolInfo.poolTotalStaked);
+  var poolRewardsPerWeek = rewardsPerWeek;
+  if (poolRewardsPerWeek == 0 && rewardsPerWeek != 0) return;
+  const userStaked = poolInfo.staked ?? poolInfo.userStaked;
+  const rewardPrice = getParameterCaseInsensitive(prices, rewardTokenAddress)?.usd;
+  const staked_tvl = sp?.staked_tvl ?? poolPrices.staked_tvl;
+  poolPrices.print_price();
+  sp?.print_price();
+  const apr = printAPR(rewardTokenTicker, rewardPrice, poolRewardsPerWeek, poolPrices.stakeTokenTicker, 
+  staked_tvl, userStaked, poolPrices.price, fixedDecimals);
+  if (poolInfo.userLPStaked > 0) sp?.print_contained_price(userStaked);
+  if (poolInfo.userStaked > 0) poolPrices.print_contained_price(userStaked);
+  printChefContractLinks(App, chefAbi, chefAddr, poolIndex, poolInfo.address, pendingRewardsFunction,
+  rewardTokenTicker, poolPrices.stakeTokenTicker, poolInfo.poolToken.unstaked, 
+  poolInfo.userStaked, poolInfo.pendingRewardTokens, fixedDecimals, claimFunction, rewardPrice, chain);
+  return apr;
+}
+
+function getPoolBagPrices(tokens, prices, pool, poolTotalStaked) {
+  if (pool.w0 != null) return getValuePrices(tokens, prices, pool);
+  if (pool.poolTokens != null) return getBalancerPrices(tokens, prices, pool);
+  if (pool.token0 != null) return getUniPrices(tokens, prices, pool);
+  if (pool.virtualPrice != null) return getCurvePrices(prices, pool); //should work for saddle too
+  if (pool.token != null) return getWrapPrices(tokens, prices, pool);
+  return getBagPrices(prices, pool, poolTotalStaked);
+}
+
+function getBagPrices(prices, pool, poolTotalStaked) {  
+  var price = getParameterCaseInsensitive(prices,pool.address)?.usd;
+  var tvl = pool.totalSupply * price / 10 ** pool.decimals;
+  pool.staked = poolTotalStaked;
+  var staked_tvl = pool.staked * price;
+  let poolUrl =`https://bscscan.com/token/${pool.address}`;
+  const name = `<a href='${poolUrl}' target='_blank'>${pool.symbol}</a>`;
+  return {
+    staked_tvl : staked_tvl,
+    price : price,
+    stakeTokenTicker : pool.symbol,
+    print_price() {
+      _print(`${name} Price: $${formatMoney(price)} Market Cap: $${formatMoney(tvl)}`);
+      _print(`Staked: ${pool.staked.toFixed(4)} ${pool.symbol} ($${formatMoney(staked_tvl)})`);
+    },
+    print_contained_price() {
+    }
+  }
 }

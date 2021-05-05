@@ -91,7 +91,7 @@ const xBasket_deposit = async function(xBasketAbi, xBasketAddress, basketAddress
     showLoading()
     allow
       .then(async function() {
-        XBASKET.deposit(currentTokens, {gasLimit: 500000})
+        XBASKET.enter(currentTokens, {gasLimit: 500000})
           .then(function(t) {
             App.provider.waitForTransaction(t.hash).then(function() {
               hideLoading()

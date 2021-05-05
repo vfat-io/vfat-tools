@@ -1,5 +1,15 @@
 const FantomTokens = [ 
-  { "id": "tether", "symbol": "USDT", "contract": "0x049d68029688eAbF473097a2fC38ef61633A3C7A"}
+  { "id": "tether", "symbol": "USDT", "contract": "0x049d68029688eAbF473097a2fC38ef61633A3C7A"},
+  { "id": "usd-coin", "symbol": "USDC", "contract": "0x50Cc648E45B84D68405BA0707e94c507b08e593d"},
+  { "id": "fantom", "symbol": "FTM", "contract": "0x21be370D5312f44cB42ce377BC9b8a0cEF1A4C83"},
+  { "id": "ethereum", "symbol": "ETH", "contract": "0x74b23882a30290451A17c44f4F05243b6b58C76d"},
+  { "id": "yearn-finance", "symbol": "YFI", "contract": "0x29b0Da86e484E1C0029B56e817912d778aC0EC69"},
+  { "id": "chainlink", "symbol": "LINK", "contract": "0xb3654dc3D10Ea7645f8319668E8F54d2574FBdC8"},
+  { "id": "cream", "symbol": "CREAM", "contract": "0x657A1861c15A3deD9AF0B6799a195a249ebdCbc6"},
+  { "id": "dai", "symbol": "DAI", "contract": "0x8D11eC38a3EB5E956B052f67Da8Bdc9bef8Abf3E"},
+  { "id": "synthetix-network-token", "symbol": "SNX", "contract": "0x56ee926bD8c72B2d5fa1aF4d9E4Cbb515a1E3Adc"},
+  { "id": "sushi", "symbol": "SUSHI", "contract": "0xae75A438b2E0cB8Bb01Ec1E1e376De11D44477CC"},
+  { "id": "ice-token", "symbol": "ICE", "contract": "0xf16e81dce15b08f326220742020379b855b87df9"}
 ];
 
 async function getFantomPrices() {
@@ -42,8 +52,8 @@ async function geterc20(App, token, address, stakingAddress) {
     if (address == "0x0000000000000000000000000000000000000000") {
       return {
         address,
-        name : "Fantom",
-        symbol : "Fantom",
+        name : "fantom",
+        symbol : "fantom",
         totalSupply: 1e8,
         decimals: 18,
         staked: 0,
@@ -142,7 +152,7 @@ async function loadFantomSynthetixPoolInfo(App, tokens, prices, stakingAbi, stak
   
       const rewardTokenTicker = rewardToken.symbol;
   
-      const poolPrices = getPoolPrices(tokens, prices, stakeToken, "Fantom");
+      const poolPrices = getPoolPrices(tokens, prices, stakeToken, "fantom");
 
       if (!poolPrices) 
       {
@@ -191,7 +201,7 @@ async function loadFantomSynthetixPoolInfo(App, tokens, prices, stakingAbi, stak
 async function loadFantomSynthetixPool(App, tokens, prices, abi, address, rewardTokenFunction, stakeTokenFunction) {
     const info = await loadFantomSynthetixPoolInfo(App, tokens, prices, abi, address, rewardTokenFunction, stakeTokenFunction);
     if (!info) return null;
-    return await printSynthetixPool(App, info, "Fantom");
+    return await printSynthetixPool(App, info, "fantom");
 }
 
 async function loadFantomBasisFork(data) {
@@ -306,21 +316,43 @@ async function loadFantomChefContract(App, tokens, prices, chef, chefAddress, ch
   if (deathPoolIndices) {   //load prices for the deathpool assets
     deathPoolIndices.map(i => poolInfos[i])
                      .map(poolInfo => 
-      poolInfo.poolToken ? getPoolPrices(tokens, prices, poolInfo.poolToken, "Fantom") : undefined);
+      poolInfo.poolToken ? getPoolPrices(tokens, prices, poolInfo.poolToken, "fantom") : undefined);
   }
 
-  const poolPrices = poolInfos.map(poolInfo => poolInfo.poolToken ? getPoolPrices(tokens, prices, poolInfo.poolToken, "Fantom") : undefined);
+  const poolPrices = poolInfos.map(poolInfo => poolInfo.poolToken ? getPoolPrices(tokens, prices, poolInfo.poolToken, "fantom") : undefined);
 
 
   _print("Finished reading smart contracts.\n");
     
+  let aprs = []
   for (i = 0; i < poolCount; i++) {
     if (poolPrices[i]) {
-      printChefPool(App, chefAbi, chefAddress, prices, tokens, poolInfos[i], i, poolPrices[i],
+      const apr = printChefPool(App, chefAbi, chefAddress, prices, tokens, poolInfos[i], i, poolPrices[i],
         totalAllocPoints, rewardsPerWeek, rewardTokenTicker, rewardTokenAddress,
-        pendingRewardsFunction, "Fantom");
+        pendingRewardsFunction, null, null, "fantom")
+      aprs.push(apr);
     }
   }
+  let totalUserStaked=0, totalStaked=0, averageApr=0;
+  for (const a of aprs) {
+    if (!isNaN(a.totalStakedUsd)) {
+      totalStaked += a.totalStakedUsd;
+    }
+    if (a.userStakedUsd > 0) {
+      totalUserStaked += a.userStakedUsd;
+      averageApr += a.userStakedUsd * a.yearlyAPR / 100;
+    }
+  }
+  averageApr = averageApr / totalUserStaked;
+  _print_bold(`Total Staked: $${formatMoney(totalStaked)}`);
+  if (totalUserStaked > 0) {
+    _print_bold(`\nYou are staking a total of $${formatMoney(totalUserStaked)} at an average APR of ${(averageApr * 100).toFixed(2)}%`)
+    _print(`Estimated earnings:`
+        + ` Day $${formatMoney(totalUserStaked*averageApr/365)}`
+        + ` Week $${formatMoney(totalUserStaked*averageApr/52)}`
+        + ` Year $${formatMoney(totalUserStaked*averageApr)}\n`);
+  }
+  return { prices, totalUserStaked, totalStaked, averageApr }
 }
 
 async function loadMultipleFantomSynthetixPools(App, tokens, prices, pools) {
@@ -328,7 +360,7 @@ async function loadMultipleFantomSynthetixPools(App, tokens, prices, pools) {
   const infos = await Promise.all(pools.map(p => 
       loadFantomSynthetixPoolInfo(App, tokens, prices, p.abi, p.address, p.rewardTokenFunction, p.stakeTokenFunction)));
   for (const i of infos) {
-    let p = await printSynthetixPool(App, i, "Fantom");
+    let p = await printSynthetixPool(App, i, "fantom");
     totalStaked += p.staked_tvl || 0;
     totalUserStaked += p.userStaked || 0;
     if (p.userStaked > 0) {
