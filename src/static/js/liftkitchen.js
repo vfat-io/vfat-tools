@@ -56,11 +56,10 @@ async function main() {
   let prices = {};
 
   //load deathpool prices
-  //Looks like this is being called twice - gets called again in the below function
-  // await loadSynthetixPoolInfo(App, tokens, prices,
-  //   Pools[0].abi, Pools[0].address, Pools[0].rewardTokenFunction, Pools[0].stakeTokenFunction);
-  // await loadSynthetixPoolInfo(App, tokens, prices,
-  //   Pools[1].abi, Pools[1].address, Pools[1].rewardTokenFunction, Pools[1].stakeTokenFunction);
+  await loadSynthetixPoolInfo(App, tokens, prices,
+     Pools[0].abi, Pools[0].address, Pools[0].rewardTokenFunction, Pools[0].stakeTokenFunction);
+   await loadSynthetixPoolInfo(App, tokens, prices,
+     Pools[1].abi, Pools[1].address, Pools[1].rewardTokenFunction, Pools[1].stakeTokenFunction);
 
   let p = await loadMultipleSynthetixLIFTPools(App, tokens, prices, Pools.concat(ShortPools))
   _print_bold(`Total staked: $${formatMoney(p.staked_tvl)}`);
