@@ -570,7 +570,7 @@ const rewardsContract_movetobardroom = async function(rewardPoolAddr, App) {
 
   if (currentStakedAmount > 0) {
     showLoading()
-    REWARD_POOL.stakeInBoardroom({gasLimit: 250000})
+    REWARD_POOL.stakeInBoardroom({gasLimit: 500000})
       .then(function(t) {
         return App.provider.waitForTransaction(t.hash)
       })
