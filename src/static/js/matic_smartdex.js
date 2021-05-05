@@ -96,8 +96,7 @@ async function loadSmartdexSynthetixPoolInfo(App, tokens, prices, stakingAbi, st
 
     const periodFinish = await STAKING_POOL.periodFinish();
     const rewardRate = await STAKING_POOL.rewardRate();
-    //const weeklyRewards = (Date.now() / 1000 > periodFinish) ? 0 : rewardRate / 1e18 * 604800;
-    const weeklyRewards = (Date.now() / 1000 > periodFinish) ? 0 : rewardRate * 604800;
+    const weeklyRewards = (Date.now() / 1000 > periodFinish) ? 0 : rewardRate / 10 ** rewardToken.decimals * 604800;
 
     const usdPerWeek = weeklyRewards * rewardTokenPrice;
 
