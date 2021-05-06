@@ -1259,7 +1259,8 @@ function getUniPrices(tokens, prices, pool)
   else if (pool.symbol.includes("SLP")) stakeTokenTicker += " SLP";
   else if (pool.symbol.includes("Cake")) stakeTokenTicker += " Cake LP";
   else if (pool.name.includes("Value LP")) stakeTokenTicker += " Value LP";
-  else if (pool.symbol.includes("PGL")) stakeTokenTicker += " PGL"
+  else if (pool.symbol.includes("PGL")) stakeTokenTicker += " PGL";
+  else if (pool.symbol.includes("CS-LP")) stakeTokenTicker += " CSS LP";
   else stakeTokenTicker += " Uni LP";
   return {
       t0: t0,
@@ -1277,7 +1278,8 @@ function getUniPrices(tokens, prices, pool)
         pool.symbol.includes("LSLP") ? `https://info.linkswap.app/pair/${pool.address}` :
           pool.symbol.includes("SLP") ?  `http://analytics.sushi.com/pairs/${pool.address}` :
             pool.symbol.includes("Cake") ?  `https://pancakeswap.info/pair/${pool.address}` :  
-            pool.symbol.includes("PGL") ?  `https://info.pangolin.exchange/#/pair/${pool.address}` :  
+            pool.symbol.includes("PGL") ?  `https://info.pangolin.exchange/#/pair/${pool.address}` :
+            pool.symbol.includes("CS-LP") ?  `https://app.coinswap.space/#/` :
             pool.name.includes("Value LP") ?  `https://info.vswap.fi/pool/${pool.address}` :  
             chain == "matic" ? `https://info.quickswap.exchange/pair/${pool.address}` :
           `http://uniswap.info/pair/${pool.address}`;
@@ -1308,6 +1310,11 @@ function getUniPrices(tokens, prices, pool)
           `https://app.pangolin.exchange/#/add/${t0address}/${t1address}`, 
           `https://app.pangolin.exchange/#/remove/${t0address}/${t1address}`, 
           `https://app.pangolin.exchange/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}` 
+        ] :
+        pool.symbol.includes("CS-LP") ? [
+          `https://app.coinswap.space/#/add/${t0address}/${t1address}`,
+          `https://app.coinswap.space/#/remove/${t0address}/${t1address}`,
+          `https://app.coinswap.space/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
         ] :
         pool.symbol.includes("SLP") ? [ 
           `https://app.sushi.com/add/${t0address}/${t1address}`,
