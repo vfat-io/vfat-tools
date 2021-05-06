@@ -22,7 +22,7 @@ async function main() {
     if (currentBlock < startBlock) {
         _print(`Rewards start at block ${startBlock}\n`);
     } else {
-        rewardsPerWeek = await GAMESWAP_CHEF.GAMESWAPPerBlock() / 1e18 *
+        rewardsPerWeek = await GAMESWAP_CHEF.eggPerBlock() / 1e18 *
             604800 / 2.1;
     }
 
