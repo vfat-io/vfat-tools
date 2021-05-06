@@ -9,7 +9,8 @@ const Pools = [
   "0xceb74052E1824Ead74637e46444E5312eB517904", //ABS WBNB POOL
   "0x6baf2490eee6b841ea16e5bbb9f7a2828dc38078", //ABS BUSD POOL
   "0xa219262522af596508a891bb74ea38de22d5bb33", //ABS CAKE POOL
-  "0xcb096ed59c5d01e31fcfc0faf7ae5fcb196b5b27"  //ABS POOL
+  "0xcb096ed59c5d01e31fcfc0faf7ae5fcb196b5b27", //ABS POOL
+  "0xF0E747d7361A0B0c23d7ac264efd2360b6bA8657"  //1INCH ABS POOL
 ].map(a => { 
   return {
     address: a,
