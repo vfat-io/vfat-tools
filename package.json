@@ -54,6 +54,7 @@
     "webpack-cli": "^3.3.11"
   },
   "dependencies": {
+    "@walletconnect/web3-provider": "^1.4.1",
     "asciichart": "^1.5.24",
     "clear": "^0.1.0",
     "cli-color": "^2.0.0",
@@ -68,7 +69,8 @@
     "lodash.debounce": "^4.0.8",
     "lodash.throttle": "^4.1.1",
     "numbro": "^2.3.2",
-    "picturefill": "^3.0.3"
+    "picturefill": "^3.0.3",
+    "web3modal": "^1.9.3"
   },
   "browserslist": [
     "last 1 version",
