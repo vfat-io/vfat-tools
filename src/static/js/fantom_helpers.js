@@ -277,7 +277,7 @@ async function getFantomPoolInfo(app, chefContract, chefAddress, poolIndex, pend
   const pendingRewardTokens = await chefContract.callStatic[pendingRewardsFunction](poolIndex, app.YOUR_ADDRESS);
   const staked = userInfo.amount / 10 ** poolToken.decimals;
   return {
-      address: poolInfo.lpToken,
+      address: poolInfo.lpToken ?? poolInfo.token,
       allocPoints: poolInfo.allocPoint ?? 1,
       poolToken: poolToken,
       userStaked : staked,
