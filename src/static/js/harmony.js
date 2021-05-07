@@ -5,7 +5,7 @@ $(function() {
 const main = async() => {
 
   let tableData = {
-    "title":"HARMONY Network",
+    "title":"Harmony Network",
     "heading":["Pool Provider","LP", "Reward Tokens", "INFO"],
     "rows": [
       [

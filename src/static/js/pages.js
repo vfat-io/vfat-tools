@@ -5,7 +5,7 @@ $(function() {
 const main = async() => {
 
   let tableData = {
-    "title":"Pages",
+    "title":"Front Page",
     "heading":["Pool Provider","LP", "Reward Tokens", "INFO"],
     "rows": [
       ["1inch               ",`<a href="1inch/"             >Various</a>`,"1INCH     ","https://1inch.exchange/#/dao/farming"],
