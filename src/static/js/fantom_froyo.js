@@ -22,6 +22,8 @@ async function main() {
     const tokens = {};
     const prices = await getFantomPrices();
 
+    prices["0x4f85Bbf3B0265DCEd4Ec72ebD0358ccCf190F1B3"] = { usd : 1};
+
     await loadFantomFroyoContract(App, tokens, prices, FROYO_CHEF, FROYO_CHEF_ADDR, FROYO_CHEF_ABI, rewardTokenTicker,
       tokenRewardsAddress, null, rewardsPerWeek, "claimableReward");
 
