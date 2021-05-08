@@ -8,10 +8,10 @@ const init_wallet = async function (callback) {
   }
 
   if (walletProvider) {
-    _print_link("[CHANGE WALLET]", changeWallet);
+    _print_link("[CHANGE WALLET]", changeWallet, "connect_wallet_button");
     start(callback);
   } else {
-    _print_link("[CONNECT WALLET]", () => connectWallet(callback));
+    _print_link("[CONNECT WALLET]", () => connectWallet(callback), "connect_wallet_button");
   }
   _print('');
 }
@@ -92,17 +92,33 @@ async function init_ethers() {
 }
 
 const changeWallet = async function() {
+  console.log("change wallet")
+  let cached = window.web3Modal.cachedProvider
   window.web3Modal.clearCachedProvider()
-  await connectWallet(()=>{})
+  await connectWallet(()=> window.location.reload() )
+  if (!window.web3Modal.cachedProvider) {
+    window.web3Modal.setCachedProvider(cached)
+  }
 }
 
 const connectWallet = async function(callback) {
   try {
+    console.log("connect wallet")
     walletProvider = await window.web3Modal.connect()
-    walletProvider.on("disconnect", (error) => {
-      window.web3Modal.clearCachedProvider()
+    walletProvider.on("accountsChanged", (accounts) => {
+      if (accounts === undefined || accounts.length === 0) {
+        window.web3Modal.clearCachedProvider()
+      }
+      window.location.reload()
     });
+
+    let button = document.getElementById('connect_wallet_button')
+    button.textContent = "[CHANGE WALLET]"
+    $(document).off('click', '#connect_wallet_button')
+    $(document).on('click', '#connect_wallet_button', changeWallet)
+
     start(callback)
+
   } catch(e) {}
 }
 
@@ -178,12 +194,10 @@ const _print_bold = function(message) {
   }
 }
 
-const _print_link = function(message, onclickFunction) {
+const _print_link = function(message, onclickFunction, uuid = ID()) {
   if (!logger) {
     logger = document.getElementById('log')
   }
-
-  const uuid = ID()
 
   logger.innerHTML += '<a href="#" id=' + uuid + '>' + message + '</a><br />'
 
