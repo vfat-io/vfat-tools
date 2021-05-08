@@ -12,6 +12,7 @@ const init_wallet = async function (callback) {
     start(callback);
   } else {
     _print_link("[CONNECT WALLET]", () => connectWallet(callback), "connect_wallet_button");
+    hideLoading()
   }
   _print('');
 }
@@ -116,6 +117,8 @@ const connectWallet = async function(callback) {
     button.textContent = "[CHANGE WALLET]"
     $(document).off('click', '#connect_wallet_button')
     $(document).on('click', '#connect_wallet_button', changeWallet)
+
+    showLoading()
 
     start(callback)
 
