@@ -1,6 +1,5 @@
 $(function() {
-  consoleInit();
-  start(main);
+  consoleInit(main)
 });
 
 async function loadPool(App, tokens, prices, stakingAddress, ps=false) {

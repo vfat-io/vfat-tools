@@ -1,15 +1,14 @@
 $(function() {
-    consoleInit();
-    start(main);
+consoleInit(main)
 });
 
-async function main() {  
+async function main() {
     const App = await init_ethers();
 
     _print(`Initialized ${App.YOUR_ADDRESS}\n`);
     _print("Reading smart contracts...\n");
 
-    const DAO = new ethers.Contract(Contracts.ZAI.DAO.address, 
+    const DAO = new ethers.Contract(Contracts.ZAI.DAO.address,
         Contracts.ZAI.DAO.abi, App.provider);
     const DOLLAR = new ethers.Contract(Contracts.ZAI.ZAI.address,
         ERC20_ABI, App.provider);
@@ -22,7 +21,7 @@ async function main() {
 
     const LP = new ethers.Contract(Contracts.ZAI.LPIncentivizationPool.address,
         Contracts.ZAI.LPIncentivizationPool.abi, App.provider);
-    await loadEmptySetLP(App, LP, Contracts.ZAI.Uniswap_DAI_ZAI.address, 
+    await loadEmptySetLP(App, LP, Contracts.ZAI.Uniswap_DAI_ZAI.address,
         "DAI-ZAI LP",144, epoch, "ZAI", uniPrices);
 
     const resp = await fetch('https://api.vfat.tools/twap/' + Contracts.ZAI.Uniswap_DAI_ZAI.address);
@@ -37,13 +36,13 @@ async function main() {
             const totalCoupons = await DAO.totalCoupons() / 1e18;
             const totalRedeemable = await DAO.totalRedeemable() / 1e18;
             const totalNet = await DAO.totalNet() / 1e18;
-    
+
             const lpReward = 0.5
             const daoReward = 0.5
             // Get price
             const calcPrice = Math.min((twap - 1) / 12, 0.01)
-    
-    
+
+
             // Calulcate the outstanding commitments so we can remove it from the rewards
             const totalOutstanding = totalCoupons - totalRedeemable
 
@@ -65,9 +64,9 @@ async function main() {
             const lpRewards = totalNet * calcPrice * lpReward
             const price = getParameterCaseInsensitive(prices, DOLLAR.address).usd;
             const lpReturn = lpRewards * price * epochsPerDay/ uniPrices.staked_tvl * 100
-            
+
             _print(`LP  APR: Day ${(lpReturn).toFixed(2)}% Week ${(lpReturn * 7).toFixed(2)}% Year ${(lpReturn * 365).toFixed(2)}%`)
-        
+
         }
         else {
             _print(`DAO APY: Day 0% Week 0% Year 0%`)

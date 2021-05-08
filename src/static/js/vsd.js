@@ -1,6 +1,5 @@
 $(function () {
-    consoleInit();
-    start(main);
+consoleInit(main)
 });
 
 const loadVSDDAO = async (App, DAO, DOLLAR) => {

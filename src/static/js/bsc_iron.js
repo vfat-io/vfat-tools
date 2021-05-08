@@ -1,7 +1,6 @@
 
 $(function() {
-  consoleInit()
-  start(main)
+  consoleInit(main)
 })
 
 async function main() {
@@ -26,12 +25,12 @@ async function main() {
 
   for(const a of SteelPoolAddresses){
     let STEEL_CHEF = new ethers.Contract(a, STEEL_STAKING_ABI, App.provider);
-    let p = 
+    let p =
       await loadSteelChefContract(App, tokens, prices, STEEL_CHEF, a, STEEL_STAKING_ABI, rewardTokenTicker, "pendingReward");
     totalStaked += p.totalStaked;
   }
   _print_bold(`Total Staked: $${formatMoney(totalStaked)}`);
-  
+
   hideLoading()
 }
 
@@ -40,7 +39,7 @@ async function loadSteelChefContract(App, tokens, prices, chef, chefAddress, che
   const chefContract = chef ?? new ethers.Contract(chefAddress, chefAbi, App.provider);
 
   const poolCount = 1;
-    
+
   _print(`<a href='https://bscscan.com/address/${chefAddress}' target='_blank'>Staking Contract</a>`);
 
   const poolInfos = await Promise.all([...Array(poolCount).keys()].map(async (x) =>
@@ -54,7 +53,7 @@ async function loadSteelChefContract(App, tokens, prices, chef, chefAddress, che
 
   if (deathPoolIndices) {   //load prices for the deathpool assets
     deathPoolIndices.map(i => poolInfos[i])
-                     .map(poolInfo => 
+                     .map(poolInfo =>
       poolInfo.poolToken ? getPoolPrices(tokens, prices, poolInfo.poolToken, "bsc") : undefined);
   }
 
@@ -84,7 +83,7 @@ async function loadSteelChefContract(App, tokens, prices, chef, chefAddress, che
 
 }
 
-async function getBscSteelPoolInfo(App, chefContract, chefAddress, poolIndex, pendingRewardsFunction) {  
+async function getBscSteelPoolInfo(App, chefContract, chefAddress, poolIndex, pendingRewardsFunction) {
   const poolInfo = await chefContract.rewardPoolInfo(poolIndex);
   const rewardTokenAddress = poolInfo.rewardToken;
   const stakedTokenAddress = await chefContract.stakeToken();
@@ -106,9 +105,9 @@ async function getBscSteelPoolInfo(App, chefContract, chefAddress, poolIndex, pe
   };
 }
 
-function printSteelChefPool(App, chefAbi, chefAddr, prices, tokens, poolInfo, poolIndex, poolPrices, 
+function printSteelChefPool(App, chefAbi, chefAddr, prices, tokens, poolInfo, poolIndex, poolPrices,
                        rewardsPerWeek, rewardTokenTicker, rewardTokenAddress,
-                       pendingRewardsFunction, fixedDecimals, claimFunction, chain="eth") {  
+                       pendingRewardsFunction, fixedDecimals, claimFunction, chain="eth") {
   fixedDecimals = fixedDecimals ?? 2;
   const sp = (poolInfo.stakedToken == null) ? null : getPoolPrices(tokens, prices, poolInfo.stakedToken);
   var poolRewardsPerWeek = rewardsPerWeek;
@@ -118,12 +117,12 @@ function printSteelChefPool(App, chefAbi, chefAddr, prices, tokens, poolInfo, po
   const staked_tvl = sp?.staked_tvl ?? poolPrices.staked_tvl;
   poolPrices.print_price();
   sp?.print_price();
-  const apr = printAPR(rewardTokenTicker, rewardPrice, poolRewardsPerWeek, poolPrices.stakeTokenTicker, 
+  const apr = printAPR(rewardTokenTicker, rewardPrice, poolRewardsPerWeek, poolPrices.stakeTokenTicker,
     staked_tvl, userStaked, poolPrices.price, fixedDecimals);
   if (poolInfo.userLPStaked > 0) sp?.print_contained_price(userStaked);
   if (poolInfo.userStaked > 0) poolPrices.print_contained_price(userStaked);
   printIronChefContractLinks(App, chefAbi, chefAddr, poolIndex, poolInfo.address, pendingRewardsFunction,
-    rewardTokenTicker, poolPrices.stakeTokenTicker, poolInfo.poolToken.unstaked, 
+    rewardTokenTicker, poolPrices.stakeTokenTicker, poolInfo.poolToken.unstaked,
     poolInfo.userStaked, poolInfo.pendingRewardTokens, fixedDecimals, claimFunction, rewardPrice, chain);
   return apr;
 }
@@ -134,10 +133,10 @@ function printIronChefContractLinks(App, chefAbi, chefAddr, poolIndex, poolAddre
   fixedDecimals = fixedDecimals ?? 2;
   const approveAndStake = async function() {
     return ironChefContract_stake(chefAbi, chefAddr, poolIndex, poolAddress, App)
-  }      
+  }
   const unstake = async function() {
     return ironChefContract_unstake(chefAbi, chefAddr, poolIndex, App)
-  }      
+  }
   const claim = async function() {
     return ironChefContract_claim(chefAbi, chefAddr, poolIndex, App)
   }
@@ -148,9 +147,9 @@ function printIronChefContractLinks(App, chefAbi, chefAddr, poolIndex, poolAddre
   if  (chefAddr == "0x0De845955E2bF089012F682fE9bC81dD5f11B372") {
     const emergencyWithdraw = async function() {
       return chefContract_emergencyWithdraw(chefAbi, chefAddr, poolIndex, App)
-    }      
+    }
     _print('***')
-    _print_link(`EMERGENCY WITHDRAW ${userStaked.toFixed(fixedDecimals)} ${stakeTokenTicker}`, emergencyWithdraw)  
+    _print_link(`EMERGENCY WITHDRAW ${userStaked.toFixed(fixedDecimals)} ${stakeTokenTicker}`, emergencyWithdraw)
     _print('This will forfeit your rewards but retrieve your capital')
     _print('***')
   }

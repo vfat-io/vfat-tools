@@ -1,12 +1,11 @@
 $(function() {
-    consoleInit();
-    start(main);
+consoleInit(main)
   });
-  
-  async function loadPool(App, prices, tokens, poolIndex, 
-                          operatorAbi, operator, operatorAddr, 
-                          rewardsPerWeek, rewardTokenTicker, rewardTokenAddress, 
-                          pendingRewardsFunctionName) {  
+
+  async function loadPool(App, prices, tokens, poolIndex,
+                          operatorAbi, operator, operatorAddr,
+                          rewardsPerWeek, rewardTokenTicker, rewardTokenAddress,
+                          pendingRewardsFunctionName) {
     const poolTokenAddress = await operator.poolTokenAddress(poolIndex);
     const poolToken = await getToken(App, poolTokenAddress, operatorAddr);
     const poolBalance = await operator.poolBalance(poolIndex, App.YOUR_ADDRESS);
@@ -46,25 +45,25 @@ $(function() {
     }
     const approveAndStake = async function() {
       return chefContract_stake(operatorAbi, operatorAddr, poolIndex, poolTokenAddress, App)
-    }      
+    }
     const unstake = async function() {
       return chefContract_unstake(operatorAbi, operatorAddr, poolIndex, App, pendingRewardsFunctionName)
-    }      
+    }
     const claim = async function() {
       return chefContract_claim(operatorAbi, operatorAddr, poolIndex, App, pendingRewardsFunctionName)
-    }       
+    }
     _print_link(`Stake ${poolToken.unstaked.toFixed(2)} ${pp.stakingTokenTicker}`, approveAndStake)
     _print_link(`Unstake ${userStaked.toFixed(2)} ${pp.stakingTokenTicker}`, unstake)
     _print_link(`Claim ${rewardEarned.toFixed(2)} ${rewardTokenTicker}`, claim)
-    _print(`\n`);    
+    _print(`\n`);
   }
 
-  async function main() {  
+  async function main() {
     const App = await init_ethers();
-  
+
     _print(`Initialized ${App.YOUR_ADDRESS}\n`);
     _print("Reading smart contracts...\n");
-  
+
     const OPERATOR_ADDR = "0xEe9156C93ebB836513968F92B4A67721f3cEa08a";
     const OPERATOR = new ethers.Contract(OPERATOR_ADDR, OPERATOR_ABI, App.provider);
 
@@ -82,9 +81,9 @@ $(function() {
 
     for (i = 0; i < poolCount; i++) {
       await loadPool(App, prices, tokens, i,
-        OPERATOR_ABI, OPERATOR, OPERATOR_ADDR, 
+        OPERATOR_ABI, OPERATOR, OPERATOR_ADDR,
         rewardsPerWeek, rewardTokenTicker, rewardTokenAddress, "rewardEarned");
     }
-  
-    hideLoading();  
+
+    hideLoading();
   }

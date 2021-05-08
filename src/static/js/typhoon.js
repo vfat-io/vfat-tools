@@ -1,6 +1,5 @@
 $(function() {
-    consoleInit();
-    start(main);
+consoleInit(main)
 });
 
 const TYPHOON_ABI = [{"inputs":[{"internalType":"contract Tornado","name":"_tornado","type":"address"},{"internalType":"contract IERC20","name":"_typhoon","type":"address"}],"payable":false,"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"previousOwner","type":"address"},{"indexed":true,"internalType":"address","name":"newOwner","type":"address"}],"name":"OwnershipTransferred","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"reward","type":"uint256"}],"name":"RewardAdded","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"uint256","name":"reward","type":"uint256"}],"name":"RewardPaid","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"bytes32","name":"nullifierHash","type":"bytes32"}],"name":"Staked","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"bytes32","name":"nullifierHash","type":"bytes32"}],"name":"Withdrawn","type":"event"},{"constant":true,"inputs":[],"name":"DURATION","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"internalType":"bytes32","name":"_nullifierHash","type":"bytes32"}],"name":"balanceOf","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"internalType":"bytes32","name":"_nullifierHash","type":"bytes32"}],"name":"earned","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"isOwner","outputs":[{"internalType":"bool","name":"","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"lastTimeRewardApplicable","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"lastUpdateTime","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"internalType":"uint256","name":"reward","type":"uint256"}],"name":"notifyRewardAmount","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"internalType":"bytes32","name":"","type":"bytes32"}],"name":"nullifierHashDeposit","outputs":[{"internalType":"bool","name":"","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"owner","outputs":[{"internalType":"address","name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"periodFinish","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[],"name":"renounceOwnership","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"rewardPerToken","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"rewardPerTokenStored","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"rewardRate","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"internalType":"bytes32","name":"","type":"bytes32"}],"name":"rewards","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"internalType":"contract IERC20","name":"_token","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"seize","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"internalType":"address","name":"_rewardDistribution","type":"address"}],"name":"setRewardDistribution","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"internalType":"bytes32","name":"_nullifierHash","type":"bytes32"}],"name":"stake","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"tornado","outputs":[{"internalType":"contract Tornado","name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"tornadoInputToken","outputs":[{"internalType":"contract ERC20Detailed","name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"totalSupply","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"internalType":"address","name":"newOwner","type":"address"}],"name":"transferOwnership","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"typhoon","outputs":[{"internalType":"contract IERC20","name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"internalType":"bytes32","name":"","type":"bytes32"}],"name":"userRewardPerTokenPaid","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"internalType":"bytes32","name":"_nullifierHash","type":"bytes32"},{"internalType":"address payable","name":"_recipient","type":"address"}],"name":"withdraw","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"}]
@@ -41,13 +40,13 @@ async function loadSynthetixPoolInfo_(App, tokens, prices, stakingAbi, stakingAd
     const rewardTokenAddress = "0x79256DB1BDB6259315a1a3D7Dd237F69cADFd8FC"
       const STAKING_POOL = new ethers.Contract(stakingAddress, stakingAbi, App.provider);
       const STAKING_MULTI = new ethcall.Contract(stakingAddress, stakingAbi);
-  
+
       const stakeTokenAddress = STAKING_POOL.callStatic[stakeTokenFunction] ?
         await STAKING_POOL.callStatic[stakeTokenFunction]()
         : "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2" //WETH
-  
+
       var stakeToken = await getToken(App, stakeTokenAddress, stakingAddress);
-  
+
       var newPriceAddresses = stakeToken.tokens.filter(x => !getParameterCaseInsensitive(prices, x));
       var newPrices = await lookUpTokenPrices(newPriceAddresses);
       for (const key in newPrices) {
@@ -59,29 +58,29 @@ async function loadSynthetixPoolInfo_(App, tokens, prices, stakingAbi, stakingAd
           tokens[address] = await getToken(App, address, stakingAddress);
       }
       const rewardToken = getParameterCaseInsensitive(tokens, rewardTokenAddress);
-  
+
       const rewardTokenTicker = rewardToken.symbol;
 
       const calls = [STAKING_MULTI.periodFinish(), STAKING_MULTI.rewardRate(), STAKING_MULTI.totalSupply()]
-      
+
       const [periodFinish, rewardRate, totalSupply] = await App.ethcallProvider.all(calls);
-      
+
       stakeToken.staked = totalSupply / 10 ** stakeToken.decimals;
-      
-  
+
+
       const poolPrices = getPoolPrices(tokens, prices, stakeToken);
-  
+
       const stakeTokenTicker = poolPrices.stakeTokenTicker;
-  
+
       const stakeTokenPrice = getParameterCaseInsensitive(prices, stakeTokenAddress)?.usd ?? poolPrices.price;
       const rewardTokenPrice = getParameterCaseInsensitive(prices, rewardTokenAddress)?.usd;
 
       const weeklyRewards = (Date.now() / 1000 > periodFinish) ? 0 : rewardRate / 1e18 * 604800;
-  
+
       const usdPerWeek = weeklyRewards * rewardTokenPrice;
-  
+
       const staked_tvl = poolPrices.staked_tvl;
-  
+
       return  {
         name,
         stakingAddress,
@@ -97,7 +96,7 @@ async function loadSynthetixPoolInfo_(App, tokens, prices, stakingAbi, stakingAd
         staked_tvl
       }
   }
-  
+
   async function printSynthetixPool_(info) {
       _print(info.name);
       info.poolPrices.print_price();
@@ -115,7 +114,7 @@ async function loadSynthetixPoolInfo_(App, tokens, prices, stakingAbi, stakingAd
 
   async function loadMultipleSynthetixPools_(App, tokens, prices, pools) {
     let totalStaked  = 0;
-    const infos = await Promise.all(pools.map(p => 
+    const infos = await Promise.all(pools.map(p =>
       loadSynthetixPoolInfo_(App, tokens, prices, p.abi, p.address, p.stakeTokenFunction, p.name)));
     for (const i of infos) {
       let p = await printSynthetixPool_(i);
@@ -139,7 +138,7 @@ async function main() {
     const App = await init_ethers();
     let tokens = {};
     let prices = {};
-  
+
     _print(`Initialized ${App.YOUR_ADDRESS}`);
     _print("Reading smart contracts...\n");
 
@@ -159,9 +158,9 @@ async function main() {
     const slpPrices = getPoolPrices(tokens, prices, slp);
 
     const p1 = await loadMultipleSynthetixPools(App, tokens, prices, LPPools);
-  
+
     let pools = TyphoonContracts.filter(c => c.address !== "").map(c => { return {
-        name : c.name, 
+        name : c.name,
         address : c.address,
         abi : c.abi,
         stakeTokenFunction : "tornadoInputToken"
@@ -169,6 +168,6 @@ async function main() {
     const p2 = await loadMultipleSynthetixPools_(App, tokens, prices, pools);
 
     _print_bold(`Total staked: $${formatMoney(p1.staked_tvl + p2.staked_tvl)}`)
-  
+
     hideLoading();
 }

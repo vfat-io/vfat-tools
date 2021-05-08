@@ -1,24 +1,23 @@
 $(function() {
-  consoleInit();
-  start(main);
+consoleInit(main)
 });
 
 async function loadPool(App, tokens, prices, stakingAddress, ps=false) {
 
-  //Get the staking contract from ethers with the ABI and extract the tokens used 
+  //Get the staking contract from ethers with the ABI and extract the tokens used
   const STAKING_POOL = new ethers.Contract(stakingAddress, HARVEST_POOL_ABI, App.provider);
   const vaultAddress = await STAKING_POOL.lpToken();
   const rewardTokenAddress = await STAKING_POOL.rewardToken();
   const VAULT = await getToken(App, vaultAddress, stakingAddress);
   const stakeTokenAddress = vaultAddress;
-  
+
 
   var newPriceAddresses = VAULT.tokens.filter(x => prices[x] == null);
   var newPrices = await lookUpTokenPrices(newPriceAddresses);
   for (const key in newPrices) {
       prices[key] = newPrices[key];
   }
-  
+
   var newTokenAddresses = VAULT.tokens.filter(x => tokens[x] == null);
   for (const address of newTokenAddresses) {
       tokens[address] = await getToken(App, address, stakingAddress);
@@ -26,14 +25,14 @@ async function loadPool(App, tokens, prices, stakingAddress, ps=false) {
 
   const rewardToken = getParameterCaseInsensitive(tokens, rewardTokenAddress);
   const rewardTokenTicker = rewardToken.symbol;
-   
+
   //Get prices from pools
   const poolPrices = getPoolPrices(tokens, prices, VAULT);
 
-  const stakingTokenTicker = poolPrices.stakeTokenTicker;  
+  const stakingTokenTicker = poolPrices.stakeTokenTicker;
   const stakeTokenPrice =  poolPrices.price;
   const rewardTokenPrice = getParameterCaseInsensitive(prices, rewardTokenAddress).usd;
-  
+
   const weeklyRewards = await get_synth_weekly_rewards(STAKING_POOL);
   const staked_tvl = poolPrices.staked_tvl;
   var userStaked;
@@ -46,7 +45,7 @@ async function loadPool(App, tokens, prices, stakingAddress, ps=false) {
     userStaked = await AutoStaking.balanceOf(App.YOUR_ADDRESS) / 10 ** VAULT.decimals;
     userUnstaked = VAULT.unstaked;
     earned = await STAKING_POOL.earned(App.YOUR_ADDRESS) / 10 ** rewardToken.decimals;
-  
+
   } else {
     userStaked = await STAKING_POOL.balanceOf(App.YOUR_ADDRESS) / 10 ** VAULT.decimals;
     userUnstaked = VAULT.unstaked;
@@ -55,7 +54,7 @@ async function loadPool(App, tokens, prices, stakingAddress, ps=false) {
 
   poolPrices.print_price();
 
-  printAPR(rewardTokenTicker, rewardTokenPrice, weeklyRewards, 
+  printAPR(rewardTokenTicker, rewardTokenPrice, weeklyRewards,
     stakingTokenTicker, staked_tvl, userStaked, stakeTokenPrice, null);
 
   const approveTENDAndStake = async function() {

@@ -1,9 +1,8 @@
 $(function() {
-    consoleInit();
-    start(main);
+consoleInit(main)
   });
 
-  async function loadPool(App, stakingPool, stakingAddress, rewardTokenTicker, rewardTokenAddress, tokens, prices) {     
+  async function loadPool(App, stakingPool, stakingAddress, rewardTokenTicker, rewardTokenAddress, tokens, prices) {
     const lpt = await stakingPool.lpt();
     const poolToken = await getToken(App, lpt, stakingAddress);
     var newPriceAddresses = poolToken.tokens.filter(x => prices[x] == null);
@@ -40,16 +39,16 @@ $(function() {
     }
     const approveAndStake = async function() {
       return rewardsContract_stake(lpt, stakingAddress, App)
-    }      
+    }
     const unstake = async function() {
       return rewardsContract_unstake(stakingAddress, App)
-    }      
+    }
     const claim = async function() {
       return rewardsContract_claim(stakingAddress, App)
-    }      
+    }
     const exit = async function() {
       return rewardsContract_exit(stakingAddress, App)
-    }      
+    }
     const pendingRewardTokens = await stakingPool.earned(App.YOUR_ADDRESS) / 1e18;
     _print_link(`Stake ${poolToken.unstaked.toFixed(4)} ${pp.stakingTokenTicker}`, approveAndStake)
     _print_link(`Unstake ${userStaked.toFixed(4)} ${pp.stakingTokenTicker}`, unstake)
@@ -57,13 +56,13 @@ $(function() {
     _print_link(`Exit`, exit)
     _print(`\n`);
   }
-  
-  async function main() {  
+
+  async function main() {
     const App = await init_ethers();
-  
+
     _print(`Initialized ${App.YOUR_ADDRESS}`);
     _print("Reading smart contracts...");
-    
+
     const rewardTokenTicker = "METRIC";
     const rewardTokenAddress = "0xefc1c73a3d8728dc4cf2a18ac5705fe93e5914ac";
     const BUILD_POOL_ADDR = "0xb4D78f3a0fA97d42Bff0f7f9CeDFE2FE23eECA05";
@@ -72,9 +71,8 @@ $(function() {
     const METRIC_POOL = new ethers.Contract(METRIC_POOL_ADDR, STAKING_ABI, App.provider);
     var tokens = {};
     var prices = {};
-    
+
     await loadPool(App, METRIC_POOL, METRIC_POOL_ADDR, rewardTokenTicker, rewardTokenAddress, tokens, prices);
     await loadPool(App, BUILD_POOL, BUILD_POOL_ADDR, rewardTokenTicker, rewardTokenAddress, tokens, prices);
     hideLoading();
   }
-  
