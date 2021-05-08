@@ -1,6 +1,5 @@
 $(function () {
-    consoleInit();
-    start(main);
+consoleInit(main)
 });
 
 async function main() {
@@ -11,7 +10,7 @@ async function main() {
         },
         Pools: {
             WETH: "0x7E9320C98389CB43B957Ff2399eA315Bce72fdb4",
-            DAI: "0xf13a49Eb6b2F6918500ee5cf8b39bb15a38F5b32", 
+            DAI: "0xf13a49Eb6b2F6918500ee5cf8b39bb15a38F5b32",
             USDC: "0x75aAf03CBF330e2b3F0623c55B7a528CFCAE8d75",
             USDT: "0x7d3fcd3825ae54e8e8ffd3d0ce95882330d54968"
         },
@@ -33,7 +32,7 @@ async function main() {
     var totalStaked = 0;
 
     for (const [, address] of Object.entries(Contracts.Staking)) {
-        const { staked_tvl } = await loadSynthetixPool(App, tokens, prices, XUSD_STAKING_POOL_ABI, address, 
+        const { staked_tvl } = await loadSynthetixPool(App, tokens, prices, XUSD_STAKING_POOL_ABI, address,
             "rewardsToken", "stakingToken");
         totalStaked += staked_tvl;
     }

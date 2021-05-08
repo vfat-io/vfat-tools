@@ -1,14 +1,13 @@
 
 $(function() {
-    consoleInit();
-    start(main);
+consoleInit(main)
   });
 
 const AURORA_CHEF_ABI = [{"type":"constructor","stateMutability":"nonpayable","inputs":[{"type":"address","name":"_aurora","internalType":"contract AuroraToken"},{"type":"address","name":"_devaddr","internalType":"address"},{"type":"address","name":"_feeAddress","internalType":"address"},{"type":"uint256","name":"_auroraPerBlock","internalType":"uint256"},{"type":"uint256","name":"_startBlock","internalType":"uint256"}]},{"type":"event","name":"Deposit","inputs":[{"type":"address","name":"user","internalType":"address","indexed":true},{"type":"uint256","name":"pid","internalType":"uint256","indexed":true},{"type":"uint256","name":"amount","internalType":"uint256","indexed":false}],"anonymous":false},{"type":"event","name":"EmergencyWithdraw","inputs":[{"type":"address","name":"user","internalType":"address","indexed":true},{"type":"uint256","name":"pid","internalType":"uint256","indexed":true},{"type":"uint256","name":"amount","internalType":"uint256","indexed":false}],"anonymous":false},{"type":"event","name":"OwnershipTransferred","inputs":[{"type":"address","name":"previousOwner","internalType":"address","indexed":true},{"type":"address","name":"newOwner","internalType":"address","indexed":true}],"anonymous":false},{"type":"event","name":"Withdraw","inputs":[{"type":"address","name":"user","internalType":"address","indexed":true},{"type":"uint256","name":"pid","internalType":"uint256","indexed":true},{"type":"uint256","name":"amount","internalType":"uint256","indexed":false}],"anonymous":false},{"type":"function","stateMutability":"view","outputs":[{"type":"uint256","name":"","internalType":"uint256"}],"name":"BONUS_MULTIPLIER","inputs":[]},{"type":"function","stateMutability":"nonpayable","outputs":[],"name":"add","inputs":[{"type":"uint256","name":"_allocPoint","internalType":"uint256"},{"type":"address","name":"_lpToken","internalType":"contract IBEP20"},{"type":"uint16","name":"_depositFeeBP","internalType":"uint16"},{"type":"bool","name":"_withUpdate","internalType":"bool"}]},{"type":"function","stateMutability":"view","outputs":[{"type":"address","name":"","internalType":"contract AuroraToken"}],"name":"aurora","inputs":[]},{"type":"function","stateMutability":"view","outputs":[{"type":"uint256","name":"","internalType":"uint256"}],"name":"auroraPerBlock","inputs":[]},{"type":"function","stateMutability":"nonpayable","outputs":[],"name":"deposit","inputs":[{"type":"uint256","name":"_pid","internalType":"uint256"},{"type":"uint256","name":"_amount","internalType":"uint256"}]},{"type":"function","stateMutability":"nonpayable","outputs":[],"name":"dev","inputs":[{"type":"address","name":"_devaddr","internalType":"address"}]},{"type":"function","stateMutability":"view","outputs":[{"type":"address","name":"","internalType":"address"}],"name":"devaddr","inputs":[]},{"type":"function","stateMutability":"nonpayable","outputs":[],"name":"emergencyWithdraw","inputs":[{"type":"uint256","name":"_pid","internalType":"uint256"}]},{"type":"function","stateMutability":"view","outputs":[{"type":"address","name":"","internalType":"address"}],"name":"feeAddress","inputs":[]},{"type":"function","stateMutability":"view","outputs":[{"type":"uint256","name":"","internalType":"uint256"}],"name":"getMultiplier","inputs":[{"type":"uint256","name":"_from","internalType":"uint256"},{"type":"uint256","name":"_to","internalType":"uint256"}]},{"type":"function","stateMutability":"nonpayable","outputs":[],"name":"harvestAll","inputs":[]},{"type":"function","stateMutability":"view","outputs":[{"type":"uint256","name":"","internalType":"uint256"}],"name":"lastEmissionUpdate","inputs":[]},{"type":"function","stateMutability":"nonpayable","outputs":[],"name":"massUpdatePools","inputs":[]},{"type":"function","stateMutability":"view","outputs":[{"type":"address","name":"","internalType":"address"}],"name":"owner","inputs":[]},{"type":"function","stateMutability":"view","outputs":[{"type":"uint256","name":"","internalType":"uint256"}],"name":"pendingAurora","inputs":[{"type":"uint256","name":"_pid","internalType":"uint256"},{"type":"address","name":"_user","internalType":"address"}]},{"type":"function","stateMutability":"view","outputs":[{"type":"address","name":"lpToken","internalType":"contract IBEP20"},{"type":"uint256","name":"allocPoint","internalType":"uint256"},{"type":"uint256","name":"lastRewardBlock","internalType":"uint256"},{"type":"uint256","name":"accAuroraPerShare","internalType":"uint256"},{"type":"uint16","name":"depositFeeBP","internalType":"uint16"}],"name":"poolInfo","inputs":[{"type":"uint256","name":"","internalType":"uint256"}]},{"type":"function","stateMutability":"view","outputs":[{"type":"uint256","name":"","internalType":"uint256"}],"name":"poolLength","inputs":[]},{"type":"function","stateMutability":"nonpayable","outputs":[],"name":"renounceOwnership","inputs":[]},{"type":"function","stateMutability":"nonpayable","outputs":[],"name":"set","inputs":[{"type":"uint256","name":"_pid","internalType":"uint256"},{"type":"uint256","name":"_allocPoint","internalType":"uint256"},{"type":"uint16","name":"_depositFeeBP","internalType":"uint16"},{"type":"bool","name":"_withUpdate","internalType":"bool"}]},{"type":"function","stateMutability":"nonpayable","outputs":[],"name":"setFeeAddress","inputs":[{"type":"address","name":"_feeAddress","internalType":"address"}]},{"type":"function","stateMutability":"nonpayable","outputs":[],"name":"setStart","inputs":[{"type":"uint256","name":"_newStartBlock","internalType":"uint256"}]},{"type":"function","stateMutability":"view","outputs":[{"type":"uint256","name":"","internalType":"uint256"}],"name":"startBlock","inputs":[]},{"type":"function","stateMutability":"view","outputs":[{"type":"uint256","name":"","internalType":"uint256"}],"name":"totalAllocPoint","inputs":[]},{"type":"function","stateMutability":"nonpayable","outputs":[],"name":"transferOwnership","inputs":[{"type":"address","name":"newOwner","internalType":"address"}]},{"type":"function","stateMutability":"nonpayable","outputs":[],"name":"updateEmissionRate","inputs":[{"type":"uint256","name":"_auroraPerBlock","internalType":"uint256"}]},{"type":"function","stateMutability":"nonpayable","outputs":[],"name":"updatePool","inputs":[{"type":"uint256","name":"_pid","internalType":"uint256"}]},{"type":"function","stateMutability":"view","outputs":[{"type":"uint256","name":"amount","internalType":"uint256"},{"type":"uint256","name":"rewardDebt","internalType":"uint256"}],"name":"userInfo","inputs":[{"type":"uint256","name":"","internalType":"uint256"},{"type":"address","name":"","internalType":"address"}]},{"type":"function","stateMutability":"nonpayable","outputs":[],"name":"withdraw","inputs":[{"type":"uint256","name":"_pid","internalType":"uint256"},{"type":"uint256","name":"_amount","internalType":"uint256"}]}]
 
-async function main() {  
+async function main() {
     const App = await init_ethers();
-  
+
     _print(`Initialized ${App.YOUR_ADDRESS}\n`);
     _print("Reading smart contracts...\n");
 
@@ -33,7 +32,7 @@ async function main() {
     await loadAuroraContract(App, tokens, prices, AURORA_CHEF, AURORA_CHEF_ADDR, AURORA_CHEF_ABI, rewardTokenTicker,
         "aurora", null, rewardsPerWeek, "pendingAurora");
 
-    hideLoading();  
+    hideLoading();
   }
 
 async function loadAuroraContract(App, tokens, prices, chef, chefAddress, chefAbi, rewardTokenTicker,
@@ -52,8 +51,8 @@ async function loadAuroraContract(App, tokens, prices, chef, chefAddress, chefAb
 
   const rewardTokenAddress = await chefContract.callStatic[rewardTokenFunction]();
   const rewardToken = await getMaticToken(App, rewardTokenAddress, chefAddress);
-  const rewardsPerWeek = rewardsPerWeekFixed ?? 
-    await chefContract.callStatic[rewardsPerBlockFunction]() 
+  const rewardsPerWeek = rewardsPerWeekFixed ??
+    await chefContract.callStatic[rewardsPerBlockFunction]()
     / 10 ** rewardToken.decimals * 604800 / 3
 
   const poolInfos = await Promise.all([...Array(poolCount).keys()].map(async (x) =>
@@ -67,7 +66,7 @@ async function loadAuroraContract(App, tokens, prices, chef, chefAddress, chefAb
 
   if (deathPoolIndices) {   //load prices for the deathpool assets
     deathPoolIndices.map(i => poolInfos[i])
-                     .map(poolInfo => 
+                     .map(poolInfo =>
       poolInfo.poolToken ? getPoolPrices(tokens, prices, poolInfo.poolToken, "matic") : undefined);
   }
 
@@ -75,7 +74,7 @@ async function loadAuroraContract(App, tokens, prices, chef, chefAddress, chefAb
 
 
   _print("Finished reading smart contracts.\n");
-  
+
   let aprs = []
   for (i = 0; i < poolCount; i++) {
     if (poolPrices[i]) {
@@ -107,7 +106,7 @@ async function loadAuroraContract(App, tokens, prices, chef, chefAddress, chefAb
   return { prices, totalUserStaked, totalStaked, averageApr }
 }
 
-async function getAuroraPoolInfo(app, chefContract, chefAddress, poolIndex, pendingRewardsFunction) {  
+async function getAuroraPoolInfo(app, chefContract, chefAddress, poolIndex, pendingRewardsFunction) {
   const poolInfo = await chefContract.poolInfo(poolIndex);
   if (poolInfo.allocPoint == 0) {
     return {
@@ -132,9 +131,9 @@ async function getAuroraPoolInfo(app, chefContract, chefAddress, poolIndex, pend
   };
 }
 
-function printAuroraPool(App, chefAbi, chefAddr, prices, tokens, poolInfo, poolIndex, poolPrices, 
+function printAuroraPool(App, chefAbi, chefAddr, prices, tokens, poolInfo, poolIndex, poolPrices,
                        totalAllocPoints, rewardsPerWeek, rewardTokenTicker, rewardTokenAddress,
-                       pendingRewardsFunction, fee, fixedDecimals, claimFunction, chain="eth") {  
+                       pendingRewardsFunction, fee, fixedDecimals, claimFunction, chain="eth") {
   fixedDecimals = fixedDecimals ?? 2;
   const sp = (poolInfo.stakedToken == null) ? null : getPoolPrices(tokens, prices, poolInfo.stakedToken);
   var poolRewardsPerWeek = poolInfo.allocPoints / totalAllocPoints * rewardsPerWeek;
@@ -144,12 +143,12 @@ function printAuroraPool(App, chefAbi, chefAddr, prices, tokens, poolInfo, poolI
   const staked_tvl = sp?.staked_tvl ?? poolPrices.staked_tvl;
   poolPrices.print_price(chain);
   sp?.print_price(chain);
-  const apr = printAPR(rewardTokenTicker, rewardPrice, poolRewardsPerWeek, poolPrices.stakeTokenTicker, 
+  const apr = printAPR(rewardTokenTicker, rewardPrice, poolRewardsPerWeek, poolPrices.stakeTokenTicker,
     staked_tvl, userStaked, poolPrices.price, fixedDecimals);
   if (poolInfo.userLPStaked > 0) sp?.print_contained_price(userStaked);
   if (poolInfo.userStaked > 0) poolPrices.print_contained_price(userStaked);
   printAuroraContractLinks(App, chefAbi, chefAddr, poolIndex, poolInfo.address, pendingRewardsFunction,
-    rewardTokenTicker, poolPrices.stakeTokenTicker, poolInfo.poolToken.unstaked, 
+    rewardTokenTicker, poolPrices.stakeTokenTicker, poolInfo.poolToken.unstaked,
     poolInfo.userStaked, poolInfo.pendingRewardTokens, fee, fixedDecimals, claimFunction, rewardPrice, chain);
   return apr;
 }
@@ -160,10 +159,10 @@ function printAuroraContractLinks(App, chefAbi, chefAddr, poolIndex, poolAddress
   fixedDecimals = fixedDecimals ?? 2;
   const approveAndStake = async function() {
     return chefContract_stake(chefAbi, chefAddr, poolIndex, poolAddress, App)
-  }      
+  }
   const unstake = async function() {
     return chefContract_unstake(chefAbi, chefAddr, poolIndex, App, pendingRewardsFunction)
-  }      
+  }
   const claim = async function() {
     return chefContract_claim(chefAbi, chefAddr, poolIndex, App, pendingRewardsFunction, claimFunction)
   }
@@ -178,9 +177,9 @@ function printAuroraContractLinks(App, chefAbi, chefAddr, poolIndex, poolAddress
   if  (chefAddr == "0x0De845955E2bF089012F682fE9bC81dD5f11B372") {
     const emergencyWithdraw = async function() {
       return chefContract_emergencyWithdraw(chefAbi, chefAddr, poolIndex, App)
-    }      
+    }
     _print('***')
-    _print_link(`EMERGENCY WITHDRAW ${userStaked.toFixed(fixedDecimals)} ${stakeTokenTicker}`, emergencyWithdraw)  
+    _print_link(`EMERGENCY WITHDRAW ${userStaked.toFixed(fixedDecimals)} ${stakeTokenTicker}`, emergencyWithdraw)
     _print('This will forfeit your rewards but retrieve your capital')
     _print('***')
   }

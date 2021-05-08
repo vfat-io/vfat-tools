@@ -1,16 +1,15 @@
 $(function() {
-    consoleInit();
-    start(main);
+consoleInit(main)
   });
 
   const MIMO_STAKING_ABI = [{"inputs":[{"internalType":"contract IGovernanceAddressProvider","name":"_addresses","type":"address"},{"internalType":"contract IERC20","name":"_token","type":"address"}],"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"uint256","name":"stake","type":"uint256"}],"name":"StakeDecreased","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"uint256","name":"stake","type":"uint256"}],"name":"StakeIncreased","type":"event"},{"inputs":[],"name":"a","outputs":[{"internalType":"contract IGovernanceAddressProvider","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"deposit","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"_user","type":"address"}],"name":"pendingMIMO","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"_user","type":"address"}],"name":"releaseMIMO","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"_user","type":"address"}],"name":"stake","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"token","outputs":[{"internalType":"contract IERC20","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"totalStake","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"_user","type":"address"}],"name":"userInfo","outputs":[{"components":[{"internalType":"uint256","name":"stake","type":"uint256"},{"internalType":"uint256","name":"accAmountPerShare","type":"uint256"}],"internalType":"struct IGenericMiner.UserInfo","name":"","type":"tuple"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"withdraw","outputs":[],"stateMutability":"nonpayable","type":"function"}]
-    
-  async function main() {  
+
+  async function main() {
     const App = await init_ethers();
-  
+
     _print(`Initialized ${App.YOUR_ADDRESS}\n`);
     _print("Reading smart contracts...\n");
-  
+
     const MIMO_STAKING_ADDR = "0x9DD8C3d3E3ec1569e3eE22C4ef26581619ab4222";
     const MIMO_STAKING_CONTRACT = new ethers.Contract(MIMO_STAKING_ADDR, MIMO_STAKING_ABI, App.provider);
 
@@ -78,17 +77,17 @@ $(function() {
     if (p1.totalUserStaked > 0 || p2.totalUserStaked > 0 || p3.totalUserStaked > 0 || p4.totalUserStaked > 0 || p5.totalUserStaked > 0) {
       _print_bold(`\nYou are staking a total of $${formatMoney(p1.totalUserStaked + p2.totalUserStaked)} at an average APR of ${(p1.averageApr + p2.averageApr * 100).toFixed(2)}%`)
       _print(`Estimated earnings:`
-        + ` Day $${formatMoney(p1.totalUserStaked*p1.averageApr/365 + 
+        + ` Day $${formatMoney(p1.totalUserStaked*p1.averageApr/365 +
                                p2.totalUserStaked*p2.averageApr/365 +
                                p3.totalUserStaked*p3.averageApr/365 +
                                p4.totalUserStaked*p4.averageApr/365 +
                                p5.totalUserStaked*p5.averageApr/365)}`
-        + ` Week $${formatMoney(p1.totalUserStaked*p1.averageApr/52 + 
+        + ` Week $${formatMoney(p1.totalUserStaked*p1.averageApr/52 +
                                 p2.totalUserStaked*p2.averageApr/52 +
                                 p3.totalUserStaked*p3.averageApr/52 +
                                 p4.totalUserStaked*p4.averageApr/52 +
                                 p5.totalUserStaked*p5.averageApr/52)}`
-        + ` Year $${formatMoney(p1.totalUserStaked*p1.averageApr + 
+        + ` Year $${formatMoney(p1.totalUserStaked*p1.averageApr +
                                 p2.totalUserStaked*p2.averageApr +
                                 p3.totalUserStaked*p3.averageApr +
                                 p4.totalUserStaked*p4.averageApr +
@@ -105,28 +104,28 @@ async function loadMimoContract(App, tokens, prices, contractAddress, abi, rewar
   const stakeToken = await getToken(App, stakingTokenAddr, contractAddress);
 
   const newAddresses = stakeToken.tokens.concat([rewardTokenAddr])
-  
+
   await getNewPricesAndTokens(App, tokens, prices, newAddresses, contractAddress);
 
   const poolPrices = getPoolPrices(tokens, prices, stakeToken);
-    
+
   const apr = printMimoPool(App, abi, contractAddress, prices, tokens, stakingTokenAddr, stakeToken, userStaked,
     poolPrices, rewardsPerWeek, rewardTokenTicker, rewardTokenAddr, pendingRewards, rewardToken);
   return apr;
 }
 
-function printMimoPool(App, abi, contractAddress, prices, tokens, stakingTokenAddr, stakeToken, userStaked, 
-  poolPrices, rewardsPerWeek, rewardTokenTicker, rewardTokenAddress, pendingRewards, rewardToken, chain="eth") {  
+function printMimoPool(App, abi, contractAddress, prices, tokens, stakingTokenAddr, stakeToken, userStaked,
+  poolPrices, rewardsPerWeek, rewardTokenTicker, rewardTokenAddress, pendingRewards, rewardToken, chain="eth") {
   const poolRewardsPerWeek = rewardsPerWeek;
   const rewardPrice = getParameterCaseInsensitive(prices, rewardTokenAddress)?.usd;
   const staked_tvl = poolPrices.staked_tvl;
   const pendingRewardTokens = pendingRewards / 10 ** 18;
   const claimFunction = "releaseMIMO";
   poolPrices.print_price();
-  const apr = printAPR(rewardTokenTicker, rewardPrice, poolRewardsPerWeek, poolPrices.stakeTokenTicker, 
+  const apr = printAPR(rewardTokenTicker, rewardPrice, poolRewardsPerWeek, poolPrices.stakeTokenTicker,
     staked_tvl, userStaked, poolPrices.price, 2);
   printMimoContractLinks(App, abi, contractAddress, stakingTokenAddr, pendingRewards,
-    rewardTokenTicker, poolPrices.stakeTokenTicker, stakeToken.unstaked, 
+    rewardTokenTicker, poolPrices.stakeTokenTicker, stakeToken.unstaked,
     userStaked, pendingRewardTokens, 2, claimFunction, rewardPrice, chain);
   return apr;
 }
@@ -136,10 +135,10 @@ function printMimoContractLinks(App, abi, contractAddress, stakingTokenAddr, pen
   claimFunction, rewardTokenPrice) {
 const approveAndStake = async function() {
   return mimoContract_stake(abi, contractAddress, stakingTokenAddr, App)
-}      
+}
 const unstake = async function() {
   return mimoContract_unstake(abi, contractAddress, App, pendingRewards, userStaked)
-}      
+}
 const claim = async function() {
   return mimoContract_claim(abi, contractAddress, App, pendingRewards, claimFunction)
 }
@@ -214,7 +213,7 @@ const mimoContract_unstake = async function(abi, contractAddress, App, pendingRe
   }
 }
 
-const mimoContract_claim = async function(abi, contractAddress, App, 
+const mimoContract_claim = async function(abi, contractAddress, App,
   pendingRewards, claimFunction) {
 const signer = App.provider.getSigner()
 
@@ -244,7 +243,7 @@ if (earnedTokenAmount > 0) {
 
 async function loadMimoContract2(App, tokens, prices, contractAddress, abi, rewardTokenTicker,
   rewardTokenAddr, stakingTokenAddr, pendingRewards, userStaked, rewardsPerWeek, parTokenAddress) {
-  
+
   if(contractAddress == "0x7DCCB36Ba7177154F364Dab07cb57250AbA50b3e"){
     _print(`WETH Pool`)
   }else if(contractAddress == "0x6105D733050Fb504460FFF37eA639F0052B12035"){
@@ -258,23 +257,23 @@ async function loadMimoContract2(App, tokens, prices, contractAddress, abi, rewa
   stakeToken.staked = await MINER_CONTRACT.totalStake() / 1e18;
 
   const newAddresses = stakeToken.tokens.concat([rewardTokenAddr])
-  
+
   await getNewPricesAndTokens(App, tokens, prices, newAddresses, contractAddress);
 
   const poolPrices = getPoolPrices(tokens, prices, stakeToken);
-    
+
   const apr = printMimoPool2(prices, userStaked,
     poolPrices, rewardsPerWeek, rewardTokenTicker, rewardTokenAddr);
   return apr;
 }
 
-function printMimoPool2(prices, userStaked, 
-  poolPrices, rewardsPerWeek, rewardTokenTicker, rewardTokenAddress) {  
+function printMimoPool2(prices, userStaked,
+  poolPrices, rewardsPerWeek, rewardTokenTicker, rewardTokenAddress) {
   const poolRewardsPerWeek = rewardsPerWeek;
   const rewardPrice = getParameterCaseInsensitive(prices, rewardTokenAddress)?.usd;
   const staked_tvl = poolPrices.staked_tvl;
   poolPrices.print_price();
-  const apr = printAPR(rewardTokenTicker, rewardPrice, poolRewardsPerWeek, poolPrices.stakeTokenTicker, 
+  const apr = printAPR(rewardTokenTicker, rewardPrice, poolRewardsPerWeek, poolPrices.stakeTokenTicker,
     staked_tvl, userStaked, poolPrices.price, 2);
     _print(`\n`);
   return apr;

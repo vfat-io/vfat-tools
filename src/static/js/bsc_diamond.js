@@ -1,6 +1,5 @@
 $(function() {
-  consoleInit()
-  start(main)
+  consoleInit(main)
 })
 
 async function main() {
@@ -30,7 +29,7 @@ async function main() {
 
   for(const a of diamondPoolAddresses){
     let DIAMOND_CHEF = new ethers.Contract(a, DIAMOND_STAKING_ABI, App.provider);
-    let p = 
+    let p =
       await loadDiamondChefContract(App, tokens, prices, DIAMOND_CHEF, a, DIAMOND_STAKING_ABI, rewardTokenTicker, "pendingReward");
     totalStaked += p.totalStaked;
     totalUserStaked += p.totalUserStaked;
@@ -45,7 +44,7 @@ async function main() {
           + ` Week $${formatMoney(totalUserStaked * averageApr/52)}`
           + ` Year $${formatMoney(totalUserStaked * averageApr)}`);
     }
-  
+
   hideLoading()
 }
 
@@ -66,7 +65,7 @@ async function loadDiamondChefContract(App, tokens, prices, chef, chefAddress, c
 
   if (deathPoolIndices) {   //load prices for the deathpool assets
     deathPoolIndices.map(i => poolInfos[i])
-                     .map(poolInfo => 
+                     .map(poolInfo =>
       poolInfo.poolToken ? getPoolPrices(tokens, prices, poolInfo.poolToken, "bsc") : undefined);
   }
 
@@ -96,7 +95,7 @@ async function loadDiamondChefContract(App, tokens, prices, chef, chefAddress, c
 
 }
 
-async function getBscDiamondPoolInfo(App, chefContract, chefAddress, poolIndex, pendingRewardsFunction) {  
+async function getBscDiamondPoolInfo(App, chefContract, chefAddress, poolIndex, pendingRewardsFunction) {
   const poolInfo = await chefContract.rewardPoolInfo(poolIndex);
   const rewardTokenAddress = poolInfo.rewardToken;
   const stakedTokenAddress = await chefContract.stakeToken();
@@ -118,9 +117,9 @@ async function getBscDiamondPoolInfo(App, chefContract, chefAddress, poolIndex, 
   };
 }
 
-function printDiamondChefPool(App, chefAbi, chefAddr, prices, tokens, poolInfo, poolIndex, poolPrices, 
+function printDiamondChefPool(App, chefAbi, chefAddr, prices, tokens, poolInfo, poolIndex, poolPrices,
                        rewardsPerWeek, rewardTokenTicker, rewardTokenAddress,
-                       pendingRewardsFunction, fixedDecimals, claimFunction, chain="eth") {  
+                       pendingRewardsFunction, fixedDecimals, claimFunction, chain="eth") {
   fixedDecimals = fixedDecimals ?? 2;
   const sp = (poolInfo.stakedToken == null) ? null : getPoolPrices(tokens, prices, poolInfo.stakedToken);
   var poolRewardsPerWeek = rewardsPerWeek;
@@ -130,12 +129,12 @@ function printDiamondChefPool(App, chefAbi, chefAddr, prices, tokens, poolInfo, 
   const staked_tvl = sp?.staked_tvl ?? poolPrices.staked_tvl;
   poolPrices.print_price();
   sp?.print_price();
-  const apr = printAPR(rewardTokenTicker, rewardPrice, poolRewardsPerWeek, poolPrices.stakeTokenTicker, 
+  const apr = printAPR(rewardTokenTicker, rewardPrice, poolRewardsPerWeek, poolPrices.stakeTokenTicker,
     staked_tvl, userStaked, poolPrices.price, fixedDecimals);
   if (poolInfo.userLPStaked > 0) sp?.print_contained_price(userStaked);
   if (poolInfo.userStaked > 0) poolPrices.print_contained_price(userStaked);
   printDiamondChefContractLinks(App, chefAbi, chefAddr, poolIndex, poolInfo.address, pendingRewardsFunction,
-    rewardTokenTicker, poolPrices.stakeTokenTicker, poolInfo.poolToken.unstaked, 
+    rewardTokenTicker, poolPrices.stakeTokenTicker, poolInfo.poolToken.unstaked,
     poolInfo.userStaked, poolInfo.pendingRewardTokens, fixedDecimals, claimFunction, rewardPrice, chain);
   return apr;
 }
@@ -146,10 +145,10 @@ function printDiamondChefContractLinks(App, chefAbi, chefAddr, poolIndex, poolAd
   fixedDecimals = fixedDecimals ?? 2;
   const approveAndStake = async function() {
     return diamondChefContract_stake(chefAbi, chefAddr, poolIndex, poolAddress, App)
-  }      
+  }
   const unstake = async function() {
     return diamondChefContract_unstake(chefAbi, chefAddr, App)
-  }      
+  }
   const claim = async function() {
     return diamondChefContract_claim(chefAbi, chefAddr, poolIndex, App)
   }
@@ -160,9 +159,9 @@ function printDiamondChefContractLinks(App, chefAbi, chefAddr, poolIndex, poolAd
   if  (chefAddr == "0x0De845955E2bF089012F682fE9bC81dD5f11B372") {
     const emergencyWithdraw = async function() {
       return chefContract_emergencyWithdraw(chefAbi, chefAddr, poolIndex, App)
-    }      
+    }
     _print('***')
-    _print_link(`EMERGENCY WITHDRAW ${userStaked.toFixed(fixedDecimals)} ${stakeTokenTicker}`, emergencyWithdraw)  
+    _print_link(`EMERGENCY WITHDRAW ${userStaked.toFixed(fixedDecimals)} ${stakeTokenTicker}`, emergencyWithdraw)
     _print('This will forfeit your rewards but retrieve your capital')
     _print('***')
   }

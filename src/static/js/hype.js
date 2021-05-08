@@ -1,15 +1,14 @@
 $(function() {
-  consoleInit();
-  start(main);
+consoleInit(main)
 });
 
 async function loadPool(App, tokens, prices, stakingAddress) {
   const STAKING_POOL = new ethers.Contract(stakingAddress, HYPE_ABI, App.provider);
 
   const stakeTokenAddress = await STAKING_POOL.lpt();
-  
+
   const rewardTokenAddress = await STAKING_POOL.rewardToken();
-  
+
   var stakeToken = await getToken(App, stakeTokenAddress, stakingAddress);
 
   if (stakeTokenAddress.toLowerCase() == rewardTokenAddress.toLowerCase()) {
@@ -28,7 +27,7 @@ async function loadPool(App, tokens, prices, stakingAddress) {
   const rewardToken = getParameterCaseInsensitive(tokens, rewardTokenAddress);
 
   const rewardTokenTicker = rewardToken.symbol;
-  
+
   const poolPrices = getPoolPrices(tokens, prices, stakeToken);
 
   const stakingTokenTicker = poolPrices.stakingTokenTicker;
@@ -42,7 +41,7 @@ async function loadPool(App, tokens, prices, stakingAddress) {
   const usdPerWeek = weeklyRewards * rewardTokenPrice;
 
   const staked_tvl = poolPrices.staked_tvl;
-  
+
   const userStaked = await STAKING_POOL.balanceOf(App.YOUR_ADDRESS) / 10 ** stakeToken.decimals;
 
   const userUnstaked = stakeToken.unstaked;
@@ -93,7 +92,7 @@ async function main() {
     "0xc0baeacc6ed67aff27ec55b238fc2fc2b5fa50d0",
     "0x6d9438cd0df10a78de373f5d9b5b5e7227e3822d",
     "0xA451C734F29711aDA1CFc3b4D71eA803737bc7e7",
-    
+
     "0x97da5d4B52D2596cFFf78372ECb7084088140779",
     "0x21AB213d86aAaC5E6C2dbae5BfA2Fd1247dda356",
     "0x35343813769C146E900afBf6106fF1b1e7C10905",

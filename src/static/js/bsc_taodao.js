@@ -1,6 +1,5 @@
 $(function() {
-  consoleInit();
-  start(main);
+consoleInit(main)
 });
 
 const TAO_POOL_ABI = [{"inputs":[{"internalType":"address","name":"_LPToken","type":"address"},{"internalType":"address","name":"_TAOToken","type":"address"},{"internalType":"address","name":"_rewardPool","type":"address"},{"internalType":"uint256","name":"_rewardPerBlock","type":"uint256"},{"internalType":"uint256","name":"_blocksToWait","type":"uint256"}],"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"_blocksRewarded","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"_amountRewarded","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"_time","type":"uint256"}],"name":"PoolUpdated","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"_staker","type":"address"},{"indexed":false,"internalType":"uint256","name":"_rewardsClaimed","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"_time","type":"uint256"}],"name":"RewardsClaimed","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"_staker","type":"address"},{"indexed":false,"internalType":"uint256","name":"_amount","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"_totalStaked","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"_time","type":"uint256"}],"name":"StakeCompleted","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"_previous","type":"address"},{"indexed":false,"internalType":"address","name":"_next","type":"address"},{"indexed":false,"internalType":"uint256","name":"_time","type":"uint256"}],"name":"TransferredOwnership","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"_staker","type":"address"},{"indexed":false,"internalType":"uint256","name":"_amount","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"_time","type":"uint256"}],"name":"WithdrawCompleted","type":"event"},{"inputs":[],"name":"LPToken","outputs":[{"internalType":"contract IERC20","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"TAOToken","outputs":[{"internalType":"contract IERC20","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"accTAOPerShare","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"claimRewards","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"_staker","type":"address"}],"name":"getUserBalance","outputs":[{"internalType":"uint256","name":"_amountStaked","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"lastRewardBlock","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"owner","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"_staker","type":"address"}],"name":"pendingRewards","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"rewardPerBlock","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"rewardPool","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"_rewardPerBlock","type":"uint256"}],"name":"setRewardPerBlock","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_amount","type":"uint256"}],"name":"stakeLP","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"totalStaked","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"_owner","type":"address"}],"name":"transferOwnership","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"unstakeLP","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"updatePool","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"userDetails","outputs":[{"internalType":"uint256","name":"_LPDeposited","type":"uint256"},{"internalType":"uint256","name":"_rewardDebt","type":"uint256"}],"stateMutability":"view","type":"function"}]
@@ -126,7 +125,7 @@ const STAKING_TAO_ABI =  [
   }
 ];
 
-const TAO_ADDR = "0x7065dda3f8ec5f6c155648bdee4420c0525d93c6"    
+const TAO_ADDR = "0x7065dda3f8ec5f6c155648bdee4420c0525d93c6"
 const TAO_POOL_ADDR = "0xC98f066c7232C4A0b2B2885052B7fdc4438D8eF0";
 const DISTRIBUTOR_ADDRESS = "0xc8bbc6cA4b99032B126414c2A088Dc38d8743420";
 const REWARD_POOL_ADDRESS = '0x08b3545337EfDe91c7d3767EE3A549ba197628d7';
@@ -135,7 +134,7 @@ const BOND_ADDRESS = '0x8E4BE6ec6bA8C76c7Dc6c80Bb4858aC5BBcED3f4';
 const sTAO_ADDRESS = '0xE12d3c8675a88fEDCf61946089079323342982bB';
 const STAKING_ADDRESS = '0x09744e01D70728786ACCFe7076c525fb41d3B08D';
 
-async function main() {  
+async function main() {
   const App = await init_ethers();
 
   _print(`Initialized ${App.YOUR_ADDRESS}\n`);
@@ -143,7 +142,7 @@ async function main() {
 
   const tokens = {}, prices = await getBscPrices()
   const tao = await getBscToken(App, TAO_ADDR, TAO_POOL_ADDR);
-    
+
   const TAO_CONTRACT = new ethers.Contract(TAO_ADDR, ERC20_ABI, App.provider);
   const STAKING_TAO_CONTRACT = new ethers.Contract(STAKING_ADDRESS, STAKING_TAO_ABI, App.provider);
   const STAO_CONTRACT = new ethers.Contract(sTAO_ADDRESS, ERC20_ABI, App.provider);
@@ -155,7 +154,7 @@ async function main() {
   const rewardPoolBalance = await TAO_CONTRACT.balanceOf(REWARD_POOL_ADDRESS);
   const bondBalance = await TAO_CONTRACT.balanceOf(BOND_ADDRESS);
   const presaleBalance = await TAO_CONTRACT.balanceOf(PRESALE_ADDRESS);
-  
+
   let userTaoBalance = await TAO_CONTRACT.balanceOf(App.YOUR_ADDRESS);
   let userStakingBalance = await STAO_CONTRACT.balanceOf(App.YOUR_ADDRESS);
   let totalStakingBalance = await TAO_CONTRACT.balanceOf(STAKING_ADDRESS);
@@ -183,7 +182,7 @@ async function main() {
   const rewardPrice = getParameterCaseInsensitive(prices, TAO_ADDR).usd;
   const userStaked = userBalance / 10 ** pool.decimals;
   const pendingRewardTokens = pendingRewards / 10 ** tao.decimals;
-  
+
   let staoCircSupply = await STAO_MAIN_CONTRACT.circulatingSupply();
   let stakingReward = await STAKING_TAO_CONTRACT.taoToDistributeNextEpoch(); //getCurrentRewardForNextEpoch();
   let stakingRebase = stakingReward / staoCircSupply;
@@ -197,10 +196,10 @@ async function main() {
 
   const approveAndStake = async function() {
     return taoPoolContract_stake(App, TAO_POOL_ABI, TAO_POOL_ADDR, lpToken)
-}      
+}
 const unstake = async function() {
     return taoPoolContract_unstake(App, TAO_POOL_ABI, TAO_POOL_ADDR)
-}      
+}
 const claim = async function() {
     return taoPoolContract_claim(App, TAO_POOL_ABI, TAO_POOL_ADDR)
 }
@@ -209,10 +208,10 @@ const claim = async function() {
 
 const approveAndStakeTAO = async function() {
   return taoDaoContract_stake(App, STAKING_TAO_ABI, STAKING_ADDRESS, TAO_ADDR)
-}      
+}
 const unstakeTAO = async function() {
   return taoDaoContract_unstake(App, STAKING_TAO_ABI, STAKING_ADDRESS)
-}      
+}
 
   _print(`<a href='https://bscscan.com/address/${TAO_ADDR}' target='_blank'>${rewardTokenTicker}</a> Price: $${formatMoney(rewardPrice)} Circulating Market Cap: $${formatMoney(rewardPrice*taoCircSupply)}`);
   _print(`Staked: ${parseFloat(totalStakingBalance.toString()).toFixed(4)} ${rewardTokenTicker} ($${formatMoney(totalStakingBalance*rewardPrice)})`)
@@ -220,20 +219,20 @@ const unstakeTAO = async function() {
   _print(`You are staking ${parseFloat(userStakingBalance.toString()).toFixed(4)} ${rewardTokenTicker} ($${formatMoney(userStakingBalance*rewardPrice)})`)
   _print_link(`Stake ${parseFloat(userTaoBalance.toString()).toFixed(4)} ${rewardTokenTicker}`, approveAndStakeTAO)
   _print_link(`Unstake ${parseFloat(userStakingBalance.toString()).toFixed(4)} ${rewardTokenTicker}`, unstakeTAO)
-  
+
   _print(``)
 
   poolPrices.print_price();
-  printAPR("TAO", rewardPrice, rewardsPerWeek, poolPrices.stakeTokenTicker, 
+  printAPR("TAO", rewardPrice, rewardsPerWeek, poolPrices.stakeTokenTicker,
       poolPrices.staked_tvl, userStaked, poolPrices.price, 4);
-  
+
   _print_link(`Stake ${pool.unstaked.toFixed(4)} ${poolPrices.stakeTokenTicker}`, approveAndStake)
   _print_link(`Unstake ${userStaked.toFixed(4)} ${poolPrices.stakeTokenTicker}`, unstake)
   _print_link(`Claim ${pendingRewardTokens.toFixed(4)} ${rewardTokenTicker} ($${formatMoney(pendingRewardTokens*rewardPrice)})`, claim)
   _print(`Staking or unstaking also claims rewards.`);
   _print(`\n`);
- 
- 
+
+
   hideLoading();
 }
 
@@ -325,15 +324,15 @@ const taoPoolContract_claim = async function(App, taoPoolAbi, taoPoolAddress) {
 
 const taoDaoContract_stake = async function(App, taoDaoAbi, taoDaoAddress, taoAddress) {
     const signer = App.provider.getSigner()
-  
+
     const STAKING_TOKEN = new ethers.Contract(taoAddress, ERC20_ABI, signer)
     const TAO_DAO_CONTRACT = new ethers.Contract(taoDaoAddress, taoDaoAbi, signer)
-  
+
     const currentTokens = await STAKING_TOKEN.balanceOf(App.YOUR_ADDRESS)
     const allowedTokens = await STAKING_TOKEN.allowance(App.YOUR_ADDRESS, taoDaoAddress)
-  
+
     let allow = Promise.resolve()
-  
+
     if (allowedTokens / 1 < currentTokens / 1) {
       showLoading()
       allow = STAKING_TOKEN.approve(taoDaoAddress, ethers.constants.MaxUint256)
@@ -345,7 +344,7 @@ const taoDaoContract_stake = async function(App, taoDaoAbi, taoDaoAddress, taoAd
           alert('Try resetting your approval to 0 first')
         })
     }
-  
+
     if (currentTokens / 1 > 0) {
       showLoading()
       allow
@@ -369,15 +368,15 @@ const taoDaoContract_stake = async function(App, taoDaoAbi, taoDaoAddress, taoAd
       alert('You have no tokens to stake!!')
     }
   }
-  
+
   const taoDaoContract_unstake = async function(App, taoDaoAbi, taoDaoAddress) {
     const signer = App.provider.getSigner()
-    
-    const TAO_DAO_CONTRACT = new ethers.Contract(taoDaoAddress, taoDaoAbi, signer);      
+
+    const TAO_DAO_CONTRACT = new ethers.Contract(taoDaoAddress, taoDaoAbi, signer);
     const STAO_CONTRACT = new ethers.Contract(sTAO_ADDRESS, ERC20_ABI, signer);
 
     const currentStakedAmount = await STAO_CONTRACT.balanceOf(App.YOUR_ADDRESS)
-  
+
     if (parseFloat(currentStakedAmount.toString()) > 0) {
       showLoading()
       TAO_DAO_CONTRACT.unstakeTAO(currentStakedAmount, {gasLimit: 500000})
@@ -389,14 +388,14 @@ const taoDaoContract_stake = async function(App, taoDaoAbi, taoDaoAddress, taoAd
         })
     }
   }
-  
+
   const taoDaoContract_claim = async function(App, taoDaoAbi, taoDaoAddress) {
     const signer = App.provider.getSigner()
-  
+
     const TAO_DAO_CONTRACT = new ethers.Contract(taoDaoAddress, taoDaoAbi, signer)
-  
+
     const currentEarnedAmount = await TAO_DAO_CONTRACT.pendingRewards(App.YOUR_ADDRESS)
-  
+
     if (currentEarnedAmount > 0) {
       showLoading()
       TAO_DAO_CONTRACT.claimRewards({gasLimit: 500000})

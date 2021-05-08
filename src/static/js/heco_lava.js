@@ -1,7 +1,6 @@
 
 $(function() {
-    consoleInit();
-    start(main);
+consoleInit(main)
   });
 
 const LAVA_CHEF_ADDRESS = "0x9d90609B6C90cC378FE15BFA9EDf249d3f3ABf6e";
@@ -23,7 +22,7 @@ const LavaAddresses0 = [
   "0x3591B79Ef267bBd63c8dfe8210dc60cD225c74e2"  //Hoo Pool  ok
 ];
 
-const LavaPools0 = LavaAddresses0.map(a => { 
+const LavaPools0 = LavaAddresses0.map(a => {
   return {
     address: a,
     abi: LAVA_FARMING_ABI0,
@@ -38,7 +37,7 @@ const LavaAddresses1 = [
   "0xEe90Be0Fa394f3C18e14eD4096A3F99f3Ddac11F", //FOMA-USDT Pool
 ];
 
-const LavaPools1 = LavaAddresses1.map(a => { 
+const LavaPools1 = LavaAddresses1.map(a => {
   return {
     address: a,
     abi: LAVA_FARMING_ABI1,
@@ -46,7 +45,7 @@ const LavaPools1 = LavaAddresses1.map(a => {
     rewardTokenFunction: "fomp"
   }; }
 )
-async function main() {  
+async function main() {
 
   const App = await init_ethers();
 
@@ -72,6 +71,6 @@ async function main() {
   if (p1.totalUserStaked > 0) {
     _print(`You are staking a total of $${formatMoney(p1.totalUserStaked)} at an APR of ${(p1.totalAPR * 100).toFixed(2)}%\n`);
   }
-  
+
   hideLoading();
   }

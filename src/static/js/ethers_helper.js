@@ -1,21 +1,36 @@
 
+let walletProvider = undefined
 
-async function init_ethers(addWalletLink = true) {
+const init_wallet = async function (callback) {
+
+  if (window.web3Modal.cachedProvider) {
+    await connectWallet(() => {})
+  }
+
+  if (walletProvider) {
+    _print_link("[CHANGE WALLET]", changeWallet);
+    start(callback);
+  } else {
+    _print_link("[CONNECT WALLET]", () => connectWallet(callback));
+  }
+  _print('');
+}
+
+async function init_ethers() {
 
   const App = {}
 
   let isMetaMaskInstalled = true
 
   try {
-    const provider = await window.web3Modal.connect();
 
     // Modern dapp browsers...
-    if (provider) {
-      App.web3Provider = provider
-      App.provider = new ethers.providers.Web3Provider(provider)
+    if (walletProvider) {
+      App.web3Provider = walletProvider
+      App.provider = new ethers.providers.Web3Provider(walletProvider)
       try {
         // Request account access
-        const accounts = await provider.request({ method: 'eth_requestAccounts' })
+        const accounts = await walletProvider.request({ method: 'eth_requestAccounts' })
         App.YOUR_ADDRESS = accounts[0];
       } catch (error) {
         // User denied account access...
@@ -67,15 +82,6 @@ async function init_ethers(addWalletLink = true) {
 
   }
 
-  if (addWalletLink) {
-    if (window.web3Modal.cachedProvider) {
-      _print_link("[CHANGE WALLET]", changeWallet);
-    } else {
-      _print_link("[CONNECT WALLET]", connectWallet);
-    }
-    _print('');
-  }
-
   if (!App.YOUR_ADDRESS || !ethers.utils.isAddress(App.YOUR_ADDRESS)) {
     throw 'Could not initialize your address. Make sure your address is checksum valid.'
   }
@@ -87,13 +93,17 @@ async function init_ethers(addWalletLink = true) {
 
 const changeWallet = async function() {
   window.web3Modal.clearCachedProvider()
-  await init_ethers(false);
-  document.location.reload();
+  await connectWallet(()=>{})
 }
 
-const connectWallet = async function() {
-  await init_ethers(false);
-  document.location.reload();
+const connectWallet = async function(callback) {
+  try {
+    walletProvider = await window.web3Modal.connect()
+    walletProvider.on("disconnect", (error) => {
+      window.web3Modal.clearCachedProvider()
+    });
+    start(callback)
+  } catch(e) {}
 }
 
 const getUrlParameter = function(sParam) {
@@ -131,10 +141,11 @@ const start = function(f) {
 
 let logger
 
-const consoleInit = function() {
+const consoleInit = function(callback) {
   logger = document.getElementById('log')
   _print(new Date().toString())
   _print('')
+  return init_wallet(callback)
 }
 
 const _print = function(message) {
