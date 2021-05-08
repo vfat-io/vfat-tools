@@ -1321,6 +1321,11 @@ function getUniPrices(tokens, prices, pool)
           `https://app.sushi.com/remove/${t0address}/${t1address}`,
           `https://app.sushi.com/swap?inputCurrency=${t0address}&outputCurrency=${t1address}` 
         ] :
+        t0.symbol.includes("COMFI") ? [
+          `https://app.uniswap.org/#/add/v2/${t0address}/${t1address}`,
+          `https://app.uniswap.org/#/remove/v2/${t0address}/${t1address}`,
+          `https://app.uniswap.org/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+        ] :
         [ `https://app.uniswap.org/#/add/${t0address}/${t1address}`,
           `https://app.uniswap.org/#/remove/${t0address}/${t1address}`,
           `https://app.uniswap.org/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}` ]
