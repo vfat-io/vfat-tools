@@ -1,63 +1,79 @@
-async function init_ethers() {
+
+
+async function init_ethers(addWalletLink = true) {
 
   const App = {}
 
   let isMetaMaskInstalled = true
 
-  const provider = await window.web3Modal.connect();
+  try {
+    const provider = await window.web3Modal.connect();
 
-  // Modern dapp browsers...
-  if (provider) {
-    App.web3Provider = provider
-    App.provider = new ethers.providers.Web3Provider(provider)
-    try {
-      // Request account access
-      const accounts = await provider.request({ method: 'eth_requestAccounts' })
-      App.YOUR_ADDRESS = accounts[0];
-    } catch (error) {
-      // User denied account access...
-      console.error('User denied account access')
-    }
-  }
-  // If no injected web3 instance is detected, fall back to backup node
-  else {
-    App.provider = new ethers.providers.JsonRpcProvider(atob(window.ETHEREUM_NODE_URL))
-    isMetaMaskInstalled = false
-    _print(
-      "You don't have MetaMask installed! Falling back to backup node...\n (will likely to fail. Please install MetaMask extension).\n"
-    )
-    sleep(10)
-  }
-  App.ethcallProvider = new ethcall.Provider();
-  await App.ethcallProvider.init(App.provider);
-
-  let addr = getUrlParameter('addr')
-
-  //resolve ENS domain if possible
-  if(typeof addr !== "undefined")
-  {
-    if (addr.includes('.eth')) {
-      addr = await App.provider.resolveName(addr)
-      if(addr == null)
-      {
-        _print("Could not initialize your ENS domain.\n")
+    // Modern dapp browsers...
+    if (provider) {
+      App.web3Provider = provider
+      App.provider = new ethers.providers.Web3Provider(provider)
+      try {
+        // Request account access
+        const accounts = await provider.request({ method: 'eth_requestAccounts' })
+        App.YOUR_ADDRESS = accounts[0];
+      } catch (error) {
+        // User denied account access...
+        console.error('User denied account access')
       }
     }
-    App.YOUR_ADDRESS = addr
-  }
+    // If no injected web3 instance is detected, fall back to backup node
+    else {
+      App.provider = new ethers.providers.JsonRpcProvider(atob(window.ETHEREUM_NODE_URL))
+      isMetaMaskInstalled = false
+      _print(
+        "You don't have MetaMask installed! Falling back to backup node...\n (will likely to fail. Please install MetaMask extension).\n"
+      )
+      sleep(10)
+    }
+    App.ethcallProvider = new ethcall.Provider();
+    await App.ethcallProvider.init(App.provider);
 
-  // Could not load URL parameter
-  if (!App.YOUR_ADDRESS) {
-    if (!isMetaMaskInstalled) {
-      if (localStorage.hasOwnProperty('addr')) {
-        App.YOUR_ADDRESS = localStorage.getItem('addr')
+    let addr = getUrlParameter('addr')
+
+    //resolve ENS domain if possible
+    if(typeof addr !== "undefined")
+    {
+      if (addr.includes('.eth')) {
+        addr = await App.provider.resolveName(addr)
+        if(addr == null)
+        {
+          _print("Could not initialize your ENS domain.\n")
+        }
+      }
+      App.YOUR_ADDRESS = addr
+    }
+
+    // Could not load URL parameter
+    if (!App.YOUR_ADDRESS) {
+      if (!isMetaMaskInstalled) {
+        if (localStorage.hasOwnProperty('addr')) {
+          App.YOUR_ADDRESS = localStorage.getItem('addr')
+        } else {
+          App.YOUR_ADDRESS = window.prompt('Enter your eth address.')
+        }
       } else {
-        App.YOUR_ADDRESS = window.prompt('Enter your eth address.')
+        let accounts = await App.provider.listAccounts()
+        App.YOUR_ADDRESS = accounts[0]
       }
-    } else {
-      let accounts = await App.provider.listAccounts()
-      App.YOUR_ADDRESS = accounts[0]
     }
+
+  } catch (e) {
+
+  }
+
+  if (addWalletLink) {
+    if (window.web3Modal.cachedProvider) {
+      _print_link("[CHANGE WALLET]", changeWallet);
+    } else {
+      _print_link("[CONNECT WALLET]", connectWallet);
+    }
+    _print('');
   }
 
   if (!App.YOUR_ADDRESS || !ethers.utils.isAddress(App.YOUR_ADDRESS)) {
@@ -65,7 +81,19 @@ async function init_ethers() {
   }
 
   localStorage.setItem('addr', App.YOUR_ADDRESS)
+
   return App
+}
+
+const changeWallet = async function() {
+  window.web3Modal.clearCachedProvider()
+  await init_ethers(false);
+  document.location.reload();
+}
+
+const connectWallet = async function() {
+  await init_ethers(false);
+  document.location.reload();
 }
 
 const getUrlParameter = function(sParam) {
