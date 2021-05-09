@@ -43,11 +43,7 @@ window.NETWORKS = {
       "https://cloudflare-eth.com"
     ],
     "blockExplorerUrls": [
-      {
-        "name": "etherscan",
-        "url": "https://etherscan.io",
-        "standard": "EIP3091"
-      }
+      "https://etherscan.io"
     ]
   },
   BINANCE_SMART_CHAIN: {
@@ -74,11 +70,7 @@ window.NETWORKS = {
       "wss://bsc-ws-node.nariox.org"
     ],
     "blockExplorerUrls": [
-      {
-        "name": "bscscan",
-        "url": "https://bscscan.com",
-        "standard": "EIP3091"
-      }
+      "https://bscscan.com"
     ],
   },
   HECO: {
@@ -149,12 +141,7 @@ window.NETWORKS = {
       "https://rpcapi.fantom.network"
     ],
     "blockExplorerUrls": [
-      {
-        "name": "ftmscan",
-        "url": "https://ftmscan.com",
-        "icon": "ftmscan",
-        "standard": "EIP3091"
-      }
+      "https://ftmscan.com"
     ],
   },
   HARMONY_S0: {
