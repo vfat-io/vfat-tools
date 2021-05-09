@@ -27,6 +27,193 @@ window.asciichart = require("asciichart");
 window.AsciiTable = require("./ascii-table");
 window.Diff = require("diff");
 window.ETHEREUM_NODE_URL = 'aHR0cHM6Ly9tYWlubmV0LmluZnVyYS5pby92My9hNmYzNmI4OWM0OGM0ZmE4YjE0NjYwNWY2ZDdhNWI2Zg==';
+window.NETWORKS = {
+  ETHEREUM: {
+    "chainId": '0x1',
+    "chainName": "Ethereum Mainnet",
+    "nativeCurrency": {
+      "name": "Ether",
+      "symbol": "ETH",
+      "decimals": 18
+    },
+    "rpcUrls": [
+      "https://mainnet.infura.io/v3/${INFURA_API_KEY}",
+      "wss://mainnet.infura.io/ws/v3/${INFURA_API_KEY}",
+      "https://api.mycryptoapi.com/eth",
+      "https://cloudflare-eth.com"
+    ],
+    "blockExplorerUrls": [
+      {
+        "name": "etherscan",
+        "url": "https://etherscan.io",
+        "standard": "EIP3091"
+      }
+    ]
+  },
+  BINANCE_SMART_CHAIN: {
+    "chainId": "0x38",
+    "chainName": "Binance Smart Chain Mainnet",
+    "nativeCurrency": {
+      "name": "Binance Chain Native Token",
+      "symbol": "BNB",
+      "decimals": 18
+    },
+    "rpcUrls": [
+      "https://bsc-dataseed1.binance.org",
+      "https://bsc-dataseed2.binance.org",
+      "https://bsc-dataseed3.binance.org",
+      "https://bsc-dataseed4.binance.org",
+      "https://bsc-dataseed1.defibit.io",
+      "https://bsc-dataseed2.defibit.io",
+      "https://bsc-dataseed3.defibit.io",
+      "https://bsc-dataseed4.defibit.io",
+      "https://bsc-dataseed1.ninicoin.io",
+      "https://bsc-dataseed2.ninicoin.io",
+      "https://bsc-dataseed3.ninicoin.io",
+      "https://bsc-dataseed4.ninicoin.io",
+      "wss://bsc-ws-node.nariox.org"
+    ],
+    "blockExplorerUrls": [
+      {
+        "name": "bscscan",
+        "url": "https://bscscan.com",
+        "standard": "EIP3091"
+      }
+    ],
+  },
+  HECO: {
+    "chainId": "0x80",
+    "chainName": "Huobi ECO Chain Mainnet",
+    "nativeCurrency": {
+      "name": "Huobi ECO Chain Native Token",
+      "symbol": "HT",
+      "decimals": 18
+    },
+    "rpcUrls": [
+      "https://http-mainnet.hecochain.com",
+      "wss://ws-mainnet.hecochain.com"
+    ],
+    "blockExplorerUrls": [],
+  },
+  POLYGON: {
+    "chainId": "0x89",
+    "chainName": "Matic Mainnet",
+    "nativeCurrency": {
+      "name": "Matic",
+      "symbol": "MATIC",
+      "decimals": 18
+    },
+    "rpcUrls": [
+      "https://rpc-mainnet.matic.network",
+      "wss://ws-mainnet.matic.network"
+    ],
+    "blockExplorerUrls": [],
+  },
+  XDAI: {
+    "chainId": "0x64",
+    "chainName": "xDAI Chain",
+    "nativeCurrency": {
+      "name": "xDAI",
+      "symbol": "xDAI",
+      "decimals": 18
+    },
+    "rpcUrls": [
+      "https://rpc.xdaichain.com",
+      "https://xdai.poanetwork.dev",
+      "wss://rpc.xdaichain.com/wss",
+      "wss://xdai.poanetwork.dev/wss",
+      "http://xdai.poanetwork.dev",
+      "https://dai.poa.network",
+      "ws://xdai.poanetwork.dev:8546"
+    ],
+    "blockExplorerUrls": [],
+  },
+  AVALANCHE: {
+    "chainId": "0xA86A",
+    "chainName": "Avalanche Mainnet",
+    "nativeCurrency": {
+      "name": "Avalanche",
+      "symbol": "AVAX",
+      "decimals": 18
+    },
+    "rpcUrls": [
+      "https://api.avax.network/ext/bc/C/rpc"
+    ],
+    "blockExplorerUrls": [],
+  },
+  FANTOM: {
+    "chainId": "0xFA",
+    "chainName": "Fantom Opera",
+    "nativeCurrency": {
+      "name": "Fantom",
+      "symbol": "FTM",
+      "decimals": 18
+    },
+    "rpcUrls": [
+      "https://rpcapi.fantom.network"
+    ],
+    "blockExplorerUrls": [
+      {
+        "name": "ftmscan",
+        "url": "https://ftmscan.com",
+        "icon": "ftmscan",
+        "standard": "EIP3091"
+      }
+    ],
+  },
+  HARMONY_S0: {
+    "chainId": "0x63564C40",
+    "chainName": "Harmony Mainnet Shard 0",
+    "nativeCurrency": {
+      "name": "ONE",
+      "symbol": "ONE",
+      "decimals": 18
+    },
+    "rpcUrls": [
+      "https://api.harmony.one"
+    ],
+    "blockExplorerUrls": [],
+  },
+  HARMONY_S1: {
+    "chainId": "0x63564C41",
+    "chainName": "Harmony Mainnet Shard 1",
+    "nativeCurrency": {
+      "name": "ONE",
+      "symbol": "ONE",
+      "decimals": 18
+    },
+    "rpcUrls": [
+      "https://s1.api.harmony.one"
+    ],
+    "blockExplorerUrls": [],
+  },
+  HARMONY_S2: {
+    "chainId": "0x63564C42",
+    "chainName": "Harmony Mainnet Shard 2",
+    "nativeCurrency": {
+      "name": "ONE",
+      "symbol": "ONE",
+      "decimals": 18
+    },
+    "rpcUrls": [
+      "https://s2.api.harmony.one"
+    ],
+    "blockExplorerUrls": [],
+  },
+  HARMONY_S3: {
+    "chainId": "0x63564C43",
+    "chainName": "Harmony Mainnet Shard 3",
+    "nativeCurrency": {
+      "name": "ONE",
+      "symbol": "ONE",
+      "decimals": 18
+    },
+    "rpcUrls": [
+      "https://s3.api.harmony.one"
+    ],
+    "blockExplorerUrls": [],
+  },
+}
 
 const infuraId = atob(window.ETHEREUM_NODE_URL).split('/').pop()
 
