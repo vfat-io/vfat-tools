@@ -349,7 +349,7 @@ async function claim(App, userProxyAddress, proxyActionsAddress, miningAddress) 
         proxyActionsAddress,
         functionName,
         functionParams,
-        300000,
+        500000,
     );
 }
 
