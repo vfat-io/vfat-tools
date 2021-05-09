@@ -28,11 +28,16 @@ window.AsciiTable = require("./ascii-table");
 window.Diff = require("diff");
 window.ETHEREUM_NODE_URL = 'aHR0cHM6Ly9tYWlubmV0LmluZnVyYS5pby92My9hNmYzNmI4OWM0OGM0ZmE4YjE0NjYwNWY2ZDdhNWI2Zg==';
 
+const infuraId = atob(window.ETHEREUM_NODE_URL).split('/').pop()
+
 const providerOptions = {
   walletconnect: {
     package: WalletConnectProvider,
     options: {
-      infuraId: atob(window.ETHEREUM_NODE_URL).split('/').pop(),
+      infuraId: infuraId,
+      rpc: {
+        56: "https://bsc-dataseed1.binance.org"
+      }
     }
   }
 };
