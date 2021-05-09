@@ -22,7 +22,7 @@ async function main() {
     const prices = await getBscPrices();
 
     await loadPrvContract(App, tokens, prices, PRV_CHEF, PRV_CHEF_ADDR, PRV_CHEF_ABI, rewardTokenTicker,
-        "prv", null, rewardsPerWeek, "pendingPRV", [1]);
+        "prv", null, rewardsPerWeek, "pendingPRV", [8]);
 
     hideLoading();
   }
