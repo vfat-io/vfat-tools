@@ -57,6 +57,10 @@ const init_wallet = async function (callback) {
       start(callback);
     } else {
       _print(`You are connected to ${networkNameFromId(connectedNetwork.chainId)}, please switch to ${targetNetwork.chainName} network`)
+      if (window.ethereum && targetNetwork.chainId !== '0x1') {
+        _print('')
+        _print_link("[SWITCH NETWORK]", () => switchNetwork(targetNetwork), "connect_wallet_button")
+      }
       hideLoading()
     }
   } else {
@@ -141,6 +145,11 @@ async function init_ethers() {
   return App
 }
 
+const switchNetwork = async function(network) {
+  await window.ethereum.request({method: 'wallet_addEthereumChain', params: [network]}).catch()
+  window.location.reload()
+}
+
 const changeWallet = async function() {
   let cached = window.web3Modal.cachedProvider
   window.web3Modal.clearCachedProvider()
@@ -186,6 +195,10 @@ const connectWallet = async function(callback) {
       button.remove()
 
       _print(`You are connected to ${networkNameFromId(connectedNetwork.chainId)}, please switch to ${targetNetwork.chainName} network`)
+      if (window.ethereum && targetNetwork.chainId !== '0x1') {
+        _print('')
+        _print_link("[SWITCH NETWORK]", () => switchNetwork(targetNetwork), "connect_wallet_button")
+      }
       hideLoading()
     }
 

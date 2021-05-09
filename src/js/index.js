@@ -92,8 +92,7 @@ window.NETWORKS = {
     "rpcUrls": [
       "https://http-mainnet.hecochain.com",
       "wss://ws-mainnet.hecochain.com"
-    ],
-    "blockExplorerUrls": [],
+    ]
   },
   POLYGON: {
     "chainId": "0x89",
@@ -106,8 +105,7 @@ window.NETWORKS = {
     "rpcUrls": [
       "https://rpc-mainnet.matic.network",
       "wss://ws-mainnet.matic.network"
-    ],
-    "blockExplorerUrls": [],
+    ]
   },
   XDAI: {
     "chainId": "0x64",
@@ -125,8 +123,7 @@ window.NETWORKS = {
       "http://xdai.poanetwork.dev",
       "https://dai.poa.network",
       "ws://xdai.poanetwork.dev:8546"
-    ],
-    "blockExplorerUrls": [],
+    ]
   },
   AVALANCHE: {
     "chainId": "0xA86A",
@@ -138,8 +135,7 @@ window.NETWORKS = {
     },
     "rpcUrls": [
       "https://api.avax.network/ext/bc/C/rpc"
-    ],
-    "blockExplorerUrls": [],
+    ]
   },
   FANTOM: {
     "chainId": "0xFA",
@@ -171,8 +167,7 @@ window.NETWORKS = {
     },
     "rpcUrls": [
       "https://api.harmony.one"
-    ],
-    "blockExplorerUrls": [],
+    ]
   },
   HARMONY_S1: {
     "chainId": "0x63564C41",
@@ -184,8 +179,7 @@ window.NETWORKS = {
     },
     "rpcUrls": [
       "https://s1.api.harmony.one"
-    ],
-    "blockExplorerUrls": [],
+    ]
   },
   HARMONY_S2: {
     "chainId": "0x63564C42",
@@ -197,8 +191,7 @@ window.NETWORKS = {
     },
     "rpcUrls": [
       "https://s2.api.harmony.one"
-    ],
-    "blockExplorerUrls": [],
+    ]
   },
   HARMONY_S3: {
     "chainId": "0x63564C43",
@@ -210,8 +203,7 @@ window.NETWORKS = {
     },
     "rpcUrls": [
       "https://s3.api.harmony.one"
-    ],
-    "blockExplorerUrls": [],
+    ]
   },
 }
 
