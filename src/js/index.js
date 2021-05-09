@@ -36,7 +36,16 @@ const providerOptions = {
     options: {
       infuraId: infuraId,
       rpc: {
-        56: "https://bsc-dataseed1.binance.org"
+        56: "https://bsc-dataseed1.binance.org",
+        128: "https://http-mainnet.hecochain.com",
+        137: "https://rpc-mainnet.matic.network",
+        100: "https://rpc.xdaichain.com",
+        43114: "https://api.avax.network/ext/bc/C/rpc",
+        250: "https://rpcapi.fantom.network",
+        1666600000: "https://api.harmony.one",
+        1666600001: "https://s1.api.harmony.one",
+        1666600002: "https://s2.api.harmony.one",
+        1666600003: "https://s3.api.harmony.one",
       }
     }
   }
