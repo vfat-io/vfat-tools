@@ -16,6 +16,8 @@ const Pools =  [
     { name: "wBTC", address: "0xE41F9FAbee859C4E6D248E9442c822F09742228a" },
     { name: "YAM", address: "0x673B95d277eF022e5eFaF9f167FFDFAB36991738" },
     { name: "YFI", address: "0x90D1d83FD4CCa873848D728FD8CEf382b1aCB4B8" },
+    { name: "BANK", address: "0x3Bdb2d1003221CfC688Cfbfb10433D37c0FE2c3e" },
+    { name: "SushiSwap LP", address: "0x08D7e47Beb0470fc683bbdE7d836c5dcd48754F2" }
 ].map(p => { return { name : p.name, address : p.address, abi : FLOAT_STAKING_ABI,
                       stakeTokenFunction : "stakeToken", rewardTokenFunction : "rewardToken" }})
 
