@@ -1,20 +1,73 @@
 
 let walletProvider = undefined
 
+const networkNameFromId = function (id) {
+  for(let network of Object.values(window.NETWORKS)) {
+    let networkId = parseInt(network.chainId, 16)
+    if (networkId === id) {
+      return network.chainName
+    }
+  }
+  return "Unknown Network"
+}
+
+const pageNetwork = function() {
+  let network = window.location.pathname.split("/")[1]
+  if (network.toLowerCase() === 'bsc') {
+    return window.NETWORKS.BINANCE_SMART_CHAIN
+  }
+  if (network.toLowerCase() === 'heco') {
+    return window.NETWORKS.HECO
+  }
+  if (network.toLowerCase() === 'polygon') {
+    return window.NETWORKS.POLYGON
+  }
+  if (network.toLowerCase() === 'xdai') {
+    return window.NETWORKS.XDAI
+  }
+  if (network.toLowerCase() === 'fantom') {
+    return window.NETWORKS.FANTOM
+  }
+  if (network.toLowerCase() === 'harmony') {
+    return window.NETWORKS.HARMONY_S0
+  }
+  if (network.toLowerCase() === 'avax') {
+    return window.NETWORKS.AVALANCHE
+  }
+
+  return window.NETWORKS.ETHEREUM
+}
+
 const init_wallet = async function (callback) {
+
+  let targetNetwork = pageNetwork()
 
   if (window.web3Modal.cachedProvider) {
     await connectWallet(() => {})
   }
 
   if (walletProvider) {
-    _print_link("[CHANGE WALLET]", changeWallet, "connect_wallet_button");
-    start(callback);
+
+    let provider = new ethers.providers.Web3Provider(walletProvider)
+    let connectedNetwork = await provider.getNetwork()
+    let targetNetworkId = parseInt(targetNetwork.chainId, 16)
+
+    if (connectedNetwork.chainId === targetNetworkId) {
+      _print_link("[CHANGE WALLET]", changeWallet, "connect_wallet_button");
+      start(callback);
+    } else {
+      _print(`You are connected to ${networkNameFromId(connectedNetwork.chainId)}, please switch to ${targetNetwork.chainName} network`)
+      if (window.ethereum && targetNetwork.chainId !== '0x1') {
+        _print('')
+        _print_link("[SWITCH NETWORK]", () => switchNetwork(targetNetwork), "connect_wallet_button")
+      }
+      hideLoading()
+    }
   } else {
     _print_link("[CONNECT WALLET]", () => connectWallet(callback), "connect_wallet_button");
     hideLoading()
   }
-  _print('');
+  _print('')
 }
 
 async function init_ethers() {
@@ -92,8 +145,12 @@ async function init_ethers() {
   return App
 }
 
+const switchNetwork = async function(network) {
+  await window.ethereum.request({method: 'wallet_addEthereumChain', params: [network]}).catch()
+  window.location.reload()
+}
+
 const changeWallet = async function() {
-  console.log("change wallet")
   let cached = window.web3Modal.cachedProvider
   window.web3Modal.clearCachedProvider()
   await connectWallet(()=> window.location.reload() )
@@ -104,8 +161,8 @@ const changeWallet = async function() {
 
 const connectWallet = async function(callback) {
   try {
-    console.log("connect wallet")
     walletProvider = await window.web3Modal.connect()
+
     walletProvider.on("accountsChanged", (accounts) => {
       if (accounts === undefined || accounts.length === 0) {
         window.web3Modal.clearCachedProvider()
@@ -113,14 +170,37 @@ const connectWallet = async function(callback) {
       window.location.reload()
     });
 
-    let button = document.getElementById('connect_wallet_button')
-    button.textContent = "[CHANGE WALLET]"
-    $(document).off('click', '#connect_wallet_button')
-    $(document).on('click', '#connect_wallet_button', changeWallet)
+    walletProvider.on("chainChanged", (networkId) => {
+      window.location.reload()
+    });
 
-    showLoading()
+    let targetNetwork = pageNetwork()
+    let provider = new ethers.providers.Web3Provider(walletProvider)
+    let connectedNetwork = await provider.getNetwork()
+    let targetNetworkId = parseInt(targetNetwork.chainId, 16)
 
-    start(callback)
+    if (connectedNetwork.chainId === targetNetworkId) {
+      let button = document.getElementById('connect_wallet_button')
+      button.textContent = "[CHANGE WALLET]"
+      $(document).off('click', '#connect_wallet_button')
+      $(document).on('click', '#connect_wallet_button', changeWallet)
+
+      showLoading()
+
+      start(callback)
+    } else {
+
+      let button = document.getElementById('connect_wallet_button')
+      $(document).off('click', '#connect_wallet_button')
+      button.remove()
+
+      _print(`You are connected to ${networkNameFromId(connectedNetwork.chainId)}, please switch to ${targetNetwork.chainName} network`)
+      if (window.ethereum && targetNetwork.chainId !== '0x1') {
+        _print('')
+        _print_link("[SWITCH NETWORK]", () => switchNetwork(targetNetwork), "connect_wallet_button")
+      }
+      hideLoading()
+    }
 
   } catch(e) {}
 }
