@@ -12,7 +12,7 @@ async function main() {
 
     const APE_CHEF_ADDR = "0x82393C7AB65a0CC6bC87f89011c91c8a2B152D4a";
     const rewardTokenTicker = "APE";
-    const APE_CHEF = new ethers.Contract(APE_ADDR, APE_CHEF_ABI, App.provider);
+    const APE_CHEF = new ethers.Contract(APE_CHEF_ADDR, APE_CHEF_ABI, App.provider);
 
     const startBlock = await APE_CHEF.startBlock();
     const currentBlock = await App.provider.getBlockNumber();
