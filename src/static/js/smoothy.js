@@ -128,7 +128,7 @@ async function getSmoothyPoolInfo(app, chefContract, chefAddress, poolIndex, pen
   const poolToken = await getToken(app, poolInfo.lpToken ?? poolInfo.stakingToken, chefAddress);
   const userInfo = await chefContract.getUserInfo(poolIndex);
   const pendingRewardTokens = await chefContract.callStatic[pendingRewardsFunction](poolIndex, app.YOUR_ADDRESS);
-  const staked = userInfo.amount / 10 ** poolToken.decimals;
+  const staked = userInfo[0] / 10 ** poolToken.decimals;
   var stakedToken;
   var userLPStaked;
   if (poolInfo.stakedHoldableToken != null &&

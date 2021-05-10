@@ -118,7 +118,7 @@ async function getSmoothyPoolInfo(App, chefContract, chefAddress, poolIndex, pen
   const poolToken = await getBscToken(App, poolInfo.lpToken, chefAddress);
   const userInfo = await chefContract.getUserInfo(poolIndex);
   const pendingRewardTokens = await chefContract.callStatic[pendingRewardsFunction](poolIndex, App.YOUR_ADDRESS);
-  const staked = userInfo.amount / 10 ** poolToken.decimals;
+  const staked = userInfo[0] / 10 ** poolToken.decimals;
   return {
       address: poolInfo.lpToken,
       allocPoints: poolInfo.allocPoint ?? 1,
