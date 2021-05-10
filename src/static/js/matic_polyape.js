@@ -32,4 +32,4 @@ async function main() {
         "poly", null, rewardsPerWeek, "pendingPoly");
 
     hideLoading();
-    }
+}
