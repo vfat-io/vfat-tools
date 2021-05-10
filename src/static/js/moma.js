@@ -30,10 +30,14 @@ async function loadMomaPool(App, tokens, prices, chef, chefAddress, chefAbi, rew
   _print(`<a href='https://etherscan.io/address/${chefAddress}' target='_blank'>Staking Contract</a>`);
   _print("");
 
+  const currentBlock = await App.provider.getBlockNumber();
+  const nextBlock = currentBlock + 1;
+  const multiplier = await chefContract.getMultiplier(currentBlock, nextBlock) / 1000000000000;
+
   const rewardTokenAddress = await chefContract.callStatic[rewardTokenFunction]();
   const rewardToken = await getToken(App, rewardTokenAddress, chefAddress);
   const rewardsPerWeek = await chefContract.callStatic[rewardsPerBlockFunction]()
-    / 10 ** rewardToken.decimals * 604800 / 13.5
+    / 10 ** rewardToken.decimals * 604800 / 13.5 * multiplier;
 
   const lpTokenAddress = await chefContract.lpToken();
   const poolToken = await getToken(App, lpTokenAddress, chefAddress);
