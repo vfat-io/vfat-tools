@@ -113,7 +113,7 @@ async function main() {
 
 async function getSmoothyPoolInfo(app, chefContract, chefAddress, poolIndex, pendingRewardsFunction, showAll=false) {
   const poolInfo = await chefContract.poolInfo(poolIndex);
-  const signer = App.provider.getSigner();
+  const signer = app.provider.getSigner();
   if (poolInfo.allocPoint == 0 && !showAll) {
     return {
       address: poolInfo.lpToken,
