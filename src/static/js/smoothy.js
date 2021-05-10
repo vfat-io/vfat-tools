@@ -113,6 +113,7 @@ async function main() {
 
 async function getSmoothyPoolInfo(app, chefContract, chefAddress, poolIndex, pendingRewardsFunction, showAll=false) {
   const poolInfo = await chefContract.poolInfo(poolIndex);
+  const signer = App.provider.getSigner();
   if (poolInfo.allocPoint == 0 && !showAll) {
     return {
       address: poolInfo.lpToken,
@@ -126,7 +127,8 @@ async function getSmoothyPoolInfo(app, chefContract, chefAddress, poolIndex, pen
     };
   }
   const poolToken = await getToken(app, poolInfo.lpToken ?? poolInfo.stakingToken, chefAddress);
-  const userInfo = await chefContract.getUserInfo(poolIndex);
+  const userInfo = await chefContract.connect(signer).getUserInfo(poolIndex);
+  //const userInfo = await chefContract.getUserInfo(poolIndex);
   const pendingRewardTokens = await chefContract.callStatic[pendingRewardsFunction](poolIndex, app.YOUR_ADDRESS);
   const staked = userInfo[0] / 10 ** poolToken.decimals;
   var stakedToken;
