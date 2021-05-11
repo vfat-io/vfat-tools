@@ -167,10 +167,13 @@ async function loadComethSynthetixPoolInfo(App, tokens, prices, stakingAbi, stak
 
 async function printComethSynthetixPool(App, info) {
   info.poolPrices.print_price("matic");
-  for(let i = 0; i > 2; i++){
+  let totalUSDPerWeek = 0;
+  for(let i = 0; i < 2; i++){
+    totalUSDPerWeek += info.usdCoinsPerWeek[i];
     _print(`${info.rewardTokenTickers[i]} Per Week: ${info.weeklyRewards[i].toFixed(2)} ($${formatMoney(info.usdCoinsPerWeek[i])})`);
   }
   let totalYearlyAPR = 0;
+  _print(`Total Per Week: $${formatMoney(totalUSDPerWeek)}`);
   for(let i = 0; i < 2; i++){
     const weeklyAPR = info.usdCoinsPerWeek[i] / info.staked_tvl * 100;
     const dailyAPR = weeklyAPR / 7;
