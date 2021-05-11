@@ -1,26 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
 <%- include(`${partials}/head`); -%>
+
 <body>
+<%- include(`${partials}/header_main`); -%>
 <pre class="container">
-<div>
-<a href="<%= PP %>/">Home</a> - <a href="<%= PP %>/all/">All</a> - <a href="<%= PP %>/bsc/">BSC</a> - <a href="<%= PP %>/heco/">HECO</a> - <a href="<%= PP %>/polygon/">POLYGON</a> - <a href="<%= PP %>/xdai/">xDAI</a> - <a href="<%= PP %>/avax/">AVAX</a> - <a href="<%= PP %>/fantom/">FANTOM</a> - <a href="<%= PP %>/harmony/">HARMONY</a> - <a href="<%= PP %>/seigniorage/">Seigniorage</a>
-</div>
-
-************************ HUOBI ECO CHAIN *************************
-
----Pool Provider---     --------LP--------      --Reward Tokens--   --INFO--
-  BAO                   <a href="bao"           >Various</a>                BAO                 https://farms.baoswap.xyz/
+    <div class="loader--1"></div>
+    <div id="log"></div>
 
 *** Disclaimer ***
 
 I am in no way affiliated with the above projects, nor do I endorse them. Please do your own research before investing.
 
-
 -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 | <a href="https://twitter.com/vfat12" target="_blank">Twitter</a> - <a href="https://github.com/vfat-tools/vfat-tools" target="_blank">GitHub</a> - <a href="https://gitcoin.co/grants/1809/vfattools-yield-farming-calculators" target="_blank">Gitcoin</a> - <a href="https://www.youtube.com/watch?v=D8RZhK1zcs0" target="_blank">YouTube</a> |
 -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 </pre>
-<%- include(`${partials}/scripts`, {scriptname: 'homepage'}); -%>
+<%- include(`${partials}/scripts`, {scriptname: 'xdai'}); -%>
 </body>
 </html>
+
