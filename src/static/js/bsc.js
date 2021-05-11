@@ -210,7 +210,7 @@ const main = async() => {
       ["Caramel             ", `<a href="caramel"       >Various</a>`,"CARAMEL       ","https://caramelswap.finance"],
       ["Plumcake            ", `<a href="plumcake"      >Various</a>`,"PLUM          ","https://plumcake.finance"],
       ["Wsbdapp             ", `<a href="wsb"           >Various</a>`,"WSB           ","https://farm.wsbdapp.com"],
-      ["Feeder              ", `<a href="feeder"        >Various</a>`,"FEED          ","https://app.feeder.finance"],
+      ["Feeder *            ", `<a href="feeder"        >Various</a>`,"FEED          ","https://app.feeder.finance"],
       ["Yolodraw            ", `<a href="yolodraw"      >Various</a>`,"YoloDraw      ","https://yolo-token.com"],
       ["Jaguar              ", `<a href="jaguar"        >Various</a>`,"JAGUAR        ","https://jaguarswap.com"],
       ["Zombie              ", `<a href="zombie"        >Various</a>`,"ZOMBIE        ","https://zombie-farm.com"],
