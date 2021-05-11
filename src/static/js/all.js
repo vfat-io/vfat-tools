@@ -116,6 +116,7 @@ const main = async() => {
       ["Lift kitchen                 ",`<a href="../liftkitchen"        >Various</a>`,"LIFT               ","https://app.lift.kitchen"],
       ["CompliFi                     ",`<a href="../complifi"           >Various</a>`,"COMFI              ","https://app.compli.fi"],
       ["Smoothy                      ",`<a href="../smoothy"            >Various</a>`,"SMTY               ","https://smoothy.finance"],
+      ["Kineko                       ",`<a href="../kineko"             >Various</a>`,"KKO                ","http://stake.kineko.io"],
     ]
   }
 
