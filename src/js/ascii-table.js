@@ -91,9 +91,16 @@ AsciiTable.alignLeft = function(str, len, pad) {
   if (str === undefined || str === null) str = ''
   if (typeof pad === 'undefined') pad = ' '
   if (typeof str !== 'string') str = str.toString()
-  var alen = len + 1 - str.length
+
+  var strLen = str.length
+  if (str.includes("href")) {
+    strLen = str.match(/.*>(.*)<\/a>/i)[1].length
+  }
+
+  var alen = len + 1 - strLen
+
   if (alen <= 0) return str
-  return str + Array(len + 1 - str.length).join(pad)
+  return str + Array(len + 1 - strLen).join(pad)
 }
 
 /**
@@ -156,7 +163,13 @@ AsciiTable.alignAuto = function(str, len, pad) {
   if (type !== '[object String]') {
     str = str.toString()
   }
-  if (str.length < len) {
+
+  var strLen = str.length
+  if (str.includes("href")) {
+    strLen = str.match(/.*>(.*)<\/a>/i)[1].length
+  }
+
+  if (strLen < len) {
     switch(type) {
       case '[object Number]': return AsciiTable.alignRight(str, len, pad)
       default: return AsciiTable.alignLeft(str, len, pad)
