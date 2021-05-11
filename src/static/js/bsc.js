@@ -243,6 +243,7 @@ const main = async() => {
       ["Naruto              ", `<a href="naruto"        >Various</a>`,"NAR           ","https://www.narutofinance.com"],
       ["Warden              ", `<a href="warden"        >Various</a>`,"WAD           ","https://www.wardenswap.finance"],
       ["Sloth               ", `<a href="sloth"         >Various</a>`,"SLOTH         ","https://slothfinance.com"],
+      ["Apescape            ", `<a href="apescape"      >Various</a>`,"ROKT/BNB      ","https://apescape.eth.link"],
     ]
   }
 
