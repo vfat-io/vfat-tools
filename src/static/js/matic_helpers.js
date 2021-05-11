@@ -58,9 +58,9 @@ async function getMaticStoredToken(App, tokenAddress, stakingAddress, type) {
     case "uniswap": 
       const pool = new ethers.Contract(tokenAddress, UNI_ABI, App.provider);
       return await getMaticUniPool(App, pool, tokenAddress, stakingAddress);
-    case "matic20":
-      const matic20 = new ethers.Contract(tokenAddress, ERC20_ABI, App.provider);
-      return await getMatic20(App, matic20, tokenAddress, stakingAddress);
+    case "erc20":
+      const erc20 = new ethers.Contract(tokenAddress, ERC20_ABI, App.provider);
+      return await getMatic20(App, erc20, tokenAddress, stakingAddress);
   }
 }
 
@@ -80,11 +80,11 @@ async function getMaticToken(App, tokenAddress, stakingAddress) {
     catch(err) {
     }
     try {
-      const matic20 = new ethers.Contract(tokenAddress, ERC20_ABI, App.provider);
-      const _name = await matic20.name();
-      const matic20tok = await getMatic20(App, matic20, tokenAddress, stakingAddress);
-      window.localStorage.setItem(tokenAddress, "matic20");
-      return matic20tok;
+      const erc20 = new ethers.Contract(tokenAddress, ERC20_ABI, App.provider);
+      const _name = await erc20.name();
+      const erc20tok = await getMatic20(App, erc20, tokenAddress, stakingAddress);
+      window.localStorage.setItem(tokenAddress, "erc20");
+      return erc20tok;
     }
     catch(err) {
       console.log(err);

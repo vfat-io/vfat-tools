@@ -11,6 +11,7 @@ consoleInit(main)
     _print("Reading smart contracts...\n");
 
     const Pools = [
+      "0x32c51094FB55c2F34Bb129C64CC39F83dC0EBA14",
       "0x8A09Eefa2326b314d404A87c119cf37d722d0a7f",
       "0x92702dcCD53022831edd3FCBfEabbBA31BC29bB6",
       "0xA98c59fE146e351511Fc890598787208D063C8a3",
