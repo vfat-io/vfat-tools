@@ -109,7 +109,7 @@ async function getKinekoPoolInfo(app, chefContract, chefAddress, poolIndex, pend
   const userStaked = await chefContract.getStakeTotalDeposited(app.YOUR_ADDRESS, poolIndex, false);//temp solution
   const pendingRewardTokens = await chefContract.callStatic[pendingRewardsFunction](app.YOUR_ADDRESS, poolIndex, false);//temp solution
   const staked = userStaked / 10 ** poolToken.decimals;
-  const rewardsPerWeek = await chefContract.getPoolRewardRate(poolIndex) / 1e18 * 604800;
+  const rewardsPerWeek = await chefContract.getPoolRewardRate(poolIndex) / 1e18 * 604800 /13.2;
   return {
       address: lpToken,
       poolToken: poolToken,
