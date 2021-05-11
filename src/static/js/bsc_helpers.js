@@ -161,9 +161,9 @@ async function getBscStoredToken(App, tokenAddress, stakingAddress, type) {
       const valuePool = new ethers.Contract(tokenAddress, VALUE_LP_ABI, App.provider);
       const tokenWeights = await valuePool.getTokenWeights()
       return await getValuePool(App, valuePool, tokenAddress, stakingAddress, tokenWeights);
-    case "bep20":
-      const bep20 = new ethers.Contract(tokenAddress, ERC20_ABI, App.provider);
-      return await getBep20(App, bep20, tokenAddress, stakingAddress);
+    case "erc20":
+      const erc20 = new ethers.Contract(tokenAddress, ERC20_ABI, App.provider);
+      return await getBep20(App, erc20, tokenAddress, stakingAddress);
     case "bscVault":
       const vault = new ethers.Contract(tokenAddress, BSC_VAULT_ABI, App.provider);
       return await getBscVault(App, vault, tokenAddress, stakingAddress);
@@ -230,11 +230,11 @@ async function getBscToken(App, tokenAddress, stakingAddress) {
       console.log(err)
     }
     try {
-      const bep20 = new ethers.Contract(tokenAddress, ERC20_ABI, App.provider);
-      const _name = await bep20.name();
-      const bep20tok = await getBep20(App, bep20, tokenAddress, stakingAddress);
-      window.localStorage.setItem(tokenAddress, "bep20");
-      return bep20tok;
+      const erc20 = new ethers.Contract(tokenAddress, ERC20_ABI, App.provider);
+      const _name = await erc20.name();
+      const erc20tok = await getBep20(App, erc20, tokenAddress, stakingAddress);
+      window.localStorage.setItem(tokenAddress, "erc20");
+      return erc20tok;
     }
     catch(err) {
       console.log(`Couldn't match ${tokenAddress} to any known token type.`);

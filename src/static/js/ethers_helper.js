@@ -1190,7 +1190,6 @@ async function getStoredToken(app, tokenAddress, stakingAddress, type) {
     case "vault":
       const vault = new ethcall.Contract(tokenAddress, HARVEST_VAULT_ABI);
       return await getVault(app, vault, tokenAddress, stakingAddress);
-    case "bep20":
     case "erc20":
       const erc20 = new ethcall.Contract(tokenAddress, ERC20_ABI);
       return await getErc20(app, erc20, tokenAddress, stakingAddress);
