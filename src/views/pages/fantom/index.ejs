@@ -1,32 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
-  <%- include(`${partials}/head`); -%>
-  <body>
-    <pre class="container">
-<div>
-<a href="<%= PP %>/">Home</a> - <a href="<%= PP %>/all/">All</a> - <a href="<%= PP %>/bsc/">BSC</a> - <a href="<%= PP %>/heco/">HECO</a> - <a href="<%= PP %>/polygon/">POLYGON</a> - <a href="<%= PP %>/xdai/">xDAI</a> - <a href="<%= PP %>/avax/">AVAX</a> - <a href="<%= PP %>/fantom/">FANTOM</a> - <a href="<%= PP %>/harmony/">HARMONY</a> - <a href="<%= PP %>/seigniorage/">Seigniorage</a>
-</div>
+<%- include(`${partials}/head`); -%>
 
-************************ FANTOM NETWORK  *************************
-
----Pool Provider---     --------LP--------          --Reward Tokens--   --INFO--
-    Popsicle             <a href="popsicle"      >Various</a>                    ICE                 https://popsicle.finance
-    Spooky               <a href="spooky"        >Various</a>                    BOO                 https://spookyswap.finance
-    Spirit               <a href="spirit"        >Various</a>                    SPIRIT              https://app.spiritswap.finance
-    Borg                 <a href="borg"          >Various</a>                    SON                 https://ftm.borgswap.exchange
-    Hyperjump            <a href="hyperjump"     >Various</a>                    ORI                 https://hyperjump.fi
-    Ester                <a href="ester"         >Various</a>                    EST                 https://ester.finance
-    Froyo                <a href="froyo"         >Various</a>                    FROYO               https://frozenyogurt.finance
-
-*** Disclaimer ***
-
-I am in no way affiliated with the above projects, nor do I endorse them. Please do your own research before investing.
-
-
--=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-| <a href="https://twitter.com/vfat12" target="_blank">Twitter</a> - <a href="https://github.com/vfat-tools/vfat-tools" target="_blank">GitHub</a> - <a href="https://gitcoin.co/grants/1809/vfattools-yield-farming-calculators" target="_blank">Gitcoin</a> - <a href="https://www.youtube.com/watch?v=D8RZhK1zcs0" target="_blank">YouTube</a> |
--=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+<body>
+<%- include(`${partials}/header_main`); -%>
+<pre class="container">
+    <div class="loader--1"></div>
+    <div id="log"></div>
+<%- include(`${partials}/disclaimer`); -%>
 </pre>
-    <%- include(`${partials}/scripts`, {scriptname: 'homepage'}); -%>
-  </body>
+<%- include(`${partials}/scripts`, {scriptname: 'fantom'}); -%>
+</body>
 </html>
+
