@@ -22,7 +22,6 @@ async function main() {
 
    const rewardsPerWeek = await ROKT_CHEF.rocketPerBlock() /1e18
         * 604800 / 3 * multiplier;
-   const rewardsPerWeek2 = await ROKT_CHEF2.rewardRate() /1e18 * 604800;
 
     const tokens = {};
     const prices = await getBscPrices();
@@ -30,13 +29,13 @@ async function main() {
     await loadBscChefContract(App, tokens, prices, ROKT_CHEF, ROKT_CHEF_ADDR, ROKT_CHEF_ABI, rewardTokenTicker,
         "rocket", null, rewardsPerWeek, "pendingReward");
     await loadApescapeContract(App, tokens, prices, ROKT_CHEF2, ROKT_CHEF_ADDR2, BNB_REWARD_CHEF_ABI, rewardTokenTicker2,
-        "rewardToken", rewardsPerWeek2, "pendingReward");
+        "rewardToken", "pendingReward");
 
     hideLoading();
   }
 
 async function loadApescapeContract(App, tokens, prices, chef, chefAddress, chefAbi, rewardTokenTicker,
-  rewardTokenFunction, rewardsPerWeekFixed, pendingRewardsFunction,
+  rewardTokenFunction, pendingRewardsFunction,
   deathPoolIndices) {
   const chefContract = chef ?? new ethers.Contract(chefAddress, chefAbi, App.provider);
 
@@ -52,7 +51,7 @@ async function loadApescapeContract(App, tokens, prices, chef, chefAddress, chef
 
   const rewardTokenAddress = await chefContract.callStatic[rewardTokenFunction]();
   const rewardToken = await getBscToken(App, rewardTokenAddress, chefAddress);
-  const rewardsPerWeek = rewardsPerWeekFixed / rewardToken.decimals;
+  const rewardsPerWeek = await chefContract.rewardRate() / 10 ** rewardToken.decimals /1e18 * 604800;
 
   const poolInfos = await Promise.all([...Array(poolCount).keys()].map(async (x) =>
     await getApescapePoolInfo(App, chefContract, chefAddress, x, pendingRewardsFunction)));

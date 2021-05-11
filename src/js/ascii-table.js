@@ -91,9 +91,16 @@ AsciiTable.alignLeft = function(str, len, pad) {
   if (str === undefined || str === null) str = ''
   if (typeof pad === 'undefined') pad = ' '
   if (typeof str !== 'string') str = str.toString()
-  var alen = len + 1 - str.length
+
+  var strLen = str.length
+  if (str.includes("href")) {
+    strLen = str.match(/.*>(.*)<\/a>/i)[1].length
+  }
+
+  var alen = len + 1 - strLen
+
   if (alen <= 0) return str
-  return str + Array(len + 1 - str.length).join(pad)
+  return str + Array(len + 1 - strLen).join(pad)
 }
 
 /**
@@ -115,7 +122,7 @@ AsciiTable.alignCenter = function(str, len, pad) {
     , odds = Math.abs((nLen % 2) - (len % 2))
     , len = str.length
 
-  return AsciiTable.alignRight('', half, pad) 
+  return AsciiTable.alignRight('', half, pad)
     + str
     + AsciiTable.alignLeft('', half + odds, pad)
 }
@@ -156,7 +163,13 @@ AsciiTable.alignAuto = function(str, len, pad) {
   if (type !== '[object String]') {
     str = str.toString()
   }
-  if (str.length < len) {
+
+  var strLen = str.length
+  if (str.includes("href")) {
+    strLen = str.match(/.*>(.*)<\/a>/i)[1].length
+  }
+
+  if (strLen < len) {
     switch(type) {
       case '[object Number]': return AsciiTable.alignRight(str, len, pad)
       default: return AsciiTable.alignLeft(str, len, pad)
@@ -193,7 +206,7 @@ AsciiTable.arrayFill = function(len, fill) {
  * @api public
  */
 
-AsciiTable.prototype.reset = 
+AsciiTable.prototype.reset =
 AsciiTable.prototype.clear = function(name) {
   this.__name = ''
   this.__nameAlign = AsciiTable.CENTER
@@ -362,7 +375,7 @@ AsciiTable.prototype.setHeadingAlign = function(dir) {
 
 /**
  * Add a row of information to the table
- * 
+ *
  * @param {...|Array} argument values in order of columns
  * @api public
  */
@@ -475,7 +488,7 @@ AsciiTable.prototype.toJSON = function() {
  * @api public
  */
 
-AsciiTable.prototype.parse = 
+AsciiTable.prototype.parse =
 AsciiTable.prototype.fromJSON = function(obj) {
   return this
     .clear()
@@ -502,10 +515,10 @@ AsciiTable.prototype.toString = function() {
     , rows = this.__rows
     , justify
     , border = this.__border
-    , all = this.__heading 
+    , all = this.__heading
         ? [this.__heading].concat(rows)
         : rows
-  
+
    // Calculate max table cell lengths across all rows
    for (var i = 0; i < all.length; i++) {
     var row = all[i]
@@ -513,8 +526,7 @@ AsciiTable.prototype.toString = function() {
       var cell = row[k]
       try {
         if (cell.includes("href")) {  // #eyo fix for href cell len
-          cell = row[k].toString().match(/\'\>([^\<\/a\>]+)/i)[1]
-          console.log(cell)
+          cell = row[k].toString().match(/.*?>(.*)<\/a>/i)[1]
         } // else {cell = row[k]}
       } catch(err) { cell = row[k] }
       max[k] = Math.max(max[k], cell ? cell.toString().length : 0)
@@ -522,12 +534,12 @@ AsciiTable.prototype.toString = function() {
   }
   this.__colMaxes = max
   justify = this.__justify ? Math.max.apply(null, max) : 0
-  
-  // Get 
+
+  // Get
   max.forEach(function(x) {
     total += justify ? justify : x + self.__spacing
   })
-  
+
   justify && (total += max.length)
   total -= this.__spacing
 
@@ -611,7 +623,7 @@ AsciiTable.prototype._renderRow = function(row, str, align) {
       , cAlign = this.__aligns[k]
       , use = align
       , method = 'alignAuto'
-  
+
     if (typeof align === 'undefined') use = cAlign
 
     if (use === AsciiTable.LEFT) method = 'alignLeft'
