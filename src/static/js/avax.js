@@ -20,6 +20,7 @@ const main = async() => {
         ["Lydia    ",`<a href="lydia"   >Various</a>`,"LYD   ","https://www.lydia.finance"],
         ["Baguette ",`<a href="baguette">Various</a>`,"BAG   ","https://app.baguette.exchange"],
         ["Gondola  ",`<a href="gondola" >Various</a>`,"GDL   ","https://app.gondola.finance"],
+        ["Birdy    ",`<a href="birdy"   >Various</a>`,"BIRD  ","https://birdy.finance"],
       ]
   }
 
