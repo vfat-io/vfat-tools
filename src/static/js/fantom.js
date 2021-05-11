@@ -40,7 +40,7 @@ const main = async() => {
       ],
       [
         "Ester",
-        `<a href='easter'>Various</a>`,
+        `<a href='ester'>Various</a>`,
         "EST",
         "https://ester.finance"
       ],
