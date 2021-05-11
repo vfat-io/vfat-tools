@@ -44,6 +44,7 @@ async function loadSFeed(App, prices){
   const FEED_ADDR = "0x67d66e8Ec1Fd25d98B3Ccd3B19B7dc4b4b7fC493";
   const sFEED_CONTRACT = new ethers.Contract(sFEED_ADDR, sFEED_ABI, App.provider);
   const FEED_CONTRACT = new ethers.Contract(FEED_ADDR, FEED_ABI, App.provider);
+  const userUnstaked = await FEED_CONTRACT.balanceOf(App.YOUR_ADDRESS) / 1e18;
   const totalDepositedFeeds = await FEED_CONTRACT.balanceOf(sFEED_ADDR) / 1e18;
   const totalSFeedTokens = await sFEED_CONTRACT.totalSupply() / 1e18;
   const virtualPrice = totalDepositedFeeds / totalSFeedTokens;
@@ -67,9 +68,9 @@ async function loadSFeed(App, prices){
     return contract_stake(sFEED_ABI, sFEED_ADDR, App, FEED_ADDR)
   }
   const unstake = async function() {
-    return contract_unstake(sFEED_ABI, sFEED_ADDR, totalOwnedSFeed, App)
+    return contract_unstake(sFEED_ABI, sFEED_ADDR, App)
   }
-  _print_link(`Stake ${totalOwnedFeed.toFixed(2)} ${stakeTicker}`, approveAndStake)
+  _print_link(`Stake ${userUnstaked.toFixed(2)} ${stakeTicker}`, approveAndStake)
   _print_link(`Unstake ${totalOwnedSFeed.toFixed(2)} ${rewardTicker}`, unstake)
 }
 
@@ -151,11 +152,17 @@ const contract_stake = async function(abi, contractAddress, App, stakeTokenAddr)
   }
 }
 
-const contract_unstake = async function(abi, contractAddress, stakedAmount, App) {
+const contract_unstake = async function(abi, contractAddress, App) {
   const signer = App.provider.getSigner()
   const sFEED_WRITE_CONTRACT = new ethers.Contract(contractAddress, abi, signer)
+
+  const currentTokens = await sFEED_WRITE_CONTRACT.balanceOf(App.YOUR_ADDRESS)
+  if (currentTokens / 1e18 == 0) {
+    alert('You have no tokens to unstake!!')
+    return;
+  };
   showLoading()
-  sFEED_WRITE_CONTRACT.leave(stakedAmount, {gasLimit: 500000})
+  sFEED_WRITE_CONTRACT.withdraw(currentTokens, {gasLimit: 500000})
       .then(function(t) {
         return App.provider.waitForTransaction(t.hash)
       })

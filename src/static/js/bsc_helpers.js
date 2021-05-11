@@ -227,7 +227,7 @@ async function getBscToken(App, tokenAddress, stakingAddress) {
       return res;
     }
     catch(err) {
-      console.log(err)
+      //console.log(err)
     }
     try {
       const erc20 = new ethers.Contract(tokenAddress, ERC20_ABI, App.provider);
