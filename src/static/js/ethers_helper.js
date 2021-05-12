@@ -1393,6 +1393,9 @@ function getUniPrices(tokens, prices, pool)
   else if (pool.name.includes("Value LP")) stakeTokenTicker += " Value LP";
   else if (pool.symbol.includes("PGL")) stakeTokenTicker += " PGL";
   else if (pool.symbol.includes("CS-LP")) stakeTokenTicker += " CSS LP";
+  else if (pool.symbol.includes("DFYN")) stakeTokenTicker += " DFYN LP";
+  else if (pool.symbol.includes("SPIRIT")) stakeTokenTicker += " SPIRIT LP";
+  else if (pool.symbol.includes("spLP")) stakeTokenTicker += " SPOOKY LP";
   else stakeTokenTicker += " Uni LP";
   return {
       t0: t0,
@@ -1405,68 +1408,97 @@ function getUniPrices(tokens, prices, pool)
       tvl : tvl,
       staked_tvl : staked_tvl,
       stakeTokenTicker : stakeTokenTicker,
-      print_price(chain="eth", decimals) {
-        const poolUrl = pool.is1inch ? "https://1inch.exchange/#/dao/pools" :
-        pool.symbol.includes("LSLP") ? `https://info.linkswap.app/pair/${pool.address}` :
-          pool.symbol.includes("SLP") ?  `http://analytics.sushi.com/pairs/${pool.address}` :
-            pool.symbol.includes("Cake") ?  `https://pancakeswap.info/pair/${pool.address}` :
-            pool.symbol.includes("PGL") ?  `https://info.pangolin.exchange/#/pair/${pool.address}` :
-            pool.symbol.includes("CS-LP") ?  `https://app.coinswap.space/#/` :
-            pool.name.includes("Value LP") ?  `https://info.vswap.fi/pool/${pool.address}` :
-            chain == "matic" ? `https://info.quickswap.exchange/pair/${pool.address}` :
-          `http://uniswap.info/pair/${pool.address}`;
+      print_price(chain="eth", decimals, customURLs) {
         const t0address = t0.symbol == "ETH" ? "ETH" : t0.address;
         const t1address = t1.symbol == "ETH" ? "ETH" : t1.address;
-        const helperUrls = pool.is1inch ? [] :
-        pool.symbol.includes("LSLP") ? [
-          `https://linkswap.app/#/add/${t0address}/${t1address}`,
-          `https://linkswap.app/#/remove/${t0address}/${t1address}`,
-          `https://linkswap.app/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
-        ] :
-        pool.symbol.includes("Cake") ? [
-          `https://exchange.pancakeswap.finance/#/add/${t0address}/${t1address}`,
-          `https://exchange.pancakeswap.finance/#/remove/${t0address}/${t1address}`,
-          `https://exchange.pancakeswap.finance/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
-        ] :
-        chain=='matic'? [
-          `https://quickswap.exchange/#/add/${t0address}/${t1address}`,
-          `https://quickswap.exchange/#/remove/${t0address}/${t1address}`,
-          `https://quickswap.exchange/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
-        ] :
-        pool.name.includes("Value LP") ? [
-          `https://bsc.valuedefi.io/#/add/${t0address}/${t1address}`,
-          `https://bsc.valuedefi.io/#/remove/${t0address}/${t1address}`,
-          `https://bsc.valuedefi.io/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
-        ] :
-        pool.symbol.includes("PGL") ? [
-          `https://app.pangolin.exchange/#/add/${t0address}/${t1address}`,
-          `https://app.pangolin.exchange/#/remove/${t0address}/${t1address}`,
-          `https://app.pangolin.exchange/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
-        ] :
-        pool.symbol.includes("CS-LP") ? [
-          `https://app.coinswap.space/#/add/${t0address}/${t1address}`,
-          `https://app.coinswap.space/#/remove/${t0address}/${t1address}`,
-          `https://app.coinswap.space/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
-        ] :
-        pool.symbol.includes("SLP") ? [
-          `https://app.sushi.com/add/${t0address}/${t1address}`,
-          `https://app.sushi.com/remove/${t0address}/${t1address}`,
-          `https://app.sushi.com/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
-        ] :
-        t0.symbol.includes("COMFI") ? [
-          `https://app.uniswap.org/#/add/v2/${t0address}/${t1address}`,
-          `https://app.uniswap.org/#/remove/v2/${t0address}/${t1address}`,
-          `https://app.uniswap.org/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
-        ] :
-        [ `https://app.uniswap.org/#/add/${t0address}/${t1address}`,
-          `https://app.uniswap.org/#/remove/${t0address}/${t1address}`,
-          `https://app.uniswap.org/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}` ]
-        const helperHrefs = helperUrls.length == 0 ? "" :
-          ` <a href='${helperUrls[0]}' target='_blank'>[+]</a> <a href='${helperUrls[1]}' target='_blank'>[-]</a> <a href='${helperUrls[2]}' target='_blank'>[<=>]</a>`
-        _print(`<a href='${poolUrl}' target='_blank'>${stakeTokenTicker}</a>${helperHrefs} Price: $${formatMoney(price)} TVL: $${formatMoney(tvl)}`);
-        _print(`${t0.symbol} Price: $${displayPrice(p0)}`);
-        _print(`${t1.symbol} Price: $${displayPrice(p1)}`);
-        _print(`Staked: ${pool.staked.toFixed(decimals ?? 4)} ${pool.symbol} ($${formatMoney(staked_tvl)})`);
+        if (customURLs) {
+          const poolUrl = `${customURLs.info}/${pool.address}`
+          const helperUrls = [
+            `${customURLs.add}/${t0address}/${t1address}`,
+            `${customURLs.remove}/${t0address}/${t1address}`,
+            `${customURLs.swap}?inputCurrency=${t0address}&outputCurrency=${t1address}`
+          ] 
+          const helperHrefs = helperUrls.length == 0 ? "" :
+            ` <a href='${helperUrls[0]}' target='_blank'>[+]</a> <a href='${helperUrls[1]}' target='_blank'>[-]</a> <a href='${helperUrls[2]}' target='_blank'>[<=>]</a>`
+          _print(`<a href='${poolUrl}' target='_blank'>${stakeTokenTicker}</a>${helperHrefs} Price: $${formatMoney(price)} TVL: $${formatMoney(tvl)}`);
+          _print(`${t0.symbol} Price: $${displayPrice(p0)}`);
+          _print(`${t1.symbol} Price: $${displayPrice(p1)}`);
+          _print(`Staked: ${pool.staked.toFixed(decimals ?? 4)} ${pool.symbol} ($${formatMoney(staked_tvl)})`);
+
+        }
+        else {
+          const poolUrl = pool.is1inch ? "https://1inch.exchange/#/dao/pools" :
+          pool.symbol.includes("LSLP") ? `https://info.linkswap.app/pair/${pool.address}` :
+            pool.symbol.includes("SLP") ?  `http://analytics.sushi.com/pairs/${pool.address}` :
+              pool.symbol.includes("Cake") ?  `https://pancakeswap.info/pair/${pool.address}` :
+              pool.symbol.includes("PGL") ?  `https://info.pangolin.exchange/#/pair/${pool.address}` :
+              pool.symbol.includes("CS-LP") ?  `https://app.coinswap.space/#/` :
+              pool.name.includes("Value LP") ?  `https://info.vswap.fi/pool/${pool.address}` :
+              pool.symbol.includes("SPIRIT") ?  `https://swap.spiritswap.finance/#/swap` :
+              pool.symbol.includes("spLP") ?  `https://info.spookyswap.finance/pair/${pool.address}` :
+              chain == "matic" ? `https://info.quickswap.exchange/pair/${pool.address}` :
+            `http://uniswap.info/pair/${pool.address}`;
+          const helperUrls = pool.is1inch ? [] :
+          pool.symbol.includes("LSLP") ? [
+            `https://linkswap.app/#/add/${t0address}/${t1address}`,
+            `https://linkswap.app/#/remove/${t0address}/${t1address}`,
+            `https://linkswap.app/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+          ] :
+          pool.symbol.includes("Cake") ? [
+            `https://exchange.pancakeswap.finance/#/add/${t0address}/${t1address}`,
+            `https://exchange.pancakeswap.finance/#/remove/${t0address}/${t1address}`,
+            `https://exchange.pancakeswap.finance/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+          ] :
+          chain=='matic'? [
+            `https://quickswap.exchange/#/add/${t0address}/${t1address}`,
+            `https://quickswap.exchange/#/remove/${t0address}/${t1address}`,
+            `https://quickswap.exchange/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+          ] :
+          pool.name.includes("Value LP") ? [
+            `https://bsc.valuedefi.io/#/add/${t0address}/${t1address}`,
+            `https://bsc.valuedefi.io/#/remove/${t0address}/${t1address}`,
+            `https://bsc.valuedefi.io/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+          ] :
+          pool.symbol.includes("PGL") ? [
+            `https://app.pangolin.exchange/#/add/${t0address}/${t1address}`,
+            `https://app.pangolin.exchange/#/remove/${t0address}/${t1address}`,
+            `https://app.pangolin.exchange/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+          ] :
+          pool.symbol.includes("CS-LP") ? [
+            `https://app.coinswap.space/#/add/${t0address}/${t1address}`,
+            `https://app.coinswap.space/#/remove/${t0address}/${t1address}`,
+            `https://app.coinswap.space/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+          ] :
+          pool.symbol.includes("SLP") ? [
+            `https://app.sushi.com/add/${t0address}/${t1address}`,
+            `https://app.sushi.com/remove/${t0address}/${t1address}`,
+            `https://app.sushi.com/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+          ] :
+          pool.symbol.includes("SPIRIT") ? [
+            `https://swap.spiritswap.finance/add/${t0address}/${t1address}`,
+            `https://swap.spiritswap.finance/remove/${t0address}/${t1address}`,
+            `https://swap.spiritswap.finance/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+          ] :
+          pool.symbol.includes("spLP") ? [
+            `https://spookyswap.finance/add/${t0address}/${t1address}`,
+            `https://spookyswap.finance/remove/${t0address}/${t1address}`,
+            `https://spookyswap.finance/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+          ] :
+          t0.symbol.includes("COMFI") ? [
+            `https://app.uniswap.org/#/add/v2/${t0address}/${t1address}`,
+            `https://app.uniswap.org/#/remove/v2/${t0address}/${t1address}`,
+            `https://app.uniswap.org/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+          ] :
+          [ `https://app.uniswap.org/#/add/${t0address}/${t1address}`,
+            `https://app.uniswap.org/#/remove/${t0address}/${t1address}`,
+            `https://app.uniswap.org/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}` ]
+          const helperHrefs = helperUrls.length == 0 ? "" :
+            ` <a href='${helperUrls[0]}' target='_blank'>[+]</a> <a href='${helperUrls[1]}' target='_blank'>[-]</a> <a href='${helperUrls[2]}' target='_blank'>[<=>]</a>`
+          _print(`<a href='${poolUrl}' target='_blank'>${stakeTokenTicker}</a>${helperHrefs} Price: $${formatMoney(price)} TVL: $${formatMoney(tvl)}`);
+          _print(`${t0.symbol} Price: $${displayPrice(p0)}`);
+          _print(`${t1.symbol} Price: $${displayPrice(p1)}`);
+          _print(`Staked: ${pool.staked.toFixed(decimals ?? 4)} ${pool.symbol} ($${formatMoney(staked_tvl)})`);
+        }
       },
       print_contained_price(userStaked) {
         var userPct = userStaked / pool.totalSupply;
@@ -2082,8 +2114,8 @@ async function loadSynthetixPoolInfo(App, tokens, prices, stakingAbi, stakingAdd
     }
 }
 
-async function printSynthetixPool(App, info, chain="eth") {
-    info.poolPrices.print_price(chain);
+async function printSynthetixPool(App, info, chain="eth", customURLs) {
+    info.poolPrices.print_price(chain, 4, customURLs);
     _print(`${info.rewardTokenTicker} Per Week: ${info.weeklyRewards.toFixed(2)} ($${formatMoney(info.usdPerWeek)})`);
     const weeklyAPR = info.usdPerWeek / info.staked_tvl * 100;
     const dailyAPR = weeklyAPR / 7;

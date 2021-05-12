@@ -158,7 +158,7 @@ function printSharkContractLinks(App, chefAbi, chefAddr, poolIndex, poolAddress,
     claimFunction, rewardTokenPrice) {
   fixedDecimals = fixedDecimals ?? 2;
   const approveAndStake = async function() {
-    return chefContract_stake(chefAbi, chefAddr, poolIndex, poolAddress, App)
+    return sharkContract_stake(chefAbi, chefAddr, poolIndex, poolAddress, App)
   }
   const unstake = async function() {
     return chefContract_unstake(chefAbi, chefAddr, poolIndex, App, pendingRewardsFunction)
@@ -216,7 +216,7 @@ const sharkContract_claim = async function(chefAbi, chefAddress, poolIndex, App,
   }
 }
 
-const chefContract_stake = async function(chefAbi, chefAddress, poolIndex, stakeTokenAddr, App) {
+const sharkContract_stake = async function(chefAbi, chefAddress, poolIndex, stakeTokenAddr, App) {
   const signer = App.provider.getSigner()
 
   const STAKING_TOKEN = new ethers.Contract(stakeTokenAddr, ERC20_ABI, signer)
