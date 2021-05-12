@@ -36,7 +36,7 @@ const main = async() => {
         ["Polyzap      ",`<a href="polyzap"       >Various</a>`,"PZAP   ","https://farm.polyzap.finance"],
         ["Polypanda    ",`<a href="polypanda"     >Various</a>`,"BAMBOO ","https://polypanda.finance"],
         ["Dfyn         ",`<a href="dfyn"          >Various</a>`,"DFYN   ","https://exchange.dfyn.network/"],
-        ["Ape Community",`<a href="ape_community" >Various</a>`,"KONG   ","https://ape.community/"],
+        ["Ape Community",`<a href="ape_community" >Various</a>`,"KONG   ","https://ape.community"],
       ]
   }
 
