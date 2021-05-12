@@ -37,6 +37,7 @@ const main = async() => {
         ["Polypanda    ",`<a href="polypanda"     >Various</a>`,"BAMBOO ","https://polypanda.finance"],
         ["Dfyn         ",`<a href="dfyn"          >Various</a>`,"DFYN   ","https://exchange.dfyn.network"],
         ["Jurassic     ",`<a href="jurassic"      >Various</a>`,"RAPTOR ","https://www.jurassicfarm.app"],
+        ["Ape Community",`<a href="ape_community" >Various</a>`,"KONG   ","https://ape.community"],
       ]
   }
 
