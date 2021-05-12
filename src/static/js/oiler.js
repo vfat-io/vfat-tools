@@ -63,36 +63,26 @@ async function loadOilerContract(App, staking, uniswap, oiler, usdc) {
 
   const programAPR = rewardPoolValueInUSDC.mul(1000000).div(TVL);
 
-  _print(`\nCurrent 100-day Staking Program APR: ${formatPercentage(programAPR)}`);
-  _print(`\tDay: ${formatPercentage(programAPR.div(100))}`);
-  _print(`\tWeek: ${formatPercentage(programAPR.mul(7).div(100))}`);
-  _print(`\tMonth: ${formatPercentage(programAPR.mul(36525).div(120000))}`);
-  _print(`\tYear: ${formatPercentage(programAPR.mul(36525).div(10000))}`);
+  _print(`\nCurrent 100-day Staking Program Returns: ${formatPercentage(programAPR)}`);
+  _print(`\tDayly: ${formatPercentage(programAPR.div(100))}`);
+  _print(`\tWeekly: ${formatPercentage(programAPR.mul(7).div(100))}`);
+  _print(`\tMonthly: ${formatPercentage(programAPR.mul(36525).div(120000))}`);
+  _print(`\tYearly: ${formatPercentage(programAPR.mul(36525).div(10000))}`);
 
 
   const stakingProgramEndsBlock = await staking.stakingProgramEndsBlock();
-  const stakingProgramDuration = ethers.BigNumber.from(660000);
   const totalExtractionPower = await staking.totalRewardPoints();
 
   let blockNumber = await App.provider.getBlockNumber();
 
   _print(`\nStaking Program ends in:`)
-  const stakingEndsBlocksID = _print_withID(`\t${(stakingProgramEndsBlock-blockNumber)} blocks`);
-  const stakingEndsTimeID = _print_withID(`\t${forHumans((stakingProgramEndsBlock - blockNumber) * AVG_BLOCK_TIME)}`);
+  _print(`\t${(stakingProgramEndsBlock-blockNumber)} blocks`);
+  _print(`\t${forHumans((stakingProgramEndsBlock - blockNumber) * AVG_BLOCK_TIME)}`);
 
   const userStake = await staking.stakes(App.YOUR_ADDRESS);
-  let userStakeHooks;
   if (userStake.startBlock != 0) {
-    userStakeHooks = printUserStake(userStake, LPtokenValue, blockNumber, stakingFundAmount, totalExtractionPower, price);
+    printUserStake(userStake, LPtokenValue, blockNumber, stakingFundAmount, totalExtractionPower, price);
   }
-
-  // App.provider.on('block', (blockNumber) => {
-  //   updateStakingEndsBlocks(stakingEndsBlocksID, blockNumber, stakingProgramEndsBlock);
-  //   updateStakingEndsTime(stakingEndsTimeID, blockNumber, stakingProgramEndsBlock);
-  //   if (userStakeHooks) {
-  //     updateUserStake(userStakeHooks, userStake, blockNumber, stakingProgramEndsBlock, stakingProgramDuration, totalExtractionPower);
-  //   }
-  // });
 
   _print("\nFinished reading smart contracts.\n");
 }
@@ -101,57 +91,30 @@ function formatPercentage(percentageInUSDC) {
   return (Number(percentageInUSDC.toString())/10000).toFixed(2)+"%";
 }
 
-function updateUserStake(userStakeHooks, userStake, blockNumber, stakingProgramEndsBlock, stakingProgramDuration, totalExtractionPower) {
-  _print_withID(`\t${blockNumber - userStake.startBlock} blocks passed already`, userStakeHooks.userStakePassedID);
-  _print_withID(`\t${userStake.startBlock - blockNumber + userStake.lockingPeriodInBlocks} more blocks to go`, userStakeHooks.userStakeToGoID);
-  _print_withID(`\t${forHumans((userStake.startBlock - blockNumber + userStake.lockingPeriodInBlocks) * AVG_BLOCK_TIME)} left`, userStakeHooks.userStakeTimeID);
-
-}
-
 function printUserStake(userStake, LPtokenValue, blockNumber, stakingFundAmount, totalExtractionPower, price) {
   const { expectedStakingRewardPoints, lockingPeriodInBlocks, startBlock, tokenAmount } = userStake;
-  // console.table({
-  //   expectedStakingRewardPoints,
-  //   lockingPeriodInBlocks,
-  //   startBlock,
-  //   tokenAmount
-  // })
+  _print("\nYour stake:");
+  _print(`\t${formatLP(tokenAmount)} locked for ${lockingPeriodInBlocks.toString()} blocks`);
+  _print(`\t${blockNumber - startBlock} blocks passed already`);
+  _print(`\t${startBlock - blockNumber + lockingPeriodInBlocks} more blocks to go`);
+  _print(`\t${forHumans((startBlock - blockNumber + lockingPeriodInBlocks) * AVG_BLOCK_TIME)} left`);
+  
+  const stakeValueLocked = tokenAmount.mul(LPtokenValue).div(BONE);
+  _print(`\nYour value locked: ${formatUSDC(stakeValueLocked)}`);
+  
+  const stakePoolShare = expectedStakingRewardPoints.mul(1000000).div(totalExtractionPower);
+  _print(`\nYour current % of the Reward Pool for this stake: ${formatPercentage(stakePoolShare)}`);
 
-  if (startBlock != 0) {
-    _print("\nYour stake:");
-    _print(`\t${formatLP(tokenAmount)} locked for ${lockingPeriodInBlocks.toString()} blocks`);
-    const userStakePassedID = _print_withID(`\t${blockNumber - userStake.startBlock} blocks passed already`);
-    const userStakeToGoID = _print_withID(`\t${userStake.startBlock - blockNumber + userStake.lockingPeriodInBlocks} more blocks to go`);
-    const userStakeTimeID = _print_withID(`\t${forHumans((userStake.startBlock - blockNumber + userStake.lockingPeriodInBlocks) * AVG_BLOCK_TIME)} left`);
-    
-    const stakeValueLocked = tokenAmount.mul(LPtokenValue).div(BONE);
-    _print(`\nYour value locked: ${formatUSDC(stakeValueLocked)}`);
-    
-    const stakePoolShare = expectedStakingRewardPoints.mul(1000000).div(totalExtractionPower);
-    _print(`\nYour current % of the Reward Pool for this stake: ${formatPercentage(stakePoolShare)}`);
+  const rewardForThisStakeOIL = expectedStakingRewardPoints.mul(stakingFundAmount).div(totalExtractionPower);
+  const rewardForThisStakeUSDC = rewardForThisStakeOIL.mul(price).div(BONE);
+  _print(`\nYour Reward for this stake: ${formatOIL(rewardForThisStakeOIL)} (${formatUSDC(rewardForThisStakeUSDC)})`);
 
-    const rewardForThisStakeOIL = expectedStakingRewardPoints.mul(stakingFundAmount).div(totalExtractionPower);
-    const rewardForThisStakeUSDC = rewardForThisStakeOIL.mul(price).div(BONE);
-    _print(`\nYour Reward for this stake: ${formatOIL(rewardForThisStakeOIL)} (${formatUSDC(rewardForThisStakeUSDC)})`);
-
-    const currentStakeAPR = rewardForThisStakeUSDC.mul(1000000).div(stakeValueLocked);
-    _print(`\nYour current P&L for this stake: ${formatPercentage(currentStakeAPR)}`);
-    _print(`\tDay APR: ${formatPercentage(currentStakeAPR.mul(Math.floor(86400/AVG_BLOCK_TIME)).div(lockingPeriodInBlocks))}`);
-    _print(`\tWeek APR: ${formatPercentage(currentStakeAPR.mul(Math.floor(86400*7/AVG_BLOCK_TIME)).div(lockingPeriodInBlocks))}`);
-    _print(`\tMonth APR: ${formatPercentage(currentStakeAPR.mul(Math.floor(86400*365.25/12/AVG_BLOCK_TIME)).div(lockingPeriodInBlocks))}`);
-    _print(`\tYear APR: ${formatPercentage(currentStakeAPR.mul(Math.floor(86400*365.25/AVG_BLOCK_TIME)).div(lockingPeriodInBlocks))}`);
-      
-    // console.table({userStakePassedID, userStakeToGoID, userStakeTimeID})
-    // return {userStakePassedID, userStakeToGoID, userStakeTimeID}
-  }
-}
-
-function updateStakingEndsBlocks(stakingEndsBlocksID, blockNumber, stakingProgramEndsBlock) {
-  _print_withID((stakingProgramEndsBlock-blockNumber) + " blocks", stakingEndsBlocksID)
-}
-
-function updateStakingEndsTime(stakingEndsTimeID, blockNumber, stakingProgramEndsBlock) {
-  _print_withID(forHumans((stakingProgramEndsBlock - blockNumber) * AVG_BLOCK_TIME), stakingEndsTimeID)
+  const currentStakeAPR = rewardForThisStakeUSDC.mul(1000000).div(stakeValueLocked);
+  _print(`\nYour current expected returns for this stake: ${formatPercentage(currentStakeAPR)}`);
+  _print(`\tDayly: ${formatPercentage(currentStakeAPR.mul(Math.floor(86400/AVG_BLOCK_TIME)).div(lockingPeriodInBlocks))}`);
+  _print(`\tWeekly: ${formatPercentage(currentStakeAPR.mul(Math.floor(86400*7/AVG_BLOCK_TIME)).div(lockingPeriodInBlocks))}`);
+  _print(`\tMonthly: ${formatPercentage(currentStakeAPR.mul(Math.floor(86400*365.25/12/AVG_BLOCK_TIME)).div(lockingPeriodInBlocks))}`);
+  _print(`\tYearly: ${formatPercentage(currentStakeAPR.mul(Math.floor(86400*365.25/AVG_BLOCK_TIME)).div(lockingPeriodInBlocks))}`);
 }
 
 function formatNumber(num) {
