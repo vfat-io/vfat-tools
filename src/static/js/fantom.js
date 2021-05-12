@@ -21,7 +21,7 @@ const main = async() => {
         "https://spookyswap.finance"
       ],
       [
-        "Spirit",
+        "Spirit *",
         `<a href='spirit'>Various</a>`,
         "SPIRIT",
         "https://app.spiritswap.finance"
@@ -33,7 +33,7 @@ const main = async() => {
         "https://ftm.borgswap.exchange"
       ],
       [
-        "Hyperjump",
+        "Hyperjump *",
         `<a href='hyperjump'>Various</a>`,
         "ORI",
         "https://hyperjump.fi"
