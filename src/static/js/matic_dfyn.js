@@ -26,7 +26,7 @@ async function main() {
     add: "https://exchange.dfyn.network/#/add",
     remove: "https://exchange.dfyn.network/#/remove",
     swap: "https://exchange.dfyn.network/#/swap",
-    info: "https://info.dfyn.network"
+    info: "https://info.dfyn.network/pair"
   }
 
   let p = await loadMultipleMaticSynthetixPools(App, tokens, prices, pools, customURLs)
