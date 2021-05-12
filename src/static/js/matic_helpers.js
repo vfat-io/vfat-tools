@@ -351,12 +351,12 @@ async function getMaticPrices() {
   return prices;
 }
 
-async function loadMultipleMaticSynthetixPools(App, tokens, prices, pools) {
+async function loadMultipleMaticSynthetixPools(App, tokens, prices, pools, customURLs) {
   let totalStaked  = 0, totalUserStaked = 0, individualAPRs = [];
   const infos = await Promise.all(pools.map(p => 
       loadMaticSynthetixPoolInfo(App, tokens, prices, p.abi, p.address, p.rewardTokenFunction, p.stakeTokenFunction)));
   for (const i of infos.filter(i => i?.poolPrices)) {
-    let p = await printSynthetixPool(App, i, "matic");
+    let p = await printSynthetixPool(App, i, "matic", customURLs);
     totalStaked += p.staked_tvl || 0;
     totalUserStaked += p.userStaked || 0;
     if (p.userStaked > 0) {

@@ -21,10 +21,15 @@ async function main() {
     rewardTokenFunction: "rewardsToken"
   }})
 
-  await loadMaticSynthetixPoolInfo(App, tokens, prices, pools[1].abi, pools[1].address,
-    pools[1].rewardTokenFunction, pools[1].stakeTokenFunction)
+  const customURLs = 
+  {
+    add: "https://exchange.dfyn.network/#/add",
+    remove: "https://exchange.dfyn.network/#/remove",
+    swap: "https://exchange.dfyn.network/#/swap",
+    info: "https://info.dfyn.network"
+  }
 
-  let p = await loadMultipleMaticSynthetixPools(App, tokens, prices, pools)
+  let p = await loadMultipleMaticSynthetixPools(App, tokens, prices, pools, customURLs)
   _print_bold(`Total staked: $${formatMoney(p.staked_tvl)}`);
   if (p.totalUserStaked > 0) {
     _print(`You are staking a total of $${formatMoney(p.totalUserStaked)} at an APR of ${(p.totalAPR * 100).toFixed(2)}%\n`);
