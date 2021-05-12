@@ -62,6 +62,12 @@ const main = async() => {
         "Various",
         "https://fantom.beefy.finance"
       ],
+      [
+        "Liquid Driver",
+        `<a href='liquid'>Various</a>`,
+        "LQDR",
+        "https://www.liquiddriver.finance"
+      ],
     ]
   }
 
