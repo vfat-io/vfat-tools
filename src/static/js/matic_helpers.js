@@ -58,9 +58,9 @@ async function getMaticStoredToken(App, tokenAddress, stakingAddress, type) {
     case "uniswap": 
       const pool = new ethers.Contract(tokenAddress, UNI_ABI, App.provider);
       return await getMaticUniPool(App, pool, tokenAddress, stakingAddress);
-    case "matic20":
-      const matic20 = new ethers.Contract(tokenAddress, ERC20_ABI, App.provider);
-      return await getMatic20(App, matic20, tokenAddress, stakingAddress);
+    case "erc20":
+      const erc20 = new ethers.Contract(tokenAddress, ERC20_ABI, App.provider);
+      return await getMatic20(App, erc20, tokenAddress, stakingAddress);
   }
 }
 
@@ -80,11 +80,11 @@ async function getMaticToken(App, tokenAddress, stakingAddress) {
     catch(err) {
     }
     try {
-      const matic20 = new ethers.Contract(tokenAddress, ERC20_ABI, App.provider);
-      const _name = await matic20.name();
-      const matic20tok = await getMatic20(App, matic20, tokenAddress, stakingAddress);
-      window.localStorage.setItem(tokenAddress, "matic20");
-      return matic20tok;
+      const erc20 = new ethers.Contract(tokenAddress, ERC20_ABI, App.provider);
+      const _name = await erc20.name();
+      const erc20tok = await getMatic20(App, erc20, tokenAddress, stakingAddress);
+      window.localStorage.setItem(tokenAddress, "erc20");
+      return erc20tok;
     }
     catch(err) {
       console.log(err);
@@ -334,7 +334,12 @@ const maticTokens = [
   { "id": "dai","symbol": "DAI", "contract": "0x8f3Cf7ad23Cd3CaDbD9735AFf958023239c6A063" },
   { "id": "quick","symbol": "QUICK", "contract": "0x831753DD7087CaC61aB5644b308642cc1c33Dc13" },
   { "id": "stake-dao", "symbol": "SDT", "contract": "0x361A5a4993493cE00f61C32d4EcCA5512b82CE90" },
-  { "id": "yield-app", "symbol": "YLD", "contract": "0x4CEBdBCB286101A17D3eA1f7fe7bbDeD2B2053dd" }
+  { "id": "yield-app", "symbol": "YLD", "contract": "0x4CEBdBCB286101A17D3eA1f7fe7bbDeD2B2053dd" },
+  { "id": "aave", "symbol": "AAVE", "contract": "0xD6DF932A45C0f255f85145f286eA0b292B21C90B" },
+  { "id": "polywhale", "symbol": "KRILL", "contract": "0x05089C9EBFFa4F0AcA269e32056b1b36B37ED71b" },
+  { "id": "chainlink", "symbol": "LINK", "contract": "0x53E0bca35eC356BD5ddDFebbD1Fc0fD03FaBad39" },
+  { "id": "sushi", "symbol": "SUSHI", "contract": "0x0b3F868E0BE5597D5DB7fEB59E1CADBb0fdDa50a" },
+  { "id": "dfyn-network", "symbol": "DFYN", "contract": "0xC168E40227E4ebD8C1caE80F7a55a4F0e6D66C97" }
 ]
 
 async function getMaticPrices() {

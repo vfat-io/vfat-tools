@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include(`${partials}/head`); -%>
+
+<body>
+<%- include(`${partials}/header_main`); -%>
+<pre id="log">
+*************** 👨‍🌾 UNOFFICIAL HYPERJUMP.FINANCE FARMING CALCULATOR 👨‍🌾 ***************
+INFO  : https://hyperjump.fi
+**************************************************************************************
+
+There is a 1% deposit fee on all LP farms
+
+</pre>
+<div class="loader--1"></div>
+<%- include(`${partials}/scripts`, {scriptname: 'fantom_hyperjump'}); -%>
+</body>
+</html> 

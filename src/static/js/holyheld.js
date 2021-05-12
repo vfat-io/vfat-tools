@@ -1,14 +1,13 @@
 $(function() {
-    consoleInit();
-    start(main);
+consoleInit(main)
   });
-  
-  async function main() {  
+
+  async function main() {
     const App = await init_ethers();
-  
+
     _print(`Initialized ${App.YOUR_ADDRESS}\n`);
     _print("Reading smart contracts...\n");
-  
+
     const HOLY_KNIGHT_ADDR = "0x5D33dE3E540b289f9340D059907ED648c9E7AaDD";
 
     _print(`Staking bonus for long-term holders (multiply by the below APR)\n`);
@@ -20,6 +19,6 @@ $(function() {
     _print(`*** Please note you will need to migrate 1 Holy to HH for each Holy you earned, in order to claim the staking bonus. ***\n`)
 
     await loadChefContract(App, null, HOLY_KNIGHT_ADDR, HOLY_KNIGHT_ABI, "HOLY", "holytoken", "holyPerBlock", null, "pendingHoly");
-  
-    hideLoading();  
+
+    hideLoading();
   }

@@ -1,13 +1,12 @@
 
 $(function() {
-  consoleInit();
-  start(main);
+consoleInit(main)
 });
 
 const MAGIC_ABI = [{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":true,"internalType":"uint256","name":"pid","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"Claim","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":true,"internalType":"uint256","name":"pid","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"Deposit","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"previousOwner","type":"address"},{"indexed":true,"internalType":"address","name":"newOwner","type":"address"}],"name":"OwnershipTransferred","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":true,"internalType":"uint256","name":"pid","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"Withdraw","type":"event"},{"inputs":[{"internalType":"uint256","name":"pid","type":"uint256"}],"name":"claim","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"pid","type":"uint256"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"deposit","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"magic","outputs":[{"internalType":"contract IERC20","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"magicPerBlock","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"owner","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"pid","type":"uint256"},{"internalType":"address","name":"_user","type":"address"}],"name":"pendingRewards","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"","type":"uint256"}],"name":"poolInfo","outputs":[{"internalType":"uint256","name":"allocPoint","type":"uint256"},{"internalType":"uint256","name":"lastRewardBlock","type":"uint256"},{"internalType":"uint256","name":"accMagicPerShare","type":"uint256"},{"internalType":"uint256","name":"depositedAmount","type":"uint256"},{"internalType":"uint256","name":"rewardsAmount","type":"uint256"},{"internalType":"uint256","name":"lockupDuration","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"renounceOwnership","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_magicPerBlock","type":"uint256"}],"name":"setMagicPerBlock","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"contract IERC20","name":"_magic","type":"address"}],"name":"setMagicToken","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"startBlock","type":"uint256"}],"name":"startStaking","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"totalAllocPoint","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"newOwner","type":"address"}],"name":"transferOwnership","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"","type":"uint256"},{"internalType":"address","name":"","type":"address"}],"name":"userInfo","outputs":[{"internalType":"uint256","name":"amount","type":"uint256"},{"internalType":"uint256","name":"rewardDebt","type":"uint256"},{"internalType":"uint256","name":"pendingRewards","type":"uint256"},{"internalType":"uint256","name":"lastClaim","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"pid","type":"uint256"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"withdraw","outputs":[],"stateMutability":"nonpayable","type":"function"}]
 const MYTHIC_ABI = [{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"Claim","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"Deposit","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"previousOwner","type":"address"},{"indexed":true,"internalType":"address","name":"newOwner","type":"address"}],"name":"OwnershipTransferred","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"Withdraw","type":"event"},{"inputs":[],"name":"claim","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"deposit","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"liquidityMining","outputs":[{"internalType":"contract IERC20","name":"lpToken","type":"address"},{"internalType":"uint256","name":"lastRewardBlock","type":"uint256"},{"internalType":"uint256","name":"accMythicPerShare","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"mythic","outputs":[{"internalType":"contract IERC20","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"mythicPerBlock","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"owner","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"_user","type":"address"}],"name":"pendingRewards","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"renounceOwnership","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"contract IERC20","name":"_mythic","type":"address"},{"internalType":"contract IERC20","name":"_lpToken","type":"address"}],"name":"setMythicTokens","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_mythicPerBlock","type":"uint256"}],"name":"setmythicPerBlock","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"startBlock","type":"uint256"}],"name":"startMining","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"newOwner","type":"address"}],"name":"transferOwnership","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"userInfo","outputs":[{"internalType":"uint256","name":"amount","type":"uint256"},{"internalType":"uint256","name":"rewardDebt","type":"uint256"},{"internalType":"uint256","name":"pendingRewards","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"withdraw","outputs":[],"stateMutability":"nonpayable","type":"function"}]
 
-async function main() {  
+async function main() {
   const App = await init_ethers();
 
   _print(`Initialized ${App.YOUR_ADDRESS}\n`);
@@ -22,7 +21,7 @@ async function main() {
 
  const rewardsMagicPerWeek = await MAGIC_CONTRACT.magicPerBlock() /1e18
       * 604800 / 3;
-  
+
   const rewardsMythicPerWeek0 = await MYTHIC_CONTRACT0.mythicPerBlock() /1e18
       * 604800 / 3;
 
@@ -41,7 +40,7 @@ async function main() {
   await loadMagicContract(App, tokens, prices, MAGIC_CONTRACT, MAGIC_ADDR, MAGIC_ABI, "MAGIC",
       "magic", null, rewardsMagicPerWeek, "pendingRewards");
 
-  hideLoading();  
+  hideLoading();
 }
 
 async function loadMagicContract(App, tokens, prices, contract, contractAddress, abi, rewardTokenTicker,
@@ -59,8 +58,8 @@ async function loadMagicContract(App, tokens, prices, contract, contractAddress,
 
   const rewardTokenAddress = await chefContract.callStatic[rewardTokenFunction]();
   const rewardToken = await getBscToken(App, rewardTokenAddress, contractAddress);
-  const rewardsPerWeek = rewardsPerWeekFixed ?? 
-    await chefContract.callStatic[rewardsPerBlockFunction]() 
+  const rewardsPerWeek = rewardsPerWeekFixed ??
+    await chefContract.callStatic[rewardsPerBlockFunction]()
     / 10 ** rewardToken.decimals * 604800 / 3
 
   const poolMagicInfos = await Promise.all([...Array(poolCount).keys()].map(async (x) =>
@@ -73,7 +72,7 @@ async function loadMagicContract(App, tokens, prices, contract, contractAddress,
   }));
 
   const poolPrices = poolMagicInfos.map(poolInfo => poolInfo.poolToken ? getPoolPrices(tokens, prices, poolInfo.poolToken) : undefined);
-    
+
   for (i = 0; i < poolCount; i++) {
     if (poolPrices[i]) {
       printChefPool(App, abi, contractAddress, prices, tokens, poolMagicInfos[i], i, poolPrices[i],
@@ -86,7 +85,7 @@ async function loadMagicContract(App, tokens, prices, contract, contractAddress,
 async function loadMythicContract(App, tokens, prices, contract, contractAddress, abi, rewardTokenTicker,
   rewardTokenFunction, rewardsPerBlockFunction, rewardsPerWeekFixed, pendingRewardsFunction) {
   const chefContract = contract ?? new ethers.Contract(contractAddress, abi, App.provider);
-  
+
   _print(`Found 2 pools.\n`)
 
   _print(`Showing incentivized pools only.\n`);
@@ -95,8 +94,8 @@ async function loadMythicContract(App, tokens, prices, contract, contractAddress
 
   const rewardTokenAddress = await chefContract.callStatic[rewardTokenFunction]();
   const rewardToken = await getBscToken(App, rewardTokenAddress, contractAddress);
-  const rewardsPerWeek = rewardsPerWeekFixed ?? 
-    await chefContract.callStatic[rewardsPerBlockFunction]() 
+  const rewardsPerWeek = rewardsPerWeekFixed ??
+    await chefContract.callStatic[rewardsPerBlockFunction]()
     / 10 ** rewardToken.decimals * 604800 / 3
 
   const mythicInfo = await getBscMythicPoolInfo(App, chefContract, contractAddress, pendingRewardsFunction);
@@ -115,12 +114,12 @@ async function loadMythicContract(App, tokens, prices, contract, contractAddress
   function printMythicPool(prices, poolInfo, poolPrices, rewardsPerWeek, rewardTokenTicker, rewardTokenAddress) {
     const rewardPrice = getParameterCaseInsensitive(prices, rewardTokenAddress)?.usd;
     poolPrices.print_price();
-    printAPR(rewardTokenTicker, rewardPrice, rewardsPerWeek, poolPrices.stakeTokenTicker, 
+    printAPR(rewardTokenTicker, rewardPrice, rewardsPerWeek, poolPrices.stakeTokenTicker,
       poolPrices.staked_tvl, poolInfo.userStaked, poolPrices.price, 2);
     if (poolInfo.userStaked > 0) poolPrices.print_contained_price(poolInfo.userStaked);
   }
 
-  async function getBscMagicPoolInfo(app, chefContract, chefAddress, poolIndex, pendingRewardsFunction) {  
+  async function getBscMagicPoolInfo(app, chefContract, chefAddress, poolIndex, pendingRewardsFunction) {
     const poolInfo = await chefContract.poolInfo(poolIndex);
     const lpToken = await chefContract.magic();
     const poolToken = await getBscToken(app, lpToken, chefAddress);
@@ -136,8 +135,8 @@ async function loadMythicContract(App, tokens, prices, contract, contractAddress
         lastRewardBlock : poolInfo.lastRewardBlock
     };
   }
-  
-  async function getBscMythicPoolInfo(app, chefContract, chefAddress, pendingRewardsFunction) {  
+
+  async function getBscMythicPoolInfo(app, chefContract, chefAddress, pendingRewardsFunction) {
     const poolInfo = await chefContract.liquidityMining();
     const poolToken = await getBscToken(app, poolInfo.lpToken, chefAddress);
     const userInfo = await chefContract.userInfo(app.YOUR_ADDRESS);
