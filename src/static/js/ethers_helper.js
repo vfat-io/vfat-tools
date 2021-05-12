@@ -1394,6 +1394,8 @@ function getUniPrices(tokens, prices, pool)
   else if (pool.symbol.includes("PGL")) stakeTokenTicker += " PGL";
   else if (pool.symbol.includes("CS-LP")) stakeTokenTicker += " CSS LP";
   else if (pool.symbol.includes("DFYN")) stakeTokenTicker += " DFYN LP";
+  else if (pool.symbol.includes("SPIRIT")) stakeTokenTicker += " SPIRIT LP";
+  else if (pool.symbol.includes("spLP")) stakeTokenTicker += " SPOOKY LP";
   else stakeTokenTicker += " Uni LP";
   return {
       t0: t0,
@@ -1432,6 +1434,8 @@ function getUniPrices(tokens, prices, pool)
               pool.symbol.includes("PGL") ?  `https://info.pangolin.exchange/#/pair/${pool.address}` :
               pool.symbol.includes("CS-LP") ?  `https://app.coinswap.space/#/` :
               pool.name.includes("Value LP") ?  `https://info.vswap.fi/pool/${pool.address}` :
+              pool.symbol.includes("SPIRIT") ?  `https://swap.spiritswap.finance/#/swap` :
+              pool.symbol.includes("spLP") ?  `https://info.spookyswap.finance/pair/${pool.address}` :
               chain == "matic" ? `https://info.quickswap.exchange/pair/${pool.address}` :
             `http://uniswap.info/pair/${pool.address}`;
           const helperUrls = pool.is1inch ? [] :
@@ -1469,6 +1473,16 @@ function getUniPrices(tokens, prices, pool)
             `https://app.sushi.com/add/${t0address}/${t1address}`,
             `https://app.sushi.com/remove/${t0address}/${t1address}`,
             `https://app.sushi.com/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+          ] :
+          pool.symbol.includes("SPIRIT") ? [
+            `https://swap.spiritswap.finance/add/${t0address}/${t1address}`,
+            `https://swap.spiritswap.finance/remove/${t0address}/${t1address}`,
+            `https://swap.spiritswap.finance/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+          ] :
+          pool.symbol.includes("spLP") ? [
+            `https://spookyswap.finance/add/${t0address}/${t1address}`,
+            `https://spookyswap.finance/remove/${t0address}/${t1address}`,
+            `https://spookyswap.finance/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
           ] :
           t0.symbol.includes("COMFI") ? [
             `https://app.uniswap.org/#/add/v2/${t0address}/${t1address}`,
