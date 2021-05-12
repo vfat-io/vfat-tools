@@ -1,6 +1,5 @@
 $(function() {
-  consoleInit();
-  start(main);
+  consoleInit(main)
 });
 const ONEINCH=  [{
   token1: "1INCH",
@@ -49,7 +48,7 @@ const ONEINCH=  [{
   farmingAddress: "0xe22f6a5dd9e491dfab49faefdb32d01aaf99703e",
 }]
 
-const Pools = ONEINCH.map(a => { 
+const Pools = ONEINCH.map(a => {
   return {
     address: a.farmingAddress,
     abi: _1INCH_FARMING_ABI,
@@ -73,6 +72,6 @@ async function main() {
   if (p.totalUserStaked > 0) {
     _print(`You are staking a total of $${formatMoney(p.totalUserStaked)} at an APR of ${(p.totalAPR * 100).toFixed(2)}%\n`);
   }
-  
+
   hideLoading();
 }

@@ -1,8 +1,7 @@
 $(function() {
-    consoleInit();
-    start(main);
+consoleInit(main)
   });
-  
+
 const RULER_POOL_ABI = [{"inputs":[],"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":true,"internalType":"address","name":"lpToken","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"Deposit","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"previousOwner","type":"address"},{"indexed":true,"internalType":"address","name":"newOwner","type":"address"}],"name":"OwnershipTransferred","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"bool","name":"old","type":"bool"},{"indexed":false,"internalType":"bool","name":"_new","type":"bool"}],"name":"PausedStatusUpdated","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":true,"internalType":"address","name":"lpToken","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"Withdraw","type":"event"},{"inputs":[{"internalType":"address","name":"_lpToken","type":"address"},{"internalType":"address","name":"_bonusTokenAddr","type":"address"},{"internalType":"uint48","name":"_startTime","type":"uint48"},{"internalType":"uint256","name":"_weeklyRewards","type":"uint256"},{"internalType":"uint256","name":"_transferAmount","type":"uint256"}],"name":"addBonus","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address[]","name":"_lpTokens","type":"address[]"},{"internalType":"address[]","name":"_bonusTokenAddrs","type":"address[]"},{"internalType":"address[]","name":"_authorizers","type":"address[]"}],"name":"addPoolsAndAllowBonus","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address[]","name":"_lpTokens","type":"address[]"}],"name":"claimRewardsForPools","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"_token","type":"address"},{"internalType":"address","name":"_lpToken","type":"address"},{"internalType":"uint256","name":"_poolBonusId","type":"uint256"}],"name":"collectDust","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"_lpToken","type":"address"},{"internalType":"uint256","name":"_amount","type":"uint256"}],"name":"deposit","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address[]","name":"_lpTokens","type":"address[]"}],"name":"emergencyWithdraw","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"_lpToken","type":"address"},{"internalType":"uint256","name":"_poolBonusId","type":"uint256"},{"internalType":"address","name":"_bonusTokenAddr","type":"address"},{"internalType":"uint256","name":"_transferAmount","type":"uint256"}],"name":"extendBonus","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"_lpToken","type":"address"},{"internalType":"address","name":"_bonusTokenAddr","type":"address"}],"name":"getAuthorizers","outputs":[{"internalType":"address[]","name":"","type":"address[]"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"_lpToken","type":"address"}],"name":"getPool","outputs":[{"components":[{"components":[{"internalType":"address","name":"bonusTokenAddr","type":"address"},{"internalType":"uint48","name":"startTime","type":"uint48"},{"internalType":"uint48","name":"endTime","type":"uint48"},{"internalType":"uint256","name":"weeklyRewards","type":"uint256"},{"internalType":"uint256","name":"accRewardsPerToken","type":"uint256"},{"internalType":"uint256","name":"remBonus","type":"uint256"}],"internalType":"struct IBonusRewards.Bonus[]","name":"bonuses","type":"tuple[]"},{"internalType":"uint256","name":"lastUpdatedAt","type":"uint256"}],"internalType":"struct IBonusRewards.Pool","name":"","type":"tuple"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getPoolList","outputs":[{"internalType":"address[]","name":"","type":"address[]"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getResponders","outputs":[{"internalType":"address[]","name":"","type":"address[]"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"_lpToken","type":"address"},{"internalType":"address","name":"_account","type":"address"}],"name":"getUser","outputs":[{"components":[{"internalType":"uint256","name":"amount","type":"uint256"},{"internalType":"uint256[]","name":"rewardsWriteoffs","type":"uint256[]"}],"internalType":"struct IBonusRewards.User","name":"","type":"tuple"},{"internalType":"uint256[]","name":"","type":"uint256[]"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"owner","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"paused","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"renounceOwnership","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"bool","name":"_paused","type":"bool"}],"name":"setPaused","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address[]","name":"_responders","type":"address[]"}],"name":"setResponders","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"newOwner","type":"address"}],"name":"transferOwnership","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"_lpToken","type":"address"},{"internalType":"address","name":"_bonusTokenAddr","type":"address"},{"internalType":"uint256","name":"_weeklyRewards","type":"uint256"},{"internalType":"uint48","name":"_startTime","type":"uint48"}],"name":"updateBonus","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"_lpToken","type":"address"},{"internalType":"address","name":"_user","type":"address"}],"name":"viewRewards","outputs":[{"internalType":"uint256[]","name":"","type":"uint256[]"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"_lpToken","type":"address"},{"internalType":"uint256","name":"_amount","type":"uint256"}],"name":"withdraw","outputs":[],"stateMutability":"nonpayable","type":"function"}]
 
 async function getRulerPoolInfo(App, pool, lpAddress) {
@@ -12,12 +11,12 @@ async function getRulerPoolInfo(App, pool, lpAddress) {
       pool.viewRewards(lpAddress, App.YOUR_ADDRESS)
     ]);
     const poolToken = await getToken(App, lpAddress, pool.address);
-    return { 
-      poolToken, 
-      rewardsPerWeek : poolInfo.bonuses.map(b => b.weeklyRewards / 1e18), 
+    return {
+      poolToken,
+      rewardsPerWeek : poolInfo.bonuses.map(b => b.weeklyRewards / 1e18),
       rewardTokenAddresses : poolInfo.bonuses.map(b => b.bonusTokenAddr),
-      totalDeposited : poolToken.staked, 
-      userStaked : userInfo.amount / 1e18, 
+      totalDeposited : poolToken.staked,
+      userStaked : userInfo.amount / 1e18,
       userUnclaimed : rewards.map(r =>  r / 1e18)
     }
 }
@@ -157,42 +156,42 @@ const xRuler_withdraw = async function(xRulerAbi, xRulerAddress, App) {
 }
 
 function printRulerContractLinks(App, rulerAbi, rulerAddr, lpAddress, lpAddress,
-    rewardTokenTickers, stakeTokenTicker, unstaked, userStaked, 
+    rewardTokenTickers, stakeTokenTicker, unstaked, userStaked,
     earnedTokens, rewardTokenPrices) {
   let fixedDecimals = 2;
   const approveAndDeposit = async function() {
     return rulerContract_deposit(rulerAbi, rulerAddr, lpAddress, lpAddress, App)
-  }      
+  }
   const withdraw = async function() {
     return rulerContract_withdraw(rulerAbi, rulerAddr, lpAddress, App)
-  }      
+  }
   const claim = async function() {
     return rulerContract_claim(rulerAbi, rulerAddr, lpAddress, App)
-  }    
+  }
   const etherscanUrl = `<a href='https://etherscan.io/address/${lpAddress}' target='_blank'>Staking Contract</a>`;
   _print(etherscanUrl);
   _print_link(`Deposit ${unstaked.toFixed(fixedDecimals)} ${stakeTokenTicker}`, approveAndDeposit)
   _print_link(`Withdraw ${userStaked.toFixed(fixedDecimals)} ${stakeTokenTicker}`, withdraw)
   let claimText = "";
   for (let i = 0; i < rewardTokenTickers.length; i++) {
-    claimText += `${earnedTokens[i].toFixed(fixedDecimals)} ${rewardTokenTickers[i]} ($${formatMoney(earnedTokens[i]*rewardTokenPrices[i])}`
+    claimText += `${earnedTokens[i].toFixed(fixedDecimals)} ${rewardTokenTickers[i]} ($${formatMoney(earnedTokens[i]*rewardTokenPrices[i])}) `
   }
   _print_link(`Claim ${claimText}`, claim);
   _print(`Staking or unstaking also claims rewards.`)
   _print(`\n`);
 }
 
-function printRulerPool(App, rulerAbi, rulerAddr, tokens, prices, poolInfo, lpAddress, poolPrices) { 
+function printRulerPool(App, rulerAbi, rulerAddr, tokens, prices, poolInfo, lpAddress, poolPrices) {
   const rewardPrices = poolInfo.rewardTokenAddresses.map(a => getParameterCaseInsensitive(prices, a)?.usd);
   const rewardTokenTickers = poolInfo.rewardTokenAddresses.map( a => getParameterCaseInsensitive(tokens, a).symbol);
   poolPrices.print_price();
   for (let i = 0; i < rewardTokenTickers.length; i++) {
-    printAPR(rewardTokenTickers[i], rewardPrices[i], poolInfo.rewardsPerWeek[i], poolPrices.stakeTokenTicker, 
+    printAPR(rewardTokenTickers[i], rewardPrices[i], poolInfo.rewardsPerWeek[i], poolPrices.stakeTokenTicker,
       poolPrices.staked_tvl, poolInfo.userStaked, poolPrices.price, 2);
   }
   if (poolInfo.userStaked > 0) poolPrices.print_contained_price(poolInfo.userStaked);
   printRulerContractLinks(App, rulerAbi, rulerAddr, lpAddress, poolInfo.poolToken.address,
-    rewardTokenTickers, poolPrices.stakeTokenTicker, poolInfo.poolToken.unstaked, 
+    rewardTokenTickers, poolPrices.stakeTokenTicker, poolInfo.poolToken.unstaked,
     poolInfo.userStaked, poolInfo.userUnclaimed, rewardPrices);
 }
 
@@ -214,16 +213,16 @@ async function loadXRuler(App, tokens, prices) {
   _print(etherscanUrl);
   const approveAndDeposit = async function() {
     return xRuler_deposit(XRULER_ABI, XRULER_ADDRESS, rulerAddress, App);
-  }      
+  }
   const withdraw = async function() {
     return xRuler_withdraw(XRULER_ABI, XRULER_ADDRESS, App)
-  }      
+  }
   _print_link(`Deposit ${ruler.unstaked.toFixed(2)} RULER`, approveAndDeposit)
   _print_link(`Withdraw ${(userBalance / 1e18).toFixed(2)} xRULER`, withdraw)
   _print(`\n`);
 }
 
-async function main() {  
+async function main() {
   const App = await init_ethers();
   const tokens = {};
   const prices = {};
@@ -235,23 +234,32 @@ async function main() {
   const RULER_POOL = new ethcall.Contract(RULER_POOL_ADDRESS, RULER_POOL_ABI);
   const [lpAddresses] = await App.ethcallProvider.all([RULER_POOL.getPoolList()]);
 
-  const poolInfos = await Promise.all(lpAddresses.map(async (x) =>
-    await getRulerPoolInfo(App, RULER_POOL, x)));
-  
-  var tokenAddresses = [].concat.apply([], poolInfos.filter(x => x.poolToken).map(x => 
+  const poolInfos = await Promise.all(lpAddresses.map(async (x) => {
+    try {
+      return await getRulerPoolInfo(App, RULER_POOL, x)
+    }
+    catch (ex) {
+      console.log(`Error loading pool ${x}, ${ex}`);
+      return null;
+    }
+  }));
+
+  var tokenAddresses = [].concat.apply([], poolInfos.filter(x => x?.poolToken).map(x =>
     x.poolToken.tokens.concat(x.rewardTokenAddresses)));
   await getNewPricesAndTokens(App, tokens, prices, tokenAddresses, RULER_POOL_ADDRESS);
 
-  const poolPrices = poolInfos.map(poolInfo => getPoolPrices(tokens, prices, poolInfo.poolToken));
+  const poolPrices = poolInfos.map(poolInfo => poolInfo?.poolToken ? getPoolPrices(tokens, prices, poolInfo.poolToken) : null);
 
   _print("Finished reading smart contracts.\n");
-    
+
   for (i = 0; i < poolPrices.length; i++) {
-      printRulerPool(App, RULER_POOL_ABI, RULER_POOL_ADDRESS, tokens, prices, 
+    if (poolPrices[i]) {
+      printRulerPool(App, RULER_POOL_ABI, RULER_POOL_ADDRESS, tokens, prices,
         poolInfos[i], lpAddresses[i], poolPrices[i]);
+    }
   }
 
   await loadXRuler(App, tokens, prices);
-  
-  hideLoading();  
+
+  hideLoading();
 }

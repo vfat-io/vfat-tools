@@ -1,8 +1,7 @@
 $(function() {
-    consoleInit();
-    start(main);
+consoleInit(main)
 });
-  
+
 async function main() {
     await loadBasisFork(Basis.OneCash);
 }

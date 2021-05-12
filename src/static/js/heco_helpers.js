@@ -58,9 +58,9 @@ async function getHecoStoredToken(App, tokenAddress, stakingAddress, type) {
     case "uniswap": 
       const pool = new ethers.Contract(tokenAddress, UNI_ABI, App.provider);
       return await getHecoUniPool(App, pool, tokenAddress, stakingAddress);
-    case "hrc20":
-      const hrc20 = new ethers.Contract(tokenAddress, ERC20_ABI, App.provider);
-      return await getHec20(App, hrc20, tokenAddress, stakingAddress);
+    case "erc20":
+      const erc20 = new ethers.Contract(tokenAddress, ERC20_ABI, App.provider);
+      return await getHec20(App, erc20, tokenAddress, stakingAddress);
   }
 }
 
@@ -80,11 +80,11 @@ async function getHecoToken(App, tokenAddress, stakingAddress) {
     catch(err) {
     }
     try {
-      const hrc20 = new ethers.Contract(tokenAddress, ERC20_ABI, App.provider);
-      const _name = await hrc20.name();
-      const hrc20tok = await getHec20(App, hrc20, tokenAddress, stakingAddress);
-      window.localStorage.setItem(tokenAddress, "hrc20");
-      return hrc20tok;
+      const erc20 = new ethers.Contract(tokenAddress, ERC20_ABI, App.provider);
+      const _name = await erc20.name();
+      const erc20tok = await getHec20(App, erc20, tokenAddress, stakingAddress);
+      window.localStorage.setItem(tokenAddress, "erc20");
+      return erc20tok;
     }
     catch(err) {
       console.log(err);

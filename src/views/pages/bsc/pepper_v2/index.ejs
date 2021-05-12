@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include(`${partials}/head`); -%>
+
+<body>
+<%- include(`${partials}/header_main`); -%>
+<pre id="log">
+*************** 👨‍🌶️ UNOFFICIAL PEPPER FINANCE v2 FARMING CALCULATOR 👨‍🌶️ *****************
+Farms : <a href="https://app.pepr.finance">https://app.pepr.finance</a> | <a href="https://t.me/pepper_finance">Telegram</a> 
+*********************************************************************************************
+
+</pre>
+<div class="loader--1"></div>
+<%- include(`${partials}/scripts`, {scriptname: 'bsc_pepper_v2'}); -%>
+</body>
+</html>

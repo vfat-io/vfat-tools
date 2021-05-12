@@ -1,23 +1,22 @@
 $(function() {
-    consoleInit();
-    start(main);
+    consoleInit(main)
 });
-  
-async function loadPool(App, tokens, prices, stakingAbi, stakingAddress, 
+
+async function loadPool(App, tokens, prices, stakingAbi, stakingAddress,
         rewardTokenFunction, stakeTokenFunction) {
     const STAKING_POOL = new ethers.Contract(stakingAddress, stakingAbi, App.provider);
-  
+
     const stakeTokenAddress = await STAKING_POOL.callStatic[stakeTokenFunction]();
-    
+
     const rewardTokenAddress = await STAKING_POOL.callStatic[rewardTokenFunction]();
-    
+
     var stakeToken = await getToken(App, stakeTokenAddress, stakingAddress);
-  
+
     if (stakeTokenAddress.toLowerCase() == rewardTokenAddress.toLowerCase()) {
         stakeToken.staked = await STAKING_POOL.totalSupply() / 10 ** stakeToken.decimals;
     }
-  
-    var newPriceAddresses = stakeToken.tokens.filter(x => 
+
+    var newPriceAddresses = stakeToken.tokens.filter(x =>
         !getParameterCaseInsensitive(prices, x));
     var newPrices = await lookUpTokenPrices(newPriceAddresses);
     for (const key in newPrices) {
@@ -27,7 +26,7 @@ async function loadPool(App, tokens, prices, stakingAbi, stakingAddress,
     if (stakeTokenFunction == "SUSD") {
         prices[stakeTokenAddress] = { usd : 1 }; //...
     }
-    var newTokenAddresses = stakeToken.tokens.filter(x => 
+    var newTokenAddresses = stakeToken.tokens.filter(x =>
         !getParameterCaseInsensitive(tokens,x));
     for (const address of newTokenAddresses) {
         tokens[address] = await getToken(App, address, stakingAddress);
@@ -36,30 +35,30 @@ async function loadPool(App, tokens, prices, stakingAbi, stakingAddress,
         tokens[rewardTokenAddress] = await getToken(App, rewardTokenAddress, stakingAddress);
     }
     const rewardToken = getParameterCaseInsensitive(tokens, rewardTokenAddress);
-  
+
     const rewardTokenTicker = rewardToken.symbol;
-    
+
     const poolPrices = getPoolPrices(tokens, prices, stakeToken);
-  
+
     const stakingTokenTicker = poolPrices.stakingTokenTicker;
-  
-    const stakeTokenPrice = 
-        prices[stakeTokenAddress]?.usd ?? getParameterCaseInsensitive(prices, stakeTokenAddress)?.usd; 
+
+    const stakeTokenPrice =
+        prices[stakeTokenAddress]?.usd ?? getParameterCaseInsensitive(prices, stakeTokenAddress)?.usd;
     const rewardTokenPrice = getParameterCaseInsensitive(prices, rewardTokenAddress)?.usd;
-  
+
     // Find out reward rate
     const weeklyRewards = await get_synth_weekly_rewards(STAKING_POOL);
-  
+
     const usdPerWeek = weeklyRewards * rewardTokenPrice;
-  
+
     const staked_tvl = poolPrices.staked_tvl;
-    
+
     const userStaked = await STAKING_POOL.balanceOf(App.YOUR_ADDRESS) / 10 ** stakeToken.decimals;
-  
+
     const userUnstaked = stakeToken.unstaked;
-  
+
     const earned = await STAKING_POOL.earned(App.YOUR_ADDRESS) / 10 ** rewardToken.decimals;
-  
+
     poolPrices.print_price();
     _print(`${rewardTokenTicker} Per Week: ${weeklyRewards.toFixed(2)} ($${formatMoney(usdPerWeek)})`);
     const weeklyAPR = usdPerWeek / staked_tvl * 100;
@@ -80,9 +79,9 @@ async function loadPool(App, tokens, prices, stakingAbi, stakingAddress,
             + ` Week ${userWeeklyRewards.toFixed(2)} ($${formatMoney(userWeeklyRewards*rewardTokenPrice)})`
             + ` Year ${userYearlyRewards.toFixed(2)} ($${formatMoney(userYearlyRewards*rewardTokenPrice)})`);
     }
-    const allowance = 
+    const allowance =
         stakeTokenFunction == "lpt" ? userUnstaked : Math.min(20000 - userStaked, userUnstaked);
-    const maxAllowance = 
+    const maxAllowance =
         stakeTokenFunction == "lpt" ? null : ethers.BigNumber.from(20000).pow(stakeToken.decimals);
     const approveTENDAndStake = async function() {
       return rewardsContract_stake(stakeTokenAddress, stakingAddress, App, maxAllowance)
@@ -142,7 +141,7 @@ async function loadBoardroom(App, tokens, prices) {
             _print(`The following figures are approximate as they are not using the official TWAP.`);
             _print(`There will be ${newTokens.toFixed(2)} BCC issued at next expansion.`);
             const rewardPrice = getParameterCaseInsensitive(prices, REWARD_TOKEN_ADDRESS).usd;
-            const boardReturn = newTokens * rewardPrice / totalStakedUsd * 100; 
+            const boardReturn = newTokens * rewardPrice / totalStakedUsd * 100;
             _print(`Boardroom APR: Day ${(boardReturn).toFixed(2)}% Week ${(boardReturn * 7).toFixed(2)}% Year ${(boardReturn * 365).toFixed(2)}%`)
         }
     }
@@ -163,7 +162,7 @@ async function loadBoardroom(App, tokens, prices) {
 
 async function main() {
 
-    const CONTRACTS = [      
+    const CONTRACTS = [
         Contracts.BASIS_COIN.DAIBCSLPTokenSharePool,
         Contracts.BASIS_COIN.DAIBCCLPTokenSharePool,
         Contracts.BASIS_COIN.BCCBACPool,
@@ -173,15 +172,15 @@ async function main() {
         Contracts.BASIS_COIN.BCCESDPool,
         Contracts.BASIS_COIN.BCCUSDCPool
     ];
-  
+
     const App = await init_ethers();
-  
+
     _print(`Initialized ${App.YOUR_ADDRESS}`);
     _print("Reading smart contracts...\n");
-  
+
     var tokens = {};
     var prices = {};
-  
+
     for (const c of CONTRACTS) {
         try {
             await loadPool(App, tokens, prices, c.abi, c.address, c.rewardToken, c.stakeToken);
@@ -192,6 +191,6 @@ async function main() {
     }
 
     //await loadBoardroom(App, tokens, prices);
-  
+
     hideLoading();
   }

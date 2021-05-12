@@ -1,11 +1,10 @@
 $(function() {
-  consoleInit();
-  start(main);
+consoleInit(main)
 });
 
 const CYC_CHEF_ABI = [{"inputs":[{"internalType":"contract IMintableToken","name":"_cycToken","type":"address"},{"internalType":"contract IERC20","name":"_lpToken","type":"address"},{"internalType":"address","name":"_router","type":"address"},{"internalType":"contract IERC20","name":"_wrappedCoin","type":"address"}],"payable":false,"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"fee","type":"uint256"}],"name":"Deposit","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"EmergencyWithdraw","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"previousOwner","type":"address"},{"indexed":true,"internalType":"address","name":"newOwner","type":"address"}],"name":"OwnershipTransferred","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"},{"indexed":false,"internalType":"bool","name":"isBlockReward","type":"bool"}],"name":"RewardAdded","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"Withdraw","type":"event"},{"constant":true,"inputs":[],"name":"accCYCPerShare","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"cycToken","outputs":[{"internalType":"contract IMintableToken","name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"internalType":"uint256","name":"_amount","type":"uint256"}],"name":"deposit","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[],"name":"emergencyWithdraw","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"entranceFeeRate","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"lastRewardBlock","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"lpToken","outputs":[{"internalType":"contract IERC20","name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"owner","outputs":[{"internalType":"address","name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"internalType":"address","name":"_user","type":"address"}],"name":"pendingReward","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"rewardPerBlock","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"rewardToDistribute","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"router","outputs":[{"internalType":"contract IRouter","name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"internalType":"uint256","name":"_entranceFeeRate","type":"uint256"}],"name":"setEntranceFeeRate","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"internalType":"uint256","name":"_rewardPerBlock","type":"uint256"}],"name":"setRewardPerBlock","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"internalType":"address","name":"newOwner","type":"address"}],"name":"transferOwnership","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[],"name":"updateBlockReward","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"userInfo","outputs":[{"internalType":"uint256","name":"amount","type":"uint256"},{"internalType":"uint256","name":"rewardDebt","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"internalType":"uint256","name":"_amount","type":"uint256"}],"name":"withdraw","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"wrappedCoin","outputs":[{"internalType":"contract IERC20","name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"}]
-  
-async function main() {  
+
+async function main() {
   const App = await init_ethers();
 
   _print(`Initialized ${App.YOUR_ADDRESS}\n`);
@@ -20,11 +19,11 @@ async function main() {
   await loadCycloneContract(App, CYC_CHEF, CYC_CHEF_ADDR, CYC_CHEF_ABI, rewardTokenTicker,
       "cycToken", null, rewardsPerWeek, "pendingReward");
 
-  hideLoading();  
+  hideLoading();
 }
 
 async function loadCycloneContract(App, chef, chefAddress, chefAbi, rewardTokenTicker,
-  rewardTokenFunction, rewardsPerBlockFunction, rewardsPerWeekFixed, pendingRewardsFunction, 
+  rewardTokenFunction, rewardsPerBlockFunction, rewardsPerWeekFixed, pendingRewardsFunction,
   extraPrices, showAll) {
 const chefContract = chef ?? new ethers.Contract(chefAddress, chefAbi, App.provider);
 
@@ -38,8 +37,8 @@ var tokens = {};
 
 const rewardTokenAddress = await chefContract.callStatic[rewardTokenFunction]();
 const rewardToken = await getToken(App, rewardTokenAddress, chefAddress);
-const rewardsPerWeek = rewardsPerWeekFixed ?? 
-  await chefContract.callStatic[rewardsPerBlockFunction]() 
+const rewardsPerWeek = rewardsPerWeekFixed ??
+  await chefContract.callStatic[rewardsPerBlockFunction]()
   / 10 ** rewardToken.decimals * 604800 / 13.5
 
 const poolInfos = await Promise.all([...Array(poolCount).keys()].map(async (x) =>
@@ -62,7 +61,7 @@ await Promise.all(tokenAddresses.map(async (address) => {
 const poolPrices = poolInfos.map(poolInfo => poolInfo.poolToken ? getPoolPrices(tokens, prices, poolInfo.poolToken) : undefined);
 
 _print("Finished reading smart contracts.\n");
-  
+
 let aprs = []
 for (let i = 0; i < poolCount; i++) {
   if (poolPrices[i]) {
@@ -94,7 +93,7 @@ if (totalUserStaked > 0) {
 return { prices, totalUserStaked, totalStaked, averageApr }
 }
 
-async function getCyclonePoolInfo(app, chefContract, chefAddress, pendingRewardsFunction, showAll=false) {  
+async function getCyclonePoolInfo(app, chefContract, chefAddress, pendingRewardsFunction, showAll=false) {
 const lpTokenAddress = await chefContract.lpToken();
 const lastRewardBlock = await chefContract.lastRewardBlock();
 const poolToken = await getToken(app, lpTokenAddress, chefAddress);
@@ -110,9 +109,9 @@ return {
 };
 }
 
-function printCyclonePool(App, chefAbi, chefAddr, prices, tokens, poolInfo, poolIndex, poolPrices, 
+function printCyclonePool(App, chefAbi, chefAddr, prices, tokens, poolInfo, poolIndex, poolPrices,
                      rewardsPerWeek, rewardTokenTicker, rewardTokenAddress,
-                     pendingRewardsFunction, fixedDecimals, claimFunction, chain="eth") {  
+                     pendingRewardsFunction, fixedDecimals, claimFunction, chain="eth") {
 fixedDecimals = fixedDecimals ?? 2;
 const sp = (poolInfo.stakedToken == null) ? null : getPoolPrices(tokens, prices, poolInfo.stakedToken);
 var poolRewardsPerWeek = rewardsPerWeek;
@@ -122,12 +121,12 @@ const rewardPrice = getParameterCaseInsensitive(prices, rewardTokenAddress)?.usd
 const staked_tvl = sp?.staked_tvl ?? poolPrices.staked_tvl;
 poolPrices.print_price();
 sp?.print_price();
-const apr = printAPR(rewardTokenTicker, rewardPrice, poolRewardsPerWeek, poolPrices.stakeTokenTicker, 
+const apr = printAPR(rewardTokenTicker, rewardPrice, poolRewardsPerWeek, poolPrices.stakeTokenTicker,
   staked_tvl, userStaked, poolPrices.price, fixedDecimals);
 if (poolInfo.userLPStaked > 0) sp?.print_contained_price(userStaked);
 if (poolInfo.userStaked > 0) poolPrices.print_contained_price(userStaked);
 printChefContractLinks(App, chefAbi, chefAddr, poolIndex, poolInfo.address, pendingRewardsFunction,
-  rewardTokenTicker, poolPrices.stakeTokenTicker, poolInfo.poolToken.unstaked, 
+  rewardTokenTicker, poolPrices.stakeTokenTicker, poolInfo.poolToken.unstaked,
   poolInfo.userStaked, poolInfo.pendingRewardTokens, fixedDecimals, claimFunction, rewardPrice, chain);
 return apr;
 }

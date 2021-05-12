@@ -1,13 +1,12 @@
 $(function() {
-    consoleInit();
-    start(main);
+consoleInit(main)
   });
 
 
-async function main() {   
+async function main() {
     const App = await init_ethers();
     const signer = App.provider.getSigner();
-  
+
     _print(`Initialized ${App.YOUR_ADDRESS}`);
     _print("Reading smart contracts...\n");
 
@@ -24,12 +23,12 @@ async function main() {
     let amountDisplay = ethers.BigNumber.from(claimInfo.amount) / 1e18;
     let proof = claimInfo.proof;
     _print(`Total PercentIOU: ${amountDisplay}`);
-    
+
     let claimed = await distributor.isClaimed(index);
     if (claimed === true) {
         _print(`You have claimed your allocated PercentIOU.`);
     }
-    else {            
+    else {
         const claim = async function() {
             return await distributor.claim(index, App.YOUR_ADDRESS, amount, proof)
         }
