@@ -38,6 +38,7 @@ const main = async() => {
         ["Dfyn         ",`<a href="dfyn"          >Various</a>`,"DFYN   ","https://exchange.dfyn.network"],
         ["Jurassic     ",`<a href="jurassic"      >Various</a>`,"RAPTOR ","https://www.jurassicfarm.app"],
         ["Ape Community",`<a href="ape_community" >Various</a>`,"KONG   ","https://ape.community"],
+        ["Beefy        ",`<a href="beefy"         >Various</a>`,"Various","https://polygon.beefy.finance"],
       ]
   }
 
