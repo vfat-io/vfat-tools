@@ -50,6 +50,12 @@ const main = async() => {
         "FROYO",
         "https://frozenyogurt.finance"
       ],
+      [
+        "Ghost",
+        `<a href='ghost'>Various</a>`,
+        "GHOST",
+        "https://www.theghost.finance"
+      ],
     ]
   }
 
