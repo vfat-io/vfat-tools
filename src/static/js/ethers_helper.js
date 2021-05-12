@@ -262,6 +262,30 @@ const _print = function(message) {
   }
 }
 
+const printMessage = function(message) {
+  let str = ''
+    if (typeof message == 'object') {
+      str +=
+        (JSON && JSON.stringify ? JSON.stringify(message, undefined, 2) : message) + '<br />'
+    } else {
+      str += message + '<br />'
+    }
+  return str;
+}
+
+const _print_withID = function(message, id) {
+  if (id) {
+    document.getElementById(id).innerHTML=printMessage(message);
+  } else {
+    id = ID();
+    if (!logger) {
+      logger = document.getElementById('log')
+    }
+    logger.innerHTML += `<div id="${id}">` + printMessage(message) + "</div>"
+  }
+  return id;
+}
+
 const _print_bold = function(message) {
   if (!logger) {
     logger = document.getElementById('log')
