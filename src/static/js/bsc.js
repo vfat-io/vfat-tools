@@ -247,6 +247,7 @@ const main = async() => {
       ["Elixir              ", `<a href="elixir"        >Various</a>`,"ELXR          ","https://www.elixir-swap.io"],
       ["Sunflower           ", `<a href="sunflower"     >Various</a>`,"SUNFLOWER     ","https://sunflowerfarming.us"],
       ["Fishstix            ", `<a href="fishstix"      >Various</a>`,"FSTX          ","http://fishstix.finance"],
+      ["Wasabix            ", `<a href="wasabix"      >Various</a>`,"WASABI          ","https://bsc.wasabix.finance"]
     ]
   }
 
