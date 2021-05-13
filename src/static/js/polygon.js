@@ -23,7 +23,6 @@ const main = async() => {
         ["Polyvolve    ",`<a href="polyvolve"     >Various</a>`,"SPEAR  ","https://polyvolve.finance"],
         ["Polygaj      ",`<a href="polygaj"       >Various</a>`,"GAJ    ","https://polygaj.finance"],
         ["Galaxy       ",`<a href="galaxy"        >Various</a>`,"Various","https://galaxyfarm.routerprotocol.com"],
-        ["Zenko        ",`<a href="zenko"         >Various</a>`,"ZENKO  ","https://app.zenko.finance"],
         ["GameSwap     ",`<a href="gameswap"      >Various</a>`,"STONK  ","https://gameswapfinance.com"],
         ["Blackswap    ",`<a href="blackswap"     >Various</a>`,"AURORA ","https://www.blackswap.finance"],
         ["Polycake     ",`<a href="polycake"      >Various</a>`,"PCAKE  ","https://www.polycake.finance"],
