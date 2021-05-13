@@ -249,7 +249,8 @@ const main = async() => {
       ["Fishstix            ", `<a href="fishstix"      >Various</a>`,"FSTX          ","http://fishstix.finance"],
       ["Wasabix             ", `<a href="wasabix"       >Various</a>`,"WASABI        ","https://bsc.wasabix.finance"],
       ["Naruto Uzumaki      ", `<a href="naruto_uzumaki">Various</a>`,"UZUMAKI       ","https://uzumaki.narutofinance.com"],
-      ["Lambo               ", `<a href="lambo"         >Various</a>`,"LAM           ","https://www.lambofinance.com"]
+      ["Lambo               ", `<a href="lambo"         >Various</a>`,"LAM           ","https://www.lambofinance.com"],
+      ["Gator               ", `<a href="gator"         >Various</a>`,"GATOR           ","https://gatorswap.xyz"]
     ]
   }
 
