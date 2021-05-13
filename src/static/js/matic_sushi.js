@@ -196,9 +196,9 @@ function printSushiAPR(rewardTokenTicker, rewardPrice, poolRewardsPerWeek,
   var userMaticYearlyRewards = userMaticWeeklyRewards * 52;
   if (userStaked > 0) {
     _print(`Estimated ${rewardTokenTicker} earnings:`
-        + ` Day ${userDailyRewards+userMaticDailyRewards.toFixed(fixedDecimals)} ($${formatMoney(userDailyRewards*rewardPrice+userMaticDailyRewards*rewardMaticPrice)})`
-        + ` Week ${userWeeklyRewards+userMaticWeeklyRewards.toFixed(fixedDecimals)} ($${formatMoney(userWeeklyRewards*rewardPrice+userMaticWeeklyRewards*rewardMaticPrice)})`
-        + ` Year ${userYearlyRewards+userMaticYearlyRewards.toFixed(fixedDecimals)} ($${formatMoney(userYearlyRewards*rewardPrice+userMaticYearlyRewards*rewardMaticPrice)})`);
+        + ` Day ${(userDailyRewards+userMaticDailyRewards).toFixed(fixedDecimals)} ($${formatMoney(userDailyRewards*rewardPrice+userMaticDailyRewards*rewardMaticPrice)})`
+        + ` Week ${(userWeeklyRewards+userMaticWeeklyRewards).toFixed(fixedDecimals)} ($${formatMoney(userWeeklyRewards*rewardPrice+userMaticWeeklyRewards*rewardMaticPrice)})`
+        + ` Year ${(userYearlyRewards+userMaticYearlyRewards).toFixed(fixedDecimals)} ($${formatMoney(userYearlyRewards*rewardPrice+userMaticYearlyRewards*rewardMaticPrice)})`);
   }
   return {
     userStakedUsd,
