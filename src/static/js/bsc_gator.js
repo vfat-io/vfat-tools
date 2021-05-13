@@ -21,7 +21,7 @@ async function main() {
     const prices = await getBscPrices();
 
     await loadBscChefContract(App, tokens, prices, GATOR_CHEF, GATOR_CHEF_ADDR, GATOR_CHEF_ABI, rewardTokenTicker,
-        "gator", null, rewardsPerWeek, "pendingGator");
+        "Gator", null, rewardsPerWeek, "pendingGator");
 
     hideLoading();
   }
