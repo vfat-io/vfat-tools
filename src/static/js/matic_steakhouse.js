@@ -11,6 +11,14 @@ async function main() {
     _print(`Initialized ${App.YOUR_ADDRESS}\n`);
     _print("Reading smart contracts...\n");
 
+    const customURLs =
+        {
+            add: "https://swap.steakhouse.finance/#/add",
+            remove: "https://swap.steakhouse.finance/#/remove",
+            swap: "https://swap.steakhouse.finance/#/swap",
+            info: "https://info.steakhouse.finance/pair"
+        }
+
    const FARM_ADDR = "0x2a6615238a161fABA3dC9a508f08c4320BE1a193";
    const rewardTokenTicker = "STEAK";
    const FARM = new ethers.Contract(FARM_ADDR, FARM_ABI, App.provider);
@@ -30,7 +38,7 @@ async function main() {
     const prices = await getMaticPrices();
 
     await loadFarmContract(App, tokens, prices, FARM, FARM_ADDR, FARM_ABI, rewardTokenTicker,
-        "steak", null, rewardsPerWeek, "pendingToken");
+        "token", null, rewardsPerWeek, "pendingToken");
 
     hideLoading();
   }
@@ -78,7 +86,7 @@ async function main() {
   let aprs = []
   for (i = 0; i < poolCount; i++) {
     if (poolPrices[i]) {
-      const apr = printFoxPool(App, chefAbi, chefAddress, prices, tokens, poolInfos[i], i, poolPrices[i],
+      const apr = printSteakPool(App, chefAbi, chefAddress, prices, tokens, poolInfos[i], i, poolPrices[i],
         totalAllocPoints, rewardsPerWeek, rewardTokenTicker, rewardTokenAddress,
         pendingRewardsFunction, null, null, "matic")
       aprs.push(apr);
@@ -106,9 +114,9 @@ async function main() {
   return { prices, totalUserStaked, totalStaked, averageApr }
 }
 
-function printFoxPool(App, chefAbi, chefAddr, prices, tokens, poolInfo, poolIndex, poolPrices,
+function printSteakPool(App, chefAbi, chefAddr, prices, tokens, poolInfo, poolIndex, poolPrices,
                        totalAllocPoints, rewardsPerWeek, rewardTokenTicker, rewardTokenAddress,
-                       pendingRewardsFunction, fixedDecimals, claimFunction, chain="eth") {
+                       pendingRewardsFunction, fixedDecimals, claimFunction, chain="matic") {
   fixedDecimals = fixedDecimals ?? 2;
   const sp = (poolInfo.stakedToken == null) ? null : getPoolPrices(tokens, prices, poolInfo.stakedToken);
   var poolRewardsPerWeek = poolInfo.allocPoints / totalAllocPoints * rewardsPerWeek;

@@ -1411,6 +1411,7 @@ function getUniPrices(tokens, prices, pool)
   else if (pool.symbol.includes("DFYN")) stakeTokenTicker += " DFYN LP";
   else if (pool.symbol.includes("SPIRIT")) stakeTokenTicker += " SPIRIT LP";
   else if (pool.symbol.includes("spLP")) stakeTokenTicker += " SPOOKY LP";
+  else if (pool.symbol.includes("Lv1")) stakeTokenTicker += " STEAK LP";
   else stakeTokenTicker += " Uni LP";
   return {
       t0: t0,
@@ -1432,7 +1433,7 @@ function getUniPrices(tokens, prices, pool)
             `${customURLs.add}/${t0address}/${t1address}`,
             `${customURLs.remove}/${t0address}/${t1address}`,
             `${customURLs.swap}?inputCurrency=${t0address}&outputCurrency=${t1address}`
-          ] 
+          ]
           const helperHrefs = helperUrls.length == 0 ? "" :
             ` <a href='${helperUrls[0]}' target='_blank'>[+]</a> <a href='${helperUrls[1]}' target='_blank'>[-]</a> <a href='${helperUrls[2]}' target='_blank'>[<=>]</a>`
           _print(`<a href='${poolUrl}' target='_blank'>${stakeTokenTicker}</a>${helperHrefs} Price: $${formatMoney(price)} TVL: $${formatMoney(tvl)}`);
@@ -1451,6 +1452,7 @@ function getUniPrices(tokens, prices, pool)
               pool.name.includes("Value LP") ?  `https://info.vswap.fi/pool/${pool.address}` :
               pool.symbol.includes("SPIRIT") ?  `https://swap.spiritswap.finance/#/swap` :
               pool.symbol.includes("spLP") ?  `https://info.spookyswap.finance/pair/${pool.address}` :
+              pool.symbol.includes("Lv1") ?  `https://info.steakhouse.finance/pair/${pool.address}` :
               chain == "matic" ? `https://info.quickswap.exchange/pair/${pool.address}` :
             `http://uniswap.info/pair/${pool.address}`;
           const helperUrls = pool.is1inch ? [] :
@@ -1463,6 +1465,11 @@ function getUniPrices(tokens, prices, pool)
             `https://exchange.pancakeswap.finance/#/add/${t0address}/${t1address}`,
             `https://exchange.pancakeswap.finance/#/remove/${t0address}/${t1address}`,
             `https://exchange.pancakeswap.finance/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+          ] :
+          pool.symbol.includes("Lv1") ? [ // adding before matic
+            `https://swap.steakhouse.finance/#/add/${t0address}/${t1address}`,
+            `https://swap.steakhouse.finance/#/remove/${t0address}/${t1address}`,
+            `https://swap.steakhouse.finance/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
           ] :
           chain=='matic'? [
             `https://quickswap.exchange/#/add/${t0address}/${t1address}`,
