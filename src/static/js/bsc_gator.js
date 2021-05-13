@@ -14,7 +14,7 @@ async function main() {
    const rewardTokenTicker = "GATOR";
    const GATOR_CHEF = new ethers.Contract(GATOR_CHEF_ADDR, GATOR_CHEF_ABI, App.provider);
 
-   const rewardsPerWeek = await GATOR_CHEF.gatorPerBlock() /1e18
+   const rewardsPerWeek = await GATOR_CHEF.GatorPerBlock() /1e18
         * 604800 / 3;
 
     const tokens = {};
