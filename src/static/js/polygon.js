@@ -39,6 +39,8 @@ const main = async() => {
         ["Ape Community",`<a href="ape_community" >Various</a>`,"KONG   ","https://ape.community"],
         ["Beefy        ",`<a href="beefy"         >Various</a>`,"Various","https://polygon.beefy.finance"],
         ["Monopoly     ",`<a href="monopoly"      >Various</a>`,"MONO   ","https://monopolyfinance.xyz"],
+        ["Polyce       ",`<a href="polyce"        >Various</a>`,"CSI"    ,"https://polyce.io"],
+        ["Lumberjack   ",`<a href="lumberjack"    >Various</a>`,"ACORN  ","https://lumberjack.finance"]
       ]
   }
 
