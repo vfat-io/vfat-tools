@@ -102,7 +102,7 @@ async function loadSnakeContract(App, tokens, prices, chef, chefAddress, chefAbi
 
 async function getSnakeInfo(App, chefContract, chefAddress, poolIndex, pendingRewardsFunction) {
   const poolInfo = await chefContract.poolInfo(poolIndex);
-  if (poolInfo.allocPoint == 0){
+  if (poolInfo.allocPoint == 0 || poolIndex == 21){
     return {
       address: poolInfo.lpToken,
       allocPoints: poolInfo.allocPoint ?? 1,
