@@ -247,6 +247,21 @@ const consoleInit = function(callback) {
   return init_wallet(callback)
 }
 
+const _print_inline = function(message) {
+  if (!logger) {
+    logger = document.getElementById('log')
+  }
+
+  for (let i = 0; i < arguments.length; i++) {
+    if (typeof arguments[i] == 'object') {
+      logger.innerHTML +=
+        (JSON && JSON.stringify ? JSON.stringify(arguments[i], undefined, 2) : arguments[i])
+    } else {
+      logger.innerHTML += arguments[i]
+    }
+  }
+}
+
 const _print = function(message) {
   if (!logger) {
     logger = document.getElementById('log')
@@ -1829,15 +1844,6 @@ function printChefContractLinks(App, chefAbi, chefAddr, poolIndex, poolAddress, 
   _print_link(`Unstake ${userStaked.toFixed(fixedDecimals)} ${stakeTokenTicker}`, unstake)
   _print_link(`Claim ${pendingRewardTokens.toFixed(fixedDecimals)} ${rewardTokenTicker} ($${formatMoney(pendingRewardTokens*rewardTokenPrice)})`, claim)
   _print(`Staking or unstaking also claims rewards.`)
-  if  (chefAddr == "0x0De845955E2bF089012F682fE9bC81dD5f11B372") {
-    const emergencyWithdraw = async function() {
-      return chefContract_emergencyWithdraw(chefAbi, chefAddr, poolIndex, App)
-    }
-    _print('***')
-    _print_link(`EMERGENCY WITHDRAW ${userStaked.toFixed(fixedDecimals)} ${stakeTokenTicker}`, emergencyWithdraw)
-    _print('This will forfeit your rewards but retrieve your capital')
-    _print('***')
-  }
   _print("");
 }
 
@@ -1851,6 +1857,7 @@ function printChefPool(App, chefAbi, chefAddr, prices, tokens, poolInfo, poolInd
   const userStaked = poolInfo.userLPStaked ?? poolInfo.userStaked;
   const rewardPrice = getParameterCaseInsensitive(prices, rewardTokenAddress)?.usd;
   const staked_tvl = sp?.staked_tvl ?? poolPrices.staked_tvl;
+  _print_inline(`${poolIndex} - `);
   poolPrices.print_price(chain);
   sp?.print_price(chain);
   const apr = printAPR(rewardTokenTicker, rewardPrice, poolRewardsPerWeek, poolPrices.stakeTokenTicker,
