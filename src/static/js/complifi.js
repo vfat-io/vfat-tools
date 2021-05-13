@@ -220,7 +220,10 @@ function printComplifiPool(App, chefAbi, chefAddr, prices, tokens, poolInfo, poo
     staked_tvl, userStaked, poolPrices.price, fixedDecimals, pendingLockedRewardTokens, pendingUnlockedRewardTokens);
   if (poolInfo.userStaked > 0) poolPrices.print_contained_price(userStaked);
 
-  const approveAndStake = async () => deposit(App, userProxyAddress, PROXY_ACTIONS_ADDR, chefAddr, poolInfo.poolToken.address, userUnstaked);
+  const STAKING_TOKEN = new ethers.Contract(poolInfo.token, ERC20_ABI, App.provider);
+  const currentTokens = await STAKING_TOKEN.balanceOf(App.YOUR_ADDRESS)
+
+  const approveAndStake = async () => deposit(App, userProxyAddress, PROXY_ACTIONS_ADDR, chefAddr, poolInfo.poolToken.address, currentTokens);
   const unstake = async () => withdraw(App, userProxyAddress, PROXY_ACTIONS_ADDR, chefAddr, poolInfo.poolToken.address, userStaked);
 
   _print_link(`Stake ${userUnstaked.toFixed(fixedDecimals)} ${poolPrices.stakeTokenTicker}`, approveAndStake)
