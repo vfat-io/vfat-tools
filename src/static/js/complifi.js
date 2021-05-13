@@ -163,7 +163,7 @@ async function getComplifiPoolInfo(app, chefContract, chefAddress, poolIndex, pe
   //     uint256 lastRewardBlock; // Last block number that reward token distribution occurs.
   // }
   const poolInfo = await chefContract.poolInfo(poolIndex);
-  if (poolInfo.allocPoint == 0) {
+  if (poolInfo.allocPoint === 0) {
     return {
       address: poolInfo.token,
       allocPoints: poolInfo.allocPoint ?? 1,
@@ -367,6 +367,17 @@ async function executeProxyAction(App, userProxyAddress, proxyActionsAddress, fu
     const callData = targetContract.interface.encodeFunctionData(functionName, functionParams.map((fp) => fp.value));
 
     showLoading();
+
+    try {
+        const gasEstimation = (await proxyContract.estimateGas['execute(address,bytes)'](proxyActionsAddress, callData)) * 1;
+        if (gasEstimation) {
+            gasLimit = Math.max(gasLimit || 0, gasEstimation);
+        }
+        console.log('Gas estimate: %s', gasEstimation);
+    } catch (error) {
+        console.log(error);
+    }
+    console.log('Gas limit: %s', gasLimit);
 
     proxyContract['execute(address,bytes)'](proxyActionsAddress, callData, {
         gasLimit: gasLimit || undefined,
