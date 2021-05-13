@@ -110,8 +110,6 @@ function printWasabixContractLinks(App, wasabixAbi, wasabixAddr, poolIndex, pool
   _print(bscscanUrl);
   _print_link(`Deposit ${unstaked.toFixed(fixedDecimals)} ${stakeTokenTicker}`, approveAndDeposit)
   _print_link(`Withdraw ${userStaked.toFixed(fixedDecimals)} ${stakeTokenTicker}`, withdraw)
-  _print_link(`Harvest ${pendingRewardTokens.toFixed(fixedDecimals)} ${rewardTokenTicker} ($${formatMoney(pendingRewardTokens*rewardTokenPrice)})`, claim)
-  _print(`Staking or unstaking also harvests rewards.`)
   _print(`\n`);
 }
 
