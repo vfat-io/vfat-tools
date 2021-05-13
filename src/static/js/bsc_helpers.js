@@ -383,7 +383,7 @@ async function getBscPoolInfo(App, chefContract, chefAddress, poolIndex, pending
   const poolInfo = await chefContract.poolInfo(poolIndex);
   if (poolInfo.allocPoint == 0 || poolIndex == 105) {
     return {
-      address: poolInfo.lpToken,
+      address: poolInfo.lpToken ?? poolInfo.token,
       allocPoints: poolInfo.allocPoint ?? 1,
       poolToken: null,
       userStaked : 0,
@@ -393,16 +393,18 @@ async function getBscPoolInfo(App, chefContract, chefAddress, poolIndex, pending
       lastRewardBlock : poolInfo.lastRewardBlock
     };
   }
-  const poolToken = await getBscToken(App, poolInfo.lpToken, chefAddress);
+  const poolToken = await getBscToken(App, poolInfo.lpToken ?? poolInfo.token, chefAddress);
   const userInfo = await chefContract.userInfo(poolIndex, App.YOUR_ADDRESS);
   const pendingRewardTokens = await chefContract.callStatic[pendingRewardsFunction](poolIndex, App.YOUR_ADDRESS);
   const staked = userInfo.amount / 10 ** poolToken.decimals;
   return {
-      address: poolInfo.lpToken,
+      address: poolInfo.lpToken ?? poolInfo.token,
       allocPoints: poolInfo.allocPoint ?? 1,
       poolToken: poolToken,
       userStaked : staked,
       pendingRewardTokens : pendingRewardTokens / 10 ** 18,
+      depositFee : (poolInfo.depositFeeBP ?? 0) / 100,
+      withdrawFee : (poolInfo.withdrawFeeBP ?? 0) / 100
   };
 }
 
@@ -452,7 +454,7 @@ async function loadBscChefContract(App, tokens, prices, chef, chefAddress, chefA
     if (poolPrices[i]) {
       const apr = printChefPool(App, chefAbi, chefAddress, prices, tokens, poolInfos[i], i, poolPrices[i],
         totalAllocPoints, rewardsPerWeek, rewardTokenTicker, rewardTokenAddress,
-        pendingRewardsFunction, null, null, "bsc")
+        pendingRewardsFunction, null, null, "bsc", poolInfos[i].depositFee, poolInfos[i].withdrawFee)
       aprs.push(apr);
     }
   }
