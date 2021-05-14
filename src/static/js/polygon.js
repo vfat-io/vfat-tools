@@ -43,7 +43,8 @@ const main = async() => {
         ["Lumberjack   ",`<a href="lumberjack"    >Various</a>`,"ACORN  ","https://lumberjack.finance"],
         ["PolyPunk     ",`<a href="polypunk"      >Various</a>`,"PPNK   ","https://polypunk.finance"],
         ["SteakHouse   ",`<a href="steakhouse"    >Various</a>`,"STEAK  ","https://steakhouse.finance"],
-        ["Monke Farm   ",`<a href="monkefarm"     >Various</a>`,"MONKE  ","https://monkefarm.finance"]
+        ["Monke Farm   ",`<a href="monkefarm"     >Various</a>`,"MONKE  ","https://monkefarm.finance"],
+        ["Adamant      ",`<a href="adamant"       >Various</a>`,"Various","https://adamant.finance"]
       ]
   }
 
