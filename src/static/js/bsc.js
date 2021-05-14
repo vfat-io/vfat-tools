@@ -252,7 +252,8 @@ const main = async() => {
       ["Gator               ", `<a href="gator"         >Various</a>`,"GATOR         ","https://gatorswap.xyz"],
       ["Pureswap            ", `<a href="pureswap"      >Various</a>`,"PURE          ","https://www.pureswap.finance"],
       ["Space Defio         ", `<a href="space_defio"   >Various</a>`,"SPCO          ","https://www.space-defio.com"],
-      ["Parthenon Eta       ", `<a href="parthenon_eta" >Various</a>`,"ETA           ","https://eta.parthenon.finance"]
+      ["Parthenon Eta       ", `<a href="parthenon_eta" >Various</a>`,"ETA           ","https://eta.parthenon.finance"],
+      ["Nftfy               ", `<a href="nftfy"         >Various</a>`,"NFTFY         ","https://nftfy.org"]
     ]
   }
 
