@@ -534,7 +534,8 @@ const bscTokens = [
   { "id": "blue-planetfinance", "symbol": "AQUA", "contract": "0x72B7D61E8fC8cF971960DD9cfA59B8C829D91991"},
   { "id": "dogecoin", "symbol": "DOGE", "contract": "0xbA2aE424d960c26247Dd6c32edC70B295c744C43"},
   { "id": "degen", "symbol": "DGNZ", "contract": "0xb68a67048596502A8B88f1C10ABFF4fA99dfEc71"},
-  { "id": "degencomp", "symbol": "aDGNZ", "contract": "0xe8B9b396c59A6BC136cF1f05C4D1A68A0F7C2Dd7"}
+  { "id": "degencomp", "symbol": "aDGNZ", "contract": "0xe8B9b396c59A6BC136cF1f05C4D1A68A0F7C2Dd7"},
+  { "id": "gambit", "symbol": "GMT", "contract": "0x99e92123eb77bc8f999316f622e5222498438784"}
 ]
 
 async function getBscPrices() {
