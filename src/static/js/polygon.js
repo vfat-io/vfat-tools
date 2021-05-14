@@ -16,6 +16,7 @@ const main = async() => {
         ["Polywhale    ",`<a href="polywhale"     >Various</a>`,"KRILL  ","https://polywhale.finance"],
         ["Aave         ",`<a href="aave"          >Various</a>`,"MATIC  ","https://aave.com"],
         ["Polyfox      ",`<a href="polyfox"       >Various</a>`,"FOX    ","https://polyfox.finance"],
+        ["SteakHouse   ",`<a href="steakhouse"    >Various</a>`,"STEAK  ","https://steakhouse.finance/"],
         ["Hawkdex      ",`<a href="hawk"          >Various</a>`,"HAWK   ","https://hawkdex.com"],
         ["Polycat      ",`<a href="polycat"       >Various</a>`,"FISH   ","https://polycat.finance"],
         ["BoughtThe.top",`<a href="boughtthetop"  >Various</a>`,"BTT    ","https://farm.BoughtThe.top"],
@@ -23,7 +24,6 @@ const main = async() => {
         ["Polyvolve    ",`<a href="polyvolve"     >Various</a>`,"SPEAR  ","https://polyvolve.finance"],
         ["Polygaj      ",`<a href="polygaj"       >Various</a>`,"GAJ    ","https://polygaj.finance"],
         ["Galaxy       ",`<a href="galaxy"        >Various</a>`,"Various","https://galaxyfarm.routerprotocol.com"],
-        ["Zenko        ",`<a href="zenko"         >Various</a>`,"ZENKO  ","https://app.zenko.finance"],
         ["GameSwap     ",`<a href="gameswap"      >Various</a>`,"STONK  ","https://gameswapfinance.com"],
         ["Blackswap    ",`<a href="blackswap"     >Various</a>`,"AURORA ","https://www.blackswap.finance"],
         ["Polycake     ",`<a href="polycake"      >Various</a>`,"PCAKE  ","https://www.polycake.finance"],
@@ -40,7 +40,10 @@ const main = async() => {
         ["Ape Community",`<a href="ape_community" >Various</a>`,"KONG   ","https://ape.community"],
         ["Beefy        ",`<a href="beefy"         >Various</a>`,"Various","https://polygon.beefy.finance"],
         ["Monopoly     ",`<a href="monopoly"      >Various</a>`,"MONO   ","https://monopolyfinance.xyz"],
-        ["Monke Farm   ",`<a href="monkefarm"     >Various</a>`,"MONKE  ","https://monkefarm.finance"],
+        ["Polyce       ",`<a href="polyce"        >Various</a>`,"CSI"    ,"https://polyce.io"],
+        ["Lumberjack   ",`<a href="lumberjack"    >Various</a>`,"ACORN  ","https://lumberjack.finance"],
+        ["PolyPunk     ",`<a href="polypunk"      >Various</a>`,"PPNK   ","https://polypunk.finance"],
+        ["Monke Farm   ",`<a href="monkefarm"     >Various</a>`,"MONKE  ","https://monkefarm.finance"]
       ]
   }
 
