@@ -121,7 +121,7 @@ const main = async() => {
       ["Muscle              ", `<a href="muscle"        >Various</a>`,"MUSCLE        ","https://muscle.finance"],
       ["Carrotcake          ", `<a href="ccake"         >Various</a>`,"cCAKE         ","https://carrotcake.fi"],
       ["Alchemist           ", `<a href="alchemist"     >Various</a>`,"MIST/AURUM    ","https://www.alchemistdefi.com"],
-      ["Mozart              ", `<a href="mozart"        >Various</a>`,"PIANO         ","https://mozartfinance.io"],
+      ["Mozart *            ", `<a href="mozart"        >Various</a>`,"PIANO         ","https://mozartfinance.io"],
       ["Hawk                ", `<a href="hawk"          >Various</a>`,"HAWK          ","https://hawkbsc.net"],
       ["Tree                ", `<a href="tree"          >Various</a>`,"SEED          ","https://app.treedefi.com"],
       ["Voodoo              ", `<a href="voodoo"        >Various</a>`,"VOODOO        ","https://voodoo.supra.finance"],
