@@ -64,7 +64,7 @@ const main = async() => {
       ["BVaults             ", `<a href="bvaults"       >Various</a>`,"Various  ","https://bvaults.fi"],
       ["MidasGold           ", `<a href="midasgold"     >Various</a>`,"Various  ","https://midasgold.network"],
       ["Nerve               ", `<a href="nerve"         >Various</a>`,"NRV           ","https://nerve.fi"],
-      ["Hyperjump *         ", `<a href="hyperjump"     >Various</a>`,"ALLOY         ","https://farm.hyperjump.fi"],
+      ["Hyperjump           ", `<a href="hyperjump"     >Various</a>`,"ALLOY         ","https://farm.hyperjump.fi"],
       ["Berry               ", `<a href="berry"         >Various</a>`,"BRY           ","https://berrydata.co"],
       ["Belt                ", `<a href="belt"          >Various</a>`,"BELT          ","https://beta.belt.fi"],
       ["Julswap             ", `<a href="julswap"       >Various</a>`,"Various  ","https://julswap.com"],
@@ -209,7 +209,7 @@ const main = async() => {
       ["Caramel             ", `<a href="caramel"       >Various</a>`,"CARAMEL       ","https://caramelswap.finance"],
       ["Plumcake            ", `<a href="plumcake"      >Various</a>`,"PLUM          ","https://plumcake.finance"],
       ["Wsbdapp             ", `<a href="wsb"           >Various</a>`,"WSB           ","https://farm.wsbdapp.com"],
-      ["Feeder *            ", `<a href="feeder"        >Various</a>`,"FEED          ","https://app.feeder.finance"],
+      ["Feeder              ", `<a href="feeder"        >Various</a>`,"FEED          ","https://app.feeder.finance"],
       ["Yolodraw            ", `<a href="yolodraw"      >Various</a>`,"YoloDraw      ","https://yolo-token.com"],
       ["Jaguar              ", `<a href="jaguar"        >Various</a>`,"JAGUAR        ","https://jaguarswap.com"],
       ["Zombie              ", `<a href="zombie"        >Various</a>`,"ZOMBIE        ","https://zombie-farm.com"],
@@ -249,7 +249,9 @@ const main = async() => {
       ["Wasabix             ", `<a href="wasabix"       >Various</a>`,"WASABI        ","https://bsc.wasabix.finance"],
       ["Naruto Uzumaki      ", `<a href="naruto_uzumaki">Various</a>`,"UZUMAKI       ","https://uzumaki.narutofinance.com"],
       ["Lambo               ", `<a href="lambo"         >Various</a>`,"LAM           ","https://www.lambofinance.com"],
-      ["Gator               ", `<a href="gator"         >Various</a>`,"GATOR           ","https://gatorswap.xyz"]
+      ["Gator               ", `<a href="gator"         >Various</a>`,"GATOR         ","https://gatorswap.xyz"],
+      ["Pureswap            ", `<a href="pureswap"      >Various</a>`,"PURE          ","https://www.pureswap.finance"],
+      ["Space Defio         ", `<a href="space_defio"   >Various</a>`,"SPCO          ","https://www.space-defio.com"]
     ]
   }
 
