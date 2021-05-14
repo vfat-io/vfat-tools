@@ -251,7 +251,8 @@ const main = async() => {
       ["Lambo               ", `<a href="lambo"         >Various</a>`,"LAM           ","https://www.lambofinance.com"],
       ["Gator               ", `<a href="gator"         >Various</a>`,"GATOR         ","https://gatorswap.xyz"],
       ["Pureswap            ", `<a href="pureswap"      >Various</a>`,"PURE          ","https://www.pureswap.finance"],
-      ["Space Defio         ", `<a href="space_defio"   >Various</a>`,"SPCO          ","https://www.space-defio.com"]
+      ["Space Defio         ", `<a href="space_defio"   >Various</a>`,"SPCO          ","https://www.space-defio.com"],
+      ["Parthenon Eta       ", `<a href="parthenon_eta" >Various</a>`,"ETA           ","https://eta.parthenon.finance"]
     ]
   }
 
