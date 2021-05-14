@@ -40,6 +40,7 @@ const main = async() => {
         ["Ape Community",`<a href="ape_community" >Various</a>`,"KONG   ","https://ape.community"],
         ["Beefy        ",`<a href="beefy"         >Various</a>`,"Various","https://polygon.beefy.finance"],
         ["Monopoly     ",`<a href="monopoly"      >Various</a>`,"MONO   ","https://monopolyfinance.xyz"],
+        ["Monke Farm   ",`<a href="monkefarm"     >Various</a>`,"MONKE  ","https://monkefarm.finance"],
       ]
   }
 
