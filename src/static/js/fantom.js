@@ -74,6 +74,12 @@ const main = async() => {
         "STRD",
         "https://strd.finance"
       ],
+      [
+        "Mushrooms",
+        `<a href='mushrooms'>Various</a>`,
+        "STRD",
+        "https://mushrooms.finance/farms"
+      ],
     ]
   }
 
