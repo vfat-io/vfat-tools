@@ -122,7 +122,7 @@ async function loadComplifiContract(App, chef, chefAddress, chefAbi, rewardToken
     let aprs = []
     for (let i = 0; i < poolCount; i++) {
         if (poolPrices[i]) {
-          const apr = printComplifiPool(App, chefAbi, chefAddress, prices, tokens, poolInfos[i], i, poolPrices[i],
+          const apr = await printComplifiPool(App, chefAbi, chefAddress, prices, tokens, poolInfos[i], i, poolPrices[i],
             totalAllocPoints, rewardsPerWeek, rewardTokenTicker, rewardTokenAddress,
             poolInfos[i].pendingLockedRewardTokens, poolInfos[i].pendingUnlockedRewardTokens, 2, userProxyAddress)
           totalLocked += poolInfos[i].pendingLockedRewardTokens;
@@ -205,7 +205,7 @@ async function getComplifiPoolInfo(app, chefContract, chefAddress, poolIndex, pe
   };
 }
 
-function printComplifiPool(App, chefAbi, chefAddr, prices, tokens, poolInfo, poolIndex, poolPrices,
+async function printComplifiPool(App, chefAbi, chefAddr, prices, tokens, poolInfo, poolIndex, poolPrices,
                        totalAllocPoints, rewardsPerWeek, rewardTokenTicker, rewardTokenAddress,
                        pendingLockedRewardTokens, pendingUnlockedRewardTokens, fixedDecimals, userProxyAddress) {
   fixedDecimals = fixedDecimals ?? 2;
@@ -220,7 +220,7 @@ function printComplifiPool(App, chefAbi, chefAddr, prices, tokens, poolInfo, poo
     staked_tvl, userStaked, poolPrices.price, fixedDecimals, pendingLockedRewardTokens, pendingUnlockedRewardTokens);
   if (poolInfo.userStaked > 0) poolPrices.print_contained_price(userStaked);
 
-  const STAKING_TOKEN = new ethers.Contract(poolInfo.token, ERC20_ABI, App.provider);
+  const STAKING_TOKEN = new ethers.Contract(poolInfo.address, ERC20_ABI, App.provider);
   const currentTokens = await STAKING_TOKEN.balanceOf(App.YOUR_ADDRESS)
 
   const approveAndStake = async () => deposit(App, userProxyAddress, PROXY_ACTIONS_ADDR, chefAddr, poolInfo.poolToken.address, currentTokens);
