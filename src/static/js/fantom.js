@@ -21,7 +21,7 @@ const main = async() => {
         "https://spookyswap.finance"
       ],
       [
-        "Spirit",
+        "Spirit *",
         `<a href='spirit'>Various</a>`,
         "SPIRIT",
         "https://app.spiritswap.finance"
@@ -33,7 +33,7 @@ const main = async() => {
         "https://ftm.borgswap.exchange"
       ],
       [
-        "Hyperjump",
+        "Hyperjump *",
         `<a href='hyperjump'>Various</a>`,
         "ORI",
         "https://hyperjump.fi"
@@ -49,6 +49,36 @@ const main = async() => {
         `<a href='froyo'>Various</a>`,
         "FROYO",
         "https://frozenyogurt.finance"
+      ],
+      [
+        "Ghost",
+        `<a href='ghost'>Various</a>`,
+        "GHOST",
+        "https://www.theghost.finance"
+      ],
+      [
+        "Beefy",
+        `<a href='beefy'>Various</a>`,
+        "Various",
+        "https://fantom.beefy.finance"
+      ],
+      [
+        "Liquid Driver",
+        `<a href='liquid'>Various</a>`,
+        "LQDR",
+        "https://www.liquiddriver.finance"
+      ],
+      [
+        "Standard",
+        `<a href='standard'>Various</a>`,
+        "STRD",
+        "https://strd.finance"
+      ],
+      [
+        "Mushrooms",
+        `<a href='mushrooms'>Various</a>`,
+        "STRD",
+        "https://mushrooms.finance/farms"
       ],
     ]
   }

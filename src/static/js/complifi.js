@@ -122,7 +122,7 @@ async function loadComplifiContract(App, chef, chefAddress, chefAbi, rewardToken
     let aprs = []
     for (let i = 0; i < poolCount; i++) {
         if (poolPrices[i]) {
-          const apr = printComplifiPool(App, chefAbi, chefAddress, prices, tokens, poolInfos[i], i, poolPrices[i],
+          const apr = await printComplifiPool(App, chefAbi, chefAddress, prices, tokens, poolInfos[i], i, poolPrices[i],
             totalAllocPoints, rewardsPerWeek, rewardTokenTicker, rewardTokenAddress,
             poolInfos[i].pendingLockedRewardTokens, poolInfos[i].pendingUnlockedRewardTokens, 2, userProxyAddress)
           totalLocked += poolInfos[i].pendingLockedRewardTokens;
@@ -163,7 +163,7 @@ async function getComplifiPoolInfo(app, chefContract, chefAddress, poolIndex, pe
   //     uint256 lastRewardBlock; // Last block number that reward token distribution occurs.
   // }
   const poolInfo = await chefContract.poolInfo(poolIndex);
-  if (poolInfo.allocPoint == 0) {
+  if (poolInfo.allocPoint === 0) {
     return {
       address: poolInfo.token,
       allocPoints: poolInfo.allocPoint ?? 1,
@@ -205,7 +205,7 @@ async function getComplifiPoolInfo(app, chefContract, chefAddress, poolIndex, pe
   };
 }
 
-function printComplifiPool(App, chefAbi, chefAddr, prices, tokens, poolInfo, poolIndex, poolPrices,
+async function printComplifiPool(App, chefAbi, chefAddr, prices, tokens, poolInfo, poolIndex, poolPrices,
                        totalAllocPoints, rewardsPerWeek, rewardTokenTicker, rewardTokenAddress,
                        pendingLockedRewardTokens, pendingUnlockedRewardTokens, fixedDecimals, userProxyAddress) {
   fixedDecimals = fixedDecimals ?? 2;
@@ -220,7 +220,10 @@ function printComplifiPool(App, chefAbi, chefAddr, prices, tokens, poolInfo, poo
     staked_tvl, userStaked, poolPrices.price, fixedDecimals, pendingLockedRewardTokens, pendingUnlockedRewardTokens);
   if (poolInfo.userStaked > 0) poolPrices.print_contained_price(userStaked);
 
-  const approveAndStake = async () => deposit(App, userProxyAddress, PROXY_ACTIONS_ADDR, chefAddr, poolInfo.poolToken.address, userUnstaked);
+  const STAKING_TOKEN = new ethers.Contract(poolInfo.address, ERC20_ABI, App.provider);
+  const currentTokens = await STAKING_TOKEN.balanceOf(App.YOUR_ADDRESS)
+
+  const approveAndStake = async () => deposit(App, userProxyAddress, PROXY_ACTIONS_ADDR, chefAddr, poolInfo.poolToken.address, currentTokens);
   const unstake = async () => withdraw(App, userProxyAddress, PROXY_ACTIONS_ADDR, chefAddr, poolInfo.poolToken.address, userStaked);
 
   _print_link(`Stake ${userUnstaked.toFixed(fixedDecimals)} ${poolPrices.stakeTokenTicker}`, approveAndStake)
@@ -349,7 +352,7 @@ async function claim(App, userProxyAddress, proxyActionsAddress, miningAddress) 
         proxyActionsAddress,
         functionName,
         functionParams,
-        300000,
+        500000,
     );
 }
 
@@ -364,6 +367,17 @@ async function executeProxyAction(App, userProxyAddress, proxyActionsAddress, fu
     const callData = targetContract.interface.encodeFunctionData(functionName, functionParams.map((fp) => fp.value));
 
     showLoading();
+
+    try {
+        const gasEstimation = (await proxyContract.estimateGas['execute(address,bytes)'](proxyActionsAddress, callData)) * 1;
+        if (gasEstimation) {
+            gasLimit = Math.max(gasLimit || 0, gasEstimation);
+        }
+        console.log('Gas estimate: %s', gasEstimation);
+    } catch (error) {
+        console.log(error);
+    }
+    console.log('Gas limit: %s', gasLimit);
 
     proxyContract['execute(address,bytes)'](proxyActionsAddress, callData, {
         gasLimit: gasLimit || undefined,

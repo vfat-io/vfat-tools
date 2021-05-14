@@ -247,6 +247,21 @@ const consoleInit = function(callback) {
   return init_wallet(callback)
 }
 
+const _print_inline = function(message) {
+  if (!logger) {
+    logger = document.getElementById('log')
+  }
+
+  for (let i = 0; i < arguments.length; i++) {
+    if (typeof arguments[i] == 'object') {
+      logger.innerHTML +=
+        (JSON && JSON.stringify ? JSON.stringify(arguments[i], undefined, 2) : arguments[i])
+    } else {
+      logger.innerHTML += arguments[i]
+    }
+  }
+}
+
 const _print = function(message) {
   if (!logger) {
     logger = document.getElementById('log')
@@ -1393,6 +1408,11 @@ function getUniPrices(tokens, prices, pool)
   else if (pool.name.includes("Value LP")) stakeTokenTicker += " Value LP";
   else if (pool.symbol.includes("PGL")) stakeTokenTicker += " PGL";
   else if (pool.symbol.includes("CS-LP")) stakeTokenTicker += " CSS LP";
+  else if (pool.symbol.includes("DFYN")) stakeTokenTicker += " DFYN LP";
+  else if (pool.symbol.includes("SPIRIT")) stakeTokenTicker += " SPIRIT LP";
+  else if (pool.symbol.includes("spLP")) stakeTokenTicker += " SPOOKY LP";
+  else if (pool.symbol.includes("Lv1")) stakeTokenTicker += " STEAK LP";
+  else if (pool.symbol.includes("PLP")) stakeTokenTicker += " Pure Swap LP";
   else stakeTokenTicker += " Uni LP";
   return {
       t0: t0,
@@ -1405,68 +1425,109 @@ function getUniPrices(tokens, prices, pool)
       tvl : tvl,
       staked_tvl : staked_tvl,
       stakeTokenTicker : stakeTokenTicker,
-      print_price(chain="eth", decimals) {
-        const poolUrl = pool.is1inch ? "https://1inch.exchange/#/dao/pools" :
-        pool.symbol.includes("LSLP") ? `https://info.linkswap.app/pair/${pool.address}` :
-          pool.symbol.includes("SLP") ?  `http://analytics.sushi.com/pairs/${pool.address}` :
-            pool.symbol.includes("Cake") ?  `https://pancakeswap.info/pair/${pool.address}` :
-            pool.symbol.includes("PGL") ?  `https://info.pangolin.exchange/#/pair/${pool.address}` :
-            pool.symbol.includes("CS-LP") ?  `https://app.coinswap.space/#/` :
-            pool.name.includes("Value LP") ?  `https://info.vswap.fi/pool/${pool.address}` :
-            chain == "matic" ? `https://info.quickswap.exchange/pair/${pool.address}` :
-          `http://uniswap.info/pair/${pool.address}`;
+      print_price(chain="eth", decimals, customURLs) {
         const t0address = t0.symbol == "ETH" ? "ETH" : t0.address;
         const t1address = t1.symbol == "ETH" ? "ETH" : t1.address;
-        const helperUrls = pool.is1inch ? [] :
-        pool.symbol.includes("LSLP") ? [
-          `https://linkswap.app/#/add/${t0address}/${t1address}`,
-          `https://linkswap.app/#/remove/${t0address}/${t1address}`,
-          `https://linkswap.app/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
-        ] :
-        pool.symbol.includes("Cake") ? [
-          `https://exchange.pancakeswap.finance/#/add/${t0address}/${t1address}`,
-          `https://exchange.pancakeswap.finance/#/remove/${t0address}/${t1address}`,
-          `https://exchange.pancakeswap.finance/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
-        ] :
-        chain=='matic'? [
-          `https://quickswap.exchange/#/add/${t0address}/${t1address}`,
-          `https://quickswap.exchange/#/remove/${t0address}/${t1address}`,
-          `https://quickswap.exchange/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
-        ] :
-        pool.name.includes("Value LP") ? [
-          `https://bsc.valuedefi.io/#/add/${t0address}/${t1address}`,
-          `https://bsc.valuedefi.io/#/remove/${t0address}/${t1address}`,
-          `https://bsc.valuedefi.io/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
-        ] :
-        pool.symbol.includes("PGL") ? [
-          `https://app.pangolin.exchange/#/add/${t0address}/${t1address}`,
-          `https://app.pangolin.exchange/#/remove/${t0address}/${t1address}`,
-          `https://app.pangolin.exchange/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
-        ] :
-        pool.symbol.includes("CS-LP") ? [
-          `https://app.coinswap.space/#/add/${t0address}/${t1address}`,
-          `https://app.coinswap.space/#/remove/${t0address}/${t1address}`,
-          `https://app.coinswap.space/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
-        ] :
-        pool.symbol.includes("SLP") ? [
-          `https://app.sushi.com/add/${t0address}/${t1address}`,
-          `https://app.sushi.com/remove/${t0address}/${t1address}`,
-          `https://app.sushi.com/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
-        ] :
-        t0.symbol.includes("COMFI") ? [
-          `https://app.uniswap.org/#/add/v2/${t0address}/${t1address}`,
-          `https://app.uniswap.org/#/remove/v2/${t0address}/${t1address}`,
-          `https://app.uniswap.org/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
-        ] :
-        [ `https://app.uniswap.org/#/add/${t0address}/${t1address}`,
-          `https://app.uniswap.org/#/remove/${t0address}/${t1address}`,
-          `https://app.uniswap.org/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}` ]
-        const helperHrefs = helperUrls.length == 0 ? "" :
-          ` <a href='${helperUrls[0]}' target='_blank'>[+]</a> <a href='${helperUrls[1]}' target='_blank'>[-]</a> <a href='${helperUrls[2]}' target='_blank'>[<=>]</a>`
-        _print(`<a href='${poolUrl}' target='_blank'>${stakeTokenTicker}</a>${helperHrefs} Price: $${formatMoney(price)} TVL: $${formatMoney(tvl)}`);
-        _print(`${t0.symbol} Price: $${displayPrice(p0)}`);
-        _print(`${t1.symbol} Price: $${displayPrice(p1)}`);
-        _print(`Staked: ${pool.staked.toFixed(decimals ?? 4)} ${pool.symbol} ($${formatMoney(staked_tvl)})`);
+        if (customURLs) {
+          const poolUrl = `${customURLs.info}/${pool.address}`
+          const helperUrls = [
+            `${customURLs.add}/${t0address}/${t1address}`,
+            `${customURLs.remove}/${t0address}/${t1address}`,
+            `${customURLs.swap}?inputCurrency=${t0address}&outputCurrency=${t1address}`
+          ]
+          const helperHrefs = helperUrls.length == 0 ? "" :
+            ` <a href='${helperUrls[0]}' target='_blank'>[+]</a> <a href='${helperUrls[1]}' target='_blank'>[-]</a> <a href='${helperUrls[2]}' target='_blank'>[<=>]</a>`
+          _print(`<a href='${poolUrl}' target='_blank'>${stakeTokenTicker}</a>${helperHrefs} Price: $${formatMoney(price)} TVL: $${formatMoney(tvl)}`);
+          _print(`${t0.symbol} Price: $${displayPrice(p0)}`);
+          _print(`${t1.symbol} Price: $${displayPrice(p1)}`);
+          _print(`Staked: ${pool.staked.toFixed(decimals ?? 4)} ${pool.symbol} ($${formatMoney(staked_tvl)})`);
+
+        }
+        else {
+          const poolUrl = pool.is1inch ? "https://1inch.exchange/#/dao/pools" :
+          pool.symbol.includes("LSLP") ? `https://info.linkswap.app/pair/${pool.address}` :
+            pool.symbol.includes("SLP") ?  `http://analytics.sushi.com/pairs/${pool.address}` :
+              pool.symbol.includes("Cake") ?  `https://pancakeswap.info/pair/${pool.address}` :
+              pool.symbol.includes("PGL") ?  `https://info.pangolin.exchange/#/pair/${pool.address}` :
+              pool.symbol.includes("CS-LP") ?  `https://app.coinswap.space/#/` :
+              pool.name.includes("Value LP") ?  `https://info.vswap.fi/pool/${pool.address}` :
+              pool.symbol.includes("SPIRIT") ?  `https://swap.spiritswap.finance/#/swap` :
+              pool.symbol.includes("spLP") ?  `https://info.spookyswap.finance/pair/${pool.address}` :
+              pool.symbol.includes("Lv1") ?  `https://info.steakhouse.finance/pair/${pool.address}` :
+              pool.symbol.includes("PLP") ?  `https://exchange.pureswap.finance/#/swap` :
+              chain == "matic" ? `https://info.quickswap.exchange/pair/${pool.address}` :
+            `http://uniswap.info/pair/${pool.address}`;
+          const helperUrls = pool.is1inch ? [] :
+          pool.symbol.includes("LSLP") ? [
+            `https://linkswap.app/#/add/${t0address}/${t1address}`,
+            `https://linkswap.app/#/remove/${t0address}/${t1address}`,
+            `https://linkswap.app/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+          ] :
+          pool.symbol.includes("Cake") ? [
+            `https://exchange.pancakeswap.finance/#/add/${t0address}/${t1address}`,
+            `https://exchange.pancakeswap.finance/#/remove/${t0address}/${t1address}`,
+            `https://exchange.pancakeswap.finance/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+          ] :
+          pool.symbol.includes("Lv1") ? [ // adding before matic
+            `https://swap.steakhouse.finance/#/add/${t0address}/${t1address}`,
+            `https://swap.steakhouse.finance/#/remove/${t0address}/${t1address}`,
+            `https://swap.steakhouse.finance/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+          ] :
+          chain=='matic'? [
+            `https://quickswap.exchange/#/add/${t0address}/${t1address}`,
+            `https://quickswap.exchange/#/remove/${t0address}/${t1address}`,
+            `https://quickswap.exchange/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+          ] :
+          pool.name.includes("Value LP") ? [
+            `https://bsc.valuedefi.io/#/add/${t0address}/${t1address}`,
+            `https://bsc.valuedefi.io/#/remove/${t0address}/${t1address}`,
+            `https://bsc.valuedefi.io/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+          ] :
+          pool.symbol.includes("PGL") ? [
+            `https://app.pangolin.exchange/#/add/${t0address}/${t1address}`,
+            `https://app.pangolin.exchange/#/remove/${t0address}/${t1address}`,
+            `https://app.pangolin.exchange/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+          ] :
+          pool.symbol.includes("CS-LP") ? [
+            `https://app.coinswap.space/#/add/${t0address}/${t1address}`,
+            `https://app.coinswap.space/#/remove/${t0address}/${t1address}`,
+            `https://app.coinswap.space/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+          ] :
+          pool.symbol.includes("SLP") ? [
+            `https://app.sushi.com/add/${t0address}/${t1address}`,
+            `https://app.sushi.com/remove/${t0address}/${t1address}`,
+            `https://app.sushi.com/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+          ] :
+          pool.symbol.includes("SPIRIT") ? [
+            `https://swap.spiritswap.finance/add/${t0address}/${t1address}`,
+            `https://swap.spiritswap.finance/remove/${t0address}/${t1address}`,
+            `https://swap.spiritswap.finance/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+          ] :
+          pool.symbol.includes("spLP") ? [
+            `https://spookyswap.finance/add/${t0address}/${t1address}`,
+            `https://spookyswap.finance/remove/${t0address}/${t1address}`,
+            `https://spookyswap.finance/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+          ] :
+          pool.symbol.includes("PLP") ? [
+            `https://exchange.pureswap.finance/#/add/${t0address}/${t1address}`,
+            `https://exchange.pureswap.finance/#/remove/${t0address}/${t1address}`,
+            `https://exchange.pureswap.finance/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+          ] :
+          t0.symbol.includes("COMFI") ? [
+            `https://app.uniswap.org/#/add/v2/${t0address}/${t1address}`,
+            `https://app.uniswap.org/#/remove/v2/${t0address}/${t1address}`,
+            `https://app.uniswap.org/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+          ] :
+          [ `https://app.uniswap.org/#/add/${t0address}/${t1address}`,
+            `https://app.uniswap.org/#/remove/${t0address}/${t1address}`,
+            `https://app.uniswap.org/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}` ]
+          const helperHrefs = helperUrls.length == 0 ? "" :
+            ` <a href='${helperUrls[0]}' target='_blank'>[+]</a> <a href='${helperUrls[1]}' target='_blank'>[-]</a> <a href='${helperUrls[2]}' target='_blank'>[<=>]</a>`
+          _print(`<a href='${poolUrl}' target='_blank'>${stakeTokenTicker}</a>${helperHrefs} Price: $${formatMoney(price)} TVL: $${formatMoney(tvl)}`);
+          _print(`${t0.symbol} Price: $${displayPrice(p0)}`);
+          _print(`${t1.symbol} Price: $${displayPrice(p1)}`);
+          _print(`Staked: ${pool.staked.toFixed(decimals ?? 4)} ${pool.symbol} ($${formatMoney(staked_tvl)})`);
+        }
       },
       print_contained_price(userStaked) {
         var userPct = userStaked / pool.totalSupply;
@@ -1673,7 +1734,7 @@ function getErc20Prices(prices, pool, chain="eth") {
     price : price,
     stakeTokenTicker : pool.symbol,
     print_price() {
-      _print(`${name} Price: $${formatMoney(price)} Market Cap: $${formatMoney(tvl)}`);
+      _print(`${name} Price: $${displayPrice(price)} Market Cap: $${formatMoney(tvl)}`);
       _print(`Staked: ${pool.staked.toFixed(4)} ${pool.symbol} ($${formatMoney(staked_tvl)})`);
     },
     print_contained_price() {
@@ -1782,7 +1843,7 @@ function printAPR(rewardTokenTicker, rewardPrice, poolRewardsPerWeek,
 
 function printChefContractLinks(App, chefAbi, chefAddr, poolIndex, poolAddress, pendingRewardsFunction,
     rewardTokenTicker, stakeTokenTicker, unstaked, userStaked, pendingRewardTokens, fixedDecimals,
-    claimFunction, rewardTokenPrice) {
+    claimFunction, rewardTokenPrice, chain, depositFee, withdrawFee) {
   fixedDecimals = fixedDecimals ?? 2;
   const approveAndStake = async function() {
     return chefContract_stake(chefAbi, chefAddr, poolIndex, poolAddress, App)
@@ -1793,25 +1854,24 @@ function printChefContractLinks(App, chefAbi, chefAddr, poolIndex, poolAddress, 
   const claim = async function() {
     return chefContract_claim(chefAbi, chefAddr, poolIndex, App, pendingRewardsFunction, claimFunction)
   }
-  _print_link(`Stake ${unstaked.toFixed(fixedDecimals)} ${stakeTokenTicker}`, approveAndStake)
-  _print_link(`Unstake ${userStaked.toFixed(fixedDecimals)} ${stakeTokenTicker}`, unstake)
+  if(depositFee > 0){
+    _print_link(`Stake ${unstaked.toFixed(fixedDecimals)} ${stakeTokenTicker} - Fee ${depositFee}%`, approveAndStake)
+  }else{
+    _print_link(`Stake ${unstaked.toFixed(fixedDecimals)} ${stakeTokenTicker}`, approveAndStake)
+  }
+  if(withdrawFee > 0){
+    _print_link(`Unstake ${userStaked.toFixed(fixedDecimals)} ${stakeTokenTicker} - Fee ${withdrawFee}%`, unstake)
+  }else{
+    _print_link(`Unstake ${userStaked.toFixed(fixedDecimals)} ${stakeTokenTicker}`, unstake)
+  }
   _print_link(`Claim ${pendingRewardTokens.toFixed(fixedDecimals)} ${rewardTokenTicker} ($${formatMoney(pendingRewardTokens*rewardTokenPrice)})`, claim)
   _print(`Staking or unstaking also claims rewards.`)
-  if  (chefAddr == "0x0De845955E2bF089012F682fE9bC81dD5f11B372") {
-    const emergencyWithdraw = async function() {
-      return chefContract_emergencyWithdraw(chefAbi, chefAddr, poolIndex, App)
-    }
-    _print('***')
-    _print_link(`EMERGENCY WITHDRAW ${userStaked.toFixed(fixedDecimals)} ${stakeTokenTicker}`, emergencyWithdraw)
-    _print('This will forfeit your rewards but retrieve your capital')
-    _print('***')
-  }
   _print("");
 }
 
 function printChefPool(App, chefAbi, chefAddr, prices, tokens, poolInfo, poolIndex, poolPrices,
                        totalAllocPoints, rewardsPerWeek, rewardTokenTicker, rewardTokenAddress,
-                       pendingRewardsFunction, fixedDecimals, claimFunction, chain="eth") {
+                       pendingRewardsFunction, fixedDecimals, claimFunction, chain="eth", depositFee=0, withdrawFee=0) {
   fixedDecimals = fixedDecimals ?? 2;
   const sp = (poolInfo.stakedToken == null) ? null : getPoolPrices(tokens, prices, poolInfo.stakedToken);
   var poolRewardsPerWeek = poolInfo.allocPoints / totalAllocPoints * rewardsPerWeek;
@@ -1819,6 +1879,7 @@ function printChefPool(App, chefAbi, chefAddr, prices, tokens, poolInfo, poolInd
   const userStaked = poolInfo.userLPStaked ?? poolInfo.userStaked;
   const rewardPrice = getParameterCaseInsensitive(prices, rewardTokenAddress)?.usd;
   const staked_tvl = sp?.staked_tvl ?? poolPrices.staked_tvl;
+  _print_inline(`${poolIndex} - `);
   poolPrices.print_price(chain);
   sp?.print_price(chain);
   const apr = printAPR(rewardTokenTicker, rewardPrice, poolRewardsPerWeek, poolPrices.stakeTokenTicker,
@@ -1827,7 +1888,7 @@ function printChefPool(App, chefAbi, chefAddr, prices, tokens, poolInfo, poolInd
   if (poolInfo.userStaked > 0) poolPrices.print_contained_price(userStaked);
   printChefContractLinks(App, chefAbi, chefAddr, poolIndex, poolInfo.address, pendingRewardsFunction,
     rewardTokenTicker, poolPrices.stakeTokenTicker, poolInfo.poolToken.unstaked,
-    poolInfo.userStaked, poolInfo.pendingRewardTokens, fixedDecimals, claimFunction, rewardPrice, chain);
+    poolInfo.userStaked, poolInfo.pendingRewardTokens, fixedDecimals, claimFunction, rewardPrice, chain, depositFee, withdrawFee);
   return apr;
 }
 
@@ -2082,8 +2143,8 @@ async function loadSynthetixPoolInfo(App, tokens, prices, stakingAbi, stakingAdd
     }
 }
 
-async function printSynthetixPool(App, info, chain="eth") {
-    info.poolPrices.print_price(chain);
+async function printSynthetixPool(App, info, chain="eth", customURLs) {
+    info.poolPrices.print_price(chain, 4, customURLs);
     _print(`${info.rewardTokenTicker} Per Week: ${info.weeklyRewards.toFixed(2)} ($${formatMoney(info.usdPerWeek)})`);
     const weeklyAPR = info.usdPerWeek / info.staked_tvl * 100;
     const dailyAPR = weeklyAPR / 7;

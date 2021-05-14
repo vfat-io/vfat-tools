@@ -383,7 +383,7 @@ async function getBscPoolInfo(App, chefContract, chefAddress, poolIndex, pending
   const poolInfo = await chefContract.poolInfo(poolIndex);
   if (poolInfo.allocPoint == 0 || poolIndex == 105) {
     return {
-      address: poolInfo.lpToken,
+      address: poolInfo.lpToken ?? poolInfo.token,
       allocPoints: poolInfo.allocPoint ?? 1,
       poolToken: null,
       userStaked : 0,
@@ -393,16 +393,18 @@ async function getBscPoolInfo(App, chefContract, chefAddress, poolIndex, pending
       lastRewardBlock : poolInfo.lastRewardBlock
     };
   }
-  const poolToken = await getBscToken(App, poolInfo.lpToken, chefAddress);
+  const poolToken = await getBscToken(App, poolInfo.lpToken ?? poolInfo.token, chefAddress);
   const userInfo = await chefContract.userInfo(poolIndex, App.YOUR_ADDRESS);
   const pendingRewardTokens = await chefContract.callStatic[pendingRewardsFunction](poolIndex, App.YOUR_ADDRESS);
   const staked = userInfo.amount / 10 ** poolToken.decimals;
   return {
-      address: poolInfo.lpToken,
+      address: poolInfo.lpToken ?? poolInfo.token,
       allocPoints: poolInfo.allocPoint ?? 1,
       poolToken: poolToken,
       userStaked : staked,
       pendingRewardTokens : pendingRewardTokens / 10 ** 18,
+      depositFee : (poolInfo.depositFeeBP ?? 0) / 100,
+      withdrawFee : (poolInfo.withdrawFeeBP ?? 0) / 100
   };
 }
 
@@ -452,7 +454,7 @@ async function loadBscChefContract(App, tokens, prices, chef, chefAddress, chefA
     if (poolPrices[i]) {
       const apr = printChefPool(App, chefAbi, chefAddress, prices, tokens, poolInfos[i], i, poolPrices[i],
         totalAllocPoints, rewardsPerWeek, rewardTokenTicker, rewardTokenAddress,
-        pendingRewardsFunction, null, null, "bsc")
+        pendingRewardsFunction, null, null, "bsc", poolInfos[i].depositFee, poolInfos[i].withdrawFee)
       aprs.push(apr);
     }
   }
@@ -526,14 +528,14 @@ const bscTokens = [
   { "id": "midas-dollar", "symbol": "MDO", "contract": "0x35e869b7456462b81cdb5e6e42434bd27f3f788c" },
   { "id": "slime-finance", "symbol": "SLME", "contract": "0x4fcfa6cc8914ab455b5b33df916d90bfe70b6ab1" },
   { "id": "bolt-true-dollar", "symbol": "BTD", "contract": "0xd1102332a213e21faf78b69c03572031f3552c33" },
-  { "id": "coral-farm", "symbol": "CRL", "contract": "0xc00b1ffa922edf1175a4e6feaac5b2b469932524" },
   { "id": "mdex", "symbol": "MDX", "contract": "0x9C65AB58d8d978DB963e63f2bfB7121627e3a739" },
   { "id": "ice-token", "symbol": "ICE", "contract": "0xf16e81dce15b08f326220742020379b855b87df9"},
   { "id": "alpaca-finance", "symbol": "ALPACA", "contract": "0x8f0528ce5ef7b51152a59745befdd91d97091d2f"},
   { "id": "blue-planetfinance", "symbol": "AQUA", "contract": "0x72B7D61E8fC8cF971960DD9cfA59B8C829D91991"},
   { "id": "dogecoin", "symbol": "DOGE", "contract": "0xbA2aE424d960c26247Dd6c32edC70B295c744C43"},
   { "id": "degen", "symbol": "DGNZ", "contract": "0xb68a67048596502A8B88f1C10ABFF4fA99dfEc71"},
-  { "id": "degencomp", "symbol": "aDGNZ", "contract": "0xe8B9b396c59A6BC136cF1f05C4D1A68A0F7C2Dd7"}
+  { "id": "degencomp", "symbol": "aDGNZ", "contract": "0xe8B9b396c59A6BC136cF1f05C4D1A68A0F7C2Dd7"},
+  { "id": "gambit", "symbol": "GMT", "contract": "0x99e92123eb77bc8f999316f622e5222498438784"}
 ]
 
 async function getBscPrices() {

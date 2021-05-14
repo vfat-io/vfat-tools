@@ -14,7 +14,7 @@ const main = async() => {
         ["Yeti     ",`<a href="yeti"    >Various</a>`,"YTS   ","https://exchange.yetiswap.app"],
         ["Pandaswap",`<a href="panda"   >Various</a>`,"BAMBOO","https://pandaswap.exchange"],
         ["Pefi     ",`<a href="pefi"    >Various</a>`,"PEFI  ","https://penguinfinance.org"],
-        ["Elk      ",`<a href="elk"     >Various</a>`,"ELK   ","https://elk.finance"],
+        ["Elk *    ",`<a href="elk"     >Various</a>`,"ELK   ","https://elk.finance"],
         ["Snowball ",`<a href="snowball">Various</a>`,"SNOB  ","https://snowball.network/earn"],
         ["Olive    ",`<a href="olive"   >Various</a>`,"OLIVE ","https://avax.olive.cash"],
         ["Lydia    ",`<a href="lydia"   >Various</a>`,"LYD   ","https://www.lydia.finance"],
