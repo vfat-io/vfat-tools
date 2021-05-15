@@ -1,15 +1,14 @@
 $(function() {
-    consoleInit();
-    start(main);
+consoleInit(main)
 });
 
-async function main() {  
+async function main() {
     const App = await init_ethers();
 
     _print(`Initialized ${App.YOUR_ADDRESS}\n`);
     _print("Reading smart contracts...\n");
 
-    const DAO = new ethers.Contract(Contracts.PSD.DAO.address, 
+    const DAO = new ethers.Contract(Contracts.PSD.DAO.address,
         Contracts.PSD.DAO.abi, App.provider);
     const DOLLAR = new ethers.Contract(Contracts.PSD.PSD.address,
         ERC20_ABI, App.provider);
@@ -21,9 +20,9 @@ async function main() {
 
     const LP = new ethers.Contract(Contracts.PSD.LPIncentivizationPool.address,
         Contracts.PSD.LPIncentivizationPool.abi, App.provider);
-    await loadEmptySetLP(App, LP, Contracts.PSD.Uniswap_USDC_PSD.address, 
+    await loadEmptySetLP(App, LP, Contracts.PSD.Uniswap_USDC_PSD.address,
         "PSD-USDC LP",12, epoch, "PSD", uniPrices);
-    
+
     const totalCoupons = await DAO.totalCoupons() / 1e18;
     const totalRedeemable = await DAO.totalRedeemable() / 1e18;
     const totalNet = await DAO.totalNet() / 1e18;
@@ -49,16 +48,16 @@ async function main() {
         if (daoRewards > 0) {
             const bondedReturn = daoRewards * epochsPerDay / totalBonded * 100;
 
-            _print(`DAO APR: Day ${(bondedReturn).toFixed(2)}% Week ${(bondedReturn * 7).toFixed(2)}% Year ${(bondedReturn * 365).toFixed(2)}%`)
+            _print(`DAO APY: Day ${(bondedReturn).toFixed(2)}% Week ${(bondedReturn * 7).toFixed(2)}% Year ${(bondedReturn * 365).toFixed(2)}%`)
 
         } else {
-            _print(`DAO APR: Day 0% Week 0% Year 0%`)
+            _print(`DAO APY: Day 0% Week 0% Year 0%`)
         }
         // Calculate total rewards allocated to LP
         const lpRewards = totalNet * calcPrice * lpReward
         const price = getParameterCaseInsensitive(prices, DOLLAR.address).usd;
         const lpReturn = lpRewards * price * epochsPerDay/ uniPrices.staked_tvl * 100
-        
+
         _print(`LP  APR: Day ${(lpReturn).toFixed(2)}% Week ${(lpReturn * 7).toFixed(2)}% Year ${(lpReturn * 365).toFixed(2)}%`)
 
     }
@@ -72,8 +71,8 @@ async function main() {
         _print(`TWAP: ${twap}\n`);
         if (twap > 1) {
             // Get price
-            const calcPrice = Math.min((twap - 1) / 8, 0.15)    
-    
+            const calcPrice = Math.min((twap - 1) / 8, 0.15)
+
             // Calulcate the outstanding commitments so we can remove it from the rewards
             const totalOutstanding = totalCoupons - totalRedeemable
 
@@ -84,21 +83,21 @@ async function main() {
             if (daoRewards > 0) {
                 const bondedReturn = daoRewards * epochsPerDay / totalBonded * 100;
 
-                _print(`DAO APR: Day ${(bondedReturn).toFixed(2)}% Week ${(bondedReturn * 7).toFixed(2)}% Year ${(bondedReturn * 365).toFixed(2)}%`)
+                _print(`DAO APY: Day ${(bondedReturn).toFixed(2)}% Week ${(bondedReturn * 7).toFixed(2)}% Year ${(bondedReturn * 365).toFixed(2)}%`)
 
             } else {
-                _print(`DAO APR: Day 0% Week 0% Year 0%`)
+                _print(`DAO APY: Day 0% Week 0% Year 0%`)
             }
             // Calculate total rewards allocated to LP
             const lpRewards = totalNet * calcPrice * lpReward
             const price = getParameterCaseInsensitive(prices, DOLLAR.address).usd;
             const lpReturn = lpRewards * price * epochsPerDay/ uniPrices.staked_tvl * 100
-            
+
             _print(`LP  APR: Day ${(lpReturn).toFixed(2)}% Week ${(lpReturn * 7).toFixed(2)}% Year ${(lpReturn * 365).toFixed(2)}%`)
-        
+
         }
         else {
-            _print(`DAO APR: Day 0% Week 0% Year 0%`)
+            _print(`DAO APY: Day 0% Week 0% Year 0%`)
             _print(`LP APR: Day 0% Week 0% Year 0%`)
         }
     }

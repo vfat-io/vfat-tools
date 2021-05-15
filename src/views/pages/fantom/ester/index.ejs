@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include(`${partials}/head`); -%>
+
+<body>
+<%- include(`${partials}/header_main`); -%>
+<pre id="log">
+*************** 👨‍🌾 UNOFFICIAL ESTER.FINANCE FARMING CALCULATOR 👨‍🌾 ***************
+INFO  : https://ester.finance
+**********************************************************************************
+
+</pre>
+<div class="loader--1"></div>
+<%- include(`${partials}/scripts`, {scriptname: 'fantom_ester'}); -%>
+</body>
+</html> 

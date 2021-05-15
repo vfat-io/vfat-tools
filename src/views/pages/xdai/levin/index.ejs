@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include(`${partials}/head`); -%>
+
+<body>
+<%- include(`${partials}/header_main`); -%>
+<pre id="log">
+********************************* xDAI **********************************
+    
+*************** 👨‍🌾 UNOFFICIAL LEVINSWAP CALCULATOR 👨‍🌾 ************
+INFO  : https://wiki.levinswap.org/
+EXCHANGE  : https://app.levinswap.org/
+FARM  : https://farm.levinswap.org/
+STAKE  : https://stake.levinswap.org/
+*************************************************************************
+
+</pre>
+<div class="loader--1"></div>
+<%- include(`${partials}/scripts`, {scriptname: 'xdai_levin'}); -%>
+</body>
+</html> 

@@ -1,6 +1,5 @@
 $(function() {
-    consoleInit();
-    start(main);
+consoleInit(main)
 });
 
 const calculateChange = (price, totalCoupons, totalRedeemable) => {
@@ -21,13 +20,13 @@ const calculateChange = (price, totalCoupons, totalRedeemable) => {
     }
 }
 
-async function main() {  
+async function main() {
     const App = await init_ethers();
 
     _print(`Initialized ${App.YOUR_ADDRESS}\n`);
     _print("Reading smart contracts...\n");
 
-    const DAO = new ethers.Contract(Contracts.BSD.DAO.address, 
+    const DAO = new ethers.Contract(Contracts.BSD.DAO.address,
         Contracts.BSD.DAO.abi, App.provider);
     const DOLLAR = new ethers.Contract(Contracts.BSD.BSD.address,
         ERC20_ABI, App.provider);
@@ -39,7 +38,7 @@ async function main() {
 
     const LP = new ethers.Contract(Contracts.BSD.LPIncentivizationPool.address,
         Contracts.BSD.LPIncentivizationPool.abi, App.provider);
-    await loadEmptySetLP(App, LP, Contracts.BSD.Uniswap_BSD_USDC.address, 
+    await loadEmptySetLP(App, LP, Contracts.BSD.Uniswap_BSD_USDC.address,
         "BSD-USDC LP", 24, epoch, "BSD", uniPrices);
 
     if (epoch < 301) { //bootstrapping
@@ -64,17 +63,17 @@ async function main() {
         if (daoRewards > 0) {
             const bondedReturn = daoRewards / totalBonded * 100 * 24; //24 epochs per day
 
-            _print(`DAO APR: Day ${bondedReturn.toFixed(2)}% Week ${(bondedReturn * 7).toFixed(2)}% Year ${(bondedReturn * 365).toFixed(2)}%`)
+            _print(`DAO APY: Day ${bondedReturn.toFixed(2)}% Week ${(bondedReturn * 7).toFixed(2)}% Year ${(bondedReturn * 365).toFixed(2)}%`)
 
         } else {
-            _print(`DAO APR: Day 0% Week 0% Year 0%`)
+            _print(`DAO APY: Day 0% Week 0% Year 0%`)
         }
         // Calculate total rewards allocated to LP
         const lpRewards = totalNet * calcPrice * lpReward
         const price = getParameterCaseInsensitive(prices, DOLLAR.address).usd;
         const lpReturn = lpRewards * price / uniPrices.staked_tvl * 100 * 24;
 
-        _print(`LP  APR: Day ${lpReturn.toFixed(2)}% Week ${(lpReturn * 7).toFixed(2)}% Year ${(lpReturn * 365).toFixed(2)}%`)        
+        _print(`LP  APR: Day ${lpReturn.toFixed(2)}% Week ${(lpReturn * 7).toFixed(2)}% Year ${(lpReturn * 365).toFixed(2)}%`)
 
     }
     else {
@@ -96,7 +95,7 @@ async function main() {
                 const daoReward = 0.775
                 // Get price
                 const calcPrice = calculateChange(twap, totalCoupons, totalRedeemable)
-        
+
                 // Calulcate the outstanding commitments so we can remove it from the rewards
                 const totalOutstanding = totalCoupons - totalRedeemable
 
@@ -107,27 +106,27 @@ async function main() {
                 if (daoRewards > 0) {
                     const bondedReturn = daoRewards / totalBonded * 100 * 3;
 
-                    _print(`DAO APR: Day ${bondedReturn.toFixed(2)}% Week ${(bondedReturn * 7).toFixed(2)}% Year ${(bondedReturn * 365).toFixed(2)}%`)
+                    _print(`DAO APY: Day ${bondedReturn.toFixed(2)}% Week ${(bondedReturn * 7).toFixed(2)}% Year ${(bondedReturn * 365).toFixed(2)}%`)
 
                 } else {
-                    _print(`DAO APR: Day 0% Week 0% Year 0%`)
+                    _print(`DAO APY: Day 0% Week 0% Year 0%`)
                 }
                 // Calculate total rewards allocated to LP
                 const lpRewards = totalNet * calcPrice * lpReward
                 const price = getParameterCaseInsensitive(prices, DOLLAR.address).usd;
                 const lpReturn = lpRewards * price / uniPrices.staked_tvl * 100
 
-                _print(`LP  APR: Day ${(lpReturn * 3).toFixed(2)}% Week ${(lpReturn * 3 * 7).toFixed(2)}% Year ${(lpReturn * 3 * 365).toFixed(2)}%`)        
+                _print(`LP  APR: Day ${(lpReturn * 3).toFixed(2)}% Week ${(lpReturn * 3 * 7).toFixed(2)}% Year ${(lpReturn * 3 * 365).toFixed(2)}%`)
             }
             else {
-                _print(`DAO APR: Day 0% Week 0% Year 0%`)
+                _print(`DAO APY: Day 0% Week 0% Year 0%`)
                 _print(`LP APR: Day 0% Week 0% Year 0%`)
-            }        
+            }
         }
     }
     _print(`\nDAO Unbonds`)
     await printDaoUnbonds(App.provider, DAO, epoch + 1, 72, 60 * 60);
     _print(`\LP Unbonds`)
     await printLPUnbonds(App.provider, LP, epoch + 1, 24, 60 * 60);
-    hideLoading();  
+    hideLoading();
 }

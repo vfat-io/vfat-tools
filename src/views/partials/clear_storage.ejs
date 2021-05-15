@@ -1,0 +1,17 @@
+<br/>
+<a href="#" id="clear-storage">[CLEAR BROWSER CACHE]</a>
+<script>
+
+    let element = document.getElementById("clear-storage")
+    element.onclick = () => localStorage.clear()
+    element.style.display = "none"
+
+
+    for (let i = 0; i < localStorage.length; i++){
+        let key = localStorage.key(i)
+        let value = localStorage.getItem(key)
+        if (value.endsWith("20") && value !== "erc20") {
+            localStorage.removeItem(key)
+        }
+    }
+</script>
