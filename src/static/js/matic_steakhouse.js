@@ -30,7 +30,7 @@ async function main() {
    if(currentBlock < startBlock){
      _print(`Rewards start at block ${startBlock}\n`);
    }else{
-    rewardsPerWeek = await FARM.pendingToken() /1e18
+    rewardsPerWeek = await FARM.TokenPerBlock() /1e18
       * 604800 / 2.1;
    }
 
