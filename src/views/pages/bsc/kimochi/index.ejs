@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include(`${partials}/head`); -%>
+
+<body>
+<%- include(`${partials}/header_main`); -%>
+<pre id="log">
+*************** 👨‍🌾 UNOFFICIAL KIMOCHI.FINANCE FARMING CALCULATOR 👨‍🌾 ***************
+INFO  : https://kimochi.finance
+************************************************************************************
+
+***You will only receive 30% of your claimed rewards up front. The other 70% will vest.***
+
+</pre>
+<div class="loader--1"></div>
+<%- include(`${partials}/scripts`, {scriptname: 'bsc_kimochi'}); -%>
+</body>
+</html> 

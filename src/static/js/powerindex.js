@@ -1,9 +1,8 @@
 $(function() {
-    consoleInit();
-    start(main);
+consoleInit(main)
   });
 
-  async function getPoolInfo(app, chefContract, chefAddress, poolIndex, pendingRewardsFunction) {  
+  async function getPoolInfo(app, chefContract, chefAddress, poolIndex, pendingRewardsFunction) {
     const poolInfo = await chefContract.pools(poolIndex);
     const poolToken = await getToken(app, poolInfo.lpToken, chefAddress);
     const userInfo = await chefContract.users(poolIndex, app.YOUR_ADDRESS);
@@ -40,16 +39,16 @@ $(function() {
 
     const rewardTokenAddress = await chefContract.callStatic[rewardTokenFunction]();
     const rewardToken = await getToken(App, rewardTokenAddress, chefAddress);
-    const rewardsPerWeek = rewardsPerWeekFixed ?? 
-      await chefContract.callStatic[rewardsPerBlockFunction]() 
+    const rewardsPerWeek = rewardsPerWeekFixed ??
+      await chefContract.callStatic[rewardsPerBlockFunction]()
       / 10 ** rewardToken.decimals * 604800 / 13.5
 
     const poolInfos = await Promise.all([...Array(poolCount).keys()].map(async (x) =>
       await getPoolInfo(App, chefContract, chefAddress, x, pendingRewardsFunction)));
-    
+
     var tokenAddresses = [].concat.apply([], poolInfos.map(x => x.poolToken.tokens));
     var prices = await lookUpTokenPrices(tokenAddresses);
-    
+
     await Promise.all(tokenAddresses.map(async (address) => {
         tokens[address] = await getToken(App, address, chefAddress);
     }));
@@ -57,24 +56,24 @@ $(function() {
     const poolPrices = poolInfos.map(poolInfo => getPoolPrices(tokens, prices, poolInfo.poolToken));
 
     _print("Finished reading smart contracts.\n");
-      
+
     for (i = 0; i < poolCount; i++) {
       printChefPool(App, chefAbi, chefAddress, prices, tokens, poolInfos[i], i, poolPrices[i],
         totalAllocPoints, rewardsPerWeek, rewardTokenTicker, rewardTokenAddress,
         pendingRewardsFunction);
     }
   }
-  async function main() {  
+  async function main() {
     const App = await init_ethers();
-  
+
     _print(`Initialized ${App.YOUR_ADDRESS}\n`);
     _print("Reading smart contracts...\n");
-  
+
     const CVP_CHEF_ADDR = "0xf09232320ebeac33fae61b24bb8d7ca192e58507";
     const rewardTokenTicker = "CVP";
 
     await loadCvpContract(App, null, CVP_CHEF_ADDR, CVP_CHEF_ABI, rewardTokenTicker,
         "cvp", "cvpPerBlock", null, "pendingCvp");
 
-    hideLoading();  
+    hideLoading();
   }

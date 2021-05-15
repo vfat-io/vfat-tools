@@ -1,66 +1,139 @@
+
+let walletProvider = undefined
+
+const networkNameFromId = function (id) {
+  for(let network of Object.values(window.NETWORKS)) {
+    let networkId = parseInt(network.chainId, 16)
+    if (networkId === id) {
+      return network.chainName
+    }
+  }
+  return "Unknown Network"
+}
+
+const pageNetwork = function() {
+  let network = window.location.pathname.split("/")[1]
+  if (network.toLowerCase() === 'bsc') {
+    return window.NETWORKS.BINANCE_SMART_CHAIN
+  }
+  if (network.toLowerCase() === 'heco') {
+    return window.NETWORKS.HECO
+  }
+  if (network.toLowerCase() === 'polygon') {
+    return window.NETWORKS.POLYGON
+  }
+  if (network.toLowerCase() === 'xdai') {
+    return window.NETWORKS.XDAI
+  }
+  if (network.toLowerCase() === 'fantom') {
+    return window.NETWORKS.FANTOM
+  }
+  if (network.toLowerCase() === 'harmony') {
+    return window.NETWORKS.HARMONY_S0
+  }
+  if (network.toLowerCase() === 'avax') {
+    return window.NETWORKS.AVALANCHE
+  }
+
+  return window.NETWORKS.ETHEREUM
+}
+
+const init_wallet = async function (callback) {
+
+  let targetNetwork = pageNetwork()
+
+  if (window.web3Modal.cachedProvider) {
+    await connectWallet(() => {})
+  }
+
+  if (walletProvider) {
+
+    let provider = new ethers.providers.Web3Provider(walletProvider)
+    let connectedNetwork = await provider.getNetwork()
+    let targetNetworkId = parseInt(targetNetwork.chainId, 16)
+
+    if (connectedNetwork.chainId === targetNetworkId) {
+      _print_link("[CHANGE WALLET]", changeWallet, "connect_wallet_button");
+      start(callback);
+    } else {
+      _print(`You are connected to ${networkNameFromId(connectedNetwork.chainId)}, please switch to ${targetNetwork.chainName} network`)
+      if (window.ethereum && targetNetwork.chainId !== '0x1') {
+        _print('')
+        _print_link("[SWITCH NETWORK]", () => switchNetwork(targetNetwork), "connect_wallet_button")
+      }
+      hideLoading()
+    }
+  } else {
+    _print_link("[CONNECT WALLET]", () => connectWallet(callback), "connect_wallet_button");
+    hideLoading()
+  }
+  _print('')
+}
+
 async function init_ethers() {
+
   const App = {}
 
-  const ETHEREUM_NODE_URL = 'aHR0cHM6Ly9tYWlubmV0LmluZnVyYS5pby92My9hNmYzNmI4OWM0OGM0ZmE4YjE0NjYwNWY2ZDdhNWI2Zg=='
-  
   let isMetaMaskInstalled = true
 
-  // Modern dapp browsers...
-  if (window.ethereum) {
-    App.web3Provider = window.ethereum
-    try {
-      // Request account access
-      const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' })
-      App.YOUR_ADDRESS = accounts[0];
-    } catch (error) {
-      // User denied account access...
-      console.error('User denied account access')
-    }
-    App.provider = new ethers.providers.Web3Provider(window.ethereum)
-  }
-  // Legacy dapp browsers...
-  else if (window.web3) {
-    App.provider = new ethers.providers.Web3Provider(window.web3.currentProvider)
-  }
-  // If no injected web3 instance is detected, fall back to backup node
-  else {
-    App.provider = new ethers.providers.JsonRpcProvider(atob(ETHEREUM_NODE_URL))
-    isMetaMaskInstalled = false
-    _print(
-      "You don't have MetaMask installed! Falling back to backup node...\n (will likely to fail. Please install MetaMask extension).\n"
-    )
-    sleep(10)
-  }
-  App.ethcallProvider = new ethcall.Provider();
-  await App.ethcallProvider.init(App.provider);
+  try {
 
-  let addr = getUrlParameter('addr')
-
-  //resolve ENS domain if possible
-  if(typeof addr !== "undefined" && addr.includes('.eth')) 
-  {
-    addr = await App.provider.resolveName(addr)
-    if(addr == null)
-    {
-      _print(
-      "Could not initialize your ENS domain.\n"
-      )
-    }
-    App.YOUR_ADDRESS = addr
-  }
-
-  // Could not load URL parameter
-  if (!App.YOUR_ADDRESS) {
-    if (!isMetaMaskInstalled) {
-      if (localStorage.hasOwnProperty('addr')) {
-        App.YOUR_ADDRESS = localStorage.getItem('addr')
-      } else {
-        App.YOUR_ADDRESS = window.prompt('Enter your eth address.')
+    // Modern dapp browsers...
+    if (walletProvider) {
+      App.web3Provider = walletProvider
+      App.provider = new ethers.providers.Web3Provider(walletProvider)
+      try {
+        // Request account access
+        const accounts = await walletProvider.request({ method: 'eth_requestAccounts' })
+        App.YOUR_ADDRESS = accounts[0];
+      } catch (error) {
+        // User denied account access...
+        console.error('User denied account access')
       }
-    } else {
-      let accounts = await App.provider.listAccounts()
-      App.YOUR_ADDRESS = accounts[0]
     }
+    // If no injected web3 instance is detected, fall back to backup node
+    else {
+      App.provider = new ethers.providers.JsonRpcProvider(atob(window.ETHEREUM_NODE_URL))
+      isMetaMaskInstalled = false
+      _print(
+        "You don't have MetaMask installed! Falling back to backup node...\n (will likely to fail. Please install MetaMask extension).\n"
+      )
+      sleep(10)
+    }
+    App.ethcallProvider = new ethcall.Provider();
+    await App.ethcallProvider.init(App.provider);
+
+    let addr = getUrlParameter('addr')
+
+    //resolve ENS domain if possible
+    if(typeof addr !== "undefined")
+    {
+      if (addr.includes('.eth')) {
+        addr = await App.provider.resolveName(addr)
+        if(addr == null)
+        {
+          _print("Could not initialize your ENS domain.\n")
+        }
+      }
+      App.YOUR_ADDRESS = addr
+    }
+
+    // Could not load URL parameter
+    if (!App.YOUR_ADDRESS) {
+      if (!isMetaMaskInstalled) {
+        if (localStorage.hasOwnProperty('addr')) {
+          App.YOUR_ADDRESS = localStorage.getItem('addr')
+        } else {
+          App.YOUR_ADDRESS = window.prompt('Enter your eth address.')
+        }
+      } else {
+        let accounts = await App.provider.listAccounts()
+        App.YOUR_ADDRESS = accounts[0]
+      }
+    }
+
+  } catch (e) {
+
   }
 
   if (!App.YOUR_ADDRESS || !ethers.utils.isAddress(App.YOUR_ADDRESS)) {
@@ -68,7 +141,68 @@ async function init_ethers() {
   }
 
   localStorage.setItem('addr', App.YOUR_ADDRESS)
+
   return App
+}
+
+const switchNetwork = async function(network) {
+  await window.ethereum.request({method: 'wallet_addEthereumChain', params: [network]}).catch()
+  window.location.reload()
+}
+
+const changeWallet = async function() {
+  let cached = window.web3Modal.cachedProvider
+  window.web3Modal.clearCachedProvider()
+  await connectWallet(()=> window.location.reload() )
+  if (!window.web3Modal.cachedProvider) {
+    window.web3Modal.setCachedProvider(cached)
+  }
+}
+
+const connectWallet = async function(callback) {
+  try {
+    walletProvider = await window.web3Modal.connect()
+
+    walletProvider.on("accountsChanged", (accounts) => {
+      if (accounts === undefined || accounts.length === 0) {
+        window.web3Modal.clearCachedProvider()
+      }
+      window.location.reload()
+    });
+
+    walletProvider.on("chainChanged", (networkId) => {
+      window.location.reload()
+    });
+
+    let targetNetwork = pageNetwork()
+    let provider = new ethers.providers.Web3Provider(walletProvider)
+    let connectedNetwork = await provider.getNetwork()
+    let targetNetworkId = parseInt(targetNetwork.chainId, 16)
+
+    if (connectedNetwork.chainId === targetNetworkId) {
+      let button = document.getElementById('connect_wallet_button')
+      button.textContent = "[CHANGE WALLET]"
+      $(document).off('click', '#connect_wallet_button')
+      $(document).on('click', '#connect_wallet_button', changeWallet)
+
+      showLoading()
+
+      start(callback)
+    } else {
+
+      let button = document.getElementById('connect_wallet_button')
+      $(document).off('click', '#connect_wallet_button')
+      button.remove()
+
+      _print(`You are connected to ${networkNameFromId(connectedNetwork.chainId)}, please switch to ${targetNetwork.chainName} network`)
+      if (window.ethereum && targetNetwork.chainId !== '0x1') {
+        _print('')
+        _print_link("[SWITCH NETWORK]", () => switchNetwork(targetNetwork), "connect_wallet_button")
+      }
+      hideLoading()
+    }
+
+  } catch(e) {}
 }
 
 const getUrlParameter = function(sParam) {
@@ -77,7 +211,7 @@ const getUrlParameter = function(sParam) {
     sParameterName,
     i
 
-  for (i = 0; i < sURLVariables.length; i++) {
+  for (let i = 0; i < sURLVariables.length; i++) {
     sParameterName = sURLVariables[i].split('=')
 
     if (sParameterName[0] === sParam) {
@@ -106,10 +240,26 @@ const start = function(f) {
 
 let logger
 
-const consoleInit = function() {
+const consoleInit = function(callback) {
   logger = document.getElementById('log')
   _print(new Date().toString())
   _print('')
+  return init_wallet(callback)
+}
+
+const _print_inline = function(message) {
+  if (!logger) {
+    logger = document.getElementById('log')
+  }
+
+  for (let i = 0; i < arguments.length; i++) {
+    if (typeof arguments[i] == 'object') {
+      logger.innerHTML +=
+        (JSON && JSON.stringify ? JSON.stringify(arguments[i], undefined, 2) : arguments[i])
+    } else {
+      logger.innerHTML += arguments[i]
+    }
+  }
 }
 
 const _print = function(message) {
@@ -142,12 +292,10 @@ const _print_bold = function(message) {
   }
 }
 
-const _print_link = function(message, onclickFunction) {
+const _print_link = function(message, onclickFunction, uuid = ID()) {
   if (!logger) {
     logger = document.getElementById('log')
   }
-
-  const uuid = ID()
 
   logger.innerHTML += '<a href="#" id=' + uuid + '>' + message + '</a><br />'
 
@@ -176,20 +324,36 @@ const sleep = function(milliseconds) {
   } while (currentDate - date < milliseconds)
 }
 
+const chunk = (arr, n) => arr.length ? [arr.slice(0, n), ...chunk(arr.slice(n), n)] : []
+
 const lookUpPrices = async function(id_array) {
-  let ids = id_array.join('%2C')
-  return $.ajax({
-    url: 'https://api.coingecko.com/api/v3/simple/price?ids=' + ids + '&vs_currencies=usd',
-    type: 'GET',
-  })
+  const prices = {}
+  for (const id_chunk of chunk(id_array, 50)) {
+    let ids = id_chunk.join('%2C')
+    let res = await $.ajax({
+      url: 'https://api.coingecko.com/api/v3/simple/price?ids=' + ids + '&vs_currencies=usd',
+      type: 'GET',
+    })
+    for (const [key, v] of Object.entries(res)) {
+      if (v.usd) prices[key] = v;
+    }
+  }
+  return prices
 }
 
 const lookUpTokenPrices = async function(id_array) {
-  let ids = id_array.join('%2C')
-  return $.ajax({
-    url: 'https://api.coingecko.com/api/v3/simple/token_price/ethereum?contract_addresses=' + ids + '&vs_currencies=usd',
-    type: 'GET',
-  })
+  const prices = {}
+  for (const id_chunk of chunk(id_array, 50)) {
+    let ids = id_chunk.join('%2C')
+    let res = await $.ajax({
+      url: 'https://api.coingecko.com/api/v3/simple/token_price/ethereum?contract_addresses=' + ids + '&vs_currencies=usd',
+      type: 'GET',
+    })
+    for (const [key, v] of Object.entries(res)) {
+      if (v.usd) prices[key] = v;
+    }
+  }
+  return prices
 }
 
 const lookUpPricesHistorical = async function(id, from, to) {
@@ -425,10 +589,10 @@ const hideLoading = function() {
 
 const toDollar = formatter.format
 
-const rewardsContract_resetApprove = async function(stakingTokenAddr, rewardPoolAddr, App) {
+const rewardsContract_resetApprove = async function(stakeTokenAddr, rewardPoolAddr, App) {
   const signer = App.provider.getSigner()
 
-  const STAKING_TOKEN = new ethers.Contract(stakingTokenAddr, ERC20_ABI, signer)
+  const STAKING_TOKEN = new ethers.Contract(stakeTokenAddr, ERC20_ABI, signer)
 
   showLoading()
 
@@ -477,14 +641,14 @@ const dao_deposit = async (App, DAO, DOLLAR) => {
   }
 }
 
-const rewardsContract_stake = async function(stakingTokenAddr, rewardPoolAddr, App, maxAllowance) {
+const rewardsContract_stake = async function(stakeTokenAddr, rewardPoolAddr, App, maxAllowance) {
   const signer = App.provider.getSigner()
 
-  const TEND_TOKEN = new ethers.Contract(stakingTokenAddr, ERC20_ABI, signer)
+  const TEND_TOKEN = new ethers.Contract(stakeTokenAddr, ERC20_ABI, signer)
   const WEEBTEND_V2_TOKEN = new ethers.Contract(rewardPoolAddr, YFFI_REWARD_CONTRACT_ABI, signer)
 
   const balanceOf = await TEND_TOKEN.balanceOf(App.YOUR_ADDRESS)
-  const currentTEND =  maxAllowance ? (maxAllowance / 1e18 < balanceOf / 1e18 
+  const currentTEND =  maxAllowance ? (maxAllowance / 1e18 < balanceOf / 1e18
     ? maxAllowance : balanceOf) : balanceOf
   const allowedTEND = await TEND_TOKEN.allowance(App.YOUR_ADDRESS, rewardPoolAddr)
 
@@ -537,6 +701,24 @@ const rewardsContract_unstake = async function(rewardPoolAddr, App) {
   if (currentStakedAmount > 0) {
     showLoading()
     REWARD_POOL.withdraw(currentStakedAmount, {gasLimit: 250000})
+      .then(function(t) {
+        return App.provider.waitForTransaction(t.hash)
+      })
+      .catch(function() {
+        hideLoading()
+      })
+  }
+}
+
+const rewardsContract_movetobardroom = async function(rewardPoolAddr, App) {
+  const signer = App.provider.getSigner()
+
+  const REWARD_POOL = new ethers.Contract(rewardPoolAddr, Y_STAKING_POOL_ABI, signer)
+  const currentStakedAmount = await REWARD_POOL.balanceOf(App.YOUR_ADDRESS)
+
+  if (currentStakedAmount > 0) {
+    showLoading()
+    REWARD_POOL.stakeInBoardroom({gasLimit: 500000})
       .then(function(t) {
         return App.provider.waitForTransaction(t.hash)
       })
@@ -611,12 +793,12 @@ const print_warning = function() {
   _print_bold('         YOU ARE RESPONSIBLE FOR ANY FUNDS THAT YOU LOSE BY INTERACTING WITH THIS CONTRACT.\n')
 }
 
- 
 
-const chefContract_stake = async function(chefAbi, chefAddress, poolIndex, stakingTokenAddr, App) {
+
+const chefContract_stake = async function(chefAbi, chefAddress, poolIndex, stakeTokenAddr, App) {
   const signer = App.provider.getSigner()
 
-  const STAKING_TOKEN = new ethers.Contract(stakingTokenAddr, ERC20_ABI, signer)
+  const STAKING_TOKEN = new ethers.Contract(stakeTokenAddr, ERC20_ABI, signer)
   const CHEF_CONTRACT = new ethers.Contract(chefAddress, chefAbi, signer)
 
   const currentTokens = await STAKING_TOKEN.balanceOf(App.YOUR_ADDRESS)
@@ -679,7 +861,7 @@ const chefContract_unstake = async function(chefAbi, chefAddress, poolIndex, App
   }
 }
 
-const chefContract_claim = async function(chefAbi, chefAddress, poolIndex, App, 
+const chefContract_claim = async function(chefAbi, chefAddress, poolIndex, App,
     pendingRewardsFunction, claimFunction) {
   const signer = App.provider.getSigner()
 
@@ -707,117 +889,286 @@ const chefContract_claim = async function(chefAbi, chefAddress, poolIndex, App,
   }
 }
 
+const chefContract_emergencyWithdraw = async function(chefAbi, chefAddress, poolIndex, App) {
+  const signer = App.provider.getSigner()
+
+  const CHEF_CONTRACT = new ethers.Contract(chefAddress, chefAbi, signer)
+
+  const currentStakedAmount = (await CHEF_CONTRACT.userInfo(poolIndex, App.YOUR_ADDRESS)).amount
+
+  if (currentStakedAmount > 0) {
+    showLoading()
+    CHEF_CONTRACT.emergencyWithdraw(poolIndex, {gasLimit: 500000})
+      .then(function(t) {
+        return App.provider.waitForTransaction(t.hash)
+      })
+      .catch(function() {
+        hideLoading()
+      })
+  }
+}
+
 async function getUniPool(app, pool, poolAddress, stakingAddress) {
-  const decimals = await pool.decimals();
-  const token0 = await pool.token0();
-  const token1 = await pool.token1();
+  const calls = [
+    pool.decimals(), pool.token0(), pool.token1(), pool.symbol(), pool.name(),
+    pool.totalSupply(), pool.balanceOf(stakingAddress), pool.balanceOf(app.YOUR_ADDRESS)
+  ];
+  const [decimals, token0, token1, symbol, name, totalSupply, staked, unstaked]
+    = await app.ethcallProvider.all(calls);
   let q0, q1, is1inch;
   try {
-    const reserves = await pool.getReserves();
+    const [reserves] = await app.ethcallProvider.all([pool.getReserves()]);
     q0 = reserves._reserve0;
     q1 = reserves._reserve1;
     is1inch = false;
   }
   catch { //for 1inch
-    const c0 = new ethers.Contract(token0, ERC20_ABI, app.provider);
-    const c1 = new ethers.Contract(token1, ERC20_ABI, app.provider);
-    q0 = await c0.balanceOf(poolAddress);
-    q1 = await c1.balanceOf(poolAddress);
+    if (token0 == "0x0000000000000000000000000000000000000000") {
+      q0 = await app.provider.getBalance(poolAddress);
+    }
+    else {
+      const c0 = new ethers.Contract(token0, ERC20_ABI, app.provider);
+      q0 = await c0.balanceOf(poolAddress);
+    }
+    if (token1 == "0x0000000000000000000000000000000000000000") {
+      q1 = await app.provider.getBalance(poolAddress);
+    }
+    else {
+      const c1 = new ethers.Contract(token1, ERC20_ABI, app.provider);
+      q1 = await c1.balanceOf(poolAddress);
+    }
     is1inch = true;
   }
-  return { 
-      symbol : await pool.symbol(),
-      name : await pool.name(),
+  return {
+      symbol,
+      name,
       address: poolAddress,
       token0: token0,
       q0,
       token1: token1,
       q1,
-      totalSupply: await pool.totalSupply() / 10 ** decimals,
+      totalSupply: totalSupply / 10 ** decimals,
       stakingAddress: stakingAddress,
-      staked: await pool.balanceOf(stakingAddress) / 10 ** decimals,
+      staked: staked / 10 ** decimals,
       decimals: decimals,
-      unstaked: await pool.balanceOf(app.YOUR_ADDRESS) / 10 ** decimals,
+      unstaked: unstaked / 10 ** decimals,
       contract: pool,
       tokens : [token0, token1],
       is1inch
   };
 }
 
-async function getBalancerPool(app, pool, poolAddress, stakingAddress, tokens) {
-  const decimals = await pool.decimals();
-  const poolTokens = await Promise.all(tokens.map(async (t) => { return {
-    address : t,
-    weight : await pool.getNormalizedWeight(t) / 1e18,
-    balance : await pool.getBalance(t)
-  };}));
-  return { 
-      symbol : await pool.symbol(),
-      name : await pool.name(),
+async function getBalancerPool(app, pool, poolAddress, stakingAddress, tokens, smartToken) {
+  const tokenCalls = tokens.map(t => [pool.getNormalizedWeight(t), pool.getBalance(t)]).flat();
+  const calls = [pool.decimals(), pool.symbol(), pool.name(), pool.totalSupply(),
+    pool.balanceOf(stakingAddress), pool.balanceOf(app.YOUR_ADDRESS)].concat(tokenCalls);
+  const results = await app.ethcallProvider.all(calls);
+  let [decimals, symbol, name, totalSupply, staked, unstaked, ] = results
+  let poolTokens = [];
+  let j = 0;
+  for (let i = 6; i < results.length; i+=2) {
+    poolTokens.push({
+      address : tokens[j],
+      weight: results[i] / 1e18,
+      balance : results[i+1]
+    })
+    j++;
+  };
+  if (smartToken) {
+    [totalSupply, staked, unstaked] = await app.ethcallProvider.all([smartToken.totalSupply(),
+      smartToken.balanceOf(stakingAddress), smartToken.balanceOf(app.YOUR_ADDRESS)]);
+  }
+  return {
+      symbol,
+      name,
       address: poolAddress,
-      poolTokens: poolTokens, //address, weight and balance
-      totalSupply: await pool.totalSupply() / 10 ** decimals,
-      stakingAddress: stakingAddress,
-      staked: await pool.balanceOf(stakingAddress) / 10 ** decimals,
+      poolTokens, //address, weight and balance
+      totalSupply: totalSupply / 10 ** decimals,
+      stakingAddress,
+      staked: staked / 10 ** decimals,
       decimals: decimals,
-      unstaked: await pool.balanceOf(app.YOUR_ADDRESS) / 10 ** decimals,
+      unstaked: unstaked / 10 ** decimals,
       contract: pool,
-      tokens : tokens //just the token addresses to conform with the other pool types
+      tokens
   };
 }
 
 async function getJar(app, jar, address, stakingAddress) {
-    const decimals = await jar.decimals();
-    const token = await getToken(app, await jar.token(), address);
-    return {
-      address: address,
-      name : await jar.name(),
-      symbol : await jar.symbol(),
-      totalSupply :  await jar.totalSupply(),
+  const calls = [jar.decimals(), jar.token(), jar.name(), jar.symbol(), jar.totalSupply(),
+    jar.balanceOf(stakingAddress), jar.balanceOf(app.YOUR_ADDRESS), jar.balance()];
+  const [decimals, token_, name, symbol, totalSupply, staked, unstaked, balance] =
+    await app.ethcallProvider.all(calls);
+  const token = await getToken(app, token_, address);
+  return {
+    address,
+    name,
+    symbol,
+    totalSupply,
+    decimals : decimals,
+    staked: staked / 10 ** decimals,
+    unstaked: unstaked / 10 ** decimals,
+    token: token,
+    balance : balance,
+    contract: jar,
+    tokens : [address].concat(token.tokens)
+  }
+}
+
+async function getCurveToken(app, curve, address, stakingAddress, minterAddress) {
+  const minter = new ethcall.Contract(minterAddress, MINTER_ABI)
+  const [virtualPrice, coin0] = await app.ethcallProvider.all([minter.get_virtual_price(), minter.coins(0)]);
+  const token = await getToken(app, coin0, address);
+  const calls = [curve.decimals(), curve.balanceOf(stakingAddress), curve.balanceOf(app.YOUR_ADDRESS),
+    curve.name(), curve.symbol(), curve.totalSupply()];
+  const [decimals, staked, unstaked, name, symbol, totalSupply] = await app.ethcallProvider.all(calls);
+  return {
+      address,
+      name,
+      symbol,
+      totalSupply,
       decimals : decimals,
-      staked: await jar.balanceOf(stakingAddress) / 10 ** decimals,
-      unstaked: await jar.balanceOf(app.YOUR_ADDRESS) / 10 ** decimals,
-      token: token,
-      balance : await jar.balance(),
-      contract: jar,
-      tokens : token.tokens
-    }
+      staked:  staked / 10 ** decimals,
+      unstaked: unstaked  / 10 ** decimals,
+      contract: curve,
+      tokens : [address, coin0],
+      token,
+      virtualPrice : virtualPrice / 1e18
+  };
+}
+
+async function getSaddleToken(app, saddle, address, stakingAddress, swapAddress) {
+  const swap = new ethcall.Contract(swapAddress, SADDLE_SWAP_ABI)
+  const [virtualPrice, coin0] = await app.ethcallProvider.all([swap.getVirtualPrice(), swap.getToken(0)]);
+  const token = await getToken(app, coin0, address);
+  const calls = [saddle.decimals(), saddle.balanceOf(stakingAddress), saddle.balanceOf(app.YOUR_ADDRESS),
+    saddle.name(), saddle.symbol(), saddle.totalSupply()];
+  const [decimals, staked, unstaked, name, symbol, totalSupply] = await app.ethcallProvider.all(calls);
+  return {
+      address,
+      name,
+      symbol,
+      totalSupply,
+      decimals : decimals,
+      staked:  staked / 10 ** decimals,
+      unstaked: unstaked  / 10 ** decimals,
+      contract: saddle,
+      tokens : [address, coin0],
+      token,
+      virtualPrice : virtualPrice / 1e18
+  };
+}
+
+async function getStableswapToken(app, stable, address, stakingAddress) {
+  const calls = [stable.decimals(), stable.balanceOf(stakingAddress), stable.balanceOf(app.YOUR_ADDRESS),
+    stable.name(), stable.symbol(), stable.totalSupply(), stable.get_virtual_price(), stable.coins(0)];
+  const [decimals, staked, unstaked, name, symbol, totalSupply, virtualPrice, coin0]
+    = await app.ethcallProvider.all(calls);
+  const token = await getToken(app, coin0, address);
+  return {
+      address,
+      name,
+      symbol,
+      totalSupply,
+      decimals : decimals,
+      staked:  staked / 10 ** decimals,
+      unstaked: unstaked  / 10 ** decimals,
+      contract: stable,
+      tokens : [address, coin0],
+      token,
+      virtualPrice : virtualPrice / 1e18
+  };
 }
 
 async function getErc20(app, token, address, stakingAddress) {
-    const decimals = await token.decimals();
-    const staked = await token.balanceOf(stakingAddress);
-    const unstaked = await token.balanceOf(app.YOUR_ADDRESS);
-    const ret = {
-        address: address,
-        name : await token.name(),
-        symbol : await token.symbol(),
-        totalSupply :  await token.totalSupply(),
-        decimals : decimals,
-        staked:  staked / 10 ** decimals,
-        unstaked: unstaked  / 10 ** decimals,
-        contract: token,
-        tokens : [address]
-    };
-    return ret;
+  if (address == "0x0000000000000000000000000000000000000000") {
+    return {
+      address,
+      name : "Ethereum",
+      symbol : "ETH",
+      totalSupply: 1e8,
+      decimals: 18,
+      staked: await app.provider.getBalance(stakingAddress) / 1e18,
+      unstaked: await app.provider.getBalance(app.YOUR_ADDRESS) / 1e18,
+      contract: null,
+      tokens:[address]
+    }
+  }
+  const calls = [token.decimals(), token.balanceOf(stakingAddress), token.balanceOf(app.YOUR_ADDRESS),
+    token.name(), token.symbol(), token.totalSupply()];
+  const [decimals, staked, unstaked, name, symbol, totalSupply] = await app.ethcallProvider.all(calls);
+  return {
+      address,
+      name,
+      symbol,
+      totalSupply,
+      decimals : decimals,
+      staked:  staked / 10 ** decimals,
+      unstaked: unstaked  / 10 ** decimals,
+      contract: token,
+      tokens : [address]
+  };
 }
 
 async function getDSToken(app, token, address, stakingAddress) {
-    const decimals = await token.decimals();
-    const staked = await token.balanceOf(stakingAddress);
-    const unstaked = await token.balanceOf(app.YOUR_ADDRESS);
-    const ret = {
-        address: address,
-        name : hex_to_ascii(await token.name()),
-        symbol : hex_to_ascii(await token.symbol()),
-        totalSupply :  await token.totalSupply(),
-        decimals : decimals,
-        staked:  staked / 10 ** decimals,
-        unstaked: unstaked  / 10 ** decimals,
-        contract: token,
-        tokens : [address]
-    };
-    return ret;
+  const calls = [token.decimals(), token.balanceOf(stakingAddress), token.balanceOf(app.YOUR_ADDRESS),
+    token.name(), token.symbol(), token.totalSupply()];
+  const [decimals, staked, unstaked, name, symbol, totalSupply] =
+    await app.ethcallProvider.all(calls);
+  return {
+    address,
+    name : hex_to_ascii(name),
+    symbol : hex_to_ascii(symbol),
+    totalSupply : totalSupply,
+    decimals : decimals,
+    staked:  staked / 10 ** decimals,
+    unstaked: unstaked  / 10 ** decimals,
+    contract: token,
+    tokens : [address]
+  };
+}
+
+async function getVault(app, vault, address, stakingAddress) {
+  const calls = [vault.decimals(), vault.underlying(), vault.name(), vault.symbol(),
+    vault.totalSupply(), vault.balanceOf(stakingAddress), vault.balanceOf(app.YOUR_ADDRESS),
+    vault.underlyingBalanceWithInvestment()];
+  const [ decimals, underlying, name, symbol, totalSupply, staked, unstaked, balance] =
+    await app.ethcallProvider.all(calls);
+  const token = await getToken(app, underlying, address);
+  return {
+    address,
+    name,
+    symbol,
+    totalSupply,
+    decimals,
+    staked: staked / 10 ** decimals,
+    unstaked: unstaked / 10 ** decimals,
+    token: token,
+    balance,
+    contract: vault,
+    tokens : token.tokens
+  }
+}
+
+async function getCToken(app, cToken, address, stakingAddress) {
+  const calls = [cToken.decimals(), cToken.underlying(), cToken.totalSupply(),
+    cToken.name(), cToken.symbol(), cToken.balanceOf(stakingAddress),
+    CToken.balanceOf(app.YOUR_ADDRESS), cToken.exchangeRateStored()];
+  const [decimals, underlying, totalSupply, name, symbol, staked, unstaked, exchangeRate] =
+    await app.ethcallProvider.all(calls);
+  const token = await getToken(app, underlying, address);
+  return {
+    address,
+    name,
+    symbol,
+    totalSupply,
+    decimals,
+    staked: staked / 10 ** decimals,
+    unstaked: unstaked / 10 ** decimals,
+    token: token,
+    balance: totalSupply * (exchangeRate / 1e18),
+    contract: cToken,
+    tokens : [address].concat(token.tokens)
+  }
 }
 
 function hex_to_ascii(str1)
@@ -830,40 +1181,167 @@ function hex_to_ascii(str1)
  return str;
 }
 
+async function getStoredToken(app, tokenAddress, stakingAddress, type) {
+  switch (type) {
+    case "uniswap":
+      const pool = new ethcall.Contract(tokenAddress, UNI_ABI);
+      return await getUniPool(app, pool, tokenAddress, stakingAddress);
+    case "balancer":
+      const bal = new ethcall.Contract(tokenAddress, BALANCER_POOL_ABI);
+      const [tokens] = await app.ethcallProvider.all([bal.getFinalTokens()]);
+      return await getBalancerPool(app, bal, tokenAddress, stakingAddress, tokens);
+    case "balancerSmart":
+      const sbal = new ethcall.Contract(tokenAddress, BPOOL_TOKEN_ABI);
+      const [bPool] = await app.ethcallProvider.all([sbal.bPool()]);
+      const bal2 = new ethcall.Contract(bPool, BPOOL_ABI);
+      const [tokens2] = await app.ethcallProvider.all([bal2.getCurrentTokens()]);
+      return await getBalancerPool(app, bal2, tokenAddress, stakingAddress, tokens2, sbal);
+    case "jar":
+      const jar = new ethcall.Contract(tokenAddress, JAR_ABI);
+      return await getJar(app, jar, tokenAddress, stakingAddress);
+    case "cToken":
+      const cToken = new ethcall.Contract(tokenAddress, CTOKEN_ABI);
+      return await getCToken(app, cToken, tokenAddress, stakingAddress);
+    case "vault":
+      const vault = new ethcall.Contract(tokenAddress, HARVEST_VAULT_ABI);
+      return await getVault(app, vault, tokenAddress, stakingAddress);
+    case "erc20":
+      const erc20 = new ethcall.Contract(tokenAddress, ERC20_ABI);
+      return await getErc20(app, erc20, tokenAddress, stakingAddress);
+    case "dsToken":
+      const dsToken = new ethcall.Contract(tokenAddress, DSTOKEN_ABI);
+      return await getDSToken(app, dsToken, tokenAddress, stakingAddress);
+    case "saddle":
+      const saddle = new ethcall.Contract(tokenAddress, SADDLE_LP_TOKEN_ABI);
+      const [swap] = await app.ethcallProvider.all([saddle.swap()]);
+      return await getSaddleToken(app, saddle, tokenAddress, stakingAddress, swap);
+    case "curve":
+      const crv = new ethcall.Contract(tokenAddress, CURVE_ABI);
+      if (tokenAddress.toLowerCase() == "0x88E11412BB21d137C217fd8b73982Dc0ED3665d7".toLowerCase()) {
+        const minter = "0x3333333ACdEdBbC9Ad7bda0876e60714195681c5";
+        return await getCurveToken(app, crv, tokenAddress, stakingAddress, minter);
+      }
+      const [minter] = await app.ethcallProvider.all([crv.minter()]);
+      return await getCurveToken(app, crv, tokenAddress, stakingAddress, minter);
+    case "stableswap":
+      const stable = new ethcall.Contract(tokenAddress, STABLESWAP_ABI);
+      return await getStableswapToken(app, stable, tokenAddress, stakingAddress);
+  }
+}
+
 async function getToken(app, tokenAddress, stakingAddress) {
+  if (tokenAddress == "0x0000000000000000000000000000000000000000") {
+    return getErc20(app, null, tokenAddress, stakingAddress)
+  }
+  const type = window.localStorage.getItem(tokenAddress);
+  //getTokenWeights
+  if (type) return getStoredToken(app, tokenAddress, stakingAddress, type);
   try {
-    const pool = new ethers.Contract(tokenAddress, UNI_ABI, app.provider);
-    const _token0 = await pool.token0();
+    const pool = new ethcall.Contract(tokenAddress, UNI_ABI);
+    const _token0 = await app.ethcallProvider.all([pool.token0()]);
     const uniPool = await getUniPool(app, pool, tokenAddress, stakingAddress);
+    window.localStorage.setItem(tokenAddress, "uniswap");
     return uniPool;
   }
   catch(err) {
   }
   try {
-    const bal = new ethers.Contract(tokenAddress, BALANCER_POOL_ABI, app.provider);
-    const tokens = await bal.getFinalTokens();
+    const bal = new ethcall.Contract(tokenAddress, BALANCER_POOL_ABI);
+    const [tokens] = await app.ethcallProvider.all([bal.getFinalTokens()]);
     const balPool = await getBalancerPool(app, bal, tokenAddress, stakingAddress, tokens);
+    window.localStorage.setItem(tokenAddress, "balancer");
     return balPool;
   }
   catch(err) {
   }
   try {
-    const jar = new ethers.Contract(tokenAddress, JAR_ABI, app.provider);
-    const _token = await jar.token();
-    return await getJar(app, jar, tokenAddress, stakingAddress);
+    const sbal = new ethcall.Contract(tokenAddress, BPOOL_TOKEN_ABI);
+    const [bPool] = await app.ethcallProvider.all([sbal.bPool(), sbal.totalSupply()]);
+    const bal = new ethcall.Contract(bPool, BPOOL_ABI);
+    const [tokens] = await app.ethcallProvider.all([bal.getCurrentTokens()]);
+    const balPool = await getBalancerPool(app, bal, tokenAddress, stakingAddress, tokens, sbal);
+    window.localStorage.setItem(tokenAddress, "balancerSmart");
+    return balPool;
   }
   catch(err) {
   }
   try {
-    const erc20 = new ethers.Contract(tokenAddress, ERC20_ABI, app.provider);
-    const _name = await erc20.name();
+    const jar = new ethcall.Contract(tokenAddress, JAR_ABI);
+    const _token = await app.ethcallProvider.all([jar.token()]);
+    const res = await getJar(app, jar, tokenAddress, stakingAddress);
+    window.localStorage.setItem(tokenAddress, "jar");
+    return res;
+  }
+  catch(err) {
+  }
+  try {
+    const cToken = new ethcall.Contract(tokenAddress, CTOKEN_ABI);
+    const _token = await app.ethcallProvider.all([cToken.underlying()]);
+    const res = await getCToken(app, cToken, tokenAddress, stakingAddress);
+    window.localStorage.setItem(tokenAddress, "cToken");
+    return res;
+  }
+  catch(err) {
+  }
+  try {
+    const vault = new ethcall.Contract(tokenAddress, HARVEST_VAULT_ABI);
+    const _token = await app.ethcallProvider.all([vault.underlying()]);
+    const res = await getVault(app, vault, tokenAddress, stakingAddress);
+    window.localStorage.setItem(tokenAddress, "vault");
+    return res;
+  }
+  catch(err) {
+  }
+  try {
+    const saddle = new ethcall.Contract(tokenAddress, SADDLE_LP_TOKEN_ABI);
+    const [swap] = await app.ethcallProvider.all([saddle.swap()]);
+    const res = await getSaddleToken(app, saddle, tokenAddress, stakingAddress, swap);
+    window.localStorage.setItem(tokenAddress, "saddle");
+    return res;
+  }
+  catch(err) {
+  }
+  try {
+    const crv = new ethcall.Contract(tokenAddress, CURVE_ABI);
+    if (tokenAddress.toLowerCase() == "0x88E11412BB21d137C217fd8b73982Dc0ED3665d7".toLowerCase()) {
+      const minter = "0x3333333ACdEdBbC9Ad7bda0876e60714195681c5";
+      const res = await getCurveToken(app, crv, tokenAddress, stakingAddress, minter);
+      window.localStorage.setItem(tokenAddress, "curve");
+      return res;
+    }
+    const [minter] = await app.ethcallProvider.all([crv.minter()]);
+    const res = await getCurveToken(app, crv, tokenAddress, stakingAddress, minter);
+    window.localStorage.setItem(tokenAddress, "curve");
+    return res;
+  }
+  catch(err) {
+  }
+  try {
+    const stable = new ethcall.Contract(tokenAddress, STABLESWAP_ABI);
+    const _coin0 = await app.ethcallProvider.all([stable.coins(0)]);
+    window.localStorage.setItem(tokenAddress, "stableswap");
+    return await getStableswapToken(app, stable, tokenAddress, stakingAddress);
+  }
+  catch (err) {
+  }
+  try {
+    const erc20 = new ethcall.Contract(tokenAddress, ERC20_ABI);
+    const _name = await app.ethcallProvider.all([erc20.name()]);
     const erc20tok = await getErc20(app, erc20, tokenAddress, stakingAddress);
+    window.localStorage.setItem(tokenAddress, "erc20");
     return erc20tok;
   }
   catch(err) {
   }
-  const dsToken = new ethers.Contract(tokenAddress, DSTOKEN_ABI, app.provider);
-  return await getDSToken(app, dsToken, tokenAddress, stakingAddress);
+  try {
+    const dsToken = new ethcall.Contract(tokenAddress, DSTOKEN_ABI);
+    const res = await getDSToken(app, dsToken, tokenAddress, stakingAddress);
+    window.localStorage.setItem(tokenAddress, "dsToken");
+    return res;
+  }
+  catch(err) {
+    console.log(`Couldn't match ${tokenAddress} to any known token type.`);
+  }
 }
 
 function getParameterCaseInsensitive(object, key) {
@@ -895,7 +1373,16 @@ function getUniPrices(tokens, prices, pool)
   var t1 = getParameterCaseInsensitive(tokens,pool.token1);
   var p1 = getParameterCaseInsensitive(prices,pool.token1)?.usd;
   if (p0 == null && p1 == null) {
-      return undefined;
+    console.log(`Missing prices for tokens ${pool.token0} and ${pool.token1}.`);
+    return undefined;
+  }
+  if (t0?.decimals == null) {
+    console.log(`Missing information for token ${pool.token0}.`);
+    return undefined;
+  }
+  if (t1?.decimals == null) {
+    console.log(`Missing information for token ${pool.token1}.`);
+    return undefined;
   }
   var q0 = pool.q0 / 10 ** t0.decimals;
   var q1 = pool.q1 / 10 ** t1.decimals;
@@ -913,7 +1400,20 @@ function getUniPrices(tokens, prices, pool)
   var price = tvl / pool.totalSupply;
   prices[pool.address] = { usd : price };
   var staked_tvl = pool.staked * price;
-  const stakingTokenTicker = `[${t0.symbol}]-[${t1.symbol}]`;
+  let stakeTokenTicker = `[${t0.symbol}]-[${t1.symbol}]`;
+  if (pool.is1inch) stakeTokenTicker += " 1INCH LP";
+  else if (pool.symbol.includes("LSLP")) stakeTokenTicker += " LSLP";
+  else if (pool.symbol.includes("SLP")) stakeTokenTicker += " SLP";
+  else if (pool.symbol.includes("Cake")) stakeTokenTicker += " Cake LP";
+  else if (pool.name.includes("Value LP")) stakeTokenTicker += " Value LP";
+  else if (pool.symbol.includes("PGL")) stakeTokenTicker += " PGL";
+  else if (pool.symbol.includes("CS-LP")) stakeTokenTicker += " CSS LP";
+  else if (pool.symbol.includes("DFYN")) stakeTokenTicker += " DFYN LP";
+  else if (pool.symbol.includes("SPIRIT")) stakeTokenTicker += " SPIRIT LP";
+  else if (pool.symbol.includes("spLP")) stakeTokenTicker += " SPOOKY LP";
+  else if (pool.symbol.includes("Lv1")) stakeTokenTicker += " STEAK LP";
+  else if (pool.symbol.includes("PLP")) stakeTokenTicker += " Pure Swap LP";
+  else stakeTokenTicker += " Uni LP";
   return {
       t0: t0,
       p0: p0,
@@ -924,27 +1424,168 @@ function getUniPrices(tokens, prices, pool)
       price: price,
       tvl : tvl,
       staked_tvl : staked_tvl,
-      stakingTokenTicker : stakingTokenTicker,
-      print_price() {
-        const poolUrl = pool.is1inch ? "https://1inch.exchange/#/dao/pools" :
-          pool.symbol.includes("SLP") ?  `http://sushiswap.vision/pair/${pool.address}`
-            : `http://uniswap.info/pair/${pool.address}`;
+      stakeTokenTicker : stakeTokenTicker,
+      print_price(chain="eth", decimals, customURLs) {
         const t0address = t0.symbol == "ETH" ? "ETH" : t0.address;
         const t1address = t1.symbol == "ETH" ? "ETH" : t1.address;
-        const helperUrls = pool.is1inch ? [] :
-          pool.symbol.includes("SLP") ? 
-          [ `https://exchange.sushiswapclassic.org/#/add/${t0address}/${t1address}`,
-            `https://exchange.sushiswapclassic.org/#/remove/${t0address}/${t1address}`,
-            `https://exchange.sushiswapclassic.org/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}` ] :
+        if (customURLs) {
+          const poolUrl = `${customURLs.info}/${pool.address}`
+          const helperUrls = [
+            `${customURLs.add}/${t0address}/${t1address}`,
+            `${customURLs.remove}/${t0address}/${t1address}`,
+            `${customURLs.swap}?inputCurrency=${t0address}&outputCurrency=${t1address}`
+          ]
+          const helperHrefs = helperUrls.length == 0 ? "" :
+            ` <a href='${helperUrls[0]}' target='_blank'>[+]</a> <a href='${helperUrls[1]}' target='_blank'>[-]</a> <a href='${helperUrls[2]}' target='_blank'>[<=>]</a>`
+          _print(`<a href='${poolUrl}' target='_blank'>${stakeTokenTicker}</a>${helperHrefs} Price: $${formatMoney(price)} TVL: $${formatMoney(tvl)}`);
+          _print(`${t0.symbol} Price: $${displayPrice(p0)}`);
+          _print(`${t1.symbol} Price: $${displayPrice(p1)}`);
+          _print(`Staked: ${pool.staked.toFixed(decimals ?? 4)} ${pool.symbol} ($${formatMoney(staked_tvl)})`);
+
+        }
+        else {
+          const poolUrl = pool.is1inch ? "https://1inch.exchange/#/dao/pools" :
+          pool.symbol.includes("LSLP") ? `https://info.linkswap.app/pair/${pool.address}` :
+            pool.symbol.includes("SLP") ?  `http://analytics.sushi.com/pairs/${pool.address}` :
+              pool.symbol.includes("Cake") ?  `https://pancakeswap.info/pair/${pool.address}` :
+              pool.symbol.includes("PGL") ?  `https://info.pangolin.exchange/#/pair/${pool.address}` :
+              pool.symbol.includes("CS-LP") ?  `https://app.coinswap.space/#/` :
+              pool.name.includes("Value LP") ?  `https://info.vswap.fi/pool/${pool.address}` :
+              pool.symbol.includes("SPIRIT") ?  `https://swap.spiritswap.finance/#/swap` :
+              pool.symbol.includes("spLP") ?  `https://info.spookyswap.finance/pair/${pool.address}` :
+              pool.symbol.includes("Lv1") ?  `https://info.steakhouse.finance/pair/${pool.address}` :
+              pool.symbol.includes("PLP") ?  `https://exchange.pureswap.finance/#/swap` :
+              chain == "matic" ? `https://info.quickswap.exchange/pair/${pool.address}` :
+            `http://uniswap.info/pair/${pool.address}`;
+          const helperUrls = pool.is1inch ? [] :
+          pool.symbol.includes("LSLP") ? [
+            `https://linkswap.app/#/add/${t0address}/${t1address}`,
+            `https://linkswap.app/#/remove/${t0address}/${t1address}`,
+            `https://linkswap.app/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+          ] :
+          pool.symbol.includes("Cake") ? [
+            `https://exchange.pancakeswap.finance/#/add/${t0address}/${t1address}`,
+            `https://exchange.pancakeswap.finance/#/remove/${t0address}/${t1address}`,
+            `https://exchange.pancakeswap.finance/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+          ] :
+          pool.symbol.includes("Lv1") ? [ // adding before matic
+            `https://swap.steakhouse.finance/#/add/${t0address}/${t1address}`,
+            `https://swap.steakhouse.finance/#/remove/${t0address}/${t1address}`,
+            `https://swap.steakhouse.finance/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+          ] :
+          chain=='matic'? [
+            `https://quickswap.exchange/#/add/${t0address}/${t1address}`,
+            `https://quickswap.exchange/#/remove/${t0address}/${t1address}`,
+            `https://quickswap.exchange/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+          ] :
+          pool.name.includes("Value LP") ? [
+            `https://bsc.valuedefi.io/#/add/${t0address}/${t1address}`,
+            `https://bsc.valuedefi.io/#/remove/${t0address}/${t1address}`,
+            `https://bsc.valuedefi.io/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+          ] :
+          pool.symbol.includes("PGL") ? [
+            `https://app.pangolin.exchange/#/add/${t0address}/${t1address}`,
+            `https://app.pangolin.exchange/#/remove/${t0address}/${t1address}`,
+            `https://app.pangolin.exchange/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+          ] :
+          pool.symbol.includes("CS-LP") ? [
+            `https://app.coinswap.space/#/add/${t0address}/${t1address}`,
+            `https://app.coinswap.space/#/remove/${t0address}/${t1address}`,
+            `https://app.coinswap.space/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+          ] :
+          pool.symbol.includes("SLP") ? [
+            `https://app.sushi.com/add/${t0address}/${t1address}`,
+            `https://app.sushi.com/remove/${t0address}/${t1address}`,
+            `https://app.sushi.com/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+          ] :
+          pool.symbol.includes("SPIRIT") ? [
+            `https://swap.spiritswap.finance/add/${t0address}/${t1address}`,
+            `https://swap.spiritswap.finance/remove/${t0address}/${t1address}`,
+            `https://swap.spiritswap.finance/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+          ] :
+          pool.symbol.includes("spLP") ? [
+            `https://spookyswap.finance/add/${t0address}/${t1address}`,
+            `https://spookyswap.finance/remove/${t0address}/${t1address}`,
+            `https://spookyswap.finance/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+          ] :
+          pool.symbol.includes("PLP") ? [
+            `https://exchange.pureswap.finance/#/add/${t0address}/${t1address}`,
+            `https://exchange.pureswap.finance/#/remove/${t0address}/${t1address}`,
+            `https://exchange.pureswap.finance/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+          ] :
+          t0.symbol.includes("COMFI") ? [
+            `https://app.uniswap.org/#/add/v2/${t0address}/${t1address}`,
+            `https://app.uniswap.org/#/remove/v2/${t0address}/${t1address}`,
+            `https://app.uniswap.org/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+          ] :
           [ `https://app.uniswap.org/#/add/${t0address}/${t1address}`,
             `https://app.uniswap.org/#/remove/${t0address}/${t1address}`,
             `https://app.uniswap.org/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}` ]
+          const helperHrefs = helperUrls.length == 0 ? "" :
+            ` <a href='${helperUrls[0]}' target='_blank'>[+]</a> <a href='${helperUrls[1]}' target='_blank'>[-]</a> <a href='${helperUrls[2]}' target='_blank'>[<=>]</a>`
+          _print(`<a href='${poolUrl}' target='_blank'>${stakeTokenTicker}</a>${helperHrefs} Price: $${formatMoney(price)} TVL: $${formatMoney(tvl)}`);
+          _print(`${t0.symbol} Price: $${displayPrice(p0)}`);
+          _print(`${t1.symbol} Price: $${displayPrice(p1)}`);
+          _print(`Staked: ${pool.staked.toFixed(decimals ?? 4)} ${pool.symbol} ($${formatMoney(staked_tvl)})`);
+        }
+      },
+      print_contained_price(userStaked) {
+        var userPct = userStaked / pool.totalSupply;
+        var q0user = userPct * q0;
+        var q1user = userPct * q1;
+        _print(`Your LP tokens comprise of ${q0user.toFixed(4)} ${t0.symbol} + ${q1user.toFixed(4)} ${t1.symbol}`);
+      }
+  }
+}
+
+function getValuePrices(tokens, prices, pool)
+{
+  var t0 = getParameterCaseInsensitive(tokens,pool.token0);
+  var p0 = getParameterCaseInsensitive(prices,pool.token0)?.usd;
+  var t1 = getParameterCaseInsensitive(tokens,pool.token1);
+  var p1 = getParameterCaseInsensitive(prices,pool.token1)?.usd;
+  if (p0 == null && p1 == null) {
+      return undefined;
+  }
+  var q0 = pool.q0 / 10 ** t0.decimals;
+  var q1 = pool.q1 / 10 ** t1.decimals;
+  if (p0 == null)
+  {
+      p0 = q1 * p1 / pool.w1 / q0 * pool.w0;
+      prices[pool.token0] = { usd : p0 };
+  }
+  if (p1 == null)
+  {
+      p1 = q0 * p0 / pool.w0 / q1 * pool.w1;
+      prices[pool.token1] = { usd : p1 };
+  }
+  var tvl = q0 * p0 + q1 * p1;
+  var price = tvl / pool.totalSupply;
+  prices[pool.address] = { usd : price };
+  var staked_tvl = pool.staked * price;
+  let stakeTokenTicker = `[${t0.symbol} ${pool.w0}%]-[${t1.symbol} ${pool.w1}%] Value-LP`;
+  return {
+      t0, p0, q0, w0 : pool.w0,
+      t1, p1, q1, w1 : pool.w1,
+      price: price,
+      tvl : tvl,
+      staked_tvl : staked_tvl,
+      stakeTokenTicker : stakeTokenTicker,
+      print_price() {
+        const poolUrl = `https://info.vswap.fi/pool/${pool.address}`
+        const t0address = t0.address;
+        const t1address =  t1.address;
+        const helperUrls = [
+          `https://bsc.valuedefi.io/#/add/${pool.address}`,
+          `https://bsc.valuedefi.io/#/remove/${pool.address}`,
+          `https://bsc.valuedefi.io/#/vswap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+        ]
         const helperHrefs = helperUrls.length == 0 ? "" :
           ` <a href='${helperUrls[0]}' target='_blank'>[+]</a> <a href='${helperUrls[1]}' target='_blank'>[-]</a> <a href='${helperUrls[2]}' target='_blank'>[<=>]</a>`
-        _print(`<a href='${poolUrl}' target='_blank'>${stakingTokenTicker}</a>${helperHrefs} LP Price: $${formatMoney(price)} TVL: $${formatMoney(tvl)}`);
+        _print(`<a href='${poolUrl}' target='_blank'>${stakeTokenTicker}</a>${helperHrefs} Price: $${formatMoney(price)} TVL: $${formatMoney(tvl)}`);
         _print(`${t0.symbol} Price: $${formatMoney(p0)}`)
         _print(`${t1.symbol} Price: $${formatMoney(p1)}`)
-        _print(`Staked: $${formatMoney(staked_tvl)}`);
+        _print(`Staked: ${pool.staked.toFixed(4)} ${pool.symbol} ($${formatMoney(staked_tvl)})`);
       },
       print_contained_price(userStaked) {
         var userPct = userStaked / pool.totalSupply;
@@ -960,7 +1601,7 @@ function getBalancerPrices(tokens, prices, pool)
   var poolTokens = pool.poolTokens.map(t => getParameterCaseInsensitive(tokens, t.address));
   var poolPrices = pool.poolTokens.map(t => getParameterCaseInsensitive(prices, t.address)?.usd);
   var quantities = poolTokens.map((t, i) => pool.poolTokens[i].balance / 10 ** t.decimals);
-  var missing = poolPrices.filter(x => !x);
+  var missing = poolPrices.map((x, i) => x ? -1 : i).filter(x => x >= 0);
   if (missing.length == poolPrices.length) {
     throw 'Every price is missing';
   }
@@ -968,18 +1609,18 @@ function getBalancerPrices(tokens, prices, pool)
   const getMissingPrice = (missingQuantity, missingWeight) =>
     quantities[notMissing] * poolPrices[notMissing] * missingWeight
      / pool.poolTokens[notMissing].weight / missingQuantity;
-  missing.map((_, i) => {
+  missing.map(i => {
     const newPrice = getMissingPrice(quantities[i], pool.poolTokens[i].weight);
     poolPrices[i] = newPrice;
     prices[poolTokens[i].address] = { usd : newPrice };
   });
-  
+
   var tvl = poolPrices.map((p, i) => p * quantities[i]).reduce((x,y)=>x+y, 0);
   var price = tvl / pool.totalSupply;
   prices[pool.address] = { usd : price };
   var staked_tvl = pool.staked * price;
   var tickers = pool.poolTokens.map((pt, i) => `[${poolTokens[i].symbol} ${pt.weight*100}%]`)
-  const stakingTokenTicker = tickers.join('-');
+  const stakeTokenTicker = tickers.join('-');
   return {
       tokens : poolTokens,
       prices : poolPrices,
@@ -987,14 +1628,14 @@ function getBalancerPrices(tokens, prices, pool)
       price: price,
       tvl : tvl,
       staked_tvl : staked_tvl,
-      stakingTokenTicker : stakingTokenTicker,
+      stakeTokenTicker : stakeTokenTicker,
       print_price() {
         const poolUrl = `http://pools.balancer.exchange/#/pool/${pool.address}`;
-        _print(`<a href='${poolUrl}' target='_blank'>${stakingTokenTicker}</a> BPT Price: $${formatMoney(price)} TVL: $${formatMoney(tvl)}`);
-        poolPrices.forEach((p, i) => 
+        _print(`<a href='${poolUrl}' target='_blank'>${stakeTokenTicker}</a> BPT Price: $${formatMoney(price)} TVL: $${formatMoney(tvl)}`);
+        poolPrices.forEach((p, i) =>
           _print(`${poolTokens[i].symbol} Price: $${formatMoney(p)}`)
         );
-        _print(`Staked: $${formatMoney(staked_tvl)}`);
+        _print(`Staked: ${pool.staked.toFixed(4)} ${stakeTokenTicker} ($${formatMoney(staked_tvl)})`);
       },
       print_contained_price(userStaked) {
         var userPct = userStaked / pool.totalSupply;
@@ -1009,39 +1650,52 @@ function getWrapPrices(tokens, prices, pool)
   const wrappedToken = pool.token;
   if (wrappedToken.token0 != null) { //Uniswap
     const uniPrices = getUniPrices(tokens, prices, wrappedToken);
-    const poolUrl = `http://uniswap.info/pair/${wrappedToken.address}`;
-    const name = `Wrapped UNI <a href='${poolUrl}' target='_blank'>${uniPrices.stakingTokenTicker}</a>`;
+    const poolUrl = pool.is1inch ? "https://1inch.exchange/#/dao/pools" :
+    pool.symbol.includes("SLP") ?  `http://analytics.sushi.com/pairs/${wrappedToken.address}` :
+    (pool.symbol.includes("Cake") || pool.symbol.includes("Pancake")) ?  `http://pancakeswap.info/pair/${wrappedToken.address}`
+      : `http://uniswap.info/pair/${wrappedToken.address}`;
+    const name = `Wrapped <a href='${poolUrl}' target='_blank'>${uniPrices.stakeTokenTicker}</a>`;
     const price = (pool.balance / 10 ** wrappedToken.decimals) * uniPrices.price / (pool.totalSupply / 10 ** pool.decimals);
-    const tvl = pool.balance / 1e18 * price;
+    const tvl = pool.balance / 10 ** wrappedToken.decimals * price;
     const staked_tvl = pool.staked * price;
-    
+
+    prices[pool.address] = { usd : price };
     return {
+      name : name,
       tvl : tvl,
       staked_tvl : staked_tvl,
       price : price,
-      stakingTokenTicker : pool.symbol,
+      stakeTokenTicker : pool.symbol,
       print_price() {
         _print(`${name} Price: $${formatMoney(price)} TVL: $${formatMoney(tvl)}`);
-        _print(`Staked: $${formatMoney(staked_tvl)}`);
+        _print(`Staked: ${pool.staked.toFixed(4)} ${pool.symbol} ($${formatMoney(staked_tvl)})`);
       },
       print_contained_price(_) {
       }
     }
   }
   else {
-    const tokenPrice = getParameterCaseInsensitive(prices, wrappedToken.address)?.usd;
+    let tokenPrice = 0;
+    if (wrappedToken.token != null) { //e.g. stakedao crv token vault
+      const pp = getPoolPrices(tokens, prices, wrappedToken.token)
+      tokenPrice = pp.price;
+    }
+    else {
+      tokenPrice = getParameterCaseInsensitive(prices, wrappedToken.address)?.usd;
+    }
     const price = (pool.balance / 10 ** wrappedToken.decimals) * tokenPrice / (pool.totalSupply / 10 ** pool.decimals);
-    const tvl = pool.balance / 1e18 * price;
+    const tvl = pool.balance / 10 ** wrappedToken.decimals * price;
     const staked_tvl = pool.staked * price;
-    
+    prices[pool.address] = { usd : price };
     return {
+      name: pool.symbol,
       tvl : tvl,
       staked_tvl : staked_tvl,
       price : price,
-      stakingTokenTicker : pool.symbol,
+      stakeTokenTicker : pool.symbol,
       print_price() {
         _print(`${pool.symbol} Price: $${formatMoney(price)} TVL: $${formatMoney(tvl)}`);
-        _print(`Staked: $${formatMoney(staked_tvl)}`);
+        _print(`Staked: ${pool.staked.toFixed(4)} ${pool.symbol} ($${formatMoney(staked_tvl)})`);
       },
       print_contained_price(_) {
       }
@@ -1049,8 +1703,50 @@ function getWrapPrices(tokens, prices, pool)
   }
 }
 
-function getErc20Prices(prices, pool) {  
+function getErc20Prices(prices, pool, chain="eth") {
   var price = getParameterCaseInsensitive(prices,pool.address)?.usd;
+  var tvl = pool.totalSupply * price / 10 ** pool.decimals;
+  var staked_tvl = pool.staked * price;
+  let poolUrl;
+  switch (chain) {
+    case "eth":
+      poolUrl=`https://etherscan.io/token/${pool.address}`;
+      break;
+    case "bsc":
+      poolUrl=`https://bscscan.com/token/${pool.address}`;
+      break;
+    case "heco":
+      poolUrl=`https://hecoinfo.com//token/${pool.address}`;
+      break;
+    case "matic":
+      poolUrl=`https://explorer-mainnet.maticvigil.com/address/${pool.address}`;
+      break;
+    case "avax":
+      poolUrl=`https://cchain.explorer.avax.network/address/${pool.address}`;
+      break;
+    case "fantom":
+      poolUrl=`https://ftmscan.com/token/${pool.address}`;
+      break;
+  }
+  const name = `<a href='${poolUrl}' target='_blank'>${pool.symbol}</a>`;
+  return {
+    staked_tvl : staked_tvl,
+    price : price,
+    stakeTokenTicker : pool.symbol,
+    print_price() {
+      _print(`${name} Price: $${displayPrice(price)} Market Cap: $${formatMoney(tvl)}`);
+      _print(`Staked: ${pool.staked.toFixed(4)} ${pool.symbol} ($${formatMoney(staked_tvl)})`);
+    },
+    print_contained_price() {
+    }
+  }
+}
+
+function getCurvePrices(prices, pool) {
+  var price = (getParameterCaseInsensitive(prices,pool.token.address)?.usd ?? 1) * pool.virtualPrice;
+  if (getParameterCaseInsensitive(prices, pool.address)?.usd ?? 0 == 0) {
+    prices[pool.address] = { usd : price };
+  }
   var tvl = pool.totalSupply * price / 10 ** pool.decimals;
   var staked_tvl = pool.staked * price;
   const poolUrl = `https://etherscan.io/token/${pool.address}`;
@@ -1058,38 +1754,52 @@ function getErc20Prices(prices, pool) {
   return {
     staked_tvl : staked_tvl,
     price : price,
-    stakingTokenTicker : pool.symbol,
+    stakeTokenTicker : pool.symbol,
     print_price() {
       _print(`${name} Price: $${formatMoney(price)} Market Cap: $${formatMoney(tvl)}`);
-      _print(`Staked: $${formatMoney(staked_tvl)}`);
+      _print(`Staked: ${pool.staked.toFixed(4)} ${pool.symbol} ($${formatMoney(staked_tvl)})`);
     },
     print_contained_price() {
     }
   }
 }
 
-function getPoolPrices(tokens, prices, pool) {
+function getPoolPrices(tokens, prices, pool, chain = "eth") {
+  if (pool.w0 != null) return getValuePrices(tokens, prices, pool);
   if (pool.poolTokens != null) return getBalancerPrices(tokens, prices, pool);
   if (pool.token0 != null) return getUniPrices(tokens, prices, pool);
+  if (pool.virtualPrice != null) return getCurvePrices(prices, pool); //should work for saddle too
   if (pool.token != null) return getWrapPrices(tokens, prices, pool);
-  return getErc20Prices(prices, pool);
+  return getErc20Prices(prices, pool, chain);
 }
 
-async function getPoolInfo(app, chefContract, chefAddress, poolIndex, pendingRewardsFunction) {  
+async function getPoolInfo(app, chefContract, chefAddress, poolIndex, pendingRewardsFunction, showAll=false) {
   const poolInfo = await chefContract.poolInfo(poolIndex);
-  const poolToken = await getToken(app, poolInfo.lpToken, chefAddress);
+  if (poolInfo.allocPoint == 0 && !showAll) {
+    return {
+      address: poolInfo.lpToken,
+      allocPoints: poolInfo.allocPoint ?? 1,
+      poolToken: null,
+      userStaked : 0,
+      pendingRewardTokens : 0,
+      stakedToken : null,
+      userLPStaked : 0,
+      lastRewardBlock : poolInfo.lastRewardBlock
+    };
+  }
+  const poolToken = await getToken(app, poolInfo.lpToken ?? poolInfo.stakingToken, chefAddress);
   const userInfo = await chefContract.userInfo(poolIndex, app.YOUR_ADDRESS);
   const pendingRewardTokens = await chefContract.callStatic[pendingRewardsFunction](poolIndex, app.YOUR_ADDRESS);
   const staked = userInfo.amount / 10 ** poolToken.decimals;
   var stakedToken;
   var userLPStaked;
-  if (poolInfo.stakedHoldableToken != null && 
+  if (poolInfo.stakedHoldableToken != null &&
     poolInfo.stakedHoldableToken != "0x0000000000000000000000000000000000000000") {
     stakedToken = await getToken(app, poolInfo.stakedHoldableToken, chefAddress);
     userLPStaked = userInfo.stakedLPAmount / 10 ** poolToken.decimals
   }
   return {
-      address: poolInfo.lpToken,
+      address: poolInfo.lpToken ?? poolInfo.stakingToken,
       allocPoints: poolInfo.allocPoint ?? 1,
       poolToken: poolToken,
       userStaked : staked,
@@ -1100,19 +1810,19 @@ async function getPoolInfo(app, chefContract, chefAddress, poolIndex, pendingRew
   };
 }
 
-function printApy(rewardTokenTicker, rewardPrice, poolRewardsPerWeek, 
-                  stakingTokenTicker, stakedTvl, userStaked, poolTokenPrice,
+function printAPR(rewardTokenTicker, rewardPrice, poolRewardsPerWeek,
+                  stakeTokenTicker, staked_tvl, userStaked, poolTokenPrice,
                   fixedDecimals) {
   var usdPerWeek = poolRewardsPerWeek * rewardPrice;
   fixedDecimals = fixedDecimals ?? 2;
   _print(`${rewardTokenTicker} Per Week: ${poolRewardsPerWeek.toFixed(fixedDecimals)} ($${formatMoney(usdPerWeek)})`);
-  var weeklyAPY = usdPerWeek / stakedTvl * 100;
-  var dailyAPY = weeklyAPY / 7;
-  var yearlyAPY = weeklyAPY * 52;
-  _print(`APY: Day ${dailyAPY.toFixed(2)}% Week ${weeklyAPY.toFixed(2)}% Year ${yearlyAPY.toFixed(2)}%`);
+  var weeklyAPR = usdPerWeek / staked_tvl * 100;
+  var dailyAPR = weeklyAPR / 7;
+  var yearlyAPR = weeklyAPR * 52;
+  _print(`APR: Day ${dailyAPR.toFixed(2)}% Week ${weeklyAPR.toFixed(2)}% Year ${yearlyAPR.toFixed(2)}%`);
   var userStakedUsd = userStaked * poolTokenPrice;
-  var userStakedPct = userStakedUsd / stakedTvl * 100;
-  _print(`You are staking ${userStaked.toFixed(fixedDecimals)} ${stakingTokenTicker} ($${formatMoney(userStakedUsd)}), ${userStakedPct.toFixed(2)}% of the pool.`);
+  var userStakedPct = userStakedUsd / staked_tvl * 100;
+  _print(`You are staking ${userStaked.toFixed(fixedDecimals)} ${stakeTokenTicker} ($${formatMoney(userStakedUsd)}), ${userStakedPct.toFixed(2)}% of the pool.`);
   var userWeeklyRewards = userStakedPct * poolRewardsPerWeek / 100;
   var userDailyRewards = userWeeklyRewards / 7;
   var userYearlyRewards = userWeeklyRewards * 52;
@@ -1122,116 +1832,75 @@ function printApy(rewardTokenTicker, rewardPrice, poolRewardsPerWeek,
         + ` Week ${userWeeklyRewards.toFixed(fixedDecimals)} ($${formatMoney(userWeeklyRewards*rewardPrice)})`
         + ` Year ${userYearlyRewards.toFixed(fixedDecimals)} ($${formatMoney(userYearlyRewards*rewardPrice)})`);
   }
+  return {
+    userStakedUsd,
+    totalStakedUsd : staked_tvl,
+    userStakedPct,
+    yearlyAPR,
+    userYearlyUsd : userYearlyRewards * rewardPrice
+  }
 }
 
 function printChefContractLinks(App, chefAbi, chefAddr, poolIndex, poolAddress, pendingRewardsFunction,
-    rewardTokenTicker, stakingTokenTicker, unstaked, userStaked, pendingRewardTokens, fixedDecimals,
-    claimFunction) {
-      fixedDecimals = fixedDecimals ?? 2;
+    rewardTokenTicker, stakeTokenTicker, unstaked, userStaked, pendingRewardTokens, fixedDecimals,
+    claimFunction, rewardTokenPrice, chain, depositFee, withdrawFee) {
+  fixedDecimals = fixedDecimals ?? 2;
   const approveAndStake = async function() {
     return chefContract_stake(chefAbi, chefAddr, poolIndex, poolAddress, App)
-  }      
+  }
   const unstake = async function() {
     return chefContract_unstake(chefAbi, chefAddr, poolIndex, App, pendingRewardsFunction)
-  }      
+  }
   const claim = async function() {
     return chefContract_claim(chefAbi, chefAddr, poolIndex, App, pendingRewardsFunction, claimFunction)
-  }    
-  const etherscanUrl = `<a href='https://etherscan.io/address/${poolAddress}' target='_blank'>Staking Contract</a>`;
-  _print(etherscanUrl);
-  _print_link(`Stake ${unstaked.toFixed(fixedDecimals)} ${stakingTokenTicker}`, approveAndStake)
-  _print_link(`Unstake ${userStaked.toFixed(fixedDecimals)} ${stakingTokenTicker}`, unstake)
-  _print_link(`Claim ${pendingRewardTokens.toFixed(fixedDecimals)} ${rewardTokenTicker}`, claim)
+  }
+  if(depositFee > 0){
+    _print_link(`Stake ${unstaked.toFixed(fixedDecimals)} ${stakeTokenTicker} - Fee ${depositFee}%`, approveAndStake)
+  }else{
+    _print_link(`Stake ${unstaked.toFixed(fixedDecimals)} ${stakeTokenTicker}`, approveAndStake)
+  }
+  if(withdrawFee > 0){
+    _print_link(`Unstake ${userStaked.toFixed(fixedDecimals)} ${stakeTokenTicker} - Fee ${withdrawFee}%`, unstake)
+  }else{
+    _print_link(`Unstake ${userStaked.toFixed(fixedDecimals)} ${stakeTokenTicker}`, unstake)
+  }
+  _print_link(`Claim ${pendingRewardTokens.toFixed(fixedDecimals)} ${rewardTokenTicker} ($${formatMoney(pendingRewardTokens*rewardTokenPrice)})`, claim)
   _print(`Staking or unstaking also claims rewards.`)
-  _print(`\n`);
+  _print("");
 }
 
-function printChefPool(App, chefAbi, chefAddr, prices, tokens, poolInfo, poolIndex, poolPrices, 
+function printChefPool(App, chefAbi, chefAddr, prices, tokens, poolInfo, poolIndex, poolPrices,
                        totalAllocPoints, rewardsPerWeek, rewardTokenTicker, rewardTokenAddress,
-                       pendingRewardsFunction, fixedDecimals, claimFunction) {  
+                       pendingRewardsFunction, fixedDecimals, claimFunction, chain="eth", depositFee=0, withdrawFee=0) {
   fixedDecimals = fixedDecimals ?? 2;
   const sp = (poolInfo.stakedToken == null) ? null : getPoolPrices(tokens, prices, poolInfo.stakedToken);
   var poolRewardsPerWeek = poolInfo.allocPoints / totalAllocPoints * rewardsPerWeek;
-  if (poolRewardsPerWeek == 0) return;
+  if (poolRewardsPerWeek == 0 && rewardsPerWeek != 0) return;
   const userStaked = poolInfo.userLPStaked ?? poolInfo.userStaked;
   const rewardPrice = getParameterCaseInsensitive(prices, rewardTokenAddress)?.usd;
-  const stakedTvl = sp?.staked_tvl ?? poolPrices.staked_tvl;
-  poolPrices.print_price();
-  sp?.print_price();
-  printApy(rewardTokenTicker, rewardPrice, poolRewardsPerWeek, poolPrices.stakingTokenTicker, 
-    stakedTvl, userStaked, poolPrices.price, fixedDecimals);
+  const staked_tvl = sp?.staked_tvl ?? poolPrices.staked_tvl;
+  _print_inline(`${poolIndex} - `);
+  poolPrices.print_price(chain);
+  sp?.print_price(chain);
+  const apr = printAPR(rewardTokenTicker, rewardPrice, poolRewardsPerWeek, poolPrices.stakeTokenTicker,
+    staked_tvl, userStaked, poolPrices.price, fixedDecimals);
   if (poolInfo.userLPStaked > 0) sp?.print_contained_price(userStaked);
   if (poolInfo.userStaked > 0) poolPrices.print_contained_price(userStaked);
   printChefContractLinks(App, chefAbi, chefAddr, poolIndex, poolInfo.address, pendingRewardsFunction,
-    rewardTokenTicker, poolPrices.stakingTokenTicker, poolInfo.poolToken.unstaked, 
-    poolInfo.userStaked, poolInfo.pendingRewardTokens, fixedDecimals, claimFunction);
+    rewardTokenTicker, poolPrices.stakeTokenTicker, poolInfo.poolToken.unstaked,
+    poolInfo.userStaked, poolInfo.pendingRewardTokens, fixedDecimals, claimFunction, rewardPrice, chain, depositFee, withdrawFee);
+  return apr;
 }
 
-async function loadChefPool(App, prices, tokens, poolIndex, 
-                            chefAbi, chefContract, chefAddr, totalAllocPoints, 
-                            rewardsPerWeek, rewardTokenTicker, rewardTokenAddress, 
-                            pendingRewardsFunction) {  
-  const poolInfo = await getPoolInfo(App, chefContract, chefAddr, poolIndex, pendingRewardsFunction);
-  var newPriceAddresses = poolInfo.poolToken.tokens.filter(x => prices[x] == null);
-  var newPrices = await lookUpTokenPrices(newPriceAddresses);
-  for (const key in newPrices) {
-      prices[key] = newPrices[key];
-  }
-  var newTokenAddresses = poolInfo.poolToken.tokens.filter(x => tokens[x] == null);
-  await Promise.all(newTokenAddresses.map(async (address) => {
-      tokens[address] = await getToken(App, address, chefAddr);
-  }));
-
-  const poolPrices = getPoolPrices(tokens, prices, poolInfo);
-
-  printChefPool(App, chefAbi, chefAddr, prices, tokens, poolInfo, poolIndex, poolPrices,
-   totalAllocPoints, rewardsPerWeek, rewardTokenTicker, rewardTokenAddress,
-   pendingRewardsFunction);
-}
-
-async function loadChefPools(App, prices, tokens, rewardTokenPoolIndex, 
-    chefAbi, chefContract, chefAddress, totalAllocPoints, 
-    rewardsPerWeek, rewardTokenTicker, rewardTokenAddress, pendingRewardsFunction, poolCount) {
-  //Loading the pool with the reward token first allows calculating the APY for the remaining ones
-  await loadChefPool(App, prices, tokens, rewardTokenPoolIndex, 
-    chefAbi, chefContract, chefAddress, totalAllocPoints, 
-    rewardsPerWeek, rewardTokenTicker, rewardTokenAddress, pendingRewardsFunction);
-  
-  for (i = 0; i < poolCount; i++) {
-    if (i != rewardTokenPoolIndex) {
-        await loadChefPool(App, prices, tokens, i,
-          chefAbi, chefContract, chefAddress, totalAllocPoints, 
-          rewardsPerWeek, rewardTokenTicker, rewardTokenAddress, pendingRewardsFunction);
-    }
-  }
-}
-
-async function loadChefContract(App, chefAddress, chefAbi, rewardTokenPoolIndex, rewardTokenTicker,
-    rewardTokenFunction, rewardsPerBlockFunction, pendingRewardsFunction) {    
-  const chefContract = new ethers.Contract(chefAddress, chefAbi, App.provider);
-
-  const poolCount = await chefContract.poolLength();
-  const totalAllocPoints = await chefContract.totalAllocPoint();
-
-  _print(`Found ${poolCount} pools.\n`)
-
-  var prices = {};
-  var tokens = {};
-
-  const rewardTokenAddress = await chefContract.callStatic[rewardTokenFunction]();
-  const rewardsPerWeek = await chefContract.callStatic[rewardsPerBlockFunction]() / 1e18 * 604800 / 13.5
-
-  await loadChefPools(App, prices, tokens, rewardTokenPoolIndex, chefAbi, chefContract, chefAddress,
-    totalAllocPoints, rewardsPerWeek, rewardTokenTicker, rewardTokenAddress, pendingRewardsFunction, poolCount);
-}
-
-async function loadChefContractSecondAttempt(App, chef, chefAddress, chefAbi, rewardTokenTicker,
-    rewardTokenFunction, rewardsPerBlockFunction, rewardsPerWeekFixed, pendingRewardsFunction) {
+async function loadChefContract(App, chef, chefAddress, chefAbi, rewardTokenTicker,
+    rewardTokenFunction, rewardsPerBlockFunction, rewardsPerWeekFixed, pendingRewardsFunction,
+    extraPrices, deathPoolIndices, showAll) {
   const chefContract = chef ?? new ethers.Contract(chefAddress, chefAbi, App.provider);
 
   const poolCount = parseInt(await chefContract.poolLength(), 10);
   const totalAllocPoints = await chefContract.totalAllocPoint();
 
+  _print(`<a href='https://etherscan.io/address/${chefAddress}' target='_blank'>Staking Contract</a>`);
   _print(`Found ${poolCount} pools.\n`)
 
   _print(`Showing incentivized pools only.\n`);
@@ -1240,424 +1909,417 @@ async function loadChefContractSecondAttempt(App, chef, chefAddress, chefAbi, re
 
   const rewardTokenAddress = await chefContract.callStatic[rewardTokenFunction]();
   const rewardToken = await getToken(App, rewardTokenAddress, chefAddress);
-  const rewardsPerWeek = rewardsPerWeekFixed ?? 
-    await chefContract.callStatic[rewardsPerBlockFunction]() 
+  const rewardsPerWeek = rewardsPerWeekFixed ??
+    await chefContract.callStatic[rewardsPerBlockFunction]()
     / 10 ** rewardToken.decimals * 604800 / 13.5
 
-  const poolInfos = await Promise.all([...Array(poolCount).keys()].map(async (x) =>
-    await getPoolInfo(App, chefContract, chefAddress, x, pendingRewardsFunction)));
-  
-  var tokenAddresses = [].concat.apply([], poolInfos.map(x => x.poolToken.tokens));
+  const poolInfos = await Promise.all([...Array(poolCount).keys()].map(async (x) => {
+    try {
+      return await getPoolInfo(App, chefContract, chefAddress, x, pendingRewardsFunction, showAll);
+    }
+    catch (ex) {
+      console.log(`Error loading pool ${x}: ${ex}`);
+      return null;
+    }
+  }));
+
+  var tokenAddresses = [].concat.apply([], poolInfos.filter(x => x?.poolToken).map(x => x.poolToken.tokens));
   var prices = await lookUpTokenPrices(tokenAddresses);
-  
+  if (extraPrices) {
+    for (const [k,v] of Object.entries(extraPrices)) {
+      if (v.usd) {
+        prices[k] = v
+      }
+    }
+  }
+  //prices["0x194ebd173f6cdace046c53eacce9b953f28411d1"] = { usd : 1.22 } //"temporary" solution
+
   await Promise.all(tokenAddresses.map(async (address) => {
       tokens[address] = await getToken(App, address, chefAddress);
   }));
 
-  const poolPrices = poolInfos.map(poolInfo => getPoolPrices(tokens, prices, poolInfo.poolToken));
+  if (deathPoolIndices) {   //load prices for the deathpool assets
+    deathPoolIndices.map(i => poolInfos[i])
+                     .map(poolInfo =>
+      poolInfo.poolToken ? getPoolPrices(tokens, prices, poolInfo.poolToken, "eth") : undefined);
+  }
+
+  const poolPrices = poolInfos.map(poolInfo => poolInfo?.poolToken ? getPoolPrices(tokens, prices, poolInfo.poolToken) : undefined);
 
   _print("Finished reading smart contracts.\n");
-    
-  for (i = 0; i < poolCount; i++) {
-    printChefPool(App, chefAbi, chefAddress, prices, tokens, poolInfos[i], i, poolPrices[i],
-      totalAllocPoints, rewardsPerWeek, rewardTokenTicker, rewardTokenAddress,
-      pendingRewardsFunction);
+
+  let aprs = []
+  for (let i = 0; i < poolCount; i++) {
+    if (poolPrices[i]) {
+      const apr = printChefPool(App, chefAbi, chefAddress, prices, tokens, poolInfos[i], i, poolPrices[i],
+        totalAllocPoints, rewardsPerWeek, rewardTokenTicker, rewardTokenAddress,
+        pendingRewardsFunction)
+      aprs.push(apr);
+    }
   }
+  let totalUserStaked=0, totalStaked=0, averageApr=0;
+  for (const a of aprs) {
+    if (a && !isNaN(a.totalStakedUsd)) {
+      totalStaked += a.totalStakedUsd;
+    }
+    if (a && a.userStakedUsd > 0) {
+      totalUserStaked += a.userStakedUsd;
+      averageApr += a.userStakedUsd * a.yearlyAPR / 100;
+    }
+  }
+  averageApr = averageApr / totalUserStaked;
+  _print_bold(`Total Staked: $${formatMoney(totalStaked)}`);
+  if (totalUserStaked > 0) {
+    _print_bold(`\nYou are staking a total of $${formatMoney(totalUserStaked)} at an average APR of ${(averageApr * 100).toFixed(2)}%`)
+    _print(`Estimated earnings:`
+        + ` Day $${formatMoney(totalUserStaked*averageApr/365)}`
+        + ` Week $${formatMoney(totalUserStaked*averageApr/52)}`
+        + ` Year $${formatMoney(totalUserStaked*averageApr)}\n`);
+  }
+  return { prices, totalUserStaked, totalStaked, averageApr }
 }
 
-async function loadFluidStatus(App, LP, fluidEpochs, epoch) {  
-  const unbondFilter = LP.filters.Unbond(App.YOUR_ADDRESS);
-  const unbonds = await LP.queryFilter(unbondFilter);
-  const bondFilter = LP.filters.Bond(App.YOUR_ADDRESS);
-  const bonds = await LP.queryFilter(bondFilter);
-  if (unbonds.length + bonds.length > 0) {
-      const lastUnbond = Math.max(...unbonds.map(u => u.args.start / 1));
-      const lastBond = Math.max(...bonds.map(d => d.args.start / 1));
-      const fluidEpoch = Math.max(lastUnbond, lastBond);
-      _print(`You last bonded or unbonded at epoch ${fluidEpoch}.`)
-      _print(`You will become Frozen in ${fluidEpoch + fluidEpochs - epoch} epochs.`);
-  }
+async function loadSingleChefPool(App, tokens, prices, chef, chefAddress, chefAbi, rewardTokenTicker,
+    rewardTokenFunction, rewardsPerBlockFunction, rewardsPerWeekFixed, pendingRewardsFunction, poolIndex) {
+  const chefContract = chef ?? new ethers.Contract(chefAddress, chefAbi, App.provider);
+
+  const totalAllocPoints = await chefContract.totalAllocPoint();
+
+  _print(`<a href='https://etherscan.io/address/${chefAddress}' target='_blank'>Staking Contract</a>`);
+  _print(`Showing pool ${poolIndex} only.\n`);
+
+  const rewardTokenAddress = await chefContract.callStatic[rewardTokenFunction]();
+  const rewardToken = await getToken(App, rewardTokenAddress, chefAddress);
+  const rewardsPerWeek = rewardsPerWeekFixed ??
+    await chefContract.callStatic[rewardsPerBlockFunction]()
+    / 10 ** rewardToken.decimals * 604800 / 13.5
+
+  const poolInfo = await getPoolInfo(App, chefContract, chefAddress, poolIndex, pendingRewardsFunction);
+
+  await getNewPricesAndTokens(App, tokens, prices, poolInfo.poolToken.tokens.concat([rewardTokenAddress]), chefAddress);
+
+  const poolPrices = getPoolPrices(tokens, prices, poolInfo.poolToken);
+
+  printChefPool(App, chefAbi, chefAddress, prices, tokens, poolInfo, poolIndex, poolPrices,
+        totalAllocPoints, rewardsPerWeek, rewardTokenTicker, rewardTokenAddress,
+        pendingRewardsFunction);
 }
 
-const loadDAO = async (App, DAO, DOLLAR, uniswapAddress, liquidityPoolAddress, tokens, prices, fluidEpochs,
-  isBuggyDAO, displayDecimals) => {
-    const unstaked = await DOLLAR.balanceOf(App.YOUR_ADDRESS) / 1e18;
-    const totalSupply = await DOLLAR.totalSupply() / 1e18;
-    const dollar = await DOLLAR.symbol();
+//ratio is used for multi-boardroom setups
+async function loadBoardroom(App, prices, boardroomAddress, oracleAddress, lptAddress, rewardTokenAddress, stakeTicker, rewardTicker,
+        epochsPerDay, maxSupplyIncrease, decimals, ratio, targetMantissa) {
+    const BOARDROOM = new ethers.Contract(boardroomAddress, BOARDROOM_ABI, App.provider);
+    const ORACLE = new ethers.Contract(oracleAddress, BASIS_ORACLE_ABI, App.provider);
+    const share = await BOARDROOM.share();
+    const SHARE = new ethers.Contract(share, ERC20_ABI, App.provider);
+    const userUnstaked = await SHARE.balanceOf(App.YOUR_ADDRESS) / 1e18;
+    const sharePrice = getParameterCaseInsensitive(prices, share)?.usd;
+    const userStaked = await BOARDROOM.balanceOf(App.YOUR_ADDRESS) / 1e18;
+    const userStakedUsd = userStaked * sharePrice;
+    const totalStaked = await BOARDROOM.totalSupply() / 1e18;
+    const totalStakedUsd = totalStaked * sharePrice;
+    const userPct = userStaked / totalStaked * 100;
+    const earned = await BOARDROOM.earned(App.YOUR_ADDRESS) / 1e18;
+    _print(`Boardroom`);
+    _print(`There is a total ${totalStaked.toFixed(2)} ${stakeTicker} ($${formatMoney(totalStakedUsd)}) staked in the Boardroom.`)
+    _print(`You are staking ${userStaked} ${stakeTicker} ($${formatMoney(userStakedUsd)}), ${userPct.toFixed(2)}% of the pool.`);
 
-    const uniPool = await getToken(App, uniswapAddress, liquidityPoolAddress);  
-    var newPrices = await lookUpTokenPrices(uniPool.tokens);
+    const rewardPrice = getParameterCaseInsensitive(prices, rewardTokenAddress).usd;
+    const oldTimestamp = await ORACLE.blockTimestampLast();
+    const token0 = await ORACLE.token0();
+    const token1 = await ORACLE.token1();
+    let twap;
+    if (token0.toLowerCase() == rewardTokenAddress.toLowerCase()) {
+        const oldPrice0 = await ORACLE.price0CumulativeLast();
+        const [price0, , timestamp] = await getCurrentPriceAndTimestamp(App, lptAddress);
+        twap = await calculateTwap(oldPrice0, oldTimestamp, price0, timestamp, targetMantissa);
+    }
+    else if (token1.toLowerCase() == rewardTokenAddress.toLowerCase()) {
+        const oldPrice1 = await ORACLE.price1CumulativeLast();
+        const [, price1, timestamp] = await getCurrentPriceAndTimestamp(App, lptAddress);
+        twap = await calculateTwap(oldPrice1, oldTimestamp, price1, timestamp, targetMantissa);
+    }
+    if (twap > 1) {
+        const REWARD_TOKEN = new ethers.Contract(rewardTokenAddress, ERC20_ABI, App.provider);
+        const totalSupply = await REWARD_TOKEN.totalSupply() / (10 ** await REWARD_TOKEN.decimals());
+        const newTokens = totalSupply *  Math.min(twap - 1, maxSupplyIncrease)  * ratio;
+        _print(`There will be ${newTokens.toFixed(decimals)} ${rewardTicker} issued at next expansion.`);
+        const boardReturn = newTokens * rewardPrice / totalStakedUsd * 100 * epochsPerDay;
+        _print(`Boardroom APR: Day ${(boardReturn).toFixed(2)}% Week ${(boardReturn * 7).toFixed(2)}% Year ${(boardReturn * 365).toFixed(2)}%`)
+    }
+
+    const approveTENDAndStake = async () => rewardsContract_stake(share, boardroomAddress, App);
+    const unstake = async () => rewardsContract_unstake(boardroomAddress, App);
+    const claim = async () => boardroom_claim(boardroomAddress, App);
+    const exit = async () =>  rewardsContract_exit(boardroomAddress, App);
+    const revoke = async () => rewardsContract_resetApprove(share, boardroomAddress, App);
+
+    _print_link(`Stake ${userUnstaked.toFixed(decimals)} ${stakeTicker}`, approveTENDAndStake)
+    _print_link(`Unstake ${userStaked.toFixed(decimals)} ${stakeTicker}`, unstake)
+    _print_link(`Claim ${earned.toFixed(decimals)} ${rewardTicker} ($${formatMoney(earned*rewardPrice)})`, claim)
+    _print_link(`Revoke (set approval to 0)`, revoke)
+    _print_link(`Exit`, exit)
+    _print(`\n`);
+
+    return { staked_tvl : totalStakedUsd };
+}
+
+async function loadSynthetixPoolInfo(App, tokens, prices, stakingAbi, stakingAddress,
+  rewardTokenFunction, stakeTokenFunction) {
+    const STAKING_POOL = new ethers.Contract(stakingAddress, stakingAbi, App.provider);
+    const STAKING_MULTI = new ethcall.Contract(stakingAddress, stakingAbi);
+
+    if (!STAKING_POOL.callStatic[stakeTokenFunction]) {
+      console.log("Couldn't find stake function ", stakeTokenFunction);
+    }
+    const stakeTokenAddress = await STAKING_POOL.callStatic[stakeTokenFunction]();
+
+    const rewardTokenAddress = await STAKING_POOL.callStatic[rewardTokenFunction]();
+
+    var stakeToken = await getToken(App, stakeTokenAddress, stakingAddress);
+
+    if (stakeTokenAddress.toLowerCase() === rewardTokenAddress.toLowerCase()) {
+      stakeToken.staked = await STAKING_POOL.totalSupply() / 10 ** stakeToken.decimals;
+    }
+
+    var newPriceAddresses = stakeToken.tokens.filter(x =>
+      x.toLowerCase() !=  "0xb34ab2f65c6e4f764ffe740ab83f982021faed6d" && //BSG can't be retrieved from Coingecko
+      !getParameterCaseInsensitive(prices, x));
+    var newPrices = await lookUpTokenPrices(newPriceAddresses);
     for (const key in newPrices) {
-        prices[key] = newPrices[key];
+      if (newPrices[key]?.usd)
+          prices[key] = newPrices[key];
     }
-    await Promise.all(uniPool.tokens.map(async (address) => {
-        tokens[address] = await getToken(App, address, uniPool.address);
-    }));
-    const uniPrices = getPoolPrices(tokens, prices, uniPool);
-
-    const zaiPrice = getParameterCaseInsensitive(prices, DOLLAR.address).usd;
-
-    const decimals = displayDecimals ?? 2;
-
-    const totalBonded = await DAO.totalBonded() / 1e18;
-    const totalStaged = await DAO.totalStaged() / 1e18;
-    const bonded = await DAO.balanceOfBonded(App.YOUR_ADDRESS) / 1e18;
-    const staged = await DAO.balanceOfStaged(App.YOUR_ADDRESS) / 1e18;
-    const status = await DAO.statusOf(App.YOUR_ADDRESS) ? "Fluid" : "Frozen";
-    const epoch = await DAO.epoch() / 1;
-    _print(`Current Epoch: ${epoch}\n`);
-    _print(`${dollar} Price: ${formatMoney(zaiPrice)}\n`);
-    
-    _print(`${dollar} Total Supply: ${totalSupply.toFixed(decimals)}, $${formatMoney(totalSupply * zaiPrice)}`);
-    _print(`${dollar} Total Staged: ${totalStaged.toFixed(decimals)}, $${formatMoney(totalStaged * zaiPrice)}`);
-    _print(`${dollar} Total Bonded: ${totalBonded.toFixed(decimals)}, $${formatMoney(totalBonded * zaiPrice)}`);
-    _print(`Your DAO status is ${status}`);
-    _print(`You have ${unstaked.toFixed(decimals)} unstaked ${dollar}, $${formatMoney(unstaked*zaiPrice)}`);
-    _print(`You have ${staged.toFixed(decimals)} staged ${dollar}, $${formatMoney(staged*zaiPrice)}, ${(staged/totalStaged*100).toFixed(4)}% of the pool`);
-    _print(`You have ${bonded.toFixed(decimals)} bonded ${dollar}, $${formatMoney(bonded*zaiPrice)}, ${(bonded/totalBonded*100).toFixed(4)}% of the pool`);
-    if (status == "Fluid") await loadFluidStatus(App, DAO, fluidEpochs, epoch);
-    
-    const approveAndDeposit = async () => dao_deposit(App, DAO, DOLLAR);
-    const withdraw = async () => esd_withdraw(DAO, App); 
-    const bond = async () => esd_bond(DAO, App); 
-    const unbond = async () => isBuggyDAO ? buggy_dao_unbond(DAO,App) : esd_unbond(DAO, App); 
-
-    _print_link(`Deposit ${unstaked.toFixed(decimals)} ${dollar}`, approveAndDeposit)
-    _print_link(`Withdraw ${staged.toFixed(decimals)} ${dollar}`, withdraw);
-    _print_link(`Bond ${staged.toFixed(decimals)} ${dollar}`, bond);
-    _print_link(`Unbond ${bonded.toFixed(decimals)} ${dollar}`, unbond);
-    _print(''); 
-
-    const couponFilter = DAO.filters.CouponPurchase(App.YOUR_ADDRESS);
-    const coupons = await DAO.queryFilter(couponFilter);
-    for (const c of coupons) {
-        const dollarAmount = c.args.dollarAmount / 1e18;
-        const couponCount = c.args.couponAmount / 1e18;
-        const couponEpoch = c.args.epoch / 1;
-        _print(`You purchased ${couponCount} coupons worth $${dollarAmount} at epoch ${couponEpoch}`)
+    var newTokenAddresses = stakeToken.tokens.filter(x =>
+      !getParameterCaseInsensitive(tokens,x));
+    for (const address of newTokenAddresses) {
+        tokens[address] = await getToken(App, address, stakingAddress);
     }
-    _print('');
+    if (!getParameterCaseInsensitive(tokens, rewardTokenAddress)) {
+        tokens[rewardTokenAddress] = await getToken(App, rewardTokenAddress, stakingAddress);
+    }
+    const rewardToken = getParameterCaseInsensitive(tokens, rewardTokenAddress);
 
-    return [epoch, uniPrices, totalBonded];
-}
+    const rewardTokenTicker = rewardToken.symbol;
 
-async function loadEmptySetLP(App, LP, stakeTokenAddress, stakeTokenTicker, fluidEpochs, epoch, rewardTicker, uniPrices,
-    displayDecimals) {
-  const stakeToken = new ethers.Contract(stakeTokenAddress, ERC20_ABI, App.provider);
-  const unstaked = await stakeToken.balanceOf(App.YOUR_ADDRESS) / 1e18;
+    const poolPrices = getPoolPrices(tokens, prices, stakeToken);
 
-  const totalBonded = await LP.totalBonded() / 1e18;
-  const totalStaged = await LP.totalStaged() / 1e18;
+    const stakeTokenTicker = poolPrices.stakeTokenTicker;
 
-  const staged = await LP.balanceOfStaged(App.YOUR_ADDRESS) / 1e18;
-  const bonded = await LP.balanceOfBonded(App.YOUR_ADDRESS) / 1e18;
-  const claimable = await LP.balanceOfClaimable(App.YOUR_ADDRESS) / 1e18;
-  const rewarded = 
-    (rewardTicker == "ESG" 
-      ? await LP.balanceOfRewarded(App.YOUR_ADDRESS, Contracts.ESG.Dollar.address)
-      : await LP.balanceOfRewarded(App.YOUR_ADDRESS))
-     / 1e18;
-  const status =
-    (rewardTicker == "ESG" 
-      ? await LP.statusOf(App.YOUR_ADDRESS, epoch) 
-      : await LP.statusOf(App.YOUR_ADDRESS)) 
-        ? "Fluid" : "Frozen";
-  
-  const lpPrice = uniPrices.price;
-  uniPrices.print_price();    
-  //_print(`${stakeTokenTicker} Total Supply: ${uniPrices.totalSupply.toFixed(2)}, $${formatMoney(uniPrices.totalSupply * zaiPrice)}`);
-  _print(`${stakeTokenTicker} Total Staged: ${totalStaged.toFixed(2)}, $${formatMoney(totalStaged * lpPrice)}`);
-  _print(`${stakeTokenTicker} Total Bonded: ${totalBonded.toFixed(2)}, $${formatMoney(totalBonded * lpPrice)}`);
-  _print(`Your LP status is ${status}`);
-  _print(`You have ${unstaked.toFixed(8)} unstaked ${stakeTokenTicker}, $${formatMoney(unstaked * lpPrice)}`);
-  if (unstaked > 0) uniPrices.print_contained_price(unstaked);
-  _print(`You have ${staged.toFixed(8)} staged ${stakeTokenTicker}, $${formatMoney(staged * lpPrice)}, ${(staged/totalStaged*100).toFixed(4)}% of the pool`);
-  if (staged > 0) uniPrices.print_contained_price(staged);
-  _print(`You have ${bonded.toFixed(8)} bonded ${stakeTokenTicker}, $${formatMoney(bonded * lpPrice)}, ${(bonded/totalBonded*100).toFixed(4)}% of the pool`);
-  if (bonded > 0) uniPrices.print_contained_price(bonded);
+    const stakeTokenPrice =
+        prices[stakeTokenAddress]?.usd ?? getParameterCaseInsensitive(prices, stakeTokenAddress)?.usd;
+    const rewardTokenPrice = getParameterCaseInsensitive(prices, rewardTokenAddress)?.usd;
 
-  const decimals = displayDecimals ?? 2;
-  _print(`You have ${rewarded.toFixed(decimals)} rewarded ${rewardTicker}`);
-  _print(`You have ${claimable.toFixed(decimals)} claimable ${rewardTicker}`);
-  
-  if (status == "Fluid") await loadFluidStatus(App, LP, fluidEpochs, epoch);
-  const approveAndDeposit = async () => dao_deposit(App, LP, stakeToken);
-  const withdraw = async () => esd_withdraw(LP, App); 
-  const bond = async () => esd_bond(LP, App); 
-  const unbond = async () => esd_unbond(LP, App); 
-  const claim = async () => esd_claim(LP, App);
+    const calls = [STAKING_MULTI.periodFinish(), STAKING_MULTI.rewardRate(),
+      STAKING_MULTI.balanceOf(App.YOUR_ADDRESS), STAKING_MULTI.earned(App.YOUR_ADDRESS)]
+    const [periodFinish, rewardRate, balance, earned_] = await App.ethcallProvider.all(calls);
+    const weeklyRewards = (Date.now() / 1000 > periodFinish) ? 0 : rewardRate / 1e18 * 604800;
 
-  _print_link(`Deposit ${unstaked.toFixed(6)} ${stakeTokenTicker}`, approveAndDeposit)
-  _print_link(`Withdraw ${staged.toFixed(6)} ${stakeTokenTicker}`, withdraw);
-  _print_link(`Bond ${staged.toFixed(6)} ${stakeTokenTicker}`, bond);
-  _print_link(`Unbond ${bonded.toFixed(6)} ${stakeTokenTicker}`, unbond);
-  _print_link(`Claim ${claimable.toFixed(6)} ${rewardTicker}`, claim);
-  _print('');   
-}
+    const usdPerWeek = weeklyRewards * rewardTokenPrice;
 
-const esd_withdraw = async function(DAO, App) {
-  const signer = App.provider.getSigner()
+    const staked_tvl = poolPrices.staked_tvl;
 
-  const REWARD_POOL = DAO.connect(signer);
-  const currentStakedAmount = await REWARD_POOL.balanceOfStaged(App.YOUR_ADDRESS)
+    const userStaked = balance / 10 ** stakeToken.decimals;
 
-  if (currentStakedAmount > 0) {
-    showLoading()
-    REWARD_POOL.withdraw(currentStakedAmount, {gasLimit: 250000})
-      .then(function(t) {
-        return App.provider.waitForTransaction(t.hash)
-      })
-      .catch(function() {
-        hideLoading()
-      })
-  }
-}
+    const userUnstaked = stakeToken.unstaked;
 
-const esd_claim = async function(LP, App) {
-  const signer = App.provider.getSigner()
+    const earned = earned_ / 10 ** rewardToken.decimals;
 
-  const claimable = await LP.balanceOfClaimable(App.YOUR_ADDRESS)
-
-  if (claimable > 0) {
-    showLoading()
-    LP.connect(signer).claim(claimable, {gasLimit: 250000})
-      .then(function(t) {
-        return App.provider.waitForTransaction(t.hash)
-      })
-      .catch(function() {
-        hideLoading()
-      })
-  }
-}
-
-const esd_unbond = async function(DAO, App) {
-  const signer = App.provider.getSigner()
-
-  const REWARD_POOL = DAO.connect(signer);
-  const currentStakedAmount = await REWARD_POOL.balanceOfBonded(App.YOUR_ADDRESS)
-
-  if (currentStakedAmount > 0) {
-    showLoading()
-    REWARD_POOL.unbond(currentStakedAmount, {gasLimit: 250000})
-      .then(function(t) {
-        return App.provider.waitForTransaction(t.hash)
-      })
-      .catch(function() {
-        hideLoading()
-      })
-  }
-}
-
-const esd_bond = async function(DAO, App) {
-  const signer = App.provider.getSigner()
-
-  const REWARD_POOL = DAO.connect(signer);
-  const currentStakedAmount = await REWARD_POOL.balanceOfStaged(App.YOUR_ADDRESS)
-
-  if (currentStakedAmount > 0) {
-    showLoading()
-    REWARD_POOL.bond(currentStakedAmount, {gasLimit: 250000})
-      .then(function(t) {
-        return App.provider.waitForTransaction(t.hash)
-      })
-      .catch(function() {
-        hideLoading()
-      })
-  }
-}
-
-const buggy_dao_unbond = async function(DAO, App) {
-  const signer = App.provider.getSigner()
-
-  const REWARD_POOL = DAO.connect(signer);
-  const currentStakedAmount = await REWARD_POOL.balanceOf(App.YOUR_ADDRESS)
-
-  if (currentStakedAmount > 0) {
-    showLoading()
-    REWARD_POOL.unbond(currentStakedAmount, {gasLimit: 250000})
-      .then(function(t) {
-        return App.provider.waitForTransaction(t.hash)
-      })
-      .catch(function() {
-        hideLoading()
-      })
-  }
-}
-
-///targetMantissa should be 12 for USDC based, 24 for DAI based
-const calculateTwap = async (oldPrice0, oldTimestamp, price0, timestamp, targetMantissa) => {
-    // Convert Prices to BN
-    const price0CumulativeLast = ethers.BigNumber.from(oldPrice0)
-    let price0Cumulative = ethers.BigNumber.from(price0)
-  
-    // Convert timestamps to BN
-    const latest = ethers.BigNumber.from(timestamp) // Current Uniswap contract timestamp
-    const blockTimestamp = latest.mod(ethers.BigNumber.from(2).pow(32))
-    const blockTimestampLast = ethers.BigNumber.from(oldTimestamp) // Saved Uniswap timestamp
-  
-    // Sub the timestamps to get distance
-    const timeElapsed = blockTimestamp.sub(blockTimestampLast)
-  
-    // If subbing timestamps equals 0: no new trades have happened so use the Spot Price
-    // Returning 0 here so it can be handled else where
-    if (timeElapsed.toNumber() === 0) return 0
-  
-    // Do the TWAP calc
-    const price0Average = price0Cumulative
-      .sub(price0CumulativeLast)
-      .div(timeElapsed)
-  
-    // Shifting the base to match the right numbers
-    // Adjust the number of 0s as necessary.
-    const exchangeRate0 = price0Average
-    .mul(ethers.BigNumber.from(10).pow(18))
-    .mul(ethers.BigNumber.from(10).pow(targetMantissa))
-    .div(ethers.BigNumber.from(2).pow(112))
-
-    // Returnthe Float of the TWAP 
-    return exchangeRate0 / 1e18;
-}
-
-const getCurrentPriceAndTimestamp = async (App, address) => {
-    const UNI = new ethers.Contract(address, UNI_ABI, App.provider);
-    const price0 = await UNI.price0CumulativeLast();
-    const price1 = await UNI.price1CumulativeLast();
-    const { _blockTimestampLast } = await UNI.getReserves()
-    return [ price0, price1, _blockTimestampLast ]
-}
-
-const getBasisCurrentPriceAndTimestamp = async (App, address) => {
-    const ORACLE = new ethers.Contract(address, BASIS_ORACLE_ABI, App.provider);
-    const price0 = await ORACLE.price0CumulativeLast();
-    const price1 = await ORACLE.price1CumulativeLast();
-    const blockTimestampLast = await ORACLE.blockTimestampLast()
-    return [ price0, price1, blockTimestampLast ]
-}
-
-async function printDaoUnbonds(provider, DAO, epoch, fluidEpochs, epochTimeSec) {
-    const fluidBlocks = fluidEpochs * epochTimeSec / 13.5 * 1.1; //10% leeway
-    const blockNumber = await provider.getBlockNumber();
-    const unbonds = await DAO.queryFilter(DAO.filters.Unbond(), blockNumber-fluidBlocks, blockNumber);
-    for (let i = 0; i < fluidEpochs; i++) {
-        let filtered = unbonds.filter(u => epoch + i + 1 - fluidEpochs == u.args?.start / 1);
-        let unbonding = filtered.map(u => u.args?.valueUnderlying / 1e18).reduce((x, y) => x+y,0);
-        _print(`Unbonding at epoch ${epoch+i}: ${formatMoney(unbonding)}`)
+    return  {
+      stakingAddress,
+      poolPrices,
+      stakeTokenAddress,
+      rewardTokenAddress,
+      stakeTokenTicker,
+      rewardTokenTicker,
+      stakeTokenPrice,
+      rewardTokenPrice,
+      weeklyRewards,
+      usdPerWeek,
+      staked_tvl,
+      userStaked,
+      userUnstaked,
+      earned
     }
 }
 
-async function printLPUnbonds(provider, DAO, epoch, fluidEpochs, epochTimeSec) {
-    const fluidBlocks = Math.round(fluidEpochs * epochTimeSec / 13.5 * 1.1); //10% leeway
-    const blockNumber = await provider.getBlockNumber();
-    const unbonds = await DAO.queryFilter(DAO.filters.Unbond(), blockNumber-fluidBlocks, blockNumber);
-    for (let i = 0; i < fluidEpochs; i++) {
-        let filtered = unbonds.filter(u => epoch + i + 1 - fluidEpochs == u.args?.start / 1);
-        let unbonding = filtered.map(u => u.args?.value / 1e18).reduce((x, y) => x+y,0);
-        let claimable = filtered.map(u => u.args?.newClaimable / 1e18).reduce((x, y) => x+y,0);
-        _print(`Unbonding at epoch ${epoch+i}: ${unbonding.toFixed(8)} - Claimable: ${formatMoney(claimable)}`);
+async function printSynthetixPool(App, info, chain="eth", customURLs) {
+    info.poolPrices.print_price(chain, 4, customURLs);
+    _print(`${info.rewardTokenTicker} Per Week: ${info.weeklyRewards.toFixed(2)} ($${formatMoney(info.usdPerWeek)})`);
+    const weeklyAPR = info.usdPerWeek / info.staked_tvl * 100;
+    const dailyAPR = weeklyAPR / 7;
+    const yearlyAPR = weeklyAPR * 52;
+    _print(`APR: Day ${dailyAPR.toFixed(2)}% Week ${weeklyAPR.toFixed(2)}% Year ${yearlyAPR.toFixed(2)}%`);
+    const userStakedUsd = info.userStaked * info.stakeTokenPrice;
+    const userStakedPct = userStakedUsd / info.staked_tvl * 100;
+    _print(`You are staking ${info.userStaked.toFixed(6)} ${info.stakeTokenTicker} ` +
+           `$${formatMoney(userStakedUsd)} (${userStakedPct.toFixed(2)}% of the pool).`);
+    if (info.userStaked > 0) {
+      info.poolPrices.print_contained_price(info.userStaked);
+        const userWeeklyRewards = userStakedPct * info.weeklyRewards / 100;
+        const userDailyRewards = userWeeklyRewards / 7;
+        const userYearlyRewards = userWeeklyRewards * 52;
+        _print(`Estimated ${info.rewardTokenTicker} earnings:`
+            + ` Day ${userDailyRewards.toFixed(2)} ($${formatMoney(userDailyRewards*info.rewardTokenPrice)})`
+            + ` Week ${userWeeklyRewards.toFixed(2)} ($${formatMoney(userWeeklyRewards*info.rewardTokenPrice)})`
+            + ` Year ${userYearlyRewards.toFixed(2)} ($${formatMoney(userYearlyRewards*info.rewardTokenPrice)})`);
+    }
+    const approveTENDAndStake = async function() {
+      return rewardsContract_stake(info.stakeTokenAddress, info.stakingAddress, App)
+    }
+    const unstake = async function() {
+      return rewardsContract_unstake(info.stakingAddress, App)
+    }
+    const claim = async function() {
+      return rewardsContract_claim(info.stakingAddress, App)
+    }
+    const exit = async function() {
+      return rewardsContract_exit(info.stakingAddress, App)
+    }
+    const revoke = async function() {
+      return rewardsContract_resetApprove(info.stakeTokenAddress, info.stakingAddress, App)
+    }
+    switch (chain) {
+      case "eth":
+        _print(`<a target="_blank" href="https://etherscan.io/address/${info.stakingAddress}#code">Etherscan</a>`);
+        break;
+      case "avax":
+        _print(`<a target="_blank" href="https://cchain.explorer.avax.network/address/${info.stakingAddress}#code">Explorer</a>`);
+        break;
+      case "bsc":
+        _print(`<a target="_blank" href="https://bscscan.com/address/${info.stakingAddress}#code">BSC Scan</a>`);
+        break;
+      case "heco":
+        _print(`<a target="_blank" href="https://hecoinfo.com/address/${info.stakingAddress}#code">Heco Scan</a>`);
+        break;
+      case "matic":
+        _print(`<a target="_blank" href="https://explorer-mainnet.maticvigil.com/address/${info.stakingAddress}#code">Polygon Explorer</a>`);
+        break;
+      case "fantom":
+        _print(`<a target="_blank" href="https://ftmscan.com/address/${info.stakingAddress}#code">FTM Scan</a>`);
+        break;
+    }
+    if (info.stakeTokenTicker != "ETH") {
+      _print_link(`Stake ${info.userUnstaked.toFixed(6)} ${info.stakeTokenTicker}`, approveTENDAndStake)
+    }
+    else {
+      _print("Please use the official website to stake ETH.");
+    }
+    _print_link(`Unstake ${info.userStaked.toFixed(6)} ${info.stakeTokenTicker}`, unstake)
+    _print_link(`Claim ${info.earned.toFixed(6)} ${info.rewardTokenTicker} ($${formatMoney(info.earned*info.rewardTokenPrice)})`, claim)
+    if (info.stakeTokenTicker != "ETH") {
+      _print_link(`Revoke (set approval to 0)`, revoke)
+    }
+    _print_link(`Exit`, exit)
+    _print("");
+
+    return {
+        staked_tvl: info.poolPrices.staked_tvl,
+        userStaked : userStakedUsd,
+        apr : yearlyAPR
     }
 }
 
-async function calculateDollarAPR(DAO, parameters, twap, dollarPrice, uniPrices, totalBonded, calculateChange) {
-    const totalCoupons = await DAO.totalCoupons() / 1e18;
-    const totalRedeemable = await DAO.totalRedeemable() / 1e18;
-    const totalNet = await DAO.totalNet() / 1e18;
-
-    const lpReward = parameters.PoolRatio;
-    const daoReward = parameters.DaoRatio;
-    // Get price
-    const calcPrice = calculateChange(twap, totalCoupons, totalRedeemable)
-
-    // Calulcate the outstanding commitments so we can remove it from the rewards
-    const totalOutstanding = totalCoupons - totalRedeemable
-
-    const maxRewards = totalNet * calcPrice * daoReward;
-
-    const daoRewards = maxRewards - totalOutstanding
-
-    if (daoRewards > 0) {
-        const bondedReturn = daoRewards / totalBonded * 100 * 24; //24 epochs per day
-
-        _print(`DAO APR: Day ${bondedReturn.toFixed(2)}% Week ${(bondedReturn * 7).toFixed(2)}% Year ${(bondedReturn * 365).toFixed(2)}%`)
-
-    } else {
-        _print(`DAO APR: Day 0% Week 0% Year 0%`)
-    }
-    // Calculate total rewards allocated to LP
-    const lpRewards = totalNet * calcPrice * lpReward
-    const lpReturn = lpRewards * dollarPrice / uniPrices.staked_tvl * 100 * 24;
-
-    _print(`LP  APR: Day ${lpReturn.toFixed(2)}% Week ${(lpReturn * 7).toFixed(2)}% Year ${(lpReturn * 365).toFixed(2)}%`)  
+async function loadSynthetixPool(App, tokens, prices, abi, address, rewardTokenFunction, stakeTokenFunction) {
+  const info = await loadSynthetixPoolInfo(App, tokens, prices, abi, address, rewardTokenFunction, stakeTokenFunction);
+  return await printSynthetixPool(App, info);
 }
 
-async function loadDollar(contractInfo, calcPrice) {
-  const params = contractInfo.Parameters;
-  
-  const App = await init_ethers();
-
-  _print(`Initialized ${App.YOUR_ADDRESS}\n`);
-  _print("Reading smart contracts...\n");
-
-  const DAO = new ethers.Contract(contractInfo.DAO.address, contractInfo.DAO.abi, App.provider);
-  const DOLLAR = new ethers.Contract(contractInfo.Dollar.address, ERC20_ABI, App.provider);
-  var prices = {};
-  var tokens = {};
-
-  const [epoch, uniPrices, totalBonded] = await loadDAO(App, DAO, DOLLAR, contractInfo.UniswapLP.address,
-      contractInfo.LPIncentivizationPool.address, tokens, prices, params.DaoLockupPeriods, false,
-      contractInfo.Dollar.displayDecimals);
-
-  const LP = new ethers.Contract(contractInfo.LPIncentivizationPool.address,
-      contractInfo.LPIncentivizationPool.abi, App.provider);
-  await loadEmptySetLP(App, LP, contractInfo.UniswapLP.address, 
-      contractInfo.LPIncentivizationPool.ticker, params.PoolLockupPeriods, 
-      epoch, contractInfo.Dollar.ticker, uniPrices, contractInfo.Dollar.displayDecimals);
-  
-  const dollarPrice = getParameterCaseInsensitive(prices, DOLLAR.address).usd;
-
-  if (epoch < params.BootstrappingPeriod) { //bootstrapping
-      const twap = params.BootstrappingPrice;      
-      await calculateDollarAPR(DAO, params, twap, dollarPrice, uniPrices, totalBonded, calcPrice);
+async function loadMultipleSynthetixPools(App, tokens, prices, pools) {
+  let totalStaked  = 0, totalUserStaked = 0, individualAPRs = [];
+  const infos = await Promise.all(pools.map(p =>
+    loadSynthetixPoolInfo(App, tokens, prices, p.abi, p.address, p.rewardTokenFunction, p.stakeTokenFunction)));
+  for (const i of infos) {
+    let p = await printSynthetixPool(App, i);
+    totalStaked += p.staked_tvl || 0;
+    totalUserStaked += p.userStaked || 0;
+    if (p.userStaked > 0) {
+      individualAPRs.push(p.userStaked * p.apr / 100);
+    }
   }
-  else {
-      const resp = await fetch('https://api.vfat.tools/twap/' + contractInfo.UniswapLP.address);
-      const text = await resp.text();
-      const array = text.split("\n");
-      if (array.length > 0) {
-          const [oldPrice0, , oldTimestamp] = array[array.length - 2].split(' ') //last line is blank
-          const [price0, , timestamp] = await getCurrentPriceAndTimestamp(App, contractInfo.UniswapLP.address);
-          const twap = await calculateTwap(oldPrice0, oldTimestamp, price0, timestamp, 12);
-          _print(`TWAP: ${twap}\n`);
+  let totalAPR = totalUserStaked == 0 ? 0 : individualAPRs.reduce((x,y)=>x+y, 0) / totalUserStaked;
+  return { staked_tvl : totalStaked, totalUserStaked, totalAPR };
+}
 
-          if (twap > params.GrowCutoff ?? 1) {
-              await calculateDollarAPR(DAO, contractInfo.Parameters, twap, dollarPrice, uniPrices, calcPrice);
-          }
-          else {
-              _print(`DAO APR: Day 0% Week 0% Year 0%`)
-              _print(`LP APR: Day 0% Week 0% Year 0%`)
-          }        
+async function loadBasisFork(data) {
+    const App = await init_ethers();
+
+    _print(`Initialized ${App.YOUR_ADDRESS}`);
+    _print("Reading smart contracts...\n");
+
+    var tokens = {};
+    var prices = {};
+    var totalStaked = 0;
+
+    let p1 = await loadSynthetixPool(App, tokens, prices, data.PoolABI,
+        data.SharePool.address, data.SharePool.rewardToken, data.SharePool.stakeToken);
+    totalStaked += p1.staked_tvl;
+
+    if (data.SharePool2) {
+      let p3 = await loadSynthetixPool(App, tokens, prices, data.PoolABI,
+          data.SharePool2.address, data.SharePool2.rewardToken, data.SharePool2.stakeToken);
+      totalStaked += p3.staked_tvl;
+    }
+
+    let p2 = await loadSynthetixPool(App, tokens, prices, data.PoolABI,
+        data.CashPool.address, data.CashPool.rewardToken, data.CashPool.stakeToken);
+    totalStaked += p2.staked_tvl;
+
+    if (data.SeedBanks) {
+      let p = await loadMultipleSynthetixPools(App, tokens, prices, data.SeedBanks)
+      totalStaked += p.staked_tvl;
+      if (p.totalUserStaked > 0) {
+        _print(`You are staking a total of $${formatMoney(p.totalUserStaked)} at an APR of ${(p.totalAPR * 100).toFixed(2)}%\n`);
       }
-  }
-  _print(`\nDAO Unbonds`)
-  await printDaoUnbonds(App.provider, DAO, epoch + 1, params.DaoLockupPeriods, params.EpochPeriod);
-  _print(`\LP Unbonds`)
-  await printLPUnbonds(App.provider, LP, epoch + 1, params.PoolLockupPeriods, params.EpochPeriod);
-  hideLoading();  
+    }
+
+    if (!data.SeedBanks)
+    {
+      if (data.Boardrooms) {
+        for (const boardroom of data.Boardrooms) {
+          let br = await loadBoardroom(App, prices, boardroom.address, data.Oracle, data.UniswapLP, data.Cash,
+              data.ShareTicker, data.CashTicker, data.ExpansionsPerDay, data.MaximumExpansion,
+              data.Decimals, boardroom.ratio, data.TargetMantissa);
+          totalStaked += br.staked_tvl;
+        }
+      }
+      else {
+        let br = await loadBoardroom(App, prices, data.Boardroom, data.Oracle, data.UniswapLP, data.Cash,
+            data.ShareTicker, data.CashTicker, data.ExpansionsPerDay, data.MaximumExpansion,
+            data.Decimals, 1, data.TargetMantissa);
+        totalStaked += br.staked_tvl;
+      }
+    }
+
+    _print_bold(`Total staked: $${formatMoney(totalStaked)}`)
+
+    hideLoading();
 }
 
-const calculateEmptySetChange = (params, totalCoupons, totalRedeemable, price) => {
-  if (price > 1 + params.CouponSupplychangeLimit && totalCoupons > totalRedeemable) {
-      return params.CouponSupplychangeLimit
-  } else if (
-      1 + params.CouponSupplychangeLimit >= price &&
-      price > 1 + params.SupplyChangeLimit &&
-      totalCoupons > totalRedeemable
-  ) {
-      return Math.abs(price - 1)
-  } else if (price > 1 + params.SupplyChangeLimit) {
-      return params.SupplyChangeLimit
-  } else if (price < 1 - params.SupplyChangeLimit) {
-      return params.SupplyChangeLimit
-  } else {
-      return Math.abs(price - 1)
+async function getNewPricesAndTokens(App, tokens, prices, newAddresses, stakingAddress) {
+  var newPriceAddresses = newAddresses.filter(x =>
+    !getParameterCaseInsensitive(prices, x));
+  var newPrices = await lookUpTokenPrices(newPriceAddresses);
+  for (const key in newPrices) {
+      if (newPrices[key])
+          prices[key] = newPrices[key];
   }
+  var newTokenAddresses = newAddresses.filter(x =>
+      !getParameterCaseInsensitive(tokens,x));
+  for (const address of newTokenAddresses) {
+      tokens[address] = await getToken(App, address, stakingAddress);
+  }
+}
+
+async function getAverageBlockTime(App){
+  const currentBlockNumber = await App.provider.getBlockNumber();
+  const currentBlock = await App.provider.getBlock(currentBlockNumber);
+  const previousBlock = await App.provider.getBlock(currentBlockNumber - 15000);
+  const differenceTimestamp = currentBlock.timestamp - previousBlock.timestamp;
+  return differenceTimestamp / 15000;
+}
+
+const displayPrice = price => {
+  const priceDecimals = price == 0 ? 2 : price < 0.0001 ? 10 : price < 0.01 ? 6 : 2;
+  return priceDecimals == 2 ? formatMoney(price) : price.toFixed(priceDecimals);
 }

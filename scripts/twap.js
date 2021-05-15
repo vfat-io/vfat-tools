@@ -20,16 +20,4 @@ const savePriceAndTimestamp = async () => {
     fs.appendFileSync('twap/' + argv[0], msg);
 } 
 
-// Mock Data 
-// In a real scenario you would fetch and store price & timestamp at an interval 
-// to mirror the contract calculating the TWAP on chain
-const price0 = '529527205677379158060966860839'
-const timestamp = '1603273219'
-const oldPrice0 = '529504297305243109940199126701'
-const oldTimestamp = '1603269588'
-
-const main = async () => {
-   const twap = await calculateTwap()
-   console.log(twap)
-}
 savePriceAndTimestamp()

@@ -1,6 +1,5 @@
 $(function() {
-    consoleInit();
-    start(main);
+consoleInit(main)
 });
 
 /*
@@ -15,7 +14,7 @@ Parameters : {
             DaoRatio : 0.755,
             SupplyChangeLimit : 0.03,
             CouponSupplyChangeLimit : 0.06,
-            GrowthThreshold : 0
+            GrowthThreshold : 1.0
 }
 */
 
@@ -37,14 +36,14 @@ const calculateChange = (params, totalCoupons, totalRedeemable, price) => {
     }
 }
 
-async function main() {  
+async function main() {
     const params = Contracts.SPAD.Parameters;
     const App = await init_ethers();
 
     _print(`Initialized ${App.YOUR_ADDRESS}\n`);
     _print("Reading smart contracts...\n");
 
-    const DAO = new ethers.Contract(Contracts.SPAD.DAO.address, 
+    const DAO = new ethers.Contract(Contracts.SPAD.DAO.address,
         Contracts.SPAD.DAO.abi, App.provider);
     const DOLLAR = new ethers.Contract(Contracts.SPAD.Dollar.address,
         ERC20_ABI, App.provider);
@@ -56,9 +55,9 @@ async function main() {
 
     const LP = new ethers.Contract(Contracts.SPAD.LPIncentivizationPool.address,
         Contracts.SPAD.LPIncentivizationPool.abi, App.provider);
-    await loadEmptySetLP(App, LP, Contracts.SPAD.UniswapLP.address, 
+    await loadEmptySetLP(App, LP, Contracts.SPAD.UniswapLP.address,
         "SPAD-USDC LP", params.PoolLockupPeriods, epoch, "SPAD", uniPrices);
-    
+
     const dollarPrice = getParameterCaseInsensitive(prices, DOLLAR.address).usd;
 
     const totalCoupons = await DAO.totalCoupons();
@@ -66,7 +65,7 @@ async function main() {
     const calcPrice = twap => calculateChange(params, totalCoupons, totalRedeemable, twap)
 
     if (epoch < params.BootstrappingPeriod) { //bootstrapping
-        const twap = params.BootstrappingPrice;      
+        const twap = params.BootstrappingPrice;
         await calculateDollarAPR(DAO, params, twap, dollarPrice, uniPrices, totalBonded, calcPrice);
     }
     else {
@@ -83,14 +82,14 @@ async function main() {
                 await calculateDollarAPR(DAO, params, twap, dollarPrice, uniPrices, calcPrice);
             }
             else {
-                _print(`DAO APR: Day 0% Week 0% Year 0%`)
+                _print(`DAO APY: Day 0% Week 0% Year 0%`)
                 _print(`LP APR: Day 0% Week 0% Year 0%`)
-            }        
+            }
         }
     }
     _print(`\nDAO Unbonds`)
     await printDaoUnbonds(App.provider, DAO, epoch + 1, params.DaoLockupPeriods, params.EpochPeriod);
     _print(`\LP Unbonds`)
     await printLPUnbonds(App.provider, LP, epoch + 1, params.PoolLockupPeriods, params.EpochPeriod);
-    hideLoading();  
+    hideLoading();
 }

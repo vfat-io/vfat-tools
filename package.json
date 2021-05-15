@@ -54,23 +54,23 @@
     "webpack-cli": "^3.3.11"
   },
   "dependencies": {
-    "ascii-table": "0.0.9",
+    "@walletconnect/web3-provider": "^1.4.1",
     "asciichart": "^1.5.24",
     "clear": "^0.1.0",
     "cli-color": "^2.0.0",
     "console-table-printer": "^2.7.3",
     "diff": "^4.0.2",
     "dompurify": "^2.0.8",
-    "ethcall": "^3.0.0",
+    "ethcall": "3.0.0",
     "ethers": "^5.0.8",
     "fuse.js": "^6.4.1",
     "jquery": "^3.5.1",
     "lodash": "^4.17.20",
     "lodash.debounce": "^4.0.8",
     "lodash.throttle": "^4.1.1",
-    "node-fetch": "^2.6.1",
     "numbro": "^2.3.2",
-    "picturefill": "^3.0.3"
+    "picturefill": "^3.0.3",
+    "web3modal": "^1.9.3"
   },
   "browserslist": [
     "last 1 version",
