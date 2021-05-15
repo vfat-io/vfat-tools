@@ -44,7 +44,8 @@ const main = async() => {
         ["PolyPunk     ",`<a href="polypunk"      >Various</a>`,"PPNK   ","https://polypunk.finance"],
         ["SteakHouse   ",`<a href="steakhouse"    >Various</a>`,"STEAK  ","https://steakhouse.finance"],
         ["Monke Farm   ",`<a href="monkefarm"     >Various</a>`,"MONKE  ","https://monkefarm.finance"],
-        ["Polylion     ",`<a href="polylion"      >Various</a>`,"LION   ","https://polylion.exchange"]
+        ["Polylion     ",`<a href="polylion"      >Various</a>`,"LION   ","https://polylion.exchange"],
+        ["PolyBull     ",`<a href="polybull"      >Various</a>`,"BULL   ","https://polybull.finance"]
       ]
   }
 
