@@ -11,7 +11,7 @@ const main = async() => {
       ["Pancake             ", `<a href="pancake"       >Various</a>`,"CAKE          ","https://pancakeswap.finance"],
       ["Apeswap             ", `<a href="apeswap"       >Various</a>`,"BANANA        ","https://apeswap.finance"],
       ["Autofarm            ", `<a href="autofarm"      >Various</a>`,"AUTOFARM      ","https://autofarm.network"],
-      ["Bake                ", `<a href="bake"          >Various</a>`,"BAKE          ","https://www.bakeryswap.org"],
+      ["Bake *              ", `<a href="bake"          >Various</a>`,"BAKE          ","https://www.bakeryswap.org"],
       ["Brew                ", `<a href="brew"          >Various</a>`,"BREW          ","https://cafeswap.finance"],
       ["Donut               ", `<a href="donut"         >Various</a>`,"DONUT         ","https://donutdefi.com"],
       ["Pumpkin             ", `<a href="pumpkin"       >Various</a>`,"PUMP          ","https://pumpkindefi.org"],
