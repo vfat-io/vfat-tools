@@ -254,10 +254,12 @@ const main = async() => {
       ["Space Defio         ", `<a href="space_defio"   >Various</a>`,"SPCO          ","https://www.space-defio.com"],
       ["Parthenon Eta       ", `<a href="parthenon_eta" >Various</a>`,"ETA           ","https://eta.parthenon.finance"],
       ["Nftfy               ", `<a href="nftfy"         >Various</a>`,"NFTFY         ","https://nftfy.org"],
-      ["Gambit              ", `<a href="gambit"        >Various</a>`,"xGMT,WBNB     ","https://gambit.financial/earn"]
+      ["Gambit              ", `<a href="gambit"        >Various</a>`,"xGMT,WBNB     ","https://gambit.financial/earn"],
+      ["Moonharvest         ", `<a href="moonharvest"   >Various</a>`,"HE3           ","https://moonharvest.net"],
+      ["Cobra               ", `<a href="cobra"         >Various</a>`,"BITE          ","https://www.cobrafinance.org"]
     ]
   }
-
+  
   let table = new AsciiTable().fromJSON(tableData);
   document.getElementById('log').innerHTML += table + '<br />';
   hideLoading();
