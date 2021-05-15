@@ -244,6 +244,7 @@ const main = async() => {
       ["Sloth               ", `<a href="sloth"         >Various</a>`,"SLOTH         ","https://slothfinance.com"],
       ["Apescape            ", `<a href="apescape"      >Various</a>`,"ROKT/BNB      ","https://apescape.eth.link"],
       ["Elixir              ", `<a href="elixir"        >Various</a>`,"ELXR          ","https://www.elixir-swap.io"],
+      ["Frenchie            ", `<a href="frenchie"      >Various</a>`,"FPP           ","https://frenchiedefi.com"],
       ["Sunflower           ", `<a href="sunflower"     >Various</a>`,"SUNFLOWER     ","https://sunflowerfarming.us"],
       ["Fishstix            ", `<a href="fishstix"      >Various</a>`,"FSTX          ","http://fishstix.finance"],
       ["Wasabix             ", `<a href="wasabix"       >Various</a>`,"WASABI        ","https://bsc.wasabix.finance"],
