@@ -42,7 +42,20 @@ async function getMatic20(App, token, address, stakingAddress) {
         tokens:[address]
       }
     }
-    const decimals = await token.decimals()
+    const decimals = await token.decimals();
+    if (address === "0x4c28f48448720e9000907BC2611F73022fdcE1fA") {
+      return {
+        address,
+        name : "Wrapped Matic",
+        symbol : "WMATIC",
+        totalSupply : await token.totalSupply(),
+        decimals : decimals,
+        staked:  await token.balanceOf(stakingAddress) / 10 ** decimals,
+        unstaked: await token.balanceOf(App.YOUR_ADDRESS)  / 10 ** decimals,
+        contract: token,
+        tokens : [address]
+      }
+    }
     return {
         address,
         name : await token.name(),
