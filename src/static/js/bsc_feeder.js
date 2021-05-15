@@ -132,7 +132,7 @@ const contract_stake = async function(abi, contractAddress, App, stakeTokenAddr)
     showLoading()
     allow
       .then(async function() {
-          CHEF_CONTRACT.enter(currentTokens, {gasLimit: 500000})
+          CHEF_CONTRACT.deposit(currentTokens, {gasLimit: 500000})
           .then(function(t) {
             App.provider.waitForTransaction(t.hash).then(function() {
               hideLoading()
@@ -283,15 +283,6 @@ function printFeederContractLinks(App, chefAbi, chefAddr, poolIndex, poolAddress
   _print_link(`Unstake ${userStaked.toFixed(fixedDecimals)} ${stakeTokenTicker}`, unstake)
   _print_link(`Claim ${pendingRewardTokens.toFixed(fixedDecimals)} ${rewardTokenTicker} ($${formatMoney(pendingRewardTokens*rewardTokenPrice)})`, claim)
   _print(`Staking or unstaking also claims rewards.`)
-  if  (chefAddr == "0x0De845955E2bF089012F682fE9bC81dD5f11B372") {
-    const emergencyWithdraw = async function() {
-      return chefContract_emergencyWithdraw(chefAbi, chefAddr, poolIndex, App)
-    }
-    _print('***')
-    _print_link(`EMERGENCY WITHDRAW ${userStaked.toFixed(fixedDecimals)} ${stakeTokenTicker}`, emergencyWithdraw)
-    _print('This will forfeit your rewards but retrieve your capital')
-    _print('***')
-  }
   _print("");
 }
 
