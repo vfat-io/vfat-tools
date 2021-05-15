@@ -242,7 +242,7 @@ const main = async() => {
       ["Warden              ", `<a href="warden"        >Various</a>`,"WAD           ","https://www.wardenswap.finance"],
       ["Sloth               ", `<a href="sloth"         >Various</a>`,"SLOTH         ","https://slothfinance.com"],
       ["Apescape            ", `<a href="apescape"      >Various</a>`,"ROKT/BNB      ","https://apescape.eth.link"],
-      ["Elixir              ", `<a href="elixir"        >Various</a>`,"ELXR          ","https://www.elixir-swap.io"]
+      ["Elixir              ", `<a href="elixir"        >Various</a>`,"ELXR          ","https://www.elixir-swap.io"],
       ["Sunflower           ", `<a href="sunflower"     >Various</a>`,"SUNFLOWER     ","https://sunflowerfarming.us"],
       ["Fishstix            ", `<a href="fishstix"      >Various</a>`,"FSTX          ","http://fishstix.finance"],
       ["Wasabix             ", `<a href="wasabix"       >Various</a>`,"WASABI        ","https://bsc.wasabix.finance"],
@@ -253,7 +253,7 @@ const main = async() => {
       ["Space Defio         ", `<a href="space_defio"   >Various</a>`,"SPCO          ","https://www.space-defio.com"],
       ["Parthenon Eta       ", `<a href="parthenon_eta" >Various</a>`,"ETA           ","https://eta.parthenon.finance"],
       ["Nftfy               ", `<a href="nftfy"         >Various</a>`,"NFTFY         ","https://nftfy.org"],
-      ["Gambit              ", `<a href="gambit"        >Various</a>`,"xGMT,WBNB     ","https://gambit.financial/earn"],,
+      ["Gambit              ", `<a href="gambit"        >Various</a>`,"xGMT,WBNB     ","https://gambit.financial/earn"],
       ["Frenchie            ", `<a href="frenchie"      >Various</a>`,"FPP           ","https://frenchiedefi.com"],
       ["Moonharvest         ", `<a href="moonharvest"   >Various</a>`,"HE3           ","https://moonharvest.net"],
       ["Cobra               ", `<a href="cobra"         >Various</a>`,"BITE          ","https://www.cobrafinance.org"],
