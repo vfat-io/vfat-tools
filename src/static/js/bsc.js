@@ -257,7 +257,8 @@ const main = async() => {
       ["Gambit              ", `<a href="gambit"        >Various</a>`,"xGMT,WBNB     ","https://gambit.financial/earn"],,
       ["Frenchie            ", `<a href="frenchie"      >Various</a>`,"FPP           ","https://frenchiedefi.com"],
       ["Moonharvest         ", `<a href="moonharvest"   >Various</a>`,"HE3           ","https://moonharvest.net"],
-      ["Cobra               ", `<a href="cobra"         >Various</a>`,"BITE          ","https://www.cobrafinance.org"]
+      ["Cobra               ", `<a href="cobra"         >Various</a>`,"BITE          ","https://www.cobrafinance.org"],
+      ["Eggplant            ", `<a href="eggplant"      >Various</a>`,"EGGP          ","https://eggplant.fi"]
     ]
   }
   
