@@ -22,7 +22,7 @@ async function main() {
     const prices = await getBscPrices();
 
     await loadBscChefContract(App, tokens, prices, PANTHER_CHEF, PANTHER_CHEF_ADDR, PANTHER_CHEF_ABI, rewardTokenTicker,
-        "panther", null, rewardsPerWeek, "pendingPanther");
+        "panther", null, rewardsPerWeek, "pendingPanther", [16]);
 
     hideLoading();
   }
