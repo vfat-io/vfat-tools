@@ -258,7 +258,8 @@ const main = async() => {
       ["Frenchie            ", `<a href="frenchie"      >Various</a>`,"FPP           ","https://frenchiedefi.com"],
       ["Moonharvest         ", `<a href="moonharvest"   >Various</a>`,"HE3           ","https://moonharvest.net"],
       ["Cobra               ", `<a href="cobra"         >Various</a>`,"BITE          ","https://www.cobrafinance.org"],
-      ["Eggplant            ", `<a href="eggplant"      >Various</a>`,"EGGP          ","https://eggplant.fi"]
+      ["Eggplant            ", `<a href="eggplant"      >Various</a>`,"EGGP          ","https://eggplant.fi"],
+      ["Mushrooms           ", `<a href="mushrooms"     >Various</a>`,"MM            ","https://mushrooms.finance"]
     ]
   }
   
