@@ -142,7 +142,6 @@ const main = async() => {
       ["Fulcrum             ", `<a href="fulcrum"       >Various</a>`,"BGOV          ","https://fulcrum.trade"],
       ["Diamond             ", `<a href="diamond"       >Various</a>`,"DND           ","https://app.diamondhand.fi"],
       ["Many                ", `<a href="many"          >Various</a>`,"MANY          ","https://manyswap.io"],
-      ["Dumpling            ", `<a href="dumpling"      >Various</a>`,"DUMP          ","https://dumplingdefi.finance"],
       ["Djinn               ", `<a href="djinn"         >Various</a>`,"DJINNS        ","http://djinn.gold"],
       ["Marshmallow         ", `<a href="marshmallow"   >Various</a>`,"MASH/TOFY     ","https://marshmallowdefi.com"],
       ["Stabilize           ", `<a href="stabilize"     >Various</a>`,"STBB          ","https://www.stabilize.finance/bsc"],
@@ -258,7 +257,8 @@ const main = async() => {
       ["Frenchie            ", `<a href="frenchie"      >Various</a>`,"FPP           ","https://frenchiedefi.com"],
       ["Moonharvest         ", `<a href="moonharvest"   >Various</a>`,"HE3           ","https://moonharvest.net"],
       ["Cobra               ", `<a href="cobra"         >Various</a>`,"BITE          ","https://www.cobrafinance.org"],
-      ["Eggplant            ", `<a href="eggplant"      >Various</a>`,"EGGP          ","https://eggplant.fi"]
+      ["Eggplant            ", `<a href="eggplant"      >Various</a>`,"EGGP          ","https://eggplant.fi"],
+      ["Dumpling            ", `<a href="dumpling"      >Various</a>`,"SDUMP         ","https://dumplingdefi.finance"]
     ]
   }
   
