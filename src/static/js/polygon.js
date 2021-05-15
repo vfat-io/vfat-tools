@@ -11,7 +11,7 @@ const main = async() => {
         ["Quickswap    ",`<a href="quick"         >Various</a>`,"QUICK  ","https://quickswap.exchange/#/quick"],
         ["Cometh       ",`<a href="cometh"        >Various</a>`,"MUST   ","https://swap.cometh.io/#/stake"],
         ["Dark         ",`<a href="dark"          >Various</a>`,"DB     ","https://www.dark.build"],
-        ["Smartdex     ",`<a href="smartdex"      >Various</a>`,"NIOX   ","https://swap.smartdex.app"],
+        ["Smartdex *   ",`<a href="smartdex"      >Various</a>`,"NIOX   ","https://swap.smartdex.app"],
         ["Elk *        ",`<a href="elk"           >Various</a>`,"ELK    ","https://app.elk.finance"],
         ["Polywhale    ",`<a href="polywhale"     >Various</a>`,"KRILL  ","https://polywhale.finance"],
         ["Aave         ",`<a href="aave"          >Various</a>`,"MATIC  ","https://aave.com"],
@@ -43,7 +43,9 @@ const main = async() => {
         ["Lumberjack   ",`<a href="lumberjack"    >Various</a>`,"ACORN  ","https://lumberjack.finance"],
         ["PolyPunk     ",`<a href="polypunk"      >Various</a>`,"PPNK   ","https://polypunk.finance"],
         ["SteakHouse   ",`<a href="steakhouse"    >Various</a>`,"STEAK  ","https://steakhouse.finance"],
-        ["Monke Farm   ",`<a href="monkefarm"     >Various</a>`,"MONKE  ","https://monkefarm.finance"]
+        ["Monke Farm   ",`<a href="monkefarm"     >Various</a>`,"MONKE  ","https://monkefarm.finance"],
+        ["Polylion     ",`<a href="polylion"      >Various</a>`,"LION   ","https://polylion.exchange"],
+        ["PolyBull     ",`<a href="polybull"      >Various</a>`,"BULL   ","https://polybull.finance"]
       ]
   }
 

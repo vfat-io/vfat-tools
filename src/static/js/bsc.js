@@ -142,7 +142,6 @@ const main = async() => {
       ["Fulcrum             ", `<a href="fulcrum"       >Various</a>`,"BGOV          ","https://fulcrum.trade"],
       ["Diamond             ", `<a href="diamond"       >Various</a>`,"DND           ","https://app.diamondhand.fi"],
       ["Many                ", `<a href="many"          >Various</a>`,"MANY          ","https://manyswap.io"],
-      ["Dumpling            ", `<a href="dumpling"      >Various</a>`,"DUMP          ","https://dumplingdefi.finance"],
       ["Djinn               ", `<a href="djinn"         >Various</a>`,"DJINNS        ","http://djinn.gold"],
       ["Marshmallow         ", `<a href="marshmallow"   >Various</a>`,"MASH/TOFY     ","https://marshmallowdefi.com"],
       ["Stabilize           ", `<a href="stabilize"     >Various</a>`,"STBB          ","https://www.stabilize.finance/bsc"],
@@ -212,7 +211,7 @@ const main = async() => {
       ["Feeder              ", `<a href="feeder"        >Various</a>`,"FEED          ","https://app.feeder.finance"],
       ["Yolodraw            ", `<a href="yolodraw"      >Various</a>`,"YoloDraw      ","https://yolo-token.com"],
       ["Jaguar              ", `<a href="jaguar"        >Various</a>`,"JAGUAR        ","https://jaguarswap.com"],
-      ["Zombie              ", `<a href="zombie"        >Various</a>`,"ZOMBIE        ","https://zombie-farm.com"],
+      ["Zombie *            ", `<a href="zombie"        >Various</a>`,"ZOMBIE        ","https://zombie-farm.com"],
       ["Degen               ", `<a href="degen"         >Various</a>`,"DGNZ          ","https://degentoken.finance"],
       ["DegenCompound       ", `<a href="degencomp"     >Various</a>`,"aDGNZ         ","https://degentoken.finance"],
       ["Parthenon Epsilon   ", `<a href="parthenon_epsilon">Various</a>`,"EPSILON       ","https://epsilon.parthenon.finance"],
@@ -243,7 +242,7 @@ const main = async() => {
       ["Warden              ", `<a href="warden"        >Various</a>`,"WAD           ","https://www.wardenswap.finance"],
       ["Sloth               ", `<a href="sloth"         >Various</a>`,"SLOTH         ","https://slothfinance.com"],
       ["Apescape            ", `<a href="apescape"      >Various</a>`,"ROKT/BNB      ","https://apescape.eth.link"],
-      ["Elixir              ", `<a href="elixir"        >Various</a>`,"ELXR          ","https://www.elixir-swap.io"],
+      ["Elixir              ", `<a href="elixir"        >Various</a>`,"ELXR          ","https://www.elixir-swap.io"]
       ["Sunflower           ", `<a href="sunflower"     >Various</a>`,"SUNFLOWER     ","https://sunflowerfarming.us"],
       ["Fishstix            ", `<a href="fishstix"      >Various</a>`,"FSTX          ","http://fishstix.finance"],
       ["Wasabix             ", `<a href="wasabix"       >Various</a>`,"WASABI        ","https://bsc.wasabix.finance"],
@@ -254,10 +253,16 @@ const main = async() => {
       ["Space Defio         ", `<a href="space_defio"   >Various</a>`,"SPCO          ","https://www.space-defio.com"],
       ["Parthenon Eta       ", `<a href="parthenon_eta" >Various</a>`,"ETA           ","https://eta.parthenon.finance"],
       ["Nftfy               ", `<a href="nftfy"         >Various</a>`,"NFTFY         ","https://nftfy.org"],
-      ["Gambit              ", `<a href="gambit"        >Various</a>`,"xGMT,WBNB     ","https://gambit.financial/earn"]
+      ["Gambit              ", `<a href="gambit"        >Various</a>`,"xGMT,WBNB     ","https://gambit.financial/earn"],,
+      ["Frenchie            ", `<a href="frenchie"      >Various</a>`,"FPP           ","https://frenchiedefi.com"],
+      ["Moonharvest         ", `<a href="moonharvest"   >Various</a>`,"HE3           ","https://moonharvest.net"],
+      ["Cobra               ", `<a href="cobra"         >Various</a>`,"BITE          ","https://www.cobrafinance.org"],
+      ["Eggplant            ", `<a href="eggplant"      >Various</a>`,"EGGP          ","https://eggplant.fi"],
+      ["Dumpling            ", `<a href="dumpling"      >Various</a>`,"SDUMP         ","https://dumplingdefi.finance"],
+      ["Mushrooms           ", `<a href="mushrooms"     >Various</a>`,"MM            ","https://mushrooms.finance"]
     ]
   }
-
+  
   let table = new AsciiTable().fromJSON(tableData);
   document.getElementById('log').innerHTML += table + '<br />';
   hideLoading();
