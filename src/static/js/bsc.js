@@ -212,7 +212,7 @@ const main = async() => {
       ["Feeder              ", `<a href="feeder"        >Various</a>`,"FEED          ","https://app.feeder.finance"],
       ["Yolodraw            ", `<a href="yolodraw"      >Various</a>`,"YoloDraw      ","https://yolo-token.com"],
       ["Jaguar              ", `<a href="jaguar"        >Various</a>`,"JAGUAR        ","https://jaguarswap.com"],
-      ["Zombie              ", `<a href="zombie"        >Various</a>`,"ZOMBIE        ","https://zombie-farm.com"],
+      ["Zombie *            ", `<a href="zombie"        >Various</a>`,"ZOMBIE        ","https://zombie-farm.com"],
       ["Degen               ", `<a href="degen"         >Various</a>`,"DGNZ          ","https://degentoken.finance"],
       ["DegenCompound       ", `<a href="degencomp"     >Various</a>`,"aDGNZ         ","https://degentoken.finance"],
       ["Parthenon Epsilon   ", `<a href="parthenon_epsilon">Various</a>`,"EPSILON       ","https://epsilon.parthenon.finance"],
