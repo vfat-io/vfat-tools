@@ -1521,12 +1521,104 @@ function getUniPrices(tokens, prices, pool)
           [ `https://app.uniswap.org/#/add/${t0address}/${t1address}`,
             `https://app.uniswap.org/#/remove/${t0address}/${t1address}`,
             `https://app.uniswap.org/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}` ]
+
           const helperHrefs = helperUrls.length == 0 ? "" :
             ` <a href='${helperUrls[0]}' target='_blank'>[+]</a> <a href='${helperUrls[1]}' target='_blank'>[-]</a> <a href='${helperUrls[2]}' target='_blank'>[<=>]</a>`
           _print(`<a href='${poolUrl}' target='_blank'>${stakeTokenTicker}</a>${helperHrefs} Price: $${formatMoney(price)} TVL: $${formatMoney(tvl)}`);
           _print(`${t0.symbol} Price: $${displayPrice(p0)}`);
           _print(`${t1.symbol} Price: $${displayPrice(p1)}`);
           _print(`Staked: ${pool.staked.toFixed(decimals ?? 4)} ${pool.symbol} ($${formatMoney(staked_tvl)})`);
+        }
+      },
+      pair_links(chain="eth", decimals, customURLs) {
+        const t0address = t0.symbol == "ETH" ? "ETH" : t0.address;
+        const t1address = t1.symbol == "ETH" ? "ETH" : t1.address;
+        if (customURLs) {
+          const poolUrl = `${customURLs.info}/${pool.address}`
+          const helperUrls = [
+            `${customURLs.add}/${t0address}/${t1address}`,
+            `${customURLs.remove}/${t0address}/${t1address}`,
+            `${customURLs.swap}?inputCurrency=${t0address}&outputCurrency=${t1address}`
+          ]
+          return {
+            pair_link: `<a href='${poolUrl}' target='_blank'>${stakeTokenTicker}</a>`,
+            add_liquidity_link: `<a href='${helperUrls[0]}' target='_blank'>[+]</a>`,
+            remove_liquidity_link: `<a href='${helperUrls[1]}' target='_blank'>[-]</a>`,
+            swap_link: `<a href='${helperUrls[2]}' target='_blank'>[<=>]</a>`,
+            token0: t0.symbol,
+            price0: `$${displayPrice(p0)}`,
+            token1: t1.symbol,
+            price1: `$${displayPrice(p1)}`,
+            total_staked: `$${formatMoney(staked_tvl)}`
+          }
+        }
+        else {
+          const poolUrl = pool.is1inch ? "https://1inch.exchange/#/dao/pools" :
+            pool.symbol.includes("LSLP") ? `https://info.linkswap.app/pair/${pool.address}` :
+              pool.symbol.includes("SLP") ?  `http://analytics.sushi.com/pairs/${pool.address}` :
+                pool.symbol.includes("Cake") ?  `https://pancakeswap.info/pair/${pool.address}` :
+                  pool.symbol.includes("PGL") ?  `https://info.pangolin.exchange/#/pair/${pool.address}` :
+                    pool.symbol.includes("CS-LP") ?  `https://app.coinswap.space/#/` :
+                      pool.name.includes("Value LP") ?  `https://info.vswap.fi/pool/${pool.address}` :
+                        chain == "matic" ? `https://info.quickswap.exchange/pair/${pool.address}` :
+                          `http://uniswap.info/pair/${pool.address}`;
+          const helperUrls = pool.is1inch ? [] :
+            pool.symbol.includes("LSLP") ? [
+                `https://linkswap.app/#/add/${t0address}/${t1address}`,
+                `https://linkswap.app/#/remove/${t0address}/${t1address}`,
+                `https://linkswap.app/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+              ] :
+              pool.symbol.includes("Cake") ? [
+                  `https://exchange.pancakeswap.finance/#/add/${t0address}/${t1address}`,
+                  `https://exchange.pancakeswap.finance/#/remove/${t0address}/${t1address}`,
+                  `https://exchange.pancakeswap.finance/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+                ] :
+                chain=='matic'? [
+                    `https://quickswap.exchange/#/add/${t0address}/${t1address}`,
+                    `https://quickswap.exchange/#/remove/${t0address}/${t1address}`,
+                    `https://quickswap.exchange/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+                  ] :
+                  pool.name.includes("Value LP") ? [
+                      `https://bsc.valuedefi.io/#/add/${t0address}/${t1address}`,
+                      `https://bsc.valuedefi.io/#/remove/${t0address}/${t1address}`,
+                      `https://bsc.valuedefi.io/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+                    ] :
+                    pool.symbol.includes("PGL") ? [
+                        `https://app.pangolin.exchange/#/add/${t0address}/${t1address}`,
+                        `https://app.pangolin.exchange/#/remove/${t0address}/${t1address}`,
+                        `https://app.pangolin.exchange/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+                      ] :
+                      pool.symbol.includes("CS-LP") ? [
+                          `https://app.coinswap.space/#/add/${t0address}/${t1address}`,
+                          `https://app.coinswap.space/#/remove/${t0address}/${t1address}`,
+                          `https://app.coinswap.space/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+                        ] :
+                        pool.symbol.includes("SLP") ? [
+                            `https://app.sushi.com/add/${t0address}/${t1address}`,
+                            `https://app.sushi.com/remove/${t0address}/${t1address}`,
+                            `https://app.sushi.com/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+                          ] :
+                          t0.symbol.includes("COMFI") ? [
+                              `https://app.uniswap.org/#/add/v2/${t0address}/${t1address}`,
+                              `https://app.uniswap.org/#/remove/v2/${t0address}/${t1address}`,
+                              `https://app.uniswap.org/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+                            ] :
+                            [ `https://app.uniswap.org/#/add/${t0address}/${t1address}`,
+                              `https://app.uniswap.org/#/remove/${t0address}/${t1address}`,
+                              `https://app.uniswap.org/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}` ]
+
+          return {
+            pair_link: `<a href='${poolUrl}' target='_blank'>${stakeTokenTicker}</a>`,
+            add_liquidity_link: `<a href='${helperUrls[0]}' target='_blank'>[+]</a>`,
+            remove_liquidity_link: `<a href='${helperUrls[1]}' target='_blank'>[-]</a>`,
+            swap_link: `<a href='${helperUrls[2]}' target='_blank'>[<=>]</a>`,
+            token0: t0.symbol,
+            price0: `$${displayPrice(p0)}`,
+            token1: t1.symbol,
+            price1: `$${displayPrice(p1)}`,
+            total_staked: `$${formatMoney(staked_tvl)}`
+          }
+
         }
       },
       print_contained_price(userStaked) {
@@ -1586,6 +1678,27 @@ function getValuePrices(tokens, prices, pool)
         _print(`${t0.symbol} Price: $${formatMoney(p0)}`)
         _print(`${t1.symbol} Price: $${formatMoney(p1)}`)
         _print(`Staked: ${pool.staked.toFixed(4)} ${pool.symbol} ($${formatMoney(staked_tvl)})`);
+      },
+      pair_links() {
+        const poolUrl = `https://info.vswap.fi/pool/${pool.address}`
+        const t0address = t0.address;
+        const t1address =  t1.address;
+        const helperUrls = [
+          `https://bsc.valuedefi.io/#/add/${pool.address}`,
+          `https://bsc.valuedefi.io/#/remove/${pool.address}`,
+          `https://bsc.valuedefi.io/#/vswap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+        ]
+        return {
+          pair_link: `<a href='${poolUrl}' target='_blank'>${stakeTokenTicker}</a>`,
+          add_liquidity_link: `<a href='${helperUrls[0]}' target='_blank'>[+]</a>`,
+          remove_liquidity_link: `<a href='${helperUrls[1]}' target='_blank'>[-]</a>`,
+          swap_link: `<a href='${helperUrls[2]}' target='_blank'>[<=>]</a>`,
+          token0: t0.symbol,
+          price0: `$${displayPrice(p0)}`,
+          token1: t1.symbol,
+          price1: `$${displayPrice(p1)}`,
+          total_staked: `$${formatMoney(staked_tvl)}`
+        }
       },
       print_contained_price(userStaked) {
         var userPct = userStaked / pool.totalSupply;
@@ -1736,6 +1849,17 @@ function getErc20Prices(prices, pool, chain="eth") {
     print_price() {
       _print(`${name} Price: $${displayPrice(price)} Market Cap: $${formatMoney(tvl)}`);
       _print(`Staked: ${pool.staked.toFixed(4)} ${pool.symbol} ($${formatMoney(staked_tvl)})`);
+    },
+    pair_links() {
+      return {
+        pair_link: name,
+        add_liquidity_link: "",
+        remove_liquidity_link: "",
+        swap_link: "",
+        price0: "",
+        price1: "",
+        total_staked: `$${formatMoney(staked_tvl)}`
+      }
     },
     print_contained_price() {
     }
