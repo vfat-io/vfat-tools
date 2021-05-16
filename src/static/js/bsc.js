@@ -259,7 +259,8 @@ const main = async() => {
       ["Cobra               ", `<a href="cobra"         >Various</a>`,"BITE          ","https://www.cobrafinance.org"],
       ["Eggplant            ", `<a href="eggplant"      >Various</a>`,"EGGP          ","https://eggplant.fi"],
       ["Dumpling            ", `<a href="dumpling"      >Various</a>`,"SDUMP         ","https://dumplingdefi.finance"],
-      ["Mushrooms           ", `<a href="mushrooms"     >Various</a>`,"MM            ","https://mushrooms.finance"]
+      ["Mushrooms           ", `<a href="mushrooms"     >Various</a>`,"MM            ","https://mushrooms.finance"],
+      ["Punch               ", `<a href="punch"         >Various</a>`,"PUNCH         ","https://www.punchdefi.com"]
     ]
   }
   
