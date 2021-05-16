@@ -261,7 +261,8 @@ const main = async() => {
       ["Dumpling            ", `<a href="dumpling"      >Various</a>`,"SDUMP         ","https://dumplingdefi.finance"],
       ["Mushrooms           ", `<a href="mushrooms"     >Various</a>`,"MM            ","https://mushrooms.finance"],
       ["Punch               ", `<a href="punch"         >Various</a>`,"PUNCH         ","https://www.punchdefi.com"],
-      ["Cosmic              ", `<a href="cosmic"        >Various</a>`,"COSMIC        ","https://app.cosmicswap.finance"]
+      ["Cosmic              ", `<a href="cosmic"        >Various</a>`,"COSMIC        ","https://app.cosmicswap.finance"],
+      ["Champagne           ", `<a href="champagne"     >Various</a>`,"CHPG          ","https://champagne.farm"]
     ]
   }
   
