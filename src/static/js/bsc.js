@@ -180,7 +180,6 @@ const main = async() => {
       ["Cyclone             ", `<a href="cyclone"       >Various</a>`,"CYC           ","https://cyclone.xyz/bsc"],
       ["Morse               ", `<a href="morse"         >Various</a>`,"MORSE         ","https://mors.finance"],
       ["Jazz                ", `<a href="jazz"          >Various</a>`,"JAZZ          ","https://jazzdefi.com"],
-      ["Satis               ", `<a href="satis"         >Various</a>`,"SAT           ","https://satis.finance"],
       ["Defi Oasis          ", `<a href="oasis"         >Various</a>`,"OASIS         ","https://defioasis.finance"],
       ["APWars              ", `<a href="apwars"        >Various</a>`,"WGOLD         ","https://farms.apwars.farm"],
       ["Evodefi             ", `<a href="evo"           >Various</a>`,"GEN           ","https://evodefi.com"],
@@ -262,7 +261,8 @@ const main = async() => {
       ["Mushrooms           ", `<a href="mushrooms"     >Various</a>`,"MM            ","https://mushrooms.finance"],
       ["Punch               ", `<a href="punch"         >Various</a>`,"PUNCH         ","https://www.punchdefi.com"],
       ["Cosmic              ", `<a href="cosmic"        >Various</a>`,"COSMIC        ","https://app.cosmicswap.finance"],
-      ["Champagne           ", `<a href="champagne"     >Various</a>`,"CHPG          ","https://champagne.farm"]
+      ["Champagne           ", `<a href="champagne"     >Various</a>`,"CHPG          ","https://champagne.farm"],
+      ["Satis               ", `<a href="satis"         >Various</a>`,"xSAT          ","https://satis.finance"]
     ]
   }
   
