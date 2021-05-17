@@ -19,7 +19,6 @@ const main = async() => {
         ["Hawkdex      ",`<a href="hawk"          >Various</a>`,"HAWK   ","https://hawkdex.com"],
         ["Polycat      ",`<a href="polycat"       >Various</a>`,"FISH   ","https://polycat.finance"],
         ["BoughtThe.top",`<a href="boughtthetop"  >Various</a>`,"BTT    ","https://farm.BoughtThe.top"],
-        ["PolyWolf     ",`<a href="polywolf"      >Various</a>`,"WOLF   ","https://polywolf.finance"],
         ["PolyStarter  ",`<a href="polystarter"   >Various</a>`,"STARTER","https://www.polystarter.fi"],
         ["Polyvolve    ",`<a href="polyvolve"     >Various</a>`,"SPEAR  ","https://polyvolve.finance"],
         ["Polygaj      ",`<a href="polygaj"       >Various</a>`,"GAJ    ","https://polygaj.finance"],
@@ -47,7 +46,8 @@ const main = async() => {
         ["Polylion     ",`<a href="polylion"      >Various</a>`,"LION   ","https://polylion.exchange"],
         ["PolyBull     ",`<a href="polybull"      >Various</a>`,"BULL   ","https://polybull.finance"],
         ["Orcinus      ",`<a href="orcinus"       >Various</a>`,"ORCA   ","https://www.orcinuslabs.ca"],
-        ["Polyape Finance",`<a href="polyape_finance">Various</a>`,"APE ","https://www.polyapefinance.com"]
+        ["Polyape Finance",`<a href="polyape_finance">Various</a>`,"APE ","https://www.polyapefinance.com"],
+        ["PolyWolf     ",`<a href="polywolf"      >Various</a>`,"WOLF   ","https://polywolf.finance"],
       ]
   }
 
