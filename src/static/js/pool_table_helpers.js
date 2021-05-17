@@ -87,6 +87,7 @@ async function printChefContractPoolsTable(title, App, chef, chefAddress, chefAb
               "rows": []
             }
             table.addRow(["Pair", pool.pair_link])
+            table.addRow(["TVL", pool.tvl])
 
             if (pool.add_liquidity_link) {
               table.addRow(["Add Liquidity", pool.add_liquidity_link])
@@ -157,6 +158,7 @@ function buildChefPool(App, chefAbi, chefAddr, prices, tokens, poolInfo, poolInd
     token1: priceLinks.token1,
     price1: priceLinks.price1,
     total_staked: priceLinks.total_staked,
+    tvl: priceLinks.tvl,
     weekly_rewards: apr.weekly_rewards,
     dpr: apr.dpr,
     wpr: apr.wpr,

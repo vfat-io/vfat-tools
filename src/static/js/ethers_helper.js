@@ -1549,7 +1549,8 @@ function getUniPrices(tokens, prices, pool)
             price0: `$${displayPrice(p0)}`,
             token1: t1.symbol,
             price1: `$${displayPrice(p1)}`,
-            total_staked: `$${formatMoney(staked_tvl)}`
+            total_staked: `${pool.staked.toFixed(4)} ($${formatMoney(staked_tvl)})`,
+            tvl: `$${formatMoney(tvl)}`
           }
         }
         else {
@@ -1616,7 +1617,8 @@ function getUniPrices(tokens, prices, pool)
             price0: `$${displayPrice(p0)}`,
             token1: t1.symbol,
             price1: `$${displayPrice(p1)}`,
-            total_staked: `$${formatMoney(staked_tvl)}`
+            total_staked: `${pool.staked.toFixed(4)} ($${formatMoney(staked_tvl)})`,
+            tvl: `$${formatMoney(tvl)}`
           }
 
         }
@@ -1697,7 +1699,8 @@ function getValuePrices(tokens, prices, pool)
           price0: `$${displayPrice(p0)}`,
           token1: t1.symbol,
           price1: `$${displayPrice(p1)}`,
-          total_staked: `$${formatMoney(staked_tvl)}`
+          total_staked: `${pool.staked.toFixed(4)} ($${formatMoney(staked_tvl)})`,
+          tvl: `$${formatMoney(tvl)}`,
         }
       },
       print_contained_price(userStaked) {
@@ -1858,7 +1861,8 @@ function getErc20Prices(prices, pool, chain="eth") {
         swap_link: "",
         price0: "",
         price1: "",
-        total_staked: `$${formatMoney(staked_tvl)}`
+        total_staked: `${pool.staked.toFixed(4)} ($${formatMoney(staked_tvl)})`,
+        tvl: `$${formatMoney(tvl)}`
       }
     },
     print_contained_price() {
