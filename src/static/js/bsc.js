@@ -11,7 +11,7 @@ const main = async() => {
       ["Pancake             ", `<a href="pancake"       >Various</a>`,"CAKE          ","https://pancakeswap.finance"],
       ["Apeswap             ", `<a href="apeswap"       >Various</a>`,"BANANA        ","https://apeswap.finance"],
       ["Autofarm            ", `<a href="autofarm"      >Various</a>`,"AUTOFARM      ","https://autofarm.network"],
-      ["Bake                ", `<a href="bake"          >Various</a>`,"BAKE          ","https://www.bakeryswap.org"],
+      ["Bake *              ", `<a href="bake"          >Various</a>`,"BAKE          ","https://www.bakeryswap.org"],
       ["Brew                ", `<a href="brew"          >Various</a>`,"BREW          ","https://cafeswap.finance"],
       ["Donut               ", `<a href="donut"         >Various</a>`,"DONUT         ","https://donutdefi.com"],
       ["Pumpkin             ", `<a href="pumpkin"       >Various</a>`,"PUMP          ","https://pumpkindefi.org"],
@@ -264,6 +264,7 @@ const main = async() => {
       ["Satis               ", `<a href="satis"         >Various</a>`,"xSAT          ","https://satis.finance"],
       ["Bondappetit         ", `<a href="bondappetit"   >Various</a>`,"bBAG          ","https://bondappetit.io"],
       ["Project69           ", `<a href="project69"     >Various</a>`, "P69,BLT      ", "https://farm.project69.network"],
+      ["Grizzly             ", `<a href="grizzly"       >Various</a>`,"GRZ           ","https://www.grizzlyswap.com"],
       ["Friction            ", `<a href="friction"      >Various</a>`,"xTAO          ","https://friction.finance"]
     ]
   }
