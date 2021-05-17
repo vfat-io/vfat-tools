@@ -81,7 +81,6 @@ const main = async() => {
       ["Hyrule              ", `<a href="hyrule"        >Various</a>`,"RUPEE         ","https://app.hyruleswap.com"],
       ["Jiggly              ", `<a href="jiggly"        >Various</a>`,"JIGG          ","https://www.jiggly.finance"],
       ["Meerkat             ", `<a href="meerkat"       >Various</a>`,"XKAT          ","https://xkat.vercel.app"],
-      ["Friction            ", `<a href="friction"      >Various</a>`,"TAO           ","https://friction.finance"],
       ["Complus             ", `<a href="complus"       >Various</a>`,"COM           ","https://bsc.complus.exchange"],
       ["Jurassicfarm        ", `<a href="jurassicfarm"  >Various</a>`,"DINO          ","https://www.jurassicfarm.app"],
       ["Swamp               ", `<a href="swamp"         >Various</a>`,"SWAMP         ","https://swamp.finance"],
@@ -264,8 +263,9 @@ const main = async() => {
       ["Champagne           ", `<a href="champagne"     >Various</a>`,"CHPG          ","https://champagne.farm"],
       ["Satis               ", `<a href="satis"         >Various</a>`,"xSAT          ","https://satis.finance"],
       ["Bondappetit         ", `<a href="bondappetit"   >Various</a>`,"bBAG          ","https://bondappetit.io"],
-      ["Project69           ", `<a href="project69"     >Various</a>`,"P69,BLT       ","https://farm.project69.network"],
-      ["Grizzly             ", `<a href="grizzly"       >Various</a>`,"GRZ           ","https://www.grizzlyswap.com"]
+      ["Project69           ", `<a href="project69"     >Various</a>`, "P69,BLT      ", "https://farm.project69.network"],
+      ["Grizzly             ", `<a href="grizzly"       >Various</a>`,"GRZ           ","https://www.grizzlyswap.com"],
+      ["Friction            ", `<a href="friction"      >Various</a>`,"xTAO          ","https://friction.finance"]
     ]
   }
   
