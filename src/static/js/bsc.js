@@ -264,7 +264,8 @@ const main = async() => {
       ["Champagne           ", `<a href="champagne"     >Various</a>`,"CHPG          ","https://champagne.farm"],
       ["Satis               ", `<a href="satis"         >Various</a>`,"xSAT          ","https://satis.finance"],
       ["Bondappetit         ", `<a href="bondappetit"   >Various</a>`,"bBAG          ","https://bondappetit.io"],
-      ["Project69               ", `<a href="project69"         >Various</a>`, "P69,BLT         ", "https://farm.project69.network"]
+      ["Project69           ", `<a href="project69"     >Various</a>`,"P69,BLT       ","https://farm.project69.network"],
+      ["Grizzly             ", `<a href="grizzly"       >Various</a>`,"GRZ           ","https://www.grizzlyswap.com"]
     ]
   }
   
