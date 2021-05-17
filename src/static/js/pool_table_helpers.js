@@ -10,6 +10,7 @@ async function printChefContractPoolsTable(title, App, chef, chefAddress, chefAb
       "#",
       "Pair",
       "Total Staked",
+      "Total $ Staked",
       "Reward",
       "APR",
       "My Stake",
@@ -98,7 +99,7 @@ async function printChefContractPoolsTable(title, App, chef, chefAddress, chefAb
             }
 
             table.addRow([`${pool.reward_token} Weekly rewards`, pool.weekly_rewards])
-            table.addRow(["Total staked", pool.total_staked])
+            table.addRow(["Total staked", `${pool.total_staked} (${pool.total_staked_dollars})`])
             table.addRow(["My stake", pool.user_stake])
             table.addRow(["DPR", pool.dpr])
             table.addRow(["WPR", pool.wpr])
@@ -112,6 +113,7 @@ async function printChefContractPoolsTable(title, App, chef, chefAddress, chefAb
           }),
           _truncate_link(pool.pair_link.replace(/\u0000/g,""), 20),
           pool.total_staked,
+          pool.total_staked_dollars,
           pool.reward_token,
           pool.apr,
           pool.user_stake,
@@ -122,6 +124,12 @@ async function printChefContractPoolsTable(title, App, chef, chefAddress, chefAb
   }
 
   let table = new AsciiTable().fromJSON(tableData);
+  table
+    .setAlign(0, AsciiTable.RIGHT)
+    .setAlign(2, AsciiTable.RIGHT)
+    .setAlign(3, AsciiTable.RIGHT)
+    .setAlign(5, AsciiTable.RIGHT)
+
   document.getElementById('log').innerHTML += table + '<br />';
 
 }
@@ -158,6 +166,7 @@ function buildChefPool(App, chefAbi, chefAddr, prices, tokens, poolInfo, poolInd
     token1: priceLinks.token1,
     price1: priceLinks.price1,
     total_staked: priceLinks.total_staked,
+    total_staked_dollars: priceLinks.total_staked_dollars,
     tvl: priceLinks.tvl,
     weekly_rewards: apr.weekly_rewards,
     dpr: apr.dpr,
