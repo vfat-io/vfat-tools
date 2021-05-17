@@ -141,9 +141,15 @@ AsciiTable.alignRight = function(str, len, pad) {
   if (str === undefined || str === null) str = ''
   if (typeof pad === 'undefined') pad = ' '
   if (typeof str !== 'string') str = str.toString()
-  var alen = len + 1 - str.length
+
+  let strLen = str.length
+  if (str.includes("href")) {
+    strLen = str.match(/<a href.*?>(.*)<\/a>/i)[1].length
+  }
+
+  var alen = len + 1 - strLen
   if (alen <= 0) return str
-  return Array(len + 1 - str.length).join(pad) + str
+  return Array(len + 1 - strLen).join(pad) + str
 }
 
 /**
