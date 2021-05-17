@@ -94,7 +94,7 @@ AsciiTable.alignLeft = function(str, len, pad) {
 
   var strLen = str.length
   if (str.includes("href")) {
-    strLen = str.match(/.*>(.*)<\/a>/i)[1].length
+    strLen = str.match(/<a href.*?>(.*)<\/a>/i)[1].length
   }
 
   var alen = len + 1 - strLen
@@ -166,7 +166,7 @@ AsciiTable.alignAuto = function(str, len, pad) {
 
   var strLen = str.length
   if (str.includes("href")) {
-    strLen = str.match(/.*>(.*)<\/a>/i)[1].length
+    strLen = str.match(/<a href.*?>(.*)<\/a>/i)[1].length
   }
 
   if (strLen < len) {
@@ -527,6 +527,7 @@ AsciiTable.prototype.toString = function() {
       try {
         if (cell.includes("href")) {  // #eyo fix for href cell len
           cell = row[k].toString().match(/.*?>(.*)<\/a>/i)[1]
+
         } // else {cell = row[k]}
       } catch(err) { cell = row[k] }
       max[k] = Math.max(max[k], cell ? cell.toString().length : 0)

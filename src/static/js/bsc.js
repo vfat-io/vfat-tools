@@ -180,7 +180,6 @@ const main = async() => {
       ["Cyclone             ", `<a href="cyclone"       >Various</a>`,"CYC           ","https://cyclone.xyz/bsc"],
       ["Morse               ", `<a href="morse"         >Various</a>`,"MORSE         ","https://mors.finance"],
       ["Jazz                ", `<a href="jazz"          >Various</a>`,"JAZZ          ","https://jazzdefi.com"],
-      ["Satis               ", `<a href="satis"         >Various</a>`,"SAT           ","https://satis.finance"],
       ["Defi Oasis          ", `<a href="oasis"         >Various</a>`,"OASIS         ","https://defioasis.finance"],
       ["APWars              ", `<a href="apwars"        >Various</a>`,"WGOLD         ","https://farms.apwars.farm"],
       ["Evodefi             ", `<a href="evo"           >Various</a>`,"GEN           ","https://evodefi.com"],
@@ -242,7 +241,7 @@ const main = async() => {
       ["Warden              ", `<a href="warden"        >Various</a>`,"WAD           ","https://www.wardenswap.finance"],
       ["Sloth               ", `<a href="sloth"         >Various</a>`,"SLOTH         ","https://slothfinance.com"],
       ["Apescape            ", `<a href="apescape"      >Various</a>`,"ROKT/BNB      ","https://apescape.eth.link"],
-      ["Elixir              ", `<a href="elixir"        >Various</a>`,"ELXR          ","https://www.elixir-swap.io"]
+      ["Elixir              ", `<a href="elixir"        >Various</a>`,"ELXR          ","https://www.elixir-swap.io"],
       ["Sunflower           ", `<a href="sunflower"     >Various</a>`,"SUNFLOWER     ","https://sunflowerfarming.us"],
       ["Fishstix            ", `<a href="fishstix"      >Various</a>`,"FSTX          ","http://fishstix.finance"],
       ["Wasabix             ", `<a href="wasabix"       >Various</a>`,"WASABI        ","https://bsc.wasabix.finance"],
@@ -253,13 +252,19 @@ const main = async() => {
       ["Space Defio         ", `<a href="space_defio"   >Various</a>`,"SPCO          ","https://www.space-defio.com"],
       ["Parthenon Eta       ", `<a href="parthenon_eta" >Various</a>`,"ETA           ","https://eta.parthenon.finance"],
       ["Nftfy               ", `<a href="nftfy"         >Various</a>`,"NFTFY         ","https://nftfy.org"],
-      ["Gambit              ", `<a href="gambit"        >Various</a>`,"xGMT,WBNB     ","https://gambit.financial/earn"],,
+      ["Gambit              ", `<a href="gambit"        >Various</a>`,"xGMT,WBNB     ","https://gambit.financial/earn"],
       ["Frenchie            ", `<a href="frenchie"      >Various</a>`,"FPP           ","https://frenchiedefi.com"],
       ["Moonharvest         ", `<a href="moonharvest"   >Various</a>`,"HE3           ","https://moonharvest.net"],
       ["Cobra               ", `<a href="cobra"         >Various</a>`,"BITE          ","https://www.cobrafinance.org"],
       ["Eggplant            ", `<a href="eggplant"      >Various</a>`,"EGGP          ","https://eggplant.fi"],
       ["Dumpling            ", `<a href="dumpling"      >Various</a>`,"SDUMP         ","https://dumplingdefi.finance"],
-      ["Mushrooms           ", `<a href="mushrooms"     >Various</a>`,"MM            ","https://mushrooms.finance"]
+      ["Mushrooms           ", `<a href="mushrooms"     >Various</a>`,"MM            ","https://mushrooms.finance"],
+      ["Punch               ", `<a href="punch"         >Various</a>`,"PUNCH         ","https://www.punchdefi.com"],
+      ["Cosmic              ", `<a href="cosmic"        >Various</a>`,"COSMIC        ","https://app.cosmicswap.finance"],
+      ["Champagne           ", `<a href="champagne"     >Various</a>`,"CHPG          ","https://champagne.farm"],
+      ["Satis               ", `<a href="satis"         >Various</a>`,"xSAT          ","https://satis.finance"],
+      ["Bondappetit         ", `<a href="bondappetit"   >Various</a>`,"bBAG          ","https://bondappetit.io"],
+      ["Project69               ", `<a href="project69"         >Various</a>`, "P69,BLT         ", "https://farm.project69.network"]
     ]
   }
   
