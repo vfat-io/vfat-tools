@@ -266,6 +266,7 @@ const main = async() => {
       ["Project69           ", `<a href="project69"     >Various</a>`, "P69,BLT      ", "https://farm.project69.network"],
       ["Grizzly             ", `<a href="grizzly"       >Various</a>`,"GRZ           ","https://www.grizzlyswap.com"],
       ["Friction            ", `<a href="friction"      >Various</a>`,"xTAO          ","https://friction.finance"],
+      ["Greyhound           ", `<a href="greyhound"      >Various</a>`,"GREYHOUND     ","https://greyhound.farm"],
       ["TakoDefi            ", `<a href="takodefi"      >Various</a>`,"TAKO          ","https://takodefi.com"]
     ]
   }
