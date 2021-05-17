@@ -263,7 +263,8 @@ const main = async() => {
       ["Cosmic              ", `<a href="cosmic"        >Various</a>`,"COSMIC        ","https://app.cosmicswap.finance"],
       ["Champagne           ", `<a href="champagne"     >Various</a>`,"CHPG          ","https://champagne.farm"],
       ["Satis               ", `<a href="satis"         >Various</a>`,"xSAT          ","https://satis.finance"],
-      ["Bondappetit         ", `<a href="bondappetit"   >Various</a>`,"bBAG          ","https://bondappetit.io"]
+      ["Bondappetit         ", `<a href="bondappetit"   >Various</a>`,"bBAG          ","https://bondappetit.io"],
+      ["Project69               ", `<a href="project69"         >Various</a>`, "P69,BLT         ", "https://farm.project69.network"]
     ]
   }
   
