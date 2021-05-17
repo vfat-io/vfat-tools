@@ -71,8 +71,8 @@ async function main() {
   await loadBakeContract(App, tokens, prices, TOKEN_REWARD_3_CHEF, TOKEN_REWARD_3_CHEF_ADDR, TOKEN_REWARD_CHEF_ABI,
     rewardToken2Ticker, "token", null, rewardsToken3PerWeek, "pendingToken");
 
-  await loadDoubleRewardsBakeContract(App, tokens, prices, DOUBLE_REWARDS_CHEF, DOUBLE_REWARDS_ADDR0, DOUBLE_REWARDS_ABI0,
-    rewardTokenTicker, secondRewardTokenTicker);
+  //await loadDoubleRewardsBakeContract(App, tokens, prices, DOUBLE_REWARDS_CHEF, DOUBLE_REWARDS_ADDR0, DOUBLE_REWARDS_ABI0,
+    //rewardTokenTicker, secondRewardTokenTicker);
 
   hideLoading();
 }
