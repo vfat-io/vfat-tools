@@ -119,7 +119,8 @@ const main = async() => {
       ["Kineko                       ",`<a href="../kineko"             >Various</a>`,"KKO                ","http://stake.kineko.io"],
       ["Oiler                        ",`<a href="../oiler"              >Various</a>`,"OIL                ","http://staking.oiler.network"],
       ["Swipe                        ",`<a href="../swipe"              >Various</a>`,"SXP                ","https://swipe.org"],
-      ["Convex                       ",`<a href="../convex"             >Various</a>`,"CVX                ","https://www.convexfinance.com"]
+      ["Convex                       ",`<a href="../convex"             >Various</a>`,"CVX                ","https://www.convexfinance.com"],
+      ["Unicly                       ",`<a href="../unicly"             >Various</a>`,"UNIC               ","https://www.app.unic.ly/#/farm"]
     ]
   }
 
