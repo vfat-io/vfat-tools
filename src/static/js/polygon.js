@@ -11,8 +11,8 @@ const main = async() => {
         ["Quickswap    ",`<a href="quick"         >Various</a>`,"QUICK  ","https://quickswap.exchange/#/quick"],
         ["Cometh       ",`<a href="cometh"        >Various</a>`,"MUST   ","https://swap.cometh.io/#/stake"],
         ["Dark         ",`<a href="dark"          >Various</a>`,"DB     ","https://www.dark.build"],
-        ["Smartdex *   ",`<a href="smartdex"      >Various</a>`,"NIOX   ","https://swap.smartdex.app"],
-        ["Elk *        ",`<a href="elk"           >Various</a>`,"ELK    ","https://app.elk.finance"],
+        ["Smartdex     ",`<a href="smartdex"      >Various</a>`,"NIOX   ","https://swap.smartdex.app"],
+        ["Elk          ",`<a href="elk"           >Various</a>`,"ELK    ","https://app.elk.finance"],
         ["Polywhale    ",`<a href="polywhale"     >Various</a>`,"KRILL  ","https://polywhale.finance"],
         ["Aave         ",`<a href="aave"          >Various</a>`,"MATIC  ","https://aave.com"],
         ["Polyfox      ",`<a href="polyfox"       >Various</a>`,"FOX    ","https://polyfox.finance"],
@@ -48,7 +48,8 @@ const main = async() => {
         ["Orcinus      ",`<a href="orcinus"       >Various</a>`,"ORCA   ","https://www.orcinuslabs.ca"],
         ["Polyape Finance",`<a href="polyape_finance">Various</a>`,"APE ","https://www.polyapefinance.com"],
         ["PolyWolf     ",`<a href="polywolf"      >Various</a>`,"WOLF   ","https://polywolf.finance"],
-        ["Stacker VC   ",`<a href="stacker-vc">Various</a>`,"STACK  ","https://stacker.vc"],
+        ["Stacker VC   ",`<a href="stacker-vc"    >Various</a>`,"STACK  ","https://stacker.vc"],
+        ["Polygoat     ",`<a href="polygoat"      >Various</a>`,"GOAT   ","https://www.polygoat.finance"]
       ]
   }
 
