@@ -118,7 +118,8 @@ const main = async() => {
       ["Smoothy                      ",`<a href="../smoothy"            >Various</a>`,"SMTY               ","https://smoothy.finance"],
       ["Kineko                       ",`<a href="../kineko"             >Various</a>`,"KKO                ","http://stake.kineko.io"],
       ["Oiler                        ",`<a href="../oiler"              >Various</a>`,"OIL                ","http://staking.oiler.network"],
-      ["Swipe                        ",`<a href="../swipe"              >Various</a>`,"SXP                ","https://swipe.org"]
+      ["Swipe                        ",`<a href="../swipe"              >Various</a>`,"SXP                ","https://swipe.org"],
+      ["Convex                       ",`<a href="../convex"             >Various</a>`,"CVX                ","https://www.convexfinance.com"]
     ]
   }
 
