@@ -1403,6 +1403,7 @@ function getUniPrices(tokens, prices, pool)
   let stakeTokenTicker = `[${t0.symbol}]-[${t1.symbol}]`;
   if (pool.is1inch) stakeTokenTicker += " 1INCH LP";
   else if (pool.symbol.includes("LSLP")) stakeTokenTicker += " LSLP";
+  else if (pool.symbol.includes("BLP")) stakeTokenTicker += " BLP";
   else if (pool.symbol.includes("SLP")) stakeTokenTicker += " SLP";
   else if (pool.symbol.includes("Cake")) stakeTokenTicker += " Cake LP";
   else if (pool.name.includes("Value LP")) stakeTokenTicker += " Value LP";
@@ -1455,6 +1456,7 @@ function getUniPrices(tokens, prices, pool)
               pool.symbol.includes("spLP") ?  `https://info.spookyswap.finance/pair/${pool.address}` :
               pool.symbol.includes("Lv1") ?  `https://info.steakhouse.finance/pair/${pool.address}` :
               pool.symbol.includes("PLP") ?  `https://exchange.pureswap.finance/#/swap` :
+              pool.symbol.includes("BLP") ?  `https://info.bakeryswap.org/#/pair/${pool.address}` :
               chain == "matic" ? `https://info.quickswap.exchange/pair/${pool.address}` :
             `http://uniswap.info/pair/${pool.address}`;
           const helperUrls = pool.is1inch ? [] :
@@ -1462,6 +1464,11 @@ function getUniPrices(tokens, prices, pool)
             `https://linkswap.app/#/add/${t0address}/${t1address}`,
             `https://linkswap.app/#/remove/${t0address}/${t1address}`,
             `https://linkswap.app/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+          ] :
+          pool.symbol.includes("BLP") ? [
+            `https://www.bakeryswap.org/#/add/${t0address}/${t1address}`,
+            `https://www.bakeryswap.org/#/remove/${t0address}/${t1address}`,
+            `https://www.bakeryswap.org/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
           ] :
           pool.symbol.includes("Cake") ? [
             `https://exchange.pancakeswap.finance/#/add/${t0address}/${t1address}`,
@@ -1472,11 +1479,6 @@ function getUniPrices(tokens, prices, pool)
             `https://swap.steakhouse.finance/#/add/${t0address}/${t1address}`,
             `https://swap.steakhouse.finance/#/remove/${t0address}/${t1address}`,
             `https://swap.steakhouse.finance/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
-          ] :
-          chain=='matic'? [
-            `https://quickswap.exchange/#/add/${t0address}/${t1address}`,
-            `https://quickswap.exchange/#/remove/${t0address}/${t1address}`,
-            `https://quickswap.exchange/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
           ] :
           pool.name.includes("Value LP") ? [
             `https://bsc.valuedefi.io/#/add/${t0address}/${t1address}`,
@@ -1512,6 +1514,11 @@ function getUniPrices(tokens, prices, pool)
             `https://exchange.pureswap.finance/#/add/${t0address}/${t1address}`,
             `https://exchange.pureswap.finance/#/remove/${t0address}/${t1address}`,
             `https://exchange.pureswap.finance/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+          ] :
+          chain=='matic'? [
+            `https://quickswap.exchange/#/add/${t0address}/${t1address}`,
+            `https://quickswap.exchange/#/remove/${t0address}/${t1address}`,
+            `https://quickswap.exchange/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
           ] :
           t0.symbol.includes("COMFI") ? [
             `https://app.uniswap.org/#/add/v2/${t0address}/${t1address}`,
@@ -1562,8 +1569,9 @@ function getUniPrices(tokens, prices, pool)
                   pool.symbol.includes("PGL") ?  `https://info.pangolin.exchange/#/pair/${pool.address}` :
                     pool.symbol.includes("CS-LP") ?  `https://app.coinswap.space/#/` :
                       pool.name.includes("Value LP") ?  `https://info.vswap.fi/pool/${pool.address}` :
-                        chain == "matic" ? `https://info.quickswap.exchange/pair/${pool.address}` :
-                          `http://uniswap.info/pair/${pool.address}`;
+                        pool.name.includes("BLP") ?  `https://info.bakeryswap.org/#/pair/${pool.address}` :
+                          chain == "matic" ? `https://info.quickswap.exchange/pair/${pool.address}` :
+                            `http://uniswap.info/pair/${pool.address}`;
           const helperUrls = pool.is1inch ? [] :
             pool.symbol.includes("LSLP") ? [
                 `https://linkswap.app/#/add/${t0address}/${t1address}`,
