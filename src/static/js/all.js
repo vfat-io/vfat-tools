@@ -60,7 +60,7 @@ const main = async() => {
       ["Big Data Protocol            ",`<a href="../bdp/"               >Various</a>`,"BDP,bALPHA         ","https://www.bigdataprotocol.com/datavault"],
       ["Unslashed                    ",`<a href="../usf/"               >Various</a>`,"USF                ","https://app.unslashed.finance/"],
       ["Siren                        ",`<a href="../siren/"             >Various</a>`,"SI                 ","https://sirenmarkets.com/"],
-      ["Float *                      ",`<a href="../float/"             >Various</a>`,"BANK               ","https://floatprotocol.com/#/stake"],
+      ["Float                        ",`<a href="../float/"             >Various</a>`,"BANK               ","https://floatprotocol.com/#/stake"],
       ["Sakeswap                     ",`<a href="../sakeswap"           >Various</a>`,"SAKE               ","https://sakeswap.finance"],
       ["Defiville                    ",`<a href="../defiville"          >Various</a>`,"ISLA               ","https://defiville.finance"],
       ["Benchmark                    ",`<a href="../benchmark/"         >Various</a>`,"MARK               ","https://launchpad.benchmarkprotocol.finance/pools"],
@@ -118,7 +118,8 @@ const main = async() => {
       ["Smoothy                      ",`<a href="../smoothy"            >Various</a>`,"SMTY               ","https://smoothy.finance"],
       ["Kineko                       ",`<a href="../kineko"             >Various</a>`,"KKO                ","http://stake.kineko.io"],
       ["Oiler                        ",`<a href="../oiler"              >Various</a>`,"OIL                ","http://staking.oiler.network"],
-      ["Swipe                        ",`<a href="../swipe"              >Various</a>`,"SXP                ","https://swipe.org"]
+      ["Swipe                        ",`<a href="../swipe"              >Various</a>`,"SXP                ","https://swipe.org"],
+      ["Convex                       ",`<a href="../convex"             >Various</a>`,"CVX                ","https://www.convexfinance.com"]
     ]
   }
 

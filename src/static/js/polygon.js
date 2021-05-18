@@ -48,7 +48,8 @@ const main = async() => {
         ["Orcinus      ",`<a href="orcinus"       >Various</a>`,"ORCA   ","https://www.orcinuslabs.ca"],
         ["Polyape Finance",`<a href="polyape_finance">Various</a>`,"APE ","https://www.polyapefinance.com"],
         ["PolyWolf     ",`<a href="polywolf"      >Various</a>`,"WOLF   ","https://polywolf.finance"],
-        ["Stacker VC   ",`<a href="stacker-vc">Various</a>`,"STACK  ","https://stacker.vc"],
+        ["Stacker VC   ",`<a href="stacker-vc"    >Various</a>`,"STACK  ","https://stacker.vc"],
+        ["Polygoat     ",`<a href="polygoat"      >Various</a>`,"GOAT   ","https://www.polygoat.finance"]
       ]
   }
 
