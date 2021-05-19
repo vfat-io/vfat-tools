@@ -22,7 +22,7 @@ const main = async() => {
       ["Gamestop                     ",`<a href="../gme"                >Various</a>`,"GME                ","https://gamestop.finance"],
       ["Harvest Finance              ",`<a href="../harvest-finance/"   >Various</a>`,"FARM               ","https://harvest.finance"],
       ["Ichi                         ",`<a href="../ichi/"              >Various</a>`,"Ichi               ","https://ichi.farm"],
-      ["Indexed                      ",`<a href="../indexed"            >Various</a>`,"NDX                ","https://indexed.finance"],
+      ["Indexed *                    ",`<a href="../indexed"            >Various</a>`,"NDX                ","https://indexed.finance"],
       ["MITH Cash                    ",`<a href="../mithcash/"          >Various</a>`,"MIS,MIC            ","https://mith.cash"],
       ["Morph                        ",`<a href="../morph"              >Various</a>`,"MORT               ","https://morph.finance"],
       ["Mushrooms                    ",`<a href="../mushrooms"          >Various</a>`,"MM                 ","https://mushrooms.finance"],
