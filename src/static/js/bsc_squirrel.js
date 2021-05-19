@@ -27,6 +27,7 @@ async function main() {
       tokens["0x8893D5fA71389673C5c4b9b3cb4EE1ba71207556"] = await getBscToken(App, "0x8893D5fA71389673C5c4b9b3cb4EE1ba71207556", "0x03d9d14367127d477e6f340c59e57ab088220187");
       tokens["0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c"] = await getBscToken(App, "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c", "0x03d9d14367127d477e6f340c59e57ab088220187");
       tokens["0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56"] = await getBscToken(App, "0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56", "0x7a5947e31739808006b4660b65f7414ad9d37d9c");
+      tokens["0x1AF3F329e8BE154074D8769D1FFa4eE058B1DBc3"] = await getBscToken(App, "0x1AF3F329e8BE154074D8769D1FFa4eE058B1DBc3", "0xcED829cB73d21B34a0AD4687C3Cd7D398172DBD8");
 
       // NUTS-BNB APE LP FARM
       const apeLpPool = await getBscToken(App, "0x789fd04BFbC64169104466Ee0d48716E0452Bcf6", "0xa998b89e50dfed569ac41dbac5f2e4edb2567251");
@@ -74,14 +75,15 @@ async function main() {
       // OTHER FARMS
       await outputVault(App, tokens, prices, signer, nutsPrice, "0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82", "0xdfd040cd6b1d7f15cad3094e3b49dc542fea77c1", "0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82", 4000, 80, "CAKE", true);
       await outputVault(App, tokens, prices, signer, nutsPrice, "0x603c7f932ED1fc6575303D8Fb018fDCBb0f39a95", "0x31fe02b9ea5501bfe8a872e205dfe6b6a79435ed", "0xF397A390f008dbfC0fE995d9754acd8d137AA8dd", 4000, 140, "BANANA", true);
-      await outputVault(App, tokens, prices, signer, nutsPrice, "0x7979F6C54ebA05E18Ded44C4F986F49a5De551c2", "0x55d1905c72365dcef69f9a7c890a26a2e3fc4c41", "0x25fd42D82d5c238ee7AA277261AA6CA5BDFE5CD4", 2000, 120, "KEBAB", true);
-      await outputVault(App, tokens, prices, signer, nutsPrice, "0xF952Fc3ca7325Cc27D15885d37117676d25BfdA6", "0x21573eee28112c05b355807baf5138ca59dfa424", "0xf952fc3ca7325cc27d15885d37117676d25bfda6", 2500, 120, "EGG", true);
+      await outputVault(App, tokens, prices, signer, nutsPrice, "0x7979F6C54ebA05E18Ded44C4F986F49a5De551c2", "0x55d1905c72365dcef69f9a7c890a26a2e3fc4c41", "0x25fd42D82d5c238ee7AA277261AA6CA5BDFE5CD4", 1500, 120, "KEBAB", true);
+      await outputVault(App, tokens, prices, signer, nutsPrice, "0xF952Fc3ca7325Cc27D15885d37117676d25BfdA6", "0x21573eee28112c05b355807baf5138ca59dfa424", "0xf952fc3ca7325cc27d15885d37117676d25bfda6", 1500, 120, "EGG", true);
 
       await outputFarm(App, tokens, prices, signer, nutsPrice, "0xa184088a740c695E156F91f5cC086a06bb78b827", "0x968c84d90bd4e1307333c7f98074d1b7caac497b", "0x4d0228EBEB39f6d2f29bA528e2d15Fc9121Ead56", 3000, 200, "AUTO", false);
-      await outputFarm(App, tokens, prices, signer, nutsPrice, "0xE02dF9e3e622DeBdD69fb838bB799E3F168902c5", "0xa9c72f556c1059500cf514ed10955bceaf227c4c", "0xc2Eed0F5a0dc28cfa895084bC0a9B8B8279aE492", 2000, 40, "BAKE", false);
+      await outputFarm(App, tokens, prices, signer, nutsPrice, "0xE02dF9e3e622DeBdD69fb838bB799E3F168902c5", "0xa9c72f556c1059500cf514ed10955bceaf227c4c", "0xc2Eed0F5a0dc28cfa895084bC0a9B8B8279aE492", 1500, 40, "BAKE", false);
+      await outputFarm(App, tokens, prices, signer, nutsPrice, "0xa9c41a46a6b3531d28d5c32f6633dd2ff05dfb90", "0x0ed3434f7d83f3217a52ff8185cf844e6a686609", "0xcED829cB73d21B34a0AD4687C3Cd7D398172DBD8", 3500, 20, "WEX", false);
 
-      await outputFarm(App, tokens, prices, signer, nutsPrice, "0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82", "0x593fcE210368f4dFe177058C1437D7f893670503", "0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82", 3500, 80, "TLM", false, 1e4);
-      await outputFarm(App, tokens, prices, signer, nutsPrice, "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c", "0x868429ffa5eddeaea8e2b8eaea4fca9c33516568", "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c", 3500, 140, "WBNB", false);
+      await outputFarm(App, tokens, prices, signer, nutsPrice, "0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82", "0x593fcE210368f4dFe177058C1437D7f893670503", "0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82", 3000, 80, "TLM", false, 1e4);
+      await outputFarm(App, tokens, prices, signer, nutsPrice, "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c", "0x868429ffa5eddeaea8e2b8eaea4fca9c33516568", "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c", 3000, 140, "WBNB", false);
   }
 
 
