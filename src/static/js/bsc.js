@@ -267,7 +267,8 @@ const main = async() => {
       ["Grizzly             ", `<a href="grizzly"       >Various</a>`,"GRZ           ","https://www.grizzlyswap.com"],
       ["Friction            ", `<a href="friction"      >Various</a>`,"xTAO          ","https://friction.finance"],
       ["Greyhound           ", `<a href="greyhound"      >Various</a>`,"GREYHOUND     ","https://greyhound.farm"],
-      ["TakoDefi            ", `<a href="takodefi"      >Various</a>`,"TAKO          ","https://takodefi.com"]
+      ["TakoDefi            ", `<a href="takodefi"      >Various</a>`,"TAKO          ","https://takodefi.com"],
+      ["TenFi               ", `<a href="tenfi"         >Various</a>`,"TENFI         ","https://ten.finance"]
     ]
   }
   
