@@ -271,7 +271,8 @@ const main = async() => {
       ["Latte               ", `<a href="latte"         >Various</a>`,"LATTE         ","https://latteswap.finance"],
       ["Lever               ", `<a href="lever"         >Various</a>`,"LEV           ","https://bsc.lever.network/Staking"],
       ["Moonshield          ", `<a href="moonshield"    >Various</a>`,"He3           ","https://moonshield.finance"],
-      ["Dinopark            ", `<a href="dinopark"      >Various</a>`,"DINO          ","https://dinopark.finance"]
+      ["Dinopark            ", `<a href="dinopark"      >Various</a>`,"DINO          ","https://dinopark.finance"],
+      ["TenFi               ", `<a href="tenfi"         >Various</a>`,"TENFI         ","https://ten.finance"]
     ]
   }
   
