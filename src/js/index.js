@@ -9,6 +9,7 @@ import $ from "jquery";
 import { ethers } from "ethers";
 import * as ethcall from "ethcall";
 
+
 //import dompurify from 'dompurify'
 
 import 'picturefill'
@@ -19,6 +20,8 @@ import "core-js/stable";
 import "regenerator-runtime/runtime";
 import WalletConnectProvider from "@walletconnect/web3-provider";
 import Web3Modal from "web3modal";
+import ChefAbi from './master_chef_abi.json'
+import BscChefs from './bsc_master_chefs.json'
 
 window.$ = $;
 window.ethers = ethers;
@@ -193,6 +196,8 @@ window.NETWORKS = {
     ]
   },
 }
+window.BscChefs = BscChefs
+window.ChefAbi = ChefAbi
 
 const infuraId = atob(window.ETHEREUM_NODE_URL).split('/').pop()
 
