@@ -49,7 +49,8 @@ const main = async() => {
         ["Polyape Finance",`<a href="polyape_finance">Various</a>`,"APE ","https://www.polyapefinance.com"],
         ["PolyWolf     ",`<a href="polywolf"      >Various</a>`,"WOLF   ","https://polywolf.finance"],
         ["Stacker VC   ",`<a href="stacker-vc"    >Various</a>`,"STACK  ","https://stacker.vc"],
-        ["Polygoat     ",`<a href="polygoat"      >Various</a>`,"GOAT   ","https://www.polygoat.finance"]
+        ["Polygoat     ",`<a href="polygoat"      >Various</a>`,"GOAT   ","https://www.polygoat.finance"],
+        ["Polysnake    ",`<a href="polysnake"     >Various</a>`,"SNAKE  ","https://www.polysnake.finance"]
       ]
   }
 
