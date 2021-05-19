@@ -268,7 +268,8 @@ const main = async() => {
       ["Friction            ", `<a href="friction"      >Various</a>`,"xTAO          ","https://friction.finance"],
       ["Greyhound           ", `<a href="greyhound"      >Various</a>`,"GREYHOUND    ","https://greyhound.farm"],
       ["TakoDefi            ", `<a href="takodefi"      >Various</a>`,"TAKO          ","https://takodefi.com"],
-      ["Latte               ", `<a href="latte"         >Various</a>`,"LATTE         ","http://latteswap.finance"]
+      ["Latte               ", `<a href="latte"         >Various</a>`,"LATTE         ","http://latteswap.finance"],
+      ["Lever               ", `<a href="lever"         >Various</a>`,"LEV           ","https://bsc.lever.network/Staking"]
     ]
   }
   
