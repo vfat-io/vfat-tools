@@ -37,6 +37,16 @@ $(function() {
     hideLoading();
   }
 
+  const getClaimableAmount = async function(stakePool, App) {
+    const tokensAccrued = await stakePool.tokensAccrued()
+    const userState = await stakePool.balances(App.YOUR_ADDRESS)
+    const userTokensAccured = userState[1]
+    const userBalance = userState[0]
+    const _tokensAccruedDiff = tokensAccrued.sub(userTokensAccured)
+    const _tokensGive = _tokensAccruedDiff.mul(userBalance)
+    return _tokensGive.toString() / 1e36
+  }
+
   const maticSLPContract_stake = async function(stakeTokenAddr, rewardPoolAddr, App, maxAllowance) {
     const signer = App.provider.getSigner()
   
@@ -95,11 +105,11 @@ $(function() {
   
     console.log(App.YOUR_ADDRESS)
  
-    const earnedYFFI = (await REWARD_POOL.balances(App.YOUR_ADDRESS)[1]) / 1e18
+    const earnedYFFI = await getClaimableAmount(REWARD_POOL, App)
   
     if (earnedYFFI > 0) {
       showLoading()
-      REWARD_POOL.claimStack({gasLimit: 250000})
+      REWARD_POOL.claimSTACK({gasLimit: 250000})
         .then(function(t) {
           return App.provider.waitForTransaction(t.hash)
         })
@@ -226,22 +236,28 @@ $(function() {
           prices[stakeTokenAddress]?.usd ?? getParameterCaseInsensitive(prices, stakeTokenAddress)?.usd;
       const rewardTokenPrice = getParameterCaseInsensitive(prices, rewardTokenAddress)?.usd;
   
-      const periodFinish = await STAKING_POOL.endBlock();
-      const rewardRate = await STAKING_POOL.emissionRate();
-      const weeklyRewards = (Date.now() / 1000 > periodFinish) ? 0 : rewardRate / 1e18 * 604800;
+      const endBlock = await STAKING_POOL.endBlock();
+      const emissionRate = await STAKING_POOL.emissionRate();
+      const rewardRate = emissionRate.toString() / 1e18 * 38400; // rewardRate per day
+      const currentBlockNumber = await App.provider.getBlockNumber();
+      const weeklyRewards = (currentBlockNumber > endBlock) ? 0 : rewardRate * 7;
   
       const usdPerWeek = weeklyRewards * rewardTokenPrice;
   
       const staked_tvl = poolPrices.staked_tvl;
   
-      let userStaked = await STAKING_POOL.balances(App.YOUR_ADDRESS)[0] / 10 ** stakeToken.decimals;
+      let stakingPoolBalances = await STAKING_POOL.balances(App.YOUR_ADDRESS);
+
+      let userStaked = stakingPoolBalances[0].toString() / 10 ** stakeToken.decimals;
+
       if(Number.isNaN(userStaked)) userStaked = 0;
-  
+
       const userUnstaked = stakeToken.unstaked;
-  
-      let earned = await STAKING_POOL.balances(App.YOUR_ADDRESS)[1] / 10 ** rewardToken.decimals;
+
+      let earned = await getClaimableAmount(STAKING_POOL, App);
+
       if(Number.isNaN(earned)) earned = 0;
-  
+
       return  {
         stakingAddress,
         poolPrices,
@@ -263,6 +279,5 @@ $(function() {
   async function loadMaticSynthetixPool(App, tokens, prices, abi, address, rewardTokenFunction, stakeTokenFunction) {
     const info = await loadMaticSynthetixPoolInfo(App, tokens, prices, abi, address, rewardTokenFunction, stakeTokenFunction);
     if (!info) return null;
-    console.log('info =>', info);
     return await printSynthetixPool(App, info, "matic");
   }
