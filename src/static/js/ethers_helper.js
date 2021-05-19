@@ -100,8 +100,10 @@ async function init_ethers() {
       )
       sleep(10)
     }
+
     App.ethcallProvider = new ethcall.Provider();
     await App.ethcallProvider.init(App.provider);
+    App.ethcallProvider.multicallAddress = "0xe21a5b299756ee452a6a871ff29852862fc99be9"
 
     let addr = getUrlParameter('addr')
 
