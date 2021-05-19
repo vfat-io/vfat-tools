@@ -263,14 +263,15 @@ const main = async() => {
       ["Champagne           ", `<a href="champagne"     >Various</a>`,"CHPG          ","https://champagne.farm"],
       ["Satis               ", `<a href="satis"         >Various</a>`,"xSAT          ","https://satis.finance"],
       ["Bondappetit         ", `<a href="bondappetit"   >Various</a>`,"bBAG          ","https://bondappetit.io"],
-      ["Project69           ", `<a href="project69"     >Various</a>`, "P69,BLT      ", "https://farm.project69.network"],
+      ["Project69           ", `<a href="project69"     >Various</a>`, "P69,BLT      ","https://farm.project69.network"],
       ["Grizzly             ", `<a href="grizzly"       >Various</a>`,"GRZ           ","https://www.grizzlyswap.com"],
       ["Friction            ", `<a href="friction"      >Various</a>`,"xTAO          ","https://friction.finance"],
-      ["Greyhound           ", `<a href="greyhound"      >Various</a>`,"GREYHOUND    ","https://greyhound.farm"],
+      ["Greyhound           ", `<a href="greyhound"     >Various</a>`,"GREYHOUND     ","https://greyhound.farm"],
       ["TakoDefi            ", `<a href="takodefi"      >Various</a>`,"TAKO          ","https://takodefi.com"],
-      ["Latte               ", `<a href="latte"         >Various</a>`,"LATTE         ","http://latteswap.finance"],
+      ["Latte               ", `<a href="latte"         >Various</a>`,"LATTE         ","https://latteswap.finance"],
       ["Lever               ", `<a href="lever"         >Various</a>`,"LEV           ","https://bsc.lever.network/Staking"],
-      ["Moonshield          ", `<a href="moonshield"    >Various</a>`,"He3           ","http://moonshield.finance"]
+      ["Moonshield          ", `<a href="moonshield"    >Various</a>`,"He3           ","https://moonshield.finance"],
+      ["Dinopark            ", `<a href="dinopark"      >Various</a>`,"DINO          ","https://dinopark.finance"]
     ]
   }
   
