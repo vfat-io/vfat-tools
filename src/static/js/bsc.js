@@ -269,7 +269,8 @@ const main = async() => {
       ["Greyhound           ", `<a href="greyhound"      >Various</a>`,"GREYHOUND    ","https://greyhound.farm"],
       ["TakoDefi            ", `<a href="takodefi"      >Various</a>`,"TAKO          ","https://takodefi.com"],
       ["Latte               ", `<a href="latte"         >Various</a>`,"LATTE         ","http://latteswap.finance"],
-      ["Lever               ", `<a href="lever"         >Various</a>`,"LEV           ","https://bsc.lever.network/Staking"]
+      ["Lever               ", `<a href="lever"         >Various</a>`,"LEV           ","https://bsc.lever.network/Staking"],
+      ["Moonshield          ", `<a href="moonshield"    >Various</a>`,"He3           ","http://moonshield.finance"]
     ]
   }
   
