@@ -122,7 +122,7 @@ const main = async() => {
       ["Convex                       ",`<a href="../convex"             >Various</a>`,"CVX                ","https://www.convexfinance.com"],
       ["Unicly                       ",`<a href="../unicly"             >Various</a>`,"UNIC               ","https://www.app.unic.ly/#/farm"],
       ["Lever                        ",`<a href="../lever"              >Various</a>`,"LEV                ","https://lever.network"],
-      ["Fuse                         ",`<a href="../fuse"               >Various</a>`,"FUSE               ","https://fuse.io"]
+      ["Fuse                         ",`<a href="../fusefarm"           >Various</a>`,"FUSE               ","https://fuse.io"]
     ]
   }
 
