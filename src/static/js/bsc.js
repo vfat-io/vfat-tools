@@ -60,7 +60,7 @@ const main = async() => {
       ["Fed                 ", `<a href="fed"           >Various</a>`,"FED           ","https://fedswap.finance"],
       ["Coral               ", `<a href="coral"         >Various</a>`,"CRL           ","https://coralfarm.finance"],
       ["Duck Money          ", `<a href="duckmoney"     >Various</a>`,"DUCK          ","https://duck.money"],
-      ["Iron Finance        ", `<a href="iron"          >Various</a>`,"STEEL         ","https://iron.finance"],
+      ["Iron Finance *      ", `<a href="iron"          >Various</a>`,"STEEL         ","https://iron.finance"],
       ["BVaults             ", `<a href="bvaults"       >Various</a>`,"Various  ","https://bvaults.fi"],
       ["MidasGold           ", `<a href="midasgold"     >Various</a>`,"Various  ","https://midasgold.network"],
       ["Nerve               ", `<a href="nerve"         >Various</a>`,"NRV           ","https://nerve.fi"],
@@ -206,7 +206,7 @@ const main = async() => {
       ["Caramel             ", `<a href="caramel"       >Various</a>`,"CARAMEL       ","https://caramelswap.finance"],
       ["Plumcake            ", `<a href="plumcake"      >Various</a>`,"PLUM          ","https://plumcake.finance"],
       ["Wsbdapp             ", `<a href="wsb"           >Various</a>`,"WSB           ","https://farm.wsbdapp.com"],
-      ["Feeder              ", `<a href="feeder"        >Various</a>`,"FEED          ","https://app.feeder.finance"],
+      ["Feeder *            ", `<a href="feeder"        >Various</a>`,"FEED          ","https://app.feeder.finance"],
       ["Yolodraw            ", `<a href="yolodraw"      >Various</a>`,"YoloDraw      ","https://yolo-token.com"],
       ["Jaguar              ", `<a href="jaguar"        >Various</a>`,"JAGUAR        ","https://jaguarswap.com"],
       ["Zombie              ", `<a href="zombie"        >Various</a>`,"ZOMBIE        ","https://zombie-farm.com"],
@@ -263,13 +263,15 @@ const main = async() => {
       ["Champagne           ", `<a href="champagne"     >Various</a>`,"CHPG          ","https://champagne.farm"],
       ["Satis               ", `<a href="satis"         >Various</a>`,"xSAT          ","https://satis.finance"],
       ["Bondappetit         ", `<a href="bondappetit"   >Various</a>`,"bBAG          ","https://bondappetit.io"],
-      ["Project69           ", `<a href="project69"     >Various</a>`, "P69,BLT      ", "https://farm.project69.network"],
+      ["Project69           ", `<a href="project69"     >Various</a>`, "P69,BLT      ","https://farm.project69.network"],
       ["Grizzly             ", `<a href="grizzly"       >Various</a>`,"GRZ           ","https://www.grizzlyswap.com"],
       ["Friction            ", `<a href="friction"      >Various</a>`,"xTAO          ","https://friction.finance"],
-      ["Greyhound           ", `<a href="greyhound"      >Various</a>`,"GREYHOUND    ","https://greyhound.farm"],
+      ["Greyhound           ", `<a href="greyhound"     >Various</a>`,"GREYHOUND     ","https://greyhound.farm"],
       ["TakoDefi            ", `<a href="takodefi"      >Various</a>`,"TAKO          ","https://takodefi.com"],
-      ["Latte               ", `<a href="latte"         >Various</a>`,"LATTE         ","http://latteswap.finance"],
+      ["Latte               ", `<a href="latte"         >Various</a>`,"LATTE         ","https://latteswap.finance"],
       ["Lever               ", `<a href="lever"         >Various</a>`,"LEV           ","https://bsc.lever.network/Staking"],
+      ["Dinopark            ", `<a href="dinopark"      >Various</a>`,"DINO          ","https://dinopark.finance"],
+      ["TenFi               ", `<a href="tenfi"         >Various</a>`,"TENFI         ","https://ten.finance"]
     ]
   }
   
