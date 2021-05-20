@@ -271,7 +271,8 @@ const main = async() => {
       ["Latte               ", `<a href="latte"         >Various</a>`,"LATTE         ","https://latteswap.finance"],
       ["Lever               ", `<a href="lever"         >Various</a>`,"LEV           ","https://bsc.lever.network/Staking"],
       ["Dinopark            ", `<a href="dinopark"      >Various</a>`,"DINO          ","https://dinopark.finance"],
-      ["TenFi               ", `<a href="tenfi"         >Various</a>`,"TENFI         ","https://ten.finance"]
+      ["TenFi               ", `<a href="tenfi"         >Various</a>`,"TENFI         ","https://ten.finance"],
+      ["YieldFields         ", `<a href="yieldfields"   >Various</a>`,"FIELD         ","https://yieldfields.finance"]
     ]
   }
   
