@@ -272,7 +272,9 @@ const main = async() => {
       ["Lever               ", `<a href="lever"         >Various</a>`,"LEV           ","https://bsc.lever.network/Staking"],
       ["Dinopark            ", `<a href="dinopark"      >Various</a>`,"DINO          ","https://dinopark.finance"],
       ["TenFi               ", `<a href="tenfi"         >Various</a>`,"TENFI         ","https://ten.finance"],
-      ["YieldFields         ", `<a href="yieldfields"   >Various</a>`,"FIELD         ","https://yieldfields.finance"]
+      ["YieldFields         ", `<a href="yieldfields"   >Various</a>`,"FIELD         ","https://yieldfields.finance"],
+      ["Tiger               ", `<a href="tiger"         >Various</a>`,"TIGER         ","https://www.tigerswapdefi.com"],
+      ["Parthenon Theta     ", `<a href="parthenon_theta">Various</a>`,"THETA        ","https://theta.parthenon.finance"]
     ]
   }
   
