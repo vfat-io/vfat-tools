@@ -270,7 +270,6 @@ const main = async() => {
       ["TakoDefi            ", `<a href="takodefi"      >Various</a>`,"TAKO          ","https://takodefi.com"],
       ["Latte               ", `<a href="latte"         >Various</a>`,"LATTE         ","http://latteswap.finance"],
       ["Lever               ", `<a href="lever"         >Various</a>`,"LEV           ","https://bsc.lever.network/Staking"],
-      ["Moonshield          ", `<a href="moonshield"    >Various</a>`,"He3           ","http://moonshield.finance"]
     ]
   }
   
