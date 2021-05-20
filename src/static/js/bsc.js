@@ -274,7 +274,8 @@ const main = async() => {
       ["TenFi               ", `<a href="tenfi"         >Various</a>`,"TENFI         ","https://ten.finance"],
       ["YieldFields         ", `<a href="yieldfields"   >Various</a>`,"FIELD         ","https://yieldfields.finance"],
       ["Tiger               ", `<a href="tiger"         >Various</a>`,"TIGER         ","https://www.tigerswapdefi.com"],
-      ["Parthenon Theta     ", `<a href="parthenon_theta">Various</a>`,"THETA        ","https://theta.parthenon.finance"]
+      ["Parthenon Theta     ", `<a href="parthenon_theta">Various</a>`,"THETA        ","https://theta.parthenon.finance"],
+      ["Fuse                ", `<a href="fuse"          >Various</a>`,"FUSE          ","https://fuse.io"]
     ]
   }
   
