@@ -77,7 +77,6 @@ async function loadFusePoolInfo(App, tokens, prices, stakingAbi, stakingAddress,
       const totalRewards = await STAKING_POOL.totalReward();
       const rewardsPerSeconds = totalRewards / stakingPeriod;
       const weeklyRewards = rewardsPerSeconds / 10 ** rewardToken.decimals * 604800;
-      //const weeklyRewards = (Date.now() / 1000 > periodFinish) ? 0 : rewardRate / 1e18 * 604800;
   
       const usdPerWeek = weeklyRewards * rewardTokenPrice;
   
