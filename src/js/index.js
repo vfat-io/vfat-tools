@@ -192,6 +192,21 @@ window.NETWORKS = {
       "https://s3.api.harmony.one"
     ]
   },
+  FUSE: {
+    "chainId": "0x7a",
+    "chainName": "Fuse Mainnet",
+    "nativeCurrency": {
+      "name": "FUSE",
+      "symbol": "FUSE",
+      "decimals": 18
+    },
+    "rpcUrls": [
+      "https://rpc.fuse.io"
+    ],
+    "blockExplorerUrls": [
+      "https://explorer.fuse.io"
+    ],
+  },
 }
 
 const infuraId = atob(window.ETHEREUM_NODE_URL).split('/').pop()

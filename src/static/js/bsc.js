@@ -275,7 +275,7 @@ const main = async() => {
       ["YieldFields         ", `<a href="yieldfields"   >Various</a>`,"FIELD         ","https://yieldfields.finance"],
       ["Tiger               ", `<a href="tiger"         >Various</a>`,"TIGER         ","https://www.tigerswapdefi.com"],
       ["Parthenon Theta     ", `<a href="parthenon_theta">Various</a>`,"THETA        ","https://theta.parthenon.finance"],
-      ["Fuse                ", `<a href="fuse"          >Various</a>`,"FUSE          ","https://fuse.io"],
+      ["Fuse                ", `<a href="fuse_bsc"      >Various</a>`,"FUSE          ","https://fuse.io"],
       ["Otter Finance       ", `<a href="otter"         >Various</a>`,"OTT           ","https://otterdefi.com"],
       ["Greenbelt           ", `<a href="greenbelt"     >Various</a>`,"LH            ","https://greenbelt.finance"],
       ["Frankenstein        ", `<a href="frankenstein"  >Various</a>`,"FRANK         ","https://frankenstein.finance"]
