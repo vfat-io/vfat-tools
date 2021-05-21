@@ -201,8 +201,11 @@ window.NETWORKS = {
       "decimals": 18
     },
     "rpcUrls": [
-      " https://explorer.fuse.io"
-    ]
+      "https://rpc.fuse.io"
+    ],
+    "blockExplorerUrls": [
+      "https://explorer.fuse.io"
+    ],
   },
 }
 
