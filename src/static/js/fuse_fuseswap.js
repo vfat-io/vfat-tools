@@ -7,8 +7,9 @@ async function main() {
   const FUSE_ABI = [{"type":"function","stateMutability":"nonpayable","payable":false,"outputs":[],"name":"withdrawInterest","inputs":[],"constant":false},{"type":"function","stateMutability":"nonpayable","payable":false,"outputs":[],"name":"withdrawStakeAndInterest","inputs":[{"type":"uint256","name":"_amount"}],"constant":false},{"type":"function","stateMutability":"nonpayable","payable":false,"outputs":[],"name":"updateGlobalYield","inputs":[],"constant":false},{"type":"function","stateMutability":"view","payable":false,"outputs":[{"type":"uint256","name":"globalTotalStaked"},{"type":"uint256","name":"globalYieldPerToken"},{"type":"uint256","name":"lastUpdated"}],"name":"interestData","inputs":[],"constant":true},{"type":"function","stateMutability":"view","payable":false,"outputs":[{"type":"address","name":""}],"name":"vaultAddress","inputs":[],"constant":true},{"type":"function","stateMutability":"view","payable":false,"outputs":[{"type":"address","name":""}],"name":"getStakeToken","inputs":[],"constant":true},{"type":"function","stateMutability":"view","payable":false,"outputs":[{"type":"address","name":""}],"name":"getRewardToken","inputs":[],"constant":true},{"type":"function","stateMutability":"view","payable":false,"outputs":[{"type":"uint256","name":""}],"name":"stakingStartTime","inputs":[],"constant":true},{"type":"function","stateMutability":"view","payable":false,"outputs":[{"type":"uint256","name":""}],"name":"totalReward","inputs":[],"constant":true},{"type":"function","stateMutability":"view","payable":false,"outputs":[{"type":"uint256","name":""},{"type":"uint256","name":""}],"name":"getYieldData","inputs":[{"type":"address","name":"_staker"}],"constant":true},{"type":"function","stateMutability":"nonpayable","payable":false,"outputs":[],"name":"stake","inputs":[{"type":"uint256","name":"_amount"}],"constant":false},{"type":"function","stateMutability":"view","payable":false,"outputs":[{"type":"uint256","name":""}],"name":"stakingPeriod","inputs":[],"constant":true},{"type":"function","stateMutability":"view","payable":false,"outputs":[{"type":"uint256","name":""},{"type":"uint256","name":""}],"name":"getStakerData","inputs":[{"type":"address","name":"_staker"}],"constant":true},{"type":"function","stateMutability":"view","payable":false,"outputs":[{"type":"uint256","name":""}],"name":"calculateInterest","inputs":[{"type":"address","name":"_staker"}],"constant":true},{"type":"function","stateMutability":"view","payable":false,"outputs":[{"type":"uint256","name":""},{"type":"uint256","name":""},{"type":"uint256","name":""},{"type":"uint256","name":""},{"type":"uint256","name":""}],"name":"getStatsData","inputs":[{"type":"address","name":"_staker"}],"constant":true},{"type":"constructor","stateMutability":"nonpayable","payable":false,"inputs":[{"type":"address","name":"_stakeToken"},{"type":"address","name":"_rewardToken"},{"type":"uint256","name":"_stakingPeriod"},{"type":"uint256","name":"_totalRewardToBeDistributed"},{"type":"uint256","name":"_stakingStart"},{"type":"address","name":"_vaultAdd"}]},{"type":"event","name":"Staked","inputs":[{"type":"address","name":"staker","indexed":true},{"type":"uint256","name":"value","indexed":false},{"type":"uint256","name":"_globalYieldPerToken","indexed":false}],"anonymous":false},{"type":"event","name":"StakeWithdrawn","inputs":[{"type":"address","name":"staker","indexed":true},{"type":"uint256","name":"value","indexed":false},{"type":"uint256","name":"_globalYieldPerToken","indexed":false}],"anonymous":false},{"type":"event","name":"InterestCollected","inputs":[{"type":"address","name":"staker","indexed":true},{"type":"uint256","name":"_value","indexed":false},{"type":"uint256","name":"_globalYieldPerToken","indexed":false}],"anonymous":false}]
   
   const Pools = [
-    //"0x4Bd7dc50B49d018FDE10a1ae6b29f09E175b85fC",
-    "0x04Ee5DE43332aF99eeC2D40de19962AA1cC583EC"
+    "0x04Ee5DE43332aF99eeC2D40de19962AA1cC583EC",
+    "0xf14D745a4D264255F758B541BB1F61EbC589EA25",
+    "0xAAb4FB30aD9c20EFFDA712c0fFC24f77b1B5439d"
   ].map(a => {
     return {
       address: a,
@@ -24,7 +25,7 @@ async function main() {
   _print("Reading smart contracts...\n");
 
   let tokens = {};
-  let prices = getFusePrices();
+  let prices = await getFusePrices();
 
   let p = await loadFusePools(App, tokens, prices, Pools)
   _print_bold(`Total staked: $${formatMoney(p.staked_tvl)}`);
@@ -40,7 +41,7 @@ async function loadFusePools(App, tokens, prices, pools) {
   const infos = await Promise.all(pools.map(p =>
     loadFusePoolInfo(App, tokens, prices, p.abi, p.address, p.rewardTokenFunction, p.stakeTokenFunction)));
   for (const i of infos) {
-    let p = await printSynthetixPool(App, i);
+    let p = await printSynthetixPool(App, i, "fuse");
     totalStaked += p.staked_tvl || 0;
     totalUserStaked += p.userStaked || 0;
     if (p.userStaked > 0) {
