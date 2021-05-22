@@ -10,26 +10,31 @@ async function main() {
     _print(`Initialized ${App.YOUR_ADDRESS}\n`);
     _print("Reading smart contracts...\n");
 
-    const TITAN_CHEF_ADDR = "0x65430393358e55A658BcdE6FF69AB28cF1CbB77a";
-    const rewardTokenTicker = "TITAN";
-    const TITAN_CHEF = new ethers.Contract(TITAN_CHEF_ADDR, TITAN_CHEF_ABI, App.provider);
+    const TITAN_CHEF_ADDR0 = "0x65430393358e55A658BcdE6FF69AB28cF1CbB77a";
+    const TITAN_CHEF_ADDR1 = "0x08b5249F1fee6e4fCf8A7113943ed6796737386E";
+    const TITAN_CHEF_ADDR2 = "0xe012d73B31f34b6199194936f65e7A1a9Ed39D73";
+    const rewardTokenTicker0 = "TITAN";
+    const rewardTokenTicker1 = "USDC";
+    const TITAN_CHEF0 = new ethers.Contract(TITAN_CHEF_ADDR0, TITAN_CHEF_ABI, App.provider);
+    const TITAN_CHEF1 = new ethers.Contract(TITAN_CHEF_ADDR1, TITAN_CHEF_ABI, App.provider);
+    const TITAN_CHEF2 = new ethers.Contract(TITAN_CHEF_ADDR2, TITAN_CHEF_ABI, App.provider);
 
-    const startBlock = await TITAN_CHEF.startBlock();
-    const currentBlock = await App.provider.getBlockNumber();
-
-    let rewardsPerWeek = 0
-    if (currentBlock < startBlock) {
-        _print(`Rewards start at block ${startBlock}\n`);
-    } else {
-        rewardsPerWeek = await TITAN_CHEF.rewardPerBlock() / 1e18 *
-            604800 / 2.0;
-    }
+    const rewardsPerWeek0 = await TITAN_CHEF0.rewardPerBlock() / 1e18 *
+        604800 / 2.0;
+    const rewardsPerWeek1 = await TITAN_CHEF1.rewardPerBlock() / 1e18 *
+        604800 / 2.0;
+    const rewardsPerWeek2 = await TITAN_CHEF2.rewardPerBlock() / 1e18 *
+        604800 / 2.0;   //usdc reward token
 
     const tokens = {};
     const prices = await getMaticPrices();
 
-    await loadMaticChefContract(App, tokens, prices, TITAN_CHEF, TITAN_CHEF_ADDR, TITAN_CHEF_ABI, rewardTokenTicker,
-        "rewardToken", null, rewardsPerWeek, "pendingReward");
+    await loadMaticChefContract(App, tokens, prices, TITAN_CHEF0, TITAN_CHEF_ADDR0, TITAN_CHEF_ABI, rewardTokenTicker0,
+        "rewardToken", null, rewardsPerWeek0, "pendingReward");
+    await loadMaticChefContract(App, tokens, prices, TITAN_CHEF1, TITAN_CHEF_ADDR1, TITAN_CHEF_ABI, rewardTokenTicker0,
+        "rewardToken", null, rewardsPerWeek1, "pendingReward");
+    await loadMaticChefContract(App, tokens, prices, TITAN_CHEF2, TITAN_CHEF_ADDR2, TITAN_CHEF_ABI, rewardTokenTicker1,
+        "rewardToken", null, rewardsPerWeek2, "pendingReward");
 
     hideLoading();
 }
