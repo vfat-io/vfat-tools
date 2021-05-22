@@ -37,6 +37,9 @@ const pageNetwork = function() {
   if (network.toLowerCase() === 'fuse') {
     return window.NETWORKS.FUSE
   }
+  if (network.toLowerCase() === 'thundercore') {
+    return window.NETWORKS.THUNDERCORE
+  }
 
   return window.NETWORKS.ETHEREUM
 }
