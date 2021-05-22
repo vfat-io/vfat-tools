@@ -279,7 +279,9 @@ const main = async() => {
       ["Otter Finance       ", `<a href="otter"         >Various</a>`,"OTT           ","https://otterdefi.com"],
       ["Greenbelt           ", `<a href="greenbelt"     >Various</a>`,"LH            ","https://greenbelt.finance"],
       ["Frankenstein        ", `<a href="frankenstein"  >Various</a>`,"FRANK         ","https://frankenstein.finance"],
-      ["Cashcow             ", `<a href="cashcow"       >Various</a>`,"CCDI          ","https://cashcowswap.org"]
+      ["Cashcow             ", `<a href="cashcow"       >Various</a>`,"CCDI          ","https://cashcowswap.org"],
+      ["Tiger Finance       ", `<a href="tiger_defi"    >Various</a>`,"TIG           ","https://www.tigerfinancedefi.com"],
+      ["Tinville            ", `<a href="tinville"      >Various</a>`,"TINvS         ","https://farms.tinville.finance"]
     ]
   }
   
