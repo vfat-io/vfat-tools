@@ -3,7 +3,7 @@ const FANTOM_VAULT_WANT_ABI = [{"inputs":[{"internalType":"contract IStrategy","
 
 const FantomTokens = [ 
   { "id": "tether", "symbol": "USDT", "contract": "0x049d68029688eAbF473097a2fC38ef61633A3C7A"},
-  { "id": "usd-coin", "symbol": "USDC", "contract": "0x50Cc648E45B84D68405BA0707e94c507b08e593d"},
+  { "id": "usd-coin", "symbol": "USDC", "contract": "0x04068DA6C83AFCFA0e13ba15A6696662335D5B75"},
   { "id": "fantom", "symbol": "FTM", "contract": "0x21be370D5312f44cB42ce377BC9b8a0cEF1A4C83"},
   { "id": "ethereum", "symbol": "ETH", "contract": "0x74b23882a30290451A17c44f4F05243b6b58C76d"},
   { "id": "yearn-finance", "symbol": "YFI", "contract": "0x29b0Da86e484E1C0029B56e817912d778aC0EC69"},
@@ -14,7 +14,7 @@ const FantomTokens = [
   { "id": "sushi", "symbol": "SUSHI", "contract": "0xae75A438b2E0cB8Bb01Ec1E1e376De11D44477CC"},
   { "id": "ice-token", "symbol": "ICE", "contract": "0xf16e81dce15b08f326220742020379b855b87df9"},
   { "id": "spookyswap", "symbol": "BOO", "contract": "0x841FAD6EAe12c286d1Fd18d1d525DFfA75C7EFFE"},
-  { "id": "cream", "symbol": "CREAM", "contract": "0x657A1861c15A3deD9AF0B6799a195a249ebdCbc6"}
+  { "id": "binancecoin", "symbol": "BNB", "contract": "0xD67de0e0a0Fd7b15dC8348Bb9BE742F3c5850454"},
 ];
 
 async function getFantomPrices() {
@@ -337,12 +337,12 @@ async function getFantomPoolInfo(app, chefContract, chefAddress, poolIndex, pend
       pendingRewardTokens : 0,
     };
   }
-  const poolToken = await getFantomToken(app, poolInfo.lpToken ?? poolInfo.token, chefAddress);
+  const poolToken = await getFantomToken(app, poolInfo.lpToken ?? poolInfo.token ?? poolInfo.stakingToken, chefAddress);
   const userInfo = await chefContract.userInfo(poolIndex, app.YOUR_ADDRESS);
   const pendingRewardTokens = await chefContract.callStatic[pendingRewardsFunction](poolIndex, app.YOUR_ADDRESS);
   const staked = userInfo.amount / 10 ** poolToken.decimals;
   return {
-      address: poolInfo.lpToken ?? poolInfo.token,
+      address : poolInfo.lpToken ?? poolInfo.token ?? poolInfo.stakingToken,
       allocPoints: poolInfo.allocPoint ?? 1,
       poolToken: poolToken,
       userStaked : staked,
@@ -354,7 +354,7 @@ async function getFantomPoolInfo(app, chefContract, chefAddress, poolIndex, pend
 
 async function loadFantomChefContract(App, tokens, prices, chef, chefAddress, chefAbi, rewardTokenTicker,
   rewardTokenFunction, rewardsPerBlockFunction, rewardsPerWeekFixed, pendingRewardsFunction,
-  deathPoolIndices) {
+  deathPoolIndices, claimFunction) {
   const chefContract = chef ?? new ethers.Contract(chefAddress, chefAbi, App.provider);
 
   const poolCount = parseInt(await chefContract.poolLength(), 10);
@@ -363,8 +363,6 @@ async function loadFantomChefContract(App, tokens, prices, chef, chefAddress, ch
   _print(`Found ${poolCount} pools.\n`)
 
   _print(`Showing incentivized pools only.\n`);
-
-  var tokens = {};
 
   const rewardTokenAddress = await chefContract.callStatic[rewardTokenFunction]();
   const rewardToken = await getFantomToken(App, rewardTokenAddress, chefAddress);
@@ -397,7 +395,7 @@ async function loadFantomChefContract(App, tokens, prices, chef, chefAddress, ch
     if (poolPrices[i]) {
       const apr = printChefPool(App, chefAbi, chefAddress, prices, tokens, poolInfos[i], i, poolPrices[i],
         totalAllocPoints, rewardsPerWeek, rewardTokenTicker, rewardTokenAddress,
-        pendingRewardsFunction, null, null, "fantom", poolInfos[i].depositFee, poolInfos[i].withdrawFee)
+        pendingRewardsFunction, null, claimFunction, "fantom", poolInfos[i].depositFee, poolInfos[i].withdrawFee)
       aprs.push(apr);
     }
   }
