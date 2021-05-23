@@ -34,6 +34,12 @@ const pageNetwork = function() {
   if (network.toLowerCase() === 'avax') {
     return window.NETWORKS.AVALANCHE
   }
+  if (network.toLowerCase() === 'fuse') {
+    return window.NETWORKS.FUSE
+  }
+  if (network.toLowerCase() === 'thundercore') {
+    return window.NETWORKS.THUNDERCORE
+  }
 
   return window.NETWORKS.ETHEREUM
 }
@@ -1868,6 +1874,9 @@ function getErc20Prices(prices, pool, chain="eth") {
     case "fantom":
       poolUrl=`https://ftmscan.com/token/${pool.address}`;
       break;
+    case "fuse":
+      poolUrl=`https://explorer.fuse.io/address/${pool.address}`;
+      break;
   }
   const name = `<a href='${poolUrl}' target='_blank'>${pool.symbol}</a>`;
   return {
@@ -2351,6 +2360,9 @@ async function printSynthetixPool(App, info, chain="eth", customURLs) {
         break;
       case "fantom":
         _print(`<a target="_blank" href="https://ftmscan.com/address/${info.stakingAddress}#code">FTM Scan</a>`);
+        break;
+      case "fuse":
+        _print(`<a target="_blank" href="https://explorer.fuse.io/address/${info.stakingAddress}#code">FUSE Scan</a>`);
         break;
     }
     if (info.stakeTokenTicker != "ETH") {
