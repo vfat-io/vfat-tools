@@ -1,10 +1,9 @@
-const { ethers } = require("ethers");
 
 $(function() {
     consoleInit(main)
     });
     
-    const ERC20_ABI = [
+    const BASE_ERC20_ABI = [
         {
             "inputs": [
                 {
@@ -331,6 +330,124 @@ $(function() {
                 {
                     "indexed": true,
                     "internalType": "address",
+                    "name": "sender",
+                    "type": "address"
+                },
+                {
+                    "indexed": false,
+                    "internalType": "uint256",
+                    "name": "amount0",
+                    "type": "uint256"
+                },
+                {
+                    "indexed": false,
+                    "internalType": "uint256",
+                    "name": "amount1",
+                    "type": "uint256"
+                },
+                {
+                    "indexed": true,
+                    "internalType": "address",
+                    "name": "to",
+                    "type": "address"
+                }
+            ],
+            "name": "Burn",
+            "type": "event"
+        },
+        {
+            "anonymous": false,
+            "inputs": [
+                {
+                    "indexed": true,
+                    "internalType": "address",
+                    "name": "sender",
+                    "type": "address"
+                },
+                {
+                    "indexed": false,
+                    "internalType": "uint256",
+                    "name": "amount0",
+                    "type": "uint256"
+                },
+                {
+                    "indexed": false,
+                    "internalType": "uint256",
+                    "name": "amount1",
+                    "type": "uint256"
+                }
+            ],
+            "name": "Mint",
+            "type": "event"
+        },
+        {
+            "anonymous": false,
+            "inputs": [
+                {
+                    "indexed": true,
+                    "internalType": "address",
+                    "name": "sender",
+                    "type": "address"
+                },
+                {
+                    "indexed": false,
+                    "internalType": "uint256",
+                    "name": "amount0In",
+                    "type": "uint256"
+                },
+                {
+                    "indexed": false,
+                    "internalType": "uint256",
+                    "name": "amount1In",
+                    "type": "uint256"
+                },
+                {
+                    "indexed": false,
+                    "internalType": "uint256",
+                    "name": "amount0Out",
+                    "type": "uint256"
+                },
+                {
+                    "indexed": false,
+                    "internalType": "uint256",
+                    "name": "amount1Out",
+                    "type": "uint256"
+                },
+                {
+                    "indexed": true,
+                    "internalType": "address",
+                    "name": "to",
+                    "type": "address"
+                }
+            ],
+            "name": "Swap",
+            "type": "event"
+        },
+        {
+            "anonymous": false,
+            "inputs": [
+                {
+                    "indexed": false,
+                    "internalType": "uint112",
+                    "name": "reserve0",
+                    "type": "uint112"
+                },
+                {
+                    "indexed": false,
+                    "internalType": "uint112",
+                    "name": "reserve1",
+                    "type": "uint112"
+                }
+            ],
+            "name": "Sync",
+            "type": "event"
+        },
+        {
+            "anonymous": false,
+            "inputs": [
+                {
+                    "indexed": true,
+                    "internalType": "address",
                     "name": "from",
                     "type": "address"
                 },
@@ -359,6 +476,21 @@ $(function() {
                     "internalType": "bytes32",
                     "name": "",
                     "type": "bytes32"
+                }
+            ],
+            "payable": false,
+            "stateMutability": "view",
+            "type": "function"
+        },
+        {
+            "constant": true,
+            "inputs": [],
+            "name": "MINIMUM_LIQUIDITY",
+            "outputs": [
+                {
+                    "internalType": "uint256",
+                    "name": "",
+                    "type": "uint256"
                 }
             ],
             "payable": false,
@@ -454,6 +586,32 @@ $(function() {
             "type": "function"
         },
         {
+            "constant": false,
+            "inputs": [
+                {
+                    "internalType": "address",
+                    "name": "to",
+                    "type": "address"
+                }
+            ],
+            "name": "burn",
+            "outputs": [
+                {
+                    "internalType": "uint256",
+                    "name": "amount0",
+                    "type": "uint256"
+                },
+                {
+                    "internalType": "uint256",
+                    "name": "amount1",
+                    "type": "uint256"
+                }
+            ],
+            "payable": false,
+            "stateMutability": "nonpayable",
+            "type": "function"
+        },
+        {
             "constant": true,
             "inputs": [],
             "name": "decimals",
@@ -466,6 +624,102 @@ $(function() {
             ],
             "payable": false,
             "stateMutability": "view",
+            "type": "function"
+        },
+        {
+            "constant": true,
+            "inputs": [],
+            "name": "factory",
+            "outputs": [
+                {
+                    "internalType": "address",
+                    "name": "",
+                    "type": "address"
+                }
+            ],
+            "payable": false,
+            "stateMutability": "view",
+            "type": "function"
+        },
+        {
+            "constant": true,
+            "inputs": [],
+            "name": "getReserves",
+            "outputs": [
+                {
+                    "internalType": "uint112",
+                    "name": "_reserve0",
+                    "type": "uint112"
+                },
+                {
+                    "internalType": "uint112",
+                    "name": "_reserve1",
+                    "type": "uint112"
+                },
+                {
+                    "internalType": "uint32",
+                    "name": "_blockTimestampLast",
+                    "type": "uint32"
+                }
+            ],
+            "payable": false,
+            "stateMutability": "view",
+            "type": "function"
+        },
+        {
+            "constant": false,
+            "inputs": [
+                {
+                    "internalType": "address",
+                    "name": "_token0",
+                    "type": "address"
+                },
+                {
+                    "internalType": "address",
+                    "name": "_token1",
+                    "type": "address"
+                }
+            ],
+            "name": "initialize",
+            "outputs": [],
+            "payable": false,
+            "stateMutability": "nonpayable",
+            "type": "function"
+        },
+        {
+            "constant": true,
+            "inputs": [],
+            "name": "kLast",
+            "outputs": [
+                {
+                    "internalType": "uint256",
+                    "name": "",
+                    "type": "uint256"
+                }
+            ],
+            "payable": false,
+            "stateMutability": "view",
+            "type": "function"
+        },
+        {
+            "constant": false,
+            "inputs": [
+                {
+                    "internalType": "address",
+                    "name": "to",
+                    "type": "address"
+                }
+            ],
+            "name": "mint",
+            "outputs": [
+                {
+                    "internalType": "uint256",
+                    "name": "liquidity",
+                    "type": "uint256"
+                }
+            ],
+            "payable": false,
+            "stateMutability": "nonpayable",
             "type": "function"
         },
         {
@@ -552,12 +806,126 @@ $(function() {
         {
             "constant": true,
             "inputs": [],
+            "name": "price0CumulativeLast",
+            "outputs": [
+                {
+                    "internalType": "uint256",
+                    "name": "",
+                    "type": "uint256"
+                }
+            ],
+            "payable": false,
+            "stateMutability": "view",
+            "type": "function"
+        },
+        {
+            "constant": true,
+            "inputs": [],
+            "name": "price1CumulativeLast",
+            "outputs": [
+                {
+                    "internalType": "uint256",
+                    "name": "",
+                    "type": "uint256"
+                }
+            ],
+            "payable": false,
+            "stateMutability": "view",
+            "type": "function"
+        },
+        {
+            "constant": false,
+            "inputs": [
+                {
+                    "internalType": "address",
+                    "name": "to",
+                    "type": "address"
+                }
+            ],
+            "name": "skim",
+            "outputs": [],
+            "payable": false,
+            "stateMutability": "nonpayable",
+            "type": "function"
+        },
+        {
+            "constant": false,
+            "inputs": [
+                {
+                    "internalType": "uint256",
+                    "name": "amount0Out",
+                    "type": "uint256"
+                },
+                {
+                    "internalType": "uint256",
+                    "name": "amount1Out",
+                    "type": "uint256"
+                },
+                {
+                    "internalType": "address",
+                    "name": "to",
+                    "type": "address"
+                },
+                {
+                    "internalType": "bytes",
+                    "name": "data",
+                    "type": "bytes"
+                }
+            ],
+            "name": "swap",
+            "outputs": [],
+            "payable": false,
+            "stateMutability": "nonpayable",
+            "type": "function"
+        },
+        {
+            "constant": true,
+            "inputs": [],
             "name": "symbol",
             "outputs": [
                 {
                     "internalType": "string",
                     "name": "",
                     "type": "string"
+                }
+            ],
+            "payable": false,
+            "stateMutability": "view",
+            "type": "function"
+        },
+        {
+            "constant": false,
+            "inputs": [],
+            "name": "sync",
+            "outputs": [],
+            "payable": false,
+            "stateMutability": "nonpayable",
+            "type": "function"
+        },
+        {
+            "constant": true,
+            "inputs": [],
+            "name": "token0",
+            "outputs": [
+                {
+                    "internalType": "address",
+                    "name": "",
+                    "type": "address"
+                }
+            ],
+            "payable": false,
+            "stateMutability": "view",
+            "type": "function"
+        },
+        {
+            "constant": true,
+            "inputs": [],
+            "name": "token1",
+            "outputs": [
+                {
+                    "internalType": "address",
+                    "name": "",
+                    "type": "address"
                 }
             ],
             "payable": false,
@@ -663,21 +1031,23 @@ $(function() {
     
       const prices = await getMaticPrices();
     
-      await loadFarmDetails(App, farm_Address[i], pool_addresses[1], base_tokens_addresses[0], base_tokens_addresses[1], ERC20_ABI);
-    
+      await loadPoolDetails(App, farm_addresses[0], pool_addresses[1], base_tokens_addresses[0], base_tokens_addresses[1], BASE_ERC20_ABI, POOL_ABI, prices);
       hideLoading();
     }
 
-    async function loadFarmDetails(App, farmAddress, poolAddress, aTokenAddress, bTokenAddress, ERC20_ABI){
-        const ATOKEN_CONTRACT = new ethers.Contract(aTokenAddress, ERC20_ABI, App.provider); //GFI
-        const BTOKEN_CONTRACT = new ethers.Contract(bTokenAddress, ERC20_ABI, App.provider); //Other
-        const POOL_CONTRACT = new ethers.Contract(poolAddress, POOL_ABI, App.provider); //Pool
+    async function loadPoolDetails(App, farmAddress, poolAddress, aTokenAddress, bTokenAddress, ERC20ABI, PoolABI, prices){
+        const ATOKEN_CONTRACT = new ethers.Contract(aTokenAddress, ERC20ABI, App.provider); //GFI
+        const BTOKEN_CONTRACT = new ethers.Contract(bTokenAddress, ERC20ABI, App.provider); //Other
+        const POOL_CONTRACT = new ethers.Contract(poolAddress, PoolABI, App.provider); //Pool
 
-        const GFI_ADDRESS = await ATOKEN_CONTRACT.UNDERLYING_ASSET_ADDRESS();
-        const B_TOKEN_ADDRESS = await BTOKEN_CONTRACT.UNDERLYING_ASSET_ADDRESS();
-        let reservesA, reservesB = await POOL_CONTRACT.getReserves();
+        const uSymbol = await ATOKEN_CONTRACT.symbol();
+        //let reservesA, reservesB, timeStamp = await POOL_CONTRACT.getReserves();
+        let reservesA = await ATOKEN_CONTRACT.balanceOf(poolAddress) / 10**18;
+        let reservesB = await BTOKEN_CONTRACT.balanceOf(poolAddress) / 10**6;
         let GFIprice = reservesB/reservesA;
-        _print_bold(`${uSymbol} ($${formatMoney(GFIprice)})`);
+        _print_bold(`${uSymbol} ($${Number(GFIprice).toFixed(7)})`);
+        _print(`GFI in Pool: ${formatMoney(reservesA)}`);
+        _print(`USDC in Pool: ${formatMoney(reservesB)}`);
 
     }
     
