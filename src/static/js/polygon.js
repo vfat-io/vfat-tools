@@ -52,8 +52,10 @@ const main = async() => {
         ["Polygoat     ",`<a href="polygoat"      >Various</a>`,"GOAT   ","https://www.polygoat.finance"],
         ["Polysnake    ",`<a href="polysnake"     >Various</a>`,"SNAKE  ","https://www.polysnake.finance"],
         ["Moonwolf     ",`<a href="moonwolf"      >Various</a>`,"MOON   ","https://www.moonwolf.io"],
-        ["Iron *       ",`<a href="iron"          >Various</a>`,"TITAN  ","https://polygon.iron.finance"],
-        ["Alchemy Dao  ",`<a href="alchemydao"    >Various</a>`,"ALCH   ","https://polygon.alchemydao.com"]
+        ["Iron         ",`<a href="iron"          >Various</a>`,"TITAN  ","https://polygon.iron.finance"],
+        ["Alchemy Dao  ",`<a href="alchemydao"    >Various</a>`,"ALCH   ","https://polygon.alchemydao.com"],
+        ["Polycrab     ",`<a href="polycrab"      >Various</a>`,"CRAB   ","https://polycrab.finance"],
+        ["Polybear     ",`<a href="polybear"      >Various</a>`,"BEAR   ","https://polybear.exchange"]
       ]
   }
 

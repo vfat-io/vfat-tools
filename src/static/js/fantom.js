@@ -93,6 +93,12 @@ const main = async() => {
         "https://stakesteak.com"
       ],
       [
+        "Frankenstein",
+        `<a href='frankenstein'>Various</a>`,
+        "FRANK",
+        "https://frankenstein.finance"
+      ],
+      [
         "Waka",
         `<a href='waka'>Various</a>`,
         "WAKA",

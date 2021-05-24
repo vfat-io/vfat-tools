@@ -29,12 +29,79 @@ async function main() {
     const tokens = {};
     const prices = await getMaticPrices();
 
-    await loadMaticChefContract(App, tokens, prices, TITAN_CHEF0, TITAN_CHEF_ADDR0, TITAN_CHEF_ABI, rewardTokenTicker0,
+    let p0 = await loadMaticIronContract(App, tokens, prices, TITAN_CHEF0, TITAN_CHEF_ADDR0, TITAN_CHEF_ABI, rewardTokenTicker0,
         "rewardToken", null, rewardsPerWeek0, "pendingReward");
-    await loadMaticChefContract(App, tokens, prices, TITAN_CHEF1, TITAN_CHEF_ADDR1, TITAN_CHEF_ABI, rewardTokenTicker0,
+    let p1 = await loadMaticIronContract(App, tokens, prices, TITAN_CHEF1, TITAN_CHEF_ADDR1, TITAN_CHEF_ABI, rewardTokenTicker0,
         "rewardToken", null, rewardsPerWeek1, "pendingReward");
-    await loadMaticChefContract(App, tokens, prices, TITAN_CHEF2, TITAN_CHEF_ADDR2, TITAN_CHEF_ABI, rewardTokenTicker1,
+    let p2 = await loadMaticIronContract(App, tokens, prices, TITAN_CHEF2, TITAN_CHEF_ADDR2, TITAN_CHEF_ABI, rewardTokenTicker1,
         "rewardToken", null, rewardsPerWeek2, "pendingReward");
 
+    _print_bold(`Total Staked: $${formatMoney(p0.totalStaked+p1.totalStaked+p2.totalStaked)}`);
+    if (p0.totalUserStaked > 0 || p1.totalUserStaked > 0 || p2.totalUserStaked > 0) {
+        _print_bold(`\nYou are staking a total of $${formatMoney(totalUserStaked)} at an average APR of ${(averageApr * 100).toFixed(2)}%`)
+        _print(`Estimated earnings:`
+            + ` Day $${formatMoney(p0.totalUserStaked*p0.averageApr/365 + p1.totalUserStaked*p1.averageApr/365 + p2.totalUserStaked*p2.averageApr/365)}`
+            + ` Week $${formatMoney(p0.totalUserStaked*p0.averageApr/52 + p1.totalUserStaked*p1.averageApr/52 + p2.totalUserStaked*p2.averageApr/52)}`
+            + ` Year $${formatMoney(p0.totalUserStaked*p0.averageApr + p1.totalUserStaked*p1.averageApr + p2.totalUserStaked*p2.averageApr)}\n`);
+    }
+
     hideLoading();
+}
+
+async function loadMaticIronContract(App, tokens, prices, chef, chefAddress, chefAbi, rewardTokenTicker,
+  rewardTokenFunction, rewardsPerBlockFunction, rewardsPerWeekFixed, pendingRewardsFunction,
+  deathPoolIndices) {
+  const chefContract = chef ?? new ethers.Contract(chefAddress, chefAbi, App.provider);
+
+  const poolCount = parseInt(await chefContract.poolLength(), 10);
+  const totalAllocPoints = await chefContract.totalAllocPoint();
+
+  _print(`Found ${poolCount} pools.\n`)
+
+  var tokens = {};
+
+  const rewardTokenAddress = await chefContract.callStatic[rewardTokenFunction]();
+  const rewardToken = await getMaticToken(App, rewardTokenAddress, chefAddress);
+  const rewardsPerWeek = rewardsPerWeekFixed ?? 
+    await chefContract.callStatic[rewardsPerBlockFunction]() 
+    / 10 ** rewardToken.decimals * 604800 / 3
+
+  const poolInfos = await Promise.all([...Array(poolCount).keys()].map(async (x) =>
+    await getMaticPoolInfo(App, chefContract, chefAddress, x, pendingRewardsFunction)));
+
+  var tokenAddresses = [].concat.apply([], poolInfos.filter(x => x.poolToken).map(x => x.poolToken.tokens));
+
+  await Promise.all(tokenAddresses.map(async (address) => {
+      tokens[address] = await getMaticToken(App, address, chefAddress);
+  }));
+
+  if (deathPoolIndices) {   //load prices for the deathpool assets
+    deathPoolIndices.map(i => poolInfos[i])
+                     .map(poolInfo => 
+      poolInfo.poolToken ? getPoolPrices(tokens, prices, poolInfo.poolToken, "matic") : undefined);
+  }
+
+  const poolPrices = poolInfos.map(poolInfo => poolInfo.poolToken ? getPoolPrices(tokens, prices, poolInfo.poolToken, "matic") : undefined);
+  
+  let aprs = []
+  for (i = 0; i < poolCount; i++) {
+    if (poolPrices[i]) {
+      const apr = printChefPool(App, chefAbi, chefAddress, prices, tokens, poolInfos[i], i, poolPrices[i],
+        totalAllocPoints, rewardsPerWeek, rewardTokenTicker, rewardTokenAddress,
+        pendingRewardsFunction, null, null, "matic", poolInfos[i].depositFee, poolInfos[i].withdrawFee)
+      aprs.push(apr);
+    }
+  }
+  let totalUserStaked=0, totalStaked=0, averageApr=0;
+  for (const a of aprs) {
+    if (!isNaN(a.totalStakedUsd)) {
+      totalStaked += a.totalStakedUsd;
+    }
+    if (a.userStakedUsd > 0) {
+      totalUserStaked += a.userStakedUsd;
+      averageApr += a.userStakedUsd * a.yearlyAPR / 100;
+    }
+  }
+  averageApr = averageApr / totalUserStaked;
+  return { prices, totalUserStaked, totalStaked, averageApr }
 }
