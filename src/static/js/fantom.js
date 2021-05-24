@@ -86,6 +86,12 @@ const main = async() => {
         "SEED",
         "https://thegreenhouse.finance"
       ],
+      [
+        "Frankenstein",
+        `<a href='frankenstein'>Various</a>`,
+        "FRANK",
+        "https://frankenstein.finance"
+      ],
     ]
   }
 
