@@ -11,7 +11,7 @@ const main = async() => {
       ["Pancake             ", `<a href="pancake"       >Various</a>`,"CAKE          ","https://pancakeswap.finance"],
       ["Apeswap             ", `<a href="apeswap"       >Various</a>`,"BANANA        ","https://apeswap.finance"],
       ["Autofarm            ", `<a href="autofarm"      >Various</a>`,"AUTOFARM      ","https://autofarm.network"],
-      ["Bake *              ", `<a href="bake"          >Various</a>`,"BAKE          ","https://www.bakeryswap.org"],
+      ["Bake                ", `<a href="bake"          >Various</a>`,"BAKE          ","https://www.bakeryswap.org"],
       ["Brew                ", `<a href="brew"          >Various</a>`,"BREW          ","https://cafeswap.finance"],
       ["Donut               ", `<a href="donut"         >Various</a>`,"DONUT         ","https://donutdefi.com"],
       ["Pumpkin             ", `<a href="pumpkin"       >Various</a>`,"PUMP          ","https://pumpkindefi.org"],
@@ -60,7 +60,7 @@ const main = async() => {
       ["Fed                 ", `<a href="fed"           >Various</a>`,"FED           ","https://fedswap.finance"],
       ["Coral               ", `<a href="coral"         >Various</a>`,"CRL           ","https://coralfarm.finance"],
       ["Duck Money          ", `<a href="duckmoney"     >Various</a>`,"DUCK          ","https://duck.money"],
-      ["Iron Finance *      ", `<a href="iron"          >Various</a>`,"STEEL         ","https://iron.finance"],
+      ["Iron Finance        ", `<a href="iron"          >Various</a>`,"STEEL         ","https://iron.finance"],
       ["BVaults             ", `<a href="bvaults"       >Various</a>`,"Various  ","https://bvaults.fi"],
       ["MidasGold           ", `<a href="midasgold"     >Various</a>`,"Various  ","https://midasgold.network"],
       ["Nerve               ", `<a href="nerve"         >Various</a>`,"NRV           ","https://nerve.fi"],
@@ -206,7 +206,7 @@ const main = async() => {
       ["Caramel             ", `<a href="caramel"       >Various</a>`,"CARAMEL       ","https://caramelswap.finance"],
       ["Plumcake            ", `<a href="plumcake"      >Various</a>`,"PLUM          ","https://plumcake.finance"],
       ["Wsbdapp             ", `<a href="wsb"           >Various</a>`,"WSB           ","https://farm.wsbdapp.com"],
-      ["Feeder *            ", `<a href="feeder"        >Various</a>`,"FEED          ","https://app.feeder.finance"],
+      ["Feeder              ", `<a href="feeder"        >Various</a>`,"FEED          ","https://app.feeder.finance"],
       ["Yolodraw            ", `<a href="yolodraw"      >Various</a>`,"YoloDraw      ","https://yolo-token.com"],
       ["Jaguar              ", `<a href="jaguar"        >Various</a>`,"JAGUAR        ","https://jaguarswap.com"],
       ["Zombie              ", `<a href="zombie"        >Various</a>`,"ZOMBIE        ","https://zombie-farm.com"],
@@ -281,7 +281,8 @@ const main = async() => {
       ["Frankenstein        ", `<a href="frankenstein"  >Various</a>`,"FRANK         ","https://frankenstein.finance"],
       ["Cashcow             ", `<a href="cashcow"       >Various</a>`,"CCDI          ","https://cashcowswap.org"],
       ["Tiger Finance       ", `<a href="tiger_defi"    >Various</a>`,"TIG           ","https://www.tigerfinancedefi.com"],
-      ["Tinville            ", `<a href="tinville"      >Various</a>`,"TINvS         ","https://farms.tinville.finance"]
+      ["Tinville            ", `<a href="tinville"      >Various</a>`,"TINvS         ","https://farms.tinville.finance"],
+      ["Matisse             ", `<a href="matisse"       >Various</a>`,"Nu            ","https://app.matisse.finance"]
     ]
   }
   

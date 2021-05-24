@@ -91,6 +91,12 @@ const main = async() => {
         `<a href='steak'>Various</a>`,
         "STEAK",
         "https://stakesteak.com"
+      ],
+      [
+        "Frankenstein",
+        `<a href='frankenstein'>Various</a>`,
+        "FRANK",
+        "https://frankenstein.finance"
       ]
     ]
   }
