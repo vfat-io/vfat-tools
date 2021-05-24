@@ -282,10 +282,11 @@ const main = async() => {
       ["Cashcow             ", `<a href="cashcow"       >Various</a>`,"CCDI          ","https://cashcowswap.org"],
       ["Tiger Finance       ", `<a href="tiger_defi"    >Various</a>`,"TIG           ","https://www.tigerfinancedefi.com"],
       ["Tinville            ", `<a href="tinville"      >Various</a>`,"TINvS         ","https://farms.tinville.finance"],
-      ["Matisse             ", `<a href="matisse"       >Various</a>`,"Nu            ","https://app.matisse.finance"]
+      ["Matisse             ", `<a href="matisse"       >Various</a>`,"Nu            ","https://app.matisse.finance"],
+      ["Cougar              ", `<a href="cougar"        >Various</a>`,"CGS           ","https://cougarswap.io"]
     ]
   }
-  
+
   let table = new AsciiTable().fromJSON(tableData);
   document.getElementById('log').innerHTML += table + '<br />';
   hideLoading();
