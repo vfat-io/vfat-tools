@@ -8,6 +8,7 @@ const main = async() => {
     "title":"POLYGON Network",
     "heading":["Pool Provider","LP", "Reward Tokens", "INFO"],
     "rows": [
+        ["Gravity Finance",`<a href="gravityfinance">Various</a>`,"GFI  ","https://gravityfinance.io/"],
         ["Quickswap    ",`<a href="quick"         >Various</a>`,"QUICK  ","https://quickswap.exchange/#/quick"],
         ["Cometh       ",`<a href="cometh"        >Various</a>`,"MUST   ","https://swap.cometh.io/#/stake"],
         ["Dark         ",`<a href="dark"          >Various</a>`,"DB     ","https://www.dark.build"],
