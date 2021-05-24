@@ -283,7 +283,8 @@ const main = async() => {
       ["Tiger Finance       ", `<a href="tiger_defi"    >Various</a>`,"TIG           ","https://www.tigerfinancedefi.com"],
       ["Tinville            ", `<a href="tinville"      >Various</a>`,"TINvS         ","https://farms.tinville.finance"],
       ["Matisse             ", `<a href="matisse"       >Various</a>`,"Nu            ","https://app.matisse.finance"],
-      ["Cougar              ", `<a href="cougar"        >Various</a>`,"CGS           ","https://cougarswap.io"]
+      ["Cougar              ", `<a href="cougar"        >Various</a>`,"CGS           ","https://cougarswap.io"],
+      ["Fluity              ", `<a href="fluity"        >Various</a>`,"FLTY          ","https://fluity.finance"]
     ]
   }
 
