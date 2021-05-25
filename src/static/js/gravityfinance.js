@@ -1005,6 +1005,350 @@ $(function() {
             "type": "function"
         }
     ]
+
+    const FARM_ABI = [
+        {
+            "anonymous": false,
+            "inputs": [
+                {
+                    "indexed": true,
+                    "internalType": "address",
+                    "name": "user",
+                    "type": "address"
+                },
+                {
+                    "indexed": false,
+                    "internalType": "uint256",
+                    "name": "amount",
+                    "type": "uint256"
+                }
+            ],
+            "name": "Deposit",
+            "type": "event"
+        },
+        {
+            "anonymous": false,
+            "inputs": [
+                {
+                    "indexed": true,
+                    "internalType": "address",
+                    "name": "user",
+                    "type": "address"
+                },
+                {
+                    "indexed": false,
+                    "internalType": "uint256",
+                    "name": "amount",
+                    "type": "uint256"
+                }
+            ],
+            "name": "EmergencyWithdraw",
+            "type": "event"
+        },
+        {
+            "anonymous": false,
+            "inputs": [
+                {
+                    "indexed": true,
+                    "internalType": "address",
+                    "name": "previousOwner",
+                    "type": "address"
+                },
+                {
+                    "indexed": true,
+                    "internalType": "address",
+                    "name": "newOwner",
+                    "type": "address"
+                }
+            ],
+            "name": "OwnershipTransferred",
+            "type": "event"
+        },
+        {
+            "anonymous": false,
+            "inputs": [
+                {
+                    "indexed": true,
+                    "internalType": "address",
+                    "name": "user",
+                    "type": "address"
+                },
+                {
+                    "indexed": false,
+                    "internalType": "uint256",
+                    "name": "amount",
+                    "type": "uint256"
+                }
+            ],
+            "name": "Withdraw",
+            "type": "event"
+        },
+        {
+            "inputs": [
+                {
+                    "internalType": "uint256",
+                    "name": "_amount",
+                    "type": "uint256"
+                }
+            ],
+            "name": "deposit",
+            "outputs": [],
+            "stateMutability": "nonpayable",
+            "type": "function"
+        },
+        {
+            "inputs": [],
+            "name": "emergencyWithdraw",
+            "outputs": [],
+            "stateMutability": "nonpayable",
+            "type": "function"
+        },
+        {
+            "inputs": [],
+            "name": "farmInfo",
+            "outputs": [
+                {
+                    "internalType": "contract IERC20",
+                    "name": "lpToken",
+                    "type": "address"
+                },
+                {
+                    "internalType": "contract IERC20",
+                    "name": "rewardToken",
+                    "type": "address"
+                },
+                {
+                    "internalType": "uint256",
+                    "name": "startBlock",
+                    "type": "uint256"
+                },
+                {
+                    "internalType": "uint256",
+                    "name": "blockReward",
+                    "type": "uint256"
+                },
+                {
+                    "internalType": "uint256",
+                    "name": "bonusEndBlock",
+                    "type": "uint256"
+                },
+                {
+                    "internalType": "uint256",
+                    "name": "bonus",
+                    "type": "uint256"
+                },
+                {
+                    "internalType": "uint256",
+                    "name": "endBlock",
+                    "type": "uint256"
+                },
+                {
+                    "internalType": "uint256",
+                    "name": "lastRewardBlock",
+                    "type": "uint256"
+                },
+                {
+                    "internalType": "uint256",
+                    "name": "accRewardPerShare",
+                    "type": "uint256"
+                },
+                {
+                    "internalType": "uint256",
+                    "name": "farmableSupply",
+                    "type": "uint256"
+                },
+                {
+                    "internalType": "uint256",
+                    "name": "numFarmers",
+                    "type": "uint256"
+                }
+            ],
+            "stateMutability": "view",
+            "type": "function"
+        },
+        {
+            "inputs": [
+                {
+                    "internalType": "uint256",
+                    "name": "_from_block",
+                    "type": "uint256"
+                },
+                {
+                    "internalType": "uint256",
+                    "name": "_to",
+                    "type": "uint256"
+                }
+            ],
+            "name": "getMultiplier",
+            "outputs": [
+                {
+                    "internalType": "uint256",
+                    "name": "",
+                    "type": "uint256"
+                }
+            ],
+            "stateMutability": "view",
+            "type": "function"
+        },
+        {
+            "inputs": [
+                {
+                    "internalType": "contract IERC20",
+                    "name": "_rewardToken",
+                    "type": "address"
+                },
+                {
+                    "internalType": "uint256",
+                    "name": "_amount",
+                    "type": "uint256"
+                },
+                {
+                    "internalType": "contract IERC20",
+                    "name": "_lpToken",
+                    "type": "address"
+                },
+                {
+                    "internalType": "uint256",
+                    "name": "_blockReward",
+                    "type": "uint256"
+                },
+                {
+                    "internalType": "uint256",
+                    "name": "_startBlock",
+                    "type": "uint256"
+                },
+                {
+                    "internalType": "uint256",
+                    "name": "_endBlock",
+                    "type": "uint256"
+                },
+                {
+                    "internalType": "uint256",
+                    "name": "_bonusEndBlock",
+                    "type": "uint256"
+                },
+                {
+                    "internalType": "uint256",
+                    "name": "_bonus",
+                    "type": "uint256"
+                }
+            ],
+            "name": "init",
+            "outputs": [],
+            "stateMutability": "nonpayable",
+            "type": "function"
+        },
+        {
+            "inputs": [],
+            "name": "owner",
+            "outputs": [
+                {
+                    "internalType": "address",
+                    "name": "",
+                    "type": "address"
+                }
+            ],
+            "stateMutability": "view",
+            "type": "function"
+        },
+        {
+            "inputs": [
+                {
+                    "internalType": "address",
+                    "name": "_user",
+                    "type": "address"
+                }
+            ],
+            "name": "pendingReward",
+            "outputs": [
+                {
+                    "internalType": "uint256",
+                    "name": "",
+                    "type": "uint256"
+                }
+            ],
+            "stateMutability": "view",
+            "type": "function"
+        },
+        {
+            "inputs": [],
+            "name": "renounceOwnership",
+            "outputs": [],
+            "stateMutability": "nonpayable",
+            "type": "function"
+        },
+        {
+            "inputs": [
+                {
+                    "internalType": "address",
+                    "name": "newOwner",
+                    "type": "address"
+                }
+            ],
+            "name": "transferOwnership",
+            "outputs": [],
+            "stateMutability": "nonpayable",
+            "type": "function"
+        },
+        {
+            "inputs": [],
+            "name": "updatePool",
+            "outputs": [],
+            "stateMutability": "nonpayable",
+            "type": "function"
+        },
+        {
+            "inputs": [
+                {
+                    "internalType": "address",
+                    "name": "",
+                    "type": "address"
+                }
+            ],
+            "name": "userInfo",
+            "outputs": [
+                {
+                    "internalType": "uint256",
+                    "name": "amount",
+                    "type": "uint256"
+                },
+                {
+                    "internalType": "uint256",
+                    "name": "rewardDebt",
+                    "type": "uint256"
+                }
+            ],
+            "stateMutability": "view",
+            "type": "function"
+        },
+        {
+            "inputs": [
+                {
+                    "internalType": "uint256",
+                    "name": "_amount",
+                    "type": "uint256"
+                }
+            ],
+            "name": "withdraw",
+            "outputs": [],
+            "stateMutability": "nonpayable",
+            "type": "function"
+        },
+        {
+            "inputs": [
+                {
+                    "internalType": "uint256",
+                    "name": "amount",
+                    "type": "uint256"
+                }
+            ],
+            "name": "withdrawRewards",
+            "outputs": [],
+            "stateMutability": "nonpayable",
+            "type": "function"
+        }
+    ]
+
     const base_tokens_addresses = [
         "0x874e178A2f3f3F9d34db862453Cd756E7eAb0381", //GFI
         "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174", // USDC
@@ -1030,28 +1374,31 @@ $(function() {
       _print("Reading smart contracts...\n");
     
       const prices = await getMaticPrices();
-      await loadFarmDetails(App, farm_addresses[0], pool_addresses[1], base_tokens_addresses[0], 0, BASE_ERC20_ABI, POOL_ABI, 6);
-      await loadFarmDetails(App, farm_addresses[0], pool_addresses[1], base_tokens_addresses[0], base_tokens_addresses[1], BASE_ERC20_ABI, POOL_ABI, 6);
-      await loadFarmDetails(App, farm_addresses[0], pool_addresses[2], base_tokens_addresses[0], base_tokens_addresses[2], BASE_ERC20_ABI, POOL_ABI, 18);
+      await loadFarmDetails(App, farm_addresses[0], pool_addresses[1], base_tokens_addresses[0], 0, BASE_ERC20_ABI, POOL_ABI, 6, prices, FARM_ABI);
+      await loadFarmDetails(App, farm_addresses[0], pool_addresses[1], base_tokens_addresses[0], base_tokens_addresses[1], BASE_ERC20_ABI, POOL_ABI, 6, prices, FARM_ABI);
+      await loadFarmDetails(App, farm_addresses[0], pool_addresses[2], base_tokens_addresses[0], base_tokens_addresses[2], BASE_ERC20_ABI, POOL_ABI, 18, prices, FARM_ABI);
       hideLoading();
     }
 
-    async function loadFarmDetails(App, farmAddress, poolAddress, aTokenAddress, bTokenAddress, ERC20ABI, PoolABI, Bzereos){
+    async function loadFarmDetails(App, farmAddress, poolAddress, aTokenAddress, bTokenAddress, ERC20ABI, PoolABI, Bzereos, prices, FARMABI){
         const ATOKEN_CONTRACT = new ethers.Contract(aTokenAddress, ERC20ABI, App.provider); //GFI
+        const FARM_CONTRACT = new ethers.Contract(farmAddress, FARMABI, App.provider);
+        const farmInfo = await FARM_CONTRACT.farmInfo();
         const uSymbol = await ATOKEN_CONTRACT.symbol();
         if (bTokenAddress != 0){
         const BTOKEN_CONTRACT = new ethers.Contract(bTokenAddress, ERC20ABI, App.provider); //Other
         const POOL_CONTRACT = new ethers.Contract(poolAddress, PoolABI, App.provider); //Pool
+        const underlyingPrice = getParameterCaseInsensitive(prices, bTokenAddress)?.usd;
 
         const otherSymbol = await BTOKEN_CONTRACT.symbol();
         //let reservesA, reservesB, timeStamp = await POOL_CONTRACT.getReserves();
         let reservesA = await ATOKEN_CONTRACT.balanceOf(poolAddress) / 10**18;
         let reservesB = await BTOKEN_CONTRACT.balanceOf(poolAddress) / 10**Bzereos;
         let GFIprice = reservesB/reservesA;
-        let poolLiquidity = reservesB + (reservesA*GFIprice);
+        let poolLiquidity = (reservesB + (reservesA*GFIprice)) * underlyingPrice;
         _print_bold(`${uSymbol}-${otherSymbol}`)
         _print(`${uSymbol} (${Number(GFIprice).toFixed(8)})[${otherSymbol}]`);
-        _print(`Liquidity in Pool: ${formatMoney(poolLiquidity)}[${otherSymbol}]`);
+        _print(`Liquidity in Pool: $${formatMoney(poolLiquidity)}`);
         _print(`APR: ??.?%`);
         _print("\n");
         }
@@ -1066,36 +1413,63 @@ $(function() {
     }
     
 
-    async function get_pool_APR(pool_id) {
+    async function get_pool_APR(farm_balance, GFI_in_pool, farm_info) {
         const blocks_per_year = 1.5019e7; 
       
-        var farm_LP_balance = await get_lp_farm_balance(pool_id) ; 
-        var pool_stats = await get_swap_pool_stats(pool_id) ; 
-        
-        var GFI_amount_in_pool = pool_stats[0] ; 
-        var totalLPSupply = pool_stats[1] ; 
+        var farm_LP_balance = farm_balance; //Is this the amount of LP tokens in the farm?
+
+        var GFI_amount_in_pool = GFI_in_pool; //Is this the amount of GFI in the liquidity pool?
+        var totalLPSupply = pool_stats[1]; // Is this the total supply of LP tokens for a specific pool?
       
         var farm_GFI_worth = farm_LP_balance * GFI_amount_in_pool * 2 / totalLPSupply //fraction of LP supply that is in the farming contract x2 is GFI worth of LP tokens in farm
       
-        var blockReward = farm_infos[pool_id]["blockReward"] ; 
+        var blockReward = farm_info["blockReward"]; 
       
-        /* console.log("farm_LP_balance: " + farm_LP_balance) ; 
-        console.log("pool_stats: " + pool_stats) ; 
-        console.log("farm_GFI_worth: " + farm_GFI_worth) ; 
-        console.log("blockReward: " + blockReward) ;  */
-      
-        var blockNumber  = await web3.eth.getBlockNumber();  
+        var blockNumber = await ethers.provider.getBlockNumber();
+        //var blockNumber  = await web3.eth.getBlockNumber();  
       
         if (blockNumber <= 14998366) {
           var APR = blockReward * blocks_per_year / farm_GFI_worth * 100 * 2; //bonus time
         } else {
           var APR = blockReward * blocks_per_year / farm_GFI_worth * 100 ; //blockreward * blocks_per_year = total GFI rewarded in 1 year. Divide by total staked worth * 100 to get APR in %
         }
-      
-        
-        
-        //return APR;
-      
+
         var final_APR = Number(APR).toFixed(2).toString();
         $("#farm"+pool_id).parents(".collapse-item").find(".apr-value").text(final_APR + "%");
+      }
+
+      async function get_APR_GFI_pool(pool_id) {
+        const blocks_per_year = 1.5019e7; 
+      
+        var GFI_balance_farm ; 
+        var startFarmBlock = farm_infos[0]["startBlock"] ; 
+        var blockReward = farm_infos[0]["blockReward"] ;
+        var blockNumber  = await web3.eth.getBlockNumber();  
+      
+        var token_contract = new web3.eth.Contract(ABI_token, token_address) ; 
+      
+        await token_contract.methods.balanceOf(farm_addresses[0]).call().then(function (value) {
+          GFI_balance_farm = value ; 
+        })
+      
+        var total_GFI_staked = GFI_balance_farm - 100e6 * 1e18 + (blockNumber - startFarmBlock) * blockNumber
+      
+        APR = blockReward * blocks_per_year / total_GFI_staked * 100 / 10; 
+        
+        var final_GFI_balance = numberWithCommas(Number(total_GFI_staked / 1e18).toFixed());
+        var final_APR = Number(APR).toFixed(2).toString();
+        $("#farm"+pool_id).parents(".collapse-item").find(".apr-value").text(final_APR + "%");
+        $("#farm"+pool_id).parents(".collapse-item").find(".liquidity-value").text(final_GFI_balance + " GFI");
+      }
+
+      //Think farms_info comes from this
+      async function get_pool_info(pool_ID) {
+        var pool_info;
+        await farm_contracts[pool_ID].methods.farmInfo().call().then(function (result) {
+            pool_info = result ;
+            //console.log(`Pool info for pool {pool_ID}: `) ; 
+            //console.log(result) ; 
+        })
+      
+        return pool_info ; 
       }
