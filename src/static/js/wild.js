@@ -17,13 +17,13 @@ consoleInit(main)
     const WILD_CHEF = new ethers.Contract(WILD_CHEF_ADDR, WILD_CHEF_ABI, App.provider);
 
     await loadWildCreditContract(App, WILD_CHEF, WILD_CHEF_ADDR, WILD_CHEF_ABI,
-        "WILD", "rewardToken", "rewardTokenPerBlock", "pendingRewards", [15]);
+        "WILD", "pendingRewards", [15]);
 
     hideLoading();
   }
 
 async function loadWildCreditContract(App, chef, chefAddress, chefAbi, rewardTokenTicker,
-    rewardTokenFunction, rewardsPerBlockFunction, pendingRewardsFunction,
+    pendingRewardsFunction,
     extraPrices, deathPoolIndices, showAll) {
   const chefContract = chef ?? new ethers.Contract(chefAddress, chefAbi, App.provider);
 
@@ -37,15 +37,15 @@ async function loadWildCreditContract(App, chef, chefAddress, chefAbi, rewardTok
 
   var tokens = {};
 
-  const rewardTokenAddress = await chefContract.callStatic[rewardTokenFunction]();
+  const rewardTokenAddress = await chefContract.rewardToken();
   const rewardToken = await getToken(App, rewardTokenAddress, chefAddress);
   const rewardsPerWeek = 
-    await chefContract.callStatic[rewardsPerBlockFunction]()
+    await chefContract.rewardTokenPerBlock()
     / 10 ** rewardToken.decimals * 604800 / 13.5
 
   const poolInfos = await Promise.all([...Array(poolCount).keys()].map(async (x) => {
     try {
-      return await getWildPoolInfo(App, chefContract, chefAddress, x, pendingRewardsFunction, tokens, showAll);
+      return await getWildPoolInfo(App, chefContract, chefAddress, x, tokens, showAll);
     }
     catch (ex) {
       console.log(`Error loading pool ${x}: ${ex}`);
@@ -74,6 +74,13 @@ async function loadWildCreditContract(App, chef, chefAddress, chefAbi, rewardTok
   }
 
   const poolPrices = poolInfos.map(poolInfo => poolInfo?.poolToken ? getPoolPrices(tokens, prices, poolInfo.poolToken) : undefined);
+
+  const wildTokenAddresses = poolInfos.map(poolInfo => poolInfo.wildToken);
+
+  await getNewPricesAndTokens(App, tokens, prices, wildTokenAddresses, chefAddress);
+
+  //I have to add all the prices from poolInfos.wildToken into poolInfos.wildLp
+  //such us prices[poolInfos.wildLp] = prices[poolInfos.wildToken].usd
 
   _print("Finished reading smart contracts.\n");
 
@@ -108,12 +115,12 @@ async function loadWildCreditContract(App, chef, chefAddress, chefAbi, rewardTok
   return { prices, totalUserStaked, totalStaked, averageApr }
 }
 
-async function getWildPoolInfo(app, chefContract, chefAddress, poolIndex, pendingRewardsFunction, tokens, showAll=false) {
+async function getWildPoolInfo(app, chefContract, chefAddress, poolIndex, tokens, showAll=false) {
   const poolInfo = await chefContract.poolInfo(poolIndex);
-  if (poolInfo.allocPoint == 0 && !showAll) {
+  if (poolInfo.allocPoints == 0 && !showAll) {
     return {
       address: poolInfo.lpToken,
-      allocPoints: poolInfo.allocPoint ?? 1,
+      allocPoints: poolInfo.allocPoints,
       poolToken: null,
       userStaked : 0,
       pendingRewardTokens : 0,
@@ -124,35 +131,43 @@ async function getWildPoolInfo(app, chefContract, chefAddress, poolIndex, pendin
   }
   const poolToken = await getToken(app, poolInfo.lpToken, chefAddress);
   if(poolInfo.lpToken != "0xc36068bf159414beb497f8ECe08763868149B2Fe"){
-    const poolSymbol = await getWildPoolSymbol(app, poolInfo.lpToken, chefAddress, tokens)
-    poolToken.symbol = poolSymbol;
+    const wildPool = await getWildPool(app, poolInfo.lpToken, chefAddress, tokens)
+    poolToken.symbol = wildPool.lpSymbol;
+    const userInfo = await chefContract.userInfo(poolIndex, app.YOUR_ADDRESS);
+    const pendingRewardTokens = await chefContract.pendingRewards(poolIndex, app.YOUR_ADDRESS);
+    const staked = userInfo.amount / 10 ** poolToken.decimals;
+    return {
+        address: poolInfo.lpToken ?? poolInfo.stakingToken,
+        allocPoints: poolInfo.allocPoints,
+        poolToken: poolToken,
+        userStaked : staked,
+        pendingRewardTokens : pendingRewardTokens / 10 ** 18,
+        lastRewardBlock : poolInfo.lastRewardBlock,
+        wildLp : wildPool.lpTokenAddress,
+        wildToken : wildPool.tokenAddress
+    };
   }
   const userInfo = await chefContract.userInfo(poolIndex, app.YOUR_ADDRESS);
-  const pendingRewardTokens = await chefContract.callStatic[pendingRewardsFunction](poolIndex, app.YOUR_ADDRESS);
+  const pendingRewardTokens = await chefContract.pendingRewards(poolIndex, app.YOUR_ADDRESS);
   const staked = userInfo.amount / 10 ** poolToken.decimals;
-  var stakedToken;
-  var userLPStaked;
-  if (poolInfo.stakedHoldableToken != null &&
-    poolInfo.stakedHoldableToken != "0x0000000000000000000000000000000000000000") {
-    stakedToken = await getToken(app, poolInfo.stakedHoldableToken, chefAddress);
-    userLPStaked = userInfo.stakedLPAmount / 10 ** poolToken.decimals
-  }
   return {
       address: poolInfo.lpToken ?? poolInfo.stakingToken,
-      allocPoints: poolInfo.allocPoint ?? 1,
+      allocPoints: poolInfo.allocPoints,
       poolToken: poolToken,
       userStaked : staked,
       pendingRewardTokens : pendingRewardTokens / 10 ** 18,
-      stakedToken : stakedToken,
-      userLPStaked : userLPStaked,
-      lastRewardBlock : poolInfo.lastRewardBlock
+      lastRewardBlock : poolInfo.lastRewardBlock,
+      wildLp : poolInfo.lpToken,
+      wildToken : poolInfo.lpToken
   };
 }
 
-async function getWildPoolSymbol(app, poolAddress, stakingAddress, tokens){
+async function getWildPool(app, poolAddress, stakingAddress, tokens){
 
   const WILD_LP = new ethcall.Contract(poolAddress, WILD_LP_TOKEN_ABI);
-  const [owner] = await app.ethcallProvider.all([WILD_LP.owner()]);
+  const [owner, _totalSupply, decimals] = await app.ethcallProvider.all([WILD_LP.owner(), WILD_LP.totalSupply(), WILD_LP.decimals()]);
+
+  const totalSupply = _totalSupply / 10 ** decimals;
 
   const OWNER = new ethcall.Contract(owner, OWNER_ABI);
 
@@ -172,8 +187,17 @@ async function getWildPoolSymbol(app, poolAddress, stakingAddress, tokens){
   let lpSymbol = "";
   if(lpTokenA == poolAddress){
     lpSymbol = `${token0.symbol}-${token1.symbol}: ${token0.symbol}`
+    return{
+      lpSymbol,
+      tokenAddress : tokenA,
+      lpTokenAddress : lpTokenA
+    };
   }else if(lpTokenB == poolAddress){
     lpSymbol = `${token0.symbol}-${token1.symbol}: ${token1.symbol}`
+    return{
+      lpSymbol,
+      tokenAddress : tokenB,
+      lpTokenAddress : lpTokenB
+    };
   }
-  return lpSymbol;
 }
