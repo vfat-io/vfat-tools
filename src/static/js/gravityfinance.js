@@ -1030,24 +1030,72 @@ $(function() {
       _print("Reading smart contracts...\n");
     
       const prices = await getMaticPrices();
-    
-      await loadPoolDetails(App, farm_addresses[0], pool_addresses[1], base_tokens_addresses[0], base_tokens_addresses[1], BASE_ERC20_ABI, POOL_ABI, prices);
+      await loadFarmDetails(App, farm_addresses[0], pool_addresses[1], base_tokens_addresses[0], 0, BASE_ERC20_ABI, POOL_ABI, 6);
+      await loadFarmDetails(App, farm_addresses[0], pool_addresses[1], base_tokens_addresses[0], base_tokens_addresses[1], BASE_ERC20_ABI, POOL_ABI, 6);
+      await loadFarmDetails(App, farm_addresses[0], pool_addresses[2], base_tokens_addresses[0], base_tokens_addresses[2], BASE_ERC20_ABI, POOL_ABI, 18);
       hideLoading();
     }
 
-    async function loadPoolDetails(App, farmAddress, poolAddress, aTokenAddress, bTokenAddress, ERC20ABI, PoolABI, prices){
+    async function loadFarmDetails(App, farmAddress, poolAddress, aTokenAddress, bTokenAddress, ERC20ABI, PoolABI, Bzereos){
         const ATOKEN_CONTRACT = new ethers.Contract(aTokenAddress, ERC20ABI, App.provider); //GFI
+        const uSymbol = await ATOKEN_CONTRACT.symbol();
+        if (bTokenAddress != 0){
         const BTOKEN_CONTRACT = new ethers.Contract(bTokenAddress, ERC20ABI, App.provider); //Other
         const POOL_CONTRACT = new ethers.Contract(poolAddress, PoolABI, App.provider); //Pool
 
-        const uSymbol = await ATOKEN_CONTRACT.symbol();
+        const otherSymbol = await BTOKEN_CONTRACT.symbol();
         //let reservesA, reservesB, timeStamp = await POOL_CONTRACT.getReserves();
         let reservesA = await ATOKEN_CONTRACT.balanceOf(poolAddress) / 10**18;
-        let reservesB = await BTOKEN_CONTRACT.balanceOf(poolAddress) / 10**6;
+        let reservesB = await BTOKEN_CONTRACT.balanceOf(poolAddress) / 10**Bzereos;
         let GFIprice = reservesB/reservesA;
-        _print_bold(`${uSymbol} ($${Number(GFIprice).toFixed(7)})`);
-        _print(`GFI in Pool: ${formatMoney(reservesA)}`);
-        _print(`USDC in Pool: ${formatMoney(reservesB)}`);
+        let poolLiquidity = reservesB + (reservesA*GFIprice);
+        _print_bold(`${uSymbol}-${otherSymbol}`)
+        _print(`${uSymbol} (${Number(GFIprice).toFixed(8)})[${otherSymbol}]`);
+        _print(`Liquidity in Pool: ${formatMoney(poolLiquidity)}[${otherSymbol}]`);
+        _print(`APR: ??.?%`);
+        _print("\n");
+        }
+        else{
+            let reservesA = await ATOKEN_CONTRACT.balanceOf(farmAddress) / 10**18;
+            _print_bold(`${uSymbol}`);
+            _print(`Liquidity in Pool: ${formatMoney(reservesA)}[${uSymbol}]`);
+            _print(`APR: ??.?%`);
+            _print(`\n`);
+        }
 
     }
     
+
+    async function get_pool_APR(pool_id) {
+        const blocks_per_year = 1.5019e7; 
+      
+        var farm_LP_balance = await get_lp_farm_balance(pool_id) ; 
+        var pool_stats = await get_swap_pool_stats(pool_id) ; 
+        
+        var GFI_amount_in_pool = pool_stats[0] ; 
+        var totalLPSupply = pool_stats[1] ; 
+      
+        var farm_GFI_worth = farm_LP_balance * GFI_amount_in_pool * 2 / totalLPSupply //fraction of LP supply that is in the farming contract x2 is GFI worth of LP tokens in farm
+      
+        var blockReward = farm_infos[pool_id]["blockReward"] ; 
+      
+        /* console.log("farm_LP_balance: " + farm_LP_balance) ; 
+        console.log("pool_stats: " + pool_stats) ; 
+        console.log("farm_GFI_worth: " + farm_GFI_worth) ; 
+        console.log("blockReward: " + blockReward) ;  */
+      
+        var blockNumber  = await web3.eth.getBlockNumber();  
+      
+        if (blockNumber <= 14998366) {
+          var APR = blockReward * blocks_per_year / farm_GFI_worth * 100 * 2; //bonus time
+        } else {
+          var APR = blockReward * blocks_per_year / farm_GFI_worth * 100 ; //blockreward * blocks_per_year = total GFI rewarded in 1 year. Divide by total staked worth * 100 to get APR in %
+        }
+      
+        
+        
+        //return APR;
+      
+        var final_APR = Number(APR).toFixed(2).toString();
+        $("#farm"+pool_id).parents(".collapse-item").find(".apr-value").text(final_APR + "%");
+      }
