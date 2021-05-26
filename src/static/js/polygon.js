@@ -8,7 +8,6 @@ const main = async() => {
     "title":"POLYGON Network",
     "heading":["Pool Provider","LP", "Reward Tokens", "INFO"],
     "rows": [
-        ["Gravity Finance",`<a href="gravityfinance">Various</a>`,"GFI  ","https://gravityfinance.io/"],
         ["Quickswap    ",`<a href="quick"         >Various</a>`,"QUICK  ","https://quickswap.exchange/#/quick"],
         ["Cometh       ",`<a href="cometh"        >Various</a>`,"MUST   ","https://swap.cometh.io/#/stake"],
         ["Dark         ",`<a href="dark"          >Various</a>`,"DB     ","https://www.dark.build"],
@@ -54,7 +53,8 @@ const main = async() => {
         ["Polysnake    ",`<a href="polysnake"     >Various</a>`,"SNAKE  ","https://www.polysnake.finance"],
         ["Moonwolf     ",`<a href="moonwolf"      >Various</a>`,"MOON   ","https://www.moonwolf.io"],
         ["Iron         ",`<a href="iron"          >Various</a>`,"TITAN  ","https://polygon.iron.finance"],
-        ["Alchemy Dao  ",`<a href="alchemydao"    >Various</a>`,"ALCH   ","https://polygon.alchemydao.com"]
+        ["Alchemy Dao  ",`<a href="alchemydao"    >Various</a>`,"ALCH   ","https://polygon.alchemydao.com"],
+        ["Gravity Finance",`<a href="gravityfinance">Various</a>`,"GFI  ","https://gravityfinance.io/"],
       ]
   }
 

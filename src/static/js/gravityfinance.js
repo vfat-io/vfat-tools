@@ -1383,7 +1383,7 @@ $(function() {
     async function loadFarmDetails(App, farmAddress, poolAddress, aTokenAddress, bTokenAddress, ERC20ABI, PoolABI, Bzereos, prices, FARMABI){
         const ATOKEN_CONTRACT = new ethers.Contract(aTokenAddress, ERC20ABI, App.provider); //GFI
         const FARM_CONTRACT = new ethers.Contract(farmAddress, FARMABI, App.provider);
-        const farmInfo = await FARM_CONTRACT.farmInfo();
+        let farmInfo = await FARM_CONTRACT.farmInfo();
         const uSymbol = await ATOKEN_CONTRACT.symbol();
         if (bTokenAddress != 0){
         const BTOKEN_CONTRACT = new ethers.Contract(bTokenAddress, ERC20ABI, App.provider); //Other
@@ -1395,38 +1395,39 @@ $(function() {
         let reservesA = await ATOKEN_CONTRACT.balanceOf(poolAddress) / 10**18;
         let reservesB = await BTOKEN_CONTRACT.balanceOf(poolAddress) / 10**Bzereos;
         let GFIprice = reservesB/reservesA;
+        let GFI_in_farm = await ATOKEN_CONTRACT.balanceOf(farmAddress);
         let poolLiquidity = (reservesB + (reservesA*GFIprice)) * underlyingPrice;
         _print_bold(`${uSymbol}-${otherSymbol}`)
         _print(`${uSymbol} (${Number(GFIprice).toFixed(8)})[${otherSymbol}]`);
         _print(`Liquidity in Pool: $${formatMoney(poolLiquidity)}`);
-        _print(`APR: ??.?%`);
-        _print("\n");
+        get_pool_APR(App, reservesA*10**18, farmInfo, ERC20ABI, farmAddress);
         }
         else{
-            let reservesA = await ATOKEN_CONTRACT.balanceOf(farmAddress) / 10**18;
+            let GFI_balance_farm = await ATOKEN_CONTRACT.balanceOf(farmAddress);
+            var startFarmBlock = farmInfo["startBlock"]; 
+            var blockNumber = await App.provider.getBlockNumber();
+            let reservesA = (GFI_balance_farm - 100e6 * 1e18 + (blockNumber - startFarmBlock) * blockNumber)/1e18;
             _print_bold(`${uSymbol}`);
             _print(`Liquidity in Pool: ${formatMoney(reservesA)}[${uSymbol}]`);
-            _print(`APR: ??.?%`);
-            _print(`\n`);
+            get_APR_GFI_pool(App, GFI_balance_farm, farmInfo);
         }
 
     }
     
 
-    async function get_pool_APR(farm_balance, GFI_in_pool, farm_info) {
+    async function get_pool_APR(App, GFI_in_pool, farm_info, ERC20ABI, farm_address) {
         const blocks_per_year = 1.5019e7; 
-      
-        var farm_LP_balance = farm_balance; //Is this the amount of LP tokens in the farm?
+        
+        const LP_TOKEN = new ethers.Contract(farm_info["lpToken"], ERC20ABI, App.provider);
+        var farm_LP_balance = await LP_TOKEN.balanceOf(farm_address); //Get the amount of LP tokens in the farm
 
-        var GFI_amount_in_pool = GFI_in_pool; //Is this the amount of GFI in the liquidity pool?
-        var totalLPSupply = pool_stats[1]; // Is this the total supply of LP tokens for a specific pool?
+        var totalLPSupply = await LP_TOKEN.totalSupply(); // Is this the total supply of LP tokens for a specific pool?
       
-        var farm_GFI_worth = farm_LP_balance * GFI_amount_in_pool * 2 / totalLPSupply //fraction of LP supply that is in the farming contract x2 is GFI worth of LP tokens in farm
+        var farm_GFI_worth = farm_LP_balance * GFI_in_pool * 2 / totalLPSupply //fraction of LP supply that is in the farming contract x2 is GFI worth of LP tokens in farm
       
         var blockReward = farm_info["blockReward"]; 
       
-        var blockNumber = await ethers.provider.getBlockNumber();
-        //var blockNumber  = await web3.eth.getBlockNumber();  
+        var blockNumber = await App.provider.getBlockNumber(); 
       
         if (blockNumber <= 14998366) {
           var APR = blockReward * blocks_per_year / farm_GFI_worth * 100 * 2; //bonus time
@@ -1435,41 +1436,22 @@ $(function() {
         }
 
         var final_APR = Number(APR).toFixed(2).toString();
-        $("#farm"+pool_id).parents(".collapse-item").find(".apr-value").text(final_APR + "%");
+        _print(`APR: ${final_APR}%`);
+        _print("\n");
       }
 
-      async function get_APR_GFI_pool(pool_id) {
+      async function get_APR_GFI_pool(App, GFI_in_farm, farm_info) {
         const blocks_per_year = 1.5019e7; 
       
-        var GFI_balance_farm ; 
-        var startFarmBlock = farm_infos[0]["startBlock"] ; 
-        var blockReward = farm_infos[0]["blockReward"] ;
-        var blockNumber  = await web3.eth.getBlockNumber();  
+        var startFarmBlock = farm_info["startBlock"] ; 
+        var blockReward = farm_info["blockReward"] ;
+        var blockNumber = await App.provider.getBlockNumber();   
       
-        var token_contract = new web3.eth.Contract(ABI_token, token_address) ; 
-      
-        await token_contract.methods.balanceOf(farm_addresses[0]).call().then(function (value) {
-          GFI_balance_farm = value ; 
-        })
-      
-        var total_GFI_staked = GFI_balance_farm - 100e6 * 1e18 + (blockNumber - startFarmBlock) * blockNumber
+        var total_GFI_staked = GFI_in_farm - 100e6 * 1e18 + (blockNumber - startFarmBlock) * blockNumber
       
         APR = blockReward * blocks_per_year / total_GFI_staked * 100 / 10; 
         
-        var final_GFI_balance = numberWithCommas(Number(total_GFI_staked / 1e18).toFixed());
         var final_APR = Number(APR).toFixed(2).toString();
-        $("#farm"+pool_id).parents(".collapse-item").find(".apr-value").text(final_APR + "%");
-        $("#farm"+pool_id).parents(".collapse-item").find(".liquidity-value").text(final_GFI_balance + " GFI");
-      }
-
-      //Think farms_info comes from this
-      async function get_pool_info(pool_ID) {
-        var pool_info;
-        await farm_contracts[pool_ID].methods.farmInfo().call().then(function (result) {
-            pool_info = result ;
-            //console.log(`Pool info for pool {pool_ID}: `) ; 
-            //console.log(result) ; 
-        })
-      
-        return pool_info ; 
+        _print(`APR: ${final_APR}%`);
+        _print("\n");
       }
