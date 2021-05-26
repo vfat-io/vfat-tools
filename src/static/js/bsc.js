@@ -285,7 +285,9 @@ const main = async() => {
       ["Matisse             ", `<a href="matisse"       >Various</a>`,"Nu            ","https://app.matisse.finance"],
       ["Cougar              ", `<a href="cougar"        >Various</a>`,"CGS           ","https://cougarswap.io"],
       ["Fluity              ", `<a href="fluity"        >Various</a>`,"FLTY          ","https://fluity.finance"],
-      ["Parthenon Iota      ", `<a href="parthenon_iota">Various</a>`,"IOTA          ","https://iota.parthenon.finance"]
+      ["Parthenon Iota      ", `<a href="parthenon_iota">Various</a>`,"IOTA          ","https://iota.parthenon.finance"],
+      ["Croco               ", `<a href="croco"         >Various</a>`,"CROCO         ","https://crocofinance.club"],
+      ["Cinnamonroll        ", `<a href="cinnamonroll"  >Various</a>`,"CNR           ","https://cinnamonroll.fi"]
     ]
   }
 
