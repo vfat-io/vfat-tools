@@ -287,7 +287,8 @@ const main = async() => {
       ["Fluity              ", `<a href="fluity"        >Various</a>`,"FLTY          ","https://fluity.finance"],
       ["Parthenon Iota      ", `<a href="parthenon_iota">Various</a>`,"IOTA          ","https://iota.parthenon.finance"],
       ["Croco               ", `<a href="croco"         >Various</a>`,"CROCO         ","https://crocofinance.club"],
-      ["Cinnamonroll        ", `<a href="cinnamonroll"  >Various</a>`,"CNR           ","https://cinnamonroll.fi"]
+      ["Cinnamonroll        ", `<a href="cinnamonroll"  >Various</a>`,"CNR           ","https://cinnamonroll.fi"],
+      ["Biswap              ", `<a href="biswap"        >Various</a>`,"BSW           ","https://biswap.org"]
     ]
   }
 
