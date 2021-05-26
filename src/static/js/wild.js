@@ -73,15 +73,15 @@ async function loadWildCreditContract(App, chef, chefAddress, chefAbi, rewardTok
       poolInfo.poolToken ? getPoolPrices(tokens, prices, poolInfo.poolToken, "eth") : undefined);
   }
 
-  const poolPrices = poolInfos.map(poolInfo => poolInfo?.poolToken ? getPoolPrices(tokens, prices, poolInfo.poolToken) : undefined);
+  const underlyingAddresses = poolInfos.map(poolInfo => poolInfo.underlyingAddress);
 
-  const wildTokenAddresses = poolInfos.map(poolInfo => poolInfo.wildToken);
+  await getNewPricesAndTokens(App, tokens, prices, underlyingAddresses, chefAddress);
 
-  await getNewPricesAndTokens(App, tokens, prices, wildTokenAddresses, chefAddress);
+  for(const poolInfo of poolInfos){
+    prices[poolInfo.lpTokenAddress] = getParameterCaseInsensitive(prices, poolInfo.underlyingAddress);
+  }
 
-  //I have to add all the prices from poolInfos.wildToken into poolInfos.wildLp
-  //such us prices[poolInfos.wildLp] = prices[poolInfos.wildToken].usd
-
+  const poolPrices = poolInfos.map(poolInfo => getPoolPrices(tokens, prices, poolInfo.poolToken));
   _print("Finished reading smart contracts.\n");
 
   let aprs = []
@@ -119,7 +119,7 @@ async function getWildPoolInfo(app, chefContract, chefAddress, poolIndex, tokens
   const poolInfo = await chefContract.poolInfo(poolIndex);
   if (poolInfo.allocPoints == 0 && !showAll) {
     return {
-      address: poolInfo.lpToken,
+      lpTokenAddress: poolInfo.lpToken,
       allocPoints: poolInfo.allocPoints,
       poolToken: null,
       userStaked : 0,
@@ -137,28 +137,28 @@ async function getWildPoolInfo(app, chefContract, chefAddress, poolIndex, tokens
     const pendingRewardTokens = await chefContract.pendingRewards(poolIndex, app.YOUR_ADDRESS);
     const staked = userInfo.amount / 10 ** poolToken.decimals;
     return {
-        address: poolInfo.lpToken ?? poolInfo.stakingToken,
+        lpTokenAddress: poolInfo.lpToken ?? poolInfo.stakingToken,
         allocPoints: poolInfo.allocPoints,
         poolToken: poolToken,
         userStaked : staked,
         pendingRewardTokens : pendingRewardTokens / 10 ** 18,
         lastRewardBlock : poolInfo.lastRewardBlock,
-        wildLp : wildPool.lpTokenAddress,
-        wildToken : wildPool.tokenAddress
+        wildLpAddress : wildPool.address,
+        underlyingAddress : wildPool.tokenAddress
     };
   }
   const userInfo = await chefContract.userInfo(poolIndex, app.YOUR_ADDRESS);
   const pendingRewardTokens = await chefContract.pendingRewards(poolIndex, app.YOUR_ADDRESS);
   const staked = userInfo.amount / 10 ** poolToken.decimals;
   return {
-      address: poolInfo.lpToken ?? poolInfo.stakingToken,
+      lpTokenAddress: poolInfo.lpToken ?? poolInfo.stakingToken,
       allocPoints: poolInfo.allocPoints,
       poolToken: poolToken,
       userStaked : staked,
       pendingRewardTokens : pendingRewardTokens / 10 ** 18,
       lastRewardBlock : poolInfo.lastRewardBlock,
-      wildLp : poolInfo.lpToken,
-      wildToken : poolInfo.lpToken
+      wildLpAddress : poolInfo.lpToken,
+      underlyingAddress : poolInfo.lpToken
   };
 }
 
