@@ -9,7 +9,8 @@ async function main() {
   const Pools = [
     "0x04Ee5DE43332aF99eeC2D40de19962AA1cC583EC",
     "0xf14D745a4D264255F758B541BB1F61EbC589EA25",
-    "0xAAb4FB30aD9c20EFFDA712c0fFC24f77b1B5439d"
+    "0xAAb4FB30aD9c20EFFDA712c0fFC24f77b1B5439d",
+    "0x65995B106988E9aCd15998a5DF95aDe89b6511c8"
   ].map(a => {
     return {
       address: a,
