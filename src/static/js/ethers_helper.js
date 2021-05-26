@@ -1422,6 +1422,7 @@ function getUniPrices(tokens, prices, pool)
   else if (pool.symbol.includes("PLP")) stakeTokenTicker += " Pure Swap LP";
   else if (pool.symbol.includes("Field-LP")) stakeTokenTicker += " Yield Fields LP";
   else if (pool.symbol.includes("UPT")) stakeTokenTicker += " Unic Swap LP";
+  else if (pool.symbol.includes("ELP")) stakeTokenTicker += " ELK LP";
   else stakeTokenTicker += " Uni LP";
   return {
       t0: t0,
@@ -1463,6 +1464,7 @@ function getUniPrices(tokens, prices, pool)
               pool.symbol.includes("SPIRIT") ?  `https://swap.spiritswap.finance/#/swap` :
               pool.symbol.includes("spLP") ?  `https://info.spookyswap.finance/pair/${pool.address}` :
               pool.symbol.includes("Lv1") ?  `https://info.steakhouse.finance/pair/${pool.address}` :
+              pool.symbol.includes("ELP") ?  `https://app.elk.finance/#/swap` :
               pool.symbol.includes("PLP") ?  `https://exchange.pureswap.finance/#/swap` :
               pool.symbol.includes("BLP") ?  `https://info.bakeryswap.org/#/pair/${pool.address}` :
               pool.symbol.includes("Field-LP") ?  `https://exchange.yieldfields.finance/#/swap` :
@@ -1499,6 +1501,11 @@ function getUniPrices(tokens, prices, pool)
             `https://app.pangolin.exchange/#/add/${t0address}/${t1address}`,
             `https://app.pangolin.exchange/#/remove/${t0address}/${t1address}`,
             `https://app.pangolin.exchange/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+          ] :
+          pool.symbol.includes("ELP") ? [
+            `https://app.elk.finance/#/add/${t0address}/${t1address}`,
+            `hhttps://app.elk.finance/#/remove/${t0address}/${t1address}`,
+            `https://app.elk.finance/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
           ] :
           pool.symbol.includes("CS-LP") ? [
             `https://app.coinswap.space/#/add/${t0address}/${t1address}`,
