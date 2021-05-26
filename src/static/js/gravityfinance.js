@@ -1374,28 +1374,25 @@ $(function() {
       _print("Reading smart contracts...\n");
     
       const prices = await getMaticPrices();
-      await loadFarmDetails(App, farm_addresses[0], pool_addresses[1], base_tokens_addresses[0], 0, BASE_ERC20_ABI, POOL_ABI, 6, prices, FARM_ABI);
-      await loadFarmDetails(App, farm_addresses[0], pool_addresses[1], base_tokens_addresses[0], base_tokens_addresses[1], BASE_ERC20_ABI, POOL_ABI, 6, prices, FARM_ABI);
-      await loadFarmDetails(App, farm_addresses[0], pool_addresses[2], base_tokens_addresses[0], base_tokens_addresses[2], BASE_ERC20_ABI, POOL_ABI, 18, prices, FARM_ABI);
+      await loadFarmDetails(App, farm_addresses[0], pool_addresses[1], base_tokens_addresses[0], 0, BASE_ERC20_ABI, FARM_ABI, 6, prices);
+      await loadFarmDetails(App, farm_addresses[1], pool_addresses[1], base_tokens_addresses[0], base_tokens_addresses[1], BASE_ERC20_ABI, FARM_ABI, 6, prices);
+      await loadFarmDetails(App, farm_addresses[2], pool_addresses[2], base_tokens_addresses[0], base_tokens_addresses[2], BASE_ERC20_ABI, FARM_ABI, 18, prices);
       hideLoading();
     }
 
-    async function loadFarmDetails(App, farmAddress, poolAddress, aTokenAddress, bTokenAddress, ERC20ABI, PoolABI, Bzereos, prices, FARMABI){
+    async function loadFarmDetails(App, farmAddress, poolAddress, aTokenAddress, bTokenAddress, ERC20ABI, FARMABI, Bzereos, prices){
         const ATOKEN_CONTRACT = new ethers.Contract(aTokenAddress, ERC20ABI, App.provider); //GFI
         const FARM_CONTRACT = new ethers.Contract(farmAddress, FARMABI, App.provider);
         let farmInfo = await FARM_CONTRACT.farmInfo();
         const uSymbol = await ATOKEN_CONTRACT.symbol();
         if (bTokenAddress != 0){
         const BTOKEN_CONTRACT = new ethers.Contract(bTokenAddress, ERC20ABI, App.provider); //Other
-        const POOL_CONTRACT = new ethers.Contract(poolAddress, PoolABI, App.provider); //Pool
         const underlyingPrice = getParameterCaseInsensitive(prices, bTokenAddress)?.usd;
 
         const otherSymbol = await BTOKEN_CONTRACT.symbol();
-        //let reservesA, reservesB, timeStamp = await POOL_CONTRACT.getReserves();
         let reservesA = await ATOKEN_CONTRACT.balanceOf(poolAddress) / 10**18;
         let reservesB = await BTOKEN_CONTRACT.balanceOf(poolAddress) / 10**Bzereos;
         let GFIprice = reservesB/reservesA;
-        let GFI_in_farm = await ATOKEN_CONTRACT.balanceOf(farmAddress);
         let poolLiquidity = (reservesB + (reservesA*GFIprice)) * underlyingPrice;
         _print_bold(`${uSymbol}-${otherSymbol}`)
         _print(`${uSymbol} (${Number(GFIprice).toFixed(8)})[${otherSymbol}]`);
