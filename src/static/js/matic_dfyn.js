@@ -83,5 +83,60 @@ const DFYNtakingContracts =  [
     //tokens: [ETHER, USDC],
     //baseToken: USDC,
     stakingRewardAddress: '0x28Bf5111B86D41427c02DFB9E98E55E5BB57d692'
+  },
+  {
+	// tokens: [DFYN, USDC],
+	// baseToken: USDC,
+	stakingRewardAddress: "0x24a5256589126a0eb73a1a011e22C1c838890Ced"
+  },
+  {
+	// tokens: [DFYN, ETHER],
+	// baseToken: ETHER,
+	stakingRewardAddress: "0xE4F8C4722Aa44bFf5c99ba64c0bC39C6d883CcB6"
+  },
+  {
+	// tokens: [WBTC, ETHER],
+	// baseToken: ETHER,
+	stakingRewardAddress: "0x370737D328cf8DfD830fFFf51Dd9c972345e6Fee"
+  },
+  {
+	// tokens: [USDT, USDC],
+	// baseToken: USDC,
+	stakingRewardAddress: "0xf786Ba582AbbE846B35E6e7089a25B761eA54113"
+  },
+  {
+	// tokens: [DAI, USDT],
+	// baseToken: USDT,
+	stakingRewardAddress: "0x32B73E973057d309d22EC98B50a8311C0F583Ad3"
+  },
+  {
+	// tokens: [ETHER, USDC],
+	// baseToken: USDC,
+	stakingRewardAddress: "0x694351F6dAfe5F2e92857e6a3C0578b68A8C1435"
+  },
+  {
+	// tokens: [ROUTE, ETHER],
+	// baseToken: ETHER,
+	stakingRewardAddress: "0xf162a26aCc064B88a0150a36d7B38996723E94D7"
+  },
+  {
+	// tokens: [WMATIC, DFYN],
+	// baseToken: DFYN,
+	stakingRewardAddress: "0x376920095Ae17e12BC114D4E33D30DFda83f8EfB"
+  },
+  {
+	// tokens: [WMATIC, ETHER],
+	// baseToken: ETHER,
+	stakingRewardAddress: "0x0BADA377367f4937bdf6A17FdaeeB0b798051c91"
+  },
+  {
+	// tokens: [UNI, ETHER],
+	// baseToken: ETHER,
+	stakingRewardAddress: "0x3cA3f35b081CD7c47990e0Ef5Eed763b54F22874"
+  },
+  {
+	// tokens: [AAVE, ETHER],
+	// baseToken: ETHER,
+	stakingRewardAddress: "0x80dF5A040E045817AB75A4214e29Dc95D83f1118"
   }
 ]
