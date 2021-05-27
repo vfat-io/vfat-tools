@@ -73,20 +73,26 @@ async function loadWildCreditContract(App, chef, chefAddress, chefAbi, rewardTok
       poolInfo.poolToken ? getPoolPrices(tokens, prices, poolInfo.poolToken, "eth") : undefined);
   }
 
-  const underlyingAddresses = poolInfos.map(poolInfo => poolInfo.underlyingAddress);
+  const underlyingAddresses = poolInfos.map(poolInfo => poolInfo.underlyingAddress).filter(address =>
+    address!= null);
+
+  const lpTokenAddresses = poolInfos.map(poolInfo => poolInfo.lpTokenAddress).filter(address =>
+    address!= null);
 
   await getNewPricesAndTokens(App, tokens, prices, underlyingAddresses, chefAddress);
 
-  for(const poolInfo of poolInfos){
-    prices[poolInfo.lpTokenAddress] = getParameterCaseInsensitive(prices, poolInfo.underlyingAddress);
+  for(let i = 0; i < lpTokenAddresses.length; i++){
+    prices[lpTokenAddresses[i]] = getParameterCaseInsensitive(prices, underlyingAddresses[i]);
   }
 
-  const poolPrices = poolInfos.map(poolInfo => getPoolPrices(tokens, prices, poolInfo.poolToken));
+  //const poolPrices = poolInfos.filter(poolInfo => poolInfo.poolToken!= null).map(newPoolInfo =>
+    //getPoolPrices(tokens, prices, newPoolInfo.poolToken));
+  const poolPrices = poolInfos.map(poolInfo => poolInfo?.poolToken ? getPoolPrices(tokens, prices, poolInfo.poolToken) : undefined);
   _print("Finished reading smart contracts.\n");
 
   let aprs = []
   for (let i = 0; i < poolCount; i++) {
-    if (poolPrices[i]) {
+    if (poolInfos[i].poolToken!=null) {
       const apr = printChefPool(App, chefAbi, chefAddress, prices, tokens, poolInfos[i], i, poolPrices[i],
         totalAllocPoints, rewardsPerWeek, rewardTokenTicker, rewardTokenAddress,
         pendingRewardsFunction)
@@ -119,7 +125,7 @@ async function getWildPoolInfo(app, chefContract, chefAddress, poolIndex, tokens
   const poolInfo = await chefContract.poolInfo(poolIndex);
   if (poolInfo.allocPoints == 0 && !showAll) {
     return {
-      lpTokenAddress: poolInfo.lpToken,
+      lpTokenAddress: null,
       allocPoints: poolInfo.allocPoints,
       poolToken: null,
       userStaked : 0,
