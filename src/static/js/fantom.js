@@ -69,7 +69,7 @@ const main = async() => {
         "https://www.liquiddriver.finance"
       ],
       [
-        "Standard",
+        "Standard *",
         `<a href='standard'>Various</a>`,
         "STRD",
         "https://strd.finance"
