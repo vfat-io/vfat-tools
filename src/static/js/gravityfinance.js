@@ -1360,7 +1360,7 @@ const pool_addresses = ["nothing", // These are where ppl add liquidity
     "0x1587663E8F475E69eA2DBb38482C8c4EE9F388Fb" // GFI/WETH
 ]
 
-const farm_addresses = ["0xFa56a0f01863c034b55e904C9c39213E44D92Af7", //GFI
+const farm_addresses = ["0xf9FBfA8Fd7568D39E1b2091379499B48EA2F4c72", //GFI
     "0xE6584E2432ef0b82A39C383e895E7e031655F2Bf", // GFI/USDC
     "0xEf943A1B9A5E697Eb26B1cfc5e9225D2Aa00395a" // GFI/WETH
 ] //array of farming contracts, 1 contract per farm */
