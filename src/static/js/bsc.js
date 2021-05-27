@@ -289,6 +289,7 @@ const main = async() => {
       ["Croco               ", `<a href="croco"         >Various</a>`,"CROCO         ","https://crocofinance.club"],
       ["Cinnamonroll        ", `<a href="cinnamonroll"  >Various</a>`,"CNR           ","https://cinnamonroll.fi"],
       ["Biswap              ", `<a href="biswap"        >Various</a>`,"BSW           ","https://biswap.org"]
+      ["Godzilla            ", `<a href="godzilla"        >Various</a>`,"BSW         ","https://godzillaswapdefi.com/"]
     ]
   }
 
