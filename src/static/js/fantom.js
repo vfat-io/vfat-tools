@@ -109,6 +109,12 @@ const main = async() => {
         `<a href='elk'>Various</a>`,
         "ELK",
         "https://app.elk.finance"
+      ],
+      [
+        "Paintswap",
+        `<a href='paintswap'>Various</a>`,
+        "BRUSH",
+        "https://paintswap.finance"
       ]
     ]
   }
