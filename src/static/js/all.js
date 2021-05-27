@@ -124,7 +124,8 @@ const main = async() => {
       ["Lever                        ",`<a href="../lever"              >Various</a>`,"LEV                ","https://lever.network"],
       ["Fuse                         ",`<a href="../fuse_eth"           >Various</a>`,"FUSE               ","https://fuse.io"],
       ["Donkey                       ",`<a href="../donkey"             >Various</a>`,"DON                ","https://don-key.finance"],
-      ["Wild Credit                  ",`<a href="../wild"               >Various</a>`,"WILD               ","https://wild.credit"]
+      ["Wild Credit                  ",`<a href="../wild"               >Various</a>`,"WILD               ","https://wild.credit"],
+      ["Convergence                  ",`<a href="../convx"              >Various</a>`,"CONV               ","https://convx.conv.finance"]
     ]
   }
 
