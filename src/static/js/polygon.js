@@ -6,13 +6,13 @@ const main = async() => {
 
   let tableData = {
     "title":"POLYGON Network",
-    "heading":["Pool Provider","LP", "Reward Tokens", "INFO"],
+    "heading":["Pool Provider","LP", "Reward Tokens", "INFO", `<a href="https://forms.gle/xjUdSmBNfT1CZASF8">waterfallbot link</a>`],
     "rows": [
         ["Quickswap *  ",`<a href="quick"         >Various</a>`,"QUICK        ","https://quickswap.exchange/#/quick"],
         ["Cometh       ",`<a href="cometh"        >Various</a>`,"MUST         ","https://swap.cometh.io/#/stake"],
         ["Dark         ",`<a href="dark"          >Various</a>`,"DB           ","https://www.dark.build"],
         ["Smartdex     ",`<a href="smartdex"      >Various</a>`,"NIOX         ","https://swap.smartdex.app"],
-        ["Elk          ",`<a href="elk"           >Various</a>`,"ELK          ","https://app.elk.finance"],
+        ["Elk          ",`<a href="elk"           >Various</a>`,"ELK          ","https://app.elk.finance", 					`<a href="https://t.me/ELKwaterfall">ELK waterfall</a>`],
         ["Polywhale    ",`<a href="polywhale"     >Various</a>`,"KRILL        ","https://polywhale.finance"],
         ["Aave         ",`<a href="aave"          >Various</a>`,"MATIC        ","https://aave.com"],
         ["Polyfox      ",`<a href="polyfox"       >Various</a>`,"FOX          ","https://polyfox.finance"],
@@ -41,7 +41,7 @@ const main = async() => {
         ["Polyce       ",`<a href="polyce"        >Various</a>`,"CSI          ","https://polyce.io"],
         ["Lumberjack   ",`<a href="lumberjack"    >Various</a>`,"ACORN        ","https://lumberjack.finance"],
         ["PolyPunk     ",`<a href="polypunk"      >Various</a>`,"PPNK         ","https://polypunk.finance"],
-        ["SteakHouse   ",`<a href="steakhouse"    >Various</a>`,"STEAK        ","https://steakhouse.finance"],
+        ["SteakHouse   ",`<a href="steakhouse"    >Various</a>`,"STEAK        ","https://steakhouse.finance",                  `<a href="https://bit.ly/Steakwaterfall">Steak waterfall</a>`],
         ["Monke Farm   ",`<a href="monkefarm"     >Various</a>`,"MONKE        ","https://monkefarm.finance"],
         ["Polylion     ",`<a href="polylion"      >Various</a>`,"LION         ","https://polylion.exchange"],
         ["PolyBull     ",`<a href="polybull"      >Various</a>`,"BULL         ","https://polybull.finance"],

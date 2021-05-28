@@ -6,7 +6,7 @@ const main = async() => {
 
   let tableData = {
     "title":"Ethereum Network",
-    "heading":["Pool Provider","LP", "Reward Tokens", "INFO"],
+    "heading":["Pool Provider","LP", "Reward Tokens", "INFO", `<a href="https://forms.gle/xjUdSmBNfT1CZASF8">waterfallbot link</a>`],
     "rows": [
       ["1inch                        ",`<a href="../1inch/"             >Various</a>`,"1INCH              ","https://1inch.exchange/#/dao/farming"],
       ["Alpha DEX                    ",`<a href="../alphadex/"          >Various</a>`,"DEX                ","https://kitten.finance"],
@@ -55,7 +55,7 @@ const main = async() => {
       ["Ethic                        ",`<a href="../ethic"              >Various</a>`,"ETHC               ","https://ethic.money"],
       ["Ruler Protocol               ",`<a href="../ruler/"             >Various</a>`,"RULER              ","https://app.rulerprotocol.com/app/farms"],
       ["Sandbox                      ",`<a href="../sandbox"            >Various</a>`,"SAND               ","https://staking.sandbox.game"],
-      ["Inverse                      ",`<a href="../inverse"            >Various</a>`,"INV                ","https://inverse.finance"],
+      ["Inverse                      ",`<a href="../inverse"            >Various</a>`,"INV                ","https://inverse.finance",        `<a href="https://t.me/INVwaterfall">INV waterfall</a>`],
       ["Badger                       ",`<a href="../badger/"            >Various</a>`,"BADGER             ","https://app.badger.finance"],
       ["Big Data Protocol            ",`<a href="../bdp/"               >Various</a>`,"BDP,bALPHA         ","https://www.bigdataprotocol.com/datavault"],
       ["Unslashed                    ",`<a href="../usf/"               >Various</a>`,"USF                ","https://app.unslashed.finance/"],

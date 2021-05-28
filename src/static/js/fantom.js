@@ -6,7 +6,7 @@ const main = async() => {
 
   let tableData = {
     "title":"FANTOM Network",
-    "heading":["Pool Provider","LP", "Reward Tokens", "INFO"],
+    "heading":["Pool Provider","LP", "Reward Tokens", "INFO", `<a href="https://forms.gle/xjUdSmBNfT1CZASF8">waterfallbot link</a>`],
     "rows": [
       [
         "Popsicle",
@@ -24,7 +24,8 @@ const main = async() => {
         "Spirit",
         `<a href='spirit'>Various</a>`,
         "SPIRIT",
-        "https://app.spiritswap.finance"
+        "https://app.spiritswap.finance",
+		`<a href="https://bit.ly/SPIRITwaterfall">SPIRIT waterfall</a>`
       ],
       [
         "Borg",
@@ -36,7 +37,7 @@ const main = async() => {
         "Hyperjump",
         `<a href='hyperjump'>Various</a>`,
         "ORI",
-        "https://hyperjump.fi"
+        "https://hyperjump.fi",
       ],
       [
         "Ester",
@@ -60,7 +61,8 @@ const main = async() => {
         "Beefy",
         `<a href='beefy'>Various</a>`,
         "Various",
-        "https://fantom.beefy.finance"
+        "https://fantom.beefy.finance",
+		`<a href="https://bit.ly/BIFIwaterfall">BIFI waterfall</a>`
       ],
       [
         "Liquid Driver",
@@ -108,7 +110,8 @@ const main = async() => {
         "Elk",
         `<a href='elk'>Various</a>`,
         "ELK",
-        "https://app.elk.finance"
+        "https://app.elk.finance",
+		`<a href="https://t.me/ELKwaterfall">ELK waterfall</a>`
       ],
       [
         "Paintswap",
