@@ -288,8 +288,9 @@ const main = async() => {
       ["Parthenon Iota      ", `<a href="parthenon_iota">Various</a>`,"IOTA          ","https://iota.parthenon.finance"],
       ["Croco               ", `<a href="croco"         >Various</a>`,"CROCO         ","https://crocofinance.club"],
       ["Cinnamonroll        ", `<a href="cinnamonroll"  >Various</a>`,"CNR           ","https://cinnamonroll.fi"],
-      ["Biswap              ", `<a href="biswap"        >Various</a>`,"BSW           ","https://biswap.org"]
-      ["Godzilla            ", `<a href="godzilla"        >Various</a>`,"BSW         ","https://godzillaswapdefi.com/"]
+      ["Biswap              ", `<a href="biswap"        >Various</a>`,"BSW           ","https://biswap.org"],
+      ["Godzilla            ", `<a href="godzilla"      >Various</a>`,"GDZ           ","https://godzillaswapdefi.com"],
+      ["Cerberus            ", `<a href="cerberus"      >Various</a>`,"CERBERUS      ","https://gocerberus.finance"]
     ]
   }
 
