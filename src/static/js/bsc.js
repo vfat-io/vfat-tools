@@ -293,7 +293,8 @@ const main = async() => {
       ["Cerberus            ", `<a href="cerberus"      >Various</a>`,"CERBERUS      ","https://gocerberus.finance"],
       ["Greenbelt NH        ", `<a href="greenbelt_nh"  >Various</a>`,"NH            ","https://nh.greenbelt.finance"],
       ["Pulsar Beta         ", `<a href="pulsar_beta"   >Various</a>`,"BPUL          ","https://beta.pulsar.farm"],
-      ["Oni                 ", `<a href="oni"           >Various</a>`,"ONI           ","https://oni.exchange"]
+      ["Oni                 ", `<a href="oni"           >Various</a>`,"ONI           ","https://oni.exchange"],
+      ["Ketchup             ", `<a href="ketchup"       >Various</a>`,"KETCHUP       ","https://ketchupfinance.com"]
     ]
   }
 
