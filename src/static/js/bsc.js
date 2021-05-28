@@ -277,7 +277,7 @@ const main = async() => {
       ["Parthenon Theta     ", `<a href="parthenon_theta">Various</a>`,"THETA        ","https://theta.parthenon.finance"],
       ["Fuse                ", `<a href="fuse_bsc"      >Various</a>`,"FUSE          ","https://fuse.io"],
       ["Otter Finance       ", `<a href="otter"         >Various</a>`,"OTT           ","https://otterdefi.com"],
-      ["Greenbelt           ", `<a href="greenbelt"     >Various</a>`,"LH            ","https://greenbelt.finance"],
+      ["Greenbelt LH        ", `<a href="greenbelt"     >Various</a>`,"LH            ","https://greenbelt.finance"],
       ["Frankenstein        ", `<a href="frankenstein"  >Various</a>`,"FRANK         ","https://frankenstein.finance"],
       ["Cashcow             ", `<a href="cashcow"       >Various</a>`,"CCDI          ","https://cashcowswap.org"],
       ["Tiger Finance       ", `<a href="tiger_defi"    >Various</a>`,"TIG           ","https://www.tigerfinancedefi.com"],
@@ -290,7 +290,8 @@ const main = async() => {
       ["Cinnamonroll        ", `<a href="cinnamonroll"  >Various</a>`,"CNR           ","https://cinnamonroll.fi"],
       ["Biswap              ", `<a href="biswap"        >Various</a>`,"BSW           ","https://biswap.org"],
       ["Godzilla            ", `<a href="godzilla"      >Various</a>`,"GDZ           ","https://godzillaswapdefi.com"],
-      ["Cerberus            ", `<a href="cerberus"      >Various</a>`,"CERBERUS      ","https://gocerberus.finance"]
+      ["Cerberus            ", `<a href="cerberus"      >Various</a>`,"CERBERUS      ","https://gocerberus.finance"],
+      ["Greenbelt NH        ", `<a href="greenbelt_nh"  >Various</a>`,"NH            ","https://nh.greenbelt.finance"]
     ]
   }
 
