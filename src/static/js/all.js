@@ -69,7 +69,7 @@ const main = async() => {
       ["Mint                         ",`<a href="../mint"               >Various</a>`,"MINT               ","https://stake.publicmint.com"],
       ["Proof Of Humanity            ",`<a href="../proofofhumanity"    >Various</a>`,"UBI                ","https://www.proofofhumanity.id"],
       ["Bao                          ",`<a href="../bao"                >Various</a>`,"BAO                ","https://www.bao.finance"],
-      ["Force DAO                    ",`<a href="../forcedao/"          >Various</a>`,"FORCE              ","https://forcedao.com"],
+      ["Force DAO *                  ",`<a href="../forcedao/"          >Various</a>`,"FORCE              ","https://forcedao.com"],
       ["Valueset                     ",`<a href="../vsd"                >Various</a>`,"VSD                ","https://valueset.finance"],
       ["Bella Protocol               ",`<a href="../bella/"             >Various</a>`,"BEL                ","https://bella.fi"],
       ["B26                          ",`<a href="../b26"                >Various</a>`,"B26                ","https://b26.finance"],
