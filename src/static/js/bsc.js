@@ -291,7 +291,8 @@ const main = async() => {
       ["Biswap              ", `<a href="biswap"        >Various</a>`,"BSW           ","https://biswap.org"],
       ["Godzilla            ", `<a href="godzilla"      >Various</a>`,"GDZ           ","https://godzillaswapdefi.com"],
       ["Cerberus            ", `<a href="cerberus"      >Various</a>`,"CERBERUS      ","https://gocerberus.finance"],
-      ["Greenbelt NH        ", `<a href="greenbelt_nh"  >Various</a>`,"NH            ","https://nh.greenbelt.finance"]
+      ["Greenbelt NH        ", `<a href="greenbelt_nh"  >Various</a>`,"NH            ","https://nh.greenbelt.finance"],
+      ["Pulsar Beta         ", `<a href="pulsar_beta"   >Various</a>`,"BPUL          ","https://beta.pulsar.farm"]
     ]
   }
 
