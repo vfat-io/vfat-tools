@@ -292,7 +292,8 @@ const main = async() => {
       ["Godzilla            ", `<a href="godzilla"      >Various</a>`,"GDZ           ","https://godzillaswapdefi.com"],
       ["Cerberus            ", `<a href="cerberus"      >Various</a>`,"CERBERUS      ","https://gocerberus.finance"],
       ["Greenbelt NH        ", `<a href="greenbelt_nh"  >Various</a>`,"NH            ","https://nh.greenbelt.finance"],
-      ["Pulsar Beta         ", `<a href="pulsar_beta"   >Various</a>`,"BPUL          ","https://beta.pulsar.farm"]
+      ["Pulsar Beta         ", `<a href="pulsar_beta"   >Various</a>`,"BPUL          ","https://beta.pulsar.farm"],
+      ["Oni                 ", `<a href="oni"           >Various</a>`,"ONI           ","https://oni.exchange"]
     ]
   }
 
