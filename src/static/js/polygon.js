@@ -55,7 +55,9 @@ const main = async() => {
         ["Iron *             ",`<a href="iron"            >Various</a>`,"TITAN        ","https://polygon.iron.finance"],
         ["Alchemy Dao        ",`<a href="alchemydao"      >Various</a>`,"ALCH         ","https://polygon.alchemydao.com"],
         ["Polycrab           ",`<a href="polycrab"        >Various</a>`,"CRAB         ","https://polycrab.finance"],
-        ["Polybear           ",`<a href="polybear"        >Various</a>`,"BEAR         ","https://polybear.exchange"]
+        ["Polybear           ",`<a href="polybear"        >Various</a>`,"BEAR         ","https://polybear.exchange"],
+        ["StonkFarm          ",`<a href="stonkfarm"       >Various</a>`,"STONKX       ","https://stonk.farm"],
+        ["Polydex            ",`<a href="polydex"         >Various</a>`,"PLX          ","https://polydex.fi"],
         ["PolyMaple          ",`<a href="polymaple"       >Various</a>`,"MAPLE        ",""]
       ]
   }
