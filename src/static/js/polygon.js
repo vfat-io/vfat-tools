@@ -57,7 +57,8 @@ const main = async() => {
         ["Polycrab           ",`<a href="polycrab"        >Various</a>`,"CRAB         ","https://polycrab.finance"],
         ["Polybear           ",`<a href="polybear"        >Various</a>`,"BEAR         ","https://polybear.exchange"],
         ["StonkFarm          ",`<a href="stonkfarm"       >Various</a>`,"STONKX       ","https://stonk.farm"],
-        ["Polydex            ",`<a href="polydex"         >Various</a>`,"PLX          ","https://polydex.fi"]
+        ["Polydex            ",`<a href="polydex"         >Various</a>`,"PLX          ","https://polydex.fi"],
+        ["Gravity Finance    ",`<a href="gravityfinance"  >Various</a>`,"GFI          ","https://gravityfinance.io/"]
       ]
   }
 
