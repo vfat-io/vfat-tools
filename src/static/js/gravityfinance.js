@@ -1278,6 +1278,19 @@ const FARM_ABI = [
         "type": "function"
     },
     {
+        "inputs": [],
+        "name": "totalStakedAmount",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
         "inputs": [
             {
                 "internalType": "address",
@@ -1352,7 +1365,9 @@ const FARM_ABI = [
 const base_tokens_addresses = [
     "0x874e178A2f3f3F9d34db862453Cd756E7eAb0381", //GFI
     "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174", // USDC
-    "0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619" //WETH
+    "0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619", //WETH
+    "0x53E0bca35eC356BD5ddDFebbD1Fc0fD03FaBad39", //Link
+    "0x0b3f868e0be5597d5db7feb59e1cadbb0fdda50a" //Sushi
 ]
 
 const pool_addresses = ["nothing", // These are where ppl add liquidity
@@ -1362,7 +1377,9 @@ const pool_addresses = ["nothing", // These are where ppl add liquidity
 
 const farm_addresses = ["0xf9FBfA8Fd7568D39E1b2091379499B48EA2F4c72", //GFI
     "0xE6584E2432ef0b82A39C383e895E7e031655F2Bf", // GFI/USDC
-    "0xEf943A1B9A5E697Eb26B1cfc5e9225D2Aa00395a" // GFI/WETH
+    "0xEf943A1B9A5E697Eb26B1cfc5e9225D2Aa00395a", // GFI/WETH
+    "0x2b1966652Aa0c09a2f34cE3FbeB19d945dEB8FA3", //Link
+    "0x0Dbe8999Cde32164340411897a7DD73654F82571" //Sushi
 ] //array of farming contracts, 1 contract per farm */
 
 
@@ -1374,9 +1391,12 @@ async function main() {
     _print("Reading smart contracts...\n");
 
     const prices = await getMaticPrices();
+    _print("Buy GFI and add Liquidity here: https://info.quickswap.exchange/token/0x874e178a2f3f3f9d34db862453cd756e7eab0381\n");
     await loadFarmDetails(App, farm_addresses[0], pool_addresses[1], base_tokens_addresses[0], 0, BASE_ERC20_ABI, FARM_ABI, 6, prices);
-    await loadFarmDetails(App, farm_addresses[1], pool_addresses[1], base_tokens_addresses[0], base_tokens_addresses[1], BASE_ERC20_ABI, FARM_ABI, 6, prices);
+    let GFIprice = await loadFarmDetails(App, farm_addresses[1], pool_addresses[1], base_tokens_addresses[0], base_tokens_addresses[1], BASE_ERC20_ABI, FARM_ABI, 6, prices);
     await loadFarmDetails(App, farm_addresses[2], pool_addresses[2], base_tokens_addresses[0], base_tokens_addresses[2], BASE_ERC20_ABI, FARM_ABI, 18, prices);
+    await loadFarmOtherDetails(App, farm_addresses[3], base_tokens_addresses[0], base_tokens_addresses[3], BASE_ERC20_ABI, FARM_ABI, 18, prices, GFIprice);
+    await loadFarmOtherDetails(App, farm_addresses[4], base_tokens_addresses[0], base_tokens_addresses[4], BASE_ERC20_ABI, FARM_ABI, 18, prices, GFIprice);
     hideLoading();
 }
 
@@ -1394,6 +1414,7 @@ async function loadFarmDetails(App, farmAddress, poolAddress, aTokenAddress, bTo
     const FARM_CONTRACT = new ethers.Contract(farmAddress, FARMABI, App.provider);
     let farmInfo = await FARM_CONTRACT.farmInfo();
     const uSymbol = await ATOKEN_CONTRACT.symbol();
+    let GFIprice;
     if (bTokenAddress != 0) {
         const BTOKEN_CONTRACT = new ethers.Contract(bTokenAddress, ERC20ABI, App.provider); //Other
         const underlyingPrice = getParameterCaseInsensitive(prices, bTokenAddress)?.usd;
@@ -1404,14 +1425,14 @@ async function loadFarmDetails(App, farmAddress, poolAddress, aTokenAddress, bTo
         const otherSymbol = await BTOKEN_CONTRACT.symbol();
         let reservesA = await ATOKEN_CONTRACT.balanceOf(poolAddress) / 10 ** 18;
         let reservesB = await BTOKEN_CONTRACT.balanceOf(poolAddress) / 10 ** Bzereos;
-        let GFIprice = reservesB / reservesA;
+        GFIprice = reservesB / reservesA;
         let poolLiquidity = (reservesB + (reservesA * GFIprice)) * underlyingPrice;
 
 
         _print_bold(`${uSymbol}-${otherSymbol}`)
         _print(`${uSymbol} (${Number(GFIprice).toFixed(8)})[${otherSymbol}]`);
         _print(`Liquidity in Pool: $${formatMoney(poolLiquidity)}`);
-        get_pool_APR(App, reservesA * 10 ** 18, farmInfo, ERC20ABI, farmAddress);
+    
 
         const approveAndStake = async function () {
             return token_stake(FARM_ABI, farmAddress, lpTokenAddress, App)
@@ -1420,15 +1441,17 @@ async function loadFarmDetails(App, farmAddress, poolAddress, aTokenAddress, bTo
         _print_link(`Deposit ${uSymbol}-${otherSymbol}`, approveAndStake)
         _print_link(`Withdraw ${uSymbol}-${otherSymbol}`, unstake)
         _print_link(`Harvest ${uSymbol}`, claim)
+        get_pool_APR(App, reservesA * 10 ** 18, farmInfo, ERC20ABI, farmAddress);
     }
     else {
         let GFI_balance_farm = await ATOKEN_CONTRACT.balanceOf(farmAddress);
+        let GFIstakedInFarm = await FARM_CONTRACT.totalStakedAmount() / 10**18;
         var startFarmBlock = farmInfo["startBlock"];
         var blockNumber = await App.provider.getBlockNumber();
-        let reservesA = (GFI_balance_farm - 100e6 * 1e18 + (blockNumber - startFarmBlock) * blockNumber) / 1e18;
+        let reservesA = (GFI_balance_farm - 100e6 * 1e18 + (blockNumber - startFarmBlock) * blockNumber) / 1e18; // should just be the staked amount
+        //Call FARM_CONTRACT.totalStakedAmount() instead of using the reservesA ^^^ above
         _print_bold(`${uSymbol}`);
-        _print(`Liquidity in Pool: ${formatMoney(reservesA)}[${uSymbol}]`);
-        get_APR_GFI_pool(App, GFI_balance_farm, farmInfo);
+        _print(`Liquidity in Pool: ${formatMoney(GFIstakedInFarm)}[${uSymbol}]`);
 
         const approveAndStake = async function () {
             return token_stake(FARM_ABI, farmAddress, aTokenAddress, App)
@@ -1437,8 +1460,45 @@ async function loadFarmDetails(App, farmAddress, poolAddress, aTokenAddress, bTo
         _print_link(`Deposit ${uSymbol}`, approveAndStake)
         _print_link(`Withdraw ${uSymbol}`, unstake)
         _print_link(`Harvest ${uSymbol}`, claim)
+        get_APR_GFI_pool(App, GFIstakedInFarm, farmInfo);
+    }
+    return GFIprice;
+}
+
+async function loadFarmOtherDetails(App, farmAddress, aTokenAddress, bTokenAddress, ERC20ABI, FARMABI, Bzereos, prices, GFIprice) {
+
+    const ATOKEN_CONTRACT = new ethers.Contract(aTokenAddress, ERC20ABI, App.provider); //GFI
+    const FARM_CONTRACT = new ethers.Contract(farmAddress, FARMABI, App.provider);
+    let farmInfo = await FARM_CONTRACT.farmInfo();
+    const uSymbol = await ATOKEN_CONTRACT.symbol();
+    const BTOKEN_CONTRACT = new ethers.Contract(bTokenAddress, ERC20ABI, App.provider); //Other
+    const underlyingPrice = getParameterCaseInsensitive(prices, bTokenAddress)?.usd;
+    let GFI_balance_farm = await ATOKEN_CONTRACT.balanceOf(farmAddress);
+    const otherSymbol = await BTOKEN_CONTRACT.symbol();
+    let reservesB = await BTOKEN_CONTRACT.balanceOf(farmAddress) / 10 ** Bzereos; //How much of the other asset is in the farm
+    let TV_Other = reservesB * underlyingPrice;
+
+
+    _print_bold(`${otherSymbol}`)
+    _print(`Liquidity in Pool: ${reservesB} [${otherSymbol}]`);
+    
+
+    const approveAndStake = async function () {
+        return token_stake(FARM_ABI, farmAddress, bTokenAddress, App)
     }
 
+    const unstake = async function () {
+        return token_unstake(FARM_ABI, farmAddress, App, "pendingReward");
+    }
+
+    const claim = async function () {
+        return token_claim(FARM_ABI, farmAddress, App, "pendingReward");
+    }
+
+    _print_link(`Deposit ${otherSymbol}`, approveAndStake)
+    _print_link(`Withdraw ${otherSymbol}`, unstake)
+    _print_link(`Harvest ${uSymbol}`, claim)
+    get_pool_APR_other_single(App, GFI_balance_farm, farmInfo, ERC20ABI, farmAddress, bTokenAddress, GFIprice, TV_Other);
 }
 
 const token_stake = async function (farmAbi, farmAddress, stakeTokenAddr, App) {
@@ -1495,16 +1555,15 @@ const token_unstake = async function (farmAbi, farmAddress, App, pendingRewardsF
     const currentStakedAmount = (await FARM_CONTRACT.userInfo(App.YOUR_ADDRESS)).amount
     const earnedTokenAmount = await FARM_CONTRACT.callStatic[pendingRewardsFunction](App.YOUR_ADDRESS) / 1e18
 
-    if (earnedTokenAmount > 0) {
-        showLoading()
-        FARM_CONTRACT.withdraw(currentStakedAmount, { gasLimit: 500000 })
-            .then(function (t) {
-                return App.provider.waitForTransaction(t.hash)
-            })
-            .catch(function () {
-                hideLoading()
-            })
-    }
+    showLoading()
+    FARM_CONTRACT.withdraw(currentStakedAmount, { gasLimit: 500000 })
+        .then(function (t) {
+            return App.provider.waitForTransaction(t.hash)
+        })
+        .catch(function () {
+            hideLoading()
+        })
+
 }
 
 const token_claim = async function (farmAbi, farmAddress, App,
@@ -1552,17 +1611,30 @@ async function get_pool_APR(App, GFI_in_pool, farm_info, ERC20ABI, farm_address)
     _print("\n");
 }
 
-async function get_APR_GFI_pool(App, GFI_in_farm, farm_info) {
+async function get_pool_APR_other_single(App, GFI_in_pool, farm_info, ERC20ABI, farm_address, otherAssetAddress, GFIprice, TV_Other) {
     const blocks_per_year = 1.5019e7;
 
-    var startFarmBlock = farm_info["startBlock"];
     var blockReward = farm_info["blockReward"];
-    var blockNumber = await App.provider.getBlockNumber();
 
-    var total_GFI_staked = GFI_in_farm - 100e6 * 1e18 + (blockNumber - startFarmBlock) * blockNumber
+    var total_GFI_distributed = blockReward * blocks_per_year ;
 
-    APR = blockReward * blocks_per_year / total_GFI_staked * 100 / 10;
+    var total_GFI_distributed_USD = total_GFI_distributed * GFIprice / 10**18 ;
 
+    var APR = total_GFI_distributed_USD / TV_Other * 100 ;
+
+    var final_APR = Number(APR).toFixed(2).toString();
+    _print(`APR: ${final_APR}%`);
+    _print("\n");
+}
+
+async function get_APR_GFI_pool(App, GFIstakedInFarm, farm_info) {
+    const blocks_per_year = 1.5019e7;
+
+    var blockReward = farm_info["blockReward"];
+
+    APR = blockReward * blocks_per_year / GFIstakedInFarm * 100 / 10;
+
+    APR = APR / 10**18;
     var final_APR = Number(APR).toFixed(2).toString();
     _print(`APR: ${final_APR}%`);
     _print("\n");
