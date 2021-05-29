@@ -22,7 +22,7 @@ async function main() {
     const prices = await getBscPrices();
 
     await loadBscChefContract(App, tokens, prices, LWNS_CHEF, LWNS_CHEF_ADDR, LWNS_CHEF_ABI, rewardTokenTicker,
-        "lwns", null, rewardsPerWeek, "pendingLWNS", [8]);
+        "lwns", null, rewardsPerWeek, "pendingLwns", [8]);
 
     hideLoading();
   }
