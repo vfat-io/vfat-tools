@@ -11,8 +11,8 @@ async function main() {
     _print("Reading smart contracts...\n");
 
     const TITAN_CHEF_ADDR0 = "0x65430393358e55A658BcdE6FF69AB28cF1CbB77a";
-    const TITAN_CHEF_ADDR1 = "0x08b5249F1fee6e4fCf8A7113943ed6796737386E";
-    const TITAN_CHEF_ADDR2 = "0xe012d73B31f34b6199194936f65e7A1a9Ed39D73";
+    const TITAN_CHEF_ADDR1 = "0xb444d596273C66Ac269C33c30Fbb245F4ba8A79d";
+    const TITAN_CHEF_ADDR2 = "0xa37DD1f62661EB18c338f18Cf797cff8b5102d8e";
     const rewardTokenTicker0 = "TITAN";
     const rewardTokenTicker1 = "USDC";
     const TITAN_CHEF0 = new ethers.Contract(TITAN_CHEF_ADDR0, TITAN_CHEF_ABI, App.provider);
