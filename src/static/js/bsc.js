@@ -295,6 +295,7 @@ const main = async() => {
       ["Pulsar Beta         ", `<a href="pulsar_beta"   >Various</a>`,"BPUL          ","https://beta.pulsar.farm"],
       ["Oni                 ", `<a href="oni"           >Various</a>`,"ONI           ","https://oni.exchange"],
       ["Ketchup             ", `<a href="ketchup"       >Various</a>`,"KETCHUP       ","https://ketchupfinance.com"],
+      ["LawnDeFi             ", `<a href="lawndefi"       >Various</a>`,"LWNS       ","https://lawndefi.com"],
       ["Longdrink           ", `<a href="longdrink"     >Various</a>`,"LONG          ","https://longdrink.finance"]
     ]
   }
