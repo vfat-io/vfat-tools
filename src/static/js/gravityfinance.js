@@ -1378,8 +1378,8 @@ const pool_addresses = ["nothing", // These are where ppl add liquidity
 const farm_addresses = ["0xf9FBfA8Fd7568D39E1b2091379499B48EA2F4c72", //GFI
     "0xE6584E2432ef0b82A39C383e895E7e031655F2Bf", // GFI/USDC
     "0xEf943A1B9A5E697Eb26B1cfc5e9225D2Aa00395a", // GFI/WETH
-    "0x2b1966652Aa0c09a2f34cE3FbeB19d945dEB8FA3", //Link
-    "0x0Dbe8999Cde32164340411897a7DD73654F82571" //Sushi
+    "0x2b1966652Aa0c09a2f34cE3FbeB19d945dEB8FA3", //Link farm
+    "0x0Dbe8999Cde32164340411897a7DD73654F82571" //Sushi farm
 ] //array of farming contracts, 1 contract per farm */
 
 
