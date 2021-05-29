@@ -1395,8 +1395,8 @@ async function main() {
     await loadFarmDetails(App, farm_addresses[0], pool_addresses[1], base_tokens_addresses[0], 0, BASE_ERC20_ABI, FARM_ABI, 6, prices);
     let GFIprice = await loadFarmDetails(App, farm_addresses[1], pool_addresses[1], base_tokens_addresses[0], base_tokens_addresses[1], BASE_ERC20_ABI, FARM_ABI, 6, prices);
     await loadFarmDetails(App, farm_addresses[2], pool_addresses[2], base_tokens_addresses[0], base_tokens_addresses[2], BASE_ERC20_ABI, FARM_ABI, 18, prices);
-    await loadFarmOtherDetails(App, farm_addresses[3], base_tokens_addresses[0], base_tokens_addresses[3], BASE_ERC20_ABI, FARM_ABI, 18, prices, GFIprice);
     await loadFarmOtherDetails(App, farm_addresses[4], base_tokens_addresses[0], base_tokens_addresses[4], BASE_ERC20_ABI, FARM_ABI, 18, prices, GFIprice);
+    await loadFarmOtherDetails(App, farm_addresses[3], base_tokens_addresses[0], base_tokens_addresses[3], BASE_ERC20_ABI, FARM_ABI, 18, prices, GFIprice);
     hideLoading();
 }
 
@@ -1632,7 +1632,7 @@ async function get_APR_GFI_pool(App, GFIstakedInFarm, farm_info) {
 
     var blockReward = farm_info["blockReward"];
 
-    APR = blockReward * blocks_per_year / GFIstakedInFarm * 100 / 10;
+    APR = blockReward * blocks_per_year / GFIstakedInFarm * 100;
 
     APR = APR / 10**18;
     var final_APR = Number(APR).toFixed(2).toString();
