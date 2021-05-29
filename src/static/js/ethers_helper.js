@@ -34,6 +34,12 @@ const pageNetwork = function() {
   if (network.toLowerCase() === 'avax') {
     return window.NETWORKS.AVALANCHE
   }
+  if (network.toLowerCase() === 'fuse') {
+    return window.NETWORKS.FUSE
+  }
+  if (network.toLowerCase() === 'thundercore') {
+    return window.NETWORKS.THUNDERCORE
+  }
 
   return window.NETWORKS.ETHEREUM
 }
@@ -53,21 +59,31 @@ const init_wallet = async function (callback) {
     let targetNetworkId = parseInt(targetNetwork.chainId, 16)
 
     if (connectedNetwork.chainId === targetNetworkId) {
-      _print_link("[CHANGE WALLET]", changeWallet, "connect_wallet_button");
+      _print_link("[CHANGE WALLET]", changeWallet, "connect_wallet_button", false);
+      _print_inline(' -=- ');
+      _print_link("[CLEAR BROWSER STORAGE]", clearLocalStorage, "clear_browser_storage");
       start(callback);
     } else {
       _print(`You are connected to ${networkNameFromId(connectedNetwork.chainId)}, please switch to ${targetNetwork.chainName} network`)
       if (window.ethereum && targetNetwork.chainId !== '0x1') {
         _print('')
-        _print_link("[SWITCH NETWORK]", () => switchNetwork(targetNetwork), "connect_wallet_button")
+        _print_link("[SWITCH NETWORK]", () => switchNetwork(targetNetwork), "connect_wallet_button", false)
+        _print_inline(' -=- ');
+        _print_link("[CLEAR BROWSER STORAGE]", clearLocalStorage, "clear_browser_storage");
       }
       hideLoading()
     }
   } else {
-    _print_link("[CONNECT WALLET]", () => connectWallet(callback), "connect_wallet_button");
+    _print_link("[CONNECT WALLET]", () => connectWallet(callback), "connect_wallet_button", false);
+    _print_inline(' -=- ');
+    _print_link("[CLEAR BROWSER STORAGE]", clearLocalStorage, "clear_browser_storage");
     hideLoading()
   }
   _print('')
+}
+
+function clearLocalStorage() {
+  localStorage.clear()
 }
 
 async function init_ethers() {
@@ -292,12 +308,15 @@ const _print_bold = function(message) {
   }
 }
 
-const _print_link = function(message, onclickFunction, uuid = ID()) {
+const _print_link = function(message, onclickFunction, uuid = ID(), add_carriage = true) {
   if (!logger) {
     logger = document.getElementById('log')
   }
 
-  logger.innerHTML += '<a href="#" id=' + uuid + '>' + message + '</a><br />'
+  logger.innerHTML += '<a href="#" id=' + uuid + '>' + message + '</a>'
+  if (add_carriage) {
+    logger.innerHTML += '<br />'
+  }
 
   $(document).on('click', '#' + uuid, function() {
     console.log('clicked')
@@ -1416,6 +1435,7 @@ function getUniPrices(tokens, prices, pool)
   else if (pool.symbol.includes("PLP")) stakeTokenTicker += " Pure Swap LP";
   else if (pool.symbol.includes("Field-LP")) stakeTokenTicker += " Yield Fields LP";
   else if (pool.symbol.includes("UPT")) stakeTokenTicker += " Unic Swap LP";
+  else if (pool.symbol.includes("ELP")) stakeTokenTicker += " ELK LP";
   else stakeTokenTicker += " Uni LP";
   return {
       t0: t0,
@@ -1457,6 +1477,7 @@ function getUniPrices(tokens, prices, pool)
               pool.symbol.includes("SPIRIT") ?  `https://swap.spiritswap.finance/#/swap` :
               pool.symbol.includes("spLP") ?  `https://info.spookyswap.finance/pair/${pool.address}` :
               pool.symbol.includes("Lv1") ?  `https://info.steakhouse.finance/pair/${pool.address}` :
+              pool.symbol.includes("ELP") ?  `https://app.elk.finance/#/swap` :
               pool.symbol.includes("PLP") ?  `https://exchange.pureswap.finance/#/swap` :
               pool.symbol.includes("BLP") ?  `https://info.bakeryswap.org/#/pair/${pool.address}` :
               pool.symbol.includes("Field-LP") ?  `https://exchange.yieldfields.finance/#/swap` :
@@ -1493,6 +1514,11 @@ function getUniPrices(tokens, prices, pool)
             `https://app.pangolin.exchange/#/add/${t0address}/${t1address}`,
             `https://app.pangolin.exchange/#/remove/${t0address}/${t1address}`,
             `https://app.pangolin.exchange/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+          ] :
+          pool.symbol.includes("ELP") ? [
+            `https://app.elk.finance/#/add/${t0address}/${t1address}`,
+            `hhttps://app.elk.finance/#/remove/${t0address}/${t1address}`,
+            `https://app.elk.finance/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
           ] :
           pool.symbol.includes("CS-LP") ? [
             `https://app.coinswap.space/#/add/${t0address}/${t1address}`,
@@ -1868,6 +1894,9 @@ function getErc20Prices(prices, pool, chain="eth") {
     case "fantom":
       poolUrl=`https://ftmscan.com/token/${pool.address}`;
       break;
+    case "fuse":
+      poolUrl=`https://explorer.fuse.io/address/${pool.address}`;
+      break;
   }
   const name = `<a href='${poolUrl}' target='_blank'>${pool.symbol}</a>`;
   return {
@@ -2027,7 +2056,7 @@ function printChefPool(App, chefAbi, chefAddr, prices, tokens, poolInfo, poolInd
                        totalAllocPoints, rewardsPerWeek, rewardTokenTicker, rewardTokenAddress,
                        pendingRewardsFunction, fixedDecimals, claimFunction, chain="eth", depositFee=0, withdrawFee=0) {
   fixedDecimals = fixedDecimals ?? 2;
-  const sp = (poolInfo.stakedToken == null) ? null : getPoolPrices(tokens, prices, poolInfo.stakedToken);
+  const sp = (poolInfo.stakedToken == null) ? null : getPoolPrices(tokens, prices, poolInfo.stakedToken, chain);
   var poolRewardsPerWeek = poolInfo.allocPoints / totalAllocPoints * rewardsPerWeek;
   if (poolRewardsPerWeek == 0 && rewardsPerWeek != 0) return;
   const userStaked = poolInfo.userLPStaked ?? poolInfo.userStaked;
@@ -2351,6 +2380,9 @@ async function printSynthetixPool(App, info, chain="eth", customURLs) {
         break;
       case "fantom":
         _print(`<a target="_blank" href="https://ftmscan.com/address/${info.stakingAddress}#code">FTM Scan</a>`);
+        break;
+      case "fuse":
+        _print(`<a target="_blank" href="https://explorer.fuse.io/address/${info.stakingAddress}#code">FUSE Scan</a>`);
         break;
     }
     if (info.stakeTokenTicker != "ETH") {
