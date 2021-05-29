@@ -209,7 +209,7 @@ const main = async() => {
       ["Feeder              ", `<a href="feeder"        >Various</a>`,"FEED          ","https://app.feeder.finance"],
       ["Yolodraw            ", `<a href="yolodraw"      >Various</a>`,"YoloDraw      ","https://yolo-token.com"],
       ["Jaguar              ", `<a href="jaguar"        >Various</a>`,"JAGUAR        ","https://jaguarswap.com"],
-      ["Zombie *            ", `<a href="zombie"        >Various</a>`,"Various       ","https://zombie-farm.com"],
+      ["Zombie              ", `<a href="zombie"        >Various</a>`,"Various       ","https://zombie-farm.com"],
       ["Degen               ", `<a href="degen"         >Various</a>`,"DGNZ          ","https://degentoken.finance"],
       ["DegenCompound       ", `<a href="degencomp"     >Various</a>`,"aDGNZ         ","https://degentoken.finance"],
       ["Parthenon Epsilon   ", `<a href="parthenon_epsilon">Various</a>`,"EPSILON    ","https://epsilon.parthenon.finance"],
@@ -284,7 +284,7 @@ const main = async() => {
       ["Tinville            ", `<a href="tinville"      >Various</a>`,"TINvS         ","https://farms.tinville.finance"],
       ["Matisse             ", `<a href="matisse"       >Various</a>`,"Nu            ","https://app.matisse.finance"],
       ["Cougar              ", `<a href="cougar"        >Various</a>`,"CGS           ","https://cougarswap.io"],
-      ["Fluity *            ", `<a href="fluity"        >Various</a>`,"FLTY          ","https://fluity.finance"],
+      ["Fluity              ", `<a href="fluity"        >Various</a>`,"FLTY          ","https://fluity.finance"],
       ["Parthenon Iota      ", `<a href="parthenon_iota">Various</a>`,"IOTA          ","https://iota.parthenon.finance"],
       ["Croco               ", `<a href="croco"         >Various</a>`,"CROCO         ","https://crocofinance.club"],
       ["Cinnamonroll        ", `<a href="cinnamonroll"  >Various</a>`,"CNR           ","https://cinnamonroll.fi"],
@@ -295,7 +295,8 @@ const main = async() => {
       ["Pulsar Beta         ", `<a href="pulsar_beta"   >Various</a>`,"BPUL          ","https://beta.pulsar.farm"],
       ["Oni                 ", `<a href="oni"           >Various</a>`,"ONI           ","https://oni.exchange"],
       ["Ketchup             ", `<a href="ketchup"       >Various</a>`,"KETCHUP       ","https://ketchupfinance.com"],
-      ["LawnDeFi             ", `<a href="lawndefi"       >Various</a>`,"LWNS       ","https://lawndefi.com"]
+      ["LawnDeFi             ", `<a href="lawndefi"       >Various</a>`,"LWNS       ","https://lawndefi.com"],
+      ["Longdrink           ", `<a href="longdrink"     >Various</a>`,"LONG          ","https://longdrink.finance"]
     ]
   }
 
