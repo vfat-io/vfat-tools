@@ -56,6 +56,7 @@ const main = async() => {
         ["Alchemy Dao        ",`<a href="alchemydao"      >Various</a>`,"ALCH         ","https://polygon.alchemydao.com"],
         ["Polycrab           ",`<a href="polycrab"        >Various</a>`,"CRAB         ","https://polycrab.finance"],
         ["Polybear           ",`<a href="polybear"        >Various</a>`,"BEAR         ","https://polybear.exchange"]
+        ["PolyMaple          ",`<a href="polymaple"       >Various</a>`,"MAPLE        ",""]
       ]
   }
 

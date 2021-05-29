@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include(`${partials}/head`); -%>
+
+<body>
+<%- include(`${partials}/header_main`); -%>
+<pre id="log">
+***************************** POLYGON NETWORK ***************************************
+
+*************** 👨‍🌾 OFFICIAL POLYMAPLE FARMING CALCULATOR 👨‍🌾 ***********************
+INFO  : 
+A simple and growing project on Polygon. Good things starts small and grows organically
+
+Use vFat to invest. We have no website.
+
+Farming
+ - Farming starts on block: 15378402
+ - Rewards harvesting starts approximately 24 hours after farming starts - on block: 15508002
+ - 50% of deposit fees collected from Farm start to Harvest start will be added to the initial liquidity pool 
+ - Harvest Lockup Timers on Pool - 12 Hrs non-native, 4 hrs native
+ - Premine to only add funds to liquidity pool and marketing cost
+
+ Twitter - https://twitter.com/poly_maple/
+*************************************************************************************
+
+*** If you are being rate limited, please select a different RPC URL from here https://docs.matic.network/docs/develop/network-details/network/ ***
+
+</pre>
+<div class="loader--1"></div>
+<%- include(`${partials}/scripts`, {scriptname: 'matic_polybear'}); -%>
+</body>
+</html>
