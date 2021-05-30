@@ -288,7 +288,8 @@ const main = async() => {
       ["LawnDeFi            ", `<a href="lawndefi"      >Various</a>`,"LWNS          ","https://lawndefi.com"],
       ["Longdrink           ", `<a href="longdrink"     >Various</a>`,"LONG          ","https://longdrink.finance"],
       ["Blaze               ", `<a href="blaze"         >Various</a>`,"BLAZE         ","https://blazedefi.finance"],
-      ["GreenDefi           ", `<a href="greendefi"     >Various</a>`,"OXYGEN        ","https://greendefi.finance"]
+      ["GreenDefi           ", `<a href="greendefi"     >Various</a>`,"OXYGEN        ","https://greendefi.finance"],
+      ["ballena.io          ", `<a href="balle"         >Various</a>`,"BALLE         ","https://ballena.io"]
     ]
   }
 
