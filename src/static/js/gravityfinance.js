@@ -1391,7 +1391,7 @@ async function main() {
     _print("Reading smart contracts...\n");
 
     const prices = await getMaticPrices();
-    _print("Buy GFI and add Liquidity here: https://info.quickswap.exchange/token/0x874e178a2f3f3f9d34db862453cd756e7eab0381\n");
+    
     await loadFarmDetails(App, farm_addresses[0], pool_addresses[1], base_tokens_addresses[0], 0, BASE_ERC20_ABI, FARM_ABI, 6, prices);
     let GFIprice = await loadFarmDetails(App, farm_addresses[1], pool_addresses[1], base_tokens_addresses[0], base_tokens_addresses[1], BASE_ERC20_ABI, FARM_ABI, 6, prices);
     await loadFarmDetails(App, farm_addresses[2], pool_addresses[2], base_tokens_addresses[0], base_tokens_addresses[2], BASE_ERC20_ABI, FARM_ABI, 18, prices);
@@ -1414,53 +1414,95 @@ async function loadFarmDetails(App, farmAddress, poolAddress, aTokenAddress, bTo
     const FARM_CONTRACT = new ethers.Contract(farmAddress, FARMABI, App.provider);
     let farmInfo = await FARM_CONTRACT.farmInfo();
     const uSymbol = await ATOKEN_CONTRACT.symbol();
+    let userGFIBalance = await ATOKEN_CONTRACT.balanceOf(App.YOUR_ADDRESS);
     let GFIprice;
+    let userInfo = await FARM_CONTRACT.userInfo(App.YOUR_ADDRESS);
+    let userAmount = userInfo["amount"] / 10**18;
+    let userReward = await FARM_CONTRACT.pendingReward(App.YOUR_ADDRESS) / 10**18;
     if (bTokenAddress != 0) {
+
         const BTOKEN_CONTRACT = new ethers.Contract(bTokenAddress, ERC20ABI, App.provider); //Other
         const underlyingPrice = getParameterCaseInsensitive(prices, bTokenAddress)?.usd;
 
-        const LP_TOKEN = new ethers.Contract(farmInfo["lpToken"], ERC20ABI, App.provider);
+        let LP_TOKEN = new ethers.Contract(farmInfo["lpToken"], ERC20ABI, App.provider);
         let lpTokenAddress = LP_TOKEN.address;
+        let LPsymbol = await LP_TOKEN.symbol();
+
+        let LPStakedinFarm = await LP_TOKEN.balanceOf(farmAddress) / 10**18;
 
         const otherSymbol = await BTOKEN_CONTRACT.symbol();
         let reservesA = await ATOKEN_CONTRACT.balanceOf(poolAddress) / 10 ** 18;
         let reservesB = await BTOKEN_CONTRACT.balanceOf(poolAddress) / 10 ** Bzereos;
         GFIprice = reservesB / reservesA;
-        let poolLiquidity = (reservesB + (reservesA * GFIprice)) * underlyingPrice;
+        let poolTVL = (reservesB + (reservesA * GFIprice)) * underlyingPrice;
+        let LPprice = 10**18 * poolTVL / await LP_TOKEN.totalSupply();
+        let farmTVL = 10**18 * poolTVL * LPStakedinFarm / await LP_TOKEN.totalSupply(); 
+        var userLPBalance = await LP_TOKEN.balanceOf(App.YOUR_ADDRESS); //Get the amount of LP tokens in the users wallet
+        let userShare = userAmount / LPStakedinFarm;
 
+        let LPurl;
+        let SWAPurl;
+        let ADDurl;
+        let SUBurl;
+        if (otherSymbol == 'USDC'){
+            LPurl = "https://info.quickswap.exchange/pair/0xb1f3555a7c3753ab4e6df1d66cfdb25477a36ce7";
+            SWAPurl = "https://quickswap.exchange/#/swap?inputCurrency=0x2791bca1f2de4661ed88a30c99a7a9449aa84174&outputCurrency=0x874e178a2f3f3f9d34db862453cd756e7eab0381";
+            ADDurl = "https://quickswap.exchange/#/add/0x2791bca1f2de4661ed88a30c99a7a9449aa84174/0x874e178a2f3f3f9d34db862453cd756e7eab0381";
+            SUBurl = "https://quickswap.exchange/#/remove/0x2791bca1f2de4661ed88a30c99a7a9449aa84174/0x874e178a2f3f3f9d34db862453cd756e7eab0381";
+        }
+        else {
+            LPurl = "https://info.quickswap.exchange/pair/0x1587663e8f475e69ea2dbb38482c8c4ee9f388fb";
+            SWAPurl = "https://quickswap.exchange/#/swap?inputCurrency=0x7ceb23fd6bc0add59e62ac25578270cff1b9f619&outputCurrency=0x874e178a2f3f3f9d34db862453cd756e7eab0381";
+            ADDurl = "https://quickswap.exchange/#/add/0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619/0x874e178a2f3f3f9d34db862453cd756e7eab0381";
+            SUBurl = "https://quickswap.exchange/#/remove/0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619/0x874e178a2f3f3f9d34db862453cd756e7eab0381";
+        }
 
-        _print_bold(`${uSymbol}-${otherSymbol}`)
-        _print(`${uSymbol} (${Number(GFIprice).toFixed(8)})[${otherSymbol}]`);
-        _print(`Liquidity in Pool: $${formatMoney(poolLiquidity)}`);
-    
+        _print_bold(`<a href='${LPurl}' target='_blank'>${uSymbol}-${otherSymbol} Quick LP</a> <a href='${ADDurl}' target='_blank'>[+]</a> <a href='${SUBurl}' target='_blank'>[-]</a> <a href='${SWAPurl}' target='_blank'>[<=>]</a> Price: $${formatMoney(LPprice)} TVL: $${formatMoney(poolTVL)}`)
+        _print(`${uSymbol} to ${otherSymbol}: ${Number(GFIprice).toFixed(8)} [${otherSymbol}]`);
+        _print(`Total Staked in Farm: ${Number(LPStakedinFarm).toFixed(8)} [${LPsymbol}] ($${formatMoney(farmTVL)})`);
+        let GFIperWeek = await get_weekly_emission(farmInfo) / 10**18;
+        _print(`GFI Emitted Per Week: ${formatMoney(GFIperWeek)}`);
 
+        let yearAPR = await get_pool_APR(App, reservesA * 10 ** 18, farmInfo, ERC20ABI, farmAddress);
+        let weekAPR = yearAPR / 52;
+        let dayAPR = yearAPR / 365;
+
+        _print(`APR: Day ${Number(dayAPR).toFixed(2)}% Week ${Number(weekAPR).toFixed(2)}% Year ${Number(yearAPR).toFixed(2)}%`);
+        _print(`You are staking ${Number(userAmount).toFixed(8)} [${uSymbol}-${otherSymbol}] (${Number(userShare).toFixed(4)}% of the pool)`);
         const approveAndStake = async function () {
             return token_stake(FARM_ABI, farmAddress, lpTokenAddress, App)
         }
 
-        _print_link(`Deposit ${uSymbol}-${otherSymbol}`, approveAndStake)
-        _print_link(`Withdraw ${uSymbol}-${otherSymbol}`, unstake)
-        _print_link(`Harvest ${uSymbol}`, claim)
-        get_pool_APR(App, reservesA * 10 ** 18, farmInfo, ERC20ABI, farmAddress);
+        _print_link(`Stake ${Number(userLPBalance/10**18).toFixed(8)} [${uSymbol}-${otherSymbol}]`, approveAndStake);
+        _print_link(`Unstake ${Number(userAmount).toFixed(8)} [${uSymbol}-${otherSymbol}]`, unstake);
+        _print_link(`Claim ${Number(userReward).toFixed(8)} [${uSymbol}]`, claim);
+        _print(`Staking or unstaking also claims rewards.\n`);
     }
     else {
         let GFI_balance_farm = await ATOKEN_CONTRACT.balanceOf(farmAddress);
         let GFIstakedInFarm = await FARM_CONTRACT.totalStakedAmount() / 10**18;
-        var startFarmBlock = farmInfo["startBlock"];
-        var blockNumber = await App.provider.getBlockNumber();
-        let reservesA = (GFI_balance_farm - 100e6 * 1e18 + (blockNumber - startFarmBlock) * blockNumber) / 1e18; // should just be the staked amount
-        //Call FARM_CONTRACT.totalStakedAmount() instead of using the reservesA ^^^ above
-        _print_bold(`${uSymbol}`);
-        _print(`Liquidity in Pool: ${formatMoney(GFIstakedInFarm)}[${uSymbol}]`);
+        let userShare = 100 * userAmount / GFIstakedInFarm;
+        let url = "https://explorer-mainnet.maticvigil.com/tokens/0x874e178A2f3f3F9d34db862453Cd756E7eAb0381/token-transfers";
+        let quickURL = "https://info.quickswap.exchange/token/0x874e178a2f3f3f9d34db862453cd756e7eab0381";
+        _print_bold(`<a href='${url}' target='_blank'>${uSymbol}</a> <a href='${quickURL}' target='_blank'>QuickSwap Listing</a>`);
+        _print(`GFI in Farm: ${formatMoney(GFIstakedInFarm)}[${uSymbol}]`);
+        let GFIperWeek = await get_weekly_emission(farmInfo) / 10**18;
+        _print(`GFI Emitted Per Week: ${formatMoney(GFIperWeek)}`);
+        let yearAPR = await get_APR_GFI_pool(App, GFIstakedInFarm, farmInfo);
+        let weekAPR = yearAPR / 52;
+        let dayAPR = yearAPR / 365;
+        _print(`APR: Day ${Number(dayAPR).toFixed(2)}% Week ${Number(weekAPR).toFixed(2)}% Year ${Number(yearAPR).toFixed(2)}%`);
+
+        _print(`You are staking ${Number(userAmount).toFixed(8)} [${uSymbol}] (${Number(userShare).toFixed(4)}% of the pool)`);
 
         const approveAndStake = async function () {
             return token_stake(FARM_ABI, farmAddress, aTokenAddress, App)
         }
-
-        _print_link(`Deposit ${uSymbol}`, approveAndStake)
-        _print_link(`Withdraw ${uSymbol}`, unstake)
-        _print_link(`Harvest ${uSymbol}`, claim)
-        get_APR_GFI_pool(App, GFIstakedInFarm, farmInfo);
+        userGFIBalance = userGFIBalance / 10**18;
+        _print_link(`Stake ${Number(userGFIBalance).toFixed(8)} [${uSymbol}]`, approveAndStake);
+        _print_link(`Unstake ${Number(userAmount).toFixed(8)} [${uSymbol}]`, unstake);
+        _print_link(`Claim ${Number(userReward).toFixed(8)} [${uSymbol}]`, claim);
+        _print(`Staking or unstaking also claims rewards.\n`);
     }
     return GFIprice;
 }
@@ -1477,11 +1519,29 @@ async function loadFarmOtherDetails(App, farmAddress, aTokenAddress, bTokenAddre
     const otherSymbol = await BTOKEN_CONTRACT.symbol();
     let reservesB = await BTOKEN_CONTRACT.balanceOf(farmAddress) / 10 ** Bzereos; //How much of the other asset is in the farm
     let TV_Other = reservesB * underlyingPrice;
-
-
-    _print_bold(`${otherSymbol}`)
-    _print(`Liquidity in Pool: ${reservesB} [${otherSymbol}]`);
-    
+    let userInfo = await FARM_CONTRACT.userInfo(App.YOUR_ADDRESS);
+    let userAmount = userInfo["amount"] / 10**18;
+    let userReward = await FARM_CONTRACT.pendingReward(App.YOUR_ADDRESS) / 10**18;
+    let otherTotalSupply = await BTOKEN_CONTRACT.totalSupply() / 10**18;
+    let marketCap = underlyingPrice * otherTotalSupply;
+    let userShare = userAmount / reservesB;
+    let userOtherBalance = await BTOKEN_CONTRACT.balanceOf(App.YOUR_ADDRESS);
+    let url;
+    if (otherSymbol == 'LINK'){
+        url = "https://explorer-mainnet.maticvigil.com/address/0x53E0bca35eC356BD5ddDFebbD1Fc0fD03FaBad39/transactions";
+    }
+    else {
+        url = "https://explorer-mainnet.maticvigil.com/address/0x0b3F868E0BE5597D5DB7fEB59E1CADBb0fdDa50a/transactions";
+    }
+    _print_bold(`<a href='${url}' target='_blank'>${otherSymbol}</a> Price: $${formatMoney(underlyingPrice)} Market Cap: $${formatMoney(marketCap)}`);
+    _print(`Staked in Pool: ${reservesB} [${otherSymbol}] ($${formatMoney(TV_Other)})`);
+    let GFIperWeek = await get_weekly_emission(farmInfo) / 10**18;
+    _print(`GFI Emitted Per Week: ${formatMoney(GFIperWeek)}`);
+    let yearAPR = await get_pool_APR_other_single(App, GFI_balance_farm, farmInfo, ERC20ABI, farmAddress, bTokenAddress, GFIprice, TV_Other);
+    let weekAPR = yearAPR / 52;
+    let dayAPR = yearAPR / 365;
+    _print(`APR: Day ${Number(dayAPR).toFixed(2)}% Week ${Number(weekAPR).toFixed(2)}% Year ${Number(yearAPR).toFixed(2)}%`);
+    _print(`You are staking ${Number(userAmount).toFixed(8)} [${uSymbol}] (${Number(userShare).toFixed(4)}% of the pool)`);
 
     const approveAndStake = async function () {
         return token_stake(FARM_ABI, farmAddress, bTokenAddress, App)
@@ -1495,10 +1555,10 @@ async function loadFarmOtherDetails(App, farmAddress, aTokenAddress, bTokenAddre
         return token_claim(FARM_ABI, farmAddress, App, "pendingReward");
     }
 
-    _print_link(`Deposit ${otherSymbol}`, approveAndStake)
-    _print_link(`Withdraw ${otherSymbol}`, unstake)
-    _print_link(`Harvest ${uSymbol}`, claim)
-    get_pool_APR_other_single(App, GFI_balance_farm, farmInfo, ERC20ABI, farmAddress, bTokenAddress, GFIprice, TV_Other);
+    _print_link(`Stake ${Number(userOtherBalance/10**18).toFixed(8)} [${otherSymbol}]`, approveAndStake);
+    _print_link(`Unstake ${Number(userAmount).toFixed(8)} [${otherSymbol}]`, unstake);
+    _print_link(`Claim ${Number(userReward).toFixed(8)} [${uSymbol}]`, claim);
+    _print(`Staking or unstaking also claims rewards.\n`);
 }
 
 const token_stake = async function (farmAbi, farmAddress, stakeTokenAddr, App) {
@@ -1586,6 +1646,12 @@ const token_claim = async function (farmAbi, farmAddress, App,
     }
 }
 
+async function get_weekly_emission(farm_info) {
+    const blocks_in_a_week = 302400;
+    var blockReward = farm_info["blockReward"];
+    return (blocks_in_a_week * blockReward);
+}
+
 async function get_pool_APR(App, GFI_in_pool, farm_info, ERC20ABI, farm_address) {
     const blocks_per_year = 1.5019e7;
 
@@ -1607,8 +1673,7 @@ async function get_pool_APR(App, GFI_in_pool, farm_info, ERC20ABI, farm_address)
     }
 
     var final_APR = Number(APR).toFixed(2).toString();
-    _print(`APR: ${final_APR}%`);
-    _print("\n");
+    return final_APR;
 }
 
 async function get_pool_APR_other_single(App, GFI_in_pool, farm_info, ERC20ABI, farm_address, otherAssetAddress, GFIprice, TV_Other) {
@@ -1623,8 +1688,7 @@ async function get_pool_APR_other_single(App, GFI_in_pool, farm_info, ERC20ABI, 
     var APR = total_GFI_distributed_USD / TV_Other * 100 ;
 
     var final_APR = Number(APR).toFixed(2).toString();
-    _print(`APR: ${final_APR}%`);
-    _print("\n");
+    return final_APR;
 }
 
 async function get_APR_GFI_pool(App, GFIstakedInFarm, farm_info) {
@@ -1636,6 +1700,5 @@ async function get_APR_GFI_pool(App, GFIstakedInFarm, farm_info) {
 
     APR = APR / 10**18;
     var final_APR = Number(APR).toFixed(2).toString();
-    _print(`APR: ${final_APR}%`);
-    _print("\n");
+    return final_APR;
 }
