@@ -195,7 +195,7 @@ const main = async() => {
       ["Parthenon Delta     ", `<a href="parthenon_delta">Various</a>`,"DELTA        ","https://delta.parthenon.finance"],
       ["Caramel             ", `<a href="caramel"       >Various</a>`,"CARAMEL       ","https://caramelswap.finance"],
       ["Plumcake            ", `<a href="plumcake"      >Various</a>`,"PLUM          ","https://plumcake.finance"],
-      ["Wsbdapp *           ", `<a href="wsb"           >Various</a>`,"WSB           ","https://farm.wsbdapp.com"],
+      ["Wsbdapp             ", `<a href="wsb"           >Various</a>`,"WSB           ","https://farm.wsbdapp.com"],
       ["Feeder              ", `<a href="feeder"        >Various</a>`,"FEED          ","https://app.feeder.finance"],
       ["Yolodraw            ", `<a href="yolodraw"      >Various</a>`,"YoloDraw      ","https://yolo-token.com"],
       ["Jaguar              ", `<a href="jaguar"        >Various</a>`,"JAGUAR        ","https://jaguarswap.com"],
@@ -288,7 +288,14 @@ const main = async() => {
       ["LawnDeFi            ", `<a href="lawndefi"      >Various</a>`,"LWNS          ","https://lawndefi.com"],
       ["Longdrink           ", `<a href="longdrink"     >Various</a>`,"LONG          ","https://longdrink.finance"],
       ["Blaze               ", `<a href="blaze"         >Various</a>`,"BLAZE         ","https://blazedefi.finance"],
-      ["GreenDefi           ", `<a href="greendefi"     >Various</a>`,"OXYGEN        ","https://greendefi.finance"],
+      ["GreenDefi           ", `<a href="greendefi"     >Various</a>`,"OXYGEN        ","https://greendefi.finance"],     
+      ["BenSwap             ", `<a href="benswap"       >Various</a>`,"GBEN          ","https://benswap.finance"],
+      ["Parthenon Kappa     ", `<a href="parthenon_kappa">Various</a>`,"KAPPA        ","https://kappa.parthenon.finance"],
+      ["ballena.io          ", `<a href="balle"         >Various</a>`,"BALLE         ","https://ballena.io"],
+      ["Hydra               ", `<a href="hydra"         >Various</a>`,"HYDRA         ","https://www.hydradefi.com"],
+      ["Cosmos Farm (MARS)  ", `<a href="cosmosmars"     >Various</a>`,"MARS          ","https://mars.cosmos.farm"],
+      ["Pancakefork         ", `<a href="pancakefork"   >Various</a>`,"FCKE          ","https://app.pancakefork.finance"],
+      ["Vesuvius            ", `<a href="vesuvius"      >Various</a>`,"VESUVIUS      ","https://vesuvius.finance"]
       ["Kesef Finance       ", `<a href="kesef"         >Various</a>`,"KSF           ","https://kesef.finance"]
     ]
   }
