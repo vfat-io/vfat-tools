@@ -289,7 +289,8 @@ const main = async() => {
       ["Longdrink           ", `<a href="longdrink"     >Various</a>`,"LONG          ","https://longdrink.finance"],
       ["Blaze               ", `<a href="blaze"         >Various</a>`,"BLAZE         ","https://blazedefi.finance"],
       ["GreenDefi           ", `<a href="greendefi"     >Various</a>`,"OXYGEN        ","https://greendefi.finance"],
-      ["BenSwap             ", `<a href="benswap"       >Various</a>`,"GBEN          ","https://benswap.finance"]
+      ["BenSwap             ", `<a href="benswap"       >Various</a>`,"GBEN          ","https://benswap.finance"],
+      ["Parthenon Kappa     ", `<a href="parthenon_kappa">Various</a>`,"KAPPA        ","https://kappa.parthenon.finance"]
     ]
   }
 
