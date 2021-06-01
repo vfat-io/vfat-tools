@@ -64,7 +64,8 @@ const main = async() => {
         ["Polygold           ",`<a href="polygold"       >Various</a>`,"POLYGOLD      ","https://polygold.finance"],
         ["Polyswan           ",`<a href="polyswan"        >Various</a>`,"SWAN         ","https://www.polyswan.finance"],
         ["Polyion            ",`<a href="polyion"         >Various</a>`,"LION         ","https://www.polyion.net"],
-        ["Eleven             ",`<a href="eleven"          >Various</a>`,"ELE          ","https://eleven.finance"]
+        ["Eleven             ",`<a href="eleven"          >Various</a>`,"ELE          ","https://eleven.finance"],
+        ["Pirate Dice        ",`<a href="piratedice"      >Various</a>`,"BOOTY        ","http://piratedice.xyz"]
       ]
   }
 
