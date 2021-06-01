@@ -1,6 +1,5 @@
 $(function() {
-    consoleInit();
-    start(main);
+consoleInit(main)
 });
 
 const getPriceFromUniswap = async (App, basePrices, lpAddress, tokenAddress, baseTokenAddress, baseDecimals) => {
@@ -11,36 +10,36 @@ const getPriceFromUniswap = async (App, basePrices, lpAddress, tokenAddress, bas
         //will need changing if any dollar token doesnt have 18 decimals
         return _reserve1 / 10 ** baseDecimals * basePrice / (_reserve0 / 1e18)
     }
-    else {            
+    else {
         return _reserve0 / 10 ** baseDecimals * basePrice / (_reserve1 / 1e18)
     }
 }
 
-const getDollar = async (App, basePrices, v) => {    
-    const price = await getPriceFromUniswap(App, basePrices, v.UniswapLP.address, v.Dollar.address, 
+const getDollar = async (App, basePrices, v) => {
+    const price = await getPriceFromUniswap(App, basePrices, v.UniswapLP.address, v.Dollar.address,
         v.UniswapLP.baseCoin, v.UniswapLP.baseDecimals);
     const dol = new ethers.Contract(v.Dollar.address, ABI.ERC20, App.provider);
     const dao = new ethers.Contract(v.DAO.address, v.DAO.abi, App.provider);
     const totalSupply = await dol.totalSupply() / 1e18
     const marketCap = totalSupply * price;
     const epoch = await dao.epoch();
-    let twap; 
+    let twap;
     try {
         if (v.Dollar.ticker == "VTD") twap = await getVTDtwap(dao);
         else twap = await getTWAP(App, v.UniswapLP.address, v.Dollar.address, v.UniswapLP.baseDecimals);
     }
     catch {}
     const status =
-        epoch <= (v.Parameters?.BootstrappingPeriod ?? 0) ? "Bootstrap" 
+        epoch <= (v.Parameters?.BootstrappingPeriod ?? 0) ? "Bootstrap"
             : (twap > 1 ? "Expansion" : "Contraction");
     return {
         page : v.Page,
         name : v.Dollar.ticker,
         lpToken : v.UniswapLP.ticker,
         epoch,
-        price,       
-        twap,   
-        status,  
+        price,
+        twap,
+        status,
         totalSupply,
         marketCap
     }
@@ -57,7 +56,7 @@ const getBasisFork = async (App, basePrices, v) => {
         const cash = new ethers.Contract(v.Cash, ABI.ERC20, App.provider);
         const shareMarketCap = (totalSupply - pool1 - pool2) / 1e18 * sharePrice;
         const cashMarketCap = await cash.totalSupply() / 1e18 * cashPrice;
-        return { 
+        return {
             page : v.Page,
             cash : v.CashTicker,
             share : v.ShareTicker,
@@ -79,7 +78,7 @@ const main = async() => {
     const basePrices = await lookUpTokenPrices(uniqueBaseCoins);
     const dollars = await Promise.all(Object.entries(Dollars).map(([,v]) => getDollar(App, basePrices, v)));
     const basisForks = (await Promise.all(Object.entries(Basis).map(([,v]) => getBasisFork(App, basePrices, v)))).filter(x => x);
-    
+
     var tableData = {
         "title":"Self-Stabilizing Dollars",
         "heading":["Ticker","Pool", "Epoch", "Price", "TWAP", "Status", "Supply", "Market Cap"],
@@ -101,8 +100,8 @@ const main = async() => {
         ] )
     }
     var table = new AsciiTable().fromJSON(tableData);
-    logger.innerHTML += table + '<br />';    
-    
+    logger.innerHTML += table + '<br />';
+
     _print_bold(`\nTotal Market Cap: $${formatMoney(dollars.reduce((v1, d2)=>v1+d2.marketCap, 0))}\n`);
 
     var table2Data = {
@@ -110,8 +109,8 @@ const main = async() => {
         "heading":["Cash","Share", "Cash Price", "Share Price", "Combined Market Cap"],
         "rows": basisForks.sort((a, b) => b.marketCap - a.marketCap)
                 .map(b => [
-            b.cash, 
-            b.share, 
+            b.cash,
+            b.share,
             `$${formatMoney(b.cashPrice)}`,
             `$${formatMoney(b.sharePrice)}`,
             `$${formatMoney(b.marketCap)}`
@@ -119,7 +118,7 @@ const main = async() => {
     };
     var table2 = new AsciiTable().fromJSON(table2Data);
     logger.innerHTML += '<br />' + table2 + '<br />';
-    
+
     _print_bold(`\nTotal Market Cap: $${formatMoney(basisForks.reduce((v1, d2)=>v1+d2.marketCap, 0))}\n`);
 
     hideLoading();

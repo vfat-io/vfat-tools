@@ -1,10 +1,9 @@
 $(function() {
-    consoleInit();
-    start(main);
+consoleInit(main)
   });
 
 
-  async function main() {  
+  async function main() {
     const App = await init_ethers();
 
     _print(`Initialized ${App.YOUR_ADDRESS}\n`);
@@ -54,7 +53,7 @@ $(function() {
         myVaultAddr = await visorfactory.userIndex(App.YOUR_ADDRESS, vaultIndex-1)
         const myVault = new ethcall.Contract(myVaultAddr, visorABI);
         [myDAI, myUSDC, myUSDT, myLP] = await App.ethcallProvider.all(
-            [myVault.getBalanceLocked(vDAI), myVault.getBalanceLocked(vUSDC), 
+            [myVault.getBalanceLocked(vDAI), myVault.getBalanceLocked(vUSDC),
              myVault.getBalanceLocked(vUSDT), myVault.getBalanceLocked(vLPAddr)]
         )
     }
@@ -66,12 +65,12 @@ $(function() {
         myVaultAddr = "0x675ACde86DffE354e175E7dCb95E71f9902477D7";
         const myVault = new ethcall.Contract(myVaultAddr, visorABI);
         [myDAI, myUSDC, myUSDT, myLP] = await App.ethcallProvider.all(
-            [myVault.getBalanceLocked(vDAI), myVault.getBalanceLocked(vUSDC), 
+            [myVault.getBalanceLocked(vDAI), myVault.getBalanceLocked(vUSDC),
              myVault.getBalanceLocked(vUSDT), myVault.getBalanceLocked(vLPAddr)]
         )
         _print("");
     }
-    
+
     _print(`My vault: ${myVaultAddr}`)
     _print("My Locked Balance:")
     _print(`   DAI: ${ethers.utils.formatEther(myDAI)}`)
@@ -81,7 +80,7 @@ $(function() {
     _print("")
 
     _print("Future Vault Rewards:")
-    
+
     const [daiFuture7, daiFuture14, daiFuture30] = await App.ethcallProvider.all( [
         DAI_Hypervisor.getFutureVaultReward(myVaultAddr, unixTimeNow+604800),
         DAI_Hypervisor.getFutureVaultReward(myVaultAddr, unixTimeNow+1209600),
@@ -92,7 +91,7 @@ $(function() {
     _print("  DAI:")
     _print(`    7 Days:  ${ethers.utils.formatEther(daiFuture7).toString().substring(0,5)} VISR | Return: ${dai_apyish_weekly.toString().substring(0,5)}%`)
     _print(`    14 Days: ${ethers.utils.formatEther(daiFuture14).toString().substring(0,5)} VISR | Return: ${dai_apyish_biweekly.toString().substring(0,5)}%`)
-    _print(`    30 Days: ${ethers.utils.formatEther(daiFuture30).toString().substring(0,5)} VISR | Return: ${dai_apyish_monthly.toString().substring(0,5)}%`) 
+    _print(`    30 Days: ${ethers.utils.formatEther(daiFuture30).toString().substring(0,5)} VISR | Return: ${dai_apyish_monthly.toString().substring(0,5)}%`)
 
     const [usdcFuture7, usdcFuture14, usdcFuture30] = await App.ethcallProvider.all( [
         USDC_Hypervisor.getFutureVaultReward(myVaultAddr, unixTimeNow+604800),
@@ -136,5 +135,5 @@ $(function() {
     _print(`    14 Days: ${ethers.utils.formatEther(lpFuture14).toString().substring(0,5)} VISR | Return: ${lp_apyish_biweekly.toString().substring(0,6)}%`)
     _print(`    30 Days: ${ethers.utils.formatEther(lpFuture30).toString().substring(0,5)} VISR | Return: ${lp_apyish_monthly.toString().substring(0,7)}%`)
 
-    hideLoading();  
-  } 
+    hideLoading();
+  }

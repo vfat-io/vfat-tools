@@ -1,6 +1,5 @@
 $(function() {
-    consoleInit();
-    start(main);
+consoleInit(main)
   });
 
   const Contracts = {
@@ -47,16 +46,16 @@ PickleAdapter 0x5403fFd517dFe40BeF9A48997d0C6896Ed0c7f28
 
 YfvAdapter 0xfD92F42bA498F7e86882C66f82eAC6547a2106f6
   */
-  
-  async function main() {  
+
+  async function main() {
     const App = await init_ethers();
-  
+
     _print(`Initialized ${App.YOUR_ADDRESS}\n`);
     _print("Reading smart contracts...\n");
-  
+
     const VAMPIRE_ADDR = ;
     const VAMPIRE = new ethers.Contract(VAMPIRE_ADDR, VAMPIRE_ABI, App.provider);
     const DRC_ADDR = "0xb78b3320493a4efaa1028130c5ba26f0b6085ef8";
 
-    hideLoading();  
+    hideLoading();
   }

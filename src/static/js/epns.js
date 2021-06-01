@@ -1,6 +1,5 @@
 $(function() {
-  consoleInit();
-  start(main);
+consoleInit(main)
 });
 
 const EPNS_STAKING_ABI = [{"inputs":[{"internalType":"uint256","name":"_epoch1Start","type":"uint256"},{"internalType":"uint256","name":"_epochDuration","type":"uint256"}],"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":true,"internalType":"address","name":"tokenAddress","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"Deposit","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":true,"internalType":"address","name":"tokenAddress","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"EmergencyWithdraw","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"caller","type":"address"},{"indexed":true,"internalType":"uint128","name":"epochId","type":"uint128"},{"indexed":false,"internalType":"address[]","name":"tokens","type":"address[]"}],"name":"ManualEpochInit","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":true,"internalType":"address","name":"tokenAddress","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"Withdraw","type":"event"},{"inputs":[{"internalType":"address","name":"user","type":"address"},{"internalType":"address","name":"token","type":"address"}],"name":"balanceOf","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"prevBalance","type":"uint256"},{"internalType":"uint128","name":"prevMultiplier","type":"uint128"},{"internalType":"uint256","name":"amount","type":"uint256"},{"internalType":"uint128","name":"currentMultiplier","type":"uint128"}],"name":"computeNewMultiplier","outputs":[{"internalType":"uint128","name":"","type":"uint128"}],"stateMutability":"pure","type":"function"},{"inputs":[],"name":"currentEpochMultiplier","outputs":[{"internalType":"uint128","name":"","type":"uint128"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"tokenAddress","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"deposit","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"tokenAddress","type":"address"}],"name":"emergencyWithdraw","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"epoch1Start","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"epochDuration","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"token","type":"address"},{"internalType":"uint128","name":"epochId","type":"uint128"}],"name":"epochIsInitialized","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getCurrentEpoch","outputs":[{"internalType":"uint128","name":"","type":"uint128"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"tokenAddress","type":"address"},{"internalType":"uint128","name":"epochId","type":"uint128"}],"name":"getEpochPoolSize","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"user","type":"address"},{"internalType":"address","name":"token","type":"address"},{"internalType":"uint128","name":"epochId","type":"uint128"}],"name":"getEpochUserBalance","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address[]","name":"tokens","type":"address[]"},{"internalType":"uint128","name":"epochId","type":"uint128"}],"name":"manualEpochInit","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"tokenAddress","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"withdraw","outputs":[],"stateMutability":"nonpayable","type":"function"}]
@@ -8,7 +7,7 @@ const EPNS_STAKING_ABI = [{"inputs":[{"internalType":"uint256","name":"_epoch1St
 const Pools = [
   "0xaf31fd9c3b0350424bf96e551d2d1264d8466205", //LP
   "0xf418588522d5dd018b425e472991e52ebbeeeeee"  //PUSH
-].map(a => { 
+].map(a => {
   return {
     address: "0xB72ff1e675117beDefF05a7D0a472c3844cfec85",
     abi: EPNS_STAKING_ABI,
@@ -39,7 +38,7 @@ async function main() {
 
 async function loadMultipleEpnsPools(App, tokens, prices, pools) {
   let totalStaked  = 0, totalUserStaked = 0, individualAPRs = [];
-  const infos = await Promise.all(pools.map(p => 
+  const infos = await Promise.all(pools.map(p =>
     loadEpnsPoolInfo(App, tokens, prices, p.abi, p.address, p.rewardTokenAddress, p.stakeTokenAddress)));
   for (const i of infos) {
     let p = await printEpnsPool(App, i);
@@ -88,7 +87,7 @@ async function loadEpnsPoolInfo(App, tokens, prices, stakingAbi, stakingAddress,
 
     const balance = await STAKING_POOL.balanceOf(App.YOUR_ADDRESS, stakeTokenAddress);
 
-    const weeklyRewards = 
+    const weeklyRewards =
       stakeTokenAddress == "0xaf31fd9c3b0350424bf96e551d2d1264d8466205" ? 35000 : 30000;
 
     const usdPerWeek = weeklyRewards * rewardTokenPrice;

@@ -1,6 +1,5 @@
 $(function() {
-  consoleInit();
-  start(main);
+consoleInit(main)
 });
 
 const MOMA_CHEF_ABI = [{"inputs":[{"internalType":"address","name":"_factory","type":"address"},{"internalType":"address","name":"_farmGenerator","type":"address"}],"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"Deposit","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"EmergencyWithdraw","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"Withdraw","type":"event"},{"inputs":[],"name":"accRewardPerShare","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"_amount","type":"uint256"}],"name":"deposit","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"emergencyWithdraw","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"factory","outputs":[{"internalType":"contract IFarmFactory","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"farmGenerator","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"farmerCount","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"firstCycleRate","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"forceEnd","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_fromBlock","type":"uint256"},{"internalType":"uint256","name":"_toBlock","type":"uint256"}],"name":"getMultiplier","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"contract IERC20","name":"_rewardToken","type":"address"},{"internalType":"contract IERC20","name":"_lpToken","type":"address"},{"internalType":"uint256","name":"_rewardPerBlock","type":"uint256"},{"internalType":"uint256","name":"_startBlock","type":"uint256"},{"internalType":"uint256[]","name":"_rateParameters","type":"uint256[]"},{"internalType":"uint256[]","name":"_vestingParameters","type":"uint256[]"},{"internalType":"address","name":"_owner","type":"address"}],"name":"init","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"initRate","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"isActive","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"lastRewardBlock","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"lpToken","outputs":[{"internalType":"contract IERC20","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"owner","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"_user","type":"address"}],"name":"pendingReward","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"percentForVesting","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"reducingCycle","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"reducingRate","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"tokenToRescue","type":"address"},{"internalType":"address","name":"to","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"rescueFunds","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"rewardPerBlock","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"rewardToken","outputs":[{"internalType":"contract IERC20","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"startBlock","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"_owner","type":"address"}],"name":"transferOwnership","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_percentForVesting","type":"uint256"}],"name":"updatePercentForVesting","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"updatePool","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_reducingRate","type":"uint256"}],"name":"updateReducingRate","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"userInfo","outputs":[{"internalType":"uint256","name":"amount","type":"uint256"},{"internalType":"uint256","name":"rewardDebt","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"vesting","outputs":[{"internalType":"contract Vesting","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"_amount","type":"uint256"}],"name":"withdraw","outputs":[],"stateMutability":"nonpayable","type":"function"}]
@@ -14,13 +13,13 @@ async function main() {
 
   let tokens = {};
   let prices = {};
-  
-  
+
+
   const MOMA_CHEF_ADDR = "0x8d05F3bEf44F3b4Cd83427c83C2A4021A5e120d2";
-  
-  await loadMomaPool(App, tokens, prices, null, MOMA_CHEF_ADDR, MOMA_CHEF_ABI, 
+
+  await loadMomaPool(App, tokens, prices, null, MOMA_CHEF_ADDR, MOMA_CHEF_ABI,
     "MOMA", "rewardToken", "rewardPerBlock", "pendingReward");
-  
+
   hideLoading();
 }
 
@@ -31,10 +30,14 @@ async function loadMomaPool(App, tokens, prices, chef, chefAddress, chefAbi, rew
   _print(`<a href='https://etherscan.io/address/${chefAddress}' target='_blank'>Staking Contract</a>`);
   _print("");
 
+  const currentBlock = await App.provider.getBlockNumber();
+  const nextBlock = currentBlock + 1;
+  const multiplier = await chefContract.getMultiplier(currentBlock, nextBlock) / 1000000000000;
+
   const rewardTokenAddress = await chefContract.callStatic[rewardTokenFunction]();
   const rewardToken = await getToken(App, rewardTokenAddress, chefAddress);
-  const rewardsPerWeek = await chefContract.callStatic[rewardsPerBlockFunction]() 
-    / 10 ** rewardToken.decimals * 604800 / 13.5
+  const rewardsPerWeek = await chefContract.callStatic[rewardsPerBlockFunction]()
+    / 10 ** rewardToken.decimals * 604800 / 13.5 * multiplier;
 
   const lpTokenAddress = await chefContract.lpToken();
   const poolToken = await getToken(App, lpTokenAddress, chefAddress);
@@ -42,7 +45,7 @@ async function loadMomaPool(App, tokens, prices, chef, chefAddress, chefAbi, rew
   const pendingRewardTokens = await chefContract.callStatic[pendingRewardsFunction](App.YOUR_ADDRESS);
   const staked = userInfo.amount / 10 ** poolToken.decimals;
   const lastRewardBlock = await chefContract.lastRewardBlock();
-  const poolInfo = 
+  const poolInfo =
   {
     address: lpTokenAddress,
     poolToken: poolToken,
@@ -50,7 +53,7 @@ async function loadMomaPool(App, tokens, prices, chef, chefAddress, chefAbi, rew
     pendingRewardTokens : pendingRewardTokens / 10 ** 18,
     lastRewardBlock : lastRewardBlock
   }
-  
+
   await getNewPricesAndTokens(App, tokens, prices, poolInfo.poolToken.tokens.concat([rewardTokenAddress]), chefAddress);
 
   const poolPrices = getPoolPrices(tokens, prices, poolInfo.poolToken);
@@ -60,9 +63,9 @@ async function loadMomaPool(App, tokens, prices, chef, chefAddress, chefAbi, rew
     pendingRewardsFunction);
 }
 
-function printMomaPool(App, chefAbi, chefAddr, prices, tokens, poolInfo, poolPrices, 
+function printMomaPool(App, chefAbi, chefAddr, prices, tokens, poolInfo, poolPrices,
                        rewardsPerWeek, rewardTokenTicker, rewardTokenAddress,
-                       pendingRewardsFunction, fixedDecimals, claimFunction, chain="eth") {  
+                       pendingRewardsFunction, fixedDecimals, claimFunction, chain="eth") {
   fixedDecimals = fixedDecimals ?? 2;
   const sp = (poolInfo.stakedToken == null) ? null : getPoolPrices(tokens, prices, poolInfo.stakedToken);
   var poolRewardsPerWeek = rewardsPerWeek;
@@ -72,12 +75,12 @@ function printMomaPool(App, chefAbi, chefAddr, prices, tokens, poolInfo, poolPri
   const staked_tvl = sp?.staked_tvl ?? poolPrices.staked_tvl;
   poolPrices.print_price(chain);
   sp?.print_price(chain);
-  const apr = printAPR(rewardTokenTicker, rewardPrice, poolRewardsPerWeek, poolPrices.stakeTokenTicker, 
+  const apr = printAPR(rewardTokenTicker, rewardPrice, poolRewardsPerWeek, poolPrices.stakeTokenTicker,
     staked_tvl, userStaked, poolPrices.price, fixedDecimals);
   if (poolInfo.userLPStaked > 0) sp?.print_contained_price(userStaked);
   if (poolInfo.userStaked > 0) poolPrices.print_contained_price(userStaked);
   printMomaContractLinks(App, chefAbi, chefAddr, poolInfo.address, pendingRewardsFunction,
-    rewardTokenTicker, poolPrices.stakeTokenTicker, poolInfo.poolToken.unstaked, 
+    rewardTokenTicker, poolPrices.stakeTokenTicker, poolInfo.poolToken.unstaked,
     poolInfo.userStaked, poolInfo.pendingRewardTokens, fixedDecimals, claimFunction, rewardPrice, chain);
   return apr;
 }
@@ -88,10 +91,10 @@ function printMomaContractLinks(App, chefAbi, chefAddr, poolAddress, pendingRewa
   fixedDecimals = fixedDecimals ?? 2;
   const approveAndStake = async function() {
     return momaContract_stake(chefAbi, chefAddr, poolAddress, App)
-  }      
+  }
   const unstake = async function() {
     return momaContract_unstake(chefAbi, chefAddr, App, pendingRewardsFunction)
-  }      
+  }
   const claim = async function() {
     return momaContract_claim(chefAbi, chefAddr, App, pendingRewardsFunction, claimFunction)
   }
@@ -168,7 +171,7 @@ const momaContract_unstake = async function(chefAbi, chefAddress, App, pendingRe
   }
 }
 
-const momaContract_claim = async function(chefAbi, chefAddress, App, 
+const momaContract_claim = async function(chefAbi, chefAddress, App,
     pendingRewardsFunction, claimFunction) {
   const signer = App.provider.getSigner()
 

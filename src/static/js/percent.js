@@ -1,6 +1,5 @@
 $(function() {
-  consoleInit();
-  start(main);
+consoleInit(main)
 });
 
 async function loadPool(App, tokens, prices, stakingAddress, rewardTokenTicker, rewardTokenAddress) {
@@ -52,7 +51,7 @@ async function loadPool(App, tokens, prices, stakingAddress, rewardTokenTicker, 
 
   const rewardTokenPrice = prices[rewardTokenAddress].usd;
   const usdPerWeek = weeklyRewards * rewardTokenPrice;
-  
+
   _print(`<a href='${poolUrl}' target='_blank'>${stakingTokenTicker}</a> BPT Price: $${formatMoney(BPTPrice)} TVL: $${formatMoney(tvl)}`);
   _print(`1 BPT  = [${token0PerBPT} ${token0.symbol}, ${token1PerBPT} ${token1.symbol}]`);
   _print(`${token0.symbol} Price: $${formatMoney(token0Price)}`)
@@ -118,7 +117,7 @@ async function main() {
 
   const rewardTokenTicker = "PCT";
   const rewardTokenAddress = "0xbc16da9df0a22f01a16bc0620a27e7d6d6488550";
-  
+
   for (const c of CONTRACTS) {
     await loadPool(App, tokens, prices, c, rewardTokenTicker, rewardTokenAddress);
   }

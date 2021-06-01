@@ -72,7 +72,6 @@ async function getHarmonyStoredToken(App, tokenAddress, stakingAddress, type) {
     case "uniswap":
       const pool = new ethers.Contract(tokenAddress, UNI_ABI, App.provider);
       return await getHarmonyUniPool(App, pool, tokenAddress, stakingAddress);
-    case "bep20":
     case "erc20":
       const erc20 = new ethers.Contract(tokenAddress, ERC20_ABI, App.provider);
       return await geterc20(App, erc20, tokenAddress, stakingAddress);
