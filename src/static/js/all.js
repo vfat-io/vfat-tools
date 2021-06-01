@@ -57,7 +57,7 @@ const main = async() => {
       ["Sandbox                      ",`<a href="../sandbox"            >Various</a>`,"SAND               ","https://staking.sandbox.game"],
       ["Inverse                      ",`<a href="../inverse"            >Various</a>`,"INV                ","https://inverse.finance"],
       ["Badger                       ",`<a href="../badger/"            >Various</a>`,"BADGER             ","https://app.badger.finance"],
-      ["Big Data Protocol            ",`<a href="../bdp/"               >Various</a>`,"BDP,bALPHA         ","https://www.bigdataprotocol.com/datavault"],
+      ["Big Data Protocol *          ",`<a href="../bdp/"               >Various</a>`,"BDP/bALPHA/bBETA   ","https://www.bigdataprotocol.com/datavault"],
       ["Unslashed                    ",`<a href="../usf/"               >Various</a>`,"USF                ","https://app.unslashed.finance/"],
       ["Siren *                      ",`<a href="../siren/"             >Various</a>`,"SI                 ","https://sirenmarkets.com/"],
       ["Float                        ",`<a href="../float/"             >Various</a>`,"BANK               ","https://floatprotocol.com/#/stake"],
