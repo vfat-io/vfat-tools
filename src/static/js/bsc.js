@@ -290,7 +290,8 @@ const main = async() => {
       ["Blaze               ", `<a href="blaze"         >Various</a>`,"BLAZE         ","https://blazedefi.finance"],
       ["GreenDefi           ", `<a href="greendefi"     >Various</a>`,"OXYGEN        ","https://greendefi.finance"],
       ["BenSwap             ", `<a href="benswap"       >Various</a>`,"GBEN          ","https://benswap.finance"],
-      ["Parthenon Kappa     ", `<a href="parthenon_kappa">Various</a>`,"KAPPA        ","https://kappa.parthenon.finance"]
+      ["Parthenon Kappa     ", `<a href="parthenon_kappa">Various</a>`,"KAPPA        ","https://kappa.parthenon.finance"],
+      ["Hydra               ", `<a href="hydra"         >Various</a>`,"HYDRA         ","https://www.hydradefi.com"]
     ]
   }
 
