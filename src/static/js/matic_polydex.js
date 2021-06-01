@@ -30,7 +30,7 @@ async function main() {
     const prices = await getMaticPrices();
     
     await loadMaticChefContract(App, tokens, prices, POLYDEX_CHEF, POLYDEX_CHEF_ADDR, POLYDEX_CHEF_ABI, rewardTokenTicker,
-        "plx", null, rewardsPerWeek, "pendingReward");
+        "plx", null, rewardsPerWeek, "pendingReward", [1]);
     
     hideLoading();
 }

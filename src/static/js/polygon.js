@@ -34,7 +34,7 @@ const main = async() => {
         ["Polyape            ",`<a href="polyape"         >Various</a>`,"Ape          ","https://www.polyape.online"],
         ["Polyzap            ",`<a href="polyzap"         >Various</a>`,"PZAP         ","https://farm.polyzap.finance"],
         ["Polypanda          ",`<a href="polypanda"       >Various</a>`,"BAMBOO       ","https://polypanda.finance"],
-        ["Dfyn *             ",`<a href="dfyn"            >Various</a>`,"DFYN         ","https://exchange.dfyn.network"],
+        ["Dfyn               ",`<a href="dfyn"            >Various</a>`,"DFYN         ","https://exchange.dfyn.network"],
         ["Jurassic           ",`<a href="jurassic"        >Various</a>`,"RAPTOR       ","https://www.jurassicfarm.app"],
         ["Beefy              ",`<a href="beefy"           >Various</a>`,"Various      ","https://polygon.beefy.finance"],
         ["Monopoly           ",`<a href="monopoly"        >Various</a>`,"MONO         ","https://monopolyfinance.xyz"],
@@ -52,7 +52,7 @@ const main = async() => {
         ["Polygoat           ",`<a href="polygoat"        >Various</a>`,"GOAT         ","https://www.polygoat.finance"],
         ["Polysnake          ",`<a href="polysnake"       >Various</a>`,"SNAKE        ","https://www.polysnake.finance"],
         ["Moonwolf           ",`<a href="moonwolf"        >Various</a>`,"MOON         ","https://www.moonwolf.io"],
-        ["Iron *             ",`<a href="iron"            >Various</a>`,"TITAN        ","https://polygon.iron.finance"],
+        ["Iron               ",`<a href="iron"            >Various</a>`,"TITAN        ","https://polygon.iron.finance"],
         ["Alchemy Dao        ",`<a href="alchemydao"      >Various</a>`,"ALCH         ","https://polygon.alchemydao.com"],
         ["Polycrab           ",`<a href="polycrab"        >Various</a>`,"CRAB         ","https://polycrab.finance"],
         ["Polybear           ",`<a href="polybear"        >Various</a>`,"BEAR         ","https://polybear.exchange"],
@@ -61,8 +61,10 @@ const main = async() => {
         ["PolyMaple          ",`<a href="polymaple"       >Various</a>`,"MAPLE        ",""],
         ["Gravity Finance    ",`<a href="gravityfinance"  >Various</a>`,"GFI          ","https://gravityfinance.io"],
         ["Smellycat          ",`<a href="smellycat"       >Various</a>`,"PUSSY        ","https://www.smellycat.finance"],
+        ["Polygold           ",`<a href="polygold"       >Various</a>`,"POLYGOLD      ","https://polygold.finance"],
+        ["Polyswan           ",`<a href="polyswan"        >Various</a>`,"SWAN         ","https://www.polyswan.finance"],
+        ["Polyion            ",`<a href="polyion"         >Various</a>`,"LION         ","https://www.polyion.net"],
         ["Eleven             ",`<a href="eleven"          >Various</a>`,"ELE          ","https://eleven.finance"]
-
       ]
   }
 
