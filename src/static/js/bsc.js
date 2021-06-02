@@ -296,6 +296,7 @@ const main = async() => {
       ["Cosmos Farm (MARS)  ", `<a href="cosmosmars"     >Various</a>`,"MARS          ","https://mars.cosmos.farm"],
       ["Pancakefork         ", `<a href="pancakefork"   >Various</a>`,"FCKE          ","https://app.pancakefork.finance"],
       ["Vesuvius            ", `<a href="vesuvius"      >Various</a>`,"VESUVIUS      ","https://vesuvius.finance"]
+      ["TheKongFinance      ", `<a href="thekongfinance">Various</a>`,"KONG          ","https://thekongfinance.com"]
     ]
   }
 
