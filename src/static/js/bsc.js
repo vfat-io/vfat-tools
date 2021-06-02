@@ -298,6 +298,7 @@ const main = async() => {
       ["Vesuvius            ", `<a href="vesuvius"      >Various</a>`,"VESUVIUS      ","https://vesuvius.finance"],
       ["Kesef Finance       ", `<a href="kesef"         >Various</a>`,"KSF           ","https://kesef.finance"],
       ["TheKongFinance      ", `<a href="thekongfinance">Various</a>`,"KONG          ","https://thekongfinance.com"]
+      ["Chained Farms Network", `<a href="chainedfarmsnetwork">Various</a>`,"CFN          ","https://main.chainedfarms.network"]
     ]
   }
 
