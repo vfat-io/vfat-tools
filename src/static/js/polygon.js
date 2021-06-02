@@ -66,7 +66,8 @@ const main = async() => {
         ["Polyion            ",`<a href="polyion"         >Various</a>`,"LION         ","https://www.polyion.net"],
         ["Eleven             ",`<a href="eleven"          >Various</a>`,"ELE          ","https://eleven.finance"],
         ["Pirate Dice        ",`<a href="piratedice"      >Various</a>`,"BOOTY        ","http://piratedice.xyz"],
-        ["PolyPingu          ",`<a href="polypingu"       >Various</a>`,"PINGU        ","https://polypingu.finance/"]
+        ["PolyPingu          ",`<a href="polypingu"       >Various</a>`,"PINGU        ","https://polypingu.finance"],
+        ["Goldenbull         ",`<a href="goldenbull"      >Various</a>`,"GBULL        ","https://farms.goldenbull.finance"]
       ]
   }
 
