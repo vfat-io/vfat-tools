@@ -10,7 +10,7 @@ async function main() {
     _print(`Initialized ${App.YOUR_ADDRESS}\n`);
     _print("Reading smart contracts...\n");
 
-   const CFN_CHEF_ADDR = "0x8abe33db403c7fcd2ff9323ea712857d86804ba6";
+   const CFN_CHEF_ADDR = '0x8abe33db403c7fcd2ff9323ea712857d86804ba6'
    const rewardTokenTicker = "CFN";
    const CFN_CHEF = new ethers.Contract(CFN_CHEF_ADDR, CFN_CHEF_ABI, App.provider);
 
@@ -21,7 +21,7 @@ async function main() {
     const prices = await getBscPrices();
 
     await loadBscChefContract(App, tokens, prices, CFN_CHEF, CFN_CHEF_ADDR, CFN_CHEF_ABI, rewardTokenTicker,
-        "cfn", null, rewardsPerWeek, "pendingToken");
+        "token", null, rewardsPerWeek, "pendingToken");
 
     hideLoading();
   }
