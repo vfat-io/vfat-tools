@@ -295,8 +295,9 @@ const main = async() => {
       ["Hydra               ", `<a href="hydra"         >Various</a>`,"HYDRA         ","https://www.hydradefi.com"],
       ["Cosmos Farm (MARS)  ", `<a href="cosmosmars"     >Various</a>`,"MARS          ","https://mars.cosmos.farm"],
       ["Pancakefork         ", `<a href="pancakefork"   >Various</a>`,"FCKE          ","https://app.pancakefork.finance"],
-      ["Vesuvius            ", `<a href="vesuvius"      >Various</a>`,"VESUVIUS      ","https://vesuvius.finance"]
-      ["Kesef Finance       ", `<a href="kesef"         >Various</a>`,"KSF           ","https://kesef.finance"]
+      ["Vesuvius            ", `<a href="vesuvius"      >Various</a>`,"VESUVIUS      ","https://vesuvius.finance"],
+      ["Kesef Finance       ", `<a href="kesef"         >Various</a>`,"KSF           ","https://kesef.finance"],
+      ["TheKongFinance      ", `<a href="thekongfinance">Various</a>`,"KONG          ","https://thekongfinance.com"]
     ]
   }
 
