@@ -293,10 +293,11 @@ const main = async() => {
       ["Parthenon Kappa     ", `<a href="parthenon_kappa">Various</a>`,"KAPPA        ","https://kappa.parthenon.finance"],
       ["ballena.io          ", `<a href="balle"         >Various</a>`,"BALLE         ","https://ballena.io"],
       ["Hydra               ", `<a href="hydra"         >Various</a>`,"HYDRA         ","https://www.hydradefi.com"],
-      ["Cosmos Farm (MARS)  ", `<a href="cosmosmars"     >Various</a>`,"MARS          ","https://mars.cosmos.farm"],
+      ["Cosmos Farm (MARS)  ", `<a href="cosmosmars"     >Various</a>`,"MARS         ","https://mars.cosmos.farm"],
       ["Pancakefork         ", `<a href="pancakefork"   >Various</a>`,"FCKE          ","https://app.pancakefork.finance"],
-      ["Vesuvius            ", `<a href="vesuvius"      >Various</a>`,"VESUVIUS      ","https://vesuvius.finance"]
-      ["Kesef Finance       ", `<a href="kesef"         >Various</a>`,"KSF           ","https://kesef.finance"]
+      ["Vesuvius            ", `<a href="vesuvius"      >Various</a>`,"VESUVIUS      ","https://vesuvius.finance"],
+      ["Kesef Finance       ", `<a href="kesef"         >Various</a>`,"KSF           ","https://kesef.finance"],
+      ["Yogi                ", `<a href="yogi"          >Various</a>`,"YOGI          ","https://bsc.farms.yogi.fi"]
     ]
   }
 
