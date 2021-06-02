@@ -1391,16 +1391,16 @@ async function main() {
     _print("Reading smart contracts...\n");
 
     const prices = await getMaticPrices();
-    
-    await loadFarmDetails(App, farm_addresses[0], pool_addresses[1], base_tokens_addresses[0], 0, BASE_ERC20_ABI, FARM_ABI, 6, prices);
-    let GFIprice = await loadFarmDetails(App, farm_addresses[1], pool_addresses[1], base_tokens_addresses[0], base_tokens_addresses[1], BASE_ERC20_ABI, FARM_ABI, 6, prices);
-    await loadFarmDetails(App, farm_addresses[2], pool_addresses[2], base_tokens_addresses[0], base_tokens_addresses[2], BASE_ERC20_ABI, FARM_ABI, 18, prices);
+
+    let GFIprice = await loadFarmDetails(App, farm_addresses[1], pool_addresses[1], base_tokens_addresses[0], base_tokens_addresses[1], BASE_ERC20_ABI, FARM_ABI, 6, prices, -1);
+    await loadFarmDetails(App, farm_addresses[2], pool_addresses[2], base_tokens_addresses[0], base_tokens_addresses[2], BASE_ERC20_ABI, FARM_ABI, 18, prices, GFIprice);
+    await loadFarmDetails(App, farm_addresses[0], pool_addresses[1], base_tokens_addresses[0], 0, BASE_ERC20_ABI, FARM_ABI, 6, prices, GFIprice);
     await loadFarmOtherDetails(App, farm_addresses[4], base_tokens_addresses[0], base_tokens_addresses[4], BASE_ERC20_ABI, FARM_ABI, 18, prices, GFIprice);
     await loadFarmOtherDetails(App, farm_addresses[3], base_tokens_addresses[0], base_tokens_addresses[3], BASE_ERC20_ABI, FARM_ABI, 18, prices, GFIprice);
     hideLoading();
 }
 
-async function loadFarmDetails(App, farmAddress, poolAddress, aTokenAddress, bTokenAddress, ERC20ABI, FARMABI, Bzereos, prices) {
+async function loadFarmDetails(App, farmAddress, poolAddress, aTokenAddress, bTokenAddress, ERC20ABI, FARMABI, Bzereos, prices, GFIusdc) {
 
     const unstake = async function () {
         return token_unstake(FARM_ABI, farmAddress, App, "pendingReward")
@@ -1436,9 +1436,17 @@ async function loadFarmDetails(App, farmAddress, poolAddress, aTokenAddress, bTo
         GFIprice = reservesB / reservesA;
         let poolTVL = (reservesB + (reservesA * GFIprice)) * underlyingPrice;
         let LPprice = 10**18 * poolTVL / await LP_TOKEN.totalSupply();
-        let farmTVL = 10**18 * poolTVL * LPStakedinFarm / await LP_TOKEN.totalSupply(); 
+        let LPsupply = await LP_TOKEN.totalSupply();
+        let farmTVL = 10**18 * poolTVL * LPStakedinFarm / LPsupply; 
         var userLPBalance = await LP_TOKEN.balanceOf(App.YOUR_ADDRESS); //Get the amount of LP tokens in the users wallet
-        let userShare = userAmount / LPStakedinFarm;
+        let userShare = 100 * userAmount / LPStakedinFarm;
+        let GFIinUSD;
+        if (GFIusdc == -1){
+            GFIinUSD = GFIprice;
+        }
+        else{
+            GFIinUSD = GFIusdc;
+        }
 
         let LPurl;
         let SWAPurl;
@@ -1458,20 +1466,29 @@ async function loadFarmDetails(App, farmAddress, poolAddress, aTokenAddress, bTo
         }
 
         _print_bold(`<a href='${LPurl}' target='_blank'>${uSymbol}-${otherSymbol} Quick LP</a> <a href='${ADDurl}' target='_blank'>[+]</a> <a href='${SUBurl}' target='_blank'>[-]</a> <a href='${SWAPurl}' target='_blank'>[<=>]</a> Price: $${formatMoney(LPprice)} TVL: $${formatMoney(poolTVL)}`)
-        _print(`${uSymbol} to ${otherSymbol}: ${Number(GFIprice).toFixed(8)} [${otherSymbol}]`);
+        _print(`${uSymbol} Price: $${Number(GFIinUSD).toFixed(4)}`);
+        _print(`${otherSymbol} Price: $${formatMoney(underlyingPrice)}`);
         _print(`Total Staked in Farm: ${Number(LPStakedinFarm).toFixed(8)} [${LPsymbol}] ($${formatMoney(farmTVL)})`);
         let GFIperWeek = await get_weekly_emission(farmInfo) / 10**18;
-        _print(`GFI Emitted Per Week: ${formatMoney(GFIperWeek)}`);
+        _print(`GFI Emitted Per Week: ${formatMoney(GFIperWeek)} ($${formatMoney(GFIinUSD * GFIperWeek)})`);
 
         let yearAPR = await get_pool_APR(App, reservesA * 10 ** 18, farmInfo, ERC20ABI, farmAddress);
         let weekAPR = yearAPR / 52;
         let dayAPR = yearAPR / 365;
 
         _print(`APR: Day ${Number(dayAPR).toFixed(2)}% Week ${Number(weekAPR).toFixed(2)}% Year ${Number(yearAPR).toFixed(2)}%`);
-        _print(`You are staking ${Number(userAmount).toFixed(8)} [${uSymbol}-${otherSymbol}] (${Number(userShare).toFixed(4)}% of the pool)`);
+        _print(`You are staking ${Number(userAmount).toFixed(8)} [${uSymbol}-${otherSymbol}] ($${formatMoney(userAmount*LPprice)}), ${Number(userShare).toFixed(4)}% of the pool`);
+        let weeklyEarnings = userShare * GFIperWeek / 100;
+        let dailyEarnings = weeklyEarnings / 7;
+        let yearlyEarnings = weeklyEarnings * 52;
+        _print(`Estimated GFI earnings: Day ${Number(dailyEarnings).toFixed(4)} ($${formatMoney(dailyEarnings * GFIinUSD)}) Week ${Number(weeklyEarnings).toFixed(4)} ($${formatMoney(weeklyEarnings * GFIinUSD)}) Year ${Number(yearlyEarnings).toFixed(4)} ($${formatMoney(yearlyEarnings * GFIinUSD)})`);
         const approveAndStake = async function () {
             return token_stake(FARM_ABI, farmAddress, lpTokenAddress, App)
         }
+        
+        let LPinMain = 10**18 * reservesA * userAmount / LPsupply;
+        let LPinOther = 10**18 * reservesB * userAmount / LPsupply;
+        _print(`Your LP tokens comprise of ${Number(LPinMain).toFixed(8)} ${uSymbol} + ${Number(LPinOther).toFixed(8)} ${otherSymbol}`);
 
         _print_link(`Stake ${Number(userLPBalance/10**18).toFixed(8)} [${uSymbol}-${otherSymbol}]`, approveAndStake);
         _print_link(`Unstake ${Number(userAmount).toFixed(8)} [${uSymbol}-${otherSymbol}]`, unstake);
@@ -1479,13 +1496,12 @@ async function loadFarmDetails(App, farmAddress, poolAddress, aTokenAddress, bTo
         _print(`Staking or unstaking also claims rewards.\n`);
     }
     else {
-        let GFI_balance_farm = await ATOKEN_CONTRACT.balanceOf(farmAddress);
         let GFIstakedInFarm = await FARM_CONTRACT.totalStakedAmount() / 10**18;
         let userShare = 100 * userAmount / GFIstakedInFarm;
         let url = "https://explorer-mainnet.maticvigil.com/tokens/0x874e178A2f3f3F9d34db862453Cd756E7eAb0381/token-transfers";
         let quickURL = "https://info.quickswap.exchange/token/0x874e178a2f3f3f9d34db862453cd756e7eab0381";
-        _print_bold(`<a href='${url}' target='_blank'>${uSymbol}</a> <a href='${quickURL}' target='_blank'>QuickSwap Listing</a>`);
-        _print(`GFI in Farm: ${formatMoney(GFIstakedInFarm)}[${uSymbol}]`);
+        _print_bold(`<a href='${url}' target='_blank'>${uSymbol}</a> <a href='${quickURL}' target='_blank'>QuickSwap Listing</a> Price: $${Number(GFIusdc).toFixed(4)}`);
+        _print(`Staked in Farm: ${formatMoney(GFIstakedInFarm)}[${uSymbol}]`);
         let GFIperWeek = await get_weekly_emission(farmInfo) / 10**18;
         _print(`GFI Emitted Per Week: ${formatMoney(GFIperWeek)}`);
         let yearAPR = await get_APR_GFI_pool(App, GFIstakedInFarm, farmInfo);
@@ -1494,6 +1510,10 @@ async function loadFarmDetails(App, farmAddress, poolAddress, aTokenAddress, bTo
         _print(`APR: Day ${Number(dayAPR).toFixed(2)}% Week ${Number(weekAPR).toFixed(2)}% Year ${Number(yearAPR).toFixed(2)}%`);
 
         _print(`You are staking ${Number(userAmount).toFixed(8)} [${uSymbol}] (${Number(userShare).toFixed(4)}% of the pool)`);
+        let weeklyEarnings = userShare * GFIperWeek / 100;
+        let dailyEarnings = weeklyEarnings / 7;
+        let yearlyEarnings = weeklyEarnings * 52;
+        _print(`Estimated GFI earnings: Day ${Number(dailyEarnings).toFixed(4)} ($${formatMoney(dailyEarnings * GFIusdc)}) Week ${Number(weeklyEarnings).toFixed(4)} ($${formatMoney(weeklyEarnings * GFIusdc)}) Year ${Number(yearlyEarnings).toFixed(4)} ($${formatMoney(yearlyEarnings * GFIusdc)})`);
 
         const approveAndStake = async function () {
             return token_stake(FARM_ABI, farmAddress, aTokenAddress, App)
@@ -1524,7 +1544,7 @@ async function loadFarmOtherDetails(App, farmAddress, aTokenAddress, bTokenAddre
     let userReward = await FARM_CONTRACT.pendingReward(App.YOUR_ADDRESS) / 10**18;
     let otherTotalSupply = await BTOKEN_CONTRACT.totalSupply() / 10**18;
     let marketCap = underlyingPrice * otherTotalSupply;
-    let userShare = userAmount / reservesB;
+    let userShare = 100 * userAmount / reservesB;
     let userOtherBalance = await BTOKEN_CONTRACT.balanceOf(App.YOUR_ADDRESS);
     let url;
     if (otherSymbol == 'LINK'){
@@ -1534,7 +1554,7 @@ async function loadFarmOtherDetails(App, farmAddress, aTokenAddress, bTokenAddre
         url = "https://explorer-mainnet.maticvigil.com/address/0x0b3F868E0BE5597D5DB7fEB59E1CADBb0fdDa50a/transactions";
     }
     _print_bold(`<a href='${url}' target='_blank'>${otherSymbol}</a> Price: $${formatMoney(underlyingPrice)} Market Cap: $${formatMoney(marketCap)}`);
-    _print(`Staked in Pool: ${reservesB} [${otherSymbol}] ($${formatMoney(TV_Other)})`);
+    _print(`Staked in Farm: ${reservesB} [${otherSymbol}] ($${formatMoney(TV_Other)})`);
     let GFIperWeek = await get_weekly_emission(farmInfo) / 10**18;
     _print(`GFI Emitted Per Week: ${formatMoney(GFIperWeek)}`);
     let yearAPR = await get_pool_APR_other_single(App, GFI_balance_farm, farmInfo, ERC20ABI, farmAddress, bTokenAddress, GFIprice, TV_Other);
@@ -1542,7 +1562,10 @@ async function loadFarmOtherDetails(App, farmAddress, aTokenAddress, bTokenAddre
     let dayAPR = yearAPR / 365;
     _print(`APR: Day ${Number(dayAPR).toFixed(2)}% Week ${Number(weekAPR).toFixed(2)}% Year ${Number(yearAPR).toFixed(2)}%`);
     _print(`You are staking ${Number(userAmount).toFixed(8)} [${uSymbol}] (${Number(userShare).toFixed(4)}% of the pool)`);
-
+    let weeklyEarnings = userShare * GFIperWeek / 100;
+    let dailyEarnings = weeklyEarnings / 7;
+    let yearlyEarnings = weeklyEarnings * 52;
+    _print(`Estimated GFI earnings: Day ${Number(dailyEarnings).toFixed(4)} ($${formatMoney(dailyEarnings * GFIprice)}) Week ${Number(weeklyEarnings).toFixed(4)} ($${formatMoney(weeklyEarnings * GFIprice)}) Year ${Number(yearlyEarnings).toFixed(4)} ($${formatMoney(yearlyEarnings * GFIprice)})`);
     const approveAndStake = async function () {
         return token_stake(FARM_ABI, farmAddress, bTokenAddress, App)
     }
