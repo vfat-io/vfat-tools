@@ -1392,11 +1392,15 @@ async function main() {
 
     const prices = await getMaticPrices();
 
-    let GFIprice = await loadFarmDetails(App, farm_addresses[1], pool_addresses[1], base_tokens_addresses[0], base_tokens_addresses[1], BASE_ERC20_ABI, FARM_ABI, 6, prices, -1);
-    await loadFarmDetails(App, farm_addresses[2], pool_addresses[2], base_tokens_addresses[0], base_tokens_addresses[2], BASE_ERC20_ABI, FARM_ABI, 18, prices, GFIprice);
-    await loadFarmDetails(App, farm_addresses[0], pool_addresses[1], base_tokens_addresses[0], 0, BASE_ERC20_ABI, FARM_ABI, 6, prices, GFIprice);
-    await loadFarmOtherDetails(App, farm_addresses[4], base_tokens_addresses[0], base_tokens_addresses[4], BASE_ERC20_ABI, FARM_ABI, 18, prices, GFIprice);
-    await loadFarmOtherDetails(App, farm_addresses[3], base_tokens_addresses[0], base_tokens_addresses[3], BASE_ERC20_ABI, FARM_ABI, 18, prices, GFIprice);
+    let FarmVar0 = await loadFarmDetails(App, farm_addresses[1], pool_addresses[1], base_tokens_addresses[0], base_tokens_addresses[1], BASE_ERC20_ABI, FARM_ABI, 6, prices, -1);
+    let GFIprice = FarmVar0[0];
+    let FarmVar1 = await loadFarmDetails(App, farm_addresses[2], pool_addresses[2], base_tokens_addresses[0], base_tokens_addresses[2], BASE_ERC20_ABI, FARM_ABI, 18, prices, GFIprice);
+    let FarmVar2 = await loadFarmDetails(App, farm_addresses[0], pool_addresses[1], base_tokens_addresses[0], 0, BASE_ERC20_ABI, FARM_ABI, 6, prices, GFIprice);
+    let FarmVar3 = await loadFarmOtherDetails(App, farm_addresses[4], base_tokens_addresses[0], base_tokens_addresses[4], BASE_ERC20_ABI, FARM_ABI, 18, prices, GFIprice);
+    let FarmVar4 = await loadFarmOtherDetails(App, farm_addresses[3], base_tokens_addresses[0], base_tokens_addresses[3], BASE_ERC20_ABI, FARM_ABI, 18, prices, GFIprice);
+    let APRavg = (Number(FarmVar0[1]) + Number(FarmVar1[1]) + Number(FarmVar2[1]) + Number(FarmVar3[0]) + Number(FarmVar4[0])) / 5;
+    let TVL = FarmVar0[2] + FarmVar1[2] + FarmVar2[2] + FarmVar3[1] + FarmVar4[1]; 
+    _print_bold(`Farm Avg. APR Year: ${Number(APRavg).toFixed(2)}%  Total Farm TVL: $${formatMoney(TVL)}`);
     hideLoading();
 }
 
@@ -1409,7 +1413,8 @@ async function loadFarmDetails(App, farmAddress, poolAddress, aTokenAddress, bTo
     const claim = async function () {
         return token_claim(FARM_ABI, farmAddress, App, "pendingReward")
     }
-
+    let yearAPR;
+    let farmTVL;
     const ATOKEN_CONTRACT = new ethers.Contract(aTokenAddress, ERC20ABI, App.provider); //GFI
     const FARM_CONTRACT = new ethers.Contract(farmAddress, FARMABI, App.provider);
     let farmInfo = await FARM_CONTRACT.farmInfo();
@@ -1429,7 +1434,7 @@ async function loadFarmDetails(App, farmAddress, poolAddress, aTokenAddress, bTo
         let LPsymbol = await LP_TOKEN.symbol();
 
         let LPStakedinFarm = await LP_TOKEN.balanceOf(farmAddress) / 10**18;
-
+        
         const otherSymbol = await BTOKEN_CONTRACT.symbol();
         let reservesA = await ATOKEN_CONTRACT.balanceOf(poolAddress) / 10 ** 18;
         let reservesB = await BTOKEN_CONTRACT.balanceOf(poolAddress) / 10 ** Bzereos;
@@ -1437,7 +1442,7 @@ async function loadFarmDetails(App, farmAddress, poolAddress, aTokenAddress, bTo
         let poolTVL = (reservesB + (reservesA * GFIprice)) * underlyingPrice;
         let LPprice = 10**18 * poolTVL / await LP_TOKEN.totalSupply();
         let LPsupply = await LP_TOKEN.totalSupply();
-        let farmTVL = 10**18 * poolTVL * LPStakedinFarm / LPsupply; 
+        farmTVL = 10**18 * poolTVL * LPStakedinFarm / LPsupply; 
         var userLPBalance = await LP_TOKEN.balanceOf(App.YOUR_ADDRESS); //Get the amount of LP tokens in the users wallet
         let userShare = 100 * userAmount / LPStakedinFarm;
         let GFIinUSD;
@@ -1472,7 +1477,7 @@ async function loadFarmDetails(App, farmAddress, poolAddress, aTokenAddress, bTo
         let GFIperWeek = await get_weekly_emission(farmInfo) / 10**18;
         _print(`GFI Emitted Per Week: ${formatMoney(GFIperWeek)} ($${formatMoney(GFIinUSD * GFIperWeek)})`);
 
-        let yearAPR = await get_pool_APR(App, reservesA * 10 ** 18, farmInfo, ERC20ABI, farmAddress);
+        yearAPR = await get_pool_APR(App, reservesA * 10 ** 18, farmInfo, ERC20ABI, farmAddress);
         let weekAPR = yearAPR / 52;
         let dayAPR = yearAPR / 365;
 
@@ -1498,13 +1503,14 @@ async function loadFarmDetails(App, farmAddress, poolAddress, aTokenAddress, bTo
     else {
         let GFIstakedInFarm = await FARM_CONTRACT.totalStakedAmount() / 10**18;
         let userShare = 100 * userAmount / GFIstakedInFarm;
+        farmTVL = GFIstakedInFarm * GFIusdc;
         let url = "https://explorer-mainnet.maticvigil.com/tokens/0x874e178A2f3f3F9d34db862453Cd756E7eAb0381/token-transfers";
         let quickURL = "https://info.quickswap.exchange/token/0x874e178a2f3f3f9d34db862453cd756e7eab0381";
         _print_bold(`<a href='${url}' target='_blank'>${uSymbol}</a> <a href='${quickURL}' target='_blank'>QuickSwap Listing</a> Price: $${Number(GFIusdc).toFixed(4)}`);
-        _print(`Staked in Farm: ${formatMoney(GFIstakedInFarm)}[${uSymbol}]`);
+        _print(`Staked in Farm: ${formatMoney(GFIstakedInFarm)}[${uSymbol}] ($${formatMoney(farmTVL)})`);
         let GFIperWeek = await get_weekly_emission(farmInfo) / 10**18;
-        _print(`GFI Emitted Per Week: ${formatMoney(GFIperWeek)}`);
-        let yearAPR = await get_APR_GFI_pool(App, GFIstakedInFarm, farmInfo);
+        _print(`GFI Emitted Per Week: ${formatMoney(GFIperWeek)} ($${formatMoney(GFIusdc*GFIperWeek)})`);
+        yearAPR = await get_APR_GFI_pool(App, GFIstakedInFarm, farmInfo);
         let weekAPR = yearAPR / 52;
         let dayAPR = yearAPR / 365;
         _print(`APR: Day ${Number(dayAPR).toFixed(2)}% Week ${Number(weekAPR).toFixed(2)}% Year ${Number(yearAPR).toFixed(2)}%`);
@@ -1524,7 +1530,7 @@ async function loadFarmDetails(App, farmAddress, poolAddress, aTokenAddress, bTo
         _print_link(`Claim ${Number(userReward).toFixed(8)} [${uSymbol}]`, claim);
         _print(`Staking or unstaking also claims rewards.\n`);
     }
-    return GFIprice;
+    return [GFIprice, yearAPR, farmTVL];
 }
 
 async function loadFarmOtherDetails(App, farmAddress, aTokenAddress, bTokenAddress, ERC20ABI, FARMABI, Bzereos, prices, GFIprice) {
@@ -1556,12 +1562,12 @@ async function loadFarmOtherDetails(App, farmAddress, aTokenAddress, bTokenAddre
     _print_bold(`<a href='${url}' target='_blank'>${otherSymbol}</a> Price: $${formatMoney(underlyingPrice)} Market Cap: $${formatMoney(marketCap)}`);
     _print(`Staked in Farm: ${reservesB} [${otherSymbol}] ($${formatMoney(TV_Other)})`);
     let GFIperWeek = await get_weekly_emission(farmInfo) / 10**18;
-    _print(`GFI Emitted Per Week: ${formatMoney(GFIperWeek)}`);
+    _print(`GFI Emitted Per Week: ${formatMoney(GFIperWeek)} ($${formatMoney(GFIprice*GFIperWeek)})`);
     let yearAPR = await get_pool_APR_other_single(App, GFI_balance_farm, farmInfo, ERC20ABI, farmAddress, bTokenAddress, GFIprice, TV_Other);
     let weekAPR = yearAPR / 52;
     let dayAPR = yearAPR / 365;
     _print(`APR: Day ${Number(dayAPR).toFixed(2)}% Week ${Number(weekAPR).toFixed(2)}% Year ${Number(yearAPR).toFixed(2)}%`);
-    _print(`You are staking ${Number(userAmount).toFixed(8)} [${uSymbol}] (${Number(userShare).toFixed(4)}% of the pool)`);
+    _print(`You are staking ${Number(userAmount).toFixed(8)} [${otherSymbol}] (${Number(userShare).toFixed(4)}% of the pool)`);
     let weeklyEarnings = userShare * GFIperWeek / 100;
     let dailyEarnings = weeklyEarnings / 7;
     let yearlyEarnings = weeklyEarnings * 52;
@@ -1582,6 +1588,7 @@ async function loadFarmOtherDetails(App, farmAddress, aTokenAddress, bTokenAddre
     _print_link(`Unstake ${Number(userAmount).toFixed(8)} [${otherSymbol}]`, unstake);
     _print_link(`Claim ${Number(userReward).toFixed(8)} [${uSymbol}]`, claim);
     _print(`Staking or unstaking also claims rewards.\n`);
+    return [yearAPR, TV_Other];
 }
 
 const token_stake = async function (farmAbi, farmAddress, stakeTokenAddr, App) {
@@ -1670,7 +1677,7 @@ const token_claim = async function (farmAbi, farmAddress, App,
 }
 
 async function get_weekly_emission(farm_info) {
-    const blocks_in_a_week = 302400;
+    const blocks_in_a_week = 288000;
     var blockReward = farm_info["blockReward"];
     return (blocks_in_a_week * blockReward);
 }
