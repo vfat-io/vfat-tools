@@ -300,7 +300,8 @@ const main = async() => {
       ["TheKongFinance      ", `<a href="thekongfinance">Various</a>`,"KONG          ","https://thekongfinance.com"],
       ["Chained Farms Network (CFN)", `<a href="chainedfarmsnetwork">Various</a>`,"CFN          ","https://main.chainedfarms.network"],
       ["Chained Farms Network (SFN1)", `<a href="chainedfarmsnetwork_sub1">Various</a>`,"SFN1          ","https://sub1.chainedfarms.network"],
-      ["Prism               ", `<a href="prism"         >Various</a>`,"PRISM         ","https://bsc.prismfinance.net"]
+      ["Prism               ", `<a href="prism"         >Various</a>`,"PRISM         ","https://bsc.prismfinance.net"],
+      ["Aloe                ", `<a href="aloe"          >Various</a>`,"ALOE          ","https://aloeswap.com"]
     ]
   }
 
