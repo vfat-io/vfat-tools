@@ -1515,7 +1515,7 @@ async function loadFarmDetails(App, farmAddress, poolAddress, aTokenAddress, bTo
         let dayAPR = yearAPR / 365;
         _print(`APR: Day ${Number(dayAPR).toFixed(2)}% Week ${Number(weekAPR).toFixed(2)}% Year ${Number(yearAPR).toFixed(2)}%`);
 
-        _print(`You are staking ${Number(userAmount).toFixed(8)} [${uSymbol}] (${Number(userShare).toFixed(4)}% of the pool)`);
+        _print(`You are staking ${Number(userAmount).toFixed(8)} [${uSymbol}] ($${formatMoney(userAmount*GFIusdc)}), ${Number(userShare).toFixed(4)}% of the pool`);
         let weeklyEarnings = userShare * GFIperWeek / 100;
         let dailyEarnings = weeklyEarnings / 7;
         let yearlyEarnings = weeklyEarnings * 52;
@@ -1567,7 +1567,7 @@ async function loadFarmOtherDetails(App, farmAddress, aTokenAddress, bTokenAddre
     let weekAPR = yearAPR / 52;
     let dayAPR = yearAPR / 365;
     _print(`APR: Day ${Number(dayAPR).toFixed(2)}% Week ${Number(weekAPR).toFixed(2)}% Year ${Number(yearAPR).toFixed(2)}%`);
-    _print(`You are staking ${Number(userAmount).toFixed(8)} [${otherSymbol}] (${Number(userShare).toFixed(4)}% of the pool)`);
+    _print(`You are staking ${Number(userAmount).toFixed(8)} [${otherSymbol}] ($${formatMoney(userAmount*underlyingPrice)}), ${Number(userShare).toFixed(4)}% of the pool`);
     let weeklyEarnings = userShare * GFIperWeek / 100;
     let dailyEarnings = weeklyEarnings / 7;
     let yearlyEarnings = weeklyEarnings * 52;
