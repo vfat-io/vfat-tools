@@ -729,13 +729,13 @@ const rewardsContract_unstake = async function(rewardPoolAddr, App) {
   }
 }
 
-const rewardsContract_movetobardroom = async function(rewardPoolAddr, App) {
+const rewardsContract_movetoboardroom = async function(rewardPoolAddr, App) {
   const signer = App.provider.getSigner()
 
   const REWARD_POOL = new ethers.Contract(rewardPoolAddr, Y_STAKING_POOL_ABI, signer)
-  const currentStakedAmount = await REWARD_POOL.balanceOf(App.YOUR_ADDRESS)
+  const currentEarnedAmount = await REWARD_POOL.earned(App.YOUR_ADDRESS)
 
-  if (currentStakedAmount > 0) {
+  if (currentEarnedAmount > 0) {
     showLoading()
     REWARD_POOL.stakeInBoardroom({gasLimit: 500000})
       .then(function(t) {
