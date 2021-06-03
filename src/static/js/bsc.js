@@ -162,7 +162,7 @@ const main = async() => {
       ["Pepper              ", `<a href="pepper"        >Various</a>`,"PEPR          ","https://old.pepr.finance"],
       ["Pepper v2           ", `<a href="pepper_v2"     >Various</a>`,"PEPR          ","https://app.pepr.finance"],
       ["Parthenon Alpha     ", `<a href="parthenon_alpha">Various</a>`,"ALPHA        ","https://alpha.parthenon.finance"],
-      ["Lokum               ", `<a href="lokum"         >Various</a>`,"LKM           ","https://lokum.finance"],
+      ["Lokum *             ", `<a href="lokum"         >Various</a>`,"sLKM           ","https://lokum.finance"],
       ["Growth              ", `<a href="growth"        >Various</a>`,"WHEAT         ","https://wheat.growthdefi.com"],
       ["Neonic              ", `<a href="neonic"        >Various</a>`,"NEONIC        ","https://neonic.finance"],
       ["HyperFinance        ", `<a href="hyperfinance"  >Various</a>`,"HYFI          ","https://hyfi.pro"],
