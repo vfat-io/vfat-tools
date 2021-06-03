@@ -68,7 +68,8 @@ const main = async() => {
         ["Pirate Dice        ",`<a href="piratedice"      >Various</a>`,"BOOTY        ","http://piratedice.xyz"],
         ["PolyPingu          ",`<a href="polypingu"       >Various</a>`,"PINGU        ","https://polypingu.finance"],
         ["Goldenbull         ",`<a href="goldenbull"      >Various</a>`,"GBULL        ","https://farms.goldenbull.finance"],
-        ["Polyakita          ",`<a href="polyakita"       >Various</a>`,"HACHI        ","https://defi.polyakita.com"]
+        ["Polyakita          ",`<a href="polyakita"       >Various</a>`,"HACHI        ","https://defi.polyakita.com"],
+        ["Prism              ",`<a href="prism"           >Various</a>`,"PRISM        ","https://polygon.prismfinance.net"]
       ]
   }
 
