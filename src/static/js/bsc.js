@@ -288,7 +288,7 @@ const main = async() => {
       ["LawnDeFi            ", `<a href="lawndefi"      >Various</a>`,"LWNS          ","https://lawndefi.com"],
       ["Longdrink           ", `<a href="longdrink"     >Various</a>`,"LONG          ","https://longdrink.finance"],
       ["Blaze               ", `<a href="blaze"         >Various</a>`,"BLAZE         ","https://blazedefi.finance"],
-      ["GreenDefi           ", `<a href="greendefi"     >Various</a>`,"OXYGEN        ","https://greendefi.finance"],     
+      ["GreenDefi           ", `<a href="greendefi"     >Various</a>`,"OXYGEN        ","https://greendefi.finance"],
       ["BenSwap             ", `<a href="benswap"       >Various</a>`,"GBEN          ","https://benswap.finance"],
       ["Parthenon Kappa     ", `<a href="parthenon_kappa">Various</a>`,"KAPPA        ","https://kappa.parthenon.finance"],
       ["ballena.io          ", `<a href="balle"         >Various</a>`,"BALLE         ","https://ballena.io"],
@@ -297,7 +297,9 @@ const main = async() => {
       ["Pancakefork         ", `<a href="pancakefork"   >Various</a>`,"FCKE          ","https://app.pancakefork.finance"],
       ["Vesuvius            ", `<a href="vesuvius"      >Various</a>`,"VESUVIUS      ","https://vesuvius.finance"],
       ["Kesef Finance       ", `<a href="kesef"         >Various</a>`,"KSF           ","https://kesef.finance"],
-      ["TheKongFinance      ", `<a href="thekongfinance">Various</a>`,"KONG          ","https://thekongfinance.com"]
+      ["TheKongFinance      ", `<a href="thekongfinance">Various</a>`,"KONG          ","https://thekongfinance.com"],
+      ["Chained Farms Network (CFN)", `<a href="chainedfarmsnetwork">Various</a>`,"CFN          ","https://main.chainedfarms.network"],
+      ["Chained Farms Network (SFN1)", `<a href="chainedfarmsnetwork_sub1">Various</a>`,"SFN1          ","https://sub1.chainedfarms.network"]
     ]
   }
 
