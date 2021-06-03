@@ -303,7 +303,8 @@ const main = async() => {
       ["Prism               ", `<a href="prism"         >Various</a>`,"PRISM         ","https://bsc.prismfinance.net"],
       ["Aloe                ", `<a href="aloe"          >Various</a>`,"ALOE          ","https://aloeswap.com"],
       ["Tea                 ", `<a href="tea"           >Various</a>`,"SUGAR         ","https://tea-swap-app.finance"],
-      ["Fish                ", `<a href="fish"          >Various</a>`,"FISH          ","https://fishswap.apps"]
+      ["Fish                ", `<a href="fish"          >Various</a>`,"FISH          ","https://fishswap.apps"],
+      ["Bundledao           ", `<a href="bundledao"     >Various</a>`,"BDL           ","https://bundledao.org"]
     ]
   }
 
