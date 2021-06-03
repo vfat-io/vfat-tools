@@ -13,15 +13,15 @@ async function main() {
 
    const GUESSIT_CHEF_ADDR = "0xf602F45b3b072217f2859E05B9a71D8e21e1f8Fd";
    const rewardTokenTicker = "GSSIT";
-   const GSSIT_CHEF = new ethers.Contract(GUESSIT_CHEF_ADDR, GUESSIT_CHEF_ABI, App.provider);
+   const GUESSIT_CHEF = new ethers.Contract(GUESSIT_CHEF_ADDR, GUESSIT_CHEF_ABI, App.provider);
 
-   const rewardsPerWeek = await GSSIT_CHEF.nativePerBlock() /1e18
+   const rewardsPerWeek = await GUESSIT_CHEF.nativePerBlock() /1e18
         * 604800 / 3;
 
     const tokens = {};
     const prices = await getBscPrices();
 
-    await loadBscChefContract(App, tokens, prices, GSSIT_CHEF, GUESSIT_CHEF_ADDR, GUESSIT_CHEF_ABI, rewardTokenTicker,
+    await loadBscChefContract(App, tokens, prices, GUESSIT_CHEF, GUESSIT_CHEF_ADDR, GUESSIT_CHEF_ABI, rewardTokenTicker,
         "native", null, rewardsPerWeek, "getPendingNative");
 
     hideLoading();
