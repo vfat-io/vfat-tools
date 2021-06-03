@@ -69,7 +69,8 @@ const main = async() => {
         ["PolyPingu          ",`<a href="polypingu"       >Various</a>`,"PINGU        ","https://polypingu.finance"],
         ["Goldenbull         ",`<a href="goldenbull"      >Various</a>`,"GBULL        ","https://farms.goldenbull.finance"],
         ["Polyakita          ",`<a href="polyakita"       >Various</a>`,"HACHI        ","https://defi.polyakita.com"],
-        ["Prism              ",`<a href="prism"           >Various</a>`,"PRISM        ","https://polygon.prismfinance.net"]
+        ["Prism              ",`<a href="prism"           >Various</a>`,"PRISM        ","https://polygon.prismfinance.net"],
+        ["Polybutterfly      ",`<a href="polybutterfly"   >Various</a>`,"POLLEN       ","https://polybutterfly.finance"]
       ]
   }
 
