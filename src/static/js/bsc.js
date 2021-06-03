@@ -162,7 +162,7 @@ const main = async() => {
       ["Pepper              ", `<a href="pepper"        >Various</a>`,"PEPR          ","https://old.pepr.finance"],
       ["Pepper v2           ", `<a href="pepper_v2"     >Various</a>`,"PEPR          ","https://app.pepr.finance"],
       ["Parthenon Alpha     ", `<a href="parthenon_alpha">Various</a>`,"ALPHA        ","https://alpha.parthenon.finance"],
-      ["Lokum               ", `<a href="lokum"         >Various</a>`,"LKM           ","https://lokum.finance"],
+      ["Lokum *             ", `<a href="lokum"         >Various</a>`,"sLKM           ","https://lokum.finance"],
       ["Growth              ", `<a href="growth"        >Various</a>`,"WHEAT         ","https://wheat.growthdefi.com"],
       ["Neonic              ", `<a href="neonic"        >Various</a>`,"NEONIC        ","https://neonic.finance"],
       ["HyperFinance        ", `<a href="hyperfinance"  >Various</a>`,"HYFI          ","https://hyfi.pro"],
@@ -293,9 +293,19 @@ const main = async() => {
       ["Parthenon Kappa     ", `<a href="parthenon_kappa">Various</a>`,"KAPPA        ","https://kappa.parthenon.finance"],
       ["ballena.io          ", `<a href="balle"         >Various</a>`,"BALLE         ","https://ballena.io"],
       ["Hydra               ", `<a href="hydra"         >Various</a>`,"HYDRA         ","https://www.hydradefi.com"],
-      ["Cosmos Farm (MARS)  ", `<a href="cosmosmars"     >Various</a>`,"MARS          ","https://mars.cosmos.farm"],
+      ["Cosmos Farm (MARS)  ", `<a href="cosmosmars"    >Various</a>`,"MARS          ","https://mars.cosmos.farm"],
       ["Pancakefork         ", `<a href="pancakefork"   >Various</a>`,"FCKE          ","https://app.pancakefork.finance"],
-      ["Vesuvius            ", `<a href="vesuvius"      >Various</a>`,"VESUVIUS      ","https://vesuvius.finance"]
+      ["Vesuvius            ", `<a href="vesuvius"      >Various</a>`,"VESUVIUS      ","https://vesuvius.finance"],
+      ["Kesef Finance       ", `<a href="kesef"         >Various</a>`,"KSF           ","https://kesef.finance"],
+      ["TheKongFinance      ", `<a href="thekongfinance">Various</a>`,"KONG          ","https://thekongfinance.com"],
+      ["Chained Farms Network (CFN)", `<a href="chainedfarmsnetwork">Various</a>`,"CFN          ","https://main.chainedfarms.network"],
+      ["Chained Farms Network (SFN1)", `<a href="chainedfarmsnetwork_sub1">Various</a>`,"SFN1          ","https://sub1.chainedfarms.network"],
+      ["Prism               ", `<a href="prism"         >Various</a>`,"PRISM         ","https://bsc.prismfinance.net"],
+      ["Aloe                ", `<a href="aloe"          >Various</a>`,"ALOE          ","https://aloeswap.com"],
+      ["Tea                 ", `<a href="tea"           >Various</a>`,"SUGAR         ","https://tea-swap-app.finance"],
+      ["Fish                ", `<a href="fish"          >Various</a>`,"FISH          ","https://fishswap.apps"],
+      ["Bundledao           ", `<a href="bundledao"     >Various</a>`,"BDL           ","https://bundledao.org"],
+	  ["GuessIt             ", `<a href="guessit"       >Various</a>`,"GSSIT         ","https://guessit.app"]
     ]
   }
 
