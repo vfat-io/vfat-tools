@@ -21,8 +21,74 @@ async function main() {
     const tokens = {};
     const prices = await getBscPrices();
 
-    await loadBscChefContract(App, tokens, prices, GUESSIT_CHEF, GUESSIT_CHEF_ADDR, GUESSIT_CHEF_ABI, rewardTokenTicker,
-        "native", null, rewardsPerWeek, "getPendingNative");
+    await loadBscGuessItChefContract(App, tokens, prices, GUESSIT_CHEF, GUESSIT_CHEF_ADDR, GUESSIT_CHEF_ABI, rewardTokenTicker,
+        "native", rewardsPerWeek, "getPendingNative");
 
     hideLoading();
   }
+  
+  async function loadBscGuessItChefContract(App, tokens, prices, chef, chefAddress, chefAbi, rewardTokenTicker,
+    rewardTokenFunction, rewardsPerWeekFixed, pendingRewardsFunction) {
+    const chefContract = chef ?? new ethers.Contract(chefAddress, chefAbi, App.provider);
+	
+    const poolCount = parseInt((await chefContract.getPoolInfo()).length, 10);
+    const totalAllocPoints = await chefContract.totalAllocationPoints();
+
+    _print(`Found ${poolCount} pools.\n`)
+
+    _print(`Showing incentivized pools only.\n`);
+
+    var tokens = {};
+
+    const rewardTokenAddress = await chefContract.callStatic[rewardTokenFunction]();
+    const rewardsPerWeek = rewardsPerWeekFixed;
+
+    const poolInfos = await Promise.all([...Array(poolCount).keys()].map(async (x) =>
+      await getBscGuessItPoolInfo(App, chefContract, chefAddress, x, pendingRewardsFunction)));
+
+    var tokenAddresses = [].concat.apply([], poolInfos.filter(x => x.poolToken).map(x => x.poolToken.tokens));
+
+    await Promise.all(tokenAddresses.map(async (address) => {
+        tokens[address] = await getBscToken(App, address, chefAddress);
+    }));
+
+    const poolPrices = poolInfos.map(poolInfo => poolInfo.poolToken ? getPoolPrices(tokens, prices, poolInfo.poolToken) : undefined);
+
+    _print("Finished reading smart contracts.\n");
+
+    for (i = 0; i < poolCount; i++) {
+      if (poolPrices[i]) {
+        printChefPool(App, chefAbi, chefAddress, prices, tokens, poolInfos[i], i, poolPrices[i],
+          totalAllocPoints, rewardsPerWeek, rewardTokenTicker, rewardTokenAddress,
+          pendingRewardsFunction);
+      }
+    }
+  }
+
+async function getBscGuessItPoolInfo(App, chefContract, chefAddress, poolIndex, pendingRewardsFunction) {  
+  const poolInfo = await chefContract.poolInfo(poolIndex);
+  if (poolInfo.allocationPoints == 0 || poolInfo.accumlatedNativePerShare == 0) {
+    return {
+      address: poolInfo.token,
+      allocPoints: poolInfo.allocationPoints ?? 1,
+      poolToken: null,
+      userStaked : 0,
+      pendingRewardTokens : 0,
+      stakedToken : null,
+      userLPStaked : 0,
+      lastRewardBlock : poolInfo.lastRewardBlock
+    };
+  }
+  const poolToken = await getBscToken(App, poolInfo.token, chefAddress);
+  const userInfo = await chefContract.userInfo(poolIndex, App.YOUR_ADDRESS);
+  const pendingRewardTokens = await chefContract.callStatic[pendingRewardsFunction](poolIndex, App.YOUR_ADDRESS);
+  const staked = userInfo.amount / 10 ** poolToken.decimals;
+  return {
+      address: poolInfo.token,
+      allocPoints: poolInfo.allocationPoints ?? 1,
+      poolToken: poolToken,
+      userStaked : staked,
+      pendingRewardTokens : pendingRewardTokens / 10 ** 18,
+      depositFee : (poolInfo.depositFee ?? 0) / 100
+  };
+}
