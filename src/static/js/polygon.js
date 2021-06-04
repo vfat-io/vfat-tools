@@ -70,7 +70,8 @@ const main = async() => {
         ["Goldenbull         ",`<a href="goldenbull"      >Various</a>`,"GBULL        ","https://farms.goldenbull.finance"],
         ["Polyakita          ",`<a href="polyakita"       >Various</a>`,"HACHI        ","https://defi.polyakita.com"],
         ["Prism              ",`<a href="prism"           >Various</a>`,"PRISM        ","https://polygon.prismfinance.net"],
-        ["Polybutterfly      ",`<a href="polybutterfly"   >Various</a>`,"POLLEN       ","https://polybutterfly.finance"]
+        ["Polybutterfly      ",`<a href="polybutterfly"   >Various</a>`,"POLLEN       ","https://polybutterfly.finance"],
+        ["Magic              ",`<a href="magic"           >Various</a>`,"DRAX/DMAGIC  ","https://defimagic.io"]
       ]
   }
 
