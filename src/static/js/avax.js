@@ -22,7 +22,8 @@ const main = async() => {
         ["Gondola     ",`<a href="gondola"    >Various</a>`,"GDL      ","https://app.gondola.finance"],
         ["Birdy       ",`<a href="birdy"      >Various</a>`,"BIRD     ","https://birdy.finance"],
         ["Canary      ",`<a href="canary"     >Various</a>`,"CNR      ","https://app.canary.exchange"],
-        ["Avalaunch   ",`<a href="avalaunch"  >Various</a>`,"XAVA     ","https://farm.avalaunch.app"]
+        ["Avalaunch   ",`<a href="avalaunch"  >Various</a>`,"XAVA     ","https://farm.avalaunch.app"],
+        ["Avme        ",`<a href="avme"       >Various</a>`,"AVME     ","https://avme.io"]
       ]
   }
 
