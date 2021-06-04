@@ -303,10 +303,12 @@ const main = async() => {
       ["Prism               ", `<a href="prism"         >Various</a>`,"PRISM         ","https://bsc.prismfinance.net"],
       ["Aloe                ", `<a href="aloe"          >Various</a>`,"ALOE          ","https://aloeswap.com"],
       ["Tea                 ", `<a href="tea"           >Various</a>`,"SUGAR         ","https://tea-swap-app.finance"],
-      ["Fish                ", `<a href="fish"          >Various</a>`,"FISH          ","https://fishswap.apps"],
+      ["Fish                ", `<a href="fish"          >Various</a>`,"FISH          ","https://fishswap.app"],
       ["Bundledao           ", `<a href="bundledao"     >Various</a>`,"BDL           ","https://bundledao.org"],
 	    ["GuessIt             ", `<a href="guessit"       >Various</a>`,"GSSIT         ","https://guessit.app"],
-	    ["Lazymint            ", `<a href="lazymint"      >Various</a>`,"LAZY          ","https://lazymint.finance"]
+	    ["GuessIt             ", `<a href="guessit"       >Various</a>`,"GSSIT         ","https://guessit.app"],
+      ["Parthenon Lambda    ", `<a href="parthenon_lambda">Various</a>`,"LAMBDA      ","https://lambda.parthenon.finance"],
+      ["Lazymint            ", `<a href="lazymint"      >Various</a>`,"LAZY          ","https://lazymint.finance"]
     ]
   }
 

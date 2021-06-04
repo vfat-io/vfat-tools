@@ -34,6 +34,7 @@ const ShortPools = [ {
 })
 const Pools = [
   "0x4DB2fa451e1051A013A42FaD98b04C2aB81043Af", //wbtc - lfbtc
+  "0xBd2B271150332628fEd8269217b88cC7A31283E4", //weth - lfeth
   "0xC3C79869ED93c88E1227a1Ca3542c9B947BA9e0c"  //lfbtc - lift,
 ].map(a => {
   return {
@@ -119,17 +120,19 @@ async function main() {
 
   //load deathpool prices
   await loadSynthetixPoolInfo(App, tokens, prices,
-     Pools[0].abi, Pools[0].address, Pools[0].rewardTokenFunction, Pools[0].stakeTokenFunction);
-   await loadSynthetixPoolInfo(App, tokens, prices,
-     Pools[1].abi, Pools[1].address, Pools[1].rewardTokenFunction, Pools[1].stakeTokenFunction);
+    Pools[0].abi, Pools[0].address, Pools[0].rewardTokenFunction, Pools[0].stakeTokenFunction);
+  await loadSynthetixPoolInfo(App, tokens, prices,
+    Pools[1].abi, Pools[1].address, Pools[1].rewardTokenFunction, Pools[1].stakeTokenFunction);
+  await loadSynthetixPoolInfo(App, tokens, prices,
+    Pools[2].abi, Pools[2].address, Pools[2].rewardTokenFunction, Pools[2].stakeTokenFunction);
 
   let p = await loadMultipleSynthetixLIFTPools(App, tokens, prices, Pools.concat(ShortPools))
     totalStaked += p.staked_tvl;
 
-  let br = await loadBoardroom_(App, prices, data.Boardroom, data.Oracle, data.UniswapLP, data.Cash,
-    data.ShareTicker, data.CashTicker, data.ExpansionsPerDay, data.MaximumExpansion, 
-    data.Decimals, 1, data.TargetMantissa);
-    totalStaked += br.staked_tvl;
+  // let br = await loadBoardroom_(App, prices, data.Boardroom, data.Oracle, data.UniswapLP, data.Cash,
+  //   data.ShareTicker, data.CashTicker, data.ExpansionsPerDay, data.MaximumExpansion, 
+  //   data.Decimals, 1, data.TargetMantissa);
+  //   totalStaked += br.staked_tvl;
 
   _print_bold(`Total staked: $${formatMoney(totalStaked)}`);
   if (p.totalUserStaked > 0) {
