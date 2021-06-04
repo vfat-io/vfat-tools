@@ -309,7 +309,8 @@ const main = async() => {
 	    ["GuessIt             ", `<a href="guessit"       >Various</a>`,"GSSIT         ","https://guessit.app"],
       ["Parthenon Lambda    ", `<a href="parthenon_lambda">Various</a>`,"LAMBDA      ","https://lambda.parthenon.finance"],
       ["Lazymint            ", `<a href="lazymint"      >Various</a>`,"LAZY          ","https://lazymint.finance"],
-      ["Werewolf            ", `<a href="werewolf"      >Various</a>`,"WEREWOLF      ","https://werewolf.farm"]
+      ["Werewolf            ", `<a href="werewolf"      >Various</a>`,"WEREWOLF      ","https://werewolf.farm"],
+      ["Pinkmoon            ", `<a href="pinkmoon"      >Various</a>`,"PinkS         ","https://www.pinkmoon.finance"]
     ]
   }
 
