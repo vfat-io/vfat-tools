@@ -6,52 +6,53 @@ const ELK_CONTRACT_ABI = [{"type":"constructor","stateMutability":"nonpayable","
 
 const Pools = [
   {
-    //tokens: [xe[f.c.AVALANCHE], f.p[f.c.AVALANCHE]],
-    stakingRewardAddress: "0x9080Bd46a55f8A32DB2B609C74f8125a08DafbC3"
-  }, {
-    //tokens: [xe[f.c.AVALANCHE], we[f.c.AVALANCHE]],
-    stakingRewardAddress: "0x4235F9bE035541A69525Fa853e2369fe493BA936"
-  }, {
-    //tokens: [xe[f.c.AVALANCHE], je[f.c.AVALANCHE]],
-    stakingRewardAddress: "0x777e391521a542430bDD59Be48b1eAc00117427c"
-  }, {
-    //tokens: [xe[f.c.AVALANCHE], Ce[f.c.AVALANCHE]],
-    stakingRewardAddress: "0x2D9C1e87595c6ED24CfEC114549A955b7023E1a9"
-  }, {
-    //tokens: [xe[f.c.AVALANCHE], Ie[f.c.AVALANCHE]],
-    stakingRewardAddress: "0xE18ae29256ee2d31f7A4AA72567fde1FF7d9895e"
-  }, {
-    //tokens: [xe[f.c.AVALANCHE], Te[f.c.AVALANCHE]],
-    stakingRewardAddress: "0xfeeFf2fcb7fE9f3211abE643c3f49f3a4F04063A"
-  }, {
-    //tokens: [xe[f.c.AVALANCHE], Oe[f.c.AVALANCHE]],
-    stakingRewardAddress: "0xC1E72BF3F97505537AdAd52639F3Bbf2DF5E5736"
-  }, {
-    //tokens: [xe[f.c.AVALANCHE], Qe[f.c.AVALANCHE]],
-    stakingRewardAddress: "0x9bC04d39a721b48Ca33700214961aC5cC3622f76"
-  }, {
-    //tokens: [xe[f.c.AVALANCHE], Ve[f.c.AVALANCHE]],
-    stakingRewardAddress: "0x99Ef222dBA70eb0A396115D3ad0633C88bc73582"
-  }, {
-    //tokens: [xe[f.c.AVALANCHE], We[f.c.AVALANCHE]],
-    stakingRewardAddress: "0xA8d91C6093b700897e4654a71BE67fE017f10098"
-  }, {
-    //tokens: [xe[f.c.AVALANCHE], Ge[f.c.AVALANCHE]],
-    stakingRewardAddress: "0x621B5aDC58ccE0F1EfA0c51007Ab9A923213f759"
-  }, {
-    //tokens: [xe[f.c.AVALANCHE], Ne[f.c.AVALANCHE]],
-    stakingRewardAddress: "0xb961966caE73a66E96D22965dE8D253c0FcBcf04"
-  }, {
-    //tokens: [xe[f.c.AVALANCHE], Ye[f.c.AVALANCHE]],
-    stakingRewardAddress: "0xec4676aAAE8B958464d087d4FaaA6731F0596ae9"
-  }, {
-    //tokens: [xe[f.c.AVALANCHE], He[f.c.AVALANCHE]],
-    stakingRewardAddress: "0x325d72D3d0806fD2A45a6C44E3e51D18D8187117"
-  }, {
-    //tokens: [xe[f.c.AVALANCHE], qe[f.c.AVALANCHE]],
-    stakingRewardAddress: "0x0DA14647cc52cD93cD5c57Bb67dC45de4CD12EF1"
-  }
-].map(p => {
+    stakingRewardAddress: "0xc990380d5fB656010bCB8AB1E7f1041Bc3155DfD"
+  },
+  {
+    stakingRewardAddress: "0x4454d8df7cC99Ccf1f5463BA3ffFe1499A432392"
+  },
+  {
+    stakingRewardAddress: "0xb7F8fCAf0Fe1f24e8f870391fd5c47C0c85aCAD0"
+  },
+  {
+    stakingRewardAddress: "0x296D24ce3dF6A1C5421D035212d30dA2ABF52a1E"
+  },
+  {
+    stakingRewardAddress: "0x975cbf5e26a1dC010d9C7948Ee8Ec152Fb7b6305"
+  },
+  {
+    stakingRewardAddress: "0xa68294fD8D399a47b7Acb86d67355B0bc652B9F8"
+  },
+  {
+    stakingRewardAddress: "0x234362079DA44960fa6F8cE24FB9DA5a36a096ba"
+  },
+  {
+    stakingRewardAddress: "0x408BaEFCEcb217D23b225b67286Ec64d01f3B365"
+  },
+  {
+    stakingRewardAddress: "0xC1c3740a269BA3ed7AA2Cea36F336A6042e1889f"
+  },
+  {
+    stakingRewardAddress: "0x60f5e19Ea1488ef514cdc7D42953cA0157cAf720"
+  },
+  {
+    stakingRewardAddress: "0x30534a68450F2492d04256aC78B9B9A7a7214a5a"
+  },
+  {
+    stakingRewardAddress: "0x7E1E7c5123F857a3e57E0802f3603d120F69c819"
+  },
+  {
+    stakingRewardAddress: "0x3eCc0622b9AbB91ca475A6F2360698d4F56ab71D"
+  },
+  {
+    stakingRewardAddress: "0x8020138c90433d8918A95d141231a5F34eCC69Ed"
+  },
+  {
+    stakingRewardAddress: "0x0c7460A12fad2F1e0E1d3eC86A3471947C16A2B6"
+  },
+  {
+    stakingRewardAddress: "0x1CcbB416BFafa14fb06192B9F542Db0C246388fE"
+  }].map(p => {
   return {
     address: p.stakingRewardAddress,
     abi: ELK_CONTRACT_ABI,
