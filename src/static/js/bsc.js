@@ -310,7 +310,8 @@ const main = async() => {
       ["Parthenon Lambda    ", `<a href="parthenon_lambda">Various</a>`,"LAMBDA      ","https://lambda.parthenon.finance"],
       ["Lazymint            ", `<a href="lazymint"      >Various</a>`,"LAZY          ","https://lazymint.finance"],
       ["Werewolf            ", `<a href="werewolf"      >Various</a>`,"WEREWOLF      ","https://werewolf.farm"],
-      ["Pinkmoon            ", `<a href="pinkmoon"      >Various</a>`,"PinkS         ","https://www.pinkmoon.finance"]
+      ["Pinkmoon            ", `<a href="pinkmoon"      >Various</a>`,"PinkS         ","https://www.pinkmoon.finance"],
+      ["ShopSwap Finance    ", `<a href="shopswap"      >Various</a>`,"SHOP         ","https://shopswap.finance"]
     ]
   }
 
