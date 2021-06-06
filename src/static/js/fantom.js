@@ -115,6 +115,12 @@ const main = async() => {
         `<a href='paintswap'>Various</a>`,
         "BRUSH",
         "https://paintswap.finance"
+      ],
+      [
+        "Tomb",
+        `<a href='tomb'>Various</a>`,
+        "Various",
+        "https://tomb.finance"
       ]
     ]
   }
