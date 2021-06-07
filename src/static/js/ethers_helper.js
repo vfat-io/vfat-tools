@@ -59,21 +59,31 @@ const init_wallet = async function (callback) {
     let targetNetworkId = parseInt(targetNetwork.chainId, 16)
 
     if (connectedNetwork.chainId === targetNetworkId) {
-      _print_link("[CHANGE WALLET]", changeWallet, "connect_wallet_button");
+      _print_link("[CHANGE WALLET]", changeWallet, "connect_wallet_button", false);
+      _print_inline(' -=- ');
+      _print_link("[CLEAR BROWSER STORAGE]", clearLocalStorage, "clear_browser_storage");
       start(callback);
     } else {
       _print(`You are connected to ${networkNameFromId(connectedNetwork.chainId)}, please switch to ${targetNetwork.chainName} network`)
       if (window.ethereum && targetNetwork.chainId !== '0x1') {
         _print('')
-        _print_link("[SWITCH NETWORK]", () => switchNetwork(targetNetwork), "connect_wallet_button")
+        _print_link("[SWITCH NETWORK]", () => switchNetwork(targetNetwork), "connect_wallet_button", false)
+        _print_inline(' -=- ');
+        _print_link("[CLEAR BROWSER STORAGE]", clearLocalStorage, "clear_browser_storage");
       }
       hideLoading()
     }
   } else {
-    _print_link("[CONNECT WALLET]", () => connectWallet(callback), "connect_wallet_button");
+    _print_link("[CONNECT WALLET]", () => connectWallet(callback), "connect_wallet_button", false);
+    _print_inline(' -=- ');
+    _print_link("[CLEAR BROWSER STORAGE]", clearLocalStorage, "clear_browser_storage");
     hideLoading()
   }
   _print('')
+}
+
+function clearLocalStorage() {
+  localStorage.clear()
 }
 
 async function init_ethers() {
@@ -298,12 +308,15 @@ const _print_bold = function(message) {
   }
 }
 
-const _print_link = function(message, onclickFunction, uuid = ID()) {
+const _print_link = function(message, onclickFunction, uuid = ID(), add_carriage = true) {
   if (!logger) {
     logger = document.getElementById('log')
   }
 
-  logger.innerHTML += '<a href="#" id=' + uuid + '>' + message + '</a><br />'
+  logger.innerHTML += '<a href="#" id=' + uuid + '>' + message + '</a>'
+  if (add_carriage) {
+    logger.innerHTML += '<br />'
+  }
 
   $(document).on('click', '#' + uuid, function() {
     console.log('clicked')
@@ -716,13 +729,13 @@ const rewardsContract_unstake = async function(rewardPoolAddr, App) {
   }
 }
 
-const rewardsContract_movetobardroom = async function(rewardPoolAddr, App) {
+const rewardsContract_movetoboardroom = async function(rewardPoolAddr, App) {
   const signer = App.provider.getSigner()
 
   const REWARD_POOL = new ethers.Contract(rewardPoolAddr, Y_STAKING_POOL_ABI, signer)
-  const currentStakedAmount = await REWARD_POOL.balanceOf(App.YOUR_ADDRESS)
+  const currentEarnedAmount = await REWARD_POOL.earned(App.YOUR_ADDRESS)
 
-  if (currentStakedAmount > 0) {
+  if (currentEarnedAmount > 0) {
     showLoading()
     REWARD_POOL.stakeInBoardroom({gasLimit: 500000})
       .then(function(t) {
@@ -1422,6 +1435,7 @@ function getUniPrices(tokens, prices, pool)
   else if (pool.symbol.includes("PLP")) stakeTokenTicker += " Pure Swap LP";
   else if (pool.symbol.includes("Field-LP")) stakeTokenTicker += " Yield Fields LP";
   else if (pool.symbol.includes("UPT")) stakeTokenTicker += " Unic Swap LP";
+  else if (pool.symbol.includes("ELP")) stakeTokenTicker += " ELK LP";
   else stakeTokenTicker += " Uni LP";
   return {
       t0: t0,
@@ -1463,6 +1477,7 @@ function getUniPrices(tokens, prices, pool)
               pool.symbol.includes("SPIRIT") ?  `https://swap.spiritswap.finance/#/swap` :
               pool.symbol.includes("spLP") ?  `https://info.spookyswap.finance/pair/${pool.address}` :
               pool.symbol.includes("Lv1") ?  `https://info.steakhouse.finance/pair/${pool.address}` :
+              pool.symbol.includes("ELP") ?  `https://app.elk.finance/#/swap` :
               pool.symbol.includes("PLP") ?  `https://exchange.pureswap.finance/#/swap` :
               pool.symbol.includes("BLP") ?  `https://info.bakeryswap.org/#/pair/${pool.address}` :
               pool.symbol.includes("Field-LP") ?  `https://exchange.yieldfields.finance/#/swap` :
@@ -1499,6 +1514,11 @@ function getUniPrices(tokens, prices, pool)
             `https://app.pangolin.exchange/#/add/${t0address}/${t1address}`,
             `https://app.pangolin.exchange/#/remove/${t0address}/${t1address}`,
             `https://app.pangolin.exchange/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+          ] :
+          pool.symbol.includes("ELP") ? [
+            `https://app.elk.finance/#/add/${t0address}/${t1address}`,
+            `hhttps://app.elk.finance/#/remove/${t0address}/${t1address}`,
+            `https://app.elk.finance/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
           ] :
           pool.symbol.includes("CS-LP") ? [
             `https://app.coinswap.space/#/add/${t0address}/${t1address}`,
