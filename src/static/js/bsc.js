@@ -314,7 +314,8 @@ const main = async() => {
       ["Kikko Finance       ", `<a href="kikko"         >Various</a>`,"KIKKO         ","https://app.kikko.finance"],
       ["SkunkSwap           ", `<a href="skunkswap"     >Various</a>`,"SKUNK         ","https://skunkswap.finance"],
       ["Panty               ", `<a href="panty"         >Various</a>`,"PANTY         ","https://pantyswap.yieldpanty.finance"],
-      ["Ant                 ", `<a href="ant"           >Various</a>`,"ANT           ","https://antswap.fi"]
+      ["Ant                 ", `<a href="ant"           >Various</a>`,"ANT           ","https://antswap.fi"],
+      ["Billhwang           ", `<a href="billhwang"     >Various</a>`,"BILL          ","https://www.billhwangdefi.co"]
     ]
   }
 
