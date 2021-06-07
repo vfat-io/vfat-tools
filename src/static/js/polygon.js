@@ -61,7 +61,7 @@ const main = async() => {
         ["PolyMaple          ",`<a href="polymaple"       >Various</a>`,"MAPLE        ",""],
         ["Gravity Finance    ",`<a href="gravityfinance"  >Various</a>`,"GFI          ","https://gravityfinance.io"],
         ["Smellycat          ",`<a href="smellycat"       >Various</a>`,"PUSSY        ","https://www.smellycat.finance"],
-        ["Polygold           ",`<a href="polygold"        >Various</a>`,"POLYGOLD      ","https://polygold.finance"],
+        ["Polygold           ",`<a href="polygold"        >Various</a>`,"POLYGOLD     ","https://polygold.finance"],
         ["Polyswan           ",`<a href="polyswan"        >Various</a>`,"SWAN         ","https://www.polyswan.finance"],
         ["Polyion            ",`<a href="polyion"         >Various</a>`,"LION         ","https://www.polyion.net"],
         ["Eleven             ",`<a href="eleven"          >Various</a>`,"ELE          ","https://eleven.finance"],
@@ -73,7 +73,8 @@ const main = async() => {
         ["Polybutterfly      ",`<a href="polybutterfly"   >Various</a>`,"POLLEN       ","https://polybutterfly.finance"],
         ["Southpark          ",`<a href="southpark"       >Various</a>`,"SOUTHPARK    ","https://southpark.finance"],
         ["PolyCash           ",`<a href="polycash"        >Various</a>`,"CASH         ","https://polycash.finance"],
-        ["Dinosaur           ",`<a href="dinosaur"        >Various</a>`,"DINO         ","https://dinosaurfinance.vercel.app"]
+        ["Dinosaur           ",`<a href="dinosaur"        >Various</a>`,"DINO         ","https://dinosaurfinance.vercel.app"],
+        ["Magic              ",`<a href="magic"           >Various</a>`,"DRAX/DMAGIC  ","https://defimagic.io"]
       ]
   }
 
