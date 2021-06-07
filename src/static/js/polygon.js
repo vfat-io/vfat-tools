@@ -12,12 +12,12 @@ const main = async() => {
         ["Cometh             ",`<a href="cometh"          >Various</a>`,"MUST         ","https://swap.cometh.io/#/stake"],
         ["Dark               ",`<a href="dark"            >Various</a>`,"DB           ","https://www.dark.build"],
         ["Smartdex           ",`<a href="smartdex"        >Various</a>`,"NIOX         ","https://swap.smartdex.app"],
-        ["Elk                ",`<a href="elk"             >Various</a>`,"ELK          ","https://app.elk.finance"],
+        ["Elk *              ",`<a href="elk"             >Various</a>`,"ELK          ","https://app.elk.finance"],
         ["Polywhale          ",`<a href="polywhale"       >Various</a>`,"KRILL        ","https://polywhale.finance"],
         ["Aave               ",`<a href="aave"            >Various</a>`,"MATIC        ","https://aave.com"],
         ["Polyfox            ",`<a href="polyfox"         >Various</a>`,"FOX          ","https://polyfox.finance"],
         ["Hawkdex            ",`<a href="hawk"            >Various</a>`,"HAWK         ","https://hawkdex.com"],
-        ["Polycat            ",`<a href="polycat"         >Various</a>`,"FISH         ","https://polycat.finance"],
+        ["Polycat            ", `<a href="polycat"        >Various</a>`,"FISH         ", "https://polycat.finance"],
         ["BoughtThe.top      ",`<a href="boughtthetop"    >Various</a>`,"BTT          ","https://farm.BoughtThe.top"],
         ["PolyStarter        ",`<a href="polystarter"     >Various</a>`,"STARTER      ","https://www.polystarter.fi"],
         ["Polyvolve          ",`<a href="polyvolve"       >Various</a>`,"SPEAR        ","https://polyvolve.finance"],
@@ -61,11 +61,18 @@ const main = async() => {
         ["PolyMaple          ",`<a href="polymaple"       >Various</a>`,"MAPLE        ",""],
         ["Gravity Finance    ",`<a href="gravityfinance"  >Various</a>`,"GFI          ","https://gravityfinance.io"],
         ["Smellycat          ",`<a href="smellycat"       >Various</a>`,"PUSSY        ","https://www.smellycat.finance"],
-        ["Polygold           ",`<a href="polygold"       >Various</a>`,"POLYGOLD      ","https://polygold.finance"],
+        ["Polygold           ",`<a href="polygold"        >Various</a>`,"POLYGOLD      ","https://polygold.finance"],
         ["Polyswan           ",`<a href="polyswan"        >Various</a>`,"SWAN         ","https://www.polyswan.finance"],
         ["Polyion            ",`<a href="polyion"         >Various</a>`,"LION         ","https://www.polyion.net"],
         ["Eleven             ",`<a href="eleven"          >Various</a>`,"ELE          ","https://eleven.finance"],
-        ["Pirate Dice        ",`<a href="piratedice"      >Various</a>`,"BOOTY        ","http://piratedice.xyz"]
+        ["Pirate Dice        ",`<a href="piratedice"      >Various</a>`,"BOOTY        ","http://piratedice.xyz"],
+        ["PolyPingu          ",`<a href="polypingu"       >Various</a>`,"PINGU        ","https://polypingu.finance"],
+        ["Goldenbull         ",`<a href="goldenbull"      >Various</a>`,"GBULL        ","https://farms.goldenbull.finance"],
+        ["Polyakita          ",`<a href="polyakita"       >Various</a>`,"HACHI        ","https://defi.polyakita.com"],
+        ["Prism              ",`<a href="prism"           >Various</a>`,"PRISM        ","https://polygon.prismfinance.net"],
+        ["Polybutterfly      ",`<a href="polybutterfly"   >Various</a>`,"POLLEN       ","https://polybutterfly.finance"],
+        ["Southpark          ",`<a href="southpark"       >Various</a>`,"SOUTHPARK    ","https://southpark.finance"],
+        ["PolyCash           ",`<a href="polycash"        >Various</a>`,"CASH         ","https://polycash.finance"]
       ]
   }
 
