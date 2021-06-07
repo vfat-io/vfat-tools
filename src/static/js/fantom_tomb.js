@@ -14,16 +14,19 @@ $(function() {
       _print("Reading smart contracts...\n");
       
       const tombRewardPoolContract = new ethers.Contract(TOMB_REWARD_POOL_ADDR, TOMB_REWARD_POOL_ABI, App.provider);
-     const tShareRewardPoolContract = new ethers.Contract(TSHARE_REWARD_POOL_ADDR, TSHARE_REWARD_POOL_ABI, App.provider);
-     const rewardTokenTicker = "TOMB";
+      const tShareRewardPoolContract = new ethers.Contract(TSHARE_REWARD_POOL_ADDR, TSHARE_REWARD_POOL_ABI, App.provider);
+      const rewardTokenTicker = "TOMB";
       const tokens = {};
       const prices = await getFantomPrices();
+      const startTime0 = await tombRewardPoolContract.poolStartTime();
+      const startTime1 = await tShareRewardPoolContract.poolStartTime();
+      const currentTime = Date.now() / 1000
 
       let tombRewardPool = await loadRewardPoolContract(App, tokens, prices, tombRewardPoolContract, TOMB_REWARD_POOL_ADDR, TOMB_REWARD_POOL_ABI, "TOMB",
-          "tomb", null, null, "pendingTOMB", 1);
+          "tomb", null, null, "pendingTOMB", 1, startTime0, currentTime);
 
       let tShareRewardPool = await loadRewardPoolContract(App, tokens, prices, tShareRewardPoolContract, TSHARE_REWARD_POOL_ADDR, TSHARE_REWARD_POOL_ABI, "TSHARE",
-          "tshare", null, null, "pendingShare", 2);
+          "tshare", null, null, "pendingShare", 2, startTime1, currentTime);
 
 
 
@@ -44,20 +47,27 @@ $(function() {
       rewardsPerSecondFunction,
       rewardsPerWeekFixed,
       pendingRewardsFunction,
-      poolCount
+      poolCount,
+      startTime,
+      currentTime
     ) {
       const poolContract = contract ?? new ethers.Contract(contractAddress, contractAbi)
+
+      _print(`<a href='https://ftmscan.com/address/${poolContract.address}' target='_blank'>Staking Contract</a>`);
+      _print("");
 
       const totalAllocPoints = await poolContract.totalAllocPoint()
 
       const rewardTokenAddress = await poolContract.callStatic[rewardTokenFunction]()
 
-
       const rewardToken = await getFantomToken(App, rewardTokenAddress, contractAddress)
 
-
-      const rewardsPerWeek =
-        rewardsPerWeekFixed ?? ((await getTokenRewardPerSecond(poolContract)) / 10 ** rewardToken.decimals) * 604800
+      let rewardsPerWeek = 0;
+      if(currentTime < startTime){
+        _print(`Rewards has not started yet\n`);
+      }else{
+       rewardsPerWeek = await getTokenRewardPerSecond(poolContract) / 10 ** rewardToken.decimals * 604800;
+      }
 
       const poolInfos = await Promise.all([...Array(poolCount).keys()].map(async (x) => 
       await getTombRewardPoolInfo(App, poolContract, contractAddress, x, pendingRewardsFunction)));
