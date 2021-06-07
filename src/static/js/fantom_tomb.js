@@ -14,8 +14,7 @@ $(function() {
         _print("Reading smart contracts...\n");
         
         const tombRewardPoolContract = new ethers.Contract(TOMB_REWARD_POOL_ADDR, TOMB_REWARD_POOL_ABI, App.provider);
-       const tShareRewardPoolContract = new ethers.Contract(TSHARE_REWARD_POOL_ADDR, TSHARE_REWARD_POOL_ABI, App.provider);
-       const rewardTokenTicker = "TOMB";
+        const tShareRewardPoolContract = new ethers.Contract(TSHARE_REWARD_POOL_ADDR, TSHARE_REWARD_POOL_ABI, App.provider);
         const tokens = {};
         const prices = await getFantomPrices();
 
@@ -23,7 +22,7 @@ $(function() {
             "tomb", null, null, "pendingTOMB", 1);
 
         let tShareRewardPool = await loadRewardPoolContract(App, tokens, prices, tShareRewardPoolContract, TSHARE_REWARD_POOL_ADDR, TSHARE_REWARD_POOL_ABI, "TSHARE",
-            "tshare", null, null, "pendingShare", 2);
+            "tshare", null, null, "pendingShare", 1);
 
 
 
@@ -56,8 +55,12 @@ $(function() {
         const rewardToken = await getFantomToken(App, rewardTokenAddress, contractAddress)
 
 
-        const rewardsPerWeek =
-          rewardsPerWeekFixed ?? ((await getTokenRewardPerSecond(poolContract)) / 10 ** rewardToken.decimals) * 604800
+        let rewardsPerWeek = 0;
+        if(poolContract.address == TSHARE_REWARD_POOL_ADDR){
+          rewardsPerWeek = await poolContract.tSharePerSecond() / 10 ** rewardToken.decimals * 604800;
+        }else{
+          rewardsPerWeek = await getTokenRewardPerSecond(poolContract) / 10 ** rewardToken.decimals * 604800;
+        }
 
         const poolInfos = await Promise.all([...Array(poolCount).keys()].map(async (x) => 
         await getTombRewardPoolInfo(App, poolContract, contractAddress, x, pendingRewardsFunction)));
@@ -72,7 +75,7 @@ $(function() {
 
         let aprs = [];
         for (i = 0; i < poolCount; i++){
-        const apr = printChefPool(App,TOMB_REWARD_POOL_ABI, contractAddress, prices, tokens, poolInfos[i], i,
+        const apr = printTombPool(App, contractAbi, contractAddress, prices, tokens, poolInfos[i], i,
              poolPrices[i], totalAllocPoints, rewardsPerWeek, rewardTokenTicker, rewardTokenAddress, pendingRewardsFunction, "fantom")
         aprs.push(apr);
         }
@@ -121,7 +124,6 @@ $(function() {
       }
       
       async function getTokenRewardPerSecond(poolContract) {
-        if (poolContract.address == TOMB_REWARD_POOL_ADDR) {
           const poolStartTime = await poolContract.poolStartTime()
           const startDateTime = new Date(poolStartTime.toNumber() * 1000)
           const FOUR_DAYS = 4 * 24 * 60 * 60 * 1000
@@ -129,9 +131,26 @@ $(function() {
             return await poolContract.epochTombPerSecond(1)
           }
           return await poolContract.epochTombPerSecond(0)
-        } else {
-            return await poolContract.tSharePerSecond()
-        }
       }
 
-    
+function printTombPool(App, chefAbi, chefAddr, prices, tokens, poolInfo, poolIndex, poolPrices,
+                       totalAllocPoints, rewardsPerWeek, rewardTokenTicker, rewardTokenAddress,
+                       pendingRewardsFunction, fixedDecimals, claimFunction, chain="eth", depositFee=0, withdrawFee=0) {
+  fixedDecimals = fixedDecimals ?? 2;
+  var poolRewardsPerWeek = poolInfo.allocPoints / totalAllocPoints * rewardsPerWeek;
+  if (poolRewardsPerWeek == 0 && rewardsPerWeek != 0) return;
+  const userStaked = poolInfo.userLPStaked ?? poolInfo.userStaked;
+  const rewardPrice = getParameterCaseInsensitive(prices, rewardTokenAddress)?.usd;
+  const staked_tvl = poolPrices.staked_tvl;
+  _print_inline(`${poolIndex} - `);
+  poolPrices.print_price(chain);
+  //sp?.print_price(chain);
+  const apr = printAPR(rewardTokenTicker, rewardPrice, poolRewardsPerWeek, poolPrices.stakeTokenTicker,
+    staked_tvl, userStaked, poolPrices.price, fixedDecimals);
+  if (poolInfo.userLPStaked > 0) sp?.print_contained_price(userStaked);
+  if (poolInfo.userStaked > 0) poolPrices.print_contained_price(userStaked);
+  printChefContractLinks(App, chefAbi, chefAddr, poolIndex, poolInfo.address, pendingRewardsFunction,
+    rewardTokenTicker, poolPrices.stakeTokenTicker, poolInfo.poolToken.unstaked,
+    poolInfo.userStaked, poolInfo.pendingRewardTokens, fixedDecimals, claimFunction, rewardPrice, chain, depositFee, withdrawFee);
+  return apr;
+}
