@@ -26,16 +26,6 @@ async function main() {
     rewardTokenAddresses: rewardTokenAddresses
   }
 
-  await getNewPricesAndTokens(App, tokens, prices, rewardTokenAddresses, pool.address)
-  //getNewPricesAndTokens has this exception
-  /*
-  {
-  "reason": "invalid ENS name",
-  "code": "INVALID_ARGUMENT",
-  "argument": "name"
-}
-  */
-
   let p = await loadDraxSynthetixPool(App, tokens, prices, pool.abi, pool.address, pool.rewardTokenAddresses, pool.stakeTokenFunction)
   
   _print_bold(`Total staked: $${formatMoney(p.staked_tvl)}`);
