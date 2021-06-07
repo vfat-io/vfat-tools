@@ -22,7 +22,7 @@ async function main() {
     const prices = await getMaticPrices();
 
     await loadMaticChefContract(App, tokens, prices, MAPLE_CHEF, MAPLE_CHEF_ADDR, MAPLE_CHEF_ABI, rewardTokenTicker,
-        "token", null, rewardsPerWeek, "pendingToken");
+        "token", null, rewardsPerWeek, "pendingToken", [5]);
 
     hideLoading();
   }
