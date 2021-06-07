@@ -72,7 +72,8 @@ const main = async() => {
         ["Prism              ",`<a href="prism"           >Various</a>`,"PRISM        ","https://polygon.prismfinance.net"],
         ["Polybutterfly      ",`<a href="polybutterfly"   >Various</a>`,"POLLEN       ","https://polybutterfly.finance"],
         ["Southpark          ",`<a href="southpark"       >Various</a>`,"SOUTHPARK    ","https://southpark.finance"],
-        ["PolyCash           ",`<a href="polycash"        >Various</a>`,"CASH         ","https://polycash.finance"]
+        ["PolyCash           ",`<a href="polycash"        >Various</a>`,"CASH         ","https://polycash.finance"],
+        ["Dinosaur           ",`<a href="dinosaur"        >Various</a>`,"DINO         ","https://dinosaurfinance.vercel.app"]
       ]
   }
 
