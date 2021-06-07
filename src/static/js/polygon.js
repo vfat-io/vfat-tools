@@ -17,8 +17,7 @@ const main = async() => {
         ["Aave               ",`<a href="aave"            >Various</a>`,"MATIC        ","https://aave.com"],
         ["Polyfox            ",`<a href="polyfox"         >Various</a>`,"FOX          ","https://polyfox.finance"],
         ["Hawkdex            ",`<a href="hawk"            >Various</a>`,"HAWK         ","https://hawkdex.com"],
-        ["Polycat            ", `<a href="polycat"         >Various</a>`, "FISH         ", "https://polycat.finance"],
-        ["PolyCash           ",`<a href="polycash"        >Various</a>`,          "CASH         ","https://polycash.finance"]
+        ["Polycat            ", `<a href="polycat"        >Various</a>`,"FISH         ", "https://polycat.finance"],
         ["BoughtThe.top      ",`<a href="boughtthetop"    >Various</a>`,"BTT          ","https://farm.BoughtThe.top"],
         ["PolyStarter        ",`<a href="polystarter"     >Various</a>`,"STARTER      ","https://www.polystarter.fi"],
         ["Polyvolve          ",`<a href="polyvolve"       >Various</a>`,"SPEAR        ","https://polyvolve.finance"],
@@ -72,7 +71,8 @@ const main = async() => {
         ["Polyakita          ",`<a href="polyakita"       >Various</a>`,"HACHI        ","https://defi.polyakita.com"],
         ["Prism              ",`<a href="prism"           >Various</a>`,"PRISM        ","https://polygon.prismfinance.net"],
         ["Polybutterfly      ",`<a href="polybutterfly"   >Various</a>`,"POLLEN       ","https://polybutterfly.finance"],
-        ["Southpark          ",`<a href="southpark"       >Various</a>`,"SOUTHPARK    ","https://southpark.finance"]
+        ["Southpark          ",`<a href="southpark"       >Various</a>`,"SOUTHPARK    ","https://southpark.finance"],
+        ["PolyCash           ",`<a href="polycash"        >Various</a>`,"CASH         ","https://polycash.finance"]
       ]
   }
 

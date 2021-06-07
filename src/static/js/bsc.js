@@ -311,9 +311,10 @@ const main = async() => {
       ["Lazymint            ", `<a href="lazymint"      >Various</a>`,"LAZY          ","https://lazymint.finance"],
       ["Werewolf            ", `<a href="werewolf"      >Various</a>`,"WEREWOLF      ","https://werewolf.farm"],
       ["Pinkmoon            ", `<a href="pinkmoon"      >Various</a>`,"PinkS         ","https://www.pinkmoon.finance"],
-      ["ShopSwap Finance    ", `<a href="shopswap"      >Various</a>`,"SHOP         ","https://shopswap.finance"],
-      ["Kikko Finance    ", `<a href="kikko"      >Various</a>`,"KIKKO         ","https://app.kikko.finance"],
-      ["SkunkSwap           ", `<a href="skunkswap"     >Various</a>`,"SKUNK         ","https://skunkswap.finance"]
+      ["ShopSwap Finance    ", `<a href="shopswap"      >Various</a>`,"SHOP          ","https://shopswap.finance"],
+      ["Kikko Finance       ", `<a href="kikko"         >Various</a>`,"KIKKO         ","https://app.kikko.finance"],
+      ["SkunkSwap           ", `<a href="skunkswap"     >Various</a>`,"SKUNK         ","https://skunkswap.finance"],
+      ["Panty               ", `<a href="panty"         >Various</a>`,"PANTY         ","https://pantyswap.yieldpanty.finance"]
     ]
   }
 
