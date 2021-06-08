@@ -74,7 +74,8 @@ const main = async() => {
         ["Southpark          ",`<a href="southpark"       >Various</a>`,"SOUTHPARK    ","https://southpark.finance"],
         ["PolyCash           ",`<a href="polycash"        >Various</a>`,"CASH         ","https://polycash.finance"],
         ["Dinosaur           ",`<a href="dinosaur"        >Various</a>`,"DINO         ","https://dinosaurfinance.vercel.app"],
-        ["Magic              ",`<a href="magic"           >Various</a>`,"DRAX/DMAGIC  ","https://defimagic.io"]
+        ["Magic              ",`<a href="magic"           >Various</a>`,"DRAX/DMAGIC  ","https://defimagic.io"],
+        ["Polymouse          ",`<a href="polymouse"       >Various</a>`,"MICE  		  ","https://polymouse.finance"]
       ]
   }
 
