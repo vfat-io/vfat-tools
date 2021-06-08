@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include(`${partials}/head`); -%>
+
+<body>
+<%- include(`${partials}/header_main`); -%>
+<pre id="log">
+*************** UNOFFICIAL AQUARIUS.FINANCE ***************
+    Website: https://aquarius.fi/
+    Description: Aquarius is a decentralized borrowing protocol with interest-free loans, high capital efficiency. we expect Aquarius to be the next MakerDao in the Fantom.
+    Twitter: https://twitter.com/Aquarius__Fi
+    CoinGecko: https://www.coingecko.com/en/coins/aquarius-fi
+    Token address:
+     - AQU: https://ftmscan.com/token/0x0f7ADb77B6334B9B5A3c4f78aAa073eA1D915bF6
+     - aUSD: https://ftmscan.com/token/0x41e3dF7f716aB5AF28c1497B354D79342923196a
+*********************************************************************************
+
+</pre>
+<div class="loader--1"></div>
+<%- include(`${partials}/scripts`, {scriptname: 'fantom_aquarius'}); -%>
+</body>
+</html>
