@@ -602,7 +602,7 @@ async function main() {
 
     const FIRE_CHEF_ADDR = "0xCEd39CF6221a10331e2349224BB1Eeb03A5c146f";
     const rewardTokenTicker = "FIRE";
-    const FIRE_CHEF = new ethers.Contract(FIRE_CHEF_ADDR, FISH_CHEF_ABI, App.provider);
+    const FIRE_CHEF = new ethers.Contract(FIRE_CHEF_ADDR, FIRE_CHEF_ABI, App.provider);
 
     const startBlock = await FIRE_CHEF.startBlock();
     const currentBlock = await App.provider.getBlockNumber();
@@ -618,7 +618,7 @@ async function main() {
     const tokens = {};
     const prices = await getMaticPrices();
 
-    await loadMaticChefContract(App, tokens, prices, FIRE_CHEF, FIRE_CHEF_ADDR, FISH_CHEF_ABI, rewardTokenTicker,
+    await loadMaticChefContract(App, tokens, prices, FIRE_CHEF, FIRE_CHEF_ADDR, FIRE_CHEF_ABI, rewardTokenTicker,
         "fire", null, rewardsPerWeek, "pendingFire");
 
     hideLoading();
