@@ -121,6 +121,12 @@ const main = async() => {
         `<a href='tomb'>Various</a>`,
         "Various",
         "https://tomb.finance"
+      ],
+      [
+        "Shadow",
+        `<a href='shadow'>Various</a>`,
+        "Various",
+        "https://shadowswap.app"
       ]
     ]
   }
