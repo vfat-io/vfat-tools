@@ -317,7 +317,9 @@ const main = async() => {
       ["Ant                 ", `<a href="ant"           >Various</a>`,"ANT           ","https://antswap.fi"],
       ["Billhwang           ", `<a href="billhwang"     >Various</a>`,"BILL          ","https://www.billhwangdefi.co"],
       ["Lavacake            ", `<a href="lavacake"      >Various</a>`,"LAVA          ","https://lavacake.finance"],
-      ["B2X                 ", `<a href="b2x"           >Various</a>`,"B2X           ","https://b2xtoken.io/farm"]
+      ["B2X                 ", `<a href="b2x"           >Various</a>`,"B2X           ","https://b2xtoken.io/farm"],
+      ["Mayo                ", `<a href="mayo"          >Various</a>`,"MAYO          ","https://mayoswap.com"],
+      ["Espresso Latte      ", `<a href="espresso_latte">Various</a>`,"ESPRESSO      ","https://espresso.latteswap.finance"]
     ]
   }
 
