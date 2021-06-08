@@ -75,7 +75,8 @@ const main = async() => {
         ["PolyCash           ",`<a href="polycash"        >Various</a>`,"CASH         ","https://polycash.finance"],
         ["Dinosaur           ",`<a href="dinosaur"        >Various</a>`,"DINO         ","https://dinosaurfinance.vercel.app"],
         ["Magic              ",`<a href="magic"           >Various</a>`,"DRAX/DMAGIC  ","https://defimagic.io"],
-        ["Polymouse          ",`<a href="polymouse"       >Various</a>`,"MICE  		  ","https://polymouse.finance"]
+        ["Polymouse          ",`<a href="polymouse"       >Various</a>`,"MICE  		  ","https://polymouse.finance"],
+        ["PolyTiger          ",`<a href="polytiger"       >Various</a>`,"TIGON        ","https://www.polytiger.com"]
       ]
   }
 
