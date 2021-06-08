@@ -14,14 +14,14 @@ async function main() {
    const rewardTokenTicker = "B2X";
    const B2X_FARM = new ethers.Contract(B2X_FARM_ADDR, B2X_FARM_ABI, App.provider);
 
-   const rewardsPerWeek = await B2X_FARM.b2xPerBlock() /1e18
-        * 604800 / 3;
+   //const rewardsPerWeek = await B2X_FARM.b2xPerBlock() /1e18
+     //   * 604800 / 3;
 
     const tokens = {};
     const prices = await getBscPrices();
 
     await loadBscChefContract(App, tokens, prices, B2X_FARM, B2X_FARM_ADDR, B2X_FARM_ABI, rewardTokenTicker,
-        "B2X", null, rewardsPerWeek, "pendingB2x", [4]);
+        "b2x", "b2xPerBlock", null, "pendingB2x");
 
     hideLoading();
   }
