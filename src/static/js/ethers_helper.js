@@ -1469,7 +1469,14 @@ function getUniPrices(tokens, prices, pool)
         else {
           const poolUrl = pool.is1inch ? "https://1inch.exchange/#/dao/pools" :
           pool.symbol.includes("LSLP") ? `https://info.linkswap.app/pair/${pool.address}` :
-            pool.symbol.includes("SLP") ?  `http://analytics.sushi.com/pairs/${pool.address}` :
+            pool.symbol.includes("SLP") ? (
+              {
+                "eth": `http://analytics.sushi.com/pairs/${pool.address}`,
+                "bsc": `http://analytics-ftm.sushi.com/pairs/${pool.address}`,
+                "fantom": `http://analytics-ftm.sushi.com/pairs/${pool.address}`,
+                "matic": `http://analytics-polygon.sushi.com/pairs/${pool.address}`,
+                "xdai": `https://analytics-xdai.sushi.com/pairs/${pool.address}`
+              }[chain]) :
               pool.symbol.includes("Cake") ?  `https://pancakeswap.info/pair/${pool.address}` :
               pool.symbol.includes("PGL") ?  `https://info.pangolin.exchange/#/pair/${pool.address}` :
               pool.symbol.includes("CS-LP") ?  `https://app.coinswap.space/#/` :
@@ -1896,6 +1903,9 @@ function getErc20Prices(prices, pool, chain="eth") {
       break;
     case "fuse":
       poolUrl=`https://explorer.fuse.io/address/${pool.address}`;
+      break;
+    case "xdai":
+      poolUrl=`https://blockscout.com/xdai/mainnet/tokens/${pool.address}`;
       break;
   }
   const name = `<a href='${poolUrl}' target='_blank'>${pool.symbol}</a>`;
