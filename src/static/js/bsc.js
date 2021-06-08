@@ -8,6 +8,7 @@ const main = async() => {
     "title":"BSC Network",
     "heading":["Pool Provider","LP", "Reward Tokens", "INFO"],
     "rows": [
+      ["FarmHero            ", `<a href="farmhero"      >Various</a>`,"FARMHERO      ","https://farmhero.io"],
       ["Pancake             ", `<a href="pancake"       >Various</a>`,"CAKE          ","https://pancakeswap.finance"],
       ["Apeswap             ", `<a href="apeswap"       >Various</a>`,"BANANA        ","https://apeswap.finance"],
       ["Autofarm            ", `<a href="autofarm"      >Various</a>`,"AUTOFARM      ","https://autofarm.network"],
