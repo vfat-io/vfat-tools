@@ -1385,7 +1385,7 @@ function formatMoney(amount, decimalCount = 2, decimal = ".", thousands = ",") {
   }
 }
 
-function getUniPrices(tokens, prices, pool)
+function getUniPrices(tokens, prices, pool, chain="eth")
 {
   var t0 = getParameterCaseInsensitive(tokens,pool.token0);
   var p0 = getParameterCaseInsensitive(prices,pool.token0)?.usd;
