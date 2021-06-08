@@ -30,7 +30,7 @@ async function main() {
     const prices = await getMaticPrices();
 
   await loadMaticChefContract(App, tokens, prices, BUNNY_CHEF, BUNNY_CHEF_ADDR, BUNNY_CHEF_ABI, rewardTokenTicker,
-        "BUNNY", null, rewardsPerWeek, "pendingBUNNY");
+        "Bunny", null, rewardsPerWeek, "pendingBunny");
 
     hideLoading();
   }
