@@ -8,7 +8,6 @@ const main = async() => {
     "title":"BSC Network",
     "heading":["Pool Provider","LP", "Reward Tokens", "INFO"],
     "rows": [
-      ["FarmHero            ", `<a href="farmhero"      >Various</a>`,"FARMHERO      ","https://farmhero.io"],
       ["Pancake             ", `<a href="pancake"       >Various</a>`,"CAKE          ","https://pancakeswap.finance"],
       ["Apeswap             ", `<a href="apeswap"       >Various</a>`,"BANANA        ","https://apeswap.finance"],
       ["Autofarm            ", `<a href="autofarm"      >Various</a>`,"AUTOFARM      ","https://autofarm.network"],
@@ -321,7 +320,8 @@ const main = async() => {
       ["B2X                 ", `<a href="b2x"           >Various</a>`,"B2X           ","https://b2xtoken.io/farm"],
       ["Mayo                ", `<a href="mayo"          >Various</a>`,"MAYO          ","https://mayoswap.com"],
       ["Espresso Latte      ", `<a href="espresso_latte">Various</a>`,"ESPRESSO      ","https://espresso.latteswap.finance"],
-      ["Chipshop            ", `<a href="chipshop"      >Various</a>`,"Various       ","https://chipshop.finance"]
+      ["Chipshop            ", `<a href="chipshop"      >Various</a>`,"Various       ","https://chipshop.finance"],
+      ["FarmHero            ", `<a href="farmhero"      >Various</a>`,"FARMHERO      ","https://farmhero.io"]
     ]
   }
 
