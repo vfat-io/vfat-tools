@@ -11,7 +11,7 @@ async function main() {
     _print(`Initialized ${App.YOUR_ADDRESS}\n`);
     _print("Reading smart contracts...\n");
 
-   const TIGON_CHEF_ADDR = "0xB23F0399a67c961ca5eDAEfcE3f0c2b60042AD94";
+   const TIGON_CHEF_ADDR = "0xF49a782c9643d5cB7C37455A0943FDCB62975Ad3";
    const rewardTokenTicker = "TIGON";
    const TIGON_CHEF = new ethers.Contract(TIGON_CHEF_ADDR, TIGON_CHEF_ABI, App.provider);
 
