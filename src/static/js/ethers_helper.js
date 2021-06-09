@@ -1898,13 +1898,14 @@ function getErc20Prices(prices, pool, chain="eth") {
       poolUrl=`https://explorer.fuse.io/address/${pool.address}`;
       break;
   }
+  const dexguruTokenlink = `<a href='https://dex.guru/token/${pool.address}-${chain}' noopener noreferrer target='_blank'>TradingView Chart</a>`;
   const name = `<a href='${poolUrl}' target='_blank'>${pool.symbol}</a>`;
   return {
     staked_tvl : staked_tvl,
     price : price,
     stakeTokenTicker : pool.symbol,
     print_price() {
-      _print(`${name} Price: $${displayPrice(price)} Market Cap: $${formatMoney(tvl)}`);
+      _print(`${name} Price: $${displayPrice(price)} Market Cap: $${formatMoney(tvl)} ${dexguruTokenlink}`);
       _print(`Staked: ${pool.staked.toFixed(4)} ${pool.symbol} ($${formatMoney(staked_tvl)})`);
     },
     pair_links() {
@@ -1934,12 +1935,13 @@ function getCurvePrices(prices, pool) {
   var staked_tvl = pool.staked * price;
   const poolUrl = `https://etherscan.io/token/${pool.address}`;
   const name = `<a href='${poolUrl}' target='_blank'>${pool.symbol}</a>`;
+  const dexguruTokenlink = `<a href='https://dex.guru/token/${pool.address}-${chain}' noopener noreferrer target='_blank'>TradingView Chart</a>`;
   return {
     staked_tvl : staked_tvl,
     price : price,
     stakeTokenTicker : pool.symbol,
     print_price() {
-      _print(`${name} Price: $${formatMoney(price)} Market Cap: $${formatMoney(tvl)}`);
+      _print(`${name} Price: $${formatMoney(price)} Market Cap: $${formatMoney(tvl)} ${dexguruTokenlink}`);
       _print(`Staked: ${pool.staked.toFixed(4)} ${pool.symbol} ($${formatMoney(staked_tvl)})`);
     },
     print_contained_price() {
