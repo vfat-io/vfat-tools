@@ -81,6 +81,7 @@ const main = async() => {
         ["Polydeer           ",`<a href="polydeer"        >Various</a>`,"DEER         ","https://polydeer.finance"],
         ["Avengers           ",`<a href="avengers"        >Various</a>`,"SHIELD       ","https://avengers.exchange"],
         ["PolyBunny          ",`<a href="polybunny"       >Various</a>`,"BUNNY        ","https://www.polybunny.finance"]
+        ["BerserkFinance     ",`<a href="berserkfinance"  >Various</a>`,"BRSK         ","https://berserkfinance.com"]
       ]
   }
 
