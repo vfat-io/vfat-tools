@@ -305,7 +305,7 @@ const main = async() => {
       ["TeaSwap             ", `<a href="tea"           >Various</a>`,"SUGAR         ","https://tea-swap-app.finance"],
       ["Fish                ", `<a href="fish"          >Various</a>`,"FISH          ","https://fishswap.app"],
       ["Bundledao           ", `<a href="bundledao"     >Various</a>`,"BDL           ","https://bundledao.org"],
-	    ["GuessIt             ", `<a href="guessit"       >Various</a>`,"GSSIT         ","https://guessit.app"],
+      ["GuessIt             ", `<a href="guessit"       >Various</a>`,"GSSIT         ","https://guessit.app"],
       ["Parthenon Lambda    ", `<a href="parthenon_lambda">Various</a>`,"LAMBDA      ","https://lambda.parthenon.finance"],
       ["Lazymint            ", `<a href="lazymint"      >Various</a>`,"LAZY          ","https://lazymint.finance"],
       ["Werewolf            ", `<a href="werewolf"      >Various</a>`,"WEREWOLF      ","https://werewolf.farm"],
@@ -322,7 +322,8 @@ const main = async() => {
       ["Espresso Latte      ", `<a href="espresso_latte">Various</a>`,"ESPRESSO      ","https://espresso.latteswap.finance"],
       ["Chipshop            ", `<a href="chipshop"      >Various</a>`,"Various       ","https://chipshop.finance"],
       ["FarmHero            ", `<a href="farmhero"      >Various</a>`,"FARMHERO      ","https://farmhero.io"],
-      ["Galaxy              ", `<a href="galaxy"        >Various</a>`,"GLX           ","https://galaxydefi.finance"]
+      ["Galaxy              ", `<a href="galaxy"        >Various</a>`,"GLX           ","https://galaxydefi.finance"],
+      ["Siberian            ", `<a href="siberian"      >Various</a>`,"SIBERIAN      ","https://siberianswap.finance"]
     ]
   }
 
