@@ -2112,7 +2112,7 @@ async function main() {
     const rewardTokenTicker = "HERO";
     const HEROFARM_CHEF = new ethers.Contract(HEROFARM_CHEF_ADDR, HEROFARM_CHEF_ABI, App.provider);
    const rewardsPerWeek = await HEROFARM_CHEF.HERORewardPerSecond() /1e18
-       * 604800;
+       * 604800 * 0.3;
     const tokens = {};
     const prices = await getBscPrices();
     await loadBscHEROChefContract(App, tokens, prices, HEROFARM_CHEF, HEROFARM_CHEF_ADDR, HEROFARM_CHEF_ABI, rewardTokenTicker,
@@ -2138,7 +2138,7 @@ async function main() {
     const rewardToken = await getBscToken(App, rewardTokenAddress, chefAddress);
     const rewardsPerWeek = rewardsPerWeekFixed ??
       await chefContract.callStatic[rewardsPerBlockFunction]()
-      / 10 ** rewardToken.decimals * 604800 
+      / 10 ** rewardToken.decimals * 604800 * 0.3
 
     const poolInfos = await Promise.all([...Array(poolCount).keys()].map(async (x) =>
       await getBscHEROPoolInfo(App, chefContract, x, pendingRewardsFunction)));
