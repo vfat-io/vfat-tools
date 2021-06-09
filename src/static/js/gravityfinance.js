@@ -1533,7 +1533,15 @@ async function loadFarmOtherDetails(App, farmAddress, aTokenAddress, bTokenAddre
     else {
         url = "https://explorer-mainnet.maticvigil.com/address/0x0b3F868E0BE5597D5DB7fEB59E1CADBb0fdDa50a/transactions";
     }
-    _print_bold(`<a href='${url}' target='_blank'>${otherSymbol}</a> Price: $${formatMoney(underlyingPrice)} Market Cap: $${formatMoney(marketCap)}`);
+    let dexguruTokenlink = ''
+
+    if (otherSymbol == 'LINK') {
+        dexguruTokenlink = `<a href='https://dex.guru/token/0x514910771af9ca656af840dff83e8264ecf986ca-eth' noopener noreferrer target='_blank'>TradingView Chart</a>`;
+      }
+      if (otherSymbol == "SUSHI") {
+        dexguruTokenlink = `<a href='https://dex.guru/token/0x6b3595068778dd592e39a122f4f5a5cf09c90fe2-eth' noopener noreferrer target='_blank'>TradingView Chart</a>`;
+      }
+    _print_bold(`<a href='${url}' target='_blank'>${otherSymbol}</a> Price: $${formatMoney(underlyingPrice)} Market Cap: $${formatMoney(marketCap)} ${dexguruTokenlink}`);
     _print(`Staked in Pool: ${reservesB} [${otherSymbol}] ($${formatMoney(TV_Other)})`);
     let GFIperWeek = await get_weekly_emission(farmInfo) / 10**18;
     _print(`GFI Emitted Per Week: ${formatMoney(GFIperWeek)}`);
