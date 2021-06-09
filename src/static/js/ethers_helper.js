@@ -1944,7 +1944,14 @@ function getCurvePrices(prices, pool) {
   var staked_tvl = pool.staked * price;
   const poolUrl = `https://etherscan.io/token/${pool.address}`;
   const name = `<a href='${poolUrl}' target='_blank'>${pool.symbol}</a>`;
-  const dexguruTokenlink = `<a href='https://dex.guru/token/${pool.address}-${chain}' noopener noreferrer target='_blank'>TradingView Chart</a>`;
+  const dexguruTokenlink =  function() {
+    const network = window.location.pathname.split("/")[1]
+    let dexguruTokenlink = '';
+    if (network.toLowerCase() === 'bsc' || network.toLowerCase() === 'eth' || network.toLowerCase() === 'polygon') {
+      dexguruTokenlink =   `<a href='https://dex.guru/token/${pool.address}-${chain}' noopener noreferrer target='_blank'>TradingView Chart</a>`;
+    }
+      return dexguruTokenlink 
+  }
   return {
     staked_tvl : staked_tvl,
     price : price,
