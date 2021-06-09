@@ -78,7 +78,7 @@ const main = async () => {
             ["Kingdom             ", `<a href="kingdom"       >Various</a>`, "CROWN         ", "https://kingdomswap.finance"],
             ["Deflate             ", `<a href="deflate"       >Various</a>`, "BLN           ", "https://deflate.finance"],
             ["Bender              ", `<a href="bender"        >Various</a>`, "BENDER        ", "https://bender.finance"],
-            ["BTCST               ", `<a href="btcst"         >Various</a>`, "BTCST         ", "https://app.btcst.finance"],
+            ["BTCST               ", `<a href="btcst"         >Various</a>`, "BTCST         ", "https://btcst.finance"],
             ["Hyrule              ", `<a href="hyrule"        >Various</a>`, "RUPEE         ", "https://app.hyruleswap.com"],
             ["Jiggly              ", `<a href="jiggly"        >Various</a>`, "JIGG          ", "https://www.jiggly.finance"],
             ["Meerkat             ", `<a href="meerkat"       >Various</a>`, "XKAT          ", "https://xkat.vercel.app"],
