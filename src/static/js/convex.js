@@ -23,8 +23,8 @@ consoleInit(main)
         [CVX_CHEF.getMultiplier(block, block+1), CVX_CHEF.rewardPerBlock(), CVX_CHEF_STAKING.poolLength()]);
     const rewardsPerWeek = rewardPerBlock / 1e18 * 604800 / 13.5 * multiplier;
 
-    await loadChefContract(App, null, CVX_CHEF_ADDR, CVX_CHEF_ABI,
-        "CVX", "cvx", null, rewardsPerWeek, "pendingCvx");
+    let cp = await loadChefContract(App, null, CVX_CHEF_ADDR, CVX_CHEF_ABI,
+        "CVX", "cvx", null, rewardsPerWeek, "pendingCvx", [0]);
 
     _print("")
 
@@ -43,7 +43,7 @@ consoleInit(main)
     });
 
     let tokens = {};
-    let prices = {};
+    let prices = cp.prices;
 
     let p = await loadMultipleConvexSynthetixPools(App, tokens, prices, Pools);
     _print_bold(`Total staked: $${formatMoney(p.staked_tvl)}`);
