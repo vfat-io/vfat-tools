@@ -1536,10 +1536,10 @@ async function loadFarmOtherDetails(App, farmAddress, aTokenAddress, bTokenAddre
     let dexguruTokenlink = ''
 
     if (otherSymbol == 'LINK') {
-        dexguruTokenlink = `<a href='https://dex.guru/token/0x53e0bca35ec356bd5dddfebbd1fc0fd03fabad39-polygon' noopener target='_blank'>TradingView Chart</a>`;
+        dexguruTokenlink = `<a href='https://dex.guru/token/0x53e0bca35ec356bd5dddfebbd1fc0fd03fabad39-polygon' rel='noopener' target='_blank'>TradingView Chart</a>`;
       }
       if (otherSymbol == "SUSHI") {
-        dexguruTokenlink = `<a href='https://dex.guru/token/0x0b3f868e0be5597d5db7feb59e1cadbb0fdda50a-polygon' noopener target='_blank'>TradingView Chart</a>`;
+        dexguruTokenlink = `<a href='https://dex.guru/token/0x0b3f868e0be5597d5db7feb59e1cadbb0fdda50a-polygon' rel='noopener' target='_blank'>TradingView Chart</a>`;
       }
     _print_bold(`<a href='${url}' target='_blank'>${otherSymbol}</a> Price: $${formatMoney(underlyingPrice)} Market Cap: $${formatMoney(marketCap)} ${dexguruTokenlink}`);
     _print(`Staked in Pool: ${reservesB} [${otherSymbol}] ($${formatMoney(TV_Other)})`);
