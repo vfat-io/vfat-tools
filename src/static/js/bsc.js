@@ -324,7 +324,8 @@ const main = async() => {
       ["FarmHero            ", `<a href="farmhero"      >Various</a>`,"FARMHERO      ","https://farmhero.io"],
       ["Galaxy              ", `<a href="galaxy"        >Various</a>`,"GLX           ","https://galaxydefi.finance"],
       ["Siberian            ", `<a href="siberian"      >Various</a>`,"SIBERIAN      ","https://siberianswap.finance"],
-      ["AnoSwap             ", `<a href="ano"           >Various</a>`,"ANO           ","https://www.anoswap.finance"]
+      ["AnoSwap             ", `<a href="ano"           >Various</a>`,"ANO           ","https://www.anoswap.finance"],
+      ["Marmelade           ", `<a href="marmelade"     >Various</a>`,"MARMEL        ","https://marmelade.finance"]
     ]
   }
 
