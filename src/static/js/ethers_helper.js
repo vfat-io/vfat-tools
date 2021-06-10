@@ -1903,7 +1903,10 @@ function getErc20Prices(prices, pool, chain="eth") {
     const network = window.location.pathname.split("/")[1]
     let dexguruTokenlink = '';
     if (network.toLowerCase() === 'bsc' || network.toLowerCase() === 'eth' || network.toLowerCase() === 'polygon') {
-      dexguruTokenlink =   `<a href='https://dex.guru/token/${pool.address.toLowerCase()}-${chain}' rel='noopener' target='_blank'>TradingView Chart</a>`;
+      dexguruTokenlink =   `<a href='https://dex.guru/token/${pool.address.toLowerCase()}-${network.toLowerCase()}' rel='noopener' target='_blank'>TradingView Chart</a>`;
+    }
+    if (chain.toLowerCase() === 'bsc' || chain.toLowerCase() === 'eth' || chain.toLowerCase() === 'polygon') {
+      dexguruTokenlink =   `<a href='https://dex.guru/token/${pool.address.toLowerCase()}-${chain.toLowerCase()}' rel='noopener' target='_blank'>TradingView Chart</a>`;
     }
       return dexguruTokenlink 
   }
@@ -1948,7 +1951,10 @@ function getCurvePrices(prices, pool) {
     const network = window.location.pathname.split("/")[1]
     let dexguruTokenlink = '';
     if (network.toLowerCase() === 'bsc' || network.toLowerCase() === 'eth' || network.toLowerCase() === 'polygon') {
-      dexguruTokenlink =   `<a href='https://dex.guru/token/${pool.address.toLowerCase()}-${chain}' rel='noopener' target='_blank'>TradingView Chart</a>`;
+      dexguruTokenlink =   `<a href='https://dex.guru/token/${pool.address.toLowerCase()}-${network.toLowerCase()}' rel='noopener' target='_blank'>TradingView Chart</a>`;
+    }
+    if (chain.toLowerCase() === 'bsc' || chain.toLowerCase() === 'eth' || chain.toLowerCase() === 'polygon') {
+      dexguruTokenlink =   `<a href='https://dex.guru/token/${pool.address.toLowerCase()}-${chain.toLowerCase()}' rel='noopener' target='_blank'>TradingView Chart</a>`;
     }
       return dexguruTokenlink 
   }
