@@ -221,7 +221,7 @@ const unstakeTAO = async function() {
   const amountTaoWeek = ((userStakingBalance) * (weekRate / 100)).toFixed(4);
   const amountTaoYear = ((userStakingBalance) * (stakingAPY / 100)).toFixed(4);
   const dexguruTokenlink = `<a href='https://dex.guru/token/${TAO_ADDR.toLowerCase()}-bsc' noopener noreferrer target='_blank'>TradingView Chart</a>`;
-  _print(`<a href='https://bscscan.com/address/${TAO_ADDR}' target='_blank'>${rewardTokenTicker}</a> Price: $${formatMoney(rewardPrice)} Circulating Market Cap: $${formatMoney(rewardPrice*taoCircSupply)} ${dexguruTokenlink}`);
+  _print(`<a href='https://bscscan.com/address/${TAO_ADDR}' target='_blank'>${rewardTokenTicker}</a> Price: $${formatMoney(rewardPrice)} Circulating Market Cap: $${formatMoney(rewardPrice*taoCircSupply)} ${dexguruTokenlink()}`);
   _print(`Staked: ${parseFloat(totalStakingBalance.toString()).toFixed(4)} ${rewardTokenTicker} ($${formatMoney(totalStakingBalance*rewardPrice)})`) 
   _print(`You are staking ${parseFloat(userStakingBalance.toString()).toFixed(4)} ${rewardTokenTicker} ($${formatMoney(usdTaoStaking)})`)
   _print(`APY: Day ${apyDay}% (${amountTaoDay} TAO) Week ${apyWeek}% (${amountTaoWeek} TAO) Year ${apyYear}% (${amountTaoYear} TAO)`)
