@@ -1391,7 +1391,7 @@ async function main() {
     _print("Reading smart contracts...\n");
 
     const prices = await getMaticPrices();
-    
+
     await loadFarmDetails(App, farm_addresses[0], pool_addresses[1], base_tokens_addresses[0], 0, BASE_ERC20_ABI, FARM_ABI, 6, prices);
     let GFIprice = await loadFarmDetails(App, farm_addresses[1], pool_addresses[1], base_tokens_addresses[0], base_tokens_addresses[1], BASE_ERC20_ABI, FARM_ABI, 6, prices);
     await loadFarmDetails(App, farm_addresses[2], pool_addresses[2], base_tokens_addresses[0], base_tokens_addresses[2], BASE_ERC20_ABI, FARM_ABI, 18, prices);
@@ -1436,7 +1436,7 @@ async function loadFarmDetails(App, farmAddress, poolAddress, aTokenAddress, bTo
         GFIprice = reservesB / reservesA;
         let poolTVL = (reservesB + (reservesA * GFIprice)) * underlyingPrice;
         let LPprice = 10**18 * poolTVL / await LP_TOKEN.totalSupply();
-        let farmTVL = 10**18 * poolTVL * LPStakedinFarm / await LP_TOKEN.totalSupply(); 
+        let farmTVL = 10**18 * poolTVL * LPStakedinFarm / await LP_TOKEN.totalSupply();
         var userLPBalance = await LP_TOKEN.balanceOf(App.YOUR_ADDRESS); //Get the amount of LP tokens in the users wallet
         let userShare = userAmount / LPStakedinFarm;
 
@@ -1536,10 +1536,10 @@ async function loadFarmOtherDetails(App, farmAddress, aTokenAddress, bTokenAddre
     let dexguruTokenlink = ''
 
     if (otherSymbol == 'LINK') {
-        dexguruTokenlink = `<a href='https://dex.guru/token/0x53e0bca35ec356bd5dddfebbd1fc0fd03fabad39-polygon' noopener noreferrer target='_blank'>TradingView Chart</a>`;
+        dexguruTokenlink = `<a href='https://dex.guru/token/0x53e0bca35ec356bd5dddfebbd1fc0fd03fabad39-polygon' noopener target='_blank'>TradingView Chart</a>`;
       }
       if (otherSymbol == "SUSHI") {
-        dexguruTokenlink = `<a href='https://dex.guru/token/0x0b3f868e0be5597d5db7feb59e1cadbb0fdda50a-polygon' noopener noreferrer target='_blank'>TradingView Chart</a>`;
+        dexguruTokenlink = `<a href='https://dex.guru/token/0x0b3f868e0be5597d5db7feb59e1cadbb0fdda50a-polygon' noopener target='_blank'>TradingView Chart</a>`;
       }
     _print_bold(`<a href='${url}' target='_blank'>${otherSymbol}</a> Price: $${formatMoney(underlyingPrice)} Market Cap: $${formatMoney(marketCap)} ${dexguruTokenlink}`);
     _print(`Staked in Pool: ${reservesB} [${otherSymbol}] ($${formatMoney(TV_Other)})`);
