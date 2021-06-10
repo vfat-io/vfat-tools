@@ -126,7 +126,8 @@ const main = async() => {
       ["Donkey                       ",`<a href="../donkey"             >Various</a>`,"DON                ","https://don-key.finance"],
       ["Wild Credit                  ",`<a href="../wild"               >Various</a>`,"WILD               ","https://wild.credit"],
       ["Convergence                  ",`<a href="../convx"              >Various</a>`,"CONV               ","https://convx.conv.finance"],
-      ["Abracadabra                  ",`<a href="../abracadabra"        >Various</a>`,"SPELL              ","https://abracadabra.money"]
+      ["Abracadabra                  ",`<a href="../abracadabra"        >Various</a>`,"SPELL              ","https://abracadabra.money"],
+      ["Universe                     ",`<a href="../universe"           >Various</a>`,"XYZ                ","https://dao.universe.xyz/yield-farming"]
     ]
   }
 

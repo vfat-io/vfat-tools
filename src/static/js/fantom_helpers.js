@@ -360,6 +360,7 @@ async function loadFantomChefContract(App, tokens, prices, chef, chefAddress, ch
   const poolCount = parseInt(await chefContract.poolLength(), 10);
   const totalAllocPoints = await chefContract.totalAllocPoint();
 
+  _print(`<a href='https://ftmscan.com/address/${chefAddress}' target='_blank'>Staking Contract</a>`);
   _print(`Found ${poolCount} pools.\n`)
 
   _print(`Showing incentivized pools only.\n`);
