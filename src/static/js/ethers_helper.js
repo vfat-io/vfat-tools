@@ -729,13 +729,13 @@ const rewardsContract_unstake = async function(rewardPoolAddr, App) {
   }
 }
 
-const rewardsContract_movetobardroom = async function(rewardPoolAddr, App) {
+const rewardsContract_movetoboardroom = async function(rewardPoolAddr, App) {
   const signer = App.provider.getSigner()
 
   const REWARD_POOL = new ethers.Contract(rewardPoolAddr, Y_STAKING_POOL_ABI, signer)
-  const currentStakedAmount = await REWARD_POOL.balanceOf(App.YOUR_ADDRESS)
+  const currentEarnedAmount = await REWARD_POOL.earned(App.YOUR_ADDRESS)
 
-  if (currentStakedAmount > 0) {
+  if (currentEarnedAmount > 0) {
     showLoading()
     REWARD_POOL.stakeInBoardroom({gasLimit: 500000})
       .then(function(t) {
@@ -1385,7 +1385,7 @@ function formatMoney(amount, decimalCount = 2, decimal = ".", thousands = ",") {
   }
 }
 
-function getUniPrices(tokens, prices, pool)
+function getUniPrices(tokens, prices, pool, chain="eth")
 {
   var t0 = getParameterCaseInsensitive(tokens,pool.token0);
   var p0 = getParameterCaseInsensitive(prices,pool.token0)?.usd;
@@ -1469,7 +1469,14 @@ function getUniPrices(tokens, prices, pool)
         else {
           const poolUrl = pool.is1inch ? "https://1inch.exchange/#/dao/pools" :
           pool.symbol.includes("LSLP") ? `https://info.linkswap.app/pair/${pool.address}` :
-            pool.symbol.includes("SLP") ?  `http://analytics.sushi.com/pairs/${pool.address}` :
+            pool.symbol.includes("SLP") ? (
+              {
+                "eth": `http://analytics.sushi.com/pairs/${pool.address}`,
+                "bsc": `http://analytics-ftm.sushi.com/pairs/${pool.address}`,
+                "fantom": `http://analytics-ftm.sushi.com/pairs/${pool.address}`,
+                "matic": `http://analytics-polygon.sushi.com/pairs/${pool.address}`,
+                "xdai": `https://analytics-xdai.sushi.com/pairs/${pool.address}`
+              }[chain]) :
               pool.symbol.includes("Cake") ?  `https://pancakeswap.info/pair/${pool.address}` :
               pool.symbol.includes("PGL") ?  `https://info.pangolin.exchange/#/pair/${pool.address}` :
               pool.symbol.includes("CS-LP") ?  `https://app.coinswap.space/#/` :
@@ -1897,13 +1904,19 @@ function getErc20Prices(prices, pool, chain="eth") {
     case "fuse":
       poolUrl=`https://explorer.fuse.io/address/${pool.address}`;
       break;
+    case "xdai":
+      poolUrl=`https://blockscout.com/xdai/mainnet/tokens/${pool.address}`;
+      break;
   }
   
   const dexguruTokenlink =  function() {
     const network = window.location.pathname.split("/")[1]
     let dexguruTokenlink = '';
     if (network.toLowerCase() === 'bsc' || network.toLowerCase() === 'eth' || network.toLowerCase() === 'polygon') {
-      dexguruTokenlink =   `<a href='https://dex.guru/token/${pool.address.toLowerCase()}-${chain}' noopener target='_blank'>TradingView Chart</a>`;
+      dexguruTokenlink =   `<a href='https://dex.guru/token/${pool.address.toLowerCase()}-${network.toLowerCase()}' rel='noopener' target='_blank'>TradingView Chart</a>`;
+    }
+    if (chain.toLowerCase() === 'bsc' || chain.toLowerCase() === 'eth' || chain.toLowerCase() === 'polygon') {
+      dexguruTokenlink =   `<a href='https://dex.guru/token/${pool.address.toLowerCase()}-${chain.toLowerCase()}' rel='noopener' target='_blank'>TradingView Chart</a>`;
     }
       return dexguruTokenlink 
   }
@@ -1948,7 +1961,10 @@ function getCurvePrices(prices, pool) {
     const network = window.location.pathname.split("/")[1]
     let dexguruTokenlink = '';
     if (network.toLowerCase() === 'bsc' || network.toLowerCase() === 'eth' || network.toLowerCase() === 'polygon') {
-      dexguruTokenlink =   `<a href='https://dex.guru/token/${pool.address.toLowerCase()}-${chain}' noopener target='_blank'>TradingView Chart</a>`;
+      dexguruTokenlink =   `<a href='https://dex.guru/token/${pool.address.toLowerCase()}-${network.toLowerCase()}' rel='noopener' target='_blank'>TradingView Chart</a>`;
+    }
+    if (chain.toLowerCase() === 'bsc' || chain.toLowerCase() === 'eth' || chain.toLowerCase() === 'polygon') {
+      dexguruTokenlink =   `<a href='https://dex.guru/token/${pool.address.toLowerCase()}-${chain.toLowerCase()}' rel='noopener' target='_blank'>TradingView Chart</a>`;
     }
       return dexguruTokenlink 
   }
