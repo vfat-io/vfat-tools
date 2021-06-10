@@ -9,6 +9,7 @@ const main = async() => {
     "heading":["Pool Provider","LP", "Reward Tokens", "INFO"],
     "rows": [
         ["Quickswap           ",`<a href="quick"           >Various</a>`,"QUICK        ","https://quickswap.exchange/#/quick"],
+        ["AppleFinance       ",`< a href=" "           >Various</ a>`,"APPLE        ","https://applefinance.io"],
         ["Cometh              ",`<a href="cometh"          >Various</a>`,"MUST         ","https://swap.cometh.io/#/stake"],
         ["Dark                ",`<a href="dark"            >Various</a>`,"DB           ","https://www.dark.build"],
         ["Smartdex            ",`<a href="smartdex"        >Various</a>`,"NIOX         ","https://swap.smartdex.app"],
