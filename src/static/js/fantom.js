@@ -103,6 +103,30 @@ const main = async() => {
         `<a href='waka'>Various</a>`,
         "WAKA",
         "https://waka.finance"
+      ],
+      [
+        "Elk *",
+        `<a href='elk'>Various</a>`,
+        "ELK",
+        "https://app.elk.finance"
+      ],
+      [
+        "Paintswap",
+        `<a href='paintswap'>Various</a>`,
+        "BRUSH",
+        "https://paintswap.finance"
+      ],
+      [
+        "Tomb",
+        `<a href='tomb'>Various</a>`,
+        "Various",
+        "https://tomb.finance"
+      ],
+      [
+        "Shadow",
+        `<a href='shadow'>Various</a>`,
+        "Various",
+        "https://shadowswap.app"
       ]
     ]
   }

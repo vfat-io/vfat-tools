@@ -57,9 +57,9 @@ const main = async() => {
       ["Sandbox                      ",`<a href="../sandbox"            >Various</a>`,"SAND               ","https://staking.sandbox.game"],
       ["Inverse                      ",`<a href="../inverse"            >Various</a>`,"INV                ","https://inverse.finance"],
       ["Badger                       ",`<a href="../badger/"            >Various</a>`,"BADGER             ","https://app.badger.finance"],
-      ["Big Data Protocol            ",`<a href="../bdp/"               >Various</a>`,"BDP,bALPHA         ","https://www.bigdataprotocol.com/datavault"],
+      ["Big Data Protocol *          ",`<a href="../bdp/"               >Various</a>`,"BDP/bALPHA/bBETA   ","https://www.bigdataprotocol.com/datavault"],
       ["Unslashed                    ",`<a href="../usf/"               >Various</a>`,"USF                ","https://app.unslashed.finance/"],
-      ["Siren                        ",`<a href="../siren/"             >Various</a>`,"SI                 ","https://sirenmarkets.com/"],
+      ["Siren *                      ",`<a href="../siren/"             >Various</a>`,"SI                 ","https://sirenmarkets.com/"],
       ["Float                        ",`<a href="../float/"             >Various</a>`,"BANK               ","https://floatprotocol.com/#/stake"],
       ["Sakeswap                     ",`<a href="../sakeswap"           >Various</a>`,"SAKE               ","https://sakeswap.finance"],
       ["Defiville                    ",`<a href="../defiville"          >Various</a>`,"ISLA               ","https://defiville.finance"],
@@ -123,7 +123,11 @@ const main = async() => {
       ["Unicly                       ",`<a href="../unicly"             >Various</a>`,"UNIC               ","https://www.app.unic.ly/#/farm"],
       ["Lever                        ",`<a href="../lever"              >Various</a>`,"LEV                ","https://lever.network"],
       ["Fuse                         ",`<a href="../fuse_eth"           >Various</a>`,"FUSE               ","https://fuse.io"],
-      ["Donkey                       ",`<a href="../donkey"             >Various</a>`,"DON                ","https://don-key.finance"]
+      ["Donkey                       ",`<a href="../donkey"             >Various</a>`,"DON                ","https://don-key.finance"],
+      ["Wild Credit                  ",`<a href="../wild"               >Various</a>`,"WILD               ","https://wild.credit"],
+      ["Convergence                  ",`<a href="../convx"              >Various</a>`,"CONV               ","https://convx.conv.finance"],
+      ["Abracadabra                  ",`<a href="../abracadabra"        >Various</a>`,"SPELL              ","https://abracadabra.money"],
+      ["Universe                     ",`<a href="../universe"           >Various</a>`,"XYZ                ","https://dao.universe.xyz/yield-farming"]
     ]
   }
 

@@ -3,7 +3,6 @@ $(function () {
 });
 
 const main = async () => {
-
     let tableData = {
         "title": "BSC Network",
         "heading": ["Pool Provider", "LP", "Reward Tokens", "INFO"],

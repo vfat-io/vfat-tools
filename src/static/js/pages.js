@@ -48,13 +48,14 @@ const main = async() => {
       ["Synthetix           ",`<a href="snx"                >Various</a>`,"SNX       ","https://staking.synthetix.io"],
       ["TrueFi              ",`<a href="truefi/"            >Various</a>`,"TRU       ","https://app.truefi.io/farm"],
       ["Typhoon Cash        ",`<a href="typhoon/"           >Various</a>`,"PHOON     ","https://typhoon.cash"],
-      ["* Unicly *          ",`<a href="unicly/"            >Various</a>`,"UNIC      ","https://www.app.unic.ly/#/farm"],
+      ["Unicly              ",`<a href="unicly/"            >Various</a>`,"UNIC      ","https://www.app.unic.ly/#/farm"],
+      ["* Universe *        ",`<a href="universe"           >Various</a>`,"XYZ       ","https://dao.universe.xyz/yield-farming"],
       ["Unslashed           ",`<a href="usf/"               >Various</a>`,"USF       ","https://app.unslashed.finance/"],
       ["Wasabix             ",`<a href="wasabix/"           >Various</a>`,"WASABI    ","https://wasabix.finance/#/app/pool"],
       ["xSigma              ",`<a href="xsigma/"            >Various</a>`,"SIG       ","https://app.xsigma.fi/stake"],
       ["xToken              ",`<a href="xtoken/"            >Various</a>`,"XTK       ","https://xtoken.cafe/app/dashboard"],
-      ["Yam                 ",`<a href="yam/"               >YAM-ETH SLP</a>`,"YAM       ","https://yam.finance/farm"],
-      ["yAxis               ",`<a href="yaxis/"             >Various</a>`,"yAxis     ","https://yaxis.io/farms"],
+      ["Yam                 ",`<a href="yam/"               >YAM-ETH SLP</a>`,"YAM   ","https://yam.finance/farm"],
+      ["yAxis               ",`<a href="yaxis/"             >Various</a>`,"yAxis     ","https://yaxis.io/farms"]
     ]
   }
 
