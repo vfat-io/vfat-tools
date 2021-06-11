@@ -330,6 +330,7 @@ const main = async() => {
       ["Pearl Defi          ", `<a href="pearl"         >Various</a>`,"PEARL         ","https://pearldefi.com"],
       ["Ant Defi            ", `<a href="antdefi"       >Various</a>`,"ANT           ","https://antdefi.io"],
       ["SafeAnt Defi        ", `<a href="safeantdefi"   >Various</a>`,"SAFEANT       ","https://antdefi.io"],
+      ["PaprPrintr          ", `<a href="paprprintr/"   >Various</a>`,"PAPR/PRNTR    ","https://paprprintr.finance"],
     ]
   }
 
