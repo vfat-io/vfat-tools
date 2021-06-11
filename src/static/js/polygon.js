@@ -85,7 +85,8 @@ const main = async() => {
         ["PolyMeme            ",`<a href="polymeme"        >Various</a>`,"MEME         ","vfat.tools/polygon/polymeme"],
         ["Harvester           ",`<a href="harvester"       >Various</a>`,"CROP         ","https://harvester.app"],
         ["Museum Of Crypto Art",`<a href="moca"            >Various</a>`,"MOCA         ","https://museumofcryptoart.com"],
-        ["Space               ",`<a href="space"           >Various</a>`,"SPACE        ","https://polygon.space-defi.com"]
+        ["Space               ",`<a href="space"           >Various</a>`,"SPACE        ","https://polygon.space-defi.com"],
+        ["Glock               ",`<a href="glock"           >Various</a>`,"GLOCK        ","https://www.glockswap.com"]
       ]
   }
 
