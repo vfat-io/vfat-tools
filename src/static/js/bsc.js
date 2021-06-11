@@ -329,6 +329,7 @@ const main = async() => {
       ["Kiyomi              ", `<a href="kiyomi"        >Various</a>`,"KYM           ","https://kiyomi.finance"],
       ["Pearl Defi          ", `<a href="pearl"         >Various</a>`,"PEARL         ","https://pearldefi.com"],
       ["Ant Defi            ", `<a href="antdefi"       >Various</a>`,"ANT           ","https://antdefi.io"],
+      ["SafeAnt Defi        ", `<a href="safeantdefi"   >Various</a>`,"SAFEANT       ","https://antdefi.io"],
     ]
   }
 
