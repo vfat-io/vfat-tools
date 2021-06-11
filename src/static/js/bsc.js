@@ -77,7 +77,7 @@ const main = async() => {
       ["Swamp               ", `<a href="swamp"         >Various</a>`,"SWAMP         ","https://swamp.finance"],
       ["Swipe               ", `<a href="swipe"         >Various</a>`,"SXP           ","https://swipe.org"],
       ["ApeSafe             ", `<a href="apesafe"       >Various</a>`,"APESAFE       ","https://apesafe.finance"],
-      ["Vlad *              ", `<a href="vlad"          >Various</a>`,"ALIFE         ","https://app.vlad.finance"],
+      ["Vlad                ", `<a href="vlad"          >Various</a>`,"ALIFE         ","https://app.vlad.finance"],
       ["Zcore               ", `<a href="zcore"         >Various</a>`,"ZEFI          ","https://finance.zcore.network"],
       ["Blizzard            ", `<a href="blizzard"      >Various</a>`,"xBLZD         ","https://blizzard.money"],
       ["Shitz               ", `<a href="shitz"         >SHITZ/BNB LP</a>`,"WBNB/ACS ","https://shitz.lol"],
