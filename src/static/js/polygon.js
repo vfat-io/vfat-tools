@@ -87,7 +87,8 @@ const main = async() => {
         ["Museum Of Crypto Art",`<a href="moca"            >Various</a>`,"MOCA         ","https://museumofcryptoart.com"],
         ["PolyPup             ",`<a href="polypup"         >Various</a>`,"PUP          ","https://polypup.finance"],
         ["Space               ",`<a href="space"           >Various</a>`,"SPACE        ","https://polygon.space-defi.com"],
-        ["Glock               ",`<a href="glock"           >Various</a>`,"GLOCK        ","https://www.glockswap.com"]
+        ["Glock               ",`<a href="glock"           >Various</a>`,"GLOCK        ","https://www.glockswap.com"],
+        ["XDollar             ",`<a href="xdollar"         >Various</a>`,"XDO          ","https://xdollar.mcn.ventures"]
       ]
   }
 
