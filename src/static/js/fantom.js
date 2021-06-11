@@ -133,6 +133,12 @@ const main = async() => {
         `<a href='borgswap'>Various</a>`,
         "KLING",
         "https://klingftm.borgswap.exchange"
+      ],
+      [
+        "Opera",
+        `<a href='opera'>Various</a>`,
+        "OPERA",
+        "https://www.operaswap.finance"
       ]
     ]
   }

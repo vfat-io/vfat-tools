@@ -331,6 +331,7 @@ const main = async() => {
       ["Ant Defi            ", `<a href="antdefi"       >Various</a>`,"ANT           ","https://antdefi.io"],
       ["SafeAnt Defi        ", `<a href="safeantdefi"   >Various</a>`,"SAFEANT       ","https://antdefi.io"],
       ["PaprPrintr          ", `<a href="paprprintr/"   >Various</a>`,"PAPR/PRNTR    ","https://paprprintr.finance"],
+      ["Andromeda           ", `<a href="andromeda"     >Various</a>`,"ADR           ","https://www.andromedadefi.com"]
     ]
   }
 
