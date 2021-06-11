@@ -84,7 +84,8 @@ const main = async() => {
         ["BerserkFinance      ",`<a href="berserkfinance"  >Various</a>`,"BRSK         ","https://berserkfinance.com"],
         ["PolyMeme            ",`<a href="polymeme"        >Various</a>`,"MEME         ","vfat.tools/polygon/polymeme"],
         ["Harvester           ",`<a href="harvester"       >Various</a>`,"CROP         ","https://harvester.app"],
-        ["Museum Of Crypto Art",`<a href="moca"            >Various</a>`,"MOCA         ","https://museumofcryptoart.com"]
+        ["Museum Of Crypto Art",`<a href="moca"            >Various</a>`,"MOCA         ","https://museumofcryptoart.com"],
+        ["XDollar             ",`<a href="xdollar"         >Various</a>`,"XDO          ","https://xdollar.mcn.ventures"]
       ]
   }
 
