@@ -328,8 +328,7 @@ const main = async() => {
       ["Marmelade           ", `<a href="marmelade"     >Various</a>`,"MARMEL        ","https://marmelade.finance"],
       ["Kiyomi              ", `<a href="kiyomi"        >Various</a>`,"KYM           ","https://kiyomi.finance"],
       ["Pearl Defi          ", `<a href="pearl"         >Various</a>`,"PEARL         ","https://pearldefi.com"],
-      ["Ant Defi            ", `<a href="antdefi"       >Various</a>`,"ANT           ","https://antdefi.io"],
-      ["SafeAnt Defi        ", `<a href="safeantdefi"   >Various</a>`,"SAFEANT       ","https://antdefi.io"],
+      ["Ant/SafeAnt Defi    ", `<a href="antdefi"       >Various</a>`,"ANT/SAFEANT   ","https://antdefi.io"],
       ["Andromeda           ", `<a href="andromeda"     >Various</a>`,"ADR           ","https://www.andromedadefi.com"]
     ]
   }
