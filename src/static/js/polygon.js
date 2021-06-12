@@ -88,7 +88,8 @@ const main = async() => {
         ["PolyPup             ",`<a href="polypup"         >Various</a>`,"PUP          ","https://polypup.finance"],
         ["Space               ",`<a href="space"           >Various</a>`,"SPACE        ","https://polygon.space-defi.com"],
         ["Glock               ",`<a href="glock"           >Various</a>`,"GLOCK        ","https://www.glockswap.com"],
-        ["XDollar             ",`<a href="xdollar"         >Various</a>`,"XDO          ","https://xdollar.mcn.ventures"]
+        ["XDollar             ",`<a href="xdollar"         >Various</a>`,"XDO          ","https://xdollar.mcn.ventures"],
+        ["8Ball               ",`<a href="8ball"           >Various</a>`,"8BALL        ","https://8ballfinance.io"]
       ]
   }
 
