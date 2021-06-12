@@ -81,6 +81,7 @@ const main = async() => {
         ["Polydeer            ",`<a href="polydeer"        >Various</a>`,"DEER         ","https://polydeer.finance"],
         ["Avengers            ",`<a href="avengers"        >Various</a>`,"SHIELD       ","https://avengers.exchange"],
         ["PolyBunny           ",`<a href="polybunny"       >Various</a>`,"BUNNY        ","https://www.polybunny.finance"],
+		["PolyCarrot          ",`<a href="polycarrot"      >Various</a>`,"CARROT       ","https://www.polycarrot.finance"],
         ["BerserkFinance      ",`<a href="berserkfinance"  >Various</a>`,"BRSK         ","https://berserkfinance.com"],
         ["PolyMeme            ",`<a href="polymeme"        >Various</a>`,"MEME         ","vfat.tools/polygon/polymeme"],
         ["Harvester           ",`<a href="harvester"       >Various</a>`,"CROP         ","https://harvester.app"],
