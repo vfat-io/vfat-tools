@@ -81,7 +81,6 @@ const main = async() => {
         ["Polydeer            ",`<a href="polydeer"        >Various</a>`,"DEER         ","https://polydeer.finance"],
         ["Avengers            ",`<a href="avengers"        >Various</a>`,"SHIELD       ","https://avengers.exchange"],
         ["PolyBunny           ",`<a href="polybunny"       >Various</a>`,"BUNNY        ","https://www.polybunny.finance"],
-		["PolyCarrot          ",`<a href="polycarrot"      >Various</a>`,"CARROT       ","https://www.polycarrot.finance"],
         ["BerserkFinance      ",`<a href="berserkfinance"  >Various</a>`,"BRSK         ","https://berserkfinance.com"],
         ["PolyMeme            ",`<a href="polymeme"        >Various</a>`,"MEME         ","vfat.tools/polygon/polymeme"],
         ["Harvester           ",`<a href="harvester"       >Various</a>`,"CROP         ","https://harvester.app"],
@@ -89,7 +88,8 @@ const main = async() => {
         ["PolyPup             ",`<a href="polypup"         >Various</a>`,"PUP          ","https://polypup.finance"],
         ["Space               ",`<a href="space"           >Various</a>`,"SPACE        ","https://polygon.space-defi.com"],
         ["Glock               ",`<a href="glock"           >Various</a>`,"GLOCK        ","https://www.glockswap.com"],
-        ["XDollar             ",`<a href="xdollar"         >Various</a>`,"XDO          ","https://xdollar.mcn.ventures"]
+        ["XDollar             ",`<a href="xdollar"         >Various</a>`,"XDO          ","https://xdollar.mcn.ventures"],
+        ["PolyCarrot          ",`<a href="polycarrot"      >Various</a>`,"CARROT       ","https://www.polycarrot.finance"]
       ]
   }
 
