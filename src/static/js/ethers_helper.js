@@ -1436,6 +1436,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
   else if (pool.symbol.includes("Field-LP")) stakeTokenTicker += " Yield Fields LP";
   else if (pool.symbol.includes("UPT")) stakeTokenTicker += " Unic Swap LP";
   else if (pool.symbol.includes("ELP")) stakeTokenTicker += " ELK LP";
+  else if (pool.symbol.includes("BenSwap")) stakeTokenTicker += " BenSwap LP";
   else stakeTokenTicker += " Uni LP";
   return {
       t0: t0,
