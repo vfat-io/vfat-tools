@@ -22,7 +22,7 @@ async function main() {
    if(currentBlock < startBlock){
      _print(`Rewards start at block ${startBlock}\n`);
    }else{
-    rewardsPerWeek = await PEARL_CHEF.kymPerBlock() /1e18
+    rewardsPerWeek = await PEARL_CHEF.pearlPerBlock() /1e18
         * 604800 / 3;
    }
 
