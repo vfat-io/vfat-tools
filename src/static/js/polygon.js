@@ -12,7 +12,7 @@ const main = async() => {
         ["Cometh              ",`<a href="cometh"          >Various</a>`,"MUST         ","https://swap.cometh.io/#/stake"],
         ["Dark                ",`<a href="dark"            >Various</a>`,"DB           ","https://www.dark.build"],
         ["Smartdex            ",`<a href="smartdex"        >Various</a>`,"NIOX         ","https://swap.smartdex.app"],
-        ["Elk *               ",`<a href="elk"             >Various</a>`,"ELK          ","https://app.elk.finance"],
+        ["Elk                 ",`<a href="elk"             >Various</a>`,"ELK          ","https://app.elk.finance"],
         ["Polywhale           ",`<a href="polywhale"       >Various</a>`,"KRILL        ","https://polywhale.finance"],
         ["Aave                ",`<a href="aave"            >Various</a>`,"MATIC        ","https://aave.com"],
         ["Polyfox             ",`<a href="polyfox"         >Various</a>`,"FOX          ","https://polyfox.finance"],
@@ -88,7 +88,9 @@ const main = async() => {
         ["PolyPup             ",`<a href="polypup"         >Various</a>`,"PUP          ","https://polypup.finance"],
         ["Space               ",`<a href="space"           >Various</a>`,"SPACE        ","https://polygon.space-defi.com"],
         ["Glock               ",`<a href="glock"           >Various</a>`,"GLOCK        ","https://www.glockswap.com"],
-        ["XDollar             ",`<a href="xdollar"         >Various</a>`,"XDO          ","https://xdollar.mcn.ventures"]
+        ["XDollar             ",`<a href="xdollar"         >Various</a>`,"XDO          ","https://xdollar.mcn.ventures"],
+        ["PolyCarrot          ",`<a href="polycarrot"      >Various</a>`,"CARROT       ","https://www.polycarrot.finance"],
+        ["8Ball               ",`<a href="8ball"           >Various</a>`,"8BALL        ","https://8ballfinance.io"]
       ]
   }
 

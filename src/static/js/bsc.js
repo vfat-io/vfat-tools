@@ -77,7 +77,7 @@ const main = async() => {
       ["Swamp               ", `<a href="swamp"         >Various</a>`,"SWAMP         ","https://swamp.finance"],
       ["Swipe               ", `<a href="swipe"         >Various</a>`,"SXP           ","https://swipe.org"],
       ["ApeSafe             ", `<a href="apesafe"       >Various</a>`,"APESAFE       ","https://apesafe.finance"],
-      ["Vlad *              ", `<a href="vlad"          >Various</a>`,"ALIFE         ","https://app.vlad.finance"],
+      ["Vlad                ", `<a href="vlad"          >Various</a>`,"ALIFE         ","https://app.vlad.finance"],
       ["Zcore               ", `<a href="zcore"         >Various</a>`,"ZEFI          ","https://finance.zcore.network"],
       ["Blizzard            ", `<a href="blizzard"      >Various</a>`,"xBLZD         ","https://blizzard.money"],
       ["Shitz               ", `<a href="shitz"         >SHITZ/BNB LP</a>`,"WBNB/ACS ","https://shitz.lol"],
@@ -328,9 +328,8 @@ const main = async() => {
       ["Marmelade           ", `<a href="marmelade"     >Various</a>`,"MARMEL        ","https://marmelade.finance"],
       ["Kiyomi              ", `<a href="kiyomi"        >Various</a>`,"KYM           ","https://kiyomi.finance"],
       ["Pearl Defi          ", `<a href="pearl"         >Various</a>`,"PEARL         ","https://pearldefi.com"],
-      ["Ant Defi            ", `<a href="antdefi"       >Various</a>`,"ANT           ","https://antdefi.io"],
-      ["SafeAnt Defi        ", `<a href="safeantdefi"   >Various</a>`,"SAFEANT       ","https://antdefi.io"],
       ["PaprPrintr          ", `<a href="paprprintr/"   >Various</a>`,"PAPR/PRNTR    ","https://paprprintr.finance"],
+      ["Ant/SafeAnt Defi    ", `<a href="antdefi"       >Various</a>`,"ANT/SAFEANT   ","https://antdefi.io"],
       ["Andromeda           ", `<a href="andromeda"     >Various</a>`,"ADR           ","https://www.andromedadefi.com"]
     ]
   }
