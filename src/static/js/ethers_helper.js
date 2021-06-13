@@ -1568,9 +1568,9 @@ function getUniPrices(tokens, prices, pool, chain="eth")
           ] :
           pool.symbol.includes("BenSwap") ? ({
             "bsc": [
-              `https://dex.benswap.finance/add/${t0address}/${t1address}`,
-              `https://dex.benswap.finance/remove/${t0address}/${t1address}`,
-              `https://dex.benswap.finance/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+              `https://dex.benswap.finance/#/add/${t0address}/${t1address}`,
+              `https://dex.benswap.finance/#/remove/${t0address}/${t1address}`,
+              `https://dex.benswap.finance/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
             ]
           }[chain]) :
           chain=='matic'? [
@@ -1628,10 +1628,9 @@ function getUniPrices(tokens, prices, pool, chain="eth")
                     pool.symbol.includes("CS-LP") ?  `https://app.coinswap.space/#/` :
                       pool.name.includes("Value LP") ?  `https://info.vswap.fi/pool/${pool.address}` :
                         pool.name.includes("BLP") ?  `https://info.bakeryswap.org/#/pair/${pool.address}` :
-                          pool.symbol.includes("BenSwap") ?  (
-                            {
-                              "bsc": `https://info.benswap.finance/pair/${pool.address}`
-                            }[chain]) :
+                          pool.symbol.includes("BenSwap") ? ({
+                            "bsc": `https://info.benswap.finance/pair/${pool.address}`
+                          }[chain]) :
                             chain == "matic" ? `https://info.quickswap.exchange/pair/${pool.address}` :
                               `http://uniswap.info/pair/${pool.address}`;
           const helperUrls = pool.is1inch ? [] :
@@ -1670,14 +1669,21 @@ function getUniPrices(tokens, prices, pool, chain="eth")
                             `https://app.sushi.com/remove/${t0address}/${t1address}`,
                             `https://app.sushi.com/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
                           ] :
-                          t0.symbol.includes("COMFI") ? [
-                              `https://app.uniswap.org/#/add/v2/${t0address}/${t1address}`,
-                              `https://app.uniswap.org/#/remove/v2/${t0address}/${t1address}`,
-                              `https://app.uniswap.org/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
-                            ] :
-                            [ `https://app.uniswap.org/#/add/${t0address}/${t1address}`,
-                              `https://app.uniswap.org/#/remove/${t0address}/${t1address}`,
-                              `https://app.uniswap.org/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}` ]
+                          pool.symbol.includes("BenSwap") ? ({
+                            "bsc": [
+                              `https://dex.benswap.finance/#/add/${t0address}/${t1address}`,
+                              `https://dex.benswap.finance/#/remove/${t0address}/${t1address}`,
+                              `https://dex.benswap.finance/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+                            ]
+                          }[chain]) :
+                            t0.symbol.includes("COMFI") ? [
+                                `https://app.uniswap.org/#/add/v2/${t0address}/${t1address}`,
+                                `https://app.uniswap.org/#/remove/v2/${t0address}/${t1address}`,
+                                `https://app.uniswap.org/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+                              ] :
+                              [ `https://app.uniswap.org/#/add/${t0address}/${t1address}`,
+                                `https://app.uniswap.org/#/remove/${t0address}/${t1address}`,
+                                `https://app.uniswap.org/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}` ]
 
           return {
             pair_link: `<a href='${poolUrl}' target='_blank'>${stakeTokenTicker}</a>`,
