@@ -91,7 +91,8 @@ const main = async() => {
         ["XDollar             ",`<a href="xdollar"         >Various</a>`,"XDO          ","https://xdollar.mcn.ventures"],
         ["PolyCarrot          ",`<a href="polycarrot"      >Various</a>`,"CARROT       ","https://www.polycarrot.finance"],
         ["8Ball               ",`<a href="8ball"           >Various</a>`,"8BALL        ","https://8ballfinance.io"],
-        ["PolyZero            ",`<a href="polyzero"        >Various</a>`,"ZERO         ",""]
+        ["PolyZero            ",`<a href="polyzero"        >Various</a>`,"ZERO         ",""],
+        ["PolyMax             ",`<a href="polymax"         >Various</a>`,"MAX          ","https://polymax.club"]
       ]
   }
 
