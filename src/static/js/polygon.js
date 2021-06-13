@@ -81,8 +81,7 @@ const main = async() => {
         ["Polydeer           ",`<a href="polydeer"        >Various</a>`,"DEER         ","https://polydeer.finance"],
         ["Avengers           ",`<a href="avengers"        >Various</a>`,"SHIELD       ","https://avengers.exchange"],
         ["PolyBunny          ",`<a href="polybunny"       >Various</a>`,"BUNNY        ","https://www.polybunny.finance"],
-        ["PolySnowFarm       ",`<a href="polysnowfarm"    >Various</a>`,"SNOW         ","https://polysnow.farm"]
-
+        ["PolySnowFarm       ",`<a href="polysnowfarm"    >Various</a>`,"SNOW         ","https://polysnow.farm"],
       ]
   }
 
