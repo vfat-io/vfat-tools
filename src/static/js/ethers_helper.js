@@ -1437,6 +1437,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
   else if (pool.symbol.includes("UPT")) stakeTokenTicker += " Unic Swap LP";
   else if (pool.symbol.includes("ELP")) stakeTokenTicker += " ELK LP";
   else if (pool.symbol.includes("BenSwap")) stakeTokenTicker += " BenSwap LP";
+  else if (pool.symbol.includes("BRUSH-LP")) stakeTokenTicker += " BRUSH LP";
   else stakeTokenTicker += " Uni LP";
   return {
       t0: t0,
@@ -1486,6 +1487,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
               pool.symbol.includes("spLP") ?  `https://info.spookyswap.finance/pair/${pool.address}` :
               pool.symbol.includes("Lv1") ?  `https://info.steakhouse.finance/pair/${pool.address}` :
               pool.symbol.includes("ELP") ?  `https://app.elk.finance/#/swap` :
+              pool.symbol.includes("BRUSH-LP") ?  `https://paintswap.finance` :
               pool.symbol.includes("PLP") ?  `https://exchange.pureswap.finance/#/swap` :
               pool.symbol.includes("BLP") ?  `https://info.bakeryswap.org/#/pair/${pool.address}` :
               pool.symbol.includes("Field-LP") ?  `https://exchange.yieldfields.finance/#/swap` :
@@ -1565,6 +1567,11 @@ function getUniPrices(tokens, prices, pool, chain="eth")
             `https://www.app.unic.ly/#/add/${t0address}/${t1address}`,
             `https://www.app.unic.ly/#/remove/${t0address}/${t1address}`,
             `https://www.app.unic.ly/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+          ] :
+          pool.symbol.includes("BRUSH-LP") ? [
+            `https://exchange.paintswap.finance/#/add/${t0address}/${t1address}`,
+            `https://exchange.paintswap.finance/#/remove/${t0address}/${t1address}`,
+            `https://exchange.paintswap.finance/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
           ] :
           pool.symbol.includes("BenSwap") ? ({
             "bsc": [
