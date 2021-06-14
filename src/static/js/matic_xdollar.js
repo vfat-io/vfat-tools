@@ -58,7 +58,7 @@ async function main() {
   let p1 = await loadXdoPools(App, tokens, prices, [xdoPool]);
   _print_bold(`Total staked: $${formatMoney(p.staked_tvl + p0.staked_tvl + p1.staked_tvl)}`);
   if (p.totalUserStaked > 0 || p0.totalUserStaked > 0 || p1.totalUserStaked > 0) {
-    _print(`You are staking a total of $${formatMoney(p.totalUserStaked + p0.totalUserStaked + p1.totalUserStaked)} at an APR of ${(p.totalAPR+p0.totalAPR * 100).toFixed(2)}%\n`);
+    _print(`You are staking a total of $${formatMoney(p.totalUserStaked + p0.totalUserStaked + p1.totalUserStaked)} at an APR of ${((p.totalUserStaked * p.totalAPR + p0.totalUserStaked * p0.totalAPR) / (p.totalUserStaked+p0.totalUserStaked) * 100).toFixed(2)}%\n`);
   }
 
   hideLoading();
