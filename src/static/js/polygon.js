@@ -95,7 +95,8 @@ const main = async() => {
         ["PolyVertex          ",`<a href="polyvertex"      >Various</a>`,"VERT         ","https://polyvertex.finance"],
         ["PolyZero            ",`<a href="polyzero"        >Various</a>`,"ZERO         ",""],
         ["PolyMax             ",`<a href="polymax"         >Various</a>`,"MAX          ","https://polymax.club"],
-        ["PolySnowFarm        ",`<a href="polysnowfarm"    >Various</a>`,"SNOW         ","https://polysnow.farm"]
+        ["PolySnowFarm        ",`<a href="polysnowfarm"    >Various</a>`,"SNOW         ","https://polysnow.farm"],
+        ["Polyyeld            ",`<a href="polyyeld"        >Various</a>`,"YELD         ","https://polyyeld.finance"]
       ]
   }
 
