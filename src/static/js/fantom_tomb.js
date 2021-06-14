@@ -6,31 +6,50 @@ $(function() {
   const TSHARE_REWARD_POOL_ABI = [{"inputs":[{"internalType":"address","name":"_tshare","type":"address"},{"internalType":"uint256","name":"_poolStartTime","type":"uint256"}],"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":true,"internalType":"uint256","name":"pid","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"Deposit","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":true,"internalType":"uint256","name":"pid","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"EmergencyWithdraw","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"RewardPaid","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":true,"internalType":"uint256","name":"pid","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"Withdraw","type":"event"},{"inputs":[],"name":"TOTAL_REWARDS","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"operator","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"poolEndTime","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"","type":"uint256"}],"name":"poolInfo","outputs":[{"internalType":"contractIERC20","name":"token","type":"address"},{"internalType":"uint256","name":"allocPoint","type":"uint256"},{"internalType":"uint256","name":"lastRewardTime","type":"uint256"},{"internalType":"uint256","name":"accTSharePerShare","type":"uint256"},{"internalType":"bool","name":"isStarted","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"poolStartTime","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"runningTime","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"tSharePerSecond","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"totalAllocPoint","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"tshare","outputs":[{"internalType":"contractIERC20","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"","type":"uint256"},{"internalType":"address","name":"","type":"address"}],"name":"userInfo","outputs":[{"internalType":"uint256","name":"amount","type":"uint256"},{"internalType":"uint256","name":"rewardDebt","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"_allocPoint","type":"uint256"},{"internalType":"contractIERC20","name":"_token","type":"address"},{"internalType":"bool","name":"_withUpdate","type":"bool"},{"internalType":"uint256","name":"_lastRewardTime","type":"uint256"}],"name":"add","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_pid","type":"uint256"},{"internalType":"uint256","name":"_allocPoint","type":"uint256"}],"name":"set","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_fromTime","type":"uint256"},{"internalType":"uint256","name":"_toTime","type":"uint256"}],"name":"getGeneratedReward","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"_pid","type":"uint256"},{"internalType":"address","name":"_user","type":"address"}],"name":"pendingShare","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"massUpdatePools","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_pid","type":"uint256"}],"name":"updatePool","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_pid","type":"uint256"},{"internalType":"uint256","name":"_amount","type":"uint256"}],"name":"deposit","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_pid","type":"uint256"},{"internalType":"uint256","name":"_amount","type":"uint256"}],"name":"withdraw","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_pid","type":"uint256"}],"name":"emergencyWithdraw","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"_operator","type":"address"}],"name":"setOperator","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"contractIERC20","name":"_token","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"},{"internalType":"address","name":"to","type":"address"}],"name":"governanceRecoverUnsupported","outputs":[],"stateMutability":"nonpayable","type":"function"}]
   const TOMB_REWARD_POOL_ADDR = "0xa7b9123f4b15fE0fF01F469ff5Eab2b41296dC0E";
   const TSHARE_REWARD_POOL_ADDR = "0xcc0a87F7e7c693042a9Cc703661F5060c80ACb43";
+  const TOMB_ADDR = "0x6c021Ae822BEa943b2E66552bDe1D2696a53fbB7";
   
   async function main() {
       const App = await init_ethers();
   
       _print(`Initialized ${App.YOUR_ADDRESS}\n`);
       _print("Reading smart contracts...\n");
-      
+
       const tombRewardPoolContract = new ethers.Contract(TOMB_REWARD_POOL_ADDR, TOMB_REWARD_POOL_ABI, App.provider);
       const tShareRewardPoolContract = new ethers.Contract(TSHARE_REWARD_POOL_ADDR, TSHARE_REWARD_POOL_ABI, App.provider);
-      const rewardTokenTicker = "TOMB";
       const tokens = {};
       const prices = await getFantomPrices();
       const startTime0 = await tombRewardPoolContract.poolStartTime();
       const startTime1 = await tShareRewardPoolContract.poolStartTime();
       const currentTime = Date.now() / 1000
 
-      let tombRewardPool = await loadRewardPoolContract(App, tokens, prices, tombRewardPoolContract, TOMB_REWARD_POOL_ADDR, TOMB_REWARD_POOL_ABI, "TOMB",
-          "tomb", null, null, "pendingTOMB", 1, startTime0, currentTime);
-
+      const MASONRY_ADDR = "0x8764DE60236C5843D9faEB1B638fbCE962773B67";
+      const ORACLE_ADDR = "0x55530fA1B042582D5FA3C313a7e02d21Af6B82f4";
+      const rewardTokenAddress = "0x6c021Ae822BEa943b2E66552bDe1D2696a53fbB7"; //TOMB
+      const lptAddress = "0x2A651563C9d3Af67aE0388a5c8F89b867038089e"; //TSHARE-FTM-LP
+      const stakeTicker = "TSHARE";
+      const rewardTicker = "TOMB";
+      const epochsPerDay = 4;
+      const maxSupplyIncrease =await getExpansion(App);
+      const decimals = 18;
+      const ratio = 1.0;
+      const targetMantissa = 12;
+      
+      let masonry = await loadMasonry(App, prices, MASONRY_ADDR, ORACLE_ADDR,  lptAddress, rewardTokenAddress, stakeTicker,
+        rewardTicker, epochsPerDay, maxSupplyIncrease, decimals, ratio, targetMantissa)
+      
+      _print('-------------------------------------------------')
+      _print('')
+      
       let tShareRewardPool = await loadRewardPoolContract(App, tokens, prices, tShareRewardPoolContract, TSHARE_REWARD_POOL_ADDR, TSHARE_REWARD_POOL_ABI, "TSHARE",
-          "tshare", null, null, "pendingShare", 2, startTime1, currentTime);
+      "tshare", null, null, "pendingShare", 2, startTime1, currentTime);
+      
+      _print_bold("Below pools are now closed, please unstake your funds. There are no more rewards to be received.")
+      _print("")
+      let tombRewardPool = await loadRewardPoolContract(App, tokens, prices, tombRewardPoolContract, TOMB_REWARD_POOL_ADDR, TOMB_REWARD_POOL_ABI, "TOMB",
+      "tomb", null, null, "pendingTOMB", 1, startTime0, currentTime);
 
 
-
-    _print_bold(`Total Staked: $${formatMoney(tombRewardPool.totalStaked + tShareRewardPool.totalStaked)}`);
+      _print_bold(`Total Staked: $${formatMoney(tombRewardPool.totalStaked + tShareRewardPool.totalStaked)}`);
 
       hideLoading();
     }
@@ -102,6 +121,63 @@ $(function() {
         return {prices, totalUserStaked, totalStaked, averageApr}
     }
 
+  async function loadMasonry(App, prices, boardroomAddress, oracleAddress, lptAddress, rewardTokenAddress, stakeTicker, rewardTicker,
+        epochsPerDay, maxSupplyIncrease, decimals, ratio, targetMantissa) {
+      const BOARDROOM = new ethers.Contract(boardroomAddress, BOARDROOM_ABI, App.provider);
+      const ORACLE = new ethers.Contract(oracleAddress, BASIS_ORACLE_ABI, App.provider);
+      const share = await BOARDROOM.share();
+      const SHARE = new ethers.Contract(share, ERC20_ABI, App.provider);
+      const userUnstaked = await SHARE.balanceOf(App.YOUR_ADDRESS) / 1e18;
+      const sharePrice = getParameterCaseInsensitive(prices, share)?.usd;
+      const userStaked = await BOARDROOM.balanceOf(App.YOUR_ADDRESS) / 1e18;
+      const userStakedUsd = userStaked * sharePrice;
+      const totalStaked = await BOARDROOM.totalSupply() / 1e18;
+      const totalStakedUsd = totalStaked * sharePrice;
+      const userPct = userStaked / totalStaked * 100;
+      const earned = await BOARDROOM.earned(App.YOUR_ADDRESS) / 1e18;
+      _print(`Masonry`);
+      _print(`There is a total ${totalStaked.toFixed(2)} ${stakeTicker} ($${formatMoney(totalStakedUsd)}) staked in the Masonry.`)
+      _print(`You are staking ${userStaked} ${stakeTicker} ($${formatMoney(userStakedUsd)}), ${userPct.toFixed(2)}% of the pool.`);
+
+      const rewardPrice = getParameterCaseInsensitive(prices, rewardTokenAddress)?.usd;
+      const oldTimestamp = await ORACLE.blockTimestampLast();
+      const token0 = await ORACLE.token0();
+      const token1 = await ORACLE.token1();
+      let twap;
+      if (token0.toLowerCase() == rewardTokenAddress.toLowerCase()) {
+          const oldPrice0 = await ORACLE.price0CumulativeLast();
+          const [price0, , timestamp] = await getCurrentPriceAndTimestamp(App, lptAddress);
+          twap = await calculateTwap(oldPrice0, oldTimestamp, price0, timestamp, targetMantissa);
+      }
+      else if (token1.toLowerCase() == rewardTokenAddress.toLowerCase()) {
+          const oldPrice1 = await ORACLE.price1CumulativeLast();
+          const [, price1, timestamp] = await getCurrentPriceAndTimestamp(App, lptAddress);
+          twap = await calculateTwap(oldPrice1, oldTimestamp, price1, timestamp, targetMantissa);
+      }
+      if (twap > 1) {
+          const REWARD_TOKEN = new ethers.Contract(rewardTokenAddress, ERC20_ABI, App.provider);
+          const totalSupply = await REWARD_TOKEN.totalSupply() / (10 ** await REWARD_TOKEN.decimals());
+          const newTokens = totalSupply *  Math.min(twap - 1, maxSupplyIncrease)  * ratio;
+          _print(`There will be ${newTokens.toFixed(decimals)} ${rewardTicker} issued at next expansion.`);
+          const masonryReturn = newTokens * rewardPrice / totalStakedUsd * 100 * epochsPerDay;
+          _print(`Masonry APR: Day ${(masonryReturn).toFixed(2)}% Week ${(masonryReturn * 7).toFixed(2)}% Year ${(masonryReturn * 365).toFixed(2)}%`)
+      }
+
+      const approveTENDAndStake = async () => rewardsContract_stake(share, boardroomAddress, App);
+      const unstake = async () => rewardsContract_unstake(boardroomAddress, App);
+      const claim = async () => boardroom_claim(boardroomAddress, App);
+      const exit = async () =>  rewardsContract_exit(boardroomAddress, App);
+      const revoke = async () => rewardsContract_resetApprove(share, boardroomAddress, App);
+
+      _print_link(`Stake ${userUnstaked.toFixed(decimals)} ${stakeTicker}`, approveTENDAndStake)
+      _print_link(`Unstake ${userStaked.toFixed(decimals)} ${stakeTicker}`, unstake)
+      _print_link(`Claim ${earned.toFixed(decimals)} ${rewardTicker} ($${formatMoney(earned*rewardPrice)})`, claim)
+      _print_link(`Revoke (set approval to 0)`, revoke)
+      _print_link(`Exit`, exit)
+      _print(`\n`);
+
+      return { staked_tvl : totalStakedUsd };
+  }
 
     async function getTombRewardPoolInfo(app, chefContract, chefAddress, poolIndex, pendingRewardsFunction) {
       const poolInfo = await chefContract.poolInfo(poolIndex)
@@ -144,6 +220,27 @@ $(function() {
       }
     }
 
+async function getExpansion(App) {
+  const tombContract = new ethers.Contract(TOMB_ADDR, ERC20_ABI, App.provider)
+  const totalSupply = await tombContract.totalSupply()
+  if (totalSupply < 50000) {
+    return 0.045
+  } else if (totalSupply < 1000000) {
+    return 0.035
+  } else if (totalSupply < 1500000) {
+    return 0.03
+  } else if (totalSupply < 2000000) {
+    return 0.025
+  } else if (totalSupply < 5000000) {
+    return 0.02
+  } else if (totalSupply < 10000000) {
+    return 0.015
+  } else if (totalSupply < 20000000) {
+    return 0.0125
+  } else {
+    return 0.01
+  }
+}
   
 function printTombPool(App, chefAbi, chefAddr, prices, tokens, poolInfo, poolIndex, poolPrices,
                      totalAllocPoints, rewardsPerWeek, rewardTokenTicker, rewardTokenAddress,
