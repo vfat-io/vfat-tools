@@ -7,6 +7,8 @@ const XDO_STAKING_ABI = [{"anonymous":false,"inputs":[{"indexed":false,"internal
 
 const XDO_UNIPOOL_STAKING_ABI = [{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"_lqtyTokenAddress","type":"address"}],"name":"LQTYTokenAddressChanged","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"previousOwner","type":"address"},{"indexed":true,"internalType":"address","name":"newOwner","type":"address"}],"name":"OwnershipTransferred","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"reward","type":"uint256"}],"name":"RewardAdded","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"uint256","name":"reward","type":"uint256"}],"name":"RewardPaid","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"Staked","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"_uniTokenAddress","type":"address"}],"name":"UniTokenAddressChanged","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"Withdrawn","type":"event"},{"inputs":[],"name":"NAME","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"account","type":"address"}],"name":"balanceOf","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"claimReward","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"duration","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"account","type":"address"}],"name":"earned","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"isOwner","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"lastTimeRewardApplicable","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"lastUpdateTime","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"lqtyToken","outputs":[{"internalType":"contract ILQTYToken","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"owner","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"periodFinish","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"rewardPerToken","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"rewardPerTokenStored","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"rewardRate","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"rewards","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"_lqtyTokenAddress","type":"address"},{"internalType":"address","name":"_uniTokenAddress","type":"address"},{"internalType":"uint256","name":"_duration","type":"uint256"}],"name":"setParams","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"stake","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"totalSupply","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"uniToken","outputs":[{"internalType":"contract IERC20","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"userRewardPerTokenPaid","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"withdraw","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"withdrawAndClaim","outputs":[],"stateMutability":"nonpayable","type":"function"}]
 
+const XDO_STAKING_ABI2 = [{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"_activePoolAddress","type":"address"}],"name":"ActivePoolAddressSet","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"_borrowerOperationsAddress","type":"address"}],"name":"BorrowerOperationsAddressSet","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"_account","type":"address"},{"indexed":false,"internalType":"uint256","name":"_amount","type":"uint256"}],"name":"EtherSent","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"_F_ETH","type":"uint256"}],"name":"F_ETHUpdated","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"_F_LUSD","type":"uint256"}],"name":"F_LUSDUpdated","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"_lqtyTokenAddress","type":"address"}],"name":"LQTYTokenAddressSet","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"_lusdTokenAddress","type":"address"}],"name":"LUSDTokenAddressSet","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"previousOwner","type":"address"},{"indexed":true,"internalType":"address","name":"newOwner","type":"address"}],"name":"OwnershipTransferred","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"staker","type":"address"},{"indexed":false,"internalType":"uint256","name":"newStake","type":"uint256"}],"name":"StakeChanged","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"_staker","type":"address"},{"indexed":false,"internalType":"uint256","name":"_F_ETH","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"_F_LUSD","type":"uint256"}],"name":"StakerSnapshotsUpdated","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"staker","type":"address"},{"indexed":false,"internalType":"uint256","name":"LUSDGain","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"ETHGain","type":"uint256"}],"name":"StakingGainsWithdrawn","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"_totalLQTYStaked","type":"uint256"}],"name":"TotalLQTYStakedUpdated","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"_troveManager","type":"address"}],"name":"TroveManagerAddressSet","type":"event"},{"inputs":[],"name":"DECIMAL_PRECISION","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"F_ETH","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"F_LUSD","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"NAME","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"activePoolAddress","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"borrowerOperationsAddress","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"_user","type":"address"}],"name":"getPendingETHGain","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"_user","type":"address"}],"name":"getPendingLUSDGain","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"_ETHFee","type":"uint256"}],"name":"increaseF_ETH","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_LUSDFee","type":"uint256"}],"name":"increaseF_LUSD","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"isOwner","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"lqtyToken","outputs":[{"internalType":"contract ILQTYToken","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"lusdToken","outputs":[{"internalType":"contract ILUSDToken","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"owner","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"_lqtyTokenAddress","type":"address"},{"internalType":"address","name":"_lusdTokenAddress","type":"address"},{"internalType":"address","name":"_troveManagerAddress","type":"address"},{"internalType":"address","name":"_borrowerOperationsAddress","type":"address"},{"internalType":"address","name":"_activePoolAddress","type":"address"}],"name":"setAddresses","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"snapshots","outputs":[{"internalType":"uint256","name":"F_ETH_Snapshot","type":"uint256"},{"internalType":"uint256","name":"F_LUSD_Snapshot","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"_LQTYamount","type":"uint256"}],"name":"stake","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"stakes","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"totalLQTYStaked","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"troveManagerAddress","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"_LQTYamount","type":"uint256"}],"name":"unstake","outputs":[],"stateMutability":"nonpayable","type":"function"},{"stateMutability":"payable","type":"receive"}]
+
 const Addresses = [
   "0x449c42BE87Bb77533c749964fD7C3b1145Cac151"
 ]
@@ -25,6 +27,11 @@ async function main() {
     "0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270"
   ]
 
+  const rewardTokenAddresses2 = [
+    "0x3A3e7650f8B9f667dA98F236010fBf44Ee4B2975",
+    "0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270"
+  ]
+
   const pools = Addresses.map(a => { return {
     address: a,
     abi: XDO_STAKING_ABI,
@@ -39,14 +46,164 @@ async function main() {
     rewardTokenFunction: "lqtyToken"
   }
 
+  const xdoPool = {
+    address: "0x3509f19581aFEDEff07c53592bc0Ca84e4855475",
+    abi: XDO_STAKING_ABI2,
+    stakeTokenFunction: "lqtyToken",
+    rewardTokenAddresses: rewardTokenAddresses2
+  }
+
   let p0 = await loadMaticSynthetixPool(App, tokens, prices, uniPool.abi, uniPool.address, uniPool.rewardTokenFunction, uniPool.stakeTokenFunction)
-  let p = await loadXDollarSynthetixPools(App, tokens, prices, pools)
-  _print_bold(`Total staked: $${formatMoney(p.staked_tvl + p0.staked_tvl)}`);
-  if (p.totalUserStaked > 0 || p0.totalUserStaked > 0) {
-    _print(`You are staking a total of $${formatMoney(p.totalUserStaked + p0.totalUserStaked)} at an APR of ${(p.totalAPR+p0.totalAPR * 100).toFixed(2)}%\n`);
+  let p = await loadXDollarSynthetixPools(App, tokens, prices, pools);
+  let p1 = await loadXdoPools(App, tokens, prices, [xdoPool]);
+  _print_bold(`Total staked: $${formatMoney(p.staked_tvl + p0.staked_tvl + p1.staked_tvl)}`);
+  if (p.totalUserStaked > 0 || p0.totalUserStaked > 0 || p1.totalUserStaked > 0) {
+    _print(`You are staking a total of $${formatMoney(p.totalUserStaked + p0.totalUserStaked + p1.totalUserStaked)} at an APR of ${(p.totalAPR+p0.totalAPR * 100).toFixed(2)}%\n`);
   }
 
   hideLoading();
+}
+
+async function loadXdoPools(App, tokens, prices, pools, customURLs) {
+  let totalStaked  = 0, totalUserStaked = 0, individualAPRs = [];
+  const infos = await Promise.all(pools.map(p => 
+      loadXdoPoolInfo(App, tokens, prices, p.abi, p.address, p.rewardTokenAddresses, p.stakeTokenFunction)));
+  for (const i of infos.filter(i => i?.poolPrices)) {
+    let p = await printXdoPool(App, i, "matic", customURLs);
+    totalStaked += p.staked_tvl || 0;
+    totalUserStaked += p.userStaked || 0;
+    if (p.userStaked > 0) {
+      individualAPRs.push(p.userStaked * p.apr / 100);
+    }
+  }
+  let totalAPR = totalUserStaked == 0 ? 0 : individualAPRs.reduce((x,y)=>x+y, 0) / totalUserStaked;
+  return { staked_tvl : totalStaked, totalUserStaked, totalAPR };
+}
+
+async function loadXdoPoolInfo(App, tokens, prices, stakingAbi, stakingAddress, rewardTokenAddresses,
+  stakeTokenFunction) {
+    const STAKING_POOL = new ethers.Contract(stakingAddress, stakingAbi, App.provider);
+
+    if (!STAKING_POOL.callStatic[stakeTokenFunction]) {
+      console.log("Couldn't find stake function ", stakeTokenFunction);
+    }
+    const stakeTokenAddress = await STAKING_POOL.callStatic[stakeTokenFunction]();
+
+    let stakeToken = await getMaticToken(App, stakeTokenAddress, stakeTokenAddress);
+    stakeToken.staked = await STAKING_POOL.totalLQTYStaked() / 10 ** stakeToken.decimals;
+
+    var newTokenAddresses = stakeToken.tokens.filter(x =>
+      !getParameterCaseInsensitive(tokens,x));
+    for (const address of newTokenAddresses) {
+        tokens[address] = await getMaticToken(App, address, stakingAddress);
+    }
+    for(rewardTokenAddress of rewardTokenAddresses){
+      if (!getParameterCaseInsensitive(tokens, rewardTokenAddress)) {
+        tokens[rewardTokenAddress] = await getMaticToken(App, rewardTokenAddress, stakingAddress);
+      }
+    }
+    let rewardTokens = [];
+    for(rewardTokenAddress of rewardTokenAddresses){
+      const rewardToken = getParameterCaseInsensitive(tokens, rewardTokenAddress);
+      rewardTokens.push(rewardToken);
+    }
+
+    let rewardTokenTickers = [];
+    for(rewardToken of rewardTokens){
+      const rewardTokenTicker = rewardToken.symbol;
+      rewardTokenTickers.push(rewardTokenTicker);
+    }
+
+    const poolPrices = getPoolPrices(tokens, prices, stakeToken, "matic");
+
+    if (!poolPrices) 
+    {
+      console.log(`Couldn't calculate prices for pool ${stakeTokenAddress}`);
+      return null;
+    }
+
+    const stakeTokenTicker = poolPrices.stakeTokenTicker;
+
+    const stakeTokenPrice =
+        prices[stakeTokenAddress]?.usd ?? getParameterCaseInsensitive(prices, stakeTokenAddress)?.usd;
+    let rewardTokenPrices = [];
+    for(rewardTokenAddress of rewardTokenAddresses){
+      const rewardTokenPrice = getParameterCaseInsensitive(prices, rewardTokenAddress)?.usd;
+      rewardTokenPrices.push(rewardTokenPrice);
+    }
+    //const weeklyRewards = 5000000 / 54;
+  
+    //const usdPerWeek = weeklyRewards * rewardTokenPrices[0];
+
+    const staked_tvl = poolPrices.staked_tvl;
+
+    //const usersStakeInfo = await STAKING_POOL.stakes(App.YOUR_ADDRESS);
+    const userStaked = await STAKING_POOL.stakes(App.YOUR_ADDRESS) / 10 ** stakeToken.decimals;
+
+    const userUnstaked = stakeToken.unstaked;
+
+    let earnings = [];
+    const earned0 = await STAKING_POOL.getPendingLUSDGain(App.YOUR_ADDRESS) / 10 ** rewardToken.decimals;
+    const earned1 = await STAKING_POOL.getPendingETHGain(App.YOUR_ADDRESS) / 10 ** rewardToken.decimals;
+    earnings.push(earned0);
+    earnings.push(earned1);
+
+    return  {
+      stakingAddress,
+      poolPrices,
+      stakeTokenAddress,
+      rewardTokenAddresses,
+      stakeTokenTicker,
+      rewardTokenTickers,
+      stakeTokenPrice,
+      rewardTokenPrices,
+      staked_tvl,
+      userStaked,
+      userUnstaked,
+      earnings
+    }
+}
+
+async function printXdoPool(App, info, chain="eth", customURLs) {
+  info.poolPrices.print_price(chain, 4, customURLs);
+  const userStakedUsd = info.userStaked * info.stakeTokenPrice;
+  const userStakedPct = userStakedUsd / info.staked_tvl * 100;
+  _print(`You are staking ${info.userStaked.toFixed(6)} ${info.stakeTokenTicker} ` +
+         `$${formatMoney(userStakedUsd)} (${userStakedPct.toFixed(2)}% of the pool).`);
+  const approveTENDAndStake = async function() {
+    return rewardsContract_stake(info.stakeTokenAddress, info.stakingAddress, App)
+  }
+  const unstake = async function() {
+    return rewardsContract_unstake(info.stakingAddress, App)
+  }
+  const claim = async function() {
+    return rewardsContract_claim(info.stakingAddress, App)
+  }
+  const exit = async function() {
+    return rewardsContract_exit(info.stakingAddress, App)
+  }
+  const revoke = async function() {
+    return rewardsContract_resetApprove(info.stakeTokenAddress, info.stakingAddress, App)
+  }
+  _print(`<a target="_blank" href="https://explorer-mainnet.maticvigil.com/address/${info.stakingAddress}#code">Polygon Explorer</a>`);
+  if (info.stakeTokenTicker != "ETH") {
+    _print_link(`Stake ${info.userUnstaked.toFixed(6)} ${info.stakeTokenTicker}`, approveTENDAndStake)
+  }
+  else {
+    _print("Please use the official website to stake ETH.");
+  }
+  _print_link(`Unstake ${info.userStaked.toFixed(6)} ${info.stakeTokenTicker}`, unstake)
+  _print_link(`Claim ${info.earnings[0].toFixed(6)} ${info.rewardTokenTickers[0]} ($${formatMoney(info.earnings[0]*info.rewardTokenPrices[0])}) + ${info.earnings[1].toFixed(6)} ${info.rewardTokenTickers[1]} ($${formatMoney(info.earnings[1]*info.rewardTokenPrices[1])})`, claim)
+  if (info.stakeTokenTicker != "ETH") {
+    _print_link(`Revoke (set approval to 0)`, revoke)
+  }
+  _print_link(`Exit`, exit)
+  _print("");
+
+  return {
+    staked_tvl: info.poolPrices.staked_tvl,
+    userStaked : userStakedUsd
+}
 }
 
 async function loadXDollarSynthetixPools(App, tokens, prices, pools, customURLs) {
