@@ -332,7 +332,8 @@ const main = async() => {
       ["PaprPrintr          ", `<a href="paprprintr/"   >Various</a>`,"PAPR/PRNTR    ","https://paprprintr.finance"],
       ["Ant/SafeAnt Defi    ", `<a href="antdefi"       >Various</a>`,"ANT/SAFEANT   ","https://antdefi.io"],
       ["Andromeda           ", `<a href="andromeda"     >Various</a>`,"ADR           ","https://www.andromedadefi.com"],
-      ["Thunderbird         ", `<a href="tbird"         >Various</a>`,"TBIRD         ","https://thunderbird.finance"]
+      ["Thunderbird         ", `<a href="tbird"         >Various</a>`,"TBIRD         ","https://thunderbird.finance"],
+      ["Elephant            ", `<a href="elephant"      >Various</a>`,"ELEPHANT      ","https://app.elephantswap.finance"]
     ]}
 
   let table = new AsciiTable().fromJSON(tableData);
