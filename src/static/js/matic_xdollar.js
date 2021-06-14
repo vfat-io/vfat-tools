@@ -53,7 +53,7 @@ async function main() {
     rewardTokenAddresses: rewardTokenAddresses2
   }
 
-  let p0 = await loadMaticSynthetixPool(App, tokens, prices, uniPool.abi, uniPool.address, uniPool.rewardTokenFunction, uniPool.stakeTokenFunction)
+  let p0 = await loadMultipleMaticSynthetixPools(App, tokens, prices, [uniPool]);
   let p = await loadXDollarSynthetixPools(App, tokens, prices, pools);
   let p1 = await loadXdoPools(App, tokens, prices, [xdoPool]);
   _print_bold(`Total staked: $${formatMoney(p.staked_tvl + p0.staked_tvl + p1.staked_tvl)}`);
