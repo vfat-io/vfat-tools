@@ -326,10 +326,10 @@ async function printXDollarPool(App, info, chain="eth", customURLs) {
         const userWeeklyRewards = userStakedPct * info.weeklyRewards / 100;
         const userDailyRewards = userWeeklyRewards / 7;
         const userYearlyRewards = userWeeklyRewards * 52;
-        _print(`Estimated ${info.rewardTokenTicker} earnings:`
-            + ` Day ${userDailyRewards.toFixed(2)} ($${formatMoney(userDailyRewards*info.rewardTokenPrice)})`
-            + ` Week ${userWeeklyRewards.toFixed(2)} ($${formatMoney(userWeeklyRewards*info.rewardTokenPrice)})`
-            + ` Year ${userYearlyRewards.toFixed(2)} ($${formatMoney(userYearlyRewards*info.rewardTokenPrice)})`);
+        _print(`Estimated ${info.rewardTokenTickers[0]} earnings:`
+            + ` Day ${userDailyRewards.toFixed(2)} ($${formatMoney(userDailyRewards*info.rewardTokenPrices[0])})`
+            + ` Week ${userWeeklyRewards.toFixed(2)} ($${formatMoney(userWeeklyRewards*info.rewardTokenPrices[0])})`
+            + ` Year ${userYearlyRewards.toFixed(2)} ($${formatMoney(userYearlyRewards*info.rewardTokenPrices[0])})`);
     }
   const approveTENDAndStake = async function() {
     return rewardsContract_stake(info.stakeTokenAddress, info.stakingAddress, App)
