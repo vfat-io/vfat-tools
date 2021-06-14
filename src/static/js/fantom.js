@@ -139,6 +139,12 @@ const main = async() => {
         `<a href='opera'>Various</a>`,
         "OPERA",
         "https://www.operaswap.finance"
+      ],
+      [
+        "Chad",
+        `<a href='chad'>Various</a>`,
+        "CHAD",
+        "N/A"
       ]
     ]
   }
