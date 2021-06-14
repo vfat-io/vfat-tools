@@ -322,6 +322,7 @@ const main = async() => {
       ["Espresso Latte      ", `<a href="espresso_latte">Various</a>`,"ESPRESSO      ","https://espresso.latteswap.finance"],
       ["Chipshop            ", `<a href="chipshop"      >Various</a>`,"Various       ","https://chipshop.finance"],
       ["FarmHero            ", `<a href="farmhero"      >Various</a>`,"FARMHERO      ","https://farmhero.io"],
+      ["VENOM               ", `<a href="venom"         >Various</a>`,"VENOM         ","https://venomswap.net"],
       ["Galaxy              ", `<a href="galaxy"        >Various</a>`,"GLX           ","https://galaxydefi.finance"],
       ["Siberian            ", `<a href="siberian"      >Various</a>`,"SIBERIAN      ","https://siberianswap.finance"],
       ["AnoSwap             ", `<a href="ano"           >Various</a>`,"ANO           ","https://www.anoswap.finance"],
@@ -332,7 +333,6 @@ const main = async() => {
       ["Ant/SafeAnt Defi    ", `<a href="antdefi"       >Various</a>`,"ANT/SAFEANT   ","https://antdefi.io"],
       ["Andromeda           ", `<a href="andromeda"     >Various</a>`,"ADR           ","https://www.andromedadefi.com"],
       ["Thunderbird         ", `<a href="tbird"         >Various</a>`,"TBIRD         ","https://thunderbird.finance"]
-    ]
   }
 
   let table = new AsciiTable().fromJSON(tableData);
