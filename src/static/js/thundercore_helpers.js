@@ -14,3 +14,31 @@ async function getTTPrices() {
   return prices;
 }
 
+async function geterc20(App, token, address, stakingAddress) {
+  if (address == "0x0000000000000000000000000000000000000000") {
+    return {
+      address,
+      name : "Thunder Token",
+      symbol : "TT",
+      totalSupply: 1e8,
+      decimals: 18,
+      staked: 0,
+      unstaked: 0,
+      contract: null,
+      tokens:[address]
+    }
+  }
+  const decimals = await token.decimals()
+  return {
+      address,
+      name : await token.name(),
+      symbol : await token.symbol(),
+      totalSupply : await token.totalSupply(),
+      decimals : decimals,
+      staked:  await token.balanceOf(stakingAddress) / 10 ** decimals,
+      unstaked: await token.balanceOf(App.YOUR_ADDRESS)  / 10 ** decimals,
+      contract: token,
+      tokens : [address]
+  };
+}
+

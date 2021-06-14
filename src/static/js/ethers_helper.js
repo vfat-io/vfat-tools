@@ -1436,6 +1436,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
   else if (pool.symbol.includes("Field-LP")) stakeTokenTicker += " Yield Fields LP";
   else if (pool.symbol.includes("UPT")) stakeTokenTicker += " Unic Swap LP";
   else if (pool.symbol.includes("ELP")) stakeTokenTicker += " ELK LP";
+  else if (pool.symbol.includes("BenSwap")) stakeTokenTicker += " BenSwap LP";
   else stakeTokenTicker += " Uni LP";
   return {
       t0: t0,
@@ -1489,6 +1490,9 @@ function getUniPrices(tokens, prices, pool, chain="eth")
               pool.symbol.includes("BLP") ?  `https://info.bakeryswap.org/#/pair/${pool.address}` :
               pool.symbol.includes("Field-LP") ?  `https://exchange.yieldfields.finance/#/swap` :
               pool.symbol.includes("UPT") ?  `https://www.app.unic.ly/#/discover` :
+              pool.symbol.includes("BenSwap") ? ({
+                "bsc": `https://info.benswap.finance/pair/${pool.address}`
+              }[chain]) :
               chain == "matic" ? `https://info.quickswap.exchange/pair/${pool.address}` :
             `http://uniswap.info/pair/${pool.address}`;
           const helperUrls = pool.is1inch ? [] :
@@ -1562,6 +1566,13 @@ function getUniPrices(tokens, prices, pool, chain="eth")
             `https://www.app.unic.ly/#/remove/${t0address}/${t1address}`,
             `https://www.app.unic.ly/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
           ] :
+          pool.symbol.includes("BenSwap") ? ({
+            "bsc": [
+              `https://dex.benswap.finance/#/add/${t0address}/${t1address}`,
+              `https://dex.benswap.finance/#/remove/${t0address}/${t1address}`,
+              `https://dex.benswap.finance/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+            ]
+          }[chain]) :
           chain=='matic'? [
             `https://quickswap.exchange/#/add/${t0address}/${t1address}`,
             `https://quickswap.exchange/#/remove/${t0address}/${t1address}`,
@@ -1617,8 +1628,11 @@ function getUniPrices(tokens, prices, pool, chain="eth")
                     pool.symbol.includes("CS-LP") ?  `https://app.coinswap.space/#/` :
                       pool.name.includes("Value LP") ?  `https://info.vswap.fi/pool/${pool.address}` :
                         pool.name.includes("BLP") ?  `https://info.bakeryswap.org/#/pair/${pool.address}` :
-                          chain == "matic" ? `https://info.quickswap.exchange/pair/${pool.address}` :
-                            `http://uniswap.info/pair/${pool.address}`;
+                          pool.symbol.includes("BenSwap") ? ({
+                            "bsc": `https://info.benswap.finance/pair/${pool.address}`
+                          }[chain]) :
+                            chain == "matic" ? `https://info.quickswap.exchange/pair/${pool.address}` :
+                              `http://uniswap.info/pair/${pool.address}`;
           const helperUrls = pool.is1inch ? [] :
             pool.symbol.includes("LSLP") ? [
                 `https://linkswap.app/#/add/${t0address}/${t1address}`,
@@ -1655,14 +1669,21 @@ function getUniPrices(tokens, prices, pool, chain="eth")
                             `https://app.sushi.com/remove/${t0address}/${t1address}`,
                             `https://app.sushi.com/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
                           ] :
-                          t0.symbol.includes("COMFI") ? [
-                              `https://app.uniswap.org/#/add/v2/${t0address}/${t1address}`,
-                              `https://app.uniswap.org/#/remove/v2/${t0address}/${t1address}`,
-                              `https://app.uniswap.org/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
-                            ] :
-                            [ `https://app.uniswap.org/#/add/${t0address}/${t1address}`,
-                              `https://app.uniswap.org/#/remove/${t0address}/${t1address}`,
-                              `https://app.uniswap.org/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}` ]
+                          pool.symbol.includes("BenSwap") ? ({
+                            "bsc": [
+                              `https://dex.benswap.finance/#/add/${t0address}/${t1address}`,
+                              `https://dex.benswap.finance/#/remove/${t0address}/${t1address}`,
+                              `https://dex.benswap.finance/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+                            ]
+                          }[chain]) :
+                            t0.symbol.includes("COMFI") ? [
+                                `https://app.uniswap.org/#/add/v2/${t0address}/${t1address}`,
+                                `https://app.uniswap.org/#/remove/v2/${t0address}/${t1address}`,
+                                `https://app.uniswap.org/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+                              ] :
+                              [ `https://app.uniswap.org/#/add/${t0address}/${t1address}`,
+                                `https://app.uniswap.org/#/remove/${t0address}/${t1address}`,
+                                `https://app.uniswap.org/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}` ]
 
           return {
             pair_link: `<a href='${poolUrl}' target='_blank'>${stakeTokenTicker}</a>`,

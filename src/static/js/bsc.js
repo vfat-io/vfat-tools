@@ -77,7 +77,7 @@ const main = async() => {
       ["Swamp               ", `<a href="swamp"         >Various</a>`,"SWAMP         ","https://swamp.finance"],
       ["Swipe               ", `<a href="swipe"         >Various</a>`,"SXP           ","https://swipe.org"],
       ["ApeSafe             ", `<a href="apesafe"       >Various</a>`,"APESAFE       ","https://apesafe.finance"],
-      ["Vlad                ", `<a href="vlad"          >Various</a>`,"LIFE          ","https://app.vlad.finance"],
+      ["Vlad                ", `<a href="vlad"          >Various</a>`,"ALIFE         ","https://app.vlad.finance"],
       ["Zcore               ", `<a href="zcore"         >Various</a>`,"ZEFI          ","https://finance.zcore.network"],
       ["Blizzard            ", `<a href="blizzard"      >Various</a>`,"xBLZD         ","https://blizzard.money"],
       ["Shitz               ", `<a href="shitz"         >SHITZ/BNB LP</a>`,"WBNB/ACS ","https://shitz.lol"],
@@ -162,7 +162,7 @@ const main = async() => {
       ["Pepper              ", `<a href="pepper"        >Various</a>`,"PEPR          ","https://old.pepr.finance"],
       ["Pepper v2           ", `<a href="pepper_v2"     >Various</a>`,"PEPR          ","https://app.pepr.finance"],
       ["Parthenon Alpha     ", `<a href="parthenon_alpha">Various</a>`,"ALPHA        ","https://alpha.parthenon.finance"],
-      ["Lokum *             ", `<a href="lokum"         >Various</a>`,"sLKM           ","https://lokum.finance"],
+      ["Lokum               ", `<a href="lokum"         >Various</a>`,"sLKM           ","https://lokum.finance"],
       ["Growth              ", `<a href="growth"        >Various</a>`,"WHEAT         ","https://wheat.growthdefi.com"],
       ["Neonic              ", `<a href="neonic"        >Various</a>`,"NEONIC        ","https://neonic.finance"],
       ["HyperFinance        ", `<a href="hyperfinance"  >Various</a>`,"HYFI          ","https://hyfi.pro"],
@@ -305,7 +305,7 @@ const main = async() => {
       ["TeaSwap             ", `<a href="tea"           >Various</a>`,"SUGAR         ","https://tea-swap-app.finance"],
       ["Fish                ", `<a href="fish"          >Various</a>`,"FISH          ","https://fishswap.app"],
       ["Bundledao           ", `<a href="bundledao"     >Various</a>`,"BDL           ","https://bundledao.org"],
-	    ["GuessIt             ", `<a href="guessit"       >Various</a>`,"GSSIT         ","https://guessit.app"],
+      ["GuessIt             ", `<a href="guessit"       >Various</a>`,"GSSIT         ","https://guessit.app"],
       ["Parthenon Lambda    ", `<a href="parthenon_lambda">Various</a>`,"LAMBDA      ","https://lambda.parthenon.finance"],
       ["Lazymint            ", `<a href="lazymint"      >Various</a>`,"LAZY          ","https://lazymint.finance"],
       ["Werewolf            ", `<a href="werewolf"      >Various</a>`,"WEREWOLF      ","https://werewolf.farm"],
@@ -322,9 +322,17 @@ const main = async() => {
       ["Espresso Latte      ", `<a href="espresso_latte">Various</a>`,"ESPRESSO      ","https://espresso.latteswap.finance"],
       ["Chipshop            ", `<a href="chipshop"      >Various</a>`,"Various       ","https://chipshop.finance"],
       ["FarmHero            ", `<a href="farmhero"      >Various</a>`,"FARMHERO      ","https://farmhero.io"],
-      ["Galaxy              ", `<a href="galaxy"        >Various</a>`,"GLX           ","https://galaxydefi.finance"]
-      ["VENOM               ", `<a href="venom"         >Various</a>`,"VENOM         ","https://venomswap.net"]
-    ]
+      ["VENOM               ", `<a href="venom"         >Various</a>`,"VENOM         ","https://venomswap.net"],
+      ["Galaxy              ", `<a href="galaxy"        >Various</a>`,"GLX           ","https://galaxydefi.finance"],
+      ["Siberian            ", `<a href="siberian"      >Various</a>`,"SIBERIAN      ","https://siberianswap.finance"],
+      ["AnoSwap             ", `<a href="ano"           >Various</a>`,"ANO           ","https://www.anoswap.finance"],
+      ["Marmelade           ", `<a href="marmelade"     >Various</a>`,"MARMEL        ","https://marmelade.finance"],
+      ["Kiyomi              ", `<a href="kiyomi"        >Various</a>`,"KYM           ","https://kiyomi.finance"],
+      ["Pearl Defi          ", `<a href="pearl"         >Various</a>`,"PEARL         ","https://pearldefi.com"],
+      ["PaprPrintr          ", `<a href="paprprintr/"   >Various</a>`,"PAPR/PRNTR    ","https://paprprintr.finance"],
+      ["Ant/SafeAnt Defi    ", `<a href="antdefi"       >Various</a>`,"ANT/SAFEANT   ","https://antdefi.io"],
+      ["Andromeda           ", `<a href="andromeda"     >Various</a>`,"ADR           ","https://www.andromedadefi.com"],
+      ["Thunderbird         ", `<a href="tbird"         >Various</a>`,"TBIRD         ","https://thunderbird.finance"]
   }
 
   let table = new AsciiTable().fromJSON(tableData);
