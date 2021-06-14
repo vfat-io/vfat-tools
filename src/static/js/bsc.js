@@ -333,7 +333,7 @@ const main = async() => {
       ["Ant/SafeAnt Defi    ", `<a href="antdefi"       >Various</a>`,"ANT/SAFEANT   ","https://antdefi.io"],
       ["Andromeda           ", `<a href="andromeda"     >Various</a>`,"ADR           ","https://www.andromedadefi.com"],
       ["Thunderbird         ", `<a href="tbird"         >Various</a>`,"TBIRD         ","https://thunderbird.finance"]
-  }
+    ]}
 
   let table = new AsciiTable().fromJSON(tableData);
   document.getElementById('log').innerHTML += table + '<br />';
