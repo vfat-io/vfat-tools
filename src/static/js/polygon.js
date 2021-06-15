@@ -101,6 +101,7 @@ const main = async() => {
         ["Wault               ",`<a href="wault"           >Various</a>`,"WEXpoly      ","https://app.wault.finance/polygon"],
         ["PolyHarvest         ",`<a href="polyharvest"     >Various</a>`,"WHEAT        ","https://www.polyharvest.finance"],
         ["PolyWoof            ",`<a href="polywoof"        >Various</a>`,"TREAT        ","https://www.polywoof.finance"],
+        ["SafeDollar          ",`<a href="safedollar"      >Various</a>`,"SDS/SDO      ","https://app.safedollar.fi"]
       ]
   }
 
