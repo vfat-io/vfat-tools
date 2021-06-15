@@ -340,7 +340,8 @@ const main = async() => {
       ["Parthenon Mu        ", `<a href="parthenon_mu"  >Various</a>`,"MU            ","https://mu.parthenon.finance"],
       ["Qi Swap             ", `<a href="qi"            >Various</a>`,"Qi            ","https://qiswap.finance"],
       ["Dollaremon          ", `<a href="dollaremon"    >Various</a>`,"DY/4DY        ","https://money-pocket.dollaremon.fi"],
-      ["WorldSwap Brussels  ", `<a href="worldswap_bru" >Various</a>`,"BRU           ","https://brussels.worldswap.finance"]
+      ["WorldSwap Brussels  ", `<a href="worldswap_bru" >Various</a>`,"BRU           ","https://brussels.worldswap.finance"],
+      ["Cotton Farm         ", `<a href="cottonfarm"    >Various</a>`,"COTTON        ","https://cottonfarm.app"]
     ]}
 
   let table = new AsciiTable().fromJSON(tableData);
