@@ -336,7 +336,8 @@ const main = async() => {
       ["Elephant            ", `<a href="elephant"      >Various</a>`,"ELEPHANT      ","https://app.elephantswap.finance"],
       ["Bloodmoon           ", `<a href="bloodmoon"     >Various</a>`,"BLOODMOON     ","https://bloodmoon.werewolf.farm"],
       ["Blacksheep          ", `<a href="blacksheep"    >Various</a>`,"BLACKSHEEP    ","https://www.blacksheepdefi.com"],
-      ["Rice                ", `<a href="rice"          >Various</a>`,"RICE          ","https://ricefarm.fi"]
+      ["Rice                ", `<a href="rice"          >Various</a>`,"RICE          ","https://ricefarm.fi"],
+      ["Parthenon Mu        ", `<a href="parthenon_mu"  >Various</a>`,"MU            ","https://mu.parthenon.finance"]
     ]}
 
   let table = new AsciiTable().fromJSON(tableData);
