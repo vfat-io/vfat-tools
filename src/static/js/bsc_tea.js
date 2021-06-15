@@ -41,13 +41,16 @@ async function main() {
    let p1 = await loadTeaswapContract(App, tokens, prices, SUGAR_CHEF, SUGAR_CHEF_ADDR, SUGAR_CHEF_ABI, rewardTokenTicker,
         "sugar", null, rewardsPerWeek, "pendingSugar");
     
-    _print_bold(`Total Staked: $${formatMoney(p0.totalStaked+p1.totalStaked)}`);
-    if (p0.totalUserStaked > 0 || p1.totalUserStaked > 0) {
-      _print_bold(`\nYou are staking a total of $${formatMoney(p0.totalUserStaked + p1.totalUserStaked)} at an average APR of ${(p0.averageApr + p1.averageApr * 100).toFixed(2)}%`)
+    const totalStaked = p0.totalStaked+p1.totalStaked
+    const totalUserStaked = p0.totalUserStaked + p1.totalUserStaked
+    const userYearlyEarnings = p0.totalUserStaked * p0.averageApr + p1.totalUserStaked * p1.averageApr
+    _print_bold(`Total Staked: $${formatMoney(totalStaked)}`);
+    if (totalUserStaked > 0) {
+      _print_bold(`\nYou are staking a total of $${formatMoney(totalUserStaked)} at an average APR of ${(userYearlyEarnings / totalUserStaked * 100).toFixed(2)}%`)
       _print(`Estimated earnings:`
-          + ` Day $${formatMoney(p0.totalUserStaked*p0.averageApr/365 + p1.totalUserStaked*p1.averageApr/365)}`
-          + ` Week $${formatMoney(p0.totalUserStaked*p0.averageApr/52 + p1.totalUserStaked*p1.averageApr/52)}`
-          + ` Year $${formatMoney(p0.totalUserStaked*p0.averageApr + p1.totalUserStaked*p1.averageApr)}\n`);
+          + ` Day $${formatMoney(userYearlyEarnings/365)}`
+          + ` Week $${formatMoney(userYearlyEarnings/52)}`
+          + ` Year $${formatMoney(userYearlyEarnings)}\n`);
     }
 
     hideLoading();
