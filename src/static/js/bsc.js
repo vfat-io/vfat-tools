@@ -302,7 +302,7 @@ const main = async() => {
       ["Chained Farms Network (SFN1)", `<a href="chainedfarmsnetwork_sub1">Various</a>`,"SFN1          ","https://sub1.chainedfarms.network"],
       ["Prism               ", `<a href="prism"         >Various</a>`,"PRISM         ","https://bsc.prismfinance.net"],
       ["Aloe                ", `<a href="aloe"          >Various</a>`,"ALOE          ","https://aloeswap.com"],
-      ["TeaSwap             ", `<a href="tea"           >Various</a>`,"SUGAR         ","https://tea-swap-app.finance"],
+      ["TeaSwap *           ", `<a href="tea"           >Various</a>`,"SUGAR/MINT    ","https://tea-swap-app.finance"],
       ["Fish                ", `<a href="fish"          >Various</a>`,"FISH          ","https://fishswap.app"],
       ["Bundledao           ", `<a href="bundledao"     >Various</a>`,"BDL           ","https://bundledao.org"],
       ["GuessIt             ", `<a href="guessit"       >Various</a>`,"GSSIT         ","https://guessit.app"],
