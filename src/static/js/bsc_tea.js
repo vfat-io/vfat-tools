@@ -36,10 +36,83 @@ async function main() {
    const tokens = {};
    const prices = await getBscPrices();
 
-   await loadBscChefContract(App, tokens, prices, MINT_CHEF, MINT_CHEF_ADDR, MINT_CHEF_ABI, rewardMINTTokenTicker,
+   let p0 = await loadTeaswapContract(App, tokens, prices, MINT_CHEF, MINT_CHEF_ADDR, MINT_CHEF_ABI, rewardMINTTokenTicker,
         "mint", null, rewardsMINTPerWeek, "pendingMint");
-    await loadBscChefContract(App, tokens, prices, SUGAR_CHEF, SUGAR_CHEF_ADDR, SUGAR_CHEF_ABI, rewardTokenTicker,
+   let p1 = await loadTeaswapContract(App, tokens, prices, SUGAR_CHEF, SUGAR_CHEF_ADDR, SUGAR_CHEF_ABI, rewardTokenTicker,
         "sugar", null, rewardsPerWeek, "pendingSugar");
+    
+    _print_bold(`Total Staked: $${formatMoney(p0.totalStaked+p1.totalStaked)}`);
+    if (p0.totalUserStaked > 0 || p1.totalUserStaked > 0) {
+      _print_bold(`\nYou are staking a total of $${formatMoney(p0.totalUserStaked + p1.totalUserStaked)} at an average APR of ${(p0.averageApr + p1.averageApr * 100).toFixed(2)}%`)
+      _print(`Estimated earnings:`
+          + ` Day $${formatMoney(p0.totalUserStaked*p0.averageApr/365 + p1.totalUserStaked*p1.averageApr/365)}`
+          + ` Week $${formatMoney(p0.totalUserStaked*p0.averageApr/52 + p1.totalUserStaked*p1.averageApr/52)}`
+          + ` Year $${formatMoney(p0.totalUserStaked*p0.averageApr + p1.totalUserStaked*p1.averageApr)}\n`);
+    }
 
     hideLoading();
   }
+
+async function loadTeaswapContract(App, tokens, prices, chef, chefAddress, chefAbi, rewardTokenTicker,
+  rewardTokenFunction, rewardsPerBlockFunction, rewardsPerWeekFixed, pendingRewardsFunction,
+  deathPoolIndices) {
+  const chefContract = chef ?? new ethers.Contract(chefAddress, chefAbi, App.provider);
+
+  const poolCount = parseInt(await chefContract.poolLength(), 10);
+  const totalAllocPoints = await chefContract.totalAllocPoint();
+    
+  _print(`<a href='https://bscscan.com/address/${chefAddress}' target='_blank'>Staking Contract</a>`);
+  _print(`Found ${poolCount} pools.\n`)
+
+  _print(`Showing incentivized pools only.\n`);
+
+  var tokens = {};
+
+  const rewardTokenAddress = await chefContract.callStatic[rewardTokenFunction]();
+  const rewardToken = await getBscToken(App, rewardTokenAddress, chefAddress);
+  const rewardsPerWeek = rewardsPerWeekFixed ?? 
+    await chefContract.callStatic[rewardsPerBlockFunction]() 
+    / 10 ** rewardToken.decimals * 604800 / 3
+
+  const poolInfos = await Promise.all([...Array(poolCount).keys()].map(async (x) =>
+    await getBscPoolInfo(App, chefContract, chefAddress, x, pendingRewardsFunction)));
+
+  var tokenAddresses = [].concat.apply([], poolInfos.filter(x => x.poolToken).map(x => x.poolToken.tokens));
+
+  await Promise.all(tokenAddresses.map(async (address) => {
+      tokens[address] = await getBscToken(App, address, chefAddress);
+  }));
+
+  if (deathPoolIndices) {   //load prices for the deathpool assets
+    deathPoolIndices.map(i => poolInfos[i])
+                     .map(poolInfo => 
+      poolInfo.poolToken ? getPoolPrices(tokens, prices, poolInfo.poolToken, "bsc") : undefined);
+  }
+
+  const poolPrices = poolInfos.map(poolInfo => poolInfo.poolToken ? getPoolPrices(tokens, prices, poolInfo.poolToken, "bsc") : undefined);
+
+
+  _print("Finished reading smart contracts.\n");    
+
+  let aprs = []
+  for (i = 0; i < poolCount; i++) {
+    if (poolPrices[i]) {
+      const apr = printChefPool(App, chefAbi, chefAddress, prices, tokens, poolInfos[i], i, poolPrices[i],
+        totalAllocPoints, rewardsPerWeek, rewardTokenTicker, rewardTokenAddress,
+        pendingRewardsFunction, null, null, "bsc", poolInfos[i].depositFee, poolInfos[i].withdrawFee)
+      aprs.push(apr);
+    }
+  }
+  let totalUserStaked=0, totalStaked=0, averageApr=0;
+  for (const a of aprs) {
+    if (!isNaN(a.totalStakedUsd)) {
+      totalStaked += a.totalStakedUsd;
+    }
+    if (a.userStakedUsd > 0) {
+      totalUserStaked += a.userStakedUsd;
+      averageApr += a.userStakedUsd * a.yearlyAPR / 100;
+    }
+  }
+  averageApr = averageApr / totalUserStaked;
+  return { prices, totalUserStaked, totalStaked, averageApr }
+}
