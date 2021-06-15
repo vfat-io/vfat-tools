@@ -341,7 +341,7 @@ const main = async() => {
       ["Qi Swap             ", `<a href="qi"            >Various</a>`,"Qi            ","https://qiswap.finance"],
       ["Dollaremon          ", `<a href="dollaremon"    >Various</a>`,"DY/4DY        ","https://money-pocket.dollaremon.fi"],
       ["WorldSwap Brussels  ", `<a href="worldswap_bru" >Various</a>`,"BRU           ","https://brussels.worldswap.finance"],
-	  ["Cotton Farm         ", `<a href="cottonfarm"    >Various</a>`,"COTTON        ","https://cottonfarm.app"]
+      ["Cotton Farm         ", `<a href="cottonfarm"    >Various</a>`,"COTTON        ","https://cottonfarm.app"]
     ]}
 
   let table = new AsciiTable().fromJSON(tableData);
