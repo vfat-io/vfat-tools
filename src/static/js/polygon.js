@@ -18,7 +18,7 @@ const main = async() => {
         ["Polyfox             ",`<a href="polyfox"         >Various</a>`,"FOX          ","https://polyfox.finance"],
         ["Hawkdex             ",`<a href="hawk"            >Various</a>`,"HAWK         ","https://hawkdex.com"],
         ["PolyDragon          ",`<a href="polydragon"     >Various</a>`,"FIRE          ","https://polydragon.io"],
-        ["Polycat             ",`<a href="polycat"        >Various</a>`,"FISH          ","https://polycat.finance"],
+        ["Polycat *           ",`<a href="polycat"        >Various</a>`,"FISH          ","https://polycat.finance"],
         ["BoughtThe.top       ",`<a href="boughtthetop"    >Various</a>`,"BTT          ","https://farm.BoughtThe.top"],
         ["PolyStarter         ",`<a href="polystarter"     >Various</a>`,"STARTER      ","https://www.polystarter.fi"],
         ["Polyvolve           ",`<a href="polyvolve"       >Various</a>`,"SPEAR        ","https://polyvolve.finance"],
