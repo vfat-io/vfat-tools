@@ -157,11 +157,11 @@ const staked_tvl =  poolPrices.staked_tvl;
 _print_inline(`${poolIndex} - `);
 poolPrices.print_price(chain);
 const apr = printAPR(rewardTokenTicker, rewardPrice, poolRewardsPerWeek, poolPrices.stakeTokenTicker,
-  staked_tvl, userStaked, poolPrices.price, fixedDecimals);
+  staked_tvl, userStaked, poolPrices.price, 2);
 if (poolInfo.userLPStaked > 0) sp?.print_contained_price(userStaked);
 if (poolInfo.userStaked > 0) poolPrices.print_contained_price(userStaked);
 printChefContractLinks(App, chefAbi, chefAddr, poolIndex, poolInfo.address, pendingRewardsFunction,
   rewardTokenTicker, poolPrices.stakeTokenTicker, poolInfo.poolToken.unstaked,
-  poolInfo.userStaked, poolInfo.pendingRewardTokens, fixedDecimals, claimFunction, rewardPrice, chain, depositFee, withdrawFee);
+  poolInfo.userStaked, poolInfo.pendingRewardTokens, 2, claimFunction, rewardPrice, chain, depositFee, withdrawFee);
 return apr;
 }
