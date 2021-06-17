@@ -111,7 +111,8 @@ const main = async() => {
         ["PolyRocket          ",`<a href="polyrocket"      >Various</a>`,"ROCKET       ","https://www.rocketfarming.finance"],
         ["PolyComet           ",`<a href="polycomet"       >Various</a>`,"COMET        ","https://www.polycomet.com"],
         ["Koge                ",`<a href="koge"            >Various</a>`,"Various      ","https://kogefarm.io"],
-        ["Fulcrum             ",`<a href="fulcrum"         >Various</a>`,"PGOV         ","https://polygon.fulcrum.trade"]
+        ["Fulcrum             ",`<a href="fulcrum"         >Various</a>`,"PGOV         ","https://polygon.fulcrum.trade"],
+        ["Augury              ",`<a href="augury"          >Various</a>`,"OMEN         ","https://augury.finance"]
       ]
   }
 
