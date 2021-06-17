@@ -10,7 +10,7 @@ async function main() {
     _print(`Initialized ${App.YOUR_ADDRESS}\n`);
     _print("Reading smart contracts...\n");
 
-    const JAVA_CHEF_ADDR = "0xbffFB99faa302df9f1041a9Dd4d53A62FB43E679";
+    const JAVA_CHEF_ADDR = "0xde3E956138e35e99A4ba5508Ee488F993AC7c853";
     const rewardTokenTicker = "JAVA";
     const JAVA_CHEF = new ethers.Contract(JAVA_CHEF_ADDR, JAVA_CHEF_ABI, App.provider);
 
