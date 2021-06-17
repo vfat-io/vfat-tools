@@ -108,7 +108,8 @@ const main = async() => {
         ["StonkYFarm          ",`<a href="stonky"          >Various</a>`,"STONKY       ","https://stonky.farm"],
         ["Polycafe            ",`<a href="polycafe"        >Various</a>`,"JAVA         ","https://polycafe.finance"],
         ["Slowpoke            ",`<a href="slowpoke"        >Various</a>`,"SLOW         ","https://slowpoke.space"],
-        ["PolyRocket          ",`<a href="polyrocket"      >Various</a>`,"ROCKET       ","https://www.rocketfarming.finance"]
+        ["PolyRocket          ",`<a href="polyrocket"      >Various</a>`,"ROCKET       ","https://www.rocketfarming.finance"],
+        ["PolyComet           ",`<a href="polycomet"       >Various</a>`,"COMET        ","https://www.polycomet.com"]
       ]
   }
 
