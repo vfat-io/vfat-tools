@@ -8,6 +8,7 @@ const main = async() => {
     "title":"POLYGON Network",
     "heading":["Pool Provider","LP", "Reward Tokens", "INFO"],
     "rows": [
+        ["50Cent              ",`<a href="50c"             >Various</a>`,"50C/50K      ","https://50cent.network"],
         ["Quickswap           ",`<a href="quick"           >Various</a>`,"QUICK        ","https://quickswap.exchange/#/quick"],
         ["Cometh              ",`<a href="cometh"          >Various</a>`,"MUST         ","https://swap.cometh.io/#/stake"],
         ["Dark                ",`<a href="dark"            >Various</a>`,"DB           ","https://www.dark.build"],
@@ -18,7 +19,7 @@ const main = async() => {
         ["Polyfox             ",`<a href="polyfox"         >Various</a>`,"FOX          ","https://polyfox.finance"],
         ["Hawkdex             ",`<a href="hawk"            >Various</a>`,"HAWK         ","https://hawkdex.com"],
         ["PolyDragon          ",`<a href="polydragon"     >Various</a>`,"FIRE          ","https://polydragon.io"],
-        ["Polycat             ",`<a href="polycat"        >Various</a>`,"FISH          ","https://polycat.finance"],
+        ["Polycat *           ",`<a href="polycat"        >Various</a>`,"FISH          ","https://polycat.finance"],
         ["BoughtThe.top       ",`<a href="boughtthetop"    >Various</a>`,"BTT          ","https://farm.BoughtThe.top"],
         ["PolyStarter         ",`<a href="polystarter"     >Various</a>`,"STARTER      ","https://www.polystarter.fi"],
         ["Polyvolve           ",`<a href="polyvolve"       >Various</a>`,"SPEAR        ","https://polyvolve.finance"],
@@ -31,6 +32,7 @@ const main = async() => {
         ["Sushi               ",`<a href="sushi"           >Various</a>`,"SUSHI        ","https://app.sushi.com"],
         ["Mai                 ",`<a href="mai"             >Various</a>`,"Qi           ","https://www.mai.finance"],
         ["Polyshark           ",`<a href="polyshark"       >Various</a>`,"SHARK        ","https://www.polyshark.finance"],
+        ["Polyvalent          ",`<a href="polyvalent"      >Various</a>`,"ELECTRON     ","https://www.polyvalent.finance"],
         ["Polyfi              ",`<a href="polyfi"          >Various</a>`,"PolyFi       ","https://polyfi.io"],
         ["Polyape             ",`<a href="polyape"         >Various</a>`,"Ape          ","https://www.polyape.online"],
         ["Polyzap             ",`<a href="polyzap"         >Various</a>`,"PZAP         ","https://farm.polyzap.finance"],
@@ -99,6 +101,16 @@ const main = async() => {
         ["Polyyeld            ",`<a href="polyyeld"        >Various</a>`,"YELD         ","https://polyyeld.finance"],
         ["Polysa              ",`<a href="polysa"          >Various</a>`,"DUFF         ","https://www.polysa.finance"],
         ["Wault               ",`<a href="wault"           >Various</a>`,"WEXpoly      ","https://www.polysa.finance"],
+        ["PolyHarvest         ",`<a href="polyharvest"     >Various</a>`,"WHEAT        ","https://www.polyharvest.finance"],
+        ["PolyWoof            ",`<a href="polywoof"        >Various</a>`,"TREAT        ","https://www.polywoof.finance"],
+        ["SafeDollar          ",`<a href="safedollar"      >Various</a>`,"SDS/SDO      ","https://app.safedollar.fi"],
+        ["Cosmic              ",`<a href="cosmic"          >Various</a>`,"COSMIC       ","https://polygon.cosmicswap.finance"],
+        ["StonkYFarm          ",`<a href="stonky"          >Various</a>`,"STONKY       ","https://stonky.farm"],
+        ["Polycafe            ",`<a href="polycafe"        >Various</a>`,"JAVA         ","https://polycafe.finance"],
+        ["Slowpoke            ",`<a href="slowpoke"        >Various</a>`,"SLOW         ","https://slowpoke.space"],
+        ["PolyRocket          ",`<a href="polyrocket"      >Various</a>`,"ROCKET       ","https://www.rocketfarming.finance"],
+        ["PolyComet           ",`<a href="polycomet"       >Various</a>`,"COMET        ","https://www.polycomet.com"],
+        ["Koge                ",`<a href="koge"            >Various</a>`,"Various      ","https://kogefarm.io"],
         ["XBull               ",`<a href="xbull"           >Various</a>`,"XBULL        ","https://xbull.finance"]
       ]
   }

@@ -100,7 +100,7 @@ const main = async() => {
       ["Poopswap            ", `<a href="poop"          >Various</a>`,"POOP          ","https://poopswap.finance"],
       ["Mooncake            ", `<a href="mooncake"      >Various</a>`,"MCAKE         ","https://mooncakeswap.finance"],
       ["Jade                ", `<a href="jade"          >Various</a>`,"JADE          ","https://jadedefi.com"],
-      ["Eleven              ", `<a href="eleven"        >Various</a>`,"ELE           ","https://eleven.finance"],
+      ["Eleven *            ", `<a href="eleven"        >Various</a>`,"ELE           ","https://eleven.finance"],
       ["Yumcha              ", `<a href="yumcha"        >Various</a>`,"YUMCHA        ","https://yumcha.finance"],
       ["Comos               ", `<a href="comos"         >Various</a>`,"COMOS         ","https://app.comos.finance"],
       ["Pokemoon            ", `<a href="pokemoon"      >Various</a>`,"KBN           ","https://pokemoon.app"],
@@ -302,7 +302,7 @@ const main = async() => {
       ["Chained Farms Network (SFN1)", `<a href="chainedfarmsnetwork_sub1">Various</a>`,"SFN1          ","https://sub1.chainedfarms.network"],
       ["Prism               ", `<a href="prism"         >Various</a>`,"PRISM         ","https://bsc.prismfinance.net"],
       ["Aloe                ", `<a href="aloe"          >Various</a>`,"ALOE          ","https://aloeswap.com"],
-      ["TeaSwap             ", `<a href="tea"           >Various</a>`,"SUGAR         ","https://tea-swap-app.finance"],
+      ["TeaSwap *           ", `<a href="tea"           >Various</a>`,"SUGAR/MINT    ","https://tea-swap-app.finance"],
       ["Fish                ", `<a href="fish"          >Various</a>`,"FISH          ","https://fishswap.app"],
       ["Bundledao           ", `<a href="bundledao"     >Various</a>`,"BDL           ","https://bundledao.org"],
       ["GuessIt             ", `<a href="guessit"       >Various</a>`,"GSSIT         ","https://guessit.app"],
@@ -336,7 +336,15 @@ const main = async() => {
       ["Elephant            ", `<a href="elephant"      >Various</a>`,"ELEPHANT      ","https://app.elephantswap.finance"],
       ["Bloodmoon           ", `<a href="bloodmoon"     >Various</a>`,"BLOODMOON     ","https://bloodmoon.werewolf.farm"],
       ["Blacksheep          ", `<a href="blacksheep"    >Various</a>`,"BLACKSHEEP    ","https://www.blacksheepdefi.com"],
-      ["Rice                ", `<a href="rice"          >Various</a>`,"RICE          ","https://ricefarm.fi"]
+      ["Rice                ", `<a href="rice"          >Various</a>`,"RICE          ","https://ricefarm.fi"],
+      ["Parthenon Mu        ", `<a href="parthenon_mu"  >Various</a>`,"MU            ","https://mu.parthenon.finance"],
+      ["Qi Swap             ", `<a href="qi"            >Various</a>`,"Qi            ","https://qiswap.finance"],
+      ["Dollaremon          ", `<a href="dollaremon"    >Various</a>`,"DY/4DY        ","https://money-pocket.dollaremon.fi"],
+      ["WorldSwap Brussels  ", `<a href="worldswap_bru" >Various</a>`,"BRU           ","https://brussels.worldswap.finance"],
+      ["Cotton Farm         ", `<a href="cottonfarm"    >Various</a>`,"COTTON        ","https://cottonfarm.app"],
+      ["Krustykrab          ", `<a href="krustykrab"    >Various</a>`,"KP            ","https://krustykrab.finance"],
+      ["Alien               ", `<a href="alien"         >Various</a>`,"ALIEN         ","https://aliendefi.com"],
+      ["Unown               ", `<a href="unown"         >Various</a>`,"UNOWN         ","https://www.unownswap.com"]
     ]}
 
   let table = new AsciiTable().fromJSON(tableData);
