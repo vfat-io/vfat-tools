@@ -11,8 +11,8 @@ async function main() {
     _print(`Initialized ${App.YOUR_ADDRESS}\n`);
     _print("Reading smart contracts...\n");
 
-    const SNOW_CHEF_ADDR = "0xade2258698670c5933bbC6E99512AFD6eD398491";
-    const rewardTokenTicker = "SNOW";
+    const SNOW_CHEF_ADDR = "0xFf42AE1A338585316267345E6234fc7E6de15D34";
+    const rewardTokenTicker = "SN0W";
     const SNOW_CHEF = new ethers.Contract(SNOW_CHEF_ADDR, SNOW_CHEF_ABI, App.provider);
 
     const startBlock = await SNOW_CHEF.startBlock();
@@ -30,7 +30,7 @@ async function main() {
     const prices = await getMaticPrices();
 
     await loadMaticChefContract(App, tokens, prices, SNOW_CHEF, SNOW_CHEF_ADDR, SNOW_CHEF_ABI, rewardTokenTicker,
-        "snow", null, rewardsPerWeek, "pendingSnow");
+        "sn0w", null, rewardsPerWeek, "pendingSn0w");
 
     hideLoading();
 }
