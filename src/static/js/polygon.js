@@ -100,7 +100,7 @@ const main = async() => {
         ["PolySnowFarm        ",`<a href="polysnowfarm"    >Various</a>`,"SNOW         ","https://polysnow.farm"],
         ["Polyyeld            ",`<a href="polyyeld"        >Various</a>`,"YELD         ","https://polyyeld.finance"],
         ["Polysa              ",`<a href="polysa"          >Various</a>`,"DUFF         ","https://www.polysa.finance"],
-        ["Wault               ",`<a href="wault"           >Various</a>`,"WEXpoly      ","https://app.wault.finance/polygon"],
+        ["Wault               ",`<a href="wault"           >Various</a>`,"WEXpoly      ","https://www.polysa.finance"],
         ["PolyHarvest         ",`<a href="polyharvest"     >Various</a>`,"WHEAT        ","https://www.polyharvest.finance"],
         ["PolyWoof            ",`<a href="polywoof"        >Various</a>`,"TREAT        ","https://www.polywoof.finance"],
         ["SafeDollar          ",`<a href="safedollar"      >Various</a>`,"SDS/SDO      ","https://app.safedollar.fi"],
@@ -112,6 +112,7 @@ const main = async() => {
         ["PolyComet           ",`<a href="polycomet"       >Various</a>`,"COMET        ","https://www.polycomet.com"],
         ["Koge                ",`<a href="koge"            >Various</a>`,"Various      ","https://kogefarm.io"],
         ["Fulcrum             ",`<a href="fulcrum"         >Various</a>`,"PGOV         ","https://polygon.fulcrum.trade"],
+        ["XBull               ",`<a href="xbull"           >Various</a>`,"XBULL        ","https://xbull.finance"],
         ["Augury              ",`<a href="augury"          >Various</a>`,"OMEN         ","https://augury.finance"]
       ]
   }
