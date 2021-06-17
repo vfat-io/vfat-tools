@@ -32,6 +32,7 @@ const main = async() => {
         ["Sushi               ",`<a href="sushi"           >Various</a>`,"SUSHI        ","https://app.sushi.com"],
         ["Mai                 ",`<a href="mai"             >Various</a>`,"Qi           ","https://www.mai.finance"],
         ["Polyshark           ",`<a href="polyshark"       >Various</a>`,"SHARK        ","https://www.polyshark.finance"],
+        ["Polyvalent          ",`<a href="polyvalent"      >Various</a>`,"ELECTRON     ","https://www.polyvalent.finance"],
         ["Polyfi              ",`<a href="polyfi"          >Various</a>`,"PolyFi       ","https://polyfi.io"],
         ["Polyape             ",`<a href="polyape"         >Various</a>`,"Ape          ","https://www.polyape.online"],
         ["Polyzap             ",`<a href="polyzap"         >Various</a>`,"PZAP         ","https://farm.polyzap.finance"],
