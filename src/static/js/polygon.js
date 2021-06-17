@@ -104,7 +104,9 @@ const main = async() => {
         ["PolyWoof            ",`<a href="polywoof"        >Various</a>`,"TREAT        ","https://www.polywoof.finance"],
         ["SafeDollar          ",`<a href="safedollar"      >Various</a>`,"SDS/SDO      ","https://app.safedollar.fi"],
         ["Cosmic              ",`<a href="cosmic"          >Various</a>`,"COSMIC       ","https://polygon.cosmicswap.finance"],
-        ["StonkYFarm          ",`<a href="stonky"          >Various</a>`,"STONKY       ","https://stonky.farm"]
+        ["StonkYFarm          ",`<a href="stonky"          >Various</a>`,"STONKY       ","https://stonky.farm"],
+        ["Polycafe            ",`<a href="polycafe"        >Various</a>`,"JAVA         ","https://polycafe.finance"],
+        ["Slowpoke            ",`<a href="slowpoke"        >Various</a>`,"SLOW         ","https://slowpoke.space"]
       ]
   }
 
