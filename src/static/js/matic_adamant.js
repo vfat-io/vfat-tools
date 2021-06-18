@@ -7,24 +7,24 @@ const ADAMANT_VAULT_ABI = [{"type":"constructor","stateMutability":"nonpayable",
 const ADAMANT_STRATEGY_ABI = [{"inputs":[{"internalType":"address","name":"_lpPair","type":"address"},{"internalType":"uint8","name":"_poolId","type":"uint8"},{"internalType":"address","name":"_vault","type":"address"},{"internalType":"address","name":"_unirouter","type":"address"}],"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"previousOwner","type":"address"},{"indexed":true,"internalType":"address","name":"newOwner","type":"address"}],"name":"OwnershipTransferred","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"account","type":"address"}],"name":"Paused","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"harvester","type":"address"}],"name":"StratHarvest","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"account","type":"address"}],"name":"Unpaused","type":"event"},{"inputs":[],"name":"CALL_FEE","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"HYPER_FEE","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"MAX_FEE","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"WITHDRAWAL_FEE","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"WITHDRAWAL_MAX","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"alloy","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"","type":"uint256"}],"name":"alloyToLp0Route","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"","type":"uint256"}],"name":"alloyToLp1Route","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"","type":"uint256"}],"name":"alloyToWbnbRoute","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"balanceOf","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"balanceOfLpPair","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"balanceOfPool","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"deposit","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"harvest","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"hypercity","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"hyperdao","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"hypr","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"lpPair","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"lpToken0","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"lpToken1","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"owner","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"panic","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"pause","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"paused","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"poolId","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"renounceOwnership","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"retireStrat","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"newOwner","type":"address"}],"name":"transferOwnership","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"unirouter","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"unpause","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"vault","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"wbnb","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"","type":"uint256"}],"name":"wbnbToHyprRoute","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"_amount","type":"uint256"}],"name":"withdraw","outputs":[],"stateMutability":"nonpayable","type":"function"}]
 
 const Address = [
-    "0x6aa5d8ddd8ca969e4f985d53fd8a46077652f239",
-    "0x223fd0c9214e13481ee972121fa0164af9fd94ec",
-    "0x6cc7a91990a9503736daf38cc67cc44e667cda39",
-    "0x25915bd35bf3ae2a4396dfc4bc150664aeb18477",
-    "0x96ef332c950f9ec2fb5b37420887ee1e28cff1f1",
-    "0xc4a350b85ae1af071fc9d542caa6c7deabf19a24",
-    "0xf2536cfb2e8113c812b4fa670dcc95c35b5b3cdd",
-    "0xc202e09d60fb53ef023098bf6dbae941b05312f2",
-    "0x019d2b581b22ef1266136df1882684e216b354fe",
-    "0x7fba16061d1a9d30f5fa1ced211e161c7d7ff1e4",
-    "0x88f81fbb5fc676065a9e3dada597a9829109e79c",
-    "0x132d94e04c1deec2e0b0daf34a4948be89d02103",
-    "0x5778fe61a19af2ae7e0f7183b00b3ab4f160747a",
-    "0x96315d37876a576f313fa1a93994156f492f8fad",
-    "0x26026849333149fc576e8a84833e84631dec3e35",
-    "0x29316d4d0426d8a43c52f4e555e9eb5f92a51c5d",
-    "0x6c06dc0785bd6b3c1a911bf972317c93b6f82cb8",
-    "0x9c7f926d7a269921d87bca8d7d184dfa7103f58f"
+    "0x0a2ad1e60bcf5f812a2c74ec519822da36f86617",
+    /*"0x45f9fEbda01894a627cD58F69308C1200f326Df2",
+    "0x37702ce44bef87236f9cC1802481ddA66E372838",
+    "0xE519980e4D898c9e3C9e0AE8f936F8807684681F",
+    "0xb15eC9d06F0dafc9b3e4E474A91c1aa13A8cDA73",
+    "0x539f41633a450Fc22074db3aD75f43D3110346A7",
+    "0x84c77e4Ba85D981f1AFB0ea786364bE3Af352078",
+    "0x80cA65F68bFe3DD2Ee4B4481993ef91C23a5a798",
+    "0x62E774a618309C2B86DA82f78FcC09544588111E",
+    "0x5dcd84D5E3E1f3b488254eb3ACf234f0DF6e1eB1",
+    "0xfF78E0c60a214b6cC0132BFF493bF68Ac8c307d8",
+    "0xAd1ba859815bbbB9DD490A92aF292430991FE534",
+    "0x508d91e7Be1B2240E0229762a88a31b211657d1F",
+    "0xCeE91fa1DcAaf32DCdeb11A736E9B832AB2031fE",
+    "0x181c5A03a4CCd80f98411192bA6b53A4B5F50B90",
+    "0x1f50A7e0e48D9f5445Ba0292A0aCEe6240DF6294",
+    "0x5076599aFD68dB3419770fC6eFc7BFAd861C1413",
+    "0xD3E7f9247b3464Da1AC6b32F4f10af1Bab6631c8"*/
   ]
   
 async function main() {
@@ -59,8 +59,9 @@ async function main() {
       for (const address of newTokenAddresses) {
           tokens[address] = await getMaticToken(App, address, contractAddress);
       }
+      const balance = await contract.balance() / 1e18;
       const totalSupply = await contract.totalSupply() / 1e18;
-      const ppfs = await contract.getPricePerFullShare() / 1e18;
+      const ppfs = balance / totalSupply;
       const userStaked = await contract.balanceOf(App.YOUR_ADDRESS) / 1e18;
       const poolPrices = getPoolPrices(tokens, prices, vault, "matic");
       return { vault, poolPrices, userStaked, ppfs, totalSupply }

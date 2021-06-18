@@ -21,7 +21,7 @@ const main = async() => {
         "https://spookyswap.finance"
       ],
       [
-        "Spirit *",
+        "Spirit",
         `<a href='spirit'>Various</a>`,
         "SPIRIT",
         "https://app.spiritswap.finance"
@@ -33,7 +33,7 @@ const main = async() => {
         "https://ftm.borgswap.exchange"
       ],
       [
-        "Hyperjump *",
+        "Hyperjump",
         `<a href='hyperjump'>Various</a>`,
         "ORI",
         "https://hyperjump.fi"
@@ -77,9 +77,75 @@ const main = async() => {
       [
         "Mushrooms",
         `<a href='mushrooms'>Various</a>`,
-        "STRD",
+        "MM",
         "https://mushrooms.finance/farms"
       ],
+      [
+        "Greenhouse",
+        `<a href='greenhouse'>Various</a>`,
+        "SEED",
+        "https://thegreenhouse.finance"
+      ],
+      [
+        "Stake Steak",
+        `<a href='steak'>Various</a>`,
+        "STEAK",
+        "https://stakesteak.com"
+      ],
+      [
+        "Frankenstein",
+        `<a href='frankenstein'>Various</a>`,
+        "FRANK",
+        "https://frankenstein.finance"
+      ],
+      [
+        "Waka",
+        `<a href='waka'>Various</a>`,
+        "WAKA",
+        "https://waka.finance"
+      ],
+      [
+        "Elk",
+        `<a href='elk'>Various</a>`,
+        "ELK",
+        "https://app.elk.finance"
+      ],
+      [
+        "Paintswap",
+        `<a href='paintswap'>Various</a>`,
+        "BRUSH",
+        "https://paintswap.finance"
+      ],
+      [
+        "Tomb",
+        `<a href='tomb'>Various</a>`,
+        "Various",
+        "https://tomb.finance"
+      ],
+      [
+        "Shadow",
+        `<a href='shadow'>Various</a>`,
+        "Various",
+        "https://shadowswap.app"
+      ],
+      [
+        "Borgswap",
+        `<a href='borgswap'>Various</a>`,
+        "KLING",
+        "https://klingftm.borgswap.exchange"
+      ],
+      [
+        "Opera",
+        `<a href='opera'>Various</a>`,
+        "OPERA",
+        "https://www.operaswap.finance"
+      ],
+      [
+        "Chad",
+        `<a href='chad'>Various</a>`,
+        "CHAD",
+        "N/A"
+      ]
     ]
   }
 

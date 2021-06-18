@@ -149,5 +149,9 @@ const SmartdexStakingContracts =  [
   {
     //tokens: [ALOHA, NIOX],
     stakingRewardAddress: '0x317875cbe5f64f14d7e9343703cac9c1501ddb05',
+  },
+  {
+    //tokens: [PBTC, USDC],
+    stakingRewardAddress: '0xa6d04447695c38d4c687cb25330b22c840223e29',
   }
 ]

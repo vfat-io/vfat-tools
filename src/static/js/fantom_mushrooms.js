@@ -15,7 +15,7 @@ async function main() {
 
    const rewardTokenTicker = "MM";
    const MM_CHEF = new ethers.Contract(MM_CHEF_ADDR, MM_CHEF_ABI, App.provider);
-   const multiplier = await MM_CHEF.BONUS_MULTIPLIER();
+   const multiplier = 1; // await MM_CHEF.BONUS_MULTIPLIER(); //no need to read this, we have no multiplier on Fantom
 
     const rewardsPerWeek = await MM_CHEF.mmPerBlock() /1e18 * 604800 * multiplier;
 

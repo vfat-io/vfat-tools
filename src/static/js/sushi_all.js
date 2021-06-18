@@ -13,7 +13,7 @@ consoleInit(main)
     const SUSHI_CHEF = new ethers.Contract(SUSHI_CHEF_ADDR, SUSHI_CHEF_ABI, App.provider);
     const rewardsPerWeek = await SUSHI_CHEF.sushiPerBlock() / 1e18 * 604800 / 13.5;
 
-    await loadChefContract(App, SUSHI_CHEF, SUSHI_CHEF_ADDR, SUSHI_CHEF_ABI,
+    await printChefContractPoolsTable("Sushi", App, SUSHI_CHEF, SUSHI_CHEF_ADDR, SUSHI_CHEF_ABI,
         "SUSHI", "sushi", null, rewardsPerWeek, "pendingSushi", null, null, true);
 
     hideLoading();
