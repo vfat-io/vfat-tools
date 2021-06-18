@@ -198,7 +198,12 @@ async function getMaticToken(App, tokenAddress, stakingAddress) {
 async function getCurveMaticToken(app, curve, address, stakingAddress, minterAddress) {
   const minter = new ethers.Contract(minterAddress, MINTER_ABI, app.provider)
   const virtualPrice = await minter.get_virtual_price();
-  const coin0 = await minter.coins(0);
+  let coin0 = ""
+  if (minterAddress.toLowerCase() == "0x445FE580eF8d70FF569aB36e80c647af338db351".toLowerCase()) {
+    coin0 = "0x27F8D03b3a2196956ED754baDc28D73be8830A6e";
+  }else{
+    coin0 = await minter.coins(0);
+  }
   const decimals = await curve.decimals();
   const token = await getMaticToken(app, coin0, address);
   const staked = await curve.balanceOf(stakingAddress);
