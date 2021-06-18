@@ -355,7 +355,7 @@ $(function() {
   poolPrices.print_price(chain);
   sp?.print_price(chain);
   const apr = printAlcxSushiAPR(rewardPrices, alcxRewardsPerWeek, sushiRewardsPerWeek,
-    poolPrices.stakeTokenTicker, staked_tvl, userStaked, poolPrices.price, fixedDecimals);
+    poolPrices.stakeTokenTicker, staked_tvl, userStaked, poolPrices.price, fixedDecimals, rewardTokenTickers);
   if (poolInfo.userLPStaked > 0) sp?.print_contained_price(userStaked);
   if (poolInfo.userStaked > 0) poolPrices.print_contained_price(userStaked);
   printAlcxSushiContractLinks(App, chefAbi, chefAddr, poolIndex, poolInfo.address, rewardTokenTickers, 
@@ -366,21 +366,23 @@ $(function() {
 
 function printAlcxSushiAPR(rewardPrices, alcxRewardsPerWeek, sushiRewardsPerWeek,
                   stakeTokenTicker, staked_tvl, userStaked, poolTokenPrice,
-                  fixedDecimals) {
+                  fixedDecimals, rewardTokenTickers) {
   const usdAlcxPerWeek = alcxRewardsPerWeek * rewardPrices[0]
-  const usdSushPerWeek = sushiRewardsPerWeek * rewardPrices[1]
-  const totalUsdPerWeek = usdAlcxPerWeek + usdSushPerWeek
+  const usdSushiPerWeek = sushiRewardsPerWeek * rewardPrices[1]
+  const totalUsdPerWeek = usdAlcxPerWeek + usdSushiPerWeek
   fixedDecimals = fixedDecimals ?? 2;
-  _print(`Total Per Week: $${formatMoney(totalUsdPerWeek)}`);
   var weeklyAlcxAPR = usdAlcxPerWeek / staked_tvl * 100;
   var dailyAlcxAPR = weeklyAlcxAPR / 7;
   var yearlyAlcxAPR = weeklyAlcxAPR * 52;
-  var weeklySushiAPR = usdSushPerWeek / staked_tvl * 100;
+  var weeklySushiAPR = usdSushiPerWeek / staked_tvl * 100;
   var dailySushiAPR = weeklySushiAPR / 7;
   var yearlySushiAPR = weeklySushiAPR * 52;
   const totalWeeklyAPR = weeklyAlcxAPR + weeklySushiAPR
   const totalDailyAPR = dailyAlcxAPR + dailySushiAPR
   const totalYearlyAPR = yearlyAlcxAPR + yearlySushiAPR
+  _print(`${rewardTokenTickers[0]} Per Week: ${alcxRewardsPerWeek.toFixed(2)} ($${formatMoney(usdAlcxPerWeek)}) APR: Year ${yearlyAlcxAPR.toFixed(2)}%`);
+  _print(`${rewardTokenTickers[1]} Per Week: ${sushiRewardsPerWeek.toFixed(2)} ($${formatMoney(usdSushiPerWeek)}) APR: Year ${yearlySushiAPR.toFixed(2)}%`);
+  _print(`Total Per Week: $${formatMoney(totalUsdPerWeek)}`);
   _print(`Total APR: Day ${totalDailyAPR.toFixed(2)}% Week ${totalWeeklyAPR.toFixed(2)}% Year ${totalYearlyAPR.toFixed(2)}%`);
   var userStakedUsd = userStaked * poolTokenPrice;
   var userStakedPct = userStakedUsd / staked_tvl * 100;
