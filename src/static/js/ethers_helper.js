@@ -977,6 +977,33 @@ async function getUniPool(app, pool, poolAddress, stakingAddress) {
   };
 }
 
+async function getGelatoPool(app, pool, poolAddress, stakingAddress) {
+  const calls = [
+    pool.decimals(), pool.token0(), pool.token1(), pool.symbol(), pool.name(),
+    pool.totalSupply(), pool.balanceOf(stakingAddress), pool.balanceOf(app.YOUR_ADDRESS),
+    pool.getUnderlyingBalances()
+  ];
+  const [decimals, token0, token1, symbol, name, totalSupply, staked, unstaked, reserves]
+    = await app.ethcallProvider.all(calls);
+  return {
+      symbol,
+      name,
+      address: poolAddress,
+      token0: token0,
+      q0 : reserves.amount0Current,
+      token1: token1,
+      q1 : reserves.amount1Current,
+      totalSupply: totalSupply / 10 ** decimals,
+      stakingAddress: stakingAddress,
+      staked: staked / 10 ** decimals,
+      decimals: decimals,
+      unstaked: unstaked / 10 ** decimals,
+      contract: pool,
+      tokens : [token0, token1],
+      isGelato : true
+  };
+}
+
 async function getBalancerPool(app, pool, poolAddress, stakingAddress, tokens, smartToken) {
   const tokenCalls = tokens.map(t => [pool.getNormalizedWeight(t), pool.getBalance(t)]).flat();
   const calls = [pool.decimals(), pool.symbol(), pool.name(), pool.totalSupply(),
@@ -1221,6 +1248,9 @@ async function getStoredToken(app, tokenAddress, stakingAddress, type) {
     case "cToken":
       const cToken = new ethcall.Contract(tokenAddress, CTOKEN_ABI);
       return await getCToken(app, cToken, tokenAddress, stakingAddress);
+    case "gelato":
+      const gelato = new ethcall.Contract(tokenAddress, GELATO_ABI);
+      return await getGelatoPool(app, gelato, tokenAddress, stakingAddress);
     case "vault":
       const vault = new ethcall.Contract(tokenAddress, HARVEST_VAULT_ABI);
       return await getVault(app, vault, tokenAddress, stakingAddress);
@@ -1255,6 +1285,15 @@ async function getToken(app, tokenAddress, stakingAddress) {
   const type = window.localStorage.getItem(tokenAddress);
   //getTokenWeights
   if (type) return getStoredToken(app, tokenAddress, stakingAddress, type);
+  try {
+    const gelato = new ethcall.Contract(tokenAddress, GELATO_ABI);
+    const [gelatoFactory] = await app.ethcallProvider.all([gelato.GELATO()]);
+    const gelatoPool = await getGelatoPool(app, gelato, tokenAddress, stakingAddress);
+    window.localStorage.setItem(tokenAddress, "gelato");
+    return gelatoPool;
+  }
+  catch(err) {
+  }
   try {
     const pool = new ethcall.Contract(tokenAddress, UNI_ABI);
     const _token0 = await app.ethcallProvider.all([pool.token0()]);
@@ -1384,6 +1423,62 @@ function formatMoney(amount, decimalCount = 2, decimal = ".", thousands = ",") {
     console.log(e)
   }
 }
+
+function getGelatoPrices(tokens, prices, pool, chain="eth")
+{
+  var t0 = getParameterCaseInsensitive(tokens,pool.token0);
+  var p0 = getParameterCaseInsensitive(prices,pool.token0)?.usd;
+  var t1 = getParameterCaseInsensitive(tokens,pool.token1);
+  var p1 = getParameterCaseInsensitive(prices,pool.token1)?.usd;
+  if (p0 == null || p1 == null) {
+    console.log(`Missing prices for tokens ${pool.token0} and ${pool.token1}.`);
+    return undefined;
+  }
+  if (t0?.decimals == null) {
+    console.log(`Missing information for token ${pool.token0}.`);
+    return undefined;
+  }
+  if (t1?.decimals == null) {
+    console.log(`Missing information for token ${pool.token1}.`);
+    return undefined;
+  }
+  var q0 = pool.q0 / 10 ** t0.decimals;
+  var q1 = pool.q1 / 10 ** t1.decimals;
+  var tvl = q0 * p0 + q1 * p1;
+  var price = tvl / pool.totalSupply;
+  prices[pool.address] = { usd : price };
+  var staked_tvl = pool.staked * price;
+  let stakeTokenTicker = `[${pool.name}]`;
+  return {
+    t0: t0,
+    p0: p0,
+    q0  : q0,
+    t1: t1,
+    p1: p1,
+    q1  : q1,
+    price: price,
+    tvl : tvl,
+    staked_tvl : staked_tvl,
+    stakeTokenTicker : stakeTokenTicker,
+    print_price(chain="eth") {
+      const t0address = t0.symbol == "ETH" ? "ETH" : t0.address;
+      const t1address = t1.symbol == "ETH" ? "ETH" : t1.address;
+      const poolUrl = `https://etherscan.io/token/${pool.address}`
+      _print(`<a href='${poolUrl}' target='_blank'>${stakeTokenTicker}</a> Price: $${formatMoney(price)} TVL: $${formatMoney(tvl)}`);
+      _print(`${t0.symbol} Price: $${displayPrice(p0)}`);
+      _print(`${t1.symbol} Price: $${displayPrice(p1)}`);
+      _print(`Staked: ${pool.staked.toFixed(4)} ${pool.symbol} ($${formatMoney(staked_tvl)})`);
+    },
+    print_contained_price(userStaked) {
+      var userPct = userStaked / pool.totalSupply;
+      var q0user = userPct * q0;
+      var q1user = userPct * q1;
+      _print(`Your LP tokens comprise of ${q0user.toFixed(4)} ${t0.symbol} + ${q1user.toFixed(4)} ${t1.symbol}`);
+    }
+  }
+}
+
+
 
 function getUniPrices(tokens, prices, pool, chain="eth")
 {
@@ -2013,6 +2108,7 @@ function getCurvePrices(prices, pool) {
 function getPoolPrices(tokens, prices, pool, chain = "eth") {
   if (pool.w0 != null) return getValuePrices(tokens, prices, pool);
   if (pool.poolTokens != null) return getBalancerPrices(tokens, prices, pool);
+  if (pool.isGelato) return getGelatoPrices(tokens, prices, pool);
   if (pool.token0 != null) return getUniPrices(tokens, prices, pool);
   if (pool.virtualPrice != null) return getCurvePrices(prices, pool); //should work for saddle too
   if (pool.token != null) return getWrapPrices(tokens, prices, pool);
