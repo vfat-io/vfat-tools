@@ -113,7 +113,8 @@ const main = async() => {
         ["Koge                ",`<a href="koge"            >Various</a>`,"Various      ","https://kogefarm.io"],
         ["Fulcrum             ",`<a href="fulcrum"         >Various</a>`,"PGOV         ","https://polygon.fulcrum.trade"],
         ["XBull               ",`<a href="xbull"           >Various</a>`,"XBULL        ","https://xbull.finance"],
-        ["Augury              ",`<a href="augury"          >Various</a>`,"OMEN         ","https://augury.finance"]
+        ["Augury              ",`<a href="augury"          >Various</a>`,"OMEN         ","https://augury.finance"],
+        ["PolyMeme V2         ",`<a href="polymemev2"      >Various</a>`,"MEME         ","https://polyme.me"]
       ]
   }
 
