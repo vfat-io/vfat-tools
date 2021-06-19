@@ -45,13 +45,16 @@ $(function() {
       let tShareRewardPool = await loadRewardPoolContract(App, tokens, prices, tShareRewardPoolContract, TSHARE_REWARD_POOL_ADDR, TSHARE_REWARD_POOL_ABI, "TSHARE",
       "tshare", "pendingShare", 2, startTime1, currentTime);
       
+
+      _print_bold(`Total Staked: $${formatMoney(tShareRewardPool.totalStaked + masonry.staked_tvl)}`);
+      _print('')      
+      _print('')
+      _print('-------------------------------------------------')
+      _print('')
       _print_bold("Below pools are now closed, please unstake your funds. There are no more rewards to be received.")
       _print("")
       let tombRewardPool = await loadRewardPoolContract(App, tokens, prices, tombRewardPoolContract, TOMB_REWARD_POOL_ADDR, TOMB_REWARD_POOL_ABI, "TOMB",
       "tomb", "pendingTOMB", 1, startTime0, currentTime);
-
-
-      _print_bold(`Total Staked: $${formatMoney(tombRewardPool.totalStaked + tShareRewardPool.totalStaked)}`);
 
       hideLoading();
     }
@@ -123,6 +126,9 @@ $(function() {
 
   async function loadMasonry(App, prices, boardroomAddress, oracleAddress, lptAddress, rewardTokenAddress, stakeTicker, rewardTicker,
         epochsPerDay, maxSupplyIncrease, decimals, ratio, targetMantissa) {
+
+      _print(`<a href='https://ftmscan.com/address/${boardroomAddress}' target='_blank'>Masonry Contract</a>`);
+      _print("");
       const BOARDROOM = new ethers.Contract(boardroomAddress, BOARDROOM_ABI, App.provider);
       const ORACLE = new ethers.Contract(oracleAddress, BASIS_ORACLE_ABI, App.provider);
       const share = await BOARDROOM.share();
