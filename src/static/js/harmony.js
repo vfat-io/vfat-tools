@@ -36,7 +36,7 @@ const main = async() => {
         "Lock",
         `<a href='lock'>Various</a>`,
         "KEY",
-        "http://www.lockswap.one"
+        "https://www.lockswap.one"
       ]
     ]
   }
