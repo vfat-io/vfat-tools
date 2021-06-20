@@ -31,6 +31,12 @@ const main = async() => {
         `<a href='loot'>Various</a>`,
         "LOOT",
         "https://lootswap.finance"
+      ],
+      [
+        "Lock",
+        `<a href='lock'>Various</a>`,
+        "KEY",
+        "http://www.lockswap.one"
       ]
     ]
   }
