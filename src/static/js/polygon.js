@@ -36,6 +36,7 @@ const main = async() => {
         ["Polyfi              ",`<a href="polyfi"          >Various</a>`,"PolyFi       ","https://polyfi.io"],
         ["Polyape             ",`<a href="polyape"         >Various</a>`,"Ape          ","https://www.polyape.online"],
         ["Polyzap             ",`<a href="polyzap"         >Various</a>`,"PZAP         ","https://farm.polyzap.finance"],
+		["Gemstones Finance   ",`<a href="gemstonesfinance">Various</a>`,"GMS          ","https://gemstones.finance"],
         ["Polypanda           ",`<a href="polypanda"       >Various</a>`,"BAMBOO       ","https://polypanda.finance"],
         ["Dfyn                ",`<a href="dfyn"            >Various</a>`,"DFYN         ","https://exchange.dfyn.network"],
         ["Jurassic            ",`<a href="jurassic"        >Various</a>`,"RAPTOR       ","https://www.jurassicfarm.app"],
