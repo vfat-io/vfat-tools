@@ -172,7 +172,7 @@ async function printFulcrumContractLinks(App, chefAbi, chefAddr, poolIndex, pool
   if(!lockedPool){
     _print_link(`Claim ${pendingRewardTokens.toFixed(fixedDecimals)} ${rewardTokenTicker} ($${formatMoney(pendingRewardTokens*rewardTokenPrice)})`, claim)
   }
-  _print_link(`Compound ${pendingRewardTokens.toFixed(fixedDecimals)} ${stakeTokenTicker}`, compound)
+  _print_link(`Compound ${pendingRewardTokens.toFixed(fixedDecimals)} ${rewardTokenTicker}`, compound)
   _print(`Staking or unstaking also claims rewards.`)
   _print("");
 }
