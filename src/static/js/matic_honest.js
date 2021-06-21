@@ -567,7 +567,7 @@ $(function() {
       _print(`Initialized ${App.YOUR_ADDRESS}\n`);
       _print("Reading smart contracts...\n");
 
-     const HONEST_CHEF_ADDR = "0x06eF460C87116382026ACEBfC97f6e26f16Bd28a";
+     const HONEST_CHEF_ADDR = "0x3b7aA1CE77984Ba321DF14E7da563A9187814305";
      const rewardTokenTicker = "HONEST";
      const HONEST_CHEF = new ethers.Contract(HONEST_CHEF_ADDR, HONEST_CHEF_ABI, App.provider);
 

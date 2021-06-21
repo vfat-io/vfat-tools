@@ -12,7 +12,7 @@ const main = async() => {
         ["50Cent              ",`<a href="50c"             >Various</a>`,"50C/50K      ","https://50cent.network"],
         ["Quickswap           ",`<a href="quick"           >Various</a>`,"QUICK        ","https://quickswap.exchange/#/quick"],
         ["Cometh              ",`<a href="cometh"          >Various</a>`,"MUST         ","https://swap.cometh.io/#/stake"],
-        ["HonestWorkFarms     ",`<a href="honestwork"        >🚜FarmingLove👨‍🌾</a>   `,"🚜  ","https://honest🌾work🚜farms.ml"],
+        ["HonestWorkFarms     ",`<a href="honestwork"        >🚜FarmingLove👨‍🌾 </a>   `,"🚜  ","https://www.honestwork.farm/"],
         ["Dark                ",`<a href="dark"            >Various</a>`,"DB           ","https://www.dark.build"],
         ["Smartdex            ",`<a href="smartdex"        >Various</a>`,"NIOX         ","https://swap.smartdex.app"],
         ["Elk                 ",`<a href="elk"             >Various</a>`,"ELK          ","https://app.elk.finance"],
