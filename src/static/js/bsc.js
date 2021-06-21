@@ -294,7 +294,7 @@ const main = async() => {
       ["ballena.io          ", `<a href="balle"         >Various</a>`,"BALLE         ","https://ballena.io"],
       ["Hydra               ", `<a href="hydra"         >Various</a>`,"HYDRA         ","https://www.hydradefi.com"],
       ["Cosmos Farm (MARS)  ", `<a href="cosmosmars"    >Various</a>`,"MARS          ","https://mars.cosmos.farm"],
-      ["Pancakefork         ", `<a href="pancakefork"   >Various</a>`,"FCKE          ","https://app.pancakefork.finance"],
+      ["Pancakefork *       ", `<a href="pancakefork"   >Various</a>`,"FCKE          ","https://app.pancakefork.finance"],
       ["Vesuvius            ", `<a href="vesuvius"      >Various</a>`,"VESUVIUS      ","https://vesuvius.finance"],
       ["Kesef Finance       ", `<a href="kesef"         >Various</a>`,"KSF           ","https://kesef.finance"],
       ["TheKongFinance      ", `<a href="thekongfinance">Various</a>`,"KONG          ","https://thekongfinance.com"],
@@ -348,7 +348,7 @@ const main = async() => {
       ["Robinhood           ", `<a href="robinhood"     >Various</a>`,"RBH           ","https://www.robinhoodswap.finance"],
       ["Zeus                ", `<a href="zeus"          >Various</a>`,"ZEUS          ","https://zeusfarmsdefi.com"],
       ["Mdex                ", `<a href="mdex"          >Various</a>`,"MDX           ","https://mdex.com"],
-      ["MeatchFinance       ", `<a href="meatchfinance" >Various</a>`,"MEATCH        ","https://www.meatchfinance.com/"]
+      ["MeatchFinance       ", `<a href="meatchfinance" >Various</a>`,"MEATCH        ","https://www.meatchfinance.com"]
     ]}
 
   let table = new AsciiTable().fromJSON(tableData);
