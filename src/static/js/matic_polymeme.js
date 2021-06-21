@@ -15,14 +15,14 @@ async function main() {
    const rewardTokenTicker = "MEME";
    const MEME_CHEF = new ethers.Contract(MEME_CHEF_ADDR, MEME_CHEF_ABI, App.provider);
 
-   const rewardsPerWeek = await MEME_CHEF.tokenPerBlock() /1e18
-        * 604800 / 2.1;
+  //  const rewardsPerWeek = await MEME_CHEF.tokenPerBlock() /1e18
+  //       * 604800 / 2.1;
 
     const tokens = {};
     const prices = await getMaticPrices();
 
     await loadMaticChefContract(App, tokens, prices, MEME_CHEF, MEME_CHEF_ADDR, MEME_CHEF_ABI, rewardTokenTicker,
-        "token", null, rewardsPerWeek, "pendingToken", [1]);
+        "token", null, 0.1, "pendingToken", [1]);
 
     hideLoading();
   }

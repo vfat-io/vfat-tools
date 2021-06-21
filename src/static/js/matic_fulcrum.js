@@ -1,3 +1,4 @@
+
 $(function () {
 consoleInit(main)
 });
@@ -87,7 +88,7 @@ async function loadFulcrumContract(App, tokens, prices, chef, chefAddress, chefA
   let aprs = []
   for (i = 0; i < poolCount; i++) {
     if (poolPrices[i]) {
-      const apr = printFulcrumPool(App, chefAbi, chefAddress, prices, tokens, poolInfos[i], i, poolPrices[i],
+      const apr = await printFulcrumPool(App, chefAbi, chefAddress, prices, tokens, poolInfos[i], i, poolPrices[i],
         totalAllocPoints, rewardsPerWeek, rewardTokenTicker, rewardTokenAddress,
         pendingRewardsFunction, null, null, "matic", poolInfos[i].depositFee, poolInfos[i].withdrawFee)
       aprs.push(apr);
@@ -115,7 +116,7 @@ async function loadFulcrumContract(App, tokens, prices, chef, chefAddress, chefA
   return { prices, totalUserStaked, totalStaked, averageApr }
 }
 
-function printFulcrumPool(App, chefAbi, chefAddr, prices, tokens, poolInfo, poolIndex, poolPrices,
+async function printFulcrumPool(App, chefAbi, chefAddr, prices, tokens, poolInfo, poolIndex, poolPrices,
                        totalAllocPoints, rewardsPerWeek, rewardTokenTicker, rewardTokenAddress,
                        pendingRewardsFunction, fixedDecimals, claimFunction, chain="eth", depositFee=0, withdrawFee=0) {
   fixedDecimals = fixedDecimals ?? 2;
@@ -132,16 +133,20 @@ function printFulcrumPool(App, chefAbi, chefAddr, prices, tokens, poolInfo, pool
     staked_tvl, userStaked, poolPrices.price, fixedDecimals);
   if (poolInfo.userLPStaked > 0) sp?.print_contained_price(userStaked);
   if (poolInfo.userStaked > 0) poolPrices.print_contained_price(userStaked);
-  printFulcrumContractLinks(App, chefAbi, chefAddr, poolIndex, poolInfo.address, pendingRewardsFunction,
+  await printFulcrumContractLinks(App, chefAbi, chefAddr, poolIndex, poolInfo.address, pendingRewardsFunction,
     rewardTokenTicker, poolPrices.stakeTokenTicker, poolInfo.poolToken.unstaked,
     poolInfo.userStaked, poolInfo.pendingRewardTokens, fixedDecimals, claimFunction, rewardPrice, chain, depositFee, withdrawFee);
   return apr;
 }
 
-function printFulcrumContractLinks(App, chefAbi, chefAddr, poolIndex, poolAddress, pendingRewardsFunction,
+async function printFulcrumContractLinks(App, chefAbi, chefAddr, poolIndex, poolAddress, pendingRewardsFunction,
     rewardTokenTicker, stakeTokenTicker, unstaked, userStaked, pendingRewardTokens, fixedDecimals,
     claimFunction, rewardTokenPrice, chain, depositFee, withdrawFee) {
   fixedDecimals = fixedDecimals ?? 2;
+  const chefContract = new ethers.Contract(chefAddr, chefAbi, App.provider);
+
+  const lockedPool = await chefContract.isLocked(poolIndex);
+
   const approveAndStake = async function() {
     return chefContract_stake(chefAbi, chefAddr, poolIndex, poolAddress, App)
   }
@@ -164,8 +169,10 @@ function printFulcrumContractLinks(App, chefAbi, chefAddr, poolIndex, poolAddres
   }else{
     _print_link(`Unstake ${userStaked.toFixed(fixedDecimals)} ${stakeTokenTicker}`, unstake)
   }
-  _print_link(`Claim ${pendingRewardTokens.toFixed(fixedDecimals)} ${rewardTokenTicker} ($${formatMoney(pendingRewardTokens*rewardTokenPrice)})`, claim)
-  _print_link(`Compound ${unstaked.toFixed(fixedDecimals)} ${stakeTokenTicker}`, compound)
+  if(!lockedPool){
+    _print_link(`Claim ${pendingRewardTokens.toFixed(fixedDecimals)} ${rewardTokenTicker} ($${formatMoney(pendingRewardTokens*rewardTokenPrice)})`, claim)
+  }
+  _print_link(`Compound ${pendingRewardTokens.toFixed(fixedDecimals)} ${rewardTokenTicker}`, compound)
   _print(`Staking or unstaking also claims rewards.`)
   _print("");
 }

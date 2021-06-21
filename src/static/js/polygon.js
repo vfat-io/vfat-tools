@@ -12,7 +12,7 @@ const main = async() => {
         ["50Cent              ",`<a href="50c"             >Various</a>`,"50C/50K      ","https://50cent.network"],
         ["Quickswap           ",`<a href="quick"           >Various</a>`,"QUICK        ","https://quickswap.exchange/#/quick"],
         ["Cometh              ",`<a href="cometh"          >Various</a>`,"MUST         ","https://swap.cometh.io/#/stake"],
-        ["HonestWorkFarms     ",`<a href="honestwork"        >🚜FarmingLove👨‍🌾 </a>   `,"🚜  ","https://www.honestwork.farm/"],
+        ["HonestWorkFarms     ",`<a href="honestwork"        >🚜FarmingLove👨‍🌾 </a>   `,"🚜  ","https://honest🌾work🚜farms.ml"],
         ["Dark                ",`<a href="dark"            >Various</a>`,"DB           ","https://www.dark.build"],
         ["Smartdex            ",`<a href="smartdex"        >Various</a>`,"NIOX         ","https://swap.smartdex.app"],
         ["Elk                 ",`<a href="elk"             >Various</a>`,"ELK          ","https://app.elk.finance"],
@@ -38,6 +38,7 @@ const main = async() => {
         ["Polyfi              ",`<a href="polyfi"          >Various</a>`,"PolyFi       ","https://polyfi.io"],
         ["Polyape             ",`<a href="polyape"         >Various</a>`,"Ape          ","https://www.polyape.online"],
         ["Polyzap             ",`<a href="polyzap"         >Various</a>`,"PZAP         ","https://farm.polyzap.finance"],
+		["Gemstones Finance   ",`<a href="gemstonesfinance">Various</a>`,"GMS          ","https://gemstones.finance"],
         ["Polypanda           ",`<a href="polypanda"       >Various</a>`,"BAMBOO       ","https://polypanda.finance"],
         ["Dfyn                ",`<a href="dfyn"            >Various</a>`,"DFYN         ","https://exchange.dfyn.network"],
         ["Jurassic            ",`<a href="jurassic"        >Various</a>`,"RAPTOR       ","https://www.jurassicfarm.app"],
@@ -115,7 +116,12 @@ const main = async() => {
         ["Koge                ",`<a href="koge"            >Various</a>`,"Various      ","https://kogefarm.io"],
         ["Fulcrum             ",`<a href="fulcrum"         >Various</a>`,"PGOV         ","https://polygon.fulcrum.trade"],
         ["XBull               ",`<a href="xbull"           >Various</a>`,"XBULL        ","https://xbull.finance"],
-        ["Augury              ",`<a href="augury"          >Various</a>`,"OMEN         ","https://augury.finance"]
+        ["Augury              ",`<a href="augury"          >Various</a>`,"OMEN         ","https://augury.finance"],
+        ["PolyMeme V2         ",`<a href="polymemev2"      >Various</a>`,"MEME         ","https://polyme.me"],
+        ["WorldSwap Bali      ",`<a href="worldswap_dps"   >Various</a>`,"DPS          ","https://bali.worldswap.finance"],
+        ["PolyFunky Finance   ",`<a href="polyfunky"       >Various</a>`,"FUNK         ","https://www.polyfunky.com"],
+        ["Polycuban           ",`<a href="polycuban"       >Various</a>`,"CUBAN        ","https://polycuban.finance"]
+
       ]
   }
 
