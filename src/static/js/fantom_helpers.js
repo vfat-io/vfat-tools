@@ -15,6 +15,8 @@ const FantomTokens = [
   { "id": "ice-token", "symbol": "ICE", "contract": "0xf16e81dce15b08f326220742020379b855b87df9"},
   { "id": "spookyswap", "symbol": "BOO", "contract": "0x841FAD6EAe12c286d1Fd18d1d525DFfA75C7EFFE"},
   { "id": "binancecoin", "symbol": "BNB", "contract": "0xD67de0e0a0Fd7b15dC8348Bb9BE742F3c5850454"},
+  { "id": "tomb-shares", "symbol": "TSHARE", "contract": "0x4cdF39285D7Ca8eB3f090fDA0C069ba5F4145B37"},
+  { "id": "tomb", "symbol": "TOMB", "contract": "0x6c021Ae822BEa943b2E66552bDe1D2696a53fbB7"},
 ];
 
 async function getFantomPrices() {
