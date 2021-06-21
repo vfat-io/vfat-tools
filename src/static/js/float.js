@@ -6,7 +6,9 @@ const FLOAT_STAKING_ABI = [{"inputs":[{"internalType":"address","name":"_admin",
 
 const NewPools = [
 { name: "BANK", address: "0x3Bdb2d1003221CfC688Cfbfb10433D37c0FE2c3e" },
-{ name: "SushiSwap LP", address: "0x08D7e47Beb0470fc683bbdE7d836c5dcd48754F2" },
+{ name: "BANK-ETH LP", address: "0x08D7e47Beb0470fc683bbdE7d836c5dcd48754F2" },
+{ name: "FLOAT-ETH LP", address: "0xcd817491872bdb33e0d21589bd92dbff43387ca4" },
+{ name: "FLOAT", address: "0x432573cf5b10eb9a160624ca2725199dc1b56e3e" },
 ].map(p => { return { name : p.name, address : p.address, abi : FLOAT_STAKING_ABI,
   stakeTokenFunction : "stakeToken", rewardTokenFunction : "rewardToken" }})
 
@@ -37,6 +39,8 @@ async function main() {
 
     _print(`Initialized ${App.YOUR_ADDRESS}`);
     _print("Reading smart contracts...\n");
+
+    _print("Float pools start at 2021-05-16 22:00 UTC\n");
 
     var tokens = {};
     var prices = await lookUpTokenPrices(["0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"]); //WETH

@@ -156,10 +156,7 @@ function printSushiPool(App, chefAbi, chefAddr, prices, tokens, poolInfo, poolIn
     staked_tvl, userStaked, poolPrices.price, fixedDecimals, poolMaticRewardsPerWeek, rewardMaticPrice, rewardMaticTicker);
   if (poolInfo.userLPStaked > 0) sp?.print_contained_price(userStaked);
   if (poolInfo.userStaked > 0) poolPrices.print_contained_price(userStaked);
-  printSushiContractLinks(App, chefAbi, chefAddr, poolIndex, poolInfo.address, pendingRewardsFunction,
-    rewardTokenTicker, poolPrices.stakeTokenTicker, poolInfo.poolToken.unstaked,
-    poolInfo.userStaked, poolInfo.pendingRewardTokens, fixedDecimals, claimFunction, rewardPrice, chain,
-    chefMaticRewardsAbi, chefMaticRewardsAddress, rewardMaticTicker, poolInfo.pendingMaticTokens, rewardMaticPrice);
+  _print("");
   return apr;
 }
 
@@ -196,9 +193,9 @@ function printSushiAPR(rewardTokenTicker, rewardPrice, poolRewardsPerWeek,
   var userMaticYearlyRewards = userMaticWeeklyRewards * 52;
   if (userStaked > 0) {
     _print(`Estimated ${rewardTokenTicker} earnings:`
-        + ` Day ${userDailyRewards+userMaticDailyRewards.toFixed(fixedDecimals)} ($${formatMoney(userDailyRewards*rewardPrice+userMaticDailyRewards*rewardMaticPrice)})`
-        + ` Week ${userWeeklyRewards+userMaticWeeklyRewards.toFixed(fixedDecimals)} ($${formatMoney(userWeeklyRewards*rewardPrice+userMaticWeeklyRewards*rewardMaticPrice)})`
-        + ` Year ${userYearlyRewards+userMaticYearlyRewards.toFixed(fixedDecimals)} ($${formatMoney(userYearlyRewards*rewardPrice+userMaticYearlyRewards*rewardMaticPrice)})`);
+        + ` Day ${(userDailyRewards+userMaticDailyRewards).toFixed(fixedDecimals)} ($${formatMoney(userDailyRewards*rewardPrice+userMaticDailyRewards*rewardMaticPrice)})`
+        + ` Week ${(userWeeklyRewards+userMaticWeeklyRewards).toFixed(fixedDecimals)} ($${formatMoney(userWeeklyRewards*rewardPrice+userMaticWeeklyRewards*rewardMaticPrice)})`
+        + ` Year ${(userYearlyRewards+userMaticYearlyRewards).toFixed(fixedDecimals)} ($${formatMoney(userYearlyRewards*rewardPrice+userMaticYearlyRewards*rewardMaticPrice)})`);
   }
   return {
     userStakedUsd,
@@ -207,34 +204,4 @@ function printSushiAPR(rewardTokenTicker, rewardPrice, poolRewardsPerWeek,
     yearlyAPR,
     userYearlyUsd : userYearlyRewards * rewardPrice + userMaticYearlyRewards * rewardMaticPrice
   }
-}
-
-function printSushiContractLinks(App, chefAbi, chefAddr, poolIndex, poolAddress, pendingRewardsFunction,
-    rewardTokenTicker, stakeTokenTicker, unstaked, userStaked, pendingRewardTokens, fixedDecimals,
-    claimFunction, rewardTokenPrice, chain, chefMaticRewardsAbi, chefMaticRewardsAddress, rewardMaticTicker, pendingMaticTokens,
-    rewardMaticPrice) {
-  fixedDecimals = fixedDecimals ?? 2;
-  const approveAndStake = async function() {
-    return chefContract_stake(chefAbi, chefAddr, poolIndex, poolAddress, App)
-  }
-  const unstake = async function() {
-    return chefContract_unstake(chefAbi, chefAddr, poolIndex, App, pendingRewardsFunction)
-  }
-  const claim = async function() {
-    return chefContract_claim(chefAbi, chefAddr, poolIndex, App, pendingRewardsFunction, claimFunction)
-  }
-  _print_link(`Stake ${unstaked.toFixed(fixedDecimals)} ${stakeTokenTicker}`, approveAndStake)
-  _print_link(`Unstake ${userStaked.toFixed(fixedDecimals)} ${stakeTokenTicker}`, unstake)
-  _print_link(`Claim ${pendingRewardTokens.toFixed(fixedDecimals)} ${rewardTokenTicker} + ${pendingMaticTokens.toFixed(fixedDecimals)} ${rewardMaticTicker} a total of ($${formatMoney(pendingRewardTokens*rewardTokenPrice + pendingMaticTokens*rewardMaticPrice)})`, claim)
-  _print(`Staking or unstaking also claims rewards.`)
-  if  (chefAddr == "0x0De845955E2bF089012F682fE9bC81dD5f11B372") {
-    const emergencyWithdraw = async function() {
-      return chefContract_emergencyWithdraw(chefAbi, chefAddr, poolIndex, App)
-    }
-    _print('***')
-    _print_link(`EMERGENCY WITHDRAW ${userStaked.toFixed(fixedDecimals)} ${stakeTokenTicker}`, emergencyWithdraw)
-    _print('This will forfeit your rewards but retrieve your capital')
-    _print('***')
-  }
-  _print("");
 }

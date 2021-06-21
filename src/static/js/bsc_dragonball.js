@@ -22,7 +22,7 @@ async function main() {
     const prices = await getBscPrices();
 
     await loadBscChefContract(App, tokens, prices, DBALL_CHEF, DBALL_CHEF_ADDR, DBALL_CHEF_ABI, rewardTokenTicker,
-        "dball", null, rewardsPerWeek, "pendingEgg");
+        "dball", null, rewardsPerWeek, "pendingEgg", [33]);
 
     hideLoading();
   }

@@ -192,6 +192,38 @@ window.NETWORKS = {
       "https://s3.api.harmony.one"
     ]
   },
+  FUSE: {
+    "chainId": "0x7a",
+    "chainName": "Fuse Mainnet",
+    "nativeCurrency": {
+      "name": "FUSE",
+      "symbol": "FUSE",
+      "decimals": 18
+    },
+    "rpcUrls": [
+      "https://rpc.fuse.io"
+    ],
+    "blockExplorerUrls": [
+      "https://explorer.fuse.io"
+    ]
+  },
+  THUNDERCORE: {
+    "chainId": "0x6c",
+    "chainName": "ThunderCore",
+    "nativeCurrency": {
+      "name": "Thunder Token",
+      "symbol": "TT",
+      "decimals": 18
+    },
+    "rpcUrls": [
+        "https://mainnet-rpc.thundercore.com",
+        "wss://mainnet-ws.thundercore.com"
+    ],
+    "blockExplorerUrls": [
+        "https://scan.thundercore.com/",
+        "https://viewblock.io/thundercore"
+    ],
+  },
 }
 
 const infuraId = atob(window.ETHEREUM_NODE_URL).split('/').pop()
@@ -203,6 +235,7 @@ const providerOptions = {
       infuraId: infuraId,
       rpc: {
         56: "https://bsc-dataseed1.binance.org",
+        108: 'https://mainnet-rpc.thundercore.com',
         128: "https://http-mainnet.hecochain.com",
         137: "https://rpc-mainnet.matic.network",
         100: "https://rpc.xdaichain.com",

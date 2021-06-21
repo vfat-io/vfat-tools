@@ -42,7 +42,20 @@ async function getMatic20(App, token, address, stakingAddress) {
         tokens:[address]
       }
     }
-    const decimals = await token.decimals()
+    const decimals = await token.decimals();
+    if (address === "0x4c28f48448720e9000907BC2611F73022fdcE1fA") {
+      return {
+        address,
+        name : "Wrapped Matic",
+        symbol : "WMATIC",
+        totalSupply : await token.totalSupply(),
+        decimals : decimals,
+        staked:  await token.balanceOf(stakingAddress) / 10 ** decimals,
+        unstaked: await token.balanceOf(App.YOUR_ADDRESS)  / 10 ** decimals,
+        contract: token,
+        tokens : [address]
+      }
+    }
     return {
         address,
         name : await token.name(),
@@ -315,6 +328,8 @@ async function getMaticPoolInfo(app, chefContract, chefAddress, poolIndex, pendi
       poolToken: poolToken,
       userStaked : staked,
       pendingRewardTokens : pendingRewardTokens / 10 ** 18,
+      depositFee : (poolInfo.depositFeeBP ?? 0) / 100,
+      withdrawFee : (poolInfo.withdrawFeeBP ?? 0) / 100
   };
 }
 
@@ -363,7 +378,7 @@ async function loadMaticChefContract(App, tokens, prices, chef, chefAddress, che
     if (poolPrices[i]) {
       const apr = printChefPool(App, chefAbi, chefAddress, prices, tokens, poolInfos[i], i, poolPrices[i],
         totalAllocPoints, rewardsPerWeek, rewardTokenTicker, rewardTokenAddress,
-        pendingRewardsFunction, null, null, "matic")
+        pendingRewardsFunction, null, null, "matic", poolInfos[i].depositFee, poolInfos[i].withdrawFee)
       aprs.push(apr);
     }
   }
@@ -404,7 +419,13 @@ const maticTokens = [
   { "id": "polywhale", "symbol": "KRILL", "contract": "0x05089C9EBFFa4F0AcA269e32056b1b36B37ED71b" },
   { "id": "chainlink", "symbol": "LINK", "contract": "0x53E0bca35eC356BD5ddDFebbD1Fc0fD03FaBad39" },
   { "id": "sushi", "symbol": "SUSHI", "contract": "0x0b3F868E0BE5597D5DB7fEB59E1CADBb0fdDa50a" },
-  { "id": "dfyn-network", "symbol": "DFYN", "contract": "0xC168E40227E4ebD8C1caE80F7a55a4F0e6D66C97" }
+  { "id": "dfyn-network", "symbol": "DFYN", "contract": "0xC168E40227E4ebD8C1caE80F7a55a4F0e6D66C97" },
+  { "id": "polydoge", "symbol": "POLYDOGE", "contract": "0x8a953cfe442c5e8855cc6c61b1293fa648bae472" },
+  { "id": "drax", "symbol": "DRAX", "contract": "0x1Ba3510A9ceEb72E5CdBa8bcdDe9647E1f20fB4b" },
+  { "id": "dark-magic", "symbol": "DMAGIC", "contract": "0x61daecab65ee2a1d5b6032df030f3faa3d116aa7" },
+  { "id": "xdollar", "symbol": "XDO", "contract": "0x3dc7b06dd0b1f08ef9acbbd2564f8605b4868eea" },
+  { "id": "iron-titanium-token", "symbol": "TITAN", "contract": "0xaaa5b9e6c589642f98a1cda99b9d024b8407285a" },
+  { "id": "bzx-protocol", "symbol": "BZRX", "contract": "0x97dfbEF4eD5a7f63781472Dbc69Ab8e5d7357cB9" }
 ]
 
 async function getMaticPrices() {

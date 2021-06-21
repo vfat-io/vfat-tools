@@ -33,61 +33,37 @@ async function main() {
   hideLoading();
 }
 
-const ELKStakingContracts =  [
+const ELKStakingContracts = [
   {
-    //MATIC-ELK
-    stakingRewardAddress: '0xeA35a9Bc850E0E75fe4c67197e82812fD0A0cfd3'
-  },
-  {
-    //USDT-ELK
-    stakingRewardAddress: '0x9eBEE1D3465d27f316A6627ba4CB603619bA98bE'
-  },
-  {
-    //USDC-ELK
-    stakingRewardAddress: '0x3d9738e6B4D12864c9dABf7Ae1903F1C8f888288'
-  },
-  {
-    //ETH-ELK
-    stakingRewardAddress: '0xD23a5dc624D9b9138AB3Cb6DdbE4Fe3De868a923'
-  },
-  {
-    //WBTC-ELK
-    stakingRewardAddress: '0x72597Da97C2F54431699215E4748763A31159419'
-  },
-  {
-    //LINK-ELK
-    stakingRewardAddress: '0xEA4Babc5A73693Bd24ADC9AeC644E73965A45b20'
-  },
-  {
-    //DAI-ELK
-    stakingRewardAddress: '0xcde6fAD8d5C560729E2E36ae3B046D30e95F5a43'
-  },
-  {
-    //QUICK-ELK
-    stakingRewardAddress: '0x1b745C2e6a0894BAC7d27cF6A50E786453Da0c04'
-  },
-  {
-    //AAVE-ELK
-    stakingRewardAddress: '0x5bef13945055926B1Cbb18200ea84B1c944D657c'
-  },
-  {
-    //GHST-ELK
-    stakingRewardAddress: '0x4b3c4Ac3F82896236Ad023D8a532fC6553B1BC2F'
-  },
-  {
-    //MUST-ELK
-    stakingRewardAddress: '0xa46E9f226276facfd12E71d458064b5151FbadCB'
-  },
-  {
-    //DEFI5-ELK
-    stakingRewardAddress: '0xdBD257A2CA19A734096F62a38efc9a6ebAAD37ca'
-  },
-  {
-    //CC10-ELK
-    stakingRewardAddress: '0xFDb7762BD3a18Ed53accdD1ce9223DB00832696d'
-  },
-  {
-    //CEL-ELK
-    stakingRewardAddress: '0x5e90eFCc096160DcBbb38bF4D234b811c1B31be1'
-  },
-]
+    stakingRewardAddress: "0x9a30885b1023d530910B237d801d73bf4C50a978"
+  },{
+    stakingRewardAddress: "0xED61F029e4129E3F162c8226764da6F8A460fbDF"
+  },{
+    stakingRewardAddress: "0xe163243B0969780bF978Eb19fD26ddc5E49BcdB5"
+  },{
+    stakingRewardAddress: "0x44DbD6C52762e85c674041A045D90a6d852f2cA3"
+  },{
+    stakingRewardAddress: "0x2009F05DD05644fED6F5A49E39F65Ed75E21616D"
+  },{
+    stakingRewardAddress: "0x051f5ec4B87a3100cecB2ceD93dB44e35712147c"
+  },{
+    stakingRewardAddress: "0xB9B11621d60eb4d0F7C0cBC751E36798da5ced8f"
+  },{
+    stakingRewardAddress: "0x0b350348ce22c1fF3038058c0aB499C3c8C6c830"
+  },{
+    stakingRewardAddress: "0xD5A3cFc6CBf0c7dCF0987C0612eeDDa13674e45C"
+  },{
+    stakingRewardAddress: "0x7C8dd5a4fa03c63e33C95dd3c413bA750B92AAe4"
+  },{
+    stakingRewardAddress: "0x319c5AB4733f75cfE2F59f971bB94921aEA1111d"
+  },{
+    stakingRewardAddress: "0x480f85Be9fe344B75e210B1745AF2C9603F09Eb8"
+  },{
+    stakingRewardAddress: "0xb1a6618f757A9408B3B7A97519728c5289bc6Ace"
+  },{
+    stakingRewardAddress: "0x19BAc5ff9C20A1551D5477aD974E1A90aB6d15d4"
+  },{
+    stakingRewardAddress: "0x6cA20386a322ee6545DeF7Ed9910Aef724EBE1eb"
+  },{
+    stakingRewardAddress: "0x0cD663c5f4d085Fd6c4E963d726Aa6c03dEd7C1b"
+  }]

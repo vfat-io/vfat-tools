@@ -25,6 +25,18 @@ const main = async() => {
         `<a href='oswap'>Various</a>`,
         "oSWAP",
         "https://app.openswap.one"
+      ],
+      [
+        "Loot",
+        `<a href='loot'>Various</a>`,
+        "LOOT",
+        "https://lootswap.finance"
+      ],
+      [
+        "Lock",
+        `<a href='lock'>Various</a>`,
+        "KEY",
+        "https://www.lockswap.one"
       ]
     ]
   }
