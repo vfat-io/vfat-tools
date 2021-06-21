@@ -213,6 +213,9 @@ async function getBscToken(App, tokenAddress, stakingAddress) {
     try {
       const VAULT = new ethers.Contract(tokenAddress, BSC_VAULT_ABI, App.provider);
       const _token = await VAULT.token();
+      if (_token.toLowerCase() == "0x3b73c1b2ea59835cbfcadade5462b6ab630d9890") {
+        throw "0x3b73c1b2ea59835cbfcadade5462b6ab630d9890 is self referential";
+      }
       const vault = await getBscVault(App, VAULT, tokenAddress, stakingAddress);
       window.localStorage.setItem(tokenAddress, "bscVault");
       return vault;

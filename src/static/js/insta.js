@@ -15,6 +15,8 @@ consoleInit(main)
 
     const App = await init_ethers();
 
+    _print("In order to use this page, please copy your DSAv2 address from Instadapp and navigate to vfat.tools/insta?addr=0xYOUR_ADDRESS_HERE\n")
+
     _print(`Initialized ${App.YOUR_ADDRESS}`);
     _print("Reading smart contracts...\n");
 
