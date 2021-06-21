@@ -119,7 +119,8 @@ const main = async() => {
         ["Augury              ",`<a href="augury"          >Various</a>`,"OMEN         ","https://augury.finance"],
         ["PolyMeme V2         ",`<a href="polymemev2"      >Various</a>`,"MEME         ","https://polyme.me"],
         ["WorldSwap Bali      ",`<a href="worldswap_dps"   >Various</a>`,"DPS          ","https://bali.worldswap.finance"],
-        ["PolyFunky Finance   ",`<a href="polyfunky"       >Various</a>`,"FUNK         ","https://www.polyfunky.com/"]
+        ["PolyFunky Finance   ",`<a href="polyfunky"       >Various</a>`,"FUNK         ","https://www.polyfunky.com"],
+        ["Polycuban           ",`<a href="polycuban"       >Various</a>`,"CUBAN        ","https://polycuban.finance"]
 
       ]
   }
