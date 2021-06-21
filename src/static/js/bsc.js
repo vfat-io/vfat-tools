@@ -345,12 +345,9 @@ const main = async() => {
       ["Krustykrab          ", `<a href="krustykrab"    >Various</a>`,"KP            ","https://krustykrab.finance"],
       ["Alien               ", `<a href="alien"         >Various</a>`,"ALIEN         ","https://aliendefi.com"],
       ["Unown               ", `<a href="unown"         >Various</a>`,"UNOWN         ","https://www.unownswap.com"],
-<<<<<<< HEAD
-      ["Mdex                ", `<a href="mdex"          >Various</a>`,"MDX           ","https://mdex.com"]
-=======
       ["Robinhood           ", `<a href="robinhood"     >Various</a>`,"RBH           ","https://www.robinhoodswap.finance"],
-      ["Zeus                ", `<a href="zeus"          >Various</a>`,"ZEUS          ","https://zeusfarmsdefi.com"]
->>>>>>> master
+      ["Zeus                ", `<a href="zeus"          >Various</a>`,"ZEUS          ","https://zeusfarmsdefi.com"],
+      ["Mdex                ", `<a href="mdex"          >Various</a>`,"MDX           ","https://mdex.com"]
     ]}
 
   let table = new AsciiTable().fromJSON(tableData);
