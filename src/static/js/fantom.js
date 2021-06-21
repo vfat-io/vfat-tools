@@ -69,12 +69,6 @@ const main = async() => {
         "https://www.liquiddriver.finance"
       ],
       [
-        "Standard",
-        `<a href='standard'>Various</a>`,
-        "STRD",
-        "https://strd.finance"
-      ],
-      [
         "Mushrooms",
         `<a href='mushrooms'>Various</a>`,
         "MM",
