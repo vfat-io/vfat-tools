@@ -15,7 +15,7 @@ async function main() {
   const prices = await getFantomPrices();
 
   const pools = ELKStakingContracts.map(c => { return {
-    address: c.stakingRewardAddress,
+    address: c,
     abi: ELK_STAKING_ABI,
     stakeTokenFunction: "stakingToken",
     rewardTokenFunction: "rewardsToken"
@@ -34,40 +34,22 @@ async function main() {
 }
 
 const ELKStakingContracts = [
-{
-  stakingRewardAddress: "0xeb724C599a72BDc812F23C0c8AacF7331917aAcD"
-}, {
-  stakingRewardAddress: "0x1552CE8a95fdE15E531840DB0d623255546b2c72"
-}, {
-  stakingRewardAddress: "0x9B4c0a7A9Bc71ce2B8BDc85C8D8bc97AFc8F97A3"
-}, {
-  stakingRewardAddress: "0x5a1458a960745f58284A37ec6F9560795E34EbE9"
-}, {
-  stakingRewardAddress: "0xD68e461aE0E410A5Ec4E4f9D430Cf388140f3938"
-}, {
-  stakingRewardAddress: "0x37c315C04bE7FF298F9e83704D742814f8E4f69d"
-}, {
-  stakingRewardAddress: "0x449A34FCA247244F24486ac40Bb0701bA5E9DCf1"
-}, {
-  stakingRewardAddress: "0xc6Dd366e29967C560144d84f9ADf26581C134CB1"
-}, {
-  stakingRewardAddress: "0xed4D40960d5b7302ddeBf503953D5fD662c8E72B"
-}, {
-  stakingRewardAddress: "0xA314d4c8a5aB97C381e21b8273540dc9eA4ce342"
-},{
-  stakingRewardAddress: "0x5b0ec13EAa2a33077dE6D118f476B85dd6A1330d"
-},{
-  stakingRewardAddress: "0xBfd4916F0908e3Ea586AeeA5175ebAc3185d64D2"
-},{
-  stakingRewardAddress: "0xf6aCA7f1320d5528C8EBbda0e92dFDd7bcB3aD8f"
-},{
-  stakingRewardAddress: "0x09D264776c6928ABb06cdc13B306F559fEe0462b"
-},{
-  stakingRewardAddress: "0xBb5852a79A6f354737B853E20cFA0EB461799F5a"
-},{
-  stakingRewardAddress: "0x4C67A5d17f4920557a4D8c67705b29838E0a5c71"
-},{
-  stakingRewardAddress: "0xB415772E92748E69d69f88f07171969725F6259C"
-},{
-  stakingRewardAddress: "0x24652F818B56406ACdDe14Fbdcd6ADE941c6b3D8"
-}]
+  "0x7739a5f9FCaB3C882280214d82C88A3Ea4464e3E",
+  "0x0BECfEB329d31CA9629D77B3F517cA9C36e6D684",
+  "0x6a74F787f4af42a81f7F85b88873377cA537565D",
+  "0x70BAe9590597677a355f65c7A8634ea24CcfD522",
+  "0xC69c9168c83A11cAF66825D168027a84CBF24BAF",
+  "0xA3D49a29ceD5A7831228CcB3c8E36d197Ba2c6a3",
+  "0x583E511E801FCbA01563C931Fd15f99448f8495f",
+  "0x043e7Ea4202163d5BEeC81aD24c48Ca61eB085DC",
+  "0x1dF858F31a0d23B8da4F8055C152Fd6324873D5b",
+  "0xb4F8e210E398Cf5E18EcAFEA06D93715038324c3",
+  "0xbdeC3F7FA20f97C91C70F851f3cc8D3E660Efe52",
+  "0xEB2C1A802504ccbAE4cd34808cfEB35146fA7f59",
+  "0xC6A45125D7F58B4666023F1293085AB514db2e9f",
+  "0x8b0E0ba28395227791e79644B4eC56b693452491",
+  "0xF0b8cD7652b101b785B43daf0ba418434dA75356",
+  "0xd58d2C628F3322997800910b11b9af951f0B95bD",
+  "0x76Cae9298020d914C58c1287c74f6d43524D8db6",
+  "0x915B694611Dcf6232Afdc789f461E3c7386149e2"
+]
