@@ -119,7 +119,7 @@ const main = async() => {
         ["PolyFunky Finance   ",`<a href="polyfunky"       >Various</a>`,"FUNK         ","https://www.polyfunky.com"],
         ["Polycuban           ",`<a href="polycuban"       >Various</a>`,"CUBAN        ","https://polycuban.finance"],
         ["50Cent              ",`<a href="50c"             >Various</a>`,"50C/50K      ","https://50cent.network"],
-        ["HonestWorkFarms     ",`<a href="honestwork"      >Various</a>`,"HONEST       ","https://honest🌾work🚜farms.ml"],
+        ["HonestWorkFarms     ",`<a href="honestwork"      >Various</a>`,"HONEST       ","https://www.honestwork.farm"],
         ["Adamant             ",`<a href="adamant"         >Various</a>`,"Various      ","https://adamant.finance"]
       ]
   }
