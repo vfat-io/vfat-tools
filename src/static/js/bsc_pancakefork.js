@@ -170,7 +170,19 @@ async function main() {
   
   }
 
-async function getPoolFCKEInfo(App, chefContract, chefAddress, poolIndex) { 
+async function getPoolFCKEInfo(App, chefContract, chefAddress, poolIndex) {
+  if (poolIndex == 0 || poolIndex == 5) { //pool 0 is not a staking contract, pool 5 has is broken with 0 alloc points
+    return {
+      address: "0xAe6e3B04d3eb991E30fA2474563fE2a89E351cdA",
+      allocPoints: 1,
+      poolToken: null,
+      userStaked : 0,
+      pendingRewardTokens : 0,
+      stakedToken : null,
+      userLPStaked : 0,
+      lastRewardBlock : 0
+    };
+  }
   const stakingPool = await chefContract.stakePoolInfo(poolIndex);
   const stakingPoolAddress = stakingPool.poolAddress;
   const poolInfoContract = new ethers.Contract(stakingPoolAddress, FCKE_STAKING_POOL_ABI, App.provider);
@@ -179,18 +191,6 @@ async function getPoolFCKEInfo(App, chefContract, chefAddress, poolIndex) {
   const rewardToken = await getBscToken(App, rewardTokenAddress, chefAddress);
   const rewardsPerWeek = await poolInfoContract.rewardPerBlock() 
         / 10 ** rewardToken.decimals * 604800 / 3
-  if (poolInfo.allocPoint == 0 || poolIndex == 0 || poolIndex == 1 || poolIndex == 5) {
-    return {
-      address: poolInfo.lpToken ?? poolInfo.token,
-      allocPoints: poolInfo.allocPoint ?? 1,
-      poolToken: null,
-      userStaked : 0,
-      pendingRewardTokens : 0,
-      stakedToken : null,
-      userLPStaked : 0,
-      lastRewardBlock : poolInfo.lastRewardBlock
-    };
-  }
   const poolToken = await getBscToken(App, poolInfo.lpToken, chefAddress);
   poolToken.staked = await poolInfoContract.lpSupply() / 10 ** poolToken.decimals;
   const userInfo = await poolInfoContract.userInfo(App.YOUR_ADDRESS);
