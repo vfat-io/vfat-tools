@@ -122,7 +122,8 @@ const main = async() => {
         ["HonestWorkFarms     ",`<a href="honestwork"      >Various</a>`,"HONEST       ","https://www.honestwork.farm"],
         ["Adamant             ",`<a href="adamant"         >Various</a>`,"Various      ","https://adamant.finance"],
         ["Polygame            ",`<a href="polygame"        >Various</a>`,"POLYGAME     ","https://polygame.finance"],
-        ["Carousel            ",`<a href="carousel"        >Various</a>`,"CRS          ","https://carouselswap.com"]
+        ["Carousel            ",`<a href="carousel"        >Various</a>`,"CRS          ","https://carouselswap.com"],
+        ["PolyCrystal         ",`<a href="polycrystal"     >Various</a>`,"CRYSTAL      ","https://polycrystal.finance"]
       ]
   }
 
