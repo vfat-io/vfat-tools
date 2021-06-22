@@ -545,7 +545,8 @@ const bscTokens = [
   { "id": "swampy", "symbol": "SWAMP", "contract": "0xc5A49b4CBe004b6FD55B30Ba1dE6AC360FF9765d"},
   { "id": "ellipsis", "symbol": "EPS", "contract": "0xA7f552078dcC247C2684336020c03648500C6d9F"},
   { "id": "ketchup-finance", "symbol": "KETCHUP", "contract": "0x714a84632ed7edbbbfeb62dacf02db4beb4c69d9"},
-  { "id": "bnbc", "symbol": "BNBC", "contract": "0x31b5d91806af3364678715f4c5bf50c1e3bae10a"}
+  { "id": "bnbc", "symbol": "BNBC", "contract": "0x31b5d91806af3364678715f4c5bf50c1e3bae10a"},
+  { "id": "thoreum", "symbol": "THOREUM", "contract": "0x580de58c1bd593a43dadcf0a739d504621817c05"}
 ]
 
 async function getBscPrices() {
