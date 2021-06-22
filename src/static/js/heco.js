@@ -15,6 +15,8 @@ const main = async() => {
       ["Booster   ",`<a href="booster"   >Various</a>`,"BOO ","https://booster.farm"],
       ["Mdis      ",`<a href="mdis"      >Various</a>`,"MDIS","https://mdis.finance"],
       ["Pippi     ",`<a href="pippi"     >Various</a>`,"PIPI","https://app.pippi.finance"],
+      ["Nut       ",`<a href="nut"       >Various</a>`,"NUT ","https://nut.money"],
+      ["Maki      ",`<a href="maki"      >Various</a>`,"MAKI","https://app.makiswap.com"]
     ]
   }
 
