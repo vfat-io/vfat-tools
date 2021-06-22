@@ -1518,6 +1518,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
   if (pool.is1inch) stakeTokenTicker += " 1INCH LP";
   else if (pool.symbol.includes("LSLP")) stakeTokenTicker += " LSLP";
   else if (pool.symbol.includes("BLP")) stakeTokenTicker += " BLP";
+  else if (pool.symbol.includes("OperaSwap")) stakeTokenTicker += " Opera Swap LP";
   else if (pool.symbol.includes("SLP")) stakeTokenTicker += " SLP";
   else if (pool.symbol.includes("Cake")) stakeTokenTicker += " Cake LP";
   else if (pool.name.includes("Value LP")) stakeTokenTicker += " Value LP";
@@ -1578,6 +1579,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
               pool.symbol.includes("PGL") ?  `https://info.pangolin.exchange/#/pair/${pool.address}` :
               pool.symbol.includes("CS-LP") ?  `https://app.coinswap.space/#/` :
               pool.name.includes("Value LP") ?  `https://info.vswap.fi/pool/${pool.address}` :
+              pool.name.includes("OperaSwap") ?  `https://www.operaswap.finance/` :
               pool.symbol.includes("SPIRIT") ?  `https://swap.spiritswap.finance/#/swap` :
               pool.symbol.includes("spLP") ?  `https://info.spookyswap.finance/pair/${pool.address}` :
               pool.symbol.includes("Lv1") ?  `https://info.steakhouse.finance/pair/${pool.address}` :
@@ -1622,6 +1624,11 @@ function getUniPrices(tokens, prices, pool, chain="eth")
             `https://app.pangolin.exchange/#/add/${t0address}/${t1address}`,
             `https://app.pangolin.exchange/#/remove/${t0address}/${t1address}`,
             `https://app.pangolin.exchange/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+          ] :
+          pool.symbol.includes("OperaSwap") ? [
+            `https://exchange.operaswap.finance/#/add/${t0address}/${t1address}`,
+            `https://exchange.operaswap.finance/#/remove/${t0address}/${t1address}`,
+            `https://exchange.operaswap.finance/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
           ] :
           pool.symbol.includes("ELP") ? [
             `https://app.elk.finance/#/add/${t0address}/${t1address}`,
