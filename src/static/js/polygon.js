@@ -125,7 +125,8 @@ const main = async() => {
         ["Polygame            ",`<a href="polygame"        >Various</a>`,"POLYGAME     ","https://polygame.finance"],
         ["Carousel            ",`<a href="carousel"        >Various</a>`,"CRS          ","https://carouselswap.com"],
         ["PolyCrystal         ",`<a href="polycrystal"     >Various</a>`,"CRYSTAL      ","https://polycrystal.finance"],
-        ["Firebird            ",`<a href="firebird"        >Various</a>`,"HOPE         ","https://app.firebird.finance"]
+        ["Firebird            ",`<a href="firebird"        >Various</a>`,"HOPE         ","https://app.firebird.finance"],
+        ["Polyroll            ",`<a href="polyroll"        >Various</a>`,"ROLL         ","https://polyroll.org"]
       ]
   }
 
