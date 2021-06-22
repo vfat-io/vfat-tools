@@ -349,6 +349,7 @@ const main = async() => {
       ["Zeus                ", `<a href="zeus"          >Various</a>`,"ZEUS          ","https://zeusfarmsdefi.com"],
       ["Mdex                ", `<a href="mdex"          >Various</a>`,"MDX           ","https://mdex.com"],
       ["MeatchFinance       ", `<a href="meatchfinance" >Various</a>`,"MEATCH        ","https://www.meatchfinance.com"],
+      ["CarnageSwap         ", `<a href="carnageswap"   >Various</a>`,"CARNAGE       ","https://www.carnageswap.net"],
       ["Thoreum             ", `<a href="thoreum"       >Various</a>`,"THOREUM       ","https://thoreum.finance"]
     ]}
 
