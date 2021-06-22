@@ -49,7 +49,7 @@ const main = async() => {
       ["TrueFi              ",`<a href="truefi/"            >Various</a>`,"TRU       ","https://app.truefi.io/farm"],
       ["Typhoon Cash        ",`<a href="typhoon/"           >Various</a>`,"PHOON     ","https://typhoon.cash"],
       ["Unicly              ",`<a href="unicly/"            >Various</a>`,"UNIC      ","https://www.app.unic.ly/#/farm"],
-      ["* Universe *        ",`<a href="universe"           >Various</a>`,"XYZ       ","https://dao.universe.xyz/yield-farming"],
+      ["Universe            ",`<a href="universe"           >Various</a>`,"XYZ       ","https://dao.universe.xyz/yield-farming"],
       ["Unslashed           ",`<a href="usf/"               >Various</a>`,"USF       ","https://app.unslashed.finance/"],
       ["Wasabix             ",`<a href="wasabix/"           >Various</a>`,"WASABI    ","https://wasabix.finance/#/app/pool"],
       ["xSigma              ",`<a href="xsigma/"            >Various</a>`,"SIG       ","https://app.xsigma.fi/stake"],
