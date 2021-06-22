@@ -124,7 +124,8 @@ const main = async() => {
         ["Adamant             ",`<a href="adamant"         >Various</a>`,"Various      ","https://adamant.finance"],
         ["Polygame            ",`<a href="polygame"        >Various</a>`,"POLYGAME     ","https://polygame.finance"],
         ["Carousel            ",`<a href="carousel"        >Various</a>`,"CRS          ","https://carouselswap.com"],
-        ["PolyCrystal         ",`<a href="polycrystal"     >Various</a>`,"CRYSTAL      ","https://polycrystal.finance"]
+        ["PolyCrystal         ",`<a href="polycrystal"     >Various</a>`,"CRYSTAL      ","https://polycrystal.finance"],
+        ["Polyroll            ",`<a href="polyroll"        >Various</a>`,"ROLL         ","https://polyroll.org"]
       ]
   }
 
