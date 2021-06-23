@@ -59,6 +59,7 @@
     "clear": "^0.1.0",
     "cli-color": "^2.0.0",
     "console-table-printer": "^2.7.3",
+    "core-js": "^3.15.1",
     "diff": "^4.0.2",
     "dompurify": "^2.0.8",
     "ethcall": "3.0.0",
