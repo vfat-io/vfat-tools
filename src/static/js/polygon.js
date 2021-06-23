@@ -127,7 +127,8 @@ const main = async() => {
         ["Firebird            ",`<a href="firebird"        >Various</a>`,"HOPE         ","https://app.firebird.finance"],
         ["Polyroll            ",`<a href="polyroll"        >Various</a>`,"ROLL         ","https://polyroll.org"],
         ["FarmHero            ",`<a href="farmhero"        >Various</a>`,"HONOR        ","https://farmhero.io"],
-        ["PolyYield           ",`<a href="polyyield"       >Various</a>`,"YIELD        ","https://polyyield.finance"]
+        ["PolyYield           ",`<a href="polyyield"       >Various</a>`,"YIELD        ","https://polyyield.finance"],
+        ["PolyPulsar          ",`<a href="polypulsar"      >Various</a>`,"BPUL         ","https://www.polypulsar.farm"]
       ]
   }
 
