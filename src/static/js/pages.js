@@ -38,6 +38,7 @@ const main = async() => {
       ["Launchpool          ",`<a href="lpool/"             >Various</a>`,"LPOOL     ","https://staking.launchpool.xyz/"],
       ["MITH Cash           ",`<a href="mithcash/"          >Various</a>`,"MIS,MIC   ","https://mith.cash"],
       ["Optionroom          ",`<a href="optionroom"         >Various</a>`,"COURT     ","https://app.optionroom.finance"],
+      ["Pendle              ",`<a href="../pendle"          >Various</a>`,"PENDLE    ","https://app.pendle.finance"],
       ["Pickle              ",`<a href="pickle/"            >Various</a>`,"Pickle    ","https://pickle.finance/farms"],
       ["PowerIndex          ",`<a href="powerindex/"        >Various</a>`,"CVP       ","https://powerindex.io"],
       ["Ruler Protocol      ",`<a href="ruler/"             >Various</a>`,"RULER     ","https://app.rulerprotocol.com/app/farms"],
