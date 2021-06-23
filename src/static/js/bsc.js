@@ -171,7 +171,7 @@ const main = async() => {
       ["Jazz                ", `<a href="jazz"          >Various</a>`,"JAZZ             ","https://jazzdefi.com"],
       ["Defi Oasis          ", `<a href="oasis"         >Various</a>`,"OASIS            ","https://defioasis.finance"],
       ["APWars              ", `<a href="apwars"        >Various</a>`,"WGOLD            ","https://farms.apwars.farm"],
-      ["Evodefi             ", `<a href="evo"           >Various</a>`,"GEN              ","https://evodefi.com"],
+      ["Evodefi *           ", `<a href="evo"           >Various</a>`,"GENX             ","https://evodefi.com"],
       ["Phyto               ", `<a href="phyto"         >Various</a>`,"PHY              ","https://www.phyto.finance"],
       ["Parthenon Beta      ", `<a href="parthenon_beta">Various</a>`,"BETA             ","https://beta.parthenon.finance"],
       ["Grand               ", `<a href="grand"         >Various</a>`,"GRAND            ","https://www.thegrandbanks.finance"],
@@ -357,7 +357,8 @@ const main = async() => {
       ["Faxe Farm           ", `<a href="faxe"          >Various</a>`,"FAXE             ","https://www.faxe.farmwiki.xyz"],
       ["Halvar Farm         ", `<a href="halvar"        >Various</a>`,"HALVAR           ","https://www.halvar.farmwiki.xyz"],
       ["Seedmoney           ", `<a href="seedmoney"     >Various</a>`,"SEEDS/SEEDLINGS  ","https://app.seedmoneyfinance.com"],
-      ["WhaleFarm           ", `<a href="whalefarm"     >Various</a>`,"WHALE            ","https://whalefarm.finance"]
+      ["WhaleFarm           ", `<a href="whalefarm"     >Various</a>`,"WHALE            ","https://whalefarm.finance"],
+      ["Lego                ", `<a href="lego"          >Various</a>`,"LEGO             ","https://legofarming.club"]
     ]}
 
 
