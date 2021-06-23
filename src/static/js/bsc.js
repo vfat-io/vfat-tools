@@ -353,7 +353,9 @@ const main = async() => {
       ["Thoreum             ", `<a href="thoreum"       >Various</a>`,"THOREUM       ","https://thoreum.finance"],
       ["BTCST               ", `<a href="btcst"         >Various</a>`,"BTCST         ","https://app.btcst.finance"],
       ["SpaceBsc            ", `<a href="space_bsc"     >Various</a>`,"SPACEBSC      ","https://www.bsc.space-defi.com"],
-      ["Popit Finance       ", `<a href="popit"         >Various</a>`,"POPIT         ","https://popit.farm"]
+      ["Popit Finance       ", `<a href="popit"         >Various</a>`,"POPIT         ","https://popit.farm"],
+      ["Faxe Farm           ", `<a href="faxe"          >Various</a>`,"FAXE          ","https://www.faxe.farmwiki.xyz"],
+      ["Halvar Farm         ", `<a href="halvar"        >Various</a>`,"HALVAR        ","https://www.halvar.farmwiki.xyz"]
     ]}
 
   let table = new AsciiTable().fromJSON(tableData);
