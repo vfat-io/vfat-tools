@@ -360,6 +360,7 @@ const main = async() => {
       ["WhaleFarm           ", `<a href="whalefarm"     >Various</a>`,"WHALE            ","https://whalefarm.finance"]
     ]}
 
+
   let table = new AsciiTable().fromJSON(tableData);
   document.getElementById('log').innerHTML += table + '<br />';
   hideLoading();
