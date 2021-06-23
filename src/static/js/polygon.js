@@ -128,7 +128,8 @@ const main = async() => {
         ["Polyroll            ",`<a href="polyroll"        >Various</a>`,"ROLL         ","https://polyroll.org"],
         ["FarmHero            ",`<a href="farmhero"        >Various</a>`,"HONOR        ","https://farmhero.io"],
         ["PolyYield           ",`<a href="polyyield"       >Various</a>`,"YIELD        ","https://polyyield.finance"],
-        ["PolyPulsar          ",`<a href="polypulsar"      >Various</a>`,"BPUL         ","https://www.polypulsar.farm"]
+        ["PolyPulsar          ",`<a href="polypulsar"      >Various</a>`,"BPUL         ","https://www.polypulsar.farm"],
+        ["Lego                ",`<a href="lego"            >Various</a>`,"LEGO         ","https://legofarming-polygon.club"]
       ]
   }
 
