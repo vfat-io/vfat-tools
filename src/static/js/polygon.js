@@ -8,7 +8,6 @@ const main = async() => {
     "title":"POLYGON Network",
     "heading":["Pool Provider","LP", "Reward Tokens", "INFO"],
       "rows": [
-        ["FarmHero           ",`<a href="farmhero"           >Various</a>`,"HONOR        ","https://farmhero.io"],
         ["Quickswap           ",`<a href="quick"           >Various</a>`,"QUICK        ","https://quickswap.exchange/#/quick"],
         ["Cometh              ",`<a href="cometh"          >Various</a>`,"MUST         ","https://swap.cometh.io/#/stake"],
         ["Dark                ",`<a href="dark"            >Various</a>`,"DB           ","https://www.dark.build"],
@@ -100,7 +99,6 @@ const main = async() => {
         ["PolyMax             ",`<a href="polymax"         >Various</a>`,"MAX          ","https://polymax.club"],
         ["PolySnowFarm        ",`<a href="polysnowfarm"    >Various</a>`,"SNOW         ","https://polysnow.farm"],
         ["Polyyeld            ",`<a href="polyyeld"        >Various</a>`,"YELD         ","https://polyyeld.finance"],
-        ["PolyYield           ",`<a href="polyyield"       >Various</a>`,"YIELD        ","https://polyyield.finance"],
         ["Polysa              ",`<a href="polysa"          >Various</a>`,"DUFF         ","https://www.polysa.finance"],
         ["Wault               ",`<a href="wault"           >Various</a>`,"WEXpoly      ","https://app.wault.finance/polygon/"],
         ["PolyHarvest         ",`<a href="polyharvest"     >Various</a>`,"WHEAT        ","https://www.polyharvest.finance"],
@@ -127,7 +125,9 @@ const main = async() => {
         ["Carousel            ",`<a href="carousel"        >Various</a>`,"CRS          ","https://carouselswap.com"],
         ["PolyCrystal         ",`<a href="polycrystal"     >Various</a>`,"CRYSTAL      ","https://polycrystal.finance"],
         ["Firebird            ",`<a href="firebird"        >Various</a>`,"HOPE         ","https://app.firebird.finance"],
-        ["Polyroll            ",`<a href="polyroll"        >Various</a>`,"ROLL         ","https://polyroll.org"]
+        ["Polyroll            ",`<a href="polyroll"        >Various</a>`,"ROLL         ","https://polyroll.org"],
+        ["FarmHero            ",`<a href="farmhero"        >Various</a>`,"HONOR        ","https://farmhero.io"],
+        ["PolyYield           ",`<a href="polyyield"       >Various</a>`,"YIELD        ","https://polyyield.finance"]
       ]
   }
 
