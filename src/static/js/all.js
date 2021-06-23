@@ -128,7 +128,8 @@ const main = async() => {
       ["Wild Credit                  ",`<a href="../wild"               >Various</a>`,"WILD               ","https://wild.credit"],
       ["Convergence                  ",`<a href="../convx"              >Various</a>`,"CONV               ","https://convx.conv.finance"],
       ["Abracadabra                  ",`<a href="../abracadabra"        >Various</a>`,"SPELL              ","https://abracadabra.money"],
-      ["Universe                     ",`<a href="../universe"           >Various</a>`,"XYZ                ","https://dao.universe.xyz/yield-farming"]
+      ["Universe                     ",`<a href="../universe"           >Various</a>`,"XYZ                ","https://dao.universe.xyz/yield-farming"],
+      ["Insta Dapp                   ",`<a href="../insta"              >Various</a>`,"INST               ","https://defi.instadapp.io"]
     ]
   }
 

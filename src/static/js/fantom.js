@@ -69,12 +69,6 @@ const main = async() => {
         "https://www.liquiddriver.finance"
       ],
       [
-        "Standard",
-        `<a href='standard'>Various</a>`,
-        "STRD",
-        "https://strd.finance"
-      ],
-      [
         "Mushrooms",
         `<a href='mushrooms'>Various</a>`,
         "MM",
@@ -105,7 +99,7 @@ const main = async() => {
         "https://waka.finance"
       ],
       [
-        "Elk",
+        "Elk *",
         `<a href='elk'>Various</a>`,
         "ELK",
         "https://app.elk.finance"
@@ -145,6 +139,12 @@ const main = async() => {
         `<a href='chad'>Various</a>`,
         "CHAD",
         "N/A"
+      ],
+      [
+        "Guru",
+        `<a href='guru'>Various</a>`,
+        "ELITE",
+        "https://ftm.guru"
       ]
     ]
   }
