@@ -171,7 +171,7 @@ const main = async() => {
       ["Jazz                ", `<a href="jazz"          >Various</a>`,"JAZZ             ","https://jazzdefi.com"],
       ["Defi Oasis          ", `<a href="oasis"         >Various</a>`,"OASIS            ","https://defioasis.finance"],
       ["APWars              ", `<a href="apwars"        >Various</a>`,"WGOLD            ","https://farms.apwars.farm"],
-      ["Evodefi             ", `<a href="evo"           >Various</a>`,"GEN              ","https://evodefi.com"],
+      ["Evodefi *           ", `<a href="evo"           >Various</a>`,"GENX             ","https://evodefi.com"],
       ["Phyto               ", `<a href="phyto"         >Various</a>`,"PHY              ","https://www.phyto.finance"],
       ["Parthenon Beta      ", `<a href="parthenon_beta">Various</a>`,"BETA             ","https://beta.parthenon.finance"],
       ["Grand               ", `<a href="grand"         >Various</a>`,"GRAND            ","https://www.thegrandbanks.finance"],
