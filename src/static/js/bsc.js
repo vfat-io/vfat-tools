@@ -357,7 +357,8 @@ const main = async() => {
       ["Faxe Farm           ", `<a href="faxe"          >Various</a>`,"FAXE             ","https://www.faxe.farmwiki.xyz"],
       ["Halvar Farm         ", `<a href="halvar"        >Various</a>`,"HALVAR           ","https://www.halvar.farmwiki.xyz"],
       ["Seedmoney           ", `<a href="seedmoney"     >Various</a>`,"SEEDS/SEEDLINGS  ","https://app.seedmoneyfinance.com"],
-      ["WhaleFarm           ", `<a href="whalefarm"     >Various</a>`,"WHALE            ","https://whalefarm.finance"]
+      ["WhaleFarm           ", `<a href="whalefarm"     >Various</a>`,"WHALE            ","https://whalefarm.finance"],
+      ["Lego                ", `<a href="lego"          >Various</a>`,"LEGO             ","https://legofarming.club"]
     ]}
 
 
