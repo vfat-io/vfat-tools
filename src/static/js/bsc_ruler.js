@@ -13,6 +13,8 @@ async function main() {
   const RULER_CHEF_ADDR = "0xC7Ea5Dc9278Bd6C05c40c298073cE827E196D82F";
   const RULER_CHEF = new ethers.Contract(RULER_CHEF_ADDR, RULER_CHEF_ABI, App.provider);
 
+  const poolList = await RULER_CHEF.getPoolList();
+
   const tokens = {};
   const prices = await getBscPrices();
 
