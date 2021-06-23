@@ -69,12 +69,6 @@ const main = async() => {
         "https://www.liquiddriver.finance"
       ],
       [
-        "Standard",
-        `<a href='standard'>Various</a>`,
-        "STRD",
-        "https://strd.finance"
-      ],
-      [
         "Mushrooms",
         `<a href='mushrooms'>Various</a>`,
         "MM",
@@ -127,6 +121,30 @@ const main = async() => {
         `<a href='shadow'>Various</a>`,
         "Various",
         "https://shadowswap.app"
+      ],
+      [
+        "Borgswap",
+        `<a href='borgswap'>Various</a>`,
+        "KLING",
+        "https://klingftm.borgswap.exchange"
+      ],
+      [
+        "Opera",
+        `<a href='opera'>Various</a>`,
+        "OPERA",
+        "https://www.operaswap.finance"
+      ],
+      [
+        "Chad",
+        `<a href='chad'>Various</a>`,
+        "CHAD",
+        "N/A"
+      ],
+      [
+        "Guru",
+        `<a href='guru'>Various</a>`,
+        "ELITE",
+        "https://ftm.guru"
       ]
     ]
   }
