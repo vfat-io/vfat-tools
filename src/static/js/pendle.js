@@ -90,7 +90,8 @@ async function loadLiquidityMiningInfo(App, farm, rewardTokenPrice, rewardsProxy
 
   let liquidityRewards;
   try {
-    liquidityRewards = (await REWARDS_PROXY.callStatic.redeemLiquidityRewards(farm.staking, [expiry], App.YOUR_ADDRESS)).rewards
+    liquidityRewards = await REWARDS_PROXY.callStatic.redeemLiquidityRewards(farm.staking, [expiry], App.YOUR_ADDRESS)
+    liquidityRewards = liquidityRewards.rewards
   } catch {
     liquidityRewards = 0;
   }  
@@ -163,8 +164,8 @@ async function printLiquidityMiningInfo(App, info, rewardTokenTicker, rewardToke
     const STAKING = new ethers.Contract(info.farm.staking, PENDLE_LIQUIDITY_MINING_ABI, signer)
 
     const maxAllowance = ethers.constants.MaxUint256
-    const balanceOf = await MARKET.balanceOf(App.YOUR_ADDRESS)
-    const current = balanceOf / 1e18
+    const balance = await MARKET.balanceOf(App.YOUR_ADDRESS)
+    const current = balance / 1e18
     const allowed = await MARKET.allowance(App.YOUR_ADDRESS, info.farm.staking)
 
     let allow = Promise.resolve()
@@ -187,7 +188,7 @@ async function printLiquidityMiningInfo(App, info, rewardTokenTicker, rewardToke
 
       allow
         .then(async function() {
-          STAKING.stake(info.expiry, balanceOf)
+          STAKING.stake(info.expiry, balance)
             .then(function(t) {
               App.provider.waitForTransaction(t.hash).then(function() {
                 hideLoading()
@@ -213,11 +214,12 @@ async function printLiquidityMiningInfo(App, info, rewardTokenTicker, rewardToke
     const signer = App.provider.getSigner()
 
     const STAKING = new ethers.Contract(info.farm.staking, PENDLE_LIQUIDITY_MINING_ABI, signer)
+    const balance = await STAKING.getBalances(info.expiry, App.YOUR_ADDRESS)
 
-    if (info.userStaked > 0) {
+    if (parseInt(balance) > 0) {
       showLoading()
 
-      STAKING.withdraw(info.expiry, info.userStaked * 1e18)
+      STAKING.withdraw(info.expiry, balance)
         .then(function(t) {
           return App.provider.waitForTransaction(t.hash)
         })
@@ -278,14 +280,14 @@ async function loadSingleSidedInfo(App, pool, rewardTokenAddress, rewardTokenPri
   const POOL = new ethers.Contract(pool.staking, PENDLE_SINGLE_STAKING_ABI, App.provider)
   const MANAGER = new ethers.Contract(pool.manager, PENDLE_SINGLE_STAKING_MANAGER_ABI, App.provider)
 
-  const pendleStaked = parseFloat(await PENDLE.balanceOf(pool.staking)) / 1e18
+  const pendleStaked = parseFloat(await POOL.totalSupply()) / 1e18
   const tvl = pendleStaked * rewardTokenPrice
-  const rewardPerBlock = parseFloat(await MANAGER.rewardPerBlock()) / 1e18
-  const rewardPerBlockUSD = rewardPerBlock * rewardTokenPrice
-  const userAvailableToStake = parseFloat(await PENDLE.balanceOf(App.YOUR_ADDRESS)) / 1e18
-  const userStaked = parseFloat(await POOL.balances(App.YOUR_ADDRESS)) / 1e18
-  const userStakedUSD = userStaked * rewardTokenPrice
-  const userPoolOwnership = userStaked / pendleStaked * 100
+  const rewardPerBlock = parseFloat(await MANAGER.rewardPerBlock())
+  const rewardPerBlockUSD = rewardPerBlock / 1e18 * rewardTokenPrice
+  const userAvailableToStake = parseFloat(await PENDLE.balanceOf(App.YOUR_ADDRESS))
+  const userShare = await POOL.balances(App.YOUR_ADDRESS)
+  const userShareUSD = parseFloat(userShare) / 1e18 * rewardTokenPrice
+  const userPoolOwnership = (parseFloat(userShare) / 1e18) / pendleStaked * 100
 
   return {
     pool,
@@ -294,8 +296,8 @@ async function loadSingleSidedInfo(App, pool, rewardTokenAddress, rewardTokenPri
     rewardPerBlock,
     rewardPerBlockUSD,
     userAvailableToStake,
-    userStaked,
-    userStakedUSD,
+    userShare,
+    userShareUSD,
     userPoolOwnership,
   }
 }
@@ -305,21 +307,21 @@ async function printSingleSidedInfo(App, info, rewardTokenTicker, rewardTokenAdd
     `<a href='https://app.pendle.finance/farm' target='_blank'>${rewardTokenTicker} SINGLE STAKING POOL</a> TVL: $${formatMoney(info.tvl)}`
   )
   _print(`${rewardTokenTicker} Price: $${displayPrice(rewardTokenPrice)}`)
-  _print(`${rewardTokenTicker} Per Block: ${info.rewardPerBlock} ($${formatMoney(info.rewardPerBlockUSD)})`)
+  _print(`${rewardTokenTicker} Per Block: ${info.rewardPerBlock / 1e18} ($${formatMoney(info.rewardPerBlockUSD)})`)
 
-  const yearlyAPR = (info.rewardPerBlock * 365 * 86400 / 13.1) / info.pendleStaked * 100 // avg 13.1 seconds block time
+  const yearlyAPR = ((info.rewardPerBlock / 1e18) * 365 * 86400 / 13.1) / info.pendleStaked * 100 // avg 13.1 seconds block time
   const weeklyAPR = yearlyAPR / 52
   const dailyAPR = yearlyAPR / 365
 
   _print(`APR: Day ${dailyAPR.toFixed(2)}% Week ${weeklyAPR.toFixed(2)}% Year ${yearlyAPR.toFixed(2)}%`)
-  _print(`Total Staked: ${(info.pendleStaked).toFixed(4)} ${rewardTokenTicker} ($${formatMoney(info.tvl)})`)
+  _print(`Total Staked: ${formatMoney(info.pendleStaked)} ${rewardTokenTicker} ($${formatMoney(info.tvl)})`)
   _print(
-    `You are staking ${info.userStaked.toFixed(18)} ${rewardTokenTicker} ` +
-      `$${formatMoney(info.userStakedUSD)} (${info.userPoolOwnership.toFixed(2)}% of the pool).`
+    `You are staking ${formatMoney(parseFloat(info.userShare) / 1e18)} ${rewardTokenTicker} ` +
+      `$${formatMoney(info.userShareUSD)} (${info.userPoolOwnership.toFixed(5)}% of the pool).`
   )
 
-  if (info.userStaked > 0) {
-    const userYearlyRewards = (info.userPoolOwnership / 100) * (info.rewardPerBlock * 365 * 86400 / 13.1)
+  if (parseFloat(info.userShare) > 0) {
+    const userYearlyRewards = (info.userPoolOwnership / 100) * ((info.rewardPerBlock / 1e18) * 365 * 86400 / 13.1)
     const userWeeklyRewards = userYearlyRewards / 52
     const userDailyRewards = userYearlyRewards / 365
     _print(
@@ -339,7 +341,7 @@ async function printSingleSidedInfo(App, info, rewardTokenTicker, rewardTokenAdd
     const maxAllowance = ethers.constants.MaxUint256
     const balanceOf = await PENDLE.balanceOf(App.YOUR_ADDRESS)
     const current = balanceOf / 1e18
-    const allowed = await PENDLE.allowance(App.YOUR_ADDRESS, info.farm.staking)
+    const allowed = await PENDLE.allowance(App.YOUR_ADDRESS, info.pool.staking)
 
     let allow = Promise.resolve()
 
@@ -361,7 +363,7 @@ async function printSingleSidedInfo(App, info, rewardTokenTicker, rewardTokenAdd
 
       allow
         .then(async function() {
-          POOL.stake(balanceOf)
+          POOL.enter(balanceOf)
             .then(function(t) {
               App.provider.waitForTransaction(t.hash).then(function() {
                 hideLoading()
@@ -388,10 +390,10 @@ async function printSingleSidedInfo(App, info, rewardTokenTicker, rewardTokenAdd
 
     const POOL = new ethers.Contract(info.pool.staking, PENDLE_SINGLE_STAKING_ABI, signer)
 
-    if (info.userShare > 0) {
+    if (parseFloat(info.userShare) > 0) {
       showLoading()
 
-      STAKING.withdraw(info.userShare * 1e18)
+      POOL.leave(info.userShare)
         .then(function(t) {
           return App.provider.waitForTransaction(t.hash)
         })
@@ -418,8 +420,8 @@ async function printSingleSidedInfo(App, info, rewardTokenTicker, rewardTokenAdd
   }
 
   _print(`<a target="_blank" href="https://etherscan.io/address/${info.pool.staking}#code">Etherscan</a>`)
-  _print_link(`Stake ${info.userAvailableToStake.toFixed(18)} ${rewardTokenTicker}`, approveAndStake)
-  _print_link(`Unstake ${info.userStaked.toFixed(18)} ${rewardTokenTicker}`, unstake)
+  _print_link(`Stake ${formatMoney(info.userAvailableToStake / 1e18)} ${rewardTokenTicker}`, approveAndStake)
+  _print_link(`Unstake ${formatMoney(info.userShare / 1e18)} ${rewardTokenTicker}`, unstake)
   _print_link(`Revoke (set approval to 0)`, revoke)
   _print('')
 }
