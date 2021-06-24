@@ -145,6 +145,12 @@ const main = async() => {
         `<a href='guru'>Various</a>`,
         "ELITE",
         "https://ftm.guru"
+      ],
+      [
+        "Rediant",
+        `<a href="rediant">Various</a>`,
+        "RDT",
+        "https://rediant.finance"
       ]
     ]
   }

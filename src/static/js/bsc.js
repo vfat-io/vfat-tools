@@ -171,7 +171,7 @@ const main = async() => {
       ["Jazz                ", `<a href="jazz"          >Various</a>`,"JAZZ             ","https://jazzdefi.com"],
       ["Defi Oasis          ", `<a href="oasis"         >Various</a>`,"OASIS            ","https://defioasis.finance"],
       ["APWars              ", `<a href="apwars"        >Various</a>`,"WGOLD            ","https://farms.apwars.farm"],
-      ["Evodefi             ", `<a href="evo"           >Various</a>`,"GEN              ","https://evodefi.com"],
+      ["Evodefi *           ", `<a href="evo"           >Various</a>`,"GENX             ","https://evodefi.com"],
       ["Phyto               ", `<a href="phyto"         >Various</a>`,"PHY              ","https://www.phyto.finance"],
       ["Parthenon Beta      ", `<a href="parthenon_beta">Various</a>`,"BETA             ","https://beta.parthenon.finance"],
       ["Grand               ", `<a href="grand"         >Various</a>`,"GRAND            ","https://www.thegrandbanks.finance"],
@@ -265,7 +265,7 @@ const main = async() => {
       ["YieldFields         ", `<a href="yieldfields"   >Various</a>`,"FIELD            ","https://yieldfields.finance"],
       ["Tiger               ", `<a href="tiger"         >Various</a>`,"TIGER            ","https://www.tigerswapdefi.com"],
       ["Parthenon Theta     ", `<a href="parthenon_theta">Various</a>`,"THETA           ","https://theta.parthenon.finance"],
-      ["Fuse                ", `<a href="fuse_bsc"      >Various</a>`,"FUSE             ","https://fuse.io"],
+      ["Fuse *              ", `<a href="fuse_bsc"      >Various</a>`,"FUSE             ","https://fuse.io"],
       ["Otter Finance       ", `<a href="otter"         >Various</a>`,"OTT              ","https://otterdefi.com"],
       ["Greenbelt LH        ", `<a href="greenbelt"     >Various</a>`,"LH               ","https://greenbelt.finance"],
       ["Frankenstein        ", `<a href="frankenstein"  >Various</a>`,"FRANK            ","https://frankenstein.finance"],
@@ -357,8 +357,12 @@ const main = async() => {
       ["Faxe Farm           ", `<a href="faxe"          >Various</a>`,"FAXE             ","https://www.faxe.farmwiki.xyz"],
       ["Halvar Farm         ", `<a href="halvar"        >Various</a>`,"HALVAR           ","https://www.halvar.farmwiki.xyz"],
       ["Seedmoney           ", `<a href="seedmoney"     >Various</a>`,"SEEDS/SEEDLINGS  ","https://app.seedmoneyfinance.com"],
+      ["WhaleFarm           ", `<a href="whalefarm"     >Various</a>`,"WHALE            ","https://whalefarm.finance"],
+      ["Lego                ", `<a href="lego"          >Various</a>`,"LEGO             ","https://legofarming.club"],
+      ["Rediant             ", `<a href="rediant"       >Various</a>`,"RDT              ","https://rediant.finance"],
       ["Ruler Protocol      ", `<a href="ruler"         >Various</a>`,"RULER            ","https://app.rulerprotocol.com/app/farms"]
     ]}
+
 
   let table = new AsciiTable().fromJSON(tableData);
   document.getElementById('log').innerHTML += table + '<br />';
