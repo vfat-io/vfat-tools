@@ -88,14 +88,19 @@ async function loadLiquidityMiningInfo(App, farm, rewardTokenPrice, rewardsProxy
   const userPoolOwnership = userStaked / (lpStaked / 1e18) * 100
   const userAvailableToStake = parseFloat(await MARKET.balanceOf(App.YOUR_ADDRESS)) / 1e18
 
-  let liquidityRewards;
+  let liquidityRewards = 0;
+  let pendingRewards = 0;
   try {
     liquidityRewards = await REWARDS_PROXY.callStatic.redeemLiquidityRewards(farm.staking, [expiry], App.YOUR_ADDRESS)
+
+    for (let i = 0; i < liquidityRewards.pendingRewards.length; i++) {
+      pendingRewards += parseInt(liquidityRewards.pendingRewards[i])
+    }
+
     liquidityRewards = liquidityRewards.rewards
-  } catch {
-    liquidityRewards = 0;
-  }  
+  } catch {}  
   const userClaimableRewards = liquidityRewards / 1e18
+  const userPendingRewards = pendingRewards / 1e18
 
   return  {
     farm,
@@ -117,6 +122,7 @@ async function loadLiquidityMiningInfo(App, farm, rewardTokenPrice, rewardsProxy
     userPoolOwnership,
     userAvailableToStake,
     userClaimableRewards,
+    userPendingRewards,
     ytPoolBalance,
     tokenPoolBalance,
     epochDuration,
@@ -156,6 +162,12 @@ async function printLiquidityMiningInfo(App, info, rewardTokenTicker, rewardToke
         ` Year ${formatMoney(userYearlyRewards)} ($${formatMoney(userYearlyRewards * rewardTokenPrice)})`
     )
   }
+
+  _print(
+    `Accrued rewards: ${(info.userClaimableRewards + info.userPendingRewards).toFixed(3)} ${rewardTokenTicker} ` +
+    `($${formatMoney((info.userClaimableRewards + info.userPendingRewards) * rewardTokenPrice)}) ` +
+    `[Claimable: ${info.userClaimableRewards.toFixed(3)} ${rewardTokenTicker} ($${formatMoney(info.userClaimableRewards)})]`
+  )
 
   const approveAndStake = async function() {
     const signer = App.provider.getSigner()
@@ -267,8 +279,7 @@ async function printLiquidityMiningInfo(App, info, rewardTokenTicker, rewardToke
   _print_link(`Stake ${info.userAvailableToStake.toFixed(18)} ${info.marketSymbol}`, approveAndStake)
   _print_link(`Withdraw ${info.userStaked.toFixed(18)} ${info.marketSymbol}`, withdraw)
   _print_link(
-    `Claim ${info.userClaimableRewards.toFixed(3)} ${rewardTokenTicker} ($${formatMoney(info.userClaimableRewards * rewardTokenPrice)}) ` +
-    `[rewards up to current Epoch]`,
+    `Claim ${info.userClaimableRewards.toFixed(3)} ${rewardTokenTicker} ($${formatMoney(info.userClaimableRewards * rewardTokenPrice)})`,
     claim
   )
   _print_link(`Revoke (set approval to 0)`, revoke)
@@ -443,7 +454,8 @@ async function main() {
   _print('- Liquidity Mining contracts can support multiple expiries.')
   _print('- As all PendleMarket LPs are 18 decimals, the LP price shown would be')
   _print('  equivalent to LP / 10^BASE_TOKEN_DECIMALS, or e.g. every')
-  _print('  0.000001 LP for the YT-aUSDC-USDC pool as USDC is 6 decimals.\n')
+  _print('  0.000001 LP for the YT-aUSDC-USDC pool as USDC is 6 decimals.')
+  _print(`- Accrued ${rewardTokenTicker} rewards linearly vests over 5 epochs.\n`)
 
   let info
   for (i in FARMS) {
