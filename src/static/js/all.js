@@ -17,6 +17,7 @@ const main = async() => {
       ["BIOPset                      ",`<a href="../biopset"           >BIOP-ETH</a>`,"BIOP               ","https://biopset.com"],
       ["Daiq                         ",`<a href="../daiq"               >Various</a>`,"DAIQ               ","https://daiq.io"],
       ["Debase                       ",`<a href="../debase"             >Various</a>`,"DEBASE             ","https://debaseonomics.io"],
+      ["Dopex                        ",`<a href="dopex/"                >Various</a>`,"DPX, rDPX          ","https://app.dopex.io/farms"],
       ["Dynamic Set Dollar           ",`<a href="../dsd/"               >Various</a>`,"DSD                ","https://dsd.finance/app"],
       ["Empty Set Dollar             ",`<a href="../esd/"               >Various</a>`,"ESD                ","https://app.emptyset.finance"],
       ["Frax Finance                 ",`<a href="../frax/"              >Various</a>`,"FXS                ","https://app.frax.finance"],
