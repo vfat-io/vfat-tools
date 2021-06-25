@@ -361,7 +361,8 @@ const main = async() => {
       ["Lego                ", `<a href="lego"          >Various</a>`,"LEGO             ","https://legofarming.club"],
       ["Rediant             ", `<a href="rediant"       >Various</a>`,"RDT              ","https://rediant.finance"],
       ["Ruler Protocol      ", `<a href="ruler"         >Various</a>`,"RULER            ","https://app.rulerprotocol.com/app/farms"],
-      ["Frozencake          ", `<a href="frozencake"    >Various</a>`,"FROZEN           ","https://www.frozencake.finance"]
+      ["Frozencake          ", `<a href="frozencake"    >Various</a>`,"FROZEN           ","https://www.frozencake.finance"],
+      ["Fox Finance          ", `<a href="foxfinance"    >Various</a>`,"FOX              ","https://www.foxfinance.org"]
     ]}
 
 
