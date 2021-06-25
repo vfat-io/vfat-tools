@@ -22,7 +22,7 @@ async function main() {
    if(currentBlock < startBlock){
      _print(`Rewards will start at block ${startBlock}\n`);
    }else{
-    rewardsPerWeek = await LAVA_CHEF.lavaPerBlock() /1e18
+    rewardsPerWeek = await WHALE_CHEF.whalePerBlock() /1e18
         * 604800 / 3;
    }
    _print(`You can harvest your rewards from block ${harvestBlock} and will have 24hours to Harvest then a new Harvest Lockup cycle starts\n`);
