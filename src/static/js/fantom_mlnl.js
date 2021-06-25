@@ -8,7 +8,7 @@ const BEEFY_STRATEGY_ABI = [{"inputs":[{"internalType":"address","name":"_lpPair
 
 const Address = [
   "0x7535b2d72d2b58AFAb7F643EaAdAf529499e7BaC",
-  "0x95ae4e5071FE9490f7F23192A7d6B2c997D27628",
+  "0xF2aeE145AD68aBDaDf7Aec67b23a300f4D73d6a4",
 ]
   
   async function main() {
