@@ -157,6 +157,12 @@ const main = async() => {
         `<a href="mlnl">Various</a>`,
         "Various",
         "https://milfinance.xyz"
+      ],
+      [
+        "Yorocoon",
+        `<a href="yorocoon">Various</a>`,
+        "CATNIP",
+        "https://yorocoon.com"
       ]
     ]
   }
