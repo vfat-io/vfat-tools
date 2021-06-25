@@ -364,7 +364,8 @@ const main = async() => {
       ["Frozencake          ", `<a href="frozencake"    >Various</a>`,"FROZEN           ","https://www.frozencake.finance"],
       ["Fox Finance         ", `<a href="foxfinance"    >Various</a>`,"FOX              ","https://www.foxfinance.org"],
       ["Cardboard Finance   ", `<a href="cardboard"     >Various</a>`,"CARDBOARD        ","https://cardboard.finance"],
-      ["Yogi                ", `<a href="yogi"          >Various</a>`,"YOGI             ","https://bsc.farms.yogi.fi"]
+      ["Yogi                ", `<a href="yogi"          >Various</a>`,"YOGI             ","https://bsc.farms.yogi.fi"],
+      ["Tomahawk            ", `<a href="tomahawk"      >Various</a>`,"TOMAHAWK         ","https://tomahawk.farm"]
     ]}
 
 
