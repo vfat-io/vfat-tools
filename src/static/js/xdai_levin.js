@@ -15,12 +15,12 @@ async function main() {
   const prices = await getXdaiPrices();
 
   const blockNumber = await App.provider.getBlockNumber();
-  const multiplier = await LEVIN.getMultiplier(blockNumber, blockNumber+1);
-  const rewardPerBlock = await LEVIN.REWARD_PER_BLOCK();
+  const multiplier = await LEVIN.BONUS_MULTIPLIER ();
+  const rewardPerBlock = await LEVIN.sushiPerBlock();
   const rewardsPerWeek = rewardPerBlock / 1e18 * multiplier * 604800 / 5
 
   await loadXdaiChefContract(App, tokens, prices, LEVIN, LEVIN_ADDR, LEVIN_ABI, "LEVIN",
-      "Levin", null, rewardsPerWeek, "pendingReward");
+      "sushi", null, rewardsPerWeek, "pendingSushi");
 
   hideLoading();
 }
