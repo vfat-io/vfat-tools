@@ -148,11 +148,46 @@ async function getBscCurveToken(App, curve, address, stakingAddress, minterAddre
   };
 }
 
+async function getBscBalancerPool(App, pool, poolAddress, stakingAddress, tokens, smartToken) {
+  let decimals = await pool.decimals();
+  let symbol = await pool.symbol();
+  let name = await pool.name();
+  let totalSupply = await pool.totalSupply();
+  let staked = await pool.balanceOf(stakingAddress);
+  const unstaked = await pool.balanceOf(App.YOUR_ADDRESS);
+  let poolTokens = [];
+  for (const t of tokens) {
+    poolTokens.push({ address: t, weight: await pool.getNormalizedWeight(t) / 1e18, balance: await pool.getBalance(t) })
+};
+  if (smartToken) {
+    totalSupply = await smartToken.totalSupply();
+    staked = await smartToken.balanceOf(stakingAddress);
+    unstaked = await smartToken.balanceOf(App.YOUR_ADDRESS);
+  }
+  return {
+      symbol,
+      name,
+      address: poolAddress,
+      poolTokens, //address, weight and balance
+      totalSupply: totalSupply / 10 ** decimals,
+      stakingAddress,
+      staked: staked / 10 ** decimals,
+      decimals: decimals,
+      unstaked: unstaked / 10 ** decimals,
+      contract: pool,
+      tokens
+  };
+}
+
 async function getBscStoredToken(App, tokenAddress, stakingAddress, type) {
   switch (type) {
     case "uniswap": 
       const pool = new ethers.Contract(tokenAddress, UNI_ABI, App.provider);
       return await getBscUniPool(App, pool, tokenAddress, stakingAddress);
+    case "balancer":
+      const bal = new ethers.Contract(tokenAddress, BALANCER_POOL_ABI, App.provider);
+      const tokens = await bal.getFinalTokens();
+      return await getBscBalancerPool(App, bal, tokenAddress, stakingAddress, tokens);
     case "swap": 
       const _3pool = new ethers.Contract(tokenAddress, BSC_3POOL_ABI, App.provider);
       const swap = await _3pool.swap();
@@ -189,6 +224,15 @@ async function getBscToken(App, tokenAddress, stakingAddress) {
       const valuePool = await getValuePool(App, vpool, tokenAddress, stakingAddress, tokenWeights);
       window.localStorage.setItem(tokenAddress, "value");
       return valuePool;
+    }
+    catch(err) {
+    }
+    try {
+      const bal = new ethers.Contract(tokenAddress, BALANCER_POOL_ABI, App.provider);
+      const tokens = await bal.getFinalTokens();
+      const balPool = await getBscBalancerPool(App, bal, tokenAddress, stakingAddress, tokens);
+      window.localStorage.setItem(tokenAddress, "balancer");
+      return balPool;
     }
     catch(err) {
     }
