@@ -151,6 +151,12 @@ const main = async() => {
         `<a href="rediant">Various</a>`,
         "RDT",
         "https://rediant.finance"
+      ],
+      [
+        "Mlnl",
+        `<a href="mlnl">Various</a>`,
+        "Various",
+        "https://milfinance.xyz"
       ]
     ]
   }
