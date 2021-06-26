@@ -367,7 +367,8 @@ const main = async() => {
       ["Yogi                ", `<a href="yogi"          >Various</a>`,"YOGI             ","https://bsc.farms.yogi.fi"],
       ["Tomahawk            ", `<a href="tomahawk"      >Various</a>`,"TOMAHAWK         ","https://tomahawk.farm"],
       ["Cookiebake          ", `<a href="cookiebake"    >Various</a>`,"CHIPS            ","https://cookiebake.finance"],
-      ["Supermanion         ", `<a href="supermanion"   >Various</a>`,"SMAN             ","https://supermanion.com"]
+      ["Supermanion         ", `<a href="supermanion"   >Various</a>`,"SMAN             ","https://supermanion.com"],
+      ["WorldSwap Berlin 🥨 ", `<a href="worldswap_ber" >Various</a>`,"BER              ","https://berlin.worldswap.finance"]
     ]}
 
 
