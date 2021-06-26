@@ -132,7 +132,8 @@ const main = async() => {
         ["Lego                ",`<a href="lego"            >Various</a>`,"LEGO         ","https://legofarming-polygon.club"],
         ["FairyFarming        ",`<a href="fairy"           >Various</a>`,"FAIRY        ","https://fairyfarming.world"],
         ["Rediant             ",`<a href="rediant"         >Various</a>`,"RDT          ","https://rediant.finance"],
-        ["StonkZFarm          ",`<a href="stonkzfarm"      >Various</a>`,"STONKZ       ","https://stonkz.farm"]
+        ["StonkZFarm          ",`<a href="stonkzfarm"      >Various</a>`,"STONKZ       ","https://stonkz.farm"],
+        ["Autofarm            ",`<a href="autofarm"        >Various</a>`,"Various      ","https://autofarm.network/polygon"]
       ]
   }
 
