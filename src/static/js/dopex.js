@@ -10,22 +10,13 @@ async function main() {
   _print(`Initialized ${App.YOUR_ADDRESS}\n`);
   _print("Reading smart contracts...\n");
 
-  const Pools = [{
-    address : "0xCE4D3E893f060Cb14B550B3E6B0AD512BEF30995",
-    abi : STAKINGREWARDS_ABI,
-  }, {
-    address : "0x2A52330Be21D311A7a3f40dAcbFEE8978541B74a",
-    abi : STAKINGREWARDS_ABI,
-  }, {
-    address : "0x175029c85B14C326C83c9f83D4A21Ca339F44Cb5",
-    abi : STAKINGREWARDS_ABI,
-  }]
+  const pools = ["0xCE4D3E893f060Cb14B550B3E6B0AD512BEF30995", "0x2A52330Be21D311A7a3f40dAcbFEE8978541B74a", "0x175029c85B14C326C83c9f83D4A21Ca339F44Cb5"]
 
   let tokens = {};
   let prices = {};
 
-  Pools.forEach(async (Pool) => {
-    await loadDopexSynthetixPools(App, tokens, prices, STAKINGREWARDS_ABI, Pool.address);
+  pools.forEach(async (pool) => {
+    await loadDopexSynthetixPools(App, tokens, prices, STAKINGREWARDS_ABI, pool);
   });
 
   hideLoading();
