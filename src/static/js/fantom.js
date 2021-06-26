@@ -69,6 +69,12 @@ const main = async() => {
         "https://www.liquiddriver.finance"
       ],
       [
+        "Balloon Farms",
+        `<a href='balloon'>Various</a>`,
+        "BALLOON",
+        "https://www.fantomballoons.com"
+      ],
+      [
         "Mushrooms",
         `<a href='mushrooms'>Various</a>`,
         "MM",
