@@ -360,7 +360,14 @@ const main = async() => {
       ["WhaleFarm           ", `<a href="whalefarm"     >Various</a>`,"WHALE            ","https://whalefarm.finance"],
       ["Lego                ", `<a href="lego"          >Various</a>`,"LEGO             ","https://legofarming.club"],
       ["Rediant             ", `<a href="rediant"       >Various</a>`,"RDT              ","https://rediant.finance"],
-      ["Ruler Protocol      ", `<a href="ruler"         >Various</a>`,"RULER            ","https://app.rulerprotocol.com/app/farms"]
+      ["Ruler Protocol      ", `<a href="ruler"         >Various</a>`,"RULER            ","https://app.rulerprotocol.com/app/farms"],
+      ["Frozencake          ", `<a href="frozencake"    >Various</a>`,"FROZEN           ","https://www.frozencake.finance"],
+      ["Fox Finance         ", `<a href="foxfinance"    >Various</a>`,"FOX              ","https://www.foxfinance.org"],
+      ["Cardboard Finance   ", `<a href="cardboard"     >Various</a>`,"CARDBOARD        ","https://cardboard.finance"],
+      ["Yogi                ", `<a href="yogi"          >Various</a>`,"YOGI             ","https://bsc.farms.yogi.fi"],
+      ["Tomahawk            ", `<a href="tomahawk"      >Various</a>`,"TOMAHAWK         ","https://tomahawk.farm"],
+      ["Cookiebake          ", `<a href="cookiebake"    >Various</a>`,"CHIPS            ","https://cookiebake.finance"],
+      ["Supermanion         ", `<a href="supermanion"   >Various</a>`,"SMAN             ","https://supermanion.com"]
     ]}
 
 

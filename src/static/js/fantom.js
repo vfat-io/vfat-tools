@@ -151,7 +151,25 @@ const main = async() => {
         `<a href="rediant">Various</a>`,
         "RDT",
         "https://rediant.finance"
-      ]
+      ],
+      [
+        "Mlnl",
+        `<a href="mlnl">Various</a>`,
+        "Various",
+        "https://milfinance.xyz"
+      ],
+      [
+        "Yorocoon",
+        `<a href="yorocoon">Various</a>`,
+        "CATNIP",
+        "https://yorocoon.com"
+      ],
+      [
+        "Balloon Farms",
+        `<a href='balloonfarms'>Various</a>`,
+        "BALLOON",
+        "https://www.fantomballoons.com"
+      ],
     ]
   }
 
