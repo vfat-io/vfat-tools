@@ -68,7 +68,6 @@ const main = async() => {
         "LQDR",
         "https://www.liquiddriver.finance"
       ],
-      [
         "Mushrooms",
         `<a href='mushrooms'>Various</a>`,
         "MM",
@@ -166,7 +165,7 @@ const main = async() => {
       ],
       [
         "Balloon Farms",
-        `<a href='balloon'>Various</a>`,
+        `<a href='balloonfarms'>Various</a>`,
         "BALLOON",
         "https://www.fantomballoons.com"
       ],
