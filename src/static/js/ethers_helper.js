@@ -2557,6 +2557,9 @@ async function printSynthetixPool(App, info, chain="eth", customURLs) {
       case "fuse":
         _print(`<a target="_blank" href="https://explorer.fuse.io/address/${info.stakingAddress}#code">FUSE Scan</a>`);
         break;
+      case "xdai":
+        _print(`<a target="_blank" href="https://blockscout.com/xdai/mainnet/address/${info.stakingAddress}/contracts">Explorer</a>`);
+        break;
     }
     if (info.stakeTokenTicker != "ETH") {
       _print_link(`Stake ${info.userUnstaked.toFixed(6)} ${info.stakeTokenTicker}`, approveTENDAndStake)
