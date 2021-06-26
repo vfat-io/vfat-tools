@@ -466,26 +466,25 @@ async function main() {
   let rewardsPerWeek = 0
   if (currentBlock < startBlock) {
     _print(`Rewards start at block ${startBlock}\n`)
-    _print(`Start countdown: https://polygonscan.com/block/countdown/${startBlock}\n`)
   }
 
   rewardsPerWeek = (((await NINJA_CHEF.ninjaPerBlock()) / 1e18) * 604800) / 2.1
 
   const tokens = {}
-  const prices = await getMaticPrices()
-
-  await loadMaticChefContract(
+  let prices = await getMaticPrices()
+  prices['0x1F1b5ce5fEDb6F27Db51C4d5e885d952f8371257'] = await loadMaticChefContract(
     App,
     tokens,
     prices,
-    DPS_CHEF,
-    DPS_CHEF_ADDR,
-    DPS_CHEF_ABI,
+    NINJA_CHEF,
+    NINJA_CHEF_ADDR,
+    NINJA_CHEF_ABI,
     rewardTokenTicker,
-    'NINJA',
-    null,
+    'ninja',
+    'ninjaPerBlock',
     rewardsPerWeek,
-    'pendingNinja'
+    'pendingNinja',
+    [0, 1, 2]
   )
 
   hideLoading()

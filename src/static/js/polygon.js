@@ -347,12 +347,7 @@ const main = async () => {
       ['FairyFarming        ', `<a href="fairy"           >Various</a>`, 'FAIRY        ', 'https://fairyfarming.world'],
       ['Rediant             ', `<a href="rediant"         >Various</a>`, 'RDT          ', 'https://rediant.finance'],
       ['StonkZFarm          ', `<a href="stonkzfarm"      >Various</a>`, 'STONKZ       ', 'https://stonkz.farm'],
-      [
-        'NinjaSwap          ',
-        `<a href="ninjaswap"        >Various</a>`,
-        'NINJA        ',
-        'https://ninjaswap.vercel.app',
-      ],
+      ['NinjaSwap          ', `<a href="ninjaswap"        >Various</a>`, 'NINJA        ', 'https://ninjaswapdefi.com'],
     ],
   }
 
