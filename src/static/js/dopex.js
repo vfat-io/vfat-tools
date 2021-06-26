@@ -33,10 +33,11 @@ async function loadDopexSynthetixPoolsInfo(App, tokens, prices, stakingAbi, stak
   const calls = [STAKING_MULTI.stakingToken(), STAKING_MULTI.rewardsTokenDPX(),
                  STAKING_MULTI.rewardsTokenRDPX(), STAKING_MULTI.periodFinish(),
                  STAKING_MULTI.rewardRateDPX(), STAKING_MULTI.rewardRateRDPX(),
-                 STAKING_MULTI.balanceOf(App.YOUR_ADDRESS), STAKING_MULTI.earned(App.YOUR_ADDRESS)]
+                 STAKING_MULTI.balanceOf(App.YOUR_ADDRESS), STAKING_MULTI.earned(App.YOUR_ADDRESS), 
+                 STAKING_MULTI.boost(), STAKING_MULTI.boostedFinish()]
   const [stakeTokenAddress, rewardTokenAddress0, rewardTokenAddress1,
          periodFinish, rewardRate0, rewardRate1, balance,
-         earned_] = await App.ethcallProvider.all(calls)
+         earned_, boost, boostedFinish] = await App.ethcallProvider.all(calls)
   const [earned_0, earned_1] = earned_;
 
 
@@ -77,8 +78,8 @@ async function loadDopexSynthetixPoolsInfo(App, tokens, prices, stakingAbi, stak
   const rewardTokenPrice0 = getParameterCaseInsensitive(prices, rewardTokenAddress0)?.usd;
   const rewardTokenPrice1 = getParameterCaseInsensitive(prices, rewardTokenAddress1)?.usd;
 
-  const weeklyRewards0 = (Date.now() / 1000 > periodFinish) ? 0 : rewardRate0 / 1e18 * 604800;
-  const weeklyRewards1 = (Date.now() / 1000 > periodFinish) ? 0 : rewardRate1 / 1e18 * 604800;
+  const weeklyRewards0 = (Date.now() / 1000 > periodFinish) ? 0 : ((Date.now() / 1000 > boostedFinish) ? rewardRate0 : rewardRate0 * boost) / 1e18 * 604800;
+  const weeklyRewards1 = (Date.now() / 1000 > periodFinish) ? 0 : ((Date.now() / 1000 > boostedFinish) ? rewardRate1 : rewardRate1 * boost) / 1e18 * 604800;
 
   const usdPerWeek0 = weeklyRewards0 * rewardTokenPrice0;
   const usdPerWeek1 = weeklyRewards1 * rewardTokenPrice1;
