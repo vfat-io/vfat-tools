@@ -371,6 +371,7 @@ const main = async() => {
       ["Supermanion         ", `<a href="supermanion"   >Various</a>`,"SMAN             ","https://supermanion.com"],
       ["WorldSwap Berlin 🥨 ", `<a href="worldswap_ber" >Various</a>`,"BER              ","https://berlin.worldswap.finance"],
       ["Fusion Finance      ", `<a href="fusion"        >Various</a>`,"U235             ","https://fusionfinance.farm/"],
+      ["Parthenon Nu        ", `<a href="parthenon_nu"  >Various</a>`,"NU               ","https://nu.parthenon.finance"]
     ]}
 
 
