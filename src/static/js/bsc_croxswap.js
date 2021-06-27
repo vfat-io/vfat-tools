@@ -15,7 +15,7 @@ async function main() {
    const rewardTokenTicker = "CROX";
    const CROX_CHEF = new ethers.Contract(CROX_CHEF_ADDR, CROX_CHEF_ABI, App.provider);
 
-   const rewardsPerWeek = await CROX_CHEF.BSWPerBlock() /1e18
+   const rewardsPerWeek = await CROX_CHEF.CROXPerBlock() /1e18
         * 604800 / 3;
 
     const tokens = {};
