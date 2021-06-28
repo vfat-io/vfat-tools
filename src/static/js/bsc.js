@@ -365,9 +365,14 @@ const main = async() => {
       ["Fox Finance         ", `<a href="foxfinance"    >Various</a>`,"FOX              ","https://www.foxfinance.org"],
       ["Cardboard Finance   ", `<a href="cardboard"     >Various</a>`,"CARDBOARD        ","https://cardboard.finance"],
       ["Yogi                ", `<a href="yogi"          >Various</a>`,"YOGI             ","https://bsc.farms.yogi.fi"],
+      ["Croxswap            ", `<a href="croxswap"      >Various</a>`,"CROX             ","https://app.croxswap.com"],
       ["Tomahawk            ", `<a href="tomahawk"      >Various</a>`,"TOMAHAWK         ","https://tomahawk.farm"],
       ["Cookiebake          ", `<a href="cookiebake"    >Various</a>`,"CHIPS            ","https://cookiebake.finance"],
-      ["Supermanion         ", `<a href="supermanion"   >Various</a>`,"SMAN             ","https://supermanion.com"]
+      ["Supermanion         ", `<a href="supermanion"   >Various</a>`,"SMAN             ","https://supermanion.com"],
+      ["WorldSwap Berlin    ", `<a href="worldswap_ber" >Various</a>`,"BER              ","https://berlin.worldswap.finance"],
+      ["Fusion Finance      ", `<a href="fusion"        >Various</a>`,"U235             ","https://fusionfinance.farm"],
+      ["Parthenon Nu        ", `<a href="parthenon_nu"  >Various</a>`,"NU               ","https://nu.parthenon.finance"],
+      ["Rasta               ", `<a href="rasta"         >Various</a>`,"RASTA            ","https://app.rasta.finance"]
     ]}
 
 
