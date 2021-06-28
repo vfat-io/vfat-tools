@@ -369,9 +369,10 @@ const main = async() => {
       ["Tomahawk            ", `<a href="tomahawk"      >Various</a>`,"TOMAHAWK         ","https://tomahawk.farm"],
       ["Cookiebake          ", `<a href="cookiebake"    >Various</a>`,"CHIPS            ","https://cookiebake.finance"],
       ["Supermanion         ", `<a href="supermanion"   >Various</a>`,"SMAN             ","https://supermanion.com"],
-      ["WorldSwap Berlin 🥨 ", `<a href="worldswap_ber" >Various</a>`,"BER              ","https://berlin.worldswap.finance"],
-      ["Fusion Finance      ", `<a href="fusion"        >Various</a>`,"U235             ","https://fusionfinance.farm/"],
-      ["Parthenon Nu        ", `<a href="parthenon_nu"  >Various</a>`,"NU               ","https://nu.parthenon.finance"]
+      ["WorldSwap Berlin    ", `<a href="worldswap_ber" >Various</a>`,"BER              ","https://berlin.worldswap.finance"],
+      ["Fusion Finance      ", `<a href="fusion"        >Various</a>`,"U235             ","https://fusionfinance.farm"],
+      ["Parthenon Nu        ", `<a href="parthenon_nu"  >Various</a>`,"NU               ","https://nu.parthenon.finance"],
+      ["Rasta               ", `<a href="rasta"         >Various</a>`,"RASTA            ","https://app.rasta.finance"]
     ]}
 
 
