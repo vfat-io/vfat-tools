@@ -289,7 +289,7 @@ const main = async () => {
         'https://www.rocketfarming.finance',
       ],
       ['PolyComet           ', `<a href="polycomet"       >Various</a>`, 'COMET        ', 'https://www.polycomet.com'],
-      ['Koge *              ', `<a href="koge"            >Various</a>`, 'Various      ', 'https://kogefarm.io'],
+      ['KogeFarm *              ', `<a href="koge"            >Various</a>`, 'Various      ', 'https://kogefarm.io'],
       [
         'Fulcrum             ',
         `<a href="fulcrum"         >Various</a>`,
