@@ -131,7 +131,7 @@ async function getHarvesterPoolInfo(app, chefContract, chefAddress, poolIndex, p
     };
   }
 
-function printHarvesterChefPool(App, chefAbi, chefAddr, prices, tokens, poolInfo, poolIndex, poolPrices,
+  function printHarvesterChefPool(App, chefAbi, chefAddr, prices, tokens, poolInfo, poolIndex, poolPrices,
                        totalAllocPoints, rewardsPerWeek, rewardTokenTicker, rewardTokenAddress,
                        pendingRewardsFunction, fixedDecimals, claimFunction, chain="eth", depositFee=0, withdrawFee=0) {
   fixedDecimals = fixedDecimals ?? 2;
