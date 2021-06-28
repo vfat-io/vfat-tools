@@ -350,6 +350,7 @@ const main = async () => {
       ['Polyquity           ', `<a href="polyquity"       >Various</a>`, 'PYQ          ', 'https://app.polyquity.org'],
       ['Tako                ', `<a href="tako"            >Various</a>`, 'TAKO         ', 'https://takodefi.com'],
       ['Harvester           ', `<a href="harvester"       >Various</a>`, '🌾          ', 'https://harvester.app'],
+      ['Polymer             ', `<a href="polymer"         >Various</a>`, 'OIL          ', 'https://polymeryield.finance'],
     ],
   }
 
