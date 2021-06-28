@@ -512,7 +512,10 @@ const maticTokens = [
   { "id": "dark-magic", "symbol": "DMAGIC", "contract": "0x61daecab65ee2a1d5b6032df030f3faa3d116aa7" },
   { "id": "xdollar", "symbol": "XDO", "contract": "0x3dc7b06dd0b1f08ef9acbbd2564f8605b4868eea" },
   { "id": "iron-titanium-token", "symbol": "TITAN", "contract": "0xaaa5b9e6c589642f98a1cda99b9d024b8407285a" },
-  { "id": "bzx-protocol", "symbol": "BZRX", "contract": "0x97dfbEF4eD5a7f63781472Dbc69Ab8e5d7357cB9" }
+  { "id": "bzx-protocol", "symbol": "BZRX", "contract": "0x97dfbEF4eD5a7f63781472Dbc69Ab8e5d7357cB9" },
+  { "id": "havven", "symbol": "SNX", "contract": "0x50B728D8D964fd00C2d0AAD81718b71311feF68a" },
+  { "id": "curve-dao-token", "symbol": "CRV", "contract": "0x172370d5Cd63279eFa6d502DAB29171933a610AF" },
+  { "id": "the-graph", "symbol": "GRT", "contract": "0x5fe2B58c013d7601147DcdD68C143A77499f5531" }
 ]
 
 async function getMaticPrices() {
