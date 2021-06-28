@@ -372,9 +372,10 @@ const main = async() => {
       ["WorldSwap Berlin    ", `<a href="worldswap_ber" >Various</a>`,"BER              ","https://berlin.worldswap.finance"],
       ["Fusion Finance      ", `<a href="fusion"        >Various</a>`,"U235             ","https://fusionfinance.farm"],
       ["Parthenon Nu        ", `<a href="parthenon_nu"  >Various</a>`,"NU               ","https://nu.parthenon.finance"],
-      ["Rasta               ", `<a href="rasta"         >Various</a>`,"RASTA            ","https://app.rasta.finance"]
+      ["Rasta               ", `<a href="rasta"         >Various</a>`,"RASTA            ","https://app.rasta.finance"],
+      ["Cosmos Farm (MARS)  ", `<a href="cosmosmars"    >Various</a>`,"MARS             ","https://mars.cosmos.farm"],
+      ["Cosmos Farm (VENUS) ", `<a href="cosmosvenus"   >Various</a>`,"VENUS            ","https://venus.cosmos.farm"]
     ]}
-
 
   let table = new AsciiTable().fromJSON(tableData);
   document.getElementById('log').innerHTML += table + '<br />';
