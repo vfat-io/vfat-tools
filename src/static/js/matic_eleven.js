@@ -17,7 +17,8 @@ $(function() {
     "0x198265ff748dae52a6c58cee1a91e1457ef957ef",
     "0xd7c5a3cba73d4c9f042f88928d1cd64b64e76a50",
     "0x47f9f157317e7e655df30e013ce14730d224d4e5",
-    "0x5f2b2518616907a5f76f25e9e2b67a571879c610"
+    "0x5f2b2518616907a5f76f25e9e2b67a571879c610",
+    "0x8F2331A864Bd34E17d04623A871f10187c68860f"
   ]
   
   async function main() {
@@ -28,6 +29,7 @@ $(function() {
   
       const tokens = {};
       const prices = await getMaticPrices();
+      prices["0x8F2331A864Bd34E17d04623A871f10187c68860f"] = getParameterCaseInsensitive(prices, "0xaAa5B9e6c589642f98a1cDA99B9D024B8407285A")
   
       const poolInfos = await Promise.all(Address.map(a => loadElePoolInfo(App, tokens, prices, a)));
       let tvl = 0, userTvl = 0

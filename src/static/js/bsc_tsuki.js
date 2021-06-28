@@ -6,14 +6,16 @@ const TSUKI_STAKING_ABI = [{"constant":true,"inputs":[{"name":"account","type":"
 
 const Pools = [
   "0x8ACcDE4171919754D7d07D9cEAB4f85c217fC1d8", //TSUKI Staking Contract
-  "0xF13Fe11687b0639173e0489117B27f0A364bB4d1", //TSUKI/BNB Staking Contract
-  "0x00cF1a1D8eDd861ce557Ee1Ff00C24d3bd52df37", //BNBC/BNB Staking Contract
+  "0x117586f152daC090D5fad51AA9380844d5620832", //TSUKI/BNB Staking Contract
+  "0x355B20F788bFdf3e262FA01dE4E0769834D5ecd0", //BNBC/BNB Staking Contract
+  "0xad4d4fe736ba0969E10D0d891fb90147D47b8557", //TREAT/BNB Staking Contract
+  "0xc5FcE17394F196479A55C79dC708413bBbAcfE6b", //CAKE Staking Contract
 ].map(a => {
   return {
     address: a,
     abi: TSUKI_STAKING_ABI,
     stakeTokenFunction: "y",
-    tokenRewardAddress: "0x3fd9e7041c45622e8026199a46f763c9807f66f3"
+    tokenRewardAddress: "0x31B5d91806AF3364678715f4C5Bf50c1e3bAE10A"
   }; })
 
 async function main() {
@@ -48,6 +50,7 @@ async function loadTsukiSynthetixPools(App, tokens, prices, pools) {
     }
   }
   let totalAPR = totalUserStaked == 0 ? 0 : individualAPRs.reduce((x,y)=>x+y, 0) / totalUserStaked;
+
   return { staked_tvl : totalStaked, totalUserStaked, totalAPR };
 }
 
