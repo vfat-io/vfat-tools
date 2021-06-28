@@ -164,9 +164,6 @@ function printHarvesterContractLinks(App, chefAbi, chefAddr, poolIndex, poolAddr
   const unstake = async function() {
     return harvesterContract_unstake(chefAbi, chefAddr, poolIndex, App, pendingRewardsFunction)
   }
-  const claim = async function() {
-    return harvesterContract_claim(chefAbi, chefAddr, poolIndex, App, pendingRewardsFunction, claimFunction)
-  }
   if(depositFee > 0){
     _print_link(`Stake ${unstaked.toFixed(fixedDecimals)} ${stakeTokenTicker} - Fee ${depositFee}%`, approveAndStake)
   }else{
@@ -177,7 +174,6 @@ function printHarvesterContractLinks(App, chefAbi, chefAddr, poolIndex, poolAddr
   }else{
     _print_link(`Unstake ${userStaked.toFixed(fixedDecimals)} ${stakeTokenTicker}`, unstake)
   }
-  _print_link(`Claim ${pendingRewardTokens.toFixed(fixedDecimals)} ${rewardTokenTicker} ($${formatMoney(pendingRewardTokens*rewardTokenPrice)})`, claim)
   _print(`Staking or unstaking also claims rewards.`)
   _print("");
 }
@@ -245,33 +241,5 @@ const harvesterContract_stake = async function(chefAbi, chefAddress, poolIndex, 
       })
   } else {
     alert('You have no tokens to stake!!')
-  }
-}
-
-const harvesterContract_claim = async function(chefAbi, chefAddress, poolIndex, App,
-    pendingRewardsFunction, claimFunction) {
-  const signer = App.provider.getSigner()
-
-  const CHEF_CONTRACT = new ethers.Contract(chefAddress, chefAbi, signer)
-
-  const earnedTokenAmount = await CHEF_CONTRACT.callStatic[pendingRewardsFunction](poolIndex, App.YOUR_ADDRESS) / 1e18
-
-  if (earnedTokenAmount > 0) {
-    showLoading()
-    if (claimFunction) {
-      claimFunction(poolIndex, {gasLimit: 500000})
-        .then(function(t) {
-          return App.provider.waitForTransaction(t.hash)
-        })
-    }
-    else {
-      CHEF_CONTRACT.reap(poolIndex, 0, {gasLimit: 500000})
-        .then(function(t) {
-          return App.provider.waitForTransaction(t.hash)
-        })
-        .catch(function() {
-          hideLoading()
-        })
-    }
   }
 }
