@@ -170,6 +170,12 @@ const main = async() => {
         "BALLOON",
         "https://www.fantomballoons.com"
       ],
+      [
+        "Spoon",
+        `<a href='spoon'>Various</a>`,
+        "SPOON",
+        "https://app.spoon.finance"
+      ]
     ]
   }
 
