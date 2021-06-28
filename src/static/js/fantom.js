@@ -69,12 +69,6 @@ const main = async() => {
         "https://www.liquiddriver.finance"
       ],
       [
-        "Standard",
-        `<a href='standard'>Various</a>`,
-        "STRD",
-        "https://strd.finance"
-      ],
-      [
         "Mushrooms",
         `<a href='mushrooms'>Various</a>`,
         "MM",
@@ -105,7 +99,7 @@ const main = async() => {
         "https://waka.finance"
       ],
       [
-        "Elk",
+        "Elk *",
         `<a href='elk'>Various</a>`,
         "ELK",
         "https://app.elk.finance"
@@ -115,6 +109,72 @@ const main = async() => {
         `<a href='paintswap'>Various</a>`,
         "BRUSH",
         "https://paintswap.finance"
+      ],
+      [
+        "Tomb",
+        `<a href='tomb'>Various</a>`,
+        "Various",
+        "https://tomb.finance"
+      ],
+      [
+        "Shadow",
+        `<a href='shadow'>Various</a>`,
+        "Various",
+        "https://shadowswap.app"
+      ],
+      [
+        "Borgswap",
+        `<a href='borgswap'>Various</a>`,
+        "KLING",
+        "https://klingftm.borgswap.exchange"
+      ],
+      [
+        "Opera",
+        `<a href='opera'>Various</a>`,
+        "OPERA",
+        "https://www.operaswap.finance"
+      ],
+      [
+        "Chad",
+        `<a href='chad'>Various</a>`,
+        "CHAD",
+        "N/A"
+      ],
+      [
+        "Guru",
+        `<a href='guru'>Various</a>`,
+        "ELITE",
+        "https://ftm.guru"
+      ],
+      [
+        "Rediant",
+        `<a href="rediant">Various</a>`,
+        "RDT",
+        "https://rediant.finance"
+      ],
+      [
+        "Mlnl",
+        `<a href="mlnl">Various</a>`,
+        "Various",
+        "https://milfinance.xyz"
+      ],
+      [
+        "Yorocoon",
+        `<a href="yorocoon">Various</a>`,
+        "CATNIP",
+        "https://yorocoon.com"
+      ],
+      [
+        "Balloon Farms",
+        `<a href='balloonfarms'>Various</a>`,
+        "BALLOON",
+        "https://www.fantomballoons.com"
+      ],
+      [
+        "Spoon",
+        `<a href='spoon'>Various</a>`,
+        "SPOON",
+        "https://app.spoon.finance"
       ]
     ]
   }

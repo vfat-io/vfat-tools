@@ -30,7 +30,7 @@ async function main() {
     const prices = await getBscPrices();
 
     await loadBscChefContract(App, tokens, prices, KETCHUP_CHEF, KETCHUP_CHEF_ADDR, KETCHUP_CHEF_ABI, rewardTokenTicker,
-        "ketchup", null, rewardsPerWeek, "pendingKetchup", [1]);
+        "ketchup", null, rewardsPerWeek, "pendingKetchup", [2]);
 
     hideLoading();
   }

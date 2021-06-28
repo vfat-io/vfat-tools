@@ -148,11 +148,46 @@ async function getBscCurveToken(App, curve, address, stakingAddress, minterAddre
   };
 }
 
+async function getBscBalancerPool(App, pool, poolAddress, stakingAddress, tokens, smartToken) {
+  let decimals = await pool.decimals();
+  let symbol = await pool.symbol();
+  let name = await pool.name();
+  let totalSupply = await pool.totalSupply();
+  let staked = await pool.balanceOf(stakingAddress);
+  const unstaked = await pool.balanceOf(App.YOUR_ADDRESS);
+  let poolTokens = [];
+  for (const t of tokens) {
+    poolTokens.push({ address: t, weight: await pool.getNormalizedWeight(t) / 1e18, balance: await pool.getBalance(t) })
+};
+  if (smartToken) {
+    totalSupply = await smartToken.totalSupply();
+    staked = await smartToken.balanceOf(stakingAddress);
+    unstaked = await smartToken.balanceOf(App.YOUR_ADDRESS);
+  }
+  return {
+      symbol,
+      name,
+      address: poolAddress,
+      poolTokens, //address, weight and balance
+      totalSupply: totalSupply / 10 ** decimals,
+      stakingAddress,
+      staked: staked / 10 ** decimals,
+      decimals: decimals,
+      unstaked: unstaked / 10 ** decimals,
+      contract: pool,
+      tokens
+  };
+}
+
 async function getBscStoredToken(App, tokenAddress, stakingAddress, type) {
   switch (type) {
     case "uniswap": 
       const pool = new ethers.Contract(tokenAddress, UNI_ABI, App.provider);
       return await getBscUniPool(App, pool, tokenAddress, stakingAddress);
+    case "balancer":
+      const bal = new ethers.Contract(tokenAddress, BALANCER_POOL_ABI, App.provider);
+      const tokens = await bal.getFinalTokens();
+      return await getBscBalancerPool(App, bal, tokenAddress, stakingAddress, tokens);
     case "swap": 
       const _3pool = new ethers.Contract(tokenAddress, BSC_3POOL_ABI, App.provider);
       const swap = await _3pool.swap();
@@ -193,6 +228,15 @@ async function getBscToken(App, tokenAddress, stakingAddress) {
     catch(err) {
     }
     try {
+      const bal = new ethers.Contract(tokenAddress, BALANCER_POOL_ABI, App.provider);
+      const tokens = await bal.getFinalTokens();
+      const balPool = await getBscBalancerPool(App, bal, tokenAddress, stakingAddress, tokens);
+      window.localStorage.setItem(tokenAddress, "balancer");
+      return balPool;
+    }
+    catch(err) {
+    }
+    try {
       const pool = new ethers.Contract(tokenAddress, UNI_ABI, App.provider);
       const _token0 = await pool.token0();
       const uniPool = await getBscUniPool(App, pool, tokenAddress, stakingAddress);
@@ -213,6 +257,9 @@ async function getBscToken(App, tokenAddress, stakingAddress) {
     try {
       const VAULT = new ethers.Contract(tokenAddress, BSC_VAULT_ABI, App.provider);
       const _token = await VAULT.token();
+      if (_token.toLowerCase() == "0x3b73c1b2ea59835cbfcadade5462b6ab630d9890") {
+        throw "0x3b73c1b2ea59835cbfcadade5462b6ab630d9890 is self referential";
+      }
       const vault = await getBscVault(App, VAULT, tokenAddress, stakingAddress);
       window.localStorage.setItem(tokenAddress, "bscVault");
       return vault;
@@ -537,7 +584,16 @@ const bscTokens = [
   { "id": "degencomp", "symbol": "aDGNZ", "contract": "0xe8B9b396c59A6BC136cF1f05C4D1A68A0F7C2Dd7"},
   { "id": "gambit", "symbol": "GMT", "contract": "0x99e92123eb77bc8f999316f622e5222498438784"},
   { "id": "alien-worlds-bsc", "symbol": "TLM", "contract": "0x2222227e22102fe3322098e4cbfe18cfebd57c95"},
-  { "id": "ten", "symbol": "TENFI", "contract": "0xd15c444f1199ae72795eba15e8c1db44e47abf62"}
+  { "id": "ten", "symbol": "TENFI", "contract": "0xd15c444f1199ae72795eba15e8c1db44e47abf62"},
+  { "id": "pancake-bunny", "symbol": "BUNNY", "contract": "0xc9849e6fdb743d08faee3e34dd2d1bc69ea11a51"},
+  { "id": "swampy", "symbol": "SWAMP", "contract": "0xc5A49b4CBe004b6FD55B30Ba1dE6AC360FF9765d"},
+  { "id": "ellipsis", "symbol": "EPS", "contract": "0xA7f552078dcC247C2684336020c03648500C6d9F"},
+  { "id": "ketchup-finance", "symbol": "KETCHUP", "contract": "0x714a84632ed7edbbbfeb62dacf02db4beb4c69d9"},
+  { "id": "bnbc", "symbol": "BNBC", "contract": "0x31b5d91806af3364678715f4c5bf50c1e3bae10a"},
+  { "id": "thoreum", "symbol": "THOREUM", "contract": "0x580de58c1bd593a43dadcf0a739d504621817c05"},
+  { "id": "ruler-protocol", "symbol": "RULER", "contract": "0x7EA2be2df7BA6E54B1A9C70676f668455E329d29"},
+  { "id": "boringdao-old", "symbol": "BOR", "contract": "0x92D7756c60dcfD4c689290E8A9F4d263b3b32241"},
+  { "id": "nerve-finance", "symbol": "NRV", "contract": "0x42F6f551ae042cBe50C739158b4f0CAC0Edb9096"}
 ]
 
 async function getBscPrices() {
