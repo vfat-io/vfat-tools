@@ -374,7 +374,8 @@ const main = async() => {
       ["Parthenon Nu        ", `<a href="parthenon_nu"  >Various</a>`,"NU               ","https://nu.parthenon.finance"],
       ["Rasta               ", `<a href="rasta"         >Various</a>`,"RASTA            ","https://app.rasta.finance"],
       ["Cosmos Farm (MARS)  ", `<a href="cosmosmars"    >Various</a>`,"MARS             ","https://mars.cosmos.farm"],
-      ["Cosmos Farm (VENUS) ", `<a href="cosmosvenus"   >Various</a>`,"VENUS            ","https://venus.cosmos.farm"]
+      ["Cosmos Farm (VENUS) ", `<a href="cosmosvenus"   >Various</a>`,"VENUS            ","https://venus.cosmos.farm"],
+      ["Skyline             ", `<a href="skyline"       >Various</a>`,"SKY              ","https://skylinefi.com"]
     ]}
 
   let table = new AsciiTable().fromJSON(tableData);
