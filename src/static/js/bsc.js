@@ -294,6 +294,7 @@ const main = async() => {
       ["ballena.io          ", `<a href="balle"         >Various</a>`,"BALLE         ","https://ballena.io"],
       ["Hydra               ", `<a href="hydra"         >Various</a>`,"HYDRA         ","https://www.hydradefi.com"],
       ["Cosmos Farm (MARS)  ", `<a href="cosmosmars"     >Various</a>`,"MARS          ","https://mars.cosmos.farm"],
+      ["Cosmos Farm (VENUS)  ", `<a href="cosmosvenus"     >Various</a>`,"VENUS          ","https://venus.cosmos.farm"],
       ["Pancakefork         ", `<a href="pancakefork"   >Various</a>`,"FCKE          ","https://app.pancakefork.finance"]
     ]
   }
