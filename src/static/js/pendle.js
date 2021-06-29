@@ -58,7 +58,7 @@ async function loadLiquidityMiningInfo(App, farm, rewardTokenPrice, rewardsProxy
   
   const expiry = await MARKET.expiry()
   const marketSymbol = await MARKET.symbol()
-  const ticker = `[${farm.yt}]-[${farm.token}] ${await MARKET.symbol()}`
+  const ticker = `[${farm.yt}]-[${farm.token}] ${marketSymbol}`
   const epochDuration = await STAKING.epochDuration()
   const reserves = await MARKET.getReserves()
   const ytPoolBalance = parseFloat(reserves[0]) / 10**YT_DECIMALS
@@ -241,7 +241,7 @@ async function printLiquidityMiningInfo(App, info, rewardTokenTicker, rewardToke
     }
   }
 
-  const claim = async function(rewardPoolAddr, ) {
+  const claim = async function() {
     const signer = App.provider.getSigner()
   
     const REWARDS_PROXY = new ethers.Contract(rewardsProxy, PENDLE_REWARDS_PROXY_ABI, signer)
