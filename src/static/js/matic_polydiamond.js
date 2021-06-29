@@ -29,7 +29,7 @@ async function main() {
   const prices = await getMaticPrices();
 
   await loadMaticChefContract(App, tokens, prices, DMND_CHEF, DMND_CHEF_ADDR, DMND_CHEF_ABI, rewardTokenTicker,
-    "Dmnd", null, rewardsPerWeek, "pendingDmnd");
+    "dmnd", null, rewardsPerWeek, "pendingDmnd");
 
   hideLoading();
 }
