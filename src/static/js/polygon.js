@@ -351,7 +351,8 @@ const main = async () => {
       ['Tako                ', `<a href="tako"            >Various</a>`, 'TAKO         ', 'https://takodefi.com'],
       ['Harvester           ', `<a href="harvester"       >Various</a>`, '🌾          ', 'https://harvester.app'],
       ['Polymer             ', `<a href="polymer"         >Various</a>`, 'OIL          ', 'https://polymeryield.finance'],
-      ['Polybrew            ', `<a href="polybrew"        >Various</a>`, 'BREW         ', 'https://polybrew.finance']
+      ['Polybrew            ', `<a href="polybrew"        >Various</a>`, 'BREW         ', 'https://polybrew.finance'],
+      ['Pickle              ', `<a href="pickle"          >Various</a>`, 'PICKLE       ', 'https://app.pickle.finance'],
     ],
   }
 
