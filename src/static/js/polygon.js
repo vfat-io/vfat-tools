@@ -1,4 +1,4 @@
-$(function() {
+$(function () {
   main()
 })
 
@@ -352,7 +352,8 @@ const main = async () => {
       ['Harvester           ', `<a href="harvester"       >Various</a>`, '🌾          ', 'https://harvester.app'],
       ['Polymer             ', `<a href="polymer"         >Various</a>`, 'OIL          ', 'https://polymeryield.finance'],
       ['Polybrew            ', `<a href="polybrew"        >Various</a>`, 'BREW         ', 'https://polybrew.finance'],
-      ['PolyCactus          ', `<a href="polycactus"      >Various</a>`, 'CACTUS        ', 'https://polycactus.com']
+      ['PolyDiamond         ', `<a href="polydiamond"     >Various</a>`, 'DMND         ', 'https://polydiamondfinance.com'],
+      ['PolyCactus          ', `<a href="polycactus"      >Various</a>`, 'CACTUS       ', 'https://polycactus.com']
     ],
   }
 
