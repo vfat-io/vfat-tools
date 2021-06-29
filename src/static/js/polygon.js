@@ -356,7 +356,8 @@ const main = async () => {
       ['PolyCactus          ', `<a href="polycactus"      >Various</a>`, 'CACTUS       ', 'https://polycactus.com'],
       ['PolyGrass           ', `<a href="polygrass"       >Various</a>`, 'GRASS        ', 'https://polygrass.online'],
       ['Pickle              ', `<a href="pickle"          >Various</a>`, 'PICKLE       ', 'https://app.pickle.finance'],
-      ['Fox                 ', `<a href="fox"             >Various</a>`, 'FOX          ', 'https://foxfarming.us']
+      ['Fox                 ', `<a href="fox"             >Various</a>`, 'FOX          ', 'https://foxfarming.us'],
+      ['MountainSwap        ', `<a href="mountain"        >Various</a>`, 'MOUNTAIN     ', '                     ']
     ],
   }
 
