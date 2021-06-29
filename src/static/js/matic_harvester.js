@@ -117,6 +117,7 @@ async function getHarvesterPoolInfo(app, chefContract, chefAddress, poolIndex, p
       };
     }
     const poolToken = await getMaticToken(app, poolInfo.seed, chefAddress);
+    poolToken.staked = poolInfo.seeds / 10 ** poolToken.decimals;
     const userInfo = await chefContract.farmers(poolIndex, app.YOUR_ADDRESS);
     const pendingRewardTokens = await chefContract.callStatic[pendingRewardsFunction](poolIndex, app.YOUR_ADDRESS);
     const staked = userInfo.seeds / 10 ** poolToken.decimals;
@@ -170,9 +171,9 @@ function printHarvesterContractLinks(App, chefAbi, chefAddr, poolIndex, poolAddr
     _print_link(`Stake ${unstaked.toFixed(fixedDecimals)} ${stakeTokenTicker}`, approveAndStake)
   }
   if(withdrawFee > 0){
-    _print_link(`Unstake ${userStaked.toFixed(fixedDecimals)} ${stakeTokenTicker} - Fee ${withdrawFee}%`, unstake)
+    _print_link(`Unstake ${userStaked.toFixed(fixedDecimals)} ${stakeTokenTicker} & Claim ${pendingRewardTokens.toFixed(fixedDecimals)} - Fee ${withdrawFee}%`, unstake)
   }else{
-    _print_link(`Unstake ${userStaked.toFixed(fixedDecimals)} ${stakeTokenTicker}`, unstake)
+    _print_link(`Unstake ${userStaked.toFixed(fixedDecimals)} ${stakeTokenTicker} & Claim ${pendingRewardTokens.toFixed(fixedDecimals)}`, unstake)
   }
   _print(`Staking or unstaking also claims rewards.`)
   _print("");
