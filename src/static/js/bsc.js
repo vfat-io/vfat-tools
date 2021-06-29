@@ -378,6 +378,7 @@ const main = async() => {
       ["Skyline             ", `<a href="skyline"       >Various</a>`,"SKY              ","https://skylinefi.com"],
       ["Blueballs           ", `<a href="blueballs"     >Various</a>`,"BLUEBALLS        ","https://www.blueballs.finance"],
       ["Simurgh             ", `<a href="simurgh"       >Various</a>`,"SIMURGH          ","https://simurgh.finance"],
+      ["Yield Parrot        ", `<a href="yieldparrot"   >Various</a>`,"LORY             ","https://app.yieldparrot.finance"],
       ["Triton              ", `<a href="triton"        >Various</a>`,"TRITON           ","https://triton.farm"]
     ]}
 
