@@ -1,14 +1,14 @@
-$(function () {
-consoleInit(main)
-});
+$(function() {
+  consoleInit(main)
+})
 
 const CACTUS_CHEF_ABI = [
   {
     inputs: [
-      { internalType: 'contract PolyCactus', name: '_cactus', type: 'address' },
-      { internalType: 'address', name: '_devAddr', type: 'address' },
-      { internalType: 'address', name: '_feeAddress', type: 'address' },
-      { internalType: 'uint256', name: '_startBlock', type: 'uint256' },
+      {internalType: 'contract PolyCactus', name: '_cactus', type: 'address'},
+      {internalType: 'address', name: '_devAddr', type: 'address'},
+      {internalType: 'address', name: '_feeAddress', type: 'address'},
+      {internalType: 'uint256', name: '_startBlock', type: 'uint256'},
     ],
     stateMutability: 'nonpayable',
     type: 'constructor',
@@ -16,14 +16,9 @@ const CACTUS_CHEF_ABI = [
   {
     anonymous: false,
     inputs: [
-      { indexed: true, internalType: 'address', name: 'user', type: 'address' },
-      { indexed: true, internalType: 'uint256', name: 'pid', type: 'uint256' },
-      {
-        indexed: false,
-        internalType: 'uint256',
-        name: 'amount',
-        type: 'uint256',
-      },
+      {indexed: true, internalType: 'address', name: 'user', type: 'address'},
+      {indexed: true, internalType: 'uint256', name: 'pid', type: 'uint256'},
+      {indexed: false, internalType: 'uint256', name: 'amount', type: 'uint256'},
     ],
     name: 'Deposit',
     type: 'event',
@@ -31,14 +26,9 @@ const CACTUS_CHEF_ABI = [
   {
     anonymous: false,
     inputs: [
-      { indexed: true, internalType: 'address', name: 'user', type: 'address' },
-      { indexed: true, internalType: 'uint256', name: 'pid', type: 'uint256' },
-      {
-        indexed: false,
-        internalType: 'uint256',
-        name: 'amount',
-        type: 'uint256',
-      },
+      {indexed: true, internalType: 'address', name: 'user', type: 'address'},
+      {indexed: true, internalType: 'uint256', name: 'pid', type: 'uint256'},
+      {indexed: false, internalType: 'uint256', name: 'amount', type: 'uint256'},
     ],
     name: 'EmergencyWithdraw',
     type: 'event',
@@ -46,18 +36,8 @@ const CACTUS_CHEF_ABI = [
   {
     anonymous: false,
     inputs: [
-      {
-        indexed: true,
-        internalType: 'address',
-        name: 'previousOwner',
-        type: 'address',
-      },
-      {
-        indexed: true,
-        internalType: 'address',
-        name: 'newOwner',
-        type: 'address',
-      },
+      {indexed: true, internalType: 'address', name: 'previousOwner', type: 'address'},
+      {indexed: true, internalType: 'address', name: 'newOwner', type: 'address'},
     ],
     name: 'OwnershipTransferred',
     type: 'event',
@@ -65,18 +45,8 @@ const CACTUS_CHEF_ABI = [
   {
     anonymous: false,
     inputs: [
-      {
-        indexed: true,
-        internalType: 'address',
-        name: '_referrer',
-        type: 'address',
-      },
-      {
-        indexed: true,
-        internalType: 'address',
-        name: '_user',
-        type: 'address',
-      },
+      {indexed: true, internalType: 'address', name: '_referrer', type: 'address'},
+      {indexed: true, internalType: 'address', name: '_user', type: 'address'},
     ],
     name: 'Referral',
     type: 'event',
@@ -84,18 +54,8 @@ const CACTUS_CHEF_ABI = [
   {
     anonymous: false,
     inputs: [
-      {
-        indexed: false,
-        internalType: 'uint256',
-        name: '_oldBp',
-        type: 'uint256',
-      },
-      {
-        indexed: false,
-        internalType: 'uint256',
-        name: '_newBp',
-        type: 'uint256',
-      },
+      {indexed: false, internalType: 'uint256', name: '_oldBp', type: 'uint256'},
+      {indexed: false, internalType: 'uint256', name: '_newBp', type: 'uint256'},
     ],
     name: 'ReferralBonusBpChanged',
     type: 'event',
@@ -103,24 +63,9 @@ const CACTUS_CHEF_ABI = [
   {
     anonymous: false,
     inputs: [
-      {
-        indexed: true,
-        internalType: 'address',
-        name: '_user',
-        type: 'address',
-      },
-      {
-        indexed: true,
-        internalType: 'address',
-        name: '_userTo',
-        type: 'address',
-      },
-      {
-        indexed: false,
-        internalType: 'uint256',
-        name: '_reward',
-        type: 'uint256',
-      },
+      {indexed: true, internalType: 'address', name: '_user', type: 'address'},
+      {indexed: true, internalType: 'address', name: '_userTo', type: 'address'},
+      {indexed: false, internalType: 'uint256', name: '_reward', type: 'uint256'},
     ],
     name: 'ReferralPaid',
     type: 'event',
@@ -128,14 +73,9 @@ const CACTUS_CHEF_ABI = [
   {
     anonymous: false,
     inputs: [
-      { indexed: true, internalType: 'address', name: 'user', type: 'address' },
-      { indexed: true, internalType: 'uint256', name: 'pid', type: 'uint256' },
-      {
-        indexed: false,
-        internalType: 'uint256',
-        name: 'amountLockedUp',
-        type: 'uint256',
-      },
+      {indexed: true, internalType: 'address', name: 'user', type: 'address'},
+      {indexed: true, internalType: 'uint256', name: 'pid', type: 'uint256'},
+      {indexed: false, internalType: 'uint256', name: 'amountLockedUp', type: 'uint256'},
     ],
     name: 'RewardLockedUp',
     type: 'event',
@@ -143,13 +83,8 @@ const CACTUS_CHEF_ABI = [
   {
     anonymous: false,
     inputs: [
-      { indexed: true, internalType: 'address', name: 'user', type: 'address' },
-      {
-        indexed: true,
-        internalType: 'address',
-        name: '_feeAddress',
-        type: 'address',
-      },
+      {indexed: true, internalType: 'address', name: 'user', type: 'address'},
+      {indexed: true, internalType: 'address', name: '_feeAddress', type: 'address'},
     ],
     name: 'SetDevAddress',
     type: 'event',
@@ -157,13 +92,8 @@ const CACTUS_CHEF_ABI = [
   {
     anonymous: false,
     inputs: [
-      { indexed: true, internalType: 'address', name: 'user', type: 'address' },
-      {
-        indexed: true,
-        internalType: 'address',
-        name: '_devAddress',
-        type: 'address',
-      },
+      {indexed: true, internalType: 'address', name: 'user', type: 'address'},
+      {indexed: true, internalType: 'address', name: '_devAddress', type: 'address'},
     ],
     name: 'SetFeeAddress',
     type: 'event',
@@ -171,13 +101,8 @@ const CACTUS_CHEF_ABI = [
   {
     anonymous: false,
     inputs: [
-      { indexed: true, internalType: 'address', name: 'user', type: 'address' },
-      {
-        indexed: true,
-        internalType: 'uint256',
-        name: '_cactusPerBlock',
-        type: 'uint256',
-      },
+      {indexed: true, internalType: 'address', name: 'user', type: 'address'},
+      {indexed: true, internalType: 'uint256', name: '_cactusPerBlock', type: 'uint256'},
     ],
     name: 'UpdateEmissionRate',
     type: 'event',
@@ -185,14 +110,9 @@ const CACTUS_CHEF_ABI = [
   {
     anonymous: false,
     inputs: [
-      { indexed: true, internalType: 'address', name: 'user', type: 'address' },
-      { indexed: true, internalType: 'uint256', name: 'pid', type: 'uint256' },
-      {
-        indexed: false,
-        internalType: 'uint256',
-        name: 'amount',
-        type: 'uint256',
-      },
+      {indexed: true, internalType: 'address', name: 'user', type: 'address'},
+      {indexed: true, internalType: 'uint256', name: 'pid', type: 'uint256'},
+      {indexed: false, internalType: 'uint256', name: 'amount', type: 'uint256'},
     ],
     name: 'Withdraw',
     type: 'event',
@@ -200,45 +120,45 @@ const CACTUS_CHEF_ABI = [
   {
     inputs: [],
     name: 'INITIAL_EMISSION_RATE',
-    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+    outputs: [{internalType: 'uint256', name: '', type: 'uint256'}],
     stateMutability: 'view',
     type: 'function',
   },
   {
     inputs: [],
     name: 'MAXIMUM_DEPOSIT_FEE_BP',
-    outputs: [{ internalType: 'uint16', name: '', type: 'uint16' }],
+    outputs: [{internalType: 'uint16', name: '', type: 'uint16'}],
     stateMutability: 'view',
     type: 'function',
   },
   {
     inputs: [],
     name: 'MAXIMUM_HARVEST_INTERVAL',
-    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+    outputs: [{internalType: 'uint256', name: '', type: 'uint256'}],
     stateMutability: 'view',
     type: 'function',
   },
   {
     inputs: [],
     name: 'MAXIMUM_REFERRAL_BP',
-    outputs: [{ internalType: 'uint16', name: '', type: 'uint16' }],
+    outputs: [{internalType: 'uint16', name: '', type: 'uint16'}],
     stateMutability: 'view',
     type: 'function',
   },
   {
     inputs: [],
     name: 'MAX_SUPPLY_CAP',
-    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+    outputs: [{internalType: 'uint256', name: '', type: 'uint256'}],
     stateMutability: 'view',
     type: 'function',
   },
   {
     inputs: [
-      { internalType: 'uint256', name: '_allocPoint', type: 'uint256' },
-      { internalType: 'contract IERC20', name: '_lpToken', type: 'address' },
-      { internalType: 'uint16', name: '_depositFeeBP', type: 'uint16' },
-      { internalType: 'uint256', name: '_harvestInterval', type: 'uint256' },
-      { internalType: 'bool', name: '_withUpdate', type: 'bool' },
+      {internalType: 'uint256', name: '_allocPoint', type: 'uint256'},
+      {internalType: 'contract IERC20', name: '_lpToken', type: 'address'},
+      {internalType: 'uint16', name: '_depositFeeBP', type: 'uint16'},
+      {internalType: 'uint256', name: '_harvestInterval', type: 'uint256'},
+      {internalType: 'bool', name: '_withUpdate', type: 'bool'},
     ],
     name: 'add',
     outputs: [],
@@ -248,34 +168,32 @@ const CACTUS_CHEF_ABI = [
   {
     inputs: [],
     name: 'cactus',
-    outputs: [
-      { internalType: 'contract PolyCactus', name: '', type: 'address' },
-    ],
+    outputs: [{internalType: 'contract PolyCactus', name: '', type: 'address'}],
     stateMutability: 'view',
     type: 'function',
   },
   {
     inputs: [],
     name: 'cactusPerBlock',
-    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+    outputs: [{internalType: 'uint256', name: '', type: 'uint256'}],
     stateMutability: 'view',
     type: 'function',
   },
   {
     inputs: [
-      { internalType: 'uint256', name: '_pid', type: 'uint256' },
-      { internalType: 'address', name: '_user', type: 'address' },
+      {internalType: 'uint256', name: '_pid', type: 'uint256'},
+      {internalType: 'address', name: '_user', type: 'address'},
     ],
     name: 'canHarvest',
-    outputs: [{ internalType: 'bool', name: '', type: 'bool' }],
+    outputs: [{internalType: 'bool', name: '', type: 'bool'}],
     stateMutability: 'view',
     type: 'function',
   },
   {
     inputs: [
-      { internalType: 'uint256', name: '_pid', type: 'uint256' },
-      { internalType: 'uint256', name: '_amount', type: 'uint256' },
-      { internalType: 'address', name: '_referrer', type: 'address' },
+      {internalType: 'uint256', name: '_pid', type: 'uint256'},
+      {internalType: 'uint256', name: '_amount', type: 'uint256'},
+      {internalType: 'address', name: '_referrer', type: 'address'},
     ],
     name: 'deposit',
     outputs: [],
@@ -284,8 +202,8 @@ const CACTUS_CHEF_ABI = [
   },
   {
     inputs: [
-      { internalType: 'uint256', name: '_pid', type: 'uint256' },
-      { internalType: 'uint256', name: '_amount', type: 'uint256' },
+      {internalType: 'uint256', name: '_pid', type: 'uint256'},
+      {internalType: 'uint256', name: '_amount', type: 'uint256'},
     ],
     name: 'deposit',
     outputs: [],
@@ -295,12 +213,12 @@ const CACTUS_CHEF_ABI = [
   {
     inputs: [],
     name: 'devAddr',
-    outputs: [{ internalType: 'address', name: '', type: 'address' }],
+    outputs: [{internalType: 'address', name: '', type: 'address'}],
     stateMutability: 'view',
     type: 'function',
   },
   {
-    inputs: [{ internalType: 'uint256', name: '_pid', type: 'uint256' }],
+    inputs: [{internalType: 'uint256', name: '_pid', type: 'uint256'}],
     name: 'emergencyWithdraw',
     outputs: [],
     stateMutability: 'nonpayable',
@@ -309,94 +227,86 @@ const CACTUS_CHEF_ABI = [
   {
     inputs: [],
     name: 'feeAddress',
-    outputs: [{ internalType: 'address', name: '', type: 'address' }],
+    outputs: [{internalType: 'address', name: '', type: 'address'}],
     stateMutability: 'view',
     type: 'function',
   },
   {
     inputs: [
-      { internalType: 'uint256', name: '_pid', type: 'uint256' },
-      { internalType: 'address', name: '_user', type: 'address' },
+      {internalType: 'uint256', name: '_pid', type: 'uint256'},
+      {internalType: 'address', name: '_user', type: 'address'},
     ],
     name: 'getHarvestUntil',
-    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+    outputs: [{internalType: 'uint256', name: '', type: 'uint256'}],
     stateMutability: 'view',
     type: 'function',
   },
   {
     inputs: [
-      { internalType: 'uint256', name: '_from', type: 'uint256' },
-      { internalType: 'uint256', name: '_to', type: 'uint256' },
+      {internalType: 'uint256', name: '_from', type: 'uint256'},
+      {internalType: 'uint256', name: '_to', type: 'uint256'},
     ],
     name: 'getMultiplier',
-    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+    outputs: [{internalType: 'uint256', name: '', type: 'uint256'}],
     stateMutability: 'view',
     type: 'function',
   },
   {
-    inputs: [
-      { internalType: 'contract IERC20', name: '_lpToken', type: 'address' },
-    ],
+    inputs: [{internalType: 'contract IERC20', name: '_lpToken', type: 'address'}],
     name: 'getPoolIdForLpToken',
-    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+    outputs: [{internalType: 'uint256', name: '', type: 'uint256'}],
     stateMutability: 'view',
     type: 'function',
   },
   {
-    inputs: [{ internalType: 'address', name: '_user', type: 'address' }],
+    inputs: [{internalType: 'address', name: '_user', type: 'address'}],
     name: 'getReferral',
-    outputs: [{ internalType: 'address', name: '', type: 'address' }],
+    outputs: [{internalType: 'address', name: '', type: 'address'}],
     stateMutability: 'view',
     type: 'function',
   },
-  {
-    inputs: [],
-    name: 'massUpdatePools',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
-  },
+  {inputs: [], name: 'massUpdatePools', outputs: [], stateMutability: 'nonpayable', type: 'function'},
   {
     inputs: [],
     name: 'owner',
-    outputs: [{ internalType: 'address', name: '', type: 'address' }],
+    outputs: [{internalType: 'address', name: '', type: 'address'}],
     stateMutability: 'view',
     type: 'function',
   },
   {
     inputs: [
-      { internalType: 'uint256', name: '_pid', type: 'uint256' },
-      { internalType: 'address', name: '_user', type: 'address' },
+      {internalType: 'uint256', name: '_pid', type: 'uint256'},
+      {internalType: 'address', name: '_user', type: 'address'},
     ],
     name: 'pendingCactus',
-    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+    outputs: [{internalType: 'uint256', name: '', type: 'uint256'}],
     stateMutability: 'view',
     type: 'function',
   },
   {
-    inputs: [{ internalType: 'contract IERC20', name: '', type: 'address' }],
+    inputs: [{internalType: 'contract IERC20', name: '', type: 'address'}],
     name: 'poolExistence',
-    outputs: [{ internalType: 'bool', name: '', type: 'bool' }],
+    outputs: [{internalType: 'bool', name: '', type: 'bool'}],
     stateMutability: 'view',
     type: 'function',
   },
   {
-    inputs: [{ internalType: 'contract IERC20', name: '', type: 'address' }],
+    inputs: [{internalType: 'contract IERC20', name: '', type: 'address'}],
     name: 'poolIdForLpAddress',
-    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+    outputs: [{internalType: 'uint256', name: '', type: 'uint256'}],
     stateMutability: 'view',
     type: 'function',
   },
   {
-    inputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+    inputs: [{internalType: 'uint256', name: '', type: 'uint256'}],
     name: 'poolInfo',
     outputs: [
-      { internalType: 'contract IERC20', name: 'lpToken', type: 'address' },
-      { internalType: 'uint256', name: 'allocPoint', type: 'uint256' },
-      { internalType: 'uint256', name: 'lastRewardBlock', type: 'uint256' },
-      { internalType: 'uint256', name: 'accCactusPerShare', type: 'uint256' },
-      { internalType: 'uint16', name: 'depositFeeBP', type: 'uint16' },
-      { internalType: 'uint256', name: 'harvestInterval', type: 'uint256' },
+      {internalType: 'contract IERC20', name: 'lpToken', type: 'address'},
+      {internalType: 'uint256', name: 'allocPoint', type: 'uint256'},
+      {internalType: 'uint256', name: 'lastRewardBlock', type: 'uint256'},
+      {internalType: 'uint256', name: 'accCactusPerShare', type: 'uint256'},
+      {internalType: 'uint16', name: 'depositFeeBP', type: 'uint16'},
+      {internalType: 'uint256', name: 'harvestInterval', type: 'uint256'},
     ],
     stateMutability: 'view',
     type: 'function',
@@ -404,45 +314,39 @@ const CACTUS_CHEF_ABI = [
   {
     inputs: [],
     name: 'poolLength',
-    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+    outputs: [{internalType: 'uint256', name: '', type: 'uint256'}],
     stateMutability: 'view',
     type: 'function',
   },
   {
     inputs: [],
     name: 'refBonusBP',
-    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+    outputs: [{internalType: 'uint256', name: '', type: 'uint256'}],
     stateMutability: 'view',
     type: 'function',
   },
   {
-    inputs: [{ internalType: 'address', name: '', type: 'address' }],
+    inputs: [{internalType: 'address', name: '', type: 'address'}],
     name: 'referredCount',
-    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+    outputs: [{internalType: 'uint256', name: '', type: 'uint256'}],
     stateMutability: 'view',
     type: 'function',
   },
   {
-    inputs: [{ internalType: 'address', name: '', type: 'address' }],
+    inputs: [{internalType: 'address', name: '', type: 'address'}],
     name: 'referrers',
-    outputs: [{ internalType: 'address', name: '', type: 'address' }],
+    outputs: [{internalType: 'address', name: '', type: 'address'}],
     stateMutability: 'view',
     type: 'function',
   },
-  {
-    inputs: [],
-    name: 'renounceOwnership',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
-  },
+  {inputs: [], name: 'renounceOwnership', outputs: [], stateMutability: 'nonpayable', type: 'function'},
   {
     inputs: [
-      { internalType: 'uint256', name: '_pid', type: 'uint256' },
-      { internalType: 'uint256', name: '_allocPoint', type: 'uint256' },
-      { internalType: 'uint16', name: '_depositFeeBP', type: 'uint16' },
-      { internalType: 'uint256', name: '_harvestInterval', type: 'uint256' },
-      { internalType: 'bool', name: '_withUpdate', type: 'bool' },
+      {internalType: 'uint256', name: '_pid', type: 'uint256'},
+      {internalType: 'uint256', name: '_allocPoint', type: 'uint256'},
+      {internalType: 'uint16', name: '_depositFeeBP', type: 'uint16'},
+      {internalType: 'uint256', name: '_harvestInterval', type: 'uint256'},
+      {internalType: 'bool', name: '_withUpdate', type: 'bool'},
     ],
     name: 'set',
     outputs: [],
@@ -450,14 +354,14 @@ const CACTUS_CHEF_ABI = [
     type: 'function',
   },
   {
-    inputs: [{ internalType: 'address', name: '_devaddr', type: 'address' }],
+    inputs: [{internalType: 'address', name: '_devaddr', type: 'address'}],
     name: 'setDevAddress',
     outputs: [],
     stateMutability: 'nonpayable',
     type: 'function',
   },
   {
-    inputs: [{ internalType: 'address', name: '_feeAddress', type: 'address' }],
+    inputs: [{internalType: 'address', name: '_feeAddress', type: 'address'}],
     name: 'setFeeAddress',
     outputs: [],
     stateMutability: 'nonpayable',
@@ -466,58 +370,54 @@ const CACTUS_CHEF_ABI = [
   {
     inputs: [],
     name: 'startBlock',
-    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+    outputs: [{internalType: 'uint256', name: '', type: 'uint256'}],
     stateMutability: 'view',
     type: 'function',
   },
   {
     inputs: [],
     name: 'totalAllocPoint',
-    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+    outputs: [{internalType: 'uint256', name: '', type: 'uint256'}],
     stateMutability: 'view',
     type: 'function',
   },
   {
     inputs: [],
     name: 'totalLockedUpRewards',
-    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+    outputs: [{internalType: 'uint256', name: '', type: 'uint256'}],
     stateMutability: 'view',
     type: 'function',
   },
   {
-    inputs: [{ internalType: 'address', name: 'newOwner', type: 'address' }],
+    inputs: [{internalType: 'address', name: 'newOwner', type: 'address'}],
     name: 'transferOwnership',
     outputs: [],
     stateMutability: 'nonpayable',
     type: 'function',
   },
   {
-    inputs: [
-      { internalType: 'uint256', name: '_cactusPerBlock', type: 'uint256' },
-    ],
+    inputs: [{internalType: 'uint256', name: '_cactusPerBlock', type: 'uint256'}],
     name: 'updateEmissionRate',
     outputs: [],
     stateMutability: 'nonpayable',
     type: 'function',
   },
   {
-    inputs: [{ internalType: 'uint256', name: '_pid', type: 'uint256' }],
+    inputs: [{internalType: 'uint256', name: '_pid', type: 'uint256'}],
     name: 'updatePool',
     outputs: [],
     stateMutability: 'nonpayable',
     type: 'function',
   },
   {
-    inputs: [
-      { internalType: 'uint256', name: '_newRefBonusBp', type: 'uint256' },
-    ],
+    inputs: [{internalType: 'uint256', name: '_newRefBonusBp', type: 'uint256'}],
     name: 'updateReferralBonusBp',
     outputs: [],
     stateMutability: 'nonpayable',
     type: 'function',
   },
   {
-    inputs: [{ internalType: 'uint256', name: '_startBlock', type: 'uint256' }],
+    inputs: [{internalType: 'uint256', name: '_startBlock', type: 'uint256'}],
     name: 'updateStartBlock',
     outputs: [],
     stateMutability: 'nonpayable',
@@ -525,23 +425,23 @@ const CACTUS_CHEF_ABI = [
   },
   {
     inputs: [
-      { internalType: 'uint256', name: '', type: 'uint256' },
-      { internalType: 'address', name: '', type: 'address' },
+      {internalType: 'uint256', name: '', type: 'uint256'},
+      {internalType: 'address', name: '', type: 'address'},
     ],
     name: 'userInfo',
     outputs: [
-      { internalType: 'uint256', name: 'amount', type: 'uint256' },
-      { internalType: 'uint256', name: 'rewardDebt', type: 'uint256' },
-      { internalType: 'uint256', name: 'rewardLockedUp', type: 'uint256' },
-      { internalType: 'uint256', name: 'nextHarvestUntil', type: 'uint256' },
+      {internalType: 'uint256', name: 'amount', type: 'uint256'},
+      {internalType: 'uint256', name: 'rewardDebt', type: 'uint256'},
+      {internalType: 'uint256', name: 'rewardLockedUp', type: 'uint256'},
+      {internalType: 'uint256', name: 'nextHarvestUntil', type: 'uint256'},
     ],
     stateMutability: 'view',
     type: 'function',
   },
   {
     inputs: [
-      { internalType: 'uint256', name: '_pid', type: 'uint256' },
-      { internalType: 'uint256', name: '_amount', type: 'uint256' },
+      {internalType: 'uint256', name: '_pid', type: 'uint256'},
+      {internalType: 'uint256', name: '_amount', type: 'uint256'},
     ],
     name: 'withdraw',
     outputs: [],
@@ -551,42 +451,42 @@ const CACTUS_CHEF_ABI = [
 ]
 
 async function main() {
-    const App = await init_ethers();
+  const App = await init_ethers()
 
-    _print(`Initialized ${App.YOUR_ADDRESS}\n`);
-    _print("Reading smart contracts...\n");
+  _print(`Initialized ${App.YOUR_ADDRESS}\n`)
+  _print('Reading smart contracts...\n')
 
-    const CACTUS_CHEF_ADDR = "0xd43439a5C9d0C5BC305dEFdf318dC56d9bE7F448";
-    const rewardTokenTicker = "CACTUS";
-    const CACTUS_CHEF = new ethers.Contract(CACTUS_CHEF_ADDR, CACTUS_CHEF_ABI, App.provider);
+  const CACTUS_CHEF_ADDR = '0x023a4AC76Df8F9468286383650346423b73DAF08'
+  const rewardTokenTicker = 'CACTUS'
+  const CACTUS_CHEF = new ethers.Contract(CACTUS_CHEF_ADDR, CACTUS_CHEF_ABI, App.provider)
 
-    const startBlock = await CACTUS_CHEF.startBlock();
-    const currentBlock = await App.provider.getBlockNumber();
+  const startBlock = await CACTUS_CHEF.startBlock()
+  const currentBlock = await App.provider.getBlockNumber()
 
-    let rewardsPerWeek = 0
-    if (currentBlock < startBlock) {
-        _print(`Rewards start at block ${startBlock}\n`);
-    } 
-        
-    rewardsPerWeek = await CACTUS_CHEF.cactusPerBlock() / 1e18 * 604800 / 2.1;
+  let rewardsPerWeek = 0
+  if (currentBlock < startBlock) {
+    _print(`Rewards start at block ${startBlock}\n`)
+    _print(`Start countdown: https://polygonscan.com/block/countdown/${startBlock}\n`)
+  }
 
-    const tokens = {};
-    let prices = await getMaticPrices();
-    prices['0x077e3882227138F277Ab691091658d1f0069531a'] =
-      await loadMaticChefContract(
-        App,
-        tokens,
-        prices,
-        CACTUS_CHEF,
-        CACTUS_CHEF_ADDR,
-        CACTUS_CHEF_ABI,
-        rewardTokenTicker,
-        'cactus',
-        'cactusPerBlock',
-        rewardsPerWeek,
-        'pendingCactus',
-        [0, 1, 2]
-      )
+  rewardsPerWeek = (((await CACTUS_CHEF.cactusPerBlock()) / 1e18) * 604800) / 2.1
 
-    hideLoading();
+  const tokens = {}
+  const prices = await getMaticPrices()
+
+  await loadMaticChefContract(
+    App,
+    tokens,
+    prices,
+    CACTUS_CHEF,
+    CACTUS_CHEF_ADDR,
+    CACTUS_CHEF_ABI,
+    rewardTokenTicker,
+    'cactus',
+    null,
+    rewardsPerWeek,
+    'pendingCactus'
+  )
+
+  hideLoading()
 }
