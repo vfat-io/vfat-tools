@@ -1,4 +1,4 @@
-$(function () {
+$(function() {
   main()
 })
 
@@ -7,6 +7,12 @@ const main = async () => {
     title: 'POLYGON Network',
     heading: ['Pool Provider', 'LP', 'Reward Tokens', 'INFO'],
     rows: [
+      [
+        'Kyber DMM           ',
+        `<a href="kyber"           >Various</a>`,
+        'KNC          ',
+        'https://dmm.exchange'
+      ],
       [
         'Quickswap           ',
         `<a href="quick"           >Various</a>`,
@@ -350,13 +356,24 @@ const main = async () => {
       ['Polyquity           ', `<a href="polyquity"       >Various</a>`, 'PYQ          ', 'https://app.polyquity.org'],
       ['Tako                ', `<a href="tako"            >Various</a>`, 'TAKO         ', 'https://takodefi.com'],
       ['Harvester           ', `<a href="harvester"       >Various</a>`, '🌾          ', 'https://harvester.app'],
-      ['Polymer             ', `<a href="polymer"         >Various</a>`, 'OIL          ', 'https://polymeryield.finance'],
+      [
+        'Polymer             ',
+        `<a href="polymer"         >Various</a>`,
+        'OIL          ',
+        'https://polymeryield.finance',
+      ],
       ['Polybrew            ', `<a href="polybrew"        >Various</a>`, 'BREW         ', 'https://polybrew.finance'],
-      ['PolyDiamond         ', `<a href="polydiamond"     >Various</a>`, 'DMND         ', 'https://polydiamondfinance.com'],
+      [
+        'PolyDiamond         ',
+        `<a href="polydiamond"     >Various</a>`,
+        'DMND         ',
+        'https://polydiamondfinance.com',
+      ],
       ['PolyCactus          ', `<a href="polycactus"      >Various</a>`, 'CACTUS       ', 'https://polycactus.com'],
       ['PolyGrass           ', `<a href="polygrass"       >Various</a>`, 'GRASS        ', 'https://polygrass.online'],
       ['Pickle              ', `<a href="pickle"          >Various</a>`, 'PICKLE       ', 'https://app.pickle.finance'],
-      ['Fox                 ', `<a href="fox"             >Various</a>`, 'FOX          ', 'https://foxfarming.us']
+      ['Fox                 ', `<a href="fox"             >Various</a>`, 'FOX          ', 'https://foxfarming.us'],
+      ['MountainSwap        ', `<a href="mountainswap"    >Various</a>`, 'MOUNTAIN     ', '                     '],
     ],
   }
 
