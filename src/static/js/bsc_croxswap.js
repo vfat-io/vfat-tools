@@ -11,7 +11,7 @@ async function main() {
     _print(`Initialized ${App.YOUR_ADDRESS}\n`);
     _print("Reading smart contracts...\n");
 
-   const CROX_CHEF_ADDR = "0x3d34883c175Ba72dDa0108EA1A5faFD6Fa673DB6";
+   const CROX_CHEF_ADDR = "0xEAf239a85b2C24229042a0840771A5620a36D2B3";
    const rewardTokenTicker = "CROX";
    const CROX_CHEF = new ethers.Contract(CROX_CHEF_ADDR, CROX_CHEF_ABI, App.provider);
 
@@ -22,7 +22,7 @@ async function main() {
     const prices = await getBscPrices();
 
     await loadBscChefContract(App, tokens, prices, CROX_CHEF, CROX_CHEF_ADDR, CROX_CHEF_ABI, rewardTokenTicker,
-        "CROX", null, rewardsPerWeek, "pendingCROX");
+        "crox", null, rewardsPerWeek, "pendingCrox");
 
     hideLoading();
   }
