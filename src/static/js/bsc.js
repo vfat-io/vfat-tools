@@ -381,7 +381,9 @@ const main = async() => {
       ["Yield Parrot        ", `<a href="yieldparrot"   >Various</a>`,"LORY             ","https://app.yieldparrot.finance"],
       ["Triton              ", `<a href="triton"        >Various</a>`,"TRITON           ","https://triton.farm"],
       ["Trident             ", `<a href="trident"       >Various</a>`,"TRIDENT          ","https://trident.pearldefi.com"],
-      ["Atar                ", `<a href="atar"          >Various</a>`,"ATAR             ","https://atar.finance"]
+      ["Atar                ", `<a href="atar"          >Various</a>`,"ATAR             ","https://atar.finance"],
+      ["Cityswap            ", `<a href="cityswap"      >Various</a>`,"CTYS             ","http://www.cityswap.xyz"],
+      ["Selenium            ", `<a href="selenium"      >Various</a>`,"SELEN            ","https://seleniumswap.com"]
     ]}
 
   let table = new AsciiTable().fromJSON(tableData);
