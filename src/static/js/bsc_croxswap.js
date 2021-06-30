@@ -15,14 +15,24 @@ async function main() {
    const rewardTokenTicker = "CROX";
    const CROX_CHEF = new ethers.Contract(CROX_CHEF_ADDR, CROX_CHEF_ABI, App.provider);
 
-   const rewardsPerWeek = await CROX_CHEF.CROXPerBlock() /1e18
-        * 604800 / 3;
+   const startBlock = await CROX_CHEF.startBlock();
+   const currentBlock = await App.provider.getBlockNumber();
+
+   const multiplier = await CROX_CHEF.getMultiplier(currentBlock, currentBlock+1);
+
+   let rewardsPerWeek = 0
+   if(currentBlock < startBlock){
+    _print(`Rewards start at block <a href="https://bscscan.com/block/countdown/${startBlock}" target="_blank">${startBlock}</a>\n`)
+   }else{
+    rewardsPerWeek = await CROX_CHEF.croxPerBlock() /1e18
+        * 604800 * multiplier / 3;
+   }
 
     const tokens = {};
     const prices = await getBscPrices();
 
     await loadBscChefContract(App, tokens, prices, CROX_CHEF, CROX_CHEF_ADDR, CROX_CHEF_ABI, rewardTokenTicker,
-        "crox", null, rewardsPerWeek, "pendingCrox");
+        "crox", null, rewardsPerWeek, "pendingCrox", [1]);
 
     hideLoading();
   }
