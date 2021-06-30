@@ -2,11 +2,6 @@ $(function() {
   consoleInit(main)
 });
 
-COINGECKO_IDS = {
-  KNC: 'kyber-network-crystal',
-  MATIC: 'matic-network',
-}
-
 const TOKEN_ADDRESSES = {
   WMATIC: '0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270',
   KNC: '0x1C954E8fe737F99f68Fa1CCda3e51ebDB291948C',
@@ -76,6 +71,7 @@ async function main() {
   const explorer = {
     url: 'polygonscan.com',
     name: 'Polygonscan',
+    info: 'polygon-info',
   }
   const KyberRewardLocker = '0x063DD8b5a42AaE93a014ce5FAbB5B70474667961'
   for (let key of Object.keys(REWARDS)) {
