@@ -305,7 +305,6 @@ async function printLiquidityMiningInfo(App, info, blockTime, explorer, TOKEN_AD
   _print_link(`Stake ${info.userAvailableToStake.toFixed(8)} ${info.lpSymbol}`, approveAndStake)
   _print_link(`Withdraw ${info.userStaked.toFixed(8)} ${info.lpSymbol}`, withdraw)
   let userHarvestableRewards = ''
-  let userClaimableRewards = ''
   for (let tokenAddr of info.rewardTokens) {
     let token = Object.keys(REWARDS).find(key => REWARDS[key].address == tokenAddr)
     const tokenHarvestable = info.userHarvestableRewards[info.rewardTokens.indexOf(tokenAddr)] / 1e18
@@ -319,7 +318,7 @@ async function printLiquidityMiningInfo(App, info, blockTime, explorer, TOKEN_AD
   )
   _print_link(
     `Claim${vested}`,
-    harvest
+    claim
   )
   _print_link(`Revoke (set approval to 0)`, revoke)
   _print('')
