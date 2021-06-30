@@ -316,7 +316,7 @@ const main = async () => {
       [
         'HonestWorkFarms     ',
         `<a href="honestwork"      >Various</a>`,
-        'HONEST       ',
+        '🚜          ',
         'https://www.honestwork.farm',
       ],
       ['Adamant             ', `<a href="adamant"         >Various</a>`, 'Various      ', 'https://adamant.finance'],
