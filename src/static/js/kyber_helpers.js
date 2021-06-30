@@ -26,7 +26,7 @@ async function lp_composition(pool, token0Balance, token1Balance) {
   _print(`Your LP tokens comprise of ${token0Balance.toFixed(8)} ${pool.token0} + ${token1Balance.toFixed(8)} ${pool.token1}`)
 }
 
-async function loadLiquidityMiningInfo(App, pool, KyberRewardLocker, TOKEN_ADDRESSES, POOLS, REWARDS) {
+async function loadLiquidityMiningInfo(App, pool, blockTime, KyberRewardLocker, TOKEN_ADDRESSES, POOLS, REWARDS) {
   const POOL = new ethers.Contract(pool.pool, DMM_POOL_ABI, App.provider)
   const FARMING = new ethers.Contract(pool.farming, KYBER_FAIR_LAUNCH_ABI, App.provider)
   const LOCKER = new ethers.Contract(KyberRewardLocker, KYBER_REWARD_LOCKER_ABI, App.provider)
@@ -42,7 +42,7 @@ async function loadLiquidityMiningInfo(App, pool, KyberRewardLocker, TOKEN_ADDRE
   const token0Decimals = await TOKEN0.decimals()
   const token1Decimals = await TOKEN1.decimals()
   const token0Balance = (parseFloat(reserves._reserve0)) / 10**token0Decimals
-  const token1Balance = (parseFloat(reserves._reserve1)) / 10**token1Decimals  
+  const token1Balance = (parseFloat(reserves._reserve1)) / 10**token1Decimals
 
   const token0Price = token1Balance / token0Balance
   const token1Price = token0Balance / token1Balance
@@ -72,11 +72,11 @@ async function loadLiquidityMiningInfo(App, pool, KyberRewardLocker, TOKEN_ADDRE
     
     let rewardsPerBlock = poolInfo.rewardPerBlocks[Object.keys(REWARDS).indexOf(token)] / 1e18 || 0
     REWARDS[token].rewardsPerBlock = rewardsPerBlock
-    let weeklyRewardsCalc = (rewardsPerBlock / 13) * (60 * 60 * 24 * 7) // Avg 13s block time
+    let weeklyRewardsCalc = (rewardsPerBlock / blockTime) * (60 * 60 * 24 * 7) // Avg 13s block time
     rewardsPerWeek += ` ${token} ${weeklyRewardsCalc.toFixed(8)} ($${formatMoney(weeklyRewardsCalc * REWARDS[token].price)})`
 
     let rewardsPerLP = rewardsPerBlock / lpStaked
-    let rewardAPR = (((rewardsPerLP * REWARDS[token].price / 13) * 31536000) / lpPrice) * 100
+    let rewardAPR = (((rewardsPerLP * REWARDS[token].price / blockTime) * 31536000) / lpPrice) * 100
     apr += rewardAPR
 
     userVestingRewards[token] = {
@@ -113,7 +113,7 @@ async function loadLiquidityMiningInfo(App, pool, KyberRewardLocker, TOKEN_ADDRE
   }
 }
 
-async function printLiquidityMiningInfo(App, info, explorer, TOKEN_ADDRESSES, REWARDS) {
+async function printLiquidityMiningInfo(App, info, blockTime, explorer, TOKEN_ADDRESSES, REWARDS) {
   _print(
     `<a href='https://${explorer.info}.dmm.exchange/pool/${info.pool.pool}' target='_blank'>${info.ticker}</a> ` +
      `<a href='https://dmm.exchange/#/add/${TOKEN_ADDRESSES[info.pool.token0]}/${TOKEN_ADDRESSES[info.pool.token1]}/${info.pool.pool}' target='_blank'>[+]</a> ` +
@@ -140,7 +140,7 @@ async function printLiquidityMiningInfo(App, info, explorer, TOKEN_ADDRESSES, RE
     lp_composition(info.pool, info.userToken0Balance, info.userToken1Balance)
     for (let tokenAddr of info.rewardTokens) {
       let token = Object.keys(REWARDS).find(key => REWARDS[key].address == tokenAddr)
-      const userWeeklyRewards = (info.userPoolOwnership / 100) * (REWARDS[token].rewardsPerBlock / 13 * 604800)
+      const userWeeklyRewards = (info.userPoolOwnership / 100) * (REWARDS[token].rewardsPerBlock / blockTime * 604800)
       const userDailyRewards = userWeeklyRewards / 7
       const userYearlyRewards = userWeeklyRewards * 52
       _print(
