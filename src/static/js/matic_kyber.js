@@ -68,6 +68,7 @@ async function main() {
   _print(`Initialized ${App.YOUR_ADDRESS}\n`);
   _print("Reading smart contracts...\n");
 
+  const blockTime = 2
   const explorer = {
     url: 'polygonscan.com',
     name: 'Polygonscan',
@@ -80,8 +81,8 @@ async function main() {
 
   let info
   for (let pool of POOLS) {
-    info = await loadLiquidityMiningInfo(App, pool, KyberRewardLocker, TOKEN_ADDRESSES, POOLS, REWARDS)
-    printLiquidityMiningInfo(App, info, explorer, TOKEN_ADDRESSES, REWARDS)
+    info = await loadLiquidityMiningInfo(App, pool, blockTime, KyberRewardLocker, TOKEN_ADDRESSES, POOLS, REWARDS)
+    printLiquidityMiningInfo(App, info, blockTime, explorer, TOKEN_ADDRESSES, REWARDS)
 
     _print("")
   }

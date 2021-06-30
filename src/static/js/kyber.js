@@ -56,6 +56,7 @@ async function main() {
   _print(`Initialized ${App.YOUR_ADDRESS}\n`);
   _print("Reading smart contracts...\n");
 
+  const blockTime = 13
   const explorer = {
     url: 'etherscan.io',
     name: 'Etherscan',
