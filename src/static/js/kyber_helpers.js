@@ -308,9 +308,10 @@ async function printLiquidityMiningInfo(App, info, blockTime, explorer, TOKEN_AD
   let userClaimableRewards = ''
   for (let tokenAddr of info.rewardTokens) {
     let token = Object.keys(REWARDS).find(key => REWARDS[key].address == tokenAddr)
+    const tokenHarvestable = info.userHarvestableRewards[info.rewardTokens.indexOf(tokenAddr)] / 1e18
     userHarvestableRewards +=
-      ` ${(info.userHarvestableRewards[info.rewardTokens.indexOf(tokenAddr)] / 1e18).toFixed(4)}` +
-      ` ${token} ($${formatMoney(info.userHarvestableRewards[info.rewardTokens.indexOf(tokenAddr)] * REWARDS[token].price)})`
+      ` ${tokenHarvestable.toFixed(4)}` +
+      ` ${token} ($${formatMoney(tokenHarvestable * REWARDS[token].price)})`
   }
   _print_link(
     `Harvest${userHarvestableRewards}`,
