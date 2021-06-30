@@ -14,13 +14,115 @@ async function main() {
    const rewardTokenTicker = "SUSHI";
    const SUSHI_CHEF = new ethers.Contract(SUSHI_CHEF_ADDR, SUSHI_CHEF_ABI, App.provider);
 
+   //rewarder function with arg (0) to receive the second reward token
+
    const rewardsPerWeek = await SUSHI_CHEF.sushiPerSecond() / 1e18 * 604800;
 
     const tokens = {};
     const prices = await getHarmonyPrices();
 
-    await loadHarmonyChefContract(App, tokens, prices, SUSHI_CHEF, SUSHI_CHEF_ADDR, SUSHI_CHEF_ABI, rewardTokenTicker,
+    await loadHarmonySushiContract(App, tokens, prices, SUSHI_CHEF, SUSHI_CHEF_ADDR, SUSHI_CHEF_ABI, rewardTokenTicker,
         "SUSHI", null, rewardsPerWeek, "pendingSushi");
 
     hideLoading();  
   }
+
+async function loadHarmonySushiContract(App, tokens, prices, chef, chefAddress, chefAbi, rewardTokenTicker,
+  rewardTokenFunction, rewardsPerBlockFunction, rewardsPerWeekFixed, pendingRewardsFunction,
+  deathPoolIndices, hideFooter) {
+  const chefContract = chef ?? new ethers.Contract(chefAddress, chefAbi, App.provider);
+
+  const poolCount = parseInt(await chefContract.poolLength(), 10);
+  const totalAllocPoints = await chefContract.totalAllocPoint();
+
+  _print(`Found ${poolCount} pools.\n`)
+
+  _print(`Showing incentivized pools only.\n`);
+
+  var tokens = {};
+
+  const rewardTokenAddress = await chefContract.callStatic[rewardTokenFunction]();
+  const rewardToken = await getHarmonyToken(App, rewardTokenAddress, chefAddress);
+  const rewardsPerWeek = rewardsPerWeekFixed ??
+    await chefContract.callStatic[rewardsPerBlockFunction]()
+    / 10 ** rewardToken.decimals * 604800 / 3
+
+  const poolInfos = await Promise.all([...Array(poolCount).keys()].map(async (x) =>
+    await getHarmonySushiPoolInfo(App, chefContract, chefAddress, x, pendingRewardsFunction)));
+
+  var tokenAddresses = [].concat.apply([], poolInfos.filter(x => x.poolToken).map(x => x.poolToken.tokens));
+
+  await Promise.all(tokenAddresses.map(async (address) => {
+      tokens[address] = await getHarmonyToken(App, address, chefAddress);
+  }));
+
+  if (deathPoolIndices) {   //load prices for the deathpool assets
+    deathPoolIndices.map(i => poolInfos[i])
+                     .map(poolInfo =>
+      poolInfo.poolToken ? getPoolPrices(tokens, prices, poolInfo.poolToken, "Harmony") : undefined);
+  }
+
+  const poolPrices = poolInfos.map(poolInfo => poolInfo.poolToken ? getPoolPrices(tokens, prices, poolInfo.poolToken, "Harmony") : undefined);
+
+
+  _print("Finished reading smart contracts.\n");
+
+  let aprs = []
+  for (i = 0; i < poolCount; i++) {
+    if (poolPrices[i]) {
+      const apr = printChefPool(App, chefAbi, chefAddress, prices, tokens, poolInfos[i], i, poolPrices[i],
+        totalAllocPoints, rewardsPerWeek, rewardTokenTicker, rewardTokenAddress,
+        pendingRewardsFunction, null, null, "bsc")
+      aprs.push(apr);
+    }
+  }
+  let totalUserStaked=0, totalStaked=0, averageApr=0;
+  for (const a of aprs) {
+    if (!isNaN(a.totalStakedUsd)) {
+      totalStaked += a.totalStakedUsd;
+    }
+    if (a.userStakedUsd > 0) {
+      totalUserStaked += a.userStakedUsd;
+      averageApr += a.userStakedUsd * a.yearlyAPR / 100;
+    }
+  }
+  averageApr = averageApr / totalUserStaked;
+
+  if (!hideFooter) {
+    _print_bold(`Total Staked: $${formatMoney(totalStaked)}`);
+    if (totalUserStaked > 0) {
+      _print_bold(`\nYou are staking a total of $${formatMoney(totalUserStaked)} at an average APR of ${(averageApr * 100).toFixed(2)}%`)
+      _print(`Estimated earnings:`
+          + ` Day $${formatMoney(totalUserStaked*averageApr/365)}`
+          + ` Week $${formatMoney(totalUserStaked*averageApr/52)}`
+          + ` Year $${formatMoney(totalUserStaked*averageApr)}\n`);
+    }
+  }
+
+  return { prices, totalUserStaked, totalStaked, averageApr }
+}
+
+async function getHarmonySushiPoolInfo(app, chefContract, chefAddress, poolIndex, pendingRewardsFunction) {
+  const poolInfo = await chefContract.poolInfo(poolIndex);
+  const lpToken = await chefContract.lpToken(poolIndex);
+  if (poolInfo.allocPoint == 0) {
+    return {
+      address: lpToken,
+      allocPoints: poolInfo.allocPoint ?? 1,
+      poolToken: null,
+      userStaked : 0,
+      pendingRewardTokens : 0,
+    };
+  }
+  const poolToken = await getHarmonyToken(app, lpToken, chefAddress);
+  const userInfo = await chefContract.userInfo(poolIndex, app.YOUR_ADDRESS);
+  const pendingRewardTokens = await chefContract.callStatic[pendingRewardsFunction](poolIndex, app.YOUR_ADDRESS);
+  const staked = userInfo.amount / 10 ** poolToken.decimals;
+  return {
+      address: lpToken,
+      allocPoints: poolInfo.allocPoint ?? 1,
+      poolToken: poolToken,
+      userStaked : staked,
+      pendingRewardTokens : pendingRewardTokens / 10 ** 18,
+  };
+}
