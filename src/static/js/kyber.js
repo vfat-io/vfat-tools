@@ -69,8 +69,8 @@ async function main() {
 
   let info
   for (let pool of POOLS) {
-    info = await loadLiquidityMiningInfo(App, pool, KyberRewardLocker, TOKEN_ADDRESSES, POOLS, REWARDS)
-    printLiquidityMiningInfo(App, info, explorer, TOKEN_ADDRESSES, REWARDS)
+    info = await loadLiquidityMiningInfo(App, pool, blockTime, KyberRewardLocker, TOKEN_ADDRESSES, POOLS, REWARDS)
+    printLiquidityMiningInfo(App, info, blockTime, explorer, TOKEN_ADDRESSES, REWARDS)
 
     _print("")
   }
