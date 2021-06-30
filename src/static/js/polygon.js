@@ -375,7 +375,8 @@ const main = async () => {
       ['Fox                 ', `<a href="fox"             >Various</a>`, 'FOX          ', 'https://foxfarming.us'],
       ['MountainSwap        ', `<a href="mountainswap"    >Various</a>`, 'MOUNTAIN     ', '                     '],
       ["Hippolygon          ", `<a href="hippolygon"      >Various</a>`, "HIPPO        ", "https://hippolygon.com"],
-      ["Pepe                ", `<a href="pepe"            >Various</a>`, "PEPEFARM     ", "https://pepefarm.finance"]
+      ["Pepe                ", `<a href="pepe"            >Various</a>`, "PEPEFARM     ", "https://pepefarm.finance"],
+      ["PolyPupBone         ", `<a href="polypupbone"     >Various</a>`, "BONE         ", "https://bone.polypup.finance"]
     ],
   }
 
