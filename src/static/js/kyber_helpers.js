@@ -57,7 +57,7 @@ async function loadLiquidityMiningInfo(App, pool, blockTime, KyberRewardLocker, 
   const userStakedUSD = userStaked * lpPrice
   const userPoolOwnership = (userStaked / lpStaked) * 100
   const userAvailableToStake = (await POOL.balanceOf(App.YOUR_ADDRESS)) / 1e18
-  const userHarvestableRewards = userInfo.unclaimedRewards
+  const userHarvestableRewards = await FARMING.pendingRewards(pool.pid, App.YOUR_ADDRESS)
   const userToken0Balance = userPoolOwnership * token0Balance / 100
   const userToken1Balance = userPoolOwnership * token1Balance / 100
   
@@ -243,8 +243,12 @@ async function printLiquidityMiningInfo(App, info, blockTime, explorer, TOKEN_AD
     const signer = App.provider.getSigner()
   
     const FARMING = new ethers.Contract(info.pool.farming, KYBER_FAIR_LAUNCH_ABI, signer)
+    let userHarvestableRewards = 0
+    for (let harvest of info.userHarvestableRewards) {
+      userHarvestableRewards += harvest
+    }
   
-    if (info.userHarvestableRewards > 0) {
+    if (userHarvestableRewards > 0) {
       showLoading()
 
       FARMING.harvest(info.pool.pid)
@@ -301,20 +305,20 @@ async function printLiquidityMiningInfo(App, info, blockTime, explorer, TOKEN_AD
   _print_link(`Stake ${info.userAvailableToStake.toFixed(8)} ${info.lpSymbol}`, approveAndStake)
   _print_link(`Withdraw ${info.userStaked.toFixed(8)} ${info.lpSymbol}`, withdraw)
   let userHarvestableRewards = ''
-  let userClaimableRewards = ''
   for (let tokenAddr of info.rewardTokens) {
     let token = Object.keys(REWARDS).find(key => REWARDS[key].address == tokenAddr)
+    const tokenHarvestable = info.userHarvestableRewards[info.rewardTokens.indexOf(tokenAddr)] / 1e18
     userHarvestableRewards +=
-      ` ${parseFloat(info.userHarvestableRewards[info.rewardTokens.indexOf(tokenAddr)]).toFixed(3)}` +
-      ` ${token} ($${formatMoney(info.userHarvestableRewards[info.rewardTokens.indexOf(tokenAddr)] * REWARDS[token].price)})`
+      ` ${tokenHarvestable.toFixed(4)}` +
+      ` ${token} ($${formatMoney(tokenHarvestable * REWARDS[token].price)})`
   }
   _print_link(
-    `Harvest ${userHarvestableRewards}`,
+    `Harvest${userHarvestableRewards}`,
     harvest
   )
   _print_link(
     `Claim${vested}`,
-    harvest
+    claim
   )
   _print_link(`Revoke (set approval to 0)`, revoke)
   _print('')
