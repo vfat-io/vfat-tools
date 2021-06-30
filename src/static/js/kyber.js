@@ -2,11 +2,6 @@ $(function() {
   consoleInit(main)
 });
 
-COINGECKO_IDS = {
-  KNC: 'kyber-network-crystal',
-  MATIC: 'matic-network',
-}
-
 const TOKEN_ADDRESSES = {
   KNC: '0xdeFA4e8a7bcBA345F687a2f1456F5Edd9CE97202',
   USDT: '0xdAC17F958D2ee523a2206206994597C13D831ec7',
@@ -64,6 +59,7 @@ async function main() {
   const explorer = {
     url: 'etherscan.io',
     name: 'Etherscan',
+    info: 'info',
   }
   const KyberRewardLocker = '0xfab5186A194588F5AD5074Bd52659302906B4522'
   for (let key of Object.keys(REWARDS)) {
