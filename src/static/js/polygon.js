@@ -8,6 +8,12 @@ const main = async () => {
     heading: ['Pool Provider', 'LP', 'Reward Tokens', 'INFO'],
     rows: [
       [
+        'Kyber DMM           ',
+        `<a href="kyber"           >Various</a>`,
+        'KNC          ',
+        'https://dmm.exchange'
+      ],
+      [
         'Quickswap           ',
         `<a href="quick"           >Various</a>`,
         'QUICK        ',
