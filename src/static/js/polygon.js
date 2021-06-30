@@ -126,6 +126,7 @@ const main = async() => {
         ["Carousel            ",`<a href="carousel"        >Various</a>`,"CRS          ","https://carouselswap.com"],
         ["PolyCrystal         ",`<a href="polycrystal"     >Various</a>`,"CRYSTAL      ","https://polycrystal.finance"],
         ["Firebird            ",`<a href="firebird"        >Various</a>`,"HOPE         ","https://app.firebird.finance"]
+        ["Hippolygon          ",`<a href="hippolygon"      >Various</a>`,"HIPPO        ","https://hippolygon.com"]
       ]
   }
 
