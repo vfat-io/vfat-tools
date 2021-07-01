@@ -378,7 +378,10 @@ const main = async () => {
       ["Pepe                ", `<a href="pepe"            >Various</a>`, "PEPEFARM     ", "https://pepefarm.finance"],
       ["PolyPupBone         ", `<a href="polypupbone"     >Various</a>`, "BONE         ", "https://bone.polypup.finance"],
       ['PolyRhino           ', `<a href="polyrhino"       >Various</a>`, 'HORN         ', 'https://polyrhino.vercel.app'],
-      ['PolyRuby            ', `<a href="polyruby"        >Various</a>`, 'RUBY         ', 'https://www.polyruby.finance']
+      ['PolyRuby            ', `<a href="polyruby"        >Various</a>`, 'RUBY         ', 'https://www.polyruby.finance'],
+      ['PolyZeus            ', `<a href="polyzeus"        >Various</a>`, 'PolyZeus     ', 'https://polyzeus.finance'],
+      ['PolyMax - CaveMan   ', `<a href="polymax_caveman" >Various</a>`, 'CaveMan      ', 'https://caveman.polymax.club'],
+      ['PolyTreasure        ', `<a href="polytreasure"    >Various</a>`, 'TRZ          ', 'https://vfat.tools/polygon/polytreasure']
     ],
   }
 
