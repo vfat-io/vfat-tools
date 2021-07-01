@@ -130,9 +130,9 @@ async function printLiquidityMiningInfo(App, info, blockTime, explorer, TOKEN_AD
   const dailyAPR = info.apr / 365
 
   _print(`APR: Day ${dailyAPR.toFixed(2)}% Week ${weeklyAPR.toFixed(2)}% Year ${info.apr.toFixed(2)}%`)
-  _print(`Total Staked: ${(info.lpStaked).toFixed(8)} ${info.lpSymbol} ($${formatMoney(info.lpStakedPrice)})`)
+  _print(`Total Staked: ${(info.lpStaked).toFixed(18)} ${info.lpSymbol} ($${formatMoney(info.lpStakedPrice)})`)
   _print(
-    `You are staking ${info.userStaked.toFixed(8)} ${info.lpSymbol} ` +
+    `You are staking ${info.userStaked.toFixed(18)} ${info.lpSymbol} ` +
       `$${formatMoney(info.userStakedUSD)} (${info.userPoolOwnership.toFixed(2)}% of the pool).`
   )
 
@@ -171,7 +171,7 @@ async function printLiquidityMiningInfo(App, info, blockTime, explorer, TOKEN_AD
   const approveAndStake = async function() {
     const signer = App.provider.getSigner()
 
-    const POOL = new ethers.Contract(info.farming.pool, DMM_POOL_ABI, signer)
+    const POOL = new ethers.Contract(info.pool.pool, DMM_POOL_ABI, signer)
     const FARMING = new ethers.Contract(info.pool.farming, KYBER_FAIR_LAUNCH_ABI, signer)
 
     const maxAllowance = ethers.constants.MaxUint256
@@ -226,10 +226,11 @@ async function printLiquidityMiningInfo(App, info, blockTime, explorer, TOKEN_AD
 
     const FARMING = new ethers.Contract(info.pool.farming, KYBER_FAIR_LAUNCH_ABI, signer)
 
+    console.log(info.userStaked > 0)
     if (info.userStaked > 0) {
       showLoading()
 
-      FARMING.withdraw(info.pool.pid, info.userStaked)
+      FARMING.withdrawAll(info.pool.pid)
         .then(function(t) {
           return App.provider.waitForTransaction(t.hash)
         })
@@ -302,8 +303,8 @@ async function printLiquidityMiningInfo(App, info, blockTime, explorer, TOKEN_AD
   }
 
   _print(`<a target="_blank" href="https://${explorer.url}/address/${info.pool.farming}#code">${explorer.name}</a>`)
-  _print_link(`Stake ${info.userAvailableToStake.toFixed(8)} ${info.lpSymbol}`, approveAndStake)
-  _print_link(`Withdraw ${info.userStaked.toFixed(8)} ${info.lpSymbol}`, withdraw)
+  _print_link(`Stake ${info.userAvailableToStake.toFixed(18)} ${info.lpSymbol}`, approveAndStake)
+  _print_link(`Withdraw ${info.userStaked.toFixed(18)} ${info.lpSymbol}`, withdraw)
   let userHarvestableRewards = ''
   for (let tokenAddr of info.rewardTokens) {
     let token = Object.keys(REWARDS).find(key => REWARDS[key].address == tokenAddr)

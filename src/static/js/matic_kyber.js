@@ -67,6 +67,10 @@ async function main() {
 
   _print(`Initialized ${App.YOUR_ADDRESS}\n`);
   _print("Reading smart contracts...\n");
+  _print(
+    `NOTE: Once rewards are harvested, they vest for 30 days before they can be claimable.\n` +
+    `      Each time you harvest, that amount harvested starts vesting for 30 days.\n`
+  )
 
   const blockTime = 2
   const explorer = {
