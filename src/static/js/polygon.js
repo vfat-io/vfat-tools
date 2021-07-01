@@ -376,7 +376,8 @@ const main = async () => {
       ['MountainSwap        ', `<a href="mountainswap"    >Various</a>`, 'MOUNTAIN     ', '                     '],
       ["Hippolygon          ", `<a href="hippolygon"      >Various</a>`, "HIPPO        ", "https://hippolygon.com"],
       ["Pepe                ", `<a href="pepe"            >Various</a>`, "PEPEFARM     ", "https://pepefarm.finance"],
-      ["PolyPupBone         ", `<a href="polypupbone"     >Various</a>`, "BONE         ", "https://bone.polypup.finance"]
+      ["PolyPupBone         ", `<a href="polypupbone"     >Various</a>`, "BONE         ", "https://bone.polypup.finance"],
+      ['PolyRhino           ', `<a href="polyrhino"       >Various</a>`, 'HORN         ', 'https://polyrhino.vercel.app']
     ],
   }
 
