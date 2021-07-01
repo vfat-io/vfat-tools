@@ -377,7 +377,7 @@ const main = async () => {
       ["Hippolygon          ", `<a href="hippolygon"      >Various</a>`, "HIPPO        ", "https://hippolygon.com"],
       ["Pepe                ", `<a href="pepe"            >Various</a>`, "PEPEFARM     ", "https://pepefarm.finance"],
       ["PolyPupBone         ", `<a href="polypupbone"     >Various</a>`, "BONE         ", "https://bone.polypup.finance"],
-	  ['PolyTreasure        ', `<a href="polytreasure"    >Various</a>`, 'TRZ          ', '                     ']
+	  ['PolyTreasure        ', `<a href="polytreasure"    >Various</a>`, 'TRZ          ', 'https://vfat.tools/polygon/polytreasure']
     ],
   }
 
