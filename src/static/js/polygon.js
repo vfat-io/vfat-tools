@@ -93,7 +93,7 @@ const main = async () => {
       ['Gemstones Finance   ', `<a href="gemstonesfinance">Various</a>`, 'GMS          ', 'https://gemstones.finance'],
       ['Polypanda           ', `<a href="polypanda"       >Various</a>`, 'BAMBOO       ', 'https://polypanda.finance'],
       [
-        'Dfyn *              ',
+        'Dfyn                ',
         `<a href="dfyn"            >Various</a>`,
         'DFYN         ',
         'https://exchange.dfyn.network',
@@ -294,7 +294,7 @@ const main = async () => {
         'https://www.rocketfarming.finance',
       ],
       ['PolyComet           ', `<a href="polycomet"       >Various</a>`, 'COMET        ', 'https://www.polycomet.com'],
-      ['KogeFarm *              ', `<a href="koge"            >Various</a>`, 'Various      ', 'https://kogefarm.io'],
+      ['KogeFarm                ', `<a href="koge"            >Various</a>`, 'Various      ', 'https://kogefarm.io'],
       [
         'Fulcrum             ',
         `<a href="fulcrum"         >Various</a>`,
@@ -311,7 +311,7 @@ const main = async () => {
         'https://bali.worldswap.finance',
       ],
       ['PolyFunky Finance   ', `<a href="polyfunky"       >Various</a>`, 'FUNK         ', 'https://www.polyfunky.com'],
-      ['Polycuban *         ', `<a href="polycuban"       >Various</a>`, 'CUBAN        ', 'https://polycuban.finance'],
+      ['Polycuban           ', `<a href="polycuban"       >Various</a>`, 'CUBAN        ', 'https://polycuban.finance'],
       ['50Cent              ', `<a href="50c"             >Various</a>`, '50C/50K      ', 'https://50cent.network'],
       [
         'HonestWorkFarms     ',
