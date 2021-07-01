@@ -29,7 +29,7 @@ async function main() {
     const prices = await getMaticPrices();
 
     await loadMaticChefContract(App, tokens, prices, HORN_CHEF, HORN_CHEF_ADDR, HORN_CHEF_ABI, rewardTokenTicker,
-        "horn", null, rewardsPerWeek, "pendingHorn", [2]);
+        "horn", null, rewardsPerWeek, "pendingHorn");
 
     hideLoading();
 }
