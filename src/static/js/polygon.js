@@ -7,12 +7,7 @@ const main = async () => {
     title: 'POLYGON Network',
     heading: ['Pool Provider', 'LP', 'Reward Tokens', 'INFO'],
     rows: [
-      [
-        'Kyber DMM           ',
-        `<a href="kyber"           >Various</a>`,
-        'KNC          ',
-        'https://dmm.exchange'
-      ],
+      ['Kyber DMM           ', `<a href="kyber"           >Various</a>`, 'KNC          ', 'https://dmm.exchange'],
       [
         'Quickswap           ',
         `<a href="quick"           >Various</a>`,
@@ -313,12 +308,7 @@ const main = async () => {
       ['PolyFunky Finance   ', `<a href="polyfunky"       >Various</a>`, 'FUNK         ', 'https://www.polyfunky.com'],
       ['Polycuban           ', `<a href="polycuban"       >Various</a>`, 'CUBAN        ', 'https://polycuban.finance'],
       ['50Cent              ', `<a href="50c"             >Various</a>`, '50C/50K      ', 'https://50cent.network'],
-      [
-        'HonestWorkFarms     ',
-        `<a href="honestwork"      >Various</a>`,
-        '🚜          ',
-        'https://www.honestwork.farm',
-      ],
+      ['HonestWorkFarms     ', `<a href="honestwork"      >Various</a>`, '🚜          ', 'https://www.honestwork.farm'],
       ['Adamant             ', `<a href="adamant"         >Various</a>`, 'Various      ', 'https://adamant.finance'],
       ['Polygame            ', `<a href="polygame"        >Various</a>`, 'POLYGAME     ', 'https://polygame.finance'],
       ['Carousel            ', `<a href="carousel"        >Various</a>`, 'CRS          ', 'https://carouselswap.com'],
@@ -374,14 +364,39 @@ const main = async () => {
       ['Pickle              ', `<a href="pickle"          >Various</a>`, 'PICKLE       ', 'https://app.pickle.finance'],
       ['Fox                 ', `<a href="fox"             >Various</a>`, 'FOX          ', 'https://foxfarming.us'],
       ['MountainSwap        ', `<a href="mountainswap"    >Various</a>`, 'MOUNTAIN     ', '                     '],
-      ["Hippolygon          ", `<a href="hippolygon"      >Various</a>`, "HIPPO        ", "https://hippolygon.com"],
-      ["Pepe                ", `<a href="pepe"            >Various</a>`, "PEPEFARM     ", "https://pepefarm.finance"],
-      ["PolyPupBone         ", `<a href="polypupbone"     >Various</a>`, "BONE         ", "https://bone.polypup.finance"],
-      ['PolyRhino           ', `<a href="polyrhino"       >Various</a>`, 'HORN         ', 'https://polyrhino.vercel.app'],
-      ['PolyRuby            ', `<a href="polyruby"        >Various</a>`, 'RUBY         ', 'https://www.polyruby.finance'],
+      ['Hippolygon          ', `<a href="hippolygon"      >Various</a>`, 'HIPPO        ', 'https://hippolygon.com'],
+      ['Pepe                ', `<a href="pepe"            >Various</a>`, 'PEPEFARM     ', 'https://pepefarm.finance'],
+      [
+        'PolyPupBone         ',
+        `<a href="polypupbone"     >Various</a>`,
+        'BONE         ',
+        'https://bone.polypup.finance',
+      ],
+      [
+        'PolyRhino           ',
+        `<a href="polyrhino"       >Various</a>`,
+        'HORN         ',
+        'https://polyrhino.vercel.app',
+      ],
+      [
+        'PolyRuby            ',
+        `<a href="polyruby"        >Various</a>`,
+        'RUBY         ',
+        'https://www.polyruby.finance',
+      ],
       ['PolyZeus            ', `<a href="polyzeus"        >Various</a>`, 'PolyZeus     ', 'https://polyzeus.finance'],
-      ['PolyMax - CaveMan   ', `<a href="polymax_caveman" >Various</a>`, 'CaveMan      ', 'https://caveman.polymax.club'],
-      ['PolyTreasure        ', `<a href="polytreasure"    >Various</a>`, 'TRZ          ', 'https://vfat.tools/polygon/polytreasure']
+      [
+        'PolyMax - CaveMan   ',
+        `<a href="polymax_caveman" >Various</a>`,
+        'CaveMan      ',
+        'https://caveman.polymax.club',
+      ],
+      [
+        'PolyTreasure        ',
+        `<a href="polytreasure"    >Various</a>`,
+        'TRZ          ',
+        'https://vfat.tools/polygon/polytreasure',
+      ][('PolyRacoon          ', `<a href="polyracoon"      >Various</a>`, 'RACOON       ', 'https://polyracoon.com/')],
     ],
   }
 
