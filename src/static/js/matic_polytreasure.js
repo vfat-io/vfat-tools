@@ -11,7 +11,7 @@ async function main() {
    
    _print(`Initialized ${App.YOUR_ADDRESS}\n`);
 
-   const TREASURY_ADDR = "0xcF96A5cd1eE948c1547D32fFDe324e68f8fD9b2F";
+   const TREASURY_ADDR = "0xEd8223dd1148C9fD3867d968696706cfa9376643";
    const WETH_ADDR = "0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619";
    const WBTC_ADDR = "0x1BFD67037B42Cf73acF2047067bd4F2C47D9BfD6";   
    const wethContract = new ethers.Contract(WETH_ADDR, ERC20_ABI, App.provider);
