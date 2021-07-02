@@ -28,7 +28,7 @@ async function main() {
     const prices = await getMaticPrices();
 
     await loadMaticChefContract(App, tokens, prices, Yearn_CHEF, Yearn_CHEF_ADDR, Yearn_CHEF_ABI, rewardTokenTicker,
-        "YEARN", null, rewardsPerWeek, "pendingYearn", [11]);
+        "YEARN", null, rewardsPerWeek, "pendingYearn", [12]);
 
 
     hideLoading();
