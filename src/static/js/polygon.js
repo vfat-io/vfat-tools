@@ -389,7 +389,8 @@ const main = async () => {
       ['PolyTreasure        ', `<a href="polytreasure"    >Various</a>`, 'TRZ          ', 'https://vfat.tools/polygon/polytreasure'],
       ['PolyRacoon          ', `<a href="polyracoon"      >Various</a>`, 'RACOON       ', 'https://polyracoon.com/'],
       ['BoneSwap            ', `<a href="boneswap"        >Various</a>`, 'BONE         ', 'https://farm.boneswap.finance'],
-      ['Polyyearn           ', `<a href="polyyearn"       >Various</a>`, 'YEARN        ', 'https://polyyearn.finance']
+      ['Polyyearn           ', `<a href="polyyearn"       >Various</a>`, 'YEARN        ', 'https://polyyearn.finance'],
+      ['WorldSwap Hanoi     ', `<a href="worldswap_han"   >Various</a>`, 'HAN          ', 'https://hanoi.worldswap.finance']
     ],
   }
 
