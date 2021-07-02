@@ -22,6 +22,9 @@ const pageNetwork = function() {
   if (network.toLowerCase() === 'polygon') {
     return window.NETWORKS.POLYGON
   }
+  if (network.toLowerCase() === 'okex') {
+    return window.NETWORKS.OKEX
+  }
   if (network.toLowerCase() === 'xdai') {
     return window.NETWORKS.XDAI
   }
@@ -2032,6 +2035,9 @@ function getErc20Prices(prices, pool, chain="eth") {
     case "matic":
       poolUrl=`https://explorer-mainnet.maticvigil.com/address/${pool.address}`;
       break;
+    case "okex":
+      poolUrl=`https://www.oklink.com/okexchain/address/${pool.address}`;
+      break;
     case "avax":
       poolUrl=`https://cchain.explorer.avax.network/address/${pool.address}`;
       break;
@@ -2550,6 +2556,9 @@ async function printSynthetixPool(App, info, chain="eth", customURLs) {
         break;
       case "matic":
         _print(`<a target="_blank" href="https://explorer-mainnet.maticvigil.com/address/${info.stakingAddress}#code">Polygon Explorer</a>`);
+        break;
+      case "okex":
+        _print(`<a target="_blank" href="https://www.oklink.com/okexchain/address/${info.stakingAddress}#code">Okex Explorer</a>`);
         break;
       case "fantom":
         _print(`<a target="_blank" href="https://ftmscan.com/address/${info.stakingAddress}#code">FTM Scan</a>`);
