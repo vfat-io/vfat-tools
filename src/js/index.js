@@ -224,6 +224,21 @@ window.NETWORKS = {
         "https://viewblock.io/thundercore"
     ],
   },
+  OKEX: {
+    "chainId": "0x42",
+    "chainName": "OKExChain Mainnet",
+    "nativeCurrency": {
+      "name": "okexchain",
+      "symbol": "OKT",
+      "decimals": 18
+    },
+    "rpcUrls": [
+        "https://exchainrpc.okex.org"
+    ],
+    "blockExplorerUrls": [
+        "https://www.oklink.com/okexchain"
+    ],
+  },
 }
 
 const infuraId = atob(window.ETHEREUM_NODE_URL).split('/').pop()
