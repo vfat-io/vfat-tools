@@ -11,7 +11,7 @@ async function main() {
    
    _print(`Initialized ${App.YOUR_ADDRESS}\n`);
 
-   const TREASURY_ADDR = "0x423cc35e3e77Ede864C8D3fca43E68407BB42DFa";
+   const TREASURY_ADDR = "0xEd8223dd1148C9fD3867d968696706cfa9376643";
    const WETH_ADDR = "0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619";
    const WBTC_ADDR = "0x1BFD67037B42Cf73acF2047067bd4F2C47D9BfD6";   
    const wethContract = new ethers.Contract(WETH_ADDR, ERC20_ABI, App.provider);
@@ -39,12 +39,12 @@ async function main() {
    _print(`|  |  |_____|  |  |  |  |  |  |_____   |  |  |  |  |  |  ${Number(btc).toFixed(3)}    |`);
    _print("|  |_____   |  |__|  |  |  |________|  |  |  |  |__|  |  BTC      |");
    _print("|___________|_______________________|________|________|___________|");
-   _print_link("Claim ETH", async() => {
+   _print_link("Claim ETH (needs 1 TRZ token!)", async() => {
 	   const signer = App.provider.getSigner();
 	   const treasuryContract = new ethers.Contract(TREASURY_ADDR, TREASURY_ABI, signer);
        treasuryContract.claimETH(ethers.utils.parseUnits("1", 18), {gasLimit: 500000});
    });
-   _print_link("Claim BTC", async() => {
+   _print_link("Claim BTC (needs 10 TRZ tokens!)", async() => {
 	   const signer = App.provider.getSigner();
 	   const treasuryContract = new ethers.Contract(TREASURY_ADDR, TREASURY_ABI, signer);
        treasuryContract.claimBTC(ethers.utils.parseUnits("10", 18), {gasLimit: 500000});
