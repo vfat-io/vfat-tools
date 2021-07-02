@@ -398,6 +398,7 @@ const main = async () => {
         'https://vfat.tools/polygon/polytreasure',
       ],
       ['PolyRacoon          ', `<a href="polyracoon"      >Various</a>`, 'RACOON       ', 'https://polyracoon.com/'],
+      ['PolyYearn          ', `<a href="polyyearn"      >Various</a>`, 'YEARN       ', 'https://polyyearn.finance/'],
     ],
   }
 
