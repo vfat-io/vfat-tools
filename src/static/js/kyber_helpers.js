@@ -55,7 +55,7 @@ async function loadLiquidityMiningInfo(App, pool, blockTime, KyberRewardLocker, 
   const userInfo = await FARMING.getUserInfo(pool.pid, App.YOUR_ADDRESS)
   const userStaked = userInfo.amount / 1e18
   const userStakedUSD = userStaked * lpPrice
-  const userPoolOwnership = (userStaked / lpStaked) * 100
+  const userPoolOwnership = (userStaked / lpTotalSupply) * 100
   const userAvailableToStake = (await POOL.balanceOf(App.YOUR_ADDRESS)) / 1e18
   const userHarvestableRewards = await FARMING.pendingRewards(pool.pid, App.YOUR_ADDRESS)
   const userToken0Balance = userPoolOwnership * token0Balance / 100
