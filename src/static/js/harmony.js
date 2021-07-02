@@ -43,6 +43,12 @@ const main = async() => {
         `<a href='daikiri'>Various</a>`,
         "DAIKI",
         "https://daikiri.finance/#"
+      ],
+      [
+        "Sushi",
+        `<a href='sushi'>Various</a>`,
+        "SUSHI",
+        "N/A"
       ]
     ]
   }
