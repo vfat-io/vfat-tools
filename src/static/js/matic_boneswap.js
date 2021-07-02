@@ -32,7 +32,7 @@ async function main() {
     const prices = await getMaticPrices();
 
     await loadMaticChefContract(App, tokens, prices, BONESWAP_MC, BONESWAP_MC_ADDR, BONESWAP_CHEF_ABI, rewardTokenTicker,
-        "boneToken", null, rewardsPerWeek, "pendingBone", []);
+        "boneToken", null, rewardsPerWeek, "pendingBone");
 
     hideLoading();
   }
