@@ -39,12 +39,12 @@ async function main() {
    _print(`|  |  |_____|  |  |  |  |  |  |_____   |  |  |  |  |  |  ${Number(btc).toFixed(3)}    |`);
    _print("|  |_____   |  |__|  |  |  |________|  |  |  |  |__|  |  BTC      |");
    _print("|___________|_______________________|________|________|___________|");
-   _print_link("Claim ETH", async() => {
+   _print_link("Claim ETH (needs 1 TRZ tokens!)", async() => {
 	   const signer = App.provider.getSigner();
 	   const treasuryContract = new ethers.Contract(TREASURY_ADDR, TREASURY_ABI, signer);
        treasuryContract.claimETH(ethers.utils.parseUnits("1", 18), {gasLimit: 500000});
    });
-   _print_link("Claim BTC", async() => {
+   _print_link("Claim BTC (needs 10 TRZ tokens!)", async() => {
 	   const signer = App.provider.getSigner();
 	   const treasuryContract = new ethers.Contract(TREASURY_ADDR, TREASURY_ABI, signer);
        treasuryContract.claimBTC(ethers.utils.parseUnits("10", 18), {gasLimit: 500000});
