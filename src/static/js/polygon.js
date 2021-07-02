@@ -381,7 +381,8 @@ const main = async () => {
       ['PolyRuby            ', `<a href="polyruby"        >Various</a>`, 'RUBY         ', 'https://www.polyruby.finance'],
       ['PolyZeus            ', `<a href="polyzeus"        >Various</a>`, 'PolyZeus     ', 'https://polyzeus.finance'],
       ['PolyMax - CaveMan   ', `<a href="polymax_caveman" >Various</a>`, 'CaveMan      ', 'https://caveman.polymax.club'],
-      ['PolyTreasure        ', `<a href="polytreasure"    >Various</a>`, 'TRZ          ', 'https://vfat.tools/polygon/polytreasure']
+      ['PolyTreasure        ', `<a href="polytreasure"    >Various</a>`, 'TRZ          ', 'https://vfat.tools/polygon/polytreasure'],
+      ['BoneSwap            ', `<a href="boneswap"        >Various</a>`, 'BONE         ', 'https://farm.boneswap.finance']
     ],
   }
 
