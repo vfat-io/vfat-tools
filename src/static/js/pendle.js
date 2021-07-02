@@ -85,7 +85,7 @@ async function loadLiquidityMiningInfo(App, farm, rewardTokenPrice, rewardsProxy
 
   const userStaked = parseFloat(await STAKING.getBalances(expiry, App.YOUR_ADDRESS)) / 1e18
   const userStakedUSD = userStaked * (lpPrice * 10**(18-TOKEN_DECIMALS))
-  const userPoolOwnership = userStaked / (lpStaked / 1e18) * 100
+  const userPoolOwnership = (userStaked / lpTotalSupply) * 100
   const userAvailableToStake = parseFloat(await MARKET.balanceOf(App.YOUR_ADDRESS)) / 1e18
 
   let liquidityRewards = 0;
