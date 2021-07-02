@@ -387,7 +387,8 @@ const main = async() => {
       ["Fallout             ", `<a href="fallout"       >Various</a>`,"FALLOUT          ","https://www.falloutfinance.com"],
       ["Nitro               ", `<a href="nitro"         >Various</a>`,"NITRO            ","https://nosfinance.com"],
       ["Magicbeans          ", `<a href="magicbeans"    >Various</a>`,"BEANS            ","https://magicbeans.finance"],
-      ["SymbioteSwap        ", `<a href="symbioteswap"  >Various</a>`,"SYM              ","https://symbioteswap.net"]
+      ["SymbioteSwap        ", `<a href="symbioteswap"  >Various</a>`,"SYM              ","https://symbioteswap.net"],
+      ["Cryptosphere        ", `<a href="cryptosphere"  >Various</a>`,"CRY              ","https://www.cryptosphere.finance"]
     ]}
 
   let table = new AsciiTable().fromJSON(tableData);
