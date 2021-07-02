@@ -396,7 +396,8 @@ const main = async () => {
         `<a href="polytreasure"    >Various</a>`,
         'TRZ          ',
         'https://vfat.tools/polygon/polytreasure',
-      ][('PolyRacoon          ', `<a href="polyracoon"      >Various</a>`, 'RACOON       ', 'https://polyracoon.com/')],
+      ],
+      ['PolyRacoon          ', `<a href="polyracoon"      >Various</a>`, 'RACOON       ', 'https://polyracoon.com/'],
     ],
   }
 
