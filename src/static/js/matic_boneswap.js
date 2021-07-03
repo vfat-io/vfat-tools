@@ -23,10 +23,8 @@ async function main() {
    let rewardsPerWeek = 0
    if(currentBlock < startBlock){
      _print(`Rewards start at block <a href="https://polygonscan.com/block/countdown/${startBlock}" target="_blank">${startBlock}</a>\n`);
-   }else{
-    rewardsPerWeek = await BONESWAP_MC.BONE_PER_BLOCK() /1e18
-      * 604800 * multiplier / 2.1;
    }
+   rewardsPerWeek = await BONESWAP_MC.BONE_PER_BLOCK() / 1e18 * 604800 * multiplier / 2.1;
 
     const tokens = {};
     const prices = await getMaticPrices();
