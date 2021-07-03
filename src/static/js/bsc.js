@@ -193,7 +193,7 @@ const main = async() => {
       ["Panther             ", `<a href="panther"       >Various</a>`,"PANTHER          ","https://pantherswap.com"],
       ["dungeonswap         ", `<a href="dungeon"       >Various</a>`,"DND              ","https://dungeonswap.app"],
       ["Parthenon Delta     ", `<a href="parthenon_delta">Various</a>`,"DELTA           ","https://delta.parthenon.finance"],
-      ["Caramel             ", `<a href="caramel"       >Various</a>`,"CARAMEL          ","https://caramelswap.finance"],
+      ["Caramel *           ", `<a href="caramel"       >Various</a>`,"MEL              ","https://caramelswap.finance"],
       ["Plumcake            ", `<a href="plumcake"      >Various</a>`,"PLUM             ","https://plumcake.finance"],
       ["Wsbdapp             ", `<a href="wsb"           >Various</a>`,"WSB              ","https://farm.wsbdapp.com"],
       ["Feeder              ", `<a href="feeder"        >Various</a>`,"FEED             ","https://app.feeder.finance"],
