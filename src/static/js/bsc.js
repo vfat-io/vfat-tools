@@ -193,7 +193,7 @@ const main = async() => {
       ["Panther             ", `<a href="panther"       >Various</a>`,"PANTHER          ","https://pantherswap.com"],
       ["dungeonswap         ", `<a href="dungeon"       >Various</a>`,"DND              ","https://dungeonswap.app"],
       ["Parthenon Delta     ", `<a href="parthenon_delta">Various</a>`,"DELTA           ","https://delta.parthenon.finance"],
-      ["Caramel             ", `<a href="caramel"       >Various</a>`,"CARAMEL          ","https://caramelswap.finance"],
+      ["Caramel *           ", `<a href="caramel"       >Various</a>`,"MEL              ","https://caramelswap.finance"],
       ["Plumcake            ", `<a href="plumcake"      >Various</a>`,"PLUM             ","https://plumcake.finance"],
       ["Wsbdapp             ", `<a href="wsb"           >Various</a>`,"WSB              ","https://farm.wsbdapp.com"],
       ["Feeder              ", `<a href="feeder"        >Various</a>`,"FEED             ","https://app.feeder.finance"],
@@ -390,7 +390,8 @@ const main = async() => {
       ["SymbioteSwap        ", `<a href="symbioteswap"  >Various</a>`,"SYM              ","https://symbioteswap.net"],
       ["Cryptosphere        ", `<a href="cryptosphere"  >Various</a>`,"CRY              ","https://www.cryptosphere.finance"],
       ["RetroFarms          ", `<a href="retro"         >Various</a>`,"QBert            ","https://retrofarms.net"],
-      ["LittleFox           ", `<a href="foxs"          >Various</a>`,"FOXS             ","https://littlefox.finance"]
+      ["LittleFox           ", `<a href="foxs"          >Various</a>`,"FOXS             ","https://littlefox.finance"],
+      ["Jungle              ", `<a href="jungle"        >Various</a>`,"JUNGLE           ","https://jungleswap.cash"]
     ]}
 
   let table = new AsciiTable().fromJSON(tableData);
