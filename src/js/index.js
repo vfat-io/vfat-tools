@@ -87,7 +87,7 @@ window.NETWORKS = {
     ]
   },
   POLYGON: {
-    "chainId": "0x89",
+    "chainId": "7A69",
     "chainName": "Matic Mainnet",
     "nativeCurrency": {
       "name": "Matic",
