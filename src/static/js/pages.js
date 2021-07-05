@@ -57,6 +57,7 @@ const main = async() => {
       ["xToken              ",`<a href="xtoken/"            >Various</a>`,"XTK       ","https://xtoken.cafe/app/dashboard"],
       ["Yam                 ",`<a href="yam/"               >YAM-ETH SLP</a>`,"YAM   ","https://yam.finance/farm"],
       ["yAxis               ",`<a href="yaxis/"             >Various</a>`,"yAxis     ","https://yaxis.io/farms"]
+      ["BambooDeFi          ",`<a href="../bamboodefi"      >Various</a>`,"BAMBOO    ","https://www.bamboodefi.com"],
     ]
   }
 
