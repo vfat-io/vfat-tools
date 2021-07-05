@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include(`${partials}/head`); -%>
+
+<body>
+<%- include(`${partials}/header_main`); -%>
+<pre id="log">
+*************** 👨‍🌾 UNOFFICIAL BONDAPPETIT DOLLAR CALCULATOR 👨‍🌾 ***************
+INFO  : https://bondappetit.io
+There is a locking period of 3 months in [USDap - USDC] pool
+*******************************************************************************
+
+</pre>
+<div class="loader--1"></div>
+<%- include(`${partials}/scripts`, {scriptname: 'bondappetit'}); -%>
+</body>
+</html> 

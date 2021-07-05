@@ -1,23 +1,22 @@
 $(function() {
-    consoleInit();
-    start(main);
+consoleInit(main)
 });
 
 const DIGG_STRATEGY_ABI = [{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"harvested","type":"uint256"},{"indexed":true,"internalType":"uint256","name":"blockNumber","type":"uint256"}],"name":"Harvest","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"totalDigg","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"totalShares","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"totalScaledShares","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"diggIncrease","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"sharesIncrease","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"scaledSharesIncrease","type":"uint256"}],"name":"HarvestState","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"account","type":"address"}],"name":"Paused","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"controller","type":"address"}],"name":"SetController","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"governance","type":"address"}],"name":"SetGovernance","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"performanceFeeGovernance","type":"uint256"}],"name":"SetPerformanceFeeGovernance","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"performanceFeeStrategist","type":"uint256"}],"name":"SetPerformanceFeeStrategist","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"strategist","type":"address"}],"name":"SetStrategist","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"withdrawalFee","type":"uint256"}],"name":"SetWithdrawalFee","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"tended","type":"uint256"}],"name":"Tend","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"account","type":"address"}],"name":"Unpaused","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"Withdraw","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"balance","type":"uint256"}],"name":"WithdrawAll","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"token","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"WithdrawOther","type":"event"},{"inputs":[],"name":"MAX_FEE","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"_governance","type":"address"},{"internalType":"address","name":"_strategist","type":"address"},{"internalType":"address","name":"_controller","type":"address"},{"internalType":"address","name":"_keeper","type":"address"},{"internalType":"address","name":"_guardian","type":"address"}],"name":"__BaseStrategy_init","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"balanceOf","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"balanceOfPool","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"balanceOfWant","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"baseStrategyVersion","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"controller","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"deposit","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"diggFaucet","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getName","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"pure","type":"function"},{"inputs":[],"name":"getProtectedTokens","outputs":[{"internalType":"address[]","name":"","type":"address[]"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"governance","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"guardian","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"harvest","outputs":[{"components":[{"internalType":"uint256","name":"totalDigg","type":"uint256"},{"internalType":"uint256","name":"totalShares","type":"uint256"},{"internalType":"uint256","name":"totalScaledShares","type":"uint256"},{"internalType":"uint256","name":"diggIncrease","type":"uint256"},{"internalType":"uint256","name":"sharesIncrease","type":"uint256"},{"internalType":"uint256","name":"scaledSharesIncrease","type":"uint256"}],"internalType":"struct StrategyDiggRewards.HarvestData","name":"","type":"tuple"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"_governance","type":"address"},{"internalType":"address","name":"_strategist","type":"address"},{"internalType":"address","name":"_controller","type":"address"},{"internalType":"address","name":"_keeper","type":"address"},{"internalType":"address","name":"_guardian","type":"address"},{"internalType":"address[2]","name":"_wantConfig","type":"address[2]"},{"internalType":"uint256[3]","name":"_feeConfig","type":"uint256[3]"}],"name":"initialize","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"isTendable","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"keeper","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"pause","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"paused","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"performanceFeeGovernance","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"performanceFeeStrategist","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"_controller","type":"address"}],"name":"setController","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"_governance","type":"address"}],"name":"setGovernance","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"_guardian","type":"address"}],"name":"setGuardian","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"_keeper","type":"address"}],"name":"setKeeper","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_performanceFeeGovernance","type":"uint256"}],"name":"setPerformanceFeeGovernance","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_performanceFeeStrategist","type":"uint256"}],"name":"setPerformanceFeeStrategist","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"_strategist","type":"address"}],"name":"setStrategist","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_withdrawalFee","type":"uint256"}],"name":"setWithdrawalFee","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_threshold","type":"uint256"}],"name":"setWithdrawalMaxDeviationThreshold","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"sharesOf","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"sharesOfPool","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"sharesOfWant","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"strategist","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"uniswap","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"unpause","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"version","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"pure","type":"function"},{"inputs":[],"name":"want","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"_amount","type":"uint256"}],"name":"withdraw","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"withdrawAll","outputs":[{"internalType":"uint256","name":"balance","type":"uint256"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"_asset","type":"address"}],"name":"withdrawOther","outputs":[{"internalType":"uint256","name":"balance","type":"uint256"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"withdrawalFee","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"withdrawalMaxDeviationThreshold","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"}]
 
 const bUniContract_stake = async function (stakingTokenAddr, rewardPoolAddr, App, maxAllowance) {
     const signer = App.provider.getSigner()
-  
+
     const TEND_TOKEN = new ethers.Contract(stakingTokenAddr, ERC20_ABI, signer)
     const WEEBTEND_V2_TOKEN = new ethers.Contract(rewardPoolAddr, BADGER_UNI_ABI, signer)
-  
+
     const balanceOf = await TEND_TOKEN.balanceOf(App.YOUR_ADDRESS)
-    const currentTEND =  maxAllowance ? (maxAllowance / 1e18 < balanceOf / 1e18 
+    const currentTEND =  maxAllowance ? (maxAllowance / 1e18 < balanceOf / 1e18
       ? maxAllowance : balanceOf) : balanceOf
     const allowedTEND = await TEND_TOKEN.allowance(App.YOUR_ADDRESS, rewardPoolAddr)
-  
+
     let allow = Promise.resolve()
-  
+
     if (allowedTEND / 1e18 < currentTEND / 1e18) {
       showLoading()
       allow = TEND_TOKEN.approve(rewardPoolAddr, ethers.constants.MaxUint256)
@@ -29,7 +28,7 @@ const bUniContract_stake = async function (stakingTokenAddr, rewardPoolAddr, App
           alert('Try resetting your approval to 0 first')
         })
     }
-  
+
     if (currentTEND / 1e18 > 0) {
       showLoading()
       allow
@@ -55,10 +54,10 @@ const bUniContract_stake = async function (stakingTokenAddr, rewardPoolAddr, App
       alert('You have no tokens to stake!!')
     }
   }
-  
+
   const bUniContract_unstake = async function(rewardPoolAddr, App) {
     const signer = App.provider.getSigner()
-  
+
     const REWARD_POOL = new ethers.Contract(rewardPoolAddr, BADGER_UNI_ABI, signer)
     const currentStakedAmount = await REWARD_POOL.balanceOf(App.YOUR_ADDRESS)
     if (currentStakedAmount > 0) {
@@ -74,21 +73,21 @@ const bUniContract_stake = async function (stakingTokenAddr, rewardPoolAddr, App
         alert('You have no tokens to unstake!!')
       }
   }
-  
+
 
 const geyserContract_stake = async function(stakingTokenAddr, rewardPoolAddr, App, maxAllowance) {
     const signer = App.provider.getSigner()
-  
+
     const TEND_TOKEN = new ethers.Contract(stakingTokenAddr, ERC20_ABI, signer)
     const WEEBTEND_V2_TOKEN = new ethers.Contract(rewardPoolAddr, BADGER_GEYSER_ABI, signer)
-  
+
     const balanceOf = await TEND_TOKEN.balanceOf(App.YOUR_ADDRESS)
-    const currentTEND =  maxAllowance ? (maxAllowance / 1e18 < balanceOf / 1e18 
+    const currentTEND =  maxAllowance ? (maxAllowance / 1e18 < balanceOf / 1e18
       ? maxAllowance : balanceOf) : balanceOf
     const allowedTEND = await TEND_TOKEN.allowance(App.YOUR_ADDRESS, rewardPoolAddr)
-  
+
     let allow = Promise.resolve()
-  
+
     if (allowedTEND / 1e18 < currentTEND / 1e18) {
       showLoading()
       allow = TEND_TOKEN.approve(rewardPoolAddr, ethers.constants.MaxUint256)
@@ -100,7 +99,7 @@ const geyserContract_stake = async function(stakingTokenAddr, rewardPoolAddr, Ap
           alert('Try resetting your approval to 0 first')
         })
     }
-  
+
     if (currentTEND / 1e18 > 0) {
       showLoading()
       allow
@@ -126,10 +125,10 @@ const geyserContract_stake = async function(stakingTokenAddr, rewardPoolAddr, Ap
       alert('You have no tokens to stake!!')
     }
   }
-  
+
   const geyserContract_unstake = async function(rewardPoolAddr, App) {
     const signer = App.provider.getSigner()
-  
+
     const REWARD_POOL = new ethers.Contract(rewardPoolAddr, BADGER_GEYSER_ABI, signer)
     const currentStakedAmount = await REWARD_POOL.totalStakedFor(App.YOUR_ADDRESS)
     if (currentStakedAmount > 0) {
@@ -160,14 +159,14 @@ async function printNonGeyserPool(App, tokens, prices, pool, sharesPerFragment) 
   const lpToken = await getToken(App, tokenAddress, strategyAddress);
   _print(`You have ${userTotallyUnstaked} ${lpToken.symbol}`);
 
-  var newPriceAddresses = lpToken.tokens.filter(x => 
+  var newPriceAddresses = lpToken.tokens.filter(x =>
       !getParameterCaseInsensitive(prices, x));
   var newPrices = await lookUpTokenPrices(newPriceAddresses);
   for (const key in newPrices) {
       if (newPrices[key])
           prices[key] = newPrices[key];
   }
-  var newTokenAddresses = lpToken.tokens.filter(x => 
+  var newTokenAddresses = lpToken.tokens.filter(x =>
       !getParameterCaseInsensitive(tokens,x));
   for (const address of newTokenAddresses) {
       tokens[address] = await getToken(App, address, tokenAddress);
@@ -197,7 +196,7 @@ async function printNonGeyserPool(App, tokens, prices, pool, sharesPerFragment) 
   _print(`\n`);
 }
 
-  
+
 async function printPool(App, tokens, prices, pool, sharesPerFragment) {
   const tokenUrl = `<a href='https://etherscan.io/address/${pool.tokenAddress}' target='_blank'>Underlying</a>`;
   const settUrl = `<a href='https://etherscan.io/address/${pool.settAddress}' target='_blank'>Sett</a>`;
@@ -213,14 +212,15 @@ async function printPool(App, tokens, prices, pool, sharesPerFragment) {
   const lpToken = await getToken(App, tokenAddress, settAddress);
   _print(`You have ${userTotallyUnstaked} ${lpToken.symbol}`);
 
-  var newPriceAddresses = lpToken.tokens.filter(x => 
+  var newPriceAddresses = lpToken.tokens.filter(x =>
+      x.toLowerCase() !== "0x075b1bb99792c9e1041ba13afef80c91a1e70fb3" && //curve sBTC
       !getParameterCaseInsensitive(prices, x));
   var newPrices = await lookUpTokenPrices(newPriceAddresses);
   for (const key in newPrices) {
       if (newPrices[key])
           prices[key] = newPrices[key];
   }
-  var newTokenAddresses = lpToken.tokens.filter(x => 
+  var newTokenAddresses = lpToken.tokens.filter(x =>
       !getParameterCaseInsensitive(tokens,x));
   for (const address of newTokenAddresses) {
       tokens[address] = await getToken(App, address, tokenAddress);
@@ -237,13 +237,13 @@ async function printPool(App, tokens, prices, pool, sharesPerFragment) {
     const swapContract = new ethers.Contract(pool.swapAddress, CURVE_SWAP_ABI, App.provider);
     const virtualPrice = await swapContract.get_virtual_price() / 1e18;
     const underlyingPrice = getParameterCaseInsensitive(prices, pool.baseToken).usd;
-    const poolPrice = underlyingPrice * virtualPrice; 
-    const pool_tvl = lpToken.balance / 1e18 * poolPrice;
+    const poolPrice = underlyingPrice * virtualPrice;
+    const pool_tvl = lpToken.totalSupply / 1e18 * poolPrice;
     const pool_staked_tvl = lpToken.staked * poolPrice;
     poolPrices.price = poolPrice;
-    _print(`${pool.symbol} Price: $${formatMoney(poolPrice)} TVL: $${formatMoney(pool_tvl)}`);
+    _print(`${lpToken.symbol} Price: $${formatMoney(poolPrice)} TVL: $${formatMoney(pool_tvl)}`);
     _print(`Staked: $${formatMoney(pool_staked_tvl)}`);
-  } 
+  }
   else {
     poolPrices.print_price();
   }
@@ -262,7 +262,7 @@ async function printPool(App, tokens, prices, pool, sharesPerFragment) {
   if (userStaked > 0) poolPrices.print_contained_price(userStaked * ratio);
   let index = 0;
   for (const r of rewardTokens) {
-    const res = await getRewards(BADGER_GEYSER, r, prices, poolPrices, totalStaked, ratio, 
+    const res = await getRewards(BADGER_GEYSER, r, prices, poolPrices, totalStaked, ratio,
       userStaked, stakeTokenPrice, settToken, lpToken, sharesPerFragment, index)
     if (res) index++;
   }
@@ -281,7 +281,7 @@ async function printPool(App, tokens, prices, pool, sharesPerFragment) {
   _print(`\n`);
 }
 
-const getRewards = async (geyser, rewardTokenAddress, prices, poolPrices, totalStaked, 
+const getRewards = async (geyser, rewardTokenAddress, prices, poolPrices, totalStaked,
                           ratio, userStaked, stakeTokenPrice, settToken, lpToken, sharesPerFragment,
                           index) => {
   let unlockSchedules = await geyser.getUnlockSchedulesFor(rewardTokenAddress)
@@ -337,7 +337,7 @@ const getRewards = async (geyser, rewardTokenAddress, prices, poolPrices, totalS
   return true;
 }
 
-const pools = [ 
+const pools = [
   {
     name : "Badger/wBTC Sushi-LP",
     tokenAddress : "0x110492b31c59716ac47337e616804e3e3adc0b4a",
@@ -350,13 +350,13 @@ const pools = [
     settAddress : "0x235c9e24D3FB2FAFd58a2E49D454Fdcd2DBf7FF1",
     geyserAddress : "0xA207D69Ea6Fb967E54baA8639c408c31767Ba62D"
   },
-  { 
+  {
     name : "DIGG/wBTC Uni-LP",
     tokenAddress : "0xe86204c4eddd2f70ee00ead6805f917671f56c52",
     settAddress : "0xC17078FDd324CC473F8175Dc5290fae5f2E84714",
-    geyserAddress : "0x0194B5fe9aB7e0C43a08aCbb771516fc057402e7" 
+    geyserAddress : "0x0194B5fe9aB7e0C43a08aCbb771516fc057402e7"
   },
-  { 
+  {
     name : "DIGG/wBTC Sushi-LP",
     tokenAddress : "0x9a13867048e01c663ce8ce2fe0cdae69ff9f35e3",
     settAddress : "0x88128580ACdD9c04Ce47AFcE196875747bF2A9f6",
@@ -390,7 +390,9 @@ const pools = [
     name : "curve.fi / sBTC",
     tokenAddress : "0x075b1bb99792c9e1041ba13afef80c91a1e70fb3",
     settAddress : "0xd04c48A53c111300aD41190D63681ed3dAd998eC",
-    geyserAddress : "0x10fC82867013fCe1bD624FafC719Bb92Df3172FC"
+    geyserAddress : "0x10fC82867013fCe1bD624FafC719Bb92Df3172FC",
+    swapAddress : "0x7fc77b5c7614e1533320ea6ddc2eb61fa00a9714",
+    baseToken : "0x2260fac5e5542a773aa44fbcfedf7c193bc2c599" //wBTC
   },
   {
     name : "curve.fi / tBTC",
@@ -408,7 +410,7 @@ const pools = [
   }
 ];
 
-async function main() {  
+async function main() {
     var tokens = {};
     var prices = {};
 
@@ -431,7 +433,7 @@ async function main() {
         await printPool(App, tokens, prices, p, sharesPerFragment);
       }
       else {
-        await printNonGeyserPool(App, tokens, prices, p, sharesPerFragment);  
+        await printNonGeyserPool(App, tokens, prices, p, sharesPerFragment);
       }
     }
     hideLoading();

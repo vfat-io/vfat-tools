@@ -1,15 +1,87 @@
 
 $(function() {
-  consoleInit();
-  start(main);
+consoleInit(main)
 });
 
 const BEEFY_VAULT_ABI = [{"inputs":[{"internalType":"address","name":"_token","type":"address"},{"internalType":"address","name":"_strategy","type":"address"},{"internalType":"string","name":"_name","type":"string"},{"internalType":"string","name":"_symbol","type":"string"},{"internalType":"uint256","name":"_approvalDelay","type":"uint256"}],"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"owner","type":"address"},{"indexed":true,"internalType":"address","name":"spender","type":"address"},{"indexed":false,"internalType":"uint256","name":"value","type":"uint256"}],"name":"Approval","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"implementation","type":"address"}],"name":"NewStratCandidate","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"previousOwner","type":"address"},{"indexed":true,"internalType":"address","name":"newOwner","type":"address"}],"name":"OwnershipTransferred","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"from","type":"address"},{"indexed":true,"internalType":"address","name":"to","type":"address"},{"indexed":false,"internalType":"uint256","name":"value","type":"uint256"}],"name":"Transfer","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"implementation","type":"address"}],"name":"UpgradeStrat","type":"event"},{"inputs":[{"internalType":"address","name":"owner","type":"address"},{"internalType":"address","name":"spender","type":"address"}],"name":"allowance","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"approvalDelay","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"spender","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"approve","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"available","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"balance","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"account","type":"address"}],"name":"balanceOf","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"decimals","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"spender","type":"address"},{"internalType":"uint256","name":"subtractedValue","type":"uint256"}],"name":"decreaseAllowance","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_amount","type":"uint256"}],"name":"deposit","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"depositAll","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"earn","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"getPricePerFullShare","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"spender","type":"address"},{"internalType":"uint256","name":"addedValue","type":"uint256"}],"name":"increaseAllowance","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"name","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"owner","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"_implementation","type":"address"}],"name":"proposeStrat","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"renounceOwnership","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"stratCandidate","outputs":[{"internalType":"address","name":"implementation","type":"address"},{"internalType":"uint256","name":"proposedTime","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"strategy","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"symbol","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"token","outputs":[{"internalType":"contract IERC20","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"totalSupply","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"recipient","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"transfer","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"sender","type":"address"},{"internalType":"address","name":"recipient","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"transferFrom","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"newOwner","type":"address"}],"name":"transferOwnership","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"upgradeStrat","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_shares","type":"uint256"}],"name":"withdraw","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"withdrawAll","outputs":[],"stateMutability":"nonpayable","type":"function"}]
 const BEEFY_STRATEGY_ABI = [{"inputs":[{"internalType":"address","name":"_vault","type":"address"},{"internalType":"address","name":"_strategist","type":"address"}],"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"previousOwner","type":"address"},{"indexed":true,"internalType":"address","name":"newOwner","type":"address"}],"name":"OwnershipTransferred","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"account","type":"address"}],"name":"Paused","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"harvester","type":"address"}],"name":"StratHarvest","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"account","type":"address"}],"name":"Unpaused","type":"event"},{"inputs":[],"name":"CALL_FEE","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"MAX_FEE","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"REWARDS_FEE","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"STRATEGIST_FEE","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"TREASURY_FEE","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"WITHDRAWAL_FEE","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"WITHDRAWAL_MAX","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"balanceOf","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"balanceOfLpPair","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"balanceOfPool","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"bifi","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"bnb","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"deposit","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"harvest","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"inch","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"lpPair","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"owner","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"panic","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"pause","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"paused","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"renounceOwnership","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"retireStrat","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"rewardPool","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"rewards","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"_strategist","type":"address"}],"name":"setStrategist","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"strategist","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"newOwner","type":"address"}],"name":"transferOwnership","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"treasury","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"unirouter","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"unpause","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"vault","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"wbnb","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"","type":"uint256"}],"name":"wbnbToBifiRoute","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"_amount","type":"uint256"}],"name":"withdraw","outputs":[],"stateMutability":"nonpayable","type":"function"},{"stateMutability":"payable","type":"receive"}]
 
 const Address = [
+  "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
+  "0x8893D5fA71389673C5c4b9b3cb4EE1ba71207556",
+  "0xa9eA4b786ee5b7A733c035564Bfd9341A4c9FC1e",
+  "0x4fCfA6cC8914ab455B5b33Df916d90BFe70b6AB1",
+  "0x790Be81C3cA0e53974bE2688cDb954732C9862e1",
+  "0x4F47A0d15c1E53F3d94c069C7D16977c29F9CB6B",
+  "0x2849b1aE7E04A3D9Bc288673A92477CF63F28aF4",
+  "0xcc2E12a9b5b75360c6FBf23B584c275D52cDdb0E",
+  "0x603c7f932ED1fc6575303D8Fb018fDCBb0f39a95",
+  "0x69F27E70E820197A6e495219D9aC34C8C6dA7EeE",
   "0xf7069e41C57EcC5F122093811d8c75bdB5f7c14e",
+  "0x9fBa2fc7505CE6801ADCF23146310187CecfcE47",
+  "0x2c1a0950aC426f920f260C9647BCD3AFD0482f4e",
+  "0xE929d65cBf543cC3cA6b18Fe7872fccC6abBf480",
+  "0x3B5332A476AbCdb80Cde6645e9e5563435e97772",
+  "0x7091E04422d1D9Be48C211cf2F818a7E88EFd736",
+  "0x621Ab9A2EF4256A43dEFeB37F0a1eACb276BbF97",
+  "0x57e6f78a7e644b8532d8c4f3A354c921709Aa897",
+  "0x1EdfEc6849C54Ee9187539516C6a67ADAcBf9704",
+  "0x580b899D8d856DFe3da7895466F779F1A509D2Fd",
+  "0xA9936272065e6DDAc9D2453C9a2712B581e9aE1B",
+  "0x0DA3EB14c8d07a87A366D029d7f2341Ac0eca775",
+  "0xb35Dc0b5eFd7c75590a9da55BE46d968c5804e24",
+  "0x4BeE93b29e1b3fd90bb3e6EdE9539Fe92E9836Cd",
+  "0x61B51dc9AEb46403628930ef5F527168941E639b",
+  "0x8AA0635A4719e665A08BaDe38b13F4a6d278165A",
+  "0xB1C9A27394dBa451Bfc4a5dce8Fc829f8a3E9278",
+  "0x2D40beB0122aBcAD0E6b49934d47adac6Dddd97B",
+  "0x92E586d7dB14483C103c2e0FE6A596F8b55DA752",
+  "0xbA67606DFE07387D20d9A324eF91732954688D77",
+  "0x94d75413A29287Dde5766E5595dc61e668965170",
+  "0xd7987DB14509FACb9CC44c0b82CC86c188f5cEEF",
+  "0x62d7eC40A1a3f0AB5D1fCC0D8bd3dCb015aFe6a3",
+  "0x0C098a54FeE7EC15a59587E69cD340BBd9d22077",
+  "0xF3C1EB01E40c47fd32D0397e56569809aae0e9c7",
+  "0x5B06aA1ebd2e15bC6001076355E5B4C39Cbc83F3",
+  "0xfc01F7a17eEb5DABc97312E13954444b00217621",
+  "0x96F66Dcf58fe5D276d64AC43095E2910AD4DBfD1",
+  "0xD307e7CC6a302046b7D91D83aa4B8324cFB7a786",
+  "0xee43C2D11Bc6DF95dcECd9be05ae648863D6f9dC",
+  "0x32FDaa004C1d9cFCf9B8044D6015DD7bb3a7Ec5a",
+  "0xFa7767Cf402a6D198cC136FED32550ABA70C3e02",
+  "0xd9fe7Ff89C5303E439a14a5155F7F48E34F28518",
+  "0xa640E017Fc01dD39F6b7B07b0460B04E218c0a01",
+  "0x48cc86214C58d7EaA78C100156c55DD45A676Ed1",
+  "0x6Cb6D451e7E7ca5d5F73715D6B5dfc55EfbC1f82",
+  "0xe0B473c0dD6D7Fea5B395c3Ce7ffd4FEF0ab4373",
+  "0x907b3848593df20243eCb5D954b06a028092b0D6",
+  "0x8f210015B2BbDd39e6d62278992136aCAfd09691",
+  "0x00dD62424A79C971D6F6a10bac531F33185E6d5b",
+  "0xCa0294b89ee367ADaEDC8cdA684648dC1c5D8FEe",
+  "0xb01e3C7789858beD3b142c8f2499F21Ab3ea3f0f",
+  "0xcf2D6e0030e24F01e4750cAE376E2126e728E0c2",
+  "0x5DA77c7DBF6dBa1155CF343db06a7D79aaaad9Ee",
+  "0x7255Ae13BA4484eD33fB48c4b833000dC12888B4",
+  "0xfEDB3855761B9e356671Fb1eC95593e99b153EfD",
+  "0x6a3fF116a10349BB40B22FD7687871d5D560d715",
+  "0xcB8c4416cD10836ff7A35F4b2AfD5BE0257Cc9DB",
+  "0x53c0CE2EBdA0c2A39327bE0B58a3c28A8Dcde420",
+  "0x7C001B962029C0a59b148293838dc780d7E5d24C",
+  "0x6b4971b8dAfc3c426EdE7E629394f31B0BdF3c16",
+  "0x31b4d6D89531BB32307737C441a8cD7d82224B91",
+  "0x9De53755e913913dEcA7360a19C0634F2214FB6d",
+  "0xDB89f01094c6e882d06aBC724aEBc7d15036fe14",
+  "0xe698edcC279f68c2c37f5c122a26faBd5f6D98A3",
+  "0x15396D3BD9338A14AE90613Fc2b85c5F7b5621CF",
+  "0x651b496bCe2C184282a2B9AeF3f8BaDBAC36Dd7f",
+  "0xE7DCEFacf1c9c523c1ccCc3Fc1Ae3EB654a4e805",
+  "0x2EA1175f7189BeAdd6D8A7687B0a311C6785a7a3",
+  "0x847c5748A280d800690F7D3A62574603b57Cd0b7",
   "0x2139E4CaDA8438a41F4009ff07D09Db29A62De04",
+  "0x8a27f380626CAc25DF8D3Ea50Ed1fd7Db882e653",
+  "0x310DF4c1DD93337A165AeF8e3d45A770CaaDe3b6",
+  "0x0666bDF7187307890D2ACF092493cCEA51A8CD0b",
+  "0xE372825C7b436244Cd5fA79cAa16e4Cc3091D4B0",
   "0x04D0bE0169694ca083996899a14752c82A953D22",
   "0x62ad4253FB38265Da05eb389ac547F1B2c09a689",
   "0x57e07d6958fd38AA2f46699744e322d3fB3db60f",
@@ -20,6 +92,7 @@ const Address = [
   "0x605d96De6068f08489392a35E9DBE90201574bbC",
   "0x10120b5550214ab9451b9b00e4f78e82c02d6482",
   "0xEE24B014422a53dA2190a64C0477a300590677f2",
+  "0x8afc0f9BdC5DcA9f0408Df03A03520bFa98A15aF",
   "0x578C066b5c7289f8Ba7c4DB43c110F19D7c51E03",
   "0x29C4C22eC7dF7e936Cb3e6C4A7E5eAE751C7d86B",
   "0x12e09a13f5e2d95b3B8db8741dFeBa453784d1DC",
@@ -37,8 +110,6 @@ const Address = [
   "0x559C88946e1958812dCfD8edd4f89B0C7d811F74",
   "0x58327471A57EE89Aa4b91753fF9E09f7291236C7",
   "0x7E45e8E3404a2C142d7E8eAE94EaEB8641607857",
-  "0xe0B473c0dD6D7Fea5B395c3Ce7ffd4FEF0ab4373",
-  "0x5B06aA1ebd2e15bC6001076355E5B4C39Cbc83F3",
   "0x02a77B01BE5BB6a73b70E2b5615694F71a2c4F41",
   "0xed324b068e31c6fB7C7921e79E54d95B1Ca9d759",
   "0x747f66e2Ab1b887a2207e15ADb7f9dAB79D9EAcf",
@@ -68,8 +139,6 @@ const Address = [
   "0xfC083Cb104b48924AB44C69537b1450B2e78eBD6",
   "0x56E899E56F6B8635B4A01b724db23674a64A7231",
   "0xFAE4a35305a1dcED8303029ac05e51386f667ED8",
-  "0x589bf2811CC824C328B5FC38288f141cB0053fAd",
-  "0x370533CB4f8b3f018caE837a83960AEfCeB36f39",
   "0x4D6294D36aD4201De1D93Af18A61453B8865d008",
   "0x1d23ecC0645B07791b7D99349e253ECEbe43f614",
   "0xb8b7CAF72D75Ac8b71bB208b2D98a9dac9d5c90B",
@@ -112,9 +181,6 @@ const Address = [
   "0x23f81b26e7dfB44832f627Ee533399285a11e711",
   "0x0F5ef847595236Bb70833825FC9Bf0ef982CDD4C",
   "0x7ca3761D9886D5Ac233E58d5B2E60174B3A94b82",
-  "0xFfEf22C020486a4118d4274a6D0573a80276d4b4",
-  "0x8F61350871B986B098A6757e3953CEF697D46025",
-  "0x40BBdaD2e12A3E9900F2e6e6A5B605c36182BEa0",
   "0x1061c2962fccD794C4131b3c13058302618329E9",
   "0xcB00A85dbb29Ab9e2581660031BF56EfC819a559",
   "0xc119408BDa86C12F1c6BD276e68ab9f558292119",
@@ -123,14 +189,12 @@ const Address = [
   "0x4884cD2C9F11Dc9e8f90d177576c46fdbd1b7641",
   "0xa40488536B1BAeECA9D2277Fde28394D3c04aD73",
   "0x4CcF7dC91389396801ec1f4A5E6cC675549f39E6",
-  "0x6BE4741AB0aD233e4315a10bc783a7B923386b71", //this is bnb
-  "0x6BE4741AB0aD233e4315a10bc783a7B923386b71", //this is wbnb
+  "0x6BE4741AB0aD233e4315a10bc783a7B923386b71",
+  "0x6BE4741AB0aD233e4315a10bc783a7B923386b71",
   "0x9aaD247bAc2AFc3027256aD0Cc09A27551069bd6",
   "0x07D478b679C6c7F4222388856f53F8dca7E7b378",
   "0x1997D7cF0A63A374A853ca9d5b1dAcCFeCa5cEb8",
   "0x2d3d152b3b94c0E0B217AC5bc1115E3D8b8018F9",
-  "0x7255Ae13BA4484eD33fB48c4b833000dC12888B4",
-  "0xA9936272065e6DDAc9D2453C9a2712B581e9aE1B",
   "0xd61420f20e945d0B617fEdA5971f692A3DCE711c",
   "0x3eb560209B438d4e23833aFf6751fcf0B810F60b",
   "0xB1B91AA761F552FEF29A50643D0F93690082960F",
@@ -142,7 +206,6 @@ const Address = [
   "0xaC112E7744C129ae54E65F5D2cb4eA472E08eA0B",
   "0x3e1B60EB79b17d41F8E268936d853A43BEA24259",
   "0x1bcc82ce9b387E16fC383af563fd400074E3f060",
-  "0x3DbBDFA0A412Fd15ef9fc4CEb3Fcc19Ff329980b",
   "0x06fb2e27155c2a551aF34E80aE67f569673dDD73",
   "0x29C36e5fcB1dC4a3D4B46C00F82b2cee39c5540e",
   "0x9D729179E429153a6aca26389e6a9b625431C79B",
@@ -150,8 +213,6 @@ const Address = [
   "0x0adc208151e6b7AE1D884b64fDA662d10B4F6174",
   "0x68aE2aB6448884714DDf11C8d55ea7578C65D502",
   "0x2091b25f02275a4D791075f83c904Fa5Fb96B5A7",
-  "0x498515AB07d72d24A85343322834a66e79e146f8",
-  "0x5EA6fE190f9F7B814fDc438A6CC448d094740588",
   "0x7A99078ba8960871233377C7aE6B5d2A61229A43",
   "0x3CAd2fF669865359b80a2d948A10e1810f7486D7",
   "0x390f28E3919D2c4d9624Ae9AeBe6da25322ED56D",
@@ -178,9 +239,44 @@ const Address = [
   "0x2fd5f579e2cF9e3cb8127BBAd1B52c25750b1aCE",
   "0x214e640c638fbe68Fb24e11BfBd8Cd7d6cb8E37b",
   "0x78d60Da18c09bdE41397010198F454021Ec810Ad",
+  "0xFDafEA4529d609901E6E6CC65b3e2C1C822e223d",
+  "0x07AD2C13a0D735FA4F8788DC0B6355AaaB2f3407",
+  "0xe6CcE165Aa3e52B2cC55F17b1dBC6A8fe5D66610",
+  "0x41D44B276904561Ac51855159516FD4cB2c90968",
+  "0xdf68Bf80D427A5827Ff2c06A9c70D407e17DC041",
+  "0x2a30C5e0d577108F694d2A96179cd73611Ee069b",
+  "0x1433c4a55449c8B96cf5Ac0cF395cBd8dc8e5f60",
+  "0x7a670e849DB824364d1031DEAfB4cD603144F23D",
+  "0x945b2379E29F503a78dBcaB2feEFFE74a6c31E2b",
+  "0x6169551074826724CAcd8Deb452BF133403c2036",
+  "0x8B1Ca7f3F0838dCd23DA8CFe223eA313739193cb",
+  "0x044e87f30bd9bD961c04028aC69155493E1b9eD0",
+  "0x666c0b9D37A20235C232081C1C6B2edc70ecC7F3",
+  "0xbF7421bd2f79643a671b70d1DDE57D452C110CF8",
+  "0xC422261EdC5dB679CAd9BC403e886351De540e77",
+  "0x5c2197149ce7CAb038aB09C45087a09070E32C73",
+  "0xd93A86BbF40454A7BCD339614fB46C67bE31B908",
+  "0x2f536faCbC780B9ccA02545d2aA71021d7308c5E",
+  "0x3492eF16b2ACb5b5240436d5D2B657fDc2b0b1eB",
+  "0x1Ff05E1Fb13931eBE19363441bF10f8c5dCc963E",
+  "0x56Fb7dA3025f76d2128Ef1b0D2EEA47Dd45e7C2a",
+  "0x14d07853560436aEe38BE12DD66d944B07D5E59F",
+  "0x0c89Ca08b6831e6b81f9f969F37A966a2C44d3d1",
+  "0x7076a33b6525132fF77F0FeE2daB2a1e79688DA0",
+  "0x114c5f7f42fB75b7960aa3e4c327f53288360F58",
+  "0xA43d8f6Db69610C8260B953658553cabF01D77c6",
+  "0xB5F0fF997BEc850b11792ed07b2B5AbDEa869B84",
+  "0x3094Ab4Af54f5208B867125B5CCeCc94Bc17cbB6",
+  "0xd5ab3Fac6200B0D8e8d76daED62793026118A78c",
+  "0x6571052b2FB67DF6DD003ED6ed371098A030Eb0d",
+  "0x17657955D954bD7F7315C388D7099af7B0b851FA",
+  "0x044e87f30bd9bD961c04028aC69155493E1b9eD0",
+  "0xDA875A511860f2752B891677489d08CaEDac00EA",
+  "0x7a670e849DB824364d1031DEAfB4cD603144F23D",
+  "0x71b5852857b85D5096d4288AD6d293F217d8e162",
 ]
 
-async function main() {  
+async function main() {
   const App = await init_ethers();
 
   _print(`Initialized ${App.YOUR_ADDRESS}\n`);
@@ -201,10 +297,10 @@ async function main() {
     _print_bold(`You are staking a total of $${formatMoney(userTvl)}`);
   }
 
-  hideLoading();  
+  hideLoading();
 }
 
-async function loadBeefyPoolInfo(App, tokens, prices, contractAddress) {  
+async function loadBeefyPoolInfo(App, tokens, prices, contractAddress) {
   try {
     const contract = await new ethers.Contract(contractAddress, BEEFY_VAULT_ABI, App.provider);
     const vault = await getBscToken(App, contractAddress, App.YOUR_ADDRESS);
@@ -226,7 +322,7 @@ async function loadBeefyPoolInfo(App, tokens, prices, contractAddress) {
 
 async function printBeefyContract(poolInfo) {
   const poolPrices = poolInfo.poolPrices;
-  _print(`${poolPrices.name} Price: $${formatMoney(poolPrices.price)} TVL: $${formatMoney(poolPrices.tvl)}`);  
+  _print(`${poolPrices.name} Price: $${formatMoney(poolPrices.price)} TVL: $${formatMoney(poolPrices.tvl)}`);
   var userStakedUsd = poolInfo.userStaked * poolPrices.price;
   var userStakedPct = userStakedUsd / poolPrices.tvl * 100;
   _print(`You are staking ${poolInfo.userStaked.toFixed(4)} ${poolPrices.name} ($${formatMoney(userStakedUsd)}), ${userStakedPct.toFixed(2)}% of the pool.`);

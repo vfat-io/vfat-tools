@@ -1,10 +1,9 @@
 $(function() {
-    consoleInit();
-    start(main);
+consoleInit(main)
 });
 
-async function main() {  
-    
+async function main() {
+
     const App = await init_ethers()
     //_print(`Initialized ${App.YOUR_ADDRESS}`)
 
@@ -44,12 +43,12 @@ async function main() {
     const rez = await fetch(url, opts);
     const rezz = await rez.json();
 
-    function convertTimestamptoTime(unixTimestamp) { 
-        dateObj = new Date(unixTimestamp * 1000); 
-        utcString = dateObj.toUTCString(); 
-        time = utcString; //.slice(-11, -4); 
-        return time 
-    } 
+    function convertTimestamptoTime(unixTimestamp) {
+        dateObj = new Date(unixTimestamp * 1000);
+        utcString = dateObj.toUTCString();
+        time = utcString; //.slice(-11, -4);
+        return time
+    }
     var formatter = new Intl.NumberFormat('en-US', {
         style: 'currency',
         currency: 'USD',
@@ -59,19 +58,19 @@ async function main() {
         "heading":["timestamp","pair", "liquidity in usd", "pair addr"],
         "rows": []
     }
-    let turl; 
+    let turl;
     if (lp == "sushiswap") {
-        turl = 'https://sushiswap.fi/pair/'
-    } 
+        turl = 'https://app.sushi.com/pair/'
+    }
     else if (lp == 'uniswap') {
         turl = 'https://info.uniswap.org/pair/'
     }
-    rezz.data.pairs.map(x => 
+    rezz.data.pairs.map(x =>
         asdf.rows.push( [
             convertTimestamptoTime(x.createdAtTimestamp),
             `${x.token0.symbol}-${x.token1.symbol}`,
             formatter.format(x.reserveUSD.substr(0,10)),
-            `<a target='_blank' href='${turl}${x.id}'>${x.id}</a>` 
+            `<a target='_blank' href='${turl}${x.id}'>${x.id}</a>`
         ] )
     )
     var table2 = new AsciiTable().fromJSON(asdf);

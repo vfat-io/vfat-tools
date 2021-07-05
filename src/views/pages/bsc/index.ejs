@@ -1,121 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
-  <%- include(`${partials}/head`); -%>
-  <body>
-    <pre class="container">
-<div>
-<a href="<%= PP %>/">Home</a> - <a href="<%= PP %>/bsc/">BSC</a> - <a href="<%= PP %>/heco/">HECO</a> - <a href="<%= PP %>/matic/">MATIC</a> - <a href="<%= PP %>/xdai/">xDAI</a> - <a href="<%= PP %>/avax/">AVAX</a> - <a href="<%= PP %>/seigniorage/">Seigniorage</a>
-</div>
-<div>
-<a href="https://www.youtube.com/watch?v=D8RZhK1zcs0" target="_blank">Youtube tutorial!</a> by the excellent <a href="https://twitter.com/gabrielhaines" target="_blank">Gabriel Haines</a>
-</div>
+<%- include(`${partials}/head`); -%>
 
-************************ BINANCE SMART CHAIN *************************
-
----Pool Provider---     --------LP--------          --Reward Tokens--   --INFO--
-     Pancake              <a href="pancake"       >Various</a>                    CAKE                https://pancakeswap.finance
-     Apeswap              <a href="apeswap"       >Various</a>                    BANANA              https://apeswap.finance
-     Autofarm             <a href="autofarm"      >Various</a>                    AUTOFARM            https://autofarm.network
-     Bake                 <a href="bake"          >Various</a>                    BAKE                https://www.bakeryswap.org
-     Brew                 <a href="brew"          >Various</a>                    BREW                https://cafeswap.finance
-     Donut                <a href="donut"         >Various</a>                    DONUT               https://donutdefi.com
-     Pumpkin              <a href="pumpkin"       >Various</a>                    PUMP                https://pumpkindefi.org
-     Ramen                <a href="ramen"         >Various</a>                    RAMENSWAP           https://ramenswap.finance
-     Goose                <a href="goose"         >Various</a>                    GOOSE               https://www.goosedefi.com
-     Salt                 <a href="salt"          >Various</a>                    SALT                https://www.saltswap.finance
-     Soup                 <a href="soup"          >Various</a>                    SOUP/SOUPS          https://soups.finance
-     Kebab                <a href="kebab"         >Various</a>                    KEBAB               https://kebabfinance.com
-     Kimochi              <a href="kimochi"       >Various</a>                    KIMOCHI             https://kimochi.finance
-     Viking               <a href="viking"        >Various</a>                    VIKING              https://www.vikingswap.finance
-     Xoxo                 <a href="xoxo"          >Various</a>                    XOXO                https://xoxo.finance
-     Nyan                 <a href="nyan"          >Various</a>                    NYAN                https://yieldnyan.com
-     bDollar              <a href="bdo/"          >Various</a>                    BDO/sBDO/bBDO       https://bdollar.fi
-     Beluga               <a href="beluga/"       >Various</a>                    BELUGA              https://belugaprotocol.org
-     BoltDollar           <a href="btd/"          >Various</a>                    BTD/BTS/BTB         https://boltdollar.finance
-     Nya Cash             <a href="nya/"          >Various</a>                    NYAS/NYAC           https://nya.cash
-     YieldScienceLabs     <a href="ysl/"          >Various</a>                    Various             https://yieldlab.science
-     Icecream             <a href="icecream"      >Various</a>                    GLTO                https://icecreamswap.finance
-     Mochi                <a href="mochi"         >Various</a>                    MOCHI               https://pool.mochiswap.io
-     Oat                  <a href="oat"           >Various</a>                    OAT                 https://oatswap.org
-     ValueDefi            <a href="valuedefi"     >Various</a>                    vBSWAP              https://bsc.valuedefi.io/#/vfarm
-     MonsterSlayer        <a href="msc"           >Various</a>                    MSS/MSC             https://monsterslayer.finance
-     Kickstart            <a href="kickstart"     >Various</a>                    KICK                https://kickstart.finance
-     Boba                 <a href="boba"          >Various</a>                    BOBA                https://bobadefi.com
-     MidasDollar          <a href="midasdollar"   >Various</a>                    MDS/MDO             https://midasdollar.fi
-     Slime                <a href="slime"         >Various</a>                    SLIME               http://slime.finance
-     Stakd                <a href="stakd"         >Various</a>                    STAKD               https://app.stakd.finance
-     Glacier              <a href="glacier"       >Various</a>                    ICE                 https://glacierswap.org/farms
-     Alpaca               <a href="alpaca"        >Various</a>                    ALPACA              https://app.alpacafinance.org
-     UFO Swap             <a href="ufo"           >Various</a>                    UFO                 https://ufodefi.com
-     Mythic               <a href="mythic"        >Various</a>                    MAGIC               https://www.mythic.finance
-     Wault                <a href="wault"         >Various</a>                    WAULT               https://app.wault.finance
-     Wantanmee            <a href="wantanmee"     >Various</a>                    MEE/MES             https://wantanmee.finance
-     Acryptos             <a href="acryptos"      >Various</a>                    ACS                 https://app.acryptos.com
-     Sashimi              <a href="sashimi"       >Various</a>                    SASHIMI             https://bsc.sashimi.cool
-     Beefy                <a href="beefy"         >Various</a>                    BIFI                https://app.beefy.finance
-     Toad Swap            <a href="toad"          >Various</a>                    TOAD                https://toad.farm
-     Nut                  <a href="nut"           >Various</a>                    NUT                 https://www.nutdefi.finance
-     Koala                <a href="koala"         >Various</a>                    LYPTUS              https://koaladefi.finance
-     Yoda                 <a href="yoda"          >Various</a>                    YODA                https://yodaswap.finance
-     Duck                 <a href="duck"          >Various</a>                    DUCK                https://duckswap.finance
-     Taco                 <a href="taco"          >Various</a>                    TACO                https://taco.finance
-     Teddy                <a href="teddy"         >Various</a>                    TEDDY               https://teddy.bears.finance
-     Gemz                 <a href="gemz"          >Various</a>                    GEMZ                https://www.gemz.finance
-     Pyramid              <a href="pyramid"       >Various</a>                    RA                  https://pyramidswap.com
-     Jalapenos            <a href="jalapeno"      >Various</a>                    JLP                 https://jalapenos.finance
-     Fed                  <a href="fed"           >Various</a>                    FED                 https://fedswap.finance
-     Coral                <a href="coral"         >Various</a>                    CRL                 https://coralfarm.finance
-     Duck Money           <a href="duckmoney"     >Various</a>                    DUCK                https://duck.money
-     Iron Finance         <a href="iron"          >Various</a>                    STEEL               https://iron.finance
-     BVaults              <a href="bvaults"       >Various</a>                    Various             https://bvaults.fi
-     MidasGold            <a href="midasgold"     >Various</a>                    MDG/BCASH/MDO/MDG2  https://midasgold.network
-     Nerve                <a href="nerve"         >Various</a>                    NRV                 https://nerve.fi
-     Hyperjump            <a href="hyperjump"     >Various</a>                    ALLOY               https://farm.hyperjump.fi
-     Berry                <a href="berry"         >Various</a>                    BRY                 https://berrydata.co
-     Belt                 <a href="belt"          >Various</a>                    BELT                https://beta.belt.fi
-     Julswap              <a href="julswap"       >Various</a>                    Various             https://julswap.com
-     Blueswap             <a href="blueswap"      >Various</a>                    BLUE                https://app.blueswap.finance
-     Brickchain           <a href="brickchain"    >Various</a>                    BRICK               https://brickchain.finance
-     Polaris              <a href="polaris"       >Various</a>                    POLAR               https://app.polarisdefi.io
-     Fullsail             <a href="fullsail"      >Various</a>                    SAIL                https://fullsail.finance
-     Wynaut               <a href="wynaut"        >Various</a>                    MEOWTH              https://wynautdefi.app
-     Meme                 <a href="meme"          >Various</a>                    MFRM                https://memefarm.io
-     Tsuki                <a href="tsuki"         >Various</a>                    TSUKI               https://tsuki.finance
-     Kingdom              <a href="kingdom"       >Various</a>                    CROWN               https://kingdomswap.finance
-     Deflate              <a href="deflate"       >Various</a>                    BLN                 https://deflate.finance
-     Bender               <a href="bender"        >Various</a>                    BENDER              https://bender.finance
-     Hyrule               <a href="hyrule"        >Various</a>                    RUPEE               https://app.hyruleswap.com
-     Jiggly               <a href="jiggly"        >Various</a>                    JIGG                https://www.jiggly.finance
-     Meerkat              <a href="meerkat"       >Various</a>                    XKAT                https://xkat.vercel.app
-     Friction             <a href="friction"      >Various</a>                    TAO                 https://friction.finance
-     Complus              <a href="complus"       >Various</a>                    COM                 https://bsc.complus.exchange
-     Jurassicfarm         <a href="jurassicfarm"  >Various</a>                    DINO                https://www.jurassicfarm.app
-     Swamp                <a href="swamp"         >Various</a>                    SWAMP               https://swamp.finance
-     Swipe                <a href="swipe"         >Various</a>                    SXP                 https://swipe.org
-     ApeSafe              <a href="apesafe"       >Various</a>                    APESAFE             https://apesafe.finance
-     Vlad                 <a href="vlad"          >Various</a>                    LIFE                https://app.vlad.finance
-     Zcore                <a href="zcore"         >Various</a>                    ZEFI                https://finance.zcore.network
-     Blizzard             <a href="blizzard"      >Various</a>                    BLZD                https://blizzard.money
-     Pineapple            <a href="pineapple"     >Various</a>                    PIN                 https://www.pineappledefi.com
-     Shitz                <a href="shitz"         >SHITZ/BNB LP</a>               WBNB/ACS            https://shitz.lol
-     Biscuit              <a href="biscuit"       >Various</a>                    BCU                 https://biscuitfarm.finance
-     Runner               <a href="runner"        >Various</a>                    ENERGY              https://bscrunner.com
-     Pumpy                <a href="pumpy"         >Various</a>                    PMP                 https://pumpy.farm
-     Knight               <a href="knight"        >Various</a>                    KNIGHT              https://www.knightsdefi.com
-     Helmet               <a href="helmet"        >Various</a>                    Various             https://www.helmet.insure
-     Pollo                <a href="pofi"          >Various</a>                    POFI                https://pollo.finance
-     Space                <a href="space"         >Various</a>                    SPACE               https://farm.space
-     Polis                <a href="polis"         >Various</a>                    POLIS               https://farms.polispay.org
-
-*** Disclaimer ***
-
-I am in no way affiliated with the above projects, nor do I endorse them. Please do your own research before investing.
-
-
--=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-| <a href="https://twitter.com/vfat12" target="_blank">Twitter</a> - <a href="https://github.com/vfat-tools/vfat-tools" target="_blank">Github</a> - <a href="https://gitcoin.co/grants/1809/vfattools-yield-farming-calculators" target="_blank">Gitcoin</a> |
--=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+<body>
+<%- include(`${partials}/header_main`); -%>
+<pre class="container">
+    <div class="loader--1"></div>
+    <div id="log"></div>
+<%- include(`${partials}/disclaimer`); -%>
 </pre>
-    <%- include(`${partials}/scripts`, {scriptname: 'homepage'}); -%>
-  </body>
+<%- include(`${partials}/scripts`, {scriptname: 'bsc'}); -%>
+</body>
 </html>
+

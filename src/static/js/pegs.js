@@ -1,6 +1,5 @@
 $(function() {
-    consoleInit();
-    start(main);
+consoleInit(main)
   });
 
   async function main() {
@@ -17,18 +16,18 @@ $(function() {
           PUSD_USDC : "0x6E222C95dD4f7346582cDdc02845138a92aF59DC"
       }
     }
-  
+
     const App = await init_ethers();
-  
+
     _print(`Initialized ${App.YOUR_ADDRESS}`);
     _print("Reading smart contracts...\n");
-  
+
     var tokens = {};
     var prices = {};
-  
+
     for (const [,address] of Object.entries(Contracts.Staking)) {
       await loadSynthetixPool(App, tokens, prices, FRAX_STAKING_POOL_ABI, address, "rewardsToken", "stakingToken");
     }
-  
+
     hideLoading();
   }

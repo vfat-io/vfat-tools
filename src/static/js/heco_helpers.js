@@ -58,9 +58,9 @@ async function getHecoStoredToken(App, tokenAddress, stakingAddress, type) {
     case "uniswap": 
       const pool = new ethers.Contract(tokenAddress, UNI_ABI, App.provider);
       return await getHecoUniPool(App, pool, tokenAddress, stakingAddress);
-    case "hrc20":
-      const hrc20 = new ethers.Contract(tokenAddress, ERC20_ABI, App.provider);
-      return await getHec20(App, hrc20, tokenAddress, stakingAddress);
+    case "erc20":
+      const erc20 = new ethers.Contract(tokenAddress, ERC20_ABI, App.provider);
+      return await getHec20(App, erc20, tokenAddress, stakingAddress);
   }
 }
 
@@ -80,11 +80,11 @@ async function getHecoToken(App, tokenAddress, stakingAddress) {
     catch(err) {
     }
     try {
-      const hrc20 = new ethers.Contract(tokenAddress, ERC20_ABI, App.provider);
-      const _name = await hrc20.name();
-      const hrc20tok = await getHec20(App, hrc20, tokenAddress, stakingAddress);
-      window.localStorage.setItem(tokenAddress, "hrc20");
-      return hrc20tok;
+      const erc20 = new ethers.Contract(tokenAddress, ERC20_ABI, App.provider);
+      const _name = await erc20.name();
+      const erc20tok = await getHec20(App, erc20, tokenAddress, stakingAddress);
+      window.localStorage.setItem(tokenAddress, "erc20");
+      return erc20tok;
     }
     catch(err) {
       console.log(err);
@@ -294,18 +294,40 @@ async function loadHecoChefContract(App, tokens, prices, chef, chefAddress, chef
 
   _print("Finished reading smart contracts.\n");
     
+  let aprs = []
   for (i = 0; i < poolCount; i++) {
     if (poolPrices[i]) {
-      printChefPool(App, chefAbi, chefAddress, prices, tokens, poolInfos[i], i, poolPrices[i],
+      const apr = printChefPool(App, chefAbi, chefAddress, prices, tokens, poolInfos[i], i, poolPrices[i],
         totalAllocPoints, rewardsPerWeek, rewardTokenTicker, rewardTokenAddress,
-        pendingRewardsFunction, "heco");
+        pendingRewardsFunction, null, null, "heco")
+      aprs.push(apr);
     }
   }
+  let totalUserStaked=0, totalStaked=0, averageApr=0;
+  for (const a of aprs) {
+    if (!isNaN(a.totalStakedUsd)) {
+      totalStaked += a.totalStakedUsd;
+    }
+    if (a.userStakedUsd > 0) {
+      totalUserStaked += a.userStakedUsd;
+      averageApr += a.userStakedUsd * a.yearlyAPR / 100;
+    }
+  }
+  averageApr = averageApr / totalUserStaked;
+  _print_bold(`Total Staked: $${formatMoney(totalStaked)}`);
+  if (totalUserStaked > 0) {
+    _print_bold(`\nYou are staking a total of $${formatMoney(totalUserStaked)} at an average APR of ${(averageApr * 100).toFixed(2)}%`)
+    _print(`Estimated earnings:`
+        + ` Day $${formatMoney(totalUserStaked*averageApr/365)}`
+        + ` Week $${formatMoney(totalUserStaked*averageApr/52)}`
+        + ` Year $${formatMoney(totalUserStaked*averageApr)}\n`);
+  }
+  return { prices, totalUserStaked, totalStaked, averageApr }
 }
 
 
 const hrcTokens = [ 
-  { "id": "huobi-token","symbol": "HT","contract":"0x5545153ccfca01fbd7dd11c0b23ba694d9509a6f" },
+  { "id": "huobi-token","symbol": "HT","contract":"0x6f259637dcd74c767781e37bc6133cd6a68aa161" },
   { "id": "mdex","symbol": "MDX","contract":"0x25d2e80cb6b86881fd7e07dd263fb79f4abe033c" }, 
   { "id": "tether","symbol": "USDT", "contract": "0xa71edc38d189767582c38a3145b5873052c3e47a" },
   { "id": "ethereum","symbol": "ETH", "contract": "0xb55569893b397324c0d048c9709f40c23445540e" },
@@ -313,7 +335,14 @@ const hrcTokens = [
   { "id": "ethereum","symbol": "HETH", "contract": "0x64FF637fB478863B7468bc97D30a5bF3A428a1fD" },
   { "id": "hoo-token","symbol": "HOO", "contract": "0xE1d1F66215998786110Ba0102ef558b22224C016" },
   { "id": "gene","symbol": "GENE", "contract": "0x2CFa849e8506910b2564aFE5BdEF33Ba66C730Aa" },
-  { "id": "husd","symbol": "HUSD", "contract": "0x0298c2b32eaE4da002a15f36fdf7615BEa3DA047" }
+  { "id": "husd","symbol": "HUSD", "contract": "0x0298c2b32eaE4da002a15f36fdf7615BEa3DA047" },
+  { "id": "huobi-btc","symbol": "HBTC", "contract": "0x0316eb71485b0ab14103307bf65a021042c6d380" },
+  { "id": "wrapped-huobi-token","symbol": "WHT", "contract": "0x105E11915B80dD8aa59aC3d58f10303C75606d46" },
+  { "id": "wrapped-huobi-token","symbol": "WHT", "contract": "0x5545153CCFcA01fbd7Dd11C0b23ba694D9509A6F" },
+  { "id": "coinwind","symbol": "COW", "contract": "0x80861a817106665bca173db6ac2ab628a738c737" },
+  { "id": "yearn-finance","symbol": "YFI", "contract": "0xB4F019bEAc758AbBEe2F906033AAa2f0F6Dacb35" },
+  { "id": "dai","symbol": "DAI", "contract": "0x3D760a45D0887DFD89A2F5385a236B29Cb46ED2a" },
+  { "id": "usd-coin","symbol": "USDC", "contract": "0x9362Bbef4B8313A8Aa9f0c9808B80577Aa26B73B" }
 ]
 
 async function getHecoPrices() {

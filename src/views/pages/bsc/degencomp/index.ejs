@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include(`${partials}/head`); -%>
+
+<body>
+<%- include(`${partials}/header_main`); -%>
+<pre id="log">
+*************** 👨‍🌾 UNOFFICIAL DEGENTOKEN.FINANCE FARMING CALCULATOR 👨‍🌾 ***************
+INFO  : https://degentoken.finance
+***************************************************************************************
+
+</pre>
+<div class="loader--1"></div>
+<%- include(`${partials}/scripts`, {scriptname: 'bsc_degencomp'}); -%>
+</body>
+</html> 
