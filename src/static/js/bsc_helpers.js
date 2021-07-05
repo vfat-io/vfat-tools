@@ -595,7 +595,11 @@ const bscTokens = [
   { "id": "boringdao-old", "symbol": "BOR", "contract": "0x92D7756c60dcfD4c689290E8A9F4d263b3b32241"},
   { "id": "nerve-finance", "symbol": "NRV", "contract": "0x42F6f551ae042cBe50C739158b4f0CAC0Edb9096"},
   { "id": "trident", "symbol": "TRIDENT", "contract": "0x66D7661cdcdF4adA7dA239Af6Fc8C4FE73E79D22"},
-  { "id": "apeswap-finance", "symbol": "BANANA", "contract": "0x603c7f932ed1fc6575303d8fb018fdcbb0f39a95"}
+  { "id": "apeswap-finance", "symbol": "BANANA", "contract": "0x603c7f932ed1fc6575303d8fb018fdcbb0f39a95"},
+  { "id": "matic-network","symbol": "MATIC","contract": "0xCC42724C6683B7E57334c4E856f4c9965ED682bD" },
+  { "id": "cosmos","symbol": "ATOM","contract": "0x0Eb3a705fc54725037CC9e008bDede697f62F335" },
+  { "id": "reef-finance","symbol": "REEF","contract": "0xF21768cCBC73Ea5B6fd3C687208a7c2def2d966e" },
+  { "id": "zcore-finance","symbol": "ZEFI","contract": "0x0288D3E353fE2299F11eA2c2e1696b4A648eCC07" }
 ]
 
 async function getBscPrices() {
