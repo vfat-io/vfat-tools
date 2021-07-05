@@ -397,7 +397,7 @@ const main = async () => {
       ['PolyArrow           ', `<a href="polyarrow"       >Various</a>`, 'ARROW        ', 'https://polyarrow.xyz'],
       ['PantsuSwap          ', `<a href="pantsuswap"      >Various</a>`, 'PANTSU       ', 'https://pantsuswap.com'],
       ['PolyMocha           ', `<a href="polymocha"       >Various</a>`, 'MOCHA        ', 'https://polymocha.finance'],
-      ['polyowl             ', `<a href="polyowl"         >Various</a>`, 'OWL          ', 'https://www.polyowl.finance']
+      ['PolyOwl             ', `<a href="polyowl"         >Various</a>`, 'OWL          ', 'https://www.polyowl.finance']
     ],
   }
 
