@@ -181,6 +181,12 @@ const main = async() => {
         `<a href='bullrun'>Various</a>`,
         "BULL",
         "https://fantom.bullrun.finance"
+      ],
+      [
+        "Strangebrew",
+        `<a href='strangebrew'>Various</a>`,
+        "BEERMONEY",
+        "https://www.strangebrew.finance"
       ]
     ]
   }
