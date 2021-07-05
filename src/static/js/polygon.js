@@ -394,7 +394,8 @@ const main = async () => {
       ['Astrobunny          ', `<a href="astrobunny"      >Various</a>`, 'ABUNNY       ', 'https://www.astrobunny.finance'],
       ['BisonFarms          ', `<a href="bisonfarms"      >Various</a>`, 'BISON        ', 'https://bisonfinance.online'],
       ['Bullrun             ', `<a href="bullrun"         >Various</a>`, 'BULL         ', 'https://polygon.bullrun.finance'],
-      ['PolyArrow           ', `<a href="polyarrow"       >Various</a>`, 'ARROW        ', 'https://polyarrow.xyz']
+      ['PolyArrow           ', `<a href="polyarrow"       >Various</a>`, 'ARROW        ', 'https://polyarrow.xyz'],
+      ['PantsuSwap          ', `<a href="pantsuswap"      >Various</a>`, 'PANTSU       ', 'https://pantsuswap.com']
     ],
   }
 
