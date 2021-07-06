@@ -118,8 +118,8 @@ const main = async() => {
       ["Lift kitchen                 ",`<a href="../liftkitchen"        >Various</a>`,"LIFT               ","https://app.lift.kitchen"],
       ["CompliFi                     ",`<a href="../complifi"           >Various</a>`,"COMFI              ","https://app.compli.fi"],
       ["Smoothy                      ",`<a href="../smoothy"            >Various</a>`,"SMTY               ","https://smoothy.finance"],
-      ["Kineko                       ",`<a href="../kineko"             >Various</a>`,"KKO                ","http://stake.kineko.io"],
-      ["Oiler                        ",`<a href="../oiler"              >Various</a>`,"OIL                ","http://staking.oiler.network"],
+      ["Kineko                       ",`<a href="../kineko"             >Various</a>`,"KKO                ","https://stake.kineko.io"],
+      ["Oiler                        ",`<a href="../oiler"              >Various</a>`,"OIL                ","https://staking.oiler.network"],
       ["Swipe                        ",`<a href="../swipe"              >Various</a>`,"SXP                ","https://swipe.org"],
       ["Convex                       ",`<a href="../convex"             >Various</a>`,"Various            ","https://www.convexfinance.com"],
       ["Unicly                       ",`<a href="../unicly"             >Various</a>`,"UNIC               ","https://www.app.unic.ly/#/farm"],
@@ -131,8 +131,9 @@ const main = async() => {
       ["Abracadabra                  ",`<a href="../abracadabra"        >Various</a>`,"SPELL              ","https://abracadabra.money"],
       ["Universe                     ",`<a href="../universe"           >Various</a>`,"XYZ                ","https://dao.universe.xyz/yield-farming"],
       ["Insta Dapp                   ",`<a href="../insta"              >Various</a>`,"INST               ","https://defi.instadapp.io"],
-      ["Pendle                       ",`<a href="../pendle"             >Various</a>`,"PENDLE             ","https://app.pendle.finance"],
-      ["Kyber                        ",`<a href="../kyber"              >Various</a>`,"KNC                ","http://dmm.exchange/"],
+      ["Pendle                       ",`<a href="../pendle"             >Various</a>`,"PENDLE             ","https://app.pendle.finance"],      
+      ["Kyber                        ",`<a href="../kyber"              >Various</a>`,"KNC                ","https://dmm.exchange"],
+      ["Shiba Swap                   ",`<a href="../shibaswap"          >Various</a>`,"BONE               ","https://shibaswap.com"],
       ["BambooDeFi                   ",`<a href="../bamboodefi"         >Various</a>`,"BAMBOO             ","https://www.bamboodefi.com"],
     ]
   }

@@ -392,12 +392,18 @@ const main = async () => {
       ['Polyyearn           ', `<a href="polyyearn"       >Various</a>`, 'YEARN        ', 'https://polyyearn.finance'],
       ['WorldSwap Hanoi     ', `<a href="worldswap_han"   >Various</a>`, 'HAN          ', 'https://hanoi.worldswap.finance'],
       ['Astrobunny          ', `<a href="astrobunny"      >Various</a>`, 'ABUNNY       ', 'https://www.astrobunny.finance'],
-      ['BisonFarms          ', `<a href="bisonfarms"      >Various</a>`, 'BISON        ', 'https://bisonfinance.online'],
+      ['BisonFinance        ', `<a href="bisonfinance"    >Various</a>`, 'BISON        ', 'https://bisonfinance.online'],
       ['Bullrun             ', `<a href="bullrun"         >Various</a>`, 'BULL         ', 'https://polygon.bullrun.finance'],
       ['PolyArrow           ', `<a href="polyarrow"       >Various</a>`, 'ARROW        ', 'https://polyarrow.xyz'],
       ['PantsuSwap          ', `<a href="pantsuswap"      >Various</a>`, 'PANTSU       ', 'https://pantsuswap.com'],
       ['PolyMocha           ', `<a href="polymocha"       >Various</a>`, 'MOCHA        ', 'https://polymocha.finance'],
-      ['PolyOwl             ', `<a href="polyowl"         >Various</a>`, 'OWL          ', 'https://www.polyowl.finance']
+      ['PolyOwl             ', `<a href="polyowl"         >Various</a>`, 'OWL          ', 'https://www.polyowl.finance'],
+      ['Astrofarms - Cancer ', `<a href="astrofarmscancer">Various</a>`, 'CANCER       ', 'https://cancer.astrofarms.finance'],
+      ['FaunaFinance        ', `<a href="faunafinance"    >Various</a>`, 'FAUNA        ', 'https://www.fauna.finance'],
+      ['Vampire             ', `<a href="vampire"         >Various</a>`, 'VAMPIRE      ', 'https://vampirefarming.club'],
+      ['PolyGorilla         ', `<a href="polygorilla"     >Various</a>`, 'GORILLA      ', 'https://polygorilla.finance'],
+      ['PolyGarden          ', `<a href="polygarden"      >Various</a>`, 'APPLE        ', 'https://www.polygarden.finance'],
+      ["Gains Farm          ",`<a href="gains-farm"      >GFARM2/DAI</a>`,"GFARM2    ","https://gains.farm"]
     ],
   }
 

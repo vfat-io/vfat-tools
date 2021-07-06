@@ -396,7 +396,12 @@ const main = async() => {
       ["Magma               ", `<a href="magma"         >Various</a>`,"MAGMA            ","https://www.magmacakefinance.com"],
       ["Dexterlab           ", `<a href="dexterlab"     >Various</a>`,"DXL              ","https://dexterlab.finance"],
       ["Bullrun             ", `<a href="bullrun"       >Various</a>`,"BULL             ","https://bsc.bullrun.finance"],
-      ["Gold Farm           ", `<a href="goldfarm"      >Various</a>`,"GOLD             ","https://goldfarm.app"]
+      ["Gold Farm           ", `<a href="goldfarm"      >Various</a>`,"GOLD             ","https://goldfarm.app"],
+      ["CorgiSwap           ", `<a href="corgiswap"     >Various</a>`,"CORIS            ","https://corgiswap.org"],
+      ["WhiteTeethSwap      ", `<a href="teeth"         >Various</a>`,"TEETH            ","https://whiteteethswap.finance"],
+      ["KittyFarms          ", `<a href="kittyfarms"    >Various</a>`,"KITTY            ","https://kittyfarms.app"],
+      ["Moondoge            ", `<a href="moondoge"      >Various</a>`,"MODO             ","https://www.moondoge.com"],
+      ["GoldenBunny         ", `<a href="goldenbunny"   >Various</a>`,"GBUNNY           ","https://goldenbunny.finance"]
     ]}
 
   let table = new AsciiTable().fromJSON(tableData);

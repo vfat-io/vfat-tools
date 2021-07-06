@@ -25,6 +25,9 @@ const pageNetwork = function() {
   if (network.toLowerCase() === 'okex') {
     return window.NETWORKS.OKEX
   }
+  if (network.toLowerCase() === 'kcc') {
+    return window.NETWORKS.KCC
+  }
   if (network.toLowerCase() === 'xdai') {
     return window.NETWORKS.XDAI
   }
@@ -2045,6 +2048,9 @@ function getErc20Prices(prices, pool, chain="eth") {
     case "okex":
       poolUrl=`https://www.oklink.com/okexchain/address/${pool.address}`;
       break;
+    case "kcc":
+      poolUrl=`https://explorer.kcc.io/en/address/${pool.address}`;
+      break;
     case "avax":
       poolUrl=`https://cchain.explorer.avax.network/address/${pool.address}`;
       break;
@@ -2566,6 +2572,9 @@ async function printSynthetixPool(App, info, chain="eth", customURLs) {
         break;
       case "okex":
         _print(`<a target="_blank" href="https://www.oklink.com/okexchain/address/${info.stakingAddress}#code">Okex Explorer</a>`);
+        break;
+      case "kcc":
+        _print(`<a target="_blank" href="https://explorer.kcc.io/en/address/${info.stakingAddress}#code">KUCOIN Explorer</a>`);
         break;
       case "fantom":
         _print(`<a target="_blank" href="https://ftmscan.com/address/${info.stakingAddress}#code">FTM Scan</a>`);
