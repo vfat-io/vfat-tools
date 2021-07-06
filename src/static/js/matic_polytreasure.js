@@ -11,6 +11,7 @@ async function main() {
    
    _print(`Initialized ${App.YOUR_ADDRESS}\n`);
 
+   const TOKEN_ADDR = "0x13436a3c5c2574C8145222260B0ed4C2Da31f760";
    const TREASURY_ADDR = "0xEd8223dd1148C9fD3867d968696706cfa9376643";
    const WETH_ADDR = "0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619";
    const WBTC_ADDR = "0x1BFD67037B42Cf73acF2047067bd4F2C47D9BfD6";   
@@ -39,15 +40,95 @@ async function main() {
    _print(`|  |  |_____|  |  |  |  |  |  |_____   |  |  |  |  |  |  ${Number(btc).toFixed(3)}    |`);
    _print("|  |_____   |  |__|  |  |  |________|  |  |  |  |__|  |  BTC      |");
    _print("|___________|_______________________|________|________|___________|");
-   _print_link("Claim ETH (needs 1 TRZ token!)", async() => {
+   _print_link("Claim ETH", async() => {
 	   const signer = App.provider.getSigner();
 	   const treasuryContract = new ethers.Contract(TREASURY_ADDR, TREASURY_ABI, signer);
-       treasuryContract.claimETH(ethers.utils.parseUnits("1", 18), {gasLimit: 500000});
+	   const tokenContract = new ethers.Contract(TOKEN_ADDR, ERC20_ABI, signer);
+	   
+	   const currentTokens = await tokenContract.balanceOf(App.YOUR_ADDRESS)
+  const allowedTokens = await tokenContract.allowance(App.YOUR_ADDRESS, TREASURY_ADDR)
+
+  let allow = Promise.resolve()
+
+  if (allowedTokens / 1e18 < currentTokens / 1e18) {
+    showLoading()
+    allow = tokenContract.approve(TREASURY_ADDR, ethers.constants.MaxUint256)
+      .then(function(t) {
+        return App.provider.waitForTransaction(t.hash)
+      })
+      .catch(function() {
+        hideLoading()
+        alert('Try resetting your approval to 0 first')
+      })
+  }
+
+  if (currentTokens / 1e18 >= 1) {
+    showLoading()
+    allow
+      .then(async function() {
+          treasuryContract.claimETH(ethers.utils.parseUnits("1", 18), {gasLimit: 500000})
+          .then(function(t) {
+            App.provider.waitForTransaction(t.hash).then(function() {
+              hideLoading()
+            })
+          })
+          .catch(function() {
+            hideLoading()
+            _print('Something went wrong.')
+          })
+      })
+      .catch(function() {
+        hideLoading()
+        _print('Something went wrong.')
+      })
+	} else {
+		alert('Not enough tokens to claim (needs 1 TRZ)!!')
+	}
    });
-   _print_link("Claim BTC (needs 10 TRZ tokens!)", async() => {
+   _print_link("Claim BTC", async() => {
 	   const signer = App.provider.getSigner();
 	   const treasuryContract = new ethers.Contract(TREASURY_ADDR, TREASURY_ABI, signer);
-       treasuryContract.claimBTC(ethers.utils.parseUnits("10", 18), {gasLimit: 500000});
+	   const tokenContract = new ethers.Contract(TOKEN_ADDR, ERC20_ABI, signer);
+	   
+	   const currentTokens = await tokenContract.balanceOf(App.YOUR_ADDRESS)
+  const allowedTokens = await tokenContract.allowance(App.YOUR_ADDRESS, TREASURY_ADDR)
+
+  let allow = Promise.resolve()
+
+  if (allowedTokens / 1e18 < currentTokens / 1e18) {
+    showLoading()
+    allow = tokenContract.approve(TREASURY_ADDR, ethers.constants.MaxUint256)
+      .then(function(t) {
+        return App.provider.waitForTransaction(t.hash)
+      })
+      .catch(function() {
+        hideLoading()
+        alert('Try resetting your approval to 0 first')
+      })
+  }
+
+  if (currentTokens / 1e18 >= 10) {
+    showLoading()
+    allow
+      .then(async function() {
+          treasuryContract.claimBTC(ethers.utils.parseUnits("10", 18), {gasLimit: 500000})
+          .then(function(t) {
+            App.provider.waitForTransaction(t.hash).then(function() {
+              hideLoading()
+            })
+          })
+          .catch(function() {
+            hideLoading()
+            _print('Something went wrong.')
+          })
+      })
+      .catch(function() {
+        hideLoading()
+        _print('Something went wrong.')
+      })
+	} else {
+		alert('Not enough tokens to claim (needs 10 TRZ)!!')
+	}
    });   
    
    const TRZ_CHEF_ADDR = "0x8ac02e8e228e91404f91c4951be7864653d503ac";
@@ -207,7 +288,7 @@ function printTrzContractLinks(App, chefAbi, chefAddr, poolIndex, poolAddress, p
     return chefContract_stake(chefAbi, chefAddr, poolIndex, poolAddress, App)
   }
   const unstake = async function() {
-    return chefContract_unstake(chefAbi, chefAddr, poolIndex, App, pendingRewardsFunction)
+    return trzContract_unstake(chefAbi, chefAddr, poolIndex, App)
   }
   const claim = async function() {
     return chefContract_claim(chefAbi, chefAddr, poolIndex, App, pendingRewardsFunction, claimFunction)
@@ -225,4 +306,22 @@ function printTrzContractLinks(App, chefAbi, chefAddr, poolIndex, poolAddress, p
   _print_link(`Claim ${pendingRewardTokens.toFixed(fixedDecimals)} ${rewardTokenTicker} ($${formatMoney(pendingRewardTokens*rewardTokenPrice)})`, claim)
   _print(`Staking or unstaking also claims rewards.`)
   _print("");
+}
+
+const trzContract_unstake = async function(chefAbi, chefAddress, poolIndex, App) {
+  const signer = App.provider.getSigner()
+  const CHEF_CONTRACT = new ethers.Contract(chefAddress, chefAbi, signer)
+
+  const currentStakedAmount = (await CHEF_CONTRACT.userInfo(poolIndex, App.YOUR_ADDRESS)).amount
+
+  if (currentStakedAmount > 0) {
+    showLoading()
+    CHEF_CONTRACT.withdraw(poolIndex, currentStakedAmount, {gasLimit: 500000})
+      .then(function(t) {
+        return App.provider.waitForTransaction(t.hash)
+      })
+      .catch(function() {
+        hideLoading()
+      })
+  }
 }

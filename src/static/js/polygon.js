@@ -389,7 +389,17 @@ const main = async () => {
       ['PolyTreasure        ', `<a href="polytreasure"    >Various</a>`, 'TRZ          ', 'https://vfat.tools/polygon/polytreasure'],
       ['PolyRacoon          ', `<a href="polyracoon"      >Various</a>`, 'RACOON       ', 'https://polyracoon.com/'],
       ['BoneSwap            ', `<a href="boneswap"        >Various</a>`, 'BONE         ', 'https://farm.boneswap.finance'],
-      ['Polyyearn           ', `<a href="polyyearn"       >Various</a>`, 'YEARN        ', 'https://polyyearn.finance']
+      ['Polyyearn           ', `<a href="polyyearn"       >Various</a>`, 'YEARN        ', 'https://polyyearn.finance'],
+      ['WorldSwap Hanoi     ', `<a href="worldswap_han"   >Various</a>`, 'HAN          ', 'https://hanoi.worldswap.finance'],
+      ['Astrobunny          ', `<a href="astrobunny"      >Various</a>`, 'ABUNNY       ', 'https://www.astrobunny.finance'],
+      ['BisonFarms          ', `<a href="bisonfarms"      >Various</a>`, 'BISON        ', 'https://bisonfinance.online'],
+      ['Bullrun             ', `<a href="bullrun"         >Various</a>`, 'BULL         ', 'https://polygon.bullrun.finance'],
+      ['PolyArrow           ', `<a href="polyarrow"       >Various</a>`, 'ARROW        ', 'https://polyarrow.xyz'],
+      ['PantsuSwap          ', `<a href="pantsuswap"      >Various</a>`, 'PANTSU       ', 'https://pantsuswap.com'],
+      ['PolyMocha           ', `<a href="polymocha"       >Various</a>`, 'MOCHA        ', 'https://polymocha.finance'],
+      ['PolyOwl             ', `<a href="polyowl"         >Various</a>`, 'OWL          ', 'https://www.polyowl.finance'],
+      ['Astrofarms - Cancer ', `<a href="astrofarmscancer">Various</a>`, 'CANCER       ', 'https://cancer.astrofarms.finance'],
+      ['FaunaFinance        ', `<a href="faunafinance"    >Various</a>`, 'FAUNA        ', 'https://www.fauna.finance']
     ],
   }
 

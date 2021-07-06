@@ -30,20 +30,23 @@ async function main() {
     const prices = await getBscPrices();
 
     await loadBscChefContract(App, tokens, prices, TENFI_CHEF, TENFI_CHEF_ADR, TENFI_CHEF_ABI, rewardTokenTicker,
-        "TENFI", null, rewardsPerWeek, "pendingTENFI", []);
+        "TENFI", null, rewardsPerWeek, "pendingTENFI", [21,22]);
 
     hideLoading()
 }
 
 async function getBscPoolInfo(App, chefContract, chefAddress, poolIndex, pendingRewardsFunction) {  
+    if(poolIndex == 21 || poolIndex ==22){
+        return {};
+    }
     const poolInfo = await chefContract.poolInfo(poolIndex);
-    const userInfo = await chefContract.userInfo(poolIndex, App.YOUR_ADDRESS);
     const poolToken = await getBscToken(App, poolInfo.want, chefAddress);
     var TENFI_STRATEGY = new ethers.Contract(poolInfo.strat, TENFI_STRATEGY_ABI, App.provider)
     poolToken.staked = await TENFI_STRATEGY.wantLockedTotal()/ 10**18;
-
+    
     const pendingRewardTokens = await chefContract.callStatic[pendingRewardsFunction](poolIndex, App.YOUR_ADDRESS);
-    const staked = userInfo.shares / 10 ** poolToken.decimals
+    const staked = await chefContract.stakedWantTokens(poolIndex,App.YOUR_ADDRESS)/ 10 ** poolToken.decimals;
+    
     return {
         address: poolInfo.want,
         allocPoints: poolInfo.allocPoint ?? 1,
@@ -53,6 +56,49 @@ async function getBscPoolInfo(App, chefContract, chefAddress, poolIndex, pending
         depositFee : (poolInfo.depositFeeBP ?? 0) / 100,
         withdrawFee : (poolInfo.withdrawFeeBP ?? 0) / 100
     };
-  }
-
+}
+const chefContract_unstake_tenfi = async function(chefAbi, chefAddress, poolIndex, App, pendingRewardsFunction) {
+    const signer = App.provider.getSigner()
+    const CHEF_CONTRACT = new ethers.Contract(chefAddress, chefAbi, signer)
   
+    const currentStakedAmount = (await CHEF_CONTRACT.stakedWantTokens(poolIndex,App.YOUR_ADDRESS))
+    const earnedTokenAmount = await CHEF_CONTRACT.callStatic[pendingRewardsFunction](poolIndex, App.YOUR_ADDRESS) / 1e18
+    
+    if (earnedTokenAmount > 0) {
+      showLoading()
+      CHEF_CONTRACT.withdraw(poolIndex, currentStakedAmount, {gasLimit: 500000})
+        .then(function(t) {
+          return App.provider.waitForTransaction(t.hash)
+        })
+        .catch(function() {
+          hideLoading()
+        })
+    }
+}
+function printChefContractLinks(App, chefAbi, chefAddr, poolIndex, poolAddress, pendingRewardsFunction,
+    rewardTokenTicker, stakeTokenTicker, unstaked, userStaked, pendingRewardTokens, fixedDecimals,
+    claimFunction, rewardTokenPrice, chain, depositFee, withdrawFee) {
+    fixedDecimals = fixedDecimals ?? 2;
+    const approveAndStake = async function() {
+        return chefContract_stake(chefAbi, chefAddr, poolIndex, poolAddress, App)
+    }
+    const unstake = async function() {
+        return chefContract_unstake_tenfi(chefAbi, chefAddr, poolIndex, App, pendingRewardsFunction)
+    }
+    const claim = async function() {
+        return chefContract_claim(chefAbi, chefAddr, poolIndex, App, pendingRewardsFunction, claimFunction)
+    }
+    if(depositFee > 0){
+        _print_link(`Stake ${unstaked.toFixed(fixedDecimals)} ${stakeTokenTicker} - Fee ${depositFee}%`, approveAndStake)
+    }else{
+        _print_link(`Stake ${unstaked.toFixed(fixedDecimals)} ${stakeTokenTicker}`, approveAndStake)
+    }
+    if(withdrawFee > 0){
+        _print_link(`Unstake ${userStaked.toFixed(fixedDecimals)} ${stakeTokenTicker} - Fee ${withdrawFee}%`, unstake)
+    }else{
+        _print_link(`Unstake ${userStaked.toFixed(fixedDecimals)} ${stakeTokenTicker}`, unstake)
+    }
+    _print_link(`Claim ${pendingRewardTokens.toFixed(fixedDecimals)} ${rewardTokenTicker} ($${formatMoney(pendingRewardTokens*rewardTokenPrice)})`, claim)
+    _print(`Staking or unstaking also claims rewards.`)
+    _print("");
+}

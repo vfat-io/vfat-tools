@@ -193,7 +193,7 @@ const main = async() => {
       ["Panther             ", `<a href="panther"       >Various</a>`,"PANTHER          ","https://pantherswap.com"],
       ["dungeonswap         ", `<a href="dungeon"       >Various</a>`,"DND              ","https://dungeonswap.app"],
       ["Parthenon Delta     ", `<a href="parthenon_delta">Various</a>`,"DELTA           ","https://delta.parthenon.finance"],
-      ["Caramel             ", `<a href="caramel"       >Various</a>`,"CARAMEL          ","https://caramelswap.finance"],
+      ["Caramel *           ", `<a href="caramel"       >Various</a>`,"MEL              ","https://caramelswap.finance"],
       ["Plumcake            ", `<a href="plumcake"      >Various</a>`,"PLUM             ","https://plumcake.finance"],
       ["Wsbdapp             ", `<a href="wsb"           >Various</a>`,"WSB              ","https://farm.wsbdapp.com"],
       ["Feeder              ", `<a href="feeder"        >Various</a>`,"FEED             ","https://app.feeder.finance"],
@@ -367,7 +367,7 @@ const main = async() => {
       ["Yogi                ", `<a href="yogi"          >Various</a>`,"YOGI             ","https://bsc.farms.yogi.fi"],
       ["Croxswap            ", `<a href="croxswap"      >Various</a>`,"CROX             ","https://app.croxswap.com"],
       ["Tomahawk            ", `<a href="tomahawk"      >Various</a>`,"TOMAHAWK         ","https://tomahawk.farm"],
-      ["Cookiebake          ", `<a href="cookiebake"    >Various</a>`,"CHIPS            ","https://cookiebake.finance"],
+      ["Cookiebake *        ", `<a href="cookiebake"    >Various</a>`,"CHIPS            ","https://cookiebake.finance"],
       ["Supermanion         ", `<a href="supermanion"   >Various</a>`,"SMAN             ","https://supermanion.com"],
       ["WorldSwap Berlin    ", `<a href="worldswap_ber" >Various</a>`,"BER              ","https://berlin.worldswap.finance"],
       ["Fusion Finance      ", `<a href="fusion"        >Various</a>`,"U235             ","https://fusionfinance.farm"],
@@ -390,7 +390,14 @@ const main = async() => {
       ["SymbioteSwap        ", `<a href="symbioteswap"  >Various</a>`,"SYM              ","https://symbioteswap.net"],
       ["Cryptosphere        ", `<a href="cryptosphere"  >Various</a>`,"CRY              ","https://www.cryptosphere.finance"],
       ["RetroFarms          ", `<a href="retro"         >Various</a>`,"QBert            ","https://retrofarms.net"],
-      ["WhiteTeethSwap      ", `<a href="teeth"         >Various</a>`,"TEETH            ","https://whiteteethswap.finance"],
+      ["LittleFox           ", `<a href="foxs"          >Various</a>`,"FOXS             ","https://littlefox.finance"],
+      ["Jungle              ", `<a href="jungle"        >Various</a>`,"JUNGLE           ","https://jungleswap.cash"],
+      ["Parachute           ", `<a href="parachute"     >Various</a>`,"PARA             ","https://parachuteswap.com"],
+      ["Magma               ", `<a href="magma"         >Various</a>`,"MAGMA            ","https://www.magmacakefinance.com"],
+      ["Dexterlab           ", `<a href="dexterlab"     >Various</a>`,"DXL              ","https://dexterlab.finance"],
+      ["Bullrun             ", `<a href="bullrun"       >Various</a>`,"BULL             ","https://bsc.bullrun.finance"],
+      ["Gold Farm           ", `<a href="goldfarm"      >Various</a>`,"GOLD             ","https://goldfarm.app"],
+      ["WhiteTeethSwap      ", `<a href="teeth"         >Various</a>`,"TEETH            ","https://whiteteethswap.finance"]
     ]}
 
   let table = new AsciiTable().fromJSON(tableData);

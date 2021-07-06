@@ -34,6 +34,7 @@ const main = async() => {
       ["Ichi                ",`<a href="ichi/"              >Various</a>`,"Ichi      ","https://ichi.farm"],
       ["Inverse             ",`<a href="inverse/"           >Various</a>`,"INV       ","https://inverse.finance/stake"],
       ["Keep                ",`<a href="keep"               >Various</a>`,"KEEP      ","https://dashboard.keep.network/liquidity"],
+      ["Kyber               ",`<a href="kyber"              >Various</a>`,"KNC       ","http://dmm.exchange"],
       ["Lift.Kitchen        ",`<a href="liftkitchen/"       >Various</a>`,"LIFT      ","https://lift.kitchen"],
       ["Launchpool          ",`<a href="lpool/"             >Various</a>`,"LPOOL     ","https://staking.launchpool.xyz/"],
       ["MITH Cash           ",`<a href="mithcash/"          >Various</a>`,"MIS,MIC   ","https://mith.cash"],
