@@ -400,7 +400,8 @@ const main = async () => {
       ['PolyOwl             ', `<a href="polyowl"         >Various</a>`, 'OWL          ', 'https://www.polyowl.finance'],
       ['Astrofarms - Cancer ', `<a href="astrofarmscancer">Various</a>`, 'CANCER       ', 'https://cancer.astrofarms.finance'],
       ['FaunaFinance        ', `<a href="faunafinance"    >Various</a>`, 'FAUNA        ', 'https://www.fauna.finance'],
-      ['Vampire             ', `<a href="vampire"         >Various</a>`, 'VAMPIRE      ', 'https://vampirefarming.club']
+      ['Vampire             ', `<a href="vampire"         >Various</a>`, 'VAMPIRE      ', 'https://vampirefarming.club'],
+      ['PolyGorilla         ', `<a href="gorilla"         >Various</a>`, 'GORILLA      ', 'https://polygorilla.finance'], 
     ],
   }
 
