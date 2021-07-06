@@ -132,7 +132,8 @@ const main = async() => {
       ["Universe                     ",`<a href="../universe"           >Various</a>`,"XYZ                ","https://dao.universe.xyz/yield-farming"],
       ["Insta Dapp                   ",`<a href="../insta"              >Various</a>`,"INST               ","https://defi.instadapp.io"],
       ["Pendle                       ",`<a href="../pendle"             >Various</a>`,"PENDLE             ","https://app.pendle.finance"],      
-      ["Kyber                        ",`<a href="../kyber"              >Various</a>`,"KNC                ","https://dmm.exchange"],     
+      ["Kyber                        ",`<a href="../kyber"              >Various</a>`,"KNC                ","https://dmm.exchange"],
+      ["Shiba Swap                   ",`<a href="../shibaswap"          >Various</a>`,"BONE               ","https://shibaswap.com"]
     ]
   }
 
