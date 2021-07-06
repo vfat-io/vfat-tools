@@ -133,7 +133,8 @@ const main = async() => {
       ["Insta Dapp                   ",`<a href="../insta"              >Various</a>`,"INST               ","https://defi.instadapp.io"],
       ["Pendle                       ",`<a href="../pendle"             >Various</a>`,"PENDLE             ","https://app.pendle.finance"],      
       ["Kyber                        ",`<a href="../kyber"              >Various</a>`,"KNC                ","https://dmm.exchange"],
-      ["Shiba Swap                   ",`<a href="../shibaswap"          >Various</a>`,"BONE               ","https://shibaswap.com"]
+      ["Shiba Swap                   ",`<a href="../shibaswap"          >Various</a>`,"BONE               ","https://shibaswap.com"],
+      ["BambooDeFi                   ",`<a href="../bamboodefi"         >Various</a>`,"BAMBOO             ","https://www.bamboodefi.com"],
     ]
   }
 
