@@ -11,7 +11,7 @@ $(function() {
         _print(`Initialized ${App.YOUR_ADDRESS}\n`);
         _print("Reading smart contracts...\n");
     
-      const BISON_CHEF_ADDR = "0xAfB54278a217ef3F21324FB830E64A7C40EdbBb8";
+      const BISON_CHEF_ADDR = "0x83b73a0AE8D14601C6447fC2E1df3A31f2c24DdD";
        const rewardTokenTicker = "BISON";
       const BISON_CHEF = new ethers.Contract(BISON_CHEF_ADDR, BISON_CHEF_ABI, App.provider);
     
