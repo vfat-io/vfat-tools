@@ -9,7 +9,7 @@ async function main() {
     _print(`Initialized ${App.YOUR_ADDRESS}\n`);
     _print("Reading smart contracts...\n");
 
-   const Gorilla_CHEF_ADDR = "0x9eaacd7d41fdde61314eeeb61326c06402b9bfe3";
+   const Gorilla_CHEF_ADDR = "0xf0168d40aAFaa078DeB86B321941CE35AE5661E9";
    const rewardTokenTicker = "GORILLA";
    const Gorilla_CHEF = new ethers.Contract(Gorilla_CHEF_ADDR, Gorilla_CHEF_ABI, App.provider);
 
