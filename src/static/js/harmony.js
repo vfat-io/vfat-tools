@@ -33,12 +33,6 @@ const main = async() => {
         "https://lootswap.finance"
       ],
       [
-        "Lock",
-        `<a href='lock'>Various</a>`,
-        "KEY",
-        "https://www.lockswap.one"
-      ],
-      [
         "Daikiri",
         `<a href='daikiri'>Various</a>`,
         "DAIKI",
