@@ -23,7 +23,6 @@ const main = async() => {
       ["Cover Protocol      ",`<a href="cover/"             >Various</a>`,"Various   ","https://app.coverprotocol.com"],
       ["Cryptex             ",`<a href="cryptex"            >Various</a>`,"CTX       ","https://app.cryptex.finance"],
       ["DFX                 ", `<a href="dfx/"              >Various</a>`,"DFX       ","https://v0.dfx.finance/"],
-      ["DojoFarm Finance    ",`<a href="dojofarm/"          >Various</a>`,"DOJO      ","https://dojofarm.finance/"],
       ["Dynamic Set Dollar  ",`<a href="dsd/"               >Various</a>`,"DSD       ","https://dsd.finance/app"],
       ["Elena               ",`<a href="elena"              >Various</a>`,"ELENA     ","https://app.elena.finance"],
       ["Empty Set Dollar    ",`<a href="esd/"               >Various</a>`,"ESD       ","https://app.emptyset.finance/"],
@@ -58,7 +57,8 @@ const main = async() => {
       ["xSigma              ",`<a href="xsigma/"            >Various</a>`,"SIG       ","https://app.xsigma.fi/stake"],
       ["xToken              ",`<a href="xtoken/"            >Various</a>`,"XTK       ","https://xtoken.cafe/app/dashboard"],
       ["Yam                 ",`<a href="yam/"               >YAM-ETH SLP</a>`,"YAM   ","https://yam.finance/farm"],
-      ["yAxis               ",`<a href="yaxis/"             >Various</a>`,"yAxis     ","https://yaxis.io/farms"]
+      ["yAxis               ",`<a href="yaxis/"             >Various</a>`,"yAxis     ","https://yaxis.io/farms"],
+      ["DojoFarm Finance    ",`<a href="dojofarm/"          >Various</a>`, "DOJO     ", "https://dojofarm.finance/"],
     ]
   }
 
