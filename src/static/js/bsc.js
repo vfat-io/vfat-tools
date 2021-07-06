@@ -401,7 +401,8 @@ const main = async() => {
       ["WhiteTeethSwap      ", `<a href="teeth"         >Various</a>`,"TEETH            ","https://whiteteethswap.finance"],
       ["KittyFarms          ", `<a href="kittyfarms"    >Various</a>`,"KITTY            ","https://kittyfarms.app"],
       ["Moondoge            ", `<a href="moondoge"      >Various</a>`,"MODO             ","https://www.moondoge.com"],
-      ["GoldenBunny         ", `<a href="goldenbunny"   >Various</a>`,"GBUNNY           ","https://goldenbunny.finance"]
+      ["GoldenBunny         ", `<a href="goldenbunny"   >Various</a>`,"GBUNNY           ","https://goldenbunny.finance"],
+      ["Shibance            ", `<a href="shibance"      >Various</a>`,"SHIBANCE         ","https://shibance.com"]
     ]}
 
   let table = new AsciiTable().fromJSON(tableData);
