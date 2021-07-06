@@ -58,7 +58,7 @@ const main = async() => {
       ["xToken              ",`<a href="xtoken/"            >Various</a>`,"XTK       ","https://xtoken.cafe/app/dashboard"],
       ["Yam                 ",`<a href="yam/"               >YAM-ETH SLP</a>`,"YAM   ","https://yam.finance/farm"],
       ["yAxis               ",`<a href="yaxis/"             >Various</a>`,"yAxis     ","https://yaxis.io/farms"],
-      ["DojoFarm Finance    ",`<a href="dojofarm/"          >Various</a>`, "DOJO     ", "https://dojofarm.finance/"],
+      ["DojoFarm Finance    ",`<a href="polygon/dojofarm/"  >Various</a>`, "DOJO     ", "https://dojofarm.finance/"]
     ]
   }
 
