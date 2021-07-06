@@ -403,7 +403,7 @@ const main = async () => {
       ['Vampire             ', `<a href="vampire"         >Various</a>`, 'VAMPIRE      ', 'https://vampirefarming.club'],
       ['PolyGorilla         ', `<a href="polygorilla"     >Various</a>`, 'GORILLA      ', 'https://polygorilla.finance'],
       ['PolyGarden          ', `<a href="polygarden"      >Various</a>`, 'APPLE        ', 'https://www.polygarden.finance'],
-      ["Gains Farm          ",`<a href="gains-farm"      >GFARM2/DAI</a>`,"GFARM2    ","https://gains.farm"],
+      ["Gains Farm          ", `<a href="gains-farm"      >GFARM2/DAI</a>`,"GFARM2     ", "https://gains.farm"],
       ['DojoFarmFinance     ', `<a href="dojofarm"        >Various</a>`, 'DOJO         ', 'https://dojofarm.finance']
     ],
   }
