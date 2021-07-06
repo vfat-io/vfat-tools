@@ -401,7 +401,7 @@ const main = async () => {
       ['Astrofarms - Cancer ', `<a href="astrofarmscancer">Various</a>`, 'CANCER       ', 'https://cancer.astrofarms.finance'],
       ['FaunaFinance        ', `<a href="faunafinance"    >Various</a>`, 'FAUNA        ', 'https://www.fauna.finance'],
       ['Vampire             ', `<a href="vampire"         >Various</a>`, 'VAMPIRE      ', 'https://vampirefarming.club'],
-      ['PolyGorilla         ', `<a href="gorilla"         >Various</a>`, 'GORILLA      ', 'https://polygorilla.finance'], 
+      ['PolyGorilla         ', `<a href="polygorilla"         >Various</a>`, 'GORILLA      ', 'https://polygorilla.finance'], 
     ],
   }
 
