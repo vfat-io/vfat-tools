@@ -398,6 +398,7 @@ const main = async () => {
       ['PantsuSwap          ', `<a href="pantsuswap"      >Various</a>`, 'PANTSU       ', 'https://pantsuswap.com'],
       ['PolyMocha           ', `<a href="polymocha"       >Various</a>`, 'MOCHA        ', 'https://polymocha.finance'],
       ['PolyOwl             ', `<a href="polyowl"         >Various</a>`, 'OWL          ', 'https://www.polyowl.finance'],
+      ['Astrofarms - Cancer ', `<a href="astrofarmscancer">Various</a>`, 'CANCER       ', 'https://cancer.astrofarms.finance'],
       ['FaunaFinance        ', `<a href="faunafinance"    >Various</a>`, 'FAUNA        ', 'https://www.fauna.finance']
     ],
   }
