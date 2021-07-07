@@ -406,7 +406,8 @@ const main = async () => {
       ["Gains Farm          ", `<a href="gains-farm"      >GFARM2/DAI</a>`,"GFARM2     ", "https://gains.farm"],
       ['DojoFarmFinance     ', `<a href="dojofarm"        >Various</a>`, 'DOJO         ', 'https://dojofarm.finance'],
       ['PolyMaple-MapleSyrup', `<a href="polymaplesyrup"  >Various</a>`, 'SYRUP        ', 'https://www.polymaple.com'],
-      ['PolyTopia           ', `<a href="polytopia"       >Various</a>`, 'UTOPIA       ', 'https://polytopia.farm']
+      ['PolyTopia           ', `<a href="polytopia"       >Various</a>`, 'UTOPIA       ', 'https://polytopia.farm'],
+      ['BrainSwap           ', `<a href="brainswap"       >Various</a>`, 'BRAIN        ', 'https://brainswap.finance']
     ],
   }
 
