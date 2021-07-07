@@ -403,7 +403,8 @@ const main = async() => {
       ["Moondoge            ", `<a href="moondoge"      >Various</a>`,"MODO             ","https://www.moondoge.com"],
       ["GoldenBunny         ", `<a href="goldenbunny"   >Various</a>`,"GBUNNY           ","https://goldenbunny.finance"],
       ["Shibance            ", `<a href="shibance"      >Various</a>`,"SHIBANCE         ","https://shibance.com"],
-      ["Hepa                ", `<a href="hepa"          >Various</a>`,"HEPA             ","https://app.hepa.finance"]
+      ["Hepa                ", `<a href="hepa"          >Various</a>`,"HEPA             ","https://app.hepa.finance"],
+      ["Sabertooth          ", `<a href="sabertooth"    >Various</a>`,"SBTS             ","https://sabertoothswap.com"],
     ]}
 
   let table = new AsciiTable().fromJSON(tableData);
