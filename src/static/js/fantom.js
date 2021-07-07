@@ -187,6 +187,12 @@ const main = async() => {
         `<a href='strangebrew'>Various</a>`,
         "BEERMONEY",
         "https://www.strangebrew.finance"
+      ],
+      [
+        "Uniron",
+        `<a href='uniron'>Various</a>`,
+        "UNIRON",
+        "https://www.uniron.finance"
       ]
     ]
   }
