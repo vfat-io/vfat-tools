@@ -91,7 +91,6 @@ const main = async() => {
       ["Klondike                     ",`<a href="../klonx"              >Various</a>`,"KLON/KBTC          ","https://klondike.finance"],
       ["Keep                         ",`<a href="../keep"               >Various</a>`,"KEEP               ","https://dashboard.keep.network/liquidity"],
       ["Cvi                          ",`<a href="../cvi"                >Various</a>`,"GOVI               ","https://cvi.finance"],
-      ["Pop                          ",`<a href="../pop"                >Various</a>`,"POP                ","https://pop.town"],
       ["Futureswap                   ",`<a href="../futureswap"         >Various</a>`,"FST                ","https://exchange.futureswap.com"],
       ["Xdefi                        ",`<a href="../xdefi"              >Various</a>`,"XDEX               ","https://farm.xdefi.com"],
       ["Eurxb                        ",`<a href="../eurxb"              >Various</a>`,"XBE                ","http://app.eurxb.finance"],
