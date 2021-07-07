@@ -10,6 +10,7 @@ const main = async() => {
     "rows": [
       ["1inch                        ",`<a href="../1inch/"             >Various</a>`,"1INCH              ","https://1inch.exchange/#/dao/farming"],
       ["Alpha DEX                    ",`<a href="../alphadex/"          >Various</a>`,"DEX                ","https://kitten.finance"],
+      ["Alphr.Finance                ",`<a href="../alphr/"             >Various</a>`,"ALPHR              ","https://alphr.finance"],
       ["Armor                        ",`<a href="../armor/"             >Various</a>`,"ARMOR              ","https://armor.fi"],
       ["Arth                         ",`<a href="../arth/"              >Various</a>`,"ARTH/MAHA          ","https://www.arthcoin.com"],
       ["Basis                        ",`<a href="../basis/"             >Various</a>`,"BAS,BAC            ","https://basis.cash"],
