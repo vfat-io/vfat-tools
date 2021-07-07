@@ -84,7 +84,7 @@ const main = async() => {
       ["Kine                         ",`<a href="../kine"               >Various</a>`,"KINE               ","https://kine.finance"],
       ["Visor                        ",`<a href="../visor"              >Various</a>`,"VISR               ","https://visor.finance"],
       ["Umbria                       ",`<a href="../umbria"             >Various</a>`,"UMBR               ","https://farm.umbria.network"],
-      ["Basket DAO                   ",`<a href="../basketdao"          >Various</a>`,"BASK               ","https://basketdao.org"],
+      ["Basket DAO *                 ",`<a href="../basketdao"          >Various</a>`,"BASK               ","https://basketdao.org"],
       ["Ethernity                    ",`<a href="../ern"                >Various</a>`,"ERN                ","https://ethernity.io"],
       ["Nft20                        ",`<a href="../nft20"              >Various</a>`,"MUSE               ","https://nft20.io"],
       ["Popsicle                     ",`<a href="../popsicle"           >Various</a>`,"ICE                ","https://popsicle.finance"],
@@ -134,6 +134,7 @@ const main = async() => {
       ["Kyber                        ",`<a href="../kyber"              >Various</a>`,"KNC                ","https://dmm.exchange"],
       ["Shiba Swap                   ",`<a href="../shibaswap"          >Various</a>`,"BONE               ","https://shibaswap.com"],
       ["BambooDeFi                   ",`<a href="../bamboodefi"         >Various</a>`,"BAMBOO             ","https://www.bamboodefi.com"],
+      ["Emi Swap`                    ",`<a href="../emiswap"            >Various</a>`,"ESW                ","https://emiswap.com"]
     ]
   }
 
