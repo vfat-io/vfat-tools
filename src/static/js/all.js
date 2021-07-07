@@ -96,7 +96,7 @@ const main = async() => {
       ["Eurxb                        ",`<a href="../eurxb"              >Various</a>`,"XBE                ","http://app.eurxb.finance"],
       ["Swarm Network                ",`<a href="../swarm"              >Various</a>`,"SWM                ","https://stake.myswarm.app"],
       ["Liquity                      ",`<a href="../liquity"            >Various</a>`,"LQTY               ","https://liquity.app"],
-      ["Bondappetit                  ",`<a href="../bondappetit"        >Various</a>`,"BAG                ","https://bondappetit.io"],
+      ["Bondappetit *                ",`<a href="../bondappetit"        >Various</a>`,"BAG                ","https://bondappetit.io"],
       ["Penguin                      ",`<a href="../penguin"            >Various</a>`,"FISH               ","https://penguinswap.eth.link"],
       ["Mimo                         ",`<a href="../mimo"               >Various</a>`,"MIMO               ","https://mimo.capital/mining"],
       ["Fei                          ",`<a href="../fei"                >Various</a>`,"FEI                ","https://fei.money"],
