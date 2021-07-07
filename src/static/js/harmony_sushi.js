@@ -235,7 +235,7 @@ const sushiContract_unstake = async function(chefAbi, chefAddress, poolIndex, Ap
   const CHEF_CONTRACT = new ethers.Contract(chefAddress, chefAbi, signer)
 
   const currentStakedAmount = (await CHEF_CONTRACT.userInfo(poolIndex, App.YOUR_ADDRESS)).amount
-  const earnedTokenAmount = await CHEF_CONTRACT.callStatic[pendingRewardsFunction](poolIndex, App.YOUR_ADDRESS) / 1e18
+  const earnedTokenAmount = await CHEF_CONTRACT.pendingSushi(poolIndex, App.YOUR_ADDRESS) / 1e18
 
   if (earnedTokenAmount > 0) {
     showLoading()
