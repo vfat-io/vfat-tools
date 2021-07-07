@@ -156,7 +156,7 @@ const main = async () => {
       ['Polybear            ', `<a href="polybear"        >Various</a>`, 'BEAR         ', 'https://polybear.exchange'],
       ['StonkFarm           ', `<a href="stonkfarm"       >Various</a>`, 'STONKX       ', 'https://stonk.farm'],
       ['Polydex             ', `<a href="polydex"         >Various</a>`, 'PLX          ', 'https://polydex.fi'],
-      ['PolyMaple           ', `<a href="polymaple"       >Various</a>`, 'MAPLE        ', ''],
+      ['PolyMaple           ', `<a href="polymaple"       >Various</a>`, 'MAPLE        ', 'https://www.polymaple.com'],
       ['Gravity Finance     ', `<a href="gravityfinance"  >Various</a>`, 'GFI          ', 'https://gravityfinance.io'],
       [
         'Smellycat           ',
@@ -404,7 +404,8 @@ const main = async () => {
       ['PolyGorilla         ', `<a href="polygorilla"     >Various</a>`, 'GORILLA      ', 'https://polygorilla.finance'],
       ['PolyGarden          ', `<a href="polygarden"      >Various</a>`, 'APPLE        ', 'https://www.polygarden.finance'],
       ["Gains Farm          ", `<a href="gains-farm"      >GFARM2/DAI</a>`,"GFARM2     ", "https://gains.farm"],
-      ['DojoFarmFinance     ', `<a href="dojofarm"        >Various</a>`, 'DOJO         ', 'https://dojofarm.finance']
+      ['DojoFarmFinance     ', `<a href="dojofarm"        >Various</a>`, 'DOJO         ', 'https://dojofarm.finance'],
+      ['PolyMaple-MapleSyrup', `<a href="polymaplesyrup"  >Various</a>`, 'SYRUP        ', 'https://www.polymaple.com']
     ],
   }
 
