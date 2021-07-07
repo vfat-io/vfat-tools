@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include(`${partials}/head`); -%>
+
+<body>
+<%- include(`${partials}/header_main`); -%>
+<pre id="log">
+***************************** POLYGON NETWORK *****************************************
+    
+*************** 👨‍🌾 BATSWAP FARMING CALCULATOR 👨‍🌾 ****************
+INFO  : https://batswap.finance/
+TG Group  : https://t.me/batswapchat
+BUY $BATSWAP  : https://quickswap.exchange/#/swap?outputCurrency=0xb8ec286d18afe8f370e39c3775e756763fb2f184
+***************************************************************************************
+
+*** If you are being rate limited, please select a different RPC URL from here https://docs.matic.network/docs/develop/network-details/network/ ***
+
+</pre>
+<div class="loader--1"></div>
+<%- include(`${partials}/scripts`, {scriptname: 'matic_batswap'}); -%>
+</body>
+</html> 
