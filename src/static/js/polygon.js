@@ -408,6 +408,7 @@ const main = async () => {
       ['PolyMaple-MapleSyrup', `<a href="polymaplesyrup"  >Various</a>`, 'SYRUP        ', 'https://www.polymaple.com'],
       ['PolyTopia           ', `<a href="polytopia"       >Various</a>`, 'UTOPIA       ', 'https://polytopia.farm'],
       ['BrainSwap           ', `<a href="brainswap"       >Various</a>`, 'BRAIN        ', 'https://brainswap.finance'],
+      ['BatSwap             ', `<a href="batswap"         >Various</a>`, 'BATSWAP      ', 'https://batswap.finance'],
       ['ChickenFarms        ', `<a href="chickenfarms"    >Various</a>`, 'CHICKEN      ', 'https://chickenfarms.live']
     ],
   }
