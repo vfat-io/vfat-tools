@@ -227,7 +227,6 @@ function printSushiContractLinks(App, chefAbi, chefAddr, poolIndex, poolAddress,
   _print_link(`Unstake ${userStaked.toFixed(fixedDecimals)} ${stakeTokenTicker}`, unstake)
   _print_link(`Claim ${pendingRewardTokens.toFixed(fixedDecimals)} ${rewardTokenTicker} ($${formatMoney(pendingRewardTokens*rewardTokenPrice)}) + ${pendingOneTokens.toFixed(fixedDecimals)} ${rewardOneTicker} ($${formatMoney(pendingOneTokens*rewardOnePrice)})`, claim)
   _print(`Staking or unstaking also claims rewards.`)
-  _print("");
 }
 
 const sushiContract_unstake = async function(chefAbi, chefAddress, poolIndex, App) {
