@@ -218,7 +218,7 @@ function printSushiContractLinks(App, chefAbi, chefAddr, poolIndex, poolAddress,
     return chefContract_stake(chefAbi, chefAddr, poolIndex, poolAddress, App)
   }
   const unstake = async function() {
-    return sushiContract_unstake(chefAbi, chefAddr, poolIndex, App, pendingRewardsFunction)
+    return sushiContract_unstake(chefAbi, chefAddr, poolIndex, App)
   }
   const claim = async function() {
     return sushiContract_claim(chefAbi, chefAddr, poolIndex, App)
@@ -230,7 +230,7 @@ function printSushiContractLinks(App, chefAbi, chefAddr, poolIndex, poolAddress,
   _print("");
 }
 
-const sushiContract_unstake = async function(chefAbi, chefAddress, poolIndex, App, pendingRewardsFunction) {
+const sushiContract_unstake = async function(chefAbi, chefAddress, poolIndex, App) {
   const signer = App.provider.getSigner()
   const CHEF_CONTRACT = new ethers.Contract(chefAddress, chefAbi, signer)
 
