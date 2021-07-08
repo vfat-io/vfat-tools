@@ -26,6 +26,7 @@ const main = async () => {
       ['Elk                 ', `<a href="elk"             >Various</a>`, 'ELK          ', 'https://app.elk.finance'],
       ['Polywhale           ', `<a href="polywhale"       >Various</a>`, 'KRILL        ', 'https://polywhale.finance'],
       ['Aave                ', `<a href="aave"            >Various</a>`, 'MATIC        ', 'https://aave.com'],
+      ['BullionFinance             ', `<a href="bullionfinance"         >Various</a>`, 'GOLD          ', 'https://bullionfinance.xyz'],
       ['Polyfox             ', `<a href="polyfox"         >Various</a>`, 'FOX          ', 'https://polyfox.finance'],
       ['Hawkdex             ', `<a href="hawk"            >Various</a>`, 'HAWK         ', 'https://hawkdex.com'],
       ['PolyDragon          ', `<a href="polydragon"      >Various</a>`, 'FIRE         ', 'https://polydragon.io'],
