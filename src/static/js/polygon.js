@@ -205,6 +205,7 @@ const main = async () => {
       ['Magic               ', `<a href="magic"           >Various</a>`, 'DRAX/DMAGIC  ', 'https://defimagic.io'],
       ['Polymouse           ', `<a href="polymouse"       >Various</a>`, 'MICE         ', 'https://polymouse.finance'],
       ['PolyTiger           ', `<a href="polytiger"       >Various</a>`, 'TIGON        ', 'https://www.polytiger.com'],
+      ['PolyCow             ', `<a href="polycow"         >Various</a>`, 'MILK         ', 'https://polycow.finance'],
       ['Polydeer            ', `<a href="polydeer"        >Various</a>`, 'DEER         ', 'https://polydeer.finance'],
       ['Avengers            ', `<a href="avengers"        >Various</a>`, 'SHIELD       ', 'https://avengers.exchange'],
       [
