@@ -404,6 +404,7 @@ const main = async() => {
       ["GoldenBunny         ", `<a href="goldenbunny"   >Various</a>`,"GBUNNY           ","https://goldenbunny.finance"],
       ["Shibance            ", `<a href="shibance"      >Various</a>`,"SHIBANCE         ","https://shibance.com"],
       ["Hepa                ", `<a href="hepa"          >Various</a>`,"HEPA             ","https://app.hepa.finance"],
+      ["Polyfrenchie        ", `<a href="polyfrenchie"  >Various</a>`,"POLYFRENCHIE     ","https://polyfrenchie.com?network=binance"],
       ["Sabertooth          ", `<a href="sabertooth"    >Various</a>`,"SBTS             ","https://sabertoothswap.com"],
     ]}
 
