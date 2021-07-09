@@ -406,6 +406,7 @@ const main = async() => {
       ["Hepa                ", `<a href="hepa"          >Various</a>`,"HEPA             ","https://app.hepa.finance"],
       ["Polyfrenchie        ", `<a href="polyfrenchie"  >Various</a>`,"POLYFRENCHIE     ","https://polyfrenchie.com?network=binance"],
       ["Sabertooth          ", `<a href="sabertooth"    >Various</a>`,"SBTS             ","https://sabertoothswap.com"],
+      ["LotusSwap           ", `<a href="lotusswap"     >Various</a>`,"LOTUS            ","https://lotusswapdefi.com"],
     ]}
 
   let table = new AsciiTable().fromJSON(tableData);
