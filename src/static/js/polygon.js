@@ -412,7 +412,8 @@ const main = async () => {
       ['BrainSwap           ', `<a href="brainswap"       >Various</a>`, 'BRAIN        ', 'https://brainswap.finance'],
       ['BatSwap             ', `<a href="batswap"         >Various</a>`, 'BATSWAP      ', 'https://batswap.finance'],
       ['Polyfrenchie        ', `<a href="batswap"         >Various</a>`, 'POLYFRENCHIE ', 'https://polyfrenchie.com/?network=polygon'],
-      ['ChickenFarms        ', `<a href="chickenfarms"    >Various</a>`, 'CHICKEN      ', 'https://chickenfarms.live']
+      ['ChickenFarms        ', `<a href="chickenfarms"    >Various</a>`, 'CHICKEN      ', 'https://chickenfarms.live'],
+      ['Polycuppa            ', `<a href="polycuppa"        >Various</a>`, 'CUPPA         ', 'https://polycuppa.finance']
     ],
   }
 
