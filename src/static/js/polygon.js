@@ -413,7 +413,9 @@ const main = async () => {
       ['BatSwap             ', `<a href="batswap"         >Various</a>`, 'BATSWAP      ', 'https://batswap.finance'],
       ['Polyfrenchie        ', `<a href="batswap"         >Various</a>`, 'POLYFRENCHIE ', 'https://polyfrenchie.com/?network=polygon'],
       ['ChickenFarms        ', `<a href="chickenfarms"    >Various</a>`, 'CHICKEN      ', 'https://chickenfarms.live'],
-      ['Polycuppa            ', `<a href="polycuppa"        >Various</a>`, 'CUPPA         ', 'https://polycuppa.finance']
+      ['Polycuppa           ', `<a href="polycuppa"        >Various</a>`, 'CUPPA         ', 'https://polycuppa.finance'],
+      ['Polymax - Berkshire   ', `<a href="polymax_berkshire">Various</a>`, 'BERKSHIRE      ', 'https://berkshire.polymax.club']
+
     ],
   }
 
