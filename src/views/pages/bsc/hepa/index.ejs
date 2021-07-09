@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include(`${partials}/head`); -%>
+
+<body>
+<%- include(`${partials}/header_main`); -%>
+<pre id="log">
+*************** 👨‍🌾 UNOFFICIAL HEPA.FINANCE FARMING CALCULATOR 👨‍🌾 ***************
+INFO  : https://app.hepa.finance
+
+⭐️When you deposit or withdraw the contract will automatically claim HEPA on your behalf.
+💡The unclaimed HEPA amount listed above is your total rewards -
+when claiming 95% will be locked and 5% will be immediately accessible.
+*********************************************************************************
+
+</pre>
+<div class="loader--1"></div>
+<%- include(`${partials}/scripts`, {scriptname: 'bsc_hepa'}); -%>
+</body>
+</html> 

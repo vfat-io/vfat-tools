@@ -10,6 +10,7 @@ const main = async() => {
     "rows": [
       ["1inch                        ",`<a href="../1inch/"             >Various</a>`,"1INCH              ","https://1inch.exchange/#/dao/farming"],
       ["Alpha DEX                    ",`<a href="../alphadex/"          >Various</a>`,"DEX                ","https://kitten.finance"],
+      ["Alphr.Finance                ",`<a href="../alphr/"             >Various</a>`,"ALPHR              ","https://alphr.finance"],
       ["Armor                        ",`<a href="../armor/"             >Various</a>`,"ARMOR              ","https://armor.fi"],
       ["Arth                         ",`<a href="../arth/"              >Various</a>`,"ARTH/MAHA          ","https://www.arthcoin.com"],
       ["Basis                        ",`<a href="../basis/"             >Various</a>`,"BAS,BAC            ","https://basis.cash"],
@@ -91,13 +92,12 @@ const main = async() => {
       ["Klondike                     ",`<a href="../klonx"              >Various</a>`,"KLON/KBTC          ","https://klondike.finance"],
       ["Keep                         ",`<a href="../keep"               >Various</a>`,"KEEP               ","https://dashboard.keep.network/liquidity"],
       ["Cvi                          ",`<a href="../cvi"                >Various</a>`,"GOVI               ","https://cvi.finance"],
-      ["Pop                          ",`<a href="../pop"                >Various</a>`,"POP                ","https://pop.town"],
       ["Futureswap                   ",`<a href="../futureswap"         >Various</a>`,"FST                ","https://exchange.futureswap.com"],
       ["Xdefi                        ",`<a href="../xdefi"              >Various</a>`,"XDEX               ","https://farm.xdefi.com"],
       ["Eurxb                        ",`<a href="../eurxb"              >Various</a>`,"XBE                ","http://app.eurxb.finance"],
       ["Swarm Network                ",`<a href="../swarm"              >Various</a>`,"SWM                ","https://stake.myswarm.app"],
       ["Liquity                      ",`<a href="../liquity"            >Various</a>`,"LQTY               ","https://liquity.app"],
-      ["Bondappetit                  ",`<a href="../bondappetit"        >Various</a>`,"BAG                ","https://bondappetit.io"],
+      ["Bondappetit *                ",`<a href="../bondappetit"        >Various</a>`,"BAG                ","https://bondappetit.io"],
       ["Penguin                      ",`<a href="../penguin"            >Various</a>`,"FISH               ","https://penguinswap.eth.link"],
       ["Mimo                         ",`<a href="../mimo"               >Various</a>`,"MIMO               ","https://mimo.capital/mining"],
       ["Fei                          ",`<a href="../fei"                >Various</a>`,"FEI                ","https://fei.money"],
@@ -135,6 +135,7 @@ const main = async() => {
       ["Kyber                        ",`<a href="../kyber"              >Various</a>`,"KNC                ","https://dmm.exchange"],
       ["Shiba Swap                   ",`<a href="../shibaswap"          >Various</a>`,"BONE               ","https://shibaswap.com"],
       ["BambooDeFi                   ",`<a href="../bamboodefi"         >Various</a>`,"BAMBOO             ","https://www.bamboodefi.com"],
+      ["Emi Swap`                    ",`<a href="../emiswap"            >Various</a>`,"ESW                ","https://emiswap.com"]
     ]
   }
 
