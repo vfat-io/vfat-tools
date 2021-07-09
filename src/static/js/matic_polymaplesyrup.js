@@ -10,7 +10,7 @@ async function main() {
    
    _print(`Initialized ${App.YOUR_ADDRESS}\n`);
    
-   const CHEF_ADDR = "";
+   const CHEF_ADDR = "0x6AD893d5f90115049B1849AaD1C153b0E99e7953";
    const rewardTokenTicker = "SYRUP";
    const CHEF = new ethers.Contract(CHEF_ADDR, CHEF_ABI, App.provider);
 
@@ -175,7 +175,7 @@ function printContractLinks(App, chefAbi, chefAddr, poolIndex, poolAddress, pend
     return chefContract_claim(chefAbi, chefAddr, poolIndex, App, pendingRewardsFunction, claimFunction)
   }
   if(depositFee > 0){
-    _print_link(`Stake ${unstaked.toFixed(fixedDecimals)} ${stakeTokenTicker} - Fee ${depositFee}%`, approveAndStake)
+    _print_link(`Stake ${unstaked.toFixed(fixedDecimals)} ${stakeTokenTicker} - Fee ${depositFee/10}%`, approveAndStake)
   }else{
     _print_link(`Stake ${unstaked.toFixed(fixedDecimals)} ${stakeTokenTicker}`, approveAndStake)
   }
