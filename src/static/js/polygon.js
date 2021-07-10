@@ -7,7 +7,6 @@ const main = async () => {
     title: 'POLYGON Network',
     heading: ['Pool Provider', 'LP', 'Reward Tokens', 'INFO'],
     rows: [
-      ['EuroBallz Finance               ', `<a href="euroballz"           >Various</a>`, 'BALLZ        ', 'https://euroballz.finance'],
       ['Kyber DMM           ', `<a href="kyber"           >Various</a>`, 'KNC          ', 'https://dmm.exchange'],
       [
         'Quickswap           ',
@@ -418,7 +417,9 @@ const main = async () => {
       ['Polymax - Berkshire ', `<a href="polymax_berkshire">Various</a>`, 'BERKSHIRE   ', 'https://berkshire.polymax.club'],
       ['Platinum Finance    ', `<a href="platinumfinance" >Various</a>`, 'PLATIN       ', 'https://platinumfinance.app'],
       ['DuckFarm            ', `<a href="duckfarm"        >Various</a>`, 'DUCK         ', 'https://duckfarm.one'],
-      ['PolyCow             ', `<a href="polycow"         >Various</a>`, 'MILK         ', 'https://polycow.finance']
+      ['PolyCow             ', `<a href="polycow"         >Various</a>`, 'MILK         ', 'https://polycow.finance'],
+      ['Euroballz           ', `<a href="euroballz"       >Various</a>`, 'BALLZ        ', 'https://euroballz.finance'],
+      ['JetSwap             ', `<a href="jetswap"         >Various</a>`, 'pWINGS       ', 'https://polygon.jetswap.finance']
     ],
   }
 
