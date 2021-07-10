@@ -40,6 +40,16 @@ async function main() {
 
 const DFYNtakingContracts = 
   [{
+    stakingRewardAddress: "0x35A3a9DF5F0E2dFf08FBA3ece64Ea5faeD7D3b18"
+  }, {
+    stakingRewardAddress: "0x8555b37C21F78F0B73d905b9c2923EB3A3efe7bc"
+  }, {
+    stakingRewardAddress: "0xF2BaEc3ECA845A6762863C6159b223E871f5ceAe"
+  }, {
+    stakingRewardAddress: "0x9Eabb8DcBFc062E3fD445E4028D617C0b6F3eaf1"
+  }, {
+    stakingRewardAddress: "0x98D7c004C54C47b7e65320Bd679CB897Aae6a6D6"
+  }, {
   //tokens: [Oe, ce],
   //baseToken: ce,
   //startTime: 1624550400,
