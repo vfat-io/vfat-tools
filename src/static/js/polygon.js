@@ -419,7 +419,8 @@ const main = async () => {
       ['DuckFarm            ', `<a href="duckfarm"        >Various</a>`, 'DUCK         ', 'https://duckfarm.one'],
       ['PolyCow             ', `<a href="polycow"         >Various</a>`, 'MILK         ', 'https://polycow.finance'],
       ['Euroballz           ', `<a href="euroballz"       >Various</a>`, 'BALLZ        ', 'https://euroballz.finance'],
-      ['JetSwap             ', `<a href="jetswap"         >Various</a>`, 'pWINGS       ', 'https://polygon.jetswap.finance']
+      ['JetSwap             ', `<a href="jetswap"         >Various</a>`, 'pWINGS       ', 'https://polygon.jetswap.finance'],
+      ['PolyToken           ', `<a href="polytoken"       >Various</a>`, 'POLYTOKEN    ', 'https://polytoken.finance']
     ],
   }
 
