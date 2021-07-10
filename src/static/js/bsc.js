@@ -81,7 +81,7 @@ const main = async() => {
       ["Zcore               ", `<a href="zcore"         >Various</a>`,"ZEFI             ","https://finance.zcore.network"],
       ["Blizzard            ", `<a href="blizzard"      >Various</a>`,"xBLZD            ","https://blizzard.money"],
       ["Shitz               ", `<a href="shitz"         >SHITZ/BNB LP</a>`,"WBNB/ACS    ","https://shitz.lol"],
-      ["Biscuit             ", `<a href="biscuit"       >Various</a>`,"BCU              ","https://biscuitfarm.finance"],
+      ["Biscuit *           ", `<a href="biscuit"       >Various</a>`,"BCU              ","https://biscuitfarm.finance"],
       ["Runner              ", `<a href="runner"        >Various</a>`,"ENERGY           ","https://bscrunner.com"],
       ["Pumpy               ", `<a href="pumpy"         >Various</a>`,"PMP              ","https://pumpy.farm"],
       ["Knight              ", `<a href="knight"        >Various</a>`,"KNIGHT           ","https://www.knightsdefi.com"],
