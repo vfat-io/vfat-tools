@@ -224,6 +224,36 @@ window.NETWORKS = {
         "https://viewblock.io/thundercore"
     ],
   },
+  OKEX: {
+    "chainId": "0x42",
+    "chainName": "OKExChain Mainnet",
+    "nativeCurrency": {
+      "name": "okexchain",
+      "symbol": "OKT",
+      "decimals": 18
+    },
+    "rpcUrls": [
+        "https://exchainrpc.okex.org"
+    ],
+    "blockExplorerUrls": [
+        "https://www.oklink.com/okexchain"
+    ],
+  },
+  KCC: {
+    "chainId": "0x141",
+    "chainName": "KuCoin Community Chain Mainnet",
+    "nativeCurrency": {
+      "name": "KuCoin Token",
+      "symbol": "KCS",
+      "decimals": 18
+    },
+    "rpcUrls": [
+        "https://rpc-mainnet.kcc.network"
+    ],
+    "blockExplorerUrls": [
+        "https://explorer.kcc.io/en"
+    ],
+  },
 }
 
 const infuraId = atob(window.ETHEREUM_NODE_URL).split('/').pop()

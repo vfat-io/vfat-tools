@@ -42,7 +42,7 @@ async function getFuseUniPool(App, pool, poolAddress, stakingAddress) {
     };
 }
 
-async function geterc20(App, token, address, stakingAddress) {
+async function getFuseErc20(App, token, address, stakingAddress) {
     if (address == "0x0000000000000000000000000000000000000000") {
       return {
         address,
@@ -56,7 +56,7 @@ async function geterc20(App, token, address, stakingAddress) {
         tokens:[address]
       }
     }
-    else if(address == "0x0BE9e53fd7EDaC9F859882AfdDa116645287C629"){
+    else if(address.toLowerCase() === "0x0BE9e53fd7EDaC9F859882AfdDa116645287C629".toLowerCase()){
       let decimals = await token.decimals()
       return{
         address,
@@ -135,13 +135,13 @@ async function getFuseStoredToken(App, tokenAddress, stakingAddress, type) {
       return await getFuseWantVault(App, wantVault, tokenAddress, stakingAddress);
     case "erc20":
       const erc20 = new ethers.Contract(tokenAddress, ERC20_ABI, App.provider);
-      return await geterc20(App, erc20, tokenAddress, stakingAddress);
+      return await getFuseErc20(App, erc20, tokenAddress, stakingAddress);
   }
 }
 
 async function getFuseToken(App, tokenAddress, stakingAddress) {
     if (tokenAddress == "0x0000000000000000000000000000000000000000") {
-      return geterc20(App, null, tokenAddress, "")
+      return getFuseErc20(App, null, tokenAddress, "")
     }
     const type = window.localStorage.getItem(tokenAddress);
     if (type) return getFuseStoredToken(App, tokenAddress, stakingAddress, type);
@@ -175,7 +175,7 @@ async function getFuseToken(App, tokenAddress, stakingAddress) {
     try {
       const erc20 = new ethers.Contract(tokenAddress, ERC20_ABI, App.provider);
       const _name = await erc20.name();
-      const erc20tok = await geterc20(App, erc20, tokenAddress, stakingAddress);
+      const erc20tok = await getFuseErc20(App, erc20, tokenAddress, stakingAddress);
       window.localStorage.setItem(tokenAddress, "erc20");
       return erc20tok;
     }

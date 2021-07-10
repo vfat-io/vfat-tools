@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include(`${partials}/head`); -%>
+
+<body>
+<%- include(`${partials}/header_main`); -%>
+<pre id="log">
+***************************** POLYGON NETWORK *****************************************
+    
+*************** 👨‍🌾 POLYRACOON FARMING CALCULATOR 👨‍🌾 ****************
+INFO  : https://polyracoon.com
+TG : https://t.me/polyracoon
+BUY RACOON : https://quickswap.exchange/#/swap?outputCurrency=0xC07F279830aaFA63e25c87227B45e426E84E6DB2
+***************************************************************************************
+
+*** If you are being rate limited, please select a different RPC URL from here <a href='https://docs.matic.network/docs/develop/network-details/network/'>https://docs.matic.network/docs/develop/network-details/network/</a> ***
+
+</pre>
+<div class="loader--1"></div>
+<%- include(`${partials}/scripts`, {scriptname: 'matic_polyracoon'}); -%>
+</body>
+</html> 

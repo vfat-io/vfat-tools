@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include(`${partials}/head`); -%>
+
+<body>
+<%- include(`${partials}/header_main`); -%>
+<pre id="log">
+***************************** POLYGON NETWORK *****************************************
+    
+*************** 👨‍🌾 UNOFFICIAL STONKZ FARMING CALCULATOR 👨‍🌾 ****************
+INFO  : <a href='https://stonkz.farm/'>https://stonkz.farm/</a>
+***************************************************************************************
+
+*** If you are being rate limited, please select a different RPC URL from here <a href='https://docs.matic.network/docs/develop/network-details/network/'>https://docs.matic.network/docs/develop/network-details/network/</a> ***
+
+</pre>
+<div class="loader--1"></div>
+<%- include(`${partials}/scripts`, {scriptname: 'matic_stonkzfarm'}); -%>
+</body>
+</html> 

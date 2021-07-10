@@ -22,6 +22,12 @@ const pageNetwork = function() {
   if (network.toLowerCase() === 'polygon') {
     return window.NETWORKS.POLYGON
   }
+  if (network.toLowerCase() === 'okex') {
+    return window.NETWORKS.OKEX
+  }
+  if (network.toLowerCase() === 'kcc') {
+    return window.NETWORKS.KCC
+  }
   if (network.toLowerCase() === 'xdai') {
     return window.NETWORKS.XDAI
   }
@@ -1518,6 +1524,8 @@ function getUniPrices(tokens, prices, pool, chain="eth")
   if (pool.is1inch) stakeTokenTicker += " 1INCH LP";
   else if (pool.symbol.includes("LSLP")) stakeTokenTicker += " LSLP";
   else if (pool.symbol.includes("BLP")) stakeTokenTicker += " BLP";
+  else if (pool.symbol.includes("ZDEXLP")) stakeTokenTicker += " ZooDex LP";
+  else if (pool.symbol.includes("OperaSwap")) stakeTokenTicker += " Opera Swap LP";
   else if (pool.symbol.includes("SLP")) stakeTokenTicker += " SLP";
   else if (pool.symbol.includes("Cake")) stakeTokenTicker += " Cake LP";
   else if (pool.name.includes("Value LP")) stakeTokenTicker += " Value LP";
@@ -1533,6 +1541,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
   else if (pool.symbol.includes("ELP")) stakeTokenTicker += " ELK LP";
   else if (pool.symbol.includes("BenSwap")) stakeTokenTicker += " BenSwap LP";
   else if (pool.symbol.includes("BRUSH-LP")) stakeTokenTicker += " BRUSH LP";
+  else if (pool.symbol.includes("APE-LP")) stakeTokenTicker += " APE LP";
   else stakeTokenTicker += " Uni LP";
   return {
       t0: t0,
@@ -1578,6 +1587,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
               pool.symbol.includes("PGL") ?  `https://info.pangolin.exchange/#/pair/${pool.address}` :
               pool.symbol.includes("CS-LP") ?  `https://app.coinswap.space/#/` :
               pool.name.includes("Value LP") ?  `https://info.vswap.fi/pool/${pool.address}` :
+              pool.name.includes("OperaSwap") ?  `https://www.operaswap.finance/` :
               pool.symbol.includes("SPIRIT") ?  `https://swap.spiritswap.finance/#/swap` :
               pool.symbol.includes("spLP") ?  `https://info.spookyswap.finance/pair/${pool.address}` :
               pool.symbol.includes("Lv1") ?  `https://info.steakhouse.finance/pair/${pool.address}` :
@@ -1585,6 +1595,8 @@ function getUniPrices(tokens, prices, pool, chain="eth")
               pool.symbol.includes("BRUSH-LP") ?  `https://paintswap.finance` :
               pool.symbol.includes("PLP") ?  `https://exchange.pureswap.finance/#/swap` :
               pool.symbol.includes("BLP") ?  `https://info.bakeryswap.org/#/pair/${pool.address}` :
+              pool.symbol.includes("APE-LP") ?  `https://info.apeswap.finance/pair/${pool.address}` :
+              pool.symbol.includes("ZDEXLP") ?  `https://charts.zoocoin.cash/?exchange=ZooDex&pair=${t0.symbol}-${t1.symbol}` :
               pool.symbol.includes("Field-LP") ?  `https://exchange.yieldfields.finance/#/swap` :
               pool.symbol.includes("UPT") ?  `https://www.app.unic.ly/#/discover` :
               pool.symbol.includes("BenSwap") ? ({
@@ -1602,6 +1614,16 @@ function getUniPrices(tokens, prices, pool, chain="eth")
             `https://www.bakeryswap.org/#/add/${t0address}/${t1address}`,
             `https://www.bakeryswap.org/#/remove/${t0address}/${t1address}`,
             `https://www.bakeryswap.org/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+          ] :
+          pool.symbol.includes("APE-LP") ? [
+            `https://app.apeswap.finance/add/${t0address}/${t1address}`,
+            `https://app.apeswap.finance/remove/${t0address}/${t1address}`,
+            `https://app.apeswap.finance/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+          ] :
+          pool.symbol.includes("ZDEXLP") ? [
+            `https://dex.zoocoin.cash/pool/add?inputCurrency=${t0address}&outputCurrency=${t1address}`,
+            `https://dex.zoocoin.cash/pool/remove?inputCurrency=${t0address}&outputCurrency=${t1address}`,
+            `https://dex.zoocoin.cash/orders/market?inputCurrency=${t0address}&outputCurrency=${t1address}`
           ] :
           pool.symbol.includes("Cake") ? [
             `https://exchange.pancakeswap.finance/#/add/${t0address}/${t1address}`,
@@ -1622,6 +1644,11 @@ function getUniPrices(tokens, prices, pool, chain="eth")
             `https://app.pangolin.exchange/#/add/${t0address}/${t1address}`,
             `https://app.pangolin.exchange/#/remove/${t0address}/${t1address}`,
             `https://app.pangolin.exchange/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+          ] :
+          pool.symbol.includes("OperaSwap") ? [
+            `https://exchange.operaswap.finance/#/add/${t0address}/${t1address}`,
+            `https://exchange.operaswap.finance/#/remove/${t0address}/${t1address}`,
+            `https://exchange.operaswap.finance/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
           ] :
           pool.symbol.includes("ELP") ? [
             `https://app.elk.finance/#/add/${t0address}/${t1address}`,
@@ -2017,6 +2044,12 @@ function getErc20Prices(prices, pool, chain="eth") {
       break;
     case "matic":
       poolUrl=`https://explorer-mainnet.maticvigil.com/address/${pool.address}`;
+      break;
+    case "okex":
+      poolUrl=`https://www.oklink.com/okexchain/address/${pool.address}`;
+      break;
+    case "kcc":
+      poolUrl=`https://explorer.kcc.io/en/address/${pool.address}`;
       break;
     case "avax":
       poolUrl=`https://cchain.explorer.avax.network/address/${pool.address}`;
@@ -2537,11 +2570,20 @@ async function printSynthetixPool(App, info, chain="eth", customURLs) {
       case "matic":
         _print(`<a target="_blank" href="https://explorer-mainnet.maticvigil.com/address/${info.stakingAddress}#code">Polygon Explorer</a>`);
         break;
+      case "okex":
+        _print(`<a target="_blank" href="https://www.oklink.com/okexchain/address/${info.stakingAddress}#code">Okex Explorer</a>`);
+        break;
+      case "kcc":
+        _print(`<a target="_blank" href="https://explorer.kcc.io/en/address/${info.stakingAddress}#code">KUCOIN Explorer</a>`);
+        break;
       case "fantom":
         _print(`<a target="_blank" href="https://ftmscan.com/address/${info.stakingAddress}#code">FTM Scan</a>`);
         break;
       case "fuse":
         _print(`<a target="_blank" href="https://explorer.fuse.io/address/${info.stakingAddress}#code">FUSE Scan</a>`);
+        break;
+      case "xdai":
+        _print(`<a target="_blank" href="https://blockscout.com/xdai/mainnet/address/${info.stakingAddress}/contracts">Explorer</a>`);
         break;
     }
     if (info.stakeTokenTicker != "ETH") {
