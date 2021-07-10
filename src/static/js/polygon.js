@@ -411,7 +411,7 @@ const main = async () => {
       ['PolyTopia           ', `<a href="polytopia"       >Various</a>`, 'UTOPIA       ', 'https://polytopia.farm'],
       ['BrainSwap           ', `<a href="brainswap"       >Various</a>`, 'BRAIN        ', 'https://brainswap.finance'],
       ['BatSwap             ', `<a href="batswap"         >Various</a>`, 'BATSWAP      ', 'https://batswap.finance'],
-      ['Polyfrenchie        ', `<a href="batswap"         >Various</a>`, 'POLYFRENCHIE ', 'https://polyfrenchie.com/?network=polygon'],
+      ['Polyfrenchie        ', `<a href="Polyfrenchie"    >Various</a>`, 'pFRE         ', 'https://polyfrenchie.com/?network=polygon'],
       ['ChickenFarms        ', `<a href="chickenfarms"    >Various</a>`, 'CHICKEN      ', 'https://chickenfarms.live'],
       ['Polycuppa           ', `<a href="polycuppa"       >Various</a>`, 'CUPPA        ', 'https://polycuppa.finance'],
       ['Polymax - Berkshire ', `<a href="polymax_berkshire">Various</a>`, 'BERKSHIRE   ', 'https://berkshire.polymax.club'],
