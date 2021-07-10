@@ -7,6 +7,7 @@ const main = async () => {
     title: 'POLYGON Network',
     heading: ['Pool Provider', 'LP', 'Reward Tokens', 'INFO'],
     rows: [
+      ['EuroBallz Finance               ', `<a href="euroballz"           >Various</a>`, 'BALLZ        ', 'https://euroballz.finance'],
       ['Kyber DMM           ', `<a href="kyber"           >Various</a>`, 'KNC          ', 'https://dmm.exchange'],
       [
         'Quickswap           ',
@@ -25,6 +26,7 @@ const main = async () => {
       ['Elk                 ', `<a href="elk"             >Various</a>`, 'ELK          ', 'https://app.elk.finance'],
       ['Polywhale           ', `<a href="polywhale"       >Various</a>`, 'KRILL        ', 'https://polywhale.finance'],
       ['Aave                ', `<a href="aave"            >Various</a>`, 'MATIC        ', 'https://aave.com'],
+      ['BullionFinance             ', `<a href="bullionfinance"         >Various</a>`, 'GOLD          ', 'https://bullionfinance.xyz'],
       ['Polyfox             ', `<a href="polyfox"         >Various</a>`, 'FOX          ', 'https://polyfox.finance'],
       ['Hawkdex             ', `<a href="hawk"            >Various</a>`, 'HAWK         ', 'https://hawkdex.com'],
       ['PolyDragon          ', `<a href="polydragon"      >Various</a>`, 'FIRE         ', 'https://polydragon.io'],
@@ -410,6 +412,12 @@ const main = async () => {
       ['BrainSwap           ', `<a href="brainswap"       >Various</a>`, 'BRAIN        ', 'https://brainswap.finance'],
       ['BatSwap             ', `<a href="batswap"         >Various</a>`, 'BATSWAP      ', 'https://batswap.finance'],
       ['ChickenFarms        ', `<a href="chickenfarms"    >Various</a>`, 'CHICKEN      ', 'https://chickenfarms.live'],
+      ['Polyfrenchie        ', `<a href="Polyfrenchie"    >Various</a>`, 'pFRE         ', 'https://polyfrenchie.com/?network=polygon'],
+      ['ChickenFarms        ', `<a href="chickenfarms"    >Various</a>`, 'CHICKEN      ', 'https://chickenfarms.live'],
+      ['Polycuppa           ', `<a href="polycuppa"       >Various</a>`, 'CUPPA        ', 'https://polycuppa.finance'],
+      ['Polymax - Berkshire ', `<a href="polymax_berkshire">Various</a>`, 'BERKSHIRE   ', 'https://berkshire.polymax.club'],
+      ['Platinum Finance    ', `<a href="platinumfinance" >Various</a>`, 'PLATIN       ', 'https://platinumfinance.app'],
+      ['DuckFarm            ', `<a href="duckfarm"        >Various</a>`, 'DUCK         ', 'https://duckfarm.one'],
       ['PolyCow             ', `<a href="polycow"         >Various</a>`, 'MILK         ', 'https://polycow.finance']
     ],
   }
