@@ -22,7 +22,7 @@ $(function () {
         if(currentBlock < startBlock){
             _print(`Milking the cows start at block ${startBlock}\n`);
         }else{
-            rewardsPerWeek = await MILK_CHEF.CometPerBlock() /1e18
+            rewardsPerWeek = await MILK_CHEF.milkPerBlock() /1e18
             * 604800 / 2.1;
         }
     
