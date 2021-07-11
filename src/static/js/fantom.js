@@ -193,6 +193,12 @@ const main = async() => {
         `<a href='uniron'>Various</a>`,
         "UNIRON",
         "https://www.uniron.finance"
+      ],
+      [
+        "Shade",
+        `<a href='shade'>Various</a>`,
+        "SHADE",
+        "https://shade.cash"
       ]
     ]
   }
