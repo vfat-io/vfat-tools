@@ -14,10 +14,17 @@ $(function () {
         const MILK_CHEF_ADDR = "0x867b17E54dBa0AFa7FEf2b8e95a30048a2f7368e";
         const rewardTokenTicker = "MILK";
         const MILK_CHEF = new ethers.Contract(MILK_CHEF_ADDR, MILK_CHEF_ABI, App.provider);
-    
-        const rewardsPerWeek = await MILK_CHEF.milkPerBlock() / 1e18 *
-                604800 / 2.1;
         
+        const startBlock = await MILK_CHEF.startBlock();
+        const currentBlock = await App.provider.getBlockNumber();
+
+        let rewardsPerWeek = 0
+        if(currentBlock < startBlock){
+            _print(`Milking the cows start at block ${startBlock}\n`);
+        }else{
+            rewardsPerWeek = await MILK_CHEF.milkPerBlock() /1e18
+            * 604800 / 2.1;
+        }
     
         const tokens = {};
         const prices = await getMaticPrices();
