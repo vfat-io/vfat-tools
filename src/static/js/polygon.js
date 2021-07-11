@@ -228,6 +228,7 @@ const main = async () => {
         'https://museumofcryptoart.com',
       ],
       ['PolyPup             ', `<a href="polypup"         >Various</a>`, 'PUP          ', 'https://polypup.finance'],
+      ['PolyGhost             ', `<a href="polyghost"         >Various</a>`, 'GHOST          ', 'https://polyghost.finance'],
       [
         'Space               ',
         `<a href="space"           >Various</a>`,
