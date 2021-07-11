@@ -422,6 +422,7 @@ const main = async () => {
       ['JetSwap             ', `<a href="jetswap"         >Various</a>`, 'pWINGS       ', 'https://polygon.jetswap.finance'],
       ['PolyToken           ', `<a href="polytoken"       >Various</a>`, 'POLYTOKEN    ', 'https://polytoken.finance'],
       ['CupidSwap           ', `<a href="cupidswap"       >Various</a>`, 'CUPID        ', 'https://www.cupidswap.com'],
+      ['PolyTulip           ', `<a href="polytulip"       >Various</a>`, 'TULIP        ', 'https://www.polytulip.com'],
       ['PolyHeaven          ', `<a href="polyheaven"      >Various</a>`, 'BIBLE        ', 'https://polyheaven.finance']
     ],
   }
