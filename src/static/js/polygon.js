@@ -228,7 +228,6 @@ const main = async () => {
         'https://museumofcryptoart.com',
       ],
       ['PolyPup             ', `<a href="polypup"         >Various</a>`, 'PUP          ', 'https://polypup.finance'],
-      ['PolyGhost             ', `<a href="polyghost"         >Various</a>`, 'GHOST          ', 'https://polyghost.finance'],
       [
         'Space               ',
         `<a href="space"           >Various</a>`,
@@ -422,7 +421,8 @@ const main = async () => {
       ['Euroballz           ', `<a href="euroballz"       >Various</a>`, 'BALLZ        ', 'https://euroballz.finance'],
       ['JetSwap             ', `<a href="jetswap"         >Various</a>`, 'pWINGS       ', 'https://polygon.jetswap.finance'],
       ['PolyToken           ', `<a href="polytoken"       >Various</a>`, 'POLYTOKEN    ', 'https://polytoken.finance'],
-      ['CupidSwap           ', `<a href="cupidswap"       >Various</a>`, 'CUPID        ', 'https://www.cupidswap.com']
+      ['CupidSwap           ', `<a href="cupidswap"       >Various</a>`, 'CUPID        ', 'https://www.cupidswap.com'],
+      ['PolyGhost           ', `<a href="polyghost"       >Various</a>`, 'GHOST        ', 'https://polyghost.finance']
     ],
   }
 
