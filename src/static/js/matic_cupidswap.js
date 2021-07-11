@@ -22,7 +22,7 @@ async function main() {
     if (currentBlock < startBlock) {
         _print(`Rewards start at block ${startBlock}\n`);
     } else {
-        rewardsPerWeek = await CUPID_CHEF.CupidPerBlock() / 1e18 *
+        rewardsPerWeek = await CUPID_CHEF.cupidPerBlock() / 1e18 *
             604800 / 2.1;
     }
 
