@@ -424,7 +424,8 @@ const main = async () => {
       ['CupidSwap           ', `<a href="cupidswap"       >Various</a>`, 'CUPID        ', 'https://www.cupidswap.com'],
       ['PolyTulip           ', `<a href="polytulip"       >Various</a>`, 'TULIP        ', 'https://www.polytulip.com'],
       ['PolyHeaven          ', `<a href="polyheaven"      >Various</a>`, 'BIBLE        ', 'https://polyheaven.finance'],
-      ['PolyGhost           ', `<a href="polyghost"       >Various</a>`, 'GHOST        ', 'https://polyghost.finance']
+      ['PolyGhost           ', `<a href="polyghost"       >Various</a>`, 'GHOST        ', 'https://polyghost.finance'],
+      ['SecuraFinance       ', `<a href="securafinance"   >Various</a>`, 'SCR          ', 'https://polygon.secura.finance']      
     ],
   }
 
