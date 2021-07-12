@@ -17,14 +17,13 @@ async function main() {
 
    const startBlock = await BDL_CHEF.startBlock();
    const currentBlock = await App.provider.getBlockNumber();
-   const bonusMultiplier = await BDL_CHEF.bonusMultiplier();
 
    let rewardsPerWeek = 0
    if(currentBlock < startBlock){
      _print(`Rewards start at block ${startBlock}\n`);
    }else{
     rewardsPerWeek = await BDL_CHEF.blockRewards() /1e18
-        * 604800 / 3 * bonusMultiplier;
+        * 604800 / 3;
    }
 
     const tokens = {};
