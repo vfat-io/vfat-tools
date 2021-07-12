@@ -430,6 +430,7 @@ const main = async () => {
       ['LoveCupidSwap       ', `<a href="cupidswaplove"   >Various</a>`, 'LOVE         ', 'https://www.lovecupidswap.live'],
       ['PharmSwap           ', `<a href="pharmswap"       >Various</a>`, 'PHARM        ', 'https://pharmswap.finance'],
       ['WorldSwap Community Edition', `<a href="worldswap_community"   >Various</a>`, 'COMMUNITY', 'https://community.worldswap.finance'],
+      ['WePiggy             ', `<a href="wepiggy"         >Various</a>`, 'WPC          ', 'https://polygon.wepiggy.com/markets']
     ],
   }
 
