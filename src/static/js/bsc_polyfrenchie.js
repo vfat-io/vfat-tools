@@ -23,14 +23,15 @@ async function main() {
    let rewardsPerWeek = 0
    if(currentBlock < startBlock){
      _print(`Rewards start at block <a href="https://bscscan.com/block/countdown/${startBlock}" target="_blank">${startBlock}</a>\n`);
+   }else{
+    rewardsPerWeek = await POLYFRENCHIE_MC.polyfrenchiePerBlock() / 1e18 * 604800 * multiplier / 2.1;
    }
-   rewardsPerWeek = await POLYFRENCHIE_MC.polyfrenchiePerBlock() / 1e18 * 604800 * multiplier / 2.1;
 
     const tokens = {};
     const prices = await getBscPrices();
 
     await loadBscChefContract(App, tokens, prices, POLYFRENCHIE_MC, POLYFRENCHIE_MC_ADDR, POLYFRENCHIE_CHEF_ABI, rewardTokenTicker,
-        "polyfrenchieToken", null, rewardsPerWeek, "pendingPolyFrenchie");
+        "polyfrenchie", null, rewardsPerWeek, "pendingPolyFrenchie", [1]);
 
     hideLoading();
   }

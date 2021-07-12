@@ -7,7 +7,6 @@ const main = async () => {
     title: 'POLYGON Network',
     heading: ['Pool Provider', 'LP', 'Reward Tokens', 'INFO'],
     rows: [
-      ['EuroBallz Finance               ', `<a href="euroballz"           >Various</a>`, 'BALLZ        ', 'https://euroballz.finance'],
       ['Kyber DMM           ', `<a href="kyber"           >Various</a>`, 'KNC          ', 'https://dmm.exchange'],
       [
         'Quickswap           ',
@@ -90,7 +89,7 @@ const main = async () => {
       ['Gemstones Finance   ', `<a href="gemstonesfinance">Various</a>`, 'GMS          ', 'https://gemstones.finance'],
       ['Polypanda           ', `<a href="polypanda"       >Various</a>`, 'BAMBOO       ', 'https://polypanda.finance'],
       [
-        'Dfyn                ',
+        'Dfyn *              ',
         `<a href="dfyn"            >Various</a>`,
         'DFYN         ',
         'https://exchange.dfyn.network',
@@ -411,11 +410,21 @@ const main = async () => {
       ['PolyTopia           ', `<a href="polytopia"       >Various</a>`, 'UTOPIA       ', 'https://polytopia.farm'],
       ['BrainSwap           ', `<a href="brainswap"       >Various</a>`, 'BRAIN        ', 'https://brainswap.finance'],
       ['BatSwap             ', `<a href="batswap"         >Various</a>`, 'BATSWAP      ', 'https://batswap.finance'],
-      ['Polyfrenchie        ', `<a href="batswap"         >Various</a>`, 'POLYFRENCHIE ', 'https://polyfrenchie.com/?network=polygon'],
       ['ChickenFarms        ', `<a href="chickenfarms"    >Various</a>`, 'CHICKEN      ', 'https://chickenfarms.live'],
-      ['Polycuppa           ', `<a href="polycuppa"        >Various</a>`, 'CUPPA         ', 'https://polycuppa.finance'],
-      ['Polymax - Berkshire   ', `<a href="polymax_berkshire">Various</a>`, 'BERKSHIRE      ', 'https://berkshire.polymax.club']
-
+      ['Polyfrenchie        ', `<a href="Polyfrenchie"    >Various</a>`, 'pFRE         ', 'https://polyfrenchie.com/?network=polygon'],
+      ['ChickenFarms        ', `<a href="chickenfarms"    >Various</a>`, 'CHICKEN      ', 'https://chickenfarms.live'],
+      ['Polycuppa           ', `<a href="polycuppa"       >Various</a>`, 'CUPPA        ', 'https://polycuppa.finance'],
+      ['Polymax - Berkshire ', `<a href="polymax_berkshire">Various</a>`, 'BERKSHIRE   ', 'https://berkshire.polymax.club'],
+      ['Platinum Finance    ', `<a href="platinumfinance" >Various</a>`, 'PLATIN       ', 'https://platinumfinance.app'],
+      ['DuckFarm            ', `<a href="duckfarm"        >Various</a>`, 'DUCK         ', 'https://duckfarm.one'],
+      ['PolyCow             ', `<a href="polycow"         >Various</a>`, 'MILK         ', 'https://polycow.finance'],
+      ['Euroballz           ', `<a href="euroballz"       >Various</a>`, 'BALLZ        ', 'https://euroballz.finance'],
+      ['JetSwap             ', `<a href="jetswap"         >Various</a>`, 'pWINGS       ', 'https://polygon.jetswap.finance'],
+      ['PolyToken           ', `<a href="polytoken"       >Various</a>`, 'POLYTOKEN    ', 'https://polytoken.finance'],
+      ['CupidSwap           ', `<a href="cupidswap"       >Various</a>`, 'CUPID        ', 'https://www.cupidswap.com'],
+      ['PolyTulip           ', `<a href="polytulip"       >Various</a>`, 'TULIP        ', 'https://www.polytulip.com'],
+      ['PolyHeaven          ', `<a href="polyheaven"      >Various</a>`, 'BIBLE        ', 'https://polyheaven.finance'],
+      ['PolyGhost           ', `<a href="polyghost"       >Various</a>`, 'GHOST        ', 'https://polyghost.finance']
     ],
   }
 
