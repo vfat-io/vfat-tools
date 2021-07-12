@@ -971,9 +971,7 @@ async function main() {
     'ghost',
     null,
     rewardsPerWeek,
-    'pendingGhost',
-    [11]
-  )
+    'pendingGhost')
 
   hideLoading()
 }
