@@ -428,7 +428,8 @@ const main = async () => {
       ['SecuraFinance       ', `<a href="securafinance"   >Various</a>`, 'SCR          ', 'https://polygon.secura.finance'],
       ['LotusSwap           ', `<a href="lotusswap"       >Various</a>`, 'ROYAL        ', 'https://polygon.lotusswapdefi.com'],
       ['LoveCupidSwap       ', `<a href="cupidswaplove"   >Various</a>`, 'LOVE         ', 'https://www.lovecupidswap.live'],
-      ['PharmSwap           ', `<a href="pharmswap"       >Various</a>`, 'PHARM        ', 'https://pharmswap.finance']
+      ['PharmSwap           ', `<a href="pharmswap"       >Various</a>`, 'PHARM        ', 'https://pharmswap.finance'],
+      ['WorldSwap Community Edition', `<a href="worldswap_community"   >Various</a>`, 'COMMUNITY', 'https://community.worldswap.finance'],
     ],
   }
 
