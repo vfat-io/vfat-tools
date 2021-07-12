@@ -405,6 +405,7 @@ const main = async() => {
       ["Shibance            ", `<a href="shibance"      >Various</a>`,"SHIBANCE         ","https://shibance.com"],
       ["Hepa                ", `<a href="hepa"          >Various</a>`,"HEPA             ","https://app.hepa.finance"],
       ["Sabertooth          ", `<a href="sabertooth"    >Various</a>`,"SBTS             ","https://sabertoothswap.com"],
+      ["WePiggy             ", `<a href="wepiggy"       >Various</a>`,"WPC              ","https://bsc.wepiggy.com/markets"],
     ]}
 
   let table = new AsciiTable().fromJSON(tableData);
