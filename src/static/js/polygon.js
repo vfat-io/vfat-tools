@@ -427,7 +427,9 @@ const main = async () => {
       ['PolyGhost           ', `<a href="polyghost"       >Various</a>`, 'GHOST        ', 'https://polyghost.finance'],
       ['SecuraFinance       ', `<a href="securafinance"   >Various</a>`, 'SCR          ', 'https://polygon.secura.finance'],
       ['LotusSwap           ', `<a href="lotusswap"       >Various</a>`, 'ROYAL        ', 'https://polygon.lotusswapdefi.com'],
-      ['WePiggy             ', `<a href="wepiggy"         >Various</a>`, 'WPC          ', 'https://polygon.wepiggy.com/markets'],
+      ['LoveCupidSwap       ', `<a href="cupidswaplove"   >Various</a>`, 'LOVE         ', 'https://www.lovecupidswap.live'],
+      ['PharmSwap           ', `<a href="pharmswap"       >Various</a>`, 'PHARM        ', 'https://pharmswap.finance'],
+      ['WePiggy             ', `<a href="wepiggy"         >Various</a>`, 'WPC          ', 'https://polygon.wepiggy.com/markets']
     ],
   }
 

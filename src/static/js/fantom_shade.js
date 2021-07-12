@@ -19,21 +19,8 @@ async function main() {
    const SHADE_CHEF = new ethers.Contract(SHADE_CHEF_ADDR, SHADE_CHEF_ABI, App.provider);
    const SHADE_CHEF_1 = new ethers.Contract(SHADE_CHEF_ADDR_1, SHADE_CHEF_ABI_1, App.provider);
 
-   let rewardsPerWeek = 0
-   let rewardsPerWeek1 = 0
-   const startBlock = await SHADE_CHEF.startTime();
-   //const startBlock1 = await SHADE_CHEF_1.startTime();
-   const currentBlock = await App.provider.getBlockNumber();
-
-   const multiplier = await SHADE_CHEF.getMultiplier(currentBlock, currentBlock+1);
-   const multiplier1 = await SHADE_CHEF_1.getMultiplier(currentBlock, currentBlock+1);
-
-   if(currentBlock < startBlock){
-    _print(`Rewards start at block <a href="https://ftmscan.com/block/countdown/${startBlock}" target="_blank">${startBlock}</a>\n`);
-   }else{
-    rewardsPerWeek = await SHADE_CHEF.shadePerSecond() /1e18 * multiplier * 604800;
-    rewardsPerWeek1 = await SHADE_CHEF_1.shadePerSecond() /1e18 * multiplier1 * 604800;
-   }
+   const rewardsPerWeek = await SHADE_CHEF.shadePerSecond() /1e18 * 604800;
+   const rewardsPerWeek1 = await SHADE_CHEF_1.shadePerSecond() /1e18 * 604800;
 
     const tokens = {};
     const prices = await getFantomPrices();
