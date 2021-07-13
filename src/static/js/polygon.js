@@ -433,7 +433,8 @@ const main = async () => {
       ['PolyQuail           ', `<a href="polyquail_kwil"  >Various</a>`, 'KWIL         ', 'https://kwil.polyquail.finance'],
       ['Coinopolis          ', `<a href="coinopolis"      >Various</a>`, 'CCASH        ', 'https://coinopolis.io'],
       ['Yearnit             ', `<a href="yearnit"         >Various</a>`, 'YEARNIT      ', 'https://yearnit.finance'],
-      ['WePiggy             ', `<a href="wepiggy"         >Various</a>`, 'WPC          ', 'https://polygon.wepiggy.com/markets']
+      ['WePiggy             ', `<a href="wepiggy"         >Various</a>`, 'WPC          ', 'https://polygon.wepiggy.com/markets'],
+      ['Copycat             ', `<a href="copycat"         >Various</a>`, 'FISH         ', 'https://copycat.farm']
     ],
   }
 
