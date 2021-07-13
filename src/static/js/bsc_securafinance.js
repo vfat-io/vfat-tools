@@ -9,7 +9,7 @@ async function main() {
   _print(`Initialized ${App.YOUR_ADDRESS}\n`)
   _print('Reading smart contracts...\n')
 
-  const SECURA_CHEF_ADDR = '0x0E3543cEDf8aaFa1fc262269A92D65bA140C6F82'
+  const SECURA_CHEF_ADDR = '0xdca9c8810d8a7bDce68C0Aec7D803584a842d3a3'
   const rewardTokenTicker = 'SCR'
   const SECURA_CHEF = new ethers.Contract(SECURA_CHEF_ADDR, SECURA_CHEF_ABI, App.provider)
 
