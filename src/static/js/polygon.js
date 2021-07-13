@@ -273,7 +273,7 @@ const main = async () => {
         'TREAT        ',
         'https://www.polywoof.finance',
       ],
-      ['SafeDollar          ', `<a href="safedollar"      >Various</a>`, 'SDS/SDO      ', 'https://app.safedollar.fi'],
+      ['SafeDollar *        ', `<a href="safedollar"      >Various</a>`, 'SDS/SDO      ', 'https://app.safedollar.fi'],
       [
         'Cosmic              ',
         `<a href="cosmic"          >Various</a>`,
