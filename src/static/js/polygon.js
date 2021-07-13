@@ -431,7 +431,8 @@ const main = async () => {
       ['PharmSwap           ', `<a href="pharmswap"       >Various</a>`, 'PHARM        ', 'https://pharmswap.finance'],
       ['WorldSwap Community Edition', `<a href="worldswap_community"   >Various</a>`, 'COMMUNITY', 'https://community.worldswap.finance'],
       ['PolyQuail           ', `<a href="polyquail_kwil"  >Various</a>`, 'KWIL         ', 'https://kwil.polyquail.finance'],
-      ['Coinopolis          ', `<a href="coinopolis"      >Various</a>`, 'CCASH        ', 'https://coinopolis.io']
+      ['Coinopolis          ', `<a href="coinopolis"      >Various</a>`, 'CCASH        ', 'https://coinopolis.io'],
+      ['Yearnit             ', `<a href="yearnit"         >Various</a>`, 'YEARNIT      ', 'https://yearnit.finance']
     ],
   }
 
