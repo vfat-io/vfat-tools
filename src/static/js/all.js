@@ -136,8 +136,7 @@ const main = async() => {
       ["Shiba Swap                   ",`<a href="../shibaswap"          >Various</a>`,"BONE               ","https://shibaswap.com"],
       ["BambooDeFi                   ",`<a href="../bamboodefi"         >Various</a>`,"BAMBOO             ","https://www.bamboodefi.com"],
       ["Emi Swap`                    ",`<a href="../emiswap"            >Various</a>`,"ESW                ","https://emiswap.com"],
-      ["WePiggy                      ",`<a href="../wepiggy/"           >Various</a>`,"WPC                ","https://www.wepiggy.com/markets"],
-      ["DojoFarm                     ", `<a href="../dojofarm/"         >Various</a>`,"DOJO               ","https://bsc.dojofarm.finance"]
+      ["WePiggy                      ",`<a href="../wepiggy/"           >Various</a>`,"WPC                ","https://www.wepiggy.com/markets"]
     ]
   }
 
