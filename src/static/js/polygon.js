@@ -228,7 +228,6 @@ const main = async () => {
         'https://museumofcryptoart.com',
       ],
       ['PolyPup             ', `<a href="polypup"         >Various</a>`, 'PUP          ', 'https://polypup.finance'],
-      ['PolyQuail           ', `<a href="polyquail_kwil"  >Various</a>`, 'KWIL         ', 'https://kwil.polyquail.finance'],
       [
         'Space               ',
         `<a href="space"           >Various</a>`,
@@ -431,6 +430,7 @@ const main = async () => {
       ['LoveCupidSwap       ', `<a href="cupidswaplove"   >Various</a>`, 'LOVE         ', 'https://www.lovecupidswap.live'],
       ['PharmSwap           ', `<a href="pharmswap"       >Various</a>`, 'PHARM        ', 'https://pharmswap.finance'],
       ['WorldSwap Community Edition', `<a href="worldswap_community"   >Various</a>`, 'COMMUNITY', 'https://community.worldswap.finance'],
+      ['PolyQuail           ', `<a href="polyquail_kwil"  >Various</a>`, 'KWIL         ', 'https://kwil.polyquail.finance'],
     ],
   }
 
