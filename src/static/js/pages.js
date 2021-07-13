@@ -54,6 +54,7 @@ const main = async() => {
       ["Universe            ",`<a href="universe"           >Various</a>`,"XYZ       ","https://dao.universe.xyz/yield-farming"],
       ["Unslashed           ",`<a href="usf/"               >Various</a>`,"USF       ","https://app.unslashed.finance/"],
       ["Wasabix             ",`<a href="wasabix/"           >Various</a>`,"WASABI    ","https://wasabix.finance/#/app/pool"],
+      ["WePiggy             ",`<a href="wepiggy/"           >Various</a>`,"WPC       ","https://www.wepiggy.com/markets"],
       ["xSigma              ",`<a href="xsigma/"            >Various</a>`,"SIG       ","https://app.xsigma.fi/stake"],
       ["xToken              ",`<a href="xtoken/"            >Various</a>`,"XTK       ","https://xtoken.cafe/app/dashboard"],
       ["Yam                 ",`<a href="yam/"               >YAM-ETH SLP</a>`,"YAM   ","https://yam.finance/farm"],
