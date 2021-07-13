@@ -416,7 +416,8 @@ const main = async() => {
       ["PapaSmurf           ", `<a href="papasmurf"     >Various</a>`,"PAPAS            ","https://papa.smurf.money"],
       ["Smurfette           ", `<a href="smurfette"     >Various</a>`,"SMRF             ","https://lady.smurf.money"],
       ["WePiggy             ", `<a href="wepiggy"       >Various</a>`,"WPC              ","https://bsc.wepiggy.com/markets"],
-      ["MixSwap             ", `<a href="mixswap"       >Various</a>`,"MXS              ","https://app.mixswap.finance"]
+      ["MixSwap             ", `<a href="mixswap"       >Various</a>`,"MXS              ","https://app.mixswap.finance"],
+      ["HamsterSwap         ", `<a href="hamsterswaps"  >Various</a>`,"HAMSTER          ","https://hamsterswaps.com"]
     ]}
 
   let table = new AsciiTable().fromJSON(tableData);
