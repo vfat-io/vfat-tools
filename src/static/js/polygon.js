@@ -425,7 +425,8 @@ const main = async () => {
       ['PolyTulip           ', `<a href="polytulip"       >Various</a>`, 'TULIP        ', 'https://www.polytulip.com'],
       ['PolyHeaven          ', `<a href="polyheaven"      >Various</a>`, 'BIBLE        ', 'https://polyheaven.finance'],
       ['PolyGhost           ', `<a href="polyghost"       >Various</a>`, 'GHOST        ', 'https://polyghost.finance'],
-      ['SecuraFinance       ', `<a href="securafinance"   >Various</a>`, 'SCR          ', 'https://polygon.secura.finance']      
+      ['SecuraFinance       ', `<a href="securafinance"   >Various</a>`, 'SCR          ', 'https://polygon.secura.finance'],
+      ['LotusSwap           ', `<a href="lotusswap"       >Various</a>`, 'ROYAL        ', 'https://polygon.lotusswapdefi.com']
     ],
   }
 
