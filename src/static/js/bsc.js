@@ -418,7 +418,8 @@ const main = async() => {
       ["WePiggy             ", `<a href="wepiggy"       >Various</a>`,"WPC              ","https://bsc.wepiggy.com/markets"],
       ["MixSwap             ", `<a href="mixswap"       >Various</a>`,"MXS              ","https://app.mixswap.finance"],
       ["HamsterSwap         ", `<a href="hamsterswaps"  >Various</a>`,"HAMSTER          ","https://hamsterswaps.com"],
-      ["DojoFarm            ", `<a href="dojofarm"      >Various</a>`,"DOJO             ","https://bsc.dojofarm.finance"]
+      ["DojoFarm            ", `<a href="dojofarm"      >Various</a>`,"DOJO             ","https://bsc.dojofarm.finance"],
+      ["BeeFarm             ", `<a href="bee"           >Various</a>`,"BEE              ","https://app.beefarm.finance"]
     ]}
 
   let table = new AsciiTable().fromJSON(tableData);

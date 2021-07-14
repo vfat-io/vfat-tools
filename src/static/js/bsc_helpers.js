@@ -599,7 +599,10 @@ const bscTokens = [
   { "id": "matic-network","symbol": "MATIC","contract": "0xCC42724C6683B7E57334c4E856f4c9965ED682bD" },
   { "id": "cosmos","symbol": "ATOM","contract": "0x0Eb3a705fc54725037CC9e008bDede697f62F335" },
   { "id": "reef-finance","symbol": "REEF","contract": "0xF21768cCBC73Ea5B6fd3C687208a7c2def2d966e" },
-  { "id": "zcore-finance","symbol": "ZEFI","contract": "0x0288D3E353fE2299F11eA2c2e1696b4A648eCC07" }
+  { "id": "zcore-finance","symbol": "ZEFI","contract": "0x0288D3E353fE2299F11eA2c2e1696b4A648eCC07" },
+  { "id": "binance-peg-litecoin","symbol": "LTC","contract": "0x4338665cbb7b2485a8855a139b75d5e34ab0db94" },
+  { "id": "tron-bsc","symbol": "TRX","contract": "0x85EAC5Ac2F758618dFa09bDbe0cf174e7d574D5B" },
+  { "id": "binance-peg-xrp","symbol": "XRP","contract": "0x1d2f0da169ceb9fc7b3144628db156f3f6c60dbe" }
 ]
 
 async function getBscPrices() {
