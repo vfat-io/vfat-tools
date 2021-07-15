@@ -438,9 +438,12 @@ const main = async () => {
       ['Cakecrypt           ', `<a href="cakecrypt"       >Various</a>`, 'pCAKECRYPT   ', 'https://poly.cakecrypt.io'],
       ['TitanBull           ', `<a href="tbull"           >Various</a>`, 'TBULL        ', 'https://titanbull.finance'],
       ['Lion                ', `<a href="lion"            >Various</a>`, 'LION         ', 'https://lionfarming.cc'],
-      ['PolyWantsACracker   ', `<a href="polywantsacracker">Various</a>`, 'LITHIUM     ', 'https://polywantsacracker.farm']
+      ['PolyWantsACracker   ', `<a href="polywantsacracker">Various</a>`, 'LITHIUM     ', 'https://polywantsacracker.farm'],
+      ['PolygonFarm Finance ', `<a href="polygonfarm"      >Various</a>`, 'SPADE       ', 'https://polygonfarm.finance'],
     ],
   }
+
+  console.log(tableData)
 
   let table = new AsciiTable().fromJSON(tableData)
   document.getElementById('log').innerHTML += table + '<br />'
