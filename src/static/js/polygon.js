@@ -142,7 +142,7 @@ const main = async () => {
       ],
       ['Moonwolf            ', `<a href="moonwolf"        >Various</a>`, 'MOON         ', 'https://www.moonwolf.io'],
       [
-        'Iron                ',
+        'Iron *              ',
         `<a href="iron"            >Various</a>`,
         'TITAN        ',
         'https://polygon.iron.finance',
@@ -228,7 +228,6 @@ const main = async () => {
         'https://museumofcryptoart.com',
       ],
       ['PolyPup             ', `<a href="polypup"         >Various</a>`, 'PUP          ', 'https://polypup.finance'],
-      ['PolyQuail           ', `<a href="polyquail_kwil"  >Various</a>`, 'KWIL         ', 'https://kwil.polyquail.finance'],
       [
         'Space               ',
         `<a href="space"           >Various</a>`,
@@ -274,7 +273,7 @@ const main = async () => {
         'TREAT        ',
         'https://www.polywoof.finance',
       ],
-      ['SafeDollar          ', `<a href="safedollar"      >Various</a>`, 'SDS/SDO      ', 'https://app.safedollar.fi'],
+      ['SafeDollar *        ', `<a href="safedollar"      >Various</a>`, 'SDS/SDO      ', 'https://app.safedollar.fi'],
       [
         'Cosmic              ',
         `<a href="cosmic"          >Various</a>`,
@@ -431,8 +430,19 @@ const main = async () => {
       ['LoveCupidSwap       ', `<a href="cupidswaplove"   >Various</a>`, 'LOVE         ', 'https://www.lovecupidswap.live'],
       ['PharmSwap           ', `<a href="pharmswap"       >Various</a>`, 'PHARM        ', 'https://pharmswap.finance'],
       ['WorldSwap Community Edition', `<a href="worldswap_community"   >Various</a>`, 'COMMUNITY', 'https://community.worldswap.finance'],
+      ['PolyQuail           ', `<a href="polyquail_kwil"  >Various</a>`, 'KWIL         ', 'https://kwil.polyquail.finance'],
+      ['Coinopolis          ', `<a href="coinopolis"      >Various</a>`, 'CCASH        ', 'https://coinopolis.io'],
+      ['Yearnit             ', `<a href="yearnit"         >Various</a>`, 'YEARNIT      ', 'https://yearnit.finance'],
+      ['WePiggy             ', `<a href="wepiggy"         >Various</a>`, 'WPC          ', 'https://polygon.wepiggy.com/markets'],
+      ['Copycat             ', `<a href="copycat"         >Various</a>`, 'FISH         ', 'https://copycat.farm'],
+      ['Cakecrypt           ', `<a href="cakecrypt"       >Various</a>`, 'pCAKECRYPT   ', 'https://poly.cakecrypt.io'],
+      ['TitanBull           ', `<a href="tbull"           >Various</a>`, 'TBULL        ', 'https://titanbull.finance'],
+      ['Lion                ', `<a href="lion"            >Various</a>`, 'LION         ', 'https://lionfarming.cc'],
+      ['PolyWantsACracker   ', `<a href="polywantsacracker">Various</a>`, 'LITHIUM     ', 'https://polywantsacracker.farm'],
+      ['PolygonFarm Finance ', `<a href="polygonfarm"      >Various</a>`, 'SPADE       ', 'https://polygonfarm.finance'],
     ],
   }
+
 
   let table = new AsciiTable().fromJSON(tableData)
   document.getElementById('log').innerHTML += table + '<br />'

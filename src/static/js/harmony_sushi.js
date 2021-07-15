@@ -174,15 +174,15 @@ $(function () {
     _print(`${rewardOneTicker} Per Week: ${poolOneRewardsPerWeek.toFixed(fixedDecimals)} ($${formatMoney(usdOnePerWeek)})`);
     var weeklyAPR = usdPerWeek / staked_tvl * 100;
     var dailyAPR = weeklyAPR / 7;
-    var yearlyAPR = weeklyAPR * 52;
+    var yearlySushiAPR = weeklyAPR * 52;
     var weeklyOneAPR = usdOnePerWeek / staked_tvl * 100;
     var dailyOneAPR = weeklyOneAPR / 7;
     var yearlyOneAPR = weeklyOneAPR * 52;
     let totalDailyAPR = dailyAPR + dailyOneAPR;
     let totalWeeklyAPR = weeklyAPR + weeklyOneAPR;
-    let totalYearlyAPR = yearlyAPR + yearlyOneAPR;
+    let totalYearlyAPR = yearlySushiAPR + yearlyOneAPR;
     let totalUSDPerWeek = usdPerWeek + usdOnePerWeek;
-    _print(`APR SUSHI: Day ${dailyAPR.toFixed(2)}% Week ${weeklyAPR.toFixed(2)}% Year ${yearlyAPR.toFixed(2)}%`);
+    _print(`APR SUSHI: Day ${dailyAPR.toFixed(2)}% Week ${weeklyAPR.toFixed(2)}% Year ${yearlySushiAPR.toFixed(2)}%`);
     _print(`APR WONE: Day ${dailyOneAPR.toFixed(2)}% Week ${weeklyOneAPR.toFixed(2)}% Year ${yearlyOneAPR.toFixed(2)}%`);
     var userStakedUsd = userStaked * poolTokenPrice;
     var userStakedPct = userStakedUsd / staked_tvl * 100;
@@ -197,15 +197,15 @@ $(function () {
     var userOneYearlyRewards = userOneWeeklyRewards * 52;
     if (userStaked > 0) {
       _print(`Estimated Total earnings:`
-          + ` Day ${(userDailyRewards+userOneDailyRewards).toFixed(fixedDecimals)} ($${formatMoney(userDailyRewards*rewardPrice+userOneDailyRewards*rewardOnePrice)})`
-          + ` Week ${(userWeeklyRewards+userOneWeeklyRewards).toFixed(fixedDecimals)} ($${formatMoney(userWeeklyRewards*rewardPrice+userOneWeeklyRewards*rewardOnePrice)})`
-          + ` Year ${(userYearlyRewards+userOneYearlyRewards).toFixed(fixedDecimals)} ($${formatMoney(userYearlyRewards*rewardPrice+userOneYearlyRewards*rewardOnePrice)})`);
+          + ` Day ($${formatMoney(userDailyRewards*rewardPrice+userOneDailyRewards*rewardOnePrice)})`
+          + ` Week ($${formatMoney(userWeeklyRewards*rewardPrice+userOneWeeklyRewards*rewardOnePrice)})`
+          + ` Year ($${formatMoney(userYearlyRewards*rewardPrice+userOneYearlyRewards*rewardOnePrice)})`);
     }
     return {
       userStakedUsd,
       totalStakedUsd : staked_tvl,
       userStakedPct,
-      yearlyAPR,
+      yearlyAPR : totalYearlyAPR,
       userYearlyUsd : userYearlyRewards * rewardPrice + userOneYearlyRewards * rewardOnePrice
     }
   }

@@ -184,7 +184,6 @@ async function getMaticToken(App, tokenAddress, stakingAddress) {
       return res;
     }
     catch(err) {
-      console.log(err)
     }
     try {
       const VAULT = new ethers.Contract(tokenAddress, MATIC_VAULT_TOKEN_ABI, App.provider);
