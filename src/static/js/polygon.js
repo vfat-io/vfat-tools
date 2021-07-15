@@ -443,7 +443,6 @@ const main = async () => {
     ],
   }
 
-  console.log(tableData)
 
   let table = new AsciiTable().fromJSON(tableData)
   document.getElementById('log').innerHTML += table + '<br />'
