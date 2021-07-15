@@ -30,7 +30,7 @@ async function main() {
     const prices = await getMaticPrices();
 
     await loadMaticChefContract(App, tokens, prices, SPADE_CHEF, SPADE_CHEF_ADDR, SPADE_CHEF_ABI, rewardTokenTicker,
-        "Spade", null, rewardsPerWeek, "pendingSpade", [9]);
+        "Spade", null, rewardsPerWeek, "pendingSpade", [11]);
 
     hideLoading();
   }

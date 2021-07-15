@@ -419,7 +419,8 @@ const main = async() => {
       ["MixSwap             ", `<a href="mixswap"       >Various</a>`,"MXS              ","https://app.mixswap.finance"],
       ["HamsterSwap         ", `<a href="hamsterswaps"  >Various</a>`,"HAMSTER          ","https://hamsterswaps.com"],
       ["DojoFarm            ", `<a href="dojofarm"      >Various</a>`,"DOJO             ","https://bsc.dojofarm.finance"],
-      ["BeeFarm             ", `<a href="bee"           >Various</a>`,"BEE              ","https://app.beefarm.finance"]
+      ["BeeFarm             ", `<a href="bee"           >Various</a>`,"BEE              ","https://app.beefarm.finance"],
+      ["Lumberjack          ", `<a href="lumberjackdefi">Various</a>`,"WOOD             ","https://lumberjackdefi.com"]
     ]}
 
   let table = new AsciiTable().fromJSON(tableData);
