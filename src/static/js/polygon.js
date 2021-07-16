@@ -439,7 +439,9 @@ const main = async () => {
       ['TitanBull           ', `<a href="tbull"           >Various</a>`, 'TBULL        ', 'https://titanbull.finance'],
       ['Lion                ', `<a href="lion"            >Various</a>`, 'LION         ', 'https://lionfarming.cc'],
       ['PolyWantsACracker   ', `<a href="polywantsacracker">Various</a>`, 'LITHIUM     ', 'https://polywantsacracker.farm'],
-      ['PolygonFarm Finance ', `<a href="polygonfarm"      >Various</a>`, 'SPADE       ', 'https://polygonfarm.finance'],
+      ['PolygonFarm Finance ', `<a href="polygonfarm"     >Various</a>`, 'SPADE        ', 'https://polygonfarm.finance'],
+      ['Polyheat            ', `<a href="polyheat"        >Various</a>`, 'HEAT         ', 'https://polyheat.finance'],
+      ['Swap Net            ', `<a href="swapnet"         >Various</a>`, 'SWP          ', 'https://swap.net']
     ],
   }
 
