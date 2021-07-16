@@ -199,6 +199,12 @@ const main = async() => {
         `<a href='shade'>Various</a>`,
         "SHADE",
         "https://shade.cash"
+      ],
+      [
+        "Shit",
+        `<a href='shit'>Various</a>`,
+        "SHIT",
+        "N/A"
       ]
     ]
   }
