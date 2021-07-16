@@ -442,7 +442,9 @@ const main = async () => {
       ['PolygonFarm Finance ', `<a href="polygonfarm"     >Various</a>`, 'SPADE        ', 'https://polygonfarm.finance'],
       ['Polyheat            ', `<a href="polyheat"        >Various</a>`, 'HEAT         ', 'https://polyheat.finance'],
       ['Swap Net            ', `<a href="swapnet"         >Various</a>`, 'SWP          ', 'https://swap.net'],
-      ['PaprPrintr          ', `<a href="paprprintr"      >Various</a>`, 'PRNTR        ', 'https://polygon.paprprintr.finance']
+      ['PaprPrintr          ', `<a href="paprprintr"      >Various</a>`, 'PRNTR        ', 'https://polygon.paprprintr.finance'],
+      ['PolyElysm           ', `<a href="polyelysm"       >Various</a>`, 'ELYSM        ', 'https://elysm.polytopia.farm'],
+      ['Poolsar             ', `<a href="poolsar"         >Various</a>`, 'STAR         ', 'https://poolsar.finance']
     ],
   }
 
