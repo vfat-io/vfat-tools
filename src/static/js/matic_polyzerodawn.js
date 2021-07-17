@@ -34,6 +34,7 @@ async function main() {
                                   "tokenGlow", 
                                   null, 
                                   rewardsPerWeek, 
+                                  "pendingToken",
                                   "pendingTokenDark",
                                   "pendingTokenSpark",
                                   "pendingTokenGlow"
@@ -57,6 +58,7 @@ async function loadMaticTrzChefContract(
                                   rewardTokenFunctionGlow, 
                                   rewardsPerBlockFunction, 
                                   rewardsPerWeekFixed, 
+                                  pendingRewardsFunction,
                                   pendingRewardsFunctionDark,
                                   pendingRewardsFunctionSpark,
                                   pendingRewardsFunctionGlow
@@ -108,15 +110,36 @@ async function loadMaticTrzChefContract(
                                 rewardTokenAddressSpark,
                                 rewardTokenTickerGlow, 
                                 rewardTokenAddressGlow,
-                                pendingRewardsFunctionDark, 
-                                pendingRewardsFunctionSpark, 
-                                pendingRewardsFunctionGlow, 
+                                pendingRewardsFunction,
                                 8, 
                                 null, 
                                 "matic", 
                                 poolInfos[i].depositFee, 
                                 poolInfos[i].withdrawFee
                     );
+                    App, 
+                    chefAbi, 
+                    chefAddr, 
+                    prices, 
+                    tokens, 
+                    poolInfo, 
+                    poolIndex,
+                    poolPrices,
+                    totalAllocPoints, 
+                    rewardsPerWeek, 
+                    rewardTokenTickerDark, 
+                    rewardTokenAddressDark,
+                    rewardTokenTickerSpark, 
+                    rewardTokenAddressSpark,
+                    rewardTokenTickerGlow, 
+                    rewardTokenAddressGlow,
+                    pendingRewardsFunction, 
+                    fixedDecimals, 
+                    claimFunction, 
+                    chain="eth", 
+                    depositFee=0, 
+                    withdrawFee=0
+
       aprs.push(apr);
     }
   }
@@ -258,6 +281,8 @@ function printTrzPool(
                         withdrawFee
                         );
 
+
+
   return apr;
 }
 
@@ -281,23 +306,40 @@ function printTrzAPR(
   var usdPerWeekGlow = poolRewardsPerWeek * rewardPriceGlow;
   fixedDecimals = fixedDecimals ?? 2;
 
-  _print(`${rewardTokenTickerDark} Per Week: ${poolRewardsPerWeek.toFixed(fixedDecimals)} ($${formatMoney(usdPerWeekDark)})`);
-  _print(`${rewardTokenTickerSpark} Per Week: ${poolRewardsPerWeek.toFixed(fixedDecimals)} ($${formatMoney(usdPerWeekSpark)})`); 
-  _print(`${rewardTokenTickerGlow} Per Week: ${poolRewardsPerWeek.toFixed(fixedDecimals)} ($${formatMoney(usdPerWeekGlow)})`);                   
+  //_print(`${rewardTokenTickerDark} Per Week: ${poolRewardsPerWeek.toFixed(fixedDecimals)} ($${formatMoney(usdPerWeekDark)})`);
+  //_print(`${rewardTokenTickerSpark} Per Week: ${poolRewardsPerWeek.toFixed(fixedDecimals)} ($${formatMoney(usdPerWeekSpark)})`); 
+  //_print(`${rewardTokenTickerGlow} Per Week: ${poolRewardsPerWeek.toFixed(fixedDecimals)} ($${formatMoney(usdPerWeekGlow)})`);                   
+
+  var weeklyAPRTotal;
+  var dailyAPRTotal;
+  var yearlyAPRTotal;
 
   var weeklyAPR = usdPerWeekDark / staked_tvl * 100;
   var dailyAPR = weeklyAPR / 7;
   var yearlyAPR = weeklyAPR * 52;
-  _print(`${rewardTokenTickerDark} APR: Day ${dailyAPR.toFixed(2)}% Week ${weeklyAPR.toFixed(2)}% Year ${yearlyAPR.toFixed(2)}%`);
+  weeklyAPRTotal += weeklyAPR;
+  dailyAPRTotal += dailyAPRTotal;
+  yearlyAPRTotal+= yearlyAPRTotal;
+  var darkAPRString = `\t${rewardTokenTickerDark} APR: Day ${dailyAPR.toFixed(2)}% Week ${weeklyAPR.toFixed(2)}% Year ${yearlyAPR.toFixed(2)}%`;
   weeklyAPR = usdPerWeekSpark / staked_tvl * 100;
   dailyAPR = weeklyAPR / 7;
   yearlyAPR = weeklyAPR * 52;
-  _print(`${rewardTokenTickerSpark} APR: Day ${dailyAPR.toFixed(2)}% Week ${weeklyAPR.toFixed(2)}% Year ${yearlyAPR.toFixed(2)}%`);
+  weeklyAPRTotal += weeklyAPR;
+  dailyAPRTotal += dailyAPRTotal;
+  yearlyAPRTotal+= yearlyAPRTotal;
+  var sparkAPRString = `\t${rewardTokenTickerSpark} APR: Day ${dailyAPR.toFixed(2)}% Week ${weeklyAPR.toFixed(2)}% Year ${yearlyAPR.toFixed(2)}%`;
   weeklyAPR = usdPerWeekGlow / staked_tvl * 100;
   dailyAPR = weeklyAPR / 7;
   yearlyAPR = weeklyAPR * 52;
-  _print(`${rewardTokenTickerGlow} APR: Day ${dailyAPR.toFixed(2)}% Week ${weeklyAPR.toFixed(2)}% Year ${yearlyAPR.toFixed(2)}%`);
-
+  weeklyAPRTotal += weeklyAPR;
+  dailyAPRTotal += dailyAPRTotal;
+  yearlyAPRTotal+= yearlyAPRTotal;
+  var glowAPRString = `\t${rewardTokenTickerGlow} APR: Day ${dailyAPR.toFixed(2)}% Week ${weeklyAPR.toFixed(2)}% Year ${yearlyAPR.toFixed(2)}%`;
+  _print_bold(`Total APR: Day ${dailyAPRTotal.toFixed(2)}% Week ${weeklyAPRTotal.toFixed(2)}% Year ${yearlyAPRTotal.toFixed(2)}%`);               
+  _print(darkAPRString);
+  _print(sparkAPRString);
+  _print(glowAPRString);
+  
 
 
   var userStakedUsd = userStaked * poolTokenPrice;
@@ -308,23 +350,25 @@ function printTrzAPR(
   var userWeeklyRewards = userStakedPct * poolRewardsPerWeek / 100;
   var userDailyRewards = userWeeklyRewards / 7;
   var userYearlyRewards = userWeeklyRewards * 52;
+
+  /*
   if (userStaked > 0) {
-    _print(`${rewardTokenTickerDark} Estimated ${rewardTokenTickerDark} earnings:`
+    _print(`Estimated ${rewardTokenTickerDark} earnings:`
         + ` Day ${userDailyRewards.toFixed(fixedDecimals)} ($${formatMoney(userDailyRewards*rewardPriceDark)})`
         + ` Week ${userWeeklyRewards.toFixed(fixedDecimals)} ($${formatMoney(userWeeklyRewards*rewardPriceDark)})`
         + ` Year ${userYearlyRewards.toFixed(fixedDecimals)} ($${formatMoney(userYearlyRewards*rewardPriceDark)})`);
     
-    _print(`${rewardTokenTickerDark} Estimated ${rewardTokenTickerDark} earnings:`
+    _print(`Estimated ${rewardTokenTickerSpark} earnings:`
     + ` Day ${userDailyRewards.toFixed(fixedDecimals)} ($${formatMoney(userDailyRewards*rewardPriceSpark)})`
     + ` Week ${userWeeklyRewards.toFixed(fixedDecimals)} ($${formatMoney(userWeeklyRewards*rewardPriceSpark)})`
     + ` Year ${userYearlyRewards.toFixed(fixedDecimals)} ($${formatMoney(userYearlyRewards*rewardPriceSpark)})`);
 
-    _print(`${rewardTokenTickerDark} Estimated ${rewardTokenTickerDark} earnings:`
+    _print(`Estimated ${rewardTokenTickerGlow} earnings:`
     + ` Day ${userDailyRewards.toFixed(fixedDecimals)} ($${formatMoney(userDailyRewards*rewardPriceGlow)})`
     + ` Week ${userWeeklyRewards.toFixed(fixedDecimals)} ($${formatMoney(userWeeklyRewards*rewardPriceGlow)})`
     + ` Year ${userYearlyRewards.toFixed(fixedDecimals)} ($${formatMoney(userYearlyRewards*rewardPriceGlow)})`);
   }
-
+  */
 
   return {
     userStakedUsd,
@@ -380,10 +424,11 @@ function printTrzContractLinks(
   }else{
     _print_link(`Unstake ${userStaked.toFixed(fixedDecimals)} ${stakeTokenTicker}`, unstake)
   }
+
   _print_link(
-          `Claim ${pendingRewardTokensDark.toFixed(fixedDecimals)} ${rewardTokenTickerDark} ($${formatMoney(pendingRewardTokensDark*rewardTokenPriceDark)})`
-          + `\n Claim ${pendingRewardTokensSpark.toFixed(fixedDecimals)} ${rewardTokenTickerSpark} ($${formatMoney(pendingRewardTokensSpark*rewardTokenPriceSpark)})`
-          + `\n Claim ${pendingRewardTokensGlow.toFixed(fixedDecimals)} ${rewardTokenTickerGlow} ($${formatMoney(pendingRewardTokensGlow*rewardTokenPriceGlow)})`
+          `Claim All ${pendingRewardTokensDark.toFixed(fixedDecimals)} ${rewardTokenTickerDark} ($${formatMoney(pendingRewardTokensDark*rewardTokenPriceDark)})`
+          + ` & ${pendingRewardTokensSpark.toFixed(fixedDecimals)} ${rewardTokenTickerSpark} ($${formatMoney(pendingRewardTokensSpark*rewardTokenPriceSpark)})`
+          + ` & ${pendingRewardTokensGlow.toFixed(fixedDecimals)} ${rewardTokenTickerGlow} ($${formatMoney(pendingRewardTokensGlow*rewardTokenPriceGlow)})`
           , claim
         );
   _print(`Staking or unstaking also claims rewards.`)
