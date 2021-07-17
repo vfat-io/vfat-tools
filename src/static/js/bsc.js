@@ -404,7 +404,7 @@ const main = async() => {
       ["KittyFarms          ", `<a href="kittyfarms"    >Various</a>`,"KITTY            ","https://kittyfarms.app"],
       ["Moondoge            ", `<a href="moondoge"      >Various</a>`,"MODO             ","https://www.moondoge.com"],
       ["GoldenBunny         ", `<a href="goldenbunny"   >Various</a>`,"GBUNNY           ","https://goldenbunny.finance"],
-      ["Shibance            ", `<a href="shibance"      >Various</a>`,"SHIBANCE         ","https://shibance.com"],
+      ["Shibance            ", `<a href="shibance"      >Various</a>`,"WOOF             ","https://shibance.com"],
       ["Hepa                ", `<a href="hepa"          >Various</a>`,"HEPA             ","https://app.hepa.finance"],
       ["Polyfrenchie        ", `<a href="polyfrenchie"  >Various</a>`,"POLYFRENCHIE     ","https://polyfrenchie.com?network=binance"],
       ["Sabertooth          ", `<a href="sabertooth"    >Various</a>`,"SBTS             ","https://sabertoothswap.com"],
