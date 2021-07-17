@@ -448,7 +448,8 @@ const main = async () => {
       ['Polymax - Cyborg    ', `<a href="polymax_cyborg"  >Various</a>`, 'ROBOCOP      ', 'https://cyborg.polymax.club'],
       ['PolyPonzi           ', `<a href="polyponzi"       >Various</a>`, 'PPZ          ', 'https://polyponzi.money'],
       ['MisfitSwap          ', `<a href="misfit"          >Various</a>`, 'SKULL        ', 'https://www.misfitswap.live'],
-      ['DinoSwap            ', `<a href="dinoswap"        >Various</a>`, 'DINO         ', 'https://dinoswap.exchange']
+      ['DinoSwap            ', `<a href="dinoswap"        >Various</a>`, 'DINO         ', 'https://dinoswap.exchange'],
+      ['Swamp               ', `<a href="swamp"           >Various</a>`, 'pSWAMP       ', 'https://swamp.finance/polygon']
     ],
   }
 
