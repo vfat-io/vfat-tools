@@ -447,7 +447,8 @@ const main = async () => {
       ['Poolsar             ', `<a href="poolsar"         >Various</a>`, 'STAR         ', 'https://poolsar.finance'],
       ['Polymax - Cyborg    ', `<a href="polymax_cyborg"  >Various</a>`, 'ROBOCOP      ', 'https://cyborg.polymax.club'],
       ['PolyPonzi           ', `<a href="polyponzi"       >Various</a>`, 'PPZ          ', 'https://polyponzi.money'],
-      ['Misfit              ', `<a href="misfit"          >Various</a>`, 'SKULL        ', 'https://www.misfitswap.live']
+      ['MisfitSwap          ', `<a href="misfit"          >Various</a>`, 'SKULL        ', 'https://www.misfitswap.live'],
+      ['DinoSwap            ', `<a href="dinoswap"        >Various</a>`, 'DINO         ', 'https://dinoswap.exchange']
     ],
   }
 
