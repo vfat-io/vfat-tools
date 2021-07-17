@@ -253,7 +253,7 @@ const main = async () => {
       ['PolyZero            ', `<a href="polyzero"        >Various</a>`, 'ZERO         ', ''],
       ['PolyMax             ', `<a href="polymax"         >Various</a>`, 'MAX          ', 'https://polymax.club'],
       ['PolySnowFarm        ', `<a href="polysnowfarm"    >Various</a>`, 'SNOW         ', 'https://polysnow.farm'],
-      ['Polyyeld            ', `<a href="polyyeld"        >Various</a>`, 'YELD         ', 'https://polyyeld.finance'],
+      ['Polyyeld *          ', `<a href="polyyeld"        >Various</a>`, 'YELD/xYELD   ', 'https://polyyeld.finance'],
       ['Polysa              ', `<a href="polysa"          >Various</a>`, 'DUFF         ', 'https://www.polysa.finance'],
       [
         'Wault               ',
@@ -438,9 +438,21 @@ const main = async () => {
       ['Cakecrypt           ', `<a href="cakecrypt"       >Various</a>`, 'pCAKECRYPT   ', 'https://poly.cakecrypt.io'],
       ['TitanBull           ', `<a href="tbull"           >Various</a>`, 'TBULL        ', 'https://titanbull.finance'],
       ['Lion                ', `<a href="lion"            >Various</a>`, 'LION         ', 'https://lionfarming.cc'],
-      ['PolyWantsACracker   ', `<a href="polywantsacracker">Various</a>`, 'LITHIUM     ', 'https://polywantsacracker.farm']
+      ['PolyWantsACracker   ', `<a href="polywantsacracker">Various</a>`, 'LITHIUM     ', 'https://polywantsacracker.farm'],
+      ['PolygonFarm Finance ', `<a href="polygonfarm"     >Various</a>`, 'SPADE        ', 'https://polygonfarm.finance'],
+      ['Polyheat            ', `<a href="polyheat"        >Various</a>`, 'HEAT         ', 'https://polyheat.finance'],
+      ['Swap Net            ', `<a href="swapnet"         >Various</a>`, 'SWP          ', 'https://swap.net'],
+      ['PaprPrintr          ', `<a href="paprprintr"      >Various</a>`, 'PRNTR        ', 'https://polygon.paprprintr.finance'],
+      ['PolyElysm           ', `<a href="polyelysm"       >Various</a>`, 'ELYSM        ', 'https://elysm.polytopia.farm'],
+      ['Poolsar             ', `<a href="poolsar"         >Various</a>`, 'STAR         ', 'https://poolsar.finance'],
+      ['Polymax - Cyborg    ', `<a href="polymax_cyborg"  >Various</a>`, 'ROBOCOP      ', 'https://cyborg.polymax.club'],
+      ['PolyPonzi           ', `<a href="polyponzi"       >Various</a>`, 'PPZ          ', 'https://polyponzi.money'],
+      ['MisfitSwap          ', `<a href="misfit"          >Various</a>`, 'SKULL        ', 'https://www.misfitswap.live'],
+      ['DinoSwap            ', `<a href="dinoswap"        >Various</a>`, 'DINO         ', 'https://dinoswap.exchange'],
+      ['Swamp               ', `<a href="swamp"           >Various</a>`, 'pSWAMP       ', 'https://swamp.finance/polygon']
     ],
   }
+
 
   let table = new AsciiTable().fromJSON(tableData)
   document.getElementById('log').innerHTML += table + '<br />'

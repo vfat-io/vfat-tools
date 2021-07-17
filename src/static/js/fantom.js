@@ -201,10 +201,10 @@ const main = async() => {
         "https://shade.cash"
       ],
       [
-        "Grim",
-        `<a href='grim'>Various</a>`,
-        "Various",
-        "https://app.grim.finance"
+        "Shit",
+        `<a href='shit'>Various</a>`,
+        "SHIT",
+        "N/A"
       ]
     ]
   }

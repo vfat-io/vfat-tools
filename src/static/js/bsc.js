@@ -18,6 +18,7 @@ const main = async() => {
       ["Goose               ", `<a href="goose"         >Various</a>`,"GOOSE            ","https://www.goosedefi.com"],
       ["Salt                ", `<a href="salt"          >Various</a>`,"SALT             ","https://www.saltswap.finance"],
       ["Soup                ", `<a href="soup"          >Various</a>`,"SOUP/SOUPS       ","https://soups.finance"],
+      ["SatoroSwap          ", `<a href="satoroswap"    >Various</a>`,"SATORO           ","https://dapp.satoroswap.finance"],
       ["Kebab               ", `<a href="kebab"         >Various</a>`,"KEBAB            ","https://kebabfinance.com"],
       ["Kimochi             ", `<a href="kimochi"       >Various</a>`,"KIMOCHI          ","https://kimochi.finance"],
       ["Xoxo                ", `<a href="xoxo"          >Various</a>`,"XOXO             ","https://xoxo.finance"],
@@ -317,6 +318,7 @@ const main = async() => {
       ["Ant                 ", `<a href="ant"           >Various</a>`,"ANT              ","https://antswap.fi"],
       ["Billhwang           ", `<a href="billhwang"     >Various</a>`,"BILL             ","https://www.billhwangdefi.co"],
       ["Lavacake            ", `<a href="lavacake"      >Various</a>`,"LAVA             ","https://lavacake.finance"],
+      ["Mousse              ", `<a href="mousse"        >Various</a>`,"MOUSSE           ","https://mousse.finance"],
       ["B2X                 ", `<a href="b2x"           >Various</a>`,"B2X              ","https://b2xtoken.io/farm"],
       ["Mayo                ", `<a href="mayo"          >Various</a>`,"MAYO             ","https://mayoswap.com"],
       ["Espresso Latte      ", `<a href="espresso_latte">Various</a>`,"ESPRESSO         ","https://espresso.latteswap.finance"],
@@ -419,7 +421,14 @@ const main = async() => {
       ["MixSwap             ", `<a href="mixswap"       >Various</a>`,"MXS              ","https://app.mixswap.finance"],
       ["HamsterSwap         ", `<a href="hamsterswaps"  >Various</a>`,"HAMSTER          ","https://hamsterswaps.com"],
       ["DojoFarm            ", `<a href="dojofarm"      >Various</a>`,"DOJO             ","https://bsc.dojofarm.finance"],
-      ["BeeFarm             ", `<a href="bee"           >Various</a>`,"BEE              ","https://app.beefarm.finance"]
+      ["BeeFarm             ", `<a href="bee"           >Various</a>`,"BEE              ","https://app.beefarm.finance"],
+      ["Lumberjack          ", `<a href="lumberjackdefi">Various</a>`,"WOOD             ","https://lumberjackdefi.com"],
+      ["WorldSwap London    ", `<a href="worldswap_lhr" >Various</a>`,"LHR              ","https://london.worldswap.finance"],
+      ["Noble Finance       ", `<a href="noble"         >Various</a>`,"NOBLE            ","https://app.noblefinance.co"],
+      ["Kong                ", `<a href="kong"          >Various</a>`,"KONG             ","https://kong.jungleswap.cash"],
+      ["Deedee              ", `<a href="deedee"        >Various</a>`,"DEEDEE           ","https://deedee.dexterlab.finance"],
+      ["Scarab              ", `<a href="scarab"        >Various</a>`,"SCARAB           ","https://scarab.farm"],
+      ["Infinity            ", `<a href="infinity"      >Various</a>`,"INF              ","https://infinity.space-defi.com"]
     ]}
 
   let table = new AsciiTable().fromJSON(tableData);

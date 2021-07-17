@@ -25,7 +25,7 @@ async function main() {
       `Rewards start at block <a href="https://bscscan.com/block/countdown/${startBlock}" target="_blank">${startBlock}</a>\n`
     )
   } else {
-    rewardsPerWeek = (((await DOJO_CHEF.securaPerBlock()) / 1e18) * 604800 * multiplier) / 3
+    rewardsPerWeek = (((await DOJO_CHEF.dojoPerBlock()) / 1e18) * 604800 * multiplier) / 3
   }
 
   const tokens = {}

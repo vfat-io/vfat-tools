@@ -20,15 +20,16 @@ const Address = [
   "0xDa4bb93Bac7CC00F6c6e2193d115Cf45099b31a0",
   "0xdf68Bf80D427A5827Ff2c06A9c70D407e17DC041",
   "0xEe3a7c885Fd3cc5358FF583F2DAB3b8bC473316f",
-  "0x41D44B276904561Ac51855159516FD4cB2c90968"
+  "0x41D44B276904561Ac51855159516FD4cB2c90968",
+  "0x59247cfe6FC768A8C3F95601008B75A94F4939Bd"
 ]
-  
+
   async function main() {
     const App = await init_ethers();
-  
+
     _print(`Initialized ${App.YOUR_ADDRESS}\n`);
     _print("Reading smart contracts...\n");
-  
+
     const prices = await getFantomPrices();
     const tokens = {};
     const poolInfos = await Promise.all(Address.map(a => loadBeefyPoolInfo(App, tokens, prices, a)));
@@ -43,10 +44,10 @@ const Address = [
     if (userTvl > 0) {
       _print_bold(`You are staking a total of $${formatMoney(userTvl)}`);
     }
-  
+
     hideLoading();
   }
-  
+
   async function loadBeefyPoolInfo(App, tokens, prices, contractAddress) {
     try {
       const contract = await new ethers.Contract(contractAddress, BEEFY_VAULT_ABI, App.provider);
@@ -66,7 +67,7 @@ const Address = [
       return null;
     }
   }
-  
+
   async function printBeefyContract(poolInfo) {
     const poolPrices = poolInfo.poolPrices;
     _print(`${poolPrices.name} Price: $${formatMoney(poolPrices.price)} TVL: $${formatMoney(poolPrices.tvl)}`);
@@ -78,4 +79,3 @@ const Address = [
     }
     _print("");
   }
-  
