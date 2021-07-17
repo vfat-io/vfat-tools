@@ -201,9 +201,9 @@ const main = async() => {
         "https://shade.cash"
       ],
       [
-        "Shit",
-        `<a href='shit'>Various</a>`,
-        "SHIT",
+        "Butt",
+        `<a href='butt'>Various</a>`,
+        "BUTT",
         "N/A"
       ]
     ]
