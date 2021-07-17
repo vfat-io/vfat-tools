@@ -446,6 +446,7 @@ const main = async () => {
       ['PolyElysm           ', `<a href="polyelysm"       >Various</a>`, 'ELYSM        ', 'https://elysm.polytopia.farm'],
       ['Poolsar             ', `<a href="poolsar"         >Various</a>`, 'STAR         ', 'https://poolsar.finance'],
       ['Polymax - Cyborg ', `<a href="polymax_cyborg">Various</a>`, 'ROBOCOP   ', 'https://cyborg.polymax.club'],
+      ['PolyPonzi           ', `<a href="polyponzi"       >Various</a>`, 'PPZ         ', 'https://polyponzi.money'],
     ],
   }
 
