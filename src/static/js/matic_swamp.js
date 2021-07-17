@@ -71,7 +71,7 @@ async function main() {
       if (poolPrices[i]) {
         const apr = printpSWAMPPool(App, chefAbi, chefAddress, prices, tokens, poolInfos[i], i, poolPrices[i],
           totalAllocPoints, rewardsPerWeek, rewardTokenTicker, rewardTokenAddress,
-          pendingRewardsFunction, null, null, "Matic")
+          pendingRewardsFunction, null, null, "matic")
         aprs.push(apr);
       }
     }
@@ -133,16 +133,16 @@ async function main() {
 
 function printpSWAMPPool(App, chefAbi, chefAddr, prices, tokens, poolInfo, poolIndex, poolPrices,
                        totalAllocPoints, rewardsPerWeek, rewardTokenTicker, rewardTokenAddress,
-                       pendingRewardsFunction, fixedDecimals, claimFunction, chain="eth") {
+                       pendingRewardsFunction, fixedDecimals, claimFunction, chain) {
   fixedDecimals = fixedDecimals ?? 2;
-  const sp = (poolInfo.stakedToken == null) ? null : getPoolPrices(tokens, prices, poolInfo.stakedToken);
+  const sp = (poolInfo.stakedToken == null) ? null : getPoolPrices(tokens, prices, poolInfo.stakedToken, chain);
   var poolRewardsPerWeek = poolInfo.allocPoints / totalAllocPoints * rewardsPerWeek;
   if (poolRewardsPerWeek == 0 && rewardsPerWeek != 0) return;
   const userStaked = poolInfo.userLPStaked ?? poolInfo.userStaked;
   const rewardPrice = getParameterCaseInsensitive(prices, rewardTokenAddress)?.usd;
   const staked_tvl = sp?.staked_tvl ?? poolPrices.staked_tvl;
-  poolPrices.print_price();
-  sp?.print_price();
+  poolPrices.print_price(chain);
+  sp?.print_price(chain);
   const apr = printAPR(rewardTokenTicker, rewardPrice, poolRewardsPerWeek, poolPrices.stakeTokenTicker,
     staked_tvl, userStaked, poolPrices.price, fixedDecimals);
   if (poolInfo.userLPStaked > 0) sp?.print_contained_price(userStaked);
@@ -181,7 +181,7 @@ const chefpSWAMPContract_unstake = async function(chefAbi, chefAddress, poolInde
 
   if (earnedTokenAmount > 0) {
     showLoading()
-    CHEF_CONTRACT.withdrawAll(poolIndex, {gasLimit: 500000})
+    CHEF_CONTRACT.withdraw(poolIndex, earnedTokenAmount, {gasLimit: 500000})
       .then(function(t) {
         return App.provider.waitForTransaction(t.hash)
       })
