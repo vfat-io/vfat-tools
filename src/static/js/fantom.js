@@ -205,6 +205,12 @@ const main = async() => {
         `<a href='butt'>Various</a>`,
         "BUTT",
         "N/A"
+      ],
+      [
+        "Grim",
+        `<a href='grim'>Various</a>`,
+        "Various",
+        "https://app.grim.finance"
       ]
     ]
   }
