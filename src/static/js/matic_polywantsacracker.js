@@ -11,7 +11,7 @@ async function main() {
     _print(`Initialized ${App.YOUR_ADDRESS}\n`);
     _print("Reading smart contracts...\n");
 
-   const LITHIUM_CHEF_ADDR = "0x13CE6810f584142AEADfF0F3D71DeC04cc20fe2b";
+   const LITHIUM_CHEF_ADDR = "0xfcD73006121333C92D770662745146338E419556";
    const rewardTokenTicker = "LITHIUM";
    const LITHIUM_CHEF = new ethers.Contract(LITHIUM_CHEF_ADDR, LITHIUM_CHEF_ABI, App.provider);
 
