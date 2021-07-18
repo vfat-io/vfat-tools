@@ -204,7 +204,7 @@ const main = async() => {
         "Butt",
         `<a href='butt'>Various</a>`,
         "BUTT",
-        "N/A"
+        "https://www.buttcoincrypto.com"
       ],
       [
         "Grim",
