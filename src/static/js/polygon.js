@@ -450,7 +450,8 @@ const main = async () => {
       ['MisfitSwap          ', `<a href="misfit"          >Various</a>`, 'SKULL        ', 'https://www.misfitswap.live'],
       ['DinoSwap            ', `<a href="dinoswap"        >Various</a>`, 'DINO         ', 'https://dinoswap.exchange'],
       ['Swamp               ', `<a href="swamp"           >Various</a>`, 'pSWAMP       ', 'https://swamp.finance/polygon'],
-      ["SpacePortDeFi       ", `<a href="spaceport"     >Various</a>`,"STARSHIP         ","https://polygon.spaceportdefi.com/"]
+      ["SpacePortDeFi       ", `<a href="spaceport"       >Various</a>`, "STARSHIP     ","https://polygon.spaceportdefi.com"],
+      ['PolyTide            ', `<a href="polytide"        >Various</a>`, 'OYSTER       ', 'https://polytide.finance']
     ],
   }
 
