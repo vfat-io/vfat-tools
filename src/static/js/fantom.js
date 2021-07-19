@@ -223,6 +223,12 @@ const main = async() => {
         `<a href='knight'>Various</a>`,
         "KF",
         "https://www.knight-finance.xyz"
+      ],
+      [
+        "beHODL",
+        `<a href='behodl'>Various</a>`,
+        "beHODL",
+        "N/A"
       ]
     ]
   }
