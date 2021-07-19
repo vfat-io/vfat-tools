@@ -152,7 +152,7 @@ function printRyuInuChefContractLinks(App, chefAbi, chefAddr, poolIndex, poolAdd
     }
     // no need to change
     const unstake = async function() {
-        return chefContract_unstake(chefAbi, chefAddr, poolIndex, App, pendingRewardsFunction)
+        return ryuInuChefContract_unstake(chefAbi, chefAddr, poolIndex, App, pendingRewardsFunction)
     }
     // changed
     const claim = async function() {
@@ -225,6 +225,24 @@ const ryuInuChefContract_stake = async function(chefAbi, chefAddress, poolIndex,
     } else {
         alert('You have no tokens to stake!!')
     }
+}
+
+const ryuInuChefContract_unstake = async function(chefAbi, chefAddress, poolIndex, App, pendingRewardsFunction) {
+	
+  const signer = App.provider.getSigner()
+  const CHEF_CONTRACT = new ethers.Contract(chefAddress, chefAbi, signer)
+  const currentStakedAmount = (await CHEF_CONTRACT.userInfo(poolIndex, App.YOUR_ADDRESS)).amount
+  const earnedTokenAmount = await CHEF_CONTRACT.callStatic[pendingRewardsFunction](poolIndex, App.YOUR_ADDRESS) / 1e18
+  if (earnedTokenAmount >= 0) {
+    showLoading()
+    CHEF_CONTRACT.withdraw(poolIndex, currentStakedAmount, {gasLimit: 500000})
+      .then(function(t) {
+        return App.provider.waitForTransaction(t.hash)
+      })
+      .catch(function() {
+        hideLoading()
+      })
+  }
 }
 
 /**
