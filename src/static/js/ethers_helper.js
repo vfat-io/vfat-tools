@@ -1954,7 +1954,7 @@ function getBalancerPrices(tokens, prices, pool)
       staked_tvl : staked_tvl,
       stakeTokenTicker : stakeTokenTicker,
       print_price() {
-        const poolUrl = `http://pools.balancer.exchange/#/pool/${pool.address}`;
+        let poolUrl = `http://pools.balancer.exchange/#/pool/${pool.address}`;
         _print(`<a href='${poolUrl}' target='_blank'>${stakeTokenTicker}</a> BPT Price: $${formatMoney(price)} TVL: $${formatMoney(tvl)}`);
         poolPrices.forEach((p, i) =>
           _print(`${poolTokens[i].symbol} Price: $${formatMoney(p)}`)
@@ -1967,6 +1967,28 @@ function getBalancerPrices(tokens, prices, pool)
         _print(`Your LP tokens comprise of ${userQs.join(' + ')}`);
       }
   }
+}
+
+function getBunicornPrices(tokens, prices, pool)
+{
+    const result = getBalancerPrices(tokens, prices, pool);
+    return { ...result, ...{
+        print_price() {
+            let poolUrl = `https://www.bunicorn.exchange/#/liquidity/tokens/detail/${pool.address}`;
+
+            let lpPrice = result.price;
+            if (pool.poolType && pool.poolType === 'stable') {
+                const pairStr = pool.tokens.join('_');
+                poolUrl = `https://www.bunicorn.exchange/#/liquidity/stablecoins/detail/${pairStr.toLowerCase()}/${pool.address}`;
+                lpPrice = result.price / 2
+            }
+            _print(`<a href='${poolUrl}' target='_blank'>${result.stakeTokenTicker}</a> BPT Price: $${formatMoney(lpPrice)} TVL: $${formatMoney(result.tvl)}`);
+            result.prices.forEach((p, i) =>
+                _print(`${result.tokens[i].symbol} Price: $${formatMoney(p)}`)
+            );
+            _print(`Staked: ${pool.staked.toFixed(4)} ${result.stakeTokenTicker} ($${formatMoney(result.staked_tvl)})`);
+        },
+    }}
 }
 
 function getWrapPrices(tokens, prices, pool)
@@ -2140,6 +2162,7 @@ function getCurvePrices(prices, pool) {
 
 function getPoolPrices(tokens, prices, pool, chain = "eth") {
   if (pool.w0 != null) return getValuePrices(tokens, prices, pool);
+  if (pool.buniPoolTokens != null) return getBunicornPrices(tokens, prices, pool);
   if (pool.poolTokens != null) return getBalancerPrices(tokens, prices, pool);
   if (pool.isGelato) return getGelatoPrices(tokens, prices, pool);
   if (pool.token0 != null) return getUniPrices(tokens, prices, pool);
