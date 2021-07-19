@@ -35,10 +35,6 @@ async function main() {
   var tokens = {};
   var prices = await getBscPrices();
 
-  prices["0x4a9f3f821590fC22bD682e829656596C29749328"] = { usd : 1 };
-  prices["0xb05697B07E87e57d96FF9802869a410aD6162777"] = { usd : 1 };
-  prices["0x42612b419E31F6a74b81Ba627C7d8d5e325D6758"] = { usd : 1 };
-
   let p = await loadMultipleBscSynthetixPools(App, tokens, prices, Pools)
   _print_bold(`Total staked: $${formatMoney(p.staked_tvl)}`);
   if (p.totalUserStaked > 0) {
