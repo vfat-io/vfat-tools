@@ -211,6 +211,12 @@ const main = async() => {
         `<a href='grim'>Various</a>`,
         "Various",
         "https://app.grim.finance"
+      ],
+      [
+        "Ryu Inu",
+        `<a href='ryuinu'>Various</a>`,
+        "RYUINU",
+        "https://ftm.ryuinu.finance"
       ]
     ]
   }
