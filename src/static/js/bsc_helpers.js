@@ -179,6 +179,46 @@ async function getBscBalancerPool(App, pool, poolAddress, stakingAddress, tokens
   };
 }
 
+async function getBscBunicornTokenPool(App, pool, poolAddress, stakingAddress, tokens, smartToken) {
+    const poolData = await getBscBalancerPool(App, pool, poolAddress, stakingAddress, tokens, smartToken);
+
+    return { ...poolData, ...{ buniPoolTokens: poolData.poolTokens }}
+}
+
+async function getBscBunicornStablePool(App, pool, poolAddress, stakingAddress, tokens) {
+    let decimals = await pool.decimals();
+    let symbol = await pool.symbol();
+    let name = await pool.name();
+    let totalSupply = await pool.totalSupply();
+    let staked = await pool.balanceOf(stakingAddress);
+    const unstaked = await pool.balanceOf(App.YOUR_ADDRESS);
+    let poolTokens = [];
+    const tokenBalances = await pool.getReserves();
+    const token0Balance = window.ethers.BigNumber.from(tokenBalances[0]).toString();
+    const token1Balance = window.ethers.BigNumber.from(tokenBalances[1]).toString();
+    const totalTokenBalance = parseFloat(token0Balance)  + parseFloat(token1Balance);
+    for (let i = 0; i < tokens.length; i++) {
+        const tokenWeightPercent = parseFloat(window.ethers.BigNumber.from(tokenBalances[i]).toString()) / totalTokenBalance;
+
+        poolTokens.push({ address: tokens[i], weight: (Number(tokenWeightPercent.toString())).toFixed(4), balance: tokenBalances[i] })
+    }
+    return {
+        poolType: 'stable',
+        symbol,
+        name,
+        address: poolAddress,
+        poolTokens, //address, weight and balance
+        buniPoolTokens: poolTokens, //address, weight and balance
+        totalSupply: (totalSupply / 10 ** decimals),
+        stakingAddress,
+        staked: staked / 10 ** decimals,
+        decimals: decimals,
+        unstaked: unstaked / 10 ** decimals,
+        contract: pool,
+        tokens
+    };
+}
+
 async function getBscStoredToken(App, tokenAddress, stakingAddress, type) {
   switch (type) {
     case "uniswap":
@@ -188,6 +228,12 @@ async function getBscStoredToken(App, tokenAddress, stakingAddress, type) {
       const bal = new ethers.Contract(tokenAddress, BALANCER_POOL_ABI, App.provider);
       const tokens = await bal.getFinalTokens();
       return await getBscBalancerPool(App, bal, tokenAddress, stakingAddress, tokens);
+    case "bunicorn:stable":
+      const poolStableContract = new ethers.Contract(tokenAddress, BUNICORN_STABLE_POOL_ABI, App.provider);
+      const token0 = await poolStableContract.token0();
+      const token1 = await poolStableContract.token1();
+      const poolStables = [token0, token1];
+      return await getBscBunicornStablePool(App, poolStableContract, tokenAddress, stakingAddress, poolStables);
     case "swap":
       const _3pool = new ethers.Contract(tokenAddress, BSC_3POOL_ABI, App.provider);
       const swap = await _3pool.swap();
@@ -275,6 +321,16 @@ async function getBscToken(App, tokenAddress, stakingAddress) {
     }
     catch(err) {
       //console.log(err)
+    }
+    try {
+        const stablePoolContract = new ethers.Contract(tokenAddress, BUNICORN_STABLE_POOL_ABI, App.provider);
+        const token0 = await stablePoolContract.token0();
+        const token1 = await stablePoolContract.token1();
+        const tokens = [token0, token1];
+        const stablePool = await getBscBunicornStablePool(App, stablePoolContract, tokenAddress, stakingAddress, tokens);
+        window.localStorage.setItem(tokenAddress, "bunicorn:stable");
+        return stablePool;
+    }catch(err) {
     }
     try {
       const erc20 = new ethers.Contract(tokenAddress, ERC20_ABI, App.provider);
