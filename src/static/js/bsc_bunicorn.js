@@ -35,6 +35,12 @@ async function main() {
   var tokens = {};
   var prices = await getBscPrices();
 
+  await loadBscSynthetixPoolInfo(App, tokens, prices, 
+                                 Pools[0].abi, 
+                                 Pools[0].address, 
+                                 Pools[0].rewardTokenFunction, 
+                                 Pools[0].stakeTokenFunction)
+
   let p = await loadMultipleBscSynthetixPools(App, tokens, prices, Pools)
   _print_bold(`Total staked: $${formatMoney(p.staked_tvl)}`);
   if (p.totalUserStaked > 0) {
