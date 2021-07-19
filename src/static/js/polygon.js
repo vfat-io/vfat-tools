@@ -435,7 +435,6 @@ const main = async () => {
       ['Yearnit             ', `<a href="yearnit"         >Various</a>`, 'YEARNIT      ', 'https://yearnit.finance'],
       ['WePiggy             ', `<a href="wepiggy"         >Various</a>`, 'WPC          ', 'https://polygon.wepiggy.com/markets'],
       ['Copycat             ', `<a href="copycat"         >Various</a>`, 'FISH         ', 'https://copycat.farm'],
-      ['Copycat2            ', `<a href="copycat2"        >Various</a>`, 'FISH2        ', 'https://copycat2.farm'],
       ['Cakecrypt           ', `<a href="cakecrypt"       >Various</a>`, 'pCAKECRYPT   ', 'https://poly.cakecrypt.io'],
       ['TitanBull           ', `<a href="tbull"           >Various</a>`, 'TBULL        ', 'https://titanbull.finance'],
       ['Lion                ', `<a href="lion"            >Various</a>`, 'LION         ', 'https://lionfarming.cc'],
@@ -452,7 +451,8 @@ const main = async () => {
       ['DinoSwap            ', `<a href="dinoswap"        >Various</a>`, 'DINO         ', 'https://dinoswap.exchange'],
       ['Swamp               ', `<a href="swamp"           >Various</a>`, 'pSWAMP       ', 'https://swamp.finance/polygon'],
       ["SpacePortDeFi       ", `<a href="spaceport"       >Various</a>`, "STARSHIP     ","https://polygon.spaceportdefi.com"],
-      ['PolyTide            ', `<a href="polytide"        >Various</a>`, 'OYSTER       ', 'https://polytide.finance']
+      ['PolyTide            ', `<a href="polytide"        >Various</a>`, 'OYSTER       ', 'https://polytide.finance'],
+      ['Copycat2            ', `<a href="copycat2"        >Various</a>`, 'FISH2        ', 'https://copycat2.farm']
     ],
   }
 
