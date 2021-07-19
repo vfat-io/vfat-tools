@@ -39,7 +39,7 @@ async function main() {
     KUNAI_CHEF_ADDR,
     KUNAI_CHEF_ABI,
     rewardTokenTicker,
-    'Kunai',
+    'kunai',
     null,
     rewardsPerWeek,
     'pendingKunai')
