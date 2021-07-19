@@ -199,6 +199,18 @@ const main = async() => {
         `<a href='shade'>Various</a>`,
         "SHADE",
         "https://shade.cash"
+      ],
+      [
+        "Butt",
+        `<a href='butt'>Various</a>`,
+        "BUTT",
+        "https://www.buttcoincrypto.com"
+      ],
+      [
+        "Grim",
+        `<a href='grim'>Various</a>`,
+        "Various",
+        "https://app.grim.finance"
       ]
     ]
   }

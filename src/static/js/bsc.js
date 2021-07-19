@@ -319,6 +319,7 @@ const main = async() => {
       ["Ant                 ", `<a href="ant"           >Various</a>`,"ANT              ","https://antswap.fi"],
       ["Billhwang           ", `<a href="billhwang"     >Various</a>`,"BILL             ","https://www.billhwangdefi.co"],
       ["Lavacake            ", `<a href="lavacake"      >Various</a>`,"LAVA             ","https://lavacake.finance"],
+      ["Mousse              ", `<a href="mousse"        >Various</a>`,"MOUSSE           ","https://mousse.finance"],
       ["B2X                 ", `<a href="b2x"           >Various</a>`,"B2X              ","https://b2xtoken.io/farm"],
       ["Mayo                ", `<a href="mayo"          >Various</a>`,"MAYO             ","https://mayoswap.com"],
       ["Espresso Latte      ", `<a href="espresso_latte">Various</a>`,"ESPRESSO         ","https://espresso.latteswap.finance"],
@@ -404,7 +405,7 @@ const main = async() => {
       ["KittyFarms          ", `<a href="kittyfarms"    >Various</a>`,"KITTY            ","https://kittyfarms.app"],
       ["Moondoge            ", `<a href="moondoge"      >Various</a>`,"MODO             ","https://www.moondoge.com"],
       ["GoldenBunny         ", `<a href="goldenbunny"   >Various</a>`,"GBUNNY           ","https://goldenbunny.finance"],
-      ["Shibance            ", `<a href="shibance"      >Various</a>`,"SHIBANCE         ","https://shibance.com"],
+      ["Shibance            ", `<a href="shibance"      >Various</a>`,"WOOF             ","https://app.shibance.com"],
       ["Hepa                ", `<a href="hepa"          >Various</a>`,"HEPA             ","https://app.hepa.finance"],
       ["Polyfrenchie        ", `<a href="polyfrenchie"  >Various</a>`,"POLYFRENCHIE     ","https://polyfrenchie.com?network=binance"],
       ["Sabertooth          ", `<a href="sabertooth"    >Various</a>`,"SBTS             ","https://sabertoothswap.com"],
@@ -423,7 +424,15 @@ const main = async() => {
       ["DojoFarm            ", `<a href="dojofarm"      >Various</a>`,"DOJO             ","https://bsc.dojofarm.finance"],
       ["BeeFarm             ", `<a href="bee"           >Various</a>`,"BEE              ","https://app.beefarm.finance"],
       ["Lumberjack          ", `<a href="lumberjackdefi">Various</a>`,"WOOD             ","https://lumberjackdefi.com"],
-      ["WorldSwap London    ", `<a href="worldswap_lhr" >Various</a>`,"LHR              ","https://london.worldswap.finance"]
+      ["WorldSwap London    ", `<a href="worldswap_lhr" >Various</a>`,"LHR              ","https://london.worldswap.finance"],
+      ["Noble Finance       ", `<a href="noble"         >Various</a>`,"NOBLE            ","https://app.noblefinance.co"],
+      ["Kong                ", `<a href="kong"          >Various</a>`,"KONG             ","https://kong.jungleswap.cash"],
+      ["Deedee              ", `<a href="deedee"        >Various</a>`,"DEEDEE           ","https://deedee.dexterlab.finance"],
+      ["Scarab              ", `<a href="scarab"        >Various</a>`,"SCARAB           ","https://scarab.farm"],
+      ["Infinity            ", `<a href="infinity"      >Various</a>`,"INF              ","https://infinity.space-defi.com"],
+      ["Halloween           ", `<a href="soul"          >Various</a>`,"SOUL             ","https://halloweenswap.finance"],
+      ["SpacePortDeFi       ", `<a href="spaceport"     >Various</a>`,"STARSHIP         ","https://bsc.spaceportdefi.com"],
+      ["Galena              ", `<a href="galena"        >Various</a>`,"GAL              ","https://www.galenaswap.com"]
     ]}
 
   let table = new AsciiTable().fromJSON(tableData);
