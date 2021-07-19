@@ -9,6 +9,7 @@ const main = async() => {
     "heading":["Pool Provider","LP", "Reward Tokens", "INFO"],
     "rows": [
       ["Pancake             ", `<a href="pancake"       >Various</a>`,"CAKE             ","https://pancakeswap.finance"],
+      ["Bunicorn            ", `<a href="bunicorn"      >Various</a>`,"BUNI             ","https://bunicorn.exchange"],
       ["Apeswap             ", `<a href="apeswap"       >Various</a>`,"BANANA           ","https://apeswap.finance"],
       ["Autofarm            ", `<a href="autofarm"      >Various</a>`,"AUTOFARM         ","https://autofarm.network"],
       ["Bake                ", `<a href="bake"          >Various</a>`,"BAKE             ","https://www.bakeryswap.org"],

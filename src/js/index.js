@@ -19,8 +19,11 @@ import "core-js/stable";
 import "regenerator-runtime/runtime";
 import WalletConnectProvider from "@walletconnect/web3-provider";
 import Web3Modal from "web3modal";
+const { request, gql } = require("graphql-request")
 
 window.$ = $;
+window.request = request;
+window.gql = gql;
 window.ethers = ethers;
 window.ethcall = ethcall;
 window.asciichart = require("asciichart");

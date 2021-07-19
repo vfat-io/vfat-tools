@@ -9,6 +9,7 @@ const main = async() => {
     "heading":["Pool Provider","LP", "Reward Tokens", "INFO"],
     "rows": [
       ["1inch                        ",`<a href="../1inch/"             >Various</a>`,"1INCH              ","https://1inch.exchange/#/dao/farming"],
+      ["Bunicorn                     ",`<a href="../bsc/bunicorn/"          >Various</a>`,"BUNI               ","https://bunicorn.exchange"],
       ["Alpha DEX                    ",`<a href="../alphadex/"          >Various</a>`,"DEX                ","https://kitten.finance"],
       ["Alphr.Finance                ",`<a href="../alphr/"             >Various</a>`,"ALPHR              ","https://alphr.finance"],
       ["Armor                        ",`<a href="../armor/"             >Various</a>`,"ARMOR              ","https://armor.fi"],
