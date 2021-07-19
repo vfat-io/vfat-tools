@@ -138,7 +138,7 @@ const main = async() => {
         "Chad",
         `<a href='chad'>Various</a>`,
         "CHAD",
-        "N/A"
+        "https://www.chadfinance.io"
       ],
       [
         "Guru",
@@ -217,6 +217,12 @@ const main = async() => {
         `<a href='ryuinu'>Various</a>`,
         "RYUINU",
         "https://ftm.ryuinu.finance"
+      ],
+      [
+        "Knight",
+        `<a href='knight'>Various</a>`,
+        "KF",
+        "https://www.knight-finance.xyz"
       ]
     ]
   }
