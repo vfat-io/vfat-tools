@@ -32,7 +32,7 @@ async function main() {
 
     // changed
     await loadRyuInuChefContract(App, tokens, prices, RYUINU_MASTERCHEF, RYUINU_MASTERCHEF_ADDR, RYUINU_MASTERCHEF_ABI, rewardTokenTicker,
-        "farmToken", null, rewardsPerWeek, "pendingFarmToken");
+        "farmToken", null, rewardsPerWeek, "pendingFarmToken", [1]);
 
     hideLoading();
 }
