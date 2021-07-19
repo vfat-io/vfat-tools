@@ -431,7 +431,8 @@ const main = async() => {
       ["Infinity            ", `<a href="infinity"      >Various</a>`,"INF              ","https://infinity.space-defi.com"],
       ["Halloween           ", `<a href="soul"          >Various</a>`,"SOUL             ","https://halloweenswap.finance"],
       ["SpacePortDeFi       ", `<a href="spaceport"     >Various</a>`,"STARSHIP         ","https://bsc.spaceportdefi.com"],
-      ["Galena              ", `<a href="galena"        >Various</a>`,"GAL              ","https://www.galenaswap.com"]
+      ["Galena              ", `<a href="galena"        >Various</a>`,"GAL              ","https://www.galenaswap.com"],
+      ["SmokingCucumber     ", `<a href="smokingcucumber">Various</a>`,"CCB             ","https://www.smokingcucumber.finance"]
     ]}
 
   let table = new AsciiTable().fromJSON(tableData);
