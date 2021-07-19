@@ -1954,7 +1954,11 @@ function getBalancerPrices(tokens, prices, pool)
       staked_tvl : staked_tvl,
       stakeTokenTicker : stakeTokenTicker,
       print_price() {
-        const poolUrl = `http://pools.balancer.exchange/#/pool/${pool.address}`;
+        let poolUrl = `http://pools.balancer.exchange/#/pool/${pool.address}`;
+        if (pool.name === "Buni Pool Token" && pool.symbol === 'BPT') {
+            poolUrl = `https://www.bunicorn.exchange/#/liquidity/tokens/detail/${pool.address}`;
+        }
+
         _print(`<a href='${poolUrl}' target='_blank'>${stakeTokenTicker}</a> BPT Price: $${formatMoney(price)} TVL: $${formatMoney(tvl)}`);
         poolPrices.forEach((p, i) =>
           _print(`${poolTokens[i].symbol} Price: $${formatMoney(p)}`)
