@@ -456,7 +456,7 @@ const main = async () => {
       ['Cremepie            ', `<a href="cremepie"        >Various</a>`, 'CPIE         ', 'https://cremepieswap.finance'],
       ['KUNAIFarm           ', `<a href="kunaifarm"       >Various</a>`, 'KUNAI        ', 'https://kunai.dojofarm.finance'],
       ['PolyFalcon          ', `<a href="polyfalcon"      >Various</a>`, 'FALCON       ', 'https://polyfalcon.com'],
-      ['BCharity            ', `<a href="bcharity"        >Various</a>`, 'GIVE         ', 'https://bcharityecssen.netlify.app']
+      ['BCharity            ', `<a href="bcharity"        >Various</a>`, 'GIVE         ', 'https://bcharity.net/']
     ],
   }
 
