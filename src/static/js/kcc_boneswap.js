@@ -25,7 +25,7 @@ async function main() {
      _print(`Rewards start at block ${startBlock}\n`);
    }
    // KCC block time is 3 seconds not 2.1s as Matic
-   rewardsPerWeek = await BONESWAP_MC.BONE_PER_BLOCK() / 1e18 * 604800 * multiplier / 3;
+   rewardsPerWeek = await BONESWAP_MC.BONE_PER_BLOCK() / 1e18 * 604800 * multiplier / 2.1;
 
     const tokens = {};
     const prices = await getKccPrices();
