@@ -11,7 +11,7 @@ async function main() {
     _print(`Initialized ${App.YOUR_ADDRESS}\n`);
     _print("Reading smart contracts...\n");
 
-   const ASTRO_CHEF_ADDR = "0x4b37545712303738AC518dd9717A47F918565894";
+   const ASTRO_CHEF_ADDR = "0x91bf510087030741CdF83aC0cec3624199241a93";
    const rewardTokenTicker = "ASTRO";
    const ASTRO_CHEF = new ethers.Contract(ASTRO_CHEF_ADDR, ASTRO_CHEF_ABI, App.provider);
 
