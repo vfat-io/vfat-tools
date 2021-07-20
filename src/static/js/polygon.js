@@ -21,7 +21,7 @@ const main = async () => {
         'https://swap.cometh.io/#/stake',
       ],
       ['Dark                ', `<a href="dark"            >Various</a>`, 'DB           ', 'https://www.dark.build'],
-      ['Smartdex            ', `<a href="smartdex"        >Various</a>`, 'NIOX         ', 'https://swap.smartdex.app'],
+      ['Smartdex *          ', `<a href="smartdex"        >Various</a>`, 'NIOX         ', 'https://swap.smartdex.app'],
       ['Elk                 ', `<a href="elk"             >Various</a>`, 'ELK          ', 'https://app.elk.finance'],
       ['Polywhale           ', `<a href="polywhale"       >Various</a>`, 'KRILL        ', 'https://polywhale.finance'],
       ['Aave                ', `<a href="aave"            >Various</a>`, 'MATIC        ', 'https://aave.com'],
@@ -455,7 +455,8 @@ const main = async () => {
       ['Copycat2            ', `<a href="copycat2"        >Various</a>`, 'FISH2        ', 'https://copycat2.farm'],
       ['Cremepie            ', `<a href="cremepie"        >Various</a>`, 'CPIE         ', 'https://cremepieswap.finance'],
       ['KUNAIFarm           ', `<a href="kunaifarm"       >Various</a>`, 'KUNAI        ', 'https://kunai.dojofarm.finance'],
-      ['PolyFalcon          ', `<a href="polyfalcon"      >Various</a>`, 'FALCON       ', 'https://polyfalcon.com']
+      ['PolyFalcon          ', `<a href="polyfalcon"      >Various</a>`, 'FALCON       ', 'https://polyfalcon.com'],
+      ['BCharity            ', `<a href="bcharity"        >Various</a>`, 'GIVE         ', 'https://bcharityecssen.netlify.app']
     ],
   }
 
