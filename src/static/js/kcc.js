@@ -13,7 +13,8 @@ const main = async() => {
       [ "KuCat",      `<a href="kucat"        >Various</a>`,     "CAT",       "https://kucat.finance" ],
       [ "KuBeans",    `<a href="kubeans"      >Various</a>`,     "KUBEANS",   "https://kubeans.club" ],
       [ "KandySwap",  `<a href="kandyswap"    >Various</a>`,     "KANDY",     "https://www.kandyswap.com" ],
-      [ "Shibance",   `<a href="shibance"     >Various</a>`,     "KWOOF",     "https://kcc.shibance.com" ]
+      [ "Shibance",   `<a href="shibance"     >Various</a>`,     "KWOOF",     "https://kcc.shibance.com" ],
+      [ "BoneSwap",   `<a href="boneswap"     >Various</a>`,     "BONE",      "https://farm-kcc.boneswap.finance" ]
     ]
   }
 
