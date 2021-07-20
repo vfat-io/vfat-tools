@@ -152,3 +152,35 @@ async function printSynthetixPool(App, info, chain="eth", customURLs) {
         apr : yearlyAPR
     }
 }
+
+async function getBscBalancerPool(App, pool, poolAddress, stakingAddress, tokens, smartToken) {
+    let decimals = await pool.decimals();
+    let symbol = await pool.symbol();
+    let name = await pool.name();
+    let totalSupply = await pool.totalSupply();
+    let staked = await pool.balanceOf(stakingAddress);
+    const unstaked = await pool.balanceOf(App.YOUR_ADDRESS);
+    let poolTokens = [];
+    for (const t of tokens) {
+        poolTokens.push({ address: t, weight: await pool.getNormalizedWeight(t) / 1e18, balance: await pool.getBalance(t) })
+    };
+    if (smartToken) {
+        totalSupply = await smartToken.totalSupply();
+        staked = await smartToken.balanceOf(stakingAddress);
+        unstaked = await smartToken.balanceOf(App.YOUR_ADDRESS);
+    }
+    return {
+        symbol,
+        name,
+        address: poolAddress,
+        poolTokens, //address, weight and balance
+        totalSupply: totalSupply / 10 ** decimals,
+        buniPoolTokens: poolTokens,
+        stakingAddress,
+        staked: staked / 10 ** decimals,
+        decimals: decimals,
+        unstaked: unstaked / 10 ** decimals,
+        contract: pool,
+        tokens
+    };
+}
