@@ -1,0 +1,15 @@
+<div id="pool-details-modal" class="modal">
+
+    <div class="modal-content" id="pool-details">
+        <a href="#" class="modal-close" id="close-pool-details-modal">Close</a><br/>
+        <pre id="pool-details-content"></pre>
+    </div>
+</div>
+<script>
+    document
+        .getElementById("close-pool-details-modal")
+        .onclick = () => {
+            document.getElementById("pool-details-modal").style.display = 'none'
+            document.getElementById("pool-details-content").innerHTML = ''
+        }
+</script>

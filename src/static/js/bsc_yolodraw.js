@@ -1,6 +1,5 @@
 $(function() {
-    consoleInit()
-    start(main)
+  consoleInit(main)
 })
 
 const YOLO_CHEF_ABI = [

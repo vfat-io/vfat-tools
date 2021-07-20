@@ -1,6 +1,5 @@
 $(function() {
-    consoleInit();
-    start(main);
+    consoleInit(main)
 });
 
 
@@ -76,7 +75,7 @@ async function main() {
     const bonds_left = await treasuryContract.epochSupplyContractionLeft();
     const maxDebtRatioPercent = await treasuryContract.maxDeptRatioPercent();
     const bonds_available_for_purchase = Math.round((BTD_totalSupply * maxDebtRatioPercent /10000) - BTB_totalSupply);
-    
+
     _print(`TREASURY INFORMATION`)
     _print(`Epoch duration = ${period} hours`)
     _print(`Fixed expansion during bootstrap of ${bootstrap_epochs} epochs`)
@@ -85,7 +84,7 @@ async function main() {
     _print('')
     _print('BONDS')
     _print(`Bonds left this epoch: ${parseFloat(bonds_left/1e18).toFixed(0)} (without taking max debt ratio into account)`)
-    _print(`Current debt ratio: ${parseFloat(BTB_totalSupply*100/BTD_totalSupply).toFixed(2)}% (Max debt ratio: ${parseFloat(maxDebtRatioPercent/100).toFixed(2)}%)`)    
+    _print(`Current debt ratio: ${parseFloat(BTB_totalSupply*100/BTD_totalSupply).toFixed(2)}% (Max debt ratio: ${parseFloat(maxDebtRatioPercent/100).toFixed(2)}%)`)
     _print(`Bonds available for purchase this epoch: ${parseFloat(bonds_available_for_purchase/1e18).toFixed(0)}`)
     _print('-------------------------------------------------')
     _print('')
@@ -100,7 +99,7 @@ async function main() {
         const stakingAddress = params[rewardToken].address
         const stakingAbi = params[rewardToken].abi
         const poolId = Contracts.BATDOLLAR[key].index
-        
+
         const STAKING_POOL = new ethers.Contract(Contracts.BATDOLLAR[key].address, Contracts.BATDOLLAR[key].abi, App.provider.getSigner());
         const total_supply = await STAKING_POOL.totalCirculating()/1e18;
         const blocks_per_week = await STAKING_POOL.BLOCKS_PER_WEEK();
@@ -113,7 +112,7 @@ async function main() {
         var userAmount = userInfo[0] / 1e18;
         var userRewardDebt = userInfo[1] / 1e18;
         var pendingReward = (userAmount * accSharePerShare/1e18) - userRewardDebt;
-        
+
         const stakedTokenKey = Contracts.BATDOLLAR[key].deposit
         const stakedTokenAddress = Contracts.BATDOLLAR[stakedTokenKey].address
         const stakedToken = new ethers.Contract(stakedTokenAddress, Contracts.BATDOLLAR[stakedTokenKey].abi, App.provider.getSigner())
@@ -181,14 +180,14 @@ async function main() {
         _print(`Total shares distributed per week = ${parseFloat(share_per_year/52).toFixed(0)} ($${formatMoney(share_per_year/52*BTS_price)})`)
         _print(`Total shares distributed per day = ${parseFloat(share_per_year/365).toFixed(0)} ($${formatMoney(share_per_year/365*BTS_price)})`)
         _print(`Total shares distributed per epoch = ${parseFloat(share_per_year/365/(24/period)).toFixed(0)} ($${formatMoney(share_per_year/365/(24/period)*BTS_price)})`)
-*/        
+*/
         let epochRewardsPerLP = share_per_year/365/4/(24/period)/total_supply;
         let yourRewardPerEpoch = epochRewardsPerLP * userStaked;
-        
+
         let apr = epochRewardsPerLP*(24/period)*365*BTS_price *100 / tokenPrice;
         table = `<table style="width:800px"><thead><th style="width:30px;text-align:left"></th><th style="width:20px;text-align:left">Epoch (${period} hours)</th><th style="width:20px;text-align:left">Day</th><th style="width:20px;text-align:left">Week</th><th style="width:20px;text-align:left">Month</th><th style="width:20px;text-align:left">Year</th></thead>`
         +`<tbody>`
-        
+
         +`<tr><td>APR</td>`
         +`<td>${parseFloat(apr/365/(24/period)).toFixed(2)}%</td>`
         +`<td>${parseFloat(apr/365).toFixed(2)}%</td>`
@@ -196,7 +195,7 @@ async function main() {
         +`<td>${parseFloat(apr/12).toFixed(2)}%</td>`
         +`<td>${parseFloat(apr).toFixed(2)}%</td>`
         +`</tr>`
-        
+
         +`<tr><td>BTS/LP</td>`
         +`<td>${parseFloat(epochRewardsPerLP).toFixed(2)} BTS/LP</td>`
         +`<td>${parseFloat(epochRewardsPerLP*(24/period)).toFixed(2)} BTS/LP</td>`
@@ -218,8 +217,8 @@ async function main() {
 
         _print(`You have staked <b>${parseFloat(userStaked).toFixed(4)} ${stakedTokenKey} ($${formatMoney(userStakedUsd)})</b> = ${parseFloat(tokenPerLP*userStaked).toFixed(6)} ${Contracts.BATDOLLAR[key].token0} ($${parseFloat(tokenPerLP*userStaked*token_price).toFixed(5)}) + ${parseFloat(userStaked*busdPerLP).toFixed(4)} BUSD ($${parseFloat(userStaked*busdPerLP*busd_price).toFixed(5)})`)
         _print(`You can claim <b>${pendingHarvest.toFixed(4)} ${rewardToken} ($${formatMoney(pendingHarvest*BTS_price)})</b>`)
-        
-       
+
+
         _print('')
         _print_link(`Approve ${parseFloat(stakedTokenBalance / 10 ** decimal).toFixed(4)}  ${Contracts.BATDOLLAR[stakingTokenTicker].symbol}`, approveFunc)
         _print_link(`Stake ${parseFloat(stakedTokenBalance / 10 ** decimal).toFixed(4)}  ${Contracts.BATDOLLAR[stakingTokenTicker].symbol}`, stakeFunc)
@@ -275,10 +274,10 @@ async function main() {
     _print(`BOARD ROOM INFORMATION`)
     _print(`There are ${parseFloat(boardRoomTotalSupply).toFixed(0)} BTS staked in the boardroom`);
     _print(`(Total Value Locked: $${formatMoney(boardRoomTotalSupply * BTS_price)})`)
-    
+
     table = `<table style="width:800px"><thead><th style="width:30px;text-align:left"></th><th style="width:20px;text-align:left">Epoch (${period} hours)</th><th style="width:20px;text-align:left">Day</th><th style="width:20px;text-align:left">Week</th><th style="width:20px;text-align:left">Month</th><th style="width:20px;text-align:left">Year</th></thead>`
     +`<tbody>`
-    
+
     +`<tr><td>APR</td>`
     +`<td>${parseFloat(apr/365/(24/period)).toFixed(2)}%</td>`
     +`<td>${parseFloat(apr/365).toFixed(2)}%</td>`
@@ -286,7 +285,7 @@ async function main() {
     +`<td>${parseFloat(apr/12).toFixed(2)}%</td>`
     +`<td>${parseFloat(apr).toFixed(2)}%</td>`
     +`</tr>`
-    
+
     +`<tr><td>BTD/BTS</td>`
     +`<td>${parseFloat(epochRewardsPerShare).toFixed(2)} BTD/BTS</td>`
     +`<td>${parseFloat(epochRewardsPerShare*(24/period)).toFixed(2)} BTD/BTS</td>`
@@ -315,7 +314,7 @@ async function main() {
        _print(`You have to wait ${6-epochs_since_last_action} more epochs to be able to unstake from boardroom!`)
     }
     _print('')
-    
+
     _print_link(`Approve ${parseFloat(BTS_balance).toFixed(2)} BTS`, approveFunc)
     _print_link(`Stake ${parseFloat(BTS_balance).toFixed(2)} BTS`, stakeFunc)
     _print_link(`Unstake ${parseFloat(inBoardRoom).toFixed(2)}  BTS`, unstakeFunc)
@@ -336,7 +335,7 @@ const getCoinGeckoPrice = async function(tokenAddress) {
     let json = await raw.text();
     return JSON.parse(json)[0]['usd']
 }
-   
+
 const getTokenInfo = async (symbol) => {
     let raw = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=' + symbol + '&vs_currencies=usd');
     let json = await raw.text();

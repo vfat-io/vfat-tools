@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include(`${partials}/head`); -%>
+
+<body>
+<%- include(`${partials}/header_main`); -%>
+<pre id="log">
+***************************** POLYGON NETWORK ***************************************
+
+
+*******************************************************************************
+          |                   |                  |                     |
+ _________|________________.=""_;=.______________|_____________________|_______
+|                   |  ,-"_,=""     `"=.|                  |
+|___________________|__"=._o`"-._        `"=.______________|___________________
+          |                `"=._o`"=._      _`"=._                     |
+ _________|_____________________:=._o "=._."_.-="'"=.__________________|_______
+|                   |    __.--" , ; `"=._o." ,-"""-._ ".   |
+|___________________|_._"  ,. .` ` `` ,  `"-._"-._   ". '__|___________________
+          |           |o`"=._` , "` `; .". ,  "-._"-._; ;              |
+ _________|___________| ;`-.o`"=._; ." ` '`."\` . "-._ /_______________|_______
+|                   | |o;    `"-.o`"=._``  '` " ,__.--o;   |
+|___________________|_| ;     (#) `-.o `"=.`_.--"_o.-; ;___|___________________
+____/______/______/___|o;._    "      `".o|o_.--"    ;o;____/______/______/____
+/______/______/______/_"=._o--._        ; | ;        ; ;/______/______/______/_
+____/______/______/______/__"=._o--._   ;o|o;     _._;o;____/______/______/____
+/______/______/______/______/____"=._o._; | ;_.--"o.--"_/______/______/______/_
+____/______/______/______/______/_____"=.o|o_.--""___/______/______/______/____
+/______/______/______/______/______/______/______/______/______/______/______/_
+*******************************************************************************
+
+WELCOME TO POLY TREASURE
+
+Welcome to the farm where you can farm TRZ tokens which you can use to claim ETH 
+(claimable by swapping at least 1 TRZ token for 1 ETH) or BTC (claimable by 
+swapping at least 10 TRZ tokens for 1 BTC). 
+
+Completely fair launch. The developer has no pre-mined tokens, small liquidity is 
+created and send to the dead address and none of the contracts have an owner  
+(and thus are completely immutable). 
+
+Disclaimer: ETH and BTC are claimable only when the treasury is filled and when you have enough tokens to claim. The treasury 
+will be filled only with the deposit fees. Therefore, a larger TVL means a larger
+treasury.
+
+LINKS:
+  * No website
+  * <a href="https://t.me/polytreasure" target="_blank" rel="noopener noreferrer">Telegram</a>
+  * <a href="https://app.sushi.com/swap?inputCurrency=0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174&outputCurrency=0x13436a3c5c2574C8145222260B0ed4C2Da31f760" target="_blank" rel="noopener noreferrer">Buy TRZ</a>
+  * <a href="https://app.sushi.com/add/0x13436a3c5c2574c8145222260b0ed4c2da31f760/0x2791bca1f2de4661ed88a30c99a7a9449aa84174" target="_blank" rel="noopener noreferrer">Add Liquidity</a>
+
+TOKEN:
+  * Token: <a href="https://polygonscan.com/address/0x13436a3c5c2574C8145222260B0ed4C2Da31f760" target="_blank" rel="noopener noreferrer">0x13436a3c5c2574C8145222260B0ed4C2Da31f760</a>
+  * Pre-mined 1 token => <a href="https://polygonscan.com/tx/0x51a5a1ef8e4b13c545b4f850135c9bff3a01069c9eca96982d9bbce62a24b0fc" target="_blank" rel="noopener noreferrer">Added liquidity</a>, <a href="https://polygonscan.com/tx/0x1850b13e20c7369b91641da78f8b3c308f77a97792e4494063ec37a1ee19c0c5" target="_blank" rel="noopener noreferrer">Burned</a> and <a href="https://polygonscan.com/tx/0xfc5de399e73613d4ed8278eb2a8fb8e349a4065f9ec86c3b62c463255c25acbf" target="_blank" rel="noopener noreferrer">Burned</a>
+  * No developer tokens
+  * No transfer tax
+  * No transfer limit
+  * Owned by MasterChef
+  * No changes allowed
+  * Burned when claiming rewards from treasury
+  * Slow minting. Only ~4 tokens per day are minted
+
+TREASURY:
+  * Treasury: <a href="https://polygonscan.com/address/0xEd8223dd1148C9fD3867d968696706cfa9376643" target="_blank" rel="noopener noreferrer">0xEd8223dd1148C9fD3867d968696706cfa9376643</a>
+  * No owner
+  * No changes allowed
+  * Claim 1 ETH for 1 TRZ token
+  * Claim 1 BTC for 10 TRZ tokens
+  
+FARMING:
+  * Masterchef: <a href="https://polygonscan.com/address/0x8Ac02E8E228e91404F91c4951BE7864653d503Ac" target="_blank" rel="noopener noreferrer">0x8Ac02E8E228e91404F91c4951BE7864653d503Ac</a>
+  * Farming Starts on Block:  17000000 — <a href="https://polygonscan.com/block/countdown/17000000" target="_blank" rel="noopener noreferrer">https://polygonscan.com/block/countdown/17000000</a>
+  * Farming Ends on Block:    30000000 — <a href="https://polygonscan.com/block/countdown/30000000" target="_blank" rel="noopener noreferrer">https://polygonscan.com/block/countdown/30000000</a>
+  * 1/10th of rewards minted to developer
+  * No owner
+  * No changes allowed
+
+DEPOSIT FEES:
+  * 0% On LP Farm
+  * 1% on Native Pool
+  * 3% On Non-Native Pools
+  * Partially used to fill the treasury
+
+
+*************************************************************************************
+
+</pre>
+<div class="loader--1"></div>
+<%- include(`${partials}/scripts`, {scriptname: 'matic_polytreasure'}); -%>
+</body>
+</html>

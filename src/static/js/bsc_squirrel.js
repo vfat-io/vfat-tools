@@ -1,7 +1,6 @@
 
 $(function() {
-    consoleInit();
-    start(main);
+    consoleInit(main)
   });
 
   const FARM_ABI = [{"constant":false,"inputs":[{"name":"amount","type":"uint256"}],"name":"cashout","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[],"name":"claimYield","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"amount","type":"uint256"}],"name":"deposit","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[],"name":"depositYield","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"amount","type":"uint256"}],"name":"setWeeksRewards","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"amount","type":"uint256"},{"name":"minNuts","type":"uint256"},{"name":"percentBurnt","type":"uint256"}],"name":"sweepNuts","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"inputs":[],"payable":false,"stateMutability":"nonpayable","type":"constructor"},{"constant":false,"inputs":[{"name":"newGov","type":"address"}],"name":"updateGovenance","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"amount","type":"uint256"}],"name":"withdrawAfterSystemClosed","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"","type":"address"}],"name":"balances","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"farmer","type":"address"}],"name":"dividendsOf","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"lastDripTime","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"farmer","type":"address"}],"name":"nutsDividendsOf","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"","type":"address"}],"name":"nutsPayoutsTo","outputs":[{"name":"","type":"int256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"nutsPerEpoch","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"nutsProfitPerShare","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"payoutEndTime","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"","type":"address"}],"name":"payoutsTo","outputs":[{"name":"","type":"int256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"pendingNutsAlloc","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"profitPerShare","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"totalDeposits","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"}];
@@ -27,7 +26,11 @@ async function main() {
       const tokens = {};
       tokens["0x8893D5fA71389673C5c4b9b3cb4EE1ba71207556"] = await getBscToken(App, "0x8893D5fA71389673C5c4b9b3cb4EE1ba71207556", "0x03d9d14367127d477e6f340c59e57ab088220187");
       tokens["0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c"] = await getBscToken(App, "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c", "0x03d9d14367127d477e6f340c59e57ab088220187");
-      tokens["0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56"] = await getBscToken(App, "0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56", "0x4b18231508a75645cd07faa0f9025808a0b9799a");
+      tokens["0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56"] = await getBscToken(App, "0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56", "0x7a5947e31739808006b4660b65f7414ad9d37d9c");
+      tokens["0x1AF3F329e8BE154074D8769D1FFa4eE058B1DBc3"] = await getBscToken(App, "0x1AF3F329e8BE154074D8769D1FFa4eE058B1DBc3", "0xcED829cB73d21B34a0AD4687C3Cd7D398172DBD8");
+      tokens["0xC9849E6fdB743d08fAeE3E34dd2D1bc69EA11a51"] = await getBscToken(App, "0xC9849E6fdB743d08fAeE3E34dd2D1bc69EA11a51", "0x7Bb89460599Dbf32ee3Aa50798BBcEae2A5F7f6a");
+      tokens["0xc5A49b4CBe004b6FD55B30Ba1dE6AC360FF9765d"] = await getBscToken(App, "0xc5A49b4CBe004b6FD55B30Ba1dE6AC360FF9765d", "0xEDaca4d6E256fc4b983aDF20585558044477abFa");
+      tokens["0xA7f552078dcC247C2684336020c03648500C6d9F"] = await getBscToken(App, "0xA7f552078dcC247C2684336020c03648500C6d9F", "0x943b7c4d2088052b1ecf8cff1ff137f575222538");
 
       // NUTS-BNB APE LP FARM
       const apeLpPool = await getBscToken(App, "0x789fd04BFbC64169104466Ee0d48716E0452Bcf6", "0xa998b89e50dfed569ac41dbac5f2e4edb2567251");
@@ -38,42 +41,29 @@ async function main() {
       const NUTS_APE_LP_POOL = new ethers.Contract("0xa998b89e50dfed569ac41dbac5f2e4edb2567251", FARM_ABI, signer);
       const userApeStaked = await NUTS_APE_LP_POOL.balances(App.YOUR_ADDRESS) / 1e18;
       const nutsPrice = prices["0x8893D5fA71389673C5c4b9b3cb4EE1ba71207556"].usd;
-      printAPR("NUTS", nutsPrice, 11000, apeLpPrices.stakeTokenTicker, apeLpPrices.staked_tvl, userApeStaked, apeLpPrices.price);
+      printAPR("NUTS", nutsPrice, 6000, apeLpPrices.stakeTokenTicker, apeLpPrices.staked_tvl, userApeStaked, apeLpPrices.price);
 
       const NUTS_APE_LP_TOKEN = new ethers.Contract("0x789fd04BFbC64169104466Ee0d48716E0452Bcf6", TOKEN_ABI, signer);
       printFarmActions(App, NUTS_APE_LP_POOL, NUTS_APE_LP_TOKEN, userApeStaked, apeLpPrices.stakeTokenTicker, nutsPrice, false, false);
 
       // NUTS-BUSD LP FARM
-      const busdLpPool = await getBscToken(App, "0xaff9731Ec354Fc414276C4921475FF09A85AD873", "0x4b18231508a75645cd07faa0f9025808a0b9799a");
+      const busdLpPool = await getBscToken(App, "0x1311BA3e82f31f7bdaEaC41C62b3E04f836e4028", "0x7a5947e31739808006b4660b65f7414ad9d37d9c");
       const busdLpPrices = await getPoolPrices(tokens, prices, busdLpPool, "bsc");
       busdLpPrices.print_price();
 
-      const NUTS_BUSD_LP_POOL = new ethers.Contract("0x4b18231508a75645cd07faa0f9025808a0b9799a", FARM_ABI, signer);
+      const NUTS_BUSD_LP_POOL = new ethers.Contract("0x7a5947e31739808006b4660b65f7414ad9d37d9c", FARM_ABI, signer);
       const userBusdStaked = await NUTS_BUSD_LP_POOL.balances(App.YOUR_ADDRESS) / 1e18;
-      printAPR("NUTS", nutsPrice, 9000, busdLpPrices.stakeTokenTicker, busdLpPrices.staked_tvl, userBusdStaked, busdLpPrices.price);
+      printAPR("NUTS", nutsPrice, 6000, busdLpPrices.stakeTokenTicker, busdLpPrices.staked_tvl, userBusdStaked, busdLpPrices.price);
 
-      const NUTS_BUSD_LP_TOKEN = new ethers.Contract("0xaff9731Ec354Fc414276C4921475FF09A85AD873", TOKEN_ABI, signer);
+      const NUTS_BUSD_LP_TOKEN = new ethers.Contract("0x1311BA3e82f31f7bdaEaC41C62b3E04f836e4028", TOKEN_ABI, signer);
       printFarmActions(App, NUTS_BUSD_LP_POOL, NUTS_BUSD_LP_TOKEN, userBusdStaked, busdLpPrices.stakeTokenTicker, nutsPrice, false, false);
-
-
-      // NUTS-BNB LP FARM
-      const lpPool = await getBscToken(App, "0x034c9e6b08c09a6144e0d0e52161338fb105e656", "0x03d9d14367127d477e6f340c59e57ab088220187");
-      const lpPrices = await getPoolPrices(tokens, prices, lpPool, "bsc");
-      lpPrices.print_price();
-
-      const NUTS_LP_POOL = new ethers.Contract("0x03d9d14367127d477e6f340c59e57ab088220187", FARM_ABI, signer);
-      const userStaked = await NUTS_LP_POOL.balances(App.YOUR_ADDRESS) / 1e18;
-      printAPR("NUTS", nutsPrice, 0, lpPrices.stakeTokenTicker, lpPrices.staked_tvl, userStaked, lpPrices.price);
-
-      const NUTS_LP_TOKEN = new ethers.Contract("0x034c9e6b08c09a6144e0d0e52161338fb105e656", TOKEN_ABI, signer);
-      printFarmActions(App, NUTS_LP_POOL, NUTS_LP_TOKEN, userStaked, lpPrices.stakeTokenTicker, nutsPrice, false, false);
 
 
       // NUTS FARM
       const nutsPool = await getBscToken(App, "0x8893D5fA71389673C5c4b9b3cb4EE1ba71207556", "0x45c12738c089224f66cd7a1c85301d79c45e2ded");
       const nutsPrices = await getPoolPrices(tokens, prices, nutsPool, "bsc");
       nutsPrices.print_price();
-      _print(`Estimated APR: 100% (varies from TVL & NUTS price)`)
+      _print(`Estimated APR: 200% (varies from TVL & NUTS price)`)
 
       const NUTS_POOL = new ethers.Contract("0x45c12738c089224f66cd7a1c85301d79c45e2ded", FARM_ABI, signer);
       const userNutsStaked = await NUTS_POOL.balances(App.YOUR_ADDRESS) / 1e18;
@@ -86,19 +76,19 @@ async function main() {
 
 
       // OTHER FARMS
-      await outputVault(App, tokens, prices, signer, nutsPrice, "0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82", "0xdfd040cd6b1d7f15cad3094e3b49dc542fea77c1", "0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82", 5000, 90, "CAKE", true);
-      await outputVault(App, tokens, prices, signer, nutsPrice, "0x603c7f932ED1fc6575303D8Fb018fDCBb0f39a95", "0x31fe02b9ea5501bfe8a872e205dfe6b6a79435ed", "0xF397A390f008dbfC0fE995d9754acd8d137AA8dd", 4000, 180, "BANANA", true);
-      await outputVault(App, tokens, prices, signer, nutsPrice, "0x7979F6C54ebA05E18Ded44C4F986F49a5De551c2", "0x55d1905c72365dcef69f9a7c890a26a2e3fc4c41", "0x25fd42D82d5c238ee7AA277261AA6CA5BDFE5CD4", 3000, 120, "KEBAB", true);
-      await outputVault(App, tokens, prices, signer, nutsPrice, "0xF952Fc3ca7325Cc27D15885d37117676d25BfdA6", "0x21573eee28112c05b355807baf5138ca59dfa424", "0xf952fc3ca7325cc27d15885d37117676d25bfda6", 3000, 120, "EGG", true);
+      await outputVault(App, tokens, prices, signer, nutsPrice, "0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82", "0xdfd040cd6b1d7f15cad3094e3b49dc542fea77c1", "0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82", 3500, 80, "CAKE", true);
+      await outputVault(App, tokens, prices, signer, nutsPrice, "0x603c7f932ED1fc6575303D8Fb018fDCBb0f39a95", "0x31fe02b9ea5501bfe8a872e205dfe6b6a79435ed", "0xF397A390f008dbfC0fE995d9754acd8d137AA8dd", 3000, 140, "BANANA", true);
+      await outputVault(App, tokens, prices, signer, nutsPrice, "0x7979F6C54ebA05E18Ded44C4F986F49a5De551c2", "0x55d1905c72365dcef69f9a7c890a26a2e3fc4c41", "0x25fd42D82d5c238ee7AA277261AA6CA5BDFE5CD4", 1000, 120, "KEBAB", true);
+      await outputVault(App, tokens, prices, signer, nutsPrice, "0xF952Fc3ca7325Cc27D15885d37117676d25BfdA6", "0x21573eee28112c05b355807baf5138ca59dfa424", "0xf952fc3ca7325cc27d15885d37117676d25bfda6", 1000, 120, "EGG", true);
+      await outputVault(App, tokens, prices, signer, nutsPrice, "0xc5A49b4CBe004b6FD55B30Ba1dE6AC360FF9765d", "0xEDaca4d6E256fc4b983aDF20585558044477abFa", "0xc5A49b4CBe004b6FD55B30Ba1dE6AC360FF9765d", 2000, 200, "SWAMP", true);
+      await outputVault(App, tokens, prices, signer, nutsPrice, "0xA7f552078dcC247C2684336020c03648500C6d9F", "0x943b7c4d2088052b1ecf8cff1ff137f575222538", "0xA7f552078dcC247C2684336020c03648500C6d9F", 1500, 100, "EPS", true);
 
-      await outputFarm(App, tokens, prices, signer, nutsPrice, "0xa184088a740c695E156F91f5cC086a06bb78b827", "0x968c84d90bd4e1307333c7f98074d1b7caac497b", "0x4d0228EBEB39f6d2f29bA528e2d15Fc9121Ead56", 3000, 200, "AUTO", false);
-      await outputFarm(App, tokens, prices, signer, nutsPrice, "0xE02dF9e3e622DeBdD69fb838bB799E3F168902c5", "0xa9c72f556c1059500cf514ed10955bceaf227c4c", "0xc2Eed0F5a0dc28cfa895084bC0a9B8B8279aE492", 3000, 40, "BAKE", false);
+      await outputFarm(App, tokens, prices, signer, nutsPrice, "0xa184088a740c695E156F91f5cC086a06bb78b827", "0x968c84d90bd4e1307333c7f98074d1b7caac497b", "0x4d0228EBEB39f6d2f29bA528e2d15Fc9121Ead56", 2500, 200, "AUTO", false);
+      await outputFarm(App, tokens, prices, signer, nutsPrice, "0xE02dF9e3e622DeBdD69fb838bB799E3F168902c5", "0xa9c72f556c1059500cf514ed10955bceaf227c4c", "0xc2Eed0F5a0dc28cfa895084bC0a9B8B8279aE492", 1000, 40, "BAKE", false);
+      await outputFarm(App, tokens, prices, signer, nutsPrice, "0xa9c41a46a6b3531d28d5c32f6633dd2ff05dfb90", "0x0ed3434f7d83f3217a52ff8185cf844e6a686609", "0xcED829cB73d21B34a0AD4687C3Cd7D398172DBD8", 2500, 20, "WEX", false);
 
-      await outputFarm(App, tokens, prices, signer, nutsPrice, "0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82", "0x593fcE210368f4dFe177058C1437D7f893670503", "0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82", 4000, 80, "TLM", false, 1e4);
-      await outputFarm(App, tokens, prices, signer, nutsPrice, "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c", "0x868429ffa5eddeaea8e2b8eaea4fca9c33516568", "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c", 4500, 140, "WBNB", false);
-      await outputFarm(App, tokens, prices, signer, nutsPrice, "0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82", "0x0fe7792ceb507e32ecb250a6e308a02c664cfba2", "0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82", 0, 0, "EPS", false);
-      await outputFarm(App, tokens, prices, signer, nutsPrice, "0xF952Fc3ca7325Cc27D15885d37117676d25BfdA6", "0x7456d4bda37d2aa5177ca1d8a494a318633b1fef", "0xF952Fc3ca7325Cc27D15885d37117676d25BfdA6", 0, 0, "EGG", true);
-      await outputFarm(App, tokens, prices, signer, nutsPrice, "0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82", "0x4d41a547cce57348e83493be0f4552a924e623a1", "0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82", 0, 0, "BRY", false);
+      await outputFarm(App, tokens, prices, signer, nutsPrice, "0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82", "0x593fcE210368f4dFe177058C1437D7f893670503", "0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82", 2500, 80, "TLM", false, 1e4);
+      await outputFarm(App, tokens, prices, signer, nutsPrice, "0xC9849E6fdB743d08fAeE3E34dd2D1bc69EA11a51", "0x868429ffa5eddeaea8e2b8eaea4fca9c33516568", "0xC9849E6fdB743d08fAeE3E34dd2D1bc69EA11a51", 2500, 140, "WBNB", false);
   }
 
 

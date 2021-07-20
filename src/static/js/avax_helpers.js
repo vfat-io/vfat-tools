@@ -1,6 +1,10 @@
 const avaxTokens = [ 
     { "id": "avalanche-2","symbol": "AVAX","contract": "0xB31f66AA3C1e785363F0875A1B74E27b85FD66c7" },
     { "id": "pangolin","symbol": "PNG", "contract": "0x60781C2586D68229fde47564546784ab3fACA982" },
+    { "id": "weth","symbol": "WETH", "contract": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2" },
+    { "id": "dai","symbol": "DAI", "contract": "0xbA7dEebBFC5fA1100Fb055a87773e1E99Cd3507a" },
+    { "id": "snowball","symbol": "SNOB", "contract": "0xc38f41a296a4493ff429f1238e030924a1542e50" },
+    { "id": "sushi","symbol": "SUSHI", "contract": "0x39cf1BD5f15fb22eC3D9Ff86b0727aFc203427cc" }
 ]
 
 async function getAvaxPrices() {
@@ -93,9 +97,9 @@ async function getAvaxStoredToken(App, tokenAddress, stakingAddress, type) {
     case "uniswap": 
       const pool = new ethers.Contract(tokenAddress, UNI_ABI, App.provider);
       return await getAvaxUniPool(App, pool, tokenAddress, stakingAddress);
-    case "avax20":
-      const avax20 = new ethers.Contract(tokenAddress, ERC20_ABI, App.provider);
-      return await getAvax20(App, avax20, tokenAddress, stakingAddress);
+    case "erc20":
+      const erc20 = new ethers.Contract(tokenAddress, ERC20_ABI, App.provider);
+      return await getAvax20(App, erc20, tokenAddress, stakingAddress);
     case "vault":
       const vault = new ethers.Contract(tokenAddress, AVAX_VAULT_ABI, App.provider);
       return await getAvaxVault(App, vault, tokenAddress, stakingAddress);
@@ -127,11 +131,11 @@ async function getAvaxToken(App, tokenAddress, stakingAddress) {
     catch(err) {
     }
     try {
-      const avax20 = new ethers.Contract(tokenAddress, ERC20_ABI, App.provider);
-      const _name = await avax20.name();
-      const avax20tok = await getAvax20(App, avax20, tokenAddress, stakingAddress);
-      window.localStorage.setItem(tokenAddress, "avax20");
-      return avax20tok;
+      const erc20 = new ethers.Contract(tokenAddress, ERC20_ABI, App.provider);
+      const _name = await erc20.name();
+      const erc20tok = await getAvax20(App, erc20, tokenAddress, stakingAddress);
+      window.localStorage.setItem(tokenAddress, "erc20");
+      return erc20tok;
     }
     catch(err) {
       console.log(err);
@@ -304,6 +308,8 @@ async function getAvaxPoolInfo(app, chefContract, chefAddress, poolIndex, pendin
       poolToken: poolToken,
       userStaked : staked,
       pendingRewardTokens : pendingRewardTokens / 10 ** 18,
+      depositFee : (poolInfo.depositFeeBP ?? 0) / 100,
+      withdrawFee : (poolInfo.withdrawFeeBP ?? 0) / 100
   };
 }
 
@@ -353,7 +359,7 @@ async function loadAvaxChefContract(App, tokens, prices, chef, chefAddress, chef
     if (poolPrices[i]) {
       const apr = printChefPool(App, chefAbi, chefAddress, prices, tokens, poolInfos[i], i, poolPrices[i],
         totalAllocPoints, rewardsPerWeek, rewardTokenTicker, rewardTokenAddress,
-        pendingRewardsFunction, null, null, "avax")
+        pendingRewardsFunction, null, null, "avax", poolInfos[i].depositFee, poolInfos[i].withdrawFee)
       aprs.push(apr);
     }
   }

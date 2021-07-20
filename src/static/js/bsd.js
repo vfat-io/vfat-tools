@@ -1,6 +1,5 @@
 $(function () {
-    consoleInit();
-    start(main);
+consoleInit(main)
 });
 
 async function loadStablePools(App, chef, chefAddress, chefAbi, rewardTokenTicker,

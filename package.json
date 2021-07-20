@@ -44,7 +44,7 @@
     "ejs": "^2.7.4",
     "gh-pages": "^3.1.0",
     "html-minifier": "^3.5.21",
-    "node-sass": "^4.13.1",
+    "node-sass": "^6.0.0",
     "node-watch": "^0.6.4",
     "npm-run-all": "^4.1.5",
     "postcss-cli": "^4.1.1",
@@ -54,21 +54,24 @@
     "webpack-cli": "^3.3.11"
   },
   "dependencies": {
+    "@walletconnect/web3-provider": "^1.4.1",
     "asciichart": "^1.5.24",
     "clear": "^0.1.0",
     "cli-color": "^2.0.0",
     "console-table-printer": "^2.7.3",
+    "core-js": "^3.15.1",
     "diff": "^4.0.2",
     "dompurify": "^2.0.8",
     "ethcall": "3.0.0",
-    "ethers": "^5.0.8",
+    "ethers": "^5.3.0",
     "fuse.js": "^6.4.1",
     "jquery": "^3.5.1",
     "lodash": "^4.17.20",
     "lodash.debounce": "^4.0.8",
     "lodash.throttle": "^4.1.1",
     "numbro": "^2.3.2",
-    "picturefill": "^3.0.3"
+    "picturefill": "^3.0.3",
+    "web3modal": "^1.9.3"
   },
   "browserslist": [
     "last 1 version",

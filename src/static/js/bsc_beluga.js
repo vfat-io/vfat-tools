@@ -1,6 +1,5 @@
 $(function() {
-  consoleInit();
-  start(main);
+  consoleInit(main)
 });
 
 async function loadPool(App, tokens, prices, stakingAddress, ps=false) {
@@ -125,15 +124,10 @@ async function main() {
   ];
   const CONTRACTS = [
     //BELUGA LP
-    "0xF25E3C74e1BE871471f876CaC5c8e3EC94293879",
+    "0xEa05b5559cDA06395139c980d8F8D479cD903017",
+    "0x2F07e9d0987ea051F291ee39c65bB71D61f59F14",
+    "0xA8cd278Ea5ac01Fe958cA12DA11B39099c8A3D30"
   ];
-  const VAULTS = [
-      "0x47947CA6D6e49246409238A35ae159996a2a1032",
-      "0x095EB886997d752C78Fe5F731d5B0C1D90b29EF4",
-      "0xf8cC0b4f3B115aD4B2d36E3896C31FEb4578ed0e",
-      "0xd522a702C443DBc9210b9F9b7eF9Bcb894F53FB9",
-      "0x821145C6529a8c9CA8DB3CE29d460F6313338459"
-  ]
 
   const App = await init_ethers();
 
@@ -148,11 +142,6 @@ async function main() {
   await loadPool(App, tokens, prices, PS[0], ps=true)
   for (const c of CONTRACTS) {
     await loadPool(App, tokens, prices, c);
-  }
-
-  _print(" === BELUGA VAULTS === \n")
-  for (const c of VAULTS) {
-      await loadVault(App, vaultTokens, prices, c)
   }
 
   hideLoading();
