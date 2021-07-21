@@ -14,7 +14,9 @@ const main = async() => {
       [ "KuBeans",    `<a href="kubeans"      >Various</a>`,     "KUBEANS",   "https://kubeans.club" ],
       [ "KandySwap",  `<a href="kandyswap"    >Various</a>`,     "KANDY",     "https://www.kandyswap.com" ],
       [ "Shibance",   `<a href="shibance"     >Various</a>`,     "KWOOF",     "https://kcc.shibance.com" ],
-      [ "BoneSwap",   `<a href="boneswap"     >Various</a>`,     "BONE",      "https://farm-kcc.boneswap.finance" ]
+      [ "BoneSwap",   `<a href="boneswap"     >Various</a>`,     "BONE",      "https://farm-kcc.boneswap.finance" ],
+      [ "SafeDex",    `<a href="safedex"      >Various</a>`,     "TREATS",    "https://safedexkcc.com/info" ],
+      [ "KuBone",     `<a href="kubone"       >Various</a>`,     "KUBONE",    "https://kubone.finance" ],
     ]
   }
 
