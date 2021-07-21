@@ -17,6 +17,7 @@ async function main() {
 
     const startBlock = await KUBONE_CHEF.startBlock();
     const currentBlock = await App.provider.getBlockNumber();
+    _print(" currentBlock ... "+currentBlock)
 
     const multiplier = await KUBONE_CHEF.getMultiplier(currentBlock, currentBlock + 1);
 
