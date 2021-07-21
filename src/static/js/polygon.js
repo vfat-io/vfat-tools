@@ -458,7 +458,8 @@ const main = async () => {
       ['PolyFalcon          ', `<a href="polyfalcon"      >Various</a>`, 'FALCON       ', 'https://polyfalcon.com'],
       ['BCharity            ', `<a href="bcharity"        >Various</a>`, 'GIVE         ', 'https://bcharity.net'],
       ['BlackSwan           ', `<a href="blackswan"       >Various</a>`, 'SWAN         ', 'https://app.blackswan.network'],
-      ['PolyBass            ', `<a href="polybass"        >Various</a>`, 'BASS         ', 'https://polybass.farm']
+      ['PolyBass            ', `<a href="polybass"        >Various</a>`, 'BASS         ', 'https://polybass.farm'],
+      ['PolyBakerySwap      ', `<a href="polybakeryswap"  >Various</a>`, 'BAKE         ', 'https://www.bakery-swap.finance']
     ],
   }
 
