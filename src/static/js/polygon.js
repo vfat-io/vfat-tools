@@ -456,7 +456,8 @@ const main = async () => {
       ['Cremepie            ', `<a href="cremepie"        >Various</a>`, 'CPIE         ', 'https://cremepieswap.finance'],
       ['KUNAIFarm           ', `<a href="kunaifarm"       >Various</a>`, 'KUNAI        ', 'https://kunai.dojofarm.finance'],
       ['PolyFalcon          ', `<a href="polyfalcon"      >Various</a>`, 'FALCON       ', 'https://polyfalcon.com'],
-      ['BCharity            ', `<a href="bcharity"        >Various</a>`, 'GIVE         ', 'https://bcharity.net/']
+      ['BCharity            ', `<a href="bcharity"        >Various</a>`, 'GIVE         ', 'https://bcharity.net/'],
+      ['PolyBakerySwap      ', `<a href="polybakeryswap"  >Various</a>`, 'BAKE         ', 'https://www.bakery-swap.finance'],
     ],
   }
 
