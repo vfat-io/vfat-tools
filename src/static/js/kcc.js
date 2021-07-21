@@ -16,6 +16,7 @@ const main = async() => {
       [ "Shibance",   `<a href="shibance"     >Various</a>`,     "KWOOF",     "https://kcc.shibance.com" ],
       [ "BoneSwap",   `<a href="boneswap"     >Various</a>`,     "BONE",      "https://farm-kcc.boneswap.finance" ],
       [ "SafeDex",    `<a href="safedex"      >Various</a>`,     "TREATS",    "https://safedexkcc.com/info" ],
+      [ "KuBone",     `<a href="kubone"       >Various</a>`,     "KUBONE",    "https://kubone.finance" ],
     ]
   }
 
