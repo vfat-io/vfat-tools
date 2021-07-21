@@ -450,13 +450,16 @@ const main = async () => {
       ['MisfitSwap          ', `<a href="misfit"          >Various</a>`, 'SKULL        ', 'https://www.misfitswap.live'],
       ['DinoSwap            ', `<a href="dinoswap"        >Various</a>`, 'DINO         ', 'https://dinoswap.exchange'],
       ['Swamp               ', `<a href="swamp"           >Various</a>`, 'pSWAMP       ', 'https://swamp.finance/polygon'],
-      ["SpacePortDeFi       ", `<a href="spaceport"       >Various</a>`, "STARSHIP     ","https://polygon.spaceportdefi.com"],
+      ["SpacePortDeFi       ", `<a href="spaceport"       >Various</a>`, "STARSHIP     ", "https://polygon.spaceportdefi.com"],
       ['PolyTide            ', `<a href="polytide"        >Various</a>`, 'OYSTER       ', 'https://polytide.finance'],
       ['Copycat2            ', `<a href="copycat2"        >Various</a>`, 'FISH2        ', 'https://copycat2.farm'],
       ['Cremepie            ', `<a href="cremepie"        >Various</a>`, 'CPIE         ', 'https://cremepieswap.finance'],
       ['KUNAIFarm           ', `<a href="kunaifarm"       >Various</a>`, 'KUNAI        ', 'https://kunai.dojofarm.finance'],
       ['PolyFalcon          ', `<a href="polyfalcon"      >Various</a>`, 'FALCON       ', 'https://polyfalcon.com'],
-      ['BCharity            ', `<a href="bcharity"        >Various</a>`, 'GIVE         ', 'https://bcharity.net/']
+      ['BCharity            ', `<a href="bcharity"        >Various</a>`, 'GIVE         ', 'https://bcharity.net'],
+      ['BlackSwan           ', `<a href="blackswan"       >Various</a>`, 'SWAN         ', 'https://app.blackswan.network'],
+      ['PolyBass            ', `<a href="polybass"        >Various</a>`, 'BASS         ', 'https://polybass.farm'],
+      ['PolyBakerySwap      ', `<a href="polybakeryswap"  >Various</a>`, 'BAKE         ', 'https://www.bakery-swap.finance']
     ],
   }
 
