@@ -1216,27 +1216,6 @@ const DRAX_STAKING_ABI = [
   }
 ]
 
-const claimDMagic = async function(rewardPoolAddr, App) {
-  const signer = App.provider.getSigner()
-
-  const REWARD_POOL = new ethers.Contract(rewardPoolAddr, Y_STAKING_POOL_ABI, signer)
-
-  console.log(App.YOUR_ADDRESS)
-
-  const earnedYFFI = (await REWARD_POOL.totalEarnedRewardToken1(App.YOUR_ADDRESS)) / 1e18
-
-  if (earnedYFFI > 0) {
-    showLoading()
-    REWARD_POOL.getReward({gasLimit: 250000})
-      .then(function(t) {
-        return App.provider.waitForTransaction(t.hash)
-      })
-      .catch(function() {
-        hideLoading()
-      })
-  }
-}
-
 async function main() {
   const App = await init_ethers();
 
@@ -1335,6 +1314,28 @@ async function loadDarkMagicSynthetixPool(App, tokens, prices, abi, address, rew
 }
 
 
+
+const claimDMagic = async function(rewardPoolAddr, App) {
+  const signer = App.provider.getSigner()
+
+  const REWARD_POOL = new ethers.Contract(rewardPoolAddr, DRAX_STAKING_ABI, signer)
+
+  console.log(App.YOUR_ADDRESS)
+
+  const earnedYFFI = (await REWARD_POOL.totalEarnedRewardToken1(App.YOUR_ADDRESS)) / 1e18
+
+  if (earnedYFFI > 0) {
+    showLoading()
+    REWARD_POOL.getReward({gasLimit: 250000})
+      .then(function(t) {
+        return App.provider.waitForTransaction(t.hash)
+      })
+      .catch(function() {
+        hideLoading()
+      })
+  }
+  else alert("Nothing to claim");
+}
 
 async function loadDraxSynthetixPoolInfo(App, tokens, prices, stakingAbi, stakingAddress,
   rewardTokenAddresses, stakeTokenFunction) {
