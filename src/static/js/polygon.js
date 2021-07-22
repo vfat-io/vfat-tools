@@ -203,7 +203,7 @@ const main = async () => {
         'DINO         ',
         'https://dinosaurfinance.vercel.app',
       ],
-      ['Magic               ', `<a href="magic"           >Various</a>`, 'DRAX/DMAGIC  ', 'https://defimagic.io'],
+      ['Magic               ', `<a href="magic"           >Various</a>`, 'DRAX/NIGHT/DMAGIC  ', 'https://defimagic.io'],
       ['Polymouse           ', `<a href="polymouse"       >Various</a>`, 'MICE         ', 'https://polymouse.finance'],
       ['PolyTiger           ', `<a href="polytiger"       >Various</a>`, 'TIGON        ', 'https://www.polytiger.com'],
       ['Polydeer            ', `<a href="polydeer"        >Various</a>`, 'DEER         ', 'https://polydeer.finance'],
