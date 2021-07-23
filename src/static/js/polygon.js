@@ -461,7 +461,8 @@ const main = async () => {
       ['PolyBass            ', `<a href="polybass"        >Various</a>`, 'BASS         ', 'https://polybass.farm'],
       ['PolyBakerySwap      ', `<a href="polybakeryswap"  >Various</a>`, 'BAKE         ', 'https://www.bakery-swap.finance'],
 	  ['PolyTail                ', `<a href="polytail"            >Various</a>`, 'POLYTAIL         ', 'https://polytail.farm'],
-      ['PearZap             ', `<a href="pearzap"         >Various</a>`, 'PEAR         ', 'https://pearzap.com']
+      ['PearZap             ', `<a href="pearzap"         >Various</a>`, 'PEAR         ', 'https://pearzap.com'],
+      ['Cygnus Finance      ', `<a href="cygnusfinance"  >Various</a>`, 'CYGNUS         ', 'https://www.cygnusdefi.com'],
     ],
   }
 
