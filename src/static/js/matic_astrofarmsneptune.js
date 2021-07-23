@@ -14,7 +14,7 @@ async function main() {
   const rewardTokenTicker = 'NEPTUNE'
   const NEPTUNE_CHEF = new ethers.Contract(NEPTUNE_CHEF_ADDR, NEPTUNE_CHEF_ABI, App.provider)
 
-  const rewardsPerWeek = (((await NEPTUNE_CHEF.CancerPerBlock()) / 1e18) * 604800) / 2.1
+  const rewardsPerWeek = (((await NEPTUNE_CHEF.NeptunePerBlock()) / 1e18) * 604800) / 2.1
 
   const tokens = {}
   const prices = await getMaticPrices()
