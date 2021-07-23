@@ -442,6 +442,7 @@ const main = async() => {
       ["TwilightFinance     ", `<a href="twilightfinance">Various</a>`,"TWIL            ","https://twilightfinance.org"],
       ["Badger              ", `<a href="badger"        >Various</a>`,"BADGER           ","https://app.badger.finance"],
       ["BambooDeFi          ", `<a href="bamboodefi"    >Various</a>`,"BAMBOO           ","https://www.bamboodefi.com"],
+      ["GoldRush            ", `<a href="goldrush"      >Various</a>`,"GNT              ","https://goldrush.farm"],
     ]}
 
   let table = new AsciiTable().fromJSON(tableData);
