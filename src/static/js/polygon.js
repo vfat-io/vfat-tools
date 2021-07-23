@@ -460,9 +460,10 @@ const main = async () => {
       ['BlackSwan           ', `<a href="blackswan"       >Various</a>`, 'SWAN         ', 'https://app.blackswan.network'],
       ['PolyBass            ', `<a href="polybass"        >Various</a>`, 'BASS         ', 'https://polybass.farm'],
       ['PolyBakerySwap      ', `<a href="polybakeryswap"  >Various</a>`, 'BAKE         ', 'https://www.bakery-swap.finance'],
-	  ['PolyTail                ', `<a href="polytail"            >Various</a>`, 'POLYTAIL         ', 'https://polytail.farm'],
+	    ['PolyTail            ', `<a href="polytail"        >Various</a>`, 'POLYTAIL     ', 'https://polytail.farm'],
       ['PearZap             ', `<a href="pearzap"         >Various</a>`, 'PEAR         ', 'https://pearzap.com'],
-      ['Cygnus Finance      ', `<a href="cygnusfinance"  >Various</a>`, 'CYGNUS         ', 'https://www.cygnusdefi.com'],
+      ['Astrofarms - Neptune', `<a href="astrofarmsneptune">Various</a>`,'NEPTUNE      ', 'https://neptune.astrofarms.finance'],
+      ['Cygnus Finance      ', `<a href="cygnusfinance"   >Various</a>`, 'CYGNUS       ', 'https://www.cygnusdefi.com'],
     ],
   }
 
