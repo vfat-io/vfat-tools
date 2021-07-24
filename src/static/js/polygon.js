@@ -416,6 +416,7 @@ const main = async () => {
       ['Polycuppa           ', `<a href="polycuppa"       >Various</a>`, 'CUPPA        ', 'https://polycuppa.finance'],
       ['Polymax - Berkshire ', `<a href="polymax_berkshire">Various</a>`, 'BERKSHIRE   ', 'https://berkshire.polymax.club'],
       ['Platinum Finance    ', `<a href="platinumfinance" >Various</a>`, 'PLATIN       ', 'https://platinumfinance.app']
+      ['Iridium Finance    ', `<a href="iridiumfinance" >Various</a>`, 'IRIDIUM       ', 'https://iridiumfinance.app/']
     ],
   }
 
