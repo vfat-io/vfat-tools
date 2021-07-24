@@ -92,7 +92,19 @@ async function getBscBiscuitPoolInfo(App, chefContract, chefAddress, poolIndex, 
   const poolInfo = await chefContract.poolInfo(poolIndex);
   const rewardTokenAddress = poolInfo.rewardToken;
   const rewardToken = await getBscToken(App, rewardTokenAddress, chefAddress);
-  const rewardsPerWeek = poolInfo.rewardPerBlock / 10 ** rewardToken.decimals * 604800 / 3
+  const rewardsPerWeek = await chefContract.getNewRewardPerBlock(poolIndex) / 10 ** rewardToken.decimals * 604800 / 3
+  if (poolInfo.allocPoint == 0 || rewardsPerWeek == 0) {
+    return {
+      address: poolInfo.lpToken ?? poolInfo.token,
+      allocPoints: poolInfo.allocPoint ?? 1,
+      poolToken: null,
+      userStaked : 0,
+      pendingRewardTokens : 0,
+      stakedToken : null,
+      userLPStaked : 0,
+      lastRewardBlock : poolInfo.lastRewardBlock
+    };
+  }
   const poolToken = await getBscToken(App, poolInfo.lpToken, chefAddress);
   const userInfo = await chefContract.userInfo(poolIndex, App.YOUR_ADDRESS);
   const pendingRewardTokens = await chefContract.callStatic[pendingRewardsFunction](poolIndex, App.YOUR_ADDRESS);

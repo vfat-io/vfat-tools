@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include(`${partials}/head`); -%>
+
+  <body>
+    <%- include(`${partials}/header_main`); -%>
+      <pre id="log">
+*************** 👨‍🌾 UNOFFICIAL BUNICORN EXCHANGE FARMING CALCULATOR 👨‍🌾 *****************
+INFO  : https://bunicorn.exchange
+****************************************************************************************
+
+A total of 20,844,000 BUNI tokens will be distributed as rewards for this program. 
+The 1st 20% of the BUNI token rewards can be claimed after 30 days from the ending date of the program on 28 July, 2021. 
+Remaining rewards will be released 20% every 30 days onwards.
+Read more about Incentivized Liquidity Bootstrapping Program.
+
+</pre>
+      <div class="loader--1"></div>
+      <%- include(`${partials}/scripts`, {scriptname: 'bsc_bunicorn' }); -%>
+  </body>
+
+</html>
