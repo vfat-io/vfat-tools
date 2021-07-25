@@ -52,7 +52,7 @@ const main = async() => {
       ],
       [
         "Troll",
-         `<a href='Troll'>Various</a>`,
+         `<a href='troll'>Various</a>`,
           "TROLL",
           "https://lootswap.finance/guilds/troll"
       ]
