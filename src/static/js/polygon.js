@@ -469,6 +469,7 @@ const main = async () => {
       ['PolyCoke            ', `<a href="polycoke"        >Various</a>`, 'COKE         ', 'https://polycoke.farm'],
       ['PolySeal            ', `<a href="polyseal"        >Various</a>`, 'SEAL         ', 'https://polyseal.farm'],
       ['Galaxy Finance One  ', `<a href="galaxy_triton"   >Various</a>`, 'TRITON       ', 'https://polygon-triton.galaxyfinance.one/'],
+      ['Stonk Share         ', `<a href="stonkshare"      >Various</a>`, 'STONKS       ', 'https://shares.stonk.farm/'],
     ],
   }
 
