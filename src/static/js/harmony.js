@@ -49,6 +49,12 @@ const main = async() => {
         `<a href='piggybank'>Various</a>`,
         "COINK",
         "https://piggybank.farm/#/"
+      ],
+      [
+        "Troll Bridge",
+         `<a href='Troll bridge'>Various</a>`,
+          "TROLL",
+          "https://lootswap.finance/guilds/troll"
       ]
     ]
   }
