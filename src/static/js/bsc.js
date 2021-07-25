@@ -14,6 +14,7 @@ const main = async() => {
       ["Bake                ", `<a href="bake"          >Various</a>`,"BAKE             ","https://www.bakeryswap.org"],
       ["Brew                ", `<a href="brew"          >Various</a>`,"BREW             ","https://cafeswap.finance"],
       ["Donut               ", `<a href="donut"         >Various</a>`,"DONUT            ","https://donutdefi.com"],
+      ["Luckycatdefi        ", `<a href="Luckycatdefi"  >Various</a>`,"LUCKYCATDEFI     ","https://luckycatdefi.com"],
       ["Ramen               ", `<a href="ramen"         >Various</a>`,"RAMENSWAP        ","https://ramenswap.finance"],
       ["Goose               ", `<a href="goose"         >Various</a>`,"GOOSE            ","https://www.goosedefi.com"],
       ["Salt                ", `<a href="salt"          >Various</a>`,"SALT             ","https://www.saltswap.finance"],
