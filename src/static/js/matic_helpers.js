@@ -518,7 +518,8 @@ const maticTokens = [
   { "id": "the-graph", "symbol": "GRT", "contract": "0x5fe2B58c013d7601147DcdD68C143A77499f5531" },
   { "id": "pickle-finance", "symbol": "PICKLE", "contract": "0x2b88aD57897A8b496595925F43048301C37615Da" },
   { "id": "must", "symbol": "MUST", "contract": "0x9C78EE466D6Cb57A4d01Fd887D2b5dFb2D46288f" },
-  { "id": "blackswan", "symbol": "SWAN", "contract": "0xab7589de4c581db0fb265e25a8e7809d84ccd7e8" }
+  { "id": "blackswan", "symbol": "SWAN", "contract": "0xab7589de4c581db0fb265e25a8e7809d84ccd7e8" },
+  { "id": "galaxy-triton", "symbol": "TRITON", "contract": "0x9cf4009e62429Db3F57Aa9e7e8E898427cF6865f" }
 ]
 
 async function getMaticPrices() {

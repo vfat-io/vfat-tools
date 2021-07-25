@@ -445,6 +445,7 @@ const main = async() => {
       ["GoldRush            ", `<a href="goldrush"      >Various</a>`,"GNT              ","https://goldrush.farm"],
       ["MacaronSwap         ", `<a href="macaron"       >Various</a>`,"MCRN             ","https://macaronswap.finance"],
       ["PlanetSwap          ", `<a href="planetswap"    >Various</a>`,"MERCURY          ","https://planetswap.app"],
+      ["Galaxy Finance One  ", `<a href="galaxy_triton" >Various</a>`,"TRITON           ","https://bsc-triton.galaxyfinance.one/"],
       ["Radeon Finance      ", `<a href="radeonfinance" >Various</a>`,"XAEA12           ","https://radeon.finance"],
       ["Luckycatdefi        ", `<a href="Luckycatdefi"  >Various</a>`,"LUCKYCATDEFI     ","https://luckycatdefi.com"]
     ]}
