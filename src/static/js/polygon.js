@@ -415,8 +415,6 @@ const main = async () => {
       ['ChickenFarms        ', `<a href="chickenfarms"    >Various</a>`, 'CHICKEN      ', 'https://chickenfarms.live'],
       ['Polycuppa           ', `<a href="polycuppa"       >Various</a>`, 'CUPPA        ', 'https://polycuppa.finance'],
       ['Polymax - Berkshire ', `<a href="polymax_berkshire">Various</a>`, 'BERKSHIRE   ', 'https://berkshire.polymax.club'],
-      ['Platinum Finance    ', `<a href="platinumfinance" >Various</a>`, 'PLATIN       ', 'https://platinumfinance.app']
-      ['Iridium Finance     ', `<a href="iridiumfinance"  >Various</a>`, 'IRIDIUM      ', 'https://iridiumfinance.app/'],
       ['Platinum Finance    ', `<a href="platinumfinance" >Various</a>`, 'PLATIN       ', 'https://platinumfinance.app'],
       ['DuckFarm            ', `<a href="duckfarm"        >Various</a>`, 'DUCK         ', 'https://duckfarm.one'],
       ['PolyCow             ', `<a href="polycow"         >Various</a>`, 'MILK         ', 'https://polycow.finance'],
@@ -470,6 +468,7 @@ const main = async () => {
       ['PolySeal            ', `<a href="polyseal"        >Various</a>`, 'SEAL         ', 'https://polyseal.farm'],
       ['Galaxy Finance One  ', `<a href="galaxy_triton"   >Various</a>`, 'TRITON       ', 'https://polygon-triton.galaxyfinance.one/'],
       ['Stonk Share         ', `<a href="stonkshare"      >Various</a>`, 'STONKS       ', 'https://shares.stonk.farm/'],
+      ['Iridium Finance     ', `<a href="iridiumfinance"  >Various</a>`, 'IRID         ', 'https://iridiumfinance.app/'],
     ],
   }
 
