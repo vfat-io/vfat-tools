@@ -2,15 +2,11 @@ $(function() {
   consoleInit(main)
 });
 
-const PENDLE_MARKET_ABI = [{"inputs":[{"internalType":"address","name":"_governanceManager","type":"address"},{"internalType":"address","name":"_xyt","type":"address"},{"internalType":"address","name":"_token","type":"address"}],"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"owner","type":"address"},{"indexed":true,"internalType":"address","name":"spender","type":"address"},{"indexed":false,"internalType":"uint256","name":"value","type":"uint256"}],"name":"Approval","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"},{"indexed":false,"internalType":"address","name":"sendTo","type":"address"}],"name":"EtherWithdraw","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"reserve0","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"weight0","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"reserve1","type":"uint256"}],"name":"Sync","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"contract IERC20","name":"token","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"},{"indexed":false,"internalType":"address","name":"sendTo","type":"address"}],"name":"TokenWithdraw","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"from","type":"address"},{"indexed":true,"internalType":"address","name":"to","type":"address"},{"indexed":false,"internalType":"uint256","name":"value","type":"uint256"}],"name":"Transfer","type":"event"},{"inputs":[],"name":"DOMAIN_SEPARATOR","outputs":[{"internalType":"bytes32","name":"","type":"bytes32"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"PERMIT_TYPEHASH","outputs":[{"internalType":"bytes32","name":"","type":"bytes32"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"user","type":"address"},{"internalType":"uint256","name":"_desiredXytAmount","type":"uint256"},{"internalType":"uint256","name":"_desiredTokenAmount","type":"uint256"},{"internalType":"uint256","name":"_xytMinAmount","type":"uint256"},{"internalType":"uint256","name":"_tokenMinAmount","type":"uint256"}],"name":"addMarketLiquidityDual","outputs":[{"components":[{"internalType":"uint256","name":"amount","type":"uint256"},{"internalType":"bool","name":"isOut","type":"bool"}],"internalType":"struct PendingTransfer[2]","name":"transfers","type":"tuple[2]"},{"internalType":"uint256","name":"lpOut","type":"uint256"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"user","type":"address"},{"internalType":"address","name":"_inToken","type":"address"},{"internalType":"uint256","name":"_exactIn","type":"uint256"},{"internalType":"uint256","name":"_minOutLp","type":"uint256"}],"name":"addMarketLiquiditySingle","outputs":[{"components":[{"internalType":"uint256","name":"amount","type":"uint256"},{"internalType":"bool","name":"isOut","type":"bool"}],"internalType":"struct PendingTransfer[2]","name":"transfers","type":"tuple[2]"},{"internalType":"uint256","name":"exactOutLp","type":"uint256"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"owner","type":"address"},{"internalType":"address","name":"spender","type":"address"}],"name":"allowance","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"spender","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"approve","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"account","type":"address"}],"name":"balanceOf","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"user","type":"address"},{"internalType":"uint256","name":"initialXytLiquidity","type":"uint256"},{"internalType":"uint256","name":"initialTokenLiquidity","type":"uint256"}],"name":"bootstrap","outputs":[{"components":[{"internalType":"uint256","name":"amount","type":"uint256"},{"internalType":"bool","name":"isOut","type":"bool"}],"internalType":"struct PendingTransfer[2]","name":"transfers","type":"tuple[2]"},{"internalType":"uint256","name":"exactOutLp","type":"uint256"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"bootstrapped","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"decimals","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"spender","type":"address"},{"internalType":"uint256","name":"subtractedValue","type":"uint256"}],"name":"decreaseAllowance","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"expiry","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"factoryId","outputs":[{"internalType":"bytes32","name":"","type":"bytes32"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getReserves","outputs":[{"internalType":"uint256","name":"xytBalance","type":"uint256"},{"internalType":"uint256","name":"xytWeight","type":"uint256"},{"internalType":"uint256","name":"tokenBalance","type":"uint256"},{"internalType":"uint256","name":"tokenWeight","type":"uint256"},{"internalType":"uint256","name":"currentBlock","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"governanceManager","outputs":[{"internalType":"contract PendleGovernanceManager","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"spender","type":"address"},{"internalType":"uint256","name":"addedValue","type":"uint256"}],"name":"increaseAllowance","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"lastCurveShiftBlock","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"lastNYield","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"lastParamK","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"lockStartTime","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"name","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"nonces","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"paramL","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"owner","type":"address"},{"internalType":"address","name":"spender","type":"address"},{"internalType":"uint256","name":"value","type":"uint256"},{"internalType":"uint256","name":"deadline","type":"uint256"},{"internalType":"uint8","name":"v","type":"uint8"},{"internalType":"bytes32","name":"r","type":"bytes32"},{"internalType":"bytes32","name":"s","type":"bytes32"}],"name":"permit","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"user","type":"address"}],"name":"redeemLpInterests","outputs":[{"internalType":"uint256","name":"interests","type":"uint256"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"user","type":"address"},{"internalType":"uint256","name":"_inLp","type":"uint256"},{"internalType":"uint256","name":"_minOutXyt","type":"uint256"},{"internalType":"uint256","name":"_minOutToken","type":"uint256"}],"name":"removeMarketLiquidityDual","outputs":[{"components":[{"internalType":"uint256","name":"amount","type":"uint256"},{"internalType":"bool","name":"isOut","type":"bool"}],"internalType":"struct PendingTransfer[2]","name":"transfers","type":"tuple[2]"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"user","type":"address"},{"internalType":"address","name":"_outToken","type":"address"},{"internalType":"uint256","name":"_inLp","type":"uint256"},{"internalType":"uint256","name":"_minOutAmountToken","type":"uint256"}],"name":"removeMarketLiquiditySingle","outputs":[{"components":[{"internalType":"uint256","name":"amount","type":"uint256"},{"internalType":"bool","name":"isOut","type":"bool"}],"internalType":"struct PendingTransfer[2]","name":"transfers","type":"tuple[2]"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"router","outputs":[{"internalType":"contract IPendleRouter","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"spender","type":"address"}],"name":"setUpEmergencyMode","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"start","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"inToken","type":"address"},{"internalType":"uint256","name":"inAmount","type":"uint256"},{"internalType":"address","name":"outToken","type":"address"},{"internalType":"uint256","name":"minOutAmount","type":"uint256"}],"name":"swapExactIn","outputs":[{"internalType":"uint256","name":"outAmount","type":"uint256"},{"components":[{"internalType":"uint256","name":"amount","type":"uint256"},{"internalType":"bool","name":"isOut","type":"bool"}],"internalType":"struct PendingTransfer[2]","name":"transfers","type":"tuple[2]"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"inToken","type":"address"},{"internalType":"uint256","name":"maxInAmount","type":"uint256"},{"internalType":"address","name":"outToken","type":"address"},{"internalType":"uint256","name":"outAmount","type":"uint256"}],"name":"swapExactOut","outputs":[{"internalType":"uint256","name":"inAmount","type":"uint256"},{"components":[{"internalType":"uint256","name":"amount","type":"uint256"},{"internalType":"bool","name":"isOut","type":"bool"}],"internalType":"struct PendingTransfer[2]","name":"transfers","type":"tuple[2]"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"symbol","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"token","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"totalSupply","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"recipient","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"transfer","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"sender","type":"address"},{"internalType":"address","name":"recipient","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"transferFrom","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"amount","type":"uint256"},{"internalType":"address payable","name":"sendTo","type":"address"}],"name":"withdrawEther","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"contract IERC20","name":"token","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"},{"internalType":"address","name":"sendTo","type":"address"}],"name":"withdrawToken","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"xyt","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"}]
+const PENDLE_LIQUIDITY_MINING_ABI = [{"inputs":[{"internalType":"uint256","name":"expiry","type":"uint256"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"stake","outputs":[{"internalType":"address","name":"newLpHoldingContractAddress","type":"address"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"expiry","type":"uint256"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"withdraw","outputs":[],"stateMutability":"nonpayable","type":"function"}]
 
-const PENDLE_LIQUIDITY_MINING_ABI = [{"inputs":[{"internalType":"address","name":"_governanceManager","type":"address"},{"internalType":"address","name":"_pausingManager","type":"address"},{"internalType":"address","name":"_whitelist","type":"address"},{"internalType":"address","name":"_pendleTokenAddress","type":"address"},{"internalType":"address","name":"_pendleRouter","type":"address"},{"internalType":"bytes32","name":"_pendleMarketFactoryId","type":"bytes32"},{"internalType":"bytes32","name":"_pendleForgeId","type":"bytes32"},{"internalType":"address","name":"_underlyingAsset","type":"address"},{"internalType":"address","name":"_baseToken","type":"address"},{"internalType":"uint256","name":"_startTime","type":"uint256"},{"internalType":"uint256","name":"_epochDuration","type":"uint256"},{"internalType":"uint256","name":"_vestingEpochs","type":"uint256"}],"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256[]","name":"_expiries","type":"uint256[]"},{"indexed":false,"internalType":"uint256[]","name":"_allocationNumerators","type":"uint256[]"}],"name":"AllocationSettingSet","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"},{"indexed":false,"internalType":"address","name":"sendTo","type":"address"}],"name":"EtherWithdraw","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256[]","name":"_rewards","type":"uint256[]"},{"indexed":false,"internalType":"uint256","name":"numberOfEpochs","type":"uint256"}],"name":"Funded","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"expiry","type":"uint256"},{"indexed":false,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"PendleRewardsSettled","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256[]","name":"_epochIds","type":"uint256[]"},{"indexed":false,"internalType":"uint256[]","name":"_rewards","type":"uint256[]"}],"name":"RewardsToppedUp","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"expiry","type":"uint256"},{"indexed":false,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"Staked","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"contract IERC20","name":"token","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"},{"indexed":false,"internalType":"address","name":"sendTo","type":"address"}],"name":"TokenWithdraw","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"expiry","type":"uint256"},{"indexed":false,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"Withdrawn","type":"event"},{"inputs":[{"internalType":"uint256","name":"","type":"uint256"}],"name":"allExpiries","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"","type":"uint256"},{"internalType":"uint256","name":"","type":"uint256"}],"name":"allocationSettings","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"baseToken","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"data","outputs":[{"internalType":"contract IPendleData","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"epochDuration","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"forge","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"forgeId","outputs":[{"internalType":"bytes32","name":"","type":"bytes32"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256[]","name":"_rewards","type":"uint256[]"}],"name":"fund","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"funded","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"expiry","type":"uint256"},{"internalType":"address","name":"user","type":"address"}],"name":"getBalances","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"governanceManager","outputs":[{"internalType":"contract PendleGovernanceManager","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"latestSetting","outputs":[{"internalType":"uint256","name":"id","type":"uint256"},{"internalType":"uint256","name":"firstEpochToApply","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"expiry","type":"uint256"}],"name":"lpHolderForExpiry","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"marketFactoryId","outputs":[{"internalType":"bytes32","name":"","type":"bytes32"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"numberOfEpochs","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"pendleTokenAddress","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"readAllExpiriesLength","outputs":[{"internalType":"uint256","name":"length","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"epochId","type":"uint256"},{"internalType":"address","name":"user","type":"address"}],"name":"readAvailableRewardsForUser","outputs":[{"internalType":"uint256","name":"availableRewardsForUser","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"epochId","type":"uint256"}],"name":"readEpochData","outputs":[{"internalType":"uint256","name":"settingId","type":"uint256"},{"internalType":"uint256","name":"totalRewards","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"expiry","type":"uint256"}],"name":"readExpiryData","outputs":[{"internalType":"uint256","name":"totalStakeLP","type":"uint256"},{"internalType":"uint256","name":"lastNYield","type":"uint256"},{"internalType":"uint256","name":"paramL","type":"uint256"},{"internalType":"address","name":"lpHolder","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"epochId","type":"uint256"},{"internalType":"uint256","name":"expiry","type":"uint256"}],"name":"readExpirySpecificEpochData","outputs":[{"internalType":"uint256","name":"stakeUnits","type":"uint256"},{"internalType":"uint256","name":"lastUpdatedForExpiry","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"epochId","type":"uint256"},{"internalType":"address","name":"user","type":"address"},{"internalType":"uint256","name":"expiry","type":"uint256"}],"name":"readStakeUnitsForUser","outputs":[{"internalType":"uint256","name":"stakeUnitsForUser","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"_user","type":"address"}],"name":"readUserExpiries","outputs":[{"internalType":"uint256[]","name":"_expiries","type":"uint256[]"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"expiry","type":"uint256"},{"internalType":"address","name":"user","type":"address"}],"name":"readUserSpecificExpiryData","outputs":[{"internalType":"uint256","name":"lastTimeUserStakeUpdated","type":"uint256"},{"internalType":"uint256","name":"lastEpochClaimed","type":"uint256"},{"internalType":"uint256","name":"balances","type":"uint256"},{"internalType":"uint256","name":"lastParamL","type":"uint256"},{"internalType":"uint256","name":"dueInterests","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"expiry","type":"uint256"},{"internalType":"address","name":"user","type":"address"}],"name":"redeemLpInterests","outputs":[{"internalType":"uint256","name":"interests","type":"uint256"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"expiry","type":"uint256"},{"internalType":"address","name":"user","type":"address"}],"name":"redeemRewards","outputs":[{"internalType":"uint256","name":"rewards","type":"uint256"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"router","outputs":[{"internalType":"contract IPendleRouter","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256[]","name":"_expiries","type":"uint256[]"},{"internalType":"uint256[]","name":"_allocationNumerators","type":"uint256[]"}],"name":"setAllocationSetting","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256[]","name":"expiries","type":"uint256[]"},{"internalType":"address","name":"spender","type":"address"}],"name":"setUpEmergencyMode","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"expiry","type":"uint256"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"stake","outputs":[{"internalType":"address","name":"newLpHoldingContractAddress","type":"address"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"expiry","type":"uint256"},{"internalType":"uint256","name":"amount","type":"uint256"},{"internalType":"uint256","name":"deadline","type":"uint256"},{"internalType":"uint8","name":"v","type":"uint8"},{"internalType":"bytes32","name":"r","type":"bytes32"},{"internalType":"bytes32","name":"s","type":"bytes32"}],"name":"stakeWithPermit","outputs":[{"internalType":"address","name":"newLpHoldingContractAddress","type":"address"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"startTime","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256[]","name":"_epochIds","type":"uint256[]"},{"internalType":"uint256[]","name":"_rewards","type":"uint256[]"}],"name":"topUpRewards","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"epochId","type":"uint256"}],"name":"totalRewardsForEpoch","outputs":[{"internalType":"uint256","name":"rewards","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"underlyingAsset","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"underlyingYieldToken","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"vestingEpochs","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"whitelist","outputs":[{"internalType":"contract IPendleWhitelist","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"expiry","type":"uint256"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"withdraw","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"amount","type":"uint256"},{"internalType":"address payable","name":"sendTo","type":"address"}],"name":"withdrawEther","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"contract IERC20","name":"token","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"},{"internalType":"address","name":"sendTo","type":"address"}],"name":"withdrawToken","outputs":[],"stateMutability":"nonpayable","type":"function"}]
+const PENDLE_SINGLE_STAKING_ABI = [{"inputs":[{"internalType":"uint256","name":"_amount","type":"uint256"}],"name":"enter","outputs":[{"internalType":"uint256","name":"sharesToMint","type":"uint256"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_share","type":"uint256"}],"name":"leave","outputs":[{"internalType":"uint256","name":"rewards","type":"uint256"}],"stateMutability":"nonpayable","type":"function"}]
 
-const PENDLE_REWARDS_PROXY_ABI = [{"inputs":[{"internalType":"contract PendleLiquidityMiningBase","name":"liqMiningContract","type":"address"},{"internalType":"uint256[]","name":"expiries","type":"uint256[]"},{"internalType":"address","name":"user","type":"address"}],"name":"redeemLiquidityRewards","outputs":[{"internalType":"uint256","name":"rewards","type":"uint256"},{"internalType":"uint256[]","name":"pendingRewards","type":"uint256[]"},{"internalType":"uint256","name":"currentEpoch","type":"uint256"}],"stateMutability":"nonpayable","type":"function"}]
-
-const PENDLE_SINGLE_STAKING_ABI = [{"inputs":[{"internalType":"contract IERC20","name":"_pendle","type":"address"}],"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"uint256","name":"pendleAmount","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"shares","type":"uint256"}],"name":"Enter","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"uint256","name":"pendleAmount","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"shares","type":"uint256"}],"name":"Leave","type":"event"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"balances","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"_amount","type":"uint256"}],"name":"enter","outputs":[{"internalType":"uint256","name":"sharesToMint","type":"uint256"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_share","type":"uint256"}],"name":"leave","outputs":[{"internalType":"uint256","name":"rewards","type":"uint256"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"pendle","outputs":[{"internalType":"contract IERC20","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"stakingManager","outputs":[{"internalType":"contract SingleStakingManager","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"totalSupply","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"}]
-
-const PENDLE_SINGLE_STAKING_MANAGER_ABI = [{"inputs":[{"internalType":"contract IERC20","name":"_pendle","type":"address"},{"internalType":"uint256","name":"_rewardPerBlock","type":"uint256"},{"internalType":"uint256","name":"_startBlock","type":"uint256"}],"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"previousOwner","type":"address"},{"indexed":true,"internalType":"address","name":"newOwner","type":"address"}],"name":"OwnershipTransferred","type":"event"},{"inputs":[{"internalType":"uint256","name":"_rewardPerBlock","type":"uint256"}],"name":"adjustRewardPerBlock","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"distributeRewards","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"finishedDistToBlock","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getBlocksLeft","outputs":[{"internalType":"uint256","name":"blocksLeft","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"owner","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"pendle","outputs":[{"internalType":"contract IERC20","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"renounceOwnership","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"rewardPerBlock","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"stakingContract","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"newOwner","type":"address"}],"name":"transferOwnership","outputs":[],"stateMutability":"nonpayable","type":"function"}]
+const PENDLE_POOLS_READ_WRAPPER_ABI = [{"inputs":[{"internalType":"contract PendleLiquidityRewardsProxy","name":"_rewardsProxy","type":"address"},{"internalType":"address","name":"_liqMiningContract","type":"address"},{"internalType":"uint256[]","name":"_expiries","type":"uint256[]"},{"internalType":"address","name":"_user","type":"address"}],"name":"claim","outputs":[{"internalType":"uint256","name":"rewards","type":"uint256"},{"internalType":"uint256[]","name":"pendingRewards","type":"uint256[]"},{"internalType":"uint256","name":"currentEpoch","type":"uint256"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"contract PendleMarket","name":"_market","type":"address"},{"internalType":"contract PendleLiquidityMining","name":"_staking","type":"address"}],"name":"getLiquidityMiningInfo","outputs":[{"internalType":"uint256","name":"expiry","type":"uint256"},{"internalType":"string","name":"marketSymbol","type":"string"},{"internalType":"string","name":"tokenSymbol","type":"string"},{"internalType":"uint256","name":"lpTotalSupply","type":"uint256"},{"internalType":"uint256","name":"totalStakeLP","type":"uint256"},{"internalType":"uint256","name":"latestSettingId","type":"uint256"},{"internalType":"uint256","name":"allocationSettings","type":"uint256"},{"internalType":"uint8","name":"tokenDecimals","type":"uint8"},{"internalType":"uint8","name":"xytDecimals","type":"uint8"},{"components":[{"internalType":"uint256","name":"xytBalance","type":"uint256"},{"internalType":"uint256","name":"xytWeight","type":"uint256"},{"internalType":"uint256","name":"tokenBalance","type":"uint256"},{"internalType":"uint256","name":"tokenWeight","type":"uint256"}],"internalType":"struct PendlePoolsReadWrapper.Reserves","name":"reserves","type":"tuple"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"contract PendleMarket","name":"_market","type":"address"},{"internalType":"contract PendleLiquidityMining","name":"_staking","type":"address"},{"internalType":"address","name":"_user","type":"address"}],"name":"getRewardsPerEpoch","outputs":[{"internalType":"uint256","name":"epochDuration","type":"uint256"},{"internalType":"uint256","name":"expiry","type":"uint256"},{"internalType":"uint256","name":"rewardsPerEpoch","type":"uint256"},{"internalType":"uint256","name":"userStaked","type":"uint256"},{"internalType":"uint256","name":"userAvailableToStake","type":"uint256"},{"internalType":"uint256","name":"userAllowance","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"contract PendleSingleStaking","name":"_staking","type":"address"},{"internalType":"contract PendleSingleStakingManager","name":"_manager","type":"address"},{"internalType":"contract IERC20","name":"_pendle","type":"address"},{"internalType":"address","name":"_user","type":"address"}],"name":"getSingleStakingInfo","outputs":[{"internalType":"uint256","name":"totalSupply","type":"uint256"},{"internalType":"uint256","name":"rewardPerBlock","type":"uint256"},{"internalType":"uint256","name":"userAvailableToStake","type":"uint256"},{"internalType":"uint256","name":"userAllowance","type":"uint256"},{"internalType":"uint256","name":"userShare","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"contract PendleMarket","name":"_market","type":"address"},{"internalType":"address","name":"_staking","type":"address"},{"internalType":"uint256","name":"_allowance","type":"uint256"}],"name":"marketApprove","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"contract PendleSingleStaking","name":"_staking","type":"address"},{"internalType":"uint256","name":"_balance","type":"uint256"}],"name":"singleStakingEnter","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"contract PendleSingleStaking","name":"_staking","type":"address"},{"internalType":"uint256","name":"_share","type":"uint256"}],"name":"singleStakingLeave","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"contract PendleLiquidityMining","name":"_staking","type":"address"},{"internalType":"uint256","name":"_expiry","type":"uint256"},{"internalType":"uint256","name":"_balance","type":"uint256"}],"name":"stake","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"contract IERC20","name":"_token","type":"address"},{"internalType":"address","name":"_staking","type":"address"},{"internalType":"uint256","name":"_allowance","type":"uint256"}],"name":"tokenApprove","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"contract PendleLiquidityMining","name":"_staking","type":"address"},{"internalType":"uint256","name":"_expiry","type":"uint256"},{"internalType":"uint256","name":"_balance","type":"uint256"}],"name":"withdraw","outputs":[],"stateMutability":"nonpayable","type":"function"}]
 
 COINGECKO_IDS = {
   PENDLE: "pendle",
@@ -18,14 +14,24 @@ COINGECKO_IDS = {
 }
 
 const FARMS = [{
-  yt: "YT-aUSDC-29DEC2022",
+  yt: "YT-aUSDC-30DEC2021",
   token: "USDC",
   market: "0x8315BcBC2c5C1Ef09B71731ab3827b0808A2D6bD",
   staking: "0x6f40A68E99645C60F14b497E75aE024777d61726",
 }, {
-  yt: "YT-cDAI-29DEC2022",
+  yt: "YT-aUSDC-29DEC2022",
+  token: "USDC",
+  market: "0x9e382E5f78B06631E4109b5d48151f2b3f326df0",
+  staking: "0x6f40A68E99645C60F14b497E75aE024777d61726",
+}, {
+  yt: "YT-cDAI-30DEC2021",
   token: "USDC",
   market: "0xB26C86330FC7F97533051F2F8cD0a90C2E82b5EE",
+  staking: "0x5B1C59Eb6872f88a92469751a034B9B5ADA9A73F",
+}, {
+  yt: "YT-cDAI-29DEC2022",
+  token: "USDC",
+  market: "0x944d1727d0b656f497e74044ff589871c330334f",
   staking: "0x5B1C59Eb6872f88a92469751a034B9B5ADA9A73F",
 }]
 
@@ -47,46 +53,39 @@ async function print_contained_price(farm, userPoolOwnership, ytPoolBalance, tok
   _print(`Your LP tokens comprise of ${yts.toFixed(4)} ${farm.yt} + ${tokens.toFixed(4)} ${farm.token}`)
 }
 
-async function loadLiquidityMiningInfo(App, farm, rewardTokenPrice, rewardsProxy) {
-  const REWARDS_PROXY = new ethers.Contract(rewardsProxy, PENDLE_REWARDS_PROXY_ABI, App.provider)
-  const MARKET = new ethers.Contract(farm.market, PENDLE_MARKET_ABI, App.provider)
-  const STAKING = new ethers.Contract(farm.staking, PENDLE_LIQUIDITY_MINING_ABI, App.provider)
-  const TOKEN = new ethers.Contract(await MARKET.token(), ERC20_ABI, App.provider)
-  const TOKEN_DECIMALS = parseInt(await TOKEN.decimals())
-  const YT = new ethers.Contract(await MARKET.xyt(), ERC20_ABI, App.provider)
-  const YT_DECIMALS = parseInt(await YT.decimals())
-  
-  const expiry = await MARKET.expiry()
-  const marketSymbol = await MARKET.symbol()
+async function loadLiquidityMiningInfo(App, farm, rewardTokenPrice, wrapper) {
+  const WRAPPER = new ethers.Contract(wrapper, PENDLE_POOLS_READ_WRAPPER_ABI, App.provider)
+  const mainInfo = await WRAPPER.getLiquidityMiningInfo(farm.market, farm.staking)
+  const epochInfo = await WRAPPER.getRewardsPerEpoch(farm.market, farm.staking, App.YOUR_ADDRESS);
+
+  const expiry = mainInfo.expiry
+  const marketSymbol = mainInfo.marketSymbol
   const ticker = `[${farm.yt}]-[${farm.token}] ${marketSymbol}`
-  const epochDuration = await STAKING.epochDuration()
-  const reserves = await MARKET.getReserves()
-  const ytPoolBalance = parseFloat(reserves[0]) / 10**YT_DECIMALS
-  const ytWeight = parseFloat(reserves[1])
-  const tokenPoolBalance = parseFloat(reserves[2]) / 10**TOKEN_DECIMALS
-  const tokenWeight = parseFloat(reserves[3])
-  const lpTotalSupply = parseFloat(await MARKET.totalSupply()) / 1e18
+  const epochDuration = epochInfo.epochDuration
+  const reserves = mainInfo.reserves
+  const ytPoolBalance = reserves[0] / 10**mainInfo.xytDecimals
+  const ytWeight = reserves[1]
+  const tokenPoolBalance = reserves[2] / 10**mainInfo.tokenDecimals
+  const tokenWeight = reserves[3]
+  const lpTotalSupply = mainInfo.lpTotalSupply / 1e18
 
-  const tokenPrice = await getTokenPrice(COINGECKO_IDS[await TOKEN.symbol()])
+  const tokenPrice = await getTokenPrice(COINGECKO_IDS[mainInfo.tokenSymbol])
   const tvl = (tokenPoolBalance * tokenPrice) / (tokenWeight / 2**40)
-  const lpPrice = tvl / lpTotalSupply / 10**(18-TOKEN_DECIMALS)  
+  const lpPrice = tvl / lpTotalSupply / 10**(18-mainInfo.tokenDecimals)  
   const ytPrice = (tokenPoolBalance / (tokenWeight / 2**40)) / (ytPoolBalance / (ytWeight / 2**40))
-  const lpStaked = parseFloat((await STAKING.readExpiryData(expiry)).totalStakeLP)
-  const lpStakedPrice = lpStaked * (lpPrice / 10**TOKEN_DECIMALS)
+  const lpStaked = mainInfo.totalStakeLP
+  const lpStakedPrice = lpStaked * (lpPrice / 10**mainInfo.tokenDecimals)
 
-  const latestSetting = await STAKING.latestSetting()
-  const allocationSettings = parseFloat(await STAKING.allocationSettings(latestSetting.id, expiry))
-  const currentEpoch = Math.floor((((Date.now() / 1000) - await STAKING.startTime()) / epochDuration) + 1)
-  const rewardsPerEpoch =  parseFloat(await STAKING.totalRewardsForEpoch(currentEpoch))
+  const rewardsPerEpoch =  epochInfo.rewardsPerEpoch
   const rewardsPerEpochUSD = (rewardsPerEpoch / 1e18) * rewardTokenPrice
-  const rewardsAllocated = allocationSettings ? (allocationSettings * rewardsPerEpoch) / 1e9 : 0
+  const rewardsAllocated = mainInfo.allocationSettings ? (mainInfo.allocationSettings * rewardsPerEpoch) / 1e9 : 0
   const rewardsPerEpochPerLP = rewardsAllocated / lpStaked
-  const apr = (rewardsPerEpochPerLP * rewardTokenPrice / epochDuration * 31536000 / (lpPrice * 10**(18-TOKEN_DECIMALS))) * 100
+  const apr = (rewardsPerEpochPerLP * rewardTokenPrice / epochDuration * 31536000 / (lpPrice * 10**(18-mainInfo.tokenDecimals))) * 100
 
-  const userStaked = parseFloat(await STAKING.getBalances(expiry, App.YOUR_ADDRESS)) / 1e18
-  const userStakedUSD = userStaked * (lpPrice * 10**(18-TOKEN_DECIMALS))
+  const userStaked = epochInfo.userStaked / 1e18
+  const userStakedUSD = userStaked * (lpPrice * 10**(18-mainInfo.tokenDecimals))
   const userPoolOwnership = (userStaked / lpTotalSupply) * 100
-  const userAvailableToStake = parseFloat(await MARKET.balanceOf(App.YOUR_ADDRESS)) / 1e18
+  const userAvailableToStake = epochInfo.userAvailableToStake / 1e18
 
   let liquidityRewards = 0;
   let pendingRewards = 0;
@@ -101,6 +100,7 @@ async function loadLiquidityMiningInfo(App, farm, rewardTokenPrice, rewardsProxy
   } catch {}  
   const userClaimableRewards = liquidityRewards / 1e18
   const userPendingRewards = pendingRewards / 1e18
+  const userAllowance = epochInfo.userAllowance / 1e18
 
   return  {
     farm,
@@ -117,19 +117,21 @@ async function loadLiquidityMiningInfo(App, farm, rewardTokenPrice, rewardsProxy
     rewardsPerEpoch,
     rewardsPerEpochUSD,
     apr,
+    epochInfo,
     userStaked,
     userStakedUSD,
     userPoolOwnership,
     userAvailableToStake,
     userClaimableRewards,
     userPendingRewards,
+    userAllowance,
     ytPoolBalance,
     tokenPoolBalance,
     epochDuration,
   }
 }
 
-async function printLiquidityMiningInfo(App, info, rewardTokenTicker, rewardTokenPrice, rewardsProxy) {
+async function printLiquidityMiningInfo(App, info, rewardTokenTicker, rewardTokenPrice, rewardsProxy, wrapper) {
   _print(
     `<a href='https://app.pendle.finance/trade?t=liquidity' target='_blank'>${info.ticker}</a> <a href='https://app.pendle.finance/trade?t=swap' target='_blank'>[<=>]</a> Price: $${formatMoney(info.lpPrice)} TVL: $${formatMoney(
       info.tvl
@@ -171,21 +173,20 @@ async function printLiquidityMiningInfo(App, info, rewardTokenTicker, rewardToke
 
   const approveAndStake = async function() {
     const signer = App.provider.getSigner()
-
-    const MARKET = new ethers.Contract(info.farm.market, PENDLE_MARKET_ABI, signer)
+    const WRAPPER = new ethers.Contract(wrapper, PENDLE_POOLS_READ_WRAPPER_ABI, signer)
     const STAKING = new ethers.Contract(info.farm.staking, PENDLE_LIQUIDITY_MINING_ABI, signer)
 
     const maxAllowance = ethers.constants.MaxUint256
-    const balance = await MARKET.balanceOf(App.YOUR_ADDRESS)
+    const balance = info.epochInfo.userAvailableToStake
     const current = balance / 1e18
-    const allowed = await MARKET.allowance(App.YOUR_ADDRESS, info.farm.staking)
+    const allowed = info.userAllowance
 
     let allow = Promise.resolve()
 
-    if (allowed / 1e18 < current / 1e18) {
+    if (allowed < current) {
       showLoading()
 
-      allow = MARKET.approve(info.farm.staking, maxAllowance)
+      allow = WRAPPER.marketApprove(info.farm.market, info.farm.staking, maxAllowance)
         .then(function(t) {
           return App.provider.waitForTransaction(t.hash)
         })
@@ -224,10 +225,9 @@ async function printLiquidityMiningInfo(App, info, rewardTokenTicker, rewardToke
 
   const withdraw = async function() {
     const signer = App.provider.getSigner()
-
     const STAKING = new ethers.Contract(info.farm.staking, PENDLE_LIQUIDITY_MINING_ABI, signer)
-    const balance = await STAKING.getBalances(info.expiry, App.YOUR_ADDRESS)
 
+    const balance = info.epochInfo.userStaked
     if (parseInt(balance) > 0) {
       showLoading()
 
@@ -243,13 +243,12 @@ async function printLiquidityMiningInfo(App, info, rewardTokenTicker, rewardToke
 
   const claim = async function() {
     const signer = App.provider.getSigner()
-  
-    const REWARDS_PROXY = new ethers.Contract(rewardsProxy, PENDLE_REWARDS_PROXY_ABI, signer)
+    const WRAPPER = new ethers.Contract(wrapper, PENDLE_POOLS_READ_WRAPPER_ABI, signer)
   
     if (info.userClaimableRewards > 0) {
       showLoading()
 
-      REWARDS_PROXY.redeemLiquidityRewards(info.farm.staking, [info.expiry], App.YOUR_ADDRESS)
+      WRAPPER.claim(rewardsProxy, info.farm.staking, [info.expiry], App.YOUR_ADDRESS)
         .then(function(t) {
           return App.provider.waitForTransaction(t.hash)
         })
@@ -261,12 +260,11 @@ async function printLiquidityMiningInfo(App, info, rewardTokenTicker, rewardToke
 
   const revoke = async function() {
     const signer = App.provider.getSigner()
-
-    const MARKET = new ethers.Contract(info.farm.market, PENDLE_MARKET_ABI, signer)
+    const WRAPPER = new ethers.Contract(wrapper, PENDLE_POOLS_READ_WRAPPER_ABI, signer)
 
     showLoading()
 
-    MARKET.approve(info.farm.staking, 0)
+    WRAPPER.marketApprove(info.farm.market, info.farm.staking, 0)
       .then(function(t) {
         return App.provider.waitForTransaction(t.hash)
       })
@@ -286,19 +284,19 @@ async function printLiquidityMiningInfo(App, info, rewardTokenTicker, rewardToke
   _print('')
 }
 
-async function loadSingleSidedInfo(App, pool, rewardTokenAddress, rewardTokenPrice) {
-  const PENDLE = new ethers.Contract(rewardTokenAddress, ERC20_ABI, App.provider)
-  const POOL = new ethers.Contract(pool.staking, PENDLE_SINGLE_STAKING_ABI, App.provider)
-  const MANAGER = new ethers.Contract(pool.manager, PENDLE_SINGLE_STAKING_MANAGER_ABI, App.provider)
+async function loadSingleSidedInfo(App, pool, rewardTokenAddress, rewardTokenPrice, wrapper) {
+  const WRAPPER = new ethers.Contract(wrapper, PENDLE_POOLS_READ_WRAPPER_ABI, App.provider)
+  const stakingInfo = await WRAPPER.getSingleStakingInfo(pool.staking, pool.manager, rewardTokenAddress, App.YOUR_ADDRESS)
 
-  const pendleStaked = parseFloat(await POOL.totalSupply()) / 1e18
+  const pendleStaked = stakingInfo.totalSupply / 1e18
   const tvl = pendleStaked * rewardTokenPrice
-  const rewardPerBlock = parseFloat(await MANAGER.rewardPerBlock())
+  const rewardPerBlock = stakingInfo.rewardPerBlock
   const rewardPerBlockUSD = rewardPerBlock / 1e18 * rewardTokenPrice
-  const userAvailableToStake = parseFloat(await PENDLE.balanceOf(App.YOUR_ADDRESS))
-  const userShare = await POOL.balances(App.YOUR_ADDRESS)
-  const userShareUSD = parseFloat(userShare) / 1e18 * rewardTokenPrice
-  const userPoolOwnership = (parseFloat(userShare) / 1e18) / pendleStaked * 100
+  const userAvailableToStake = stakingInfo.userAvailableToStake
+  const userAllowance = stakingInfo.userAllowance / 1e18
+  const userShare = stakingInfo.userShare
+  const userShareUSD = userShare / 1e18 * rewardTokenPrice
+  const userPoolOwnership = (userShare / 1e18) / pendleStaked * 100
 
   return {
     pool,
@@ -313,7 +311,7 @@ async function loadSingleSidedInfo(App, pool, rewardTokenAddress, rewardTokenPri
   }
 }
 
-async function printSingleSidedInfo(App, info, rewardTokenTicker, rewardTokenAddress, rewardTokenPrice) {
+async function printSingleSidedInfo(App, info, rewardTokenTicker, rewardTokenAddress, rewardTokenPrice, wrapper) {
   _print(
     `<a href='https://app.pendle.finance/farm' target='_blank'>${rewardTokenTicker} SINGLE STAKING POOL</a> TVL: $${formatMoney(info.tvl)}`
   )
@@ -327,11 +325,11 @@ async function printSingleSidedInfo(App, info, rewardTokenTicker, rewardTokenAdd
   _print(`APR: Day ${dailyAPR.toFixed(2)}% Week ${weeklyAPR.toFixed(2)}% Year ${yearlyAPR.toFixed(2)}%`)
   _print(`Total Staked: ${formatMoney(info.pendleStaked)} ${rewardTokenTicker} ($${formatMoney(info.tvl)})`)
   _print(
-    `You are staking ${formatMoney(parseFloat(info.userShare) / 1e18)} ${rewardTokenTicker} ` +
+    `You are staking ${formatMoney(info.userShare / 1e18)} ${rewardTokenTicker} ` +
       `$${formatMoney(info.userShareUSD)} (${info.userPoolOwnership.toFixed(5)}% of the pool).`
   )
 
-  if (parseFloat(info.userShare) > 0) {
+  if (info.userShare > 0) {
     const userYearlyRewards = (info.userPoolOwnership / 100) * ((info.rewardPerBlock / 1e18) * 365 * 86400 / 13.1)
     const userWeeklyRewards = userYearlyRewards / 52
     const userDailyRewards = userYearlyRewards / 365
@@ -345,21 +343,19 @@ async function printSingleSidedInfo(App, info, rewardTokenTicker, rewardTokenAdd
 
   const approveAndStake = async function() {
     const signer = App.provider.getSigner()
-
-    const PENDLE = new ethers.Contract(rewardTokenAddress, ERC20_ABI, signer)
+    const WRAPPER = new ethers.Contract(wrapper, PENDLE_POOLS_READ_WRAPPER_ABI, signer)
     const POOL = new ethers.Contract(info.pool.staking, PENDLE_SINGLE_STAKING_ABI, signer)
 
     const maxAllowance = ethers.constants.MaxUint256
-    const balanceOf = await PENDLE.balanceOf(App.YOUR_ADDRESS)
-    const current = balanceOf / 1e18
-    const allowed = await PENDLE.allowance(App.YOUR_ADDRESS, info.pool.staking)
+    const current =  info.userAvailableToStake / 1e18
+    const allowed = info.allowance
 
     let allow = Promise.resolve()
 
-    if (allowed / 1e18 < current / 1e18) {
+    if (allowed < current) {
       showLoading()
 
-      allow = PENDLE.approve(info.pool.staking, maxAllowance)
+      allow = WRAPPER.tokenApprove(rewardTokenAddress, info.pool.staking, maxAllowance)
         .then(function(t) {
           return App.provider.waitForTransaction(t.hash)
         })
@@ -374,7 +370,7 @@ async function printSingleSidedInfo(App, info, rewardTokenTicker, rewardTokenAdd
 
       allow
         .then(async function() {
-          POOL.enter(balanceOf)
+          POOL.enter(info.userAvailableToStake)
             .then(function(t) {
               App.provider.waitForTransaction(t.hash).then(function() {
                 hideLoading()
@@ -398,10 +394,9 @@ async function printSingleSidedInfo(App, info, rewardTokenTicker, rewardTokenAdd
 
   const unstake = async function() {
     const signer = App.provider.getSigner()
-
     const POOL = new ethers.Contract(info.pool.staking, PENDLE_SINGLE_STAKING_ABI, signer)
 
-    if (parseFloat(info.userShare) > 0) {
+    if (info.userShare > 0) {
       showLoading()
 
       POOL.leave(info.userShare)
@@ -416,12 +411,11 @@ async function printSingleSidedInfo(App, info, rewardTokenTicker, rewardTokenAdd
 
   const revoke = async function() {
     const signer = App.provider.getSigner()
-
-    const PENDLE = new ethers.Contract(rewardTokenAddress, ERC20_ABI, signer)
+    const WRAPPER = new ethers.Contract(wrapper, PENDLE_POOLS_READ_WRAPPER_ABI, signer)
 
     showLoading()
 
-    PENDLE.approve(info.pool.staking, 0)
+    WRAPPER.tokenApprove(rewardTokenAddress, info.pool.staking, 0)
       .then(function(t) {
         return App.provider.waitForTransaction(t.hash)
       })
@@ -447,6 +441,7 @@ async function main() {
   const rewardTokenAddress = '0x808507121B80c02388fAd14726482e061B8da827'
   const rewardTokenPrice = await getTokenPrice(COINGECKO_IDS[rewardTokenTicker])
   const rewardsProxy = '0x246Bc457768b96003349C367E42021ef47DF1640'
+  const wrapper = '0xfD6481F9cC5B44765c3E6A0eE8794d68956b1c7F'
 
   _print('=========================== PENDLE MARKET POOLS ===========================\n')
 
@@ -459,16 +454,16 @@ async function main() {
 
   let info
   for (i in FARMS) {
-    info = await loadLiquidityMiningInfo(App, FARMS[i], rewardTokenPrice, rewardsProxy)
-    printLiquidityMiningInfo(App, info, rewardTokenTicker, rewardTokenPrice, rewardsProxy)
+    info = await loadLiquidityMiningInfo(App, FARMS[i], rewardTokenPrice, wrapper)
+    printLiquidityMiningInfo(App, info, rewardTokenTicker, rewardTokenPrice, rewardsProxy, wrapper)
 
     _print("")
   }
 
   _print('========================== SINGLE SIDED STAKING POOL =========================\n')
 
-  info = await loadSingleSidedInfo(App, SINGLE_SIDED, rewardTokenAddress, rewardTokenPrice)
-  printSingleSidedInfo(App, info, rewardTokenTicker, rewardTokenAddress, rewardTokenPrice)
+  info = await loadSingleSidedInfo(App, SINGLE_SIDED, rewardTokenAddress, rewardTokenPrice, wrapper)
+  printSingleSidedInfo(App, info, rewardTokenTicker, rewardTokenAddress, rewardTokenPrice, wrapper)
 
   // _print('============================= SUSHISWAP POOLS =============================\n')
 
