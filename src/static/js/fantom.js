@@ -59,7 +59,7 @@ const main = async() => {
       [
         "Beefy",
         `<a href='beefy'>Various</a>`,
-        "Various",
+        "BIFI",
         "https://fantom.beefy.finance"
       ],
       [
@@ -113,13 +113,13 @@ const main = async() => {
       [
         "Tomb",
         `<a href='tomb'>Various</a>`,
-        "Various",
+        "TOMB",
         "https://tomb.finance"
       ],
       [
         "Shadow",
         `<a href='shadow'>Various</a>`,
-        "Various",
+        "SHADOW",
         "https://shadowswap.app"
       ],
       [
@@ -138,7 +138,7 @@ const main = async() => {
         "Chad",
         `<a href='chad'>Various</a>`,
         "CHAD",
-        "N/A"
+        "https://www.chadfinance.io"
       ],
       [
         "Guru",
@@ -155,7 +155,7 @@ const main = async() => {
       [
         "Mlnl",
         `<a href="mlnl">Various</a>`,
-        "Various",
+        "MLNL",
         "https://milfinance.xyz"
       ],
       [
@@ -199,7 +199,49 @@ const main = async() => {
         `<a href='shade'>Various</a>`,
         "SHADE",
         "https://shade.cash"
-      ]
+      ],
+      [
+        "Butt",
+        `<a href='butt'>Various</a>`,
+        "BUTT",
+        "https://www.buttcoincrypto.com"
+      ],
+      [
+        "Grim",
+        `<a href='grim'>Various</a>`,
+        "GRIM",
+        "https://app.grim.finance"
+      ],
+      [
+        "Ryu Inu",
+        `<a href='ryuinu'>Various</a>`,
+        "RYUINU",
+        "https://ftm.ryuinu.finance"
+      ],
+      [
+        "Knight",
+        `<a href='knight'>Various</a>`,
+        "KF",
+        "https://www.knight-finance.xyz"
+      ],
+      [
+        "beHODL",
+        `<a href='behodl'>Various</a>`,
+        "beHODL",
+        "N/A"
+      ],
+      [
+        "AURA",
+        `<a href='aura'>Various</a>`,
+        "AURA",
+        "https://dapp.aurafi.org/"
+      ],
+      [
+        "Galaxy Finance One",
+        `<a href='galaxy_triton'>Various</a>`,
+        "TRITON",
+        "https://fantom-triton.galaxyfinance.one/"
+      ],
     ]
   }
 

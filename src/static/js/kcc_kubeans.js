@@ -25,7 +25,7 @@ $(function() {
             _print(`Rewards start at block ${startBlock}\n`);
         } else{
         rewardsPerWeek = await KUBEANS_CHEF.kubeansPerBlock() / 1e18
-          * 604800 * multiplier / 2.1;
+          * 604800 * multiplier / 3;
         }
 
         const tokens = {};

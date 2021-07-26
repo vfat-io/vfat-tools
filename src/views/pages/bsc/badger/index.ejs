@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include(`${partials}/head`); -%>
+
+<body>
+<%- include(`${partials}/header_main`); -%>
+<pre id="log">
+*************** 👨‍🌾 UNOFFICIAL BADGER FARMING CALCULATOR 👨‍🌾 ***************
+INFO  : https://app.badger.finance
+***************************************************************************
+
+The below APRs do not include underlying rewards such as from curve, sushi or fees. They are only BADGER/DIGG farming APRs.
+
+</pre>
+<div class="loader--1"></div>
+<%- include(`${partials}/scripts`, {scriptname: 'bsc_badger'}); -%>
+</body>
+</html> 
