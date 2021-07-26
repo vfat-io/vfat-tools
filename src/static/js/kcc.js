@@ -8,7 +8,7 @@ const main = async() => {
     "title":"KCC Network",
     "heading":["Pool Provider","LP", "Reward Tokens", "INFO"],
     "rows": [
-      [ "Kukaburra",  `<a href="kukaburra"        >Various</a>`,     "KUKA",       "https://kukaburra.io/" ],
+      [ "Kukaburra",  `<a href="kukaburra"        >Various</a>`,     "🐦KUKA",       "https://kukaburra.io/" ],
       [ "Kudex",      `<a href="kudex"        >Various</a>`,     "KUD",       "https://kudex.finance" ],
       [ "KuSwap",     `<a href="kuswap"       >Various</a>`,     "KUS",       "https://kuswap.io" ],
       [ "KuCat",      `<a href="kucat"        >Various</a>`,     "CAT",       "https://kucat.finance" ],
