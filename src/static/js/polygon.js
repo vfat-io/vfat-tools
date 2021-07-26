@@ -469,6 +469,7 @@ const main = async () => {
       ['Galaxy Finance One  ', `<a href="galaxy_triton"   >Various</a>`, 'TRITON       ', 'https://polygon-triton.galaxyfinance.one/'],
       ['Stonk Share         ', `<a href="stonkshare"      >Various</a>`, 'STONKS       ', 'https://shares.stonk.farm/'],
       ['Iridium Finance     ', `<a href="iridiumfinance"  >Various</a>`, 'IRID         ', 'https://iridiumfinance.app/'],
+      ['PlanetSwap          ', `<a href="planetswap"      >Various</a>`, 'VENUS        ', 'https://venus.planetswap.app/'],
     ],
   }
 
