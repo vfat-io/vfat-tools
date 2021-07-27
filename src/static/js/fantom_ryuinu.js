@@ -24,7 +24,7 @@ async function main() {
         _print(`Rewards start at block ${startBlock}\n`);
     }else{
         rewardsPerWeek = await RYUINU_MASTERCHEF.farmTokenPerBlock() /1e18
-            * 604800 / 2.1;
+            * 604800 / 1.1;
     }
 
     const tokens = {};
