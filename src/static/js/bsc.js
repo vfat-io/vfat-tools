@@ -447,7 +447,8 @@ const main = async() => {
       ["PlanetSwap          ", `<a href="planetswap"    >Various</a>`,"MERCURY          ","https://planetswap.app"],
       ["Galaxy Finance One  ", `<a href="galaxy_triton" >Various</a>`,"TRITON           ","https://bsc-triton.galaxyfinance.one/"],
       ["Radeon Finance      ", `<a href="radeonfinance" >Various</a>`,"XAEA12           ","https://radeon.finance"],
-      ["Luckycatdefi        ", `<a href="Luckycatdefi"  >Various</a>`,"LUCKYCATDEFI     ","https://luckycatdefi.com"]
+      ["Luckycatdefi        ", `<a href="Luckycatdefi"  >Various</a>`,"LUCKYCATDEFI     ","https://luckycatdefi.com"],
+      ["Cobra (VenomDAO)    ", `<a href="cobra_venom"   >Various</a>`,"COBRA            ","https://cobra.exchange"]
     ]}
 
   let table = new AsciiTable().fromJSON(tableData);
