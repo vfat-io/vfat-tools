@@ -470,7 +470,8 @@ const main = async () => {
       ['Stonk Share         ', `<a href="stonkshare"      >Various</a>`, 'STONKS       ', 'https://shares.stonk.farm'],
       ['Iridium Finance     ', `<a href="iridiumfinance"  >Various</a>`, 'IRID         ', 'https://iridiumfinance.app'],
       ['PlanetSwap          ', `<a href="planetswap"      >Various</a>`, 'VENUS        ', 'https://venus.planetswap.app'],
-      ['Xenomorph Finance   ', `<a href="xenomorph"       >Various</a>`, 'XENO         ', 'https://xenomorph.finance']
+      ['Xenomorph Finance   ', `<a href="xenomorph"       >Various</a>`, 'XENO         ', 'https://xenomorph.finance'],
+      ['PolyGoon            ', `<a href="polygoon"        >Various</a>`, 'GOON         ', 'https://polygoon.finance']
     ],
   }
 
