@@ -472,7 +472,8 @@ const main = async () => {
       ['Xenomorph Finance   ', `<a href="xenomorph"       >Various</a>`, 'XENO         ', 'https://xenomorph.finance'],
       ['PolyGoon            ', `<a href="polygoon"        >Various</a>`, 'GOON         ', 'https://polygoon.finance'],
       ['PolyBakeryCream     ', `<a href="polybakerycream" >Various</a>`, 'CREAM        ', 'https://bakerycream.finance'],
-      ['HamsterParty        ', `<a href="hamsterparty"    >Various</a>`, 'HAMSTER      ', 'https://hamsterparty.club']
+      ['HamsterParty        ', `<a href="hamsterparty"    >Various</a>`, 'HAMSTER      ', 'https://hamsterparty.club'],
+      ['PolyMax - Gratitude ', `<a href="polymax_gratitude"    >Various</a>`, 'GRATITUDE      ', 'https://gratitude.polymax.club']
     ],
   }
 
