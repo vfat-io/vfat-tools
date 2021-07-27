@@ -459,7 +459,7 @@ const main = async () => {
       ['BlackSwan           ', `<a href="blackswan"       >Various</a>`, 'SWAN         ', 'https://app.blackswan.network'],
       ['PolyBass            ', `<a href="polybass"        >Various</a>`, 'BASS         ', 'https://polybass.farm'],
       ['PolyBakerySwap      ', `<a href="polybakeryswap"  >Various</a>`, 'BAKE         ', 'https://www.bakery-swap.finance'],
-	  ['PolyTail            ', `<a href="polytail"        >Various</a>`, 'POLYTAIL     ', 'https://polytail.farm'],
+	    ['PolyTail            ', `<a href="polytail"        >Various</a>`, 'POLYTAIL     ', 'https://polytail.farm'],
       ['PearZap             ', `<a href="pearzap"         >Various</a>`, 'PEAR         ', 'https://pearzap.com'],
       ['Astrofarms - Neptune', `<a href="astrofarmsneptune">Various</a>`,'NEPTUNE      ', 'https://neptune.astrofarms.finance'],
       ['Cygnus Finance      ', `<a href="cygnusfinance"   >Various</a>`, 'CYGNUS       ', 'https://www.cygnusdefi.com'],
@@ -471,7 +471,8 @@ const main = async () => {
       ['PlanetSwap          ', `<a href="planetswap"      >Various</a>`, 'VENUS        ', 'https://venus.planetswap.app'],
       ['Xenomorph Finance   ', `<a href="xenomorph"       >Various</a>`, 'XENO         ', 'https://xenomorph.finance'],
       ['PolyGoon            ', `<a href="polygoon"        >Various</a>`, 'GOON         ', 'https://polygoon.finance'],
-      ['PolyBakeryCream     ', `<a href="polybakerycream" >Various</a>`, 'CREAM        ', 'https://bakerycream.finance']
+      ['PolyBakeryCream     ', `<a href="polybakerycream" >Various</a>`, 'CREAM        ', 'https://bakerycream.finance'],
+      ['HamsterParty        ', `<a href="hamsterparty"    >Various</a>`, 'HAMSTER      ', 'https://hamsterparty.club']
     ],
   }
 
