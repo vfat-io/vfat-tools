@@ -450,7 +450,8 @@ const main = async() => {
       ["Luckycatdefi        ", `<a href="Luckycatdefi"  >Various</a>`,"LUCKYCATDEFI     ","https://luckycatdefi.com"],
       ["Cobra (VenomDAO)    ", `<a href="cobra_venom"   >Various</a>`,"COBRA            ","https://cobra.exchange"],
       ["Supergirlion        ", `<a href="supergirlion"  >Various</a>`,"SGIRL            ","https://newgirl.supermanion.com"],
-      ["Silver              ", `<a href="silver"        >Various</a>`,"SILVER           ","https://silver.eternity.money"]
+      ["Silver              ", `<a href="silver"        >Various</a>`,"SILVER           ","https://silver.eternity.money"],
+      ["Restaurant          ", `<a href="restaurant"    >Various</a>`,"RES              ","https://restaurantdefi.finance"]
     ]}
 
   let table = new AsciiTable().fromJSON(tableData);
