@@ -448,7 +448,10 @@ const main = async() => {
       ["Galaxy Finance One  ", `<a href="galaxy_triton" >Various</a>`,"TRITON           ","https://bsc-triton.galaxyfinance.one/"],
       ["Radeon Finance      ", `<a href="radeonfinance" >Various</a>`,"XAEA12           ","https://radeon.finance"],
       ["Luckycatdefi        ", `<a href="Luckycatdefi"  >Various</a>`,"LUCKYCATDEFI     ","https://luckycatdefi.com"],
-      ["Cobra (VenomDAO)    ", `<a href="cobra_venom"   >Various</a>`,"COBRA            ","https://cobra.exchange"]
+      ["Cobra (VenomDAO)    ", `<a href="cobra_venom"   >Various</a>`,"COBRA            ","https://cobra.exchange"],
+      ["Supergirlion        ", `<a href="supergirlion"  >Various</a>`,"SGIRL            ","https://newgirl.supermanion.com"],
+      ["Silver              ", `<a href="silver"        >Various</a>`,"SILVER           ","https://silver.eternity.money"],
+      ["Restaurant          ", `<a href="restaurant"    >Various</a>`,"RES              ","https://restaurantdefi.finance"]
     ]}
 
   let table = new AsciiTable().fromJSON(tableData);

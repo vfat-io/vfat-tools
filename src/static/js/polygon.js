@@ -364,7 +364,6 @@ const main = async () => {
       ['PolyGrass           ', `<a href="polygrass"       >Various</a>`, 'GRASS        ', 'https://polygrass.online'],
       ['Pickle              ', `<a href="pickle"          >Various</a>`, 'PICKLE       ', 'https://app.pickle.finance'],
       ['Fox                 ', `<a href="fox"             >Various</a>`, 'FOX          ', 'https://foxfarming.us'],
-      ['MountainSwap        ', `<a href="mountainswap"    >Various</a>`, 'MOUNTAIN     ', '                     '],
       ['Hippolygon          ', `<a href="hippolygon"      >Various</a>`, 'HIPPO        ', 'https://hippolygon.com'],
       ['Pepe                ', `<a href="pepe"            >Various</a>`, 'PEPEFARM     ', 'https://pepefarm.finance'],
       [
@@ -471,6 +470,7 @@ const main = async () => {
       ['Iridium Finance     ', `<a href="iridiumfinance"  >Various</a>`, 'IRID         ', 'https://iridiumfinance.app'],
       ['PlanetSwap          ', `<a href="planetswap"      >Various</a>`, 'VENUS        ', 'https://venus.planetswap.app'],
       ['Xenomorph Finance   ', `<a href="xenomorph"       >Various</a>`, 'XENO         ', 'https://xenomorph.finance'],
+      ['PolyGoon            ', `<a href="polygoon"        >Various</a>`, 'GOON         ', 'https://polygoon.finance'],
       ['PolyBakeryCream     ', `<a href="polybakerycream" >Various</a>`, 'CREAM        ', 'https://bakerycream.finance']
     ],
   }
