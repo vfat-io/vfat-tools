@@ -236,6 +236,12 @@ const main = async() => {
         "AURA",
         "https://dapp.aurafi.org/"
       ],
+      [
+        "Galaxy Finance One",
+        `<a href='galaxy_triton'>Various</a>`,
+        "TRITON",
+        "https://fantom-triton.galaxyfinance.one/"
+      ],
     ]
   }
 

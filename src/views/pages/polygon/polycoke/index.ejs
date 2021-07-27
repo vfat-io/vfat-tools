@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include(`${partials}/head`); -%>
+
+<body>
+<%- include(`${partials}/header_main`); -%>
+<pre id="log">
+***************************** POLYGON NETWORK ***************************
+    
+*************** 👨‍🌾 UNOFFICIAL POLYCOKE FARMING CALCULATOR 👨‍🌾 ****************
+INFO  : https://polycoke.farm
+*************************************************************************
+
+*** If you are being rate limited, please select a different RPC URL from here https://docs.matic.network/docs/develop/network-decokes/network/ ***
+
+</pre>
+<div class="loader--1"></div>
+<%- include(`${partials}/scripts`, {scriptname: 'matic_polycoke'}); -%>
+</body>
+</html> 
