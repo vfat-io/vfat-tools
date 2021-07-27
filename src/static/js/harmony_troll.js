@@ -25,7 +25,7 @@ async function main() {
     const prices = await getHarmonyPrices();
 
     await loadHarmonyChefContract(App, tokens, prices, TROLL_CHEF, TROLL_CHEF_ADDR, TROLL_CHEF_ABI, rewardTokenTicker,
-        "troll", null, rewardsPerWeek, "pendingTroll", [0,1,2,3,4,5]);
+        "govToken", null, rewardsPerWeek, "pendingReward", [0,1,2,3,4,5]);
 
     hideLoading();
   }
