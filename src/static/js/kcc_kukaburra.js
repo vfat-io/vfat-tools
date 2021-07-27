@@ -111,8 +111,8 @@ async function loadKukaKccSynthetixPool(App, tokens, prices, abi, address, rewar
     await loadKukaKccSynthetixPool(App, tokens, prices, kukuabi, '0xbb633732a0ef5ec3e751b3bcfec6584da94f3ae3', "rewardsToken", "stakingToken" )
     await loadKukaKccSynthetixPool(App, tokens, prices, kukuabi, '0x998C7a1211cE0c3Ef716dD8Ca3215C28E1B82979', "rewardsToken", "stakingToken" )
     await loadKukaKccSynthetixPool(App, tokens, prices, kukuabi, '0x1C7b61FB69846E79a0AEAdD195C81D924993fC1e', "rewardsToken", "stakingToken" )
-    //await loadKukaKccSynthetixPool(App, tokens, prices, kukuabi, '0xcf04fabac398823811df9d4bb1444ff0104be41d', "rewardsToken", "stakingToken" )
-    //await loadKukaKccSynthetixPool(App, tokens, prices, kukuabi, '0xdfd63A360e187932b4f1FE3186e0d73705D00936', "rewardsToken", "stakingToken" )
+    await loadKukaKccSynthetixPool(App, tokens, prices, kukuabi, '0xea4fc4599907a2f311b49964cc008d02ff10f73d', "rewardsToken", "stakingToken" )
+    await loadKukaKccSynthetixPool(App, tokens, prices, kukuabi, '0x5833a528f5ac21c442d3b0869fdcff80294b29a4', "rewardsToken", "stakingToken" )
 
     hideLoading();
 
