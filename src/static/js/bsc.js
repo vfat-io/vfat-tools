@@ -453,7 +453,7 @@ const main = async() => {
       ["Silver              ", `<a href="silver"        >Various</a>`,"SILVER           ","https://silver.eternity.money"],
       ["Restaurant          ", `<a href="restaurant"    >Various</a>`,"RES              ","https://restaurantdefi.finance"],
       ["SpacePortDeFi Layer1", `<a href="spaceport layer1">Various</a>`,"SATELITE       ","https://bsc2.spaceportdefi.com"],
-
+      ["MarsSwap            ", `<a href="marsswap"      >Various</a>`,"MARS             ","https://marsswap.finance"]
     ]}
 
   let table = new AsciiTable().fromJSON(tableData);
