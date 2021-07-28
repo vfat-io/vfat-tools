@@ -418,7 +418,7 @@ const main = async () => {
       ['Polymax - Berkshire ', `<a href="polymax_berkshire">Various</a>`, 'BERKSHIRE   ', 'https://berkshire.polymax.club'],
       ['Platinum Finance    ', `<a href="platinumfinance" >Various</a>`, 'PLATIN       ', 'https://platinumfinance.app'],
       ['DuckFarm            ', `<a href="duckfarm"        >Various</a>`, 'DUCK         ', 'https://duckfarm.one'],
-      ['PolyCow             ', `<a href="polycow"         >Various</a>`, 'MILK         ', 'https://polycow.finance']
+      ['PolyCow             ', `<a href="polycow"         >Various</a>`, 'MILK / BUTTER', 'https://polycow.finance']
     ],
   }
 
