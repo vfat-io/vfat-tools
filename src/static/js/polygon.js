@@ -416,7 +416,7 @@ const main = async () => {
       ['Polymax - Berkshire ', `<a href="polymax_berkshire">Various</a>`, 'BERKSHIRE   ', 'https://berkshire.polymax.club'],
       ['Platinum Finance    ', `<a href="platinumfinance" >Various</a>`, 'PLATIN       ', 'https://platinumfinance.app'],
       ['DuckFarm            ', `<a href="duckfarm"        >Various</a>`, 'DUCK         ', 'https://duckfarm.one'],
-      ['PolyCow             ', `<a href="polycow"         >Various</a>`, 'MILK         ', 'https://polycow.finance'],
+      ['PolyCow             ', `<a href="polycow"         >Various</a>`, 'MILK / BUTTER', 'https://polycow.finance'],
       ['Euroballz           ', `<a href="euroballz"       >Various</a>`, 'BALLZ        ', 'https://euroballz.finance'],
       ['JetSwap             ', `<a href="jetswap"         >Various</a>`, 'pWINGS       ', 'https://polygon.jetswap.finance'],
       ['PolyToken           ', `<a href="polytoken"       >Various</a>`, 'POLYTOKEN    ', 'https://polytoken.finance'],
@@ -478,7 +478,8 @@ const main = async () => {
       ['Suncrypto           ', `<a href="suncrypto"       >Various</a>`, 'SUN          ', 'https://suncrypto.finance'],
       ['SushiFarm Finance   ', `<a href="sushifarm"       >Various</a>`, 'SUSHI        ', 'https://sushifarm.finance'],
       ['MeebMaster          ', `<a href="meeb"            >Various</a>`, 'MEEB         ', 'https://app.meebmaster.com'],
-      ['Atma                ', `<a href="atma"            >Various</a>`, 'ATMA         ', 'https://0xatma.finance']
+      ['Atma                ', `<a href="atma"            >Various</a>`, 'ATMA         ', 'https://0xatma.finance'],
+      ['Avengers Defi       ', `<a href="avengers_defi"   >Various</a>`, 'AVENGERS     ', 'https://avengersdefi.club']
     ],
   }
 
