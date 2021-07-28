@@ -25,6 +25,7 @@ async function main() {
       let pool = await MCN_CHEF.getPool(poolAddress);
       let rewards = []
       let pendingRewards = await MCN_CHEF.viewRewards(poolAddress, App.YOUR_ADDRESS);
+      const stakedAmount = pool.amount / 1e18;
       for(let i = 0; i < pool.bonuses.length; i++){
         if(Date.now() / 1000 < pool.bonuses[i].endTime){
           rewards.push({
@@ -39,7 +40,8 @@ async function main() {
           abi : MCN_CHEF_ABI,
           address : MCN_CHEF_ADDR,
           stakedToken : poolAddress,
-          rewards : rewards
+          rewards : rewards,
+          stakedAmount : stakedAmount
       });
       }
   }
@@ -59,7 +61,7 @@ async function main() {
 async function loadMcnprotocolContracts(App, tokens, prices, pools, mcnContract) {
   let totalStaked  = 0, totalUserStaked = 0, individualAPRs = [];
   const infos = await Promise.all(pools.map(p =>
-    loadMcnprotocolPoolInfo(App, tokens, p.address, p.stakedToken, p.rewards, mcnContract)));
+    loadMcnprotocolPoolInfo(App, tokens, p.address, p.stakedToken, p.rewards, mcnContract, p.stakedAmount)));
   let tokenAddresses = []
   for (const info of infos) {
     info.stakeToken.tokens.forEach(t => tokenAddresses.push(t));
@@ -81,7 +83,7 @@ async function loadMcnprotocolContracts(App, tokens, prices, pools, mcnContract)
 }
 
 async function loadMcnprotocolPoolInfo(App, tokens, stakingAddress, stakeTokenAddress,
-  rewards, mcnContract) {
+  rewards, mcnContract, stakedAmount) {
     const rewardTokens = await Promise.all(rewards.map(async r => {
       if (!getParameterCaseInsensitive(tokens, r.rewardToken)) {
         tokens[r.rewardToken] = await getToken(App, r.rewardToken, stakingAddress);
@@ -100,6 +102,7 @@ async function loadMcnprotocolPoolInfo(App, tokens, stakingAddress, stakeTokenAd
     }));
 
     const stakeToken = await getToken(App, stakeTokenAddress, stakingAddress);
+    stakeToken.staked = stakedAmount;
 
     const userInfos = await mcnContract.getUser(stakeTokenAddress, App.YOUR_ADDRESS);
 
