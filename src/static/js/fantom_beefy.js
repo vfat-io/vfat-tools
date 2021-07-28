@@ -20,15 +20,36 @@ const Address = [
   "0xDa4bb93Bac7CC00F6c6e2193d115Cf45099b31a0",
   "0xdf68Bf80D427A5827Ff2c06A9c70D407e17DC041",
   "0xEe3a7c885Fd3cc5358FF583F2DAB3b8bC473316f",
-  "0x41D44B276904561Ac51855159516FD4cB2c90968"
+  "0x41D44B276904561Ac51855159516FD4cB2c90968",
+  "0x59247cfe6FC768A8C3F95601008B75A94F4939Bd",
+  "0xbF07093ccd6adFC3dEB259C557b61E94c1F66945",
+  "0xda3c57A81aCe16b2cC34e8872e886575f8ccf672",
+  "0x27c77411074ba90cA35e6f92A79dAd577c05A746",
+  "0xEE40C6Decc15dCeCE7a836e5CD5Ff94523D32265",
+  "0xae94e96bF81b3a43027918b138B71a771D381150",
+  "0x8316b990De26eB530B7B1bb0d87f5b0a304637cd",
+  "0x7CE2332fAF6328986C75e3A8fCc1CB79621aeB1F",
+  "0xe8188B9701E6DB1Fe24c75783474D22e5957BBEF",
+  "0xC5b2a6aB801E74F098aCC8Bb62B786b47319c4D9",
+  "0xb8c90D7C60Cf88915BCc4F388F207D5F7fDaA9b4",
+  "0x15DD4398721733D8273FD4Ed9ac5eadC6c018866",
+  "0x9344e006518af9739F4077014F8B7794777Ae96F",
+  "0xf2e4C5b0Ed40716cB23cCE7eBd15ECDCDa934EDf",
+  "0x33E0Feb374C9B7fC3Ac392140BdE3036263D8e5e",
+  "0xBdA8bC79705BC60226adCA2766e94Eb5512949a3",
+  "0x6676C93eb0F2daEfD3b9d03De2E3b18F888cF942",
+  "0x7076a33b6525132fF77F0FeE2daB2a1e79688DA0",
+  "0x7715d9458683288024B9e20D1319DC162361B06c"
+
+
 ]
-  
+
   async function main() {
     const App = await init_ethers();
-  
+
     _print(`Initialized ${App.YOUR_ADDRESS}\n`);
     _print("Reading smart contracts...\n");
-  
+
     const prices = await getFantomPrices();
     const tokens = {};
     const poolInfos = await Promise.all(Address.map(a => loadBeefyPoolInfo(App, tokens, prices, a)));
@@ -43,10 +64,10 @@ const Address = [
     if (userTvl > 0) {
       _print_bold(`You are staking a total of $${formatMoney(userTvl)}`);
     }
-  
+
     hideLoading();
   }
-  
+
   async function loadBeefyPoolInfo(App, tokens, prices, contractAddress) {
     try {
       const contract = await new ethers.Contract(contractAddress, BEEFY_VAULT_ABI, App.provider);
@@ -66,7 +87,7 @@ const Address = [
       return null;
     }
   }
-  
+
   async function printBeefyContract(poolInfo) {
     const poolPrices = poolInfo.poolPrices;
     _print(`${poolPrices.name} Price: $${formatMoney(poolPrices.price)} TVL: $${formatMoney(poolPrices.tvl)}`);
@@ -78,4 +99,3 @@ const Address = [
     }
     _print("");
   }
-  

@@ -47,7 +47,7 @@ async function main() {
   }
 
   const xusdUsdcPool = {
-    address: "0x7A421C2E1fAb82Da0259582F1821e7bEB5D42233",
+    address: "0x1e49892c0d0D4455bbbA633EeDaDd6d26224369e",
     abi: XDO_UNIPOOL_STAKING_ABI,
     stakeTokenFunction: "uniToken",
     rewardTokenFunction: "lqtyToken"

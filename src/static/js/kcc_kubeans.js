@@ -25,14 +25,14 @@ $(function() {
             _print(`Rewards start at block ${startBlock}\n`);
         } else{
         rewardsPerWeek = await KUBEANS_CHEF.kubeansPerBlock() / 1e18
-          * 604800 * multiplier / 2.1;
+          * 604800 * multiplier / 3;
         }
 
         const tokens = {};
         const prices = await getKccPrices();
 
         await loadKccChefContract(App, tokens, prices, KUBEANS_CHEF, KUBEANS_CHEF_ADDR, KUBEANS_CHEF_ABI, rewardTokenTicker,
-            "KUBEANS", null, rewardsPerWeek, "pendingKubeans");
+            "kubeans", null, rewardsPerWeek, "pendingKubeans");
 
         hideLoading();
       }
