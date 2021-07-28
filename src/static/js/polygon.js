@@ -478,7 +478,8 @@ const main = async () => {
       ['Suncrypto           ', `<a href="suncrypto"       >Various</a>`, 'SUN          ', 'https://suncrypto.finance'],
       ['SushiFarm Finance   ', `<a href="sushifarm"       >Various</a>`, 'SUSHI        ', 'https://sushifarm.finance'],
       ['MeebMaster          ', `<a href="meeb"            >Various</a>`, 'MEEB         ', 'https://app.meebmaster.com'],
-      ['Atma                ', `<a href="atma"            >Various</a>`, 'ATMA         ', 'https://0xatma.finance']
+      ['Atma                ', `<a href="atma"            >Various</a>`, 'ATMA         ', 'https://0xatma.finance'],
+      ['Avengers Defi       ', `<a href="avengers_defi"   >Various</a>`, 'AVENGERS     ', 'https://avengersdefi.club']
     ],
   }
 
