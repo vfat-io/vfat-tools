@@ -477,7 +477,8 @@ const main = async () => {
       ['PolyMax - Gratitude ', `<a href="polymax_gratitude">Various</a>`,'GRATITUDE    ', 'https://gratitude.polymax.club'],
       ['Suncrypto           ', `<a href="suncrypto"       >Various</a>`, 'SUN          ', 'https://suncrypto.finance'],
       ['SushiFarm Finance   ', `<a href="sushifarm"       >Various</a>`, 'SUSHI        ', 'https://sushifarm.finance'],
-      ['MeebMaster          ', `<a href="meeb"            >Various</a>`, 'MEEB         ', 'https://app.meebmaster.com']
+      ['MeebMaster          ', `<a href="meeb"            >Various</a>`, 'MEEB         ', 'https://app.meebmaster.com'],
+      ['Atma                ', `<a href="atma"            >Various</a>`, 'ATMA         ', 'https://0xatma.finance']
     ],
   }
 
