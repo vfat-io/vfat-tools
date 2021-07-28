@@ -140,7 +140,8 @@ const main = async () => {
       ["WePiggy                      ", `<a href="../wepiggy/"           >Various</a>`, "WPC                ", "https://www.wepiggy.com/markets"],
       ["Saddle                       ", `<a href="../saddle/"            >Various</a>`, "Various            ", "https://saddle.exchange"],
       ["Composable                   ", `<a href="../composable/"        >Various</a>`, "Composable         ", "https://app.composable.finance"],
-      ["MCN Ventures                 ", `<a href="../mcn/"               >Various</a>`, "MCN                ", "https://farm.mcn.ventures"]
+      ["MCN Ventures                 ", `<a href="../mcn/"               >Various</a>`, "MCN                ", "https://farm.mcn.ventures"],
+      ["Fox Shapeshift               ", `<a href="../fox/"               >Various</a>`, "FOX                ", "https://fox.shapeshift.com"]
     ]
   }
 
