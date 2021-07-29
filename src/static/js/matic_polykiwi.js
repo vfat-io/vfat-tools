@@ -10,7 +10,7 @@ async function main() {
     _print(`Initialized ${App.YOUR_ADDRESS}\n`);
     _print("Reading smart contracts...\n");
 
-   const KIWI_CHEF_ADDR = "0x4760887cf9B85D75615C944cdcF0aCA48Cc76505";
+   const KIWI_CHEF_ADDR = "0x333E03D75e1245Ec22d9C961Eb7bC1e3Aea2FeAa";
    const rewardTokenTicker = "KIWI";
    const KIWI_CHEF = new ethers.Contract(KIWI_CHEF_ADDR, KIWI_CHEF_ABI, App.provider);
 
