@@ -46,7 +46,14 @@ async function main() {
     rewardTokenFunction: "lqtyToken"
   }
 
-  const xusdUsdcPool = {
+  const xusdUsdcPoolPhase1 = {
+    address: "0x7A421C2E1fAb82Da0259582F1821e7bEB5D42233",
+    abi: XDO_UNIPOOL_STAKING_ABI,
+    stakeTokenFunction: "uniToken",
+    rewardTokenFunction: "lqtyToken"
+  }
+
+  const xusdUsdcPoolPhase2 = {
     address: "0x1e49892c0d0D4455bbbA633EeDaDd6d26224369e",
     abi: XDO_UNIPOOL_STAKING_ABI,
     stakeTokenFunction: "uniToken",
@@ -60,7 +67,7 @@ async function main() {
     rewardTokenAddresses: rewardTokenAddresses2
   }
 
-  let p0 = await loadMultipleMaticSynthetixPools(App, tokens, prices, [uniPool, xusdUsdcPool]);
+  let p0 = await loadMultipleMaticSynthetixPools(App, tokens, prices, [uniPool, xusdUsdcPoolPhase1, xusdUsdcPoolPhase2]);
   let p = await loadXDollarSynthetixPools(App, tokens, prices, pools);
   let p1 = await loadXdoPools(App, tokens, prices, [xdoPool]);
   _print_bold(`Total staked: $${formatMoney(p.staked_tvl + p0.staked_tvl + p1.staked_tvl)}`);
