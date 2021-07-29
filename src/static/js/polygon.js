@@ -21,7 +21,7 @@ const main = async () => {
         'https://swap.cometh.io/#/stake',
       ],
       ['Dark                ', `<a href="dark"            >Various</a>`, 'DB           ', 'https://www.dark.build'],
-      ['Smartdex *          ', `<a href="smartdex"        >Various</a>`, 'NIOX         ', 'https://swap.smartdex.app'],
+      ['Smartdex            ', `<a href="smartdex"        >Various</a>`, 'NIOX         ', 'https://swap.smartdex.app'],
       ['Elk                 ', `<a href="elk"             >Various</a>`, 'ELK          ', 'https://app.elk.finance'],
       ['Polywhale           ', `<a href="polywhale"       >Various</a>`, 'KRILL        ', 'https://polywhale.finance'],
       ['Aave                ', `<a href="aave"            >Various</a>`, 'MATIC        ', 'https://aave.com'],
@@ -89,7 +89,7 @@ const main = async () => {
       ['Gemstones Finance   ', `<a href="gemstonesfinance">Various</a>`, 'GMS          ', 'https://gemstones.finance'],
       ['Polypanda           ', `<a href="polypanda"       >Various</a>`, 'BAMBOO       ', 'https://polypanda.finance'],
       [
-        'Dfyn *              ',
+        'Dfyn                ',
         `<a href="dfyn"            >Various</a>`,
         'DFYN         ',
         'https://exchange.dfyn.network',
@@ -142,7 +142,7 @@ const main = async () => {
       ],
       ['Moonwolf            ', `<a href="moonwolf"        >Various</a>`, 'MOON         ', 'https://www.moonwolf.io'],
       [
-        'Iron *              ',
+        'Iron                ',
         `<a href="iron"            >Various</a>`,
         'TITAN        ',
         'https://polygon.iron.finance',
@@ -253,7 +253,7 @@ const main = async () => {
       ['PolyZero            ', `<a href="polyzero"        >Various</a>`, 'ZERO         ', ''],
       ['PolyMax             ', `<a href="polymax"         >Various</a>`, 'MAX          ', 'https://polymax.club'],
       ['PolySnowFarm        ', `<a href="polysnowfarm"    >Various</a>`, 'SNOW         ', 'https://polysnow.farm'],
-      ['Polyyeld *          ', `<a href="polyyeld"        >Various</a>`, 'YELD/xYELD   ', 'https://polyyeld.finance'],
+      ['Polyyeld            ', `<a href="polyyeld"        >Various</a>`, 'YELD/xYELD   ', 'https://polyyeld.finance'],
       ['Polysa              ', `<a href="polysa"          >Various</a>`, 'DUFF         ', 'https://www.polysa.finance'],
       [
         'Wault               ',
@@ -273,7 +273,7 @@ const main = async () => {
         'TREAT        ',
         'https://www.polywoof.finance',
       ],
-      ['SafeDollar *        ', `<a href="safedollar"      >Various</a>`, 'SDS/SDO      ', 'https://app.safedollar.fi'],
+      ['SafeDollar          ', `<a href="safedollar"      >Various</a>`, 'SDS/SDO      ', 'https://app.safedollar.fi'],
       [
         'Cosmic              ',
         `<a href="cosmic"          >Various</a>`,
@@ -482,7 +482,8 @@ const main = async () => {
       ['Avengers Defi       ', `<a href="avengers_defi"   >Various</a>`, 'AVENGERS     ', 'https://avengersdefi.club'],
       ['PolyYork            ', `<a href="polyyork"        >Various</a>`, 'POLYYORK     ', 'https://polyyork.finance'],
       ['PolyKiwi            ', `<a href="polykiwi"        >Various</a>`, 'KIWI         ', 'https://polykiwi.farm'],
-      ['PolyFund            ', `<a href="polyfund"        >Various</a>`, 'FUND         ', 'https://www.polyfund.finance']
+      //['PolyFund            ', `<a href="polyfund"        >Various</a>`, 'FUND         ', 'https://www.polyfund.finance'],
+      ['PolySky             ', `<a href="polysky"         >Various</a>`, 'SIRIUS       ', 'https://polysky.finance']
     ],
   }
 
