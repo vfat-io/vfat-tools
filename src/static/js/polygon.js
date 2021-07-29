@@ -480,7 +480,8 @@ const main = async () => {
       ['MeebMaster          ', `<a href="meeb"            >Various</a>`, 'MEEB         ', 'https://app.meebmaster.com'],
       ['Atma                ', `<a href="atma"            >Various</a>`, 'ATMA         ', 'https://0xatma.finance'],
       ['Avengers Defi       ', `<a href="avengers_defi"   >Various</a>`, 'AVENGERS     ', 'https://avengersdefi.club'],
-      ['PolyKiwi                ', `<a href="polykiwi"            >Various</a>`, 'KIWI         ', 'https://polykiwi.farm']
+      ['PolyKiwi                ', `<a href="polykiwi"            >Various</a>`, 'KIWI         ', 'https://polykiwi.farm'],
+      ['PolyGlass                ', `<a href="polyglass"            >Various</a>`, 'GLASS         ', 'https://polyglass.farm']
     ],
   }
 
