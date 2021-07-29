@@ -131,7 +131,7 @@ async function printSynthetixPool(App, info, chain="eth", customURLs) {
     }
     _print(`Earned ${info.earned.toFixed(6)} ${info.rewardTokenTicker} ($${formatMoney(info.earned*info.rewardTokenPrice)})`)
     if (info.stakeTokenTicker != "ETH") {
-        _print_link(`Stake ${info.userUnstaked.toFixed(6)} ${info.stakeTokenTicker}`, approveTENDAndStake)
+        _print_link(`Stake ${info.userUnstaked.toFixed(6)} ${info.stakeTokenTicker}`,() => alert('The prestaking closed. You can not stake LP anymore.'))
     }
     else {
         _print("Please use the official website to stake ETH.");

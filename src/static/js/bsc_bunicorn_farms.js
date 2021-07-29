@@ -6,7 +6,7 @@ const BUNI_CHEF_ABI = [{inputs:[{internalType:"contract BuniToken",name:"_buni",
 async function main() {
   const App = await init_ethers();
 
-  const BUNI_CHEF_ADDR = "0xE2d84D292d014E589d1F6d4eAc6DdE0181C3CfBB";
+  const BUNI_CHEF_ADDR = "0xA12c974fE40ea825E66615bA0Dc4Fd19be4D7d24";
   const rewardTokenTicker = "BUNI";
   const BUNI_CHEF = new ethers.Contract(BUNI_CHEF_ADDR, BUNI_CHEF_ABI, App.provider);
   const rewardsPerWeek = await BUNI_CHEF.buniPerBlock() /1e18
@@ -177,8 +177,8 @@ async function main() {
   }else{
     _print_link(`Unstake ${userStaked.toFixed(fixedDecimals)} ${stakeTokenTicker}`, unstake)
   }
-  _print(`<a href='https://bunicorn.exchange/#/vesting' target='_blank'>Harvest NFT</a>`);
-  _print_link(`Claim ${pendingRewardTokens.toFixed(fixedDecimals)} ${rewardTokenTicker} ($${formatMoney(pendingRewardTokens*rewardTokenPrice)})`, claim)
+  _print(`<a href='https://bunicorn.exchange/#/vesting' target='_blank'>Show My NFT</a>`);
+  _print_link(`Harvest NFT ${pendingRewardTokens.toFixed(fixedDecimals)} ${rewardTokenTicker} ($${formatMoney(pendingRewardTokens*rewardTokenPrice)})`, claim)
   _print(`Staking or unstaking also claims rewards.`)
   _print("");
 }
