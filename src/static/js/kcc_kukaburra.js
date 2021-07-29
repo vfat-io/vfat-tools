@@ -10,6 +10,116 @@ async function main() {
     
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+    async function loadKukaKccSynthetixPoolInfowkcs(App, tokens, prices, stakingAbi, stakingAddress,
+        rewardTokenFunction, stakeTokenFunction) {
+          const STAKING_POOL = new ethers.Contract(stakingAddress, stakingAbi, App.provider);
+    
+          if (!STAKING_POOL.callStatic[stakeTokenFunction]) {
+            console.log("Couldn't find stake function ", stakeTokenFunction);
+          }
+          const stakeTokenAddress = await STAKING_POOL.callStatic[stakeTokenFunction]();
+    
+          const rewardTokenAddress = await STAKING_POOL.callStatic[rewardTokenFunction]();
+    
+          var stakeToken = await getKccToken(App, stakeTokenAddress, stakingAddress);
+    
+          if (stakeTokenAddress.toLowerCase() === rewardTokenAddress.toLowerCase()) {
+            stakeToken.staked = await STAKING_POOL.totalSupply() / 10 ** stakeToken.decimals;
+          }
+    
+          var newPriceAddresses = stakeToken.tokens.filter(x =>
+            !getParameterCaseInsensitive(prices, x));
+          var newPrices = await lookUpTokenPrices(newPriceAddresses);
+          for (const key in newPrices) {
+            if (newPrices[key]?.usd)
+                prices[key] = newPrices[key];
+          }
+          var newTokenAddresses = stakeToken.tokens.filter(x =>
+            !getParameterCaseInsensitive(tokens,x));
+          for (const address of newTokenAddresses) {
+              tokens[address] = await getKccToken(App, address, stakingAddress);
+          }
+          if (!getParameterCaseInsensitive(tokens, rewardTokenAddress)) {
+              tokens[rewardTokenAddress] = await getKccToken(App, rewardTokenAddress, stakingAddress);
+          }
+          const rewardToken = getParameterCaseInsensitive(tokens, rewardTokenAddress);
+    
+          const rewardTokenTicker = rewardToken.symbol;
+    
+          const poolPrices = getPoolPrices(tokens, prices, stakeToken, "kcc");
+    
+          if (!poolPrices)
+          {
+            console.log(`Couldn't calculate prices for pool ${stakeTokenAddress}`);
+            return null;
+          }
+    
+          const stakeTokenTicker = poolPrices.stakeTokenTicker;
+    
+          const stakeTokenPrice =
+              prices[stakeTokenAddress]?.usd ?? getParameterCaseInsensitive(prices, stakeTokenAddress)?.usd;
+          const rewardTokenPrice = getParameterCaseInsensitive(prices, rewardTokenAddress)?.usd;
+    
+          const periodFinish = await STAKING_POOL.periodFinish();
+          const rewardRate = await STAKING_POOL.rewardRate();
+          const weeklyRewards = (Date.now() / 1000 > periodFinish) ? 0 : rewardRate / 1e18 * 604800;
+    
+          const usdPerWeek = weeklyRewards * rewardTokenPrice;
+    
+          const staked_tvl = poolPrices.staked_tvl;
+    
+          const userStaked = await STAKING_POOL.balanceOf(App.YOUR_ADDRESS) / 10 ** stakeToken.decimals;
+    
+          const userUnstaked = stakeToken.unstaked;
+    
+          const earned = await STAKING_POOL.earned(App.YOUR_ADDRESS) / 10 ** rewardToken.decimals;
+    
+          return  {
+            stakingAddress,
+            poolPrices,
+            stakeTokenAddress,
+            rewardTokenAddress,
+            stakeTokenTicker,
+            rewardTokenTicker,
+            stakeTokenPrice,
+            rewardTokenPrice,
+            weeklyRewards,
+            usdPerWeek,
+            staked_tvl,
+            userStaked,
+            userUnstaked,
+            earned
+          }
+    }
+    
+    async function loadKukaKccSynthetixPoolwkcs(App, tokens, prices, abi, address, rewardTokenFunction, stakeTokenFunction) {
+        const info = await loadKukaKccSynthetixPoolInfowkcs(App, tokens, prices, abi, address, rewardTokenFunction, stakeTokenFunction);
+        if (!info) return null;
+        return await printSynthetixPool(App, info, "kcc");
+    }
+
+
+
+
+
+
+
+
+
+
+
 async function loadKukaKccSynthetixPoolInfo(App, tokens, prices, stakingAbi, stakingAddress,
     rewardTokenFunction, stakeTokenFunction) {
       const STAKING_POOL = new ethers.Contract(stakingAddress, stakingAbi, App.provider);
@@ -111,8 +221,12 @@ async function loadKukaKccSynthetixPool(App, tokens, prices, abi, address, rewar
     await loadKukaKccSynthetixPool(App, tokens, prices, kukuabi, '0xbb633732a0ef5ec3e751b3bcfec6584da94f3ae3', "rewardsToken", "stakingToken" )
     await loadKukaKccSynthetixPool(App, tokens, prices, kukuabi, '0x998C7a1211cE0c3Ef716dD8Ca3215C28E1B82979', "rewardsToken", "stakingToken" )
     await loadKukaKccSynthetixPool(App, tokens, prices, kukuabi, '0x1C7b61FB69846E79a0AEAdD195C81D924993fC1e', "rewardsToken", "stakingToken" )
-    await loadKukaKccSynthetixPool(App, tokens, prices, kukuabi, '0xea4fc4599907a2f311b49964cc008d02ff10f73d', "rewardsToken", "stakingToken" )
-    await loadKukaKccSynthetixPool(App, tokens, prices, kukuabi, '0x5833a528f5ac21c442d3b0869fdcff80294b29a4', "rewardsToken", "stakingToken" )
+    await loadKukaKccSynthetixPoolwkcs(App, tokens, prices, kukuabi, '0xea4fc4599907a2f311b49964cc008d02ff10f73d', "rewardsToken", "stakingToken" )  //wkcs
+    await loadKukaKccSynthetixPoolwkcs(App, tokens, prices, kukuabi, '0x5833a528f5ac21c442d3b0869fdcff80294b29a4', "rewardsToken", "stakingToken" )  //wkcs
+
+    await loadKukaKccSynthetixPool(App, tokens, prices, kukuabi, '0x900144b8fda9fc829fd7daa3f7d6dec232acf988', "rewardsToken", "stakingToken" )
+    await loadKukaKccSynthetixPool(App, tokens, prices, kukuabi, '0x92c30baf20c80a96215ca9b02ef4e5126558803b', "rewardsToken", "stakingToken" )
+    await loadKukaKccSynthetixPool(App, tokens, prices, kukuabi, '0xc9259875abf7a7d909b3288042c95d8bed25eb80', "rewardsToken", "stakingToken" )
 
     hideLoading();
 
