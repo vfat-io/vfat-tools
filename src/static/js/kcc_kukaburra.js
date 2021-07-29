@@ -62,7 +62,7 @@ async function loadKukaKccSynthetixPoolInfo(App, tokens, prices, stakingAbi, sta
 
       const periodFinish = await STAKING_POOL.periodFinish();
       const rewardRate = await STAKING_POOL.rewardRate();
-      const weeklyRewards = (Date.now() / 1000 > periodFinish) ? 0 : rewardRate / 1e9 * 604800;
+      const weeklyRewards = (Date.now() / 1000 > periodFinish) ? 0 : rewardRate / 1e18 * 604800;
 
       const usdPerWeek = weeklyRewards * rewardTokenPrice;
 
