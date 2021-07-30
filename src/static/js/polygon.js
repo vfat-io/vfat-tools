@@ -459,6 +459,8 @@ const main = async () => {
       ['BlackSwan           ', `<a href="blackswan"       >Various</a>`, 'SWAN         ', 'https://app.blackswan.network'],
       ['PolyBass            ', `<a href="polybass"        >Various</a>`, 'BASS         ', 'https://polybass.farm'],
       ['PolyBakerySwap      ', `<a href="polybakeryswap"  >Various</a>`, 'BAKE         ', 'https://www.bakery-swap.finance'],
+      ['PolyBakeryCream     ', `<a href="polybakerycream" >Various</a>`, 'CREAM        ', 'https://bakerycream.finance'],
+      ['PolyBakeryBiscuit   ', `<a href="polybakerybiscuit" >Various</a>`, 'BISCUIT    ', 'https://bakerybiscuit.finance'],
 	    ['PolyTail            ', `<a href="polytail"        >Various</a>`, 'POLYTAIL     ', 'https://polytail.farm'],
       ['PearZap             ', `<a href="pearzap"         >Various</a>`, 'PEAR         ', 'https://pearzap.com'],
       ['Astrofarms - Neptune', `<a href="astrofarmsneptune">Various</a>`,'NEPTUNE      ', 'https://neptune.astrofarms.finance'],
@@ -471,7 +473,6 @@ const main = async () => {
       ['PlanetSwap          ', `<a href="planetswap"      >Various</a>`, 'VENUS        ', 'https://venus.planetswap.app'],
       ['Xenomorph Finance   ', `<a href="xenomorph"       >Various</a>`, 'XENO         ', 'https://xenomorph.finance'],
       ['PolyGoon            ', `<a href="polygoon"        >Various</a>`, 'GOON         ', 'https://polygoon.finance'],
-      ['PolyBakeryCream     ', `<a href="polybakerycream" >Various</a>`, 'CREAM        ', 'https://bakerycream.finance'],
       ['HamsterParty        ', `<a href="hamsterparty"    >Various</a>`, 'HAMSTER      ', 'https://hamsterparty.club'],
       ['SpacePortDeFi Layer1', `<a href="spaceport layer1">Various</a>`, 'SATELITE     ', "https://polygon2.spaceportdefi.com"],
       ['PolyMax - Gratitude ', `<a href="polymax_gratitude">Various</a>`,'GRATITUDE    ', 'https://gratitude.polymax.club'],
@@ -481,10 +482,13 @@ const main = async () => {
       ['Atma                ', `<a href="atma"            >Various</a>`, 'ATMA         ', 'https://0xatma.finance'],
       ['Avengers Defi       ', `<a href="avengers_defi"   >Various</a>`, 'AVENGERS     ', 'https://avengersdefi.club'],
       ['PolyKiwi            ', `<a href="polykiwi"        >Various</a>`, 'KIWI         ', 'https://polykiwi.farm'],
-      //['PolyFund            ', `<a href="polyfund"        >Various</a>`, 'FUND         ', 'https://www.polyfund.finance'],
       ['PolySky             ', `<a href="polysky"         >Various</a>`, 'SIRIUS       ', 'https://polysky.finance'],
       ['PolyGlass           ', `<a href="polyglass"       >Various</a>`, 'GLASS        ', 'https://polyglass.farm'],
       ['OceanFinance         ', `<a href="oceanfinance"       >Various</a>`, 'DOLPH        ', 'https://oceanfinance.io'],
+      ['PolyYork            ', `<a href="polyyork"        >Various</a>`, 'YORK         ', 'https://polyyork.finance'],
+      ['Hermes              ', `<a href="hermes"          >Various</a>`, 'IRIS         ', 'https://www.hermesdefi.io'],
+      ['PolyFund            ', `<a href="polyfund"        >Various</a>`, 'FUND         ', 'https://www.polyfund.finance'],
+      ['Timeleap Finance    ', `<a href="timeleapfinance" >Various</a>`, 'TIME         ', 'https://timeleap.finance']
     ],
   }
 
