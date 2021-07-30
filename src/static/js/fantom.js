@@ -244,13 +244,13 @@ const main = async() => {
       ],
       [
         "ShibaSwap - GBONE",
-        `<a href='shibashwap'>Various</a>`,
+        `<a href='shibaswap'>Various</a>`,
         "GBONE",
         "https://shibafantom.finance"
       ],
       [
         "ShibaSwap - BONE",
-        `<a href='shibashwap_bone'>Various</a>`,
+        `<a href='shibaswap_bone'>Various</a>`,
         "BONE",
         "https://shibafantom.finance"
       ],
