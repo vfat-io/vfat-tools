@@ -1543,6 +1543,8 @@ function getUniPrices(tokens, prices, pool, chain="eth")
   else if (pool.symbol.includes("BRUSH-LP")) stakeTokenTicker += " BRUSH LP";
   else if (pool.symbol.includes("APE-LP")) stakeTokenTicker += " APE LP";
   else if (pool.symbol.includes("Galaxy-LP")) stakeTokenTicker += " Galaxy LP";
+  else if (pool.symbol.includes("KUS-LP")) stakeTokenTicker += " KUS LP";
+  else if (pool.symbol.includes("KoffeeMug")) stakeTokenTicker += " KoffeeMug";
   else stakeTokenTicker += " Uni LP";
   return {
       t0: t0,
@@ -1596,6 +1598,8 @@ function getUniPrices(tokens, prices, pool, chain="eth")
               pool.symbol.includes("BRUSH-LP") ?  `https://paintswap.finance` :
               pool.symbol.includes("PLP") ?  `https://exchange.pureswap.finance/#/swap` :
               pool.symbol.includes("BLP") ?  `https://info.bakeryswap.org/#/pair/${pool.address}` :
+              pool.symbol.includes("KUS-LP") ?  `https://kuswap.info/pair/#/${pool.address}` :
+              pool.symbol.includes("KoffeeMug") ?  `https://koffeeswap.exchange/#/pro` :
               pool.symbol.includes("APE-LP") ?  `https://info.apeswap.finance/pair/${pool.address}` :
               pool.symbol.includes("ZDEXLP") ?  `https://charts.zoocoin.cash/?exchange=ZooDex&pair=${t0.symbol}-${t1.symbol}` :
               pool.symbol.includes("Field-LP") ?  `https://exchange.yieldfields.finance/#/swap` :
@@ -1737,6 +1741,16 @@ function getUniPrices(tokens, prices, pool, chain="eth")
             `https://quickswap.exchange/#/remove/${t0address}/${t1address}`,
             `https://quickswap.exchange/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
           ] :
+          pool.symbol.includes("KUS-LP") ? [
+              `https://kuswap.finance/#/add/${t0address}/${t1address}`,
+              `https://kuswap.finance/#/remove/${t0address}/${t1address}`,
+              `https://kuswap.finance/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+          ] :
+          pool.symbol.includes("KoffeeMug") ? [
+            `https://koffeeswap.exchange/#/add/${t0address}/${t1address}`,
+            `https://koffeeswap.exchange/#/remove/${t0address}/${t1address}`,
+            `https://koffeeswap.exchange/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+        ] :
           t0.symbol.includes("COMFI") ? [
             `https://app.uniswap.org/#/add/v2/${t0address}/${t1address}`,
             `https://app.uniswap.org/#/remove/v2/${t0address}/${t1address}`,
