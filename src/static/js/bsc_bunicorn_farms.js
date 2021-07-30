@@ -17,7 +17,7 @@ async function main() {
   _print_bold('NFT FARMS\n');
   await loadBscChefContract(App, tokens, prices, BUNI_CHEF, BUNI_CHEF_ADDR, BUNI_CHEF_ABI, rewardTokenTicker,
     "buni", null, rewardsPerWeek, "pendingBuni");
-  hideLoading();  
+  hideLoading();
 }
   function printChefPool(
     App,
@@ -121,7 +121,7 @@ async function main() {
     if (staked_tvl) {
       userStakedPct = (userStakedUsd / staked_tvl) * 100;
     }
-  
+
     _print(
       `You are staking ${userStaked.toFixed(
         fixedDecimals
@@ -177,8 +177,8 @@ async function main() {
   }else{
     _print_link(`Unstake ${userStaked.toFixed(fixedDecimals)} ${stakeTokenTicker}`, unstake)
   }
-  _print(`<a href='https://bunicorn.exchange/#/vesting' target='_blank'>Show My NFT</a>`);
   _print_link(`Harvest NFT ${pendingRewardTokens.toFixed(fixedDecimals)} ${rewardTokenTicker} ($${formatMoney(pendingRewardTokens*rewardTokenPrice)})`, claim)
-  _print(`Staking or unstaking also claims rewards.`)
+  _print_link(`<a href='https://bunicorn.exchange/#/vesting' target='_blank'>Show My NFT</a>`)
+  _print(`Staking or unstaking also harvest rewards.`)
   _print("");
 }
