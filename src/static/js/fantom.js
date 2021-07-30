@@ -242,6 +242,12 @@ const main = async() => {
         "TRITON",
         "https://fantom-triton.galaxyfinance.one/"
       ],
+      [
+        "ShibaSwap",
+        `<a href='shibashwap'>Various</a>`,
+        "SHIBA",
+        "https://shibafantom.finance"
+      ],
     ]
   }
 
