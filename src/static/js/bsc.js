@@ -438,7 +438,22 @@ const main = async() => {
       ["Area51Defi          ", `<a href="area51defi"    >Various</a>`,"AFOD             ","https://area51defi.com"],
       ["PiranhaSwap         ", `<a href="piranhaswap"   >Various</a>`,"PIRANHA          ","https://piranhaswap.finance"],
       ["Robobuddy           ", `<a href="robobuddy"     >Various</a>`,"ROBO             ","https://robobuddy.finance"],
-      ["Astro               ", `<a href="astro"         >Various</a>`,"ASTRO            ","https://astroprotocol.com"]
+      ["Astro               ", `<a href="astro"         >Various</a>`,"ASTRO            ","https://astroprotocol.com"],
+      ["TwilightFinance     ", `<a href="twilightfinance">Various</a>`,"TWIL            ","https://twilightfinance.org"],
+      ["Badger              ", `<a href="badger"        >Various</a>`,"BADGER           ","https://app.badger.finance"],
+      ["BambooDeFi          ", `<a href="bamboodefi"    >Various</a>`,"BAMBOO           ","https://www.bamboodefi.com"],
+      ["GoldRush            ", `<a href="goldrush"      >Various</a>`,"GNT              ","https://goldrush.farm"],
+      ["MacaronSwap         ", `<a href="macaron"       >Various</a>`,"MCRN             ","https://macaronswap.finance"],
+      ["PlanetSwap          ", `<a href="planetswap"    >Various</a>`,"MERCURY          ","https://planetswap.app"],
+      ["Galaxy Finance One  ", `<a href="galaxy_triton" >Various</a>`,"TRITON           ","https://bsc-triton.galaxyfinance.one/"],
+      ["Radeon Finance      ", `<a href="radeonfinance" >Various</a>`,"XAEA12           ","https://radeon.finance"],
+      ["Luckycatdefi        ", `<a href="Luckycatdefi"  >Various</a>`,"LUCKYCATDEFI     ","https://luckycatdefi.com"],
+      ["Cobra (VenomDAO)    ", `<a href="cobra_venom"   >Various</a>`,"COBRA            ","https://cobra.exchange"],
+      ["Supergirlion        ", `<a href="supergirlion"  >Various</a>`,"SGIRL            ","https://newgirl.supermanion.com"],
+      ["Silver              ", `<a href="silver"        >Various</a>`,"SILVER           ","https://silver.eternity.money"],
+      ["Restaurant          ", `<a href="restaurant"    >Various</a>`,"RES              ","https://restaurantdefi.finance"],
+      ["SpacePortDeFi Layer1", `<a href="spaceport layer1">Various</a>`,"SATELITE       ","https://bsc2.spaceportdefi.com"],
+      ["MarsSwap            ", `<a href="marsswap"      >Various</a>`,"MARS             ","https://marsswap.finance"]
     ]}
 
   let table = new AsciiTable().fromJSON(tableData);
