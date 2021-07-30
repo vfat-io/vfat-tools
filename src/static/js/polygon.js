@@ -14,6 +14,7 @@ const main = async () => {
         'QUICK        ',
         'https://quickswap.exchange/#/quick',
       ],
+      ['PolyDEX             ', `<a href="polyDEX"         >Various</a>`, 'CNT          ', 'https://app.polydex.org/'],
       [
         'Cometh              ',
         `<a href="cometh"          >Various</a>`,
