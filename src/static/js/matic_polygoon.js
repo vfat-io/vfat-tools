@@ -35,17 +35,21 @@ $(function() {
             "goon", null, rewardsPerWeek, "pendingReward");
     
         hideLoading();
-      }
+}
     
 async function loadMaticPolygoonContract(App, tokens, prices, chef, chefAddress, chefAbi, rewardTokenTicker,
   rewardTokenFunction, rewardsPerBlockFunction, rewardsPerWeekFixed, pendingRewardsFunction,
   deathPoolIndices) {
   const chefContract = chef ?? new ethers.Contract(chefAddress, chefAbi, App.provider);
+  
+  const catCount = parseInt(await chefContract.categoriesLength(), 10);
+  const totalCatAllocPoints = await chefContract.totalCatAllocPoints();
 
   const poolCount = parseInt(await chefContract.poolsLength(), 10);
-  const totalAllocPoints = await chefContract.totalCatAllocPoints();
+  // Settung a target totalAllocPoints
+  const totalAllocPoints = 1e9
 
-  _print(`Found ${poolCount} pools.\n`)
+  _print(`Found ${poolCount} pools among ${catCount} categories.\n`)
 
   _print(`Showing incentivized pools only.\n`);
 
@@ -57,8 +61,10 @@ async function loadMaticPolygoonContract(App, tokens, prices, chef, chefAddress,
     await chefContract.callStatic[rewardsPerBlockFunction]() 
     / 10 ** rewardToken.decimals * 604800 / 3
 
+  const catInfos = await Promise.all([...Array(catCount).keys()].map(async (x) =>
+    await getMaticPolygoonCatInfo(chefContract, x, totalCatAllocPoints, totalAllocPoints)));
   const poolInfos = await Promise.all([...Array(poolCount).keys()].map(async (x) =>
-    await getMaticPolygoonPoolInfo(App, chefContract, chefAddress, x, pendingRewardsFunction)));
+    await getMaticPolygoonPoolInfo(App, chefContract, chefAddress, x, pendingRewardsFunction, catInfos)));
 
   var tokenAddresses = [].concat.apply([], poolInfos.filter(x => x.poolToken).map(x => x.poolToken.tokens));
 
@@ -73,7 +79,6 @@ async function loadMaticPolygoonContract(App, tokens, prices, chef, chefAddress,
   }
 
   const poolPrices = poolInfos.map(poolInfo => poolInfo.poolToken ? getPoolPrices(tokens, prices, poolInfo.poolToken, "matic") : undefined);
-
 
   _print("Finished reading smart contracts.\n");
   
@@ -108,11 +113,23 @@ async function loadMaticPolygoonContract(App, tokens, prices, chef, chefAddress,
   return { prices, totalUserStaked, totalStaked, averageApr }
 }
 
-async function getMaticPolygoonPoolInfo(app, chefContract, chefAddress, poolIndex, pendingRewardsFunction) {  
+async function getMaticPolygoonCatInfo(chefContract, catIndex, totalCatAllocPoints, targetTotalAllocPoints) {
+  const catInfo = await chefContract.catInfo(catIndex);
+  return {
+    allocPoints: catInfo.allocPoints ?? 1,
+    // Used to convert PolyGoon's allocation system to a classic masterchef's one
+    targetTotalPoolAllocPoints: (catInfo.allocPoints ?? 1) / totalCatAllocPoints * targetTotalAllocPoints,
+    totalPoolAllocPoints: catInfo.totalPoolAllocPoints ?? 1,
+    name: catInfo.name,
+  }
+}
+
+async function getMaticPolygoonPoolInfo(app, chefContract, chefAddress, poolIndex, pendingRewardsFunction, catInfos) {  
   const poolInfo = await chefContract.poolInfo(poolIndex);
   if (poolInfo.allocPoints == 0) {
     return {
       address: poolInfo.token,
+      catId: poolInfo.catId,
       allocPoints: poolInfo.allocPoints ?? 1,
       poolToken: null,
       userStaked : 0,
@@ -120,12 +137,14 @@ async function getMaticPolygoonPoolInfo(app, chefContract, chefAddress, poolInde
     };
   }
   const poolToken = await getMaticToken(app, poolInfo.token, chefAddress);
+  const poolCategory = catInfos[poolInfo.catId]
   const userInfo = await chefContract.userInfo(poolIndex, app.YOUR_ADDRESS);
   const pendingRewardTokens = await chefContract.callStatic[pendingRewardsFunction](poolIndex, app.YOUR_ADDRESS);
   const staked = userInfo.amount / 10 ** poolToken.decimals;
   return {
       address: poolInfo.token,
-      allocPoints: poolInfo.allocPoints ?? 1,
+      // Converting pool alloc points to a classic masterchef's one
+      allocPoints: (poolInfo.allocPoints ?? 1) / poolCategory.totalPoolAllocPoints * poolCategory.targetTotalPoolAllocPoints,
       poolToken: poolToken,
       userStaked : staked,
       pendingRewardTokens : pendingRewardTokens / 10 ** 18,
