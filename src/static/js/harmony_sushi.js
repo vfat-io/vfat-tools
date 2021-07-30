@@ -82,7 +82,7 @@ $(function () {
         const apr = printSushiPool(App, chefAbi, chefAddress, prices, tokens, poolInfos[i], i, poolPrices[i],
           totalAllocPoints, rewardsPerWeek, rewardTokenTicker, rewardTokenAddress,
           pendingRewardsFunction, null, null, "harmony", chefOneRewardsAbi, chefOneRewardsAddress, oneRewardsPerWeek,
-          rewardOneTicker, oneTokenAddress)
+          rewardOneTicker, oneTokenAddress, poolInfos[i].pendingOneTokens)
         aprs.push(apr);
       }
     }
@@ -141,7 +141,7 @@ $(function () {
                          totalAllocPoints, rewardsPerWeek, rewardTokenTicker, rewardTokenAddress,
                          pendingRewardsFunction, fixedDecimals, claimFunction, chain="harmony",
                          chefOneRewardsAbi, chefOneRewardsAddress, oneRewardsPerWeek,
-                         rewardOneTicker, oneTokenAddress) {
+                         rewardOneTicker, oneTokenAddress, pendingOneTokens) {
     fixedDecimals = fixedDecimals ?? 2;
     const sp = (poolInfo.stakedToken == null) ? null : getPoolPrices(tokens, prices, poolInfo.stakedToken);
     var poolRewardsPerWeek = poolInfo.allocPoints / totalAllocPoints * rewardsPerWeek;
@@ -157,6 +157,9 @@ $(function () {
       staked_tvl, userStaked, poolPrices.price, fixedDecimals, poolOneRewardsPerWeek, rewardOnePrice, rewardOneTicker);
     if (poolInfo.userLPStaked > 0) sp?.print_contained_price(userStaked);
     if (poolInfo.userStaked > 0) poolPrices.print_contained_price(userStaked);
+    printSushiContractLinks(App, chefAbi, chefAddr, poolIndex, poolInfo.address, pendingRewardsFunction,
+      rewardTokenTicker, poolPrices.stakeTokenTicker, poolInfo.poolToken.unstaked,
+      poolInfo.userStaked, poolInfo.pendingRewardTokens, fixedDecimals, rewardPrice, pendingOneTokens, rewardOneTicker, rewardOnePrice);
     _print("");
     return apr;
   }
@@ -171,15 +174,15 @@ $(function () {
     _print(`${rewardOneTicker} Per Week: ${poolOneRewardsPerWeek.toFixed(fixedDecimals)} ($${formatMoney(usdOnePerWeek)})`);
     var weeklyAPR = usdPerWeek / staked_tvl * 100;
     var dailyAPR = weeklyAPR / 7;
-    var yearlyAPR = weeklyAPR * 52;
+    var yearlySushiAPR = weeklyAPR * 52;
     var weeklyOneAPR = usdOnePerWeek / staked_tvl * 100;
     var dailyOneAPR = weeklyOneAPR / 7;
     var yearlyOneAPR = weeklyOneAPR * 52;
     let totalDailyAPR = dailyAPR + dailyOneAPR;
     let totalWeeklyAPR = weeklyAPR + weeklyOneAPR;
-    let totalYearlyAPR = yearlyAPR + yearlyOneAPR;
+    let totalYearlyAPR = yearlySushiAPR + yearlyOneAPR;
     let totalUSDPerWeek = usdPerWeek + usdOnePerWeek;
-    _print(`APR SUSHI: Day ${dailyAPR.toFixed(2)}% Week ${weeklyAPR.toFixed(2)}% Year ${yearlyAPR.toFixed(2)}%`);
+    _print(`APR SUSHI: Day ${dailyAPR.toFixed(2)}% Week ${weeklyAPR.toFixed(2)}% Year ${yearlySushiAPR.toFixed(2)}%`);
     _print(`APR WONE: Day ${dailyOneAPR.toFixed(2)}% Week ${weeklyOneAPR.toFixed(2)}% Year ${yearlyOneAPR.toFixed(2)}%`);
     var userStakedUsd = userStaked * poolTokenPrice;
     var userStakedPct = userStakedUsd / staked_tvl * 100;
@@ -193,16 +196,73 @@ $(function () {
     var userYearlyRewards = userWeeklyRewards * 52;
     var userOneYearlyRewards = userOneWeeklyRewards * 52;
     if (userStaked > 0) {
-      _print(`Estimated ${rewardTokenTicker} earnings:`
-          + ` Day ${(userDailyRewards+userOneDailyRewards).toFixed(fixedDecimals)} ($${formatMoney(userDailyRewards*rewardPrice+userOneDailyRewards*rewardOnePrice)})`
-          + ` Week ${(userWeeklyRewards+userOneWeeklyRewards).toFixed(fixedDecimals)} ($${formatMoney(userWeeklyRewards*rewardPrice+userOneWeeklyRewards*rewardOnePrice)})`
-          + ` Year ${(userYearlyRewards+userOneYearlyRewards).toFixed(fixedDecimals)} ($${formatMoney(userYearlyRewards*rewardPrice+userOneYearlyRewards*rewardOnePrice)})`);
+      _print(`Estimated Total earnings:`
+          + ` Day ($${formatMoney(userDailyRewards*rewardPrice+userOneDailyRewards*rewardOnePrice)})`
+          + ` Week ($${formatMoney(userWeeklyRewards*rewardPrice+userOneWeeklyRewards*rewardOnePrice)})`
+          + ` Year ($${formatMoney(userYearlyRewards*rewardPrice+userOneYearlyRewards*rewardOnePrice)})`);
     }
     return {
       userStakedUsd,
       totalStakedUsd : staked_tvl,
       userStakedPct,
-      yearlyAPR,
+      yearlyAPR : totalYearlyAPR,
       userYearlyUsd : userYearlyRewards * rewardPrice + userOneYearlyRewards * rewardOnePrice
     }
   }
+
+function printSushiContractLinks(App, chefAbi, chefAddr, poolIndex, poolAddress, pendingRewardsFunction,
+    rewardTokenTicker, stakeTokenTicker, unstaked, userStaked, pendingRewardTokens, fixedDecimals, rewardTokenPrice, pendingOneTokens,
+    rewardOneTicker, rewardOnePrice) {
+  fixedDecimals = fixedDecimals ?? 2;
+  const approveAndStake = async function() {
+    return chefContract_stake(chefAbi, chefAddr, poolIndex, poolAddress, App)
+  }
+  const unstake = async function() {
+    return sushiContract_unstake(chefAbi, chefAddr, poolIndex, App)
+  }
+  const claim = async function() {
+    return sushiContract_claim(chefAbi, chefAddr, poolIndex, App)
+  }
+  _print_link(`Stake ${unstaked.toFixed(fixedDecimals)} ${stakeTokenTicker}`, approveAndStake)
+  _print_link(`Unstake ${userStaked.toFixed(fixedDecimals)} ${stakeTokenTicker}`, unstake)
+  _print_link(`Claim ${pendingRewardTokens.toFixed(fixedDecimals)} ${rewardTokenTicker} ($${formatMoney(pendingRewardTokens*rewardTokenPrice)}) + ${pendingOneTokens.toFixed(fixedDecimals)} ${rewardOneTicker} ($${formatMoney(pendingOneTokens*rewardOnePrice)})`, claim)
+  _print(`Staking or unstaking also claims rewards.`)
+}
+
+const sushiContract_unstake = async function(chefAbi, chefAddress, poolIndex, App) {
+  const signer = App.provider.getSigner()
+  const CHEF_CONTRACT = new ethers.Contract(chefAddress, chefAbi, signer)
+
+  const currentStakedAmount = (await CHEF_CONTRACT.userInfo(poolIndex, App.YOUR_ADDRESS)).amount
+  const earnedTokenAmount = await CHEF_CONTRACT.pendingSushi(poolIndex, App.YOUR_ADDRESS) / 1e18
+
+  if (earnedTokenAmount > 0) {
+    showLoading()
+    CHEF_CONTRACT.withdrawAndHarvest(poolIndex, currentStakedAmount, App.YOUR_ADDRESS, {gasLimit: 500000})
+      .then(function(t) {
+        return App.provider.waitForTransaction(t.hash)
+      })
+      .catch(function() {
+        hideLoading()
+      })
+  }
+}
+
+const sushiContract_claim = async function(chefAbi, chefAddress, poolIndex, App) {
+  const signer = App.provider.getSigner()
+
+  const CHEF_CONTRACT = new ethers.Contract(chefAddress, chefAbi, signer)
+
+  const earnedTokenAmount = await CHEF_CONTRACT.pendingSushi(poolIndex, App.YOUR_ADDRESS) / 1e18
+
+  if (earnedTokenAmount > 0) {
+    showLoading()
+    CHEF_CONTRACT.harvest(poolIndex, App.YOUR_ADDRESS, {gasLimit: 500000})
+        .then(function(t) {
+          return App.provider.waitForTransaction(t.hash)
+        })
+        .catch(function() {
+          hideLoading()
+        })
+  }
+}

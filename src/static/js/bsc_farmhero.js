@@ -2111,8 +2111,10 @@ async function main() {
    const HEROFARM_CHEF_ADDR = "0xDAD01f1d99191a2eCb78FA9a007604cEB8993B2D";
     const rewardTokenTicker = "HERO";
     const HEROFARM_CHEF = new ethers.Contract(HEROFARM_CHEF_ADDR, HEROFARM_CHEF_ABI, App.provider);
-   const rewardsPerWeek = await HEROFARM_CHEF.HERORewardPerSecond() /1e18
-       * 604800 * 0.3;
+//    const rewardsPerWeek = await HEROFARM_CHEF.HERORewardPerSecond() /1e18
+//        * 604800 * 0.3;
+    const now = parseInt(new Date().getTime() / 1000);
+    const rewardsPerWeek = await HEROFARM_CHEF.calculateReward(now, now + 1) / 1e18 * 604800 * 0.3;
     const tokens = {};
     const prices = await getBscPrices();
     await loadBscHEROChefContract(App, tokens, prices, HEROFARM_CHEF, HEROFARM_CHEF_ADDR, HEROFARM_CHEF_ABI, rewardTokenTicker,
