@@ -481,11 +481,11 @@ const main = async () => {
       ['Atma                ', `<a href="atma"            >Various</a>`, 'ATMA         ', 'https://0xatma.finance'],
       ['Avengers Defi       ', `<a href="avengers_defi"   >Various</a>`, 'AVENGERS     ', 'https://avengersdefi.club'],
       ['PolyKiwi            ', `<a href="polykiwi"        >Various</a>`, 'KIWI         ', 'https://polykiwi.farm'],
-      //['PolyFund            ', `<a href="polyfund"        >Various</a>`, 'FUND         ', 'https://www.polyfund.finance'],
       ['PolySky             ', `<a href="polysky"         >Various</a>`, 'SIRIUS       ', 'https://polysky.finance'],
       ['PolyGlass           ', `<a href="polyglass"       >Various</a>`, 'GLASS        ', 'https://polyglass.farm'],
       ['PolyYork            ', `<a href="polyyork"        >Various</a>`, 'YORK         ', 'https://polyyork.finance'],
-      ['Hermes              ', `<a href="hermes"          >Various</a>`, 'IRIS         ', 'https://www.hermesdefi.io']
+      ['Hermes              ', `<a href="hermes"          >Various</a>`, 'IRIS         ', 'https://www.hermesdefi.io'],
+      ['PolyFund            ', `<a href="polyfund"        >Various</a>`, 'FUND         ', 'https://www.polyfund.finance']
     ],
   }
 
