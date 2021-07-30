@@ -454,8 +454,9 @@ const main = async() => {
       ["Restaurant          ", `<a href="restaurant"    >Various</a>`,"RES              ","https://restaurantdefi.finance"],
       ["SpacePortDeFi Layer1", `<a href="spaceport layer1">Various</a>`,"SATELITE       ","https://bsc2.spaceportdefi.com"],
       ["MarsSwap            ", `<a href="marsswap"      >Various</a>`,"MARS             ","https://marsswap.finance"],
-      ["Arena               ", `<a href="arena"         >Various</a>`,"ARENA            ","https://www.arenaswap.com"]
-      ["Cherry              ", `<a href="cherry"        >Various</a>`,"CHERRY           ","https://www.fletaconnect.io"]
+      ["Arena               ", `<a href="arena"         >Various</a>`,"ARENA            ","https://www.arenaswap.com"],
+      ["Cherry              ", `<a href="cherry"        >Various</a>`,"CHERRY           ","https://www.fletaconnect.io"],
+      ["TeaBags             ", `<a href="teabags"       >Various</a>`,"TEABAGS          ","https://www.teabagsdefi.com"]
     ]}
 
   let table = new AsciiTable().fromJSON(tableData);
