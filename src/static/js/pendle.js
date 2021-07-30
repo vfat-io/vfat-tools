@@ -79,6 +79,7 @@ async function loadLiquidityMiningInfo(App, farm, rewardTokenPrice, wrapper) {
   const rewardsPerEpoch =  epochInfo.rewardsPerEpoch
   const rewardsPerEpochUSD = (rewardsPerEpoch / 1e18) * rewardTokenPrice
   const rewardsAllocated = mainInfo.allocationSettings ? (mainInfo.allocationSettings * rewardsPerEpoch) / 1e9 : 0
+  const rewardsAllocatedUSD = (rewardsAllocated / 1e18) * rewardTokenPrice
   const rewardsPerEpochPerLP = rewardsAllocated / lpStaked
   const apr = (rewardsPerEpochPerLP * rewardTokenPrice / epochDuration * 31536000 / (lpPrice * 10**(18-mainInfo.tokenDecimals))) * 100
 
@@ -114,8 +115,8 @@ async function loadLiquidityMiningInfo(App, farm, rewardTokenPrice, wrapper) {
     tokenPrice,
     lpStaked,
     lpStakedPrice,
-    rewardsPerEpoch,
-    rewardsPerEpochUSD,
+    rewardsAllocated,
+    rewardsAllocatedUSD,
     apr,
     epochInfo,
     userStaked,
@@ -140,7 +141,7 @@ async function printLiquidityMiningInfo(App, info, rewardTokenTicker, rewardToke
   _print(`${info.farm.yt} Price: $${displayPrice(info.ytPrice)}`)
   _print(`${info.farm.token} Price: $${displayPrice(info.tokenPrice)}`)
   _print(`${rewardTokenTicker} Price: $${displayPrice(rewardTokenPrice)}`)
-  _print(`${rewardTokenTicker} Per Epoch: ${formatMoney(info.rewardsPerEpoch / 1e18)} ($${formatMoney(info.rewardsPerEpochUSD)})`)
+  _print(`${rewardTokenTicker} Per Epoch: ${formatMoney(info.rewardsAllocated / 1e18)} ($${formatMoney(info.rewardsAllocatedUSD)})`)
 
   const weeklyAPR = info.apr / 365 * 7
   const dailyAPR = weeklyAPR / 7
@@ -154,7 +155,7 @@ async function printLiquidityMiningInfo(App, info, rewardTokenTicker, rewardToke
 
   if (info.userStaked > 0) {
     print_contained_price(info.farm, info.userPoolOwnership, info.ytPoolBalance, info.tokenPoolBalance)
-    const userWeeklyRewards = (info.userPoolOwnership / 100) * (info.rewardsPerEpoch / 1e18 / info.epochDuration * 604800)
+    const userWeeklyRewards = (info.userPoolOwnership / 100) * (info.rewardsAllocated / 1e18 / info.epochDuration * 604800)
     const userDailyRewards = userWeeklyRewards / 7
     const userYearlyRewards = userWeeklyRewards * 52
     _print(
