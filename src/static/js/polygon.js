@@ -14,7 +14,6 @@ const main = async () => {
         'QUICK        ',
         'https://quickswap.exchange/#/quick',
       ],
-      ['PolyDEX             ', `<a href="polyDEX"         >Various</a>`, 'CNT          ', 'https://app.polydex.org/'],
       [
         'Cometh              ',
         `<a href="cometh"          >Various</a>`,
@@ -488,7 +487,8 @@ const main = async () => {
       ['PolyYork            ', `<a href="polyyork"        >Various</a>`, 'YORK         ', 'https://polyyork.finance'],
       ['Hermes              ', `<a href="hermes"          >Various</a>`, 'IRIS         ', 'https://www.hermesdefi.io'],
       ['PolyFund            ', `<a href="polyfund"        >Various</a>`, 'FUND         ', 'https://www.polyfund.finance'],
-      ['Timeleap Finance    ', `<a href="timeleapfinance" >Various</a>`, 'TIME         ', 'https://timeleap.finance']
+      ['Timeleap Finance    ', `<a href="timeleapfinance" >Various</a>`, 'TIME         ', 'https://timeleap.finance'],
+      ['PolyDEX             ', `<a href="polyDEX"         >Various</a>`, 'CNT          ', 'https://app.polydex.org']
     ],
   }
 
