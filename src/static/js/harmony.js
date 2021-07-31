@@ -55,6 +55,12 @@ const main = async() => {
          `<a href='troll'>Various</a>`,
           "TROLL",
           "https://lootswap.finance/guilds/troll"
+      ],
+      [
+          "Arbiter",
+           `<a href='arbiter'>Various</a>`,
+            "ARB",
+            "https://lootswap.finance/guilds/arb"
       ]
     ]
   }
