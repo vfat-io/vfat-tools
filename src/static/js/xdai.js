@@ -10,7 +10,7 @@ const main = async() => {
     "rows": [
         ["Bao"        ,`<a href="bao">Various</a>`         ,"BAO"         ,"https://farms.baoswap.xyz"],
         ["Levin"      ,`<a href="levin">Various</a>`       ,"LEVIN"       ,"https://farm.levinswap.org"],
-        ["Swapr"      ,`<a href="swapr">Various</a>`       ,"Various"     ,"https://swapr.eth.link/#/pools"],
+        ["Swapr"      ,`<a href="swapr">Various</a>`       ,"DXD"         ,"https://swapr.eth.link/#/pools"],
         ["Sushi"      ,`<a href="sushi">Various</a>`       ,"SUSHI/XDAI"  ,"https://app.sushi.com"]
       ]
   }
