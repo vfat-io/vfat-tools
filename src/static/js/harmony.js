@@ -42,7 +42,7 @@ const main = async() => {
         "Sushi",
         `<a href='sushi'>Various</a>`,
         "SUSHI",
-        "N/A"
+        "https://app.sushi.com"
       ],
       [
         "Piggybank",
