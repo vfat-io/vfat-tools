@@ -493,6 +493,7 @@ const main = async () => {
       ['BerryFarmsRaspBerry ', `<a href="berryfarmsraspberry">Various</a>`, 'RASP      ', 'https://berryfarms.world'],
       ['PolyEarn            ', `<a href="polyEarn"        >Various</a>`, 'PEN          ', 'https://polyearn.com'],
       ['PolyYeti            ', `<a href="polyyeti"        >Various</a>`, 'YETI          ', 'https://polyyeti.farm']
+      ['PolyBean            ', `<a href="polybean"        >Various</a>`, 'BEAN          ', 'https://polybean.farm']
     ],
   }
 
