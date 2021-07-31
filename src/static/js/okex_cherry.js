@@ -32,7 +32,7 @@ async function main() {
     const prices = await getOkexPrices();
 
     await loadOkexChefContract(App, tokens, prices, CHE_CHEF, CHE_CHEF_ADDR, CHE_CHEF_ABI, rewardTokenTicker,
-        "cherry", null, rewardsPerWeek, "pendingCherry");
+        "cherry", null, rewardsPerWeek, "pendingCherry", [2]);
 
     hideLoading();
   }
