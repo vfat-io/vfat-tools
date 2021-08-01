@@ -89,7 +89,7 @@ const main = async () => {
       ['Gemstones Finance   ', `<a href="gemstonesfinance">Various</a>`, 'GMS          ', 'https://gemstones.finance'],
       ['Polypanda           ', `<a href="polypanda"       >Various</a>`, 'BAMBOO       ', 'https://polypanda.finance'],
       [
-        'Dfyn                ',
+        'Dfyn *              ',
         `<a href="dfyn"            >Various</a>`,
         'DFYN         ',
         'https://exchange.dfyn.network',
@@ -492,7 +492,7 @@ const main = async () => {
       ['PolyDEX             ', `<a href="polyDEX"         >Various</a>`, 'CNT          ', 'https://app.polydex.org'],
       ['BerryFarmsRaspBerry ', `<a href="berryfarmsraspberry">Various</a>`, 'RASP      ', 'https://berryfarms.world'],
       ['PolyEarn            ', `<a href="polyEarn"        >Various</a>`, 'PEN          ', 'https://polyearn.com'],
-      ['PolyDyson            ', `<a href="polydyson"        >Various</a>`, 'DYSON          ', 'https://polydyson.app'],
+      ['PolyDyson           ', `<a href="polydyson"       >Various</a>`, 'DYSON        ', 'https://polydyson.app'],
       ['PolyTopia Wonster   ', `<a href="wonster"         >Various</a>`, 'WONSTER      ', 'https://wonster.polytopia.farm']
     ],
   }
