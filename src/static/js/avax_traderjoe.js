@@ -15,7 +15,8 @@ async function main() {
    const rewardTokenTicker = "JOE";
    const JOE_CHEF = new ethers.Contract(JOE_CHEF_ADDR, JOE_CHEF_ABI, App.provider);
 
-   const rewardsPerWeek = await JOE_CHEF.joePerSec() /1e18 * 604800;
+   // JOE only emits 50% of supply to liquidity mining
+   const rewardsPerWeek = await JOE_CHEF.joePerSec() /2 /1e18 * 604800;
 
     const tokens = {};
     const prices = await getAvaxPrices();
