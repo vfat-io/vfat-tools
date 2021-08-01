@@ -492,6 +492,7 @@ const main = async () => {
       ['PolyDEX             ', `<a href="polyDEX"         >Various</a>`, 'CNT          ', 'https://app.polydex.org'],
       ['BerryFarmsRaspBerry ', `<a href="berryfarmsraspberry">Various</a>`, 'RASP      ', 'https://berryfarms.world'],
       ['PolyEarn            ', `<a href="polyEarn"        >Various</a>`, 'PEN          ', 'https://polyearn.com'],
+      ['PolyDyson            ', `<a href="polydyson"        >Various</a>`, 'DYSON          ', 'https://polydyson.app'],
       ['PolyTopia Wonster   ', `<a href="wonster"         >Various</a>`, 'WONSTER      ', 'https://wonster.polytopia.farm']
     ],
   }
