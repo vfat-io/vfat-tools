@@ -89,7 +89,7 @@ const main = async () => {
       ['Gemstones Finance   ', `<a href="gemstonesfinance">Various</a>`, 'GMS          ', 'https://gemstones.finance'],
       ['Polypanda           ', `<a href="polypanda"       >Various</a>`, 'BAMBOO       ', 'https://polypanda.finance'],
       [
-        'Dfyn                ',
+        'Dfyn *              ',
         `<a href="dfyn"            >Various</a>`,
         'DFYN         ',
         'https://exchange.dfyn.network',
