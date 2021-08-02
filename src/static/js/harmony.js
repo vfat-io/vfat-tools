@@ -21,6 +21,12 @@ const main = async() => {
         "https://viper.exchange"
       ],
       [
+        "Viper (smartchef)",
+        `<a href='viper/smartchef'>Various</a>`,
+        "Various",
+        "https://viper.exchange"
+      ],
+      [
         "Open Swap",
         `<a href='oswap'>Various</a>`,
         "oSWAP",
