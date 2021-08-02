@@ -495,10 +495,11 @@ const main = async () => {
       ['PolyYeti            ', `<a href="polyyeti"        >Various</a>`, 'YETI         ', 'https://polyyeti.farm'],
       ['PolyBean            ', `<a href="polybean"        >Various</a>`, 'BEAN         ', 'https://polybean.farm'],
       ['PolyDyson           ', `<a href="polydyson"       >Various</a>`, 'DYSON        ', 'https://polydyson.app'],
-      ['PolyTopia Wonster   ', `<a href="wonster"         >Various</a>`, 'WONSTER      ', 'https://wonster.polytopia.farm']
+      ['PolyTopia Wonster   ', `<a href="wonster"         >Various</a>`, 'WONSTER      ', 'https://wonster.polytopia.farm'],
+      ['PolyRiver           ', `<a href="polyriver"       >Various</a>`, 'RIVER        ', 'WIP']
     ],
   }
-  
+
 
   let table = new AsciiTable().fromJSON(tableData)
   document.getElementById('log').innerHTML += table + '<br />'
