@@ -99,7 +99,7 @@ const main = async() => {
         "https://waka.finance"
       ],
       [
-        "Elk",
+        "Elk *",
         `<a href='elk'>Various</a>`,
         "ELK",
         "https://app.elk.finance"
