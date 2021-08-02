@@ -1,5 +1,6 @@
 const HarmonyTokens = [
   { "id": "binance-usd", "symbol": "bscBUSD", "contract": "0x0aB43550A6915F9f67d0c454C2E90385E6497EaA"},
+  { "id": "usd-coin", "symbol": "1USDC", "contract": "0x985458E523dB3d53125813eD68c274899e9DfAb4"},
   { "id": "tether", "symbol": "1USDT", "contract": "0x3C2B8Be99c50593081EAA2A724F0B8285F5aba8f"},
   { "id": "harmony", "symbol": "WONE", "contract": "0xcF664087a5bB0237a0BAd6742852ec6c8d69A27a"},
   { "id": "sushi", "symbol": "SUSHI", "contract": "0xBEC775Cb42AbFa4288dE81F387a9b1A3c4Bc552A"},
