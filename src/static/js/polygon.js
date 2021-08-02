@@ -498,7 +498,7 @@ const main = async () => {
       ['PolyTopia Wonster   ', `<a href="wonster"         >Various</a>`, 'WONSTER      ', 'https://wonster.polytopia.farm'],
       ['PolyRiver           ', `<a href="polyriver"       >Various</a>`, 'RIVER        ', 'WIP'],
       ['PolyBakeryCake      ', `<a href="polybakerycake"  >Various</a>`, 'CAKE         ', 'https://bakerycake.finance'],
-      ['PolySecond'          , `<a href="polyanon_vol_1"  >ROI</a>`    , 'MATIC        ', 'https://github.com/PolyAnon/PolySecond/Docs/PolySecond.md'],
+      ['PolySecond'          , `<a href="polyanon_vol_1"  >ROI</a>`    , 'MATIC        ', 'https://github.com/PolyAnon/PolySecond/blob/main/Docs/PolySecond.md'],
     ],
   }
 
