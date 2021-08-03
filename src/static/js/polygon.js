@@ -499,7 +499,8 @@ const main = async () => {
       ['PolyRiver           ', `<a href="polyriver"       >Various</a>`, 'RIVER        ', 'WIP'],
       ['PolyBakeryCake      ', `<a href="polybakerycake"  >Various</a>`, 'CAKE         ', 'https://bakerycake.finance'],
       ['PolySecond'          , `<a href="polyanon_vol_1"  >ROI</a>`    , 'MATIC        ', 'https://github.com/PolyAnon/PolySecond/blob/main/Docs/PolySecond.md'],
-      ['PolyRabbit          ', `<a href="polyrabbit"      >Various</a>`, 'RABBIT       ', 'https://polyrabbitfinance.com']
+      ['PolyRabbit          ', `<a href="polyrabbit"      >Various</a>`, 'RABBIT       ', 'https://polyrabbitfinance.com'],
+      ['polyDEX-CryptionNetwork', `<a href="polydex_cryptionnetwork">Various</a>`, 'CNT', 'https://app.polydex.org']
     ],
   }
 
