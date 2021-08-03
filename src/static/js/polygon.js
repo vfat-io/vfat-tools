@@ -22,7 +22,7 @@ const main = async () => {
       ],
       ['Dark                ', `<a href="dark"            >Various</a>`, 'DB           ', 'https://www.dark.build'],
       ['Smartdex            ', `<a href="smartdex"        >Various</a>`, 'NIOX         ', 'https://swap.smartdex.app'],
-      ['Elk                 ', `<a href="elk"             >Various</a>`, 'ELK          ', 'https://app.elk.finance'],
+      ['Elk *               ', `<a href="elk"             >Various</a>`, 'ELK          ', 'https://app.elk.finance'],
       ['Polywhale           ', `<a href="polywhale"       >Various</a>`, 'KRILL        ', 'https://polywhale.finance'],
       ['Aave                ', `<a href="aave"            >Various</a>`, 'MATIC        ', 'https://aave.com'],
       ['BullionFinance             ', `<a href="bullionfinance"         >Various</a>`, 'GOLD          ', 'https://bullionfinance.xyz'],
@@ -461,7 +461,7 @@ const main = async () => {
       ['PolyBakerySwap      ', `<a href="polybakeryswap"  >Various</a>`, 'BAKE         ', 'https://www.bakery-swap.finance'],
       ['PolyBakeryCream     ', `<a href="polybakerycream" >Various</a>`, 'CREAM        ', 'https://bakerycream.finance'],
       ['PolyBakeryBiscuit   ', `<a href="polybakerybiscuit" >Various</a>`, 'BISCUIT    ', 'https://bakerybiscuit.finance'],
-	    ['PolyTail            ', `<a href="polytail"        >Various</a>`, 'POLYTAIL     ', 'https://polytail.farm'],
+	  ['PolyTail            ', `<a href="polytail"        >Various</a>`, 'POLYTAIL     ', 'https://polytail.farm'],
       ['PearZap             ', `<a href="pearzap"         >Various</a>`, 'PEAR         ', 'https://pearzap.com'],
       ['Astrofarms - Neptune', `<a href="astrofarmsneptune">Various</a>`,'NEPTUNE      ', 'https://neptune.astrofarms.finance'],
       ['Cygnus Finance      ', `<a href="cygnusfinance"   >Various</a>`, 'CYGNUS       ', 'https://www.cygnusdefi.com'],
@@ -496,7 +496,9 @@ const main = async () => {
       ['PolyBean            ', `<a href="polybean"        >Various</a>`, 'BEAN         ', 'https://polybean.farm'],
       ['PolyDyson           ', `<a href="polydyson"       >Various</a>`, 'DYSON        ', 'https://polydyson.app'],
       ['PolyTopia Wonster   ', `<a href="wonster"         >Various</a>`, 'WONSTER      ', 'https://wonster.polytopia.farm'],
-      ['PolyRiver           ', `<a href="polyriver"       >Various</a>`, 'RIVER        ', 'WIP']
+      ['PolyRiver           ', `<a href="polyriver"       >Various</a>`, 'RIVER        ', 'WIP'],
+      ['PolyBakeryCake      ', `<a href="polybakerycake"  >Various</a>`, 'CAKE         ', 'https://bakerycake.finance'],
+      ['PolySecond'          , `<a href="polyanon_vol_1"  >ROI</a>`    , 'MATIC        ', 'https://github.com/PolyAnon/PolySecond/blob/main/Docs/PolySecond.md'],
     ],
   }
 
