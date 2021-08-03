@@ -144,6 +144,19 @@ async function printMcnSynthetixPool(App, tokens, prices, info, chain="eth") {
     const userStakedPct = userStakedUsd / info.staked_tvl * 100;
     _print(`You are staking ${info.userStaked.toFixed(6)} ${info.stakeTokenTicker} ` +
            `$${formatMoney(userStakedUsd)} (${userStakedPct.toFixed(2)}% of the pool).`);
+    if (info.userStaked > 0) {
+    info.poolPrices.print_contained_price(info.userStaked);
+      const userWeeklyRewards0 = userStakedPct * info.rewardTokens[0].weeklyRewards / 100;
+      const userDailyRewards0 = userWeeklyRewards0 / 7;
+      const userYearlyRewards0 = userWeeklyRewards0 * 52;
+      const userWeeklyRewards1 = info.rewardTokens[1].weeklyRewards / 100;
+      const userDailyRewards1 = userWeeklyRewards1 / 7;
+      const userYearlyRewards1 = userWeeklyRewards1 * 52;
+      _print(`Estimated ${info.rewardTokens[0].rewardTokenTicker} + ${info.rewardTokens[1].rewardTokenTicker} earnings:`
+          + ` Day ${(userDailyRewards0+userDailyRewards1).toFixed(2)} ($${formatMoney(userDailyRewards0*rewardTokenPrices[0]+userDailyRewards1*rewardTokenPrices[1])})`
+          + ` Week ${(userWeeklyRewards0+userWeeklyRewards1).toFixed(2)} ($${formatMoney(userWeeklyRewards0*rewardTokenPrices[0]+userWeeklyRewards1*rewardTokenPrices[1])})`
+          + ` Year ${(userYearlyRewards0+userYearlyRewards1).toFixed(2)} ($${formatMoney(userYearlyRewards0*rewardTokenPrices[0]+userYearlyRewards1*rewardTokenPrices[1])})`);
+  }
     const approveTENDAndStake = async function() {
       return rewardsContract_stake(info.stakeTokenAddress, info.stakingAddress, App)
     }
