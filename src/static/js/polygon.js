@@ -500,7 +500,8 @@ const main = async () => {
       ['PolyBakeryCake      ', `<a href="polybakerycake"  >Various</a>`, 'CAKE         ', 'https://bakerycake.finance'],
       ['PolySecond'          , `<a href="polyanon_vol_1"  >ROI</a>`    , 'MATIC        ', 'https://github.com/PolyAnon/PolySecond/blob/main/Docs/PolySecond.md'],
       ['PolyRabbit          ', `<a href="polyrabbit"      >Various</a>`, 'RABBIT       ', 'https://polyrabbitfinance.com'],
-      ['polyDEX-CryptionNetwork', `<a href="polydex_cryptionnetwork">Various</a>`, 'CNT', 'https://app.polydex.org']
+      ['polyDEX-CryptionNetwork', `<a href="polydex_cryptionnetwork">Various</a>`, 'CNT', 'https://app.polydex.org'],
+      ['WorldSwap Kuala Lumpur', `<a href="worldswap_kul" >Various</a>`, 'KUL          ', 'https://kualalumpur.worldswap.finance']
     ],
   }
 
