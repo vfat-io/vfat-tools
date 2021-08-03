@@ -489,7 +489,7 @@ const main = async () => {
       ['Hermes              ', `<a href="hermes"          >Various</a>`, 'IRIS         ', 'https://www.hermesdefi.io'],
       ['PolyFund            ', `<a href="polyfund"        >Various</a>`, 'FUND         ', 'https://www.polyfund.finance'],
       ['Timeleap Finance    ', `<a href="timeleapfinance" >Various</a>`, 'TIME         ', 'https://timeleap.finance'],
-      ['PolyDEX             ', `<a href="polyDEX"         >Various</a>`, 'CNT          ', 'https://app.polydex.org'],
+      ['polyDEX-CryptionNetwork             ', `<a href="polyDEX-CryptionNetwork"         >Various</a>`, 'CNT          ', 'https://app.polydex.org'],
       ['BerryFarmsRaspBerry ', `<a href="berryfarmsraspberry">Various</a>`, 'RASP      ', 'https://berryfarms.world'],
       ['PolyEarn            ', `<a href="polyearn"        >Various</a>`, 'PEN          ', 'https://polyearn.com'],
       ['PolyYeti            ', `<a href="polyyeti"        >Various</a>`, 'YETI         ', 'https://polyyeti.farm'],
