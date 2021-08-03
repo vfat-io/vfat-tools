@@ -9,33 +9,32 @@ const VIPER_SMARTCHEF_FACTORY_ADDR = "0x410ce9879d14919cbc9693406d5950a60d3b0f48
 
 const EXTRACTED_POOLS = [
   '0x5c84935da00817c167b3e2e857d9269f9e211334', 
-  // '0xfd93797ef7154650314d1e820071f145504eea83', 
-  // '0xe8bf74b6062f633c35e9ea4879538192ab817c0c', 
-  // '0xd21863ffc3ee64dc4e5bfc147e226791f88c9561', 
-  // '0x1ab9074e61fc816c2741f89caf4379b9d85c6563', 
-  // '0xccf3b92c18edf3ee66398af25cdb523db86c8240', 
-  // '0xbff7711839f5afafe79e6eae9fe1298c3092d686', 
-  // '0x7bb4479cabcf7246bce45b90ccbff07eab0ff79f', 
-  // '0x5a1488ef677addf07fbf09b8b3dc542755a42480', 
-  // '0x09d240553d7df155d45557adcec16ae60f2d3821', 
-  // '0x23c3d5540d5eaf2b71f7f005215c293d979c8943', 
   '0xae2d26605c293d0c8b68c905f0dc81f1d3ac2ac1', 
   '0xf37d2132c358cc51386fae9f8485d38d42be21a5', 
   '0xf2ac00a3ba3e04cca11a1b62cf366b1c3fa2f196', 
   '0xbd19b4af9e4a03575d92d127708b0c142a7ec1b7', 
   '0x9b37d0017eae7a5027b1536f8c9f4b5cdbb971e2', 
-  // '0x54496b3a08d93adbe59047b7d2b41d0d7744e2e0', 
   '0x6cf157a593de05026b691dcd850c472c8cb75b89', 
-  // '0xb9ca09a6d85644dca941bb2ea1df8a6a55cc9123', 
-  '0xf33e9c1ad490d760e9a1ea9e24e56bdcdc87f279'
+  '0xf33e9c1ad490d760e9a1ea9e24e56bdcdc87f279',
+  // BELOW THIS IS NOT ANNOUNCED YET (NO REWARD TOKENS)
+  '0x2da46ba416f943de73e444366db7ef9cd1169a33', 
+  '0xb74a2074ed707f1656e20aad7ae94d42e1e35abc', 
+  '0xabb088d1f56a4dd9f84830019e171e514573e68d', 
+  '0x53939c7b13219898189f557c7be930fd40573a8e', 
+  '0x5ee91b7cc0cc349bdd26831eaeaa191b19fe8802', 
+  '0x7d5eb674c2596a33571ae961d35d788c5d7e1b21'
 ];
 
 const PRELOAD_PRICES_POOL = [
   '0x96025483bd32c645b822a5a08004b84d674537cb', // ONE-VIPER
-  '0x54918b8ca826659cc8aa8d4524ee5ac71ba104bd', // NFT-ONE
 ]
 
-const LAST_EXTRACTED_BLOCK = 15774660;
+const PRELOAD_TOKEN_INDICES = [
+  '0xcf664087a5bb0237a0bad6742852ec6c8d69a27a', // ONE
+  '0xea589e93ff18b1a1f1e9bac7ef3e86ab62addc79', // VIPER
+]
+
+const LAST_EXTRACTED_BLOCK = 15805000;
 
 const FIXED_DECIMALS = 2;
 
@@ -71,6 +70,19 @@ async function main() {
   hideLoading();
 }
 
+function getViperUniPair(token0, token1) {
+  if (ethers.utils.hexlify(token0) > ethers.utils.hexlify(token1)) [token0, token1] = [token1, token0];
+  return ethers.utils.hexDataSlice(
+    ethers.utils.solidityKeccak256(['bytes', 'address', 'bytes', 'bytes'], [
+      '0xff',
+      '0x7D02c116b98d0965ba7B642ace0183ad8b8D2196',
+      ethers.utils.solidityKeccak256(['address', 'address'], [token0, token1]),
+      '0x162f79e638367cd45a118c778971dfd8d96c625d2798d3b71994b035cfe9b6dc'
+    ]),
+    12
+  )
+}
+
 async function loadViperSmartChefContracts(App, prices, chefAddresses, blockNumber) {
   const poolCount = parseInt(chefAddresses.length, 10);
 
@@ -87,8 +99,9 @@ async function loadViperSmartChefContracts(App, prices, chefAddresses, blockNumb
     tokens[x.stakedToken.address] = x.stakedToken;
     tokens[x.rewardToken.address] = x.rewardToken;
     if(x.stakedToken.tokens) {
-      tokens[x.stakedToken.tokens[0]] = await getHarmonyToken(App, x.stakedToken.tokens[0], "0x0000000000000000000000000000000000000000");
-      tokens[x.stakedToken.tokens[1]] = await getHarmonyToken(App, x.stakedToken.tokens[1], "0x0000000000000000000000000000000000000000");
+      await Promise.all(x.stakedToken.tokens.map(async (x) => {
+        tokens[x] = await getHarmonyToken(App, x, "0x0000000000000000000000000000000000000000");
+      }));
     }
   }));
 
@@ -97,14 +110,25 @@ async function loadViperSmartChefContracts(App, prices, chefAddresses, blockNumb
     getPoolPrices(tokens, prices, pool, "Harmony");
   }));
 
+  // TODO: multicall?
+  await Promise.all(Object.keys(tokens).filter(x => (x !== 'undefined' && !x.tokens && !prices[x])).map(x =>
+    Promise.all(PRELOAD_TOKEN_INDICES.map(
+      async (index) => {
+        const poolAddr = getViperUniPair(index, x)
+        if(await App.provider.getCode(poolAddr) === ethers.utils.hexlify("0x")) return;
+        const pool = await getHarmonyToken(App, poolAddr, "0x0000000000000000000000000000000000000000");
+        if (pool) getPoolPrices(tokens, prices, pool, "Harmony");
+      }
+    ))
+  ));
+
   const poolPrices = poolInfos.map(poolInfo => poolInfo.stakedToken ? getPoolPrices(tokens, prices, poolInfo.stakedToken, "Harmony") : undefined);
 
   _print("Finished reading smart contracts.\n");
 
   let aprs = []
   for (i = 0; i < poolCount; i++) {
-    console.log([poolInfos[i], poolPrices[i]])
-    if (poolPrices[i]) {
+    if (poolInfos[i].rewardPerBlock && poolPrices[i]) {
       const apr = printViperSmartChefPool(App, chefAddresses[i], prices, poolInfos[i], i, poolPrices[i])
       aprs.push(apr);
     }
@@ -143,17 +167,20 @@ async function getViperSmartChefPoolInfo(App, chefAddress, blockNumber) {
     startBlock: await chefContract.startBlock(),
     endBlock: await chefContract.endBlock(),
   }
-  if (poolInfo.rewardPerBlock == 0 || blockNumber < poolInfo.startBlock || blockNumber > poolInfo.endBlock) {
-    return {
-      stakedToken: null,
-      rewardToken: null,
-      rewardPerBlock: 0,
-      userStaked : 0,
-      pendingRewardTokens : 0,
-    };
+  const emptyPool = {
+    stakedToken: null,
+    rewardToken: null,
+    rewardPerBlock: 0,
+    userStaked : 0,
+    pendingRewardTokens : 0,
   }
-  const stakedToken = await getHarmonyToken(App, poolInfo.stakedToken, chefAddress);
+
+  if (poolInfo.rewardPerBlock === 0 || blockNumber < poolInfo.startBlock || blockNumber > poolInfo.endBlock) return emptyPool;
+
   const rewardToken = await getHarmonyToken(App, poolInfo.rewardToken, chefAddress);
+  if(rewardToken.staked === 0) return emptyPool;
+
+  const stakedToken = await getHarmonyToken(App, poolInfo.stakedToken, chefAddress);
   const userInfo = await chefContract.userInfo(App.YOUR_ADDRESS);
   const pendingRewardTokens = await chefContract.pendingReward(App.YOUR_ADDRESS);
   const userStaked = userInfo.amount / 10 ** stakedToken.decimals;
