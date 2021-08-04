@@ -719,10 +719,11 @@ $(function () { consoleInit(main) });
                  "─────▐██──▀▀──▀▀──██▌──────" + "\n" +
                  "────▄████▄──▐▌──▄████▄─────";
     _print(logo);
-    prettyTable("PolyAnon",
-      [{ k:"Blockchain", v:"Polygon"   , l:"https://github.com/PolyAnon/Docs/PolyAnon.md" },
-       { k:"Vol. 1"    , v:"PolySecond", l:"https://github.com/PolyAnon/PolySecond/Docs/PolySecond.md" },
-       { k:""          , v:"Telegram"  , l:"https://t.me/polysecond" }
+    prettyTable("Welcome",
+      [{ k:"About us"  , v:"PolyAnon"  , l:"https://github.com/PolyAnon/PolyAnon/blob/main/Docs/PolyAnon.md"     },
+       { k:"Vol. 1"    , v:"PolySecond", l:"https://github.com/PolyAnon/PolySecond/blob/main/Docs/PolySecond.md" },
+       { k:"SEP"       , v:""          , l:null                                                                  },
+       { k:""          , v:"Telegram"  , l:"https://t.me/polysecond"                                             }
       ]);
     ///------------------------------------------------------------------------
     const start         = new Date((await contract.startUNIX()).toNumber() * 1000);
