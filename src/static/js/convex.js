@@ -214,12 +214,12 @@ async function printConvexSynthetixPool(App, tokens, prices, info, chain="eth", 
     const dailyAPR = weeklyAPR / 7;
     const yearlyAPR = weeklyAPR * 52;
     _print(`APR: Day ${dailyAPR.toFixed(2)}% Week ${weeklyAPR.toFixed(2)}% Year ${yearlyAPR.toFixed(2)}%`);
-    const userStakedUsd = info.userStaked * info.stakeTokenPrice;
+    const userStakedUsd = info.userStaked * poolPrices.price;
     const userStakedPct = userStakedUsd / staked_tvl * 100;
     _print(`You are staking ${info.userStaked.toFixed(6)} ${stakeTokenTicker} ` +
            `$${formatMoney(userStakedUsd)} (${userStakedPct.toFixed(2)}% of the pool).`);
     if (info.userStaked > 0) {
-      info.poolPrices.print_contained_price(info.userStaked);
+      info.poolPrices?.print_contained_price(info.userStaked);
         const userWeeklyRewards = userStakedPct * info.weeklyRewards / 100;
         const userDailyRewards = userWeeklyRewards / 7;
         const userYearlyRewards = userWeeklyRewards * 52;

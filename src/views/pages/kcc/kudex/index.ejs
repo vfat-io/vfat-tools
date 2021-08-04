@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include(`${partials}/head`); -%>
+
+<body>
+<%- include(`${partials}/header_main`); -%>
+<pre id="log">
+*************** 👨‍🌾 UNOFFICIAL KUDEX FARMING CALCULATOR 👨‍🌾 ***************
+INFO  : https://www.kudex.finance
+******************************************************************************
+
+</pre>
+<div class="loader--1"></div>
+<%- include(`${partials}/scripts`, {scriptname: 'kcc_kudex'}); -%>
+</body>
+</html>

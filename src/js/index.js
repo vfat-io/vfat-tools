@@ -239,6 +239,21 @@ window.NETWORKS = {
         "https://www.oklink.com/okexchain"
     ],
   },
+  KCC: {
+    "chainId": "0x141",
+    "chainName": "KuCoin Community Chain Mainnet",
+    "nativeCurrency": {
+      "name": "KuCoin Token",
+      "symbol": "KCS",
+      "decimals": 18
+    },
+    "rpcUrls": [
+        "https://rpc-mainnet.kcc.network"
+    ],
+    "blockExplorerUrls": [
+        "https://explorer.kcc.io/en"
+    ],
+  },
 }
 
 const infuraId = atob(window.ETHEREUM_NODE_URL).split('/').pop()

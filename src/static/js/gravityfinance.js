@@ -1376,10 +1376,12 @@ const pool_addresses = ["nothing", // These are where ppl add liquidity
 ]
 
 const farm_addresses = ["0xf9FBfA8Fd7568D39E1b2091379499B48EA2F4c72", //GFI
-    "0xE6584E2432ef0b82A39C383e895E7e031655F2Bf", // GFI/USDC
-    "0xEf943A1B9A5E697Eb26B1cfc5e9225D2Aa00395a", // GFI/WETH
+    "0x037013d0952a0215CC235F176e9eb88E6a465970", // GFI/USDC 
+    "0xA85587945C97359d64d94d141BF1D95C215D1626", // GFI/WETH 
     "0x2b1966652Aa0c09a2f34cE3FbeB19d945dEB8FA3", //Link farm
-    "0x0Dbe8999Cde32164340411897a7DD73654F82571" //Sushi farm
+    "0x0Dbe8999Cde32164340411897a7DD73654F82571", //Sushi farm
+    "0xE6584E2432ef0b82A39C383e895E7e031655F2Bf", // GFI/USDC LEGACY 
+    "0xEf943A1B9A5E697Eb26B1cfc5e9225D2Aa00395a", // GFI/WETH LEGACY
 ] //array of farming contracts, 1 contract per farm */
 
 
@@ -1389,6 +1391,7 @@ async function main() {
 
     _print(`Initialized ${App.YOUR_ADDRESS}\n`);
     _print("Reading smart contracts...\n");
+    _print("***NOTICE: GFI-USDC farm, and GFI-WETH farm have been updated to new farms, unstake from the old, and stake into the new to continue earning rewards***\n");
 
     const prices = await getMaticPrices();
 
@@ -1398,6 +1401,8 @@ async function main() {
     let FarmVar2 = await loadFarmDetails(App, farm_addresses[0], pool_addresses[1], base_tokens_addresses[0], 0, BASE_ERC20_ABI, FARM_ABI, 6, prices, GFIprice);
     let FarmVar3 = await loadFarmOtherDetails(App, farm_addresses[4], base_tokens_addresses[0], base_tokens_addresses[4], BASE_ERC20_ABI, FARM_ABI, 18, prices, GFIprice);
     let FarmVar4 = await loadFarmOtherDetails(App, farm_addresses[3], base_tokens_addresses[0], base_tokens_addresses[3], BASE_ERC20_ABI, FARM_ABI, 18, prices, GFIprice);
+    await loadLegacyFarmDetails(App, farm_addresses[5], pool_addresses[1], base_tokens_addresses[0], base_tokens_addresses[1], BASE_ERC20_ABI, FARM_ABI, 6, prices, -1);
+    await loadLegacyFarmDetails(App, farm_addresses[6], pool_addresses[2], base_tokens_addresses[0], base_tokens_addresses[2], BASE_ERC20_ABI, FARM_ABI, 18, prices, GFIprice);
     let APRavg = (Number(FarmVar0[1]) + Number(FarmVar1[1]) + Number(FarmVar2[1]) + Number(FarmVar3[0]) + Number(FarmVar4[0])) / 5;
     let TVL = FarmVar0[2] + FarmVar1[2] + FarmVar2[2] + FarmVar3[1] + FarmVar4[1]; 
     _print_bold(`Farm Avg. APR Year: ${Number(APRavg).toFixed(2)}%  Total Farm TVL: $${formatMoney(TVL)}`);
@@ -1739,4 +1744,33 @@ async function get_APR_GFI_pool(App, GFIstakedInFarm, farm_info) {
     APR = APR / 10**18;
     var final_APR = Number(APR).toFixed(2).toString();
     return final_APR;
+}
+
+async function loadLegacyFarmDetails(App, farmAddress, poolAddress, aTokenAddress, bTokenAddress, ERC20ABI, FARMABI, Bzereos, prices, GFIusdc) {
+
+    const unstake = async function () {
+        return token_unstake(FARM_ABI, farmAddress, App, "pendingReward")
+    }
+
+    const claim = async function () {
+        return token_claim(FARM_ABI, farmAddress, App, "pendingReward")
+    }
+    let yearAPR;
+    let farmTVL;
+    const ATOKEN_CONTRACT = new ethers.Contract(aTokenAddress, ERC20ABI, App.provider); //GFI
+    const BTOKEN_CONTRACT = new ethers.Contract(bTokenAddress, ERC20ABI, App.provider); //Other
+    const FARM_CONTRACT = new ethers.Contract(farmAddress, FARMABI, App.provider);
+    let farmInfo = await FARM_CONTRACT.farmInfo();
+    const uSymbol = await ATOKEN_CONTRACT.symbol();
+    let userGFIBalance = await ATOKEN_CONTRACT.balanceOf(App.YOUR_ADDRESS);
+    let GFIprice;
+    let userInfo = await FARM_CONTRACT.userInfo(App.YOUR_ADDRESS);
+    let userAmount = userInfo["amount"] / 10**18;
+    let userReward = await FARM_CONTRACT.pendingReward(App.YOUR_ADDRESS) / 10**18;
+    const otherSymbol = await BTOKEN_CONTRACT.symbol();
+    _print_bold(`!!!LEGACY FARM, NO MORE REWARDS, UNSTAKE AND RESTAKE INTO NEW LP FARM!!!`);
+    _print_bold(`${uSymbol}-${otherSymbol} Quick LP`);
+    _print_link(`Unstake ${Number(userAmount).toFixed(8)} [${uSymbol}-${otherSymbol}]`, unstake);
+    _print(``);
+    return [GFIprice, yearAPR, farmTVL];
 }
