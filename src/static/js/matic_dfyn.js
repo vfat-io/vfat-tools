@@ -39,107 +39,133 @@ async function main() {
 }
 
 const DFYNtakingContracts = 
-  [{
-  //tokens: [Oe, ce],
-  //baseToken: ce,
-  //startTime: 1624550400,
-  stakingRewardAddress: "0xeee84F55F493c6ea89b655FFF09F2a2f9C2D1Dd8",
-  //version: "v2"
-}, {
-  //tokens: [Oe, he],
-  //baseToken: he,
-  //startTime: 1624550400,
-  stakingRewardAddress: "0x17e8732E2f0f6c35a794e9db4e63AeaDa9ce927C",
-  //version: "v2"
-}, {
-  //tokens: [Ee, he],
-  //baseToken: he,
-  //startTime: 1624550400,
-  stakingRewardAddress: "0xA51aF13F630489eE77B4489844041031e4e36824",
-  //version: "v2"
-}, {
-  //tokens: [se, ce],
-  //baseToken: ce,
-  //startTime: 1624550400,
-  stakingRewardAddress: "0xa55D1729eF64755D44640C67feA6D18A44EE9326",
-  //version: "v2"
-}, {
-  //tokens: [ue, se],
-  //baseToken: se,
-  //startTime: 1624550400,
-  stakingRewardAddress: "0xf01adB0eF728D4544E9a1E3543FC98F0C1CAE7FD",
-  //version: "v2"
-}, {
-  //tokens: [ue, ce],
-  //baseToken: ce,
-  //startTime: 1624550400,
-  stakingRewardAddress: "0xbd7BD38EC111A1789158b25240B5DaAE043113aE",
-  //version: "v2"
-}, {
-  //tokens: [he, ce],
-  //baseToken: ce,
-  //startTime: 1624550400,
-  stakingRewardAddress: "0x12286A4a13FCAFB77f08c48A00e6963A0ca6d917",
-  //version: "v2"
-}, {
-  //tokens: [pe, ce],
-  //baseToken: ce,
-  //startTime: 1624550400,
-  stakingRewardAddress: "0x39a7733e5F418a5F4c11A2212f085F0a776Ac7D3",
-  //version: "v2"
-}, {
-  //tokens: [pe, he],
-  //baseToken: he,
-  //startTime: 1624550400,
-  stakingRewardAddress: "0xCf32aF39BC10BAd0E193630E4E49b0Fa44867E7B",
-  //version: "v2"
-}, {
-  //tokens: [ge, he],
-  //baseToken: he,
-  //startTime: 1624550400,
-  stakingRewardAddress: "0xC79FC48EC33038e80531B14b1efE0C8cAb50747A",
-  //version: "v2"
-}, {
-  //tokens: [Fe, he],
-  //baseToken: he,
-  //startTime: 1624550400,
-  stakingRewardAddress: "0xbE6D6BA111E459610646FD4234005331af49179F",
-  //version: "v2"
-}, {
-  //tokens: [Ae, he],
-  //baseToken: he,
-  //startTime: 1624550400,
-  stakingRewardAddress: "0xC9091079b96fc51df933720b5071c0B0d18EF785",
-  //version: "v2"
-}, {
-  //tokens: [Ae, ce],
-  //baseToken: ce,
-  //startTime: 1624550400,
-  stakingRewardAddress: "0xf8f7F41BC59f37cfC19794CB41Ec37073fc98E5f",
-  //version: "v2"
-}, {
-  //tokens: [ve, ge],
-  //baseToken: ge,
-  //startTime: 1624550400,
-  stakingRewardAddress: "0x9b0E341661E8A993BBe3dd4b1d2484f100A55BB4",
-  //version: "v2"
-}, {
-  //tokens: [xe, he],
-  //baseToken: he,
-  //startTime: 1624550400,
-  stakingRewardAddress: "0xE504196B11dE48Da00872697f4683F5596dc8E8E",
-  //version: "v2"
-}, {
-  //tokens: [xe, ce],
-  //baseToken: ce,
-  //startTime: 1624550400,
-  stakingRewardAddress: "0xF4B0Dfe49aa35463D40d2FFAe47006990Ae10465",
-  //version: "v2"
-}, {
-  //tokens: [Ue, ce],
-  //baseToken: ce,
-  //startTime: 1624550400,
-  stakingRewardAddress: "0x6aa7f7cD7185905948951ab10E5FAE65d4Ab883D",
-  //version: "v2"
-}]
+  [
+    {
+      //[Ue, ve],
+      //ve,
+      //1627142400,
+      stakingRewardAddress: "0xbFE8679551Ee2CBA6A0FFDBa48AC29Ab89421A1F",
+      //"v3",
+      //"35"
+  }, {
+      //[Me, ye],
+      //ye,
+      //1627142400,
+      stakingRewardAddress: "0x5661681563003189a02a21Ca352a08f4D2B7dc6b",
+      //"v3",
+      //"35"
+  }, {
+      //[Me, je],
+      //je,
+      //1627142400,
+      stakingRewardAddress: "0xAE3b7B761FA5d19330E7b70f982e82a8514097F1",
+      //"v3",
+      //"35"
+  }, {
+      //[Ce, je],
+      //je,
+      //1627142400,
+      stakingRewardAddress: "0xAA1c6DE472eE563Bc2D5c9414db0ab80C3D0B53e",
+      //"v3",
+      //"35"
+  }, {
+      //[ve, ye],
+      //ye,
+      //1627142400,
+      stakingRewardAddress: "0x015a19cb6279F2c50fB197e1D83fA35C239521Bc",
+      //"v3",
+      //"35"
+  }, {
+      //[ve, be],
+      //ve,
+      //1627142400,
+      stakingRewardAddress: "0x41b03D6146222C2EF99C4af4Bc54Ad879DDE65B4",
+      //"v3",
+      //"35"
+  }, {
+      //[be, ye],
+      //ye,
+      //1627142400,
+      stakingRewardAddress: "0xF01261a698cd6331521CE6e1f9b17A011bf1c22E",
+      //"v3",
+      //"35"
+  }, {
+      //[ye, je],
+      //ye,
+      //1627142400,
+      stakingRewardAddress: "0x83bF2d48626b86c11389BF1B38942Caf31B57149",
+      //"v3",
+      //"35"
+  }, {
+      //[ye, he],
+      //ye,
+      //1627142400,
+      stakingRewardAddress: "0x0D11c2Be47cE813D72D5Ae5C94BE669DBD76BB35",
+      //"v3",
+      //"35"
+  }, {
+      //[je, he],
+      //je,
+      //1627142400,
+      stakingRewardAddress: "0xe38298301670DEBbd10FdB350569D7984458F482",
+      //"v3",
+      //"35"
+  }, {
+      //[ke, je],
+      //ke,
+      //1627142400,
+      stakingRewardAddress: "0x9C1f078085FEB02849edDE18bd28Aa688D20a7Ce",
+      //"v3",
+      //"35"
+  }, {
+      //[Ye, je],
+      //je,
+      //1627142400,
+      stakingRewardAddress: "0xC20D2f5b9d2FD9E89f33aa0b400A8070f1008B50",
+      //"v3",
+      //"35"
+  }, {
+      //[Se, je],
+      //je,
+      //1627142400,
+      stakingRewardAddress: "0x797fEd94a3865df1c2096a0e9a1cDfd194fe7150",
+      //"v3",
+      //"35"
+  }, {
+      //[Se, ye],
+      //ye,
+      //1627142400,
+      stakingRewardAddress: "0x8FA2e1ae0180f42c7b39EB91C018879E55918145",
+      //"v3",
+      //"35"
+  }, {
+      //[Oe, ke],
+      //ke,
+      //1627142400,
+      stakingRewardAddress: "0xc721F5d5BE5DDa564D9daC501757976F21ae8210",
+      //"v3",
+      //"35"
+  }, {
+      //[Ie, je],
+      //je,
+      //1627142400,
+      stakingRewardAddress: "0x3481fd816CE3C1418bcDB1105F6D1b4c6B3a9823",
+      //"v3",
+      //"35"
+  }, {
+      //[Ie, ye],
+      //ye,
+      //1627142400,
+      stakingRewardAddress: "0xcCf0565d6B15560eE0Bcaad6361CD565905CdcFa",
+      //"v3",
+      //"35"
+  }, {
+      //[He, ye],
+      //ye,
+      //1627142400,
+      stakingRewardAddress: "0xDC87882BCb8A3F15DDEbCE9023bc4661FEa4dbA5",
+      //"v3",
+      //"35"
+  }
+]
 

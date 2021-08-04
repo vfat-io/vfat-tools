@@ -179,6 +179,46 @@ async function getBscBalancerPool(App, pool, poolAddress, stakingAddress, tokens
   };
 }
 
+async function getBscBunicornTokenPool(App, pool, poolAddress, stakingAddress, tokens, smartToken) {
+    const poolData = await getBscBalancerPool(App, pool, poolAddress, stakingAddress, tokens, smartToken);
+
+    return { ...poolData, ...{ buniPoolTokens: poolData.poolTokens }}
+}
+
+async function getBscBunicornStablePool(App, pool, poolAddress, stakingAddress, tokens) {
+    let decimals = await pool.decimals();
+    let symbol = await pool.symbol();
+    let name = await pool.name();
+    let totalSupply = await pool.totalSupply();
+    let staked = await pool.balanceOf(stakingAddress);
+    const unstaked = await pool.balanceOf(App.YOUR_ADDRESS);
+    let poolTokens = [];
+    const tokenBalances = await pool.getReserves();
+    const token0Balance = window.ethers.BigNumber.from(tokenBalances[0]).toString();
+    const token1Balance = window.ethers.BigNumber.from(tokenBalances[1]).toString();
+    const totalTokenBalance = parseFloat(token0Balance)  + parseFloat(token1Balance);
+    for (let i = 0; i < tokens.length; i++) {
+        const tokenWeightPercent = parseFloat(window.ethers.BigNumber.from(tokenBalances[i]).toString()) / totalTokenBalance;
+
+        poolTokens.push({ address: tokens[i], weight: (Number(tokenWeightPercent.toString())).toFixed(4), balance: tokenBalances[i] })
+    }
+    return {
+        poolType: 'stable',
+        symbol,
+        name,
+        address: poolAddress,
+        poolTokens, //address, weight and balance
+        buniPoolTokens: poolTokens, //address, weight and balance
+        totalSupply: (totalSupply / 10 ** decimals),
+        stakingAddress,
+        staked: staked / 10 ** decimals,
+        decimals: decimals,
+        unstaked: unstaked / 10 ** decimals,
+        contract: pool,
+        tokens
+    };
+}
+
 async function getBscStoredToken(App, tokenAddress, stakingAddress, type) {
   switch (type) {
     case "uniswap":
@@ -188,6 +228,12 @@ async function getBscStoredToken(App, tokenAddress, stakingAddress, type) {
       const bal = new ethers.Contract(tokenAddress, BALANCER_POOL_ABI, App.provider);
       const tokens = await bal.getFinalTokens();
       return await getBscBalancerPool(App, bal, tokenAddress, stakingAddress, tokens);
+    case "bunicorn:stable":
+      const poolStableContract = new ethers.Contract(tokenAddress, BUNICORN_STABLE_POOL_ABI, App.provider);
+      const token0 = await poolStableContract.token0();
+      const token1 = await poolStableContract.token1();
+      const poolStables = [token0, token1];
+      return await getBscBunicornStablePool(App, poolStableContract, tokenAddress, stakingAddress, poolStables);
     case "swap":
       const _3pool = new ethers.Contract(tokenAddress, BSC_3POOL_ABI, App.provider);
       const swap = await _3pool.swap();
@@ -275,6 +321,16 @@ async function getBscToken(App, tokenAddress, stakingAddress) {
     }
     catch(err) {
       //console.log(err)
+    }
+    try {
+        const stablePoolContract = new ethers.Contract(tokenAddress, BUNICORN_STABLE_POOL_ABI, App.provider);
+        const token0 = await stablePoolContract.token0();
+        const token1 = await stablePoolContract.token1();
+        const tokens = [token0, token1];
+        const stablePool = await getBscBunicornStablePool(App, stablePoolContract, tokenAddress, stakingAddress, tokens);
+        window.localStorage.setItem(tokenAddress, "bunicorn:stable");
+        return stablePool;
+    }catch(err) {
     }
     try {
       const erc20 = new ethers.Contract(tokenAddress, ERC20_ABI, App.provider);
@@ -594,7 +650,16 @@ const bscTokens = [
   { "id": "ruler-protocol", "symbol": "RULER", "contract": "0x7EA2be2df7BA6E54B1A9C70676f668455E329d29"},
   { "id": "boringdao-old", "symbol": "BOR", "contract": "0x92D7756c60dcfD4c689290E8A9F4d263b3b32241"},
   { "id": "nerve-finance", "symbol": "NRV", "contract": "0x42F6f551ae042cBe50C739158b4f0CAC0Edb9096"},
-  { "id": "trident", "symbol": "TRIDENT", "contract": "0x66D7661cdcdF4adA7dA239Af6Fc8C4FE73E79D22"}
+  { "id": "trident", "symbol": "TRIDENT", "contract": "0x66D7661cdcdF4adA7dA239Af6Fc8C4FE73E79D22"},
+  { "id": "apeswap-finance", "symbol": "BANANA", "contract": "0x603c7f932ed1fc6575303d8fb018fdcbb0f39a95"},
+  { "id": "matic-network","symbol": "MATIC","contract": "0xCC42724C6683B7E57334c4E856f4c9965ED682bD" },
+  { "id": "cosmos","symbol": "ATOM","contract": "0x0Eb3a705fc54725037CC9e008bDede697f62F335" },
+  { "id": "reef-finance","symbol": "REEF","contract": "0xF21768cCBC73Ea5B6fd3C687208a7c2def2d966e" },
+  { "id": "zcore-finance","symbol": "ZEFI","contract": "0x0288D3E353fE2299F11eA2c2e1696b4A648eCC07" },
+  { "id": "binance-peg-litecoin","symbol": "LTC","contract": "0x4338665cbb7b2485a8855a139b75d5e34ab0db94" },
+  { "id": "tron-bsc","symbol": "TRX","contract": "0x85EAC5Ac2F758618dFa09bDbe0cf174e7d574D5B" },
+  { "id": "binance-peg-xrp","symbol": "XRP","contract": "0x1d2f0da169ceb9fc7b3144628db156f3f6c60dbe" },
+  { "id": "galaxy-triton", "symbol": "TRITON", "contract": "0x9cf4009e62429Db3F57Aa9e7e8E898427cF6865f" }
 ]
 
 async function getBscPrices() {

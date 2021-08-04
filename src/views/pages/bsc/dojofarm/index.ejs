@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include(`${partials}/head`); -%>
+
+  <body>
+    <%- include(`${partials}/header_main`); -%>
+      <pre id="log">
+***************************** BSC NETWORK **********************************************
+
+*************** 👨‍🌾 UNOFFICIAL DOJOFARM.FINANCE FARMING CALCULATOR 👨‍🌾 *******************
+INFO  : https://bsc.dojofarm.finance
+********************************************************************************************
+
+</pre>
+      <div class="loader--1"></div>
+      <%- include(`${partials}/scripts`, {scriptname: 'bsc_dojofarm' }); -%>
+  </body>
+
+</html>
