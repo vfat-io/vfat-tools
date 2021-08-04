@@ -463,6 +463,7 @@ const main = async() => {
       ["Buffalo             ", `<a href="buffalo"       >Various</a>`,"BUFF             ","https://www.buffaloswap.org"],
       ["MiniDuck            ", `<a href="miniduck"      >Various</a>`,"MiniDuck         ","https://miniduck.finance/"],
       ["PlanetSwap Mars     ", `<a href="planetswap_mars">Various</a>`,"MARS            ","https://mars.planetswap.app"],
+      ["SpacePortDeFi Layer2", `<a href="spaceport layer2">Various</a>`,"UFO            ","https://bsc3.spaceportdefi.com"],
     ]}
 
   let table = new AsciiTable().fromJSON(tableData);
