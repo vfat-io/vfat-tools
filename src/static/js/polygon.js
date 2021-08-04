@@ -491,6 +491,7 @@ const main = async () => {
       ['Timeleap Finance    ', `<a href="timeleapfinance" >Various</a>`, 'TIME         ', 'https://timeleap.finance'],
       ['PolyDEX             ', `<a href="polyDEX"         >Various</a>`, 'CNT          ', 'https://app.polydex.org'],
       ['BerryFarmsRaspBerry ', `<a href="berryfarmsraspberry">Various</a>`, 'RASP      ', 'https://berryfarms.world'],
+      ['BerryFarmsBlueBerry ', `<a href="berryfarmsblueberry">Various</a>`, 'BLUEBRY   ', 'https://blueberryfarms.world'],
       ['PolyEarn            ', `<a href="polyEarn"        >Various</a>`, 'PEN          ', 'https://polyearn.com']
     ],
   }
