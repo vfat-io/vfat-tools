@@ -458,13 +458,14 @@ const main = async() => {
       ["Cherry              ", `<a href="cherry"        >Various</a>`,"CHERRY           ","https://www.fletaconnect.io"],
       ["TeaBags             ", `<a href="teabags"       >Various</a>`,"TEABAGS          ","https://www.teabagsdefi.com"],
       ["HoneyFarm           ", `<a href="honeyfarm"     >Various</a>`,"HONEY            ","https://honeyfarm.finance"],
-      ["1001 Nights         ", `<a href="aladdin"       >Various</a>`,"ALADDIN          ","https://1001nights.gold"],
+      ["1001 Nights Aladdin ", `<a href="aladdin"       >Various</a>`,"ALADDIN          ","https://1001nights.gold"],
       ["ZooGame             ", `<a href="zoo"           >Various</a>`,"KEY              ","https://zoogame.app"],
       ["Buffalo             ", `<a href="buffalo"       >Various</a>`,"BUFF             ","https://www.buffaloswap.org"],
       ["MiniDuck            ", `<a href="miniduck"      >Various</a>`,"MiniDuck         ","https://miniduck.finance"],
       ["PlanetSwap Mars     ", `<a href="planetswap_mars">Various</a>`,"MARS            ","https://mars.planetswap.app"],
       ["SpacePortDeFi Layer2", `<a href="spaceport layer2">Various</a>`,"UFO            ","https://bsc3.spaceportdefi.com"],
-      ["ShallotDefi         ", `<a href="shallotdefi"   >Various</a>`,"SHALLOT          ","https://shallotdefi.com"]
+      ["ShallotDefi         ", `<a href="shallotdefi"   >Various</a>`,"SHALLOT          ","https://shallotdefi.com"],
+      ["1001 Nights Jasmine ", `<a href="jasmine"       >Various</a>`,"JASMINE          ","https://jasmine.1001nights.gold"]
     ]}
 
   let table = new AsciiTable().fromJSON(tableData);
