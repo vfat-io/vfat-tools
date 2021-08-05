@@ -468,6 +468,7 @@ const main = async() => {
       ["1001 Nights Jasmine ", `<a href="jasmine"       >Various</a>`,"JASMINE          ","https://jasmine.1001nights.gold"],
       ["GreedySmurf         ", `<a href="greedysmurf"   >Various</a>`,"GREEDY           ","https://greedy.smurf.money"],
       ["Cobra (JungleSwap)  ", `<a href="cobra_jungleswap">Various</a>`,"COBRA          ","https://cobra.jungleswap.cash"]
+      ["Slotmachinedefi     ", `<a href="Slotmachinedefi">Various</a>`,"SLOT            ","https://slotmachinedefi.com"]
     ]}
 
   let table = new AsciiTable().fromJSON(tableData);
