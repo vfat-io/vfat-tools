@@ -11,7 +11,7 @@ $(function () {
         _print(`Initialized ${App.YOUR_ADDRESS}\n`);
         _print("Reading smart contracts...\n");
     
-        const HERMES_CHEF_ADDR = "0xfABc13d1D70068D4309D88D5EdC8ddc6F36080D8";
+        const HERMES_CHEF_ADDR = "0xF2a544C1Ee9B21D6B068F638B5fB4835D8efBA3D";
         const rewardTokenTicker = "IRIS";
         const HERMES_CHEF = new ethers.Contract(HERMES_CHEF_ADDR, HERMES_CHEF_ABI, App.provider);
     

@@ -1545,6 +1545,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
   else if (pool.symbol.includes("Galaxy-LP")) stakeTokenTicker += " Galaxy LP";
   else if (pool.symbol.includes("KUS-LP")) stakeTokenTicker += " KUS LP";
   else if (pool.symbol.includes("KoffeeMug")) stakeTokenTicker += " KoffeeMug";
+  else if (pool.symbol.includes("DMM-LP")) stakeTokenTicker += " Kyber LP";
   else stakeTokenTicker += " Uni LP";
   return {
       t0: t0,

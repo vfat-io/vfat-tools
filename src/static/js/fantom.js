@@ -99,7 +99,7 @@ const main = async() => {
         "https://waka.finance"
       ],
       [
-        "Elk",
+        "Elk *",
         `<a href='elk'>Various</a>`,
         "ELK",
         "https://app.elk.finance"
@@ -142,7 +142,7 @@ const main = async() => {
       ],
       [
         "Guru",
-        `<a href='guru'>Various</a>`,
+        `<a href='guru'>ELITE-WFTM SLP</a>`,
         "ELITE",
         "https://ftm.guru"
       ],
@@ -254,6 +254,12 @@ const main = async() => {
         "BONE",
         "https://shibafantom.finance"
       ],
+      [
+        "Guru - LF#1",
+        `<a href='guru'>NIPS-WFTM ZDEXLP</a>`,
+        "NIPS",
+        "https://ftm.guru"
+      ]
     ]
   }
 

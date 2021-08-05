@@ -128,11 +128,13 @@ async function printMcnSynthetixPool(App, tokens, prices, info, chain="eth") {
     info.rewardTokenPrice = getParameterCaseInsensitive
     info.poolPrices.print_price(chain);
     let weeklyAPRs = 0
+    let rewardTokenPrices = [];
     for(const rewardToken of info.rewardTokens){
       const rewardTokenPrice = getParameterCaseInsensitive(prices, rewardToken.address)?.usd ?? 0;
       rewardToken.usdPerWeek = rewardToken.weeklyRewards * rewardTokenPrice;
       _print(`${rewardToken.rewardTokenTicker} Per Week: ${rewardToken.weeklyRewards.toFixed(2)} ($${formatMoney(rewardToken.usdPerWeek)})`);
       weeklyAPRs += rewardToken.usdPerWeek;
+      rewardTokenPrices.push(rewardTokenPrice);
     }
     const weeklyAPR = weeklyAPRs / info.staked_tvl * 100;
     const dailyAPR = weeklyAPR / 7;
@@ -142,6 +144,19 @@ async function printMcnSynthetixPool(App, tokens, prices, info, chain="eth") {
     const userStakedPct = userStakedUsd / info.staked_tvl * 100;
     _print(`You are staking ${info.userStaked.toFixed(6)} ${info.stakeTokenTicker} ` +
            `$${formatMoney(userStakedUsd)} (${userStakedPct.toFixed(2)}% of the pool).`);
+    if (info.userStaked > 0) {
+    info.poolPrices.print_contained_price(info.userStaked);
+      const userWeeklyRewards0 = userStakedPct * info.rewardTokens[0].weeklyRewards / 100;
+      const userDailyRewards0 = userWeeklyRewards0 / 7;
+      const userYearlyRewards0 = userWeeklyRewards0 * 52;
+      const userWeeklyRewards1 = info.rewardTokens[1].weeklyRewards / 100;
+      const userDailyRewards1 = userWeeklyRewards1 / 7;
+      const userYearlyRewards1 = userWeeklyRewards1 * 52;
+      _print(`Estimated ${info.rewardTokens[0].rewardTokenTicker} + ${info.rewardTokens[1].rewardTokenTicker} earnings:`
+          + ` Day ${(userDailyRewards0+userDailyRewards1).toFixed(2)} ($${formatMoney(userDailyRewards0*rewardTokenPrices[0]+userDailyRewards1*rewardTokenPrices[1])})`
+          + ` Week ${(userWeeklyRewards0+userWeeklyRewards1).toFixed(2)} ($${formatMoney(userWeeklyRewards0*rewardTokenPrices[0]+userWeeklyRewards1*rewardTokenPrices[1])})`
+          + ` Year ${(userYearlyRewards0+userYearlyRewards1).toFixed(2)} ($${formatMoney(userYearlyRewards0*rewardTokenPrices[0]+userYearlyRewards1*rewardTokenPrices[1])})`);
+  }
     const approveTENDAndStake = async function() {
       return rewardsContract_stake(info.stakeTokenAddress, info.stakingAddress, App)
     }
@@ -160,9 +175,7 @@ async function printMcnSynthetixPool(App, tokens, prices, info, chain="eth") {
     _print(`<a target="_blank" href="https://etherscan.io/address/${info.stakingAddress}#code">Etherscan</a>`);
     _print_link(`Stake ${info.userUnstaked.toFixed(6)} ${info.stakeTokenTicker}`, approveTENDAndStake)
     _print_link(`Unstake ${info.userStaked.toFixed(6)} ${info.stakeTokenTicker}`, unstake)
-    for(const rewardToken of info.rewardTokens){
-      _print_link(`Claim ${rewardToken.earned.toFixed(6)} ${rewardToken.rewardTokenTicker} ($${formatMoney(rewardToken.earned*rewardToken.rewardTokenPrice)})`, claim)
-    }
+    _print_link(`Claim ${info.rewardTokens[0].earned.toFixed(6)} ${info.rewardTokens[0].rewardTokenTicker} ($${formatMoney(info.rewardTokens[0].earned*rewardTokenPrices[0])}) + ${info.rewardTokens[1].earned.toFixed(6)} ${info.rewardTokens[1].rewardTokenTicker} ($${formatMoney(info.rewardTokens[1].earned*rewardTokenPrices[1])})`, claim)
     _print_link(`Revoke (set approval to 0)`, revoke)
     _print_link(`Exit`, exit)
     _print("");
