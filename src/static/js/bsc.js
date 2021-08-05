@@ -245,7 +245,7 @@ const main = async() => {
       ["Gambit              ", `<a href="gambit"        >Various</a>`,"xGMT,WBNB        ","https://gambit.financial/earn"],
       ["Frenchie            ", `<a href="frenchie"      >Various</a>`,"FPP              ","https://frenchiedefi.com"],
       ["Moonharvest         ", `<a href="moonharvest"   >Various</a>`,"HE3              ","https://moonharvest.net"],
-      ["Cobra               ", `<a href="cobra"         >Various</a>`,"BITE             ","https://www.cobrafinance.org"],
+      ["Cobra Bite          ", `<a href="cobra"         >Various</a>`,"BITE             ","https://www.cobrafinance.org"],
       ["Eggplant            ", `<a href="eggplant"      >Various</a>`,"EGGP             ","https://eggplant.fi"],
       ["Dumpling            ", `<a href="dumpling"      >Various</a>`,"SDUMP            ","https://dumplingdefi.finance"],
       ["Mushrooms           ", `<a href="mushrooms"     >Various</a>`,"MM               ","https://mushrooms.finance"],
@@ -466,7 +466,8 @@ const main = async() => {
       ["SpacePortDeFi Layer2", `<a href="spaceport layer2">Various</a>`,"UFO            ","https://bsc3.spaceportdefi.com"],
       ["ShallotDefi         ", `<a href="shallotdefi"   >Various</a>`,"SHALLOT          ","https://shallotdefi.com"],
       ["1001 Nights Jasmine ", `<a href="jasmine"       >Various</a>`,"JASMINE          ","https://jasmine.1001nights.gold"],
-      ["GreedySmurf         ", `<a href="greedysmurf"   >Various</a>`,"GREEDY           ","https://greedy.smurf.money"]
+      ["GreedySmurf         ", `<a href="greedysmurf"   >Various</a>`,"GREEDY           ","https://greedy.smurf.money"],
+      ["Cobra (JungleSwap)  ", `<a href="cobra_jungleswap">Various</a>`,"COBRA          ","https://cobra.jungleswap.cash"]
     ]}
 
   let table = new AsciiTable().fromJSON(tableData);
