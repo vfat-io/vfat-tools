@@ -503,7 +503,8 @@ const main = async () => {
       ['WorldSwap Kuala Lumpur', `<a href="worldswap_kul" >Various</a>`, 'KUL          ', 'https://kualalumpur.worldswap.finance'],
       ['PolySanta           ', `<a href="polysanta"       >Various</a>`, 'SANTA        ', 'https://polysanta.farm'],
       ['SpacePortDeFi Layer2', `<a href="spaceport layer2">Various</a>`, 'UFO          ', "https://polygon3.spaceportdefi.com"],
-      ['PolyPizza           ', `<a href="polypizza"       >Various</a>`, 'PIZZA        ', 'https://polypizza.farm']
+      ['PolyPizza           ', `<a href="polypizza"       >Various</a>`, 'PIZZA        ', 'https://polypizza.farm'],
+      ['ShallotDefi         ', `<a href="shallotdefi"     >Various</a>`, 'SHALLOT      ', 'https://poly.shallotdefi.com']
     ],
   }
 

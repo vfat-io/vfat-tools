@@ -445,7 +445,7 @@ const main = async() => {
       ["GoldRush            ", `<a href="goldrush"      >Various</a>`,"GNT              ","https://goldrush.farm"],
       ["MacaronSwap         ", `<a href="macaron"       >Various</a>`,"MCRN             ","https://macaronswap.finance"],
       ["PlanetSwap          ", `<a href="planetswap"    >Various</a>`,"MERCURY          ","https://planetswap.app"],
-      ["Galaxy Finance One  ", `<a href="galaxy_triton" >Various</a>`,"TRITON           ","https://bsc-triton.galaxyfinance.one/"],
+      ["Galaxy Finance One  ", `<a href="galaxy_triton" >Various</a>`,"TRITON           ","https://bsc-triton.galaxyfinance.one"],
       ["Radeon Finance      ", `<a href="radeonfinance" >Various</a>`,"XAEA12           ","https://radeon.finance"],
       ["Luckycatdefi        ", `<a href="Luckycatdefi"  >Various</a>`,"LUCKYCATDEFI     ","https://luckycatdefi.com"],
       ["Cobra (VenomDAO)    ", `<a href="cobra_venom"   >Various</a>`,"COBRA            ","https://cobra.exchange"],
@@ -461,9 +461,10 @@ const main = async() => {
       ["1001 Nights         ", `<a href="aladdin"       >Various</a>`,"ALADDIN          ","https://1001nights.gold"],
       ["ZooGame             ", `<a href="zoo"           >Various</a>`,"KEY              ","https://zoogame.app"],
       ["Buffalo             ", `<a href="buffalo"       >Various</a>`,"BUFF             ","https://www.buffaloswap.org"],
-      ["MiniDuck            ", `<a href="miniduck"      >Various</a>`,"MiniDuck         ","https://miniduck.finance/"],
+      ["MiniDuck            ", `<a href="miniduck"      >Various</a>`,"MiniDuck         ","https://miniduck.finance"],
       ["PlanetSwap Mars     ", `<a href="planetswap_mars">Various</a>`,"MARS            ","https://mars.planetswap.app"],
       ["SpacePortDeFi Layer2", `<a href="spaceport layer2">Various</a>`,"UFO            ","https://bsc3.spaceportdefi.com"],
+      ["ShallotDefi         ", `<a href="shallotdefi"   >Various</a>`,"SHALLOT          ","https://shallotdefi.com"]
     ]}
 
   let table = new AsciiTable().fromJSON(tableData);
