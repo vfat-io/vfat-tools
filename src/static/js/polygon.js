@@ -501,7 +501,8 @@ const main = async () => {
       ['PolyRabbit          ', `<a href="polyrabbit"      >Various</a>`, 'RABBIT       ', 'https://polyrabbitfinance.com'],
       ['polyDEX-CryptionNetwork', `<a href="polydex_cryptionnetwork">Various</a>`, 'CNT', 'https://app.polydex.org'],
       ['WorldSwap Kuala Lumpur', `<a href="worldswap_kul" >Various</a>`, 'KUL          ', 'https://kualalumpur.worldswap.finance'],
-      ['PolySanta            ', `<a href="polysanta"        >Various</a>`, 'SANTA         ', 'https://polysanta.farm']
+      ['PolySanta            ', `<a href="polysanta"        >Various</a>`, 'SANTA         ', 'https://polysanta.farm'],
+      ['PolyWave            ', `<a href="polywave"        >Various</a>`, 'WAVE         ', 'https://polywave.finance/pools']
     ],
   }
 
