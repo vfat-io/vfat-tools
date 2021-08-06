@@ -505,7 +505,9 @@ const main = async () => {
       ['SpacePortDeFi Layer2', `<a href="spaceport layer2">Various</a>`, 'UFO          ', "https://polygon3.spaceportdefi.com"],
       ['PolyPizza           ', `<a href="polypizza"       >Various</a>`, 'PIZZA        ', 'https://polypizza.farm'],
       ['ShallotDefi         ', `<a href="shallotdefi"     >Various</a>`, 'SHALLOT      ', 'https://poly.shallotdefi.com'],
-      ['BerryFarmsBlueBerry ', `<a href="berryfarmsblueberry">Various</a>`, 'BLUEBRY   ', 'https://blueberryfarms.world']
+      ['BerryFarmsBlueBerry ', `<a href="berryfarmsblueberry">Various</a>`, 'BLUEBRY   ', 'https://blueberryfarms.world'],
+      ['PolyWave            ', `<a href="polywave"        >Various</a>`, 'WAVE         ', 'https://polywave.finance/pools'],
+      ['PolyPup Ball        ', `<a href="polypupball"     >Various</a>`, 'BALL         ', 'https://ball.polypup.finance']
     ],
   }
 

@@ -519,7 +519,18 @@ const maticTokens = [
   { "id": "pickle-finance", "symbol": "PICKLE", "contract": "0x2b88aD57897A8b496595925F43048301C37615Da" },
   { "id": "must", "symbol": "MUST", "contract": "0x9C78EE466D6Cb57A4d01Fd887D2b5dFb2D46288f" },
   { "id": "blackswan", "symbol": "SWAN", "contract": "0xab7589de4c581db0fb265e25a8e7809d84ccd7e8" },
-  { "id": "galaxy-triton", "symbol": "TRITON", "contract": "0x9cf4009e62429Db3F57Aa9e7e8E898427cF6865f" }
+  { "id": "galaxy-triton", "symbol": "TRITON", "contract": "0x9cf4009e62429Db3F57Aa9e7e8E898427cF6865f" },
+
+  { "id": "polywave", "symbol": "WAVE", "contract": "0x4de7fea447b837d7e77848a4b6c0662a64a84e14" },
+  { "id": "surf", "symbol": "SURF", "contract": "0x1e42edbe5376e717c1b22904c59e406426e8173f" },
+  { "id": "towel", "symbol": "TOWEL", "contract": "0x1e946ca17b893ab0f22cf1951137624ee9e689ef" },
+  { "id": "uniswap", "symbol": "UNI", "contract": "0xb33eaad8d922b1083446dc23f610c2567fb5180f" },
+  { "id": "agar", "symbol": "AGAr", "contract": "0xf84bd51eab957c2e7b7d646a3427c5a50848281d" },
+  { "id": "pcomb", "symbol": "pCOMB", "contract": "0x37d1ebc3af809b8fadb45dce7077efc629b2b5bb" },
+  { "id": "lmao", "symbol": "LMAO", "contract": "0xda6f81c2426131337b0cf73768b94c2004390b0e" },
+  { "id": "titan", "symbol": "TITAN", "contract": "0xaaa5b9e6c589642f98a1cda99b9d024b8407285a" },
+  { "id": "wrbt", "symbol": "wRBT", "contract": "0xa5d447757dac8c5faab1858b13da4af701adf4bb" },
+  { "id": "wlev", "symbol": "WLEV", "contract": "0xeb7f7955730a7dba1427a6567950eb4a98dfcbdf" },
 ]
 
 async function getMaticPrices() {
