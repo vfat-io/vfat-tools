@@ -22,7 +22,7 @@ $(function() {
       const prices = await getBscPrices();
   
       await loadBscChefContract(App, tokens, prices, SLOT_CHEF, SLOT_CHEF_ADDR, SLOT_CHEF_ABI, rewardTokenTicker,
-          "slot", null, rewardsPerWeek, "pendingSLOT");
+          "slot", null, rewardsPerWeek, "pendingSlot");
   
       hideLoading();
     }
