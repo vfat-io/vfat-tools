@@ -497,11 +497,15 @@ const main = async () => {
       ['PolyTopia Wonster   ', `<a href="wonster"         >Various</a>`, 'WONSTER      ', 'https://wonster.polytopia.farm'],
       ['PolyRiver           ', `<a href="polyriver"       >Various</a>`, 'RIVER        ', 'WIP'],
       ['PolyBakeryCake      ', `<a href="polybakerycake"  >Various</a>`, 'CAKE         ', 'https://bakerycake.finance'],
-      ['PolySecond'          , `<a href="polyanon_vol_1"  >ROI</a>`    , 'MATIC        ', 'https://github.com/PolyAnon/PolySecond/blob/main/Docs/PolySecond.md'],
+      ['PolySecond          ', `<a href="polyanon_vol_1"  >ROI</a>`    , 'MATIC        ', 'https://github.com/PolyAnon/PolySecond/blob/main/Docs/PolySecond.md'],
       ['PolyRabbit          ', `<a href="polyrabbit"      >Various</a>`, 'RABBIT       ', 'https://polyrabbitfinance.com'],
       ['polyDEX-CryptionNetwork', `<a href="polydex_cryptionnetwork">Various</a>`, 'CNT', 'https://app.polydex.org'],
       ['WorldSwap Kuala Lumpur', `<a href="worldswap_kul" >Various</a>`, 'KUL          ', 'https://kualalumpur.worldswap.finance'],
-      ['PolySanta            ', `<a href="polysanta"        >Various</a>`, 'SANTA         ', 'https://polysanta.farm'],
+      ['PolySanta           ', `<a href="polysanta"       >Various</a>`, 'SANTA        ', 'https://polysanta.farm'],
+      ['SpacePortDeFi Layer2', `<a href="spaceport layer2">Various</a>`, 'UFO          ', "https://polygon3.spaceportdefi.com"],
+      ['PolyPizza           ', `<a href="polypizza"       >Various</a>`, 'PIZZA        ', 'https://polypizza.farm'],
+      ['ShallotDefi         ', `<a href="shallotdefi"     >Various</a>`, 'SHALLOT      ', 'https://poly.shallotdefi.com'],
+      ['BerryFarmsBlueBerry ', `<a href="berryfarmsblueberry">Various</a>`, 'BLUEBRY   ', 'https://blueberryfarms.world'],
       ['PolyWave            ', `<a href="polywave"        >Various</a>`, 'WAVE         ', 'https://polywave.finance/pools']
     ],
   }
