@@ -16,13 +16,10 @@ const EXTRACTED_POOLS = [
   '0x9b37d0017eae7a5027b1536f8c9f4b5cdbb971e2', 
   '0x6cf157a593de05026b691dcd850c472c8cb75b89', 
   '0xf33e9c1ad490d760e9a1ea9e24e56bdcdc87f279',
-  // BELOW THIS IS NOT ANNOUNCED YET (NO REWARD TOKENS)
-  '0x2da46ba416f943de73e444366db7ef9cd1169a33', 
-  '0xb74a2074ed707f1656e20aad7ae94d42e1e35abc', 
-  '0xabb088d1f56a4dd9f84830019e171e514573e68d', 
-  '0x53939c7b13219898189f557c7be930fd40573a8e', 
-  '0x5ee91b7cc0cc349bdd26831eaeaa191b19fe8802', 
-  '0x7d5eb674c2596a33571ae961d35d788c5d7e1b21'
+  '0x3e3a5850714541c573ecb746bdfb4900fd8717d7', 
+  '0xa58c2cbf2050f47749c44b6fb249ab77f109ef39', 
+  '0x2af8c7bfbc2ba194a4853262b1a3ec86595022d9',
+  "0xa0cb12f792b11f4098a83fd4d5bc6fa02bfb0625", // 0x58c9d398c4c017375953d9507412b164818548fead96a31370539130ac3de698
 ];
 
 const PRELOAD_PRICES_POOL = [
@@ -34,7 +31,8 @@ const PRELOAD_TOKEN_INDICES = [
   '0xea589e93ff18b1a1f1e9bac7ef3e86ab62addc79', // VIPER
 ]
 
-const LAST_EXTRACTED_BLOCK = 15805000;
+const LAST_EXTRACTED_BLOCK = 15897130;
+const BLOCKS_TO_EXTRACT = 1000;
 
 const FIXED_DECIMALS = 2;
 
@@ -47,20 +45,34 @@ async function main() {
   const blockNumber = await App.provider.getBlockNumber();
   let pools = EXTRACTED_POOLS;
 
-  const VIPER_SMARTCHEF_FACTORY = new ethers.Contract(VIPER_SMARTCHEF_FACTORY_ADDR, VIPER_SMARTCHEF_FACTORY_ABI, App.provider);
-  const smartchefFilter = VIPER_SMARTCHEF_FACTORY.filters.NewSmartChefContract();
-  const poolsDynExtracted = (await VIPER_SMARTCHEF_FACTORY.queryFilter(
-    smartchefFilter, 
-    Math.max(blockNumber - 500000, LAST_EXTRACTED_BLOCK)
-  )).map(log => ethers.utils.hexDataSlice(log.topics[1], 12));
-
-  console.log(poolsDynExtracted);
-  pools = [].concat(pools, poolsDynExtracted);
-
-  if (LAST_EXTRACTED_BLOCK + 500000 < blockNumber) {
-    _print(`Too many blocks have passed after the pool was last extracted manually.`);
-    _print(`Not querying for all of the pools for performance reasons.\n`);
+  if (LAST_EXTRACTED_BLOCK + BLOCKS_TO_EXTRACT < blockNumber) {
+    _print(`Pools was last extracted on block ${LAST_EXTRACTED_BLOCK}.`);
+    _print(`Not querying for new pools for performance reasons.\n`);
     _print_bold(`Some newer pools may not show up.\n`);
+  }
+  else {
+    const VIPER_SMARTCHEF_FACTORY = new ethers.Contract(VIPER_SMARTCHEF_FACTORY_ADDR, VIPER_SMARTCHEF_FACTORY_ABI, App.provider);
+    const smartchefFilter = VIPER_SMARTCHEF_FACTORY.filters.NewSmartChefContract();
+
+    try {
+      const poolsDynExtracted = (await VIPER_SMARTCHEF_FACTORY.queryFilter(
+        smartchefFilter, 
+        Math.max(blockNumber - BLOCKS_TO_EXTRACT, LAST_EXTRACTED_BLOCK)
+      )).map(log => ethers.utils.hexDataSlice(log.topics[1], 12));
+  
+      if(poolsDynExtracted.length > 0) {
+        _print_bold(`Found additional pools after last extracted.`);
+        _print_bold(`Those pool might disappear from vfat in the future until it is added to vfat manually`);
+      }
+  
+      console.log(poolsDynExtracted);
+      pools = [].concat(pools, poolsDynExtracted);
+
+    } catch (error) {
+      console.error(error);
+      _print(`Pools was last extracted on block ${LAST_EXTRACTED_BLOCK}.`);
+      _print_bold(`Some newer pools may not show up.\n`);
+    }
   }
 
   const basePrices = await getHarmonyPrices();
@@ -132,6 +144,7 @@ async function loadViperSmartChefContracts(App, prices, chefAddresses, blockNumb
       const apr = printViperSmartChefPool(App, chefAddresses[i], prices, poolInfos[i], i, poolPrices[i])
       aprs.push(apr);
     }
+    else console.log([i, chefAddresses[i], poolInfos[i].stakedToken, poolInfos[i].rewardToken])
   }
   let totalUserStaked=0, totalStaked=0, averageApr=0;
   for (const a of aprs) {
@@ -167,20 +180,20 @@ async function getViperSmartChefPoolInfo(App, chefAddress, blockNumber) {
     startBlock: await chefContract.startBlock(),
     endBlock: await chefContract.endBlock(),
   }
+  
+  const stakedToken = await getHarmonyToken(App, poolInfo.stakedToken, chefAddress);
+  const rewardToken = await getHarmonyToken(App, poolInfo.rewardToken, chefAddress);
+
   const emptyPool = {
-    stakedToken: null,
-    rewardToken: null,
+    stakedToken,
+    rewardToken,
     rewardPerBlock: 0,
     userStaked : 0,
     pendingRewardTokens : 0,
   }
 
-  if (poolInfo.rewardPerBlock === 0 || blockNumber < poolInfo.startBlock || blockNumber > poolInfo.endBlock) return emptyPool;
+  if (rewardToken.staked === 0 || poolInfo.rewardPerBlock === 0 || blockNumber < poolInfo.startBlock || blockNumber > poolInfo.endBlock) return emptyPool;
 
-  const rewardToken = await getHarmonyToken(App, poolInfo.rewardToken, chefAddress);
-  if(rewardToken.staked === 0) return emptyPool;
-
-  const stakedToken = await getHarmonyToken(App, poolInfo.stakedToken, chefAddress);
   const userInfo = await chefContract.userInfo(App.YOUR_ADDRESS);
   const pendingRewardTokens = await chefContract.pendingReward(App.YOUR_ADDRESS);
   const userStaked = userInfo.amount / 10 ** stakedToken.decimals;
