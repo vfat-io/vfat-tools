@@ -467,8 +467,9 @@ const main = async() => {
       ["ShallotDefi         ", `<a href="shallotdefi"   >Various</a>`,"SHALLOT          ","https://shallotdefi.com"],
       ["1001 Nights Jasmine ", `<a href="jasmine"       >Various</a>`,"JASMINE          ","https://jasmine.1001nights.gold"],
       ["GreedySmurf         ", `<a href="greedysmurf"   >Various</a>`,"GREEDY           ","https://greedy.smurf.money"],
-      ["Cobra (JungleSwap)  ", `<a href="cobra_jungleswap">Various</a>`,"COBRA          ","https://cobra.jungleswap.cash"]
-      ["Slotmachinedefi     ", `<a href="Slotmachinedefi">Various</a>`,"SLOT            ","https://slotmachinedefi.com"]
+      ["Cobra (JungleSwap)  ", `<a href="cobra_jungleswap">Various</a>`,"COBRA          ","https://cobra.jungleswap.cash"],
+      ["Slotmachinedefi     ", `<a href="Slotmachinedefi">Various</a>`,"SLOT            ","https://slotmachinedefi.com"],
+      ["BuffaloSwap         ", `<a href="buffaloswap"   >Various</a>`,"BUFFALOSWAP      ","https://www.buffaloswap.org"]
     ]}
 
   let table = new AsciiTable().fromJSON(tableData);
