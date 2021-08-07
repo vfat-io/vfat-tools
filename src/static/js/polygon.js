@@ -507,7 +507,8 @@ const main = async () => {
       ['ShallotDefi         ', `<a href="shallotdefi"     >Various</a>`, 'SHALLOT      ', 'https://poly.shallotdefi.com'],
       ['BerryFarmsBlueBerry ', `<a href="berryfarmsblueberry">Various</a>`, 'BLUEBRY   ', 'https://blueberryfarms.world'],
       ['PolyWave            ', `<a href="polywave"        >Various</a>`, 'WAVE         ', 'https://polywave.finance/pools'],
-      ['PolyPup Ball        ', `<a href="polypupball"     >Various</a>`, 'BALL         ', 'https://ball.polypup.finance']
+      ['PolyPup Ball        ', `<a href="polypupball"     >Various</a>`, 'BALL         ', 'https://ball.polypup.finance'],
+      ['Polymon             ', `<a href="polymon"         >Various</a>`, 'PYM         ', 'https://polymon.finance']
     ],
   }
 
