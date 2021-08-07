@@ -8,6 +8,7 @@ const main = async() => {
     "title":"OKEX Network",
     "heading":["Pool Provider","LP", "Reward Tokens", "INFO"],
     "rows": [
+      ["FarmHero",   `<a href='farmhero'     >Various</a>`,  "GLORY",    "https://oec.farmhero.io"],
       ["Sakeswap",   `<a href='sakeswap'     >Various</a>`,  "SAKE",    "https://okapp.sakeswap.fi"],
       ["WePiggy",    `<a href='wepiggy'      >Various</a>`,  "WPC",     "https://okexchain.wepiggy.com/markets"],
       ["KSwap",      `<a href='kswap'        >Various</a>`,  "KST",     "https://kswap.finance"],
