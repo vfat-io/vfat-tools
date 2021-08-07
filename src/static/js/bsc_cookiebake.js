@@ -41,6 +41,13 @@ const Pool3 = {
   rewardTokenAddress : "0x1e584D356db17deCFA474Fb9669Fa7D2f181eE4E"
 }
 
+const Pool5 = {
+  address : "0x9854341320Dc7F6318a415f4fcBd3A58C90FbFe5",
+  abi : NEW_CHIPS_CONTRACT_ABI,
+  stakeTokenAddress : "0xc9849e6fdb743d08faee3e34dd2d1bc69ea11a51",
+  rewardTokenAddress : "0x1e584D356db17deCFA474Fb9669Fa7D2f181eE4E"
+}
+
 async function main() {
 
   const App = await init_ethers();
@@ -56,10 +63,11 @@ async function main() {
   let p1 = await loadChipsSynthetixPool1(App, tokens, prices, Pool1.abi, Pool1.address, Pool1.chipsTokenAddress);
   let p2 = await loadNewChipsSynthetixPool(App, tokens, prices, Pool2.abi, Pool2.address, Pool2.rewardTokenAddress, Pool2.stakeTokenAddress);
   let p3 = await loadNewChipsSynthetixPool(App, tokens, prices, Pool3.abi, Pool3.address, Pool3.rewardTokenAddress, Pool3.stakeTokenAddress);
+  let p5 = await loadNewChipsSynthetixPool(App, tokens, prices, Pool5.abi, Pool5.address, Pool5.rewardTokenAddress, Pool5.stakeTokenAddress);
 
-  _print_bold(`Total staked: $${formatMoney(p0.staked_tvl+p1.staked_tvl+p2.staked_tvl+p3.staked_tvl+p4.staked_tvl)}`);
-  if (p0.totalUserStaked > 0 || p1.totalUserStaked > 0 || p2.totalUserStaked > 0 || p3.totalUserStaked > 0 || p4.totalUserStaked > 0) {
-    _print(`You are staking a total of $${formatMoney(p0.totalUserStaked+p1.totalUserStaked+p2.totalUserStaked+p3.totalUserStaked+p4.totalUserStaked)}`);
+  _print_bold(`Total staked: $${formatMoney(p0.staked_tvl+p1.staked_tvl+p2.staked_tvl+p3.staked_tvl+p4.staked_tvl+p5.staked_tvl)}`);
+  if (p0.totalUserStaked > 0 || p1.totalUserStaked > 0 || p2.totalUserStaked > 0 || p3.totalUserStaked > 0 || p4.totalUserStaked > 0 || p5.totalUserStaked > 0) {
+    _print(`You are staking a total of $${formatMoney(p0.totalUserStaked+p1.totalUserStaked+p2.totalUserStaked+p3.totalUserStaked+p4.totalUserStaked+p5.totalUserStaked)}`);
   }
 
   hideLoading();
