@@ -90,13 +90,13 @@ async function main() {
           poolshares: allInfo.compressedInfos[i][0],
           deposittokenaddress: allInfo.tokenAddresses[i].toLowerCase(),
           deposittokensymbol: deptokensymbol,
-          deptokenprice: allInfo.compressedInfos[i][5],
+          deptokenprice: allInfo.compressedInfos[i][5] * 1e18 / allInfo.compressedInfos[4][5],  //allInfo.compressedInfos[i][5],
           waveperday: totalwaveperday * parseInt(allInfo.compressedInfos[i][0]) / parseInt(totalShares),
           totaldeposited: allInfo.compressedInfos[i][3],
           rewardtokensymbol: "WAVE",
           userdeposited: allInfo.compressedInfos[i][7],
           userrewards: allInfo.compressedInfos[i][8],
-
+          decimals: parseInt(allInfo.compressedInfos[I][6]),
           depfee: allInfo.compressedInfos[i][1],
           withdrawfee: allInfo.compressedInfos[i][2],
         })
@@ -113,7 +113,7 @@ async function main() {
           const t1symbol = await t1.symbol()
           _print(`${theindex} - <a href="https://info.quickswap.exchange/pair/${i.deposittokenaddress}">[${t0symbol}-[${t1symbol}] Quickswap LP</a> <a href="https://quickswap.exchange/#/add/${token0}/${token1}">[+]</a> <a href="https://quickswap.exchange/#/remove/${token0}/${token1}">[-]</a> <a href="https://quickswap.exchange/#/swap?inputCurrency=${token0}&outputCurrency=${token1}">[<=>]</a> Price: $${ (i.deptokenprice / 1e18).toFixed(2) } TVL: $${ ((i.deptokenprice / 1e18) * (i.totaldeposited / 1e18)).toFixed(2) } `)
         } else {
-          _print(`${theindex} - <a href="https://polygonscan.com/address/${i.deposittokenaddress}">${i.deposittokensymbol}</a>  Price: $${ (i.deptokenprice / 1e18).toFixed(2) } TVL: $${ ((i.deptokenprice / 1e18) * (i.totaldeposited / 1e18)).toFixed(2) }`)
+          _print(`${theindex} - <a href="https://polygonscan.com/address/${i.deposittokenaddress}">${i.deposittokensymbol}</a>  Price: $${ (i.deptokenprice / 1e18).toFixed(2) } TVL: $${ ((i.deptokenprice / 1e18) * (i.totaldeposited / 1e18) * 10 ** (18 - i.decimals)).toFixed(2) }`)
         }
         _print(`${i.deposittokensymbol} Price: $${(i.deptokenprice / 1e18).toFixed(2) }`)
         _print(`WAVE Price: $${waveprice.usd}`)
