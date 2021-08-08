@@ -489,7 +489,6 @@ const main = async () => {
       ['Hermes              ', `<a href="hermes"          >Various</a>`, 'IRIS         ', 'https://www.hermesdefi.io'],
       ['PolyFund            ', `<a href="polyfund"        >Various</a>`, 'FUND         ', 'https://www.polyfund.finance'],
       ['Timeleap Finance    ', `<a href="timeleapfinance" >Various</a>`, 'TIME         ', 'https://timeleap.finance'],
-      ['PolyDEX             ', `<a href="polyDEX"         >Various</a>`, 'CNT          ', 'https://app.polydex.org'],
       ['BerryFarmsRaspBerry ', `<a href="berryfarmsraspberry">Various</a>`, 'RASP      ', 'https://berryfarms.world'],
       ['PolyEarn            ', `<a href="polyearn"        >Various</a>`, 'PEN          ', 'https://polyearn.com'],
       ['PolyYeti            ', `<a href="polyyeti"        >Various</a>`, 'YETI         ', 'https://polyyeti.farm'],
@@ -498,11 +497,23 @@ const main = async () => {
       ['PolyTopia Wonster   ', `<a href="wonster"         >Various</a>`, 'WONSTER      ', 'https://wonster.polytopia.farm'],
       ['PolyRiver           ', `<a href="polyriver"       >Various</a>`, 'RIVER        ', 'WIP'],
       ['PolyBakeryCake      ', `<a href="polybakerycake"  >Various</a>`, 'CAKE         ', 'https://bakerycake.finance'],
-      ['PolySecond'          , `<a href="polyanon_vol_1"  >ROI</a>`    , 'MATIC        ', 'https://github.com/PolyAnon/PolySecond/blob/main/Docs/PolySecond.md'],
+      ['PolySecond          ', `<a href="polyanon_vol_1"  >ROI</a>`    , 'MATIC        ', 'https://github.com/PolyAnon/PolySecond/blob/main/Docs/PolySecond.md'],
       ['PolyRabbit          ', `<a href="polyrabbit"      >Various</a>`, 'RABBIT       ', 'https://polyrabbitfinance.com'],
       ['polyDEX-CryptionNetwork', `<a href="polydex_cryptionnetwork">Various</a>`, 'CNT', 'https://app.polydex.org'],
       ['WorldSwap Kuala Lumpur', `<a href="worldswap_kul" >Various</a>`, 'KUL          ', 'https://kualalumpur.worldswap.finance'],
+      ['PolySanta           ', `<a href="polysanta"       >Various</a>`, 'SANTA        ', 'https://polysanta.farm'],
+      ['SpacePortDeFi Layer2', `<a href="spaceport layer2">Various</a>`, 'UFO          ', "https://polygon3.spaceportdefi.com"],
+      ['PolyPizza           ', `<a href="polypizza"       >Various</a>`, 'PIZZA        ', 'https://polypizza.farm'],
+      ['ShallotDefi         ', `<a href="shallotdefi"     >Various</a>`, 'SHALLOT      ', 'https://poly.shallotdefi.com'],
+      ['BerryFarmsBlueBerry ', `<a href="berryfarmsblueberry">Various</a>`, 'BLUEBRY   ', 'https://blueberryfarms.world'],
+      ['PolyWave            ', `<a href="polywave"        >Various</a>`, 'WAVE         ', 'https://polywave.finance/pools'],
+      ['PolyPup Ball        ', `<a href="polypupball"     >Various</a>`, 'BALL         ', 'https://ball.polypup.finance'],
+      ['Polymon             ', `<a href="polymon"         >Various</a>`, 'PYM          ', 'https://polymon.finance'],
+      ['PlagueFactory       ', `<a href="plaguefactory"   >Various</a>`, 'PLAGUE       ', 'https://plaguefactory.com'],
+      ['PolyShield          ', `<a href="polyshield"      >Various</a>`, 'SHI3LD       ', 'https://polyshield.finance'],
+      ['Yield Enhancement Labs', `<a href="yel"           >Various</a>`, 'YEL          ', 'https://yel.finance'],
       ['PolyZeroDawn        ', `<a href="polyzerodawn"    >Various</a>`, 'PolyZeroDawn ', '']
+
     ],
   }
 

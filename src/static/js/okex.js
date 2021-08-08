@@ -12,7 +12,8 @@ const main = async() => {
       ["WePiggy",    `<a href='wepiggy'      >Various</a>`,  "WPC",     "https://okexchain.wepiggy.com/markets"],
       ["KSwap",      `<a href='kswap'        >Various</a>`,  "KST",     "https://kswap.finance"],
       ["CherrySwap", `<a href='cherryswap'   >Various</a>`,  "CHE",     "https://www.cherryswap.net"],
-      ["BoneSwap",   `<a href='boneswap'     >Various</a>`,  "BONE",    "https://farm-okex.boneswap.finance"]
+      ["BoneSwap",   `<a href='boneswap'     >Various</a>`,  "BONE",    "https://farm-okex.boneswap.finance"],
+      ["FarmHero",   `<a href='farmhero'     >Various</a>`,  "GLORY",   "https://oec.farmhero.io"],
     ]
   }
 

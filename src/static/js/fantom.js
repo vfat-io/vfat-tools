@@ -259,6 +259,12 @@ const main = async() => {
         `<a href='guru'>NIPS-WFTM ZDEXLP</a>`,
         "NIPS",
         "https://ftm.guru"
+      ],
+      [
+        "Yield Enhancement Labs",
+        `<a href='yel'>Various</a>`,
+        "YEL",
+        "https://yel.finance"
       ]
     ]
   }

@@ -17,20 +17,20 @@ async function main() {
    const BONE_CHEF = new ethers.Contract(BONE_CHEF_ADDR, BONE_CHEF_ABI, App.provider);
 
    let rewardsPerWeek = 0
-   const startBlock = await BONE_CHEF.startBlock();
+   const startBlock = await BONE_CHEF.startTime();
    const currentBlock = await App.provider.getBlockNumber();
 
    if(currentBlock < startBlock){
     _print(`Rewards start at block <a href="https://ftmscan.com/block/countdown/${startBlock}" target="_blank">${startBlock}</a>\n`);
    }else{
-    rewardsPerWeek = await BONE_CHEF.BonePerBlock() /1e18 * 604800;
+    rewardsPerWeek = await BONE_CHEF.tokenPerSecond() /1e18 * 604800;
    }
 
     const tokens = {};
     const prices = await getFantomPrices();
 
     await loadFantomChefContract(App, tokens, prices, BONE_CHEF, BONE_CHEF_ADDR, BONE_CHEF_ABI, rewardTokenTicker,
-      "Bone", null, rewardsPerWeek, "pendingBone", [1]);
+      "bone", null, rewardsPerWeek, "pendingToken", [1]);
 
     hideLoading();
   }
