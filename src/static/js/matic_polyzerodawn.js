@@ -9,7 +9,7 @@ async function main() {
    
    _print(`Initialized ${App.YOUR_ADDRESS}\n`); 
 
-   const CHEF_ADDR = "0x4ff1f64683785E0460c24A4EF78D582C2488704f";
+   const CHEF_ADDR = "0x7D5a4a79E371F95aa8053e5602491685a29329DB";
    const rewardTokenTickerDark = "Dark";
    const rewardTokenTickerSpark = "Spark";
    const rewardTokenTickerGlow = "Glow";
