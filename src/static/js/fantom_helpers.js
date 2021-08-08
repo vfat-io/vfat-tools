@@ -22,6 +22,7 @@ const FantomTokens = [
   { "id": "frax", "symbol": "FRAX", "contract": "0xaf319E5789945197e365E7f7fbFc56B130523B33"},
   { "id": "spiritswap", "symbol": "SPIRIT", "contract": "0x5cc61a78f164885776aa610fb0fe1257df78e59b"},
   { "id": "grimcoin", "symbol": "GRIM", "contract": "0x7eC94C4327dC757601B4273cD67014d7760Be97E"},
+  { "id": "galaxy-triton", "symbol": "TRITON", "contract": "0x9cf4009e62429Db3F57Aa9e7e8E898427cF6865f"},
   { "id": "galaxy-triton", "symbol": "TRITON", "contract": "0x9cf4009e62429Db3F57Aa9e7e8E898427cF6865f"}
 ];
 
