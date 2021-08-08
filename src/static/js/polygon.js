@@ -509,7 +509,8 @@ const main = async () => {
       ['PolyWave            ', `<a href="polywave"        >Various</a>`, 'WAVE         ', 'https://polywave.finance/pools'],
       ['PolyPup Ball        ', `<a href="polypupball"     >Various</a>`, 'BALL         ', 'https://ball.polypup.finance'],
       ['Polymon             ', `<a href="polymon"         >Various</a>`, 'PYM          ', 'https://polymon.finance'],
-      ['PlagueFactory      ', `<a href="plaguefactory"   >Various</a>`, 'PLAGUE       ', 'https://plaguefactory.com']
+      ['PlagueFactory       ', `<a href="plaguefactory"   >Various</a>`, 'PLAGUE       ', 'https://plaguefactory.com'],
+      ['PolyShield          ', `<a href="polyshield"      >Various</a>`, 'SHI3LD       ', 'https://polyshield.finance']
     ],
   }
 
