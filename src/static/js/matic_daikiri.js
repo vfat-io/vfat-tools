@@ -25,7 +25,7 @@ async function main() {
     const prices = await getMaticPrices();
 
     await loadMaticChefContract(App, tokens, prices, DAIKI_CHEF, DAIKI_CHEF_ADDR, DAIKI_CHEF_ABI, rewardTokenTicker,
-        "rewardToken", null, rewardsPerWeek, "pendingRewardToken");
+        "rewardToken", null, rewardsPerWeek, "pendingRewardToken", [0,1,2,3,4]);
 
     hideLoading();
 }
