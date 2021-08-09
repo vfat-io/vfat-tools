@@ -512,8 +512,8 @@ const main = async () => {
       ['PlagueFactory       ', `<a href="plaguefactory"   >Various</a>`, 'PLAGUE       ', 'https://plaguefactory.com'],
       ['PolyShield          ', `<a href="polyshield"      >Various</a>`, 'SHI3LD       ', 'https://polyshield.finance'],
       ['Yield Enhancement Labs', `<a href="yel"           >Various</a>`, 'YEL          ', 'https://yel.finance'],
-      ['PolyZeroDawn        ', `<a href="polyzerodawn"    >Various</a>`, 'PolyZeroDawn ', '']
-
+      ['PolyZeroDawn        ', `<a href="polyzerodawn"    >Various</a>`, 'PolyZeroDawn ', 'N/A'],
+      ['HawkSwap            ', `<a href="hawkswap"        >Various</a>`, 'HAWK         ', 'https://hawkfarming.finance']
     ],
   }
 
