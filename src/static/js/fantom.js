@@ -256,15 +256,27 @@ const main = async() => {
       ],
       [
         "Guru - LF#1",
-        `<a href='guru'>NIPS-WFTM ZDEXLP</a>`,
+        `<a href='guru_lite1'>NIPS-WFTM ZDEXLP</a>`,
         "NIPS",
-        "https://ftm.guru"
+        "https://ftm.guru/LF/1"
       ],
       [
         "Yield Enhancement Labs",
         `<a href='yel'>Various</a>`,
         "YEL",
         "https://yel.finance"
+      ],
+      [
+        "Guru - LF#2001",
+        `<a href='guru_lite2001'>Nova-WFTM spLP</a>`,
+        "BLK",
+        "https://ftm.guru/LF/2001"
+      ],
+      [
+        "Guru - LF#2002",
+        `<a href='guru_lite2002'>Nova-BLK spLP</a>`,
+        "Nova",
+        "https://ftm.guru/LF/2002"
       ]
     ]
   }
