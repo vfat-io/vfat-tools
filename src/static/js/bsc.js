@@ -471,6 +471,7 @@ const main = async() => {
       ["Slotmachinedefi     ", `<a href="Slotmachinedefi">Various</a>`,"SLOT            ","https://slotmachinedefi.com"],
       ["BuffaloSwap         ", `<a href="buffaloswap"   >Various</a>`,"BUFFALOSWAP      ","https://www.buffaloswap.org"],
       ["TenguSwap           ", `<a href="tenguswap"     >Various</a>`,"TENGUSWAP        ","https://tenguswap.com"]
+      ["ShibaNova           ", `<a href="shibanova"     >Various</a>`,"ShibaNova        ","https://app.shibanova.io"]
     ]}
 
   let table = new AsciiTable().fromJSON(tableData);
