@@ -476,7 +476,8 @@ const main = async() => {
       ["Yield Enhancement Labs", `<a href="yel"         >Various</a>`,"YEL              ","https://yel.finance"],
       ["WoodChain Bsc       ", `<a href="woodchain"     >Various</a>`,"WOOD             ","https://bsc.woodchain.io"],
       ["SpacePortDeFi Layer3", `<a href="spaceport layer3">Various</a>`,"GALACTICA      ","https://bsc4.spaceportdefi.com"],
-      ["ShibaNova           ", `<a href="shibanova"     >Various</a>`,"ShibaNova        ","https://app.shibanova.io"]
+      ["ShibaNova           ", `<a href="shibanova"     >Various</a>`,"ShibaNova        ","https://app.shibanova.io"],
+      ["Plague Factory           ", `<a href="plaguefactory"     >Various</a>`,"PLAGUE        ","https://bsc.plaguefactory.com"]
     ]}
 
   let table = new AsciiTable().fromJSON(tableData);
