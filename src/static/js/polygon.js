@@ -518,7 +518,8 @@ const main = async () => {
       ['SpacePortDeFi Layer3', `<a href="spaceport layer3">Various</a>`, 'GALACTICA    ', "https://polygon4.spaceportdefi.com"],
       ["Daikiri Finance",   `<a href='daikiri'            >Various</a>`, "DAIKI        ", "https://daikiri.finance/#" ],
       ['BerryFarmsBlackBerry', `<a href="berryfarmsblackberry">Various</a>`, 'BLACKBRY ', 'https://blackberryfarms.world'],
-      ['Beefarm             ', `<a href="beefarm"         >Various</a>`, 'BEE          ', "https://beefarmpolygon.com"]
+      ['Beefarm             ', `<a href="beefarm"         >Various</a>`, 'BEE          ', "https://beefarmpolygon.com"],
+      ['Raccoon             ', `<a href="raccoon"         >Various</a>`, 'RACCOON      ', "https://raccoonyield.club"]
     ],
   }
 
