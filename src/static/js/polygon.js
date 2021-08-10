@@ -517,7 +517,8 @@ const main = async () => {
       ['PolyQuail KEGG      ', `<a href="polyquail_kegg"  >Various</a>`, 'KEGG         ', 'https://kegg.polyquail.finance'],
       ['SpacePortDeFi Layer3', `<a href="spaceport layer3">Various</a>`, 'GALACTICA    ', "https://polygon4.spaceportdefi.com"],
       ["Daikiri Finance",   `<a href='daikiri'            >Various</a>`, "DAIKI        ", "https://daikiri.finance/#" ],
-      ['BerryFarmsBlackBerry', `<a href="berryfarmsblackberry">Various</a>`, 'BLACKBRY ', 'https://blackberryfarms.world']
+      ['BerryFarmsBlackBerry', `<a href="berryfarmsblackberry">Various</a>`, 'BLACKBRY ', 'https://blackberryfarms.world'],
+      ['Beefarm             ', `<a href="beefarm"         >Various</a>`, 'BEE          ', "https://beefarmpolygon.com"]
     ],
   }
 
