@@ -277,6 +277,12 @@ const main = async() => {
         `<a href='guru_lite2002'>Nova-BLK spLP</a>`,
         "Nova",
         "https://ftm.guru/LF/2002"
+      ],
+      [
+        "Bomb",
+        `<a href='fbomb'>Various</a>`,
+        "SHRAP",
+        "https://app.fbomb.finance"
       ]
     ]
   }
