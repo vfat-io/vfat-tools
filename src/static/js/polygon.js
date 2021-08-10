@@ -515,6 +515,7 @@ const main = async () => {
       ['PolyZeroDawn        ', `<a href="polyzerodawn"    >Various</a>`, 'PolyZeroDawn ', 'N/A'],
       ['HawkSwap            ', `<a href="hawkswap"        >Various</a>`, 'HAWK         ', 'https://hawkfarming.finance'],
       ['PolyQuail KEGG      ', `<a href="polyquail_kegg"  >Various</a>`, 'KEGG         ', 'https://kegg.polyquail.finance'],
+      ["Daikiri Finance",   `<a href='daikiri'            >Various</a>`, "DAIKI        ", "https://daikiri.finance/#" ],
       ['BerryFarmsBlackBerry', `<a href="berryfarmsblackberry">Various</a>`, 'BLACKBRY ', 'https://blackberryfarms.world']
     ],
   }

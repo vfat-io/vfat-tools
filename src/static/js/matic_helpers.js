@@ -394,7 +394,7 @@ async function loadMaticBasisFork(data) {
 
 
 async function getMaticPoolInfo(app, chefContract, chefAddress, poolIndex, pendingRewardsFunction) {  
-  const poolInfo = await chefContract.poolInfo(poolIndex);
+  const poolInfo = await chefContract.poolInfo(poolIndex);  
   if (poolInfo.allocPoint == 0) {
     return {
       address: poolInfo.lpToken,
