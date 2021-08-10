@@ -449,6 +449,7 @@ const main = async() => {
       ["Radeon Finance      ", `<a href="radeonfinance" >Various</a>`,"XAEA12           ","https://radeon.finance"],
       ["Luckycatdefi        ", `<a href="Luckycatdefi"  >Various</a>`,"LUCKYCATDEFI     ","https://luckycatdefi.com"],
       ["Cobra (VenomDAO)    ", `<a href="cobra_venom"   >Various</a>`,"COBRA            ","https://cobra.exchange"],
+      ["Cobra (VenomDAO) smartchef", `<a href="cobra_venom/smartchef">Various</a>`,"Various","https://cobra.exchange"],
       ["Supergirlion        ", `<a href="supergirlion"  >Various</a>`,"SGIRL            ","https://newgirl.supermanion.com"],
       ["Silver              ", `<a href="silver"        >Various</a>`,"SILVER           ","https://silver.eternity.money"],
       ["Restaurant          ", `<a href="restaurant"    >Various</a>`,"RES              ","https://restaurantdefi.finance"],
