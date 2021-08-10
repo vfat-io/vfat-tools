@@ -509,7 +509,13 @@ const main = async () => {
       ['PolyWave            ', `<a href="polywave"        >Various</a>`, 'WAVE         ', 'https://polywave.finance/pools'],
       ['PolyPup Ball        ', `<a href="polypupball"     >Various</a>`, 'BALL         ', 'https://ball.polypup.finance'],
       ['Polymon             ', `<a href="polymon"         >Various</a>`, 'PYM          ', 'https://polymon.finance'],
-      ['Plague Factory      ', `<a href="plaguefactory"   >Various</a>`, 'PLAGUE       ', 'https://plaguefactory.com']
+      ['PlagueFactory       ', `<a href="plaguefactory"   >Various</a>`, 'PLAGUE       ', 'https://plaguefactory.com'],
+      ['PolyShield          ', `<a href="polyshield"      >Various</a>`, 'SHI3LD       ', 'https://polyshield.finance'],
+      ['Yield Enhancement Labs', `<a href="yel"           >Various</a>`, 'YEL          ', 'https://yel.finance'],
+      ['PolyZeroDawn        ', `<a href="polyzerodawn"    >Various</a>`, 'PolyZeroDawn ', 'N/A'],
+      ['HawkSwap            ', `<a href="hawkswap"        >Various</a>`, 'HAWK         ', 'https://hawkfarming.finance'],
+      ['PolyQuail KEGG      ', `<a href="polyquail_kegg"  >Various</a>`, 'KEGG         ', 'https://kegg.polyquail.finance'],
+      ['BerryFarmsBlackBerry', `<a href="berryfarmsblackberry">Various</a>`, 'BLACKBRY ', 'https://blackberryfarms.world']
     ],
   }
 

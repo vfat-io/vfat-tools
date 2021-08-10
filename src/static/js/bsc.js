@@ -470,7 +470,11 @@ const main = async() => {
       ["Cobra (JungleSwap)  ", `<a href="cobra_jungleswap">Various</a>`,"COBRA          ","https://cobra.jungleswap.cash"],
       ["Slotmachinedefi     ", `<a href="Slotmachinedefi">Various</a>`,"SLOT            ","https://slotmachinedefi.com"],
       ["BuffaloSwap         ", `<a href="buffaloswap"   >Various</a>`,"BUFFALOSWAP      ","https://www.buffaloswap.org"],
-      ["TenguSwap           ", `<a href="tenguswap"     >Various</a>`,"TENGUSWAP        ","https://tenguswap.com"]
+      ["TenguSwap           ", `<a href="tenguswap"     >Various</a>`,"TENGUSWAP        ","https://tenguswap.com"],
+      ["Sponge Farm         ", `<a href="spongefarm"    >Various</a>`,"SPONGE           ","https://sponge.farm"],
+      ["SugarRush           ", `<a href="sugarrush"     >Various</a>`,"SUGARRUSH        ","https://sugarrush.finance"],
+      ["Yield Enhancement Labs", `<a href="yel"         >Various</a>`,"YEL              ","https://yel.finance"],
+      ["WoodChain Bsc       ", `<a href="woodchain"     >Various</a>`,"WOOD             ","https://bsc.woodchain.io"],
       ["ShibaNova           ", `<a href="shibanova"     >Various</a>`,"ShibaNova        ","https://app.shibanova.io"]
     ]}
 

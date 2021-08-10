@@ -319,6 +319,9 @@ const providerOptions = {
         1666600001: "https://s1.api.harmony.one",
         1666600002: "https://s2.api.harmony.one",
         1666600003: "https://s3.api.harmony.one",
+        122: "https://rpc.fuse.io",
+        66: "https://exchainrpc.okex.org",
+        321: "https://rpc-mainnet.kcc.network"
       }
     }
   }
