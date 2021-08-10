@@ -53,7 +53,7 @@ async function print_contained_price(farm, userPoolOwnership, ytPoolBalance, tok
   _print(`Your LP tokens comprise of ${yts.toFixed(4)} ${farm.yt} + ${tokens.toFixed(4)} ${farm.token}`)
 }
 
-async function loadLiquidityMiningInfo(App, farm, rewardTokenPrice, wrapper) {
+async function loadLiquidityMiningInfo(App, farm, rewardTokenPrice, rewardsProxy, wrapper) {
   const WRAPPER = new ethers.Contract(wrapper, PENDLE_POOLS_READ_WRAPPER_ABI, App.provider)
   const mainInfo = await WRAPPER.getLiquidityMiningInfo(farm.market, farm.staking)
   const epochInfo = await WRAPPER.getRewardsPerEpoch(farm.market, farm.staking, App.YOUR_ADDRESS);
@@ -91,7 +91,7 @@ async function loadLiquidityMiningInfo(App, farm, rewardTokenPrice, wrapper) {
   let liquidityRewards = 0;
   let pendingRewards = 0;
   try {
-    liquidityRewards = await REWARDS_PROXY.callStatic.redeemLiquidityRewards(farm.staking, [expiry], App.YOUR_ADDRESS)
+    liquidityRewards = await WRAPPER.callStatic.claim(rewardsProxy, farm.staking, [expiry], App.YOUR_ADDRESS)
 
     for (let i = 0; i < liquidityRewards.pendingRewards.length; i++) {
       pendingRewards += parseInt(liquidityRewards.pendingRewards[i])
@@ -455,7 +455,7 @@ async function main() {
 
   let info
   for (i in FARMS) {
-    info = await loadLiquidityMiningInfo(App, FARMS[i], rewardTokenPrice, wrapper)
+    info = await loadLiquidityMiningInfo(App, FARMS[i], rewardTokenPrice, rewardsProxy, wrapper)
     printLiquidityMiningInfo(App, info, rewardTokenTicker, rewardTokenPrice, rewardsProxy, wrapper)
 
     _print("")
