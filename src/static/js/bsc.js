@@ -479,6 +479,8 @@ const main = async() => {
       ["SpacePortDeFi Layer3", `<a href="spaceport layer3">Various</a>`,"GALACTICA      ","https://bsc4.spaceportdefi.com"],
       ["ShibaNova           ", `<a href="shibanova"     >Various</a>`,"ShibaNova        ","https://app.shibanova.io"],
       ["Plague Factory      ", `<a href="plaguefactory" >Various</a>`,"PLAGUE           ","https://bsc.plaguefactory.com"],
+      ["Werewolf Clash of Fire", `<a href="clash_fire"  >Various</a>`,"FIRE             ","https://clash.werewolf.farm"],
+      ["Werewolf Clash of Ice ", `<a href="clash_ice"   >Various</a>`,"ICE              ","https://clash.werewolf.farm"],
       ["Eternity Rubin      ", `<a href="rubin"         >Various</a>`,"RUBIN            ","https://rubin.eternity.money"]
     ]}
 
