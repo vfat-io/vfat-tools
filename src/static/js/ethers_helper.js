@@ -1546,6 +1546,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
   else if (pool.symbol.includes("KUS-LP")) stakeTokenTicker += " KUS LP";
   else if (pool.symbol.includes("KoffeeMug")) stakeTokenTicker += " KoffeeMug";
   else if (pool.symbol.includes("DMM-LP")) stakeTokenTicker += " Kyber LP";
+  else if (pool.symbol.includes("CAT-LP")) stakeTokenTicker += " PolyCat LP";
   else stakeTokenTicker += " Uni LP";
   return {
       t0: t0,
@@ -1588,6 +1589,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
                 "xdai": `https://analytics-xdai.sushi.com/pairs/${pool.address}`
               }[chain]) :
               pool.symbol.includes("Cake") ?  `https://pancakeswap.info/pair/${pool.address}` :
+              pool.symbol.includes("CAT-LP") ?  `https://polycat.finance` :
               pool.symbol.includes("PGL") ?  `https://info.pangolin.exchange/#/pair/${pool.address}` :
               pool.symbol.includes("CS-LP") ?  `https://app.coinswap.space/#/` :
               pool.name.includes("Value LP") ?  `https://info.vswap.fi/pool/${pool.address}` :
@@ -1627,6 +1629,11 @@ function getUniPrices(tokens, prices, pool, chain="eth")
             `https://www.bakeryswap.org/#/add/${t0address}/${t1address}`,
             `https://www.bakeryswap.org/#/remove/${t0address}/${t1address}`,
             `https://www.bakeryswap.org/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+          ] :
+          pool.symbol.includes("CAT-LP") ? [
+            `https://trade.polycat.finance/#/add/${t0address}/${t1address}`,
+            `https://trade.polycat.finance/#/remove/${t0address}/${t1address}`,
+            `https://trade.polycat.finance/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
           ] :
           pool.symbol.includes("APE-LP") ? [
             `https://app.apeswap.finance/add/${t0address}/${t1address}`,
