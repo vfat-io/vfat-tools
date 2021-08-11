@@ -503,7 +503,8 @@ const main = async () => {
       ['polyDEX-CryptionNetwork', `<a href="polydex_cryptionnetwork">Various</a>`, 'CNT', 'https://app.polydex.org'],
       ['WorldSwap Kuala Lumpur', `<a href="worldswap_kul" >Various</a>`, 'KUL          ', 'https://kualalumpur.worldswap.finance'],
       ['PolySanta            ', `<a href="polysanta"        >Various</a>`, 'SANTA         ', 'https://polysanta.farm'],
-      ['PolyPizza            ', `<a href="polypizza"        >Various</a>`, 'PIZZA         ', 'https://polypizza.farm']
+      ['PolyPizza            ', `<a href="polypizza"        >Various</a>`, 'PIZZA         ', 'https://polypizza.farm'],
+      ['Growth Finance    ', `<a href="growthfinance" >Various</a>`, 'GROWTH       ', 'https://growthfinance.app']
     ],
   }
 
