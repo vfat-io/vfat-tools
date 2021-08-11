@@ -42,7 +42,7 @@ const main = async() => {
       ["Pickle              ",`<a href="pickle/"            >Various</a>`,"Pickle    ","https://pickle.finance/farms"],
       ["PowerIndex          ",`<a href="powerindex/"        >Various</a>`,"CVP       ","https://powerindex.io"],
       ["Ruler Protocol      ",`<a href="ruler/"             >Various</a>`,"RULER     ","https://app.rulerprotocol.com/app/farms"],
-      ["* Shiba Swap *      ",`<a href="shibaswap"          >Various</a>`,"BONE      ","https://shibaswap.com"],
+      ["Shiba Swap          ",`<a href="shibaswap"          >Various</a>`,"BONE      ","https://shibaswap.com"],
       ["Siren               ",`<a href="siren/"             >Various</a>`,"SI        ","https://sirenmarkets.com/"],
       ["Stabilize           ",`<a href="stabilize/"         >Various</a>`,"STBZ      ","https://stabilize.finance"],
       ["StakeDAO            ",`<a href="stakedao/"          >Various</a>`,"SDT       ","https://stakedao.org"],

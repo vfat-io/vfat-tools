@@ -1546,6 +1546,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
   else if (pool.symbol.includes("KUS-LP")) stakeTokenTicker += " KUS LP";
   else if (pool.symbol.includes("KoffeeMug")) stakeTokenTicker += " KoffeeMug";
   else if (pool.symbol.includes("DMM-LP")) stakeTokenTicker += " Kyber LP";
+  else if (pool.symbol.includes("CAT-LP")) stakeTokenTicker += " PolyCat LP";
   else stakeTokenTicker += " Uni LP";
   return {
       t0: t0,
@@ -1588,6 +1589,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
                 "xdai": `https://analytics-xdai.sushi.com/pairs/${pool.address}`
               }[chain]) :
               pool.symbol.includes("Cake") ?  `https://pancakeswap.info/pair/${pool.address}` :
+              pool.symbol.includes("CAT-LP") ?  `https://polycat.finance` :
               pool.symbol.includes("PGL") ?  `https://info.pangolin.exchange/#/pair/${pool.address}` :
               pool.symbol.includes("CS-LP") ?  `https://app.coinswap.space/#/` :
               pool.name.includes("Value LP") ?  `https://info.vswap.fi/pool/${pool.address}` :
@@ -1628,6 +1630,11 @@ function getUniPrices(tokens, prices, pool, chain="eth")
             `https://www.bakeryswap.org/#/remove/${t0address}/${t1address}`,
             `https://www.bakeryswap.org/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
           ] :
+          pool.symbol.includes("CAT-LP") ? [
+            `https://trade.polycat.finance/#/add/${t0address}/${t1address}`,
+            `https://trade.polycat.finance/#/remove/${t0address}/${t1address}`,
+            `https://trade.polycat.finance/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+          ] :
           pool.symbol.includes("APE-LP") ? [
             `https://app.apeswap.finance/add/${t0address}/${t1address}`,
             `https://app.apeswap.finance/remove/${t0address}/${t1address}`,
@@ -1639,9 +1646,9 @@ function getUniPrices(tokens, prices, pool, chain="eth")
             `https://dex.zoocoin.cash/orders/market?inputCurrency=${t0address}&outputCurrency=${t1address}`
           ] :
           pool.symbol.includes("Cake") ? [
-            `https://exchange.pancakeswap.finance/#/add/${t0address}/${t1address}`,
-            `https://exchange.pancakeswap.finance/#/remove/${t0address}/${t1address}`,
-            `https://exchange.pancakeswap.finance/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+            `https://pancakeswap.finance/add/${t0address}/${t1address}`,
+            `https://pancakeswap.finance/remove/${t0address}/${t1address}`,
+            `https://pancakeswap.finance/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
           ] :
           pool.symbol.includes("Lv1") ? [ // adding before matic
             `https://swap.steakhouse.finance/#/add/${t0address}/${t1address}`,
@@ -1820,9 +1827,9 @@ function getUniPrices(tokens, prices, pool, chain="eth")
                 `https://linkswap.app/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
               ] :
               pool.symbol.includes("Cake") ? [
-                  `https://exchange.pancakeswap.finance/#/add/${t0address}/${t1address}`,
-                  `https://exchange.pancakeswap.finance/#/remove/${t0address}/${t1address}`,
-                  `https://exchange.pancakeswap.finance/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+                  `https://pancakeswap.finance/add/${t0address}/${t1address}`,
+                  `https://pancakeswap.finance/remove/${t0address}/${t1address}`,
+                  `https://pancakeswap.finance/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
                 ] :
                 chain=='matic'? [
                     `https://quickswap.exchange/#/add/${t0address}/${t1address}`,
@@ -2159,7 +2166,7 @@ function getErc20Prices(prices, pool, chain="eth") {
       poolUrl=`https://blockscout.com/xdai/mainnet/tokens/${pool.address}`;
       break;
   }
-  
+
   const getDexguruTokenlink =  function() {
     const network = window.location.pathname.split("/")[1]
     let dexguruTokenlink = '';
@@ -2170,7 +2177,7 @@ function getErc20Prices(prices, pool, chain="eth") {
       if (chain && (chain.toLowerCase() === 'bsc' || chain.toLowerCase() === 'eth' || chain.toLowerCase() === 'polygon')) {
         dexguruTokenlink =   `<a href='https://dex.guru/token/${pool.address.toLowerCase()}-${chain.toLowerCase()}' rel='noopener' target='_blank'>[%]</a>`;
       }
-    }      
+    }
     return dexguruTokenlink
   }
 
@@ -2217,7 +2224,7 @@ function getCurvePrices(prices, pool) {
       if (network && (network.toLowerCase() === 'bsc' || network.toLowerCase() === 'eth' || network.toLowerCase() === 'polygon')) {
         dexguruTokenlink =   `<a href='https://dex.guru/token/${pool.address.toLowerCase()}-${network.toLowerCase()}' rel='noopener' target='_blank'>[%]</a>`;
       }
-    }      
+    }
     return dexguruTokenlink
   }
   return {
