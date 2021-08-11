@@ -24,14 +24,14 @@ async function main() {
     const tokens = {};
     const prices = await getMaticPrices();
 
-    await loadMaticChefContract(App, tokens, prices, DAIKI_CHEF, DAIKI_CHEF_ADDR, DAIKI_CHEF_ABI, rewardTokenTicker,
+    await loadMaticDAIKIChefContract(App, tokens, prices, DAIKI_CHEF, DAIKI_CHEF_ADDR, DAIKI_CHEF_ABI, rewardTokenTicker,
         "rewardToken", null, rewardsPerWeek, "pendingRewardToken", [0, 1, 2, 3, 4]);
 
     hideLoading();
 }
 
 
-async function loadMaticChefContract(App, tokens, prices, chef, chefAddress, chefAbi, rewardTokenTicker,
+async function loadMaticDAIKIChefContract(App, tokens, prices, chef, chefAddress, chefAbi, rewardTokenTicker,
     rewardTokenFunction, rewardsPerBlockFunction, rewardsPerWeekFixed, pendingRewardsFunction,
     deathPoolIndices) {
     const chefContract = chef ?? new ethers.Contract(chefAddress, chefAbi, App.provider);
@@ -52,7 +52,7 @@ async function loadMaticChefContract(App, tokens, prices, chef, chefAddress, che
         / 10 ** rewardToken.decimals * 604800 / 3
 
     const poolInfos = await Promise.all([...Array(poolCount).keys()].map(async (x) =>
-        await getMaticPoolInfo(App, chefContract, chefAddress, x, pendingRewardsFunction)));
+        await getMaticDAIKIPoolInfo(App, chefContract, chefAddress, x, pendingRewardsFunction)));
 
     var tokenAddresses = [].concat.apply([], poolInfos.filter(x => x.poolToken).map(x => x.poolToken.tokens));
 
@@ -102,7 +102,7 @@ async function loadMaticChefContract(App, tokens, prices, chef, chefAddress, che
     return { prices, totalUserStaked, totalStaked, averageApr }
 }
 
-async function getMaticPoolInfo(app, chefContract, chefAddress, poolIndex, pendingRewardsFunction) {
+async function getMaticDAIKIPoolInfo(app, chefContract, chefAddress, poolIndex, pendingRewardsFunction) {
     const poolInfo = await chefContract.poolInfo(poolIndex);
     if (poolInfo.allocPoint == 0) {
         return {
