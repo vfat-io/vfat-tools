@@ -521,6 +521,7 @@ const main = async () => {
       ['Beefarm             ', `<a href="beefarm"         >Various</a>`, 'BEE          ', "https://beefarmpolygon.com"],
       ['Raccoon             ', `<a href="raccoon"         >Various</a>`, 'RACCOON      ', "https://raccoonyield.club"],
       ['PolyFlower          ', `<a href="polyflower"      >Various</a>`, 'FLOWER       ', 'https://t.me/polyflower'],
+      ['PolyDachshund       ', `<a href="polydachs"       >Various</a>`, 'DACHS        ', 'https://t.me/polydachs'],
     ],
   }
 
