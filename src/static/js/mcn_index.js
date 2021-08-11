@@ -8,7 +8,7 @@ const main = async () => {
     "title": "MCN Ventures Projects",
     "heading": ["Pool Provider", "Network", "LP", "Reward Tokens", "INFO"],
     "rows": [
-      ["MCN Ventures    ", "Ethereum", `<a href="/mcn/"               >MCN / USDC-MCN / XDO</a>`,   "MCN    ","https://farm.mcn.ventures"],
+      ["MCN Ventures    ", "Ethereum", `<a href="/mcn/farm"               >MCN / USDC-MCN / XDO</a>`,   "MCN    ","https://farm.mcn.ventures"],
       ["XDollar         ", "Polygon",  `<a href="../polygon/xdollar"  >Various</a>`,   "XDO    ","https://xdollar.mcn.ventures"],
     ]
   }
