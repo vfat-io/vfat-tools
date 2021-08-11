@@ -519,7 +519,8 @@ const main = async () => {
       ["Daikiri Finance",   `<a href='daikiri'            >Various</a>`, "DAIKI        ", "https://daikiri.finance/#" ],
       ['BerryFarmsBlackBerry', `<a href="berryfarmsblackberry">Various</a>`, 'BLACKBRY ', 'https://blackberryfarms.world'],
       ['Beefarm             ', `<a href="beefarm"         >Various</a>`, 'BEE          ', "https://beefarmpolygon.com"],
-      ['Raccoon             ', `<a href="raccoon"         >Various</a>`, 'RACCOON      ', "https://raccoonyield.club"]
+      ['Raccoon             ', `<a href="raccoon"         >Various</a>`, 'RACCOON      ', "https://raccoonyield.club"],
+      ['PolyFlower          ', `<a href="polyflower"      >Various</a>`, 'KEGG         ', 'https://t.me/polyflower'],
     ],
   }
 
