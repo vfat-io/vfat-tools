@@ -24,7 +24,7 @@ async function main() {
    if(currentBlock < startBlock){
      _print(`Rewards start at block <a href="https://polygonscan.com/block/countdown/${startBlock}" target="_blank">${startBlock}</a>\n`);
    }else{
-    rewardsPerWeek = await FLOWER_CHEF.KiwiPerBlock() /1e18
+    rewardsPerWeek = await FLOWER_CHEF.EMISSION_RATE() /1e18
       * 604800 * multiplier / 2.1;
    }
 
