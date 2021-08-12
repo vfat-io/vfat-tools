@@ -481,7 +481,8 @@ const main = async() => {
       ["Plague Factory      ", `<a href="plaguefactory" >Various</a>`,"PLAGUE           ","https://bsc.plaguefactory.com"],
       ["Werewolf Clash of Fire", `<a href="clash_fire"  >Various</a>`,"FIRE             ","https://clash.werewolf.farm"],
       ["Werewolf Clash of Ice ", `<a href="clash_ice"   >Various</a>`,"ICE              ","https://clash.werewolf.farm"],
-      ["Eternity Rubin      ", `<a href="rubin"         >Various</a>`,"RUBIN            ","https://rubin.eternity.money"]
+      ["Eternity Rubin      ", `<a href="rubin"         >Various</a>`,"RUBIN            ","https://rubin.eternity.money"],
+      ["WWF Finance         ", `<a href="wwf"           >Various</a>`,"WWF              ","https://wwf.finance"]
     ]}
 
   let table = new AsciiTable().fromJSON(tableData);
