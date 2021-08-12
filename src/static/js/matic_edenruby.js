@@ -31,7 +31,7 @@ async function main() {
     const prices = await getMaticPrices();
 
     await loadMaticChefContract(App, tokens, prices, RGEM_CHEF, RGEM_CHEF_ADDR, RGEM_CHEF_ABI, rewardTokenTicker,
-        "RGEM", null, rewardsPerWeek, "pendingRGEM");
+        "RGEMToken", null, rewardsPerWeek, "pendingRGEM");
 
     hideLoading();
   }
