@@ -194,7 +194,7 @@ function printPawChefContractLinks(App, chefAbi, chefAddr, poolIndex, poolAddres
     claimFunction, rewardTokenPrice, chain, depositFee, withdrawFee) {
   fixedDecimals = fixedDecimals ?? 2;
   const approveAndStake = async function() {
-    return chefPawContract_stake(chefAbi, chefAddr, poolIndex, poolAddress, App)
+    return chefPawContract_stake(chefAbi, chefAddr, poolIndex, poolAddress, App, pendingRewardsFunction)
   }
   const unstake = async function() {
     return chefContract_unstake(chefAbi, chefAddr, poolIndex, App, pendingRewardsFunction)
@@ -217,11 +217,20 @@ function printPawChefContractLinks(App, chefAbi, chefAddr, poolIndex, poolAddres
   _print("");
 }
 
-const chefPawContract_stake = async function(chefAbi, chefAddress, poolIndex, stakeTokenAddr, App) {
+const chefPawContract_stake = async function(chefAbi, chefAddress, poolIndex, stakeTokenAddr, App, pendingRewardsFunction) {
   const signer = App.provider.getSigner()
 
   const STAKING_TOKEN = new ethers.Contract(stakeTokenAddr, ERC20_ABI, signer)
   const CHEF_CONTRACT = new ethers.Contract(chefAddress, chefAbi, signer)
+
+  let shouldHarvest;
+
+  const earnedTokenAmount = await CHEF_CONTRACT.callStatic[pendingRewardsFunction](poolIndex, App.YOUR_ADDRESS) / 1e18
+  if(earnedTokenAmount > 0){
+    shouldHarvest = true;
+  }else{
+    shouldHarvest = false;
+  }
 
   const currentTokens = await STAKING_TOKEN.balanceOf(App.YOUR_ADDRESS)
   const allowedTokens = await STAKING_TOKEN.allowance(App.YOUR_ADDRESS, chefAddress)
@@ -244,7 +253,7 @@ const chefPawContract_stake = async function(chefAbi, chefAddress, poolIndex, st
     showLoading()
     allow
       .then(async function() {
-          CHEF_CONTRACT.deposit(poolIndex, currentTokens, false, {gasLimit: 500000})
+          CHEF_CONTRACT.deposit(poolIndex, currentTokens, shouldHarvest, {gasLimit: 500000})
           .then(function(t) {
             App.provider.waitForTransaction(t.hash).then(function() {
               hideLoading()
@@ -270,9 +279,12 @@ const chefPawContract_claim = async function(chefAbi, chefAddress, poolIndex, Ap
 
   const CHEF_CONTRACT = new ethers.Contract(chefAddress, chefAbi, signer)
 
+  let shouldHarvest = false;
+
   const earnedTokenAmount = await CHEF_CONTRACT.callStatic[pendingRewardsFunction](poolIndex, App.YOUR_ADDRESS) / 1e18
 
   if (earnedTokenAmount > 0) {
+    shouldHarvest = true;
     showLoading()
     if (claimFunction) {
       claimFunction(poolIndex, {gasLimit: 500000})
@@ -281,7 +293,7 @@ const chefPawContract_claim = async function(chefAbi, chefAddress, poolIndex, Ap
         })
     }
     else {
-      CHEF_CONTRACT.deposit(poolIndex, 0, true, {gasLimit: 500000})
+      CHEF_CONTRACT.deposit(poolIndex, 0, shouldHarvest, {gasLimit: 500000})
         .then(function(t) {
           return App.provider.waitForTransaction(t.hash)
         })
