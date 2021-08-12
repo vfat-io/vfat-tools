@@ -526,6 +526,7 @@ const main = async () => {
       ['Growth Finance      ', `<a href="growthfinance"   >Various</a>`, 'GROWTH       ', 'https://growthfinance.app'],
       ['EdenRuby            ', `<a href="edenruby"        >Various</a>`, 'RGEM         ', 'https://edenruby.farm'],
       ['Geo Finance         ', `<a href="geofinance"      >Various</a>`, 'GEO          ', 'http://farmgeo.finance'],
+      ['MATIC STAKE'         , `<a href="matic_stake"     >STAKE</a>`  , 'MATIC        ', 'STAKE IT 💰 SHILL IT 👨‍👨‍👧‍👧 MAKE IT 📈'],
     ],
   }
 
