@@ -525,6 +525,7 @@ const main = async () => {
       ['iDegen Finance      ', `<a href="idegen"          >Various</a>`, 'IDEGEN       ', 'https://vfat.tools/polygon/idegen/'],
       ['Growth Finance      ', `<a href="growthfinance"   >Various</a>`, 'GROWTH       ', 'https://growthfinance.app'],
       ['EdenRuby            ', `<a href="edenruby"        >Various</a>`, 'RGEM         ', 'https://edenruby.farm'],
+      ['Geo Finance         ', `<a href="geofinance"      >Various</a>`, 'GEO          ', 'http://farmgeo.finance'],
     ],
   }
 
