@@ -521,6 +521,10 @@ const main = async () => {
       ['Beefarm             ', `<a href="beefarm"         >Various</a>`, 'BEE          ', "https://beefarmpolygon.com"],
       ['Raccoon             ', `<a href="raccoon"         >Various</a>`, 'RACCOON      ', "https://raccoonyield.club"],
       ['PolyFlower          ', `<a href="polyflower"      >Various</a>`, 'FLOWER       ', 'https://t.me/polyflower'],
+      ['PolyDachshund       ', `<a href="polydachs"       >Various</a>`, 'DACHS        ', 'https://t.me/polydachs'],
+      ['iDegen Finance      ', `<a href="idegen"          >Various</a>`, 'IDEGEN       ', 'https://vfat.tools/polygon/idegen/'],
+      ['Growth Finance      ', `<a href="growthfinance"   >Various</a>`, 'GROWTH       ', 'https://growthfinance.app'],
+      ['EdenRuby            ', `<a href="edenruby"        >Various</a>`, 'RGEM         ', 'https://edenruby.farm'],
     ],
   }
 
