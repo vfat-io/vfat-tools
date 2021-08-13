@@ -29,7 +29,7 @@ const main = async () => {
       ['Polyfox             ', `<a href="polyfox"         >Various</a>`, 'FOX          ', 'https://polyfox.finance'],
       ['Hawkdex             ', `<a href="hawk"            >Various</a>`, 'HAWK         ', 'https://hawkdex.com'],
       ['PolyDragon          ', `<a href="polydragon"      >Various</a>`, 'FIRE         ', 'https://polydragon.io'],
-      ['Polycat *           ', `<a href="polycat"         >Various</a>`, 'FISH         ', 'https://polycat.finance'],
+      ['Polycat *           ', `<a href="polycat"         >Various</a>`, 'FISH/PAW     ', 'https://polycat.finance'],
       ['BoughtThe.top       ', `<a href="boughtthetop"    >Various</a>`, 'BTT          ', 'https://farm.BoughtThe.top'],
       ['PolyStarter         ', `<a href="polystarter"     >Various</a>`, 'STARTER      ', 'https://www.polystarter.fi'],
       ['Polyvolve           ', `<a href="polyvolve"       >Various</a>`, 'SPEAR        ', 'https://polyvolve.finance'],
@@ -461,7 +461,7 @@ const main = async () => {
       ['PolyBakerySwap      ', `<a href="polybakeryswap"  >Various</a>`, 'BAKE         ', 'https://www.bakery-swap.finance'],
       ['PolyBakeryCream     ', `<a href="polybakerycream" >Various</a>`, 'CREAM        ', 'https://bakerycream.finance'],
       ['PolyBakeryBiscuit   ', `<a href="polybakerybiscuit" >Various</a>`, 'BISCUIT    ', 'https://bakerybiscuit.finance'],
-	  ['PolyTail            ', `<a href="polytail"        >Various</a>`, 'POLYTAIL     ', 'https://polytail.farm'],
+	    ['PolyTail            ', `<a href="polytail"        >Various</a>`, 'POLYTAIL     ', 'https://polytail.farm'],
       ['PearZap             ', `<a href="pearzap"         >Various</a>`, 'PEAR         ', 'https://pearzap.com'],
       ['Astrofarms - Neptune', `<a href="astrofarmsneptune">Various</a>`,'NEPTUNE      ', 'https://neptune.astrofarms.finance'],
       ['Cygnus Finance      ', `<a href="cygnusfinance"   >Various</a>`, 'CYGNUS       ', 'https://www.cygnusdefi.com'],
@@ -519,7 +519,14 @@ const main = async () => {
       ["Daikiri Finance",   `<a href='daikiri'            >Various</a>`, "DAIKI        ", "https://daikiri.finance/#" ],
       ['BerryFarmsBlackBerry', `<a href="berryfarmsblackberry">Various</a>`, 'BLACKBRY ', 'https://blackberryfarms.world'],
       ['Beefarm             ', `<a href="beefarm"         >Various</a>`, 'BEE          ', "https://beefarmpolygon.com"],
-      ['Raccoon             ', `<a href="raccoon"         >Various</a>`, 'RACCOON      ', "https://raccoonyield.club"]
+      ['Raccoon             ', `<a href="raccoon"         >Various</a>`, 'RACCOON      ', "https://raccoonyield.club"],
+      ['PolyFlower          ', `<a href="polyflower"      >Various</a>`, 'FLOWER       ', 'https://t.me/polyflower'],
+      ['PolyDachshund       ', `<a href="polydachs"       >Various</a>`, 'DACHS        ', 'https://t.me/polydachs'],
+      ['iDegen Finance      ', `<a href="idegen"          >Various</a>`, 'IDEGEN       ', 'https://vfat.tools/polygon/idegen/'],
+      ['Growth Finance      ', `<a href="growthfinance"   >Various</a>`, 'GROWTH       ', 'https://growthfinance.app'],
+      ['EdenRuby            ', `<a href="edenruby"        >Various</a>`, 'RGEM         ', 'https://edenruby.farm'],
+      ['Geo Finance         ', `<a href="geofinance"      >Various</a>`, 'GEO          ', 'http://farmgeo.finance'],
+      ['MATIC STAKE'         , `<a href="matic_stake"     >STAKE</a>`  , 'MATIC        ', 'STAKE IT 💰 SHILL IT 👨‍👨‍👧‍👧 MAKE IT 📈'],
     ],
   }
 

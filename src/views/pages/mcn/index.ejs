@@ -4,13 +4,22 @@
 
 <body>
 <%- include(`${partials}/header_main`); -%>
-<pre id="log">
-*************** 👨‍🌾 UNOFFICIAL MCN VENTURES FARMING CALCULATOR 👨‍🌾 ***************
-INFO  : https://farm.mcn.ventures
-*********************************************************************************
+<br>
 
+<br>FARMS: <a href='https://farm.mcn.ventures' target='blank'>farm.mcn.ventures</a>
+<br>VOTE TO BE FEATURED: <a href="https://snapshot.org/#/mcnventures.eth" target="blank">snapshot</a>
+<br>*******************************************************************************************************
+<pre class="container">
+    <div class="loader--1"></div>
+    <div id="log"></div>
+
+MCN Ventures is a new attempt at a decentralized venture fund. Please see <a href="https://mcn.ventures" target="blank">https://mcn.ventures</a> for details on joining as a partner or new project.
+
+-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+| <a href="https://twitter.com/vfat0" target="_blank">Twitter</a> - <a href="https://github.com/vfat-tools/vfat-tools" target="_blank">GitHub</a> - <a href="https://gitcoin.co/grants/1809/vfattools-yield-farming-calculators" target="_blank">Gitcoin</a> - <a href="https://www.youtube.com/watch?v=D8RZhK1zcs0" target="_blank">YouTube</a> |
+-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 </pre>
-<div class="loader--1"></div>
-<%- include(`${partials}/scripts`, {scriptname: 'mcn'}); -%>
+
+<%- include(`${partials}/scripts`, {scriptname: 'mcn_index'}); -%>
 </body>
-</html> 
+</html>
