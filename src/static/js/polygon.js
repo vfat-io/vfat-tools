@@ -527,6 +527,7 @@ const main = async () => {
       ['EdenRuby            ', `<a href="edenruby"        >Various</a>`, 'RGEM         ', 'https://edenruby.farm'],
       ['Geo Finance         ', `<a href="geofinance"      >Various</a>`, 'GEO          ', 'http://farmgeo.finance'],
       ['MATIC STAKE'         , `<a href="matic_stake"     >STAKE</a>`  , 'MATIC        ', 'STAKE IT 💰 SHILL IT 👨‍👨‍👧‍👧 MAKE IT 📈'],
+      ['Poly Unicorn        ', `<a href="polyunicorn"     >Various</a>`, 'CORN         ', 'https://PolyUnicorn.org'],
       ['Plague Doctor       ', `<a href="plaguedoctor"    >Various</a>`, 'DOCTOR       ', 'https://doc.plaguefactory.com'],
       ['Barbershop          ', `<a href="barbershop"      >Various</a>`, 'HAIR         ', 'https://barbershop.finance']
     ],
