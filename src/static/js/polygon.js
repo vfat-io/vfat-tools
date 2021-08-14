@@ -528,6 +528,7 @@ const main = async () => {
       ['Geo Finance         ', `<a href="geofinance"      >Various</a>`, 'GEO          ', 'http://farmgeo.finance'],
       ['MATIC STAKE'         , `<a href="matic_stake"     >STAKE</a>`  , 'MATIC        ', 'STAKE IT 💰 SHILL IT 👨‍👨‍👧‍👧 MAKE IT 📈'],
       ['Plague Doctor'       , `<a href="matic_plaguedoctor"     >Various</a>`, 'DOCTOR       ', 'https://doc.plaguefactory.com'],
+      ['Poly Unicorn 🦄'     , `<a href="polyunicorn"   >Various</a>`, 'CORN          ', 'https://PolyUnicorn.org'],
     ],
   }
 
