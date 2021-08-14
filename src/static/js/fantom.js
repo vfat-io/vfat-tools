@@ -283,6 +283,12 @@ const main = async() => {
         `<a href='fbomb'>Various</a>`,
         "SHRAP",
         "https://app.fbomb.finance"
+      ],
+      [
+        "xDao",
+        `<a href='xdao'>Various</a>`,
+        "HTZ",
+        "https://thexdao.com"
       ]
     ]
   }
