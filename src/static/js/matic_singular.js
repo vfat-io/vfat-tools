@@ -666,43 +666,29 @@ async function main() {
 
   const SING_CHEF = new ethers.Contract(SING_CHEF_ADDR, SING_CHEF_ABI, App.provider)
 
-  const rewardsPerWeek0 = ((await SING_CHEF.yelPerSecond()) / 1e18) * 604800
+  const rewardsPerWeek0 = ((await SING_CHEF.singPerSec()) / 1e18) * 604800
 
   const tokens = {}
   const prices = await getMaticPrices()
 
-  // await loadMaticYelChefContract(
-  //   App,
-  //   tokens,
-  //   prices,
-  //   SING_CHEF,
-  //   SING_CHEF_ADDR,
-  //   SING_CHEF_ABI,
-  //   rewardTokenTicker,
-  //   'yel',
-  //   null,
-  //   rewardsPerWeek0,
-  //   'pendingYel',
-  //   [1]
-  // )
-  // await loadMaticYelChefContract(
-  //   App,
-  //   tokens,
-  //   prices,
-  //   YEL_CHEF1,
-  //   YEL_CHEF_ADDR1,
-  //   SING_CHEF_ABI,
-  //   rewardTokenTicker,
-  //   'yel',
-  //   null,
-  //   rewardsPerWeek1,
-  //   'pendingYel'
-  // )
+  await loadMaticSingChefContract(
+    App,
+    tokens,
+    prices,
+    SING_CHEF,
+    SING_CHEF_ADDR,
+    SING_CHEF_ABI,
+    rewardTokenTicker,
+    'sing',
+    null,
+    rewardsPerWeek0,
+    'pendingSing'
+  )
 
   hideLoading()
 }
 
-async function loadMaticYelChefContract(
+async function loadMaticSingChefContract(
   App,
   tokens,
   prices,
@@ -713,13 +699,31 @@ async function loadMaticYelChefContract(
   rewardTokenFunction,
   rewardsPerBlockFunction,
   rewardsPerWeekFixed,
-  pendingRewardsFunction,
-  deathPoolIndices
+  pendingRewardsFunction
 ) {
+  console.log({
+    App,
+    tokens,
+    prices,
+    chef,
+    chefAddress,
+    chefAbi,
+    rewardTokenTicker,
+    rewardTokenFunction,
+    rewardsPerBlockFunction,
+    rewardsPerWeekFixed,
+    pendingRewardsFunction,
+  })
+
   const chefContract = chef ?? new ethers.Contract(chefAddress, chefAbi, App.provider)
 
   const poolCount = parseInt(await chefContract.poolLength(), 10)
+
+  console.log('poolCount', poolCount)
+
   const totalAllocPoints = await chefContract.totalAllocPoint()
+
+  console.log('totalAllocPoints ', totalAllocPoints)
 
   _print(`Found ${poolCount} pools.\n`)
 
@@ -728,16 +732,27 @@ async function loadMaticYelChefContract(
   var tokens = {}
 
   const rewardTokenAddress = await chefContract.callStatic[rewardTokenFunction]()
+
+  console.log('rewardTokenAddress', rewardTokenAddress)
+
   const rewardToken = await getMaticToken(App, rewardTokenAddress, chefAddress)
+
+  console.log('rewardToken', rewardToken)
+
   const rewardsPerWeek =
     rewardsPerWeekFixed ??
     (((await chefContract.callStatic[rewardsPerBlockFunction]()) / 10 ** rewardToken.decimals) * 604800) / 3
 
+  console.log('rewardsPerWeek', rewardsPerWeek)
+
   const poolInfos = await Promise.all(
-    [...Array(poolCount).keys()].map(
-      async x => await getMaticYelPoolInfo(App, chefContract, chefAddress, x, pendingRewardsFunction)
+    // [...Array(poolCount).keys()].map(
+    [...Array(1).keys()].map(
+      async x => await getMaticSingPoolInfo(App, chefContract, chefAddress, x, pendingRewardsFunction)
     )
   )
+
+  console.log('poolInfos', poolInfos)
 
   var tokenAddresses = [].concat.apply(
     [],
@@ -749,13 +764,6 @@ async function loadMaticYelChefContract(
       tokens[address] = await getMaticToken(App, address, chefAddress)
     })
   )
-
-  if (deathPoolIndices) {
-    //load prices for the deathpool assets
-    deathPoolIndices
-      .map(i => poolInfos[i])
-      .map(poolInfo => (poolInfo.poolToken ? getPoolPrices(tokens, prices, poolInfo.poolToken, 'matic') : undefined))
-  }
 
   const poolPrices = poolInfos.map(poolInfo =>
     poolInfo.poolToken ? getPoolPrices(tokens, prices, poolInfo.poolToken, 'matic') : undefined
@@ -789,9 +797,11 @@ async function loadMaticYelChefContract(
       aprs.push(apr)
     }
   }
+
   let totalUserStaked = 0,
     totalStaked = 0,
     averageApr = 0
+
   for (const a of aprs) {
     if (!isNaN(a.totalStakedUsd)) {
       totalStaked += a.totalStakedUsd
@@ -801,8 +811,10 @@ async function loadMaticYelChefContract(
       averageApr += (a.userStakedUsd * a.yearlyAPR) / 100
     }
   }
+
   averageApr = averageApr / totalUserStaked
   _print_bold(`Total Staked: $${formatMoney(totalStaked)}`)
+
   if (totalUserStaked > 0) {
     _print_bold(
       `\nYou are staking a total of $${formatMoney(totalUserStaked)} at an average APR of ${(averageApr * 100).toFixed(
@@ -816,11 +828,13 @@ async function loadMaticYelChefContract(
         ` Year $${formatMoney(totalUserStaked * averageApr)}\n`
     )
   }
+
   return {prices, totalUserStaked, totalStaked, averageApr}
 }
 
-async function getMaticYelPoolInfo(app, chefContract, chefAddress, poolIndex, pendingRewardsFunction) {
+async function getMaticSingPoolInfo(app, chefContract, chefAddress, poolIndex, pendingRewardsFunction) {
   const poolInfo = await chefContract.poolInfo(poolIndex)
+
   if (poolInfo.allocPoint == 0) {
     return {
       address: poolInfo.stakingToken,
@@ -830,7 +844,9 @@ async function getMaticYelPoolInfo(app, chefContract, chefAddress, poolIndex, pe
       pendingRewardTokens: 0,
     }
   }
-  const poolToken = await getMaticToken(app, poolInfo.stakingToken, chefAddress)
+
+  const poolToken = await getMaticToken(app, poolInfo.lpToken, chefAddress)
+
   const userInfo = await chefContract.userInfo(poolIndex, app.YOUR_ADDRESS)
   const pendingRewardTokens = await chefContract.callStatic[pendingRewardsFunction](poolIndex, app.YOUR_ADDRESS)
   const staked = userInfo.amount / 10 ** poolToken.decimals
