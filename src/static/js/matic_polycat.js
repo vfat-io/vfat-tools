@@ -39,8 +39,8 @@ async function main() {
     await loadMaticPawChefContract(App, tokens, prices, FISH_CHEF, FISH_CHEF_ADDR, FISH_CHEF_ABI, rewardTokenTicker,
       "paw", null, rewardsPerWeek, "pendingPaw");
 
-    await loadMaticPawChefContract(App, tokens, prices, PAW_CHEF, PAW_CHEF_ADDR, PAW_CHEF_ABI, rewardPAWTokenTicker,
-      "paw", null, rewardsPAWPerWeek, "pendingPaw");
+    //await loadMaticPawChefContract(App, tokens, prices, PAW_CHEF, PAW_CHEF_ADDR, PAW_CHEF_ABI, rewardPAWTokenTicker,
+      //"paw", null, rewardsPAWPerWeek, "pendingPaw");
 
     //await loadPolycatVaults(App, tokens, prices, FISH_CHEF_VAULT, FISH_CHEF_VAULT_ADDR, FISH_VAULT_ABI);
 
