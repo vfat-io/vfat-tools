@@ -483,6 +483,7 @@ const main = async() => {
       ["Werewolf Clash of Ice ", `<a href="clash_ice"   >Various</a>`,"ICE              ","https://clash.werewolf.farm"],
       ["Eternity Rubin      ", `<a href="rubin"         >Various</a>`,"RUBIN            ","https://rubin.eternity.money"],
       ["WWF Finance         ", `<a href="wwf"           >Various</a>`,"WWF              ","https://wwf.finance"]
+      ["Defi finance        ", `<a href="defi"          >Various</a>`,"wDEFI            ","https://www.defi.finance"],
     ]}
 
   let table = new AsciiTable().fromJSON(tableData);
