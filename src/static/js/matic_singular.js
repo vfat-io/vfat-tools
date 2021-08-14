@@ -746,8 +746,7 @@ async function loadMaticSingChefContract(
   console.log('rewardsPerWeek', rewardsPerWeek)
 
   const poolInfos = await Promise.all(
-    // [...Array(poolCount).keys()].map(
-    [...Array(1).keys()].map(
+    [...Array(poolCount).keys()].map(
       async x => await getMaticSingPoolInfo(App, chefContract, chefAddress, x, pendingRewardsFunction)
     )
   )
