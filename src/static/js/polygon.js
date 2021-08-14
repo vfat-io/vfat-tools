@@ -530,7 +530,8 @@ const main = async () => {
       ['Poly Unicorn        ', `<a href="polyunicorn"     >Various</a>`, 'CORN         ', 'https://PolyUnicorn.org'],
       ['Plague Doctor       ', `<a href="plaguedoctor"    >Various</a>`, 'DOCTOR       ', 'https://doc.plaguefactory.com'],
       ['Barbershop          ', `<a href="barbershop"      >Various</a>`, 'HAIR         ', 'https://barbershop.finance'],
-      ['Ninja               ', `<a href="ninja"           >Various</a>`, 'NINJA        ', 'https://0xpolygon.ninja']
+      ['Ninja               ', `<a href="ninja"           >Various</a>`, 'NINJA        ', 'https://0xpolygon.ninja'],
+      ['Poly United Finance ', `<a href="polyunitedfinance"  >Various</a>`, 'UNITED    ', 'http://polyunited.finance']
     ],
   }
 
