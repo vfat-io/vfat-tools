@@ -184,7 +184,6 @@ async function getMaticToken(App, tokenAddress, stakingAddress) {
       return res;
     }
     catch(err) {
-      console.log(err)
     }
     try {
       const VAULT = new ethers.Contract(tokenAddress, MATIC_VAULT_TOKEN_ABI, App.provider);
@@ -395,7 +394,7 @@ async function loadMaticBasisFork(data) {
 
 
 async function getMaticPoolInfo(app, chefContract, chefAddress, poolIndex, pendingRewardsFunction) {  
-  const poolInfo = await chefContract.poolInfo(poolIndex);
+  const poolInfo = await chefContract.poolInfo(poolIndex);  
   if (poolInfo.allocPoint == 0) {
     return {
       address: poolInfo.lpToken,
@@ -510,6 +509,7 @@ const maticTokens = [
   { "id": "polydoge", "symbol": "POLYDOGE", "contract": "0x8a953cfe442c5e8855cc6c61b1293fa648bae472" },
   { "id": "drax", "symbol": "DRAX", "contract": "0x1Ba3510A9ceEb72E5CdBa8bcdDe9647E1f20fB4b" },
   { "id": "dark-magic", "symbol": "DMAGIC", "contract": "0x61daecab65ee2a1d5b6032df030f3faa3d116aa7" },
+  { "id": "nightbane", "symbol": "NIGHT", "contract": "0xEEf10C9Bf17c9d2C9619fd29447B231EA0Fde548" },
   { "id": "xdollar", "symbol": "XDO", "contract": "0x3dc7b06dd0b1f08ef9acbbd2564f8605b4868eea" },
   { "id": "iron-titanium-token", "symbol": "TITAN", "contract": "0xaaa5b9e6c589642f98a1cda99b9d024b8407285a" },
   { "id": "bzx-protocol", "symbol": "BZRX", "contract": "0x97dfbEF4eD5a7f63781472Dbc69Ab8e5d7357cB9" },
@@ -518,6 +518,19 @@ const maticTokens = [
   { "id": "the-graph", "symbol": "GRT", "contract": "0x5fe2B58c013d7601147DcdD68C143A77499f5531" },
   { "id": "pickle-finance", "symbol": "PICKLE", "contract": "0x2b88aD57897A8b496595925F43048301C37615Da" },
   { "id": "must", "symbol": "MUST", "contract": "0x9C78EE466D6Cb57A4d01Fd887D2b5dFb2D46288f" },
+  { "id": "blackswan", "symbol": "SWAN", "contract": "0xab7589de4c581db0fb265e25a8e7809d84ccd7e8" },
+  { "id": "galaxy-triton", "symbol": "TRITON", "contract": "0x9cf4009e62429Db3F57Aa9e7e8E898427cF6865f" },
+  { "id": "polywave", "symbol": "WAVE", "contract": "0x4de7fea447b837d7e77848a4b6c0662a64a84e14" },
+  { "id": "surf", "symbol": "SURF", "contract": "0x1e42edbe5376e717c1b22904c59e406426e8173f" },
+  { "id": "towel", "symbol": "TOWEL", "contract": "0x1e946ca17b893ab0f22cf1951137624ee9e689ef" },
+  { "id": "uniswap", "symbol": "UNI", "contract": "0xb33eaad8d922b1083446dc23f610c2567fb5180f" },
+  { "id": "agar", "symbol": "AGAr", "contract": "0xf84bd51eab957c2e7b7d646a3427c5a50848281d" },
+  { "id": "pcomb", "symbol": "pCOMB", "contract": "0x37d1ebc3af809b8fadb45dce7077efc629b2b5bb" },
+  { "id": "lmao", "symbol": "LMAO", "contract": "0xda6f81c2426131337b0cf73768b94c2004390b0e" },
+  { "id": "titan", "symbol": "TITAN", "contract": "0xaaa5b9e6c589642f98a1cda99b9d024b8407285a" },
+  { "id": "wrbt", "symbol": "wRBT", "contract": "0xa5d447757dac8c5faab1858b13da4af701adf4bb" },
+  { "id": "wlev", "symbol": "WLEV", "contract": "0xeb7f7955730a7dba1427a6567950eb4a98dfcbdf" },
+  { "id": "dragons-quick", "symbol": "DQUICK", "contract": "0xf28164a485b0b2c90639e47b0f377b4a438a16b1" }
 ]
 
 async function getMaticPrices() {

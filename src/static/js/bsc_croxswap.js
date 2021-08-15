@@ -11,18 +11,28 @@ async function main() {
     _print(`Initialized ${App.YOUR_ADDRESS}\n`);
     _print("Reading smart contracts...\n");
 
-   const CROX_CHEF_ADDR = "0x3d34883c175Ba72dDa0108EA1A5faFD6Fa673DB6";
+   const CROX_CHEF_ADDR = "0xEAf239a85b2C24229042a0840771A5620a36D2B3";
    const rewardTokenTicker = "CROX";
    const CROX_CHEF = new ethers.Contract(CROX_CHEF_ADDR, CROX_CHEF_ABI, App.provider);
 
-   const rewardsPerWeek = await CROX_CHEF.CROXPerBlock() /1e18
-        * 604800 / 3;
+   const startBlock = await CROX_CHEF.startBlock();
+   const currentBlock = await App.provider.getBlockNumber();
+
+   const multiplier = await CROX_CHEF.getMultiplier(currentBlock, currentBlock+1);
+
+   let rewardsPerWeek = 0
+   if(currentBlock < startBlock){
+    _print(`Rewards start at block <a href="https://bscscan.com/block/countdown/${startBlock}" target="_blank">${startBlock}</a>\n`)
+   }else{
+    rewardsPerWeek = await CROX_CHEF.croxPerBlock() /1e18
+        * 604800 * multiplier / 3;
+   }
 
     const tokens = {};
     const prices = await getBscPrices();
 
     await loadBscChefContract(App, tokens, prices, CROX_CHEF, CROX_CHEF_ADDR, CROX_CHEF_ABI, rewardTokenTicker,
-        "CROX", null, rewardsPerWeek, "pendingCROX");
+        "crox", null, rewardsPerWeek, "pendingCrox", [1]);
 
     hideLoading();
   }

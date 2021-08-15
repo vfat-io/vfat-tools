@@ -337,7 +337,13 @@ const hrcTokens = [
   { "id": "gene","symbol": "GENE", "contract": "0x2CFa849e8506910b2564aFE5BdEF33Ba66C730Aa" },
   { "id": "husd","symbol": "HUSD", "contract": "0x0298c2b32eaE4da002a15f36fdf7615BEa3DA047" },
   { "id": "huobi-btc","symbol": "HBTC", "contract": "0x0316eb71485b0ab14103307bf65a021042c6d380" },
-  { "id": "wrapped-huobi-token","symbol": "WHT", "contract": "0x105E11915B80dD8aa59aC3d58f10303C75606d46" }
+  { "id": "wrapped-huobi-token","symbol": "WHT", "contract": "0x105E11915B80dD8aa59aC3d58f10303C75606d46" },
+  { "id": "wrapped-huobi-token","symbol": "WHT", "contract": "0x5545153CCFcA01fbd7Dd11C0b23ba694D9509A6F" },
+  { "id": "coinwind","symbol": "COW", "contract": "0x80861a817106665bca173db6ac2ab628a738c737" },
+  { "id": "yearn-finance","symbol": "YFI", "contract": "0xB4F019bEAc758AbBEe2F906033AAa2f0F6Dacb35" },
+  { "id": "dai","symbol": "DAI", "contract": "0x3D760a45D0887DFD89A2F5385a236B29Cb46ED2a" },
+  { "id": "usd-coin","symbol": "USDC", "contract": "0x9362Bbef4B8313A8Aa9f0c9808B80577Aa26B73B" },
+  { "id": "galaxy-triton", "symbol": "TRITON", "contract": "0x9cf4009e62429Db3F57Aa9e7e8E898427cF6865f" }
 ]
 
 async function getHecoPrices() {

@@ -18,6 +18,11 @@ const FantomTokens = [
   { "id": "binancecoin", "symbol": "BNB", "contract": "0xD67de0e0a0Fd7b15dC8348Bb9BE742F3c5850454"},
   { "id": "tomb-shares", "symbol": "TSHARE", "contract": "0x4cdF39285D7Ca8eB3f090fDA0C069ba5F4145B37"},
   { "id": "tomb", "symbol": "TOMB", "contract": "0x6c021Ae822BEa943b2E66552bDe1D2696a53fbB7"},
+  { "id": "frax-share", "symbol": "FXS", "contract": "0x82F8Cb20c14F134fe6Ebf7aC3B903B2117aAfa62"},
+  { "id": "frax", "symbol": "FRAX", "contract": "0xaf319E5789945197e365E7f7fbFc56B130523B33"},
+  { "id": "spiritswap", "symbol": "SPIRIT", "contract": "0x5cc61a78f164885776aa610fb0fe1257df78e59b"},
+  { "id": "grimcoin", "symbol": "GRIM", "contract": "0x7eC94C4327dC757601B4273cD67014d7760Be97E"},
+  { "id": "galaxy-triton", "symbol": "TRITON", "contract": "0x9cf4009e62429Db3F57Aa9e7e8E898427cF6865f"}
 ];
 
 async function getFantomPrices() {

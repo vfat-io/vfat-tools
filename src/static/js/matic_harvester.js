@@ -171,9 +171,9 @@ function printHarvesterContractLinks(App, chefAbi, chefAddr, poolIndex, poolAddr
     _print_link(`Stake ${unstaked.toFixed(fixedDecimals)} ${stakeTokenTicker}`, approveAndStake)
   }
   if(withdrawFee > 0){
-    _print_link(`Unstake ${userStaked.toFixed(fixedDecimals)} ${stakeTokenTicker} & Claim ${pendingRewardTokens.toFixed(fixedDecimals)} - Fee ${withdrawFee}%`, unstake)
+    _print_link(`Unstake ${userStaked.toFixed(fixedDecimals)} ${stakeTokenTicker} & Claim ${pendingRewardTokens.toFixed(fixedDecimals)} ${rewardTokenTicker} ($${formatMoney(pendingRewardTokens*rewardTokenPrice)}) - Fee ${withdrawFee}%`, unstake)
   }else{
-    _print_link(`Unstake ${userStaked.toFixed(fixedDecimals)} ${stakeTokenTicker} & Claim ${pendingRewardTokens.toFixed(fixedDecimals)}`, unstake)
+    _print_link(`Unstake ${userStaked.toFixed(fixedDecimals)} ${stakeTokenTicker} & Claim ${pendingRewardTokens.toFixed(fixedDecimals)} ${rewardTokenTicker} ($${formatMoney(pendingRewardTokens*rewardTokenPrice)})`, unstake)
   }
   _print(`Staking or unstaking also claims rewards.`)
   _print("");

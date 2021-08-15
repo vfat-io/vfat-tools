@@ -149,14 +149,18 @@ async function printNonGeyserPool(App, tokens, prices, pool, sharesPerFragment) 
   const tokenUrl = `<a href='https://etherscan.io/address/${pool.tokenAddress}' target='_blank'>Underlying</a>`;
   const settUrl = `<a href='https://etherscan.io/address/${pool.settAddress}' target='_blank'>Sett</a>`;
   _print(`${pool.name} - ${tokenUrl} - ${settUrl}`);
-  const tokenAddress = pool.tokenAddress;
+  
+
   const settAddress = pool.settAddress;
+  const SETT_CONTRACT = new ethers.Contract(settAddress, BADGER_UNI_ABI, App.provider);
+
+  const tokenAddress = pool.tokenAddress ?? await SETT_CONTRACT.token();
   const strategyAddress = pool.strategyAddress;
 
   const TOKEN_CONTRACT = new ethers.Contract(tokenAddress, ERC20_ABI, App.provider);
   const userTotallyUnstaked = await TOKEN_CONTRACT.balanceOf(App.YOUR_ADDRESS) / 1e18;
 
-  const lpToken = await getToken(App, tokenAddress, strategyAddress);
+  const lpToken = await getToken(App, tokenAddress, strategyAddress ?? settAddress);
   _print(`You have ${userTotallyUnstaked} ${lpToken.symbol}`);
 
   var newPriceAddresses = lpToken.tokens.filter(x =>
@@ -171,12 +175,13 @@ async function printNonGeyserPool(App, tokens, prices, pool, sharesPerFragment) 
   for (const address of newTokenAddresses) {
       tokens[address] = await getToken(App, address, tokenAddress);
   }
-
-  const SETT_CONTRACT = new ethers.Contract(settAddress, BADGER_UNI_ABI, App.provider);
   const userUnstaked = await SETT_CONTRACT.balanceOf(App.YOUR_ADDRESS) / 1e18;
-  const settToken = await getToken(App, settAddress, strategyAddress);
+  const settToken = await getToken(App, settAddress, strategyAddress ?? settAddress);
   _print(`You have ${userUnstaked} ${settToken.symbol}`);
 
+  if (lpToken.staked == 0) {
+    lpToken.staked = await SETT_CONTRACT.balance() / 1e18;
+  }
   let poolPrices = getPoolPrices(tokens, prices, lpToken);
 
   poolPrices.print_price();
@@ -407,7 +412,17 @@ const pools = [
     tokenAddress : "0x49849c98ae39fff122806c06791fa73784fb3675",
     settAddress : "0xAf5A1DECfa95BAF63E0084a35c62592B774A2A87",
     geyserAddress : "0xeD0B7f5d9F6286d00763b0FFCbA886D8f9d56d5e",
-  }
+  },
+  //{ name: "yearn.wBtc", settAddress: "0x4b92d19c11435614CD49Af1b589001b7c08cD4D5"},
+  { name: "native.sushiibBTCwBTC", settAddress: "0x8a8FFec8f4A0C8c9585Da95D9D97e8Cd6de273DE"},
+  { name: "experimental.digg", settAddress: "0x608b6D82eb121F3e5C0baeeD32d81007B916E83C"},
+  { name: "native.hbtcCrv", settAddress: "0x8c76970747afd5398e958bDfadA4cf0B9FcA16c4"},
+  { name: "native.pbtcCrv", settAddress: "0x55912D0Cf83B75c492E761932ABc4DB4a5CB1b17"},
+  { name: "native.obtcCrv", settAddress: "0xf349c0faA80fC1870306Ac093f75934078e28991"},
+  { name: "native.bbtcCrv", settAddress: "0x5Dce29e92b1b939F8E8C60DcF15BDE82A85be4a9"},
+  { name: "native.tricryptoCrv", settAddress: "0xBE08Ef12e4a553666291E9fFC24fCCFd354F2Dd2"},
+  { name: "native.cvxCrv", settAddress: "0x2B5455aac8d64C14786c3a29858E43b5945819C0"},
+  { name: "native.cvx", settAddress: "0x53C8E199eb2Cb7c01543C137078a038937a68E40"}
 ];
 
 async function main() {

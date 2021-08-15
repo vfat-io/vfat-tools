@@ -1,7 +1,10 @@
 const avaxTokens = [ 
     { "id": "avalanche-2","symbol": "AVAX","contract": "0xB31f66AA3C1e785363F0875A1B74E27b85FD66c7" },
     { "id": "pangolin","symbol": "PNG", "contract": "0x60781C2586D68229fde47564546784ab3fACA982" },
-    { "id": "weth","symbol": "WETH", "contract": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2" }
+    { "id": "weth","symbol": "WETH", "contract": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2" },
+    { "id": "dai","symbol": "DAI", "contract": "0xbA7dEebBFC5fA1100Fb055a87773e1E99Cd3507a" },
+    { "id": "snowball-token","symbol": "SNOB", "contract": "0xc38f41a296a4493ff429f1238e030924a1542e50" },
+    { "id": "sushi","symbol": "SUSHI", "contract": "0x39cf1BD5f15fb22eC3D9Ff86b0727aFc203427cc" }
 ]
 
 async function getAvaxPrices() {
