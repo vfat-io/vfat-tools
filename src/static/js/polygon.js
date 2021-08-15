@@ -821,12 +821,8 @@ const main = async () => {
       ],
       ['Barbershop          ', `<a href="barbershop"      >Various</a>`, 'HAIR         ', 'https://barbershop.finance'],
       ['Ninja               ', `<a href="ninja"           >Various</a>`, 'NINJA        ', 'https://0xpolygon.ninja'],
-      [
-        'Singular               ',
-        `<a href="singular"           >Various</a>`,
-        'SING        ',
-        'https://singular.farm/',
-      ],
+      ['Singular            ', `<a href="singular"        >Various</a>`, 'SING         ', 'https://singular.farm/'],
+      ['Earth Finance       ', `<a href="earthfinance"    >Various</a>`, 'EARTH        ', 'https://geo-earthswap.finance']
     ],
   }
 
