@@ -299,7 +299,8 @@ const main = async () => {
       ['Poly United Finance ', `<a href="polyunitedfinance"  >Various</a>`, 'UNITED    ', 'http://polyunited.finance'],
       ['Singular            ', `<a href="singular"        >Various</a>`, 'SING         ', 'https://singular.farm/'],
       ['Earth Finance       ', `<a href="earthfinance"    >Various</a>`, 'EARTH        ', 'https://geo-earthswap.finance'],
-      ['The Stadium Arcadium', `<a href="stadiumarcadium" >Various</a>`, 'ARCADIUM + MYFRIENDS', 'https://stadiumarcadium.farm']
+      ['The Stadium Arcadium', `<a href="stadiumarcadium" >Various</a>`, 'ARCADIUM + MYFRIENDS', 'https://stadiumarcadium.farm'],
+      ['Tetu.io'             , `<a href="tetu"            >Various</a>`, 'TETU         ', 'https://app.tetu.io'],
     ],
   }
 
