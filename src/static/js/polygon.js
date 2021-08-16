@@ -303,6 +303,7 @@ const main = async () => {
       ['Tetu.io'             , `<a href="tetu"            >Various</a>`, 'TETU         ', 'https://app.tetu.io'],
       ['SunsetV2'            , `<a href="sunsetv2"        >Various</a>`, 'SUNSET       ', 'https://sunsetv2.finance'],
       ['Helium Finance'      , `<a href="heliumfinance"   >Various</a>`, 'HELIUM       ', 'https://heliumfinance.club'],
+      [''      , `<a href=""   >Various</a>`, 'FARM         ', '']
     ],
   }
 
