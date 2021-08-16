@@ -303,7 +303,8 @@ const main = async () => {
       ['Tetu.io'             , `<a href="tetu"            >Various</a>`, 'TETU         ', 'https://app.tetu.io'],
       ['SunsetV2'            , `<a href="sunsetv2"        >Various</a>`, 'SUNSET       ', 'https://sunsetv2.finance'],
       ['Helium Finance'      , `<a href="heliumfinance"   >Various</a>`, 'HELIUM       ', 'https://heliumfinance.club'],
-      ['PolyYork V2'         , `<a href="polyyork2"       >Various</a>`, 'GoldYork     ', 'https://gold.polyyork.finance']
+      ['PolyYork V2'         , `<a href="polyyork2"       >Various</a>`, 'GoldYork     ', 'https://gold.polyyork.finance'],
+      ['EbiSwap Finance'     , `<a href="ebiswap"         >Various</a>`, 'EBI          ', 'https://ebiswap.finance']
     ],
   }
 
