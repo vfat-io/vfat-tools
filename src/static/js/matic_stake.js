@@ -688,7 +688,7 @@ $(function () { consoleInit(main) });
     const contract = new ethers.Contract(addr, abi, app.provider);
     ///------------------------------------------------------------------------
     _print_bold("*** The below project is in no way affiliated with vfat.tools, just like all other projects listed here. ***")
-    _print_bold("*** Previous shill language has now been removed. ***")
+    _print("TELEGRAM: https://t.me/matic_stake")
     const plannames = ["TORTOISE 🐢", "FLAMINGO 🦩", "OCTOPUS 🐙", "SCORPION 🦂", "EAGLE 🦅", "SHARK 🦈", "BULL 🐂", "ELEPHANT 🐘"]
 
     ///------------------------------------------------------------------------
