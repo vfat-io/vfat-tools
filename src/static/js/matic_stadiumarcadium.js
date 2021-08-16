@@ -1194,7 +1194,7 @@ $(function () {
       }
       if (a.userStakedUsd > 0) {
         totalUserStaked += a[0].userStakedUsd;
-        averageApr += a[0].userStakedUsd * ((a[0] != null ? a[0].yearlyAPR : 0) + (a[1] != null ? a[1].yearlyAPR : 0) + (a[2] != null ? a[2].yearlyAPR : 0)) / 100;
+        averageApr += a[0].userStakedUsd * (a[0].yearlyAPR + (a[1] != null ? a[1].yearlyAPR : 0) + a[2].yearlyAPR) / 100;
       }
     }
     averageApr = averageApr / totalUserStaked;
@@ -1235,8 +1235,8 @@ $(function () {
     const apr1 = printAPR(rewardTokenTicker1, rewardPrice1, poolRewardsPerWeek1, poolPrices.stakeTokenTicker,
       staked_tvl, userStaked, poolPrices.price, fixedDecimals);
   
-    const apr2 = (poolIndex !== 0) ? printAPR(rewardTokenTicker2, rewardPrice2, poolRewardsPerWeek2, poolPrices.stakeTokenTicker,
-      staked_tvl, userStaked, poolPrices.price, fixedDecimals) : null
+    const apr2 = printAPR(rewardTokenTicker2, rewardPrice2, poolRewardsPerWeek2, poolPrices.stakeTokenTicker,
+      staked_tvl, userStaked, poolPrices.price, fixedDecimals)
     const apr3 = (poolIndex === 0) ?  printAPR(rewardTokenTicker3, rewardPrice3, poolRewardsPerWeek3, poolPrices.stakeTokenTicker,
       staked_tvl, userStaked, poolPrices.price, fixedDecimals) : null
   
@@ -1276,7 +1276,7 @@ $(function () {
       _print_link(`Unstake ${userStaked.toFixed(fixedDecimals)} ${stakeTokenTicker}`, unstake)
     }
     if (pendingRewardTokens1 > 0)
-      _print_link(`Claim ${pendingRewardTokens1.toFixed(fixedDecimals)} ${rewardTokenTicker1} ($${formatMoney(pendingRewardTokens1*rewardTokenPrice1)})`, claim)
+      _print_link(`Claim ${pendingRewardTokens1.toFixed(fixedDecimals)} ${rewardTokenTicker1} ($${formatMoney(pendingRewardToken1s*rewardTokenPrice1)})`, claim)
     if (pendingRewardTokens2 > 0)
       _print_link(`Claim ${pendingRewardTokens2.toFixed(fixedDecimals)} ${rewardTokenTicker2} ($${formatMoney(pendingRewardTokens2*rewardTokenPrice2)})`, claim)
     if (pendingRewardTokens3 > 0)
