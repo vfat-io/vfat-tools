@@ -301,6 +301,7 @@ const main = async () => {
       ['Earth Finance       ', `<a href="earthfinance"    >Various</a>`, 'EARTH        ', 'https://geo-earthswap.finance'],
       ['The Stadium Arcadium', `<a href="stadiumarcadium" >Various</a>`, 'ARCADIUM + MYFRIENDS', 'https://stadiumarcadium.farm'],
       ['Tetu.io'             , `<a href="tetu"            >Various</a>`, 'TETU         ', 'https://app.tetu.io'],
+      ['Helium Finance'      , `<a href="heliumfinance"   >Various</a>`, 'HELIUM       ', 'https://heliumfinance.club'],
     ],
   }
 
