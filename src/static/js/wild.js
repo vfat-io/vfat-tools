@@ -42,7 +42,7 @@ async function loadxWILD(App){
   const totalOwnedWILD = totalOwnedxWILD * virtualPrice;
   const tvl = totalDepositedWILDs * WILDPrice
   const usersPercentage = totalOwnedxWILD / totalxWILDTokens * 100;
-  const usersxWILDUsd = totalOwnedxWILD * WILDPrice;
+  const usersxWILDUsd = totalOwnedxWILD * xWILDPrice;
   _print(`\n${rewardTicker} Price: $${toFixed(xWILDPrice, 2)} Total Supply: ${toFixed(totalxWILDTokens, 4)} TVL: $${formatMoney(tvl)}`);
   _print(`${stakeTicker} Price: $${toFixed(WILDPrice, 2)}`);
   _print(`There is a total of ${toFixed(totalDepositedWILDs, 2)} WILD staked in xWILD`);
