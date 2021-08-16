@@ -36,7 +36,7 @@ async function main() {
       return chefPawContract_claimAll(PAW_CHEF_ABI, PAW_CHEF_ADDR, App, pools.totalPendingTokens);
     }
 
-    _print_link(`Vesting all ${pools.totalPendingTokens.toFixed(2)} ${rewardTokenTicker} ($${formatMoney(pools.totalUSDPendingRewards)})`, vestingAll)
+    _print_link(`Start vesting of all ${pools.totalPendingTokens.toFixed(2)} ${rewardTokenTicker} ($${formatMoney(pools.totalUSDPendingRewards)})`, vestingAll)
 
     hideLoading();
 }
