@@ -487,7 +487,8 @@ const main = async() => {
       ["Snorre              ", `<a href="snorre"        >Various</a>`,"SNORRE           ","https://snorre.farmwiki.xyz"],
       ["Defi finance        ", `<a href="defi"          >Various</a>`,"wDEFI            ","https://www.defi.finance"],
       ["Ryu Inu             ", `<a href="ryuinu"        >Various</a>`,"RYUINU           ","https://bsc.ryuinu.finance"],
-      ["Stable Farms        ", `<a href="stable"        >Various</a>`,"FSTABLE          ","https://www.stablefarms.finance"]
+      ["Stable Farms        ", `<a href="stable"        >Various</a>`,"FSTABLE          ","https://www.stablefarms.finance"],
+      ["Viralata Finance    ", `<a href="viralata"      >Various</a>`,"VIRALATA         ","https://app.viralata.finance"]
     ]}
 
   let table = new AsciiTable().fromJSON(tableData);
