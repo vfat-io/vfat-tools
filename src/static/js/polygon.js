@@ -307,7 +307,7 @@ const main = async () => {
       ['WoodChain Polygon'   , `<a href="woodchain"       >Various</a>`, 'WOOD         ', 'https://polygon.woodchain.io'],
       ['Ragnarok'            , `<a href="ragnarok"        >Various</a>`, 'RAGNAROK     ', 'https://ragnarok.digital'],
       ['EbiSwap Finance'     , `<a href="ebiswap"         >Various</a>`, 'EBI          ', 'https://ebiswap.finance'],
-      ['Barns Finance'       , `<a href="barns"           >Various</a>`, 'FARM         ', 'https://barns.finance']
+      ['Hype Matic'          , `<a href="hypematic"       >ROI</a>`,     'MATIC         ', 'https://vfat.tools/polygon/hypematic/']
     ],
   }
 
