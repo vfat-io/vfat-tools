@@ -50,16 +50,22 @@ async function main() {
     "0xD91E9a0fEf7C0fa4EBdAF4d0aCF55888949A2a9b", "0x2Ef2cb6af83de4171A69EE2f7C677079fFD9BcD0")
 
   let p = await loadMcnprotocolContracts(App, tokens, prices, pools, MCN_CHEF)
+  const claimAll = async function() {
+    return rewardsMcnContract_claim(p.stakeTokenAddresses, MCN_CHEF_ADDR, App)
+  }
   _print_bold(`Total staked: $${formatMoney(p.staked_tvl)}`);
   if (p.totalUserStaked > 0) {
     _print(`You are staking a total of $${formatMoney(p.totalUserStaked)} at an APR of ${(p.totalAPR * 100).toFixed(2)}%\n`);
+    _print_link(`Claim All`, claimAll);
   }
+
+  //_print_link(`Claim All ${info.rewardTokens[0].earned.toFixed(6)} ${info.rewardTokens[0].rewardTokenTicker} ($${formatMoney(info.rewardTokens[0].earned*rewardTokenPrices[0])}) + ${info.rewardTokens[1].earned.toFixed(6)} ${info.rewardTokens[1].rewardTokenTicker} ($${formatMoney(info.rewardTokens[1].earned*rewardTokenPrices[1])})`, claimAll)
 
   hideLoading();
 }
 
 async function loadMcnprotocolContracts(App, tokens, prices, pools, mcnContract) {
-  let totalStaked  = 0, totalUserStaked = 0, individualAPRs = [];
+  let totalStaked  = 0, totalUserStaked = 0, individualAPRs = [], stakeTokenAddresses = [];
   const infos = await Promise.all(pools.map(p =>
     loadMcnprotocolPoolInfo(App, tokens, p.address, p.stakedToken, p.rewards, mcnContract, p.stakedAmount)));
   let tokenAddresses = []
@@ -74,12 +80,13 @@ async function loadMcnprotocolContracts(App, tokens, prices, pools, mcnContract)
     let p = await printMcnSynthetixPool(App, tokens, prices, info);
     totalStaked += p.staked_tvl || 0;
     totalUserStaked += p.userStaked || 0;
+    stakeTokenAddresses.push(p.stakeTokenAddresses)
     if (p.userStaked > 0) {
       individualAPRs.push(p.userStaked * p.apr / 100);
     }
   }
   let totalAPR = totalUserStaked == 0 ? 0 : individualAPRs.reduce((x,y)=>x+y, 0) / totalUserStaked;
-  return { staked_tvl : totalStaked, totalUserStaked, totalAPR };
+  return { staked_tvl : totalStaked, totalUserStaked, totalAPR, stakeTokenAddresses };
 }
 
 async function loadMcnprotocolPoolInfo(App, tokens, stakingAddress, stakeTokenAddress,
@@ -127,6 +134,7 @@ async function printMcnSynthetixPool(App, tokens, prices, info, chain="eth") {
     info.staked_tvl = info.poolPrices.staked_tvl;
     info.rewardTokenPrice = getParameterCaseInsensitive
     info.poolPrices.print_price(chain);
+    let stakeTokenAddresses = [];
     let weeklyAPRs = 0
     let rewardTokenPrices = [];
     for(const rewardToken of info.rewardTokens){
@@ -156,15 +164,16 @@ async function printMcnSynthetixPool(App, tokens, prices, info, chain="eth") {
           + ` Day ${(userDailyRewards0+userDailyRewards1).toFixed(2)} ($${formatMoney(userDailyRewards0*rewardTokenPrices[0]+userDailyRewards1*rewardTokenPrices[1])})`
           + ` Week ${(userWeeklyRewards0+userWeeklyRewards1).toFixed(2)} ($${formatMoney(userWeeklyRewards0*rewardTokenPrices[0]+userWeeklyRewards1*rewardTokenPrices[1])})`
           + ` Year ${(userYearlyRewards0+userYearlyRewards1).toFixed(2)} ($${formatMoney(userYearlyRewards0*rewardTokenPrices[0]+userYearlyRewards1*rewardTokenPrices[1])})`);
+      stakeTokenAddresses.push(info.stakeTokenAddress);
   }
     const approveTENDAndStake = async function() {
-      return rewardsContract_stake(info.stakeTokenAddress, info.stakingAddress, App)
+      return rewardsMcnContract_stake(info.stakeTokenAddress, info.stakingAddress, App)
     }
     const unstake = async function() {
-      return rewardsContract_unstake(info.stakingAddress, App)
+      return rewardsMcnContract_unstake(info.stakeTokenAddress, info.stakingAddress, App)
     }
     const claim = async function() {
-      return rewardsContract_claim(info.stakingAddress, App)
+      return rewardsMcnContract_claim([info.stakeTokenAddress], info.stakingAddress, App)
     }
     const exit = async function() {
       return rewardsContract_exit(info.stakingAddress, App)
@@ -183,8 +192,99 @@ async function printMcnSynthetixPool(App, tokens, prices, info, chain="eth") {
     return {
         staked_tvl: info.poolPrices.staked_tvl,
         userStaked : userStakedUsd,
-        apr : yearlyAPR
+        apr : yearlyAPR,
+        stakeTokenAddresses : stakeTokenAddresses
     }
+}
+
+const rewardsMcnContract_claim = async function(lpTokenAddresses, rewardPoolAddr, App) {
+  const signer = App.provider.getSigner()
+
+  const REWARD_POOL = new ethers.Contract(rewardPoolAddr, Y_STAKING_POOL_ABI, signer)
+
+  console.log(App.YOUR_ADDRESS)
+
+  const earnedYFFI = (await REWARD_POOL.earned(App.YOUR_ADDRESS)) / 1e18
+
+  if (earnedYFFI > 0) {
+    showLoading()
+    REWARD_POOL.claimRewardsForPools(lpTokenAddresses, {gasLimit: 250000})
+      .then(function(t) {
+        return App.provider.waitForTransaction(t.hash)
+      })
+      .catch(function() {
+        hideLoading()
+      })
+  }
+}
+
+const rewardsMcnContract_unstake = async function(lpTokenAddress, rewardPoolAddr, App) {
+  const signer = App.provider.getSigner()
+
+  const REWARD_POOL = new ethers.Contract(rewardPoolAddr, Y_STAKING_POOL_ABI, signer)
+  const currentStakedAmount = await REWARD_POOL.balanceOf(App.YOUR_ADDRESS)
+
+  if (currentStakedAmount > 0) {
+    showLoading()
+    REWARD_POOL.withdraw(lpTokenAddress, currentStakedAmount, {gasLimit: 250000})
+      .then(function(t) {
+        return App.provider.waitForTransaction(t.hash)
+      })
+      .catch(function() {
+        hideLoading()
+      })
+  }
+}
+
+const rewardsMcnContract_stake = async function(stakeTokenAddr, rewardPoolAddr, App, maxAllowance) {
+  const signer = App.provider.getSigner()
+
+  const TEND_TOKEN = new ethers.Contract(stakeTokenAddr, ERC20_ABI, signer)
+  const WEEBTEND_V2_TOKEN = new ethers.Contract(rewardPoolAddr, YFFI_REWARD_CONTRACT_ABI, signer)
+
+  const balanceOf = await TEND_TOKEN.balanceOf(App.YOUR_ADDRESS)
+  const currentTEND =  maxAllowance ? (maxAllowance / 1e18 < balanceOf / 1e18
+    ? maxAllowance : balanceOf) : balanceOf
+  const allowedTEND = await TEND_TOKEN.allowance(App.YOUR_ADDRESS, rewardPoolAddr)
+
+  let allow = Promise.resolve()
+
+  if (allowedTEND / 1e18 < currentTEND / 1e18) {
+    showLoading()
+    allow = TEND_TOKEN.approve(rewardPoolAddr, ethers.constants.MaxUint256)
+      .then(function(t) {
+        return App.provider.waitForTransaction(t.hash)
+      })
+      .catch(function() {
+        hideLoading()
+        alert('Try resetting your approval to 0 first')
+      })
+  }
+
+  if (currentTEND / 1e18 > 0) {
+    showLoading()
+    allow
+      .then(async function() {
+        WEEBTEND_V2_TOKEN.deposit(stakeTokenAddr, currentTEND, {gasLimit: 500000})
+          .then(function(t) {
+            App.provider.waitForTransaction(t.hash).then(function() {
+              hideLoading()
+            })
+          })
+          .catch(x => {
+            hideLoading()
+            console.log(x);
+            _print('Something went wrong.')
+          })
+      })
+      .catch(x => {
+        hideLoading()
+        console.log(x);
+        _print('Something went wrong.')
+      })
+  } else {
+    alert('You have no tokens to stake!!')
+  }
 }
 
 async function loadMcnSynthetixPoolInfo(App, tokens, prices, stakingAbi, stakingAddress,
