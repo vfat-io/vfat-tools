@@ -306,7 +306,8 @@ const main = async () => {
       ['PolyYork V2'         , `<a href="polyyork2"       >Various</a>`, 'GoldYork     ', 'https://gold.polyyork.finance'],
       ['WoodChain Polygon'   , `<a href="woodchain"       >Various</a>`, 'WOOD         ', 'https://polygon.woodchain.io'],
       ['Ragnarok'            , `<a href="ragnarok"        >Various</a>`, 'RAGNAROK     ', 'https://ragnarok.digital'],
-      ['EbiSwap Finance'     , `<a href="ebiswap"         >Various</a>`, 'EBI          ', 'https://ebiswap.finance']
+      ['EbiSwap Finance'     , `<a href="ebiswap"         >Various</a>`, 'EBI          ', 'https://ebiswap.finance'],
+      ['Barns Finance'       , `<a href="barns"           >Various</a>`, 'FARM         ', 'https://barns.finance']
     ],
   }
 
