@@ -308,6 +308,7 @@ const main = async () => {
       ['Ragnarok'            , `<a href="ragnarok"        >Various</a>`, 'RAGNAROK     ', 'https://ragnarok.digital'],
       ['EbiSwap Finance'     , `<a href="ebiswap"         >Various</a>`, 'EBI          ', 'https://ebiswap.finance'],
       ['Barns Finance'       , `<a href="barns"           >Various</a>`, 'FARM         ', 'https://barns.finance']
+      ['MATIC FARM'          , `<a href="matic_farm"      >Various</a>`, 'MATIC FARM   ', ''],
     ],
   }
 
