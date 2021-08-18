@@ -1058,16 +1058,23 @@ $(function () {
     let blocknum = ethers.BigNumber.from(blocknumber.toString())
     const startBlockBN = ethers.BigNumber.from(startBlock.toString())
     const endEmissionBN = ethers.BigNumber.from(endEmission.toString())
-    const gradientE124BN = ethers.BigNumber.from(gradientE24.toString())
+    const gradientE24BN = ethers.BigNumber.from(gradientE24.toString())
     const endBlockBN = ethers.BigNumber.from(endBlock.toString())
   
+console.log("blocknum ", blocknum)
+console.log("isIncreasing", isIncreasing)
+console.log("startBlockBN ", startBlockBN)
+console.log("endEmissionBN ", endEmissionBN)
+console.log("gradientE24BN ", gradientE24BN)
+console.log("endBlockBN ", endBlockBN)
+
     if (blocknum.lte(startBlockBN)) blocknum = startBlockBN
   
     if (blocknum.gte(endBlock)) return endEmissionBN
   
     if (gradientE24.isZero()) return ethers.BigNumber.from(0)
     let currentArcadiumEmission = endEmissionBN
-    const deltaHeight = gradientE124BN.mul(endBlockBN.sub(blocknum)).div(ethers.BigNumber.from('10').pow(24))
+    const deltaHeight = gradientE24BN.mul(endBlockBN.sub(blocknum)).div(ethers.BigNumber.from('10').pow(24))
   
     if (isIncreasing) currentArcadiumEmission = endEmissionBN.sub(deltaHeight)
     else currentArcadiumEmission = endEmissionBN.add(deltaHeight)
@@ -1104,12 +1111,15 @@ $(function () {
       const endGoalArcadiumEmission = await MCHEF.endGoalArcadiumEmission();
       const arcadiumReleaseGradient = await MCHEF.arcadiumReleaseGradient();
       const endArcadiumGradientBlock = await MCHEF.endArcadiumGradientBlock();
-  
+
       if (currentBlock <= farmingEndBlock)
         arcadiumRelease = getArcadiumRelease(currentBlock, startBlock, isIncreasing, endGoalArcadiumEmission, arcadiumReleaseGradient, endArcadiumGradientBlock)
   
-      const rewardsPerWeek1 = arcadiumRelease.div(ethers.BigNumber.from(10).pow(ethers.BigNumber.from(18))).toNumber() * 604800 / 2;
+
+      const rewardsPerWeek1 = arcadiumRelease.mul(604800).div(2)
   
+      console.log("rewardsPerWeek1 ", rewardsPerWeek1)
+
       const multiplier = await MCHEF.getMyFriendsMultiplier(currentBlock, currentBlock+1);
   
       const rewardsPerWeek2 = 0.032 * 604800 * multiplier / 2;
@@ -1118,7 +1128,7 @@ $(function () {
   
       const totalUSDC = await MCHEF.totalUSDCCollected();
     
-      const rewardsPerWeek3 = (((totalUSDC.div(ethers.BigNumber.from(10).pow(ethers.BigNumber.from(6))).toNumber() - 7200)/(currentBlock  - swapStartBlock)) *
+      const rewardsPerWeek3 = (((totalUSDC.toNumber() - 7200000000)/(currentBlock  - swapStartBlock)) *
               604800 / 2);
   
   
@@ -1174,7 +1184,6 @@ $(function () {
   
     _print("Finished reading smart contracts.\n");
   
-  
     console.log("poolPrices ", poolPrices)
   
     let aprs = []
@@ -1216,17 +1225,32 @@ $(function () {
                          fixedDecimals, claimFunction, chain="eth", depositFee=0, withdrawFee=0, myFriendsPoints) {
     fixedDecimals = fixedDecimals ?? 2;
     const sp = (poolInfo1.stakedToken == null) ? null : getPoolPrices(tokens, prices, poolInfo1.stakedToken, chain);
-    var poolRewardsPerWeek1 = (poolInfo1.allocPoints / totalAllocPoints) * rewardsPerWeek1;
-    var poolRewardsPerWeek2 = (totalAllocPoints > myFriendsPoints) ? (poolInfo1.allocPoints / (totalAllocPoints - myFriendsPoints)) * rewardsPerWeek2 : 0
-    var poolRewardsPerWeek3 = (poolInfo1.allocPoints / totalAllocPoints) * rewardsPerWeek3;
+    
+    console.log("poolInfo1.allocPoints ", poolInfo1.allocPoints)
+
+    console.log("rewardsPerWeek1 ", rewardsPerWeek1)
+    console.log("rewardsPerWeek2 ", rewardsPerWeek2)
+    console.log("rewardsPerWeek3 ", rewardsPerWeek3)
+
+    console.log("totalAllocPoints ", totalAllocPoints)
+    console.log("myFriendsPoints ", myFriendsPoints)
+    
+    const poolRewardsPerWeek1 = (poolInfo1.allocPoints.toNumber() / totalAllocPoints.toNumber()) * (rewardsPerWeek1.div(ethers.BigNumber.from(10).pow(12)).toNumber() / 1000000);
+    const poolRewardsPerWeek2 = (totalAllocPoints.toNumber() > myFriendsPoints.toNumber()) ? rewardsPerWeek2 * (poolInfo1.allocPoints.toNumber() / (totalAllocPoints.toNumber() - myFriendsPoints.toNumber())) : 0
+    const poolRewardsPerWeek3 = rewardsPerWeek3;
   
+    console.log("poolRewardsPerWeek1 ", poolRewardsPerWeek1)
+    console.log("poolRewardsPerWeek2 ", poolRewardsPerWeek2)
+    console.log("poolRewardsPerWeek3 ", poolRewardsPerWeek3)
+
     if (poolRewardsPerWeek1 == 0 && rewardsPerWeek1 != 0 && poolRewardsPerWeek2 == 0 && rewardsPerWeek2 != 0 && poolRewardsPerWeek3 == 0 && rewardsPerWeek3 != 0) return;
-  
+
     const userStaked = poolInfo1.userLPStaked ?? poolInfo1.userStaked;
     const rewardPrice1 = getParameterCaseInsensitive(prices, rewardTokenAddress1)?.usd;
     const rewardPrice2 = getParameterCaseInsensitive(prices, rewardTokenAddress2)?.usd;
     const rewardPrice3 = getParameterCaseInsensitive(prices, rewardTokenAddress3)?.usd;
   
+
     const staked_tvl = sp?.staked_tvl ?? poolPrices.staked_tvl;
     _print_inline(`${poolIndex} - `);
     poolPrices.print_price(chain);
@@ -1237,7 +1261,7 @@ $(function () {
   
     const apr2 = (poolIndex !== 0) ? printAPR(rewardTokenTicker2, rewardPrice2, poolRewardsPerWeek2, poolPrices.stakeTokenTicker,
       staked_tvl, userStaked, poolPrices.price, fixedDecimals) : null
-    const apr3 = (poolIndex === 0) ?  printAPR(rewardTokenTicker3, rewardPrice3, poolRewardsPerWeek3, poolPrices.stakeTokenTicker,
+    const apr3 = (poolIndex === 0) ?  printAPR(rewardTokenTicker3, rewardPrice3, poolRewardsPerWeek3 / 1000000, poolPrices.stakeTokenTicker,
       staked_tvl, userStaked, poolPrices.price, fixedDecimals) : null
   
     if (poolInfo1.userLPStaked > 0) sp?.print_contained_price(userStaked);
