@@ -455,7 +455,7 @@ $(function () { consoleInit(main) });
     const staked = fromEther(await contract.totalStaked());
     const doubles = parseInt(await contract.totalDoubled(), 10);
     const minAmount = fromEther(await contract.MIN_AMOUNT());
-    const refLink = "https://vfat.tools/polygon/poly_crypto_double/?ref=" + app.YOUR_ADDRESS.toString();
+    const refLink = "https://vfat.tools/polygon/crypto_double/?ref=" + app.YOUR_ADDRESS.toString();
     _print("<hr>")
     _print(header(2, "CryptoDouble"));
     const telegramLink = "https://t.me/cryptodoublecrypto";
