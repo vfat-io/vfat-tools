@@ -1117,10 +1117,10 @@ $(function () {
       const swapStartBlock = 17926000
   
       const totalUSDC = await MCHEF.totalUSDCCollected();
-    
+   
       const rewardsPerWeek3 = (((totalUSDC.toNumber() - 7200000000)/(currentBlock  - swapStartBlock)) *
               604800 / 2);
-  
+ 
   
       const tokens = {};
       const prices = await getMaticPrices();
@@ -1134,22 +1134,22 @@ $(function () {
   async function loadStadiumArcadiumContract(App, tokens, prices, chef, chefAddress, chefAbi, rewardTokenTicker1, rewardTokenTicker2, rewardTokenTicker3,
     rewardTokenFunction1, rewardTokenFunction2, rewardTokenFunction3, rewardsPerWeekFixed1, rewardsPerWeekFixed2, rewardsPerWeekFixed3, pendingRewardsFunction1, pendingRewardsFunction2, pendingRewardsFunction3) {
     const chefContract = chef ?? new ethers.Contract(chefAddress, chefAbi, App.provider);
-  
+ 
     const poolCount = parseInt(await chefContract.poolLength(), 10);
     const totalAllocPoints = await chefContract.totalAllocPoint();
-  
+ 
     _print(`Found ${poolCount} pools.\n`)
-  
+ 
     _print(`Showing incentivized pools only.\n`);
-  
+ 
     var tokens = {};
-  
+ 
     const rewardTokenAddress1 = await chefContract.callStatic[rewardTokenFunction1]();
     const rewardsPerWeek1 = rewardsPerWeekFixed1
-  
+ 
     const rewardTokenAddress2 = await chefContract.callStatic[rewardTokenFunction2]();
     const rewardsPerWeek2 = rewardsPerWeekFixed2
-  
+ 
     const rewardTokenAddress3 = await chefContract.callStatic[rewardTokenFunction3]();
     const rewardsPerWeek3 = rewardsPerWeekFixed3
   
