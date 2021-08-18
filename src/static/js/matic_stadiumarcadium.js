@@ -1108,10 +1108,7 @@ $(function () {
       if (currentBlock <= farmingEndBlock)
         arcadiumRelease = getArcadiumRelease(currentBlock, startBlock, isIncreasing, endGoalArcadiumEmission, arcadiumReleaseGradient, endArcadiumGradientBlock)
   
-
       const rewardsPerWeek1 = arcadiumRelease.mul(604800).div(2)
-  
-      console.log("rewardsPerWeek1 ", rewardsPerWeek1)
 
       const multiplier = await MCHEF.getMyFriendsMultiplier(currentBlock, currentBlock+1);
   
@@ -1176,8 +1173,7 @@ $(function () {
     const poolPrices = poolInfos1.map(poolInfo => poolInfo.poolToken ? getPoolPrices(tokens, prices, poolInfo.poolToken, "matic") : undefined);
   
     _print("Finished reading smart contracts.\n");
-  
-    console.log("poolPrices ", poolPrices)
+ 
   
     let aprs = []
     for (i = 0; i < poolCount; i++) {
