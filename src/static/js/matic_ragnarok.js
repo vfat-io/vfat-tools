@@ -16,7 +16,6 @@ async function main() {
 
     const startBlock = await RAGNAROK_CHEF.startBlock();
     const currentBlock = await App.provider.getBlockNumber();
-    const bonusMultiplier = await RAGNAROK_CHEF.BONUS_MULTIPLIER();
 
     let rewardsPerWeek = 0
     if (currentBlock < startBlock) {
