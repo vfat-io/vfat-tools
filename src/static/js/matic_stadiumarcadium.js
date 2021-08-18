@@ -1060,13 +1060,6 @@ $(function () {
     const endEmissionBN = ethers.BigNumber.from(endEmission.toString())
     const gradientE24BN = ethers.BigNumber.from(gradientE24.toString())
     const endBlockBN = ethers.BigNumber.from(endBlock.toString())
-  
-console.log("blocknum ", blocknum)
-console.log("isIncreasing", isIncreasing)
-console.log("startBlockBN ", startBlockBN)
-console.log("endEmissionBN ", endEmissionBN)
-console.log("gradientE24BN ", gradientE24BN)
-console.log("endBlockBN ", endBlockBN)
 
     if (blocknum.lte(startBlockBN)) blocknum = startBlockBN
   
@@ -1226,22 +1219,9 @@ console.log("endBlockBN ", endBlockBN)
     fixedDecimals = fixedDecimals ?? 2;
     const sp = (poolInfo1.stakedToken == null) ? null : getPoolPrices(tokens, prices, poolInfo1.stakedToken, chain);
     
-    console.log("poolInfo1.allocPoints ", poolInfo1.allocPoints)
-
-    console.log("rewardsPerWeek1 ", rewardsPerWeek1)
-    console.log("rewardsPerWeek2 ", rewardsPerWeek2)
-    console.log("rewardsPerWeek3 ", rewardsPerWeek3)
-
-    console.log("totalAllocPoints ", totalAllocPoints)
-    console.log("myFriendsPoints ", myFriendsPoints)
-    
     const poolRewardsPerWeek1 = (poolInfo1.allocPoints.toNumber() / totalAllocPoints.toNumber()) * (rewardsPerWeek1.div(ethers.BigNumber.from(10).pow(12)).toNumber() / 1000000);
     const poolRewardsPerWeek2 = (totalAllocPoints.toNumber() > myFriendsPoints.toNumber()) ? rewardsPerWeek2 * (poolInfo1.allocPoints.toNumber() / (totalAllocPoints.toNumber() - myFriendsPoints.toNumber())) : 0
     const poolRewardsPerWeek3 = rewardsPerWeek3;
-  
-    console.log("poolRewardsPerWeek1 ", poolRewardsPerWeek1)
-    console.log("poolRewardsPerWeek2 ", poolRewardsPerWeek2)
-    console.log("poolRewardsPerWeek3 ", poolRewardsPerWeek3)
 
     if (poolRewardsPerWeek1 == 0 && rewardsPerWeek1 != 0 && poolRewardsPerWeek2 == 0 && rewardsPerWeek2 != 0 && poolRewardsPerWeek3 == 0 && rewardsPerWeek3 != 0) return;
 
