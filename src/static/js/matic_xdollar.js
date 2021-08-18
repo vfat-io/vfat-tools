@@ -118,7 +118,7 @@ async function loadGysrPool(App, tokens, prices, pool, customURLs) {
 
   totalStaked = p.staked_tvl || 0;
   totalUserStaked = p.userStaked || 0;
-  totalAPR = p.yearlyAPR || 0;
+  totalAPR = p.apr / 100 || 0;
 
   return { staked_tvl: totalStaked, totalUserStaked, totalAPR};
 }
@@ -173,8 +173,8 @@ async function printGysrPool(App, info, customURLs) {
 
     return {
         staked_tvl: info.totalSupply,
-        userStaked : info.pool_share,
-        apr : yearlyAPR
+        userStaked: info.pool_share / 1e18 * info.price,
+        apr: info.yearlyAPR
     }
 }
 
