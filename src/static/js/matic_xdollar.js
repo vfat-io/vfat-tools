@@ -255,23 +255,36 @@ async function loadGysrPoolInfo(App, tokens, prices, stakingAbi, stakingAddress,
         let userShare = 0;
         let preVestingRewards = 0;
         for (let i = 0; i < userStakeCount; i++) {
-            userStaked = await reward.stakes(App.YOUR_ADDRESS , i);
+            userStaked = await reward.stakes(App.YOUR_ADDRESS , i) ?? 0;
             userRawStakeShare += userStaked.shares
             userStakeShare += userStaked.shares * userStaked.bonus
             userShare = userStakeShare / totalStakingShares / 1e18
             preVestingRewards += ((((updated_rewardRate - userStaked.rewardTally) * userStaked.shares) / 1e18) * userStaked.bonus) / 1e18;
         }
+        
         let locked = await reward.totalLocked();
-        let remaining_period = parseInt(funding.duration) - (parseInt(Math.floor(Date.now()/1000)) - parseInt(funding.start))
-        let remaining_rewards = parseInt(locked) * 1e6 - parseInt(unlocked_updated)
-        stakeToken.userDailyRewards = userShare * remaining_rewards / (remaining_period / 3600 / 24) / 1e24
+        let remaining_rewards = 0;
+        let remaining_period = funding.duration ? parseInt(funding.duration) - (parseInt(Math.floor(Date.now()/1000)) - parseInt(funding.start)) : 0;
+        if (remaining_period > 0) {
+          remaining_rewards = parseInt(locked) * 1e6 - parseInt(unlocked_updated);
+          stakeToken.userDailyRewards = userShare * remaining_rewards / (remaining_period / 3600 / 24) / 1e24
+        } else {
+          stakeToken.userDailyRewards = 0;
+        }
         stakeToken.userWeeklyRewards = stakeToken.userDailyRewards * 7
         stakeToken.userYearlyRewards = stakeToken.userDailyRewards * 365
-        stakeToken.dailyAPR = stakeToken.userDailyRewards * stakeToken.rewardTokenPrice / (userRawStakeShare / 1e24) * 100
+
+        if (userRawStakeShare > 0) {
+          stakeToken.dailyAPR = stakeToken.userDailyRewards * stakeToken.rewardTokenPrice / (userRawStakeShare / 1e24) * 100
+          stakeToken.lp_share = userRawStakeShare / totalRawStakingShares;
+        } else {
+          stakeToken.dailyAPR = remaining_period > 0 ? remaining_rewards / (remaining_period / 3600 / 24) * stakeToken.rewardTokenPrice / (totalRawStakingShares * stakeToken.stakeTokenPrice) * 100: 0;
+          stakeToken.lp_share = 0;
+        }
         stakeToken.weeklyAPR = stakeToken.dailyAPR * 7
         stakeToken.yearlyAPR = stakeToken.dailyAPR * 365
-        stakeToken.lp_share = userRawStakeShare / totalRawStakingShares
-        let coeff = await reward.timeVestingCoefficient(userStaked.timestamp);
+
+        let coeff = userStaked.timestamp ? await reward.timeVestingCoefficient(userStaked.timestamp) : 0;
         stakeToken.rewardAmount = preVestingRewards * coeff / 1e18 / 1e18 / 1e6;
 
 
