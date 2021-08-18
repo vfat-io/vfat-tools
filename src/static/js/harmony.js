@@ -74,6 +74,12 @@ const main = async() => {
         "BARD",
         "https://lootswap.finance/guilds/bard"
       ],
+      [
+        "Cosmic",
+        `<a href='cosmic'>Various</a>`,
+        "MAGIC",
+        "https://lootswap.finance/guilds/cosmic"
+      ],
     ]
   }
 
