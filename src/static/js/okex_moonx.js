@@ -11,7 +11,7 @@ async function main() {
     _print("Reading smart contracts...\n");
 
    const MOONX_CHEF_ADDR = "0x731A75B1321BAf241a13c0e2d39052BB6c98eaf9";
-   const rewardTokenTicker = "CHE";
+   const rewardTokenTicker = "MOONX";
    const MOONX_CHEF = new ethers.Contract(MOONX_CHEF_ADDR, MOONX_CHEF_ABI, App.provider);
 
    const startBlock = await MOONX_CHEF.startBlock();
