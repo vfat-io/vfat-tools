@@ -74,6 +74,12 @@ const main = async() => {
         "BARD",
         "https://lootswap.finance/guilds/bard"
       ],
+      [
+        "Sonicswap",
+        `<a href='sonicswap'>Various</a>`,
+        "SONIC",
+        "https://sonicswap.io/#/staking"
+      ],
     ]
   }
 
