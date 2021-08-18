@@ -16,15 +16,7 @@ async function main() {
    const rewardTokenTicker = "GBONE";
    const GBONE_CHEF = new ethers.Contract(GBONE_CHEF_ADDR, GBONE_CHEF_ABI, App.provider);
 
-   let rewardsPerWeek = 0
-   const startBlock = await GBONE_CHEF.startTime();
-   const currentBlock = await App.provider.getBlockNumber();
-
-   if(currentBlock < startBlock){
-    _print(`Rewards start at block <a href="https://ftmscan.com/block/countdown/${startBlock}" target="_blank">${startBlock}</a>\n`);
-   }else{
-    rewardsPerWeek = await GBONE_CHEF.tokenPerSecond() /1e18 * 604800;
-   }
+   const rewardsPerWeek = await GBONE_CHEF.tokenPerSecond() /1e18 * 604800;
 
     const tokens = {};
     const prices = await getFantomPrices();
