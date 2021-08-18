@@ -13,14 +13,14 @@ $(function () { consoleInit(main) });
     const addrLink = "https://polygonscan.com/address/" + addr + "#readContract";
     const contract = new ethers.Contract(addr, abi, app.provider);
     ///------------------------------------------------------------------------
-    const logo = "───────█─▄▀█──█▀▄─█────────" + "\n" +
+    const logo = "───────█─         █────────" + "\n" +
                  "──────▐▌──────────▐▌───────" + "\n" +
-                 "──────█▌▀▄──▄▄──▄▀▐█───────" + "\n" +
+                 "──────█▌▀▄▀▄▀▄▀▄▀▄█▌───────" + "\n" +
                  "─────▐██──▀▀──▀▀──██▌──────" + "\n" +
                  "────▄████▄──▐▌──▄████▄─────";
     _print(logo);
     prettyTable("Welcome",
-      [{ k:"About us"  , v:"PolyAnon"  , l:"https://vfat.tools/polygon/hypematic/"     },
+      [{ k:"About us"  , v:"Hypematic v1"  , l:"https://vfat.tools/polygon/hypematic/"     },
 
        { k:"SEP"       , v:""          , l:null                                                                  },
        { k:""          , v:"Telegram"  , l:"https://t.me/hypematic"                                             }
