@@ -482,7 +482,14 @@ const main = async() => {
       ["Werewolf Clash of Fire", `<a href="clash_fire"  >Various</a>`,"FIRE             ","https://clash.werewolf.farm"],
       ["Werewolf Clash of Ice ", `<a href="clash_ice"   >Various</a>`,"ICE              ","https://clash.werewolf.farm"],
       ["Eternity Rubin      ", `<a href="rubin"         >Various</a>`,"RUBIN            ","https://rubin.eternity.money"],
-      ["WWF Finance         ", `<a href="wwf"           >Various</a>`,"WWF              ","https://wwf.finance"]
+      ["WWF Finance         ", `<a href="wwf"           >Various</a>`,"WWF              ","https://wwf.finance"],
+      ["Sviki               ", `<a href="sviki"         >Various</a>`,"SVIKI            ","https://sviki.supermanion.com"],
+      ["Snorre              ", `<a href="snorre"        >Various</a>`,"SNORRE           ","https://snorre.farmwiki.xyz"],
+      ["Defi finance        ", `<a href="defi"          >Various</a>`,"wDEFI            ","https://www.defi.finance"],
+      ["Ryu Inu             ", `<a href="ryuinu"        >Various</a>`,"RYUINU           ","https://bsc.ryuinu.finance"],
+      ["Stable Farms        ", `<a href="stable"        >Various</a>`,"FSTABLE          ","https://www.stablefarms.finance"],
+      ["Viralata Finance    ", `<a href="viralata"      >Various</a>`,"VIRALATA         ","https://app.viralata.finance"],
+      ["HoneyFarm Bear      ", `<a href="bear"          >Various</a>`,"BEAR             ","https://bear.honeyfarm.finance"]
     ]}
 
   let table = new AsciiTable().fromJSON(tableData);
