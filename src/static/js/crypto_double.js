@@ -1211,7 +1211,7 @@ async function claim() {
     });
 }
 function getAddress() {
-  return "0x1Ee5BDD695bBAF8FCF3F85eDA4469aeE264BD186";
+  return "0xAD12E53809f5258913BC9Bb4E002fcAd27d01554";
 }
 function prettyMatic(raw) {
   return prettyDouble(raw) + " Matic";
