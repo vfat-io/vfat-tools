@@ -7,56 +7,55 @@ $(function () { consoleInit(main) });
 
       [{"inputs":[{"internalType":"address payable","name":"_dev","type":"address"},{"internalType":"address payable","name":"_pro","type":"address"},{"internalType":"uint256","name":"startDate","type":"uint256"}],"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"uint256","name":"totalAmount","type":"uint256"}],"name":"FeePayed","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"penaltyAmount","type":"uint256"}],"name":"ForceWithdrawn","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"uint8","name":"plan","type":"uint8"},{"indexed":false,"internalType":"uint256","name":"percent","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"profit","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"start","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"finish","type":"uint256"}],"name":"NewDeposit","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"user","type":"address"}],"name":"Newbie","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"referrer","type":"address"},{"indexed":true,"internalType":"address","name":"referral","type":"address"},{"indexed":true,"internalType":"uint256","name":"level","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"RefBonus","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"Withdrawn","type":"event"},{"inputs":[],"name":"INVEST_MIN_AMOUNT","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"PENALTY_STEP","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"PERCENTS_DIVIDER","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"PERCENT_STEP","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"","type":"uint256"}],"name":"REFERRAL_PERCENTS","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"TIME_STEP","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"dev","outputs":[{"internalType":"address payable","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"index","type":"uint256"}],"name":"forceWithdraw","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"getContractBalance","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint8","name":"plan","type":"uint8"}],"name":"getPercent","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint8","name":"plan","type":"uint8"}],"name":"getPlanInfo","outputs":[{"internalType":"uint256","name":"time","type":"uint256"},{"internalType":"uint256","name":"percent","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint8","name":"plan","type":"uint8"},{"internalType":"uint256","name":"deposit","type":"uint256"}],"name":"getResult","outputs":[{"internalType":"uint256","name":"percent","type":"uint256"},{"internalType":"uint256","name":"profit","type":"uint256"},{"internalType":"uint256","name":"finish","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"userAddress","type":"address"}],"name":"getUserAmountOfDeposits","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"userAddress","type":"address"}],"name":"getUserAvailable","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"userAddress","type":"address"}],"name":"getUserCheckpoint","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"userAddress","type":"address"},{"internalType":"uint256","name":"index","type":"uint256"}],"name":"getUserDepositInfo","outputs":[{"internalType":"uint8","name":"plan","type":"uint8"},{"internalType":"uint256","name":"percent","type":"uint256"},{"internalType":"uint256","name":"amount","type":"uint256"},{"internalType":"uint256","name":"profit","type":"uint256"},{"internalType":"uint256","name":"start","type":"uint256"},{"internalType":"uint256","name":"finish","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"userAddress","type":"address"}],"name":"getUserDividends","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"userAddress","type":"address"}],"name":"getUserReferralBonus","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"userAddress","type":"address"}],"name":"getUserReferralTotalBonus","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"userAddress","type":"address"}],"name":"getUserReferralWithdrawn","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"userAddress","type":"address"}],"name":"getUserReferrer","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"userAddress","type":"address"}],"name":"getUserTotalDeposits","outputs":[{"internalType":"uint256","name":"amount","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"referrer","type":"address"},{"internalType":"uint8","name":"plan","type":"uint8"}],"name":"invest","outputs":[],"stateMutability":"payable","type":"function"},{"inputs":[],"name":"pro","outputs":[{"internalType":"address payable","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"startUNIX","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"totalRefBonus","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"totalStaked","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"withdraw","outputs":[],"stateMutability":"nonpayable","type":"function"}];
 
-    ///------------------------------------------------------------------------
+   ///------------------------------------------------------------------------
     const app      = await init_ethers();
     const addr     = getAddress();
     const addrLink = "https://polygonscan.com/address/" + addr + "#readContract";
     const contract = new ethers.Contract(addr, abi, app.provider);
     ///------------------------------------------------------------------------
-    const logo = "───────█─         █────────" + "\n" +
-                 "──────▐▌──────────▐▌───────" + "\n" +
-                 "──────█▌▀▄▀▄▀▄▀▄▀▄█▌───────" + "\n" +
-                 "─────▐██──▀▀──▀▀──██▌──────" + "\n" +
-                 "────▄████▄──▐▌──▄████▄─────";
-    _print(logo);
-    prettyTable("Welcome",
-      [{ k:"About us"  , v:"Hypematic v1"  , l:"https://vfat.tools/polygon/hypematic/"     },
+    _print_bold("*** The below project is in no way affiliated with vfat.tools, just like all other projects listed here. ***")
+    _print("TELEGRAM: https://t.me/hypematicv1")
+    const plannames = ["PLAN 1", "PLAN 2", "PLAN 3", "PLAN 4", "PLAN 5", "PLAN 6", "PLAN 7", "PLAN 8"]
 
-       { k:"SEP"       , v:""          , l:null                                                                  },
-       { k:""          , v:"Telegram"  , l:"https://t.me/hypematic"                                             }
-      ]);
     ///------------------------------------------------------------------------
     const start         = new Date((await contract.startUNIX()).toNumber() * 1000);
     const staked        = fromEther(await contract.totalStaked());
     const dailyIncr     = (await contract.PERCENT_STEP()).toNumber() / 10;
     const minAmount     = fromEther(await contract.INVEST_MIN_AMOUNT());
     const earlyFee      = (await contract.PENALTY_STEP()).toNumber() / 10;
-    const devFee        = (await contract.DEV_FEE()).toNumber() / 10;
-    const contractFee   = (await contract.CONTRACT_FEE()).toNumber() / 10;
     const dailyIncrInfo = dailyIncr.toString() + "% per day";
     const earlyFeeInfo  = prettyInt(earlyFee)  + "% (plans 5-8 only)";
+    _print("<hr>")
+    const contr = "<h1 style='font-size:40px'>CONTRACT</h3>"
+    _print(contr)
     prettyTable("Contract",
-      [{ k:"Start datetime"        , v:prettyDatetime(start)       , l:null     },
+      [{ k:"Start date"        , v:prettyDatetime(start)       , l:null     },
        { k:"Address"               , v:addr                        , l:addrLink },
        { k:"SEP"                   , v:""                          , l:null     },
        { k:"Total staked"          , v:prettyMatic(staked)         , l:null     },
-       { k:"Min. investment"       , v:prettyMatic(minAmount)      , l:null     },
+       { k:"Min. stake"       , v:prettyMatic(minAmount)      , l:null     },
        { k:"Interest rate increase", v:dailyIncrInfo               , l:null     },
        { k:"SEP"                   , v:""                          , l:null     },
-       { k:"Development fee"       , v:devFee.toString()      + "%", l:null     },
-       { k:"Contract fee"          , v:contractFee.toString() + "%", l:null     },
+       { k:"Development fee"       , v:"6%", l:null     },
+       { k:"Contract fee"          , v:"6%", l:null     },
        { k:"Early exit fee"        , v:earlyFeeInfo                , l:null     }
       ]);
     ///------------------------------------------------------------------------
     const planInfos       = await getPlanInfos();
     const userInvestments = await getUserInvestments();
     const userOverview    = await getUserOverview();
+    _print("<hr>")
+    const user = "<h1 style='font-size:40px'>USER</h3>"
+    _print(user)
     prettyUserOverview(userInvestments, userOverview);
+    _print("<hr>")
+    const plans = "<h1 style='font-size:40px'>HIGH YIELD INVESTMENT PLANS</h3>"
+    _print(plans)
     prettyPlanInfos(userInvestments, planInfos);
     hideLoading();
     //---------------------------------------------------------------------------
     function init() {
-      document.title = "Hypematic 1";
+      document.title = "HYPEMATIC HYIP.";
     }
     async function getPlanInfos() {
       var planInfos = [];
@@ -113,8 +112,8 @@ $(function () { consoleInit(main) });
       avgDailyPct = totalStaked == 0 ? 0 : (avgDailyPct / totalStaked).toFixed(2);
       const refPending = userOverview.balancePending > 0 ? userOverview.refBonusOutstanding : 0;
       var rows =
-        [{ k:"Number of investments"      , v:prettyInt(numDeposits)                       , l:null },
-         { k:"Total invested"             , v:prettyMatic(totalStaked)                     , l:null },
+        [{ k:"Number staked"      , v:prettyInt(numDeposits)                       , l:null },
+         { k:"Total staked"             , v:prettyMatic(totalStaked)                     , l:null },
          { k:"Average daily interest rate", v:avgDailyPct.toString() + "%"                 , l:null },
          { k:"SEP"                        , v:""                                           , l:null },
          { k:"Rewards outstanding"        , v:prettyMatic(expOutstanding)                  , l:null },
@@ -153,14 +152,14 @@ $(function () { consoleInit(main) });
         const investLink = "javascript:invest(" + (i + 1).toString() + ")";
         const example =
           [{ k:"SEP"           , v:""                  , l:null       },
-           { k:""              , v:"Example investment", l:null       },
+           { k:""              , v:"Example stake", l:null       },
            { k:"SEP"           , v:""                  , l:null       },
-           { k:"Start datetime", v:prettyDatetime(now) , l:null       },
-           { k:"End datetime"  , v:prettyDatetime(thn) , l:null       },
+           { k:"Start date", v:prettyDatetime(now) , l:null       },
+           { k:"End date"  , v:prettyDatetime(thn) , l:null       },
            { k:"Invest"        , v:prettyMatic(1000)   , l:null       },
            { k:"Earn"          , v:prettyMatic(ret1k)  , l:null       },
            { k:"SEP"           , v:""                  , l:null       },
-           { k:""              , v:"Invest"            , l:investLink }
+           { k:""              , v:"Stake"            , l:investLink }
            ];
         var rows = [];
         if (userInvestments[i].length == 0) {
@@ -174,12 +173,12 @@ $(function () { consoleInit(main) });
             const progress = getProgress(investment.start, investment.end);
             investmentInfo =
               [{ k:"SEP"                , v:""                                  , l:null },
-               { k:""                   , v:"Investment " + (j + 1).toString()  , l:null },
+               { k:""                   , v:"Stake " + (j + 1).toString()  , l:null },
                { k:"SEP"                , v:""                                  , l:null },
-               { k:"Start datetime"     , v:prettyDatetime(investment.start)    , l:null },
-               { k:"End datetime"       , v:prettyDatetime(investment.end)      , l:null },
+               { k:"Start date"     , v:prettyDatetime(investment.start)    , l:null },
+               { k:"End date"       , v:prettyDatetime(investment.end)      , l:null },
                { k:"Progress"           , v:progress                            , l:null },
-               { k:"Invested"           , v:prettyMatic(investment.staked)      , l:null },
+               { k:"Staked"           , v:prettyMatic(investment.staked)      , l:null },
                { k:"Expected return"    , v:prettyMatic(investment.expReturn)   , l:null },
                { k:"Daily interest rate", v:investment.dailyPct.toString() + "%", l:null },
                { k:"SEP"                , v:""                                  , l:null }
@@ -193,11 +192,11 @@ $(function () { consoleInit(main) });
           }
           const reinvestInfo =
             [{ k:"SEP", v:""                             , l:null       },
-             { k:""   , v:"Invest x" + (j + 1).toString(), l:investLink }
+             { k:""   , v:"Stake x" + (j + 1).toString(), l:investLink }
             ];
           rows = overview.concat(investmentsInfo, reinvestInfo);
         }
-        prettyTable("Investmant plan " + (i + 1).toString(), rows);
+        prettyTable("Stake plan " + (i + 1).toString() + " = " + plannames[i], rows);
       }
     }
     function prettyTable(header, rows, tsl = "+", tsr = "+", bsl = "+",
@@ -271,7 +270,8 @@ $(function () { consoleInit(main) });
         s = botSplitSep;
       }
       str = str + "\n" + s;
-      _print(`${str}\n`);
+      const str2 = "<p style='font-size:16px;text-align:left'>" + str + "</p>"
+      _print(`${str2}\n`);
     }
 
 }
@@ -286,7 +286,7 @@ async function invest(plan) {
       ref = null;
   }
   try {
-    var amountStr = prompt("How much matic would you like to invest in Plan " + plan.toString() + "?", "");
+    var amountStr = prompt("How much matic would you like to stake in Plan " + plan.toString() + "?", "");
     if (amountStr == null) {
       return;
     }
@@ -298,7 +298,7 @@ async function invest(plan) {
     const details = "    Plan:       " + plan.toString()
                   + "\n    Amount: " + prettyMatic(amount)
                   + refStr;
-    if (confirm("Confirm your investment:\n" + details)) {
+    if (confirm("Confirm your stake:\n" + details)) {
       const zero = "0x0000000000000000000000000000000000000000";
       ref = ref == null ? zero : ref;
       const amountBN = toEther(amount);
