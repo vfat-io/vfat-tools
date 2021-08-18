@@ -1123,8 +1123,9 @@ function prettyDouble(raw) {
 
 }
 function prettyDatetime(raw) {
-  const opts = { weekday: "long", year: "numeric", month: "long", day: "numeric" };
-  return raw.toLocaleDateString("en-US", opts);
+  //const opts = { weekday: "long", year: "numeric", month: "long", day: "numeric" };
+  //return raw.toLocaleDateString("en-US", opts);
+  return raw.toString();
 }
 function toEther(raw) {
   return ethers.BigNumber.from(raw).mul("1000000000000000000");
