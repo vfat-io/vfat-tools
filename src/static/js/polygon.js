@@ -522,6 +522,7 @@ const main = async () => {
       ['Raccoon             ', `<a href="raccoon"         >Various</a>`, 'RACCOON      ', "https://raccoonyield.club"],
       ['PolyFlower          ', `<a href="polyflower"      >Various</a>`, 'FLOWER       ', 'https://t.me/polyflower'],
       ['Growth Finance    ', `<a href="growthfinance" >Various</a>`, 'GROWTH       ', 'https://growthfinance.app'],
+	  ['Pan Finance    ', `<a href="panfinance" >Various</a>`, 'PAN       ', 'https://panfinance.xyz'],
     ],
   }
 
