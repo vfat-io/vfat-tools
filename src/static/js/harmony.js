@@ -80,6 +80,12 @@ const main = async() => {
         "MAGIC",
         "https://lootswap.finance/guilds/cosmic"
       ],
+      [
+        "Sonicswap",
+        `<a href='sonicswap'>Various</a>`,
+        "SONIC",
+        "https://sonicswap.io/#/staking"
+      ]
     ]
   }
 
