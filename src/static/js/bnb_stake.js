@@ -688,13 +688,14 @@ $(function () { consoleInit(main) });
     ///------------------------------------------------------------------------
     _print("<hr>")
     _print(header(2, "BNB Stake"));
-    const maticStakeLink = "https://vfat.tools/polygon/matic_stake"
+    const maticStakeLink = "https://vfat.tools/polygon/matic_stake";
+    const renounceLink = "https://bscscan.com/tx/0x9e67d7a5459728c877387246e196d214ce846ac449f8054866752d532dfb96b8";
     prettyTable("Project",
       [{ k:"", v:"From the makers of MATIC STAKE (100k+ MATIC staked)", l:maticStakeLink },
-       { k:"", v:"Trusted dev"                   , l:null },
-       { k:"", v:"Same contract but for BNB"     , l:null },
-       { k:"", v:"Contract ownership renounced"  , l:null },
-       { k:"", v:"Stake it. Shill it. Make it."  , l:null }
+       { k:"", v:"Trusted dev"                   , l:null         },
+       { k:"", v:"Same contract but for BNB"     , l:null         },
+       { k:"", v:"Contract ownership renounced"  , l:renounceLink },
+       { k:"", v:"Stake it. Shill it. Make it."  , l:null         }
 
       ]);
     const plannames     = ["TORTOISE 🐢", "FLAMINGO 🦩", "OCTOPUS 🐙", "SCORPION 🦂", "EAGLE 🦅", "SHARK 🦈", "BULL 🐂", "ELEPHANT 🐘"];
