@@ -310,6 +310,7 @@ const main = async () => {
       ['Hype Matic v1'       , `<a href="hypematic"       >ROI</a>`,     'MATIC        ', 'https://vfat.tools/polygon/hypematic/'],
       ['Pan Finance         ', `<a href="panfinance"      >Various</a>`, 'PAN          ', 'https://panfinance.xyz'],
       ['CryptoDouble        ', `<a href="crypto_double"   >DOUBLE</a>` , 'MATIC        ', 'https://t.me/cryptodoublecrypto'],
+      ['Valorant Finance    ', `<a href="valorantfinance" >Various</a>`, 'RADIANITE    ', 'https://valorant.life']
     ],
   }
 
