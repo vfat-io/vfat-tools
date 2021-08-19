@@ -21,6 +21,12 @@ const main = async() => {
         "https://viper.exchange"
       ],
       [
+        "Viper (smartchef)",
+        `<a href='viper/smartchef'>Various</a>`,
+        "Various",
+        "https://viper.exchange"
+      ],
+      [
         "Open Swap",
         `<a href='oswap'>Various</a>`,
         "oSWAP",
@@ -42,7 +48,7 @@ const main = async() => {
         "Sushi",
         `<a href='sushi'>Various</a>`,
         "SUSHI",
-        "N/A"
+        "https://app.sushi.com"
       ],
       [
         "Piggybank",
@@ -52,9 +58,33 @@ const main = async() => {
       ],
       [
         "Troll",
-         `<a href='troll'>Various</a>`,
-          "TROLL",
-          "https://lootswap.finance/guilds/troll"
+        `<a href='troll'>Various</a>`,
+        "TROLL",
+        "https://lootswap.finance/guilds/troll"
+      ],
+      [
+        "Arbiter",
+        `<a href='arbiter'>Various</a>`,
+        "ARB",
+        "https://lootswap.finance/guilds/arb"
+      ],
+      [
+        "Bard",
+        `<a href='bard'>Various</a>`,
+        "BARD",
+        "https://lootswap.finance/guilds/bard"
+      ],
+      [
+        "Cosmic",
+        `<a href='cosmic'>Various</a>`,
+        "MAGIC",
+        "https://lootswap.finance/guilds/cosmic"
+      ],
+      [
+        "Sonicswap",
+        `<a href='sonicswap'>Various</a>`,
+        "SONIC",
+        "https://sonicswap.io/#/staking"
       ]
     ]
   }

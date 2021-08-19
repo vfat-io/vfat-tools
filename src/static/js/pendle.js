@@ -53,7 +53,7 @@ async function print_contained_price(farm, userPoolOwnership, ytPoolBalance, tok
   _print(`Your LP tokens comprise of ${yts.toFixed(4)} ${farm.yt} + ${tokens.toFixed(4)} ${farm.token}`)
 }
 
-async function loadLiquidityMiningInfo(App, farm, rewardTokenPrice, wrapper) {
+async function loadLiquidityMiningInfo(App, farm, rewardTokenPrice, rewardsProxy, wrapper) {
   const WRAPPER = new ethers.Contract(wrapper, PENDLE_POOLS_READ_WRAPPER_ABI, App.provider)
   const mainInfo = await WRAPPER.getLiquidityMiningInfo(farm.market, farm.staking)
   const epochInfo = await WRAPPER.getRewardsPerEpoch(farm.market, farm.staking, App.YOUR_ADDRESS);
@@ -79,6 +79,7 @@ async function loadLiquidityMiningInfo(App, farm, rewardTokenPrice, wrapper) {
   const rewardsPerEpoch =  epochInfo.rewardsPerEpoch
   const rewardsPerEpochUSD = (rewardsPerEpoch / 1e18) * rewardTokenPrice
   const rewardsAllocated = mainInfo.allocationSettings ? (mainInfo.allocationSettings * rewardsPerEpoch) / 1e9 : 0
+  const rewardsAllocatedUSD = (rewardsAllocated / 1e18) * rewardTokenPrice
   const rewardsPerEpochPerLP = rewardsAllocated / lpStaked
   const apr = (rewardsPerEpochPerLP * rewardTokenPrice / epochDuration * 31536000 / (lpPrice * 10**(18-mainInfo.tokenDecimals))) * 100
 
@@ -90,7 +91,7 @@ async function loadLiquidityMiningInfo(App, farm, rewardTokenPrice, wrapper) {
   let liquidityRewards = 0;
   let pendingRewards = 0;
   try {
-    liquidityRewards = await REWARDS_PROXY.callStatic.redeemLiquidityRewards(farm.staking, [expiry], App.YOUR_ADDRESS)
+    liquidityRewards = await WRAPPER.callStatic.claim(rewardsProxy, farm.staking, [expiry], App.YOUR_ADDRESS)
 
     for (let i = 0; i < liquidityRewards.pendingRewards.length; i++) {
       pendingRewards += parseInt(liquidityRewards.pendingRewards[i])
@@ -114,8 +115,8 @@ async function loadLiquidityMiningInfo(App, farm, rewardTokenPrice, wrapper) {
     tokenPrice,
     lpStaked,
     lpStakedPrice,
-    rewardsPerEpoch,
-    rewardsPerEpochUSD,
+    rewardsAllocated,
+    rewardsAllocatedUSD,
     apr,
     epochInfo,
     userStaked,
@@ -140,7 +141,7 @@ async function printLiquidityMiningInfo(App, info, rewardTokenTicker, rewardToke
   _print(`${info.farm.yt} Price: $${displayPrice(info.ytPrice)}`)
   _print(`${info.farm.token} Price: $${displayPrice(info.tokenPrice)}`)
   _print(`${rewardTokenTicker} Price: $${displayPrice(rewardTokenPrice)}`)
-  _print(`${rewardTokenTicker} Per Epoch: ${formatMoney(info.rewardsPerEpoch / 1e18)} ($${formatMoney(info.rewardsPerEpochUSD)})`)
+  _print(`${rewardTokenTicker} Per Epoch: ${formatMoney(info.rewardsAllocated / 1e18)} ($${formatMoney(info.rewardsAllocatedUSD)})`)
 
   const weeklyAPR = info.apr / 365 * 7
   const dailyAPR = weeklyAPR / 7
@@ -154,7 +155,7 @@ async function printLiquidityMiningInfo(App, info, rewardTokenTicker, rewardToke
 
   if (info.userStaked > 0) {
     print_contained_price(info.farm, info.userPoolOwnership, info.ytPoolBalance, info.tokenPoolBalance)
-    const userWeeklyRewards = (info.userPoolOwnership / 100) * (info.rewardsPerEpoch / 1e18 / info.epochDuration * 604800)
+    const userWeeklyRewards = (info.userPoolOwnership / 100) * (info.rewardsAllocated / 1e18 / info.epochDuration * 604800)
     const userDailyRewards = userWeeklyRewards / 7
     const userYearlyRewards = userWeeklyRewards * 52
     _print(
@@ -454,7 +455,7 @@ async function main() {
 
   let info
   for (i in FARMS) {
-    info = await loadLiquidityMiningInfo(App, FARMS[i], rewardTokenPrice, wrapper)
+    info = await loadLiquidityMiningInfo(App, FARMS[i], rewardTokenPrice, rewardsProxy, wrapper)
     printLiquidityMiningInfo(App, info, rewardTokenTicker, rewardTokenPrice, rewardsProxy, wrapper)
 
     _print("")

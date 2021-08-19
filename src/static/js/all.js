@@ -98,7 +98,7 @@ const main = async () => {
       ["Eurxb                        ", `<a href="../eurxb"              >Various</a>`, "XBE                ", "http://app.eurxb.finance"],
       ["Swarm Network                ", `<a href="../swarm"              >Various</a>`, "SWM                ", "https://stake.myswarm.app"],
       ["Liquity                      ", `<a href="../liquity"            >Various</a>`, "LQTY               ", "https://liquity.app"],
-      ["Bondappetit *                ", `<a href="../bondappetit"        >Various</a>`, "BAG                ", "https://bondappetit.io"],
+      ["Bondappetit                  ", `<a href="../bondappetit"        >Various</a>`, "BAG                ", "https://bondappetit.io"],
       ["Penguin                      ", `<a href="../penguin"            >Various</a>`, "FISH               ", "https://penguinswap.eth.link"],
       ["Mimo                         ", `<a href="../mimo"               >Various</a>`, "MIMO               ", "https://mimo.capital/mining"],
       ["Fei                          ", `<a href="../fei"                >Various</a>`, "FEI                ", "https://fei.money"],
@@ -127,7 +127,7 @@ const main = async () => {
       ["Lever                        ", `<a href="../lever"              >Various</a>`, "LEV                ", "https://lever.network"],
       ["Fuse                         ", `<a href="../fuse_eth"           >Various</a>`, "FUSE               ", "https://fuse.io"],
       ["Donkey                       ", `<a href="../donkey"             >Various</a>`, "DON                ", "https://don-key.finance"],
-      ["Wild Credit                  ", `<a href="../wild"               >Various</a>`, "WILD               ", "https://wild.credit"],
+      ["Wild Credit *                ", `<a href="../wild"               >Various</a>`, "WILD               ", "https://wild.credit"],
       ["Convergence                  ", `<a href="../convx"              >Various</a>`, "CONV               ", "https://convx.conv.finance"],
       ["Abracadabra                  ", `<a href="../abracadabra"        >Various</a>`, "SPELL              ", "https://abracadabra.money"],
       ["Universe                     ", `<a href="../universe"           >Various</a>`, "XYZ                ", "https://dao.universe.xyz/yield-farming"],
@@ -138,8 +138,12 @@ const main = async () => {
       ["BambooDeFi                   ", `<a href="../bamboodefi"         >Various</a>`, "BAMBOO             ", "https://www.bamboodefi.com"],
       ["Emi Swap`                    ", `<a href="../emiswap"            >Various</a>`, "ESW                ", "https://emiswap.com"],
       ["WePiggy                      ", `<a href="../wepiggy/"           >Various</a>`, "WPC                ", "https://www.wepiggy.com/markets"],
-      ["Saddle                       ",`<a href="../saddle/"             >Various</a>`, "Various            ","https://saddle.exchange"],
-      ["Composable                   ", `<a href="../composable/"        >Various</a>`, "Composable         ", "https://app.composable.finance"]
+      ["Saddle                       ", `<a href="../saddle/"            >Various</a>`, "Various            ", "https://saddle.exchange"],
+      ["Composable                   ", `<a href="../composable/"        >Various</a>`, "Composable         ", "https://app.composable.finance"],
+      ["MCN Ventures                 ", `<a href="../mcn/"               >Various</a>`, "MCN                ", "https://farm.mcn.ventures"],
+      ["Fox Shapeshift               ", `<a href="../fox/"               >Various</a>`, "FOX                ", "https://fox.shapeshift.com"],
+      ["Yield Enhancement Labs       ", `<a href="../yel/"               >Various</a>`, "YEL                ", "https://yel.finance"],
+      ["Emptyset Finance             ", `<a href="../emptyset/"          >Various</a>`, "ESS                ", "https://app.emptyset.finance/dollar"]
     ]
   }
 

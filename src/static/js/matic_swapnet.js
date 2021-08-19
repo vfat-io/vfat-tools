@@ -11,7 +11,7 @@ async function main() {
     _print(`Initialized ${App.YOUR_ADDRESS}\n`);
     _print("Reading smart contracts...\n");
 
-   const SWP_CHEF_ADDR = "0x14CD7A6c114c5233eB75f842030b4732b48667Dc";
+   const SWP_CHEF_ADDR = "0xE064A6cfAc95D0bE6f5908D438daBbE71DA7f2a9";
    const rewardTokenTicker = "SWP";
    const SWP_CHEF = new ethers.Contract(SWP_CHEF_ADDR, SWP_CHEF_ABI, App.provider);
    const rewardsPerWeek = await SWP_CHEF.sushiPerSecond() /1e18 * 604800;

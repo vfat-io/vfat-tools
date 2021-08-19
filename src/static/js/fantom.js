@@ -99,7 +99,7 @@ const main = async() => {
         "https://waka.finance"
       ],
       [
-        "Elk",
+        "Elk *",
         `<a href='elk'>Various</a>`,
         "ELK",
         "https://app.elk.finance"
@@ -142,7 +142,7 @@ const main = async() => {
       ],
       [
         "Guru",
-        `<a href='guru'>Various</a>`,
+        `<a href='guru'>ELITE-WFTM SLP</a>`,
         "ELITE",
         "https://ftm.guru"
       ],
@@ -242,6 +242,54 @@ const main = async() => {
         "TRITON",
         "https://fantom-triton.galaxyfinance.one/"
       ],
+      [
+        "ShibaSwap - GBONE",
+        `<a href='shibaswap'>Various</a>`,
+        "GBONE",
+        "https://shibafantom.finance"
+      ],
+      [
+        "ShibaSwap - BONE",
+        `<a href='shibaswap_bone'>Various</a>`,
+        "BONE",
+        "https://shibafantom.finance"
+      ],
+      [
+        "Guru - LF#1",
+        `<a href='guru_lite1'>NIPS-WFTM ZDEXLP</a>`,
+        "NIPS",
+        "https://ftm.guru/LF/1"
+      ],
+      [
+        "Yield Enhancement Labs",
+        `<a href='yel'>Various</a>`,
+        "YEL",
+        "https://yel.finance"
+      ],
+      [
+        "Guru - LF#2001",
+        `<a href='guru_lite2001'>Nova-WFTM spLP</a>`,
+        "BLK",
+        "https://ftm.guru/LF/2001"
+      ],
+      [
+        "Guru - LF#2002",
+        `<a href='guru_lite2002'>Nova-BLK spLP</a>`,
+        "Nova",
+        "https://ftm.guru/LF/2002"
+      ],
+      [
+        "Bomb",
+        `<a href='fbomb'>Various</a>`,
+        "SHRAP",
+        "https://app.fbomb.finance"
+      ],
+      [
+        "xDao",
+        `<a href='xdao'>Various</a>`,
+        "HTZ",
+        "https://thexdao.com"
+      ]
     ]
   }
 
