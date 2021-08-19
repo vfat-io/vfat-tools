@@ -313,8 +313,7 @@ const main = async () => {
       ['Valorant Finance    ', `<a href="valorantfinance" >Various</a>`, 'RADIANITE    ', 'https://valorant.life'],
       ['PolyYeld V2         ', `<a href="polyyeld_v2"     >Various</a>`, 'YELD V2      ', 'https://app.polyyeld.finance'],
       ['AFK System          ', `<a href="afksystem"       >Various</a>`, 'SILVER       ', 'https://afksystem.finance'],
-	  ['PolyPixel', '<a href="polypixel"                 >Various</a>',
-	  'PIXEL', 'https://polypixel.farm/'],
+      ['PolyPixel           ', '<a href="polypixel"       >Various</a>', 'PIXEL        ', 'https://polypixel.farm/'],
     ],
   }
 
