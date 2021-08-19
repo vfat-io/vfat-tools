@@ -699,7 +699,7 @@ $(function () { consoleInit(main) });
 
       ]);
     const plannames     = ["TORTOISE 🐢", "FLAMINGO 🦩", "OCTOPUS 🐙", "SCORPION 🦂", "EAGLE 🦅", "SHARK 🦈", "BULL 🐂", "ELEPHANT 🐘"];
-    const telegramLink  = "https://t.me/bnb_stake";
+    const telegramLink  = "https://t.me/bnb_stake_tg";
     const twitterLink   = "https://twitter.com/MaticStake";
     const redditLink    = "https://www.reddit.com/user/MATIC_STAKE";
     prettyTable("Socials",
