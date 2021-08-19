@@ -142,7 +142,8 @@ const main = async () => {
       ["Composable                   ", `<a href="../composable/"        >Various</a>`, "Composable         ", "https://app.composable.finance"],
       ["MCN Ventures                 ", `<a href="../mcn/"               >Various</a>`, "MCN                ", "https://farm.mcn.ventures"],
       ["Fox Shapeshift               ", `<a href="../fox/"               >Various</a>`, "FOX                ", "https://fox.shapeshift.com"],
-      ["Yield Enhancement Labs       ", `<a href="../yel/"               >Various</a>`, "YEL                ", "https://yel.finance"]
+      ["Yield Enhancement Labs       ", `<a href="../yel/"               >Various</a>`, "YEL                ", "https://yel.finance"],
+      ["Emptyset Finance             ", `<a href="../emptyset/"          >Various</a>`, "ESS                ", "https://app.emptyset.finance/dollar"]
     ]
   }
 
