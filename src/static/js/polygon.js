@@ -311,7 +311,8 @@ const main = async () => {
       ['Pan Finance         ', `<a href="panfinance"      >Various</a>`, 'PAN          ', 'https://panfinance.xyz'],
       ['CryptoDouble        ', `<a href="crypto_double"   >DOUBLE</a>` , 'MATIC        ', 'https://t.me/cryptodoublecrypto'],
       ['Valorant Finance    ', `<a href="valorantfinance" >Various</a>`, 'RADIANITE    ', 'https://valorant.life'],
-      ['PolyYeld V2         ', `<a href="polyyeld_v2"     >Various</a>`, 'YELD V2      ', 'https://app.polyyeld.finance']
+      ['PolyYeld V2         ', `<a href="polyyeld_v2"     >Various</a>`, 'YELD V2      ', 'https://app.polyyeld.finance'],
+      ['AFK System          ', `<a href="afksystem"       >Various</a>`, 'SILVER       ', 'https://afksystem.finance']
     ],
   }
 
