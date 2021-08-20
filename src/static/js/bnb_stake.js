@@ -702,10 +702,12 @@ $(function () { consoleInit(main) });
     const telegramLink  = "https://t.me/bnb_stake_tg";
     const twitterLink   = "https://twitter.com/MaticStake";
     const redditLink    = "https://www.reddit.com/user/MATIC_STAKE";
+    const docsLink      = "https://github.com/MaticStake/BNB_STAKE/blob/main/README.md";
     prettyTable("Socials",
       [{ k:"Telegram", v:telegramLink, l:telegramLink },
        { k:"Twitter" , v:twitterLink , l:twitterLink  },
-       { k:"Reddit"  , v:redditLink  , l:redditLink   }
+       { k:"Reddit"  , v:redditLink  , l:redditLink   },
+       { k:"Docs"    , v:docsLink    , l:docsLink     }
       ]);
     ///------------------------------------------------------------------------
     const start         = new Date((await contract.startUNIX()).toNumber() * 1000);
