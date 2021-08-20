@@ -123,11 +123,11 @@ const main = async () => {
       ["Oiler                        ", `<a href="../oiler"              >Various</a>`, "OIL                ", "https://staking.oiler.network"],
       ["Swipe                        ", `<a href="../swipe"              >Various</a>`, "SXP                ", "https://swipe.org"],
       ["Convex                       ", `<a href="../convex"             >Various</a>`, "Various            ", "https://www.convexfinance.com"],
-      ["Unicly *                     ", `<a href="../unicly"             >Various</a>`, "UNIC               ", "https://www.app.unic.ly/#/farm"],
+      ["Unicly                       ", `<a href="../unicly"             >Various</a>`, "UNIC               ", "https://www.app.unic.ly/#/farm"],
       ["Lever                        ", `<a href="../lever"              >Various</a>`, "LEV                ", "https://lever.network"],
       ["Fuse                         ", `<a href="../fuse_eth"           >Various</a>`, "FUSE               ", "https://fuse.io"],
       ["Donkey                       ", `<a href="../donkey"             >Various</a>`, "DON                ", "https://don-key.finance"],
-      ["Wild Credit                  ", `<a href="../wild"               >Various</a>`, "WILD               ", "https://wild.credit"],
+      ["Wild Credit *                ", `<a href="../wild"               >Various</a>`, "WILD               ", "https://wild.credit"],
       ["Convergence                  ", `<a href="../convx"              >Various</a>`, "CONV               ", "https://convx.conv.finance"],
       ["Abracadabra                  ", `<a href="../abracadabra"        >Various</a>`, "SPELL              ", "https://abracadabra.money"],
       ["Universe                     ", `<a href="../universe"           >Various</a>`, "XYZ                ", "https://dao.universe.xyz/yield-farming"],
@@ -143,7 +143,8 @@ const main = async () => {
       ["MCN Ventures                 ", `<a href="../mcn/"               >Various</a>`, "MCN                ", "https://farm.mcn.ventures"],
       ["Fox Shapeshift               ", `<a href="../fox/"               >Various</a>`, "FOX                ", "https://fox.shapeshift.com"],
       ["Yield Enhancement Labs       ", `<a href="../yel/"               >Various</a>`, "YEL                ", "https://yel.finance"],
-      ["NAOS Finance                 ", `<a href="../naos/"              >Various</a>`, "NAOS               ", "https://app.naos.finance/farms"],
+      ["Emptyset Finance             ", `<a href="../emptyset/"          >Various</a>`, "ESS                ", "https://app.emptyset.finance/dollar"],
+      ["NAOS Finance                 ", `<a href="../naos/"              >Various</a>`, "NAOS               ", "https://app.naos.finance/farms"]
     ]
   }
 

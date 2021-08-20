@@ -23,7 +23,7 @@ $(function () {
         const prices = await getMaticPrices();
     
         await loadMaticChefContract(App, tokens, prices, HERMES_CHEF, HERMES_CHEF_ADDR, HERMES_CHEF_ABI, rewardTokenTicker,
-            "iris", null, rewardsPerWeek, "pendingIris");
+            "iris", null, rewardsPerWeek, "pendingIris", [8]);
     
         hideLoading();
     }
