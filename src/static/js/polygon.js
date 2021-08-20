@@ -523,6 +523,7 @@ const main = async () => {
       ['PolyFlower          ', `<a href="polyflower"      >Various</a>`, 'FLOWER       ', 'https://t.me/polyflower'],
       ['Growth Finance    ', `<a href="growthfinance" >Various</a>`, 'GROWTH       ', 'https://growthfinance.app'],
 	  ['Pan Finance    ', `<a href="panfinance" >Various</a>`, 'PAN       ', 'https://panfinance.xyz'],
+	  ['Tom Finance    ', `<a href="tomfinance" >Various</a>`, 'TOM       ', 'https://tomfinance.vip'],
     ],
   }
 
