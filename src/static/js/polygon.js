@@ -303,7 +303,24 @@ const main = async () => {
       ['Tetu.io'             , `<a href="tetu"            >Various</a>`, 'TETU         ', 'https://app.tetu.io'],
       ['SunsetV2'            , `<a href="sunsetv2"        >Various</a>`, 'SUNSET       ', 'https://sunsetv2.finance'],
       ['Helium Finance'      , `<a href="heliumfinance"   >Various</a>`, 'HELIUM       ', 'https://heliumfinance.club'],
-      ['PolyYork V2'         , `<a href="polyyork2"       >Various</a>`, 'GoldYork     ', 'https://gold.polyyork.finance']
+      ['PolyYork V2'         , `<a href="polyyork2"       >Various</a>`, 'GoldYork     ', 'https://gold.polyyork.finance'],
+      ['WoodChain Polygon'   , `<a href="woodchain"       >Various</a>`, 'WOOD         ', 'https://polygon.woodchain.io'],
+      ['Ragnarok'            , `<a href="ragnarok"        >Various</a>`, 'RAGNAROK     ', 'https://ragnarok.digital'],
+      ['EbiSwap Finance'     , `<a href="ebiswap"         >Various</a>`, 'EBI          ', 'https://ebiswap.finance'],
+      ['Hype Matic v1'       , `<a href="hypematic"       >ROI</a>`,     'MATIC        ', 'https://vfat.tools/polygon/hypematic/'],
+      ['Pan Finance         ', `<a href="panfinance"      >Various</a>`, 'PAN          ', 'https://panfinance.xyz'],
+      ['CryptoDouble        ', `<a href="crypto_double"   >DOUBLE</a>` , 'MATIC        ', 'https://t.me/cryptodoublecrypto'],
+      ['Valorant Finance    ', `<a href="valorantfinance" >Various</a>`, 'RADIANITE    ', 'https://valorant.life'],
+      ['PolyYeld V2         ', `<a href="polyyeld_v2"     >Various</a>`, 'YELD V2      ', 'https://app.polyyeld.finance'],
+      ['AFK System          ', `<a href="afksystem"       >Various</a>`, 'SILVER       ', 'https://afksystem.finance'],
+      ['Barns               ', `<a href="barns"           >Various</a>`, 'FARM         ', 'https://barns.finance'],
+      ['Polycorn Finance    ', `<a href="polycorn"        >Various</a>`, 'YCORN        ', 'https://polycorn.finance'],
+      ['PolyPixel           ', '<a href="polypixel"       >Various</a>', 'PIXEL        ', 'https://polypixel.farm'],
+      ['BerryFactory-Tartlet', `<a href="tartlet"         >Various</a>`, 'TARTLET      ', 'https://berryfactory.world'],
+      ['SandmanFarm         ',`<a href="sandmanfarm"       >Various</a>`,'SANDMANFARM   ','https://sandman.farm',],
+      ['Sunrise'             , `<a href="sunrise"         >Various</a>`, 'SUNRISE      ', 'N/A']
+      ['Arable'              , `<a href="arable"          >Various</a>`, 'ARABELLA     ', 'https://arable.finance'],
+      ['Ton Finance         ', `<a href="tomfinance"      >Various</a>`, 'TOM          ', 'https://tomfinance.vip'],
     ],
   }
 
