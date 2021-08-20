@@ -689,7 +689,7 @@ $(function () { consoleInit(main) });
     _print("<hr>")
     _print(header(2, "BNB Stake"));
     const maticStakeLink = "https://vfat.tools/polygon/matic_stake";
-    const renounceLink = "https://bscscan.com/tx/0x9e67d7a5459728c877387246e196d214ce846ac449f8054866752d532dfb96b8";
+    const renounceLink = "https://bscscan.com/tx/0xbfa60784f4ff17227846d03548ffe95ec6922e344e91f208ec549c2050c3b3a9";
     prettyTable("Project",
       [{ k:"", v:"From the makers of MATIC STAKE (100k+ MATIC staked)", l:maticStakeLink },
        { k:"", v:"Trusted dev"                   , l:null         },
@@ -1135,7 +1135,7 @@ async function withdraw() {
     });
 }
 function getAddress() {
-  return "0x3DE0FcaC293C4b51D56a4930DD5a1982f9F59181";
+  return "0x475B262902d2f641514b2a9a5270834Be58b56fA";
 }
 function prettyBNB(raw) {
   return prettyDouble(raw) + " BNB";
