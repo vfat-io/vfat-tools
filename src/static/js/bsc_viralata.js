@@ -15,22 +15,32 @@ async function main() {
  const rewardTokenTicker = "AURO";
  const AURO_CHEF = new ethers.Contract(AURO_CHEF_ADDR, AURO_CHEF_ABI, App.provider);
 
- const REAUTokenInfo = await getTokenInfo('REAU')
- _print('-------------------------------------------------')
- _print(`REAU price $${formatMoney(REAUTokenInfo.price_usd)}`)
- _print('-------------------------------------------------')
- _print(' ')
-
- const getTokenInfo = async (symbol) => {
-  let raw = await fetch('https://api.viralata.finance/price?token=' + symbol)
-  return JSON.parse(await raw.text()).data[0].price_usd
+ const getTokenInfoREAU = async (symbol) => {
+  let raw = await fetch('https://api.viralata.finance/price?token=' + symbol).then(response => response.json()).then(json => price_reau = Number(json[0].price_usd))
 }
+
+const getTokenInfoAURO = async (symbol) => {
+  let raw = await fetch('https://api.viralata.finance/price?token=' + symbol).then(response => response.json()).then(json => price_auro = Number(json[0].price_usd).toFixed(2))
+}
+
+const REAUTokenInfo = await getTokenInfoREAU('REAU')
+_print('-------------------------------------------------')
+_print(`REAU price $${formatMoney(price_reau,11)}`)
+_print('-------------------------------------------------')
+
+const AUROTokenInfo = await getTokenInfoAURO('AURO')
+_print('-------------------------------------------------')
+_print(`AURO price $${formatMoney(price_auro)}`)
+_print('-------------------------------------------------')
+_print(' ')
 
  const rewardsPerWeek = await AURO_CHEF.auroPerBlock() /1e18
       * 604800 / 3;
 
   const tokens = {};
   const prices = await getBscPrices();
+  prices["0x4c79b8c9cb0bd62b047880603a9decf36de28344"] = {usd : price_reau};
+  prices["0x8d9A79314c4e09A7c53C124195cAeB8B89F4879D"] = {usd : price_auro};
 
    await loadBscChefContract(App, tokens, prices, AURO_CHEF, AURO_CHEF_ADDR, AURO_CHEF_ABI, rewardTokenTicker,
       "auro", null, rewardsPerWeek, "pendingAuro");
