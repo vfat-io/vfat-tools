@@ -31,7 +31,7 @@ async function main() {
   const prices = await getMaticPrices();
 
   await loadMaticChefContract(App, tokens, prices, SUNV2_CHEF, SUNV2_CHEF_ADDR, SUNV2_CHEF_ABI,
-    rewardTokenTicker, "SUNSETToken", null, rewardsPerWeek, "pendingSUNSET");
+    rewardTokenTicker, "SUNSETToken", null, rewardsPerWeek, "pendingSUNSET", [17]);
 
   hideLoading();
 }
