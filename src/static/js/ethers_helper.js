@@ -1547,6 +1547,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
   else if (pool.symbol.includes("KoffeeMug")) stakeTokenTicker += " KoffeeMug";
   else if (pool.symbol.includes("DMM-LP")) stakeTokenTicker += " Kyber LP";
   else if (pool.symbol.includes("CAT-LP")) stakeTokenTicker += " PolyCat LP";
+  else if (pool.symbol.includes("VLP")) stakeTokenTicker += " AURO LP";
   else stakeTokenTicker += " Uni LP";
   return {
       t0: t0,
@@ -1604,6 +1605,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
               pool.symbol.includes("KUS-LP") ?  `https://kuswap.info/pair/#/${pool.address}` :
               pool.symbol.includes("KoffeeMug") ?  `https://koffeeswap.exchange/#/pro` :
               pool.symbol.includes("APE-LP") ?  `https://info.apeswap.finance/pair/${pool.address}` :
+              pool.symbol.includes("VLP") ?  `https://info.viralata.finance/pair/${pool.address}` :
               pool.symbol.includes("ZDEXLP") ?  `https://charts.zoocoin.cash/?exchange=ZooDex&pair=${t0.symbol}-${t1.symbol}` :
               pool.symbol.includes("Field-LP") ?  `https://exchange.yieldfields.finance/#/swap` :
               pool.symbol.includes("UPT") ?  `https://www.app.unic.ly/#/discover` :
@@ -1639,6 +1641,11 @@ function getUniPrices(tokens, prices, pool, chain="eth")
             `https://app.apeswap.finance/add/${t0address}/${t1address}`,
             `https://app.apeswap.finance/remove/${t0address}/${t1address}`,
             `https://app.apeswap.finance/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+          ] :
+          pool.symbol.includes("VLP") ? [
+            `https://app.viralata.finance/add/${t0address}/${t1address}`,
+            `https://app.viralata.finance/remove/${t0address}/${t1address}`,
+            `https://app.viralata.finance/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
           ] :
           pool.symbol.includes("ZDEXLP") ? [
             `https://dex.zoocoin.cash/pool/add?inputCurrency=${t0address}&outputCurrency=${t1address}`,
