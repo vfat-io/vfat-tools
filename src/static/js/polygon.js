@@ -313,6 +313,9 @@ const main = async () => {
       ['Valorant Finance    ', `<a href="valorantfinance" >Various</a>`, 'RADIANITE    ', 'https://valorant.life'],
       ['PolyYeld V2         ', `<a href="polyyeld_v2"     >Various</a>`, 'YELD V2      ', 'https://app.polyyeld.finance'],
       ['AFK System          ', `<a href="afksystem"       >Various</a>`, 'SILVER       ', 'https://afksystem.finance'],
+      ['Barns               ', `<a href="barns"           >Various</a>`, 'FARM         ', 'https://barns.finance'],
+      ['Polycorn Finance    ', `<a href="polycorn"        >Various</a>`, 'YCORN        ', 'https://polycorn.finance'],
+      ['PolyPixel           ', '<a href="polypixel"       >Various</a>', 'PIXEL        ', 'https://polypixel.farm'],
       ['BerryFactory-Tartlet', `<a href="tartlet"         >Various</a>`, 'TARTLET      ', 'https://berryfactory.world']
     ],
   }
