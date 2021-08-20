@@ -318,7 +318,7 @@ const main = async () => {
       ['PolyPixel           ', '<a href="polypixel"       >Various</a>', 'PIXEL        ', 'https://polypixel.farm'],
       ['BerryFactory-Tartlet', `<a href="tartlet"         >Various</a>`, 'TARTLET      ', 'https://berryfactory.world'],
       ['Sunrise'             , `<a href="sunrise"         >Various</a>`, 'SUNRISE      ', 'N/A'],
-	    ['Poly20              ', `<a href="poly20"          >ROI</a>`,     'MATIC        ', 'https://poly20.finance/']
+      ['Poly20              ', `<a href="poly20"          >ROI</a>`,     'MATIC        ', 'https://poly20.finance/']
     ],
   }
 
