@@ -316,6 +316,7 @@ const main = async () => {
       ['Barns               ', `<a href="barns"           >Various</a>`, 'FARM         ', 'https://barns.finance'],
       ['Polycorn Finance    ', `<a href="polycorn"        >Various</a>`, 'YCORN        ', 'https://polycorn.finance'],
       ['PolyPixel           ', '<a href="polypixel"       >Various</a>', 'PIXEL        ', 'https://polypixel.farm'],
+      ['BerryFactory-Tartlet', `<a href="tartlet"         >Various</a>`, 'TARTLET      ', 'https://berryfactory.world']
     ],
   }
 
