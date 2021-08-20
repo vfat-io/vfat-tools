@@ -302,6 +302,7 @@ const main = async () => {
       ['The Stadium Arcadium', `<a href="stadiumarcadium" >Various</a>`, 'ARCADIUM + MYFRIENDS', 'https://stadiumarcadium.farm'],
       ['Tetu.io'             , `<a href="tetu"            >Various</a>`, 'TETU         ', 'https://app.tetu.io'],
       ['Helium Finance'      , `<a href="heliumfinance"   >Various</a>`, 'HELIUM       ', 'https://heliumfinance.club'],
+      ['Neon Finance'        , `<a href="neonfinance"     >Various</a>`, 'NEON         ', 'https://neonfinance.club'],
     ],
   }
 
