@@ -20,9 +20,15 @@ async function main() {
 
   const tokens = {};
   const prices = await getBscPrices();
-    
 
-  await loadBscChefContract(App, tokens, prices, AURO_CHEF, AURO_CHEF_ADDR, AURO_CHEF_ABI, rewardTokenTicker,
+
+//let raw = await fetch('https://api.viralata.finance/.netlify/functions/api/auroPrice')
+//let data = JSON.parse(await raw.text()).data
+//let price = data.price_usd
+
+//_print(`Price $${formatMoney(price,15)}\n`);
+
+ await loadBscChefContract(App, tokens, prices, AURO_CHEF, AURO_CHEF_ADDR, AURO_CHEF_ABI, rewardTokenTicker,
       "auro", null, rewardsPerWeek, "pendingAuro");
 
   hideLoading();
