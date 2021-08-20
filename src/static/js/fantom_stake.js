@@ -687,27 +687,25 @@ $(function () { consoleInit(main) });
     const contract = new ethers.Contract(addr, abi, app.provider);
     ///------------------------------------------------------------------------
     _print("<hr>")
-    _print(header(2, "BNB Stake"));
+    _print(header(2, "FTM Stake"));
     const maticStakeLink = "https://vfat.tools/polygon/matic_stake";
-    const renounceLink = "https://bscscan.com/tx/0xbfa60784f4ff17227846d03548ffe95ec6922e344e91f208ec549c2050c3b3a9";
+    const renounceLink = "https://ftmscan.com/tx/0x2fcce0a026d6a16953c67826be1a7c19fa9b9a1e6293798edfc46444b2a1d258";
     prettyTable("Project",
       [{ k:"", v:"From the makers of MATIC STAKE (100k+ MATIC staked)", l:maticStakeLink },
        { k:"", v:"Trusted dev"                   , l:null         },
-       { k:"", v:"Same contract but for BNB"     , l:null         },
+       { k:"", v:"Same contract but for FTM"     , l:null         },
        { k:"", v:"Contract ownership renounced"  , l:renounceLink },
        { k:"", v:"Stake it. Shill it. Make it."  , l:null         }
 
       ]);
     const plannames     = ["TORTOISE 🐢", "FLAMINGO 🦩", "OCTOPUS 🐙", "SCORPION 🦂", "EAGLE 🦅", "SHARK 🦈", "BULL 🐂", "ELEPHANT 🐘"];
-    const telegramLink  = "https://t.me/bnb_stake_tg";
-    const twitterLink   = "https://twitter.com/MaticStake";
-    const redditLink    = "https://www.reddit.com/user/MATIC_STAKE";
-    const docsLink      = "https://github.com/MaticStake/BNB_STAKE/blob/main/README.md";
+    const telegramLink  = "https://t.me/";
+    const twitterLink   = "https://twitter.com/";
+    const redditLink    = "https://www.reddit.com/";
     prettyTable("Socials",
       [{ k:"Telegram", v:telegramLink, l:telegramLink },
        { k:"Twitter" , v:twitterLink , l:twitterLink  },
-       { k:"Reddit"  , v:redditLink  , l:redditLink   },
-       { k:"Docs"    , v:docsLink    , l:docsLink     }
+       { k:"Reddit"  , v:redditLink  , l:redditLink   }
       ]);
     ///------------------------------------------------------------------------
     const start         = new Date((await contract.startUNIX()).toNumber() * 1000);
@@ -717,7 +715,7 @@ $(function () { consoleInit(main) });
     const earlyFee      = (await contract.PENALTY_STEP()).toNumber() / 10;
     const dailyIncrInfo = dailyIncr.toString() + "% per day";
     const earlyFeeInfo  = prettyInt(earlyFee)  + "% (plans 5-8 only)";
-    const refLink       = "https://vfat.tools/bsc/bnb_stake/?ref=" + app.YOUR_ADDRESS.toString();
+    const refLink       = "https://vfat.tools/fantom/fantom_stake/?ref=" + app.YOUR_ADDRESS.toString();
     _print("<hr>")
     _print(header(2,"Contract Info"));
     prettyTable("Contract",
@@ -745,7 +743,7 @@ $(function () { consoleInit(main) });
     _print("<hr>")
     _print(header(2,"Staking Plans"));
     prettyTable("Instructions",
-      [{ k:"", v:"Stake BNB in any of the plans"                                                     , l:null },
+      [{ k:"", v:"Stake FTM in any of the plans"                                                     , l:null },
        { k:"", v:"Share your referal link with everyone you know and earn 6% rewards on their stakes", l:null },
        { k:"", v:"Withdraw your rewards over time"                                                   , l:null },
        { k:"", v:"Profit"                                                                            , l:null }
@@ -754,7 +752,7 @@ $(function () { consoleInit(main) });
     hideLoading();
     //---------------------------------------------------------------------------
     function init() {
-      document.title = "BNB STAKE. STAKE IT. SHILL IT. MAKE IT.";
+      document.title = "FTM STAKE. STAKE IT. SHILL IT. MAKE IT.";
     }
     async function getPlanInfos() {
       var planInfos = [];
@@ -1137,10 +1135,10 @@ async function withdraw() {
     });
 }
 function getAddress() {
-  return "0x475B262902d2f641514b2a9a5270834Be58b56fA";
+  return "0xb28f8A9bB8cA9A22f59905AdF822946E0C41Bba1";
 }
 function prettyBNB(raw) {
-  return prettyDouble(raw) + " BNB";
+  return prettyDouble(raw) + " FTM";
 }
 function prettyInt(raw) {
   return Math.round(raw).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
