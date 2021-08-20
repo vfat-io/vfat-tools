@@ -16,6 +16,9 @@ const pageNetwork = function() {
   if (network.toLowerCase() === 'bsc') {
     return window.NETWORKS.BINANCE_SMART_CHAIN
   }
+  if (network.toLowerCase() === 'arbitrum') {
+    return window.NETWORKS.ARBITRUM
+  }
   if (network.toLowerCase() === 'heco') {
     return window.NETWORKS.HECO
   }
@@ -93,7 +96,6 @@ function clearLocalStorage() {
 }
 
 async function init_ethers() {
-
   const App = {}
 
   let isMetaMaskInstalled = true
