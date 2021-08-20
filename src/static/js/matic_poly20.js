@@ -841,7 +841,6 @@ $(function () { consoleInit(main) });
     const staked        = fromEther(await contract.totalStaked());
     const dailyIncr     = (await contract.PERCENT_STEP()).toNumber() / 10;
     const minAmount     = fromEther(await contract.INVEST_MIN_AMOUNT());
-    const earlyFee      = (await contract.PENALTY_STEP()).toNumber() / 10;
     const devFee        = (await contract.DEV_FEE()).toNumber() / 10;
     const dailyIncrInfo = dailyIncr.toString() + "% per day";
     prettyTable("Contract",
