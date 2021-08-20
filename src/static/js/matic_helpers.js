@@ -530,7 +530,8 @@ const maticTokens = [
   { "id": "titan", "symbol": "TITAN", "contract": "0xaaa5b9e6c589642f98a1cda99b9d024b8407285a" },
   { "id": "wrbt", "symbol": "wRBT", "contract": "0xa5d447757dac8c5faab1858b13da4af701adf4bb" },
   { "id": "wlev", "symbol": "WLEV", "contract": "0xeb7f7955730a7dba1427a6567950eb4a98dfcbdf" },
-  { "id": "dragons-quick", "symbol": "DQUICK", "contract": "0xf28164a485b0b2c90639e47b0f377b4a438a16b1" }
+  { "id": "dragons-quick", "symbol": "DQUICK", "contract": "0xf28164a485b0b2c90639e47b0f377b4a438a16b1" },
+  { "id": "polywolf", "symbol": "MOON", "contract": "0xc56d17dd519e5eb43a19c9759b5d5372115220bd" }
 ]
 
 async function getMaticPrices() {
