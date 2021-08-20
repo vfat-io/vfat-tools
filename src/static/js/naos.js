@@ -25,8 +25,11 @@ async function printNaosPoolInfo(App, tokens, prices, poolId) {
   const rewardToken = getParameterCaseInsensitive(tokens, rewardTokenAddress)
   const poolPrices = getPoolPrices(tokens, prices, stakeToken)
 
-  _print(`${poolId} - '${stakeToken.name}' Pool`)
   if (stakeToken.token0) {
+    const token0 = getParameterCaseInsensitive(tokens, stakeToken.token0)
+    const token1 = getParameterCaseInsensitive(tokens, stakeToken.token1)
+    _print(`${poolId} - ${token0.symbol}-${token1.symbol} UNI_V2 LP Pool`)
+
     _print(
       `<a href="https://etherscan.io/token/${stakeTokenAddress}" target="_blank">${
         stakeToken.symbol
@@ -39,12 +42,14 @@ async function printNaosPoolInfo(App, tokens, prices, poolId) {
       }&outputCurrency=${stakeToken.token1}" target="_blank">[<=>]</a>`
     )
   } else if (stakeToken.token) {
+    _print(`${poolId} - ${stakeToken.name} Pool`)
     _print(
       `<a href="https://etherscan.io/token/${stakeTokenAddress}" target="_blank">${
         stakeToken.symbol
       }</a> Price: $${displayPrice(poolPrices.price)} <a href="https://crv.to/pool" target="_blank">[+]</a>`
     )
   } else {
+    _print(`${poolId} - ${stakeToken.name} Pool`)
     _print(
       `<a href="https://etherscan.io/token/${stakeTokenAddress}" target="_blank">${
         stakeToken.symbol
