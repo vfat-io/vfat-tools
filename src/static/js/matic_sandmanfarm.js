@@ -681,7 +681,7 @@ async function main() {
       `Rewards start at block <a href="https://polygonscan.com/block/countdown/${startBlock}" target="_blank">${startBlock}</a>\n`
     )
   } else {
-    rewardsPerWeek = (((await SANDMAN_CHEF.sandmanPerBlock()) / 1e18) * 604800 * multiplier) / 3
+    rewardsPerWeek = (((await SANDMAN_CHEF.sandManPerBlock()) / 1e18) * 604800 * multiplier) / 3
   }
 
   const tokens = {}
