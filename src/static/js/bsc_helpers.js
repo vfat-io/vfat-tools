@@ -659,7 +659,6 @@ const bscTokens = [
   { "id": "binance-peg-litecoin","symbol": "LTC","contract": "0x4338665cbb7b2485a8855a139b75d5e34ab0db94" },
   { "id": "tron-bsc","symbol": "TRX","contract": "0x85EAC5Ac2F758618dFa09bDbe0cf174e7d574D5B" },
   { "id": "binance-peg-xrp","symbol": "XRP","contract": "0x1d2f0da169ceb9fc7b3144628db156f3f6c60dbe" },
-  { "id": "galaxy-triton", "symbol": "TRITON", "contract": "0x9cf4009e62429Db3F57Aa9e7e8E898427cF6865f" }
   { "id": "galaxy-triton", "symbol": "TRITON", "contract": "0x9cf4009e62429Db3F57Aa9e7e8E898427cF6865f" },
   { "id": "vira-lata-finance", "symbol": "REAU", "contract": "0x4c79b8c9cB0BD62B047880603a9DEcf36dE28344" },
   { "id": "biswap", "symbol": "BSW", "contract": "0x965f527d9159dce6288a2219db51fc6eef120dd1"},
