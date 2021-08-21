@@ -44,6 +44,8 @@ async function main() {
     const tokens = {};
     const prices = await getMaticPrices();
 
+    prices["0xb4d09ff3dA7f9e9A2BA029cb0A81A989fd7B8f17"] = { usd : 1 }
+
     await loadMaticChefContract(App, tokens, prices, SILVER_CHEF, SILVER_CHEF_ADDR, SILVER_CHEF_ABI, rewardTokenTicker,
         "SILVER", null, rewardsPerWeek, "pendingSilver");
     await loadMaticAfkVaultContract(App, tokens, prices, SILVER_VAULT, SILVER_VAULT_ADDR, SILVER_VAULT_ABI, rewardTokenTicker,
@@ -95,7 +97,7 @@ async function loadMaticAfkVaultContract(App, tokens, prices, chef, chefAddress,
       if (poolPrices[i]) {
         const apr = printChefPool(App, chefAbi, chefAddress, prices, tokens, poolInfos[i], i, poolPrices[i],
           totalAllocPoints, rewardsPerWeek, rewardTokenTicker, rewardTokenAddress,
-          pendingRewardsFunction, null, null, "matic")
+          pendingRewardsFunction, null, null, "matic", poolInfos[i].depositFee, poolInfos[i].withdrawFee)
         aprs.push(apr);
       }
     }
@@ -138,7 +140,7 @@ async function loadMaticAfkVaultContract(App, tokens, prices, chef, chefAddress,
     }
     const poolToken = await getMaticToken(App, poolInfo.want, poolInfo.strat);
     const strat = new ethers.Contract(poolInfo.strat, STRAT_ABI, App.provider);
-    poolToken.staked = await strat.wantLockedTotal() / 1e18;
+    poolToken.staked = await strat.wantLockedTotal() / 10 ** poolToken.decimals;
     const totalShares = await strat.sharesTotal();
     const userInfo = await chefContract.userInfo(poolIndex, App.YOUR_ADDRESS);
     const pendingRewardTokens = await chefContract.callStatic[pendingRewardsFunction](poolIndex, App.YOUR_ADDRESS);
@@ -151,6 +153,8 @@ async function loadMaticAfkVaultContract(App, tokens, prices, chef, chefAddress,
         pendingRewardTokens : pendingRewardTokens / 10 ** 18,
         stakedToken : null,
         userLPStaked : null,
-        lastRewardBlock : poolInfo.lastRewardBlock
+        lastRewardBlock : poolInfo.lastRewardBlock,
+        depositFee : (poolInfo.depositFee ?? 0) / 100,
+        withdrawFee : (poolInfo.withdrawFeeBP ?? 0) / 100
     };
   }

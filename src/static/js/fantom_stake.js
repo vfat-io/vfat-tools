@@ -683,7 +683,7 @@ $(function () { consoleInit(main) });
     ///------------------------------------------------------------------------
     const app      = await init_ethers();
     const addr     = getAddress();
-    const addrLink = "https://bscscan.com/address/" + addr + "#readContract";
+    const addrLink = "https://ftmscan.com/address/" + addr + "#readContract";
     const contract = new ethers.Contract(addr, abi, app.provider);
     ///------------------------------------------------------------------------
     _print("<hr>")
@@ -819,7 +819,7 @@ $(function () { consoleInit(main) });
          { k:"Referral bonus pending"     , v:prettyBNB(refPending)                        , l:null }
         ];
       if (userOverview.ref != null) {
-        const refLink = "https://bscscan.com/address/" + userOverview.ref.toString();
+        const refLink = "https://ftmscan.com/address/" + userOverview.ref.toString();
         rows = [{ k:"Referrer", v:userOverview.ref.toString(), l:refLink }].concat(rows);
       }
       if (userOverview.balancePending > 0) {
@@ -828,7 +828,7 @@ $(function () { consoleInit(main) });
                             { k:""   , v:"Withdraw pending rewards", l:withdrawLink }
                            ]);
       }
-      const addrLink = "https://bscscan.com/address/" + app.YOUR_ADDRESS;
+      const addrLink = "https://ftmscan.com/address/" + app.YOUR_ADDRESS;
       rows = [{ k:"Address", v:app.YOUR_ADDRESS.toString(), l:addrLink }].concat(rows);
       prettyTable("Your account", rows);
     }
