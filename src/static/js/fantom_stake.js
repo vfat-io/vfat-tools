@@ -828,7 +828,7 @@ $(function () { consoleInit(main) });
                             { k:""   , v:"Withdraw pending rewards", l:withdrawLink }
                            ]);
       }
-      const addrLink = "https://bscscan.com/address/" + app.YOUR_ADDRESS;
+      const addrLink = "https://ftmscan.com/address/" + app.YOUR_ADDRESS;
       rows = [{ k:"Address", v:app.YOUR_ADDRESS.toString(), l:addrLink }].concat(rows);
       prettyTable("Your account", rows);
     }
