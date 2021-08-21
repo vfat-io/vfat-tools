@@ -817,7 +817,7 @@ $(function () { consoleInit(main) });
          { k:"Referral bonus pending"     , v:prettyAVAX(refPending)                        , l:null }
         ];
       if (userOverview.ref != null) {
-        const refLink = "https://bscscan.com/address/" + userOverview.ref.toString();
+        const refLink = "https://cchain.explorer.avax.network/address/" + userOverview.ref.toString();
         rows = [{ k:"Referrer", v:userOverview.ref.toString(), l:refLink }].concat(rows);
       }
       if (userOverview.balancePending > 0) {
