@@ -839,16 +839,16 @@ $(function () { consoleInit(main) });
     ///------------------------------------------------------------------------
     const start         = new Date((await contract.startUNIX()).toNumber() * 1000);
     const staked        = fromEther(await contract.totalStaked());
-    const dailyIncr     = (await contract.PERCENT_STEP()).toNumber() / 10;
     const minAmount     = fromEther(await contract.INVEST_MIN_AMOUNT());
     const devFee        = (await contract.DEV_FEE()).toNumber() / 10;
-    const dailyIncrInfo = dailyIncr.toString() + "% per day";
+    const dailyIncrInfo = "20% per day";
     prettyTable("Contract",
       [{ k:"Start date"            , v:prettyDatetime(start)       , l:null     },
        { k:"Address"               , v:addr                        , l:addrLink },
        { k:"SEP"                   , v:""                          , l:null     },
        { k:"Total staked"          , v:prettyMatic(staked)         , l:null     },
-       { k:"Min. investment"       , v:prettyMatic(minAmount)      , l:null     }
+       { k:"Min. investment"       , v:prettyMatic(minAmount)      , l:null     },
+       { k:"Daily profit"		   , v:dailyIncrInfo               , l:null     }
       ]);
     ///------------------------------------------------------------------------
     
