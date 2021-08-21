@@ -8,7 +8,7 @@ const main = async() => {
     "title":"Arbitrum Network",
     "heading":["Pool Provider","LP", "Reward Tokens", "INFO"],
     "rows": [
-      ["GMX                 ", `<a href="/arbitrum/gmx"      >Various</a>`,"ETH,GMX          ","https://gmx.finance"],
+      ["GMX                 ", `<a href="/arbitrum/gmx"      >Various</a>`,"ETH,GMX          ","https://gmx.financial"],
      ]
   }
 
