@@ -201,8 +201,8 @@ function printCustomChefPool(
     rewardPrice,
     poolRewardsPerWeek,
     poolPrices.stakeTokenTicker,
-    staked_tvl,
-    userStaked,
+    Number(staked_tvl),
+    Number(userStaked),
     token_price,
     fixedDecimals
   )
@@ -248,7 +248,7 @@ function printCustomAPR(
   var dailyAPR = weeklyAPR / 7
   var yearlyAPR = weeklyAPR * 52
   _print(`APR: Day ${dailyAPR.toFixed(2)}% Week ${weeklyAPR.toFixed(2)}% Year ${yearlyAPR.toFixed(2)}%`)
-  var userStakedUsd = userStaked * poolTokenPrice
+  var userStakedUsd = Number(userStaked * poolTokenPrice)
   var userStakedPct = staked_tvl >= 1 ? (userStakedUsd / staked_tvl) * 100 : (userStakedUsd / 1) * 100
   _print(
     `You are staking ${userStaked.toFixed(fixedDecimals)} ${stakeTokenTicker} ($${formatMoney(
