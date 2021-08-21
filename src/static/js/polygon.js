@@ -323,6 +323,7 @@ const main = async () => {
       ['Ton Finance         ', `<a href="tomfinance"      >Various</a>`, 'TOM          ', 'https://tomfinance.vip'],
       ['Poly20              ', `<a href="poly20"          >ROI</a>`,     'MATIC        ', 'https://poly20.finance'],
       ['Neon Finance        ', `<a href="neonfinance"     >Various</a>`, 'NEON         ', 'https://neonfinance.club'],
+      ['Quokka              ', `<a href="quokka"         >Various</a>`, 'QUOKK         ', 'https://polyquokka.finance/'],
       ['Kavian Finance      ', `<a href="kavianfinance"   >Various</a>`, 'KAVIAN       ', 'https:// kavian.finance']
     ],
   }
