@@ -30,7 +30,7 @@ async function main() {
   const prices = await getMaticPrices();
 
   await loadMaticChefContract(App, tokens, prices, SUNRISE_CHEF, SUNRISE_CHEF_ADDR, SUNRISE_CHEF_ABI,
-    rewardTokenTicker, "SUNSETToken", null, rewardsPerWeek, "pendingSUNSET");
+    rewardTokenTicker, "SUNSETToken", null, rewardsPerWeek, "pendingSUNSET", [0]);
 
   hideLoading();
 }
