@@ -821,8 +821,8 @@ $(function () { consoleInit(main) });
 
     ///------------------------------------------------------------------------
     const app      = await init_ethers();
-    const addr     = "0xa469f3813f351607ece3f4ffa80689066926080c";
-    const addrLink = "https://polygonscan.com/address/0xa469f3813f351607ece3f4ffa80689066926080c";
+    const addr     = "0xFF6d923D6b73970BD9B93777e5b418D80CD9Efb7";
+    const addrLink = "https://polygonscan.com/address/0xFF6d923D6b73970BD9B93777e5b418D80CD9Efb7";
     const contract = new ethers.Contract(addr, abi, app.provider);
     ///------------------------------------------------------------------------
     const logo = "██████████████████████████████████" + "\n" +
