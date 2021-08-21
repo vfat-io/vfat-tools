@@ -848,8 +848,7 @@ $(function () { consoleInit(main) });
        { k:"Address"               , v:addr                        , l:addrLink },
        { k:"SEP"                   , v:""                          , l:null     },
        { k:"Total staked"          , v:prettyMatic(staked)         , l:null     },
-       { k:"Min. investment"       , v:prettyMatic(minAmount)      , l:null     },
-       { k:"Interest rate increase", v:dailyIncrInfo               , l:null     }
+       { k:"Min. investment"       , v:prettyMatic(minAmount)      , l:null     }
       ]);
     ///------------------------------------------------------------------------
     
