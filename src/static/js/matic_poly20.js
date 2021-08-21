@@ -821,35 +821,34 @@ $(function () { consoleInit(main) });
 
     ///------------------------------------------------------------------------
     const app      = await init_ethers();
-    const addr     = "0xa469f3813f351607ece3f4ffa80689066926080c";
-    const addrLink = "https://polygonscan.com/address/0xa469f3813f351607ece3f4ffa80689066926080c";
+    const addr     = "0xFF6d923D6b73970BD9B93777e5b418D80CD9Efb7";
+    const addrLink = "https://polygonscan.com/address/0xFF6d923D6b73970BD9B93777e5b418D80CD9Efb7";
     const contract = new ethers.Contract(addr, abi, app.provider);
     ///------------------------------------------------------------------------
     const logo = "██████████████████████████████████" + "\n" +
                  "█▄─▄▄─█─▄▄─█▄─▄███▄─█─▄█▀▄▄▀█─▄▄─█" + "\n" +
                  "██─▄▄▄█─██─██─██▀██▄─▄███▀▄██─██─█" + "\n" +
-                 "▀▄▄▄▀▀▀▄▄▄▄▀▄▄▄▄▄▀▀▄▄▄▀▀▄▄▄▄▀▄▄▄▄▀";
+                 "▀▄▄▄▀▀▀▄▄▄▄▀▄▄▄▄▄▀▀▄▄▄▀▀▄▄▄▄▀▄▄▄▄▀" + "\n";
 
     _print(logo);
     prettyTable("Welcome",
       [{ k:"SEP"       , v:""          , l: null                                                                  },
       { k:""          , v:"Website"    , l:"https://poly20.finance/"                                              },
-      { k:""          , v:"Telegram"   , l:"https://t.me/poly20finance"                                           }
+      { k:""          , v:"Telegram"   , l:"https://t.me/poly20"                                                  }
       ]);
     ///------------------------------------------------------------------------
     const start         = new Date((await contract.startUNIX()).toNumber() * 1000);
     const staked        = fromEther(await contract.totalStaked());
-    const dailyIncr     = (await contract.PERCENT_STEP()).toNumber() / 10;
     const minAmount     = fromEther(await contract.INVEST_MIN_AMOUNT());
     const devFee        = (await contract.DEV_FEE()).toNumber() / 10;
-    const dailyIncrInfo = dailyIncr.toString() + "% per day";
+    const dailyIncrInfo = "20% per day";
     prettyTable("Contract",
-      [{ k:"Start datetime"        , v:prettyDatetime(start)       , l:null     },
+      [{ k:"Start date"            , v:prettyDatetime(start)       , l:null     },
        { k:"Address"               , v:addr                        , l:addrLink },
        { k:"SEP"                   , v:""                          , l:null     },
        { k:"Total staked"          , v:prettyMatic(staked)         , l:null     },
        { k:"Min. investment"       , v:prettyMatic(minAmount)      , l:null     },
-       { k:"Interest rate increase", v:dailyIncrInfo               , l:null     }
+       { k:"Daily profit"		   , v:dailyIncrInfo               , l:null     }
       ]);
     ///------------------------------------------------------------------------
     
