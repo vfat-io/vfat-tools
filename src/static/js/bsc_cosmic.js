@@ -22,7 +22,7 @@ async function main() {
    if(currentBlock < startBlock){
     _print(`Rewards start at block ${startBlock}\n`)
    }else{
-    rewardsPerWeek = await COSMIC_CHEF.cakePerBlock() /1e18
+    rewardsPerWeek = await COSMIC_CHEF.cosmicPerBlock() /1e18
         * 604800 / 3;
    }
 
