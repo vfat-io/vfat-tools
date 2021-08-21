@@ -828,13 +828,13 @@ $(function () { consoleInit(main) });
     const logo = "██████████████████████████████████" + "\n" +
                  "█▄─▄▄─█─▄▄─█▄─▄███▄─█─▄█▀▄▄▀█─▄▄─█" + "\n" +
                  "██─▄▄▄█─██─██─██▀██▄─▄███▀▄██─██─█" + "\n" +
-                 "▀▄▄▄▀▀▀▄▄▄▄▀▄▄▄▄▄▀▀▄▄▄▀▀▄▄▄▄▀▄▄▄▄▀";
+                 "▀▄▄▄▀▀▀▄▄▄▄▀▄▄▄▄▄▀▀▄▄▄▀▀▄▄▄▄▀▄▄▄▄▀" + "\n";
 
     _print(logo);
     prettyTable("Welcome",
       [{ k:"SEP"       , v:""          , l: null                                                                  },
       { k:""          , v:"Website"    , l:"https://poly20.finance/"                                              },
-      { k:""          , v:"Telegram"   , l:"https://t.me/poly20finance"                                           }
+      { k:""          , v:"Telegram"   , l:"https://t.me/poly20"                                                  }
       ]);
     ///------------------------------------------------------------------------
     const start         = new Date((await contract.startUNIX()).toNumber() * 1000);
@@ -844,7 +844,7 @@ $(function () { consoleInit(main) });
     const devFee        = (await contract.DEV_FEE()).toNumber() / 10;
     const dailyIncrInfo = dailyIncr.toString() + "% per day";
     prettyTable("Contract",
-      [{ k:"Start datetime"        , v:prettyDatetime(start)       , l:null     },
+      [{ k:"Start date"            , v:prettyDatetime(start)       , l:null     },
        { k:"Address"               , v:addr                        , l:addrLink },
        { k:"SEP"                   , v:""                          , l:null     },
        { k:"Total staked"          , v:prettyMatic(staked)         , l:null     },
