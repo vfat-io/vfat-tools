@@ -317,11 +317,12 @@ const main = async () => {
       ['Polycorn Finance    ', `<a href="polycorn"        >Various</a>`, 'YCORN        ', 'https://polycorn.finance'],
       ['PolyPixel           ', '<a href="polypixel"       >Various</a>', 'PIXEL        ', 'https://polypixel.farm'],
       ['BerryFactory-Tartlet', `<a href="tartlet"         >Various</a>`, 'TARTLET      ', 'https://berryfactory.world'],
-      ['SandmanFarm         ',`<a href="sandmanfarm"       >Various</a>`,'SANDMANFARM   ','https://sandman.farm'],
-      ['Sunrise'             , `<a href="sunrise"         >Various</a>`, 'SUNRISE      ', 'N/A'],
-      ['Arable'              , `<a href="arable"          >Various</a>`, 'ARABELLA     ', 'https://arable.finance'],
+      ['SandmanFarm         ', `<a href="sandmanfarm"     >Various</a>`, 'SANDMANFARM  ','https://sandman.farm'],
+      ['Sunrise             ', `<a href="sunrise"         >Various</a>`, 'SUNRISE      ', 'N/A'],
+      ['Arable              ', `<a href="arable"          >Various</a>`, 'ARABELLA     ', 'https://arable.finance'],
       ['Ton Finance         ', `<a href="tomfinance"      >Various</a>`, 'TOM          ', 'https://tomfinance.vip'],
-      ['Poly20              ', `<a href="poly20"          >ROI</a>`,     'MATIC        ', 'https://poly20.finance']
+      ['Poly20              ', `<a href="poly20"          >ROI</a>`,     'MATIC        ', 'https://poly20.finance'],
+      ['Neon Finance        ', `<a href="neonfinance"     >Various</a>`, 'NEON         ', 'https://neonfinance.club']
     ],
   }
 
