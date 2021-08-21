@@ -88,7 +88,10 @@ async function main() {
 
       await outputFarm(App, tokens, prices, signer, nutsPrice, "0x965f527d9159dce6288a2219db51fc6eef120dd1", "0xa354d5e64f579f18b041f9566dd9b47e009293d5", "0x965f527d9159dce6288a2219db51fc6eef120dd1", 1500, 200, "BSW", false);
       await outputFarm(App, tokens, prices, signer, nutsPrice, "0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82", "0xd4748e168De4E0CA610c2C2054242e8565F832D3", "0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82", 1500, 80, "BTT", false);
-      await outputFarm(App, tokens, prices, signer, nutsPrice, "0xC9849E6fdB743d08fAeE3E34dd2D1bc69EA11a51", "0x868429ffa5eddeaea8e2b8eaea4fca9c33516568", "0xC9849E6fdB743d08fAeE3E34dd2D1bc69EA11a51", 2500, 140, "WBNB", false);
+      await outputFarm(App, tokens, prices, signer, nutsPrice, "0xC9849E6fdB743d08fAeE3E34dd2D1bc69EA11a51", "0x868429ffa5eddeaea8e2b8eaea4fca9c33516568", "0xC9849E6fdB743d08fAeE3E34dd2D1bc69EA11a51", 1000, 140, "WBNB", false);
+
+      await outputVault(App, tokens, prices, signer, nutsPrice, "0x1446f3cedf4d86a9399e49f7937766e6de2a3aab", "0xfa1eec6b16248a4ea7ec1ced30b12c0f89c58199", "0x1446f3cedf4d86a9399e49f7937766e6de2a3aab", 1500, 300, "KROWN", true);
+      await outputFarm(App, tokens, prices, signer, nutsPrice, "0x565b72163f17849832A692A3c5928cc502f46D69", "0x1527fa6f217687c2590f2c11c882ef992422f9b5", "0x565b72163f17849832A692A3c5928cc502f46D69", 1500, 120, "WBNB", false);
   }
 
 
