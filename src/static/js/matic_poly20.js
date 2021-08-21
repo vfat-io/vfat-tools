@@ -959,3 +959,4 @@ function fromEther(big) {
     return parseFloat(w + "." + f);
   }
 }
+hideLoading();
