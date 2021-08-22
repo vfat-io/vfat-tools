@@ -9,7 +9,7 @@ $(function() {
       _print(`Initialized ${App.YOUR_ADDRESS}\n`);
       _print("Reading smart contracts...\n");
 
-     const KSF_CHEF_ADDR = "0x0cc7fb3626c55ce4eff79045e8e7cb52434431d4";
+     const KSF_CHEF_ADDR = "0x092c51b4736dee895eb5b64892dc83b230f02d82";
      const rewardTokenTicker = "KSF";
      const KSF_CHEF = new ethers.Contract(KSF_CHEF_ADDR, KSF_CHEF_ABI, App.provider);
 
