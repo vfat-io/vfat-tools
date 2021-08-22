@@ -326,7 +326,8 @@ const main = async () => {
       ['Quokka              ', `<a href="quokka"          >Various</a>`, 'QUOKK        ', 'https://polyquokka.finance'],
       ['Kavian Finance      ', `<a href="kavianfinance"   >Various</a>`, 'KAVIAN       ', 'https://kavian.finance'],
       ['Space-Defi Halo     ', `<a href="spacedefihalo"   >Various</a>`, 'HALO         ', 'https://Halo.space-Defi.com'],
-      ['Evo-Matic           ', `<a href="evomatic"        >Various</a>`, 'GENX         ', 'https://evo-matic.com']
+      ['Evo-Matic           ', `<a href="evomatic"        >Various</a>`, 'GENX         ', 'https://evo-matic.com'],
+      ['PickleFarm          ', `<a href="picklefarm"      >Various</a>`, 'PICKLE       ', 'N/A'],
     ],
   }
 
