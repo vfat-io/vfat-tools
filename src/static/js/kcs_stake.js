@@ -683,31 +683,29 @@ $(function () { consoleInit(main) });
     ///------------------------------------------------------------------------
     const app      = await init_ethers();
     const addr     = getAddress();
-    const addrLink = "https://bscscan.com/address/" + addr + "#readContract";
+    const addrLink = "https://explorer.kcc.io/en/address/" + addr;
     const contract = new ethers.Contract(addr, abi, app.provider);
     ///------------------------------------------------------------------------
     _print("<hr>")
-    _print(header(2, "BNB Stake"));
+    _print(header(2, "KCS Stake"));
     const maticStakeLink = "https://vfat.tools/polygon/matic_stake";
-    const renounceLink = "https://bscscan.com/tx/0x9e67d7a5459728c877387246e196d214ce846ac449f8054866752d532dfb96b8";
+    const renounceLink = "https://explorer.kcc.io/en/tx/0xd48d56baea006f82e60b5979cc1659ff9d4fbcc45df818144c6fddb1578e24a1";
     prettyTable("Project",
       [{ k:"", v:"From the makers of MATIC STAKE (100k+ MATIC staked)", l:maticStakeLink },
        { k:"", v:"Trusted dev"                   , l:null         },
-       { k:"", v:"Same contract but for BNB"     , l:null         },
+       { k:"", v:"Same contract but for KCS"     , l:null         },
        { k:"", v:"Contract ownership renounced"  , l:renounceLink },
        { k:"", v:"Stake it. Shill it. Make it."  , l:null         }
 
       ]);
     const plannames     = ["TORTOISE 🐢", "FLAMINGO 🦩", "OCTOPUS 🐙", "SCORPION 🦂", "EAGLE 🦅", "SHARK 🦈", "BULL 🐂", "ELEPHANT 🐘"];
-    const telegramLink  = "https://t.me/bnb_stake_tg";
+    const telegramLink  = "https://t.me/matic_stake";
     const twitterLink   = "https://twitter.com/MaticStake";
     const redditLink    = "https://www.reddit.com/user/MATIC_STAKE";
-    const docsLink      = "https://github.com/MaticStake/BNB_STAKE/blob/main/README.md";
     prettyTable("Socials",
       [{ k:"Telegram", v:telegramLink, l:telegramLink },
        { k:"Twitter" , v:twitterLink , l:twitterLink  },
        { k:"Reddit"  , v:redditLink  , l:redditLink   },
-       { k:"Docs"    , v:docsLink    , l:docsLink     }
       ]);
     ///------------------------------------------------------------------------
     const start         = new Date((await contract.startUNIX()).toNumber() * 1000);
@@ -717,15 +715,15 @@ $(function () { consoleInit(main) });
     const earlyFee      = (await contract.PENALTY_STEP()).toNumber() / 10;
     const dailyIncrInfo = dailyIncr.toString() + "% per day";
     const earlyFeeInfo  = prettyInt(earlyFee)  + "% (plans 5-8 only)";
-    const refLink       = "https://vfat.tools/bsc/bnb_stake/?ref=" + app.YOUR_ADDRESS.toString();
+    const refLink       = "https://vfat.tools/kcc/kcs_stake/?ref=" + app.YOUR_ADDRESS.toString();
     _print("<hr>")
     _print(header(2,"Contract Info"));
     prettyTable("Contract",
       [{ k:"Start date"            , v:prettyDatetime(start)       , l:null     },
        { k:"Address"               , v:addr                        , l:addrLink },
        { k:"SEP"                   , v:""                          , l:null     },
-       { k:"Total staked"          , v:prettyBNB(staked)           , l:null     },
-       { k:"Min. stake"            , v:prettyBNB(minAmount)        , l:null     },
+       { k:"Total staked"          , v:prettyKCS(staked)           , l:null     },
+       { k:"Min. stake"            , v:prettyKCS(minAmount)        , l:null     },
        { k:"Interest rate increase", v:dailyIncrInfo               , l:null     },
        { k:"SEP"                   , v:""                          , l:null     },
        { k:"Development fee"       , v:"6%"                        , l:null     },
@@ -745,7 +743,7 @@ $(function () { consoleInit(main) });
     _print("<hr>")
     _print(header(2,"Staking Plans"));
     prettyTable("Instructions",
-      [{ k:"", v:"Stake BNB in any of the plans"                                                     , l:null },
+      [{ k:"", v:"Stake KCS in any of the plans"                                                     , l:null },
        { k:"", v:"Share your referal link with everyone you know and earn 6% rewards on their stakes", l:null },
        { k:"", v:"Withdraw your rewards over time"                                                   , l:null },
        { k:"", v:"Profit"                                                                            , l:null }
@@ -754,7 +752,7 @@ $(function () { consoleInit(main) });
     hideLoading();
     //---------------------------------------------------------------------------
     function init() {
-      document.title = "BNB STAKE. STAKE IT. SHILL IT. MAKE IT.";
+      document.title = "KCS STAKE. STAKE IT. SHILL IT. MAKE IT.";
     }
     async function getPlanInfos() {
       var planInfos = [];
@@ -812,13 +810,13 @@ $(function () { consoleInit(main) });
       const refPending = userOverview.balancePending > 0 ? userOverview.refBonusOutstanding : 0;
       var rows =
         [{ k:"Number staked"              , v:prettyInt(numDeposits)                       , l:null },
-         { k:"Total staked"               , v:prettyBNB(totalStaked)                       , l:null },
+         { k:"Total staked"               , v:prettyKCS(totalStaked)                       , l:null },
          { k:"Average daily interest rate", v:avgDailyPct.toString() + "%"                 , l:null },
          { k:"SEP"                        , v:""                                           , l:null },
-         { k:"Rewards outstanding"        , v:prettyBNB(expOutstanding)                    , l:null },
-         { k:"Rewards pending"            , v:prettyBNB(userOverview.balancePending)       , l:null },
-         { k:"Referral bonus outstanding" , v:prettyBNB(userOverview.refBonusOutstanding)  , l:null },
-         { k:"Referral bonus pending"     , v:prettyBNB(refPending)                        , l:null }
+         { k:"Rewards outstanding"        , v:prettyKCS(expOutstanding)                    , l:null },
+         { k:"Rewards pending"            , v:prettyKCS(userOverview.balancePending)       , l:null },
+         { k:"Referral bonus outstanding" , v:prettyKCS(userOverview.refBonusOutstanding)  , l:null },
+         { k:"Referral bonus pending"     , v:prettyKCS(refPending)                        , l:null }
         ];
       if (userOverview.ref != null) {
         const refLink = "https://bscscan.com/address/" + userOverview.ref.toString();
@@ -855,8 +853,8 @@ $(function () { consoleInit(main) });
            { k:"SEP"           , v:""                  , l:null       },
            { k:"Start date"    , v:prettyDatetime(now) , l:null       },
            { k:"End date"      , v:prettyDatetime(thn) , l:null       },
-           { k:"Invest"        , v:prettyBNB(10)       , l:null       },
-           { k:"Earn"          , v:prettyBNB(ret10)    , l:null       },
+           { k:"Invest"        , v:prettyKCS(10)       , l:null       },
+           { k:"Earn"          , v:prettyKCS(ret10)    , l:null       },
            { k:"SEP"           , v:""                  , l:null       },
            { k:""              , v:"Stake"             , l:investLink }
            ];
@@ -877,8 +875,8 @@ $(function () { consoleInit(main) });
                { k:"Start date"         , v:prettyDatetime(investment.start)    , l:null },
                { k:"End date"           , v:prettyDatetime(investment.end)      , l:null },
                { k:"Progress"           , v:progress                            , l:null },
-               { k:"Staked"             , v:prettyBNB(investment.staked)        , l:null },
-               { k:"Expected return"    , v:prettyBNB(investment.expReturn)     , l:null },
+               { k:"Staked"             , v:prettyKCS(investment.staked)        , l:null },
+               { k:"Expected return"    , v:prettyKCS(investment.expReturn)     , l:null },
                { k:"Daily interest rate", v:investment.dailyPct.toString() + "%", l:null },
                { k:"SEP"                , v:""                                  , l:null }
                ];
@@ -985,18 +983,18 @@ async function invest(plan) {
       ref = null;
   }
   try {
-    var amountStr = prompt("How much BNB would you like to stake in Plan " + plan.toString() + "?", "");
+    var amountStr = prompt("How much KCS would you like to stake in Plan " + plan.toString() + "?", "");
     if (amountStr == null) {
       return;
     }
     const amount = parseFloat(amountStr);
     //console.log(amount);
-    if (isNaN(amount) || amount < 0.01) {
+    if (isNaN(amount) || amount < 0.1) {
       throw "Invalid amount";
     }
     const refStr  = ref == null ? "" : "\n    Referrer: " + ref;
     const details = "    Plan:       " + plan.toString()
-                  + "\n    Amount: "   + prettyBNB(amount)
+                  + "\n    Amount: "   + prettyKCS(amount)
                   + refStr;
     if (confirm("Confirm your stake:\n" + details)) {
       const zero = "0x0000000000000000000000000000000000000000";
@@ -1033,7 +1031,7 @@ async function invest(plan) {
       const pot      = fromEther(await app.provider.getBalance(app.YOUR_ADDRESS));
       let allow      = Promise.resolve();
       if (pot < amount) {
-        alert("You don't have " + prettyBNB(amount) + " in your wallet");
+        alert("You don't have " + prettyKCS(amount) + " in your wallet");
         return;
       }
       showLoading();
@@ -1139,8 +1137,8 @@ async function withdraw() {
 function getAddress() {
   return "0x3DE0FcaC293C4b51D56a4930DD5a1982f9F59181";
 }
-function prettyBNB(raw) {
-  return prettyDouble(raw) + " BNB";
+function prettyKCS(raw) {
+  return prettyDouble(raw) + " KCS";
 }
 function prettyInt(raw) {
   return Math.round(raw).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
