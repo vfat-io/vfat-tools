@@ -715,7 +715,7 @@ $(function () { consoleInit(main) });
     const earlyFee      = (await contract.PENALTY_STEP()).toNumber() / 10;
     const dailyIncrInfo = dailyIncr.toString() + "% per day";
     const earlyFeeInfo  = prettyInt(earlyFee)  + "% (plans 5-8 only)";
-    const refLink       = "https://vfat.tools/fantom/fantom_stake/?ref=" + app.YOUR_ADDRESS.toString();
+    const refLink       = "https://vfat.tools/fantom/ftm_stake/?ref=" + app.YOUR_ADDRESS.toString();
     _print("<hr>")
     _print(header(2,"Contract Info"));
     prettyTable("Contract",
