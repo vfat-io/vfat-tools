@@ -494,7 +494,8 @@ const main = async() => {
       ["BNB STAKE           ", `<a href="bnb_stake"     >STAKE</a>`  ,"BNB              ","https://t.me/bnb_stake_tg"],
       ["Ibg                 ", `<a href="ibg"           >Various</a>`,"iBG              ","https://farm.ibg.finance"],
       ["Adamant             ", `<a href="adamant"       >Various</a>`,"ADAMANT          ","https://adamant.eternity.money"],
-      ["1001 Nights Abu     ", `<a href="abu"           >Various</a>`,"ABU              ","https://abu.1001nights.gold"]
+      ["1001 Nights Abu     ", `<a href="abu"           >Various</a>`,"ABU              ","https://abu.1001nights.gold"],
+      ["BNB Money Maker     ", `<a href="bnb_money_maker">BNB</a>`,"BNB              ","https://vfat.tools/bsc/bnb_money_maker"]
     ]}
 
   let table = new AsciiTable().fromJSON(tableData);
