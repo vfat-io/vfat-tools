@@ -13,12 +13,23 @@ async function main() {
   const tokens = {};
   const prices = await getFantomPrices();
 
+  //add this pool in order to receive the price of the Nova - Ftm LP
+  const NovaWftmPool = {
+    address: "0x05BF8A10a24acB9D61b9b6dd90aeF99FB86A1C7e",
+    abi: ELITE_STAKING_ABI,
+    stakeTokenFunction: "liqpairadd",
+    rewardTokenFunction: "farmrewa"
+  }
+
   const pool = {
     address: "0x397162B32D1Aafe137b434f3f3B05615266E7d33",
     abi: ELITE_STAKING_ABI,
     stakeTokenFunction: "liqpairadd",
     rewardTokenFunction: "farmrewa"
   }
+
+  await loadFantomSynthetixPoolInfo(App, tokens, prices, NovaWftmPool.abi, NovaWftmPool.address,
+    NovaWftmPool.rewardTokenFunction, NovaWftmPool.stakeTokenFunction)
 
   let p = await loadFantomSynthetixPool(App, tokens, prices, pool.abi, pool.address, pool.rewardTokenFunction, pool.stakeTokenFunction)
   _print_bold(`Total staked: $${formatMoney(p.staked_tvl)}`);
