@@ -11,7 +11,6 @@ const GLP_MANAGER_ABI = [{"inputs": [{"internalType": "address","name": "_vault"
 const addresses = {
     StakedGmxTracker: '0x908C4D94D34924765f1eDc22A1DD098397c59dD4',
     RewardReader: '0xD6cf2885cdF53868127F0aBefa1CEE40B940FC8f',
-    StakedGmxTracker: "0x908C4D94D34924765f1eDc22A1DD098397c59dD4",
     BonusGmxTracker: "0x4d268a7d4C16ceB5a606c173Bd974984343fea13",
     FeeGmxTracker: "0x4d268a7d4C16ceB5a606c173Bd974984343fea13",
     FeeGlpTracker: "0x4e971a87900b931fF39d1Aad67697F49835400b6",
@@ -28,7 +27,7 @@ function sumArr(arr) {
 
 async function getGmxPrice() {
   // TODO use price from Uni LP when it will be created
-  return 2 
+  return 2
 }
 
 async function getEthPrice() {
@@ -123,7 +122,7 @@ async function main() {
 
     const [
       gmxPrice,
-      ethPrice, 
+      ethPrice,
       gmxSupply,
       glpSupply,
       glpAum
@@ -149,7 +148,7 @@ async function main() {
 
     _print(`<a href="${getTokenUrl(addresses.GMX)}" target="_blank">GMX</a> Price: $${formatMoney(gmxPrice)} Market Cap: $${formatMoney(gmxSupply * gmxPrice)}`)
     await loadYieldFarm(App, [
-        {tracker: stakedGmxTracker, tokenSymbol: 'GMX', tokenPrice: gmxPrice}, 
+        {tracker: stakedGmxTracker, tokenSymbol: 'GMX', tokenPrice: gmxPrice},
         {tracker: feeGmxTracker, tokenSymbol: 'ETH', tokenPrice: ethPrice},
     ], gmxPrice, [addresses.GMX, addresses.ES_GMX], ['GMX', 'Escrow GMX'])
 
