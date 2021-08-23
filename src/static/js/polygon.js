@@ -328,6 +328,7 @@ const main = async () => {
       ['Space-Defi Halo     ', `<a href="spacedefihalo"   >Various</a>`, 'HALO         ', 'https://Halo.space-Defi.com'],
       ['Evo-Matic           ', `<a href="evomatic"        >Various</a>`, 'GENX         ', 'https://evo-matic.com'],
       ['PickleFarm          ', `<a href="picklefarm"      >Various</a>`, 'PICKLE       ', 'N/A'],
+      ['CottonCandy         ', `<a href="cottoncandy"     >Various</a>`, 'CANDY        ', 'https://cottoncandydefi.com']
     ],
   }
 
