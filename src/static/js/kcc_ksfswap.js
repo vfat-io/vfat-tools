@@ -30,7 +30,7 @@ $(function() {
       const prices = await getKccPrices();
 
       await loadKccChefContract(App, tokens, prices, KSF_CHEF, KSF_CHEF_ADDR, KSF_CHEF_ABI, rewardTokenTicker,
-          "ksf", null, rewardsPerWeek, "pendingKsf");
+          "ksf", null, rewardsPerWeek, "pendingKsf", [1]);
 
       hideLoading();
     }
