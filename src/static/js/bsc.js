@@ -495,6 +495,7 @@ const main = async() => {
       ["Ibg                 ", `<a href="ibg"           >Various</a>`,"iBG              ","https://farm.ibg.finance"],
       ["Adamant             ", `<a href="adamant"       >Various</a>`,"ADAMANT          ","https://adamant.eternity.money"],
       ["1001 Nights Abu     ", `<a href="abu"           >Various</a>`,"ABU              ","https://abu.1001nights.gold"],
+      ["Dot Finance         ", `<a href="dot_finance"   >STAKE</a>`,"Dot Finance        ","https://app.dot.finance"]
       //["Elk                 ", `<a href="elk"           >Various</a>`,"ELK              ","https://app.elk.finance"]
     ]}
 
