@@ -22,7 +22,7 @@ $(function() {
      if(currentBlock < startBlock){
        _print(`Rewards start at block ${startBlock}\n`);
      }else{
-      rewardsPerWeek = await KSF_CHEF.KSFPerBlock() /1e18
+      rewardsPerWeek = await KSF_CHEF.ksfPerBlock() /1e18
         * 604800 * multiplier / 3;
      }
 
@@ -30,7 +30,7 @@ $(function() {
       const prices = await getKccPrices();
 
       await loadKccChefContract(App, tokens, prices, KSF_CHEF, KSF_CHEF_ADDR, KSF_CHEF_ABI, rewardTokenTicker,
-          "KSF", null, rewardsPerWeek, "pendingKSF", [1]);
+          "ksf", null, rewardsPerWeek, "pendingKsf");
 
       hideLoading();
     }
