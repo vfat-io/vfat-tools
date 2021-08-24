@@ -332,7 +332,8 @@ const main = async () => {
       ['Astrofarms - Virgo  ', `<a href="astrofarmsvirgo" >Various</a>`, 'VIRGO        ', 'https://virgo.astrofarms.finance'],
       ['Watersports         ', `<a href="watersports"     >Various</a>`, 'WATER        ', 'https://watersports.finance'],
       ['BerryFactory-Pavlova', `<a href="pavlova"         >Various</a>`, 'PAVLOVA      ', 'https://pavlovaberry.world'],
-      ['PolyLama            ', `<a href="polylama"        >Various</a>`, 'LAMA          ', 'https://polylama.finance']
+      ['PolyLama            ', `<a href="polylama"        >Various</a>`, 'LAMA          ', 'https://polylama.finance'],
+      ['Energy 8            ', `<a href="energy8"         >Various</a>`, 'E8           ', 'https://energy8.io/farming']
     ],
   }
 
