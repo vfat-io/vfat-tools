@@ -14,7 +14,7 @@ const main = async() => {
       ["CherrySwap",    `<a href='cherryswap'   >Various</a>`,  "CHE",     "https://www.cherryswap.net"],
       ["BoneSwap",      `<a href='boneswap'     >Various</a>`,  "BONE",    "https://farm-okex.boneswap.finance"],
       ["FarmHero",      `<a href='farmhero'     >Various</a>`,  "GLORY",   "https://oec.farmhero.io"],
-      ["SpaceX-MOONX",  `<a href='moonx'        >Various</a>`,  "MOONX",   "https://spacex.finanancial"],
+      ["SpaceX-MOONX",  `<a href='moonx'        >Various</a>`,  "MOONX",   "https://spacex.financial"],
     ]
   }
 

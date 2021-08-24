@@ -289,6 +289,12 @@ const main = async() => {
         `<a href='xdao'>Various</a>`,
         "HTZ",
         "https://thexdao.com"
+      ],
+      [
+        "Fantom Stake",
+        `<a href='ftm_stake'>FTM</a>`,
+        "FTM",
+        "N/A"
       ]
     ]
   }

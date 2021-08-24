@@ -262,7 +262,7 @@ const chefPawContract_claimAll = async function(chefAbi, chefAddress, App, pendi
 
   if (pendingRewardTokens > 0) {
     showLoading()
-    CHEF_CONTRACT.harvestAll({gasLimit: 500000})
+    CHEF_CONTRACT.harvestAll({gasLimit: 2000000})
       .then(function(t) {
         return App.provider.waitForTransaction(t.hash)
       })

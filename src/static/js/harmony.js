@@ -85,6 +85,12 @@ const main = async() => {
         `<a href='sonicswap'>Various</a>`,
         "SONIC",
         "https://sonicswap.io/#/staking"
+      ],
+      [
+        "Defi Kingdoms",
+        `<a href='defikingdoms'>Various</a>`,
+        "JEWEL",
+        "https://game.defikingdoms.com/"
       ]
     ]
   }

@@ -702,10 +702,12 @@ $(function () { consoleInit(main) });
     const telegramLink  = "https://t.me/bnb_stake_tg";
     const twitterLink   = "https://twitter.com/MaticStake";
     const redditLink    = "https://www.reddit.com/user/MATIC_STAKE";
+    const docsLink      = "https://github.com/MaticStake/BNB_STAKE/blob/main/README.md";
     prettyTable("Socials",
       [{ k:"Telegram", v:telegramLink, l:telegramLink },
        { k:"Twitter" , v:twitterLink , l:twitterLink  },
-       { k:"Reddit"  , v:redditLink  , l:redditLink   }
+       { k:"Reddit"  , v:redditLink  , l:redditLink   },
+       { k:"Docs"    , v:docsLink    , l:docsLink     }
       ]);
     ///------------------------------------------------------------------------
     const start         = new Date((await contract.startUNIX()).toNumber() * 1000);
@@ -988,7 +990,7 @@ async function invest(plan) {
       return;
     }
     const amount = parseFloat(amountStr);
-    console.log(amount);
+    //console.log(amount);
     if (isNaN(amount) || amount < 0.01) {
       throw "Invalid amount";
     }
@@ -999,8 +1001,8 @@ async function invest(plan) {
     if (confirm("Confirm your stake:\n" + details)) {
       const zero = "0x0000000000000000000000000000000000000000";
       ref = ref == null ? zero : ref;
-      const amountBN = toEther(amount);
-      console.log(amountBN);
+      const amountBN = toEther(amountStr);
+      //console.log(amountBN);
       ///----------------------------------------------------------------------
       const abi =
         [
@@ -1151,16 +1153,7 @@ function prettyDatetime(raw) {
   return raw.toString();
 }
 function toEther(raw) {
-  if(raw < 1) {
-    const fact = 1.0 / raw;
-    console.log(fact);
-    const one = ethers.BigNumber.from(1.0).mul("1000000000000000000");
-    console.log(one)
-    return one.div(fact);
-  } else
-  {
-  return ethers.BigNumber.from(raw).mul("1000000000000000000");
-  }
+  return ethers.utils.parseUnits(raw, "ether");
 }
 function fromEther(big) {
   const str = big.toString();
