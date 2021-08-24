@@ -438,7 +438,7 @@ const main = async() => {
       ["Area51Defi          ", `<a href="area51defi"    >Various</a>`,"AFOD             ","https://area51defi.com"],
       ["PiranhaSwap         ", `<a href="piranhaswap"   >Various</a>`,"PIRANHA          ","https://piranhaswap.finance"],
       ["Robobuddy           ", `<a href="robobuddy"     >Various</a>`,"ROBO             ","https://robobuddy.finance"],
-      ["Astro               ", `<a href="astro"         >Various</a>`,"ASTRO            ","https://astroprotocol.com"],
+      ["Astro *             ", `<a href="astro"         >Various</a>`,"ASTRO            ","https://astroprotocol.com"],
       ["TwilightFinance     ", `<a href="twilightfinance">Various</a>`,"TWIL            ","https://twilightfinance.org"],
       ["Badger              ", `<a href="badger"        >Various</a>`,"BADGER           ","https://app.badger.finance"],
       ["BambooDeFi          ", `<a href="bamboodefi"    >Various</a>`,"BAMBOO           ","https://www.bamboodefi.com"],
@@ -492,7 +492,11 @@ const main = async() => {
       ["HoneyFarm Bear      ", `<a href="bear"          >Various</a>`,"BEAR             ","https://bear.honeyfarm.finance"],
       ["Treasurefarm        ", `<a href="treasurefarm"  >Various</a>`,"TREASURE         ","https://treasurefarm.cash"],
       ["BNB STAKE           ", `<a href="bnb_stake"     >STAKE</a>`  ,"BNB              ","https://t.me/bnb_stake_tg"],
-      ["Ibg                 ", `<a href="ibg"           >Various</a>`,"iBG              ","https://farm.ibg.finance"]
+      ["Ibg                 ", `<a href="ibg"           >Various</a>`,"iBG              ","https://farm.ibg.finance"],
+      ["Adamant             ", `<a href="adamant"       >Various</a>`,"ADAMANT          ","https://adamant.eternity.money"],
+      ["1001 Nights Abu     ", `<a href="abu"           >Various</a>`,"ABU              ","https://abu.1001nights.gold"],
+      ["Wish Finance        ", `<a href="wish"          >Various</a>`,"WISH             ","https://wishfinance.io"]
+      //["Elk                 ", `<a href="elk"           >Various</a>`,"ELK              ","https://app.elk.finance"]
     ]}
 
   let table = new AsciiTable().fromJSON(tableData);

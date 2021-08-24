@@ -294,7 +294,7 @@ const main = async() => {
         "Fantom Stake",
         `<a href='ftm_stake'>FTM</a>`,
         "FTM",
-        "https://vfat.tools/fantom/ftm_stake/"
+        "N/A"
       ]
     ]
   }

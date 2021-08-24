@@ -19,7 +19,7 @@ const main = async () => {
       ['Polyfox             ', `<a href="polyfox"         >Various</a>`, 'FOX          ', 'https://polyfox.finance'],
       ['Hawkdex             ', `<a href="hawk"            >Various</a>`, 'HAWK         ', 'https://hawkdex.com'],
       ['PolyDragon          ', `<a href="polydragon"      >Various</a>`, 'FIRE         ', 'https://polydragon.io'],
-      ['Polycat             ', `<a href="polycat"         >Various</a>`, 'FISH/PAW     ', 'https://polycat.finance'],
+      ['Polycat             ', `<a href="polycat"         >Various</a>`, 'PAW          ', 'https://polycat.finance'],
       ['BoughtThe.top       ', `<a href="boughtthetop"    >Various</a>`, 'BTT          ', 'https://farm.BoughtThe.top'],
       ['PolyStarter         ', `<a href="polystarter"     >Various</a>`, 'STARTER      ', 'https://www.polystarter.fi'],
       ['Polyvolve           ', `<a href="polyvolve"       >Various</a>`, 'SPEAR        ', 'https://polyvolve.finance'],
@@ -317,13 +317,22 @@ const main = async () => {
       ['Polycorn Finance    ', `<a href="polycorn"        >Various</a>`, 'YCORN        ', 'https://polycorn.finance'],
       ['PolyPixel           ', '<a href="polypixel"       >Various</a>', 'PIXEL        ', 'https://polypixel.farm'],
       ['BerryFactory-Tartlet', `<a href="tartlet"         >Various</a>`, 'TARTLET      ', 'https://berryfactory.world'],
-      ['SandmanFarm         ', `<a href="sandmanfarm"     >Various</a>`, 'SANDMANFARM  ','https://sandman.farm'],
+      ['SandmanFarm         ', `<a href="sandmanfarm"     >Various</a>`, 'SANDMANFARM  ', 'https://sandman.farm'],
       ['Sunrise             ', `<a href="sunrise"         >Various</a>`, 'SUNRISE      ', 'N/A'],
       ['Arable              ', `<a href="arable"          >Various</a>`, 'ARABELLA     ', 'https://arable.finance'],
       ['Ton Finance         ', `<a href="tomfinance"      >Various</a>`, 'TOM          ', 'https://tomfinance.vip'],
       ['Poly20              ', `<a href="poly20"          >ROI</a>`,     'MATIC        ', 'https://poly20.finance'],
       ['Neon Finance        ', `<a href="neonfinance"     >Various</a>`, 'NEON         ', 'https://neonfinance.club'],
-      ['Kavian Finance      ', `<a href="kavianfinance"   >Various</a>`, 'KAVIAN       ', 'https:// kavian.finance']
+      ['Quokka              ', `<a href="quokka"          >Various</a>`, 'QUOKK        ', 'https://polyquokka.finance'],
+      ['Kavian Finance      ', `<a href="kavianfinance"   >Various</a>`, 'KAVIAN       ', 'https://kavian.finance'],
+      ['Space-Defi Halo     ', `<a href="spacedefihalo"   >Various</a>`, 'HALO         ', 'https://Halo.space-Defi.com'],
+      ['Evo-Matic           ', `<a href="evomatic"        >Various</a>`, 'GENX         ', 'https://evo-matic.com'],
+      ['PickleFarm          ', `<a href="picklefarm"      >Various</a>`, 'PICKLE       ', 'N/A'],
+      ['CottonCandy         ', `<a href="cottoncandy"     >Various</a>`, 'CANDY        ', 'https://cottoncandydefi.com'],
+      ['Astrofarms - Virgo  ', `<a href="astrofarmsvirgo" >Various</a>`, 'VIRGO        ', 'https://virgo.astrofarms.finance'],
+      ['Watersports         ', `<a href="watersports"     >Various</a>`, 'WATER        ', 'https://watersports.finance'],
+      ['BerryFactory-Pavlova', `<a href="pavlova"         >Various</a>`, 'PAVLOVA      ', 'https://pavlovaberry.world'],
+      ['PolyLama            ', `<a href="polylama"        >Various</a>`, 'LAMA          ', 'https://polylama.finance']
     ],
   }
 

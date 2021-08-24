@@ -40,6 +40,7 @@ async function loadxWILD(App){
   const stakeTicker = await WILD_CONTRACT.symbol();
   const totalOwnedxWILD = await xWILD_CONTRACT.balanceOf(App.YOUR_ADDRESS) / 1e18;
   const totalOwnedWILD = totalOwnedxWILD * virtualPrice;
+  const totalOwnedWildForStake = await WILD_CONTRACT.balanceOf(App.YOUR_ADDRESS) / 1e18;
   const tvl = totalDepositedWILDs * WILDPrice
   const usersPercentage = totalOwnedxWILD / totalxWILDTokens * 100;
   const usersxWILDUsd = totalOwnedxWILD * xWILDPrice;
@@ -53,7 +54,7 @@ async function loadxWILD(App){
   const unstake = async function() {
     return contract_unstake(xWILD_ABI, xWILD_ADDR, totalOwnedxWILD, App)
   }
-  _print_link(`Stake ${totalOwnedWILD.toFixed(2)} ${stakeTicker}`, approveAndStake)
+  _print_link(`Stake ${totalOwnedWildForStake.toFixed(2)} ${stakeTicker}`, approveAndStake)
   _print_link(`Unstake ${totalOwnedxWILD.toFixed(2)} ${rewardTicker}`, unstake)
 }
 

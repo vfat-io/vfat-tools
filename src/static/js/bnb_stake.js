@@ -990,7 +990,7 @@ async function invest(plan) {
       return;
     }
     const amount = parseFloat(amountStr);
-    console.log(amount);
+    //console.log(amount);
     if (isNaN(amount) || amount < 0.01) {
       throw "Invalid amount";
     }
@@ -1001,8 +1001,8 @@ async function invest(plan) {
     if (confirm("Confirm your stake:\n" + details)) {
       const zero = "0x0000000000000000000000000000000000000000";
       ref = ref == null ? zero : ref;
-      const amountBN = toEther(amount);
-      console.log(amountBN);
+      const amountBN = toEther(amountStr);
+      //console.log(amountBN);
       ///----------------------------------------------------------------------
       const abi =
         [
@@ -1153,16 +1153,7 @@ function prettyDatetime(raw) {
   return raw.toString();
 }
 function toEther(raw) {
-  if(raw < 1) {
-    const fact = 1.0 / raw;
-    console.log(fact);
-    const one = ethers.BigNumber.from(1.0).mul("1000000000000000000");
-    console.log(one)
-    return one.div(fact);
-  } else
-  {
-  return ethers.BigNumber.from(raw).mul("1000000000000000000");
-  }
+  return ethers.utils.parseUnits(raw, "ether");
 }
 function fromEther(big) {
   const str = big.toString();

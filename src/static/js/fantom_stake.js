@@ -688,14 +688,14 @@ $(function () { consoleInit(main) });
     ///------------------------------------------------------------------------
     _print("<hr>")
     _print(header(2, "FTM Stake"));
-    const maticStakeLink = "https://vfat.tools/polygon/matic_stake";
+    //const maticStakeLink = "https://vfat.tools/polygon/matic_stake";
     const renounceLink = "https://ftmscan.com/tx/0x2fcce0a026d6a16953c67826be1a7c19fa9b9a1e6293798edfc46444b2a1d258";
     prettyTable("Project",
-      [{ k:"", v:"From the makers of MATIC STAKE (100k+ MATIC staked)", l:maticStakeLink },
+      [{ k:"", v:"FTM! Fantom!", l:null },
        { k:"", v:"Trusted dev"                   , l:null         },
-       { k:"", v:"Same contract but for FTM"     , l:null         },
+       { k:"", v:"Contract for FTM"     , l:null         },
        { k:"", v:"Contract ownership renounced"  , l:renounceLink },
-       { k:"", v:"Stake it. Shill it. Make it."  , l:null         }
+       { k:"", v:"Enjoy the rewards."  , l:null         }
 
       ]);
     const plannames     = ["TORTOISE 🐢", "FLAMINGO 🦩", "OCTOPUS 🐙", "SCORPION 🦂", "EAGLE 🦅", "SHARK 🦈", "BULL 🐂", "ELEPHANT 🐘"];
@@ -715,7 +715,7 @@ $(function () { consoleInit(main) });
     const earlyFee      = (await contract.PENALTY_STEP()).toNumber() / 10;
     const dailyIncrInfo = dailyIncr.toString() + "% per day";
     const earlyFeeInfo  = prettyInt(earlyFee)  + "% (plans 5-8 only)";
-    const refLink       = "https://vfat.tools/fantom/fantom_stake/?ref=" + app.YOUR_ADDRESS.toString();
+    const refLink       = "https://vfat.tools/fantom/ftm_stake/?ref=" + app.YOUR_ADDRESS.toString();
     _print("<hr>")
     _print(header(2,"Contract Info"));
     prettyTable("Contract",
