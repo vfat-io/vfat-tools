@@ -62,6 +62,13 @@ const Pool7 = {
   rewardTokenAddress : "0x1e584D356db17deCFA474Fb9669Fa7D2f181eE4E"
 }
 
+const Pool8 = {
+  address : "0x4f59666A09a64cBdE6c02b66E8E9F6524BE0c95C",
+  abi : NEW_CHIPS_CONTRACT_ABI,
+  stakeTokenAddress : "0x4d0228EBEB39f6d2f29bA528e2d15Fc9121Ead56",
+  rewardTokenAddress : "0x1e584D356db17deCFA474Fb9669Fa7D2f181eE4E"
+}
+
 async function main() {
 
   const App = await init_ethers();
@@ -80,10 +87,11 @@ async function main() {
   let p5 = await loadNewChipsSynthetixPool(App, tokens, prices, Pool5.abi, Pool5.address, Pool5.rewardTokenAddress, Pool5.stakeTokenAddress);
   let p6 = await loadNewChipsSynthetixPool(App, tokens, prices, Pool6.abi, Pool6.address, Pool6.rewardTokenAddress, Pool6.stakeTokenAddress);
   let p7 = await loadNewChipsSynthetixPool(App, tokens, prices, Pool7.abi, Pool7.address, Pool7.rewardTokenAddress, Pool7.stakeTokenAddress);
+  let p8 = await loadNewChipsSynthetixPool(App, tokens, prices, Pool8.abi, Pool8.address, Pool8.rewardTokenAddress, Pool8.stakeTokenAddress);
 
-  _print_bold(`Total staked: $${formatMoney(p0.staked_tvl+p1.staked_tvl+p2.staked_tvl+p3.staked_tvl+p4.staked_tvl+p5.staked_tvl+p6.staked_tvl+p7.staked_tvl)}`);
-  if (p0.totalUserStaked > 0 || p1.totalUserStaked > 0 || p2.totalUserStaked > 0 || p3.totalUserStaked > 0 || p4.totalUserStaked > 0 || p5.totalUserStaked > 0 || p6.totalUserStaked > 0 || p7.totalUserStaked > 0) {
-    _print(`You are staking a total of $${formatMoney(p0.totalUserStaked+p1.totalUserStaked+p2.totalUserStaked+p3.totalUserStaked+p4.totalUserStaked+p5.totalUserStaked+p6.totalUserStaked+p7.totalUserStaked)}`);
+  _print_bold(`Total staked: $${formatMoney(p0.staked_tvl+p1.staked_tvl+p2.staked_tvl+p3.staked_tvl+p4.staked_tvl+p5.staked_tvl+p6.staked_tvl+p7.staked_tvl+p8.staked_tvl)}`);
+  if (p0.totalUserStaked > 0 || p1.totalUserStaked > 0 || p2.totalUserStaked > 0 || p3.totalUserStaked > 0 || p4.totalUserStaked > 0 || p5.totalUserStaked > 0 || p6.totalUserStaked > 0 || p7.totalUserStaked > 0 || p8.totalUserStaked > 0) {
+    _print(`You are staking a total of $${formatMoney(p0.totalUserStaked+p1.totalUserStaked+p2.totalUserStaked+p3.totalUserStaked+p4.totalUserStaked+p5.totalUserStaked+p6.totalUserStaked+p7.totalUserStaked+p8.totalUserStaked)}`);
   }
 
   hideLoading();
