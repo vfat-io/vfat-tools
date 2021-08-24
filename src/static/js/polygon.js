@@ -329,7 +329,8 @@ const main = async () => {
       ['Evo-Matic           ', `<a href="evomatic"        >Various</a>`, 'GENX         ', 'https://evo-matic.com'],
       ['PickleFarm          ', `<a href="picklefarm"      >Various</a>`, 'PICKLE       ', 'N/A'],
       ['CottonCandy         ', `<a href="cottoncandy"     >Various</a>`, 'CANDY        ', 'https://cottoncandydefi.com'],
-      ['Astrofarms - Virgo  ', `<a href="astrofarmsvirgo" >Various</a>`, 'VIRGO        ', 'https://virgo.astrofarms.finance']
+      ['Astrofarms - Virgo  ', `<a href="astrofarmsvirgo" >Various</a>`, 'VIRGO        ', 'https://virgo.astrofarms.finance'],
+      ['WaterSports Finance ', `<a href="watersports"     >Various</a>`, 'WATER        ', 'https://watersports.finance']
     ],
   }
 
