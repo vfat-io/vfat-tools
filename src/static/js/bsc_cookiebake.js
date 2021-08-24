@@ -55,6 +55,13 @@ const Pool6 = {
   rewardTokenAddress : "0x1e584D356db17deCFA474Fb9669Fa7D2f181eE4E"
 }
 
+const Pool7 = {
+  address : "0x8E1C16fFE61FE2647995BAe57329caEa8b4562cf",
+  abi : NEW_CHIPS_CONTRACT_ABI,
+  stakeTokenAddress : "0x565b72163f17849832a692a3c5928cc502f46d69",
+  rewardTokenAddress : "0x1e584D356db17deCFA474Fb9669Fa7D2f181eE4E"
+}
+
 async function main() {
 
   const App = await init_ethers();
@@ -72,10 +79,11 @@ async function main() {
   let p3 = await loadNewChipsSynthetixPool(App, tokens, prices, Pool3.abi, Pool3.address, Pool3.rewardTokenAddress, Pool3.stakeTokenAddress);
   let p5 = await loadNewChipsSynthetixPool(App, tokens, prices, Pool5.abi, Pool5.address, Pool5.rewardTokenAddress, Pool5.stakeTokenAddress);
   let p6 = await loadNewChipsSynthetixPool(App, tokens, prices, Pool6.abi, Pool6.address, Pool6.rewardTokenAddress, Pool6.stakeTokenAddress);
+  let p7 = await loadNewChipsSynthetixPool(App, tokens, prices, Pool7.abi, Pool7.address, Pool7.rewardTokenAddress, Pool7.stakeTokenAddress);
 
-  _print_bold(`Total staked: $${formatMoney(p0.staked_tvl+p1.staked_tvl+p2.staked_tvl+p3.staked_tvl+p4.staked_tvl+p5.staked_tvl)}`);
-  if (p0.totalUserStaked > 0 || p1.totalUserStaked > 0 || p2.totalUserStaked > 0 || p3.totalUserStaked > 0 || p4.totalUserStaked > 0 || p5.totalUserStaked > 0 || p6.totalUserStaked > 0) {
-    _print(`You are staking a total of $${formatMoney(p0.totalUserStaked+p1.totalUserStaked+p2.totalUserStaked+p3.totalUserStaked+p4.totalUserStaked+p5.totalUserStaked+p6.totalUserStaked)}`);
+  _print_bold(`Total staked: $${formatMoney(p0.staked_tvl+p1.staked_tvl+p2.staked_tvl+p3.staked_tvl+p4.staked_tvl+p5.staked_tvl+p6.staked_tvl+p7.staked_tvl)}`);
+  if (p0.totalUserStaked > 0 || p1.totalUserStaked > 0 || p2.totalUserStaked > 0 || p3.totalUserStaked > 0 || p4.totalUserStaked > 0 || p5.totalUserStaked > 0 || p6.totalUserStaked > 0 || p7.totalUserStaked > 0) {
+    _print(`You are staking a total of $${formatMoney(p0.totalUserStaked+p1.totalUserStaked+p2.totalUserStaked+p3.totalUserStaked+p4.totalUserStaked+p5.totalUserStaked+p6.totalUserStaked+p7.totalUserStaked)}`);
   }
 
   hideLoading();
