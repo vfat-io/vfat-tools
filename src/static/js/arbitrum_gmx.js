@@ -149,15 +149,15 @@ async function main() {
     + ` Price: $${formatMoney(glpPrice)} TVL: $${formatMoney(glpAum)}`
   )
   await loadYieldFarm(App, [
-    {tracker: stakedGlpTracker, tokenSymbol: 'Escrow GMX', tokenPrice: gmxPrice},
+    {tracker: stakedGlpTracker, tokenSymbol: 'Escrowed GMX', tokenPrice: gmxPrice},
     {tracker: feeGlpTracker, tokenSymbol: 'ETH', tokenPrice: ethPrice}
   ], glpPrice, [addresses.FeeGlpTracker], ['GLP'])
 
   _print(`<a href="${getTokenUrl(addresses.GMX)}" target="_blank">GMX</a> Price: $${formatMoney(gmxPrice)} Market Cap: $${formatMoney(gmxSupply * gmxPrice)}`)
   await loadYieldFarm(App, [
-    {tracker: stakedGmxTracker, tokenSymbol: 'Escrow GMX', tokenPrice: gmxPrice}, 
+    {tracker: stakedGmxTracker, tokenSymbol: 'Escrowed GMX', tokenPrice: gmxPrice}, 
     {tracker: feeGmxTracker, tokenSymbol: 'ETH', tokenPrice: ethPrice},
-  ], gmxPrice, [addresses.GMX, addresses.ES_GMX], ['GMX', 'Escrow GMX'])
+  ], gmxPrice, [addresses.GMX, addresses.ES_GMX], ['GMX', 'Escrowed GMX'])
 
   hideLoading();
 }
