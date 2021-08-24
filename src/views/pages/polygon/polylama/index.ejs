@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include(`${partials}/head`); -%>
+
+<body>
+<%- include(`${partials}/header_main`); -%>
+<pre id="log">
+***************************** POLYGON NETWORK ***************************
+    
+*************** 👨‍🌾 UNOFFICIAL POLYLAMA FARMING CALCULATOR 👨‍🌾 ****************
+INFO  : https://polylama.finance
+INFO  : Rewards paid in $LAMA which is a Reflection token 
+INFO  : $LAMA has 0% fees for Farming
+*************************************************************************
+
+*** If you are being rate limited, please select a different RPC URL from here https://docs.matic.network/docs/develop/network-dekiwis/network/ ***
+
+</pre>
+<div class="loader--1"></div>
+<%- include(`${partials}/scripts`, {scriptname: 'matic_polylama'}); -%>
+</body>
+</html> 
