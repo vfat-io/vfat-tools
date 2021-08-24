@@ -310,6 +310,8 @@ const main = async () => {
       ['Hype Matic v1'       , `<a href="hypematic"       >ROI</a>`,     'MATIC        ', 'https://vfat.tools/polygon/hypematic/'],
       ['Pan Finance         ', `<a href="panfinance"      >Various</a>`, 'PAN          ', 'https://panfinance.xyz'],
 	  ['Ton Finance         ', `<a href="tomfinance"      >Various</a>`, 'TOM          ', 'https://tomfinance.vip'],
+	  ['Nemo Finance         ', `<a href="nemofinance"      >Various</a>`, 'NEMO          ', 'https://nemofinance.top'],
+	  ['Dice Finance         ', `<a href="dicefinance"      >Various</a>`, 'DICE          ', 'https://dicefinance.pro'],
     ],
   }
 
