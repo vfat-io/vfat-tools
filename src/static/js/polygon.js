@@ -19,7 +19,7 @@ const main = async () => {
       ['Polyfox             ', `<a href="polyfox"         >Various</a>`, 'FOX          ', 'https://polyfox.finance'],
       ['Hawkdex             ', `<a href="hawk"            >Various</a>`, 'HAWK         ', 'https://hawkdex.com'],
       ['PolyDragon          ', `<a href="polydragon"      >Various</a>`, 'FIRE         ', 'https://polydragon.io'],
-      ['Polycat             ', `<a href="polycat"         >Various</a>`, 'FISH/PAW     ', 'https://polycat.finance'],
+      ['Polycat             ', `<a href="polycat"         >Various</a>`, 'PAW          ', 'https://polycat.finance'],
       ['BoughtThe.top       ', `<a href="boughtthetop"    >Various</a>`, 'BTT          ', 'https://farm.BoughtThe.top'],
       ['PolyStarter         ', `<a href="polystarter"     >Various</a>`, 'STARTER      ', 'https://www.polystarter.fi'],
       ['Polyvolve           ', `<a href="polyvolve"       >Various</a>`, 'SPEAR        ', 'https://polyvolve.finance'],
@@ -328,6 +328,10 @@ const main = async () => {
       ['Space-Defi Halo     ', `<a href="spacedefihalo"   >Various</a>`, 'HALO         ', 'https://Halo.space-Defi.com'],
       ['Evo-Matic           ', `<a href="evomatic"        >Various</a>`, 'GENX         ', 'https://evo-matic.com'],
       ['PickleFarm          ', `<a href="picklefarm"      >Various</a>`, 'PICKLE       ', 'N/A'],
+      ['CottonCandy         ', `<a href="cottoncandy"     >Various</a>`, 'CANDY        ', 'https://cottoncandydefi.com'],
+      ['Astrofarms - Virgo  ', `<a href="astrofarmsvirgo" >Various</a>`, 'VIRGO        ', 'https://virgo.astrofarms.finance'],
+      ['Watersports         ', `<a href="watersports"     >Various</a>`, 'WATER        ', 'https://watersports.finance'],
+      ['BerryFactory-Pavlova', `<a href="pavlova"         >Various</a>`, 'PAVLOVA      ', 'https://pavlovaberry.world']
     ],
   }
 
