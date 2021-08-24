@@ -320,6 +320,8 @@ const main = async () => {
       ['Sunrise'             , `<a href="sunrise"         >Various</a>`, 'SUNRISE      ', 'N/A'],
       ['Arable'              , `<a href="arable"          >Various</a>`, 'ARABELLA     ', 'https://arable.finance'],
       ['Ton Finance         ', `<a href="tomfinance"      >Various</a>`, 'TOM          ', 'https://tomfinance.vip'],
+	  ['Nemo Finance         ', `<a href="nemofinance"      >Various</a>`, 'NEMO          ', 'https://nemofinance.top'],
+	  ['Dice Finance         ', `<a href="dicefinance"      >Various</a>`, 'DICE          ', 'https://dicefinance.pro'],
     ],
   }
 
