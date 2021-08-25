@@ -329,7 +329,8 @@ const main = async () => {
       ['BerryFactory-Pavlova', `<a href="pavlova"         >Various</a>`, 'PAVLOVA      ', 'https://pavlovaberry.world'],
       ['PolyLama            ', `<a href="polylama"        >Various</a>`, 'LAMA         ', 'https://polylama.finance'],
       ['Nemo Finance        ', `<a href="nemofinance"     >Various</a>`, 'NEMO         ', 'https://nemofinance.top'],
-	    ['Dice Finance        ', `<a href="dicefinance"     >Various</a>`, 'DICE         ', 'https://dicefinance.pro']
+	    ['Dice Finance        ', `<a href="dicefinance"     >Various</a>`, 'DICE         ', 'https://dicefinance.pro'],
+      ['Energy 8            ', `<a href="energy8"         >Various</a>`, 'E8           ', 'https://energy8.io/farming']
     ],
   }
 
