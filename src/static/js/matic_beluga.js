@@ -9,19 +9,14 @@ $(function() {
   const VAULT_REGISTRY_ABI = [{"inputs":[{"internalType":"address","name":"_store","type":"address"}],"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"vault","type":"address"},{"indexed":false,"internalType":"string","name":"name","type":"string"}],"name":"RegistryUpdated","type":"event"},{"inputs":[{"internalType":"address","name":"_keeper","type":"address"}],"name":"addKeeper","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"_vault","type":"address"},{"internalType":"string","name":"_name","type":"string"}],"name":"addVault","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address[]","name":"_vaults","type":"address[]"},{"internalType":"string[]","name":"_names","type":"string[]"}],"name":"batchAddVaults","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"governance","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"isVaultRegistered","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"keepers","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"_keeper","type":"address"}],"name":"removeKeeper","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"_store","type":"address"}],"name":"setStorage","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"store","outputs":[{"internalType":"contract Storage","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"_vault","type":"address"},{"internalType":"string","name":"_newName","type":"string"}],"name":"updateVaultName","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"vaultName","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"","type":"uint256"}],"name":"vaults","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"}]
 
   const Address = [
-    "0xD109D9d6f258D48899D7D16549B89122B0536729",
-    "0x90FcA6d7931B4feCAe00c3dD864304AC8848fF7A",
-    "0xa599e42A39dEa9230A8164dEC8316C2522c9cCd7",
-    "0xde2AB86CC044a2905917F3123aD5b833b363298A",
-    "0x3856f4E61f5b28FEE2Fbf322fc03a03AFB930f4f",
-    "0xF4051fdd819c580e4C03fF73cff9a6D9f29Bd48d",
-    "0x5c95b6c16df69e97d5aec4cfefbb1200847d7101",
-    "0x52B8bb74Cde6602AB9e6540e25E0A97f5B3226D7",
-    "0x198265ff748dae52a6c58cee1a91e1457ef957ef",
-    "0xd7c5a3cba73d4c9f042f88928d1cd64b64e76a50",
-    "0x47f9f157317e7e655df30e013ce14730d224d4e5",
-    "0x5f2b2518616907a5f76f25e9e2b67a571879c610",
-    "0x8F2331A864Bd34E17d04623A871f10187c68860f"
+    "0x8F9e76298db4Ed7580766A4bf3228283eA7c3fBF",
+    "0xC6360e82f141316Fd253B34E136c4D7f96A733f8",
+    "0xD728A39CCFB8Ccc16A34607c602F1bDCCf601F00",
+    "0x6731b5a568be03d0Ea9c0Ad9E008e50ce80FBD54",
+    "0xB0202008604744Caeb2a7c4038B83B57B616ef0A",
+    "0x307aFb77958A51518e9e964D82fB0d582Fa6EAC8",
+    "0xbB7564A65B1dB1681C0Cd8Fc07fEd2C80177af3f",
+    "0xd24D5Ab9f7035b0187fCB5AE0Adf2E535969bA6b"
   ]
   
   async function main() {
