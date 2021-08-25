@@ -18,7 +18,7 @@ async function main() {
 
   const blockNumber = await App.provider.getBlockNumber();
   const multiplier = await GOOSE_CHEF.getMultiplier(blockNumber, blockNumber+1);
-  const rewardPerBlock = await GOOSE_CHEF.mochiPerBlock();
+  const rewardPerBlock = await GOOSE_CHEF.eggPerBlock();
   const rewardsPerWeek = rewardPerBlock / 1e18 * multiplier * 604800 / 2
 
     const tokens = {};

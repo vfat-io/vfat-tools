@@ -90,7 +90,13 @@ const main = async() => {
         "Defi Kingdoms",
         `<a href='defikingdoms'>Various</a>`,
         "JEWEL",
-        "https://game.defikingdoms.com/"
+        "https://game.defikingdoms.com"
+      ],
+      [
+        "Rain",
+        `<a href='rain'>Various</a>`,
+        "RAIN",
+        "https://rainfinance.one"
       ]
     ]
   }
