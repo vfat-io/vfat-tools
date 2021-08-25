@@ -36,7 +36,7 @@ $(function() {
       {
         printBelugaContract(p);
         _print("");
-        if (!isNaN(p.poolPrices.tvl)) tvl += p.poolPrices.tvl;
+        if (!isNaN(p.totalSupplyUSD)) tvl += p.totalSupplyUSD;
         if (!isNaN(p.userStaked * p.poolPrices.price)) userTvl += p.userStaked * p.poolPrices.price;
       }
       _print_bold(`\nTotal Value Locked: $${formatMoney(tvl)}`);
@@ -64,7 +64,8 @@ $(function() {
       const userStaked = await contract.balanceOf(App.YOUR_ADDRESS) / 1e18;
       const userEarned = await contract.earned(bGFI_WETH_LP, App.YOUR_ADDRESS)
       const poolPrices = getPoolPrices(tokens, prices, vault, "matic");
-      return { vault, vaultName, poolPrices, userStaked, userEarned, ppfs, totalSupply }
+      const totalSupplyUSD = poolPrices.price * totalSupply;
+      return { vault, vaultName, poolPrices, userStaked, userEarned, ppfs, totalSupply, totalSupplyUSD }
     }
     catch (err) {
       console.log(underlyingContract, err);
@@ -76,12 +77,13 @@ $(function() {
     const poolPrices = poolInfo.poolPrices;
     poolPrices.name = poolInfo.vaultName;
     _print(`${poolPrices.name} Price: $${formatMoney(poolPrices.price)} TVL: $${formatMoney(poolPrices.tvl)}`);
+    _print(`Staked: ${poolInfo.totalSupply.toFixed(8)} ($${(poolInfo.totalSupply * poolPrices.price).toFixed(2)})`);
     var userStakedUsd = poolInfo.userStaked * poolPrices.price;
     var userStakedPct = userStakedUsd / poolPrices.tvl * 100;
     _print(`You are staking ${poolInfo.userStaked.toFixed(4)} ${poolInfo.vaultName} ($${formatMoney(userStakedUsd)}), ${userStakedPct.toFixed(2)}% of the pool.`);
     _print(`You've earned a total of ${poolInfo.userEarned.toFixed(12)} bGFI-WETH-LP in maximizer rewards.`)
     if (poolInfo.userStaked > 0) {
-      _print(`Your stake comprises of ${poolInfo.userStaked * poolInfo.ppfs} ${poolInfo.vault.underlying.symbol}.`)
+      _print(`Your stake comprises of ${poolInfo.userStaked * poolInfo.ppfs} ${poolInfo.vault.symbol}.`)
     }
     _print("");
   }
