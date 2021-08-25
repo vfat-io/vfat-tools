@@ -36,7 +36,7 @@ async function main() {
     null,
     rewardsPerWeek,
     "pendingReward",
-    [0,1,2,3,4], // need to specify to prevent ~0 staked tokens from getting omitted
+    [0,1,2,3,4,5,6], // need to specify to prevent ~0 staked tokens from getting omitted
   );
 
   hideLoading();

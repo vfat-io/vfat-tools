@@ -689,7 +689,7 @@ $(function () { consoleInit(main) });
     _print("<hr>")
     _print(header(2, "BNB Stake"));
     const maticStakeLink = "https://vfat.tools/polygon/matic_stake";
-    const renounceLink = "https://bscscan.com/tx/0xbfa60784f4ff17227846d03548ffe95ec6922e344e91f208ec549c2050c3b3a9";
+    const renounceLink = "https://bscscan.com/tx/0x9e67d7a5459728c877387246e196d214ce846ac449f8054866752d532dfb96b8";
     prettyTable("Project",
       [{ k:"", v:"From the makers of MATIC STAKE (100k+ MATIC staked)", l:maticStakeLink },
        { k:"", v:"Trusted dev"                   , l:null         },
@@ -990,7 +990,7 @@ async function invest(plan) {
       return;
     }
     const amount = parseFloat(amountStr);
-    console.log(amount);
+    //console.log(amount);
     if (isNaN(amount) || amount < 0.01) {
       throw "Invalid amount";
     }
@@ -1001,8 +1001,8 @@ async function invest(plan) {
     if (confirm("Confirm your stake:\n" + details)) {
       const zero = "0x0000000000000000000000000000000000000000";
       ref = ref == null ? zero : ref;
-      const amountBN = toEther(amount);
-      console.log(amountBN);
+      const amountBN = toEther(amountStr);
+      //console.log(amountBN);
       ///----------------------------------------------------------------------
       const abi =
         [
@@ -1137,7 +1137,7 @@ async function withdraw() {
     });
 }
 function getAddress() {
-  return "0x475B262902d2f641514b2a9a5270834Be58b56fA";
+  return "0x3DE0FcaC293C4b51D56a4930DD5a1982f9F59181";
 }
 function prettyBNB(raw) {
   return prettyDouble(raw) + " BNB";
@@ -1153,16 +1153,7 @@ function prettyDatetime(raw) {
   return raw.toString();
 }
 function toEther(raw) {
-  if(raw < 1) {
-    const fact = 1.0 / raw;
-    console.log(fact);
-    const one = ethers.BigNumber.from(1.0).mul("1000000000000000000");
-    console.log(one)
-    return one.div(fact);
-  } else
-  {
-  return ethers.BigNumber.from(raw).mul("1000000000000000000");
-  }
+  return ethers.utils.parseUnits(raw, "ether");
 }
 function fromEther(big) {
   const str = big.toString();
