@@ -75,15 +75,15 @@ async function loadXUnicVaultContract(App, chef, chefAddress, chefAbi, rewardTok
 
   _print("Finished reading smart contracts.\n");
 
-  for (let i = 0; i < poolCount; i++) {
+  /*for (let i = 0; i < poolCount; i++) {
     if (poolPrices[i]) {
       printXUnicVault(App, chefAbi, chefAddress, prices, tokens, poolInfos[i], i, poolPrices[i],
         rewardTokenTicker, rewardTokenAddress,
         pendingRewardsFunction);
     }
-  }
+  }*/
 
-  /*let aprs = []
+  let aprs = []
   for (let i = 0; i < poolCount; i++) {
     if (poolPrices[i]) {
       const apr = printXUnicVault(App, chefAbi, chefAddress, prices, tokens, poolInfos[i], i, poolPrices[i],
@@ -104,7 +104,7 @@ async function loadXUnicVaultContract(App, chef, chefAddress, chefAbi, rewardTok
   _print_bold(`Total Staked: $${formatMoney(totalStaked)}`);
   if (totalUserStaked > 0) {
     _print_bold(`You are staking a total of $${formatMoney(totalUserStaked)}`)
-  }*/
+  }
 }
 
 async function getXUnicVaultInfo(app, chefContract, chefAddress, poolIndex, pendingRewardsFunction, unicChef) {
@@ -129,10 +129,16 @@ function printXUnicVault(App, chefAbi, chefAddr, prices, tokens, poolInfo, poolI
   fixedDecimals = fixedDecimals ?? 2;
   const sp = (poolInfo.stakedToken == null) ? null : getPoolPrices(tokens, prices, poolInfo.stakedToken, chain);
   const userStaked = poolInfo.userLPStaked ?? poolInfo.userStaked;
-  const rewardPrice = getParameterCaseInsensitive(prices, rewardTokenAddress)?.usd;
+  //const rewardPrice = getParameterCaseInsensitive(prices, rewardTokenAddress)?.usd;
+  const userStakedUsd = userStaked * poolPrices.price;
   const staked_tvl = sp?.staked_tvl ?? poolPrices.staked_tvl;
   _print_inline(`${poolIndex} - `);
   poolPrices.print_price(chain);
   sp?.print_price(chain);
+  if(userStaked > 0){
+    _print(`You are staking ${userStaked.toFixed(fixedDecimals)} ($${(userStaked * poolPrices.price).toFixed(fixedDecimals)})`);
+  }
   _print("");
+  return{ totalStakedUsd : staked_tvl,
+          userStakedUsd }
 }
