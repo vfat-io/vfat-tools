@@ -23,7 +23,7 @@ $(function () {
         const prices = await getMaticPrices();
     
         await loadMaticChefContract(App, tokens, prices, LITTLEFARMER_CHEF, LITTLEFARMER_CHEF_ADDR, LITTLEFARMER_CHEF_ABI, rewardTokenTicker,
-            "lfarmer", null, rewardsPerWeek, "pendingLittleFarmer", [8]);
+            "littlefarmer", null, rewardsPerWeek, "pendingLittleFarmer");
     
         hideLoading();
     }
