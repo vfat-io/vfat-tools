@@ -331,7 +331,8 @@ const main = async () => {
       ['Nemo Finance        ', `<a href="nemofinance"     >Various</a>`, 'NEMO         ', 'https://nemofinance.top'],
 	    ['Dice Finance        ', `<a href="dicefinance"     >Various</a>`, 'DICE         ', 'https://dicefinance.pro'],
       ['Energy 8            ', `<a href="energy8"         >Various</a>`, 'E8           ', 'https://energy8.io/farming'],
-      ['Beluga              ', `<a href="beluga"          >Various</a>`, 'Various      ', 'https://app.beluga.fi']
+      ['Beluga              ', `<a href="beluga"          >Various</a>`, 'Various      ', 'https://app.beluga.fi'],
+      ['Little Farmer       ', `<a href="littlefarmer"    >Various</a>`, 'LFARMER      ', 'https://www.littlefarmer.finance'],
     ],
   }
 
