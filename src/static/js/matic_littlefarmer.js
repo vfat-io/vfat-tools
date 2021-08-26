@@ -15,7 +15,7 @@ $(function () {
         const rewardTokenTicker = "LFARMER";
         const LITTLEFARMER_CHEF = new ethers.Contract(LITTLEFARMER_CHEF_ADDR, LITTLEFARMER_CHEF_ABI, App.provider);
     
-        const rewardsPerWeek = await LITTLEFARMER_CHEF.lfarmerPerBlock() / 1e18 *
+        const rewardsPerWeek = await LITTLEFARMER_CHEF.littlefarmerPerBlock() / 1e18 *
                 604800 / 2.1;
         
     
@@ -23,7 +23,7 @@ $(function () {
         const prices = await getMaticPrices();
     
         await loadMaticChefContract(App, tokens, prices, LITTLEFARMER_CHEF, LITTLEFARMER_CHEF_ADDR, LITTLEFARMER_CHEF_ABI, rewardTokenTicker,
-            "lfarmer", null, rewardsPerWeek, "pendingLfarmer", [8]);
+            "lfarmer", null, rewardsPerWeek, "pendingLittleFarmer", [8]);
     
         hideLoading();
     }
