@@ -73,6 +73,11 @@ $(function() {
       const vault = await getMaticToken(App, underlyingContractAddress, App.YOUR_ADDRESS);
       const vaultName = await registry.vaultName(contractAddress)
       const isVaultMaximizer = vaultName.toLowerCase().split(" ").includes("maximizer")
+      const isVaultLPToken = vault.name.toLowerCase().includes("LP")
+      let lpToken
+      if(isVaultLPToken == true) {
+         lpToken = await getMaticUniPool(App, 
+      }
       var newTokenAddresses = vault.tokens.filter(x => !getParameterCaseInsensitive(tokens, x));
       for (const address of newTokenAddresses) {
           tokens[address] = await getMaticToken(App, address, underlyingContractAddress);
@@ -83,7 +88,16 @@ $(function() {
       const userEarned = await contract.earned(bGFI_WETH_LP, App.YOUR_ADDRESS)
       const poolPrices = getPoolPrices(tokens, prices, vault, "matic");
       const totalSupplyUSD = poolPrices.price * totalSupply;
-      return { vault, vaultName, isVaultMaximizer, poolPrices, userStaked, userEarned, ppfs, totalSupply, totalSupplyUSD }
+      // Fetch LP values.
+      let userPct
+      let q0User
+      let q1User
+      if(isVaultLPToken == true) {
+        userPct = lpToken.unstaked / lpToken.totalSupply
+        q0User = userPct * lpToken.q0 / 1e18
+        q1User = userPct * lpToken.q1 / 1e18
+      }
+      return { vault, vaultName, isVaultMaximizer, poolPrices, userStaked, userEarned, ppfs, totalSupply, totalSupplyUSD, q0User, q1User }
     }
     catch (err) {
       console.log(underlyingContract, err);
@@ -99,6 +113,7 @@ $(function() {
     var userStakedUsd = poolInfo.userStaked * poolPrices.price;
     var userStakedPct = userStakedUsd / poolPrices.tvl * 100;
     _print(`You are staking ${poolInfo.userStaked.toFixed(4)} ${poolInfo.vaultName} ($${formatMoney(userStakedUsd)}), ${userStakedPct.toFixed(2)}% of the pool.`);
+    _print(`Your LP tokens comprise of ${poolInfo.q0user.toFixed(2)} ${poolPrices.t0.symbol} + ${poolInfo.q1user.toFixed(2)} ${poolPrices.t1.symbol}`);
     if (poolInfo.userStaked > 0) {
       _print(`Your stake comprises of ${poolInfo.userStaked * poolInfo.ppfs} ${poolInfo.vault.symbol}.`)
         if(poolInfo.isVaultMaximizer) {
