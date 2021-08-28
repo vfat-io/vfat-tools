@@ -97,6 +97,12 @@ const main = async() => {
         `<a href='rain'>Various</a>`,
         "RAIN",
         "https://rainfinance.one"
+      ],
+        [
+        "FATExDAO",
+        `<a href='fatex'>Various</a>`,
+        "FATE",
+        "https://app.fatex.io"
       ]
     ]
   }
