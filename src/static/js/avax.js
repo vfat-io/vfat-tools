@@ -26,7 +26,8 @@ const main = async() => {
         ["Avme        ",`<a href="avme"       >Various</a>`,"AVME     ","https://avme.io"],
         ["TraderJoe   ",`<a href="traderjoe"  >Various</a>`,"JOE      ","https://www.traderjoexyz.com"],
         ["Frost       ",`<a href="tundra"     >Various</a>`,"TUNDRA   ","https://frostfinance.farm" ],
-        ["Zabu        ",`<a href="zabu"       >Various</a>`,"ZABU     ","https://zabu.finance" ]
+        ["Zabu        ",`<a href="zabu"       >Various</a>`,"ZABU     ","https://zabu.finance" ],
+        ["DutchFinance   ",`<a href="dutch"   >Various</a>`,"DUTCH    ","https://avax.theflyingdutchman.finance" ]
     ]
   }
 
