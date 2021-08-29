@@ -334,7 +334,8 @@ const main = async () => {
       ['Beluga              ', `<a href="beluga"          >Various</a>`, 'Various      ', 'https://app.beluga.fi'],
       ['Little Farmer       ', `<a href="littlefarmer"    >Various</a>`, 'LFARMER      ', 'https://www.littlefarmer.finance'],
       ['Jaguar              ', `<a href="jaguar"          >Various</a>`, 'JAGUAR       ', 'https://polygon.jaguarswap.com'],
-      ['PolyDino            ', `<a href="polydino"        >Various</a>`, 'DINO         ', 'https://polydino.finance']
+      ['PolyDino            ', `<a href="polydino"        >Various</a>`, 'DINO         ', 'https://polydino.finance'],
+      ['Dynamis             ', `<a href="dynamis"         >Various</a>`, 'DYNA         ', 'https://dynamis.finance']
     ],
   }
 
