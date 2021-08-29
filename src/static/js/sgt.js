@@ -40,5 +40,19 @@ async function main() {
     _print(`You are staking a total of $${formatMoney(p.totalUserStaked)} at an APR of ${(p.totalAPR * 100).toFixed(2)}%\n`);
   }
 
+  _print("New SGT v2 pools below...\n");
+  await loadSGTv2Chef(App);
+
   hideLoading();
+}
+
+async function loadSGTv2Chef(App) {
+  const SGT_CHEF_ADDR = "todo";
+  const SGT_CHEF_ABI = [ { "inputs": [ { "internalType": "uint256", "name": "_pid", "type": "uint256" }, { "internalType": "uint256", "name": "_amount", "type": "uint256" } ], "name": "deposit", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [ { "internalType": "uint256", "name": "pid", "type": "uint256" } ], "name": "poolInfo", "outputs": [ { "components": [ { "internalType": "contract IERC20", "name": "lpToken", "type": "address" }, { "internalType": "uint256", "name": "allocPoint", "type": "uint256" }, { "internalType": "uint256", "name": "lastRewardBlock", "type": "uint256" }, { "internalType": "uint256", "name": "accSushiPerShare", "type": "uint256" } ], "internalType": "struct IMasterChef.PoolInfo", "name": "", "type": "tuple" } ], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "totalAllocPoint", "outputs": [ { "internalType": "uint256", "name": "", "type": "uint256" } ], "stateMutability": "view", "type": "function" } ]
+  const SGT_CHEF = new ethers.Contract(SGT_CHEF_ADDR, SGT_CHEF_ABI, App.provider);
+  const SGT_REWARD_TOKEN_TICKER = "SGT";
+  const rewardsPerWeek = await SGT_CHEF.rewardPerSecond() / 1e18 * 604800;
+
+  await loadChefContract(App, SGT_CHEF, SGT_CHEF_ADDR, SGT_CHEF_ABI,
+    SGT_REWARD_TOKEN_TICKER, "reward", null, rewardsPerWeek, "pendingReward");
 }
