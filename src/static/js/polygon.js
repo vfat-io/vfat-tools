@@ -331,7 +331,8 @@ const main = async () => {
       ['CottonCandy         ', `<a href="cottoncandy"     >Various</a>`, 'CANDY        ', 'https://cottoncandydefi.com'],
       ['Astrofarms - Virgo  ', `<a href="astrofarmsvirgo" >Various</a>`, 'VIRGO        ', 'https://virgo.astrofarms.finance'],
       ['Watersports         ', `<a href="watersports"     >Various</a>`, 'WATER        ', 'https://watersports.finance'],
-      ['BerryFactory-Pavlova', `<a href="pavlova"         >Various</a>`, 'PAVLOVA      ', 'https://pavlovaberry.world']
+      ['BerryFactory-Pavlova', `<a href="pavlova"         >Various</a>`, 'PAVLOVA      ', 'https://pavlovaberry.world'],
+      ['BerryFactory-Muffin ', `<a href="muffin"          >Various</a>`, 'MUFFIN       ', 'https://muffinberry.world']
     ],
   }
 
