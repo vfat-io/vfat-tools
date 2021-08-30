@@ -272,7 +272,7 @@ async function printXdoPool(App, info, chain="eth", customURLs) {
   const revoke = async function() {
     return rewardsContract_resetApprove(info.stakeTokenAddress, info.stakingAddress, App)
   }
-  _print(`<a target="_blank" href="https://explorer-mainnet.maticvigil.com/address/${info.stakingAddress}#code">Polygon Explorer</a>`);
+  _print(`<a target="_blank" href="https://cchain.explorer.avax.network/address/${info.stakingAddress}/contracts">Avax Explorer</a>`);
   if (info.stakeTokenTicker != "ETH") {
     _print_link(`Stake ${info.userUnstaked.toFixed(6)} ${info.stakeTokenTicker}`, approveTENDAndStake)
   }
@@ -329,7 +329,7 @@ async function printXDollarPool(App, info, chain="eth", customURLs) {
   const revoke = async function() {
     return rewardsContract_resetApprove(info.stakeTokenAddress, info.stakingAddress, App)
   }
-  _print(`<a target="_blank" href="https://explorer-mainnet.maticvigil.com/address/${info.stakingAddress}#code">Polygon Explorer</a>`);
+  _print(`<a target="_blank" href="https://cchain.explorer.avax.network/address/${info.stakingAddress}/contracts">Avax Explorer</a>`);
   if (info.stakeTokenTicker != "ETH") {
     _print_link(`Stake ${info.userUnstaked.toFixed(6)} ${info.stakeTokenTicker}`, approveTENDAndStake)
   }
