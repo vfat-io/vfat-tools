@@ -216,7 +216,7 @@ async function loadXDollarPoolInfo(App, tokens, prices, stakingAbi, stakingAddre
       const rewardTokenPrice = getParameterCaseInsensitive(prices, rewardTokenAddress)?.usd;
       rewardTokenPrices.push(rewardTokenPrice);
     }
-    const weeklyRewards = (16000000 * 50 / 100) / 52;
+    const weeklyRewards = 3000000 / 52
 
     const usdPerWeek = weeklyRewards * rewardTokenPrices[0];
 
