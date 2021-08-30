@@ -20,6 +20,8 @@ const avaxTokens = [
     { "id": 'bitcoin', "symbol": 'WBTC', "contract": '0x50b7545627a5162F82A992c33b87aDc75187B218' },
     { "id": 'sushi', "symbol": 'SUSHI.e', "contract": '0x37B608519F91f70F2EeB0e5Ed9AF4061722e4F76' },
     { "id": 'penguin-finance', "symbol": 'PEFI', "contract": '0xe896CDeaAC9615145c0cA09C8Cd5C25bced6384c' },
+    { "id": 'xdollar', "symbol": 'XDO', "contract": '0x9ef758ac000a354479e538b8b2f01b917b8e89e7' },
+    { "id": 'wrapped-avax', "symbol": 'WAVAX', "contract": '0xb31f66aa3c1e785363f0875a1b74e27b85fd66c7' }
 ]
 
 async function getAvaxPrices() {
