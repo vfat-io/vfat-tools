@@ -25,10 +25,10 @@ const main = async() => {
         ["Avalaunch   ",`<a href="avalaunch"  >Various</a>`,"XAVA     ","https://farm.avalaunch.app"],
         ["Avme        ",`<a href="avme"       >Various</a>`,"AVME     ","https://avme.io"],
         ["TraderJoe   ",`<a href="traderjoe"  >Various</a>`,"JOE      ","https://www.traderjoexyz.com"],
-        ["AVAX STAKE  ",`<a href="avax_stake" >STAKE</a>`  ,"AVAX     ","https://t.me/matic_stake" ],
-        ["Frost       ",`<a href="tundra"     >Various</a>`,"TUNDRA   ","https://frostfinance.farm/" ]
-
-      ]
+        ["Frost       ",`<a href="tundra"     >Various</a>`,"TUNDRA   ","https://frostfinance.farm" ],
+        ["Zabu        ",`<a href="zabu"       >Various</a>`,"ZABU     ","https://zabu.finance" ],
+        ["DutchFinance   ",`<a href="dutch"   >Various</a>`,"DUTCH    ","https://avax.theflyingdutchman.finance" ]
+    ]
   }
 
   let table = new AsciiTable().fromJSON(tableData);

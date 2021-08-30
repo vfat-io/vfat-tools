@@ -10,7 +10,7 @@ consoleInit(main)
     _print(`Initialized ${App.YOUR_ADDRESS}\n`);
     _print("Reading smart contracts...\n");
 
-    const SWM_CHEF_ADDR = "0xD38abbAeC03a9FF287eFc9a5F0d0580E07335D1D";
+    const SWM_CHEF_ADDR = "0xE13c0Ec78D283eb8Cca72Edd018a9c13AD0E002a";
     const rewardTokenTicker = "SWM";
     const SWM_CHEF = new ethers.Contract(SWM_CHEF_ADDR, SWM_STAKING_ABI, App.provider);
     const rewardsPerWeek = await SWM_CHEF.avgRewardsPerSecondTotal() / 1e18

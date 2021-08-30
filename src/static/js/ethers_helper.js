@@ -74,12 +74,11 @@ const init_wallet = async function (callback) {
       start(callback);
     } else {
       _print(`You are connected to ${networkNameFromId(connectedNetwork.chainId)}, please switch to ${targetNetwork.chainName} network`)
-      if (window.ethereum && targetNetwork.chainId !== '0x1') {
-        _print('')
-        _print_link("[SWITCH NETWORK]", () => switchNetwork(targetNetwork), "connect_wallet_button", false)
-        _print_inline(' -=- ');
-        _print_link("[CLEAR BROWSER STORAGE]", clearLocalStorage, "clear_browser_storage");
-      }
+      _print('')
+      _print_link("[SWITCH NETWORK]", () => switchNetwork(targetNetwork), "connect_wallet_button", false)
+      _print_inline(' -=- ');
+      _print_link("[CLEAR BROWSER STORAGE]", clearLocalStorage, "clear_browser_storage");
+
       hideLoading()
     }
   } else {
@@ -170,7 +169,11 @@ async function init_ethers() {
 }
 
 const switchNetwork = async function(network) {
-  await window.ethereum.request({method: 'wallet_addEthereumChain', params: [network]}).catch()
+    if (network.chainId === '0x1') {
+        await window.ethereum.request({method: 'wallet_switchEthereumChain', params: [{chainId: network.chainId }]}).catch()
+    } else {
+        await window.ethereum.request({method: 'wallet_addEthereumChain', params: [network]}).catch()
+    }
   window.location.reload()
 }
 
