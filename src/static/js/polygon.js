@@ -336,7 +336,8 @@ const main = async () => {
       ['Jaguar              ', `<a href="jaguar"          >Various</a>`, 'JAGUAR       ', 'https://polygon.jaguarswap.com'],
       ['PolyDino            ', `<a href="polydino"        >Various</a>`, 'DINO         ', 'https://polydino.finance'],
       ['Dynamis             ', `<a href="dynamis"         >Various</a>`, 'DYNA         ', 'https://dynamis.finance'],
-      ['BerryFactory-Muffin ', `<a href="muffin"          >Various</a>`, 'MUFFIN       ', 'https://muffinberry.world']
+      ['BerryFactory-Muffin ', `<a href="muffin"          >Various</a>`, 'MUFFIN       ', 'https://muffinberry.world'],
+      ['PolyPulsar Gamma    ', `<a href="polypulsar_gamma">Various</a>`, 'GPUL         ', 'https://gamma.polypulsar.farm']
     ],
   }
 
