@@ -28,7 +28,8 @@ const main = async() => {
         ["Frost       ",`<a href="tundra"     >Various</a>`,"TUNDRA   ","https://frostfinance.farm" ],
         ["Zabu        ",`<a href="zabu"       >Various</a>`,"ZABU     ","https://zabu.finance" ],
         ["DutchFinance",`<a href="dutch"      >Various</a>`,"DUTCH    ","https://avax.theflyingdutchman.finance" ],
-        ["Xdollar     ",`<a href="xdollar"    >Various</a>`,"XDO      ","https://xdollar-avax.mcn.ventures" ]
+        ["Xdollar     ",`<a href="xdollar"    >Various</a>`,"XDO      ","https://xdollar-avax.mcn.ventures" ],
+        ["Eskimo      ",`<a href="eskimo"     >Various</a>`,"ESKI     ","https://eskimo.farm" ]
     ]
   }
 
