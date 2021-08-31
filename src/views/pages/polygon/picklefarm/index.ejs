@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include(`${partials}/head`); -%>
+
+<body>
+<%- include(`${partials}/header_main`); -%>
+<pre id="log">
+***************************** POLYGON NETWORK *********************************
+
+*************************** 👨‍🌾 PICKLE FARM 👨‍🌾 ********************************
+
+*** If you are being rate limited, please select a different RPC URL from here https://docs.matic.network/docs/develop/network-details/network/ ***
+
+
+A RugDoc review for PickleFarm will be posted, prior to or shortly after farming starts, in the Telegram channel below.
+
+MasterChef Contract: <a href="https://polygonscan.com/address/0x05EcA63A4c443bA1303f57e03C5e16f08D12EEAA#readContract">0x05EcA63A4c443bA1303f57e03C5e16f08D12EEAA</a>
+PICKLE Token Contract: <a href="https://polygonscan.com/address/0x7c4fa2d732df74b5fb9bccac9e755530e8e0d9a2#readContract">0x7c4fa2d732df74b5fb9bccac9e755530e8e0d9a2</a>
+
+Tokenomics: 
+    <b>62 100 max token supply / Emission Rate: 0.015 PICKLE / Block</b>
+    
+
+Feenomics: 
+    <b>33.3% Goes back to Liquidity Pool.</b>
+    <b>16.7% Will be used to BUYBACK AND BURN.</b>
+    <b>33.3% Will be used for Marketing for the Farm as well as our Native Token.</b>
+    <b>16.7% Will be used to pay for the team and for further projects.</b>
+
+
+Farming start (estimated): <a href="https://polygonscan.com/block/countdown/18755000">https://polygonscan.com/block/countdown/18755000</a>
+
+PICKLE/USDC Chart: <a href="https://polygon.poocoin.app/tokens/0x7c4fa2d732df74b5fb9bccac9e755530e8e0d9a2">PooCoin</a>
+
+Telegram channel: <a href="https://t.me/PickleFarm">PickleFarm</a>
+
+A Layer 2 will be Announced in the Future. Stay Tuned!.
+
+<b>NOTE: MasterChef and Token ownership will be renounced at or before the farming start block. Proof will be posted in the Telegram channel linked above.</b>
+
+</pre>
+<div class="loader--1"></div>
+<%- include(`${partials}/scripts`, {scriptname: 'matic_picklefarm'}); -%>
+</body>
+</html>

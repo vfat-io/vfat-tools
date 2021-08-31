@@ -59,7 +59,7 @@ const main = async() => {
       [
         "Beefy",
         `<a href='beefy'>Various</a>`,
-        "Various",
+        "BIFI",
         "https://fantom.beefy.finance"
       ],
       [
@@ -99,7 +99,7 @@ const main = async() => {
         "https://waka.finance"
       ],
       [
-        "Elk",
+        "Elk *",
         `<a href='elk'>Various</a>`,
         "ELK",
         "https://app.elk.finance"
@@ -113,13 +113,13 @@ const main = async() => {
       [
         "Tomb",
         `<a href='tomb'>Various</a>`,
-        "Various",
+        "TOMB",
         "https://tomb.finance"
       ],
       [
         "Shadow",
         `<a href='shadow'>Various</a>`,
-        "Various",
+        "SHADOW",
         "https://shadowswap.app"
       ],
       [
@@ -142,7 +142,7 @@ const main = async() => {
       ],
       [
         "Guru",
-        `<a href='guru'>Various</a>`,
+        `<a href='guru'>ELITE-WFTM SLP</a>`,
         "ELITE",
         "https://ftm.guru"
       ],
@@ -155,7 +155,7 @@ const main = async() => {
       [
         "Mlnl",
         `<a href="mlnl">Various</a>`,
-        "Various",
+        "MLNL",
         "https://milfinance.xyz"
       ],
       [
@@ -209,7 +209,7 @@ const main = async() => {
       [
         "Grim",
         `<a href='grim'>Various</a>`,
-        "Various",
+        "GRIM",
         "https://app.grim.finance"
       ],
       [
@@ -229,6 +229,78 @@ const main = async() => {
         `<a href='behodl'>Various</a>`,
         "beHODL",
         "N/A"
+      ],
+      [
+        "AURA",
+        `<a href='aura'>Various</a>`,
+        "AURA",
+        "https://dapp.aurafi.org/"
+      ],
+      [
+        "Galaxy Finance One",
+        `<a href='galaxy_triton'>Various</a>`,
+        "TRITON",
+        "https://fantom-triton.galaxyfinance.one/"
+      ],
+      [
+        "ShibaSwap - GBONE",
+        `<a href='shibaswap'>Various</a>`,
+        "GBONE",
+        "https://shibafantom.finance"
+      ],
+      [
+        "ShibaSwap - BONE",
+        `<a href='shibaswap_bone'>Various</a>`,
+        "BONE",
+        "https://shibafantom.finance"
+      ],
+      [
+        "Guru - LF#1",
+        `<a href='guru_lite1'>NIPS-WFTM ZDEXLP</a>`,
+        "NIPS",
+        "https://ftm.guru/LF/1"
+      ],
+      [
+        "Yield Enhancement Labs",
+        `<a href='yel'>Various</a>`,
+        "YEL",
+        "https://yel.finance"
+      ],
+      [
+        "Guru - LF#2001",
+        `<a href='guru_lite2001'>Nova-WFTM spLP</a>`,
+        "BLK",
+        "https://ftm.guru/LF/2001"
+      ],
+      [
+        "Guru - LF#2002",
+        `<a href='guru_lite2002'>Nova-BLK spLP</a>`,
+        "Nova",
+        "https://ftm.guru/LF/2002"
+      ],
+      [
+        "Bomb",
+        `<a href='fbomb'>Various</a>`,
+        "SHRAP",
+        "https://app.fbomb.finance"
+      ],
+      [
+        "xDao",
+        `<a href='xdao'>Various</a>`,
+        "HTZ",
+        "https://thexdao.com"
+      ],
+      [
+        "Guru - YS#2",
+        `<a href='guru_ys2'>ELITE-WFTM spLP</a>`,
+        "ELITE",
+        "https://ftm.guru/YS/2"
+      ],
+      [
+        "Guru - LF#23",
+        `<a href='guru_lite23'>DEATH-WFTM spLP</a>`,
+        "DEATH",
+        "https://ftm.guru/LF/23"
       ]
     ]
   }

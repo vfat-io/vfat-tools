@@ -14,7 +14,7 @@ const main = async() => {
         ["Yeti        ",`<a href="yeti"       >Various</a>`,"YTS      ","https://exchange.yetiswap.app"],
         ["Pandaswap   ",`<a href="panda"      >Various</a>`,"BAMBOO   ","https://pandaswap.exchange"],
         ["Pefi        ",`<a href="pefi"       >Various</a>`,"PEFI     ","https://penguinfinance.org"],
-        ["Elk         ",`<a href="elk"        >Various</a>`,"ELK      ","https://elk.finance"],
+        ["Elk *       ",`<a href="elk"        >Various</a>`,"ELK      ","https://elk.finance"],
         ["Snowball    ",`<a href="snowball"   >Various</a>`,"SNOB     ","https://snowball.network/earn"],
         ["Olive       ",`<a href="olive"      >Various</a>`,"OLIVE    ","https://avax.olive.cash"],
         ["Lydia       ",`<a href="lydia"      >Various</a>`,"LYD      ","https://www.lydia.finance"],
@@ -25,9 +25,14 @@ const main = async() => {
         ["Avalaunch   ",`<a href="avalaunch"  >Various</a>`,"XAVA     ","https://farm.avalaunch.app"],
         ["Avme        ",`<a href="avme"       >Various</a>`,"AVME     ","https://avme.io"],
         ["TraderJoe   ",`<a href="traderjoe"  >Various</a>`,"JOE      ","https://www.traderjoexyz.com"],
+        ["Frost       ",`<a href="tundra"     >Various</a>`,"TUNDRA   ","https://frostfinance.farm" ],
+        ["Zabu        ",`<a href="zabu"       >Various</a>`,"ZABU     ","https://zabu.finance" ],
+        ["DutchFinance",`<a href="dutch"      >Various</a>`,"DUTCH    ","https://avax.theflyingdutchman.finance" ],
+        ["Xdollar     ",`<a href="xdollar"    >Various</a>`,"XDO      ","https://xdollar-avax.mcn.ventures" ],
+        ["CrabFinance ",`<a href="crab   "    >Various</a>`,"CRAB     ","https://crabfinance.live" ],
+        ["Eskimo      ",`<a href="eskimo"     >Various</a>`,"ESKI     ","https://eskimo.farm" ],
         ['Bcharity    ',`<a href="bcharity"   >Various</a>`,'Give     ', 'https://avaxgive.netlify.app/'],
-
-      ]
+    ]
   }
 
   let table = new AsciiTable().fromJSON(tableData);

@@ -46,6 +46,21 @@ window.NETWORKS = {
       "https://etherscan.io"
     ]
   },
+  ARBITRUM: {
+    "chainId": "0xa4b1",
+    "chainName": "Arbitrum Mainnet",
+    "nativeCurrency": {
+      "name": "Ether",
+      "symbol": "ETH",
+      "decimals": 18
+    },
+    "rpcUrls": [
+      "https://arb1.arbitrum.io/rpc"
+    ],
+    "blockExplorerUrls": [
+      "https://explorer.arbitrum.io"
+    ]
+  },
   BINANCE_SMART_CHAIN: {
     "chainId": "0x38",
     "chainName": "Binance Smart Chain Mainnet",
@@ -55,6 +70,7 @@ window.NETWORKS = {
       "decimals": 18
     },
     "rpcUrls": [
+      "https://bsc-dataseed.binance.org",
       "https://bsc-dataseed1.binance.org",
       "https://bsc-dataseed2.binance.org",
       "https://bsc-dataseed3.binance.org",
@@ -67,7 +83,7 @@ window.NETWORKS = {
       "https://bsc-dataseed2.ninicoin.io",
       "https://bsc-dataseed3.ninicoin.io",
       "https://bsc-dataseed4.ninicoin.io",
-      "wss://bsc-ws-node.nariox.org"
+      "wss://bsc-ws-node.nariox.org:443"
     ],
     "blockExplorerUrls": [
       "https://bscscan.com"
@@ -83,7 +99,11 @@ window.NETWORKS = {
     },
     "rpcUrls": [
       "https://http-mainnet.hecochain.com",
+      "https://http-mainnet-node.huobichain.com",
       "wss://ws-mainnet.hecochain.com"
+    ],
+    "blockExplorerUrls": [
+      "https://hecoinfo.com"
     ]
   },
   POLYGON: {
@@ -96,7 +116,25 @@ window.NETWORKS = {
     },
     "rpcUrls": [
       "https://rpc-mainnet.matic.network",
-      "wss://ws-mainnet.matic.network"
+      "https://matic-mainnet.chainstacklabs.com",
+      "https://rpc-mainnet.maticvigil.com",
+      "https://rpc-mainnet.matic.quiknode.pro",
+      "https://matic-mainnet-full-rpc.bwarelabs.com",
+      "https://matic-mainnet-archive-rpc.bwarelabs.com",
+      "wss://ws-mainnet.matic.network",
+      "wss://rpc-mainnet.matic.network",
+      "wss://ws-matic-mainnet.chainstacklabs.com",
+      "wss://rpc-mainnet.maticvigil.com/ws",
+      "wss://rpc-mainnet.matic.quiknode.pro",
+      "wss://matic-mainnet-full-ws.bwarelabs.com",
+      "wss://matic-mainnet-archive-ws.bwarelabs.com"
+    ],
+    "blockExplorerUrls": [
+      "https://polygonscan.com",
+      "https://polygon-explorer-mainnet.chainstacklabs.com",
+      "https://explorer-mainnet.maticvigil.com",
+      "https://explorer.matic.network",
+      "https://backup-explorer.matic.network"
     ]
   },
   XDAI: {
@@ -115,6 +153,9 @@ window.NETWORKS = {
       "http://xdai.poanetwork.dev",
       "https://dai.poa.network",
       "ws://xdai.poanetwork.dev:8546"
+    ],
+    "blockExplorerUrls": [
+      "https://blockscout.com/xdai/mainnet"
     ]
   },
   AVALANCHE: {
@@ -127,6 +168,10 @@ window.NETWORKS = {
     },
     "rpcUrls": [
       "https://api.avax.network/ext/bc/C/rpc"
+    ],
+    "blockExplorerUrls": [
+      "https://explorer.avax.network",
+      "https://cchain.explorer.avax.network"
     ]
   },
   FANTOM: {
@@ -154,6 +199,9 @@ window.NETWORKS = {
     },
     "rpcUrls": [
       "https://api.harmony.one"
+    ],
+    "blockExplorerUrls": [
+      "https://explorer.harmony.one"
     ]
   },
   HARMONY_S1: {
@@ -166,6 +214,9 @@ window.NETWORKS = {
     },
     "rpcUrls": [
       "https://s1.api.harmony.one"
+    ],
+    "blockExplorerUrls": [
+      "https://explorer.harmony.one"
     ]
   },
   HARMONY_S2: {
@@ -178,6 +229,9 @@ window.NETWORKS = {
     },
     "rpcUrls": [
       "https://s2.api.harmony.one"
+    ],
+    "blockExplorerUrls": [
+      "https://explorer.harmony.one"
     ]
   },
   HARMONY_S3: {
@@ -190,6 +244,9 @@ window.NETWORKS = {
     },
     "rpcUrls": [
       "https://s3.api.harmony.one"
+    ],
+    "blockExplorerUrls": [
+      "https://explorer.harmony.one"
     ]
   },
   FUSE: {
@@ -217,6 +274,8 @@ window.NETWORKS = {
     },
     "rpcUrls": [
         "https://mainnet-rpc.thundercore.com",
+        "https://mainnet-rpc.thundertoken.net",
+        "https://mainnet-rpc.thundercore.io",
         "wss://mainnet-ws.thundercore.com"
     ],
     "blockExplorerUrls": [
@@ -271,10 +330,14 @@ const providerOptions = {
         100: "https://rpc.xdaichain.com",
         43114: "https://api.avax.network/ext/bc/C/rpc",
         250: "https://rpcapi.fantom.network",
+        42161: "https://arb1.arbitrum.io/rpc",
         1666600000: "https://api.harmony.one",
         1666600001: "https://s1.api.harmony.one",
         1666600002: "https://s2.api.harmony.one",
         1666600003: "https://s3.api.harmony.one",
+        122: "https://rpc.fuse.io",
+        66: "https://exchainrpc.okex.org",
+        321: "https://rpc-mainnet.kcc.network"
       }
     }
   }

@@ -1,10 +1,27 @@
-const avaxTokens = [ 
+const avaxTokens = [
     { "id": "avalanche-2","symbol": "AVAX","contract": "0xB31f66AA3C1e785363F0875A1B74E27b85FD66c7" },
     { "id": "pangolin","symbol": "PNG", "contract": "0x60781C2586D68229fde47564546784ab3fACA982" },
     { "id": "weth","symbol": "WETH", "contract": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2" },
+    { "id": "weth","symbol": "WETH.e", "contract": "0x49d5c2bdffac6ce2bfdb6640f4f80f226bc10bab" },
     { "id": "dai","symbol": "DAI", "contract": "0xbA7dEebBFC5fA1100Fb055a87773e1E99Cd3507a" },
-    { "id": "snowball","symbol": "SNOB", "contract": "0xc38f41a296a4493ff429f1238e030924a1542e50" },
-    { "id": "sushi","symbol": "SUSHI", "contract": "0x39cf1BD5f15fb22eC3D9Ff86b0727aFc203427cc" }
+    { "id": "dai","symbol": "DAI.e", "contract": "0xd586e7f844cea2f87f50152665bcbc2c279d8d70" },
+    { "id": "snowball-token","symbol": "SNOB", "contract": "0xc38f41a296a4493ff429f1238e030924a1542e50" },
+    { "id": "sushi","symbol": "SUSHI", "contract": "0x39cf1BD5f15fb22eC3D9Ff86b0727aFc203427cc" },
+    { "id": "benqi","symbol": "QI", "contract": "0x8729438eb15e2c8b576fcc6aecda6a148776c0f5" },
+    { "id": "tether", "symbol": "USDT.e", "contract": "0xc7198437980c041c805a1edcba50c1ce5db95118" },
+    { "id": 'uniswap', "symbol": 'UNI', "contract": '0x8eBAf22B6F053dFFeaf46f4Dd9eFA95D89ba8580' },
+    { "id": 'chainlink', "symbol": 'LINK', "contract": '0x5947BB275c521040051D82396192181b413227A3' },
+    { "id": 'aave', "symbol": 'AAVE', "contract": '0x63a72806098Bd3D9520cC43356dD78afe5D386D9' },
+    { "id": 'yearn-finance', "symbol": 'YFI', "contract": '0x9eAaC1B23d935365bD7b542Fe22cEEe2922f52dc' },
+    { "id": 'usd-coin', "symbol": 'USDC', "contract": '0xA7D7079b0FEaD91F3e65f86E8915Cb59c1a4C664' },
+    { "id": 'avalaunch', "symbol": 'XAVA', "contract": '0xd1c3f94DE7e5B45fa4eDBBA472491a9f4B166FC4' },
+    { "id": 'yield-yak', "symbol": 'YAK', "contract": '0x59414b3089ce2AF0010e7523Dea7E2b35d776ec7' },
+    { "id": 'sherpa', "symbol": 'SHERPA', "contract": '0xa5E59761eBD4436fa4d20E1A27cBa29FB2471Fc6' },
+    { "id": 'bitcoin', "symbol": 'WBTC', "contract": '0x50b7545627a5162F82A992c33b87aDc75187B218' },
+    { "id": 'sushi', "symbol": 'SUSHI.e', "contract": '0x37B608519F91f70F2EeB0e5Ed9AF4061722e4F76' },
+    { "id": 'penguin-finance', "symbol": 'PEFI', "contract": '0xe896CDeaAC9615145c0cA09C8Cd5C25bced6384c' },
+    { "id": 'xdollar', "symbol": 'XDO', "contract": '0x9ef758ac000a354479e538b8b2f01b917b8e89e7' },
+    { "id": 'wrapped-avax', "symbol": 'WAVAX', "contract": '0xb31f66aa3c1e785363f0875a1b74e27b85fd66c7' }
 ]
 
 async function getAvaxPrices() {
@@ -16,7 +33,7 @@ async function getAvaxPrices() {
     return prices;
 }
 
-async function getAvaxUniPool(App, pool, poolAddress, stakingAddress) {    
+async function getAvaxUniPool(App, pool, poolAddress, stakingAddress) {
     let q0, q1;
     const reserves = await pool.getReserves();
     q0 = reserves._reserve0;
@@ -24,7 +41,7 @@ async function getAvaxUniPool(App, pool, poolAddress, stakingAddress) {
     const decimals = await pool.decimals();
     const token0 = await pool.token0();
     const token1 = await pool.token1();
-    return { 
+    return {
         symbol : await pool.symbol(),
         name : await pool.name(),
         address: poolAddress,
@@ -94,7 +111,7 @@ const AVAX_VAULT_ABI = [{"type":"constructor","stateMutability":"nonpayable","in
 
 async function getAvaxStoredToken(App, tokenAddress, stakingAddress, type) {
   switch (type) {
-    case "uniswap": 
+    case "uniswap":
       const pool = new ethers.Contract(tokenAddress, UNI_ABI, App.provider);
       return await getAvaxUniPool(App, pool, tokenAddress, stakingAddress);
     case "erc20":
@@ -146,20 +163,20 @@ async function getAvaxToken(App, tokenAddress, stakingAddress) {
 async function loadAvaxSynthetixPoolInfo(App, tokens, prices, stakingAbi, stakingAddress,
     rewardTokenFunction, stakeTokenFunction) {
       const STAKING_POOL = new ethers.Contract(stakingAddress, stakingAbi, App.provider);
-  
+
       if (!STAKING_POOL.callStatic[stakeTokenFunction]) {
         console.log("Couldn't find stake function ", stakeTokenFunction);
       }
       const stakeTokenAddress = await STAKING_POOL.callStatic[stakeTokenFunction]();
-  
+
       const rewardTokenAddress = await STAKING_POOL.callStatic[rewardTokenFunction]();
-  
+
       var stakeToken = await getAvaxToken(App, stakeTokenAddress, stakingAddress);
-  
+
       if (stakeTokenAddress.toLowerCase() === rewardTokenAddress.toLowerCase()) {
         stakeToken.staked = await STAKING_POOL.totalSupply() / 10 ** stakeToken.decimals;
       }
-  
+
       var newPriceAddresses = stakeToken.tokens.filter(x =>
         !getParameterCaseInsensitive(prices, x));
       var newPrices = await lookUpTokenPrices(newPriceAddresses);
@@ -176,37 +193,37 @@ async function loadAvaxSynthetixPoolInfo(App, tokens, prices, stakingAbi, stakin
           tokens[rewardTokenAddress] = await getAvaxToken(App, rewardTokenAddress, stakingAddress);
       }
       const rewardToken = getParameterCaseInsensitive(tokens, rewardTokenAddress);
-  
+
       const rewardTokenTicker = rewardToken.symbol;
-  
+
       const poolPrices = getPoolPrices(tokens, prices, stakeToken, "avax");
 
-      if (!poolPrices) 
+      if (!poolPrices)
       {
         console.log(`Couldn't calculate prices for pool ${stakeTokenAddress}`);
         return null;
       }
-  
+
       const stakeTokenTicker = poolPrices.stakeTokenTicker;
-  
+
       const stakeTokenPrice =
           prices[stakeTokenAddress]?.usd ?? getParameterCaseInsensitive(prices, stakeTokenAddress)?.usd;
       const rewardTokenPrice = getParameterCaseInsensitive(prices, rewardTokenAddress)?.usd;
-  
+
       const periodFinish = await STAKING_POOL.periodFinish();
       const rewardRate = await STAKING_POOL.rewardRate();
       const weeklyRewards = (Date.now() / 1000 > periodFinish) ? 0 : rewardRate / 1e18 * 604800;
-  
+
       const usdPerWeek = weeklyRewards * rewardTokenPrice;
-  
+
       const staked_tvl = poolPrices.staked_tvl;
-  
+
       const userStaked = await STAKING_POOL.balanceOf(App.YOUR_ADDRESS) / 10 ** stakeToken.decimals;
-  
+
       const userUnstaked = stakeToken.unstaked;
-  
+
       const earned = await STAKING_POOL.earned(App.YOUR_ADDRESS) / 10 ** rewardToken.decimals;
-  
+
       return  {
         stakingAddress,
         poolPrices,
@@ -240,18 +257,18 @@ async function loadAvaxBasisFork(data) {
     var tokens = {};
     var prices = {};
     var totalStaked = 0;
-    
-    let p1 = await loadAvaxSynthetixPool(App, tokens, prices, data.PoolABI, 
+
+    let p1 = await loadAvaxSynthetixPool(App, tokens, prices, data.PoolABI,
         data.SharePool.address, data.SharePool.rewardToken, data.SharePool.stakeToken);
     totalStaked += p1.staked_tvl;
-    
+
     if (data.SharePool2) {
-      let p3 = await loadAvaxSynthetixPool(App, tokens, prices, data.PoolABI, 
+      let p3 = await loadAvaxSynthetixPool(App, tokens, prices, data.PoolABI,
           data.SharePool2.address, data.SharePool2.rewardToken, data.SharePool2.stakeToken);
       totalStaked += p3.staked_tvl;
     }
 
-    let p2 = await loadAvaxSynthetixPool(App, tokens, prices, data.PoolABI, 
+    let p2 = await loadAvaxSynthetixPool(App, tokens, prices, data.PoolABI,
         data.CashPool.address, data.CashPool.rewardToken, data.CashPool.stakeToken);
     totalStaked += p2.staked_tvl;
 
@@ -268,18 +285,18 @@ async function loadAvaxBasisFork(data) {
       if (data.Boardrooms) {
         for (const boardroom of data.Boardrooms) {
           let br = await loadBoardroom(App, prices, boardroom.address, data.Oracle, data.UniswapLP, data.Cash,
-              data.ShareTicker, data.CashTicker, data.ExpansionsPerDay, data.MaximumExpansion, 
+              data.ShareTicker, data.CashTicker, data.ExpansionsPerDay, data.MaximumExpansion,
               data.Decimals, boardroom.ratio, data.TargetMantissa);
           totalStaked += br.staked_tvl;
         }
       }
       else {
         let br = await loadBoardroom(App, prices, data.Boardroom, data.Oracle, data.UniswapLP, data.Cash,
-            data.ShareTicker, data.CashTicker, data.ExpansionsPerDay, data.MaximumExpansion, 
+            data.ShareTicker, data.CashTicker, data.ExpansionsPerDay, data.MaximumExpansion,
             data.Decimals, 1, data.TargetMantissa);
         totalStaked += br.staked_tvl;
       }
-    } 
+    }
 
     _print_bold(`Total staked: $${formatMoney(totalStaked)}`)
 
@@ -287,7 +304,7 @@ async function loadAvaxBasisFork(data) {
 }
 
 
-async function getAvaxPoolInfo(app, chefContract, chefAddress, poolIndex, pendingRewardsFunction) {  
+async function getAvaxPoolInfo(app, chefContract, chefAddress, poolIndex, pendingRewardsFunction) {
   const poolInfo = await chefContract.poolInfo(poolIndex);
   if (poolInfo.allocPoint == 0) {
     return {
@@ -329,8 +346,8 @@ async function loadAvaxChefContract(App, tokens, prices, chef, chefAddress, chef
 
   const rewardTokenAddress = await chefContract.callStatic[rewardTokenFunction]();
   const rewardToken = await getAvaxToken(App, rewardTokenAddress, chefAddress);
-  const rewardsPerWeek = rewardsPerWeekFixed ?? 
-    await chefContract.callStatic[rewardsPerBlockFunction]() 
+  const rewardsPerWeek = rewardsPerWeekFixed ??
+    await chefContract.callStatic[rewardsPerBlockFunction]()
     / 10 ** rewardToken.decimals * 604800 / 3
 
   const poolInfos = await Promise.all([...Array(poolCount).keys()].map(async (x) =>
@@ -345,7 +362,7 @@ async function loadAvaxChefContract(App, tokens, prices, chef, chefAddress, chef
 
   if (deathPoolIndices) {   //load prices for the deathpool assets
     deathPoolIndices.map(i => poolInfos[i])
-                     .map(poolInfo => 
+                     .map(poolInfo =>
       poolInfo?.poolToken ? getPoolPrices(tokens, prices, poolInfo.poolToken, "avax") : undefined);
   }
 
@@ -353,7 +370,7 @@ async function loadAvaxChefContract(App, tokens, prices, chef, chefAddress, chef
 
 
   _print("Finished reading smart contracts.\n");
-    
+
   let aprs = []
   for (i = 0; i < poolCount; i++) {
     if (poolPrices[i]) {
@@ -387,7 +404,7 @@ async function loadAvaxChefContract(App, tokens, prices, chef, chefAddress, chef
 
 async function loadMultipleAvaxSynthetixPools(App, tokens, prices, pools) {
   let totalStaked  = 0, totalUserStaked = 0, individualAPRs = [];
-  const infos = await Promise.all(pools.map(p => 
+  const infos = await Promise.all(pools.map(p =>
       loadAvaxSynthetixPoolInfo(App, tokens, prices, p.abi, p.address, p.rewardTokenFunction, p.stakeTokenFunction)));
   for (const i of infos) {
     let p = await printSynthetixPool(App, i, "avax");

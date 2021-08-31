@@ -23,7 +23,7 @@ async function main() {
      _print(`Rewards start at block ${startBlock}\n`);
    }else{
     rewardsPerWeek = await LONG_CHEF.longPerBlock() /1e18
-        * 604800 / 3;
+        * 604800 / 3 * 0.85; // 15 % go straight to the treasury
    }
 
     const tokens = {};
