@@ -337,7 +337,9 @@ const main = async () => {
       ['PolyDino            ', `<a href="polydino"        >Various</a>`, 'DINO         ', 'https://polydino.finance'],
       ['Dynamis             ', `<a href="dynamis"         >Various</a>`, 'DYNA         ', 'https://dynamis.finance'],
       ['BerryFactory-Muffin ', `<a href="muffin"          >Various</a>`, 'MUFFIN       ', 'https://muffinberry.world'],
-      ['PolyPulsar Gamma    ', `<a href="polypulsar_gamma">Various</a>`, 'GPUL         ', 'https://gamma.polypulsar.farm']
+      ['PolyPulsar Gamma    ', `<a href="polypulsar_gamma">Various</a>`, 'GPUL         ', 'https://gamma.polypulsar.farm'],
+      ['PolyCrow            ', `<a href="polycrow        ">Various</a>`, 'CROW         ', 'https://polycrow.finance/']
+
     ],
   }
 
