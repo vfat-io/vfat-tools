@@ -31,7 +31,8 @@ const main = async() => {
         ["Xdollar     ",`<a href="xdollar"    >Various</a>`,"XDO      ","https://xdollar-avax.mcn.ventures" ],
         ["CrabFinance ",`<a href="crab   "    >Various</a>`,"CRAB     ","https://crabfinance.live" ],
         ["Eskimo      ",`<a href="eskimo"     >Various</a>`,"ESKI     ","https://eskimo.farm" ],
-        ["EternalFinance" ,`<a href="ikaris"  >Various</a>`,"IKARIS   ","https://avax.eternalfinance.live" ],
+        ['Bcharity    ',`<a href="bcharity"   >Various</a>`,'Give     ', 'https://avaxgive.netlify.app'],
+        ["EternalFinance" ,`<a href="ikaris"  >Various</a>`,"IKARIS   ","https://avax.eternalfinance.live" ]
     ]
   }
 
