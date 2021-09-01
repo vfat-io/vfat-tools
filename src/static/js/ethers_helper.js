@@ -1589,6 +1589,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
             pool.symbol.includes("SLP") ? (
               {
                 "eth": `http://analytics.sushi.com/pairs/${pool.address}`,
+                "arbitrum": `http://analytics.sushi.com/pairs/${pool.address}`, //temporary solution until they put arbitrum
                 "bsc": `http://analytics-ftm.sushi.com/pairs/${pool.address}`,
                 "fantom": `http://analytics-ftm.sushi.com/pairs/${pool.address}`,
                 "matic": `http://analytics-polygon.sushi.com/pairs/${pool.address}`,
