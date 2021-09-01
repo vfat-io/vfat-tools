@@ -127,16 +127,20 @@ function printXUnicVault(App, chefAbi, chefAddr, prices, tokens, poolInfo, poolI
   _print_inline(`${poolIndex} - `);
   poolPrices.print_price(chain);
   sp?.print_price(chain);
+  if(userStaked > 0){
+    _print(`You are staking ${userStaked.toFixed(fixedDecimals)} ${poolPrices.stakeTokenTicker} ($${formatMoney(userStaked * poolPrices.price)})`);
+    poolPrices.print_contained_price(userStaked);
+  }
   printUniclyChefContractLinks(App, chefAbi, chefAddr, poolIndex, poolInfo.address, pendingRewardTokens,
     rewardTokenTicker, poolPrices.stakeTokenTicker, poolInfo.poolToken.unstaked,
-    userStaked, fixedDecimals, claimFunction, rewardPrice, chain, pendingRewardsFunction, poolPrices);
+    userStaked, fixedDecimals, claimFunction, rewardPrice, chain, pendingRewardsFunction);
   return{ totalStakedUsd : staked_tvl,
     userStakedUsd }
 }
 
 function printUniclyChefContractLinks(App, chefAbi, chefAddr, poolIndex, poolAddress, pendingRewardTokens,
     rewardTokenTicker, stakeTokenTicker, unstaked, userStaked, fixedDecimals,
-    claimFunction, rewardTokenPrice, chain, pendingRewardsFunction, poolPrices) {
+    claimFunction, rewardTokenPrice, chain, pendingRewardsFunction) {
   fixedDecimals = fixedDecimals ?? 2;
   const approveAndStake = async function() {
     return chefContract_stake(chefAbi, chefAddr, poolIndex, poolAddress, App)
@@ -146,9 +150,6 @@ function printUniclyChefContractLinks(App, chefAbi, chefAddr, poolIndex, poolAdd
   }
   const claim = async function() {
     return chefContract_claim(chefAbi, chefAddr, poolIndex, App, pendingRewardsFunction, claimFunction)
-  }
-  if(userStaked > 0){
-    _print(`You are staking ${userStaked.toFixed(fixedDecimals)} ${stakeTokenTicker} ($${formatMoney(userStaked * poolPrices.price)})`);
   }
   _print_link(`Stake ${unstaked.toFixed(fixedDecimals)} ${stakeTokenTicker}`, approveAndStake)
   _print_link(`Unstake ${userStaked.toFixed(fixedDecimals)} ${stakeTokenTicker}`, unstake)
