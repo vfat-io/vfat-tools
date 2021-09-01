@@ -132,16 +132,6 @@ function printIronChefContractLinks(App, chefAbi, chefAddr, poolIndex, poolAddre
   _print("");
 }
 
-const _ironChefContract_claim = async function (chefAbi, chefAddress, poolIndex, App, pendingRewardsFunction) {
-  const signer = App.provider.getSigner()
-
-  const CHEF_CONTRACT = new ethers.Contract(chefAddress, chefAbi, signer)
-  const iron_claim = () => {
-    return CHEF_CONTRACT.harvest(poolIndex, App.YOUR_ADDRESS, { gasLimit: GAS_LIMIT })
-  }
-  return chefContract_claim(chefAbi, chefAddress, poolIndex, App, pendingRewardsFunction, iron_claim)
-}
-
 const _ironChefContract_stake = async function (chefAbi, chefAddress, poolIndex, stakeTokenAddr, App) {
   const signer = App.provider.getSigner()
 
@@ -206,6 +196,17 @@ const _ironChefContract_unstake = async function (chefAbi, chefAddress, poolInde
         hideLoading()
       })
   }
+}
+
+const _ironChefContract_claim = async function (chefAbi, chefAddress, poolIndex, App, pendingRewardsFunction) {
+  const signer = App.provider.getSigner()
+
+  const CHEF_CONTRACT = new ethers.Contract(chefAddress, chefAbi, signer)
+
+  const sgt_claim = () => {
+    return CHEF_CONTRACT.harvest(poolIndex, App.YOUR_ADDRESS, { gasLimit: GAS_LIMIT })
+  }
+  return chefContract_claim(chefAbi, chefAddress, poolIndex, App, pendingRewardsFunction, sgt_claim)
 }
 
 const _ironChefContract_resetApprove = async function (stakeTokenAddr, rewardPoolAddr, App) {
