@@ -100,34 +100,34 @@ async function getIronPoolInfo(app, chefContract, chefAddress, poolIndex, pendin
   };
 }
 
-  function printIronChefContractLinks(App, chefAbi, chefAddr, poolIndex, poolAddress, pendingRewardsFunction,
-    rewardTokenTicker, stakeTokenTicker, unstaked, userStaked, pendingRewardTokens, fixedDecimals,
-    claimFunction, rewardTokenPrice, chain, depositFee, withdrawFee) {
+function printIronChefContractLinks(App, chefAbi, chefAddr, poolIndex, poolAddress, pendingRewardsFunction,
+  rewardTokenTicker, stakeTokenTicker, unstaked, userStaked, pendingRewardTokens, fixedDecimals,
+  claimFunction, rewardTokenPrice, chain, depositFee, withdrawFee) {
   fixedDecimals = fixedDecimals ?? 2;
   console.log("Printing custom link for SGT MasterChef");
-  const approveAndStake = async function() {
+  const approveAndStake = async function () {
     return _ironChefContract_stake(chefAbi, chefAddr, poolIndex, poolAddress, App)
   }
-  const unstake = async function() {
+  const unstake = async function () {
     return _ironChefContract_unstake(chefAbi, chefAddr, poolIndex, App, pendingRewardsFunction)
   }
-  const claim = async function() {
+  const claim = async function () {
     return _ironChefContract_claim(chefAbi, chefAddr, poolIndex, App, pendingRewardsFunction)
   }
-  const revoke = async function() {
+  const revoke = async function () {
     return _ironChefContract_resetApprove(stakeTokenAddr, rewardPoolAddr, App)
   }
-  if(depositFee > 0){
+  if (depositFee > 0) {
     _print_link(`Stake ${unstaked.toFixed(fixedDecimals)} ${stakeTokenTicker} - Fee ${depositFee}%`, approveAndStake)
-  }else{
+  } else {
     _print_link(`Stake ${unstaked.toFixed(fixedDecimals)} ${stakeTokenTicker}`, approveAndStake)
   }
-  if(withdrawFee > 0){
+  if (withdrawFee > 0) {
     _print_link(`Unstake ${userStaked.toFixed(fixedDecimals)} ${stakeTokenTicker} - Fee ${withdrawFee}%`, unstake)
-  }else{
+  } else {
     _print_link(`Unstake ${userStaked.toFixed(fixedDecimals)} ${stakeTokenTicker}`, unstake)
   }
-  _print_link(`Claim ${pendingRewardTokens.toFixed(fixedDecimals)} ${rewardTokenTicker} ($${formatMoney(pendingRewardTokens*rewardTokenPrice)})`, claim)
+  _print_link(`Claim ${pendingRewardTokens.toFixed(fixedDecimals)} ${rewardTokenTicker} ($${formatMoney(pendingRewardTokens * rewardTokenPrice)})`, claim)
   _print_link(`Revoke (set approval to 0)`, revoke)
   _print("");
 }
@@ -142,7 +142,7 @@ const _ironChefContract_claim = async function (chefAbi, chefAddress, poolIndex,
   return chefContract_claim(chefAbi, chefAddress, poolIndex, App, pendingRewardsFunction, iron_claim)
 }
 
-const _ironChefContract_stake = async function(chefAbi, chefAddress, poolIndex, stakeTokenAddr, App) {
+const _ironChefContract_stake = async function (chefAbi, chefAddress, poolIndex, stakeTokenAddr, App) {
   const signer = App.provider.getSigner()
 
   const STAKING_TOKEN = new ethers.Contract(stakeTokenAddr, ERC20_ABI, signer)
@@ -189,7 +189,7 @@ const _ironChefContract_stake = async function(chefAbi, chefAddress, poolIndex, 
   }
 }
 
-const _ironChefContract_unstake = async function(chefAbi, chefAddress, poolIndex, App, pendingRewardsFunction) {
+const _ironChefContract_unstake = async function (chefAbi, chefAddress, poolIndex, App, pendingRewardsFunction) {
   const signer = App.provider.getSigner()
   const CHEF_CONTRACT = new ethers.Contract(chefAddress, chefAbi, signer)
 
@@ -208,6 +208,6 @@ const _ironChefContract_unstake = async function(chefAbi, chefAddress, poolIndex
   }
 }
 
-const _ironChefContract_resetApprove = async function(stakeTokenAddr, rewardPoolAddr, App) {
+const _ironChefContract_resetApprove = async function (stakeTokenAddr, rewardPoolAddr, App) {
   return rewardsContract_resetApprove(stakeTokenAddr, rewardPoolAddr, App)
 }
