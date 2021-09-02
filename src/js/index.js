@@ -313,6 +313,21 @@ window.NETWORKS = {
         "https://explorer.kcc.io/en"
     ],
   },
+  CELO: {
+    "chainId": "0xA4EC",
+    "chainName": "Celo Mainnet",
+    "nativeCurrency": {
+      "name": "celo",
+      "symbol": "CELO",
+      "decimals": 18
+    },
+    "rpcUrls": [
+        "https://forno.celo.org"
+    ],
+    "blockExplorerUrls": [
+        "https://explorer.celo.org"
+    ],
+  },
 }
 
 const infuraId = atob(window.ETHEREUM_NODE_URL).split('/').pop()
