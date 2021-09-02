@@ -75,20 +75,12 @@ async function loadXUnicVaultContract(App, chef, chefAddress, chefAbi, rewardTok
 
   _print("Finished reading smart contracts.\n");
 
-  for (let i = 0; i < poolCount; i++) {
-    if (poolPrices[i]) {
-      printXUnicVault(App, chefAbi, chefAddress, prices, tokens, poolInfos[i], i, poolPrices[i],
-        rewardTokenTicker, rewardTokenAddress,
-        pendingRewardsFunction);
-    }
-  }
-
-  /*let aprs = []
+  let aprs = []
   for (let i = 0; i < poolCount; i++) {
     if (poolPrices[i]) {
       const apr = printXUnicVault(App, chefAbi, chefAddress, prices, tokens, poolInfos[i], i, poolPrices[i],
         rewardTokenTicker, rewardTokenAddress,
-        pendingRewardsFunction)
+        pendingRewardsFunction, poolInfos[i].pendingRewardTokens)
       aprs.push(apr);
     }
   }
@@ -104,7 +96,7 @@ async function loadXUnicVaultContract(App, chef, chefAddress, chefAbi, rewardTok
   _print_bold(`Total Staked: $${formatMoney(totalStaked)}`);
   if (totalUserStaked > 0) {
     _print_bold(`You are staking a total of $${formatMoney(totalUserStaked)}`)
-  }*/
+  }
 }
 
 async function getXUnicVaultInfo(app, chefContract, chefAddress, poolIndex, pendingRewardsFunction, unicChef) {
@@ -125,14 +117,43 @@ async function getXUnicVaultInfo(app, chefContract, chefAddress, poolIndex, pend
 
 function printXUnicVault(App, chefAbi, chefAddr, prices, tokens, poolInfo, poolIndex, poolPrices,
                        rewardTokenTicker, rewardTokenAddress,
-                       pendingRewardsFunction, fixedDecimals, claimFunction, chain="eth", depositFee=0, withdrawFee=0) {
+                       pendingRewardsFunction, pendingRewardTokens, fixedDecimals, claimFunction, chain="eth") {
   fixedDecimals = fixedDecimals ?? 2;
   const sp = (poolInfo.stakedToken == null) ? null : getPoolPrices(tokens, prices, poolInfo.stakedToken, chain);
   const userStaked = poolInfo.userLPStaked ?? poolInfo.userStaked;
   const rewardPrice = getParameterCaseInsensitive(prices, rewardTokenAddress)?.usd;
+  const userStakedUsd = userStaked * poolPrices.price;
   const staked_tvl = sp?.staked_tvl ?? poolPrices.staked_tvl;
   _print_inline(`${poolIndex} - `);
   poolPrices.print_price(chain);
   sp?.print_price(chain);
+  if(userStaked > 0){
+    _print(`You are staking ${userStaked.toFixed(fixedDecimals)} ${poolPrices.stakeTokenTicker} ($${formatMoney(userStaked * poolPrices.price)})`);
+    poolPrices.print_contained_price(userStaked);
+  }
+  printUniclyChefContractLinks(App, chefAbi, chefAddr, poolIndex, poolInfo.address, pendingRewardTokens,
+    rewardTokenTicker, poolPrices.stakeTokenTicker, poolInfo.poolToken.unstaked,
+    userStaked, fixedDecimals, claimFunction, rewardPrice, chain, pendingRewardsFunction);
+  return{ totalStakedUsd : staked_tvl,
+    userStakedUsd }
+}
+
+function printUniclyChefContractLinks(App, chefAbi, chefAddr, poolIndex, poolAddress, pendingRewardTokens,
+    rewardTokenTicker, stakeTokenTicker, unstaked, userStaked, fixedDecimals,
+    claimFunction, rewardTokenPrice, chain, pendingRewardsFunction) {
+  fixedDecimals = fixedDecimals ?? 2;
+  const approveAndStake = async function() {
+    return chefContract_stake(chefAbi, chefAddr, poolIndex, poolAddress, App)
+  }
+  const unstake = async function() {
+    return chefContract_unstake(chefAbi, chefAddr, poolIndex, App, pendingRewardsFunction)
+  }
+  const claim = async function() {
+    return chefContract_claim(chefAbi, chefAddr, poolIndex, App, pendingRewardsFunction, claimFunction)
+  }
+  _print_link(`Stake ${unstaked.toFixed(fixedDecimals)} ${stakeTokenTicker}`, approveAndStake)
+  _print_link(`Unstake ${userStaked.toFixed(fixedDecimals)} ${stakeTokenTicker}`, unstake)
+  _print_link(`Claim ${pendingRewardTokens.toFixed(fixedDecimals)} ${rewardTokenTicker} ($${formatMoney(pendingRewardTokens*rewardTokenPrice)})`, claim)
+  _print(`Staking or unstaking also claims rewards.`)
   _print("");
 }

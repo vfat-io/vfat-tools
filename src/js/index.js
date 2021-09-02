@@ -46,6 +46,21 @@ window.NETWORKS = {
       "https://etherscan.io"
     ]
   },
+  ARBITRUM: {
+    "chainId": "0xa4b1",
+    "chainName": "Arbitrum Mainnet",
+    "nativeCurrency": {
+      "name": "Ether",
+      "symbol": "ETH",
+      "decimals": 18
+    },
+    "rpcUrls": [
+      "https://arb1.arbitrum.io/rpc"
+    ],
+    "blockExplorerUrls": [
+      "https://explorer.arbitrum.io"
+    ]
+  },
   BINANCE_SMART_CHAIN: {
     "chainId": "0x38",
     "chainName": "Binance Smart Chain Mainnet",
@@ -298,6 +313,21 @@ window.NETWORKS = {
         "https://explorer.kcc.io/en"
     ],
   },
+  CELO: {
+    "chainId": "0xA4EC",
+    "chainName": "Celo Mainnet",
+    "nativeCurrency": {
+      "name": "celo",
+      "symbol": "CELO",
+      "decimals": 18
+    },
+    "rpcUrls": [
+        "https://forno.celo.org"
+    ],
+    "blockExplorerUrls": [
+        "https://explorer.celo.org"
+    ],
+  },
 }
 
 const infuraId = atob(window.ETHEREUM_NODE_URL).split('/').pop()
@@ -315,6 +345,7 @@ const providerOptions = {
         100: "https://rpc.xdaichain.com",
         43114: "https://api.avax.network/ext/bc/C/rpc",
         250: "https://rpcapi.fantom.network",
+        42161: "https://arb1.arbitrum.io/rpc",
         1666600000: "https://api.harmony.one",
         1666600001: "https://s1.api.harmony.one",
         1666600002: "https://s2.api.harmony.one",

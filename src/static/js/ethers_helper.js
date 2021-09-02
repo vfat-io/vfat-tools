@@ -16,6 +16,9 @@ const pageNetwork = function() {
   if (network.toLowerCase() === 'bsc') {
     return window.NETWORKS.BINANCE_SMART_CHAIN
   }
+  if (network.toLowerCase() === 'arbitrum') {
+    return window.NETWORKS.ARBITRUM
+  }
   if (network.toLowerCase() === 'heco') {
     return window.NETWORKS.HECO
   }
@@ -46,6 +49,9 @@ const pageNetwork = function() {
   if (network.toLowerCase() === 'thundercore') {
     return window.NETWORKS.THUNDERCORE
   }
+  if (network.toLowerCase() === 'celo') {
+    return window.NETWORKS.CELO
+  }
 
   return window.NETWORKS.ETHEREUM
 }
@@ -71,12 +77,11 @@ const init_wallet = async function (callback) {
       start(callback);
     } else {
       _print(`You are connected to ${networkNameFromId(connectedNetwork.chainId)}, please switch to ${targetNetwork.chainName} network`)
-      if (window.ethereum && targetNetwork.chainId !== '0x1') {
-        _print('')
-        _print_link("[SWITCH NETWORK]", () => switchNetwork(targetNetwork), "connect_wallet_button", false)
-        _print_inline(' -=- ');
-        _print_link("[CLEAR BROWSER STORAGE]", clearLocalStorage, "clear_browser_storage");
-      }
+      _print('')
+      _print_link("[SWITCH NETWORK]", () => switchNetwork(targetNetwork), "connect_wallet_button", false)
+      _print_inline(' -=- ');
+      _print_link("[CLEAR BROWSER STORAGE]", clearLocalStorage, "clear_browser_storage");
+
       hideLoading()
     }
   } else {
@@ -93,7 +98,6 @@ function clearLocalStorage() {
 }
 
 async function init_ethers() {
-
   const App = {}
 
   let isMetaMaskInstalled = true
@@ -168,7 +172,11 @@ async function init_ethers() {
 }
 
 const switchNetwork = async function(network) {
-  await window.ethereum.request({method: 'wallet_addEthereumChain', params: [network]}).catch()
+    if (network.chainId === '0x1') {
+        await window.ethereum.request({method: 'wallet_switchEthereumChain', params: [{chainId: network.chainId }]}).catch()
+    } else {
+        await window.ethereum.request({method: 'wallet_addEthereumChain', params: [network]}).catch()
+    }
   window.location.reload()
 }
 
@@ -1547,6 +1555,8 @@ function getUniPrices(tokens, prices, pool, chain="eth")
   else if (pool.symbol.includes("KoffeeMug")) stakeTokenTicker += " KoffeeMug";
   else if (pool.symbol.includes("DMM-LP")) stakeTokenTicker += " Kyber LP";
   else if (pool.symbol.includes("CAT-LP")) stakeTokenTicker += " PolyCat LP";
+  else if (pool.symbol.includes("VLP")) stakeTokenTicker += " AURO LP";
+  else if (pool.symbol.includes("ULP")) stakeTokenTicker += " Ubeswap LP Token";
   else stakeTokenTicker += " Uni LP";
   return {
       t0: t0,
@@ -1583,6 +1593,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
             pool.symbol.includes("SLP") ? (
               {
                 "eth": `http://analytics.sushi.com/pairs/${pool.address}`,
+                "arbitrum": `http://analytics.sushi.com/pairs/${pool.address}`, //temporary solution until they put arbitrum
                 "bsc": `http://analytics-ftm.sushi.com/pairs/${pool.address}`,
                 "fantom": `http://analytics-ftm.sushi.com/pairs/${pool.address}`,
                 "matic": `http://analytics-polygon.sushi.com/pairs/${pool.address}`,
@@ -1593,6 +1604,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
               pool.symbol.includes("PGL") ?  `https://info.pangolin.exchange/#/pair/${pool.address}` :
               pool.symbol.includes("CS-LP") ?  `https://app.coinswap.space/#/` :
               pool.name.includes("Value LP") ?  `https://info.vswap.fi/pool/${pool.address}` :
+              pool.name.includes("Ubeswap") ?  `https://info.ubeswap.org/pair/${pool.address}` :
               pool.name.includes("OperaSwap") ?  `https://www.operaswap.finance/` :
               pool.symbol.includes("SPIRIT") ?  `https://swap.spiritswap.finance/#/swap` :
               pool.symbol.includes("spLP") ?  `https://info.spookyswap.finance/pair/${pool.address}` :
@@ -1604,6 +1616,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
               pool.symbol.includes("KUS-LP") ?  `https://kuswap.info/pair/#/${pool.address}` :
               pool.symbol.includes("KoffeeMug") ?  `https://koffeeswap.exchange/#/pro` :
               pool.symbol.includes("APE-LP") ?  `https://info.apeswap.finance/pair/${pool.address}` :
+              pool.symbol.includes("VLP") ?  `https://info.viralata.finance/pair/${pool.address}` :
               pool.symbol.includes("ZDEXLP") ?  `https://charts.zoocoin.cash/?exchange=ZooDex&pair=${t0.symbol}-${t1.symbol}` :
               pool.symbol.includes("Field-LP") ?  `https://exchange.yieldfields.finance/#/swap` :
               pool.symbol.includes("UPT") ?  `https://www.app.unic.ly/#/discover` :
@@ -1639,6 +1652,16 @@ function getUniPrices(tokens, prices, pool, chain="eth")
             `https://app.apeswap.finance/add/${t0address}/${t1address}`,
             `https://app.apeswap.finance/remove/${t0address}/${t1address}`,
             `https://app.apeswap.finance/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+          ] :
+          pool.symbol.includes("ULP") ? [
+            `https://app.ubeswap.org/#/add/${t0address}/${t1address}`,
+            `https://app.ubeswap.org/#/remove/${t0address}/${t1address}`,
+            `https://app.ubeswap.org/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+          ] :
+          pool.symbol.includes("VLP") ? [
+            `https://app.viralata.finance/add/${t0address}/${t1address}`,
+            `https://app.viralata.finance/remove/${t0address}/${t1address}`,
+            `https://app.viralata.finance/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
           ] :
           pool.symbol.includes("ZDEXLP") ? [
             `https://dex.zoocoin.cash/pool/add?inputCurrency=${t0address}&outputCurrency=${t1address}`,
@@ -2165,6 +2188,9 @@ function getErc20Prices(prices, pool, chain="eth") {
     case "xdai":
       poolUrl=`https://blockscout.com/xdai/mainnet/tokens/${pool.address}`;
       break;
+    case "celo":
+      poolUrl=`https://explorer.celo.org/address/${pool.address}`;
+      break;
   }
 
   const getDexguruTokenlink =  function() {
@@ -2687,6 +2713,9 @@ async function printSynthetixPool(App, info, chain="eth", customURLs) {
         break;
       case "xdai":
         _print(`<a target="_blank" href="https://blockscout.com/xdai/mainnet/address/${info.stakingAddress}/contracts">Explorer</a>`);
+        break;
+      case "celo":
+        _print(`<a target="_blank" href="https://explorer.celo.org/address/${info.stakingAddress}/contracts">Celo Explorer</a>`);
         break;
     }
     if (info.stakeTokenTicker != "ETH") {

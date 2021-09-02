@@ -289,6 +289,24 @@ const main = async() => {
         `<a href='xdao'>Various</a>`,
         "HTZ",
         "https://thexdao.com"
+      ],
+      [
+        "Guru - YS#2",
+        `<a href='guru_ys2'>ELITE-WFTM spLP</a>`,
+        "ELITE",
+        "https://ftm.guru/YS/2"
+      ],
+      [
+        "Guru - LF#23",
+        `<a href='guru_lite23'>DEATH-WFTM spLP</a>`,
+        "DEATH",
+        "https://ftm.guru/LF/23"
+      ],
+      [
+        "Zoocoin",
+        `<a href='zoocoin'>Various</a>`,
+        "WILD",
+        "https://dex.zoocoin.cash"
       ]
     ]
   }

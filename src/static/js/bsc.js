@@ -438,7 +438,7 @@ const main = async() => {
       ["Area51Defi          ", `<a href="area51defi"    >Various</a>`,"AFOD             ","https://area51defi.com"],
       ["PiranhaSwap         ", `<a href="piranhaswap"   >Various</a>`,"PIRANHA          ","https://piranhaswap.finance"],
       ["Robobuddy           ", `<a href="robobuddy"     >Various</a>`,"ROBO             ","https://robobuddy.finance"],
-      ["Astro               ", `<a href="astro"         >Various</a>`,"ASTRO            ","https://astroprotocol.com"],
+      ["Astro *             ", `<a href="astro"         >Various</a>`,"ASTRO            ","https://astroprotocol.com"],
       ["TwilightFinance     ", `<a href="twilightfinance">Various</a>`,"TWIL            ","https://twilightfinance.org"],
       ["Badger              ", `<a href="badger"        >Various</a>`,"BADGER           ","https://app.badger.finance"],
       ["BambooDeFi          ", `<a href="bamboodefi"    >Various</a>`,"BAMBOO           ","https://www.bamboodefi.com"],
@@ -487,7 +487,20 @@ const main = async() => {
       ["Snorre              ", `<a href="snorre"        >Various</a>`,"SNORRE           ","https://snorre.farmwiki.xyz"],
       ["Defi finance        ", `<a href="defi"          >Various</a>`,"wDEFI            ","https://www.defi.finance"],
       ["Ryu Inu             ", `<a href="ryuinu"        >Various</a>`,"RYUINU           ","https://bsc.ryuinu.finance"],
-      ["Stable Farms        ", `<a href="stable"        >Various</a>`,"FSTABLE          ","https://www.stablefarms.finance"]
+      ["Stable Farms        ", `<a href="stable"        >Various</a>`,"FSTABLE          ","https://www.stablefarms.finance"],
+      ["Viralata Finance    ", `<a href="viralata"      >Various</a>`,"VIRALATA         ","https://app.viralata.finance"],
+      ["HoneyFarm Bear      ", `<a href="bear"          >Various</a>`,"BEAR             ","https://bear.honeyfarm.finance"],
+      ["Treasurefarm        ", `<a href="treasurefarm"  >Various</a>`,"TREASURE         ","https://treasurefarm.cash"],
+      ["Ibg                 ", `<a href="ibg"           >Various</a>`,"iBG              ","https://farm.ibg.finance"],
+      ["Adamant             ", `<a href="adamant"       >Various</a>`,"ADAMANT          ","https://adamant.eternity.money"],
+      ["1001 Nights Abu     ", `<a href="abu"           >Various</a>`,"ABU              ","https://abu.1001nights.gold"],
+      ["Wish Finance        ", `<a href="wish"          >Various</a>`,"WISH             ","https://wishfinance.io"],
+      ["BabySwap            ", `<a href="babyswap"      >Various</a>`,"BABY             ","https://home.babyswap.finance"],
+      ["Alita               ", `<a href="alita"         >Various</a>`,"ALI              ","https://app.alita.finance"],
+      ["Singular            ", `<a href="singular"      >Various</a>`,"SING             ","https://singular.farm"],
+      ["Elk                 ", `<a href="elk"           >Various</a>`,"ELK              ","https://app.elk.finance"],
+      ["Defily              ", `<a href="defily"        >Various</a>`,"DFL              ","https://defily.io"],
+      ["United Farmers Finance", `<a href="united_farmers_finance"        >Various</a>`,"UFF              ","https://unitedfarmers.finance"]
     ]}
 
   let table = new AsciiTable().fromJSON(tableData);

@@ -24,8 +24,17 @@ const main = async() => {
         ["Canary      ",`<a href="canary"     >Various</a>`,"CNR      ","https://app.canary.exchange"],
         ["Avalaunch   ",`<a href="avalaunch"  >Various</a>`,"XAVA     ","https://farm.avalaunch.app"],
         ["Avme        ",`<a href="avme"       >Various</a>`,"AVME     ","https://avme.io"],
-        ["TraderJoe   ",`<a href="traderjoe"  >Various</a>`,"JOE      ","https://www.traderjoexyz.com"]
-      ]
+        ["TraderJoe   ",`<a href="traderjoe"  >Various</a>`,"JOE      ","https://www.traderjoexyz.com"],
+        ["Frost       ",`<a href="tundra"     >Various</a>`,"TUNDRA   ","https://frostfinance.farm" ],
+        ["Zabu        ",`<a href="zabu"       >Various</a>`,"ZABU     ","https://zabu.finance" ],
+        ["DutchFinance",`<a href="dutch"      >Various</a>`,"DUTCH    ","https://avax.theflyingdutchman.finance" ],
+        ["Xdollar     ",`<a href="xdollar"    >Various</a>`,"XDO      ","https://xdollar-avax.mcn.ventures" ],
+        ["CrabFinance ",`<a href="crab   "    >Various</a>`,"CRAB     ","https://crabfinance.live" ],
+        ["Eskimo      ",`<a href="eskimo"     >Various</a>`,"ESKI     ","https://eskimo.farm" ],
+        ['Bcharity    ',`<a href="bcharity"   >Various</a>`,'Give     ', 'https://avaxgive.netlify.app'],
+        ["EternalFinance" ,`<a href="ikaris"  >Various</a>`,"IKARIS   ","https://avax.eternalfinance.live" ],
+        ["Sphereswap  ",`<a href="sphereswap" >Various</a>`,"SPHERE.e ","https://avax.sphereswap.app" ]
+    ]
   }
 
   let table = new AsciiTable().fromJSON(tableData);
