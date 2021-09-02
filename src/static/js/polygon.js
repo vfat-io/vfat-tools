@@ -339,7 +339,9 @@ const main = async () => {
       ['BerryFactory-Muffin ', `<a href="muffin"          >Various</a>`, 'MUFFIN       ', 'https://muffinberry.world'],
       ['PolyPulsar Gamma    ', `<a href="polypulsar_gamma">Various</a>`, 'GPUL         ', 'https://gamma.polypulsar.farm'],
       ['PolyCrow            ', `<a href="polycrow        ">Various</a>`, 'CROW         ', 'https://polycrow.finance'],
-      ['Jaguar Fire         ', `<a href="jaguar_fire     ">Various</a>`, 'JAGUAR       ', 'https://fire.jaguarswap.com']
+      ['Jaguar Fire         ', `<a href="jaguar_fire     ">Various</a>`, 'JAGUAR       ', 'https://fire.jaguarswap.com'],
+      ['Hop Exchange        ', `<a href="hop             ">Various</a>`, 'WMATIC       ', 'https://app.hop.exchange'],
+      ['Zelda               ', `<a href="zelda           ">Various</a>`, 'ZELDA        ', 'https://zelda.farm']
 
     ],
   }
