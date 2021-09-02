@@ -499,7 +499,8 @@ const main = async() => {
       ["Alita               ", `<a href="alita"         >Various</a>`,"ALI              ","https://app.alita.finance"],
       ["Singular            ", `<a href="singular"      >Various</a>`,"SING             ","https://singular.farm"],
       ["Elk                 ", `<a href="elk"           >Various</a>`,"ELK              ","https://app.elk.finance"],
-      ["Defily              ", `<a href="defily"        >Various</a>`,"DFL              ","https://defily.io"]
+      ["Defily              ", `<a href="defily"        >Various</a>`,"DFL              ","https://defily.io"],
+      ["United Farmers Finance", `<a href="united_farmers_finance"        >Various</a>`,"UFF              ","https://unitedfarmers.finance"]
     ]}
 
   let table = new AsciiTable().fromJSON(tableData);
