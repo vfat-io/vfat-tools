@@ -304,6 +304,7 @@ const main = async () => {
       ['SunsetV2'            , `<a href="sunsetv2"        >Various</a>`, 'SUNSET       ', 'https://sunsetv2.finance'],
       ['Helium Finance'      , `<a href="heliumfinance"   >Various</a>`, 'HELIUM       ', 'https://heliumfinance.club'],
       ['PolyYork V2'         , `<a href="polyyork2"       >Various</a>`, 'GoldYork     ', 'https://gold.polyyork.finance']
+      ['Tamago Swap'         , `<a href="tamagoswap"       >Various</a>`, 'TMGO     ', 'https://tamagoswap.finance']
     ],
   }
 
