@@ -33,7 +33,8 @@ const main = async() => {
         ["Eskimo      ",`<a href="eskimo"     >Various</a>`,"ESKI     ","https://eskimo.farm" ],
         ['Bcharity    ',`<a href="bcharity"   >Various</a>`,'Give     ', 'https://avaxgive.netlify.app'],
         ["EternalFinance" ,`<a href="ikaris"  >Various</a>`,"IKARIS   ","https://avax.eternalfinance.live" ],
-        ["Sphereswap  ",`<a href="sphereswap" >Various</a>`,"SPHERE.e ","https://avax.sphereswap.app" ]
+        ["Sphereswap  ",`<a href="sphereswap" >Various</a>`,"SPHERE.e ","https://avax.sphereswap.app" ],
+        ["LittleFarmer  ",`<a href="littlefarmer" >Various</a>`,"AFARMER","https://avax.littlefarmer.finance" ]
     ]
   }
 
