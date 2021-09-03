@@ -307,6 +307,12 @@ const main = async() => {
         `<a href='zoocoin'>Various</a>`,
         "WILD",
         "https://dex.zoocoin.cash"
+      ],
+      [
+        "FrensFi",
+        `<a href='frensfi'>Various</a>`,
+        "Various",
+        "https://frens.fi"
       ]
     ]
   }
