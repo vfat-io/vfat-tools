@@ -15,7 +15,8 @@ const main = async() => {
     "heading":["Pool Provider","LP", "Reward Tokens", "INFO"],
     "rows": [
       ["GMX                 ", `<a href="/arbitrum/gmx"      >Various</a>`,"ETH,Escrowed GMX   ","https://gmx.financial"],
-      ["Sushi               ", `<a href="/arbitrum/sushi"    >Various</a>`,"SUSHI              ","https://app.sushi.com"]
+      ["Sushi               ", `<a href="/arbitrum/sushi"    >Various</a>`,"SUSHI              ","https://app.sushi.com"],
+      ["Dodo Exchange       ", `<a href="/arbitrum/dodo"     >Various</a>`,"DODO               ","https://app.dodoex.io"]
      ]
   }
 
