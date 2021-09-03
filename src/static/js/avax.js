@@ -35,7 +35,8 @@ const main = async() => {
         ["EternalFinance" ,`<a href="ikaris"  >Various</a>`,"IKARIS   ","https://avax.eternalfinance.live" ],
         ["Sphereswap  ",`<a href="sphereswap" >Various</a>`,"SPHERE.e ","https://avax.sphereswap.app" ],
         ["LittleFarmer  ",`<a href="littlefarmer" >Various</a>`,"AFARMER","https://avax.littlefarmer.finance" ],
-        ["BerryFactory-Trifle",`<a href="trifle" >Various</a>`,"TRIFLE","https://avaxtrifleberry.world" ]
+        ["BerryFactory-Trifle",`<a href="trifle" >Various</a>`,"TRIFLE","https://avaxtrifleberry.world" ],
+        ["Crypto Yield Focus",`<a href="cryptoyieldfocus" >Various</a>`,"CYF","https://www.cryptoyieldfocus.com" ]
     ]
   }
 
