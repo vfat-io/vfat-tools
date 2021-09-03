@@ -26,7 +26,17 @@ const main = async() => {
         ["Avme        ",`<a href="avme"       >Various</a>`,"AVME     ","https://avme.io"],
         ["TraderJoe   ",`<a href="traderjoe"  >Various</a>`,"JOE      ","https://www.traderjoexyz.com"],
         ["Frost       ",`<a href="tundra"     >Various</a>`,"TUNDRA   ","https://frostfinance.farm" ],
-        ["Zabu        ",`<a href="zabu"       >Various</a>`,"ZABU     ","https://zabu.finance" ]
+        ["Zabu        ",`<a href="zabu"       >Various</a>`,"ZABU     ","https://zabu.finance" ],
+        ["DutchFinance",`<a href="dutch"      >Various</a>`,"DUTCH    ","https://avax.theflyingdutchman.finance" ],
+        ["Xdollar     ",`<a href="xdollar"    >Various</a>`,"XDO      ","https://xdollar-avax.mcn.ventures" ],
+        ["CrabFinance ",`<a href="crab   "    >Various</a>`,"CRAB     ","https://crabfinance.live" ],
+        ["Eskimo      ",`<a href="eskimo"     >Various</a>`,"ESKI     ","https://eskimo.farm" ],
+        ['Bcharity    ',`<a href="bcharity"   >Various</a>`,'Give     ', 'https://avaxgive.netlify.app'],
+        ["EternalFinance" ,`<a href="ikaris"  >Various</a>`,"IKARIS   ","https://avax.eternalfinance.live" ],
+        ["Sphereswap  ",`<a href="sphereswap" >Various</a>`,"SPHERE.e ","https://avax.sphereswap.app" ],
+        ["LittleFarmer  ",`<a href="littlefarmer" >Various</a>`,"AFARMER","https://avax.littlefarmer.finance" ],
+        ["BerryFactory-Trifle",`<a href="trifle" >Various</a>`,"TRIFLE","https://avaxtrifleberry.world" ],
+        ["Crypto Yield Focus",`<a href="cryptoyieldfocus" >Various</a>`,"CYF","https://www.cryptoyieldfocus.com" ]
     ]
   }
 

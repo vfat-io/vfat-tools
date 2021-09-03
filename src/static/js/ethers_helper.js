@@ -49,6 +49,9 @@ const pageNetwork = function() {
   if (network.toLowerCase() === 'thundercore') {
     return window.NETWORKS.THUNDERCORE
   }
+  if (network.toLowerCase() === 'celo') {
+    return window.NETWORKS.CELO
+  }
 
   return window.NETWORKS.ETHEREUM
 }
@@ -1553,6 +1556,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
   else if (pool.symbol.includes("DMM-LP")) stakeTokenTicker += " Kyber LP";
   else if (pool.symbol.includes("CAT-LP")) stakeTokenTicker += " PolyCat LP";
   else if (pool.symbol.includes("VLP")) stakeTokenTicker += " AURO LP";
+  else if (pool.symbol.includes("ULP")) stakeTokenTicker += " Ubeswap LP Token";
   else stakeTokenTicker += " Uni LP";
   return {
       t0: t0,
@@ -1589,6 +1593,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
             pool.symbol.includes("SLP") ? (
               {
                 "eth": `http://analytics.sushi.com/pairs/${pool.address}`,
+                "arbitrum": `http://analytics.sushi.com/pairs/${pool.address}`, //temporary solution until they put arbitrum
                 "bsc": `http://analytics-ftm.sushi.com/pairs/${pool.address}`,
                 "fantom": `http://analytics-ftm.sushi.com/pairs/${pool.address}`,
                 "matic": `http://analytics-polygon.sushi.com/pairs/${pool.address}`,
@@ -1599,6 +1604,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
               pool.symbol.includes("PGL") ?  `https://info.pangolin.exchange/#/pair/${pool.address}` :
               pool.symbol.includes("CS-LP") ?  `https://app.coinswap.space/#/` :
               pool.name.includes("Value LP") ?  `https://info.vswap.fi/pool/${pool.address}` :
+              pool.name.includes("Ubeswap") ?  `https://info.ubeswap.org/pair/${pool.address}` :
               pool.name.includes("OperaSwap") ?  `https://www.operaswap.finance/` :
               pool.symbol.includes("SPIRIT") ?  `https://swap.spiritswap.finance/#/swap` :
               pool.symbol.includes("spLP") ?  `https://info.spookyswap.finance/pair/${pool.address}` :
@@ -1646,6 +1652,11 @@ function getUniPrices(tokens, prices, pool, chain="eth")
             `https://app.apeswap.finance/add/${t0address}/${t1address}`,
             `https://app.apeswap.finance/remove/${t0address}/${t1address}`,
             `https://app.apeswap.finance/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+          ] :
+          pool.symbol.includes("ULP") ? [
+            `https://app.ubeswap.org/#/add/${t0address}/${t1address}`,
+            `https://app.ubeswap.org/#/remove/${t0address}/${t1address}`,
+            `https://app.ubeswap.org/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
           ] :
           pool.symbol.includes("VLP") ? [
             `https://app.viralata.finance/add/${t0address}/${t1address}`,
@@ -2177,6 +2188,9 @@ function getErc20Prices(prices, pool, chain="eth") {
     case "xdai":
       poolUrl=`https://blockscout.com/xdai/mainnet/tokens/${pool.address}`;
       break;
+    case "celo":
+      poolUrl=`https://explorer.celo.org/address/${pool.address}`;
+      break;
   }
 
   const getDexguruTokenlink =  function() {
@@ -2699,6 +2713,9 @@ async function printSynthetixPool(App, info, chain="eth", customURLs) {
         break;
       case "xdai":
         _print(`<a target="_blank" href="https://blockscout.com/xdai/mainnet/address/${info.stakingAddress}/contracts">Explorer</a>`);
+        break;
+      case "celo":
+        _print(`<a target="_blank" href="https://explorer.celo.org/address/${info.stakingAddress}/contracts">Celo Explorer</a>`);
         break;
     }
     if (info.stakeTokenTicker != "ETH") {

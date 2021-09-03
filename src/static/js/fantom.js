@@ -301,6 +301,18 @@ const main = async() => {
         `<a href='guru_lite23'>DEATH-WFTM spLP</a>`,
         "DEATH",
         "https://ftm.guru/LF/23"
+      ],
+      [
+        "Zoocoin",
+        `<a href='zoocoin'>Various</a>`,
+        "WILD",
+        "https://dex.zoocoin.cash"
+      ],
+      [
+        "FrensFi",
+        `<a href='frensfi'>Various</a>`,
+        "Various",
+        "https://frens.fi"
       ]
     ]
   }

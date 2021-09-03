@@ -333,7 +333,20 @@ const main = async () => {
       ['Energy 8            ', `<a href="energy8"         >Various</a>`, 'E8           ', 'https://energy8.io/farming'],
       ['Beluga              ', `<a href="beluga"          >Various</a>`, 'Various      ', 'https://app.beluga.fi'],
       ['Little Farmer       ', `<a href="littlefarmer"    >Various</a>`, 'LFARMER      ', 'https://www.littlefarmer.finance'],
-      ['Jaguar              ', `<a href="jaguar"          >Various</a>`, 'JAGUAR       ', 'https://polygon.jaguarswap.com']
+      ['Jaguar              ', `<a href="jaguar"          >Various</a>`, 'JAGUAR       ', 'https://polygon.jaguarswap.com'],
+      ['PolyDino            ', `<a href="polydino"        >Various</a>`, 'DINO         ', 'https://polydino.finance'],
+      ['Dynamis             ', `<a href="dynamis"         >Various</a>`, 'DYNA         ', 'https://dynamis.finance'],
+      ['BerryFactory-Muffin ', `<a href="muffin"          >Various</a>`, 'MUFFIN       ', 'https://muffinberry.world'],
+      ['PolyPulsar Gamma    ', `<a href="polypulsar_gamma">Various</a>`, 'GPUL         ', 'https://gamma.polypulsar.farm'],
+      ['PolyCrow            ', `<a href="polycrow        ">Various</a>`, 'CROW         ', 'https://polycrow.finance'],
+      ['Jaguar Fire         ', `<a href="jaguar_fire     ">Various</a>`, 'JAGUAR       ', 'https://fire.jaguarswap.com'],
+      ['Hop Exchange        ', `<a href="hop             ">Various</a>`, 'WMATIC       ', 'https://app.hop.exchange'],
+      ['Zelda               ', `<a href="zelda           ">Various</a>`, 'ZELDA        ', 'https://zelda.farm'],
+      ['PolyWiki            ', `<a href="wiki            ">Various</a>`, 'WIKI         ', 'https://poly.farmwiki.xyz'],
+      ['PolyGalaxy          ', `<a href="polygalaxy      ">Various</a>`, 'GALAXY       ', 'https://polygalaxy.finance'],
+      ['Tamago Swap         ', `<a href="tamago          ">Various</a>`, 'TMGO         ', 'https://tamagoswap.finance'],
+      ['PolyNuts            ', `<a href="polynuts        ">Various</a>`, 'NUTS         ', 'https://polynuts.farm'] 
+
     ],
   }
 

@@ -70,7 +70,7 @@ $(function() {
         if (poolPrices[i]) {
           const apr = printCustomChefPool(App, chefAbi, chefAddress, prices, tokens, poolInfos[i], i, poolPrices[i],
             totalAllocPoints, rewardsPerWeek, rewardTokenTicker, rewardTokenAddress,
-            pendingRewardsFunction, null, null, "avax", poolInfos[i].depositFee, poolInfos[i].withdrawFee)
+            pendingRewardsFunction, 8, null, "avax", poolInfos[i].depositFee, poolInfos[i].withdrawFee)
           aprs.push(apr);
         }
       }
@@ -123,15 +123,16 @@ $(function() {
     stakeTokenTicker, staked_tvl, userStaked, poolTokenPrice,
     fixedDecimals) {
       var usdPerWeek = poolRewardsPerWeek * rewardPrice;
-      fixedDecimals = fixedDecimals ?? 2;
+      fixedDecimals = fixedDecimals ?? 6;
+      var timePerBlock = 1.5;
       _print(`${rewardTokenTicker} Per Week: ${poolRewardsPerWeek.toFixed(fixedDecimals)} ($${formatMoney(usdPerWeek)})`);
-      var weeklyAPR = staked_tvl >= 1 ? usdPerWeek / staked_tvl * 100 : usdPerWeek / 1 * 100;
+      var weeklyAPR = staked_tvl >= 1 ? usdPerWeek / staked_tvl * 100 / timePerBlock : usdPerWeek / 1 * 100 / timePerBlock;
       var dailyAPR = weeklyAPR / 7;
       var yearlyAPR = weeklyAPR * 52;
       _print(`APR: Day ${dailyAPR.toFixed(2)}% Week ${weeklyAPR.toFixed(2)}% Year ${yearlyAPR.toFixed(2)}%`);
       var userStakedUsd = userStaked * poolTokenPrice;
       var userStakedPct = staked_tvl >= 1 ? userStakedUsd / staked_tvl * 100 : userStakedUsd / 1 * 100;
-      _print(`You are staking ${userStaked.toFixed(fixedDecimals)} ${stakeTokenTicker} ($${formatMoney(userStakedUsd)}), ${userStakedPct.toFixed(2)}% of the pool.`);
+      _print(`You are staking ${userStaked.toFixed(fixedDecimals)} ${stakeTokenTicker} ($${formatMoney(userStakedUsd)}), ${userStakedPct.toFixed(4)}% of the pool.`);
       var userWeeklyRewards = userStakedPct * poolRewardsPerWeek / 100;
       var userDailyRewards = userWeeklyRewards / 7;
       var userYearlyRewards = userWeeklyRewards * 52;
@@ -153,7 +154,7 @@ $(function() {
 function printCustomChefContractLinks(App, chefAbi, chefAddr, poolIndex, poolAddress, pendingRewardsFunction,
   rewardTokenTicker, stakeTokenTicker, unstaked, userStaked, pendingRewardTokens, fixedDecimals,
   claimFunction, rewardTokenPrice, chain, depositFee, withdrawFee) {
-    fixedDecimals = fixedDecimals ?? 2;
+    fixedDecimals = fixedDecimals ?? 6;
     const approveAndStake = async function() {
       return chefContract_stake(chefAbi, chefAddr, poolIndex, poolAddress, App)
     }
@@ -164,7 +165,7 @@ function printCustomChefContractLinks(App, chefAbi, chefAddr, poolIndex, poolAdd
       return chefContract_claim(chefAbi, chefAddr, poolIndex, App, pendingRewardsFunction, claimFunction)
     }
     if(depositFee > 0){
-      _print_link(`Stake ${unstaked.toFixed(fixedDecimals)} ${stakeTokenTicker} - Withdrawal Fee ${depositFee}%`, approveAndStake)
+      _print_link(`Stake ${unstaked.toString(fixedDecimals)} ${stakeTokenTicker} - Withdrawal Fee ${depositFee}%`, approveAndStake)
     }else{
       _print_link(`Stake ${unstaked.toFixed(fixedDecimals)} ${stakeTokenTicker}`, approveAndStake)
     }
