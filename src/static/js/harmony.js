@@ -98,12 +98,18 @@ const main = async() => {
         "RAIN",
         "https://rainfinance.one"
       ],
-        [
+      [
         "FATExDAO",
         `<a href='fatex'>Various</a>`,
         "FATE",
         "https://app.fatex.io"
-      ]
+      ],
+      [
+        "TheValleys",
+        `<a href='thevalleys'>Various</a>`,
+        "AME",
+        "https://thevalleys.one"
+      ],
     ]
   }
 
