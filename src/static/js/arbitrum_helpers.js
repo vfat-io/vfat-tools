@@ -130,19 +130,21 @@ async function getArbitrumSpoonVault(App, spoonVault, address, stakingAddress) {
 
 async function getArbitrumDlpPool(App, dlpPool, tokenAddress, originTokenAddress, stakingAddress){
   const ownerAddress = await dlpPool._OWNER_();
-  const originToken = getArbitrumToken(App, originTokenAddress, ownerAddress);
+  const originToken = await getArbitrumToken(App, originTokenAddress, ownerAddress);
+  const totalSupply = await dlpPool.totalSupply();
+  const name = await dlpPool.name();
   return {
     address : tokenAddress,
-    name : await dlpPool.name(),
-    symbol : await dlpPool.name(),
-    totalSupply : await dlpPool.totalSupply(),
-    decimals : await dlpPool.decimals(),
-    staked : await balanceOf("???") / 10 ** decimals,
+    name : name,
+    symbol : name,
+    totalSupply : totalSupply,
+    decimals : await dlpPool.decimals(),  //something is wrong here. we have to see the tokenAddress contract and take its abi
+    staked : totalSupply,
     unstaked : await balanceOf(App.YOUR_ADDRESS) / 10 ** decimals,
-    token : "???",
+    token : originToken,
     balance : originToken.staked,
     contract : dlpPool,
-    tokens : "???"
+    tokens : [originToken]
   }
 }
 
