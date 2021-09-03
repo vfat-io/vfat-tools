@@ -344,7 +344,7 @@ const main = async () => {
       ['Zelda               ', `<a href="zelda           ">Various</a>`, 'ZELDA        ', 'https://zelda.farm'],
       ['PolyWiki            ', `<a href="wiki            ">Various</a>`, 'WIKI         ', 'https://poly.farmwiki.xyz'],
       ['PolyGalaxy          ', `<a href="polygalaxy      ">Various</a>`, 'GALAXY       ', 'https://polygalaxy.finance'],
-      ['Tamago Swap         ', `<a href="tamago          ">Various</a>`, 'TMGO         ', 'https://tamagoswap.finance']
+      ['Tamago Swap         ', `<a href="tamago          ">Various</a>`, 'TMGO         ', 'https://tamagoswap.finance'],
       ['PolyNuts            ', `<a href="polynuts        ">Various</a>`, 'NUTS         ', 'https://polynuts.farm'] 
 
     ],
