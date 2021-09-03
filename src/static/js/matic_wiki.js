@@ -11,7 +11,7 @@ async function main() {
     _print(`Initialized ${App.YOUR_ADDRESS}\n`);
     _print("Reading smart contracts...\n");
 
-   const WIKI_CHEF_ADDR = "0xE40065bDaaB3B6A3e541929f897D4FBaaEAFe175";
+   const WIKI_CHEF_ADDR = "0x3938C0fEcEF9a6d38050b424c4C6C2639E9d6A6F";
    const rewardTokenTicker = "WIKI";
    const WIKI_CHEF = new ethers.Contract(WIKI_CHEF_ADDR, WIKI_CHEF_ABI, App.provider);
 
