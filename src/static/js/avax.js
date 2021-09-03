@@ -34,7 +34,8 @@ const main = async() => {
         ['Bcharity    ',`<a href="bcharity"   >Various</a>`,'Give     ', 'https://avaxgive.netlify.app'],
         ["EternalFinance" ,`<a href="ikaris"  >Various</a>`,"IKARIS   ","https://avax.eternalfinance.live" ],
         ["Sphereswap  ",`<a href="sphereswap" >Various</a>`,"SPHERE.e ","https://avax.sphereswap.app" ],
-        ["LittleFarmer  ",`<a href="littlefarmer" >Various</a>`,"AFARMER","https://avax.littlefarmer.finance" ]
+        ["LittleFarmer  ",`<a href="littlefarmer" >Various</a>`,"AFARMER","https://avax.littlefarmer.finance" ],
+        ["BerryFactory-Trifle",`<a href="trifle" >Various</a>`,"TRIFLE","https://avaxtrifleberry.world" ]
     ]
   }
 

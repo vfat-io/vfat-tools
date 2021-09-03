@@ -341,7 +341,9 @@ const main = async () => {
       ['PolyCrow            ', `<a href="polycrow        ">Various</a>`, 'CROW         ', 'https://polycrow.finance'],
       ['Jaguar Fire         ', `<a href="jaguar_fire     ">Various</a>`, 'JAGUAR       ', 'https://fire.jaguarswap.com'],
       ['Hop Exchange        ', `<a href="hop             ">Various</a>`, 'WMATIC       ', 'https://app.hop.exchange'],
-      ['Zelda               ', `<a href="zelda           ">Various</a>`, 'ZELDA        ', 'https://zelda.farm']
+      ['Zelda               ', `<a href="zelda           ">Various</a>`, 'ZELDA        ', 'https://zelda.farm'],
+      ['PolyWiki            ', `<a href="wiki            ">Various</a>`, 'WIKI         ', 'https://poly.farmwiki.xyz'],
+      ['PolyGalaxy          ', `<a href="polygalaxy      ">Various</a>`, 'GALAXY       ', 'https://polygalaxy.finance']
 
     ],
   }
