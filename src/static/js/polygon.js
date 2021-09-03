@@ -345,6 +345,7 @@ const main = async () => {
       ['PolyWiki            ', `<a href="wiki            ">Various</a>`, 'WIKI         ', 'https://poly.farmwiki.xyz'],
       ['PolyGalaxy          ', `<a href="polygalaxy      ">Various</a>`, 'GALAXY       ', 'https://polygalaxy.finance'],
       ['Tamago Swap         ', `<a href="tamago          ">Various</a>`, 'TMGO         ', 'https://tamagoswap.finance']
+      ['PolyNuts            ', `<a href="polynuts        ">Various</a>`, 'NUTS         ', 'https://polynuts.farm'] 
 
     ],
   }
