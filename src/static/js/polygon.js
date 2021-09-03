@@ -346,7 +346,7 @@ const main = async () => {
       ['PolyGalaxy          ', `<a href="polygalaxy      ">Various</a>`, 'GALAXY       ', 'https://polygalaxy.finance'],
       ['Tamago Swap         ', `<a href="tamago          ">Various</a>`, 'TMGO         ', 'https://tamagoswap.finance'],
       ['PolyNuts            ', `<a href="polynuts        ">Various</a>`, 'NUTS         ', 'https://polynuts.farm'] 
-
+      ['PollyFinance        ', `<a href="pollyfinance    ">Various</a>`, 'POLLY        ', 'https://pollyfinance.com/farms'] 
     ],
   }
 
