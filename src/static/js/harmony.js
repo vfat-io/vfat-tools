@@ -103,7 +103,14 @@ const main = async() => {
         `<a href='fatex'>Various</a>`,
         "FATE",
         "https://app.fatex.io"
-      ]
+      ],
+        [
+        "FarmersOnlyFi",
+        `<a href='farmersonly'>Various</a>`,
+        "" +
+        "FOX",
+        "https://app.farmersonly.fi"
+        ]
     ]
   }
 
