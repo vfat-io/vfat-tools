@@ -328,6 +328,21 @@ window.NETWORKS = {
         "https://explorer.celo.org"
     ],
   },
+  IOTEX: {
+    "chainId": "0x1251",
+    "chainName": "IoTeX Mainnet",
+    "nativeCurrency": {
+      "name": "IoTeX",
+      "symbol": "IOTX",
+      "decimals": 18
+    },
+    "rpcUrls": [
+      "https://babel-api.mainnet.iotex.io"
+    ],
+    "blockExplorerUrls": [
+      "https://iotexscan.io"
+    ],
+  },
 }
 
 const infuraId = atob(window.ETHEREUM_NODE_URL).split('/').pop()
@@ -352,6 +367,7 @@ const providerOptions = {
         1666600003: "https://s3.api.harmony.one",
         122: "https://rpc.fuse.io",
         66: "https://exchainrpc.okex.org",
+        4689: "https://babel-api.mainnet.iotex.io",
         321: "https://rpc-mainnet.kcc.network"
       }
     }
