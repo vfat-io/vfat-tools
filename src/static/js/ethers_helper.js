@@ -52,6 +52,9 @@ const pageNetwork = function() {
   if (network.toLowerCase() === 'celo') {
     return window.NETWORKS.CELO
   }
+  if (network.toLowerCase() === 'iotex') {
+    return window.NETWORKS.IOTEX
+  }
 
   return window.NETWORKS.ETHEREUM
 }
@@ -2191,6 +2194,9 @@ function getErc20Prices(prices, pool, chain="eth") {
     case "celo":
       poolUrl=`https://explorer.celo.org/address/${pool.address}`;
       break;
+    case "iotex":
+      poolUrl=`https://iotexscan.io/token/${pool.address}`;
+      break;
   }
 
   const getDexguruTokenlink =  function() {
@@ -2717,6 +2723,9 @@ async function printSynthetixPool(App, info, chain="eth", customURLs) {
       case "celo":
         _print(`<a target="_blank" href="https://explorer.celo.org/address/${info.stakingAddress}/contracts">Celo Explorer</a>`);
         break;
+      case "iotex":
+          _print(`<a target="_blank" href="https://iotexscan.io/address/${info.stakingAddress}#code">IoTeX Explorer</a>`);
+          break;
     }
     if (info.stakeTokenTicker != "ETH") {
       _print_link(`Stake ${info.userUnstaked.toFixed(6)} ${info.stakeTokenTicker}`, approveTENDAndStake)
