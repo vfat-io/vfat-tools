@@ -110,6 +110,12 @@ const main = async() => {
         "AME",
         "https://thevalleys.one"
       ],
+      [
+        "FarmersOnlyFi",
+        `<a href='farmersonly'>Various</a>`,
+        "FOX",
+        "https://app.farmersonly.fi"
+      ]
     ]
   }
 
