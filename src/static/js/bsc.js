@@ -9,9 +9,9 @@ const main = async() => {
     "heading":["Pool Provider","LP", "Reward Tokens", "INFO"],
     "rows": [
       ["Pancake             ", `<a href="pancake"       >Various</a>`,"CAKE             ","https://pancakeswap.finance"],
-      ["Kyber               ", `<a href="kyber"         >Various</a>`,"KNC              ","https://dmm.exchange"],
       ["Apeswap             ", `<a href="apeswap"       >Various</a>`,"BANANA           ","https://apeswap.finance"],
       ["Autofarm            ", `<a href="autofarm"      >Various</a>`,"AUTOFARM         ","https://autofarm.network"],
+      ["Kyber               ", `<a href="kyber"         >Various</a>`,"KNC              ","https://dmm.exchange"],
       ["Bake                ", `<a href="bake"          >Various</a>`,"BAKE             ","https://www.bakeryswap.org"],
       ["Brew                ", `<a href="brew"          >Various</a>`,"BREW             ","https://cafeswap.finance"],
       ["Donut               ", `<a href="donut"         >Various</a>`,"DONUT            ","https://donutdefi.com"],
