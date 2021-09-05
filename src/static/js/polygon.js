@@ -347,7 +347,9 @@ const main = async () => {
       ['Tamago Swap         ', `<a href="tamago          ">Various</a>`, 'TMGO         ', 'https://tamagoswap.finance'],
       ['PolyNuts            ', `<a href="polynuts        ">Various</a>`, 'NUTS         ', 'https://polynuts.farm'],
       ['PollyFinance        ', `<a href="pollyfinance    ">Various</a>`, 'POLLY        ', 'https://pollyfinance.com/farms'],
-      ['ApeSwap             ', `<a href="apeswap         ">Various</a>`, 'BANANA       ', 'https://app.apeswap.finance']
+      ['ApeSwap             ', `<a href="apeswap         ">Various</a>`, 'BANANA       ', 'https://app.apeswap.finance'],
+	  ['Gummy Finance      ', `<a href="gummyfinance"   >Various</a>`, 'GUMMY       ', 'https://gummyfinance.cc'],
+	  ['Gull Finance      ', `<a href="gullfinance"   >Various</a>`, 'GULL       ', 'https://gullfinance.xyz'],
     ],
   }
 
