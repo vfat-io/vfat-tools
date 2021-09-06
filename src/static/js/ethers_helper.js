@@ -1010,7 +1010,7 @@ async function getDlpPool(App, dlpPool, tokenAddress, originTokenAddress, stakin
     staked : totalSupply / 10 ** decimals,
     unstaked : await dlpPool.balanceOf(App.YOUR_ADDRESS) / 10 ** decimals,
     token : originToken,
-    balance : originToken.staked,
+    balance : originToken.staked  * 10 ** originToken.decimals,
     contract : dlpPool,
     tokens : [originTokenAddress]
   }

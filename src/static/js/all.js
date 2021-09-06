@@ -123,7 +123,7 @@ const main = async () => {
       ["Oiler                        ", `<a href="../oiler"              >Various</a>`, "OIL                ", "https://staking.oiler.network"],
       ["Swipe                        ", `<a href="../swipe"              >Various</a>`, "SXP                ", "https://swipe.org"],
       ["Convex                       ", `<a href="../convex"             >Various</a>`, "Various            ", "https://www.convexfinance.com"],
-      ["Unicly *                     ", `<a href="../unicly"             >Various</a>`, "UNIC               ", "https://www.app.unic.ly/#/farm"],
+      ["Unicly                       ", `<a href="../unicly"             >Various</a>`, "UNIC               ", "https://www.app.unic.ly/#/farm"],
       ["Lever                        ", `<a href="../lever"              >Various</a>`, "LEV                ", "https://lever.network"],
       ["Fuse                         ", `<a href="../fuse_eth"           >Various</a>`, "FUSE               ", "https://fuse.io"],
       ["Donkey                       ", `<a href="../donkey"             >Various</a>`, "DON                ", "https://don-key.finance"],
@@ -145,7 +145,8 @@ const main = async () => {
       ["Yield Enhancement Labs       ", `<a href="../yel/"               >Various</a>`, "YEL                ", "https://yel.finance"],
       ["Emptyset Finance             ", `<a href="../emptyset/"          >Various</a>`, "ESS                ", "https://app.emptyset.finance/dollar"],
       ["NAOS Finance                 ", `<a href="../naos/"              >Various</a>`, "NAOS               ", "https://app.naos.finance/farms"],
-      ["XBE Finance                  ", `<a href="../xbe/"               >Various</a>`, "XBE                ", "https://app.xbe.finance"]
+      ["XBE Finance                  ", `<a href="../xbe/"               >Various</a>`, "XBE                ", "https://app.xbe.finance"],
+      ["Dodo Exchange                ", `<a href="../dodo/"              >Various</a>`, "DODO               ", "https://app.dodoex.io"]
     ]
   }
 

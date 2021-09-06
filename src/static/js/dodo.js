@@ -16,13 +16,13 @@ consoleInit(main)
     const rewardsPerWeek = await DODO_CHEF.dodoPerBlock() / 1e18 * 604800 / 13.5;
 
     await loadDODOChefContract(App, DODO_CHEF, DODO_CHEF_ADDR, DODO_CHEF_ABI,
-        "DODO", "dodoRewardVault", null, rewardsPerWeek, "getPendingReward");
+        "DODO", null, rewardsPerWeek, "getPendingReward", null, [14]);
 
   hideLoading();
 }
 
 async function loadDODOChefContract(App, chef, chefAddress, chefAbi, rewardTokenTicker,
-    rewardTokenFunction, rewardsPerBlockFunction, rewardsPerWeekFixed, pendingRewardsFunction,
+    rewardsPerBlockFunction, rewardsPerWeekFixed, pendingRewardsFunction,
     extraPrices, deathPoolIndices, showAll) {
   const chefContract = chef ?? new ethers.Contract(chefAddress, chefAbi, App.provider);
 
@@ -36,7 +36,7 @@ async function loadDODOChefContract(App, chef, chefAddress, chefAbi, rewardToken
 
   var tokens = {};
 
-  const rewardTokenAddress = await chefContract.callStatic[rewardTokenFunction]();
+  const rewardTokenAddress = "0x43Dfc4159D86F3A37A5A4B3D4580b888ad7d4DDd";
   const rewardToken = await getToken(App, rewardTokenAddress, chefAddress);
   const rewardsPerWeek = rewardsPerWeekFixed ??
     await chefContract.callStatic[rewardsPerBlockFunction]()
