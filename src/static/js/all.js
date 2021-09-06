@@ -144,7 +144,8 @@ const main = async () => {
       ["Fox Shapeshift               ", `<a href="../fox/"               >Various</a>`, "FOX                ", "https://fox.shapeshift.com"],
       ["Yield Enhancement Labs       ", `<a href="../yel/"               >Various</a>`, "YEL                ", "https://yel.finance"],
       ["Emptyset Finance             ", `<a href="../emptyset/"          >Various</a>`, "ESS                ", "https://app.emptyset.finance/dollar"],
-      ["NAOS Finance                 ", `<a href="../naos/"              >Various</a>`, "NAOS               ", "https://app.naos.finance/farms"]
+      ["NAOS Finance                 ", `<a href="../naos/"              >Various</a>`, "NAOS               ", "https://app.naos.finance/farms"],
+      ["XBE Finance                  ", `<a href="../xbe/"               >Various</a>`, "XBE                ", "https://app.xbe.finance"]
     ]
   }
 
