@@ -11,6 +11,26 @@ const ArbitrumTokens = [
     { "id": "tether","symbol": "USDT", "contract": "0xfd086bc7cd5c481dcc9c85ebe478a1c0b69fcbb9" }
 ];
 
+const uniSqrtPrice = (tokenDecimals, sqrtRatioX96) => {
+  const [token0Decimals, token1Decimals] = tokenDecimals;
+  const scalarNumerator = ethers.BigNumber.from(10).pow(token0Decimals);
+  const scalarDenominator = ethers.BigNumber.from(10).pow(token1Decimals);
+
+  const sqrtRatioX96BI = ethers.BigNumber.from(sqrtRatioX96);
+
+  const inputNumerator = sqrtRatioX96BI.mul(sqrtRatioX96BI);
+  const inputDenominator = ethers.BigNumber.from(2).pow(192);
+
+  let numerator = scalarDenominator.mul(inputDenominator)
+  let denominator = scalarNumerator.mul(inputNumerator)
+
+  let fraction
+  if (denominator.gt(numerator)) {
+    return 1 / denominator.div(numerator).toNumber()
+  }
+  return numerator.div(denominator).toNumber()
+}
+
 async function getArbitrumPrices() {
     const idPrices = await lookUpPrices(ArbitrumTokens.map(x => x.id));
     const prices = {}
