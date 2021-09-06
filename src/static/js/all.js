@@ -101,7 +101,7 @@ const main = async () => {
       ["Bondappetit                  ", `<a href="../bondappetit"        >Various</a>`, "BAG                ", "https://bondappetit.io"],
       ["Penguin                      ", `<a href="../penguin"            >Various</a>`, "FISH               ", "https://penguinswap.eth.link"],
       ["Mimo                         ", `<a href="../mimo"               >Various</a>`, "MIMO               ", "https://mimo.capital/mining"],
-      ["Fei                          ", `<a href="../fei"                >Various</a>`, "FEI                ", "https://fei.money"],
+      ["Fei *                        ", `<a href="../fei"                >Various</a>`, "FEI                ", "https://fei.money"],
       ["Blockchain Adventurers Guild ", `<a href="../bag"                >Various</a>`, "BAG                ", "https://app.thisistheway.finance/#/stake"],
       ["Piedao                       ", `<a href="../piedao"             >Various</a>`, "DOUGH              ", "https://www.piedao.org"],
       ["Cryptex                      ", `<a href="../cryptex"            >Various</a>`, "CTX                ", "https://app.cryptex.finance"],
