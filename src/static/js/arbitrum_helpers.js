@@ -4,7 +4,11 @@ const ARBITRUM_VAULT_WANT_ABI = [{"inputs":[{"internalType":"contract IStrategy"
 const ARBITRUM_DLP_ABI = [{"inputs":[{"internalType":"address","name":"_originToken","type":"address"}],"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"owner","type":"address"},{"indexed":true,"internalType":"address","name":"spender","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"Approval","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"uint256","name":"value","type":"uint256"}],"name":"Burn","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"uint256","name":"value","type":"uint256"}],"name":"Mint","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"previousOwner","type":"address"},{"indexed":true,"internalType":"address","name":"newOwner","type":"address"}],"name":"OwnershipTransferPrepared","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"previousOwner","type":"address"},{"indexed":true,"internalType":"address","name":"newOwner","type":"address"}],"name":"OwnershipTransferred","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"from","type":"address"},{"indexed":true,"internalType":"address","name":"to","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"Transfer","type":"event"},{"inputs":[],"name":"_NEW_OWNER_","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"_OWNER_","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"owner","type":"address"},{"internalType":"address","name":"spender","type":"address"}],"name":"allowance","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"spender","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"approve","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"owner","type":"address"}],"name":"balanceOf","outputs":[{"internalType":"uint256","name":"balance","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"user","type":"address"},{"internalType":"uint256","name":"value","type":"uint256"}],"name":"burn","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"claimOwnership","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"decimals","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"user","type":"address"},{"internalType":"uint256","name":"value","type":"uint256"}],"name":"mint","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"name","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"originToken","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"symbol","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"totalSupply","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"to","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"transfer","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"from","type":"address"},{"internalType":"address","name":"to","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"transferFrom","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"newOwner","type":"address"}],"name":"transferOwnership","outputs":[],"stateMutability":"nonpayable","type":"function"}]
 
 const ArbitrumTokens = [
-    { "id": "weth","symbol": "WETH", "contract": "0x82aF49447D8a07e3bd95BD0d56f35241523fBab1" }
+    { "id": "weth","symbol": "WETH", "contract": "0x82aF49447D8a07e3bd95BD0d56f35241523fBab1" },
+    { "id": "dodo","symbol": "DODO", "contract": "0x69eb4fa4a2fbd498c257c57ea8b7655a2559a581" },
+    { "id": "wrapped-bitcoin","symbol": "WBTC", "contract": "0x2f2a2543b76a4166549f7aab2e75bef0aefc5b0f" },
+    { "id": "usd-coin","symbol": "USDC", "contract": "0xff970a61a04b1ca14834a43f5de4533ebddb5cc8" },
+    { "id": "tether","symbol": "USDT", "contract": "0xfd086bc7cd5c481dcc9c85ebe478a1c0b69fcbb9" }
 ];
 
 async function getArbitrumPrices() {
@@ -133,18 +137,19 @@ async function getArbitrumDlpPool(App, dlpPool, tokenAddress, originTokenAddress
   const originToken = await getArbitrumToken(App, originTokenAddress, ownerAddress);
   const totalSupply = await dlpPool.totalSupply();
   const name = await dlpPool.name();
+  const decimals = await dlpPool.decimals()
   return {
     address : tokenAddress,
     name : name,
     symbol : name,
     totalSupply : totalSupply,
-    decimals : await dlpPool.decimals(),  //something is wrong here. we have to see the tokenAddress contract and take its abi
-    staked : totalSupply,
-    unstaked : await balanceOf(App.YOUR_ADDRESS) / 10 ** decimals,
+    decimals : decimals,
+    staked : totalSupply / 10 ** decimals,
+    unstaked : await dlpPool.balanceOf(App.YOUR_ADDRESS) / 10 ** decimals,
     token : originToken,
-    balance : originToken.staked,
+    balance : originToken.staked * 10 ** originToken.decimals,
     contract : dlpPool,
-    tokens : [originToken]
+    tokens : [originTokenAddress]
   }
 }
 
@@ -161,8 +166,8 @@ async function getArbitrumStoredToken(App, tokenAddress, stakingAddress, type) {
       return await getArbitrumWantVault(App, wantVault, tokenAddress, stakingAddress);
     case "dlp":
       const dlpPool = new ethers.Contract(tokenAddress, ARBITRUM_DLP_ABI, App.provider);
-      const originTokenAddress = dlpPool.originToken();
-      return await await getArbitrumDlpPool(App, dlpPool, tokenAddress, originTokenAddress, stakingAddress);
+      const originTokenAddress = await dlpPool.originToken();
+      return await getArbitrumDlpPool(App, dlpPool, tokenAddress, originTokenAddress, stakingAddress);
     case "erc20":
       const erc20 = new ethers.Contract(tokenAddress, ERC20_ABI, App.provider);
       return await geterc20(App, erc20, tokenAddress, stakingAddress);

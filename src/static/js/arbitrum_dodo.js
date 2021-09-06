@@ -22,13 +22,13 @@ async function main() {
     const prices = await getArbitrumPrices();
 
     await loadArbitrumDodoContract(App, tokens, prices, DODO_CHEF, DODO_CHEF_ADDR, DODO_CHEF_ABI, rewardTokenTicker,
-        "dodoRewardVault", null, rewardsPerWeek, "getPendingReward");
+      null, rewardsPerWeek, "getPendingReward");
 
     hideLoading();
   }
 
 async function loadArbitrumDodoContract(App, tokens, prices, chef, chefAddress, chefAbi, rewardTokenTicker,
-  rewardTokenFunction, rewardsPerBlockFunction, rewardsPerWeekFixed, pendingRewardsFunction,
+  rewardsPerBlockFunction, rewardsPerWeekFixed, pendingRewardsFunction,
   deathPoolIndices, claimFunction) {
   const chefContract = chef ?? new ethers.Contract(chefAddress, chefAbi, App.provider);
 
@@ -40,7 +40,7 @@ async function loadArbitrumDodoContract(App, tokens, prices, chef, chefAddress, 
 
   _print(`Showing incentivized pools only.\n`);
 
-  const rewardTokenAddress = await chefContract.callStatic[rewardTokenFunction]();
+  const rewardTokenAddress = "0x69eb4fa4a2fbd498c257c57ea8b7655a2559a581";
   const rewardToken = await getArbitrumToken(App, rewardTokenAddress, chefAddress);
   const rewardsPerWeek = rewardsPerWeekFixed ??
     await chefContract.callStatic[rewardsPerBlockFunction]()
