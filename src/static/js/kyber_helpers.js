@@ -6,13 +6,16 @@ DMM_POOL_ABI = [{"inputs":[],"stateMutability":"nonpayable","type":"constructor"
 
 COINGECKO_IDS = {
   KNC: 'kyber-network-crystal',
+  ETH: 'ethereum',
   MATIC: 'matic-network',
   USDT: 'tether',
   USDC: 'usd-coin',
+  BUSD: 'binance-usd',
   DAI: 'dai',
   WBTC: 'wrapped-bitcoin',
   WETH: 'weth',
   WMATIC: 'wmatic',
+  WBNB: 'wbnb',
 }
 
 async function getCoinGeckoPrice(symbol) {

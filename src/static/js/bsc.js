@@ -11,6 +11,7 @@ const main = async() => {
       ["Pancake             ", `<a href="pancake"       >Various</a>`,"CAKE             ","https://pancakeswap.finance"],
       ["Apeswap             ", `<a href="apeswap"       >Various</a>`,"BANANA           ","https://apeswap.finance"],
       ["Autofarm            ", `<a href="autofarm"      >Various</a>`,"AUTOFARM         ","https://autofarm.network"],
+      ["Kyber               ", `<a href="kyber"         >Various</a>`,"KNC              ","https://dmm.exchange"],
       ["Bake                ", `<a href="bake"          >Various</a>`,"BAKE             ","https://www.bakeryswap.org"],
       ["Brew                ", `<a href="brew"          >Various</a>`,"BREW             ","https://cafeswap.finance"],
       ["Donut               ", `<a href="donut"         >Various</a>`,"DONUT            ","https://donutdefi.com"],
@@ -501,7 +502,7 @@ const main = async() => {
       ["Elk                 ", `<a href="elk"           >Various</a>`,"ELK              ","https://app.elk.finance"],
       ["Defily              ", `<a href="defily"        >Various</a>`,"DFL              ","https://defily.io"],
       ["United Farmers Finance", `<a href="united_farmers_finance"        >Various</a>`,"UFF              ","https://unitedfarmers.finance"],
-      ["Yerba Mate Finance  ", `<a href="yerbamate"     >Various</a>`,"YERBAMATE        ","https://app.yerbamate.finance"],
+      ["Yerba Mate Finance  ", `<a href="yerbamatefinance">Various</a>`,"YERBAMATE      ","https://app.yerbamate.finance"],
       ["Rocketmoon          ", `<a href="rocketmoon"    >Various</a>`,"ROCKET           ","https://rocketmoon.farm"],
       ["DogCake             ", `<a href="dogcake"       >Various</a>`,"DCAKE            ","https://dogcake.finance"]
     ]}
