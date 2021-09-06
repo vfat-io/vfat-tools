@@ -101,7 +101,7 @@ const main = async () => {
       ["Bondappetit                  ", `<a href="../bondappetit"        >Various</a>`, "BAG                ", "https://bondappetit.io"],
       ["Penguin                      ", `<a href="../penguin"            >Various</a>`, "FISH               ", "https://penguinswap.eth.link"],
       ["Mimo                         ", `<a href="../mimo"               >Various</a>`, "MIMO               ", "https://mimo.capital/mining"],
-      ["Fei                          ", `<a href="../fei"                >Various</a>`, "FEI                ", "https://fei.money"],
+      ["Fei *                        ", `<a href="../fei"                >Various</a>`, "FEI                ", "https://fei.money"],
       ["Blockchain Adventurers Guild ", `<a href="../bag"                >Various</a>`, "BAG                ", "https://app.thisistheway.finance/#/stake"],
       ["Piedao                       ", `<a href="../piedao"             >Various</a>`, "DOUGH              ", "https://www.piedao.org"],
       ["Cryptex                      ", `<a href="../cryptex"            >Various</a>`, "CTX                ", "https://app.cryptex.finance"],
@@ -123,7 +123,7 @@ const main = async () => {
       ["Oiler                        ", `<a href="../oiler"              >Various</a>`, "OIL                ", "https://staking.oiler.network"],
       ["Swipe                        ", `<a href="../swipe"              >Various</a>`, "SXP                ", "https://swipe.org"],
       ["Convex                       ", `<a href="../convex"             >Various</a>`, "Various            ", "https://www.convexfinance.com"],
-      ["Unicly *                     ", `<a href="../unicly"             >Various</a>`, "UNIC               ", "https://www.app.unic.ly/#/farm"],
+      ["Unicly                       ", `<a href="../unicly"             >Various</a>`, "UNIC               ", "https://www.app.unic.ly/#/farm"],
       ["Lever                        ", `<a href="../lever"              >Various</a>`, "LEV                ", "https://lever.network"],
       ["Fuse                         ", `<a href="../fuse_eth"           >Various</a>`, "FUSE               ", "https://fuse.io"],
       ["Donkey                       ", `<a href="../donkey"             >Various</a>`, "DON                ", "https://don-key.finance"],
@@ -144,7 +144,9 @@ const main = async () => {
       ["Fox Shapeshift               ", `<a href="../fox/"               >Various</a>`, "FOX                ", "https://fox.shapeshift.com"],
       ["Yield Enhancement Labs       ", `<a href="../yel/"               >Various</a>`, "YEL                ", "https://yel.finance"],
       ["Emptyset Finance             ", `<a href="../emptyset/"          >Various</a>`, "ESS                ", "https://app.emptyset.finance/dollar"],
-      ["NAOS Finance                 ", `<a href="../naos/"              >Various</a>`, "NAOS               ", "https://app.naos.finance/farms"]
+      ["NAOS Finance                 ", `<a href="../naos/"              >Various</a>`, "NAOS               ", "https://app.naos.finance/farms"],
+      ["XBE Finance                  ", `<a href="../xbe/"               >Various</a>`, "XBE                ", "https://app.xbe.finance"],
+      ["Dodo Exchange                ", `<a href="../dodo/"              >Various</a>`, "DODO               ", "https://app.dodoex.io"]
     ]
   }
 
