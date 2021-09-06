@@ -350,6 +350,7 @@ const main = async () => {
       ['ApeSwap             ', `<a href="apeswap         ">Various</a>`, 'BANANA       ', 'https://app.apeswap.finance'],
 	  ['Gummy Finance      ', `<a href="gummyfinance"   >Various</a>`, 'GUMMY       ', 'https://gummyfinance.cc'],
 	  ['Gull Finance      ', `<a href="gullfinance"   >Various</a>`, 'GULL       ', 'https://gullfinance.xyz'],
+    ['PolyAlpha Finance ',`<a href="polyalpha"     >Various</a>`,'ALPHA        ','https://polyalpha.finance',],
     ],
   }
 
