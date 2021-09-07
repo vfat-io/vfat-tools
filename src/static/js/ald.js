@@ -14,7 +14,7 @@ consoleInit(main)
     const rewardsPerWeek = await ALD_CHEF.aldPerBlock() / 1e18 * 604800 / 13.5;
 
     await loadAldChefContract(App, ALD_CHEF, ALD_CHEF_ADDR, ALD_CHEF_ABI,
-        "ALD", "ald", null, rewardsPerWeek, "pendingALD", [4,5]);
+        "ALD", "ald", null, rewardsPerWeek, "pendingALD", null, [5]);
 
     hideLoading();
   }
@@ -76,6 +76,7 @@ async function loadAldChefContract(App, chef, chefAddress, chefAbi, rewardTokenT
   const poolPrices = poolInfos.map(poolInfo => poolInfo?.poolToken ? getPoolPrices(tokens, prices, poolInfo.poolToken) : undefined);
 
   _print("Finished reading smart contracts.\n");
+
 
   let aprs = []
   for (let i = 0; i < poolCount; i++) {
