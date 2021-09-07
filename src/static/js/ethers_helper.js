@@ -1669,7 +1669,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
                     "fantom": `https://fantom-exchange.galaxyfinance.one/#/swap`,
                 }[chain]) :
               chain == "matic" ? `https://info.quickswap.exchange/pair/${pool.address}` :
-            `http://uniswap.info/pair/${pool.address}`;
+            `http://v2.uniswap.info/pair/${pool.address}`;
           const helperUrls = pool.is1inch ? [] :
           pool.symbol.includes("LSLP") ? [
             `https://linkswap.app/#/add/${t0address}/${t1address}`,
@@ -1820,14 +1820,9 @@ function getUniPrices(tokens, prices, pool, chain="eth")
             `https://koffeeswap.exchange/#/remove/${t0address}/${t1address}`,
             `https://koffeeswap.exchange/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
         ] :
-          t0.symbol.includes("COMFI") ? [
-            `https://app.uniswap.org/#/add/v2/${t0address}/${t1address}`,
+          [ `https://app.uniswap.org/#/add/v2/${t0address}/${t1address}`,
             `https://app.uniswap.org/#/remove/v2/${t0address}/${t1address}`,
-            `https://app.uniswap.org/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
-          ] :
-          [ `https://app.uniswap.org/#/add/${t0address}/${t1address}`,
-            `https://app.uniswap.org/#/remove/${t0address}/${t1address}`,
-            `https://app.uniswap.org/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}` ]
+            `https://app.uniswap.org/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}&use=v2` ]
 
           const helperHrefs = helperUrls.length == 0 ? "" :
             ` <a href='${helperUrls[0]}' target='_blank'>[+]</a> <a href='${helperUrls[1]}' target='_blank'>[-]</a> <a href='${helperUrls[2]}' target='_blank'>[<=>]</a>`
@@ -1880,7 +1875,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
                             "fantom": `https://fantom-exchange.galaxyfinance.one/#/swap`
                           }[chain]) :
                             chain == "matic" ? `https://info.quickswap.exchange/pair/${pool.address}` :
-                              `http://uniswap.info/pair/${pool.address}`;
+                              `http://v2.uniswap.info/pair/${pool.address}`;
           const helperUrls = pool.is1inch ? [] :
             pool.symbol.includes("LSLP") ? [
                 `https://linkswap.app/#/add/${t0address}/${t1address}`,
@@ -1946,14 +1941,9 @@ function getUniPrices(tokens, prices, pool, chain="eth")
                             `https://fantom-exchange.galaxyfinance.one/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
                             ]
                         }[chain]) :
-                            t0.symbol.includes("COMFI") ? [
-                                `https://app.uniswap.org/#/add/v2/${t0address}/${t1address}`,
-                                `https://app.uniswap.org/#/remove/v2/${t0address}/${t1address}`,
-                                `https://app.uniswap.org/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
-                              ] :
-                              [ `https://app.uniswap.org/#/add/${t0address}/${t1address}`,
-                                `https://app.uniswap.org/#/remove/${t0address}/${t1address}`,
-                                `https://app.uniswap.org/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}` ]
+                            [ `https://app.uniswap.org/#/add/v2/${t0address}/${t1address}`,
+                              `https://app.uniswap.org/#/remove/v2/${t0address}/${t1address}`,
+                              `https://app.uniswap.org/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}&use=v2` ]
 
           return {
             pair_link: `<a href='${poolUrl}' target='_blank'>${stakeTokenTicker}</a>`,
@@ -2141,7 +2131,7 @@ function getWrapPrices(tokens, prices, pool)
     const poolUrl = pool.is1inch ? "https://1inch.exchange/#/dao/pools" :
     pool.symbol.includes("SLP") ?  `http://analytics.sushi.com/pairs/${wrappedToken.address}` :
     (pool.symbol.includes("Cake") || pool.symbol.includes("Pancake")) ?  `http://pancakeswap.info/pair/${wrappedToken.address}`
-      : `http://uniswap.info/pair/${wrappedToken.address}`;
+      : `http://v2.uniswap.info/pair/${wrappedToken.address}`;
     const name = `<a href='${etherscanUrl}' target='_blank'>${pool.symbol}</a> (Wrapped <a href='${poolUrl}' target='_blank'>${uniPrices.stakeTokenTicker}</a>)`;
     const price = (pool.balance / 10 ** wrappedToken.decimals) * uniPrices.price / (pool.totalSupply / 10 ** pool.decimals);
     const tvl = pool.balance / 10 ** wrappedToken.decimals * price;
