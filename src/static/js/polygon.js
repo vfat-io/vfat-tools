@@ -352,6 +352,7 @@ const main = async () => {
 	  ['Gull Finance      ', `<a href="gullfinance"   >Various</a>`, 'GULL       ', 'https://gullfinance.xyz'],
       ['PolyAlpha Finance ',`<a href="polyalpha"     >Various</a>`,'ALPHA        ','https://polyalpha.finance'],
       ['OberonFinance       ',`<a href="galaxy_oberon"    >Various</a>`,'OBERON        ','https://polygon-oberon.galaxyfinance.one'],
+      ['PolyCougar         ' , `<a href="cougar"           >Various</a>`, 'CGS          ', 'https://polyapp.cougarswap.io'],
     ],
   }
 
