@@ -698,7 +698,8 @@ const bscTokens = [
   { "id": "biswap", "symbol": "BSW", "contract": "0x965f527d9159dce6288a2219db51fc6eef120dd1"},
   { "id": "krown", "symbol": "KRW", "contract": "0x1446f3cedf4d86a9399e49f7937766e6de2a3aab"},
   { "id": "pancake-hunny", "symbol": "HUNNY", "contract": "0x565b72163f17849832A692A3c5928cc502f46D69"},
-  { "id": "dodo", "symbol": "DODO", "contract": "0x67ee3cb086f8a16f34bee3ca72fad36f7db929e2"}
+  { "id": "dodo", "symbol": "DODO", "contract": "0x67ee3cb086f8a16f34bee3ca72fad36f7db929e2"},
+  { "id": "galaxy-oberon", "symbol": "OBERON", "contract": "0xc979E70611D997Aa109528c6A9aa73D82Eaa2881" },
 ]
 
 async function getBscPrices() {

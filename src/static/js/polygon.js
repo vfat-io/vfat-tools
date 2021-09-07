@@ -351,6 +351,7 @@ const main = async () => {
 	  ['Gummy Finance      ', `<a href="gummyfinance"   >Various</a>`, 'GUMMY       ', 'https://gummyfinance.cc'],
 	  ['Gull Finance      ', `<a href="gullfinance"   >Various</a>`, 'GULL       ', 'https://gullfinance.xyz'],
     ['PolyAlpha Finance ',`<a href="polyalpha"     >Various</a>`,'ALPHA        ','https://polyalpha.finance',],
+      ['OberonFinance       ',`<a href="galaxy_oberon"    >Various</a>`,'OBERON        ','https://polygon-oberon.galaxyfinance.one',],
     ],
   }
 
