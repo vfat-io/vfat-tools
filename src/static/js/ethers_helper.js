@@ -2137,11 +2137,12 @@ function getWrapPrices(tokens, prices, pool)
   const wrappedToken = pool.token;
   if (wrappedToken.token0 != null) { //Uniswap
     const uniPrices = getUniPrices(tokens, prices, wrappedToken);
+    const etherscanUrl = "https://etherscan.io/address/" + pool.address;
     const poolUrl = pool.is1inch ? "https://1inch.exchange/#/dao/pools" :
     pool.symbol.includes("SLP") ?  `http://analytics.sushi.com/pairs/${wrappedToken.address}` :
     (pool.symbol.includes("Cake") || pool.symbol.includes("Pancake")) ?  `http://pancakeswap.info/pair/${wrappedToken.address}`
       : `http://uniswap.info/pair/${wrappedToken.address}`;
-    const name = `Wrapped <a href='${poolUrl}' target='_blank'>${uniPrices.stakeTokenTicker}</a>`;
+    const name = `<a href='${etherscanUrl}' target='_blank'>${pool.symbol}</a> (Wrapped <a href='${poolUrl}' target='_blank'>${uniPrices.stakeTokenTicker}</a>)`;
     const price = (pool.balance / 10 ** wrappedToken.decimals) * uniPrices.price / (pool.totalSupply / 10 ** pool.decimals);
     const tvl = pool.balance / 10 ** wrappedToken.decimals * price;
     const staked_tvl = pool.staked * price;
@@ -2181,7 +2182,8 @@ function getWrapPrices(tokens, prices, pool)
       price : price,
       stakeTokenTicker : pool.symbol,
       print_price() {
-        _print(`${pool.symbol} Price: $${formatMoney(price)} TVL: $${formatMoney(tvl)}`);
+        const poolUrl = "https://etherscan.io/address/" + pool.address;
+        _print(`<a href='${poolUrl}' target='_blank'>${pool.symbol}</a> (Wrapped ${pool.token.name}) Price: $${formatMoney(price)} TVL: $${formatMoney(tvl)}`);
         _print(`Staked: ${pool.staked.toFixed(4)} ${pool.symbol} ($${formatMoney(staked_tvl)})`);
       },
       print_contained_price(_) {
