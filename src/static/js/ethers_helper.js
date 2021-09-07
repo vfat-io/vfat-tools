@@ -20,6 +20,9 @@ const pageNetwork = function() {
   if (network.toLowerCase() === 'arbitrum') {
     return window.NETWORKS.ARBITRUM
   }
+  if (network.toLowerCase() === 'moonriver') {
+    return window.NETWORKS.MOONRIVER
+  }
   if (network.toLowerCase() === 'heco') {
     return window.NETWORKS.HECO
   }
@@ -2223,6 +2226,9 @@ function getErc20Prices(prices, pool, chain="eth") {
       break;
     case "iotex":
       poolUrl=`https://iotexscan.io/token/${pool.address}`;
+      break;
+    case "moonriver":
+      poolUrl=`https://blockscout.moonriver.moonbeam.network/address/${pool.address}`;
       break;
   }
 
