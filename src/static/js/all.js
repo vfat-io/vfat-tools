@@ -95,7 +95,6 @@ const main = async () => {
       ["Cvi                          ", `<a href="../cvi"                >Various</a>`, "GOVI               ", "https://cvi.finance"],
       ["Futureswap                   ", `<a href="../futureswap"         >Various</a>`, "FST                ", "https://exchange.futureswap.com"],
       ["Xdefi                        ", `<a href="../xdefi"              >Various</a>`, "XDEX               ", "https://farm.xdefi.com"],
-      ["Eurxb                        ", `<a href="../eurxb"              >Various</a>`, "XBE                ", "http://app.eurxb.finance"],
       ["Swarm Network                ", `<a href="../swarm"              >Various</a>`, "SWM                ", "https://stake.myswarm.app"],
       ["Liquity                      ", `<a href="../liquity"            >Various</a>`, "LQTY               ", "https://liquity.app"],
       ["Bondappetit                  ", `<a href="../bondappetit"        >Various</a>`, "BAG                ", "https://bondappetit.io"],
