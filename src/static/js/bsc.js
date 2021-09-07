@@ -505,7 +505,7 @@ const main = async() => {
       ["Yerba Mate Finance  ", `<a href="yerbamatefinance">Various</a>`,"YERBAMATE      ","https://app.yerbamate.finance"],
       ["Rocketmoon          ", `<a href="rocketmoon"    >Various</a>`,"ROCKET           ","https://rocketmoon.farm"],
       ["DogCake             ", `<a href="dogcake"       >Various</a>`,"DCAKE            ","https://dogcake.finance"],
-      ["Dodo Exchange       ", `<a href="dodo"          >Various</a>`,"DODO             ","https://app.dodoex.io"]
+      ["DODO                ", `<a href="dodo"          >Various</a>`,"DODO             ","https://app.dodoex.io"]
     ]}
 
   let table = new AsciiTable().fromJSON(tableData);
