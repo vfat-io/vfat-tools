@@ -319,7 +319,14 @@ const main = async() => {
         `<a href='reaperfarm'>Various</a>`,
         "Various",
         "https://reaper.farm"
-      ]
+      ],
+      [
+        "OberonFinance",
+        `<a href='galaxy_oberon'>Various</a>`,
+        "OBERON",
+        "https://fantom-oberon.galaxyfinance.one/"
+      ],
+
     ]
   }
 
