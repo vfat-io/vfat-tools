@@ -365,7 +365,6 @@ async function loadFantomBasisFork(data) {
     hideLoading();
 }
 
-
 async function getFantomPoolInfo(app, chefContract, chefAddress, poolIndex, pendingRewardsFunction) {
   const poolInfo = await chefContract.poolInfo(poolIndex);
   if (poolInfo.allocPoint == 0) {
