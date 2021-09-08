@@ -8,7 +8,7 @@ const main = async () => {
     heading: ['Pool Provider', 'LP', 'Reward Tokens', 'INFO'],
     rows: [
       ['Ram Protocol', `<a href="ram">Various</a>`, 'RAM', 'https://rammer.finance/'],
-      ['TTSwap', `<a href="ttswap">Various</a>`, 'N/A', 'https://ttswap.space/'],
+      ['TTSwap', `<a href="ttswap">Various</a>`, 'TT', 'https://ttswap.space/'],
     ],
   }
 

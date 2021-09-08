@@ -23,7 +23,7 @@ async function main() {
     prices["0x86aFa7ff694Ab8C985b79733745662760e454169"] = { usd : 1 }
 
     await loadBeltChefContract(App, tokens, prices, BELT_CHEF, BELT_CHEF_ADDR, BELT_CHEF_ABI, rewardTokenTicker,
-        "BELT", null, rewardsPerWeek, "pendingBELT");
+        "BELT", "BELTPerBlock", rewardsPerWeek, "pendingBELT");
 
     hideLoading();
   }

@@ -139,19 +139,27 @@ const SmartdexStakingContracts =  [
     stakingRewardAddress: '0x73eb490b3acd5e36a365bb6f934bd85977ad7068',
   },
   {
-    //tokens: [AGI, NIOX],
-    stakingRewardAddress: '0xa79374bf7c8b9297b20789375fc7ef2c72c32dbf',
-  },
-  {
-    //tokens: [GLQ, MaticWETH],
-    stakingRewardAddress: '0x96d287d25bbbd87910fd28f21fbfa590dfb33b96',
-  },
-  {
-    //tokens: [ALOHA, NIOX],
-    stakingRewardAddress: '0x317875cbe5f64f14d7e9343703cac9c1501ddb05',
-  },
-  {
     //tokens: [PBTC, USDC],
     stakingRewardAddress: '0xa6d04447695c38d4c687cb25330b22c840223e29',
-  }
+  },
+  {
+    //tokens: [DAI, USDC],
+    stakingRewardAddress: '0xB1280593437E65d9a5a1249D53749F6A0f772F94',
+  },
+  {
+    //tokens: [USDC, USDT],
+    stakingRewardAddress: '0xed3Db68a933BCc1Af76056FFcF82Dc16Babf4191',
+  },
+  {
+    //tokens: [RENBTC, NIOX],
+    stakingRewardAddress: '0xc8748Cdba57dd66d7EAE5c8221A1C79f931688d9',
+  },
+  {
+    //tokens: [AGIX, NIOX],
+    stakingRewardAddress: '0x821EA05B45321133739DE3059ABAd8Db54B508d2',
+  },
+  {
+    //tokens: [SDAO, NIOX],
+    stakingRewardAddress: '0x6790a67E75C328297419cda14b075D688B22770C',
+  },
 ]
