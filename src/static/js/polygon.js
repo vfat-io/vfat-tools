@@ -353,7 +353,7 @@ const main = async () => {
       ['PolyAlpha Finance   ', `<a href="polyalpha"       >Various</a>`, 'ALPHA        ', 'https://polyalpha.finance'],
       ['OberonFinance       ', `<a href="galaxy_oberon"   >Various</a>`, 'OBERON       ', 'https://polygon-oberon.galaxyfinance.one'],
       ["TenguSwap           ", `<a href="tenguswap"       >Various</a>`, "TENGUSWAP    ", "https://polygon.tenguswap.com"],
-      ['PolyCougar          ', `<a href="cougar"          >Various</a>`, 'CGS          ', 'https://polyapp.cougarswap.io']
+      ['PolyCougar          ', `<a href="cougar"          >Various</a>`, 'CGS          ', 'https://polyapp.cougarswap.io'],
       ['PolyPegasus         ', `<a href="Polypegasus"     >Various</a>`, 'PEGASUS      ', 'https://polypegasus.farm']
     ],
   }
