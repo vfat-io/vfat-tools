@@ -121,6 +121,12 @@ const main = async() => {
         `<a href='galaxyfarms'>Various</a>`,
         "NEBULA",
         "https://galaxyfarms.one"
+      ],
+      [
+        "Fuzz Finance",
+        `<a href='fuzz'>Various</a>`,
+        "FUZZ",
+        "https://fuzz.fi"
       ]
     ]
   }
