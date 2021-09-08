@@ -17,7 +17,7 @@ $(function() {
     const tokens = {};
     const prices = await getAvaxPrices();
 
-    await loadCustomAvaxChefContract(App, tokens, prices, DERGG_CHEF, DREGG_CHEF_ADDR, DREGG_CHEF_ABI, rewardTokenTicker,
+    await loadCustomAvaxChefContract(App, tokens, prices, DREGG_CHEF, DREGG_CHEF_ADDR, DREGG_CHEF_ABI, rewardTokenTicker,
         "DREGG", "DREGGPerBlock", null, "pendingDREGG", [8]);
 
     hideLoading();
