@@ -348,11 +348,12 @@ const main = async () => {
       ['PolyNuts            ', `<a href="polynuts        ">Various</a>`, 'NUTS         ', 'https://polynuts.farm'],
       ['PollyFinance        ', `<a href="pollyfinance    ">Various</a>`, 'POLLY        ', 'https://pollyfinance.com/farms'],
       ['ApeSwap             ', `<a href="apeswap         ">Various</a>`, 'BANANA       ', 'https://app.apeswap.finance'],
-	  ['Gummy Finance      ', `<a href="gummyfinance"   >Various</a>`, 'GUMMY       ', 'https://gummyfinance.cc'],
-	  ['Gull Finance      ', `<a href="gullfinance"   >Various</a>`, 'GULL       ', 'https://gullfinance.xyz'],
-      ['PolyAlpha Finance ',`<a href="polyalpha"     >Various</a>`,'ALPHA        ','https://polyalpha.finance'],
-      ['OberonFinance       ',`<a href="galaxy_oberon"    >Various</a>`,'OBERON        ','https://polygon-oberon.galaxyfinance.one'],
-      ['PolyCougar         ' , `<a href="cougar"           >Various</a>`, 'CGS          ', 'https://polyapp.cougarswap.io'],
+	    ['Gummy Finance       ', `<a href="gummyfinance"    >Various</a>`, 'GUMMY        ', 'https://gummyfinance.cc'],
+	    ['Gull Finance        ', `<a href="gullfinance"     >Various</a>`, 'GULL         ', 'https://gullfinance.xyz'],
+      ['PolyAlpha Finance   ', `<a href="polyalpha"       >Various</a>`, 'ALPHA        ', 'https://polyalpha.finance'],
+      ['OberonFinance       ', `<a href="galaxy_oberon"   >Various</a>`, 'OBERON       ', 'https://polygon-oberon.galaxyfinance.one'],
+      ["TenguSwap           ", `<a href="tenguswap"       >Various</a>`, "TENGUSWAP    ", "https://polygon.tenguswap.com"],
+      ['PolyCougar          ', `<a href="cougar"          >Various</a>`, 'CGS          ', 'https://polyapp.cougarswap.io']
     ],
   }
 
