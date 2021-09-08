@@ -326,6 +326,18 @@ const main = async() => {
         "OBERON",
         "https://fantom-oberon.galaxyfinance.one/"
       ],
+      [
+        "Guru - LF#2005",
+        `<a href='guru_lite2005'>BLK-WFTM spLP</a>`,
+        "BLK",
+        "https://ftm.guru/LF/2005"
+      ],
+      [
+        "Guru - LF#301",
+        `<a href='guru_lite301'>TCUZ-WFTM spLP</a>`,
+        "TCUZ",
+        "https://ftm.guru/LF/301"
+      ]
 
     ]
   }
