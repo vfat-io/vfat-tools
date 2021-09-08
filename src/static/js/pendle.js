@@ -9,57 +9,94 @@ const PENDLE_SINGLE_STAKING_ABI = [{"inputs":[{"internalType":"uint256","name":"
 const PENDLE_POOLS_READ_WRAPPER_ABI = [{"inputs":[{"internalType":"contract PendleLiquidityRewardsProxy","name":"_rewardsProxy","type":"address"},{"internalType":"address","name":"_liqMiningContract","type":"address"},{"internalType":"uint256[]","name":"_expiries","type":"uint256[]"},{"internalType":"address","name":"_user","type":"address"}],"name":"claim","outputs":[{"internalType":"uint256","name":"rewards","type":"uint256"},{"internalType":"uint256[]","name":"pendingRewards","type":"uint256[]"},{"internalType":"uint256","name":"currentEpoch","type":"uint256"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"_poolOrMarket","type":"address"},{"internalType":"contract PendleLiquidityMining","name":"_staking","type":"address"},{"internalType":"enum PendlePoolsReadWrapper.Type","name":"_type","type":"uint8"}],"name":"getLiquidityMiningInfo","outputs":[{"internalType":"uint256","name":"expiry","type":"uint256"},{"internalType":"string","name":"marketSymbol","type":"string"},{"internalType":"string","name":"tokenSymbol","type":"string"},{"internalType":"uint256","name":"lpTotalSupply","type":"uint256"},{"internalType":"uint256","name":"totalStakeLP","type":"uint256"},{"internalType":"uint256","name":"totalRewards","type":"uint256"},{"internalType":"uint8","name":"tokenDecimals","type":"uint8"},{"internalType":"uint8","name":"xytDecimals","type":"uint8"},{"components":[{"internalType":"uint256","name":"ytotBalance","type":"uint256"},{"internalType":"uint256","name":"ytotWeight","type":"uint256"},{"internalType":"uint256","name":"tokenBalance","type":"uint256"},{"internalType":"uint256","name":"tokenWeight","type":"uint256"}],"internalType":"struct PendlePoolsReadWrapper.Reserves","name":"reserves","type":"tuple"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"contract PendleSingleStaking","name":"_staking","type":"address"},{"internalType":"contract PendleSingleStakingManager","name":"_manager","type":"address"},{"internalType":"contract IERC20","name":"_pendle","type":"address"},{"internalType":"address","name":"_user","type":"address"}],"name":"getSingleStakingInfo","outputs":[{"internalType":"uint256","name":"totalSupply","type":"uint256"},{"internalType":"uint256","name":"rewardPerBlock","type":"uint256"},{"internalType":"uint256","name":"userAvailableToStake","type":"uint256"},{"internalType":"uint256","name":"userAllowance","type":"uint256"},{"internalType":"uint256","name":"userShare","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"contract PendleYieldToken","name":"_pool","type":"address"},{"internalType":"contract PendleLiquidityMining","name":"_staking","type":"address"},{"internalType":"address","name":"_user","type":"address"},{"internalType":"enum PendlePoolsReadWrapper.Type","name":"_type","type":"uint8"}],"name":"getStakingInfo","outputs":[{"internalType":"uint256","name":"expiry","type":"uint256"},{"internalType":"uint256","name":"numberOfEpochs","type":"uint256"},{"internalType":"uint256","name":"epochDuration","type":"uint256"},{"internalType":"uint256","name":"userStaked","type":"uint256"},{"internalType":"uint256","name":"userAvailableToStake","type":"uint256"},{"internalType":"uint256","name":"userAllowance","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"contract IERC20","name":"_token","type":"address"},{"internalType":"address","name":"_staking","type":"address"},{"internalType":"uint256","name":"_allowance","type":"uint256"}],"name":"tokenApprove","outputs":[],"stateMutability":"nonpayable","type":"function"}]
 
 COINGECKO_IDS = {
-  PENDLE: "pendle",
-  USDC: "usd-coin",
+  PENDLE: 'pendle',
+  USDC: 'usd-coin',
 }
 
 const YT_FARMS = [{
-  st: "YT-aUSDC-30DEC2021",
-  token: "USDC",
-  market: "0x9e382E5f78B06631E4109b5d48151f2b3f326df0",
-  staking: "0x6f40A68E99645C60F14b497E75aE024777d61726",
+  st: 'YT-PE-29DEC2022',
+  token: 'PENDLE',
+  market: '0x685d32f394a5F03e78a1A0F6A91B4E2bf6F52cfE',
+  staking: '0x0F3BCcBfEF1dC227f33A11d7a51cD02DEaD208c8',
 }, {
-  st: "YT-aUSDC-29DEC2022",
-  token: "USDC",
-  market: "0x8315BcBC2c5C1Ef09B71731ab3827b0808A2D6bD",
-  staking: "0x6f40A68E99645C60F14b497E75aE024777d61726",
+  st: 'YT-ETHUSDC-29DEC2022',
+  token: 'USDC',
+  market: '0x79c05Da47dC20ff9376B2f7DbF8ae0c994C3A0D0',
+  staking: '0xA78029ab5235B9A83EC45eD036042Db26c6E4300',
 }, {
-  st: "YT-cDAI-30DEC2021",
-  token: "USDC",
-  market: "0x944d1727d0b656f497e74044ff589871c330334f",
-  staking: "0x5B1C59Eb6872f88a92469751a034B9B5ADA9A73F",
+  st: 'YT-aUSDC-30DEC2021',
+  token: 'USDC',
+  market: '0x9e382E5f78B06631E4109b5d48151f2b3f326df0',
+  staking: '0x6f40A68E99645C60F14b497E75aE024777d61726',
 }, {
-  st: "YT-cDAI-29DEC2022",
-  token: "USDC",
-  market: "0xB26C86330FC7F97533051F2F8cD0a90C2E82b5EE",
-  staking: "0x5B1C59Eb6872f88a92469751a034B9B5ADA9A73F",
+  st: 'YT-aUSDC-29DEC2022',
+  token: 'USDC',
+  market: '0x8315BcBC2c5C1Ef09B71731ab3827b0808A2D6bD',
+  staking: '0x6f40A68E99645C60F14b497E75aE024777d61726',
+}, {
+  st: 'YT-cDAI-30DEC2021',
+  token: 'USDC',
+  market: '0x944d1727d0b656f497e74044ff589871c330334f',
+  staking: '0x5B1C59Eb6872f88a92469751a034B9B5ADA9A73F',
+}, {
+  st: 'YT-cDAI-29DEC2022',
+  token: 'USDC',
+  market: '0xB26C86330FC7F97533051F2F8cD0a90C2E82b5EE',
+  staking: '0x5B1C59Eb6872f88a92469751a034B9B5ADA9A73F',
 }]
 
 const OT_FARMS = [{
-  st: "OT-aUSDC-30DEC2021",
-  token: "USDC",
-  market: "0x8B758d7fD0fC58FCA8caA5e53AF2c7Da5F5F8De1",
-  staking: "0x07C87cfE096c417212eAB4152d365F0F7dC6FCe4",
+  st: 'OT-PE-29DEC2022',
+  token: 'PENDLE',
+  market: '0xb124c4e18a282143d362a066736fd60d22393ef4',
+  staking: '0x309d8Cf8f7C3340b50ff0ef457075A3c5792203f',
 }, {
-  st: "OT-aUSDC-29DEC2022",
-  token: "USDC",
-  market: "0x0d8a21f2ea15269b7470c347083ee1f85e6a723b",
-  staking: "0xFb0e378b3eD6D7F8b73230644D945E28fd7F7b03",
+  st: 'OT-ETHUSDC-29DEC2022',
+  token: 'USDC',
+  market: '0x72972b21ce425cfd67935e07c68e84300ce3f40f',
+  staking: '0x529c513DDE7968E19E79e38Ff94D36e4C3c21Eb7',
 }, {
-  st: "OT-cDAI-30DEC2021",
-  token: "USDC",
-  market: "0x2C80D72af9AB0bb9D98F607C817c6F512dd647e6",
-  staking: "0x071dc669Be57C1b3053F746Db20cb3Bf54383aeA",
+  st: 'OT-aUSDC-30DEC2021',
+  token: 'USDC',
+  market: '0x8B758d7fD0fC58FCA8caA5e53AF2c7Da5F5F8De1',
+  staking: '0x07C87cfE096c417212eAB4152d365F0F7dC6FCe4',
 }, {
-  st: "OT-cDAI-29DEC2022",
-  token: "USDC",
-  market: "0x4556C4488CC16D5e9552cC1a99a529c1392E4fe9",
-  staking: "0xa660c9aAa46b696Df01768E1D2d88CE2d5293778",
+  st: 'OT-aUSDC-29DEC2022',
+  token: 'USDC',
+  market: '0x0d8a21f2ea15269b7470c347083ee1f85e6a723b',
+  staking: '0xFb0e378b3eD6D7F8b73230644D945E28fd7F7b03',
+}, {
+  st: 'OT-cDAI-30DEC2021',
+  token: 'USDC',
+  market: '0x2C80D72af9AB0bb9D98F607C817c6F512dd647e6',
+  staking: '0x071dc669Be57C1b3053F746Db20cb3Bf54383aeA',
+}, {
+  st: 'OT-cDAI-29DEC2022',
+  token: 'USDC',
+  market: '0x4556C4488CC16D5e9552cC1a99a529c1392E4fe9',
+  staking: '0xa660c9aAa46b696Df01768E1D2d88CE2d5293778',
 }]
 
 const SINGLE_SIDED = {
   staking: '0x07282F2CEEbD7a65451Fcd268b364300D9e6D7f5',
   manager: '0x747fc744837DEDa8D1c568d8e90839e5D4495255',
+}
+
+const TOKEN_ADDRESSES = {
+  'YT-PE-29DEC2022': '0x49c8aC20dE6409c7e0B8f9867cffD1481D8206c6',
+  'YT-ETHUSDC-29DEC2022': '0x311FCB5dB45A3a5876975f8108237F20525Fa7e0',
+  'YT-aUSDC-30DEC2021': '0xFfAf22DB1ff7e4983b57Ca9632f796f68EdedeF9',
+  'YT-aUSDC-29DEC2022': '0xcDb5b940E95C8632dEcDc806B90dD3fC44E699fE',
+  'YT-cDAI-30DEC2021': '0x31654eb46a3a450265c6dfc4fc4fbbfe371e26fe',
+  'YT-cDAI-29DEC2022': '0xb7deFe73528942793649c0A950Ec528f66159047',
+  'OT-PE-29DEC2022': '0xbF682bd31a615123D28d611b38b0aE3d2b675C2C',
+  'OT-ETHUSDC-29DEC2022': '0x322D6c69048330247165231EB7848A5C80a48878',
+  'OT-aUSDC-30DEC2021': '0x010a0288af52ed61e32674d82bbc7ddbfa9a1324',
+  'OT-aUSDC-29DEC2022': '0x8fcb1783bF4b71A51F702aF0c266729C4592204a',
+  'OT-cDAI-30DEC2021': '0xe55e3b62005a2035d48ac0c41a5a9c799f04892c',
+  'OT-cDAI-29DEC2022': '0x3D4e7F52efaFb9E0C70179B688FC3965a75BCfEa',
+  'USDC': '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48',
+  'PENDLE': '0x808507121B80c02388fAd14726482e061B8da827',
 }
 
 async function getTokenPrice(symbol) {
@@ -161,10 +198,10 @@ async function printLiquidityMiningInfo(App, info, type, rewardTokenTicker, rewa
     )
   } else {
     _print(
-      `<a href='https://app.sushi.com/swap?outputCurrency=${info.farm.st}' target='_blank'>${info.ticker}</a> ` +
-      `<a href='https://app.sushi.com/add/${info.farm.st}/${info.farm.token}' target='_blank'>[+]</a> ` +
-      `<a href='https://app.sushi.com/remove/${info.farm.st}/${info.farm.token}' target='_blank'>[-]</a> ` +
-      `<a href='https://app.sushi.com/swap?outputCurrency=${info.farm.st}' target='_blank'>[<=>]</a> ` +
+      `<a href='https://app.sushi.com/swap?outputCurrency=${TOKEN_ADDRESSES[info.farm.st]}' target='_blank'>${info.ticker}</a> ` +
+      `<a href='https://app.sushi.com/add/${TOKEN_ADDRESSES[info.farm.st]}/${TOKEN_ADDRESSES[info.farm.token]}' target='_blank'>[+]</a> ` +
+      `<a href='https://app.sushi.com/remove/${TOKEN_ADDRESSES[info.farm.st]}/${TOKEN_ADDRESSES[info.farm.token]}' target='_blank'>[-]</a> ` +
+      `<a href='https://app.sushi.com/swap?outputCurrency=${TOKEN_ADDRESSES[info.farm.st]}' target='_blank'>[<=>]</a> ` +
       `LP Price: $${formatMoney(info.lpPrice)} TVL: $${formatMoney(info.tvl)}`
     )
   }
