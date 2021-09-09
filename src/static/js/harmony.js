@@ -74,6 +74,54 @@ const main = async() => {
         "BARD",
         "https://lootswap.finance/guilds/bard"
       ],
+      [
+        "Cosmic",
+        `<a href='cosmic'>Various</a>`,
+        "MAGIC",
+        "https://lootswap.finance/guilds/cosmic"
+      ],
+      [
+        "Sonicswap",
+        `<a href='sonicswap'>Various</a>`,
+        "SONIC",
+        "https://sonicswap.io/#/staking"
+      ],
+      [
+        "Defi Kingdoms",
+        `<a href='defikingdoms'>Various</a>`,
+        "JEWEL",
+        "https://game.defikingdoms.com"
+      ],
+      [
+        "Rain",
+        `<a href='rain'>Various</a>`,
+        "RAIN",
+        "https://rainfinance.one"
+      ],
+      [
+        "FATExDAO",
+        `<a href='fatex'>Various</a>`,
+        "FATE",
+        "https://app.fatex.io"
+      ],
+      [
+        "TheValleys",
+        `<a href='thevalleys'>Various</a>`,
+        "AME",
+        "https://thevalleys.one"
+      ],
+      [
+        "FarmersOnlyFi",
+        `<a href='farmersonly'>Various</a>`,
+        "FOX",
+        "https://app.farmersonly.fi"
+      ],
+      [
+        "Fuzz Finance",
+        `<a href='fuzz'>Various</a>`,
+        "FUZZ",
+        "https://fuzz.fi"
+      ]
     ]
   }
 

@@ -46,6 +46,36 @@ window.NETWORKS = {
       "https://etherscan.io"
     ]
   },
+  ARBITRUM: {
+    "chainId": "0xa4b1",
+    "chainName": "Arbitrum Mainnet",
+    "nativeCurrency": {
+      "name": "Ether",
+      "symbol": "ETH",
+      "decimals": 18
+    },
+    "rpcUrls": [
+      "https://arb1.arbitrum.io/rpc"
+    ],
+    "blockExplorerUrls": [
+      "https://explorer.arbitrum.io"
+    ]
+  },
+  MOONRIVER: {
+    "chainId": "0x505",
+    "chainName": "Moonriver",
+    "nativeCurrency": {
+      "name": "moonriver",
+      "symbol": "MOVR",
+      "decimals": 18
+    },
+    "rpcUrls": [
+      "https://rpc.moonriver.moonbeam.network"
+    ],
+    "blockExplorerUrls": [
+      "https://moonbeam.network/networks/moonriver/"
+    ]
+  },
   BINANCE_SMART_CHAIN: {
     "chainId": "0x38",
     "chainName": "Binance Smart Chain Mainnet",
@@ -298,6 +328,36 @@ window.NETWORKS = {
         "https://explorer.kcc.io/en"
     ],
   },
+  CELO: {
+    "chainId": "0xA4EC",
+    "chainName": "Celo Mainnet",
+    "nativeCurrency": {
+      "name": "celo",
+      "symbol": "CELO",
+      "decimals": 18
+    },
+    "rpcUrls": [
+        "https://forno.celo.org"
+    ],
+    "blockExplorerUrls": [
+        "https://explorer.celo.org"
+    ],
+  },
+  IOTEX: {
+    "chainId": "0x1251",
+    "chainName": "IoTeX Mainnet",
+    "nativeCurrency": {
+      "name": "IoTeX",
+      "symbol": "IOTX",
+      "decimals": 18
+    },
+    "rpcUrls": [
+      "https://babel-api.mainnet.iotex.io"
+    ],
+    "blockExplorerUrls": [
+      "https://iotexscan.io"
+    ],
+  },
 }
 
 const infuraId = atob(window.ETHEREUM_NODE_URL).split('/').pop()
@@ -315,12 +375,14 @@ const providerOptions = {
         100: "https://rpc.xdaichain.com",
         43114: "https://api.avax.network/ext/bc/C/rpc",
         250: "https://rpcapi.fantom.network",
+        42161: "https://arb1.arbitrum.io/rpc",
         1666600000: "https://api.harmony.one",
         1666600001: "https://s1.api.harmony.one",
         1666600002: "https://s2.api.harmony.one",
         1666600003: "https://s3.api.harmony.one",
         122: "https://rpc.fuse.io",
         66: "https://exchainrpc.okex.org",
+        4689: "https://babel-api.mainnet.iotex.io",
         321: "https://rpc-mainnet.kcc.network"
       }
     }

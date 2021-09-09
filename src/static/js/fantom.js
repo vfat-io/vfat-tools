@@ -63,7 +63,7 @@ const main = async() => {
         "https://fantom.beefy.finance"
       ],
       [
-        "Liquid Driver",
+        "Liquid Driver *",
         `<a href='liquid'>Various</a>`,
         "LQDR",
         "https://www.liquiddriver.finance"
@@ -99,7 +99,7 @@ const main = async() => {
         "https://waka.finance"
       ],
       [
-        "Elk *",
+        "Elk",
         `<a href='elk'>Various</a>`,
         "ELK",
         "https://app.elk.finance"
@@ -277,7 +277,68 @@ const main = async() => {
         `<a href='guru_lite2002'>Nova-BLK spLP</a>`,
         "Nova",
         "https://ftm.guru/LF/2002"
+      ],
+      [
+        "Bomb",
+        `<a href='fbomb'>Various</a>`,
+        "SHRAP",
+        "https://app.fbomb.finance"
+      ],
+      [
+        "xDao",
+        `<a href='xdao'>Various</a>`,
+        "HTZ",
+        "https://thexdao.com"
+      ],
+      [
+        "Guru - YS#2",
+        `<a href='guru_ys2'>ELITE-WFTM spLP</a>`,
+        "ELITE",
+        "https://ftm.guru/YS/2"
+      ],
+      [
+        "Guru - LF#23",
+        `<a href='guru_lite23'>DEATH-WFTM spLP</a>`,
+        "DEATH",
+        "https://ftm.guru/LF/23"
+      ],
+      [
+        "Zoocoin",
+        `<a href='zoocoin'>Various</a>`,
+        "WILD",
+        "https://dex.zoocoin.cash"
+      ],
+      [
+        "FrensFi",
+        `<a href='frensfi'>Various</a>`,
+        "Various",
+        "https://frens.fi"
+      ],
+      [
+        "Reaper.Farm",
+        `<a href='reaperfarm'>Various</a>`,
+        "Various",
+        "https://reaper.farm"
+      ],
+      [
+        "OberonFinance",
+        `<a href='galaxy_oberon'>Various</a>`,
+        "OBERON",
+        "https://fantom-oberon.galaxyfinance.one/"
+      ],
+      [
+        "Guru - LF#2005",
+        `<a href='guru_lite2005'>BLK-WFTM spLP</a>`,
+        "BLK",
+        "https://ftm.guru/LF/2005"
+      ],
+      [
+        "Guru - LF#301",
+        `<a href='guru_lite301'>TCUZ-WFTM spLP</a>`,
+        "TCUZ",
+        "https://ftm.guru/LF/301"
       ]
+
     ]
   }
 

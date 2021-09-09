@@ -95,13 +95,12 @@ const main = async () => {
       ["Cvi                          ", `<a href="../cvi"                >Various</a>`, "GOVI               ", "https://cvi.finance"],
       ["Futureswap                   ", `<a href="../futureswap"         >Various</a>`, "FST                ", "https://exchange.futureswap.com"],
       ["Xdefi                        ", `<a href="../xdefi"              >Various</a>`, "XDEX               ", "https://farm.xdefi.com"],
-      ["Eurxb                        ", `<a href="../eurxb"              >Various</a>`, "XBE                ", "http://app.eurxb.finance"],
       ["Swarm Network                ", `<a href="../swarm"              >Various</a>`, "SWM                ", "https://stake.myswarm.app"],
       ["Liquity                      ", `<a href="../liquity"            >Various</a>`, "LQTY               ", "https://liquity.app"],
-      ["Bondappetit *                ", `<a href="../bondappetit"        >Various</a>`, "BAG                ", "https://bondappetit.io"],
+      ["Bondappetit                  ", `<a href="../bondappetit"        >Various</a>`, "BAG                ", "https://bondappetit.io"],
       ["Penguin                      ", `<a href="../penguin"            >Various</a>`, "FISH               ", "https://penguinswap.eth.link"],
       ["Mimo                         ", `<a href="../mimo"               >Various</a>`, "MIMO               ", "https://mimo.capital/mining"],
-      ["Fei                          ", `<a href="../fei"                >Various</a>`, "FEI                ", "https://fei.money"],
+      ["Fei *                        ", `<a href="../fei"                >Various</a>`, "FEI                ", "https://fei.money"],
       ["Blockchain Adventurers Guild ", `<a href="../bag"                >Various</a>`, "BAG                ", "https://app.thisistheway.finance/#/stake"],
       ["Piedao                       ", `<a href="../piedao"             >Various</a>`, "DOUGH              ", "https://www.piedao.org"],
       ["Cryptex                      ", `<a href="../cryptex"            >Various</a>`, "CTX                ", "https://app.cryptex.finance"],
@@ -142,7 +141,12 @@ const main = async () => {
       ["Composable                   ", `<a href="../composable/"        >Various</a>`, "Composable         ", "https://app.composable.finance"],
       ["MCN Ventures                 ", `<a href="../mcn/"               >Various</a>`, "MCN                ", "https://farm.mcn.ventures"],
       ["Fox Shapeshift               ", `<a href="../fox/"               >Various</a>`, "FOX                ", "https://fox.shapeshift.com"],
-      ["Yield Enhancement Labs       ", `<a href="../yel/"               >Various</a>`, "YEL                ", "https://yel.finance"]
+      ["Yield Enhancement Labs       ", `<a href="../yel/"               >Various</a>`, "YEL                ", "https://yel.finance"],
+      ["Emptyset Finance             ", `<a href="../emptyset/"          >Various</a>`, "ESS                ", "https://app.emptyset.finance/dollar"],
+      ["NAOS Finance                 ", `<a href="../naos/"              >Various</a>`, "NAOS               ", "https://app.naos.finance/farms"],
+      ["XBE Finance                  ", `<a href="../xbe/"               >Various</a>`, "XBE                ", "https://app.xbe.finance"],
+      ["DODO                         ", `<a href="../dodo/"              >Various</a>`, "DODO               ", "https://app.dodoex.io"],
+      ["Aladdin                      ", `<a href="../ald/"               >Various</a>`, "ALD                ", "https://app.aladdin.club"]
     ]
   }
 
