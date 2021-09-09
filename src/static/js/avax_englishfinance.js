@@ -16,7 +16,7 @@ $(function () {
 
         const blocksPerSeconds = await getAverageBlockTime(App);
     		
-        const rewardsPerWeek = await ENGLISH_CHEF.englishPerBlock() / 1e18 *		
+        const rewardsPerWeek = await ENGLISH_CHEF.engliishPerBlock() / 1e18 *		
                 604800 / blocksPerSeconds;		
         		
     		
@@ -24,7 +24,7 @@ $(function () {
         const prices = await getAvaxPrices();		
     		
         await loadAvaxChefContract(App, tokens, prices, ENGLISH_CHEF, ENGLISH_CHEF_ADDR, ENGLISH_CHEF_ABI, rewardTokenTicker,		
-            "english", null, rewardsPerWeek, "pendingEnglish");		
+            "engliish", null, rewardsPerWeek, "pendingEnglish");		
     		
         hideLoading();		
     }		
