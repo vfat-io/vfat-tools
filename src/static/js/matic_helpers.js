@@ -27,7 +27,7 @@ async function getMaticUniPool(App, pool, poolAddress, stakingAddress) {
         contract: pool,
         tokens : [token0, token1],
         is1inch : false
-    };
+    };    
 }
 
 async function getMatic20(App, token, address, stakingAddress) {
@@ -530,7 +530,8 @@ const maticTokens = [
   { "id": "titan", "symbol": "TITAN", "contract": "0xaaa5b9e6c589642f98a1cda99b9d024b8407285a" },
   { "id": "wrbt", "symbol": "wRBT", "contract": "0xa5d447757dac8c5faab1858b13da4af701adf4bb" },
   { "id": "wlev", "symbol": "WLEV", "contract": "0xeb7f7955730a7dba1427a6567950eb4a98dfcbdf" },
-  { "id": "dragons-quick", "symbol": "DQUICK", "contract": "0xf28164a485b0b2c90639e47b0f377b4a438a16b1" }
+  { "id": "dragons-quick", "symbol": "DQUICK", "contract": "0xf28164a485b0b2c90639e47b0f377b4a438a16b1" },
+  { "id": "xdollar-stablecoin", "sybmol": "xUSD", "contract": "0x3a3e7650f8b9f667da98f236010fbf44ee4b2975"}
 ]
 
 async function getMaticPrices() {
