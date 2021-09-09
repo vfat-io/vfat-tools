@@ -115,12 +115,6 @@ const main = async() => {
         `<a href='farmersonly'>Various</a>`,
         "FOX",
         "https://app.farmersonly.fi"
-      ],
-      [
-        "GalaxyFarms",
-        `<a href='galaxyfarms'>Various</a>`,
-        "NEBULA",
-        "https://galaxyfarms.one"
       ]
     ]
   }
