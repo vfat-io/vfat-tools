@@ -25,7 +25,7 @@ $(function() {
     _print(`Showing <b>EXP</b> pools...\n`)
 
     await loadCustomAvaxChefContract(App, tokens, prices, EXP_CHEF, EXP_CHEF_ADDR, EXP_CHEF_ABI, rewardTokenTickerEXP,
-      "EXP", "EXPPerSec", null, "pendingEXP", [1]);
+      "EXP", "EXPPerSec", null, "pendingEXP", [1, 4]);
 
     _print(`\nShowing <b>TUNDRA</b> pools...\n`)
 
