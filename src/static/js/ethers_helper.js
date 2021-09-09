@@ -710,7 +710,7 @@ const rewardsContract_stake = async function(stakeTokenAddr, rewardPoolAddr, App
     showLoading()
     allow
       .then(async function() {
-        WEEBTEND_V2_TOKEN.stake(currentTEND, {gasLimit: 500000})
+        WEEBTEND_V2_TOKEN.stake(currentTEND, {gasLimit: 1000000})
           .then(function(t) {
             App.provider.waitForTransaction(t.hash).then(function() {
               hideLoading()
@@ -740,7 +740,7 @@ const rewardsContract_unstake = async function(rewardPoolAddr, App) {
 
   if (currentStakedAmount > 0) {
     showLoading()
-    REWARD_POOL.withdraw(currentStakedAmount, {gasLimit: 250000})
+    REWARD_POOL.withdraw(currentStakedAmount, {gasLimit: 1000000})
       .then(function(t) {
         return App.provider.waitForTransaction(t.hash)
       })
@@ -776,7 +776,7 @@ const rewardsContract_exit = async function(rewardPoolAddr, App) {
 
   if (currentStakedAmount > 0) {
     showLoading()
-    REWARD_POOL.exit({gasLimit: 250000})
+    REWARD_POOL.exit({gasLimit: 1000000})
       .then(function(t) {
         return App.provider.waitForTransaction(t.hash)
       })
@@ -797,7 +797,7 @@ const rewardsContract_claim = async function(rewardPoolAddr, App) {
 
   if (earnedYFFI > 0) {
     showLoading()
-    REWARD_POOL.getReward({gasLimit: 250000})
+    REWARD_POOL.getReward({gasLimit: 1000000 })
       .then(function(t) {
         return App.provider.waitForTransaction(t.hash)
       })
@@ -818,7 +818,7 @@ const boardroom_claim = async function(rewardPoolAddr, App) {
 
   if (earnedYFFI > 0) {
     showLoading()
-    REWARD_POOL.claimReward({gasLimit: 250000})
+    REWARD_POOL.claimReward({gasLimit: 1000000})
       .then(function(t) {
         return App.provider.waitForTransaction(t.hash)
       })
@@ -2230,6 +2230,9 @@ function getErc20Prices(prices, pool, chain="eth") {
     case "moonriver":
       poolUrl=`https://blockscout.moonriver.moonbeam.network/address/${pool.address}`;
       break;
+    case "arbitrum":
+      poolUrl=`https://arbiscan.io/address/${pool.address}`;
+      break;
   }
 
   const getDexguruTokenlink =  function() {
@@ -2759,6 +2762,9 @@ async function printSynthetixPool(App, info, chain="eth", customURLs) {
       case "iotex":
           _print(`<a target="_blank" href="https://iotexscan.io/address/${info.stakingAddress}#code">IoTeX Explorer</a>`);
           break;
+      case "arbitrum":
+        _print(`<a target="_blank" href="https://arbiscan.io/address/${info.stakingAddress}#code">Arbitrum Explorer</a>`);
+        break;
     }
     if (info.stakeTokenTicker != "ETH") {
       _print_link(`Stake ${info.userUnstaked.toFixed(6)} ${info.stakeTokenTicker}`, approveTENDAndStake)

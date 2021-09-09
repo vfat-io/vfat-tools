@@ -8,7 +8,8 @@ const ArbitrumTokens = [
     { "id": "dodo","symbol": "DODO", "contract": "0x69eb4fa4a2fbd498c257c57ea8b7655a2559a581" },
     { "id": "wrapped-bitcoin","symbol": "WBTC", "contract": "0x2f2a2543b76a4166549f7aab2e75bef0aefc5b0f" },
     { "id": "usd-coin","symbol": "USDC", "contract": "0xff970a61a04b1ca14834a43f5de4533ebddb5cc8" },
-    { "id": "tether","symbol": "USDT", "contract": "0xfd086bc7cd5c481dcc9c85ebe478a1c0b69fcbb9" }
+    { "id": "tether","symbol": "USDT", "contract": "0xfd086bc7cd5c481dcc9c85ebe478a1c0b69fcbb9" },
+    { "id": "NYAN","symbol": "NYAN", "contract": "0xeD3fB761414DA74b74F33e5c5a1f78104b188DfC" }
 ];
 
 const uniSqrtPrice = (tokenDecimals, sqrtRatioX96) => {
