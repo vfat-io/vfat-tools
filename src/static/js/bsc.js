@@ -370,7 +370,7 @@ const main = async() => {
       ["Yogi                ", `<a href="yogi"          >Various</a>`,"YOGI             ","https://bsc.farms.yogi.fi"],
       ["Croxswap            ", `<a href="croxswap"      >Various</a>`,"CROX             ","https://app.croxswap.com"],
       ["Tomahawk            ", `<a href="tomahawk"      >Various</a>`,"TOMAHAWK         ","https://tomahawk.farm"],
-      ["Cookiebake *        ", `<a href="cookiebake"    >Various</a>`,"CHIPS            ","https://cookiebake.finance"],
+      ["Cookiebake          ", `<a href="cookiebake"    >Various</a>`,"CHIPS            ","https://cookiebake.finance"],
       ["Supermanion         ", `<a href="supermanion"   >Various</a>`,"SMAN             ","https://supermanion.com"],
       ["WorldSwap Berlin    ", `<a href="worldswap_ber" >Various</a>`,"BER              ","https://berlin.worldswap.finance"],
       ["Fusion Finance      ", `<a href="fusion"        >Various</a>`,"U235             ","https://fusionfinance.farm"],
@@ -439,7 +439,7 @@ const main = async() => {
       ["Area51Defi          ", `<a href="area51defi"    >Various</a>`,"AFOD             ","https://area51defi.com"],
       ["PiranhaSwap         ", `<a href="piranhaswap"   >Various</a>`,"PIRANHA          ","https://piranhaswap.finance"],
       ["Robobuddy           ", `<a href="robobuddy"     >Various</a>`,"ROBO             ","https://robobuddy.finance"],
-      ["Astro *             ", `<a href="astro"         >Various</a>`,"ASTRO            ","https://astroprotocol.com"],
+      ["Astro               ", `<a href="astro"         >Various</a>`,"ASTRO            ","https://astroprotocol.com"],
       ["TwilightFinance     ", `<a href="twilightfinance">Various</a>`,"TWIL            ","https://twilightfinance.org"],
       ["Badger              ", `<a href="badger"        >Various</a>`,"BADGER           ","https://app.badger.finance"],
       ["BambooDeFi          ", `<a href="bamboodefi"    >Various</a>`,"BAMBOO           ","https://www.bamboodefi.com"],
@@ -501,12 +501,13 @@ const main = async() => {
       ["Singular            ", `<a href="singular"      >Various</a>`,"SING             ","https://singular.farm"],
       ["Elk                 ", `<a href="elk"           >Various</a>`,"ELK              ","https://app.elk.finance"],
       ["Defily              ", `<a href="defily"        >Various</a>`,"DFL              ","https://defily.io"],
-      ["United Farmers Finance", `<a href="united_farmers_finance"        >Various</a>`,"UFF              ","https://unitedfarmers.finance"],
+      ["United Farmers Finance", `<a href="united_farmers_finance"        >Various</a>`,"UFF","https://unitedfarmers.finance"],
       ["Yerba Mate Finance  ", `<a href="yerbamatefinance">Various</a>`,"YERBAMATE      ","https://app.yerbamate.finance"],
       ["Rocketmoon          ", `<a href="rocketmoon"    >Various</a>`,"ROCKET           ","https://rocketmoon.farm"],
       ["DogCake             ", `<a href="dogcake"       >Various</a>`,"DCAKE            ","https://dogcake.finance"],
       ["DODO                ", `<a href="dodo"          >Various</a>`,"DODO             ","https://app.dodoex.io"],
       ["OberonFinance       ", `<a href="galaxy_oberon" >Various</a>`,"OBERON           ","https://bsc-oberon.galaxyfinance.one"],
+      ["1001 Nights Rajah   ", `<a href="rajah"         >Various</a>`,"RAJAH            ","https://rajah.1001nights.gold"]
     ]}
 
   let table = new AsciiTable().fromJSON(tableData);
