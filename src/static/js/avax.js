@@ -40,7 +40,8 @@ const main = async() => {
         ["StormSwap   ",`<a href="stormswap"  >Various</a>`,"STORM    ","https://stormswap.finance" ],
         ["OberonFinance", `<a href="galaxy_oberon" >Various</a>`,"OBERON","https://avalanche-oberon.galaxyfinance.one"],
         ["EnglishFinance",`<a href="english"      >Various</a>`,"ENGLISH    ","https://english.theflyingdutchman.finance" ],
-        ["TheDragonsLair" ,`<a href="dregg"   >Various</a>`,"DREGG    ","https://thedragonslair.farm" ]
+        ["TheDragonsLair" ,`<a href="dregg"   >Various</a>`,"DREGG    ","https://thedragonslair.farm" ],
+        ["AvaEagle"       ,`<a href="avaeagle">Various</a>`,"EAGLE    ","https://avaeagle.com" ]
     ]
   }
 
