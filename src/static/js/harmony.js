@@ -117,10 +117,10 @@ const main = async() => {
         "https://app.farmersonly.fi"
       ],
       [
-        "GalaxyFarms",
-        `<a href='galaxyfarms'>Various</a>`,
-        "NEBULA",
-        "https://galaxyfarms.one"
+        "Fuzz Finance",
+        `<a href='fuzz'>Various</a>`,
+        "FUZZ",
+        "https://fuzz.fi"
       ]
     ]
   }
