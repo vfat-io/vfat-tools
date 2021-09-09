@@ -115,6 +115,12 @@ const main = async() => {
         `<a href='farmersonly'>Various</a>`,
         "FOX",
         "https://app.farmersonly.fi"
+      ],
+      [
+        "Fuzz Finance",
+        `<a href='fuzz'>Various</a>`,
+        "FUZZ",
+        "https://fuzz.fi"
       ]
     ]
   }
