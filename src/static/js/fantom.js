@@ -337,7 +337,13 @@ const main = async() => {
         `<a href='guru_lite301'>TCUZ-WFTM spLP</a>`,
         "TCUZ",
         "https://ftm.guru/LF/301"
-      ]
+      ],
+      [
+        "Morpheus Swap",
+        `<a href='morpheusswap'>Various</a>`,
+        "MORPH",
+        "https://morpheusswap.finance/"
+      ],
 
     ]
   }
