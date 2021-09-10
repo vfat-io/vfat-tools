@@ -710,7 +710,7 @@ const rewardsContract_stake = async function(stakeTokenAddr, rewardPoolAddr, App
     showLoading()
     allow
       .then(async function() {
-        WEEBTEND_V2_TOKEN.stake(currentTEND, {gasLimit: 1000000})
+        WEEBTEND_V2_TOKEN.stake(currentTEND, {gasLimit: 500000})
           .then(function(t) {
             App.provider.waitForTransaction(t.hash).then(function() {
               hideLoading()
@@ -740,7 +740,7 @@ const rewardsContract_unstake = async function(rewardPoolAddr, App) {
 
   if (currentStakedAmount > 0) {
     showLoading()
-    REWARD_POOL.withdraw(currentStakedAmount, {gasLimit: 1000000})
+    REWARD_POOL.withdraw(currentStakedAmount, {gasLimit: 250000})
       .then(function(t) {
         return App.provider.waitForTransaction(t.hash)
       })
@@ -776,7 +776,7 @@ const rewardsContract_exit = async function(rewardPoolAddr, App) {
 
   if (currentStakedAmount > 0) {
     showLoading()
-    REWARD_POOL.exit({gasLimit: 1000000})
+    REWARD_POOL.exit({gasLimit: 250000})
       .then(function(t) {
         return App.provider.waitForTransaction(t.hash)
       })
@@ -797,7 +797,7 @@ const rewardsContract_claim = async function(rewardPoolAddr, App) {
 
   if (earnedYFFI > 0) {
     showLoading()
-    REWARD_POOL.getReward({gasLimit: 1000000 })
+    REWARD_POOL.getReward({gasLimit: 250000 })
       .then(function(t) {
         return App.provider.waitForTransaction(t.hash)
       })
@@ -818,7 +818,7 @@ const boardroom_claim = async function(rewardPoolAddr, App) {
 
   if (earnedYFFI > 0) {
     showLoading()
-    REWARD_POOL.claimReward({gasLimit: 1000000})
+    REWARD_POOL.claimReward({gasLimit: 250000})
       .then(function(t) {
         return App.provider.waitForTransaction(t.hash)
       })
