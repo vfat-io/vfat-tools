@@ -43,6 +43,7 @@ const main = async() => {
         ["TheDragonsLair" ,`<a href="dregg"   >Various</a>`,"DREGG    ","https://thedragonslair.farm" ],
         ["AvaEagle"       ,`<a href="avaeagle">Various</a>`,"EAGLE    ","https://avaeagle.com" ],
         ["ThenaFinance" ,`<a href="thena"  >Various</a>`,"THENA   ","https://thena.eternalfinance.live" ],
+        ["SwiftFinance" ,`<a href="swift"  >Various</a>`,"SWIFT   ","https://swiftfinance.farm" ]
     ]
   }
 
