@@ -356,6 +356,7 @@ const main = async () => {
       ['PolyCougar          ', `<a href="cougar"          >Various</a>`, 'CGS          ', 'https://polyapp.cougarswap.io'],
       ['PolyPegasus         ', `<a href="polypegasus"     >Various</a>`, 'PEGASUS      ', 'https://polypegasus.farm'],
       ['Omega Farms         ', `<a href="omega"           >Various</a>`, 'OMEGA        ', 'https://www.omegadefi.space'],
+      ['Darkside Finance    ', `<a href="darksidefinance" >Various</a>`, 'DARK / CZDIAMOND', 'https://darkside.finance'],
       ['BloodySwap Finance  ', `<a href="bloodyswap"      >Various</a>`, 'BLOOD        ', 'https://www.bloodyswap.finance']
     ],
   }
