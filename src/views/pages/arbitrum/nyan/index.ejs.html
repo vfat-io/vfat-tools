@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include(`${partials}/head`); -%>
+
+<body>
+<%- include(`${partials}/header_main`); -%>
+<pre id="log">
+*************** 👨‍🌾 UNOFFICIAL NYAN FARMING CALCULATOR 👨‍🌾 ***************
+INFO  : https://arbinyan.xyz/
+**************************************************************************
+
+WARNING: Staking through vfat is currently broken. 
+         Visit <a href="https://arbinyan.xyz/">https://arbinyan.xyz/</a> to single stake ETH and NYAN!
+
+</pre>
+<div class="loader--1"></div>
+<%- include(`${partials}/scripts`, {scriptname: 'arbitrum_nyan'}); -%>
+</body>
+</html> 
