@@ -797,7 +797,7 @@ const rewardsContract_claim = async function(rewardPoolAddr, App) {
 
   if (earnedYFFI > 0) {
     showLoading()
-    REWARD_POOL.getReward({gasLimit: 250000 })
+    REWARD_POOL.getReward({gasLimit: 250000})
       .then(function(t) {
         return App.provider.waitForTransaction(t.hash)
       })
