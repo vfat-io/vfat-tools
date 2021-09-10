@@ -16,7 +16,7 @@ async function main() {
    const rewardTokenTicker = "MORPH";
    const MORPH_CHEF = new ethers.Contract(MORPH_CHEF_ADDR, MORPH_CHEF_ABI, App.provider);
 
-   const rewardsPerWeek = await MORPH_CHEF.morphPerSecond() /1e18 * 604800;
+   const rewardsPerWeek = await MORPH_CHEF.morphPerSec() /1e18 * 604800;
 
     const tokens = {};
     const prices = await getFantomPrices();
