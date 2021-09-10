@@ -68,16 +68,16 @@ async function getArbitrumUniPool(App, pool, poolAddress, stakingAddress) {
     };
 }
 
-async function geterc20(App, token, address, stakingAddress) {
+async function getercArbitrum20(App, token, address, stakingAddress) {
     if (address == "0x0000000000000000000000000000000000000000") {
       return {
         address,
-        name : "arbitrum",
-        symbol : "arbitrum",
+        name : "Ethereum",
+        symbol : "ETH",
         totalSupply: 1e8,
         decimals: 18,
-        staked: 0,
-        unstaked: 0,
+        staked: await App.provider.getBalance(stakingAddress) / 1e18,
+        unstaked: await App.provider.getBalance(App.YOUR_ADDRESS) / 1e18,
         contract: null,
         tokens:[address]
       }
@@ -197,7 +197,7 @@ async function getArbitrumStoredToken(App, tokenAddress, stakingAddress, type) {
 
 async function getArbitrumToken(App, tokenAddress, stakingAddress) {
     if (tokenAddress == "0x0000000000000000000000000000000000000000") {
-      return geterc20(App, null, tokenAddress, "")
+      return getercArbitrum20(App, null, tokenAddress, stakingAddress)
     }
     const type = window.localStorage.getItem(tokenAddress);
     if (type) return getArbitrumStoredToken(App, tokenAddress, stakingAddress, type);

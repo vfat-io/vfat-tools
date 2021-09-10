@@ -6,7 +6,7 @@ const NYAN_ABI = [{"inputs":[{"internalType":"contract IERC20","name":"_rewardTo
 
 const Pools = [
   "0x32e5594F14de658b0d577D6560fA0d9C6F1aa724",  // nyan
-  // "0x9F7968de728aC7A6769141F63dCA03FD8b03A76F", // eth
+  "0x9F7968de728aC7A6769141F63dCA03FD8b03A76F", // eth
   "0x62FF5Be795262999fc1EbaC29277575031d2dA2C", // nyan-eth
 
 ].map(a => ({
@@ -24,11 +24,17 @@ async function main() {
 
   var tokens = {};
   const prices = await getArbitrumPrices();
-  console.log(prices)
+
+  await loadArbitrumSynthetixPoolInfo(App, tokens, prices, Pools[1].abi, Pools[1].address, Pools[1].rewardTokenFunction, Pools[1].stakeTokenFunction)
+  await loadArbitrumSynthetixPoolInfo(App, tokens, prices, Pools[2].abi, Pools[2].address, Pools[2].rewardTokenFunction, Pools[2].stakeTokenFunction)
+  prices["0x0000000000000000000000000000000000000000"] = prices["0x82aF49447D8a07e3bd95BD0d56f35241523fBab1"];
+
   let p = await loadMultipleArbitrumSynthetixPools(App, tokens, prices, Pools)
   _print_bold(`Total staked: $${formatMoney(p.staked_tvl)}`);
   if (p.totalUserStaked > 0) {
   _print(`You are staking a total of $${formatMoney(p.totalUserStaked)} at an APR of ${(p.totalAPR * 100).toFixed(2)}%\n`);
   }
+
+  hideLoading();
 
 }
