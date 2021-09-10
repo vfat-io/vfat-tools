@@ -355,7 +355,8 @@ const main = async () => {
       ["TenguSwap           ", `<a href="tenguswap"       >Various</a>`, "TENGUSWAP    ", "https://polygon.tenguswap.com"],
       ['PolyCougar          ', `<a href="cougar"          >Various</a>`, 'CGS          ', 'https://polyapp.cougarswap.io'],
       ['PolyPegasus         ', `<a href="polypegasus"     >Various</a>`, 'PEGASUS      ', 'https://polypegasus.farm'],
-      ['Omega Farms         ', `<a href="omega"           >Various</a>`, 'OMEGA        ', 'https://www.omegadefi.space']
+      ['Omega Farms         ', `<a href="omega"           >Various</a>`, 'OMEGA        ', 'https://www.omegadefi.space'],
+      ['BloodySwap Finance  ', `<a href="bloodyswap"      >Various</a>`, 'BLOOD        ', 'https://www.bloodyswap.finance']
     ],
   }
 
