@@ -342,8 +342,14 @@ const main = async() => {
         "Morpheus Swap",
         `<a href='morpheusswap'>Various</a>`,
         "MORPH",
-        "https://morpheusswap.finance/"
+        "https://morpheusswap.finance"
       ],
+      [
+        "Olive",
+        `<a href='olive'>Various</a>`,
+        "OLIVE",
+        "https://olive.cash"
+      ]
 
     ]
   }
