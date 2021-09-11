@@ -1598,6 +1598,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
   else if (pool.symbol.includes("CAT-LP")) stakeTokenTicker += " PolyCat LP";
   else if (pool.symbol.includes("VLP")) stakeTokenTicker += " AURO LP";
   else if (pool.symbol.includes("ULP")) stakeTokenTicker += " Ubeswap LP Token";
+  else if (pool.symbol.includes("JLP")) stakeTokenTicker += " Joe LP Token";
   else stakeTokenTicker += " Uni LP";
   return {
       t0: t0,
@@ -1661,6 +1662,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
               pool.symbol.includes("ZDEXLP") ?  `https://charts.zoocoin.cash/?exchange=ZooDex&pair=${t0.symbol}-${t1.symbol}` :
               pool.symbol.includes("Field-LP") ?  `https://exchange.yieldfields.finance/#/swap` :
               pool.symbol.includes("UPT") ?  `https://www.app.unic.ly/#/discover` :
+              pool.symbol.includes("JLP") ?  `https://www.traderjoexyz.com/#/pool` :
               pool.symbol.includes("BenSwap") ? ({
                 "bsc": `https://info.benswap.finance/pair/${pool.address}`
               }[chain]) :

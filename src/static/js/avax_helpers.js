@@ -91,6 +91,35 @@ async function getAvax20(App, token, address, stakingAddress) {
     };
 }
 
+async function getYrt(App, token, address, stakingAddress) {
+    if (address == "0x0000000000000000000000000000000000000000") {
+      return {
+        address,
+        name : "Avax",
+        symbol : "AVAX",
+        totalSupply: 1e8,
+        decimals: 18,
+        staked: 0,
+        unstaked: 0,
+        contract: null,
+        tokens:[address]
+      }
+    }6
+    const decimals = await token.decimals()
+    return {
+        address,
+        name : await token.name(),
+        symbol : await token.symbol(),
+        totalSupply : await token.totalSupply(),
+        depositToken: await token.depositToken(),
+        decimals : decimals,
+        staked:  await token.balanceOf(stakingAddress) / 10 ** decimals,
+        unstaked: await token.balanceOf(App.YOUR_ADDRESS)  / 10 ** decimals,
+        contract: token,
+        tokens : [address]
+    };
+}
+
 async function getAvaxVault(App, vault, address, stakingAddress) {
   const decimals = await vault.decimals();
   const token_ = await vault.token();
@@ -117,6 +146,9 @@ async function getAvaxStoredToken(App, tokenAddress, stakingAddress, type) {
     case "uniswap":
       const pool = new ethers.Contract(tokenAddress, UNI_ABI, App.provider);
       return await getAvaxUniPool(App, pool, tokenAddress, stakingAddress);
+    case "yrt":
+      const yrt = new ethers.Contract(tokenAddress, YRT_ABI, App.provider);
+      return await getYrt(App, yrt, tokenAddress, stakingAddress);
     case "erc20":
       const erc20 = new ethers.Contract(tokenAddress, ERC20_ABI, App.provider);
       return await getAvax20(App, erc20, tokenAddress, stakingAddress);
@@ -130,13 +162,16 @@ async function getAvaxToken(App, tokenAddress, stakingAddress) {
     if (tokenAddress == "0x0000000000000000000000000000000000000000") {
       return getAvax20(App, null, tokenAddress, "")
     }
+    console.log("C " + tokenAddress)
     const type = window.localStorage.getItem(tokenAddress);
+    console.log("D " + tokenAddress)
     if (type) return getAvaxStoredToken(App, tokenAddress, stakingAddress, type);
     try {
       const pool = new ethers.Contract(tokenAddress, UNI_ABI, App.provider);
       const _token0 = await pool.token0();
       const uniPool = await getAvaxUniPool(App, pool, tokenAddress, stakingAddress);
       window.localStorage.setItem(tokenAddress, "uniswap");
+        console.log("F " + tokenAddress)
       return uniPool;
     }
     catch(err) {
@@ -151,10 +186,24 @@ async function getAvaxToken(App, tokenAddress, stakingAddress) {
     catch(err) {
     }
     try {
+      const yrt = new ethers.Contract(tokenAddress, YRT_ABI, App.provider);
+      const _name = await yrt.name();
+      const yrtok = await getYrt(App, yrt, tokenAddress, stakingAddress);
+      window.localStorage.setItem(tokenAddress, "yrt");
+      console.log("BB " + tokenAddress)
+      console.dir(yrtok)
+      return yrtok;
+    }
+    catch(err) {
+      console.log(err);
+      console.log(`Couldn't match ${tokenAddress} to any known token type.`);
+    }
+    try {
       const erc20 = new ethers.Contract(tokenAddress, ERC20_ABI, App.provider);
       const _name = await erc20.name();
       const erc20tok = await getAvax20(App, erc20, tokenAddress, stakingAddress);
       window.localStorage.setItem(tokenAddress, "erc20");
+        console.log("G " + tokenAddress)
       return erc20tok;
     }
     catch(err) {
