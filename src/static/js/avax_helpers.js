@@ -22,9 +22,9 @@ const avaxTokens = [
     { "id": 'sushi', "symbol": 'SUSHI.e', "contract": '0x37B608519F91f70F2EeB0e5Ed9AF4061722e4F76' },
     { "id": 'penguin-finance', "symbol": 'PEFI', "contract": '0xe896CDeaAC9615145c0cA09C8Cd5C25bced6384c' },
     { "id": 'xdollar', "symbol": 'XDO', "contract": '0x9ef758ac000a354479e538b8b2f01b917b8e89e7' },
+    { "id": 'xdollar-stablecoin', "symbol": 'xUSD', "contract": '0x3509f19581afedeff07c53592bc0ca84e4855475' },
     { "id": 'wrapped-avax', "symbol": 'WAVAX', "contract": '0xb31f66aa3c1e785363f0875a1b74e27b85fd66c7' },
     { "id": "galaxy-oberon", "symbol": "OBERON", "contract": "0xc979E70611D997Aa109528c6A9aa73D82Eaa2881"},
-    { "id": "tundra", "symbol": "TUNDRA", "contract": "0x21c5402C3B7d40C89Cc472C9dF5dD7E51BbAb1b1"},
 ]
 
 async function getAvaxPrices() {
