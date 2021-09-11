@@ -8,6 +8,7 @@ const COPYPASTA_PIT_ABI = [{"inputs":[{"internalType":"string","name":"_name","t
 const PASTA_TOKEN_ADDR = "0x5903720f0132E8bd48530010d9b3192B25F51D8e";
 const PASTA_CHEF_ADDR = "0xFA9E5F11a1e1dB500B0BfC59839bCfFeaEF59683";
 const PASTA_PIT_ADDR = "0x0485c47FBfDee263bF88329cb3e37dDD948bdFf6";
+
 const REWARD_TOKEN_TICKER = "PASTA";
 const PIT_NAME = "PastaBowl";
 
@@ -18,7 +19,8 @@ async function main() {
   _print("Reading smart contracts...\n");
 
   const PASTA_CHEF = new ethers.Contract(PASTA_CHEF_ADDR, COPYPASTA_CHEF_ABI, App.provider);
-
+  
+  const poolindices = await PASTA_CHEF.poolLength();
   const blockNumber = await App.provider.getBlockNumber();
   const multiplier = await PASTA_CHEF.getMultiplier(blockNumber, blockNumber+1);
   const rewardPerBlock = await PASTA_CHEF.REWARD_PER_BLOCK();
@@ -39,10 +41,24 @@ async function main() {
     null,
     rewardsPerWeek,
     "pendingReward",
-    [0,1,2,3,4,5,6,7,8,9],
+    Array.from(Array(Number(poolindices)).keys()),
     true
   );
-
+  // const { prices, totalUserStaked, totalStaked, averageApr } = await loadPastaChefContract(
+  //   App,
+  //   tokens,
+  //   basePrices,
+  //   PASTA_CHEF,
+  //   PASTA_CHEF_ADDR,
+  //   COPYPASTA_CHEF_ABI,
+  //   REWARD_TOKEN_TICKER,
+  //   "govToken",
+  //   null,
+  //   rewardsPerWeek,
+  //   "pendingReward",
+  //   [0,1],
+  //   true
+  // );
   const PASTA = new ethers.Contract(PASTA_TOKEN_ADDR, ERC20_ABI, App.provider.getSigner());
   const PASTA_PIT = new ethers.Contract(PASTA_PIT_ADDR, COPYPASTA_PIT_ABI, App.provider.getSigner());
   const pastaBowl = await pastaBowlData(PASTA, PASTA_PIT, App, prices);
@@ -74,11 +90,9 @@ async function loadPastaChefContract(App, tokens, prices, chef, chefAddress, che
   const totalAllocPoints = await chefContract.totalAllocPoint();
 
   _print(`Found ${poolCount} pools.\n`)
-
   _print(`Showing incentivized pools only.\n`);
 
   var tokens = {};
-
   const rewardTokenAddress = await chefContract.callStatic[rewardTokenFunction]();
   const rewardToken = await getHarmonyToken(App, rewardTokenAddress, chefAddress);
   const rewardsPerWeek = rewardsPerWeekFixed ??
@@ -87,14 +101,13 @@ async function loadPastaChefContract(App, tokens, prices, chef, chefAddress, che
 
   const poolInfos = await Promise.all([...Array(poolCount).keys()].map(async (x) =>
     await getHarmonyPoolInfo(App, chefContract, chefAddress, x, pendingRewardsFunction)));
-
   var tokenAddresses = [].concat.apply([], poolInfos.filter(x => x.poolToken).map(x => x.poolToken.tokens));
 
   await Promise.all(tokenAddresses.map(async (address) => {
       tokens[address] = await getHarmonyToken(App, address, chefAddress);
   }));
 
-  if (deathPoolIndices) {   //load prices for the deathpool assets
+  if (deathPoolIndices) {  //load prices for the deathpool assets
     deathPoolIndices.map(i => poolInfos[i])
                      .map(poolInfo =>
       poolInfo.poolToken ? getPoolPrices(tokens, prices, poolInfo.poolToken, "Harmony") : undefined);
@@ -110,7 +123,7 @@ async function loadPastaChefContract(App, tokens, prices, chef, chefAddress, che
     if (poolPrices[i]) {
       const apr = printPastaChefPool(App, chefAbi, chefAddress, prices, tokens, poolInfos[i], i, poolPrices[i],
         totalAllocPoints, rewardsPerWeek, rewardTokenTicker, rewardTokenAddress,
-        pendingRewardsFunction, null, null, "bsc")
+        pendingRewardsFunction, null, null, "harmony")
       aprs.push(apr);
     }
   }
@@ -143,7 +156,7 @@ async function loadPastaChefContract(App, tokens, prices, chef, chefAddress, che
 
 function printPastaChefPool(App, chefAbi, chefAddr, prices, tokens, poolInfo, poolIndex, poolPrices,
                             totalAllocPoints, rewardsPerWeek, rewardTokenTicker, rewardTokenAddress,
-                            pendingRewardsFunction, fixedDecimals, claimFunction, chain="bsc", depositFee=0, withdrawFee=0) {
+                            pendingRewardsFunction, fixedDecimals, claimFunction, chain="Harmony", depositFee=0, withdrawFee=0) {
   fixedDecimals = fixedDecimals ?? 2;
   const sp = (poolInfo.stakedToken == null) ? null : getPoolPrices(tokens, prices, poolInfo.stakedToken, chain);
   var poolRewardsPerWeek = poolInfo.allocPoints / totalAllocPoints * rewardsPerWeek;
