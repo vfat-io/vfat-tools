@@ -11,7 +11,8 @@ const main = async() => {
       ["GMX                 ", `<a href="/arbitrum/gmx"      >Various</a>`,"ETH,Escrowed GMX   ","https://gmx.financial"],
       ["Sushi               ", `<a href="/arbitrum/sushi"    >Various</a>`,"SUSHI              ","https://app.sushi.com"],
       ["DODO                ", `<a href="/arbitrum/dodo"     >Various</a>`,"DODO               ","https://app.dodoex.io"],
-      ["NYAN                ", `<a href="/arbitrum/nyan"     >Various</a>`,"NYAN               ","https://arbinyan.xyz/"]
+      ["NYAN                ", `<a href="/arbitrum/nyan"     >Various</a>`,"NYAN               ","https://arbinyan.xyz"],
+      ["TheHoneyPot         ", `<a href="/arbitrum/honeypot" >Various</a>`,"HONEY              ","https://thehoneypot.finance"]
      ]
   }
 

@@ -44,7 +44,8 @@ const main = async() => {
         ["AvaEagle"       ,`<a href="avaeagle">Various</a>`,"EAGLE    ","https://avaeagle.com" ],
         ["ThenaFinance" ,`<a href="thena"  >Various</a>`,"THENA   ","https://thena.eternalfinance.live" ],
         ["SwiftFinance" ,`<a href="swift"  >Various</a>`,"SWIFT   ","https://swiftfinance.farm" ],
-        ["SmitheryFarms-Silver" ,`<a href="silver"  >Various</a>`,"SILVER","https://smitheryfarms.world" ]
+        ["SmitheryFarms-Silver" ,`<a href="silver"  >Various</a>`,"SILVER","https://smitheryfarms.world" ],
+        ["Eleven Finance" ,`<a href="eleven"  >Various</a>`,"ELE","https://eleven.finance" ]
     ]
   }
 
