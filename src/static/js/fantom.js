@@ -329,7 +329,7 @@ const main = async() => {
       [
         "Guru - LF#2005",
         `<a href='guru_lite2005'>BLK-WFTM spLP</a>`,
-        "BLK",
+        "Nova",
         "https://ftm.guru/LF/2005"
       ],
       [
@@ -349,8 +349,19 @@ const main = async() => {
         `<a href='olive'>Various</a>`,
         "OLIVE",
         "https://olive.cash"
+      ],
+      [
+        "Guru - LF#2004",
+        `<a href='guru_lite2004'>Nova</a>`,
+        "BLK",
+        "https://ftm.guru/LF/2004"
+      ],
+      [
+        "Guru - LF#2006",
+        `<a href='guru_lite2006'>SST-WFTM spLP</a>`,
+        "BLK",
+        "https://ftm.guru/LF/2006"
       ]
-
     ]
   }
 
