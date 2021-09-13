@@ -8,7 +8,8 @@ const main = async() => {
     "title":"Moonriver Network",
     "heading":["Pool Provider","LP", "Reward Tokens", "INFO"],
     "rows": [
-      ["Moonfarm                 ", `<a href="moonfarm"      >Various</a>`,"MOON   ","https://app.moonfarm.in"]
+      ["Moonfarm                 ", `<a href="moonfarm"      >Various</a>`,"MOON   ","https://app.moonfarm.in"],
+      ["Solarbeam                ", `<a href="solarbeam"     >Various</a>`,"SOLAR  ","https://solarbeam.io"]
      ]
   }
 

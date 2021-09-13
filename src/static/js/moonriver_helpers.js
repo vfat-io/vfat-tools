@@ -49,7 +49,7 @@ async function getMoonriverUniPool(App, pool, poolAddress, stakingAddress) {
     };
 }
 
-async function geterc20(App, token, address, stakingAddress) {
+async function getercMoonriver20(App, token, address, stakingAddress) {
     if (address == "0x0000000000000000000000000000000000000000") {
       return {
         address,
@@ -178,7 +178,7 @@ async function getMoonriverStoredToken(App, tokenAddress, stakingAddress, type) 
 
 async function getMoonriverToken(App, tokenAddress, stakingAddress) {
     if (tokenAddress == "0x0000000000000000000000000000000000000000") {
-      return geterc20(App, null, tokenAddress, "")
+      return getercMoonriver20(App, null, tokenAddress, "")
     }
     const type = window.localStorage.getItem(tokenAddress);
     if (type) return getMoonriverStoredToken(App, tokenAddress, stakingAddress, type);

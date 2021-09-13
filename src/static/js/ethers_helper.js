@@ -2230,6 +2230,9 @@ function getErc20Prices(prices, pool, chain="eth") {
     case "moonriver":
       poolUrl=`https://blockscout.moonriver.moonbeam.network/address/${pool.address}`;
       break;
+    case "arbitrum":
+      poolUrl=`https://arbiscan.io/address/${pool.address}`;
+      break;
   }
 
   const getDexguruTokenlink =  function() {
@@ -2759,6 +2762,9 @@ async function printSynthetixPool(App, info, chain="eth", customURLs) {
       case "iotex":
           _print(`<a target="_blank" href="https://iotexscan.io/address/${info.stakingAddress}#code">IoTeX Explorer</a>`);
           break;
+      case "arbitrum":
+        _print(`<a target="_blank" href="https://arbiscan.io/address/${info.stakingAddress}#code">Arbitrum Explorer</a>`);
+        break;
     }
     if (info.stakeTokenTicker != "ETH") {
       _print_link(`Stake ${info.userUnstaked.toFixed(6)} ${info.stakeTokenTicker}`, approveTENDAndStake)

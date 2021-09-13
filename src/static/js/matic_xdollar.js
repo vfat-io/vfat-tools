@@ -91,22 +91,226 @@ async function main() {
       rewardTokenFunction: "rewardTokens"
   }
 
+  const kyberGysrPool = {
+    address: "0xfaE7272e953d889169f13d8fdc0e730B6C61429D",
+    abi: GYSR_POOL_ABI,
+    stakeTokenFunction: "stakingTokens",
+    rewardTokenFunction: "rewardTokens"
+  }
 
-  let p0 = await loadMultipleMaticSynthetixPools(App, tokens, prices, [uniPool, xusdUsdcPoolPhase1, xusdUsdcPoolPhase2]);
-  let p2 = await loadKyberDMMPools(App, tokens, prices, [daiUniPool]);
   let p3 = await loadGysrPool(App, tokens, prices, gysrPool);
+  let p4 = await loadKyberGysrPool(App, tokens, prices, kyberGysrPool);
   let p = await loadXDollarSynthetixPools(App, tokens, prices, pools);
   let p1 = await loadXdoPools(App, tokens, prices, [xdoPool]);
-  let totalPStaked = formatMoney(p.totalUserStaked + p0.totalUserStaked + p1.totalUserStaked + p2.totalUserStaked + p3.totalUserStaked);
-  let totalPAPR = ((p.totalUserStaked * p.totalAPR + p0.totalUserStaked * p0.totalAPR + p2.totalUserStaked * p2.totalAPR + p3.totalUserStaked * p3.totalAPR)
-        / (p.totalUserStaked + p0.totalUserStaked + p2.totalUserStaked + p3.totalUserStaked) * 100).toFixed(2)
-  _print_bold(`Total staked: $${formatMoney(p.staked_tvl + p0.staked_tvl + p1.staked_tvl + p2.staked_tvl + p3.staked_tvl)}`);
-  if (p.totalUserStaked > 0 || p0.totalUserStaked > 0 || p1.totalUserStaked > 0 || p2.totalUserStaked > 0 || p3.totalUserStaked > 0) {
+  let p0 = await loadMultipleMaticSynthetixPools(App, tokens, prices, [uniPool, xusdUsdcPoolPhase1, xusdUsdcPoolPhase2]);
+  let p2 = await loadKyberDMMPools(App, tokens, prices, [daiUniPool]);
+  let totalPStaked = formatMoney(p.totalUserStaked + p0.totalUserStaked + p1.totalUserStaked + p2.totalUserStaked + p3.totalUserStaked + p4.totalUserStaked);
+  let totalPAPR = ((p.totalUserStaked * p.totalAPR + p0.totalUserStaked * p0.totalAPR + p2.totalUserStaked * p2.totalAPR + p3.totalUserStaked * p3.totalAPR + p4.totalUserStaked * p4.totalAPR)
+        / (p.totalUserStaked + p0.totalUserStaked + p2.totalUserStaked + p3.totalUserStaked + p4.totalUserStaked) * 100).toFixed(2)
+  _print_bold(`Total staked: $${formatMoney(p.staked_tvl + p0.staked_tvl + p1.staked_tvl + p2.staked_tvl + p3.staked_tvl + p4.staked_tvl)}`);
+  if (p.totalUserStaked > 0 || p0.totalUserStaked > 0 || p1.totalUserStaked > 0 || p2.totalUserStaked > 0 || p3.totalUserStaked > 0 || p4.totalUserStaked > 0) {
     _print(`You are staking a total of $${totalPStaked} at an APR of ${totalPAPR}%\n`);
   }
 
   hideLoading();
 }
+
+async function loadKyberGysrPool(App, tokens, prices, pool, customURLs) {
+  let totalStaked  = 0,
+      totalUserStaked = 0;
+  const info = await loadKyberGysrPoolInfo(App, tokens, prices, pool.abi, pool.address, pool.rewardTokenFunction, pool.stakeTokenFunction);
+  let p = await printKyberGysrPool(App, info, customURLs);
+
+  totalStaked = p.staked_tvl || 0;
+  totalUserStaked = p.userStaked || 0;
+  totalAPR = p.apr / 100 || 0;
+
+  return { staked_tvl: totalStaked, totalUserStaked, totalAPR};
+}
+
+async function loadKyberGysrPoolInfo(App, tokens, prices, stakingAbi, stakingAddress, rewardTokenFunction,
+  stakeTokenFunction) {
+   try {
+        const STAKING_POOL = new ethers.Contract(stakingAddress, stakingAbi, App.provider);
+
+        const [stakeTokenAddress] = await STAKING_POOL.callStatic[stakeTokenFunction]();
+        let stakeToken = await getKyberDMMToken(App, stakeTokenAddress, stakingAddress);
+
+        let newTokenAddresses = stakeToken.tokens.filter(x =>
+          !getParameterCaseInsensitive(tokens,x));
+        
+          for (const address of newTokenAddresses) {
+            tokens[address] = await getMaticToken(App, address, stakingAddress);
+        }
+
+        const poolPrices = await getPoolPrices(tokens, prices, stakeToken, "matic");
+        
+        if (!poolPrices)
+        {
+          console.log(`Couldn't calculate prices for pool ${stakeTokenAddress}`);
+          return null;
+        }
+        
+        stakeToken.token0_symbol = poolPrices.t0.symbol
+        stakeToken.token1_symbol = poolPrices.t1.symbol
+        stakeToken.token0_price = poolPrices.p0
+        stakeToken.token1_price = poolPrices.p1
+        stakeToken.price = poolPrices.price
+        stakeToken.reserve0 = poolPrices.q0
+        stakeToken.reserve1 = poolPrices.q1       
+        stakeToken.stakeTokenTicker = poolPrices.stakeTokenTicker;
+
+        stakeToken.stakeTokenPrice = poolPrices.price
+
+        stakeToken.stakeTokenAddress= stakeTokenAddress;
+        stakeToken.stakingAddress = stakingAddress;
+        stakeToken.poolUrl = "https://dmm.exchange/#/add/0x3A3e7650f8B9f667dA98F236010fBf44Ee4B2975/0x8f3Cf7ad23Cd3CaDbD9735AFf958023239c6A063/0xAAAe5aabDB7db627c58dfEeBa27bA2933A39c592"
+
+
+        const [rewardTokenAddress] = await STAKING_POOL.callStatic[rewardTokenFunction]();
+        const rewardToken = new ethers.Contract(rewardTokenAddress, ERC20_ABI, App.provider);
+        stakeToken.rewardTokenTicker = await rewardToken.symbol();
+
+        const rewardModuleAddress = await STAKING_POOL.callStatic["rewardModule"]();
+        const reward = new ethers.Contract(rewardModuleAddress, GYSR_REWARD_ABI, App.provider);
+
+        stakeToken.staked = await reward.totalRawStakingShares() / 1e24;
+        stakeToken.pool_share = await STAKING_POOL.stakingBalances(App.YOUR_ADDRESS);
+        stakeToken.rewardTokenPrice = getParameterCaseInsensitive(prices, rewardTokenAddress)?.usd;
+
+        let fundingCount =  await reward.fundingCount(rewardTokenAddress);
+        let funding = {}
+        let weeklyRewards = 0
+        let unlocked_updated = 0;
+        for (let i = 0; i < fundingCount; i++) {
+            funding = await reward.fundings(rewardTokenAddress, i);
+            weeklyRewards += funding.locked != 0? funding.shares / funding.duration / 1e24 * 3600 * 24 * 7 : Number(0);
+            unlocked_updated = await reward.unlockable(rewardTokenAddress, i);
+        }
+
+        stakeToken.weeklyRewards = weeklyRewards
+        stakeToken.usdPerWeek = weeklyRewards * stakeToken.rewardTokenPrice
+
+        let totalStakingShares = await reward.totalStakingShares();
+        let totalRawStakingShares = await reward.totalRawStakingShares();
+        stakeToken.gysrAvgPoolBouns = totalStakingShares / totalRawStakingShares
+        let userStakeCount = await reward.stakeCount(App.YOUR_ADDRESS);
+        let rewardRate = await reward.rewardsPerStakedShare();
+        let updated_rewardRate =  parseInt(rewardRate) + parseInt(unlocked_updated) * 1e18 / totalStakingShares
+
+        let userRawStakeShare = 0;
+        let userStakeShare = 0;
+        let userStaked = {};
+        let userShare = 0;
+        let preVestingRewards = 0;
+        for (let i = 0; i < userStakeCount; i++) {
+            userStaked = await reward.stakes(App.YOUR_ADDRESS , i) ?? 0;
+            userRawStakeShare += Number(userStaked.shares)
+            userStakeShare += userStaked.shares * userStaked.bonus
+
+            preVestingRewards += ((((updated_rewardRate - userStaked.rewardTally) * userStaked.shares) / 1e18) * userStaked.bonus) / 1e18;
+        }
+        
+        userShare = userStakeShare / totalStakingShares / 1e18
+        stakeToken.userGysrBouns = userRawStakeShare > 0? userStakeShare / userRawStakeShare : 1;
+
+        let locked = await reward.totalLocked();
+        let remaining_rewards = 0;
+        let remaining_period = funding.duration ? parseInt(funding.duration) - (parseInt(Math.floor(Date.now()/1000)) - parseInt(funding.start)) : 0;
+        if (remaining_period > 0) {
+          remaining_rewards = parseInt(locked) * 1e6 - parseInt(unlocked_updated);
+          stakeToken.userDailyRewards = userShare * remaining_rewards / (remaining_period / 3600 / 24) / 1e24
+        } else {
+          stakeToken.userDailyRewards = 0;
+        }
+
+        stakeToken.userWeeklyRewards = stakeToken.userDailyRewards * 7
+        stakeToken.userYearlyRewards = stakeToken.userDailyRewards * 365
+
+        if (userRawStakeShare > 0) {
+          stakeToken.dailyAPR = stakeToken.userDailyRewards * stakeToken.rewardTokenPrice / (userRawStakeShare * stakeToken.stakeTokenPrice / 1e24) * 100
+          stakeToken.lp_share = userRawStakeShare / totalRawStakingShares;
+        } else {
+          stakeToken.dailyAPR = remaining_period > 0 ? remaining_rewards / (remaining_period / 3600 / 24) * stakeToken.rewardTokenPrice / (totalRawStakingShares * stakeToken.stakeTokenPrice) * 100: 0;
+          stakeToken.lp_share = 0;
+        }
+
+        stakeToken.weeklyAPR = stakeToken.dailyAPR * 7
+        stakeToken.yearlyAPR = stakeToken.dailyAPR * 365
+
+        let coeff = userStaked.timestamp ? await reward.timeVestingCoefficient(userStaked.timestamp) : 0;
+        stakeToken.rewardAmount = preVestingRewards * coeff / 1e18 / 1e18 / 1e6;
+
+
+        return stakeToken
+
+
+   } catch (err) {
+        console.log(err.message)
+   }
+}
+
+async function printKyberGysrPool(App, info, customURLs) {
+  _print(`<a href='${info.poolUrl}' target='_blank'>${info.stakeTokenTicker}</a> Price: $${formatMoney(info.price)} TVL: $${formatMoney(info.totalSupply * info.price)}`);
+  _print(`${info.token0_symbol} Price: $${displayPrice(info.token0_price)}`);
+  _print(`${info.token1_symbol} Price: $${displayPrice(info.token1_price)}`);
+  _print(`Staked: ${formatMoney(info.staked)} ${info.stakeTokenTicker} ($${formatMoney(info.totalSupply * info.price)})`);
+  _print(`${info.rewardTokenTicker} Per Week: ${info.weeklyRewards.toFixed(2)} ($${formatMoney(info.usdPerWeek)})`);
+  const weeklyAPR = info.weeklyAPR;
+  const dailyAPR = info.dailyAPR;
+  const yearlyAPR = info.yearlyAPR;
+  const userStakedUsd = info.pool_share / 1e18 * info.price;
+  const userStakedPct = info.staked > 0 ? info.pool_share / info.staked / 1e18 : 0;
+  if (info.pool_share > 0) {
+      _print(`APR (GYSR multipliers ${(info.userGysrBouns / 1e18).toFixed(2)}x): Day ${dailyAPR.toFixed(2)}% Week ${weeklyAPR.toFixed(2)}% Year ${yearlyAPR.toFixed(2)}%`);
+      _print(`Your LP token comprise of ${(info.reserve0 * info.lp_share).toFixed(2)} ${info.token0_symbol} + ${(info.reserve1 * info.lp_share).toFixed(2)} ${info.token1_symbol}`)
+      _print(`You are staking ${(info.pool_share / 1e18).toFixed(6)} ${info.stakeTokenTicker} ` +
+      `$${formatMoney(userStakedUsd)} (${(userStakedPct * 100).toFixed(2)}% of the pool).`);
+      const userWeeklyRewards = info.userWeeklyRewards
+      const userDailyRewards = info.userDailyRewards
+      const userYearlyRewards = info.userYearlyRewards;
+      _print(`Estimated ${info.rewardTokenTicker} earnings:`
+          + ` Day ${userDailyRewards.toFixed(2)} ($${formatMoney(userDailyRewards*info.rewardTokenPrice)})`
+          + ` Week ${userWeeklyRewards.toFixed(2)} ($${formatMoney(userWeeklyRewards*info.rewardTokenPrice)})`
+          + ` Year ${userYearlyRewards.toFixed(2)} ($${formatMoney(userYearlyRewards*info.rewardTokenPrice)})`);
+  } else {
+    _print(`APR (avg. GYSR multipliers ${info.gysrAvgPoolBouns.toFixed(2)}x): Day ${dailyAPR.toFixed(2)}% Week ${weeklyAPR.toFixed(2)}% Year ${yearlyAPR.toFixed(2)}%`);     
+    _print(`APR (w/o GYSR multipliers 1x): Day ${(dailyAPR / info.gysrAvgPoolBouns).toFixed(2)}% Week ${(weeklyAPR / info.gysrAvgPoolBouns).toFixed(2)}% Year ${(yearlyAPR / info.gysrAvgPoolBouns).toFixed(2)}%`);
+    _print(`You are staking ${(info.pool_share / 1e18).toFixed(6)} ${info.stakeTokenTicker} ` +
+          `$${formatMoney(userStakedUsd)} (${(userStakedPct * 100).toFixed(2)}% of the pool).`);
+
+  }
+
+  const exit = async function() {
+      return gysrPool_rewardsContract_exit(info.stakingAddress, App)
+  }
+  const revoke = async function() {
+      return rewardsContract_resetApprove(info.stakeTokenAddress, info.stakingAddress, App)
+  }
+  _print(`<a target="_blank" href="https://explorer-mainnet.maticvigil.com/address/${info.stakingAddress}#code">Polygon Explorer</a>`);
+  let gysrPoolLink = `target="_blank" href="https://app.gysr.io/pool/${info.stakingAddress}">`
+  if (info.stakeTokenTicker != "ETH") {
+      _print_link(`<a ${gysrPoolLink}Stake ${info.unstaked.toFixed(6)} ${info.stakeTokenTicker}</a>`)
+  }
+  else {
+      _print("Please use the official website to stake ETH.");
+  }
+
+  _print_link(`<a ${gysrPoolLink}Unstake ${(info.pool_share / 1e18).toFixed(6)} ${info.stakeTokenTicker}</a>`)
+  _print_link(`<a ${gysrPoolLink}Claim ${info.rewardAmount.toFixed(6)} ${info.rewardTokenTicker} ($${formatMoney(info.rewardAmount*info.rewardTokenPrice)})</a>`)
+  if (info.stakeTokenTicker != "ETH") {
+      _print_link(`Revoke (set approval to 0)`, revoke)
+  }
+  _print_link(`Exit`, exit)
+  _print("");
+
+  return {
+      staked_tvl: info.totalSupply,
+      userStaked: info.pool_share / 1e18 * info.price,
+      apr: info.yearlyAPR
+  }
+}
+
 
 async function loadGysrPool(App, tokens, prices, pool, customURLs) {
   let totalStaked  = 0,
@@ -235,15 +439,13 @@ async function loadGysrPoolInfo(App, tokens, prices, stakingAbi, stakingAddress,
         stakeToken.stakeTokenPrice = prices["0x3A3e7650f8B9f667dA98F236010fBf44Ee4B2975"]?.usd ?? getParameterCaseInsensitive(prices, "0x3A3e7650f8B9f667dA98F236010fBf44Ee4B2975")?.usd;
         stakeToken.rewardTokenPrice = getParameterCaseInsensitive(prices, rewardTokenAddress)?.usd;
 
-
-
         let fundingCount =  await reward.fundingCount(rewardTokenAddress);
         let funding = {}
         let weeklyRewards = 0
         let unlocked_updated = 0;
         for (let i = 0; i < fundingCount; i++) {
             funding = await reward.fundings(rewardTokenAddress, i);
-            weeklyRewards += funding.shares / funding.duration / 1e24 * 3600 * 24 * 7
+            weeklyRewards += funding.locked != 0? funding.shares / funding.duration / 1e24 * 3600 * 24 * 7 : Number(0);
             unlocked_updated = await reward.unlockable(rewardTokenAddress, i);
         }
 
@@ -284,7 +486,7 @@ async function loadGysrPoolInfo(App, tokens, prices, stakingAbi, stakingAddress,
         stakeToken.userYearlyRewards = stakeToken.userDailyRewards * 365
 
         if (userRawStakeShare > 0) {
-          stakeToken.dailyAPR = stakeToken.userDailyRewards * stakeToken.rewardTokenPrice / (userRawStakeShare / 1e24) * 100
+          stakeToken.dailyAPR = stakeToken.userDailyRewards * stakeToken.rewardTokenPrice / (userRawStakeShare * stakeToken.stakeTokenPrice / 1e24) * 100
           stakeToken.lp_share = userRawStakeShare / totalRawStakingShares;
         } else {
           stakeToken.dailyAPR = remaining_period > 0 ? remaining_rewards / (remaining_period / 3600 / 24) * stakeToken.rewardTokenPrice / (totalRawStakingShares * stakeToken.stakeTokenPrice) * 100: 0;
@@ -303,8 +505,6 @@ async function loadGysrPoolInfo(App, tokens, prices, stakingAbi, stakingAddress,
    } catch (err) {
         console.log(err.message)
    }
-
-
 }
 
 async function getIronLPToken(App, tokenAddress, stakingAddress) {
@@ -359,6 +559,7 @@ async function loadKyberDMMPools(App, tokens, prices, pools, customURLs) {
       loadKyberDMMPoolInfo(App, tokens, prices, p.abi, p.address, p.rewardTokenFunction, p.stakeTokenFunction)));
   for (const i of infos.filter(i => i?.poolPrices)) {
     let p = await printUniPool(App, i, "matic", customURLs);
+
     totalStaked += p.staked_tvl || 0;
     totalUserStaked += p.userStaked || 0;
     if (p.userStaked > 0) {
@@ -381,8 +582,7 @@ async function loadKyberDMMPoolInfo(App, tokens, prices, stakingAbi, stakingAddr
 
     const rewardTokenAddress = await STAKING_POOL.callStatic[rewardTokenFunction]();
 
-    var stakeToken = await getKyberDMMToken(App, stakeTokenAddress, stakingAddress);
-    stakeToken.staked = await STAKING_POOL.totalSupply() / 10 ** stakeToken.decimals;
+    let stakeToken = await getKyberDMMToken(App, stakeTokenAddress, stakingAddress);
 
     var newTokenAddresses = stakeToken.tokens.filter(x =>
       !getParameterCaseInsensitive(tokens,x));
@@ -816,8 +1016,6 @@ const uniPool_rewardsContract_claim = async function(rewardPoolAddr, App) {
   const signer = App.provider.getSigner()
 
   const REWARD_POOL = new ethers.Contract(rewardPoolAddr, XDO_UNIPOOL_STAKING_ABI, signer)
-
-  console.log(App.YOUR_ADDRESS)
 
   const earnedYFFI = (await REWARD_POOL.earned(App.YOUR_ADDRESS)) / 1e18
 

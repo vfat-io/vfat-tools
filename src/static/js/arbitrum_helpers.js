@@ -8,7 +8,8 @@ const ArbitrumTokens = [
     { "id": "dodo","symbol": "DODO", "contract": "0x69eb4fa4a2fbd498c257c57ea8b7655a2559a581" },
     { "id": "wrapped-bitcoin","symbol": "WBTC", "contract": "0x2f2a2543b76a4166549f7aab2e75bef0aefc5b0f" },
     { "id": "usd-coin","symbol": "USDC", "contract": "0xff970a61a04b1ca14834a43f5de4533ebddb5cc8" },
-    { "id": "tether","symbol": "USDT", "contract": "0xfd086bc7cd5c481dcc9c85ebe478a1c0b69fcbb9" }
+    { "id": "tether","symbol": "USDT", "contract": "0xfd086bc7cd5c481dcc9c85ebe478a1c0b69fcbb9" },
+    { "id": "NYAN","symbol": "NYAN", "contract": "0xeD3fB761414DA74b74F33e5c5a1f78104b188DfC" }
 ];
 
 const uniSqrtPrice = (tokenDecimals, sqrtRatioX96) => {
@@ -67,16 +68,16 @@ async function getArbitrumUniPool(App, pool, poolAddress, stakingAddress) {
     };
 }
 
-async function geterc20(App, token, address, stakingAddress) {
+async function getercArbitrum20(App, token, address, stakingAddress) {
     if (address == "0x0000000000000000000000000000000000000000") {
       return {
         address,
-        name : "arbitrum",
-        symbol : "arbitrum",
+        name : "Ethereum",
+        symbol : "ETH",
         totalSupply: 1e8,
         decimals: 18,
-        staked: 0,
-        unstaked: 0,
+        staked: await App.provider.getBalance(stakingAddress) / 1e18,
+        unstaked: await App.provider.getBalance(App.YOUR_ADDRESS) / 1e18,
         contract: null,
         tokens:[address]
       }
@@ -196,7 +197,7 @@ async function getArbitrumStoredToken(App, tokenAddress, stakingAddress, type) {
 
 async function getArbitrumToken(App, tokenAddress, stakingAddress) {
     if (tokenAddress == "0x0000000000000000000000000000000000000000") {
-      return geterc20(App, null, tokenAddress, "")
+      return getercArbitrum20(App, null, tokenAddress, stakingAddress)
     }
     const type = window.localStorage.getItem(tokenAddress);
     if (type) return getArbitrumStoredToken(App, tokenAddress, stakingAddress, type);

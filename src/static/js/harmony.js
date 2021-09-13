@@ -21,6 +21,12 @@ const main = async() => {
         "https://viper.exchange"
       ],
       [
+        "CopyPasta",
+        `<a href='copypasta'>Various</a>`,
+        "PASTA",
+        "https://copypasta.one"
+      ],
+      [
         "Viper (smartchef)",
         `<a href='viper/smartchef'>Various</a>`,
         "Various",
@@ -117,10 +123,10 @@ const main = async() => {
         "https://app.farmersonly.fi"
       ],
       [
-        "GalaxyFarms",
-        `<a href='galaxyfarms'>Various</a>`,
-        "NEBULA",
-        "https://galaxyfarms.one"
+        "Fuzz Finance",
+        `<a href='fuzz'>Various</a>`,
+        "FUZZ",
+        "https://fuzz.fi"
       ]
     ]
   }
