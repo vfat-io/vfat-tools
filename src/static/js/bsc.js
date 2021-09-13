@@ -499,7 +499,7 @@ const main = async() => {
       ["BabySwap            ", `<a href="babyswap"      >Various</a>`,"BABY             ","https://home.babyswap.finance"],
       ["Alita               ", `<a href="alita"         >Various</a>`,"ALI              ","https://app.alita.finance"],
       ["Singular            ", `<a href="singular"      >Various</a>`,"SING             ","https://singular.farm"],
-      ["Elk                 ", `<a href="elk"           >Various</a>`,"ELK              ","https://app.elk.finance"],
+      ["Elk *               ", `<a href="elk"           >Various</a>`,"ELK              ","https://app.elk.finance"],
       ["Defily              ", `<a href="defily"        >Various</a>`,"DFL              ","https://defily.io"],
       ["United Farmers Finance", `<a href="united_farmers_finance"        >Various</a>`,"UFF","https://unitedfarmers.finance"],
       ["Yerba Mate Finance  ", `<a href="yerbamatefinance">Various</a>`,"YERBAMATE      ","https://app.yerbamate.finance"],
