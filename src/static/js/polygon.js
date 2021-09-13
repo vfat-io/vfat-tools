@@ -359,7 +359,7 @@ const main = async () => {
       ['Darkside Finance    ', `<a href="darksidefinance" >Various</a>`, 'DARK / CZDIAMOND', 'https://darkside.finance'],
       ['BloodySwap Finance  ', `<a href="bloodyswap"      >Various</a>`, 'BLOOD        ', 'https://www.bloodyswap.finance'],
       ['Troller Finance     ', `<a href="troller"         >Various</a>`, 'TROLL        ', 'https://troller.finance']
-      ['Kavian L2 Finance     ', `<a href="kavianl2"         >Various</a>`, 'KAVIANL2        ', 'https://kavian.finance']
+      ['Kavian L2 Finance     ', `<a href="kavianl2finance"         >Various</a>`, 'KAVIANL2        ', 'https://kavian.finance']
 
     ],
   }
