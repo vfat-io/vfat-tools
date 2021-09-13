@@ -12,7 +12,9 @@ const main = async() => {
       ["Sushi               ", `<a href="/arbitrum/sushi"    >Various</a>`,"SUSHI              ","https://app.sushi.com"],
       ["DODO                ", `<a href="/arbitrum/dodo"     >Various</a>`,"DODO               ","https://app.dodoex.io"],
       ["NYAN                ", `<a href="/arbitrum/nyan"     >Various</a>`,"NYAN               ","https://arbinyan.xyz"],
-      ["TheHoneyPot         ", `<a href="/arbitrum/honeypot" >Various</a>`,"HONEY              ","https://thehoneypot.finance"]
+      ["TheHoneyPot         ", `<a href="/arbitrum/honeypot" >Various</a>`,"HONEY              ","https://thehoneypot.finance"],
+      ["ArbiApe             ", `<a href="/arbitrum/arbiape"  >Various</a>`,"APE                ","https://arbiape.com"],
+      ["ArbiFarm            ", `<a href="/arbitrum/arbifarm" >Various</a>`,"AFARM              ","https://www.arbifarm.fi"]
      ]
   }
 
