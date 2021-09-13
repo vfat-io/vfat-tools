@@ -45,7 +45,8 @@ const main = async() => {
         ["ThenaFinance" ,`<a href="thena"  >Various</a>`,"THENA   ","https://thena.eternalfinance.live" ],
         ["SwiftFinance" ,`<a href="swift"  >Various</a>`,"SWIFT   ","https://swiftfinance.farm" ],
         ["SmitheryFarms-Silver" ,`<a href="silver"  >Various</a>`,"SILVER","https://smitheryfarms.world" ],
-        ["Eleven Finance" ,`<a href="eleven"  >Various</a>`,"ELE","https://eleven.finance" ]
+        ["Eleven Finance" ,`<a href="eleven"  >Various</a>`,"ELE","https://eleven.finance" ],
+        ["OmegaFarms   ",`<a href="omega  "  >Various</a>`,"OMEGA     ","https://avax.omegadefi.space" ],
     ]
   }
 
