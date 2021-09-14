@@ -47,6 +47,7 @@ const main = async() => {
         ["SmitheryFarms-Silver" ,`<a href="silver"  >Various</a>`,"SILVER","https://smitheryfarms.world" ],
         ["Eleven Finance" ,`<a href="eleven"  >Various</a>`,"ELE","https://eleven.finance" ],
         ["OmegaFarms   ",`<a href="omega  "  >Various</a>`,"OMEGA     ","https://avax.omegadefi.space" ],
+        ["Mammoth Finance  ",`<a href="mammoth  "  >Various</a>`,"TUSK     ","https://mammothfinance.io" ]
     ]
   }
 

@@ -358,7 +358,10 @@ const main = async () => {
       ['Omega Farms         ', `<a href="omega"           >Various</a>`, 'OMEGA        ', 'https://www.omegadefi.space'],
       ['Darkside Finance    ', `<a href="darksidefinance" >Various</a>`, 'DARK / CZDIAMOND', 'https://darkside.finance'],
       ['BloodySwap Finance  ', `<a href="bloodyswap"      >Various</a>`, 'BLOOD        ', 'https://www.bloodyswap.finance'],
-      ['Troller Finance     ', `<a href="troller"         >Various</a>`, 'TROLL        ', 'https://troller.finance']
+      ['Troller Finance     ', `<a href="troller"         >Various</a>`, 'TROLL        ', 'https://troller.finance'],
+      ['Kavian L2 Finance   ', `<a href="kavianl2finance" >Various</a>`, 'KAVIANL2     ', 'https://kavian.finance'],
+      ['PolyPig Digital     ', `<a href="polypig"         >Various</a>`, 'POLYPIG      ', 'https://polypig.digital'],
+      ['Onyx Farms          ', `<a href="onyxfarms"       >Various</a>`, 'ONYX         ', 'https://polygon.onyx.farm']
     ],
   }
 
