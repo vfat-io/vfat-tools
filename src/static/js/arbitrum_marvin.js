@@ -24,7 +24,7 @@ async function main() {
    if(currentBlock < startBlock){
      _print(`Rewards start at block ${startBlock}\n`);
    }else{
-    rewardsPerWeek = await MARVIN_CHEF.MarvinPerBlock() /1e18
+    rewardsPerWeek = await MARVIN_CHEF.marvinPerBlock() /1e18
         * 604800 * multiplier / 3;
    }
 
