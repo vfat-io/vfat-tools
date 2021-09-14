@@ -11,7 +11,7 @@ $(function() {
         _print("Reading smart contracts...\n");
     
        const ONYXFARMS_CHEF_ADDR = "0xc46290828490900B9d7dA34B2D977078F1730F59";
-       const rewardTokenTicker = "Onyx";
+       const rewardTokenTicker = "ONYX";
        const ONYXFARMS_CHEF = new ethers.Contract(ONYXFARMS_CHEF_ADDR, ONYXFARMS_CHEF_ABI, App.provider);
     
        const startBlock = await ONYXFARMS_CHEF.startBlock();
@@ -31,7 +31,7 @@ $(function() {
         const prices = await getMaticPrices();
     
         await loadMaticChefContract(App, tokens, prices, ONYXFARMS_CHEF, ONYXFARMS_CHEF_ADDR, ONYXFARMS_CHEF_ABI, rewardTokenTicker,
-            "Onyx", null, rewardsPerWeek, "pendingOnyx");
+            "onyx", null, rewardsPerWeek, "pendingOnyx");
     
         hideLoading();
       }

@@ -32,7 +32,7 @@ async function main() {
     const prices = await getMaticPrices();
 
     await loadMaticChefContract(App, tokens, prices, BLOOD_CHEF, BLOOD_CHEF_ADDR, BLOOD_CHEF_ABI, rewardTokenTicker,
-        "blood", null, rewardsPerWeek, "pendingBlood");
+        "blood", null, rewardsPerWeek, "pendingBlood",[13]);
 
     hideLoading();
   }
