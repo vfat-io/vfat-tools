@@ -16,7 +16,8 @@ const main = async() => {
       ["ArbiFarm            ", `<a href="/arbitrum/arbifarm" >Various</a>`,"AFARM              ","https://www.arbifarm.fi"],
       ["Marvin              ", `<a href="/arbitrum/marvin"   >Various</a>`,"MARVIN             ","https://marvinfarms.info"],
       ["Arballz             ", `<a href="/arbitrum/arballz"  >Various</a>`,"ARB                ","https://arballz.finance"],
-      ["ArbiKiwi            ", `<a href="/arbitrum/arbikiwi" >Various</a>`,"AKIWI              ","http://arbikiwi.finance"]
+      ["ArbiKiwi            ", `<a href="/arbitrum/arbikiwi" >Various</a>`,"AKIWI              ","http://arbikiwi.finance"],
+      //["Arbis               ", `<a href="/arbitrum/arbis"    >Various</a>`,"Various            ","https://arbis.finance"]
      ]
   }
 
