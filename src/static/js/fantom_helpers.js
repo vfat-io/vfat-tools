@@ -24,6 +24,7 @@ const FantomTokens = [
   { "id": "grimcoin", "symbol": "GRIM", "contract": "0x7eC94C4327dC757601B4273cD67014d7760Be97E"},
   { "id": "galaxy-triton", "symbol": "TRITON", "contract": "0x9cf4009e62429Db3F57Aa9e7e8E898427cF6865f"},
   { "id": "galaxy-oberon", "symbol": "OBERON", "contract": "0xc979E70611D997Aa109528c6A9aa73D82Eaa2881"},
+  { "id": "pumpkins", "symbol": "KINS", "contract": "0x6eced8e16eda61e65292f019b165542a5906ecd6"},
 ];
 
 async function getFantomPrices() {
