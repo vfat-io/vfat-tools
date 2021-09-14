@@ -356,7 +356,13 @@ const main = async() => {
         "BLK",
         "https://ftm.guru/LF/2004"
       ],
-             [
+      [
+        "Guru - LF#2006",
+        `<a href='guru_lite2006'>SST-WFTM spLP</a>`,
+        "BLK",
+        "https://ftm.guru/LF/2006"
+      ],
+      [
         "NippleLabs - BOOB",
         `<a href='nipplelabs'>Various</a>`,
         "BOOB",
@@ -367,12 +373,6 @@ const main = async() => {
         `<a href='nipplelabs_milk'>Various</a>`,
         "MILK",
         "https://nipplelabs.finance"
-      ],
-      [
-        "Guru - LF#2006",
-        `<a href='guru_lite2006'>SST-WFTM spLP</a>`,
-        "BLK",
-        "https://ftm.guru/LF/2006"
       ]
     ]
   }
