@@ -367,6 +367,18 @@ const main = async() => {
         `<a href='pumpkinsfarm'>Various</a>`,
         "KINS",
         "https://pumpkins.farm"
+      ],
+      [
+        "NippleLabs - BOOB",
+        `<a href='nipplelabs'>Various</a>`,
+        "BOOB",
+        "https://nipplelabs.finance"
+      ],
+      [
+        "NippleLabs - MILK",
+        `<a href='nipplelabs_milk'>Various</a>`,
+        "MILK",
+        "https://nipplelabs.finance"
       ]
     ]
   }
