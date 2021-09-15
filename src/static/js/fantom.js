@@ -361,6 +361,12 @@ const main = async() => {
         `<a href='guru_lite2006'>SST-WFTM spLP</a>`,
         "BLK",
         "https://ftm.guru/LF/2006"
+      ],
+      [
+        "PumpKins Farm",
+        `<a href='pumpkinsfarm'>Various</a>`,
+        "KINS",
+        "https://pumpkins.farm"
       ]
     ]
   }
