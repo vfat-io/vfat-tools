@@ -1,3 +1,4 @@
+const DLP_ABI = [{"inputs":[{"internalType":"address","name":"_originToken","type":"address"}],"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"owner","type":"address"},{"indexed":true,"internalType":"address","name":"spender","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"Approval","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"uint256","name":"value","type":"uint256"}],"name":"Burn","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"uint256","name":"value","type":"uint256"}],"name":"Mint","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"previousOwner","type":"address"},{"indexed":true,"internalType":"address","name":"newOwner","type":"address"}],"name":"OwnershipTransferPrepared","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"previousOwner","type":"address"},{"indexed":true,"internalType":"address","name":"newOwner","type":"address"}],"name":"OwnershipTransferred","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"from","type":"address"},{"indexed":true,"internalType":"address","name":"to","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"Transfer","type":"event"},{"inputs":[],"name":"_NEW_OWNER_","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"_OWNER_","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"owner","type":"address"},{"internalType":"address","name":"spender","type":"address"}],"name":"allowance","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"spender","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"approve","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"owner","type":"address"}],"name":"balanceOf","outputs":[{"internalType":"uint256","name":"balance","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"user","type":"address"},{"internalType":"uint256","name":"value","type":"uint256"}],"name":"burn","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"claimOwnership","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"decimals","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"user","type":"address"},{"internalType":"uint256","name":"value","type":"uint256"}],"name":"mint","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"name","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"originToken","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"symbol","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"totalSupply","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"to","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"transfer","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"from","type":"address"},{"internalType":"address","name":"to","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"transferFrom","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"newOwner","type":"address"}],"name":"transferOwnership","outputs":[],"stateMutability":"nonpayable","type":"function"}]
 
 let walletProvider = undefined
 
@@ -18,6 +19,9 @@ const pageNetwork = function() {
   }
   if (network.toLowerCase() === 'arbitrum') {
     return window.NETWORKS.ARBITRUM
+  }
+  if (network.toLowerCase() === 'moonriver') {
+    return window.NETWORKS.MOONRIVER
   }
   if (network.toLowerCase() === 'heco') {
     return window.NETWORKS.HECO
@@ -994,6 +998,27 @@ async function getUniPool(app, pool, poolAddress, stakingAddress) {
   };
 }
 
+async function getDlpPool(App, dlpPool, tokenAddress, originTokenAddress, stakingAddress){
+  const ownerAddress = await dlpPool._OWNER_();
+  const originToken = await getToken(App, originTokenAddress, ownerAddress);
+  const totalSupply = await dlpPool.totalSupply();
+  const name = await dlpPool.name();
+  const decimals = await dlpPool.decimals();
+  return {
+    address : tokenAddress,
+    name : name,
+    symbol : name,
+    totalSupply : totalSupply,
+    decimals : decimals,
+    staked : totalSupply / 10 ** decimals,
+    unstaked : await dlpPool.balanceOf(App.YOUR_ADDRESS) / 10 ** decimals,
+    token : originToken,
+    balance : originToken.staked  * 10 ** originToken.decimals,
+    contract : dlpPool,
+    tokens : [originTokenAddress]
+  }
+}
+
 async function getGelatoPool(app, pool, poolAddress, stakingAddress) {
   const calls = [
     pool.decimals(), pool.token0(), pool.token1(), pool.symbol(), pool.name(),
@@ -1265,6 +1290,10 @@ async function getStoredToken(app, tokenAddress, stakingAddress, type) {
     case "cToken":
       const cToken = new ethcall.Contract(tokenAddress, CTOKEN_ABI);
       return await getCToken(app, cToken, tokenAddress, stakingAddress);
+    case "dlp":
+      const dlpPool = new ethers.Contract(tokenAddress, DLP_ABI, app.provider);
+      const originTokenAddress = await dlpPool.originToken();
+      return await getDlpPool(app, dlpPool, tokenAddress, originTokenAddress, stakingAddress);
     case "gelato":
       const gelato = new ethcall.Contract(tokenAddress, GELATO_ABI);
       return await getGelatoPool(app, gelato, tokenAddress, stakingAddress);
@@ -1337,6 +1366,15 @@ async function getToken(app, tokenAddress, stakingAddress) {
     const balPool = await getBalancerPool(app, bal, tokenAddress, stakingAddress, tokens, sbal);
     window.localStorage.setItem(tokenAddress, "balancerSmart");
     return balPool;
+  }
+  catch(err) {
+  }
+  try {
+    const pool = new ethers.Contract(tokenAddress, DLP_ABI, app.provider);
+    const originTokenAddress = await pool.originToken();
+    const dlpPool = await getDlpPool(app, pool, tokenAddress, originTokenAddress, stakingAddress);
+    window.localStorage.setItem(tokenAddress, "dlp");
+    return dlpPool;
   }
   catch(err) {
   }
@@ -1596,7 +1634,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
             pool.symbol.includes("SLP") ? (
               {
                 "eth": `http://analytics.sushi.com/pairs/${pool.address}`,
-                "arbitrum": `http://analytics.sushi.com/pairs/${pool.address}`, //temporary solution until they put arbitrum
+                "arbitrum": `http://analytics-arbitrum.sushi.com/pairs/${pool.address}`,
                 "bsc": `http://analytics-ftm.sushi.com/pairs/${pool.address}`,
                 "fantom": `http://analytics-ftm.sushi.com/pairs/${pool.address}`,
                 "matic": `http://analytics-polygon.sushi.com/pairs/${pool.address}`,
@@ -1634,7 +1672,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
                     "fantom": `https://fantom-exchange.galaxyfinance.one/#/swap`,
                 }[chain]) :
               chain == "matic" ? `https://info.quickswap.exchange/pair/${pool.address}` :
-            `http://uniswap.info/pair/${pool.address}`;
+            `http://v2.uniswap.info/pair/${pool.address}`;
           const helperUrls = pool.is1inch ? [] :
           pool.symbol.includes("LSLP") ? [
             `https://linkswap.app/#/add/${t0address}/${t1address}`,
@@ -1785,14 +1823,9 @@ function getUniPrices(tokens, prices, pool, chain="eth")
             `https://koffeeswap.exchange/#/remove/${t0address}/${t1address}`,
             `https://koffeeswap.exchange/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
         ] :
-          t0.symbol.includes("COMFI") ? [
-            `https://app.uniswap.org/#/add/v2/${t0address}/${t1address}`,
+          [ `https://app.uniswap.org/#/add/v2/${t0address}/${t1address}`,
             `https://app.uniswap.org/#/remove/v2/${t0address}/${t1address}`,
-            `https://app.uniswap.org/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
-          ] :
-          [ `https://app.uniswap.org/#/add/${t0address}/${t1address}`,
-            `https://app.uniswap.org/#/remove/${t0address}/${t1address}`,
-            `https://app.uniswap.org/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}` ]
+            `https://app.uniswap.org/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}&use=v2` ]
 
           const helperHrefs = helperUrls.length == 0 ? "" :
             ` <a href='${helperUrls[0]}' target='_blank'>[+]</a> <a href='${helperUrls[1]}' target='_blank'>[-]</a> <a href='${helperUrls[2]}' target='_blank'>[<=>]</a>`
@@ -1845,7 +1878,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
                             "fantom": `https://fantom-exchange.galaxyfinance.one/#/swap`
                           }[chain]) :
                             chain == "matic" ? `https://info.quickswap.exchange/pair/${pool.address}` :
-                              `http://uniswap.info/pair/${pool.address}`;
+                              `http://v2.uniswap.info/pair/${pool.address}`;
           const helperUrls = pool.is1inch ? [] :
             pool.symbol.includes("LSLP") ? [
                 `https://linkswap.app/#/add/${t0address}/${t1address}`,
@@ -1911,14 +1944,9 @@ function getUniPrices(tokens, prices, pool, chain="eth")
                             `https://fantom-exchange.galaxyfinance.one/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
                             ]
                         }[chain]) :
-                            t0.symbol.includes("COMFI") ? [
-                                `https://app.uniswap.org/#/add/v2/${t0address}/${t1address}`,
-                                `https://app.uniswap.org/#/remove/v2/${t0address}/${t1address}`,
-                                `https://app.uniswap.org/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
-                              ] :
-                              [ `https://app.uniswap.org/#/add/${t0address}/${t1address}`,
-                                `https://app.uniswap.org/#/remove/${t0address}/${t1address}`,
-                                `https://app.uniswap.org/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}` ]
+                            [ `https://app.uniswap.org/#/add/v2/${t0address}/${t1address}`,
+                              `https://app.uniswap.org/#/remove/v2/${t0address}/${t1address}`,
+                              `https://app.uniswap.org/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}&use=v2` ]
 
           return {
             pair_link: `<a href='${poolUrl}' target='_blank'>${stakeTokenTicker}</a>`,
@@ -2102,11 +2130,12 @@ function getWrapPrices(tokens, prices, pool)
   const wrappedToken = pool.token;
   if (wrappedToken.token0 != null) { //Uniswap
     const uniPrices = getUniPrices(tokens, prices, wrappedToken);
+    const etherscanUrl = "https://etherscan.io/address/" + pool.address;
     const poolUrl = pool.is1inch ? "https://1inch.exchange/#/dao/pools" :
     pool.symbol.includes("SLP") ?  `http://analytics.sushi.com/pairs/${wrappedToken.address}` :
     (pool.symbol.includes("Cake") || pool.symbol.includes("Pancake")) ?  `http://pancakeswap.info/pair/${wrappedToken.address}`
-      : `http://uniswap.info/pair/${wrappedToken.address}`;
-    const name = `Wrapped <a href='${poolUrl}' target='_blank'>${uniPrices.stakeTokenTicker}</a>`;
+      : `http://v2.uniswap.info/pair/${wrappedToken.address}`;
+    const name = `<a href='${etherscanUrl}' target='_blank'>${pool.symbol}</a> (Wrapped <a href='${poolUrl}' target='_blank'>${uniPrices.stakeTokenTicker}</a>)`;
     const price = (pool.balance / 10 ** wrappedToken.decimals) * uniPrices.price / (pool.totalSupply / 10 ** pool.decimals);
     const tvl = pool.balance / 10 ** wrappedToken.decimals * price;
     const staked_tvl = pool.staked * price;
@@ -2146,7 +2175,8 @@ function getWrapPrices(tokens, prices, pool)
       price : price,
       stakeTokenTicker : pool.symbol,
       print_price() {
-        _print(`${pool.symbol} Price: $${formatMoney(price)} TVL: $${formatMoney(tvl)}`);
+        const poolUrl = "https://etherscan.io/address/" + pool.address;
+        _print(`<a href='${poolUrl}' target='_blank'>${pool.symbol}</a> (Wrapped ${pool.token.name}) Price: $${formatMoney(price)} TVL: $${formatMoney(tvl)}`);
         _print(`Staked: ${pool.staked.toFixed(4)} ${pool.symbol} ($${formatMoney(staked_tvl)})`);
       },
       print_contained_price(_) {
@@ -2196,6 +2226,12 @@ function getErc20Prices(prices, pool, chain="eth") {
       break;
     case "iotex":
       poolUrl=`https://iotexscan.io/token/${pool.address}`;
+      break;
+    case "moonriver":
+      poolUrl=`https://blockscout.moonriver.moonbeam.network/address/${pool.address}`;
+      break;
+    case "arbitrum":
+      poolUrl=`https://arbiscan.io/address/${pool.address}`;
       break;
   }
 
@@ -2726,6 +2762,9 @@ async function printSynthetixPool(App, info, chain="eth", customURLs) {
       case "iotex":
           _print(`<a target="_blank" href="https://iotexscan.io/address/${info.stakingAddress}#code">IoTeX Explorer</a>`);
           break;
+      case "arbitrum":
+        _print(`<a target="_blank" href="https://arbiscan.io/address/${info.stakingAddress}#code">Arbitrum Explorer</a>`);
+        break;
     }
     if (info.stakeTokenTicker != "ETH") {
       _print_link(`Stake ${info.userUnstaked.toFixed(6)} ${info.stakeTokenTicker}`, approveTENDAndStake)

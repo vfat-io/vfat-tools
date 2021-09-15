@@ -61,6 +61,21 @@ window.NETWORKS = {
       "https://explorer.arbitrum.io"
     ]
   },
+  MOONRIVER: {
+    "chainId": "0x505",
+    "chainName": "Moonriver",
+    "nativeCurrency": {
+      "name": "moonriver",
+      "symbol": "MOVR",
+      "decimals": 18
+    },
+    "rpcUrls": [
+      "https://rpc.moonriver.moonbeam.network"
+    ],
+    "blockExplorerUrls": [
+      "https://moonbeam.network/networks/moonriver/"
+    ]
+  },
   BINANCE_SMART_CHAIN: {
     "chainId": "0x38",
     "chainName": "Binance Smart Chain Mainnet",

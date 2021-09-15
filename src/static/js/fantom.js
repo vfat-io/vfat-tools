@@ -63,7 +63,7 @@ const main = async() => {
         "https://fantom.beefy.finance"
       ],
       [
-        "Liquid Driver",
+        "Liquid Driver *",
         `<a href='liquid'>Various</a>`,
         "LQDR",
         "https://www.liquiddriver.finance"
@@ -313,6 +313,72 @@ const main = async() => {
         `<a href='frensfi'>Various</a>`,
         "Various",
         "https://frens.fi"
+      ],
+      [
+        "Reaper.Farm",
+        `<a href='reaperfarm'>Various</a>`,
+        "Various",
+        "https://reaper.farm"
+      ],
+      [
+        "OberonFinance",
+        `<a href='galaxy_oberon'>Various</a>`,
+        "OBERON",
+        "https://fantom-oberon.galaxyfinance.one/"
+      ],
+      [
+        "Guru - LF#2005",
+        `<a href='guru_lite2005'>BLK-WFTM spLP</a>`,
+        "Nova",
+        "https://ftm.guru/LF/2005"
+      ],
+      [
+        "Guru - LF#301",
+        `<a href='guru_lite301'>TCUZ-WFTM spLP</a>`,
+        "TCUZ",
+        "https://ftm.guru/LF/301"
+      ],
+      [
+        "Morpheus Swap",
+        `<a href='morpheusswap'>Various</a>`,
+        "MORPH",
+        "https://morpheusswap.finance"
+      ],
+      [
+        "Olive",
+        `<a href='olive'>Various</a>`,
+        "OLIVE",
+        "https://olive.cash"
+      ],
+      [
+        "Guru - LF#2004",
+        `<a href='guru_lite2004'>Nova</a>`,
+        "BLK",
+        "https://ftm.guru/LF/2004"
+      ],
+      [
+        "Guru - LF#2006",
+        `<a href='guru_lite2006'>SST-WFTM spLP</a>`,
+        "BLK",
+        "https://ftm.guru/LF/2006"
+      ],
+      [
+        "PumpKins Farm",
+        `<a href='pumpkinsfarm'>Various</a>`,
+        "KINS",
+        "https://pumpkins.farm"
+      ],
+      [
+        "NippleLabs - BOOB",
+        `<a href='nipplelabs'>Various</a>`,
+        "BOOB",
+        "https://nipplelabs.finance"
+      ],
+      [
+        "NippleLabs - MILK",
+        `<a href='nipplelabs_milk'>Various</a>`,
+        "MILK",
+        "https://nipplelabs.finance"
       ]
     ]
   }

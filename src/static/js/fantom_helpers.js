@@ -22,7 +22,9 @@ const FantomTokens = [
   { "id": "frax", "symbol": "FRAX", "contract": "0xaf319E5789945197e365E7f7fbFc56B130523B33"},
   { "id": "spiritswap", "symbol": "SPIRIT", "contract": "0x5cc61a78f164885776aa610fb0fe1257df78e59b"},
   { "id": "grimcoin", "symbol": "GRIM", "contract": "0x7eC94C4327dC757601B4273cD67014d7760Be97E"},
-  { "id": "galaxy-triton", "symbol": "TRITON", "contract": "0x9cf4009e62429Db3F57Aa9e7e8E898427cF6865f"}
+  { "id": "galaxy-triton", "symbol": "TRITON", "contract": "0x9cf4009e62429Db3F57Aa9e7e8E898427cF6865f"},
+  { "id": "galaxy-oberon", "symbol": "OBERON", "contract": "0xc979E70611D997Aa109528c6A9aa73D82Eaa2881"},
+  { "id": "pumpkins", "symbol": "KINS", "contract": "0x6eced8e16eda61e65292f019b165542a5906ecd6"},
 ];
 
 async function getFantomPrices() {
@@ -365,7 +367,6 @@ async function loadFantomBasisFork(data) {
     hideLoading();
 }
 
-
 async function getFantomPoolInfo(app, chefContract, chefAddress, poolIndex, pendingRewardsFunction) {
   const poolInfo = await chefContract.poolInfo(poolIndex);
   if (poolInfo.allocPoint == 0) {
@@ -461,76 +462,6 @@ async function loadFantomChefContract(App, tokens, prices, chef, chefAddress, ch
   }
   return { prices, totalUserStaked, totalStaked, averageApr }
 }
-
-async function loadSteakChefContract(App, tokens, prices, chef, chefAddress, chefAbi, rewardTokenTicker,
-    rewardTokenFunction, rewardsPerBlockFunction, rewardsPerWeekFixed, pendingRewardsFunction,
-    deathPoolIndices, claimFunction) {
-    const chefContract = chef ?? new ethers.Contract(chefAddress, chefAbi, App.provider);
-
-    const poolCount = parseInt(await chefContract.poolLength(), 10);
-    const totalAllocPoints = await chefContract.totalAllocPoint();
-
-    _print(`Found ${poolCount} pools.\n`)
-
-    _print(`Showing incentivized pools only.\n`);
-
-    const rewardTokenAddress = await chefContract.callStatic[rewardTokenFunction]();
-    const rewardToken = await getFantomToken(App, rewardTokenAddress, chefAddress);
-    const rewardsPerWeek = rewardsPerWeekFixed ??
-      await chefContract.callStatic[rewardsPerBlockFunction]() //Add 10% deposit fees to APR calculations?
-      / 10 ** rewardToken.decimals * 604800 / 3 //*0.9
-
-    const poolInfos = await Promise.all([...Array(poolCount).keys()].map(async (x) =>
-      await getFantomPoolInfo(App, chefContract, chefAddress, x, pendingRewardsFunction)));
-
-    var tokenAddresses = [].concat.apply([], poolInfos.filter(x => x.poolToken).map(x => x.poolToken.tokens));
-
-    await Promise.all(tokenAddresses.map(async (address) => {
-        tokens[address] = await getFantomToken(App, address, chefAddress);
-    }));
-
-    if (deathPoolIndices) {   //load prices for the deathpool assets
-      deathPoolIndices.map(i => poolInfos[i])
-                       .map(poolInfo =>
-        poolInfo.poolToken ? getPoolPrices(tokens, prices, poolInfo.poolToken, "fantom") : undefined);
-    }
-
-    const poolPrices = poolInfos.map(poolInfo => poolInfo.poolToken ? getPoolPrices(tokens, prices, poolInfo.poolToken, "fantom") : undefined);
-
-
-    _print("Finished reading smart contracts.\n");
-
-    let aprs = []
-    for (i = 0; i < poolCount; i++) {
-      if (poolPrices[i]) {
-        _print(`Note: There is a 0.05% deposit fee into farms that is returned to iFUSD holders, and 10% claim fee that is returned to xSTEAK holders.`)
-        const apr = printChefPool(App, chefAbi, chefAddress, prices, tokens, poolInfos[i], i, poolPrices[i],
-          totalAllocPoints, rewardsPerWeek, rewardTokenTicker, rewardTokenAddress,
-          pendingRewardsFunction, null, claimFunction, "fantom", 0.005, poolInfos[i].withdrawFee)
-        aprs.push(apr);
-      }
-    }
-    let totalUserStaked=0, totalStaked=0, averageApr=0;
-    for (const a of aprs) {
-      if (!isNaN(a.totalStakedUsd)) {
-        totalStaked += a.totalStakedUsd;
-      }
-      if (a.userStakedUsd > 0) {
-        totalUserStaked += a.userStakedUsd;
-        averageApr += a.userStakedUsd * a.yearlyAPR / 100;
-      }
-    }
-    averageApr = averageApr / totalUserStaked;
-    _print_bold(`Total Staked: $${formatMoney(totalStaked)}`);
-    if (totalUserStaked > 0) {
-      _print_bold(`\nYou are staking a total of $${formatMoney(totalUserStaked)} at an average APR of ${(averageApr * 100).toFixed(2)}%`)
-      _print(`\nEstimated earnings:`
-          + ` Day $${formatMoney(totalUserStaked*averageApr/365)}`
-          + ` Week $${formatMoney(totalUserStaked*averageApr/52)}`
-          + ` Year $${formatMoney(totalUserStaked*averageApr)}\n`);
-    }
-    return { prices, totalUserStaked, totalStaked, averageApr }
-  }
 
 async function loadMultipleFantomSynthetixPools(App, tokens, prices, pools) {
   let totalStaked  = 0, totalUserStaked = 0, individualAPRs = [];
