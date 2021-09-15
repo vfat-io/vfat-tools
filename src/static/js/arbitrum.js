@@ -18,7 +18,8 @@ const main = async() => {
       ["Arballz             ", `<a href="/arbitrum/arballz"  >Various</a>`,"ARB                ","https://arballz.finance"],
       ["ArbiKiwi            ", `<a href="/arbitrum/arbikiwi" >Various</a>`,"AKIWI              ","http://arbikiwi.finance"],
       ["Badger              ", `<a href="/arbitrum/badger"   >Various</a>`,"BADGER             ","https://app.badger.finance"],
-      ["FrostArbi           ", `<a href="/arbitrum/frost"    >Various</a>`,"FROST              ","https://frostarbi.com"]
+      ["FrostArbi           ", `<a href="/arbitrum/frost"    >Various</a>`,"FROST              ","https://frostarbi.com"],
+      ["MagicLand           ", `<a href="/arbitrum/magicland">Various</a>`,"MAGIC              ","https://magicland.fi"]
       //["Arbis               ", `<a href="/arbitrum/arbis"    >Various</a>`,"Various            ","https://arbis.finance"]
      ]
   }
