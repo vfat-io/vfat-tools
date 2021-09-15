@@ -10,7 +10,7 @@ $(function () {
         _print(`Initialized ${App.YOUR_ADDRESS}\n`);		
         _print("Reading smart contracts...\n");		
     		
-        const PEPSI_CHEF_ADDR = "0x645D07803B388CdBA800eE5D64E3E7A1fc208033";		
+        const PEPSI_CHEF_ADDR = "0x5c3EEeB6bD3B2c4372aAB2B2242Fc582ADe8225F";		
         const rewardTokenTicker = "PEPSI";		
         const PEPSI_CHEF = new ethers.Contract(PEPSI_CHEF_ADDR, PEPSI_CHEF_ABI, App.provider);		
     		
