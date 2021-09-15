@@ -10,7 +10,10 @@ const ArbitrumTokens = [
     { "id": "wrapped-bitcoin","symbol": "WBTC", "contract": "0x2f2a2543b76a4166549f7aab2e75bef0aefc5b0f" },
     { "id": "usd-coin","symbol": "USDC", "contract": "0xff970a61a04b1ca14834a43f5de4533ebddb5cc8" },
     { "id": "tether","symbol": "USDT", "contract": "0xfd086bc7cd5c481dcc9c85ebe478a1c0b69fcbb9" },
-    { "id": "NYAN","symbol": "NYAN", "contract": "0xeD3fB761414DA74b74F33e5c5a1f78104b188DfC" }
+    { "id": "NYAN","symbol": "NYAN", "contract": "0xeD3fB761414DA74b74F33e5c5a1f78104b188DfC" },
+    { "id": "wrapped-ether", "symbol": "WETH", "contract": "0x82aF49447D8a07e3bd95BD0d56f35241523fBab1"},
+    { "id": "sushi", "symbol": "SUSHI", "contract": "0xd4d42F0b6DEF4CE0383636770eF773390d85c61A"},
+    { "id": "badger-dao", "symbol": "BADGER", "contract": "0xBfa641051Ba0a0Ad1b0AcF549a89536A0D76472E"}
 ];
 
 const uniSqrtPrice = (tokenDecimals, sqrtRatioX96) => {
