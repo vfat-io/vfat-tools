@@ -25,7 +25,7 @@ async function main() {
      _print(`Rewards start at block ${startBlock}\n`);
    }else{
     rewardsPerWeek = await HONEY_CHEF.honeyPerBlock() /1e18
-        * 604800 * multiplier / 3;
+        * 604800 * multiplier / 13.5;
    }
 
     const tokens = {};

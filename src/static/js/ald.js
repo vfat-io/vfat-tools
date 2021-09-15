@@ -20,7 +20,7 @@ consoleInit(main)
      _print(`Rewards start at block <a href="https://etherscan.com/block/countdown/${startBlock}" target="_blank">${startBlock}</a>\n`)
     }else{
      rewardsPerWeek = await ALD_CHEF.aldPerBlock() / 1e18 * 604800 / 13.5 
-      * await ALD_CHEF.tokenDistributorAllocNume() / await ALD_CHEF.tokenDistributorAllocDenom();
+      * (1 - await ALD_CHEF.tokenDistributorAllocNume() / await ALD_CHEF.tokenDistributorAllocDenom());
     }
 
     let p = await loadAldChefContract(App, ALD_CHEF, ALD_CHEF_ADDR, ALD_CHEF_ABI,

@@ -54,6 +54,7 @@ async function loadSynthetixSlpXbePoolInfo(App, tokens, prices, stakingAbi, stak
     const stakeTokenAddress = await STAKING_POOL.callStatic[stakeTokenFunction]();
 
     var stakeToken = await getToken(App, stakeTokenAddress, stakingAddress);
+    stakeToken.staked = await STAKING_POOL.totalSupply() / 10 ** stakeToken.decimals;
 
     if (stakeTokenAddress.toLowerCase() === rewardTokenAddress.toLowerCase()) {
       stakeToken.staked = await STAKING_POOL.totalSupply() / 10 ** stakeToken.decimals;
