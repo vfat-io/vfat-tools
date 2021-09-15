@@ -11,6 +11,8 @@ import * as ethcall from "ethcall";
 
 //import dompurify from 'dompurify'
 
+import * as myTokens from './token.js';
+
 import 'picturefill'
 import 'utils/errors'
 import 'utils/validation'
@@ -37,8 +39,7 @@ window.NETWORKS = {
       "decimals": 18
     },
     "rpcUrls": [
-      "https://mainnet.infura.io/v3/${INFURA_API_KEY}",
-      "wss://mainnet.infura.io/ws/v3/${INFURA_API_KEY}",
+      "https://mainnet.infura.io/v3/" + myTokens.INFURA_API_ID,
       "https://api.mycryptoapi.com/eth",
       "https://cloudflare-eth.com"
     ],
@@ -130,6 +131,7 @@ window.NETWORKS = {
       "decimals": 18
     },
     "rpcUrls": [
+      "https://polygon-mainnet.infura.io/v3/" + myTokens.INFURA_API_ID,
       "https://rpc-mainnet.matic.network",
       "https://matic-mainnet.chainstacklabs.com",
       "https://rpc-mainnet.maticvigil.com",
@@ -198,7 +200,7 @@ window.NETWORKS = {
       "decimals": 18
     },
     "rpcUrls": [
-      "https://rpcapi.fantom.network"
+      "https://rpc.ftm.tools"
     ],
     "blockExplorerUrls": [
       "https://ftmscan.com"

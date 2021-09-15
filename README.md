@@ -1,3 +1,7 @@
+
+This repo is modified to default to provided endpoints rather than wallet endpoints
+for Infura hosted endpoints to work (eth, poly), add infura endpoint to src/js/token.js
+
 ## vfat.tools
 
 _It ain't much, but it's honest work_

@@ -186,6 +186,9 @@ typings/
 .env
 dist/
 
+# file with token information
+src/js/token.js
+
 # exclude backup files
 *~
 

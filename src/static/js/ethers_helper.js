@@ -92,10 +92,13 @@ const init_wallet = async function (callback) {
       hideLoading()
     }
   } else {
-    _print_link("[CONNECT WALLET]", () => connectWallet(callback), "connect_wallet_button", false);
-    _print_inline(' -=- ');
-    _print_link("[CLEAR BROWSER STORAGE]", clearLocalStorage, "clear_browser_storage");
-    hideLoading()
+    _print('CONNECTING TO SUPPLIED ENDPOINT');
+    let targetNetwork = pageNetwork()
+    let targetNetworkId = parseInt(targetNetwork.chainId, 16)
+    _print(`target id ${targetNetworkId} `)
+    _print(targetNetworkId)
+    await connectWallet(() => {});
+    start(callback)
   }
   _print('')
 }
@@ -111,28 +114,13 @@ async function init_ethers() {
 
   try {
 
-    // Modern dapp browsers...
-    if (walletProvider) {
-      App.web3Provider = walletProvider
-      App.provider = new ethers.providers.Web3Provider(walletProvider)
-      try {
-        // Request account access
-        const accounts = await walletProvider.request({ method: 'eth_requestAccounts' })
-        App.YOUR_ADDRESS = accounts[0];
-      } catch (error) {
-        // User denied account access...
-        console.error('User denied account access')
-      }
-    }
-    // If no injected web3 instance is detected, fall back to backup node
-    else {
-      App.provider = new ethers.providers.JsonRpcProvider(atob(window.ETHEREUM_NODE_URL))
-      isMetaMaskInstalled = false
-      _print(
-        "You don't have MetaMask installed! Falling back to backup node...\n (will likely to fail. Please install MetaMask extension).\n"
-      )
-      sleep(10)
-    }
+    let targetNetwork = pageNetwork()
+    let targetNetworkId = parseInt(targetNetwork.chainId, 16)
+    App.provider = new ethers.providers.JsonRpcProvider(targetNetwork.rpcUrls[0])
+
+    isMetaMaskInstalled = false
+    sleep(10)
+
     App.ethcallProvider = new ethcall.Provider();
     await App.ethcallProvider.init(App.provider);
 
@@ -198,23 +186,12 @@ const changeWallet = async function() {
 
 const connectWallet = async function(callback) {
   try {
-    walletProvider = await window.web3Modal.connect()
-
-    walletProvider.on("accountsChanged", (accounts) => {
-      if (accounts === undefined || accounts.length === 0) {
-        window.web3Modal.clearCachedProvider()
-      }
-      window.location.reload()
-    });
-
-    walletProvider.on("chainChanged", (networkId) => {
-      window.location.reload()
-    });
 
     let targetNetwork = pageNetwork()
-    let provider = new ethers.providers.Web3Provider(walletProvider)
-    let connectedNetwork = await provider.getNetwork()
     let targetNetworkId = parseInt(targetNetwork.chainId, 16)
+    let provider = undefined
+    provider = new ethers.providers.JsonRpcProvider(targetNetwork.rpcUrls[0])
+    let connectedNetwork = await provider.getNetwork()
 
     if (connectedNetwork.chainId === targetNetworkId) {
       let button = document.getElementById('connect_wallet_button')
