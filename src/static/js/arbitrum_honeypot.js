@@ -20,14 +20,12 @@ async function main() {
 
    const multiplier = await HONEY_CHEF.getMultiplier(currentBlock, currentBlock+1);
 
-   const blocksPerSeconds = await getAverageBlockTime(App);
-
    let rewardsPerWeek = 0
    if(currentBlock < startBlock){
      _print(`Rewards start at block ${startBlock}\n`);
    }else{
     rewardsPerWeek = await HONEY_CHEF.honeyPerBlock() /1e18
-        * 604800 * multiplier / blocksPerSeconds;
+        * 604800 * multiplier / 13.5;
    }
 
     const tokens = {};

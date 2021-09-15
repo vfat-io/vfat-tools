@@ -466,13 +466,11 @@ async function loadArbitrumChefContract(App, tokens, prices, chef, chefAddress, 
 
   _print(`Showing incentivized pools only.\n`);
 
-  const blocksPerSeconds = await getAverageBlockTime(App);
-
   const rewardTokenAddress = await chefContract.callStatic[rewardTokenFunction]();
   const rewardToken = await getArbitrumToken(App, rewardTokenAddress, chefAddress);
   const rewardsPerWeek = rewardsPerWeekFixed ??
     await chefContract.callStatic[rewardsPerBlockFunction]()
-    / 10 ** rewardToken.decimals * 604800 / blocksPerSeconds
+    / 10 ** rewardToken.decimals * 604800 / 13.5
 
   const poolInfos = await Promise.all([...Array(poolCount).keys()].map(async (x) =>
     await getArbitrumPoolInfo(App, chefContract, chefAddress, x, pendingRewardsFunction)));
