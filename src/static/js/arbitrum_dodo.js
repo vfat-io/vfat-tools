@@ -15,8 +15,10 @@ async function main() {
    const rewardTokenTicker = "DODO";
    const DODO_CHEF = new ethers.Contract(DODO_CHEF_ADDR, DODO_CHEF_ABI, App.provider);
 
+   const blocksPerSeconds = await getAverageBlockTime(App);
+
    const rewardsPerWeek = await DODO_CHEF.dodoPerBlock() /1e18
-        * 604800 / 13.5;
+        * 604800 / blocksPerSeconds;
 
     const tokens = {};
     const prices = await getArbitrumPrices();
