@@ -15,18 +15,8 @@ async function main() {
    const rewardTokenTicker = "MARVIN";
    const MARVIN_CHEF = new ethers.Contract(MARVIN_CHEF_ADDR, MARVIN_CHEF_ABI, App.provider);
 
-   const startBlock = await MARVIN_CHEF.startBlock();
-   const currentBlock = await App.provider.getBlockNumber();
-
-   const multiplier = await MARVIN_CHEF.getMultiplier(currentBlock, currentBlock+1);
-
-   let rewardsPerWeek = 0
-   if(currentBlock < startBlock){
-     _print(`Rewards start at block ${startBlock}\n`);
-   }else{
-    rewardsPerWeek = await MARVIN_CHEF.marvinPerBlock() /1e18
-        * 604800 * multiplier / 13.5;
-   }
+   let rewardsPerWeek = await MARVIN_CHEF.marvinPerBlock() /1e18
+      * 604800 / 13.5;
 
     const tokens = {};
     const prices = await getArbitrumPrices();

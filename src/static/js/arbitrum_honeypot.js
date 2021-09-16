@@ -15,18 +15,12 @@ async function main() {
    const rewardTokenTicker = "HONEY";
    const HONEY_CHEF = new ethers.Contract(HONEY_CHEF_ADDR, HONEY_CHEF_ABI, App.provider);
 
-   const startBlock = await HONEY_CHEF.startBlock();
    const currentBlock = await App.provider.getBlockNumber();
 
    const multiplier = await HONEY_CHEF.getMultiplier(currentBlock, currentBlock+1);
 
-   let rewardsPerWeek = 0
-   if(currentBlock < startBlock){
-     _print(`Rewards start at block ${startBlock}\n`);
-   }else{
-    rewardsPerWeek = await HONEY_CHEF.honeyPerBlock() /1e18
-        * 604800 * multiplier / 13.5;
-   }
+   const rewardsPerWeek = await HONEY_CHEF.honeyPerBlock() /1e18
+    * 604800 * multiplier / 13.5;
 
     const tokens = {};
     const prices = await getArbitrumPrices();
