@@ -387,7 +387,7 @@ const main = async() => {
         "https://ftm.guru/LF/1010"
       ],
       [
-        "Guru - LF#1010",
+        "Guru - LF#1011",
         `<a href='guru_lite1010'>SUN-WFTM SPIRIT-LP</a>`,
         "SUN",
         "https://ftm.guru/LF/1011"
