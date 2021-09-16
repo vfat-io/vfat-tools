@@ -50,7 +50,7 @@ const main = async() => {
         ["Mammoth Finance  ",`<a href="mammoth  "  >Various</a>`,"TUSK     ","https://mammothfinance.io" ],
         ["Singular  ",`<a href="singular">Various</a>`,"SING", 'https://singular.farm' ],
         ["ZabuV2        ",`<a href="zabuV2"        >Various</a>`,"ZUBAX      ","https://zabu.finance"],
-        ["Dolphin        ",`<a href="DOLPHIN"        >Various</a>`,"Dolphin      ","https://www.dolphinswap.finance"]
+        ["Dolphin        ",`<a href="dolphin"        >Various</a>`,"DOLPHIN      ","https://www.dolphinswap.finance"]
     ]
   }
 
