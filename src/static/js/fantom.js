@@ -334,7 +334,7 @@ const main = async() => {
       ],
       [
         "Guru - LF#301",
-        `<a href='guru_lite301'>TCUZ-WFTM spLP</a>`,
+        `<a href='guru_lite301'>TCUZ-WFTM SPIRIT-LP</a>`,
         "TCUZ",
         "https://ftm.guru/LF/301"
       ],
@@ -379,6 +379,18 @@ const main = async() => {
         `<a href='nipplelabs_milk'>Various</a>`,
         "MILK",
         "https://nipplelabs.finance"
+      ],
+      [
+        "Guru - LF#1010",
+        `<a href='guru_lite1010'>SUN</a>`,
+        "SUN",
+        "https://ftm.guru/LF/1010"
+      ],
+      [
+        "Guru - LF#1010",
+        `<a href='guru_lite1010'>SUN-WFTM SPIRIT-LP</a>`,
+        "SUN",
+        "https://ftm.guru/LF/1011"
       ]
     ]
   }
