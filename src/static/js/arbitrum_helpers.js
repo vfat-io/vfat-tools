@@ -314,9 +314,9 @@ async function getArbitrumToken(App, tokenAddress, stakingAddress) {
     catch(err) {
     }
     try {
-      const erc20 = new ethers.Contract(tokenAddress, ERC20_ABI, App.provider);
-      const _name = await erc20.name();
-      const erc20tok = await geterc20(App, erc20, tokenAddress, stakingAddress);
+      const erc20 = new ethcall.Contract(tokenAddress, ERC20_ABI);
+      const _name = await App.ethcallProvider.all([erc20.name()]);
+      const erc20tok = await getErc20(App, erc20, tokenAddress, stakingAddress);
       window.localStorage.setItem(tokenAddress, "erc20");
       return erc20tok;
     }
