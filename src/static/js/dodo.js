@@ -46,7 +46,7 @@ async function loadDodoContract0(App, prices, chef, chefAddress, chefAbi,
     await getDodoPoolInfo0(App, chefContract, chefAddress, x, pendingRewardsFunction)));
 
   var tokenAddresses = [].concat.apply([], poolInfos.filter(x => x?.poolToken).map(x => x.poolToken.tokens));
-  prices = await lookUpTokenPrices(tokenAddresses);
+  //prices = await lookUpTokenPrices(tokenAddresses);
 
   await Promise.all(tokenAddresses.map(async (address) => {
       tokens[address] = await getToken(App, address, chefAddress);
