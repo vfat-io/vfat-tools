@@ -74,54 +74,31 @@ async function getArbitrumUniPool(App, pool, poolAddress, stakingAddress) {
     };
 }
 
-async function getDodoArbitrumDualPoolToken(app, pool, poolAddress, stakingAddress) {
-  const calls = [
-    pool.decimals(), pool._BASE_TOKEN_(), pool._QUOTE_TOKEN_(), pool.symbol(), pool.name(),
-    pool.totalSupply(), pool.balanceOf(stakingAddress), pool.balanceOf(app.YOUR_ADDRESS)
-  ];
-  const [decimals, token0, token1, symbol, name, totalSupply, staked, unstaked]
-    = await app.ethcallProvider.all(calls);
-  let q0, q1, is1inch;
-  try {
-    const [reserves] = await app.ethcallProvider.all([pool.getVaultReserve()]);
+async function getDodoArbitrumDualPoolToken(App, pool, poolAddress, stakingAddress) {
+  let q0, q1;
+    const reserves = await pool.getVaultReserve();
     q0 = reserves.baseReserve;
     q1 = reserves.quoteReserve;
-    is1inch = false;
-  }
-  catch { //for 1inch
-    if (token0 == "0x0000000000000000000000000000000000000000") {
-      q0 = await app.provider.getBalance(poolAddress);
-    }
-    else {
-      const c0 = new ethers.Contract(token0, ERC20_ABI, app.provider);
-      q0 = await c0.balanceOf(poolAddress);
-    }
-    if (token1 == "0x0000000000000000000000000000000000000000") {
-      q1 = await app.provider.getBalance(poolAddress);
-    }
-    else {
-      const c1 = new ethers.Contract(token1, ERC20_ABI, app.provider);
-      q1 = await c1.balanceOf(poolAddress);
-    }
-    is1inch = true;
-  }
-  return {
-      symbol,
-      name,
-      address: poolAddress,
-      token0: token0,
-      q0,
-      token1: token1,
-      q1,
-      totalSupply: totalSupply / 10 ** decimals,
-      stakingAddress: stakingAddress,
-      staked: staked / 10 ** decimals,
-      decimals: decimals,
-      unstaked: unstaked / 10 ** decimals,
-      contract: pool,
-      tokens : [token0, token1],
-      is1inch
-  };
+    const decimals = await pool.decimals();
+    const token0 = await pool._BASE_TOKEN_();
+    const token1 = await pool._QUOTE_TOKEN_();
+    return {
+        symbol : await pool.symbol(),
+        name : await pool.name(),
+        address: poolAddress,
+        token0,
+        q0,
+        token1,
+        q1,
+        totalSupply: await pool.totalSupply() / 10 ** decimals,
+        stakingAddress: stakingAddress,
+        staked: await pool.balanceOf(stakingAddress) / 10 ** decimals,
+        decimals: decimals,
+        unstaked: await pool.balanceOf(App.YOUR_ADDRESS) / 10 ** decimals,
+        contract: pool,
+        tokens : [token0, token1],
+        is1inch : false
+    };
 }
 
 async function getercArbitrum20(App, token, address, stakingAddress) {
@@ -255,8 +232,8 @@ async function getArbitrumStoredToken(App, tokenAddress, stakingAddress, type) {
       const pool = new ethers.Contract(tokenAddress, UNI_ABI, App.provider);
       return await getArbitrumUniPool(App, pool, tokenAddress, stakingAddress);
     case "doualArbitrumDlp":
-      const doualDlpPool = new ethcall.Contract(tokenAddress, DLP_ARBITRUM_DUAL_TOKEN_ABI);
-      return await getDodoArbitrumDualPoolToken(app, doualDlpPool, tokenAddress, stakingAddress);
+      const doualDlpPool = new ethers.Contract(tokenAddress, DLP_ARBITRUM_DUAL_TOKEN_ABI, App.provider);
+      return await getDodoArbitrumDualPoolToken(App, doualDlpPool, tokenAddress, stakingAddress);
     case "arbitrumVault":
       const vault = new ethers.Contract(tokenAddress, ARBITRUM_VAULT_TOKEN_ABI, App.provider);
       return await getArbitrumVault(App, vault, tokenAddress, stakingAddress);
@@ -292,9 +269,9 @@ async function getArbitrumToken(App, tokenAddress, stakingAddress) {
     catch(err) {
     }
     try {
-      const pool = new ethcall.Contract(tokenAddress, DLP_ARBITRUM_DUAL_TOKEN_ABI);
-      const _baseToken = await app.ethcallProvider.all([pool._BASE_TOKEN_()]);
-      const doualDlpPool = await DLP_ARBITRUM_DUAL_TOKEN_ABI(app, pool, tokenAddress, stakingAddress);
+      const pool = new ethers.Contract(tokenAddress, DLP_ARBITRUM_DUAL_TOKEN_ABI, App.provider);
+      const _baseToken = await pool._BASE_TOKEN_();
+      const doualDlpPool = await getDodoArbitrumDualPoolToken(App, pool, tokenAddress, stakingAddress);
       window.localStorage.setItem(tokenAddress, "doualArbitrumDlp");
       return doualDlpPool;
     }

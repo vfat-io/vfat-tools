@@ -12,7 +12,7 @@ async function main() {
     _print(`Initialized ${App.YOUR_ADDRESS}\n`);
     _print("Reading smart contracts...\n");
 
-   const DODO_CHEF_ADDR = "0x1ee7AEF7690d07Ad090EF2519371CE074423Db62";
+   const DODO_CHEF_ADDR = "0x98CEb851aF3d8627287885D56AEA863B848CeB6F";
    const DODO_CHEF = new ethers.Contract(DODO_CHEF_ADDR, DODO_CHEF_ABI, App.provider);
 
    const DODO_CHEF_ADDR0 = "0xE3C10989dDc5Df5B1b9c0E6229c2E4e0862fDe3e";
