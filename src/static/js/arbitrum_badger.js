@@ -109,10 +109,11 @@ async function getSettRewards(settAddress, prices, poolPrices, App) {
     beneficiary = paginatedSchedule[paginatedIndex];
     token = paginatedSchedule[paginatedIndex + 1];
     amount = ethers.BigNumber.from(paginatedSchedule[paginatedIndex + 2]);
+    startTime = ethers.BigNumber.from(paginatedSchedule[paginatedIndex + 3]);
     endTime = ethers.BigNumber.from(paginatedSchedule[paginatedIndex + 4]);
     duration = ethers.BigNumber.from(paginatedSchedule[paginatedIndex + 5]);
     
-    if (endTime.gte(nowTimestamp)) {
+    if (endTime.gte(nowTimestamp) && startTime.lte(nowTimestamp)) {
       validTokens[token]= {
           amount: amount,
           duration: duration,
