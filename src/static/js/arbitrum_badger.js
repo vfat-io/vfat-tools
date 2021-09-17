@@ -112,7 +112,7 @@ async function getSettRewards(settAddress, prices, poolPrices, App) {
     startTime = ethers.BigNumber.from(paginatedSchedule[paginatedIndex + 3]);
     endTime = ethers.BigNumber.from(paginatedSchedule[paginatedIndex + 4]);
     duration = ethers.BigNumber.from(paginatedSchedule[paginatedIndex + 5]);
-    
+
     if (endTime.gte(nowTimestamp) && startTime.lte(nowTimestamp)) {
       validTokens[token]= {
           amount: amount,
@@ -201,7 +201,17 @@ const pools = [
     name: "Wrapped BTC/Wrapped ETH",
     tokenAddress: "0x515e252b2b5c22b4b2b6Df66c2eBeeA871AA4d69",
     settAddress: "0xFc13209cAfE8fb3bb5fbD929eC9F11a39e8Ac041",
-  }
+  },
+  {
+    name: "Curve.fi renBTC/wBTC LP",
+    tokenAddress: "0x3E01dD8a5E1fb3481F0F589056b428Fc308AF0Fb",
+    settAddress: "0xBA418CDdd91111F5c1D1Ac2777Fa8CEa28D71843",
+  },
+  {
+    name: "Curve.fi tricrypto LP",
+    tokenAddress: "0x8e0B8c8BB9db49a46697F3a5Bb8A308e744821D2",
+    settAddress: "0x4591890225394BF66044347653e112621AF7DDeb",
+  },
 ];
 
 const registry = "0xfda7eb6f8b7a9e9fcfd348042ae675d1d652454f";
