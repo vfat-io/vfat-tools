@@ -15,20 +15,12 @@ async function main() {
    const rewardTokenTicker = "ARB";
    const ARB_CHEF = new ethers.Contract(ARB_CHEF_ADDR, ARB_CHEF_ABI, App.provider);
 
-   const startBlock = await ARB_CHEF.startBlock();
    const currentBlock = await App.provider.getBlockNumber();
 
    const multiplier = await ARB_CHEF.getMultiplier(currentBlock, currentBlock+1);
 
-   const blocksPerSeconds = await getAverageBlockTime(App);
-
-   let rewardsPerWeek = 0
-   if(currentBlock < startBlock){
-     _print(`Rewards start at block ${startBlock}\n`);
-   }else{
-    rewardsPerWeek = await ARB_CHEF.ballzPerBlock() /1e18
-        * 604800 * multiplier / blocksPerSeconds;
-   }
+   const rewardsPerWeek = await ARB_CHEF.ballzPerBlock() /1e18
+      * 604800 * multiplier / 13.5;
 
     const tokens = {};
     const prices = await getArbitrumPrices();

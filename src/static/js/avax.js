@@ -41,13 +41,16 @@ const main = async() => {
         ["OberonFinance", `<a href="galaxy_oberon" >Various</a>`,"OBERON","https://avalanche-oberon.galaxyfinance.one"],
         ["EnglishFinance",`<a href="english"      >Various</a>`,"ENGLISH    ","https://english.theflyingdutchman.finance" ],
         ["TheDragonsLair" ,`<a href="dregg"   >Various</a>`,"DREGG    ","https://thedragonslair.farm" ],
-        ["AvaEagle"       ,`<a href="avaeagle">Various</a>`,"EAGLE    ","https://avaeagle.com" ],
+        ["AvaEagle *"       ,`<a href="avaeagle">Various</a>`,"EGG    ","https://avaeagle.com" ],
         ["ThenaFinance" ,`<a href="thena"  >Various</a>`,"THENA   ","https://thena.eternalfinance.live" ],
         ["SwiftFinance" ,`<a href="swift"  >Various</a>`,"SWIFT   ","https://swiftfinance.farm" ],
         ["SmitheryFarms-Silver" ,`<a href="silver"  >Various</a>`,"SILVER","https://smitheryfarms.world" ],
         ["Eleven Finance" ,`<a href="eleven"  >Various</a>`,"ELE","https://eleven.finance" ],
         ["OmegaFarms   ",`<a href="omega  "  >Various</a>`,"OMEGA     ","https://avax.omegadefi.space" ],
-        ["Mammoth Finance  ",`<a href="mammoth  "  >Various</a>`,"TUSK     ","https://mammothfinance.io" ]
+        ["Mammoth Finance  ",`<a href="mammoth  "  >Various</a>`,"TUSK     ","https://mammothfinance.io" ],
+        ["Singular  ",`<a href="singular">Various</a>`,"SING", 'https://singular.farm' ],
+        ["ZabuV2        ",`<a href="zabuV2"        >Various</a>`,"ZUBAX      ","https://zabu.finance"],
+        ["Dolphin        ",`<a href="dolphin"        >Various</a>`,"DOLPHIN      ","https://www.dolphinswap.finance"]
     ]
   }
 

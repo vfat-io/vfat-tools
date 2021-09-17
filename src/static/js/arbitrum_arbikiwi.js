@@ -11,24 +11,16 @@ async function main() {
     _print(`Initialized ${App.YOUR_ADDRESS}\n`);
     _print("Reading smart contracts...\n");
 
-   const AKIWI_CHEF_ADDR = "0x5bC57EBfC57a46520033F2C4D4fd193b01268a04";
+   const AKIWI_CHEF_ADDR = "0xCa19Fb6308A4cadCc90F4F405ef82d2C597Aa408";
    const rewardTokenTicker = "AKIWI";
    const AKIWI_CHEF = new ethers.Contract(AKIWI_CHEF_ADDR, AKIWI_CHEF_ABI, App.provider);
 
-   const startBlock = await AKIWI_CHEF.startBlock();
    const currentBlock = await App.provider.getBlockNumber();
 
    const multiplier = await AKIWI_CHEF.getMultiplier(currentBlock, currentBlock+1);
 
-   const blocksPerSeconds = await getAverageBlockTime(App);
-
-   let rewardsPerWeek = 0
-   if(currentBlock < startBlock){
-     _print(`Rewards start at block ${startBlock}\n`);
-   }else{
-    rewardsPerWeek = await AKIWI_CHEF.akiwiPerBlock() /1e18
-        * 604800 * multiplier / blocksPerSeconds;
-   }
+   const rewardsPerWeek = await AKIWI_CHEF.akiwiPerBlock() /1e18
+    * 604800 * multiplier / 13.5;
 
     const tokens = {};
     const prices = await getArbitrumPrices();

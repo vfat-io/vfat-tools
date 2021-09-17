@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include(`${partials}/head`); -%>
+
+<body>
+<%- include(`${partials}/header_main`); -%>
+<pre id="log">
+***************************** AVALANCHE ****************************************
+
+*************** 👨‍🌾 UNOFFICIAL ZABU FINANCE FARMING CALCULATOR 👨‍🌾 ***********
+INFO  : https://zabu.finance/
+********************************************************************************
+
+</pre>
+<div class="loader--1"></div>
+<%- include(`${partials}/scripts`, {scriptname: 'avax_zabu_v2'}); -%>
+</body>
+</html>
