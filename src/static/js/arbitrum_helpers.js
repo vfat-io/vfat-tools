@@ -48,57 +48,103 @@ async function getArbitrumPrices() {
 }
 
 async function getArbitrumUniPool(App, pool, poolAddress, stakingAddress) {
-    let q0, q1;
-    const reserves = await pool.getReserves();
+  const calls = [
+    pool.decimals(), pool.token0(), pool.token1(), pool.symbol(), pool.name(),
+    pool.totalSupply(), pool.balanceOf(stakingAddress), pool.balanceOf(App.YOUR_ADDRESS)
+  ];
+  const [decimals, token0, token1, symbol, name, totalSupply, staked, unstaked]
+    = await App.ethcallProvider.all(calls);
+  let q0, q1, is1inch;
+  try {
+    const [reserves] = await App.ethcallProvider.all([pool.getReserves()]);
     q0 = reserves._reserve0;
     q1 = reserves._reserve1;
-    const decimals = await pool.decimals();
-    const token0 = await pool.token0();
-    const token1 = await pool.token1();
-    return {
-        symbol : await pool.symbol(),
-        name : await pool.name(),
-        address: poolAddress,
-        token0,
-        q0,
-        token1,
-        q1,
-        totalSupply: await pool.totalSupply() / 10 ** decimals,
-        stakingAddress: stakingAddress,
-        staked: await pool.balanceOf(stakingAddress) / 10 ** decimals,
-        decimals: decimals,
-        unstaked: await pool.balanceOf(App.YOUR_ADDRESS) / 10 ** decimals,
-        contract: pool,
-        tokens : [token0, token1],
-        is1inch : false
-    };
+    is1inch = false;
+  }
+  catch { //for 1inch
+    if (token0 == "0x0000000000000000000000000000000000000000") {
+      q0 = await App.provider.getBalance(poolAddress);
+    }
+    else {
+      const c0 = new ethers.Contract(token0, ERC20_ABI, App.provider);
+      q0 = await c0.balanceOf(poolAddress);
+    }
+    if (token1 == "0x0000000000000000000000000000000000000000") {
+      q1 = await App.provider.getBalance(poolAddress);
+    }
+    else {
+      const c1 = new ethers.Contract(token1, ERC20_ABI, App.provider);
+      q1 = await c1.balanceOf(poolAddress);
+    }
+    is1inch = true;
+  }
+  return {
+      symbol,
+      name,
+      address: poolAddress,
+      token0: token0,
+      q0,
+      token1: token1,
+      q1,
+      totalSupply: totalSupply / 10 ** decimals,
+      stakingAddress: stakingAddress,
+      staked: staked / 10 ** decimals,
+      decimals: decimals,
+      unstaked: unstaked / 10 ** decimals,
+      contract: pool,
+      tokens : [token0, token1],
+      is1inch
+  };
 }
 
 async function getDodoArbitrumDualPoolToken(App, pool, poolAddress, stakingAddress) {
-  let q0, q1;
-    const reserves = await pool.getVaultReserve();
+  const calls = [
+    pool.decimals(), pool._BASE_TOKEN_(), pool._QUOTE_TOKEN_(), pool.symbol(), pool.name(),
+    pool.totalSupply(), pool.balanceOf(stakingAddress), pool.balanceOf(App.YOUR_ADDRESS)
+  ];
+  const [decimals, token0, token1, symbol, name, totalSupply, staked, unstaked]
+    = await App.ethcallProvider.all(calls);
+  let q0, q1, is1inch;
+  try {
+    const [reserves] = await App.ethcallProvider.all([pool.getVaultReserve()]);
     q0 = reserves.baseReserve;
     q1 = reserves.quoteReserve;
-    const decimals = await pool.decimals();
-    const token0 = await pool._BASE_TOKEN_();
-    const token1 = await pool._QUOTE_TOKEN_();
-    return {
-        symbol : await pool.symbol(),
-        name : await pool.name(),
-        address: poolAddress,
-        token0,
-        q0,
-        token1,
-        q1,
-        totalSupply: await pool.totalSupply() / 10 ** decimals,
-        stakingAddress: stakingAddress,
-        staked: await pool.balanceOf(stakingAddress) / 10 ** decimals,
-        decimals: decimals,
-        unstaked: await pool.balanceOf(App.YOUR_ADDRESS) / 10 ** decimals,
-        contract: pool,
-        tokens : [token0, token1],
-        is1inch : false
-    };
+    is1inch = false;
+  }
+  catch { //for 1inch
+    if (token0 == "0x0000000000000000000000000000000000000000") {
+      q0 = await App.provider.getBalance(poolAddress);
+    }
+    else {
+      const c0 = new ethers.Contract(token0, ERC20_ABI, App.provider);
+      q0 = await c0.balanceOf(poolAddress);
+    }
+    if (token1 == "0x0000000000000000000000000000000000000000") {
+      q1 = await App.provider.getBalance(poolAddress);
+    }
+    else {
+      const c1 = new ethers.Contract(token1, ERC20_ABI, App.provider);
+      q1 = await c1.balanceOf(poolAddress);
+    }
+    is1inch = true;
+  }
+  return {
+      symbol,
+      name,
+      address: poolAddress,
+      token0: token0,
+      q0,
+      token1: token1,
+      q1,
+      totalSupply: totalSupply / 10 ** decimals,
+      stakingAddress: stakingAddress,
+      staked: staked / 10 ** decimals,
+      decimals: decimals,
+      unstaked: unstaked / 10 ** decimals,
+      contract: pool,
+      tokens : [token0, token1],
+      is1inch
+  };
 }
 
 async function getercArbitrum20(App, token, address, stakingAddress) {
@@ -130,87 +176,74 @@ async function getercArbitrum20(App, token, address, stakingAddress) {
 }
 
 async function getArbitrumVault(App, vault, address, stakingAddress) {
-  const decimals = await vault.decimals();
-  const token_ = await vault.token();
+  const calls = [vault.decimals(), vault.token(), vault.name(), vault.symbol(),
+                 vault.totalSupply(), vault.balanceOf(stakingAddress),
+                 vault.balanceOf(App.YOUR_ADDRESS), vault.balance()];
+  const [decimals, token_, name, symbol, totalSupply, staked, unstaked, balance] = await App.ethcallProvider.all(calls);
   const token = await getArbitrumToken(App, token_, address);
   return {
     address,
-    name : await vault.name(),
-    symbol : await vault.symbol(),
-    totalSupply : await vault.totalSupply(),
+    name : name,
+    symbol : symbol,
+    totalSupply : totalSupply,
     decimals : decimals,
-    staked: await vault.balanceOf(stakingAddress) / 10 ** decimals,
-    unstaked: await vault.balanceOf(App.YOUR_ADDRESS) / 10 ** decimals,
+    staked: staked / 10 ** decimals,
+    unstaked: unstaked / 10 ** decimals,
     token: token,
-    balance : await vault.balance(),
+    balance : balance,
     contract: vault,
     tokens : [address].concat(token.tokens),
   }
 }
 
 async function getArbitrumArbisVault(App, vault, address, stakingAddress) {
-  const decimals = await vault.decimals();
-  const token_ = await vault.getUnderlying() /*?? await vault.depositToken()*/
+  const calls = [vault.decimals(), vault.getUnderlying(), vault.name(), vault.symbol(),
+                 vault.totalSupply(), vault.balanceOf(stakingAddress),
+                 vault.balanceOf(App.YOUR_ADDRESS), vault.totalDeposits()];
+  const [decimals, token_, name, symbol, totalSupply, staked, unstaked, balance] = await App.ethcallProvider.all(calls);
   const token = await getArbitrumToken(App, token_, address);
   return {
     address,
-    name : await vault.name(),
-    symbol : await vault.symbol(),
-    totalSupply : await vault.totalSupply(),
+    name : name,
+    symbol : symbol,
+    totalSupply : totalSupply,
     decimals : decimals,
-    staked: await vault.balanceOf(stakingAddress) / 10 ** decimals,
-    unstaked: await vault.balanceOf(App.YOUR_ADDRESS) / 10 ** decimals,
+    staked: staked / 10 ** decimals,
+    unstaked: unstaked / 10 ** decimals,
     token: token,
-    balance : await vault.totalDeposits(),
+    balance : balance,
     contract: vault,
     tokens : [address].concat(token.tokens),
   }
 }
 
 async function getArbitrumWantVault(App, vault, address, stakingAddress) {
-  const decimals = await vault.decimals();
-  const token_ = await vault.want();
+  const calls = [vault.decimals(), vault.want(), vault.name(), vault.symbol(),
+                 vault.totalSupply(), vault.balanceOf(stakingAddress),
+                 vault.balanceOf(App.YOUR_ADDRESS), vault.balance()];
+  const [decimals, token_, name, symbol, totalSupply, staked, unstaked, balance] = await App.ethcallProvider.all(calls);
   const token = await getArbitrumToken(App, token_, address);
   return {
     address,
-    name : await vault.name(),
-    symbol : await vault.symbol(),
-    totalSupply : await vault.totalSupply(),
+    name : name,
+    symbol : symbol,
+    totalSupply : totalSupply,
     decimals : decimals,
-    staked: await vault.balanceOf(stakingAddress) / 10 ** decimals,
-    unstaked: await vault.balanceOf(App.YOUR_ADDRESS) / 10 ** decimals,
+    staked: staked / 10 ** decimals,
+    unstaked: unstaked / 10 ** decimals,
     token: token,
-    balance : await vault.balance(),
+    balance : balance,
     contract: vault,
     tokens : [address].concat(token.tokens),
   }
 }
 
-async function getArbitrumSpoonVault(App, spoonVault, address, stakingAddress) {
-  const decimals = await spoonVault.decimals();
-  const token_ = await spoonVault.wantToken();
-  const token = await getArbitrumToken(App, token_, address);
-  return {
-    address,
-    name : await spoonVault.name(),
-    symbol : await spoonVault.symbol(),
-    totalSupply : await spoonVault.totalSupply(),
-    decimals : decimals,
-    staked: await spoonVault.balanceOf(stakingAddress) / 10 ** decimals,
-    unstaked: await spoonVault.balanceOf(App.YOUR_ADDRESS) / 10 ** decimals,
-    token: token,
-    balance : await spoonVault.totalTokenBalance(),
-    contract: spoonVault,
-    tokens : [address].concat(token.tokens),
-  }
-}
-
 async function getArbitrumDlpPool(App, dlpPool, tokenAddress, originTokenAddress, stakingAddress){
-  const ownerAddress = await dlpPool._OWNER_();
+  const calls = [
+    dlpPool._OWNER_(), dlpPool.totalSupply(), dlpPool.name(), dlpPool.decimals(), dlpPool.balanceOf(App.YOUR_ADDRESS)
+  ];
+  const [ownerAddress, totalSupply, name, decimals, balanceOfUncstaked] = await App.ethcallProvider.all(calls);
   const originToken = await getArbitrumToken(App, originTokenAddress, ownerAddress);
-  const totalSupply = await dlpPool.totalSupply();
-  const name = await dlpPool.name();
-  const decimals = await dlpPool.decimals()
   return {
     address : tokenAddress,
     name : name,
@@ -218,7 +251,7 @@ async function getArbitrumDlpPool(App, dlpPool, tokenAddress, originTokenAddress
     totalSupply : totalSupply,
     decimals : decimals,
     staked : totalSupply / 10 ** decimals,
-    unstaked : await dlpPool.balanceOf(App.YOUR_ADDRESS) / 10 ** decimals,
+    unstaked : balanceOfUncstaked / 10 ** decimals,
     token : originToken,
     balance : originToken.staked * 10 ** originToken.decimals,
     contract : dlpPool,
@@ -229,27 +262,27 @@ async function getArbitrumDlpPool(App, dlpPool, tokenAddress, originTokenAddress
 async function getArbitrumStoredToken(App, tokenAddress, stakingAddress, type) {
   switch (type) {
     case "uniswap":
-      const pool = new ethers.Contract(tokenAddress, UNI_ABI, App.provider);
+      const pool = new ethcall.Contract(tokenAddress, UNI_ABI);
       return await getArbitrumUniPool(App, pool, tokenAddress, stakingAddress);
     case "doualArbitrumDlp":
-      const doualDlpPool = new ethers.Contract(tokenAddress, DLP_ARBITRUM_DUAL_TOKEN_ABI, App.provider);
+      const doualDlpPool = new ethcall.Contract(tokenAddress, DLP_ARBITRUM_DUAL_TOKEN_ABI);
       return await getDodoArbitrumDualPoolToken(App, doualDlpPool, tokenAddress, stakingAddress);
     case "arbitrumVault":
-      const vault = new ethers.Contract(tokenAddress, ARBITRUM_VAULT_TOKEN_ABI, App.provider);
+      const vault = new ethcall.Contract(tokenAddress, ARBITRUM_VAULT_TOKEN_ABI);
       return await getArbitrumVault(App, vault, tokenAddress, stakingAddress);
     case "arbitrumArbisVault":
-      const arbisVault = new ethers.Contract(tokenAddress, ARBIS_VAULT_UNDERLYING_ABI, App.provider);
+      const arbisVault = new ethcall.Contract(tokenAddress, ARBIS_VAULT_UNDERLYING_ABI);
       return await getArbitrumArbisVault(App, arbisVault, tokenAddress, stakingAddress);
     case "arbitrumWantVault":
-      const wantVault = new ethers.Contract(tokenAddress, ARBITRUM_VAULT_WANT_ABI, App.provider);
+      const wantVault = new ethcall.Contract(tokenAddress, ARBITRUM_VAULT_WANT_ABI);
       return await getArbitrumWantVault(App, wantVault, tokenAddress, stakingAddress);
     case "dlp":
-      const dlpPool = new ethers.Contract(tokenAddress, ARBITRUM_DLP_ABI, App.provider);
-      const originTokenAddress = await dlpPool.originToken();
+      const dlpPool = new ethcall.Contract(tokenAddress, ARBITRUM_DLP_ABI);
+      const [originTokenAddress] = await App.ethcallProvider.all([dlpPool.originToken()]);
       return await getArbitrumDlpPool(App, dlpPool, tokenAddress, originTokenAddress, stakingAddress);
     case "erc20":
-      const erc20 = new ethers.Contract(tokenAddress, ERC20_ABI, App.provider);
-      return await geterc20(App, erc20, tokenAddress, stakingAddress);
+      const erc20 = new ethcall.Contract(tokenAddress, ERC20_ABI);
+      return await getErc20(App, erc20, tokenAddress, stakingAddress);
   }
 }
 
@@ -260,17 +293,18 @@ async function getArbitrumToken(App, tokenAddress, stakingAddress) {
     const type = window.localStorage.getItem(tokenAddress);
     if (type) return getArbitrumStoredToken(App, tokenAddress, stakingAddress, type);
     try {
-      const pool = new ethers.Contract(tokenAddress, UNI_ABI, App.provider);
-      const _token0 = await pool.token0();
+      const pool = new ethcall.Contract(tokenAddress, UNI_ABI);
+      const _token0 = await App.ethcallProvider.all([pool.token0()]);
       const uniPool = await getArbitrumUniPool(App, pool, tokenAddress, stakingAddress);
       window.localStorage.setItem(tokenAddress, "uniswap");
       return uniPool;
     }
     catch(err) {
+      console.log(err)
     }
     try {
-      const pool = new ethers.Contract(tokenAddress, DLP_ARBITRUM_DUAL_TOKEN_ABI, App.provider);
-      const _baseToken = await pool._BASE_TOKEN_();
+      const pool = new ethcall.Contract(tokenAddress, DLP_ARBITRUM_DUAL_TOKEN_ABI);
+      const _baseToken = await App.ethcallProvider.all([pool._BASE_TOKEN_()]);
       const doualDlpPool = await getDodoArbitrumDualPoolToken(App, pool, tokenAddress, stakingAddress);
       window.localStorage.setItem(tokenAddress, "doualArbitrumDlp");
       return doualDlpPool;
@@ -278,8 +312,8 @@ async function getArbitrumToken(App, tokenAddress, stakingAddress) {
     catch(err) {
     }
     try {
-      const pool = new ethers.Contract(tokenAddress, ARBITRUM_DLP_ABI, App.provider);
-      const originTokenAddress = await pool.originToken();
+      const pool = new ethcall.Contract(tokenAddress, ARBITRUM_DLP_ABI);
+      const [originTokenAddress] = await App.ethcallProvider.all([pool.originToken()]);
       const dlpPool = await getArbitrumDlpPool(App, pool, tokenAddress, originTokenAddress, stakingAddress);
       window.localStorage.setItem(tokenAddress, "dlp");
       return dlpPool;
@@ -287,8 +321,8 @@ async function getArbitrumToken(App, tokenAddress, stakingAddress) {
     catch(err) {
     }
     try {
-      const VAULT = new ethers.Contract(tokenAddress, ARBITRUM_VAULT_TOKEN_ABI, App.provider);
-      const _token = await VAULT.token()
+      const VAULT = new ethcall.Contract(tokenAddress, ARBITRUM_VAULT_TOKEN_ABI);
+      const _token = await App.ethcallProvider.all([VAULT.token()]);
       const vault = await getArbitrumVault(App, VAULT, tokenAddress, stakingAddress);
       window.localStorage.setItem(tokenAddress, "arbitrumVault");
       return vault;
@@ -296,8 +330,8 @@ async function getArbitrumToken(App, tokenAddress, stakingAddress) {
     catch(err) {
     }
     try {
-      const ARBIS_VAULT = new ethers.Contract(tokenAddress, ARBIS_VAULT_UNDERLYING_ABI, App.provider);
-      const _token = await ARBIS_VAULT.getUnderlying()
+      const ARBIS_VAULT = new ethcall.Contract(tokenAddress, ARBIS_VAULT_UNDERLYING_ABI);
+      const _token = await App.ethcallProvider.all([ARBIS_VAULT.getUnderlying()]);
       const arbisVault = await getArbitrumArbisVault(App, ARBIS_VAULT, tokenAddress, stakingAddress);
       window.localStorage.setItem(tokenAddress, "arbitrumArbisVault");
       return arbisVault;
@@ -305,8 +339,8 @@ async function getArbitrumToken(App, tokenAddress, stakingAddress) {
     catch(err) {
     }
     try {
-      const WANT_VAULT = new ethers.Contract(tokenAddress, ARBITRUM_VAULT_WANT_ABI, App.provider);
-      const _want = await WANT_VAULT.want();
+      const WANT_VAULT = new ethcall.Contract(tokenAddress, ARBITRUM_VAULT_WANT_ABI);
+      const _want = await App.ethcallProvider.all([WANT_VAULT.want()]);
       const wantVault = await getArbitrumWantVault(App, WANT_VAULT, tokenAddress, stakingAddress);
       window.localStorage.setItem(tokenAddress, "arbitrumWantVault");
       return wantVault;
@@ -329,6 +363,7 @@ async function getArbitrumToken(App, tokenAddress, stakingAddress) {
 async function loadArbitrumSynthetixPoolInfo(App, tokens, prices, stakingAbi, stakingAddress,
     rewardTokenFunction, stakeTokenFunction) {
       const STAKING_POOL = new ethers.Contract(stakingAddress, stakingAbi, App.provider);
+      const STAKING_MULTI = new ethcall.Contract(stakingAddress, stakingAbi);
 
       if (!STAKING_POOL.callStatic[stakeTokenFunction]) {
         console.log("Couldn't find stake function ", stakeTokenFunction);
@@ -376,20 +411,21 @@ async function loadArbitrumSynthetixPoolInfo(App, tokens, prices, stakingAbi, st
           prices[stakeTokenAddress]?.usd ?? getParameterCaseInsensitive(prices, stakeTokenAddress)?.usd;
       const rewardTokenPrice = getParameterCaseInsensitive(prices, rewardTokenAddress)?.usd;
 
-      const periodFinish = await STAKING_POOL.periodFinish();
-      const rewardRate = await STAKING_POOL.rewardRate();
-      //const weeklyRewards = (Date.now() / 1000 > periodFinish) ? 0 : rewardRate / 1e18 * 604800;
+      const calls = [STAKING_MULTI.periodFinish(), STAKING_MULTI.rewardRate(),
+        STAKING_MULTI.balanceOf(App.YOUR_ADDRESS), STAKING_MULTI.earned(App.YOUR_ADDRESS)]
+      const [periodFinish, rewardRate, balance, earned_] = await App.ethcallProvider.all(calls);
+
       const weeklyRewards = (Date.now() / 1000 > periodFinish) ? 0 : rewardRate / 10 ** rewardToken.decimals * 604800;
 
       const usdPerWeek = weeklyRewards * rewardTokenPrice;
 
       const staked_tvl = poolPrices.staked_tvl;
 
-      const userStaked = await STAKING_POOL.balanceOf(App.YOUR_ADDRESS) / 10 ** stakeToken.decimals;
+      const userStaked = balance / 10 ** stakeToken.decimals;
 
       const userUnstaked = stakeToken.unstaked;
 
-      const earned = await STAKING_POOL.earned(App.YOUR_ADDRESS) / 10 ** rewardToken.decimals;
+      const earned = earned_ / 10 ** rewardToken.decimals;
 
       return  {
         stakingAddress,
