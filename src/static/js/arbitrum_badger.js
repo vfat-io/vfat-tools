@@ -142,11 +142,41 @@ async function getSettRewards(settAddress, prices, poolPrices, App) {
 }
 
 
+function getBadgerPoolPrices(prices, pool, chain="eth") {
+  const price = prices[pool.address].usd;
+  var tvl = pool.totalSupply * price / 10 ** pool.decimals;
+  var staked_tvl = pool.staked * price;
+  const poolUrl = chain === 'arbitrum' ? `https://arbiscan.io/token/${pool.address}` : `https://etherscan.io/token/${pool.address}`;
+  const name = `<a href='${poolUrl}' target='_blank'>${pool.symbol}</a>`;
+  const getDexguruTokenlink =  function() {
+    const network = window.location.pathname.split("/")[1]
+    let dexguruTokenlink = '';
+    if (tvl > 0) {
+      if (network && (network.toLowerCase() === 'bsc' || network.toLowerCase() === 'eth' || network.toLowerCase() === 'polygon')) {
+        dexguruTokenlink =   `<a href='https://dex.guru/token/${pool.address.toLowerCase()}-${network.toLowerCase()}' rel='noopener' target='_blank'>[%]</a>`;
+      }
+    }
+    return dexguruTokenlink
+  }
+  return {
+    staked_tvl : staked_tvl,
+    price : price,
+    stakeTokenTicker : pool.symbol,
+    print_price() {
+      _print(`${name} Price: $${formatMoney(price)} Market Cap: $${formatMoney(tvl)} ${getDexguruTokenlink()}`);
+      _print(`Staked: ${pool.staked.toFixed(4)} ${pool.symbol} ($${formatMoney(staked_tvl)})`);
+    },
+    print_contained_price() {
+    }
+  }
+}
+
+
 async function printNonGeyserPool(App, tokens, prices, pool) {
   const tokenUrl = `<a href='https://arbiscan.io/address/${pool.tokenAddress}' target='_blank'>Underlying</a>`;
   const settUrl = `<a href='https://arbiscan.io/address/${pool.settAddress}' target='_blank'>Sett</a>`;
   _print(`${pool.name} - ${tokenUrl} - ${settUrl}`);
-  
+
 
   const settAddress = pool.settAddress;
   const SETT_CONTRACT = new ethers.Contract(settAddress, BADGER_UNI_ABI, App.provider);
@@ -170,7 +200,7 @@ async function printNonGeyserPool(App, tokens, prices, pool) {
   if (lpToken.staked == 0) {
     lpToken.staked = await SETT_CONTRACT.balance() / 1e18;
   }
-  let poolPrices = getPoolPrices(tokens, prices, lpToken);
+  let poolPrices = getBadgerPoolPrices(prices, lpToken, "arbitrum");
 
   poolPrices.print_price();
 
@@ -189,6 +219,20 @@ async function printNonGeyserPool(App, tokens, prices, pool) {
   _print_link(`Stake ${userTotallyUnstaked.toFixed(12)} ${lpToken.symbol}`, approveUNIAndStake)
   _print_link(`Unstake ${userUnstaked.toFixed(12)} ${lpToken.symbol}`, unstakeUNI)
   _print(`\n`);
+}
+
+const formatBadgerPrices = obj =>
+  Object.keys(obj).reduce((acc, key) => {
+    acc[key] = {"usd": obj[key]};
+    return acc;
+  }, {});
+
+const getBadgerPrices = async function(chain = "eth") {
+  const pricesReturn = await $.ajax({
+      url: `https://api.badger.finance/v2/prices?chain=${chain}`,
+      type: 'GET',
+    });
+  return formatBadgerPrices(pricesReturn);
 }
 
 const pools = [
@@ -219,7 +263,7 @@ const badgerAddress = "0xBfa641051Ba0a0Ad1b0AcF549a89536A0D76472E";
 
 async function main() {
     var tokens = {};
-    const prices = await getArbitrumPrices();
+    const prices = await getBadgerPrices("arbitrum");
 
     const App = await init_ethers();
 

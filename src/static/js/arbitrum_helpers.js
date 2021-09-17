@@ -54,6 +54,9 @@ async function getArbitrumUniPool(App, pool, poolAddress, stakingAddress) {
     const decimals = await pool.decimals();
     const token0 = await pool.token0();
     const token1 = await pool.token1();
+    const stakedWei = await pool.balanceOf(stakingAddress);
+    const decimalMultiplier = 10 ** decimals;
+    const staked = ethers.BigNumber.from(stakedWei.toString()).div(decimalMultiplier.toString()).toNumber(0);
     return {
         symbol : await pool.symbol(),
         name : await pool.name(),
@@ -64,7 +67,7 @@ async function getArbitrumUniPool(App, pool, poolAddress, stakingAddress) {
         q1,
         totalSupply: await pool.totalSupply() / 10 ** decimals,
         stakingAddress: stakingAddress,
-        staked: await pool.balanceOf(stakingAddress) / 10 ** decimals,
+        staked: staked,
         decimals: decimals,
         unstaked: await pool.balanceOf(App.YOUR_ADDRESS) / 10 ** decimals,
         contract: pool,
@@ -218,17 +221,17 @@ async function getArbitrumCurvePool(App, tokenAddress, stakingAddress) {
   const decimalDivisor = (10 ** decimals.toNumber()).toString();
 
   return {
-      tokenAddress,
+      address: tokenAddress,
       name,
       symbol,
-      totalSupply: totalSupply.div(decimalDivisor).toNumber(),
+      totalSupply: totalSupply.div(decimalDivisor).toNumber(0),
       decimals : decimals.toNumber(),
-      staked:  staked.div(decimalDivisor).toNumber(),
-      unstaked: unstaked.div(decimalDivisor).toNumber(),
+      staked:  staked.div(decimalDivisor).toNumber(0),
+      unstaked: unstaked.div(decimalDivisor).toNumber(0),
       contract: crv,
       tokens : [tokenAddress, coin0],
       token,
-      virtualPrice : virtualPrice.div(decimalDivisor).toNumber()
+      virtualPrice : virtualPrice.div(decimalDivisor).toNumber(0)
   };
 }
 
