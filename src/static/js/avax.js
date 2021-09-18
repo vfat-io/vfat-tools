@@ -9,6 +9,7 @@ const main = async() => {
     "heading":["Pool Provider","LP", "Reward Tokens", "INFO"],
     "rows": [
         ["Pangolin    ",`<a href="png"        >Various</a>`,"PNG      ","https://app.pangolin.exchange/#/png"],
+        ["Kyber       ",`<a href="kyber"      >Various</a>`,"AVAX      ","https://dmm.exchange"],
         ["Complus     ",`<a href="complus"    >Various</a>`,"COM      ","https://avax.complus.exchange"],
         ["Zero        ",`<a href="zero"       >Various</a>`,"ZERO     ","https://app.0.exchange"],
         ["Yeti        ",`<a href="yeti"       >Various</a>`,"YTS      ","https://exchange.yetiswap.app"],

@@ -9,6 +9,8 @@ const TOKEN_ADDRESSES = {
   USDC: '0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174',
   DAI: '0x8f3Cf7ad23Cd3CaDbD9735AFf958023239c6A063',
   WETH: '0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619',
+  XUSD:'0x3A3e7650f8B9f667dA98F236010fBf44Ee4B2975',
+  XDO: '0x3Dc7B06dD0B1f08ef9AcBbD2564f8605b4868EEA',
 }
 
 const POOLS = [{
@@ -47,11 +49,22 @@ const POOLS = [{
   pool: '0xd8B9E9444fCBF26BEA4BAdd6142dD6a962BCA86A',
   farming: '0x3aDd3034Fcf921F20c74c6149FB44921709595B1',
   pid: 3,
+}, {
+  token0: 'USDC',
+  token1: 'XUSD',
+  pool: '0x2616f7285bDCb9C3D0422745b1C8A5751e0EA204',
+  farming: '0xc0601973451d9369252Aee01397c0270CD2Ecd60',
+  pid: 0,
 }]
 
 const REWARDS = {
   'KNC': {
     address: '0x1C954E8fe737F99f68Fa1CCda3e51ebDB291948C',
+    price: 0,
+    rewardsPerBlock: 0,
+  },
+  'XDO': {
+    address: '0x3Dc7B06dD0B1f08ef9AcBbD2564f8605b4868EEA',
     price: 0,
     rewardsPerBlock: 0,
   },
