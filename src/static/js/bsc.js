@@ -20,6 +20,7 @@ const main = async() => {
       ["Salt                ", `<a href="salt"          >Various</a>`,"SALT             ","https://www.saltswap.finance"],
       ["Soup                ", `<a href="soup"          >Various</a>`,"SOUP/SOUPS       ","https://soups.finance"],
       ["SatoroSwap          ", `<a href="satoroswap"    >Various</a>`,"SATORO           ","https://dapp.satoroswap.finance"],
+      ["Scientix            ", `<a href="scix"          >Various</a>`,"SCIX             ","https://scientix.finance/"],
       ["Kebab               ", `<a href="kebab"         >Various</a>`,"KEBAB            ","https://kebabfinance.com"],
       ["Kimochi             ", `<a href="kimochi"       >Various</a>`,"KIMOCHI          ","https://kimochi.finance"],
       ["Xoxo                ", `<a href="xoxo"          >Various</a>`,"XOXO             ","https://xoxo.finance"],
