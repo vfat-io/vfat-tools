@@ -22,8 +22,9 @@ const main = async() => {
       ["MagicLand           ", `<a href="/arbitrum/magicland">Various</a>`,"MAGIC              ","https://magicland.fi"],
       ["TIF                 ", `<a href="/arbitrum/tif"      >Various</a>`,"TIF                ","https://tif.finance"],
       ["FrostArbi Iceberg   ", `<a href="/arbitrum/iceberg"  >Various</a>`,"FFARM              ","https://iceberg.frostarbi.com"],
-      ["Panda Farms         ", `<a href="/arbitrum/panda"    >Various</a>`,"PANDA              ","http://pandafarms.live"]
-      //["Arbis               ", `<a href="/arbitrum/arbis"    >Various</a>`,"Various            ","https://arbis.finance"]
+      ["Panda Farms         ", `<a href="/arbitrum/panda"    >Various</a>`,"PANDA              ","http://pandafarms.live"],
+      //["Arbis               ", `<a href="/arbitrum/arbis"    >Various</a>`,"Various            ","https://arbis.finance"],
+      ["Impermax Finance    ", `<a href="/arbitrum/impermax" >Various</a>`,"IMX                ","https://arbitrum.impermax.finance"],
      ]
   }
 
