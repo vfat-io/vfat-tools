@@ -16,7 +16,7 @@ $(function () {
 
         const blocksPerSeconds = await getAverageBlockTime(App);
     		
-        const rewardsPerWeek = await THUNDER_CHEF.ThunderPerBlock() / 1e18 *		
+        const rewardsPerWeek = await THUNDER_CHEF.thunderPerBlock() / 1e18 *		
                 604800 / blocksPerSeconds;		
         		
     		
@@ -24,7 +24,7 @@ $(function () {
         const prices = await getAvaxPrices();		
     		
         await loadAvaxChefContract(App, tokens, prices, THUNDER_CHEF, THUNDER_CHEF_ADDR, THUNDER_CHEF_ABI, rewardTokenTicker,		
-            "Thunder", null, rewardsPerWeek, "pendingThunder");		
+            "thunder", null, rewardsPerWeek, "pendingThunder");		
     		
         hideLoading();		
     }		
