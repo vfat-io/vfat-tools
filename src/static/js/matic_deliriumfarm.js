@@ -10,7 +10,7 @@ async function main() {
   _print(`Initialized ${App.YOUR_ADDRESS}\n`)
   _print('Reading smart contracts...\n')
 
-  const DELIRIUM_CHEF_ADDR = '0x9D73BEFA87A51562464d07fE5959476f64Cfdc7f'
+  const DELIRIUM_CHEF_ADDR = '0xd3976E92a48821DD1122Ae5e8265b14595aF34d2'
   const rewardTokenTicker = 'delirium'
   const DELIRIUM_CHEF = new ethers.Contract(DELIRIUM_CHEF_ADDR, DELIRIUM_CHEF_ABI, App.provider)
 
