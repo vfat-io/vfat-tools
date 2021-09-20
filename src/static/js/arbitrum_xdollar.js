@@ -48,17 +48,17 @@ $(function() {
   
       let p = await loadXdoPools(App, tokens, prices, [xdoPool]);
   
-      let p1 = await loadMultipleArbitrumSynthetixPools(App, tokens, prices, [uniPool]);
+      //let p1 = await loadMultipleArbitrumSynthetixPools(App, tokens, prices, [uniPool]);
       
       const p0 = await loadXDollarPool(App, tokens, prices, XusdPool.abi, 
                                                             XusdPool.address, 
                                                             XusdPool.rewardTokenAddresses, 
                                                             XusdPool.stakeTokenFunction);
       
-      let totalPStaked = formatMoney(p.totalUserStaked+p0.totalUserStaked+p1.totalUserStaked);
-      let totalPAPR = ((p.totalUserStaked * p.totalAPR + p0.totalUserStaked * p0.totalAPR + p1.totalUserStaked * p1.totalAPR) / (p.totalUserStaked + p0.totalUserStaked + p1.totalUserStaked) * 100).toFixed(2)
-      _print_bold(`Total staked: $${formatMoney(p.staked_tvl+p0.staked_tvl+p1.staked_tvl)}`);
-      if (p.totalUserStaked > 0 || p0.totalUserStaked > 0 || p1.totalUserStaked > 0) {
+      let totalPStaked = formatMoney(p.totalUserStaked+p0.totalUserStaked/*+p1.totalUserStaked*/);
+      let totalPAPR = ((p.totalUserStaked * p.totalAPR + p0.totalUserStaked * p0.totalAPR/* + p1.totalUserStaked * p1.totalAPR*/) / (p.totalUserStaked + p0.totalUserStaked/* + p1.totalUserStaked*/) * 100).toFixed(2)
+      _print_bold(`Total staked: $${formatMoney(p.staked_tvl+p0.staked_tvl/*+p1.staked_tvl*/)}`);
+      if (p.totalUserStaked > 0 || p0.totalUserStaked > 0/* || p1.totalUserStaked > 0*/) {
         _print(`You are staking a total of $${totalPStaked} at an APR of ${totalPAPR}%\n`);
       }
   
