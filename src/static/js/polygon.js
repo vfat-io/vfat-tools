@@ -364,7 +364,8 @@ const main = async () => {
       ['Onyx Farms          ', `<a href="onyxfarms"       >Various</a>`, 'ONYX         ', 'https://polygon.onyx.farm'],
       ['Girin Finance       ', `<a href="girinfinance"    >Various</a>`, 'GIRIN        ', 'https://girinfinance.pro'],
 	    ['Pepsi Finance       ', `<a href="pepsifinance"    >Various</a>`, 'PEPSI        ', 'https://pepsifinance.cc'],
-	    ['PolyWise       ', `<a href="polywisefinance"    >Various</a>`, 'WISE        ', 'https://polywise.finance/'],
+	    ['PolyWise            ', `<a href="polywisefinance" >Various</a>`, 'WISE         ', 'https://polywise.finance/'],
+      ['wBAN                ', `<a href="wban"            >Various</a>`, 'wBAN         ', 'https://polygon.banano.cc/'],
     ],
   }
 
