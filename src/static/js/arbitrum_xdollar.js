@@ -48,6 +48,8 @@ $(function() {
   
       let p = await loadXdoPools(App, tokens, prices, [xdoPool]);
   
+      await loadArbitrumSynthetixPoolInfo(App, tokens, prices, uniPool.abi, uniPool.address,
+        uniPool.rewardTokenFunction, uniPool.stakeTokenFunction)
       //let p1 = await loadMultipleArbitrumSynthetixPools(App, tokens, prices, [uniPool]);
       
       const p0 = await loadXDollarPool(App, tokens, prices, XusdPool.abi, 
