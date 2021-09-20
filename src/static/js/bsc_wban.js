@@ -16,13 +16,11 @@
     
        const startBlock = 7981731;//await BENIS.startTime();
        const currentBlock = await App.provider.getBlockNumber();
-       const multiplier = await BENIS.getMultiplier(currentBlock, currentBlock + 1);
        let rewardsPerWeek = 0
        if(currentBlock < startBlock){
          _print(`Rewards start at block <a href="https://polygonscan.com/block/countdown/${startBlock}" target="_blank">${startBlock}</a>\n`);
        }else{
         rewardsPerWeek = await BENIS.wbanPerSecond() /1e18
-          //* 604800 * multiplier / 2.1;
           * 604800;
        }
     
