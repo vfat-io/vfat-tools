@@ -12,7 +12,7 @@ const main = async () => {
       ['Cometh              ',`<a href="cometh"           >Various</a>`,'MUST          ','https://swap.cometh.io/#/stake',],
       ['Dark                ', `<a href="dark"            >Various</a>`, 'DB           ', 'https://www.dark.build'],
       ['Smartdex            ', `<a href="smartdex"        >Various</a>`, 'NIOX         ', 'https://swap.smartdex.app'],
-      ['Elk *               ', `<a href="elk"             >Various</a>`, 'ELK          ', 'https://app.elk.finance'],
+      ['Elk                 ', `<a href="elk"             >Various</a>`, 'ELK          ', 'https://app.elk.finance'],
       ['Polywhale           ', `<a href="polywhale"       >Various</a>`, 'KRILL        ', 'https://polywhale.finance'],
       ['Aave                ', `<a href="aave"            >Various</a>`, 'MATIC        ', 'https://aave.com'],
       ['BullionFinance      ',`<a href="bullionfinance"   >Various</a>`,'GOLD          ','https://bullionfinance.xyz',],
@@ -364,7 +364,8 @@ const main = async () => {
       ['Onyx Farms          ', `<a href="onyxfarms"       >Various</a>`, 'ONYX         ', 'https://polygon.onyx.farm'],
       ['Girin Finance       ', `<a href="girinfinance"    >Various</a>`, 'GIRIN        ', 'https://girinfinance.pro'],
 	    ['Pepsi Finance       ', `<a href="pepsifinance"    >Various</a>`, 'PEPSI        ', 'https://pepsifinance.cc'],
-	    ['PolyWise       ', `<a href="polywisefinance"    >Various</a>`, 'WISE        ', 'https://polywise.finance/'],
+	    ['PolyWise            ', `<a href="polywisefinance" >Various</a>`, 'WISE         ', 'https://polywise.finance'],
+	    ['DeliriumFarm        ', `<a href="deliriumfarm"    >Various</a>`, 'DELIRIUMFARM ', 'https://delirium.sandman.finance']
     ],
   }
 
