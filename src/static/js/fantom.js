@@ -15,6 +15,12 @@ const main = async() => {
         "https://popsicle.finance"
       ],
       [
+        "WraithSwap",
+        `<a href='wraith'>Various</a>`,
+        "WRA",
+        "https://wraithswap.finance"
+      ],
+      [
         "Spooky",
         `<a href='spooky'>Various</a>`,
         "boo",
