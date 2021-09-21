@@ -76,7 +76,7 @@ window.NETWORKS = {
       "https://moonbeam.network/networks/moonriver/"
     ]
   },
-  OPTIMISTIC: {
+  OPTIMISM: {
     "chainId": "0xA",
     "chainName": "Optimistic Ethereum",
     "nativeCurrency": {
@@ -88,7 +88,7 @@ window.NETWORKS = {
       "https://mainnet.optimism.io/"
     ],
     "blockExplorerUrls": [
-      "https://optimism.io" //https://optimistic.etherscan.io/?
+      "https://optimistic.etherscan.io/"
     ]
   },
   BINANCE_SMART_CHAIN: {
