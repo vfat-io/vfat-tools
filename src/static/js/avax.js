@@ -9,6 +9,7 @@ const main = async() => {
     "heading":["Pool Provider","LP", "Reward Tokens", "INFO"],
     "rows": [
         ["Pangolin    ",`<a href="png"        >Various</a>`,"PNG      ","https://app.pangolin.exchange/#/png"],
+        ["Kyber       ",`<a href="kyber"      >Various</a>`,"AVAX      ","https://dmm.exchange"],
         ["Complus     ",`<a href="complus"    >Various</a>`,"COM      ","https://avax.complus.exchange"],
         ["Zero        ",`<a href="zero"       >Various</a>`,"ZERO     ","https://app.0.exchange"],
         ["Yeti        ",`<a href="yeti"       >Various</a>`,"YTS      ","https://exchange.yetiswap.app"],
@@ -50,7 +51,8 @@ const main = async() => {
         ["Mammoth Finance  ",`<a href="mammoth  "  >Various</a>`,"TUSK     ","https://mammothfinance.io" ],
         ["Singular  ",`<a href="singular">Various</a>`,"SING", 'https://singular.farm' ],
         ["ZabuV2        ",`<a href="zabuV2"        >Various</a>`,"ZUBAX      ","https://zabu.finance"],
-        ["Dolphin        ",`<a href="DOLPHIN"        >Various</a>`,"Dolphin      ","https://www.dolphinswap.finance"]
+        ["Dolphin        ",`<a href="dolphin"        >Various</a>`,"DOLPHIN      ","https://www.dolphinswap.finance"],
+        ["ThunderSwap        ",`<a href="thunder"        >Various</a>`,"THUNDER      ","https://thunderswap.club"]
     ]
   }
 

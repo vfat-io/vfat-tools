@@ -16,7 +16,7 @@ $(function () {
 
         const blocksPerSeconds = await getAverageBlockTime(App);
     		
-        const rewardsPerWeek = await DOLPHIN_CHEF.dolphinPerBlock() / 1e18 *		
+        const rewardsPerWeek = await DOLPHIN_CHEF.DolphinPerBlock() / 1e18 *		
                 604800 / blocksPerSeconds;		
         		
     		
@@ -24,7 +24,7 @@ $(function () {
         const prices = await getAvaxPrices();		
     		
         await loadAvaxChefContract(App, tokens, prices, DOLPHIN_CHEF, DOLPHIN_CHEF_ADDR, DOLPHIN_CHEF_ABI, rewardTokenTicker,		
-            "dolphin", null, rewardsPerWeek, "pendingDolphin");		
+            "Dolphin", null, rewardsPerWeek, "pendingDolphin");		
     		
         hideLoading();		
     }		

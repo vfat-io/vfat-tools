@@ -738,7 +738,7 @@ async function loadAvaxSingChefContract(
 
   const poolInfos = await Promise.all(
     [...Array(poolCount).keys()].map(
-      async x => await getAvaxSingPoolInfo(App, chefContract, chefAddress, x, pendingRewardsFunction)
+      async x => await getAvaxPoolInfo(App, chefContract, chefAddress, x, pendingRewardsFunction)
     )
   )
 
@@ -827,7 +827,7 @@ async function getAvaxSingPoolInfo(app, chefContract, chefAddress, poolIndex, pe
 
   if (poolInfo.allocPoint == 0) {
     return {
-      address: poolInfo.stakingToken,
+      address: poolInfo.lpToken,
       allocPoints: poolInfo.allocPoint ?? 1,
       poolToken: null,
       userStaked: 0,

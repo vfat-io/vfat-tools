@@ -20,8 +20,13 @@ const main = async() => {
       ["Badger              ", `<a href="/arbitrum/badger"   >Various</a>`,"BADGER             ","https://app.badger.finance"],
       ["FrostArbi           ", `<a href="/arbitrum/frost"    >Various</a>`,"FROST              ","https://frostarbi.com"],
       ["MagicLand           ", `<a href="/arbitrum/magicland">Various</a>`,"MAGIC              ","https://magicland.fi"],
+      ["TIF                 ", `<a href="/arbitrum/tif"      >Various</a>`,"TIF                ","https://tif.finance"],
+      ["FrostArbi Iceberg   ", `<a href="/arbitrum/iceberg"  >Various</a>`,"FFARM              ","https://iceberg.frostarbi.com"],
+      ["Panda Farms         ", `<a href="/arbitrum/panda"    >Various</a>`,"PANDA              ","http://pandafarms.live"],
+      //["Arbis               ", `<a href="/arbitrum/arbis"    >Various</a>`,"Various            ","https://arbis.finance"],
+      ["Impermax Finance    ", `<a href="/arbitrum/impermax" >Various</a>`,"IMX                ","https://arbitrum.impermax.finance"],
+      ["Xdollar             ", `<a href="/arbitrum/xdollar"  >Various</a>`,"XDO                ","https://xdollar-arb.mcn.ventures" ],
       ["ArbiDolphin         ", `<a href="/arbitrum/arbidolphin">Various</a>`,"ARBIDOLPHIN      ","https://arb.dolphinswap.finance"]
-      //["Arbis               ", `<a href="/arbitrum/arbis"    >Various</a>`,"Various            ","https://arbis.finance"]
      ]
   }
 

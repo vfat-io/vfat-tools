@@ -20,6 +20,7 @@ const main = async() => {
       ["Salt                ", `<a href="salt"          >Various</a>`,"SALT             ","https://www.saltswap.finance"],
       ["Soup                ", `<a href="soup"          >Various</a>`,"SOUP/SOUPS       ","https://soups.finance"],
       ["SatoroSwap          ", `<a href="satoroswap"    >Various</a>`,"SATORO           ","https://dapp.satoroswap.finance"],
+      ["Scientix            ", `<a href="scix"          >Various</a>`,"SCIX             ","https://scientix.finance/"],
       ["Kebab               ", `<a href="kebab"         >Various</a>`,"KEBAB            ","https://kebabfinance.com"],
       ["Kimochi             ", `<a href="kimochi"       >Various</a>`,"KIMOCHI          ","https://kimochi.finance"],
       ["Xoxo                ", `<a href="xoxo"          >Various</a>`,"XOXO             ","https://xoxo.finance"],
@@ -511,7 +512,12 @@ const main = async() => {
       ["Bacoin              ", `<a href="bacoin"        >Various</a>`,"BACOIN           ","https://bacoin.farm"],
       ["RainbowFarm         ", `<a href="rainbow"       >Various</a>`,"RNBO             ","https://rainbowfarm.finance"],
 	    ["Meow                ", `<a href="meow"          >Various</a>`,"MEOWTH           ","https://meowswap.net"],
-      ["PearZap             ", `<a href="pearzap"       >Various</a>`,"PEAR             ","https://pearzap.com"]
+      ["PearZap             ", `<a href="pearzap"       >Various</a>`,"PEAR             ","https://pearzap.com"],
+      ["Centaurus           ", `<a href="centaurus"     >Various</a>`,"CEN              ","https://cen.centaurus.network"],
+      ["SecureSwap          ", `<a href="secureswap"    >Various</a>`,"SCX              ","https://secureswap.io"],
+      ["ChronoSwap          ", `<a href="chronoswap"    >Various</a>`,"THOP             ","https://chronoswap.finance"],
+      ["Chupacabra          ", `<a href="chupacabra"    >Various</a>`,"Chupa            ","https://chupacabra.finance"],
+      ["WWE                 ", `<a href="wwe"           >Various</a>`,"WWE              ","https://wwe.wwf.finance"]
     ]}
 
   let table = new AsciiTable().fromJSON(tableData);
