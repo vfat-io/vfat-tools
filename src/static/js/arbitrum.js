@@ -26,6 +26,7 @@ const main = async() => {
       //["Arbis               ", `<a href="/arbitrum/arbis"    >Various</a>`,"Various            ","https://arbis.finance"],
       ["Impermax Finance    ", `<a href="/arbitrum/impermax" >Various</a>`,"IMX                ","https://arbitrum.impermax.finance"],
       ["Xdollar             ", `<a href="/arbitrum/xdollar"  >Various</a>`,"XDO                ","https://xdollar-arb.mcn.ventures" ],
+      ["ArbiDolphin         ", `<a href="/arbitrum/arbidolphin">Various</a>`,"ARBIDOLPHIN      ","https://arb.dolphinswap.finance"]
      ]
   }
 
