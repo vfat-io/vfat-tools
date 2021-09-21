@@ -11,7 +11,7 @@ async function main() {
     _print(`Initialized ${App.YOUR_ADDRESS}\n`);
     _print("Reading smart contracts...\n");
 
-   const MAGIC_CHEF_ADDR = "0x6b614684742717114200dc9f30cBFdCC00fc73Ec";
+   const MAGIC_CHEF_ADDR = "0x9B4CF5d754455fD3Bc4212DCFF1b085DBCd5b0c0";
    const rewardTokenTicker = "MAGIC";
    const MAGIC_CHEF = new ethers.Contract(MAGIC_CHEF_ADDR, MAGIC_CHEF_ABI, App.provider);
 
