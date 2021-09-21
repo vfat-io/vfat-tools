@@ -27,6 +27,7 @@ const main = async() => {
       ["Xdollar             ", `<a href="/arbitrum/xdollar"     >Various</a>`,"XDO                ","https://xdollar-arb.mcn.ventures" ],
       ["ArbiDolphin         ", `<a href="/arbitrum/arbidolphin" >Various</a>`,"ARBIDOLPHIN        ","https://arb.dolphinswap.finance"],
       ["Parrotdefi          ", `<a href="/arbitrum/parrotdefi"  >Various</a>`,"PPEGG              ","https://parrotdefi.com"]
+      ["WhalesFinance       ", `<a href="/arbitrum/whalesfinance">Various</a>`,"WHALES        ","https://app.whalesfinance.io/"]
       //["Arbis               ", `<a href="/arbitrum/arbis"    >Various</a>`,"Various            ","https://arbis.finance"],
      ]
   }
