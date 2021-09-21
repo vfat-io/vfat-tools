@@ -24,6 +24,9 @@ const pageNetwork = function() {
   if (network.toLowerCase() === 'moonriver') {
     return window.NETWORKS.MOONRIVER
   }
+  if (network.toLowerCase() === 'optimistic') {
+    return window.NETWORKS.OPTIMISTIC
+  }
   if (network.toLowerCase() === 'heco') {
     return window.NETWORKS.HECO
   }
