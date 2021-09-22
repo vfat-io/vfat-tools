@@ -297,7 +297,7 @@ async function getArbitrumStoredToken(App, tokenAddress, stakingAddress, type) {
       const arbisVault = new ethcall.Contract(tokenAddress, ARBIS_VAULT_UNDERLYING_ABI);
       return await getArbitrumArbisVault(App, arbisVault, tokenAddress, stakingAddress);
     case "arbitrumArbisVault2":
-      const arbisVault2 = new ethcall.Contract(tokenAddress, ARBIS_VAULT_UNDERLYING_ABI);
+      const arbisVault2 = new ethcall.Contract(tokenAddress, ARBIS_VAULT_UNDERLYING_ABI2);
       return await getArbitrumArbisVault2(App, arbisVault2, tokenAddress, stakingAddress);
     case "arbitrumWantVault":
       const wantVault = new ethcall.Contract(tokenAddress, ARBITRUM_VAULT_WANT_ABI);
@@ -319,6 +319,15 @@ async function getArbitrumToken(App, tokenAddress, stakingAddress) {
     const type = window.localStorage.getItem(tokenAddress);
     if (type) return getArbitrumStoredToken(App, tokenAddress, stakingAddress, type);
     try {
+      const ARBIS_VAULT2 = new ethcall.Contract(tokenAddress, ARBIS_VAULT_UNDERLYING_ABI2);
+      const _token = await App.ethcallProvider.all([ARBIS_VAULT2.depositToken()]);
+      const arbisVault2 = await getArbitrumArbisVault2(App, ARBIS_VAULT2, tokenAddress, stakingAddress);
+      window.localStorage.setItem(tokenAddress, "arbitrumArbisVault2");
+      return arbisVault2;
+    }
+    catch(err) {
+    }
+    try {
       const pool = new ethcall.Contract(tokenAddress, UNI_ABI);
       const _token0 = await App.ethcallProvider.all([pool.token0()]);
       const uniPool = await getArbitrumUniPool(App, pool, tokenAddress, stakingAddress);
@@ -327,15 +336,6 @@ async function getArbitrumToken(App, tokenAddress, stakingAddress) {
     }
     catch(err) {
       console.log(err)
-    }
-    try {
-      const pool = new ethcall.Contract(tokenAddress, DLP_ARBITRUM_DUAL_TOKEN_ABI);
-      const _baseToken = await App.ethcallProvider.all([pool._BASE_TOKEN_()]);
-      const doualDlpPool = await getDodoArbitrumDualPoolToken(App, pool, tokenAddress, stakingAddress);
-      window.localStorage.setItem(tokenAddress, "doualArbitrumDlp");
-      return doualDlpPool;
-    }
-    catch(err) {
     }
     try {
       const pool = new ethcall.Contract(tokenAddress, ARBITRUM_DLP_ABI);
@@ -365,11 +365,11 @@ async function getArbitrumToken(App, tokenAddress, stakingAddress) {
     catch(err) {
     }
     try {
-      const ARBIS_VAULT2 = new ethcall.Contract(tokenAddress, ARBIS_VAULT_UNDERLYING_ABI2);
-      const _token = await App.ethcallProvider.all([ARBIS_VAULT2.depositToken()]);
-      const arbisVault2 = await getArbitrumArbisVault2(App, ARBIS_VAULT2, tokenAddress, stakingAddress);
-      window.localStorage.setItem(tokenAddress, "arbitrumArbisVault2");
-      return arbisVault2;
+      const pool = new ethcall.Contract(tokenAddress, DLP_ARBITRUM_DUAL_TOKEN_ABI);
+      const _baseToken = await App.ethcallProvider.all([pool._BASE_TOKEN_()]);
+      const doualDlpPool = await getDodoArbitrumDualPoolToken(App, pool, tokenAddress, stakingAddress);
+      window.localStorage.setItem(tokenAddress, "doualArbitrumDlp");
+      return doualDlpPool;
     }
     catch(err) {
     }
