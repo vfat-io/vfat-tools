@@ -126,7 +126,7 @@ async function loadArbitrumTifSynthetixPoolInfo(App, tokens, prices, stakingAbi,
 
     const earned = earned_ / 10 ** rewardToken.decimals;
 
-    const depositFee = depositFee_ / 10000 * 100;
+    const depositFee = (depositFee_ / 10000) * 100;
 
     return  {
       stakingAddress,
