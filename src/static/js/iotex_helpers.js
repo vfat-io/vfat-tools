@@ -494,7 +494,7 @@ async function loadIotexChefContract(App, tokens, prices, chef, chefAddress, che
   const rewardToken = await getIotexToken(App, rewardTokenAddress, chefAddress);
   const rewardsPerWeek = rewardsPerWeekFixed ??
     await chefContract.callStatic[rewardsPerBlockFunction]()
-    / 10 ** rewardToken.decimals * 604800 / 13.5
+    / 10 ** rewardToken.decimals * 604800 / 5
 
   const poolInfos = await Promise.all([...Array(poolCount).keys()].map(async (x) =>
     await getIotexPoolInfo(App, chefContract, chefAddress, x, pendingRewardsFunction)));

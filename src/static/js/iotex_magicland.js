@@ -16,7 +16,7 @@ async function main() {
    const MAGIC_CHEF = new ethers.Contract(MAGIC_CHEF_ADDR, MAGIC_CHEF_ABI, App.provider);
 
    const rewardsPerWeek = await MAGIC_CHEF.MagicPerBlock() /1e18
-      * 604800 / 13.5;
+      * 604800 / 5;
 
     const tokens = {};
     const prices = await getIotexPrices();
