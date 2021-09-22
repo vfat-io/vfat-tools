@@ -3,8 +3,8 @@ $(function() {
 });
 
 const Address = [
-  '0x7864BA11676B8cc286a7367b3cfd504968920B3a',
-  //'0xf285108D3aa4DC9041364b64297979979a7Ec7B9',
+  //'0x7864BA11676B8cc286a7367b3cfd504968920B3a',
+  '0xf285108D3aa4DC9041364b64297979979a7Ec7B9',
 ]
 
 async function main() {
@@ -49,8 +49,20 @@ async function loadARBISPoolInfo(App, tokens, prices, contractAddress) {
     return { vault, poolPrices, userStaked, ppfs, totalSupply }
   }
   catch (err) {
-    console.log(contractAddress, err);
-    return null;
+    const contract = await new ethers.Contract(contractAddress, ARBIS_VAULT_UNDERLYING_ABI2, App.provider);
+    const vault = await getArbitrumToken(App, contractAddress, App.YOUR_ADDRESS);
+    var newTokenAddresses = vault.tokens.filter(x => !getParameterCaseInsensitive(tokens, x));
+    for (const address of newTokenAddresses) {
+      tokens[address] = await getArbitrumToken(App, address, contractAddress);
+    }
+    const totalSupply = await contract.totalSupply() / 1e18;
+    const totalDeposits = await contract.totalDeposits() / 1e18;
+    const ppfs = totalDeposits / totalSupply;
+    const userStaked = await contract.balanceOf(App.YOUR_ADDRESS) / 1e18;
+    const poolPrices = getPoolPrices(tokens, prices, vault, "arbitrum");
+    return { vault, poolPrices, userStaked, ppfs, totalSupply }
+    /*console.log(contractAddress, err);
+    return null;*/
   }
 }
 
