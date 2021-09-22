@@ -19,7 +19,7 @@ async function main() {
 
    const multiplier = await WHALES_CHEF.getMultiplier(currentBlock, currentBlock+1);
 
-   const rewardsPerWeek = await WHALES_CHEF.AfarmPerBlock() /1e18
+   const rewardsPerWeek = await WHALES_CHEF.whalesPerBlock() /1e18
     * 604800 * multiplier / 13.5;
 
     const tokens = {};
