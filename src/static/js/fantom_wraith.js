@@ -17,7 +17,7 @@ async function main() {
    const rewardTokenTicker = "WRA";
    const WRA_CHEF = new ethers.Contract(WRA_CHEF_ADDR, WRA_CHEF_ABI, App.provider);
 
-   const rewardsPerWeek = 84088875874000000 / 1e18 * 604800;
+   const rewardsPerWeek = await WRA_CHEF.wraPerSecond() / 1e18 * 604800;
 
     const tokens = {};
     const prices = await getFantomPrices();
