@@ -28,8 +28,7 @@ const main = async() => {
       ["ArbiDolphin         ", `<a href="/arbitrum/arbidolphin" >Various</a>`,"ARBIDOLPHIN        ","https://arb.dolphinswap.finance"],
       ["WhalesFinance       ", `<a href="/arbitrum/whalesfinance">Various</a>`,"WHALES            ","https://app.whalesfinance.io/"],
       ["Parrotdefi          ", `<a href="/arbitrum/parrotdefi"  >Various</a>`,"PPEGG              ","https://parrotdefi.com"],
-
-      //["Arbis               ", `<a href="/arbitrum/arbis"    >Various</a>`,"Various            ","https://arbis.finance"],
+      ["Arbis               ", `<a href="/arbitrum/arbis"       >Various</a>`,"Various            ","https://arbis.finance"]
      ]
   }
 

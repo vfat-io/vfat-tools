@@ -25,9 +25,9 @@ async function main() {
   var tokens = {};
   const prices = await getAvaxPrices();
 
-  await loadAvaxSynthetixPoolInfo(App, tokens, prices, Pools[1].abi, Pools[1].address, Pools[1].rewardTokenFunction, Pools[1].stakeTokenFunction)
-  await loadAvaxSynthetixPoolInfo(App, tokens, prices, Pools[2].abi, Pools[2].address, Pools[2].rewardTokenFunction, Pools[2].stakeTokenFunction)
-  prices["0x0000000000000000000000000000000000000000"] = prices["0xB31f66AA3C1e785363F0875A1B74E27b85FD66c7"];
+  await loadAvaxSynthetixPoolInfo(App, tokens, prices, Pools[0].abi, Pools[0].address, Pools[0].rewardTokenFunction, Pools[0].stakeTokenFunction)
+  //await loadAvaxSynthetixPoolInfo(App, tokens, prices, Pools[2].abi, Pools[2].address, Pools[2].rewardTokenFunction, Pools[2].stakeTokenFunction)
+  prices["0x0000000000000000000000000000000000000000"] = prices["0xb31f66aa3c1e785363f0875a1b74e27b85fd66c7"];
 
   let p = await loadMultipleAvaxSynthetixPools(App, tokens, prices, Pools)
   _print_bold(`Total staked: $${formatMoney(p.staked_tvl)}`);
