@@ -524,4 +524,9 @@ code {
   }
 }
 
+.mcn-reviewed {
+    font-weight: bold;
+    color: lawngreen;
+}
+
 @import "diff.scss";
