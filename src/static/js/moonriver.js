@@ -12,7 +12,9 @@ const main = async() => {
       ["Solarbeam                ", `<a href="solarbeam"     >Various</a>`,"SOLAR  ","https://solarbeam.io"],
       ["Moonkafe                ", `<a href="moonkafe"     >Various</a>`,"KAFE  ","https://moon.kafe.finance"],
       ["MoonEngine              ", `<a href="moonengine"     >Various</a>`,"MOONENGINE  ","https://www.moonengine.info"],
-     ]
+      ["Bcharity              ", `<a href="bcharity"     >Various</a>`,"GIVE  ","https://moongive.netlify.app/"],
+     
+    ]
   }
 
   let table = new AsciiTable().fromJSON(tableData);
