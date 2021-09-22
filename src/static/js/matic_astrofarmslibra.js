@@ -32,7 +32,7 @@ async function main() {
   const prices = await getMaticPrices();
 
   await loadMaticChefContract(App, tokens, prices, LIBRA_CHEF, LIBRA_CHEF_ADDR, LIBRA_CHEF_ABI, rewardTokenTicker,
-    "libra", null, rewardsPerWeek, "pendingLibra");
+    "libra", null, rewardsPerWeek, "pendingLibra", [7]);
 
   hideLoading();
 }
