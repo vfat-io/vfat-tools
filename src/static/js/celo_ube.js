@@ -43,13 +43,13 @@ $(function() {
       active: true,
     },
     // CELO-MOBI
-    /*{
+    {
       address: '0xd930501A0848DC0AA3E301c7B9b8AFE8134D7f5F',
       underlyingPool: '0x19F1A692C77B481C23e9916E3E83Af919eD49765',
       basePool: '0x19F1A692C77B481C23e9916E3E83Af919eD49765',
       numRewards: 2,
       active: true,
-    },*/  //I have a problem with this pool with the APR calculation
+    },
     // CELO-mcUSD
     {
       address: '0xbbC8C824c638fd238178a71F5b1E5Ce7e4Ce586B',
@@ -275,9 +275,11 @@ $(function() {
       if(rewardTokens.length > 2){
         const earned = await STAKING_POOL.earned(App.YOUR_ADDRESS) / 10 ** rewardTokens[2].decimals;
         earnings.push(earned);
-        usdCoinsPerWeek.swapItems(0, 2);
+        //usdCoinsPerWeek.swapItems(0, 2);
+        rewardTokenTickers.swapItems(0, 2);
       }else{
-        usdCoinsPerWeek.swapItems(0, 1);
+        //usdCoinsPerWeek.swapItems(0, 1);
+        rewardTokenTickers.swapItems(0, 1);
       }
   
       const staked_tvl = poolPrices.staked_tvl;
