@@ -15,7 +15,7 @@ const main = async() => {
         ["Yeti        ",`<a href="yeti"       >Various</a>`,"YTS      ","https://exchange.yetiswap.app"],
         ["Pandaswap   ",`<a href="panda"      >Various</a>`,"BAMBOO   ","https://pandaswap.exchange"],
         ["Pefi        ",`<a href="pefi"       >Various</a>`,"PEFI     ","https://penguinfinance.org"],
-        ["Elk *       ",`<a href="elk"        >Various</a>`,"ELK      ","https://elk.finance"],
+        ["Elk         ",`<a href="elk"        >Various</a>`,"ELK      ","https://elk.finance"],
         ["Snowball    ",`<a href="snowball"   >Various</a>`,"SNOB     ","https://snowball.network/earn"],
         ["Olive       ",`<a href="olive"      >Various</a>`,"OLIVE    ","https://avax.olive.cash"],
         ["Lydia       ",`<a href="lydia"      >Various</a>`,"LYD      ","https://www.lydia.finance"],
@@ -42,7 +42,7 @@ const main = async() => {
         ["OberonFinance", `<a href="galaxy_oberon" >Various</a>`,"OBERON","https://avalanche-oberon.galaxyfinance.one"],
         ["EnglishFinance",`<a href="english"      >Various</a>`,"ENGLISH    ","https://english.theflyingdutchman.finance" ],
         ["TheDragonsLair" ,`<a href="dregg"   >Various</a>`,"DREGG    ","https://thedragonslair.farm" ],
-        ["AvaEagle *"       ,`<a href="avaeagle">Various</a>`,"EGG    ","https://avaeagle.com" ],
+        ["AvaEagle"       ,`<a href="avaeagle">Various</a>`,"EGG    ","https://avaeagle.com" ],
         ["ThenaFinance" ,`<a href="thena"  >Various</a>`,"THENA   ","https://thena.eternalfinance.live" ],
         ["SwiftFinance" ,`<a href="swift"  >Various</a>`,"SWIFT   ","https://swiftfinance.farm" ],
         ["SmitheryFarms-Silver" ,`<a href="silver"  >Various</a>`,"SILVER","https://smitheryfarms.world" ],
@@ -52,7 +52,8 @@ const main = async() => {
         ["Singular  ",`<a href="singular">Various</a>`,"SING", 'https://singular.farm' ],
         ["ZabuV2        ",`<a href="zabuV2"        >Various</a>`,"ZUBAX      ","https://zabu.finance"],
         ["Dolphin        ",`<a href="dolphin"        >Various</a>`,"DOLPHIN      ","https://www.dolphinswap.finance"],
-        ["ThunderSwap        ",`<a href="thunder"        >Various</a>`,"THUNDER      ","https://thunderswap.club"]
+        ["ThunderSwap        ",`<a href="thunder"        >Various</a>`,"THUNDER      ","https://thunderswap.club"],
+        ["AvaNyan        ",`<a href="anyan"        >Various</a>`,"NYAN      ","https://avanyan.io"]
     ]
   }
 

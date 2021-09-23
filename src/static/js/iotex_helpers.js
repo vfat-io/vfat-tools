@@ -485,7 +485,7 @@ async function loadIotexChefContract(App, tokens, prices, chef, chefAddress, che
   const poolCount = parseInt(await chefContract.poolLength(), 10);
   const totalAllocPoints = await chefContract.totalAllocPoint();
 
-  _print(`<a href='https://arbiscan.io/address/${chefAddress}' target='_blank'>Staking Contract</a>`);
+  _print(`<a href='https://iotexscan.io/address/${chefAddress}' target='_blank'>Staking Contract</a>`);
   _print(`Found ${poolCount} pools.\n`)
 
   _print(`Showing incentivized pools only.\n`);
@@ -494,7 +494,7 @@ async function loadIotexChefContract(App, tokens, prices, chef, chefAddress, che
   const rewardToken = await getIotexToken(App, rewardTokenAddress, chefAddress);
   const rewardsPerWeek = rewardsPerWeekFixed ??
     await chefContract.callStatic[rewardsPerBlockFunction]()
-    / 10 ** rewardToken.decimals * 604800 / 13.5
+    / 10 ** rewardToken.decimals * 604800 / 5
 
   const poolInfos = await Promise.all([...Array(poolCount).keys()].map(async (x) =>
     await getIotexPoolInfo(App, chefContract, chefAddress, x, pendingRewardsFunction)));

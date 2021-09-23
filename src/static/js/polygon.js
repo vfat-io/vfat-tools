@@ -364,8 +364,10 @@ const main = async () => {
       ['Onyx Farms          ', `<a href="onyxfarms"       >Various</a>`, 'ONYX         ', 'https://polygon.onyx.farm'],
       ['Girin Finance       ', `<a href="girinfinance"    >Various</a>`, 'GIRIN        ', 'https://girinfinance.pro'],
 	    ['Pepsi Finance       ', `<a href="pepsifinance"    >Various</a>`, 'PEPSI        ', 'https://pepsifinance.cc'],
-	    ['PolyWise            ', `<a href="polywise"      >Various</a>`, 'WISE         ', 'https://polywise.finance'],
-	    ['DeliriumFarm        ', `<a href="deliriumfarm"    >Various</a>`, 'DELIRIUMFARM ', 'https://delirium.sandman.finance']
+	    ['PolyWise            ', `<a href="polywise"        >Various</a>`, 'WISE         ', 'https://polywise.finance'],
+	    ['DeliriumFarm        ', `<a href="deliriumfarm"    >Various</a>`, 'DELIRIUMFARM ', 'https://delirium.sandman.finance'],
+	    ['Astrofarms - Libra  ', `<a href="astrofarmslibra" >Various</a>`, 'LIBRA        ', 'https://libra.astrofarms.finance'],
+      ['PolyQuail CHK       ', `<a href="polyquail_chk"   >Various</a>`, 'CHK          ', 'https://chk.polyquail.finance']
     ],
   }
 
