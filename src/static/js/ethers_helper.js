@@ -24,6 +24,9 @@ const pageNetwork = function() {
   if (network.toLowerCase() === 'moonriver') {
     return window.NETWORKS.MOONRIVER
   }
+  if (network.toLowerCase() === 'optimism') {
+    return window.NETWORKS.OPTIMISM
+  }
   if (network.toLowerCase() === 'heco') {
     return window.NETWORKS.HECO
   }
@@ -2285,6 +2288,9 @@ function getErc20Prices(prices, pool, chain="eth") {
     case "fantom":
       poolUrl=`https://ftmscan.com/token/${pool.address}`;
       break;
+    case "optimism":
+      poolUrl=`https://optimistic.etherscan.io/token/${pool.address}`;
+      break;
     case "fuse":
       poolUrl=`https://explorer.fuse.io/address/${pool.address}`;
       break;
@@ -2798,6 +2804,9 @@ async function printSynthetixPool(App, info, chain="eth", customURLs) {
     switch (chain) {
       case "eth":
         _print(`<a target="_blank" href="https://etherscan.io/address/${info.stakingAddress}#code">Etherscan</a>`);
+        break;
+      case "optimism":
+        _print(`<a target="_blank" href="https://optimistic.etherscan.io/address/${info.stakingAddress}#code">Optimism</a>`);
         break;
       case "avax":
         _print(`<a target="_blank" href="https://cchain.explorer.avax.network/address/${info.stakingAddress}#code">Explorer</a>`);
