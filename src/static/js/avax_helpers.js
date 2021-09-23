@@ -192,17 +192,6 @@ async function getAvaxToken(App, tokenAddress, stakingAddress) {
       console.log(err);
       console.log(`Couldn't match ${tokenAddress} to any known token type.`);
     }
-    try {
-      const kyber = new ethers.Contract(tokenAddress, KYBER_DMM_ABI, App.provider);
-      const _name = await kyber.name();
-      const kyberDMM = await getAvax20(App, erc20, tokenAddress, stakingAddress);
-      window.localStorage.setItem(tokenAddress, "kyber");
-      return kyberDMM;
-    }
-    catch(err) {
-      console.log(err);
-      console.log(`Couldn't match ${tokenAddress} to any known token type.`);
-    }
   }
 
 async function loadAvaxSynthetixPoolInfo(App, tokens, prices, stakingAbi, stakingAddress,
