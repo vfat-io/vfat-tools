@@ -18,7 +18,7 @@
        const currentBlock = await App.provider.getBlockNumber();
        let rewardsPerWeek = 0
        if(currentBlock < startBlock){
-         _print(`Rewards start at block <a href="https://polygonscan.com/block/countdown/${startBlock}" target="_blank">${startBlock}</a>\n`);
+         _print(`Rewards start at block <a href="https://bscscan.com/block/countdown/${startBlock}" target="_blank">${startBlock}</a>\n`);
        }else{
         rewardsPerWeek = await BENIS.wbanPerSecond() /1e18
           * 604800;
