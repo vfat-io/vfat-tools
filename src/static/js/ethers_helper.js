@@ -1643,6 +1643,14 @@ function getUniPrices(tokens, prices, pool, chain="eth")
               pool.symbol.includes("Cake") ?  `https://pancakeswap.info/pair/${pool.address}` :
               pool.symbol.includes("CAT-LP") ?  `https://polycat.finance` :
               pool.symbol.includes("PGL") ?  `https://info.pangolin.exchange/#/pair/${pool.address}` :
+              pool.symbol.includes("DMM-LP") ?  (
+                {
+                  "eth": `https://info.dmm.exchange/pair/${t0address}_${t1address}`,
+                  "avax": `https://avax-info.dmm.exchange/pair/${t0address}_${t1address}`,
+                  "bsc": `https://bsc-info.dmm.exchange/pair/${t0address}_${t1address}`,
+                  "matic": `https://polygon-info.dmm.exchange/pair/${t0address}_${t1address}`
+                }
+              [chain]):
               pool.symbol.includes("CS-LP") ?  `https://app.coinswap.space/#/` :
               pool.name.includes("Value LP") ?  `https://info.vswap.fi/pool/${pool.address}` :
               pool.name.includes("Ubeswap") ?  `https://info.ubeswap.org/pair/${pool.address}` :
@@ -1729,6 +1737,11 @@ function getUniPrices(tokens, prices, pool, chain="eth")
             `https://app.pangolin.exchange/#/remove/${t0address}/${t1address}`,
             `https://app.pangolin.exchange/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
           ] :
+          pool.symbol.includes("DMM-LP") ? [
+            `https://dmm.exchange/#/add/${t0address}/${t1address}/${pool.address}`,
+            `https://dmm.exchange/#/remove/${t0address}/${t1address}/${pool.address}`,
+            `https://dmm.exchange/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`            
+          ]:
           pool.symbol.includes("OperaSwap") ? [
             `https://exchange.operaswap.finance/#/add/${t0address}/${t1address}`,
             `https://exchange.operaswap.finance/#/remove/${t0address}/${t1address}`,
