@@ -354,8 +354,20 @@ const main = async () => {
       ['OberonFinance       ', `<a href="galaxy_oberon"   >Various</a>`, 'OBERON       ', 'https://polygon-oberon.galaxyfinance.one'],
       ["TenguSwap           ", `<a href="tenguswap"       >Various</a>`, "TENGUSWAP    ", "https://polygon.tenguswap.com"],
       ['PolyCougar          ', `<a href="cougar"          >Various</a>`, 'CGS          ', 'https://polyapp.cougarswap.io'],
-      ['PolyPegasus         ', `<a href="Polypegasus"     >Various</a>`, 'PEGASUS      ', 'https://polypegasus.farm'],
-      ['Omega Farms         ', `<a href="omega"           >Various</a>`, 'OMEGA        ', 'https://www.omegadefi.space']
+      ['PolyPegasus         ', `<a href="polypegasus"     >Various</a>`, 'PEGASUS      ', 'https://polypegasus.farm'],
+      ['Omega Farms         ', `<a href="omega"           >Various</a>`, 'OMEGA        ', 'https://www.omegadefi.space'],
+      ['Darkside Finance    ', `<a href="darksidefinance" >Various</a>`, 'DARK / CZDIAMOND', 'https://darkside.finance'],
+      ['BloodySwap Finance  ', `<a href="bloodyswap"      >Various</a>`, 'BLOOD        ', 'https://www.bloodyswap.finance'],
+      ['Troller Finance     ', `<a href="troller"         >Various</a>`, 'TROLL        ', 'https://troller.finance'],
+      ['Kavian L2 Finance   ', `<a href="kavianl2finance" >Various</a>`, 'KAVIANL2     ', 'https://kavian.finance'],
+      ['PolyPig Digital     ', `<a href="polypig"         >Various</a>`, 'POLYPIG      ', 'https://polypig.digital'],
+      ['Onyx Farms          ', `<a href="onyxfarms"       >Various</a>`, 'ONYX         ', 'https://polygon.onyx.farm'],
+      ['Girin Finance       ', `<a href="girinfinance"    >Various</a>`, 'GIRIN        ', 'https://girinfinance.pro'],
+	    ['Pepsi Finance       ', `<a href="pepsifinance"    >Various</a>`, 'PEPSI        ', 'https://pepsifinance.cc'],
+	    ['PolyWise            ', `<a href="polywise"        >Various</a>`, 'WISE         ', 'https://polywise.finance'],
+	    ['DeliriumFarm        ', `<a href="deliriumfarm"    >Various</a>`, 'DELIRIUMFARM ', 'https://delirium.sandman.finance'],
+	    ['Astrofarms - Libra  ', `<a href="astrofarmslibra" >Various</a>`, 'LIBRA        ', 'https://libra.astrofarms.finance'],
+      ['PolyQuail CHK       ', `<a href="polyquail_chk"   >Various</a>`, 'CHK          ', 'https://chk.polyquail.finance']
     ],
   }
 

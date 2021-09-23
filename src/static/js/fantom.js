@@ -99,7 +99,7 @@ const main = async() => {
         "https://waka.finance"
       ],
       [
-        "Elk",
+        "Elk *",
         `<a href='elk'>Various</a>`,
         "ELK",
         "https://app.elk.finance"
@@ -329,16 +329,81 @@ const main = async() => {
       [
         "Guru - LF#2005",
         `<a href='guru_lite2005'>BLK-WFTM spLP</a>`,
-        "BLK",
+        "Nova",
         "https://ftm.guru/LF/2005"
       ],
       [
         "Guru - LF#301",
-        `<a href='guru_lite301'>TCUZ-WFTM spLP</a>`,
+        `<a href='guru_lite301'>TCUZ-WFTM SPIRIT-LP</a>`,
         "TCUZ",
         "https://ftm.guru/LF/301"
-      ]
-
+      ],
+      [
+        "Morpheus Swap",
+        `<a href='morpheusswap'>Various</a>`,
+        "MORPH",
+        "https://morpheusswap.finance"
+      ],
+      [
+        "Olive",
+        `<a href='olive'>Various</a>`,
+        "OLIVE",
+        "https://olive.cash"
+      ],
+      [
+        "Guru - LF#2004",
+        `<a href='guru_lite2004'>Nova</a>`,
+        "BLK",
+        "https://ftm.guru/LF/2004"
+      ],
+      [
+        "Guru - LF#2006",
+        `<a href='guru_lite2006'>SST-WFTM spLP</a>`,
+        "BLK",
+        "https://ftm.guru/LF/2006"
+      ],
+      [
+        "PumpKins Farm",
+        `<a href='pumpkinsfarm'>Various</a>`,
+        "KINS",
+        "https://pumpkins.farm"
+      ],
+      [
+        "NippleLabs - BOOB",
+        `<a href='nipplelabs'>Various</a>`,
+        "BOOB",
+        "https://nipplelabs.finance"
+      ],
+      [
+        "NippleLabs - MILK",
+        `<a href='nipplelabs_milk'>Various</a>`,
+        "MILK",
+        "https://nipplelabs.finance"
+      ],
+      [
+        "Guru - LF#1010",
+        `<a href='guru_lite1010'>SUN</a>`,
+        "SUN",
+        "https://ftm.guru/LF/1010"
+      ],
+      [
+        "Guru - LF#1011",
+        `<a href='guru_lite1010'>SUN-WFTM SPIRIT-LP</a>`,
+        "SUN",
+        "https://ftm.guru/LF/1011"
+      ],
+      [
+        "WraithSwap",
+        `<a href='wraith'>Various</a>`,
+        "WRA",
+        "https://wraithswap.finance"
+      ],
+      [
+        "FoxyFinance",
+        `<a href='foxyfinance'>Various</a>`,
+        "FOXY",
+        "https://foxyfinance.co"
+      ],
     ]
   }
 

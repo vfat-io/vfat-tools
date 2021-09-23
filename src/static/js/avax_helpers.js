@@ -22,10 +22,29 @@ const avaxTokens = [
     { "id": 'sushi', "symbol": 'SUSHI.e', "contract": '0x37B608519F91f70F2EeB0e5Ed9AF4061722e4F76' },
     { "id": 'penguin-finance', "symbol": 'PEFI', "contract": '0xe896CDeaAC9615145c0cA09C8Cd5C25bced6384c' },
     { "id": 'xdollar', "symbol": 'XDO', "contract": '0x9ef758ac000a354479e538b8b2f01b917b8e89e7' },
+    { "id": 'xdollar-stablecoin', "symbol": 'xUSD', "contract": '0x3509f19581afedeff07c53592bc0ca84e4855475' },
     { "id": 'wrapped-avax', "symbol": 'WAVAX', "contract": '0xb31f66aa3c1e785363f0875a1b74e27b85fd66c7' },
     { "id": "galaxy-oberon", "symbol": "OBERON", "contract": "0xc979E70611D997Aa109528c6A9aa73D82Eaa2881"},
-    { "id": "tundra", "symbol": "TUNDRA", "contract": "0x21c5402C3B7d40C89Cc472C9dF5dD7E51BbAb1b1"},
-    { "id": "xdollar-stablecoin", "sybmol": "xUSD", "contract": "0x3509f19581aFEDEff07c53592bc0Ca84e4855475"}
+    { "id": "frax", "symbol": "FRAX", "contract": "0xDC42728B0eA910349ed3c6e1c9Dc06b5FB591f98"},
+    { "id": "zabu-token", "symbol": "ZABU", "contract": "0xDd453dBD253fA4E5e745047d93667Ce9DA93bbCF"},
+    { "id": "tundra-token", "symbol": "TUNDRA", "contract": "0x21c5402C3B7d40C89Cc472C9dF5dD7E51BbAb1b1"},
+    { "id": "verso", "symbol": "VSO", "contract": "0x846D50248BAf8b7ceAA9d9B53BFd12d7D7FBB25a"},
+    { "id": "elk-finance", "symbol": "ELK", "contract": "0xE1C110E1B1b4A1deD0cAf3E42BfBdbB7b5d7cE1C"},
+    { "id": "gondola-finance", "symbol": "GDL", "contract": "0xD606199557c8Ab6F4Cc70bD03FaCc96ca576f142"},
+    { "id": "lydia-finance", "symbol": "LYD", "contract": "0x4C9B4E1AC6F24CdE3660D5E4Ef1eBF77C710C084"},
+    { "id": "canary", "symbol": "CNR", "contract": "0x8D88e48465F30Acfb8daC0b3E35c9D6D7d36abaf"},
+    { "id": "magic-internet-money", "symbol": "MIM", "contract": "0x130966628846BFd36ff31a822705796e8cb8C18D"},
+    { "id": "wonderland", "symbol": "TIME", "contract": "0xb54f16fB19478766A268F172C9480f8da1a7c9C3"},
+    { "id": "eleven-finance", "symbol": "ELE", "contract": "0xAcD7B3D9c10e97d0efA418903C0c7669E702E4C0"},
+    { "id": "allianceblock", "symbol": "WALBT", "contract": "0x9E037dE681CaFA6E661e6108eD9c2bd1AA567Ecd"},
+    { "id": "avme", "symbol": "AVME", "contract": "0x1ECd47FF4d9598f89721A2866BFEb99505a413Ed"},
+    { "id": "yetiswap", "symbol": "YTS", "contract": "0x488F73cddDA1DE3664775fFd91623637383D6404"},
+    { "id": "cycle-token", "symbol": "CYCLE", "contract": "0x81440C939f2C1E34fc7048E518a637205A632a74"},
+    { "id": "storm-token", "symbol": "STORM", "contract": "0x6AFD5A1ea4b793CC1526d6Dc7e99A608b356eF7b"},
+    { "id": "baguette", "symbol": "BAG", "contract": "0xa1144a6A1304bd9cbb16c800F7a867508726566E"},
+    { "id": "olivecash", "symbol": "OLIVE", "contract": "0x617724974218A18769020A70162165A539c07E8a"},
+    { "id": "yay-games", "symbol": "YAY", "contract": "0x01C2086faCFD7aA38f69A6Bd8C91BEF3BB5adFCa"},
+    { "id": "aave", "symbol": "AAVE.e", "contract": "0x63a72806098Bd3D9520cC43356dD78afe5D386D9"}
 ]
 
 async function getAvaxPrices() {

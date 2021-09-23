@@ -10,6 +10,7 @@ const main = async() => {
     "rows": [
       ["1inch               ",`<a href="1inch/"             >Various</a>`,"1INCH     ","https://1inch.exchange/#/dao/farming"],
       ["Aave                ",`<a href="aave"               >Various</a>`,"stkAAVE   ","https://aave.com"],
+      ["Aladdin             ",`<a href="ald/"               >Various</a>`,"ALD       ","https://app.aladdin.club"],
       ["Alchemix            ",`<a href="alcx/"              >Various</a>`,"ALCX      ","https://app.alchemix.fi/farms"],
       ["Alpha DEX           ",`<a href="alphadex/"          >Various</a>`,"DEX       ","https://kitten.finance"],
       ["Armor               ",`<a href="armor/"             >Various</a>`,"ARMOR     ","https://armor.fi"],
@@ -23,7 +24,8 @@ const main = async() => {
       ["Cover Protocol      ",`<a href="cover/"             >Various</a>`,"Various   ","https://app.coverprotocol.com"],
       ["Cryptex             ",`<a href="cryptex"            >Various</a>`,"CTX       ","https://app.cryptex.finance"],
       ["DFX                 ",`<a href="dfx/"               >Various</a>`,"DFX       ","https://v0.dfx.finance/"],
-      ["* DODO *            ",`<a href="dodo/"              >Various</a>`,"DODO      ","https://app.dodoex.io"],
+      ["Dopex               ",`<a href="dopex/"             >Various</a>`,"DPX, rDPX ","https://app.dopex.io/farms"],
+      ["DODO                ",`<a href="dodo/"              >Various</a>`,"DODO      ","https://app.dodoex.io"],
       ["Dynamic Set Dollar  ",`<a href="dsd/"               >Various</a>`,"DSD       ","https://dsd.finance/app"],
       ["Elena               ",`<a href="elena"              >Various</a>`,"ELENA     ","https://app.elena.finance"],
       ["Empty Set Dollar    ",`<a href="esd/"               >Various</a>`,"ESD       ","https://app.emptyset.finance/"],

@@ -21,6 +21,12 @@ const main = async() => {
         "https://viper.exchange"
       ],
       [
+        "CopyPasta",
+        `<a href='copypasta'>Various</a>`,
+        "PASTA",
+        "https://copypasta.one"
+      ],
+      [
         "Viper (smartchef)",
         `<a href='viper/smartchef'>Various</a>`,
         "Various",

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include(`${partials}/head`); -%>
+
+<body>
+<%- include(`${partials}/header_main`); -%>
+<pre id="log">
+*************** 👨‍🌾 UNOFFICIAL TIF FARMING CALCULATOR 👨‍🌾 ***************
+INFO  : https://tif.finance
+**************************************************************************
+
+WARNING: Staking through vfat is currently broken. 
+         Visit <a href="https://tif.finance">https://tif.finance/</a> to stake ETH and TIF!
+
+* The deposit fee can be adjust up to 50%, please take note before depositing *
+
+</pre>
+<div class="loader--1"></div>
+<%- include(`${partials}/scripts`, {scriptname: 'arbitrum_tif'}); -%>
+</body>
+</html> 

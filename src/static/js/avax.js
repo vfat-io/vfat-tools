@@ -9,6 +9,7 @@ const main = async() => {
     "heading":["Pool Provider","LP", "Reward Tokens", "INFO"],
     "rows": [
         ["Pangolin    ",`<a href="png"        >Various</a>`,"PNG      ","https://app.pangolin.exchange/#/png"],
+        ["Kyber       ",`<a href="kyber"      >Various</a>`,"AVAX      ","https://dmm.exchange"],
         ["Complus     ",`<a href="complus"    >Various</a>`,"COM      ","https://avax.complus.exchange"],
         ["Zero        ",`<a href="zero"       >Various</a>`,"ZERO     ","https://app.0.exchange"],
         ["Yeti        ",`<a href="yeti"       >Various</a>`,"YTS      ","https://exchange.yetiswap.app"],
@@ -39,7 +40,20 @@ const main = async() => {
         ["Crypto Yield Focus",`<a href="cryptoyieldfocus" >Various</a>`,"CYF","https://www.cryptoyieldfocus.com" ],
         ["StormSwap   ",`<a href="stormswap"  >Various</a>`,"STORM    ","https://stormswap.finance" ],
         ["OberonFinance", `<a href="galaxy_oberon" >Various</a>`,"OBERON","https://avalanche-oberon.galaxyfinance.one"],
-        ["TheDragonsLair" ,`<a href="dregg"   >Various</a>`,"DREGG    ","https://thedragonslair.farm" ]
+        ["EnglishFinance",`<a href="english"      >Various</a>`,"ENGLISH    ","https://english.theflyingdutchman.finance" ],
+        ["TheDragonsLair" ,`<a href="dregg"   >Various</a>`,"DREGG    ","https://thedragonslair.farm" ],
+        ["AvaEagle"       ,`<a href="avaeagle">Various</a>`,"EGG    ","https://avaeagle.com" ],
+        ["ThenaFinance" ,`<a href="thena"  >Various</a>`,"THENA   ","https://thena.eternalfinance.live" ],
+        ["SwiftFinance" ,`<a href="swift"  >Various</a>`,"SWIFT   ","https://swiftfinance.farm" ],
+        ["SmitheryFarms-Silver" ,`<a href="silver"  >Various</a>`,"SILVER","https://smitheryfarms.world" ],
+        ["Eleven Finance" ,`<a href="eleven"  >Various</a>`,"ELE","https://eleven.finance" ],
+        ["OmegaFarms   ",`<a href="omega  "  >Various</a>`,"OMEGA     ","https://avax.omegadefi.space" ],
+        ["Mammoth Finance  ",`<a href="mammoth  "  >Various</a>`,"TUSK     ","https://mammothfinance.io" ],
+        ["Singular  ",`<a href="singular">Various</a>`,"SING", 'https://singular.farm' ],
+        ["ZabuV2        ",`<a href="zabuV2"        >Various</a>`,"ZUBAX      ","https://zabu.finance"],
+        ["Dolphin        ",`<a href="dolphin"        >Various</a>`,"DOLPHIN      ","https://www.dolphinswap.finance"],
+        ["ThunderSwap        ",`<a href="thunder"        >Various</a>`,"THUNDER      ","https://thunderswap.club"],
+        ["AvaNyan        ",`<a href="anyan"        >Various</a>`,"NYAN      ","https://avanyan.io"]
     ]
   }
 
