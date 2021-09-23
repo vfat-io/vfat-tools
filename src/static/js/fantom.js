@@ -397,7 +397,13 @@ const main = async() => {
         `<a href='wraith'>Various</a>`,
         "WRA",
         "https://wraithswap.finance"
-      ]
+      ],
+      [
+        "FoxyFinance",
+        `<a href='foxyfinance'>Various</a>`,
+        "FOXY",
+        "https://foxyfinance.co"
+      ],
     ]
   }
 
