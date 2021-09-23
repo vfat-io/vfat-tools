@@ -25,6 +25,7 @@ const avaxTokens = [
     { "id": 'wrapped-avax', "symbol": 'WAVAX', "contract": '0xb31f66aa3c1e785363f0875a1b74e27b85fd66c7' },
     { "id": "galaxy-oberon", "symbol": "OBERON", "contract": "0xc979E70611D997Aa109528c6A9aa73D82Eaa2881"},
     { "id": "tundra", "symbol": "TUNDRA", "contract": "0x21c5402C3B7d40C89Cc472C9dF5dD7E51BbAb1b1"},
+    { "id": "xdollar-stablecoin", "sybmol": "xUSD", "contract": "0x3509f19581aFEDEff07c53592bc0Ca84e4855475"}
 ]
 
 async function getAvaxPrices() {
@@ -123,6 +124,9 @@ async function getAvaxStoredToken(App, tokenAddress, stakingAddress, type) {
     case "vault":
       const vault = new ethers.Contract(tokenAddress, AVAX_VAULT_ABI, App.provider);
       return await getAvaxVault(App, vault, tokenAddress, stakingAddress);
+    case "kyber":
+      const kyber = new ethers.Contract(tokenAddress, DMM_POOL_ABI, App.provider);
+      return await getAvaxUniPool(App, kyber, tokenAddress, stakingAddress);
   }
 }
 
@@ -132,6 +136,14 @@ async function getAvaxToken(App, tokenAddress, stakingAddress) {
     }
     const type = window.localStorage.getItem(tokenAddress);
     if (type) return getAvaxStoredToken(App, tokenAddress, stakingAddress, type);
+    try {
+      const kyber = new ethers.Contract(tokenAddress, DMM_POOL_ABI, App.provider);  
+      const kyberLP = await getAvaxUniPool(App, kyber, tokenAddress, stakingAddress);
+      window.localStorage.setItem(tokenAddress, "kyber");
+      return kyberLP;
+    }
+    catch(err) {
+    }
     try {
       const pool = new ethers.Contract(tokenAddress, UNI_ABI, App.provider);
       const _token0 = await pool.token0();
