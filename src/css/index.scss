@@ -70,40 +70,38 @@ body, input {
 
 }
 
-@media (prefers-color-scheme: dark) {
-  .modal {
-    background-color: var(--main-background-color);
-  }
+.modal {
+background-color: var(--main-background-color);
+}
 
-  .modal-content {
-    background-color: var(--main-background-color);
-  }
+.modal-content {
+background-color: var(--main-background-color);
+}
 
-  .modal-input {
-    background-color: var(--main-background-color);
-    color: var(--main-text-color);
-  }
+.modal-input {
+background-color: var(--main-background-color);
+color: var(--main-text-color);
+}
 
-  #quick-dropdown {
-    color: var(--main-text-color);
-    > li:hover, > li.active {
-      background: rgba(255,255,255,0.2)
-    }
-  }
+#quick-dropdown {
+color: var(--main-text-color);
+> li:hover, > li.active {
+  background: rgba(255,255,255,0.2)
+}
+}
 
-  body {
-    background-color: var(--main-background-color);
-    color: var(--main-text-color);
-  }
+body {
+background-color: var(--main-background-color);
+color: var(--main-text-color);
+}
 
-  a {
-    color: var(--main-text-color);
-  }
+a {
+color: var(--main-text-color);
+}
 
-  .border {
-      border-style: solid;
-      border-color: var(--main-text-color);
-  }
+.border {
+  border-style: solid;
+  border-color: var(--main-text-color);
 }
 
 *, *:before, *:after {
