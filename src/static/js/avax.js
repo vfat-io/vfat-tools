@@ -53,7 +53,8 @@ const main = async() => {
         ["ZabuV2        ",`<a href="zabuV2"        >Various</a>`,"ZUBAX      ","https://zabu.finance"],
         ["Dolphin        ",`<a href="dolphin"        >Various</a>`,"DOLPHIN      ","https://www.dolphinswap.finance"],
         ["ThunderSwap        ",`<a href="thunder"        >Various</a>`,"THUNDER      ","https://thunderswap.club"],
-        ["AvaNyan        ",`<a href="anyan"        >Various</a>`,"NYAN      ","https://avanyan.io"]
+        ["AvaNyan        ",`<a href="anyan"        >Various</a>`,"NYAN      ","https://avanyan.io"],
+        ["Luffy Swap        ",`<a href="luffyswap"        >Various</a>`,"LUFFYS      ","https://luffyswap.finance"]
     ]
   }
 
