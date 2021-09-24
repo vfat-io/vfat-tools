@@ -348,8 +348,8 @@ const main = async () => {
       ['PolyNuts            ', `<a href="polynuts        ">Various</a>`, 'NUTS         ', 'https://polynuts.farm'],
       ['PollyFinance        ', `<a href="pollyfinance    ">Various</a>`, 'POLLY        ', 'https://pollyfinance.com/farms'],
       ['ApeSwap             ', `<a href="apeswap         ">Various</a>`, 'BANANA       ', 'https://app.apeswap.finance'],
-	    ['Gummy Finance       ', `<a href="gummyfinance"    >Various</a>`, 'GUMMY        ', 'https://gummyfinance.cc'],
-	    ['Gull Finance        ', `<a href="gullfinance"     >Various</a>`, 'GULL         ', 'https://gullfinance.xyz'],
+	  ['Gummy Finance       ', `<a href="gummyfinance"    >Various</a>`, 'GUMMY        ', 'https://gummyfinance.cc'],
+	  ['Gull Finance        ', `<a href="gullfinance"     >Various</a>`, 'GULL         ', 'https://gullfinance.xyz'],
       ['PolyAlpha Finance   ', `<a href="polyalpha"       >Various</a>`, 'ALPHA        ', 'https://polyalpha.finance'],
       ['OberonFinance       ', `<a href="galaxy_oberon"   >Various</a>`, 'OBERON       ', 'https://polygon-oberon.galaxyfinance.one'],
       ["TenguSwap           ", `<a href="tenguswap"       >Various</a>`, "TENGUSWAP    ", "https://polygon.tenguswap.com"],
@@ -363,11 +363,13 @@ const main = async () => {
       ['PolyPig Digital     ', `<a href="polypig"         >Various</a>`, 'POLYPIG      ', 'https://polypig.digital'],
       ['Onyx Farms          ', `<a href="onyxfarms"       >Various</a>`, 'ONYX         ', 'https://polygon.onyx.farm'],
       ['Girin Finance       ', `<a href="girinfinance"    >Various</a>`, 'GIRIN        ', 'https://girinfinance.pro'],
-	    ['Pepsi Finance       ', `<a href="pepsifinance"    >Various</a>`, 'PEPSI        ', 'https://pepsifinance.cc'],
-	    ['PolyWise            ', `<a href="polywise"        >Various</a>`, 'WISE         ', 'https://polywise.finance'],
-	    ['DeliriumFarm        ', `<a href="deliriumfarm"    >Various</a>`, 'DELIRIUMFARM ', 'https://delirium.sandman.finance'],
-	    ['Astrofarms - Libra  ', `<a href="astrofarmslibra" >Various</a>`, 'LIBRA        ', 'https://libra.astrofarms.finance'],
-      ['PolyQuail CHK       ', `<a href="polyquail_chk"   >Various</a>`, 'CHK          ', 'https://chk.polyquail.finance']
+	  ['Pepsi Finance       ', `<a href="pepsifinance"    >Various</a>`, 'PEPSI        ', 'https://pepsifinance.cc'],
+	  ['PolyWise            ', `<a href="polywise"        >Various</a>`, 'WISE         ', 'https://polywise.finance'],
+	  ['DeliriumFarm        ', `<a href="deliriumfarm"    >Various</a>`, 'DELIRIUMFARM ', 'https://delirium.sandman.finance'],
+	  ['Astrofarms - Libra  ', `<a href="astrofarmslibra" >Various</a>`, 'LIBRA        ', 'https://libra.astrofarms.finance'],
+      ['PolyQuail CHK       ', `<a href="polyquail_chk"   >Various</a>`, 'CHK          ', 'https://chk.polyquail.finance'],
+      ['TaquitoSwap         ', `<a href="taquitoswap"     >Various</a>`, 'TAQUITO      ', 'https://taquito.finance']
+
     ],
   }
 
