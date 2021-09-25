@@ -522,6 +522,7 @@ const main = async() => {
       ["CC Swap             ", `<a href="ccswap"        >Various</a>`,"CC               ","https://app.ccswap.org"],
       ["UnoRe               ", `<a href="unore"         >Various</a>`,"UNORE            ","https://app.unore.io"],
       ["Centaurus Net       ", `<a href="centaurus_net" >Various</a>`,"CEN              ","https://centaurus.network"]
+      ["wBAN                ", `<a href="wban"          >Various</a>`,"wBAN             ","https://bsc.banano.cc"]
     ]}
 
   let table = new AsciiTable().fromJSON(tableData);
