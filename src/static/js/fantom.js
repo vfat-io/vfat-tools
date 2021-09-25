@@ -63,7 +63,7 @@ const main = async() => {
         "https://fantom.beefy.finance"
       ],
       [
-        "Liquid Driver *",
+        "Liquid Driver",
         `<a href='liquid'>Various</a>`,
         "LQDR",
         "https://www.liquiddriver.finance"
@@ -99,7 +99,7 @@ const main = async() => {
         "https://waka.finance"
       ],
       [
-        "Elk *",
+        "Elk",
         `<a href='elk'>Various</a>`,
         "ELK",
         "https://app.elk.finance"
@@ -391,6 +391,30 @@ const main = async() => {
         `<a href='guru_lite1010'>SUN-WFTM SPIRIT-LP</a>`,
         "SUN",
         "https://ftm.guru/LF/1011"
+      ],
+      [
+        "WraithSwap",
+        `<a href='wraith'>Various</a>`,
+        "WRA",
+        "https://wraithswap.finance"
+      ],
+      [
+        "FoxyFinance",
+        `<a href='foxyfinance'>Various</a>`,
+        "FOXY",
+        "https://foxyfinance.co"
+      ],
+      [
+        "Eleven",
+        `<a href='eleven'>Various</a>`,
+        "Various",
+        "https://eleven.finance"
+      ],
+      [
+        "Fantom Cougar",
+        `<a href='cougar'>Various</a>`,
+        "CGS",
+        "https://fantomapp.cougarswap.io"
       ]
     ]
   }

@@ -1,0 +1,14 @@
+
+:root {
+    --main-background-color: #272727;
+    --main-text-color: #dddddd;
+    --highlight-color: limegreen;
+    --visited-text-color: #7245dc;
+}
+
+[data-theme='light'] {
+    --main-background-color: #dddddd;
+    --main-text-color: #272727;
+    --highlight-color: mediumseagreen;
+    --visited-text-color: #4b2f89;
+}

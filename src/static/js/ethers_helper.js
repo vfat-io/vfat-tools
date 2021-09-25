@@ -24,6 +24,9 @@ const pageNetwork = function() {
   if (network.toLowerCase() === 'moonriver') {
     return window.NETWORKS.MOONRIVER
   }
+  if (network.toLowerCase() === 'optimism') {
+    return window.NETWORKS.OPTIMISM
+  }
   if (network.toLowerCase() === 'heco') {
     return window.NETWORKS.HECO
   }
@@ -1657,7 +1660,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
   else if (pool.symbol.includes("Galaxy-LP")) stakeTokenTicker += " Galaxy LP";
   else if (pool.symbol.includes("KUS-LP")) stakeTokenTicker += " KUS LP";
   else if (pool.symbol.includes("KoffeeMug")) stakeTokenTicker += " KoffeeMug";
-  else if (pool.symbol.includes("DMM-LP")) stakeTokenTicker += " Kyber LP";
+  else if (pool.symbol.includes("DMM-LP")) stakeTokenTicker += " DMM-LP";
   else if (pool.symbol.includes("CAT-LP")) stakeTokenTicker += " PolyCat LP";
   else if (pool.symbol.includes("VLP")) stakeTokenTicker += " AURO LP";
   else if (pool.symbol.includes("DLP")) stakeTokenTicker += " DLP";
@@ -1707,6 +1710,14 @@ function getUniPrices(tokens, prices, pool, chain="eth")
               pool.symbol.includes("Cake") ?  `https://pancakeswap.info/pair/${pool.address}` :
               pool.symbol.includes("CAT-LP") ?  `https://polycat.finance` :
               pool.symbol.includes("PGL") ?  `https://info.pangolin.exchange/#/pair/${pool.address}` :
+              pool.symbol.includes("DMM-LP") ?  (
+                {
+                  "eth": `https://info.dmm.exchange/pair/${t0address}_${t1address}`,
+                  "avax": `https://avax-info.dmm.exchange/pair/${t0address}_${t1address}`,
+                  "bsc": `https://bsc-info.dmm.exchange/pair/${t0address}_${t1address}`,
+                  "matic": `https://polygon-info.dmm.exchange/pair/${t0address}_${t1address}`
+                }
+              [chain]):
               pool.symbol.includes("CS-LP") ?  `https://app.coinswap.space/#/` :
               pool.name.includes("Value LP") ?  `https://info.vswap.fi/pool/${pool.address}` :
               pool.name.includes("Ubeswap") ?  `https://info.ubeswap.org/pair/${pool.address}` :
@@ -1749,6 +1760,11 @@ function getUniPrices(tokens, prices, pool, chain="eth")
             `https://www.bakeryswap.org/#/remove/${t0address}/${t1address}`,
             `https://www.bakeryswap.org/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
           ] :
+          pool.symbol.includes("DMM-LP") ? [
+            `https://dmm.exchange/#/add/${t0address}/${t1address}/${pool.address}`,
+            `https://dmm.exchange/#/remove/${t0address}/${t1address}/${pool.address}`,
+            `https://dmm.exchange/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`            
+          ]:
           pool.symbol.includes("CAT-LP") ? [
             `https://trade.polycat.finance/#/add/${t0address}/${t1address}`,
             `https://trade.polycat.finance/#/remove/${t0address}/${t1address}`,
@@ -2285,6 +2301,9 @@ function getErc20Prices(prices, pool, chain="eth") {
     case "fantom":
       poolUrl=`https://ftmscan.com/token/${pool.address}`;
       break;
+    case "optimism":
+      poolUrl=`https://optimistic.etherscan.io/token/${pool.address}`;
+      break;
     case "fuse":
       poolUrl=`https://explorer.fuse.io/address/${pool.address}`;
       break;
@@ -2798,6 +2817,9 @@ async function printSynthetixPool(App, info, chain="eth", customURLs) {
     switch (chain) {
       case "eth":
         _print(`<a target="_blank" href="https://etherscan.io/address/${info.stakingAddress}#code">Etherscan</a>`);
+        break;
+      case "optimism":
+        _print(`<a target="_blank" href="https://optimistic.etherscan.io/address/${info.stakingAddress}#code">Optimism</a>`);
         break;
       case "avax":
         _print(`<a target="_blank" href="https://cchain.explorer.avax.network/address/${info.stakingAddress}#code">Explorer</a>`);
