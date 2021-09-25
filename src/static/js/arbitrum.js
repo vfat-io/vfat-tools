@@ -29,7 +29,9 @@ const main = async() => {
       ["WhalesFinance       ",""                                                                                               , `<a href="/arbitrum/whalesfinance">Various</a>`,"WHALES            ","https://app.whalesfinance.io/"],
       ["Parrotdefi          ",`<a href="https://twitter.com/MCNVentures/status/1440498902688358402?s=20" target="_blank" class="mcn-reviewed">REVIEW</a>`, `<a href="/arbitrum/parrotdefi"  >Various</a>`,"PPEGG              ","https://parrotdefi.com"],
       ["Arbis               ",""                                                                                               , `<a href="/arbitrum/arbis"       >Various</a>`,"Various            ","https://arbis.finance"],
-      ["DragonArbi          ",""                                                                                               , `<a href="/arbitrum/dragonarbi"  >Various</a>`,"DRAGON             ","https://dragonarbi.com"]
+      ["DragonArbi          ",""                                                                                               , `<a href="/arbitrum/dragonarbi"  >Various</a>`,"DRAGON             ","https://dragonarbi.com"],
+      ["Hundred             ",""                                                                                               , `<a href="/arbitrum/hundred"     >Various</a>`,"HND                ","https://hundred.finance"],
+      ["Polarbi             ",""                                                                                               , `<a href="/arbitrum/polarbi"     >Various</a>`,"POLAR              ","https://www.polarbi.net"]
      ]
   }
 

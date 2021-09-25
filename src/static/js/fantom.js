@@ -63,7 +63,7 @@ const main = async() => {
         "https://fantom.beefy.finance"
       ],
       [
-        "Liquid Driver *",
+        "Liquid Driver",
         `<a href='liquid'>Various</a>`,
         "LQDR",
         "https://www.liquiddriver.finance"
@@ -99,7 +99,7 @@ const main = async() => {
         "https://waka.finance"
       ],
       [
-        "Elk *",
+        "Elk",
         `<a href='elk'>Various</a>`,
         "ELK",
         "https://app.elk.finance"
@@ -404,6 +404,18 @@ const main = async() => {
         "FOXY",
         "https://foxyfinance.co"
       ],
+      [
+        "Eleven",
+        `<a href='eleven'>Various</a>`,
+        "Various",
+        "https://eleven.finance"
+      ],
+      [
+        "Fantom Cougar",
+        `<a href='cougar'>Various</a>`,
+        "CGS",
+        "https://fantomapp.cougarswap.io"
+      ]
     ]
   }
 

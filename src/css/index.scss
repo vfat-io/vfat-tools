@@ -96,7 +96,11 @@ color: var(--main-text-color);
 }
 
 a {
-color: var(--main-text-color);
+  color: var(--main-text-color);
+}
+
+a:visited {
+    color: var(--visited-text-color);
 }
 
 .border {
