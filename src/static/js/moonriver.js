@@ -13,8 +13,7 @@ const main = async() => {
       ["Moonkafe                ", `<a href="moonkafe"     >Various</a>`,"KAFE  ","https://moon.kafe.finance"],
       ["MoonEngine              ", `<a href="moonengine"     >Various</a>`,"MOONENGINE  ","https://www.moonengine.info"],
       ["Bcharity              ", `<a href="bcharity"     >Various</a>`,"GIVE  ","https://moongive.netlify.app/"],
-      ["MoonLake              ", `<a href="moonlake"     >Various</a>`,"MOONLAKE  ","https://moonlake.finance/"],
-     
+      ["1Swap              ", `<a href="1swap"     >Various</a>`,"1SWAP  ","https://1swap.fi/"],
     ]
   }
 
