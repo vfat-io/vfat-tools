@@ -369,7 +369,7 @@ const main = async () => {
 	  ['Astrofarms - Libra  ', `<a href="astrofarmslibra" >Various</a>`, 'LIBRA        ', 'https://libra.astrofarms.finance'],
       ['PolyQuail CHK       ', `<a href="polyquail_chk"   >Various</a>`, 'CHK          ', 'https://chk.polyquail.finance'],
       ['TaquitoSwap         ', `<a href="taquitoswap"     >Various</a>`, 'TAQUITO      ', 'https://taquito.finance']
-
+      ['wBAN                ', `<a href="wban"            >Various</a>`, 'wBAN         ', 'https://polygon.banano.cc/'],
     ],
   }
 
