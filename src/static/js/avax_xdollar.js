@@ -58,10 +58,7 @@ async function main() {
     const tokens = {};
     const prices = await getAvaxPrices();
 
-    const p = await loadAvaxSynthetixPool(App, tokens, prices, xusdWAVAXPool.abi, 
-                                                               xusdWAVAXPool.address, 
-                                                               xusdWAVAXPool.rewardTokenFunction, 
-                                                               xusdWAVAXPool.stakeTokenFunction);
+    const p = await loadMultipleAvaxSynthetixPools(App, tokens, prices, [xusdWAVAXPool]);
 
     const p2 = await loadKyberDMMPools(App, tokens, prices, [xusdUsdcPool]);
 
@@ -74,11 +71,12 @@ async function main() {
                                                       XdoPool.address, 
                                                       XdoPool.rewardTokenAddresses,
                                                       XdoPool.stakeTokenFunction);
-    
-    let totalPStaked = formatMoney(p.totalUserStaked+p0.totalUserStaked+p1.totalUserStaked+p2.totalUserStaked);
-    let totalPAPR = ((p.totalUserStaked * p.totalAPR + p0.totalUserStaked * p0.totalAPR + p1.totalUserStaked * p1.totalAPR + p2.totalUserStaked * p2.totalAPR) / (p.totalUserStaked + p0.totalUserStaked + p1.totalUserStaked + p2.totalUserStaked) * 100).toFixed(2)
+
+    let totalPStaked = formatMoney(p.totalUserStaked+p0.userStaked+p1.userStaked+p2.totalUserStaked);
+    let totalPAPR = ((p.totalUserStaked * p.totalApr + p0.userStaked * p0.apr + p2.totalUserStaked * p2.totalAPR) / (p.totalUserStaked + p0.userStaked + p2.totalUserStaked) * 100).toFixed(2)
     _print_bold(`Total staked: $${formatMoney(p.staked_tvl+p0.staked_tvl+p1.staked_tvl+p2.staked_tvl)}`);
-    if (p.totalUserStaked > 0 || p0.totalUserStaked > 0 || p1.totalUserStaked > 0 || p2.totalUserStaked > 0) {
+
+    if (p.totalUserStaked > 0 || p0.userStaked > 0 || p1.userStaked > 0 || p2.totalUserStaked > 0) {
       _print(`You are staking a total of $${totalPStaked} at an APR of ${totalPAPR}%\n`);
     }
 
@@ -378,6 +376,7 @@ async function loadKyberDMMPools(App, tokens, prices, pools, customURLs) {
     }
   }
   let totalAPR = totalUserStaked == 0 ? 0 : individualAPRs.reduce((x,y)=>x+y, 0) / totalUserStaked;
+
   return { staked_tvl : totalStaked, totalUserStaked, totalAPR };
 }
 
