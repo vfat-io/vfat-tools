@@ -16,7 +16,7 @@ async function main() {
    const MOONLAKE_CHEF = new ethers.Contract(MOONLAKE_CHEF_ADDR, MOONLAKE_CHEF_ABI, App.provider);
     
    const blocksPerSeconds = await getAverageBlockTime(App);
-   const startBlock = await MOON_CHEF.startBlock();
+   const startBlock = await MOONLAKE_CHEF.startBlock();
     const currentBlock = await App.provider.getBlockNumber();
     
    
