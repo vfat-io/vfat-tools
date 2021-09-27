@@ -6,6 +6,10 @@ App : https://vfat.tools
 
 Original work: https://yieldfarming.info
 
+## vfat.tools listing + review service in partnership with MCN Ventures ##
+
+Please seee https://mcn.ventures/review for more details on this service.
+
 ## How to run locally
 
 Fork the repo and clone it to your PC, or just clone the original.
@@ -37,7 +41,3 @@ For most new pages you will need three things:
 \* Please note project are added chronologically, newest at the bottom.
 
 ** Please do not add any projects to the front page index, if on ETH use all.js
-
-## MCN Dual farming
-
-MCN is a new type of decentralized fund, which offers dual token farming for onboarded projects. Please read the [listing guide](https://mcndvf.medium.com/mcn-farm-listing-guide-b4f8e3c3ec41) if you would like to submit your project for this.
