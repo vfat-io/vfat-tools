@@ -16,8 +16,10 @@ async function main() {
    const DODO_CHEF = new ethers.Contract(DODO_CHEF_ADDR, DODO_CHEF_ABI, App.provider);
 
    const DODO_CHEF_ADDR0 = "0xE3C10989dDc5Df5B1b9c0E6229c2E4e0862fDe3e";
+   const DODO_CHEF_ADDR1 = "0x06633cd8E46C3048621A517D6bb5f0A84b4919c6";
      const rewardTokenTicker = "DODO";
      const DODO_CHEF0 = new ethers.Contract(DODO_CHEF_ADDR0, DODO_CHEF_ABI0, App.provider);
+     const DODO_CHEF1 = new ethers.Contract(DODO_CHEF_ADDR1, DODO_CHEF_ABI, App.provider);
   
      const rewardsPerWeek0 = await DODO_CHEF0.dodoPerBlock() /1e18
           * 604800 / 13.5;
@@ -28,7 +30,10 @@ async function main() {
     await loadArbitrumDodoContract0(App, tokens, prices, DODO_CHEF0, DODO_CHEF_ADDR0, DODO_CHEF_ABI0, rewardTokenTicker,
       null, rewardsPerWeek0, "getPendingReward");
 
-    await loadArbitrumDodoContract(App, tokens, prices, DODO_CHEF, DODO_CHEF_ADDR, DODO_CHEF_ABI,
+      await loadArbitrumDodoContract(App, tokens, prices, DODO_CHEF, DODO_CHEF_ADDR, DODO_CHEF_ABI,
+        "getPendingRewardByToken");
+
+      await loadArbitrumDodoContract(App, tokens, prices, DODO_CHEF1, DODO_CHEF_ADDR1, DODO_CHEF_ABI,
       "getPendingRewardByToken");
 
     hideLoading();
