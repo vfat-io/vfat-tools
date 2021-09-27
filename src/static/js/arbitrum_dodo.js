@@ -36,6 +36,16 @@ async function main() {
       await loadArbitrumDodoContract(App, tokens, prices, DODO_CHEF1, DODO_CHEF_ADDR1, DODO_CHEF_ABI,
       "getPendingRewardByToken");
 
+    /*_print_bold(`Total Staked: $${formatMoney(p0.totalStaked+p1.totalStaked+p2.totalStaked)}`);
+    const userYearlyEarnings = p0.totalUserStaked * p0.averageApr + p1.totalUserStaked * p1.averageApr + p2.totalUserStaked * p2.averageApr
+    if (p0.totalUserStaked > 0 || p1.totalUserStaked > 0 || p2.totalUserStaked > 0) {
+      _print_bold(`\nYou are staking a total of $${formatMoney(p0.totalUserStaked+p1.totalUserStaked+p2.totalUserStaked)} at an average APR of ${(userYearlyEarnings / totalUserStaked * 100).toFixed(2)}%`)
+      _print(`Estimated earnings:`
+          + ` Day $${formatMoney(userYearlyEarnings/365)}`
+          + ` Week $${formatMoney(userYearlyEarnings/52)}`
+          + ` Year $${formatMoney(userYearlyEarnings)}\n`);
+    } */
+
     hideLoading();
   }
 
