@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include(`${partials}/head`); -%>
+
+  <body>
+    <%- include(`${partials}/header_main`); -%>
+      <pre id="log">
+***************************** BSC NETWORK *************************************
+
+*************** 👨‍🌾 UNOFFICIAL WRAPPED BANANO FARMING CALCULATOR 👨‍🌾 *************
+INFO  : https://bsc.banano.cc
+***********************************************************************************
+
+*** If you are being rate limited, please select a different RPC URL from here https://docs.binance.org/smart-chain/developer/rpc.html ***
+
+</pre>
+      <div class="loader--1"></div>
+      <%- include(`${partials}/scripts`, {scriptname: 'bsc_wban' }); -%>
+  </body>
+
+</html>
