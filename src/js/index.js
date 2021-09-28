@@ -373,6 +373,21 @@ window.NETWORKS = {
       "https://iotexscan.io"
     ],
   },
+  METER: {
+    "chainId": "0x52",
+    "chainName": "Meter Mainnet",
+    "nativeCurrency": {
+      "name": "meter-stable",
+      "symbol": "MTR",
+      "decimals": 18
+    },
+    "rpcUrls": [
+      "https://rpc.meter.io"
+    ],
+    "blockExplorerUrls": [
+      "https://scan.meter.io"
+    ],
+  },
 }
 
 const infuraId = atob(window.ETHEREUM_NODE_URL).split('/').pop()

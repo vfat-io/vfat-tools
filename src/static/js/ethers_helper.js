@@ -63,6 +63,9 @@ const pageNetwork = function() {
   if (network.toLowerCase() === 'iotex') {
     return window.NETWORKS.IOTEX
   }
+  if (network.toLowerCase() === 'meter') {
+    return window.NETWORKS.METER
+  }
 
   return window.NETWORKS.ETHEREUM
 }
@@ -2313,6 +2316,9 @@ function getErc20Prices(prices, pool, chain="eth") {
     case "celo":
       poolUrl=`https://explorer.celo.org/address/${pool.address}`;
       break;
+    case "meter":
+      poolUrl=`https://scan.meter.io/address/${pool.address}`;
+      break;
     case "iotex":
       poolUrl=`https://iotexscan.io/token/${pool.address}`;
       break;
@@ -2853,6 +2859,9 @@ async function printSynthetixPool(App, info, chain="eth", customURLs) {
         break;
       case "iotex":
           _print(`<a target="_blank" href="https://iotexscan.io/address/${info.stakingAddress}#code">IoTeX Explorer</a>`);
+          break;
+      case "meter":
+          _print(`<a target="_blank" href="https://scan.meter.io/address/${info.stakingAddress}">Meter Explorer</a>`);
           break;
       case "arbitrum":
         _print(`<a target="_blank" href="https://arbiscan.io/address/${info.stakingAddress}#code">Arbitrum Explorer</a>`);
