@@ -1665,6 +1665,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
   else if (pool.symbol.includes("VLP")) stakeTokenTicker += " AURO LP";
   else if (pool.symbol.includes("DLP")) stakeTokenTicker += " DLP";
   else if (pool.symbol.includes("ULP")) stakeTokenTicker += " Ubeswap LP Token";
+  else if (pool.symbol.includes("LOVE LP")) stakeTokenTicker += " Love Boat Love LP Token"; 
   else stakeTokenTicker += " Uni LP";
   return {
       t0: t0,
@@ -1747,6 +1748,9 @@ function getUniPrices(tokens, prices, pool, chain="eth")
                     "matic": `https://polygon-exchange.galaxyfinance.one/#/swap`,
                     "fantom": `https://fantom-exchange.galaxyfinance.one/#/swap`,
                 }[chain]) :
+              pool.symbol.includes("LOVE LP") ? ({
+                "matic": `https://info.loveboat.exchange/pair/${pool.address}`
+              }[chain]) : 
               chain == "matic" ? `https://info.quickswap.exchange/pair/${pool.address}` :
             `http://v2.uniswap.info/pair/${pool.address}`;
           const helperUrls = pool.is1inch ? [] :
@@ -1909,6 +1913,13 @@ function getUniPrices(tokens, prices, pool, chain="eth")
             `https://koffeeswap.exchange/#/remove/${t0address}/${t1address}`,
             `https://koffeeswap.exchange/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
         ] :
+          pool.symbol.includes("LOVE LP") ? ({
+            "matic": [
+              `https://loveboat.exchange/#/add/${t0address}/${t1address}`,
+              `https://loveboat.exchange/#/remove/${t0address}/${t1address}`,
+              `https://loveboat.exchange/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+            ]
+          }[chain]) :
           [ `https://app.uniswap.org/#/add/v2/${t0address}/${t1address}`,
             `https://app.uniswap.org/#/remove/v2/${t0address}/${t1address}`,
             `https://app.uniswap.org/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}&use=v2` ]
