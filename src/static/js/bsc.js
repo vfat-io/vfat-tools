@@ -500,7 +500,7 @@ const main = async() => {
       ["BabySwap            ", `<a href="babyswap"      >Various</a>`,"BABY             ","https://home.babyswap.finance"],
       ["Alita               ", `<a href="alita"         >Various</a>`,"ALI              ","https://app.alita.finance"],
       ["Singular            ", `<a href="singular"      >Various</a>`,"SING             ","https://singular.farm"],
-      ["Elk *               ", `<a href="elk"           >Various</a>`,"ELK              ","https://app.elk.finance"],
+      ["Elk                 ", `<a href="elk"           >Various</a>`,"ELK              ","https://app.elk.finance"],
       ["Defily              ", `<a href="defily"        >Various</a>`,"DFL              ","https://defily.io"],
       ["United Farmers Finance", `<a href="united_farmers_finance"        >Various</a>`,"UFF","https://unitedfarmers.finance"],
       ["Yerba Mate Finance  ", `<a href="yerbamatefinance">Various</a>`,"YERBAMATE      ","https://app.yerbamate.finance"],
@@ -515,6 +515,9 @@ const main = async() => {
       ["PearZap             ", `<a href="pearzap"       >Various</a>`,"PEAR             ","https://pearzap.com"],
       ["Centaurus           ", `<a href="centaurus"     >Various</a>`,"CEN              ","https://cen.centaurus.network"],
       ["SecureSwap          ", `<a href="secureswap"    >Various</a>`,"SCX              ","https://secureswap.io"],
+      ["ChronoSwap          ", `<a href="chronoswap"    >Various</a>`,"THOP             ","https://chronoswap.finance"],
+      ["Chupacabra          ", `<a href="chupacabra"    >Various</a>`,"Chupa            ","https://chupacabra.finance"],
+      ["WWE                 ", `<a href="wwe"           >Various</a>`,"WWE              ","https://wwe.wwf.finance"],
       ["UnoRe               ", `<a href="unore"         >Various</a>`,"UNORE            ","https://app.unore.io"]
     ]}
 
