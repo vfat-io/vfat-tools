@@ -368,7 +368,7 @@ const main = async () => {
 	    ['DeliriumFarm        ', `<a href="deliriumfarm"    >Various</a>`, 'DELIRIUMFARM ', 'https://delirium.sandman.finance'],
 	    ['Astrofarms - Libra  ', `<a href="astrofarmslibra" >Various</a>`, 'LIBRA        ', 'https://libra.astrofarms.finance'],
       ['PolyQuail CHK       ', `<a href="polyquail_chk"   >Various</a>`, 'CHK          ', 'https://chk.polyquail.finance'],
-      ['TaquitoSwap         ', `<a href="taquitoswap"     >Various</a>`, 'TAQUITO      ', 'https://taquito.finance']
+      ['TaquitoSwap         ', `<a href="taquitoswap"     >Various</a>`, 'TAQUITO      ', 'https://taquito.finance'],
       ['wBAN                ', `<a href="wban"            >Various</a>`, 'wBAN         ', 'https://polygon.banano.cc/'],
       ['Love Boat Exchange  ', `<a href="love"            >Various</a>`, 'LOVE         ', 'https://www.loveboat.exchange/#/rewards'],
     ],
