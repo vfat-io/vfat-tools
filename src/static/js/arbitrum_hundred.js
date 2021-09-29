@@ -486,9 +486,9 @@ function printDodoAPR(rewardTokenTickers, rewardPrices, poolRewardsPerWeek,
   }
   if (userStaked > 0) {
     _print(`Estimated Total Earnings :`
-        + ` Day ${totalUserDailyRewards.toFixed(fixedDecimals)} ($${formatMoney(totalUserDailyRewardsUsd)})`
-        + ` Week ${totalUserWeeklyRewards.toFixed(fixedDecimals)} ($${formatMoney(totalUserWeeklyRewardsUsd)})`
-        + ` Year ${totalUserYearlyRewards.toFixed(fixedDecimals)} ($${formatMoney(totalUserYearlyRewardsUsd)})`);
+        + ` Day ($${formatMoney(totalUserDailyRewardsUsd)})`
+        + ` Week ($${formatMoney(totalUserWeeklyRewardsUsd)})`
+        + ` Year ($${formatMoney(totalUserYearlyRewardsUsd)})`);
   }
   return {
     userStakedUsd,
