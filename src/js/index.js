@@ -77,6 +77,21 @@ window.NETWORKS = {
       "https://moonbeam.network/networks/moonriver/"
     ]
   },
+  OPTIMISM: {
+    "chainId": "0xA",
+    "chainName": "Optimistic Ethereum",
+    "nativeCurrency": {
+      "name": "ethereum",
+      "symbol": "OETH",
+      "decimals": 18
+    },
+    "rpcUrls": [
+      "https://mainnet.optimism.io/"
+    ],
+    "blockExplorerUrls": [
+      "https://optimistic.etherscan.io/"
+    ]
+  },
   BINANCE_SMART_CHAIN: {
     "chainId": "0x38",
     "chainName": "Binance Smart Chain Mainnet",

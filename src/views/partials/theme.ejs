@@ -1,0 +1,38 @@
+<br/>
+<a href="" id="theme-button">[light mode]</a>
+<script>
+
+    function setDarkMode() {
+        document.documentElement.setAttribute('data-theme', 'dark');
+        localStorage.setItem('theme', 'dark');
+        document.getElementById("theme-button").innerText = '[light mode]';
+    }
+
+    function setLightMode() {
+        document.documentElement.setAttribute('data-theme', 'light');
+        localStorage.setItem('theme', 'light');
+        document.getElementById("theme-button").innerText = '[dark mode]';
+    }
+
+    function initTheme() {
+        let currentTheme = localStorage.getItem('theme');
+        if (currentTheme === "dark") {
+            setDarkMode();
+        } else {
+            setLightMode();
+        }
+    }
+
+    function setTheme() {
+        let currentTheme = localStorage.getItem('theme');
+        if (currentTheme === "dark") {
+            setLightMode();
+        } else {
+            setDarkMode();
+        }
+    }
+
+    initTheme();
+    document.getElementById("theme-button").onclick = setTheme
+
+</script>

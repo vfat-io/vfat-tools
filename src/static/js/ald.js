@@ -295,7 +295,7 @@ const chefAldContract_unstake = async function(chefAbi, chefAddress, poolAddress
   const signer = App.provider.getSigner()
   const CHEF_CONTRACT = new ethers.Contract(chefAddress, chefAbi, signer)
 
-  const currentStakedAmount = await CHEF_CONTRACT.userBalanceForPool(app.YOUR_ADDRESS, chefAddress);
+  const currentStakedAmount = await CHEF_CONTRACT.userBalanceForPool(app.YOUR_ADDRESS, poolAddress);
   const earnedTokenAmount = await CHEF_CONTRACT.callStatic[pendingRewardsFunction](poolAddress, App.YOUR_ADDRESS) / 1e18
 
   if (earnedTokenAmount > 0) {
