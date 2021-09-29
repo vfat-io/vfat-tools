@@ -11,6 +11,13 @@ const HUNDRED_ABI = {
             stateMutability: 'view',
             type: 'function',
         },
+        {
+            inputs: [{"internalType":"address","name":"","type":"address"}],
+            name: 'compSpeeds',
+            outputs: [{"internalType":"uint256","name":"","type":"uint256"}],
+            stateMutability: 'view',
+            type: 'function',
+        }
     ],
     pToken: [
         {
@@ -146,13 +153,16 @@ async function main() {
     _print(`Initialized ${App.YOUR_ADDRESS}\n`);
     _print("Reading smart contracts...\n");
 
+    const tokens = {};
+    const prices = await getArbitrumPrices();
+
     const COMPTROLLER = new ethcall.Contract(contracts.comptroller, HUNDRED_ABI.comptroller, App.provider);
 
     const [allMarkets] = await App.ethcallProvider.all([COMPTROLLER.getAllMarkets()]);
 
     // console.log(allMarkets);
 
-    const data = await Promise.all(allMarkets.map(token => loadData(App, token)));
+    const data = await Promise.all(allMarkets.map(token => loadData(App, token, COMPTROLLER, prices)));
 
     // console.log(data);
 
@@ -176,9 +186,6 @@ async function main() {
     const DODO_CHEF_ADDR = "0x06633cd8E46C3048621A517D6bb5f0A84b4919c6";
     const DODO_CHEF = new ethers.Contract(DODO_CHEF_ADDR, DODO_CHEF_ABI, App.provider);
 
-    const tokens = {};
-    const prices = await getArbitrumPrices();
-
     let p0 = await loadArbitrumDodoContract(App, tokens, prices, DODO_CHEF, DODO_CHEF_ADDR, DODO_CHEF_ABI,
         "getPendingRewardByToken");
     _print_bold(`Total Staked: $${formatMoney(p0.totalStaked)}`);
@@ -195,7 +202,7 @@ async function main() {
     hideLoading();
 }
 
-async function loadData(App, token) {
+async function loadData(App, token, comptroller, prices) {
 
     const PTOKEN_CONTRACT = new ethcall.Contract(token, HUNDRED_ABI.pToken, App.provider);
 
@@ -257,7 +264,15 @@ async function loadData(App, token) {
     const supplyAPY = ((1 + supplyRatePerBlock_ / 1e18) ** blocksPerYear - 1) * 100;
     const borrowAPY = ((1 + borrowRatePerBlock_ / 1e18) ** blocksPerYear - 1) * 100;
 
-    const supplyFarmingAPY = 0;
+    let supplyFarmingAPY = 0;
+    const [farmingRewards_] = await App.ethcallProvider.all([comptroller.compSpeeds(token)])
+    const farmingRewards = farmingRewards_ / 1e18;
+    const blocksPerYear_ = blocksPerYear * 1
+    const tvl = totalSupply * underlyingPrice;
+    const rewardPrice = getParameterCaseInsensitive(prices, "0x10010078a54396f62c96df8532dc2b4847d47ed3")?.usd;
+    if(farmingRewards > 0){
+      supplyFarmingAPY = farmingRewards * blocksPerYear_ * rewardPrice / tvl * 100
+    }
     const borrowFarmingAPY = 0;
 
     const supplyNetAPY = supplyAPY + supplyFarmingAPY
@@ -303,7 +318,7 @@ async function printData(data) {
     _print(`Supplied : ${formatMoney(data.totalSupply)} ($${formatMoney(data.totalSupply * data.underlyingPrice)}) at ${data.supplyAPY.toFixed(2)}% APY`)
     _print(`Borrowed : ${formatMoney(data.totalBorrows)} ($${formatMoney(data.totalBorrows * data.underlyingPrice)}) at ${data.borrowAPY.toFixed(2)}% APY`)
     _print(`Reserves : ${formatMoney(data.totalReserves)} ($${formatMoney(data.totalReserves * data.underlyingPrice)})`);
-    _print(`Farming APY Supply ${data.supplyFarmingAPY.toFixed(2)}% Borrow ${data.borrowFarmingAPY.toFixed(2)}%`);
+    _print(`Farming APR Supply ${data.supplyFarmingAPY.toFixed(2)}% Borrow ${data.borrowFarmingAPY.toFixed(2)}%`);
     _print(`Net APY Supply ${data.supplyNetAPY.toFixed(2)}% Borrow ${data.borrowNetAPY.toFixed(2)}%`);
     if (data.supply > 0) {
         _print(`You are supplying ${formatMoney(data.supply)} ${data.underlyingSymbol} ($${formatMoney(data.supply * data.underlyingPrice)}), ${(data.supplyPct).toFixed(2)}% of the pool.`)
