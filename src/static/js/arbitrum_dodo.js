@@ -16,8 +16,10 @@ async function main() {
    const DODO_CHEF = new ethers.Contract(DODO_CHEF_ADDR, DODO_CHEF_ABI, App.provider);
 
    const DODO_CHEF_ADDR0 = "0xE3C10989dDc5Df5B1b9c0E6229c2E4e0862fDe3e";
+   const DODO_CHEF_ADDR1 = "0x06633cd8E46C3048621A517D6bb5f0A84b4919c6";
      const rewardTokenTicker = "DODO";
      const DODO_CHEF0 = new ethers.Contract(DODO_CHEF_ADDR0, DODO_CHEF_ABI0, App.provider);
+     const DODO_CHEF1 = new ethers.Contract(DODO_CHEF_ADDR1, DODO_CHEF_ABI, App.provider);
   
      const rewardsPerWeek0 = await DODO_CHEF0.dodoPerBlock() /1e18
           * 604800 / 13.5;
@@ -25,11 +27,25 @@ async function main() {
     const tokens = {};
     const prices = await getArbitrumPrices();
 
-    await loadArbitrumDodoContract0(App, tokens, prices, DODO_CHEF0, DODO_CHEF_ADDR0, DODO_CHEF_ABI0, rewardTokenTicker,
+    let p0 = await loadArbitrumDodoContract0(App, tokens, prices, DODO_CHEF0, DODO_CHEF_ADDR0, DODO_CHEF_ABI0, rewardTokenTicker,
       null, rewardsPerWeek0, "getPendingReward");
 
-    await loadArbitrumDodoContract(App, tokens, prices, DODO_CHEF, DODO_CHEF_ADDR, DODO_CHEF_ABI,
+    let p1 = await loadArbitrumDodoContract(App, tokens, prices, DODO_CHEF, DODO_CHEF_ADDR, DODO_CHEF_ABI,
+        "getPendingRewardByToken");
+
+    let p2 = await loadArbitrumDodoContract(App, tokens, prices, DODO_CHEF1, DODO_CHEF_ADDR1, DODO_CHEF_ABI,
       "getPendingRewardByToken");
+
+    _print_bold(`Total Staked: $${formatMoney(p0.totalStaked+p1.totalStaked+p2.totalStaked)}`);
+    const userYearlyEarnings = p0.totalUserStaked * p0.averageApr + p1.totalUserStaked * p1.averageApr + p2.totalUserStaked * p2.averageApr
+    const totalUserStaked = p0.totalUserStaked+p1.totalUserStaked+p2.totalUserStaked;
+    if (p0.totalUserStaked > 0 || p1.totalUserStaked > 0 || p2.totalUserStaked > 0) {
+      _print_bold(`\nYou are staking a total of $${formatMoney(totalUserStaked)} at an average APR of ${(userYearlyEarnings / totalUserStaked * 100).toFixed(2)}%`)
+      _print(`Estimated earnings:`
+          + ` Day $${formatMoney(userYearlyEarnings/365)}`
+          + ` Week $${formatMoney(userYearlyEarnings/52)}`
+          + ` Year $${formatMoney(userYearlyEarnings)}\n`);
+    }
 
     hideLoading();
   }
@@ -40,9 +56,8 @@ async function loadArbitrumDodoContract(App, tokens, prices, chef, chefAddress, 
 
   const poolCount = 1;
 
-  _print(`<a href='https://ftmscan.com/address/${chefAddress}' target='_blank'>Staking Contract</a>`);
-
-  _print(`Showing incentivized pools only.\n`);
+  _print(`<a href='https://arbiscan.io/address/${chefAddress}' target='_blank'>Staking Contract</a>`);
+  _print("");
 
   const poolInfos = await Promise.all([...Array(poolCount).keys()].map(async (x) =>
     await getArbitrumDodoPoolInfo(App, chefContract, chefAddress, x, pendingRewardsFunction)));
@@ -61,9 +76,6 @@ async function loadArbitrumDodoContract(App, tokens, prices, chef, chefAddress, 
 
   const poolPrices = poolInfos.map(poolInfo => poolInfo.poolToken ? getPoolPrices(tokens, prices, poolInfo.poolToken, "arbitrum") : undefined);
 
-
-  _print("Finished reading smart contracts.\n");
-
   let aprs = []
   for (i = 0; i < poolCount; i++) {
     if (poolPrices[i]) {
@@ -81,16 +93,14 @@ async function loadArbitrumDodoContract(App, tokens, prices, chef, chefAddress, 
     if (a.userStakedUsd > 0) {
       totalUserStaked += a.userStakedUsd;
       averageApr += a.userStakedUsd * a.yearlyAPR / 100;
+    }else{
+      averageApr = 0;
     }
   }
-  averageApr = averageApr / totalUserStaked;
-  _print_bold(`Total Staked: $${formatMoney(totalStaked)}`);
-  if (totalUserStaked > 0) {
-    _print_bold(`\nYou are staking a total of $${formatMoney(totalUserStaked)} at an average APR of ${(averageApr * 100).toFixed(2)}%`)
-    _print(`Estimated earnings:`
-        + ` Day $${formatMoney(totalUserStaked*averageApr/365)}`
-        + ` Week $${formatMoney(totalUserStaked*averageApr/52)}`
-        + ` Year $${formatMoney(totalUserStaked*averageApr)}\n`);
+  if(totalUserStaked > 0){
+    averageApr = averageApr / totalUserStaked;
+  }else{
+    averageApr = 0;
   }
   return { prices, totalUserStaked, totalStaked, averageApr }
 }
@@ -139,10 +149,9 @@ async function getArbitrumDodoPoolInfo(app, chefContract, chefAddress, poolIndex
 function printDodoChefPool(App, chefAbi, chefAddr, prices, tokens, poolInfo, poolIndex, poolPrices,
                        rewardsPerWeek, rewardTokenTickers, rewardTokenAddresses,
                        pendingRewardsFunction, fixedDecimals, claimFunction, chain="eth", depositFee=0, withdrawFee=0) {
-  fixedDecimals = fixedDecimals ?? 2;
+  fixedDecimals = fixedDecimals ?? 4;
   const sp = (poolInfo.stakedToken == null) ? null : getPoolPrices(tokens, prices, poolInfo.stakedToken, chain);
   let poolRewardsPerWeek = rewardsPerWeek;
-  //if (poolRewardsPerWeek == 0 && rewardsPerWeek != 0) return;
   const userStaked = poolInfo.userStaked;
   let rewardPrices = []
   for(rewardTokenAddress of rewardTokenAddresses){
@@ -172,23 +181,36 @@ function printDodoAPR(rewardTokenTickers, rewardPrices, poolRewardsPerWeek,
     usdCoinsPerWeek.push(usdPerWeek);
   }
   fixedDecimals = fixedDecimals ?? 2;
+  let totalDailyAPR = 0, totalWeeklyAPR = 0, totalYearlyAPR = 0;
   for(let i = 0; i < rewardTokenTickers.length; i++){
     _print(`${rewardTokenTickers[i]} Per Week: ${poolRewardsPerWeek[i].toFixed(fixedDecimals)} ($${formatMoney(usdCoinsPerWeek[i])})`);
     var weeklyAPR = usdCoinsPerWeek[i] / staked_tvl * 100;
     var dailyAPR = weeklyAPR / 7;
     var yearlyAPR = weeklyAPR * 52;
     _print(`APR: Day ${dailyAPR.toFixed(2)}% Week ${weeklyAPR.toFixed(2)}% Year ${yearlyAPR.toFixed(2)}%`);
+    totalDailyAPR+=dailyAPR
+    totalWeeklyAPR+=weeklyAPR
+    totalYearlyAPR+=yearlyAPR
   }
+  _print(`Total APR: Day ${totalDailyAPR.toFixed(2)}% Week ${totalWeeklyAPR.toFixed(2)}% Year ${totalYearlyAPR.toFixed(2)}%`);
   var userStakedUsd = userStaked * poolTokenPrice;
   var userStakedPct = userStakedUsd / staked_tvl * 100;
   _print(`You are staking ${userStaked.toFixed(fixedDecimals)} ${stakeTokenTicker} ($${formatMoney(userStakedUsd)}), ${userStakedPct.toFixed(2)}% of the pool.`);
   let userYearlyUsds = []
+  let totalUserWeeklyRewards = 0, totalUserDailyRewards = 0, totalUserYearlyRewards = 0;
+  let totalUserWeeklyRewardsUsd = 0, totalUserDailyRewardsUsd = 0, totalUserYearlyRewardsUsd = 0;
   for(let i = 0; i < poolRewardsPerWeek.length; i++){
     var userWeeklyRewards = userStakedPct * poolRewardsPerWeek[i] / 100;
     var userDailyRewards = userWeeklyRewards / 7;
     var userYearlyRewards = userWeeklyRewards * 52;
     const userYearlyUsd = userYearlyRewards * rewardPrices[i];
     userYearlyUsds.push(userYearlyUsd);
+    totalUserWeeklyRewards+=userWeeklyRewards;
+    totalUserDailyRewards+=userDailyRewards;
+    totalUserYearlyRewards+=userYearlyRewards;
+    totalUserWeeklyRewardsUsd+=userWeeklyRewards*rewardPrices[i]
+    totalUserDailyRewardsUsd+=userDailyRewards*rewardPrices[i]
+    totalUserYearlyRewardsUsd+=userYearlyRewards*rewardPrices[i]
     if (userStaked > 0) {
       _print(`Estimated ${rewardTokenTickers[i]} earnings:`
           + ` Day ${userDailyRewards.toFixed(fixedDecimals)} ($${formatMoney(userDailyRewards*rewardPrices[i])})`
@@ -196,11 +218,17 @@ function printDodoAPR(rewardTokenTickers, rewardPrices, poolRewardsPerWeek,
           + ` Year ${userYearlyRewards.toFixed(fixedDecimals)} ($${formatMoney(userYearlyRewards*rewardPrices[i])})`);
     }
   }
+  if (userStaked > 0) {
+    _print(`Estimated Total Earnings :`
+        + ` Day ($${formatMoney(totalUserDailyRewardsUsd)})`
+        + ` Week ($${formatMoney(totalUserWeeklyRewardsUsd)})`
+        + ` Year ($${formatMoney(totalUserYearlyRewardsUsd)})`);
+  }
   return {
     userStakedUsd,
     totalStakedUsd : staked_tvl,
     userStakedPct,
-    yearlyAPR,
+    yearlyAPR : totalYearlyAPR,
     userYearlyUsds : userYearlyUsds
   }
 }
@@ -210,13 +238,13 @@ function printDodoChefContractLinks(App, chefAbi, chefAddr, poolIndex, poolAddre
     claimFunction, rewardTokenPrices, chain, depositFee, withdrawFee) {
   fixedDecimals = fixedDecimals ?? 2;
   const approveAndStake = async function() {
-    return chefContract_stake(chefAbi, chefAddr, poolIndex, poolAddress, App)
+    return dodoArbitrumContract_stake(chefAbi, chefAddr, poolIndex, poolAddress, App)
   }
   const unstake = async function() {
-    return chefContract_unstake(chefAbi, chefAddr, poolIndex, App, pendingRewardsFunction)
+    return dodoArbitrumContract_unstake(chefAbi, chefAddr, poolIndex, App, pendingRewardsFunction)
   }
   const claim = async function() {
-    return chefContract_claim(chefAbi, chefAddr, poolIndex, App, pendingRewardsFunction, claimFunction)
+    return dodoArbitrumContract_claim(chefAbi, chefAddr, poolIndex, App, pendingRewardsFunction, claimFunction)
   }
   if(depositFee > 0){
     _print_link(`Stake ${unstaked.toFixed(fixedDecimals)} ${stakeTokenTicker} - Fee ${depositFee}%`, approveAndStake)
@@ -231,6 +259,100 @@ function printDodoChefContractLinks(App, chefAbi, chefAddr, poolIndex, poolAddre
   _print_link(`Claim ${pendingRewardTokens[0].toFixed(fixedDecimals)} ${rewardTokenTickers[0]} ($${formatMoney(pendingRewardTokens[0]*rewardTokenPrices[0])}) + ${pendingRewardTokens[1].toFixed(fixedDecimals)} ${rewardTokenTickers[1]} ($${formatMoney(pendingRewardTokens[1]*rewardTokenPrices[1])})`, claim)
   _print(`Staking or unstaking also claims rewards.`)
   _print("");
+}
+
+const dodoArbitrumContract_stake = async function(chefAbi, chefAddress, poolIndex, stakeTokenAddr, App) {
+  const signer = App.provider.getSigner()
+
+  const STAKING_TOKEN = new ethers.Contract(stakeTokenAddr, ERC20_ABI, signer)
+  const CHEF_CONTRACT = new ethers.Contract(chefAddress, chefAbi, signer)
+
+  const currentTokens = await STAKING_TOKEN.balanceOf(App.YOUR_ADDRESS)
+  const allowedTokens = await STAKING_TOKEN.allowance(App.YOUR_ADDRESS, chefAddress)
+
+  let allow = Promise.resolve()
+
+  if (allowedTokens / 1e18 < currentTokens / 1e18) {
+    showLoading()
+    allow = STAKING_TOKEN.approve(chefAddress, ethers.constants.MaxUint256)
+      .then(function(t) {
+        return App.provider.waitForTransaction(t.hash)
+      })
+      .catch(function() {
+        hideLoading()
+        alert('Try resetting your approval to 0 first')
+      })
+  }
+
+  if (currentTokens / 1e18 > 0) {
+    showLoading()
+    allow
+      .then(async function() {
+          CHEF_CONTRACT.deposit(currentTokens)
+          .then(function(t) {
+            App.provider.waitForTransaction(t.hash).then(function() {
+              hideLoading()
+            })
+          })
+          .catch(function() {
+            hideLoading()
+            _print('Something went wrong.')
+          })
+      })
+      .catch(function() {
+        hideLoading()
+        _print('Something went wrong.')
+      })
+  } else {
+    alert('You have no tokens to stake!!')
+  }
+}
+
+const dodoArbitrumContract_unstake = async function(chefAbi, chefAddress, poolIndex, App, pendingRewardsFunction) {
+  const signer = App.provider.getSigner()
+  const CHEF_CONTRACT = new ethers.Contract(chefAddress, chefAbi, signer)
+
+  const currentStakedAmount = (await CHEF_CONTRACT.userInfo(poolIndex, App.YOUR_ADDRESS)).amount
+  const earnedTokenAmount = await CHEF_CONTRACT.callStatic[pendingRewardsFunction](poolIndex, App.YOUR_ADDRESS) / 1e18
+
+  if (earnedTokenAmount > 0) {
+    showLoading()
+    CHEF_CONTRACT.withdraw(currentStakedAmount)
+      .then(function(t) {
+        return App.provider.waitForTransaction(t.hash)
+      })
+      .catch(function() {
+        hideLoading()
+      })
+  }
+}
+
+const dodoArbitrumContract_claim = async function(chefAbi, chefAddress, poolIndex, App,
+  pendingRewardsFunction, claimFunction) {
+  const signer = App.provider.getSigner()
+
+  const CHEF_CONTRACT = new ethers.Contract(chefAddress, chefAbi, signer)
+
+  const earnedTokenAmount = await CHEF_CONTRACT.callStatic[pendingRewardsFunction](poolIndex, App.YOUR_ADDRESS) / 1e18
+
+  if (earnedTokenAmount > 0) {
+    showLoading()
+    if (claimFunction) {
+      claimFunction(poolIndex)
+        .then(function(t) {
+          return App.provider.waitForTransaction(t.hash)
+        })
+    }
+    else {
+      CHEF_CONTRACT.claimAllRewards()
+        .then(function(t) {
+          return App.provider.waitForTransaction(t.hash)
+        })
+        .catch(function() {
+          hideLoading()
+        })
+    }
+  }
 }
 
 async function getArbitrumDodoPoolInfo0(app, chefContract, chefAddress, poolIndex, pendingRewardsFunction) {
@@ -268,11 +390,9 @@ async function getArbitrumDodoPoolInfo0(app, chefContract, chefAddress, poolInde
   
     const poolCount = parseInt(await chefContract.poolLength(), 10);
     const totalAllocPoints = await chefContract.totalAllocPoint();
-  
-    _print(`<a href='https://ftmscan.com/address/${chefAddress}' target='_blank'>Staking Contract</a>`);
-    _print(`Found ${poolCount} pools.\n`)
-  
-    _print(`Showing incentivized pools only.\n`);
+
+    _print(`<a href='https://arbiscan.io/address/${chefAddress}' target='_blank'>Staking Contract</a>`);
+    _print("");
   
     const rewardTokenAddress = "0x69eb4fa4a2fbd498c257c57ea8b7655a2559a581";
     const rewardToken = await getArbitrumToken(App, rewardTokenAddress, chefAddress);
@@ -297,13 +417,10 @@ async function getArbitrumDodoPoolInfo0(app, chefContract, chefAddress, poolInde
   
     const poolPrices = poolInfos.map(poolInfo => poolInfo.poolToken ? getPoolPrices(tokens, prices, poolInfo.poolToken, "arbitrum") : undefined);
   
-  
-    _print("Finished reading smart contracts.\n");
-  
     let aprs = []
     for (i = 0; i < poolCount; i++) {
       if (poolPrices[i]) {
-        const apr = printChefPool(App, chefAbi, chefAddress, prices, tokens, poolInfos[i], i, poolPrices[i],
+        const apr = printArbitrumChefPool(App, chefAbi, chefAddress, prices, tokens, poolInfos[i], i, poolPrices[i],
           totalAllocPoints, rewardsPerWeek, rewardTokenTicker, rewardTokenAddress,
           pendingRewardsFunction, null, claimFunction, "arbitrum", poolInfos[i].depositFee, poolInfos[i].withdrawFee)
         aprs.push(apr);
@@ -319,14 +436,10 @@ async function getArbitrumDodoPoolInfo0(app, chefContract, chefAddress, poolInde
         averageApr += a.userStakedUsd * a.yearlyAPR / 100;
       }
     }
-    averageApr = averageApr / totalUserStaked;
-    _print_bold(`Total Staked: $${formatMoney(totalStaked)}`);
-    if (totalUserStaked > 0) {
-      _print_bold(`\nYou are staking a total of $${formatMoney(totalUserStaked)} at an average APR of ${(averageApr * 100).toFixed(2)}%`)
-      _print(`Estimated earnings:`
-          + ` Day $${formatMoney(totalUserStaked*averageApr/365)}`
-          + ` Week $${formatMoney(totalUserStaked*averageApr/52)}`
-          + ` Year $${formatMoney(totalUserStaked*averageApr)}\n`);
+    if(totalUserStaked > 0){
+      averageApr = averageApr / totalUserStaked;
+    }else{
+      averageApr = 0;
     }
     return { prices, totalUserStaked, totalStaked, averageApr }
   }

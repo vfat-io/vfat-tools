@@ -11,7 +11,7 @@ async function main() {
     _print(`Initialized ${App.YOUR_ADDRESS}\n`);
     _print("Reading smart contracts...\n");
 
-   const GIVE_CHEF_ADDR = "0x94acC4E9F7E65BBF92657eBc0d9Ca3f7138A9c4a";
+   const GIVE_CHEF_ADDR = "0x2882e8bB3B960f7A3b0168b933C956c67238d4eA";
    const rewardTokenTicker = "GIVE";
    const GIVE_CHEF = new ethers.Contract(GIVE_CHEF_ADDR, GIVE_CHEF_ABI, App.provider);
     

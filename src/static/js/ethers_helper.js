@@ -1660,11 +1660,12 @@ function getUniPrices(tokens, prices, pool, chain="eth")
   else if (pool.symbol.includes("Galaxy-LP")) stakeTokenTicker += " Galaxy LP";
   else if (pool.symbol.includes("KUS-LP")) stakeTokenTicker += " KUS LP";
   else if (pool.symbol.includes("KoffeeMug")) stakeTokenTicker += " KoffeeMug";
-  else if (pool.symbol.includes("DMM-LP")) stakeTokenTicker += " Kyber LP";
+  else if (pool.symbol.includes("DMM-LP")) stakeTokenTicker += " DMM-LP";
   else if (pool.symbol.includes("CAT-LP")) stakeTokenTicker += " PolyCat LP";
   else if (pool.symbol.includes("VLP")) stakeTokenTicker += " AURO LP";
   else if (pool.symbol.includes("DLP")) stakeTokenTicker += " DLP";
   else if (pool.symbol.includes("ULP")) stakeTokenTicker += " Ubeswap LP Token";
+  else if (pool.symbol.includes("LOVE LP")) stakeTokenTicker += " Love Boat Love LP Token"; 
   else stakeTokenTicker += " Uni LP";
   return {
       t0: t0,
@@ -1710,6 +1711,14 @@ function getUniPrices(tokens, prices, pool, chain="eth")
               pool.symbol.includes("Cake") ?  `https://pancakeswap.info/pair/${pool.address}` :
               pool.symbol.includes("CAT-LP") ?  `https://polycat.finance` :
               pool.symbol.includes("PGL") ?  `https://info.pangolin.exchange/#/pair/${pool.address}` :
+              pool.symbol.includes("DMM-LP") ?  (
+                {
+                  "eth": `https://info.dmm.exchange/pair/${t0address}_${t1address}`,
+                  "avax": `https://avax-info.dmm.exchange/pair/${t0address}_${t1address}`,
+                  "bsc": `https://bsc-info.dmm.exchange/pair/${t0address}_${t1address}`,
+                  "matic": `https://polygon-info.dmm.exchange/pair/${t0address}_${t1address}`
+                }
+              [chain]):
               pool.symbol.includes("CS-LP") ?  `https://app.coinswap.space/#/` :
               pool.name.includes("Value LP") ?  `https://info.vswap.fi/pool/${pool.address}` :
               pool.name.includes("Ubeswap") ?  `https://info.ubeswap.org/pair/${pool.address}` :
@@ -1739,6 +1748,9 @@ function getUniPrices(tokens, prices, pool, chain="eth")
                     "matic": `https://polygon-exchange.galaxyfinance.one/#/swap`,
                     "fantom": `https://fantom-exchange.galaxyfinance.one/#/swap`,
                 }[chain]) :
+              pool.symbol.includes("LOVE LP") ? ({
+                "matic": `https://info.loveboat.exchange/pair/${pool.address}`
+              }[chain]) : 
               chain == "matic" ? `https://info.quickswap.exchange/pair/${pool.address}` :
             `http://v2.uniswap.info/pair/${pool.address}`;
           const helperUrls = pool.is1inch ? [] :
@@ -1752,6 +1764,11 @@ function getUniPrices(tokens, prices, pool, chain="eth")
             `https://www.bakeryswap.org/#/remove/${t0address}/${t1address}`,
             `https://www.bakeryswap.org/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
           ] :
+          pool.symbol.includes("DMM-LP") ? [
+            `https://dmm.exchange/#/add/${t0address}/${t1address}/${pool.address}`,
+            `https://dmm.exchange/#/remove/${t0address}/${t1address}/${pool.address}`,
+            `https://dmm.exchange/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`            
+          ]:
           pool.symbol.includes("CAT-LP") ? [
             `https://trade.polycat.finance/#/add/${t0address}/${t1address}`,
             `https://trade.polycat.finance/#/remove/${t0address}/${t1address}`,
@@ -1896,6 +1913,13 @@ function getUniPrices(tokens, prices, pool, chain="eth")
             `https://koffeeswap.exchange/#/remove/${t0address}/${t1address}`,
             `https://koffeeswap.exchange/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
         ] :
+          pool.symbol.includes("LOVE LP") ? ({
+            "matic": [
+              `https://loveboat.exchange/#/add/${t0address}/${t1address}`,
+              `https://loveboat.exchange/#/remove/${t0address}/${t1address}`,
+              `https://loveboat.exchange/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+            ]
+          }[chain]) :
           [ `https://app.uniswap.org/#/add/v2/${t0address}/${t1address}`,
             `https://app.uniswap.org/#/remove/v2/${t0address}/${t1address}`,
             `https://app.uniswap.org/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}&use=v2` ]
