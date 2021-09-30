@@ -521,7 +521,8 @@ const main = async() => {
       ["UnoRe               ","", `<a href="unore"         >Various</a>`,"UNORE            ","https://app.unore.io"],
       ["Centaurus Net       ","", `<a href="centaurus_net" >Various</a>`,"CEN              ","https://centaurus.network"],
       ["BYield Finance      ","", `<a href="byield"        >Various</a>`,"BYIELD           ","https://www.byieldfinance.com"],
-      ["wBAN                ","", `<a href="wban"          >Various</a>`,"wBAN             ","https://bsc.banano.cc"]
+      ["wBAN                ","", `<a href="wban"          >Various</a>`,"wBAN             ","https://bsc.banano.cc"],
+      ["VastSwap            ","", `<a href="vast"          >Various</a>`,"VAST             ","https://vastswap.com"]
     ]}
 
   let table = new AsciiTable().fromJSON(tableData);
