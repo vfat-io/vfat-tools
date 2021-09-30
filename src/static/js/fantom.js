@@ -415,6 +415,12 @@ const main = async() => {
         `<a href='cougar'>Various</a>`,
         "CGS",
         "https://fantomapp.cougarswap.io"
+      ],
+      [
+        "Meso Finance",
+        `<a href='meso'>Various</a>`,
+        "MESO",
+        "https://www.meso.finance"
       ]
     ]
   }

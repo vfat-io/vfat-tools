@@ -18,6 +18,7 @@ const ArbitrumTokens = [
     { "id": "badger-dao", "symbol": "BADGER", "contract": "0xBfa641051Ba0a0Ad1b0AcF549a89536A0D76472E"},
     { "id": "mcdex", "symbol": "MCB", "contract": "0x4e352cF164E64ADCBad318C3a1e222E9EBa4Ce42"},
     { "id": "xdollar", "symbol": "XDO", "contract": "0x9ef758ac000a354479e538b8b2f01b917b8e89e7"},
+    { "id": "hundred-finance", "symbol": "HND", "contract": "0x10010078a54396f62c96df8532dc2b4847d47ed3"}
 ];
 
 const uniSqrtPrice = (tokenDecimals, sqrtRatioX96) => {
