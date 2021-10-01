@@ -9,7 +9,8 @@ const main = async() => {
     "heading":["Pool Provider","LP", "Reward Tokens", "INFO"],
     "rows": [
         ["Ubeswap  ",     `<a href="ubeswap"       >Various</a>`,      "UBE ",     "https://app.ubeswap.org" ],
-        ["Harem  ",     `<a href="harem"       >Various</a>`,      "HAREM ",     "https://harem.farm/" ]
+        ["Harem  ",       `<a href="harem"         >Various</a>`,      "HAREM ",   "https://harem.farm" ],
+        ["Mobius  ",      `<a href="mobius"        >Various</a>`,      "NERVE ",   "https://www.mobius.money" ]
     ]
   }
 
