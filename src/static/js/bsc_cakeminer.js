@@ -390,9 +390,9 @@ async function main() {
   const miners = await contract.getMyMiners({ from: app.YOUR_ADDRESS });
   const production = Number(miners * 60 * 60).toFixed(2);
   const eggs = await contract.getMyEggs({ from: app.YOUR_ADDRESS });
-  const sell = await contract.calculateEggSell(eggs);
-  const devFee = await contract.devFee(sell);
-  const barrel = Number(ethers.utils.formatEther(sell) - ethers.utils.formatEther(devFee)).toFixed(2);
+  const sell = eggs > 0 ? await contract.calculateEggSell(eggs) : 0;
+  const devFee = eggs > 0 ? await contract.devFee(sell) : 0;
+  const barrel = eggs > 0 ? Number(ethers.utils.formatEther(sell) - ethers.utils.formatEther(devFee)).toFixed(2) : 0.00;
   const balance = ethers.utils.formatEther(await contract.getBalance());
   const balanceStr = numberWithCommas(Number(balance).toFixed(2));
   const balanceUsd = numberWithCommas(Number(cakeUsd * balance).toFixed(2));
