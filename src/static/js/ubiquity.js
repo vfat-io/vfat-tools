@@ -19,6 +19,9 @@ const formatEther = (n, round = 2) => {
   return formatMoney(+ethers.utils.formatEther(n), round)
 }
 
+const toEtherNum = n => +n.toString() / 1e18
+const toNum = n => +n.toString()
+
 async function main() {
   print_warning()
 
@@ -45,53 +48,71 @@ async function main() {
     contracts.UbiquityAlgorithmicDollarManager.abi
   )
 
-  // Third party contracts
-  const dai = loadContract(DAI_TOKEN_ADDR, ERC20_ABI)
-  const curvePool = loadContract(contracts.CurvePool.address, contracts.CurvePool.abi)
-  const crv3 = loadContract(await manager.curve3PoolTokenAddress(), ERC20_ABI)
+  const sushiSwapPool = loadContract(await manager.sushiSwapPoolAddress(), contracts.SushiSwapPool.abi)
 
-  // Ubiquity Contracts
+  const C = {
+    // Third party contracts
+    dai: loadContract(DAI_TOKEN_ADDR, ERC20_ABI),
+    curvePool: loadContract(contracts.CurvePool.address, contracts.CurvePool.abi),
+    crv3: loadContract(await manager.curve3PoolTokenAddress(), ERC20_ABI),
 
-  const uad = loadContract(await manager.dollarTokenAddress(), contracts.UbiquityAlgorithmicDollar.abi)
-  const uar = loadContract(await manager.autoRedeemTokenAddress(), contracts.UbiquityAutoRedeem.abi)
-  const ugov = loadContract(await manager.governanceTokenAddress(), contracts.UbiquityGovernance.abi)
-  const twap = loadContract(await manager.twapOracleAddress(), contracts.TWAPOracle.abi)
-  const metaPool = loadContract(await manager.stableSwapMetaPoolAddress(), contracts.IMetaPool.abi)
-  const bondingShare = loadContract(await manager.bondingShareAddress(), contracts.BondingShareV2.abi)
-  const masterChef = loadContract(await manager.masterChefAddress(), contracts.MasterChefV2.abi)
-  const bonding = loadContract(await manager.bondingContractAddress(), contracts.BondingV2.abi)
-  const formulas = loadContract(await manager.formulasAddress(), contracts.UbiquityFormulas.abi)
+    // Ubiquity Contracts
+    manager,
+    uad: loadContract(await manager.dollarTokenAddress(), contracts.UbiquityAlgorithmicDollar.abi),
+    uar: loadContract(await manager.autoRedeemTokenAddress(), contracts.UbiquityAutoRedeem.abi),
+    ugov: loadContract(await manager.governanceTokenAddress(), contracts.UbiquityGovernance.abi),
+    twap: loadContract(await manager.twapOracleAddress(), contracts.TWAPOracle.abi),
+    metaPool: loadContract(await manager.stableSwapMetaPoolAddress(), contracts.IMetaPool.abi),
+    bondingShare: loadContract(await manager.bondingShareAddress(), contracts.BondingShareV2.abi),
+    masterChef: loadContract(await manager.masterChefAddress(), contracts.MasterChefV2.abi),
+    bonding: loadContract(await manager.bondingContractAddress(), contracts.BondingV2.abi),
+    formulas: loadContract(await manager.formulasAddress(), contracts.UbiquityFormulas.abi),
+    sushiSwapPool,
+    ugovUadPair: loadContract(await sushiSwapPool.pair(), contracts.UniswapV2Pair.abi),
+  }
 
   // Prices & Balances
-  const twapPrice = await twap.consult(await manager.dollarTokenAddress())
-  const [uadIndex, daiIndex] = await curvePool.get_coin_indices(metaPool.address, uad.address, ADDRESS.DAI)
-  const uadDai = await metaPool['get_dy_underlying(int128,int128,uint256)'](
+  const twapPrice = await C.twap.consult(await C.manager.dollarTokenAddress())
+  const [uadIndex, daiIndex] = await C.curvePool.get_coin_indices(C.metaPool.address, C.uad.address, ADDRESS.DAI)
+  const uadDai = await C.metaPool['get_dy_underlying(int128,int128,uint256)'](
     uadIndex,
     daiIndex,
     ethers.utils.parseEther('1')
   )
+  const reserves = await C.ugovUadPair.getReserves()
+  const ubqReserve = +reserves.reserve0.toString()
+  const uadReserve = +reserves.reserve1.toString()
+  const ubqPrice = ubqReserve / uadReserve
 
   const balances = {
-    uad: await uad.balanceOf(ACCOUNT),
-    uar: await uar.balanceOf(ACCOUNT),
-    ubq: await ugov.balanceOf(ACCOUNT),
-    uad3crv: await metaPool.balanceOf(ACCOUNT),
-    crv3: await crv3.balanceOf(ACCOUNT),
+    uad: await C.uad.balanceOf(ACCOUNT),
+    uar: await C.uar.balanceOf(ACCOUNT),
+    ubq: await C.ugov.balanceOf(ACCOUNT),
+    uad3crv: await C.metaPool.balanceOf(ACCOUNT),
+    crv3: await C.crv3.balanceOf(ACCOUNT),
   }
 
-  const treasuryBalances = {
-    uad: await uad.balanceOf(ADDRESS.TREASURY),
-    ubq: await ugov.balanceOf(ADDRESS.TREASURY),
-    uad3crv: await metaPool.balanceOf(ADDRESS.TREASURY),
-    dai: await dai.balanceOf(ADDRESS.TREASURY),
-  }
+  // const treasuryBalances = {
+  //   uad: await uad.balanceOf(ADDRESS.TREASURY),
+  //   ubq: await ugov.balanceOf(ADDRESS.TREASURY),
+  //   uad3crv: await metaPool.balanceOf(ADDRESS.TREASURY),
+  //   dai: await dai.balanceOf(ADDRESS.TREASURY),
+  // }
 
   _print('Finished reading smart contracts...')
 
   _print('\n========== PRICES ==========')
   _print(`uAD TWAP ${formatEther(twapPrice, 5)}`)
-  _print(`1 uAD = ${formatEther(uadDai, 5)} DAI`)
-  // _print(`17.257 UBQ per uAD`)
+  _print(
+    `1 uAD = ${formatEther(
+      uadDai,
+      5
+    )} DAI | Pool: <a target="_blank" href="https://crv.to/">SWAP</a> <a target="_blank" href="https://crv.to/pool">DEPOSIT</a>`
+  )
+  _print_inline(`1 uAD = ${formatMoney(1 / ubqPrice, 5)} UBQ | Pool: `)
+  _print(
+    `<a target="_blank" href="https://app.sushi.com/swap?inputCurrency=${C.ugov.address}&outputCurrency=${C.uad.address}">SWAP</a> <a target="_blank" href="https://app.sushi.com/add/${C.ugov.address}/${C.uad.address}">DEPOSIT</a>`
+  )
 
   _print('\n========== YOUR ASSETS ==========')
   _print(`uAD ${formatEther(balances.uad)}`)
@@ -101,11 +122,11 @@ async function main() {
   _print(`3CRV ${formatEther(balances.crv3)}`)
   _print(`uAD3CRV-f ${formatEther(balances.uad3crv)}`)
 
-  _print('\n========== Ubiquity DAO Treasury ==========')
-  _print(`uAD ${formatEther(treasuryBalances.uad)}`)
-  _print(`UBQ ${formatEther(treasuryBalances.ubq)}`)
-  _print(`Curve uAD3CRV-f ${formatEther(treasuryBalances.uad3crv)}`)
-  _print(`DAI ${formatEther(treasuryBalances.dai)}`)
+  // _print('\n========== Ubiquity DAO Treasury ==========')
+  // _print(`uAD ${formatEther(treasuryBalances.uad)}`)
+  // _print(`UBQ ${formatEther(treasuryBalances.ubq)}`)
+  // _print(`Curve uAD3CRV-f ${formatEther(treasuryBalances.uad3crv)}`)
+  // _print(`DAI ${formatEther(treasuryBalances.dai)}`)
   // _print(`SushiSwap SLP 3.161`)
 
   // _print('\n========== uAD SWAP ==========')
@@ -125,7 +146,7 @@ async function main() {
   // _print('Claimable rewards: 100 - CLAIM?')
   // _print('You own 1.12% of the pool / 500 UBQ and 29 uAD')
 
-  function logTransactionResult(result) {
+  function logGas(result) {
     console.log(
       `approveWaiting gas used with 100 gwei / gas:${ethers.utils.formatEther(
         result.gasUsed.mul(ethers.utils.parseUnits('100', 'gwei'))
@@ -133,9 +154,20 @@ async function main() {
     )
   }
 
+  async function performTransaction(transaction) {
+    try {
+      const tx = await transaction
+      const txR = await tx.wait()
+      logGas(txR)
+      return true
+    } catch (e) {
+      console.error('Transaction error', e)
+      alert(`Transaction error`)
+    }
+    return false
+  }
+
   async function stakeDialog() {
-    const allowance = await metaPool.allowance(ACCOUNT, bonding.address)
-    console.log('Allowance', allowance)
     let lpTokens = prompt('How many LP tokens? (leave empty for all)')
     if (!lpTokens) {
       lpTokens = balances.uad3crv
@@ -144,79 +176,155 @@ async function main() {
     }
 
     const weeks = parseInt(prompt('How many weeks?'))
-    if (weeks >= 4 && weeks <= 208) {
+    if (weeks >= 1 && weeks <= 208) {
       const bigWeeks = ethers.BigNumber.from(weeks)
-
-      console.log('Staking!', weeks, bigWeeks, allowance)
     } else {
-      alert('Must be a number from 4 to 208')
+      alert('Must be a number from 1 to 208')
       return
     }
 
     console.log('LPTokens', lpTokens)
+
+    const allowance = await C.metaPool.allowance(ACCOUNT, C.bonding.address)
+    console.log('Allowance', allowance)
     if (allowance.lt(lpTokens)) {
-      transaction = await metaPool.approve(bonding.address, lpTokens)
-      logTransactionResult(await transaction.wait())
-      const allowance2 = await metaPool.allowance(account.address, bonding.address)
+      await performTransaction(C.metaPool.approve(C.bonding.address, lpTokens))
+      const allowance2 = await C.metaPool.allowance(ACCOUNT, C.bonding.address)
       console.log('allowance2', formatEther(allowance2))
     }
 
-    const depositWaiting = await bonding.deposit(lpTokens, weeks)
+    const depositWaiting = await C.bonding.deposit(lpTokens, weeks)
     await depositWaiting.wait()
+    document.location.reload()
   }
 
-  const blockCountInAWeek = await bonding.blockCountInAWeek()
+  const blockCountInAWeek = await C.bonding.blockCountInAWeek()
   let userTotalLP = 0
+
+  const pr = (text, num) => text.padRight(num, ' ')
+
   async function printStake(id) {
-    const ugov = await masterChef.pendingUGOV(id)
-    const bond = await bondingShare.getBond(id)
+    const ugov = await C.masterChef.pendingUGOV(id)
+    const bond = await C.bondingShare.getBond(id)
 
-    const endBlock = +bond.endBlock.toString()
-    const blocksLeft = endBlock - CURRENT_BLOCK
-    const weeksLeft = Math.round((blocksLeft / blockCountInAWeek) * 100) / 100
+    if (bond.lpAmount.gt(0) || ugov.gt(0)) {
+      const endBlock = +bond.endBlock.toString()
+      const blocksLeft = endBlock - CURRENT_BLOCK
+      const weeksLeft = Math.round((blocksLeft / blockCountInAWeek) * 100) / 100
+      const LP_TO_USD = 1 / 0.75
 
-    userTotalLP += bond.lpAmount
-    _print_inline(
-      `  * <strong>${formatEther(bond.lpAmount)} LP</strong> Staked - ${weeksLeft} weeks left (${blocksLeft} blocks) - `
-    )
-    _print_link(`Claim <strong>${formatEther(ugov)} UBQ</strong> Reward`, async () => {
-      await redeem(id)
-    })
+      userTotalLP += bond.lpAmount
+      const amountUsd = formatMoney(+ethers.utils.formatEther(bond.lpAmount) * LP_TO_USD, 2)
+      const canWithdraw = weeksLeft <= 0
+
+      const depositText = pr(`${formatEther(bond.lpAmount)} LP (~$${amountUsd})}`, 30)
+      const rewardText = pr(`${formatEther(ugov, 5)} UBQ`, 16)
+      const weeksText = pr(canWithdraw ? 'READY' : `${weeksLeft} weeks`, 13)
+      _print_inline(`${depositText}${rewardText}${weeksText}`)
+      if (canWithdraw) {
+        _print_link(`Claim reward &amp withdraw`, async () => {
+          await withdraw(id, bond.lpAmount)
+        })
+      } else {
+        _print_link(`Claim reward`, async () => {
+          await redeem(id)
+        })
+      }
+    }
   }
 
   async function redeem(id) {
     console.log('Redeemeng bonding share ', id)
-    const transaction = await masterChef.getRewards(id)
-    logTransactionResult(await transaction.wait())
+    await performTransaction(C.masterChef.getRewards(id))
+    document.location.reload()
   }
 
-  _print('\n========== Ubiquity Farming ==========')
-  _print(`<a href="https://uad.ubq.fi/" target="_blank">Staking dashboard &raquo;</a>`)
-  _print_link(`Stake up to ${formatEther(balances.uad3crv)} uAD3CRV-f for 4 to 208 weeks`, stakeDialog)
+  async function withdraw(id, allLpAmount) {
+    const isAllowed = await C.bondingShare.isApprovedForAll(ACCOUNT, C.bonding.address)
+    if (!isAllowed) {
+      if (!(await performTransaction(C.bondingShare.setApprovalForAll(C.bonding.address, true)))) {
+        return
+      }
+    }
+    await performTransaction(C.bonding.removeLiquidity(allLpAmount, ethers.BigNumber.from(id)))
+    document.location.reload()
+  }
 
-  const bondingShareIds = await bondingShare.holderTokens(ACCOUNT)
-  await Promise.all(bondingShareIds.map(printStake))
-  const totalLP = await bondingShare.totalLP()
-  const poolOwnership = Math.round((userTotalLP / totalLP) * 10000) / 100
-  _print(`${poolOwnership}% of LP tokens stake pool ownership (total pool is ${formatEther(totalLP)})`)
-  _print(`Current block: ${CURRENT_BLOCK} | Blocks in a week: ${blockCountInAWeek} seconds`)
+  _print('\n========== LIQUIDITY TOKENS STAKING ==========')
+  _print_link(
+    `Stake up to ${formatEther(balances.uad3crv)} uAD3CRV-f for 1 to 208 weeks and get UBQ rewards`,
+    stakeDialog
+  )
 
-  const multiplier = await bonding.bondingDiscountMultiplier()
-  async function printRewardPrediction(lpTokens, weeks) {
-    const shares = await formulas.durationMultiply(
-      ethers.BigNumber.from(lpTokens),
-      ethers.BigNumber.from(weeks),
-      multiplier
+  await printApy()
+  await printDeposits()
+
+  _print('')
+  _print(`<a href="https://uad.ubq.fi/" target="_blank">Official Ubiquity dashboard &raquo;</a>`)
+
+  async function printApy() {
+    const ubqPerBlock = await C.masterChef.uGOVPerBlock()
+    const ubqMultiplier = await C.masterChef.uGOVmultiplier()
+    const ugovDivider = toNum(await C.masterChef.uGOVDivider())
+    const actualUbqPerBlock = toEtherNum(ubqPerBlock.mul(ubqMultiplier).div(`${1e18}`))
+    const blockCountInAWeek = toNum(await C.bonding.blockCountInAWeek())
+    const ubqPerWeek = actualUbqPerBlock * blockCountInAWeek
+
+    const DAYS_IN_A_YEAR = 365.2422
+    const totalShares = toEtherNum(await C.masterChef.totalShares())
+
+    const usdPerWeek = ubqPerWeek * ubqPrice
+    const usdAsLp = 0.75 // TODO: Calculate more precise value
+    const bigNumberOneUsdAsLp = ethers.utils.parseEther(usdAsLp.toString())
+
+    const bondingDiscountMultiplier = await C.bonding.bondingDiscountMultiplier()
+    const sharesResults = await Promise.all(
+      [1, 50, 100, 208].map(async i => {
+        const weeks = ethers.BigNumber.from(i.toString())
+        const shares = toEtherNum(
+          await C.formulas.durationMultiply(bigNumberOneUsdAsLp, weeks, bondingDiscountMultiplier)
+        )
+        return [i, shares]
+      })
     )
-    _print(`  ${lpTokens} LP tokens for ${weeks} weeks  = ${shares} UBQ`)
+    _print('')
+    _print(`<strong>${pr('Staking time', 18)}</strong><strong>${pr('APY', 10)}</strong>`)
+    sharesResults.forEach(([weeks, shares]) => {
+      const rewardsPerWeek = (shares / totalShares) * usdPerWeek
+      const yearlyYield = (rewardsPerWeek / 7) * DAYS_IN_A_YEAR * 100
+      const weeksText = pr(`${weeks} ${weeks === 1 ? 'week' : 'weeks'}`, 18)
+      const apyText = pr(`${yearlyYield.toPrecision(4)}%`, 10)
+      _print(`${weeksText}${apyText}`)
+    })
+
+    _print('')
+    _print(`UBQ per 1 uAD = ${formatMoney(1 / ubqPrice, 2)}`)
+    _print(`UBQ Minted per week = ${formatMoney(ubqPerWeek, 0)} (~$${formatMoney(ubqPerWeek * ubqPrice, 0)})`)
+    _print(`Total pool shares = ${formatMoney(totalShares, 2)}`)
   }
 
-  _print(`Reward estimation`)
-  await printRewardPrediction(100, 4)
-  await printRewardPrediction(100, 10)
-  await printRewardPrediction(100, 50)
-  await printRewardPrediction(100, 100)
-  await printRewardPrediction(100, 200)
-  await printRewardPrediction(100, 208)
+  async function printDeposits() {
+    const bondingShareIds = await C.bondingShare.holderTokens(ACCOUNT)
+    _print('')
+    _print(`<strong>${pr('Deposit (APPROX.)', 30)}${pr('Pending reward', 16)}${pr('Unlock time', 13)}Action</strong>`)
+    await Promise.all(bondingShareIds.map(printStake))
+    _print('')
+
+    const totalShares = await C.masterChef.totalShares()
+
+    const totalUserShares = (await Promise.all(bondingShareIds.map(id => C.masterChef.getBondingShareInfo(id))))
+      .map(s => s[0])
+      .reduce((sum, val) => {
+        return sum.add(val)
+      }, ethers.BigNumber.from('0x0'))
+
+    const poolPercentage =
+      Math.round(
+        +ethers.utils.formatEther(totalUserShares.mul(ethers.utils.parseEther('100')).div(totalShares)) * 10000
+      ) / 10000
+
+    _print(`With ${formatEther(totalUserShares, 2)} shares you own ${poolPercentage}% of LP staking pool`)
+  }
+
   hideLoading()
 }
