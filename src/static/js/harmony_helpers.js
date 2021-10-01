@@ -7,7 +7,9 @@ const HarmonyTokens = [
   { "id": "dai", "symbol": "1DAI", "contract": "0xEf977d2f931C1978Db5F6747666fa1eACB0d0339"},
   { "id": "rendoge", "symbol": "1renDOGE", "contract": "0x6C7bA6c44871655968e2aE85116Becb79c6AC352"},
   { "id": "wrapped-bitcoin", "symbol": "bscBTCB", "contract": "0x34224dCF981dA7488FdD01c7fdd64E74Cd55DcF7"},
-  { "id": "binance-eth", "symbol": "bscETH", "contract": "0x783ee3e955832a3d52ca4050c4c251731c156020"}
+  { "id": "binance-eth", "symbol": "bscETH", "contract": "0x783ee3e955832a3d52ca4050c4c251731c156020"},
+  { "id": "terra-luna", "symbol": "LUNA", "contract": "0x95ce547d730519a90def30d647f37d9e5359b6ae"},
+  { "id": "terra-usd", "symbol": "UST", "contract": "0x224e64ec1bdce3870a6a6c777edd450454068fec"}
 ];
 
 async function getHarmonyPrices() {

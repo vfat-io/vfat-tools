@@ -146,7 +146,8 @@ $(function() {
     const poolInfos = await Promise.all([...Array(poolCount / 1).keys()].map(async (x) =>
       await getAlcxPoolInfo(App, ALCX_POOL, x)));
   
-    var tokenAddresses = [].concat.apply([], poolInfos.filter(x => x.poolToken).map(x => x.poolToken.tokens));
+    var tokenAddresses = [].concat.apply([], poolInfos.filter(x => x.poolToken).map(x => x.poolToken.tokens.filter(t => t != 
+      "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE" && t != "0xC4C319E2D4d66CcA4464C0c2B32c9Bd23ebe784e")));
     var prices = await lookUpTokenPrices(tokenAddresses);
     getParameterCaseInsensitive(prices, "0xBC6DA0FE9aD5f3b0d58160288917AA56653660E9").usd = 1
   
@@ -154,16 +155,21 @@ $(function() {
         tokens[address] = await getToken(App, address, ALCX_POOL_ADDRESS);
     }));
   
-    const poolPrices = poolInfos.map(poolInfo => getPoolPrices(tokens, prices, poolInfo.poolToken));
+    const poolPrices = poolInfos.filter(poolInfo => poolInfo.poolToken.address != "0xC4C319E2D4d66CcA4464C0c2B32c9Bd23ebe784e").map(poolInfo =>
+       getPoolPrices(tokens, prices, poolInfo.poolToken));
   
     _print("Finished reading smart contracts.\n");
   
     let aprs = []
     for (i = 0; i < poolCount; i++) {
       if (i != 3) { //TIME pool
-        const apr = printAlcxPool(App, ALCX_POOL_ABI, ALCX_POOL_ADDRESS, prices,
-          poolInfos[i], i, poolPrices[i], rewardTokenTicker, rewardTokenAddress);
-        aprs.push(apr);
+        if(i == 7){
+          i++
+        }else{
+          const apr = printAlcxPool(App, ALCX_POOL_ABI, ALCX_POOL_ADDRESS, prices,
+            poolInfos[i], i, poolPrices[i], rewardTokenTicker, rewardTokenAddress);
+          aprs.push(apr);
+        }
       }
     }
     let totalUserStaked=0, totalStaked=0, averageApr=0;
@@ -246,7 +252,8 @@ $(function() {
       }
     }));
   
-    var tokenAddresses = [].concat.apply([], poolInfos.filter(x => x?.poolToken).map(x => x.poolToken.tokens));
+    var tokenAddresses = [].concat.apply([], poolInfos.filter(x => x.poolToken).map(x => x.poolToken.tokens.filter(t => t != 
+      "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE" && t != "0xC4C319E2D4d66CcA4464C0c2B32c9Bd23ebe784e")));
     var prices = await lookUpTokenPrices(tokenAddresses.concat([rewardTokenAddresses]));
     if (extraPrices) {
       for (const [k,v] of Object.entries(extraPrices)) {
@@ -266,8 +273,9 @@ $(function() {
         poolInfo.poolToken ? getPoolPrices(tokens, prices, poolInfo.poolToken, "eth") : undefined);
     }
   
-    const poolPrices = poolInfos.map(poolInfo => poolInfo?.poolToken ? getPoolPrices(tokens, prices, poolInfo.poolToken) : undefined);
-  
+    const poolPrices = poolInfos.filter(poolInfo => poolInfo.poolToken.address != "0xC4C319E2D4d66CcA4464C0c2B32c9Bd23ebe784e").map(poolInfo =>
+      getPoolPrices(tokens, prices, poolInfo.poolToken));
+
     const rewardTokenTickers = ["ALCX", "SUSHI"];
     let pendingRewardTokens = [];
     const pendingAlcxRewardTokens = await alcxChef.pendingToken(0, App.YOUR_ADDRESS) / 10 ** 18;

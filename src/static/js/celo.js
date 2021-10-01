@@ -5,10 +5,11 @@ $(function() {
 const main = async() => {
 
   let tableData = {
-    "title":"AVALANCHE Network",
+    "title":"CELO Network",
     "heading":["Pool Provider","LP", "Reward Tokens", "INFO"],
     "rows": [
-        ["Ubeswap  ",     `<a href="ubeswap"       >Various</a>`,      "UBE ",     "https://app.ubeswap.org" ]
+        ["Ubeswap  ",     `<a href="ubeswap"       >Various</a>`,      "UBE ",     "https://app.ubeswap.org" ],
+        ["Harem  ",     `<a href="harem"       >Various</a>`,      "HAREM ",     "https://harem.farm/" ]
     ]
   }
 

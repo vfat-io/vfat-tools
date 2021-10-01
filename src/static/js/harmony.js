@@ -21,6 +21,12 @@ const main = async() => {
         "https://viper.exchange"
       ],
       [
+        "CopyPasta",
+        `<a href='copypasta'>Various</a>`,
+        "PASTA",
+        "https://copypasta.one"
+      ],
+      [
         "Viper (smartchef)",
         `<a href='viper/smartchef'>Various</a>`,
         "Various",
@@ -98,11 +104,29 @@ const main = async() => {
         "RAIN",
         "https://rainfinance.one"
       ],
-        [
+      [
         "FATExDAO",
         `<a href='fatex'>Various</a>`,
         "FATE",
         "https://app.fatex.io"
+      ],
+      [
+        "TheValleys",
+        `<a href='thevalleys'>Various</a>`,
+        "AME",
+        "https://thevalleys.one"
+      ],
+      [
+        "FarmersOnlyFi",
+        `<a href='farmersonly'>Various</a>`,
+        "FOX",
+        "https://app.farmersonly.fi"
+      ],
+      [
+        "Fuzz Finance",
+        `<a href='fuzz'>Various</a>`,
+        "FUZZ",
+        "https://fuzz.fi"
       ]
     ]
   }
