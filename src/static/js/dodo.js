@@ -209,13 +209,13 @@ function printDodoChefContractLinks0(App, chefAbi, chefAddr, poolIndex, poolAddr
     claimFunction, rewardTokenPrices, chain, depositFee, withdrawFee) {
   fixedDecimals = fixedDecimals ?? 2;
   const approveAndStake = async function() {
-    return chefContract_stake(chefAbi, chefAddr, poolIndex, poolAddress, App)
+    return dodoContract_stake(chefAbi, chefAddr, poolAddress, App)
   }
   const unstake = async function() {
-    return chefContract_unstake(chefAbi, chefAddr, poolIndex, App, pendingRewardsFunction)
+    return dodoContract_unstake(chefAbi, chefAddr, poolIndex, App, pendingRewardsFunction)
   }
   const claim = async function() {
-    return chefContract_claim(chefAbi, chefAddr, poolIndex, App, pendingRewardsFunction, claimFunction)
+    return dodoContract_claim(chefAbi, chefAddr, App)
   }
   if(depositFee > 0){
     _print_link(`Stake ${unstaked.toFixed(fixedDecimals)} ${stakeTokenTicker} - Fee ${depositFee}%`, approveAndStake)
@@ -230,6 +230,92 @@ function printDodoChefContractLinks0(App, chefAbi, chefAddr, poolIndex, poolAddr
   _print_link(`Claim ${pendingRewardTokens[0].toFixed(fixedDecimals)} ${rewardTokenTickers[0]} ($${formatMoney(pendingRewardTokens[0]*rewardTokenPrices[0])}) + ${pendingRewardTokens[1].toFixed(fixedDecimals)} ${rewardTokenTickers[1]} ($${formatMoney(pendingRewardTokens[1]*rewardTokenPrices[1])})`, claim)
   _print(`Staking or unstaking also claims rewards.`)
   _print("");
+}
+
+async function dodoContract_stake(chefAbi, chefAddress, stakeTokenAddr, App) {
+  const signer = App.provider.getSigner()
+
+  const STAKING_TOKEN = new ethers.Contract(stakeTokenAddr, ERC20_ABI, signer)
+  const CHEF_CONTRACT = new ethers.Contract(chefAddress, chefAbi, signer)
+
+  const currentTokens = await STAKING_TOKEN.balanceOf(App.YOUR_ADDRESS)
+  const allowedTokens = await STAKING_TOKEN.allowance(App.YOUR_ADDRESS, chefAddress)
+
+  let allow = Promise.resolve()
+
+  if (allowedTokens / 1e18 < currentTokens / 1e18) {
+    showLoading()
+    allow = STAKING_TOKEN.approve(chefAddress, ethers.constants.MaxUint256)
+      .then(function(t) {
+        return App.provider.waitForTransaction(t.hash)
+      })
+      .catch(function() {
+        hideLoading()
+        alert('Try resetting your approval to 0 first')
+      })
+  }
+
+  if (currentTokens / 1e18 > 0) {
+    showLoading()
+    allow
+      .then(async function() {
+          CHEF_CONTRACT.deposit(currentTokens, {gasLimit: 500000})
+          .then(function(t) {
+            App.provider.waitForTransaction(t.hash).then(function() {
+              hideLoading()
+            })
+          })
+          .catch(function() {
+            hideLoading()
+            _print('Something went wrong.')
+          })
+      })
+      .catch(function() {
+        hideLoading()
+        _print('Something went wrong.')
+      })
+  } else {
+    alert('You have no tokens to stake!!')
+  }
+}
+
+async function dodoContract_unstake(chefAbi, chefAddress, poolIndex, App) {
+  const signer = App.provider.getSigner()
+  const CHEF_CONTRACT = new ethers.Contract(chefAddress, chefAbi, signer)
+
+  const currentStakedAmount = (await CHEF_CONTRACT.userInfo(poolIndex, App.YOUR_ADDRESS)).amount
+  //dodo reward token address
+  const earnedTokenAmount = await CHEF_CONTRACT.getPendingRewardByToken(App.YOUR_ADDRESS, "0x43Dfc4159D86F3A37A5A4B3D4580b888ad7d4DDd") / 1e18
+
+  if (earnedTokenAmount > 0) {
+    showLoading()
+    CHEF_CONTRACT.withdraw(currentStakedAmount, {gasLimit: 500000})
+      .then(function(t) {
+        return App.provider.waitForTransaction(t.hash)
+      })
+      .catch(function() {
+        hideLoading()
+      })
+  }
+}
+
+async function dodoContract_claim(chefAbi, chefAddress, App) {
+  const signer = App.provider.getSigner()
+
+  const CHEF_CONTRACT = new ethers.Contract(chefAddress, chefAbi, signer)
+
+  const earnedTokenAmount = await CHEF_CONTRACT.getPendingRewardByToken(App.YOUR_ADDRESS, "0x43Dfc4159D86F3A37A5A4B3D4580b888ad7d4DDd") / 1e18
+
+  if (earnedTokenAmount > 0) {
+    showLoading()
+      CHEF_CONTRACT.claimAllRewards({gasLimit: 500000})
+        .then(function(t) {
+          return App.provider.waitForTransaction(t.hash)
+        })
+        .catch(function() {
+          hideLoading()
+        })
+  }
 }
 
 async function loadDODOChefContract(App, chef, chefAddress, chefAbi, rewardTokenTicker,
