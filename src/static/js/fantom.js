@@ -421,6 +421,12 @@ const main = async() => {
         `<a href='meso'>Various</a>`,
         "MESO",
         "https://www.meso.finance"
+      ],
+      [
+        "Fantom Berry",
+        `<a href='berry'>Various</a>`,
+        "BERRY",
+        "https://fantomberry.world"
       ]
     ]
   }
