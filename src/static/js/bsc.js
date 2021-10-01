@@ -523,7 +523,8 @@ const main = async() => {
       ["BYield Finance      ","", `<a href="byield"        >Various</a>`,"BYIELD           ","https://www.byieldfinance.com"],
       ["wBAN                ","", `<a href="wban"          >Various</a>`,"wBAN             ","https://bsc.banano.cc"],
       ["VastSwap            ","", `<a href="vast"          >Various</a>`,"VAST             ","https://vastswap.com"],
-      ["CakeMiner           ","", `<a href="cakeminer"     >Various</a>`,"CAKE             ","https://dextoken-miner.finance"]
+      ["CakeMiner           ","", `<a href="cakeminer"     >Various</a>`,"CAKE             ","https://dextoken-miner.finance"],
+      ["Clam Island         ","", `<a href="clam_island"   >Various</a>`,"GEM              ","https://clamisland.fi/"]
     ]}
 
   let table = new AsciiTable().fromJSON(tableData);
