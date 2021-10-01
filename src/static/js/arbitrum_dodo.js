@@ -168,7 +168,8 @@ function printDodoChefPool(App, chefAbi, chefAddr, prices, tokens, poolInfo, poo
   if (poolInfo.userStaked > 0) poolPrices.print_contained_price(userStaked);
   printDodoChefContractLinks(App, chefAbi, chefAddr, poolIndex, poolInfo.address, pendingRewardsFunction,
     rewardTokenTickers, poolPrices.stakeTokenTicker, poolInfo.poolToken.unstaked,
-    poolInfo.userStaked, poolInfo.pendingRewardTokens, fixedDecimals, claimFunction, rewardPrices, chain, depositFee, withdrawFee);
+    poolInfo.userStaked, poolInfo.pendingRewardTokens, fixedDecimals, claimFunction, rewardPrices, chain, depositFee, withdrawFee,
+    poolInfo.address);
   return apr;
 }
 
@@ -235,16 +236,16 @@ function printDodoAPR(rewardTokenTickers, rewardPrices, poolRewardsPerWeek,
 
 function printDodoChefContractLinks(App, chefAbi, chefAddr, poolIndex, poolAddress, pendingRewardsFunction,
     rewardTokenTickers, stakeTokenTicker, unstaked, userStaked, pendingRewardTokens, fixedDecimals,
-    claimFunction, rewardTokenPrices, chain, depositFee, withdrawFee) {
+    claimFunction, rewardTokenPrices, chain, depositFee, withdrawFee, lpTokenAddress) {
   fixedDecimals = fixedDecimals ?? 2;
   const approveAndStake = async function() {
     return dodoArbitrumContract_stake(chefAbi, chefAddr, poolIndex, poolAddress, App)
   }
   const unstake = async function() {
-    return dodoArbitrumContract_unstake(chefAbi, chefAddr, poolIndex, App, pendingRewardsFunction)
+    return dodoArbitrumContract_unstake(chefAbi, chefAddr, poolIndex, App)
   }
   const claim = async function() {
-    return dodoArbitrumContract_claim(chefAbi, chefAddr, poolIndex, App, pendingRewardsFunction, claimFunction)
+    return dodoArbitrumContract_claim(chefAbi, chefAddr, App)
   }
   if(depositFee > 0){
     _print_link(`Stake ${unstaked.toFixed(fixedDecimals)} ${stakeTokenTicker} - Fee ${depositFee}%`, approveAndStake)
@@ -261,7 +262,7 @@ function printDodoChefContractLinks(App, chefAbi, chefAddr, poolIndex, poolAddre
   _print("");
 }
 
-const dodoArbitrumContract_stake = async function(chefAbi, chefAddress, poolIndex, stakeTokenAddr, App) {
+async function dodoArbitrumContract_stake(chefAbi, chefAddress, poolIndex, stakeTokenAddr, App) {
   const signer = App.provider.getSigner()
 
   const STAKING_TOKEN = new ethers.Contract(stakeTokenAddr, ERC20_ABI, signer)
@@ -308,12 +309,12 @@ const dodoArbitrumContract_stake = async function(chefAbi, chefAddress, poolInde
   }
 }
 
-const dodoArbitrumContract_unstake = async function(chefAbi, chefAddress, poolIndex, App, pendingRewardsFunction) {
+async function dodoArbitrumContract_unstake(chefAbi, chefAddress, poolIndex, App) {
   const signer = App.provider.getSigner()
   const CHEF_CONTRACT = new ethers.Contract(chefAddress, chefAbi, signer)
 
   const currentStakedAmount = (await CHEF_CONTRACT.userInfo(poolIndex, App.YOUR_ADDRESS)).amount
-  const earnedTokenAmount = await CHEF_CONTRACT.callStatic[pendingRewardsFunction](poolIndex, App.YOUR_ADDRESS) / 1e18
+  const earnedTokenAmount = await CHEF_CONTRACT.getPendingRewardByToken(App.YOUR_ADDRESS, "0x10010078a54396f62c96df8532dc2b4847d47ed3") / 1e18
 
   if (earnedTokenAmount > 0) {
     showLoading()
@@ -327,23 +328,15 @@ const dodoArbitrumContract_unstake = async function(chefAbi, chefAddress, poolIn
   }
 }
 
-const dodoArbitrumContract_claim = async function(chefAbi, chefAddress, poolIndex, App,
-  pendingRewardsFunction, claimFunction) {
+async function dodoArbitrumContract_claim(chefAbi, chefAddress, App) {
   const signer = App.provider.getSigner()
 
   const CHEF_CONTRACT = new ethers.Contract(chefAddress, chefAbi, signer)
 
-  const earnedTokenAmount = await CHEF_CONTRACT.callStatic[pendingRewardsFunction](poolIndex, App.YOUR_ADDRESS) / 1e18
+  const earnedTokenAmount = await CHEF_CONTRACT.getPendingRewardByToken(App.YOUR_ADDRESS, "0x10010078a54396f62c96df8532dc2b4847d47ed3") / 1e18
 
   if (earnedTokenAmount > 0) {
     showLoading()
-    if (claimFunction) {
-      claimFunction(poolIndex)
-        .then(function(t) {
-          return App.provider.waitForTransaction(t.hash)
-        })
-    }
-    else {
       CHEF_CONTRACT.claimAllRewards()
         .then(function(t) {
           return App.provider.waitForTransaction(t.hash)
@@ -351,7 +344,6 @@ const dodoArbitrumContract_claim = async function(chefAbi, chefAddress, poolInde
         .catch(function() {
           hideLoading()
         })
-    }
   }
 }
 
