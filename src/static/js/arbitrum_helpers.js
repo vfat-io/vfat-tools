@@ -19,7 +19,8 @@ const ArbitrumTokens = [
     { "id": "mcdex", "symbol": "MCB", "contract": "0x4e352cF164E64ADCBad318C3a1e222E9EBa4Ce42"},
     { "id": "xdollar", "symbol": "XDO", "contract": "0x9ef758ac000a354479e538b8b2f01b917b8e89e7"},
     { "id": "hundred-finance", "symbol": "HND", "contract": "0x10010078a54396f62c96df8532dc2b4847d47ed3"},
-    { "id": "chainlink", "symbol": "LINK", "contract": "0xf97f4df75117a78c1A5a0DBb814Af92458539FB4"}
+    { "id": "chainlink", "symbol": "LINK", "contract": "0xf97f4df75117a78c1A5a0DBb814Af92458539FB4"},
+    { "id": "magic-internet-money", "symbol": "MIM", "contract": "0xFEa7a6a0B346362BF88A9e4A88416B77a57D6c2A"}
 ];
 
 const uniSqrtPrice = (tokenDecimals, sqrtRatioX96) => {
