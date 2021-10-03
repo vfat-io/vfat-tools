@@ -427,6 +427,12 @@ const main = async() => {
         `<a href='berry'>Various</a>`,
         "BERRY",
         "https://fantomberry.world"
+      ],
+      [
+        "Procyon",
+        `<a href='procyon'>Various</a>`,
+        "PROCYON",
+        "https://procyonswap.com"
       ]
     ]
   }
