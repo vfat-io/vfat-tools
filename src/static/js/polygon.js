@@ -373,7 +373,8 @@ const main = async () => {
       ['Love Boat Exchange  ', `<a href="love"            >Various</a>`, 'LOVE         ', 'https://www.loveboat.exchange/#/rewards'],
       ['DespairFarm         ', `<a href="despairfarm"     >Various</a>`, 'DESPAIRFARM  ', 'https://despair.sandman.finance'],
       ['Protofi             ', `<a href="protofi"         >Various</a>`, 'PROTO        ', 'https://bank.protofi.app'],
-      ['VastSwap            ', `<a href="vast"            >Various</a>`, 'VAST         ', 'https://polygon.vastswap.com']
+      ['VastSwap            ', `<a href="vast"            >Various</a>`, 'VAST         ', 'https://polygon.vastswap.com'],
+      ['Guppy Finance       ', `<a href="guppyfinance"    >Various</a>`, 'FRY / GUPPY  ', 'https://guppy.finance'],
     ],
   }
 
