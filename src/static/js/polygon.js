@@ -366,6 +366,7 @@ const main = async () => {
 	    ['Pepsi Finance       ', `<a href="pepsifinance"    >Various</a>`, 'PEPSI        ', 'https://pepsifinance.cc'],
 	    ['PolyWise            ', `<a href="polywisefinance" >Various</a>`, 'WISE         ', 'https://polywise.finance'],
 	    ['DeliriumFarm        ', `<a href="deliriumfarm"    >Various</a>`, 'DELIRIUMFARM ', 'https://delirium.sandman.finance']
+        ['PolySage        ', `<a href="polysage"    >Various</a>`, 'SAGE ', 'https://polysage.finance']
     ],
   }
 
