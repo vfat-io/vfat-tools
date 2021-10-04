@@ -372,6 +372,7 @@ const main = async () => {
       ['wBAN                ', `<a href="wban"            >Various</a>`, 'wBAN         ', 'https://polygon.banano.cc/'],
       ['Love Boat Exchange  ', `<a href="love"            >Various</a>`, 'LOVE         ', 'https://www.loveboat.exchange/#/rewards'],
       ['Protofi             ', `<a href="protofi"         >Various</a>`, 'PROTO        ', 'https://bank.protofi.app'],
+      ['VastSwap            ', `<a href="vast"            >Various</a>`, 'VAST         ', 'https://polygon.vastswap.com']
     ],
   }
 
