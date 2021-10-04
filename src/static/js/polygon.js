@@ -371,6 +371,7 @@ const main = async () => {
       ['TaquitoSwap         ', `<a href="taquitoswap"     >Various</a>`, 'TAQUITO      ', 'https://taquito.finance'],
       ['wBAN                ', `<a href="wban"            >Various</a>`, 'wBAN         ', 'https://polygon.banano.cc/'],
       ['Love Boat Exchange  ', `<a href="love"            >Various</a>`, 'LOVE         ', 'https://www.loveboat.exchange/#/rewards'],
+      ['DespairFarm        ', `<a href="despairfarm"    >Various</a>`, 'DESPAIRFARM ', 'https://despair.sandman.finance'],
     ],
   }
 
