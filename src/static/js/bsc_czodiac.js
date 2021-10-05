@@ -21,7 +21,7 @@ async function main() {
     const prices = await getBscPrices();
 
     await loadBscChefContract(App, tokens, prices, SPCA_CHEF, SPCA_CHEF_ADDR, SPCA_CHEF_ABI, rewardTokenTicker,
-        "spca", null, rewardsPerWeek, "pendingSPCA", [1]);
+        "czf", null, rewardsPerWeek, "pendingCzf", [1]);
 
     hideLoading();
   }
