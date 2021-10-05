@@ -1665,7 +1665,8 @@ function getUniPrices(tokens, prices, pool, chain="eth")
   else if (pool.symbol.includes("VLP")) stakeTokenTicker += " AURO LP";
   else if (pool.symbol.includes("DLP")) stakeTokenTicker += " DLP";
   else if (pool.symbol.includes("ULP")) stakeTokenTicker += " Ubeswap LP Token";
-  else if (pool.symbol.includes("LOVE LP")) stakeTokenTicker += " Love Boat Love LP Token"; 
+  else if (pool.symbol.includes("LOVE LP")) stakeTokenTicker += " Love Boat Love LP Token";
+  else if (pool.symbol.includes("Proto-LP")) stakeTokenTicker += " ProtoFi LP Token";
   else stakeTokenTicker += " Uni LP";
   return {
       t0: t0,
@@ -1741,6 +1742,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
               pool.symbol.includes("BenSwap") ? ({
                 "bsc": `https://info.benswap.finance/pair/${pool.address}`
               }[chain]) :
+              pool.symbol.includes("Proto-LP") ? `https://polygonscan.com/${pool.address}` :
               pool.symbol.includes("Galaxy-LP") ? (
                 {
                     "bsc": `https://bsc-exchange.galaxyfinance.one/#/swap`,
@@ -1750,7 +1752,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
                 }[chain]) :
               pool.symbol.includes("LOVE LP") ? ({
                 "matic": `https://info.loveboat.exchange/pair/${pool.address}`
-              }[chain]) : 
+              }[chain]) :
               chain == "matic" ? `https://info.quickswap.exchange/pair/${pool.address}` :
             `http://v2.uniswap.info/pair/${pool.address}`;
           const helperUrls = pool.is1inch ? [] :
@@ -1767,7 +1769,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
           pool.symbol.includes("DMM-LP") ? [
             `https://dmm.exchange/#/add/${t0address}/${t1address}/${pool.address}`,
             `https://dmm.exchange/#/remove/${t0address}/${t1address}/${pool.address}`,
-            `https://dmm.exchange/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`            
+            `https://dmm.exchange/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
           ]:
           pool.symbol.includes("CAT-LP") ? [
             `https://trade.polycat.finance/#/add/${t0address}/${t1address}`,
@@ -1853,6 +1855,11 @@ function getUniPrices(tokens, prices, pool, chain="eth")
             `https://exchange.pureswap.finance/#/add/${t0address}/${t1address}`,
             `https://exchange.pureswap.finance/#/remove/${t0address}/${t1address}`,
             `https://exchange.pureswap.finance/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+          ] :
+          pool.symbol.includes("Proto-LP") ? [
+            `https://dex.protofi.app/#/add/${t0address}/${t1address}`,
+            `https://dex.protofi.app/#/remove/${t0address}/${t1address}`,
+            `https://dex.protofi.app/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
           ] :
           pool.symbol.includes("Field-LP") ? [
             `https://exchange.yieldfields.finance/#/add/${t0address}/${t1address}`,

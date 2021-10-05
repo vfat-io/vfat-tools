@@ -147,7 +147,8 @@ const main = async () => {
       ["XBE Finance                  ", `<a href="../xbe/"               >Various</a>`, "XBE                ", "https://app.xbe.finance"],
       ["DODO *                       ", `<a href="../dodo/"              >Various</a>`, "DODO               ", "https://app.dodoex.io"],
       ["Aladdin                      ", `<a href="../ald/"               >Various</a>`, "ALD                ", "https://app.aladdin.club"],
-      ["Hundred                      ", `<a href="../hundred/"           >Various</a>`, "HND                ", "https://hundred.finance"]
+      ["Hundred                      ", `<a href="../hundred/"           >Various</a>`, "HND                ", "https://hundred.finance"],
+      ["Gro                          ", `<a href="../gro/"               >Various</a>`, "GRO                ", "https://app.gro.xyz"]
     ]
   }
 

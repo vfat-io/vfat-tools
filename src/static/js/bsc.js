@@ -522,7 +522,10 @@ const main = async() => {
       ["Centaurus Net       ","", `<a href="centaurus_net" >Various</a>`,"CEN              ","https://centaurus.network"],
       ["BYield Finance      ","", `<a href="byield"        >Various</a>`,"BYIELD           ","https://www.byieldfinance.com"],
       ["wBAN                ","", `<a href="wban"          >Various</a>`,"wBAN             ","https://bsc.banano.cc"],
-      ["VastSwap            ","", `<a href="vast"          >Various</a>`,"VAST             ","https://vastswap.com"]
+      ["VastSwap            ","", `<a href="vast"          >Various</a>`,"VAST             ","https://vastswap.com"],
+      ["CakeMiner           ","", `<a href="cakeminer"     >Various</a>`,"CAKE             ","https://dextoken-miner.finance"],
+      ["Clam Island         ","", `<a href="clam_island"   >Various</a>`,"GEM              ","https://clamisland.fi/"],
+      ["CZodiac             ","", `<a href="czodiac"       >Various</a>`,"CZF              ","https://app.czodiac.com/#/czfarm"]
     ]}
 
   let table = new AsciiTable().fromJSON(tableData);

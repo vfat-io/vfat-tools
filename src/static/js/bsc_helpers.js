@@ -700,6 +700,8 @@ const bscTokens = [
   { "id": "pancake-hunny", "symbol": "HUNNY", "contract": "0x565b72163f17849832A692A3c5928cc502f46D69"},
   { "id": "dodo", "symbol": "DODO", "contract": "0x67ee3cb086f8a16f34bee3ca72fad36f7db929e2"},
   { "id": "galaxy-oberon", "symbol": "OBERON", "contract": "0xc979E70611D997Aa109528c6A9aa73D82Eaa2881" },
+  { "id": "gem", "symbol": "GEM", "contract": "0x9fb4DEF63f8caEC83Cb3EBcC22Ba0795258C988a" },
+  { "id": "shell", "symbol": "SHELL", "contract": "0x01c16da6E041Cf203959624Ade1F39652973D0EB" },
 ]
 
 async function getBscPrices() {
