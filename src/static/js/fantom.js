@@ -440,6 +440,7 @@ const main = async() => {
        "SOUL",
        "https://soul.sh",
     ],
+    ]
   }
 
   let table = new AsciiTable().fromJSON(tableData);
