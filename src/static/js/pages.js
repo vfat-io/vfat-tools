@@ -33,6 +33,7 @@ const main = async() => {
       ["Float               ",`<a href="float/"             >Various</a>`,"BANK      ","https://floatprotocol.com/#/stake"],
       ["Force DAO           ",`<a href="forcedao/"          >Various</a>`,"FORCE     ","https://forcedao.com/"],
       ["Frax Finance        ",`<a href="frax/"              >Various</a>`,"FXS       ","https://app.frax.finance/"],
+      ["* Gro *             ",`<a href="gro/"               >Various</a>`,"GRO       ","https://app.gro.xyz"],
       ["Harvest Finance     ",`<a href="harvest-finance/"   >Various</a>`,"FARM      ","https://harvest.finance"],
       ["Ichi                ",`<a href="ichi/"              >Various</a>`,"Ichi      ","https://ichi.farm"],
       ["Inverse             ",`<a href="inverse/"           >Various</a>`,"INV       ","https://inverse.finance/stake"],
