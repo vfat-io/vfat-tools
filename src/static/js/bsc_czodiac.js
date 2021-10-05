@@ -20,7 +20,7 @@ async function main() {
     const tokens = {};
     const prices = await getBscPrices();
 
-    await loadBscChefContract(App, tokens, prices, SPCA_CHEF, SPCA_CHEF_ADDR, SPCA_CHEF_ABI, rewardTokenTicker,
+    await loadBscChefContract(App, tokens, prices, CZODIAC_CHEF, CZODIAC_CHEF_ADDR, CZODIAC_CHEF_ABI, rewardTokenTicker,
         "czf", null, rewardsPerWeek, "pendingCzf", [1]);
 
     hideLoading();
