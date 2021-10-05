@@ -579,7 +579,8 @@ const maticTokens = [
   { "id": "xdollar-stablecoin", "sybmol": "xUSD", "contract": "0x3a3e7650f8b9f667da98f236010fbf44ee4b2975"},
   { "id": "aavegochi", "symbol": "GHST", "contract": "0x385Eeac5cB85A38A9a07A70c73e0a3271CfB54A7"},
   { "id": "kommunitas", "symbol": "KOM", "contract": "0xC004e2318722EA2b15499D6375905d75Ee5390B8"},
-  { "id": "polycat", "symbol": "FISH", "contract":"0x3a3Df212b7AA91Aa0402B9035b098891d276572B"}
+  { "id": "polycat", "symbol": "FISH", "contract":"0x3a3Df212b7AA91Aa0402B9035b098891d276572B"},
+  { "id": "polly-defi-nest", "symbol": "NDEFI", "contract":"0xd3f07EA86DDf7BAebEfd49731D7Bbd207FedC53B"}
 ]
 
 
