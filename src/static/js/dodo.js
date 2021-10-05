@@ -212,7 +212,7 @@ function printDodoChefContractLinks0(App, chefAbi, chefAddr, poolIndex, poolAddr
     return dodoContract_stake(chefAbi, chefAddr, poolAddress, App)
   }
   const unstake = async function() {
-    return dodoContract_unstake(chefAbi, chefAddr, poolIndex, App, pendingRewardsFunction)
+    return dodoContract_unstake(chefAbi, chefAddr, poolIndex, App)
   }
   const claim = async function() {
     return dodoContract_claim(chefAbi, chefAddr, App)
@@ -283,13 +283,13 @@ async function dodoContract_unstake(chefAbi, chefAddress, poolIndex, App) {
   const signer = App.provider.getSigner()
   const CHEF_CONTRACT = new ethers.Contract(chefAddress, chefAbi, signer)
 
-  const currentStakedAmount = (await CHEF_CONTRACT.userInfo(poolIndex, App.YOUR_ADDRESS)).amount
+  const userStaked = await CHEF_CONTRACT.balanceOf(App.YOUR_ADDRESS)
   //dodo reward token address
   const earnedTokenAmount = await CHEF_CONTRACT.getPendingRewardByToken(App.YOUR_ADDRESS, "0x43Dfc4159D86F3A37A5A4B3D4580b888ad7d4DDd") / 1e18
 
   if (earnedTokenAmount > 0) {
     showLoading()
-    CHEF_CONTRACT.withdraw(currentStakedAmount, {gasLimit: 500000})
+    CHEF_CONTRACT.withdraw(userStaked, {gasLimit: 500000})
       .then(function(t) {
         return App.provider.waitForTransaction(t.hash)
       })

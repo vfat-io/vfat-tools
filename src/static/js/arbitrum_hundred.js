@@ -522,10 +522,10 @@ function printDodoChefContractLinks(App, chefAbi, chefAddr, poolIndex, poolAddre
     return dodoArbitrumContract_stake(chefAbi, chefAddr, poolIndex, poolAddress, App)
   }
   const unstake = async function() {
-    return dodoArbitrumContract_unstake(chefAbi, chefAddr, App, userStaked)
+    return dodoArbitrumContract_unstake(chefAbi, chefAddr, App)
   }
   const claim = async function() {
-    return dodoArbitrumContract_claim(chefAbi, chefAddr, poolIndex, App, pendingRewardsFunction, claimFunction)
+    return dodoArbitrumContract_claim(chefAbi, chefAddr, App)
   }
   if(depositFee > 0){
     _print_link(`Stake ${unstaked.toFixed(fixedDecimals)} ${stakeTokenTicker} - Fee ${depositFee}%`, approveAndStake)
@@ -589,10 +589,11 @@ const dodoArbitrumContract_stake = async function(chefAbi, chefAddress, poolInde
   }
 }
 
-async function dodoArbitrumContract_unstake(chefAbi, chefAddress, App, userStaked) {
+async function dodoArbitrumContract_unstake(chefAbi, chefAddress, App) {
   const signer = App.provider.getSigner()
   const CHEF_CONTRACT = new ethers.Contract(chefAddress, chefAbi, signer)
 
+  const userStaked = await CHEF_CONTRACT.balanceOf(App.YOUR_ADDRESS)
   const earnedTokenAmount = await CHEF_CONTRACT.getPendingRewardByToken(App.YOUR_ADDRESS, "0x10010078a54396f62c96df8532dc2b4847d47ed3") / 1e18
 
   if (earnedTokenAmount > 0) {
@@ -601,7 +602,8 @@ async function dodoArbitrumContract_unstake(chefAbi, chefAddress, App, userStake
       .then(function(t) {
         return App.provider.waitForTransaction(t.hash)
       })
-      .catch(function() {
+      .catch(function(ex) {
+        console.log(ex)
         hideLoading()
       })
   }
