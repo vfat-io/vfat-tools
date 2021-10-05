@@ -12,7 +12,7 @@ const main = async() => {
         ["Levin"      ,`<a href="levin">Various</a>`       ,"LEVIN"       ,"https://farm.levinswap.org"],
         ["Swapr"      ,`<a href="swapr">Various</a>`       ,"DXD"         ,"https://swapr.eth.link/#/pools"],
         ["Sushi"      ,`<a href="sushi">Various</a>`       ,"SUSHI/XDAI"  ,"https://app.sushi.com"],
-        ["Elk"        ,`<a href="elk">Various</a>`         ,"ELK"         ,"https://app.elk.finance"]
+        ["Elk *"      ,`<a href="elk">Various</a>`         ,"ELK"         ,"https://app.elk.finance"]
       ]
   }
 

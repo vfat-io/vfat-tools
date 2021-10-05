@@ -9,13 +9,21 @@ COINGECKO_IDS = {
   ETH: 'ethereum',
   MATIC: 'matic-network',
   USDT: 'tether',
+  'USDT.E': 'tether',
   USDC: 'usd-coin',
+  'USDC.E': 'usd-coin',
   BUSD: 'binance-usd',
   DAI: 'dai',
   WBTC: 'wrapped-bitcoin',
   WETH: 'weth',
+  'WETH.E': 'weth',
   WMATIC: 'wmatic',
   WBNB: 'wbnb',
+  AVAX: 'avalanche-2',
+  WAVAX: 'wrapped-avax',
+  XUSD: 'xdollar-stablecoin',
+  HERO: 'step-hero',
+  XDO: 'xdollar',
 }
 
 async function getCoinGeckoPrice(symbol) {
@@ -49,8 +57,8 @@ async function loadLiquidityMiningInfo(App, pool, blockTime, KyberRewardLocker, 
 
   const token0Price = token1Balance / token0Balance
   const token1Price = token0Balance / token1Balance
-  const token0MarketPrice = await getCoinGeckoPrice(COINGECKO_IDS[await TOKEN0.symbol()])
-  const token1MarketPrice = await getCoinGeckoPrice(COINGECKO_IDS[await TOKEN1.symbol()])
+  const token0MarketPrice = await getCoinGeckoPrice(COINGECKO_IDS[(await TOKEN0.symbol()).toUpperCase()])
+  const token1MarketPrice = await getCoinGeckoPrice(COINGECKO_IDS[(await TOKEN1.symbol()).toUpperCase()])
   const tvl = (token0Balance * token0MarketPrice) + (token1Balance * token1MarketPrice)
   const lpPrice = tvl / lpTotalSupply
   const lpStaked = poolInfo.totalStake / 1e18
@@ -63,17 +71,24 @@ async function loadLiquidityMiningInfo(App, pool, blockTime, KyberRewardLocker, 
   const userHarvestableRewards = await FARMING.pendingRewards(pool.pid, App.YOUR_ADDRESS)
   const userToken0Balance = userPoolOwnership * token0Balance / 100
   const userToken1Balance = userPoolOwnership * token1Balance / 100
-  
+  const currentBlock = await App.provider.getBlockNumber()
+  const endBlock = poolInfo.endBlock
+
   let apr = 0
   let rewards = ''
   let rewardsPerWeek = ''
   let userVestingRewards = {}
   let userVestedRewards = {}
+  let rewardsPerBlock = 0;
   for (let tokenAddr of rewardTokens) {
     let token = Object.keys(REWARDS).find(key => REWARDS[key].address == tokenAddr)
     rewards += ` ${token} $${formatMoney(REWARDS[token].price)}`
     
-    let rewardsPerBlock = poolInfo.rewardPerBlocks[Object.keys(REWARDS).indexOf(token)] / 1e18 || 0
+    if (currentBlock < endBlock) {
+      rewardsPerBlock = poolInfo.rewardPerBlocks[Object.keys(REWARDS).indexOf(token)] / 1e18 || 0
+    } else {
+      rewardsPerBlock = 0;
+    }
     REWARDS[token].rewardsPerBlock = rewardsPerBlock
     let weeklyRewardsCalc = (rewardsPerBlock / blockTime) * (60 * 60 * 24 * 7) // Avg 13s block time
     rewardsPerWeek += ` ${token} ${weeklyRewardsCalc.toFixed(8)} ($${formatMoney(weeklyRewardsCalc * REWARDS[token].price)})`
@@ -118,7 +133,7 @@ async function loadLiquidityMiningInfo(App, pool, blockTime, KyberRewardLocker, 
 
 async function printLiquidityMiningInfo(App, info, blockTime, explorer, TOKEN_ADDRESSES, REWARDS) {
   _print(
-    `<a href='https://${explorer.info}.dmm.exchange/pool/${info.pool.pool}' target='_blank'>${info.ticker}</a> ` +
+    `<a href='https://${explorer.info}.dmm.exchange/pool/${info.pool.pool}' target='_blank'>${info.ticker.toUpperCase()}</a> ` +
      `<a href='https://dmm.exchange/#/add/${TOKEN_ADDRESSES[info.pool.token0]}/${TOKEN_ADDRESSES[info.pool.token1]}/${info.pool.pool}' target='_blank'>[+]</a> ` +
      `<a href='https://dmm.exchange/#/remove/${TOKEN_ADDRESSES[info.pool.token0]}/${TOKEN_ADDRESSES[info.pool.token1]}/${info.pool.pool}' target='_blank'>[-]</a> ` +
      `<a href='https://dmm.exchange/#/swap?inputCurrency=${TOKEN_ADDRESSES[info.pool.token0]}&outputCurrency=${TOKEN_ADDRESSES[info.pool.token1]}' target='_blank'>[<=>]</a> ` +

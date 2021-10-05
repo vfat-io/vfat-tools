@@ -11,7 +11,9 @@ async function main() {
     _print(`Initialized ${App.YOUR_ADDRESS}\n`);
     _print("Reading smart contracts...\n");
 
-    const FOX_CHEF_ADDR = "0x3CBF7762b140246e150855aE138a14E0c34C532a";
+    const FOX_CHEF_ADDR = "0x15e04418d328c39ba747690f6dae9bbf548cd358";
+    const FOX_ADDR = "0x0159ED2E06DDCD46a25E74eb8e159Ce666B28687";
+    const FOX_USDC_ADDR = "0xe52b3038800eE067B8C8c1f548BB915Ab7AA8Bc2";
     const rewardTokenTicker = "FOX";
     const FOX_CHEF = new ethers.Contract(FOX_CHEF_ADDR, FOX_CHEF_ABI, App.provider);
 
@@ -20,6 +22,12 @@ async function main() {
 
     const tokens = {};
     const prices = await getHarmonyPrices();
+
+    // Add FOX price
+    const foxUsdcPoolInfo = await getHarmonyToken(App, FOX_USDC_ADDR, FOX_CHEF_ADDR);
+    var q0 = foxUsdcPoolInfo.q0 / 10 ** 18;
+    var q1 = foxUsdcPoolInfo.q1 / 10 ** 6;
+    prices[FOX_ADDR] = {usd: q1 / q0};
 
     await loadHarmonyChefContract(App, tokens, prices, FOX_CHEF, FOX_CHEF_ADDR, FOX_CHEF_ABI, rewardTokenTicker,
         "fox", null, rewardsPerWeek, "pendingFox", []);
