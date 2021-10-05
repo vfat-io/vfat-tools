@@ -433,8 +433,13 @@ const main = async() => {
         `<a href='procyon'>Various</a>`,
         "PROCYON",
         "https://procyonswap.com"
-      ]
-    ]
+      ],
+      [
+       "Soul Swap",
+       `<a href='soulswap'>Various</a>`,
+       "SOUL",
+       "https://soul.sh",
+    ],
   }
 
   let table = new AsciiTable().fromJSON(tableData);
