@@ -374,7 +374,8 @@ const main = async () => {
       ['DespairFarm         ', `<a href="despairfarm"     >Various</a>`, 'DESPAIRFARM  ', 'https://despair.sandman.finance'],
       ['Protofi             ', `<a href="protofi"         >Various</a>`, 'PROTO        ', 'https://bank.protofi.app'],
       ['VastSwap            ', `<a href="vast"            >Various</a>`, 'VAST         ', 'https://polygon.vastswap.com'],
-      ['Polysage            ', `<a href="polysage"        >Various</a>`, 'SAGE         ', 'https://polysage.finance']
+      ['Polysage            ', `<a href="polysage"        >Various</a>`, 'SAGE         ', 'https://polysage.finance'],
+      ['Elementic           ', `<a href="elementic"       >Various</a>`, 'FIRE         ', 'https://fire.elementic.finance']
     ],
   }
 
