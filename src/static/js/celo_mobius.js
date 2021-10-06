@@ -66,9 +66,6 @@ $(function() {
       var userStakedUsd = poolInfo.userStaked * poolPrices.price;
       var userStakedPct = userStakedUsd / poolPrices.tvl * 100;
       _print(`You Have ${poolInfo.userStaked.toFixed(12)} ${poolInfo.vault.name} ${userStakedBtc.toFixed(4)} ${poolInfo.vault.token.name}, $${formatMoney(userStakedUsd)}, ${userStakedPct.toFixed(2)}% of the pool.`);
-      /*if (poolInfo.userStaked > 0) {
-        _print(`Your stake comprises of ${poolInfo.userStaked * poolInfo.ppfs} ${poolInfo.vault.token.symbol}.`)
-      }*/
       _print("");
     }
   

@@ -10,7 +10,7 @@ const main = async() => {
     "rows": [
         ["Ubeswap  ",     `<a href="ubeswap"       >Various</a>`,      "UBE ",     "https://app.ubeswap.org" ],
         ["Harem  ",       `<a href="harem"         >Various</a>`,      "HAREM ",   "https://harem.farm" ],
-        ["Mobius  ",      `<a href="mobius"        >Various</a>`,      "NERVE ",   "https://www.mobius.money" ]
+        ["Mobius  ",      `<a href="mobius"        >Various</a>`,      "MOBI ",    "https://www.mobius.money" ]
     ]
   }
 
