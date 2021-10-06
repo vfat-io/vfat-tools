@@ -5,7 +5,10 @@ const celoTokens = [
     { "id": "ubeswap","symbol": "UBE","contract": "0x00be915b9dcf56a3cbe739d9b9c202ca692409ec" },
     { "id": "celo-dollar","symbol": "CUSD","contract": "0x64dEFa3544c695db8c535D289d843a189aa26b98" },
     { "id": "moola-market","symbol": "MOO","contract": "0x17700282592D6917F6A73D0bF8AcCf4D578c131e" },
-    { "id": "wrapped-celo","symbol": "WCELO","contract": "0x471ece3750da237f93b8e339c536989b8978a438" }
+    { "id": "wrapped-celo","symbol": "WCELO","contract": "0x471ece3750da237f93b8e339c536989b8978a438" },
+    { "id": "wrapped-bitcoin","symbol": "WBTC","contract": "0xD629eb00dEced2a080B7EC630eF6aC117e614f1b" },
+    { "id": "usd-coin","symbol": "USDC","contract": "0x765DE816845861e75A25fCA122bb6898B8B1282a" },
+    { "id": "weth","symbol": "WETH","contract": "0x2DEf4285787d58a2f811AF24755A8150622f4361" }
 ]
 
 async function getCeloPrices() {

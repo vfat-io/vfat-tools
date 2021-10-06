@@ -34,7 +34,7 @@ $(function() {
       }
       _print_bold(`\nTotal Value Locked: $${formatMoney(tvl)}`);
       if (userTvl > 0) {
-        _print_bold(`You are staking a total of $${formatMoney(userTvl)}`);
+        _print_bold(`You have deposited a total of $${formatMoney(userTvl)}`);
       }
   
       hideLoading();
@@ -61,14 +61,14 @@ $(function() {
   
     async function printMobiusContract(poolInfo) {
       const poolPrices = poolInfo.poolPrices;
-      //_print(`${vault.name} Price: $${formatMoney(poolPrices.price)} TVL: $${formatMoney(poolPrices.tvl)}`);
-      poolPrices.print_price();
+      const userStakedBtc = poolInfo.vault.virtualPrice * poolInfo.userStaked
+      _print(`${poolInfo.vault.name} Price: $${formatMoney(poolPrices.price)} Market Cap: $${formatMoney(poolPrices.tvl)}`);
       var userStakedUsd = poolInfo.userStaked * poolPrices.price;
       var userStakedPct = userStakedUsd / poolPrices.tvl * 100;
-      _print(`You are staking ${poolInfo.userStaked.toFixed(4)} ${poolInfo.vault.name} ($${formatMoney(userStakedUsd)}), ${userStakedPct.toFixed(2)}% of the pool.`);
-      if (poolInfo.userStaked > 0) {
+      _print(`You Have ${poolInfo.userStaked.toFixed(12)} ${poolInfo.vault.name} ${userStakedBtc.toFixed(4)} ${poolInfo.vault.token.name}, $${formatMoney(userStakedUsd)}, ${userStakedPct.toFixed(2)}% of the pool.`);
+      /*if (poolInfo.userStaked > 0) {
         _print(`Your stake comprises of ${poolInfo.userStaked * poolInfo.ppfs} ${poolInfo.vault.token.symbol}.`)
-      }
+      }*/
       _print("");
     }
   

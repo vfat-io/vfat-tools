@@ -2390,7 +2390,7 @@ function getErc20Prices(prices, pool, chain="eth") {
 }
 
 function getCurvePrices(prices, pool) {
-  var price = (getParameterCaseInsensitive(prices,pool.token.address)?.usd ?? 1) * pool.virtualPrice;
+  var price = (getParameterCaseInsensitive(prices,pool.token.address).usd) * pool.virtualPrice;
   if (getParameterCaseInsensitive(prices, pool.address)?.usd ?? 0 == 0) {
     prices[pool.address] = { usd : price };
   }
@@ -2417,7 +2417,8 @@ function getCurvePrices(prices, pool) {
       _print(`Staked: ${pool.staked.toFixed(4)} ${pool.symbol} ($${formatMoney(staked_tvl)})`);
     },
     print_contained_price() {
-    }
+    },
+    tvl : tvl
   }
 }
 
