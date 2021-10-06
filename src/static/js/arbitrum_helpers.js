@@ -486,7 +486,7 @@ async function loadArbitrumSynthetixPoolInfo(App, tokens, prices, stakingAbi, st
 async function loadArbitrumSynthetixPool(App, tokens, prices, abi, address, rewardTokenFunction, stakeTokenFunction) {
     const info = await loadArbitrumSynthetixPoolInfo(App, tokens, prices, abi, address, rewardTokenFunction, stakeTokenFunction);
     if (!info) return null;
-    return await printSynthetixPool(App, info, "arbitrum");
+    return await printArbitrumSynthetixPool(App, info, "arbitrum");
 }
 
 async function loadArbitrumBasisFork(data) {
@@ -791,7 +791,7 @@ async function loadMultipleArbitrumSynthetixPools(App, tokens, prices, pools) {
   const infos = await Promise.all(pools.map(p =>
       loadArbitrumSynthetixPoolInfo(App, tokens, prices, p.abi, p.address, p.rewardTokenFunction, p.stakeTokenFunction)));
   for (const i of infos) {
-    let p = await printSynthetixPool(App, i, "arbitrum");
+    let p = await printArbitrumSynthetixPool(App, i, "arbitrum");
     totalStaked += p.staked_tvl || 0;
     totalUserStaked += p.userStaked || 0;
     if (p.userStaked > 0) {
@@ -800,6 +800,154 @@ async function loadMultipleArbitrumSynthetixPools(App, tokens, prices, pools) {
   }
   let totalApr = totalUserStaked == 0 ? 0 : individualAPRs.reduce((x,y)=>x+y, 0) / totalUserStaked;
   return { staked_tvl : totalStaked, totalUserStaked, totalApr };
+}
+
+async function printArbitrumSynthetixPool(App, info, chain="eth", customURLs) {
+    info.poolPrices.print_price(chain, 4, customURLs);
+    _print(`${info.rewardTokenTicker} Per Week: ${info.weeklyRewards.toFixed(2)} ($${formatMoney(info.usdPerWeek)})`);
+    const weeklyAPR = info.usdPerWeek / info.staked_tvl * 100;
+    const dailyAPR = weeklyAPR / 7;
+    const yearlyAPR = weeklyAPR * 52;
+    _print(`APR: Day ${dailyAPR.toFixed(2)}% Week ${weeklyAPR.toFixed(2)}% Year ${yearlyAPR.toFixed(2)}%`);
+    const userStakedUsd = info.userStaked * info.stakeTokenPrice;
+    const userStakedPct = userStakedUsd / info.staked_tvl * 100;
+    _print(`You are staking ${info.userStaked.toFixed(6)} ${info.stakeTokenTicker} ` +
+           `$${formatMoney(userStakedUsd)} (${userStakedPct.toFixed(2)}% of the pool).`);
+    if (info.userStaked > 0) {
+      info.poolPrices.print_contained_price(info.userStaked);
+        const userWeeklyRewards = userStakedPct * info.weeklyRewards / 100;
+        const userDailyRewards = userWeeklyRewards / 7;
+        const userYearlyRewards = userWeeklyRewards * 52;
+        _print(`Estimated ${info.rewardTokenTicker} earnings:`
+            + ` Day ${userDailyRewards.toFixed(2)} ($${formatMoney(userDailyRewards*info.rewardTokenPrice)})`
+            + ` Week ${userWeeklyRewards.toFixed(2)} ($${formatMoney(userWeeklyRewards*info.rewardTokenPrice)})`
+            + ` Year ${userYearlyRewards.toFixed(2)} ($${formatMoney(userYearlyRewards*info.rewardTokenPrice)})`);
+    }
+    const approveTENDAndStake = async function() {
+      return rewardsContractArbitrum_stake(info.stakeTokenAddress, info.stakingAddress, App)
+    }
+    const unstake = async function() {
+      return rewardsContractArbitrum_unstake(info.stakingAddress, App)
+    }
+    const claim = async function() {
+      return rewardsContractArbitrum_claim(info.stakingAddress, App)
+    }
+    const exit = async function() {
+      return rewardsContract_exit(info.stakingAddress, App)
+    }
+    const revoke = async function() {
+      return rewardsContract_resetApprove(info.stakeTokenAddress, info.stakingAddress, App)
+    }
+    _print(`<a target="_blank" href="https://arbiscan.io/address/${info.stakingAddress}#code">Arbitrum Explorer</a>`);
+    if (info.stakeTokenTicker != "ETH") {
+      _print_link(`Stake ${info.userUnstaked.toFixed(6)} ${info.stakeTokenTicker}`, approveTENDAndStake)
+    }
+    else {
+      _print("Please use the official website to stake ETH.");
+    }
+    _print_link(`Unstake ${info.userStaked.toFixed(6)} ${info.stakeTokenTicker}`, unstake)
+    _print_link(`Claim ${info.earned.toFixed(6)} ${info.rewardTokenTicker} ($${formatMoney(info.earned*info.rewardTokenPrice)})`, claim)
+    if (info.stakeTokenTicker != "ETH") {
+      _print_link(`Revoke (set approval to 0)`, revoke)
+    }
+    _print_link(`Exit`, exit)
+    _print("");
+
+    return {
+        staked_tvl: info.poolPrices.staked_tvl,
+        userStaked : userStakedUsd,
+        apr : yearlyAPR
+    }
+}
+
+const rewardsContractArbitrum_stake = async function(stakeTokenAddr, rewardPoolAddr, App, maxAllowance) {
+  const signer = App.provider.getSigner()
+
+  const TEND_TOKEN = new ethers.Contract(stakeTokenAddr, ERC20_ABI, signer)
+  const WEEBTEND_V2_TOKEN = new ethers.Contract(rewardPoolAddr, YFFI_REWARD_CONTRACT_ABI, signer)
+
+  const balanceOf = await TEND_TOKEN.balanceOf(App.YOUR_ADDRESS)
+  const currentTEND =  maxAllowance ? (maxAllowance / 1e18 < balanceOf / 1e18
+    ? maxAllowance : balanceOf) : balanceOf
+  const allowedTEND = await TEND_TOKEN.allowance(App.YOUR_ADDRESS, rewardPoolAddr)
+
+  let allow = Promise.resolve()
+
+  if (allowedTEND / 1e18 < currentTEND / 1e18) {
+    showLoading()
+    allow = TEND_TOKEN.approve(rewardPoolAddr, ethers.constants.MaxUint256)
+      .then(function(t) {
+        return App.provider.waitForTransaction(t.hash)
+      })
+      .catch(function() {
+        hideLoading()
+        alert('Try resetting your approval to 0 first')
+      })
+  }
+
+  if (currentTEND / 1e18 > 0) {
+    showLoading()
+    allow
+      .then(async function() {
+        WEEBTEND_V2_TOKEN.stake(currentTEND)
+          .then(function(t) {
+            App.provider.waitForTransaction(t.hash).then(function() {
+              hideLoading()
+            })
+          })
+          .catch(x => {
+            hideLoading()
+            console.log(x);
+            _print('Something went wrong.')
+          })
+      })
+      .catch(x => {
+        hideLoading()
+        console.log(x);
+        _print('Something went wrong.')
+      })
+  } else {
+    alert('You have no tokens to stake!!')
+  }
+}
+
+const rewardsContractArbitrum_unstake = async function(rewardPoolAddr, App) {
+  const signer = App.provider.getSigner()
+
+  const REWARD_POOL = new ethers.Contract(rewardPoolAddr, Y_STAKING_POOL_ABI, signer)
+  const currentStakedAmount = await REWARD_POOL.balanceOf(App.YOUR_ADDRESS)
+
+  if (currentStakedAmount > 0) {
+    showLoading()
+    REWARD_POOL.withdraw(currentStakedAmount)
+      .then(function(t) {
+        return App.provider.waitForTransaction(t.hash)
+      })
+      .catch(function() {
+        hideLoading()
+      })
+  }
+}
+
+const rewardsContractArbitrum_claim = async function(rewardPoolAddr, App) {
+  const signer = App.provider.getSigner()
+
+  const REWARD_POOL = new ethers.Contract(rewardPoolAddr, Y_STAKING_POOL_ABI, signer)
+
+  console.log(App.YOUR_ADDRESS)
+
+  const earnedYFFI = (await REWARD_POOL.earned(App.YOUR_ADDRESS)) / 1e18
+
+  if (earnedYFFI > 0) {
+    showLoading()
+    REWARD_POOL.getReward()
+      .then(function(t) {
+        return App.provider.waitForTransaction(t.hash)
+      })
+      .catch(function() {
+        hideLoading()
+      })
+  }
 }
 
 async function loadMultipleArbitrumSynthetixPoolsSequential(App, tokens, prices, pools) {
