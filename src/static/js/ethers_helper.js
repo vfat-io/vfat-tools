@@ -1668,6 +1668,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
   else if (pool.symbol.includes("ULP")) stakeTokenTicker += " Ubeswap LP Token";
   else if (pool.symbol.includes("LOVE LP")) stakeTokenTicker += " Love Boat Love LP Token";
   else if (pool.symbol.includes("Proto-LP")) stakeTokenTicker += " ProtoFi LP Token";
+  else if (pool.symbol.includes("SOUL-LP")) stakeTokenTicker += " Soulswap LP Token";
   else stakeTokenTicker += " Uni LP";
   return {
       t0: t0,
@@ -1847,6 +1848,11 @@ function getUniPrices(tokens, prices, pool, chain="eth")
             `https://swap.spiritswap.finance/add/${t0address}/${t1address}`,
             `https://swap.spiritswap.finance/remove/${t0address}/${t1address}`,
             `https://swap.spiritswap.finance/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+          ] :
+          pool.symbol.includes("SOUL-LP") ? [
+            `https://app.soulswap.finance/add/${t0address}/${t1address}`,
+            `https://app.soulswap.finance/remove/${t0address}/${t1address}`,
+            `https://app.soulswap.finance/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
           ] :
           pool.symbol.includes("spLP") ? [
             `https://spookyswap.finance/add/${t0address}/${t1address}`,
@@ -2388,7 +2394,7 @@ function getErc20Prices(prices, pool, chain="eth") {
 }
 
 function getCurvePrices(prices, pool) {
-  var price = (getParameterCaseInsensitive(prices,pool.token.address)?.usd ?? 1) * pool.virtualPrice;
+  var price = (getParameterCaseInsensitive(prices,pool.token.address).usd) * pool.virtualPrice;
   if (getParameterCaseInsensitive(prices, pool.address)?.usd ?? 0 == 0) {
     prices[pool.address] = { usd : price };
   }
@@ -2415,7 +2421,8 @@ function getCurvePrices(prices, pool) {
       _print(`Staked: ${pool.staked.toFixed(4)} ${pool.symbol} ($${formatMoney(staked_tvl)})`);
     },
     print_contained_price() {
-    }
+    },
+    tvl : tvl
   }
 }
 
