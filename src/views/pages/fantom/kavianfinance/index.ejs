@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include(`${partials}/head`); -%>
+
+<body>
+<%- include(`${partials}/header_main`); -%>
+<pre id="log">
+***************************** FANTOM NETWORK *************************************
+
+*************** 👨‍🌾 UNOFFICIAL KAVIAN FINANCE FARMING CALCULATOR 👨‍🌾 *********************
+INFO  : https://fantom.kavian.finance/
+***********************************************************************************
+
+*** If you are being rate limited, please select a different RPC URL from here https://rpc.ftm.tools// ***
+
+</pre>
+<div class="loader--1"></div>
+<%- include(`${partials}/scripts`, {scriptname: 'fantom_kavian'}); -%>
+</body>
+</html>
