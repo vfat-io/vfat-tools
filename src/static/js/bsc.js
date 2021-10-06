@@ -526,7 +526,8 @@ const main = async() => {
       ["CakeMiner           ","", `<a href="cakeminer"     >Various</a>`,"CAKE             ","https://dextoken-miner.finance"],
       ["Clam Island         ","", `<a href="clam_island"   >Various</a>`,"GEM              ","https://clamisland.fi/"],
       ["CZodiac             ","", `<a href="czodiac"       >Various</a>`,"CZF              ","https://app.czodiac.com/#/czfarm"],
-      ["1001 Nights Jafar   ","", `<a href="jafar"         >Various</a>`,"JAFAR            ","https://jafar.1001nights.gold"]
+      ["1001 Nights Jafar   ","", `<a href="jafar"         >Various</a>`,"JAFAR            ","https://jafar.1001nights.gold"],
+      ["The Gas Station     ","", `<a href="thegasstation">Various</a>`,"bscGAS          ","https://gasstationcrypto.com/"],
     ]}
 
   let table = new AsciiTable().fromJSON(tableData);
