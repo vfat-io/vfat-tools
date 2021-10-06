@@ -439,7 +439,13 @@ const main = async() => {
        `<a href='soulswap'>Various</a>`,
        "SOUL",
        "https://soul.sh",
-    ],
+      ],
+      [
+       "Kavian Finance",
+       `<a href='kavian'>Various</a>`,
+       "fKAVIAN",
+       "https://fantom.kavian.finance",
+      ]
     ]
   }
 
