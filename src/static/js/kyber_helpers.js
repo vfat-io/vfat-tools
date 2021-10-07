@@ -24,6 +24,10 @@ COINGECKO_IDS = {
   XUSD: 'xdollar-stablecoin',
   HERO: 'step-hero',
   XDO: 'xdollar',
+  DYP: 'defi-yield-protocol',
+  APEIN: 'ape-in',
+  FIWA: 'defi-warrior',
+  CTR: 'creator-platform',
 }
 
 async function getCoinGeckoPrice(symbol) {
