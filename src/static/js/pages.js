@@ -29,6 +29,7 @@ const main = async() => {
       ["Dynamic Set Dollar  ",`<a href="dsd/"               >Various</a>`,"DSD       ","https://dsd.finance/app"],
       ["Elena               ",`<a href="elena"              >Various</a>`,"ELENA     ","https://app.elena.finance"],
       ["Empty Set Dollar    ",`<a href="esd/"               >Various</a>`,"ESD       ","https://app.emptyset.finance/"],
+      ["* Enterdao *        ", `<a href="enterdao/"         >Various</a>`,"ENTR     ","https://dao.enterdao.xyz"],
       ["Fei                 ",`<a href="fei"                >Various</a>`,"FEI       ","https://fei.money"],
       ["Float               ",`<a href="float/"             >Various</a>`,"BANK      ","https://floatprotocol.com/#/stake"],
       ["Force DAO           ",`<a href="forcedao/"          >Various</a>`,"FORCE     ","https://forcedao.com/"],
