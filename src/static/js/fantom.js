@@ -445,6 +445,12 @@ const main = async() => {
        `<a href='kavian'>Various</a>`,
        "fKAVIAN",
        "https://fantom.kavian.finance",
+      ],
+      [
+       "Geist Finance",
+       `<a href='geist'>Various</a>`,
+       "GEIST",
+       "https://geist.finance",
       ]
     ]
   }
