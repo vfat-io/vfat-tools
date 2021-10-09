@@ -37,6 +37,41 @@ async function getFantomPrices() {
     return prices;
 }
 
+async function getFantomBalancerPool(App, pool, poolAddress, stakingAddress, tokens, smartToken) {
+  const tokenCalls = tokens.map(t => [pool.getNormalizedWeight(t), pool.getBalance(t)]).flat();
+  const calls = [pool.decimals(), pool.symbol(), pool.name(), pool.totalSupply(),
+    pool.balanceOf(stakingAddress), pool.balanceOf(App.YOUR_ADDRESS)].concat(tokenCalls);
+  const results = await App.ethcallProvider.all(calls);
+  let [decimals, symbol, name, totalSupply, staked, unstaked, ] = results
+  let poolTokens = [];
+  let j = 0;
+  for (let i = 6; i < results.length; i+=2) {
+    poolTokens.push({
+      address : tokens[j],
+      weight: results[i] / 1e18,
+      balance : results[i+1]
+    })
+    j++;
+  };
+  if (smartToken) {
+    [totalSupply, staked, unstaked] = await App.ethcallProvider.all([smartToken.totalSupply(),
+      smartToken.balanceOf(stakingAddress), smartToken.balanceOf(App.YOUR_ADDRESS)]);
+  }
+  return {
+      symbol,
+      name,
+      address: poolAddress,
+      poolTokens, //address, weight and balance
+      totalSupply: totalSupply / 10 ** decimals,
+      stakingAddress,
+      staked: staked / 10 ** decimals,
+      decimals: decimals,
+      unstaked: unstaked / 10 ** decimals,
+      contract: pool,
+      tokens
+  };
+}
+
 async function getFantomUniPool(App, pool, poolAddress, stakingAddress) {
     let q0, q1;
     const reserves = await pool.getReserves();
@@ -163,6 +198,10 @@ async function getFantomStoredToken(App, tokenAddress, stakingAddress, type) {
     case "fantomWantVault":
       const wantVault = new ethers.Contract(tokenAddress, FANTOM_VAULT_WANT_ABI, App.provider);
       return await getFantomWantVault(App, wantVault, tokenAddress, stakingAddress);
+    case "fantomBalancer":
+      const bal = new ethcall.Contract(tokenAddress, BALANCER_POOL_ABI);
+      const [tokens] = await App.ethcallProvider.all([bal.getFinalTokens()]);
+      return await getBalancerPool(App, bal, tokenAddress, stakingAddress, tokens);
     case "erc20":
       const erc20 = new ethers.Contract(tokenAddress, ERC20_ABI, App.provider);
       return await geterc20(App, erc20, tokenAddress, stakingAddress);
@@ -199,6 +238,15 @@ async function getFantomToken(App, tokenAddress, stakingAddress) {
       const vault = await getFantomVault(App, VAULT, tokenAddress, stakingAddress);
       window.localStorage.setItem(tokenAddress, "fantomVault");
       return vault;
+    }
+    catch(err) {
+    }
+    try {
+      const bal = new ethcall.Contract(tokenAddress, BALANCER_POOL_ABI);
+      const [tokens] = await App.ethcallProvider.all([bal.getFinalTokens()]);
+      const balPool = await getBalancerPool(App, bal, tokenAddress, stakingAddress, tokens);
+      window.localStorage.setItem(tokenAddress, "fantomBalancer");
+      return balPool;
     }
     catch(err) {
     }
