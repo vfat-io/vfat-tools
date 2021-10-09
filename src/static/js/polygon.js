@@ -379,6 +379,8 @@ const main = async () => {
       ['Guppy Finance       ', `<a href="guppyfinance"    >Various</a>`, 'FRY / GUPPY  ', 'https://guppy.finance'],
       ['PolyKiwi Finance    ', '<a href="polykiwifinance"        >Various</a>', 'KIWI         ', 'https://polykiwi.finance'],
       ['The Gas Station     ', `<a href="thegasstation" >Various</a>`, 'polyGAS      ', 'https://gasstationcrypto.com/'],
+      ['MysteryBox Defi     ', `<a href="mysteryboxdefi" >Various</a>`, 'MysteryBoxDefi      ', 'https://www.mysteryboxdefi.finance/'],
+      ['PolyBeta Finance     ', `<a href="polybeta" >Various</a>`, 'BETA      ', 'https://www.polybeta.finance/'],
     ],
   }
 
