@@ -528,6 +528,7 @@ const main = async() => {
       ["CZodiac             ","", `<a href="czodiac"       >Various</a>`,"CZF              ","https://app.czodiac.com/#/czfarm"],
       ["1001 Nights Jafar   ","", `<a href="jafar"         >Various</a>`,"JAFAR            ","https://jafar.1001nights.gold"],
       ["The Gas Station     ","", `<a href="thegasstation">Various</a>`,"bscGAS          ","https://gasstationcrypto.com/"],
+      ["Shield              ","", `<a href="shield"        >Various</a>`,"SLD              ","https://shieldex.io/"],
     ]}
 
   let table = new AsciiTable().fromJSON(tableData);
