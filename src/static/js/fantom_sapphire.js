@@ -11,7 +11,7 @@ async function main() {
     _print(`Initialized ${App.YOUR_ADDRESS}\n`);
     _print("Reading smart contracts...\n");
 
-   const SAPPHIRE_CHEF_ADDR = "0x30b65159dB82eFCf8CEde9861bc6B85336310EB2";
+   const SAPPHIRE_CHEF_ADDR = "0x5A3b5A572789B87755Fa7720A4Fae36e2e2D3b35";
 
    const rewardTokenTicker = "SAPPHIRE";
    const SAPPHIRE_CHEF = new ethers.Contract(SAPPHIRE_CHEF_ADDR, SAPPHIRE_CHEF_ABI, App.provider);
