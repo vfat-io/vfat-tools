@@ -25,7 +25,7 @@ async function main() {
     const prices = await getHarmonyPrices();
 
     await loadHarmonyChefContract(App, tokens, prices, MIS_CHEF, MIS_CHEF_ADDR, MIS_CHEF_ABI, rewardTokenTicker,
-        "labo", null, rewardsPerWeek, "pendingLabo", [0,1,2]);
+        "labo", null, rewardsPerWeek, "pendingLabo", [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]);
 
     hideLoading();
   }
