@@ -50,7 +50,7 @@ async function loadIotexParrotChefContract(App, tokens, prices, chef, chefAddres
     await getIotexPoolInfo(App, chefContract, chefAddress, x, pendingRewardsFunction)));
 
   var tokenAddresses = [].concat.apply([], poolInfos.filter(x => x.poolToken).map(x => x.poolToken.tokens));
-  tokenAddresses.push("0x8eDfb54E8c76C512DBdD4FAa252Bf4E163CaAD32");
+  //tokenAddresses.push("0x8eDfb54E8c76C512DBdD4FAa252Bf4E163CaAD32");
 
   await Promise.all(tokenAddresses.map(async (address) => {
       tokens[address] = await getIotexToken(App, address, chefAddress);
