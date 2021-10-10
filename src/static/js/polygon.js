@@ -381,7 +381,8 @@ const main = async () => {
       ['The Gas Station     ', `<a href="thegasstation" >Various</a>`, 'polyGAS      ', 'https://gasstationcrypto.com/'],
       ['MysteryBox Defi     ', `<a href="mysteryboxdefi" >Various</a>`, 'MysteryBoxDefi      ', 'https://www.mysteryboxdefi.finance/'],
       ['PolyBeta Finance     ', `<a href="polybeta" >Various</a>`, 'BETA      ', 'https://www.polybeta.finance/'],
-	  ['Coconut Finance        ', `<a href="coconutfinance"     >Various</a>`, 'COCONUT         ', 'https://coconutfinance.cc']
+	  ['Coconut Finance        ', `<a href="coconutfinance"     >Various</a>`, 'COCONUT         ', 'https://coconutfinance.cc'],
+    ['TacoParty           ', `<a href="tacoparty"       >Various</a>`, 'TACOPARTY 🌮  ', 'https://app.tacoparty.finance'],
     ],
   }
 
