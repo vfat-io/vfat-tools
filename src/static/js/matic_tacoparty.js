@@ -1019,8 +1019,7 @@ $(function() {
         const prices = await getMaticPrices();
     
         await loadMaticChefContract(App, tokens, prices, TACOPARTY_CHEF, TACOPARTY_CHEF_ADDR, TACOPARTY_CHEF_ABI, rewardTokenTicker,
-            "tacoparty", null, rewardsPerWeek, "pendingTaco");
+            "taco", null, rewardsPerWeek, "pendingTaco");
     
         hideLoading();
       }
-    
