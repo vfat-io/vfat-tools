@@ -209,7 +209,7 @@ $(function() {
   
     if (earnedDPX > 0 || earnedRDPX > 0) {
       showLoading()
-      REWARD_POOL.getReward(2, {gasLimit: 250000})
+      REWARD_POOL.getReward(2)
         .then(function(t) {
           return App.provider.waitForTransaction(t.hash)
         })
