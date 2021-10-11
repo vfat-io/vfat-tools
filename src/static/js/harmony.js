@@ -127,6 +127,12 @@ const main = async() => {
         `<a href='fuzz'>Various</a>`,
         "FUZZ",
         "https://fuzz.fi"
+      ],
+      [
+        "Artemis Protocol",
+        `<a href='artemisprotocol'>Various</a>`,
+        "MIS",
+        "https://app.artemisprotocol.one"
       ]
     ]
   }

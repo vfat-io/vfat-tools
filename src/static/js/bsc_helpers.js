@@ -702,6 +702,7 @@ const bscTokens = [
   { "id": "galaxy-oberon", "symbol": "OBERON", "contract": "0xc979E70611D997Aa109528c6A9aa73D82Eaa2881" },
   { "id": "gem", "symbol": "GEM", "contract": "0x9fb4DEF63f8caEC83Cb3EBcC22Ba0795258C988a" },
   { "id": "shell", "symbol": "SHELL", "contract": "0x01c16da6E041Cf203959624Ade1F39652973D0EB" },
+  { "id": "token-dforce-usd", "symbol": "USX", "contract": "0xb5102cee1528ce2c760893034a4603663495fd72" },
 ]
 
 async function getBscPrices() {
