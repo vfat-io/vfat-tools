@@ -451,6 +451,12 @@ const main = async() => {
         `<a href='sapphire'>Various</a>`,
         "SAPPHIRE",
         "https://sapphiredefi.com"
+      ],        
+      [
+        "Singular",
+        `<a href='singular'>Various</a>`,
+        "SING",
+        "https://singular.farm"
       ],  
     ]
   }
