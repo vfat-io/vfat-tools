@@ -23,14 +23,14 @@ async function main() {
    if(currentBlock < startBlock){
     _print(`Rewards start at block <a href="https://ftmscan.com/block/countdown/${startBlock}" target="_blank">${startBlock}</a>\n`);
    }else{
-    rewardsPerWeek = await SAPPHIRE_CHEF.fSapphirePerBlock() /1e18 * 604800;
+    rewardsPerWeek = await SAPPHIRE_CHEF.fSapphirePerBlock() /1e18 * 604800 ;
    }
 
     const tokens = {};
     const prices = await getFantomPrices();
 
     await loadFantomChefContract(App, tokens, prices, SAPPHIRE_CHEF, SAPPHIRE_CHEF_ADDR, SAPPHIRE_CHEF_ABI, rewardTokenTicker,
-      "token", null, rewardsPerWeek, "pendingSapphire", [21]);
+      "token", null, rewardsPerWeek, "pendingSapphire");
 
     hideLoading();
   }
