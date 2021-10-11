@@ -447,6 +447,12 @@ const main = async() => {
        "https://fantom.kavian.finance",
       ],
       [
+        "Sapphire DeFi",
+        `<a href='sapphire'>Various</a>`,
+        "SAPPHIRE",
+        "https://sapphiredefi.com"
+      ],
+      [
        "Geist Finance",
        `<a href='geist'>Various</a>`,
        "GEIST",

@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include(`${partials}/head`); -%>
+
+<body>
+<%- include(`${partials}/header_main`); -%>
+<pre id="log">
+***************************** AVALANCHE *********************************
+    
+*************** 👨‍🌾 UNOFFICIAL ORCA FARMING CALCULATOR 👨‍🌾 ***********
+INFO  : https://avai.finance
+*************************************************************************
+
+</pre>
+<div class="loader--1"></div>
+<%- include(`${partials}/scripts`, {scriptname: 'avax_orca'}); -%>
+</body>
+</html> 
