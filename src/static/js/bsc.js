@@ -527,8 +527,9 @@ const main = async() => {
       ["Clam Island         ","", `<a href="clam_island"   >Various</a>`,"GEM              ","https://clamisland.fi/"],
       ["CZodiac             ","", `<a href="czodiac"       >Various</a>`,"CZF              ","https://app.czodiac.com/#/czfarm"],
       ["1001 Nights Jafar   ","", `<a href="jafar"         >Various</a>`,"JAFAR            ","https://jafar.1001nights.gold"],
-      ["The Gas Station     ","", `<a href="thegasstation">Various</a>`,"bscGAS          ","https://gasstationcrypto.com/"],
+      ["The Gas Station     ","", `<a href="thegasstation" >Various</a>`,"bscGAS           ","https://gasstationcrypto.com/"],
       ["Shield              ","", `<a href="shield"        >Various</a>`,"SLD              ","https://shieldex.io/"],
+      ["Centaurus Axe       ","", `<a href="centaurus_axe" >Various</a>`,"AXE              ","https://axe.centaurus.network"],
     ]}
 
   let table = new AsciiTable().fromJSON(tableData);

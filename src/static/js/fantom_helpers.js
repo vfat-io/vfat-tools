@@ -25,8 +25,7 @@ const FantomTokens = [
   { "id": "galaxy-triton", "symbol": "TRITON", "contract": "0x9cf4009e62429Db3F57Aa9e7e8E898427cF6865f"},
   { "id": "galaxy-oberon", "symbol": "OBERON", "contract": "0xc979E70611D997Aa109528c6A9aa73D82Eaa2881"},
   { "id": "pumpkins", "symbol": "KINS", "contract": "0x6eced8e16eda61e65292f019b165542a5906ecd6"},
-  { "id": "wraithswap", "symbol": "WRA", "contract": "0x4CF098d3775Bd78a4508a13E126798Da5911b6cd"},
-  { "id": "FTM-Sapphire", "symbol": "SAPPHIRE", "contract": "0xfa7d8c3cccc90c07c53fee45a7a333cec40b441b"}, 
+  { "id": "wraithswap", "symbol": "WRA", "contract": "0x4CF098d3775Bd78a4508a13E126798Da5911b6cd"}
 ];
 
 async function getFantomPrices() {
