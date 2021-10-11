@@ -124,7 +124,7 @@ async function getFantomUniPool(App, pool, poolAddress, stakingAddress) {
   };
 }
 
-async function geterc20(App, token, address, stakingAddress) {
+async function getFantomErc20(App, token, address, stakingAddress) {
     if (address == "0x0000000000000000000000000000000000000000") {
       return {
         address,
@@ -234,16 +234,16 @@ async function getFantomStoredToken(App, tokenAddress, stakingAddress, type) {
     case "fantomBalancer":
       const bal = new ethcall.Contract(tokenAddress, BALANCER_POOL_ABI);
       const [tokens] = await App.ethcallProvider.all([bal.getFinalTokens()]);
-      return await getBalancerPool(App, bal, tokenAddress, stakingAddress, tokens);
+      return await getFantomBalancerPool(App, bal, tokenAddress, stakingAddress, tokens);
     case "erc20":
       const erc20 = new ethcall.Contract(tokenAddress, ERC20_ABI);
-      return await geterc20(App, erc20, tokenAddress, stakingAddress);
+      return await getFantomErc20(App, erc20, tokenAddress, stakingAddress);
   }
 }
 
 async function getFantomToken(App, tokenAddress, stakingAddress) {
     if (tokenAddress == "0x0000000000000000000000000000000000000000") {
-      return geterc20(App, null, tokenAddress, "")
+      return getFantomErc20(App, null, tokenAddress, "")
     }
     const type = window.localStorage.getItem(tokenAddress);
     if (type) return getFantomStoredToken(App, tokenAddress, stakingAddress, type);
@@ -277,7 +277,7 @@ async function getFantomToken(App, tokenAddress, stakingAddress) {
     try {
       const bal = new ethcall.Contract(tokenAddress, BALANCER_POOL_ABI);
       const [tokens] = await App.ethcallProvider.all([bal.getFinalTokens()]);
-      const balPool = await getBalancerPool(App, bal, tokenAddress, stakingAddress, tokens);
+      const balPool = await getFantomBalancerPool(App, bal, tokenAddress, stakingAddress, tokens);
       window.localStorage.setItem(tokenAddress, "fantomBalancer");
       return balPool;
     }
@@ -295,7 +295,7 @@ async function getFantomToken(App, tokenAddress, stakingAddress) {
     try {
       const erc20 = new ethcall.Contract(tokenAddress, ERC20_ABI);
       const _name = await App.ethcallProvider.all([erc20.name()]);
-      const erc20tok = await geterc20(App, erc20, tokenAddress, stakingAddress);
+      const erc20tok = await getFantomErc20(App, erc20, tokenAddress, stakingAddress);
       window.localStorage.setItem(tokenAddress, "erc20");
       return erc20tok;
     }
