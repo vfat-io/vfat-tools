@@ -133,6 +133,12 @@ const main = async() => {
         `<a href='artemisprotocol'>Various</a>`,
         "MIS",
         "https://app.artemisprotocol.one"
+      ],
+      [
+        "Harmony Cougar",
+        `<a href='cougar'>Various</a>`,
+        "CGS",
+        "https://harmonyapp.cougarswap.io"
       ]
     ]
   }
