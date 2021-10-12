@@ -27,7 +27,8 @@ const FantomTokens = [
   { "id": "pumpkins", "symbol": "KINS", "contract": "0x6eced8e16eda61e65292f019b165542a5906ecd6"},
   { "id": "wraithswap", "symbol": "WRA", "contract": "0x4CF098d3775Bd78a4508a13E126798Da5911b6cd"},    
   { "id": "geist-finance", "symbol": "GEIST", "contract": "0xd8321aa83fb0a4ecd6348d4577431310a6e0814d"},
-  { "id": "bitcoin", "symbol": "BTC", "contract": "0x321162Cd933E2Be498Cd2267a90534A804051b11"}
+  { "id": "bitcoin", "symbol": "BTC", "contract": "0x321162Cd933E2Be498Cd2267a90534A804051b11"},
+  { "id": "curve-dao-token", "symbol": "CRV", "contract": "0x1e4f97b9f9f913c46f1632781732927b9019c68b"}
 ];
 
 async function getFantomPrices() {
@@ -278,7 +279,6 @@ async function loadFantomSynthetixPoolInfo(App, tokens, prices, stakingAbi, stak
 
       const periodFinish = await STAKING_POOL.periodFinish();
       const rewardRate = await STAKING_POOL.rewardRate();
-      //const weeklyRewards = (Date.now() / 1000 > periodFinish) ? 0 : rewardRate / 1e18 * 604800;
       const weeklyRewards = (Date.now() / 1000 > periodFinish) ? 0 : rewardRate / 10 ** rewardToken.decimals * 604800;
 
       const usdPerWeek = weeklyRewards * rewardTokenPrice;
