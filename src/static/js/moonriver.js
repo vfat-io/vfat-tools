@@ -18,7 +18,8 @@ const main = async() => {
       ["1Swap                    ", `<a href="1swap"         >Various</a>`,"1SWAP       ","https://1swap.fi"],
       ["ApolloSwap               ", `<a href="apollo"        >Various</a>`,"APOLLO      ","https://apolloswap.farm"],
       ["MoonWhale                ", `<a href="moonwhale"     >Various</a>`,"WHALE       ","https://whale.moonlake.finance"],
-      ["LandSwap                 ", `<a href="landswap"      >Various</a>`,"LAND        ","https://landswap.app"]
+      ["LandSwap                 ", `<a href="landswap"      >Various</a>`,"LAND        ","https://landswap.app"],
+      ["MoonBeach                ", `<a href="moonbeach"      >Various</a>`,"COCONUT    ","https://moonbeach.farm"]
 
     ]
   }
