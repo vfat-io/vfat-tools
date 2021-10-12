@@ -464,6 +464,12 @@ const main = async() => {
        "BEETS",
        "https://app.beethovenx.io",
       ],
+      [
+       "Curve",
+       `<a href='curve'>Various</a>`,
+       "Various",
+       "https://ftm.curve.fi",
+      ]
     ]
   }
 
