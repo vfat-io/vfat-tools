@@ -218,11 +218,65 @@ async function getFantomSpoonVault(App, vault, address, stakingAddress) {
   }
 }
 
+async function getFantomCurveToken(App, curve, address, stakingAddress, minterAddress) {
+  const minter = new ethcall.Contract(minterAddress, MINTER_ABI)
+  const [virtualPrice, coin0] = await App.ethcallProvider.all([minter.get_virtual_price(), minter.coins(0)]);
+  const token = await getToken(App, coin0, address);
+  const calls = [curve.decimals(), curve.balanceOf(stakingAddress), curve.balanceOf(App.YOUR_ADDRESS),
+    curve.name(), curve.symbol(), curve.totalSupply()];
+  const [decimals, staked, unstaked, name, symbol, totalSupply] = await App.ethcallProvider.all(calls);
+  return {
+      address,
+      name,
+      symbol,
+      totalSupply,
+      decimals : decimals,
+      staked:  staked / 10 ** decimals,
+      unstaked: unstaked  / 10 ** decimals,
+      contract: curve,
+      tokens : [address, coin0],
+      token,
+      virtualPrice : virtualPrice / 1e18
+  };
+}
+
+async function getFantomStableswapToken(App, stable, address, stakingAddress) {
+  const calls = [stable.decimals(), stable.balanceOf(stakingAddress), stable.balanceOf(App.YOUR_ADDRESS),
+    stable.name(), stable.symbol(), stable.totalSupply(), stable.get_virtual_price(), stable.coins(0)];
+  const [decimals, staked, unstaked, name, symbol, totalSupply, virtualPrice, coin0]
+    = await App.ethcallProvider.all(calls);
+  const token = await getToken(App, coin0, address);
+  return {
+      address,
+      name,
+      symbol,
+      totalSupply,
+      decimals : decimals,
+      staked:  staked / 10 ** decimals,
+      unstaked: unstaked  / 10 ** decimals,
+      contract: stable,
+      tokens : [address, coin0],
+      token,
+      virtualPrice : virtualPrice / 1e18
+  };
+}
+
 async function getFantomStoredToken(App, tokenAddress, stakingAddress, type) {
   switch (type) {
     case "fantomSpoonVault":
       const spoonVault = new ethcall.Contract(tokenAddress, SPOON_VAULT_ABI);
       return await getFantomSpoonVault(App, spoonVault, tokenAddress, stakingAddress);
+    case "curve":
+      const crv = new ethcall.Contract(tokenAddress, CURVE_ABI);
+      /*if (tokenAddress.toLowerCase() == "0x88E11412BB21d137C217fd8b73982Dc0ED3665d7".toLowerCase()) {
+        const minter = "0x3333333ACdEdBbC9Ad7bda0876e60714195681c5";
+        return await getFantomCurveToken(App, crv, tokenAddress, stakingAddress, minter);
+      }*/
+      const [minter] = await App.ethcallProvider.all([crv.minter()]);
+      return await getFantomCurveToken(App, crv, tokenAddress, stakingAddress, minter);
+    case "stableswap":
+      const stable = new ethcall.Contract(tokenAddress, STABLESWAP_ABI);
+      return await getFantomStableswapToken(App, stable, tokenAddress, stakingAddress);
     case "uniswap":
       const pool = new ethcall.Contract(tokenAddress, UNI_ABI);
       return await getFantomUniPool(App, pool, tokenAddress, stakingAddress);
@@ -256,6 +310,29 @@ async function getFantomToken(App, tokenAddress, stakingAddress) {
       return spoonVault;
     }
     catch(err) {
+    }
+    try {
+      const crv = new ethcall.Contract(tokenAddress, CURVE_ABI);
+      /*if (tokenAddress.toLowerCase() == "0x88E11412BB21d137C217fd8b73982Dc0ED3665d7".toLowerCase()) {
+        const minter = "0x3333333ACdEdBbC9Ad7bda0876e60714195681c5";
+        const res = await getFantomCurveToken(App, crv, tokenAddress, stakingAddress, minter);
+        window.localStorage.setItem(tokenAddress, "curve");
+        return res;
+      }*/
+      const [minter] = await App.ethcallProvider.all([crv.minter()]);
+      const res = await getFantomCurveToken(App, crv, tokenAddress, stakingAddress, minter);
+      window.localStorage.setItem(tokenAddress, "curve");
+      return res;
+    }
+    catch(err) {
+    }
+    try {
+      const stable = new ethcall.Contract(tokenAddress, STABLESWAP_ABI);
+      const _coin0 = await App.ethcallProvider.all([stable.coins(0)]);
+      window.localStorage.setItem(tokenAddress, "stableswap");
+      return await getFantomStableswapToken(App, stable, tokenAddress, stakingAddress);
+    }
+    catch (err) {
     }
     try {
       const pool = new ethcall.Contract(tokenAddress, UNI_ABI);
