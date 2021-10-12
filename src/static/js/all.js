@@ -150,7 +150,7 @@ const main = async () => {
       ["Hundred                      ", `<a href="../hundred/"           >Various</a>`, "HND                ", "https://hundred.finance"],
       ["Gro                          ", `<a href="../gro/"               >Various</a>`, "GRO                ", "https://app.gro.xyz"],
       ["Enterdao                     ", `<a href="../enterdao/"          >Various</a>`, "ENTR               ", "https://dao.enterdao.xyz"],
-      ["Augmented Finance            ", `<a href="../augmented.finance/" >Various</a>`, "AGF                ", "https://augmented.finance"]
+      ["Augmented Finance            ", `<a href="../augmented/"         >Various</a>`, "AGF                ", "https://augmented.finance"]
     ]
   }
 

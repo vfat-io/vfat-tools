@@ -20,8 +20,8 @@ async function main() {
     _print(text.trim());
   })
 
-  _print_bold(`TVL: $${tvl.toFixed(2)}\n`)
-
+  _print_bold(`TVL: $${formatMoney(tvl.toFixed(2))}\n`)
+  
   _print_bold(`Supplied tokens:\n`)
   Object.keys(tokens)
     .filter(key => Boolean(tokens[key]))
