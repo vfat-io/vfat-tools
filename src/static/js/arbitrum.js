@@ -33,7 +33,9 @@ const main = async() => {
       ["Hundred *           ",""                                                                                               , `<a href="/arbitrum/hundred"     >Various</a>`,"HND                ","https://hundred.finance"],
       ["Polarbi             ",""                                                                                               , `<a href="/arbitrum/polarbi"     >Various</a>`,"POLAR              ","https://www.polarbi.net"],
       ["GMArbitrum          ",""                                                                                               , `<a href="/arbitrum/gmarb"       >Various</a>`,"GM                 ","https://gmarb.finance"],
-      ["Swapr               ",""                                                                                               , `<a href="/arbitrum/swapr"       >Various</a>`,"SWPR               ","https://swapr.eth.link"]
+      ["Swapr               ",""                                                                                               , `<a href="/arbitrum/swapr"       >Various</a>`,"SWPR               ","https://swapr.eth.link"],
+      ["Dopex               ",""                                                                                               , `<a href="/arbitrum/dopex"       >Various</a>`,"DPX, rDPX          ","https://app.dopex.io/farms"],
+      ["Beefy               ",""                                                                                               , `<a href="/arbitrum/beefy"       >Various</a>`,"Various            ","https://www.beefy.finance/Arbitrum"]
      ]
   }
 
