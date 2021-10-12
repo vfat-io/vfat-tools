@@ -119,7 +119,7 @@ async function getBeethovenxPoolInfo(app, chefContract, chefAddress, poolIndex, 
   }
   const poolToken = await getFantomToken(app, lpToken, chefAddress);
   const userInfo = await chefContract.userInfo(poolIndex, app.YOUR_ADDRESS);
-  const pendingRewardTokens = await chefContract.callStatic[pendingRewardsFunction](poolIndex, app.YOUR_ADDRESS);
+  const pendingRewardTokens = await chefContract.pendingBeets(poolIndex, app.YOUR_ADDRESS);
   const staked = userInfo.amount / 10 ** poolToken.decimals;
   return {
       address : lpToken,
