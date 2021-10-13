@@ -467,7 +467,7 @@ const main = async() => {
       [
        "Curve",
        `<a href='curve'>Various</a>`,
-       "Various",
+       "CRV/FTM",
        "https://ftm.curve.fi",
       ]
     ]
