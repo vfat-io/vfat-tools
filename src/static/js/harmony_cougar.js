@@ -11,29 +11,42 @@ async function main() {
     _print(`Initialized ${App.YOUR_ADDRESS}\n`);
     _print("Reading smart contracts...\n");
 
-   const COUGAR_CHEF_ADDR = "0x1357521115A4dAA6524045215ac7F979e64d6079";
-   const COUGAR_ADDR = "0x6cc35220349C444c39b8e26b359757739aAEc952";
-   const COUGAR_USDC_ADDR = "0x611917Ad4d306D08914f024ae191f168f6c793aB";
-   const rewardTokenTicker = "CGS";
-   const COUGAR_CHEF = new ethers.Contract(COUGAR_CHEF_ADDR, COUGAR_CHEF_ABI, App.provider);
+    const COUGAR_CHEF_ADDR = "0x1357521115A4dAA6524045215ac7F979e64d6079";
+    const COUGAR_ADDR = "0x6cc35220349C444c39b8e26b359757739aAEc952";
+    const COUGAR_USDC_ADDR = "0x611917Ad4d306D08914f024ae191f168f6c793aB";
+    const rewardTokenTicker = "CGS";
+    const COUGAR_CHEF = new ethers.Contract(COUGAR_CHEF_ADDR, COUGAR_CHEF_ABI, App.provider);
 
 
-  const blockNumber = await App.provider.getBlockNumber();
-  const multiplier = await COUGAR_CHEF.getMultiplier(blockNumber, blockNumber+1);
-  const rewardPerBlock = await COUGAR_CHEF.cougarPerBlock();
-  const rewardsPerWeek = rewardPerBlock / 1e18 * multiplier * 604800 / 2
+    const blockNumber = await App.provider.getBlockNumber();
+    const startBlock = await COUGAR_CHEF.startBlock();
 
-    const tokens = {};
-    const prices = await getHarmonyPrices();
+    let rewardsPerWeek = 0
+    if(blockNumber < startBlock){
+        _print(`REWARDS HAVE NOT YET STARTED!\n\tRewards will start at block ${startBlock}\n`);
+    }else{
+        const multiplier = await COUGAR_CHEF.getMultiplier(blockNumber, blockNumber+1);
+        const rewardPerBlock = await COUGAR_CHEF.cougarPerBlock();
+        rewardsPerWeek = rewardPerBlock / 1e18 * multiplier * 604800 / 2
+    }
 
-    // Add CGS price
     const cgsUsdcPoolInfo = await getHarmonyToken(App, COUGAR_USDC_ADDR, COUGAR_CHEF_ADDR);
-    var q0 = cgsUsdcPoolInfo.q0 / 10 ** 18;
-    var q1 = cgsUsdcPoolInfo.q1 / 10 ** 6;
-    prices[COUGAR_ADDR] = {usd: q1 / q0};
 
-    await loadHarmonyChefContract(App, tokens, prices, COUGAR_CHEF, COUGAR_CHEF_ADDR, COUGAR_CHEF_ABI, rewardTokenTicker,
-        "cougar", null, rewardsPerWeek, "pendingCougar", []);
+    if (cgsUsdcPoolInfo) {
+        const tokens = {};
+        const prices = await getHarmonyPrices();
+
+        // Add CGS price
+        var q0 = cgsUsdcPoolInfo.q0 / 10 ** 18;
+        var q1 = cgsUsdcPoolInfo.q1 / 10 ** 6;
+        prices[COUGAR_ADDR] = {usd: q1 / q0};
+
+        await loadHarmonyChefContract(App, tokens, prices, COUGAR_CHEF, COUGAR_CHEF_ADDR, COUGAR_CHEF_ABI, rewardTokenTicker,
+            "cougar", null, rewardsPerWeek, "pendingCougar", []);
+    }
+    else {
+        _print(`Could not load CGS price.\n\tThis probably due to liquidity have not yet added or the network error. Please try again later!\n`);
+    }
 
     hideLoading();
   }
