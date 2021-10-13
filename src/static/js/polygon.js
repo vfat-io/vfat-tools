@@ -385,7 +385,8 @@ const main = async () => {
       ['TacoParty           ', `<a href="tacoparty"       >Various</a>`, 'TACOPARTY    ', 'https://app.tacoparty.finance'],
       ['Rabbit              ', '<a href="rabbit"          >Various</a>', 'RABBIT       ', 'https://rabbit.luxe'],
       ['Flerovium           ', '<a href="flerovium"       >Various</a>', 'FLEROVIUM    ', 'https://flerovium.finance'],
-      ['Covid Finance       ', `<a href="covidfinance"    >Various</a>`, 'COVID        ', 'https://covidfinance.pro']
+      ['Covid Finance       ', `<a href="covidfinance"    >Various</a>`, 'COVID        ', 'https://covidfinance.pro'],
+      ['Sentient Swap       ', `<a href="sentientswap"    >Various</a>`, 'STN        ', 'https://sentientswap.live']
     ],
   }
 
