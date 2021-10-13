@@ -287,6 +287,49 @@ async function getArbitrumDlpPool(App, dlpPool, tokenAddress, originTokenAddress
   }
 }
 
+async function getArbitrumCurveToken(App, curve, address, stakingAddress, minterAddress) {
+  const minter = new ethcall.Contract(minterAddress, MINTER_ABI)
+  const [virtualPrice, coin0] = await App.ethcallProvider.all([minter.get_virtual_price(), minter.coins(0)]);
+  const token = await getToken(App, coin0, address);
+  const calls = [curve.decimals(), curve.balanceOf(stakingAddress), curve.balanceOf(App.YOUR_ADDRESS),
+    curve.name(), curve.symbol(), curve.totalSupply()];
+  const [decimals, staked, unstaked, name, symbol, totalSupply] = await App.ethcallProvider.all(calls);
+  return {
+      address,
+      name,
+      symbol,
+      totalSupply,
+      decimals : decimals,
+      staked:  staked / 10 ** decimals,
+      unstaked: unstaked  / 10 ** decimals,
+      contract: curve,
+      tokens : [address, coin0],
+      token,
+      virtualPrice : virtualPrice / 1e18
+  };
+}
+
+async function getArbitrumStableswapToken(App, stable, address, stakingAddress) {
+  const calls = [stable.decimals(), stable.balanceOf(stakingAddress), stable.balanceOf(App.YOUR_ADDRESS),
+    stable.name(), stable.symbol(), stable.totalSupply(), stable.get_virtual_price(), stable.coins(0)];
+  const [decimals, staked, unstaked, name, symbol, totalSupply, virtualPrice, coin0]
+    = await App.ethcallProvider.all(calls);
+  const token = await getToken(App, coin0, address);
+  return {
+      address,
+      name,
+      symbol,
+      totalSupply,
+      decimals : decimals,
+      staked:  staked / 10 ** decimals,
+      unstaked: unstaked  / 10 ** decimals,
+      contract: stable,
+      tokens : [address, coin0],
+      token,
+      virtualPrice : virtualPrice / 1e18
+  };
+}
+
 async function getArbitrumStoredToken(App, tokenAddress, stakingAddress, type) {
   switch (type) {
     case "uniswap":
@@ -301,6 +344,13 @@ async function getArbitrumStoredToken(App, tokenAddress, stakingAddress, type) {
     case "arbitrumArbisVault":
       const arbisVault = new ethcall.Contract(tokenAddress, ARBIS_VAULT_UNDERLYING_ABI);
       return await getArbitrumArbisVault(App, arbisVault, tokenAddress, stakingAddress);
+    case "curve":
+      const crv = new ethcall.Contract(tokenAddress, CURVE_ABI);
+      const [minter] = await App.ethcallProvider.all([crv.minter()]);
+      return await getArbitrumCurveToken(App, crv, tokenAddress, stakingAddress, minter);
+    case "stableswap":
+      const stable = new ethcall.Contract(tokenAddress, STABLESWAP_ABI);
+      return await getArbitrumStableswapToken(App, stable, tokenAddress, stakingAddress);
     case "arbitrumArbisVault2":
       const arbisVault2 = new ethcall.Contract(tokenAddress, ARBIS_VAULT_UNDERLYING_ABI2);
       return await getArbitrumArbisVault2(App, arbisVault2, tokenAddress, stakingAddress);
@@ -350,6 +400,23 @@ async function getArbitrumToken(App, tokenAddress, stakingAddress) {
       return dlpPool;
     }
     catch(err) {
+    }
+    try {
+      const crv = new ethcall.Contract(tokenAddress, CURVE_ABI);
+      const [minter] = await App.ethcallProvider.all([crv.minter()]);
+      const res = await getArbitrumCurveToken(App, crv, tokenAddress, stakingAddress, minter);
+      window.localStorage.setItem(tokenAddress, "curve");
+      return res;
+    }
+    catch(err) {
+    }
+    try {
+      const stable = new ethcall.Contract(tokenAddress, STABLESWAP_ABI);
+      const _coin0 = await App.ethcallProvider.all([stable.coins(0)]);
+      window.localStorage.setItem(tokenAddress, "stableswap");
+      return await getArbitrumStableswapToken(App, stable, tokenAddress, stakingAddress);
+    }
+    catch (err) {
     }
     try {
       const VAULT = new ethcall.Contract(tokenAddress, ARBITRUM_VAULT_TOKEN_ABI);

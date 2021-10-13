@@ -12,7 +12,7 @@ const main = async() => {
       ["Parrotdefi          ",`<a href="https://twitter.com/MCNVentures/status/1440498902688358402?s=20" target="_blank" class="mcn-reviewed">REVIEW</a>`, `<a href="/arbitrum/parrotdefi"  >Various</a>`,"PPEGG              ","https://parrotdefi.com"],
       ["GMX                 ",""                                                                                               , `<a href="/arbitrum/gmx"         >Various</a>`,"ETH,Escrowed GMX   ","https://gmx.financial"],
       ["Sushi               ",""                                                                                               , `<a href="/arbitrum/sushi"       >Various</a>`,"SUSHI              ","https://app.sushi.com"],
-      ["DODO *              ",""                                                                                               , `<a href="/arbitrum/dodo"        >Various</a>`,"DODO               ","https://app.dodoex.io"],
+      ["DODO                ",""                                                                                               , `<a href="/arbitrum/dodo"        >Various</a>`,"DODO               ","https://app.dodoex.io"],
       ["NYAN                ",""                                                                                               , `<a href="/arbitrum/nyan"        >Various</a>`,"NYAN               ","https://arbinyan.xyz"],
       ["TheHoneyPot         ",""                                                                                               , `<a href="/arbitrum/honeypot"    >Various</a>`,"HONEY              ","https://thehoneypot.finance"],
       ["ArbiFarm            ",""                                                                                               , `<a href="/arbitrum/arbifarm"    >Various</a>`,"AFARM              ","https://www.arbifarm.fi"],
@@ -30,12 +30,13 @@ const main = async() => {
       ["WhalesFinance       ",""                                                                                               , `<a href="/arbitrum/whalesfinance">Various</a>`,"WHALES            ","https://app.whalesfinance.io/"],
       ["Arbis               ",""                                                                                               , `<a href="/arbitrum/arbis"       >Various</a>`,"Various            ","https://arbis.finance"],
       ["DragonArbi          ",""                                                                                               , `<a href="/arbitrum/dragonarbi"  >Various</a>`,"DRAGON             ","https://dragonarbi.com"],
-      ["Hundred *           ",""                                                                                               , `<a href="/arbitrum/hundred"     >Various</a>`,"HND                ","https://hundred.finance"],
+      ["Hundred             ",""                                                                                               , `<a href="/arbitrum/hundred"     >Various</a>`,"HND                ","https://hundred.finance"],
       ["Polarbi             ",""                                                                                               , `<a href="/arbitrum/polarbi"     >Various</a>`,"POLAR              ","https://www.polarbi.net"],
       ["GMArbitrum          ",""                                                                                               , `<a href="/arbitrum/gmarb"       >Various</a>`,"GM                 ","https://gmarb.finance"],
       ["Swapr               ",""                                                                                               , `<a href="/arbitrum/swapr"       >Various</a>`,"SWPR               ","https://swapr.eth.link"],
       ["Dopex               ",""                                                                                               , `<a href="/arbitrum/dopex"       >Various</a>`,"DPX, rDPX          ","https://app.dopex.io/farms"],
-      ["Beefy               ",""                                                                                               , `<a href="/arbitrum/beefy"       >Various</a>`,"Various            ","https://www.beefy.finance/Arbitrum"]
+      ["Beefy               ",""                                                                                               , `<a href="/arbitrum/beefy"       >Various</a>`,"Various            ","https://www.beefy.finance/Arbitrum"],
+      ["Curve               ",""                                                                                               , `<a href="/arbitrum/curve"       >Various</a>`,"CRV/ETH            ","https://arbitrum.curve.fi"]
      ]
   }
 
