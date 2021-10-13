@@ -8,7 +8,7 @@ Original work: https://yieldfarming.info
 
 ## vfat.tools listing + review service in partnership with MCN Ventures ##
 
-Please seee https://mcn.ventures/review for more details on this service.
+Please seeee https://mcn.ventures/review for more details on this service.
 
 ## How to run locally
 
