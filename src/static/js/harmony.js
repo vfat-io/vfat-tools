@@ -135,6 +135,12 @@ const main = async() => {
         "https://app.artemisprotocol.one"
       ],
       [
+        "Harmony Cougar",
+        `<a href='cougar'>Various</a>`,
+        "CGS",
+        "https://harmonyapp.cougarswap.io"
+      ],
+      [
         "ADENA Finance",
         `<a href='adena'>Various</a>`,
         "ADENA",
