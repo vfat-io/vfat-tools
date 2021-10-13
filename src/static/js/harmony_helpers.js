@@ -99,6 +99,27 @@ async function getHarmonyCurveToken(App, curve, address, stakingAddress, minterA
   };
 }
 
+async function getHarmonyStableswapToken(App, stable, address, stakingAddress) {
+  const calls = [stable.decimals(), stable.balanceOf(stakingAddress), stable.balanceOf(App.YOUR_ADDRESS),
+    stable.name(), stable.symbol(), stable.totalSupply(), stable.get_virtual_price(), stable.coins(0)];
+  const [decimals, staked, unstaked, name, symbol, totalSupply, virtualPrice, coin0]
+    = await App.ethcallProvider.all(calls);
+  const token = await getToken(App, coin0, address);
+  return {
+      address,
+      name,
+      symbol,
+      totalSupply,
+      decimals : decimals,
+      staked:  staked / 10 ** decimals,
+      unstaked: unstaked  / 10 ** decimals,
+      contract: stable,
+      tokens : [address, coin0],
+      token,
+      virtualPrice : virtualPrice / 1e18
+  };
+}
+
 async function getHarmonyStoredToken(App, tokenAddress, stakingAddress, type) {
   switch (type) {
     case "uniswap":
@@ -108,6 +129,9 @@ async function getHarmonyStoredToken(App, tokenAddress, stakingAddress, type) {
       const crv = new ethcall.Contract(tokenAddress, CURVE_ABI);
       const [minter] = await App.ethcallProvider.all([crv.minter()]);
       return await getHarmonyCurveToken(App, crv, tokenAddress, stakingAddress, minter);
+    case "stableswap":
+      const stable = new ethcall.Contract(tokenAddress, STABLESWAP_ABI);
+      return await getHarmonyStableswapToken(App, stable, tokenAddress, stakingAddress);
     case "erc20":
       const erc20 = new ethers.Contract(tokenAddress, ERC20_ABI, App.provider);
       return await geterc20(App, erc20, tokenAddress, stakingAddress);
@@ -137,6 +161,14 @@ async function getHarmonyToken(App, tokenAddress, stakingAddress) {
       return res;
     }
     catch(err) {
+    }
+    try {
+      const stable = new ethcall.Contract(tokenAddress, STABLESWAP_ABI);
+      const _coin0 = await App.ethcallProvider.all([stable.coins(0)]);
+      window.localStorage.setItem(tokenAddress, "stableswap");
+      return await getHarmonyStableswapToken(App, stable, tokenAddress, stakingAddress);
+    }
+    catch (err) {
     }
     try {
       const erc20 = new ethers.Contract(tokenAddress, ERC20_ABI, App.provider);
