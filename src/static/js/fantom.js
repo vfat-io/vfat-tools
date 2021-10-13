@@ -451,7 +451,7 @@ const main = async() => {
         `<a href='sapphire'>Various</a>`,
         "SAPPHIRE",
         "https://sapphiredefi.com"
-      ],
+      ],        
       [
        "Geist Finance",
        `<a href='geist'>Various</a>`,
@@ -469,7 +469,13 @@ const main = async() => {
        `<a href='curve'>Various</a>`,
        "CRV/FTM",
        "https://ftm.curve.fi",
-      ]
+      ],
+      [
+        "Singular",
+        `<a href='singular'>Various</a>`,
+        "SING",
+        "https://singular.farm"
+      ],  
     ]
   }
 
