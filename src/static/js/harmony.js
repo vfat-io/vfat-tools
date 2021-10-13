@@ -133,7 +133,13 @@ const main = async() => {
         `<a href='artemisprotocol'>Various</a>`,
         "MIS",
         "https://app.artemisprotocol.one"
-      ]
+      ],
+      [
+        "Elephant Exchange",
+        `<a href='elephant'>Various</a>`,
+        "ELEPHANT",
+        "https://elephant.ac"
+      ],
     ]
   }
 

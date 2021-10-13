@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include(`${partials}/head`); -%>
+
+<body>
+<%- include(`${partials}/header_main`); -%>
+<pre id="log">
+*************** 🐘  Elephant DEX Staking Calc 🐘  ***************
+WEBSITE  : https://elephant.ac
+
+ElephantSwap - New DEX on the Harmony Blockchain
+
+The launch date for this DEX is Oct. 16 2021 ~5PM UTC. Please see the medium article below for additional information.
+
+https://medium.com/@elephantdex/elephantswap-e86bfee371e7
+
+
+
+
+
+**************************************************************************************
+
+</pre>
+<div class="loader--1"></div>
+<%- include(`${partials}/scripts`, {scriptname: 'harmony_elephant'}); -%>
+</body>
+</html> 
