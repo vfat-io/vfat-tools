@@ -145,7 +145,13 @@ const main = async() => {
         `<a href='adena'>Various</a>`,
         "ADENA",
         "https://adena.finance"
-      ]
+      ],
+      [
+        "Elephant Exchange",
+        `<a href='elephant'>Various</a>`,
+        "ELEPHANT",
+        "https://elephant.ac"
+      ],
     ]
   }
 
