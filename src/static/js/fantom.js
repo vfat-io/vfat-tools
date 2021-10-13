@@ -453,6 +453,24 @@ const main = async() => {
         "https://sapphiredefi.com"
       ],        
       [
+       "Geist Finance",
+       `<a href='geist'>Various</a>`,
+       "GEIST",
+       "https://geist.finance",
+      ],
+      [
+       "Beethovenx",
+       `<a href='beethovenx'>Various</a>`,
+       "BEETS",
+       "https://app.beethovenx.io",
+      ],
+      [
+       "Curve",
+       `<a href='curve'>Various</a>`,
+       "CRV/FTM",
+       "https://ftm.curve.fi",
+      ],
+      [
         "Singular",
         `<a href='singular'>Various</a>`,
         "SING",
