@@ -139,6 +139,12 @@ const main = async() => {
         `<a href='cougar'>Various</a>`,
         "CGS",
         "https://harmonyapp.cougarswap.io"
+      ],
+      [
+        "ADENA Finance",
+        `<a href='adena'>Various</a>`,
+        "ADENA",
+        "https://adena.finance"
       ]
     ]
   }
