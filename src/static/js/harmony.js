@@ -147,11 +147,17 @@ const main = async() => {
         "https://adena.finance"
       ],
       [
+        "Elephant Exchange",
+        `<a href='elephant'>Various</a>`,
+        "ELEPHANT",
+        "https://elephant.ac"
+      ],
+      [
         "Curve",
         `<a href='curve'>Various</a>`,
         "CRV/ONE",
         "https://harmony.curve.fi"
-      ]
+      ],
     ]
   }
 
