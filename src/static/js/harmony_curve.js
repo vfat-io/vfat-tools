@@ -137,7 +137,7 @@ async function main() {
       }
 }
 
-async function printCurvePool(App, info, chain="eth", customURLs) {
+async function printCurvePool(App, info, chain="harmony", customURLs) {
     info.poolPrices.print_price(chain, 4, customURLs);
     let totalYearlyAPR = 0
     for(let i =0; i < info.rewardTokenTickers.length; i++){
@@ -177,7 +177,7 @@ async function printCurvePool(App, info, chain="eth", customURLs) {
     const revoke = async function() {
       return rewardsContract_resetApprove(info.stakeTokenAddress, info.stakingAddress, App)
     }
-    _print(`<a target="_blank" href="https://explorer.harmony.one/address/${info.stakingAddress}#code">HARMONY Scan</a>`);
+    _print(`<a target="_blank" href="https://explorer.harmony.one/address/${info.stakingAddress}#code">HARMONY Explorer</a>`);
     _print_link(`Stake ${info.userUnstaked.toFixed(6)} ${info.stakeTokenTicker}`, approveTENDAndStake)
     _print_link(`Unstake ${info.userStaked.toFixed(6)} ${info.stakeTokenTicker}`, unstake)
     _print_link(`Claim ${info.earnings[0].toFixed(6)} ${info.rewardTokenTickers[0]} ($${formatMoney(info.earnings[0]*info.rewardTokenPrices[0])}) + ${info.earnings[1].toFixed(6)} ${info.rewardTokenTickers[1]} ($${formatMoney(info.earnings[1]*info.rewardTokenPrices[1])})`, claim)
