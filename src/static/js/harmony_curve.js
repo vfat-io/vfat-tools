@@ -139,7 +139,7 @@ async function main() {
 
 async function printCurvePool(App, info, chain="harmony", customURLs) {
     info.poolPrices.print_price(chain, 4, customURLs);
-    let totalYearlyAPR = 0
+    let totalYearlyAPR = 0, totalWeeklyRewards = 0, totalRewardPrices = 0
     for(let i =0; i < info.rewardTokenTickers.length; i++){
       _print(`${info.rewardTokenTickers[i]} Per Week: ${info.weeklyRewards[i].toFixed(2)} ($${formatMoney(info.usdCoinsPerWeek[i])})`);
       const weeklyAPR = info.usdCoinsPerWeek[i] / info.staked_tvl * 100;
@@ -147,6 +147,8 @@ async function printCurvePool(App, info, chain="harmony", customURLs) {
       const yearlyAPR = weeklyAPR * 52;
       _print(`APR: Day ${dailyAPR.toFixed(2)}% Week ${weeklyAPR.toFixed(2)}% Year ${yearlyAPR.toFixed(2)}%`);
       totalYearlyAPR += yearlyAPR;
+      totalWeeklyRewards += info.weeklyRewards[i]
+      totalRewardPrices += info.rewardTokenPrices[i]
     }
     const userStakedUsd = info.userStaked * info.stakeTokenPrice;
     const userStakedPct = userStakedUsd / info.staked_tvl * 100;
@@ -154,13 +156,13 @@ async function printCurvePool(App, info, chain="harmony", customURLs) {
            `$${formatMoney(userStakedUsd)} (${userStakedPct.toFixed(2)}% of the pool).`);
     if (info.userStaked > 0) {
       info.poolPrices.print_contained_price(info.userStaked);
-        const userWeeklyRewards = userStakedPct * info.weeklyRewards / 100;
+        const userWeeklyRewards = userStakedPct * totalWeeklyRewards / 100;
         const userDailyRewards = userWeeklyRewards / 7;
         const userYearlyRewards = userWeeklyRewards * 52;
         _print(`Estimated ${info.rewardTokenTicker} earnings:`
-            + ` Day ${userDailyRewards.toFixed(2)} ($${formatMoney(userDailyRewards*info.rewardTokenPrice)})`
-            + ` Week ${userWeeklyRewards.toFixed(2)} ($${formatMoney(userWeeklyRewards*info.rewardTokenPrice)})`
-            + ` Year ${userYearlyRewards.toFixed(2)} ($${formatMoney(userYearlyRewards*info.rewardTokenPrice)})`);
+            + ` Day ${userDailyRewards.toFixed(2)} ($${formatMoney(userDailyRewards*totalRewardPrices)})`
+            + ` Week ${userWeeklyRewards.toFixed(2)} ($${formatMoney(userWeeklyRewards*totalRewardPrices)})`
+            + ` Year ${userYearlyRewards.toFixed(2)} ($${formatMoney(userYearlyRewards*totalRewardPrices)})`);
     }
     const approveTENDAndStake = async function() {
       return rewardsContract_stake(info.stakeTokenAddress, info.stakingAddress, App)
