@@ -133,6 +133,12 @@ const main = async() => {
         `<a href='artemisprotocol'>Various</a>`,
         "MIS",
         "https://app.artemisprotocol.one"
+      ],
+      [
+        "ADENA Finance",
+        `<a href='adena'>Various</a>`,
+        "ADENA",
+        "https://adena.finance"
       ]
     ]
   }
