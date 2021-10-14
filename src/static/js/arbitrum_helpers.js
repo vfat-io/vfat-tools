@@ -323,11 +323,11 @@ async function getArbitrumTriCryptoToken(App, curve, address, stakingAddress, mi
       const token = await getArbitrumToken(App, coinAddresses[i], address);
       coins.push(
         {address : coinAddresses[i],
-         token : token,
-         balance : balances[i]}
+         token   : token,
+         balance : balances[i] / 10 ** token.decimals}
       )
     }
-  const [virtualPrice] = await App.ethcallProvider.all([minter.get_virtual_price()]);
+  const [virtualPrice, xcp_profit] = await App.ethcallProvider.all([minter.get_virtual_price(), minter.xcp_profit()]);
   const calls = [curve.decimals(), curve.balanceOf(stakingAddress), curve.balanceOf(App.YOUR_ADDRESS),
     curve.name(), curve.symbol(), curve.totalSupply()];
   const [decimals, staked, unstaked, name, symbol, totalSupply] = await App.ethcallProvider.all(calls);
@@ -336,14 +336,15 @@ async function getArbitrumTriCryptoToken(App, curve, address, stakingAddress, mi
       address,
       name,
       symbol,
-      totalSupply,
+      totalSupply : totalSupply / 10 ** decimals,
       decimals : decimals,
       staked:  staked / 10 ** decimals,
       unstaked: unstaked  / 10 ** decimals,
       contract: curve,
       tokens,
       coins,
-      virtualPrice : virtualPrice / 1e18
+      virtualPrice : virtualPrice / 1e18,
+      xcp_profit : xcp_profit / 10 ** decimals
   };
 }
 

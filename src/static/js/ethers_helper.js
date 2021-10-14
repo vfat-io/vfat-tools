@@ -1584,7 +1584,7 @@ function getGelatoPrices(tokens, prices, pool, chain="eth")
     print_price(chain="eth") {
       const t0address = t0.symbol == "ETH" ? "ETH" : t0.address;
       const t1address = t1.symbol == "ETH" ? "ETH" : t1.address;
-      const poolUrl = `https://etherscan.io/token/${pool.address}`
+      const poolUrl = getChainExplorerUrl(chain, pool.address);
       _print(`<a href='${poolUrl}' target='_blank'>${stakeTokenTicker}</a> Price: $${formatMoney(price)} TVL: $${formatMoney(tvl)}`);
       _print(`${t0.symbol} Price: $${displayPrice(p0)}`);
       _print(`${t1.symbol} Price: $${displayPrice(p1)}`);
@@ -2389,14 +2389,14 @@ function getErc20Prices(prices, pool, chain="eth") {
   }
 }
 
-function getCurvePrices(prices, pool) {
+function getCurvePrices(prices, pool, chain) {
   var price = (getParameterCaseInsensitive(prices,pool.token.address).usd) * pool.virtualPrice;
   if (getParameterCaseInsensitive(prices, pool.address)?.usd ?? 0 == 0) {
     prices[pool.address] = { usd : price };
   }
   var tvl = pool.totalSupply * price / 10 ** pool.decimals;
   var staked_tvl = pool.staked * price;
-  const poolUrl = `https://etherscan.io/token/${pool.address}`;
+  const poolUrl = getChainExplorerUrl(chain, pool.address);
   const name = `<a href='${poolUrl}' target='_blank'>${pool.symbol}</a>`;
   const getDexguruTokenlink =  function() {
     const network = window.location.pathname.split("/")[1]
@@ -2422,13 +2422,41 @@ function getCurvePrices(prices, pool) {
   }
 }
 
+function getTriCryptoPrices(prices, pool, chain){
+  let tvl = 0;
+  for(let i = 0; i < pool.coins.length; i++){
+    const price = (getParameterCaseInsensitive(prices,pool.coins[i].address).usd);
+    if (getParameterCaseInsensitive(prices, pool.address)?.usd ?? 0 == 0) {
+      prices[pool.address] = { usd : price };
+    }
+    tvl += pool.coins[i].balance * price;
+  }
+  const price = tvl / pool.totalSupply;
+  const staked_tvl = pool.staked * price;
+  const poolUrl = getChainExplorerUrl(chain, pool.address);
+  const name = `<a href='${poolUrl}' target='_blank'>${pool.symbol}</a>`;
+  return {
+    staked_tvl : staked_tvl,
+    price,
+    stakeTokenTicker : pool.symbol,
+    print_price() {
+      _print(`${name} Price: $${formatMoney(price)} Market Cap: $${formatMoney(tvl)}`);
+      _print(`Staked: ${pool.staked.toFixed(4)} ${pool.symbol} ($${formatMoney(staked_tvl)})`);
+    },
+    print_contained_price() {
+    },
+    tvl : tvl
+  }
+}
+
 function getPoolPrices(tokens, prices, pool, chain = "eth") {
   if (pool.w0 != null) return getValuePrices(tokens, prices, pool);
   if (pool.buniPoolTokens != null) return getBunicornPrices(tokens, prices, pool);
   if (pool.poolTokens != null) return getBalancerPrices(tokens, prices, pool);
-  if (pool.isGelato) return getGelatoPrices(tokens, prices, pool);
+  if (pool.isGelato) return getGelatoPrices(tokens, prices, pool, chain);
   if (pool.token0 != null) return getUniPrices(tokens, prices, pool);
-  if (pool.virtualPrice != null) return getCurvePrices(prices, pool); //should work for saddle too
+  if (pool.xcp_profit != null) return getTriCryptoPrices(prices, pool, chain);
+  if (pool.virtualPrice != null) return getCurvePrices(prices, pool, chain); //should work for saddle too
   if (pool.token != null) return getWrapPrices(tokens, prices, pool);
   return getErc20Prices(prices, pool, chain);
 }
@@ -3006,4 +3034,17 @@ async function getAverageBlockTime(App){
 const displayPrice = price => {
   const priceDecimals = price == 0 ? 2 : price < 0.0001 ? 10 : price < 0.01 ? 6 : 2;
   return priceDecimals == 2 ? formatMoney(price) : price.toFixed(priceDecimals);
+}
+
+function getChainExplorerUrl(chain, address){
+  switch(chain){
+    case "eth" :
+      return `https://etherscan.io/token/${address}`;
+    case "fantom" :
+      return `https://ftmscan.com/token/${address}`;
+    case "harmony" :
+      return `https://explorer.harmony.one/address/${address}`;
+    case "arbitrum" :
+      return `https://arbiscan.io/token/${address}`;
+  }
 }
