@@ -451,7 +451,7 @@ const main = async() => {
         `<a href='sapphire'>Various</a>`,
         "SAPPHIRE",
         "https://sapphiredefi.com"
-      ],        
+      ],
       [
        "Geist Finance",
        `<a href='geist'>Various</a>`,
@@ -475,7 +475,8 @@ const main = async() => {
         `<a href='singular'>Various</a>`,
         "SING",
         "https://singular.farm"
-      ],  
+      ],
+      ["KogeFarm                ", `<a href="koge"      >Various</a>`,'Various      ',"https://kogefarm.io"]
     ]
   }
 
