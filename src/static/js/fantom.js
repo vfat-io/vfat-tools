@@ -75,6 +75,12 @@ const main = async() => {
         "https://mushrooms.finance/farms"
       ],
       [
+        "DarkMatter",
+        `<a href='darkmatter'>Various</a>`,
+        "DMD",
+        "https://www.darkmatterdefi.com/"
+      ],
+      [
         "Greenhouse",
         `<a href='greenhouse'>Various</a>`,
         "SEED",
