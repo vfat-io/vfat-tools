@@ -72,6 +72,9 @@ async function loadMcnprotocolContracts(App, tokens, prices, pools, mcnContract)
     info.rewardTokens.forEach(r => r.rewardToken.tokens.forEach(rt => tokenAddresses.push(rt)));
   }
   await getNewPricesAndTokens(App, tokens, prices, tokenAddresses, mcnContract.address);
+  const magicPrice = await getPriceByID("magic-token");
+  //prices["0xA384Bc7Cdc0A93e686da9E7B8C0807cD040F4E0b"] = magicPrice.magic-token;
+  prices["0xA384Bc7Cdc0A93e686da9E7B8C0807cD040F4E0b"] = magicPrice["magic-token"];
   const xDollarPrice = await getPriceByID("xdollar");
   prices["0x173fd7434B8B50dF08e3298f173487ebDB35FD14"] = xDollarPrice.xdollar;
   const iotexPrice = await getPriceByID("iotex");
