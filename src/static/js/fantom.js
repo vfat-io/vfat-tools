@@ -345,6 +345,12 @@ const main = async() => {
         "https://morpheusswap.finance"
       ],
       [
+        "ScareCrow Finance",
+        `<a href='scarecrow'>Various</a>`,
+        "SCARE",
+        "https://scarecrow.fi"
+      ],
+      [
         "Olive",
         `<a href='olive'>Various</a>`,
         "OLIVE",
