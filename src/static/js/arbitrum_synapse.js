@@ -22,7 +22,7 @@ async function main() {
     const prices = await getArbitrumPrices();
 
     prices["0xD70A52248e546A3B260849386410C7170c7BD1E9"] = prices["0x82aF49447D8a07e3bd95BD0d56f35241523fBab1"];  //nETH
-    prices["0xF1FD0b04b9508B7e9498C7bB389D3452Cc008757"] = prices["0xff970a61a04b1ca14834a43f5de4533ebddb5cc8"];  //nUSD
+    prices["0xF1FD0b04b9508B7e9498C7bB389D3452Cc008757"] = {usd : 1};  //nUSD
 
     await loadSynapseChefContract(App, tokens, prices, SYNAPSE_CHEF, SYNAPSE_CHEF_ADDR, SYNAPSE_CHEF_ABI, rewardTokenTicker,
         "SYNAPSE", null, rewardsPerWeek, "pendingSynapse");
