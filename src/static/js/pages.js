@@ -52,6 +52,7 @@ const main = async() => {
       ["Stabilize           ",`<a href="stabilize/"         >Various</a>`,"STBZ      ","https://stabilize.finance"],
       ["StakeDAO            ",`<a href="stakedao/"          >Various</a>`,"SDT       ","https://stakedao.org"],
       ["Sushiswap           ",`<a href="sushi/"             >Various</a>`,"SUSHI     ","https://app.sushi.com/farms"],
+      ["* Synapse *         ",`<a href="synapse/"           >Various</a>`,"SYNAPSE   ","https://synapseprotocol.com"]
       ["Synthetix           ",`<a href="snx"                >Various</a>`,"SNX       ","https://staking.synthetix.io"],
       ["TrueFi              ",`<a href="truefi/"            >Various</a>`,"TRU       ","https://app.truefi.io/farm"],
       ["Typhoon Cash        ",`<a href="typhoon/"           >Various</a>`,"PHOON     ","https://typhoon.cash"],

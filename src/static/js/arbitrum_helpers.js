@@ -23,7 +23,8 @@ const ArbitrumTokens = [
     { "id": "magic-internet-money", "symbol": "MIM", "contract": "0xFEa7a6a0B346362BF88A9e4A88416B77a57D6c2A"},
     { "id": "dopex", "symbol": "DPX", "contract": "0x6C2C06790b3E3E3c38e12Ee22F8183b37a13EE55"},
     { "id": "dopex-rebate-token", "symbol": "RDPX", "contract": "0x32Eb7902D4134bf98A28b963D26de779AF92A212"},
-    { "id": "curve-dao-token", "symbol": "CRV", "contract": "0x11cDb42B0EB46D95f990BeDD4695A6e3fA034978"}
+    { "id": "curve-dao-token", "symbol": "CRV", "contract": "0x11cDb42B0EB46D95f990BeDD4695A6e3fA034978"},
+    { "id": "synapse-2", "symbol": "SYN", "contract": "0x080F6AEd32Fc474DD5717105Dba5ea57268F46eb"}
 ];
 
 const uniSqrtPrice = (tokenDecimals, sqrtRatioX96) => {
