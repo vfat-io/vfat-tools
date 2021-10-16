@@ -382,7 +382,8 @@ const main = async () => {
       ['MysteryBox Defi     ', `<a href="mysteryboxdefi" >Various</a>`, 'MysteryBoxDefi      ', 'https://www.mysteryboxdefi.finance/'],
       ['PolyBeta Finance     ', `<a href="polybeta" >Various</a>`, 'BETA      ', 'https://www.polybeta.finance/'],
 	  ['Coconut Finance        ', `<a href="coconutfinance"     >Various</a>`, 'COCONUT         ', 'https://coconutfinance.cc'],
-	  ['Covid Finance        ', `<a href="covidfinance"     >Various</a>`, 'COVID         ', 'https://covidfinance.pro']
+	  ['Covid Finance        ', `<a href="covidfinance"     >Various</a>`, 'COVID         ', 'https://covidfinance.pro'],
+	  ['Jam Finance        ', `<a href="jamfinance"     >Various</a>`, 'JAM         ', 'https://jamfinance.cc']
     ],
   }
 
