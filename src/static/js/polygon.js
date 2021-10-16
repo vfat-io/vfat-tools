@@ -7,6 +7,7 @@ const main = async () => {
     title: 'POLYGON Network',
     heading: ['Pool Provider', 'LP', 'Reward Tokens', 'INFO'],
     rows: [
+      ['WAVE              ', `<a href="WAVE"          >Various</a>`, 'WAVE         ', 'https://www.wavedefi.io'],
       ['Kyber               ', `<a href="kyber"           >Various</a>`, 'KNC          ', 'https://dmm.exchange'],
       ['Quickswap           ',`<a href="quick"            >Various</a>`,'QUICK         ','https://quickswap.exchange/#/quick',],
       ['Cometh              ',`<a href="cometh"           >Various</a>`,'MUST          ','https://swap.cometh.io/#/stake',],
