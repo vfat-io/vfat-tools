@@ -53,6 +53,7 @@ const main = async() => {
         ["ZabuV2        ",`<a href="zabuV2"        >Various</a>`,"ZUBAX      ","https://zabu.finance"],
         ["Dolphin        ",`<a href="dolphin"        >Various</a>`,"DOLPHIN      ","https://www.dolphinswap.finance"],
         ["ThunderSwap        ",`<a href="thunder"        >Various</a>`,"THUNDER      ","https://thunderswap.club"]
+        ["WiseAvax        ",`<a href="wiseavax"        >Various</a>`,"WISE      ","https://wiseavax.finance"]
     ]
   }
 
