@@ -345,12 +345,6 @@ const main = async() => {
         "https://morpheusswap.finance"
       ],
       [
-        "ScareCrow Finance",
-        `<a href='scarecrow'>Various</a>`,
-        "SCARE",
-        "https://scarecrow.fi"
-      ],
-      [
         "Olive",
         `<a href='olive'>Various</a>`,
         "OLIVE",
@@ -482,7 +476,13 @@ const main = async() => {
         "SING",
         "https://singular.farm"
       ],
-      ["KogeFarm                ", `<a href="koge"      >Various</a>`,'Various      ',"https://kogefarm.io"]
+      ["KogeFarm                ", `<a href="koge"      >Various</a>`,'Various      ',"https://kogefarm.io"],
+      [
+        "ScareCrow Finance",
+        `<a href='scarecrow'>Various</a>`,
+        "SCARE",
+        "https://scarecrow.fi"
+      ],
     ]
   }
 
