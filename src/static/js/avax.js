@@ -57,7 +57,8 @@ const main = async() => {
         ["Luffy Swap              ",`<a href="luffyswap"        >Various</a>`,"LUFFYS       ","https://luffyswap.finance"],
         ["FarmersOnly             ",`<a href="farmersonly"      >Various</a>`,"CORN         ","https://www.farmersonly.farm"],
         ["Wolf                    ",`<a href="wolf"             >Various</a>`,"WOLF         ","https://wolfavax.com"],
-        ["IceSlush                ",`<a href="iceslush"         >Various</a>`,"SLUSH        ","https://iceslush.finance"]
+        ["IceSlush                ",`<a href="iceslush"         >Various</a>`,"SLUSH        ","https://iceslush.finance"],
+        ["Orca                    ",`<a href="orca"             >Various</a>`,"ORCA         ","https://avai.finance"]
     ]
   }
 
