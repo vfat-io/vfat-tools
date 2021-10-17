@@ -19,7 +19,7 @@ consoleInit(main)
      const prices = await getMaticPrices();
  
      await loadPollyChefContract(App, tokens, prices, POLLY_CHEF, POLLY_CHEF_ADDR, POLLY_CHEF_ABI, rewardTokenTicker,
-         "Polly", null, null, "pendingReward");
+         "Polly", null, null, "pendingReward", [19]);
  
      hideLoading();
    }
@@ -96,7 +96,7 @@ consoleInit(main)
  
  async function getPollyPoolInfo(App, chefContract, chefAddress, poolIndex, pendingRewardsFunction) {
    const poolInfo = await chefContract.poolInfo(poolIndex);
-   if (poolInfo.allocPoint == 0 || poolIndex == 105) {
+   if (poolInfo.allocPoint == 0) {
      return {
        address: poolInfo.lpToken,
        allocPoints: poolInfo.allocPoint ?? 1,

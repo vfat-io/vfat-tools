@@ -521,7 +521,16 @@ const main = async() => {
       ["UnoRe               ","", `<a href="unore"         >Various</a>`,"UNORE            ","https://app.unore.io"],
       ["Centaurus Net       ","", `<a href="centaurus_net" >Various</a>`,"CEN              ","https://centaurus.network"],
       ["BYield Finance      ","", `<a href="byield"        >Various</a>`,"BYIELD           ","https://www.byieldfinance.com"],
-      ["wBAN                ","", `<a href="wban"          >Various</a>`,"wBAN             ","https://bsc.banano.cc"]
+      ["wBAN                ","", `<a href="wban"          >Various</a>`,"wBAN             ","https://bsc.banano.cc"],
+      ["VastSwap            ","", `<a href="vast"          >Various</a>`,"VAST             ","https://vastswap.com"],
+      ["CakeMiner           ","", `<a href="cakeminer"     >Various</a>`,"CAKE             ","https://dextoken-miner.finance"],
+      ["Clam Island         ","", `<a href="clam_island"   >Various</a>`,"GEM              ","https://clamisland.fi/"],
+      ["CZodiac             ","", `<a href="czodiac"       >Various</a>`,"CZF              ","https://app.czodiac.com/#/czfarm"],
+      ["1001 Nights Jafar   ","", `<a href="jafar"         >Various</a>`,"JAFAR            ","https://jafar.1001nights.gold"],
+      ["The Gas Station     ","", `<a href="thegasstation" >Various</a>`,"bscGAS           ","https://gasstationcrypto.com/"],
+      ["Shield              ","", `<a href="shield"        >Various</a>`,"SLD              ","https://shieldex.io/"],
+      ["Centaurus Axe       ","", `<a href="centaurus_axe" >Various</a>`,"AXE              ","https://axe.centaurus.network"],
+      ["dForce              ","", `<a href="dforce"        >Various</a>`,"DF               ","https://dforce.network"]
     ]}
 
   let table = new AsciiTable().fromJSON(tableData);

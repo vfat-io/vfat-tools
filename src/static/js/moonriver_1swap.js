@@ -21,6 +21,14 @@ async function main() {
   prices['0x17da5445F3Cd02b3F1cD820E6DE55983fe80CF85'] = {usd: 1} // 1S3P
   prices['0x2D5913437accb1119dd82E7584942fed3574F034'] = {usd: 1} // BUSD-1S3P
 
+  const customURLs =
+  {
+    add: "https://solarbeam.io/exchange/add",
+    remove: "https://solarbeam.io/exchange/remove",
+    swap: "https://solarbeam.io/exchange/swap",
+    info: "https://analytics.solarbeam.io/pairs"
+  }
+
   const chef1swap_stake = async function(chefAbi, chefAddress, poolIndex, stakeTokenAddr, App) {
     const signer = App.provider.getSigner()
 
@@ -186,7 +194,7 @@ async function main() {
     const rewardPrice = getParameterCaseInsensitive(prices, rewardTokenAddress)?.usd
     const staked_tvl = sp?.staked_tvl ?? poolPrices.staked_tvl
     _print_inline(`${poolIndex} - `)
-    poolPrices.print_price(chain)
+    poolPrices.print_price(chain, 18, customURLs)
     sp?.print_price(chain)
     const apr = printAPR(
       rewardTokenTicker,
