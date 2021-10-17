@@ -61,6 +61,10 @@ async function loadSGTv2Chef(App, prices) {
   const PENDING_REWARDS_FN = "pendingReward";
   const rewardsPerWeek = await SGT_CHEF.rewardPerSecond() / 1e18 * 604800;
 
+  // Set veSGT price. 1 SLP, locked for 1095 days gets 1 veSGT, so it's innacurate
+  // But we set the price equal to SLP to approximate the APR on the UI
+  prices = await getVeSGTPrice(App, prices, SGT_CHEF_ADDR);
+
   // These are transient window overrides that do not propagate if the page is changed
   // Overwrite link printing to allow iron style master chef interactions which require a "to" param
   window.printChefContractLinks = printIronChefContractLinks;
@@ -72,24 +76,28 @@ async function loadSGTv2Chef(App, prices) {
     prices, null, null)
 }
 
+async function getVeSGTPrice(App, prices, SGT_CHEF_ADDR) {
+  let tokens = {};
+  let veSGT_addr = '0x21b555305e9d65c8b8ae232e60fd806edc9c5d78';
+  let slp_addr = '0x41bfba56b9ba48d0a83775d89c247180617266bc';
+  tokens[veSGT_addr] =  await getToken(App, slp_addr, SGT_CHEF_ADDR);
+  tokens[tokens[veSGT_addr].token0] = await getToken(App, tokens[veSGT_addr].token0, SGT_CHEF_ADDR)
+  tokens[tokens[veSGT_addr].token1] = await getToken(App, tokens[veSGT_addr].token1, SGT_CHEF_ADDR)
+  veSGT_price_approx = await getPoolPrices(tokens, prices, tokens[veSGT_addr]);
+  prices[veSGT_addr] = {usd: veSGT_price_approx.price};
+  return prices;
+}
+
 async function getIronPoolInfo(app, chefContract, chefAddress, poolIndex, pendingRewardsFunction) {
   const poolInfo = await chefContract.poolInfo(poolIndex);
   const lpToken = await chefContract.lpToken(poolIndex);
 
-  if (poolInfo.allocPoint == 0) {
-    return {
-      address: lpToken,
-      allocPoints: poolInfo.allocPoint ?? 1,
-      poolToken: null,
-      userStaked: 0,
-      pendingRewardTokens: 0,
-    };
-  }
   const poolToken = await getToken(app, lpToken, chefAddress);
   const userInfo = await chefContract.userInfo(poolIndex, app.YOUR_ADDRESS);
   const pendingRewardTokens = await chefContract.callStatic[pendingRewardsFunction](poolIndex, app.YOUR_ADDRESS);
   const staked = userInfo.amount / 10 ** poolToken.decimals;
-  return {
+
+  let res = {
     address: lpToken,
     allocPoints: poolInfo.allocPoint ?? 1,
     poolToken: poolToken,
@@ -97,7 +105,13 @@ async function getIronPoolInfo(app, chefContract, chefAddress, poolIndex, pendin
     pendingRewardTokens: pendingRewardTokens / 10 ** 18,
     depositFee: (poolInfo.depositFeeBP ?? 0) / 100,
     withdrawFee: (poolInfo.withdrawFeeBP ?? 0) / 100
-  };
+  }
+
+  // Write out disable pools so users can exit
+  // Todo: improve this
+  if (poolInfo.allocPoint == 0) res.allocPoints = -1;
+
+  return res;
 }
 
 function printIronChefContractLinks(App, chefAbi, chefAddr, poolIndex, poolAddress, pendingRewardsFunction,
