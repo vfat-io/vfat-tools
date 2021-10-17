@@ -387,7 +387,8 @@ const main = async () => {
       ['Flerovium           ', '<a href="flerovium"       >Various</a>', 'FLEROVIUM    ', 'https://flerovium.finance'],
       ['Covid Finance       ', `<a href="covidfinance"    >Various</a>`, 'COVID        ', 'https://covidfinance.pro'],
       ['Sentient Swap       ', `<a href="sentientswap"    >Various</a>`, 'STN          ', 'https://sentientswap.live'],
-      ['Tower Finance       ', `<a href="tower"           >Various</a>`, 'IVORY        ', 'https://app.towerfinance.io']
+      ['Tower Finance       ', `<a href="tower"           >Various</a>`, 'IVORY        ', 'https://app.towerfinance.io'],
+      ['Jam Finance         ', `<a href="jamfinance"      >Various</a>`, 'JAM          ', 'https://jamfinance.cc']
     ],
   }
 
