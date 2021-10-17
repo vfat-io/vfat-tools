@@ -476,7 +476,7 @@ const main = async() => {
         "SING",
         "https://singular.farm"
       ],
-      ["KogeFarm                ", `<a href="koge"      >Various</a>`,'Various      ',"https://kogefarm.io"],
+      ["KogeFarm           ", `<a href="koge"         >Various</a>`,'Various      ',"https://kogefarm.io"],
       [
         "ScareCrow Finance",
         `<a href='scarecrow'>Various</a>`,
@@ -488,7 +488,8 @@ const main = async() => {
         `<a href='scarecrow'>Various</a>`,
         "WAR",
         "https://war.sapphiredefi.com/"
-      ],  
+      ],
+      ["DarkMatter         ", `<a href="darkmatter"   >Various</a>`,'DMD          ',"https://www.darkmatterdefi.com"],
     ]
   }
 
