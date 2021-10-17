@@ -24,7 +24,7 @@ async function main() {
    if(currentBlock < startBlock){
      _print(`Rewards start at block <a href="https://polygonscan.com/block/countdown/${startBlock}" target="_blank">${startBlock}</a>\n`);
    }else{
-    rewardsPerWeek = await JAGUAR_CHEF.jaguarPerBlock() /1e18
+    rewardsPerWeek = await JAGUAR_CHEF.JaguarPerBlock() /1e18
       * 604800 * multiplier / 2.1;
    }
 

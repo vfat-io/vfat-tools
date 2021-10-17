@@ -95,7 +95,6 @@ const main = async () => {
       ["Cvi                          ", `<a href="../cvi"                >Various</a>`, "GOVI               ", "https://cvi.finance"],
       ["Futureswap                   ", `<a href="../futureswap"         >Various</a>`, "FST                ", "https://exchange.futureswap.com"],
       ["Xdefi                        ", `<a href="../xdefi"              >Various</a>`, "XDEX               ", "https://farm.xdefi.com"],
-      ["Eurxb                        ", `<a href="../eurxb"              >Various</a>`, "XBE                ", "http://app.eurxb.finance"],
       ["Swarm Network                ", `<a href="../swarm"              >Various</a>`, "SWM                ", "https://stake.myswarm.app"],
       ["Liquity                      ", `<a href="../liquity"            >Various</a>`, "LQTY               ", "https://liquity.app"],
       ["Bondappetit                  ", `<a href="../bondappetit"        >Various</a>`, "BAG                ", "https://bondappetit.io"],
@@ -127,7 +126,7 @@ const main = async () => {
       ["Lever                        ", `<a href="../lever"              >Various</a>`, "LEV                ", "https://lever.network"],
       ["Fuse                         ", `<a href="../fuse_eth"           >Various</a>`, "FUSE               ", "https://fuse.io"],
       ["Donkey                       ", `<a href="../donkey"             >Various</a>`, "DON                ", "https://don-key.finance"],
-      ["Wild Credit *                ", `<a href="../wild"               >Various</a>`, "WILD               ", "https://wild.credit"],
+      ["Wild Credit                  ", `<a href="../wild"               >Various</a>`, "WILD               ", "https://wild.credit"],
       ["Convergence                  ", `<a href="../convx"              >Various</a>`, "CONV               ", "https://convx.conv.finance"],
       ["Abracadabra                  ", `<a href="../abracadabra"        >Various</a>`, "SPELL              ", "https://abracadabra.money"],
       ["Universe                     ", `<a href="../universe"           >Various</a>`, "XYZ                ", "https://dao.universe.xyz/yield-farming"],
@@ -144,7 +143,15 @@ const main = async () => {
       ["Fox Shapeshift               ", `<a href="../fox/"               >Various</a>`, "FOX                ", "https://fox.shapeshift.com"],
       ["Yield Enhancement Labs       ", `<a href="../yel/"               >Various</a>`, "YEL                ", "https://yel.finance"],
       ["Emptyset Finance             ", `<a href="../emptyset/"          >Various</a>`, "ESS                ", "https://app.emptyset.finance/dollar"],
-      ["NAOS Finance                 ", `<a href="../naos/"              >Various</a>`, "NAOS               ", "https://app.naos.finance/farms"]
+      ["NAOS Finance                 ", `<a href="../naos/"              >Various</a>`, "NAOS               ", "https://app.naos.finance/farms"],
+      ["XBE Finance                  ", `<a href="../xbe/"               >Various</a>`, "XBE                ", "https://app.xbe.finance"],
+      ["DODO                         ", `<a href="../dodo/"              >Various</a>`, "DODO               ", "https://app.dodoex.io"],
+      ["Aladdin                      ", `<a href="../ald/"               >Various</a>`, "ALD                ", "https://app.aladdin.club"],
+      ["Hundred                      ", `<a href="../hundred/"           >Various</a>`, "HND                ", "https://hundred.finance"],
+      ["Gro                          ", `<a href="../gro/"               >Various</a>`, "GRO                ", "https://app.gro.xyz"],
+      ["Enterdao                     ", `<a href="../enterdao/"          >Various</a>`, "ENTR               ", "https://dao.enterdao.xyz"],
+      ["Augmented Finance            ", `<a href="../augmented/"         >Various</a>`, "AGF                ", "https://augmented.finance"],
+      ["Synapse                      ", `<a href="../synapse/"           >Various</a>`, "SYNAPSE            ", "https://synapseprotocol.com"]
     ]
   }
 
