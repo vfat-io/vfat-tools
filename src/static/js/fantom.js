@@ -483,6 +483,12 @@ const main = async() => {
         "SCARE",
         "https://scarecrow.fi"
       ],
+      [
+        "Sapphire War",
+        `<a href='scarecrow'>Various</a>`,
+        "WAR",
+        "https://war.sapphiredefi.com/"
+      ],
       ["DarkMatter         ", `<a href="darkmatter"   >Various</a>`,'DMD          ',"https://www.darkmatterdefi.com"],
     ]
   }
