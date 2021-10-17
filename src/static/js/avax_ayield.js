@@ -25,7 +25,7 @@ $(function () {
         const prices = await getAvaxPrices();		
     		
         await loadAvaxChefContract(App, tokens, prices, AYIELD_CHEF, AYIELD_CHEF_ADDR, AYIELD_CHEF_ABI, rewardTokenTicker,		
-            "AYIELD", null, rewardsPerWeek, "pendingAyield", [1]);		
+            "ayield", null, rewardsPerWeek, "pendingAyield", [1]);		
     		
         hideLoading();		
     }		
