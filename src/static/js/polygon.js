@@ -389,6 +389,7 @@ const main = async () => {
       ['Sentient Swap       ', `<a href="sentientswap"    >Various</a>`, 'STN          ', 'https://sentientswap.live'],
       ['Tower Finance       ', `<a href="tower"           >Various</a>`, 'IVORY        ', 'https://app.towerfinance.io'],
       ['WAVE                ', `<a href="WAVE"            >Various</a>`, 'WAVE         ', 'https://www.wavedefi.io'],
+      ['Jam Finance         ', `<a href="jamfinance"      >Various</a>`, 'JAM          ', 'https://jamfinance.cc']
     ],
   }
 
