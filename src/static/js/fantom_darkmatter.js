@@ -15,7 +15,7 @@ $(function() {
        const rewardTokenTicker = "DMD";
        const DMD_CHEF = new ethers.Contract(DMD_CHEF_ADDR, DMD_CHEF_ABI, App.provider);
     
-       const rewardsPerWeek = await DMD_CHEF.DMDPerSec() /1e18 * 604800;
+       const rewardsPerWeek = await DMD_CHEF.DMDPerSecond() /1e18 * 604800;
     
         const tokens = {};
         const prices = await getFantomPrices();
