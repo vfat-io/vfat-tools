@@ -13,7 +13,7 @@ async function main() {
 
    const SAPPHIRE_CHEF_ADDR = "0xD1b96929AceDFa7a2920b5409D0c5636b89dcD85";
 
-   const rewardTokenTicker = "SAPPHIRE";
+   const rewardTokenTicker = "WAR";
    const SAPPHIRE_CHEF = new ethers.Contract(SAPPHIRE_CHEF_ADDR, SAPPHIRE_CHEF_ABI, App.provider);
 
    let rewardsPerWeek = 0
