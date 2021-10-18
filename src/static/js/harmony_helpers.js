@@ -53,8 +53,8 @@ async function getHarmonyErc20(App, token, address, stakingAddress) {
   if (address == "0x0000000000000000000000000000000000000000") {
     return {
       address,
-      name : "Harmony",
-      symbol : "Harmony",
+      name : "One",
+      symbol : "ONE",
       totalSupply: 1e8,
       decimals: 18,
       staked: 0,
@@ -142,7 +142,7 @@ async function getHarmonyStoredToken(App, tokenAddress, stakingAddress, type) {
 
 async function getHarmonyToken(App, tokenAddress, stakingAddress) {
     if (tokenAddress == "0x0000000000000000000000000000000000000000") {
-      return geterc20(App, null, tokenAddress, "")
+      return getHarmonyErc20(App, null, tokenAddress, stakingAddress)
     }
     const type = window.localStorage.getItem(tokenAddress);
     if (type) return getHarmonyStoredToken(App, tokenAddress, stakingAddress, type);
