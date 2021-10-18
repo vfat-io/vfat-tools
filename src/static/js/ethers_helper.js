@@ -2364,6 +2364,9 @@ function getErc20Prices(prices, pool, chain="eth") {
     case "smartbch":
       poolUrl=`https://smartscan.cash/address/${pool.address}`;
       break;
+    case "harmony":
+      poolUrl=`https://explorer.harmony.one/address/${pool.address}`;
+      break;
   }
 
   const getDexguruTokenlink =  function() {
@@ -2931,12 +2934,15 @@ async function printSynthetixPool(App, info, chain="eth", customURLs) {
       case "smartbch":
         _print(`<a target="_blank" href="https://smartscan.cash/address/${info.stakingAddress}#code">SmartScan</a>`);
         break;
+      case "harmony":
+        _print(`<a target="_blank" href="https://explorer.harmony.one/address/${info.stakingAddress}#code">Harmony Explorer</a>`);
+        break;
     }
-    if (info.stakeTokenTicker != "ETH") {
+    if (info.stakeTokenAddress != "0x0000000000000000000000000000000000000000") {
       _print_link(`Stake ${info.userUnstaked.toFixed(6)} ${info.stakeTokenTicker}`, approveTENDAndStake)
     }
     else {
-      _print("Please use the official website to stake ETH.");
+      _print(`Please use the official website to stake ${info.stakeTokenTicker}.`);
     }
     _print_link(`Unstake ${info.userStaked.toFixed(6)} ${info.stakeTokenTicker}`, unstake)
     _print_link(`Claim ${info.earned.toFixed(6)} ${info.rewardTokenTicker} ($${formatMoney(info.earned*info.rewardTokenPrice)})`, claim)

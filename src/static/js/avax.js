@@ -61,7 +61,8 @@ const main = async() => {
         ["Orca                    ",`<a href="orca"             >Various</a>`,"ORCA         ","https://avai.finance"],
         ["WiseAvax                ",`<a href="wiseavax"         >Various</a>`,"WISE         ","https://wiseavax.finance"],
         ["AYield Finance          ",`<a href="ayield"           >Various</a>`,"AYIELD       ","https://ayieldfinance.com"],
-        ["AVATerra                ",`<a href="avaterra"         >Various</a>`,"AVATERRA     ","https://app.avaterra.finance"]
+        ["AVATerra                ",`<a href="avaterra"         >Various</a>`,"AVATERRA     ","https://app.avaterra.finance"],
+        ["FarmersOnly TMT         ",`<a href="farmersonly_tmt"  >Various</a>`,"TMT          ","https://tmt.farmersonly.farm"]
     ]
   }
 

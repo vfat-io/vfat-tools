@@ -158,6 +158,12 @@ const main = async() => {
         "CRV/ONE",
         "https://harmony.curve.fi"
       ],
+      [
+        "HarmoNYAN",
+        `<a href='harmonyan'>Various</a>`,
+        "HNYAN",
+        "https://harmonyan.one"
+      ],
     ]
   }
 
