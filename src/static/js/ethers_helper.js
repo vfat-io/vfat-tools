@@ -2346,6 +2346,9 @@ function getErc20Prices(prices, pool, chain="eth") {
     case "arbitrum":
       poolUrl=`https://arbiscan.io/address/${pool.address}`;
       break;
+    case "harmony":
+      poolUrl=`https://explorer.harmony.one/address/${pool.address}`;
+      break;
   }
 
   const getDexguruTokenlink =  function() {
@@ -2909,6 +2912,9 @@ async function printSynthetixPool(App, info, chain="eth", customURLs) {
           break;
       case "arbitrum":
         _print(`<a target="_blank" href="https://arbiscan.io/address/${info.stakingAddress}#code">Arbitrum Explorer</a>`);
+        break;
+      case "harmony":
+        _print(`<a target="_blank" href="https://explorer.harmony.one/address/${info.stakingAddress}#code">Harmony Explorer</a>`);
         break;
     }
     if (info.stakeTokenTicker != "ETH") {

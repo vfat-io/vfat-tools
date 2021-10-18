@@ -49,16 +49,16 @@ async function getHarmonyUniPool(App, pool, poolAddress, stakingAddress) {
     };
 }
 
-async function geterc20(App, token, address, stakingAddress) {
+async function gethrc20(App, token, address, stakingAddress) {
     if (address == "0x0000000000000000000000000000000000000000") {
       return {
         address,
-        name : "Harmony",
-        symbol : "Harmony",
+        name : "One",
+        symbol : "ONE",
         totalSupply: 1e8,
         decimals: 18,
-        staked: 0,
-        unstaked: 0,
+        staked:  await App.provider.getBalance(stakingAddress) / 1e18,
+        unstaked: await App.provider.getBalance(App.YOUR_ADDRESS) / 1e18,
         contract: null,
         tokens:[address]
       }
@@ -134,13 +134,13 @@ async function getHarmonyStoredToken(App, tokenAddress, stakingAddress, type) {
       return await getHarmonyStableswapToken(App, stable, tokenAddress, stakingAddress);
     case "erc20":
       const erc20 = new ethers.Contract(tokenAddress, ERC20_ABI, App.provider);
-      return await geterc20(App, erc20, tokenAddress, stakingAddress);
+      return await gethrc20(App, erc20, tokenAddress, stakingAddress);
   }
 }
 
 async function getHarmonyToken(App, tokenAddress, stakingAddress) {
     if (tokenAddress == "0x0000000000000000000000000000000000000000") {
-      return geterc20(App, null, tokenAddress, "")
+      return gethrc20(App, null, tokenAddress, stakingAddress)
     }
     const type = window.localStorage.getItem(tokenAddress);
     if (type) return getHarmonyStoredToken(App, tokenAddress, stakingAddress, type);
@@ -173,7 +173,7 @@ async function getHarmonyToken(App, tokenAddress, stakingAddress) {
     try {
       const erc20 = new ethers.Contract(tokenAddress, ERC20_ABI, App.provider);
       const _name = await erc20.name();
-      const erc20tok = await geterc20(App, erc20, tokenAddress, stakingAddress);
+      const erc20tok = await gethrc20(App, erc20, tokenAddress, stakingAddress);
       window.localStorage.setItem(tokenAddress, "erc20");
       return erc20tok;
     }
