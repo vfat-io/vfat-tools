@@ -194,9 +194,11 @@ async function loadMasterBreederContract(App, chef, chefAddress, chefAbi, reward
     extraPrices, showAll) {
   const chefContract = chef ?? new ethers.Contract(chefAddress, chefAbi, App.provider);
 
-  const poolCount = 1;
+  const poolCount = parseInt(await chefContract.poolLength(), 10);
+  const totalAllocPoints = await chefContract.totalAllocPoint();
 
   _print(`<a href='https://smartscan.cash/address/${chefAddress}' target='_blank'>Staking Contract</a>`);
+  _print(`Found ${poolCount} pools.\n`)
 
   _print(`Showing incentivized pools only.\n`);
 
