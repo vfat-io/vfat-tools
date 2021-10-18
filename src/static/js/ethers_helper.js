@@ -63,6 +63,9 @@ const pageNetwork = function() {
   if (network.toLowerCase() === 'iotex') {
     return window.NETWORKS.IOTEX
   }
+  if (network.toLowerCase() === 'smartbch') {
+    return window.NETWORKS.SMARTBCH
+  }
 
   return window.NETWORKS.ETHEREUM
 }
@@ -1741,7 +1744,8 @@ function getUniPrices(tokens, prices, pool, chain="eth")
               pool.symbol.includes("Field-LP") ?  `https://exchange.yieldfields.finance/#/swap` :
               pool.symbol.includes("UPT") ?  `https://www.app.unic.ly/#/discover` :
               pool.symbol.includes("BenSwap") ? ({
-                "bsc": `https://info.benswap.finance/pair/${pool.address}`
+                "bsc": `https://info.benswap.finance/pair/${pool.address}`,
+                "smartbch": `https://info.benswap.cash/pair/${pool.address}`
               }[chain]) :
               pool.symbol.includes("Proto-LP") ? `https://polygonscan.com/${pool.address}` :
               pool.symbol.includes("Galaxy-LP") ? (
@@ -1887,6 +1891,11 @@ function getUniPrices(tokens, prices, pool, chain="eth")
               `https://dex.benswap.finance/#/add/${t0address}/${t1address}`,
               `https://dex.benswap.finance/#/remove/${t0address}/${t1address}`,
               `https://dex.benswap.finance/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+            ],
+            "smartbch": [
+              `https://dex.benswap.cash/#/add/${t0address}/${t1address}`,
+              `https://dex.benswap.cash/#/remove/${t0address}/${t1address}`,
+              `https://dex.benswap.cash/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
             ]
           }[chain]) :
           pool.symbol.includes("Galaxy-LP") ? ({
@@ -1979,7 +1988,8 @@ function getUniPrices(tokens, prices, pool, chain="eth")
                       pool.name.includes("Value LP") ?  `https://info.vswap.fi/pool/${pool.address}` :
                         pool.name.includes("BLP") ?  `https://info.bakeryswap.org/#/pair/${pool.address}` :
                           pool.symbol.includes("BenSwap") ? ({
-                            "bsc": `https://info.benswap.finance/pair/${pool.address}`
+                            "bsc": `https://info.benswap.finance/pair/${pool.address}`,     
+                            "smartbch": `https://info.benswap.cash/pair/${pool.address}`
                           }[chain]) :
                           pool.symbol.includes("Galaxy-LP") ? ({
                             "bsc": `https://bsc-exchange.galaxyfinance.one/#/swap`,
@@ -2030,6 +2040,11 @@ function getUniPrices(tokens, prices, pool, chain="eth")
                               `https://dex.benswap.finance/#/add/${t0address}/${t1address}`,
                               `https://dex.benswap.finance/#/remove/${t0address}/${t1address}`,
                               `https://dex.benswap.finance/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+                            ],
+                            "smartbch": [
+                              `https://dex.benswap.cash/#/add/${t0address}/${t1address}`,
+                              `https://dex.benswap.cash/#/remove/${t0address}/${t1address}`,
+                              `https://dex.benswap.cash/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
                             ]
                           }[chain]) :
                         pool.symbol.includes("Galaxy-LP") ? ({
@@ -2346,6 +2361,9 @@ function getErc20Prices(prices, pool, chain="eth") {
     case "arbitrum":
       poolUrl=`https://arbiscan.io/address/${pool.address}`;
       break;
+    case "smartbch":
+      poolUrl=`https://smartscan.cash/address/${pool.address}`;
+      break;
   }
 
   const getDexguruTokenlink =  function() {
@@ -2454,7 +2472,7 @@ function getPoolPrices(tokens, prices, pool, chain = "eth") {
   if (pool.buniPoolTokens != null) return getBunicornPrices(tokens, prices, pool);
   if (pool.poolTokens != null) return getBalancerPrices(tokens, prices, pool);
   if (pool.isGelato) return getGelatoPrices(tokens, prices, pool, chain);
-  if (pool.token0 != null) return getUniPrices(tokens, prices, pool);
+  if (pool.token0 != null) return getUniPrices(tokens, prices, pool, chain);
   if (pool.xcp_profit != null) return getTriCryptoPrices(prices, pool, chain);
   if (pool.virtualPrice != null) return getCurvePrices(prices, pool, chain); //should work for saddle too
   if (pool.token != null) return getWrapPrices(tokens, prices, pool);
@@ -2909,6 +2927,9 @@ async function printSynthetixPool(App, info, chain="eth", customURLs) {
           break;
       case "arbitrum":
         _print(`<a target="_blank" href="https://arbiscan.io/address/${info.stakingAddress}#code">Arbitrum Explorer</a>`);
+        break;
+      case "smartbch":
+        _print(`<a target="_blank" href="https://smartscan.cash/address/${info.stakingAddress}#code">SmartScan</a>`);
         break;
     }
     if (info.stakeTokenTicker != "ETH") {
