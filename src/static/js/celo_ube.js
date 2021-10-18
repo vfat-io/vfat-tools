@@ -28,6 +28,22 @@ $(function() {
   const MultiRewardsPools = [
     // mCUSD-mcEUR
     {
+      address: '0x2f0ddEAa9DD2A0FB78d41e58AD35373d6A81EbB0',
+      underlyingPool: '0xaf13437122cd537C5D8942f17787cbDBd787fE94',
+      basePool: '0xaf13437122cd537C5D8942f17787cbDBd787fE94',
+      numRewards: 2,
+      active: false,
+    },
+    // MOO-mCELO
+    {
+      address: '0x84Bb1795b699Bf7a798C0d63e9Aad4c96B0830f4',
+      underlyingPool: '0xC087aEcAC0a4991f9b0e931Ce2aC77a826DDdaf3',
+      basePool: '0xC087aEcAC0a4991f9b0e931Ce2aC77a826DDdaf3',
+      numRewards: 2,
+      active: false,
+    },
+    // mCUSD-mcEUR
+    {
       address: '0x3d823f7979bB3af846D8F1a7d98922514eA203fC',
       underlyingPool: '0xb030882bfc44e223fd5e20d8645c961be9b30bb3',
       basePool: '0xaf13437122cd537C5D8942f17787cbDBd787fE94',
