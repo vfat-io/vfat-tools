@@ -189,28 +189,6 @@ async function getSmartBchToken(App, tokenAddress, stakingAddress) {
   }
 }
 
-function printBenSwapPool(App, chefAbi, chefAddr, prices, tokens, poolInfo, poolIndex, poolPrices,
-                       rewardsPerWeek, rewardTokenTicker, rewardTokenAddress,
-                       pendingRewardsFunction, fixedDecimals, claimFunction, chain="smartbch") {
-  fixedDecimals = fixedDecimals ?? 2;
-  const sp = (poolInfo.stakedToken == null) ? null : getPoolPrices(tokens, prices, poolInfo.stakedToken);
-  var poolRewardsPerWeek = rewardsPerWeek;
-  if (poolRewardsPerWeek == 0 && rewardsPerWeek != 0) return;
-  const userStaked = poolInfo.userLPStaked ?? poolInfo.userStaked;
-  const rewardPrice = getParameterCaseInsensitive(prices, rewardTokenAddress)?.usd;
-  const staked_tvl = sp?.staked_tvl ?? poolPrices.staked_tvl;
-  poolPrices.print_price();
-  sp?.print_price();
-  const apr = printAPR(rewardTokenTicker, rewardPrice, poolRewardsPerWeek, poolPrices.stakeTokenTicker,
-    staked_tvl, userStaked, poolPrices.price, fixedDecimals);
-  if (poolInfo.userLPStaked > 0) sp?.print_contained_price(userStaked);
-  if (poolInfo.userStaked > 0) poolPrices.print_contained_price(userStaked);
-  printChefContractLinks(App, chefAbi, chefAddr, poolIndex, poolInfo.address, pendingRewardsFunction,
-    rewardTokenTicker, poolPrices.stakeTokenTicker, poolInfo.poolToken.unstaked,
-    poolInfo.userStaked, poolInfo.pendingRewardTokens, fixedDecimals, claimFunction, rewardPrice, chain);
-  return apr;
-}
-
 async function loadMasterBreederContract(App, chef, chefAddress, chefAbi, rewardTokenTicker,
     rewardTokenFunction, rewardsPerBlockFunction, rewardsPerWeekFixed, pendingRewardsFunction,
     extraPrices, showAll) {
@@ -255,9 +233,9 @@ async function loadMasterBreederContract(App, chef, chefAddress, chefAbi, reward
   let aprs = []
   for (let i = 0; i < poolCount; i++) {
     if (poolPrices[i]) {
-      const apr = printBenSwapPool(App, chefAbi, chefAddress, prices, tokens, poolInfos[i], i, poolPrices[i],
-        rewardsPerWeek, rewardTokenTicker, rewardTokenAddress,
-        pendingRewardsFunction)
+      const apr = printChefPool(App, chefAbi, chefAddress, prices, tokens, poolInfos[i], i, poolPrices[i],
+        totalAllocPoints, rewardsPerWeek, rewardTokenTicker, rewardTokenAddress,
+        pendingRewardsFunction, null, null, "smartbch", poolInfos[i].depositFee, poolInfos[i].withdrawFee)
       aprs.push(apr);
     }
   }
