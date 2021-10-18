@@ -233,6 +233,8 @@ async function loadMasterBreederContract(App, chef, chefAddress, chefAbi, reward
   const poolInfos = await Promise.all([...Array(poolCount).keys()].map(async (x) =>
     await getBenSwapPoolInfo(App, chefContract, chefAddress, x, pendingRewardsFunction)));
 
+  var tokenAddresses = [].concat.apply([], poolInfos.filter(x => x.poolToken).map(x => x.poolToken.tokens));
+
   var prices = await getSmartBchPrices();
   if (extraPrices) {
     for (const [k,v] of Object.entries(extraPrices)) {
