@@ -485,7 +485,7 @@ const main = async() => {
       ],
       [
         "Sapphire War",
-        `<a href='scarecrow'>Various</a>`,
+        `<a href='sapphirewar'>Various</a>`,
         "WAR",
         "https://war.sapphiredefi.com/"
       ],
