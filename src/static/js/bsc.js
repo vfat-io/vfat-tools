@@ -530,7 +530,8 @@ const main = async() => {
       ["The Gas Station     ","", `<a href="thegasstation" >Various</a>`,"bscGAS           ","https://gasstationcrypto.com/"],
       ["Shield              ","", `<a href="shield"        >Various</a>`,"SLD              ","https://shieldex.io/"],
       ["Centaurus Axe       ","", `<a href="centaurus_axe" >Various</a>`,"AXE              ","https://axe.centaurus.network"],
-      ["dForce              ","", `<a href="dforce"        >Various</a>`,"DF               ","https://dforce.network"]
+      ["dForce              ","", `<a href="dforce"        >Various</a>`,"DF               ","https://dforce.network"],
+      ["KawaiiSwap           ","", `<a href="kawaiiswap"   >Various</a>`,"CALCIFER         ","https://www.kawaiiswap.finance"]
     ]}
 
   let table = new AsciiTable().fromJSON(tableData);
