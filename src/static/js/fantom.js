@@ -490,6 +490,7 @@ const main = async() => {
         "https://war.sapphiredefi.com/"
       ],
       ["DarkMatter         ", `<a href="darkmatter"   >Various</a>`,'DMD          ',"https://www.darkmatterdefi.com"],
+      ["DegenApe        ", `<a href="degenape"   >Various</a>`,'DAPE          ',"https://www.degenapefarm.com"],
     ]
   }
 
