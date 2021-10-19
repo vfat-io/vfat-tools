@@ -9,7 +9,8 @@ const HarmonyTokens = [
   { "id": "wrapped-bitcoin", "symbol": "bscBTCB", "contract": "0x34224dCF981dA7488FdD01c7fdd64E74Cd55DcF7"},
   { "id": "binance-eth", "symbol": "bscETH", "contract": "0x783ee3e955832a3d52ca4050c4c251731c156020"},
   { "id": "terra-luna", "symbol": "LUNA", "contract": "0x95ce547d730519a90def30d647f37d9e5359b6ae"},
-  { "id": "terra-usd", "symbol": "UST", "contract": "0x224e64ec1bdce3870a6a6c777edd450454068fec"}
+  { "id": "terra-usd", "symbol": "UST", "contract": "0x224e64ec1bdce3870a6a6c777edd450454068fec"},
+  { "id": "curve-dao-token", "symbol": "CRV", "contract": "0x352cd428EFd6F31B5cae636928b7B84149cF369F"}
 ];
 
 async function getHarmonyPrices() {
@@ -48,32 +49,77 @@ async function getHarmonyUniPool(App, pool, poolAddress, stakingAddress) {
     };
 }
 
-async function geterc20(App, token, address, stakingAddress) {
-    if (address == "0x0000000000000000000000000000000000000000") {
-      return {
-        address,
-        name : "Harmony",
-        symbol : "Harmony",
-        totalSupply: 1e8,
-        decimals: 18,
-        staked: 0,
-        unstaked: 0,
-        contract: null,
-        tokens:[address]
-      }
-    }
-    const decimals = await token.decimals()
+async function getHarmonyErc20(App, token, address, stakingAddress) {
+  if (address == "0x0000000000000000000000000000000000000000") {
     return {
-        address,
-        name : await token.name(),
-        symbol : await token.symbol(),
-        totalSupply : await token.totalSupply(),
-        decimals : decimals,
-        staked:  await token.balanceOf(stakingAddress) / 10 ** decimals,
-        unstaked: await token.balanceOf(App.YOUR_ADDRESS)  / 10 ** decimals,
-        contract: token,
-        tokens : [address]
-    };
+      address,
+      name : "One",
+      symbol : "ONE",
+      totalSupply: 1e8,
+      decimals: 18,
+      staked: 0,
+      unstaked: 0,
+      contract: null,
+      tokens:[address]
+    }
+  }
+  const calls = [token.decimals(), token.balanceOf(stakingAddress), token.balanceOf(App.YOUR_ADDRESS),
+    token.name(), token.symbol(), token.totalSupply()];
+  const [decimals, staked, unstaked, name, symbol, totalSupply] = await App.ethcallProvider.all(calls);
+  return {
+      address,
+      name,
+      symbol,
+      totalSupply,
+      decimals : decimals,
+      staked:  staked / 10 ** decimals,
+      unstaked: unstaked  / 10 ** decimals,
+      contract: token,
+      tokens : [address]
+  };
+}
+
+async function getHarmonyCurveToken(App, curve, address, stakingAddress, minterAddress) {
+  const minter = new ethcall.Contract(minterAddress, MINTER_ABI)
+  const [virtualPrice, coin0] = await App.ethcallProvider.all([minter.get_virtual_price(), minter.coins(0)]);
+  const token = await getToken(App, coin0, address);
+  const calls = [curve.decimals(), curve.balanceOf(stakingAddress), curve.balanceOf(App.YOUR_ADDRESS),
+    curve.name(), curve.symbol(), curve.totalSupply()];
+  const [decimals, staked, unstaked, name, symbol, totalSupply] = await App.ethcallProvider.all(calls);
+  return {
+      address,
+      name,
+      symbol,
+      totalSupply,
+      decimals : decimals,
+      staked:  staked / 10 ** decimals,
+      unstaked: unstaked  / 10 ** decimals,
+      contract: curve,
+      tokens : [address, coin0],
+      token,
+      virtualPrice : virtualPrice / 1e18
+  };
+}
+
+async function getHarmonyStableswapToken(App, stable, address, stakingAddress) {
+  const calls = [stable.decimals(), stable.balanceOf(stakingAddress), stable.balanceOf(App.YOUR_ADDRESS),
+    stable.name(), stable.symbol(), stable.totalSupply(), stable.get_virtual_price(), stable.coins(0)];
+  const [decimals, staked, unstaked, name, symbol, totalSupply, virtualPrice, coin0]
+    = await App.ethcallProvider.all(calls);
+  const token = await getToken(App, coin0, address);
+  return {
+      address,
+      name,
+      symbol,
+      totalSupply,
+      decimals : decimals,
+      staked:  staked / 10 ** decimals,
+      unstaked: unstaked  / 10 ** decimals,
+      contract: stable,
+      tokens : [address, coin0],
+      token,
+      virtualPrice : virtualPrice / 1e18
+  };
 }
 
 async function getHarmonyStoredToken(App, tokenAddress, stakingAddress, type) {
@@ -81,15 +127,22 @@ async function getHarmonyStoredToken(App, tokenAddress, stakingAddress, type) {
     case "uniswap":
       const pool = new ethers.Contract(tokenAddress, UNI_ABI, App.provider);
       return await getHarmonyUniPool(App, pool, tokenAddress, stakingAddress);
+    case "curve":
+      const crv = new ethcall.Contract(tokenAddress, CURVE_ABI);
+      const [minter] = await App.ethcallProvider.all([crv.minter()]);
+      return await getHarmonyCurveToken(App, crv, tokenAddress, stakingAddress, minter);
+    case "stableswap":
+      const stable = new ethcall.Contract(tokenAddress, STABLESWAP_ABI);
+      return await getHarmonyStableswapToken(App, stable, tokenAddress, stakingAddress);
     case "erc20":
-      const erc20 = new ethers.Contract(tokenAddress, ERC20_ABI, App.provider);
-      return await geterc20(App, erc20, tokenAddress, stakingAddress);
+      const erc20 = new ethcall.Contract(tokenAddress, ERC20_ABI);
+      return await getHarmonyErc20(App, erc20, tokenAddress, stakingAddress);
   }
 }
 
 async function getHarmonyToken(App, tokenAddress, stakingAddress) {
     if (tokenAddress == "0x0000000000000000000000000000000000000000") {
-      return geterc20(App, null, tokenAddress, "")
+      return getHarmonyErc20(App, null, tokenAddress, stakingAddress)
     }
     const type = window.localStorage.getItem(tokenAddress);
     if (type) return getHarmonyStoredToken(App, tokenAddress, stakingAddress, type);
@@ -103,9 +156,26 @@ async function getHarmonyToken(App, tokenAddress, stakingAddress) {
     catch(err) {
     }
     try {
-      const erc20 = new ethers.Contract(tokenAddress, ERC20_ABI, App.provider);
-      const _name = await erc20.name();
-      const erc20tok = await geterc20(App, erc20, tokenAddress, stakingAddress);
+      const crv = new ethcall.Contract(tokenAddress, CURVE_ABI);
+      const [minter] = await App.ethcallProvider.all([crv.minter()]);
+      const res = await getHarmonyCurveToken(App, crv, tokenAddress, stakingAddress, minter);
+      window.localStorage.setItem(tokenAddress, "curve");
+      return res;
+    }
+    catch(err) {
+    }
+    try {
+      const stable = new ethcall.Contract(tokenAddress, STABLESWAP_ABI);
+      const _coin0 = await App.ethcallProvider.all([stable.coins(0)]);
+      window.localStorage.setItem(tokenAddress, "stableswap");
+      return await getHarmonyStableswapToken(App, stable, tokenAddress, stakingAddress);
+    }
+    catch (err) {
+    }
+    try {
+      const erc20 = new ethcall.Contract(tokenAddress, ERC20_ABI);
+      const _name = await App.ethcallProvider.all([erc20.name()]);
+      const erc20tok = await getHarmonyErc20(App, erc20, tokenAddress, stakingAddress);
       window.localStorage.setItem(tokenAddress, "erc20");
       return erc20tok;
     }
@@ -118,6 +188,7 @@ async function getHarmonyToken(App, tokenAddress, stakingAddress) {
 async function loadHarmonySynthetixPoolInfo(App, tokens, prices, stakingAbi, stakingAddress,
     rewardTokenFunction, stakeTokenFunction) {
       const STAKING_POOL = new ethers.Contract(stakingAddress, stakingAbi, App.provider);
+      const STAKING_MULTI = new ethcall.Contract(stakingAddress, stakingAbi);
 
       if (!STAKING_POOL.callStatic[stakeTokenFunction]) {
         console.log("Couldn't find stake function ", stakeTokenFunction);
@@ -151,7 +222,7 @@ async function loadHarmonySynthetixPoolInfo(App, tokens, prices, stakingAbi, sta
 
       const rewardTokenTicker = rewardToken.symbol;
 
-      const poolPrices = getPoolPrices(tokens, prices, stakeToken, "Harmony");
+      const poolPrices = getPoolPrices(tokens, prices, stakeToken, "harmony");
 
       if (!poolPrices)
       {
@@ -165,19 +236,21 @@ async function loadHarmonySynthetixPoolInfo(App, tokens, prices, stakingAbi, sta
           prices[stakeTokenAddress]?.usd ?? getParameterCaseInsensitive(prices, stakeTokenAddress)?.usd;
       const rewardTokenPrice = getParameterCaseInsensitive(prices, rewardTokenAddress)?.usd;
 
-      const periodFinish = await STAKING_POOL.periodFinish();
-      const rewardRate = await STAKING_POOL.rewardRate();
-      const weeklyRewards = (Date.now() / 1000 > periodFinish) ? 0 : rewardRate / 1e18 * 604800;
+      const calls = [STAKING_MULTI.periodFinish(), STAKING_MULTI.rewardRate(),
+        STAKING_MULTI.balanceOf(App.YOUR_ADDRESS), STAKING_MULTI.earned(App.YOUR_ADDRESS)]
+      const [periodFinish, rewardRate, balance, earned_] = await App.ethcallProvider.all(calls);
+
+      const weeklyRewards = (Date.now() / 1000 > periodFinish) ? 0 : rewardRate / 10 ** rewardToken.decimals * 604800;
 
       const usdPerWeek = weeklyRewards * rewardTokenPrice;
 
       const staked_tvl = poolPrices.staked_tvl;
 
-      const userStaked = await STAKING_POOL.balanceOf(App.YOUR_ADDRESS) / 10 ** stakeToken.decimals;
+      const userStaked = balance / 10 ** stakeToken.decimals;
 
       const userUnstaked = stakeToken.unstaked;
 
-      const earned = await STAKING_POOL.earned(App.YOUR_ADDRESS) / 10 ** rewardToken.decimals;
+      const earned = earned_ / 10 ** rewardToken.decimals;
 
       return  {
         stakingAddress,

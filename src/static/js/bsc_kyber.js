@@ -9,6 +9,8 @@ const TOKEN_ADDRESSES = {
   BUSD: '0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56',
   ETH: '0x2170Ed0880ac9A755fd29B2688956BD959F933F8',
   HERO: '0xE8176d414560cFE1Bf82Fd73B986823B89E4F545',
+  CTR: '0xD6Cce248263ea1e2b8cB765178C944Fc16Ed0727',
+  FIWA: '0x633237c6fa30fae46cc5bb22014da30e50a718cc',
 }
 
 const POOLS = [{
@@ -41,6 +43,18 @@ const POOLS = [{
   pool: '0x2D49F16C9ad4f1145bb27c9af71474F468a697c8',
   farming: '0xcCAc8DFb75120140A5469282a13E9A60B1751276',
   pid: 0,
+},{
+  token0: 'WBNB',
+  token1: 'CTR',
+  pool: '0x97dBaf4aD688aEd04817121301a005B710E6067a',
+  farming: '0x829c27fd3013b944cbE76E92c3D6c45767c0C789',
+  pid: 0,
+},{
+  token0: 'USDT',
+  token1: 'FIWA',
+  pool: '0xf81e106c5b44ba9a993fc1f456a4c8e54c47cf34',
+  farming: '0xc49b3b43565b76E5ba7A98613263E7bFdEf1140c',
+  pid: 0,
 }]
 
 const REWARDS = {
@@ -51,6 +65,16 @@ const REWARDS = {
   },
   'HERO': {
     address: '0xE8176d414560cFE1Bf82Fd73B986823B89E4F545',
+    price: 0,
+    rewardsPerBlock: 0,
+  },
+  'CTR': {
+    address: '0xD6Cce248263ea1e2b8cB765178C944Fc16Ed0727',
+    price: 0,
+    rewardsPerBlock: 0,
+  },
+  'FIWA': {
+    address: '0x633237C6FA30FAe46Cc5bB22014DA30e50a718cC',
     price: 0,
     rewardsPerBlock: 0,
   },

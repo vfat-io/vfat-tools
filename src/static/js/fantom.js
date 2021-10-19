@@ -421,7 +421,76 @@ const main = async() => {
         `<a href='meso'>Various</a>`,
         "MESO",
         "https://www.meso.finance"
-      ]
+      ],
+      [
+        "Fantom Berry",
+        `<a href='berry'>Various</a>`,
+        "BERRY",
+        "https://fantomberry.world"
+      ],
+      [
+        "Procyon",
+        `<a href='procyon'>Various</a>`,
+        "PROCYON",
+        "https://procyonswap.com"
+      ],
+      [
+       "Soul Swap",
+       `<a href='soulswap'>Various</a>`,
+       "SOUL",
+       "https://soul.sh",
+      ],
+      [
+       "Kavian Finance",
+       `<a href='kavian'>Various</a>`,
+       "fKAVIAN",
+       "https://fantom.kavian.finance",
+      ],
+      [
+        "Sapphire DeFi",
+        `<a href='sapphire'>Various</a>`,
+        "SAPPHIRE",
+        "https://sapphiredefi.com"
+      ],
+      [
+       "Geist Finance",
+       `<a href='geist'>Various</a>`,
+       "GEIST",
+       "https://geist.finance",
+      ],
+      [
+       "Beethovenx",
+       `<a href='beethovenx'>Various</a>`,
+       "BEETS",
+       "https://app.beethovenx.io",
+      ],
+      [
+       "Curve",
+       `<a href='curve'>Various</a>`,
+       "CRV/FTM",
+       "https://ftm.curve.fi",
+      ],
+      [
+        "Singular",
+        `<a href='singular'>Various</a>`,
+        "SING",
+        "https://singular.farm"
+      ],
+      ["KogeFarm           ", `<a href="koge"         >Various</a>`,'Various      ',"https://kogefarm.io"],
+      [
+        "ScareCrow Finance",
+        `<a href='scarecrow'>Various</a>`,
+        "SCARE",
+        "https://scarecrow.fi"
+      ],
+      [
+        "Sapphire War",
+        `<a href='sapphirewar'>Various</a>`,
+        "WAR",
+        "https://war.sapphiredefi.com/"
+      ],
+      ["DarkMatter         ", `<a href="darkmatter"   >Various</a>`,'DMD          ',"https://www.darkmatterdefi.com"],
+      ["DegenApe           ", `<a href="degenape"     >Various</a>`,'DAPE         ',"https://www.degenapefarm.com"],
     ]
   }
 

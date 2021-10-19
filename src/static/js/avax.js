@@ -29,7 +29,7 @@ const main = async() => {
         ["Frost                   ",`<a href="tundra"           >Various</a>`,"TUNDRA       ","https://frostfinance.farm" ],
         ["Zabu                    ",`<a href="zabu"             >Various</a>`,"ZABU         ","https://zabu.finance" ],
         ["DutchFinance            ",`<a href="dutch"            >Various</a>`,"DUTCH        ","https://avax.theflyingdutchman.finance" ],
-        ["Xdollar *               ",`<a href="xdollar"          >Various</a>`,"XDO          ","https://xdollar-avax.mcn.ventures" ],
+        ["Xdollar                 ",`<a href="xdollar"          >Various</a>`,"XDO          ","https://xdollar-avax.mcn.ventures" ],
         ["CrabFinance             ",`<a href="crab"             >Various</a>`,"CRAB         ","https://crabfinance.live" ],
         ["Eskimo                  ",`<a href="eskimo"           >Various</a>`,"ESKI         ","https://eskimo.farm" ],
         ['Bcharity                ',`<a href="bcharity"         >Various</a>`,'Give         ','https://avaxgive.netlify.app'],
@@ -56,7 +56,13 @@ const main = async() => {
         ["AvaNyan                 ",`<a href="anyan"            >Various</a>`,"NYAN         ","https://avanyan.io"],
         ["Luffy Swap              ",`<a href="luffyswap"        >Various</a>`,"LUFFYS       ","https://luffyswap.finance"],
         ["FarmersOnly             ",`<a href="farmersonly"      >Various</a>`,"CORN         ","https://www.farmersonly.farm"],
-        ["Wolf                    ",`<a href="wolf"             >Various</a>`,"WOLF         ","https://wolfavax.com"]
+        ["Wolf                    ",`<a href="wolf"             >Various</a>`,"WOLF         ","https://wolfavax.com"],
+        ["IceSlush                ",`<a href="iceslush"         >Various</a>`,"SLUSH        ","https://iceslush.finance"],
+        ["Orca                    ",`<a href="orca"             >Various</a>`,"ORCA         ","https://avai.finance"],
+        ["WiseAvax                ",`<a href="wiseavax"         >Various</a>`,"WISE         ","https://wiseavax.finance"],
+        ["AYield Finance          ",`<a href="ayield"           >Various</a>`,"AYIELD       ","https://ayieldfinance.com"],
+        ["AVATerra                ",`<a href="avaterra"         >Various</a>`,"AVATERRA     ","https://app.avaterra.finance"],
+        ["FarmersOnly TMT         ",`<a href="farmersonly_tmt"  >Various</a>`,"TMT          ","https://tmt.farmersonly.farm"]
     ]
   }
 
