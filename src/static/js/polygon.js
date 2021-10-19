@@ -390,6 +390,7 @@ const main = async () => {
       ['Rabbit              ', '<a href="rabbit"          >Various</a>', 'RABBIT       ', 'https://rabbit.luxe'],
       ['Flerovium           ', '<a href="flerovium"       >Various</a>', 'FLEROVIUM    ', 'https://flerovium.finance'],
 	  ['Jam Finance        ', `<a href="jamfinance"     >Various</a>`, 'JAM         ', 'https://jamfinance.cc'],
+	  ['Snake Finance        ', `<a href="snakefinance"     >Various</a>`, 'SNAKE         ', 'https://snakefinance.club'],
     ],
   }
 
