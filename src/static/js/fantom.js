@@ -491,6 +491,7 @@ const main = async() => {
       ],
       ["DarkMatter         ", `<a href="darkmatter"   >Various</a>`,'DMD          ',"https://www.darkmatterdefi.com"],
       ["DegenApe           ", `<a href="degenape"     >Various</a>`,'DAPE         ',"https://www.degenapefarm.com"],
+      ["ArcDefi            ", `<a href="arcdefi "     >Various</a>`,'ARC         ',"https://arcdefi.org"],
     ]
   }
 
