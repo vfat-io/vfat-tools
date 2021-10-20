@@ -1005,6 +1005,35 @@ async function getUniPool(app, pool, poolAddress, stakingAddress) {
   };
 }
 
+async function getLixirPool(app, pool, poolAddress, stakingAddress) {
+  const calls = [
+    pool.decimals(), pool.token0(), pool.token1(), pool.symbol(), pool.name(),
+    pool.totalSupply(), pool.balanceOf(stakingAddress), pool.balanceOf(app.YOUR_ADDRESS)
+  ];
+  const [decimals, token0, token1, symbol, name, totalSupply, staked, unstaked]
+    = await app.ethcallProvider.all(calls);
+  let q0, q1;
+  const [reserves] = await app.ethcallProvider.all([pool.calculateTotals()]);
+  q0 = reserves.total0;
+  q1 = reserves.total1;
+  return {
+      symbol,
+      name,
+      address: poolAddress,
+      token0: token0,
+      q0,
+      token1: token1,
+      q1,
+      totalSupply: totalSupply / 10 ** decimals,
+      stakingAddress: stakingAddress,
+      staked: staked / 10 ** decimals,
+      decimals: decimals,
+      unstaked: unstaked / 10 ** decimals,
+      contract: pool,
+      tokens : [token0, token1],
+  };
+}
+
 async function getDodoDualPoolToken(app, pool, poolAddress, stakingAddress) {
   const calls = [
     pool.decimals(), pool._BASE_TOKEN_(), pool._QUOTE_TOKEN_(), pool.symbol(), pool.name(),
@@ -1352,6 +1381,9 @@ async function getStoredToken(app, tokenAddress, stakingAddress, type) {
     case "uniswap":
       const pool = new ethcall.Contract(tokenAddress, UNI_ABI);
       return await getUniPool(app, pool, tokenAddress, stakingAddress);
+    case "lixir":
+      const lixirPool = new ethcall.Contract(tokenAddress, LIXIR_TOKEN_ABI);
+      return await getLixirPool(app, lixirPool, tokenAddress, stakingAddress);
     case "doualDlp":
       const doualDlpPool = new ethcall.Contract(tokenAddress, DLP_DUAL_TOKEN_ABI);
       return await getDodoDualPoolToken(app, doualDlpPool, tokenAddress, stakingAddress);
@@ -1421,6 +1453,15 @@ async function getToken(app, tokenAddress, stakingAddress) {
     const gelatoPool = await getGelatoPool(app, gelato, tokenAddress, stakingAddress);
     window.localStorage.setItem(tokenAddress, "gelato");
     return gelatoPool;
+  }
+  catch(err) {
+  }
+  try {
+    const lixirPool = new ethcall.Contract(tokenAddress, LIXIR_TOKEN_ABI);
+    const _weth9 = await app.ethcallProvider.all([lixirPool.weth9()]);
+    const lixir = await getLixirPool(app, lixirPool, tokenAddress, stakingAddress);
+    window.localStorage.setItem(tokenAddress, "lixir");
+    return lixir;
   }
   catch(err) {
   }
@@ -1704,6 +1745,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
   else if (pool.symbol.includes("LOVE LP")) stakeTokenTicker += " Love Boat Love LP Token";
   else if (pool.symbol.includes("Proto-LP")) stakeTokenTicker += " ProtoFi LP Token";
   else if (pool.symbol.includes("SOUL-LP")) stakeTokenTicker += " Soulswap LP Token";
+  else if (pool.symbol.includes("lv_")) stakeTokenTicker += " Lixir LP Token";
   else stakeTokenTicker += " Uni LP";
   return {
       t0: t0,
@@ -1776,6 +1818,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
               pool.symbol.includes("ZDEXLP") ?  `https://charts.zoocoin.cash/?exchange=ZooDex&pair=${t0.symbol}-${t1.symbol}` :
               pool.symbol.includes("Field-LP") ?  `https://exchange.yieldfields.finance/#/swap` :
               pool.symbol.includes("UPT") ?  `https://www.app.unic.ly/#/discover` :
+              pool.symbol.includes("lv_") ?  `https://app.lixir.finance/vaults/${pool.address}` :
               pool.symbol.includes("BenSwap") ? ({
                 "bsc": `https://info.benswap.finance/pair/${pool.address}`,
                 "smartbch": `https://info.benswap.cash/pair/${pool.address}`
@@ -1803,6 +1846,11 @@ function getUniPrices(tokens, prices, pool, chain="eth")
             `https://www.bakeryswap.org/#/add/${t0address}/${t1address}`,
             `https://www.bakeryswap.org/#/remove/${t0address}/${t1address}`,
             `https://www.bakeryswap.org/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+          ] :
+          pool.symbol.includes("lv_") ? [
+            `https://app.lixir.finance/vaults/${pool.address}`,
+            `https://app.lixir.finance/vaults/${pool.address}`,
+            `https://app.uniswap.org/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}&use=v2`
           ] :
           pool.symbol.includes("DMM-LP") ? [
             `https://dmm.exchange/#/add/${t0address}/${t1address}/${pool.address}`,

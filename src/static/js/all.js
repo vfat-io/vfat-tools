@@ -152,7 +152,8 @@ const main = async () => {
       ["Enterdao                     ", `<a href="../enterdao/"          >Various</a>`, "ENTR               ", "https://dao.enterdao.xyz"],
       ["Augmented Finance            ", `<a href="../augmented/"         >Various</a>`, "AGF                ", "https://augmented.finance"],
       ["Synapse                      ", `<a href="../synapse/"           >Various</a>`, "SYNAPSE            ", "https://synapseprotocol.com"],
-      ["Tokemak                      ", `<a href="../tokemak/"           >Various</a>`, "Various            ", "https://www.tokemak.xyz"]
+      ["Tokemak                      ", `<a href="../tokemak/"           >Various</a>`, "Various            ", "https://www.tokemak.xyz"],
+      ["Lixir                        ", `<a href="../lixir/"             >Various</a>`, "LIX                ", "https://app.lixir.finance"]
     ]
   }
 
