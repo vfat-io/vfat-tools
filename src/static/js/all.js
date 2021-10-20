@@ -47,7 +47,7 @@ const main = async () => {
       ["Yam                          ", `<a href="../yam/"               >YAM-ETH SLP</a>`, "YAM                ", "https://yam.finance/farm"],
       ["yAxis                        ", `<a href="../yaxis/"             >Various</a>`, "yAxis              ", "https://yaxis.io/farms"],
       ["YflUsd                       ", `<a href="../yflusd"             >Various</a>`, "YFLUSD             ", "https://yflusd.linkswap.app"],
-      ["Sharedstake *                ", `<a href="../sgt"                >Various</a>`, "SGT                ", "https://www.sharedstake.org/earn"],
+      ["Sharedstake                  ", `<a href="../sgt"                >Various</a>`, "SGT                ", "https://www.sharedstake.org/earn"],
       ["Launchpool                   ", `<a href="../lpool/"             >Various</a>`, "LPOOL              ", "https://staking.launchpool.xyz/"],
       ["Wolf Of Wallstreet           ", `<a href="../wows"               >Various</a>`, "WOWS               ", "https://app.wolvesofwallstreet.finance"],
       ["Strudel                      ", `<a href="../strudel"            >Various</a>`, "TRDL               ", "https://strudel.finance"],
@@ -151,7 +151,8 @@ const main = async () => {
       ["Gro                          ", `<a href="../gro/"               >Various</a>`, "GRO                ", "https://app.gro.xyz"],
       ["Enterdao                     ", `<a href="../enterdao/"          >Various</a>`, "ENTR               ", "https://dao.enterdao.xyz"],
       ["Augmented Finance            ", `<a href="../augmented/"         >Various</a>`, "AGF                ", "https://augmented.finance"],
-      ["Synapse                      ", `<a href="../synapse/"           >Various</a>`, "SYNAPSE            ", "https://synapseprotocol.com"]
+      ["Synapse                      ", `<a href="../synapse/"           >Various</a>`, "SYNAPSE            ", "https://synapseprotocol.com"],
+      ["Tokemak                      ", `<a href="../tokemak/"           >Various</a>`, "Various            ", "https://www.tokemak.xyz"]
     ]
   }
 

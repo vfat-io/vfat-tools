@@ -1294,6 +1294,27 @@ async function getVault(app, vault, address, stakingAddress) {
   }
 }
 
+async function getTokemakVault(app, vault, address, stakingAddress) {
+  const calls = [vault.decimals(), vault.underlyer(), vault.name(), vault.symbol(),
+    vault.totalSupply(), vault.balanceOf(stakingAddress), vault.balanceOf(app.YOUR_ADDRESS)];
+  const [ decimals, underlying, name, symbol, totalSupply, staked, unstaked] =
+    await app.ethcallProvider.all(calls);
+  const token = await getToken(app, underlying, address);
+  return {
+    address,
+    name,
+    symbol,
+    totalSupply,
+    decimals,
+    staked: staked / 10 ** decimals,
+    unstaked: unstaked / 10 ** decimals,
+    token: token,
+    balance : totalSupply,
+    contract: vault,
+    tokens : token.tokens
+  }
+}
+
 async function getCToken(app, cToken, address, stakingAddress) {
   const calls = [cToken.decimals(), cToken.underlying(), cToken.totalSupply(),
     cToken.name(), cToken.symbol(), cToken.balanceOf(stakingAddress),
@@ -1354,6 +1375,9 @@ async function getStoredToken(app, tokenAddress, stakingAddress, type) {
       const dlpPool = new ethers.Contract(tokenAddress, DLP_ABI, app.provider);
       const originTokenAddress = await dlpPool.originToken();
       return await getDlpPool(app, dlpPool, tokenAddress, originTokenAddress, stakingAddress);
+    case "tokemak":
+      const tokemak = new ethcall.Contract(tokenAddress, TOKEMAK_VAULT_ABI);
+      return await getTokemakVault(app, tokemak, tokenAddress, stakingAddress);
     case "gelato":
       const gelato = new ethcall.Contract(tokenAddress, GELATO_ABI);
       return await getGelatoPool(app, gelato, tokenAddress, stakingAddress);
@@ -1470,6 +1494,15 @@ async function getToken(app, tokenAddress, stakingAddress) {
     const _token = await app.ethcallProvider.all([vault.underlying()]);
     const res = await getVault(app, vault, tokenAddress, stakingAddress);
     window.localStorage.setItem(tokenAddress, "vault");
+    return res;
+  }
+  catch(err) {
+  }
+  try {
+    const vaultTokemak = new ethcall.Contract(tokenAddress, TOKEMAK_VAULT_ABI);
+    const _token = await app.ethcallProvider.all([vaultTokemak.underlyer()]);
+    const res = await getTokemakVault(app, vaultTokemak, tokenAddress, stakingAddress);
+    window.localStorage.setItem(tokenAddress, "tokemak");
     return res;
   }
   catch(err) {
