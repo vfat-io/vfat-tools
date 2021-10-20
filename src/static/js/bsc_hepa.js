@@ -11,7 +11,7 @@ async function main() {
     _print(`Initialized ${App.YOUR_ADDRESS}\n`);
     _print("Reading smart contracts...\n");
 
-   const HEPA_CHEF_ADDR = "0x8782d54F1B1f85875028F759cB5C5FDdAEDaE0a1";
+   const HEPA_CHEF_ADDR = "0xfB3153CbaB05b34868378016668117F573DC21EC";
    const rewardTokenTicker = "HEPA";
    const HEPA_CHEF = new ethers.Contract(HEPA_CHEF_ADDR, HEPA_CHEF_ABI, App.provider);
 
