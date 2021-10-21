@@ -21,6 +21,7 @@ const main = async() => {
       ["LandSwap                 ", `<a href="landswap"      >Various</a>`,"LAND        ","https://landswap.app"],
       ["MoonBeach                ", `<a href="moonbeach"      >Various</a>`,"COCONUT    ","https://moonbeach.farm"],
       ["KogeFarm                ", `<a href="koge"      >Various</a>`,"VARIOUS    ","https://kogefarm.io"],
+      ["MoonFi                ", `<a href="moonfi"      >Various</a>`,"VARIOUS    ","https://www.moofi.app"],
     ]
   }
 
