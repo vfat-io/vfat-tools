@@ -11,7 +11,7 @@ $(function () {
         _print(`Initialized ${App.YOUR_ADDRESS}\n`);		
         _print("Reading smart contracts...\n");		
     		
-        const MELT_CHEF_ADDR = "0x479710b1cfD30C4D93B4e1a47d821C5E06B3d3FE";		
+        const MELT_CHEF_ADDR = "0x46655CE994041664163489B278CF0eE576322118";		
         const rewardTokenTicker = "MELT";		
         const MELT_CHEF = new ethers.Contract(MELT_CHEF_ADDR, MELT_CHEF_ABI, App.provider);		
 
