@@ -13,7 +13,7 @@ async function main() {
 
    const SALEM_CHEF_ADDR = "0xdA2A9024D8D01F4EA0aa35EEdf771432095219ef";
 
-   const rewardTokenTicker = "salem";
+   const rewardTokenTicker = "SALEM";
    const SALEM_CHEF = new ethers.Contract(SALEM_CHEF_ADDR, SALEM_CHEF_ABI, App.provider);
 
    let rewardsPerWeek = 0
@@ -23,14 +23,14 @@ async function main() {
    if(currentBlock < startBlock){
     _print(`Rewards start at block <a href="https://ftmscan.com/block/countdown/${startBlock}" target="_blank">${startBlock}</a>\n`);
    }else{
-    rewardsPerWeek = await SALEM_CHEF.SalemPerTime() /1e18 * 604800;
+    rewardsPerWeek = await SALEM_CHEF.SalemPerSecond() /1e18 * 604800;
    }
 
     const tokens = {};
     const prices = await getFantomPrices();
 
     await loadFantomChefContract(App, tokens, prices, SALEM_CHEF, SALEM_CHEF_ADDR, SALEM_CHEF_ABI, rewardTokenTicker,
-      "salem", null, rewardsPerWeek, "pendingSALEM");
+      "salem", null, rewardsPerWeek, "pendingSalem");
 
     hideLoading();
   }
