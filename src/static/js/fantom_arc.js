@@ -21,7 +21,7 @@ $(function() {
         const tokens = {};
         const prices = await getFantomPrices();
     
-        await loadFantomChefContract(App, tokens, prices, FOXY_CHEF, FOXY_CHEF_ADDR, FOXY_CHEF_ABI, rewardTokenTicker,
+        await loadFantomChefContract(App, tokens, prices, ARC_CHEF, ARC_CHEF_ADDR, ARC_CHEF_ABI, rewardTokenTicker,
           "arc", null, rewardsPerWeek, "pendingArc", [1]);
     
     
