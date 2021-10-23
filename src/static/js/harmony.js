@@ -164,6 +164,12 @@ const main = async() => {
         "HNYAN",
         "https://harmonyan.one"
       ],
+      [
+        "BossSwap",
+        `<a href='bossswap'>Various</a>`,
+        "BOSS",
+        "https://www.bossswap.finance"
+      ]
     ]
   }
 
