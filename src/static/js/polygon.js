@@ -390,7 +390,8 @@ const main = async () => {
       ['Tower Finance       ', `<a href="tower"           >Various</a>`, 'IVORY        ', 'https://app.towerfinance.io'],
       ['Jam Finance         ', `<a href="jamfinance"      >Various</a>`, 'JAM          ', 'https://jamfinance.cc'],
       ['WAVE                ', `<a href="wave"            >Various</a>`, 'WAVE         ', 'https://www.wavedefi.io'],
-      ['Snake Finance       ', `<a href="snakefinance"    >Various</a>`, 'SNAKE        ', 'https://snakefinance.club']
+      ['Snake Finance       ', `<a href="snakefinance"    >Various</a>`, 'SNAKE        ', 'https://snakefinance.club'],
+	  	  ['Fried Finance        ', `<a href="friedfinance"     >Various</a>`, 'FRIED         ', 'https://friedfinance.cc']
     ],
   }
 
