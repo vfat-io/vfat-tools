@@ -32,7 +32,7 @@ const main = async() => {
       ["Nya Cash            ","", `<a href="nya/"          >Various</a>`,"NYAS/NYAC        ","https://nya.cash"],
       ["YieldScienceLabs    ","", `<a href="ysl/"          >Various</a>`,"Various          ","https://yieldlab.science"],
       ["Icecream            ","", `<a href="icecream"      >Various</a>`,"GLTO             ","https://icecreamswap.finance"],
-      ["Mochi               ","", `<a href="mochi"         >Various</a>`,"MOCHI            ","https://pool.mochiswap.io"],
+      ["Mochi Old           ","", `<a href="mochi"         >Various</a>`,"MOCHI            ","https://pool.mochiswap.io"],
       ["ValueDefi           ","", `<a href="valuedefi"     >Various</a>`,"vBSWAP           ","https://bsc.valuedefi.io/#/vfarm"],
       ["Kickstart           ","", `<a href="kickstart"     >Various</a>`,"KICK             ","https://kickstart.finance"],
       ["Boba                ","", `<a href="boba"          >Various</a>`,"BOBA             ","https://bobadefi.com"],
@@ -533,7 +533,8 @@ const main = async() => {
       ["dForce              ","", `<a href="dforce"        >Various</a>`,"DF               ","https://dforce.network"],
       ["KawaiiSwap          ","", `<a href="kawaiiswap"    >Various</a>`,"CALCIFER         ","https://www.kawaiiswap.finance"],
       ["Centaurus Shield    ","", `<a href="centaurus_shield">Various</a>`,"SHIELD         ","https://shield.centaurus.network"],
-      ["Stone Temple Binance","", `<a href="stonetemplebinance">Various</a>`,"STB+PLUSH    ","https://www.stonetemple.finance"]
+      ["Stone Temple Binance","", `<a href="stonetemplebinance">Various</a>`,"STB+PLUSH    ","https://www.stonetemple.finance"],
+      ["MochiSwap           ","", `<a href="mochiswap"     >Various</a>`,"bMOCHI           ","https://bsc.mochiswap.io"]
     ]}
 
   let table = new AsciiTable().fromJSON(tableData);
