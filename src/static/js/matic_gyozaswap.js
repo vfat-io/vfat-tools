@@ -24,7 +24,7 @@ async function main() {
    if(currentBlock < startBlock){
      _print(`Rewards start at block <a href="https://polygonscan.com/block/countdown/${startBlock}" target="_blank">${startBlock}</a>\n`);
    }else{
-    rewardsPerWeek = await GZA_CHEF.tmgoPerBlock() /1e18
+    rewardsPerWeek = await GZA_CHEF.gzaPerBlock() /1e18
       * 604800 * multiplier / 2.1;
    }
 
