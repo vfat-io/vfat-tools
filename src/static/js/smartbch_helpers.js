@@ -316,7 +316,7 @@ async function loadSmartbchSynthetixPoolInfo(App, tokens, prices, stakingAbi, st
       if (poolPrices[i]) {
         const apr = printChefPool(App, chefAbi, chefAddress, prices, tokens, poolInfos[i], i, poolPrices[i],
           totalAllocPoints, rewardsPerWeek, rewardTokenTicker, rewardTokenAddress,
-          pendingRewardsFunction, null, null, "bsc")
+          pendingRewardsFunction, null, null, "smartbch")
         aprs.push(apr);
       }
     }
