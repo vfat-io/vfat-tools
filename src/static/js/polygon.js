@@ -24,6 +24,7 @@ const main = async () => {
       ['PolyStarter         ', `<a href="polystarter"     >Various</a>`, 'STARTER      ', 'https://www.polystarter.fi'],
       ['Polyvolve           ', `<a href="polyvolve"       >Various</a>`, 'SPEAR        ', 'https://polyvolve.finance'],
       ['Polygaj             ', `<a href="polygaj"         >Various</a>`, 'GAJ          ', 'https://polygaj.finance'],
+      ['PolyNYAN            ', `<a href="polynyan"        >Various</a>`, 'NYAN         ', 'https://polynyan.eth.link'],
       ['Galaxy              ',`<a href="galaxy"           >Various</a>`,'Various       ','https://galaxyfarm.routerprotocol.com',],
       ['GameSwap            ',`<a href="gameswap"         >Various</a>`,'STONK         ','https://gameswapfinance.com',],
       ['Blackswap           ',`<a href="blackswap"        >Various</a>`,'AURORA/SOLAR  ','https://www.blackswap.finance',],
@@ -390,7 +391,9 @@ const main = async () => {
       ['Tower Finance       ', `<a href="tower"           >Various</a>`, 'IVORY        ', 'https://app.towerfinance.io'],
       ['Jam Finance         ', `<a href="jamfinance"      >Various</a>`, 'JAM          ', 'https://jamfinance.cc'],
       ['WAVE                ', `<a href="wave"            >Various</a>`, 'WAVE         ', 'https://www.wavedefi.io'],
-      ['Snake Finance       ', `<a href="snakefinance"    >Various</a>`, 'SNAKE        ', 'https://snakefinance.club']
+      ['Snake Finance       ', `<a href="snakefinance"    >Various</a>`, 'SNAKE        ', 'https://snakefinance.club'],
+	  	['Fried Finance        ', `<a href="friedfinance"     >Various</a>`, 'FRIED         ', 'https://friedfinance.cc'],
+      ['GyozaSwap           ', `<a href="gyozaswap"       >Various</a>`, 'GZA          ', 'https://gyozaswap.io']
     ],
   }
 

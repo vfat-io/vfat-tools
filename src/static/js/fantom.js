@@ -493,7 +493,9 @@ const main = async() => {
       ["DegenApe           ", `<a href="degenape"     >Various</a>`,'DAPE         ',"https://www.degenapefarm.com"],
       ["ArcDefi            ", `<a href="arcdefi "     >Various</a>`,'ARC          ',"https://arcdefi.org"],
       ["Salem              ", `<a href="salem "       >Various</a>`,'SALEM        ',"https://salem.finance"],
-      ["Maximum            ", `<a href="maximum "     >Various</a>`,'MAX          ',"https://maximum.farm"]
+      ["Maximum            ", `<a href="maximum "     >Various</a>`,'MAX          ',"https://maximum.farm"],
+	  ["Squid            ", `<a href="squid "     >Various</a>`,'SQUID          ',"https://squid-defi.com"],
+    ["WitcherDeFi            ", `<a href="witcherdefi "     >Various</a>`,'WITCHER          ',"https://ftm.witcherdefi.com"]
     ]
   }
 
