@@ -192,6 +192,7 @@ const main = async() => {
       ["Celestial           ","", `<a href="celestial"     >Various</a>`,"CELES            ","https://app.celesfinance.com"],
       ["Pandaswap           ","", `<a href="pandaswap"     >Various</a>`,"PNDA             ","https://farms.pandaswap.xyz"],
       ["Panther             ","", `<a href="panther"       >Various</a>`,"PANTHER          ","https://pantherswap.com"],
+      ["RobustSwap          ","", `<a href="robustswap"    >Various</a>`,"RBS              ","https://robustswap.com"],
       ["dungeonswap         ","", `<a href="dungeon"       >Various</a>`,"DND              ","https://dungeonswap.app"],
       ["Parthenon Delta     ","", `<a href="parthenon_delta">Various</a>`,"DELTA           ","https://delta.parthenon.finance"],
       ["Caramel             ","", `<a href="caramel"       >Various</a>`,"MEL              ","https://caramelswap.finance"],
