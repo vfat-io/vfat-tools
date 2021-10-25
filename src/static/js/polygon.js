@@ -24,6 +24,7 @@ const main = async () => {
       ['PolyStarter         ', `<a href="polystarter"     >Various</a>`, 'STARTER      ', 'https://www.polystarter.fi'],
       ['Polyvolve           ', `<a href="polyvolve"       >Various</a>`, 'SPEAR        ', 'https://polyvolve.finance'],
       ['Polygaj             ', `<a href="polygaj"         >Various</a>`, 'GAJ          ', 'https://polygaj.finance'],
+      ['PolyNYAN            ', `<a href="polynyan"        >Various</a>`, 'NYAN         ', 'https://polynyan.eth.link'],
       ['Galaxy              ',`<a href="galaxy"           >Various</a>`,'Various       ','https://galaxyfarm.routerprotocol.com',],
       ['GameSwap            ',`<a href="gameswap"         >Various</a>`,'STONK         ','https://gameswapfinance.com',],
       ['Blackswap           ',`<a href="blackswap"        >Various</a>`,'AURORA/SOLAR  ','https://www.blackswap.finance',],
