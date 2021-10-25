@@ -574,7 +574,6 @@ const maticTokens = [
   { "id": "wlev", "symbol": "WLEV", "contract": "0xeb7f7955730a7dba1427a6567950eb4a98dfcbdf" },
   { "id": "dragons-quick", "symbol": "DQUICK", "contract": "0xf28164a485b0b2c90639e47b0f377b4a438a16b1" },
   { "id": "polywolf", "symbol": "MOON", "contract": "0xc56d17dd519e5eb43a19c9759b5d5372115220bd" },
-  { "id": "polynyan", "symbol": "NYAN", "contract": "0xa0badc7f4292b3745aee868964449926ccecd567" },
   { "id": "candy", "symbol": "CANDY", "contract": "0x710dF6FF5c680b0AcEc713a3D034C2B79D08741E" },
   { "id": "galaxy-oberon", "symbol": "OBERON", "contract": "0xc979E70611D997Aa109528c6A9aa73D82Eaa2881"},
   { "id": "xdollar-stablecoin", "sybmol": "xUSD", "contract": "0x3a3e7650f8b9f667da98f236010fbf44ee4b2975"},
