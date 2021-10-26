@@ -192,7 +192,6 @@ const main = async() => {
       ["Celestial           ","", `<a href="celestial"     >Various</a>`,"CELES            ","https://app.celesfinance.com"],
       ["Pandaswap           ","", `<a href="pandaswap"     >Various</a>`,"PNDA             ","https://farms.pandaswap.xyz"],
       ["Panther             ","", `<a href="panther"       >Various</a>`,"PANTHER          ","https://pantherswap.com"],
-      ["RobustSwap          ","", `<a href="robustswap"    >Various</a>`,"RBS              ","https://robustswap.com"],
       ["dungeonswap         ","", `<a href="dungeon"       >Various</a>`,"DND              ","https://dungeonswap.app"],
       ["Parthenon Delta     ","", `<a href="parthenon_delta">Various</a>`,"DELTA           ","https://delta.parthenon.finance"],
       ["Caramel             ","", `<a href="caramel"       >Various</a>`,"MEL              ","https://caramelswap.finance"],
@@ -536,7 +535,8 @@ const main = async() => {
       ["Centaurus Shield    ","", `<a href="centaurus_shield">Various</a>`,"SHIELD         ","https://shield.centaurus.network"],
       ["Stone Temple Binance","", `<a href="stonetemplebinance">Various</a>`,"STB+PLUSH    ","https://www.stonetemple.finance"],
       ["MochiSwap           ","", `<a href="mochiswap"     >Various</a>`,"bMOCHI           ","https://bsc.mochiswap.io"],
-      ["ModerSwap           ","", `<a href="moderswap"     >Various</a>`,"MOD              ","https://moderswap.com"]
+      ["ModerSwap           ","", `<a href="moderswap"     >Various</a>`,"MOD              ","https://moderswap.com"],
+      ["RobustSwap          ","", `<a href="robustswap"    >Various</a>`,"RBS              ","https://robustswap.com"]
     ]}
 
   let table = new AsciiTable().fromJSON(tableData);
