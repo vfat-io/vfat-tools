@@ -21,7 +21,7 @@ async function main() {
     if (currentBlock < startBlock) {
         _print(`Rewards start at block ${startBlock}\n`);
     } else {
-         rewardsPerWeek = await CELLULAR_CHEF.CellPerBlock() /1e18
+         rewardsPerWeek = await CELLULAR_CHEF.cellPerBlock() /1e18
             * 604800 / 5;
     }
 
