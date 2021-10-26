@@ -11,7 +11,8 @@ const main = async() => {
         ["Ubeswap * ",     `<a href="ubeswap"       >Various</a>`,      "UBE",       "https://app.ubeswap.org" ],
         ["Harem  ",       `<a href="harem"         >Various</a>`,      "HAREM",     "https://harem.farm" ],
         ["Mobius  ",      `<a href="mobius"        >Various</a>`,      "MOBI",      "https://www.mobius.money" ],
-        ["Sushi   ",      `<a href="sushi"         >Various</a>`,      "SUSHI/CELO","https://app.sushi.com" ]
+        ["Sushi   ",      `<a href="sushi"         >Various</a>`,      "SUSHI/CELO","https://app.sushi.com" ],
+        ["Cellular   ",      `<a href="cellular"         >Various</a>`,      "CELL","https://cellular.finance" ]
     ]
   }
 
