@@ -34,7 +34,8 @@ const main = async () => {
       ["Curve",             `<a href='curve'>Various</a>`,          "CRV/ONE",       "https://harmony.curve.fi"],
       ["HarmoNYAN",         `<a href='harmonyan'>Various</a>`,      "HNYAN",         "https://harmonyan.one"],
       ["BossSwap",          `<a href='bossswap'>Various</a>`,       "BOSS",          "https://www.bossswap.finance"],
-      ["ParadiseFi", "<a href='paradisefi'>Various</a>", "EDEN", "https://paradisefi.io/"]
+      ["ParadiseFi",        "<a href='paradisefi'>Various</a>",     "EDEN",          "https://paradisefi.io"],
+      ["Elk",               `<a href='elk'>Various</a>`,            "ELK",           "https://elk.finance"]
     ]
   }
 
