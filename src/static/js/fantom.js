@@ -96,7 +96,8 @@ const main = async() => {
       ["Maximum            ", `<a href="maximum "     >Various</a>`,'MAX          ',"https://maximum.farm"],
 	    ["Squid              ", `<a href="squid "       >Various</a>`,'SQUID        ',"https://squid-defi.com"],
       ["WitcherDeFi        ", `<a href="witcherdefi " >Various</a>`,'WITCHER      ',"https://ftm.witcherdefi.com"],
-      ["Sapphire Recycle   ", `<a href="recycle "     >Various</a>`,'RECYCLE      ',"https://recycle.sapphiredefi.com"]
+      ["Sapphire Recycle   ", `<a href="recycle "     >Various</a>`,'RECYCLE      ',"https://recycle.sapphiredefi.com"],
+      ["Venom Finance      ", `<a href="venom"        >Various</a>`,'VENOM        ',"https://venom.farm"]
     ]
   }
 
