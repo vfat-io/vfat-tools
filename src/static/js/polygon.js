@@ -7,12 +7,12 @@ const main = async () => {
     title: 'POLYGON Network',
     heading: ['Pool Provider', 'LP', 'Reward Tokens', 'INFO'],
     rows: [
-      ['Quickswap *         ',`<a href="quick"            >Various</a>`,'QUICK         ','https://quickswap.exchange/#/quick'],
+      ['Quickswap           ',`<a href="quick"            >Various</a>`,'QUICK         ','https://quickswap.exchange/#/quick'],
       ['Kyber               ', `<a href="kyber"           >Various</a>`, 'KNC          ', 'https://dmm.exchange'],
       ['Cometh              ',`<a href="cometh"           >Various</a>`,'MUST          ','https://swap.cometh.io/#/stake'],
       ['Dark                ', `<a href="dark"            >Various</a>`, 'DB           ', 'https://www.dark.build'],
       ['Smartdex            ', `<a href="smartdex"        >Various</a>`, 'NIOX         ', 'https://swap.smartdex.app'],
-      ['Elk                 ', `<a href="elk"             >Various</a>`, 'ELK          ', 'https://app.elk.finance'],
+      ['Elk *               ', `<a href="elk"             >Various</a>`, 'ELK          ', 'https://app.elk.finance'],
       ['Polywhale           ', `<a href="polywhale"       >Various</a>`, 'KRILL        ', 'https://polywhale.finance'],
       ['Aave                ', `<a href="aave"            >Various</a>`, 'MATIC        ', 'https://aave.com'],
       ['BullionFinance      ',`<a href="bullionfinance"   >Various</a>`,'GOLD          ','https://bullionfinance.xyz',],
@@ -24,6 +24,7 @@ const main = async () => {
       ['PolyStarter         ', `<a href="polystarter"     >Various</a>`, 'STARTER      ', 'https://www.polystarter.fi'],
       ['Polyvolve           ', `<a href="polyvolve"       >Various</a>`, 'SPEAR        ', 'https://polyvolve.finance'],
       ['Polygaj             ', `<a href="polygaj"         >Various</a>`, 'GAJ          ', 'https://polygaj.finance'],
+      ['PolyNYAN            ', `<a href="polynyan"        >Various</a>`, 'NYAN         ', 'https://polynyan.eth.link'],
       ['Galaxy              ',`<a href="galaxy"           >Various</a>`,'Various       ','https://galaxyfarm.routerprotocol.com',],
       ['GameSwap            ',`<a href="gameswap"         >Various</a>`,'STONK         ','https://gameswapfinance.com',],
       ['Blackswap           ',`<a href="blackswap"        >Various</a>`,'AURORA/SOLAR  ','https://www.blackswap.finance',],
@@ -391,8 +392,12 @@ const main = async () => {
       ['Jam Finance         ', `<a href="jamfinance"      >Various</a>`, 'JAM          ', 'https://jamfinance.cc'],
       ['WAVE                ', `<a href="wave"            >Various</a>`, 'WAVE         ', 'https://www.wavedefi.io'],
       ['Snake Finance       ', `<a href="snakefinance"    >Various</a>`, 'SNAKE        ', 'https://snakefinance.club'],
-	  ['Fried Finance        ', `<a href="friedfinance"     >Various</a>`, 'FRIED         ', 'https://friedfinance.cc'],
-  	  ['Skull Finance        ', `<a href="skullfinance"     >Various</a>`, 'SKULL         ', 'https://skullfinance.top']
+	  ['Fried Finance       ', `<a href="friedfinance"    >Various</a>`, 'FRIED        ', 'https://friedfinance.cc'],
+      ['GyozaSwap           ', `<a href="gyozaswap"       >Various</a>`, 'GZA          ', 'https://gyozaswap.io'],
+      ['PolyGamma Finance   ', `<a href="polygamma"       >Various</a>`, 'GAMMA        ', 'https://polygamma.finance'],
+      ['Angle               ', '<a href="angle"           >Various</a>', 'Angle        ', 'https://angle.farm'],
+      ['Hermes Defi         ', `<a href="hermesdefiL2"    >Various</a>`, 'APOLLO       ', 'https://www.hermesdefi.io'],
+	  ['Skull Finance       ', `<a href="skullfinance"    >Various</a>`, 'SKULL        ', 'https://skullfinance.top'],
     ],
   }
 
