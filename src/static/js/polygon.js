@@ -396,6 +396,7 @@ const main = async () => {
       ['GyozaSwap           ', `<a href="gyozaswap"       >Various</a>`, 'GZA          ', 'https://gyozaswap.io'],
       ['PolyGamma Finance           ', `<a href="polygamma"       >Various</a>`, 'GAMMA          ', 'https://polygamma.finance'],
       ['Angle               ','<a href="angle"            >Various</a>', 'Angle        ', 'https://angle.farm'],
+      ['Hermes Defi              ', `<a href="hermesdefiL2"          >Various</a>`, 'APOLLO         ', 'https://www.hermesdefi.io'],
     ],
   }
 
