@@ -393,7 +393,9 @@ const main = async () => {
       ['WAVE                ', `<a href="wave"            >Various</a>`, 'WAVE         ', 'https://www.wavedefi.io'],
       ['Snake Finance       ', `<a href="snakefinance"    >Various</a>`, 'SNAKE        ', 'https://snakefinance.club'],
 	  	['Fried Finance        ', `<a href="friedfinance"     >Various</a>`, 'FRIED         ', 'https://friedfinance.cc'],
-      ['GyozaSwap           ', `<a href="gyozaswap"       >Various</a>`, 'GZA          ', 'https://gyozaswap.io']
+      ['GyozaSwap           ', `<a href="gyozaswap"       >Various</a>`, 'GZA          ', 'https://gyozaswap.io'],
+      ['PolyGamma Finance           ', `<a href="polygamma"       >Various</a>`, 'GAMMA          ', 'https://polygamma.finance'],
+      ['Angle               ','<a href="angle"            >Various</a>', 'Angle        ', 'https://angle.farm'],
     ],
   }
 
