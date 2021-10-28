@@ -98,7 +98,8 @@ const main = async() => {
       ["WitcherDeFi        ", `<a href="witcherdefi " >Various</a>`,'WITCHER      ',"https://ftm.witcherdefi.com"],
       ["Sapphire Recycle   ", `<a href="recycle "     >Various</a>`,'RECYCLE      ',"https://recycle.sapphiredefi.com"],
       ["Venom Finance      ", `<a href="venom"        >Various</a>`,'VENOM        ',"https://venom.farm"],
-      ["Bouje Finance      ", `<a href="boujefinance ">Various</a>`,'BOUJE        ',"https://bouje.finance"]
+      ["Bouje Finance      ", `<a href="boujefinance ">Various</a>`,'BOUJE        ',"https://bouje.finance"],
+      ["TrickOrTreat       ", `<a href="trickortreat ">Various</a>`,'TREAT        ',"https://trickortreat.farm"]
     ]
   }
 
