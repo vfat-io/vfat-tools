@@ -65,6 +65,7 @@ const main = async() => {
         ["FarmersOnly TMT         ",`<a href="farmersonly_tmt"  >Various</a>`,"TMT          ","https://tmt.farmersonly.farm"],
         ["MeltShroom Network      ",`<a href="meltshroom"       >Various</a>`,"MELT         ","https://meltshroom.network"],
         ["IceCubes                ",`<a href="icecubes"         >Various</a>`,"ICUBE        ","https://icecubes.finance"],
+        ["Zeal                    ",`<a href="zeal"             >Various</a>`,"WING         ","https://zeal.farm"]
     ]
   }
 
