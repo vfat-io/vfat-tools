@@ -30,7 +30,7 @@ async function main() {
     const prices = await getFantomPrices();
 
     await loadFantomChefContract(App, tokens, prices, BOUJE_CHEF, BOUJE_CHEF_ADDR, BOUJE_CHEF_ABI, rewardTokenTicker,
-      "bouje", null, rewardsPerWeek, "pendingBouje");
+      "boujeToken", null, rewardsPerWeek, "pendingBouje");
 
     hideLoading();
   }
