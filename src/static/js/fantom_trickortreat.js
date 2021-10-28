@@ -19,12 +19,12 @@ async function main() {
    let rewardsPerWeek = 0
    const startTime = await TREAT_CHEF.startTime();
    const currentTime = Date.now() / 1000;
+   rewardsPerWeek = await TREAT_CHEF.treatPerSecond() /1e18 * 604800;
 
    if(startTime > currentTime){
     _print(`Rewards have not started yet`);
-   }else{
-    rewardsPerWeek = await TREAT_CHEF.treatPerSecond() /1e18 * 604800;
-   }
+
+
 
     const tokens = {};
     const prices = await getFantomPrices();
