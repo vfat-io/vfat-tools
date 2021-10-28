@@ -24,14 +24,17 @@ async function main() {
     const tokens = {};
     const prices = await getHarmonyPrices();
     const isStakedToValidator = await FUZZ_PRODUCER.isStaked(App.YOUR_ADDRESS);
-    _print("----------------------------------------------------------------------------------------------------------------\n")
+    const moreInfoLink = "<a href='https://docs.fuzz.fi/fuzz-swap/staking-reward-boost' rel='noopener' target='_blank'>[LEARN MORE]</a>";
+    const validatorLink = `<a href='https://staking.harmony.one/validators/mainnet/one1r55rwumsrm6w3d20uhaa3hm4rxr442k0qx9gj8' rel='noopener' target='_blank'>[DELEGATE ${isStakedToValidator ? 'MORE' : 'NOW'}]</a>`;
+
+    _print("----------------------------------------------------------------------------------------------------------------------------------\n")
     if(isStakedToValidator){
       const stakedPercent = await FUZZ_PRODUCER.getStakingMultiplier(App.YOUR_ADDRESS);
-      _print(`You're staked to our Harmony validator and earning an extra ${stakedPercent / 1000}% on all LP rewards\n`);
+      _print(`You're staked to our Harmony validator and earning an extra ${stakedPercent / 1000}% on all LP rewards ${moreInfoLink} ${validatorLink}\n`);
     } else {
-      _print("You're NOT staked to our Harmony validator. You could be earning upto 20% extra on your LP rewards.\n")
+      _print(`You're NOT staked to our Harmony validator. You could be earning up to 20% extra on your LP rewards. ${moreInfoLink} ${validatorLink}\n`)
     }
-    _print("----------------------------------------------------------------------------------------------------------------\n")
+    _print("----------------------------------------------------------------------------------------------------------------------------------\n")
 
     await loadHarmonyChefContract(App, tokens, prices, FUZZ_PRODUCER, FUZZ_PRODUCER_ADDR, FUZZ_PRODUCER_ABI, rewardTokenTicker,
         "fuzz", null, rewardsPerWeek, "pendingFuzz", [0,1,2,3]);

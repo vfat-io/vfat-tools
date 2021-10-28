@@ -498,7 +498,7 @@ const main = async() => {
       ["BabySwap            ","", `<a href="babyswap"      >Various</a>`,"BABY             ","https://home.babyswap.finance"],
       ["Alita               ","", `<a href="alita"         >Various</a>`,"ALI              ","https://app.alita.finance"],
       ["Singular            ","", `<a href="singular"      >Various</a>`,"SING             ","https://singular.farm"],
-      ["Elk                 ","", `<a href="elk"           >Various</a>`,"ELK              ","https://app.elk.finance"],
+      ["Elk *               ","", `<a href="elk"           >Various</a>`,"ELK              ","https://app.elk.finance"],
       ["Defily              ","", `<a href="defily"        >Various</a>`,"DFL              ","https://defily.io"],
       ["United Farmers Finance","", `<a href="united_farmers_finance"        >Various</a>`,"UFF","https://unitedfarmers.finance"],
       ["Yerba Mate Finance  ","", `<a href="yerbamatefinance">Various</a>`,"YERBAMATE      ","https://app.yerbamate.finance"],
@@ -534,7 +534,9 @@ const main = async() => {
       ["KawaiiSwap          ","", `<a href="kawaiiswap"    >Various</a>`,"CALCIFER         ","https://www.kawaiiswap.finance"],
       ["Centaurus Shield    ","", `<a href="centaurus_shield">Various</a>`,"SHIELD         ","https://shield.centaurus.network"],
       ["Stone Temple Binance","", `<a href="stonetemplebinance">Various</a>`,"STB+PLUSH    ","https://www.stonetemple.finance"],
-      ["MochiSwap           ","", `<a href="mochiswap"     >Various</a>`,"bMOCHI           ","https://bsc.mochiswap.io"]
+      ["MochiSwap           ","", `<a href="mochiswap"     >Various</a>`,"bMOCHI           ","https://bsc.mochiswap.io"],
+      ["ModerSwap           ","", `<a href="moderswap"     >Various</a>`,"MOD              ","https://moderswap.com"],
+      ["RobustSwap          ","", `<a href="robustswap"    >Various</a>`,"RBS              ","https://robustswap.com"]
     ]}
 
   let table = new AsciiTable().fromJSON(tableData);
