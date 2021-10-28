@@ -726,7 +726,7 @@ $(function () {
         _print(`Initialized ${App.YOUR_ADDRESS}\n`);
         _print("Reading smart contracts...\n");
 
-        const ICUBE_CHEF_ADDR = "0x951c8a8dee33bd5039a71e7bd4244d5659cf1517";
+        const ICUBE_CHEF_ADDR = "0xEC91B2808Ab778d8900634FD2811fD0Be07D9774";
         const rewardTokenTicker = "ICUBE";
         const ICUBE_CHEF = new ethers.Contract(ICUBE_CHEF_ADDR, ICUBE_CHEF_ABI, App.provider);
 
