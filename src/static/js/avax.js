@@ -63,7 +63,8 @@ const main = async() => {
         ["AYield Finance          ",`<a href="ayield"           >Various</a>`,"AYIELD       ","https://ayieldfinance.com"],
         ["AVATerra                ",`<a href="avaterra"         >Various</a>`,"AVATERRA     ","https://app.avaterra.finance"],
         ["FarmersOnly TMT         ",`<a href="farmersonly_tmt"  >Various</a>`,"TMT          ","https://tmt.farmersonly.farm"],
-        ["MeltShroom Network      ",`<a href="meltshroom"       >Various</a>`,"MELT         ","https://meltshroom.network"]
+        ["MeltShroom Network      ",`<a href="meltshroom"       >Various</a>`,"MELT         ","https://meltshroom.network"],
+        ["IceCubes                ",`<a href="icecubes"         >Various</a>`,"ICUBE        ","https://icecubes.finance"],
     ]
   }
 
