@@ -21,8 +21,8 @@ async function main() {
     rewardTokenFunction: "rewardsToken"
   }})
 
-  await loadXdaiSynthetixPoolInfo(App, tokens, prices, pools[0].abi, pools[0].address,
-    pools[0].rewardTokenFunction, pools[0].stakeTokenFunction)
+  /*await loadXdaiSynthetixPoolInfo(App, tokens, prices, pools[0].abi, pools[0].address,
+    pools[0].rewardTokenFunction, pools[0].stakeTokenFunction)*/
 
   let p = await loadMultipleXdaiSynthetixPools(App, tokens, prices, pools)
   _print_bold(`Total staked: $${formatMoney(p.staked_tvl)}`);
@@ -34,16 +34,16 @@ async function main() {
 }
 
 const ELKStakingContracts = [
-  "0xb5F7fDB9Ce50FA4E4978C4aF2308dfe4B0583bAD",
-  "0xf64c22037Cf7C7F26588d50dB94609af50389abd",
-  "0xDbcbF9218b660cA566D8282BDCbfA9adF8861Dd1",
-  "0xCA75E8a2de947828E13608BA64F09c6043a45C1F",
-  "0x767Cfa5A29f6585d9D0A02265878e66f1Caa0971",
-  "0x37ee86AFb3ac27519e2aAbcF73694D1629b66F28",
-  "0x90B5F9951C03C8D3f8840e983DcA52b23926903c",
-  "0xCE1853d5754FE15e5b6E0F0b3CAA85D5A16e466b",
-  "0x39d0b006D6a692235AF2BB79C9dd6FeA4A2F0eCb",
-  "0x5162B1531d219c954E5c73015Cc895Ef0ed7dAbe",
-  "0x2DD742c89e85C4d84649D8d0b32BF5Ccf525444A",
-  "0xCDAFcc3fc51e33E77a3C460dc009F21F387d937f"
+  "0xaAA981bf447C20CD2c247cF35391a0e222A25628",
+  "0xBCe27cc918F046a5B639B7B0422265B10B80aFa6",
+  "0xC0fdC8DE5984A801a1170ECeDb805c2263D052a5",
+  "0xDF16a97159bE014253d60d2d84847F45BE7fd1F5",
+  "0xa214e551b0A6AECA50F7AcDD07FBa715422a6639",
+  "0xB3Af87CCDd36A5126eB6DfCDcAe453dCDAB924C6",
+  "0x6b64e70a24c38D1E79E4E82Ab2D3cb9A24e57BB4",
+  "0x08eb5c2EB9B164Db156B6E16E0f23c65215bAC00",
+  "0x2FDCc98E79702668c8957d817ff0AE24AbF4FDaC",
+  "0x92e4916c06E75Df4637193363094F10F47E33086",
+  "0x7Bbe14034d551d09DFfed18A163d4071b15d2504",
+  "0x258Fd31Df46f1C8924e8c7EC32C0F58e79e7b2BF"
 ]

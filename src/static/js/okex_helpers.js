@@ -4,7 +4,8 @@ const OKEX_VAULT_WANT_ABI = [{"inputs":[{"internalType":"contract IStrategy","na
 const OkexTokens = [
   { "id": "tether", "symbol": "USDT", "contract": "0x382bb369d343125bfb2117af9c149795c6c65c50"},
   { "id": "okexchain", "symbol": "OKT", "contract": "0x8F8526dbfd6E38E3D8307702cA8469Bae6C56C15"},
-  { "id": "wrapped-bitcoin", "symbol": "WBTC", "contract": "0x54e4622DC504176b3BB432dCCAf504569699a7fF"}
+  { "id": "wrapped-bitcoin", "symbol": "WBTC", "contract": "0x54e4622DC504176b3BB432dCCAf504569699a7fF"},
+  { "id": "elk-finance", "symbol": "ELK", "contract": "0xE1C110E1B1b4A1deD0cAf3E42BfBdbB7b5d7cE1C"}
 ];
 
 async function getOkexPrices() {

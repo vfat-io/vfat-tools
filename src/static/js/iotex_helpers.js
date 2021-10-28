@@ -13,6 +13,9 @@ const IotexTokens = [
     { "id": "binance-usd","symbol": "BUSD", "contract": "0xacEE9B11CD4B3f57e58880277aC72c8c41ABe4e4" },
     { "id": "binance-usd","symbol": "BUSD", "contract": "0x84ABcb2832bE606341a50128AEB1DB43AA017449" },
     { "id": "usd-coin","symbol": "USDC", "contract": "0x3B2bf2b523f54C4E454F08Aa286D03115aFF326c" },
+    { "id": "wmatic","symbol": "WMATIC", "contract": "0x8e66c0d6B70C0B23d39f4B21A1eAC52BBA8eD89a" },
+    { "id": "tether","symbol": "USDT", "contract": "0x3CDb7c48E70B854ED2Fa392E21687501D84B3AFc" },
+    { "id": "dai","symbol": "DAI", "contract": "0x62a9D987Cbf4C45a550DEEd5B57b200d7a319632" }
 ];
 
 async function getIotexPrices() {

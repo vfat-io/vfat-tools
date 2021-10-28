@@ -22,7 +22,8 @@ const main = async() => {
       [ "KuCow",      `<a href="kucow"        >Various</a>`,     "KUCOW",     "https://kucow.finance" ],
       [ "Kukafe",     `<a href="kukafe"       >Various</a>`,     "KAFE",      "https://kukafe.finance" ],
       [ "Kuulaid",    `<a href="kuulaid"      >Various</a>`,     "KUUL",      "https://kuulaid.finance" ],
-      [ "KsfSwap",    `<a href="ksfswap"      >Various</a>`,     "KSF",       "https://ksfswap.finance" ]
+      [ "KsfSwap",    `<a href="ksfswap"      >Various</a>`,     "KSF",       "https://ksfswap.finance" ],
+      [ "Elk",        `<a href="elk"          >Various</a>`,     "ELK",       "https://elk.finance" ]
     ]
   }
 

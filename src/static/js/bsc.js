@@ -32,7 +32,7 @@ const main = async() => {
       ["Nya Cash            ","", `<a href="nya/"          >Various</a>`,"NYAS/NYAC        ","https://nya.cash"],
       ["YieldScienceLabs    ","", `<a href="ysl/"          >Various</a>`,"Various          ","https://yieldlab.science"],
       ["Icecream            ","", `<a href="icecream"      >Various</a>`,"GLTO             ","https://icecreamswap.finance"],
-      ["Mochi               ","", `<a href="mochi"         >Various</a>`,"MOCHI            ","https://pool.mochiswap.io"],
+      ["Mochi Old           ","", `<a href="mochi"         >Various</a>`,"MOCHI            ","https://pool.mochiswap.io"],
       ["ValueDefi           ","", `<a href="valuedefi"     >Various</a>`,"vBSWAP           ","https://bsc.valuedefi.io/#/vfarm"],
       ["Kickstart           ","", `<a href="kickstart"     >Various</a>`,"KICK             ","https://kickstart.finance"],
       ["Boba                ","", `<a href="boba"          >Various</a>`,"BOBA             ","https://bobadefi.com"],
@@ -498,7 +498,7 @@ const main = async() => {
       ["BabySwap            ","", `<a href="babyswap"      >Various</a>`,"BABY             ","https://home.babyswap.finance"],
       ["Alita               ","", `<a href="alita"         >Various</a>`,"ALI              ","https://app.alita.finance"],
       ["Singular            ","", `<a href="singular"      >Various</a>`,"SING             ","https://singular.farm"],
-      ["Elk                 ","", `<a href="elk"           >Various</a>`,"ELK              ","https://app.elk.finance"],
+      ["Elk *               ","", `<a href="elk"           >Various</a>`,"ELK              ","https://app.elk.finance"],
       ["Defily              ","", `<a href="defily"        >Various</a>`,"DFL              ","https://defily.io"],
       ["United Farmers Finance","", `<a href="united_farmers_finance"        >Various</a>`,"UFF","https://unitedfarmers.finance"],
       ["Yerba Mate Finance  ","", `<a href="yerbamatefinance">Various</a>`,"YERBAMATE      ","https://app.yerbamate.finance"],
@@ -522,7 +522,22 @@ const main = async() => {
       ["Centaurus Net       ","", `<a href="centaurus_net" >Various</a>`,"CEN              ","https://centaurus.network"],
       ["BYield Finance      ","", `<a href="byield"        >Various</a>`,"BYIELD           ","https://www.byieldfinance.com"],
       ["wBAN                ","", `<a href="wban"          >Various</a>`,"wBAN             ","https://bsc.banano.cc"],
-      ["VastSwap            ","", `<a href="vast"          >Various</a>`,"VAST             ","https://vastswap.com"]
+      ["VastSwap            ","", `<a href="vast"          >Various</a>`,"VAST             ","https://vastswap.com"],
+      ["CakeMiner           ","", `<a href="cakeminer"     >Various</a>`,"CAKE             ","https://dextoken-miner.finance"],
+      ["Clam Island         ","", `<a href="clam_island"   >Various</a>`,"GEM              ","https://clamisland.fi/"],
+      ["CZodiac             ","", `<a href="czodiac"       >Various</a>`,"CZF              ","https://app.czodiac.com/#/czfarm"],
+      ["1001 Nights Jafar   ","", `<a href="jafar"         >Various</a>`,"JAFAR            ","https://jafar.1001nights.gold"],
+      ["The Gas Station     ","", `<a href="thegasstation" >Various</a>`,"bscGAS           ","https://gasstationcrypto.com/"],
+      ["Shield              ","", `<a href="shield"        >Various</a>`,"SLD              ","https://shieldex.io/"],
+      ["Centaurus Axe       ","", `<a href="centaurus_axe" >Various</a>`,"AXE              ","https://axe.centaurus.network"],
+      ["dForce              ","", `<a href="dforce"        >Various</a>`,"DF               ","https://dforce.network"],
+      ["KawaiiSwap          ","", `<a href="kawaiiswap"    >Various</a>`,"CALCIFER         ","https://www.kawaiiswap.finance"],
+      ["Centaurus Shield    ","", `<a href="centaurus_shield">Various</a>`,"SHIELD         ","https://shield.centaurus.network"],
+      ["Stone Temple Binance","", `<a href="stonetemplebinance">Various</a>`,"STB+PLUSH    ","https://www.stonetemple.finance"],
+      ["MochiSwap           ","", `<a href="mochiswap"     >Various</a>`,"bMOCHI           ","https://bsc.mochiswap.io"],
+      ["ModerSwap           ","", `<a href="moderswap"     >Various</a>`,"MOD              ","https://moderswap.com"],
+      ["RobustSwap          ","", `<a href="robustswap"    >Various</a>`,"RBS              ","https://robustswap.com"],
+      ["Palladium           ","", `<a href="palladium"     >Various</a>`,"PD               ","https://palladium.farm"]
     ]}
 
   let table = new AsciiTable().fromJSON(tableData);

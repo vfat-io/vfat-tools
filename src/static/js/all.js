@@ -145,10 +145,16 @@ const main = async () => {
       ["Emptyset Finance             ", `<a href="../emptyset/"          >Various</a>`, "ESS                ", "https://app.emptyset.finance/dollar"],
       ["NAOS Finance                 ", `<a href="../naos/"              >Various</a>`, "NAOS               ", "https://app.naos.finance/farms"],
       ["XBE Finance                  ", `<a href="../xbe/"               >Various</a>`, "XBE                ", "https://app.xbe.finance"],
-      ["DODO *                       ", `<a href="../dodo/"              >Various</a>`, "DODO               ", "https://app.dodoex.io"],
+      ["DODO                         ", `<a href="../dodo/"              >Various</a>`, "DODO               ", "https://app.dodoex.io"],
       ["Aladdin                      ", `<a href="../ald/"               >Various</a>`, "ALD                ", "https://app.aladdin.club"],
       ["Hundred                      ", `<a href="../hundred/"           >Various</a>`, "HND                ", "https://hundred.finance"],
-      ["Ubiquity                     ", `<a href="../ubiquity/"          >Various</a>`, "UBQ                ", "https://uad.ubq.fi"],
+      ["Gro                          ", `<a href="../gro/"               >Various</a>`, "GRO                ", "https://app.gro.xyz"],
+      ["Enterdao                     ", `<a href="../enterdao/"          >Various</a>`, "ENTR               ", "https://dao.enterdao.xyz"],
+      ["Augmented Finance            ", `<a href="../augmented/"         >Various</a>`, "AGF                ", "https://augmented.finance"],
+      ["Synapse                      ", `<a href="../synapse/"           >Various</a>`, "SYNAPSE            ", "https://synapseprotocol.com"],
+      ["Tokemak                      ", `<a href="../tokemak/"           >Various</a>`, "Various            ", "https://www.tokemak.xyz"],
+      ["Lixir                        ", `<a href="../lixir/"             >Various</a>`, "LIX                ", "https://app.lixir.finance"],
+      ["Ubiquity                     ", `<a href="../ubiquity/"          >Various</a>`, "UBQ                ", "https://uad.ubq.fi"]
     ]
   }
 
