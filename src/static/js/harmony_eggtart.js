@@ -633,7 +633,7 @@ async function main() {
     EGGT_CHEF_ADDR,
     EGGT_CHEF_ABI,
     rewardTokenTicker,
-    "govToken",
+    "cake",
     null,
     rewardsPerWeek,
     "pendingCake",
