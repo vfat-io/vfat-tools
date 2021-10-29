@@ -7,6 +7,7 @@ const main = async () => {
     "title":"Harmony Network",
     "heading":["Pool Provider","LP", "Reward Tokens", "INFO"],
     "rows": [
+      ["Eggtart",           `<a href='eggtart'>Various</a>`,        "EGGT",          "https://eggtartswap.com"],  
       ["Mochi",             `<a href='mochi'>Various</a>`,          "hMOCHI",        "https://harmony.mochiswap.io"],
       ["Viper",             `<a href='viper'>Various</a>`,          "VIPER",         "https://viper.exchange"],
       ["CopyPasta",         `<a href='copypasta'>Various</a>`,      "PASTA",         "https://copypasta.one"],
