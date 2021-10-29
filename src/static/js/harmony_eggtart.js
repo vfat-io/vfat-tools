@@ -612,7 +612,7 @@ async function main() {
   _print(`Initialized ${App.YOUR_ADDRESS}\n`);
   _print("Reading smart contracts...\n");
 
-  const EGGT_CHEF_ADDR = "0x7a70cf76524994b0F53981e44709d25Ef2AF7014";
+  const EGGT_CHEF_ADDR = "0xB14f236C8A4e2ED70BEEBcf33F4E6eb544871268";
   const rewardTokenTicker = "EGGT";
   const EGGT_CHEF = new ethers.Contract(EGGT_CHEF_ADDR, EGGT_CHEF_ABI, App.provider);
 
