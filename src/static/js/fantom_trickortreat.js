@@ -22,7 +22,7 @@ async function main() {
    rewardsPerWeek = await TREAT_CHEF.treatPerSecond() /1e18 * 604800;
 
    if(startTime > currentTime){
-    _print(`Rewards have not started yet`);
+    _print(`Rewards have not started yet`);}
 
 
 
