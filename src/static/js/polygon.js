@@ -397,7 +397,9 @@ const main = async () => {
       ['PolyGamma Finance   ', `<a href="polygamma"       >Various</a>`, 'GAMMA        ', 'https://polygamma.finance'],
       ['Angle               ', '<a href="angle"           >Various</a>', 'Angle        ', 'https://angle.farm'],
       ['Hermes Defi         ', `<a href="hermesdefiL2"    >Various</a>`, 'APOLLO       ', 'https://www.hermesdefi.io'],
-	    ['Skull Finance       ', `<a href="skullfinance"    >Various</a>`, 'SKULL        ', 'https://skullfinance.top']
+	    ['Skull Finance       ', `<a href="skullfinance"    >Various</a>`, 'SKULL        ', 'https://skullfinance.top'],
+	    ['Astrofarms - Scorpio', `<a href="astrofarmsscorpio">Various</a>`, 'SCORPIO     ', 'https://scorpio.astrofarms.finance'],
+	    ['FarmWiki            ', `<a href="farmwiki"        >Various</a>`, 'FENRIR       ', 'https://fenrir.farmwiki.xyz']
     ],
   }
 
