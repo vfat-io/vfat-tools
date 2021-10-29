@@ -1,9 +1,8 @@
 $(function() {
   main()
-});
+})
 
-const main = async() => {
-
+const main = async () => {
   let tableData = {
     "title":"Harmony Network",
     "heading":["Pool Provider","LP", "Reward Tokens", "INFO"],
@@ -34,11 +33,14 @@ const main = async() => {
       ["Elephant Exchange", `<a href='elephant'>Various</a>`,       "ELEPHANT",      "https://elephant.ac"],
       ["Curve",             `<a href='curve'>Various</a>`,          "CRV/ONE",       "https://harmony.curve.fi"],
       ["HarmoNYAN",         `<a href='harmonyan'>Various</a>`,      "HNYAN",         "https://harmonyan.one"],
-      ["BossSwap",          `<a href='bossswap'>Various</a>`,       "BOSS",          "https://www.bossswap.finance"]
+      ["BossSwap",          `<a href='bossswap'>Various</a>`,       "BOSS",          "https://www.bossswap.finance"],
+      ["ParadiseFi",        "<a href='paradisefi'>Various</a>",     "EDEN",          "https://paradisefi.io"],
+      ["Elk",               `<a href='elk'>Various</a>`,            "ELK",           "https://elk.finance"],
+      ["Eggtart",           `<a href='eggtart'>Various</a>`,        "EGGT",          "https://eggtartswap.com"],
     ]
   }
 
-  let table = new AsciiTable().fromJSON(tableData);
-  document.getElementById('log').innerHTML += table + '<br />';
-  hideLoading();
+  let table = new AsciiTable().fromJSON(tableData)
+  document.getElementById('log').innerHTML += table + '<br />'
+  hideLoading()
 }
