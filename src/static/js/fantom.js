@@ -102,7 +102,7 @@ const main = async() => {
       ["TrickOrTreat       ", `<a href="trickortreat ">Various</a>`,'TREAT        ',"https://trickortreat.farm"],
       ["Beluga             ", `<a href="beluga "      >Various</a>`,'Various      ',"https://app.beluga.fi"],
       ["Eldritch Finance   ", `<a href="eldritch"     >Various</a>`,'ELDR         ',"https://eldritch.app"],
-      ["HarrySwap", `<a href="harryswap"     >Various</a>`,'HARRY         ',"https://harryswap.finance"]
+      ["HarrySwap          ", `<a href="harryswap"    >Various</a>`,'HARRY        ',"https://harryswap.finance"]
     ]
   }
 
