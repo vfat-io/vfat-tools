@@ -100,7 +100,8 @@ const main = async() => {
       ["Venom Finance      ", `<a href="venom"        >Various</a>`,'VENOM        ',"https://venom.farm"],
       ["Bouje Finance      ", `<a href="boujefinance ">Various</a>`,'BOUJE        ',"https://bouje.finance"],
       ["TrickOrTreat       ", `<a href="trickortreat ">Various</a>`,'TREAT        ',"https://trickortreat.farm"],
-      ["Beluga             ", `<a href="beluga "      >Various</a>`,'Various      ',"https://app.beluga.fi"]
+      ["Beluga             ", `<a href="beluga "      >Various</a>`,'Various      ',"https://app.beluga.fi"],
+      ["Eldritch Finance   ", `<a href="eldritch"     >Various</a>`,'ELDR         ',"https://eldritch.app"]
     ]
   }
 
