@@ -512,7 +512,7 @@ async function main() {
   const rewardTokenAddress = '0x808507121B80c02388fAd14726482e061B8da827'
   const rewardTokenPrice = await getTokenPrice(COINGECKO_IDS[rewardTokenTicker])
   const rewardsProxy = '0x70E649eb230dbaEe72303Ac14Fa817B81DeDCf0b'
-  const wrapper = '0x6f85A88bEa6D185093FFAD73DA853B27Ae354AAa'
+  const wrapper = '0x9ec5f3a22df861f98101c00f3df488ff361a7eee'
 
   _print('=========================== PENDLE MARKET POOLS ===========================\n')
 
