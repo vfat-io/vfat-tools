@@ -2,9 +2,9 @@
 <html lang="en">
 <%- include(`${partials}/head`); -%>
 
-    <body>
-        <%- include(`${partials}/header_main`); -%>
-            <pre id="log">
+<body>
+<%- include(`${partials}/header_main`); -%>
+<pre id="log">
 *************** 👨‍🌾 UNOFFICIAL OPENSWAP FARMING CALCULATOR 👨‍🌾 ***************
 INFO  : https://app.openswap.one/ 
 <span style="color:rgba(3,209,235,1.00)">
@@ -16,6 +16,6 @@ and easy ways for users to trade, provide liquidity, and earn collected fees fro
 
 </pre>
 <div class="loader--1"></div>
-    <%- include(`${partials}/scripts`, {scriptname: 'harmony_openx' }); -%>
+<%- include(`${partials}/scripts`, {scriptname: 'harmony_openswapv2' }); -%>
 </body>
 </html>
