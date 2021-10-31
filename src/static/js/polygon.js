@@ -388,6 +388,7 @@ const main = async () => {
       ['Covid Finance       ', `<a href="covidfinance"    >Various</a>`, 'COVID        ', 'https://covidfinance.pro'],
       ['Sentient Swap       ', `<a href="sentientswap"    >Various</a>`, 'STN          ', 'https://sentientswap.live'],
       ['Tower Finance       ', `<a href="tower"           >Various</a>`, 'IVORY        ', 'https://app.towerfinance.io']
+      ['PolyUnity Finance       ', `<a href=polyunity"           >Various</a>`, 'UNITY        ', 'https://polyunity.finance']  
     ],
   }
 
