@@ -37,7 +37,8 @@ const main = async() => {
       ["Dopex               ",""                                                                                               , `<a href="/arbitrum/dopex"       >Various</a>`,"DPX, rDPX          ","https://app.dopex.io/farms"],
       ["Beefy               ",""                                                                                               , `<a href="/arbitrum/beefy"       >Various</a>`,"Various            ","https://www.beefy.finance/Arbitrum"],
       ["Curve               ",""                                                                                               , `<a href="/arbitrum/curve"       >Various</a>`,"CRV                ","https://arbitrum.curve.fi"],
-      ["Synapse             ",""                                                                                               , `<a href="/arbitrum/synapse"     >Various</a>`,"SYNAPSE            ","https://synapseprotocol.com"]
+      ["Synapse             ",""                                                                                               , `<a href="/arbitrum/synapse"     >Various</a>`,"SYNAPSE            ","https://synapseprotocol.com"],
+      ["Pickle              ",""                                                                                               , `<a href="/arbitrum/pickle"      >Various</a>`,"PICKLE             ","https://app.pickle.finance"]
      ]
   }
 

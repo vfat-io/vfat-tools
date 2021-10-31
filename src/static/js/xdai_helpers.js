@@ -4,6 +4,7 @@ const xdaiTokens = [
     { "id": "lever-network","symbol": "LEV","contract": "0xaCb954Db4F51558016455cE9b1Ba32a5bd8b529d" },
     { "id": "honey","symbol": "HNY","contract": "0x71850b7e9ee3f13ab46d67167341e4bdc905eef9" },
     { "id": "xdai-native-comb","symbol": "XCOMB","contract": "0x38fb649ad3d6ba1113be5f57b927053e97fc5bf7" },
+    { "id": "elk-finance","symbol": "ELK","contract": "0xE1C110E1B1b4A1deD0cAf3E42BfBdbB7b5d7cE1C" },
 ]
 
 async function getXdaiPrices() {

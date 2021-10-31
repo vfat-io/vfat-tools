@@ -177,6 +177,28 @@ async function getFantomVault(App, vault, address, stakingAddress) {
   }
 }
 
+async function getFantomBasicVault(App, vault, address, stakingAddress) {
+  const calls = [vault.decimals(), vault.underlying(), vault.name(), vault.symbol(),
+    vault.totalSupply(), vault.balanceOf(stakingAddress), vault.balanceOf(App.YOUR_ADDRESS),
+    vault.underlyingBalanceWithInvestment()];
+  const [ decimals, underlying, name, symbol, totalSupply, staked, unstaked, balance] =
+    await App.ethcallProvider.all(calls);
+  const token = await getFantomToken(App, underlying, address);
+  return {
+    address,
+    name,
+    symbol,
+    totalSupply,
+    decimals,
+    staked: staked / 10 ** decimals,
+    unstaked: unstaked / 10 ** decimals,
+    token: token,
+    balance,
+    contract: vault,
+    tokens : token.tokens
+  }
+}
+
 async function getFantomWantVault(App, vault, address, stakingAddress) {
   const calls = [vault.decimals(), vault.want(), vault.name(), vault.symbol(),
     vault.totalSupply(), vault.balanceOf(stakingAddress), vault.balanceOf(App.YOUR_ADDRESS), vault.balance()]
@@ -280,6 +302,9 @@ async function getFantomStoredToken(App, tokenAddress, stakingAddress, type) {
     case "fantomVault":
       const vault = new ethcall.Contract(tokenAddress, FANTOM_VAULT_TOKEN_ABI);
       return await getFantomVault(App, vault, tokenAddress, stakingAddress);
+    case "basicFantomVault":
+      const basicFantomVault = new ethcall.Contract(tokenAddress, HARVEST_VAULT_ABI);
+      return await getFantomBasicVault(App, basicFantomVault, tokenAddress, stakingAddress);
     case "fantomWantVault":
       const wantVault = new ethcall.Contract(tokenAddress, FANTOM_VAULT_WANT_ABI);
       return await getFantomWantVault(App, wantVault, tokenAddress, stakingAddress);
@@ -342,6 +367,15 @@ async function getFantomToken(App, tokenAddress, stakingAddress) {
       const vault = await getFantomVault(App, VAULT, tokenAddress, stakingAddress);
       window.localStorage.setItem(tokenAddress, "fantomVault");
       return vault;
+    }
+    catch(err) {
+    }
+    try {
+      const basicVault = new ethcall.Contract(tokenAddress, HARVEST_VAULT_ABI);
+      const _token = await App.ethcallProvider.all([basicVault.underlying()]);
+      const res = await getFantomBasicVault(App, basicVault, tokenAddress, stakingAddress);
+      window.localStorage.setItem(tokenAddress, "basicFantomVault");
+      return res;
     }
     catch(err) {
     }

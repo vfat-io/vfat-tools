@@ -15,7 +15,7 @@ const main = async() => {
         ["Yeti                    ",`<a href="yeti"             >Various</a>`,"YTS          ","https://exchange.yetiswap.app"],
         ["Pandaswap               ",`<a href="panda"            >Various</a>`,"BAMBOO       ","https://pandaswap.exchange"],
         ["Pefi                    ",`<a href="pefi"             >Various</a>`,"PEFI         ","https://penguinfinance.org"],
-        ["Elk                     ",`<a href="elk"              >Various</a>`,"ELK          ","https://elk.finance"],
+        ["Elk *                   ",`<a href="elk"              >Various</a>`,"ELK          ","https://elk.finance"],
         ["Snowball                ",`<a href="snowball"         >Various</a>`,"SNOB         ","https://snowball.network/earn"],
         ["Olive                   ",`<a href="olive"            >Various</a>`,"OLIVE        ","https://avax.olive.cash"],
         ["Lydia                   ",`<a href="lydia"            >Various</a>`,"LYD          ","https://www.lydia.finance"],
@@ -58,7 +58,15 @@ const main = async() => {
         ["FarmersOnly             ",`<a href="farmersonly"      >Various</a>`,"CORN         ","https://www.farmersonly.farm"],
         ["Wolf                    ",`<a href="wolf"             >Various</a>`,"WOLF         ","https://wolfavax.com"],
         ["IceSlush                ",`<a href="iceslush"         >Various</a>`,"SLUSH        ","https://iceslush.finance"],
-        ["Orca                    ",`<a href="orca"             >Various</a>`,"ORCA         ","https://avai.finance"]
+        ["Orca                    ",`<a href="orca"             >Various</a>`,"ORCA         ","https://avai.finance"],
+        ["WiseAvax                ",`<a href="wiseavax"         >Various</a>`,"WISE         ","https://wiseavax.finance"],
+        ["AYield Finance          ",`<a href="ayield"           >Various</a>`,"AYIELD       ","https://ayieldfinance.com"],
+        ["AVATerra                ",`<a href="avaterra"         >Various</a>`,"AVATERRA     ","https://app.avaterra.finance"],
+        ["FarmersOnly TMT         ",`<a href="farmersonly_tmt"  >Various</a>`,"TMT          ","https://tmt.farmersonly.farm"],
+        ["MeltShroom Network      ",`<a href="meltshroom"       >Various</a>`,"MELT         ","https://meltshroom.network"],
+        ["IceCubes                ",`<a href="icecubes"         >Various</a>`,"ICUBE        ","https://icecubes.finance"],
+        ["Zeal                    ",`<a href="zeal"             >Various</a>`,"WING         ","https://zeal.farm"],
+        ["The Seed Farm           ",`<a href="seedfarm"         >Various</a>`,"SEED         ","https://theseedfarm.app"]
     ]
   }
 

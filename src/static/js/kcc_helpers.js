@@ -3,7 +3,8 @@ const KCC_VAULT_WANT_ABI = [{"inputs":[{"internalType":"contract IStrategy","nam
 
 const KccTokens = [
   { "id": "kucoin-shares", "symbol": "KCS", "contract": "0x6c021Ae822BEa943b2E66552bDe1D2696a53fbB7"},
-  { "id": "kucoin-shares", "symbol": "WKCS", "contract": "0x4446fc4eb47f2f6586f9faab68b3498f86c07521"}
+  { "id": "kucoin-shares", "symbol": "WKCS", "contract": "0x4446fc4eb47f2f6586f9faab68b3498f86c07521"},
+  { "id": "elk-finance", "symbol": "ELK", "contract": "0xE1C110E1B1b4A1deD0cAf3E42BfBdbB7b5d7cE1C"}
 ];
 
 async function getKccPrices() {
@@ -414,7 +415,7 @@ async function loadKccChefContract(App, tokens, prices, chef, chefAddress, chefA
 async function loadMultipleKccSynthetixPools(App, tokens, prices, pools) {
   let totalStaked  = 0, totalUserStaked = 0, individualAPRs = [];
   const infos = await Promise.all(pools.map(p =>
-      loadkccSynthetixPoolInfo(App, tokens, prices, p.abi, p.address, p.rewardTokenFunction, p.stakeTokenFunction)));
+      loadKccSynthetixPoolInfo(App, tokens, prices, p.abi, p.address, p.rewardTokenFunction, p.stakeTokenFunction)));
   for (const i of infos) {
     let p = await printSynthetixPool(App, i, "kcc");
     totalStaked += p.staked_tvl || 0;

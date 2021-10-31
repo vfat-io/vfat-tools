@@ -295,7 +295,7 @@ async function elephantPitData(ELEPHANT, ELEPHANT_PIT, App, prices) {
 
   if (elephantPrice && elephantPrice.usd) {
     elephantPitTotalBalanceUSD = elephantPitTotalBalance * elephantPrice.usd;
-    elephantPitUserBalanceUSD = elephantPitUserBalanceUSD * elephantPrice.usd;
+    elephantPitUserBalanceUSD = elephantPitUserBalance * elephantPrice.usd;
 
     _print(`${PIT_NAME} TVL: $${formatMoney(elephantPitTotalBalanceUSD)}`);
     _print(`${REWARD_TOKEN_TICKER} Price: $${formatMoney(elephantPrice.usd)}`);
