@@ -49,7 +49,7 @@ const OT_FARMS = [{
   st: 'OT-PE-29DEC2022',
   token: 'PENDLE',
   market: '0xb124c4e18a282143d362a066736fd60d22393ef4',
-  staking: '0x309d8Cf8f7C3340b50ff0ef457075A3c5792203f',
+  staking: '0x2c09fd74e80cE12bEbBC8f56FAB8633eA41C2bCc',
 }, {
   st: 'OT-ETHUSDC-29DEC2022',
   token: 'USDC',
@@ -510,7 +510,7 @@ async function main() {
   const rewardTokenAddress = '0x808507121B80c02388fAd14726482e061B8da827'
   const rewardTokenPrice = await getTokenPrice(COINGECKO_IDS[rewardTokenTicker])
   const rewardsProxy = '0x246Bc457768b96003349C367E42021ef47DF1640'
-  const wrapper = '0xdf227f1B1a409B4aBc77526fae379F707C8563f7'
+  const wrapper = '0xe78CdD5C264B5928064789a1aC05D70234621b11'
 
   _print('=========================== PENDLE MARKET POOLS ===========================\n')
 
