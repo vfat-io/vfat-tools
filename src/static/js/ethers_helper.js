@@ -1746,6 +1746,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
   else if (pool.symbol.includes("Proto-LP")) stakeTokenTicker += " ProtoFi LP Token";
   else if (pool.symbol.includes("SOUL-LP")) stakeTokenTicker += " Soulswap LP Token";
   else if (pool.symbol.includes("lv_")) stakeTokenTicker += " Lixir LP Token";
+  else if (pool.symbol.includes("LOOT-LP")) stakeTokenTicker += " Loot LP Token";
   else stakeTokenTicker += " Uni LP";
   return {
       t0: t0,
@@ -1819,6 +1820,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
               pool.symbol.includes("Field-LP") ?  `https://exchange.yieldfields.finance/#/swap` :
               pool.symbol.includes("UPT") ?  `https://www.app.unic.ly/#/discover` :
               pool.symbol.includes("lv_") ?  `https://app.lixir.finance/vaults/${pool.address}` :
+              pool.symbol.includes("LOOT-LP") ?  `https://analytics.lootswap.finance/pair/${pool.address}` :
               pool.symbol.includes("BenSwap") ? ({
                 "bsc": `https://info.benswap.finance/pair/${pool.address}`,
                 "smartbch": `https://info.benswap.cash/pair/${pool.address}`
@@ -1856,6 +1858,11 @@ function getUniPrices(tokens, prices, pool, chain="eth")
             `https://dmm.exchange/#/add/${t0address}/${t1address}/${pool.address}`,
             `https://dmm.exchange/#/remove/${t0address}/${t1address}/${pool.address}`,
             `https://dmm.exchange/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+          ]:
+          pool.symbol.includes("LOOT-LP") ? [
+            `https://legacy.lootswap.finance/#/add/${t0address}/${t1address}`,
+            `https://legacy.lootswap.finance/#/remove/${t0address}/${t1address}`,
+            `https://legacy.lootswap.finance/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
           ]:
           pool.symbol.includes("CAT-LP") ? [
             `https://trade.polycat.finance/#/add/${t0address}/${t1address}`,
