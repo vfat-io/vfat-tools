@@ -67,6 +67,7 @@ const main = async() => {
         ["IceCubes                ",`<a href="icecubes"         >Various</a>`,"ICUBE        ","https://icecubes.finance"],
         ["Zeal                    ",`<a href="zeal"             >Various</a>`,"WING         ","https://zeal.farm"],
         ["The Seed Farm           ",`<a href="seedfarm"         >Various</a>`,"SEED         ","https://theseedfarm.app"]
+        ["SageAvax                ",`<a href="sageavax"         >Various</a>`,"SAGE         ","https://sageavax.finance"],
     ]
   }
 
