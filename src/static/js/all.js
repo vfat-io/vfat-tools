@@ -154,7 +154,8 @@ const main = async () => {
       ["Synapse                      ", `<a href="../synapse/"           >Various</a>`, "SYNAPSE            ", "https://synapseprotocol.com"],
       ["Tokemak                      ", `<a href="../tokemak/"           >Various</a>`, "Various            ", "https://www.tokemak.xyz"],
       ["Lixir                        ", `<a href="../lixir/"             >Various</a>`, "LIX                ", "https://app.lixir.finance"],
-      ["Ubiquity                     ", `<a href="../ubiquity/"          >Various</a>`, "UBQ                ", "https://uad.ubq.fi"]
+      ["Ubiquity                     ", `<a href="../ubiquity/"          >Various</a>`, "UBQ                ", "https://uad.ubq.fi"],
+      ["SDAO                         ", `<a href="../sdao/"              >Various</a>`, "SDAO               ", "https://app.singularitydao.ai"]
     ]
   }
 
