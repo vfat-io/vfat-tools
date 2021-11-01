@@ -18,8 +18,8 @@ async function main() {
 
   const blockNumber = await App.provider.getBlockNumber();
   const multiplier = await FOOL_CHEF.getMultiplier(blockNumber, blockNumber+1);
-  const rewardPerBlock = await FOOL_CHEF.REWARD_PER_BLOCK();
-  const rewardsPerWeek = rewardPerBlock / 1e18 * multiplier * 604800 / 2
+  const rewardPerBlock = await FOOL_CHEF.REWARD_PER_BLOCK() / 1e18;
+  const rewardsPerWeek = rewardPerBlock * 604800 / 2
 
     const tokens = {};
     const prices = await getHarmonyPrices();
