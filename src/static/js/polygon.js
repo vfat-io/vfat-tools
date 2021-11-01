@@ -398,6 +398,7 @@ const main = async () => {
       ['Angle               ', '<a href="angle"           >Various</a>', 'Angle        ', 'https://angle.farm'],
       ['Hermes Defi         ', `<a href="hermesdefiL2"    >Various</a>`, 'APOLLO       ', 'https://www.hermesdefi.io'],
 	  ['Skull Finance       ', `<a href="skullfinance"    >Various</a>`, 'SKULL        ', 'https://skullfinance.top'],
+	  ['Melon Finance       ', `<a href="melonfinance"    >Various</a>`, 'MELON        ', 'https://melonfinance.cc'],
     ],
   }
 
