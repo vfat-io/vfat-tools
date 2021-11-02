@@ -820,8 +820,7 @@ async function main() {
 
   var currentBlock = await App.provider.getBlockNumber()
 
-  // var poolsResponse = await fetch(`https://www.gasstationcrypto.com/pools.json`)
-  var poolsResponse = await fetch(`http://localhost:8080/pools.json`)
+  var poolsResponse = await fetch(`https://www.gasstationcrypto.com/pools.json`)
 
   var pools = await poolsResponse.json()
 
