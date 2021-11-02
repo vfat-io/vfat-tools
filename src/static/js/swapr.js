@@ -6,26 +6,19 @@ $(function() {
 
   SwaprStakingAddresses = [
     {
-    "id": "0x0cc0d8bdd60eec41d41b83e156b26a1aae298d06"
+    "id": "0x9e0394c971aebe048710e84dec74f3e94eb11f87"
     },    {
-    "id": "0x6cf77bda52b30cdf194ace4dfd303a4b74f2fbd9"
+    "id": "0xbb7dc83aa6a63f5dd61c4678d5c66c43208d10c3"
     },    {
-    "id": "0x826a19214899bd42162544f0f3d0e0e6bf9123f1"
-    },    {
-    "id": "0x89b64345831bf6cac089c1abfb7f217d35ad4695"
-    },    {
-    "id": "0xc7ce9f19d284ae74e20d6a15ff98f0d475852f66"
-    },    {
-    "id": "0xd29c5802eefb6b9e39ed022fb2e058ed3b766821"
-    },    {
-    "id": "0xd55f9f246efda240f32f33594e2be40c02550b43"
+    "id": "0xc9392fd28fd1effc0504f9c670c8d694669e76d7"
     }
   ]
+
   async function main() {
     const App = await init_ethers();
   
     const tokens = {};
-    const prices = await getXdaiPrices();
+    const prices = {};
   
     const pools = SwaprStakingAddresses.map(a => { return {
       address: a.id,
@@ -34,8 +27,8 @@ $(function() {
       rewardTokensFunction: "getRewardTokens"
     }})
   
-    await loadSwaprSynthetixPoolInfo(App, tokens, prices, pools[3].abi, pools[3].address,
-      pools[3].rewardTokensFunction, pools[3].stakeTokenFunction)
+    /*await loadSwaprSynthetixPoolInfo(App, tokens, prices, pools[3].abi, pools[3].address,
+      pools[3].rewardTokensFunction, pools[3].stakeTokenFunction)*/
   
     let p = await loadMultipleSwaprSynthetixPools(App, tokens, prices, pools)
     _print_bold(`Total staked: $${formatMoney(p.staked_tvl)}`);
@@ -51,7 +44,7 @@ $(function() {
     const infos = await Promise.all(pools.map(p => 
         loadSwaprSynthetixPoolInfo(App, tokens, prices, p.abi, p.address, p.rewardTokensFunction, p.stakeTokenFunction)));
     for (const i of infos) {
-      let p = await printSwaprSynthetixPool(App, i, "xdai");
+      let p = await printSwaprSynthetixPool(App, i, "eth");
       totalStaked += p.staked_tvl || 0;
       totalUserStaked += p.userStaked || 0;
       if (p.userStaked > 0) {
@@ -73,7 +66,7 @@ $(function() {
   
       const rewardTokenAddresses = await STAKING_POOL.callStatic[rewardTokensFunction]();
   
-      let stakeToken = await getXdaiToken(App, stakeTokenAddress, stakingAddress);
+      let stakeToken = await getToken(App, stakeTokenAddress, stakingAddress);
   
       var newPriceAddresses = stakeToken.tokens.filter(x =>
         !getParameterCaseInsensitive(prices, x));
@@ -85,11 +78,11 @@ $(function() {
       var newTokenAddresses = stakeToken.tokens.filter(x =>
         !getParameterCaseInsensitive(tokens,x));
       for (const address of newTokenAddresses) {
-          tokens[address] = await getXdaiToken(App, address, stakingAddress);
+          tokens[address] = await getToken(App, address, stakingAddress);
       }
       for(const rewardTokenAddress of rewardTokenAddresses){
         if (!getParameterCaseInsensitive(tokens, rewardTokenAddress)) {
-          tokens[rewardTokenAddress] = await getXdaiToken(App, rewardTokenAddress, stakingAddress);
+          tokens[rewardTokenAddress] = await getToken(App, rewardTokenAddress, stakingAddress);
         }
       }
       let rewardTokens = [];
@@ -104,7 +97,7 @@ $(function() {
         rewardTokenTickers.push(rewardTokenTicker);
       }
   
-      const poolPrices = getPoolPrices(tokens, prices, stakeToken, "xdai");
+      const poolPrices = getPoolPrices(tokens, prices, stakeToken, "eth");
 
       if (!poolPrices) 
       {
@@ -225,7 +218,7 @@ async function printSwaprSynthetixPool(App, info, chain="eth", customURLs) {
   const revoke = async function() {
     return rewardsContract_resetApprove(info.stakeTokenAddress, info.stakingAddress, App)
   }
-  _print(`<a target="_blank" href="https://blockscout.com/xdai/mainnet/address/${info.stakingAddress}/contracts">Explorer</a>`);
+  _print(`<a target="_blank" href="https://etherscan.io/address/${info.stakingAddress}#code">Etherscan</a>`);
   if (info.stakeTokenTicker != "ETH") {
     _print_link(`Stake ${info.userUnstaked.toFixed(6)} ${info.stakeTokenTicker}`, approveTENDAndStake)
   }
