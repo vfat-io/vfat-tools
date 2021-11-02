@@ -867,7 +867,7 @@ async function main() {
 
       rewardTokens[rewardTokenAddress] = await getFantomToken(App, rewardTokenAddress, pool.address)
       rewardsPerWeek[rewardTokenAddress] =
-        (((await poolContract.rewardPerBlock()) / 10 ** rewardTokens[rewardTokenAddress].decimals) * 604800) / 2
+        ((await poolContract.rewardPerBlock()) / 10 ** rewardTokens[rewardTokenAddress].decimals) * 604800
     } catch (err) {
       poolAbi = POOL_DUAL_REWARDS_V1_ABI
       poolContract = new ethers.Contract(pool.address, poolAbi, App.provider)
@@ -879,11 +879,11 @@ async function main() {
 
       rewardTokens[rewardToken0Address] = await getFantomToken(App, rewardToken0Address, pool.address)
       rewardsPerWeek[rewardToken0Address] =
-        (((await poolContract.reward0PerBlock()) / 10 ** rewardTokens[rewardToken0Address].decimals) * 604800) / 2
+        ((await poolContract.reward0PerBlock()) / 10 ** rewardTokens[rewardToken0Address].decimals) * 604800
 
       rewardTokens[rewardToken1Address] = await getFantomToken(App, rewardToken1Address, pool.address)
       rewardsPerWeek[rewardToken1Address] =
-        (((await poolContract.reward1PerBlock()) / 10 ** rewardTokens[rewardToken1Address].decimals) * 604800) / 2
+        ((await poolContract.reward1PerBlock()) / 10 ** rewardTokens[rewardToken1Address].decimals) * 604800
     }
 
     var poolInfo = await getGasStationFantomPoolInfo(
