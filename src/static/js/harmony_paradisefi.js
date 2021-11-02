@@ -269,6 +269,7 @@ async function loadParadiseSynthetixPoolInfo(App, tokens, prices, stakingAbi, st
     const rewardTokenAddress = await STAKING_POOL.callStatic[rewardTokenFunction]();
 
     var stakeToken = await getHarmonyToken(App, stakeTokenAddress, stakingAddress);
+    stakeToken.staked = await STAKING_POOL.totalSupply() / 10 ** stakeToken.decimals;
 
     if (stakeTokenAddress.toLowerCase() === rewardTokenAddress.toLowerCase()) {
       stakeToken.staked = await STAKING_POOL.totalSupply() / 10 ** stakeToken.decimals;

@@ -97,7 +97,13 @@ const main = async() => {
 	    ["Squid              ", `<a href="squid "       >Various</a>`,'SQUID        ',"https://squid-defi.com"],
       ["WitcherDeFi        ", `<a href="witcherdefi " >Various</a>`,'WITCHER      ',"https://ftm.witcherdefi.com"],
       ["Sapphire Recycle   ", `<a href="recycle "     >Various</a>`,'RECYCLE      ',"https://recycle.sapphiredefi.com"],
-      ["Venom Finance      ", `<a href="venom"        >Various</a>`,'VENOM        ',"https://venom.farm"]
+      ["Venom Finance      ", `<a href="venom"        >Various</a>`,'VENOM        ',"https://venom.farm"],
+      ["Bouje Finance      ", `<a href="boujefinance ">Various</a>`,'BOUJE        ',"https://bouje.finance"],
+      ["TrickOrTreat       ", `<a href="trickortreat ">Various</a>`,'TREAT        ',"https://trickortreat.farm"],
+      ["Beluga             ", `<a href="beluga "      >Various</a>`,'Various      ',"https://app.beluga.fi"],
+      ["Eldritch Finance   ", `<a href="eldritch"     >Various</a>`,'ELDR         ',"https://eldritch.app"],
+      ["HarrySwap          ", `<a href="harryswap"    >Various</a>`,'HARRY        ',"https://harryswap.finance"],
+      ["Mummyz Finance     ", `<a href="mummyz"       >Various</a>`,'zMUMMY       ',"https://mummyz.finance"]
     ]
   }
 
