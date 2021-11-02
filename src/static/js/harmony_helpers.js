@@ -359,7 +359,7 @@ async function getHarmonyPoolInfo(app, chefContract, chefAddress, poolIndex, pen
 
 async function loadHarmonyChefContract(App, tokens, prices, chef, chefAddress, chefAbi, rewardTokenTicker,
   rewardTokenFunction, rewardsPerBlockFunction, rewardsPerWeekFixed, pendingRewardsFunction,
-  deathPoolIndices, hideFooter) {
+  deathPoolIndices, hideFooter, customTokens = {}) {
   const chefContract = chef ?? new ethers.Contract(chefAddress, chefAbi, App.provider);
 
   const poolCount = parseInt(await chefContract.poolLength(), 10);
@@ -384,8 +384,10 @@ async function loadHarmonyChefContract(App, tokens, prices, chef, chefAddress, c
 
   await Promise.all(tokenAddresses.map(async (address) => {
       tokens[address] = await getHarmonyToken(App, address, chefAddress);
+      if (customTokens[address]) {
+        tokens[address] = {...tokens[address], ...customTokens[address]}
+      }
   }));
-
   if (deathPoolIndices) {   //load prices for the deathpool assets
     deathPoolIndices.map(i => poolInfos[i])
                      .map(poolInfo =>
@@ -393,7 +395,6 @@ async function loadHarmonyChefContract(App, tokens, prices, chef, chefAddress, c
   }
 
   const poolPrices = poolInfos.map(poolInfo => poolInfo.poolToken ? getPoolPrices(tokens, prices, poolInfo.poolToken, "Harmony") : undefined);
-
 
   _print("Finished reading smart contracts.\n");
 

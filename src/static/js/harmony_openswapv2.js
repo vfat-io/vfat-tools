@@ -22,7 +22,17 @@ $(function() {
   
     const tokens = {}
     const prices = await getHarmonyPrices()
-  
+    const customTokens = {}
+    customTokens['0x0aB43550A6915F9f67d0c454C2E90385E6497EaA'] = {symbol: 'bBUSD'}
+    customTokens['0xE176EBE47d621b984a73036B9DA5d834411ef734'] = {symbol: 'eBUSD'}
+    customTokens['0x6983D1E6DEf3690C4d616b13597A09e6193EA013'] = {symbol: 'eETH'}
+    customTokens['0xb1f6E61E1e113625593a22fa6aa94F8052bc39E0'] = {symbol: 'bBNB'}
+    customTokens['0x3095c7557bCb296ccc6e363DE01b760bA031F2d9'] = {symbol: 'eWBTC'}
+    customTokens['0x985458E523dB3d53125813eD68c274899e9DfAb4'] = {symbol: 'eUSDC'}
+    customTokens['0x6E7bE5B9B4C9953434CD83950D61408f1cCc3bee'] = {symbol: 'bMATIC'}
+    customTokens['0x582617bD8Ca80d22D4432E63Fda52D74dcDCEe4c'] = {symbol: 'bADA'}
+    customTokens['0x44cED87b9F1492Bf2DCf5c16004832569f7f6cBa'] = {symbol: 'bUSDC'}
+
     await loadHarmonyChefContract(
       App,
       tokens,
@@ -35,7 +45,9 @@ $(function() {
       null,
       rewardsPerWeek,
       'pendingOpenSwap',
-      [0, 1, 2, 3, 4, 5, 6], // need to specify to prevent ~0 staked tokens from getting omitted
+      [0, 1, 2, 3, 4, 5, 6], // need to specify to prevent ~0 staked tokens from getting omitted,
+      false,
+      customTokens
     )
   
     hideLoading()
