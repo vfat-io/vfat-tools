@@ -392,7 +392,7 @@ const main = async () => {
       ['Jam Finance         ', `<a href="jamfinance"      >Various</a>`, 'JAM          ', 'https://jamfinance.cc'],
       ['WAVE                ', `<a href="wave"            >Various</a>`, 'WAVE         ', 'https://www.wavedefi.io'],
       ['Snake Finance       ', `<a href="snakefinance"    >Various</a>`, 'SNAKE        ', 'https://snakefinance.club'],
-	  	['Fried Finance       ', `<a href="friedfinance"    >Various</a>`, 'FRIED        ', 'https://friedfinance.cc'],
+	    ['Fried Finance       ', `<a href="friedfinance"    >Various</a>`, 'FRIED        ', 'https://friedfinance.cc'],
       ['GyozaSwap           ', `<a href="gyozaswap"       >Various</a>`, 'GZA          ', 'https://gyozaswap.io'],
       ['PolyGamma Finance   ', `<a href="polygamma"       >Various</a>`, 'GAMMA        ', 'https://polygamma.finance'],
       ['Angle               ', '<a href="angle"           >Various</a>', 'Angle        ', 'https://angle.farm'],
@@ -401,7 +401,8 @@ const main = async () => {
 	    ['Astrofarms - Scorpio', `<a href="astrofarmsscorpio">Various</a>`, 'SCORPIO     ', 'https://scorpio.astrofarms.finance'],
 	    ['FarmWiki            ', `<a href="farmwiki"        >Various</a>`, 'FENRIR       ', 'https://fenrir.farmwiki.xyz'],
 	    ['DefiHalal           ', `<a href="defihalal"       >Various</a>`, 'HALAL        ', 'https://app.defihalal.org'],
-      ['PolyUnity Finance   ', `<a href="polyunity"       >Various</a>`, 'UNITY        ', 'https://polyunity.finance']
+      ['PolyUnity Finance   ', `<a href="polyunity"       >Various</a>`, 'UNITY        ', 'https://polyunity.finance'],
+      ['Melon Finance       ', `<a href="melonfinance"    >Various</a>`, 'MELON        ', 'https://melonfinance.cc']
     ],
   }
 
