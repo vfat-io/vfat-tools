@@ -24,7 +24,8 @@ const ArbitrumTokens = [
     { "id": "dopex", "symbol": "DPX", "contract": "0x6C2C06790b3E3E3c38e12Ee22F8183b37a13EE55"},
     { "id": "dopex-rebate-token", "symbol": "RDPX", "contract": "0x32Eb7902D4134bf98A28b963D26de779AF92A212"},
     { "id": "curve-dao-token", "symbol": "CRV", "contract": "0x11cDb42B0EB46D95f990BeDD4695A6e3fA034978"},
-    { "id": "synapse-2", "symbol": "SYN", "contract": "0x080F6AEd32Fc474DD5717105Dba5ea57268F46eb"}
+    { "id": "synapse-2", "symbol": "SYN", "contract": "0x080F6AEd32Fc474DD5717105Dba5ea57268F46eb"},
+    { "id": "pickle-finance", "symbol": "PICKLE", "contract": "0x965772e0E9c84b6f359c8597C891108DcF1c5B1A"}
 ];
 
 const uniSqrtPrice = (tokenDecimals, sqrtRatioX96) => {
@@ -202,6 +203,44 @@ async function getArbitrumVault(App, vault, address, stakingAddress) {
     balance : balance,
     contract: vault,
     tokens : [address].concat(token.tokens),
+  }
+}
+
+async function getArbitrumJar(App, jar, address, stakingAddress) {
+  const calls = [jar.decimals(), jar.token(), jar.name(), jar.symbol(), jar.totalSupply(),
+    jar.balanceOf(stakingAddress), jar.balanceOf(App.YOUR_ADDRESS), jar.balance()];
+  const [decimals, token_, name, symbol, totalSupply, staked, unstaked, balance] =
+    await App.ethcallProvider.all(calls);
+  const token = await getArbitrumToken(App, token_, address);
+  if(token.xcp_profit){ //this is only for triTokens
+    return {
+      address,
+      name,
+      symbol,
+      totalSupply : token.totalSupply,
+      decimals : token.decimals,
+      staked : staked / 10 ** decimals,
+      unstaked : unstaked / 10 ** decimals,
+      contract: jar,
+      tokens : token.tokens,
+      coins : token.coins,
+      virtualPrice : token.virtualPrice,
+      xcp_profit : token.xcp_profit
+    }
+  }else{
+    return {
+      address,
+      name,
+      symbol,
+      totalSupply,
+      decimals : decimals,
+      staked: staked / 10 ** decimals,
+      unstaked: unstaked / 10 ** decimals,
+      token: token,
+      balance : balance,
+      contract: jar,
+      tokens : [address].concat(token.tokens)
+    }
   }
 }
 
@@ -405,6 +444,9 @@ async function getArbitrumStoredToken(App, tokenAddress, stakingAddress, type) {
       const dlpPool = new ethcall.Contract(tokenAddress, ARBITRUM_DLP_ABI);
       const [originTokenAddress] = await App.ethcallProvider.all([dlpPool.originToken()]);
       return await getArbitrumDlpPool(App, dlpPool, tokenAddress, originTokenAddress, stakingAddress);
+    case "jar":
+      const jar = new ethcall.Contract(tokenAddress, JAR_ABI);
+      return await getArbitrumJar(App, jar, tokenAddress, stakingAddress);
     case "erc20":
       const erc20 = new ethcall.Contract(tokenAddress, ERC20_ABI);
       return await getErc20(App, erc20, tokenAddress, stakingAddress);
@@ -450,7 +492,7 @@ async function getArbitrumToken(App, tokenAddress, stakingAddress) {
       const [triMinter] = await App.ethcallProvider.all([tri.minter()]);
       const minterContract = new ethcall.Contract(triMinter, TRITOKEN_MINTER_ABI);
       const [xcp_profit] = await App.ethcallProvider.all([minterContract.xcp_profit()]);
-      const res = await getArbitrumCurveToken(App, tri, tokenAddress, stakingAddress, triMinter);
+      const res = await getArbitrumTriCryptoToken(App, tri, tokenAddress, stakingAddress, triMinter);
       window.localStorage.setItem(tokenAddress, "triToken");
       return res;
     }
@@ -472,6 +514,16 @@ async function getArbitrumToken(App, tokenAddress, stakingAddress) {
       return await getArbitrumStableswapToken(App, stable, tokenAddress, stakingAddress);
     }
     catch (err) {
+    }
+    try {
+      const jar = new ethcall.Contract(tokenAddress, JAR_ABI);
+      const _token = await App.ethcallProvider.all([jar.token()]);
+      const [ratio] = await App.ethcallProvider.all([jar.getRatio()]);  //to see if its jar or a classic vault
+      const res = await getArbitrumJar(App, jar, tokenAddress, stakingAddress);
+      window.localStorage.setItem(tokenAddress, "jar");
+      return res;
+    }
+    catch(err) {
     }
     try {
       const VAULT = new ethcall.Contract(tokenAddress, ARBITRUM_VAULT_TOKEN_ABI);

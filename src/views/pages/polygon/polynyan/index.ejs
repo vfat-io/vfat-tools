@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include(`${partials}/head`); -%>
+
+<body>
+<%- include(`${partials}/header_main`); -%>
+<pre id="log">
+*************** 👨‍🌾 UNOFFICIAL NYAN FARMING CALCULATOR 👨‍🌾 ***************
+INFO  : https://polynyan.eth.link/
+**************************************************************************
+
+WARNING: Staking through vfat is currently broken. 
+         Visit <a href="https://polynyan.eth.link/">https://polynyan.eth.link/</a> to single stake MATIC and NYAN!
+
+</pre>
+<div class="loader--1"></div>
+<%- include(`${partials}/scripts`, {scriptname: 'matic_nyan'}); -%>
+</body>
+</html> 
