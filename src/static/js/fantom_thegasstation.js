@@ -428,7 +428,7 @@ var POOL_DUAL_REWARDS_V1_ABI = [
   },
 ]
 
-async function getGasStationBscPoolInfo(app, poolContract, poolAddress, rewardTokenAddresses, rewardTokens) {
+async function getGasStationFantomPoolInfo(app, poolContract, poolAddress, rewardTokenAddresses, rewardTokens) {
   var stakeToken = await poolContract.STAKE_TOKEN()
   var depositFee = await poolContract.depositFee()
   var burnFee = await poolContract.depositBurnFee()
@@ -438,7 +438,7 @@ async function getGasStationBscPoolInfo(app, poolContract, poolAddress, rewardTo
     withdrawFee = await poolContract.withdrawFee()
   } catch (err) {}
 
-  var poolToken = await getBscToken(app, stakeToken, poolAddress)
+  var poolToken = await getFantomToken(app, stakeToken, poolAddress)
   var userInfo = await poolContract.userInfo(app.YOUR_ADDRESS)
   var pendingRewards = {}
 
@@ -661,7 +661,7 @@ function printGasStationAPR(
   }
 }
 
-function printGasStationBscPoolLinks(
+function printGasStationFantomPoolLinks(
   App,
   poolAbi,
   poolAddr,
@@ -726,11 +726,11 @@ function printGasStationBscPoolLinks(
 
   if (currentBlock < startBlock) {
     _print(
-      `Fuel Tank starts in <a href='https://bscscan.com/block/countdown/${startBlock}' target='_blank'>${startBlock}</a>`
+      `Fuel Tank starts in <a href='https://ftmscan.com/block/countdown/${startBlock}' target='_blank'>${startBlock}</a>`
     )
   } else if (currentBlock < endBlock) {
     _print(
-      `Fuel Tank finishes in <a href='https://bscscan.com/block/countdown/${endBlock}' target='_blank'>${endBlock}</a>`
+      `Fuel Tank finishes in <a href='https://ftmscan.com/block/countdown/${endBlock}' target='_blank'>${endBlock}</a>`
     )
   } else {
     _print('Fuel Tank Finished!!!')
@@ -740,7 +740,7 @@ function printGasStationBscPoolLinks(
   _print('')
 }
 
-function printGasStationBscPool(
+function printGasStationFantomPool(
   App,
   poolAbi,
   poolAddr,
@@ -760,7 +760,7 @@ function printGasStationBscPool(
   endBlock
 ) {
   fixedDecimals = fixedDecimals ?? 2
-  var sp = poolInfo.stakedToken == null ? null : getPoolPrices(tokens, prices, poolInfo.stakedToken, 'bsc')
+  var sp = poolInfo.stakedToken == null ? null : getPoolPrices(tokens, prices, poolInfo.stakedToken, 'fantom')
 
   var userStaked = poolInfo.userLPStaked ?? poolInfo.userStaked
   var rewardPrices = {}
@@ -771,8 +771,8 @@ function printGasStationBscPool(
   var staked_tvl = sp?.staked_tvl ?? poolPrices.staked_tvl
 
   // _print_inline(`${poolIndex} - `);
-  poolPrices.print_price('bsc')
-  sp?.print_price('bsc')
+  poolPrices.print_price('fantom')
+  sp?.print_price('fantom')
 
   var apr = printGasStationAPR(
     rewardTokens,
@@ -789,7 +789,7 @@ function printGasStationBscPool(
   if (poolInfo.userLPStaked > 0) sp?.print_contained_price(userStaked)
   if (poolInfo.userStaked > 0) poolPrices.print_contained_price(userStaked)
 
-  printGasStationBscPoolLinks(
+  printGasStationFantomPoolLinks(
     App,
     poolAbi,
     poolAddr,
@@ -824,26 +824,26 @@ async function main() {
 
   var pools = await poolsResponse.json()
 
-  _print(`${pools['bsc'].length} Pools Found...\n`)
+  _print(`${pools['fantom'].length} Pools Found...\n`)
   _print('Reading smart contracts...\n')
 
   var aprs = []
   var tokens = {}
-  var prices = await getBscPrices()
+  var prices = await getFantomPrices()
 
-  var lpToken = await getBscToken(
+  var lpToken = await getFantomToken(
     App,
-    '0xfB6f376B990ae3fc3Cfa2Ce1cB1A796c5895AcBa',
+    '0x2ae4249f5a33a3ceadc10ddcbc5a9e8abe7680ef',
     '0x0000000000000000000000000000000000000000'
   )
   await Promise.all(
     lpToken.tokens.map(async address => {
-      tokens[address] = await getBscToken(App, address, '0x0000000000000000000000000000000000000000')
+      tokens[address] = await getFantomToken(App, address, '0x0000000000000000000000000000000000000000')
     })
   )
-  getPoolPrices(tokens, prices, lpToken, 'bsc')
+  getPoolPrices(tokens, prices, lpToken, 'fantom')
 
-  for (var pool of pools['bsc']) {
+  for (var pool of pools['fantom']) {
     _print('=========================================================\n')
 
     _print(`Reading: ${pool.name ?? pool.address}...`)
@@ -865,9 +865,9 @@ async function main() {
 
       rewardTokenAddresses.push(rewardTokenAddress)
 
-      rewardTokens[rewardTokenAddress] = await getBscToken(App, rewardTokenAddress, pool.address)
+      rewardTokens[rewardTokenAddress] = await getFantomToken(App, rewardTokenAddress, pool.address)
       rewardsPerWeek[rewardTokenAddress] =
-        (((await poolContract.rewardPerBlock()) / 10 ** rewardTokens[rewardTokenAddress].decimals) * 604800) / 3
+        (((await poolContract.rewardPerBlock()) / 10 ** rewardTokens[rewardTokenAddress].decimals) * 604800) / 2
     } catch (err) {
       poolAbi = POOL_DUAL_REWARDS_V1_ABI
       poolContract = new ethers.Contract(pool.address, poolAbi, App.provider)
@@ -877,29 +877,35 @@ async function main() {
 
       rewardTokenAddresses.push(rewardToken0Address, rewardToken1Address)
 
-      rewardTokens[rewardToken0Address] = await getBscToken(App, rewardToken0Address, pool.address)
+      rewardTokens[rewardToken0Address] = await getFantomToken(App, rewardToken0Address, pool.address)
       rewardsPerWeek[rewardToken0Address] =
-        (((await poolContract.reward0PerBlock()) / 10 ** rewardTokens[rewardToken0Address].decimals) * 604800) / 3
+        (((await poolContract.reward0PerBlock()) / 10 ** rewardTokens[rewardToken0Address].decimals) * 604800) / 2
 
-      rewardTokens[rewardToken1Address] = await getBscToken(App, rewardToken1Address, pool.address)
+      rewardTokens[rewardToken1Address] = await getFantomToken(App, rewardToken1Address, pool.address)
       rewardsPerWeek[rewardToken1Address] =
-        (((await poolContract.reward1PerBlock()) / 10 ** rewardTokens[rewardToken1Address].decimals) * 604800) / 3
+        (((await poolContract.reward1PerBlock()) / 10 ** rewardTokens[rewardToken1Address].decimals) * 604800) / 2
     }
 
-    var poolInfo = await getGasStationBscPoolInfo(App, poolContract, pool.address, rewardTokenAddresses, rewardTokens)
+    var poolInfo = await getGasStationFantomPoolInfo(
+      App,
+      poolContract,
+      pool.address,
+      rewardTokenAddresses,
+      rewardTokens
+    )
 
     await Promise.all(
       poolInfo.poolToken.tokens.map(async address => {
-        tokens[address] = await getBscToken(App, address, pool.address)
+        tokens[address] = await getFantomToken(App, address, pool.address)
       })
     )
 
-    var poolPrice = getPoolPrices(tokens, prices, poolInfo.poolToken, 'bsc')
+    var poolPrice = getPoolPrices(tokens, prices, poolInfo.poolToken, 'fantom')
 
     var startBlock = (await poolContract.startBlock()).toNumber()
     var endBlock = (await poolContract.endBlock()).toNumber()
 
-    var apr = printGasStationBscPool(
+    var apr = printGasStationFantomPool(
       App,
       poolAbi,
       pool.address,
@@ -935,6 +941,7 @@ async function main() {
       averageApr += (a.userStakedUsd * a.yearlyAPR) / 100
     }
   }
+
   averageApr = averageApr / totalUserStaked
   _print_bold(`Total Staked: $${formatMoney(totalStaked)}`)
   if (totalUserStaked > 0) {
