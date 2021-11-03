@@ -1715,6 +1715,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
   let stakeTokenTicker = `[${t0.symbol}]-[${t1.symbol}]`;
   if (pool.is1inch) stakeTokenTicker += " 1INCH LP";
   else if (pool.symbol.includes("LSLP")) stakeTokenTicker += " LSLP";
+  else if (pool.symbol.includes("HBLP")) stakeTokenTicker += " Huckleberry LP";
   else if (pool.symbol.includes("BLP")) stakeTokenTicker += " BLP";
   else if (pool.symbol.includes("ZDEXLP")) stakeTokenTicker += " ZooDex LP";
   else if (pool.symbol.includes("OperaSwap")) stakeTokenTicker += " Opera Swap LP";
@@ -1810,6 +1811,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
               pool.symbol.includes("ELP") ?  `https://app.elk.finance/#/swap` :
               pool.symbol.includes("BRUSH-LP") ?  `https://paintswap.finance` :
               pool.symbol.includes("PLP") ?  `https://exchange.pureswap.finance/#/swap` :
+              pool.symbol.includes("HBLP") ?  `https://info.huckleberry.finance/pair/${pool.address}` :
               pool.symbol.includes("BLP") ?  `https://info.bakeryswap.org/#/pair/${pool.address}` :
               pool.symbol.includes("KUS-LP") ?  `https://kuswap.info/pair/#/${pool.address}` :
               pool.symbol.includes("KoffeeMug") ?  `https://koffeeswap.exchange/#/pro` :
@@ -1843,6 +1845,11 @@ function getUniPrices(tokens, prices, pool, chain="eth")
             `https://linkswap.app/#/add/${t0address}/${t1address}`,
             `https://linkswap.app/#/remove/${t0address}/${t1address}`,
             `https://linkswap.app/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+          ] :
+          pool.symbol.includes("HBLP") ? [
+            `https://www.huckleberry.finance/#/add/${t0address}/${t1address}`,
+            `https://www.huckleberry.finance/#/remove/${t0address}/${t1address}`,
+            `https://www.huckleberry.finance/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
           ] :
           pool.symbol.includes("BLP") ? [
             `https://www.bakeryswap.org/#/add/${t0address}/${t1address}`,
