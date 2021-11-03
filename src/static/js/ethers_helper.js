@@ -1732,6 +1732,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
   else if (pool.symbol.includes("UPT")) stakeTokenTicker += " Unic Swap LP";
   else if (pool.symbol.includes("ELP")) stakeTokenTicker += " ELK LP";
   else if (pool.symbol.includes("BenSwap")) stakeTokenTicker += " BenSwap LP";
+  else if (pool.name.includes("MISTswap LP Token")) stakeTokenTicker += " MistSwap LP";
   else if (pool.symbol.includes("BRUSH-LP")) stakeTokenTicker += " BRUSH LP";
   else if (pool.symbol.includes("APE-LP")) stakeTokenTicker += " APE LP";
   else if (pool.symbol.includes("Galaxy-LP")) stakeTokenTicker += " Galaxy LP";
@@ -1825,6 +1826,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
                 "bsc": `https://info.benswap.finance/pair/${pool.address}`,
                 "smartbch": `https://info.benswap.cash/pair/${pool.address}`
               }[chain]) :
+              pool.name.includes("MISTswap LP Token") ?  `https://analytics.mistswap.fi/pair/${pool.address}` :
               pool.symbol.includes("Proto-LP") ? `https://polygonscan.com/${pool.address}` :
               pool.symbol.includes("Galaxy-LP") ? (
                 {
@@ -1986,6 +1988,11 @@ function getUniPrices(tokens, prices, pool, chain="eth")
               `https://dex.benswap.cash/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
             ]
           }[chain]) :
+          pool.name.includes("MISTswap LP Token") ? [
+            `https://app.mistswap.fi/add/${t0address}/${t1address}`,
+            `https://app.mistswap.fi/remove/${t0address}/${t1address}`,
+            `https://app.mistswap.fi/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+          ] :
           pool.symbol.includes("Galaxy-LP") ? ({
             "bsc": [
               `https://bsc-exchange.galaxyfinance.one/#/add/${t0address}/${t1address}`,
@@ -2079,6 +2086,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
                             "bsc": `https://info.benswap.finance/pair/${pool.address}`,     
                             "smartbch": `https://info.benswap.cash/pair/${pool.address}`
                           }[chain]) :
+                          pool.name.includes("MISTswap LP Token") ?  `http://analytics.mistswap.fi/pairs/${pool.address}` :
                           pool.symbol.includes("Galaxy-LP") ? ({
                             "bsc": `https://bsc-exchange.galaxyfinance.one/#/swap`,
                             "heco": `https://heco-exchange.galaxyfinance.one/#/swap`,
@@ -2135,6 +2143,11 @@ function getUniPrices(tokens, prices, pool, chain="eth")
                               `https://dex.benswap.cash/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
                             ]
                           }[chain]) :
+                        pool.name.includes("MISTswap LP Token") ? [
+                          `https://app.mistswap.fi/add/${t0address}/${t1address}`,
+                          `https://app.mistswap.fi/remove/${t0address}/${t1address}`,
+                          `https://app.mistswap.fi/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+                        ] :
                         pool.symbol.includes("Galaxy-LP") ? ({
                             "bsc": [
                             `https://bsc-exchange.galaxyfinance.one/#/add/${t0address}/${t1address}`,
