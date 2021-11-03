@@ -1,4 +1,3 @@
-
 $(function() {
 consoleInit(main)
   });
