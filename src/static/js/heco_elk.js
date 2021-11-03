@@ -6,25 +6,25 @@ consoleInit(main)
 const ELK_HECO_ABI = [{"inputs":[{"internalType":"address","name":"_rewardsDistribution","type":"address"},{"internalType":"address","name":"_rewardsToken","type":"address"},{"internalType":"address","name":"_stakingToken","type":"address"}],"payable":false,"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"reward","type":"uint256"}],"name":"RewardAdded","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"uint256","name":"reward","type":"uint256"}],"name":"RewardPaid","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"Staked","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"Withdrawn","type":"event"},{"constant":true,"inputs":[{"internalType":"address","name":"account","type":"address"}],"name":"balanceOf","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"internalType":"address","name":"account","type":"address"}],"name":"earned","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[],"name":"exit","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[],"name":"getReward","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"getRewardForDuration","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"lastTimeRewardApplicable","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"lastUpdateTime","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"internalType":"uint256","name":"reward","type":"uint256"}],"name":"notifyRewardAmount","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"periodFinish","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"rewardPerToken","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"rewardPerTokenStored","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"rewardRate","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"rewards","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"rewardsDistribution","outputs":[{"internalType":"address","name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"rewardsDuration","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"rewardsToken","outputs":[{"internalType":"contract IERC20","name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"stake","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"internalType":"uint256","name":"amount","type":"uint256"},{"internalType":"uint256","name":"deadline","type":"uint256"},{"internalType":"uint8","name":"v","type":"uint8"},{"internalType":"bytes32","name":"r","type":"bytes32"},{"internalType":"bytes32","name":"s","type":"bytes32"}],"name":"stakeWithPermit","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"stakingToken","outputs":[{"internalType":"contract IERC20","name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"totalSupply","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"userRewardPerTokenPaid","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"withdraw","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"}]
 
 const ElkAddresses = [
-  "0xCD1fb1F17228C0f97C926Eea6C39fc5D52e57f75",
-  "0x4DDaef8224278700D4BE55c198fcb99EbFdEfcc2",
-  "0x133277F793e2B5b5D15a274356151C968a35E2a8",
-  "0x62285C12E31Bb6E76d587BE4ca4fAbdE72Eba8F8",
-  "0xE5d265cE2DBcEDCfBB62000B7aD11362B4205a27",
-  "0xcF287fc12aBD621822637ea8eF9C10CBF5eE4EF3",
-  "0x7EcA4278C17592E6ac840F3c584d122430576Aea",
-  "0xd54499a763047337fE21006027aaA7AF23f07434",
-  "0x88C71d43bf0B6A058b21E66A2FaC56FF1bbcec6b",
-  "0x3C65A34798363db883E22BA3b55A7f154be2fB04",
-  "0xAd581DAbdc1F3BCb4Ed19E8Fb463BC251054F8EE",
-  "0x6ab2C6E8b9380f8d31B0243d556d8B72541A9160",
-  "0xE31D7076f0aac9A87407596cB9d6EaBf0C0aB7B0",
-  "0xc8035d058E2730558267B34242C61C4cA2550ca9",
-  "0x188f4709C8F193642939FC62Bdf8E79a3100Be89",
-  "0x92957fb07Da9a79643474342ecc91cF81F5826fb",
-  "0x2C0f52815668A6Db63F22e0A5aC4eEec8Ed94A23",
-  "0x8162397dE77786d61315Fe1327A3D66F7E0afcE3",
-  "0x596637F271C4321a9BD2c7d020687C6e1d667a72"
+  "0x8778d529239226F54CE4b2Ce06430D5D66297310",
+  "0x52314cA8E9132fDa1A9fdCe4bebed45915A7E92b",
+  "0x0a3762671C70263b074cA549280e320aC6e7805f",
+  "0x312a719aE947bBbaD1CB9efB46141e4E1b6D709A",
+  "0xA38b6da2d3a6064B3eDB624F5b0Def8Ab8E8526d",
+  "0x02F4e833Eb4a07918416CDc7A19fA03CFfB77e04",
+  "0x41EE76C8e649a8426B02d4d1A3B28D473bCB825A",
+  "0xb07fd47ae776377cf39dbeF6c244Ad019a31dD8C",
+  "0xc7BFaDe56efAeC48fA015b1dF473654b35Ea0737",
+  "0xe8817638869856D1F577Dc2A7cbAD6E05aFD9E8b",
+  "0x9161F14c57350E4c859AFBCdc942E4cEEa6b85e1",
+  "0x38cef38B71D98c8e13ADB887e0623FFE93a828a5",
+  "0xB2f0a8E62A1AdAf04AD7A899679aC88C5134A1C4",
+  "0xf587968165975A716c26C56aFd6ecBf6AA2D2738",
+  "0x4A49c43634761767460CcE8Cb0B56718821626dC",
+  "0xeDfceB2E6495914326002436Df07C7358C55888f",
+  "0x1f4598DF4d31f03f3f93bA420848d35D933C54b2",
+  "0x3604408271b5d326BD4Ac13e64850BFcc0702B12",
+  "0xc1b68510Ab04eE7181aad79a4fd73B96653Ef008"
 ];
 
 const ElkPools = ElkAddresses.map(a => {
@@ -51,9 +51,8 @@ async function main() {
   let p0 = await loadMultipleHecoSynthetixPools(App, tokens, prices, ElkPools)
   _print_bold(`Total staked: $${formatMoney(p0.staked_tvl)}`);
   if (p0.totalUserStaked > 0) {
-    _print(`You are staking a total of $${formatMoney(p0.totalUserStaked)} at an APR of ${(p0.totalAPR * 100).toFixed(2)}%\n`);
+    _print(`You are staking a total of $${formatMoney(p0.totalUserStaked)} at an APR of ${(p0.totalApr * 100).toFixed(2)}%\n`);
   }
 
   hideLoading();
   }
-  

@@ -3,7 +3,8 @@ const KCC_VAULT_WANT_ABI = [{"inputs":[{"internalType":"contract IStrategy","nam
 
 const KccTokens = [
   { "id": "kucoin-shares", "symbol": "KCS", "contract": "0x6c021Ae822BEa943b2E66552bDe1D2696a53fbB7"},
-  { "id": "kucoin-shares", "symbol": "WKCS", "contract": "0x4446fc4eb47f2f6586f9faab68b3498f86c07521"}
+  { "id": "kucoin-shares", "symbol": "WKCS", "contract": "0x4446fc4eb47f2f6586f9faab68b3498f86c07521"},
+  { "id": "elk-finance", "symbol": "ELK", "contract": "0xE1C110E1B1b4A1deD0cAf3E42BfBdbB7b5d7cE1C"}
 ];
 
 async function getKccPrices() {
@@ -411,80 +412,10 @@ async function loadKccChefContract(App, tokens, prices, chef, chefAddress, chefA
   return { prices, totalUserStaked, totalStaked, averageApr }
 }
 
-async function loadSteakChefContract(App, tokens, prices, chef, chefAddress, chefAbi, rewardTokenTicker,
-    rewardTokenFunction, rewardsPerBlockFunction, rewardsPerWeekFixed, pendingRewardsFunction,
-    deathPoolIndices, claimFunction) {
-    const chefContract = chef ?? new ethers.Contract(chefAddress, chefAbi, App.provider);
-
-    const poolCount = parseInt(await chefContract.poolLength(), 10);
-    const totalAllocPoints = await chefContract.totalAllocPoint();
-
-    _print(`Found ${poolCount} pools.\n`)
-
-    _print(`Showing incentivized pools only.\n`);
-
-    const rewardTokenAddress = await chefContract.callStatic[rewardTokenFunction]();
-    const rewardToken = await getKccToken(App, rewardTokenAddress, chefAddress);
-    const rewardsPerWeek = rewardsPerWeekFixed ??
-      await chefContract.callStatic[rewardsPerBlockFunction]() //Add 10% deposit fees to APR calculations?
-      / 10 ** rewardToken.decimals * 604800 / 3 //*0.9
-
-    const poolInfos = await Promise.all([...Array(poolCount).keys()].map(async (x) =>
-      await getKccPoolInfo(App, chefContract, chefAddress, x, pendingRewardsFunction)));
-
-    var tokenAddresses = [].concat.apply([], poolInfos.filter(x => x.poolToken).map(x => x.poolToken.tokens));
-
-    await Promise.all(tokenAddresses.map(async (address) => {
-        tokens[address] = await getKccToken(App, address, chefAddress);
-    }));
-
-    if (deathPoolIndices) {   //load prices for the deathpool assets
-      deathPoolIndices.map(i => poolInfos[i])
-                       .map(poolInfo =>
-        poolInfo.poolToken ? getPoolPrices(tokens, prices, poolInfo.poolToken, "kcc") : undefined);
-    }
-
-    const poolPrices = poolInfos.map(poolInfo => poolInfo.poolToken ? getPoolPrices(tokens, prices, poolInfo.poolToken, "kcc") : undefined);
-
-
-    _print("Finished reading smart contracts.\n");
-
-    let aprs = []
-    for (i = 0; i < poolCount; i++) {
-      if (poolPrices[i]) {
-        _print(`Note: There is a 0.05% deposit fee into farms that is returned to iFUSD holders, and 10% claim fee that is returned to xSTEAK holders.`)
-        const apr = printChefPool(App, chefAbi, chefAddress, prices, tokens, poolInfos[i], i, poolPrices[i],
-          totalAllocPoints, rewardsPerWeek, rewardTokenTicker, rewardTokenAddress,
-          pendingRewardsFunction, null, claimFunction, "kcc", 0.005, poolInfos[i].withdrawFee)
-        aprs.push(apr);
-      }
-    }
-    let totalUserStaked=0, totalStaked=0, averageApr=0;
-    for (const a of aprs) {
-      if (!isNaN(a.totalStakedUsd)) {
-        totalStaked += a.totalStakedUsd;
-      }
-      if (a.userStakedUsd > 0) {
-        totalUserStaked += a.userStakedUsd;
-        averageApr += a.userStakedUsd * a.yearlyAPR / 100;
-      }
-    }
-    averageApr = averageApr / totalUserStaked;
-    _print_bold(`Total Staked: $${formatMoney(totalStaked)}`);
-    if (totalUserStaked > 0) {
-      _print_bold(`\nYou are staking a total of $${formatMoney(totalUserStaked)} at an average APR of ${(averageApr * 100).toFixed(2)}%`)
-      _print(`\nEstimated earnings:`
-          + ` Day $${formatMoney(totalUserStaked*averageApr/365)}`
-          + ` Week $${formatMoney(totalUserStaked*averageApr/52)}`
-          + ` Year $${formatMoney(totalUserStaked*averageApr)}\n`);
-    }
-    return { prices, totalUserStaked, totalStaked, averageApr }
-  }
-
 async function loadMultipleKccSynthetixPools(App, tokens, prices, pools) {
   let totalStaked  = 0, totalUserStaked = 0, individualAPRs = [];
   const infos = await Promise.all(pools.map(p =>
-      loadkccSynthetixPoolInfo(App, tokens, prices, p.abi, p.address, p.rewardTokenFunction, p.stakeTokenFunction)));
+      loadKccSynthetixPoolInfo(App, tokens, prices, p.abi, p.address, p.rewardTokenFunction, p.stakeTokenFunction)));
   for (const i of infos) {
     let p = await printSynthetixPool(App, i, "kcc");
     totalStaked += p.staked_tvl || 0;

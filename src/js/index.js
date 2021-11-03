@@ -76,6 +76,21 @@ window.NETWORKS = {
       "https://moonbeam.network/networks/moonriver/"
     ]
   },
+  OPTIMISM: {
+    "chainId": "0xA",
+    "chainName": "Optimistic Ethereum",
+    "nativeCurrency": {
+      "name": "ethereum",
+      "symbol": "OETH",
+      "decimals": 18
+    },
+    "rpcUrls": [
+      "https://mainnet.optimism.io/"
+    ],
+    "blockExplorerUrls": [
+      "https://optimistic.etherscan.io/"
+    ]
+  },
   BINANCE_SMART_CHAIN: {
     "chainId": "0x38",
     "chainName": "Binance Smart Chain Mainnet",
@@ -358,6 +373,21 @@ window.NETWORKS = {
       "https://iotexscan.io"
     ],
   },
+  SMARTBCH: {
+    "chainId": "0x2710",
+    "chainName": "Smart Bitcoin Cash Mainnet",
+    "nativeCurrency": {
+      "name": "Bitcoin Cash",
+      "symbol": "BCH",
+      "decimals": 18
+    },
+    "rpcUrls": [
+      "https://global.uat.cash"
+    ],
+    "blockExplorerUrls": [
+      "https://smartscan.cash"
+    ],
+  },
 }
 
 const infuraId = atob(window.ETHEREUM_NODE_URL).split('/').pop()
@@ -383,7 +413,8 @@ const providerOptions = {
         122: "https://rpc.fuse.io",
         66: "https://exchainrpc.okex.org",
         4689: "https://babel-api.mainnet.iotex.io",
-        321: "https://rpc-mainnet.kcc.network"
+        321: "https://rpc-mainnet.kcc.network",
+        10000: "https://global.uat.cash"
       }
     }
   }

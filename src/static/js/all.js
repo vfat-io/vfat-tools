@@ -100,7 +100,7 @@ const main = async () => {
       ["Bondappetit                  ", `<a href="../bondappetit"        >Various</a>`, "BAG                ", "https://bondappetit.io"],
       ["Penguin                      ", `<a href="../penguin"            >Various</a>`, "FISH               ", "https://penguinswap.eth.link"],
       ["Mimo                         ", `<a href="../mimo"               >Various</a>`, "MIMO               ", "https://mimo.capital/mining"],
-      ["Fei *                        ", `<a href="../fei"                >Various</a>`, "FEI                ", "https://fei.money"],
+      ["Fei                          ", `<a href="../fei"                >Various</a>`, "FEI                ", "https://fei.money"],
       ["Blockchain Adventurers Guild ", `<a href="../bag"                >Various</a>`, "BAG                ", "https://app.thisistheway.finance/#/stake"],
       ["Piedao                       ", `<a href="../piedao"             >Various</a>`, "DOUGH              ", "https://www.piedao.org"],
       ["Cryptex                      ", `<a href="../cryptex"            >Various</a>`, "CTX                ", "https://app.cryptex.finance"],
@@ -146,7 +146,18 @@ const main = async () => {
       ["NAOS Finance                 ", `<a href="../naos/"              >Various</a>`, "NAOS               ", "https://app.naos.finance/farms"],
       ["XBE Finance                  ", `<a href="../xbe/"               >Various</a>`, "XBE                ", "https://app.xbe.finance"],
       ["DODO                         ", `<a href="../dodo/"              >Various</a>`, "DODO               ", "https://app.dodoex.io"],
-      ["Aladdin                      ", `<a href="../ald/"               >Various</a>`, "ALD                ", "https://app.aladdin.club"]
+      ["Aladdin                      ", `<a href="../ald/"               >Various</a>`, "ALD                ", "https://app.aladdin.club"],
+      ["Hundred                      ", `<a href="../hundred/"           >Various</a>`, "HND                ", "https://hundred.finance"],
+      ["Gro                          ", `<a href="../gro/"               >Various</a>`, "GRO                ", "https://app.gro.xyz"],
+      ["Enterdao                     ", `<a href="../enterdao/"          >Various</a>`, "ENTR               ", "https://dao.enterdao.xyz"],
+      ["Augmented Finance            ", `<a href="../augmented/"         >Various</a>`, "AGF                ", "https://augmented.finance"],
+      ["Synapse                      ", `<a href="../synapse/"           >Various</a>`, "SYNAPSE            ", "https://synapseprotocol.com"],
+      ["Tokemak                      ", `<a href="../tokemak/"           >Various</a>`, "Various            ", "https://www.tokemak.xyz"],
+      ["Lixir                        ", `<a href="../lixir/"             >Various</a>`, "LIX                ", "https://app.lixir.finance"],
+      ["Ubiquity                     ", `<a href="../ubiquity/"          >Various</a>`, "UBQ                ", "https://uad.ubq.fi"],
+      ["SDAO                         ", `<a href="../sdao/"              >Various</a>`, "SDAO               ", "https://app.singularitydao.ai"],
+      ["Botto                        ", `<a href="../botto/"             >Various</a>`, "BOTTO              ", "https://app.botto.com"],
+      ["Swapr                        ", `<a href="../swapr/"             >Various</a>`, "SWPR               ", "https://swapr.eth.link"]
     ]
   }
 

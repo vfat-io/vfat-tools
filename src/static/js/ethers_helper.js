@@ -1,4 +1,5 @@
 const DLP_ABI = [{"inputs":[{"internalType":"address","name":"_originToken","type":"address"}],"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"owner","type":"address"},{"indexed":true,"internalType":"address","name":"spender","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"Approval","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"uint256","name":"value","type":"uint256"}],"name":"Burn","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"uint256","name":"value","type":"uint256"}],"name":"Mint","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"previousOwner","type":"address"},{"indexed":true,"internalType":"address","name":"newOwner","type":"address"}],"name":"OwnershipTransferPrepared","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"previousOwner","type":"address"},{"indexed":true,"internalType":"address","name":"newOwner","type":"address"}],"name":"OwnershipTransferred","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"from","type":"address"},{"indexed":true,"internalType":"address","name":"to","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"Transfer","type":"event"},{"inputs":[],"name":"_NEW_OWNER_","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"_OWNER_","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"owner","type":"address"},{"internalType":"address","name":"spender","type":"address"}],"name":"allowance","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"spender","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"approve","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"owner","type":"address"}],"name":"balanceOf","outputs":[{"internalType":"uint256","name":"balance","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"user","type":"address"},{"internalType":"uint256","name":"value","type":"uint256"}],"name":"burn","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"claimOwnership","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"decimals","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"user","type":"address"},{"internalType":"uint256","name":"value","type":"uint256"}],"name":"mint","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"name","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"originToken","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"symbol","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"totalSupply","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"to","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"transfer","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"from","type":"address"},{"internalType":"address","name":"to","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"transferFrom","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"newOwner","type":"address"}],"name":"transferOwnership","outputs":[],"stateMutability":"nonpayable","type":"function"}]
+const DLP_DUAL_TOKEN_ABI = [{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"owner","type":"address"},{"indexed":true,"internalType":"address","name":"spender","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"Approval","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"uint256","name":"value","type":"uint256"}],"name":"Burn","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"to","type":"address"},{"indexed":false,"internalType":"uint256","name":"increaseShares","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"totalShares","type":"uint256"}],"name":"BuyShares","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"borrower","type":"address"},{"indexed":false,"internalType":"address","name":"assetTo","type":"address"},{"indexed":false,"internalType":"uint256","name":"baseAmount","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"quoteAmount","type":"uint256"}],"name":"DODOFlashLoan","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"fromToken","type":"address"},{"indexed":false,"internalType":"address","name":"toToken","type":"address"},{"indexed":false,"internalType":"uint256","name":"fromAmount","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"toAmount","type":"uint256"},{"indexed":false,"internalType":"address","name":"trader","type":"address"},{"indexed":false,"internalType":"address","name":"receiver","type":"address"}],"name":"DODOSwap","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"uint256","name":"value","type":"uint256"}],"name":"Mint","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"payer","type":"address"},{"indexed":false,"internalType":"address","name":"to","type":"address"},{"indexed":false,"internalType":"uint256","name":"decreaseShares","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"totalShares","type":"uint256"}],"name":"SellShares","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"from","type":"address"},{"indexed":true,"internalType":"address","name":"to","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"Transfer","type":"event"},{"inputs":[],"name":"DOMAIN_SEPARATOR","outputs":[{"internalType":"bytes32","name":"","type":"bytes32"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"PERMIT_TYPEHASH","outputs":[{"internalType":"bytes32","name":"","type":"bytes32"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"_BASE_PRICE_CUMULATIVE_LAST_","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"_BASE_RESERVE_","outputs":[{"internalType":"uint112","name":"","type":"uint112"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"_BASE_TOKEN_","outputs":[{"internalType":"contract IERC20","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"_BLOCK_TIMESTAMP_LAST_","outputs":[{"internalType":"uint32","name":"","type":"uint32"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"_IS_OPEN_TWAP_","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"_I_","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"_K_","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"_LP_FEE_RATE_","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"_MAINTAINER_","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"_MT_FEE_RATE_MODEL_","outputs":[{"internalType":"contract IFeeRateModel","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"_QUOTE_RESERVE_","outputs":[{"internalType":"uint112","name":"","type":"uint112"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"_QUOTE_TOKEN_","outputs":[{"internalType":"contract IERC20","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"_addr","type":"address"}],"name":"addressToShortString","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"pure","type":"function"},{"inputs":[{"internalType":"address","name":"owner","type":"address"},{"internalType":"address","name":"spender","type":"address"}],"name":"allowance","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"spender","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"approve","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"owner","type":"address"}],"name":"balanceOf","outputs":[{"internalType":"uint256","name":"balance","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"to","type":"address"}],"name":"buyShares","outputs":[{"internalType":"uint256","name":"shares","type":"uint256"},{"internalType":"uint256","name":"baseInput","type":"uint256"},{"internalType":"uint256","name":"quoteInput","type":"uint256"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"decimals","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"baseAmount","type":"uint256"},{"internalType":"uint256","name":"quoteAmount","type":"uint256"},{"internalType":"address","name":"assetTo","type":"address"},{"internalType":"bytes","name":"data","type":"bytes"}],"name":"flashLoan","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"getBaseInput","outputs":[{"internalType":"uint256","name":"input","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getMidPrice","outputs":[{"internalType":"uint256","name":"midPrice","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getPMMState","outputs":[{"components":[{"internalType":"uint256","name":"i","type":"uint256"},{"internalType":"uint256","name":"K","type":"uint256"},{"internalType":"uint256","name":"B","type":"uint256"},{"internalType":"uint256","name":"Q","type":"uint256"},{"internalType":"uint256","name":"B0","type":"uint256"},{"internalType":"uint256","name":"Q0","type":"uint256"},{"internalType":"enum PMMPricing.RState","name":"R","type":"uint8"}],"internalType":"struct PMMPricing.PMMState","name":"state","type":"tuple"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getPMMStateForCall","outputs":[{"internalType":"uint256","name":"i","type":"uint256"},{"internalType":"uint256","name":"K","type":"uint256"},{"internalType":"uint256","name":"B","type":"uint256"},{"internalType":"uint256","name":"Q","type":"uint256"},{"internalType":"uint256","name":"B0","type":"uint256"},{"internalType":"uint256","name":"Q0","type":"uint256"},{"internalType":"uint256","name":"R","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getQuoteInput","outputs":[{"internalType":"uint256","name":"input","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"user","type":"address"}],"name":"getUserFeeRate","outputs":[{"internalType":"uint256","name":"lpFeeRate","type":"uint256"},{"internalType":"uint256","name":"mtFeeRate","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getVaultReserve","outputs":[{"internalType":"uint256","name":"baseReserve","type":"uint256"},{"internalType":"uint256","name":"quoteReserve","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"maintainer","type":"address"},{"internalType":"address","name":"baseTokenAddress","type":"address"},{"internalType":"address","name":"quoteTokenAddress","type":"address"},{"internalType":"uint256","name":"lpFeeRate","type":"uint256"},{"internalType":"address","name":"mtFeeRateModel","type":"address"},{"internalType":"uint256","name":"i","type":"uint256"},{"internalType":"uint256","name":"k","type":"uint256"},{"internalType":"bool","name":"isOpenTWAP","type":"bool"}],"name":"init","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"name","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"nonces","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"owner","type":"address"},{"internalType":"address","name":"spender","type":"address"},{"internalType":"uint256","name":"value","type":"uint256"},{"internalType":"uint256","name":"deadline","type":"uint256"},{"internalType":"uint8","name":"v","type":"uint8"},{"internalType":"bytes32","name":"r","type":"bytes32"},{"internalType":"bytes32","name":"s","type":"bytes32"}],"name":"permit","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"trader","type":"address"},{"internalType":"uint256","name":"payBaseAmount","type":"uint256"}],"name":"querySellBase","outputs":[{"internalType":"uint256","name":"receiveQuoteAmount","type":"uint256"},{"internalType":"uint256","name":"mtFee","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"trader","type":"address"},{"internalType":"uint256","name":"payQuoteAmount","type":"uint256"}],"name":"querySellQuote","outputs":[{"internalType":"uint256","name":"receiveBaseAmount","type":"uint256"},{"internalType":"uint256","name":"mtFee","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"to","type":"address"}],"name":"sellBase","outputs":[{"internalType":"uint256","name":"receiveQuoteAmount","type":"uint256"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"to","type":"address"}],"name":"sellQuote","outputs":[{"internalType":"uint256","name":"receiveBaseAmount","type":"uint256"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"shareAmount","type":"uint256"},{"internalType":"address","name":"to","type":"address"},{"internalType":"uint256","name":"baseMinAmount","type":"uint256"},{"internalType":"uint256","name":"quoteMinAmount","type":"uint256"},{"internalType":"bytes","name":"data","type":"bytes"},{"internalType":"uint256","name":"deadline","type":"uint256"}],"name":"sellShares","outputs":[{"internalType":"uint256","name":"baseAmount","type":"uint256"},{"internalType":"uint256","name":"quoteAmount","type":"uint256"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"symbol","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"sync","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"totalSupply","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"to","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"transfer","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"from","type":"address"},{"internalType":"address","name":"to","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"transferFrom","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"version","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"pure","type":"function"}]
 
 let walletProvider = undefined
 
@@ -22,6 +23,9 @@ const pageNetwork = function() {
   }
   if (network.toLowerCase() === 'moonriver') {
     return window.NETWORKS.MOONRIVER
+  }
+  if (network.toLowerCase() === 'optimism') {
+    return window.NETWORKS.OPTIMISM
   }
   if (network.toLowerCase() === 'heco') {
     return window.NETWORKS.HECO
@@ -58,6 +62,9 @@ const pageNetwork = function() {
   }
   if (network.toLowerCase() === 'iotex') {
     return window.NETWORKS.IOTEX
+  }
+  if (network.toLowerCase() === 'smartbch') {
+    return window.NETWORKS.SMARTBCH
   }
 
   return window.NETWORKS.ETHEREUM
@@ -998,6 +1005,85 @@ async function getUniPool(app, pool, poolAddress, stakingAddress) {
   };
 }
 
+async function getLixirPool(app, pool, poolAddress, stakingAddress) {
+  const calls = [
+    pool.decimals(), pool.token0(), pool.token1(), pool.symbol(), pool.name(),
+    pool.totalSupply(), pool.balanceOf(stakingAddress), pool.balanceOf(app.YOUR_ADDRESS)
+  ];
+  const [decimals, token0, token1, symbol, name, totalSupply, staked, unstaked]
+    = await app.ethcallProvider.all(calls);
+  let q0, q1;
+  const [reserves] = await app.ethcallProvider.all([pool.calculateTotals()]);
+  q0 = reserves.total0;
+  q1 = reserves.total1;
+  return {
+      symbol,
+      name,
+      address: poolAddress,
+      token0: token0,
+      q0,
+      token1: token1,
+      q1,
+      totalSupply: totalSupply / 10 ** decimals,
+      stakingAddress: stakingAddress,
+      staked: staked / 10 ** decimals,
+      decimals: decimals,
+      unstaked: unstaked / 10 ** decimals,
+      contract: pool,
+      tokens : [token0, token1],
+  };
+}
+
+async function getDodoDualPoolToken(app, pool, poolAddress, stakingAddress) {
+  const calls = [
+    pool.decimals(), pool._BASE_TOKEN_(), pool._QUOTE_TOKEN_(), pool.symbol(), pool.name(),
+    pool.totalSupply(), pool.balanceOf(stakingAddress), pool.balanceOf(app.YOUR_ADDRESS)
+  ];
+  const [decimals, token0, token1, symbol, name, totalSupply, staked, unstaked]
+    = await app.ethcallProvider.all(calls);
+  let q0, q1, is1inch;
+  try {
+    const [reserves] = await app.ethcallProvider.all([pool.getVaultReserve()]);
+    q0 = reserves.baseReserve;
+    q1 = reserves.quoteReserve;
+    is1inch = false;
+  }
+  catch { //for 1inch
+    if (token0 == "0x0000000000000000000000000000000000000000") {
+      q0 = await app.provider.getBalance(poolAddress);
+    }
+    else {
+      const c0 = new ethers.Contract(token0, ERC20_ABI, app.provider);
+      q0 = await c0.balanceOf(poolAddress);
+    }
+    if (token1 == "0x0000000000000000000000000000000000000000") {
+      q1 = await app.provider.getBalance(poolAddress);
+    }
+    else {
+      const c1 = new ethers.Contract(token1, ERC20_ABI, app.provider);
+      q1 = await c1.balanceOf(poolAddress);
+    }
+    is1inch = true;
+  }
+  return {
+      symbol,
+      name,
+      address: poolAddress,
+      token0: token0,
+      q0,
+      token1: token1,
+      q1,
+      totalSupply: totalSupply / 10 ** decimals,
+      stakingAddress: stakingAddress,
+      staked: staked / 10 ** decimals,
+      decimals: decimals,
+      unstaked: unstaked / 10 ** decimals,
+      contract: pool,
+      tokens : [token0, token1],
+      is1inch
+  };
+}
+
 async function getDlpPool(App, dlpPool, tokenAddress, originTokenAddress, stakingAddress){
   const ownerAddress = await dlpPool._OWNER_();
   const originToken = await getToken(App, originTokenAddress, ownerAddress);
@@ -1237,6 +1323,27 @@ async function getVault(app, vault, address, stakingAddress) {
   }
 }
 
+async function getTokemakVault(app, vault, address, stakingAddress) {
+  const calls = [vault.decimals(), vault.underlyer(), vault.name(), vault.symbol(),
+    vault.totalSupply(), vault.balanceOf(stakingAddress), vault.balanceOf(app.YOUR_ADDRESS)];
+  const [ decimals, underlying, name, symbol, totalSupply, staked, unstaked] =
+    await app.ethcallProvider.all(calls);
+  const token = await getToken(app, underlying, address);
+  return {
+    address,
+    name,
+    symbol,
+    totalSupply,
+    decimals,
+    staked: staked / 10 ** decimals,
+    unstaked: unstaked / 10 ** decimals,
+    token: token,
+    balance : totalSupply,
+    contract: vault,
+    tokens : token.tokens
+  }
+}
+
 async function getCToken(app, cToken, address, stakingAddress) {
   const calls = [cToken.decimals(), cToken.underlying(), cToken.totalSupply(),
     cToken.name(), cToken.symbol(), cToken.balanceOf(stakingAddress),
@@ -1274,6 +1381,12 @@ async function getStoredToken(app, tokenAddress, stakingAddress, type) {
     case "uniswap":
       const pool = new ethcall.Contract(tokenAddress, UNI_ABI);
       return await getUniPool(app, pool, tokenAddress, stakingAddress);
+    case "lixir":
+      const lixirPool = new ethcall.Contract(tokenAddress, LIXIR_TOKEN_ABI);
+      return await getLixirPool(app, lixirPool, tokenAddress, stakingAddress);
+    case "doualDlp":
+      const doualDlpPool = new ethcall.Contract(tokenAddress, DLP_DUAL_TOKEN_ABI);
+      return await getDodoDualPoolToken(app, doualDlpPool, tokenAddress, stakingAddress);
     case "balancer":
       const bal = new ethcall.Contract(tokenAddress, BALANCER_POOL_ABI);
       const [tokens] = await app.ethcallProvider.all([bal.getFinalTokens()]);
@@ -1294,6 +1407,9 @@ async function getStoredToken(app, tokenAddress, stakingAddress, type) {
       const dlpPool = new ethers.Contract(tokenAddress, DLP_ABI, app.provider);
       const originTokenAddress = await dlpPool.originToken();
       return await getDlpPool(app, dlpPool, tokenAddress, originTokenAddress, stakingAddress);
+    case "tokemak":
+      const tokemak = new ethcall.Contract(tokenAddress, TOKEMAK_VAULT_ABI);
+      return await getTokemakVault(app, tokemak, tokenAddress, stakingAddress);
     case "gelato":
       const gelato = new ethcall.Contract(tokenAddress, GELATO_ABI);
       return await getGelatoPool(app, gelato, tokenAddress, stakingAddress);
@@ -1341,11 +1457,29 @@ async function getToken(app, tokenAddress, stakingAddress) {
   catch(err) {
   }
   try {
+    const lixirPool = new ethcall.Contract(tokenAddress, LIXIR_TOKEN_ABI);
+    const _weth9 = await app.ethcallProvider.all([lixirPool.weth9()]);
+    const lixir = await getLixirPool(app, lixirPool, tokenAddress, stakingAddress);
+    window.localStorage.setItem(tokenAddress, "lixir");
+    return lixir;
+  }
+  catch(err) {
+  }
+  try {
     const pool = new ethcall.Contract(tokenAddress, UNI_ABI);
     const _token0 = await app.ethcallProvider.all([pool.token0()]);
     const uniPool = await getUniPool(app, pool, tokenAddress, stakingAddress);
     window.localStorage.setItem(tokenAddress, "uniswap");
     return uniPool;
+  }
+  catch(err) {
+  }
+  try {
+    const pool = new ethcall.Contract(tokenAddress, DLP_DUAL_TOKEN_ABI);
+    const _baseToken = await app.ethcallProvider.all([pool._BASE_TOKEN_()]);
+    const doualDlpPool = await getDodoDualPoolToken(app, pool, tokenAddress, stakingAddress);
+    window.localStorage.setItem(tokenAddress, "doualDlp");
+    return doualDlpPool;
   }
   catch(err) {
   }
@@ -1401,6 +1535,15 @@ async function getToken(app, tokenAddress, stakingAddress) {
     const _token = await app.ethcallProvider.all([vault.underlying()]);
     const res = await getVault(app, vault, tokenAddress, stakingAddress);
     window.localStorage.setItem(tokenAddress, "vault");
+    return res;
+  }
+  catch(err) {
+  }
+  try {
+    const vaultTokemak = new ethcall.Contract(tokenAddress, TOKEMAK_VAULT_ABI);
+    const _token = await app.ethcallProvider.all([vaultTokemak.underlyer()]);
+    const res = await getTokemakVault(app, vaultTokemak, tokenAddress, stakingAddress);
+    window.localStorage.setItem(tokenAddress, "tokemak");
     return res;
   }
   catch(err) {
@@ -1518,7 +1661,7 @@ function getGelatoPrices(tokens, prices, pool, chain="eth")
     print_price(chain="eth") {
       const t0address = t0.symbol == "ETH" ? "ETH" : t0.address;
       const t1address = t1.symbol == "ETH" ? "ETH" : t1.address;
-      const poolUrl = `https://etherscan.io/token/${pool.address}`
+      const poolUrl = getChainExplorerUrl(chain, pool.address);
       _print(`<a href='${poolUrl}' target='_blank'>${stakeTokenTicker}</a> Price: $${formatMoney(price)} TVL: $${formatMoney(tvl)}`);
       _print(`${t0.symbol} Price: $${displayPrice(p0)}`);
       _print(`${t1.symbol} Price: $${displayPrice(p1)}`);
@@ -1572,6 +1715,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
   let stakeTokenTicker = `[${t0.symbol}]-[${t1.symbol}]`;
   if (pool.is1inch) stakeTokenTicker += " 1INCH LP";
   else if (pool.symbol.includes("LSLP")) stakeTokenTicker += " LSLP";
+  else if (pool.symbol.includes("HBLP")) stakeTokenTicker += " Huckleberry LP";
   else if (pool.symbol.includes("BLP")) stakeTokenTicker += " BLP";
   else if (pool.symbol.includes("ZDEXLP")) stakeTokenTicker += " ZooDex LP";
   else if (pool.symbol.includes("OperaSwap")) stakeTokenTicker += " Opera Swap LP";
@@ -1594,10 +1738,16 @@ function getUniPrices(tokens, prices, pool, chain="eth")
   else if (pool.symbol.includes("Galaxy-LP")) stakeTokenTicker += " Galaxy LP";
   else if (pool.symbol.includes("KUS-LP")) stakeTokenTicker += " KUS LP";
   else if (pool.symbol.includes("KoffeeMug")) stakeTokenTicker += " KoffeeMug";
-  else if (pool.symbol.includes("DMM-LP")) stakeTokenTicker += " Kyber LP";
+  else if (pool.symbol.includes("DMM-LP")) stakeTokenTicker += " DMM-LP";
   else if (pool.symbol.includes("CAT-LP")) stakeTokenTicker += " PolyCat LP";
   else if (pool.symbol.includes("VLP")) stakeTokenTicker += " AURO LP";
+  else if (pool.symbol.includes("DLP")) stakeTokenTicker += " DLP";
   else if (pool.symbol.includes("ULP")) stakeTokenTicker += " Ubeswap LP Token";
+  else if (pool.symbol.includes("LOVE LP")) stakeTokenTicker += " Love Boat Love LP Token";
+  else if (pool.symbol.includes("Proto-LP")) stakeTokenTicker += " ProtoFi LP Token";
+  else if (pool.symbol.includes("SOUL-LP")) stakeTokenTicker += " Soulswap LP Token";
+  else if (pool.symbol.includes("lv_")) stakeTokenTicker += " Lixir LP Token";
+  else if (pool.symbol.includes("LOOT-LP")) stakeTokenTicker += " Loot LP Token";
   else stakeTokenTicker += " Uni LP";
   return {
       t0: t0,
@@ -1634,7 +1784,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
             pool.symbol.includes("SLP") ? (
               {
                 "eth": `http://analytics.sushi.com/pairs/${pool.address}`,
-                "arbitrum": `http://analytics.sushi.com/pairs/${pool.address}`, //temporary solution until they put arbitrum
+                "arbitrum": `http://analytics-arbitrum.sushi.com/pairs/${pool.address}`,
                 "bsc": `http://analytics-ftm.sushi.com/pairs/${pool.address}`,
                 "fantom": `http://analytics-ftm.sushi.com/pairs/${pool.address}`,
                 "matic": `http://analytics-polygon.sushi.com/pairs/${pool.address}`,
@@ -1643,6 +1793,14 @@ function getUniPrices(tokens, prices, pool, chain="eth")
               pool.symbol.includes("Cake") ?  `https://pancakeswap.info/pair/${pool.address}` :
               pool.symbol.includes("CAT-LP") ?  `https://polycat.finance` :
               pool.symbol.includes("PGL") ?  `https://info.pangolin.exchange/#/pair/${pool.address}` :
+              pool.symbol.includes("DMM-LP") ?  (
+                {
+                  "eth": `https://info.dmm.exchange/pair/${t0address}_${t1address}`,
+                  "avax": `https://avax-info.dmm.exchange/pair/${t0address}_${t1address}`,
+                  "bsc": `https://bsc-info.dmm.exchange/pair/${t0address}_${t1address}`,
+                  "matic": `https://polygon-info.dmm.exchange/pair/${t0address}_${t1address}`
+                }
+              [chain]):
               pool.symbol.includes("CS-LP") ?  `https://app.coinswap.space/#/` :
               pool.name.includes("Value LP") ?  `https://info.vswap.fi/pool/${pool.address}` :
               pool.name.includes("Ubeswap") ?  `https://info.ubeswap.org/pair/${pool.address}` :
@@ -1653,17 +1811,23 @@ function getUniPrices(tokens, prices, pool, chain="eth")
               pool.symbol.includes("ELP") ?  `https://app.elk.finance/#/swap` :
               pool.symbol.includes("BRUSH-LP") ?  `https://paintswap.finance` :
               pool.symbol.includes("PLP") ?  `https://exchange.pureswap.finance/#/swap` :
+              pool.symbol.includes("HBLP") ?  `https://info.huckleberry.finance/pair/${pool.address}` :
               pool.symbol.includes("BLP") ?  `https://info.bakeryswap.org/#/pair/${pool.address}` :
               pool.symbol.includes("KUS-LP") ?  `https://kuswap.info/pair/#/${pool.address}` :
               pool.symbol.includes("KoffeeMug") ?  `https://koffeeswap.exchange/#/pro` :
               pool.symbol.includes("APE-LP") ?  `https://info.apeswap.finance/pair/${pool.address}` :
               pool.symbol.includes("VLP") ?  `https://info.viralata.finance/pair/${pool.address}` :
+              pool.symbol.includes("DLP") ?  `https://app.dodoex.io/pool/list?${pool.address}` :
               pool.symbol.includes("ZDEXLP") ?  `https://charts.zoocoin.cash/?exchange=ZooDex&pair=${t0.symbol}-${t1.symbol}` :
               pool.symbol.includes("Field-LP") ?  `https://exchange.yieldfields.finance/#/swap` :
               pool.symbol.includes("UPT") ?  `https://www.app.unic.ly/#/discover` :
+              pool.symbol.includes("lv_") ?  `https://app.lixir.finance/vaults/${pool.address}` :
+              pool.symbol.includes("LOOT-LP") ?  `https://analytics.lootswap.finance/pair/${pool.address}` :
               pool.symbol.includes("BenSwap") ? ({
-                "bsc": `https://info.benswap.finance/pair/${pool.address}`
+                "bsc": `https://info.benswap.finance/pair/${pool.address}`,
+                "smartbch": `https://info.benswap.cash/pair/${pool.address}`
               }[chain]) :
+              pool.symbol.includes("Proto-LP") ? `https://polygonscan.com/${pool.address}` :
               pool.symbol.includes("Galaxy-LP") ? (
                 {
                     "bsc": `https://bsc-exchange.galaxyfinance.one/#/swap`,
@@ -1671,6 +1835,9 @@ function getUniPrices(tokens, prices, pool, chain="eth")
                     "matic": `https://polygon-exchange.galaxyfinance.one/#/swap`,
                     "fantom": `https://fantom-exchange.galaxyfinance.one/#/swap`,
                 }[chain]) :
+              pool.symbol.includes("LOVE LP") ? ({
+                "matic": `https://info.loveboat.exchange/pair/${pool.address}`
+              }[chain]) :
               chain == "matic" ? `https://info.quickswap.exchange/pair/${pool.address}` :
             `http://v2.uniswap.info/pair/${pool.address}`;
           const helperUrls = pool.is1inch ? [] :
@@ -1679,11 +1846,31 @@ function getUniPrices(tokens, prices, pool, chain="eth")
             `https://linkswap.app/#/remove/${t0address}/${t1address}`,
             `https://linkswap.app/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
           ] :
+          pool.symbol.includes("HBLP") ? [
+            `https://www.huckleberry.finance/#/add/${t0address}/${t1address}`,
+            `https://www.huckleberry.finance/#/remove/${t0address}/${t1address}`,
+            `https://www.huckleberry.finance/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+          ] :
           pool.symbol.includes("BLP") ? [
             `https://www.bakeryswap.org/#/add/${t0address}/${t1address}`,
             `https://www.bakeryswap.org/#/remove/${t0address}/${t1address}`,
             `https://www.bakeryswap.org/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
           ] :
+          pool.symbol.includes("lv_") ? [
+            `https://app.lixir.finance/vaults/${pool.address}`,
+            `https://app.lixir.finance/vaults/${pool.address}`,
+            `https://app.uniswap.org/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}&use=v2`
+          ] :
+          pool.symbol.includes("DMM-LP") ? [
+            `https://dmm.exchange/#/add/${t0address}/${t1address}/${pool.address}`,
+            `https://dmm.exchange/#/remove/${t0address}/${t1address}/${pool.address}`,
+            `https://dmm.exchange/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+          ]:
+          pool.symbol.includes("LOOT-LP") ? [
+            `https://legacy.lootswap.finance/#/add/${t0address}/${t1address}`,
+            `https://legacy.lootswap.finance/#/remove/${t0address}/${t1address}`,
+            `https://legacy.lootswap.finance/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+          ]:
           pool.symbol.includes("CAT-LP") ? [
             `https://trade.polycat.finance/#/add/${t0address}/${t1address}`,
             `https://trade.polycat.finance/#/remove/${t0address}/${t1address}`,
@@ -1739,6 +1926,11 @@ function getUniPrices(tokens, prices, pool, chain="eth")
             `hhttps://app.elk.finance/#/remove/${t0address}/${t1address}`,
             `https://app.elk.finance/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
           ] :
+          pool.symbol.includes("DLP") ? [
+            `https://app.dodoex.io/pool/list?${pool.address}`,
+            `https://app.dodoex.io/pool/list?${pool.address}`,
+            `https://app.dodoex.io/exchange/${t0address}-${t1address}`
+          ] :
           pool.symbol.includes("CS-LP") ? [
             `https://app.coinswap.space/#/add/${t0address}/${t1address}`,
             `https://app.coinswap.space/#/remove/${t0address}/${t1address}`,
@@ -1754,6 +1946,11 @@ function getUniPrices(tokens, prices, pool, chain="eth")
             `https://swap.spiritswap.finance/remove/${t0address}/${t1address}`,
             `https://swap.spiritswap.finance/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
           ] :
+          pool.symbol.includes("SOUL-LP") ? [
+            `https://app.soulswap.finance/add/${t0address}/${t1address}`,
+            `https://app.soulswap.finance/remove/${t0address}/${t1address}`,
+            `https://app.soulswap.finance/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+          ] :
           pool.symbol.includes("spLP") ? [
             `https://spookyswap.finance/add/${t0address}/${t1address}`,
             `https://spookyswap.finance/remove/${t0address}/${t1address}`,
@@ -1763,6 +1960,11 @@ function getUniPrices(tokens, prices, pool, chain="eth")
             `https://exchange.pureswap.finance/#/add/${t0address}/${t1address}`,
             `https://exchange.pureswap.finance/#/remove/${t0address}/${t1address}`,
             `https://exchange.pureswap.finance/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+          ] :
+          pool.symbol.includes("Proto-LP") ? [
+            `https://dex.protofi.app/#/add/${t0address}/${t1address}`,
+            `https://dex.protofi.app/#/remove/${t0address}/${t1address}`,
+            `https://dex.protofi.app/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
           ] :
           pool.symbol.includes("Field-LP") ? [
             `https://exchange.yieldfields.finance/#/add/${t0address}/${t1address}`,
@@ -1784,6 +1986,11 @@ function getUniPrices(tokens, prices, pool, chain="eth")
               `https://dex.benswap.finance/#/add/${t0address}/${t1address}`,
               `https://dex.benswap.finance/#/remove/${t0address}/${t1address}`,
               `https://dex.benswap.finance/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+            ],
+            "smartbch": [
+              `https://dex.benswap.cash/#/add/${t0address}/${t1address}`,
+              `https://dex.benswap.cash/#/remove/${t0address}/${t1address}`,
+              `https://dex.benswap.cash/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
             ]
           }[chain]) :
           pool.symbol.includes("Galaxy-LP") ? ({
@@ -1823,6 +2030,13 @@ function getUniPrices(tokens, prices, pool, chain="eth")
             `https://koffeeswap.exchange/#/remove/${t0address}/${t1address}`,
             `https://koffeeswap.exchange/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
         ] :
+          pool.symbol.includes("LOVE LP") ? ({
+            "matic": [
+              `https://loveboat.exchange/#/add/${t0address}/${t1address}`,
+              `https://loveboat.exchange/#/remove/${t0address}/${t1address}`,
+              `https://loveboat.exchange/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+            ]
+          }[chain]) :
           [ `https://app.uniswap.org/#/add/v2/${t0address}/${t1address}`,
             `https://app.uniswap.org/#/remove/v2/${t0address}/${t1address}`,
             `https://app.uniswap.org/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}&use=v2` ]
@@ -1869,7 +2083,8 @@ function getUniPrices(tokens, prices, pool, chain="eth")
                       pool.name.includes("Value LP") ?  `https://info.vswap.fi/pool/${pool.address}` :
                         pool.name.includes("BLP") ?  `https://info.bakeryswap.org/#/pair/${pool.address}` :
                           pool.symbol.includes("BenSwap") ? ({
-                            "bsc": `https://info.benswap.finance/pair/${pool.address}`
+                            "bsc": `https://info.benswap.finance/pair/${pool.address}`,     
+                            "smartbch": `https://info.benswap.cash/pair/${pool.address}`
                           }[chain]) :
                           pool.symbol.includes("Galaxy-LP") ? ({
                             "bsc": `https://bsc-exchange.galaxyfinance.one/#/swap`,
@@ -1920,6 +2135,11 @@ function getUniPrices(tokens, prices, pool, chain="eth")
                               `https://dex.benswap.finance/#/add/${t0address}/${t1address}`,
                               `https://dex.benswap.finance/#/remove/${t0address}/${t1address}`,
                               `https://dex.benswap.finance/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+                            ],
+                            "smartbch": [
+                              `https://dex.benswap.cash/#/add/${t0address}/${t1address}`,
+                              `https://dex.benswap.cash/#/remove/${t0address}/${t1address}`,
+                              `https://dex.benswap.cash/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
                             ]
                           }[chain]) :
                         pool.symbol.includes("Galaxy-LP") ? ({
@@ -2077,7 +2297,7 @@ function getBalancerPrices(tokens, prices, pool)
   var price = tvl / pool.totalSupply;
   prices[pool.address] = { usd : price };
   var staked_tvl = pool.staked * price;
-  var tickers = pool.poolTokens.map((pt, i) => `[${poolTokens[i].symbol} ${pt.weight*100}%]`)
+  var tickers = pool.poolTokens.map((pt, i) => `[${poolTokens[i].symbol} ${(pt.weight*100).toFixed(2)}%]`)
   const stakeTokenTicker = tickers.join('-');
   return {
       tokens : poolTokens,
@@ -2215,6 +2435,9 @@ function getErc20Prices(prices, pool, chain="eth") {
     case "fantom":
       poolUrl=`https://ftmscan.com/token/${pool.address}`;
       break;
+    case "optimism":
+      poolUrl=`https://optimistic.etherscan.io/token/${pool.address}`;
+      break;
     case "fuse":
       poolUrl=`https://explorer.fuse.io/address/${pool.address}`;
       break;
@@ -2229,6 +2452,15 @@ function getErc20Prices(prices, pool, chain="eth") {
       break;
     case "moonriver":
       poolUrl=`https://blockscout.moonriver.moonbeam.network/address/${pool.address}`;
+      break;
+    case "arbitrum":
+      poolUrl=`https://arbiscan.io/address/${pool.address}`;
+      break;
+    case "smartbch":
+      poolUrl=`https://smartscan.cash/address/${pool.address}`;
+      break;
+    case "harmony":
+      poolUrl=`https://explorer.harmony.one/address/${pool.address}`;
       break;
   }
 
@@ -2273,14 +2505,14 @@ function getErc20Prices(prices, pool, chain="eth") {
   }
 }
 
-function getCurvePrices(prices, pool) {
-  var price = (getParameterCaseInsensitive(prices,pool.token.address)?.usd ?? 1) * pool.virtualPrice;
+function getCurvePrices(prices, pool, chain) {
+  var price = (getParameterCaseInsensitive(prices,pool.token.address).usd) * pool.virtualPrice;
   if (getParameterCaseInsensitive(prices, pool.address)?.usd ?? 0 == 0) {
     prices[pool.address] = { usd : price };
   }
   var tvl = pool.totalSupply * price / 10 ** pool.decimals;
   var staked_tvl = pool.staked * price;
-  const poolUrl = `https://etherscan.io/token/${pool.address}`;
+  const poolUrl = getChainExplorerUrl(chain, pool.address);
   const name = `<a href='${poolUrl}' target='_blank'>${pool.symbol}</a>`;
   const getDexguruTokenlink =  function() {
     const network = window.location.pathname.split("/")[1]
@@ -2301,7 +2533,35 @@ function getCurvePrices(prices, pool) {
       _print(`Staked: ${pool.staked.toFixed(4)} ${pool.symbol} ($${formatMoney(staked_tvl)})`);
     },
     print_contained_price() {
+    },
+    tvl : tvl
+  }
+}
+
+function getTriCryptoPrices(prices, pool, chain){
+  let tvl = 0;
+  for(let i = 0; i < pool.coins.length; i++){
+    const price = (getParameterCaseInsensitive(prices,pool.coins[i].address).usd);
+    if (getParameterCaseInsensitive(prices, pool.address)?.usd ?? 0 == 0) {
+      prices[pool.address] = { usd : price };
     }
+    tvl += pool.coins[i].balance * price;
+  }
+  const price = tvl / pool.totalSupply;
+  const staked_tvl = pool.staked * price;
+  const poolUrl = getChainExplorerUrl(chain, pool.address);
+  const name = `<a href='${poolUrl}' target='_blank'>${pool.symbol}</a>`;
+  return {
+    staked_tvl : staked_tvl,
+    price,
+    stakeTokenTicker : pool.symbol,
+    print_price() {
+      _print(`${name} Price: $${formatMoney(price)} Market Cap: $${formatMoney(tvl)}`);
+      _print(`Staked: ${pool.staked.toFixed(4)} ${pool.symbol} ($${formatMoney(staked_tvl)})`);
+    },
+    print_contained_price() {
+    },
+    tvl : tvl
   }
 }
 
@@ -2309,9 +2569,10 @@ function getPoolPrices(tokens, prices, pool, chain = "eth") {
   if (pool.w0 != null) return getValuePrices(tokens, prices, pool);
   if (pool.buniPoolTokens != null) return getBunicornPrices(tokens, prices, pool);
   if (pool.poolTokens != null) return getBalancerPrices(tokens, prices, pool);
-  if (pool.isGelato) return getGelatoPrices(tokens, prices, pool);
-  if (pool.token0 != null) return getUniPrices(tokens, prices, pool);
-  if (pool.virtualPrice != null) return getCurvePrices(prices, pool); //should work for saddle too
+  if (pool.isGelato) return getGelatoPrices(tokens, prices, pool, chain);
+  if (pool.token0 != null) return getUniPrices(tokens, prices, pool, chain);
+  if (pool.xcp_profit != null) return getTriCryptoPrices(prices, pool, chain);
+  if (pool.virtualPrice != null) return getCurvePrices(prices, pool, chain); //should work for saddle too
   if (pool.token != null) return getWrapPrices(tokens, prices, pool);
   return getErc20Prices(prices, pool, chain);
 }
@@ -2726,6 +2987,9 @@ async function printSynthetixPool(App, info, chain="eth", customURLs) {
       case "eth":
         _print(`<a target="_blank" href="https://etherscan.io/address/${info.stakingAddress}#code">Etherscan</a>`);
         break;
+      case "optimism":
+        _print(`<a target="_blank" href="https://optimistic.etherscan.io/address/${info.stakingAddress}#code">Optimism</a>`);
+        break;
       case "avax":
         _print(`<a target="_blank" href="https://cchain.explorer.avax.network/address/${info.stakingAddress}#code">Explorer</a>`);
         break;
@@ -2759,12 +3023,21 @@ async function printSynthetixPool(App, info, chain="eth", customURLs) {
       case "iotex":
           _print(`<a target="_blank" href="https://iotexscan.io/address/${info.stakingAddress}#code">IoTeX Explorer</a>`);
           break;
+      case "arbitrum":
+        _print(`<a target="_blank" href="https://arbiscan.io/address/${info.stakingAddress}#code">Arbitrum Explorer</a>`);
+        break;
+      case "smartbch":
+        _print(`<a target="_blank" href="https://smartscan.cash/address/${info.stakingAddress}#code">SmartScan</a>`);
+        break;
+      case "harmony":
+        _print(`<a target="_blank" href="https://explorer.harmony.one/address/${info.stakingAddress}#code">Harmony Explorer</a>`);
+        break;
     }
-    if (info.stakeTokenTicker != "ETH") {
+    if (info.stakeTokenAddress != "0x0000000000000000000000000000000000000000") {
       _print_link(`Stake ${info.userUnstaked.toFixed(6)} ${info.stakeTokenTicker}`, approveTENDAndStake)
     }
     else {
-      _print("Please use the official website to stake ETH.");
+      _print(`Please use the official website to stake ${info.stakeTokenTicker}.`);
     }
     _print_link(`Unstake ${info.userStaked.toFixed(6)} ${info.stakeTokenTicker}`, unstake)
     _print_link(`Claim ${info.earned.toFixed(6)} ${info.rewardTokenTicker} ($${formatMoney(info.earned*info.rewardTokenPrice)})`, claim)
@@ -2883,4 +3156,17 @@ async function getAverageBlockTime(App){
 const displayPrice = price => {
   const priceDecimals = price == 0 ? 2 : price < 0.0001 ? 10 : price < 0.01 ? 6 : 2;
   return priceDecimals == 2 ? formatMoney(price) : price.toFixed(priceDecimals);
+}
+
+function getChainExplorerUrl(chain, address){
+  switch(chain){
+    case "eth" :
+      return `https://etherscan.io/token/${address}`;
+    case "fantom" :
+      return `https://ftmscan.com/token/${address}`;
+    case "harmony" :
+      return `https://explorer.harmony.one/address/${address}`;
+    case "arbitrum" :
+      return `https://arbiscan.io/token/${address}`;
+  }
 }
