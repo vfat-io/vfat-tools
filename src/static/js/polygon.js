@@ -403,7 +403,8 @@ const main = async () => {
 	    ['FarmWiki            ',"",  `<a href="farmwiki"        >Various</a>`, 'FENRIR       ', 'https://fenrir.farmwiki.xyz'],
 	    ['DefiHalal           ',"",  `<a href="defihalal"       >Various</a>`, 'HALAL        ', 'https://app.defihalal.org'],
       ['PolyUnity Finance   ',"",  `<a href="polyunity"       >Various</a>`, 'UNITY        ', 'https://polyunity.finance'],
-      ['Melon Finance       ',"",  `<a href="melonfinance"    >Various</a>`, 'MELON        ', 'https://melonfinance.cc']
+      ['Melon Finance       ',"",  `<a href="melonfinance"    >Various</a>`, 'MELON        ', 'https://melonfinance.cc'],
+      ['Mushrooms Finance       ',"",  `<a href="mushrooms"    >Various</a>`, 'MM        ', 'https://mushrooms.finance/farms']
     ],
   }
 
