@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include(`${partials}/head`); -%>
+
+<body>
+<%- include(`${partials}/header_main`); -%>
+<pre id="log">
+***************************** POLYGON NETWORK *************************************
+
+*************** 👨‍🌾 UNOFFICIAL POLYSNOW.FARM SNOWFARM CALCULATOR 👨‍🌾 **************
+INFO  : https://polysnow.farm
+***********************************************************************************
+
+*** If you are being rate limited, please use our PolySnow RPC https://rpc-mainnet.maticvigil.com/v1/138a24e63c05c978011dfcb45cba9aa3c8806816 ***
+
+</pre>
+<div class="loader--1"></div>
+<%- include(`${partials}/scripts`, {scriptname: 'matic_polysnowfarm'}); -%>
+</body>
+</html>

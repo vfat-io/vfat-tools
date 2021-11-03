@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include(`${partials}/head`); -%>
+
+<body>
+<%- include(`${partials}/header_main`); -%>
+<pre id="log">
+***************************** POLYGON NETWORK *********************************
+
+*************************** 👨‍🌾 SUNRISE FARM 👨‍🌾 *******************************
+
+*** If you are being rate limited, please select a different RPC URL from here https://docs.matic.network/docs/develop/network-details/network/ ***
+
+Previous farm layer review (same MasterChef and Token contracts): <a href="https://rugdoc.io/project/sunset-finance/">RugDoc</a>
+A RugDoc review for Sunrise will be posted, prior to or shortly after farming starts, in the Telegram channel below.
+
+MasterChef Contract: <a href="https://polygonscan.com/address/0xd7f44ee5e90915dba8725b7cf6bdb3e69881b418#readContract">0xd7f44ee5e90915dba8725b7cf6bdb3e69881b418</a>
+SUNRISE Token Contract: <a href="https://polygonscan.com/address/0x17b87678026208ec3b4cec49b4116e80e5f700d8#readContract">0x17b87678026208ec3b4cec49b4116e80e5f700d8</a>
+
+Tokenomics: 
+    <b>20k max token supply / 0.0015 emission per block</b>
+    <b>5% transfer tax used to automatically provide liquidity for SUNRISE/WMATIC LP</b>
+
+Feenomics: 
+    <b>10% additional rewards minted to dev wallet</b>
+    <b>0% deposit fee on native and partner pools / 4% deposit fee on non-native pools</b>
+    <b>Note: Deposit fee will be split amongst the dev team for future development, expenses, and new features.</b>
+
+Proof of burned liquidity: <a href="https://polygonscan.com/tx/0xec064a9aae67aaed06a9385701cb225bca41670241d55a92b09f86c2a7d890fb">tx hash</a>
+
+Farming start (estimated): <a href="https://polygonscan.com/block/countdown/18240845">Sat Aug 21 2021 18:30:00 UTC</a>
+
+SUNRISE/WMATIC Chart: <a href="https://www.defined.fi/matic/0xe059df89fd34ba7df9ad48f3ec5d54448a21eb92">defined.fi</a>
+
+Telegram channel: <a href="https://t.me/sunsetfinancechat">Sunset Finance</a>
+
+<b>NOTE: MasterChef and Token ownership will be renounced at or before the farming start block. Proof will be posted in the Telegram channel linked above.</b>
+
+</pre>
+<div class="loader--1"></div>
+<%- include(`${partials}/scripts`, {scriptname: 'matic_sunrise'}); -%>
+</body>
+</html>

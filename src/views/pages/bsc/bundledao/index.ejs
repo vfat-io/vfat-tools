@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include(`${partials}/head`); -%>
+
+  <body>
+    <%- include(`${partials}/header_main`); -%>
+      <pre id="log">
+*************** 👨‍🌾 UNOFFICIAL BUNDLEDAO FINANCE FARMING CALCULATOR 👨‍🌾 *****************
+INFO  : https://bundledao.org
+****************************************************************************************
+
+</pre>
+      <div class="loader--1"></div>
+      <%- include(`${partials}/scripts`, {scriptname: 'bsc_bundle' }); -%>
+  </body>
+
+</html>

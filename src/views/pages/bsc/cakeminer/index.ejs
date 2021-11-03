@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include(`${partials}/head`); -%>
+
+<body>
+<%- include(`${partials}/header_main`); -%>
+<pre id="log">
+*************** 👨‍🌾 UNOFFICIAL CAKE MINER MINING CALCULATOR 👨‍🌾 ***************
+INFO: https://dextoken-miner.finance
+********************************************************************************************
+
+</pre>
+<div class="loader--1"></div>
+<%- include(`${partials}/scripts`, {scriptname: 'bsc_cakeminer'}); -%>
+</body>
+</html>

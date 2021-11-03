@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include(`${partials}/head`); -%>
+
+<body>
+<%- include(`${partials}/header_main`); -%>
+<pre id="log">
+*************** 👨‍🌾 UNOFFICIAL XBE.FINANCE FARMING CALCULATOR 👨‍🌾 ***************
+INFO  : https://app.xbe.finance
+********************************************************************************
+
+EARLY WITHDRAWAL PENALTY
+
+Please note that XBE LP rewards are automatically staked (which further has an unbonding time of 5 days). 
+All staked XBE rewards will further earn XBE staking rewards, up until withdrawn. 
+During the unbonding process XBE will continue to earn XBE staking rewards until withdrawn.
+
+Users may withdraw their XBE LP rewards at anytime during the unbonding process at a 50% penalty. 
+This penalty is awarded to the XBE stakers.
+
+</pre>
+<div class="loader--1"></div>
+<%- include(`${partials}/scripts`, {scriptname: 'xbe'}); -%>
+</body>
+</html> 

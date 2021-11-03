@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include(`${partials}/head`); -%>
+
+<body>
+<%- include(`${partials}/header_main`); -%>
+<pre id="log">
+***************************** POLYGON NETWORK ***************************************
+
+<a href="https://bullionfinance.xyz" target="_blank" rel="noopener noreferrer">Website</a> -
+<a href="https://twitter.com/bullionfinance1" target="_blank" rel="noopener noreferrer">Twitter</a> -
+<a href="https://t.me/Bullion_Finance" target="_blank" rel="noopener noreferrer">Telegram</a>
+
+
+Website Farming Launching Soon: <a href="https://bullionfinance.xyz" target="_blank" rel="noopener noreferrer">https://bullionfinance.xyz</a>
+
+LINKS:
+  * <a href="https://quickswap.exchange/#/swap?inputCurrency=ETH&outputCurrency=0x7D41E0D59149F018D0D5B93F44B65f8ae0b90d6d" target="_blank" rel="noopener noreferrer">BUY GOLD FROM QUICKSWAP</a>
+  * <a href="https://exchange.dfyn.network/#/add/0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174/0x7D41E0D59149F018D0D5B93F44B65f8ae0b90d6d" target="_blank" rel="noopener noreferrer">BUY GOLD FROM DFYN</a>
+  * <a href="https://app.sushi.com/add/0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174/0x7D41E0D59149F018D0D5B93F44B65f8ae0b90d6d" target="_blank" rel="noopener noreferrer">BUY GOLD FROM SUSHI</a>
+  * <a href="https://quickswap.exchange/#/add/ETH/0x7D41E0D59149F018D0D5B93F44B65f8ae0b90d6d" target="_blank" rel="noopener noreferrer">ADD LIQUIDITY QUICKSWAP (MATIC - GOLD)</a>
+  * <a href="https://quickswap.exchange/#/add/0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174/0x7D41E0D59149F018D0D5B93F44B65f8ae0b90d6d" target="_blank" rel="noopener noreferrer">ADD LIQUIDITY QUICKSWAP (USDC - GOLD)</a>
+  * <a href="https://exchange.dfyn.network/#/add/MATIC/0x7D41E0D59149F018D0D5B93F44B65f8ae0b90d6d" target="_blank" rel="noopener noreferrer">ADD LIQUIDITY DFYN (MATIC - GOLD)</a>
+  * <a href="https://exchange.dfyn.network/#/add/0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174/0x7D41E0D59149F018D0D5B93F44B65f8ae0b90d6d" target="_blank" rel="noopener noreferrer">ADD LIQUIDITY DFYN (USDC - GOLD)</a>
+  * <a href="https://app.sushi.com/add/ETH/0x7D41E0D59149F018D0D5B93F44B65f8ae0b90d6d" target="_blank" rel="noopener noreferrer">ADD LIQUIDITY SUSHI (MATIC - GOLD)</a>
+  * <a href="https://app.sushi.com/add/0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174/0x7D41E0D59149F018D0D5B93F44B65f8ae0b90d6d" target="_blank" rel="noopener noreferrer">ADD LIQUIDITY SUSHI (USDC - GOLD)</a>
+
+
+TOKEN:
+  * Symbol: <a href="https://polygonscan.com/token/0x7D41E0D59149F018D0D5B93F44B65f8ae0b90d6d" target="_blank" rel="noopener noreferrer">GOLD</a>
+  * No Transfer Fee
+
+FARMING:
+  * Masterchef: <a href="https://polygonscan.com/address/0x8c18b6e5ED35Ec3Bfde9fbd6fF62a518E2221a44#code" target="_blank" rel="noopener noreferrer">0x8c18b6e5ED35Ec3Bfde9fbd6fF62a518E2221a44</a>
+  * <a href="https://polygonscan.com/block/countdown/16939517"  target="_blank" rel="noopener noreferrer">Farming Starts on Block: 16939517 — Mon July 12 2021 04:30:00 GMT</a>
+  * First Harvest Start: <a href="https://polygonscan.com/block/countdown/16939517"  target="_blank" rel="noopener noreferrer">block 16939517</a>
+  * Harvest Cooldowns:
+      - Native:     2 Hours
+      - Non-Native: 2 Hours
+
+DEPOSIT FEES:
+  * No Fees On Native Farms
+  * 3% Fees On Non-Native Farms
+
+NOTES:
+  * Use 6% slippage when swapping tokens due to transfer fee.
+
+
+                          *** IMPORTANT ***
+*** ATTEMPTING TO HARVEST EARLY WILL MINT GOLD AND STORE IN MASTERCHEF ***
+*** NO GOLD IS LOST!!!                                                 ***
+*** YOU WILL BE PAID YOUR FULL BALANCE ON NEXT SUCCESSFUL HARVEST      ***
+
+*************************************************************************************
+
+*** If you are being rate limited, please select a different RPC URL from here https://docs.matic.network/docs/develop/network-details/network/ ***
+
+</pre>
+<div class="loader--1"></div>
+<%- include(`${partials}/scripts`, {scriptname: 'matic_bullionfinance'}); -%>
+</body>
+</html>

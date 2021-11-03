@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include(`${partials}/head`); -%>
+
+<body>
+<%- include(`${partials}/header_main`); -%>
+<pre id="log">
+*************** 👨‍🌾 HAMSTER SWAP FARMING CALCULATOR 👨‍🌾 ***************
+
+INFO       : https://hamsterswaps.com
+Telegram   : https://t.me/hamsterswaps
+$HAMSTER   : https://exchange.pancakeswap.finance/#/swap?outputCurrency=0xF7FB38176C63bFCB774a68b24B3C32bc279b37A7
+
+**************************************************************************************
+
+</pre>
+<div class="loader--1"></div>
+<%- include(`${partials}/scripts`, {scriptname: 'bsc_hamsterswaps'}); -%>
+</body>
+</html> 

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include(`${partials}/head`); -%>
+
+<body>
+<%- include(`${partials}/header_main`); -%>
+<pre id="log">
+***************************** POLYGON NETWORK ***************************************
+
+
+__   __           __  ___  __   __  
+|__) /  \ |    \ /  / |__  |__) /  \ 
+|    \__/ |___  |  /_ |___ |  \ \__/ 
+                                     
+vfat + contracts = PolyZero
+
+zero Telegram, zero Twitter, zero Website
+
+Showing support for the PolyMaple team - check them out.
+
+
+
+LINKS:
+  * <a href="https://quickswap.exchange/#/swap?outputCurrency=0x4Ed706aE367945aC2943E56b94681B9AB97c0BaA" target="_blank" rel="noopener noreferrer">BUY ZERO</a>
+  * <a href="https://quickswap.exchange/#/add/0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270/0x4Ed706aE367945aC2943E56b94681B9AB97c0BaA" target="_blank" rel="noopener noreferrer">ADD LIQUIDITY</a>
+
+TOKEN:
+  * Symbol: <a href="https://polygonscan.com/address/0x4Ed706aE367945aC2943E56b94681B9AB97c0BaA#code" target="_blank" rel="noopener noreferrer">ZERO</a>
+  * Anti-whale  (0.5% Max total supply transfer amount)
+  * 5% Transfer Fee - 5% Burned
+  * 10000 Tokens Pre-mined: 10000 to LP 
+  * Liquidity Locked: <a href="https://polygonscan.com/address/0xe654f4B8fe6552CaC2809Ef0226a9c07b0291f0C#code" target="_blank" rel="noopener noreferrer">0xe654f4B8fe6552CaC2809Ef0226a9c07b0291f0C</a>
+  * Timelock - 24 hrs - https://polygonscan.com/tx/0x7a05e23dace3314c17f3c679a2ceba8dd341da86f4bf364c52e3dcf4200e9aae
+
+FARMING:
+  * Masterchef: <a href="https://polygonscan.com/address/0xbcEbb61CCC0e468103BDecC538356191BC55dB32#code" target="_blank" rel="noopener noreferrer">0xbcEbb61CCC0e468103BDecC538356191BC55dB32</a>
+  * Farming Starts on Block:          15880000 — Fri Jun 18 2021 - https://polygonscan.com/block/countdown/15880000
+  * Purchase ZERO Starting on Block:  15920000 - Sat Jun 19 2021 - https://polygonscan.com/block/countdown/15920000
+  * Harvest Starts on Block:          15960000 - Sun Jun 20 2021 - https://polygonscan.com/block/countdown/15960000
+  * Harvest Cooldowns:
+      - Native:     12 Hours
+      - Non-Native: 23 Hours
+
+DEPOSIT FEES:
+  * 0% On Native Farms
+  * 3% On Non-Native Farms
+    * 1% for Buyback and Burns
+
+NOTES:
+  * Use 6% slippage when swapping tokens due to transfer fee.
+
+
+*************************************************************************************
+
+*** If you are being rate limited, please select a different RPC URL from here https://docs.matic.network/docs/develop/network-details/network/ ***
+
+</pre>
+<div class="loader--1"></div>
+<%- include(`${partials}/scripts`, {scriptname: 'matic_polyzero'}); -%>
+</body>
+</html>

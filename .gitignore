@@ -188,3 +188,6 @@ dist/
 
 # exclude backup files
 *~
+
+# vs code
+.vscode/

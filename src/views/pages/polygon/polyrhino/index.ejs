@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include(`${partials}/head`); -%>
+
+<body>
+<%- include(`${partials}/header_main`); -%>
+<pre id="log">
+*************** 👨‍🌾 UNOFFICIAL POLYRHINO FARMING CALCULATOR 👨‍🌾 *******************
+INFO  : https://polyrhino.vercel.app/farms
+*********************************************************************************
+
+</pre>
+<div class="loader--1"></div>
+<%- include(`${partials}/scripts`, {scriptname: 'matic_polyrhino'}); -%>
+</body>
+</html>

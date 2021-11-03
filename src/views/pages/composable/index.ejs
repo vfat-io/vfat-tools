@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include(`${partials}/head`); -%>
+
+<body>
+<%- include(`${partials}/header_main`); -%>
+<pre id="log">
+*************** 👨‍🌾 UNOFFICIAL Composable FARMING CALCULATOR 👨‍🌾 ***************
+INFO  : https://composable.finance
+**************************************************************************
+
+</pre>
+<div class="loader--1"></div>
+<%- include(`${partials}/scripts`, {scriptname: 'composable'}); -%>
+
+<pre id="incentives">
+As of October 18th, besides the LAYR rewards users are entitled to, participants receive 5% of Instrumental tokens supply as well, over a 8 weeks period:
+<ul>
+    <li>During the first 7 days, 3,250,000 tokens will be distributed</li>
+    <li>The second week will see 1,500,000 tokens distributed</li>
+    <li>For the remainder of the program, there will be 250,000 tokens distributed</li>
+</ul>
+Current APY:
+   USDT: 95.43%
+   USDC: 107.36%
+   DAI: 114.20%
+Current TVL: 53M
+</pre>
+</body>
+</html>

@@ -11,7 +11,7 @@ async function main() {
     _print(`Initialized ${App.YOUR_ADDRESS}\n`);
     _print("Reading smart contracts...\n");
 
-   const GME_CHEF_ADDR = "0x06F4F64a9d13cF07Ecd2Ec20aFaF7Dd0a238B599";
+   const GME_CHEF_ADDR = "0xA05E0dc94A139d03812f5E6716c9De0a015da699";
    const rewardTokenTicker = "GME";
    const GME_CHEF = new ethers.Contract(GME_CHEF_ADDR, GME_CHEF_ABI, App.provider);
 

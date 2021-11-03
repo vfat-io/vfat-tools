@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+  <%- include(`${partials}/head`); -%>
+
+  <body>
+    <%- include(`${partials}/header_main`); -%>
+    <pre id="log">
+***************************** POLYGON NETWORK ***************************************
+
+****************** 🥷 OFFICIAL NINJASWAP FARMING CALCULATOR 🥷 ***********************
+
+INFO  : 
+
+Buy NINJA: https://quickswap.exchange/#/swap?outputCurrency=0x3d40560B6C301A640f29c4fFE58592b62f7428d5
+
+Farming
+ - Farming start on block: 16373223. Thursday, 1 Jul 2021 22:22
+
+ - Harvest Lockup Timers on Pool - 4 Hrs non-native, 2 hrs native.
+ - Pre-mine to only add funds to liquidity pool and marketing cost
+
+Deposit fees
+ - 3% on Non-native farms
+ - 0% on Native farms
+
+ Token
+ - NINJA: 0x3d40560B6C301A640f29c4fFE58592b62f7428d5
+ - Max Supply : 1,000,000 NINJA
+ - Anti-whale will set to  0.5% Max total supply transfer amount
+
+ Twitter - https://twitter.com/ninjaswapfi
+ Telegram - https://t.me/polyninja_finance
+*************************************************************************************
+
+*** If you are being rate limited, please select a different RPC URL from here https://docs.matic.network/docs/develop/network-details/network/ ***
+
+</pre
+    >
+    <div class="loader--1"></div>
+    <%- include(`${partials}/scripts`, {scriptname: 'matic_ninjaswap'}); -%>
+  </body>
+</html>

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include(`${partials}/head`); -%>
+
+<body>
+<%- include(`${partials}/header_main`); -%>
+<pre id="log">
+***************************** AVALANCHE ******************************************************
+    
+********************** 👨‍🌾 OFFICIAL FROST FINANCE FARMING CALCULATOR 👨‍🌾 **********************
+Tundra Website         : <a href="https://frostfinance.farm/">https://frostfinance.farm/</a>
+Tundra (Beta) Website  : <a href="https://beta.frostfinance.farm/">https://beta.frostfinance.farm/</a>
+EXP Website            : <a href="https://exp.frostfinance.farm/">https://exp.frostfinance.farm/</a>
+Docs                   : <a href="https://frostfinance.gitbook.io/frost-finance/">https://frostfinance.gitbook.io/frost-finance/</a>
+Telegram               : <a href="https://t.me/frostfinance">https://t.me/frostfinance</a>
+Twitter                : <a href="https://twitter.com/Frost_FI">https://twitter.com/Frost_FI</a>
+**********************************************************************************************
+
+</pre>
+<div class="loader--1"></div>
+<%- include(`${partials}/scripts`, {scriptname: 'avax_tundra'}); -%>
+</body>
+</html> 

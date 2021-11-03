@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include(`${partials}/head`); -%>
+
+  <body>
+    <%- include(`${partials}/header_main`); -%>
+      <pre id="log">
+*************** 👨‍🌾 UNOFFICIAL BUNICORN EXCHANGE FARMING CALCULATOR 👨‍🌾 *****************
+INFO  : https://bunicorn.exchange
+****************************************************************************************
+
+The prestaking will close at 2PM (UTC) 28 July, 2021. Rewards will stop counting, and APR will drop to 0%. Kindly unstake your LP at closing time.
+If you want to continue staking, you can move your LP to our NFT farm. Read details about our NFT farm <a href="https://blog.buni.finance/bunicorn-nft-farms-join-to-earn-the-very-first-bunicorn-eggs-c4a71293366f" target="_blank">HERE</a>
+
+
+</pre>
+      <div class="loader--1"></div>
+      <%- include(`${partials}/scripts`, {scriptname: 'bsc_bunicorn_prestaking' }); -%>
+  </body>
+
+</html>

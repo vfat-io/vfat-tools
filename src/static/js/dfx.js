@@ -7,7 +7,10 @@ const DFX_ABI = [{"inputs":[{"internalType":"address","name":"_owner","type":"ad
 const Pools = [
   "0x1Bd4F9e718442A1c9F14cc04a235119e3C0d2Cf2",
   "0xd1681390a5aC8A60D4392EB3C22CA662B2Db68D7",
-  "0x0a6d3EB98AbB3754e54ABEE7dA2DDaA892Ecb980"
+  "0x0a6d3EB98AbB3754e54ABEE7dA2DDaA892Ecb980",
+  "0x84Bf8151394dcF32146965753B28760550f3D7A8",
+  "0x5EaAEff69f2aB64d1CC0244FB31B236cA989544f",
+  "0xd52D48Db08e8224ef6E2be8F54f3c84e790b1c32"
 ].map(a => {
   return {
     address: a,

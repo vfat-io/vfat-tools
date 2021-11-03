@@ -46,6 +46,31 @@ const ONEINCH=  [{
   token2: "USDT",
   poolAddress: "0xbba17b81ab4193455be10741512d0e71520f43cb",
   farmingAddress: "0xe22f6a5dd9e491dfab49faefdb32d01aaf99703e",
+},{
+    token1: "1INCH",
+    token2: "OPIUM",
+    poolAddress: "0xbba17b81ab4193455be10741512d0e71520f43cb",
+    farmingAddress: "0x48371588E964F1e8939127AF68622e32268640FA",
+},{
+    token1: "1INCH",
+    token2: "VSP",
+    poolAddress: "0xbba17b81ab4193455be10741512d0e71520f43cb",
+    farmingAddress: "0x8b1aF1298f5c0CA8a6B4E66626a4bDaE0f7521e5",
+},{
+    token1: "1INCH",
+    token2: "ICHI",
+    poolAddress: "0xbba17b81ab4193455be10741512d0e71520f43cb",
+    farmingAddress: "0x7dEd1B278D244f707214759C45c1540834890E95",
+},{
+    token1: "1INCH",
+    token2: "SWISE",
+    poolAddress: "0xbba17b81ab4193455be10741512d0e71520f43cb",
+    farmingAddress: "0x2CB9e71A5cf989008Ba93dAD8EdB988eC1b4182f",
+},{
+    token1: "1INCH",
+    token2: "WXT",
+    poolAddress: "0xbba17b81ab4193455be10741512d0e71520f43cb",
+    farmingAddress: "0x598032bA8e7ACb625eA6854B4696e25AfA2eC9F0",
 }]
 
 const Pools = ONEINCH.map(a => {

@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+  <%- include(`${partials}/head`); -%>
+
+  <body>
+    <%- include(`${partials}/header_main`); -%>
+    <pre id="log">
+*************** 👨‍🌾 UNOFFICIAL NAOS FARMING CALCULATOR 👨‍🌾 ****************
+INFO  : <a href='https://app.naos.finance/farms'>https://app.naos.finance/farms</a>
+***************************************************************************
+
+</pre>
+    <div class="loader--1"></div>
+    <%- include(`${partials}/scripts`, {scriptname: 'naos'}); -%>
+  </body>
+</html>
