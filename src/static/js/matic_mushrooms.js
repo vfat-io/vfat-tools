@@ -23,7 +23,7 @@ async function main() {
    const tokens = {};
    const prices = await getMaticPrices();
 
-   await loadMaticPickleContract(App, tokens, prices, MM_CHEF, MM_CHEF_ADDR, MM_CHEF_ABI, rewardTokenTicker, "mm", null, rewardsPerWeek, "pendingMM", [1]);
+   await loadMaticChefContract(App, tokens, prices, MM_CHEF, MM_CHEF_ADDR, MM_CHEF_ABI, rewardTokenTicker, "mm", null, rewardsPerWeek, "pendingMM", [1]);
 
    hideLoading();
 }
