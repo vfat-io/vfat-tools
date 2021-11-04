@@ -98,10 +98,10 @@ function printZoomChefPool(App, chefAbi, chefAddr, prices, tokens, poolInfo, poo
 
 function printZoomContractLinks(App, chefAbi, chefAddr, poolIndex, poolAddress, stakeTokenTicker, unstaked, userStaked, fixedDecimals) {
   fixedDecimals = fixedDecimals ?? 2;
-  const unstake = async function() {
-    return zoom_emergencyWithdraw(chefAbi, chefAddr, poolIndex, App, pendingRewardsFunction)
+  const emergencyWithdraw = async function() {
+    return zoom_emergencyWithdraw(chefAbi, chefAddr, poolIndex, App)
   }
-  _print_link(`Emergency Withdraw ${userStaked.toFixed(fixedDecimals)} ${stakeTokenTicker}`, unstake)
+  _print_link(`Emergency Withdraw ${userStaked.toFixed(fixedDecimals)} ${stakeTokenTicker}`, emergencyWithdraw)
   _print("");
 }
 
