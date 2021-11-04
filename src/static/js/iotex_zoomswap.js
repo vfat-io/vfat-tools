@@ -12,17 +12,114 @@ $(function() {
         _print("Reading smart contracts...\n");
 
        const MASTER_CHEF_ADDR = "0x92F1a54835436Ad1858018f11d017fCE31756C17";
-       const rewardTokenTicker = "ZOOM";
        const MAGIC_CHEF = new ethers.Contract(MASTER_CHEF_ADDR, MASTER_CHEF_ABI, App.provider);
-
-       const rewardsPerWeek = await MAGIC_CHEF.zoomPerBlock() /1e18
-          * 604800 / 5;
 
         const tokens = {};
         const prices = await getIotexPrices();
 
-        await loadIotexChefContract(App, tokens, prices, MAGIC_CHEF, MASTER_CHEF_ADDR, MASTER_CHEF_ABI, rewardTokenTicker,
-            "zoom", null, rewardsPerWeek, "pendingZoom", [1]);
+        await loadZoomChefContract(App, tokens, prices, MAGIC_CHEF, MASTER_CHEF_ADDR, MASTER_CHEF_ABI, [1]);
 
         hideLoading();
       }
+
+async function loadZoomChefContract(App, tokens, prices, chef, chefAddress, chefAbi, deathPoolIndices) {
+  const chefContract = chef ?? new ethers.Contract(chefAddress, chefAbi, App.provider);
+  const poolCount = parseInt(await chefContract.poolLength(), 10);
+
+  _print(`<a href='https://iotexscan.io/address/${chefAddress}' target='_blank'>Staking Contract</a>`);
+  _print(`Found ${poolCount} pools.\n`)
+
+  _print(`Showing incentivized pools only.\n`);
+
+  const poolInfos = await Promise.all([...Array(poolCount).keys()].map(async (x) =>
+    await getzoomswapPoolInfo(App, chefContract, chefAddress, x)));
+
+  var tokenAddresses = [].concat.apply([], poolInfos.filter(x => x.poolToken).map(x => x.poolToken.tokens));
+
+  await Promise.all(tokenAddresses.map(async (address) => {
+      tokens[address] = await getIotexToken(App, address, chefAddress);
+  }));
+
+  if (deathPoolIndices) {   //load prices for the deathpool assets
+    deathPoolIndices.map(i => poolInfos[i])
+                     .map(poolInfo =>
+      poolInfo.poolToken ? getPoolPrices(tokens, prices, poolInfo.poolToken, "iotex") : undefined);
+  }
+
+  const poolPrices = poolInfos.map(poolInfo => poolInfo.poolToken ? getPoolPrices(tokens, prices, poolInfo.poolToken, "iotex") : undefined);
+
+
+  _print("Finished reading smart contracts.\n");
+  for (i = 0; i < poolCount; i++) {
+    if (poolPrices[i]) {
+      printZoomChefPool(App, chefAbi, chefAddress, prices, tokens, poolInfos[i], i, poolPrices[i],
+        "iotex")
+    }
+  }
+  return { prices }
+}
+
+async function getzoomswapPoolInfo(app, chefContract, chefAddress, poolIndex) {
+  const poolInfo = await chefContract.poolInfo(poolIndex);
+  if (poolInfo.allocPoint == 0) {
+    return {
+      address: poolInfo.lpToken,
+      allocPoints: poolInfo.allocPoint ?? 1,
+      poolToken: null,
+      userStaked : 0,
+      pendingRewardTokens : 0,
+    };
+  }
+  const poolToken = await getIotexToken(app, poolInfo.lpToken ?? poolInfo.token ?? poolInfo.stakingToken, chefAddress);
+  const userInfo = await chefContract.userInfo(poolIndex, app.YOUR_ADDRESS);
+  const staked = userInfo.amount / 10 ** poolToken.decimals;
+  return {
+      address : poolInfo.lpToken ?? poolInfo.token ?? poolInfo.stakingToken,
+      allocPoints: poolInfo.allocPoint ?? 1,
+      poolToken: poolToken,
+      userStaked : staked
+  };
+}
+
+function printZoomChefPool(App, chefAbi, chefAddr, prices, tokens, poolInfo, poolIndex, poolPrices,
+                    chain="eth") {
+  fixedDecimals = 2;
+  const sp = (poolInfo.stakedToken == null) ? null : getPoolPrices(tokens, prices, poolInfo.stakedToken, chain);
+  const userStaked = poolInfo.userLPStaked ?? poolInfo.userStaked;
+  const staked_tvl = sp?.staked_tvl ?? poolPrices.staked_tvl;
+  _print_inline(`${poolIndex} - `);
+  poolPrices.print_price(chain);
+  sp?.print_price(chain);
+  if (poolInfo.userLPStaked > 0) sp?.print_contained_price(userStaked);
+  if (poolInfo.userStaked > 0) poolPrices.print_contained_price(userStaked);
+  printZoomContractLinks(App, chefAbi, chefAddr, poolIndex, poolInfo.address, poolPrices.stakeTokenTicker, poolInfo.poolToken.unstaked,
+    poolInfo.userStaked, fixedDecimals);
+}
+
+function printZoomContractLinks(App, chefAbi, chefAddr, poolIndex, poolAddress, stakeTokenTicker, unstaked, userStaked, fixedDecimals) {
+  fixedDecimals = fixedDecimals ?? 2;
+  const unstake = async function() {
+    return zoom_emergencyWithdraw(chefAbi, chefAddr, poolIndex, App, pendingRewardsFunction)
+  }
+  _print_link(`Emergency Withdraw ${userStaked.toFixed(fixedDecimals)} ${stakeTokenTicker}`, unstake)
+  _print("");
+}
+
+const zoom_emergencyWithdraw = async function(chefAbi, chefAddress, poolIndex, App) {
+  const signer = App.provider.getSigner()
+
+  const CHEF_CONTRACT = new ethers.Contract(chefAddress, chefAbi, signer)
+
+  const currentStakedAmount = (await CHEF_CONTRACT.userInfo(poolIndex, App.YOUR_ADDRESS)).amount
+
+  if (currentStakedAmount > 0) {
+    showLoading()
+    CHEF_CONTRACT.emergencyWithdraw(poolIndex, {gasLimit: 500000})
+      .then(function(t) {
+        return App.provider.waitForTransaction(t.hash)
+      })
+      .catch(function() {
+        hideLoading()
+      })
+  }
+}
