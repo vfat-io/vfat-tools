@@ -69,6 +69,7 @@ const main = async() => {
         ["The Seed Farm           ",`<a href="seedfarm"         >Various</a>`,"SEED         ","https://theseedfarm.app"],
         ["SageAvax                ",`<a href="sageavax"         >Various</a>`,"SAGE         ","https://sageavax.finance"],
         ["Aave                    ",`<a href="aave"             >Various</a>`,"WAVAX        ","https://app.aave.com"]
+        ["Mint                    ",`<a href="mint"             >Various</a>`,"WOLF         ","https://mint-swap.com"],
     ]
   }
 
