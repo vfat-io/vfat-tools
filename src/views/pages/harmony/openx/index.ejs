@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include(`${partials}/head`); -%>
+
+<body>
+<%- include(`${partials}/header_main`); -%>
+<pre id="log">
+*************** 👨‍🌾 UNOFFICIAL OPENSWAP FARMING CALCULATOR 👨‍🌾 ***************
+INFO  : https://app.openswap.one/ 
+<span style="color:rgba(3,209,235,1.00)">
+OpenSwap is a DeFi protocol on the Harmony network with simple yield farming capabilities
+cross-chain tools for bridging the Harmony, Ethereum, and Binance Smart Chain networks
+and easy ways for users to trade, provide liquidity, and earn collected fees from transactions.
+</span>
+**************************************************************************************
+
+</pre>
+<div class="loader--1"></div>
+<%- include(`${partials}/scripts`, {scriptname: 'harmony_openswapv2' }); -%>
+</body>
+</html>

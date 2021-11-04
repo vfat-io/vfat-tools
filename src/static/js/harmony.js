@@ -11,7 +11,7 @@ const main = async () => {
       ["Viper",             `<a href='viper'>Various</a>`,          "VIPER",         "https://viper.exchange"],
       ["CopyPasta",         `<a href='copypasta'>Various</a>`,      "PASTA",         "https://copypasta.one"],
       ["Viper (smartchef)", `<a href='viper/smartchef'>Various</a>`,"Various",       "https://viper.exchange"],
-      ["Open Swap",         `<a href='oswap'>Various</a>`,          "oSWAP",         "https://app.openswap.one"],
+      ["OpenSwap",         `<a href='oswap'>Various</a>`,          "oSWAP",         "https://app.v1.openswap.one"],
       ["Loot",              `<a href='loot'>Various</a>`,           "LOOT",          "https://lootswap.finance"],
       ["Daikiri",           `<a href='daikiri'>Various</a>`,        "DAIKI",         "https://daikiri.finance/#"],
       ["Sushi",             `<a href='sushi'>Various</a>`,          "SUSHI",         "https://app.sushi.com"],
@@ -35,7 +35,10 @@ const main = async () => {
       ["HarmoNYAN",         `<a href='harmonyan'>Various</a>`,      "HNYAN",         "https://harmonyan.one"],
       ["BossSwap",          `<a href='bossswap'>Various</a>`,       "BOSS",          "https://www.bossswap.finance"],
       ["ParadiseFi",        "<a href='paradisefi'>Various</a>",     "EDEN",          "https://paradisefi.io"],
-      ["Elk",               `<a href='elk'>Various</a>`,            "ELK",           "https://elk.finance"]
+      ["Elk",               `<a href='elk'>Various</a>`,            "ELK",           "https://elk.finance"],
+      ["Eggtart",           `<a href='eggtart'>Various</a>`,        "EGGT",          "https://eggtartswap.com"],
+      ["OpenSwap",          `<a href='openx'>Various</a>`,          "OpenX",         "https://app.openswap.one"],
+      ["Fool",              `<a href='fool'>Various</a>`,           "FOOL",          "https://lootswap.finance/guilds/fool"]
     ]
   }
 
