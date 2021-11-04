@@ -66,6 +66,9 @@ const pageNetwork = function() {
   if (network.toLowerCase() === 'smartbch') {
     return window.NETWORKS.SMARTBCH
   }
+  if (network.toLowerCase() === 'polis') {
+    return window.NETWORKS.POLIS
+  }
 
   return window.NETWORKS.ETHEREUM
 }
@@ -2097,7 +2100,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
                       pool.name.includes("Value LP") ?  `https://info.vswap.fi/pool/${pool.address}` :
                         pool.name.includes("BLP") ?  `https://info.bakeryswap.org/#/pair/${pool.address}` :
                           pool.symbol.includes("BenSwap") ? ({
-                            "bsc": `https://info.benswap.finance/pair/${pool.address}`,     
+                            "bsc": `https://info.benswap.finance/pair/${pool.address}`,
                             "smartbch": `https://info.benswap.cash/pair/${pool.address}`
                           }[chain]) :
                           pool.name.includes("MISTswap LP Token") ?  `http://analytics.mistswap.fi/pairs/${pool.address}` :
