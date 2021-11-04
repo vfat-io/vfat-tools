@@ -392,13 +392,14 @@ const main = async () => {
       ['Jam Finance         ', `<a href="jamfinance"      >Various</a>`, 'JAM          ', 'https://jamfinance.cc'],
       ['WAVE                ', `<a href="wave"            >Various</a>`, 'WAVE         ', 'https://www.wavedefi.io'],
       ['Snake Finance       ', `<a href="snakefinance"    >Various</a>`, 'SNAKE        ', 'https://snakefinance.club'],
-	  ['Fried Finance       ', `<a href="friedfinance"    >Various</a>`, 'FRIED        ', 'https://friedfinance.cc'],
+	    ['Fried Finance       ', `<a href="friedfinance"    >Various</a>`, 'FRIED        ', 'https://friedfinance.cc'],
       ['GyozaSwap           ', `<a href="gyozaswap"       >Various</a>`, 'GZA          ', 'https://gyozaswap.io'],
       ['PolyGamma Finance   ', `<a href="polygamma"       >Various</a>`, 'GAMMA        ', 'https://polygamma.finance'],
       ['Angle               ', '<a href="angle"           >Various</a>', 'Angle        ', 'https://angle.farm'],
       ['Hermes Defi         ', `<a href="hermesdefiL2"    >Various</a>`, 'APOLLO       ', 'https://www.hermesdefi.io'],
-	  ['Skull Finance       ', `<a href="skullfinance"    >Various</a>`, 'SKULL        ', 'https://skullfinance.top'],
-	  ['Melon Finance       ', `<a href="melonfinance"    >Various</a>`, 'MELON        ', 'https://melonfinance.cc'],
+	    ['Skull Finance       ', `<a href="skullfinance"    >Various</a>`, 'SKULL        ', 'https://skullfinance.top'],
+	    ['Melon Finance       ', `<a href="melonfinance"    >Various</a>`, 'MELON        ', 'https://melonfinance.cc'],
+      ['Wheel Finance       ', `<a href="wheelfinance"    >Various</a>`, 'WHEEL        ', 'https://wheelfinance.xyz'],
     ],
   }
 
