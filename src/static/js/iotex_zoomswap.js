@@ -11,7 +11,7 @@ $(function() {
         _print(`Initialized ${App.YOUR_ADDRESS}\n`);
         _print("Reading smart contracts...\n");
 
-       const MASTER_CHEF_ADDR = "0x92F1a54835436Ad1858018f11d017fCE31756C17";
+       const MASTER_CHEF_ADDR = "0x1ba725d2ba56482f11fee3642f1c739d25018e4d";
        const MAGIC_CHEF = new ethers.Contract(MASTER_CHEF_ADDR, MASTER_CHEF_ABI, App.provider);
 
         const tokens = {};
