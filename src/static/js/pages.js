@@ -22,6 +22,7 @@ const main = async() => {
       ["Bella Protocol      ",`<a href="bella/"             >Various</a>`,"BEL       ","https://bella.fi"],
       ["Big Data Protocol   ",`<a href="bdp/"               >Various</a>`,"BDP,bALPHA","https://www.bigdataprotocol.com/datavault"],
       ["* Botto *           ", `<a href="botto/"            >Various</a>`,"BOTTO     ","https://app.botto.com"],
+      ["COFFIN FINANCE      ",`<a href="fantom/coffin"      >Various</a>`,"COFFIN     ","https://app.coffin.finance"],
       ["Cover Protocol      ",`<a href="cover/"             >Various</a>`,"Various   ","https://app.coverprotocol.com"],
       ["Cryptex             ",`<a href="cryptex"            >Various</a>`,"CTX       ","https://app.cryptex.finance"],
       ["DFX                 ",`<a href="dfx/"               >Various</a>`,"DFX       ","https://v0.dfx.finance/"],
