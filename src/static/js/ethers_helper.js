@@ -1190,11 +1190,11 @@ async function getJar(app, jar, address, stakingAddress) {
 
 async function getCurveToken(app, curve, address, stakingAddress, minterAddress) {
   const minter = new ethcall.Contract(minterAddress, MINTER_ABI)
-  const [virtualPrice, coin0] = await app.ethcallProvider.all([minter.get_virtual_price(), minter.coins(0)]);
-  const token = await getToken(app, coin0, address);
-  const calls = [curve.decimals(), curve.balanceOf(stakingAddress), curve.balanceOf(app.YOUR_ADDRESS),
-    curve.name(), curve.symbol(), curve.totalSupply()];
-  const [decimals, staked, unstaked, name, symbol, totalSupply] = await app.ethcallProvider.all(calls);
+  const [virtualPrice, coin0] = await app.ethcallProvider.all([minter.get_virtual_price(), minter.coins(0)]);  
+  
+  const lpToken = new ethcall.Contract(curve.address, CURVE_ABI);
+  const [decimals, staked, unstaked, name, symbol, totalSupply] = await app.ethcallProvider.all([lpToken.decimals(), lpToken.balanceOf(stakingAddress), lpToken.balanceOf(app.YOUR_ADDRESS), lpToken.name(), lpToken.symbol(), lpToken.totalSupply()]);
+    
   return {
       address,
       name,
@@ -1205,7 +1205,7 @@ async function getCurveToken(app, curve, address, stakingAddress, minterAddress)
       unstaked: unstaked  / 10 ** decimals,
       contract: curve,
       tokens : [address, coin0],
-      token,
+      await getToken(app, coin0, address),
       virtualPrice : virtualPrice / 1e18
   };
 }
