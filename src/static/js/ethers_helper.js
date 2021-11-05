@@ -1195,6 +1195,8 @@ async function getCurveToken(app, curve, address, stakingAddress, minterAddress)
   const lpToken = new ethcall.Contract(curve.address, CURVE_ABI);
   const [decimals, staked, unstaked, name, symbol, totalSupply] = await app.ethcallProvider.all([lpToken.decimals(), lpToken.balanceOf(stakingAddress), lpToken.balanceOf(app.YOUR_ADDRESS), lpToken.name(), lpToken.symbol(), lpToken.totalSupply()]);
     
+  const token0 = await getToken(app, coin0, address);
+  
   return {
       address,
       name,
@@ -1205,7 +1207,7 @@ async function getCurveToken(app, curve, address, stakingAddress, minterAddress)
       unstaked: unstaked  / 10 ** decimals,
       contract: curve,
       tokens : [address, coin0],
-      await getToken(app, coin0, address),
+      token0,
       virtualPrice : virtualPrice / 1e18
   };
 }
