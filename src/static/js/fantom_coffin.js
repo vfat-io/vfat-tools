@@ -27,15 +27,16 @@ const MASTERCHEF_V1_ABI = [{"inputs":[],"stateMutability":"nonpayable","type":"c
       const rewardsPerWeekV1 = await MASTERCHEF_V1.rewardPerSecond() /1e18 * 604800;
       const rewardsPerWeekV2 = await MASTERCHEF_V2.rewardPerSecond() /1e18 * 604800;
 
-      const tokens = {};
+      const tokensV1 = {};
+      const tokensV2 = {};
       const prices = await getFantomPrices();
 
       _print("---- ⚰️🌾 Farms COFFIN MAKER V1 🌾⚰️ ----\n");
-      await loadFantomChefContract(App, tokens, prices, MASTERCHEF_V1, MASTERCHEF_V1_ADDR, MASTERCHEF_V1_ABI, rewardTokenTicker,
+      await loadFantomChefContract(App, tokensV1, prices, MASTERCHEF_V1, MASTERCHEF_V1_ADDR, MASTERCHEF_V1_ABI, rewardTokenTicker,
         "rewardToken", null, rewardsPerWeekV1, "pendingReward");
 
       _print("---- ⚰️🌾 Farms COFFIN MAKER V2 🌾⚰️ ----\n");
-      await loadFantomChefContract(App, tokens, prices, MASTERCHEF_V2, MASTERCHEF_V2_ADDR, MASTERCHEF_V2_ABI, rewardTokenTicker,
+      await loadFantomChefContract(App, tokensV2, prices, MASTERCHEF_V2, MASTERCHEF_V2_ADDR, MASTERCHEF_V2_ABI, rewardTokenTicker,
         "rewardToken", null, rewardsPerWeekV2, "pendingReward");
 
       hideLoading();
