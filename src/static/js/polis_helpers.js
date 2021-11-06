@@ -15,11 +15,13 @@ async function getPolisPrices() {
 async function loadPolisChefContract(App, tokens, prices, chef, chefAddress, chefAbi, rewardTokenTicker,
                                     rewardTokenFunction, rewardsPerBlockFunction, rewardsPerWeekFixed, pendingRewardsFunction,
                                     deathPoolIndices) {
+
     const chefContract = chef ?? new ethers.Contract(chefAddress, chefAbi, App.provider);
 
     const poolCount = parseInt(await chefContract.poolLength(), 10);
     const totalAllocPoints = await chefContract.totalAllocPoint();
 
+    _print(`<a href='https://explorer.polis.tech/address/${chefAddress}' target='_blank'>Staking Contract</a>`);
     _print(`Found ${poolCount} pools.\n`)
 
     _print(`Showing incentivized pools only.\n`);
@@ -32,7 +34,6 @@ async function loadPolisChefContract(App, tokens, prices, chef, chefAddress, che
         await chefContract.callStatic[rewardsPerBlockFunction]()
         / 10 ** rewardToken.decimals * 604800 / 5
 
-    console.log("loadPolisChefContract", App, chefContract, chefAddress, pendingRewardsFunction)
     const poolInfos = await Promise.all([...Array(poolCount).keys()].map(async (x) =>
         await getPolisPoolInfo(App, chefContract, chefAddress, x, pendingRewardsFunction)));
 
@@ -190,9 +191,7 @@ async function getPolisPoolInfo(app, chefContract, chefAddress, poolIndex, pendi
             pendingRewardTokens : 0,
         };
     }
-    console.log("getPolisPoolInfo", app, poolInfo, chefAddress)
     const poolToken = await getPolisToken(app, poolInfo.lpToken, chefAddress);
-    console.log("getPolisToken", poolToken)
     const userInfo = await chefContract.userInfo(poolIndex, app.YOUR_ADDRESS);
     const pendingRewardTokens = await chefContract.callStatic[pendingRewardsFunction](poolIndex, app.YOUR_ADDRESS);
     const staked = userInfo.amount / 10 ** poolToken.decimals;
