@@ -23,7 +23,8 @@ const main = async() => {
       ["KogeFarm                 ", `<a href="koge"          >Various</a>`,"VARIOUS     ","https://kogefarm.io"],
       ["MoonFi                   ", `<a href="moonfi"        >Various</a>`,"VARIOUS     ","https://www.moofi.app"],
       ["Elk                      ", `<a href="elk"           >Various</a>`,"ELK         ","https://elk.finance"],
-      ["Huckleberry              ", `<a href="huckleberry"   >Various</a>`,"FINN        ","https://www.huckleberry.finance"]
+      ["Huckleberry              ", `<a href="huckleberry"   >Various</a>`,"FINN        ","https://www.huckleberry.finance"],
+      ["Sushi                    ", `<a href="sushi"         >Various</a>`,"SUSHI/MOVR  ","https://app.sushi.com"]
     ]
   }
 
