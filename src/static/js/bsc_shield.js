@@ -2,20 +2,21 @@ $(function () { consoleInit(main) });
 
 const SLD_ADDRESS = "0x1ef6A7e2c966fb7C5403EFEFdE38338b1a95a084";
 const USDT_ADDRESS = "0x55d398326f99059fF775485246999027B3197955";
-const REUSDT_ADDRESS = "0x6ACc136471c3796Db904FBD1329A32F6C11aD051";
-const REWARD_CONTRCT_ADDRESS = "0x2d8C927b8e81E409ba7877Ac6641DdBEFf90ea58";
+const REUSDT_ADDRESS = "0x65081C21228dc943f47b1Cdb394Eb8db022bc744";
+const REWARD_CONTRCT_ADDRESS = "0x8F6ed59F3d7d9D327a8097Bf652f5e83fb1902f5";
 const SLD_USDT_PANCAKE_ADDRESS = "0x86F8C5f9E1CBe5672cEe1ddc82B7a376490eAEd5";
+const BROKER_ADDRESS = "0xff34F282b82489BfDa789816d7622d3Ae8199Af6";
 
 const REWARD_CONTRACT_ABI = [
   {
     "inputs": [],
     "name": "sldUnlocked",
     "outputs": [
-        {
+      {
         "internalType": "uint256",
         "name": "",
         "type": "uint256"
-        }
+      }
     ],
     "stateMutability": "view",
     "type": "function",
@@ -141,21 +142,21 @@ const REUSDT_ABI = [
     "inputs": [],
     "name": "plAmountInfo",
     "outputs": [
-        {
+      {
         "internalType": "uint256",
         "name": "plDepositTotal",
         "type": "uint256"
-        },
-        {
+      },
+      {
         "internalType": "uint256",
         "name": "pl1lockedAmount",
         "type": "uint256"
-        },
-        {
+      },
+      {
         "internalType": "uint256",
         "name": "pl1AvailAmount",
         "type": "uint256"
-        }
+      }
     ],
     "stateMutability": "view",
     "type": "function"
@@ -185,6 +186,11 @@ const REUSDT_ABI = [
         "internalType": "uint256",
         "name": "_mintAmount",
         "type": "uint256"
+      },
+      {
+        "internalType": "address",
+        "name": "_inviter",
+        "type": "address"
       }
     ],
     "name": "provide",
@@ -251,7 +257,7 @@ const REUSDT_ABI = [
         "type": "uint256"
       }
     ],
-    "name": "getMintReDaiAmount",
+    "name": "getMintReTokenAmount",
     "outputs": [
       {
         "internalType": "uint256",
@@ -309,7 +315,7 @@ async function main() {
 
   _print(`Initialized ${App.YOUR_ADDRESS}\n`);
   _print("Reading smart contracts...\n");
-  
+
   _print("\n");
   _print("  ______   __        __            __        __        _______                        __                                    __ ");
   _print(" /      \\ /  |      /  |          /  |      /  |      /       \\                      /  |                                  /  |");
@@ -389,7 +395,7 @@ const getUSDTPublicPool = async (App, pool, user, tokens, price) => {
     tokens[REUSDT_ADDRESS].contract.balanceOf(user),
   ]);
 
-  const reTokenAmount = (user_balance == 0) ? 0 : await pool.getMintReDaiAmount(user_balance);
+  const reTokenAmount = (user_balance == 0) ? 0 : await pool.getMintReTokenAmount(user_balance);
 
   const approveAndProvide = async function () {
     return provideUSDT(App, pool, tokens[USDT_ADDRESS]);
@@ -484,7 +490,7 @@ const provideUSDT = async (App, pool, staked_token) => {
     showLoading()
     allow
       .then(async function () {
-        pool.provide(currentTokens)
+        pool.provide(currentTokens, BROKER_ADDRESS)
           .then(function (t) {
             App.provider.waitForTransaction(t.hash).then(function () {
               hideLoading();
@@ -529,7 +535,7 @@ const lockReUSDT = async (App, reward_contract, staked_token) => {
   let allow = Promise.resolve()
   if (allowedTokens / 1e18 < currentTokens / 1e18) {
     showLoading();
-    const TOKEN = new ethers.Contract(staked_token.address, ERC20_ABI, App.provider.getSigner()) 
+    const TOKEN = new ethers.Contract(staked_token.address, ERC20_ABI, App.provider.getSigner())
     allow = TOKEN.approve(reward_contract.address, ethers.constants.MaxUint256)
       .then(function (t) {
         return App.provider.waitForTransaction(t.hash)
