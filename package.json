@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "browser-sync start -s 'dist' -f 'dist' --no-open --no-notify --reload-debounce 50",
-    "setup-for-dev": "NODE_ENV=development npm-run-all --sequential rmprod copy-to-dist build:html",
+    "setup-for-dev": "NODE_ENV=development& npm-run-all --sequential rmprod copy-to-dist build:html",
     "dev": "npm run setup-for-dev && npm-run-all --parallel start watch:*",
     "build": "NODE_ENV=production npm-run-all --sequential rmprod copy-to-dist minify:js minify:css prepend-banner hash-filenames minify:html",
     "build:html": "NODE_ENV=development babel-node build-tools/ejs-to-html.mjs",
@@ -40,7 +40,7 @@
     "babel-polyfill": "^6.26.0",
     "browser-sync": "^2.26.7",
     "clean-css": "^4.2.3",
-    "cross-env": "^7.0.2",
+    "cross-env": "^7.0.3",
     "ejs": "^2.7.4",
     "gh-pages": "^3.1.0",
     "html-minifier": "^3.5.21",
