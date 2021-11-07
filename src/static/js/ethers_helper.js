@@ -66,6 +66,9 @@ const pageNetwork = function() {
   if (network.toLowerCase() === 'smartbch') {
     return window.NETWORKS.SMARTBCH
   }
+  if (network.toLowerCase() === 'polis') {
+    return window.NETWORKS.POLIS
+  }
 
   return window.NETWORKS.ETHEREUM
 }
@@ -1750,6 +1753,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
   else if (pool.symbol.includes("lv_")) stakeTokenTicker += " Lixir LP Token";
   else if (pool.symbol.includes("LOOT-LP")) stakeTokenTicker += " Loot LP Token";
   else if (pool.symbol.includes("MIMO-LP")) stakeTokenTicker += " Mimo LP Token";
+  else if (pool.symbol.includes("HLP")) stakeTokenTicker += " Hades Swap LP Token";
   else stakeTokenTicker += " Uni LP";
   return {
       t0: t0,
@@ -1825,6 +1829,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
               pool.symbol.includes("MIMO-LP") ?  `https://v2.info.mimo.exchange/pair/${pool.address}` :
               pool.symbol.includes("UPT") ?  `https://www.app.unic.ly/#/discover` :
               pool.symbol.includes("lv_") ?  `https://app.lixir.finance/vaults/${pool.address}` :
+              pool.symbol.includes("HLP") ?  `https://analytics.hadesswap.finance/pairs/${pool.address}` :
               pool.symbol.includes("LOOT-LP") ?  `https://analytics.lootswap.finance/pair/${pool.address}` :
               pool.symbol.includes("BenSwap") ? ({
                 "bsc": `https://info.benswap.finance/pair/${pool.address}`,
@@ -1859,6 +1864,11 @@ function getUniPrices(tokens, prices, pool, chain="eth")
             `https://www.bakeryswap.org/#/add/${t0address}/${t1address}`,
             `https://www.bakeryswap.org/#/remove/${t0address}/${t1address}`,
             `https://www.bakeryswap.org/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+          ] :
+          pool.symbol.includes("HLP") ? [
+            `https://hadesswap.finance/add/${t0address}/${t1address}`,
+            `https://hadesswap.finance/remove/${t0address}/${t1address}`,
+            `https://hadesswap.finance/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
           ] :
           pool.symbol.includes("lv_") ? [
             `https://app.lixir.finance/vaults/${pool.address}`,
@@ -2097,7 +2107,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
                       pool.name.includes("Value LP") ?  `https://info.vswap.fi/pool/${pool.address}` :
                         pool.name.includes("BLP") ?  `https://info.bakeryswap.org/#/pair/${pool.address}` :
                           pool.symbol.includes("BenSwap") ? ({
-                            "bsc": `https://info.benswap.finance/pair/${pool.address}`,     
+                            "bsc": `https://info.benswap.finance/pair/${pool.address}`,
                             "smartbch": `https://info.benswap.cash/pair/${pool.address}`
                           }[chain]) :
                           pool.name.includes("MISTswap LP Token") ?  `http://analytics.mistswap.fi/pairs/${pool.address}` :
@@ -2481,6 +2491,9 @@ function getErc20Prices(prices, pool, chain="eth") {
       break;
     case "harmony":
       poolUrl=`https://explorer.harmony.one/address/${pool.address}`;
+      break;
+    case "polis":
+      poolUrl=`https://explorer.polis.tech/address/${pool.address}`;
       break;
   }
 
