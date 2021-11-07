@@ -405,7 +405,8 @@ const main = async () => {
       ['PolyUnity Finance   ',"",  `<a href="polyunity"       >Various</a>`, 'UNITY        ', 'https://polyunity.finance'],
       ['Melon Finance       ',"",  `<a href="melonfinance"    >Various</a>`, 'MELON        ', 'https://melonfinance.cc'],
       ['Mushrooms Finance   ',"",  `<a href="mushrooms"       >Various</a>`, 'MM           ', 'https://mushrooms.finance/farms'],
-      ['Wheel Finance       ',"",  `<a href="wheelfinance"    >Various</a>`, 'WHEEL        ', 'https://wheelfinance.xyz']
+      ['Wheel Finance       ',"",  `<a href="wheelfinance"    >Various</a>`, 'WHEEL        ', 'https://wheelfinance.xyz'],
+      ['Icecolony           ',"",  `<a href="icecolony"       >Various</a>`, 'ICE          ', 'https://www.icecolony.com']
     ],
   }
 
