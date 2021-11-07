@@ -107,7 +107,8 @@ const main = async() => {
       ['The Gas Station    ', `<a href="thegasstation">Various</a>`,'ftmGAS       ','https://gasstationcrypto.com'],
       ['COFFIN FINANCE     ', `<a href="coffin"       >Various</a>`,'COFFIN       ','https://app.coffin.finance'],
       ['Babypig Finance    ', `<a href="babypig"      >Various</a>`,'fBABYPIG     ','https://babypig.finance'],
-      ['Draco Force    ', `<a href="dracoforce"      >Various</a>`,'DRC     ','https://dracoforce.com']
+      ['Draco Force        ', `<a href="dracoforce"   >Various</a>`,'DRC          ','https://dracoforce.com'],
+      ['Smurf              ', `<a href="smurf"        >Various</a>`,'CLEVER       ','https://smurf.money']
     ]
   }
 
