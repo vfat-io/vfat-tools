@@ -23,14 +23,14 @@ async function main() {
    if(currentBlock < startBlock){
     _print(`Rewards start at block <a href="https://ftmscan.com/block/countdown/${startBlock}" target="_blank">${startBlock}</a>\n`);
    }else{
-    rewardsPerWeek = await DRC_CHEF.DrcPerBlockPerBlock() /1e18 * 604800 ;
+    rewardsPerWeek = await DRC_CHEF.DrcPerBlock() /1e18 * 604800 ;
    }
 
     const tokens = {};
     const prices = await getFantomPrices();
 
     await loadFantomChefContract(App, tokens, prices, DRC_CHEF, DRC_CHEF_ADDR, DRC_CHEF_ABI, rewardTokenTicker,
-      "token", null, rewardsPerWeek, "pendingDrc");
+      "drc", null, rewardsPerWeek, "pendingDrc");
 
     hideLoading();
   }
