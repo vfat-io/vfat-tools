@@ -11,7 +11,7 @@ $(function () {
         _print(`Initialized ${App.YOUR_ADDRESS}\n`);		
         _print("Reading smart contracts...\n");		
     		
-        const BUD_CHEF_ADDR = "0x1C568AF0671AB2B31be26c435373379a78069faA";		
+        const BUD_CHEF_ADDR = "0x71756ba72D8A2B84D0415D09BB4a3820BBb51594";		
         const rewardTokenTicker = "BUD";		
         const BUD_CHEF = new ethers.Contract(BUD_CHEF_ADDR, BUD_CHEF_ABI, App.provider);
 
