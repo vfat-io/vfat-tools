@@ -59,8 +59,6 @@ async function main() {
     _print_link(`Claim All`, claimAll);
   }
 
-  //_print_link(`Claim All ${info.rewardTokens[0].earned.toFixed(6)} ${info.rewardTokens[0].rewardTokenTicker} ($${formatMoney(info.rewardTokens[0].earned*rewardTokenPrices[0])}) + ${info.rewardTokens[1].earned.toFixed(6)} ${info.rewardTokens[1].rewardTokenTicker} ($${formatMoney(info.rewardTokens[1].earned*rewardTokenPrices[1])})`, claimAll)
-
   hideLoading();
 }
 
@@ -74,8 +72,12 @@ async function loadMcnprotocolContracts(App, tokens, prices, pools, mcnContract)
     info.rewardTokens.forEach(r => r.rewardToken.tokens.forEach(rt => tokenAddresses.push(rt)));
   }
   await getNewPricesAndTokens(App, tokens, prices, tokenAddresses, mcnContract.address);
+  const magicPrice = await getPriceByID("magic-token");
+  prices["0xA384Bc7Cdc0A93e686da9E7B8C0807cD040F4E0b"] = magicPrice["magic-token"];
   const xDollarPrice = await getPriceByID("xdollar");
   prices["0x173fd7434B8B50dF08e3298f173487ebDB35FD14"] = xDollarPrice.xdollar;
+  const iotexPrice = await getPriceByID("iotex");
+  prices["0x6fB3e0A217407EFFf7Ca062D46c26E5d60a14d69"] = iotexPrice.iotex;
   for (const info of infos) {
     let p = await printMcnSynthetixPool(App, tokens, prices, info);
     totalStaked += p.staked_tvl || 0;
@@ -153,17 +155,52 @@ async function printMcnSynthetixPool(App, tokens, prices, info, chain="eth") {
     _print(`You are staking ${info.userStaked.toFixed(6)} ${info.stakeTokenTicker} ` +
            `$${formatMoney(userStakedUsd)} (${userStakedPct.toFixed(2)}% of the pool).`);
     if (info.userStaked > 0) {
-    info.poolPrices.print_contained_price(info.userStaked);
-      const userWeeklyRewards0 = userStakedPct * info.rewardTokens[0].weeklyRewards / 100;
-      const userDailyRewards0 = userWeeklyRewards0 / 7;
-      const userYearlyRewards0 = userWeeklyRewards0 * 52;
-      const userWeeklyRewards1 = info.rewardTokens[1].weeklyRewards / 100;
-      const userDailyRewards1 = userWeeklyRewards1 / 7;
-      const userYearlyRewards1 = userWeeklyRewards1 * 52;
-      _print(`Estimated ${info.rewardTokens[0].rewardTokenTicker} + ${info.rewardTokens[1].rewardTokenTicker} earnings:`
-          + ` Day ${(userDailyRewards0+userDailyRewards1).toFixed(2)} ($${formatMoney(userDailyRewards0*rewardTokenPrices[0]+userDailyRewards1*rewardTokenPrices[1])})`
-          + ` Week ${(userWeeklyRewards0+userWeeklyRewards1).toFixed(2)} ($${formatMoney(userWeeklyRewards0*rewardTokenPrices[0]+userWeeklyRewards1*rewardTokenPrices[1])})`
-          + ` Year ${(userYearlyRewards0+userYearlyRewards1).toFixed(2)} ($${formatMoney(userYearlyRewards0*rewardTokenPrices[0]+userYearlyRewards1*rewardTokenPrices[1])})`);
+      info.poolPrices.print_contained_price(info.userStaked);
+      let totalUserWeeklyRewards = 0;
+      let totalUserDailyRewards = 0;
+      let totalUserYearlyRewards = 0;
+      let totalRewardPrices = 0;
+      for(let i = 0; i < info.rewardTokens.length; i++){
+        const userWeeklyReward = userStakedPct * info.rewardTokens[i].weeklyRewards / 100;
+        const userDailyReward = userWeeklyReward / 7;
+        const userYearlyReward = userWeeklyReward * 52;
+        totalUserWeeklyRewards += userWeeklyReward;
+        totalUserDailyRewards += userDailyReward;
+        totalUserYearlyRewards += userYearlyReward;
+        totalRewardPrices += rewardTokenPrices[i];
+      }
+      switch(info.rewardTokens.length){
+        case 1 :
+          _print(`Estimated ${info.rewardTokens[0].rewardTokenTicker} earnings:`
+          + ` Day ($${formatMoney(totalUserDailyRewards*totalRewardPrices)})`
+          + ` Week ($${formatMoney(totalUserWeeklyRewards*totalRewardPrices)})`
+          + ` Year ($${formatMoney(totalUserYearlyRewards*totalRewardPrices)})`);
+          break;
+        case 2 :
+          _print(`Estimated ${info.rewardTokens[0].rewardTokenTicker} + ${info.rewardTokens[1].rewardTokenTicker} earnings:`
+          + ` Day ($${formatMoney(totalUserDailyRewards*totalRewardPrices)})`
+          + ` Week ($${formatMoney(totalUserWeeklyRewards*totalRewardPrices)})`
+          + ` Year ($${formatMoney(totalUserYearlyRewards*totalRewardPrices)})`);
+          break;
+        case 3 :
+          _print(`Estimated ${info.rewardTokens[0].rewardTokenTicker} + ${info.rewardTokens[1].rewardTokenTicker} + ${info.rewardTokens[2].rewardTokenTicker} earnings:`
+          + ` Day ($${formatMoney(totalUserDailyRewards*totalRewardPrices)})`
+          + ` Week ($${formatMoney(totalUserWeeklyRewards*totalRewardPrices)})`
+          + ` Year ($${formatMoney(totalUserYearlyRewards*totalRewardPrices)})`);
+          break;
+        case 4 :
+          _print(`Estimated ${info.rewardTokens[0].rewardTokenTicker} + ${info.rewardTokens[1].rewardTokenTicker} + ${info.rewardTokens[2].rewardTokenTicker} + ${info.rewardTokens[3].rewardTokenTicker} earnings:`
+          + ` Day ($${formatMoney(totalUserDailyRewards*totalRewardPrices)})`
+          + ` Week ($${formatMoney(totalUserWeeklyRewards*totalRewardPrices)})`
+          + ` Year ($${formatMoney(totalUserYearlyRewards*totalRewardPrices)})`);
+          break;
+        case 5 :
+          _print(`Estimated ${info.rewardTokens[0].rewardTokenTicker} + ${info.rewardTokens[1].rewardTokenTicker} + ${info.rewardTokens[2].rewardTokenTicker} + ${info.rewardTokens[3].rewardTokenTicker} + ${info.rewardTokens[4].rewardTokenTicker} earnings:`
+          + ` Day ($${formatMoney(totalUserDailyRewards*totalRewardPrices)})`
+          + ` Week ($${formatMoney(totalUserWeeklyRewards*totalRewardPrices)})`
+          + ` Year ($${formatMoney(totalUserYearlyRewards*totalRewardPrices)})`);
+          break;
+      }
       stakeTokenAddresses.push(info.stakeTokenAddress);
   }
     const approveTENDAndStake = async function() {
@@ -184,7 +221,23 @@ async function printMcnSynthetixPool(App, tokens, prices, info, chain="eth") {
     _print(`<a target="_blank" href="https://etherscan.io/address/${info.stakingAddress}#code">Etherscan</a>`);
     _print_link(`Stake ${info.userUnstaked.toFixed(6)} ${info.stakeTokenTicker}`, approveTENDAndStake)
     _print_link(`Unstake ${info.userStaked.toFixed(6)} ${info.stakeTokenTicker}`, unstake)
-    _print_link(`Claim ${info.rewardTokens[0].earned.toFixed(6)} ${info.rewardTokens[0].rewardTokenTicker} ($${formatMoney(info.rewardTokens[0].earned*rewardTokenPrices[0])}) + ${info.rewardTokens[1].earned.toFixed(6)} ${info.rewardTokens[1].rewardTokenTicker} ($${formatMoney(info.rewardTokens[1].earned*rewardTokenPrices[1])})`, claim)
+    switch (info.rewardTokens.length){
+      case 1 :
+        _print_link(`Claim ${info.rewardTokens[0].earned.toFixed(6)} ${info.rewardTokens[0].rewardTokenTicker} ($${formatMoney(info.rewardTokens[0].earned*rewardTokenPrices[0])})`, claim)
+        break;
+      case 2 :
+        _print_link(`Claim ${info.rewardTokens[0].earned.toFixed(6)} ${info.rewardTokens[0].rewardTokenTicker} ($${formatMoney(info.rewardTokens[0].earned*rewardTokenPrices[0])}) + ${info.rewardTokens[1].earned.toFixed(6)} ${info.rewardTokens[1].rewardTokenTicker} ($${formatMoney(info.rewardTokens[1].earned*rewardTokenPrices[1])})`, claim)
+        break;
+      case 3 :
+        _print_link(`Claim ${info.rewardTokens[0].earned.toFixed(6)} ${info.rewardTokens[0].rewardTokenTicker} ($${formatMoney(info.rewardTokens[0].earned*rewardTokenPrices[0])}) + ${info.rewardTokens[1].earned.toFixed(6)} ${info.rewardTokens[1].rewardTokenTicker} ($${formatMoney(info.rewardTokens[1].earned*rewardTokenPrices[1])}) + ${info.rewardTokens[2].earned.toFixed(6)} ${info.rewardTokens[2].rewardTokenTicker} ($${formatMoney(info.rewardTokens[2].earned*rewardTokenPrices[2])})`, claim)
+        break;
+      case 4 :
+        _print_link(`Claim ${info.rewardTokens[0].earned.toFixed(6)} ${info.rewardTokens[0].rewardTokenTicker} ($${formatMoney(info.rewardTokens[0].earned*rewardTokenPrices[0])}) + ${info.rewardTokens[1].earned.toFixed(6)} ${info.rewardTokens[1].rewardTokenTicker} ($${formatMoney(info.rewardTokens[1].earned*rewardTokenPrices[1])}) + ${info.rewardTokens[2].earned.toFixed(6)} ${info.rewardTokens[2].rewardTokenTicker} ($${formatMoney(info.rewardTokens[2].earned*rewardTokenPrices[2])}) + ${info.rewardTokens[3].earned.toFixed(6)} ${info.rewardTokens[3].rewardTokenTicker} ($${formatMoney(info.rewardTokens[3].earned*rewardTokenPrices[3])})`, claim)
+        break;
+      case 5 :
+        _print_link(`Claim ${info.rewardTokens[0].earned.toFixed(6)} ${info.rewardTokens[0].rewardTokenTicker} ($${formatMoney(info.rewardTokens[0].earned*rewardTokenPrices[0])}) + ${info.rewardTokens[1].earned.toFixed(6)} ${info.rewardTokens[1].rewardTokenTicker} ($${formatMoney(info.rewardTokens[1].earned*rewardTokenPrices[1])}) + ${info.rewardTokens[2].earned.toFixed(6)} ${info.rewardTokens[2].rewardTokenTicker} ($${formatMoney(info.rewardTokens[2].earned*rewardTokenPrices[2])}) + ${info.rewardTokens[3].earned.toFixed(6)} ${info.rewardTokens[3].rewardTokenTicker} ($${formatMoney(info.rewardTokens[3].earned*rewardTokenPrices[3])}) + ${info.rewardTokens[4].earned.toFixed(6)} ${info.rewardTokens[4].rewardTokenTicker} ($${formatMoney(info.rewardTokens[4].earned*rewardTokenPrices[4])})`, claim)
+        break;
+    }
     _print_link(`Revoke (set approval to 0)`, revoke)
     _print_link(`Exit`, exit)
     _print("");

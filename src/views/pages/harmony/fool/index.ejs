@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include(`${partials}/head`); -%>
+
+<body>
+<%- include(`${partials}/header_main`); -%>
+<pre id="log">
+*************** 👨‍🌾 UNOFFICIAL FOOL FARMING CALCULATOR 👨‍🌾 ***************
+INFO  : https://lootswap.finance/guilds/fool
+*************************************************************************
+
+Rewards are 25% locked up until block 25150000
+
+There is a deposit fee in some pools, please check the site.
+
+</pre>
+<div class="loader--1"></div>
+<%- include(`${partials}/scripts`, {scriptname: 'harmony_fool'}); -%>
+</body>
+</html>
