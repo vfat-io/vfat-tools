@@ -68,7 +68,10 @@ const main = async() => {
         ["Zeal                    ",`<a href="zeal"             >Various</a>`,"WING         ","https://zeal.farm"],
         ["The Seed Farm           ",`<a href="seedfarm"         >Various</a>`,"SEED         ","https://theseedfarm.app"],
         ["SageAvax                ",`<a href="sageavax"         >Various</a>`,"SAGE         ","https://sageavax.finance"],
-        ["Aave                    ",`<a href="aave"             >Various</a>`,"WAVAX        ","https://app.aave.com"]
+        ["Aave                    ",`<a href="aave"             >Various</a>`,"WAVAX        ","https://app.aave.com"],
+        ["The Bud Farm            ",`<a href="budfarm"          >Various</a>`,"BUD          ","https://thebudfarm.app"],
+        ["Mint                    ",`<a href="mintswap"         >Various</a>`,"MINT         ","https://mint-swap.com"],
+        ["SmartCoin               ",`<a href="smartcoin"        >Various</a>`,"SMRT         ","https://smartcoin.farm"]
     ]
   }
 

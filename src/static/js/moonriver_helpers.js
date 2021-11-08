@@ -11,7 +11,8 @@ const MoonriverTokens = [
     { "id": "wrapped-bitcoin","symbol": "WBTC", "contract": "0x6aB6d61428fde76768D7b45D8BFeec19c6eF91A8" },
     { "id": "binancecoin","symbol": "BNB", "contract": "0x2bF9b864cdc97b08B6D79ad4663e71B8aB65c45c" },
     { "id": "binance-usd","symbol": "BUSD", "contract": "0x5D9ab5522c64E1F6ef5e3627ECCc093f56167818" },
-    { "id": "elk-finance","symbol": "ELK", "contract": "0xE1C110E1B1b4A1deD0cAf3E42BfBdbB7b5d7cE1C" }
+    { "id": "elk-finance","symbol": "ELK", "contract": "0xE1C110E1B1b4A1deD0cAf3E42BfBdbB7b5d7cE1C" },
+    { "id": "sushi","symbol": "SUSHI", "contract": "0xf390830DF829cf22c53c8840554B98eafC5dCBc2" }
 ];
 
 async function getMoonriverPrices() {
