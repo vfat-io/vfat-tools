@@ -538,7 +538,8 @@ const main = async() => {
       ["ModerSwap           ","", `<a href="moderswap"     >Various</a>`,"MOD              ","https://moderswap.com"],
       ["RobustSwap          ","", `<a href="robustswap"    >Various</a>`,"RBS              ","https://robustswap.com"],
       ["Palladium           ","", `<a href="palladium"     >Various</a>`,"PD               ","https://palladium.farm"],
-      ["RainbowFarm RNBZ    ","", `<a href="rainbow-rnbz"   >Various</a>`,"RNBO-RNBZ        ","https://rainbowfarm.finance"],
+      ["RainbowFarm RNBZ    ","", `<a href="rainbow-rnbz"  >Various</a>`,"RNBO-RNBZ        ","https://rainbowfarm.finance"],
+      ["BootySwap           ","", `<a href="bootyswap"     >Various</a>`,"TWERK            ","https://app.bootyswap.finance"]
     ]}
 
   let table = new AsciiTable().fromJSON(tableData);
