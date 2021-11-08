@@ -157,7 +157,8 @@ const main = async () => {
       ["Ubiquity                     ", `<a href="../ubiquity/"          >Various</a>`, "UBQ                ", "https://uad.ubq.fi"],
       ["SDAO                         ", `<a href="../sdao/"              >Various</a>`, "SDAO               ", "https://app.singularitydao.ai"],
       ["Botto                        ", `<a href="../botto/"             >Various</a>`, "BOTTO              ", "https://app.botto.com"],
-      ["Swapr                        ", `<a href="../swapr/"             >Various</a>`, "SWPR               ", "https://swapr.eth.link"]
+      ["Swapr                        ", `<a href="../swapr/"             >Various</a>`, "SWPR               ", "https://swapr.eth.link"],
+      ["Merit Circle                 ", `<a href="../meritcircle/"       >Various</a>`, "MC                 ", "https://swap.meritcircle.io"]
     ]
   }
 

@@ -32,7 +32,8 @@ const FantomTokens = [
   { "id": "bitcoin", "symbol": "BTC", "contract": "0x321162Cd933E2Be498Cd2267a90534A804051b11"},
   { "id": "curve-dao-token", "symbol": "CRV", "contract": "0x1e4f97b9f9f913c46f1632781732927b9019c68b"},
   { "id": "coffin-finance", "symbol": "COFFIN", "contract": "0x593Ab53baFfaF1E821845cf7080428366F030a9c"},
-  { "id": "coffin-dollar", "symbol": "CoUSD", "contract": "0x0DeF844ED26409C5C46dda124ec28fb064D90D27"}
+  { "id": "coffin-dollar", "symbol": "CoUSD", "contract": "0x0DeF844ED26409C5C46dda124ec28fb064D90D27"},
+  { "id": "beethoven-x", "symbol": "BEETS", "contract": "0xf24bcf4d1e507740041c9cfd2dddb29585adce1e"}
 ];
 
 async function getFantomPrices() {

@@ -23,7 +23,7 @@ const main = async() => {
       ["Stake Steak        ", `<a href='steak'        >Various</a>`,"STEAK        ","https://stakesteak.com"],
       ["Frankenstein       ", `<a href='frankenstein' >Various</a>`,"FRANK        ","https://frankenstein.finance"],
       ["Waka               ", `<a href='waka'         >Various</a>`,"WAKA         ","https://waka.finance"],
-      ["Elk *              ", `<a href='elk'          >Various</a>`,"ELK          ","https://app.elk.finance"],
+      ["Elk                ", `<a href='elk'          >Various</a>`,"ELK          ","https://app.elk.finance"],
       ["Paintswap          ", `<a href='paintswap'    >Various</a>`,"BRUSH        ","https://paintswap.finance"],
       ["Tomb               ", `<a href='tomb'         >Various</a>`,"TOMB         ","https://tomb.finance"],
       ["Shadow             ", `<a href='shadow'       >Various</a>`,"SHADOW       ","https://shadowswap.app"],
@@ -108,7 +108,8 @@ const main = async() => {
       ['COFFIN FINANCE     ', `<a href="coffin"       >Various</a>`,'COFFIN       ','https://app.coffin.finance'],
       ['Babypig Finance    ', `<a href="babypig"      >Various</a>`,'fBABYPIG     ','https://babypig.finance'],
       ['Draco Force        ', `<a href="dracoforce"   >Various</a>`,'DRC          ','https://dracoforce.com'],
-      ['Smurf              ', `<a href="smurf"        >Various</a>`,'CLEVER       ','https://smurf.money']
+      ['Smurf              ', `<a href="smurf"        >Various</a>`,'CLEVER       ','https://smurf.money'],
+      ['Hundred            ', `<a href="hundred"      >Various</a>`,'HND          ','https://hundred.finance']
     ]
   }
 
