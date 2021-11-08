@@ -11,7 +11,7 @@ $(function () {
     _print('Reading smart contracts...\n')
   
     const DESTRUCTION_CHEF_ADDR = '0x85A025BA2C054117Bc53666342F8A0Be08C38A9F'
-    const rewardTokenTicker = 'destruction'
+    const rewardTokenTicker = 'DESTRUCTION'
     const DESTRUCTION_CHEF = new ethers.Contract(DESTRUCTION_CHEF_ADDR, DESTRUCTION_CHEF_ABI, App.provider)
   
     const startBlock = await DESTRUCTION_CHEF.startBlock()
