@@ -61,6 +61,36 @@ window.NETWORKS = {
       "https://explorer.arbitrum.io"
     ]
   },
+  MOONRIVER: {
+    "chainId": "0x505",
+    "chainName": "Moonriver",
+    "nativeCurrency": {
+      "name": "moonriver",
+      "symbol": "MOVR",
+      "decimals": 18
+    },
+    "rpcUrls": [
+      "https://rpc.moonriver.moonbeam.network"
+    ],
+    "blockExplorerUrls": [
+      "https://moonbeam.network/networks/moonriver/"
+    ]
+  },
+  OPTIMISM: {
+    "chainId": "0xA",
+    "chainName": "Optimistic Ethereum",
+    "nativeCurrency": {
+      "name": "ethereum",
+      "symbol": "OETH",
+      "decimals": 18
+    },
+    "rpcUrls": [
+      "https://mainnet.optimism.io/"
+    ],
+    "blockExplorerUrls": [
+      "https://optimistic.etherscan.io/"
+    ]
+  },
   BINANCE_SMART_CHAIN: {
     "chainId": "0x38",
     "chainName": "Binance Smart Chain Mainnet",
@@ -313,6 +343,66 @@ window.NETWORKS = {
         "https://explorer.kcc.io/en"
     ],
   },
+  CELO: {
+    "chainId": "0xA4EC",
+    "chainName": "Celo Mainnet",
+    "nativeCurrency": {
+      "name": "celo",
+      "symbol": "CELO",
+      "decimals": 18
+    },
+    "rpcUrls": [
+        "https://forno.celo.org"
+    ],
+    "blockExplorerUrls": [
+        "https://explorer.celo.org"
+    ],
+  },
+  IOTEX: {
+    "chainId": "0x1251",
+    "chainName": "IoTeX Mainnet",
+    "nativeCurrency": {
+      "name": "IoTeX",
+      "symbol": "IOTX",
+      "decimals": 18
+    },
+    "rpcUrls": [
+      "https://babel-api.mainnet.iotex.io"
+    ],
+    "blockExplorerUrls": [
+      "https://iotexscan.io"
+    ],
+  },
+  SMARTBCH: {
+    "chainId": "0x2710",
+    "chainName": "Smart Bitcoin Cash Mainnet",
+    "nativeCurrency": {
+      "name": "Bitcoin Cash",
+      "symbol": "BCH",
+      "decimals": 18
+    },
+    "rpcUrls": [
+      "https://global.uat.cash"
+    ],
+    "blockExplorerUrls": [
+      "https://smartscan.cash"
+    ],
+  },
+  POLIS: {
+    "chainId": "0x518AF",
+    "chainName": "Polis Olympus Chain",
+    "nativeCurrency": {
+      "name": "Polis",
+      "symbol": "POLIS",
+      "decimals": 18
+    },
+    "rpcUrls": [
+      "https://rpc.polis.tech"
+    ],
+    "blockExplorerUrls": [
+      "https://explorer.polis.tech"
+    ],
+  },
 }
 
 const infuraId = atob(window.ETHEREUM_NODE_URL).split('/').pop()
@@ -337,7 +427,10 @@ const providerOptions = {
         1666600003: "https://s3.api.harmony.one",
         122: "https://rpc.fuse.io",
         66: "https://exchainrpc.okex.org",
-        321: "https://rpc-mainnet.kcc.network"
+        4689: "https://babel-api.mainnet.iotex.io",
+        321: "https://rpc-mainnet.kcc.network",
+        10000: "https://global.uat.cash",
+        333999: "https://rpc.polis.tech"
       }
     }
   }

@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include(`${partials}/head`); -%>
+
+<body>
+<%- include(`${partials}/header_main`); -%>
+<pre id="log">
+*************** 🦊  UNOFFICIAL FOXY FINANCE FARMING CALCULATOR 🦊 ***************
+
+INFO  : https://moon.foxyfinance.co
+*****************************************************************************
+
+</pre>
+<div class="loader--1"></div>
+<%- include(`${partials}/scripts`, {scriptname: 'moonriver_foxy'}); -%>
+</body>
+</html> 
