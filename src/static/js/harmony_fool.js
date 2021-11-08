@@ -16,10 +16,10 @@ async function main() {
    const FOOL_CHEF = new ethers.Contract(FOOL_CHEF_ADDR, FOOL_CHEF_ABI, App.provider);
 
 
-  const blockNumber = await App.provider.getBlockNumber();
+  const blockNumber = await App.provider.getBlockNumber() * 1;
   const multiplier = await FOOL_CHEF.getMultiplier(blockNumber, blockNumber+1);
   const rewardPerBlock = await FOOL_CHEF.REWARD_PER_BLOCK() / 1e18;
-  const rewardsPerWeek = rewardPerBlock * 604800 / 2
+  const rewardsPerWeek = rewardPerBlock * 604800 * multiplier / 2
 
     const tokens = {};
     const prices = await getHarmonyPrices();

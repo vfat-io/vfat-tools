@@ -402,7 +402,7 @@ async function loadHarmonyChefContract(App, tokens, prices, chef, chefAddress, c
     if (poolPrices[i]) {
       const apr = printChefPool(App, chefAbi, chefAddress, prices, tokens, poolInfos[i], i, poolPrices[i],
         totalAllocPoints, rewardsPerWeek, rewardTokenTicker, rewardTokenAddress,
-        pendingRewardsFunction, null, null, "bsc")
+        pendingRewardsFunction, null, null, "harmony")
       aprs.push(apr);
     }
   }

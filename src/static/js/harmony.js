@@ -25,7 +25,7 @@ const main = async () => {
       ["Rain",              `<a href='rain'>Various</a>`,           "RAIN",          "https://rainfinance.one"],
       ["FATExDAO",          `<a href='fatex'>Various</a>`,          "FATE",          "https://app.fatex.io"],
       ["TheValleys",        `<a href='thevalleys'>Various</a>`,     "AME",           "https://thevalleys.one"],
-      ["FarmersOnlyFi",     `<a href='farmersonly'>Various</a>`,    "FOX",           "https://app.farmersonly.fi"],
+      ["FarmersOnlyFi *",   `<a href='farmersonly'>Various</a>`,    "FOX",           "https://app.farmersonly.fi"],
       ["Fuzz Finance",      `<a href='fuzz'>Various</a>`,           "FUZZ",          "https://swap.fuzz.fi"],
       ["Artemis Protocol",  `<a href='artemisprotocol'>Various</a>`,"MIS",           "https://app.artemisprotocol.one"],
       ["Harmony Cougar",    `<a href='cougar'>Various</a>`,         "CGS",           "https://harmonyapp.cougarswap.io"],
