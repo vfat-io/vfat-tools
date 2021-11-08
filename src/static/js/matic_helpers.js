@@ -173,10 +173,10 @@ async function getMaticStoredToken(App, tokenAddress, stakingAddress, type) {
       const crv = new ethers.Contract(tokenAddress, MATIC_CURVE_ABI, App.provider);
       if (tokenAddress.toLowerCase() == "0x88E11412BB21d137C217fd8b73982Dc0ED3665d7".toLowerCase()) {
         const minter = "0x3333333ACdEdBbC9Ad7bda0876e60714195681c5";
-        return await getCurveToken(App, crv, tokenAddress, stakingAddress, minter);
+        return await getCurveMaticToken(App, crv, tokenAddress, stakingAddress, minter);
       }
       const minter = await crv.minter();
-      return await getCurveToken(App, crv, tokenAddress, stakingAddress, minter);
+      return await getCurveMaticToken(App, crv, tokenAddress, stakingAddress, minter);
     case "maticSaddle":
       const saddle = new ethers.Contract(tokenAddress, MATIC_SADDLE_LP_TOKEN_ABI, App.provider);
       const swap = await saddle.swap();
