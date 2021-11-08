@@ -406,7 +406,8 @@ const main = async () => {
       ['Melon Finance       ',"",  `<a href="melonfinance"    >Various</a>`, 'MELON        ', 'https://melonfinance.cc'],
       ['Mushrooms Finance   ',"",  `<a href="mushrooms"       >Various</a>`, 'MM           ', 'https://mushrooms.finance/farms'],
       ['Wheel Finance       ',"",  `<a href="wheelfinance"    >Various</a>`, 'WHEEL        ', 'https://wheelfinance.xyz'],
-      ['Icecolony           ',"",  `<a href="icecolony"       >Various</a>`, 'ICE          ', 'https://www.icecolony.com']
+      ['Icecolony           ',"",  `<a href="icecolony"       >Various</a>`, 'ICE          ', 'https://www.icecolony.com'],
+      ['DestructionFarm         ',"",  `<a href="destructionfarm"     >Various</a>`, 'DESTRUCTIONFARM  ', 'https://destruction.sandman.finance']
     ],
   }
 
