@@ -110,7 +110,8 @@ const main = async() => {
       ['Draco Force        ', `<a href="dracoforce"   >Various</a>`,'DRC          ','https://dracoforce.com'],
       ['Smurf              ', `<a href="smurf"        >Various</a>`,'CLEVER       ','https://smurf.money'],
       ['Hundred            ', `<a href="hundred"      >Various</a>`,'HND          ','https://hundred.finance'],
-      ['FantomPup          ', `<a href="fantompup"    >Various</a>`,'PUP          ','https://fantompup.finance']
+      ['FantomPup          ', `<a href="fantompup"    >Various</a>`,'PUP          ','https://fantompup.finance'],
+      ['UndeadFinance      ', `<a href="undeadfinance">Various</a>`,'UNDEAD       ','https://undeadfinance.com']
     ]
   }
 
