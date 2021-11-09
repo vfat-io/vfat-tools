@@ -205,7 +205,7 @@ function printRewarderPool(App, chefAbi, chefAddr, prices, tokens, poolInfo, poo
     _print(`${rewarderTicker} Per Week: ${poolRewarderRewardsPerWeek.toFixed(fixedDecimals)} ($${formatMoney(usdRewarderPerWeek)})`);
     var weeklyAPR = usdPerWeek / staked_tvl * 100;
     var dailyAPR = weeklyAPR / 7;
-    var yearlyRewarderAPR = weeklyAPR * 52;
+    var yearlyAPR = weeklyAPR * 52;
     var weeklyRewarderAPR = usdRewarderPerWeek / staked_tvl * 100;
     var dailyRewarderAPR = weeklyRewarderAPR / 7;
     var yearlyRewarderAPR = weeklyRewarderAPR * 52;
@@ -213,7 +213,7 @@ function printRewarderPool(App, chefAbi, chefAddr, prices, tokens, poolInfo, poo
     let totalWeeklyAPR = weeklyAPR + weeklyRewarderAPR;
     let totalYearlyAPR = yearlyRewarderAPR + yearlyRewarderAPR;
     let totalUSDPerWeek = usdPerWeek + usdRewarderPerWeek;
-    _print(`APR ${rewardTokenTicker}: Day ${dailyAPR.toFixed(2)}% Week ${weeklyAPR.toFixed(2)}% Year ${yearlyRewarderAPR.toFixed(2)}%`);
+    _print(`APR ${rewardTokenTicker}: Day ${dailyAPR.toFixed(2)}% Week ${weeklyAPR.toFixed(2)}% Year ${yearlyAPR.toFixed(2)}%`);
     _print(`APR ${rewarderTicker}: Day ${dailyRewarderAPR.toFixed(2)}% Week ${weeklyRewarderAPR.toFixed(2)}% Year ${yearlyRewarderAPR.toFixed(2)}%`);
     var userStakedUsd = userStaked * poolTokenPrice;
     var userStakedPct = userStakedUsd / staked_tvl * 100;
