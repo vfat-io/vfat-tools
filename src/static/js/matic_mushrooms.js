@@ -22,6 +22,9 @@ async function main() {
 
    const tokens = {};
    const prices = await getMaticPrices();
+   
+   // assume AAVE DAI at $1 which is coin0 in crv3Crypto in Polygon
+   prices["0x27F8D03b3a2196956ED754baDc28D73be8830A6e"] = {"usd": 1};
 
    await loadMaticChefContract(App, tokens, prices, MM_CHEF, MM_CHEF_ADDR, MM_CHEF_ABI, rewardTokenTicker, "mm", null, rewardsPerWeek, "pendingMM", [1]);
 
