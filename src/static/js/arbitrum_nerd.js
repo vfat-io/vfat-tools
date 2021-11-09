@@ -3,7 +3,7 @@ $(function () {
 });
 
 
-const CHEF_ABI = [[
+const CHEF_ABI = [
   {
     "inputs": [
       {
