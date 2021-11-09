@@ -400,6 +400,7 @@ const main = async () => {
 	    ['Skull Finance       ', `<a href="skullfinance"    >Various</a>`, 'SKULL        ', 'https://skullfinance.top'],
 	    ['Melon Finance       ', `<a href="melonfinance"    >Various</a>`, 'MELON        ', 'https://melonfinance.cc'],
       ['Wheel Finance       ', `<a href="wheelfinance"    >Various</a>`, 'WHEEL        ', 'https://wheelfinance.xyz'],
+	  ['KIMCHI Finance       ', `<a href="kimchifinance"    >Various</a>`, 'KIMCHI        ', 'https://kimchifinance.icu'],
     ],
   }
 
