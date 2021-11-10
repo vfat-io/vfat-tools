@@ -69,14 +69,22 @@ async function loadMcnprotocolContracts(App, tokens, prices, pools, mcnContract)
     info.rewardTokens.forEach(r => r.rewardToken.tokens.forEach(rt => tokenAddresses.push(rt)));
   }
   await getNewPricesAndTokens(App, tokens, prices, tokenAddresses, mcnContract.address);
+  prices["0xC35257624b01932e521bc5D9dc07e4F9ed21ED28"] = {usd : 1};
+  prices["0x14D66e676b978255C719B2771c657ACc418Bb9Fa"] = {usd : 1};
+  prices["0xdFf5DC9d8dAC189324452D54e2df19d2Bdba78CE"] = {usd : 1};
+  //prices["0x1789777FeF2E847d2d89461e4BBaeD3F5a4C1269"] = {usd : 1};
+  prices["0x425C2c686f12d61ECD4dFD1170214E3BEFEbBe33"] = {usd : 1};
+  //prices["0xc01dB0B2aa2B93088E014eA5ac64D8bDdFA80fBB"] = {usd : 1};
   for (const info of infos) {
-    let p = await printMcnSynthetixPool(App, tokens, prices, info);
-    totalStaked += p.staked_tvl || 0;
-    totalUserStaked += p.userStaked || 0;
-    stakeTokenAddresses.push(p.stakeTokenAddresses)
-    if (p.userStaked > 0) {
-      individualAPRs.push(p.userStaked * p.apr / 100);
-    }
+    if(info.stakeToken.staked > 0){
+          let p = await printMcnSynthetixPool(App, tokens, prices, info);
+          totalStaked += p.staked_tvl || 0;
+          totalUserStaked += p.userStaked || 0;
+          stakeTokenAddresses.push(p.stakeTokenAddresses)
+          if (p.userStaked > 0) {
+            individualAPRs.push(p.userStaked * p.apr / 100);
+          }
+       }
   }
   let totalAPR = totalUserStaked == 0 ? 0 : individualAPRs.reduce((x,y)=>x+y, 0) / totalUserStaked;
   return { staked_tvl : totalStaked, totalUserStaked, totalAPR, stakeTokenAddresses };
