@@ -45,6 +45,9 @@ const pageNetwork = function() {
   if (network.toLowerCase() === 'fantom') {
     return window.NETWORKS.FANTOM
   }
+  if (network.toLowerCase() === 'cronos') {
+    return window.NETWORKS.CRONOS
+  }
   if (network.toLowerCase() === 'harmony') {
     return window.NETWORKS.HARMONY_S0
   }
@@ -2472,6 +2475,9 @@ function getErc20Prices(prices, pool, chain="eth") {
     case "fantom":
       poolUrl=`https://ftmscan.com/token/${pool.address}`;
       break;
+    case "cronos":
+      poolUrl=`https://cronos.crypto.org/explorer/address/${pool.address}`;
+      break;
     case "optimism":
       poolUrl=`https://optimistic.etherscan.io/token/${pool.address}`;
       break;
@@ -3051,6 +3057,9 @@ async function printSynthetixPool(App, info, chain="eth", customURLs) {
       case "fantom":
         _print(`<a target="_blank" href="https://ftmscan.com/address/${info.stakingAddress}#code">FTM Scan</a>`);
         break;
+      case "cronos":
+        _print(`<a target="_blank" href="https://cronos.crypto.org/explorer/address/${info.stakingAddress}#code">FTM Scan</a>`);
+        break;
       case "fuse":
         _print(`<a target="_blank" href="https://explorer.fuse.io/address/${info.stakingAddress}#code">FUSE Scan</a>`);
         break;
@@ -3208,5 +3217,7 @@ function getChainExplorerUrl(chain, address){
       return `https://explorer.harmony.one/address/${address}`;
     case "arbitrum" :
       return `https://arbiscan.io/token/${address}`;
+    case "cronos" :
+      return `https://cronos.crypto.org/explorer/address/${address}`;
   }
 }

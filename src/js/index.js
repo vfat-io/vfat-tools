@@ -294,6 +294,21 @@ window.NETWORKS = {
       "https://explorer.fuse.io"
     ]
   },
+  CRONOS: {
+    "chainId": "0x19",
+    "chainName": "Cronos Mainnet",
+    "nativeCurrency": {
+      "name": "CRO",
+      "symbol": "CRO",
+      "decimals": 18
+    },
+    "rpcUrls": [
+      "https://evm-cronos.crypto.org"
+    ],
+    "blockExplorerUrls": [
+      "https://cronos.crypto.org/explorer"
+    ]
+  },
   THUNDERCORE: {
     "chainId": "0x6c",
     "chainName": "ThunderCore",
