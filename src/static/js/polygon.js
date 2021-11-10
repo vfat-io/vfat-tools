@@ -13,7 +13,7 @@ const main = async () => {
       ['Cometh              ',"", `<a href="cometh"           >Various</a>`,'MUST          ','https://swap.cometh.io/#/stake'],
       ['Dark                ',"", `<a href="dark"            >Various</a>`, 'DB           ', 'https://www.dark.build'],
       ['Smartdex            ',"", `<a href="smartdex"        >Various</a>`, 'NIOX         ', 'https://swap.smartdex.app'],
-      ['Elk *               ',"", `<a href="elk"             >Various</a>`, 'ELK          ', 'https://app.elk.finance'],
+      ['Elk                 ',"", `<a href="elk"             >Various</a>`, 'ELK          ', 'https://app.elk.finance'],
       ['Polywhale           ',"", `<a href="polywhale"       >Various</a>`, 'KRILL        ', 'https://polywhale.finance'],
       ['Aave                ',"", `<a href="aave"            >Various</a>`, 'MATIC        ', 'https://aave.com'],
       ['BullionFinance      ',"", `<a href="bullionfinance"   >Various</a>`,'GOLD          ','https://bullionfinance.xyz',],
@@ -406,7 +406,9 @@ const main = async () => {
       ['Melon Finance       ',"",  `<a href="melonfinance"    >Various</a>`, 'MELON        ', 'https://melonfinance.cc'],
       ['Mushrooms Finance   ',"",  `<a href="mushrooms"       >Various</a>`, 'MM           ', 'https://mushrooms.finance/farms'],
       ['Wheel Finance       ',"",  `<a href="wheelfinance"    >Various</a>`, 'WHEEL        ', 'https://wheelfinance.xyz'],
-      ['Icecolony           ',"",  `<a href="icecolony"       >Various</a>`, 'ICE          ', 'https://www.icecolony.com']
+      ['Icecolony           ',"",  `<a href="icecolony"       >Various</a>`, 'ICE          ', 'https://www.icecolony.com'],
+      ['DestructionFarm     ',"",  `<a href="destructionfarm" >Various</a>`, 'DESTRUCTIONFARM', 'https://destruction.sandman.finance'],
+      ['KIMCHI Finance      ',"",  `<a href="kimchifinance"   >Various</a>`, 'KIMCHI        ', 'https://kimchifinance.icu']
     ],
   }
 

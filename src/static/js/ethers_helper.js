@@ -1754,6 +1754,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
   else if (pool.symbol.includes("LOOT-LP")) stakeTokenTicker += " Loot LP Token";
   else if (pool.symbol.includes("MIMO-LP")) stakeTokenTicker += " Mimo LP Token";
   else if (pool.symbol.includes("HLP")) stakeTokenTicker += " Hades Swap LP Token";
+  else if (pool.symbol.includes("MOCHI-LP")) stakeTokenTicker += " Mochi LP Token";
   else stakeTokenTicker += " Uni LP";
   return {
       t0: t0,
@@ -1827,6 +1828,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
               pool.symbol.includes("ZDEXLP") ?  `https://charts.zoocoin.cash/?exchange=ZooDex&pair=${t0.symbol}-${t1.symbol}` :
               pool.symbol.includes("Field-LP") ?  `https://exchange.yieldfields.finance/#/swap` :
               pool.symbol.includes("MIMO-LP") ?  `https://v2.info.mimo.exchange/pair/${pool.address}` :
+              pool.symbol.includes("MOCHI-LP") ?  `https://harmony.mochiswap.io/` :
               pool.symbol.includes("UPT") ?  `https://www.app.unic.ly/#/discover` :
               pool.symbol.includes("lv_") ?  `https://app.lixir.finance/vaults/${pool.address}` :
               pool.symbol.includes("HLP") ?  `https://analytics.hadesswap.finance/pairs/${pool.address}` :
@@ -1869,6 +1871,11 @@ function getUniPrices(tokens, prices, pool, chain="eth")
             `https://hadesswap.finance/add/${t0address}/${t1address}`,
             `https://hadesswap.finance/remove/${t0address}/${t1address}`,
             `https://hadesswap.finance/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+          ] :
+          pool.symbol.includes("MOCHI-LP") ? [
+            `https://harmony.mochiswap.io/add/${t0address}/${t1address}`,
+            `https://harmony.mochiswap.io/remove/${t0address}/${t1address}`,
+            `https://harmony.mochiswap.io/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
           ] :
           pool.symbol.includes("lv_") ? [
             `https://app.lixir.finance/vaults/${pool.address}`,

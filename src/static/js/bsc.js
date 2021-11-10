@@ -498,7 +498,7 @@ const main = async() => {
       ["BabySwap            ","", `<a href="babyswap"      >Various</a>`,"BABY             ","https://home.babyswap.finance"],
       ["Alita               ","", `<a href="alita"         >Various</a>`,"ALI              ","https://app.alita.finance"],
       ["Singular            ","", `<a href="singular"      >Various</a>`,"SING             ","https://singular.farm"],
-      ["Elk *               ","", `<a href="elk"           >Various</a>`,"ELK              ","https://app.elk.finance"],
+      ["Elk                 ","", `<a href="elk"           >Various</a>`,"ELK              ","https://app.elk.finance"],
       ["Defily              ","", `<a href="defily"        >Various</a>`,"DFL              ","https://defily.io"],
       ["United Farmers Finance","", `<a href="united_farmers_finance"        >Various</a>`,"UFF","https://unitedfarmers.finance"],
       ["Yerba Mate Finance  ","", `<a href="yerbamatefinance">Various</a>`,"YERBAMATE      ","https://app.yerbamate.finance"],
@@ -538,7 +538,8 @@ const main = async() => {
       ["ModerSwap           ","", `<a href="moderswap"     >Various</a>`,"MOD              ","https://moderswap.com"],
       ["RobustSwap          ","", `<a href="robustswap"    >Various</a>`,"RBS              ","https://robustswap.com"],
       ["Palladium           ","", `<a href="palladium"     >Various</a>`,"PD               ","https://palladium.farm"],
-      ["RainbowFarm RNBZ    ","", `<a href="rainbow-rnbz"   >Various</a>`,"RNBO-RNBZ        ","https://rainbowfarm.finance"],
+      ["RainbowFarm RNBZ    ","", `<a href="rainbow-rnbz"  >Various</a>`,"RNBO-RNBZ        ","https://rainbowfarm.finance"],
+      ["BootySwap           ","", `<a href="bootyswap"     >Various</a>`,"TWERK            ","https://app.bootyswap.finance"]
     ]}
 
   let table = new AsciiTable().fromJSON(tableData);
