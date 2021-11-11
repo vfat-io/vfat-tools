@@ -373,6 +373,36 @@ window.NETWORKS = {
       "https://iotexscan.io"
     ],
   },
+  SMARTBCH: {
+    "chainId": "0x2710",
+    "chainName": "Smart Bitcoin Cash Mainnet",
+    "nativeCurrency": {
+      "name": "Bitcoin Cash",
+      "symbol": "BCH",
+      "decimals": 18
+    },
+    "rpcUrls": [
+      "https://global.uat.cash"
+    ],
+    "blockExplorerUrls": [
+      "https://smartscan.cash"
+    ],
+  },
+  POLIS: {
+    "chainId": "0x518AF",
+    "chainName": "Polis Olympus Chain",
+    "nativeCurrency": {
+      "name": "Polis",
+      "symbol": "POLIS",
+      "decimals": 18
+    },
+    "rpcUrls": [
+      "https://rpc.polis.tech"
+    ],
+    "blockExplorerUrls": [
+      "https://explorer.polis.tech"
+    ],
+  },
 }
 
 const infuraId = atob(window.ETHEREUM_NODE_URL).split('/').pop()
@@ -398,7 +428,9 @@ const providerOptions = {
         122: "https://rpc.fuse.io",
         66: "https://exchainrpc.okex.org",
         4689: "https://babel-api.mainnet.iotex.io",
-        321: "https://rpc-mainnet.kcc.network"
+        321: "https://rpc-mainnet.kcc.network",
+        10000: "https://global.uat.cash",
+        333999: "https://rpc.polis.tech"
       }
     }
   }

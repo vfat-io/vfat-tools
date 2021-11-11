@@ -239,10 +239,10 @@ async function main() {
   for(const p of poolInfos.filter(p => p))
   {
     printYieldyakContract(p);
-    if (!isNaN(p.poolPrices.tvl)) tvl += p.poolPrices.tvl;
+    if (!isNaN(p.underlyingDepositTokensUSD)) tvl += p.underlyingDepositTokensUSD;
     if (!isNaN(p.userStaked * p.poolPrices.price)) userTvl += p.userStaked * p.poolPrices.price;
   }
-  _print_bold(`\nTotal Value Locked: $${formatMoney(tvl)}`);
+  //_print_bold(`\nTotal Value Locked: $${formatMoney(tvl)}`);
   if (userTvl > 0) {
     _print_bold(`You are staking a total of $${formatMoney(userTvl)}`);
   }
@@ -263,7 +263,8 @@ async function loadYieldyakPoolInfo(App, tokens, prices, contractAddress) {
     const ppfs = totalDeposits / totalSupply;
     const userStaked = await contract.balanceOf(App.YOUR_ADDRESS) / 1e18;
     const poolPrices = getPoolPrices(tokens, prices, vault, "avax");
-    return { vault, poolPrices, userStaked, ppfs, totalSupply, totalDeposits }
+    const underlyingDepositTokensUSD = totalDeposits * poolPrices.price;
+    return { vault, poolPrices, userStaked, ppfs, totalSupply, totalDeposits, underlyingDepositTokensUSD }
   }
   catch (err) {
     const contract = await new ethers.Contract(contractAddress, ARBIS_VAULT_UNDERLYING_ABI2, App.provider);
@@ -277,7 +278,8 @@ async function loadYieldyakPoolInfo(App, tokens, prices, contractAddress) {
     const ppfs = totalDeposits / totalSupply;
     const userStaked = await contract.balanceOf(App.YOUR_ADDRESS) / 1e18;
     const poolPrices = getPoolPrices(tokens, prices, vault, "avax");
-    return { vault, poolPrices, userStaked, ppfs, totalSupply, totalDeposits }
+    const underlyingDepositTokensUSD = totalDeposits * poolPrices.price;
+    return { vault, poolPrices, userStaked, ppfs, totalSupply, totalDeposits, underlyingDepositTokensUSD }
   }
 }
 

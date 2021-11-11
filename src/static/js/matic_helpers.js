@@ -173,10 +173,10 @@ async function getMaticStoredToken(App, tokenAddress, stakingAddress, type) {
       const crv = new ethers.Contract(tokenAddress, MATIC_CURVE_ABI, App.provider);
       if (tokenAddress.toLowerCase() == "0x88E11412BB21d137C217fd8b73982Dc0ED3665d7".toLowerCase()) {
         const minter = "0x3333333ACdEdBbC9Ad7bda0876e60714195681c5";
-        return await getCurveToken(App, crv, tokenAddress, stakingAddress, minter);
+        return await getCurveMaticToken(App, crv, tokenAddress, stakingAddress, minter);
       }
       const minter = await crv.minter();
-      return await getCurveToken(App, crv, tokenAddress, stakingAddress, minter);
+      return await getCurveMaticToken(App, crv, tokenAddress, stakingAddress, minter);
     case "maticSaddle":
       const saddle = new ethers.Contract(tokenAddress, MATIC_SADDLE_LP_TOKEN_ABI, App.provider);
       const swap = await saddle.swap();
@@ -580,7 +580,13 @@ const maticTokens = [
   { "id": "aavegochi", "symbol": "GHST", "contract": "0x385Eeac5cB85A38A9a07A70c73e0a3271CfB54A7"},
   { "id": "kommunitas", "symbol": "KOM", "contract": "0xC004e2318722EA2b15499D6375905d75Ee5390B8"},
   { "id": "polycat", "symbol": "FISH", "contract":"0x3a3Df212b7AA91Aa0402B9035b098891d276572B"},
-  { "id": "polly-defi-nest", "symbol": "NDEFI", "contract":"0xd3f07EA86DDf7BAebEfd49731D7Bbd207FedC53B"}
+  { "id": "polly-defi-nest", "symbol": "NDEFI", "contract":"0xd3f07EA86DDf7BAebEfd49731D7Bbd207FedC53B"},
+  { "id": "gamee", "symbol": "GMEE", "contract":"0xcf32822ff397Ef82425153a9dcb726E5fF61DCA7"},
+  { "id": "polkabridge", "symbol": "PBR", "contract":"0x0D6ae2a429df13e44A07Cd2969E085e4833f64A0"},
+  { "id": "phoenix-token", "symbol": "PHX", "contract":"0x9C6BfEdc14b5C23E3900889436Edca7805170f01"},
+  { "id": "zerogoki", "symbol": "REI", "contract":"0xB9f9e37c2CdbaFF928C3Da730b02F06fE09aE70E"},
+  { "id": "honor-token", "symbol": "HONOR", "contract":"0xb82a20b4522680951f11c94c54b8800c1c237693"},
+  { "id": "mantra-dao", "symbol": "OM", "contract":"0xC3Ec80343D2bae2F8E680FDADDe7C17E71E114ea"}
 ]
 
 

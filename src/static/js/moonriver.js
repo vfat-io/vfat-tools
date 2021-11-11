@@ -18,8 +18,14 @@ const main = async() => {
       ["1Swap                    ", `<a href="1swap"         >Various</a>`,"1SWAP       ","https://1swap.fi"],
       ["ApolloSwap               ", `<a href="apollo"        >Various</a>`,"APOLLO      ","https://apolloswap.farm"],
       ["MoonWhale                ", `<a href="moonwhale"     >Various</a>`,"WHALE       ","https://whale.moonlake.finance"],
-      ["LandSwap                 ", `<a href="landswap"      >Various</a>`,"LAND        ","https://landswap.app"]
-
+      ["LandSwap                 ", `<a href="landswap"      >Various</a>`,"LAND        ","https://landswap.app"],
+      ["MoonBeach                ", `<a href="moonbeach"     >Various</a>`,"COCONUT     ","https://moonbeach.farm"],
+      ["KogeFarm                 ", `<a href="koge"          >Various</a>`,"VARIOUS     ","https://kogefarm.io"],
+      ["MoonFi                   ", `<a href="moonfi"        >Various</a>`,"VARIOUS     ","https://www.moofi.app"],
+      ["Elk                      ", `<a href="elk"           >Various</a>`,"ELK         ","https://elk.finance"],
+      ["Huckleberry              ", `<a href="huckleberry"   >Various</a>`,"FINN        ","https://www.huckleberry.finance"],
+      ["Sushi                    ", `<a href="sushi"         >Various</a>`,"SUSHI/MOVR  ","https://app.sushi.com"],
+      ["Nileriver                ", `<a href="nileriver"     >Various</a>`,"NIL         ","https://www.nileriver.finance"]
     ]
   }
 

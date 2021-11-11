@@ -11,7 +11,7 @@ async function main() {
     _print(`Initialized ${App.YOUR_ADDRESS}\n`);
     _print("Reading smart contracts...\n");
 
-   const KEY_CHEF_ADDR = "0x711858293750FA053b1429F4755ce5f1C76A6557";
+   const KEY_CHEF_ADDR = "0x7a4af3Be01073D48aF3BC2a95CB7F189EdC1F97c";
    const rewardTokenTicker = "KEY";
    const KEY_CHEF = new ethers.Contract(KEY_CHEF_ADDR, KEY_CHEF_ABI, App.provider);
 
