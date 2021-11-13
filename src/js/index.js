@@ -403,6 +403,21 @@ window.NETWORKS = {
       "https://explorer.polis.tech"
     ],
   },
+  CRONOS: {
+    "chainId": "0x19",
+    "chainName": "Cronos Mainnet",
+    "nativeCurrency": {
+      "name": "CryptoCom Coin",
+      "symbol": "CRO",
+      "decimals": 18
+    },
+    "rpcUrls": [
+      "https://rpc.crodex.app"
+    ],
+    "blockExplorerUrls": [
+      "https://cronos.crypto.org/explorer"
+    ]
+  },
 }
 
 const infuraId = atob(window.ETHEREUM_NODE_URL).split('/').pop()
@@ -430,7 +445,8 @@ const providerOptions = {
         4689: "https://babel-api.mainnet.iotex.io",
         321: "https://rpc-mainnet.kcc.network",
         10000: "https://global.uat.cash",
-        333999: "https://rpc.polis.tech"
+        333999: "https://rpc.polis.tech",
+        25: "https://rpc.crodex.app"
       }
     }
   }

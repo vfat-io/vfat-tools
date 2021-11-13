@@ -69,6 +69,9 @@ const pageNetwork = function() {
   if (network.toLowerCase() === 'polis') {
     return window.NETWORKS.POLIS
   }
+  if (network.toLowerCase() === 'cronos') {
+    return window.NETWORKS.CRONOS
+  }
 
   return window.NETWORKS.ETHEREUM
 }
@@ -2543,6 +2546,9 @@ function getErc20Prices(prices, pool, chain="eth") {
     case "polis":
       poolUrl=`https://explorer.polis.tech/address/${pool.address}`;
       break;
+    case "cronos":
+      poolUrl=`https://cronos.crypto.org/explorer/address/${pool.address}`;
+      break;
   }
 
   const getDexguruTokenlink =  function() {
@@ -3112,6 +3118,9 @@ async function printSynthetixPool(App, info, chain="eth", customURLs) {
         break;
       case "harmony":
         _print(`<a target="_blank" href="https://explorer.harmony.one/address/${info.stakingAddress}#code">Harmony Explorer</a>`);
+        break;
+      case "cronos":
+        _print(`<a target="_blank" href="https://cronos.crypto.org/explorer/address/${info.stakingAddress}#code">Cronos Explorer</a>`);
         break;
     }
     if (info.stakeTokenAddress != "0x0000000000000000000000000000000000000000") {
