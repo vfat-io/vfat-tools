@@ -6,35 +6,33 @@ $(function() {
 
   SwaprStakingAddresses = [
     {
-    "id": "0x0a38511104f0f8ce902669b49f94ef745f166adc"
+    "id": "0x0463e8a24f4f71f706bcb57802060cb15bb94f64"
     },    {
-    "id": "0x1be2a96bcd71a529e19b85dd58ef2c7742a50536"
+    "id": "0x190aa002834e1563959274d6d2425cd6f7b4e7e4"
     },    {
-    "id": "0x41bc7a685b692f09acb7e2af1eacd6ec6b54c2bf"
+    "id": "0x2416f5a3b15972378144ce881d622bcefb505446"
     },    {
-    "id": "0x6bcef623122135389005b257a48b8497d09cd7da"
+    "id": "0x43d4524585b36bdca06d5d9dc0b814fac1be4402"
     },    {
-    "id": "0x70ba56c1c5b6f3e31fc562002d3d1c288fedd3a2"
+    "id": "0x51f8a22facab2e6239b0113fd7c140c3a908477e"
     },    {
-    "id": "0x7763111c02878a471a677ccf71aca749a06bcddd"
+    "id": "0x5648c16640e92f67a52165766e1e9d86792b4138"
     },    {
-    "id": "0x8a3f6e0bd38c0b4d119d6a8985c0ed0bbb52432e"
+    "id": "0x61a03c3fdc2e0986170da71af252053447ec54e1"
     },    {
-    "id": "0x8e1d895582942f928a74d8c5e72334feac5d3556"
+    "id": "0x6e7abe63090a50a0ce48f7201ded435635e13a9d"
     },    {
-    "id": "0x9c8a87fbbd45c061661945145ed5fec565ff9689"
+    "id": "0x7f73e94e25118cadafbca7065b0b92b33a57762f"
     },    {
-    "id": "0xa83b103076c993b15fe5dc89c48d3099e2d6f789"
+    "id": "0xd253c427f0655b5e731a49f2c5623679ea4b50a6"
     },    {
-    "id": "0xb85fbb49235c57e652e6470576b844f221aacc7b"
+    "id": "0xda7e52d6c185ad132ff0b92199adca18b37b728a"
     },    {
-    "id": "0xbe572411f6fea14b1cea0d3c4ffc6342581416ce"
+    "id": "0xeb093cc25e3f99f323ceb420b28c7995e6abe153"
     },    {
-    "id": "0xc47189a4bc3c597e476e09f9c84f5fddb3a9e8e2"
+    "id": "0xf33959b40745b33c781d7974cba9613a1444f951"
     },    {
-    "id": "0xe262c6d83e749dea940913ee3209a09eb69bf84c"
-    },    {
-    "id": "0xf8972252186318b1dbd367358b14badeb1485b88"
+    "id": "0xf87e0d22f400c50a84bd5d2025cb295f73ba12f3"
     },
   ]
   async function main() {

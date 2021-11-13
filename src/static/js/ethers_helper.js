@@ -1372,6 +1372,31 @@ async function getCToken(app, cToken, address, stakingAddress) {
   }
 }
 
+async function getAngleToken(app, angelToken, address, stakingAddress) {
+  const calls = [angelToken.decimals(), angelToken.totalSupply(),
+    angelToken.name(), angelToken.symbol(), angelToken.balanceOf(stakingAddress),
+    angelToken.balanceOf(app.YOUR_ADDRESS), angelToken.poolManager()];
+  const [decimals, totalSupply, name, symbol, staked, unstaked, poolManager] =
+    await app.ethcallProvider.all(calls);
+  const POOL_MANAGER_ABI = [{"inputs":[],"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"amountDistributed","type":"uint256"}],"name":"FeesDistributed","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"token","type":"address"},{"indexed":true,"internalType":"address","name":"to","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"Recovered","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"bytes32","name":"role","type":"bytes32"},{"indexed":true,"internalType":"bytes32","name":"previousAdminRole","type":"bytes32"},{"indexed":true,"internalType":"bytes32","name":"newAdminRole","type":"bytes32"}],"name":"RoleAdminChanged","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"bytes32","name":"role","type":"bytes32"},{"indexed":true,"internalType":"address","name":"account","type":"address"},{"indexed":true,"internalType":"address","name":"sender","type":"address"}],"name":"RoleGranted","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"bytes32","name":"role","type":"bytes32"},{"indexed":true,"internalType":"address","name":"account","type":"address"},{"indexed":true,"internalType":"address","name":"sender","type":"address"}],"name":"RoleRevoked","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"strategy","type":"address"},{"indexed":false,"internalType":"uint256","name":"debtRatio","type":"uint256"}],"name":"StrategyAdded","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"strategy","type":"address"},{"indexed":false,"internalType":"uint256","name":"gain","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"loss","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"debtPayment","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"totalDebt","type":"uint256"}],"name":"StrategyReported","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"strategy","type":"address"}],"name":"StrategyRevoked","type":"event"},{"inputs":[],"name":"BASE_PARAMS","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"BASE_TOKENS","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"DEFAULT_ADMIN_ROLE","outputs":[{"internalType":"bytes32","name":"","type":"bytes32"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"GOVERNOR_ROLE","outputs":[{"internalType":"bytes32","name":"","type":"bytes32"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"GUARDIAN_ROLE","outputs":[{"internalType":"bytes32","name":"","type":"bytes32"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"STABLEMASTER_ROLE","outputs":[{"internalType":"bytes32","name":"","type":"bytes32"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"STRATEGY_ROLE","outputs":[{"internalType":"bytes32","name":"","type":"bytes32"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"_governor","type":"address"}],"name":"addGovernor","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"strategy","type":"address"},{"internalType":"uint256","name":"_debtRatio","type":"uint256"}],"name":"addStrategy","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"creditAvailable","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"debtOutstanding","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"debtRatio","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address[]","name":"governorList","type":"address[]"},{"internalType":"address","name":"guardian","type":"address"},{"internalType":"contract IPerpetualManager","name":"_perpetualManager","type":"address"},{"internalType":"contract IFeeManager","name":"_feeManager","type":"address"},{"internalType":"contract IOracle","name":"_oracle","type":"address"}],"name":"deployCollateral","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"estimatedAPR","outputs":[{"internalType":"uint256","name":"apr","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"feeManager","outputs":[{"internalType":"contract IFeeManager","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getBalance","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"bytes32","name":"role","type":"bytes32"}],"name":"getRoleAdmin","outputs":[{"internalType":"bytes32","name":"","type":"bytes32"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getTotalAsset","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"bytes32","name":"role","type":"bytes32"},{"internalType":"address","name":"account","type":"address"}],"name":"grantRole","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"bytes32","name":"role","type":"bytes32"},{"internalType":"address","name":"account","type":"address"}],"name":"hasRole","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"_token","type":"address"},{"internalType":"contract IStableMaster","name":"_stableMaster","type":"address"}],"name":"initialize","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"perpetualManager","outputs":[{"internalType":"contract IPerpetualManager","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"tokenAddress","type":"address"},{"internalType":"address","name":"to","type":"address"},{"internalType":"uint256","name":"amountToRecover","type":"uint256"}],"name":"recoverERC20","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"_governor","type":"address"}],"name":"removeGovernor","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"bytes32","name":"role","type":"bytes32"},{"internalType":"address","name":"account","type":"address"}],"name":"renounceRole","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"gain","type":"uint256"},{"internalType":"uint256","name":"loss","type":"uint256"},{"internalType":"uint256","name":"debtPayment","type":"uint256"}],"name":"report","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"guardian","type":"address"}],"name":"revokeGuardian","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"bytes32","name":"role","type":"bytes32"},{"internalType":"address","name":"account","type":"address"}],"name":"revokeRole","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"strategy","type":"address"}],"name":"revokeStrategy","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"contract IFeeManager","name":"_feeManager","type":"address"}],"name":"setFeeManager","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"_guardian","type":"address"},{"internalType":"address","name":"guardian","type":"address"}],"name":"setGuardian","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"strategy","type":"address"}],"name":"setStrategyEmergencyExit","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"stableMaster","outputs":[{"internalType":"contract IStableMaster","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"strategies","outputs":[{"internalType":"uint256","name":"lastReport","type":"uint256"},{"internalType":"uint256","name":"totalStrategyDebt","type":"uint256"},{"internalType":"uint256","name":"debtRatio","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"","type":"uint256"}],"name":"strategyList","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"token","outputs":[{"internalType":"contract IERC20","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"totalDebt","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"strategy","type":"address"},{"internalType":"uint256","name":"_debtRatio","type":"uint256"}],"name":"updateStrategyDebtRatio","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"contract IStrategy","name":"strategy","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"withdrawFromStrategy","outputs":[],"stateMutability":"nonpayable","type":"function"}]
+  const poolManagerContract = new ethcall.Contract(poolManager, POOL_MANAGER_ABI);
+  const [_token] = await app.ethcallProvider.all([poolManagerContract.token()]);
+  const token = await getToken(app, _token, address);
+  return {
+    address,
+    name,
+    symbol,
+    totalSupply,
+    decimals,
+    staked: staked / 10 ** decimals,
+    unstaked: unstaked / 10 ** decimals,
+    token: token,
+    balance: totalSupply,
+    contract: angelToken,
+    tokens : [address].concat(token.tokens)
+  }
+}
+
 function hex_to_ascii(str1)
 {
  var hex  = str1.toString();
@@ -1397,6 +1422,9 @@ async function getStoredToken(app, tokenAddress, stakingAddress, type) {
       const bal = new ethcall.Contract(tokenAddress, BALANCER_POOL_ABI);
       const [tokens] = await app.ethcallProvider.all([bal.getFinalTokens()]);
       return await getBalancerPool(app, bal, tokenAddress, stakingAddress, tokens);
+    case "angle":
+      const angle = new ethcall.Contract(tokenAddress, ANGLE_POOL_ABI);
+      return await getAngleToken(app, angle, tokenAddress, stakingAddress);
     case "balancerSmart":
       const sbal = new ethcall.Contract(tokenAddress, BPOOL_TOKEN_ABI);
       const [bPool] = await app.ethcallProvider.all([sbal.bPool()]);
@@ -1495,6 +1523,15 @@ async function getToken(app, tokenAddress, stakingAddress) {
     const balPool = await getBalancerPool(app, bal, tokenAddress, stakingAddress, tokens);
     window.localStorage.setItem(tokenAddress, "balancer");
     return balPool;
+  }
+  catch(err) {
+  }
+  try {
+    const angle = new ethcall.Contract(tokenAddress, ANGLE_POOL_ABI);
+    const [_poolManager] = await app.ethcallProvider.all([angle.poolManager()]);
+    const anglePool = await getAngleToken(app, angle, tokenAddress, stakingAddress);
+    window.localStorage.setItem(tokenAddress, "angle");
+    return anglePool;
   }
   catch(err) {
   }
@@ -1729,6 +1766,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
   else if (pool.symbol.includes("Cake")) stakeTokenTicker += " Cake LP";
   else if (pool.name.includes("Value LP")) stakeTokenTicker += " Value LP";
   else if (pool.symbol.includes("PGL")) stakeTokenTicker += " PGL";
+  else if (pool.symbol.includes("JLP")) stakeTokenTicker += " JLP";
   else if (pool.symbol.includes("CS-LP")) stakeTokenTicker += " CSS LP";
   else if (pool.symbol.includes("DFYN")) stakeTokenTicker += " DFYN LP";
   else if (pool.symbol.includes("SPIRIT")) stakeTokenTicker += " SPIRIT LP";
@@ -1818,6 +1856,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
               pool.symbol.includes("SPIRIT") ?  `https://swap.spiritswap.finance/#/swap` :
               pool.symbol.includes("spLP") ?  `https://info.spookyswap.finance/pair/${pool.address}` :
               pool.symbol.includes("Lv1") ?  `https://info.steakhouse.finance/pair/${pool.address}` :
+              pool.symbol.includes("JLP") ?  `https://cchain.explorer.avax.network/address/${pool.address}` :
               pool.symbol.includes("ELP") ?  `https://app.elk.finance/#/swap` :
               pool.symbol.includes("BRUSH-LP") ?  `https://paintswap.finance` :
               pool.symbol.includes("PLP") ?  `https://exchange.pureswap.finance/#/swap` :
@@ -2424,18 +2463,20 @@ function getWrapPrices(tokens, prices, pool)
     else {
       tokenPrice = getParameterCaseInsensitive(prices, wrappedToken.address)?.usd;
     }
+    const poolUrl = "https://etherscan.io/address/" + pool.address;
+    const etherscanUrl = "https://etherscan.io/address/" + pool.address;
+    const name = `<a href='${etherscanUrl}' target='_blank'>${pool.symbol}</a> (Wrapped <a href='${poolUrl}' target='_blank'>${wrappedToken.symbol}</a>)`;
     const price = (pool.balance / 10 ** wrappedToken.decimals) * tokenPrice / (pool.totalSupply / 10 ** pool.decimals);
     const tvl = pool.balance / 10 ** wrappedToken.decimals * price;
     const staked_tvl = pool.staked * price;
     prices[pool.address] = { usd : price };
     return {
-      name: pool.symbol,
+      name: name,
       tvl : tvl,
       staked_tvl : staked_tvl,
       price : price,
       stakeTokenTicker : pool.symbol,
       print_price() {
-        const poolUrl = "https://etherscan.io/address/" + pool.address;
         _print(`<a href='${poolUrl}' target='_blank'>${pool.symbol}</a> (Wrapped ${pool.token.name}) Price: $${formatMoney(price)} TVL: $${formatMoney(tvl)}`);
         _print(`Staked: ${pool.staked.toFixed(4)} ${pool.symbol} ($${formatMoney(staked_tvl)})`);
       },
