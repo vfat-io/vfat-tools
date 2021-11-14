@@ -38,7 +38,8 @@ const main = async () => {
       ["Elk",               `<a href='elk'>Various</a>`,            "ELK",           "https://elk.finance"],
       ["Eggtart",           `<a href='eggtart'>Various</a>`,        "EGGT",          "https://eggtartswap.com"],
       ["OpenSwap",          `<a href='openx'>Various</a>`,          "OpenX",         "https://app.openswap.one"],
-      ["Fool",              `<a href='fool'>Various</a>`,           "FOOL",          "https://lootswap.finance/guilds/fool"]
+      ["Fool",              `<a href='fool'>Various</a>`,           "FOOL",          "https://lootswap.finance/guilds/fool"],
+      ["SmugSwap",          `<a href='smugdoge'>Various</a>`,       "BABYSMUG",      "https://smugswap.com"]
     ]
   }
 
