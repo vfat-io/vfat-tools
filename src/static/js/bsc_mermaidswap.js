@@ -903,7 +903,7 @@ $(function() {
         const prices = await getBscPrices();
     
         await loadBscChefContract(App, tokens, prices, PANCAKE_CHEF, PANCAKE_CHEF_ADDR, PANCAKE_CHEF_ABI, rewardTokenTicker,
-            "merd", null, rewardsPerWeek, "pendingMerd");
+            "merd", null, rewardsPerWeek, "pendingMerd", [11]);
     
         hideLoading();
       }
