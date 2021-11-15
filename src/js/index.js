@@ -303,7 +303,7 @@ window.NETWORKS = {
       "decimals": 18
     },
     "rpcUrls": [
-      "https://evm-cronos.crypto.org"
+      "https://rpc.crodex.app/"
     ],
     "blockExplorerUrls": [
       "https://cronos.crypto.org/explorer"
@@ -445,7 +445,8 @@ const providerOptions = {
         4689: "https://babel-api.mainnet.iotex.io",
         321: "https://rpc-mainnet.kcc.network",
         10000: "https://global.uat.cash",
-        333999: "https://rpc.polis.tech"
+        333999: "https://rpc.polis.tech",
+        25: "https://rpc.crodex.app/"
       }
     }
   }
