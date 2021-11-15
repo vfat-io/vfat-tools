@@ -1802,6 +1802,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
   else if (pool.symbol.includes("MIMO-LP")) stakeTokenTicker += " Mimo LP Token";
   else if (pool.symbol.includes("HLP")) stakeTokenTicker += " Hades Swap LP Token";
   else if (pool.symbol.includes("MOCHI-LP")) stakeTokenTicker += " Mochi LP Token";
+  else if (pool.symbol.includes("SMUG-LP")) stakeTokenTicker += " Smug LP Token";
   else if (pool.symbol.includes("VVS-LP")) stakeTokenTicker += " VVS LP Token";
   else if (pool.symbol.includes("Crona-LP")) stakeTokenTicker += " Crona LP Token";
   else if (pool.symbol.includes("Wagyu-LP")) stakeTokenTicker += " Wagyu LP Token";
@@ -1883,6 +1884,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
               pool.symbol.includes("Field-LP") ?  `https://exchange.yieldfields.finance/#/swap` :
               pool.symbol.includes("MIMO-LP") ?  `https://v2.info.mimo.exchange/pair/${pool.address}` :
               pool.symbol.includes("MOCHI-LP") ?  `https://harmony.mochiswap.io/` :
+              pool.symbol.includes("SMUG-LP") ?  `https://smugswap.com/` :
               pool.symbol.includes("UPT") ?  `https://www.app.unic.ly/#/discover` :
               pool.symbol.includes("lv_") ?  `https://app.lixir.finance/vaults/${pool.address}` :
               pool.symbol.includes("HLP") ?  `https://analytics.hadesswap.finance/pairs/${pool.address}` :
@@ -1947,6 +1949,11 @@ function getUniPrices(tokens, prices, pool, chain="eth")
             `https://harmony.mochiswap.io/add/${t0address}/${t1address}`,
             `https://harmony.mochiswap.io/remove/${t0address}/${t1address}`,
             `https://harmony.mochiswap.io/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+          ] :
+          pool.symbol.includes("SMUG-LP") ? [
+            `https://smugswap.com/add/${t0address}/${t1address}`,
+            `https://smugswap.com/remove/${t0address}/${t1address}`,
+            `https://smugswap.com/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
           ] :
           pool.symbol.includes("lv_") ? [
             `https://app.lixir.finance/vaults/${pool.address}`,
