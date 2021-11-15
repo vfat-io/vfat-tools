@@ -1801,6 +1801,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
   else if (pool.symbol.includes("MOCHI-LP")) stakeTokenTicker += " Mochi LP Token";
   else if (pool.symbol.includes("VVS-LP")) stakeTokenTicker += " VVS LP Token";
   else if (pool.symbol.includes("Crona-LP")) stakeTokenTicker += " Crona LP Token";
+  else if (pool.symbol.includes("Wagyu-LP")) stakeTokenTicker += " Wagyu LP Token";
   else stakeTokenTicker += " Uni LP";
   return {
       t0: t0,
@@ -1868,6 +1869,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
               pool.symbol.includes("HBLP") ?  `https://info.huckleberry.finance/pair/${pool.address}` :
               pool.symbol.includes("BLP") ?  `https://info.bakeryswap.org/#/pair/${pool.address}` :
               pool.symbol.includes("KUS-LP") ?  `https://kuswap.info/pair/#/${pool.address}` :
+              pool.symbol.includes("Wagyu-LP") ?  `https://exchange.wagyuswap.app/info/pool/${pool.address}` :
               pool.symbol.includes("KoffeeMug") ?  `https://koffeeswap.exchange/#/pro` :
               pool.symbol.includes("APE-LP") ?  `https://info.apeswap.finance/pair/${pool.address}` :
               pool.symbol.includes("VLP") ?  `https://info.viralata.finance/pair/${pool.address}` :
@@ -1945,6 +1947,11 @@ function getUniPrices(tokens, prices, pool, chain="eth")
             `https://dmm.exchange/#/add/${t0address}/${t1address}/${pool.address}`,
             `https://dmm.exchange/#/remove/${t0address}/${t1address}/${pool.address}`,
             `https://dmm.exchange/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+          ]:
+          pool.symbol.includes("Wagyu-LP") ? [
+            `https://exchange.wagyuswap.app/add/${t0address}/${t1address}`,
+            `https://exchange.wagyuswap.app/remove/${t0address}/${t1address}`,
+            `https://exchange.wagyuswap.app/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
           ]:
           pool.symbol.includes("LOOT-LP") ? [
             `https://legacy.lootswap.finance/#/add/${t0address}/${t1address}`,
