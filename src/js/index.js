@@ -249,6 +249,21 @@ window.NETWORKS = {
       "https://evmexplorer.velas.com"
     ],
   },
+  BOBA: {
+    "chainId": "0x120",
+    "chainName": "Boba Network",
+    "nativeCurrency": {
+      "name": "ethereum",
+      "symbol": "ETH",
+      "decimals": 18
+    },
+    "rpcUrls": [
+      "https://mainnet.boba.network/"
+    ],
+    "blockExplorerUrls": [
+      "https://blockexplorer.boba.network"
+    ],
+  },
   HARMONY_S0: {
     "chainId": "0x63564C40",
     "chainName": "Harmony Mainnet Shard 0",

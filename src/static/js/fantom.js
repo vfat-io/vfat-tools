@@ -117,6 +117,7 @@ const main = async() => {
       ['Unirex Finance     ', `<a href="unirexfinance">Various</a>`,'fUNIREX      ','https://unirex.finance'],
       ['Krampus Finance    ', `<a href="krampus"      >Various</a>`,'KrampusToken ','https://krampus.finance'],
       ['KUZO Defi          ', `<a href="kuzo"         >Various</a>`,'KUZO         ','https://kuzo.xyz'],
+      ['Monster Finance    ', `<a href="monsterfinance">Various</a>`,'MNSTR       ','https://monsterfinance.app']
     ]
   }
 

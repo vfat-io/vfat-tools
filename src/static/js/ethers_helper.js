@@ -57,6 +57,9 @@ const pageNetwork = function() {
   if (network.toLowerCase() === 'aurora') {
     return window.NETWORKS.AURORA
   }
+  if (network.toLowerCase() === 'boba') {
+    return window.NETWORKS.BOBA
+  }
   if (network.toLowerCase() === 'avax') {
     return window.NETWORKS.AVALANCHE
   }
@@ -1804,6 +1807,8 @@ function getUniPrices(tokens, prices, pool, chain="eth")
   else if (pool.symbol.includes("MOCHI-LP")) stakeTokenTicker += " Mochi LP Token";
   else if (pool.symbol.includes("VVS-LP")) stakeTokenTicker += " VVS LP Token";
   else if (pool.symbol.includes("Crona-LP")) stakeTokenTicker += " Crona LP Token";
+  else if (pool.symbol.includes("Wagyu-LP")) stakeTokenTicker += " Wagyu LP Token";
+  else if (pool.symbol.includes("OLP")) stakeTokenTicker += " Oolong LP Token";
   else stakeTokenTicker += " Uni LP";
   return {
       t0: t0,
@@ -1871,6 +1876,8 @@ function getUniPrices(tokens, prices, pool, chain="eth")
               pool.symbol.includes("HBLP") ?  `https://info.huckleberry.finance/pair/${pool.address}` :
               pool.symbol.includes("BLP") ?  `https://info.bakeryswap.org/#/pair/${pool.address}` :
               pool.symbol.includes("KUS-LP") ?  `https://kuswap.info/pair/#/${pool.address}` :
+              pool.symbol.includes("Wagyu-LP") ?  `https://exchange.wagyuswap.app/info/pool/${pool.address}` :
+              pool.symbol.includes("OLP") ?  `https://info.oolongswap.com/#/pair/${pool.address}` :
               pool.symbol.includes("KoffeeMug") ?  `https://koffeeswap.exchange/#/pro` :
               pool.symbol.includes("APE-LP") ?  `https://info.apeswap.finance/pair/${pool.address}` :
               pool.symbol.includes("VLP") ?  `https://info.viralata.finance/pair/${pool.address}` :
@@ -1919,6 +1926,11 @@ function getUniPrices(tokens, prices, pool, chain="eth")
             `https://vvs.finance/remove/${t0address}/${t1address}`,
             `https://vvs.finance/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
           ] :
+          pool.symbol.includes("OLP") ? [
+            `https://oolongswap.com/#/add/${t0address}/${t1address}`,
+            `https://oolongswap.com/#/remove/${t0address}/${t1address}`,
+            `https://oolongswap.com/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+          ] :
           pool.symbol.includes("Crona-LP") ? [
             `https://app.cronaswap.org/add/${t0address}/${t1address}`,
             `https://app.cronaswap.org/remove/${t0address}/${t1address}`,
@@ -1948,6 +1960,11 @@ function getUniPrices(tokens, prices, pool, chain="eth")
             `https://dmm.exchange/#/add/${t0address}/${t1address}/${pool.address}`,
             `https://dmm.exchange/#/remove/${t0address}/${t1address}/${pool.address}`,
             `https://dmm.exchange/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+          ]:
+          pool.symbol.includes("Wagyu-LP") ? [
+            `https://exchange.wagyuswap.app/add/${t0address}/${t1address}`,
+            `https://exchange.wagyuswap.app/remove/${t0address}/${t1address}`,
+            `https://exchange.wagyuswap.app/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
           ]:
           pool.symbol.includes("LOOT-LP") ? [
             `https://legacy.lootswap.finance/#/add/${t0address}/${t1address}`,
@@ -2545,6 +2562,9 @@ function getErc20Prices(prices, pool, chain="eth") {
     case "aurora":
       poolUrl=`https://explorer.mainnet.aurora.dev/address/${pool.address}`;
       break;
+    case "boba":
+      poolUrl=`https://blockexplorer.boba.network/address/${pool.address}`;
+      break;
     case "optimism":
       poolUrl=`https://optimistic.etherscan.io/token/${pool.address}`;
       break;
@@ -3133,6 +3153,9 @@ async function printSynthetixPool(App, info, chain="eth", customURLs) {
       case "aurora":
         _print(`<a target="_blank" href="https://explorer.mainnet.aurora.dev/address/${info.stakingAddress}#code">Aurora Explorer</a>`);
         break;
+      case "boba":
+        _print(`<a target="_blank" href="https://blockexplorer.boba.network/address/${info.stakingAddress}#code">Boba Explorer</a>`);
+        break;
       case "fuse":
         _print(`<a target="_blank" href="https://explorer.fuse.io/address/${info.stakingAddress}#code">FUSE Scan</a>`);
         break;
@@ -3296,5 +3319,7 @@ function getChainExplorerUrl(chain, address){
       return `https://evmexplorer.velas.com/address/${address}`;
     case "aurora" :
       return `https://explorer.mainnet.aurora.dev/address/${address}`;
+    case "boba" :
+      return `https://blockexplorer.boba.network/address/${address}`;
   }
 }
