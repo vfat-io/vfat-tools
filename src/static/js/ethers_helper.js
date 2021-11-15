@@ -1797,6 +1797,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
   else if (pool.symbol.includes("HLP")) stakeTokenTicker += " Hades Swap LP Token";
   else if (pool.symbol.includes("MOCHI-LP")) stakeTokenTicker += " Mochi LP Token";
   else if (pool.symbol.includes("VVS-LP")) stakeTokenTicker += " VVS LP Token";
+  else if (pool.symbol.includes("Crona-LP")) stakeTokenTicker += " Crona LP Token";
   else stakeTokenTicker += " Uni LP";
   return {
       t0: t0,
@@ -1877,6 +1878,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
               pool.symbol.includes("HLP") ?  `https://analytics.hadesswap.finance/pairs/${pool.address}` :
               pool.symbol.includes("LOOT-LP") ?  `https://analytics.lootswap.finance/pair/${pool.address}` :
               pool.symbol.includes("VVS-LP") ?  `https://vvs.finance/info/farm/${pool.address}` :
+              pool.symbol.includes("Crona-LP") ?  `https://app.cronaswap.org/info/${pool.address}` : //wait for real version
               pool.symbol.includes("BenSwap") ? ({
                 "bsc": `https://info.benswap.finance/pair/${pool.address}`,
                 "smartbch": `https://info.benswap.cash/pair/${pool.address}`
@@ -1910,6 +1912,11 @@ function getUniPrices(tokens, prices, pool, chain="eth")
             `https://vvs.finance/add/${t0address}/${t1address}`,
             `https://vvs.finance/remove/${t0address}/${t1address}`,
             `https://vvs.finance/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+          ] :
+          pool.symbol.includes("Crona-LP") ? [
+            `https://app.cronaswap.org/add/${t0address}/${t1address}`,
+            `https://app.cronaswap.org/remove/${t0address}/${t1address}`,
+            `https://app.cronaswap.org/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
           ] :
           pool.symbol.includes("BLP") ? [
             `https://www.bakeryswap.org/#/add/${t0address}/${t1address}`,

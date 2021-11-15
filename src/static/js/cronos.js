@@ -10,7 +10,8 @@ const main = async() => {
     "rows": [
       ["CrodexSwap           ", `<a href='crodex'     >Various</a>`,"CRX          ","https://swap.crodex.app"],
       ["VVS Finance          ", `<a href='vvs'        >Various</a>`,"VVS          ","https://vvs.finance"],
-      ["CroFarm              ", `<a href='crofarm'    >Various</a>`,"CRF          ","https://crofarm.app"]
+      ["CroFarm              ", `<a href='crofarm'    >Various</a>`,"CRF          ","https://crofarm.app"],
+      ["CronaSwap            ", `<a href='crona'      >Various</a>`,"CRONA        ","https://app.cronaswap.org"]
     ]
   }
 
