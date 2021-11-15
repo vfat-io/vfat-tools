@@ -51,6 +51,9 @@ const pageNetwork = function() {
   if (network.toLowerCase() === 'harmony') {
     return window.NETWORKS.HARMONY_S0
   }
+  if (network.toLowerCase() === 'velas') {
+    return window.NETWORKS.VELAS
+  }
   if (network.toLowerCase() === 'avax') {
     return window.NETWORKS.AVALANCHE
   }
@@ -2533,6 +2536,9 @@ function getErc20Prices(prices, pool, chain="eth") {
     case "cronos":
       poolUrl=`https://cronos.crypto.org/explorer/address/${pool.address}`;
       break;
+    case "velas":
+      poolUrl=`https://evmexplorer.velas.com/address/${pool.address}`;
+      break;
     case "optimism":
       poolUrl=`https://optimistic.etherscan.io/token/${pool.address}`;
       break;
@@ -3113,7 +3119,10 @@ async function printSynthetixPool(App, info, chain="eth", customURLs) {
         _print(`<a target="_blank" href="https://ftmscan.com/address/${info.stakingAddress}#code">FTM Scan</a>`);
         break;
       case "cronos":
-        _print(`<a target="_blank" href="https://cronos.crypto.org/explorer/address/${info.stakingAddress}#code">FTM Scan</a>`);
+        _print(`<a target="_blank" href="https://cronos.crypto.org/explorer/address/${info.stakingAddress}#code">Cronos Scan</a>`);
+        break;
+      case "velas":
+        _print(`<a target="_blank" href="https://evmexplorer.velas.com/address/${info.stakingAddress}#code">Velas Scan</a>`);
         break;
       case "fuse":
         _print(`<a target="_blank" href="https://explorer.fuse.io/address/${info.stakingAddress}#code">FUSE Scan</a>`);
@@ -3274,5 +3283,7 @@ function getChainExplorerUrl(chain, address){
       return `https://arbiscan.io/token/${address}`;
     case "cronos" :
       return `https://cronos.crypto.org/explorer/address/${address}`;
+    case "velas" :
+      return `https://evmexplorer.velas.com/address/${address}`;
   }
 }

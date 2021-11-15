@@ -219,6 +219,21 @@ window.NETWORKS = {
       "https://ftmscan.com"
     ],
   },
+  VELAS: {
+    "chainId": "0x6A",
+    "chainName": "Velas EVM",
+    "nativeCurrency": {
+      "name": "Velas",
+      "symbol": "VLX",
+      "decimals": 18
+    },
+    "rpcUrls": [
+      "https://evmexplorer.velas.com/rpc"
+    ],
+    "blockExplorerUrls": [
+      "https://evmexplorer.velas.com"
+    ],
+  },
   HARMONY_S0: {
     "chainId": "0x63564C40",
     "chainName": "Harmony Mainnet Shard 0",
