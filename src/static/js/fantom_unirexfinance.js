@@ -38,7 +38,7 @@ $(function() {
             UNIREX_CHEF_ADDR,
             UNIREX_CHEF_ABI,
             rewardTokenTicker,
-            "funirex",
+            "unirex",
             null,
             rewardsPerWeek,
             "pendingUnirex");
