@@ -294,6 +294,21 @@ window.NETWORKS = {
       "https://explorer.fuse.io"
     ]
   },
+  CRONOS: {
+    "chainId": "0x19",
+    "chainName": "Cronos Mainnet",
+    "nativeCurrency": {
+      "name": "CRO",
+      "symbol": "CRO",
+      "decimals": 18
+    },
+    "rpcUrls": [
+      "https://evm-cronos.crypto.org"
+    ],
+    "blockExplorerUrls": [
+      "https://cronos.crypto.org/explorer"
+    ]
+  },
   THUNDERCORE: {
     "chainId": "0x6c",
     "chainName": "ThunderCore",
@@ -388,6 +403,21 @@ window.NETWORKS = {
       "https://smartscan.cash"
     ],
   },
+  POLIS: {
+    "chainId": "0x518AF",
+    "chainName": "Polis Olympus Chain",
+    "nativeCurrency": {
+      "name": "Polis",
+      "symbol": "POLIS",
+      "decimals": 18
+    },
+    "rpcUrls": [
+      "https://rpc.polis.tech"
+    ],
+    "blockExplorerUrls": [
+      "https://explorer.polis.tech"
+    ],
+  },
 }
 
 const infuraId = atob(window.ETHEREUM_NODE_URL).split('/').pop()
@@ -414,7 +444,8 @@ const providerOptions = {
         66: "https://exchainrpc.okex.org",
         4689: "https://babel-api.mainnet.iotex.io",
         321: "https://rpc-mainnet.kcc.network",
-        10000: "https://global.uat.cash"
+        10000: "https://global.uat.cash",
+        333999: "https://rpc.polis.tech"
       }
     }
   }

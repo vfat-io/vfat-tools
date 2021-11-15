@@ -27,10 +27,13 @@ const FantomTokens = [
   { "id": "galaxy-triton", "symbol": "TRITON", "contract": "0x9cf4009e62429Db3F57Aa9e7e8E898427cF6865f"},
   { "id": "galaxy-oberon", "symbol": "OBERON", "contract": "0xc979E70611D997Aa109528c6A9aa73D82Eaa2881"},
   { "id": "pumpkins", "symbol": "KINS", "contract": "0x6eced8e16eda61e65292f019b165542a5906ecd6"},
-  { "id": "wraithswap", "symbol": "WRA", "contract": "0x4CF098d3775Bd78a4508a13E126798Da5911b6cd"},    
+  { "id": "wraithswap", "symbol": "WRA", "contract": "0x4CF098d3775Bd78a4508a13E126798Da5911b6cd"},
   { "id": "geist-finance", "symbol": "GEIST", "contract": "0xd8321aa83fb0a4ecd6348d4577431310a6e0814d"},
   { "id": "bitcoin", "symbol": "BTC", "contract": "0x321162Cd933E2Be498Cd2267a90534A804051b11"},
-  { "id": "curve-dao-token", "symbol": "CRV", "contract": "0x1e4f97b9f9f913c46f1632781732927b9019c68b"}
+  { "id": "curve-dao-token", "symbol": "CRV", "contract": "0x1e4f97b9f9f913c46f1632781732927b9019c68b"},
+  { "id": "coffin-finance", "symbol": "COFFIN", "contract": "0x593Ab53baFfaF1E821845cf7080428366F030a9c"},
+  { "id": "coffin-dollar", "symbol": "CoUSD", "contract": "0x0DeF844ED26409C5C46dda124ec28fb064D90D27"},
+  { "id": "beethoven-x", "symbol": "BEETS", "contract": "0xf24bcf4d1e507740041c9cfd2dddb29585adce1e"}
 ];
 
 async function getFantomPrices() {
@@ -159,7 +162,7 @@ async function getFantomErc20(App, token, address, stakingAddress) {
 async function getFantomVault(App, vault, address, stakingAddress) {
   const calls = [vault.decimals(), vault.token(), vault.name(), vault.symbol(),
     vault.totalSupply(), vault.balanceOf(stakingAddress), vault.balanceOf(App.YOUR_ADDRESS), vault.balance()]
-  const [decimals, token_, name, symbol, totalSupply, staked, unstaked, balance] = 
+  const [decimals, token_, name, symbol, totalSupply, staked, unstaked, balance] =
     await App.ethcallProvider.all(calls);
   const token = await getFantomToken(App, token_, address);
   return {
@@ -177,10 +180,32 @@ async function getFantomVault(App, vault, address, stakingAddress) {
   }
 }
 
+async function getFantomBasicVault(App, vault, address, stakingAddress) {
+  const calls = [vault.decimals(), vault.underlying(), vault.name(), vault.symbol(),
+    vault.totalSupply(), vault.balanceOf(stakingAddress), vault.balanceOf(App.YOUR_ADDRESS),
+    vault.underlyingBalanceWithInvestment()];
+  const [ decimals, underlying, name, symbol, totalSupply, staked, unstaked, balance] =
+    await App.ethcallProvider.all(calls);
+  const token = await getFantomToken(App, underlying, address);
+  return {
+    address,
+    name,
+    symbol,
+    totalSupply,
+    decimals,
+    staked: staked / 10 ** decimals,
+    unstaked: unstaked / 10 ** decimals,
+    token: token,
+    balance,
+    contract: vault,
+    tokens : token.tokens
+  }
+}
+
 async function getFantomWantVault(App, vault, address, stakingAddress) {
   const calls = [vault.decimals(), vault.want(), vault.name(), vault.symbol(),
     vault.totalSupply(), vault.balanceOf(stakingAddress), vault.balanceOf(App.YOUR_ADDRESS), vault.balance()]
-  const [decimals, token_, name, symbol, totalSupply, staked, unstaked, balance] = 
+  const [decimals, token_, name, symbol, totalSupply, staked, unstaked, balance] =
     await App.ethcallProvider.all(calls);
   const token = await getFantomToken(App, token_, address);
   return {
@@ -201,7 +226,7 @@ async function getFantomWantVault(App, vault, address, stakingAddress) {
 async function getFantomSpoonVault(App, vault, address, stakingAddress) {
   const calls = [vault.decimals(), vault.wantToken(), vault.name(), vault.symbol(),
     vault.totalSupply(), vault.balanceOf(stakingAddress), vault.balanceOf(App.YOUR_ADDRESS), vault.totalTokenBalance()]
-  const [decimals, token_, name, symbol, totalSupply, staked, unstaked, balance] = 
+  const [decimals, token_, name, symbol, totalSupply, staked, unstaked, balance] =
     await App.ethcallProvider.all(calls);
   const token = await getFantomToken(App, token_, address);
   return {
@@ -280,6 +305,9 @@ async function getFantomStoredToken(App, tokenAddress, stakingAddress, type) {
     case "fantomVault":
       const vault = new ethcall.Contract(tokenAddress, FANTOM_VAULT_TOKEN_ABI);
       return await getFantomVault(App, vault, tokenAddress, stakingAddress);
+    case "basicFantomVault":
+      const basicFantomVault = new ethcall.Contract(tokenAddress, HARVEST_VAULT_ABI);
+      return await getFantomBasicVault(App, basicFantomVault, tokenAddress, stakingAddress);
     case "fantomWantVault":
       const wantVault = new ethcall.Contract(tokenAddress, FANTOM_VAULT_WANT_ABI);
       return await getFantomWantVault(App, wantVault, tokenAddress, stakingAddress);
@@ -342,6 +370,15 @@ async function getFantomToken(App, tokenAddress, stakingAddress) {
       const vault = await getFantomVault(App, VAULT, tokenAddress, stakingAddress);
       window.localStorage.setItem(tokenAddress, "fantomVault");
       return vault;
+    }
+    catch(err) {
+    }
+    try {
+      const basicVault = new ethcall.Contract(tokenAddress, HARVEST_VAULT_ABI);
+      const _token = await App.ethcallProvider.all([basicVault.underlying()]);
+      const res = await getFantomBasicVault(App, basicVault, tokenAddress, stakingAddress);
+      window.localStorage.setItem(tokenAddress, "basicFantomVault");
+      return res;
     }
     catch(err) {
     }
@@ -565,6 +602,7 @@ async function loadFantomChefContract(App, tokens, prices, chef, chefAddress, ch
 
   const rewardTokenAddress = await chefContract.callStatic[rewardTokenFunction]();
   const rewardToken = await getFantomToken(App, rewardTokenAddress, chefAddress);
+
   const rewardsPerWeek = rewardsPerWeekFixed ??
     await chefContract.callStatic[rewardsPerBlockFunction]()
     / 10 ** rewardToken.decimals * 604800 / 3
@@ -598,6 +636,7 @@ async function loadFantomChefContract(App, tokens, prices, chef, chefAddress, ch
       aprs.push(apr);
     }
   }
+
   let totalUserStaked=0, totalStaked=0, averageApr=0;
   for (const a of aprs) {
     if (!isNaN(a.totalStakedUsd)) {

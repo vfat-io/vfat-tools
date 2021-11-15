@@ -536,7 +536,11 @@ const main = async() => {
       ["Stone Temple Binance","", `<a href="stonetemplebinance">Various</a>`,"STB+PLUSH    ","https://www.stonetemple.finance"],
       ["MochiSwap           ","", `<a href="mochiswap"     >Various</a>`,"bMOCHI           ","https://bsc.mochiswap.io"],
       ["ModerSwap           ","", `<a href="moderswap"     >Various</a>`,"MOD              ","https://moderswap.com"],
-      ["RobustSwap          ","", `<a href="robustswap"    >Various</a>`,"RBS              ","https://robustswap.com"]
+      ["RobustSwap          ","", `<a href="robustswap"    >Various</a>`,"RBS              ","https://robustswap.com"],
+      ["Palladium           ","", `<a href="palladium"     >Various</a>`,"PD               ","https://palladium.farm"],
+      ["RainbowFarm RNBZ    ","", `<a href="rainbow-rnbz"  >Various</a>`,"RNBO-RNBZ        ","https://rainbowfarm.finance"],
+      ["BootySwap           ","", `<a href="bootyswap"     >Various</a>`,"TWERK            ","https://app.bootyswap.finance"],
+      ["RichPig             ","", `<a href="richpig"       >Various</a>`,"PIG              ","https://richpig.net"]
     ]}
 
   let table = new AsciiTable().fromJSON(tableData);

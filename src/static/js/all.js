@@ -153,7 +153,15 @@ const main = async () => {
       ["Augmented Finance            ", `<a href="../augmented/"         >Various</a>`, "AGF                ", "https://augmented.finance"],
       ["Synapse                      ", `<a href="../synapse/"           >Various</a>`, "SYNAPSE            ", "https://synapseprotocol.com"],
       ["Tokemak                      ", `<a href="../tokemak/"           >Various</a>`, "Various            ", "https://www.tokemak.xyz"],
-      ["Lixir                        ", `<a href="../lixir/"             >Various</a>`, "LIX                ", "https://app.lixir.finance"]
+      ["Lixir                        ", `<a href="../lixir/"             >Various</a>`, "LIX                ", "https://app.lixir.finance"],
+      ["Ubiquity                     ", `<a href="../ubiquity/"          >Various</a>`, "UBQ                ", "https://uad.ubq.fi"],
+      ["SDAO                         ", `<a href="../sdao/"              >Various</a>`, "SDAO               ", "https://app.singularitydao.ai"],
+      ["Botto                        ", `<a href="../botto/"             >Various</a>`, "BOTTO              ", "https://app.botto.com"],
+      ["Swapr                        ", `<a href="../swapr/"             >Various</a>`, "SWPR               ", "https://swapr.eth.link"],
+      ["Merit Circle                 ", `<a href="../meritcircle/"       >Various</a>`, "MC                 ", "https://swap.meritcircle.io"],
+      ["DAOventures                  ", `<a href="../daoventures/"       >Various</a>`, "DAOVENTURES        ", "https://app.daoventures.co/invest"],
+      ["Angle                        ", `<a href="../angle/"             >Various</a>`, "ANGLE              ", "https://app.angle.money"],
+      ["Beverage                     ", `<a href="../beverage/"          >Various</a>`, "DRINK              ", "https://beverage.finance"]
     ]
   }
 

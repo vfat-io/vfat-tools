@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include(`${partials}/head`); -%>
+
+<body>
+<%- include(`${partials}/header_main`); -%>
+<pre id="log">
+*************** 👨‍🌾 UNOFFICIAL NILERIVER FARMING CALCULATOR 👨‍🌾 ***************
+INFO  : https://www.nileriver.finance/
+******************************************************************************
+
+There is a locking period in NIL staking pools. Please check the site for more informations.
+
+</pre>
+<div class="loader--1"></div>
+<%- include(`${partials}/scripts`, {scriptname: 'moonriver_nileriver'}); -%>
+</body>
+</html>

@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include(`${partials}/head`); -%>
+
+  <body>
+    <%- include(`${partials}/header_main`); -%>
+      <pre id="log">
+*************** 👨‍🌾 UNOFFICIAL SMARTCOIN FARMING CALCULATOR 👨‍🌾 ***************
+INFO  : https://smartcoin.farm
+******************************************************************************
+
+</pre>
+      <div class="loader--1"></div>
+      <%- include(`${partials}/scripts`, {scriptname: 'avax_smartcoin' }); -%>
+  </body>
+
+</html>
