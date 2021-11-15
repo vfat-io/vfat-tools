@@ -234,6 +234,21 @@ window.NETWORKS = {
       "https://evmexplorer.velas.com"
     ],
   },
+  AURORA: {
+    "chainId": "0x4E454152",
+    "chainName": "Aurora MainNet",
+    "nativeCurrency": {
+      "name": "aave-eth-v1",
+      "symbol": "aETH",
+      "decimals": 18
+    },
+    "rpcUrls": [
+      "https://mainnet.aurora.dev"
+    ],
+    "blockExplorerUrls": [
+      "https://evmexplorer.velas.com"
+    ],
+  },
   HARMONY_S0: {
     "chainId": "0x63564C40",
     "chainName": "Harmony Mainnet Shard 0",
