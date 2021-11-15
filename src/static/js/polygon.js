@@ -408,8 +408,9 @@ const main = async () => {
       ['Wheel Finance       ',"",  `<a href="wheelfinance"    >Various</a>`, 'WHEEL        ', 'https://wheelfinance.xyz'],
       ['Icecolony           ',"",  `<a href="icecolony"       >Various</a>`, 'ICE          ', 'https://www.icecolony.com'],
       ['DestructionFarm     ',"",  `<a href="destructionfarm" >Various</a>`, 'DESTRUCTIONFARM', 'https://destruction.sandman.finance'],
-      ['KIMCHI Finance      ',"",  `<a href="kimchifinance"   >Various</a>`, 'KIMCHI        ', 'https://kimchifinance.icu'],
-      ['Boltrswap      ',"",  `<a href="boltrswap"   >Various</a>`, 'BOL        ', 'https://boltrswap.com'],
+      ['KIMCHI Finance      ',"",  `<a href="kimchifinance"   >Various</a>`, 'KIMCHI       ', 'https://kimchifinance.icu'],
+      ['Boltrswap           ',"",  `<a href="boltrswap"       >Various</a>`, 'BOL          ', 'https://boltrswap.com'],
+      ['Gemgard Finance     ',"",  `<a href="gemgard"         >Various</a>`, 'GGT          ', 'https://gemgard.finance']
     ],
   }
 
