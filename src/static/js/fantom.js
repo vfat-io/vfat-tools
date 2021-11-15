@@ -114,6 +114,7 @@ const main = async() => {
       ['UndeadFinance      ', `<a href="undeadfinance">Various</a>`,'UNDEAD       ','https://undeadfinance.com'],
       ['FanTerra           ', `<a href="fanterra"     >Various</a>`,'FANTERRA     ','https://app.fanterra.finance'],
       ['Bear Finance       ', `<a href="bear"         >Various</a>`,'BEAR         ','https://bearfinance.org'],
+      ['Krampus Finance    ', `<a href="krampus"      >Various</a>`,'KrampusToken ','https://krampus.finance']
     ]
   }
 
