@@ -73,7 +73,9 @@ const main = async() => {
         ["Mint                    ",`<a href="mintswap"         >Various</a>`,"MINT         ","https://mint-swap.com"],
         ["SmartCoin               ",`<a href="smartcoin"        >Various</a>`,"SMRT         ","https://smartcoin.farm"],
         ["Avax Cougar             ",`<a href="cougar"           >Various</a>`,"CGS          ","https://avaapp.cougarswap.io"],
-        ["Yieldyak                ",`<a href="yieldyak"         >Various</a>`,"Various      ","https://yieldyak.com"]
+        ["Yieldyak                ",`<a href="yieldyak"         >Various</a>`,"Various      ","https://yieldyak.com"],
+        ["Mermaidswap         ", `<a href="mermaidswap"       >Various</a>`,"MERD              ","https://mermaidswap.com"]
+    
     ]
   }
 
