@@ -100,7 +100,7 @@ async function loadSmugChefContract(App, tokens, prices, chef, chefAddress, chef
       poolInfo.poolToken ? getPoolPrices(tokens, prices, poolInfo.poolToken, "Harmony") : undefined);
   }
 
-  const poolPrices = poolInfos.map(poolInfo => poolInfo.poolToken ? getPoolPrices(tokens, prices, poolInfo.poolToken, "Harmony") : undefined);
+  const poolPrices = poolInfos.reverse().map(poolInfo => poolInfo.poolToken ? getPoolPrices(tokens, prices, poolInfo.poolToken, "Harmony") : undefined);
 
 
   _print("Finished reading smart contracts.\n");
