@@ -54,6 +54,9 @@ const pageNetwork = function() {
   if (network.toLowerCase() === 'velas') {
     return window.NETWORKS.VELAS
   }
+  if (network.toLowerCase() === 'boba') {
+    return window.NETWORKS.BOBA
+  }
   if (network.toLowerCase() === 'avax') {
     return window.NETWORKS.AVALANCHE
   }
@@ -1802,6 +1805,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
   else if (pool.symbol.includes("VVS-LP")) stakeTokenTicker += " VVS LP Token";
   else if (pool.symbol.includes("Crona-LP")) stakeTokenTicker += " Crona LP Token";
   else if (pool.symbol.includes("Wagyu-LP")) stakeTokenTicker += " Wagyu LP Token";
+  else if (pool.symbol.includes("OLP")) stakeTokenTicker += " Oolong LP Token";
   else stakeTokenTicker += " Uni LP";
   return {
       t0: t0,
@@ -1870,6 +1874,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
               pool.symbol.includes("BLP") ?  `https://info.bakeryswap.org/#/pair/${pool.address}` :
               pool.symbol.includes("KUS-LP") ?  `https://kuswap.info/pair/#/${pool.address}` :
               pool.symbol.includes("Wagyu-LP") ?  `https://exchange.wagyuswap.app/info/pool/${pool.address}` :
+              pool.symbol.includes("OLP") ?  `https://info.oolongswap.com/#/pair/${pool.address}` :
               pool.symbol.includes("KoffeeMug") ?  `https://koffeeswap.exchange/#/pro` :
               pool.symbol.includes("APE-LP") ?  `https://info.apeswap.finance/pair/${pool.address}` :
               pool.symbol.includes("VLP") ?  `https://info.viralata.finance/pair/${pool.address}` :
@@ -1917,6 +1922,11 @@ function getUniPrices(tokens, prices, pool, chain="eth")
             `https://vvs.finance/add/${t0address}/${t1address}`,
             `https://vvs.finance/remove/${t0address}/${t1address}`,
             `https://vvs.finance/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+          ] :
+          pool.symbol.includes("OLP") ? [
+            `https://oolongswap.com/#/add/${t0address}/${t1address}`,
+            `https://oolongswap.com/#/remove/${t0address}/${t1address}`,
+            `https://oolongswap.com/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
           ] :
           pool.symbol.includes("Crona-LP") ? [
             `https://app.cronaswap.org/add/${t0address}/${t1address}`,
@@ -2546,6 +2556,9 @@ function getErc20Prices(prices, pool, chain="eth") {
     case "velas":
       poolUrl=`https://evmexplorer.velas.com/address/${pool.address}`;
       break;
+    case "boba":
+      poolUrl=`https://blockexplorer.boba.network/address/${pool.address}`;
+      break;
     case "optimism":
       poolUrl=`https://optimistic.etherscan.io/token/${pool.address}`;
       break;
@@ -3131,6 +3144,9 @@ async function printSynthetixPool(App, info, chain="eth", customURLs) {
       case "velas":
         _print(`<a target="_blank" href="https://evmexplorer.velas.com/address/${info.stakingAddress}#code">Velas Scan</a>`);
         break;
+      case "boba":
+        _print(`<a target="_blank" href="https://blockexplorer.boba.network/address/${info.stakingAddress}#code">Boba Explorer</a>`);
+        break;
       case "fuse":
         _print(`<a target="_blank" href="https://explorer.fuse.io/address/${info.stakingAddress}#code">FUSE Scan</a>`);
         break;
@@ -3292,5 +3308,7 @@ function getChainExplorerUrl(chain, address){
       return `https://cronos.crypto.org/explorer/address/${address}`;
     case "velas" :
       return `https://evmexplorer.velas.com/address/${address}`;
+    case "boba" :
+      return `https://blockexplorer.boba.network/address/${address}`;
   }
 }
