@@ -1810,6 +1810,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
   else if (pool.symbol.includes("Crona-LP")) stakeTokenTicker += " Crona LP Token";
   else if (pool.symbol.includes("Wagyu-LP")) stakeTokenTicker += " Wagyu LP Token";
   else if (pool.symbol.includes("OLP")) stakeTokenTicker += " Oolong LP Token";
+  else if (pool.symbol.includes("TLP")) stakeTokenTicker += " Trisolaris LP Token";
   else stakeTokenTicker += " Uni LP";
   return {
       t0: t0,
@@ -1893,6 +1894,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
               pool.symbol.includes("HLP") ?  `https://analytics.hadesswap.finance/pairs/${pool.address}` :
               pool.symbol.includes("LOOT-LP") ?  `https://analytics.lootswap.finance/pair/${pool.address}` :
               pool.symbol.includes("VVS-LP") ?  `https://vvs.finance/info/farm/${pool.address}` :
+              pool.symbol.includes("TLP") ?  `https://explorer.mainnet.aurora.dev/address/${pool.address}` :
               pool.symbol.includes("Crona-LP") ?  `https://app.cronaswap.org/info/${pool.address}` : //wait for real version
               pool.symbol.includes("BenSwap") ? ({
                 "bsc": `https://info.benswap.finance/pair/${pool.address}`,
@@ -1922,6 +1924,11 @@ function getUniPrices(tokens, prices, pool, chain="eth")
             `https://www.huckleberry.finance/#/add/${t0address}/${t1address}`,
             `https://www.huckleberry.finance/#/remove/${t0address}/${t1address}`,
             `https://www.huckleberry.finance/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+          ] :
+          pool.symbol.includes("TLP") ? [
+            `https://www.trisolaris.io/#/add/${t0address}/${t1address}`,
+            `https://www.trisolaris.io/#/remove/${t0address}/${t1address}`,
+            `https://www.trisolaris.io/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
           ] :
           pool.symbol.includes("VVS") ? [
             `https://vvs.finance/add/${t0address}/${t1address}`,
