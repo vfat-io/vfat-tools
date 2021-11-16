@@ -39,7 +39,7 @@ async function main() {
     null,
     rewardsPerWeek,
     "pendingReward",
-    [0],
+    [],
     true
   );
 
@@ -102,13 +102,15 @@ async function loadSmugChefContract(App, tokens, prices, chef, chefAddress, chef
 
   const poolPrices = poolInfos.reverse().map(poolInfo => poolInfo.poolToken ? getPoolPrices(tokens, prices, poolInfo.poolToken, "Harmony") : undefined);
 
+//   const poolPricesRev = poolPrices.reverse()
+
 
   _print("Finished reading smart contracts.\n");
 
   let aprs = []
-  for (i = 0; i < poolCount; i++) {
+  for (i = poolCount - 1; i >= 0; i--) {
     if (poolPrices[i]) {
-      const apr = printSmugChefPool(App, chefAbi, chefAddress, prices, tokens, poolInfos[i], i, poolPrices[i],
+      const apr = printSmugChefPool(App, chefAbi, chefAddress, prices, tokens, poolInfos[i], (poolCount - i - 1), poolPrices[i],
         totalAllocPoints, rewardsPerWeek, rewardTokenTicker, rewardTokenAddress,
         pendingRewardsFunction, null, null, "bsc")
       aprs.push(apr);
@@ -246,7 +248,8 @@ const smugContract_unstake = async function(chefAbi, chefAddress, poolIndex, App
   const currentStakedAmount = (await CHEF_CONTRACT.userInfo(poolIndex, App.YOUR_ADDRESS)).amount
   const earnedTokenAmount = await CHEF_CONTRACT.callStatic[pendingRewardsFunction](poolIndex, App.YOUR_ADDRESS) / 1e18
 
-  if (earnedTokenAmount > 0) {
+  // allow unstaking before farming start
+//   if (earnedTokenAmount > 0) {
     showLoading()
     CHEF_CONTRACT.withdraw(poolIndex, currentStakedAmount, "0x0000000000000000000000000000000000000000", {gasLimit: 500000})
       .then(function(t) {
@@ -255,7 +258,7 @@ const smugContract_unstake = async function(chefAbi, chefAddress, poolIndex, App
       .catch(function() {
         hideLoading()
       })
-  }
+//   }
 }
 
 const smugContract_claim = async function(chefAbi, chefAddress, poolIndex, App,
