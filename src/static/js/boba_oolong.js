@@ -15,7 +15,9 @@ async function main() {
    const rewardTokenTicker = "OLO";
    const OLO_CHEF = new ethers.Contract(OLO_CHEF_ADDR, OLO_CHEF_ABI, App.provider);
 
-   const rewardsPerWeek = await OLO_CHEF.oolongPerSec() /1e18 * 604800;
+   const weeklyRewards = await OLO_CHEF.oolongPerSec() /1e18 * 604800;
+   const distributorPercent = await OLO_CHEF.distributorPercent()
+   const rewardsPerWeek = weeklyRewards * (1 - distributorPercent / 1000)
 
     const tokens = {};
     const prices = await getBobaPrices();
