@@ -410,7 +410,8 @@ const main = async () => {
       ['DestructionFarm     ',"",  `<a href="destructionfarm" >Various</a>`, 'DESTRUCTIONFARM', 'https://destruction.sandman.finance'],
       ['KIMCHI Finance      ',"",  `<a href="kimchifinance"   >Various</a>`, 'KIMCHI       ', 'https://kimchifinance.icu'],
       ['Boltrswap           ',"",  `<a href="boltrswap"       >Various</a>`, 'BOL          ', 'https://boltrswap.com'],
-      ['Gemgard Finance     ',"",  `<a href="gemgard"         >Various</a>`, 'GGT          ', 'https://gemgard.finance']
+      ['Gemgard Finance     ',"",  `<a href="gemgard"         >Various</a>`, 'GGT          ', 'https://gemgard.finance'],
+      ['Synapse             ',"",  `<a href="synapse"         >Various</a>`, 'SYN          ', 'https://synapseprotocol.com']
     ],
   }
 

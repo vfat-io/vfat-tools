@@ -586,7 +586,8 @@ const maticTokens = [
   { "id": "phoenix-token", "symbol": "PHX", "contract":"0x9C6BfEdc14b5C23E3900889436Edca7805170f01"},
   { "id": "zerogoki", "symbol": "REI", "contract":"0xB9f9e37c2CdbaFF928C3Da730b02F06fE09aE70E"},
   { "id": "honor-token", "symbol": "HONOR", "contract":"0xb82a20b4522680951f11c94c54b8800c1c237693"},
-  { "id": "mantra-dao", "symbol": "OM", "contract":"0xC3Ec80343D2bae2F8E680FDADDe7C17E71E114ea"}
+  { "id": "mantra-dao", "symbol": "OM", "contract":"0xC3Ec80343D2bae2F8E680FDADDe7C17E71E114ea"},
+  { "id": "synapse-2", "symbol": "SYN", "contract":"0xf8f9efc0db77d8881500bb06ff5d6abc3070e695"}
 ]
 
 

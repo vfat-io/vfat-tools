@@ -49,7 +49,8 @@ const avaxTokens = [
     { "id": "yay-games", "symbol": "YAY", "contract": "0x01C2086faCFD7aA38f69A6Bd8C91BEF3BB5adFCa"},
     { "id": "aave", "symbol": "AAVE.e", "contract": "0x63a72806098Bd3D9520cC43356dD78afe5D386D9"},
     { "id": "orcadao", "symbol": "ORCA", "contract": "0x8B1d98A91F853218ddbb066F20b8c63E782e2430"},
-    { "id": "orca-avai", "symbol": "AVAI", "contract": "0x346a59146b9b4a77100d369a3d18e8007a9f46a6"}
+    { "id": "orca-avai", "symbol": "AVAI", "contract": "0x346a59146b9b4a77100d369a3d18e8007a9f46a6"},
+    { "id": "synapse-2", "symbol": "SYN", "contract": "0x1f1E7c893855525b303f99bDF5c3c05Be09ca251"}
 ]
 
 async function getAvaxPrices() {
