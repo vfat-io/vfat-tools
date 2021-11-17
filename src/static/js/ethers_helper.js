@@ -1808,6 +1808,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
   else if (pool.symbol.includes("SMUG-LP")) stakeTokenTicker += " Smug LP Token";
   else if (pool.symbol.includes("VVS-LP")) stakeTokenTicker += " VVS LP Token";
   else if (pool.symbol.includes("Crona-LP")) stakeTokenTicker += " Crona LP Token";
+  else if (pool.symbol.includes("Genesis-LP")) stakeTokenTicker += " Genesis LP Token";
   else if (pool.symbol.includes("Wagyu-LP")) stakeTokenTicker += " Wagyu LP Token";
   else if (pool.symbol.includes("OLP")) stakeTokenTicker += " Oolong LP Token";
   else if (pool.symbol.includes("TLP")) stakeTokenTicker += " Trisolaris LP Token";
@@ -1896,6 +1897,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
               pool.symbol.includes("VVS-LP") ?  `https://vvs.finance/info/farm/${pool.address}` :
               pool.symbol.includes("TLP") ?  `https://explorer.mainnet.aurora.dev/address/${pool.address}` :
               pool.symbol.includes("Crona-LP") ?  `https://app.cronaswap.org/info/${pool.address}` : //wait for real version
+              pool.symbol.includes("Genesis-LP") ?  `https://app.cronaswap.org/info/${pool.address}` : //wait for real version
               pool.symbol.includes("BenSwap") ? ({
                 "bsc": `https://info.benswap.finance/pair/${pool.address}`,
                 "smartbch": `https://info.benswap.cash/pair/${pool.address}`
@@ -1941,6 +1943,11 @@ function getUniPrices(tokens, prices, pool, chain="eth")
             `https://oolongswap.com/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
           ] :
           pool.symbol.includes("Crona-LP") ? [
+            `https://app.cronaswap.org/add/${t0address}/${t1address}`,
+            `https://app.cronaswap.org/remove/${t0address}/${t1address}`,
+            `https://app.cronaswap.org/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+          ] :
+          pool.symbol.includes("Genesis-LP") ? [
             `https://app.cronaswap.org/add/${t0address}/${t1address}`,
             `https://app.cronaswap.org/remove/${t0address}/${t1address}`,
             `https://app.cronaswap.org/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
