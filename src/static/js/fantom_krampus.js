@@ -13,7 +13,7 @@ $(function() {
   
      const Krampus_CHEF_ABI = "0xfa0c8e045bc9ff79648f8cc616f93aaaf2d956df";
   
-     const rewardTokenTicker = "KrampusToken";
+     const rewardTokenTicker = "Krampus";
      const Krampus_CHEF_ABI = new ethers.Contract(Krampus_CHEF_ABI, Krampus_CHEF_ABI, App.provider);
   
      let rewardsPerWeek = 0
