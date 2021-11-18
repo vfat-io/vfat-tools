@@ -9,6 +9,8 @@ const CronosTokens = [
   { "id": "usd-coin", "symbol": "USDC", "contract": "0xc21223249CA28397B4B6541dfFaEcC539BfF0c59"},
   { "id": "tether", "symbol": "USDT", "contract": "0x66e428c3f67a68878562e79A0234c1F83c208770"},
   { "id": "dai", "symbol": "DAI", "contract": "0xF2001B145b43032AAF5Ee2884e456CCd805F677D"},
+  { "id": "binance-usd", "symbol": "BUSD", "contract": "0x6aB6d61428fde76768D7b45D8BFeec19c6eF91A8"},
+  { "id": "vvs-finance", "symbol": "VVS", "contract": "0x2D03bECE6747ADC00E1a131BBA1469C15fD11e03"}
 ];
 
 async function getCronosPrices() {
