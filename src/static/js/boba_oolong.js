@@ -22,8 +22,42 @@ async function main() {
     const tokens = {};
     const prices = await getBobaPrices();
 
+    await loadOLOSynthetixPoolInfo(App, tokens, prices, "0xf5ffa0aabf101e651f6cf722031d4efedc835b67")
+
     await loadBobaChefContract(App, tokens, prices, OLO_CHEF, OLO_CHEF_ADDR, OLO_CHEF_ABI, rewardTokenTicker,
         "oolong", null, rewardsPerWeek, "pendingOolong");
 
     hideLoading();
   }
+
+async function loadOLOSynthetixPoolInfo(App, tokens, prices, stakeTokenAddress) {
+      var stakeToken = await getBobaToken(App, stakeTokenAddress, stakeTokenAddress);
+      var newPriceAddresses = stakeToken.tokens.filter(x =>
+        !getParameterCaseInsensitive(prices, x));
+      var newPrices = await lookUpTokenPrices(newPriceAddresses);
+      for (const key in newPrices) {
+        if (newPrices[key]?.usd)
+            prices[key] = newPrices[key];
+      }
+      var newTokenAddresses = stakeToken.tokens.filter(x =>
+        !getParameterCaseInsensitive(tokens,x));
+      for (const address of newTokenAddresses) {
+          tokens[address] = await getBobaToken(App, address, stakeTokenAddress);
+      }
+      const poolPrices = getPoolPrices(tokens, prices, stakeToken, "boba");
+      if (!poolPrices)
+      {
+        console.log(`Couldn't calculate prices for pool ${stakeTokenAddress}`);
+        return null;
+      }
+      const stakeTokenTicker = poolPrices.stakeTokenTicker;
+
+      const stakeTokenPrice =
+          prices[stakeTokenAddress]?.usd ?? getParameterCaseInsensitive(prices, stakeTokenAddress)?.usd;
+      return  {
+        poolPrices,
+        stakeTokenAddress,
+        stakeTokenTicker,
+        stakeTokenPrice
+      }
+}
