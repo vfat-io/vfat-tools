@@ -13,7 +13,7 @@ const main = async() => {
       ["Aladdin             ",`<a href="ald/"               >Various</a>`,"ALD       ","https://app.aladdin.club"],
       ["Alchemix            ",`<a href="alcx/"              >Various</a>`,"ALCX      ","https://app.alchemix.fi/farms"],
       ["Alpha DEX           ",`<a href="alphadex/"          >Various</a>`,"DEX       ","https://kitten.finance"],
-      ["* Angle *           ",`<a href="angle/"             >Various</a>`,"ANGLE     ","https://app.angle.money"],
+      ["Angle               ",`<a href="angle/"             >Various</a>`,"ANGLE     ","https://app.angle.money"],
       ["Armor               ",`<a href="armor/"             >Various</a>`,"ARMOR     ","https://armor.fi"],
       ["Badger              ",`<a href="badger/"            >Various</a>`,"BADGER    ","https://app.badger.finance"],
       ["Bao                 ",`<a href="bao"                >Various</a>`,"BAO       ","https://www.bao.finance"],
