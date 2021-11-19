@@ -39,7 +39,8 @@ const main = async() => {
       ["Curve               ",""                                                                                               , `<a href="/arbitrum/curve"       >Various</a>`,"CRV                ","https://arbitrum.curve.fi"],
       ["Synapse             ",""                                                                                               , `<a href="/arbitrum/synapse"     >Various</a>`,"SYNAPSE            ","https://synapseprotocol.com"],
       ["Pickle              ",""                                                                                               , `<a href="/arbitrum/pickle"      >Various</a>`,"PICKLE             ","https://app.pickle.finance"],
-      ["Nerd                ",""                                                                                               , `<a href="/arbitrum/nerd"        >Various</a>`,"NERD               ","https://nerdcoin.farm"]
+      ["Nerd                ",""                                                                                               , `<a href="/arbitrum/nerd"        >Various</a>`,"NERD               ","https://nerdcoin.farm"],
+      ["Saddle              ",""                                                                                               , `<a href="/arbitrum/saddle"      >Various</a>`,"SADDLE             ","https://saddle.exchange"]
      ]
   }
 

@@ -25,7 +25,8 @@ const ArbitrumTokens = [
     { "id": "dopex-rebate-token", "symbol": "RDPX", "contract": "0x32Eb7902D4134bf98A28b963D26de779AF92A212"},
     { "id": "curve-dao-token", "symbol": "CRV", "contract": "0x11cDb42B0EB46D95f990BeDD4695A6e3fA034978"},
     { "id": "synapse-2", "symbol": "SYN", "contract": "0x080F6AEd32Fc474DD5717105Dba5ea57268F46eb"},
-    { "id": "pickle-finance", "symbol": "PICKLE", "contract": "0x965772e0E9c84b6f359c8597C891108DcF1c5B1A"}
+    { "id": "pickle-finance", "symbol": "PICKLE", "contract": "0x965772e0E9c84b6f359c8597C891108DcF1c5B1A"},
+    { "id": "saddle-finance", "symbol": "SDL", "contract": "0x75c9bc761d88f70156daf83aa010e84680baf131"}
 ];
 
 const uniSqrtPrice = (tokenDecimals, sqrtRatioX96) => {
