@@ -1,6 +1,7 @@
 
 const BobaTokens = [
-  { "id": "weth", "symbol": "WETH", "contract": "0xDeadDeAddeAddEAddeadDEaDDEAdDeaDDeAD0000"}
+  { "id": "weth", "symbol": "WETH", "contract": "0xDeadDeAddeAddEAddeadDEaDDEAdDeaDDeAD0000"},
+  { "id": "synapse-2", "symbol": "SYN", "contract": "0xb554A55358fF0382Fb21F0a478C3546d1106Be8c"}
 ];
 
 async function getBobaPrices() {
