@@ -14,7 +14,8 @@ const main = async() => {
       ["CronaSwap            ", `<a href='crona'      >Various</a>`,"CRONA        ","https://app.cronaswap.org"],
       ["Crystl               ", `<a href='crystl'     >Various</a>`,"Various      ","https://cronos.crystl.finance"],
       ["CronosYield          ", `<a href='cronosyield'>Various</a>`,"CPY          ","https://www.cronosyield.finance"],
-      ["StormSwap            ", `<a href='stormswap'  >Various</a>`,"WIND         ","https://cronos.stormswap.finance"]
+      ["StormSwap            ", `<a href='stormswap'  >Various</a>`,"WIND         ","https://cronos.stormswap.finance"],
+      ["Genesis Finance      ", `<a href='genesis'    >Various</a>`,"GENESIS      ","https://genesisfinance.app"]
     ]
   }
 
