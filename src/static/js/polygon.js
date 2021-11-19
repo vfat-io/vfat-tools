@@ -411,7 +411,8 @@ const main = async () => {
       ['KIMCHI Finance      ',"",  `<a href="kimchifinance"   >Various</a>`, 'KIMCHI       ', 'https://kimchifinance.icu'],
       ['Boltrswap           ',"",  `<a href="boltrswap"       >Various</a>`, 'BOL          ', 'https://boltrswap.com'],
       ['Gemgard Finance     ',"",  `<a href="gemgard"         >Various</a>`, 'GGT          ', 'https://gemgard.finance'],
-      ['Synapse             ',"",  `<a href="synapse"         >Various</a>`, 'SYN          ', 'https://synapseprotocol.com']
+      ['Synapse             ',"",  `<a href="synapse"         >Various</a>`, 'SYN          ', 'https://synapseprotocol.com'],
+      ['TacoParty Salsa     ',"",  `<a href="tacopartysalsa"  >Various</a>`, 'SALSA        ', 'https://salsa.tacoparty.finance']
     ],
   }
 
