@@ -16,15 +16,23 @@ async function main() {
     const rewardTokenTicker = "GENESIS";
     const GENESIS_CHEF = new ethers.Contract(GENESIS_CHEF_ADDR, GENESIS_CHEF_ABI, App.provider);
 
-    let rewardsPerWeek = 0;
+    let rewardsPerWeek = 0
+    const startBlock = await GENESIS_CHEF.startBlock();
+    const currentBlock = await App.provider.getBlockNumber();
 
-    rewardsPerWeek = await GENESIS_CHEF.GenesisPerBlock() / 1e18 * 604800 / 5.6;
+    const multiplier = await GENESIS_CHEF.getMultiplier(currentBlock, currentBlock + 1);
+ 
+    if(currentBlock < startBlock){
+     _print(`Rewards start at block ${startBlock}\n`)
+    }else{
+        rewardsPerWeek = await GENESIS_CHEF.GenesisPerBlock() / 1e18 * multiplier * 604800 / 5.6;
+    }
 
     const tokens = {};
     const prices = await getCronosPrices();
 
     await loadCronosChefContract(App, tokens, prices, GENESIS_CHEF, GENESIS_CHEF_ADDR, GENESIS_CHEF_ABI, rewardTokenTicker,
-        "Genesis", null, rewardsPerWeek, "pendingGenesis", [1,2,3,4,5]);
+        "Genesis", null, rewardsPerWeek, "pendingGenesis", [7]);
 
     hideLoading();
 }
