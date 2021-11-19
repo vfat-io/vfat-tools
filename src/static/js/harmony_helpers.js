@@ -11,7 +11,8 @@ const HarmonyTokens = [
   { "id": "terra-luna", "symbol": "LUNA", "contract": "0x95ce547d730519a90def30d647f37d9e5359b6ae"},
   { "id": "terra-usd", "symbol": "UST", "contract": "0x224e64ec1bdce3870a6a6c777edd450454068fec"},
   { "id": "curve-dao-token", "symbol": "CRV", "contract": "0x352cd428EFd6F31B5cae636928b7B84149cF369F"},
-  { "id": "elk-finance", "symbol": "ELK", "contract": "0xe1c110e1b1b4a1ded0caf3e42bfbdbb7b5d7ce1c"}
+  { "id": "elk-finance", "symbol": "ELK", "contract": "0xe1c110e1b1b4a1ded0caf3e42bfbdbb7b5d7ce1c"},
+  { "id": "synapse-2", "symbol": "SYN", "contract": "0xE55e19Fb4F2D85af758950957714292DAC1e25B2"}
 ];
 
 async function getHarmonyPrices() {

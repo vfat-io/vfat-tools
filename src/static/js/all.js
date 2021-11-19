@@ -160,6 +160,8 @@ const main = async () => {
       ["Swapr                        ", `<a href="../swapr/"             >Various</a>`, "SWPR               ", "https://swapr.eth.link"],
       ["Merit Circle                 ", `<a href="../meritcircle/"       >Various</a>`, "MC                 ", "https://swap.meritcircle.io"],
       ["DAOventures                  ", `<a href="../daoventures/"       >Various</a>`, "DAOVENTURES        ", "https://app.daoventures.co/invest"],
+      ["Angle                        ", `<a href="../angle/"             >Various</a>`, "ANGLE              ", "https://app.angle.money"],
+      ["Beverage                     ", `<a href="../beverage/"          >Various</a>`, "DRINK              ", "https://beverage.finance"],
       ["Nildao                       ", `<a href="../nildao/"            >Various</a>`, "NIL                ", "https://www.nildao.xyz"]
     ]
   }

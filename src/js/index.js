@@ -219,6 +219,51 @@ window.NETWORKS = {
       "https://ftmscan.com"
     ],
   },
+  VELAS: {
+    "chainId": "0x6A",
+    "chainName": "Velas EVM",
+    "nativeCurrency": {
+      "name": "Velas",
+      "symbol": "VLX",
+      "decimals": 18
+    },
+    "rpcUrls": [
+      "https://evmexplorer.velas.com/rpc"
+    ],
+    "blockExplorerUrls": [
+      "https://evmexplorer.velas.com"
+    ],
+  },
+  AURORA: {
+    "chainId": "0x4E454152",
+    "chainName": "Aurora MainNet",
+    "nativeCurrency": {
+      "name": "aave-eth-v1",
+      "symbol": "aETH",
+      "decimals": 18
+    },
+    "rpcUrls": [
+      "https://mainnet.aurora.dev"
+    ],
+    "blockExplorerUrls": [
+      "https://evmexplorer.velas.com"
+    ],
+  },
+  BOBA: {
+    "chainId": "0x120",
+    "chainName": "Boba Network",
+    "nativeCurrency": {
+      "name": "ethereum",
+      "symbol": "ETH",
+      "decimals": 18
+    },
+    "rpcUrls": [
+      "https://mainnet.boba.network/"
+    ],
+    "blockExplorerUrls": [
+      "https://blockexplorer.boba.network"
+    ],
+  },
   HARMONY_S0: {
     "chainId": "0x63564C40",
     "chainName": "Harmony Mainnet Shard 0",
@@ -292,6 +337,21 @@ window.NETWORKS = {
     ],
     "blockExplorerUrls": [
       "https://explorer.fuse.io"
+    ]
+  },
+  CRONOS: {
+    "chainId": "0x19",
+    "chainName": "Cronos Mainnet",
+    "nativeCurrency": {
+      "name": "CRO",
+      "symbol": "CRO",
+      "decimals": 18
+    },
+    "rpcUrls": [
+      "https://rpc.crodex.app/"
+    ],
+    "blockExplorerUrls": [
+      "https://cronos.crypto.org/explorer"
     ]
   },
   THUNDERCORE: {
@@ -430,7 +490,8 @@ const providerOptions = {
         4689: "https://babel-api.mainnet.iotex.io",
         321: "https://rpc-mainnet.kcc.network",
         10000: "https://global.uat.cash",
-        333999: "https://rpc.polis.tech"
+        333999: "https://rpc.polis.tech",
+        25: "https://rpc.crodex.app/"
       }
     }
   }

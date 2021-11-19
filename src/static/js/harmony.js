@@ -7,7 +7,7 @@ const main = async () => {
     "title":"Harmony Network",
     "heading":["Pool Provider","LP", "Reward Tokens", "INFO"],
     "rows": [
-      ["Mochi *",           `<a href='mochi'>Various</a>`,          "hMOCHI",        "https://harmony.mochiswap.io"],
+      ["Mochi",             `<a href='mochi'>Various</a>`,          "hMOCHI",        "https://harmony.mochiswap.io"],
       ["Viper",             `<a href='viper'>Various</a>`,          "VIPER",         "https://viper.exchange"],
       ["CopyPasta",         `<a href='copypasta'>Various</a>`,      "PASTA",         "https://copypasta.one"],
       ["Viper (smartchef)", `<a href='viper/smartchef'>Various</a>`,"Various",       "https://viper.exchange"],
@@ -23,7 +23,7 @@ const main = async () => {
       ["Sonicswap",         `<a href='sonicswap'>Various</a>`,      "SONIC",         "https://sonicswap.io/#/staking"],
       ["Defi Kingdoms",     `<a href='defikingdoms'>Various</a>`,   "JEWEL",         "https://game.defikingdoms.com"],
       ["Rain",              `<a href='rain'>Various</a>`,           "RAIN",          "https://rainfinance.one"],
-      ["FATExDAO *",        `<a href='fatex'>Various</a>`,          "FATE",          "https://app.fatex.io"],
+      ["FATExDAO",          `<a href='fatex'>Various</a>`,          "FATE",          "https://app.fatex.io"],
       ["TheValleys",        `<a href='thevalleys'>Various</a>`,     "AME",           "https://thevalleys.one"],
       ["FarmersOnlyFi",     `<a href='farmersonly'>Various</a>`,    "FOX",           "https://app.farmersonly.fi"],
       ["Fuzz Finance",      `<a href='fuzz'>Various</a>`,           "FUZZ",          "https://swap.fuzz.fi"],
@@ -38,7 +38,10 @@ const main = async () => {
       ["Elk",               `<a href='elk'>Various</a>`,            "ELK",           "https://elk.finance"],
       ["Eggtart",           `<a href='eggtart'>Various</a>`,        "EGGT",          "https://eggtartswap.com"],
       ["OpenSwap",          `<a href='openx'>Various</a>`,          "OpenX",         "https://app.openswap.one"],
-      ["Fool",              `<a href='fool'>Various</a>`,           "FOOL",          "https://lootswap.finance/guilds/fool"]
+      ["Fool",              `<a href='fool'>Various</a>`,           "FOOL",          "https://lootswap.finance/guilds/fool"],
+      ["SmugSwap",          `<a href='smugdoge'>Various</a>`,       "BABYSMUG",      "https://smugswap.com"],
+      ["Reverse Protocol",  `<a href='reverse'>Various</a>`,        "RVRS",          "https://beta.reverseprotocol.one"],
+      ["Synapse",           `<a href='synapse'>Various</a>`,        "SYN",           "https://synapseprotocol.com"]
     ]
   }
 

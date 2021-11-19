@@ -112,7 +112,13 @@ const main = async() => {
       ['Hundred            ', `<a href="hundred"      >Various</a>`,'HND          ','https://hundred.finance'],
       ['FantomPup          ', `<a href="fantompup"    >Various</a>`,'PUP          ','https://fantompup.finance'],
       ['UndeadFinance      ', `<a href="undeadfinance">Various</a>`,'UNDEAD       ','https://undeadfinance.com'],
-      ['FanTerra           ', `<a href="fanterra"     >Various</a>`,'FANTERRA     ','https://app.fanterra.finance']
+      ['FanTerra           ', `<a href="fanterra"     >Various</a>`,'FANTERRA     ','https://app.fanterra.finance'],
+      ['Bear Finance       ', `<a href="bear"         >Various</a>`,'BEAR         ','https://bearfinance.org'],
+      ['Unirex Finance     ', `<a href="unirexfinance">Various</a>`,'fUNIREX      ','https://unirex.finance'],
+      ['Krampus Finance    ', `<a href="krampus"      >Various</a>`,'KrampusToken ','https://krampus.finance'],
+      ['KUZO Defi          ', `<a href="kuzo"         >Various</a>`,'KUZO         ','https://kuzo.xyz'],
+      ['Monster Finance    ', `<a href="monsterfinance">Various</a>`,'MNSTR       ','https://monsterfinance.app'],
+      ['Synapse            ', `<a href="synapse"      >Various</a>`,'SYN          ','https://synapseprotocol.com']
     ]
   }
 

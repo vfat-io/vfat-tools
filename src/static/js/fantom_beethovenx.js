@@ -211,7 +211,7 @@ function printRewarderPool(App, chefAbi, chefAddr, prices, tokens, poolInfo, poo
     var yearlyRewarderAPR = weeklyRewarderAPR * 52;
     let totalDailyAPR = dailyAPR + dailyRewarderAPR;
     let totalWeeklyAPR = weeklyAPR + weeklyRewarderAPR;
-    let totalYearlyAPR = yearlyRewarderAPR + yearlyRewarderAPR;
+    let totalYearlyAPR = yearlyRewarderAPR + yearlyAPR;
     let totalUSDPerWeek = usdPerWeek + usdRewarderPerWeek;
     _print(`APR ${rewardTokenTicker}: Day ${dailyAPR.toFixed(2)}% Week ${weeklyAPR.toFixed(2)}% Year ${yearlyAPR.toFixed(2)}%`);
     _print(`APR ${rewarderTicker}: Day ${dailyRewarderAPR.toFixed(2)}% Week ${weeklyRewarderAPR.toFixed(2)}% Year ${yearlyRewarderAPR.toFixed(2)}%`);
