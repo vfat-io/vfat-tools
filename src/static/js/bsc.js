@@ -500,7 +500,7 @@ const main = async() => {
       ["Singular            ","", `<a href="singular"      >Various</a>`,"SING             ","https://singular.farm"],
       ["Elk                 ","", `<a href="elk"           >Various</a>`,"ELK              ","https://app.elk.finance"],
       ["Defily              ","", `<a href="defily"        >Various</a>`,"DFL              ","https://defily.io"],
-      ["United Farmers Finance","", `<a href="united_farmers_finance"        >Various</a>`,"UFF","https://unitedfarmers.finance"],
+      ["United Farmers Finance UFF","", `<a href="united_farmers_finance"        >Various</a>`,"UFF","https://app.unitedfarmers.finance/uff-farms"],
       ["Yerba Mate Finance  ","", `<a href="yerbamatefinance">Various</a>`,"YERBAMATE      ","https://app.yerbamate.finance"],
       ["Rocketmoon          ","", `<a href="rocketmoon"    >Various</a>`,"ROCKET           ","https://rocketmoon.farm"],
       ["DogCake             ","", `<a href="dogcake"       >Various</a>`,"DCAKE            ","https://dogcake.finance"],
@@ -543,7 +543,7 @@ const main = async() => {
       ["RichPig             ","", `<a href="richpig"       >Various</a>`,"PIG              ","https://richpig.net"],
       ["Mermaidswap         ","", `<a href="mermaidswap"   >Various</a>`,"MERD             ","https://mermaidswap.com"],
       ["Synapse             ","", `<a href="synapse"       >Various</a>`,"SYN              ","https://synapseprotocol.com"],
-      ["United Farmers Finance Grain","", `<a href="grain" >Various</a>`,"GRAIN            ","https://app.unitedfarmers.finance/grain-farms"],
+      ["United Farmers Finance GRAIN","", `<a href="grain" >Various</a>`,"GRAIN            ","https://app.unitedfarmers.finance/grain-farms"],
       ["ConquerUranus          ","", `<a href="conqueruranus"    >Various</a>`,"SHITIUM           ","https://dapp.conqueruranus.com"]
     ]}
 
