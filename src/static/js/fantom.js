@@ -118,7 +118,8 @@ const main = async() => {
       ['Krampus Finance    ', `<a href="krampus"      >Various</a>`,'KrampusToken ','https://krampus.finance'],
       ['KUZO Defi          ', `<a href="kuzo"         >Various</a>`,'KUZO         ','https://kuzo.xyz'],
       ['Monster Finance    ', `<a href="monsterfinance">Various</a>`,'MNSTR       ','https://monsterfinance.app'],
-      ['Synapse            ', `<a href="synapse"      >Various</a>`,'SYN          ','https://synapseprotocol.com']
+      ['Synapse            ', `<a href="synapse"      >Various</a>`,'SYN          ','https://synapseprotocol.com'],
+      ['Draco Cave            ', `<a href="dracocave"      >Various</a>`,'CAVE          ','https://cave.dracoforce.com/']
     ]
   }
 
