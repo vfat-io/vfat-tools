@@ -31,7 +31,7 @@ async function main() {
     const prices = await getCronosPrices();
 
     await loadCronosChefContract(App, tokens, prices, ZEUS_CHEF, ZEUS_CHEF_ADDR, ZEUS_CHEF_ABI, rewardTokenTicker,
-      "ZEUS", null, rewardsPerWeek, "pendingZEUS", [1]);
+      "ZEUS", null, rewardsPerWeek, "pendingZEUS", [7]);
 
     hideLoading();
   }
