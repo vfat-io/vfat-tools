@@ -119,7 +119,8 @@ const main = async() => {
       ['KUZO Defi          ', `<a href="kuzo"         >Various</a>`,'KUZO         ','https://kuzo.xyz'],
       ['Monster Finance    ', `<a href="monsterfinance">Various</a>`,'MNSTR       ','https://monsterfinance.app'],
       ['Synapse            ', `<a href="synapse"      >Various</a>`,'SYN          ','https://synapseprotocol.com'],
-      ['Draco Cave            ', `<a href="dracocave"      >Various</a>`,'CAVE          ','https://cave.dracoforce.com/']
+      ['Draco Cave            ', `<a href="dracocave"      >Various</a>`,'CAVE          ','https://cave.dracoforce.com/'],
+      ["Eldritch Finance v2  ", `<a href="eldritchv2"     >Various</a>`,'ELDRv2         ',"https://eldritch.app"],
     ]
   }
 
