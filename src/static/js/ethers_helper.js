@@ -1841,6 +1841,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
   else if (pool.symbol.includes("Wagyu-LP")) stakeTokenTicker += " Wagyu LP Token";
   else if (pool.symbol.includes("OLP")) stakeTokenTicker += " Oolong LP Token";
   else if (pool.symbol.includes("TLP")) stakeTokenTicker += " Trisolaris LP Token";
+  else if (pool.symbol.includes("SCLP")) stakeTokenTicker += " SwapperChan LP Token";
   else stakeTokenTicker += " Uni LP";
   return {
       t0: t0,
@@ -1896,6 +1897,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
               [chain]):
               pool.symbol.includes("CS-LP") ?  `https://app.coinswap.space/#/` :
               pool.name.includes("Value LP") ?  `https://info.vswap.fi/pool/${pool.address}` :
+              pool.symbol.includes("SCLP") ?  `https://analytics.swapperchan.com/pairs/${pool.address}` :
               pool.name.includes("Ubeswap") ?  `https://info.ubeswap.org/pair/${pool.address}` :
               pool.name.includes("OperaSwap") ?  `https://www.operaswap.finance/` :
               pool.symbol.includes("SPIRIT") ?  `https://swap.spiritswap.finance/#/swap` :
@@ -1970,6 +1972,11 @@ function getUniPrices(tokens, prices, pool, chain="eth")
             `https://oolongswap.com/#/add/${t0address}/${t1address}`,
             `https://oolongswap.com/#/remove/${t0address}/${t1address}`,
             `https://oolongswap.com/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+          ] :
+          pool.symbol.includes("SCLP") ? [
+            `https://swapperchan.com/add/${t0address}/${t1address}`,
+            `https://swapperchan.com/remove/${t0address}/${t1address}`,
+            `https://swapperchan.com/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
           ] :
           pool.symbol.includes("Crona-LP") ? [
             `https://app.cronaswap.org/add/${t0address}/${t1address}`,
