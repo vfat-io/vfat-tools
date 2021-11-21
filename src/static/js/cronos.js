@@ -17,7 +17,9 @@ const main = async() => {
       ["StormSwap            ", `<a href='stormswap'    >Various</a>`,"WIND         ","https://cronos.stormswap.finance"],
       ["Genesis Finance      ", `<a href='genesis'      >Various</a>`,"GENESIS      ","https://genesisfinance.app"],
       ["Zeus Finance         ", `<a href='zeusfinance'  >Various</a>`,"ZEUS         ","https://www.zeusfinance.app"],
-      ["Meso Finance         ", `<a href='meso'         >Various</a>`,"croMESO      ","https://cro.meso.finance"]
+      ["Meso Finance         ", `<a href='meso'         >Various</a>`,"croMESO      ","https://cro.meso.finance"],
+      ["BlackBird Finance    ", `<a href='bird'         >Various</a>`,"BIRD         ","https://croblackbird.finance/"]
+
     ]
   }
 
