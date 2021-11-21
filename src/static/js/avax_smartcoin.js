@@ -19,7 +19,7 @@ $(function () {
         const currentTime = Date.now();
         let rewardsPerWeek = 0;
 
-        if(currentTime < startTime){
+        if(currentTime > startTime){
             rewardsPerWeek = await SMRTr_CHEF.joePerSec() / 1e18 * 604800;
         }else{
             _print("Rewards has not started yet")
