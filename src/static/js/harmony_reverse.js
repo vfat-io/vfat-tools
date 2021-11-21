@@ -11,6 +11,7 @@ const CrystalMine_ABI = [{"inputs":[{"internalType":"contract IERC20","name":"to
 
 const EXTINCTION_POOLS = [
   '0xA144063168d7d08B61D1870eC1AA1030Cb9fC4E8',
+  '0xc5caf6e573ccc93df52bba0a86593281200780db',
   '0xec7826201c7fcadbd048c0226c861e1df2759f8d',
   '0x37b380c2593a172e92a5f0bbaca3bcfc9091060b',
 ]
@@ -139,36 +140,34 @@ async function loadExtinctionPoolContracts(App, tokens, prices, poolAddresses, b
 
   _print("Finished reading smart contracts.\n");
 
+  _print_bold("ROI assumes you deposit in the current block using the formula below.");
+  _print_bold("ROI = (blocks remaining * current APR per block) - 100");
+  _print_bold("If you have deposited prior to current block your ROI would be higher.\n");
+
   let aprs = []
   for (i = 0; i < poolCount; i++) {
     if (poolInfos[i].rewardPerBlock && poolPrices[i]) {
-      const apr = printExtinctionPool(App, poolAddresses[i], prices, poolInfos[i], i, poolPrices[i])
+      const apr = printExtinctionPool(App, poolAddresses[i], prices, poolInfos[i], i, poolPrices[i], blockNumber)
       aprs.push(apr);
     }
     else console.log([i, poolAddresses[i], poolInfos[i].stakedToken, poolInfos[i].rewardToken])
   }
-  let totalUserStaked=0, totalStaked=0, averageApr=0;
+  let totalUserStaked=0, totalStaked=0;
   for (const a of aprs) {
     if (!isNaN(a.totalStakedUsd)) {
       totalStaked += a.totalStakedUsd;
     }
     if (a.userStakedUsd > 0) {
       totalUserStaked += a.userStakedUsd;
-      averageApr += a.userStakedUsd * a.yearlyAPR / 100;
     }
   }
-  averageApr = averageApr / totalUserStaked;
 
   _print_bold(`Total Staked: $${formatMoney(totalStaked)}`);
   if (totalUserStaked > 0) {
-    _print_bold(`\nYou are staking a total of $${formatMoney(totalUserStaked)} at an average APR of ${(averageApr * 100).toFixed(2)}%`)
-    _print(`Estimated earnings:`
-        + ` Day $${formatMoney(totalUserStaked*averageApr/365)}`
-        + ` Week $${formatMoney(totalUserStaked*averageApr/52)}`
-        + ` Year $${formatMoney(totalUserStaked*averageApr)}\n`);
+    _print_bold(`\nYou are staking a total of $${formatMoney(totalUserStaked)}`);
   }
 
-  return { prices, totalUserStaked, totalStaked, averageApr }
+  return { prices, totalUserStaked, totalStaked }
 }
 
 
@@ -178,8 +177,9 @@ async function getExtinctionPoolInfo(App, poolAddress, blockNumber) {
     stakedToken: await poolContract.BondToken(),
     rewardToken: await poolContract.REWARD(),
     rewardPerBlock: await poolContract.rewardPerBlock(),
-    startBlock: await poolContract.startBlock(),
-    endBlock: await poolContract.endBlock(),
+    startBlock: (await poolContract.startBlock()).toNumber(),
+    endBlock: (await poolContract.endBlock()).toNumber(),
+    lockBlock: (await poolContract.lockBlock()).toNumber(),
   }
   
   const stakedToken = await getHarmonyToken(App, poolInfo.stakedToken, poolAddress);
@@ -193,6 +193,9 @@ async function getExtinctionPoolInfo(App, poolAddress, blockNumber) {
     rewardPerBlock: 0,
     userStaked : 0,
     pendingRewardTokens : 0,
+    startBlock: poolInfo.startBlock,
+    endBlock: poolInfo.endBlock,
+    lockBlock: poolInfo.lockBlock,
   }
 
   if (rewardToken.staked === 0 || poolInfo.rewardPerBlock === 0 || blockNumber < poolInfo.startBlock || blockNumber > poolInfo.endBlock) return emptyPool;
@@ -206,11 +209,14 @@ async function getExtinctionPoolInfo(App, poolAddress, blockNumber) {
     rewardPerBlock: poolInfo.rewardPerBlock / 10 ** rewardToken.decimals,
     userStaked,
     pendingRewardTokens : pendingRewardTokens / 10 ** rewardToken.decimals,
+    startBlock: poolInfo.startBlock,
+    endBlock: poolInfo.endBlock,
+    lockBlock: poolInfo.lockBlock,
   };
 }
 
 
-function printExtinctionPool(App, poolAddr, prices, poolInfo, poolIndex, poolPrices) {
+function printExtinctionPool(App, poolAddr, prices, poolInfo, poolIndex, poolPrices, blockNumber) {
   const poolRewardsPerWeek = poolInfo.rewardPerBlock * 604800 / 2;
   if (poolRewardsPerWeek == 0) return;
   const userStaked = poolInfo.userStaked;
@@ -218,10 +224,33 @@ function printExtinctionPool(App, poolAddr, prices, poolInfo, poolIndex, poolPri
   const staked_tvl = poolPrices.staked_tvl;
   _print_inline(`${poolIndex} - `);
   poolPrices.print_price('harmony');
-  const apr = printAPR(poolInfo.rewardToken.symbol, rewardPrice, poolRewardsPerWeek, poolPrices.stakeTokenTicker,
-  staked_tvl, userStaked, poolPrices.price, FIXED_DECIMALS);
+  const apr = printROI(poolInfo.rewardToken.symbol, rewardPrice, poolRewardsPerWeek, poolPrices.stakeTokenTicker,
+    staked_tvl, userStaked, poolPrices.price, blockNumber, poolInfo.endBlock, FIXED_DECIMALS);
   if (poolInfo.userStaked > 0) poolPrices.print_contained_price(userStaked);
   _print("");
   // printExtinctionPoolContractLinks(App, poolAddr, poolInfo, rewardPrice);
   return apr;
+}
+
+function printROI(rewardTokenTicker, rewardPrice, poolRewardsPerWeek,
+  stakeTokenTicker, staked_tvl, userStaked, poolTokenPrice,
+  blockNumber, endBlock, fixedDecimals
+) {
+  var usdPerWeek = poolRewardsPerWeek * rewardPrice;
+  fixedDecimals = fixedDecimals ?? 2;
+  _print(`${rewardTokenTicker} Per Week: ${poolRewardsPerWeek.toFixed(fixedDecimals)} ($${formatMoney(usdPerWeek)})`);
+  var weeklyAPR = usdPerWeek / staked_tvl * 100;
+  var blocklyAPR = weeklyAPR / 604800 * 2;
+  var ROINow = (blocklyAPR * (endBlock - blockNumber)) - 100;
+  _print(`APR: Day ${(weeklyAPR / 7).toFixed(2)}%`);
+  _print(`Blocks left: ${(endBlock - blockNumber)} (${Math.ceil((endBlock - blockNumber) / 86400 * 2)} Days)`);
+  _print(`ROI: Now ${ROINow.toFixed(2)}%`);
+  var userStakedUsd = userStaked * poolTokenPrice;
+  var userStakedPct = userStakedUsd / staked_tvl * 100;
+  _print(`You are staking ${userStaked.toFixed(fixedDecimals)} ${stakeTokenTicker} ($${formatMoney(userStakedUsd)}), ${userStakedPct.toFixed(2)}% of the pool.`);
+  return {
+    userStakedUsd,
+    totalStakedUsd : staked_tvl,
+    userStakedPct,
+  }
 }
