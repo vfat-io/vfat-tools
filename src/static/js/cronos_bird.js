@@ -19,9 +19,9 @@ $(function() {
        const rewardsPerWeek = await BIRD_CHEF.birdPerBlock() /1e18 * 604800;
     
         const tokens = {};
-        const prices = await getFantomPrices();
+        const prices = await getCronosPrices();
     
-        await loadFantomChefContract(App, tokens, prices, BIRD_CHEF, BIRD_CHEF_ADDR, BIRD_CHEF_ABI, rewardTokenTicker,
+        await loadCronosChefContract(App, tokens, prices, BIRD_CHEF, BIRD_CHEF_ADDR, BIRD_CHEF_ABI, rewardTokenTicker,
           "bird", null, rewardsPerWeek, "pendingBird", [1]);
     
     
