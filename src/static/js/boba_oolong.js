@@ -24,8 +24,15 @@ async function main() {
 
     await loadOLOSynthetixPoolInfo(App, tokens, prices, "0xf5ffa0aabf101e651f6cf722031d4efedc835b67")
 
-    await loadBobaChefContract(App, tokens, prices, OLO_CHEF, OLO_CHEF_ADDR, OLO_CHEF_ABI, rewardTokenTicker,
+    let p = await loadBobaChefContract(App, tokens, prices, OLO_CHEF, OLO_CHEF_ADDR, OLO_CHEF_ABI, rewardTokenTicker,
         "oolong", null, rewardsPerWeek, "pendingOolong");
+    
+    const claimAll = async function() {
+      return rewardsOloContract_claimAll(OLO_CHEF_ABI, OLO_CHEF_ADDR, p.totalUserStaked, App)
+    }
+    if(p.totalUserStaked > 0){
+      _print_link(`Claim All`, claimAll);
+    }
 
     hideLoading();
   }
@@ -60,4 +67,20 @@ async function loadOLOSynthetixPoolInfo(App, tokens, prices, stakeTokenAddress) 
         stakeTokenTicker,
         stakeTokenPrice
       }
+}
+
+const rewardsOloContract_claimAll = async function(chefAbi, chefAddress, userStaked, App) {
+  const signer = App.provider.getSigner()
+  const CHEF_CONTRACT = new ethers.Contract(chefAddress, chefAbi, signer)
+
+  if (userStaked > 0) {
+    showLoading()
+    CHEF_CONTRACT.claimAll({gasLimit: 500000})
+      .then(function(t) {
+        return App.provider.waitForTransaction(t.hash)
+      })
+      .catch(function() {
+        hideLoading()
+      })
+  }
 }
