@@ -121,6 +121,8 @@ const main = async() => {
       ['Synapse            ', `<a href="synapse"      >Various</a>`,'SYN          ','https://synapseprotocol.com'],
       ['Draco Cave            ', `<a href="dracocave"      >Various</a>`,'CAVE          ','https://cave.dracoforce.com/'],
       ["Eldritch Finance v2  ", `<a href="eldritchv2"     >Various</a>`,'ELDRv2         ',"https://eldritch.app"],
+      ["Knights Finance  ", `<a href="knights"     >Various</a>`,'KNIGHTS         ',"https://knightsfinance.xyz"],
+
     ]
   }
 
