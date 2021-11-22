@@ -40,6 +40,7 @@ const main = async() => {
       ["Synapse             ",""                                                                                               , `<a href="/arbitrum/synapse"     >Various</a>`,"SYNAPSE            ","https://synapseprotocol.com"],
       ["Pickle              ",""                                                                                               , `<a href="/arbitrum/pickle"      >Various</a>`,"PICKLE             ","https://app.pickle.finance"],
       ["Nerd                ",""                                                                                               , `<a href="/arbitrum/nerd"        >Various</a>`,"NERD               ","https://nerdcoin.farm"],
+      ["WePiggy             ",""                                                                                               , `<a href="/arbitrum/wepiggy"     >Various</a>`,"WPC                ","https://app.wepiggy.com"],
       ["Saddle              ",""                                                                                               , `<a href="/arbitrum/saddle"      >Various</a>`,"SADDLE             ","https://saddle.exchange"]
      ]
   }
