@@ -75,7 +75,8 @@ const main = async() => {
         ["Avax Cougar             ",`<a href="cougar"           >Various</a>`,"CGS          ","https://avaapp.cougarswap.io"],
         ["Yieldyak                ",`<a href="yieldyak"         >Various</a>`,"Various      ","https://yieldyak.com"],
         ["Mermaidswap             ", `<a href="mermaidswap"     >Various</a>`,"MERD         ","https://mermaidswap.com"],
-        ["Synapse                 ", `<a href="synapse"         >Various</a>`,"SYN          ","https://synapseprotocol.com"]
+        ["Synapse                 ", `<a href="synapse"         >Various</a>`,"SYN          ","https://synapseprotocol.com"],
+        ["AVALuan                 ",`<a href="avaluan"          >Various</a>`,"AVALuan      ","https://luan.avaterra.finance"]
     
     ]
   }
