@@ -81,6 +81,9 @@ const pageNetwork = function() {
   if (network.toLowerCase() === 'polis') {
     return window.NETWORKS.POLIS
   }
+  if (network.toLowerCase() === 'metis') {
+    return window.NETWORKS.METIS
+  }
 
   return window.NETWORKS.ETHEREUM
 }
