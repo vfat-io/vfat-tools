@@ -76,7 +76,8 @@ const main = async() => {
         ["Yieldyak                ",`<a href="yieldyak"         >Various</a>`,"Various      ","https://yieldyak.com"],
         ["Mermaidswap             ", `<a href="mermaidswap"     >Various</a>`,"MERD         ","https://mermaidswap.com"],
         ["Synapse                 ", `<a href="synapse"         >Various</a>`,"SYN          ","https://synapseprotocol.com"],
-        ["AVALuan                 ",`<a href="avaluan"          >Various</a>`,"AVALuan      ","https://luan.avaterra.finance"]
+        ["AVALuan                 ",`<a href="avaluan"          >Various</a>`,"AVALuan      ","https://luan.avaterra.finance"],
+        ["Stabilize               ",`<a href="stabilize"        >Various</a>`,"SET          ","https://app.stabilize.fi"]
     
     ]
   }
