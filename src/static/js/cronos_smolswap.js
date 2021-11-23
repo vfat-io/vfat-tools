@@ -16,6 +16,8 @@ async function main() {
    const rewardTokenTicker = "SMOL";
    const SMOL_CHEF = new ethers.Contract(SMOL_CHEF_ADDR, SMOL_CHEF_ABI, App.provider);
 
+   const BONUS_MULTIPLIER = await SMOL_CHEF.BONUS_MULTIPLIER();
+
    let rewardsPerWeek = 0
    const startBlock = await SMOL_CHEF.startBlock();
    const currentBlock = await App.provider.getBlockNumber();
@@ -23,7 +25,7 @@ async function main() {
    if(currentBlock < startBlock){
     _print(`Rewards start at block ${startBlock}\n`)
    }else{
-    rewardsPerWeek = await SMOL_CHEF.smolPerBlock() / 1e18 * 604800 / 5.5 * 1000;
+    rewardsPerWeek = await SMOL_CHEF.smolPerBlock() / 1e18 * 604800 * BONUS_MULTIPLIER / 5.6;
    }
 
     const tokens = {};
