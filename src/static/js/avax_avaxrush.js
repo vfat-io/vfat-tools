@@ -18,8 +18,7 @@ async function main() {
 
     const blocksPerSeconds = await getAverageBlockTime(App);
         
-    const rewardsPerWeek = await SONIC_CHEF.SonicPerSecond() / 1e18 *		
-            604800 / blocksPerSeconds;		
+    const rewardsPerWeek = await SONIC_CHEF.SonicPerSecond() / 1e18 * 604800;
             
         
     const tokens = {};		
