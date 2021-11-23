@@ -8,6 +8,7 @@ const main = async() => {
     "title":"AVALANCHE Network",
     "heading":["Pool Provider","LP", "Reward Tokens", "INFO"],
     "rows": [
+        ["AvaxRush                ",`<a href="avaxrush"         >Various</a>`,"PNG          ","https://avaxrush.com"],
         ["Pangolin                ",`<a href="png"              >Various</a>`,"PNG          ","https://app.pangolin.exchange/#/png"],
         ["Kyber                   ",`<a href="kyber"            >Various</a>`,"AVAX         ","https://dmm.exchange"],
         ["Complus                 ",`<a href="complus"          >Various</a>`,"COM          ","https://avax.complus.exchange"],
