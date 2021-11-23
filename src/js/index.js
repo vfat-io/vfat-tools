@@ -463,6 +463,21 @@ window.NETWORKS = {
       "https://explorer.polis.tech"
     ],
   },
+  METIS: {
+    "chainId": "0x440",
+    "chainName": "Metis Mainnet",
+    "nativeCurrency": {
+      "name": "Metis",
+      "symbol": "METIS",
+      "decimals": 18
+    },
+    "rpcUrls": [
+      "https://andromeda.metis.io/?owner=1088"
+    ],
+    "blockExplorerUrls": [
+      "https://andromeda-explorer.metis.io/"
+    ],
+  },
 }
 
 const infuraId = atob(window.ETHEREUM_NODE_URL).split('/').pop()
