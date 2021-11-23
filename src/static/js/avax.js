@@ -80,7 +80,7 @@ const main = async() => {
         ["Stabilize               ",`<a href="stabilize"        >Various</a>`,"SET          ","https://app.stabilize.fi"],
         ["MochiSwap               ",`<a href="mochi"            >Various</a>`,"aMOCHI       ","https://avalanche.mochiswap.io"],
         ["The Blossom Farm        ",`<a href="bloom"            >Various</a>`,"BLM          ","https://bloom.theseedfarm.app"],
-        ["AvaxRush                ",`<a href="avaxrush"         >Various</a>`,"PNG          ","https://avaxrush.com"]
+        ["AvaxRush                ",`<a href="avaxrush"         >Various</a>`,"AVAX         ","https://avaxrush.com"]
     ]
   }
 
