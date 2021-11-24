@@ -8,6 +8,7 @@ const main = async() => {
     "title":"FANTOM Network",
     "heading":["Pool Provider","LP", "Reward Tokens", "INFO"],
     "rows": [
+      ["Autofarm           ", `<a href='autofatm'     >Various</a>`,"Various      ","https://autofarm.network/fantom"],
       ["Popsicle           ", `<a href='popsicle'     >Various</a>`,"ICE          ","https://popsicle.finance"],
       ["Spooky             ", `<a href='spooky'       >Various</a>`,"boo          ","https://spookyswap.finance"],
       ["Spirit             ", `<a href='spirit'       >Various</a>`,"SPIRIT       ","https://app.spiritswap.finance"],
