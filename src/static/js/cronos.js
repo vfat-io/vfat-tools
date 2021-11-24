@@ -8,6 +8,7 @@ const main = async() => {
     "title":"Cronos Network",
     "heading":["Pool Provider","LP", "Reward Tokens", "INFO"],
     "rows": [
+      ["Autofarm             ", `<a href='autofarm'     >Various</a>`,"Various      ","https://autofarm.network/cronos"],
       ["CrodexSwap           ", `<a href='crodex'       >Various</a>`,"CRX          ","https://swap.crodex.app"],
       ["VVS Finance          ", `<a href='vvs'          >Various</a>`,"VVS          ","https://vvs.finance"],
       ["CroFarm              ", `<a href='crofarm'      >Various</a>`,"CRF          ","https://crofarm.app"],
