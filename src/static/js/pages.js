@@ -54,6 +54,7 @@ const main = async() => {
       ["Siren               ",`<a href="siren/"             >Various</a>`,"SI        ","https://sirenmarkets.com/"],
       ["Stabilize           ",`<a href="stabilize/"         >Various</a>`,"STBZ      ","https://stabilize.finance"],
       ["StakeDAO            ",`<a href="stakedao/"          >Various</a>`,"SDT       ","https://stakedao.org"],
+      ["* Sushi V2 *        ",`<a href="sushiv2/"           >Various</a>`,"Various   ","https://app.sushi.com"],
       ["Sushiswap           ",`<a href="sushi/"             >Various</a>`,"SUSHI     ","https://app.sushi.com/farms"],
       ["Synapse             ",`<a href="synapse/"           >Various</a>`,"SYNAPSE   ","https://synapseprotocol.com"],
       ["Synthetix           ",`<a href="snx"                >Various</a>`,"SNX       ","https://staking.synthetix.io"],
