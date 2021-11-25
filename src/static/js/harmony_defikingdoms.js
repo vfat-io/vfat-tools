@@ -110,7 +110,7 @@ async function loadJewelChefContract(App, tokens, prices, chef, chefAddress, che
     if (poolPrices[i]) {
       const apr = printJewelChefPool(App, chefAbi, chefAddress, prices, tokens, poolInfos[i], i, poolPrices[i],
         totalAllocPoints, rewardsPerWeek, rewardTokenTicker, rewardTokenAddress,
-        pendingRewardsFunction, null, null, "bsc")
+        pendingRewardsFunction, null, null, "harmony")
       aprs.push(apr);
     }
   }
@@ -143,7 +143,7 @@ async function loadJewelChefContract(App, tokens, prices, chef, chefAddress, che
 
 function printJewelChefPool(App, chefAbi, chefAddr, prices, tokens, poolInfo, poolIndex, poolPrices,
                             totalAllocPoints, rewardsPerWeek, rewardTokenTicker, rewardTokenAddress,
-                            pendingRewardsFunction, fixedDecimals, claimFunction, chain="bsc", depositFee=0, withdrawFee=0) {
+                            pendingRewardsFunction, fixedDecimals, claimFunction, chain="harmony", depositFee=0, withdrawFee=0) {
   fixedDecimals = fixedDecimals ?? 2;
   const sp = (poolInfo.stakedToken == null) ? null : getPoolPrices(tokens, prices, poolInfo.stakedToken, chain);
   var poolRewardsPerWeek = poolInfo.allocPoints / totalAllocPoints * rewardsPerWeek;
@@ -154,7 +154,7 @@ function printJewelChefPool(App, chefAbi, chefAddr, prices, tokens, poolInfo, po
   _print_inline(`${poolIndex} - `);
   poolPrices.print_price(chain);
   sp?.print_price(chain);
-  const apr = printAPR(rewardTokenTicker, rewardPrice, poolRewardsPerWeek, poolPrices.stakeTokenTicker,
+  const apr = printKingdomAPR(rewardTokenTicker, rewardPrice, poolRewardsPerWeek, poolPrices.stakeTokenTicker,
   staked_tvl, userStaked, poolPrices.price, fixedDecimals);
   if (poolInfo.userLPStaked > 0) sp?.print_contained_price(userStaked);
   if (poolInfo.userStaked > 0) poolPrices.print_contained_price(userStaked);
@@ -162,6 +162,37 @@ function printJewelChefPool(App, chefAbi, chefAddr, prices, tokens, poolInfo, po
   rewardTokenTicker, poolPrices.stakeTokenTicker, poolInfo.poolToken.unstaked,
   poolInfo.userStaked, poolInfo.pendingRewardTokens, fixedDecimals, claimFunction, rewardPrice, chain, depositFee, withdrawFee);
   return apr;
+}
+
+function printKingdomAPR(rewardTokenTicker, rewardPrice, poolRewardsPerWeek,
+                  stakeTokenTicker, staked_tvl, userStaked, poolTokenPrice,
+                  fixedDecimals) {
+  var usdPerWeek = poolRewardsPerWeek * rewardPrice;
+  fixedDecimals = fixedDecimals ?? 2
+  _print(`${rewardTokenTicker} Per Week: ${poolRewardsPerWeek.toFixed(fixedDecimals)} ($${formatMoney(usdPerWeek)})`);
+  var weeklyAPR = usdPerWeek / staked_tvl * 100;
+  var dailyAPR = weeklyAPR / 7;
+  var yearlyAPR = weeklyAPR * 52;
+  _print(`APR: Day ${dailyAPR.toFixed(2)}% Week ${weeklyAPR.toFixed(2)}% Year ${yearlyAPR.toFixed(2)}%`);
+  var userStakedUsd = userStaked * poolTokenPrice;
+  var userStakedPct = userStakedUsd / staked_tvl * 100;
+  _print(`You are staking ${userStaked.toFixed(8)} ${stakeTokenTicker} ($${formatMoney(userStakedUsd)}), ${userStakedPct.toFixed(2)}% of the pool.`);
+  var userWeeklyRewards = userStakedPct * poolRewardsPerWeek / 100;
+  var userDailyRewards = userWeeklyRewards / 7;
+  var userYearlyRewards = userWeeklyRewards * 52;
+  if (userStaked > 0) {
+    _print(`Estimated ${rewardTokenTicker} earnings:`
+        + ` Day ${userDailyRewards.toFixed(fixedDecimals)} ($${formatMoney(userDailyRewards*rewardPrice)})`
+        + ` Week ${userWeeklyRewards.toFixed(fixedDecimals)} ($${formatMoney(userWeeklyRewards*rewardPrice)})`
+        + ` Year ${userYearlyRewards.toFixed(fixedDecimals)} ($${formatMoney(userYearlyRewards*rewardPrice)})`);
+  }
+  return {
+    userStakedUsd,
+    totalStakedUsd : staked_tvl,
+    userStakedPct,
+    yearlyAPR,
+    userYearlyUsd : userYearlyRewards * rewardPrice
+  }
 }
 
 function printJewelChefContractLinks(App, chefAbi, chefAddr, poolIndex, poolAddress, pendingRewardsFunction,
@@ -300,7 +331,7 @@ async function jewelPitData(JEWEL, JEWEL_PIT, App, prices) {
     _print(`${PIT_NAME} TVL: $${formatMoney(jewelPitTotalBalanceUSD)}`);
     _print(`${REWARD_TOKEN_TICKER} Price: $${formatMoney(jewelPrice.usd)}`);
     _print(`Staked: ${(jewelPitTotalBalance).toFixed(2)} ${REWARD_TOKEN_TICKER} ($${formatMoney(jewelPitTotalBalanceUSD)})`);
-    _print(`You are staking ${(jewelPitUserBalance).toFixed(2)} ${REWARD_TOKEN_TICKER} ($${formatMoney(jewelPitUserBalanceUSD)}), ${(jewelPitShare * 100).toFixed(2)}% of the pool.`);
+    _print(`You are staking ${(jewelPitUserBalance).toFixed(8)} ${REWARD_TOKEN_TICKER} ($${formatMoney(jewelPitUserBalanceUSD)}), ${(jewelPitShare * 100).toFixed(2)}% of the pool.`);
 
     const approveAndEnter = async function() {
       return jewelPitApproveAndEnter(JEWEL, JEWEL_PIT, jewelBalanceBigNum, App);
