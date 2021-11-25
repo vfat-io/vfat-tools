@@ -8,7 +8,6 @@ const main = async() => {
     "title":"Cronos Network",
     "heading":["Pool Provider","LP", "Reward Tokens", "INFO"],
     "rows": [
-      ["Autofarm             ", `<a href='autofarm'     >Various</a>`,"Various      ","https://autofarm.network/cronos"],
       ["CrodexSwap           ", `<a href='crodex'       >Various</a>`,"CRX          ","https://swap.crodex.app"],
       ["VVS Finance          ", `<a href='vvs'          >Various</a>`,"VVS          ","https://vvs.finance"],
       ["CroFarm              ", `<a href='crofarm'      >Various</a>`,"CRF          ","https://crofarm.app"],
@@ -19,7 +18,8 @@ const main = async() => {
       ["Genesis Finance      ", `<a href='genesis'      >Various</a>`,"GENESIS      ","https://genesisfinance.app"],
       ["Zeus Finance         ", `<a href='zeusfinance'  >Various</a>`,"ZEUS         ","https://www.zeusfinance.app"],
       ["Meso Finance         ", `<a href='meso'         >Various</a>`,"croMESO      ","https://cro.meso.finance"],
-      ["BlackBird Finance    ", `<a href='bird'         >Various</a>`,"BIRD         ","https://croblackbird.finance/"]
+      ["BlackBird Finance    ", `<a href='bird'         >Various</a>`,"BIRD         ","https://croblackbird.finance/"],
+      ["Autofarm             ", `<a href='autofarm'     >Various</a>`,"Various      ","https://autofarm.network/cronos"]
 
     ]
   }
