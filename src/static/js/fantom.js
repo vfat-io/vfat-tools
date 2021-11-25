@@ -8,7 +8,6 @@ const main = async() => {
     "title":"FANTOM Network",
     "heading":["Pool Provider","LP", "Reward Tokens", "INFO"],
     "rows": [
-      ["Autofarm           ", `<a href='autofatm'     >Various</a>`,"Various      ","https://autofarm.network/fantom"],
       ["Popsicle           ", `<a href='popsicle'     >Various</a>`,"ICE          ","https://popsicle.finance"],
       ["Spooky             ", `<a href='spooky'       >Various</a>`,"boo          ","https://spookyswap.finance"],
       ["Spirit             ", `<a href='spirit'       >Various</a>`,"SPIRIT       ","https://app.spiritswap.finance"],
@@ -120,10 +119,10 @@ const main = async() => {
       ['KUZO Defi          ', `<a href="kuzo"         >Various</a>`,'KUZO         ','https://kuzo.xyz'],
       ['Monster Finance    ', `<a href="monsterfinance">Various</a>`,'MNSTR       ','https://monsterfinance.app'],
       ['Synapse            ', `<a href="synapse"      >Various</a>`,'SYN          ','https://synapseprotocol.com'],
-      ['Draco Cave            ', `<a href="dracocave"      >Various</a>`,'CAVE          ','https://cave.dracoforce.com/'],
-      ["Eldritch Finance v2  ", `<a href="eldritchv2"     >Various</a>`,'ELDRv2         ',"https://eldritch.app"],
+      ['Draco Cave         ', `<a href="dracocave"    >Various</a>`,'CAVE         ','https://cave.dracoforce.com/'],
+      ["Eldritch Finance v2  ", `<a href="eldritchv2" >Various</a>`,'ELDRv2       ',"https://eldritch.app"],
       ["Knights Finance  ", `<a href="knights"     >Various</a>`,'KNIGHTS         ',"https://knightsfinance.xyz"],
-
+      ["Autofarm           ", `<a href='autofatm'     >Various</a>`,"Various      ","https://autofarm.network/fantom"]
     ]
   }
 
