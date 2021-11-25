@@ -20,6 +20,20 @@ consoleInit(main)
       rewardTokenAddress : "0x5DE7Cc4BcBCa31c473F6D2F27825Cfb09cc0Bb16" //XBE token address
     }
 
+    const SlpPool2 = {
+      address : "0x4f2499a9aeb4f65ddc85c2cc77561abbcf090089",
+      abi : XBE_SLP_STAKING_ABI,
+      stakeTokenFunction : "stakingToken",
+      rewardTokenAddress : "0x5DE7Cc4BcBCa31c473F6D2F27825Cfb09cc0Bb16" //XBE token address
+    }
+
+    const SlpPool3 = {
+      address : "0xa4D94Ff014c48F1032fe2c558Ec7ECD035276F3b",
+      abi : XBE_SLP_STAKING_ABI,
+      stakeTokenFunction : "stakingToken",
+      rewardTokenAddress : "0x5DE7Cc4BcBCa31c473F6D2F27825Cfb09cc0Bb16" //XBE token address
+    }
+
     const App = await init_ethers();
 
     _print(`Initialized ${App.YOUR_ADDRESS}`);
@@ -30,9 +44,11 @@ consoleInit(main)
 
     let p = await loadSynthetixPool(App, tokens, prices, Pool.abi, Pool.address, Pool.rewardTokenFunction, Pool.stakeTokenFunction);
     let p0 = await loadSynthetixSlpXbePool(App, tokens, prices, SlpPool.abi, SlpPool.address, SlpPool.rewardTokenAddress, SlpPool.stakeTokenFunction);
-    _print_bold(`Total staked: $${formatMoney(p.staked_tvl+p0.staked_tvl)}`);
-    if (p.totalUserStaked >  0 || p0.totalUserStaked > 0) {
-      _print(`You are staking a total of $${formatMoney(p.totalUserStaked+p0.totalUserStaked)} at an APR of ${(p.totalAPR+p0.totalAPR * 100).toFixed(2)}%\n`);
+    let p1 = await loadSynthetixSlpXbePool(App, tokens, prices, SlpPool2.abi, SlpPool2.address, SlpPool2.rewardTokenAddress, SlpPool2.stakeTokenFunction);
+    let p2= await loadSynthetixSlpXbePool(App, tokens, prices, SlpPool3.abi, SlpPool3.address, SlpPool3.rewardTokenAddress, SlpPool3.stakeTokenFunction);
+    _print_bold(`Total staked: $${formatMoney(p.staked_tvl+p0.staked_tvl+p1.staked_tvl+p2.staked_tvl)}`);
+    if (p.totalUserStaked >  0 || p0.totalUserStaked > 0 || p1.totalUserStaked > 0 || p2.totalUserStaked > 0) {
+      _print(`You are staking a total of $${formatMoney(p.totalUserStaked+p0.totalUserStaked+p1.totalUserStaked+p2.totalUserStaked)} at an APR of ${(p.totalAPR+(p0.totalAPR+p1.totalAPR+p2.totalAPR) * 100).toFixed(2)}%\n`);
   }
 
   hideLoading();

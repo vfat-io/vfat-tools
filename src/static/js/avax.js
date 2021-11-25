@@ -79,8 +79,10 @@ const main = async() => {
         ["AVALuan                 ",`<a href="avaluan"          >Various</a>`,"AVALuan      ","https://luan.avaterra.finance"],
         ["Stabilize               ",`<a href="stabilize"        >Various</a>`,"SET          ","https://app.stabilize.fi"],
         ["MochiSwap               ",`<a href="mochi"            >Various</a>`,"aMOCHI       ","https://avalanche.mochiswap.io"],
-        ["Autofarm                ",`<a href="autofarm"         >Various</a>`,"Various      ","https://autofarm.network/avax"],
-    
+        ["The Blossom Farm        ",`<a href="bloom"            >Various</a>`,"BLM          ","https://bloom.theseedfarm.app"],
+        ["AvaxRush                ",`<a href="avaxrush"         >Various</a>`,"SONIC        ","https://avaxrush.com"],
+        ["FarmersOnly ONION       ",`<a href="onion"            >Various</a>`,"ONION        ","https://onion.farmersonly.farm"],
+        ["Autofarm                ", `<a href='autofatm'        >Various</a>`,"Various      ","https://autofarm.network/fantom"]
     ]
   }
 

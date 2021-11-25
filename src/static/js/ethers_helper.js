@@ -81,6 +81,9 @@ const pageNetwork = function() {
   if (network.toLowerCase() === 'polis') {
     return window.NETWORKS.POLIS
   }
+  if (network.toLowerCase() === 'metis') {
+    return window.NETWORKS.METIS
+  }
 
   return window.NETWORKS.ETHEREUM
 }
@@ -1816,6 +1819,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
   else if (pool.symbol.includes("ELP")) stakeTokenTicker += " ELK LP";
   else if (pool.symbol.includes("BenSwap")) stakeTokenTicker += " BenSwap LP";
   else if (pool.name.includes("MISTswap LP Token")) stakeTokenTicker += " MistSwap LP";
+  else if (pool.name.includes("TANGOswap LP Token")) stakeTokenTicker += " TangoSwap LP";
   else if (pool.symbol.includes("BRUSH-LP")) stakeTokenTicker += " BRUSH LP";
   else if (pool.symbol.includes("APE-LP")) stakeTokenTicker += " APE LP";
   else if (pool.symbol.includes("Galaxy-LP")) stakeTokenTicker += " Galaxy LP";
@@ -2160,6 +2164,11 @@ function getUniPrices(tokens, prices, pool, chain="eth")
             `https://app.mistswap.fi/remove/${t0address}/${t1address}`,
             `https://app.mistswap.fi/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
           ] :
+          pool.name.includes("TANGOswap LP Token") ? [
+            `https://tangoswap.cash/add/${t0address}/${t1address}`,
+            `https://tangoswap.cash/remove/${t0address}/${t1address}`,
+            `https://tangoswap.cash/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+          ] :
           pool.symbol.includes("Galaxy-LP") ? ({
             "bsc": [
               `https://bsc-exchange.galaxyfinance.one/#/add/${t0address}/${t1address}`,
@@ -2314,6 +2323,11 @@ function getUniPrices(tokens, prices, pool, chain="eth")
                           `https://app.mistswap.fi/add/${t0address}/${t1address}`,
                           `https://app.mistswap.fi/remove/${t0address}/${t1address}`,
                           `https://app.mistswap.fi/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+                        ] :
+                        pool.name.includes("TANGOswap LP Token") ? [
+                          `https://tangoswap.cash/add/${t0address}/${t1address}`,
+                          `https://tangoswap.cash/remove/${t0address}/${t1address}`,
+                          `https://tangoswap.cash/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
                         ] :
                         pool.symbol.includes("Galaxy-LP") ? ({
                             "bsc": [
@@ -2609,6 +2623,9 @@ function getErc20Prices(prices, pool, chain="eth") {
       break;
     case "fantom":
       poolUrl=`https://ftmscan.com/token/${pool.address}`;
+      break;
+    case "metis":
+      poolUrl=`https://andromeda-explorer.metis.io/token/${pool.address}`;
       break;
     case "cronos":
       poolUrl=`https://cronos.crypto.org/explorer/address/${pool.address}`;
@@ -3201,6 +3218,9 @@ async function printSynthetixPool(App, info, chain="eth", customURLs) {
       case "fantom":
         _print(`<a target="_blank" href="https://ftmscan.com/address/${info.stakingAddress}#code">FTM Scan</a>`);
         break;
+      case "metis":
+        _print(`<a target="_blank" href="https://andromeda-explorer.metis.io/address/${info.stakingAddress}#code">Andromeda Explorer</a>`);
+        break;
       case "cronos":
         _print(`<a target="_blank" href="https://cronos.crypto.org/explorer/address/${info.stakingAddress}#code">Cronos Scan</a>`);
         break;
@@ -3378,5 +3398,7 @@ function getChainExplorerUrl(chain, address){
       return `https://explorer.mainnet.aurora.dev/address/${address}`;
     case "boba" :
       return `https://blockexplorer.boba.network/address/${address}`;
+    case "metis" :
+      return `https://andromeda-explorer.metis.io/address/${address}`;
   }
 }
