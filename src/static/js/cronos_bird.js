@@ -16,7 +16,7 @@ $(function() {
        const rewardTokenTicker = "BIRD";
        const BIRD_CHEF = new ethers.Contract(BIRD_CHEF_ADDR, BIRD_CHEF_ABI, App.provider);
     
-       const rewardsPerWeek = await BIRD_CHEF.birdPerBlock() /1e18 * 604800;
+       const rewardsPerWeek = await BIRD_CHEF.birdPerBlock() /1e18 * 604800 / 5.6;
     
         const tokens = {};
         const prices = await getCronosPrices();
