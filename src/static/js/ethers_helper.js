@@ -1436,6 +1436,27 @@ async function getNToken(app, token, address, stakingAddress) {
   };
 }
 
+async function getYearnVault(app, yearn, address, stakingAddress) {
+  const calls = [yearn.decimals(), yearn.token(), yearn.name(), yearn.symbol(), yearn.totalSupply(),
+    yearn.balanceOf(stakingAddress), yearn.balanceOf(app.YOUR_ADDRESS), yearn.totalAssets()];
+  const [decimals, token_, name, symbol, totalSupply, staked, unstaked, balance] =
+    await app.ethcallProvider.all(calls);
+  const token = await getToken(app, token_, address);
+  return {
+    address,
+    name,
+    symbol,
+    totalSupply,
+    decimals : decimals,
+    staked: staked / 10 ** decimals,
+    unstaked: unstaked / 10 ** decimals,
+    token: token,
+    balance : balance,
+    contract: yearn,
+    tokens : [address].concat(token.tokens)
+  }
+}
+
 async function getStoredToken(app, tokenAddress, stakingAddress, type) {
   switch (type) {
     case "uniswap":
@@ -1444,6 +1465,9 @@ async function getStoredToken(app, tokenAddress, stakingAddress, type) {
     case "lixir":
       const lixirPool = new ethcall.Contract(tokenAddress, LIXIR_TOKEN_ABI);
       return await getLixirPool(app, lixirPool, tokenAddress, stakingAddress);
+    case "yearn":
+      const yearnVault = new ethcall.Contract(tokenAddress, YEARN_VAULT_ABI);
+      return await getYearnVault(app, yearnVault, tokenAddress, stakingAddress);
     case "doualDlp":
       const doualDlpPool = new ethcall.Contract(tokenAddress, DLP_DUAL_TOKEN_ABI);
       return await getDodoDualPoolToken(app, doualDlpPool, tokenAddress, stakingAddress);
@@ -1528,6 +1552,15 @@ async function getToken(app, tokenAddress, stakingAddress) {
     const lixir = await getLixirPool(app, lixirPool, tokenAddress, stakingAddress);
     window.localStorage.setItem(tokenAddress, "lixir");
     return lixir;
+  }
+  catch(err) {
+  }
+  try {
+    const yearnVault = new ethcall.Contract(tokenAddress, YEARN_VAULT_ABI);
+    const _domainSep = await app.ethcallProvider.all([yearnVault.DOMAIN_SEPARATOR()]);
+    const yearn = await getYearnVault(app, yearnVault, tokenAddress, stakingAddress);
+    window.localStorage.setItem(tokenAddress, "yearn");
+    return yearn;
   }
   catch(err) {
   }

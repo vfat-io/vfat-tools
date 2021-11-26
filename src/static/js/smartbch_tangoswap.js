@@ -581,7 +581,7 @@ $(function () {
         const prices = await getSmartbchPrices();
 
         await loadSmartbchChefContract(App, tokens, prices, TANGO_CHEF, TANGO_CHEF_ADDR, TANGO_CHEF_ABI, rewardTokenTicker,
-                "sushi", null, rewardsPerWeek, "pendingSushi", null, false, true);
+                "sushi", null, rewardsPerWeek, "pendingSushi", [2,3], false, true);
 
         hideLoading();
     }
