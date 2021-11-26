@@ -163,7 +163,8 @@ const main = async () => {
       ["Angle                        ", `<a href="../angle/"             >Various</a>`, "ANGLE              ", "https://app.angle.money"],
       ["Beverage                     ", `<a href="../beverage/"          >Various</a>`, "DRINK              ", "https://beverage.finance"],
       ["Nildao                       ", `<a href="../nildao/"            >Various</a>`, "NIL                ", "https://www.nildao.xyz"],
-      ["Sushi V2                     ", `<a href="../sushiv2/"           >Various</a>`, "Various            ", "https://app.sushi.com"]
+      ["Sushi V2                     ", `<a href="../sushiv2/"           >Various</a>`, "Various            ", "https://app.sushi.com"],
+      ["GenomesDAO                   ", `<a href="../genomesdao/"        >Various</a>`, "Various            ", "https://staking.genomes.io"]
     ]
   }
 
