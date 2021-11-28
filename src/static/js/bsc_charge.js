@@ -12,10 +12,18 @@ async function main() {
     _print("Reading smart contracts...\n");
 
    const STATIC_CHEF_ADDRESS = "0x92b2C216260E33d622d78bB7F1C5F2b63983aB14";
-   const rewardTokenTicker = "Static";
-   const STATIC_CHEF = new ethers.Contract(STATIC_CHEF_ADDRESS, MASTER_CHARGE_ABI, App.provider);
+   const CHARGE_STATIC_BUSD_CHEF_ADDRESS = "0xA48B61392B240E122d00Fe334EF995a9A23deCFF";
+   const CHARGE_CHARGE_BUSD_CHEF_ADDRESS = "0x60c489a4df20a440bfE68277e47140d178DBA9aC";
 
-   const rewardsPerWeek = await STATIC_CHEF.rewardPerBlock() /1e18
+   const staticRewardTokenTicker = "Static";
+   const chargeRewardTokenTicker = "Charge";
+
+   const STATIC_CHEF = new ethers.Contract(STATIC_CHEF_ADDRESS, MASTER_CHARGE_ABI, App.provider);
+   const CHARGE_STATIC_BUSD_CHEF = new ethers.Contract(CHARGE_STATIC_BUSD_CHEF_ADDRESS, MASTER_CHARGE_ABI, App.provider);
+   const CHARGE_CHARGE_BUSD_CHEF = new ethers.Contract(CHARGE_CHARGE_BUSD_CHEF_ADDRESS, MASTER_CHARGE_ABI, App.provider);
+
+
+    let rewardsPerWeek = await STATIC_CHEF.rewardPerBlock() /1e18
         * 604800 / 3;
 
     const tokens = {};
@@ -26,26 +34,43 @@ async function main() {
     _print(`                STATIC FARMS`);
     _print(`***************************************************`);
 
-    await loadBscChefContract(App, tokens, prices, STATIC_CHEF, STATIC_CHEF_ADDRESS, MASTER_CHARGE_ABI, rewardTokenTicker,
+    await loadBscChefContract(App, tokens, prices, STATIC_CHEF, STATIC_CHEF_ADDRESS, MASTER_CHARGE_ABI, staticRewardTokenTicker,
         "rewardToken", null, rewardsPerWeek, "pendingReward", [5]);
 
+
+    _print()
+    _print()
+    _print(`***************************************************`);
+    _print(`                CHARGE FARMS - CHARGE-BUSD`);
+    _print(`***************************************************`);
+    rewardsPerWeek = await CHARGE_CHARGE_BUSD_CHEF.rewardPerBlock() /1e18
+        * 604800 / 3;
+    await loadBscChefContract(App, tokens, prices, CHARGE_CHARGE_BUSD_CHEF, CHARGE_CHARGE_BUSD_CHEF_ADDRESS, MASTER_CHARGE_ABI, chargeRewardTokenTicker,
+        "rewardToken", null, rewardsPerWeek, "pendingReward", [0], 1);
+
+
     _print()
     _print()
 
     _print(`***************************************************`);
-    _print(`                CHARGE FARMS`);
+    _print(`                CHARGE FARMS - STATIC-BUSD`);
     _print(`***************************************************`);
-    _print(`Farming begins shortly ;)`);
+    rewardsPerWeek = await CHARGE_STATIC_BUSD_CHEF.rewardPerBlock() /1e18
+        * 604800 / 3;
+
+    await loadBscChefContract(App, tokens, prices, CHARGE_STATIC_BUSD_CHEF, CHARGE_STATIC_BUSD_CHEF_ADDRESS, MASTER_CHARGE_ABI, chargeRewardTokenTicker,
+        "rewardToken", null, rewardsPerWeek, "pendingReward", [0]);
+
 
     hideLoading();
   }
 
 async function loadBscChefContract(App, tokens, prices, chef, chefAddress, chefAbi, rewardTokenTicker,
   rewardTokenFunction, rewardsPerBlockFunction, rewardsPerWeekFixed, pendingRewardsFunction,
-  deathPoolIndices) {
+  deathPoolIndices, forcePoolLength) {
   const chefContract = chef ?? new ethers.Contract(chefAddress, chefAbi, App.provider);
 
-  const poolCount = parseInt(await chefContract.numPools(), 10);
+  const poolCount = forcePoolLength ?? parseInt(await chefContract.numPools(), 10);
   const totalAllocPoints = await chefContract.totalAllocPoint();
 
   _print(`<a href='https://bscscan.com/address/${chefAddress}' target='_blank'>Staking Contract</a>`);
@@ -113,7 +138,7 @@ async function loadBscChefContract(App, tokens, prices, chef, chefAddress, chefA
 
 async function getChargeDefiPoolInfo(App, chefContract, chefAddress, poolIndex, pendingRewardsFunction) {
   const poolInfo = await chefContract.poolInfo(poolIndex);
-  if (poolInfo.allocPoint == 0 || poolInfo.accxBLZDPerShare == 0) {
+  if (poolInfo.allocPoint == 0 || poolInfo.accTokenPerShare == 0) {
     return {
       address: poolInfo.stakedToken,
       allocPoints: poolInfo.allocPoint ?? 1,
@@ -151,7 +176,6 @@ function printChargeChefPool(App, chefAbi, chefAddr, prices, tokens, poolInfo, p
     var poolRewardsPerWeek = poolInfo.allocPoints / totalAllocPoints * rewardsPerWeek;
     if (poolRewardsPerWeek == 0 && rewardsPerWeek != 0) return;
     const userStaked = poolInfo.userLPStaked ?? poolInfo.userStaked;
-    console.log("prices: " + JSON.stringify(prices));
     const rewardPrice = getParameterCaseInsensitive(prices, rewardTokenAddress)?.usd;
     const staked_tvl = sp?.staked_tvl ?? poolPrices.staked_tvl;
     _print_inline(`${poolIndex} - `);
