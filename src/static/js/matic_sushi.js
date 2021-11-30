@@ -201,7 +201,7 @@ function printSushiAPR(rewardTokenTicker, rewardPrice, poolRewardsPerWeek,
     userStakedUsd,
     totalStakedUsd : staked_tvl,
     userStakedPct,
-    yearlyAPR,
+    yearlyAPR  : totalYearlyAPR,
     userYearlyUsd : userYearlyRewards * rewardPrice + userMaticYearlyRewards * rewardMaticPrice
   }
 }
