@@ -6,7 +6,7 @@ const main = async() => {
 
   let tableData = {
     "title":"FANTOM Network",
-    "heading":["Pool Provider","LP", "Reward Tokens", "INFO"></a>'],
+    "heading":["Pool Provider","LP", "Reward Tokens", "INFO"],
     "rows": [
       ["Popsicle           ", `<a href='popsicle'     >Various</a>`,"ICE          ",'<a href="https://popsicle.finance">https://popsicle.finance</a>'],
       ["Spooky             ", `<a href='spooky'       >Various</a>`,"boo          ",'<a href="https://spookyswap.finance">https://spookyswap.finance</a>'],
