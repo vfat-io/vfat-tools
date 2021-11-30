@@ -547,7 +547,8 @@ const main = async() => {
       ["ConquerUranus       ","", `<a href="conqueruranus" >Various</a>`,"SHITIUM          ","https://dapp.conqueruranus.com"],
       ["Charge Defi         ","", `<a href="charge"        >Various</a>`,"STATIC/CHARGE/PULSE","https://chargedefi.fi"],
       ["LandShare           ","", `<a href="landshare"     >Various</a>`,"LAND",           "https://app.landshare.io"],
-      ["RocketLemon Finance ","", `<a href="rocketlemon"   >Various</a>`,"LEMON            ","https://rocketlemondefi.com"]
+      ["RocketLemon Finance ","", `<a href="rocketlemon"   >Various</a>`,"LEMON            ","https://rocketlemondefi.com"],
+      ["AnchorSwap          ","", `<a href="anchorswap"    >Various</a>`,"ANCHOR           ","https://anchorswap.app"]
     ]}
 
   let table = new AsciiTable().fromJSON(tableData);
