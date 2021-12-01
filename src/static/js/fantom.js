@@ -123,7 +123,8 @@ const main = async() => {
       ["Eldritch Finance v2  ", `<a href="eldritchv2" >Various</a>`,'ELDRv2       ',"https://eldritch.app"],
       ["Knights Finance  ", `<a href="knights"     >Various</a>`,'KNIGHTS         ',"https://knightsfinance.xyz"],
       ['FANLuan            ', `<a href="fanluan"      >Various</a>`,'FLUAN        ','https://luan.fanterra.finance'],
-      ["Autofarm           ", `<a href='autofatm'     >Various</a>`,"Various      ","https://autofarm.network/fantom"]
+      ["Autofarm           ", `<a href='autofatm'     >Various</a>`,"Various      ","https://autofarm.network/fantom"],
+      ["MunSwap      ", `<a href='munswap'     >Various</a>`,"MUN     ","https://mun-swap.com"]
     ]
   }
 
