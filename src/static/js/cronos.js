@@ -21,7 +21,8 @@ const main = async() => {
       ["BlackBird Finance    ", `<a href='bird'         >Various</a>`,"BIRD         ","https://croblackbird.finance"],
       ["SmolSwap             ", `<a href='smolswap'     >Various</a>`,"SMOL         ","https://smolswap.com"],
       ["Autofarm             ", `<a href='autofarm'     >Various</a>`,"Various      ","https://autofarm.network/cronos"],
-      ["CroSwap              ", `<a href='croswap'      >Various</a>`,"CSP          ","https://croswapdefi.com"]  
+      ["CroSwap              ", `<a href='croswap'      >Various</a>`,"CSP          ","https://croswapdefi.com"],
+      ["MetaCrono Finance    ", `<a href='metacrono'    >Various</a>`,"METACRONO    ","https://www.metacrono.finance/"],
 
     ]
   }
