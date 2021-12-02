@@ -414,6 +414,7 @@ const main = async () => {
       ['Synapse             ',"",  `<a href="synapse"         >Various</a>`, 'SYN          ', 'https://synapseprotocol.com'],
       ['TacoParty Salsa     ',"",  `<a href="tacopartysalsa"  >Various</a>`, 'SALSA        ', 'https://salsa.tacoparty.finance'],
       ['Autofarm            ',"",  `<a href="autofarm"        >Various</a>`, 'Various      ','https://autofarm.network/polygon'],
+      ['DesireFarm          ',"",  `<a href="desirefarm"      >Various</a>`, 'Various      ','https://desire.sandman.finance']
     ],
   }
 
