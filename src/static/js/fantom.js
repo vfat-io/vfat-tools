@@ -124,7 +124,8 @@ const main = async() => {
       ["Knights Finance  ", `<a href="knights"     >Various</a>`,'KNIGHTS         ',"https://knightsfinance.xyz"],
       ['FANLuan            ', `<a href="fanluan"      >Various</a>`,'FLUAN        ','https://luan.fanterra.finance'],
       ["Autofarm           ", `<a href='autofatm'     >Various</a>`,"Various      ","https://autofarm.network/fantom"],
-      ["MunSwap      ", `<a href='munswap'     >Various</a>`,"MUN     ","https://mun-swap.com"]
+      ["MunSwap      ", `<a href='munswap'     >Various</a>`,"MUN     ","https://mun-swap.com"],
+      ["rKITTEN            ", `<a href='rkitten'      >Various</a>`,"rKITTEN      ","https://kittens.fakeworms.studio/rewards"],
     ]
   }
 
