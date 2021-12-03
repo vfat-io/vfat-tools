@@ -15,7 +15,7 @@ const main = async() => {
       ["Hyperjump          ", `<a href='hyperjump'    >Various</a>`,"ORI          ","https://hyperjump.fi"],
       ["Ester              ", `<a href='ester'        >Various</a>`,"EST          ","https://ester.finance"],
       ["Froyo              ", `<a href='froyo'        >Various</a>`,"FROYO        ","https://frozenyogurt.finance"],
-      ["Ghost              ", `<a href='ghost'        >Various</a>`,"GHOST        ","https://www.theghost.finance"],
+      ["The Ghost          ", `<a href='ghost'        >Various</a>`,"GHOST        ","https://www.theghost.finance"],
       ["Beefy              ", `<a href='beefy'        >Various</a>`,"BIFI         ","https://fantom.beefy.finance"],
       ["Liquid Driver      ", `<a href='liquid'       >Various</a>`,"LQDR         ","https://www.liquiddriver.finance"],
       ["Mushrooms          ", `<a href='mushrooms'    >Various</a>`,"MM           ","https://mushrooms.finance/farms"],
@@ -127,6 +127,7 @@ const main = async() => {
       ["MunSwap            ", `<a href='munswap'      >Various</a>`,"MUN          ","https://mun-swap.com"],
       ["TrickorTreat L2    ", `<a href='trick'        >Various</a>`,"TRICK        ","https://trickortreat.farm"],
       ["rKITTEN            ", `<a href='rkitten'      >Various</a>`,"rKITTEN      ","https://kittens.fakeworms.studio/rewards"],
+      ["Ghost              ", `<a href='ghst'         >Various</a>`,"GHST         ","https://ghost.maximum.farm"]
     ]
   }
 
