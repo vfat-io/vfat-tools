@@ -21,7 +21,7 @@ async function main() {
    const currentTime = Date.now() / 1000;
    rewardsPerWeek = await TRICK_CHEF.trickPerSecond() /1e18 * 604800;
 
-   if(startTime > currentTime){
+   if(startTime < currentTime){
     _print(`Rewards have not started yet`);}
 
 
