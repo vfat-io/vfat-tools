@@ -22,7 +22,11 @@ const main = async() => {
       ["MoonBeach                ", `<a href="moonbeach"     >Various</a>`,"COCONUT     ","https://moonbeach.farm"],
       ["KogeFarm                 ", `<a href="koge"          >Various</a>`,"VARIOUS     ","https://kogefarm.io"],
       ["MoonFi                   ", `<a href="moonfi"        >Various</a>`,"VARIOUS     ","https://www.moofi.app"],
-      ["Elk                      ", `<a href="elk"           >Various</a>`,"ELK         ","https://elk.finance"]
+      ["Elk                      ", `<a href="elk"           >Various</a>`,"ELK         ","https://elk.finance"],
+      ["Huckleberry              ", `<a href="huckleberry"   >Various</a>`,"FINN        ","https://www.huckleberry.finance"],
+      ["Sushi                    ", `<a href="sushi"         >Various</a>`,"SUSHI/MOVR  ","https://app.sushi.com"],
+      ["Nileriver                ", `<a href="nileriver"     >Various</a>`,"NIL         ","https://www.nileriver.finance"],
+      ["RivrKitty                ", `<a href="rivrkitty"     >Various</a>`,"PAWS        ","https://www.rivrkitty.com"]
     ]
   }
 

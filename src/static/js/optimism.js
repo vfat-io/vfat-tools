@@ -8,7 +8,8 @@ const main = async() => {
     "title":"Optimistic Network",
     "heading":["Pool Provider","LP", "Reward Tokens", "INFO"],
     "rows": [
-      //There is no any project for optimistic yet.
+      ["Synapse               ", `<a href='synapse'    >Various</a>`,"SYN          ","https://synapseprotocol.com"],
+      ["WePiggy               ", `<a href='wepiggy'    >Various</a>`,"WPC          ","https://app.wepiggy.com"]
      ]
   }
 

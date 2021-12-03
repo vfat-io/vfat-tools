@@ -417,7 +417,7 @@ const main = async() => {
       ["BabySmurf           ","", `<a href="babysmurf"     >Various</a>`,"bSMURF           ","https://smurf.money"],
       ["PapaSmurf           ","", `<a href="papasmurf"     >Various</a>`,"PAPAS            ","https://papa.smurf.money"],
       ["Smurfette           ","", `<a href="smurfette"     >Various</a>`,"SMRF             ","https://lady.smurf.money"],
-      ["WePiggy             ","", `<a href="wepiggy"       >Various</a>`,"WPC              ","https://bsc.wepiggy.com/markets"],
+      ["WePiggy             ","", `<a href="wepiggy"       >Various</a>`,"WPC              ","https://app.wepiggy.com"],
       ["MixSwap             ","", `<a href="mixswap"       >Various</a>`,"MXS              ","https://app.mixswap.finance"],
       ["HamsterSwap         ","", `<a href="hamsterswaps"  >Various</a>`,"HAMSTER          ","https://hamsterswaps.com"],
       ["DojoFarm            ","", `<a href="dojofarm"      >Various</a>`,"DOJO             ","https://bsc.dojofarm.finance"],
@@ -498,9 +498,9 @@ const main = async() => {
       ["BabySwap            ","", `<a href="babyswap"      >Various</a>`,"BABY             ","https://home.babyswap.finance"],
       ["Alita               ","", `<a href="alita"         >Various</a>`,"ALI              ","https://app.alita.finance"],
       ["Singular            ","", `<a href="singular"      >Various</a>`,"SING             ","https://singular.farm"],
-      ["Elk *               ","", `<a href="elk"           >Various</a>`,"ELK              ","https://app.elk.finance"],
+      ["Elk                 ","", `<a href="elk"           >Various</a>`,"ELK              ","https://app.elk.finance"],
       ["Defily              ","", `<a href="defily"        >Various</a>`,"DFL              ","https://defily.io"],
-      ["United Farmers Finance","", `<a href="united_farmers_finance"        >Various</a>`,"UFF","https://unitedfarmers.finance"],
+      ["United Farmers Finance UFF","", `<a href="united_farmers_finance"        >Various</a>`,"UFF","https://app.unitedfarmers.finance/uff-farms"],
       ["Yerba Mate Finance  ","", `<a href="yerbamatefinance">Various</a>`,"YERBAMATE      ","https://app.yerbamate.finance"],
       ["Rocketmoon          ","", `<a href="rocketmoon"    >Various</a>`,"ROCKET           ","https://rocketmoon.farm"],
       ["DogCake             ","", `<a href="dogcake"       >Various</a>`,"DCAKE            ","https://dogcake.finance"],
@@ -537,7 +537,18 @@ const main = async() => {
       ["MochiSwap           ","", `<a href="mochiswap"     >Various</a>`,"bMOCHI           ","https://bsc.mochiswap.io"],
       ["ModerSwap           ","", `<a href="moderswap"     >Various</a>`,"MOD              ","https://moderswap.com"],
       ["RobustSwap          ","", `<a href="robustswap"    >Various</a>`,"RBS              ","https://robustswap.com"],
-      ["Palladium           ","", `<a href="palladium"     >Various</a>`,"PD               ","https://palladium.farm"]
+      ["Palladium           ","", `<a href="palladium"     >Various</a>`,"PD               ","https://palladium.farm"],
+      ["RainbowFarm RNBZ    ","", `<a href="rainbow-rnbz"  >Various</a>`,"RNBO-RNBZ        ","https://rainbowfarm.finance"],
+      ["BootySwap           ","", `<a href="bootyswap"     >Various</a>`,"TWERK            ","https://app.bootyswap.finance"],
+      ["RichPig             ","", `<a href="richpig"       >Various</a>`,"PIG              ","https://richpig.net"],
+      ["Mermaidswap         ","", `<a href="mermaidswap"   >Various</a>`,"MERD             ","https://mermaidswap.com"],
+      ["Synapse             ","", `<a href="synapse"       >Various</a>`,"SYN              ","https://synapseprotocol.com"],
+      ["United Farmers Finance GRAIN","", `<a href="grain" >Various</a>`,"GRAIN            ","https://app.unitedfarmers.finance/grain-farms"],
+      ["ConquerUranus       ","", `<a href="conqueruranus" >Various</a>`,"SHITIUM          ","https://dapp.conqueruranus.com"],
+      ["Charge Defi         ","", `<a href="charge"        >Various</a>`,"STATIC/CHARGE/PULSE","https://chargedefi.fi"],
+      ["LandShare           ","", `<a href="landshare"     >Various</a>`,"LAND",           "https://app.landshare.io"],
+      ["RocketLemon Finance ","", `<a href="rocketlemon"   >Various</a>`,"LEMON            ","https://rocketlemondefi.com"],
+      ["AnchorSwap          ","", `<a href="anchorswap"    >Various</a>`,"ANCHOR           ","https://anchorswap.app"]
     ]}
 
   let table = new AsciiTable().fromJSON(tableData);

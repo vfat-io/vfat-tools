@@ -173,10 +173,10 @@ async function getMaticStoredToken(App, tokenAddress, stakingAddress, type) {
       const crv = new ethers.Contract(tokenAddress, MATIC_CURVE_ABI, App.provider);
       if (tokenAddress.toLowerCase() == "0x88E11412BB21d137C217fd8b73982Dc0ED3665d7".toLowerCase()) {
         const minter = "0x3333333ACdEdBbC9Ad7bda0876e60714195681c5";
-        return await getCurveToken(App, crv, tokenAddress, stakingAddress, minter);
+        return await getCurveMaticToken(App, crv, tokenAddress, stakingAddress, minter);
       }
       const minter = await crv.minter();
-      return await getCurveToken(App, crv, tokenAddress, stakingAddress, minter);
+      return await getCurveMaticToken(App, crv, tokenAddress, stakingAddress, minter);
     case "maticSaddle":
       const saddle = new ethers.Contract(tokenAddress, MATIC_SADDLE_LP_TOKEN_ABI, App.provider);
       const swap = await saddle.swap();
@@ -586,7 +586,8 @@ const maticTokens = [
   { "id": "phoenix-token", "symbol": "PHX", "contract":"0x9C6BfEdc14b5C23E3900889436Edca7805170f01"},
   { "id": "zerogoki", "symbol": "REI", "contract":"0xB9f9e37c2CdbaFF928C3Da730b02F06fE09aE70E"},
   { "id": "honor-token", "symbol": "HONOR", "contract":"0xb82a20b4522680951f11c94c54b8800c1c237693"},
-  { "id": "mantra-dao", "symbol": "OM", "contract":"0xC3Ec80343D2bae2F8E680FDADDe7C17E71E114ea"}
+  { "id": "mantra-dao", "symbol": "OM", "contract":"0xC3Ec80343D2bae2F8E680FDADDe7C17E71E114ea"},
+  { "id": "synapse-2", "symbol": "SYN", "contract":"0xf8f9efc0db77d8881500bb06ff5d6abc3070e695"}
 ]
 
 

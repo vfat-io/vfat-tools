@@ -15,7 +15,7 @@ const main = async() => {
         ["Yeti                    ",`<a href="yeti"             >Various</a>`,"YTS          ","https://exchange.yetiswap.app"],
         ["Pandaswap               ",`<a href="panda"            >Various</a>`,"BAMBOO       ","https://pandaswap.exchange"],
         ["Pefi                    ",`<a href="pefi"             >Various</a>`,"PEFI         ","https://penguinfinance.org"],
-        ["Elk *                   ",`<a href="elk"              >Various</a>`,"ELK          ","https://elk.finance"],
+        ["Elk                     ",`<a href="elk"              >Various</a>`,"ELK          ","https://elk.finance"],
         ["Snowball                ",`<a href="snowball"         >Various</a>`,"SNOB         ","https://snowball.network/earn"],
         ["Olive                   ",`<a href="olive"            >Various</a>`,"OLIVE        ","https://avax.olive.cash"],
         ["Lydia                   ",`<a href="lydia"            >Various</a>`,"LYD          ","https://www.lydia.finance"],
@@ -68,7 +68,21 @@ const main = async() => {
         ["Zeal                    ",`<a href="zeal"             >Various</a>`,"WING         ","https://zeal.farm"],
         ["The Seed Farm           ",`<a href="seedfarm"         >Various</a>`,"SEED         ","https://theseedfarm.app"],
         ["SageAvax                ",`<a href="sageavax"         >Various</a>`,"SAGE         ","https://sageavax.finance"],
-        ["Aave                    ",`<a href="aave"             >Various</a>`,"WAVAX        ","https://app.aave.com"]
+        ["Aave                    ",`<a href="aave"             >Various</a>`,"WAVAX        ","https://app.aave.com"],
+        ["The Bud Farm            ",`<a href="budfarm"          >Various</a>`,"BUD          ","https://thebudfarm.app"],
+        ["Mint                    ",`<a href="mintswap"         >Various</a>`,"MINT         ","https://mint-swap.com"],
+        ["SmartCoin               ",`<a href="smartcoin"        >Various</a>`,"SMRT         ","https://smartcoin.farm"],
+        ["Avax Cougar             ",`<a href="cougar"           >Various</a>`,"CGS          ","https://avaapp.cougarswap.io"],
+        ["Yieldyak                ",`<a href="yieldyak"         >Various</a>`,"Various      ","https://yieldyak.com"],
+        ["Mermaidswap             ", `<a href="mermaidswap"     >Various</a>`,"MERD         ","https://mermaidswap.com"],
+        ["Synapse                 ", `<a href="synapse"         >Various</a>`,"SYN          ","https://synapseprotocol.com"],
+        ["AVALuan                 ",`<a href="avaluan"          >Various</a>`,"AVALuan      ","https://luan.avaterra.finance"],
+        ["Stabilize               ",`<a href="stabilize"        >Various</a>`,"SET          ","https://app.stabilize.fi"],
+        ["MochiSwap               ",`<a href="mochi"            >Various</a>`,"aMOCHI       ","https://avalanche.mochiswap.io"],
+        ["The Blossom Farm        ",`<a href="bloom"            >Various</a>`,"BLM          ","https://bloom.theseedfarm.app"],
+        ["AvaxRush                ",`<a href="avaxrush"         >Various</a>`,"SONIC        ","https://avaxrush.com"],
+        ["FarmersOnly ONION       ",`<a href="onion"            >Various</a>`,"ONION        ","https://onion.farmersonly.farm"],
+        ["Autofarm                ", `<a href='autofatm'        >Various</a>`,"Various      ","https://autofarm.network/fantom"]
     ]
   }
 

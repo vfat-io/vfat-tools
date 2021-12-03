@@ -13,7 +13,7 @@ const main = async () => {
       ['Cometh              ',"", `<a href="cometh"           >Various</a>`,'MUST          ','https://swap.cometh.io/#/stake'],
       ['Dark                ',"", `<a href="dark"            >Various</a>`, 'DB           ', 'https://www.dark.build'],
       ['Smartdex            ',"", `<a href="smartdex"        >Various</a>`, 'NIOX         ', 'https://swap.smartdex.app'],
-      ['Elk *               ',"", `<a href="elk"             >Various</a>`, 'ELK          ', 'https://app.elk.finance'],
+      ['Elk                 ',"", `<a href="elk"             >Various</a>`, 'ELK          ', 'https://app.elk.finance'],
       ['Polywhale           ',"", `<a href="polywhale"       >Various</a>`, 'KRILL        ', 'https://polywhale.finance'],
       ['Aave                ',"", `<a href="aave"            >Various</a>`, 'MATIC        ', 'https://aave.com'],
       ['BullionFinance      ',"", `<a href="bullionfinance"   >Various</a>`,'GOLD          ','https://bullionfinance.xyz',],
@@ -199,7 +199,7 @@ const main = async () => {
       ['PolyQuail           ',"", `<a href="polyquail_kwil"  >Various</a>`,'KWIL         ','https://kwil.polyquail.finance',],
       ['Coinopolis          ',"", `<a href="coinopolis"      >Various</a>`, 'CCASH        ', 'https://coinopolis.io'],
       ['Yearnit             ',"", `<a href="yearnit"         >Various</a>`, 'YEARNIT      ', 'https://yearnit.finance'],
-      ['WePiggy             ',"", `<a href="wepiggy"         >Various</a>`,'WPC          ','https://polygon.wepiggy.com/markets',],
+      ['WePiggy             ',"", `<a href="wepiggy"         >Various</a>`,'WPC          ','https://app.wepiggy.com',],
       ['Copycat             ',"", `<a href="copycat"         >Various</a>`, 'FISH         ', 'https://copycat.farm'],
       ['Cakecrypt           ',"", `<a href="cakecrypt"       >Various</a>`, 'pCAKECRYPT   ', 'https://poly.cakecrypt.io'],
       ['TitanBull           ',"", `<a href="tbull"           >Various</a>`, 'TBULL        ', 'https://titanbull.finance'],
@@ -403,7 +403,19 @@ const main = async () => {
 	    ['FarmWiki            ',"",  `<a href="farmwiki"        >Various</a>`, 'FENRIR       ', 'https://fenrir.farmwiki.xyz'],
 	    ['DefiHalal           ',"",  `<a href="defihalal"       >Various</a>`, 'HALAL        ', 'https://app.defihalal.org'],
       ['PolyUnity Finance   ',"",  `<a href="polyunity"       >Various</a>`, 'UNITY        ', 'https://polyunity.finance'],
-      ['Melon Finance       ',"",  `<a href="melonfinance"    >Various</a>`, 'MELON        ', 'https://melonfinance.cc']
+      ['Melon Finance       ',"",  `<a href="melonfinance"    >Various</a>`, 'MELON        ', 'https://melonfinance.cc'],
+      ['Mushrooms Finance   ',"",  `<a href="mushrooms"       >Various</a>`, 'MM           ', 'https://mushrooms.finance/farms'],
+      ['Wheel Finance       ',"",  `<a href="wheelfinance"    >Various</a>`, 'WHEEL        ', 'https://wheelfinance.xyz'],
+      ['Icecolony           ',"",  `<a href="icecolony"       >Various</a>`, 'ICE          ', 'https://www.icecolony.com'],
+      ['DestructionFarm     ',"",  `<a href="destructionfarm" >Various</a>`, 'DESTRUCTIONFARM', 'https://destruction.sandman.finance'],
+      ['KIMCHI Finance      ',"",  `<a href="kimchifinance"   >Various</a>`, 'KIMCHI       ', 'https://kimchifinance.icu'],
+      ['Boltrswap           ',"",  `<a href="boltrswap"       >Various</a>`, 'BOL          ', 'https://boltrswap.com'],
+      ['Gemgard Finance     ',"",  `<a href="gemgard"         >Various</a>`, 'GGT          ', 'https://gemgard.finance'],
+      ['Synapse             ',"",  `<a href="synapse"         >Various</a>`, 'SYN          ', 'https://synapseprotocol.com'],
+      ['TacoParty Salsa     ',"",  `<a href="tacopartysalsa"  >Various</a>`, 'SALSA        ', 'https://salsa.tacoparty.finance'],
+      ['Autofarm            ',"",  `<a href="autofarm"        >Various</a>`, 'Various      ','https://autofarm.network/polygon'],
+      ['DesireFarm          ',"",  `<a href="desirefarm"      >Various</a>`, 'Various      ','https://desire.sandman.finance'],
+      ["BambooDeFi          ","", `<a href="bamboodefi"       >Various</a>`, 'BAMBOO       ','https://polygon.bamboodefi.com/']
     ],
   }
 

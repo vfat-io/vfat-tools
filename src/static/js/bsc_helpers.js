@@ -703,6 +703,7 @@ const bscTokens = [
   { "id": "gem", "symbol": "GEM", "contract": "0x9fb4DEF63f8caEC83Cb3EBcC22Ba0795258C988a" },
   { "id": "shell", "symbol": "SHELL", "contract": "0x01c16da6E041Cf203959624Ade1F39652973D0EB" },
   { "id": "token-dforce-usd", "symbol": "USX", "contract": "0xb5102cee1528ce2c760893034a4603663495fd72" },
+  { "id": "synapse-2", "symbol": "SYN", "contract": "0xa4080f1778e69467E905B8d6F72f6e441f9e9484" }
 ]
 
 async function getBscPrices() {

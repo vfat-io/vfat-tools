@@ -20,7 +20,7 @@ async function main() {
    const startTime = await WING_CHEF.startTime();
    const currentTime = Date.now() / 1000;
 
-   if(startTime > currentTime){
+   if(startTime < currentTime){
     _print(`Rewards have not started yet\n`);
    }else{
     rewardsPerWeek = await WING_CHEF.wingPerSecond() /1e18 * 604800;

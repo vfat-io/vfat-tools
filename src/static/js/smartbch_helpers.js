@@ -273,7 +273,7 @@ async function loadSmartbchSynthetixPoolInfo(App, tokens, prices, stakingAbi, st
   
   async function loadSmartbchChefContract(App, tokens, prices, chef, chefAddress, chefAbi, rewardTokenTicker,
     rewardTokenFunction, rewardsPerBlockFunction, rewardsPerWeekFixed, pendingRewardsFunction,
-    deathPoolIndices, hideFooter) {
+    deathPoolIndices, hideFooter, showTable) {
     const chefContract = chef ?? new ethers.Contract(chefAddress, chefAbi, App.provider);
   
     const poolCount = parseInt(await chefContract.poolLength(), 10);
@@ -342,10 +342,87 @@ async function loadSmartbchSynthetixPoolInfo(App, tokens, prices, stakingAbi, st
             + ` Year $${formatMoney(totalUserStaked*averageApr)}\n`);
       }
     }
-  
+
+    if (showTable) {
+      let tableData = {
+        "title": rewardTokenTicker,
+        "heading": [
+          "#",
+          "Pair",
+          "Total Staked",
+          "Total $ Staked",
+          "Reward",
+          "APR",
+          "My Stake",
+        ],
+        "rows": []
+      }
+
+      for (let i = 0; i < poolCount; i++) {
+        if (poolPrices[i]) {
+          let pool = buildChefPool(App, chefAbi, chefAddress, prices, tokens, poolInfos[i], i, poolPrices[i],
+            totalAllocPoints, rewardsPerWeek, rewardTokenTicker, rewardTokenAddress,
+            pendingRewardsFunction)
+
+          if (pool) {
+            tableData.rows.push([
+              _build_link(`${i}`, () => {
+                document.getElementById("pool-details-modal").style.display = 'block'
+
+                let table = new AsciiTable();
+
+                let tableData = {
+                  "title": pool.pair_link,
+                  "rows": []
+                }
+                table.addRow(["Pair", pool.pair_link])
+                table.addRow(["TVL", pool.tvl])
+
+                if (pool.add_liquidity_link) {
+                  table.addRow(["Add Liquidity", pool.add_liquidity_link])
+                  table.addRow(["Remove Liquidity", pool.remove_liquidity_link])
+                  table.addRow(["Swap", pool.swap_link])
+                  table.addRow([`${pool.token0} Price`, pool.price0])
+                  table.addRow([`${pool.token1} Price`, pool.price1])
+                }
+
+                table.addRow([`${pool.reward_token} Weekly rewards`, pool.weekly_rewards])
+                table.addRow(["Total staked", `${pool.total_staked} (${pool.total_staked_dollars})`])
+                table.addRow(["My stake", pool.user_stake])
+                table.addRow(["DPR", pool.dpr])
+                table.addRow(["WPR", pool.wpr])
+                table.addRow(["APR", pool.apr])
+                table.addRow(["Stake", pool.stake])
+                table.addRow(["Unstake", pool.unstake])
+                table.addRow(["Claim", pool.claim])
+
+                document.getElementById('pool-details-content').innerHTML += table + '<br />';
+
+              }),
+              _truncate_link(pool.pair_link.replace(/\u0000/g,""), 30),
+              pool.total_staked,
+              pool.total_staked_dollars,
+              pool.reward_token,
+              pool.apr,
+              pool.user_stake,
+            ])
+          }
+        }
+      }
+
+      let table = new AsciiTable().fromJSON(tableData);
+      table
+        .setAlign(0, AsciiTable.RIGHT)
+        .setAlign(2, AsciiTable.RIGHT)
+        .setAlign(3, AsciiTable.RIGHT)
+        .setAlign(5, AsciiTable.RIGHT)
+
+      document.getElementById('log').innerHTML += table + '<br />';
+    }
+
     return { prices, totalUserStaked, totalStaked, averageApr }
   }
-  
+
   async function loadMultipleSmartbchSynthetixPools(App, tokens, prices, pools) {
     let totalStaked  = 0, totalUserStaked = 0, individualAPRs = [];
     const infos = await Promise.all(pools.map(p =>
@@ -376,4 +453,3 @@ async function loadSmartbchSynthetixPoolInfo(App, tokens, prices, stakingAbi, st
     let totalApr = totalUserStaked == 0 ? 0 : individualAPRs.reduce((x,y)=>x+y, 0) / totalUserStaked;
     return { staked_tvl : totalStaked, totalUserStaked, totalApr };
   }
-  
