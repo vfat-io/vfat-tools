@@ -3,7 +3,7 @@ $(function() {
   consoleInit(main)
   });
 
-const Addresses = [/*{
+const Addresses = [{
   symbol: "YFI",
   token: "0x0bc529c00C6401aEF6D220BE8C6Ea1667F6Ad93e",
   vaultFrom: "0xBA2E7Fed597fd0E3e70f5130BcDbbFE06bB94fe1",
@@ -192,14 +192,14 @@ const Addresses = [/*{
   vaultTo: "0x25212Df29073FfFA7A67399AcEfC2dd75a831A1A",
   apyTooltip: "Please migrate funds to our new vault to continue earning boosted yield.",
   migrationMessage: "This vault is no longer boosted, but is still earning yield. Withdraw funds or migrate your balance to the new v2 Curve EURS yVault to continue earning boosted yield."
-},*/ {
+}, {
   symbol: "LINK",
   token: "0x514910771AF9Ca656af840dff83E8264EcF986CA",
   vaultFrom: "0x881b06da56BB5675c54E4Ed311c21E54C5025298",
   vaultTo: "0x671a912C10bba0CFA74Cfc2d6Fba9BA1ed9530B2",
   apyTooltip: "Please migrate funds to our new vault to continue earning yield.",
   migrationMessage: "This vault is no longer active. Withdraw funds or migrate your balance to the v2 LINK yVault to continue earning yield."
-}, /*{
+}, {
   symbol: "WETH",
   token: "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
   vaultFrom: "0xa9fE4601811213c340e850ea305481afF02f5b28",
@@ -262,7 +262,7 @@ const Addresses = [/*{
   vaultTo: "0xa354F35829Ae975e850e23e9615b11Da1B3dC4DE",
   apyTooltip: "Please migrate funds to our new vault to continue earning yield.",
   migrationMessage: "This vault is no longer active. Withdraw funds or migrate your balance to continue earning yield."
-}*/].map(v => 
+}].map(v => 
   v.vaultTo)
 
   async function main() {

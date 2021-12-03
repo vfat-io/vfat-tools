@@ -2889,23 +2889,15 @@ function getTriCryptoPrices(prices, pool, chain){
 
 function getYearnPrices(prices, pool, chain){
   let price = 0
-  if(prices[pool.token.address]){
-    let underlyingPrice = getParameterCaseInsensitive(prices, pool.token.address).usd;
+  let underlyingPrice = getParameterCaseInsensitive(prices, pool.token.address).usd;
+  if(underlyingPrice){
     price = underlyingPrice * pool.ppfs;
   }else{
-    price = getPoolPrices(prices, pool.token.address, chain).price;
+    underlyingPrice = getPoolPrices(prices, pool.token.address, chain).price;
+    price = underlyingPrice * pool.ppfs;
   }
-  const price = getParameterCaseInsensitive(prices, pool.token.address).usd
-  let tvl = 0;
-  for(let i = 0; i < pool.coins.length; i++){
-    const price = (getParameterCaseInsensitive(prices,pool.coins[i].address).usd);
-    if (getParameterCaseInsensitive(prices, pool.address)?.usd ?? 0 == 0) {
-      prices[pool.address] = { usd : price };
-    }
-    tvl += pool.coins[i].balance * price;
-  }
-  const price = tvl / pool.totalSupply;
-  const staked_tvl = pool.staked * price;
+  const tvl = (pool.token.totalSupply / 10 ** pool.token.decimals) * price
+  const staked_tvl = pool.balance * price;
   const poolUrl = getChainExplorerUrl(chain, pool.address);
   const name = `<a href='${poolUrl}' target='_blank'>${pool.symbol}</a>`;
   return {
@@ -2914,11 +2906,12 @@ function getYearnPrices(prices, pool, chain){
     stakeTokenTicker : pool.symbol,
     print_price() {
       _print(`${name} Price: $${formatMoney(price)} Market Cap: $${formatMoney(tvl)}`);
-      _print(`Staked: ${pool.staked.toFixed(4)} ${pool.symbol} ($${formatMoney(staked_tvl)})`);
+      _print(`Staked: ${pool.balance.toFixed(4)} ${pool.symbol} ($${formatMoney(staked_tvl)})`);
     },
     print_contained_price() {
     },
-    tvl : tvl
+    staked_tvl,
+    tvl
   }
 }
 
