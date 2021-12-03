@@ -122,14 +122,14 @@ const Addresses = [/*{
   vaultTo: "0x84E13785B5a27879921D6F685f041421C7F482dA",
   apyTooltip: "Please migrate funds to our new vault to continue earning boosted yield.",
   migrationMessage: "This vault is no longer boosted, but is still earning yield. Withdraw funds or migrate your balance to the new v2 Curve 3pool yVault to continue earning boosted yield."
-},*/ {
+}, {
   symbol: "crvDUSD",
   token: "0x3a664Ab939FD8482048609f652f9a0B0677337B9",
   vaultFrom: "0x8e6741b456a074F0Bc45B8b82A755d4aF7E965dF",
   vaultTo: "0x30FCf7c6cDfC46eC237783D94Fc78553E79d4E9C",
   apyTooltip: "Please migrate funds to our new vault to continue earning boosted yield.",
   migrationMessage: "This vault is no longer boosted, but is still earning yield. Withdraw funds or migrate your balance to the new v2 Curve DUSD yVault to continue earning boosted yield."
-}, /*{
+}, {
   symbol: "crvMUSD",
   token: "0x1AEf73d49Dedc4b1778d0706583995958Dc862e6",
   vaultFrom: "0x0FCDAeDFb8A7DfDa2e9838564c5A1665d856AFDF",
@@ -192,14 +192,14 @@ const Addresses = [/*{
   vaultTo: "0x25212Df29073FfFA7A67399AcEfC2dd75a831A1A",
   apyTooltip: "Please migrate funds to our new vault to continue earning boosted yield.",
   migrationMessage: "This vault is no longer boosted, but is still earning yield. Withdraw funds or migrate your balance to the new v2 Curve EURS yVault to continue earning boosted yield."
-}, {
+},*/ {
   symbol: "LINK",
   token: "0x514910771AF9Ca656af840dff83E8264EcF986CA",
   vaultFrom: "0x881b06da56BB5675c54E4Ed311c21E54C5025298",
   vaultTo: "0x671a912C10bba0CFA74Cfc2d6Fba9BA1ed9530B2",
   apyTooltip: "Please migrate funds to our new vault to continue earning yield.",
   migrationMessage: "This vault is no longer active. Withdraw funds or migrate your balance to the v2 LINK yVault to continue earning yield."
-}, {
+}, /*{
   symbol: "WETH",
   token: "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
   vaultFrom: "0xa9fE4601811213c340e850ea305481afF02f5b28",
