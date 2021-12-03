@@ -1438,8 +1438,8 @@ async function getNToken(app, token, address, stakingAddress) {
 
 async function getYearnVault(app, yearn, address, stakingAddress) {
   const calls = [yearn.decimals(), yearn.token(), yearn.name(), yearn.symbol(), yearn.totalSupply(),
-    yearn.balanceOf(stakingAddress), yearn.balanceOf(app.YOUR_ADDRESS), yearn.totalAssets()];
-  const [decimals, token_, name, symbol, totalSupply, staked, unstaked, balance] =
+    yearn.balanceOf(stakingAddress), yearn.balanceOf(app.YOUR_ADDRESS), yearn.totalAssets(), yearn.pricePerShare()];
+  const [decimals, token_, name, symbol, totalSupply, staked, unstaked, balance, ppfs] =
     await app.ethcallProvider.all(calls);
   const token = await getToken(app, token_, address);
   return {
@@ -1451,10 +1451,49 @@ async function getYearnVault(app, yearn, address, stakingAddress) {
     staked: staked / 10 ** decimals,
     unstaked: unstaked / 10 ** decimals,
     token: token,
-    balance : balance,
+    balance : balance / 10 ** decimals,
     contract: yearn,
-    tokens : [address].concat(token.tokens)
+    tokens : [address].concat(token.tokens),
+    ppfs : ppfs / 10 ** decimals
   }
+}
+
+async function getTriCryptoToken(app, curve, address, stakingAddress, minterAddress) {
+  const minter = new ethcall.Contract(minterAddress, ETH_TRITOKEN_MINTER_ABI)
+  const registryAddress = "0x90E00ACe148ca3b23Ac1bC8C240C2a7Dd9c2d7f5";
+  const registry = new ethcall.Contract(registryAddress, REGISTRY_ABI);
+  let coins = [];
+  const [coinAddresses, coinsCount, balances] = 
+    await app.ethcallProvider.all([registry.get_coins(minterAddress), 
+                                   registry.get_n_coins(minterAddress), 
+                                   registry.get_balances(minterAddress)]);
+  for(let i = 0; i < coinsCount[0]; i++){
+      const token = await getToken(app, coinAddresses[i], address);
+      coins.push(
+        {address : coinAddresses[i],
+         token   : token,
+         balance : balances[i] / 10 ** token.decimals}
+      )
+    }
+  const [virtualPrice, A_precise] = await app.ethcallProvider.all([minter.get_virtual_price(), minter.A_precise()]);
+  const calls = [curve.decimals(), curve.balanceOf(stakingAddress), curve.balanceOf(app.YOUR_ADDRESS),
+    curve.name(), curve.symbol(), curve.totalSupply()];
+  const [decimals, staked, unstaked, name, symbol, totalSupply] = await app.ethcallProvider.all(calls);
+  const tokens = coins.map(c => c.address).concat([address]);
+  return {
+      address,
+      name,
+      symbol,
+      totalSupply : totalSupply / 10 ** decimals,
+      decimals : decimals,
+      staked:  staked / 10 ** decimals,
+      unstaked: unstaked  / 10 ** decimals,
+      contract: curve,
+      tokens,
+      coins,
+      virtualPrice : virtualPrice / 1e18,
+      A_precise : A_precise * 1
+  };
 }
 
 async function getStoredToken(app, tokenAddress, stakingAddress, type) {
@@ -1468,6 +1507,10 @@ async function getStoredToken(app, tokenAddress, stakingAddress, type) {
     case "yearn":
       const yearnVault = new ethcall.Contract(tokenAddress, YEARN_VAULT_ABI);
       return await getYearnVault(app, yearnVault, tokenAddress, stakingAddress);
+    case "triToken":
+      const tri = new ethcall.Contract(tokenAddress, TRITOKEN_ABI);
+      const [triMinter] = await app.ethcallProvider.all([tri.minter()]);
+      return await getTriCryptoToken(app, tri, tokenAddress, stakingAddress, triMinter);
     case "doualDlp":
       const doualDlpPool = new ethcall.Contract(tokenAddress, DLP_DUAL_TOKEN_ABI);
       return await getDodoDualPoolToken(app, doualDlpPool, tokenAddress, stakingAddress);
@@ -1561,6 +1604,17 @@ async function getToken(app, tokenAddress, stakingAddress) {
     const yearn = await getYearnVault(app, yearnVault, tokenAddress, stakingAddress);
     window.localStorage.setItem(tokenAddress, "yearn");
     return yearn;
+  }
+  catch(err) {
+  }
+  try {
+    const tri = new ethcall.Contract(tokenAddress, CURVE_ABI);
+    const [triMinter] = await app.ethcallProvider.all([tri.minter()]);
+    const minterContract = new ethcall.Contract(triMinter, ETH_TRITOKEN_MINTER_ABI);
+    const [A_precise] = await app.ethcallProvider.all([minterContract.A_precise()]);
+    const res = await getTriCryptoToken(app, tri, tokenAddress, stakingAddress, triMinter);
+    window.localStorage.setItem(tokenAddress, "triToken");
+    return res;
   }
   catch(err) {
   }
@@ -2778,6 +2832,33 @@ function getCurvePrices(prices, pool, chain) {
   }
 }
 
+function getNewCurveCryptoPrices(prices, pool, chain){
+  let tvl = 0;
+  for(let i = 0; i < pool.token.coins.length; i++){
+    const price = (getParameterCaseInsensitive(prices,pool.token.coins[i].address).usd);
+    if (getParameterCaseInsensitive(prices, pool.token.address)?.usd ?? 0 == 0) {
+      prices[pool.token.address] = { usd : price };
+    }
+    tvl += pool.token.coins[i].balance * price;
+  }
+  const price = tvl / pool.token.totalSupply;
+  const staked_tvl = pool.balance * price;
+  const poolUrl = getChainExplorerUrl(chain, pool.address);
+  const name = `<a href='${poolUrl}' target='_blank'>${pool.name}</a>`;
+  return {
+    staked_tvl : staked_tvl,
+    price,
+    stakeTokenTicker : pool.symbol,
+    print_price() {
+      _print(`${name} Price: $${formatMoney(price)} Market Cap: $${formatMoney(tvl)}`);
+      _print(`Staked: ${pool.balance.toFixed(4)} ${pool.symbol} ($${formatMoney(staked_tvl)})`);
+    },
+    print_contained_price() {
+    },
+    staked_tvl
+  }
+}
+
 function getTriCryptoPrices(prices, pool, chain){
   let tvl = 0;
   for(let i = 0; i < pool.coins.length; i++){
@@ -2812,6 +2893,7 @@ function getPoolPrices(tokens, prices, pool, chain = "eth") {
   if (pool.isGelato) return getGelatoPrices(tokens, prices, pool, chain);
   if (pool.token0 != null) return getUniPrices(tokens, prices, pool, chain);
   if (pool.xcp_profit != null) return getTriCryptoPrices(prices, pool, chain);
+  if (pool.token.A_precise != null) return getNewCurveCryptoPrices(prices, pool, chain);
   if (pool.virtualPrice != null) return getCurvePrices(prices, pool, chain); //should work for saddle too
   if (pool.token != null) return getWrapPrices(tokens, prices, pool);
   return getErc20Prices(prices, pool, chain);
