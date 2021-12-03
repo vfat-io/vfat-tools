@@ -2889,7 +2889,7 @@ function getTriCryptoPrices(prices, pool, chain){
 
 function getYearnPrices(prices, pool, chain){
   let price = 0
-  let underlyingPrice = getParameterCaseInsensitive(prices, pool.token.address).usd;
+  let underlyingPrice = getParameterCaseInsensitive(prices, pool.token.address)?.usd;
   if(underlyingPrice){
     price = underlyingPrice * pool.ppfs;
   }else{
