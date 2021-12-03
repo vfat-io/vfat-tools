@@ -25,7 +25,8 @@ const main = async() => {
       ["Elk                      ", `<a href="elk"           >Various</a>`,"ELK         ","https://elk.finance"],
       ["Huckleberry              ", `<a href="huckleberry"   >Various</a>`,"FINN        ","https://www.huckleberry.finance"],
       ["Sushi                    ", `<a href="sushi"         >Various</a>`,"SUSHI/MOVR  ","https://app.sushi.com"],
-      ["Nileriver                ", `<a href="nileriver"     >Various</a>`,"NIL         ","https://www.nileriver.finance"]
+      ["Nileriver                ", `<a href="nileriver"     >Various</a>`,"NIL         ","https://www.nileriver.finance"],
+      ["RivrKitty                ", `<a href="rivrkitty"     >Various</a>`,"PAWS        ","https://www.rivrkitty.com"]
     ]
   }
 
