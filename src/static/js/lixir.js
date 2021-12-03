@@ -8,6 +8,8 @@ const Pools = [
   "0xDa42DEC00F7A11a325daf53a144c041Afb5AD448",
   "0x4Cad76Bb7d7ee4CA1b360A5aC974195A373932CF",
   "0x94555c8BE71545aDFF49CA1bB95f4dEBaf720F15",
+  "0x7db530c90ce1a2803911d85b380b83adbe8aeb56",
+  "0xe038ec0651c5e554b65d4072188d5a7e3b976af0"
 ].map(a => {
   return {
     address: a,
