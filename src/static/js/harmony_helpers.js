@@ -275,7 +275,7 @@ async function loadHarmonySynthetixPoolInfo(App, tokens, prices, stakingAbi, sta
 async function loadHarmonySynthetixPool(App, tokens, prices, abi, address, rewardTokenFunction, stakeTokenFunction) {
     const info = await loadHarmonySynthetixPoolInfo(App, tokens, prices, abi, address, rewardTokenFunction, stakeTokenFunction);
     if (!info) return null;
-    return await printSynthetixPool(App, info, "Harmony");
+    return await printSynthetixPool(App, info, "harmony");
 }
 
 async function loadHarmonyBasisFork(data) {
@@ -390,10 +390,10 @@ async function loadHarmonyChefContract(App, tokens, prices, chef, chefAddress, c
   if (deathPoolIndices) {   //load prices for the deathpool assets
     deathPoolIndices.map(i => poolInfos[i])
                      .map(poolInfo =>
-      poolInfo.poolToken ? getPoolPrices(tokens, prices, poolInfo.poolToken, "Harmony") : undefined);
+      poolInfo.poolToken ? getPoolPrices(tokens, prices, poolInfo.poolToken, "harmony") : undefined);
   }
 
-  const poolPrices = poolInfos.map(poolInfo => poolInfo.poolToken ? getPoolPrices(tokens, prices, poolInfo.poolToken, "Harmony") : undefined);
+  const poolPrices = poolInfos.map(poolInfo => poolInfo.poolToken ? getPoolPrices(tokens, prices, poolInfo.poolToken, "harmony") : undefined);
 
 
   _print("Finished reading smart contracts.\n");
@@ -438,7 +438,7 @@ async function loadMultipleHarmonySynthetixPools(App, tokens, prices, pools) {
   const infos = await Promise.all(pools.map(p =>
       loadHarmonySynthetixPoolInfo(App, tokens, prices, p.abi, p.address, p.rewardTokenFunction, p.stakeTokenFunction)));
   for (const i of infos) {
-    let p = await printSynthetixPool(App, i, "Harmony");
+    let p = await printSynthetixPool(App, i, "harmony");
     totalStaked += p.staked_tvl || 0;
     totalUserStaked += p.userStaked || 0;
     if (p.userStaked > 0) {
