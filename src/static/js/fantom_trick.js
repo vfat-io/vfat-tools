@@ -18,7 +18,7 @@ async function main() {
 
    let rewardsPerWeek = 0
    const startTime = await TRICK_CHEF.startTime();
-   const currentTime = Date.now() / 1000;
+   const currentTime = Date.now();
    rewardsPerWeek = await TRICK_CHEF.trickPerSecond() /1e18 * 604800;
 
    if(startTime < currentTime){
