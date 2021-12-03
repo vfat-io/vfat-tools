@@ -569,12 +569,14 @@ $(function () {
         const startBlock = await TANGO_CHEF.startBlock();
         const currentBlock = await App.provider.getBlockNumber();
 
+        const multiplier = await TANGO_CHEF.getMultiplier(currentBlock, currentBlock+1);
+
         let rewardsPerWeek = 0
         if(currentBlock < startBlock){
           _print(`REWARDS HAVE NOT YET STARTED!\n\tRewards start at block ${startBlock}\n`);
         }else{
          rewardsPerWeek = await TANGO_CHEF.sushiPerBlock() / 1e18 *
-                 604800 / blocksPerSeconds;
+         multiplier * 604800 / blocksPerSeconds;
         }
 
         const tokens = {};

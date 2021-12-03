@@ -21,7 +21,7 @@ async function main() {
     const prices = await getAuroraPrices();
  
     await loadNearPadChefContract(App, tokens, prices, NEARPAD_CHEF, NEARPAD_CHEF_ADDR, NEARPAD_CHEF_ABI, rewardTokenTicker,
-        null, rewardsPerWeek, "pendingSushi");
+        null, rewardsPerWeek, "pendingSushi", [3,9,10]);
     hideLoading();
   }
 

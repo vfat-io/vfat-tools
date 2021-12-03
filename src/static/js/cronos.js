@@ -18,10 +18,11 @@ const main = async() => {
       ["Genesis Finance      ", `<a href='genesis'      >Various</a>`,"GENESIS      ","https://genesisfinance.app"],
       ["Zeus Finance         ", `<a href='zeusfinance'  >Various</a>`,"ZEUS         ","https://www.zeusfinance.app"],
       ["Meso Finance         ", `<a href='meso'         >Various</a>`,"croMESO      ","https://cro.meso.finance"],
-      ["BlackBird Finance    ", `<a href='bird'         >Various</a>`,"BIRD         ","https://croblackbird.finance/"],
       ["BlackBird Finance    ", `<a href='bird'         >Various</a>`,"BIRD         ","https://croblackbird.finance"],
       ["SmolSwap             ", `<a href='smolswap'     >Various</a>`,"SMOL         ","https://smolswap.com"],
-      ["Autofarm             ", `<a href='autofarm'     >Various</a>`,"Various      ","https://autofarm.network/cronos"]
+      ["Autofarm             ", `<a href='autofarm'     >Various</a>`,"Various      ","https://autofarm.network/cronos"],
+      ["CroSwap              ", `<a href='croswap'      >Various</a>`,"CSP          ","https://croswapdefi.com"],
+      ["MetaCrono Finance    ", `<a href='metacrono'    >Various</a>`,"METACRONO    ","https://www.metacrono.finance/"],
 
     ]
   }
