@@ -140,7 +140,7 @@ async function main() {
       const epochRewards1PerShare = (lastRewards1PerShare - prevRewards1PerShare) / 1e18;
 
       const rewards0PerYear = epochRewards0PerShare*(24/period)*365*reward0Price;
-      const rewards1PerYear = epochRewards1PerShare*(24/period)*365*reward0Price;
+      const rewards1PerYear = epochRewards1PerShare*(24/period)*365*reward1Price;
       const apr = (rewards0PerYear + rewards1PerYear) *100 / stakedTokenPrice;
 
       const claimBoardRoomReward = async function() {
@@ -169,54 +169,101 @@ async function main() {
       const reward1PerTokenStr = `Charge/${stakedTokenName}`;
 
 
-      table = `<table style="width:800px"><thead><th style="width:30px;text-align:left"></th><th style="width:20px;text-align:left">Epoch (${period} hours)</th><th style="width:20px;text-align:left">Day</th><th style="width:20px;text-align:left">Week</th><th style="width:20px;text-align:left">Month</th><th style="width:20px;text-align:left">Year</th></thead>`
-          +`<tbody>`
+      if(!doubleReward) {
+          table = `<table style="width:800px"><thead><th style="width:30px;text-align:left"></th><th style="width:20px;text-align:left">Epoch (${period} hours)</th><th style="width:20px;text-align:left">Day</th><th style="width:20px;text-align:left">Week</th><th style="width:20px;text-align:left">Month</th><th style="width:20px;text-align:left">Year</th></thead>`
+              + `<tbody>`
 
-          +`<tr><td>APR</td>`
-          +`<td>${parseFloat(apr/365/(24/period)).toFixed(2)}%</td>`
-          +`<td>${parseFloat(apr/365).toFixed(2)}%</td>`
-          +`<td>${parseFloat(apr/52).toFixed(2)}%</td>`
-          +`<td>${parseFloat(apr/12).toFixed(2)}%</td>`
-          +`<td>${parseFloat(apr).toFixed(2)}%</td>`
-          +`</tr>`
-
-          +`<tr><td>${reward0PerTokenStr}</td>`
-          +`<td>${parseFloat(epochRewards0PerShare).toFixed(2)}</td>`
-          +`<td>${parseFloat(epochRewards0PerShare*(24/period)).toFixed(2)}</td>`
-          +`<td>${parseFloat(epochRewards0PerShare*(24/period)*7).toFixed(2)}</td>`
-          +`<td>${parseFloat(epochRewards0PerShare*(24/period)*365/12).toFixed(2)}</td>`
-          +`<td>${parseFloat(epochRewards0PerShare*(24/period)*365).toFixed(2)}</td>`
-          +`</tr>`
-
-          if(doubleReward) {
-              +`<tr><td>${reward1PerTokenStr}</td>`
-              + `<td>${parseFloat(epochRewards1PerShare).toFixed(2)}</td>`
-              + `<td>${parseFloat(epochRewards1PerShare * (24 / period)).toFixed(2)}</td>`
-              + `<td>${parseFloat(epochRewards1PerShare * (24 / period) * 7).toFixed(2)}</td>`
-              + `<td>${parseFloat(epochRewards1PerShare * (24 / period) * 365 / 12).toFixed(2)}</td>`
-              + `<td>${parseFloat(epochRewards1PerShare * (24 / period) * 365).toFixed(2)}</td>`
+              + `<tr><td>APR</td>`
+              + `<td>${parseFloat(apr / 365 / (24 / period)).toFixed(2)}%</td>`
+              + `<td>${parseFloat(apr / 365).toFixed(2)}%</td>`
+              + `<td>${parseFloat(apr / 52).toFixed(2)}%</td>`
+              + `<td>${parseFloat(apr / 12).toFixed(2)}%</td>`
+              + `<td>${parseFloat(apr).toFixed(2)}%</td>`
               + `</tr>`
-          }
 
-          +`<tr><td>Static Yield for<br> <b>${inBoardRoom.toFixed(2)} ${stakedTokenName} staked</b></td>`
-          +`<td>${parseFloat(inBoardRoom*epochRewards0PerShare).toFixed(2)} Static ($${formatMoney(reward0Price*inBoardRoom*epochRewards0PerShare)})</td>`
-          +`<td>${parseFloat(inBoardRoom*epochRewards0PerShare*(24/period)).toFixed(2)} Static ($${formatMoney(reward0Price*inBoardRoom*epochRewards0PerShare*(24/period))})</td>`
-          +`<td>${parseFloat(inBoardRoom*epochRewards0PerShare*(24/period)*7).toFixed(2)} Static ($${formatMoney(reward0Price*inBoardRoom*epochRewards0PerShare*(24/period)*7)})</td>`
-          +`<td>${parseFloat(inBoardRoom*epochRewards0PerShare*(24/period)*365/12).toFixed(2)} Static ($${formatMoney(reward0Price*inBoardRoom*epochRewards0PerShare*(24/period)*365/12)})</td>`
-          +`<td>${parseFloat(inBoardRoom*epochRewards0PerShare*(24/period)*365).toFixed(2)} Static ($${formatMoney(reward0Price*inBoardRoom*epochRewards0PerShare*(24/period)*365)})</td>`
-          +`</tr>`
-      if(doubleReward) {
-          +`<tr><td>Charge Yield for<br> <b>${inBoardRoom.toFixed(2)} ${stakedTokenName} staked</b></td>`
-          +`<td>${parseFloat(inBoardRoom*epochRewards1PerShare).toFixed(2)} Charge ($${formatMoney(reward1Price*inBoardRoom*epochRewards1PerShare)})</td>`
-          +`<td>${parseFloat(inBoardRoom*epochRewards1PerShare*(24/period)).toFixed(2)} Charge ($${formatMoney(reward1Price*inBoardRoom*epochRewards1PerShare*(24/period))})</td>`
-          +`<td>${parseFloat(inBoardRoom*epochRewards1PerShare*(24/period)*7).toFixed(2)} Charge ($${formatMoney(reward1Price*inBoardRoom*epochRewards1PerShare*(24/period)*7)})</td>`
-          +`<td>${parseFloat(inBoardRoom*epochRewards1PerShare*(24/period)*365/12).toFixed(2)} Charge ($${formatMoney(reward1Price*inBoardRoom*epochRewards1PerShare*(24/period)*365/12)})</td>`
-          +`<td>${parseFloat(inBoardRoom*epochRewards1PerShare*(24/period)*365).toFixed(2)} Charge ($${formatMoney(reward1Price*inBoardRoom*epochRewards1PerShare*(24/period)*365)})</td>`
-          +`</tr>`
+              + `<tr><td>${reward0PerTokenStr}</td>`
+              + `<td>${parseFloat(epochRewards0PerShare).toFixed(2)}</td>`
+              + `<td>${parseFloat(epochRewards0PerShare * (24 / period)).toFixed(2)}</td>`
+              + `<td>${parseFloat(epochRewards0PerShare * (24 / period) * 7).toFixed(2)}</td>`
+              + `<td>${parseFloat(epochRewards0PerShare * (24 / period) * 365 / 12).toFixed(2)}</td>`
+              + `<td>${parseFloat(epochRewards0PerShare * (24 / period) * 365).toFixed(2)}</td>`
+              + `</tr>`
+
+
+              /* +`<tr><td>${reward1PerTokenStr}</td>`
+               + `<td>${parseFloat(epochRewards1PerShare).toFixed(2)}</td>`
+               + `<td>${parseFloat(epochRewards1PerShare * (24 / period)).toFixed(2)}</td>`
+               + `<td>${parseFloat(epochRewards1PerShare * (24 / period) * 7).toFixed(2)}</td>`
+               + `<td>${parseFloat(epochRewards1PerShare * (24 / period) * 365 / 12).toFixed(2)}</td>`
+               + `<td>${parseFloat(epochRewards1PerShare * (24 / period) * 365).toFixed(2)}</td>`
+               + `</tr>`*/
+
+              + `<tr><td>Static Yield for<br><b>${inBoardRoom.toFixed(2)} ${stakedTokenName}</b></td>`
+              + `<td>${parseFloat(inBoardRoom * epochRewards0PerShare).toFixed(2)}   ($${formatMoney(reward0Price * inBoardRoom * epochRewards0PerShare)})</td>`
+              + `<td>${parseFloat(inBoardRoom * epochRewards0PerShare * (24 / period)).toFixed(2)}   ($${formatMoney(reward0Price * inBoardRoom * epochRewards0PerShare * (24 / period))})</td>`
+              + `<td>${parseFloat(inBoardRoom * epochRewards0PerShare * (24 / period) * 7).toFixed(2)}   ($${formatMoney(reward0Price * inBoardRoom * epochRewards0PerShare * (24 / period) * 7)})</td>`
+              + `<td>${parseFloat(inBoardRoom * epochRewards0PerShare * (24 / period) * 365 / 12).toFixed(2)}   ($${formatMoney(reward0Price * inBoardRoom * epochRewards0PerShare * (24 / period) * 365 / 12)})</td>`
+              + `<td>${parseFloat(inBoardRoom * epochRewards0PerShare * (24 / period) * 365).toFixed(2)}   ($${formatMoney(reward0Price * inBoardRoom * epochRewards0PerShare * (24 / period) * 365)})</td>`
+              + `</tr>`
+
+              /* +`<tr><td>Charge Yield for<br> <b>${inBoardRoom.toFixed(2)} ${stakedTokenName} staked</b></td>`
+               +`<td>${parseFloat(inBoardRoom*epochRewards1PerShare).toFixed(2)} Charge ($${formatMoney(reward1Price*inBoardRoom*epochRewards1PerShare)})</td>`
+               +`<td>${parseFloat(inBoardRoom*epochRewards1PerShare*(24/period)).toFixed(2)} Charge ($${formatMoney(reward1Price*inBoardRoom*epochRewards1PerShare*(24/period))})</td>`
+               +`<td>${parseFloat(inBoardRoom*epochRewards1PerShare*(24/period)*7).toFixed(2)} Charge ($${formatMoney(reward1Price*inBoardRoom*epochRewards1PerShare*(24/period)*7)})</td>`
+               +`<td>${parseFloat(inBoardRoom*epochRewards1PerShare*(24/period)*365/12).toFixed(2)} Charge ($${formatMoney(reward1Price*inBoardRoom*epochRewards1PerShare*(24/period)*365/12)})</td>`
+               +`<td>${parseFloat(inBoardRoom*epochRewards1PerShare*(24/period)*365).toFixed(2)} Charge ($${formatMoney(reward1Price*inBoardRoom*epochRewards1PerShare*(24/period)*365)})</td>`
+               +`</tr>`*/
+
+              + `</tbody></table>`;
+          _print(table);
+      } else {
+          table = `<table style="width:800px"><thead><th style="width:30px;text-align:left"></th><th style="width:20px;text-align:left">Epoch (${period} hours)</th><th style="width:20px;text-align:left">Day</th><th style="width:20px;text-align:left">Week</th><th style="width:20px;text-align:left">Month</th><th style="width:20px;text-align:left">Year</th></thead>`
+              + `<tbody>`
+
+              + `<tr><td>APR</td>`
+              + `<td>${parseFloat(apr / 365 / (24 / period)).toFixed(2)}%</td>`
+              + `<td>${parseFloat(apr / 365).toFixed(2)}%</td>`
+              + `<td>${parseFloat(apr / 52).toFixed(2)}%</td>`
+              + `<td>${parseFloat(apr / 12).toFixed(2)}%</td>`
+              + `<td>${parseFloat(apr).toFixed(2)}%</td>`
+              + `</tr>`
+
+              + `<tr><td>${reward0PerTokenStr}</td>`
+              + `<td>${parseFloat(epochRewards0PerShare).toFixed(2)}</td>`
+              + `<td>${parseFloat(epochRewards0PerShare * (24 / period)).toFixed(2)}</td>`
+              + `<td>${parseFloat(epochRewards0PerShare * (24 / period) * 7).toFixed(2)}</td>`
+              + `<td>${parseFloat(epochRewards0PerShare * (24 / period) * 365 / 12).toFixed(2)}</td>`
+              + `<td>${parseFloat(epochRewards0PerShare * (24 / period) * 365).toFixed(2)}</td>`
+              + `</tr>`
+
+              + `<tr><td>Static Yield for<br><b>${inBoardRoom.toFixed(2)} ${stakedTokenName}</b></td>`
+              + `<td>${parseFloat(inBoardRoom * epochRewards0PerShare).toFixed(2)}   ($${formatMoney(reward0Price * inBoardRoom * epochRewards0PerShare)})</td>`
+              + `<td>${parseFloat(inBoardRoom * epochRewards0PerShare * (24 / period)).toFixed(2)}   ($${formatMoney(reward0Price * inBoardRoom * epochRewards0PerShare * (24 / period))})</td>`
+              + `<td>${parseFloat(inBoardRoom * epochRewards0PerShare * (24 / period) * 7).toFixed(2)}   ($${formatMoney(reward0Price * inBoardRoom * epochRewards0PerShare * (24 / period) * 7)})</td>`
+              + `<td>${parseFloat(inBoardRoom * epochRewards0PerShare * (24 / period) * 365 / 12).toFixed(2)}   ($${formatMoney(reward0Price * inBoardRoom * epochRewards0PerShare * (24 / period) * 365 / 12)})</td>`
+              + `<td>${parseFloat(inBoardRoom * epochRewards0PerShare * (24 / period) * 365).toFixed(2)}   ($${formatMoney(reward0Price * inBoardRoom * epochRewards0PerShare * (24 / period) * 365)})</td>`
+              + `</tr>`
+
+
+               +`<tr><td>${reward1PerTokenStr}</td>`
+               + `<td>${parseFloat(epochRewards1PerShare).toFixed(4)}</td>`
+               + `<td>${parseFloat(epochRewards1PerShare * (24 / period)).toFixed(4)}</td>`
+               + `<td>${parseFloat(epochRewards1PerShare * (24 / period) * 7).toFixed(4)}</td>`
+               + `<td>${parseFloat(epochRewards1PerShare * (24 / period) * 365 / 12).toFixed(4)}</td>`
+               + `<td>${parseFloat(epochRewards1PerShare * (24 / period) * 365).toFixed(4)}</td>`
+               + `</tr>`
+
+               +`<tr><td>Charge Yield for<br><b>${inBoardRoom.toFixed(2)} ${stakedTokenName}</b></td>`
+               +`<td>${parseFloat(inBoardRoom*epochRewards1PerShare).toFixed(2)}   ($${formatMoney(reward1Price*inBoardRoom*epochRewards1PerShare)})</td>`
+               +`<td>${parseFloat(inBoardRoom*epochRewards1PerShare*(24/period)).toFixed(2)}   ($${formatMoney(reward1Price*inBoardRoom*epochRewards1PerShare*(24/period))})</td>`
+               +`<td>${parseFloat(inBoardRoom*epochRewards1PerShare*(24/period)*7).toFixed(2)}   ($${formatMoney(reward1Price*inBoardRoom*epochRewards1PerShare*(24/period)*7)})</td>`
+               +`<td>${parseFloat(inBoardRoom*epochRewards1PerShare*(24/period)*365/12).toFixed(2)}   ($${formatMoney(reward1Price*inBoardRoom*epochRewards1PerShare*(24/period)*365/12)})</td>`
+               +`<td>${parseFloat(inBoardRoom*epochRewards1PerShare*(24/period)*365).toFixed(2)}   ($${formatMoney(reward1Price*inBoardRoom*epochRewards1PerShare*(24/period)*365)})</td>`
+               +`</tr>`
+
+              + `</tbody></table>`;
+          _print(table);
       }
-
-          +`</tbody></table>`;
-      _print(table);
 
       _print(`You have staked <b>${parseFloat(inBoardRoom).toFixed(4)} ${stakedTokenName} ($${formatMoney(stakedTokenPrice*inBoardRoom)})</b>`)
       if (epochs_since_last_action<3) {
@@ -265,8 +312,8 @@ async function main() {
           "rewardToken", null, rewardsPerWeek, "pendingReward", [5]);*/
 
 
-      _print()
-      _print()
+      _print('')
+      _print('')
       _print(`***************************************************`);
       _print(`                CHARGE FARMS - CHARGE-BUSD`);
       _print(`***************************************************`);
@@ -276,8 +323,8 @@ async function main() {
           "rewardToken", null, rewardsPerWeek, "pendingReward", [0], 1);
 
 
-      _print()
-      _print()
+      _print('')
+      _print('')
 
       _print(`***************************************************`);
       _print(`                CHARGE FARMS - STATIC-BUSD`);
