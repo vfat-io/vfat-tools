@@ -3,7 +3,7 @@ $(function() {
   consoleInit(main)
   });
 
-const Addresses = [{
+/*const Addresses = [{
   symbol: "YFI",
   token: "0x0bc529c00C6401aEF6D220BE8C6Ea1667F6Ad93e",
   vaultFrom: "0xBA2E7Fed597fd0E3e70f5130BcDbbFE06bB94fe1",
@@ -262,8 +262,92 @@ const Addresses = [{
   vaultTo: "0xa354F35829Ae975e850e23e9615b11Da1B3dC4DE",
   apyTooltip: "Please migrate funds to our new vault to continue earning yield.",
   migrationMessage: "This vault is no longer active. Withdraw funds or migrate your balance to continue earning yield."
+}, {
+  vaultTo: "0x986b4AFF588a109c09B50A03f42E4110E29D353F",
+}, {
+  vaultTo: "0xB8C3B7A2A618C552C23B1E4701109a9E756Bab67",
+}, {
+  vaultTo: "0xBFa4D8AA6d8a379aBFe7793399D3DdaCC5bBECBB",
+}, {
+  vaultTo: "0xe11ba472F74869176652C35D30dB89854b5ae84D",
+}, {
+  vaultTo: "0xe2F6b9773BF3A015E2aA70741Bde1498bdB9425b",
+}, {
+  vaultTo: "0x27b7b1ad7288079A66d12350c828D3C00A6F07d7",
+}, {
+  vaultTo: "0x9d409a0A012CFbA9B15F6D4B36Ac57A46966Ab9a",
+}, {
+  vaultTo: "0x5fA5B62c8AF877CB37031e0a3B2f34A78e3C56A6",
+}, {
+  vaultTo: "0xB4AdA607B9d6b2c9Ee07A275e9616B84AC560139",
+}, {
+  vaultTo: "0xFBEB78a723b8087fD2ea7Ef1afEc93d35E8Bed42",
+}, {
+  vaultTo: "0xEcd5e75AFb02eFa118AF914515D6521aaBd189F1",
+}, {
+  vaultTo: "0x6Ede7F19df5df6EF23bD5B9CeDb651580Bdf56Ca",
+}, {
+  vaultTo: "0xa5cA62D95D24A4a350983D5B8ac4EB8638887396",
+}, {
+  vaultTo: "0xF29AE508698bDeF169B89834F76704C3B205aedf",
+}, {
+  vaultTo: "0xA74d4B67b3368E83797a35382AFB776bAAE4F5C8",
+}, {
+  vaultTo: "0xBfedbcbe27171C418CDabC2477042554b1904857",
+}, {
+  vaultTo: "0x054AF22E1519b020516D72D749221c24756385C9",
+}, {
+  vaultTo: "0x873fB544277FD7b977B196a826459a69E27eA4ea",
+}, {
+  vaultTo: "0x80bbeE2fa460dA291e796B9045e93d19eF948C6A",
+}, {
+  vaultTo: "0x28a5b95C101df3Ded0C0d9074DB80C438774B6a9",
+}, {
+  vaultTo: "0x3D27705c64213A5DcD9D26880c1BcFa72d5b6B0E",
+}, {
+  vaultTo: "0xC116dF49c02c5fD147DE25Baa105322ebF26Bd97",
+}, {
+  vaultTo: "0xd9788f3931Ede4D5018184E198699dC6d66C1915",
+}, {
+  vaultTo: "0x4A3FE75762017DB0eD73a71C9A06db7768DB5e66",
+}, {
+  vaultTo: "0x6d765CbE5bC922694afE112C140b8878b9FB0390",
+}, {
+  vaultTo: "0x0d4EA8536F9A13e4FBa16042a46c30f092b06aA5",
+}, {
+  vaultTo: "0x2DfB14E32e2F8156ec15a2c21c3A6c053af52Be8",
+}, {
+  vaultTo: "0x4560b99C904aAD03027B5178CCa81584744AC01f",
+}, {
+  vaultTo: "0x67e019bfbd5a67207755D04467D6A70c0B75bF60",
+}, {
+  vaultTo: "0x528D50dC9a333f01544177a924893FA1F5b9F748",
+}, {
+  vaultTo: "0x595a68a8c9D5C230001848B69b1947ee2A607164",
+}, {
+  vaultTo: "0x1b905331F7dE2748F4D6a0678e1521E20347643F",
+}, {
+  vaultTo: "0x490bD0886F221A5F79713D3E84404355A9293C50",
+}, {
+  vaultTo: "0x59518884EeBFb03e90a18ADBAAAB770d4666471e",
+}, {
+  vaultTo: "0x59518884EeBFb03e90a18ADBAAAB770d4666471e",
+}, {
+  vaultTo: "0x59518884EeBFb03e90a18ADBAAAB770d4666471e",
+}, {
+  vaultTo: "0x59518884EeBFb03e90a18ADBAAAB770d4666471e",
+}, {
+  vaultTo: "0x59518884EeBFb03e90a18ADBAAAB770d4666471e",
+}, {
+  vaultTo: "0x59518884EeBFb03e90a18ADBAAAB770d4666471e",
+}, {
+  vaultTo: "0x59518884EeBFb03e90a18ADBAAAB770d4666471e",
+}, {
+  vaultTo: "0x59518884EeBFb03e90a18ADBAAAB770d4666471e",
+}, {
+  vaultTo: "0x59518884EeBFb03e90a18ADBAAAB770d4666471e",
 }].map(v => 
-  v.vaultTo)
+  v.vaultTo)*/
 
   async function main() {
     const App = await init_ethers();
@@ -271,9 +355,24 @@ const Addresses = [{
     _print(`Initialized ${App.YOUR_ADDRESS}\n`);
     _print("Reading smart contracts...\n");
 
+    const YEARN_CONTRACT_ABI = [{"name":"NewRelease","inputs":[{"name":"release_id","type":"uint256","indexed":true},{"name":"template","type":"address","indexed":false},{"name":"api_version","type":"string","indexed":false}],"anonymous":false,"type":"event"},{"name":"NewVault","inputs":[{"name":"token","type":"address","indexed":true},{"name":"vault_id","type":"uint256","indexed":true},{"name":"vault","type":"address","indexed":false},{"name":"api_version","type":"string","indexed":false}],"anonymous":false,"type":"event"},{"name":"NewExperimentalVault","inputs":[{"name":"token","type":"address","indexed":true},{"name":"deployer","type":"address","indexed":true},{"name":"vault","type":"address","indexed":false},{"name":"api_version","type":"string","indexed":false}],"anonymous":false,"type":"event"},{"name":"NewGovernance","inputs":[{"name":"governance","type":"address","indexed":false}],"anonymous":false,"type":"event"},{"name":"VaultTagged","inputs":[{"name":"vault","type":"address","indexed":false},{"name":"tag","type":"string","indexed":false}],"anonymous":false,"type":"event"},{"stateMutability":"nonpayable","type":"constructor","inputs":[],"outputs":[]},{"stateMutability":"nonpayable","type":"function","name":"setGovernance","inputs":[{"name":"governance","type":"address"}],"outputs":[],"gas":36245},{"stateMutability":"nonpayable","type":"function","name":"acceptGovernance","inputs":[],"outputs":[],"gas":37517},{"stateMutability":"view","type":"function","name":"latestRelease","inputs":[],"outputs":[{"name":"","type":"string"}],"gas":6831},{"stateMutability":"view","type":"function","name":"latestVault","inputs":[{"name":"token","type":"address"}],"outputs":[{"name":"","type":"address"}],"gas":2587},{"stateMutability":"nonpayable","type":"function","name":"newRelease","inputs":[{"name":"vault","type":"address"}],"outputs":[],"gas":82588},{"stateMutability":"nonpayable","type":"function","name":"newVault","inputs":[{"name":"token","type":"address"},{"name":"guardian","type":"address"},{"name":"rewards","type":"address"},{"name":"name","type":"string"},{"name":"symbol","type":"string"}],"outputs":[{"name":"","type":"address"}]},{"stateMutability":"nonpayable","type":"function","name":"newVault","inputs":[{"name":"token","type":"address"},{"name":"guardian","type":"address"},{"name":"rewards","type":"address"},{"name":"name","type":"string"},{"name":"symbol","type":"string"},{"name":"releaseDelta","type":"uint256"}],"outputs":[{"name":"","type":"address"}]},{"stateMutability":"nonpayable","type":"function","name":"newExperimentalVault","inputs":[{"name":"token","type":"address"},{"name":"governance","type":"address"},{"name":"guardian","type":"address"},{"name":"rewards","type":"address"},{"name":"name","type":"string"},{"name":"symbol","type":"string"}],"outputs":[{"name":"","type":"address"}]},{"stateMutability":"nonpayable","type":"function","name":"newExperimentalVault","inputs":[{"name":"token","type":"address"},{"name":"governance","type":"address"},{"name":"guardian","type":"address"},{"name":"rewards","type":"address"},{"name":"name","type":"string"},{"name":"symbol","type":"string"},{"name":"releaseDelta","type":"uint256"}],"outputs":[{"name":"","type":"address"}]},{"stateMutability":"nonpayable","type":"function","name":"endorseVault","inputs":[{"name":"vault","type":"address"}],"outputs":[]},{"stateMutability":"nonpayable","type":"function","name":"endorseVault","inputs":[{"name":"vault","type":"address"},{"name":"releaseDelta","type":"uint256"}],"outputs":[]},{"stateMutability":"nonpayable","type":"function","name":"setBanksy","inputs":[{"name":"tagger","type":"address"}],"outputs":[]},{"stateMutability":"nonpayable","type":"function","name":"setBanksy","inputs":[{"name":"tagger","type":"address"},{"name":"allowed","type":"bool"}],"outputs":[]},{"stateMutability":"nonpayable","type":"function","name":"tagVault","inputs":[{"name":"vault","type":"address"},{"name":"tag","type":"string"}],"outputs":[],"gas":186064},{"stateMutability":"view","type":"function","name":"numReleases","inputs":[],"outputs":[{"name":"","type":"uint256"}],"gas":1388},{"stateMutability":"view","type":"function","name":"releases","inputs":[{"name":"arg0","type":"uint256"}],"outputs":[{"name":"","type":"address"}],"gas":1533},{"stateMutability":"view","type":"function","name":"numVaults","inputs":[{"name":"arg0","type":"address"}],"outputs":[{"name":"","type":"uint256"}],"gas":1663},{"stateMutability":"view","type":"function","name":"vaults","inputs":[{"name":"arg0","type":"address"},{"name":"arg1","type":"uint256"}],"outputs":[{"name":"","type":"address"}],"gas":1808},{"stateMutability":"view","type":"function","name":"tokens","inputs":[{"name":"arg0","type":"uint256"}],"outputs":[{"name":"","type":"address"}],"gas":1623},{"stateMutability":"view","type":"function","name":"numTokens","inputs":[],"outputs":[{"name":"","type":"uint256"}],"gas":1538},{"stateMutability":"view","type":"function","name":"isRegistered","inputs":[{"name":"arg0","type":"address"}],"outputs":[{"name":"","type":"bool"}],"gas":1783},{"stateMutability":"view","type":"function","name":"governance","inputs":[],"outputs":[{"name":"","type":"address"}],"gas":1598},{"stateMutability":"view","type":"function","name":"pendingGovernance","inputs":[],"outputs":[{"name":"","type":"address"}],"gas":1628},{"stateMutability":"view","type":"function","name":"tags","inputs":[{"name":"arg0","type":"address"}],"outputs":[{"name":"","type":"string"}],"gas":10229},{"stateMutability":"view","type":"function","name":"banksy","inputs":[{"name":"arg0","type":"address"}],"outputs":[{"name":"","type":"bool"}],"gas":1903}]
+    const yearnContract = new ethcall.Contract("0x50c1a2ea0a861a967d9d0ffe2ae4012c2e053804", YEARN_CONTRACT_ABI);
+
+    const [numTokens] = await App.ethcallProvider.all([yearnContract.numTokens()]);
+    
+    let vaults = [];
+    for(let i = 0; i < numTokens; i++){
+      const [token] = await App.ethcallProvider.all([yearnContract.tokens(i)])
+      const [vault] = await App.ethcallProvider.all([yearnContract.vaults(token, 0)])
+      vaults.push(vault)
+    }
+
     const tokens = {};
     let prices = {}
-    const poolInfos = await Promise.all(Addresses.map(a => loadYearnPoolInfo(App, tokens, a, prices)));
+    await getNewPricesAndTokens(App, tokens, prices, vaults, App.YOUR_ADDRESS);
+    const poolInfos = await Promise.all(vaults.map(a => loadYearnPoolInfo(App, tokens, a, prices)));
+    const poolPrices = poolInfos.map(poolInfo => getPoolPrices(tokens, prices, poolInfo.vault, "eth"));
+
     let staked_tvl = 0, userTvl = 0
     for(const p of poolInfos.filter(p => p))
     {
@@ -292,9 +391,7 @@ const Addresses = [{
   async function loadYearnPoolInfo(App, tokens, contractAddress, prices) {
     try {
       const vault = await getToken(App, contractAddress, App.YOUR_ADDRESS);
-      await getNewPricesAndTokens(App, tokens, prices, vault.tokens, contractAddress);
-      const poolPrices = getPoolPrices(tokens, prices, vault, "eth");
-      return { vault, poolPrices }
+      return { vault }
     }
     catch (err) { 
       console.log(contractAddress, err);

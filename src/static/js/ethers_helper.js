@@ -1212,13 +1212,14 @@ async function getCurveToken(app, curve, address, stakingAddress, minterAddress)
   const token = await getToken(app, coin0, address);
   const calls = [curve.decimals(), curve.balanceOf(stakingAddress), curve.balanceOf(app.YOUR_ADDRESS),
     curve.name(), curve.symbol(), curve.totalSupply()];
-  const [decimals, staked, unstaked, name, symbol, totalSupply] = await app.ethcallProvider.all(calls);
+  const [decimals_, staked, unstaked, name, symbol, totalSupply] = await app.ethcallProvider.all(calls);
+  const decimals =  decimals_ / 1;
   return {
       address,
       name,
       symbol,
       totalSupply,
-      decimals : decimals,
+      decimals,
       staked:  staked / 10 ** decimals,
       unstaked: unstaked  / 10 ** decimals,
       contract: curve,
@@ -1272,7 +1273,8 @@ async function getStableswapToken(app, stable, address, stakingAddress) {
 }
 
 async function getErc20(app, token, address, stakingAddress) {
-  if (address == "0x0000000000000000000000000000000000000000") {
+  if (address == "0x0000000000000000000000000000000000000000" || 
+      address == "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE") {
     return {
       address,
       name : "Ethereum",
@@ -1568,6 +1570,12 @@ async function getStoredToken(app, tokenAddress, stakingAddress, type) {
       }
       const [minter] = await app.ethcallProvider.all([crv.minter()]);
       return await getCurveToken(app, crv, tokenAddress, stakingAddress, minter);
+    case "curveRegistry":
+      const crvRegistry = new ethcall.Contract(tokenAddress, CURVE_ABI);
+      const registryAddress = "0x90E00ACe148ca3b23Ac1bC8C240C2a7Dd9c2d7f5";
+      const registry = new ethcall.Contract(registryAddress, REGISTRY_ABI);
+      const [minterAddress] = await app.ethcallProvider.all([registry.get_pool_from_lp_token(tokenAddress)]);
+      return await getCurveToken(app, crvRegistry, tokenAddress, stakingAddress, minterAddress);
     case "stableswap":
       const stable = new ethcall.Contract(tokenAddress, STABLESWAP_ABI);
       return await getStableswapToken(app, stable, tokenAddress, stakingAddress);
@@ -1575,7 +1583,8 @@ async function getStoredToken(app, tokenAddress, stakingAddress, type) {
 }
 
 async function getToken(app, tokenAddress, stakingAddress) {
-  if (tokenAddress == "0x0000000000000000000000000000000000000000") {
+  if (tokenAddress == "0x0000000000000000000000000000000000000000" || 
+      tokenAddress == "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE") {
     return getErc20(app, null, tokenAddress, stakingAddress)
   }
   const type = window.localStorage.getItem(tokenAddress);
@@ -1609,11 +1618,11 @@ async function getToken(app, tokenAddress, stakingAddress) {
   catch(err) {
   }
   try {
-    const tri = new ethcall.Contract(tokenAddress, CURVE_ABI);
-    const [triMinter] = await app.ethcallProvider.all([tri.minter()]);
-    const minterContract = new ethcall.Contract(triMinter, ETH_TRITOKEN_MINTER_ABI);
+    const curveToken2 = new ethcall.Contract(tokenAddress, CURVE_ABI);
+    const [curveToken2Minter] = await app.ethcallProvider.all([curveToken2.minter()]);
+    const minterContract = new ethcall.Contract(curveToken2Minter, ETH_CURVE2_MINTER_ABI);
     const [A_precise] = await app.ethcallProvider.all([minterContract.A_precise()]);
-    const res = await getCurveCryptoToken2(app, tri, tokenAddress, stakingAddress, triMinter);
+    const res = await getCurveCryptoToken2(app, curveToken2, tokenAddress, stakingAddress, curveToken2Minter);
     window.localStorage.setItem(tokenAddress, "curveToken2");
     return res;
   }
@@ -1743,6 +1752,17 @@ async function getToken(app, tokenAddress, stakingAddress) {
     return res;
   }
   catch(err) {
+  }
+  try{
+    const curveToken = new ethcall.Contract(tokenAddress, CURVE_ABI);
+    const registryAddress = "0x90E00ACe148ca3b23Ac1bC8C240C2a7Dd9c2d7f5";
+    const registry = new ethcall.Contract(registryAddress, REGISTRY_ABI);
+    const [minterAddress] = await app.ethcallProvider.all([registry.get_pool_from_lp_token(tokenAddress)]);
+    const res = await getCurveToken(app, curveToken, tokenAddress, stakingAddress, minterAddress);
+    window.localStorage.setItem(tokenAddress, "curveRegistry");
+    return res;
+  }
+  catch(err){
   }
   try {
     const stable = new ethcall.Contract(tokenAddress, STABLESWAP_ABI);
@@ -2835,14 +2855,14 @@ function getCurvePrices(prices, pool, chain) {
 
 function getCurveCryptoPrices2(prices, pool, chain){
   let tvl = 0;
-  for(let i = 0; i < pool.token.coins.length; i++){
-    const price = (getParameterCaseInsensitive(prices,pool.token.coins[i].address).usd);
-    if (getParameterCaseInsensitive(prices, pool.token.address)?.usd ?? 0 == 0) {
-      prices[pool.token.address] = { usd : price };
+  for(let i = 0; i < pool.coins.length; i++){
+    const price = (getParameterCaseInsensitive(prices,pool.coins[i].address).usd);
+    if (getParameterCaseInsensitive(prices, pool.address)?.usd ?? 0 == 0) {
+      prices[pool.address] = { usd : price };
     }
-    tvl += pool.token.coins[i].balance * price;
+    tvl += pool.coins[i].balance * price;
   }
-  const price = tvl / pool.token.totalSupply;
+  const price = tvl / pool.totalSupply;
   const staked_tvl = pool.balance * price;
   const poolUrl = getChainExplorerUrl(chain, pool.address);
   const name = `<a href='${poolUrl}' target='_blank'>${pool.name}</a>`;
@@ -2893,7 +2913,7 @@ function getYearnPrices(prices, pool, chain){
   if(underlyingPrice){
     price = underlyingPrice * pool.ppfs;
   }else{
-    underlyingPrice = getPoolPrices(prices, pool.token.address, chain).price;
+    underlyingPrice = getPoolPrices(pool.token.tokens, prices, pool.token, chain).price;
     price = underlyingPrice * pool.ppfs;
   }
   const tvl = (pool.token.totalSupply / 10 ** pool.token.decimals) * price
