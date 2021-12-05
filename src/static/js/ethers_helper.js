@@ -1367,7 +1367,7 @@ async function getTokemakVault(app, vault, address, stakingAddress) {
 async function getCToken(app, cToken, address, stakingAddress) {
   const calls = [cToken.decimals(), cToken.underlying(), cToken.totalSupply(),
     cToken.name(), cToken.symbol(), cToken.balanceOf(stakingAddress),
-    CToken.balanceOf(app.YOUR_ADDRESS), cToken.exchangeRateStored()];
+    cToken.balanceOf(app.YOUR_ADDRESS), cToken.exchangeRateStored()];
   const [decimals, underlying, totalSupply, name, symbol, staked, unstaked, exchangeRate] =
     await app.ethcallProvider.all(calls);
   const token = await getToken(app, underlying, address);
@@ -2821,7 +2821,12 @@ function getErc20Prices(prices, pool, chain="eth") {
 }
 
 function getCurvePrices(prices, pool, chain) {
-  var price = (getParameterCaseInsensitive(prices,pool.token.address).usd) * pool.virtualPrice;
+  var price = (getParameterCaseInsensitive(prices,pool.token.address)?.usd);
+  if(price){
+    price = price * pool.virtualPrice;
+  }else{
+    price = getPoolPrices(pool.token.tokens, prices, pool.token, chain).price * pool.virtualPrice;
+  }
   if (getParameterCaseInsensitive(prices, pool.address)?.usd ?? 0 == 0) {
     prices[pool.address] = { usd : price };
   }
@@ -2855,12 +2860,19 @@ function getCurvePrices(prices, pool, chain) {
 
 function getCurveCryptoPrices2(prices, pool, chain){
   let tvl = 0;
+  let pprice = 0;
   for(let i = 0; i < pool.coins.length; i++){
-    const price = (getParameterCaseInsensitive(prices,pool.coins[i].address).usd);
-    if (getParameterCaseInsensitive(prices, pool.address)?.usd ?? 0 == 0) {
-      prices[pool.address] = { usd : price };
+    pprice = (getParameterCaseInsensitive(prices,pool.coins[i].address)?.usd);
+    if(pprice){
+      if (getParameterCaseInsensitive(prices, pool.address)?.usd ?? 0 == 0) {
+        prices[pool.address] = { usd : pprice };
+      }
+      tvl += pool.coins[i].balance * pprice;
+    }else{
+      pprice = getPoolPrices(pool.token.tokens, prices, pool.token, chain).price;
+      prices[pool.address] = { usd : pprice };
+      tvl += pool.coins[i].balance * pprice;
     }
-    tvl += pool.coins[i].balance * price;
   }
   const price = tvl / pool.totalSupply;
   const staked_tvl = pool.balance * price;

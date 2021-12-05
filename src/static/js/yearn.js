@@ -3,382 +3,50 @@ $(function() {
   consoleInit(main)
   });
 
-/*const Addresses = [{
-  symbol: "YFI",
-  token: "0x0bc529c00C6401aEF6D220BE8C6Ea1667F6Ad93e",
-  vaultFrom: "0xBA2E7Fed597fd0E3e70f5130BcDbbFE06bB94fe1",
-  vaultTo: "0xE14d13d8B3b85aF791b2AADD661cDBd5E6097Db1",
-  apyTooltip: "Please migrate funds to our new vault to continue earning yield.",
-  migrationMessage: "This vault is no longer active. Withdraw funds or migrate your balance to the v2 YFI yVault to continue earning yield."
-}, {
-  symbol: "crvSBTC",
-  token: "0x075b1bb99792c9E1041bA13afEf80C91a1e70fB3",
-  vaultFrom: "0x7Ff566E1d69DEfF32a7b244aE7276b9f90e9D0f6",
-  vaultTo: "0x8414Db07a7F743dEbaFb402070AB01a4E0d2E45e",
-  apyTooltip: "Please migrate funds to our new vault to continue earning boosted yield.",
-  migrationMessage: "This vault is no longer boosted, but is still earning yield. Withdraw funds or migrate your balance to the v2 Curve sBTC Pool yVault to continue earning boosted yield."
-}, {
-  symbol: "crvRENBTC",
-  token: "0x49849C98ae39Fff122806C06791Fa73784FB3675",
-  vaultFrom: "0x5334e150B938dd2b6bd040D9c4a03Cff0cED3765",
-  vaultTo: "0x7047F90229a057C13BF847C0744D646CFb6c9E1A",
-  apyTooltip: "Please migrate funds to our new vault to continue earning boosted yield.",
-  migrationMessage: "This vault is no longer boosted, but is still earning yield. Withdraw funds or migrate your balance to the v2 Curve renBTC Pool yVault to continue earning boosted yield."
-}, {
-  symbol: "crvHBTC",
-  token: "0xb19059ebb43466C323583928285a49f558E572Fd",
-  vaultFrom: "0x46AFc2dfBd1ea0c0760CAD8262A5838e803A37e5",
-  vaultTo: "0x625b7DF2fa8aBe21B0A976736CDa4775523aeD1E",
-  apyTooltip: "Please migrate funds to our new vault to continue earning boosted yield.",
-  migrationMessage: "This vault is no longer boosted, but is still earning yield. Migrate your balance to the v2 Curve HBTC Pool yVault to continue earning boosted yield."
-}, {
-  symbol: "WETH",
-  token: "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
-  vaultFrom: "0xe1237aA7f535b0CC33Fd973D66cBf830354D16c7",
-  vaultTo: "0xa258C4606Ca8206D8aA700cE2143D7db854D168c",
-  apyTooltip: "Please migrate funds to our new vault to continue earning yield.",
-  migrationMessage: "This vault is no longer active. Withdraw funds or migrate your balance to the v2 WETH yVault to continue earning yield."
-}, {
-  symbol: "crvSAAVE",
-  token: "0x02d341CcB60fAaf662bC0554d13778015d1b285C",
-  vaultFrom: "0xBacB69571323575C6a5A3b4F9EEde1DC7D31FBc1",
-  vaultTo: "0xb4D1Be44BfF40ad6e506edf43156577a3f8672eC",
-  apyTooltip: "Please migrate funds to our new vault to continue earning boosted yield.",
-  migrationMessage: "This vault is no longer boosted, but is still earning yield. Withdraw funds or migrate your balance to the v2 Curve sAave Pool yVault to continue earning boosted yield."
-}, {
-  symbol: "crvOBTC",
-  token: "0x2fE94ea3d5d4a175184081439753DE15AeF9d614",
-  vaultFrom: "0x7F83935EcFe4729c4Ea592Ab2bC1A32588409797",
-  vaultTo: "0xe9Dc63083c464d6EDcCFf23444fF3CFc6886f6FB",
-  apyTooltip: "Please migrate funds to our new vault to continue earning boosted yield.",
-  migrationMessage: "This vault is no longer boosted, but is still earning yield. Withdraw funds or migrate your balance to the v2 Curve oBTC Pool yVault to continue earning boosted yield."
-}, {
-  symbol: "crvTBTC",
-  token: "0x64eda51d3Ad40D56b9dFc5554E06F94e1Dd786Fd",
-  vaultFrom: "0x07FB4756f67bD46B748b16119E802F1f880fb2CC",
-  vaultTo: "0x23D3D0f1c697247d5e0a9efB37d8b0ED0C464f7f",
-  apyTooltip: "Please migrate funds to our new vault to continue earning yield.",
-  migrationMessage: "This vault is no longer boosted, but is still earning yield. Withdraw funds or migrate your balance to the v2 Curve tBTC Pool yVault to continue earning boosted yield."
-}, {
-  symbol: "crvBBTC",
-  token: "0x410e3E86ef427e30B9235497143881f717d93c2A",
-  vaultFrom: "0xA8B1Cb4ed612ee179BDeA16CCa6Ba596321AE52D",
-  vaultTo: "0x8fA3A9ecd9EFb07A8CE90A6eb014CF3c0E3B32Ef",
-  apyTooltip: "Please migrate funds to our new vault to continue earning boosted yield.",
-  migrationMessage: "This vault is no longer boosted, but is still earning yield. Withdraw funds or migrate your balance to the v2 Curve BBTC Pool yVault to continue earning boosted yield."
-}, {
-  symbol: "crvPBTC",
-  token: "0xDE5331AC4B3630f94853Ff322B66407e0D6331E8",
-  vaultFrom: "0x123964EbE096A920dae00Fb795FFBfA0c9Ff4675",
-  vaultTo: "0x3c5DF3077BcF800640B5DAE8c91106575a4826E6",
-  apyTooltip: "Please migrate funds to our new vault to continue earning yield.",
-  migrationMessage: "This vault is no longer boosted, but is still earning yield. Withdraw funds or migrate your balance to the v2 Curve pBTC Pool yVault to continue earning boosted yield."
-}, {
-  symbol: "WBTC",
-  token: "0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599",
-  vaultFrom: "0xcB550A6D4C8e3517A939BC79d0c7093eb7cF56B5",
-  vaultTo: "0xA696a63cc78DfFa1a63E9E50587C197387FF6C7E",
-  apyTooltip: "Please migrate funds to our new vault to continue earning yield.",
-  migrationMessage: "This vault is no longer active. Withdraw funds or migrate your balance to the new v2 WBTC yVault to continue earning yield."
-}, {
-  symbol: "ETH",
-  token: "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
-  vaultFrom: "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE",
-  vaultTo: "0xa9fE4601811213c340e850ea305481afF02f5b28",
-  apyTooltip: "Please migrate funds to our new vault to continue earning yield.",
-  migrationMessage: "This vault is no longer active. Withdraw funds or migrate your balance to the new v2 ETH yVault to continue earning yield."
-}, {
-  symbol: "crvYBUSD",
-  token: "0x3B3Ac5386837Dc563660FB6a0937DFAa5924333B",
-  vaultFrom: "0x2994529C0652D127b7842094103715ec5299bBed",
-  vaultTo: "0x8ee57c05741aA9DB947A744E713C15d4d19D8822",
-  apyTooltip: "Please migrate funds to our new vault to continue earning boosted yield.",
-  migrationMessage: "This vault is no longer boosted, but is still earning yield. Withdraw funds or migrate your balance to the new v2 Curve yBUSD Pool yVault to continue earning boosted yield."
-}, {
-  symbol: "crvCOMP",
-  token: "0x845838DF265Dcd2c412A1Dc9e959c7d08537f8a2",
-  vaultFrom: "0x629c759D1E83eFbF63d84eb3868B564d9521C129",
-  vaultTo: "0xD6Ea40597Be05c201845c0bFd2e96A60bACde267",
-  apyTooltip: "Please migrate funds to our new vault to continue earning boosted yield.",
-  migrationMessage: "This vault is no longer boosted, but is still earning yield. Withdraw funds or migrate your balance to the new v2 Curve Compound Pool yVault to continue earning boosted yield."
-}, {
-  symbol: "crvGUSD",
-  token: "0xD2967f45c4f384DEEa880F807Be904762a3DeA07",
-  vaultFrom: "0xcC7E70A958917cCe67B4B87a8C30E6297451aE98",
-  vaultTo: "0x2a38B9B0201Ca39B17B460eD2f11e4929559071E",
-  apyTooltip: "Please migrate funds to our new vault to continue earning boosted yield.",
-  migrationMessage: "This vault is no longer boosted, but is still earning yield. Withdraw funds or migrate your balance to the new v2 Curve GUSD Pool yVault to continue earning boosted yield."
-}, {
-  symbol: "yCRV",
-  token: "0xdF5e0e81Dff6FAF3A7e52BA697820c5e32D806A8",
-  vaultFrom: "0x5dbcF33D8c2E976c6b560249878e6F1491Bca25c",
-  vaultTo: "0x4B5BfD52124784745c1071dcB244C6688d2533d3",
-  apyTooltip: "Please migrate funds to our new vault to continue earning boosted yield.",
-  migrationMessage: "This vault is no longer boosted, but is still earning yield. Withdraw funds or migrate your balance to the new v2 Curve Y Pool yVault to continue earning boosted yield."
-}, {
-  symbol: "3Crv",
-  token: "0x6c3F90f043a72FA612cbac8115EE7e52BDe6E490",
-  vaultFrom: "0x9cA85572E6A3EbF24dEDd195623F188735A5179f",
-  vaultTo: "0x84E13785B5a27879921D6F685f041421C7F482dA",
-  apyTooltip: "Please migrate funds to our new vault to continue earning boosted yield.",
-  migrationMessage: "This vault is no longer boosted, but is still earning yield. Withdraw funds or migrate your balance to the new v2 Curve 3pool yVault to continue earning boosted yield."
-}, {
-  symbol: "crvDUSD",
-  token: "0x3a664Ab939FD8482048609f652f9a0B0677337B9",
-  vaultFrom: "0x8e6741b456a074F0Bc45B8b82A755d4aF7E965dF",
-  vaultTo: "0x30FCf7c6cDfC46eC237783D94Fc78553E79d4E9C",
-  apyTooltip: "Please migrate funds to our new vault to continue earning boosted yield.",
-  migrationMessage: "This vault is no longer boosted, but is still earning yield. Withdraw funds or migrate your balance to the new v2 Curve DUSD yVault to continue earning boosted yield."
-}, {
-  symbol: "crvMUSD",
-  token: "0x1AEf73d49Dedc4b1778d0706583995958Dc862e6",
-  vaultFrom: "0x0FCDAeDFb8A7DfDa2e9838564c5A1665d856AFDF",
-  vaultTo: "0x8cc94ccd0f3841a468184aCA3Cc478D2148E1757",
-  apyTooltip: "Please migrate funds to our new vault to continue earning boosted yield.",
-  migrationMessage: "This vault is no longer boosted, but is still earning yield. Withdraw funds or migrate your balance to the new v2 Curve MUSD yVault to continue earning boosted yield."
-}, {
-  symbol: "crvUST",
-  token: "0x94e131324b6054c0D789b190b2dAC504e4361b53",
-  vaultFrom: "0xF6C9E9AF314982A4b38366f4AbfAa00595C5A6fC",
-  vaultTo: "0x1C6a9783F812b3Af3aBbf7de64c3cD7CC7D1af44",
-  apyTooltip: "Please migrate funds to our new vault to continue earning boosted yield.",
-  migrationMessage: "This vault is no longer boosted, but is still earning yield. Withdraw funds or migrate your balance to the new v2 Curve UST yVault to continue earning boosted yield."
-}, {
-  symbol: "crvSUSD",
-  token: "0xC25a3A3b969415c80451098fa907EC722572917F",
-  vaultFrom: "0x5533ed0a3b83F70c3c4a1f69Ef5546D3D4713E44",
-  vaultTo: "0x5a770DbD3Ee6bAF2802D29a901Ef11501C44797A",
-  apyTooltip: "Please migrate funds to our new vault to continue earning boosted yield.",
-  migrationMessage: "This vault is no longer boosted, but is still earning yield. Withdraw funds or migrate your balance to the new v2 Curve SUSD yVault to continue earning boosted yield."
-}, {
-  symbol: "crvLINK",
-  token: "0xcee60cFa923170e4f8204AE08B4fA6A3F5656F3a",
-  vaultFrom: "0x96Ea6AF74Af09522fCB4c28C269C26F59a31ced6",
-  vaultTo: "0xf2db9a7c0ACd427A680D640F02d90f6186E71725",
-  apyTooltip: "Please migrate funds to our new vault to continue earning boosted yield.",
-  migrationMessage: "This vault is no longer boosted, but is still earning yield. Withdraw funds or migrate your balance to the new v2 Curve Link yVault to continue earning boosted yield."
-}, {
-  symbol: "crvUSDP",
-  token: "0x7Eb40E450b9655f4B3cC4259BCC731c63ff55ae6",
-  vaultFrom: "0x1B5eb1173D2Bf770e50F10410C9a96F7a8eB6e75",
-  vaultTo: "0xC4dAf3b5e2A9e93861c3FBDd25f1e943B8D87417",
-  apyTooltip: "Please migrate funds to our new vault to continue earning boosted yield.",
-  migrationMessage: "This vault is no longer boosted, but is still earning yield. Withdraw funds or migrate your balance to the new v2 Curve USDP yVault to continue earning boosted yield."
-}, {
-  symbol: "crvUSDN",
-  token: "0x4f3E8F405CF5aFC05D68142F3783bDfE13811522",
-  vaultFrom: "0xFe39Ce91437C76178665D64d7a2694B0f6f17fE3",
-  vaultTo: "0x3B96d491f067912D18563d56858Ba7d6EC67a6fa",
-  apyTooltip: "Please migrate funds to our new vault to continue earning boosted yield.",
-  migrationMessage: "This vault is no longer boosted, but is still earning yield. Withdraw funds or migrate your balance to the new v2 Curve USDN yVault to continue earning boosted yield."
-}, {
-  symbol: "crvAAVE",
-  token: "0xFd2a8fA60Abd58Efe3EeE34dd494cD491dC14900",
-  vaultFrom: "0x03403154afc09Ce8e44C3B185C82C6aD5f86b9ab",
-  vaultTo: "0x39CAF13a104FF567f71fd2A4c68C026FDB6E740B",
-  apyTooltip: "Please migrate funds to our new vault to continue earning boosted yield.",
-  migrationMessage: "This vault is no longer boosted, but is still earning yield. Withdraw funds or migrate your balance to the new v2 Curve Aave yVault to continue earning boosted yield."
-}, {
-  symbol: "crvAETH",
-  token: "0xaA17A236F2bAdc98DDc0Cf999AbB47D47Fc0A6Cf",
-  vaultFrom: "0xE625F5923303f1CE7A43ACFEFd11fd12f30DbcA4",
-  vaultTo: "0x132d8D2C76Db3812403431fAcB00F3453Fc42125",
-  apyTooltip: "Please migrate funds to our new vault to continue earning boosted yield.",
-  migrationMessage: "This vault is no longer boosted, but is still earning yield. Withdraw funds or migrate your balance to the new v2 Curve ankrETH yVault to continue earning boosted yield."
-}, {
-  symbol: "crvEURS",
-  token: "0x194eBd173F6cDacE046C53eACcE9B953F28411d1",
-  vaultFrom: "0x98B058b2CBacF5E99bC7012DF757ea7CFEbd35BC",
-  vaultTo: "0x25212Df29073FfFA7A67399AcEfC2dd75a831A1A",
-  apyTooltip: "Please migrate funds to our new vault to continue earning boosted yield.",
-  migrationMessage: "This vault is no longer boosted, but is still earning yield. Withdraw funds or migrate your balance to the new v2 Curve EURS yVault to continue earning boosted yield."
-}, {
-  symbol: "LINK",
-  token: "0x514910771AF9Ca656af840dff83E8264EcF986CA",
-  vaultFrom: "0x881b06da56BB5675c54E4Ed311c21E54C5025298",
-  vaultTo: "0x671a912C10bba0CFA74Cfc2d6Fba9BA1ed9530B2",
-  apyTooltip: "Please migrate funds to our new vault to continue earning yield.",
-  migrationMessage: "This vault is no longer active. Withdraw funds or migrate your balance to the v2 LINK yVault to continue earning yield."
-}, {
-  symbol: "WETH",
-  token: "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
-  vaultFrom: "0xa9fE4601811213c340e850ea305481afF02f5b28",
-  vaultTo: "0xa258C4606Ca8206D8aA700cE2143D7db854D168c",
-  apyTooltip: "Please migrate funds to our new vault to continue earning yield.",
-  migrationMessage: "This vault is no longer active. Withdraw funds or migrate your balance to the v2 WETH yVault to continue earning yield."
-}, {
-  symbol: "DAI",
-  token: "0x6B175474E89094C44Da98b954EedeAC495271d0F",
-  vaultFrom: "0x19D3364A399d251E894aC732651be8B0E4e85001",
-  vaultTo: "0xdA816459F1AB5631232FE5e97a05BBBb94970c95",
-  apyTooltip: "Please migrate funds to our new vault to continue earning yield.",
-  migrationMessage: "This vault is winding down. Withdraw funds or migrate your balance to the new v2 DAI yVault to continue earning yield."
-}, {
-  symbol: "crvTriCrypto",
-  token: "0xcA3d75aC011BF5aD07a98d02f18225F9bD9A6BDF",
-  vaultFrom: "0x3D980E50508CFd41a13837A60149927a11c03731",
-  vaultTo: "0xE537B5cc158EB71037D4125BDD7538421981E6AA",
-  apyTooltip: "Please migrate funds to our new vault to continue earning yield.",
-  migrationMessage: "Curve identified an issue with this pool and has deployed a new 3Crypto pool. Please migrate to our new 3Crypto vault to earn higher yield."
-}, {
-  symbol: "TUSD",
-  token: "0x0000000000085d4780B73119b644AE5ecd22b376",
-  vaultFrom: "0x37d19d1c4E1fa9DC47bD1eA12f742a0887eDa74a",
-  vaultTo: "0xFD0877d9095789cAF24c98F7CCe092fa8E120775",
-  apyTooltip: "Please migrate funds to our new vault to continue earning yield.",
-  migrationMessage: "This vault is no longer active. Withdraw funds or migrate your balance to the v2 TUSD yVault to continue earning yield."
-}, {
-  symbol: "DAI",
-  token: "0x6B175474E89094C44Da98b954EedeAC495271d0F",
-  vaultFrom: "0xACd43E627e64355f1861cEC6d3a6688B31a6F952",
-  vaultTo: "0xdA816459F1AB5631232FE5e97a05BBBb94970c95",
-  apyTooltip: "Please migrate funds to our new vault to continue earning yield.",
-  migrationMessage: "This vault is no longer active. Withdraw funds or migrate your balance to the v2 DAI yVault to continue earning yield."
-}, {
-  symbol: "USDC",
-  token: "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
-  vaultFrom: "0x597aD1e0c13Bfe8025993D9e79C69E1c0233522e",
-  vaultTo: "0xa354F35829Ae975e850e23e9615b11Da1B3dC4DE",
-  apyTooltip: "Please migrate funds to our new vault to continue earning yield.",
-  migrationMessage: "This vault is no longer active. Withdraw funds or migrate your balance to the v2 USDC yVault to continue earning yield."
-}, {
-  symbol: "USDT",
-  token: "0xdAC17F958D2ee523a2206206994597C13D831ec7",
-  vaultFrom: "0x2f08119C6f07c006695E079AAFc638b8789FAf18",
-  vaultTo: "0x7Da96a3891Add058AdA2E826306D812C638D87a7",
-  apyTooltip: "Please migrate funds to our new vault to continue earning yield.",
-  migrationMessage: "This vault is no longer active. Withdraw funds or migrate your balance to the v2 USDT yVault to continue earning yield."
-}, {
-  symbol: "YFI",
-  token: "0x0bc529c00C6401aEF6D220BE8C6Ea1667F6Ad93e",
-  vaultFrom: "0xE14d13d8B3b85aF791b2AADD661cDBd5E6097Db1",
-  vaultTo: "0xdb25cA703181E7484a155DD612b06f57E12Be5F0",
-  apyTooltip: "Please migrate funds to our new vault to continue earning yield.",
-  migrationMessage: "This vault is no longer active. Withdraw funds or migrate your balance to the v2 YFI yVault to continue earning yield."
-}, {
-  symbol: "USDC",
-  token: "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
-  vaultFrom: "0x5f18C75AbDAe578b483E5F43f12a39cF75b973a9",
-  vaultTo: "0xa354F35829Ae975e850e23e9615b11Da1B3dC4DE",
-  apyTooltip: "Please migrate funds to our new vault to continue earning yield.",
-  migrationMessage: "This vault is no longer active. Withdraw funds or migrate your balance to continue earning yield."
-}, {
-  vaultTo: "0x986b4AFF588a109c09B50A03f42E4110E29D353F",
-}, {
-  vaultTo: "0xB8C3B7A2A618C552C23B1E4701109a9E756Bab67",
-}, {
-  vaultTo: "0xBFa4D8AA6d8a379aBFe7793399D3DdaCC5bBECBB",
-}, {
-  vaultTo: "0xe11ba472F74869176652C35D30dB89854b5ae84D",
-}, {
-  vaultTo: "0xe2F6b9773BF3A015E2aA70741Bde1498bdB9425b",
-}, {
-  vaultTo: "0x27b7b1ad7288079A66d12350c828D3C00A6F07d7",
-}, {
-  vaultTo: "0x9d409a0A012CFbA9B15F6D4B36Ac57A46966Ab9a",
-}, {
-  vaultTo: "0x5fA5B62c8AF877CB37031e0a3B2f34A78e3C56A6",
-}, {
-  vaultTo: "0xB4AdA607B9d6b2c9Ee07A275e9616B84AC560139",
-}, {
-  vaultTo: "0xFBEB78a723b8087fD2ea7Ef1afEc93d35E8Bed42",
-}, {
-  vaultTo: "0xEcd5e75AFb02eFa118AF914515D6521aaBd189F1",
-}, {
-  vaultTo: "0x6Ede7F19df5df6EF23bD5B9CeDb651580Bdf56Ca",
-}, {
-  vaultTo: "0xa5cA62D95D24A4a350983D5B8ac4EB8638887396",
-}, {
-  vaultTo: "0xF29AE508698bDeF169B89834F76704C3B205aedf",
-}, {
-  vaultTo: "0xA74d4B67b3368E83797a35382AFB776bAAE4F5C8",
-}, {
-  vaultTo: "0xBfedbcbe27171C418CDabC2477042554b1904857",
-}, {
-  vaultTo: "0x054AF22E1519b020516D72D749221c24756385C9",
-}, {
-  vaultTo: "0x873fB544277FD7b977B196a826459a69E27eA4ea",
-}, {
-  vaultTo: "0x80bbeE2fa460dA291e796B9045e93d19eF948C6A",
-}, {
-  vaultTo: "0x28a5b95C101df3Ded0C0d9074DB80C438774B6a9",
-}, {
-  vaultTo: "0x3D27705c64213A5DcD9D26880c1BcFa72d5b6B0E",
-}, {
-  vaultTo: "0xC116dF49c02c5fD147DE25Baa105322ebF26Bd97",
-}, {
-  vaultTo: "0xd9788f3931Ede4D5018184E198699dC6d66C1915",
-}, {
-  vaultTo: "0x4A3FE75762017DB0eD73a71C9A06db7768DB5e66",
-}, {
-  vaultTo: "0x6d765CbE5bC922694afE112C140b8878b9FB0390",
-}, {
-  vaultTo: "0x0d4EA8536F9A13e4FBa16042a46c30f092b06aA5",
-}, {
-  vaultTo: "0x2DfB14E32e2F8156ec15a2c21c3A6c053af52Be8",
-}, {
-  vaultTo: "0x4560b99C904aAD03027B5178CCa81584744AC01f",
-}, {
-  vaultTo: "0x67e019bfbd5a67207755D04467D6A70c0B75bF60",
-}, {
-  vaultTo: "0x528D50dC9a333f01544177a924893FA1F5b9F748",
-}, {
-  vaultTo: "0x595a68a8c9D5C230001848B69b1947ee2A607164",
-}, {
-  vaultTo: "0x1b905331F7dE2748F4D6a0678e1521E20347643F",
-}, {
-  vaultTo: "0x490bD0886F221A5F79713D3E84404355A9293C50",
-}, {
-  vaultTo: "0x59518884EeBFb03e90a18ADBAAAB770d4666471e",
-}, {
-  vaultTo: "0x59518884EeBFb03e90a18ADBAAAB770d4666471e",
-}, {
-  vaultTo: "0x59518884EeBFb03e90a18ADBAAAB770d4666471e",
-}, {
-  vaultTo: "0x59518884EeBFb03e90a18ADBAAAB770d4666471e",
-}, {
-  vaultTo: "0x59518884EeBFb03e90a18ADBAAAB770d4666471e",
-}, {
-  vaultTo: "0x59518884EeBFb03e90a18ADBAAAB770d4666471e",
-}, {
-  vaultTo: "0x59518884EeBFb03e90a18ADBAAAB770d4666471e",
-}, {
-  vaultTo: "0x59518884EeBFb03e90a18ADBAAAB770d4666471e",
-}, {
-  vaultTo: "0x59518884EeBFb03e90a18ADBAAAB770d4666471e",
-}].map(v => 
-  v.vaultTo)*/
-
   async function main() {
     const App = await init_ethers();
 
     _print(`Initialized ${App.YOUR_ADDRESS}\n`);
     _print("Reading smart contracts...\n");
 
-    const YEARN_CONTRACT_ABI = [{"name":"NewRelease","inputs":[{"name":"release_id","type":"uint256","indexed":true},{"name":"template","type":"address","indexed":false},{"name":"api_version","type":"string","indexed":false}],"anonymous":false,"type":"event"},{"name":"NewVault","inputs":[{"name":"token","type":"address","indexed":true},{"name":"vault_id","type":"uint256","indexed":true},{"name":"vault","type":"address","indexed":false},{"name":"api_version","type":"string","indexed":false}],"anonymous":false,"type":"event"},{"name":"NewExperimentalVault","inputs":[{"name":"token","type":"address","indexed":true},{"name":"deployer","type":"address","indexed":true},{"name":"vault","type":"address","indexed":false},{"name":"api_version","type":"string","indexed":false}],"anonymous":false,"type":"event"},{"name":"NewGovernance","inputs":[{"name":"governance","type":"address","indexed":false}],"anonymous":false,"type":"event"},{"name":"VaultTagged","inputs":[{"name":"vault","type":"address","indexed":false},{"name":"tag","type":"string","indexed":false}],"anonymous":false,"type":"event"},{"stateMutability":"nonpayable","type":"constructor","inputs":[],"outputs":[]},{"stateMutability":"nonpayable","type":"function","name":"setGovernance","inputs":[{"name":"governance","type":"address"}],"outputs":[],"gas":36245},{"stateMutability":"nonpayable","type":"function","name":"acceptGovernance","inputs":[],"outputs":[],"gas":37517},{"stateMutability":"view","type":"function","name":"latestRelease","inputs":[],"outputs":[{"name":"","type":"string"}],"gas":6831},{"stateMutability":"view","type":"function","name":"latestVault","inputs":[{"name":"token","type":"address"}],"outputs":[{"name":"","type":"address"}],"gas":2587},{"stateMutability":"nonpayable","type":"function","name":"newRelease","inputs":[{"name":"vault","type":"address"}],"outputs":[],"gas":82588},{"stateMutability":"nonpayable","type":"function","name":"newVault","inputs":[{"name":"token","type":"address"},{"name":"guardian","type":"address"},{"name":"rewards","type":"address"},{"name":"name","type":"string"},{"name":"symbol","type":"string"}],"outputs":[{"name":"","type":"address"}]},{"stateMutability":"nonpayable","type":"function","name":"newVault","inputs":[{"name":"token","type":"address"},{"name":"guardian","type":"address"},{"name":"rewards","type":"address"},{"name":"name","type":"string"},{"name":"symbol","type":"string"},{"name":"releaseDelta","type":"uint256"}],"outputs":[{"name":"","type":"address"}]},{"stateMutability":"nonpayable","type":"function","name":"newExperimentalVault","inputs":[{"name":"token","type":"address"},{"name":"governance","type":"address"},{"name":"guardian","type":"address"},{"name":"rewards","type":"address"},{"name":"name","type":"string"},{"name":"symbol","type":"string"}],"outputs":[{"name":"","type":"address"}]},{"stateMutability":"nonpayable","type":"function","name":"newExperimentalVault","inputs":[{"name":"token","type":"address"},{"name":"governance","type":"address"},{"name":"guardian","type":"address"},{"name":"rewards","type":"address"},{"name":"name","type":"string"},{"name":"symbol","type":"string"},{"name":"releaseDelta","type":"uint256"}],"outputs":[{"name":"","type":"address"}]},{"stateMutability":"nonpayable","type":"function","name":"endorseVault","inputs":[{"name":"vault","type":"address"}],"outputs":[]},{"stateMutability":"nonpayable","type":"function","name":"endorseVault","inputs":[{"name":"vault","type":"address"},{"name":"releaseDelta","type":"uint256"}],"outputs":[]},{"stateMutability":"nonpayable","type":"function","name":"setBanksy","inputs":[{"name":"tagger","type":"address"}],"outputs":[]},{"stateMutability":"nonpayable","type":"function","name":"setBanksy","inputs":[{"name":"tagger","type":"address"},{"name":"allowed","type":"bool"}],"outputs":[]},{"stateMutability":"nonpayable","type":"function","name":"tagVault","inputs":[{"name":"vault","type":"address"},{"name":"tag","type":"string"}],"outputs":[],"gas":186064},{"stateMutability":"view","type":"function","name":"numReleases","inputs":[],"outputs":[{"name":"","type":"uint256"}],"gas":1388},{"stateMutability":"view","type":"function","name":"releases","inputs":[{"name":"arg0","type":"uint256"}],"outputs":[{"name":"","type":"address"}],"gas":1533},{"stateMutability":"view","type":"function","name":"numVaults","inputs":[{"name":"arg0","type":"address"}],"outputs":[{"name":"","type":"uint256"}],"gas":1663},{"stateMutability":"view","type":"function","name":"vaults","inputs":[{"name":"arg0","type":"address"},{"name":"arg1","type":"uint256"}],"outputs":[{"name":"","type":"address"}],"gas":1808},{"stateMutability":"view","type":"function","name":"tokens","inputs":[{"name":"arg0","type":"uint256"}],"outputs":[{"name":"","type":"address"}],"gas":1623},{"stateMutability":"view","type":"function","name":"numTokens","inputs":[],"outputs":[{"name":"","type":"uint256"}],"gas":1538},{"stateMutability":"view","type":"function","name":"isRegistered","inputs":[{"name":"arg0","type":"address"}],"outputs":[{"name":"","type":"bool"}],"gas":1783},{"stateMutability":"view","type":"function","name":"governance","inputs":[],"outputs":[{"name":"","type":"address"}],"gas":1598},{"stateMutability":"view","type":"function","name":"pendingGovernance","inputs":[],"outputs":[{"name":"","type":"address"}],"gas":1628},{"stateMutability":"view","type":"function","name":"tags","inputs":[{"name":"arg0","type":"address"}],"outputs":[{"name":"","type":"string"}],"gas":10229},{"stateMutability":"view","type":"function","name":"banksy","inputs":[{"name":"arg0","type":"address"}],"outputs":[{"name":"","type":"bool"}],"gas":1903}]
-    const yearnContract = new ethcall.Contract("0x50c1a2ea0a861a967d9d0ffe2ae4012c2e053804", YEARN_CONTRACT_ABI);
+    /* 
+      https://www.coingecko.com/en/coins/interest-bearing-bitcoin
+      opote, to yearn vault exei underlying to wrapped ibBTC, to wrapped ibBTC exei underlying to ibBTC, to opoio exei price coingecko kanonika
+      to provlima ara einai oti otan fortwnoume to wrapped ibBTC den to ypologizoume swsta san vault pou einai
 
-    const [numTokens] = await App.ethcallProvider.all([yearnContract.numTokens()]);
-    
-    let vaults = [];
-    for(let i = 0; i < numTokens; i++){
-      const [token] = await App.ethcallProvider.all([yearnContract.tokens(i)])
-      const [vault] = await App.ethcallProvider.all([yearnContract.vaults(token, 0)])
-      vaults.push(vault)
-    }
+      na vrw giati den vriskw price gia auta edw
+      https://etherscan.io/token/0x5e69e8b51B71C8596817fD442849BD44219bb095
+      https://etherscan.io/token/0x8b9C0c24307344B6D7941ab654b2Aeee25347473
+      https://etherscan.io/token/0x595a68a8c9D5C230001848B69b1947ee2A607164
+      https://etherscan.io/token/0x528D50dC9a333f01544177a924893FA1F5b9F748
+      https://etherscan.io/token/0x28a5b95C101df3Ded0C0d9074DB80C438774B6a9
+    */
+
+    const ASSETS_CONTRACT_ABI = [{"inputs":[{"internalType":"address","name":"_registryAddress","type":"address"},{"internalType":"address","name":"_managementListAddress","type":"address"}],"stateMutability":"nonpayable","type":"constructor"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"assetDeprecated","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"assetsAddresses","outputs":[{"internalType":"address[]","name":"","type":"address[]"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"assetsLength","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"generatorInfo","outputs":[{"components":[{"internalType":"address","name":"id","type":"address"},{"internalType":"string","name":"typeId","type":"string"},{"internalType":"string","name":"categoryId","type":"string"}],"internalType":"struct AddressesGenerator_VAULT_V2.GeneratorInfo","name":"","type":"tuple"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getPositionSpenderAddresses","outputs":[{"internalType":"address[]","name":"","type":"address[]"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"managementList","outputs":[{"internalType":"contract ManagementList","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"numberOfDeprecatedAssets","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"","type":"uint256"}],"name":"positionSpenderAddresses","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"registry","outputs":[{"internalType":"contract IV2Registry","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"assetAddress","type":"address"},{"internalType":"bool","name":"newDeprecationStatus","type":"bool"}],"name":"setAssetDeprecated","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address[]","name":"addresses","type":"address[]"}],"name":"setPositionSpenderAddresses","outputs":[],"stateMutability":"nonpayable","type":"function"}]
+    const ASSETS_ADDRESS = "0x437758D475F70249e03EDa6bE23684aD1FC375F0"
+    const ASSETS_CONTRACT = new ethcall.Contract(ASSETS_ADDRESS, ASSETS_CONTRACT_ABI);
+
+    const [vaultAddresses] = await App.ethcallProvider.all([ASSETS_CONTRACT.assetsAddresses()]);
+    //const vaultAddresses = ["0x5e69e8b51B71C8596817fD442849BD44219bb095"]
 
     const tokens = {};
     let prices = {}
-    await getNewPricesAndTokens(App, tokens, prices, vaults, App.YOUR_ADDRESS);
-    const poolInfos = await Promise.all(vaults.map(a => loadYearnPoolInfo(App, tokens, a, prices)));
-    const poolPrices = poolInfos.map(poolInfo => getPoolPrices(tokens, prices, poolInfo.vault, "eth"));
+    const vaults = await Promise.all(vaultAddresses.map(a => getToken(App, a, App.YOUR_ADDRESS)));
+    const newTokens = vaults.map(v => v.tokens).flat();
+    await getNewPricesAndTokens(App, tokens, prices, newTokens, App.YOUR_ADDRESS);
+    prices["0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE"] = getParameterCaseInsensitive(prices, "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2");
+    const poolPrices = vaults.map(v => tryGetPoolPrices(tokens, prices, v, "eth"));
 
     let staked_tvl = 0, userTvl = 0
-    for(const p of poolInfos.filter(p => p))
-    {
-      printYearnContract(p);
-      if (!isNaN(p.poolPrices.staked_tvl)) staked_tvl += p.poolPrices.staked_tvl;
-      if (!isNaN(p.userStaked * p.poolPrices.price)) userTvl += p.userStaked * p.poolPrices.price;
+    for(let i = 0; i < vaults.length; i++){
+      if(!poolPrices[i]){
+        continue;
+      }
+      else{
+       await printYearnContract(vaults[i], poolPrices[i]); 
+      }
+      if (!isNaN(poolPrices[i].staked_tvl)) staked_tvl += poolPrices[i].staked_tvl;
+      if (!isNaN(vaults[i].userStaked * poolPrices[i].price)) userTvl += vaults[i].userStaked * poolPrices[i].price;
     }
     _print_bold(`\nTotal Value Locked: $${formatMoney(staked_tvl)}`);
     if (userTvl > 0) {
@@ -387,26 +55,24 @@ $(function() {
 
     hideLoading();
   }
-  
-  async function loadYearnPoolInfo(App, tokens, contractAddress, prices) {
-    try {
-      const vault = await getToken(App, contractAddress, App.YOUR_ADDRESS);
-      return { vault }
-    }
-    catch (err) { 
-      console.log(contractAddress, err);
-      return null;
-    }
-  }
 
-  async function printYearnContract(poolInfo) {
-    const poolPrices = poolInfo.poolPrices;
-    poolPrices.print_price();
-    var userStakedUsd = poolInfo.vault.staked * poolPrices.price;
-    var userStakedPct = userStakedUsd / poolPrices.tvl * 100;
-    _print(`You are staking ${poolInfo.vault.staked.toFixed(4)} ${poolPrices.stakeTokenTicker} ($${formatMoney(userStakedUsd)}), ${userStakedPct.toFixed(2)}% of the pool.`);
-    if (poolInfo.vault.staked > 0) {
-      _print(`Your stake comprises of ${poolInfo.vault.staked * poolInfo.vault.ppfs} ${poolInfo.vault.token.symbol}.`)
+  async function printYearnContract(vault, poolPrice) {
+    poolPrice.print_price();
+    var userStakedUsd = vault.staked * poolPrice.price;
+    var userStakedPct = userStakedUsd / poolPrice.tvl * 100;
+    _print(`You are staking ${vault.staked.toFixed(4)} ${poolPrice.stakeTokenTicker} ($${formatMoney(userStakedUsd)}), ${userStakedPct.toFixed(2)}% of the pool.`);
+    if (vault.staked > 0) {
+      _print(`Your stake comprises of ${vault.staked * vault.ppfs} ${vault.token.symbol}.`)
     }
     _print("");
   }
+
+function tryGetPoolPrices(tokens, prices, pool, chain = "eth"){
+  try {
+    const poolPrice = getPoolPrices(tokens, prices, pool, chain = "eth")
+    return poolPrice;
+  }catch(err){
+    console.log(pool.address, err);
+    return null;
+  }
+}
