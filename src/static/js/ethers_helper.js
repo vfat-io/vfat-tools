@@ -1499,6 +1499,27 @@ async function getCurveCryptoToken2(app, curve, address, stakingAddress, minterA
   };
 }
 
+async function getCurveMinterToken(app, curve, address, stakingAddress) {
+  const calls = [curve.get_virtual_price(), curve.coins(0), curve.decimals(), curve.balanceOf(stakingAddress), 
+                 curve.balanceOf(app.YOUR_ADDRESS), curve.name(), curve.symbol(), curve.totalSupply()];
+  const [virtualPrice, coin0, decimals_, staked, unstaked, name, symbol, totalSupply] = await app.ethcallProvider.all(calls);
+  const token = await getToken(app, coin0, address);
+  const decimals =  decimals_ / 1;
+  return {
+      address,
+      name,
+      symbol,
+      totalSupply,
+      decimals,
+      staked:  staked / 10 ** decimals,
+      unstaked: unstaked  / 10 ** decimals,
+      contract: curve,
+      tokens : [address, coin0],
+      token,
+      virtualPrice : virtualPrice / 1e18
+  };
+}
+
 async function getStoredToken(app, tokenAddress, stakingAddress, type) {
   switch (type) {
     case "uniswap":
@@ -1576,6 +1597,10 @@ async function getStoredToken(app, tokenAddress, stakingAddress, type) {
       const registry = new ethcall.Contract(registryAddress, REGISTRY_ABI);
       const [minterAddress] = await app.ethcallProvider.all([registry.get_pool_from_lp_token(tokenAddress)]);
       return await getCurveToken(app, crvRegistry, tokenAddress, stakingAddress, minterAddress);
+    case "curveWithMinter":
+      const crvMinter = new ethcall.Contract(tokenAddress, CURVE_WITH_MINTER_ABI);
+      const [virtualPrice] = await app.ethcallProvider.all([crvMinter.get_virtual_price()]);
+      return await getCurveMinterToken(app, crvMinter, tokenAddress, stakingAddress);
     case "stableswap":
       const stable = new ethcall.Contract(tokenAddress, STABLESWAP_ABI);
       return await getStableswapToken(app, stable, tokenAddress, stakingAddress);
@@ -1760,6 +1785,15 @@ async function getToken(app, tokenAddress, stakingAddress) {
     const [minterAddress] = await app.ethcallProvider.all([registry.get_pool_from_lp_token(tokenAddress)]);
     const res = await getCurveToken(app, curveToken, tokenAddress, stakingAddress, minterAddress);
     window.localStorage.setItem(tokenAddress, "curveRegistry");
+    return res;
+  }
+  catch(err){
+  }
+  try{
+    const curveMinterToken = new ethcall.Contract(tokenAddress, CURVE_WITH_MINTER_ABI);
+    const [virtualPrice] = await app.ethcallProvider.all([curveMinterToken.get_virtual_price()]);
+    const res = await getCurveMinterToken(app, curveMinterToken, tokenAddress, stakingAddress);
+    window.localStorage.setItem(tokenAddress, "curveWithMinter");
     return res;
   }
   catch(err){
@@ -2822,9 +2856,16 @@ function getErc20Prices(prices, pool, chain="eth") {
 
 function getCurvePrices(prices, pool, chain) {
   var price = (getParameterCaseInsensitive(prices,pool.token.address)?.usd);
+  let address = ""
   if(price){
     price = price * pool.virtualPrice;
   }else{
+    switch(pool.token.address){
+      case "0x8751D4196027d4e6DA63716fA7786B5174F04C15" : //wibBTC
+        pool.token.address = "0xc4e15973e6ff2a35cc804c2cf9d2a1b817a8b40f" //ibBTC
+      case "0x69681f8fde45345C3870BCD5eaf4A05a60E7D227" : //ibGBP
+        pool.token.address = "0xecaB2C76f1A8359A06fAB5fA0CEea51280A97eCF" //cyGBP
+    }
     price = getPoolPrices(pool.token.tokens, prices, pool.token, chain).price * pool.virtualPrice;
   }
   if (getParameterCaseInsensitive(prices, pool.address)?.usd ?? 0 == 0) {
