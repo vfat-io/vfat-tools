@@ -1520,6 +1520,24 @@ async function getCurveMinterToken(app, curve, address, stakingAddress) {
   };
 }
 
+async function getIronBankToken(app, ibToken, address, stakingAddress) {
+  const calls = [ibToken.decimals(), ibToken.name(), ibToken.symbol(),
+    ibToken.totalSupply(), ibToken.balanceOf(stakingAddress), ibToken.balanceOf(app.YOUR_ADDRESS)];
+  const [ decimals, name, symbol, totalSupply, staked, unstaked] =
+    await app.ethcallProvider.all(calls);
+  return {
+    address,
+    name,
+    symbol,
+    totalSupply,
+    decimals,
+    staked: staked / 10 ** decimals,
+    unstaked: unstaked / 10 ** decimals,
+    balance : totalSupply,
+    contract: ibToken
+  }
+}
+
 async function getStoredToken(app, tokenAddress, stakingAddress, type) {
   switch (type) {
     case "uniswap":
@@ -1528,6 +1546,9 @@ async function getStoredToken(app, tokenAddress, stakingAddress, type) {
     case "lixir":
       const lixirPool = new ethcall.Contract(tokenAddress, LIXIR_TOKEN_ABI);
       return await getLixirPool(app, lixirPool, tokenAddress, stakingAddress);
+    case "ironBank":
+      const ironBankPool = new ethcall.Contract(tokenAddress, IRONBANK_TOKEN_ABI);
+      return await getIronBankToken(app, ironBankPool, tokenAddress, stakingAddress);
     case "yearn":
       const yearnVault = new ethcall.Contract(tokenAddress, YEARN_VAULT_ABI);
       return await getYearnVault(app, yearnVault, tokenAddress, stakingAddress);
@@ -1630,6 +1651,15 @@ async function getToken(app, tokenAddress, stakingAddress) {
     const lixir = await getLixirPool(app, lixirPool, tokenAddress, stakingAddress);
     window.localStorage.setItem(tokenAddress, "lixir");
     return lixir;
+  }
+  catch(err) {
+  }
+  try {
+    const ironBankPool = new ethcall.Contract(tokenAddress, IRONBANK_TOKEN_ABI);
+    const _ib = await app.ethcallProvider.all([ironBankPool.ib()]);
+    const ironBank = await getIronBankToken(app, ironBankPool, tokenAddress, stakingAddress);
+    window.localStorage.setItem(tokenAddress, "ironBank");
+    return ironBank;
   }
   catch(err) {
   }
@@ -2856,15 +2886,12 @@ function getErc20Prices(prices, pool, chain="eth") {
 
 function getCurvePrices(prices, pool, chain) {
   var price = (getParameterCaseInsensitive(prices,pool.token.address)?.usd);
-  let address = ""
   if(price){
     price = price * pool.virtualPrice;
   }else{
     switch(pool.token.address){
       case "0x8751D4196027d4e6DA63716fA7786B5174F04C15" : //wibBTC
         pool.token.address = "0xc4e15973e6ff2a35cc804c2cf9d2a1b817a8b40f" //ibBTC
-      case "0x69681f8fde45345C3870BCD5eaf4A05a60E7D227" : //ibGBP
-        pool.token.address = "0xecaB2C76f1A8359A06fAB5fA0CEea51280A97eCF" //cyGBP
     }
     price = getPoolPrices(pool.token.tokens, prices, pool.token, chain).price * pool.virtualPrice;
   }
@@ -2885,12 +2912,27 @@ function getCurvePrices(prices, pool, chain) {
     }
     return dexguruTokenlink
   }
+
+  let decimals = 0
+
+  if(price > 0.1){
+    decimals = 3
+  }else if(price > 0.01){
+    decimals = 4
+  }else if(price > 0.001){
+    decimals = 5
+  }else if(price > 0.0001){
+    decimals = 6
+  }else if(price > 0.00001){
+    decimals = 7
+  }else { decimals = 2; }
+
   return {
     staked_tvl : staked_tvl,
     price : price,
     stakeTokenTicker : pool.symbol,
     print_price() {
-      _print(`${name} Price: $${formatMoney(price)} Market Cap: $${formatMoney(tvl)} ${getDexguruTokenlink()}`);
+      _print(`${name} Price: $${price.toFixed(decimals)} Market Cap: $${formatMoney(tvl)} ${getDexguruTokenlink()}`);
       _print(`Staked: ${pool.staked.toFixed(4)} ${pool.symbol} ($${formatMoney(staked_tvl)})`);
     },
     print_contained_price() {
