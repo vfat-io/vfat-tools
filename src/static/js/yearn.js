@@ -9,15 +9,6 @@ $(function() {
     _print(`Initialized ${App.YOUR_ADDRESS}\n`);
     _print("Reading smart contracts...\n");
 
-    /* 
-      na vrw giati den vriskw price gia auta edw
-      https://etherscan.io/token/0x5e69e8b51B71C8596817fD442849BD44219bb095 this has 0 total assets inside it
-      https://etherscan.io/token/0x8b9C0c24307344B6D7941ab654b2Aeee25347473 this is not in coingecko in order to receive its price
-      https://etherscan.io/token/0x595a68a8c9D5C230001848B69b1947ee2A607164 this has a price 0 in coingecko
-      https://etherscan.io/token/0x528D50dC9a333f01544177a924893FA1F5b9F748 this is the ibKRW and i will take the price from chainlink
-      https://etherscan.io/token/0x28a5b95C101df3Ded0C0d9074DB80C438774B6a9 this has 0 total assets inside it
-    */
-
     const ASSETS_CONTRACT_ABI = [{"inputs":[{"internalType":"address","name":"_registryAddress","type":"address"},{"internalType":"address","name":"_managementListAddress","type":"address"}],"stateMutability":"nonpayable","type":"constructor"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"assetDeprecated","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"assetsAddresses","outputs":[{"internalType":"address[]","name":"","type":"address[]"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"assetsLength","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"generatorInfo","outputs":[{"components":[{"internalType":"address","name":"id","type":"address"},{"internalType":"string","name":"typeId","type":"string"},{"internalType":"string","name":"categoryId","type":"string"}],"internalType":"struct AddressesGenerator_VAULT_V2.GeneratorInfo","name":"","type":"tuple"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getPositionSpenderAddresses","outputs":[{"internalType":"address[]","name":"","type":"address[]"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"managementList","outputs":[{"internalType":"contract ManagementList","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"numberOfDeprecatedAssets","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"","type":"uint256"}],"name":"positionSpenderAddresses","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"registry","outputs":[{"internalType":"contract IV2Registry","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"assetAddress","type":"address"},{"internalType":"bool","name":"newDeprecationStatus","type":"bool"}],"name":"setAssetDeprecated","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address[]","name":"addresses","type":"address[]"}],"name":"setPositionSpenderAddresses","outputs":[],"stateMutability":"nonpayable","type":"function"}]
     const ASSETS_ADDRESS = "0x437758D475F70249e03EDa6bE23684aD1FC375F0"
     const ASSETS_CONTRACT = new ethcall.Contract(ASSETS_ADDRESS, ASSETS_CONTRACT_ABI);
@@ -41,11 +32,6 @@ $(function() {
     }
 
     const [vaultAddresses] = await App.ethcallProvider.all([ASSETS_CONTRACT.assetsAddresses()]);
-    /*const vaultAddresses = ["0x5e69e8b51B71C8596817fD442849BD44219bb095", 
-                            "0x8b9C0c24307344B6D7941ab654b2Aeee25347473", 
-                            "0x595a68a8c9D5C230001848B69b1947ee2A607164",
-                            "0x528D50dC9a333f01544177a924893FA1F5b9F748",
-                            "0x28a5b95C101df3Ded0C0d9074DB80C438774B6a9"]*/
 
     const tokens = {};
     let prices = {}
@@ -53,9 +39,9 @@ $(function() {
     const newTokens = vaults.map(v => v.tokens).flat().concat(["0xc4e15973e6ff2a35cc804c2cf9d2a1b817a8b40f"]);
     await getNewPricesAndTokens(App, tokens, prices, newTokens, App.YOUR_ADDRESS);
     prices["0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE"] = getParameterCaseInsensitive(prices, "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2");
-    prices["0x95dFDC8161832e4fF7816aC4B6367CE201538253"] = chainlinkPrices.ibKRW //KRW
-    prices["0x9fcf418B971134625CdF38448B949C8640971671"] = chainlinkPrices.ibEUR  //EUR
-    prices["0x69681f8fde45345C3870BCD5eaf4A05a60E7D227"] = chainlinkPrices.ibGBP  //GBP
+    prices["0x95dFDC8161832e4fF7816aC4B6367CE201538253"] = { usd : chainlinkPrices.ibKRW } //KRW
+    prices["0x9fcf418B971134625CdF38448B949C8640971671"] = { usd : chainlinkPrices.ibEUR }  //EUR
+    prices["0x69681f8fde45345C3870BCD5eaf4A05a60E7D227"] = { usd : chainlinkPrices.ibGBP }  //GBP
     const poolPrices = vaults.map(v => tryGetPoolPrices(tokens, prices, v, "eth"));
 
     let staked_tvl = 0, userTvl = 0

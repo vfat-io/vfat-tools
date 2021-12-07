@@ -1481,13 +1481,14 @@ async function getCurveCryptoToken2(app, curve, address, stakingAddress, minterA
   const [virtualPrice, A_precise] = await app.ethcallProvider.all([minter.get_virtual_price(), minter.A_precise()]);
   const calls = [curve.decimals(), curve.balanceOf(stakingAddress), curve.balanceOf(app.YOUR_ADDRESS),
     curve.name(), curve.symbol(), curve.totalSupply()];
-  const [decimals, staked, unstaked, name, symbol, totalSupply] = await app.ethcallProvider.all(calls);
+  const [_decimals, staked, unstaked, name, symbol, totalSupply] = await app.ethcallProvider.all(calls);
   const tokens = coins.map(c => c.address).concat([address]);
+  const decimals = _decimals / 1;
   return {
       address,
       name,
       symbol,
-      totalSupply : totalSupply / 10 ** decimals,
+      totalSupply,
       decimals : decimals,
       staked:  staked / 10 ** decimals,
       unstaked: unstaked  / 10 ** decimals,
@@ -2913,26 +2914,12 @@ function getCurvePrices(prices, pool, chain) {
     return dexguruTokenlink
   }
 
-  let decimals = 0
-
-  if(price > 0.1){
-    decimals = 3
-  }else if(price > 0.01){
-    decimals = 4
-  }else if(price > 0.001){
-    decimals = 5
-  }else if(price > 0.0001){
-    decimals = 6
-  }else if(price > 0.00001){
-    decimals = 7
-  }else { decimals = 2; }
-
   return {
     staked_tvl : staked_tvl,
     price : price,
     stakeTokenTicker : pool.symbol,
     print_price() {
-      _print(`${name} Price: $${price.toFixed(decimals)} Market Cap: $${formatMoney(tvl)} ${getDexguruTokenlink()}`);
+      _print(`${name} Price: $${formatMoney(price)} Market Cap: $${formatMoney(tvl)} ${getDexguruTokenlink()}`);
       _print(`Staked: ${pool.staked.toFixed(4)} ${pool.symbol} ($${formatMoney(staked_tvl)})`);
     },
     print_contained_price() {
@@ -2957,7 +2944,7 @@ function getCurveCryptoPrices2(prices, pool, chain){
       tvl += pool.coins[i].balance * pprice;
     }
   }
-  const price = tvl / pool.totalSupply;
+  const price = tvl / (pool.totalSupply / 10 ** pool.decimals);
   const staked_tvl = pool.balance * price;
   const poolUrl = getChainExplorerUrl(chain, pool.address);
   const name = `<a href='${poolUrl}' target='_blank'>${pool.name}</a>`;
@@ -3015,12 +3002,26 @@ function getYearnPrices(prices, pool, chain){
   const staked_tvl = pool.balance * price;
   const poolUrl = getChainExplorerUrl(chain, pool.address);
   const name = `<a href='${poolUrl}' target='_blank'>${pool.symbol}</a>`;
+  let decimals = 0
+
+  if(price > 0.1){
+    decimals = 2
+  }else if(price > 0.01){
+    decimals = 4
+  }else if(price > 0.001){
+    decimals = 5
+  }else if(price > 0.0001){
+    decimals = 6
+  }else if(price > 0.00001){
+    decimals = 7
+  }else { decimals = 2; }
+
   return {
     staked_tvl : staked_tvl,
     price,
     stakeTokenTicker : pool.symbol,
     print_price() {
-      _print(`${name} Price: $${formatMoney(price)} Market Cap: $${formatMoney(tvl)}`);
+      _print(`${name} Price: $${price.toFixed(decimals)} Market Cap: $${formatMoney(tvl)}`);
       _print(`Staked: ${pool.balance.toFixed(4)} ${pool.symbol} ($${formatMoney(staked_tvl)})`);
     },
     print_contained_price() {
