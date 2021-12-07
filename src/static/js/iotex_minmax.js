@@ -14,7 +14,7 @@ async function main() {
   var tokens = {};
   var prices = await getIotexPrices();
 
-  const MCN_CHEF_ADDR = "f3a640eeb661cdf78f1817314123e8bbd12e191f";
+  const MCN_CHEF_ADDR = "0xf3a640eeb661cdf78f1817314123e8bbd12e191f";
   const MCN_CHEF = new ethers.Contract(MCN_CHEF_ADDR, MCN_CHEF_ABI, App.provider);
 
   const poolAddresses = await MCN_CHEF.getPoolList();
