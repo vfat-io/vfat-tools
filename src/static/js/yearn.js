@@ -50,7 +50,7 @@ $(function() {
         continue;
       }
       else{
-       await printYearnContract(vaults[i], poolPrices[i]); 
+       await printYearnContract(App, vaults[i], poolPrices[i]); 
       }
       if (!isNaN(poolPrices[i].staked_tvl)) staked_tvl += poolPrices[i].staked_tvl;
       if (!isNaN(vaults[i].userStaked * poolPrices[i].price)) userTvl += vaults[i].userStaked * poolPrices[i].price;
@@ -63,7 +63,7 @@ $(function() {
     hideLoading();
   }
 
-  async function printYearnContract(vault, poolPrice) {
+  async function printYearnContract(App, vault, poolPrice) {
     poolPrice.print_price();
     var userStakedUsd = vault.staked * poolPrice.price;
     var userStakedPct = userStakedUsd / poolPrice.tvl * 100;
@@ -71,6 +71,14 @@ $(function() {
     if (vault.staked > 0) {
       _print(`Your stake comprises of ${vault.staked * vault.ppfs} ${vault.token.symbol}.`)
     }
+    const deposit = async function() {
+      return yearnVaultDeposit(App, vault)
+    }
+    const withdraw = async function() {
+      return yearnVaultWithdraw(App, vault)
+    }
+    _print_link(`Deposit ${vault.token.unstaked.toFixed(6)} ${vault.token.symbol}`, deposit);
+    _print_link(`Withdraw ${vault.token.staked.toFixed(6)} ${vault.token.symbol}`, withdraw)
     _print("");
   }
 
@@ -84,3 +92,68 @@ function tryGetPoolPrices(tokens, prices, pool, chain = "eth"){
   }
 }
 
+async function yearnVaultDeposit(App, vaultToken){
+  const signer = await App.provider.getSigner();
+
+  const STAKING_TOKEN = new ethers.Contract(vaultToken.token.address, ERC20_ABI, signer)
+  const VAULT_CONTRACT = new ethers.Contract(vaultToken.address, YEARN_VAULT_ABI, signer)
+
+  const balanceToStake = await STAKING_TOKEN.balanceOf(App.YOUR_ADDRESS)
+  const allowedTokens = await STAKING_TOKEN.allowance(App.YOUR_ADDRESS, vaultToken.token.address)
+
+  const decimals = await STAKING_TOKEN.decimals();
+  let allow = Promise.resolve()
+
+  if (allowedTokens / 10 ** decimals < balanceToStake / 10 ** decimals) {
+    showLoading()
+    allow = STAKING_TOKEN.approve(vaultToken.token.address, ethers.constants.MaxUint256)
+      .then(function(t) {
+        return App.provider.waitForTransaction(t.hash)
+      })
+      .catch(function() {
+        hideLoading()
+        alert('Try resetting your approval to 0 first')
+      })
+  }
+
+  if (balanceToStake / 10 ** decimals > 0) {
+    showLoading()
+    allow
+      .then(async function() {
+        VAULT_CONTRACT.deposit(balanceToStake, {gasLimit: 500000})
+          .then(function(t) {
+            App.provider.waitForTransaction(t.hash).then(function() {
+              hideLoading()
+            })
+          })
+          .catch(function() {
+            hideLoading()
+            _print('Something went wrong.')
+          })
+      })
+      .catch(function() {
+        hideLoading()
+        _print('Something went wrong.')
+      })
+  } else {
+    alert('You have no tokens to stake!!')
+  }
+}
+
+async function yearnVaultWithdraw(App, vaultToken){
+  const signer = App.provider.getSigner()
+  const VAULT_CONTRACT = new ethers.Contract(vaultToken.address, YEARN_VAULT_ABI, signer)
+
+  const currentStakedAmount = await VAULT_CONTRACT.balanceOf(App.YOUR_ADDRESS);
+
+  if (currentStakedAmount / 10 ** vault.decimals > 0) {
+    showLoading()
+    VAULT_CONTRACT.withdraw({gasLimit: 500000})
+      .then(function(t) {
+        return App.provider.waitForTransaction(t.hash)
+      })
+      .catch(function() {
+        hideLoading()
+      })
+  }
+}
