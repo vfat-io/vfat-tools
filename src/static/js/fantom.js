@@ -128,7 +128,8 @@ const main = async() => {
       ["TrickorTreat L2    ", `<a href='trick'        >Various</a>`,"TRICK        ","https://trickortreat.farm"],
       ["rKITTEN            ", `<a href='rkitten'      >Various</a>`,"rKITTEN      ","https://kittens.fakeworms.studio/rewards"],
       ["Ghost              ", `<a href='ghst'         >Various</a>`,"GHST         ","https://ghost.maximum.farm"],
-      ["Smurf Mushy        ", `<a href='mushy'        >Various</a>`,"MUSHY        ","https://mushy.smurf.money"]
+      ["Smurf Mushy        ", `<a href='mushy'        >Various</a>`,"MUSHY        ","https://mushy.smurf.money"],
+      ["Supercub Finance   ", `<a href='supercub'     >Various</a>`,"SCUB         ","https://supercub.finance"]
     ]
   }
 
