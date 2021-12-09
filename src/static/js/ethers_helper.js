@@ -1539,6 +1539,26 @@ async function getIronBankToken(app, ibToken, address, stakingAddress) {
   }
 }
 
+async function getCurveVault(app, curveVault, address) {
+  const calls = [curveVault.lp_token(), curveVault.get_virtual_price()];
+  const [token_, virtualPrice] = await app.ethcallProvider.all(calls);
+  const token = await getToken(app, token_, address);
+  const decimals = token.decimals;
+  return {
+    address,
+    name : token.name,
+    symbol : token.symbol,
+    totalSupply : token.totalSupply,
+    decimals : decimals,
+    staked: token.staked / 10 ** decimals,
+    unstaked: token.unstaked / 10 ** decimals,
+    contract: curveVault,
+    tokens : [address].concat(token.tokens),
+    token,
+    virtualPrice : virtualPrice / 10 ** decimals
+  }
+}
+
 async function getStoredToken(app, tokenAddress, stakingAddress, type) {
   switch (type) {
     case "uniswap":
@@ -1547,6 +1567,9 @@ async function getStoredToken(app, tokenAddress, stakingAddress, type) {
     case "lixir":
       const lixirPool = new ethcall.Contract(tokenAddress, LIXIR_TOKEN_ABI);
       return await getLixirPool(app, lixirPool, tokenAddress, stakingAddress);
+    case "curveVault":
+      const curveVault = new ethcall.Contract(tokenAddress, CURVE_VAULT_ABI);
+      return await getCurveVault(app, curveVault, tokenAddress);
     case "ironBank":
       const ironBankPool = new ethcall.Contract(tokenAddress, IRONBANK_TOKEN_ABI);
       return await getIronBankToken(app, ironBankPool, tokenAddress, stakingAddress);
@@ -1652,6 +1675,15 @@ async function getToken(app, tokenAddress, stakingAddress) {
     const lixir = await getLixirPool(app, lixirPool, tokenAddress, stakingAddress);
     window.localStorage.setItem(tokenAddress, "lixir");
     return lixir;
+  }
+  catch(err) {
+  }
+  try {
+    const curveVault = new ethcall.Contract(tokenAddress, CURVE_VAULT_ABI);
+    const _lpToken = await app.ethcallProvider.all([curveVault.lp_token()]);
+    const curveVaultToken = await getCurveVault(app, curveVault, tokenAddress);
+    window.localStorage.setItem(tokenAddress, "curveVault");
+    return curveVaultToken;
   }
   catch(err) {
   }
