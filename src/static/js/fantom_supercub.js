@@ -30,7 +30,7 @@ $(function() {
         const prices = await getFantomPrices();
     
         await loadFantomChefContract(App, tokens, prices, SCUB_CHEF, SCUB_CHEF_ADDR, SCUB_CHEF_ABI, rewardTokenTicker,
-          "scub", null, rewardsPerWeek, "pendingScub", [36]);
+          "scub", null, rewardsPerWeek, "pendingScub", [1]);
     
         hideLoading();
       }
