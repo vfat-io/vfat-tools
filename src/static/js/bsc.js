@@ -550,7 +550,8 @@ const main = async() => {
       ["RocketLemon Finance ","", `<a href="rocketlemon"   >Various</a>`,"LEMON            ","https://rocketlemondefi.com"],
       ["AnchorSwap          ","", `<a href="anchorswap"    >Various</a>`,"ANCHOR           ","https://anchorswap.app"],
       ["Shibanceinu         ","", `<a href="shibanceinu"   >Various</a>`,"SHIBINU          ","https://shibanceinu.com"],
-      ["Hotpot              ","", `<a href="hotpot"        >Various</a>`,"MEAT             ","https://hotpot.farm"]
+      ["Hotpot              ","", `<a href="hotpot"        >Various</a>`,"MEAT             ","https://hotpot.farm"],
+      ["KnightSwap          ","", `<a href="knightswap"    >Various</a>`,"KNIGHT           ","https://app.knightswap.financial"]
     ]}
 
   let table = new AsciiTable().fromJSON(tableData);
