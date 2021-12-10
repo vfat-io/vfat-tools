@@ -16,13 +16,11 @@ $(function() {
 
     const [_vaultCount] = await App.ethcallProvider.all([ASSETS_CONTRACT.pool_count()]);
     const vaultCount = _vaultCount / 1;
-    let vaultAddresses = [];
-    const [vaultAddress] = await App.ethcallProvider.all([ASSETS_CONTRACT.pool_list(1)]);
-    vaultAddresses.push(vaultAddress)
-    /*for(let i = 0; i < vaultCount; i++){
-      const [vaultAddress] = await App.ethcallProvider.all([ASSETS_CONTRACT.pool_list(i)]);
-      vaultAddresses.push(vaultAddress);
-    }*/
+    //let vaultAddresses = [];
+    //const [vaultAddress] = await App.ethcallProvider.all([ASSETS_CONTRACT.pool_list(1)]);
+    //vaultAddresses.push(vaultAddress)
+    const vaultAddresses = await Promise.all([...Array(vaultCount).keys()].map(async (i) =>
+      await App.ethcallProvider.all([ASSETS_CONTRACT.pool_list(i)])));
 
     const tokens = {};
     let prices = {}
