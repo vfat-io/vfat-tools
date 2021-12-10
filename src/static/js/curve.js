@@ -17,10 +17,12 @@ $(function() {
     const [_vaultCount] = await App.ethcallProvider.all([ASSETS_CONTRACT.pool_count()]);
     const vaultCount = _vaultCount / 1;
     let vaultAddresses = [];
-    for(let i = 0; i < vaultCount; i++){
+    const [vaultAddress] = await App.ethcallProvider.all([ASSETS_CONTRACT.pool_list(1)]);
+    vaultAddresses.push(vaultAddress)
+    /*for(let i = 0; i < vaultCount; i++){
       const [vaultAddress] = await App.ethcallProvider.all([ASSETS_CONTRACT.pool_list(i)]);
       vaultAddresses.push(vaultAddress);
-    }
+    }*/
 
     const tokens = {};
     let prices = {}
@@ -36,7 +38,7 @@ $(function() {
         continue;
       }
       else{
-       await printYearnContract(App, vaults[i], poolPrices[i]); 
+       await printCurveContract(App, vaults[i], poolPrices[i]); 
       }
       if (!isNaN(poolPrices[i].staked_tvl)) staked_tvl += poolPrices[i].staked_tvl;
       if (!isNaN(vaults[i].userStaked * poolPrices[i].price)) userTvl += vaults[i].userStaked * poolPrices[i].price;
@@ -49,7 +51,7 @@ $(function() {
     hideLoading();
   }
 
-  async function printYearnContract(App, vault, poolPrice) {
+  async function printCurveContract(App, vault, poolPrice) {
     poolPrice.print_price();
     var userStakedUsd = vault.staked * poolPrice.price;
     var userStakedPct = userStakedUsd / poolPrice.tvl * 100;
@@ -57,14 +59,14 @@ $(function() {
     if (vault.staked > 0) {
       _print(`Your stake comprises of ${vault.staked * vault.ppfs} ${vault.token.symbol}.`)
     }
-    const deposit = async function() {
-      return yearnVaultDeposit(App, vault)
+    /*const deposit = async function() {
+      return curveVaultDeposit(App, vault)
     }
     const withdraw = async function() {
-      return yearnVaultWithdraw(App, vault)
+      return curveVaultWithdraw(App, vault)
     }
     _print_link(`Deposit ${vault.token.unstaked.toFixed(6)} ${vault.token.symbol}`, deposit);
-    _print_link(`Withdraw ${vault.staked.toFixed(6)} ${vault.token.symbol}`, withdraw)
+    _print_link(`Withdraw ${vault.staked.toFixed(6)} ${vault.token.symbol}`, withdraw)*/
     _print("");
   }
 
@@ -78,11 +80,11 @@ function tryGetPoolPrices(tokens, prices, pool, chain = "eth"){
   }
 }
 
-async function yearnVaultDeposit(App, vaultToken){
+async function curveVaultDeposit(App, vaultToken){
   const signer = await App.provider.getSigner();
 
   const STAKING_TOKEN = new ethers.Contract(vaultToken.token.address, ERC20_ABI, signer)
-  const VAULT_CONTRACT = new ethers.Contract(vaultToken.address, YEARN_TOKEN_ABI, signer)
+  const VAULT_CONTRACT = new ethers.Contract(vaultToken.address, CURVE_TOKEN_ABI, signer)
 
   const balanceToStake = await STAKING_TOKEN.balanceOf(App.YOUR_ADDRESS)
   const allowedTokens = await STAKING_TOKEN.allowance(App.YOUR_ADDRESS, vaultToken.token.address)
@@ -127,9 +129,9 @@ async function yearnVaultDeposit(App, vaultToken){
   }
 }
 
-async function yearnVaultWithdraw(App, vaultToken){
+async function curveVaultWithdraw(App, vaultToken){
   const signer = App.provider.getSigner()
-  const VAULT_CONTRACT = new ethers.Contract(vaultToken.address, YEARN_TOKEN_ABI, signer)
+  const VAULT_CONTRACT = new ethers.Contract(vaultToken.address, CURVE_TOKEN_ABI, signer)
 
   const currentStakedAmount = await VAULT_CONTRACT.balanceOf(App.YOUR_ADDRESS);
 
