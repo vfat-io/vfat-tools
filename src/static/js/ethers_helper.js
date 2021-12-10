@@ -2142,7 +2142,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
                 "bsc": `https://info.benswap.finance/pair/${pool.address}`,
                 "smartbch": `https://info.benswap.cash/pair/${pool.address}`
               }[chain]) :
-              pool.name.includes("MISTswap LP Token") ?  `https://analytics.mistswap.fi/pair/${pool.address}` :
+              pool.name.includes("MISTswap LP Token") ?  `https://analytics.mistswap.fi/pairs/${pool.address}` :
               pool.symbol.includes("Proto-LP") ? `https://polygonscan.com/${pool.address}` :
               pool.symbol.includes("Galaxy-LP") ? (
                 {
