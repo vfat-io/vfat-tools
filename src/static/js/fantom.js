@@ -130,7 +130,8 @@ const main = async() => {
       ["Ghost              ", `<a href='ghst'         >Various</a>`,"GHST         ","https://ghost.maximum.farm"],
       ["Smurf Mushy        ", `<a href='mushy'        >Various</a>`,"MUSHY        ","https://mushy.smurf.money"],
       ["Supercub Finance   ", `<a href='supercub'     >Various</a>`,"SCUB         ","https://supercub.finance"],
-      ["Dark KnightSwap    ", `<a href='knightswap'   >Various</a>`,"DKNIGHT      ","https://dark.knightswap.financial"]
+      ["Dark KnightSwap    ", `<a href='knightswap'   >Various</a>`,"DKNIGHT      ","https://dark.knightswap.financial"],
+      ["Genesys            ", `<a href='genesys   '   >Various</a>`,"DNA          ","https://genesys.app"]
     ]
   }
 
