@@ -1461,45 +1461,6 @@ async function getYearnVault(app, yearn, address, stakingAddress) {
   }
 }
 
-async function getCurveCryptoToken2(app, curve, address, stakingAddress, minterAddress) {
-  const minter = new ethcall.Contract(minterAddress, ETH_TRITOKEN_MINTER_ABI)
-  const registryAddress = "0x90E00ACe148ca3b23Ac1bC8C240C2a7Dd9c2d7f5";
-  const registry = new ethcall.Contract(registryAddress, REGISTRY_ABI);
-  let coins = [];
-  const [coinAddresses, coinsCount, balances] = 
-    await app.ethcallProvider.all([registry.get_coins(minterAddress), 
-                                   registry.get_n_coins(minterAddress), 
-                                   registry.get_balances(minterAddress)]);
-  for(let i = 0; i < coinsCount[0]; i++){
-      const token = await getToken(app, coinAddresses[i], address);
-      coins.push(
-        {address : coinAddresses[i],
-         token   : token,
-         balance : balances[i] / 10 ** token.decimals}
-      )
-    }
-  const [virtualPrice, A_precise] = await app.ethcallProvider.all([minter.get_virtual_price(), minter.A_precise()]);
-  const calls = [curve.decimals(), curve.balanceOf(stakingAddress), curve.balanceOf(app.YOUR_ADDRESS),
-    curve.name(), curve.symbol(), curve.totalSupply()];
-  const [_decimals, staked, unstaked, name, symbol, totalSupply] = await app.ethcallProvider.all(calls);
-  const tokens = coins.map(c => c.address).concat([address]);
-  const decimals = _decimals / 1;
-  return {
-      address,
-      name,
-      symbol,
-      totalSupply,
-      decimals : decimals,
-      staked:  staked / 10 ** decimals,
-      unstaked: unstaked  / 10 ** decimals,
-      contract: curve,
-      tokens,
-      coins,
-      virtualPrice : virtualPrice / 1e18,
-      A_precise : A_precise * 1
-  };
-}
-
 async function getCurveMinterToken(app, curve, address, stakingAddress) {
   const calls = [curve.get_virtual_price(), curve.coins(0), curve.decimals(), curve.balanceOf(stakingAddress), 
                  curve.balanceOf(app.YOUR_ADDRESS), curve.name(), curve.symbol(), curve.totalSupply()];
@@ -1539,26 +1500,6 @@ async function getIronBankToken(app, ibToken, address, stakingAddress) {
   }
 }
 
-async function getCurveVault(app, curveVault, address) {
-  const calls = [curveVault.lp_token(), curveVault.get_virtual_price()];
-  const [token_, virtualPrice] = await app.ethcallProvider.all(calls);
-  const token = await getToken(app, token_, address);
-  const decimals = token.decimals;
-  return {
-    address,
-    name : token.name,
-    symbol : token.symbol,
-    totalSupply : token.totalSupply,
-    decimals : decimals,
-    staked: token.staked / 10 ** decimals,
-    unstaked: token.unstaked / 10 ** decimals,
-    contract: curveVault,
-    tokens : [address].concat(token.tokens),
-    token,
-    virtualPrice : virtualPrice / 10 ** decimals
-  }
-}
-
 async function getStoredToken(app, tokenAddress, stakingAddress, type) {
   switch (type) {
     case "uniswap":
@@ -1567,19 +1508,12 @@ async function getStoredToken(app, tokenAddress, stakingAddress, type) {
     case "lixir":
       const lixirPool = new ethcall.Contract(tokenAddress, LIXIR_TOKEN_ABI);
       return await getLixirPool(app, lixirPool, tokenAddress, stakingAddress);
-    case "curveVault":
-      const curveVault = new ethcall.Contract(tokenAddress, CURVE_VAULT_ABI);
-      return await getCurveVault(app, curveVault, tokenAddress);
     case "ironBank":
       const ironBankPool = new ethcall.Contract(tokenAddress, IRONBANK_TOKEN_ABI);
       return await getIronBankToken(app, ironBankPool, tokenAddress, stakingAddress);
     case "yearn":
       const yearnVault = new ethcall.Contract(tokenAddress, YEARN_VAULT_ABI);
       return await getYearnVault(app, yearnVault, tokenAddress, stakingAddress);
-    case "curveToken2":
-      const tri = new ethcall.Contract(tokenAddress, TRITOKEN_ABI);
-      const [triMinter] = await app.ethcallProvider.all([tri.minter()]);
-      return await getCurveCryptoToken2(app, tri, tokenAddress, stakingAddress, triMinter);
     case "doualDlp":
       const doualDlpPool = new ethcall.Contract(tokenAddress, DLP_DUAL_TOKEN_ABI);
       return await getDodoDualPoolToken(app, doualDlpPool, tokenAddress, stakingAddress);
@@ -1679,15 +1613,6 @@ async function getToken(app, tokenAddress, stakingAddress) {
   catch(err) {
   }
   try {
-    const curveVault = new ethcall.Contract(tokenAddress, CURVE_VAULT_ABI);
-    const _lpToken = await app.ethcallProvider.all([curveVault.lp_token()]);
-    const curveVaultToken = await getCurveVault(app, curveVault, tokenAddress);
-    window.localStorage.setItem(tokenAddress, "curveVault");
-    return curveVaultToken;
-  }
-  catch(err) {
-  }
-  try {
     const ironBankPool = new ethcall.Contract(tokenAddress, IRONBANK_TOKEN_ABI);
     const _ib = await app.ethcallProvider.all([ironBankPool.ib()]);
     const ironBank = await getIronBankToken(app, ironBankPool, tokenAddress, stakingAddress);
@@ -1702,17 +1627,6 @@ async function getToken(app, tokenAddress, stakingAddress) {
     const yearn = await getYearnVault(app, yearnVault, tokenAddress, stakingAddress);
     window.localStorage.setItem(tokenAddress, "yearn");
     return yearn;
-  }
-  catch(err) {
-  }
-  try {
-    const curveToken2 = new ethcall.Contract(tokenAddress, CURVE_ABI);
-    const [curveToken2Minter] = await app.ethcallProvider.all([curveToken2.minter()]);
-    const minterContract = new ethcall.Contract(curveToken2Minter, ETH_CURVE2_MINTER_ABI);
-    const [A_precise] = await app.ethcallProvider.all([minterContract.A_precise()]);
-    const res = await getCurveCryptoToken2(app, curveToken2, tokenAddress, stakingAddress, curveToken2Minter);
-    window.localStorage.setItem(tokenAddress, "curveToken2");
-    return res;
   }
   catch(err) {
   }
@@ -2960,40 +2874,6 @@ function getCurvePrices(prices, pool, chain) {
   }
 }
 
-function getCurveCryptoPrices2(prices, pool, chain){
-  let tvl = 0;
-  let pprice = 0;
-  for(let i = 0; i < pool.coins.length; i++){
-    pprice = (getParameterCaseInsensitive(prices,pool.coins[i].address)?.usd);
-    if(pprice){
-      if (getParameterCaseInsensitive(prices, pool.address)?.usd ?? 0 == 0) {
-        prices[pool.address] = { usd : pprice };
-      }
-      tvl += pool.coins[i].balance * pprice;
-    }else{
-      pprice = getPoolPrices(pool.token.tokens, prices, pool.token, chain).price;
-      prices[pool.address] = { usd : pprice };
-      tvl += pool.coins[i].balance * pprice;
-    }
-  }
-  const price = tvl / (pool.totalSupply / 10 ** pool.decimals);
-  const staked_tvl = pool.balance * price;
-  const poolUrl = getChainExplorerUrl(chain, pool.address);
-  const name = `<a href='${poolUrl}' target='_blank'>${pool.name}</a>`;
-  return {
-    staked_tvl : staked_tvl,
-    price,
-    stakeTokenTicker : pool.symbol,
-    print_price() {
-      _print(`${name} Price: $${formatMoney(price)} Market Cap: $${formatMoney(tvl)}`);
-      _print(`Staked: ${pool.balance.toFixed(4)} ${pool.symbol} ($${formatMoney(staked_tvl)})`);
-    },
-    print_contained_price() {
-    },
-    staked_tvl
-  }
-}
-
 function getTriCryptoPrices(prices, pool, chain){
   let tvl = 0;
   for(let i = 0; i < pool.coins.length; i++){
@@ -3070,7 +2950,6 @@ function getPoolPrices(tokens, prices, pool, chain = "eth") {
   if (pool.isGelato) return getGelatoPrices(tokens, prices, pool, chain);
   if (pool.token0 != null) return getUniPrices(tokens, prices, pool, chain);
   if (pool.xcp_profit != null) return getTriCryptoPrices(prices, pool, chain);
-  if (pool.A_precise != null) return getCurveCryptoPrices2(prices, pool, chain);
   if (pool.yearn) return getYearnPrices(prices, pool, chain);
   if (pool.virtualPrice != null) return getCurvePrices(prices, pool, chain); //should work for saddle too
   if (pool.token != null) return getWrapPrices(tokens, prices, pool);

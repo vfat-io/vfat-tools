@@ -16,30 +16,34 @@ $(function() {
 
     const [_vaultCount] = await App.ethcallProvider.all([ASSETS_CONTRACT.pool_count()]);
     const vaultCount = _vaultCount / 1;
-    //let vaultAddresses = [];
-    //const [vaultAddress] = await App.ethcallProvider.all([ASSETS_CONTRACT.pool_list(1)]);
-    //vaultAddresses.push(vaultAddress)
-    const vaultAddresses = await Promise.all([...Array(vaultCount).keys()].map(async (i) =>
-      await App.ethcallProvider.all([ASSETS_CONTRACT.pool_list(i)])));
+    const calls = [...Array(vaultCount).keys()].map(i => ASSETS_CONTRACT.pool_list(i));
+    const vaultAddresses = await App.ethcallProvider.all(calls);
+
+    const calls2 = vaultAddresses.map(a => ASSETS_CONTRACT.get_lp_token(a));
+    const tokenAddresses = await App.ethcallProvider.all(calls2);
+    //const tokenAddresses = ["0xFd2a8fA60Abd58Efe3EeE34dd494cD491dC14900"] //testing purposes
+
+    //this is the minter of Curve.fi cDAI/cUSDC/USDT I dont get the price. check if its TriCrypto
+    //https://etherscan.io/address/0x52EA46506B9CC5Ef470C5bf89f17Dc28bB35D85C#readContract
 
     const tokens = {};
     let prices = {}
-    const vaults = await Promise.all(vaultAddresses.map(a => getToken(App, a, App.YOUR_ADDRESS)));
-    const newTokens = vaults.map(v => v.tokens).flat();
+    const underlyingTokens = await Promise.all(tokenAddresses.map(a => getToken(App, a, App.YOUR_ADDRESS)));
+    const newTokens = underlyingTokens.map(ut => ut.tokens).flat().concat(["0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"]);
     await getNewPricesAndTokens(App, tokens, prices, newTokens, App.YOUR_ADDRESS);
     prices["0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE"] = getParameterCaseInsensitive(prices,  "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2");
-    const poolPrices = vaults.map(v => tryGetPoolPrices(tokens, prices, v, "eth"));
+    const poolPrices = underlyingTokens.map(ut => tryGetPoolPrices(tokens, prices, ut, "eth"));
 
     let staked_tvl = 0, userTvl = 0
-    for(let i = 0; i < vaults.length; i++){
+    for(let i = 0; i < underlyingTokens.length; i++){
       if(!poolPrices[i]){
         continue;
       }
       else{
-       await printCurveContract(App, vaults[i], poolPrices[i]); 
+       await printCurveContract(App, underlyingTokens[i], poolPrices[i]); 
       }
       if (!isNaN(poolPrices[i].staked_tvl)) staked_tvl += poolPrices[i].staked_tvl;
-      if (!isNaN(vaults[i].userStaked * poolPrices[i].price)) userTvl += vaults[i].userStaked * poolPrices[i].price;
+      if (!isNaN(underlyingTokens[i].userStaked * poolPrices[i].price)) userTvl += underlyingTokens[i].userStaked * poolPrices[i].price;
     }
     _print_bold(`\nTotal Value Locked: $${formatMoney(staked_tvl)}`);
     if (userTvl > 0) {
@@ -78,7 +82,7 @@ function tryGetPoolPrices(tokens, prices, pool, chain = "eth"){
   }
 }
 
-async function curveVaultDeposit(App, vaultToken){
+/*async function curveVaultDeposit(App, vaultToken){
   const signer = await App.provider.getSigner();
 
   const STAKING_TOKEN = new ethers.Contract(vaultToken.token.address, ERC20_ABI, signer)
@@ -143,4 +147,4 @@ async function curveVaultWithdraw(App, vaultToken){
         hideLoading()
       })
   }
-}
+}*/
