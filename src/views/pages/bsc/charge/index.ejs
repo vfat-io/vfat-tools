@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include(`${partials}/head`); -%>
+
+<body>
+<%- include(`${partials}/header_main`); -%>
+<pre id="log">
+*************** 👨‍🌾 UNOFFICIAL CHARGE DEFI CALCULATOR 👨‍🌾 ************
+Algorithmic Stablecoin ecosystem with rebase mechanics on BSC.
+
+INFO    : <a href="https://chargedefi.fi" >https://chargedefi.fi</a>
+TWITTER : <a href="https://twitter.com/ChargeDeFi" >https://twitter.com/ChargeDeFi</a>
+DISCORD : <a href="https://discord.gg/TDFHtWj7b5">https://discord.gg/TDFHtWj7b5</a>
+TELEGRAM: <a href="https://t.me/chargedefi" >https://t.me/chargedefi</a>
+**********************************************************************
+</pre>
+<div class="loader--1"></div>
+<%- include(`${partials}/scripts`, {scriptname: 'bsc_charge'}); -%>
+</body>
+</html>

@@ -108,7 +108,7 @@ async function loadFateRewardControllerContract(
     }
 
     const rewardsPerWeek = rewardsPerWeekOrNull ??
-        await rewardControllerContract.callStatic[rewardsPerBlockFunctionName]('0') / 1e18 * BLOCKS_PER_WEEK.toNumber() * multiplier / divisor
+        await rewardControllerContract.callStatic[rewardsPerBlockFunctionName](0) / 1e18 * BLOCKS_PER_WEEK.toNumber() * multiplier / divisor
 
     const poolInfos = await Promise.all([...Array(poolCount).keys()].map(async (x) =>
         await getHarmonyPoolInfo(App, rewardControllerContract, rewardControllerContract.address, x, pendingRewardsFunctionName)));

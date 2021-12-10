@@ -199,7 +199,7 @@ const main = async () => {
       ['PolyQuail           ',"", `<a href="polyquail_kwil"  >Various</a>`,'KWIL         ','https://kwil.polyquail.finance',],
       ['Coinopolis          ',"", `<a href="coinopolis"      >Various</a>`, 'CCASH        ', 'https://coinopolis.io'],
       ['Yearnit             ',"", `<a href="yearnit"         >Various</a>`, 'YEARNIT      ', 'https://yearnit.finance'],
-      ['WePiggy             ',"", `<a href="wepiggy"         >Various</a>`,'WPC          ','https://polygon.wepiggy.com/markets',],
+      ['WePiggy             ',"", `<a href="wepiggy"         >Various</a>`,'WPC          ','https://app.wepiggy.com',],
       ['Copycat             ',"", `<a href="copycat"         >Various</a>`, 'FISH         ', 'https://copycat.farm'],
       ['Cakecrypt           ',"", `<a href="cakecrypt"       >Various</a>`, 'pCAKECRYPT   ', 'https://poly.cakecrypt.io'],
       ['TitanBull           ',"", `<a href="tbull"           >Various</a>`, 'TBULL        ', 'https://titanbull.finance'],
@@ -407,7 +407,15 @@ const main = async () => {
       ['Mushrooms Finance   ',"",  `<a href="mushrooms"       >Various</a>`, 'MM           ', 'https://mushrooms.finance/farms'],
       ['Wheel Finance       ',"",  `<a href="wheelfinance"    >Various</a>`, 'WHEEL        ', 'https://wheelfinance.xyz'],
       ['Icecolony           ',"",  `<a href="icecolony"       >Various</a>`, 'ICE          ', 'https://www.icecolony.com'],
-      ['DestructionFarm         ',"",  `<a href="destructionfarm"     >Various</a>`, 'DESTRUCTIONFARM  ', 'https://destruction.sandman.finance']
+      ['DestructionFarm     ',"",  `<a href="destructionfarm" >Various</a>`, 'DESTRUCTIONFARM', 'https://destruction.sandman.finance'],
+      ['KIMCHI Finance      ',"",  `<a href="kimchifinance"   >Various</a>`, 'KIMCHI       ', 'https://kimchifinance.icu'],
+      ['Boltrswap           ',"",  `<a href="boltrswap"       >Various</a>`, 'BOL          ', 'https://boltrswap.com'],
+      ['Gemgard Finance     ',"",  `<a href="gemgard"         >Various</a>`, 'GGT          ', 'https://gemgard.finance'],
+      ['Synapse             ',"",  `<a href="synapse"         >Various</a>`, 'SYN          ', 'https://synapseprotocol.com'],
+      ['TacoParty Salsa     ',"",  `<a href="tacopartysalsa"  >Various</a>`, 'SALSA        ', 'https://salsa.tacoparty.finance'],
+      ['Autofarm            ',"",  `<a href="autofarm"        >Various</a>`, 'Various      ','https://autofarm.network/polygon'],
+      ['DesireFarm          ',"",  `<a href="desirefarm"      >Various</a>`, 'Various      ','https://desire.sandman.finance'],
+      ["BambooDeFi          ","", `<a href="bamboodefi"       >Various</a>`, 'BAMBOO       ','https://polygon.bamboodefi.com/']
     ],
   }
 

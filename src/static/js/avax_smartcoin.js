@@ -11,7 +11,7 @@ $(function () {
         _print(`Initialized ${App.YOUR_ADDRESS}\n`);
         _print("Reading smart contracts...\n");
     		
-        const SMRTr_CHEF_ADDR = "0xa0488F956D7fe05b1798e9FaF0cE5F1133d23822";		
+        const SMRTr_CHEF_ADDR = "0x1495b7e8d7E9700Bd0726F1705E864265724f6e2";		
         const rewardTokenTicker = "SMRT";		
         const SMRTr_CHEF = new ethers.Contract(SMRTr_CHEF_ADDR, SMRTr_CHEF_ABI, App.provider);
 
@@ -19,7 +19,7 @@ $(function () {
         const currentTime = Date.now();
         let rewardsPerWeek = 0;
 
-        if(currentTime < startTime){
+        if(currentTime > startTime){
             rewardsPerWeek = await SMRTr_CHEF.joePerSec() / 1e18 * 604800;
         }else{
             _print("Rewards has not started yet")

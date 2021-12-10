@@ -11,7 +11,7 @@ async function main() {
     _print(`Initialized ${App.YOUR_ADDRESS}\n`);
     _print("Reading smart contracts...\n");
 
-   const MOCHI_CHEF_ADDR = "0xAB466B0656725bE5B0fD950668884E6A893bd859";
+   const MOCHI_CHEF_ADDR = "0xd0cb3e55449646c9735d53e83eea5eb7e97a52dc";
    const rewardTokenTicker = "hMOCHI";
    const MOCHI_CHEF = new ethers.Contract(MOCHI_CHEF_ADDR, MOCHI_CHEF_ABI, App.provider);
 
@@ -25,7 +25,7 @@ async function main() {
     const prices = await getHarmonyPrices();
 
     await loadHarmonyChefContract(App, tokens, prices, MOCHI_CHEF, MOCHI_CHEF_ADDR, MOCHI_CHEF_ABI, rewardTokenTicker,
-        "mochi", null, rewardsPerWeek, "pendingMochi", [0,1,2,3,4,5,6]);
+        "mochi", null, rewardsPerWeek, "pendingMochi", [1]);
 
     hideLoading();
   }
