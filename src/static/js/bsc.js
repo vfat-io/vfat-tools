@@ -553,7 +553,7 @@ const main = async() => {
       ["Hotpot              ","", `<a href="hotpot"        >Various</a>`,"MEAT             ","https://hotpot.farm"],
       ["KnightSwap          ","", `<a href="knightswap"    >Various</a>`,"KNIGHT           ","https://app.knightswap.financial"],
       ["WapSwap             ","", `<a href="wapswap"       >Various</a>`,"WAP              ","https://dapp.wapswap.finance"],
-      ["KnightSwap          ","", `<a href="knightswap"    >Various</a>`,"KNIGHT           ","https://app.knightswap.financial"]
+      ["Mars Ecosystem      ","", `<a href="marsecosystem" >Various</a>`,"Various          ","https://app.marsecosystem.com"]
     ]}
 
   let table = new AsciiTable().fromJSON(tableData);
