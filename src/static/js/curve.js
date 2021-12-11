@@ -30,10 +30,6 @@ $(function() {
     const calls3 = vaultAddresses.map(a => ASSETS_CONTRACT.get_gauges(a))
     const vaultGauges = await App.ethcallProvider.all(calls3);
     const gaugeAddresses = vaultGauges.map(g => g[0][0]);
-
-
-
-
     //const tokenAddresses = ["0xFd2a8fA60Abd58Efe3EeE34dd494cD491dC14900"] //testing purposes
 
     //this is the minter of Curve.fi cDAI/cUSDC/USDT I dont get the price. check if its TriCrypto
@@ -41,7 +37,12 @@ $(function() {
 
     const tokens = {};
     let prices = {}
-    const underlyingTokens = await Promise.all(tokenAddresses.map(a => getToken(App, a, App.YOUR_ADDRESS)));
+    //const underlyingTokens = await Promise.all(tokenAddresses.map(a => getToken(App, a, App.YOUR_ADDRESS)));
+    let underlyingTokens = []
+    for(let i = 0; i < tokenAddresses.length; i++){
+      const underlyingToken = await getToken(App, tokenAddresses[i], gaugeAddresses[i]);
+      underlyingTokens.push(underlyingToken);
+    }
     const newTokens = underlyingTokens.map(ut => ut.tokens).flat().concat(["0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"]);
     await getNewPricesAndTokens(App, tokens, prices, newTokens, App.YOUR_ADDRESS);
     prices["0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE"] = getParameterCaseInsensitive(prices,  "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2");
@@ -68,13 +69,15 @@ $(function() {
 
   async function printCurveContract(App, vault, poolPrice) {
     poolPrice.print_price();
-    var userStakedUsd = vault.staked * poolPrice.price;
+    //prepei na kanw balanceOf(App.YOUR_ADDRESS) sto contract tou kathe gauge gia na vrw posa exei kanei stake o kathe user
+    //ena gauge einai oloidio me ena synthetix. na dw mipws to perasw me tin multiple synthetix pools https://etherscan.io/address/0x4c18E409Dc8619bFb6a1cB56D114C3f592E0aE79#readContract
+    /*var userStakedUsd = vault.staked * poolPrice.price;
     var userStakedPct = userStakedUsd / poolPrice.tvl * 100;
     _print(`You are staking ${vault.staked.toFixed(4)} ${poolPrice.stakeTokenTicker} ($${formatMoney(userStakedUsd)}), ${userStakedPct.toFixed(2)}% of the pool.`);
     if (vault.staked > 0) {
       _print(`Your stake comprises of ${vault.staked * vault.ppfs} ${vault.token.symbol}.`)
     }
-    /*const deposit = async function() {
+    const deposit = async function() {
       return curveVaultDeposit(App, vault)
     }
     const withdraw = async function() {
