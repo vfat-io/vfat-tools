@@ -54,7 +54,7 @@ const main = async() => {
       ["Siren               ",`<a href="siren/"             >Various</a>`,"SI        ","https://sirenmarkets.com/"],
       ["Stabilize           ",`<a href="stabilize/"         >Various</a>`,"STBZ      ","https://stabilize.finance"],
       ["StakeDAO            ",`<a href="stakedao/"          >Various</a>`,"SDT       ","https://stakedao.org"],
-      ["* Sushi V2 *        ",`<a href="sushiv2/"           >Various</a>`,"Various   ","https://app.sushi.com"],
+      ["Sushi V2            ",`<a href="sushiv2/"           >Various</a>`,"Various   ","https://app.sushi.com"],
       ["Sushiswap           ",`<a href="sushi/"             >Various</a>`,"SUSHI     ","https://app.sushi.com/farms"],
       ["Synapse             ",`<a href="synapse/"           >Various</a>`,"SYNAPSE   ","https://synapseprotocol.com"],
       ["Synthetix           ",`<a href="snx"                >Various</a>`,"SNX       ","https://staking.synthetix.io"],
@@ -67,6 +67,7 @@ const main = async() => {
       ["WePiggy             ",`<a href="wepiggy/"           >Various</a>`,"WPC       ","https://app.wepiggy.com"],
       ["xSigma              ",`<a href="xsigma/"            >Various</a>`,"SIG       ","https://app.xsigma.fi/stake"],
       ["xToken              ",`<a href="xtoken/"            >Various</a>`,"XTK       ","https://xtoken.cafe/app/dashboard"],
+      ["* Yearn *           ",`<a href="yearn/"             >Various</a>`,"Various   ","https://yearn.finance"],
       ["Yam                 ",`<a href="yam/"               >YAM-ETH SLP</a>`,"YAM   ","https://yam.finance/farm"],
       ["yAxis               ",`<a href="yaxis/"             >Various</a>`,"yAxis     ","https://yaxis.io/farms"]
     ]

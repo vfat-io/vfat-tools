@@ -27,7 +27,7 @@ async function main() {
  const TOKEN_REWARD_1_CHEF_ADDR = "0x4127f84f2B9F922259a10bfb8d32C56428A4E885";
  const TOKEN_REWARD_2_CHEF_ADDR = "0x7a7e491FD948B4c9d4C8A4c6D9A04Efb88dF2b93";
  const TOKEN_REWARD_3_CHEF_ADDR = "0xE4379Fc68a6e91Cb05F917B7De3F9E069C0e9161";
- const TOKEN_REWARD_4_CHEF_ADDR = "0x0c2fC172c822B923f92A17aD9EA5c15aD7332624";
+ const TOKEN_REWARD_4_CHEF_ADDR = "0x6a8dbbfbb5a57d07d14e63e757fb80b4a7494f81";
  const rewardTokenTicker = "BAKE";
  const rewardToken0Ticker = "TLM";
  const rewardToken1Ticker = "PET";
@@ -48,31 +48,22 @@ async function main() {
  const rewardsToken1PerWeek = await TOKEN_REWARD_1_CHEF.getTotalReward(currentBlock, nextBlock) / 1e4 * 604800 / 3;
  const rewardsToken2PerWeek = await TOKEN_REWARD_2_CHEF.getTotalReward(currentBlock, nextBlock) / 1e18 * 604800 / 3;
  const rewardsToken3PerWeek = await TOKEN_REWARD_3_CHEF.getTotalReward(currentBlock, nextBlock) / 1e6 * 604800 / 3;
- //const rewardsToken4PerWeek = await TOKEN_REWARD_4_CHEF.tokenPerBlock() * 604800 / 3;
+ const rewardsToken4PerWeek = await TOKEN_REWARD_4_CHEF.getTotalReward(currentBlock, nextBlock) / 1e18 * 604800 / 3;
 
   const tokens = {};
   const prices = await getBscPrices();
 
-  //await loadBakeContract(App, tokens, prices, TOKEN_REWARD_4_CHEF, TOKEN_REWARD_4_CHEF_ADDR, TOKEN_REWARD_CHEF_ABI,
-    //rewardToken3Ticker, "token", null, rewardsToken4PerWeek, "pendingToken"); //I have a bug, this is not a verified contract to read
+  await loadBakeContract(App, tokens, prices, TOKEN_REWARD_4_CHEF, TOKEN_REWARD_4_CHEF_ADDR, TOKEN_REWARD_CHEF_ABI,
+    rewardTokenTicker, "token", null, rewardsToken4PerWeek, "pendingToken");
 
   await loadBakeContract(App, tokens, prices, BAKE_CHEF, BAKE_CHEF_ADDR, BAKE_CHEF_ABI, rewardTokenTicker,
       "bake", null, rewardsPerWeek, "pendingBake");
-
-  await loadBakeContract(App, tokens, prices, TOKEN_REWARD_0_CHEF, TOKEN_REWARD_0_CHEF_ADDR, TOKEN_REWARD_CHEF_ABI,
-    rewardToken0Ticker, "token", null, rewardsToken0PerWeek, "pendingToken");
-
-  await loadBakeContract(App, tokens, prices, TOKEN_REWARD_1_CHEF, TOKEN_REWARD_1_CHEF_ADDR, TOKEN_REWARD_CHEF_ABI,
-    rewardToken0Ticker, "token", null, rewardsToken1PerWeek, "pendingToken");
 
   await loadBakeContract(App, tokens, prices, TOKEN_REWARD_2_CHEF, TOKEN_REWARD_2_CHEF_ADDR, TOKEN_REWARD_CHEF_ABI,
     rewardToken1Ticker, "token", null, rewardsToken2PerWeek, "pendingToken");
 
   await loadBakeContract(App, tokens, prices, TOKEN_REWARD_3_CHEF, TOKEN_REWARD_3_CHEF_ADDR, TOKEN_REWARD_CHEF_ABI,
     rewardToken2Ticker, "token", null, rewardsToken3PerWeek, "pendingToken");
-
-  //await loadDoubleRewardsBakeContract(App, tokens, prices, DOUBLE_REWARDS_CHEF, DOUBLE_REWARDS_ADDR0, DOUBLE_REWARDS_ABI0,
-    //rewardTokenTicker, secondRewardTokenTicker);
 
   hideLoading();
 }

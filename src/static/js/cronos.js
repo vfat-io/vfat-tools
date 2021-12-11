@@ -23,7 +23,9 @@ const main = async() => {
       ["Autofarm             ", `<a href='autofarm'     >Various</a>`,"Various      ","https://autofarm.network/cronos"],
       ["CroSwap              ", `<a href='croswap'      >Various</a>`,"CSP          ","https://croswapdefi.com"],
       ["MetaCrono Finance    ", `<a href='metacrono'    >Various</a>`,"METACRONO    ","https://www.metacrono.finance/"],
-
+      ["CyberDog Finance     ", `<a href='cbrdog'       >Various</a>`,"CBRDOG       ","https://cyberdog.finance"],
+      ["Salem Finance        ", `<a href='salem'        >Various</a>`,"SALEM        ","https://cronos.salem.finance"],
+      ["CronArena              ", `<a href='cronarena'      >Various</a>`,"CRA          ","https://cronarena.com/"]  
     ]
   }
 
