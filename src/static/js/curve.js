@@ -66,12 +66,12 @@ $(function() {
 
     hideLoading();
   }
-
+  
   async function printCurveContract(App, vault, poolPrice) {
     poolPrice.print_price();
     //prepei na kanw balanceOf(App.YOUR_ADDRESS) sto contract tou kathe gauge gia na vrw posa exei kanei stake o kathe user
     //ena gauge einai oloidio me ena synthetix. na dw mipws to perasw me tin multiple synthetix pools https://etherscan.io/address/0x4c18E409Dc8619bFb6a1cB56D114C3f592E0aE79#readContract
-    /*var userStakedUsd = vault.staked * poolPrice.price;
+    var userStakedUsd = vault.staked * poolPrice.price;
     var userStakedPct = userStakedUsd / poolPrice.tvl * 100;
     _print(`You are staking ${vault.staked.toFixed(4)} ${poolPrice.stakeTokenTicker} ($${formatMoney(userStakedUsd)}), ${userStakedPct.toFixed(2)}% of the pool.`);
     if (vault.staked > 0) {
@@ -84,7 +84,7 @@ $(function() {
       return curveVaultWithdraw(App, vault)
     }
     _print_link(`Deposit ${vault.token.unstaked.toFixed(6)} ${vault.token.symbol}`, deposit);
-    _print_link(`Withdraw ${vault.staked.toFixed(6)} ${vault.token.symbol}`, withdraw)*/
+    _print_link(`Withdraw ${vault.staked.toFixed(6)} ${vault.token.symbol}`, withdraw)
     _print("");
   }
 
@@ -98,7 +98,7 @@ function tryGetPoolPrices(tokens, prices, pool, chain = "eth"){
   }
 }
 
-/*async function curveVaultDeposit(App, vaultToken){
+async function curveVaultDeposit(App, vaultToken){
   const signer = await App.provider.getSigner();
 
   const STAKING_TOKEN = new ethers.Contract(vaultToken.token.address, ERC20_ABI, signer)
@@ -163,4 +163,4 @@ async function curveVaultWithdraw(App, vaultToken){
         hideLoading()
       })
   }
-}*/
+}
