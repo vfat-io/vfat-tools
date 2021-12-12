@@ -1273,7 +1273,7 @@ async function getStableswapToken(app, stable, address, stakingAddress) {
 }
 
 async function getErc20(app, token, address, stakingAddress) {
-  if (address == "0x0000000000000000000000000000000000000000" || 
+  if (address == "0x0000000000000000000000000000000000000000" ||
       address == "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE") {
     return {
       address,
@@ -1466,9 +1466,9 @@ async function getCurveCryptoToken2(app, curve, address, stakingAddress, minterA
   const registryAddress = "0x90E00ACe148ca3b23Ac1bC8C240C2a7Dd9c2d7f5";
   const registry = new ethcall.Contract(registryAddress, REGISTRY_ABI);
   let coins = [];
-  const [coinAddresses, coinsCount, balances] = 
-    await app.ethcallProvider.all([registry.get_coins(minterAddress), 
-                                   registry.get_n_coins(minterAddress), 
+  const [coinAddresses, coinsCount, balances] =
+    await app.ethcallProvider.all([registry.get_coins(minterAddress),
+                                   registry.get_n_coins(minterAddress),
                                    registry.get_balances(minterAddress)]);
   for(let i = 0; i < coinsCount[0]; i++){
       const token = await getToken(app, coinAddresses[i], address);
@@ -1501,7 +1501,7 @@ async function getCurveCryptoToken2(app, curve, address, stakingAddress, minterA
 }
 
 async function getCurveMinterToken(app, curve, address, stakingAddress) {
-  const calls = [curve.get_virtual_price(), curve.coins(0), curve.decimals(), curve.balanceOf(stakingAddress), 
+  const calls = [curve.get_virtual_price(), curve.coins(0), curve.decimals(), curve.balanceOf(stakingAddress),
                  curve.balanceOf(app.YOUR_ADDRESS), curve.name(), curve.symbol(), curve.totalSupply()];
   const [virtualPrice, coin0, decimals_, staked, unstaked, name, symbol, totalSupply] = await app.ethcallProvider.all(calls);
   const token = await getToken(app, coin0, address);
@@ -1630,7 +1630,7 @@ async function getStoredToken(app, tokenAddress, stakingAddress, type) {
 }
 
 async function getToken(app, tokenAddress, stakingAddress) {
-  if (tokenAddress == "0x0000000000000000000000000000000000000000" || 
+  if (tokenAddress == "0x0000000000000000000000000000000000000000" ||
       tokenAddress == "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE") {
     return getErc20(app, null, tokenAddress, stakingAddress)
   }
@@ -1993,6 +1993,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
   else if (pool.symbol.includes("BenSwap")) stakeTokenTicker += " BenSwap LP";
   else if (pool.name.includes("MISTswap LP Token")) stakeTokenTicker += " MistSwap LP";
   else if (pool.name.includes("TANGOswap LP Token")) stakeTokenTicker += " TangoSwap LP";
+  else if (pool.name.includes("1BCH LP Token")) stakeTokenTicker += " 1BCH LP";
   else if (pool.symbol.includes("BRUSH-LP")) stakeTokenTicker += " BRUSH LP";
   else if (pool.symbol.includes("APE-LP")) stakeTokenTicker += " APE LP";
   else if (pool.symbol.includes("Galaxy-LP")) stakeTokenTicker += " Galaxy LP";
@@ -2342,6 +2343,11 @@ function getUniPrices(tokens, prices, pool, chain="eth")
             `https://tangoswap.cash/remove/${t0address}/${t1address}`,
             `https://tangoswap.cash/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
           ] :
+          pool.name.includes("1BCH LP Token") ? [
+            `https://1bch.com/add/${t0address}/${t1address}`,
+            `https://1bch.com/remove/${t0address}/${t1address}`,
+            `https://1bch.com/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+          ] :
           pool.symbol.includes("Galaxy-LP") ? ({
             "bsc": [
               `https://bsc-exchange.galaxyfinance.one/#/add/${t0address}/${t1address}`,
@@ -2501,6 +2507,11 @@ function getUniPrices(tokens, prices, pool, chain="eth")
                           `https://tangoswap.cash/add/${t0address}/${t1address}`,
                           `https://tangoswap.cash/remove/${t0address}/${t1address}`,
                           `https://tangoswap.cash/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+                        ] :
+                        pool.name.includes("1BCH LP Token") ? [
+                          `https://1bch.com/add/${t0address}/${t1address}`,
+                          `https://1bch.com/remove/${t0address}/${t1address}`,
+                          `https://1bch.com/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
                         ] :
                         pool.symbol.includes("Galaxy-LP") ? ({
                             "bsc": [
