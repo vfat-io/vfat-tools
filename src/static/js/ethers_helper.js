@@ -2010,6 +2010,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
   else if (pool.symbol.includes("LOOT-LP")) stakeTokenTicker += " Loot LP Token";
   else if (pool.symbol.includes("MIMO-LP")) stakeTokenTicker += " Mimo LP Token";
   else if (pool.symbol.includes("HLP")) stakeTokenTicker += " Hades Swap LP Token";
+  else if (pool.name.includes("1BCH LP Token")) stakeTokenTicker += " 1BCH LP";
   else if (pool.symbol.includes("MOCHI-LP")) stakeTokenTicker += " Mochi LP Token";
   else if (pool.symbol.includes("SMUG-LP")) stakeTokenTicker += " Smug LP Token";
   else if (pool.symbol.includes("VVS-LP")) stakeTokenTicker += " VVS LP Token";
@@ -2341,6 +2342,11 @@ function getUniPrices(tokens, prices, pool, chain="eth")
             `https://tangoswap.cash/add/${t0address}/${t1address}`,
             `https://tangoswap.cash/remove/${t0address}/${t1address}`,
             `https://tangoswap.cash/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+          ] :
+          pool.name.includes("1BCH LP Token") ? [
+            `https://1bch.com/add/${t0address}/${t1address}`,
+            `https://1bch.com/remove/${t0address}/${t1address}`,
+            `https://1bch.com/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
           ] :
           pool.symbol.includes("Galaxy-LP") ? ({
             "bsc": [
