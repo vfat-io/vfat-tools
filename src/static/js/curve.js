@@ -36,12 +36,25 @@ $(function() {
       })
     }
 
-    const gaugeContracts = allGauges.map(g => g[0]).flat().map(g => new ethcall.Contract(g, GAUGE_CONTRACT_ABI))
+    const gaugeContracts = allGauges.map(g => g[0])
+      .flat()
+      .filter(a => a
+      .toLowerCase() !=  "0x0000000000000000000000000000000000000000")
+      .map(g => new ethcall.Contract(g, GAUGE_CONTRACT_ABI))
     const gaugeCalls = gaugeContracts.map(c => [c.totalSupply(), c.balanceOf(App.YOUR_ADDRESS)]).flat()
+    const gaugeValues = await App.ethcallProvider.all(gaugeCalls);
+
+    const gaugeResults = {};
+    for(let i = 0; i < gaugeContracts.length; i++){
+      gaugeResults[gaugeContracts[i].address] = {
+        totalSupply  : gaugeValues[i*2],
+        usersStaked  : gaugeValues[i*2+1]
+      }
+    }
 
     const tokens = {};
     let prices = {}
-    
+
     let underlyingTokens = []
     for(let i = 0; i < tokenAddresses.length; i++){
       const underlyingToken = await getToken(App, tokenAddresses[i], App.YOUR_ADDRESS);
@@ -50,8 +63,18 @@ $(function() {
     const newTokens = underlyingTokens.map(ut => ut.tokens).flat().concat(["0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"]);
     await getNewPricesAndTokens(App, tokens, prices, newTokens, App.YOUR_ADDRESS);
     prices["0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE"] = getParameterCaseInsensitive(prices,  "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2");
-    const poolPrices = underlyingTokens.map(ut => tryGetPoolPrices(tokens, prices, ut, "eth"));
 
+    for(const poolInfo of poolInfos){
+      for(const gauge of poolInfo.gauges[0]){
+        const gaugeResult = gaugeResults[gauge];
+        const underlyingToken = getParameterCaseInsensitive(tokens, poolInfo.lpTokenAddress);
+        underlyingToken.staked = gaugeResult.totalSupply / 10 ** underlyingToken.decimals;
+        const poolPrice = tryGetPoolPrices(tokens, prices, underlyingToken, "eth")
+        await printCurveContract(underlyingToken, poolPrice, gaugeResult);
+      }
+    }
+    
+    /*const poolPrices = underlyingTokens.map(ut => tryGetPoolPrices(tokens, prices, ut, "eth"));
     let staked_tvl = 0, userTvl = 0
     for(let i = 0; i < underlyingTokens.length; i++){
       if(!poolPrices[i]){
@@ -66,29 +89,20 @@ $(function() {
     _print_bold(`\nTotal Value Locked: $${formatMoney(staked_tvl)}`);
     if (userTvl > 0) {
       _print_bold(`You are staking a total of $${formatMoney(userTvl)}`);
-    }
+    }*/
 
     hideLoading();
   }
   
-  async function printCurveContract(App, vault, poolPrice) {
+  async function printCurveContract(underlyingToken, poolPrice, gaugeResult) {
     poolPrice.print_price();
-    //prepei na kanw balanceOf(App.YOUR_ADDRESS) sto contract tou kathe gauge gia na vrw posa exei kanei stake o kathe user
-    //ena gauge einai oloidio me ena synthetix. na dw mipws to perasw me tin multiple synthetix pools https://etherscan.io/address/0x4c18E409Dc8619bFb6a1cB56D114C3f592E0aE79#readContract
-    /*var userStakedUsd = vault.staked * poolPrice.price;
+    const userStaked = gaugeResult.usersStaked / 10 ** underlyingToken.decimals;
+    var userStakedUsd = userStaked * poolPrice.price;
     var userStakedPct = userStakedUsd / poolPrice.tvl * 100;
-    _print(`You are staking ${vault.staked.toFixed(4)} ${poolPrice.stakeTokenTicker} ($${formatMoney(userStakedUsd)}), ${userStakedPct.toFixed(2)}% of the pool.`);
-    if (vault.staked > 0) {
-      _print(`Your stake comprises of ${vault.staked * vault.ppfs} ${vault.token.symbol}.`)
+    _print(`You are staking ${userStaked.toFixed(4)} ${poolPrice.stakeTokenTicker} ($${formatMoney(userStakedUsd)}), ${userStakedPct.toFixed(2)}% of the pool.`);
+    if (userStaked > 0) {
+      _print(`Your stake comprises of ${userStaked/* * vault.ppfs*/} ${poolPrice.stakeTokenTicker}.`)
     }
-    const deposit = async function() {
-      return curveVaultDeposit(App, vault)
-    }
-    const withdraw = async function() {
-      return curveVaultWithdraw(App, vault)
-    }
-    _print_link(`Deposit ${vault.token.unstaked.toFixed(6)} ${vault.token.symbol}`, deposit);
-    _print_link(`Withdraw ${vault.staked.toFixed(6)} ${vault.token.symbol}`, withdraw)*/
     _print("");
   }
 
