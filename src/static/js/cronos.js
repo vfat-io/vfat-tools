@@ -23,6 +23,7 @@ const main = async() => {
       ["Autofarm             ", `<a href='autofarm'     >Various</a>`,"Various      ","https://autofarm.network/cronos"],
       ["CroSwap              ", `<a href='croswap'      >Various</a>`,"CSP          ","https://croswapdefi.com"],
       ["MetaCrono Finance    ", `<a href='metacrono'    >Various</a>`,"METACRONO    ","https://www.metacrono.finance/"],
+      ["BetaCrono Finance    ", `<a href='betacrono'    >Various</a>`,"BETACRONO    ","https://beta.metacrono.finance/"],
 
     ]
   }
