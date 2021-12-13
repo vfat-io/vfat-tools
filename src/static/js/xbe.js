@@ -165,7 +165,7 @@ async function printXbeSynthetixPool(App, info, chain="eth", customURLs) {
       return rewardsContract_unstake(info.stakingAddress, App)
     }
     const claim = async function() {
-      return rewardsContract_claim(info.stakingAddress, App)
+      return rewardsXbeContract_claim(info.stakingAddress, App)
     }
     const exit = async function() {
       return rewardsContract_exit(info.stakingAddress, App)
@@ -181,7 +181,7 @@ async function printXbeSynthetixPool(App, info, chain="eth", customURLs) {
       _print(`Please use the official website to stake ${info.stakeTokenTicker}.`);
     }
     _print_link(`Unstake ${info.userStaked.toFixed(6)} ${info.stakeTokenTicker}`, unstake)
-    //_print_link(`Claim ${info.earned.toFixed(6)} ${info.rewardTokenTicker} ($${formatMoney(info.earned*info.rewardTokenPrice)})`, claim)
+    _print_link(`Claim ${info.earned.toFixed(6)} ${info.rewardTokenTicker} ($${formatMoney(info.earned*info.rewardTokenPrice)})`, claim)
     if (info.stakeTokenTicker != "ETH") {
       _print_link(`Revoke (set approval to 0)`, revoke)
     }
@@ -193,4 +193,25 @@ async function printXbeSynthetixPool(App, info, chain="eth", customURLs) {
         userStaked : userStakedUsd,
         apr : yearlyAPR
     }
+}
+
+const rewardsXbeContract_claim = async function(rewardPoolAddr, App) {
+  const signer = App.provider.getSigner()
+
+  const REWARD_POOL = new ethers.Contract(rewardPoolAddr, Y_STAKING_POOL_ABI, signer)
+
+  console.log(App.YOUR_ADDRESS)
+
+  const earnedYFFI = (await REWARD_POOL.earned(App.YOUR_ADDRESS)) / 1e18
+
+  if (earnedYFFI > 0) {
+    showLoading()
+    REWARD_POOL.getReward(true, {gasLimit: 250000})
+      .then(function(t) {
+        return App.provider.waitForTransaction(t.hash)
+      })
+      .catch(function() {
+        hideLoading()
+      })
+  }
 }

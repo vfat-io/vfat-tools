@@ -87,20 +87,28 @@ async function loadFateRewardControllerContract(
     const BLOCKS_PER_WEEK = window.ethers.BigNumber.from('302400')
     const index = parseInt((currentBlock.sub(startBlock)).div(BLOCKS_PER_WEEK).toString())
     const EPOCH_0 = 13
-    const EPOCH_1 = 26
-    // TODO fill in future locked rewards schedule here
+    const EPOCH_1 = 21
+
     let multiplier;
     if (index < EPOCH_0) {
         multiplier = 5
     } else if (index < EPOCH_1) {
-        // TODO fix - this is pre-emptive
-        multiplier = 9.09
+        multiplier = 12.5
     } else {
         multiplier = 1
     }
 
+    let divisor;
+    if (index < EPOCH_0) {
+        divisor = 1
+    } else if (index < EPOCH_1) {
+        divisor = 10
+    } else {
+        divisor = 1
+    }
+
     const rewardsPerWeek = rewardsPerWeekOrNull ??
-        await rewardControllerContract.callStatic[rewardsPerBlockFunctionName](0) / 1e18 * BLOCKS_PER_WEEK.toNumber() * multiplier
+        await rewardControllerContract.callStatic[rewardsPerBlockFunctionName](0) / 1e18 * BLOCKS_PER_WEEK.toNumber() * multiplier / divisor
 
     const poolInfos = await Promise.all([...Array(poolCount).keys()].map(async (x) =>
         await getHarmonyPoolInfo(App, rewardControllerContract, rewardControllerContract.address, x, pendingRewardsFunctionName)));

@@ -68,7 +68,7 @@ const main = async () => {
       ["Sakeswap                     ", `<a href="../sakeswap"           >Various</a>`, "SAKE               ", "https://sakeswap.finance"],
       ["Defiville                    ", `<a href="../defiville"          >Various</a>`, "ISLA               ", "https://defiville.finance"],
       ["Benchmark                    ", `<a href="../benchmark/"         >Various</a>`, "MARK               ", "https://launchpad.benchmarkprotocol.finance/pools"],
-      ["Governor                     ", `<a href="../governordao"        >Various</a>`, "GDAO               ", "https://governordao.org"],
+      ["Governor *                   ", `<a href="../governordao"        >Various</a>`, "GDAO               ", "https://governordao.org"],
       ["Optionroom                   ", `<a href="../optionroom"         >Various</a>`, "COURT              ", "https://app.optionroom.finance"],
       ["Mint                         ", `<a href="../mint"               >Various</a>`, "MINT               ", "https://stake.publicmint.com"],
       ["Proof Of Humanity            ", `<a href="../proofofhumanity"    >Various</a>`, "UBI                ", "https://www.proofofhumanity.id"],
@@ -164,7 +164,8 @@ const main = async () => {
       ["Beverage                     ", `<a href="../beverage/"          >Various</a>`, "DRINK              ", "https://beverage.finance"],
       ["Nildao                       ", `<a href="../nildao/"            >Various</a>`, "NIL                ", "https://www.nildao.xyz"],
       ["Sushi V2                     ", `<a href="../sushiv2/"           >Various</a>`, "Various            ", "https://app.sushi.com"],
-      ["GenomesDAO                   ", `<a href="../genomesdao/"        >Various</a>`, "Various            ", "https://staking.genomes.io"]
+      ["GenomesDAO                   ", `<a href="../genomesdao/"        >Various</a>`, "Various            ", "https://staking.genomes.io"],
+      ["Yearn                        ", `<a href="../yearn/"             >Various</a>`, "Various            ", "https://yearn.finance"]
     ]
   }
 

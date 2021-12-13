@@ -9,7 +9,8 @@ const main = async() => {
     "heading":["Pool Provider","LP", "Reward Tokens", "INFO"],
     "rows": [
         ["Trisolaris ",     `<a href="trisolaris"       >Various</a>`,      "TRI",       "https://www.trisolaris.io" ],
-        ["NearPad ",     `<a href="nearpad"       >Various</a>`,      "NearPad",       "https://nearpad.io" ]
+        ["NearPad ",        `<a href="nearpad"          >Various</a>`,      "NearPad",   "https://nearpad.io" ],
+        ["WannaSwap ",      `<a href="wannaswap"        >Various</a>`,      "WANNA",     "https://wannaswap.finance" ]
     ]
   }
 

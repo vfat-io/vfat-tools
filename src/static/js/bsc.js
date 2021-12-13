@@ -13,7 +13,7 @@ const main = async() => {
       ["Apeswap             ","", `<a href="apeswap"       >Various</a>`,"BANANA           ","https://apeswap.finance"],
       ["Autofarm            ","", `<a href="autofarm"      >Various</a>`,"AUTOFARM         ","https://autofarm.network"],
       ["Kyber               ","", `<a href="kyber"         >Various</a>`,"KNC              ","https://dmm.exchange"],
-      ["Bake                ","", `<a href="bake"          >Various</a>`,"BAKE             ","https://www.bakeryswap.org"],
+      ["Bake *              ","", `<a href="bake"          >Various</a>`,"BAKE             ","https://www.bakeryswap.org"],
       ["Brew                ","", `<a href="brew"          >Various</a>`,"BREW             ","https://cafeswap.finance"],
       ["Donut               ","", `<a href="donut"         >Various</a>`,"DONUT            ","https://donutdefi.com"],
       ["Ramen               ","", `<a href="ramen"         >Various</a>`,"RAMENSWAP        ","https://ramenswap.finance"],
@@ -548,7 +548,13 @@ const main = async() => {
       ["Charge Defi         ","", `<a href="charge"        >Various</a>`,"STATIC/CHARGE/PULSE","https://chargedefi.fi"],
       ["LandShare           ","", `<a href="landshare"     >Various</a>`,"LAND",           "https://app.landshare.io"],
       ["RocketLemon Finance ","", `<a href="rocketlemon"   >Various</a>`,"LEMON            ","https://rocketlemondefi.com"],
-      ["AnchorSwap          ","", `<a href="anchorswap"    >Various</a>`,"ANCHOR           ","https://anchorswap.app"]
+      ["AnchorSwap          ","", `<a href="anchorswap"    >Various</a>`,"ANCHOR           ","https://anchorswap.app"],
+      ["Shibanceinu         ","", `<a href="shibanceinu"   >Various</a>`,"SHIBINU          ","https://shibanceinu.com"],
+      ["Hotpot              ","", `<a href="hotpot"        >Various</a>`,"MEAT             ","https://hotpot.farm"],
+      ["KnightSwap          ","", `<a href="knightswap"    >Various</a>`,"KNIGHT           ","https://app.knightswap.financial"],
+      ["WapSwap             ","", `<a href="wapswap"       >Various</a>`,"WAP              ","https://dapp.wapswap.finance"],
+      ["Mars Ecosystem      ","", `<a href="marsecosystem" >Various</a>`,"Various          ","https://app.marsecosystem.com"],
+      ["Icecolony           ","", `<a href="icecolony"     >Various</a>`,"ICE              ","https://bsc.icecolony.com"]
     ]}
 
   let table = new AsciiTable().fromJSON(tableData);

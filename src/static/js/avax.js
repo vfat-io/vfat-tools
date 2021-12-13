@@ -82,7 +82,8 @@ const main = async() => {
         ["The Blossom Farm        ",`<a href="bloom"            >Various</a>`,"BLM          ","https://bloom.theseedfarm.app"],
         ["AvaxRush                ",`<a href="avaxrush"         >Various</a>`,"SONIC        ","https://avaxrush.com"],
         ["FarmersOnly ONION       ",`<a href="onion"            >Various</a>`,"ONION        ","https://onion.farmersonly.farm"],
-        ["Autofarm                ", `<a href='autofatm'        >Various</a>`,"Various      ","https://autofarm.network/fantom"]
+        ["Autofarm                ", `<a href='autofatm'        >Various</a>`,"Various      ","https://autofarm.network/fantom"],
+        ["IceFlake                ",`<a href="iceflake"         >Various</a>`,"FLAKE        ","https://iceflake.finance"]
     ]
   }
 

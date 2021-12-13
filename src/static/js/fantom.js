@@ -15,7 +15,7 @@ const main = async() => {
       ["Hyperjump          ", `<a href='hyperjump'    >Various</a>`,"ORI          ","https://hyperjump.fi"],
       ["Ester              ", `<a href='ester'        >Various</a>`,"EST          ","https://ester.finance"],
       ["Froyo              ", `<a href='froyo'        >Various</a>`,"FROYO        ","https://frozenyogurt.finance"],
-      ["Ghost              ", `<a href='ghost'        >Various</a>`,"GHOST        ","https://www.theghost.finance"],
+      ["The Ghost          ", `<a href='ghost'        >Various</a>`,"GHOST        ","https://www.theghost.finance"],
       ["Beefy              ", `<a href='beefy'        >Various</a>`,"BIFI         ","https://fantom.beefy.finance"],
       ["Liquid Driver      ", `<a href='liquid'       >Various</a>`,"LQDR         ","https://www.liquiddriver.finance"],
       ["Mushrooms          ", `<a href='mushrooms'    >Various</a>`,"MM           ","https://mushrooms.finance/farms"],
@@ -108,7 +108,7 @@ const main = async() => {
       ['COFFIN FINANCE     ', `<a href="coffin"       >Various</a>`,'COFFIN       ','https://app.coffin.finance'],
       ['Babypig Finance    ', `<a href="babypig"      >Various</a>`,'fBABYPIG     ','https://babypig.finance'],
       ['Draco Force        ', `<a href="dracoforce"   >Various</a>`,'DRC          ','https://dracoforce.com'],
-      ['Smurf              ', `<a href="smurf"        >Various</a>`,'CLEVER       ','https://smurf.money'],
+      ['Smurf Clever       ', `<a href="smurf"        >Various</a>`,'CLEVER       ','https://smurf.money'],
       ['Hundred            ', `<a href="hundred"      >Various</a>`,'HND          ','https://hundred.finance'],
       ['FantomPup          ', `<a href="fantompup"    >Various</a>`,'PUP          ','https://fantompup.finance'],
       ['UndeadFinance      ', `<a href="undeadfinance">Various</a>`,'UNDEAD       ','https://undeadfinance.com'],
@@ -121,9 +121,19 @@ const main = async() => {
       ['Synapse            ', `<a href="synapse"      >Various</a>`,'SYN          ','https://synapseprotocol.com'],
       ['Draco Cave         ', `<a href="dracocave"    >Various</a>`,'CAVE         ','https://cave.dracoforce.com/'],
       ["Eldritch Finance v2  ", `<a href="eldritchv2" >Various</a>`,'ELDRv2       ',"https://eldritch.app"],
-      ["Knights Finance  ", `<a href="knights"     >Various</a>`,'KNIGHTS         ',"https://knightsfinance.xyz"],
+      ["Knights Finance    ", `<a href="knights"      >Various</a>`,'KNIGHTS      ',"https://knightsfinance.xyz"],
       ['FANLuan            ', `<a href="fanluan"      >Various</a>`,'FLUAN        ','https://luan.fanterra.finance'],
-      ["Autofarm           ", `<a href='autofatm'     >Various</a>`,"Various      ","https://autofarm.network/fantom"]
+      ["Autofarm           ", `<a href='autofatm'     >Various</a>`,"Various      ","https://autofarm.network/fantom"],
+      ["MunSwap            ", `<a href='munswap'      >Various</a>`,"MUN          ","https://mun-swap.com"],
+      ["TrickorTreat L2    ", `<a href='trick'        >Various</a>`,"TRICK        ","https://trickortreat.farm"],
+      ["rKITTEN            ", `<a href='rkitten'      >Various</a>`,"rKITTEN      ","https://kittens.fakeworms.studio/rewards"],
+      ["Ghost              ", `<a href='ghst'         >Various</a>`,"GHST         ","https://ghost.maximum.farm"],
+      ["Smurf Mushy        ", `<a href='mushy'        >Various</a>`,"MUSHY        ","https://mushy.smurf.money"],
+      ["Supercub Finance   ", `<a href='supercub'     >Various</a>`,"SCUB         ","https://supercub.finance"],
+      ["Dark KnightSwap    ", `<a href='knightswap'   >Various</a>`,"DKNIGHT      ","https://dark.knightswap.financial"],
+      ["Genesys            ", `<a href='genesys   '   >Various</a>`,"DNA          ","https://genesys.app"],
+      ["Xmas-Past          ", `<a href='xmaspast '    >Various</a>`,"XPAST        ","https://www.xmas-past.com"],
+      ["Bakerguild         ", `<a href='bakerguild '  >Various</a>`,"BAKER        ","https://bakerguild.com"]
     ]
   }
 
