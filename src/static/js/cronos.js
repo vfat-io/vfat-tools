@@ -26,7 +26,8 @@ const main = async() => {
       ["CyberDog Finance     ", `<a href='cbrdog'       >Various</a>`,"CBRDOG       ","https://cyberdog.finance"],
       ["Salem Finance        ", `<a href='salem'        >Various</a>`,"SALEM        ","https://cronos.salem.finance"],
       ["CronArena            ", `<a href='cronarena'    >Various</a>`,"CRA          ","https://cronarena.com/"],
-      ["CROTerra             ", `<a href='croterra'     >Various</a>`,"CROTerra     ","https://croterra.finance/"]
+      ["CROTerra             ", `<a href='croterra'     >Various</a>`,"CROTerra     ","https://croterra.finance/"],
+      ["BetaCrono Finance    ", `<a href='betacrono'    >Various</a>`,"BETACRONO    ","https://beta.metacrono.finance/"],
     ]
   }
 
