@@ -27,15 +27,6 @@ $(function() {
     const calls3 = poolAddresses.map(a => ASSETS_CONTRACT.get_gauges(a))
     const allGauges = await App.ethcallProvider.all(calls3);
 
-    let poolInfos = [];
-    for(let i = 0; i < poolAddresses.length; i++){
-      poolInfos.push({
-        poolAddress    : poolAddresses[i],
-        lpTokenAddress : tokenAddresses[i],
-        gauges         : allGauges[i],
-      })
-    }
-
     const gaugeContracts = allGauges.map(g => g[0])
       .flat()
       .filter(a => a
@@ -43,6 +34,18 @@ $(function() {
       .map(g => new ethcall.Contract(g, GAUGE_CONTRACT_ABI))
     const gaugeCalls = gaugeContracts.map(c => [c.totalSupply(), c.balanceOf(App.YOUR_ADDRESS)]).flat()
     const gaugeValues = await App.ethcallProvider.all(gaugeCalls);
+
+    const allGaugesAddresses = allGauges.map(g => g[0]).flat().filter(a => a.toLowerCase() !=  "0x0000000000000000000000000000000000000000");
+
+    let poolInfos = [];
+    for(let i = 0; i < poolAddresses.length; i++){
+      poolInfos.push({
+        poolAddress    : poolAddresses[i],
+        lpTokenAddress : tokenAddresses[i],
+        //gauges         : allGauges[i],
+        gauges         : allGaugesAddresses[i],
+      })
+    }
 
     const gaugeResults = {};
     for(let i = 0; i < gaugeContracts.length; i++){
@@ -64,15 +67,31 @@ $(function() {
     await getNewPricesAndTokens(App, tokens, prices, newTokens, App.YOUR_ADDRESS);
     prices["0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE"] = getParameterCaseInsensitive(prices,  "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2");
 
+    let staked_tvl = 0, userTvl = 0
     for(const poolInfo of poolInfos){
-      for(const gauge of poolInfo.gauges[0]){
+      const gaugeResult = (gaugeResults[poolInfo.gauges]===undefined) ? null : gaugeResults[poolInfo.gauges]
+      const underlyingToken = getParameterCaseInsensitive(tokens, poolInfo.lpTokenAddress);
+      const totalSupply = (gaugeResult!=null) ? gaugeResult.totalSupply / 10 ** underlyingToken.decimals : 0;
+      const usersStaked = (gaugeResult!=null) ? gaugeResult.usersStaked / 10 ** underlyingToken.decimals : 0;
+      underlyingToken.staked = totalSupply;
+      const poolPrice = tryGetPoolPrices(tokens, prices, underlyingToken, "eth")
+      staked_tvl += poolPrice.staked_tvl;
+      userTvl += usersStaked * poolPrice.price;
+      await printCurveContract(underlyingToken, poolPrice, gaugeResult);
+    }
+    _print_bold(`\nTotal Value Locked: $${formatMoney(staked_tvl)}`);
+    if (userTvl > 0) {
+      _print_bold(`You are staking a total of $${formatMoney(userTvl)}`);
+    }
+    /*for(const poolInfo of poolInfos){
+      for(const gauge of poolInfo.gauges){
         const gaugeResult = gaugeResults[gauge];
         const underlyingToken = getParameterCaseInsensitive(tokens, poolInfo.lpTokenAddress);
         underlyingToken.staked = gaugeResult.totalSupply / 10 ** underlyingToken.decimals;
         const poolPrice = tryGetPoolPrices(tokens, prices, underlyingToken, "eth")
         await printCurveContract(underlyingToken, poolPrice, gaugeResult);
       }
-    }
+    }*/
     
     /*const poolPrices = underlyingTokens.map(ut => tryGetPoolPrices(tokens, prices, ut, "eth"));
     let staked_tvl = 0, userTvl = 0
@@ -96,14 +115,16 @@ $(function() {
   
   async function printCurveContract(underlyingToken, poolPrice, gaugeResult) {
     poolPrice.print_price();
-    const userStaked = gaugeResult.usersStaked / 10 ** underlyingToken.decimals;
-    var userStakedUsd = userStaked * poolPrice.price;
-    var userStakedPct = userStakedUsd / poolPrice.tvl * 100;
-    _print(`You are staking ${userStaked.toFixed(4)} ${poolPrice.stakeTokenTicker} ($${formatMoney(userStakedUsd)}), ${userStakedPct.toFixed(2)}% of the pool.`);
-    if (userStaked > 0) {
-      _print(`Your stake comprises of ${userStaked/* * vault.ppfs*/} ${poolPrice.stakeTokenTicker}.`)
-    }
-    _print("");
+    if(gaugeResult!=null){
+      const userStaked = gaugeResult.usersStaked / 10 ** underlyingToken.decimals;
+      var userStakedUsd = userStaked * poolPrice.price;
+      var userStakedPct = userStakedUsd / poolPrice.tvl * 100;
+      _print(`You are staking ${userStaked.toFixed(4)} ${poolPrice.stakeTokenTicker} ($${formatMoney(userStakedUsd)}), ${userStakedPct.toFixed(2)}% of the pool.`);
+      if (userStaked > 0) {
+        _print(`Your stake comprises of ${userStaked/* * vault.ppfs*/} ${poolPrice.stakeTokenTicker}.`)
+      }
+      _print("");
+    }else{ _print(""); }
   }
 
 function tryGetPoolPrices(tokens, prices, pool, chain = "eth"){
