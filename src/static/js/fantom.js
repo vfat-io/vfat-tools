@@ -131,7 +131,9 @@ const main = async() => {
       ["Smurf Mushy        ", `<a href='mushy'        >Various</a>`,"MUSHY        ","https://mushy.smurf.money"],
       ["Supercub Finance   ", `<a href='supercub'     >Various</a>`,"SCUB         ","https://supercub.finance"],
       ["Dark KnightSwap    ", `<a href='knightswap'   >Various</a>`,"DKNIGHT      ","https://dark.knightswap.financial"],
-      ["Genesys            ", `<a href='genesys   '   >Various</a>`,"DNA          ","https://genesys.app"]
+      ["Genesys            ", `<a href='genesys   '   >Various</a>`,"DNA          ","https://genesys.app"],
+      ["Xmas-Past          ", `<a href='xmaspast '    >Various</a>`,"XPAST        ","https://www.xmas-past.com"],
+      ["Bakerguild         ", `<a href='bakerguild '  >Various</a>`,"BAKER        ","https://bakerguild.com"]
     ]
   }
 
