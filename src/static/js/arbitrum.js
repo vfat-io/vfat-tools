@@ -41,8 +41,9 @@ const main = async() => {
       ["Pickle              ",""                                                                                               , `<a href="/arbitrum/pickle"      >Various</a>`,"PICKLE             ","https://app.pickle.finance"],
       ["Nerd                ",""                                                                                               , `<a href="/arbitrum/nerd"        >Various</a>`,"NERD               ","https://nerdcoin.farm"],
       ["WePiggy             ",""                                                                                               , `<a href="/arbitrum/wepiggy"     >Various</a>`,"WPC                ","https://app.wepiggy.com"],
-      ["Saddle              ",""                                                                                               , `<a href="/arbitrum/saddle"      >Various</a>`,"SADDLE             ","https://saddle.exchange"]
-     ]
+      ["Saddle              ",""                                                                                               , `<a href="/arbitrum/saddle"      >Various</a>`,"SADDLE             ","https://saddle.exchange"],
+      ["ONYX                ",""                                                                                               , `<a href="/arbitrum/onyx"        >Various</a>`,"ONYX               ","https://arbi.onyx.farm/"],
+    ]
   }
 
   let table = new AsciiTable().fromJSON(tableData);
