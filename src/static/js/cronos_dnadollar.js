@@ -38,8 +38,8 @@ async function main() {
 
     _print("");
 
-    await loadDshareContract(App, tokens, prices, DSHARE_CHEF, DSHARE_CHEF_ADDR, DSHARE_CHEF_ABI, DSHARE_rewardsPerWeek,
-      "dshare", null, rewardsPerWeek, "pendingShare");
+    await loadDshareContract(App, tokens, prices, DSHARE_CHEF, DSHARE_CHEF_ADDR, DSHARE_CHEF_ABI, DSHARE_rewardTokenTicker,
+      "dshare", null, DSHARE_rewardsPerWeek, "pendingShare");
 
     hideLoading();
   }
