@@ -15,7 +15,7 @@ $(function () {
         const rewardTokenTicker = "XPAST";		
         const XPAST_CHEF = new ethers.Contract(XPAST_CHEF_ADDR, XPAST_CHEF_ABI, App.provider);
 
-        const rewardsPerWeek = await XPAST_CHEF.xpastPerSecond() / 1e18 * 604800;
+        const rewardsPerWeek = await XPAST_CHEF.XpastPerSecond() / 1e18 * 604800;
         		
         const tokens = {};		
         const prices = await getFantomPrices();		
