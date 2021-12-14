@@ -26,7 +26,7 @@ async function main() {
     const prices = await getArbitrumPrices();
 
     await loadArbitrumChefContract(App, tokens, prices, ONYX_CHEF, ONYX_CHEF_ADDR, ONYX_CHEF_ABI, rewardTokenTicker,
-        "onyx", null, rewardsPerWeek, "pendingOnyx");
+        "Onyx", null, rewardsPerWeek, "pendingOnyx");
 
     hideLoading();
   }
