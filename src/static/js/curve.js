@@ -22,13 +22,12 @@ $(function() {
     const poolAddresses = await App.ethcallProvider.all(calls)
     
     //problem with this pool
-    //poolAddresses.filter(p => p != "0x52EA46506B9CC5Ef470C5bf89f17Dc28bB35D85C")
-    //this is the token address 0x9fC689CCaDa600B6DF723D9E47D84d76664a1F23
+    const filteredPools = poolAddresses.filter(p => p.toLowerCase() !== "0x52EA46506B9CC5Ef470C5bf89f17Dc28bB35D85C".toLowerCase())
 
-    const calls2 = poolAddresses.map(a => ASSETS_CONTRACT.get_lp_token(a));
+    const calls2 = filteredPools.map(a => ASSETS_CONTRACT.get_lp_token(a));
     const lpTokenAddresses = await App.ethcallProvider.all(calls2);
 
-    const calls3 = poolAddresses.map(a => ASSETS_CONTRACT.get_gauges(a))
+    const calls3 = filteredPools.map(a => ASSETS_CONTRACT.get_gauges(a))
     const allGauges = await App.ethcallProvider.all(calls3);
 
     const gaugeContracts = allGauges.map(g => g[0])
@@ -42,9 +41,9 @@ $(function() {
     const allGaugesAddresses = allGauges.map(g => g[0]).flat().filter(a => a.toLowerCase() !=  "0x0000000000000000000000000000000000000000");
 
     let poolInfos = [];
-    for(let i = 0; i < poolAddresses.length; i++){
+    for(let i = 0; i < filteredPools.length; i++){
       poolInfos.push({
-        poolAddress    : poolAddresses[i],
+        poolAddress    : filteredPools[i],
         lpTokenAddress : lpTokenAddresses[i],
         gauges         : allGaugesAddresses[i],
       })
@@ -126,7 +125,7 @@ $(function() {
         _print(`Your stake comprises of ${userStaked} ${poolPrice.stakeTokenTicker}.`)
       }
       _print("");
-    }
+    }else{_print("");}
   }
 
 function tryGetPoolPrices(tokens, prices, pool, chain = "eth"){
