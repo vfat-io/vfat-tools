@@ -12,6 +12,7 @@ const ArbitrumTokens = [
     { "id": "wrapped-bitcoin","symbol": "WBTC", "contract": "0x2f2a2543b76a4166549f7aab2e75bef0aefc5b0f" },
     { "id": "usd-coin","symbol": "USDC", "contract": "0xff970a61a04b1ca14834a43f5de4533ebddb5cc8" },
     { "id": "tether","symbol": "USDT", "contract": "0xfd086bc7cd5c481dcc9c85ebe478a1c0b69fcbb9" },
+    { "id": "dai","symbol": "DAI", "contract": "0xda10009cbd5d07dd0cecc66161fc93d7c9000da1" },
     { "id": "arbinyan","symbol": "NYAN", "contract": "0xed3fb761414da74b74f33e5c5a1f78104b188dfc" },
     { "id": "wrapped-ether", "symbol": "WETH", "contract": "0x82aF49447D8a07e3bd95BD0d56f35241523fBab1"},
     { "id": "sushi", "symbol": "SUSHI", "contract": "0xd4d42F0b6DEF4CE0383636770eF773390d85c61A"},
@@ -356,9 +357,9 @@ async function getArbitrumTriCryptoToken(App, curve, address, stakingAddress, mi
   const registryAddress = "0x445FE580eF8d70FF569aB36e80c647af338db351";
   const registry = new ethcall.Contract(registryAddress, ARBITRUM_REGISTRY_ABI);
   let coins = [];
-  const [coinAddresses, coinsCount, balances] = 
-    await App.ethcallProvider.all([registry.get_coins(minterAddress), 
-                                   registry.get_n_coins(minterAddress), 
+  const [coinAddresses, coinsCount, balances] =
+    await App.ethcallProvider.all([registry.get_coins(minterAddress),
+                                   registry.get_n_coins(minterAddress),
                                    registry.get_balances(minterAddress)]);
   for(let i = 0; i < coinsCount[1]; i++){
       const token = await getArbitrumToken(App, coinAddresses[i], address);
