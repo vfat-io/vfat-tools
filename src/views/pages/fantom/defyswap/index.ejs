@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include(`${partials}/head`); -%>
+
+<body>
+<%- include(`${partials}/header_main`); -%>
+<pre id="log">
+*************** 👨‍🌾 UNOFFICIAL DEFYSWAP FARMING CALCULATOR 👨‍🌾 ***************
+
+INFO : https://defyswap.finance
+FARM : https://defyswap.finance/farms
+TELEGRAM : https://t.me/defyswap
+TWITTER :  https://twitter.com/DefySwap
+
+DFY CONTRACT : 0x84b0b7718f8480A9eDa3133Fd385D7EDf2b1d1c4
+
+*****************************************************************************
+
+</pre>
+<div class="loader--1"></div>
+<%- include(`${partials}/scripts`, {scriptname: 'fantom_defyswap'}); -%>
+</body>
+</html> 
