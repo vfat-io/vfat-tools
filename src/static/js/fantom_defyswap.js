@@ -16,19 +16,17 @@ $(function() {
      const rewardTokenTicker = "DFY";
      const DFY_MASTER = new ethers.Contract(DFY_MASTER_ADDR, DFY_MASTER_ABI, App.provider);
   
-     let rewardsPerWeek = 0
-      const currentBlock = Date.now();
+      const currentBlock = await App.provider.getBlockNumber();
   
      const multiplier = await DFY_MASTER.getMultiplier(currentBlock, currentBlock+1);
-  
-   
-      rewardsPerWeek = await DFY_MASTER.defyPerSec() /1e18 * multiplier * 604800;
+
+     const rewardsPerWeek = await DFY_MASTER.defyPerSec() /1e18 * multiplier * 604800;
   
       const tokens = {};
       const prices = await getFantomPrices();
   
       await loadFantomChefContract(App, tokens, prices, DFY_MASTER, DFY_MASTER_ADDR, DFY_MASTER_ABI, rewardTokenTicker,
-        "defy", null, rewardsPerWeek, "pendingDefy");
+        "defy", null, rewardsPerWeek, "pendingDefy", [1]);
   
       hideLoading();
     }
