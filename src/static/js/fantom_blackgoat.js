@@ -15,12 +15,11 @@ const GOAT_ABI = [{"inputs":[{"internalType":"contract GoatToken","name":"_goat"
       const rewardTokenTicker = "GOAT";
       const GOAT_INIT = new ethers.Contract(GOAT_ADDR, GOAT_ABI, App.provider);
   
-      let rewardsPerWeek = 0
-      const currentBlock = Date.now();
+      const currentBlock = await App.provider.getBlockNumber();
   
       const multiplier = await GOAT_INIT.getMultiplier(currentBlock, currentBlock+1);
    
-      rewardsPerWeek = await GOAT_INIT.goatPerSec() / 1e18 * multiplier * 604800;
+      const rewardsPerWeek = await GOAT_INIT.goatPerSec() / 1e18 * multiplier * 604800;
   
       const tokens = {};
       const prices = await getFantomPrices();
