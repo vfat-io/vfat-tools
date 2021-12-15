@@ -11,6 +11,8 @@ async function main() {
     _print(`Initialized ${App.YOUR_ADDRESS}\n`);
     _print("Reading smart contracts...\n");
 
+   //maybe this is the dual reward staking contract
+   //https://explorer.mainnet.aurora.dev/address/0x3838956710bcc9D122Dd23863a0549ca8D5675D6/contracts
    const TRI_CHEF_ADDR = "0x1f1Ed214bef5E83D8f5d0eB5D7011EB965D0D79B";
    const rewardTokenTicker = "TRI";
    const TRI_CHEF = new ethers.Contract(TRI_CHEF_ADDR, TRI_CHEF_ABI, App.provider);
