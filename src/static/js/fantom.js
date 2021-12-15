@@ -134,7 +134,8 @@ const main = async() => {
       ["Genesys            ", `<a href='genesys   '   >Various</a>`,"DNA          ","https://genesys.app"],
       ["Xmas-Past          ", `<a href='xmaspast '    >Various</a>`,"XPAST        ","https://www.xmas-past.com"],
       ["Bakerguild         ", `<a href='bakerguild '  >Various</a>`,"BAKER        ","https://bakerguild.com"],
-      ["DefySwap           ", `<a href='defyswap'     >Various</a>`,"DFY          ","https://defyswap.finance"]
+      ["DefySwap           ", `<a href='defyswap'     >Various</a>`,"DFY          ","https://defyswap.finance"],
+      ["BlackGoat          ", `<a href='blackgoat'    >Various</a>`,"GOAT         ","https://app.fanblackgoat.finance"]
     ]
   }
 
