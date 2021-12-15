@@ -586,8 +586,8 @@ async function getFantomPoolInfo(app, chefContract, chefAddress, poolIndex, pend
       poolToken: poolToken,
       userStaked : staked,
       pendingRewardTokens : pendingRewardTokens / 10 ** 18,
-      depositFee : (poolInfo.depositFeeBP ?? 0) / 100,
-      withdrawFee : (poolInfo.withdrawFeeBP ?? 0) / 100
+      depositFee : (poolInfo.depositFeeBP ?? poolInfo.depositFee ?? 0) / 100,
+      withdrawFee : (poolInfo.withdrawFeeBP ?? poolInfo.withdrawalFee ?? 0) / 100
   };
 }
 
