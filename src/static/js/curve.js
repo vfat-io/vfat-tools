@@ -19,15 +19,12 @@ $(function() {
     const poolCount = _poolCount / 1;
 
     const calls = [...Array(poolCount).keys()].map(i => ASSETS_CONTRACT.pool_list(i));
-    const poolAddresses = await App.ethcallProvider.all(calls)
-    
-    //problem with this pool
-    const filteredPools = poolAddresses.filter(p => p.toLowerCase() !== "0x52EA46506B9CC5Ef470C5bf89f17Dc28bB35D85C".toLowerCase())
+    const poolAddresses = await App.ethcallProvider.all(calls)        
 
-    const calls2 = filteredPools.map(a => ASSETS_CONTRACT.get_lp_token(a));
+    const calls2 = poolAddresses.map(a => ASSETS_CONTRACT.get_lp_token(a));
     const lpTokenAddresses = await App.ethcallProvider.all(calls2);
-
-    const calls3 = filteredPools.map(a => ASSETS_CONTRACT.get_gauges(a))
+    
+    const calls3 = poolAddresses.map(a => ASSETS_CONTRACT.get_gauges(a))
     const allGauges = await App.ethcallProvider.all(calls3);
 
     const gaugeContracts = allGauges.map(g => g[0])
@@ -38,14 +35,12 @@ $(function() {
     const gaugeCalls = gaugeContracts.map(c => [c.totalSupply(), c.balanceOf(App.YOUR_ADDRESS)]).flat()
     const gaugeValues = await App.ethcallProvider.all(gaugeCalls);
 
-    const allGaugesAddresses = allGauges.map(g => g[0]).flat().filter(a => a.toLowerCase() !=  "0x0000000000000000000000000000000000000000");
-
     let poolInfos = [];
-    for(let i = 0; i < filteredPools.length; i++){
+    for(let i = 0; i < poolAddresses.length; i++){
       poolInfos.push({
-        poolAddress    : filteredPools[i],
+        poolAddress    : poolAddresses[i],
         lpTokenAddress : lpTokenAddresses[i],
-        gauges         : allGaugesAddresses[i],
+        gauges         : allGauges[i],
       })
     }
 
@@ -68,48 +63,25 @@ $(function() {
     const newTokens = lpTokens.map(t => t.tokens).flat().concat(["0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"]);
     await getNewPricesAndTokens(App, tokens, prices, newTokens, App.YOUR_ADDRESS);
     prices["0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE"] = getParameterCaseInsensitive(prices,  "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2");
-    let staked_tvl = 0, userTvl = 0
-    for(const poolInfo of poolInfos){
-      const gaugeResult = (gaugeResults[poolInfo.gauges]===undefined) ? null : gaugeResults[poolInfo.gauges]
-      const lpToken = getParameterCaseInsensitive(tokens, poolInfo.lpTokenAddress);
-      const totalSupply = (gaugeResult!=null) ? gaugeResult.totalSupply / 10 ** lpToken.decimals : 0;
-      const usersStaked = (gaugeResult!=null) ? gaugeResult.usersStaked / 10 ** lpToken.decimals : 0;
-      lpToken.staked = totalSupply;
-      const poolPrice = tryGetPoolPrices(tokens, prices, lpToken, "eth")
-      staked_tvl += poolPrice.staked_tvl
-      userTvl += usersStaked * poolPrice.price
-      await printCurveContract(lpToken, poolPrice, gaugeResult);
-    }
-    _print_bold(`\nTotal Value Locked: $${formatMoney(staked_tvl)}`);
-    if (userTvl > 0) {
-      _print_bold(`You are staking a total of $${formatMoney(userTvl)}`);
-    }
-    /*for(const poolInfo of poolInfos){
-      for(const gauge of poolInfo.gauges){
+    let staked_tvl = 0, userTvl = 0, tvl = 0;
+    for(const poolInfo of poolInfos.filter(p => p.poolAddress.toLowerCase() !== "0x52EA46506B9CC5Ef470C5bf89f17Dc28bB35D85C".toLowerCase())){
+      for(const gauge of poolInfo.gauges[0].filter(a => a != "0x0000000000000000000000000000000000000000")){
         const gaugeResult = gaugeResults[gauge];
-        const underlyingToken = getParameterCaseInsensitive(tokens, poolInfo.lpTokenAddress);
-        underlyingToken.staked = gaugeResult.totalSupply / 10 ** underlyingToken.decimals;
-        const poolPrice = tryGetPoolPrices(tokens, prices, underlyingToken, "eth")
-        await printCurveContract(underlyingToken, poolPrice, gaugeResult);
+        const lpToken = getParameterCaseInsensitive(tokens, poolInfo.lpTokenAddress);
+        const totalSupply = gaugeResult.totalSupply / 10 ** lpToken.decimals;
+        const usersStaked = gaugeResult.usersStaked / 10 ** lpToken.decimals;
+        lpToken.staked = totalSupply;
+        const poolPrice = tryGetPoolPrices(tokens, prices, lpToken, "eth")
+        staked_tvl += totalSupply * poolPrice.price;
+        userTvl += usersStaked * poolPrice.price;
+        tvl += poolPrice.tvl;
+        await printCurveContract(lpToken, poolPrice, gaugeResult);
       }
-    }*/
-    
-    /*const poolPrices = underlyingTokens.map(ut => tryGetPoolPrices(tokens, prices, ut, "eth"));
-    let staked_tvl = 0, userTvl = 0
-    for(let i = 0; i < underlyingTokens.length; i++){
-      if(!poolPrices[i]){
-        continue;
-      }
-      else{
-       await printCurveContract(App, underlyingTokens[i], poolPrices[i]); 
-      }
-      if (!isNaN(poolPrices[i].staked_tvl)) staked_tvl += poolPrices[i].staked_tvl;
-      if (!isNaN(underlyingTokens[i].userStaked * poolPrices[i].price)) userTvl += underlyingTokens[i].userStaked * poolPrices[i].price;
     }
-    _print_bold(`\nTotal Value Locked: $${formatMoney(staked_tvl)}`);
+    _print_bold(`\nTotal Value Locked: $${formatMoney(tvl)} Total Value Staked: $${formatMoney(staked_tvl)}`);
     if (userTvl > 0) {
       _print_bold(`You are staking a total of $${formatMoney(userTvl)}`);
-    }*/
+    }
 
     hideLoading();
   }
@@ -137,77 +109,3 @@ function tryGetPoolPrices(tokens, prices, pool, chain = "eth"){
     return null;
   }
 }
-
-/*async function curveVaultDeposit(App, vaultToken){
-  const signer = await App.provider.getSigner();
-
-  const STAKING_TOKEN = new ethers.Contract(vaultToken.token.address, ERC20_ABI, signer)
-  const VAULT_CONTRACT = new ethers.Contract(vaultToken.address, CURVE_TOKEN_ABI, signer)
-
-  const balanceToStake = await STAKING_TOKEN.balanceOf(App.YOUR_ADDRESS)
-  const allowedTokens = await STAKING_TOKEN.allowance(App.YOUR_ADDRESS, vaultToken.token.address)
-
-  const decimals = await STAKING_TOKEN.decimals();
-  let allow = Promise.resolve()
-
-  if (allowedTokens / 10 ** decimals < balanceToStake / 10 ** decimals) {
-    showLoading()
-    allow = STAKING_TOKEN.approve(vaultToken.token.address, ethers.constants.MaxUint256)
-      .then(function(t) {
-        return App.provider.waitForTransaction(t.hash)
-      })
-      .catch(function() {
-        hideLoading()
-        alert('Try resetting your approval to 0 first')
-      })
-  }
-
-  if (balanceToStake / 10 ** decimals > 0) {
-    showLoading()
-    allow
-      .then(async function() {
-        VAULT_CONTRACT["deposit(uint256)"](balanceToStake, {gasLimit: 500000})
-          .then(function(t) {
-            App.provider.waitForTransaction(t.hash).then(function() {
-              hideLoading()
-            })
-          })
-          .catch(function() {
-            hideLoading()
-            _print('Something went wrong.\n')
-          })
-      })
-      .catch(function(ex) {
-        hideLoading()
-        _print('Something went wrong.')
-        _print(ex)
-      })
-  } else {
-    alert('You have no tokens to stake!!')
-  }
-}
-
-async function curveVaultWithdraw(App, vaultToken){
-  const signer = App.provider.getSigner()
-  const VAULT_CONTRACT = new ethers.Contract(vaultToken.address, CURVE_TOKEN_ABI, signer)
-
-  const currentStakedAmount = await VAULT_CONTRACT.balanceOf(App.YOUR_ADDRESS);
-
-  if (currentStakedAmount / 10 ** vault.decimals > 0) {
-    showLoading()
-    VAULT_CONTRACT["withdraw()"]({gasLimit: 500000})
-      .then(function(t) {
-        return App.provider.waitForTransaction(t.hash)
-      })
-      .catch(function() {
-        hideLoading()
-      })
-  }
-}*/
-
-//const GAUGE_ADDRESS = ""
-    //const GAUGE_CONTRACT = new ethcall.Contract(GAUGE_ADDRESS, GAUGE_CONTRACT_ABI);
-    //const tokenAddresses = ["0xFd2a8fA60Abd58Efe3EeE34dd494cD491dC14900"] //testing purposes
-
-    //this is the minter of Curve.fi cDAI/cUSDC/USDT I dont get the price. check if its TriCrypto
-    //https://etherscan.io/address/0x52EA46506B9CC5Ef470C5bf89f17Dc28bB35D85C#readContract
