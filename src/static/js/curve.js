@@ -74,11 +74,11 @@ $(function() {
         const poolPrice = tryGetPoolPrices(tokens, prices, lpToken, "eth")
         staked_tvl += totalSupply * poolPrice.price;
         userTvl += usersStaked * poolPrice.price;
-        tvl += poolPrice.tvl;
+        tvl += (lpToken.totalSupply / 10 ** lpToken.decimals) * poolPrice.price;
         await printCurveContract(lpToken, poolPrice, gaugeResult);
       }
     }
-    _print_bold(`\nTotal Value Locked: $${formatMoney(tvl)} Total Value Staked: $${formatMoney(staked_tvl)}`);
+    _print_bold(`\nTotal Value Locked: $${formatMoney(tvl.toFixed(2))} Total Value Staked: $${formatMoney(staked_tvl)}`);
     if (userTvl > 0) {
       _print_bold(`You are staking a total of $${formatMoney(userTvl)}`);
     }
