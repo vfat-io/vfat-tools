@@ -11,7 +11,7 @@ async function main() {
     _print(`Initialized ${App.YOUR_ADDRESS}\n`);
     _print("Reading smart contracts...\n");
 
-   const PLUTUS_ADDR = "0x036db579ca9a04fa676cefac9db6f83ab7fbaad7";
+   const PLUTUS_ADDR = "0x8d8bb3a47b7b175cbf4be51df07e5b1410e9f089";
    const rewardTokenTicker = "POLIS";
    const PLUTUS = new ethers.Contract(PLUTUS_ADDR, PLUTUS_ABI, App.provider);
 
