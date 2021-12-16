@@ -415,8 +415,9 @@ const main = async () => {
       ['TacoParty Salsa     ',"",  `<a href="tacopartysalsa"  >Various</a>`, 'SALSA        ', 'https://salsa.tacoparty.finance'],
       ['Autofarm            ',"",  `<a href="autofarm"        >Various</a>`, 'Various      ','https://autofarm.network/polygon'],
       ['DesireFarm          ',"",  `<a href="desirefarm"      >Various</a>`, 'Various      ','https://desire.sandman.finance'],
-      ["BambooDeFi          ", "", `<a href="bamboodefi"       >Various</a>`, 'BAMBOO       ', 'https://polygon.bamboodefi.com/'],
+      ["BambooDeFi          ", "", `<a href="bamboodefi"      >Various</a>`, 'BAMBOO       ', 'https://polygon.bamboodefi.com/'],
       ['Mirai               ',"",  `<a href="mirai"           >Various</a>`, 'MIRAI        ','https://mirai.farm'],
+      ['Nachoxyz            ',"",  `<a href="nachoxyz"        >Various</a>`, 'NACHO/NSHARE ','https://nachoxyz.com']
     ],
   }
 
