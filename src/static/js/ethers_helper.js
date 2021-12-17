@@ -84,6 +84,9 @@ const pageNetwork = function() {
   if (network.toLowerCase() === 'metis') {
     return window.NETWORKS.METIS
   }
+  if (network.toLowerCase() === 'meter') {
+    return window.NETWORKS.METER
+  }
 
   return window.NETWORKS.ETHEREUM
 }
