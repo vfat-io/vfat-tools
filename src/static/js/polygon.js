@@ -417,7 +417,7 @@ const main = async () => {
       ['DesireFarm          ',"",  `<a href="desirefarm"      >Various</a>`, 'Various      ','https://desire.sandman.finance'],
       ["BambooDeFi          ", "", `<a href="bamboodefi"      >Various</a>`, 'BAMBOO       ', 'https://polygon.bamboodefi.com/'],
       ['Mirai               ',"",  `<a href="mirai"           >Various</a>`, 'MIRAI        ','https://mirai.farm'],
-      ['Nachoxyz            ',"",  `<a href="nachoxyz"        >Various</a>`, 'NACHO/NSHARE ','https://nachoxyz.com']
+      ['Nacho               ',"",  `<a href="nacho"           >Various</a>`, 'NACHO/NSHARE ','https://nachoxyz.com']
     ],
   }
 
