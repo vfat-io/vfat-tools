@@ -25,6 +25,7 @@ const main = async() => {
       ["Botto               ", `<a href="botto/"            >Various</a>`,"BOTTO     ","https://app.botto.com"],
       ["Cover Protocol      ",`<a href="cover/"             >Various</a>`,"Various   ","https://app.coverprotocol.com"],
       ["Cryptex             ",`<a href="cryptex"            >Various</a>`,"CTX       ","https://app.cryptex.finance"],
+      ["Curve               ",`<a href="curve/"             >Various</a>`,"Various   ","https://curve.fi"],
       ["DFX                 ",`<a href="dfx/"               >Various</a>`,"DFX       ","https://v0.dfx.finance/"],
       ["Dopex               ",`<a href="dopex/"             >Various</a>`,"DPX, rDPX ","https://app.dopex.io/farms"],
       ["DODO                ",`<a href="dodo/"              >Various</a>`,"DODO      ","https://app.dodoex.io"],
