@@ -76,10 +76,10 @@ $(function() {
         staked_tvl += totalSupply * poolPrice.price;
         userTvl += usersStaked * poolPrice.price;
         tvl += (lpToken.totalSupply / 10 ** lpToken.decimals) * poolPrice.price;
-        await printCurveContract(App, lpToken, poolPrice, gaugeResult);
+        await printCurveContract(App, lpToken, poolPrice, gaugeResult, gauge);
       }
     }
-    _print_bold(`\nTotal Value Locked: $${formatMoney(tvl.toFixed(2))}`);
+    _print_bold(`Total Value Locked: $${formatMoney(tvl.toFixed(2))}`);
     _print_bold(`\nTotal Value Staked: $${formatMoney(staked_tvl)}`);
     if (userTvl > 0) {
       _print_bold(`You are staking a total of $${formatMoney(userTvl)}`);
@@ -88,7 +88,7 @@ $(function() {
     hideLoading();
   }
   
-  async function printCurveContract(App, lpToken, poolPrice, gaugeResult) {
+  async function printCurveContract(App, lpToken, poolPrice, gaugeResult, gauge) {
     poolPrice.print_price();
     const userStaked = gaugeResult.usersStaked / 10 ** lpToken.decimals;
     var userStakedUsd = userStaked * poolPrice.price;
@@ -98,10 +98,10 @@ $(function() {
       _print(`Your stake comprises of ${userStaked} ${poolPrice.stakeTokenTicker}.`)
     }
     const deposit = async function() {
-      return curveGaugetDeposit(App, gaugeResult, lpToken)
+      return curveGaugetDeposit(App, gauge, lpToken)
     }
     const withdraw = async function() {
-      return curveGaugeWithdraw(App, gaugeResult, lpToken)
+      return curveGaugeWithdraw(App, gauge, lpToken)
     }
     _print_link(`Deposit ${lpToken.unstaked.toFixed(6)} ${lpToken.symbol}`, deposit);
     _print_link(`Withdraw ${userStaked.toFixed(6)} ${lpToken.symbol}`, withdraw)
@@ -112,7 +112,7 @@ async function curveGaugetDeposit(App, gauge, token){
   const signer = await App.provider.getSigner();
 
   const STAKING_TOKEN = new ethers.Contract(token.address, ERC20_ABI, signer)
-  const GAUGE_CONTRACT = new ethers.Contract(gauge.address, GAUGE_CONTRACT_ABI, signer)
+  const GAUGE_CONTRACT = new ethers.Contract(gauge, GAUGE_CONTRACT_ABI, signer)
 
   const balanceToStake = await STAKING_TOKEN.balanceOf(App.YOUR_ADDRESS)
   const allowedTokens = await STAKING_TOKEN.allowance(App.YOUR_ADDRESS, token.address)
@@ -159,7 +159,7 @@ async function curveGaugetDeposit(App, gauge, token){
 
 async function curveGaugeWithdraw(App, gauge, token){
   const signer = App.provider.getSigner()
-  const GAUGE_CONTRACT = new ethers.Contract(gauge.address, GAUGE_CONTRACT_ABI, signer)
+  const GAUGE_CONTRACT = new ethers.Contract(gauge, GAUGE_CONTRACT_ABI, signer)
 
   const currentStakedAmount = await GAUGE_CONTRACT.balanceOf(App.YOUR_ADDRESS);
 
