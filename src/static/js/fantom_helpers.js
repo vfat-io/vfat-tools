@@ -37,7 +37,9 @@ const FantomTokens = [
   { "id": "synapse-2", "symbol": "SYN", "contract": "0xE55e19Fb4F2D85af758950957714292DAC1e25B2"},
   { "id": "spell-token", "symbol": "SPELL", "contract": "0x468003B688943977e6130F4F68F23aad939a1040"},
   { "id": "joe", "symbol": "JOE", "contract": "0x9F47F313ACFd4bdC52F4373b493EaE7d5aC5b765"},
-  { "id": "true-usd", "symbol": "TUSD", "contract": "0x9879aBDea01a879644185341F7aF7d8343556B7a"}
+  { "id": "true-usd", "symbol": "TUSD", "contract": "0x9879aBDea01a879644185341F7aF7d8343556B7a"},
+  { "id": "magic-internet-money", "symbol": "MIM", "contract": "0xa8cD5D59827514BCF343EC19F531ce1788Ea48f8"},
+  { "id": "frax", "symbol": "FRAX", "contract": "0xb4300e088a3AE4e624EE5C71Bc1822F68BB5f2bc"}
 ];
 
 async function getFantomPrices() {
