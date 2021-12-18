@@ -291,6 +291,28 @@ async function getFantomStableswapToken(App, stable, address, stakingAddress) {
   };
 }
 
+async function getCFantomToken(App, cToken, address, stakingAddress) {
+  const calls = [cToken.decimals(), cToken.underlying(), cToken.totalSupply(),
+    cToken.name(), cToken.symbol(), cToken.balanceOf(stakingAddress),
+    cToken.balanceOf(App.YOUR_ADDRESS), cToken.exchangeRateStored()];
+  const [decimals, underlying, totalSupply, name, symbol, staked, unstaked, exchangeRate] =
+    await App.ethcallProvider.all(calls);
+  const token = await getFantomToken(App, underlying, address);
+  return {
+    address,
+    name,
+    symbol,
+    totalSupply,
+    decimals,
+    staked: staked / 10 ** decimals,
+    unstaked: unstaked / 10 ** decimals,
+    token: token,
+    balance: totalSupply * (exchangeRate / 1e18),
+    contract: cToken,
+    tokens : [address].concat(token.tokens)
+  }
+}
+
 async function getFantomStoredToken(App, tokenAddress, stakingAddress, type) {
   switch (type) {
     case "fantomSpoonVault":
@@ -303,6 +325,9 @@ async function getFantomStoredToken(App, tokenAddress, stakingAddress, type) {
     case "stableswap":
       const stable = new ethcall.Contract(tokenAddress, STABLESWAP_ABI);
       return await getFantomStableswapToken(App, stable, tokenAddress, stakingAddress);
+    case "cFantomToken":
+      const cFantomToken = new ethcall.Contract(tokenAddress, CTOKEN_ABI);
+      return await getCFantomToken(App, cFantomToken, tokenAddress, stakingAddress);
     case "uniswap":
       const pool = new ethcall.Contract(tokenAddress, UNI_ABI);
       return await getFantomUniPool(App, pool, tokenAddress, stakingAddress);
@@ -374,6 +399,15 @@ async function getFantomToken(App, tokenAddress, stakingAddress) {
       const vault = await getFantomVault(App, VAULT, tokenAddress, stakingAddress);
       window.localStorage.setItem(tokenAddress, "fantomVault");
       return vault;
+    }
+    catch(err) {
+    }
+    try {
+      const cFantomToken = new ethcall.Contract(tokenAddress, CTOKEN_ABI);
+      const _totalBorrows = await App.ethcallProvider.all([cFantomToken.totalBorrows()]);
+      const res = await getCFantomToken(App, cFantomToken, tokenAddress, stakingAddress);
+      window.localStorage.setItem(tokenAddress, "cFantomToken");
+      return res;
     }
     catch(err) {
     }

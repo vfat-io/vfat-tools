@@ -191,6 +191,25 @@ async function main() {
     gageInfos.push(gageInfo);
     i=i+2
   }
+
+  let staked_tvl, userTvl = 0;
+  for(let i = 0; i < gageInfos.length; i++){
+    const lpToken = await getFantomToken(App, gageInfos[i].lpTokenAddress, gaugeAddresses[i]);
+    const totalSupply = gageInfos[i].totalSupply / 10 ** lpToken.decimals;
+    const usersStaked = gageInfos[i].balance / 10 ** lpToken.decimals;
+    //lpToken.staked = totalSupply;
+    const poolPrice = getPoolPrices(tokens, prices, lpToken, "fantom")
+    staked_tvl += totalSupply * poolPrice.price;
+    userTvl += usersStaked * poolPrice.price;
+    //tvl += (lpToken.totalSupply / 10 ** lpToken.decimals) * poolPrice.price;
+    await printHndContract(App, lpToken, poolPrice, gageInfos[i], gaugeAddresses[i]);
+  }
+  //_print_bold(`Total Value Locked: $${formatMoney(tvl.toFixed(2))}`);
+  _print_bold(`\nTotal Value Staked: $${formatMoney(staked_tvl)}`);
+  if (userTvl > 0) {
+    _print_bold(`You are staking a total of $${formatMoney(userTvl)}`);
+  }
+  _print("");
   
   /*================================      GAUGES      ====================================================== */
 
@@ -226,6 +245,26 @@ async function main() {
     "beets", null, rewardsPerWeek, "pendingBeets");
 
   hideLoading();
+}
+
+async function printHndContract(App, lpToken, poolPrice, gaugeResult, gauge) {
+  poolPrice.print_price();
+  const userStaked = gaugeResult.balance / 10 ** lpToken.decimals;
+  var userStakedUsd = userStaked * poolPrice.price;
+  var userStakedPct = userStakedUsd / poolPrice.tvl * 100;
+  _print(`You are staking ${userStaked.toFixed(4)} ${poolPrice.stakeTokenTicker} ($${formatMoney(userStakedUsd)}), ${userStakedPct.toFixed(2)}% of the pool.`);
+  if (userStaked > 0) {
+    _print(`Your stake comprises of ${userStaked} ${poolPrice.stakeTokenTicker}.`)
+  }
+  /*const deposit = async function() {
+    return curveGaugetDeposit(App, gauge, lpToken)
+  }
+  const withdraw = async function() {
+    return curveGaugeWithdraw(App, gauge, lpToken)
+  }
+  _print_link(`Deposit ${lpToken.unstaked.toFixed(6)} ${lpToken.symbol}`, deposit);
+  _print_link(`Withdraw ${userStaked.toFixed(6)} ${lpToken.symbol}`, withdraw)*/
+  _print("");
 }
 
 async function loadData(App, token, comptroller, prices) {
