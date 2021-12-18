@@ -172,7 +172,10 @@ async function main() {
   const HND_GAUGES_CONTROLLER_ADDR = "0xb1c4426C86082D91a6c097fC588E5D5d8dD1f5a8";
   const HND_GAUGES_CONTROLLER = new ethcall.Contract(HND_GAUGES_CONTROLLER_ADDR, HND_GAUGES_CONTROLLER_ABI);
 
-  const [gaugesCount] = await App.ethcallProvider.all([HND_GAUGES_CONTROLLER.n_gauges()]);
+  const [_gaugesCount] = await App.ethcallProvider.all([HND_GAUGES_CONTROLLER.n_gauges()]);
+  const gaugesCount = _gaugesCount / 1;
+  const calls = [...Array(gaugesCount).keys()].map(i => HND_GAUGES_CONTROLLER.gauges(i));
+  const gaugeAddresses = await App.ethcallProvider.all(calls);
   
   /*================================      GAUGES      ====================================================== */
 
