@@ -180,6 +180,17 @@ async function main() {
   const gaugeContracts = gaugeAddresses.map(a => new ethcall.Contract(a, HND_GAUGE_ABI));
   const gaugeCalls = gaugeContracts.map(c => [c.lp_token(), c.totalSupply(), c.balanceOf(App.YOUR_ADDRESS)]).flat();
   const gaugeValues = await App.ethcallProvider.all(gaugeCalls);
+
+  let gageInfos = []
+  for(let i = 0; i < gaugeValues.length; i++){
+    const gageInfo = {
+      lpTokenAddress : gaugeValues[i],
+      totalSupply    : gaugeValues[i+1],
+      balance        : gaugeValues[i+2]
+    }
+    gageInfos.push(gageInfo);
+    i=i+2
+  }
   
   /*================================      GAUGES      ====================================================== */
 
