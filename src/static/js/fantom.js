@@ -135,7 +135,8 @@ const main = async() => {
       ["Xmas-Past          ", `<a href='xmaspast '    >Various</a>`,"XPAST        ","https://www.xmas-past.com"],
       ["Bakerguild         ", `<a href='bakerguild '  >Various</a>`,"BAKER        ","https://bakerguild.com"],
       ["DefySwap           ", `<a href='defyswap'     >Various</a>`,"DFY          ","https://defyswap.finance"],
-      ["BlackGoat          ", `<a href='blackgoat'    >Various</a>`,"GOAT         ","https://app.fanblackgoat.finance"]
+      ["BlackGoat          ", `<a href='blackgoat'    >Various</a>`,"GOAT         ","https://app.fanblackgoat.finance"],
+      ["Scream             ", `<a href='scream'       >Various</a>`,"SCREAM       ","https://scream.sh"]
     ]
   }
 
