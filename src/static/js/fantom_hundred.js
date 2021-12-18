@@ -176,6 +176,10 @@ async function main() {
   const gaugesCount = _gaugesCount / 1;
   const calls = [...Array(gaugesCount).keys()].map(i => HND_GAUGES_CONTROLLER.gauges(i));
   const gaugeAddresses = await App.ethcallProvider.all(calls);
+
+  const gaugeContracts = gaugeAddresses.map(a => new ethcall.Contract(a, HND_GAUGE_ABI));
+  const gaugeCalls = gaugeContracts.map(c => [c.lp_token(), c.totalSupply(), c.balanceOf(App.YOUR_ADDRESS)]).flat();
+  const gaugeValues = await App.ethcallProvider.all(gaugeCalls);
   
   /*================================      GAUGES      ====================================================== */
 
