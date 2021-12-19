@@ -38,8 +38,8 @@ const FantomTokens = [
   { "id": "spell-token", "symbol": "SPELL", "contract": "0x468003B688943977e6130F4F68F23aad939a1040"},
   { "id": "joe", "symbol": "JOE", "contract": "0x9F47F313ACFd4bdC52F4373b493EaE7d5aC5b765"},
   { "id": "true-usd", "symbol": "TUSD", "contract": "0x9879aBDea01a879644185341F7aF7d8343556B7a"},
-  { "id": "magic-internet-money", "symbol": "MIM", "contract": "0xa8cD5D59827514BCF343EC19F531ce1788Ea48f8"},
-  { "id": "frax", "symbol": "FRAX", "contract": "0xb4300e088a3AE4e624EE5C71Bc1822F68BB5f2bc"},
+  { "id": "magic-internet-money", "symbol": "MIM", "contract": "0x82f0B8B456c1A451378467398982d4834b6829c1"},
+  { "id": "frax", "symbol": "FRAX", "contract": "0xdc301622e621166BD8E82f2cA0A26c13Ad0BE355"},
   { "id": "hundred-finance", "symbol": "HND", "contract": "0x10010078a54396f62c96df8532dc2b4847d47ed3"}
 ];
 
