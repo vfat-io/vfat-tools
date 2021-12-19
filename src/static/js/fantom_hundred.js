@@ -192,15 +192,21 @@ async function main() {
     i=i+2
   }
 
+  //HND reward token
+  const rewradToken = await getFantomToken(App, "0x10010078a54396f62c96df8532dc2b4847d47ed3", App.YOUR_ADDRESS);
+  const rewardTokenPrice = getParameterCaseInsensitive(prices, "0x10010078a54396f62c96df8532dc2b4847d47ed3")?.usd;
+
   let staked_tvl, userTvl = 0;
   for(let i = 0; i < gageInfos.length; i++){
     const lpToken = await getFantomToken(App, gageInfos[i].lpTokenAddress, gaugeAddresses[i]);
     const totalSupply = gageInfos[i].totalSupply / 10 ** lpToken.decimals;
     const usersStaked = gageInfos[i].balance / 10 ** lpToken.decimals;
+    const _claimableRewards = await App.ethcallProvider.all([gaugeContracts[i].claimable_reward(App.YOUR_ADDRESS, rewradToken.address)]);
+    const claimableTokens = _claimableRewards / 10 ** rewradToken.decimals;
     const poolPrice = getPoolPrices(tokens, prices, lpToken, "fantom")
     staked_tvl += totalSupply * poolPrice.price;
     userTvl += usersStaked * poolPrice.price;
-    await printHndContract(App, lpToken, poolPrice, gageInfos[i], gaugeAddresses[i]);
+    await printHndContract(App, lpToken, poolPrice, gageInfos[i], gaugeAddresses[i], claimableTokens, rewradToken, rewardTokenPrice);
   }
   _print_bold(`\nTotal Value Staked: $${formatMoney(staked_tvl)}`);
   if (userTvl > 0) {
@@ -244,7 +250,7 @@ async function main() {
   hideLoading();
 }
 
-async function printHndContract(App, lpToken, poolPrice, gaugeResult, gauge) {
+async function printHndContract(App, lpToken, poolPrice, gaugeResult, gauge, claimableTokens, rewradToken, rewardTokenPrice) {
   poolPrice.print_price();
   const userStaked = gaugeResult.balance / 10 ** lpToken.decimals;
   var userStakedUsd = userStaked * poolPrice.price;
@@ -259,8 +265,12 @@ async function printHndContract(App, lpToken, poolPrice, gaugeResult, gauge) {
   const withdraw = async function() {
     return hndGaugeWithdraw(App, gauge, lpToken)
   }
+  const claim = async function() {
+    return hndGaugeClaim(App, gauge, rewradToken)
+  }
   _print_link(`Deposit ${lpToken.unstaked.toFixed(6)} ${lpToken.symbol}`, deposit);
-  _print_link(`Withdraw ${userStaked.toFixed(6)} ${lpToken.symbol}`, withdraw)
+  _print_link(`Withdraw ${userStaked.toFixed(6)} ${lpToken.symbol}`, withdraw);
+  _print_link(`Claim ${claimableTokens.toFixed(6)} ${rewradToken.symbol} ($${formatMoney(claimableTokens*rewardTokenPrice)})`, claim);
   _print("");
 }
 
@@ -328,6 +338,24 @@ async function hndGaugeWithdraw(App, gauge, token){
       .catch(function() {
         hideLoading()
       })
+  }
+}
+
+async function hndGaugeClaim(App, gauge, rewradToken) {
+  const signer = App.provider.getSigner()
+  const GAUGE_CONTRACT = new ethers.Contract(gauge, HND_GAUGE_ABI, signer)
+
+  const earnedTokenAmount = await GAUGE_CONTRACT.claimable_reward(App.YOUR_ADDRESS, rewradToken.address) / 1e18
+
+  if (earnedTokenAmount > 0) {
+    showLoading()
+    GAUGE_CONTRACT["claim_rewards()"]({gasLimit: 500000})
+        .then(function(t) {
+          return App.provider.waitForTransaction(t.hash)
+        })
+        .catch(function() {
+          hideLoading()
+        })
   }
 }
 
