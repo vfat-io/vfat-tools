@@ -187,14 +187,15 @@ async function main() {
   const rewradToken = await getArbitrumToken(App, "0x10010078a54396F62c96dF8532dc2B4847d47ED3", App.YOUR_ADDRESS);
   const rewardTokenPrice = getParameterCaseInsensitive(prices, "0x10010078a54396f62c96df8532dc2b4847d47ed3")?.usd;
 
-  let staked_tvl, userTvl = 0;
+  let staked_tvl = 0;
+  let userTvl = 0;
   for(let i = 0; i < gageInfos.length; i++){
     const lpToken = await getArbitrumToken(App, gageInfos[i].lpTokenAddress, gaugeAddresses[i]);
     const totalSupply = gageInfos[i].totalSupply / 10 ** lpToken.decimals;
     const usersStaked = gageInfos[i].balance / 10 ** lpToken.decimals;
     const _claimableRewards = await App.ethcallProvider.all([gaugeContracts[i].claimable_reward(App.YOUR_ADDRESS, rewradToken.address)]);
     const claimableTokens = _claimableRewards / 10 ** rewradToken.decimals;
-    const poolPrice = getPoolPrices(tokens, prices, lpToken, "arbitrum")
+    const poolPrice = getPoolPrices(tokens, prices, lpToken, "arbitrum");
     staked_tvl += totalSupply * poolPrice.price;
     userTvl += usersStaked * poolPrice.price;
     await printHndContract(App, lpToken, poolPrice, gageInfos[i], gaugeAddresses[i], claimableTokens, rewradToken, rewardTokenPrice);

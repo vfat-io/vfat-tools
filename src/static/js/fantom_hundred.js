@@ -196,7 +196,8 @@ async function main() {
   const rewradToken = await getFantomToken(App, "0x10010078a54396f62c96df8532dc2b4847d47ed3", App.YOUR_ADDRESS);
   const rewardTokenPrice = getParameterCaseInsensitive(prices, "0x10010078a54396f62c96df8532dc2b4847d47ed3")?.usd;
 
-  let staked_tvl, userTvl = 0;
+  let staked_tvl = 0;
+  let userTvl = 0;
   for(let i = 0; i < gageInfos.length; i++){
     const lpToken = await getFantomToken(App, gageInfos[i].lpTokenAddress, gaugeAddresses[i]);
     const totalSupply = gageInfos[i].totalSupply / 10 ** lpToken.decimals;

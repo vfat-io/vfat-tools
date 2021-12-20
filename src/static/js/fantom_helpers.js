@@ -310,7 +310,7 @@ async function getCFantomToken(App, cToken, address, stakingAddress) {
     staked: staked / 10 ** decimals,
     unstaked: unstaked / 10 ** decimals,
     token: token,
-    balance: totalSupply * (exchangeRate / 1e18),
+    balance: totalSupply * exchangeRate / 1e18,
     contract: cToken,
     tokens : [address].concat(token.tokens)
   }

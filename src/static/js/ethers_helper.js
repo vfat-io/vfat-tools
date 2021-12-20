@@ -1383,7 +1383,7 @@ async function getCToken(app, cToken, address, stakingAddress) {
     staked: staked / 10 ** decimals,
     unstaked: unstaked / 10 ** decimals,
     token: token,
-    balance: totalSupply * (exchangeRate / 1e18),
+    balance: totalSupply * exchangeRate / 1e18,
     contract: cToken,
     tokens : [address].concat(token.tokens)
   }
@@ -2714,17 +2714,17 @@ function getBunicornPrices(tokens, prices, pool)
     }}
 }
 
-function getWrapPrices(tokens, prices, pool)
+function getWrapPrices(tokens, prices, pool, chain)
 {
   const wrappedToken = pool.token;
   if (wrappedToken.token0 != null) { //Uniswap
     const uniPrices = getUniPrices(tokens, prices, wrappedToken);
-    const etherscanUrl = "https://etherscan.io/address/" + pool.address;
+    const contractUrl = getChainExplorerUrl(chain, pool.address)
     const poolUrl = pool.is1inch ? "https://1inch.exchange/#/dao/pools" :
     pool.symbol.includes("SLP") ?  `http://analytics.sushi.com/pairs/${wrappedToken.address}` :
     (pool.symbol.includes("Cake") || pool.symbol.includes("Pancake")) ?  `http://pancakeswap.info/pair/${wrappedToken.address}`
       : `http://v2.uniswap.info/pair/${wrappedToken.address}`;
-    const name = `<a href='${etherscanUrl}' target='_blank'>${pool.symbol}</a> (Wrapped <a href='${poolUrl}' target='_blank'>${uniPrices.stakeTokenTicker}</a>)`;
+    const name = `<a href='${contractUrl}' target='_blank'>${pool.symbol}</a> (Wrapped <a href='${poolUrl}' target='_blank'>${uniPrices.stakeTokenTicker}</a>)`;
     const price = (pool.balance / 10 ** wrappedToken.decimals) * uniPrices.price / (pool.totalSupply / 10 ** pool.decimals);
     const tvl = pool.balance / 10 ** wrappedToken.decimals * price;
     const staked_tvl = pool.staked * price;
@@ -2753,11 +2753,11 @@ function getWrapPrices(tokens, prices, pool)
     else {
       tokenPrice = getParameterCaseInsensitive(prices, wrappedToken.address)?.usd;
     }
-    const poolUrl = "https://etherscan.io/address/" + pool.address;
-    const etherscanUrl = "https://etherscan.io/address/" + pool.address;
-    const name = `<a href='${etherscanUrl}' target='_blank'>${pool.symbol}</a> (Wrapped <a href='${poolUrl}' target='_blank'>${wrappedToken.symbol}</a>)`;
+    const poolUrl = getChainExplorerUrl(chain, pool.token.address)
+    const contractUrl = getChainExplorerUrl(chain, pool.address)
+    const name = `<a href='${contractUrl}' target='_blank'>${pool.symbol}</a> (Wrapped <a href='${poolUrl}' target='_blank'>${wrappedToken.symbol}</a>)`;
     const price = (pool.balance / 10 ** wrappedToken.decimals) * tokenPrice / (pool.totalSupply / 10 ** pool.decimals);
-    const tvl = pool.balance / 10 ** wrappedToken.decimals * price;
+    const tvl = pool.totalSupply / 10 ** pool.decimals * price
     const staked_tvl = pool.staked * price;
     prices[pool.address] = { usd : price };
     return {
@@ -3053,7 +3053,7 @@ function getPoolPrices(tokens, prices, pool, chain = "eth") {
   if (pool.A_precise != null) return getCurveCryptoPrices2(prices, pool, chain);
   if (pool.yearn) return getYearnPrices(prices, pool, chain);
   if (pool.virtualPrice != null) return getCurvePrices(prices, pool, chain); //should work for saddle too
-  if (pool.token != null) return getWrapPrices(tokens, prices, pool);
+  if (pool.token != null) return getWrapPrices(tokens, prices, pool, chain);
   return getErc20Prices(prices, pool, chain);
 }
 
@@ -3665,7 +3665,7 @@ function getChainExplorerUrl(chain, address){
     case "harmony" :
       return `https://explorer.harmony.one/address/${address}`;
     case "arbitrum" :
-      return `https://arbiscan.io/token/${address}`;
+      return `https://arbiscan.io/address/${address}`;
     case "cronos" :
       return `https://cronos.crypto.org/explorer/address/${address}`;
     case "velas" :
