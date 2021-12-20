@@ -30,7 +30,7 @@ async function main() {
     "0x9ef758ac000a354479e538b8b2f01b917b8e89e7",
     "0xb31f66aa3c1e785363f0875a1b74e27b85fd66c7"
   ]
-  const XusdPool = {
+  const StablePool2 = {
     address : "0x22Bd1a65c3cB136a8314efa6b20971e3Ffa9eD8a",
     abi : XDO_STABLE_STAKING_ABI,
     stakeTokenFunction : "lusdToken",
@@ -41,7 +41,7 @@ async function main() {
     "0x3509f19581afedeff07c53592bc0ca84e4855475",
     "0xb31f66aa3c1e785363f0875a1b74e27b85fd66c7"
   ]
-  const XdoPool = {
+  const StablePool1 = {
     address: "0x68738A47d40C34d890168aB7B612A6f649f395e4",
     abi: XDO_STAKING_ABI2,
     stakeTokenFunction: "lqtyToken",
@@ -58,19 +58,19 @@ async function main() {
     const tokens = {};
     const prices = await getAvaxPrices();
 
-    const p = await loadMultipleAvaxSynthetixPools(App, tokens, prices, [xusdWAVAXPool]);
+    //const p = await loadMultipleAvaxSynthetixPools(App, tokens, prices, [xusdWAVAXPool]);
 
-    const p2 = await loadKyberDMMPools(App, tokens, prices, [xusdUsdcPool]);
+    //const p2 = await loadKyberDMMPools(App, tokens, prices, [xusdUsdcPool]);
 
-    const p0 = await loadXDollarPool(App, tokens, prices, XusdPool.abi, 
-                                                          XusdPool.address, 
-                                                          XusdPool.rewardTokenAddresses, 
-                                                          XusdPool.stakeTokenFunction);
+    const p0 = await loadXDollarPool(App, tokens, prices, StablePool2.abi, 
+                                                          StablePool2.address, 
+                                                          StablePool2.rewardTokenAddresses, 
+                                                          StablePool2.stakeTokenFunction);
 
-    const p1 = await loadXdoPool(App, tokens, prices, XdoPool.abi, 
-                                                      XdoPool.address, 
-                                                      XdoPool.rewardTokenAddresses,
-                                                      XdoPool.stakeTokenFunction);
+    const p1 = await loadStablePool1(App, tokens, prices, StablePool1.abi, 
+                                                      StablePool1.address, 
+                                                      StablePool1.rewardTokenAddresses,
+                                                      StablePool1.stakeTokenFunction);
 
     let totalPStaked = formatMoney(p.totalUserStaked+p0.userStaked+p1.userStaked+p2.totalUserStaked);
     let totalPAPR = ((p.totalUserStaked * p.totalApr + p0.userStaked * p0.apr + p2.totalUserStaked * p2.totalAPR) / (p.totalUserStaked + p0.userStaked + p2.totalUserStaked) * 100).toFixed(2)
@@ -89,13 +89,13 @@ async function loadXDollarPool(App, tokens, prices, abi, address, rewardTokenFun
     return await printXDollarPool(App, info, "avax");
 }
 
-async function loadXdoPool(App, tokens, prices, abi, address, rewardTokenFunction, stakeTokenFunction) {
-  const info = await loadXdoPoolInfo(App, tokens, prices, abi, address, rewardTokenFunction, stakeTokenFunction);
+async function loadStablePool1(App, tokens, prices, abi, address, rewardTokenFunction, stakeTokenFunction) {
+  const info = await loadStablePool1Info(App, tokens, prices, abi, address, rewardTokenFunction, stakeTokenFunction);
   if (!info) return null;
-  return await printXdoPool(App, info, "avax");
+  return await printStablePool1(App, info, "avax");
 }
 
-async function loadXdoPoolInfo(App, tokens, prices, stakingAbi, stakingAddress, rewardTokenAddresses,
+async function loadStablePool1Info(App, tokens, prices, stakingAbi, stakingAddress, rewardTokenAddresses,
   stakeTokenFunction) {
     const STAKING_POOL = new ethers.Contract(stakingAddress, stakingAbi, App.provider);
 
@@ -262,7 +262,7 @@ async function loadXDollarPoolInfo(App, tokens, prices, stakingAbi, stakingAddre
     }
 }
 
-async function printXdoPool(App, info, chain="eth", customURLs) {
+async function printStablePool1(App, info, chain="eth", customURLs) {
   info.poolPrices.print_price(chain, 4, customURLs);
   const userStakedUsd = info.userStaked * info.stakeTokenPrice;
   const userStakedPct = userStakedUsd / info.staked_tvl * 100;
