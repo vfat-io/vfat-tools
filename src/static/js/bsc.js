@@ -13,7 +13,7 @@ const main = async() => {
       ["Apeswap             ","", `<a href="apeswap"       >Various</a>`,"BANANA           ","https://apeswap.finance"],
       ["Autofarm            ","", `<a href="autofarm"      >Various</a>`,"AUTOFARM         ","https://autofarm.network"],
       ["Kyber               ","", `<a href="kyber"         >Various</a>`,"KNC              ","https://dmm.exchange"],
-      ["Bake *              ","", `<a href="bake"          >Various</a>`,"BAKE             ","https://www.bakeryswap.org"],
+      ["Bake                ","", `<a href="bake"          >Various</a>`,"BAKE             ","https://www.bakeryswap.org"],
       ["Brew                ","", `<a href="brew"          >Various</a>`,"BREW             ","https://cafeswap.finance"],
       ["Donut               ","", `<a href="donut"         >Various</a>`,"DONUT            ","https://donutdefi.com"],
       ["Ramen               ","", `<a href="ramen"         >Various</a>`,"RAMENSWAP        ","https://ramenswap.finance"],
@@ -554,7 +554,8 @@ const main = async() => {
       ["KnightSwap          ","", `<a href="knightswap"    >Various</a>`,"KNIGHT           ","https://app.knightswap.financial"],
       ["WapSwap             ","", `<a href="wapswap"       >Various</a>`,"WAP              ","https://dapp.wapswap.finance"],
       ["Mars Ecosystem      ","", `<a href="marsecosystem" >Various</a>`,"Various          ","https://app.marsecosystem.com"],
-      ["Icecolony           ","", `<a href="icecolony"     >Various</a>`,"ICE              ","https://bsc.icecolony.com"]
+      ["Icecolony           ","", `<a href="icecolony"     >Various</a>`,"ICE              ","https://bsc.icecolony.com"],
+      ["Topshelf            ","", `<a href="topshelf"      >Various</a>`,"LIQR             ","https://topshelf.finance"]
     ]}
 
   let table = new AsciiTable().fromJSON(tableData);
