@@ -44,7 +44,8 @@ async function loadxWILD(App){
   const tvl = totalDepositedWILDs * WILDPrice
   const usersPercentage = totalOwnedxWILD / totalxWILDTokens * 100;
   const usersxWILDUsd = totalOwnedxWILD * xWILDPrice;
-  _print(`\n${rewardTicker} Price: $${toFixed(xWILDPrice, 2)} Total Supply: ${toFixed(totalxWILDTokens, 4)} TVL: $${formatMoney(tvl)}`);
+  _print(`\n<a href="https://etherscan.io/address/${xWILD_ADDR}#readContract" target="blank">xWild Staking Contract</a>`)
+  _print(`${rewardTicker} Price: $${toFixed(xWILDPrice, 2)} Total Supply: ${toFixed(totalxWILDTokens, 4)} TVL: $${formatMoney(tvl)}`);
   _print(`${stakeTicker} Price: $${toFixed(WILDPrice, 2)}`);
   _print(`There is a total of ${toFixed(totalDepositedWILDs, 2)} WILD staked in xWILD`);
   _print(`Your balance is ${totalOwnedxWILD.toFixed(2)} ${rewardTicker} (${totalOwnedWILD.toFixed(2)} ${stakeTicker}), $${formatMoney(usersxWILDUsd)}, ${usersPercentage.toFixed(2)}% of the pool`);
@@ -52,10 +53,11 @@ async function loadxWILD(App){
     return contract_stake(xWILD_ABI, xWILD_ADDR, App, WILD_ADDR)
   }
   const unstake = async function() {
-    return contract_unstake(xWILD_ABI, xWILD_ADDR, totalOwnedxWILD, App)
+    return contract_unstake(xWILD_ABI, xWILD_ADDR, App)
   }
   _print_link(`Stake ${totalOwnedWildForStake.toFixed(2)} ${stakeTicker}`, approveAndStake)
   _print_link(`Unstake ${totalOwnedxWILD.toFixed(2)} ${rewardTicker}`, unstake)
+  _print('\n');
 }
 
 const contract_stake = async function(abi, contractAddress, App, stakeTokenAddr) {
@@ -105,7 +107,9 @@ const contract_stake = async function(abi, contractAddress, App, stakeTokenAddr)
   }
 }
 
-const contract_unstake = async function(abi, contractAddress, stakedAmount, App) {
+const contract_unstake = async function(abi, contractAddress, App) {
+  const xWILD_STAKING_CONTRACT = new ethers.Contract(contractAddress,abi,App.provider);
+  const stakedAmount = await xWILD_STAKING_CONTRACT.balanceOf(App.YOUR_ADDRESS)
   const signer = App.provider.getSigner()
   const xWILD_WRITE_CONTRACT = new ethers.Contract(contractAddress, abi, signer)
   showLoading()

@@ -34,7 +34,13 @@ const FantomTokens = [
   { "id": "coffin-finance", "symbol": "COFFIN", "contract": "0x593Ab53baFfaF1E821845cf7080428366F030a9c"},
   { "id": "coffin-dollar", "symbol": "CoUSD", "contract": "0x0DeF844ED26409C5C46dda124ec28fb064D90D27"},
   { "id": "beethoven-x", "symbol": "BEETS", "contract": "0xf24bcf4d1e507740041c9cfd2dddb29585adce1e"},
-  { "id": "synapse-2", "symbol": "SYN", "contract": "0xE55e19Fb4F2D85af758950957714292DAC1e25B2"}
+  { "id": "synapse-2", "symbol": "SYN", "contract": "0xE55e19Fb4F2D85af758950957714292DAC1e25B2"},
+  { "id": "spell-token", "symbol": "SPELL", "contract": "0x468003B688943977e6130F4F68F23aad939a1040"},
+  { "id": "joe", "symbol": "JOE", "contract": "0x9F47F313ACFd4bdC52F4373b493EaE7d5aC5b765"},
+  { "id": "true-usd", "symbol": "TUSD", "contract": "0x9879aBDea01a879644185341F7aF7d8343556B7a"},
+  { "id": "magic-internet-money", "symbol": "MIM", "contract": "0x82f0B8B456c1A451378467398982d4834b6829c1"},
+  { "id": "frax", "symbol": "FRAX", "contract": "0xdc301622e621166BD8E82f2cA0A26c13Ad0BE355"},
+  { "id": "hundred-finance", "symbol": "HND", "contract": "0x10010078a54396f62c96df8532dc2b4847d47ed3"}
 ];
 
 async function getFantomPrices() {
@@ -288,6 +294,28 @@ async function getFantomStableswapToken(App, stable, address, stakingAddress) {
   };
 }
 
+async function getCFantomToken(App, cToken, address, stakingAddress) {
+  const calls = [cToken.decimals(), cToken.underlying(), cToken.totalSupply(),
+    cToken.name(), cToken.symbol(), cToken.balanceOf(stakingAddress),
+    cToken.balanceOf(App.YOUR_ADDRESS), cToken.exchangeRateStored()];
+  const [decimals, underlying, totalSupply, name, symbol, staked, unstaked, exchangeRate] =
+    await App.ethcallProvider.all(calls);
+  const token = await getFantomToken(App, underlying, address);
+  return {
+    address,
+    name,
+    symbol,
+    totalSupply,
+    decimals,
+    staked: staked / 10 ** decimals,
+    unstaked: unstaked / 10 ** decimals,
+    token: token,
+    balance: totalSupply * exchangeRate / 1e18,
+    contract: cToken,
+    tokens : [address].concat(token.tokens)
+  }
+}
+
 async function getFantomStoredToken(App, tokenAddress, stakingAddress, type) {
   switch (type) {
     case "fantomSpoonVault":
@@ -300,6 +328,9 @@ async function getFantomStoredToken(App, tokenAddress, stakingAddress, type) {
     case "stableswap":
       const stable = new ethcall.Contract(tokenAddress, STABLESWAP_ABI);
       return await getFantomStableswapToken(App, stable, tokenAddress, stakingAddress);
+    case "cFantomToken":
+      const cFantomToken = new ethcall.Contract(tokenAddress, CTOKEN_ABI);
+      return await getCFantomToken(App, cFantomToken, tokenAddress, stakingAddress);
     case "uniswap":
       const pool = new ethcall.Contract(tokenAddress, UNI_ABI);
       return await getFantomUniPool(App, pool, tokenAddress, stakingAddress);
@@ -371,6 +402,15 @@ async function getFantomToken(App, tokenAddress, stakingAddress) {
       const vault = await getFantomVault(App, VAULT, tokenAddress, stakingAddress);
       window.localStorage.setItem(tokenAddress, "fantomVault");
       return vault;
+    }
+    catch(err) {
+    }
+    try {
+      const cFantomToken = new ethcall.Contract(tokenAddress, CTOKEN_ABI);
+      const _totalBorrows = await App.ethcallProvider.all([cFantomToken.totalBorrows()]);
+      const res = await getCFantomToken(App, cFantomToken, tokenAddress, stakingAddress);
+      window.localStorage.setItem(tokenAddress, "cFantomToken");
+      return res;
     }
     catch(err) {
     }
@@ -583,8 +623,8 @@ async function getFantomPoolInfo(app, chefContract, chefAddress, poolIndex, pend
       poolToken: poolToken,
       userStaked : staked,
       pendingRewardTokens : pendingRewardTokens / 10 ** 18,
-      depositFee : (poolInfo.depositFeeBP ?? 0) / 100,
-      withdrawFee : (poolInfo.withdrawFeeBP ?? 0) / 100
+      depositFee : (poolInfo.depositFeeBP ?? poolInfo.depositFee ?? 0) / 100,
+      withdrawFee : (poolInfo.withdrawFeeBP ?? poolInfo.withdrawalFee ?? 0) / 100
   };
 }
 
