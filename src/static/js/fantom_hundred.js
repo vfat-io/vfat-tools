@@ -282,14 +282,14 @@ async function hndGaugetDeposit(App, gauge, token){
   const GAUGE_CONTRACT = new ethers.Contract(gauge, HND_GAUGE_ABI, signer)
 
   const balanceToStake = await STAKING_TOKEN.balanceOf(App.YOUR_ADDRESS)
-  const allowedTokens = await STAKING_TOKEN.allowance(App.YOUR_ADDRESS, token.address)
+  const allowedTokens = await STAKING_TOKEN.allowance(App.YOUR_ADDRESS, gauge)
 
   const decimals = await STAKING_TOKEN.decimals();
   let allow = Promise.resolve()
 
   if (allowedTokens / 10 ** decimals < balanceToStake / 10 ** decimals) {
     showLoading()
-    allow = STAKING_TOKEN.approve(token.address, ethers.constants.MaxUint256)
+    allow = STAKING_TOKEN.approve(gauge, ethers.constants.MaxUint256)
       .then(function(t) {
         return App.provider.waitForTransaction(t.hash)
       })
