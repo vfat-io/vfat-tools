@@ -6,8 +6,7 @@ const DLP_OPTIMISTIC_DUAL_TOKEN_ABI = [{"anonymous":false,"inputs":[{"indexed":t
 const optimisticTokens = [
     { "id": "weth","symbol": "WETH", "contract": "0x4200000000000000000000000000000000000006" },
     { "id": "synapse-2","symbol": "SYN", "contract": "0x5a5fff6f753d7c11a56a52fe47a177a87e431655" },
-    { "id": "arbinyan","symbol": "NYAN", "contract": "0xA807D4Bc69b050b8D0c99542cf93903C2EFe8b4c" },
-    { "id": "ahegao","symbol": "AHEGAO", "contract": "0xCb04Af8d0f3da0A93c7Eb3607f7B9fa3c42bad8d" }
+    { "id": "arbinyan","symbol": "NYAN", "contract": "0xA807D4Bc69b050b8D0c99542cf93903C2EFe8b4c" }
 ];
 
 async function getOptimisticPrices() {
