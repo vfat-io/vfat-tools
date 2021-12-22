@@ -84,7 +84,7 @@ const main = async() => {
         ["FarmersOnly ONION       ",`<a href="onion"            >Various</a>`,"ONION        ","https://onion.farmersonly.farm"],
         ["Autofarm                ", `<a href='autofatm'        >Various</a>`,"Various      ","https://autofarm.network/fantom"],
         ["IceFlake                ",`<a href="iceflake"         >Various</a>`,"FLAKE        ","https://iceflake.finance"],
-        ["BanksyFarm              ",`<a href="banksyfarm"       >Various</a>`,"BanksyFarm   ","https://banksy.farm"]
+        ["Banksy Farm              ",`<a href="banksyfarm"       >Various</a>`,"BanksyFarm   ","https://banksy.farm"]
     ]
   }
 
