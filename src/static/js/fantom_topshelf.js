@@ -16,24 +16,24 @@ $(function() {
       _print("Reading smart contracts...\n");
   
     const LpStakingPool = {
-      address : "0xB1DE6f1A82700D0b65b97E231531d6e815E0BD2B",
+      address : "0xEF7815Bf149aea53811384D3A6f1705145FD50Ac",
       abi : LP_STAKING_ABI,
       stakeTokenFunction : "stakingToken",
       rewardTokenAddress : "0x33333ee26a7d02e41c33828b42fb1e0889143477"
     }
   
     const LiqrStakingPool = {
-      address : "0x4Fb1BA09748545a84C8a089a4e19c7C65c495c07",
+      address : "0x11B0303034fdB52D4e53B4E4202B49681DF9ae82",
       abi : LIQR_STAKING_ABI,
       stakeTokenFunction : "stakingToken"
     }
   
      const rewardTokenAddresses1 = [
       "0x33333ee26a7d02e41c33828b42fb1e0889143477",
-      "0xB31f66AA3C1e785363F0875A1B74E27b85FD66c7"
+      "0xd02a30d33153877bc20e5721ee53dedee0422b2f"
     ]
     const StablePool1 = {
-      address : "0x0d37E5FF77cd482748cdD5251c92a65377D59000",
+      address : "0xB345a75fEc95b381287F71A2eBbF094791433008",
       abi : TOP_STABLE_STAKING_ABI,
       stakeTokenFunction : "lusdToken",
       rewardTokenAddresses : rewardTokenAddresses1
@@ -41,27 +41,17 @@ $(function() {
   
     const rewardTokenAddresses2 = [
       "0x33333ee26a7d02e41c33828b42fb1e0889143477",
-      "0x37c9be6c81990398e9b87494484afc6a4608c25d"
+      "0x21be370d5312f44cb42ce377bc9b8a0cef1a4c83"
     ]
     const StablePool2 = {
-      address : "0x69aEDD363888F840583387be59E26aF73068615D",
+      address : "0xc0e133D2bb669df10eC147C31694eF88Ef0dB8Ec",
       abi : TOP_STABLE_STAKING_ABI,
       stakeTokenFunction : "lusdToken",
       rewardTokenAddresses : rewardTokenAddresses2
     }
   
       const tokens = {};
-      const prices = await getAvaxPrices();
-  
-      const p0 = await loadStablePool(App, tokens, prices, StablePool1.abi, 
-                                                           StablePool1.address, 
-                                                           StablePool1.rewardTokenAddresses, 
-                                                           StablePool1.stakeTokenFunction);
-  
-      const p1 = await loadStablePool(App, tokens, prices, StablePool2.abi, 
-                                                           StablePool2.address, 
-                                                           StablePool2.rewardTokenAddresses, 
-                                                           StablePool2.stakeTokenFunction);
+      const prices = await getFantomPrices();
   
       const p2 = await loadLpStakingPool(App, tokens, prices, LpStakingPool.abi, 
                                                               LpStakingPool.address, 
@@ -71,6 +61,16 @@ $(function() {
       const p3 = await loadLiqrPool(App, tokens, prices, LiqrStakingPool.abi, 
                                                          LiqrStakingPool.address,
                                                          LiqrStakingPool.stakeTokenFunction);
+
+      const p0 = await loadStablePool(App, tokens, prices, StablePool1.abi, 
+                                                           StablePool1.address, 
+                                                           StablePool1.rewardTokenAddresses, 
+                                                           StablePool1.stakeTokenFunction);
+
+      const p1 = await loadStablePool(App, tokens, prices, StablePool2.abi, 
+                                                           StablePool2.address, 
+                                                           StablePool2.rewardTokenAddresses, 
+                                                           StablePool2.stakeTokenFunction);
   
       let totalPStaked = formatMoney(p0.userStaked+p1.userStaked+p2.userStaked+p3.userStaked);
       let totalPAPR = ((p2.userStaked * p2.apr + p3.userStaked * p3.apr) / (p2.userStaked + p3.userStaked) * 100).toFixed(2)
@@ -88,19 +88,19 @@ $(function() {
   async function loadStablePool(App, tokens, prices, abi, address, rewardTokenAddresses, stakeTokenFunction) {
       const info = await loadStablePoolInfo(App, tokens, prices, abi, address, rewardTokenAddresses, stakeTokenFunction);
       if (!info) return null;
-      return await printStablePool(App, info, "avax");
+      return await printStablePool(App, info, "fantom");
   }
   
   async function loadLpStakingPool(App, tokens, prices, abi, address, rewardTokenAddress, stakeTokenFunction) {
     const info = await loadLpStakingPoolInfo(App, tokens, prices, abi, address, rewardTokenAddress, stakeTokenFunction);
     if (!info) return null;
-    return await printLpStakingPool(App, info, "avax");
+    return await printLpStakingPool(App, info, "fantom");
   }
   
   async function loadLiqrPool(App, tokens, prices, abi, address, stakeTokenFunction) {
     const info = await loadloadLiqrPoolInfo(App, tokens, prices, abi, address, stakeTokenFunction);
     if (!info) return null;
-    return await printloadLiqrPool(App, info, "avax");
+    return await printloadLiqrPool(App, info, "fantom");
   }
   
   async function loadloadLiqrPoolInfo(App, tokens, prices, stakingAbi, stakingAddress,
@@ -118,7 +118,7 @@ $(function() {
           rewardTokenAddresses.push(rewardTokenAddress);
         }
   
-        var stakeToken = await getAvaxToken(App, stakeTokenAddress, stakingAddress);
+        var stakeToken = await getFantomToken(App, stakeTokenAddress, stakingAddress);
   
         var newPriceAddresses = stakeToken.tokens.filter(x =>
           !getParameterCaseInsensitive(prices, x));
@@ -130,11 +130,11 @@ $(function() {
         var newTokenAddresses = stakeToken.tokens.filter(x =>
           !getParameterCaseInsensitive(tokens,x));
         for (const address of newTokenAddresses) {
-            tokens[address] = await getAvaxToken(App, address, stakingAddress);
+            tokens[address] = await getFantomToken(App, address, stakingAddress);
         }
         for(const rewardTokenAddress of rewardTokenAddresses){
           if (!getParameterCaseInsensitive(tokens, rewardTokenAddress)) {
-            tokens[rewardTokenAddress] = await getAvaxToken(App, rewardTokenAddress, stakingAddress);
+            tokens[rewardTokenAddress] = await getFantomToken(App, rewardTokenAddress, stakingAddress);
           }
         }
         let rewardTokens = [];
@@ -161,7 +161,7 @@ $(function() {
           earnings.push(earned);
         }
   
-        const poolPrices = getPoolPrices(tokens, prices, stakeToken, "avax");
+        const poolPrices = getPoolPrices(tokens, prices, stakeToken, "fantom");
   
         if (!poolPrices)
         {
@@ -207,7 +207,7 @@ $(function() {
         }
         const stakeTokenAddress = await STAKING_POOL.callStatic[stakeTokenFunction]();
   
-        var stakeToken = await getAvaxToken(App, stakeTokenAddress, stakingAddress);
+        var stakeToken = await getFantomToken(App, stakeTokenAddress, stakingAddress);
   
         if (stakeTokenAddress.toLowerCase() === rewardTokenAddress.toLowerCase()) {
           stakeToken.staked = await STAKING_POOL.totalSupply() / 10 ** stakeToken.decimals;
@@ -223,16 +223,16 @@ $(function() {
         var newTokenAddresses = stakeToken.tokens.filter(x =>
           !getParameterCaseInsensitive(tokens,x));
         for (const address of newTokenAddresses) {
-            tokens[address] = await getAvaxToken(App, address, stakingAddress);
+            tokens[address] = await getFantomToken(App, address, stakingAddress);
         }
         if (!getParameterCaseInsensitive(tokens, rewardTokenAddress)) {
-            tokens[rewardTokenAddress] = await getAvaxToken(App, rewardTokenAddress, stakingAddress);
+            tokens[rewardTokenAddress] = await getFantomToken(App, rewardTokenAddress, stakingAddress);
         }
         const rewardToken = getParameterCaseInsensitive(tokens, rewardTokenAddress);
   
         const rewardTokenTicker = rewardToken.symbol;
   
-        const poolPrices = getPoolPrices(tokens, prices, stakeToken, "avax");
+        const poolPrices = getPoolPrices(tokens, prices, stakeToken, "fantom");
   
         if (!poolPrices)
         {
@@ -317,7 +317,7 @@ $(function() {
       const revoke = async function() {
         return rewardsContract_resetApprove(info.stakeTokenAddress, info.stakingAddress, App)
       }
-      _print(`<a target="_blank" href="https://cchain.explorer.avax.network/address/${info.stakingAddress}#code">Explorer</a>`);
+      _print(`<a target="_blank" href="https://ftmscan.com/address/${info.stakingAddress}#code">Explorer</a>`);
       _print_link(`Stake ${info.userUnstaked.toFixed(6)} ${info.stakeTokenTicker} Fee-${info.depositFee}%`, approveTENDAndStake)
       _print_link(`Unstake ${info.userStaked.toFixed(6)} ${info.stakeTokenTicker}`, unstake)
       _print_link(`Claim ${info.earned.toFixed(6)} ${info.rewardTokenTicker} ($${formatMoney(info.earned*info.rewardTokenPrice)})`, claim)
@@ -343,17 +343,17 @@ $(function() {
       }
       const stakeTokenAddress = await STAKING_POOL.callStatic[stakeTokenFunction]();
   
-      let stakeToken = await getAvaxToken(App, stakeTokenAddress, stakeTokenAddress);
+      let stakeToken = await getFantomToken(App, stakeTokenAddress, stakeTokenAddress);
       stakeToken.staked = await STAKING_POOL.getTotalLUSDDeposits() / 10 ** stakeToken.decimals;
   
       var newTokenAddresses = stakeToken.tokens.filter(x =>
         !getParameterCaseInsensitive(tokens,x));
       for (const address of newTokenAddresses) {
-          tokens[address] = await getAvaxToken(App, address, stakingAddress);
+          tokens[address] = await getFantomToken(App, address, stakingAddress);
       }
       for(const rewardTokenAddress of rewardTokenAddresses){
         if (!getParameterCaseInsensitive(tokens, rewardTokenAddress)) {
-          tokens[rewardTokenAddress] = await getAvaxToken(App, rewardTokenAddress, stakingAddress);
+          tokens[rewardTokenAddress] = await getFantomToken(App, rewardTokenAddress, stakingAddress);
         }
       }
       let rewardTokens = [];
@@ -369,7 +369,7 @@ $(function() {
       }
   
   
-      const poolPrices = getPoolPrices(tokens, prices, stakeToken, "avax");
+      const poolPrices = getPoolPrices(tokens, prices, stakeToken, "fantom");
   
       if (!poolPrices)
       {
@@ -437,7 +437,7 @@ $(function() {
     const revoke = async function() {
       return rewardsContract_resetApprove(info.stakeTokenAddress, info.stakingAddress, App)
     }
-    _print(`<a target="_blank" href="https://cchain.explorer.avax.network/address/${info.stakingAddress}/contracts">Avax Explorer</a>`);
+    _print(`<a target="_blank" href="https://ftmscan.com/address/${info.stakingAddress}/contracts">Fantom Explorer</a>`);
     if (info.stakeTokenTicker != "ETH") {
       _print_link(`Stake ${info.userUnstaked.toFixed(6)} ${info.stakeTokenTicker}`, approveTENDAndStake)
     }
@@ -458,7 +458,7 @@ $(function() {
     }
   }
   
-  async function printloadLiqrPool(App, info, chain="avax", customURLs) {
+  async function printloadLiqrPool(App, info, chain="fantom", customURLs) {
       info.poolPrices.print_price(chain, 4, customURLs);
       for(let i = 0; i < info.rewardTokenTickers; i++){
         _print(`${info.rewardTokenTickers[i]} Per Week: ${info.weeklyRewards[i].toFixed(2)} ($${formatMoney(info.usdCoinsPerWeek[i])})`);
@@ -514,7 +514,7 @@ $(function() {
       const revoke = async function() {
         return rewardsContract_resetApprove(info.stakeTokenAddress, info.stakingAddress, App)
       }
-      _print(`<a target="_blank" href="https://snowtrace.io/address/${info.stakingAddress}#code">Avax Explorer</a>`);
+      _print(`<a target="_blank" href="https://ftmscan.com/address/${info.stakingAddress}#code">Fantom Explorer</a>`);
       if (info.stakeTokenTicker != "ETH") {
         _print_link(`Stake ${info.userUnstaked.toFixed(6)} ${info.stakeTokenTicker}`, approveTENDAndStake)
       }
@@ -522,9 +522,11 @@ $(function() {
         _print("Please use the official website to stake ETH.");
       }
       _print_link(`Unstake ${info.userStaked.toFixed(6)} ${info.stakeTokenTicker}`, unstake)
+      let claimLink = "";
       for(let i = 0; i < info.earnings.length; i++){
-        _print_link(`Claim ${info.earnings[i].toFixed(6)} ${info.rewardTokenTickers[i]} ($${formatMoney(info.earnings[i]*info.rewardTokenPrices[i])})`, claim)
+        claimLink += `${info.earnings[i].toFixed(6)} ${info.rewardTokenTickers[i]} ($${formatMoney(info.earnings[i]*info.rewardTokenPrices[i])}) `
       }
+      _print_link(`Claim ${claimLink}`, claim)
       if (info.stakeTokenTicker != "ETH") {
         _print_link(`Revoke (set approval to 0)`, revoke)
       }

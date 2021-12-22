@@ -53,16 +53,6 @@ $(function() {
       const tokens = {};
       const prices = await getBscPrices();
   
-      const p0 = await loadStablePool(App, tokens, prices, StablePool1.abi, 
-                                                           StablePool1.address, 
-                                                           StablePool1.rewardTokenAddresses, 
-                                                           StablePool1.stakeTokenFunction);
-  
-      const p1 = await loadStablePool(App, tokens, prices, StablePool2.abi, 
-                                                           StablePool2.address, 
-                                                           StablePool2.rewardTokenAddresses, 
-                                                           StablePool2.stakeTokenFunction);
-  
       const p2 = await loadLpStakingPool(App, tokens, prices, LpStakingPool.abi, 
                                                               LpStakingPool.address, 
                                                               LpStakingPool.rewardTokenAddress, 
@@ -71,6 +61,16 @@ $(function() {
       const p3 = await loadLiqrPool(App, tokens, prices, LiqrStakingPool.abi, 
                                                          LiqrStakingPool.address,
                                                          LiqrStakingPool.stakeTokenFunction);
+
+      const p0 = await loadStablePool(App, tokens, prices, StablePool1.abi, 
+                                                           StablePool1.address, 
+                                                           StablePool1.rewardTokenAddresses, 
+                                                           StablePool1.stakeTokenFunction);
+
+      const p1 = await loadStablePool(App, tokens, prices, StablePool2.abi, 
+                                                           StablePool2.address, 
+                                                           StablePool2.rewardTokenAddresses, 
+                                                           StablePool2.stakeTokenFunction);
   
       let totalPStaked = formatMoney(p0.userStaked+p1.userStaked+p2.userStaked+p3.userStaked);
       let totalPAPR = ((p2.userStaked * p2.apr + p3.userStaked * p3.apr) / (p2.userStaked + p3.userStaked) * 100).toFixed(2)
@@ -522,9 +522,11 @@ $(function() {
         _print("Please use the official website to stake ETH.");
       }
       _print_link(`Unstake ${info.userStaked.toFixed(6)} ${info.stakeTokenTicker}`, unstake)
+      let claimLink = "";
       for(let i = 0; i < info.earnings.length; i++){
-        _print_link(`Claim ${info.earnings[i].toFixed(6)} ${info.rewardTokenTickers[i]} ($${formatMoney(info.earnings[i]*info.rewardTokenPrices[i])})`, claim)
+        claimLink += `${info.earnings[i].toFixed(6)} ${info.rewardTokenTickers[i]} ($${formatMoney(info.earnings[i]*info.rewardTokenPrices[i])}) `
       }
+      _print_link(`Claim ${claimLink}`, claim)
       if (info.stakeTokenTicker != "ETH") {
         _print_link(`Revoke (set approval to 0)`, revoke)
       }
