@@ -506,7 +506,7 @@ $(function() {
         return rewardsContract_unstake(info.stakingAddress,info.userStakedWei, App)
       }
       const claim = async function() {
-        return claimDMagic(info.stakingAddress, App)
+        return claimTopshelf(info.stakingAddress, App)
       }
       const exit = async function() {
         return rewardsContract_exit(info.stakingAddress, App)
@@ -537,3 +537,25 @@ $(function() {
           apr : yearlyAPR
       }
   }
+
+const claimTopshelf = async function(rewardPoolAddr, App) {
+  const signer = App.provider.getSigner()
+
+  const REWARD_POOL = new ethers.Contract(rewardPoolAddr, DRAX_STAKING_ABI, signer)
+
+  console.log(App.YOUR_ADDRESS)
+
+  const earnedYFFI = (await REWARD_POOL.totalEarnedRewardToken1(App.YOUR_ADDRESS)) / 1e18
+
+  if (earnedYFFI > 0) {
+    showLoading()
+    REWARD_POOL.getReward({gasLimit: 250000})
+      .then(function(t) {
+        return App.provider.waitForTransaction(t.hash)
+      })
+      .catch(function() {
+        hideLoading()
+      })
+  }
+  else alert("Nothing to claim");
+}

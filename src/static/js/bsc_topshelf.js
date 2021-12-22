@@ -16,24 +16,24 @@ $(function() {
       _print("Reading smart contracts...\n");
   
     const LpStakingPool = {
-      address : "0xB1DE6f1A82700D0b65b97E231531d6e815E0BD2B",
+      address : "0xf49A978B0c13d1ee138F3B3301fFE73c95b2E4D2",
       abi : LP_STAKING_ABI,
       stakeTokenFunction : "stakingToken",
       rewardTokenAddress : "0x33333ee26a7d02e41c33828b42fb1e0889143477"
     }
   
     const LiqrStakingPool = {
-      address : "0x4Fb1BA09748545a84C8a089a4e19c7C65c495c07",
+      address : "0xC250Be4011c99E0759fC6c7892054ae342999515",
       abi : LIQR_STAKING_ABI,
       stakeTokenFunction : "stakingToken"
     }
   
      const rewardTokenAddresses1 = [
       "0x33333ee26a7d02e41c33828b42fb1e0889143477",
-      "0xB31f66AA3C1e785363F0875A1B74E27b85FD66c7"
+      "0xaf4de8e872131ae328ce21d909c74705d3aaf452"
     ]
     const StablePool1 = {
-      address : "0x0d37E5FF77cd482748cdD5251c92a65377D59000",
+      address : "0x5fcBF156b68079B629041C5Bd9429387Aa8bDA3E",
       abi : TOP_STABLE_STAKING_ABI,
       stakeTokenFunction : "lusdToken",
       rewardTokenAddresses : rewardTokenAddresses1
@@ -41,17 +41,17 @@ $(function() {
   
     const rewardTokenAddresses2 = [
       "0x33333ee26a7d02e41c33828b42fb1e0889143477",
-      "0x37c9be6c81990398e9b87494484afc6a4608c25d"
+      "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c"
     ]
     const StablePool2 = {
-      address : "0x69aEDD363888F840583387be59E26aF73068615D",
+      address : "0xF40D2991d41ce989c4DCc0C475D4cEFbA7776866",
       abi : TOP_STABLE_STAKING_ABI,
       stakeTokenFunction : "lusdToken",
       rewardTokenAddresses : rewardTokenAddresses2
     }
   
       const tokens = {};
-      const prices = await getAvaxPrices();
+      const prices = await getBscPrices();
   
       const p0 = await loadStablePool(App, tokens, prices, StablePool1.abi, 
                                                            StablePool1.address, 
@@ -88,19 +88,19 @@ $(function() {
   async function loadStablePool(App, tokens, prices, abi, address, rewardTokenAddresses, stakeTokenFunction) {
       const info = await loadStablePoolInfo(App, tokens, prices, abi, address, rewardTokenAddresses, stakeTokenFunction);
       if (!info) return null;
-      return await printStablePool(App, info, "avax");
+      return await printStablePool(App, info, "bsc");
   }
   
   async function loadLpStakingPool(App, tokens, prices, abi, address, rewardTokenAddress, stakeTokenFunction) {
     const info = await loadLpStakingPoolInfo(App, tokens, prices, abi, address, rewardTokenAddress, stakeTokenFunction);
     if (!info) return null;
-    return await printLpStakingPool(App, info, "avax");
+    return await printLpStakingPool(App, info, "bsc");
   }
   
   async function loadLiqrPool(App, tokens, prices, abi, address, stakeTokenFunction) {
     const info = await loadloadLiqrPoolInfo(App, tokens, prices, abi, address, stakeTokenFunction);
     if (!info) return null;
-    return await printloadLiqrPool(App, info, "avax");
+    return await printloadLiqrPool(App, info, "bsc");
   }
   
   async function loadloadLiqrPoolInfo(App, tokens, prices, stakingAbi, stakingAddress,
@@ -118,7 +118,7 @@ $(function() {
           rewardTokenAddresses.push(rewardTokenAddress);
         }
   
-        var stakeToken = await getAvaxToken(App, stakeTokenAddress, stakingAddress);
+        var stakeToken = await getBscToken(App, stakeTokenAddress, stakingAddress);
   
         var newPriceAddresses = stakeToken.tokens.filter(x =>
           !getParameterCaseInsensitive(prices, x));
@@ -130,11 +130,11 @@ $(function() {
         var newTokenAddresses = stakeToken.tokens.filter(x =>
           !getParameterCaseInsensitive(tokens,x));
         for (const address of newTokenAddresses) {
-            tokens[address] = await getAvaxToken(App, address, stakingAddress);
+            tokens[address] = await getBscToken(App, address, stakingAddress);
         }
         for(const rewardTokenAddress of rewardTokenAddresses){
           if (!getParameterCaseInsensitive(tokens, rewardTokenAddress)) {
-            tokens[rewardTokenAddress] = await getAvaxToken(App, rewardTokenAddress, stakingAddress);
+            tokens[rewardTokenAddress] = await getBscToken(App, rewardTokenAddress, stakingAddress);
           }
         }
         let rewardTokens = [];
@@ -161,7 +161,7 @@ $(function() {
           earnings.push(earned);
         }
   
-        const poolPrices = getPoolPrices(tokens, prices, stakeToken, "avax");
+        const poolPrices = getPoolPrices(tokens, prices, stakeToken, "bsc");
   
         if (!poolPrices)
         {
@@ -207,7 +207,7 @@ $(function() {
         }
         const stakeTokenAddress = await STAKING_POOL.callStatic[stakeTokenFunction]();
   
-        var stakeToken = await getAvaxToken(App, stakeTokenAddress, stakingAddress);
+        var stakeToken = await getBscToken(App, stakeTokenAddress, stakingAddress);
   
         if (stakeTokenAddress.toLowerCase() === rewardTokenAddress.toLowerCase()) {
           stakeToken.staked = await STAKING_POOL.totalSupply() / 10 ** stakeToken.decimals;
@@ -223,16 +223,16 @@ $(function() {
         var newTokenAddresses = stakeToken.tokens.filter(x =>
           !getParameterCaseInsensitive(tokens,x));
         for (const address of newTokenAddresses) {
-            tokens[address] = await getAvaxToken(App, address, stakingAddress);
+            tokens[address] = await getBscToken(App, address, stakingAddress);
         }
         if (!getParameterCaseInsensitive(tokens, rewardTokenAddress)) {
-            tokens[rewardTokenAddress] = await getAvaxToken(App, rewardTokenAddress, stakingAddress);
+            tokens[rewardTokenAddress] = await getBscToken(App, rewardTokenAddress, stakingAddress);
         }
         const rewardToken = getParameterCaseInsensitive(tokens, rewardTokenAddress);
   
         const rewardTokenTicker = rewardToken.symbol;
   
-        const poolPrices = getPoolPrices(tokens, prices, stakeToken, "avax");
+        const poolPrices = getPoolPrices(tokens, prices, stakeToken, "bsc");
   
         if (!poolPrices)
         {
@@ -317,7 +317,7 @@ $(function() {
       const revoke = async function() {
         return rewardsContract_resetApprove(info.stakeTokenAddress, info.stakingAddress, App)
       }
-      _print(`<a target="_blank" href="https://cchain.explorer.avax.network/address/${info.stakingAddress}#code">Explorer</a>`);
+      _print(`<a target="_blank" href="https://bscscan.com/address/${info.stakingAddress}#code">Explorer</a>`);
       _print_link(`Stake ${info.userUnstaked.toFixed(6)} ${info.stakeTokenTicker} Fee-${info.depositFee}%`, approveTENDAndStake)
       _print_link(`Unstake ${info.userStaked.toFixed(6)} ${info.stakeTokenTicker}`, unstake)
       _print_link(`Claim ${info.earned.toFixed(6)} ${info.rewardTokenTicker} ($${formatMoney(info.earned*info.rewardTokenPrice)})`, claim)
@@ -343,17 +343,17 @@ $(function() {
       }
       const stakeTokenAddress = await STAKING_POOL.callStatic[stakeTokenFunction]();
   
-      let stakeToken = await getAvaxToken(App, stakeTokenAddress, stakeTokenAddress);
+      let stakeToken = await getBscToken(App, stakeTokenAddress, stakeTokenAddress);
       stakeToken.staked = await STAKING_POOL.getTotalLUSDDeposits() / 10 ** stakeToken.decimals;
   
       var newTokenAddresses = stakeToken.tokens.filter(x =>
         !getParameterCaseInsensitive(tokens,x));
       for (const address of newTokenAddresses) {
-          tokens[address] = await getAvaxToken(App, address, stakingAddress);
+          tokens[address] = await getBscToken(App, address, stakingAddress);
       }
       for(const rewardTokenAddress of rewardTokenAddresses){
         if (!getParameterCaseInsensitive(tokens, rewardTokenAddress)) {
-          tokens[rewardTokenAddress] = await getAvaxToken(App, rewardTokenAddress, stakingAddress);
+          tokens[rewardTokenAddress] = await getBscToken(App, rewardTokenAddress, stakingAddress);
         }
       }
       let rewardTokens = [];
@@ -369,7 +369,7 @@ $(function() {
       }
   
   
-      const poolPrices = getPoolPrices(tokens, prices, stakeToken, "avax");
+      const poolPrices = getPoolPrices(tokens, prices, stakeToken, "bsc");
   
       if (!poolPrices)
       {
@@ -437,7 +437,7 @@ $(function() {
     const revoke = async function() {
       return rewardsContract_resetApprove(info.stakeTokenAddress, info.stakingAddress, App)
     }
-    _print(`<a target="_blank" href="https://cchain.explorer.avax.network/address/${info.stakingAddress}/contracts">Avax Explorer</a>`);
+    _print(`<a target="_blank" href="https://bscscan.com/address/${info.stakingAddress}/contracts">Bsc Explorer</a>`);
     if (info.stakeTokenTicker != "ETH") {
       _print_link(`Stake ${info.userUnstaked.toFixed(6)} ${info.stakeTokenTicker}`, approveTENDAndStake)
     }
@@ -458,7 +458,7 @@ $(function() {
     }
   }
   
-  async function printloadLiqrPool(App, info, chain="avax", customURLs) {
+  async function printloadLiqrPool(App, info, chain="bsc", customURLs) {
       info.poolPrices.print_price(chain, 4, customURLs);
       for(let i = 0; i < info.rewardTokenTickers; i++){
         _print(`${info.rewardTokenTickers[i]} Per Week: ${info.weeklyRewards[i].toFixed(2)} ($${formatMoney(info.usdCoinsPerWeek[i])})`);
@@ -506,7 +506,7 @@ $(function() {
         return rewardsContract_unstake(info.stakingAddress,info.userStakedWei, App)
       }
       const claim = async function() {
-        return claimDMagic(info.stakingAddress, App)
+        return claimTopshelf(info.stakingAddress, App)
       }
       const exit = async function() {
         return rewardsContract_exit(info.stakingAddress, App)
@@ -514,7 +514,7 @@ $(function() {
       const revoke = async function() {
         return rewardsContract_resetApprove(info.stakeTokenAddress, info.stakingAddress, App)
       }
-      _print(`<a target="_blank" href="https://snowtrace.io/address/${info.stakingAddress}#code">Avax Explorer</a>`);
+      _print(`<a target="_blank" href="https://bscscan.com/address/${info.stakingAddress}#code">Bsc Explorer</a>`);
       if (info.stakeTokenTicker != "ETH") {
         _print_link(`Stake ${info.userUnstaked.toFixed(6)} ${info.stakeTokenTicker}`, approveTENDAndStake)
       }
@@ -537,3 +537,25 @@ $(function() {
           apr : yearlyAPR
       }
   }
+
+const claimTopshelf = async function(rewardPoolAddr, App) {
+  const signer = App.provider.getSigner()
+
+  const REWARD_POOL = new ethers.Contract(rewardPoolAddr, DRAX_STAKING_ABI, signer)
+
+  console.log(App.YOUR_ADDRESS)
+
+  const earnedYFFI = (await REWARD_POOL.totalEarnedRewardToken1(App.YOUR_ADDRESS)) / 1e18
+
+  if (earnedYFFI > 0) {
+    showLoading()
+    REWARD_POOL.getReward({gasLimit: 250000})
+      .then(function(t) {
+        return App.provider.waitForTransaction(t.hash)
+      })
+      .catch(function() {
+        hideLoading()
+      })
+  }
+  else alert("Nothing to claim");
+}
