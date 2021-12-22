@@ -15,7 +15,8 @@ $(function() {
        const rewardTokenTicker = "BANKSY";
        const BANKSY_CHEF = new ethers.Contract(BANKSY_CHEF_ADDR, BANKSY_CHEF_ABI, App.provider);
     
-       const rewardsPerWeek = await BANKSY_CHEF.banksyPerBlock() /1e18 * 604800;
+       const blocksPerSeconds = await getAverageBlockTime(App);
+       const rewardsPerWeek = await BANKSY_CHEF.banksyPerBlock() /1e18 * 604800 / blocksPerSeconds;
     
         const tokens = {};
         const prices = await getAvaxPrices();
