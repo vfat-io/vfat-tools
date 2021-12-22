@@ -52,7 +52,11 @@ $(function() {
   
       const tokens = {};
       const prices = await getBscPrices();
-  
+
+      prices["0xDA279B4a038B2C10792178d77911627a98eeB3f8"] = { usd : 1 }
+      prices["0xD295F4b58D159167DB247de06673169425B50EF2"] = { usd : 1 }
+      prices["0xaF4dE8E872131AE328Ce21D909C74705d3Aaf452"] = { usd : 1 }
+      
       const p2 = await loadLpStakingPool(App, tokens, prices, LpStakingPool.abi, 
                                                               LpStakingPool.address, 
                                                               LpStakingPool.rewardTokenAddress, 
@@ -152,7 +156,7 @@ $(function() {
           rewardTokenPrices.push(rewardTokenPrice);
           const rewardData = await STAKING_POOL.rewardData(rewardTokenAddress);
           const periodFinish = rewardData.periodFinish;
-          const rewardRate = rewardData.rewardRate;
+          const rewardRate = rewardData.rewardRate / 10 ** rewardToken.decimals
           const weeklyReward = (Date.now() / 1000 > periodFinish) ? 0 : rewardRate / rewardToken.decimals * 604800;
           const usdPerWeek = weeklyReward * rewardTokenPrice;
           weeklyRewards.push(weeklyReward);

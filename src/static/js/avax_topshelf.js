@@ -53,6 +53,10 @@ async function main() {
     const tokens = {};
     const prices = await getAvaxPrices();
 
+    prices["0x40b393cecf8F7D7Fc79b83e8fA40e850511817f6"] = { usd : 1 }
+    prices["0xe0237F9E2aaABd7Ffb8630BE5203D573a045Bca7"] = { usd : 1 }
+    prices["0x37c9be6c81990398e9b87494484afc6a4608c25d"] = { usd : 1 }
+
       const p2 = await loadLpStakingPool(App, tokens, prices, LpStakingPool.abi, 
                                                               LpStakingPool.address, 
                                                               LpStakingPool.rewardTokenAddress, 
@@ -152,7 +156,7 @@ async function loadloadLiqrPoolInfo(App, tokens, prices, stakingAbi, stakingAddr
         rewardTokenPrices.push(rewardTokenPrice);
         const rewardData = await STAKING_POOL.rewardData(rewardTokenAddress);
         const periodFinish = rewardData.periodFinish;
-        const rewardRate = rewardData.rewardRate;
+        const rewardRate = rewardData.rewardRate / 10 ** rewardToken.decimals
         const weeklyReward = (Date.now() / 1000 > periodFinish) ? 0 : rewardRate / rewardToken.decimals * 604800;
         const usdPerWeek = weeklyReward * rewardTokenPrice;
         weeklyRewards.push(weeklyReward);
