@@ -8,7 +8,7 @@ const main = async() => {
     "title":"AVALANCHE Network",
     "heading":["Pool Provider","LP", "Reward Tokens", "INFO"],
     "rows": [
-        ["Pangolin *              ",`<a href="png"              >Various</a>`,"PNG          ","https://app.pangolin.exchange/#/png"],
+        ["Pangolin                ",`<a href="png"              >Various</a>`,"PNG          ","https://app.pangolin.exchange/#/png"],
         ["Kyber                   ",`<a href="kyber"            >Various</a>`,"AVAX         ","https://dmm.exchange"],
         ["Complus                 ",`<a href="complus"          >Various</a>`,"COM          ","https://avax.complus.exchange"],
         ["Zero                    ",`<a href="zero"             >Various</a>`,"ZERO         ","https://app.0.exchange"],
@@ -82,8 +82,10 @@ const main = async() => {
         ["The Blossom Farm        ",`<a href="bloom"            >Various</a>`,"BLM          ","https://bloom.theseedfarm.app"],
         ["AvaxRush                ",`<a href="avaxrush"         >Various</a>`,"SONIC        ","https://avaxrush.com"],
         ["FarmersOnly ONION       ",`<a href="onion"            >Various</a>`,"ONION        ","https://onion.farmersonly.farm"],
-        ["Autofarm                ", `<a href='autofatm'        >Various</a>`,"Various      ","https://autofarm.network/fantom"],
-        ["IceFlake                ",`<a href="iceflake"         >Various</a>`,"FLAKE        ","https://iceflake.finance"]
+        ["Autofarm                ", `<a href='autofatm'        >Various</a>`,"Various      ","https://autofarm.network"],
+        ["IceFlake                ",`<a href="iceflake"         >Various</a>`,"FLAKE        ","https://iceflake.finance"],
+        ["BanksyFarm              ",`<a href="banksyfarm"       >Various</a>`,"BanksyFarm   ","https://banksy.farm"],
+        ["Topshelf                ",`<a href="topshelf"         >Various</a>`,"LIQR         ","https://topshelf.finance"]
     ]
   }
 
