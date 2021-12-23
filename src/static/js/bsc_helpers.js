@@ -516,7 +516,6 @@ async function loadBscBasisFork(data) {
     hideLoading();
 }
 
-
 async function getBscPoolInfo(App, chefContract, chefAddress, poolIndex, pendingRewardsFunction) {
   const poolInfo = await chefContract.poolInfo(poolIndex);
   if (poolInfo.allocPoint == 0 || poolIndex == 105) {
@@ -616,7 +615,6 @@ async function loadBscChefContract(App, tokens, prices, chef, chefAddress, chefA
         + ` Year $${formatMoney(totalUserStaked*averageApr)}\n`);
   }
   return { prices, totalUserStaked, totalStaked, averageApr }
-
 }
 
 

@@ -29,7 +29,8 @@ const main = async() => {
       ["CROTerra             ", `<a href='croterra'     >Various</a>`,"CROTerra     ","https://croterra.finance"],
       ["BetaCrono Finance    ", `<a href='betacrono'    >Various</a>`,"BETACRONO    ","https://beta.metacrono.finance"],
       ["DnaDollar            ", `<a href='dnadollar'    >Various</a>`,"DNA          ","https://dnadollar.com"],
-      ["MM Finance           ", `<a href='mm'           >Various</a>`,"MMF          ","https://mm.finance"]
+      ["MM Finance           ", `<a href='mm'           >Various</a>`,"MMF          ","https://mm.finance"],
+      ["Elk                  ", `<a href='elk'          >Various</a>`,"ELK          ","https://app.elk.finance"]
     ]
   }
 
