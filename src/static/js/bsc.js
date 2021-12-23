@@ -106,7 +106,7 @@ const main = async() => {
       ["Eleven              ","", `<a href="eleven"        >Various</a>`,"ELE              ","https://eleven.finance"],
       ["Yumcha              ","", `<a href="yumcha"        >Various</a>`,"YUMCHA           ","https://yumcha.finance"],
       ["Comos               ","", `<a href="comos"         >Various</a>`,"COMOS            ","https://app.comos.finance"],
-      ["Pokemoon            ","", `<a href="pokemoon"      >Various</a>`,"KBN              ","https://pokemoon.app"],
+      ["Pokemoon *          ","", `<a href="pokemoon"      >Various</a>`,"KBN              ","https://pokemoon.io"],
       ["Octree              ","", `<a href="octree"        >Various</a>`,"OAK              ","https://octree.finance"],
       ["Cub                 ","", `<a href="cub"           >Various</a>`,"CUB              ","https://cubdefi.com"],
       ["Popsicle            ","", `<a href="popsicle"      >Various</a>`,"ICE              ","https://popsicle.finance"],
