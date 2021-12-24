@@ -30,7 +30,7 @@ $(function() {
         const prices = await getFantomPrices();
     
         await loadFantomChefContract(App, tokens, prices, CARIBOU_CHEF, CARIBOU_CHEF_ADDR, CARIBOU_CHEF_ABI, rewardTokenTicker,
-          "token", null, rewardsPerWeek, "pendingCARIBOU");
+          "caribou", null, rewardsPerWeek, "pendingCaribou");
     
         hideLoading();
       }
