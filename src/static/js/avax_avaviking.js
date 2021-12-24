@@ -14,24 +14,24 @@ $(function () {
         const VIKING_CHEF_ADDR = "0xEF8285A4B4F21D3F9dC9E5cEf7E39977E2Ef8B3d";		
         const rewardTokenTicker = "VIKING";		
         const VIKING_CHEF = new ethers.Contract(VIKING_CHEF_ADDR, VIKING_CHEF_ABI, App.provider);
+        
+        const blocksPerSeconds = await getAverageBlockTime(App);
 
-        const startTime = await VIKING_CHEF.startTime();
-        const currentTime = Date.now();
+        const startBlock = await VIKING_CHEF.startBlock();
+        const currentBlock = await App.provider.getBlockNumber();
         let rewardsPerWeek = 0;
 
-        if(currentTime > startTime){
-            rewardsPerWeek = await VIKING_CHEF.fVikingPerBlock() / 1e18 * 604800;
-        }else{
-            _print("Rewards has not started yet")
-            _print("")
-        }
-        		
+        if (currentBlock < startBlock) {
+            _print(`Rewards start at block <a href="https://cchain.explorer.avax.network/block/${startBlock}" target="_blank">${startBlock}</a>\n`);
+        } else {
+            rewardsPerWeek = await VIKING_CHEF.fVikingPerBlock() / 1e18 * 604800 / blocksPerSeconds;
+        }        		
     		
         const tokens = {};		
         const prices = await getAvaxPrices();		
     		
         await loadAvaxChefContract(App, tokens, prices, VIKING_CHEF, VIKING_CHEF_ADDR, VIKING_CHEF_ABI, rewardTokenTicker,		
-            "avaviking", null, rewardsPerWeek, "pendingViking", [1]);		
+            "token", null, rewardsPerWeek, "pendingViking", [1]);		
     		
         hideLoading();		
     }		
