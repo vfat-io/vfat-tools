@@ -85,7 +85,8 @@ const main = async() => {
         ["Autofarm                ", `<a href='autofatm'        >Various</a>`,"Various      ","https://autofarm.network"],
         ["IceFlake                ",`<a href="iceflake"         >Various</a>`,"FLAKE        ","https://iceflake.finance"],
         ["BanksyFarm              ",`<a href="banksyfarm"       >Various</a>`,"BanksyFarm   ","https://banksy.farm"],
-        ["Topshelf                ",`<a href="topshelf"         >Various</a>`,"LIQR         ","https://topshelf.finance"]
+        ["Topshelf                ",`<a href="topshelf"         >Various</a>`,"LIQR         ","https://topshelf.finance"],
+        ["Avaviking                ",`<a href="avaviking"         >Various</a>`,"VIKING         ","https://www.avaviking.com"]
     ]
   }
 
