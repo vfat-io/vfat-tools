@@ -478,6 +478,21 @@ window.NETWORKS = {
       "https://andromeda-explorer.metis.io/"
     ],
   },
+  METER: {
+    "chainId": "0x52",
+    "chainName": "Meter Mainnet",
+    "nativeCurrency": {
+      "name": "Meter token",
+      "symbol": "MTR",
+      "decimals": 18
+    },
+    "rpcUrls": [
+      "https://rpc.meter.io"
+    ],
+    "blockExplorerUrls": [
+      "https://scan.meter.io"
+    ],
+  },
 }
 
 const infuraId = atob(window.ETHEREUM_NODE_URL).split('/').pop()
@@ -506,7 +521,8 @@ const providerOptions = {
         321: "https://rpc-mainnet.kcc.network",
         10000: "https://global.uat.cash",
         333999: "https://rpc.polis.tech",
-        25: "https://rpc.crodex.app/"
+        25: "https://rpc.crodex.app/",
+        82: "https://rpc.meter.io"
       }
     }
   }

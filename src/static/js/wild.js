@@ -17,23 +17,22 @@ consoleInit(main)
     const WILD_CHEF_ABI = [{"inputs":[{"internalType":"contract IERC20","name":"_rewardToken","type":"address"},{"internalType":"uint256","name":"_totalRewardPerBlock","type":"uint256"}],"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":true,"internalType":"uint256","name":"pid","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"Deposit","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":true,"internalType":"uint256","name":"pid","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"EmergencyWithdraw","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"previousOwner","type":"address"},{"indexed":true,"internalType":"address","name":"newOwner","type":"address"}],"name":"OwnershipTransferConfirmed","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"previousOwner","type":"address"},{"indexed":true,"internalType":"address","name":"newOwner","type":"address"}],"name":"OwnershipTransferInitiated","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"lpToken","type":"address"},{"indexed":true,"internalType":"uint256","name":"pid","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"points","type":"uint256"}],"name":"PoolUpdate","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"value","type":"uint256"}],"name":"RewardRateUpdate","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":true,"internalType":"uint256","name":"pid","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"Withdraw","type":"event"},{"inputs":[],"name":"acceptOwnership","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"accrueAllPools","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_pid","type":"uint256"}],"name":"accruePool","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"_lpToken","type":"address"},{"internalType":"uint256","name":"_points","type":"uint256"}],"name":"addPool","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_pid","type":"uint256"},{"internalType":"uint256","name":"_amount","type":"uint256"}],"name":"deposit","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_pid","type":"uint256"}],"name":"emergencyWithdraw","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"isOwner","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"_recipient","type":"address"},{"internalType":"uint256","name":"_amount","type":"uint256"}],"name":"migrateRewards","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"owner","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"pendingOwner","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"_pid","type":"uint256"},{"internalType":"address","name":"_user","type":"address"}],"name":"pendingRewards","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"pidByToken","outputs":[{"internalType":"uint256","name":"pid","type":"uint256"},{"internalType":"bool","name":"added","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"poolLength","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"","type":"uint256"}],"name":"pools","outputs":[{"internalType":"contract IERC20","name":"lpToken","type":"address"},{"internalType":"uint256","name":"points","type":"uint256"},{"internalType":"uint256","name":"lastRewardBlock","type":"uint256"},{"internalType":"uint256","name":"accRewardTokenPerShare","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"rewardToken","outputs":[{"internalType":"contract IERC20","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"_pid","type":"uint256"},{"internalType":"uint256","name":"_points","type":"uint256"}],"name":"setReward","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_value","type":"uint256"}],"name":"setTotalRewardPerBlock","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"totalPoints","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"totalRewardPerBlock","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"_newOwner","type":"address"}],"name":"transferOwnership","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"","type":"uint256"},{"internalType":"address","name":"","type":"address"}],"name":"userInfo","outputs":[{"internalType":"uint256","name":"amount","type":"uint256"},{"internalType":"uint256","name":"rewardDebt","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"_pid","type":"uint256"},{"internalType":"uint256","name":"_amount","type":"uint256"}],"name":"withdraw","outputs":[],"stateMutability":"nonpayable","type":"function"}]
     const WILD_CHEF_ADDR = "0x3220269e3CfA62270F4d0e5c4245D7b6a0079777";
     const WILD_CHEF = new ethers.Contract(WILD_CHEF_ADDR, WILD_CHEF_ABI, App.provider);
-    await loadxWILD(App);
-    await loadWildCreditContract(App, WILD_CHEF, WILD_CHEF_ADDR, WILD_CHEF_ABI,
+    let p1 = await loadWildCreditContract(App, WILD_CHEF, WILD_CHEF_ADDR, WILD_CHEF_ABI,
         "WILD", "pendingRewards", [], [0]);
+
+    await loadxWILD(App, p1.prices);
 
     hideLoading();
   }
 
-async function loadxWILD(App){
+async function loadxWILD(App, prices){
   const xWILD_ADDR = "0xB0f466cc45dc73D0A6Ea889C63390aEea7b6Dcc5";
   const WILD_ADDR = "0x08A75dbC7167714CeaC1a8e43a8d643A4EDd625a";
-  const tokenAddresses = [xWILD_ADDR, WILD_ADDR];
   const xWILD_CONTRACT = new ethers.Contract(xWILD_ADDR, xWILD_ABI, App.provider);
   const WILD_CONTRACT = new ethers.Contract(WILD_ADDR, WILD_ABI, App.provider);
   const totalDepositedWILDs = await WILD_CONTRACT.balanceOf(xWILD_ADDR) / 1e18;
   const totalxWILDTokens = await xWILD_CONTRACT.totalSupply() / 1e18;
   const virtualPrice = totalDepositedWILDs / totalxWILDTokens;
-  const prices = await lookUpTokenPrices(tokenAddresses);
   const WILDPrice = getParameterCaseInsensitive(prices, WILD_ADDR).usd;
   const xWILDPrice = WILDPrice * virtualPrice;
   const rewardTicker = await xWILD_CONTRACT.symbol();
@@ -44,7 +43,8 @@ async function loadxWILD(App){
   const tvl = totalDepositedWILDs * WILDPrice
   const usersPercentage = totalOwnedxWILD / totalxWILDTokens * 100;
   const usersxWILDUsd = totalOwnedxWILD * xWILDPrice;
-  _print(`\n${rewardTicker} Price: $${toFixed(xWILDPrice, 2)} Total Supply: ${toFixed(totalxWILDTokens, 4)} TVL: $${formatMoney(tvl)}`);
+  _print(`\n<a href="https://etherscan.io/address/${xWILD_ADDR}#readContract" target="blank">xWild Staking Contract</a>`)
+  _print(`${rewardTicker} Price: $${toFixed(xWILDPrice, 2)} Total Supply: ${toFixed(totalxWILDTokens, 4)} TVL: $${formatMoney(tvl)}`);
   _print(`${stakeTicker} Price: $${toFixed(WILDPrice, 2)}`);
   _print(`There is a total of ${toFixed(totalDepositedWILDs, 2)} WILD staked in xWILD`);
   _print(`Your balance is ${totalOwnedxWILD.toFixed(2)} ${rewardTicker} (${totalOwnedWILD.toFixed(2)} ${stakeTicker}), $${formatMoney(usersxWILDUsd)}, ${usersPercentage.toFixed(2)}% of the pool`);
@@ -52,10 +52,11 @@ async function loadxWILD(App){
     return contract_stake(xWILD_ABI, xWILD_ADDR, App, WILD_ADDR)
   }
   const unstake = async function() {
-    return contract_unstake(xWILD_ABI, xWILD_ADDR, totalOwnedxWILD, App)
+    return contract_unstake(xWILD_ABI, xWILD_ADDR, App)
   }
   _print_link(`Stake ${totalOwnedWildForStake.toFixed(2)} ${stakeTicker}`, approveAndStake)
   _print_link(`Unstake ${totalOwnedxWILD.toFixed(2)} ${rewardTicker}`, unstake)
+  _print('\n');
 }
 
 const contract_stake = async function(abi, contractAddress, App, stakeTokenAddr) {
@@ -105,7 +106,9 @@ const contract_stake = async function(abi, contractAddress, App, stakeTokenAddr)
   }
 }
 
-const contract_unstake = async function(abi, contractAddress, stakedAmount, App) {
+const contract_unstake = async function(abi, contractAddress, App) {
+  const xWILD_STAKING_CONTRACT = new ethers.Contract(contractAddress,abi,App.provider);
+  const stakedAmount = await xWILD_STAKING_CONTRACT.balanceOf(App.YOUR_ADDRESS)
   const signer = App.provider.getSigner()
   const xWILD_WRITE_CONTRACT = new ethers.Contract(contractAddress, abi, signer)
   showLoading()
@@ -191,7 +194,7 @@ async function loadWildCreditContract(App, chef, chefAddress, chefAbi, rewardTok
   let aprs = []
   for (let i = 0; i < poolCount; i++) {
     if (poolInfos[i].poolToken!=null) {
-      const apr = printChefPool(App, chefAbi, chefAddress, prices, tokens, poolInfos[i], i, poolPrices[i],
+      const apr = printWildChefPool(App, chefAbi, chefAddress, prices, tokens, poolInfos[i], i, poolPrices[i],
         totalAllocPoints, rewardsPerWeek, rewardTokenTicker, rewardTokenAddress,
         pendingRewardsFunction)
       aprs.push(apr);
@@ -217,6 +220,57 @@ async function loadWildCreditContract(App, chef, chefAddress, chefAbi, rewardTok
         + ` Year $${formatMoney(totalUserStaked*averageApr)}\n`);
   }
   return { prices, totalUserStaked, totalStaked, averageApr }
+}
+
+function printWildChefPool(App, chefAbi, chefAddr, prices, tokens, poolInfo, poolIndex, poolPrices,
+                       totalAllocPoints, rewardsPerWeek, rewardTokenTicker, rewardTokenAddress,
+                       pendingRewardsFunction, fixedDecimals, claimFunction, chain="eth", depositFee=0, withdrawFee=0) {
+  fixedDecimals = fixedDecimals ?? 2;
+  const sp = (poolInfo.stakedToken == null) ? null : getPoolPrices(tokens, prices, poolInfo.stakedToken, chain);
+  var poolRewardsPerWeek = poolInfo.allocPoints / totalAllocPoints * rewardsPerWeek;
+  if (poolRewardsPerWeek == 0 && rewardsPerWeek != 0) return;
+  const userStaked = poolInfo.userLPStaked ?? poolInfo.userStaked;
+  const rewardPrice = getParameterCaseInsensitive(prices, rewardTokenAddress)?.usd;
+  const staked_tvl = sp?.staked_tvl ?? poolPrices.staked_tvl;
+  _print_inline(`${poolIndex} - `);
+  poolPrices.print_price(chain);
+  sp?.print_price(chain);
+  const apr = printAPR(rewardTokenTicker, rewardPrice, poolRewardsPerWeek, poolPrices.stakeTokenTicker,
+    staked_tvl, userStaked, poolPrices.price, fixedDecimals);
+  if (poolInfo.userLPStaked > 0) sp?.print_contained_price(userStaked);
+  if (poolInfo.userStaked > 0) poolPrices.print_contained_price(userStaked);
+  printWildChefContractLinks(App, chefAbi, chefAddr, poolIndex, poolInfo.lpTokenAddress, pendingRewardsFunction,
+    rewardTokenTicker, poolPrices.stakeTokenTicker, poolInfo.poolToken.unstaked,
+    poolInfo.userStaked, poolInfo.pendingRewardTokens, fixedDecimals, claimFunction, rewardPrice, chain, depositFee, withdrawFee);
+  return apr;
+}
+
+function printWildChefContractLinks(App, chefAbi, chefAddr, poolIndex, poolAddress, pendingRewardsFunction,
+    rewardTokenTicker, stakeTokenTicker, unstaked, userStaked, pendingRewardTokens, fixedDecimals,
+    claimFunction, rewardTokenPrice, chain, depositFee, withdrawFee) {
+  fixedDecimals = fixedDecimals ?? 2;
+  const approveAndStake = async function() {
+    return chefContract_stake(chefAbi, chefAddr, poolIndex, poolAddress, App)
+  }
+  const unstake = async function() {
+    return chefContract_unstake(chefAbi, chefAddr, poolIndex, App, pendingRewardsFunction)
+  }
+  const claim = async function() {
+    return chefContract_claim(chefAbi, chefAddr, poolIndex, App, pendingRewardsFunction, claimFunction)
+  }
+  if(depositFee > 0){
+    _print_link(`Stake ${unstaked.toFixed(fixedDecimals)} ${stakeTokenTicker} - Fee ${depositFee}%`, approveAndStake)
+  }else{
+    _print_link(`Stake ${unstaked.toFixed(fixedDecimals)} ${stakeTokenTicker}`, approveAndStake)
+  }
+  if(withdrawFee > 0){
+    _print_link(`Unstake ${userStaked.toFixed(fixedDecimals)} ${stakeTokenTicker} - Fee ${withdrawFee}%`, unstake)
+  }else{
+    _print_link(`Unstake ${userStaked.toFixed(fixedDecimals)} ${stakeTokenTicker}`, unstake)
+  }
+  _print_link(`Claim ${pendingRewardTokens.toFixed(fixedDecimals)} ${rewardTokenTicker} ($${formatMoney(pendingRewardTokens*rewardTokenPrice)})`, claim)
+  _print(`Staking or unstaking also claims rewards.`)
+  _print("");
 }
 
 async function getWildPoolInfo(app, chefContract, chefAddress, poolIndex, tokens, showAll=false) {
