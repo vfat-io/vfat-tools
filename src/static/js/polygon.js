@@ -420,7 +420,7 @@ const main = async () => {
       ['Nacho               ',"",  `<a href="nacho"           >Various</a>`, 'NACHO/NSHARE ','https://nachoxyz.com'],
       ['Salem Finance       ',"",  `<a href="salem"           >Various</a>`, 'SALEM        ','https://polygon.salem.finance'],
       ['Sandbox             ',"",  `<a href="sandbox"         >Various</a>`, 'SAND         ','https://www.sandbox.game'],
-      ['Destiny             ',"",  `<a href="destinyfarm"         >Various</a>`, 'Various      ','https://destiny.sandman.finance'],
+      ['Destiny             ',"",  `<a href="destinyfarm"     >Various</a>`, 'Various      ','https://destiny.sandman.finance'],
     ],
   }
 
