@@ -43,7 +43,8 @@ const main = async () => {
       ["SmugSwap",          "",`<a href='smugdoge'>Various</a>`,       "BABYSMUG",      "https://smugswap.com"],
       ["Reverse Protocol",  "",`<a href='reverse'>Various</a>`,        "RVRS",          "https://beta.reverseprotocol.one"],
       ["Synapse",           "",`<a href='synapse'>Various</a>`,        "SYN",           "https://synapseprotocol.com"],
-      ["Wagmidao",          "",`<a href='wagmidao'>Various</a>`,       "GMI",           "https://app.wagmidao.io"]
+      ["Wagmidao",          "",`<a href='wagmidao'>Various</a>`,       "GMI",           "https://app.wagmidao.io"],
+      ["Chad Finance",      "",`<a href='chadfinance'>Various</a>`,    "CHAD",           "https://chadfinance.one"]
     ]
   }
 

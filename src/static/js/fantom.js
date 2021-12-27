@@ -108,8 +108,8 @@ const main = async() => {
       ['COFFIN FINANCE     ', `<a href="coffin"       >Various</a>`,'COFFIN       ','https://app.coffin.finance'],
       ['Babypig Finance    ', `<a href="babypig"      >Various</a>`,'fBABYPIG     ','https://babypig.finance'],
       ['Draco Force        ', `<a href="dracoforce"   >Various</a>`,'DRC          ','https://dracoforce.com'],
-      ['Smurf              ', `<a href="smurf"        >Various</a>`,'CLEVER       ','https://smurf.money'],
-      ['Hundred            ', `<a href="hundred"      >Various</a>`,'HND          ','https://hundred.finance'],
+      ['Smurf Clever       ', `<a href="smurf"        >Various</a>`,'CLEVER       ','https://smurf.money'],
+      ['Hundred *          ', `<a href="hundred"      >Various</a>`,'HND          ','https://hundred.finance'],
       ['FantomPup          ', `<a href="fantompup"    >Various</a>`,'PUP          ','https://fantompup.finance'],
       ['UndeadFinance      ', `<a href="undeadfinance">Various</a>`,'UNDEAD       ','https://undeadfinance.com'],
       ['FanTerra           ', `<a href="fanterra"     >Various</a>`,'FANTERRA     ','https://app.fanterra.finance'],
@@ -127,7 +127,17 @@ const main = async() => {
       ["MunSwap            ", `<a href='munswap'      >Various</a>`,"MUN          ","https://mun-swap.com"],
       ["TrickorTreat L2    ", `<a href='trick'        >Various</a>`,"TRICK        ","https://trickortreat.farm"],
       ["rKITTEN            ", `<a href='rkitten'      >Various</a>`,"rKITTEN      ","https://kittens.fakeworms.studio/rewards"],
-      ["Ghost              ", `<a href='ghst'         >Various</a>`,"GHST         ","https://ghost.maximum.farm"]
+      ["Ghost              ", `<a href='ghst'         >Various</a>`,"GHST         ","https://ghost.maximum.farm"],
+      ["Smurf Mushy        ", `<a href='mushy'        >Various</a>`,"MUSHY        ","https://mushy.smurf.money"],
+      ["Supercub Finance   ", `<a href='supercub'     >Various</a>`,"SCUB         ","https://supercub.finance"],
+      ["Dark KnightSwap    ", `<a href='knightswap'   >Various</a>`,"DKNIGHT      ","https://dark.knightswap.financial"],
+      ["Genesys            ", `<a href='genesys   '   >Various</a>`,"DNA          ","https://genesys.app"],
+      ["Xmas-Past          ", `<a href='xmaspast '    >Various</a>`,"XPAST        ","https://www.xmas-past.com"],
+      ["Bakerguild         ", `<a href='bakerguild '  >Various</a>`,"BAKER        ","https://bakerguild.com"],
+      ["DefySwap           ", `<a href='defyswap'     >Various</a>`,"DFY          ","https://defyswap.finance"],
+      ["BlackGoat          ", `<a href='blackgoat'    >Various</a>`,"GOAT         ","https://app.fanblackgoat.finance"],
+      ["Topshelf           ", `<a href='topshelf'     >Various</a>`,"LIQR         ","https://topshelf.finance"],
+      ["Caribou Finance    ", `<a href='caribou'      >Various</a>`,"CARIBOU      ","https://caribou.finance"]
     ]
   }
 

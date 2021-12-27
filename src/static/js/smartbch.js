@@ -9,9 +9,10 @@ const main = async() => {
     "heading":["Pool Provider","LP", "Reward Tokens", "INFO"],
     "rows": [
       ["BenSwap             ", `<a href="benswap"       >Various</a>`,"EBEN             ","https://benswap.cash"],
-      ["MistSwap            ", `<a href="mistswap"      >Various</a>`,"MIST             ","https://mistswap.fi"],
-      ["MuesliSwap BCH      ", `<a href="muesliswap"    >Various</a>`,"MILK             ","<a href=\"https://muesli.cash\">https://muesli.cash</a>"],
-      ["TangoSwap           ", `<a href="tangoswap"     >Various</a>`,"TANGO            ","https://tangoswap.cash"]
+      ["MistSwap            ", `<a href="mistswap"      >Various</a>`,"MIST, xMIST      ","https://app.mistswap.fi"],
+      ["MuesliSwap BCH      ", `<a href="muesliswap"    >Various</a>`,"MILK             ","https://muesli.cash"],
+      ["TangoSwap           ", `<a href="tangoswap"     >Various</a>`,"TANGO            ","https://tangoswap.cash"],
+      ["1BCH                ", `<a href="1bch"          >Various</a>`,"1BCH             ","https://1bch.com"]
     ]}
 
   let table = new AsciiTable().fromJSON(tableData);

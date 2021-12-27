@@ -15,8 +15,7 @@ async function main() {
     const Pools = [
       "0xfDb129ea4b6f557b07BcDCedE54F665b7b6Bc281",
       "0xb9C05B8EE41FDCbd9956114B3aF15834FDEDCb54",
-      "0xfE1A3dD8b169fB5BF0D5dbFe813d956F39fF6310",
-      //"0x260e4fbb13dd91e187ae992c3435d0cf97172316" //I have wrong staked balance
+      "0xfE1A3dD8b169fB5BF0D5dbFe813d956F39fF6310"
     ]
     
     const tokens = {};

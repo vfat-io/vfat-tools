@@ -84,6 +84,9 @@ const pageNetwork = function() {
   if (network.toLowerCase() === 'metis') {
     return window.NETWORKS.METIS
   }
+  if (network.toLowerCase() === 'meter') {
+    return window.NETWORKS.METER
+  }
 
   return window.NETWORKS.ETHEREUM
 }
@@ -889,9 +892,8 @@ const chefContract_unstake = async function(chefAbi, chefAddress, poolIndex, App
   const CHEF_CONTRACT = new ethers.Contract(chefAddress, chefAbi, signer)
 
   const currentStakedAmount = (await CHEF_CONTRACT.userInfo(poolIndex, App.YOUR_ADDRESS)).amount
-  const earnedTokenAmount = await CHEF_CONTRACT.callStatic[pendingRewardsFunction](poolIndex, App.YOUR_ADDRESS) / 1e18
 
-  if (earnedTokenAmount > 0) {
+  if (currentStakedAmount / 1e18 > 0) {
     showLoading()
     CHEF_CONTRACT.withdraw(poolIndex, currentStakedAmount, {gasLimit: 500000})
       .then(function(t) {
@@ -1189,13 +1191,14 @@ async function getCurveToken(app, curve, address, stakingAddress, minterAddress)
   const token = await getToken(app, coin0, address);
   const calls = [curve.decimals(), curve.balanceOf(stakingAddress), curve.balanceOf(app.YOUR_ADDRESS),
     curve.name(), curve.symbol(), curve.totalSupply()];
-  const [decimals, staked, unstaked, name, symbol, totalSupply] = await app.ethcallProvider.all(calls);
+  const [decimals_, staked, unstaked, name, symbol, totalSupply] = await app.ethcallProvider.all(calls);
+  const decimals =  decimals_ / 1;
   return {
       address,
       name,
       symbol,
       totalSupply,
-      decimals : decimals,
+      decimals,
       staked:  staked / 10 ** decimals,
       unstaked: unstaked  / 10 ** decimals,
       contract: curve,
@@ -1249,7 +1252,8 @@ async function getStableswapToken(app, stable, address, stakingAddress) {
 }
 
 async function getErc20(app, token, address, stakingAddress) {
-  if (address == "0x0000000000000000000000000000000000000000") {
+  if (address == "0x0000000000000000000000000000000000000000" || 
+      address == "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE") {
     return {
       address,
       name : "Ethereum",
@@ -1342,7 +1346,7 @@ async function getTokemakVault(app, vault, address, stakingAddress) {
 async function getCToken(app, cToken, address, stakingAddress) {
   const calls = [cToken.decimals(), cToken.underlying(), cToken.totalSupply(),
     cToken.name(), cToken.symbol(), cToken.balanceOf(stakingAddress),
-    CToken.balanceOf(app.YOUR_ADDRESS), cToken.exchangeRateStored()];
+    cToken.balanceOf(app.YOUR_ADDRESS), cToken.exchangeRateStored()];
   const [decimals, underlying, totalSupply, name, symbol, staked, unstaked, exchangeRate] =
     await app.ethcallProvider.all(calls);
   const token = await getToken(app, underlying, address);
@@ -1355,7 +1359,7 @@ async function getCToken(app, cToken, address, stakingAddress) {
     staked: staked / 10 ** decimals,
     unstaked: unstaked / 10 ** decimals,
     token: token,
-    balance: totalSupply * (exchangeRate / 1e18),
+    balance: totalSupply * exchangeRate / 1e18,
     contract: cToken,
     tokens : [address].concat(token.tokens)
   }
@@ -1413,6 +1417,68 @@ async function getNToken(app, token, address, stakingAddress) {
   };
 }
 
+async function getYearnVault(app, yearn, address, stakingAddress) {
+  const calls = [yearn.decimals(), yearn.token(), yearn.name(), yearn.symbol(), yearn.totalSupply(),
+    yearn.balanceOf(stakingAddress), yearn.balanceOf(app.YOUR_ADDRESS), yearn.totalAssets(), yearn.pricePerShare()];
+  const [decimals, token_, name, symbol, totalSupply, staked, unstaked, balance, ppfs] =
+    await app.ethcallProvider.all(calls);
+  const token = await getToken(app, token_, address);
+  return {
+    address,
+    name,
+    symbol,
+    totalSupply,
+    decimals : decimals,
+    staked: staked / 10 ** decimals,
+    unstaked: unstaked / 10 ** decimals,
+    token: token,
+    balance : balance / 10 ** decimals,
+    contract: yearn,
+    tokens : [address].concat(token.tokens),
+    ppfs : ppfs / 10 ** decimals,
+    yearn : true
+  }
+}
+
+async function getCurveMinterToken(app, curve, address, stakingAddress) {
+  const calls = [curve.get_virtual_price(), curve.coins(0), curve.decimals(), curve.balanceOf(stakingAddress), 
+                 curve.balanceOf(app.YOUR_ADDRESS), curve.name(), curve.symbol(), curve.totalSupply()];
+  const [virtualPrice, coin0, decimals_, staked, unstaked, name, symbol, totalSupply] = await app.ethcallProvider.all(calls);
+  const token = await getToken(app, coin0, address);
+  const decimals =  decimals_ / 1;
+  return {
+      address,
+      name,
+      symbol,
+      totalSupply,
+      decimals,
+      staked:  staked / 10 ** decimals,
+      unstaked: unstaked  / 10 ** decimals,
+      contract: curve,
+      tokens : [address, coin0],
+      token,
+      virtualPrice : virtualPrice / 1e18
+  };
+}
+
+async function getIronBankToken(app, ibToken, address, stakingAddress) {
+  const calls = [ibToken.decimals(), ibToken.name(), ibToken.symbol(),
+    ibToken.totalSupply(), ibToken.balanceOf(stakingAddress), ibToken.balanceOf(app.YOUR_ADDRESS)];
+  const [ decimals, name, symbol, totalSupply, staked, unstaked] =
+    await app.ethcallProvider.all(calls);
+  return {
+    address,
+    name,
+    symbol,
+    totalSupply,
+    decimals,
+    staked: staked / 10 ** decimals,
+    unstaked: unstaked / 10 ** decimals,
+    balance : totalSupply,
+    contract: ibToken
+  }
+}
+
 async function getStoredToken(app, tokenAddress, stakingAddress, type) {
   switch (type) {
     case "uniswap":
@@ -1421,6 +1487,12 @@ async function getStoredToken(app, tokenAddress, stakingAddress, type) {
     case "lixir":
       const lixirPool = new ethcall.Contract(tokenAddress, LIXIR_TOKEN_ABI);
       return await getLixirPool(app, lixirPool, tokenAddress, stakingAddress);
+    case "ironBank":
+      const ironBankPool = new ethcall.Contract(tokenAddress, IRONBANK_TOKEN_ABI);
+      return await getIronBankToken(app, ironBankPool, tokenAddress, stakingAddress);
+    case "yearn":
+      const yearnVault = new ethcall.Contract(tokenAddress, YEARN_VAULT_ABI);
+      return await getYearnVault(app, yearnVault, tokenAddress, stakingAddress);
     case "doualDlp":
       const doualDlpPool = new ethcall.Contract(tokenAddress, DLP_DUAL_TOKEN_ABI);
       return await getDodoDualPoolToken(app, doualDlpPool, tokenAddress, stakingAddress);
@@ -1477,6 +1549,16 @@ async function getStoredToken(app, tokenAddress, stakingAddress, type) {
       }
       const [minter] = await app.ethcallProvider.all([crv.minter()]);
       return await getCurveToken(app, crv, tokenAddress, stakingAddress, minter);
+    case "curveRegistry":
+      const crvRegistry = new ethcall.Contract(tokenAddress, CURVE_ABI);
+      const registryAddress = "0x90E00ACe148ca3b23Ac1bC8C240C2a7Dd9c2d7f5";
+      const registry = new ethcall.Contract(registryAddress, REGISTRY_ABI);
+      const [minterAddress] = await app.ethcallProvider.all([registry.get_pool_from_lp_token(tokenAddress)]);
+      return await getCurveToken(app, crvRegistry, tokenAddress, stakingAddress, minterAddress);
+    case "curveWithMinter":
+      const crvMinter = new ethcall.Contract(tokenAddress, CURVE_WITH_MINTER_ABI);
+      const [virtualPrice] = await app.ethcallProvider.all([crvMinter.get_virtual_price()]);
+      return await getCurveMinterToken(app, crvMinter, tokenAddress, stakingAddress);
     case "stableswap":
       const stable = new ethcall.Contract(tokenAddress, STABLESWAP_ABI);
       return await getStableswapToken(app, stable, tokenAddress, stakingAddress);
@@ -1484,7 +1566,8 @@ async function getStoredToken(app, tokenAddress, stakingAddress, type) {
 }
 
 async function getToken(app, tokenAddress, stakingAddress) {
-  if (tokenAddress == "0x0000000000000000000000000000000000000000") {
+  if (tokenAddress == "0x0000000000000000000000000000000000000000" || 
+      tokenAddress == "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE") {
     return getErc20(app, null, tokenAddress, stakingAddress)
   }
   const type = window.localStorage.getItem(tokenAddress);
@@ -1505,6 +1588,24 @@ async function getToken(app, tokenAddress, stakingAddress) {
     const lixir = await getLixirPool(app, lixirPool, tokenAddress, stakingAddress);
     window.localStorage.setItem(tokenAddress, "lixir");
     return lixir;
+  }
+  catch(err) {
+  }
+  try {
+    const ironBankPool = new ethcall.Contract(tokenAddress, IRONBANK_TOKEN_ABI);
+    const _ib = await app.ethcallProvider.all([ironBankPool.ib()]);
+    const ironBank = await getIronBankToken(app, ironBankPool, tokenAddress, stakingAddress);
+    window.localStorage.setItem(tokenAddress, "ironBank");
+    return ironBank;
+  }
+  catch(err) {
+  }
+  try {
+    const yearnVault = new ethcall.Contract(tokenAddress, YEARN_VAULT_ABI);
+    const _domainSep = await app.ethcallProvider.all([yearnVault.DOMAIN_SEPARATOR()]);
+    const yearn = await getYearnVault(app, yearnVault, tokenAddress, stakingAddress);
+    window.localStorage.setItem(tokenAddress, "yearn");
+    return yearn;
   }
   catch(err) {
   }
@@ -1632,6 +1733,26 @@ async function getToken(app, tokenAddress, stakingAddress) {
     return res;
   }
   catch(err) {
+  }
+  try{
+    const curveToken = new ethcall.Contract(tokenAddress, CURVE_ABI);
+    const registryAddress = "0x90E00ACe148ca3b23Ac1bC8C240C2a7Dd9c2d7f5";
+    const registry = new ethcall.Contract(registryAddress, REGISTRY_ABI);
+    const [minterAddress] = await app.ethcallProvider.all([registry.get_pool_from_lp_token(tokenAddress)]);
+    const res = await getCurveToken(app, curveToken, tokenAddress, stakingAddress, minterAddress);
+    window.localStorage.setItem(tokenAddress, "curveRegistry");
+    return res;
+  }
+  catch(err){
+  }
+  try{
+    const curveMinterToken = new ethcall.Contract(tokenAddress, CURVE_WITH_MINTER_ABI);
+    const [virtualPrice] = await app.ethcallProvider.all([curveMinterToken.get_virtual_price()]);
+    const res = await getCurveMinterToken(app, curveMinterToken, tokenAddress, stakingAddress);
+    window.localStorage.setItem(tokenAddress, "curveWithMinter");
+    return res;
+  }
+  catch(err){
   }
   try {
     const stable = new ethcall.Contract(tokenAddress, STABLESWAP_ABI);
@@ -1814,6 +1935,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
   else if (pool.symbol.includes("LOOT-LP")) stakeTokenTicker += " Loot LP Token";
   else if (pool.symbol.includes("MIMO-LP")) stakeTokenTicker += " Mimo LP Token";
   else if (pool.symbol.includes("HLP")) stakeTokenTicker += " Hades Swap LP Token";
+  else if (pool.name.includes("1BCH LP Token")) stakeTokenTicker += " 1BCH LP";
   else if (pool.symbol.includes("MOCHI-LP")) stakeTokenTicker += " Mochi LP Token";
   else if (pool.symbol.includes("SMUG-LP")) stakeTokenTicker += " Smug LP Token";
   else if (pool.symbol.includes("VVS-LP")) stakeTokenTicker += " VVS LP Token";
@@ -1914,7 +2036,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
                 "bsc": `https://info.benswap.finance/pair/${pool.address}`,
                 "smartbch": `https://info.benswap.cash/pair/${pool.address}`
               }[chain]) :
-              pool.name.includes("MISTswap LP Token") ?  `https://analytics.mistswap.fi/pair/${pool.address}` :
+              pool.name.includes("MISTswap LP Token") ?  `https://analytics.mistswap.fi/pairs/${pool.address}` :
               pool.symbol.includes("Proto-LP") ? `https://polygonscan.com/${pool.address}` :
               pool.symbol.includes("Galaxy-LP") ? (
                 {
@@ -2145,6 +2267,11 @@ function getUniPrices(tokens, prices, pool, chain="eth")
             `https://tangoswap.cash/add/${t0address}/${t1address}`,
             `https://tangoswap.cash/remove/${t0address}/${t1address}`,
             `https://tangoswap.cash/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+          ] :
+          pool.name.includes("1BCH LP Token") ? [
+            `https://1bch.com/add/${t0address}/${t1address}`,
+            `https://1bch.com/remove/${t0address}/${t1address}`,
+            `https://1bch.com/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
           ] :
           pool.symbol.includes("Galaxy-LP") ? ({
             "bsc": [
@@ -2509,17 +2636,17 @@ function getBunicornPrices(tokens, prices, pool)
     }}
 }
 
-function getWrapPrices(tokens, prices, pool)
+function getWrapPrices(tokens, prices, pool, chain)
 {
   const wrappedToken = pool.token;
   if (wrappedToken.token0 != null) { //Uniswap
     const uniPrices = getUniPrices(tokens, prices, wrappedToken);
-    const etherscanUrl = "https://etherscan.io/address/" + pool.address;
+    const contractUrl = getChainExplorerUrl(chain, pool.address)
     const poolUrl = pool.is1inch ? "https://1inch.exchange/#/dao/pools" :
     pool.symbol.includes("SLP") ?  `http://analytics.sushi.com/pairs/${wrappedToken.address}` :
     (pool.symbol.includes("Cake") || pool.symbol.includes("Pancake")) ?  `http://pancakeswap.info/pair/${wrappedToken.address}`
       : `http://v2.uniswap.info/pair/${wrappedToken.address}`;
-    const name = `<a href='${etherscanUrl}' target='_blank'>${pool.symbol}</a> (Wrapped <a href='${poolUrl}' target='_blank'>${uniPrices.stakeTokenTicker}</a>)`;
+    const name = `<a href='${contractUrl}' target='_blank'>${pool.symbol}</a> (Wrapped <a href='${poolUrl}' target='_blank'>${uniPrices.stakeTokenTicker}</a>)`;
     const price = (pool.balance / 10 ** wrappedToken.decimals) * uniPrices.price / (pool.totalSupply / 10 ** pool.decimals);
     const tvl = pool.balance / 10 ** wrappedToken.decimals * price;
     const staked_tvl = pool.staked * price;
@@ -2548,11 +2675,11 @@ function getWrapPrices(tokens, prices, pool)
     else {
       tokenPrice = getParameterCaseInsensitive(prices, wrappedToken.address)?.usd;
     }
-    const poolUrl = "https://etherscan.io/address/" + pool.address;
-    const etherscanUrl = "https://etherscan.io/address/" + pool.address;
-    const name = `<a href='${etherscanUrl}' target='_blank'>${pool.symbol}</a> (Wrapped <a href='${poolUrl}' target='_blank'>${wrappedToken.symbol}</a>)`;
+    const poolUrl = getChainExplorerUrl(chain, pool.token.address)
+    const contractUrl = getChainExplorerUrl(chain, pool.address)
+    const name = `<a href='${contractUrl}' target='_blank'>${pool.symbol}</a> (Wrapped <a href='${poolUrl}' target='_blank'>${wrappedToken.symbol}</a>)`;
     const price = (pool.balance / 10 ** wrappedToken.decimals) * tokenPrice / (pool.totalSupply / 10 ** pool.decimals);
-    const tvl = pool.balance / 10 ** wrappedToken.decimals * price;
+    const tvl = pool.totalSupply / 10 ** pool.decimals * price
     const staked_tvl = pool.staked * price;
     prices[pool.address] = { usd : price };
     return {
@@ -2603,6 +2730,9 @@ function getErc20Prices(prices, pool, chain="eth") {
       break;
     case "metis":
       poolUrl=`https://andromeda-explorer.metis.io/token/${pool.address}`;
+      break;
+    case "meter":
+      poolUrl=`https://scan.meter.io/token/${pool.address}`;
       break;
     case "cronos":
       poolUrl=`https://cronos.crypto.org/explorer/address/${pool.address}`;
@@ -2690,7 +2820,16 @@ function getErc20Prices(prices, pool, chain="eth") {
 }
 
 function getCurvePrices(prices, pool, chain) {
-  var price = (getParameterCaseInsensitive(prices,pool.token.address).usd) * pool.virtualPrice;
+  var price = (getParameterCaseInsensitive(prices,pool.token.address)?.usd);
+  if(price){
+    price = price * pool.virtualPrice;
+  }else{
+    switch(pool.token.address){
+      case "0x8751D4196027d4e6DA63716fA7786B5174F04C15" : //wibBTC
+        pool.token.address = "0xc4e15973e6ff2a35cc804c2cf9d2a1b817a8b40f" //ibBTC
+    }
+    price = getPoolPrices(pool.token.tokens, prices, pool.token, chain).price * pool.virtualPrice;
+  }
   if (getParameterCaseInsensitive(prices, pool.address)?.usd ?? 0 == 0) {
     prices[pool.address] = { usd : price };
   }
@@ -2708,6 +2847,7 @@ function getCurvePrices(prices, pool, chain) {
     }
     return dexguruTokenlink
   }
+
   return {
     staked_tvl : staked_tvl,
     price : price,
@@ -2749,6 +2889,48 @@ function getTriCryptoPrices(prices, pool, chain){
   }
 }
 
+function getYearnPrices(prices, pool, chain){
+  let price = 0
+  let underlyingPrice = getParameterCaseInsensitive(prices, pool.token.address)?.usd;
+  if(underlyingPrice){
+    price = underlyingPrice * pool.ppfs;
+  }else{
+    underlyingPrice = getPoolPrices(pool.token.tokens, prices, pool.token, chain).price;
+    price = underlyingPrice * pool.ppfs;
+  }
+  const tvl = (pool.token.totalSupply / 10 ** pool.token.decimals) * price
+  const staked_tvl = pool.balance * price;
+  const poolUrl = getChainExplorerUrl(chain, pool.address);
+  const name = `<a href='${poolUrl}' target='_blank'>${pool.symbol}</a>`;
+  let decimals = 0
+
+  if(price > 0.1){
+    decimals = 2
+  }else if(price > 0.01){
+    decimals = 4
+  }else if(price > 0.001){
+    decimals = 5
+  }else if(price > 0.0001){
+    decimals = 6
+  }else if(price > 0.00001){
+    decimals = 7
+  }else { decimals = 2; }
+
+  return {
+    staked_tvl : staked_tvl,
+    price,
+    stakeTokenTicker : pool.symbol,
+    print_price() {
+      _print(`${name} Price: $${price.toFixed(decimals)} Market Cap: $${formatMoney(tvl)}`);
+      _print(`Staked: ${pool.balance.toFixed(4)} ${pool.symbol} ($${formatMoney(staked_tvl)})`);
+    },
+    print_contained_price() {
+    },
+    staked_tvl,
+    tvl
+  }
+}
+
 function getPoolPrices(tokens, prices, pool, chain = "eth") {
   if (pool.w0 != null) return getValuePrices(tokens, prices, pool);
   if (pool.buniPoolTokens != null) return getBunicornPrices(tokens, prices, pool);
@@ -2756,8 +2938,9 @@ function getPoolPrices(tokens, prices, pool, chain = "eth") {
   if (pool.isGelato) return getGelatoPrices(tokens, prices, pool, chain);
   if (pool.token0 != null) return getUniPrices(tokens, prices, pool, chain);
   if (pool.xcp_profit != null) return getTriCryptoPrices(prices, pool, chain);
+  if (pool.yearn) return getYearnPrices(prices, pool, chain);
   if (pool.virtualPrice != null) return getCurvePrices(prices, pool, chain); //should work for saddle too
-  if (pool.token != null) return getWrapPrices(tokens, prices, pool);
+  if (pool.token != null) return getWrapPrices(tokens, prices, pool, chain);
   return getErc20Prices(prices, pool, chain);
 }
 
@@ -3198,6 +3381,9 @@ async function printSynthetixPool(App, info, chain="eth", customURLs) {
       case "metis":
         _print(`<a target="_blank" href="https://andromeda-explorer.metis.io/address/${info.stakingAddress}#code">Andromeda Explorer</a>`);
         break;
+      case "meter":
+        _print(`<a target="_blank" href="https://scan.meter.io/address/${info.stakingAddress}#code">Andromeda Explorer</a>`);
+        break;
       case "cronos":
         _print(`<a target="_blank" href="https://cronos.crypto.org/explorer/address/${info.stakingAddress}#code">Cronos Scan</a>`);
         break;
@@ -3366,7 +3552,7 @@ function getChainExplorerUrl(chain, address){
     case "harmony" :
       return `https://explorer.harmony.one/address/${address}`;
     case "arbitrum" :
-      return `https://arbiscan.io/token/${address}`;
+      return `https://arbiscan.io/address/${address}`;
     case "cronos" :
       return `https://cronos.crypto.org/explorer/address/${address}`;
     case "velas" :
@@ -3377,5 +3563,7 @@ function getChainExplorerUrl(chain, address){
       return `https://blockexplorer.boba.network/address/${address}`;
     case "metis" :
       return `https://andromeda-explorer.metis.io/address/${address}`;
+    case "meter" :
+      return `https://scan.meter.io/address/${address}`;
   }
 }
