@@ -149,7 +149,7 @@ async function yearnVaultWithdraw(App, vaultToken){
 
   const currentStakedAmount = await VAULT_CONTRACT.balanceOf(App.YOUR_ADDRESS);
 
-  if (currentStakedAmount / 10 ** vault.decimals > 0) {
+  if (currentStakedAmount / 10 ** vaultToken.token.decimals > 0) {
     showLoading()
     VAULT_CONTRACT["withdraw()"]({gasLimit: 500000})
       .then(function(t) {
