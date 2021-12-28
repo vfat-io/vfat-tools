@@ -421,6 +421,7 @@ const main = async () => {
       ['Salem Finance       ',"",  `<a href="salem"           >Various</a>`, 'SALEM        ','https://polygon.salem.finance'],
       ['Sandbox             ',"",  `<a href="sandbox"         >Various</a>`, 'SAND         ','https://www.sandbox.game'],
       ['Destiny             ',"",  `<a href="destinyfarm"     >Various</a>`, 'Various      ','https://destiny.sandman.finance'],
+      ['Popsicle            ',"",  `<a href="popsicle"        >Various</a>`, 'ICE          ','https://popsicle.finance']
     ],
   }
 
