@@ -703,7 +703,8 @@ const bscTokens = [
   { "id": "token-dforce-usd", "symbol": "USX", "contract": "0xb5102cee1528ce2c760893034a4603663495fd72" },
   { "id": "synapse-2", "symbol": "SYN", "contract": "0xa4080f1778e69467E905B8d6F72f6e441f9e9484" },
   { "id": "mars-ecosystem-token", "symbol": "XMS", "contract": "0x7859b01bbf675d67da8cd128a50d155cd881b576" },
-  { "id": "topshelf-finance", "symbol": "LIQR", "contract": "0x33333ee26a7d02e41c33828b42fb1e0889143477" }
+  { "id": "topshelf-finance", "symbol": "LIQR", "contract": "0x33333ee26a7d02e41c33828b42fb1e0889143477" },
+  { "id": "blockchain-adventurers-guild", "symbol": "BAG", "contract": "0x7c650f39d777F40120345314Ab8009D11F70c972" }
 ]
 
 async function getBscPrices() {
