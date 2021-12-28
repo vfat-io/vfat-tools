@@ -556,7 +556,8 @@ const main = async() => {
       ["Mars Ecosystem      ","", `<a href="marsecosystem" >Various</a>`,"Various          ","https://app.marsecosystem.com"],
       ["Icecolony           ","", `<a href="icecolony"     >Various</a>`,"ICE              ","https://bsc.icecolony.com"],
       ["Topshelf            ","", `<a href="topshelf"      >Various</a>`,"LIQR             ","https://topshelf.finance"],
-      ["Niob Finance        ","", `<a href="niob"          >Various</a>`,"NIOB             ","https://niob.finance"]
+      ["Niob Finance        ","", `<a href="niob"          >Various</a>`,"NIOB             ","https://niob.finance"],
+      ["Bag Finance         ","", `<a href="bag"           >Various</a>`,"BGLD             ","https://app.thisistheway.finance"]
     ]}
 
   let table = new AsciiTable().fromJSON(tableData);

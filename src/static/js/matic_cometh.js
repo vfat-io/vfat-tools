@@ -29,9 +29,11 @@ $(function() {
         stakeTokenFunction : "stakingToken"
       }
     })
+
+    await loadComethSynthetixPoolInfo(App, tokens, prices, PoolsMultiRewards[2].abi, PoolsMultiRewards[2].address, PoolsMultiRewards[2].stakeTokenFunction)
   
-    let p = await loadMultipleMaticSynthetixPools(App, tokens, prices, pools)
     let pm = await loadMultipleComethRewardPools(App,tokens, prices, PoolsMultiRewards)
+    let p = await loadMultipleMaticSynthetixPools(App, tokens, prices, pools)
     _print_bold(`Total staked: $${formatMoney(p.staked_tvl + pm.staked_tvl)}`);
     if (p.totalUserStaked > 0 || pm.totalUserStaked > 0) {
       _print(`You are staking a total of $${formatMoney(p.totalUserStaked+pm.totalUserStaked)} at an APR of ${(p.totalAPR + pm.totalAPR * 100).toFixed(2)}%\n`);
@@ -230,94 +232,89 @@ async function printComethSynthetixPool(App, info) {
   
   const ComethDoubleRewardContracts = [
     {
-      //tokens: [DOKI, MATIC_WETH],
-      //rewards: [MUST, DOKI],
-      stakingMultiRewardsAddress: '0x81AbDd138c50D577cda3116b763d2e3f82CE8eA2'
-    },
-    {
-      //tokens: [DOKI, MUST],
-      //rewards: [MUST, DOKI],
-      stakingMultiRewardsAddress: '0xD6644eA185Ed9CE3Df1D91B54471D27B36a65c30'
-    },
-    {
-      //tokens: [AZUKI, MUST],
-      //rewards: [MUST, AZUKI],
-      stakingMultiRewardsAddress: '0xc0a1dFb85734E465C5dadc5683DE58358C906598'
-    },
-    {
-      //tokens: [AZUKI, MATIC_WETH],
-      //rewards: [MUST, AZUKI],
-      stakingMultiRewardsAddress: '0x69Cb6f98E45c13A230d292bE0a6aF93a6521c39B'
-    },
-    {
-      //tokens: [STR, MUST],
-      //rewards: [MUST, STR],
-      stakingMultiRewardsAddress: '0x93ca5835c6A36Cf58C653cD6dc20EC381DCb89Bd'
-    },
-    {
-      //tokens: [NDR, MUST],
-      //rewards: [MUST, STR],
-      stakingMultiRewardsAddress: '0x9668925653495E72Abe5EB3B5d1eDD04758e58C8'
-    },
-    {
-      //tokens: [ELET, MUST],
-      //rewards: [MUST, ELET],
-      stakingMultiRewardsAddress: '0xFdA044F14B6590c211a50854F36C2eB5f9a9c0a0'
-    },
-    {
-      //tokens: [MATIC_WETH, VBTC],
-      //rewards: [MUST, TRDL],
-      stakingMultiRewardsAddress: '0xFD37a2266605830A1589E778E33A9A24394d2E93'
-    },
-    {
-      //tokens: [MUST, VBTC],
-      //rewards: [MUST, TRDL],
-      stakingMultiRewardsAddress: '0x6779689d29C407Ab97545Bf2Cb8cbcB93370e5fe'
-    },
-    {
-      //tokens: [WBTC, VBTC],
-      //rewards: [MUST, TRDL],
-      stakingMultiRewardsAddress: '0xd65bfB8b20B08724F2772f95296dCd4ebEBACfcb'
-    },
-    {
-      //tokens: [ELET, WMATIC],
-      //rewards: [MUST, ELET],
-      stakingMultiRewardsAddress: '0x1cFc3E212C7B9207C8388ed08B88570d1809E15a'
-    },
-    {
-      //tokens: [TRDL, MUST],
-      //rewards: [MUST, TRDL],
-      stakingMultiRewardsAddress: '0x8Cf8C7Db0Ab27985973a0E01A8a5CE2CFfd468ed'
-    },
-    {
-      //tokens: [MATIC_WETH, SDT],
-      //rewards: [MUST, SDT],
-      stakingMultiRewardsAddress: '0x7C991dF9CDaFB1F62BefD5D6502fF81a7D85227b'
-    },
-    {
-      //tokens: [MM, MUST],
-      //rewards: [MUST, MM],
-      stakingMultiRewardsAddress: '0x2F434bC10D44Db5161934FAaa58A462C8F1cBE52'
-    },
-    {
-      //tokens: [MWETH, MUST],
-      //rewards: [MUST, MM],
-      stakingMultiRewardsAddress: '0xa964B2ef4C0326e5c0701b513d43d7f7f254E4C1'
-    },
-    {
-      //tokens: [MWBTC, MUST],
-      //rewards: [MUST, MM],
-      stakingMultiRewardsAddress: '0x066E267ff61F23d733538695da066ADA72a6fac3'
-    },
-    {
-      //tokens: [RAZOR, MATIC_WETH],
-      //rewards: [MUST, RAZOR],
-      stakingMultiRewardsAddress: '0x72c287b1c0252d2cfBA6a58f672CbC73979d9FA1'
-    },
-    {
-      //tokens: [RAZOR, MUST],
-      //rewards: [MUST, RAZOR],
-      stakingMultiRewardsAddress: '0x9eCc7384cAd836F7cC99b3d231AEB1e5A3FA4F06'
+      //tokens: [Ze, gt],
+      //rewards: [Se, ze],
+      stakingMultiRewardsAddress: "0xBbDC1681e43549d3871CF1953D1dD9afF320feF0"
+  }, {
+      //tokens: [Ze, Se],
+      //rewards: [Se, ze],
+      stakingMultiRewardsAddress: "0x2146baC214D9BF2Da56c3d4A69b9149e457F9d8c"
+  }, {
+      //tokens: [ze, Se],
+      //rewards: [Se, ze],
+      stakingMultiRewardsAddress: "0xc0a1dFb85734E465C5dadc5683DE58358C906598"
+  }, {
+      //tokens: [ze, gt],
+      //rewards: [Se, ze],
+      stakingMultiRewardsAddress: "0x69Cb6f98E45c13A230d292bE0a6aF93a6521c39B"
+  }, {
+      //tokens: [gt, Me],
+      //rewards: [Se, Me],
+      stakingMultiRewardsAddress: "0x7C991dF9CDaFB1F62BefD5D6502fF81a7D85227b"
+  }, {
+      //tokens: [it, Se],
+      //rewards: [Se, it],
+      stakingMultiRewardsAddress: "0x2F434bC10D44Db5161934FAaa58A462C8F1cBE52"
+  }, {
+      //tokens: [ct, Se],
+      //rewards: [Se, it],
+      stakingMultiRewardsAddress: "0xa964B2ef4C0326e5c0701b513d43d7f7f254E4C1"
+  }, {
+      //tokens: [lt, Se],
+      //rewards: [Se, it],
+      stakingMultiRewardsAddress: "0x066E267ff61F23d733538695da066ADA72a6fac3"
+  }, {
+      //tokens: [ut, Se],
+      //rewards: [Se, ut],
+      stakingMultiRewardsAddress: "0x3a68F45a3Bc648365a80AbafA2528cd3277eEB96"
+  }, {
+      //tokens: [nt, gt],
+      //rewards: [Se, nt],
+      stakingMultiRewardsAddress: "0xAB4292c600ddF1845D41c00b374DbBA5062e0810"
+  }, {
+      //tokens: [nt, Se],
+      //rewards: [Se, nt],
+      stakingMultiRewardsAddress: "0xcA9c316760AAAF865163b0DC5066cdb89A9562Ac"
+  }, {
+      //tokens: [vt, gt],
+      //rewards: [Se, vt],
+      stakingMultiRewardsAddress: "0xe3AE080d6a4F1aC5AbABf514F871428342135877"
+  }, {
+      //tokens: [vt, Se],
+      //rewards: [Se, vt],
+      stakingMultiRewardsAddress: "0xe29544a8145978a2355E44fBAC61F4748f0EcCA6"
+  }, {
+      //tokens: [Et, Se],
+      //rewards: [Se, Et],
+      stakingMultiRewardsAddress: "0xdd90B544Db1d1d1c59c6d3608de5d7C694eEbE23"
+  }, {
+      //tokens: [Re, jt],
+      //rewards: [Se, jt],
+      stakingMultiRewardsAddress: "0xAE4985c56647970870beB871864184ceCf5A60Bb"
+  }, {
+      //tokens: [gt, Tt],
+      //rewards: [Se, Tt],
+      stakingMultiRewardsAddress: "0xEA98BC930D0f6c71aFE7D717A940170cCbd6a8CE"
+  }, {
+      //tokens: [gt, ft],
+      //rewards: [Se, ft],
+      stakingMultiRewardsAddress: "0x4e2114F7FA11Dc0765ddD51Ad98B6624C3bf1908"
+  }, {
+      //tokens: [St, Re],
+      //rewards: [Se, St],
+      stakingMultiRewardsAddress: "0x9Dc2b914172Beb78dBD077800f088AdDa4051c8c"
+  }, {
+      //tokens: [St, Se],
+      //rewards: [Se, St],
+      stakingMultiRewardsAddress: "0xC2A20288904b4886d82FA08F4277e662fD24D82d"
+  }, {
+      //tokens: [Rt, Re],
+      //rewards: [Se, Rt],
+      stakingMultiRewardsAddress: "0x1D85b838667471a1D1FFB0b91AeD019840e9bDd6"
+  }, {
+      //tokens: [Rt, Se],
+      //rewards: [Se, Rt],
+      stakingMultiRewardsAddress: "0x3408C63BD09927651e9755B0E86d263e8a7B64A7"
     }
   ]
   

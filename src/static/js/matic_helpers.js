@@ -438,19 +438,19 @@ async function getMaticPoolInfo(app, chefContract, chefAddress, poolIndex, pendi
   const poolInfo = await chefContract.poolInfo(poolIndex);  
   if (poolInfo.allocPoint == 0) {
     return {
-      address: poolInfo.lpToken,
+      address: poolInfo.lpToken ?? poolInfo.stakingToken,
       allocPoints: poolInfo.allocPoint ?? 1,
       poolToken: null,
       userStaked : 0,
       pendingRewardTokens : 0,
     };
   }
-  const poolToken = await getMaticToken(app, poolInfo.lpToken, chefAddress);
+  const poolToken = await getMaticToken(app, poolInfo.lpToken ?? poolInfo.stakingToken, chefAddress);
   const userInfo = await chefContract.userInfo(poolIndex, app.YOUR_ADDRESS);
   const pendingRewardTokens = await chefContract.callStatic[pendingRewardsFunction](poolIndex, app.YOUR_ADDRESS);
   const staked = userInfo.amount / 10 ** poolToken.decimals;
   return {
-      address: poolInfo.lpToken,
+      address: poolInfo.lpToken ?? poolInfo.stakingToken,
       allocPoints: poolInfo.allocPoint ?? 1,
       poolToken: poolToken,
       userStaked : staked,
@@ -468,6 +468,7 @@ async function loadMaticChefContract(App, tokens, prices, chef, chefAddress, che
   const poolCount = parseInt(await chefContract.poolLength(), 10);
   const totalAllocPoints = await chefContract.totalAllocPoint();
 
+  _print(`<a href='https://polygonscan.com/address/${chefAddress}' target='_blank'>Staking Contract</a>`);
   _print(`Found ${poolCount} pools.\n`)
 
   _print(`Showing incentivized pools only.\n`);
@@ -587,7 +588,8 @@ const maticTokens = [
   { "id": "zerogoki", "symbol": "REI", "contract":"0xB9f9e37c2CdbaFF928C3Da730b02F06fE09aE70E"},
   { "id": "honor-token", "symbol": "HONOR", "contract":"0xb82a20b4522680951f11c94c54b8800c1c237693"},
   { "id": "mantra-dao", "symbol": "OM", "contract":"0xC3Ec80343D2bae2F8E680FDADDe7C17E71E114ea"},
-  { "id": "synapse-2", "symbol": "SYN", "contract":"0xf8f9efc0db77d8881500bb06ff5d6abc3070e695"}
+  { "id": "synapse-2", "symbol": "SYN", "contract":"0xf8f9efc0db77d8881500bb06ff5d6abc3070e695"},
+  { "id": "blockchain-adventurers-guild", "symbol": "BAG", "contract":"0xB1d82666384bE5F8C59AA18e650493ABb8A614Ad"}
 ]
 
 
