@@ -8,7 +8,7 @@ $(function() {
       "title":"Metis Network",
       "heading":["Pool Provider","LP", "Reward Tokens", "INFO"],
       "rows": [
-        ["", ``,"",""]
+        ["Tethys",          `<a href="tethys"         >Various</a>`,        "TETHYS",              "https://tethys.finance"]
       ]
     }
   
