@@ -12,6 +12,7 @@ async function main() {
     _print("Reading smart contracts...\n");
 
    const MIS_CHEF_ADDR = "0x59C777cd749b307Be910f15c54A3116ff88f9706";
+   //const MIS_CHEF_ADDR = "0x6aaea0a742056e5a6aa1a428a8ec403c1b964609"; //this is for staking MIS but i cant read the code
    const rewardTokenTicker = "MIS";
    const MIS_CHEF = new ethers.Contract(MIS_CHEF_ADDR, MIS_CHEF_ABI, App.provider);
 
