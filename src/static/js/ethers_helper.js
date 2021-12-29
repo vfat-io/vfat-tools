@@ -1896,6 +1896,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
   var staked_tvl = pool.staked * price;
   let stakeTokenTicker = `[${t0.symbol}]-[${t1.symbol}]`;
   if (pool.is1inch) stakeTokenTicker += " 1INCH LP";
+  else if (pool.symbol.includes("TETHYSLP")) stakeTokenTicker += " TETHYS LP";
   else if (pool.symbol.includes("LSLP")) stakeTokenTicker += " LSLP";
   else if (pool.symbol.includes("HBLP")) stakeTokenTicker += " Huckleberry LP";
   else if (pool.symbol.includes("BLP")) stakeTokenTicker += " BLP";
@@ -1977,6 +1978,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
         }
         else {
           const poolUrl = pool.is1inch ? "https://1inch.exchange/#/dao/pools" :
+          pool.symbol.includes("TETHYSLP") ?  `https://info.tethys.finance/pair/${pool.address}` :
           pool.symbol.includes("LSLP") ? `https://info.linkswap.app/pair/${pool.address}` :
             pool.symbol.includes("SLP") ? (
               {
@@ -1985,7 +1987,8 @@ function getUniPrices(tokens, prices, pool, chain="eth")
                 "bsc": `http://analytics-ftm.sushi.com/pairs/${pool.address}`,
                 "fantom": `http://analytics-ftm.sushi.com/pairs/${pool.address}`,
                 "matic": `http://analytics-polygon.sushi.com/pairs/${pool.address}`,
-                "xdai": `https://analytics-xdai.sushi.com/pairs/${pool.address}`
+                "xdai": `https://analytics-xdai.sushi.com/pairs/${pool.address}`,
+                "harmony": `https://analytics-harmony.sushi.com/pairs/${pool.address}`
               }[chain]) :
               pool.symbol.includes("Cake") ?  `https://pancakeswap.info/pair/${pool.address}` :
               pool.symbol.includes("CAT-LP") ?  `https://polycat.finance` :
@@ -2105,6 +2108,11 @@ function getUniPrices(tokens, prices, pool, chain="eth")
             `https://harmony.mochiswap.io/add/${t0address}/${t1address}`,
             `https://harmony.mochiswap.io/remove/${t0address}/${t1address}`,
             `https://harmony.mochiswap.io/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+          ] :
+          pool.symbol.includes("TETHYSLP") ? [
+            `https://tethys.finance/pool/add?inputCurrency=${t0address}&outputCurrency=${t1address}`,
+            `https://tethys.finance/pool/remove?inputCurrency=${t0address}&outputCurrency=${t1address}`,
+            `https://tethys.finance/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
           ] :
           pool.symbol.includes("SMUG-LP") ? [
             `https://smugswap.com/add/${t0address}/${t1address}`,
