@@ -2805,6 +2805,7 @@ function getErc20Prices(prices, pool, chain="eth") {
     staked_tvl : staked_tvl,
     price : price,
     stakeTokenTicker : pool.symbol,
+    tvl : tvl,
     print_price() {
       _print(`${name} Price: $${displayPrice(price)} Market Cap: $${formatMoney(tvl)} ${getDexguruTokenlink()}`);
       _print(`Staked: ${pool.staked.toFixed(4)} ${pool.symbol} ($${formatMoney(staked_tvl)})`);
