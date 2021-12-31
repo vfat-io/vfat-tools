@@ -11,7 +11,8 @@ const main = async() => {
         ["Trisolaris *",    `<a href="trisolaris"       >Various</a>`,      "TRI",       "https://www.trisolaris.io" ],
         ["NearPad ",        `<a href="nearpad"          >Various</a>`,      "NearPad",   "https://nearpad.io" ],
         ["WannaSwap ",      `<a href="wannaswap"        >Various</a>`,      "WANNA",     "https://wannaswap.finance" ],
-        ["Polaris",         `<a href="polaris"          >Various</a>`,      "PLRS",      "https://polaristoken.fi" ]
+        ["Polaris",         `<a href="polaris"          >Various</a>`,      "PLRS",      "https://polaristoken.fi" ],
+        ["YellowSun",       `<a href="yellowsun"        >Various</a>`,      "YELLOWSUN", "https://aurora.yellowsun.live/" ],
     ]
   }
 
