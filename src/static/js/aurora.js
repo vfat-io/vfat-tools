@@ -13,6 +13,7 @@ const main = async() => {
         ["WannaSwap ",      `<a href="wannaswap"        >Various</a>`,      "WANNA",     "https://wannaswap.finance" ],
         ["Polaris",         `<a href="polaris"          >Various</a>`,      "PLRS",      "https://polaristoken.fi" ],
         ["YellowSun",       `<a href="yellowsun"        >Various</a>`,      "YELLOWSUN", "https://aurora.yellowsun.live/" ],
+        ["Cocoon",          `<a href="cocoon"           >Various</a>`,      "COCOON",    "https://cocoon.farm" ],
     ]
   }
 
