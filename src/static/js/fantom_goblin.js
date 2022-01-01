@@ -15,24 +15,16 @@ async function main() {
 
     const rewardTokenTicker = "GOBLIN";
     const GOBLIN_CHEF = new ethers.Contract(GOBLIN_CHEF_ADDR, GOBLIN_CHEF_ABI, App.provider);
-
-    let rewardsPerWeek = 0
-    const startBlock = await GOBLIN_CHEF.startBlock();
     const currentBlock = await App.provider.getBlockNumber();
 
     const multiplier = await GOBLIN_CHEF.getMultiplier(currentBlock, currentBlock + 1);
- 
-    if(currentBlock < startBlock){
-     _print(`Rewards start at block ${startBlock}\n`)
-    }else{
-        rewardsPerWeek = await GOBLIN_CHEF.GenesisPerBlock() / 1e18 * multiplier * 604800 / 5.6;
-    }
+    const rewardsPerWeek = await GOBLIN_CHEF.goblinPerSecond() / 1e18 * multiplier * 604800;
 
     const tokens = {};
-    const prices = await getCronosPrices();
+    const prices = await getFantomPrices();
 
-    await loadCronosChefContract(App, tokens, prices, GOBLIN_CHEF, GOBLIN_CHEF_ADDR, GOBLIN_CHEF_ABI, rewardTokenTicker,
-        "Genesis", null, rewardsPerWeek, "pendingGenesis", [7]);
+    await loadFantomChefContract(App, tokens, prices, GOBLIN_CHEF, GOBLIN_CHEF_ADDR, GOBLIN_CHEF_ABI, rewardTokenTicker,
+        "goblin", null, rewardsPerWeek, "pendinggoblin");
 
     hideLoading();
 }
