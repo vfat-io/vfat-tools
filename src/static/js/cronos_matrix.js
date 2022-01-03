@@ -11,7 +11,7 @@ async function main() {
     _print(`Initialized ${App.YOUR_ADDRESS}\n`);
     _print("Reading smart contracts...\n");
 
-    const MATRIX_CHEF_ADDR = "0xD720528902c832e466bFEddfa60eCeb3A175ca1C";
+    const MATRIX_CHEF_ADDR = "0xacAb1D5FaBD5c675db07d40De8E0E218EBe75A9e";
 
     const rewardTokenTicker = "MTX";
     const MATRIX_CHEF = new ethers.Contract(MATRIX_CHEF_ADDR, MATRIX_CHEF_ABI, App.provider);
