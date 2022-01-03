@@ -8,10 +8,13 @@ const main = async() => {
     "title":"Aurora Network",
     "heading":["Pool Provider","LP", "Reward Tokens", "INFO"],
     "rows": [
-        ["Trisolaris *",    `<a href="trisolaris"       >Various</a>`,      "TRI",       "https://www.trisolaris.io" ],
-        ["NearPad ",        `<a href="nearpad"          >Various</a>`,      "NearPad",   "https://nearpad.io" ],
-        ["WannaSwap ",      `<a href="wannaswap"        >Various</a>`,      "WANNA",     "https://wannaswap.finance" ],
-        ["Polaris",         `<a href="polaris"          >Various</a>`,      "PLRS",      "https://polaristoken.fi" ]
+        ["Trisolaris",      `<a href="trisolaris"       >Various</a>`,      "TRI",          "https://www.trisolaris.io" ],
+        ["NearPad",         `<a href="nearpad"          >Various</a>`,      "NearPad",      "https://nearpad.io" ],
+        ["WannaSwap",       `<a href="wannaswap"        >Various</a>`,      "WANNA",        "https://wannaswap.finance" ],
+        ["Polaris",         `<a href="polaris"          >Various</a>`,      "PLRS",         "https://polaristoken.fi" ],
+        ["YellowSun",       `<a href="yellowsun"        >Various</a>`,      "YELLOWSUN",    "https://aurora.yellowsun.live" ],
+        ["Cocoon",          `<a href="cocoon"           >Various</a>`,      "COCOON",       "https://cocoon.farm" ],
+        ["AuroraSwap",      `<a href="auroraswap"       >Various</a>`,      "BRL",          "https://app.auroraswap.finance" ]
     ]
   }
 
