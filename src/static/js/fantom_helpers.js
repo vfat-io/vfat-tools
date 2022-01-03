@@ -330,7 +330,7 @@ async function getFantomStoredToken(App, tokenAddress, stakingAddress, type) {
     case "stableswap":
       const stable = new ethcall.Contract(tokenAddress, STABLESWAP_ABI);
       return await getFantomStableswapToken(App, stable, tokenAddress, stakingAddress);
-    case "cFantomToken":
+    case "cToken":
       const cFantomToken = new ethcall.Contract(tokenAddress, CTOKEN_ABI);
       return await getCFantomToken(App, cFantomToken, tokenAddress, stakingAddress);
     case "uniswap":
@@ -408,10 +408,10 @@ async function getFantomToken(App, tokenAddress, stakingAddress) {
     catch(err) {
     }
     try {
-      const cFantomToken = new ethcall.Contract(tokenAddress, CTOKEN_ABI);
-      const _totalBorrows = await App.ethcallProvider.all([cFantomToken.totalBorrows()]);
-      const res = await getCFantomToken(App, cFantomToken, tokenAddress, stakingAddress);
-      window.localStorage.setItem(tokenAddress, "cFantomToken");
+      const cToken = new ethcall.Contract(tokenAddress, CTOKEN_ABI);
+      const _totalBorrows = await App.ethcallProvider.all([cToken.totalBorrows()]);
+      const res = await getCFantomToken(App, cToken, tokenAddress, stakingAddress);
+      window.localStorage.setItem(tokenAddress, "cToken");
       return res;
     }
     catch(err) {

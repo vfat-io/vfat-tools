@@ -9,7 +9,7 @@ const HarmonyTokens = [
   { "id": "wrapped-bitcoin", "symbol": "bscBTCB", "contract": "0x34224dCF981dA7488FdD01c7fdd64E74Cd55DcF7"},
   { "id": "binance-eth", "symbol": "bscETH", "contract": "0x783ee3e955832a3d52ca4050c4c251731c156020"},
   { "id": "terra-luna", "symbol": "LUNA", "contract": "0x95ce547d730519a90def30d647f37d9e5359b6ae"},
-  { "id": "terra-usd", "symbol": "UST", "contract": "0x224e64ec1bdce3870a6a6c777edd450454068fec"},
+  { "id": "terrausd", "symbol": "UST", "contract": "0x224e64ec1bdce3870a6a6c777edd450454068fec"},
   { "id": "curve-dao-token", "symbol": "CRV", "contract": "0x352cd428EFd6F31B5cae636928b7B84149cF369F"},
   { "id": "elk-finance", "symbol": "ELK", "contract": "0xe1c110e1b1b4a1ded0caf3e42bfbdbb7b5d7ce1c"},
   { "id": "synapse-2", "symbol": "SYN", "contract": "0xE55e19Fb4F2D85af758950957714292DAC1e25B2"},
@@ -125,6 +125,28 @@ async function getHarmonyStableswapToken(App, stable, address, stakingAddress) {
   };
 }
 
+async function getCHarmonyToken(App, cToken, address, stakingAddress) {
+  const calls = [cToken.decimals(), cToken.underlying(), cToken.totalSupply(),
+    cToken.name(), cToken.symbol(), cToken.balanceOf(stakingAddress),
+    cToken.balanceOf(App.YOUR_ADDRESS), cToken.exchangeRateStored()];
+  const [decimals, underlying, totalSupply, name, symbol, staked, unstaked, exchangeRate] =
+    await App.ethcallProvider.all(calls);
+  const token = await getHarmonyToken(App, underlying, address);
+  return {
+    address,
+    name,
+    symbol,
+    totalSupply,
+    decimals,
+    staked: staked / 10 ** decimals,
+    unstaked: unstaked / 10 ** decimals,
+    token: token,
+    balance: totalSupply * exchangeRate / 1e18,
+    contract: cToken,
+    tokens : [address].concat(token.tokens)
+  }
+}
+
 async function getHarmonyStoredToken(App, tokenAddress, stakingAddress, type) {
   switch (type) {
     case "uniswap":
@@ -137,6 +159,9 @@ async function getHarmonyStoredToken(App, tokenAddress, stakingAddress, type) {
     case "stableswap":
       const stable = new ethcall.Contract(tokenAddress, STABLESWAP_ABI);
       return await getHarmonyStableswapToken(App, stable, tokenAddress, stakingAddress);
+    case "cToken":
+      const cHarmonyToken = new ethcall.Contract(tokenAddress, CTOKEN_ABI);
+      return await getCHarmonyToken(App, cHarmonyToken, tokenAddress, stakingAddress);
     case "erc20":
       const erc20 = new ethcall.Contract(tokenAddress, ERC20_ABI);
       return await getHarmonyErc20(App, erc20, tokenAddress, stakingAddress);
@@ -174,6 +199,15 @@ async function getHarmonyToken(App, tokenAddress, stakingAddress) {
       return await getHarmonyStableswapToken(App, stable, tokenAddress, stakingAddress);
     }
     catch (err) {
+    }
+    try {
+      const cToken = new ethcall.Contract(tokenAddress, CTOKEN_ABI);
+      const _totalBorrows = await App.ethcallProvider.all([cToken.totalBorrows()]);
+      const res = await getCHarmonyToken(App, cToken, tokenAddress, stakingAddress);
+      window.localStorage.setItem(tokenAddress, "cToken");
+      return res;
+    }
+    catch(err) {
     }
     try {
       const erc20 = new ethcall.Contract(tokenAddress, ERC20_ABI);
