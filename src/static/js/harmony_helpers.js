@@ -12,7 +12,10 @@ const HarmonyTokens = [
   { "id": "terra-usd", "symbol": "UST", "contract": "0x224e64ec1bdce3870a6a6c777edd450454068fec"},
   { "id": "curve-dao-token", "symbol": "CRV", "contract": "0x352cd428EFd6F31B5cae636928b7B84149cF369F"},
   { "id": "elk-finance", "symbol": "ELK", "contract": "0xe1c110e1b1b4a1ded0caf3e42bfbdbb7b5d7ce1c"},
-  { "id": "synapse-2", "symbol": "SYN", "contract": "0xE55e19Fb4F2D85af758950957714292DAC1e25B2"}
+  { "id": "synapse-2", "symbol": "SYN", "contract": "0xE55e19Fb4F2D85af758950957714292DAC1e25B2"},
+  { "id": "harmon-ape", "symbol": "APE", "contract": "0xd3a50c0dce15c12fe64941ffd2b864e887c9b9e1"},
+  { "id": "defi-kingdoms", "symbol": "JEWEL", "contract": "0x72cb10c6bfa5624dd07ef608027e366bd690048f"},
+  { "id": "wrapped-bitcoin", "symbol": "WBTC", "contract": "0x3095c7557bCb296ccc6e363DE01b760bA031F2d9"}
 ];
 
 async function getHarmonyPrices() {
@@ -355,6 +358,8 @@ async function getHarmonyPoolInfo(app, chefContract, chefAddress, poolIndex, pen
       poolToken: poolToken,
       userStaked : staked,
       pendingRewardTokens : pendingRewardTokens / 10 ** 18,
+      depositFee : (poolInfo.depositFeeBP ?? poolInfo.depositFee ?? 0) / 100,
+      withdrawFee : (poolInfo.withdrawFeeBP ?? poolInfo.withdrawalFee ?? 0) / 100
   };
 }
 
@@ -403,7 +408,7 @@ async function loadHarmonyChefContract(App, tokens, prices, chef, chefAddress, c
     if (poolPrices[i]) {
       const apr = printChefPool(App, chefAbi, chefAddress, prices, tokens, poolInfos[i], i, poolPrices[i],
         totalAllocPoints, rewardsPerWeek, rewardTokenTicker, rewardTokenAddress,
-        pendingRewardsFunction, null, null, "harmony")
+        pendingRewardsFunction, null, null, "harmony", poolInfos[i].depositFee, poolInfos[i].withdrawFee)
       aprs.push(apr);
     }
   }
