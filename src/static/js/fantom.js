@@ -138,7 +138,8 @@ const main = async() => {
       ["BlackGoat          ", `<a href='blackgoat'    >Various</a>`,"GOAT         ","https://app.fanblackgoat.finance"],
       ["Topshelf           ", `<a href='topshelf'     >Various</a>`,"LIQR         ","https://topshelf.finance"],
       ["Caribou Finance    ", `<a href='caribou'      >Various</a>`,"CARIBOU      ","https://caribou.finance"],
-      ["Bag Finance        ", `<a href='bag'          >Various</a>`,"BGLD         ","https://app.thisistheway.finance"]
+      ["Bag Finance        ", `<a href='bag'          >Various</a>`,"BGLD         ","https://app.thisistheway.finance"],
+      ["Goblin             ", `<a href='goblin'       >Various</a>`,"GOBLIN       ","https://thegoblin.money"]
     ]
   }
 
