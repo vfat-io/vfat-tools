@@ -18,7 +18,7 @@ async function main() {
 
     let rewardsPerWeek = 0
     
-    rewardsPerWeek = await MATRIX_CHEF.matrixPerSecond() / 1e18 * multiplier * 86400 * 7;
+    rewardsPerWeek = await MATRIX_CHEF.matrixPerSecond() / 1e18 * 86400 * 7;
     
     const tokens = {};
     const prices = await getCronosPrices();
