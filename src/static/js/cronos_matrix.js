@@ -17,22 +17,14 @@ async function main() {
     const MATRIX_CHEF = new ethers.Contract(MATRIX_CHEF_ADDR, MATRIX_CHEF_ABI, App.provider);
 
     let rewardsPerWeek = 0
-    const startTime = await MATRIX_CHEF.startTime();
-    const currentTime = await App.provider.getBlockNumber().timestamp;
-
-    const multiplier = await MATRIX_CHEF.getMultiplier(currentTime, currentTime + 1);
-
-    if(currentTime < startTime){
-     _print(`Rewards start at UNIX time ${startTime}\n`)
-    }else{
-        rewardsPerWeek = await MATRIX_CHEF.matrixPerSecond() / 1e18 * multiplier * 86400 * 7;
-    }
-
+    
+    rewardsPerWeek = await MATRIX_CHEF.matrixPerSecond() / 1e18 * multiplier * 86400 * 7;
+    
     const tokens = {};
     const prices = await getCronosPrices();
 
     await loadCronosChefContract(App, tokens, prices, MATRIX_CHEF, MATRIX_CHEF_ADDR, MATRIX_CHEF_ABI, rewardTokenTicker,
-        "Matrix", null, rewardsPerWeek, "pendingMatrix", [7]);
+        "Matrix", null, rewardsPerWeek, "pendingMatrix", [1,2,3,4,5,6,7,8]);
 
     hideLoading();
 }
