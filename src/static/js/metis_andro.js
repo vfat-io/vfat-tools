@@ -19,14 +19,14 @@ async function main() {
 
    const multiplier = await ANDRO_CHEF.getMultiplier(currentBlock, currentBlock + 1);
 
-   const rewardsPerWeek = await ANDRO_CHEF.androPerSecond() /1e18
+   const rewardsPerWeek = await ANDRO_CHEF.AndroPerBlock() /1e18
         * 604800 * multiplier;
 
     const tokens = {};
     const prices = await getMetisPrices();
 
     await loadMetisChefContract(App, tokens, prices, ANDRO_CHEF, ANDRO_CHEF_ADDR, ANDRO_CHEF_ABI, rewardTokenTicker,
-        "andro", null, rewardsPerWeek, "pendingAndro");
+        "Andro", null, rewardsPerWeek, "pendingAndro");
 
     hideLoading();
   }
