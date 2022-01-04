@@ -755,9 +755,8 @@ async function dodoArbitrumContract_unstake(chefAbi, chefAddress, App) {
   const CHEF_CONTRACT = new ethers.Contract(chefAddress, chefAbi, signer)
 
   const userStaked = await CHEF_CONTRACT.balanceOf(App.YOUR_ADDRESS)
-  const earnedTokenAmount = await CHEF_CONTRACT.getPendingRewardByToken(App.YOUR_ADDRESS, "0x10010078a54396f62c96df8532dc2b4847d47ed3") / 1e18
-
-  if (earnedTokenAmount > 0) {
+  
+  if (userStaked / 1e18 > 0) {
     showLoading()
     CHEF_CONTRACT.withdraw(userStaked)
       .then(function(t) {

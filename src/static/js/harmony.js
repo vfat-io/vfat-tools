@@ -42,7 +42,9 @@ const main = async () => {
       ["Reverse Protocol",  "",`<a href='reverse'>Various</a>`,        "RVRS",          "https://beta.reverseprotocol.one"],
       ["Synapse",           "",`<a href='synapse'>Various</a>`,        "SYN",           "https://synapseprotocol.com"],
       ["Wagmidao",          "",`<a href='wagmidao'>Various</a>`,       "GMI",           "https://app.wagmidao.io"],
-      ["Chad Finance",      "",`<a href='chadfinance'>Various</a>`,    "CHAD",           "https://chadfinance.one"]
+      ["Chad Finance",      "",`<a href='chadfinance'>Various</a>`,    "CHAD",          "https://chadfinance.one"],
+      ["Hermes",            "",`<a href='hermes'>Various</a>`,         "PLTS",          "https://plutus.hermesdefi.io"],
+      ["Hundred",           "",`<a href='hundred'>Various</a>`,        "HND",           "https://hundred.finance"]
     ]
   }
 

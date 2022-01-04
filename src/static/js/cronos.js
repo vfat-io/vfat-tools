@@ -32,6 +32,7 @@ const main = async() => {
       ["MM Finance           ", `<a href='mm'           >Various</a>`,"MMF          ","https://mm.finance"],
       ["Elk                  ", `<a href='elk'          >Various</a>`,"ELK          ","https://app.elk.finance"],
       ["CROLuan              ", `<a href='croluan'      >Various</a>`,"LUAN         ","https://luan.croterra.finance/"]
+      ["Matrix Finance       ", `<a href='matrix'       >Various</a>`,"MTX          ","https://www.matrixfinance.io/"]
     ]
   }
 
