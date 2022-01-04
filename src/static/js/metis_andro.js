@@ -19,8 +19,13 @@ async function main() {
 
    const multiplier = await ANDRO_CHEF.getMultiplier(currentBlock, currentBlock + 1);
 
-   const rewardsPerWeek = await ANDRO_CHEF.AndroPerBlock() /1e18
-        * 604800 * multiplier;
+   let rewardsPerWeek = 0
+   if(currentBlock < startBlock){
+    _print(`Rewards start at block ${startBlock}\n`)
+  }else{
+    rewardsPerWeek = await ANDRO_CHEF.AndroPerBlock() /1e18
+      * 604800 * multiplier;
+  }
 
     const tokens = {};
     const prices = await getMetisPrices();
