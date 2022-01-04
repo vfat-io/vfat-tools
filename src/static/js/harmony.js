@@ -44,7 +44,8 @@ const main = async () => {
       ["Wagmidao",          "",`<a href='wagmidao'>Various</a>`,       "GMI",           "https://app.wagmidao.io"],
       ["Chad Finance",      "",`<a href='chadfinance'>Various</a>`,    "CHAD",          "https://chadfinance.one"],
       ["Hermes",            "",`<a href='hermes'>Various</a>`,         "PLTS",          "https://plutus.hermesdefi.io"],
-      ["Hundred",           "",`<a href='hundred'>Various</a>`,        "HND",           "https://hundred.finance"]
+      ["Hundred",           "",`<a href='hundred'>Various</a>`,        "HND",           "https://hundred.finance"],
+      ["Unite Finance",     "",`<a href='unite'>Various</a>`,          "USHARE",        "https://unitefinance.io"]
     ]
   }
 
