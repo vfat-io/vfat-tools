@@ -14,8 +14,7 @@ async function main() {
 
     const rewardTokenTicker = "GOBLIN";
     const GOBLIN_CHEF = new ethers.Contract(GOBLIN_CHEF_ADDR, GOBLIN_CHEF_ABI, App.provider);
- 
-    let rewardsPerWeek = 0;
+
     const rewardsPerWeek = await GOBLIN_CHEF.goblinPerSecond() / 1e18 * 86400*7;
 
     const tokens = {};
