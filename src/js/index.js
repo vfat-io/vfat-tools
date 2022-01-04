@@ -350,7 +350,7 @@ window.NETWORKS = {
       "decimals": 18
     },
     "rpcUrls": [
-      "https://rpc.crodex.app/"
+        "https://rpc-cronos.crypto.org"
     ],
     "blockExplorerUrls": [
       "https://cronos.crypto.org/explorer"
