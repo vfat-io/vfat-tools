@@ -12,7 +12,8 @@ const main = async() => {
       ["WePiggy               ", `<a href='wepiggy'    >Various</a>`,"WPC          ","https://app.wepiggy.com"],
       ["NYAN                  ", `<a href="nyan"       >Various</a>`,"NYAN         ","https://optinyan.xyz/"],
       ["ahegao.finance        ", `<a href="ahegao"     >Various</a>`,"AHEGAO       ","https://ahegao.finance"],
-      ["OptiDOGE              ", `<a href="optidoge"   >Various</a>`,"OPTIDOGE     ","https://optidoge.xyz"]
+      ["OptiDOGE              ", `<a href="optidoge"   >Various</a>`,"OPTIDOGE     ","https://optidoge.xyz"],
+      ["Rubicon               ", `<a href="rubicon"    >Various</a>`,"Various      ","https://app.rubicon.finance"]
     ]
   }
 
