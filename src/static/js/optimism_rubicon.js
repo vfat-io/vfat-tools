@@ -20,38 +20,26 @@ async function main() {
   const prices = await getOptimisticPrices();
   const tokens = {};
   const poolInfos = await Promise.all(Address.map(a => loadRubiconPoolInfo(App, tokens, prices, a)));
-  let tvl = 0, userTvl = 0
+  let tvl = 0;
   for(const p of poolInfos.filter(p => p))
   {
     printRubiconContract(p);
-    if (!isNaN(p.underlyingDepositTokensUSD)) tvl += p.underlyingDepositTokensUSD;
-    if (!isNaN(p.userStaked * p.poolPrices.price)) userTvl += p.userStaked * p.poolPrices.price;
+    if (!isNaN(p.poolPrices.tvl)) tvl += p.poolPrices.tvl;
   }
-  //_print_bold(`\nTotal Value Locked: $${formatMoney(tvl)}`);
-  if (userTvl > 0) {
-    _print_bold(`You are staking a total of $${formatMoney(userTvl)}`);
-  }
+  _print_bold(`\nTotal Value Locked: $${formatMoney(tvl)}`);
 
   hideLoading();
 }
 
 async function loadRubiconPoolInfo(App, tokens, prices, contractAddress) {
   try {
-    const contract = await new ethers.Contract(contractAddress, RUBICON_VAULT_ABI, App.provider);
     const vault = await getOptimisticToken(App, contractAddress, App.YOUR_ADDRESS);
-    const underlyingAddress = await contract.underlying();
-    const underlyingToken = await getOptimisticToken(App, underlyingAddress, App.YOUR_ADDRESS);
     var newTokenAddresses = vault.tokens.filter(x => !getParameterCaseInsensitive(tokens, x));
     for (const address of newTokenAddresses) {
       tokens[address] = await getOptimisticToken(App, address, contractAddress);
     }
-    const totalSupply = await contract.totalSupply() / 10 ** underlyingToken.decimals;/// 10 ** vault.decimals;
-    const totalDeposits = await contract.underlyingBalance() / 10 ** underlyingToken.decimals;
-    const ppfs = totalDeposits / totalSupply;
-    const userStaked = await contract.balanceOf(App.YOUR_ADDRESS) / 10 ** vault.decimals;
     const poolPrices = getPoolPrices(tokens, prices, vault, "optimistic");
-    const underlyingDepositTokensUSD = totalDeposits * poolPrices.price;
-    return { vault, poolPrices, userStaked, ppfs, totalSupply, totalDeposits, underlyingDepositTokensUSD }
+    return { vault, poolPrices }
   }
   catch (err) {
     console.log(err)
@@ -60,14 +48,12 @@ async function loadRubiconPoolInfo(App, tokens, prices, contractAddress) {
 
 async function printRubiconContract(poolInfo) {
   const poolPrices = poolInfo.poolPrices;
-  _print(`${poolPrices.name} Price: $${formatMoney(poolPrices.price)} TVL: $${formatMoney(poolPrices.tvl)}`);
-  var userStakedUsd = poolInfo.userStaked * poolPrices.price;
+  _print(`${poolPrices.name} `);
+  var userStakedUsd = poolInfo.vault.unstaked * poolPrices.price;
   var userStakedPct = userStakedUsd / poolPrices.tvl * 100;
-  let underlyingDepositTokensUSD = poolInfo.totalDeposits * poolPrices.price;
-  _print(`Total Staked: ${poolInfo.totalSupply.toFixed(4)} ${poolInfo.vault.symbol} (${poolInfo.totalDeposits.toFixed(4)} ${poolInfo.vault.token.symbol}), $${formatMoney(underlyingDepositTokensUSD)}`);
-  _print(`You are staking ${poolInfo.userStaked.toFixed(4)} ${poolPrices.name} ($${formatMoney(userStakedUsd)}), ${userStakedPct.toFixed(2)}% of the pool.`);
-  if (poolInfo.userStaked > 0) {
-    _print(`Your stake comprises of ${poolInfo.userStaked * poolInfo.ppfs} ${poolInfo.vault.token.symbol}.`)
-  }
+  const totalUnderlyingStaked = poolInfo.vault.staked
+  const totalSupply = poolInfo.vault.totalSupply / 10 ** poolInfo.vault.token.decimals;
+  _print(`Total Staked: ${totalSupply.toFixed(4)} ${poolInfo.vault.symbol} (${totalUnderlyingStaked.toFixed(4)} ${poolInfo.vault.token.symbol}), $${formatMoney(poolPrices.tvl)}`);
+  _print(`You are staking ${poolInfo.vault.unstaked.toFixed(4)} ${poolPrices.name} ($${formatMoney(userStakedUsd)}), ${userStakedPct.toFixed(2)}% of the pool.`);
   _print("");
 }

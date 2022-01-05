@@ -219,9 +219,8 @@ async function getOptimisticDlpPool(App, dlpPool, tokenAddress, originTokenAddre
 
 async function getOptimisticRubiconVault(App, vault, address, stakingAddress) {
   const calls = [vault.decimals(), vault.underlying(), vault.name(), vault.symbol(),
-                 vault.totalSupply(), vault.balanceOf(stakingAddress),
-                 vault.balanceOf(App.YOUR_ADDRESS), vault.underlyingBalance()];
-  const [decimals, token_, name, symbol, totalSupply, staked, unstaked, balance] = await App.ethcallProvider.all(calls);
+                 vault.totalSupply(), vault.balanceOf(App.YOUR_ADDRESS), vault.underlyingBalance()];
+  const [decimals, token_, name, symbol, totalSupply, unstaked, balance] = await App.ethcallProvider.all(calls);
   const token = await getOptimisticToken(App, token_, address);
   return {
     address,
@@ -229,7 +228,7 @@ async function getOptimisticRubiconVault(App, vault, address, stakingAddress) {
     symbol : symbol,
     totalSupply : totalSupply,
     decimals : decimals,
-    staked: staked / 10 ** decimals,
+    staked: balance / 10 ** token.decimals,
     unstaked: unstaked / 10 ** decimals,
     token: token,
     balance : balance,
