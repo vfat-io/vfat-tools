@@ -194,7 +194,7 @@ async function main() {
     const lpToken = await getHarmonyToken(App, gageInfos[i].lpTokenAddress, gaugeAddresses[i]);
     const totalSupply = gageInfos[i].totalSupply / 10 ** lpToken.decimals;
     const usersStaked = gageInfos[i].balance / 10 ** lpToken.decimals;
-    const _claimableRewards = await App.ethcallProvider.all([gaugeContracts[i].claimable_reward(App.YOUR_ADDRESS, rewradToken.address)]);
+    const _claimableRewards = await App.ethcallProvider.all([gaugeContracts[i].integrate_fraction(App.YOUR_ADDRESS)]);
     const claimableTokens = _claimableRewards / 10 ** rewradToken.decimals;
     const poolPrice = getPoolPrices(tokens, prices, lpToken, "harmony")
     staked_tvl += totalSupply * poolPrice.price;

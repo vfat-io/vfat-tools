@@ -16,6 +16,7 @@ async function main() {
    const ANDRO_CHEF = new ethers.Contract(ANDRO_CHEF_ADDR, ANDRO_CHEF_ABI, App.provider);
 
    const currentBlock = await App.provider.getBlockNumber();
+   const startBlock = await ANDRO_CHEF.startBlock();
 
    const multiplier = await ANDRO_CHEF.getMultiplier(currentBlock, currentBlock + 1);
 

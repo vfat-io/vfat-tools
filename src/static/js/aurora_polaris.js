@@ -31,4 +31,5 @@ async function main() {
   if (p.totalUserStaked > 0) {
   _print(`You are staking a total of $${formatMoney(p.totalUserStaked)} at an APR of ${(p.totalAPR * 100).toFixed(2)}%\n`);
   }
+  hideLoading();
 }
