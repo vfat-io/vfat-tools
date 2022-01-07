@@ -36,6 +36,9 @@ const pageNetwork = function() {
   if (network.toLowerCase() === 'okex') {
     return window.NETWORKS.OKEX
   }
+  if (network.toLowerCase() === 'emerald') {
+    return window.NETWORKS.EMERALD
+  }
   if (network.toLowerCase() === 'kcc') {
     return window.NETWORKS.KCC
   }
