@@ -2759,6 +2759,9 @@ function getErc20Prices(prices, pool, chain="eth") {
     case "fantom":
       poolUrl=`https://ftmscan.com/token/${pool.address}`;
       break;
+    case "emerald":
+      poolUrl=`https://explorer.emerald.oasis.dev/token/${pool.address}`;
+      break;
     case "metis":
       poolUrl=`https://andromeda-explorer.metis.io/token/${pool.address}`;
       break;
@@ -3410,6 +3413,9 @@ async function printSynthetixPool(App, info, chain="eth", customURLs) {
       case "fantom":
         _print(`<a target="_blank" href="https://ftmscan.com/address/${info.stakingAddress}#code">FTM Scan</a>`);
         break;
+      case "emerald":
+        _print(`<a target="_blank" href="https://explorer.emerald.oasis.dev/address/${info.stakingAddress}#code">FTM Scan</a>`);
+        break;
       case "metis":
         _print(`<a target="_blank" href="https://andromeda-explorer.metis.io/address/${info.stakingAddress}#code">Andromeda Explorer</a>`);
         break;
@@ -3597,5 +3603,7 @@ function getChainExplorerUrl(chain, address){
       return `https://andromeda-explorer.metis.io/address/${address}`;
     case "meter" :
       return `https://scan.meter.io/address/${address}`;
+    case "emerald" :
+      return `https://explorer.emerald.oasis.dev/token/${address}`;
   }
 }

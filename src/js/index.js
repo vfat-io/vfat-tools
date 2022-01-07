@@ -91,6 +91,21 @@ window.NETWORKS = {
       "https://optimistic.etherscan.io/"
     ]
   },
+  EMERALD: {
+    "chainId": "0xA516",
+    "chainName": "Emerald Paratime Mainnet",
+    "nativeCurrency": {
+      "name": "oasis-network",
+      "symbol": "ROSE",
+      "decimals": 18
+    },
+    "rpcUrls": [
+      "https://emerald.oasis.dev"
+    ],
+    "blockExplorerUrls": [
+      "https://explorer.emerald.oasis.dev"
+    ]
+  },
   BINANCE_SMART_CHAIN: {
     "chainId": "0x38",
     "chainName": "Binance Smart Chain Mainnet",
