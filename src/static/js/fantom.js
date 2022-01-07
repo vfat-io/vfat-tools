@@ -140,7 +140,7 @@ const main = async() => {
       ["Caribou Finance    ", `<a href='caribou'      >Various</a>`,"CARIBOU      ","https://caribou.finance"],
       ["Bag Finance        ", `<a href='bag'          >Various</a>`,"BGLD         ","https://app.thisistheway.finance"],
       ["Goblin             ", `<a href='goblin'       >Various</a>`,"GOBLIN       ","https://thegoblin.money"],
-      ["Banksy Farm        ", `<a href='banksyfarm'   >Various</a>`,"BANKSYFARM   ","https://ftm.banksy.farm"],
+      ["Banksy Farm         ", `<a href='banksyfarm'   >Various</a>`,"BANKSYFARM   ","https://ftm.banksy.farm"],
       ["Tokyo Swap         ", `<a href='tokyoswap'    >Various</a>`,"TOKYO        ","https://ftm.tokyoswap.finance"]
     ]
   }
