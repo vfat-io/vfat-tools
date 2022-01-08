@@ -1971,7 +1971,8 @@ function getUniPrices(tokens, prices, pool, chain="eth")
   else if (pool.symbol.includes("Genesis-LP")) stakeTokenTicker += " Genesis LP Token";
   else if (pool.symbol.includes("Wagyu-LP")) stakeTokenTicker += " Wagyu LP Token";
   else if (pool.symbol.includes("OLP")) stakeTokenTicker += " Oolong LP Token";
-  else if (pool.symbol.includes("TLP")) stakeTokenTicker += " Trisolaris LP Token";
+  else if (pool.symbol.includes("TLP") && !pool.name.includes("Thorus LP")) stakeTokenTicker += " Trisolaris LP Token";
+  else if (pool.symbol.includes("TLP") && pool.name.includes("Thorus LP")) stakeTokenTicker += " Thorus LP Token";
   else if (pool.symbol.includes("SCLP")) stakeTokenTicker += " SwapperChan LP Token";
   else stakeTokenTicker += " Uni LP";
   return {
@@ -2060,7 +2061,8 @@ function getUniPrices(tokens, prices, pool, chain="eth")
               pool.symbol.includes("HLP") ?  `https://analytics.hadesswap.finance/pairs/${pool.address}` :
               pool.symbol.includes("LOOT-LP") ?  `https://analytics.lootswap.finance/pair/${pool.address}` :
               pool.symbol.includes("VVS-LP") ?  `https://vvs.finance/info/farm/${pool.address}` :
-              pool.symbol.includes("TLP") ?  `https://explorer.mainnet.aurora.dev/address/${pool.address}` :
+              pool.symbol.includes("TLP") && !pool.name.includes("Thorus LP") ?  `https://explorer.mainnet.aurora.dev/address/${pool.address}` :
+              pool.symbol.includes("TLP") && !pool.name.includes("Thorus LP") ?  `https://snowtrace.io/address/${pool.address}` :
               pool.symbol.includes("Crona-LP") ?  `https://app.cronaswap.org/info/${pool.address}` : //wait for real version
               pool.symbol.includes("Genesis-LP") ?  `https://app.cronaswap.org/info/${pool.address}` : //wait for real version
               pool.symbol.includes("BenSwap") ? ({
@@ -2092,10 +2094,15 @@ function getUniPrices(tokens, prices, pool, chain="eth")
             `https://www.huckleberry.finance/#/remove/${t0address}/${t1address}`,
             `https://www.huckleberry.finance/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
           ] :
-          pool.symbol.includes("TLP") ? [
+          pool.symbol.includes("TLP") && !pool.name.includes("Thorus LP") ? [
             `https://www.trisolaris.io/#/add/${t0address}/${t1address}`,
             `https://www.trisolaris.io/#/remove/${t0address}/${t1address}`,
             `https://www.trisolaris.io/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+          ] :
+          pool.symbol.includes("TLP") && pool.name.includes("Thorus LP") ? [
+            `https://app.thorus.fi/add/${t0address}/${t1address}`,
+            `https://app.thorus.fi/remove/${t0address}/${t1address}`,
+            `https://app.thorus.fi/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
           ] :
           pool.symbol.includes("VVS") ? [
             `https://vvs.finance/add/${t0address}/${t1address}`,
