@@ -106,7 +106,7 @@ const main = async() => {
       ["Eleven              ","", `<a href="eleven"        >Various</a>`,"ELE              ","https://eleven.finance"],
       ["Yumcha              ","", `<a href="yumcha"        >Various</a>`,"YUMCHA           ","https://yumcha.finance"],
       ["Comos               ","", `<a href="comos"         >Various</a>`,"COMOS            ","https://app.comos.finance"],
-      ["Pokemoon *          ","", `<a href="pokemoon"      >Various</a>`,"KBN              ","https://pokemoon.io"],
+      ["Pokemoon            ","", `<a href="pokemoon"      >Various</a>`,"KBN              ","https://pokemoon.io"],
       ["Octree              ","", `<a href="octree"        >Various</a>`,"OAK              ","https://octree.finance"],
       ["Cub                 ","", `<a href="cub"           >Various</a>`,"CUB              ","https://cubdefi.com"],
       ["Popsicle            ","", `<a href="popsicle"      >Various</a>`,"ICE              ","https://popsicle.finance"],
@@ -562,7 +562,8 @@ const main = async() => {
       ["Dibs                ","", `<a href="dibs"          >Various</a>`,"DSHARE/DIBS      ","https://www.dibs.money"],
       ["UFX                 ","", `<a href="ufx"           >Various</a>`,"UFX              ","https://app.unitedfarmers.finance/farms"],
       ["UFGRAIN             ","", `<a href="ufgrain"       >Various</a>`,"UFGRAIN          ","https://app.unitedfarmers.finance/farms"],
-      ["Tokyo Swap          ","", `<a href="tokyoswap"     >Various</a>`,"TOKYO            ","https://www.tokyoswap.finance"]
+      ["Tokyo Swap          ","", `<a href="tokyoswap"     >Various</a>`,"TOKYO            ","https://www.tokyoswap.finance"],
+      ["Latte Swap          ","", `<a href="latteswap"     >Various</a>`,"LATTE            ","https://app.latteswap.com"]
     ]}
 
   let table = new AsciiTable().fromJSON(tableData);
