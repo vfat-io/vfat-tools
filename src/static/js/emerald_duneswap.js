@@ -16,11 +16,17 @@ $(function() {
      const rewardTokenTicker = "DUNE";
      const DUNE_CHEF = new ethers.Contract(DUNE_CHEF_ADDR, DUNE_CHEF_ABI, App.provider);
      const currentBlock = await App.provider.getBlockNumber();
+     const startBlock = await DUNE_CHEF.startBlock();
+     let rewardsPerWeek = 0
      const multiplier = await DUNE_CHEF.getMultiplier(currentBlock, currentBlock+1);
 
      const blocksPerSeconds = await getAverageBlockTime(App);
 
-     const rewardsPerWeek = await DUNE_CHEF.dunePerBlock() /1e18 * multiplier * 604800 / blocksPerSeconds;
+     if(currentBlock < startBlock){
+      _print(`Rewards start at block ${startBlock}\n`);
+     }else{
+      rewardsPerWeek = await DUNE_CHEF.dunePerBlock() /1e18 * multiplier * 604800 / blocksPerSeconds;
+     }
 
       const tokens = {};
       const prices = await getEmeraldPrices();
