@@ -80,7 +80,7 @@ $(function() {
     var tokens = {};
   
     const rewardTokenAddress = await chefContract.callStatic[rewardTokenFunction]();
-    const rewardToken = await getHarmonyToken(App, rewardTokenAddress, chefAddress);
+    const rewardToken = await getSmartbchToken(App, rewardTokenAddress, chefAddress);
     const rewardsPerWeek = rewardsPerWeekFixed ??
       await chefContract.callStatic[rewardsPerBlockFunction]()
       / 10 ** rewardToken.decimals * 604800 / 6
