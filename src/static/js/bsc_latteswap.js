@@ -22,11 +22,10 @@ async function main() {
 
     const tokens = {};
     const prices = await getBscPrices();
-
-    //missing the flat-busd pool
     //check the functions for deposit, withdraw and claim to change them
     //in printChefPool() I have to add stakingTokens[i] and not i!!!
 
+    //missing the flat-busd pool
     const stakingTokens = ["0x1524C3380257eF5D556AFeB6056c35DeFA9db8b6",  //LATTE-BUSD
                            "0x318b894003d0eacfedaa41b8c70ed3ce1fde1450",  //BUSD-USDT
                            "0xbd4284d34b9673fc79aab2c0080c5a19b4282425",  //BTCB-BUSD
@@ -114,7 +113,7 @@ async function loadLatteswapContract(App, tokens, prices, chef, chefAddress, che
   let aprs = []
   for (i = 0; i < poolCount; i++) {
     if (poolPrices[i]) {
-      const apr = printChefPool(App, chefAbi, chefAddress, prices, tokens, poolInfos[i], i, poolPrices[i],
+      const apr = printLatteswapPool(App, chefAbi, chefAddress, prices, tokens, poolInfos[i], stakingTokens[i], poolPrices[i],
         totalAllocPoints, rewardsPerWeek, rewardTokenTicker, rewardTokenAddress,
         pendingRewardsFunction, null, null, "bsc", poolInfos[i].depositFee, poolInfos[i].withdrawFee)
       aprs.push(apr);
@@ -141,3 +140,157 @@ async function loadLatteswapContract(App, tokens, prices, chef, chefAddress, che
   }
   return { prices, totalUserStaked, totalStaked, averageApr }
 }
+
+function printLatteswapPool(App, chefAbi, chefAddr, prices, tokens, poolInfo, stakingToken, poolPrices,
+                       totalAllocPoints, rewardsPerWeek, rewardTokenTicker, rewardTokenAddress,
+                       pendingRewardsFunction, fixedDecimals, claimFunction, chain="eth", depositFee=0, withdrawFee=0) {
+  fixedDecimals = fixedDecimals ?? 2;
+  const sp = (poolInfo.stakedToken == null) ? null : getPoolPrices(tokens, prices, poolInfo.stakedToken, chain);
+  var poolRewardsPerWeek = poolInfo.allocPoints / totalAllocPoints * rewardsPerWeek;
+  if (poolRewardsPerWeek == 0 && rewardsPerWeek != 0) return;
+  const userStaked = poolInfo.userLPStaked ?? poolInfo.userStaked;
+  const rewardPrice = getParameterCaseInsensitive(prices, rewardTokenAddress)?.usd;
+  const staked_tvl = sp?.staked_tvl ?? poolPrices.staked_tvl;
+  poolPrices.print_price(chain);
+  sp?.print_price(chain);
+  const apr = printAPR(rewardTokenTicker, rewardPrice, poolRewardsPerWeek, poolPrices.stakeTokenTicker,
+    staked_tvl, userStaked, poolPrices.price, fixedDecimals);
+  if (poolInfo.userLPStaked > 0) sp?.print_contained_price(userStaked);
+  if (poolInfo.userStaked > 0) poolPrices.print_contained_price(userStaked);
+  printLatteswapContractLinks(App, chefAbi, chefAddr, stakingToken, poolInfo.address, pendingRewardsFunction,
+    rewardTokenTicker, poolPrices.stakeTokenTicker, poolInfo.poolToken.unstaked,
+    poolInfo.userStaked, poolInfo.pendingRewardTokens, fixedDecimals, claimFunction, rewardPrice, chain, depositFee, withdrawFee);
+  return apr;
+}
+
+function printLatteswapContractLinks(App, chefAbi, chefAddr, stakingToken, poolAddress, pendingRewardsFunction,
+    rewardTokenTicker, stakeTokenTicker, unstaked, userStaked, pendingRewardTokens, fixedDecimals,
+    claimFunction, rewardTokenPrice, chain, depositFee, withdrawFee) {
+  fixedDecimals = fixedDecimals ?? 2;
+  const approveAndStake = async function() {
+    return latteswapContract_stake(chefAbi, chefAddr, stakingToken, poolAddress, App)
+  }
+  const unstake = async function() {
+    return latteswapContract_unstake(chefAbi, chefAddr, stakingToken, App, pendingRewardsFunction)
+  }
+  const claim = async function() {
+    return latteswapContract_claim(chefAbi, chefAddr, stakingToken, App, pendingRewardsFunction, claimFunction)
+  }
+  if(depositFee > 0){
+    _print_link(`Stake ${unstaked.toFixed(fixedDecimals)} ${stakeTokenTicker} - Fee ${depositFee}%`, approveAndStake)
+  }else{
+    _print_link(`Stake ${unstaked.toFixed(fixedDecimals)} ${stakeTokenTicker}`, approveAndStake)
+  }
+  if(withdrawFee > 0){
+    _print_link(`Unstake ${userStaked.toFixed(fixedDecimals)} ${stakeTokenTicker} - Fee ${withdrawFee}%`, unstake)
+  }else{
+    _print_link(`Unstake ${userStaked.toFixed(fixedDecimals)} ${stakeTokenTicker}`, unstake)
+  }
+  _print_link(`Claim ${pendingRewardTokens.toFixed(fixedDecimals)} ${rewardTokenTicker} ($${formatMoney(pendingRewardTokens*rewardTokenPrice)})`, claim)
+  _print(`Staking or unstaking also claims rewards.`)
+  _print("");
+}
+
+//there is an _for arg (address) which I havent add it. check if it works I think its users address
+const latteswapContract_stake = async function(chefAbi, chefAddress, stakingToken, stakeTokenAddr, App) {
+  const signer = App.provider.getSigner()
+
+  const STAKING_TOKEN = new ethers.Contract(stakeTokenAddr, ERC20_ABI, signer)
+  const CHEF_CONTRACT = new ethers.Contract(chefAddress, chefAbi, signer)
+
+  const currentTokens = await STAKING_TOKEN.balanceOf(App.YOUR_ADDRESS)
+  const allowedTokens = await STAKING_TOKEN.allowance(App.YOUR_ADDRESS, chefAddress)
+
+  let allow = Promise.resolve()
+
+  if (allowedTokens / 1e18 < currentTokens / 1e18) {
+    showLoading()
+    allow = STAKING_TOKEN.approve(chefAddress, ethers.constants.MaxUint256)
+      .then(function(t) {
+        return App.provider.waitForTransaction(t.hash)
+      })
+      .catch(function() {
+        hideLoading()
+        alert('Try resetting your approval to 0 first')
+      })
+  }
+
+  if (currentTokens / 1e18 > 0) {
+    showLoading()
+    allow
+      .then(async function() {
+          CHEF_CONTRACT.deposit(stakingToken, currentTokens, {gasLimit: 500000})
+          .then(function(t) {
+            App.provider.waitForTransaction(t.hash).then(function() {
+              hideLoading()
+            })
+          })
+          .catch(function() {
+            hideLoading()
+            _print('Something went wrong.')
+          })
+      })
+      .catch(function() {
+        hideLoading()
+        _print('Something went wrong.')
+      })
+  } else {
+    alert('You have no tokens to stake!!')
+  }
+}
+
+//there is an _for arg (address) which I havent add it. check if it works I think its users address
+const latteswapContract_unstake = async function(chefAbi, chefAddress, stakingToken, App, pendingRewardsFunction) {
+  const signer = App.provider.getSigner()
+  const CHEF_CONTRACT = new ethers.Contract(chefAddress, chefAbi, signer)
+
+  const currentStakedAmount = (await CHEF_CONTRACT.userInfo(stakingToken, App.YOUR_ADDRESS)).amount
+
+  if (currentStakedAmount / 1e18 > 0) {
+    showLoading()
+    CHEF_CONTRACT.withdraw(stakingToken, currentStakedAmount, {gasLimit: 500000})
+      .then(function(t) {
+        return App.provider.waitForTransaction(t.hash)
+      })
+      .catch(function() {
+        hideLoading()
+      })
+  }
+}
+
+//there is an _for arg (address) which I havent add it. check if it works. I think its users address
+const latteswapContract_claim = async function(chefAbi, chefAddress, stakingToken, App,
+    pendingRewardsFunction, claimFunction) {
+  const signer = App.provider.getSigner()
+
+  const CHEF_CONTRACT = new ethers.Contract(chefAddress, chefAbi, signer)
+
+  const earnedTokenAmount = await CHEF_CONTRACT.callStatic[pendingRewardsFunction](stakingToken, App.YOUR_ADDRESS) / 1e18
+
+  if (earnedTokenAmount > 0) {
+    showLoading()
+    CHEF_CONTRACT.harvest(stakingToken, {gasLimit: 500000})
+        .then(function(t) {
+          return App.provider.waitForTransaction(t.hash)
+        })
+        .catch(function() {
+          hideLoading()
+        })
+  }
+}
+
+/*
+/// @dev Harvest LATTE earned from a specific pool.
+  /// @param _stakeToken The pool's stake token
+  function harvest(address _for, address _stakeToken) external override nonReentrant {
+    PoolInfo storage pool = poolInfo[_stakeToken];
+    UserInfo storage user = userInfo[_stakeToken][_for];
+
+    uint256 lastRewardBlock = pool.lastRewardBlock;
+    updatePool(_stakeToken);
+    _harvest(_for, _stakeToken, lastRewardBlock);
+
+    user.rewardDebt = user.amount.mul(pool.accLattePerShare).div(1e12);
+    user.bonusDebt = user.amount.mul(pool.accLattePerShareTilBonusEnd).div(1e12);
+  }
+   */
