@@ -219,7 +219,7 @@ const latteswapContract_stake = async function(chefAbi, chefAddress, stakingToke
     showLoading()
     allow
       .then(async function() {
-          CHEF_CONTRACT.deposit(stakingToken, currentTokens, {gasLimit: 500000})
+          CHEF_CONTRACT.deposit(App.YOUR_ADDRESS, stakingToken, currentTokens, {gasLimit: 500000})
           .then(function(t) {
             App.provider.waitForTransaction(t.hash).then(function() {
               hideLoading()
@@ -248,7 +248,7 @@ const latteswapContract_unstake = async function(chefAbi, chefAddress, stakingTo
 
   if (currentStakedAmount / 1e18 > 0) {
     showLoading()
-    CHEF_CONTRACT.withdraw(stakingToken, currentStakedAmount, {gasLimit: 500000})
+    CHEF_CONTRACT.withdraw(App.YOUR_ADDRESS, stakingToken, currentStakedAmount, {gasLimit: 500000})
       .then(function(t) {
         return App.provider.waitForTransaction(t.hash)
       })
@@ -269,7 +269,7 @@ const latteswapContract_claim = async function(chefAbi, chefAddress, stakingToke
 
   if (earnedTokenAmount > 0) {
     showLoading()
-    CHEF_CONTRACT.harvest(stakingToken, {gasLimit: 500000})
+    CHEF_CONTRACT.harvest(App.YOUR_ADDRESS, stakingToken, {gasLimit: 500000})
         .then(function(t) {
           return App.provider.waitForTransaction(t.hash)
         })
@@ -280,7 +280,7 @@ const latteswapContract_claim = async function(chefAbi, chefAddress, stakingToke
 }
 
 /*
-/// @dev Harvest LATTE earned from a specific pool.
+  /// @dev Harvest LATTE earned from a specific pool.
   /// @param _stakeToken The pool's stake token
   function harvest(address _for, address _stakeToken) external override nonReentrant {
     PoolInfo storage pool = poolInfo[_stakeToken];
