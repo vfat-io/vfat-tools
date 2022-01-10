@@ -99,7 +99,6 @@ $(function() {
                        .map(poolInfo =>
         poolInfo.poolToken ? getPoolPrices(tokens, prices, poolInfo.poolToken, "smartbch") : undefined);
     }
-  
     const poolPrices = poolInfos.map(poolInfo => poolInfo.poolToken ? getPoolPrices(tokens, prices, poolInfo.poolToken, "smartbch") : undefined);
   
   
