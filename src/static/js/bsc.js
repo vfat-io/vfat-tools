@@ -106,7 +106,7 @@ const main = async() => {
       ["Eleven              ","", `<a href="eleven"        >Various</a>`,"ELE              ","https://eleven.finance"],
       ["Yumcha              ","", `<a href="yumcha"        >Various</a>`,"YUMCHA           ","https://yumcha.finance"],
       ["Comos               ","", `<a href="comos"         >Various</a>`,"COMOS            ","https://app.comos.finance"],
-      ["Pokemoon *          ","", `<a href="pokemoon"      >Various</a>`,"KBN              ","https://pokemoon.io"],
+      ["Pokemoon            ","", `<a href="pokemoon"      >Various</a>`,"KBN              ","https://pokemoon.io"],
       ["Octree              ","", `<a href="octree"        >Various</a>`,"OAK              ","https://octree.finance"],
       ["Cub                 ","", `<a href="cub"           >Various</a>`,"CUB              ","https://cubdefi.com"],
       ["Popsicle            ","", `<a href="popsicle"      >Various</a>`,"ICE              ","https://popsicle.finance"],
@@ -556,7 +556,15 @@ const main = async() => {
       ["Mars Ecosystem      ","", `<a href="marsecosystem" >Various</a>`,"Various          ","https://app.marsecosystem.com"],
       ["Icecolony           ","", `<a href="icecolony"     >Various</a>`,"ICE              ","https://bsc.icecolony.com"],
       ["Topshelf            ","", `<a href="topshelf"      >Various</a>`,"LIQR             ","https://topshelf.finance"],
-      ["Niob Finance        ","", `<a href="niob"          >Various</a>`,"NIOB             ","https://niob.finance"]
+      ["Niob Finance        ","", `<a href="niob"          >Various</a>`,"NIOB             ","https://niob.finance"],
+      ["Bag Finance         ","", `<a href="bag"           >Various</a>`,"BGLD             ","https://app.thisistheway.finance"],
+      ["Whale Loans         ","", `<a href="whaleloans"    >Various</a>`,"HUMP             ","https://whale.loans"],
+      ["Dibs                ","", `<a href="dibs"          >Various</a>`,"DSHARE/DIBS      ","https://www.dibs.money"],
+      ["UFX                 ","", `<a href="ufx"           >Various</a>`,"UFX              ","https://app.unitedfarmers.finance/farms"],
+      ["UFGRAIN             ","", `<a href="ufgrain"       >Various</a>`,"UFGRAIN          ","https://app.unitedfarmers.finance/farms"],
+      ["Tokyo Swap          ","", `<a href="tokyoswap"     >Various</a>`,"TOKYO            ","https://www.tokyoswap.finance"],
+      ["Latte Swap          ","", `<a href="latteswap"     >Various</a>`,"LATTE            ","https://app.latteswap.com"],
+      ["The Manor           ","", `<a href="manor"         >Various</a>`,"REV              ","https://themanor.farm"]
     ]}
 
   let table = new AsciiTable().fromJSON(tableData);

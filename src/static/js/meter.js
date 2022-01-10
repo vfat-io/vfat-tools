@@ -8,7 +8,7 @@ const main = async() => {
     "title":"Meter Network",
     "heading":["Pool Provider","LP", "Reward Tokens", "INFO"],
     "rows": [
-      ["Voltswap               ", `<a href="voltswap"         >Various</a>`,"VOLT            ","https://farm.voltswap.finance"],
+      ["Voltswap               ", `<a href="voltswap"         >Various</a>`,"VOLT            ","https://farm.voltswap.finance"]
     ]}
 
   let table = new AsciiTable().fromJSON(tableData);

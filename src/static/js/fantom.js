@@ -109,7 +109,7 @@ const main = async() => {
       ['Babypig Finance    ', `<a href="babypig"      >Various</a>`,'fBABYPIG     ','https://babypig.finance'],
       ['Draco Force        ', `<a href="dracoforce"   >Various</a>`,'DRC          ','https://dracoforce.com'],
       ['Smurf Clever       ', `<a href="smurf"        >Various</a>`,'CLEVER       ','https://smurf.money'],
-      ['Hundred *          ', `<a href="hundred"      >Various</a>`,'HND          ','https://hundred.finance'],
+      ['Hundred            ', `<a href="hundred"      >Various</a>`,'HND          ','https://hundred.finance'],
       ['FantomPup          ', `<a href="fantompup"    >Various</a>`,'PUP          ','https://fantompup.finance'],
       ['UndeadFinance      ', `<a href="undeadfinance">Various</a>`,'UNDEAD       ','https://undeadfinance.com'],
       ['FanTerra           ', `<a href="fanterra"     >Various</a>`,'FANTERRA     ','https://app.fanterra.finance'],
@@ -123,7 +123,7 @@ const main = async() => {
       ["Eldritch Finance v2  ", `<a href="eldritchv2" >Various</a>`,'ELDRv2       ',"https://eldritch.app"],
       ["Knights Finance    ", `<a href="knights"      >Various</a>`,'KNIGHTS      ',"https://knightsfinance.xyz"],
       ['FANLuan            ', `<a href="fanluan"      >Various</a>`,'FLUAN        ','https://luan.fanterra.finance'],
-      ["Autofarm           ", `<a href='autofatm'     >Various</a>`,"Various      ","https://autofarm.network/fantom"],
+      ["Autofarm           ", `<a href='autofarm'     >Various</a>`,"Various      ","https://autofarm.network/fantom"],
       ["MunSwap            ", `<a href='munswap'      >Various</a>`,"MUN          ","https://mun-swap.com"],
       ["TrickorTreat L2    ", `<a href='trick'        >Various</a>`,"TRICK        ","https://trickortreat.farm"],
       ["rKITTEN            ", `<a href='rkitten'      >Various</a>`,"rKITTEN      ","https://kittens.fakeworms.studio/rewards"],
@@ -137,7 +137,13 @@ const main = async() => {
       ["DefySwap           ", `<a href='defyswap'     >Various</a>`,"DFY          ","https://defyswap.finance"],
       ["BlackGoat          ", `<a href='blackgoat'    >Various</a>`,"GOAT         ","https://app.fanblackgoat.finance"],
       ["Topshelf           ", `<a href='topshelf'     >Various</a>`,"LIQR         ","https://topshelf.finance"],
-      ["Caribou Finance    ", `<a href='caribou'      >Various</a>`,"CARIBOU      ","https://caribou.finance"]
+      ["Caribou Finance    ", `<a href='caribou'      >Various</a>`,"CARIBOU      ","https://caribou.finance"],
+      ["Bag Finance        ", `<a href='bag'          >Various</a>`,"BGLD         ","https://app.thisistheway.finance"],
+      ["Goblin             ", `<a href='goblin'       >Various</a>`,"GOBLIN       ","https://thegoblin.money"],
+      ["Banksy Farm        ", `<a href='banksyfarm'   >Various</a>`,"BANKSYFARM   ","https://ftm.banksy.farm"],
+      ["Tokyo Swap         ", `<a href='tokyoswap'    >Various</a>`,"TOKYO        ","https://ftm.tokyoswap.finance"],
+      ["Cougar Vault       ", `<a href='cougar_vault' >Various</a>`,"CGSV         ","https://vault.cougarswap.io"],
+      ["Skull Game         ", `<a href='skull'        >Various</a>`,"SKULL        ","https://ftm.skullgamefi.com"]
     ]
   }
 

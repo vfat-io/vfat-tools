@@ -41,7 +41,8 @@ const FantomTokens = [
   { "id": "magic-internet-money", "symbol": "MIM", "contract": "0x82f0B8B456c1A451378467398982d4834b6829c1"},
   { "id": "frax", "symbol": "FRAX", "contract": "0xdc301622e621166BD8E82f2cA0A26c13Ad0BE355"},
   { "id": "hundred-finance", "symbol": "HND", "contract": "0x10010078a54396f62c96df8532dc2b4847d47ed3"},
-  { "id": "topshelf-finance", "symbol": "LIQR", "contract": "0x33333ee26a7d02e41c33828b42fb1e0889143477" }
+  { "id": "topshelf-finance", "symbol": "LIQR", "contract": "0x33333ee26a7d02e41c33828b42fb1e0889143477" },
+  { "id": "blockchain-adventurers-guild", "symbol": "BAG", "contract":"0xB1d82666384bE5F8C59AA18e650493ABb8A614Ad"}
 ];
 
 async function getFantomPrices() {
@@ -329,7 +330,7 @@ async function getFantomStoredToken(App, tokenAddress, stakingAddress, type) {
     case "stableswap":
       const stable = new ethcall.Contract(tokenAddress, STABLESWAP_ABI);
       return await getFantomStableswapToken(App, stable, tokenAddress, stakingAddress);
-    case "cFantomToken":
+    case "cToken":
       const cFantomToken = new ethcall.Contract(tokenAddress, CTOKEN_ABI);
       return await getCFantomToken(App, cFantomToken, tokenAddress, stakingAddress);
     case "uniswap":
@@ -407,10 +408,10 @@ async function getFantomToken(App, tokenAddress, stakingAddress) {
     catch(err) {
     }
     try {
-      const cFantomToken = new ethcall.Contract(tokenAddress, CTOKEN_ABI);
-      const _totalBorrows = await App.ethcallProvider.all([cFantomToken.totalBorrows()]);
-      const res = await getCFantomToken(App, cFantomToken, tokenAddress, stakingAddress);
-      window.localStorage.setItem(tokenAddress, "cFantomToken");
+      const cToken = new ethcall.Contract(tokenAddress, CTOKEN_ABI);
+      const _totalBorrows = await App.ethcallProvider.all([cToken.totalBorrows()]);
+      const res = await getCFantomToken(App, cToken, tokenAddress, stakingAddress);
+      window.localStorage.setItem(tokenAddress, "cToken");
       return res;
     }
     catch(err) {

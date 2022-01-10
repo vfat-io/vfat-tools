@@ -68,7 +68,7 @@ const main = async () => {
       ["Sakeswap                     ", `<a href="../sakeswap"           >Various</a>`, "SAKE               ", "https://sakeswap.finance"],
       ["Defiville                    ", `<a href="../defiville"          >Various</a>`, "ISLA               ", "https://defiville.finance"],
       ["Benchmark                    ", `<a href="../benchmark/"         >Various</a>`, "MARK               ", "https://launchpad.benchmarkprotocol.finance/pools"],
-      ["Governor *                   ", `<a href="../governordao"        >Various</a>`, "GDAO               ", "https://governordao.org"],
+      ["Governor                     ", `<a href="../governordao"        >Various</a>`, "GDAO               ", "https://governordao.org"],
       ["Optionroom                   ", `<a href="../optionroom"         >Various</a>`, "COURT              ", "https://app.optionroom.finance"],
       ["Mint                         ", `<a href="../mint"               >Various</a>`, "MINT               ", "https://stake.publicmint.com"],
       ["Proof Of Humanity            ", `<a href="../proofofhumanity"    >Various</a>`, "UBI                ", "https://www.proofofhumanity.id"],

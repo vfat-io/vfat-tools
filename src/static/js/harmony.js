@@ -23,14 +23,12 @@ const main = async () => {
       ["Cosmic",            "",`<a href='cosmic'>Various</a>`,         "MAGIC",         "https://lootswap.finance/guilds/cosmic"],
       ["Sonicswap",         "",`<a href='sonicswap'>Various</a>`,      "SONIC",         "https://sonicswap.io/#/staking"],
       ["Defi Kingdoms",     "",`<a href='defikingdoms'>Various</a>`,   "JEWEL",         "https://game.defikingdoms.com"],
-      ["Rain",              "",`<a href='rain'>Various</a>`,           "RAIN",          "https://rainfinance.one"],
       ["FATExDAO",          "",`<a href='fatex'>Various</a>`,          "FATE",          "https://app.fatex.io"],
       ["TheValleys",        "",`<a href='thevalleys'>Various</a>`,     "AME",           "https://thevalleys.one"],
       ["FarmersOnlyFi",     "",`<a href='farmersonly'>Various</a>`,    "FOX",           "https://app.farmersonly.fi"],
       ["Fuzz Finance",      "",`<a href='fuzz'>Various</a>`,           "FUZZ",          "https://swap.fuzz.fi"],
       ["Artemis Protocol",  "",`<a href='artemisprotocol'>Various</a>`,"MIS",           "https://app.artemisprotocol.one"],
       ["Harmony Cougar",    "",`<a href='cougar'>Various</a>`,         "CGS",           "https://harmonyapp.cougarswap.io"],
-      ["ADENA Finance",     "",`<a href='adena'>Various</a>`,          "ADENA",         "https://adena.finance"],
       ["Elephant Exchange", "",`<a href='elephant'>Various</a>`,       "ELEPHANT",      "https://elephant.ac"],
       ["Curve",             "",`<a href='curve'>Various</a>`,          "CRV/ONE",       "https://harmony.curve.fi"],
       ["HarmoNYAN",         "",`<a href='harmonyan'>Various</a>`,      "HNYAN",         "https://harmonyan.one"],
@@ -44,7 +42,11 @@ const main = async () => {
       ["Reverse Protocol",  "",`<a href='reverse'>Various</a>`,        "RVRS",          "https://beta.reverseprotocol.one"],
       ["Synapse",           "",`<a href='synapse'>Various</a>`,        "SYN",           "https://synapseprotocol.com"],
       ["Wagmidao",          "",`<a href='wagmidao'>Various</a>`,       "GMI",           "https://app.wagmidao.io"],
-      ["Chad Finance",      "",`<a href='chadfinance'>Various</a>`,    "CHAD",           "https://chadfinance.one"]
+      ["Chad Finance",      "",`<a href='chadfinance'>Various</a>`,    "CHAD",          "https://chadfinance.one"],
+      ["Hermes",            "",`<a href='hermes'>Various</a>`,         "PLTS",          "https://plutus.hermesdefi.io"],
+      ["Hundred",           "",`<a href='hundred'>Various</a>`,        "HND",           "https://hundred.finance"],
+      ["Unite Finance",     "",`<a href='unite'>Various</a>`,          "USHARE",        "https://unitefinance.io"],
+      ["WePiggy",           "",`<a href='wepiggy'>Various</a>`,        "WPC",           "https://app.wepiggy.com"]
     ]
   }
 

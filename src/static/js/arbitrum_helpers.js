@@ -448,9 +448,9 @@ async function getArbitrumStoredToken(App, tokenAddress, stakingAddress, type) {
     case "arbitrumArbisVault":
       const arbisVault = new ethcall.Contract(tokenAddress, ARBIS_VAULT_UNDERLYING_ABI);
       return await getArbitrumArbisVault(App, arbisVault, tokenAddress, stakingAddress);
-    case "cArbitrumToken":
-      const cArbitrumToken = new ethcall.Contract(tokenAddress, CTOKEN_ABI);
-      return await getCArbitrumToken(App, cArbitrumToken, tokenAddress, stakingAddress);
+    case "cToken":
+      const cToken = new ethcall.Contract(tokenAddress, CTOKEN_ABI);
+      return await getCArbitrumToken(App, cToken, tokenAddress, stakingAddress);
     case "triToken":
       const tri = new ethcall.Contract(tokenAddress, TRITOKEN_ABI);
       const [triMinter] = await App.ethcallProvider.all([tri.minter()]);
@@ -510,7 +510,7 @@ async function getArbitrumToken(App, tokenAddress, stakingAddress) {
       const cArbitrumToken = new ethcall.Contract(tokenAddress, CTOKEN_ABI);
       const _totalBorrows = await App.ethcallProvider.all([cArbitrumToken.totalBorrows()]);
       const res = await getCArbitrumToken(App, cArbitrumToken, tokenAddress, stakingAddress);
-      window.localStorage.setItem(tokenAddress, "cArbitrumToken");
+      window.localStorage.setItem(tokenAddress, "cToken");
       return res;
     }
     catch(err) {

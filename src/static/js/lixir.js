@@ -10,7 +10,9 @@ const Pools = [
   "0x94555c8BE71545aDFF49CA1bB95f4dEBaf720F15",
   "0x7Db530c90CE1a2803911D85b380b83ADbe8aEB56", // LINK gauge
   "0xe038ec0651c5e554B65D4072188D5A7e3b976af0", // ENS gauge
-  "0x960c6ede0e5d7cba4abcce2ba27f84e5528d4453" // WSTR gauge
+  "0x960c6ede0e5d7cba4abcce2ba27f84e5528d4453", // WSTR gauge
+  "0x3451d644e6D164889Cda6Eb779Cf5Ac120c2dd33", // FLOKI gauge
+  "0xE544483CFADEEf714bC0c5f99985756C43c24B0e"  // SOS gauge
 ].map(a => {
   return {
     address: a,
