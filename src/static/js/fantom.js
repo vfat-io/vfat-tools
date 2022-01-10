@@ -142,7 +142,8 @@ const main = async() => {
       ["Goblin             ", `<a href='goblin'       >Various</a>`,"GOBLIN       ","https://thegoblin.money"],
       ["Banksy Farm        ", `<a href='banksyfarm'   >Various</a>`,"BANKSYFARM   ","https://ftm.banksy.farm"],
       ["Tokyo Swap         ", `<a href='tokyoswap'    >Various</a>`,"TOKYO        ","https://ftm.tokyoswap.finance"],
-      ["Cougar Vault       ", `<a href='cougar_vault' >Various</a>`,"CGSV         ","https://vault.cougarswap.io"]
+      ["Cougar Vault       ", `<a href='cougar_vault' >Various</a>`,"CGSV         ","https://vault.cougarswap.io"],
+      ["Skull Game         ", `<a href='skull'        >Various</a>`,"SKULL        ","https://ftm.skullgamefi.com"]
     ]
   }
 
