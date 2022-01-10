@@ -25,7 +25,7 @@ const main = async() => {
       ["Botto               ", `<a href="botto/"            >Various</a>`,"BOTTO     ","https://app.botto.com"],
       ["Cover Protocol      ",`<a href="cover/"             >Various</a>`,"Various   ","https://app.coverprotocol.com"],
       ["Cryptex             ",`<a href="cryptex"            >Various</a>`,"CTX       ","https://app.cryptex.finance"],
-      ["* Curve *           ",`<a href="curve/"             >Various</a>`,"Various   ","https://curve.fi"],
+      ["Curve               ",`<a href="curve/"             >Various</a>`,"Various   ","https://curve.fi"],
       ["DFX                 ",`<a href="dfx/"               >Various</a>`,"DFX       ","https://v0.dfx.finance/"],
       ["Dopex               ",`<a href="dopex/"             >Various</a>`,"DPX, rDPX ","https://app.dopex.io/farms"],
       ["DODO                ",`<a href="dodo/"              >Various</a>`,"DODO      ","https://app.dodoex.io"],
@@ -68,7 +68,7 @@ const main = async() => {
       ["WePiggy             ",`<a href="wepiggy/"           >Various</a>`,"WPC       ","https://app.wepiggy.com"],
       ["xSigma              ",`<a href="xsigma/"            >Various</a>`,"SIG       ","https://app.xsigma.fi/stake"],
       ["xToken              ",`<a href="xtoken/"            >Various</a>`,"XTK       ","https://xtoken.cafe/app/dashboard"],
-      ["* Yearn *           ",`<a href="yearn/"             >Various</a>`,"Various   ","https://yearn.finance"],
+      ["Yearn               ",`<a href="yearn/"             >Various</a>`,"Various   ","https://yearn.finance"],
       ["Yam                 ",`<a href="yam/"               >YAM-ETH SLP</a>`,"YAM   ","https://yam.finance/farm"],
       ["yAxis               ",`<a href="yaxis/"             >Various</a>`,"yAxis     ","https://yaxis.io/farms"]
     ]
