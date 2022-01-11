@@ -54,7 +54,7 @@ const main = async () => {
       ["Sushiswap                    ", `<a href="../sushi/"             >Various</a>`, "SUSHI              ", "https://app.sushi.com/farms"],
       ["xSigma                       ", `<a href="../xsigma/"            >Various</a>`, "SIG                ", "https://app.xsigma.fi/stake"],
       ["Alchemix                     ", `<a href="../alcx/"              >Various</a>`, "ALCX               ", "https://app.alchemix.fi/farms"],
-      ["DFX                          ", `<a href="../dfx/"               >Various</a>`, "DFX                ", "https://v0.dfx.finance/"],
+      ["DFX *                        ", `<a href="../dfx/"               >Various</a>`, "DFX                ", "https://app.dfx.finance"],
       ["xToken                       ", `<a href="../xtoken/"            >Various</a>`, "XTK                ", "https://xtoken.cafe/app/dashboard"],
       ["Ethic                        ", `<a href="../ethic"              >Various</a>`, "ETHC               ", "https://ethic.money"],
       ["Ruler Protocol               ", `<a href="../ruler/"             >Various</a>`, "RULER              ", "https://app.rulerprotocol.com/app/farms"],
