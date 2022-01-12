@@ -9,7 +9,7 @@ $(function() {
       "heading":["Pool Provider","LP", "Reward Tokens", "INFO"],
       "rows": [
         ["Tethys",          `<a href="tethys"         >Various</a>`,        "TETHYS",              "https://tethys.finance"],
-        ["Netswap",         `<a href="netswap"        >Various</a>`,        "NETT",                "https://netswap.io"],
+        ["Netswap *",       `<a href="netswap"        >Various</a>`,        "NETT",                "https://netswap.io"],
         ["Andro",           `<a href="andro"          >Various</a>`,        "ANDRO",               "https://androfinance.com"],
       ]
     }
