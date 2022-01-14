@@ -3607,6 +3607,8 @@ function getChainExplorerUrl(chain, address){
   switch(chain){
     case "eth" :
       return `https://etherscan.io/token/${address}`;
+    case "bsc" :
+      return `https://bscscan.com/token/${address}`;
     case "fantom" :
       return `https://ftmscan.com/token/${address}`;
     case "harmony" :
