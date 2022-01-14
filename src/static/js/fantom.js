@@ -140,11 +140,11 @@ const main = async() => {
       ["Caribou Finance    ", `<a href='caribou'      >Various</a>`,"CARIBOU      ","https://caribou.finance"],
       ["Bag Finance        ", `<a href='bag'          >Various</a>`,"BGLD         ","https://app.thisistheway.finance"],
       ["Goblin             ", `<a href='goblin'       >Various</a>`,"GOBLIN       ","https://thegoblin.money"],
-      ["Banksy Farm        ", `<a href='banksyfarm'   >Various</a>`,"BANKSYFARM   ","https://ftm.banksy.farm"],
+      ["Banksy Farm *      ", `<a href='banksyfarm'   >Various</a>`,"BANKSYFARM   ","https://ftm.banksy.farm"],
       ["Tokyo Swap         ", `<a href='tokyoswap'    >Various</a>`,"TOKYO        ","https://ftm.tokyoswap.finance"],
       ["Cougar Vault       ", `<a href='cougar_vault' >Various</a>`,"CGSV         ","https://vault.cougarswap.io"],
       ["Skull Game         ", `<a href='skull'        >Various</a>`,"SKULL        ","https://ftm.skullgamefi.com"],
-      ["Waterfall Finance          ", `<a href='waterfallfinance '    >Various</a>`,"WATERFALL        ","https://app.defiwaterfall.com/"]
+      ["Waterfall Finance  ", `<a href='waterfallfinance'>Various</a>`,"WATERFALL ","https://app.defiwaterfall.com/"]
     ]
   }
 
