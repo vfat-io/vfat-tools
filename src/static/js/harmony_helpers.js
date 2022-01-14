@@ -16,7 +16,8 @@ const HarmonyTokens = [
   { "id": "hundred-finance", "symbol": "HND", "contract": "0x10010078a54396f62c96df8532dc2b4847d47ed3"},
   { "id": "harmon-ape", "symbol": "APE", "contract": "0xd3a50c0dce15c12fe64941ffd2b864e887c9b9e1"},
   { "id": "defi-kingdoms", "symbol": "JEWEL", "contract": "0x72cb10c6bfa5624dd07ef608027e366bd690048f"},
-  { "id": "wrapped-bitcoin", "symbol": "WBTC", "contract": "0x3095c7557bCb296ccc6e363DE01b760bA031F2d9"}
+  { "id": "wrapped-bitcoin", "symbol": "WBTC", "contract": "0x3095c7557bCb296ccc6e363DE01b760bA031F2d9"},
+  { "id": "crypto-royale", "symbol": "ROY", "contract": "0xfe1b516A7297eb03229A8B5AfAD80703911E81cB"}
 ];
 
 async function getHarmonyPrices() {

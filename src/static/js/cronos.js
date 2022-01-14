@@ -33,7 +33,7 @@ const main = async() => {
       ["Elk                  ", `<a href='elk'          >Various</a>`,"ELK          ","https://app.elk.finance"],
       ["CROLuan              ", `<a href='croluan'      >Various</a>`,"LUAN         ","https://luan.croterra.finance/"],
       ["Matrix Finance       ", `<a href='matrix'       >Various</a>`,"MTX          ","https://www.matrixfinance.io/"],
-      ["DarkCrypto Finance   ", `<a href='darkcrypto'   >Various</a>`,"DARK/SKY     ","https://www.darkcrypto.finance/"]
+      ["DarkCrypto Finance   ", `<a href='darkcrypto'   >Various</a>`,"DARK/SKY     ","https://www.darkcrypto.finance/"],
     ]
   }
 

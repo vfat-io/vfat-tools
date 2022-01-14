@@ -146,7 +146,7 @@ const main = async () => {
       ["NAOS Finance                 ", `<a href="../naos/"              >Various</a>`, "NAOS               ", "https://app.naos.finance/farms"],
       ["XBE Finance                  ", `<a href="../xbe/"               >Various</a>`, "XBE                ", "https://app.xbe.finance"],
       ["DODO                         ", `<a href="../dodo/"              >Various</a>`, "DODO               ", "https://app.dodoex.io"],
-      ["Aladdin                      ", `<a href="../ald/"               >Various</a>`, "ALD                ", "https://app.aladdin.club"],
+      ["Aladdin *                    ", `<a href="../ald/"               >Various</a>`, "ALD                ", "https://app.aladdin.club"],
       ["Hundred                      ", `<a href="../hundred/"           >Various</a>`, "HND                ", "https://hundred.finance"],
       ["Gro                          ", `<a href="../gro/"               >Various</a>`, "GRO                ", "https://app.gro.xyz"],
       ["Enterdao                     ", `<a href="../enterdao/"          >Various</a>`, "ENTR               ", "https://dao.enterdao.xyz"],
