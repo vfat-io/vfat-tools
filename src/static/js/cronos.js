@@ -31,8 +31,9 @@ const main = async() => {
       ["DnaDollar            ", `<a href='dnadollar'    >Various</a>`,"DNA          ","https://dnadollar.com"],
       ["MM Finance           ", `<a href='mm'           >Various</a>`,"MMF          ","https://mm.finance"],
       ["Elk                  ", `<a href='elk'          >Various</a>`,"ELK          ","https://app.elk.finance"],
-      ["CROLuan              ", `<a href='croluan'      >Various</a>`,"LUAN         ","https://luan.croterra.finance/"]
-      ["Matrix Finance       ", `<a href='matrix'       >Various</a>`,"MTX          ","https://www.matrixfinance.io/"]
+      ["CROLuan              ", `<a href='croluan'      >Various</a>`,"LUAN         ","https://luan.croterra.finance/"],
+      ["Matrix Finance       ", `<a href='matrix'       >Various</a>`,"MTX          ","https://www.matrixfinance.io/"],
+      ["DarkCrypto Finance   ", `<a href='darkcrypto'   >Various</a>`,"DARK/SKY     ","https://www.darkcrypto.finance/"]
     ]
   }
 
