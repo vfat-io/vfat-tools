@@ -1255,7 +1255,7 @@ async function getStableswapToken(app, stable, address, stakingAddress) {
 }
 
 async function getErc20(app, token, address, stakingAddress) {
-  if (address == "0x0000000000000000000000000000000000000000" || 
+  if (address == "0x0000000000000000000000000000000000000000" ||
       address == "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE") {
     return {
       address,
@@ -1444,7 +1444,7 @@ async function getYearnVault(app, yearn, address, stakingAddress) {
 }
 
 async function getCurveMinterToken(app, curve, address, stakingAddress) {
-  const calls = [curve.get_virtual_price(), curve.coins(0), curve.decimals(), curve.balanceOf(stakingAddress), 
+  const calls = [curve.get_virtual_price(), curve.coins(0), curve.decimals(), curve.balanceOf(stakingAddress),
                  curve.balanceOf(app.YOUR_ADDRESS), curve.name(), curve.symbol(), curve.totalSupply()];
   const [virtualPrice, coin0, decimals_, staked, unstaked, name, symbol, totalSupply] = await app.ethcallProvider.all(calls);
   const token = await getToken(app, coin0, address);
@@ -1569,7 +1569,7 @@ async function getStoredToken(app, tokenAddress, stakingAddress, type) {
 }
 
 async function getToken(app, tokenAddress, stakingAddress) {
-  if (tokenAddress == "0x0000000000000000000000000000000000000000" || 
+  if (tokenAddress == "0x0000000000000000000000000000000000000000" ||
       tokenAddress == "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE") {
     return getErc20(app, null, tokenAddress, stakingAddress)
   }
@@ -2849,7 +2849,12 @@ function getErc20Prices(prices, pool, chain="eth") {
 }
 
 function getCurvePrices(prices, pool, chain) {
-  var price = (getParameterCaseInsensitive(prices,pool.token.address)?.usd);
+  var price;
+    if(pool.token !=undefined){
+        price = (getParameterCaseInsensitive(prices,pool.token.address)?.usd);
+    }else{
+        return {}
+    }
   if(price){
     price = price * pool.virtualPrice;
   }else{
@@ -3579,6 +3584,8 @@ function getChainExplorerUrl(chain, address){
   switch(chain){
     case "eth" :
       return `https://etherscan.io/token/${address}`;
+    case "bsc" :
+      return `https://bscscan.com/token/${address}`;
     case "fantom" :
       return `https://ftmscan.com/token/${address}`;
     case "harmony" :
