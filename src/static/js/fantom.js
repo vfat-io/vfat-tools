@@ -144,6 +144,7 @@ const main = async() => {
       ["Tokyo Swap         ", `<a href='tokyoswap'    >Various</a>`,"TOKYO        ","https://ftm.tokyoswap.finance"],
       ["Cougar Vault       ", `<a href='cougar_vault' >Various</a>`,"CGSV         ","https://vault.cougarswap.io"],
       ["Skull Game         ", `<a href='skull'        >Various</a>`,"SKULL        ","https://ftm.skullgamefi.com"],
+      ["Degen Haus         ", `<a href='degenhaus'    >Various</a>`,"TRIP        ","https://app.degen.haus"],
       ["Waterfall Finance  ", `<a href='waterfallfinance'>Various</a>`,"WATERFALL ","https://app.defiwaterfall.com/"]
     ]
   }
