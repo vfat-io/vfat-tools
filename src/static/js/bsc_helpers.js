@@ -155,7 +155,7 @@ async function getBscBalancerPool(App, pool, poolAddress, stakingAddress, tokens
   let name = await pool.name();
   let totalSupply = await pool.totalSupply();
   let staked = await pool.balanceOf(stakingAddress);
-  const unstaked = await pool.balanceOf(App.YOUR_ADDRESS);
+  let unstaked = await pool.balanceOf(App.YOUR_ADDRESS);
   let poolTokens = [];
   for (const t of tokens) {
     poolTokens.push({ address: t, weight: await pool.getNormalizedWeight(t) / 1e18, balance: await pool.getBalance(t) })
