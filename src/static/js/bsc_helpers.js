@@ -707,7 +707,11 @@ const bscTokens = [
   { "id": "blockchain-adventurers-guild", "symbol": "BAG", "contract": "0x7c650f39d777F40120345314Ab8009D11F70c972" },
   { "id": "true-usd", "symbol": "TUSD", "contract": "0x14016e85a25aeb13065688cafb43044c2ef86784" },
   { "id": "ptokens-btc", "symbol": "PBTC", "contract": "0xed28a457a5a76596ac48d87c0f577020f6ea1c4c" },
-  { "id": "neutrino", "symbol": "USDN", "contract": "0x03ab98f5dc94996f8c33e15cd4468794d12d41f9" }
+  { "id": "neutrino", "symbol": "USDN", "contract": "0x03ab98f5dc94996f8c33e15cd4468794d12d41f9" },
+  { "id": "greentrust", "symbol": "GNT", "contract": "0xf750a26eb0acf95556e8529e72ed530f3b60f348" },
+  { "id": "killswitch", "symbol": "KSW", "contract": "0x270178366a592ba598c2e9d2971da65f7baa7c86" },
+  { "id": "xbn", "symbol": "XBN", "contract": "0x547cbe0f0c25085e7015aa6939b28402eb0ccdac" },
+  { "id": "lucky-lion", "symbol": "LUCKY", "contract": "0xc3d912863152e1afc935ad0d42d469e7c6b05b77" }
 ]
 
 async function getBscPrices() {
