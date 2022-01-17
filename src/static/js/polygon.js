@@ -8,9 +8,9 @@ const main = async () => {
     heading: ["Pool Provider","MCN", "LP", "Reward Tokens", "INFO"],
     rows: [
       ["Parrotdefi          ",`<a href="https://twitter.com/MCNVentures/status/1440498902688358402?s=20" target="_blank" class="mcn-reviewed">REVIEW</a>`, `<a href="parrotdefi"  >Various</a>`,"pPEGG              ","https://polygon.parrotdefi.com"],
-      ['Quickswap *         ',"", `<a href="quick"            >Various</a>`,'QUICK         ','https://quickswap.exchange/#/quick'],
+      ['Quickswap           ',"", `<a href="quick"            >Various</a>`,'QUICK         ','https://quickswap.exchange/#/quick'],
       ['Kyber               ',"", `<a href="kyber"           >Various</a>`, 'KNC          ', 'https://dmm.exchange'],
-      ['Cometh *            ',"", `<a href="cometh"           >Various</a>`,'MUST          ','https://swap.cometh.io/#/stake'],
+      ['Cometh              ',"", `<a href="cometh"           >Various</a>`,'MUST          ','https://swap.cometh.io/#/stake'],
       ['Dark                ',"", `<a href="dark"            >Various</a>`, 'DB           ', 'https://www.dark.build'],
       ['Smartdex            ',"", `<a href="smartdex"        >Various</a>`, 'NIOX         ', 'https://swap.smartdex.app'],
       ['Elk                 ',"", `<a href="elk"             >Various</a>`, 'ELK          ', 'https://app.elk.finance'],
