@@ -206,7 +206,7 @@ async function getFantomYearnVault(App, yearn, address, stakingAddress) {
     staked: staked / 10 ** decimals,
     unstaked: unstaked / 10 ** decimals,
     token: token,
-    balance : balance / 10 ** decimals,
+    balance : staked / 10 ** decimals,
     contract: yearn,
     tokens : [address].concat(token.tokens),
     ppfs : ppfs / 10 ** decimals,
