@@ -711,7 +711,9 @@ const bscTokens = [
   { "id": "greentrust", "symbol": "GNT", "contract": "0xf750a26eb0acf95556e8529e72ed530f3b60f348" },
   { "id": "killswitch", "symbol": "KSW", "contract": "0x270178366a592ba598c2e9d2971da65f7baa7c86" },
   { "id": "xbn", "symbol": "XBN", "contract": "0x547cbe0f0c25085e7015aa6939b28402eb0ccdac" },
-  { "id": "lucky-lion", "symbol": "LUCKY", "contract": "0xc3d912863152e1afc935ad0d42d469e7c6b05b77" }
+  { "id": "lucky-lion", "symbol": "LUCKY", "contract": "0xc3d912863152e1afc935ad0d42d469e7c6b05b77" },
+  { "id": "binance-peg-filecoin", "symbol": "FIL", "contract": "0x0d8ce2a99bb6e3b7db580ed848240e4a0f9ae153" },
+  { "id": "rabbit-finance", "symbol": "RABBIT", "contract": "0x95a1199eba84ac5f19546519e287d43d2f0e1b41" },
 ]
 
 async function getBscPrices() {
