@@ -8,7 +8,8 @@ const main = async() => {
     "title":"BSC Network",
     "heading":["Pool Provider","MCN","LP", "Reward Tokens", "INFO"],
     "rows": [
-      ["Space               ",`<a href="https://twitter.com/MCNVentures/status/1442278437805170691?s=20" target="_blank" class="mcn-reviewed">REVIEW</a>`, `<a href="space"         >Various</a>`,"SPACE            ","https://farm.space"],
+      ["Whale Loans         ",`<a href="https://twitter.com/MCNVentures/status/1482936116374564866?cxt=HHwWhMDTkc-iuZQpAAAA" target="_blank" class="mcn-reviewed">REVIEW</a>`, `<a href="whaleloans"         >Various</a>`,"HUMP             ","https://www.whale.loans"],
+      ["Space               ",`<a href="https://twitter.com/MCNVentures/status/1442278437805170691?s=20" target="_blank" class="mcn-reviewed">REVIEW</a>`,                     `<a href="space"              >Various</a>`,"SPACE            ","https://farm.space"],
       ["Pancake             ","", `<a href="pancake"       >Various</a>`,"CAKE             ","https://pancakeswap.finance"],
       ["Apeswap             ","", `<a href="apeswap"       >Various</a>`,"BANANA           ","https://apeswap.finance"],
       ["Autofarm            ","", `<a href="autofarm"      >Various</a>`,"AUTOFARM         ","https://autofarm.network"],
@@ -558,7 +559,6 @@ const main = async() => {
       ["Topshelf            ","", `<a href="topshelf"      >Various</a>`,"LIQR             ","https://topshelf.finance"],
       ["Niob Finance        ","", `<a href="niob"          >Various</a>`,"NIOB             ","https://niob.finance"],
       ["Bag Finance         ","", `<a href="bag"           >Various</a>`,"BGLD             ","https://app.thisistheway.finance"],
-      ["Whale Loans         ","", `<a href="whaleloans"    >Various</a>`,"HUMP             ","https://whale.loans"],
       ["Dibs                ","", `<a href="dibs"          >Various</a>`,"DSHARE/DIBS      ","https://www.dibs.money"],
       ["UFX                 ","", `<a href="ufx"           >Various</a>`,"UFX              ","https://app.unitedfarmers.finance/farms"],
       ["UFGRAIN             ","", `<a href="ufgrain"       >Various</a>`,"UFGRAIN          ","https://app.unitedfarmers.finance/farms"],
