@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+  <%- include(`${partials}/head`); -%>
+
+  <body>
+    <%- include(`${partials}/header_main`); -%>
+    <pre id="log">
+*************** 👨‍🌾 Welcome to QUARTZ.DEFI 👨‍🌾 ************
+Algorithmic Stablecoin ecosystem pegged to UST on Harmony.
+
+App     : <a href="http://quartz-defi.one/" >http://quartz-defi.one/</a>
+TWITTER : <a href="https://twitter.com/quartz_defi" >https://twitter.com/quartz_defi</a>
+DISCORD : <a href="https://discord.gg/TDFHtWj7b5">https://discord.gg/TDFHtWj7b5</a>
+**********************************************************************
+</pre>
+    <div class="loader--1"></div>
+    <%- include(`${partials}/scripts`, {scriptname: 'harmony_quartzdefi'}); -%>
+  </body>
+</html>

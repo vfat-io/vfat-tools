@@ -46,7 +46,8 @@ const main = async () => {
       ["Hermes",            "",`<a href='hermes'>Various</a>`,         "PLTS",          "https://plutus.hermesdefi.io"],
       ["Hundred",           "",`<a href='hundred'>Various</a>`,        "HND",           "https://hundred.finance"],
       ["Unite Finance",     "",`<a href='unite'>Various</a>`,          "USHARE",        "https://unitefinance.io"],
-      ["WePiggy",           "",`<a href='wepiggy'>Various</a>`,        "WPC",           "https://app.wepiggy.com"]
+      ["WePiggy",           "",`<a href='wepiggy'>Various</a>`,        "WPC",           "https://app.wepiggy.com"],
+      ["Quartz.Defi",       "",`<a href='quartzdefi'>Various</a>`,     "QUARTZ",        "https://quartz-defi.one"],
     ]
   }
 
