@@ -30,7 +30,7 @@ async function main() {
     const prices = await getBscPrices();
 
     await loadBscChefContract(App, tokens, prices, WATERFALL_CHEF, WATERFALL_CHEF_ADDR, WATERFALL_CHEF_ABI, rewardTokenTicker,
-        "waterfallfinance", null, rewardsPerWeek, "pendingWaterfall");
+        "Waterfall", null, rewardsPerWeek, "pendingWaterfall");
 
     hideLoading();
   }
