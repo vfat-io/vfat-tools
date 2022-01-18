@@ -87,7 +87,7 @@ const main = async() => {
       ["Curve              ", `<a href='curve'        >Various</a>`,"CRV/FTM      ","https://ftm.curve.fi"],
       ["Singular           ", `<a href='singular'     >Various</a>`,"SING         ","https://singular.farm"],
       ["KogeFarm           ", `<a href="koge"         >Various</a>`,'Various      ',"https://kogefarm.io"],
-      ["ScareCrow Finance  ", `<a href='scarecrow'    >Various</a>`,"SCARE        ","https://scarecrow.fi"],
+      ["ScareCrow Finance *", `<a href='scarecrow'    >Various</a>`,"SCARE        ","https://scarecrow.fi"],
       ["Sapphire War       ", `<a href='sapphirewar'  >Various</a>`,"WAR          ","https://war.sapphiredefi.com"],
       ["DarkMatter         ", `<a href="darkmatter"   >Various</a>`,'DMD          ',"https://www.darkmatterdefi.com"],
       ["DegenApe           ", `<a href="degenape"     >Various</a>`,'DAPE         ',"https://www.degenapefarm.com"],
