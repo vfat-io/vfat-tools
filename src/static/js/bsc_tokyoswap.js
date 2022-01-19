@@ -15,7 +15,7 @@ async function main() {
   const rewardTokenTicker = "TOKYO";
   const TOKYO_CHEF = new ethers.Contract(TOKYO_CHEF_ADDR, TOKYO_CHEF_ABI, App.provider);
 
-  const rewardsPerWeek = await TOKYO_CHEF.tokyoPerSecond() /1e18
+  const rewardsPerWeek = await TOKYO_CHEF.TokyoPerSecond() /1e18
         * 604800;
 
   const tokens = {};
