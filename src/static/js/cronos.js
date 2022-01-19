@@ -35,6 +35,7 @@ const main = async() => {
       ["CROLuan              ","", `<a href='croluan'      >Various</a>`,"LUAN         ","https://luan.croterra.finance/"],
       ["Matrix Finance       ","", `<a href='matrix'       >Various</a>`,"MTX          ","https://www.matrixfinance.io/"],
       ["DarkCrypto Finance   ","", `<a href='darkcrypto'   >Various</a>`,"DARK/SKY     ","https://www.darkcrypto.finance/"],
+      ["Cronos Cougar        ","", `<a href='cougar    '   >Various</a>`,"CGS          ","https://cronosapp.cougarswap.io/"],
     ]
   }
 
