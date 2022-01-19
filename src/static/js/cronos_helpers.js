@@ -150,8 +150,8 @@ async function getCronosBasicVault(App, vault, address, stakingAddress) {
 
 async function getCronosCroblancVault(App, vault, address, stakingAddress) {
   const calls = [vault.decimals(), vault.want(), vault.name(), vault.symbol(),
-    vault.totalSupply(), vault.stakedWant(), vault.balanceOf(App.YOUR_ADDRESS)]
-  const [decimals, token_, name, symbol, totalSupply, staked, unstaked] =
+    vault.totalSupply(), vault.balanceOf(App.YOUR_ADDRESS)]
+  const [decimals, token_, name, symbol, totalSupply, unstaked] =
     await App.ethcallProvider.all(calls);
   const token = await getCronosToken(App, token_, address);
   return {
@@ -160,10 +160,9 @@ async function getCronosCroblancVault(App, vault, address, stakingAddress) {
     symbol,
     totalSupply,
     decimals,
-    staked: staked / 10 ** decimals,
+    staked: totalSupply / 10 ** decimals,
     unstaked: unstaked / 10 ** decimals,
     token: token,
-    balance: staked / 10 ** decimals,
     contract: vault,
     tokens : [address].concat(token.tokens),
   }
