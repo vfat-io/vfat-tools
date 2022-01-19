@@ -84,25 +84,27 @@ async function loadCroblancContract(App, tokens, prices, chef, chefAddress, chef
     	
 async function getCroblancPoolInfo(app, chefContract, chefAddress, farmToken) {
   const poolInfo = await chefContract.farmInfos(farmToken);
+  if (poolInfo.allocationPoints == 0 || poolInfo.farmingEnabled == false 
+    || farmToken == "0x71f8c0c91dc53092c373a4faf27bda8b4407e94b"
+    || farmToken == "0x1e767e41f2613685397055fe072e7d5b18e40aab"
+    || farmToken == "0x267f568cfd7035e801509cee19a7feb2c62f62f3"
+    || farmToken == "0xcc63ddc9c71c8d29a45520ccb64df0e167d961a2") {
+  return {
+    address: farmToken,
+    allocPoints: 1,
+    poolToken: null,
+    pendingCroblanc: 0,
+    pendingWheat: 0,
+    userStaked: 0,
+    croblancToken : null,
+    wheatToken : null
+  };
+}
   const vaultContract = new ethers.Contract(farmToken, FARMTOKEN_ABI, app.provider);
   const stakingContractAddress = await vaultContract.masterChef();
   const croblancAddress = await vaultContract.croblanc();
   const wheatAddress = await vaultContract.wheat();
   const poolTokenAddress = await vaultContract.want();
-  if (poolInfo.allocationPoints == 0 || poolInfo.farmingEnabled == false || farmToken == "0x71f8c0c91dc53092c373a4faf27bda8b4407e94b"
-      || farmToken == "0x1e767e41f2613685397055fe072e7d5b18e40aab"
-      || farmToken == "0x267f568cfd7035e801509cee19a7feb2c62f62f3") {
-    return {
-      address: poolTokenAddress,
-      allocPoints: poolInfo.allocationPoints ?? 1,
-      poolToken: null,
-      pendingCroblanc: 0,
-      pendingWheat: 0,
-      userStaked: 0,
-      croblancToken : null,
-      wheatToken : null
-    };
-  }
   const croblancToken = await getCronosToken(app, croblancAddress, chefAddress);
   const wheatToken = await getCronosToken(app, wheatAddress, chefAddress);
   const poolToken = await getCronosToken(app, poolTokenAddress, stakingContractAddress);
