@@ -13,7 +13,9 @@ const CronosTokens = [
   { "id": "binance-usd", "symbol": "BUSD", "contract": "0x6aB6d61428fde76768D7b45D8BFeec19c6eF91A8"},
   { "id": "vvs-finance", "symbol": "VVS", "contract": "0x2D03bECE6747ADC00E1a131BBA1469C15fD11e03"},
   { "id": "fantom", "symbol": "FTM", "contract": "0xB44a9B6905aF7c801311e8F4E76932ee959c663C"},
-  { "id": "avalanche-2", "symbol": "AVAX", "contract": "0x765277EebeCA2e31912C9946eAe1021199B39C61"}
+  { "id": "avalanche-2", "symbol": "AVAX", "contract": "0x765277EebeCA2e31912C9946eAe1021199B39C61"},
+  { "id": "crow-token", "symbol": "CROW", "contract": "0x285c3329930a3fd3c7c14bc041d3e50e165b1517"},
+  { "id": "cronaswap", "symbol": "CRONA", "contract": "0xadbd1231fb360047525bedf962581f3eee7b49fe"}
 ];
 
 async function getCronosPrices() {
@@ -164,6 +166,7 @@ async function getCronosCroblancVault(App, vault, address, stakingAddress) {
     unstaked: unstaked / 10 ** decimals,
     token: token,
     contract: vault,
+    balance : totalSupply,
     tokens : [address].concat(token.tokens),
   }
 }
@@ -524,7 +527,7 @@ async function loadCronosChefContract(App, tokens, prices, chef, chefAddress, ch
   const poolCount = parseInt(await chefContract.poolLength(), 10);
   const totalAllocPoints = await chefContract.totalAllocPoint();
 
-  _print(`<a href='https://cronos.crypto.org/explorer/address/${chefAddress}' target='_blank'>Staking Contract</a>`);
+  _print(`<a href='https://cronoscan.com/address/${chefAddress}' target='_blank'>Staking Contract</a>`);
   _print(`Found ${poolCount} pools.\n`)
 
   _print(`Showing incentivized pools only.\n`);
