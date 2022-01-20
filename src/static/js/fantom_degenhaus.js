@@ -15,7 +15,7 @@ async function main() {
    const rewardTokenTicker = "TRIP";
    const TRIP_CHEF = new ethers.Contract(TRIP_CHEF_ADDR, TRIP_CHEF_ABI, App.provider);
 
-    const rewardsPerWeek = await TRIP_CHEF.startTime() /1e18 * 604800;
+    const rewardsPerWeek = await TRIP_CHEF.tripPerSecond() /1e18 * 604800;
 
     const tokens = {};
     const prices = await getFantomPrices();
