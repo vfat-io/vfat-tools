@@ -2763,7 +2763,7 @@ function getErc20Prices(prices, pool, chain="eth") {
       poolUrl=`https://scan.meter.io/token/${pool.address}`;
       break;
     case "cronos":
-      poolUrl=`https://cronos.crypto.org/explorer/address/${pool.address}`;
+      poolUrl=`https://cronoscan.com/address/${pool.address}`;
       break;
     case "velas":
       poolUrl=`https://evmexplorer.velas.com/address/${pool.address}`;
@@ -3422,7 +3422,7 @@ async function printSynthetixPool(App, info, chain="eth", customURLs) {
         _print(`<a target="_blank" href="https://scan.meter.io/address/${info.stakingAddress}#code">Andromeda Explorer</a>`);
         break;
       case "cronos":
-        _print(`<a target="_blank" href="https://cronos.crypto.org/explorer/address/${info.stakingAddress}#code">Cronos Scan</a>`);
+        _print(`<a target="_blank" href="https://cronoscan.com/address/${info.stakingAddress}#code">Cronos Scan</a>`);
         break;
       case "velas":
         _print(`<a target="_blank" href="https://evmexplorer.velas.com/address/${info.stakingAddress}#code">Velas Scan</a>`);
@@ -3593,7 +3593,7 @@ function getChainExplorerUrl(chain, address){
     case "arbitrum" :
       return `https://arbiscan.io/address/${address}`;
     case "cronos" :
-      return `https://cronos.crypto.org/explorer/address/${address}`;
+      return `https://cronoscan.com/address/${address}`;
     case "velas" :
       return `https://evmexplorer.velas.com/address/${address}`;
     case "aurora" :
