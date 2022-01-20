@@ -51,6 +51,9 @@ const pageNetwork = function() {
   if (network.toLowerCase() === 'cronos') {
     return window.NETWORKS.CRONOS
   }
+  if (network.toLowerCase() === 'moonbeam') {
+    return window.NETWORKS.MOONBEAM
+  }
   if (network.toLowerCase() === 'harmony') {
     return window.NETWORKS.HARMONY_S0
   }
@@ -2788,6 +2791,9 @@ function getErc20Prices(prices, pool, chain="eth") {
     case "cronos":
       poolUrl=`https://cronoscan.com/address/${pool.address}`;
       break;
+    case "moonbeam":
+      poolUrl=`https://moonscan.io/address/${pool.address}`;
+      break;
     case "velas":
       poolUrl=`https://evmexplorer.velas.com/address/${pool.address}`;
       break;
@@ -3447,6 +3453,9 @@ async function printSynthetixPool(App, info, chain="eth", customURLs) {
       case "cronos":
         _print(`<a target="_blank" href="https://cronoscan.com/address/${info.stakingAddress}#code">Cronos Scan</a>`);
         break;
+      case "moonbeam":
+        _print(`<a target="_blank" href="https://moonscan.io/address/${info.stakingAddress}#code">Moonbeam Scan</a>`);
+        break;
       case "velas":
         _print(`<a target="_blank" href="https://evmexplorer.velas.com/address/${info.stakingAddress}#code">Velas Scan</a>`);
         break;
@@ -3617,6 +3626,8 @@ function getChainExplorerUrl(chain, address){
       return `https://arbiscan.io/address/${address}`;
     case "cronos" :
       return `https://cronoscan.com/address/${address}`;
+    case "moonbeam" :
+      return `https://moonscan.io/address/${address}`;
     case "velas" :
       return `https://evmexplorer.velas.com/address/${address}`;
     case "aurora" :
