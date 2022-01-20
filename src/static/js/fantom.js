@@ -207,7 +207,8 @@ const main = async () => {
       ['Davy Jones         ', `<a href='davyjones'    >Various</a>`, 'JONES        ', 'https://davyjones.fi'],
       ['WeVE               ', `<a href='weve'         >Various</a>`, 'WEVE         ', 'https://vedao.io'],
       ['2omb               ', `<a href='2omb'         >Various</a>`, '2SHARES      ', 'https://2omb.finance'],
-      ['Degen Haus         ', `<a href='degenhaus'    >Various</a>`, 'TRIP         ', 'https://degen.haus']
+      ['Degen Haus         ', `<a href='degenhaus'    >Various</a>`, 'TRIP         ', 'https://degen.haus'],
+      ['Protofi            ', `<a href="protofi"      >Various</a>`, 'PROTO        ', 'https://fantombank.protofi.app'],  
     ],
   }
 
