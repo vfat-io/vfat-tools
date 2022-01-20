@@ -211,7 +211,8 @@ const main = async () => {
       ['Waterfall Finance  ', `<a href='waterfallfinance'>Various</a>`, 'WATERFALL ', 'https://app.defiwaterfall.com'],
       ['Davy Jones         ', `<a href='davyjones'    >Various</a>`, 'JONES        ', 'https://davyjones.fi'],
       ['WeVE               ', `<a href='weve'         >Various</a>`, 'WEVE         ', 'https://vedao.io'],
-      ['2omb               ', `<a href='2omb'         >Various</a>`, '2SHARES      ', 'https://2omb.finance']
+      ['2omb               ', `<a href='2omb'         >Various</a>`, '2SHARES      ', 'https://2omb.finance'],
+      ['Degen Haus         ', `<a href='degenhaus'    >Various</a>`, 'TRIP         ', 'https://degen.haus']
     ],
   }
 
