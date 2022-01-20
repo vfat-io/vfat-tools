@@ -19,6 +19,8 @@ async function main() {
     _print(`Initialized ${App.YOUR_ADDRESS}\n`);
     _print("Reading smart contracts...\n");
 
+    const hump = await getBscToken(App, HUMP_ADDRESS, STAKING_ADDRESS);
+
     const HUMP_CONTRACT = new ethers.Contract(HUMP_ADDRESS, HUMP_ABI, App.provider);
     const STAKING_HUMP_CONTRACT = new ethers.Contract(STAKING_ADDRESS, HUMP_STAKING_ABI, App.provider);
     const SHUMP_CONTRACT = new ethers.Contract(sHUMP_ADDRESS, sHUMP_ABI, App.provider);
@@ -40,24 +42,21 @@ async function main() {
 
     const rewardTokenTicker = "HUMP";
 
-    const prices = await getBscPrices();
     const userBalance = await SHUMP_CONTRACT.balanceOf(App.YOUR_ADDRESS);;
-    const rewardPrice = getParameterCaseInsensitive(prices, HUMP_ADDRESS)?.usd;
+    const rewardPrice = hump.usd;
     const userStaked = userBalance / 10 ** 9;
     const userUnstaked = userHumpBalance / 10 ** 9;
 
     let shumpCircSupply = await SHUMP_CONTRACT.circulatingSupply();
-    let _stakingReward = await STAKING_HUMP_CONTRACT.epoch()
-    let stakingReward = _stakingReward.distribute;
+    let stakingReward = await STAKING_HUMP_CONTRACT.epoch().distribute;
     let stakingRebase = stakingReward / shumpCircSupply;
 
     let nextEpochRewards = userStakingBalance * stakingRebase;
 
     let dayRate = (Math.pow(1 + stakingRebase, 1 * 4) - 1) * 100;
-    //let weekRate = (Math.pow(1 + stakingRebase, 7 * 4) - 1) * 100;
-    let weekRate = dayRate * 7
-    //let stakingAPY = Math.pow(1 + stakingRebase, 365 * 4) * 100;
-    let stakingAPY =  dayRate * 365
+    let weekRate = (Math.pow(1 + stakingRebase, 7 * 4) - 1) * 100;
+    let monthlyRate = Math.pow(1 + stakingRebase, 30 * 4) * 100;
+    let stakingAPY = Math.pow(1 + stakingRebase, 365 * 4) * 100;
 
     const approveAndStakeHUMP = async function () {
         return humpDaoContract_stake(App, HUMP_STAKING_ABI, STAKING_ADDRESS, HUMP_ADDRESS)
@@ -77,7 +76,7 @@ async function main() {
     _print(`<a href='https://bscscan.com/address/${HUMP_ADDRESS}' target='_blank'>${rewardTokenTicker}</a> Price: $${formatMoney(rewardPrice)} Circulating Market Cap: $${formatMoney(rewardPrice * humpCircSupply)} ${dexguruTokenlink}`);
     _print(`Staked: ${parseFloat(totalStakingBalance.toString()).toFixed(4)} ${rewardTokenTicker} ($${formatMoney(totalStakingBalance * rewardPrice)})`)
     _print(`You are staking ${parseFloat(userStakingBalance.toString()).toFixed(4)} ${rewardTokenTicker} ($${formatMoney(usdHumpStaking)})`)
-    _print(`APR: Day ${apyDay}% (${amountHumpDay} HUMP) Week ${apyWeek}% (${amountHumpWeek} HUMP) Year ${apyYear}% (${amountHumpYear} HUMP)`)
+    _print(`APY: Day ${apyDay}% (${amountHumpDay} HUMP) Week ${apyWeek}% (${amountHumpWeek} HUMP) Year ${apyYear}% (${amountHumpYear} HUMP)`)
     _print_link(`Stake ${parseFloat(userHumpBalance.toString()).toFixed(4)} ${rewardTokenTicker}`, approveAndStakeHUMP)
     _print_link(`Unstake ${parseFloat(userStakingBalance.toString()).toFixed(4)} ${rewardTokenTicker}`, unstakeHUMP)
     _print(`\n`);

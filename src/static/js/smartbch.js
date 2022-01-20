@@ -13,7 +13,7 @@ const main = async() => {
       ["MuesliSwap BCH      ", `<a href="muesliswap"    >Various</a>`,"MILK             ","https://muesli.cash"],
       ["TangoSwap           ", `<a href="tangoswap"     >Various</a>`,"TANGO            ","https://tangoswap.cash"],
       ["1BCH                ", `<a href="1bch"          >Various</a>`,"1BCH             ","https://1bch.com"],
-      ["SmartDEX            ", `<a href="smartdex"      >Various</a>`,"dSMART, xSMART   ","https://smartdex.cash"]
+      ["SmartDEX             ", `<a href="smartdex"     >Various</a>`,"dSMART, xSMART   ","https://smartdex.cash"]
     ]}
 
   let table = new AsciiTable().fromJSON(tableData);

@@ -8,10 +8,8 @@ const main = async() => {
     "title":"Fuse Network",
     "heading":["Pool Provider","LP", "Reward Tokens", "INFO"],
     "rows": [
-      ["Fuse                      ",`<a href="fuseio"                 >Various</a>`,"FUSE               ","https://fuse.io"],
-      ["Elk                       ",`<a href="elk"                    >Various</a>`,"ELK                ","https://app.elk.finance"],
-      ["Beefy                     ",`<a href="beefy"                  >Various</a>`,"BIFI               ","https://app.beefy.finance/#/fuse"],
-      ["Sushi                     ",`<a href="sushi"                  >Various</a>`,"FUSE               ","https://app.sushi.com"]
+      ["Fuseswap                       ",`<a href="fuseswap"               >Various</a>`,"FUSE               ","https://fuseswap.com"],
+      ["Elk                            ",`<a href="elk"                    >Various</a>`,"ELK                ","https://app.elk.finance"]
     ]
   }
 
