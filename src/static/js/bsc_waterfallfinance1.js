@@ -11,12 +11,20 @@ async function main() {
     _print(`Initialized ${App.YOUR_ADDRESS}\n`);
     _print("Reading smart contracts...\n");
 
-   const WATERFALL_CHEF_ADDR = "0x49a21E7Ae826CD5F0c0Cb1dC942d1deD66d21191";
+   const WATERFALL_CHEF_ADDR = "0x49a21E7Ae826CD5F0c0Cb1dC942d1deD66d21191 ";
    const rewardTokenTicker = "WATERFALL";
    const WATERFALL_CHEF = new ethers.Contract(WATERFALL_CHEF_ADDR, WATERFALL_CHEF_ABI, App.provider);
 
-   const rewardsPerWeek = await WATERFALL_CHEF.WaterfallPerBlock() /1e18
+   const startBlock = await WATERFALL_CHEF.startBlock();
+   const currentBlock = await App.provider.getBlockNumber();
+
+   let rewardsPerWeek = 0
+   if(currentBlock < startBlock){
+     _print(`Rewards start at block ${startBlock}\n`);
+   }else{
+    rewardsPerWeek = await WATERFALL_CHEF.WaterfallPerBlock() /1e18
         * 604800 / 3;
+   }
 
     const tokens = {};
     const prices = await getBscPrices();

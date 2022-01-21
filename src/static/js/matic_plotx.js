@@ -202,6 +202,7 @@ async function printPlotSynthetixPool(App, info) {
     return rewardsContract_resetApprove(info.stakeTokenAddress, info.stakingAddress, App)
   }
   _print(`<a target="_blank" href="https://explorer-mainnet.maticvigil.com/address/${info.stakingAddress}#code">Polygon Explorer</a>`);
+  _print_link(`Stake ${info.userUnstaked.toFixed(6)} ${info.stakeTokenTicker}`, approveTENDAndStake)
   _print_link(`Unstake ${info.userStaked.toFixed(6)} ${info.stakeTokenTicker}`, unstake)
   _print_link(`Claim ${info.earnedA.toFixed(6)} ${info.rewardTokenTickers[0]} + ${info.earnedB.toFixed(6)} ${info.rewardTokenTickers[1]} ($${formatMoney(info.earnedA*info.rewardTokenPrices[0] + info.earnedB*info.rewardTokenPrices[1])})`, claim)
   if (info.stakeTokenTicker != "ETH") {
