@@ -49,6 +49,21 @@ const DEFINER_ABI = {
       stateMutability: 'view',
       type: 'function',
     },
+    {
+      constant: true,
+      inputs: [],
+      name: 'savingAccount',
+      outputs: [
+        {
+          internalType: 'contract SavingAccount',
+          name: '',
+          type: 'address',
+        },
+      ],
+      payable: false,
+      stateMutability: 'view',
+      type: 'function',
+    },
   ],
   tokenRegistry: [
     {
@@ -320,6 +335,128 @@ const DEFINER_ABI = {
       stateMutability: 'view',
       type: 'function',
     },
+    {
+      constant: true,
+      inputs: [
+        {
+          name: '',
+          type: 'address',
+        },
+        {
+          name: '',
+          type: 'address',
+        },
+      ],
+      name: 'allowance',
+      outputs: [
+        {
+          name: '',
+          type: 'uint256',
+        },
+      ],
+      payable: false,
+      stateMutability: 'view',
+      type: 'function',
+    },
+    {
+      constant: true,
+      inputs: [
+        {
+          name: '',
+          type: 'address',
+        },
+      ],
+      name: 'balanceOf',
+      outputs: [
+        {
+          name: '',
+          type: 'uint256',
+        },
+      ],
+      payable: false,
+      stateMutability: 'view',
+      type: 'function',
+    },
+    {
+      constant: false,
+      inputs: [
+        {
+          name: '_spender',
+          type: 'address',
+        },
+        {
+          name: '_value',
+          type: 'uint256',
+        },
+      ],
+      name: 'approve',
+      outputs: [
+        {
+          name: 'success',
+          type: 'bool',
+        },
+      ],
+      payable: false,
+      stateMutability: 'nonpayable',
+      type: 'function',
+    },
+  ],
+  savingAccounts: [
+    {
+      constant: false,
+      inputs: [
+        {
+          internalType: 'address',
+          name: '_token',
+          type: 'address',
+        },
+        {
+          internalType: 'uint256',
+          name: '_amount',
+          type: 'uint256',
+        },
+      ],
+      name: 'deposit',
+      outputs: [],
+      payable: true,
+      stateMutability: 'payable',
+      type: 'function',
+    },
+    {
+      constant: false,
+      inputs: [
+        {
+          internalType: 'address',
+          name: '_token',
+          type: 'address',
+        },
+        {
+          internalType: 'uint256',
+          name: '_amount',
+          type: 'uint256',
+        },
+      ],
+      name: 'withdraw',
+      outputs: [],
+      payable: false,
+      stateMutability: 'nonpayable',
+      type: 'function',
+    },
+    {
+      constant: false,
+      inputs: [
+        {
+          internalType: 'address',
+          name: '_token',
+          type: 'address',
+        },
+      ],
+      name: 'withdrawAll',
+      outputs: [],
+      payable: false,
+      stateMutability: 'nonpayable',
+      type: 'function',
+    },
   ],
 }
 const CONFIG = {
@@ -332,8 +469,13 @@ const CONFIG = {
     decimals: 18,
   },
   YEAR_BLOCKS: 2102400,
+  minGas: 10 ** 16,
+  MAX_VAL: '115792089237316195423570985008687907853269984665640564039457584007913129639935',
 }
 let finPricePlatform
+let savingAccountsAddress
+let borrowETH
+let borrowPower
 
 async function main() {
   const App = await init_ethers()
@@ -347,6 +489,8 @@ async function main() {
   const tokenRegistryAddress = await global.tokenInfoRegistry()
   const bankAddress = await global.bank()
   const accountsAddress = await global.accounts()
+  const savingAccountAddress = await global.savingAccount()
+  savingAccountsAddress = savingAccountAddress
 
   // token registry
   const COMPTROLLER = new ethers.Contract(tokenRegistryAddress, DEFINER_ABI.tokenRegistry, App.provider)
@@ -354,17 +498,16 @@ async function main() {
 
   // bank
   const accountsContract = new ethers.Contract(accountsAddress, DEFINER_ABI.accounts, App.provider)
-  const getBorrowPower = await accountsContract.getBorrowPower(App.YOUR_ADDRESS)
-  const getBorrowETH = await accountsContract.getBorrowETH(App.YOUR_ADDRESS)
-
+  borrowPower = await accountsContract.getBorrowPower(App.YOUR_ADDRESS)
+  borrowETH = await accountsContract.getBorrowETH(App.YOUR_ADDRESS)
   _print_bold(`*************** 👨‍🌾 YOUR ADDRESS AREA 👨‍🌾 ***************`)
-  _print(`Total   loan  : ${formatMoney(getBorrowETH / 10 ** 18)} (Unit:${CONFIG.platform.symbol})`)
-  _print(`Borrow  power : ${formatMoney(getBorrowPower / 10 ** 18)} (Unit:${CONFIG.platform.symbol})`)
+  _print(`Total   loan  : ${formatMoney(borrowETH / 10 ** 18)} (Unit:${CONFIG.platform.symbol})`)
+  _print(`Borrow  power : ${formatMoney(borrowPower / 10 ** 18)} (Unit:${CONFIG.platform.symbol})`)
   _print_bold(`******************************************************\n`)
 
   const tokens = await Promise.all(
     allMarkets.map(token =>
-      loadTokenData(App, bankAddress, accountsAddress, tokenRegistryAddress, token, App.YOUR_ADDRESS)
+      loadTokenData(App, bankAddress, accountsAddress, savingAccountAddress, tokenRegistryAddress, token)
     )
   )
 
@@ -393,7 +536,7 @@ async function main() {
   _print('')
 
   for (const market of tokens) {
-    printData(market)
+    printData(market, App)
   }
   _print_bold(`******************************************************`)
 
@@ -405,7 +548,14 @@ async function getApr(ratePerBlock, yearBlocks) {
   return apr
 }
 
-async function loadTokenData(App, bank_address, accounts_address, registry_address, token_address, user_address) {
+async function loadTokenData(
+  App,
+  bank_address,
+  accounts_address,
+  saving_accounts_address,
+  registry_address,
+  token_address
+) {
   // Contract
   const bankContract = new ethers.Contract(bank_address, DEFINER_ABI.bank, App.provider)
   const accountsContract = new ethers.Contract(accounts_address, DEFINER_ABI.accounts, App.provider)
@@ -429,16 +579,31 @@ async function loadTokenData(App, bank_address, accounts_address, registry_addre
 
   // token info
   let tokenSymbol, tokenDecimals
+  let isApprove = false
+  let addressBalance, addressAvailableBalance
   if (token_address.toLowerCase() === CONFIG.platform.address.toLowerCase()) {
     tokenSymbol = CONFIG.platform.symbol
     tokenDecimals = CONFIG.platform.decimals
+    addressBalance = await App.provider.getBalance(App.YOUR_ADDRESS)
+    addressAvailableBalance = addressBalance - CONFIG.minGas > 0 ? (addressBalance - CONFIG.minGas).toFixed(0) : 0
+    isApprove = true
   } else if (token_address.toLowerCase() === '0x9f8F72aA9304c8B593d555F12eF6589cC3A579A2'.toLowerCase()) {
     tokenSymbol = 'MKR'
     tokenDecimals = 18
+    const erc20Contract = new ethers.Contract(token_address, DEFINER_ABI.erc20, App.provider)
+    addressBalance = await erc20Contract.balanceOf(App.YOUR_ADDRESS)
+    addressAvailableBalance = addressBalance
+    const approveValue = await erc20Contract.allowance(App.YOUR_ADDRESS, saving_accounts_address)
+    isApprove = approveValue - addressBalance > 0
   } else {
     const erc20Contract = new ethers.Contract(token_address, DEFINER_ABI.erc20, App.provider)
     tokenSymbol = await erc20Contract.symbol()
     tokenDecimals = await erc20Contract.decimals()
+    addressBalance = await erc20Contract.balanceOf(App.YOUR_ADDRESS)
+    addressAvailableBalance = addressBalance
+
+    const approveValue = await erc20Contract.allowance(App.YOUR_ADDRESS, saving_accounts_address)
+    isApprove = approveValue - addressBalance > 0
   }
 
   // Fin
@@ -447,10 +612,11 @@ async function loadTokenData(App, bank_address, accounts_address, registry_addre
   }
 
   // user info
-  const depositBalanceCurrent = await accountsContract.getDepositBalanceCurrent(token_address, user_address)
-  const borrowBalanceCurrent = await accountsContract.getBorrowBalanceCurrent(token_address, user_address)
+  const depositBalanceCurrent = await accountsContract.getDepositBalanceCurrent(token_address, App.YOUR_ADDRESS)
+  const borrowBalanceCurrent = await accountsContract.getBorrowBalanceCurrent(token_address, App.YOUR_ADDRESS)
 
   return {
+    tokenAddress: token_address,
     tokenSymbol: tokenSymbol,
     tokenDecimals: tokenDecimals,
 
@@ -476,10 +642,88 @@ async function loadTokenData(App, bank_address, accounts_address, registry_addre
     pricePlatform: (priceRate / 10 ** 18).toFixed(18),
     collateral: currentStatus.collateral,
     collateralPlatform: (currentStatus.collateral / 10 ** 18) * (priceRate / 10 ** 18).toFixed(18),
+
+    isApprove: isApprove,
+    userBalance: addressBalance,
+    userAvailableBalance: addressAvailableBalance,
   }
 }
 
-async function printData(data) {
+// Approve
+async function approve(App, token_address) {
+  // showLoading()
+  const signer = App.provider.getSigner()
+  const erc20Contract = new ethers.Contract(token_address, DEFINER_ABI.erc20, signer)
+  erc20Contract
+    .approve(savingAccountsAddress, CONFIG.MAX_VAL)
+    .then(function(t) {
+      return App.provider.waitForTransaction(t.hash)
+    })
+    .catch(function(err) {
+      console.error(err)
+      hideLoading()
+      alert('Error! Please try again.')
+    })
+}
+
+// deposit
+async function deposit(App, data) {
+  // showLoading()
+  if (data.userAvailableBalance <= 0) {
+    return alert('Insufficient balance')
+  }
+  const signer = App.provider.getSigner()
+  const savingAccountContract = new ethers.Contract(savingAccountsAddress, DEFINER_ABI.savingAccounts, signer)
+  savingAccountContract
+    .deposit(data.tokenAddress, data.userAvailableBalance, {
+      value:
+        data.tokenAddress.toLowerCase() === CONFIG.platform.address.toLowerCase() ? data.userAvailableBalance : '0',
+    })
+    .then(function(t) {
+      return App.provider.waitForTransaction(t.hash)
+    })
+    .catch(function(err) {
+      console.error(err)
+      hideLoading()
+      alert('Error! Please try again.')
+    })
+}
+
+async function withdraw(App, data) {
+  // showLoading()
+  if (data.depositByUser <= 0) {
+    return alert('Insufficient balance')
+  }
+  const signer = App.provider.getSigner()
+  const savingAccountContract = new ethers.Contract(savingAccountsAddress, DEFINER_ABI.savingAccounts, signer)
+
+  if (borrowETH <= 0) {
+    savingAccountContract
+      .withdrawAll(data.tokenAddress)
+      .then(function(t) {
+        return App.provider.waitForTransaction(t.hash)
+      })
+      .catch(function(err) {
+        console.error(err)
+        hideLoading()
+        alert('Error! Please try again.')
+      })
+  } else {
+    let activeAmount = (borrowPower - borrowETH) / data.priceRate
+    savingAccountContract
+      .withdraw(data.tokenAddress, (activeAmount * 10 ** data.tokenDecimals).toFixed(0))
+      .then(function(t) {
+        return App.provider.waitForTransaction(t.hash)
+      })
+      .catch(function(err) {
+        console.error(err)
+        hideLoading()
+        alert('Error! Please try again.')
+      })
+  }
+}
+
+async function printData(data, App) {
   // _print_bold(`${data.tokenSymbol} ($${formatMoney(data.underlyingPrice)})`)
   _print_bold(`${data.tokenSymbol}`)
   _print(`Deposit Market  Size    : ${formatMoney(data.deposits / 10 ** data.tokenDecimals)} ${data.tokenSymbol}`)
@@ -491,6 +735,21 @@ async function printData(data) {
   _print(`Borrow  APR             : ${data.borrowApr.toFixed(2)}%`)
   _print(`Borrow  Mining  APR     : ${data.borrowMiningApr.toFixed(2)}% `)
   _print(`Borrow  Net  APR        : ${(data.borrowApr - data.borrowMiningApr).toFixed(2)}% `)
+  if (!data.isApprove) {
+    _print_link(`Approve ${data.tokenSymbol}`, () => {
+      approve(App, data.tokenAddress)
+    })
+  }
+  const approveDes = data.isApprove ? '' : `(Need Approval)`
+  _print_link(
+    `Deposit ${formatMoney(data.userAvailableBalance / 10 ** data.tokenDecimals)} ${data.tokenSymbol} ${approveDes}`,
+    () => {
+      deposit(App, data)
+    }
+  )
+  _print_link(`Withdraw ${formatMoney(data.depositByUser / 10 ** data.tokenDecimals)} ${data.tokenSymbol}`, () => {
+    withdraw(App, data)
+  })
   if (data.depositByUser > 0) {
     _print(
       `You are Deposit ${formatMoney(data.depositByUser / 10 ** data.tokenDecimals)} ${
