@@ -77,6 +77,21 @@ window.NETWORKS = {
       "https://moonbeam.network/networks/moonriver/"
     ]
   },
+  MOONBEAM: {
+    "chainId": "0x504",
+    "chainName": "Moonbeam",
+    "nativeCurrency": {
+      "name": "moonbeam",
+      "symbol": "GLMR",
+      "decimals": 18
+    },
+    "rpcUrls": [
+      "https://rpc.api.moonbeam.network"
+    ],
+    "blockExplorerUrls": [
+      "https://moonscan.io/"
+    ]
+  },
   OPTIMISM: {
     "chainId": "0xA",
     "chainName": "Optimistic Ethereum",
