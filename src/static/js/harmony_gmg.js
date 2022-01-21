@@ -44,9 +44,9 @@ async function main() {
     true
   );
 
-  const JEWEL = new ethers.Contract(JEWEL_TOKEN_ADDR, ERC20_ABI, App.provider.getSigner());
+  const GMG = new ethers.Contract(GMG_ADDR, ERC20_ABI, App.provider.getSigner());
   const STAKED_GMG = new ethers.Contract(STAKED_GMG_ADDR, STAKED_GMG_ABI, App.provider.getSigner());
-  const xGmg = await stakedGmgData(JEWEL, STAKED_GMG, App, prices);
+  const xGmg = await stakedGmgData(GMG, STAKED_GMG, App, prices);
 
   const totalStakedInclxGmg = totalStaked //+ xGmg.totalBalanceUSD
 
@@ -113,8 +113,12 @@ async function loadMasterJeweler(App, tokens, prices, chef, chefAddress, chefAbi
         totalAllocPoints, rewardsPerWeek, rewardTokenTicker, rewardTokenAddress,
         pendingRewardsFunction, null, null, "harmony")
       aprs.push(apr);
+      if(poolPrices[i].t1.address == "0x8d175DC448b1d3D0277AB87388a5362921eE1fEF") {
+        prices[GMG_ADDR] = {'usd': poolPrices[i].p1}
+      }
     }
   }
+
   let totalUserStaked=0, totalStaked=0, averageApr=0;
   for (const a of aprs) {
     if (!isNaN(a.totalStakedUsd)) {
@@ -309,40 +313,43 @@ const jewelContract_claim = async function(chefAbi, chefAddress, poolIndex, App,
   }
 }
 
-async function stakedGmgData(JEWEL, STAKED_GMG, App, prices) {
-  const xGmgTotalBalance = await JEWEL.balanceOf(STAKED_GMG_ADDR) / 1e18;
+async function stakedGmgData(GMG, STAKED_GMG, App, prices) {
+  const xGmgTotalBalance = await GMG.balanceOf(STAKED_GMG_ADDR) / 1e18;
   const xGmgTotalSupply = await STAKED_GMG.totalSupply() / 1e18;
-  const xJewelRatio = xGmgTotalBalance / xGmgTotalSupply;
+  const xGMGRatio = xGmgTotalBalance / xGmgTotalSupply;
 
   const xGmgUserBalanceBigNum = await STAKED_GMG.balanceOf(App.YOUR_ADDRESS);
-  const xGmgUserBalance = (xGmgUserBalanceBigNum / 1e18) * xJewelRatio;
+  const xGmgUserBalance = (xGmgUserBalanceBigNum / 1e18) * xGMGRatio;
   const xGmgShare = xGmgUserBalance / xGmgTotalBalance;
-  const jewelBalanceBigNum = await JEWEL.balanceOf(App.YOUR_ADDRESS);
-  const jewelBalance = jewelBalanceBigNum / 1e18;
+  const gmgBalanceBigNum = await GMG.balanceOf(App.YOUR_ADDRESS);
+  const gmgBalance = gmgBalanceBigNum / 1e18;
 
-  const jewelPrice = prices[JEWEL_TOKEN_ADDR];
+  const gmgPrice = prices[GMG_ADDR];
 
   let xGmgTotalBalanceUSD;
   let xGmgUserBalanceUSD;
 
-  if (jewelPrice && jewelPrice.usd) {
-    xGmgTotalBalanceUSD = xGmgTotalBalance * jewelPrice.usd;
-    xGmgUserBalanceUSD = xGmgUserBalance * jewelPrice.usd;
+  console.log(prices)
+  console.log(gmgPrice)
+
+  if (gmgPrice && gmgPrice.usd) {
+    xGmgTotalBalanceUSD = xGmgTotalBalance * gmgPrice.usd;
+    xGmgUserBalanceUSD = xGmgUserBalance * gmgPrice.usd;
 
     _print(`${PIT_NAME} TVL: $${formatMoney(xGmgTotalBalanceUSD)}`);
-    _print(`${REWARD_TOKEN_TICKER} Price: $${formatMoney(jewelPrice.usd)}`);
+    _print(`${REWARD_TOKEN_TICKER} Price: $${formatMoney(gmgPrice.usd)}`);
     _print(`Staked: ${(xGmgTotalBalance).toFixed(2)} ${REWARD_TOKEN_TICKER} ($${formatMoney(xGmgTotalBalanceUSD)})`);
     _print(`You are staking ${(xGmgUserBalance).toFixed(8)} ${REWARD_TOKEN_TICKER} ($${formatMoney(xGmgUserBalanceUSD)}), ${(xGmgShare * 100).toFixed(2)}% of the pool.`);
 
     const approveAndEnter = async function() {
-      return xGmgApproveAndEnter(JEWEL, STAKED_GMG, jewelBalanceBigNum, App);
+      return xGmgApproveAndEnter(GMG, STAKED_GMG, gmgBalanceBigNum, App);
     }
 
     const leave = async function() {
       return xGmgLeave(STAKED_GMG, xGmgUserBalanceBigNum, App);
     }
 
-    _print_link(`Stake ${(jewelBalance).toFixed(2)} ${REWARD_TOKEN_TICKER}`, approveAndEnter);
+    _print_link(`Stake ${(gmgBalance).toFixed(2)} ${REWARD_TOKEN_TICKER}`, approveAndEnter);
 
     if (xGmgUserBalance > 0) {
       _print_link(`Unstake ${xGmgUserBalance.toFixed(2)} ${REWARD_TOKEN_TICKER}`, leave);
