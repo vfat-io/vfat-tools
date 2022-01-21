@@ -329,9 +329,6 @@ async function stakedGmgData(GMG, STAKED_GMG, App, prices) {
   let xGmgTotalBalanceUSD;
   let xGmgUserBalanceUSD;
 
-  console.log(prices)
-  console.log(gmgPrice)
-
   if (gmgPrice && gmgPrice.usd) {
     xGmgTotalBalanceUSD = xGmgTotalBalance * gmgPrice.usd;
     xGmgUserBalanceUSD = xGmgUserBalance * gmgPrice.usd;
