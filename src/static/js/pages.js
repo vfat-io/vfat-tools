@@ -70,7 +70,8 @@ const main = async() => {
       ["xToken              ",`<a href="xtoken/"            >Various</a>`,"XTK       ","https://xtoken.cafe/app/dashboard"],
       ["Yearn               ",`<a href="yearn/"             >Various</a>`,"Various   ","https://yearn.finance"],
       ["Yam                 ",`<a href="yam/"               >YAM-ETH SLP</a>`,"YAM   ","https://yam.finance/farm"],
-      ["yAxis               ",`<a href="yaxis/"             >Various</a>`,"yAxis     ","https://yaxis.io/farms"]
+      ["yAxis               ",`<a href="yaxis/"             >Various</a>`,"yAxis     ","https://yaxis.io/farms"],
+      ['DeFiner             ',`<a href="definer"            >Various</a>`,'FIN       ','https://app.definer.org'],
     ]
   }
 
