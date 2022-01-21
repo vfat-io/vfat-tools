@@ -179,12 +179,7 @@ const main = async () => {
       ['Ghost              ', `<a href='ghst'         >Various</a>`, 'GHST         ', 'https://ghost.maximum.farm'],
       ['Smurf Mushy        ', `<a href='mushy'        >Various</a>`, 'MUSHY        ', 'https://mushy.smurf.money'],
       ['Supercub Finance   ', `<a href='supercub'     >Various</a>`, 'SCUB         ', 'https://supercub.finance'],
-      [
-        'Dark KnightSwap    ',
-        `<a href='knightswap'   >Various</a>`,
-        'DKNIGHT      ',
-        'https://dark.knightswap.financial',
-      ],
+      ['Dark KnightSwap    ', `<a href='knightswap'   >Various</a>`, 'DKNIGHT      ', 'https://dark.knightswap.financial'],
       ['Genesys            ', `<a href='genesys   '   >Various</a>`, 'DNA          ', 'https://genesys.app'],
       ['Xmas-Past          ', `<a href='xmaspast '    >Various</a>`, 'XPAST        ', 'https://www.xmas-past.com'],
       ['Bakerguild         ', `<a href='bakerguild '  >Various</a>`, 'BAKER        ', 'https://bakerguild.com'],
@@ -212,6 +207,9 @@ const main = async () => {
       ['Davy Jones         ', `<a href='davyjones'    >Various</a>`, 'JONES        ', 'https://davyjones.fi'],
       ['WeVE               ', `<a href='weve'         >Various</a>`, 'WEVE         ', 'https://vedao.io'],
       ['2omb               ', `<a href='2omb'         >Various</a>`, '2SHARES      ', 'https://2omb.finance'],
+      ['Degen Haus         ', `<a href='degenhaus'    >Various</a>`, 'TRIP         ', 'https://degen.haus'],
+      ['Age                ', `<a href='age'          >Various</a>`, 'AOD          ', 'https://agefantom.com']
+      ['Protofi            ', `<a href="protofi"      >Various</a>`, 'PROTO        ', 'https://fantombank.protofi.app'],
       ['Radial Finance     ', `<a href='radial'       >Various</a>`, 'RDL          ', 'https://www.radialfinance.com/farms']
     ],
   }

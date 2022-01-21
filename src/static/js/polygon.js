@@ -423,7 +423,9 @@ const main = async () => {
       ['Destiny             ',"",  `<a href="destinyfarm"     >Various</a>`, 'Various      ','https://destiny.sandman.finance'],
       ['Popsicle            ',"",  `<a href="popsicle"        >Various</a>`, 'ICE          ','https://popsicle.finance'],
       ['Bag Finance         ',"",  `<a href="bag"             >Various</a>`, 'BGLD         ','https://app.thisistheway.finance'],
-      ['DFX                 ',"",  `<a href="dfx"             >Various</a>`, 'DFX          ','https://app.dfx.finance']
+      ['DFX                 ',"",  `<a href="dfx"             >Various</a>`, 'DFX          ','https://app.dfx.finance'],
+      ['DeFiner             ',"",  `<a href="definer"         >Various</a>`, 'FIN          ','https://app.definer.org'],
+      ['Plotx               ',"",  `<a href="plotx"           >Various</a>`, 'MATIC/bPLOT  ','https://plotx.io']
     ],
   }
 
