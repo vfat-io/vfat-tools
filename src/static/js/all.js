@@ -137,7 +137,6 @@ const main = async () => {
       ["BambooDeFi                   ", `<a href="../bamboodefi"         >Various</a>`, "BAMBOO             ", "https://www.bamboodefi.com"],
       ["Emi Swap`                    ", `<a href="../emiswap"            >Various</a>`, "ESW                ", "https://emiswap.com"],
       ["WePiggy                      ", `<a href="../wepiggy/"           >Various</a>`, "WPC                ", "https://app.wepiggy.com"],
-      ["Greedy Merchants Guild       ", `<a href="../gmg/"               >Various</a>`, "GMG                ", "https://gmg.money"],
       ["Saddle                       ", `<a href="../saddle/"            >Various</a>`, "Various            ", "https://saddle.exchange"],
       ["Composable                   ", `<a href="../composable/"        >Various</a>`, "Composable         ", "https://app.composable.finance"],
       ["MCN Ventures                 ", `<a href="../mcn/"               >Various</a>`, "MCN                ", "https://farm.mcn.ventures"],
