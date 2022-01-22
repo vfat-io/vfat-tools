@@ -212,7 +212,8 @@ const main = async () => {
       ['Protofi            ', `<a href="protofi"      >Various</a>`, 'PROTO        ', 'https://fantombank.protofi.app'],
       ['Vapedao            ', `<a href="vapedao"      >Various</a>`, 'vAPE         ', 'https://vapedao.finance'],
       ['Radial Finance     ', `<a href='radial'       >Various</a>`, 'RDL          ', 'https://www.radialfinance.com/farms'],
-      ['Webribe            ', `<a href='webribe'      >Various</a>`, 'VBRB         ', 'https://webribe.me']
+      ['Webribe            ', `<a href='webribe'      >Various</a>`, 'VBRB         ', 'https://webribe.me'],
+      ['0xDAO              ', `<a href='0xdao'        >Various</a>`, 'OXD          ', 'https://www.oxdao.fi']
     ],
   }
 
