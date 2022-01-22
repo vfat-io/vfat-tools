@@ -20,6 +20,12 @@ async function main() {
     const tokens = {};
     const prices = await getFantomPrices();
 
+    prices["0xa48d959AE2E88f1dAA7D5F611E01908106dE7598"] = prices["0x841FAD6EAe12c286d1Fd18d1d525DFfA75C7EFFE"] //xBOO
+    prices["0xfcef8a994209d6916EB2C86cDD2AFD60Aa6F54b1"] = prices["0xf24bcf4d1e507740041c9cfd2dddb29585adce1e"] //fBEETS
+    prices["0x74D1D2A851e339B8cB953716445Be7E8aBdf92F4"] = prices["0xc5e2b037d30a390e62180970b3aa4e91868764cd"] //xTAROT
+    prices["0xd9e28749e80D867d5d14217416BFf0e668C10645"] = prices["0x77128dfdd0ac859b33f44050c6fa272f34872b5e"] //xCREDIT
+    prices["0xe3D17C7e840ec140a7A51ACA351a482231760824"] = prices["0xe0654c8e6fd4d733349ac7e09f6f23da256bf475"] //xSCREAM
+
     await loadFantomChefContract(App, tokens, prices, OXD_CHEF, OXD_CHEF_ADDR, OXD_CHEF_ABI, rewardTokenTicker,
       "oxd", null, rewardsPerWeek, "pendingOXD", [1]);
 

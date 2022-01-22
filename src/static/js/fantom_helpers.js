@@ -47,7 +47,8 @@ const FantomTokens = [
   { "id": "beluga-fi", "symbol": "BELUGA", "contract":"0x4A13a2cf881f5378DEF61E430139Ed26d843Df9A"},
   { "id": "liquiddriver", "symbol": "LQDR", "contract":"0x10b620b2dbac4faa7d7ffd71da486f5d44cd86f9"},
   { "id": "tarot", "symbol": "TAROT", "contract":"0xc5e2b037d30a390e62180970b3aa4e91868764cd"},
-  { "id": "creditum", "symbol": "CREDIT", "contract":"0x77128dfdd0ac859b33f44050c6fa272f34872b5e"}
+  { "id": "creditum", "symbol": "CREDIT", "contract":"0x77128dfdd0ac859b33f44050c6fa272f34872b5e"},
+  { "id": "scream", "symbol": "SCREAM", "contract":"0xe0654c8e6fd4d733349ac7e09f6f23da256bf475"}
 ];
 
 async function getFantomPrices() {
