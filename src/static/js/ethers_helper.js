@@ -2054,7 +2054,10 @@ function getUniPrices(tokens, prices, pool, chain="eth")
                 "smartbch": `https://info.benswap.cash/pair/${pool.address}`
               }[chain]) :
               pool.name.includes("MISTswap LP Token") ?  `https://analytics.mistswap.fi/pairs/${pool.address}` :
-              pool.symbol.includes("Proto-LP") ? `https://polygonscan.com/${pool.address}` :
+              pool.symbol.includes("Proto-LP")? ({
+                "matic":`https://polygonscan.com/${pool.address}` ,
+                "fantom": `https://fantomscan.com/address/${pool.address}` 
+            }[chain]):
               pool.symbol.includes("Galaxy-LP") ? (
                 {
                     "bsc": `https://bsc-exchange.galaxyfinance.one/#/swap`,
@@ -2258,11 +2261,17 @@ function getUniPrices(tokens, prices, pool, chain="eth")
             `https://exchange.pureswap.finance/#/remove/${t0address}/${t1address}`,
             `https://exchange.pureswap.finance/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
           ] :
-          pool.symbol.includes("Proto-LP") ? [
+          pool.symbol.includes("Proto-LP") ? ({
+            "matic":[
             `https://dex.protofi.app/#/add/${t0address}/${t1address}`,
             `https://dex.protofi.app/#/remove/${t0address}/${t1address}`,
             `https://dex.protofi.app/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
-          ] :
+          ],
+          "fantom":[
+            `https://fantomdex.protofi.app/#/add/${t0address}/${t1address}`,
+            `https://fantomdex.protofi.app/#/remove/${t0address}/${t1address}`,
+            `https://fantomdex.protofi.app/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+          ]}[chain])  :
           pool.symbol.includes("Field-LP") ? [
             `https://exchange.yieldfields.finance/#/add/${t0address}/${t1address}`,
             `https://exchange.yieldfields.finance/#/remove/${t0address}/${t1address}`,

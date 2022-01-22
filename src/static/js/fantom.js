@@ -208,7 +208,11 @@ const main = async () => {
       ['WeVE               ', `<a href='weve'         >Various</a>`, 'WEVE         ', 'https://vedao.io'],
       ['2omb               ', `<a href='2omb'         >Various</a>`, '2SHARES      ', 'https://2omb.finance'],
       ['Degen Haus         ', `<a href='degenhaus'    >Various</a>`, 'TRIP         ', 'https://degen.haus'],
-      ['Age                ', `<a href='age'          >Various</a>`, 'AOD          ', 'https://agefantom.com']
+      ['Age                ', `<a href='age'          >Various</a>`, 'AOD          ', 'https://agefantom.com'],
+      ['Protofi            ', `<a href="protofi"      >Various</a>`, 'PROTO        ', 'https://fantombank.protofi.app'],
+      ['Vapedao            ', `<a href="vapedao"      >Various</a>`, 'vAPE         ', 'https://vapedao.finance'],
+      ['Radial Finance     ', `<a href='radial'       >Various</a>`, 'RDL          ', 'https://www.radialfinance.com/farms'],
+      ['Webribe            ', `<a href='webribe'      >Various</a>`, 'VBRB         ', 'https://webribe.me']
     ],
   }
 
