@@ -2044,6 +2044,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
               pool.symbol.includes("lv_") ?  `https://app.lixir.finance/vaults/${pool.address}` :
               pool.symbol.includes("HLP") ?  `https://analytics.hadesswap.finance/pairs/${pool.address}` :
               pool.symbol.includes("LOOT-LP") ?  `https://analytics.lootswap.finance/pair/${pool.address}` :
+              pool.symbol.includes("JEWEL-LP") ? `https://explorer.harmony.one/address/${pool.address}`:
               pool.symbol.includes("VVS-LP") ?  `https://vvs.finance/info/farm/${pool.address}` :
               pool.symbol.includes("TLP") && !pool.name.includes("Thorus LP") ?  `https://explorer.mainnet.aurora.dev/address/${pool.address}` :
               pool.symbol.includes("TLP") && !pool.name.includes("Thorus LP") ?  `https://snowtrace.io/address/${pool.address}` :
@@ -2225,6 +2226,11 @@ function getUniPrices(tokens, prices, pool, chain="eth")
             `https://app.elk.finance/#/add/${t0address}/${t1address}`,
             `hhttps://app.elk.finance/#/remove/${t0address}/${t1address}`,
             `https://app.elk.finance/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+          ] :
+          pool.symbol.includes("JEWEL-LP") ? [
+            `https://game.defikingdoms.com/#/add/${t0address}/${t1address}`,
+            `https://game.defikingdoms.com/#/remove/${t0address}/${t1address}`,
+            `https://game.defikingdoms.com/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
           ] :
           pool.symbol.includes("DLP") ? [
             `https://app.dodoex.io/pool/list?${pool.address}`,
