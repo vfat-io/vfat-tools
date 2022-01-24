@@ -6,21 +6,31 @@ $(function() {
 
   SwaprStakingAddresses = [
     {
-    "id": "0x1aa2099aebcd14c687267a0c81c6c16929f2acf7"
+    "id": "0x01f2465e02d2a8ab288dc3983c09fbea36ecff45"
     },    {
-    "id": "0x2ad5986957a772dfa9e640c923082c653bcd0f08"
+    "id": "0x0c82065a1a11707d4198126537323522f9d55a37"
     },    {
-    "id": "0x2cd853c6737c092e1eda89f2ccb0050a871d1495"
+    "id": "0x1dd74a88221288210da257c8e8cb70f860372b6f"
     },    {
-    "id": "0x39293782281eaa8188852095d3e43b97909926bc"
+    "id": "0x4e969a61737f06d0fbcf5a578dffeca9aeb69dec"
     },    {
-    "id": "0x5fa1124bb17806577beb04bb0af16c50b592b2df"
+    "id": "0x74d981e8cb04227a6b9f22f66a58bf9a005d07c4"
     },    {
-    "id": "0xbb41ec470363b8b43a3615bb285af1b226e76437"
+    "id": "0x7c6c56f78fc3161f18b56a433494c1e0f5da4238"
     },    {
-    "id": "0xc65cc53556a28299ac695491934982cfad92d85b"
+    "id": "0x81dddfc43739ba88a8f1280c3411b79058255c99"
     },    {
-    "id": "0xf73929012458bba751c16a65ec10078a4c050984"
+    "id": "0x85cc51bf2cf572522dbeb2638e095d7683877cf9"
+    },    {
+    "id": "0x97cb3deb4282d9d6101b4aafce68923a9a062b74"
+    },    {
+    "id": "0x9832d47589ad94ea42de63158e121a141259a0c9"
+    },    {
+    "id": "0xa51bef8aaabfe5f0c6c58e01d321eee037f7af39"
+    },    {
+    "id": "0xf6682fdc65e5ea1390b07b438f5be84a7e3a961d"
+    },    {
+    "id": "0xfed72651e8c4dbeadca7b55fdd48ee4a4789b662"
     }
   ]
   async function main() {

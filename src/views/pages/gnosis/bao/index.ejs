@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include(`${partials}/head`); -%>
+
+<body>
+<%- include(`${partials}/header_main`); -%>
+<pre id="log">
+********************************* GNOSIS **********************************
+    
+*************** 👨‍🌾 UNOFFICIAL BAOSWAP FARMING CALCULATOR 👨‍🌾 **************
+INFO  : https://farms.baoswap.xyz/farms/
+***************************************************************************
+
+</pre>
+<div class="loader--1"></div>
+<%- include(`${partials}/scripts`, {scriptname: 'gnosis_bao'}); -%>
+</body>
+</html> 

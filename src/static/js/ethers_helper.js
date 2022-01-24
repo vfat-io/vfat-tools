@@ -42,8 +42,8 @@ const pageNetwork = function() {
   if (network.toLowerCase() === 'kcc') {
     return window.NETWORKS.KCC
   }
-  if (network.toLowerCase() === 'xdai') {
-    return window.NETWORKS.XDAI
+  if (network.toLowerCase() === 'gnosis') {
+    return window.NETWORKS.GNOSIS
   }
   if (network.toLowerCase() === 'fantom') {
     return window.NETWORKS.FANTOM

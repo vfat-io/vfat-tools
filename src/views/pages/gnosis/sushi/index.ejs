@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include(`${partials}/head`); -%>
+
+<body>
+<%- include(`${partials}/header_main`); -%>
+<pre id="log">
+********************************* GNOSIS **********************************
+    
+*************** 👨‍🌾 UNOFFICIAL SUSHI FARMING CALCULATOR 👨‍🌾 ****************
+INFO  : https://app.sushi.com
+***************************************************************************
+
+</pre>
+<div class="loader--1"></div>
+<%- include(`${partials}/scripts`, {scriptname: 'gnosis_sushi'}); -%>
+</body>
+</html> 
