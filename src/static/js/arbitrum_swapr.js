@@ -6,34 +6,32 @@ $(function() {
 
   SwaprStakingAddresses = [
     {
-    "id": "0x0463e8a24f4f71f706bcb57802060cb15bb94f64"
+    "id": "0x0c7ee0d04472adcef96d8f96d8bc30b40427c5c4"
     },    {
-    "id": "0x190aa002834e1563959274d6d2425cd6f7b4e7e4"
+    "id": "0x144a96dd4e76a492e8b8a136f10a2d4f9fb95d22"
     },    {
-    "id": "0x2416f5a3b15972378144ce881d622bcefb505446"
+    "id": "0x3b40ba93160608f806a50ef665baf4b1ab733367"
     },    {
-    "id": "0x43d4524585b36bdca06d5d9dc0b814fac1be4402"
+    "id": "0x439a1b13c96a06906d0b7f53259d97d3f2ed9961"
     },    {
-    "id": "0x51f8a22facab2e6239b0113fd7c140c3a908477e"
+    "id": "0x5c4d0b606799433d9601e62087dad8d573907548"
     },    {
-    "id": "0x5648c16640e92f67a52165766e1e9d86792b4138"
+    "id": "0x66a96fc465c60920f176917c2092c236a503a1f8"
     },    {
-    "id": "0x61a03c3fdc2e0986170da71af252053447ec54e1"
+    "id": "0x87929482dce0455671614958d3c195165c71cd19"
     },    {
-    "id": "0x6e7abe63090a50a0ce48f7201ded435635e13a9d"
+    "id": "0x8a85170e1429d065c1e55c5f53139a4f5bcd614a"
     },    {
-    "id": "0x7f73e94e25118cadafbca7065b0b92b33a57762f"
+    "id": "0x8c969b9c63821585611fb88039ecc23586b1bbed"
     },    {
-    "id": "0xd253c427f0655b5e731a49f2c5623679ea4b50a6"
+    "id": "0x959669893df2eb27b2ef43a5432896c32c30adac"
     },    {
-    "id": "0xda7e52d6c185ad132ff0b92199adca18b37b728a"
+    "id": "0xc09f6e813e0a064b333c4a33609da12833980ecd"
     },    {
-    "id": "0xeb093cc25e3f99f323ceb420b28c7995e6abe153"
+    "id": "0xcfa751f38fcf66344a040201ee8ba34151fa6238"
     },    {
-    "id": "0xf33959b40745b33c781d7974cba9613a1444f951"
-    },    {
-    "id": "0xf87e0d22f400c50a84bd5d2025cb295f73ba12f3"
-    },
+    "id": "0xe64f6007591f2d287cb75732de33b27933fde4a4"
+    }
   ]
   async function main() {
     const App = await init_ethers();
@@ -48,8 +46,8 @@ $(function() {
       rewardTokensFunction: "getRewardTokens"
     }})
   
-    await loadSwaprSynthetixPoolInfo(App, tokens, prices, pools[6].abi, pools[6].address,
-      pools[6].rewardTokensFunction, pools[6].stakeTokenFunction)
+    await loadSwaprSynthetixPoolInfo(App, tokens, prices, pools[3].abi, pools[3].address,
+      pools[3].rewardTokensFunction, pools[3].stakeTokenFunction)
   
     let p = await loadMultipleSwaprSynthetixPools(App, tokens, prices, pools)
     _print_bold(`Total staked: $${formatMoney(p.staked_tvl)}`);
