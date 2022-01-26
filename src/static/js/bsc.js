@@ -107,7 +107,6 @@ const main = async() => {
       ["Eleven              ","", `<a href="eleven"        >Various</a>`,"ELE              ","https://eleven.finance"],
       ["Yumcha              ","", `<a href="yumcha"        >Various</a>`,"YUMCHA           ","https://yumcha.finance"],
       ["Comos               ","", `<a href="comos"         >Various</a>`,"COMOS            ","https://app.comos.finance"],
-      ["Pokemoon            ","", `<a href="pokemoon"      >Various</a>`,"KBN              ","https://pokemoon.io"],
       ["Octree              ","", `<a href="octree"        >Various</a>`,"OAK              ","https://octree.finance"],
       ["Cub                 ","", `<a href="cub"           >Various</a>`,"CUB              ","https://cubdefi.com"],
       ["Popsicle            ","", `<a href="popsicle"      >Various</a>`,"ICE              ","https://popsicle.finance"],
@@ -563,10 +562,11 @@ const main = async() => {
       ["UFX                 ","", `<a href="ufx"           >Various</a>`,"UFX              ","https://app.unitedfarmers.finance/farms"],
       ["UFGRAIN             ","", `<a href="ufgrain"       >Various</a>`,"UFGRAIN          ","https://app.unitedfarmers.finance/farms"],
       ["Tokyo Swap          ","", `<a href="tokyoswap"     >Various</a>`,"TOKYO            ","https://www.tokyoswap.finance"],
-      ["Latte Swap *        ","", `<a href="latteswap"     >Various</a>`,"LATTE            ","https://app.latteswap.com"],
+      ["Latte Swap          ","", `<a href="latteswap"     >Various</a>`,"LATTE            ","https://app.latteswap.com"],
       ["The Manor           ","", `<a href="manor"         >Various</a>`,"REV              ","https://themanor.farm"],
       ["Waterfall Finance   ","", `<a href="waterfallfinance">Various</a>`,"WATERFALL      ","https://bsc.defiwaterfall.com"],
-      ["BXH                 ","", `<a href="bxh"           >Various</a>`,"BXH              ","https://www.bxh.com"]
+      ["BXH                 ","", `<a href="bxh"           >Various</a>`,"BXH              ","https://www.bxh.com"],
+      ["Metacosmix (Old Pokemoon)","", `<a href="metacosmix">Various</a>`,"KBN             ","https://www.metacosmix.io"]
     ]}
 
   let table = new AsciiTable().fromJSON(tableData);
