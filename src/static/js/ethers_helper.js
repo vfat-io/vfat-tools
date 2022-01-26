@@ -1956,6 +1956,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
   else if (pool.symbol.includes("TLP") && !pool.name.includes("Thorus LP")) stakeTokenTicker += " Trisolaris LP Token";
   else if (pool.symbol.includes("TLP") && pool.name.includes("Thorus LP")) stakeTokenTicker += " Thorus LP Token";
   else if (pool.symbol.includes("SCLP")) stakeTokenTicker += " SwapperChan LP Token";
+  else if (pool.symbol.includes('VENOM-LP')) stakeTokenTicker += ' VENOM-LP Token'
   else stakeTokenTicker += " Uni LP";
   return {
       t0: t0,
@@ -2057,7 +2058,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
               pool.name.includes("MISTswap LP Token") ?  `https://analytics.mistswap.fi/pairs/${pool.address}` :
               pool.symbol.includes("Proto-LP")? ({
                 "matic":`https://polygonscan.com/${pool.address}` ,
-                "fantom": `https://fantomscan.com/address/${pool.address}` 
+                "fantom": `https://fantomscan.com/address/${pool.address}`
             }[chain]):
               pool.symbol.includes("Galaxy-LP") ? (
                 {
@@ -2068,8 +2069,9 @@ function getUniPrices(tokens, prices, pool, chain="eth")
                 }[chain]) :
               pool.symbol.includes("LOVE LP") ? ({
                 "matic": `https://info.loveboat.exchange/pair/${pool.address}`
-              }[chain]) :
-              chain == "matic" ? `https://info.quickswap.exchange/pair/${pool.address}` :
+              }[chain]) : pool.symbol.includes('VENOM-LP')
+          ? `https://info.viper.exchange/pairs/${pool.address}`
+          : chain == "matic" ? `https://info.quickswap.exchange/pair/${pool.address}` :
             `http://v2.uniswap.info/pair/${pool.address}`;
           const helperUrls = pool.is1inch ? [] :
           pool.symbol.includes("LSLP") ? [
@@ -2373,7 +2375,12 @@ function getUniPrices(tokens, prices, pool, chain="eth")
               `https://loveboat.exchange/#/remove/${t0address}/${t1address}`,
               `https://loveboat.exchange/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
             ]
-          }[chain]) :
+          }[chain]) : pool.symbol.includes('VENOM-LP')
+          ? [
+              `https://viper.exchange/#/add/${t0address}/${t1address}`,
+              `https://viper.exchange/#/remove/${t0address}/${t1address}`,
+              `https://viper.exchange/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`,
+            ] :
           [ `https://app.uniswap.org/#/add/v2/${t0address}/${t1address}`,
             `https://app.uniswap.org/#/remove/v2/${t0address}/${t1address}`,
             `https://app.uniswap.org/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}&use=v2` ]
