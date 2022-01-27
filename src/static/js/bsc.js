@@ -11,6 +11,7 @@ const main = async() => {
       ["Whale Loans         ",`<a href="https://twitter.com/MCNVentures/status/1482936116374564866?cxt=HHwWhMDTkc-iuZQpAAAA" target="_blank" class="mcn-reviewed">REVIEW</a>`, `<a href="whaleloans"         >Various</a>`,"HUMP             ","https://www.whale.loans"],
       ["Space               ",`<a href="https://twitter.com/MCNVentures/status/1442278437805170691?s=20" target="_blank" class="mcn-reviewed">REVIEW</a>`,                     `<a href="space"              >Various</a>`,"SPACE            ","https://farm.space"],
       ["Pancake             ","", `<a href="pancake"       >Various</a>`,"CAKE             ","https://pancakeswap.finance"],
+      ["Boston              ","", `<a href="boston"        >Various</a>`,"BEANS            ","https://bostonswap.finance"],
       ["Apeswap             ","", `<a href="apeswap"       >Various</a>`,"BANANA           ","https://apeswap.finance"],
       ["Autofarm            ","", `<a href="autofarm"      >Various</a>`,"AUTOFARM         ","https://autofarm.network"],
       ["Kyber               ","", `<a href="kyber"         >Various</a>`,"KNC              ","https://dmm.exchange"],
