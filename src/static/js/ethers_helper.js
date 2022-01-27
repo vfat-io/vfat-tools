@@ -1972,6 +1972,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
   else if (pool.symbol.includes("MOCHI-LP")) stakeTokenTicker += " Mochi LP Token";
   else if (pool.symbol.includes("SMUG-LP")) stakeTokenTicker += " Smug LP Token";
   else if (pool.symbol.includes("VVS-LP")) stakeTokenTicker += " VVS LP Token";
+  else if (pool.symbol.includes("CNO-LP")) stakeTokenTicker += " CNO LP Token";
   else if (pool.symbol.includes("Crona-LP")) stakeTokenTicker += " Crona LP Token";
   else if (pool.symbol.includes("Genesis-LP")) stakeTokenTicker += " Genesis LP Token";
   else if (pool.symbol.includes("Wagyu-LP")) stakeTokenTicker += " Wagyu LP Token";
@@ -2070,6 +2071,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
               pool.symbol.includes("LOOT-LP") ?  `https://analytics.lootswap.finance/pair/${pool.address}` :
               pool.symbol.includes("JEWEL-LP") ? `https://explorer.harmony.one/address/${pool.address}`:
               pool.symbol.includes("VVS-LP") ?  `https://vvs.finance/info/farm/${pool.address}` :
+              pool.symbol.includes("CNO-LP") ?  `https://chronoswap.org/info/pool/${pool.address}` :
               pool.symbol.includes("TLP") && !pool.name.includes("Thorus LP") ?  `https://explorer.mainnet.aurora.dev/address/${pool.address}` :
               pool.symbol.includes("TLP") && !pool.name.includes("Thorus LP") ?  `https://snowtrace.io/address/${pool.address}` :
               pool.symbol.includes("Crona-LP") ?  `https://app.cronaswap.org/info/${pool.address}` : //wait for real version
@@ -2126,6 +2128,11 @@ function getUniPrices(tokens, prices, pool, chain="eth")
             `https://vvs.finance/add/${t0address}/${t1address}`,
             `https://vvs.finance/remove/${t0address}/${t1address}`,
             `https://vvs.finance/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+          ] :
+          pool.symbol.includes("CNO") ? [
+            `https://chronoswap.org/add/${t0address}/${t1address}`,
+            `https://chronoswap.org/remove/${t0address}/${t1address}`,
+            `https://chronoswap.org/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
           ] :
           pool.symbol.includes("OLP") ? [
             `https://oolongswap.com/#/add/${t0address}/${t1address}`,
