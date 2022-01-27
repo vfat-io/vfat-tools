@@ -13,7 +13,8 @@ const main = async() => {
       ["NYAN                  ", `<a href="nyan"       >Various</a>`,"NYAN         ","https://optinyan.xyz/"],
       ["ahegao.finance        ", `<a href="ahegao"     >Various</a>`,"AHEGAO       ","https://ahegao.finance"],
       ["OptiDOGE              ", `<a href="optidoge"   >Various</a>`,"OPTIDOGE     ","https://optidoge.xyz"],
-      ["Rubicon               ", `<a href="rubicon"    >Various</a>`,"Various      ","https://app.rubicon.finance"]
+      ["Rubicon               ", `<a href="rubicon"    >Various</a>`,"Various      ","https://app.rubicon.finance"],
+      ["Synthetix             ", `<a href="synthetix"  >Various</a>`,"SNX          ","https://staking.synthetix.io"]
     ]
   }
 
