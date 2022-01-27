@@ -47,9 +47,10 @@ const main = async () => {
       ["Hundred",                "",`<a href='hundred'>Various</a>`,        "HND",           "https://hundred.finance"],
       ["Unite Finance",          "",`<a href='unite'>Various</a>`,          "USHARE",        "https://unitefinance.io"],
       ["WePiggy",                "",`<a href='wepiggy'>Various</a>`,        "WPC",           "https://app.wepiggy.com"],
-        ["Greedy Merchants Guild","", `<a href='gmg'>Various</a>`,          "GMG",           "https://gmg.money"],
+      ["Greedy Merchants Guild","", `<a href='gmg'>Various</a>`,            "GMG",           "https://gmg.money"],
       ["Comfy Money",            "",`<a href='comfymoney'>Various</a>`,     "COMFY & CSHARE","https://comfy.money"],
       ["Quartz Defi",            "",`<a href='quartzdefi'>Various</a>`,     "QUARTZ",        "https://quartz-defi.one"],
+      ["HolyGrail",              "",`<a href='holygrail'>Various</a>`,      "HLY",           "https://holygrail.one"],
     ]
   }
 

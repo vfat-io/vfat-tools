@@ -9,19 +9,14 @@ const main = async () => {
     rows: [
       ['Popsicle           ', `<a href='popsicle'     >Various</a>`, 'ICE          ', 'https://popsicle.finance'],
       ['Spooky             ', `<a href='spooky'       >Various</a>`, 'boo          ', 'https://spookyswap.finance'],
-      ['Spirit             ', `<a href='spirit'       >Various</a>`, 'SPIRIT       ', 'https://app.spiritswap.finance'],
+      ['Spirit *           ', `<a href='spirit'       >Various</a>`, 'SPIRIT       ', 'https://app.spiritswap.finance'],
       ['Borg               ', `<a href='borg'         >Various</a>`, 'SON          ', 'https://ftm.borgswap.exchange'],
       ['Hyperjump          ', `<a href='hyperjump'    >Various</a>`, 'ORI          ', 'https://hyperjump.fi'],
       ['Ester              ', `<a href='ester'        >Various</a>`, 'EST          ', 'https://ester.finance'],
       ['Froyo              ', `<a href='froyo'        >Various</a>`, 'FROYO        ', 'https://frozenyogurt.finance'],
       ['The Ghost          ', `<a href='ghost'        >Various</a>`, 'GHOST        ', 'https://www.theghost.finance'],
       ['Beefy              ', `<a href='beefy'        >Various</a>`, 'BIFI         ', 'https://fantom.beefy.finance'],
-      [
-        'Liquid Driver      ',
-        `<a href='liquid'       >Various</a>`,
-        'LQDR         ',
-        'https://www.liquiddriver.finance',
-      ],
+      ['Liquid Driver      ', `<a href='liquid'       >Various</a>`, 'LQDR         ', 'https://www.liquiddriver.finance'],
       [
         'Mushrooms          ',
         `<a href='mushrooms'    >Various</a>`,
@@ -214,7 +209,8 @@ const main = async () => {
       ['Radial Finance     ', `<a href='radial'       >Various</a>`, 'RDL          ', 'https://www.radialfinance.com/farms'],
       ['Webribe            ', `<a href='webribe'      >Various</a>`, 'VBRB         ', 'https://webribe.me'],
       ['0xDAO              ', `<a href='0xdao'        >Various</a>`, 'OXD          ', 'https://www.oxdao.fi'],
-      ['Moneyrain Finance  ', `<a href='moneyrainfinance'>Various</a>`, 'MONEYRAIN ', 'https://defimoneyrain.com'],  
+      ['Moneyrain Finance  ', `<a href='moneyrainfinance'>Various</a>`, 'MONEYRAIN ', 'https://defimoneyrain.com'],
+      ['Sushi              ', `<a href='sushi'        >Various</a>`, 'SUSHI/FTM    ', 'https://app.sushi.com']
     ],
   }
 
