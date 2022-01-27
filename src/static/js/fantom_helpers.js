@@ -159,19 +159,6 @@ async function getFantomErc20(App, token, address, stakingAddress) {
         tokens:[address]
       }
     }
-    if (address == "0x0000000000000000000000000000000000000001") {
-      return {
-        address,
-        name : "unkown",
-        symbol : "unkown",
-        totalSupply: 1e8,
-        decimals: 18,
-        staked: 0,
-        unstaked: 0,
-        contract: null,
-        tokens:[address]
-      }
-    }
     const calls = [token.decimals(), token.balanceOf(stakingAddress), token.balanceOf(App.YOUR_ADDRESS),
       token.name(), token.symbol(), token.totalSupply()];
     const [decimals, staked, unstaked, name, symbol, totalSupply] = await App.ethcallProvider.all(calls);
@@ -404,7 +391,7 @@ async function getFantomStoredToken(App, tokenAddress, stakingAddress, type) {
 }
 
 async function getFantomToken(App, tokenAddress, stakingAddress) {
-    if (tokenAddress == "0x0000000000000000000000000000000000000000" || tokenAddress == "0x0000000000000000000000000000000000000001") {
+    if (tokenAddress == "0x0000000000000000000000000000000000000000") {
       return getFantomErc20(App, null, tokenAddress, "")
     }
     const type = window.localStorage.getItem(tokenAddress);
