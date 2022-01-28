@@ -21,7 +21,7 @@ $(function () {
       const prices = await getFantomPrices();		
       
       await loadFantomChefContract(App, tokens, prices, VIVE_CHEF, VIVE_CHEF_ADDR, VIVE_CHEF_ABI, rewardTokenTicker,		
-          "vive", null, rewardsPerWeek, "pendingVive");		
+          "vivelaboujeToken", null, rewardsPerWeek, "pendingVive");		
       
       hideLoading();		
   }		
