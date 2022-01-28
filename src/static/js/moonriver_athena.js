@@ -34,13 +34,13 @@ async function main() {
     await loadOShareChefContract(App, tokens, prices, OSHARE_CHEF, OSHARE_CHEF_ADDR, OSHARE_CHEF_ABI, rewardTokenTicker,
         "ashare", null, rewardsPerWeek, "pendingShare");
 
-    _print("\nThere is a locking period for the current pool for withdraw and claim. Please use the oficial site\n");
+    /*_print("\nThere is a locking period for the current pool for withdraw and claim. Please use the oficial site\n");
 
     let p = await loadMultipleAthenaSynthetixPools(App, tokens, prices, pools)
     _print_bold(`Total staked: $${formatMoney(p.staked_tvl)}`);
     if (p.totalUserStaked > 0) {
       _print(`You are staking a total of $${formatMoney(p.totalUserStaked)} at an APR of ${(p.totalApr * 100).toFixed(2)}%\n`);
-    }
+    }*/
 
     hideLoading();
   }
@@ -239,7 +239,7 @@ async function printSynthetixPool(App, info, chain="eth", customURLs) {
     const exit = async function() {
       return rewardsContract_exit(info.stakingAddress, App)
     }
-    _print(`<a target="_blank" href="https://blockscout.moonriver.moonbeam.network/address/${info.stakingAddress}#code">Moonriver Explorer</a>`);
+    _print(`<a target="_blank" href="https://moonriver.moonscan.io/address/${info.stakingAddress}#code">Moonriver Scan</a>`);
     if (info.stakeTokenAddress != "0x0000000000000000000000000000000000000000") {
       _print_link(`Stake ${info.userUnstaked.toFixed(6)} ${info.stakeTokenTicker}`, approveTENDAndStake)
     }

@@ -2862,7 +2862,7 @@ function getErc20Prices(prices, pool, chain="eth") {
       poolUrl=`https://iotexscan.io/token/${pool.address}`;
       break;
     case "moonriver":
-      poolUrl=`https://blockscout.moonriver.moonbeam.network/address/${pool.address}`;
+      poolUrl=`https://moonriver.moonscan.io/address/${pool.address}`;
       break;
     case "arbitrum":
       poolUrl=`https://arbiscan.io/address/${pool.address}`;
@@ -3497,7 +3497,7 @@ async function printSynthetixPool(App, info, chain="eth", customURLs) {
         _print(`<a target="_blank" href="https://cronoscan.com/address/${info.stakingAddress}#code">Cronos Scan</a>`);
         break;
       case "moonriver":
-        _print(`<a target="_blank" href="https://blockscout.moonriver.moonbeam.network/address/${info.stakingAddress}#code">Moonriver Explorer</a>`);
+        _print(`<a target="_blank" https://moonriver.moonscan.io/address/${info.stakingAddress}#code">Moonriver Explorer</a>`);
         break;
       case "moonbeam":
         _print(`<a target="_blank" href="https://moonscan.io/address/${info.stakingAddress}#code">Moonbeam Scan</a>`);
@@ -3674,6 +3674,8 @@ function getChainExplorerUrl(chain, address){
       return `https://cronoscan.com/address/${address}`;
     case "moonbeam" :
       return `https://moonscan.io/address/${address}`;
+    case "moonriver" :
+      return `https://moonriver.moonscan.io/address/${address}`
     case "velas" :
       return `https://evmexplorer.velas.com/address/${address}`;
     case "aurora" :
