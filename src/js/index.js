@@ -176,8 +176,8 @@ window.NETWORKS = {
       "decimals": 18
     },
     "rpcUrls": [
-      "https://polygon-mainnet.infura.io/v3/" + myTokens.INFURA_API_ID,
       "https://rpc-mainnet.matic.network",
+      "https://polygon-mainnet.infura.io/v3/" + myTokens.INFURA_API_ID,
       "https://matic-mainnet.chainstacklabs.com",
       "https://rpc-mainnet.maticvigil.com",
       "https://rpc-mainnet.matic.quiknode.pro",
