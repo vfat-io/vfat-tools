@@ -482,7 +482,7 @@ async function main() {
    const rewardTokenTicker = "HLY";
    const HLY_CHEF = new ethers.Contract(HLY_CHEF_ADDR, HLY_CHEF_ABI, App.provider);
 
-   const rewardsPerWeek = await HLY_CHEF.hlyPerSecond() /1e18 * 302400;
+   const rewardsPerWeek = await HLY_CHEF.hlyPerSecond() /1e18 * 604800;
 
     const tokens = {};
     const prices = await getHarmonyPrices();
