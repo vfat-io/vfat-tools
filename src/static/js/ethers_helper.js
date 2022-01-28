@@ -3496,6 +3496,9 @@ async function printSynthetixPool(App, info, chain="eth", customURLs) {
       case "cronos":
         _print(`<a target="_blank" href="https://cronoscan.com/address/${info.stakingAddress}#code">Cronos Scan</a>`);
         break;
+      case "moonriver":
+        _print(`<a target="_blank" href="https://blockscout.moonriver.moonbeam.network/address/${info.stakingAddress}#code">Moonriver Explorer</a>`);
+        break;
       case "moonbeam":
         _print(`<a target="_blank" href="https://moonscan.io/address/${info.stakingAddress}#code">Moonbeam Scan</a>`);
         break;
