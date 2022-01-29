@@ -16,21 +16,13 @@ async function main() {
    const rewardTokenTicker = "FATFIRE";
    const FATFIRE_CHEF = new ethers.Contract(FATFIRE_CHEF_ADDR, FATFIRE_CHEF_ABI, App.provider);
 
-   let rewardsPerWeek = 0
-   const startBlock = await FATFIRE_CHEF.startBlock();
-   const currentBlock = await App.provider.getBlockNumber();
-
-   if(currentBlock < startBlock){
-    _print(`Rewards start at block <a href="https://ftmscan.com/block/countdown/${startBlock}" target="_blank">${startBlock}</a>\n`);
-   }else{
-    rewardsPerWeek = await FATFIRE_CHEF.FatfirePerSecond() /1e18 * 604800 ;
-   }
+   const rewardsPerWeek = await FATFIRE_CHEF.FatfirePerSecond() /1e18 * 604800 ;
 
     const tokens = {};
     const prices = await getFantomPrices();
 
     await loadFantomChefContract(App, tokens, prices, FATFIRE_CHEF, FATFIRE_CHEF_ADDR, FATFIRE_CHEF_ABI, rewardTokenTicker,
-      "token", null, rewardsPerWeek, "pendingFatfire");
+      "fatfire", null, rewardsPerWeek, "pendingFatfire");
 
     hideLoading();
   }
