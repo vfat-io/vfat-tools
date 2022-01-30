@@ -714,7 +714,15 @@ const bscTokens = [
   { "id": "lucky-lion", "symbol": "LUCKY", "contract": "0xc3d912863152e1afc935ad0d42d469e7c6b05b77" },
   { "id": "binance-peg-filecoin", "symbol": "FIL", "contract": "0x0d8ce2a99bb6e3b7db580ed848240e4a0f9ae153" },
   { "id": "rabbit-finance", "symbol": "RABBIT", "contract": "0x95a1199eba84ac5f19546519e287d43d2f0e1b41" },
-  { "id": "humpback", "symbol": "HUMP", "contract": "0x453939C0270e9405876C7f047aDE3932FD2d7a51" }
+  { "id": "humpback", "symbol": "HUMP", "contract": "0x453939C0270e9405876C7f047aDE3932FD2d7a51" },
+  { "id": "ecio-space", "symbol": "ECIO", "contract": "0x327a3e880bf2674ee40b6f872be2050ed406b021" },
+  { "id": "gmt-token", "symbol": "GMT", "contract": "0x7Ddc52c4De30e94Be3A6A0A2b259b2850f421989" },
+  { "id": "axie-infinity", "symbol": "AXS", "contract": "0x715D400F88C167884bbCc41C5FeA407ed4D2f8A0" },
+  { "id": "cryptoskates", "symbol": "CST", "contract": "0x368eb5efdca39126e8e76aae5187166de7c2766c" },
+  { "id": "the-killbox-game", "symbol": "KBOX", "contract": "0x3523d58d8036b1c5c9a13493143c97aefc5ad422" },
+  { "id": "orakler", "symbol": "ORKL", "contract": "0x36bc1f4d4af21df024398150ad39627fb2c8a847" },
+  { "id": "lucky-block", "symbol": "LBLOCK", "contract": "0x2cd96e8c3ff6b5e01169f6e3b61d28204e7810bb" },
+  { "id": "luna-rush", "symbol": "LUS", "contract": "0xde301d6a2569aefcfe271b9d98f318baee1d30a4" }
 ]
 
 async function getBscPrices() {
