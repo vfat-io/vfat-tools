@@ -37,7 +37,8 @@ const main = async() => {
       ["DarkCrypto Finance   ","", `<a href='darkcrypto'   >Various</a>`,"DARK/SKY     ","https://www.darkcrypto.finance/"],
       ["Cronos Cougar        ","", `<a href='cougar'       >Various</a>`,"CGS          ","https://cronosapp.cougarswap.io/"],
       ["Gaur                 ","", `<a href='gaur'         >Various</a>`,"GSHARE/GAUR  ","https://gaur.money"],
-      ["ChronoSwap           ","", `<a href='chronoswap'   >Various</a>`,"CNO          ","https://chronoswap.org"]
+      ["ChronoSwap           ","", `<a href='chronoswap'   >Various</a>`,"CNO          ","https://chronoswap.org"],
+      ["Agilefi              ","", `<a href='agilefi'      >Various</a>`,"AGL          ","https://app.agilefi.org"]
     ]
   }
 
