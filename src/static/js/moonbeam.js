@@ -9,7 +9,8 @@ const main = async() => {
     "heading":["Pool Provider","MCN","LP", "Reward Tokens", "INFO"],
     "rows": [
       ["BeamSwap           ","", `<a href='beamswap'       >Various</a>`,"GLINT          ","https://beamswap.io"],
-      ["Solarflare         ","", `<a href='solarflare'     >Various</a>`,"FLARE          ","https://app.solarflare.io"]
+      ["Solarflare         ","", `<a href='solarflare'     >Various</a>`,"FLARE          ","https://app.solarflare.io"],
+      ["Galaxy             ","", `<a href='galaxy'         >Various</a>`,"GSHARE / GLX   ","https://www.galaxyfinance.finance"]
     ]
   }
 

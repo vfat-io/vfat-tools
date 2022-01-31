@@ -567,7 +567,8 @@ const main = async() => {
       ["Waterfall Finance   ","", `<a href="waterfallfinance">Various</a>`,"WATERFALL      ","https://bsc.defiwaterfall.com"],
       ["BXH                 ","", `<a href="bxh"           >Various</a>`,"BXH              ","https://www.bxh.com"],
       ["Metacosmix (Old Pokemoon)","", `<a href="metacosmix">Various</a>`,"KBN             ","https://www.metacosmix.io"],
-      ["BostonSwap          ","", `<a href="bostonswap"    >Various</a>`,"BEANS            ","https://bostonswap.finance"]
+      ["BostonSwap          ","", `<a href="bostonswap"    >Various</a>`,"BEANS            ","https://bostonswap.finance"],
+      ["Too Farm            ","", `<a href="too"           >Various</a>`,"TFARM            ","https://too.farm"]
     ]}
 
   let table = new AsciiTable().fromJSON(tableData);
