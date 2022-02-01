@@ -15,8 +15,18 @@ $(function () {
       const rewardTokenTicker = "VIVE";		
       const VIVE_CHEF = new ethers.Contract(VIVE_CHEF_ADDR, VIVE_CHEF_ABI, App.provider);
 
-      const rewardsPerWeek = await VIVE_CHEF.VivePerSecond() / 1e18 * 604800;
-          
+
+     let rewardsPerWeek = 0
+     const startBlock = await VIVE_CHEF.startBlock();
+     const currentBlock = await App.provider.getBlockNumber();
+
+        if(currentBlock < startBlock){
+      _print(`Rewards start at block <a href="https://ftmscan.com/block/countdown/${startBlock}" target="_blank">${startBlock}</a>\n`);
+      }else{
+       rewardsPerWeek = await VIVE_CHEF.VivePerSecond() /1e18 * 604800;
+      }
+
+ 
       const tokens = {};		
       const prices = await getFantomPrices();		
       
