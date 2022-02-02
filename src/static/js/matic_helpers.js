@@ -589,7 +589,8 @@ const maticTokens = [
   { "id": "honor-token", "symbol": "HONOR", "contract":"0xb82a20b4522680951f11c94c54b8800c1c237693"},
   { "id": "mantra-dao", "symbol": "OM", "contract":"0xC3Ec80343D2bae2F8E680FDADDe7C17E71E114ea"},
   { "id": "synapse-2", "symbol": "SYN", "contract":"0xf8f9efc0db77d8881500bb06ff5d6abc3070e695"},
-  { "id": "blockchain-adventurers-guild", "symbol": "BAG", "contract":"0xB1d82666384bE5F8C59AA18e650493ABb8A614Ad"}
+  { "id": "blockchain-adventurers-guild", "symbol": "BAG", "contract":"0xB1d82666384bE5F8C59AA18e650493ABb8A614Ad"},
+  { "id": "plotx", "symbol": "PLOT", "contract":"0xe82808eaA78339b06a691fd92E1Be79671cAd8D3"}
 ]
 
 

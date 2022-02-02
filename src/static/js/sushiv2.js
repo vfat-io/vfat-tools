@@ -270,7 +270,6 @@ $(function() {
     const userStaked = poolInfo.userLPStaked ?? poolInfo.userStaked;
     const rewardPrice = getParameterCaseInsensitive(prices, rewardTokenAddress)?.usd;
     const staked_tvl = sp?.staked_tvl ?? poolPrices.staked_tvl;
-    _print_inline(`${poolIndex} - `);
     poolPrices.print_price(chain);
     sp?.print_price(chain);
     const apr = printAPR(rewardTokenTicker, rewardPrice, poolRewardsPerWeek, poolPrices.stakeTokenTicker,

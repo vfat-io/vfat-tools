@@ -237,11 +237,41 @@ async function getOptimisticRubiconVault(App, vault, address, stakingAddress) {
   }
 }
 
+async function getOptimisticGelatoPool(App, pool, poolAddress, stakingAddress) {
+  const calls = [
+    pool.decimals(), pool.token0(), pool.token1(), pool.symbol(), pool.name(),
+    pool.totalSupply(), pool.balanceOf(stakingAddress), pool.balanceOf(App.YOUR_ADDRESS),
+    pool.getUnderlyingBalances()
+  ];
+  const [decimals, token0, token1, symbol, name, totalSupply, staked, unstaked, reserves]
+    = await App.ethcallProvider.all(calls);
+  return {
+      symbol,
+      name,
+      address: poolAddress,
+      token0: token0,
+      q0 : reserves.amount0Current,
+      token1: token1,
+      q1 : reserves.amount1Current,
+      totalSupply: totalSupply / 10 ** decimals,
+      stakingAddress: stakingAddress,
+      staked: staked / 10 ** decimals,
+      decimals: decimals,
+      unstaked: unstaked / 10 ** decimals,
+      contract: pool,
+      tokens : [token0, token1],
+      isGelato : true
+  };
+}
+
 async function getOptimisticStoredToken(App, tokenAddress, stakingAddress, type) {
   switch (type) {
     case "uniswap":
       const pool = new ethcall.Contract(tokenAddress, UNI_ABI);
       return await getOptimisticUniPool(App, pool, tokenAddress, stakingAddress);
+    case "gelato":
+      const gelato = new ethcall.Contract(tokenAddress, GELATO_ABI);
+      return await getOptimisticGelatoPool(App, gelato, tokenAddress, stakingAddress);
     case "doualOptimisticDlp":
       const doualDlpPool = new ethcall.Contract(tokenAddress, DLP_OPTIMISTIC_DUAL_TOKEN_ABI);
       return await getDodoOptimisticDualPoolToken(App, doualDlpPool, tokenAddress, stakingAddress);
@@ -270,6 +300,15 @@ async function getOptimisticToken(App, tokenAddress, stakingAddress) {
     }
     const type = window.localStorage.getItem(tokenAddress);
     if (type) return getOptimisticStoredToken(App, tokenAddress, stakingAddress, type);
+    try {
+      const gelato = new ethcall.Contract(tokenAddress, GELATO_ABI);
+      const [gelatoFactory] = await App.ethcallProvider.all([gelato.GELATO()]);
+      const gelatoPool = await getOptimisticGelatoPool(App, gelato, tokenAddress, stakingAddress);
+      window.localStorage.setItem(tokenAddress, "gelato");
+      return gelatoPool;
+    }
+    catch(err) {
+    }
     try {
       const pool = new ethcall.Contract(tokenAddress, UNI_ABI);
       const _token0 = await App.ethcallProvider.all([pool.token0()]);

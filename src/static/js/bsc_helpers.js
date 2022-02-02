@@ -155,7 +155,7 @@ async function getBscBalancerPool(App, pool, poolAddress, stakingAddress, tokens
   let name = await pool.name();
   let totalSupply = await pool.totalSupply();
   let staked = await pool.balanceOf(stakingAddress);
-  const unstaked = await pool.balanceOf(App.YOUR_ADDRESS);
+  let unstaked = await pool.balanceOf(App.YOUR_ADDRESS);
   let poolTokens = [];
   for (const t of tokens) {
     poolTokens.push({ address: t, weight: await pool.getNormalizedWeight(t) / 1e18, balance: await pool.getBalance(t) })
@@ -704,7 +704,25 @@ const bscTokens = [
   { "id": "synapse-2", "symbol": "SYN", "contract": "0xa4080f1778e69467E905B8d6F72f6e441f9e9484" },
   { "id": "mars-ecosystem-token", "symbol": "XMS", "contract": "0x7859b01bbf675d67da8cd128a50d155cd881b576" },
   { "id": "topshelf-finance", "symbol": "LIQR", "contract": "0x33333ee26a7d02e41c33828b42fb1e0889143477" },
-  { "id": "blockchain-adventurers-guild", "symbol": "BAG", "contract": "0x7c650f39d777F40120345314Ab8009D11F70c972" }
+  { "id": "blockchain-adventurers-guild", "symbol": "BAG", "contract": "0x7c650f39d777F40120345314Ab8009D11F70c972" },
+  { "id": "true-usd", "symbol": "TUSD", "contract": "0x14016e85a25aeb13065688cafb43044c2ef86784" },
+  { "id": "ptokens-btc", "symbol": "PBTC", "contract": "0xed28a457a5a76596ac48d87c0f577020f6ea1c4c" },
+  { "id": "neutrino", "symbol": "USDN", "contract": "0x03ab98f5dc94996f8c33e15cd4468794d12d41f9" },
+  { "id": "greentrust", "symbol": "GNT", "contract": "0xf750a26eb0acf95556e8529e72ed530f3b60f348" },
+  { "id": "killswitch", "symbol": "KSW", "contract": "0x270178366a592ba598c2e9d2971da65f7baa7c86" },
+  { "id": "xbn", "symbol": "XBN", "contract": "0x547cbe0f0c25085e7015aa6939b28402eb0ccdac" },
+  { "id": "lucky-lion", "symbol": "LUCKY", "contract": "0xc3d912863152e1afc935ad0d42d469e7c6b05b77" },
+  { "id": "binance-peg-filecoin", "symbol": "FIL", "contract": "0x0d8ce2a99bb6e3b7db580ed848240e4a0f9ae153" },
+  { "id": "rabbit-finance", "symbol": "RABBIT", "contract": "0x95a1199eba84ac5f19546519e287d43d2f0e1b41" },
+  { "id": "humpback", "symbol": "HUMP", "contract": "0x453939C0270e9405876C7f047aDE3932FD2d7a51" },
+  { "id": "ecio-space", "symbol": "ECIO", "contract": "0x327a3e880bf2674ee40b6f872be2050ed406b021" },
+  { "id": "gmt-token", "symbol": "GMT", "contract": "0x7Ddc52c4De30e94Be3A6A0A2b259b2850f421989" },
+  { "id": "axie-infinity", "symbol": "AXS", "contract": "0x715D400F88C167884bbCc41C5FeA407ed4D2f8A0" },
+  { "id": "cryptoskates", "symbol": "CST", "contract": "0x368eb5efdca39126e8e76aae5187166de7c2766c" },
+  { "id": "the-killbox-game", "symbol": "KBOX", "contract": "0x3523d58d8036b1c5c9a13493143c97aefc5ad422" },
+  { "id": "orakler", "symbol": "ORKL", "contract": "0x36bc1f4d4af21df024398150ad39627fb2c8a847" },
+  { "id": "lucky-block", "symbol": "LBLOCK", "contract": "0x2cd96e8c3ff6b5e01169f6e3b61d28204e7810bb" },
+  { "id": "luna-rush", "symbol": "LUS", "contract": "0xde301d6a2569aefcfe271b9d98f318baee1d30a4" }
 ]
 
 async function getBscPrices() {

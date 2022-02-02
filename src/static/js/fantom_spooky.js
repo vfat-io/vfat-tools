@@ -107,7 +107,7 @@ async function loadSingleSpookyContract(App, tokens, prices, chef, chefAddress, 
 
 async function getSpookyPoolInfo(app, chefContract, chefAddress, poolIndex, pendingRewardsFunction) {
   const poolInfo = await chefContract.poolInfo(poolIndex);
-  if (poolInfo.allocPoint == 0) {
+  if (poolInfo.allocPoint == 0 || poolInfo.Token == "0x1C8D76074619BCA749b521343Ce16bb96d9F3614") {
     return {
       address: poolInfo.Token,
       allocPoints: poolInfo.allocPoint ?? 1,
