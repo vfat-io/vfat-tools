@@ -422,7 +422,8 @@ const main = async () => {
       ['Sandbox             ',"",  `<a href="sandbox"         >Various</a>`, 'SAND         ','https://www.sandbox.game'],
       ['Destiny             ',"",  `<a href="destinyfarm"     >Various</a>`, 'Various      ','https://destiny.sandman.finance'],
       ['Popsicle            ',"",  `<a href="popsicle"        >Various</a>`, 'ICE          ','https://popsicle.finance'],
-      ['Bag Finance         ',"",  `<a href="bag"             >Various</a>`, 'BGLD         ','https://app.thisistheway.finance']
+      ['Bag Finance         ',"",  `<a href="bag"             >Various</a>`, 'BGLD         ','https://app.thisistheway.finance'],
+      ['Argano              ',"",  `<a href="argano"          >Various</a>`, 'AGOy         ','https://www.argano.io/']
     ],
   }
 
