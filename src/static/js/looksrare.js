@@ -138,13 +138,13 @@ async function loadLooksSynthetixPoolInfo2(App, tokens, prices, stakingAbi, stak
     }
     const stakeTokenAddress = await STAKING_POOL.callStatic[stakeTokenFunction]();
 
-    const rewardTokenAddress = await STAKING_POOL.callStatic[rewardTokenFunction]();
+    let rewardTokenAddresses = [];
+    const rewardTokenAddress1 = await STAKING_POOL.callStatic[stakeTokenFunction]();
+    const rewardTokenAddress2 = await STAKING_POOL.callStatic[rewardTokenFunction]();
+    rewardTokenAddresses.push(rewardTokenAddress1)
+    rewardTokenAddresses.push(rewardTokenAddress2)
 
     var stakeToken = await getToken(App, stakeTokenAddress, stakingAddress);
-
-    if (stakeTokenAddress.toLowerCase() === rewardTokenAddress.toLowerCase()) {
-      stakeToken.staked = await STAKING_POOL.totalShares() / 10 ** stakeToken.decimals;
-    }
 
     var newPriceAddresses = stakeToken.tokens.filter(x =>
       x.toLowerCase() !=  "0xb34ab2f65c6e4f764ffe740ab83f982021faed6d" && //BSG can't be retrieved from Coingecko
@@ -159,27 +159,49 @@ async function loadLooksSynthetixPoolInfo2(App, tokens, prices, stakingAbi, stak
     for (const address of newTokenAddresses) {
         tokens[address] = await getToken(App, address, stakingAddress);
     }
-    if (!getParameterCaseInsensitive(tokens, rewardTokenAddress)) {
+    for(const rewardTokenAddress of rewardTokenAddresses){
+      if (!getParameterCaseInsensitive(tokens, rewardTokenAddress)) {
         tokens[rewardTokenAddress] = await getToken(App, rewardTokenAddress, stakingAddress);
+      }
     }
-    const rewardToken = getParameterCaseInsensitive(tokens, rewardTokenAddress);
+    let rewardTokens = [];
+    let rewardTokenTickers = [];
+    for(const rewardTokenAddress of rewardTokenAddresses){
+      const rewardToken = getParameterCaseInsensitive(tokens, rewardTokenAddress);
+      const rewardTokenTicker = rewardToken.symbol;
+      rewardTokens.push(rewardToken)
+      rewardTokenTickers.push(rewardTokenTicker)
+      }
 
-    const rewardTokenTicker = rewardToken.symbol;
-
-    const calls = [STAKING_MULTI.totalShares(), STAKING_MULTI.calculateSharePriceInLOOKS(), STAKING_MULTI.currentRewardPerBlock(),
+    const calls = [STAKING_MULTI.currentRewardPerBlock(), STAKING_MULTI.totalShares(), STAKING_MULTI.calculateSharePriceInLOOKS(),
       STAKING_MULTI.calculateSharesValueInLOOKS(App.YOUR_ADDRESS), STAKING_MULTI.calculatePendingRewards(App.YOUR_ADDRESS)]
-    const [totalShares_, sharePriceInLooks_, rewardsPerBlock, balance, earned_] = await App.ethcallProvider.all(calls);
-    const weeklyRewards = rewardsPerBlock / 1e18 * 604800 / 13.5;
+    const [rewardsPerBlock2, totalShares_, sharePriceInLooks_, balance, earned_] = await App.ethcallProvider.all(calls);
+
+    const STAKING_MULTI_REWARDS_ABI = [{"inputs":[{"internalType":"address","name":"_looksRareToken","type":"address"},{"internalType":"address","name":"_tokenSplitter","type":"address"},{"internalType":"uint256","name":"_startBlock","type":"uint256"},{"internalType":"uint256[]","name":"_rewardsPerBlockForStaking","type":"uint256[]"},{"internalType":"uint256[]","name":"_rewardsPerBlockForOthers","type":"uint256[]"},{"internalType":"uint256[]","name":"_periodLengthesInBlocks","type":"uint256[]"},{"internalType":"uint256","name":"_numberPeriods","type":"uint256"}],"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"uint256","name":"harvestedAmount","type":"uint256"}],"name":"Compound","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"harvestedAmount","type":"uint256"}],"name":"Deposit","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"uint256","name":"currentPhase","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"startBlock","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"rewardPerBlockForStaking","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"rewardPerBlockForOthers","type":"uint256"}],"name":"NewRewardsPerBlock","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"harvestedAmount","type":"uint256"}],"name":"Withdraw","type":"event"},{"inputs":[],"name":"NUMBER_PERIODS","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"PRECISION_FACTOR","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"START_BLOCK","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"accTokenPerShare","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"user","type":"address"}],"name":"calculatePendingRewards","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"currentPhase","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"deposit","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"endBlock","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"harvestAndCompound","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"lastRewardBlock","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"looksRareToken","outputs":[{"internalType":"contract ILooksRareToken","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"rewardPerBlockForOthers","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"rewardPerBlockForStaking","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"","type":"uint256"}],"name":"stakingPeriod","outputs":[{"internalType":"uint256","name":"rewardPerBlockForStaking","type":"uint256"},{"internalType":"uint256","name":"rewardPerBlockForOthers","type":"uint256"},{"internalType":"uint256","name":"periodLengthInBlock","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"tokenSplitter","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"totalAmountStaked","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"updatePool","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"userInfo","outputs":[{"internalType":"uint256","name":"amount","type":"uint256"},{"internalType":"uint256","name":"rewardDebt","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"withdraw","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"withdrawAll","outputs":[],"stateMutability":"nonpayable","type":"function"}]
+    const STAKING_MULTI_REWARDS = new ethcall.Contract("0x465a790b428268196865a3ae2648481ad7e0d3b1", STAKING_MULTI_REWARDS_ABI);
+    const rewardCalls = [STAKING_MULTI_REWARDS.rewardPerBlockForStaking()];
+    const [rewardsPerBlock1] = await App.ethcallProvider.all(rewardCalls);
+    let weeklyRewards = [];
+    weeklyRewards.push(rewardsPerBlock1 / 1e18 * 604800 / 13.5)
+    weeklyRewards.push(rewardsPerBlock2 / 1e18 * 604800 / 13.5)
 
     const stakeTokenPrice =
         prices[stakeTokenAddress]?.usd ?? getParameterCaseInsensitive(prices, stakeTokenAddress)?.usd;
-    const rewardTokenPrice = getParameterCaseInsensitive(prices, rewardTokenAddress)?.usd;
+    let rewardTokenPrices = [];
+    for(const rewardTokenAddress of rewardTokenAddresses){
+      const rewardTokenPrice = getParameterCaseInsensitive(prices, rewardTokenAddress)?.usd;
+      rewardTokenPrices.push(rewardTokenPrice);
+    }
 
     const totalShares = totalShares_ / 1e18;
     const sharePriceInLooks = sharePriceInLooks_ / 1e18;
     const totalStaked = totalShares * sharePriceInLooks;
     stakeToken.staked = totalStaked;
-    const usdPerWeek = weeklyRewards * rewardTokenPrice;
+    let usdCoinsPerWeek = [];
+    for(let i = 0; i < rewardTokenAddresses.length; i++){
+      const usdPerWeek = weeklyRewards[i] * rewardTokenPrices[i];  //this needs update
+      usdCoinsPerWeek.push(usdPerWeek);
+    }
 
     const poolPrices = getPoolPrices(tokens, prices, stakeToken);
 
@@ -191,19 +213,19 @@ async function loadLooksSynthetixPoolInfo2(App, tokens, prices, stakingAbi, stak
 
     const userUnstaked = stakeToken.unstaked;
 
-    const earned = earned_ / 10 ** rewardToken.decimals;
+    const earned = earned_ / 1e18
 
     return  {
       stakingAddress,
       poolPrices,
       stakeTokenAddress,
-      rewardTokenAddress,
+      rewardTokenAddresses,
       stakeTokenTicker,
-      rewardTokenTicker,
+      rewardTokenTickers,
       stakeTokenPrice,
-      rewardTokenPrice,
+      rewardTokenPrices,
       weeklyRewards,
-      usdPerWeek,
+      usdCoinsPerWeek,
       staked_tvl,
       userStaked,
       userUnstaked,
@@ -212,61 +234,81 @@ async function loadLooksSynthetixPoolInfo2(App, tokens, prices, stakingAbi, stak
 }
 
 async function printLooksSynthetixPool2(App, info, chain="eth", customURLs) {
-    info.poolPrices.print_price(chain, 4, customURLs);
-    _print(`${info.rewardTokenTicker} Per Week: ${info.weeklyRewards.toFixed(2)} ($${formatMoney(info.usdPerWeek)})`);
-    const weeklyAPR = info.usdPerWeek / info.staked_tvl * 100;
-    const dailyAPR = weeklyAPR / 7;
-    const yearlyAPR = weeklyAPR * 52;
-    _print(`APR: Day ${dailyAPR.toFixed(2)}% Week ${weeklyAPR.toFixed(2)}% Year ${yearlyAPR.toFixed(2)}%`);
-    const userStakedUsd = info.userStaked * info.stakeTokenPrice;
-    const userStakedPct = userStakedUsd / info.staked_tvl * 100;
-    _print(`You are staking ${info.userStaked.toFixed(6)} ${info.stakeTokenTicker} ` +
-           `$${formatMoney(userStakedUsd)} (${userStakedPct.toFixed(2)}% of the pool).`);
-    if (info.userStaked > 0) {
-      info.poolPrices.print_contained_price(info.userStaked);
-        const userWeeklyRewards = userStakedPct * info.weeklyRewards / 100;
-        const userDailyRewards = userWeeklyRewards / 7;
-        const userYearlyRewards = userWeeklyRewards * 52;
-        _print(`Estimated ${info.rewardTokenTicker} earnings:`
-            + ` Day ${userDailyRewards.toFixed(2)} ($${formatMoney(userDailyRewards*info.rewardTokenPrice)})`
-            + ` Week ${userWeeklyRewards.toFixed(2)} ($${formatMoney(userWeeklyRewards*info.rewardTokenPrice)})`
-            + ` Year ${userYearlyRewards.toFixed(2)} ($${formatMoney(userYearlyRewards*info.rewardTokenPrice)})`);
-    }
-    const approveTENDAndStake = async function() {
-      return looksContract_stake(info.stakeTokenAddress, info.stakingAddress, App)
-    }
-    const unstake = async function() {
-      return looksContract_unstake(info.stakingAddress, App)
-    }
-    const claim = async function() {
-      return looksContract_claim(info.stakingAddress, App)
-    }
-    const exit = async function() {
-      return rewardsContract_exit(info.stakingAddress, App)
-    }
-    const revoke = async function() {
-      return rewardsContract_resetApprove(info.stakeTokenAddress, info.stakingAddress, App)
-    }
-    _print(`<a target="_blank" href="https://etherscan.io/address/${info.stakingAddress}#code">Etherscan</a>`);
-    if (info.stakeTokenAddress != "0x0000000000000000000000000000000000000000") {
-      _print_link(`Stake ${info.userUnstaked.toFixed(6)} ${info.stakeTokenTicker}`, approveTENDAndStake)
-    }
-    else {
-      _print(`Please use the official website to stake ${info.stakeTokenTicker}.`);
-    }
-    _print_link(`Unstake ${info.userStaked.toFixed(6)} ${info.stakeTokenTicker}`, unstake)
-    _print_link(`Claim ${info.earned.toFixed(6)} ${info.rewardTokenTicker} ($${formatMoney(info.earned*info.rewardTokenPrice)})`, claim)
-    if (info.stakeTokenTicker != "ETH") {
-      _print_link(`Revoke (set approval to 0)`, revoke)
-    }
-    _print_link(`Exit`, exit)
-    _print("");
+  info.poolPrices.print_price(chain, 4, customURLs);
+  for(let i = 0; i < info.rewardTokenTickers; i++){
+    _print(`${info.rewardTokenTickers[i]} Per Week: ${info.weeklyRewards[i].toFixed(2)} ($${formatMoney(info.usdCoinsPerWeek[i])})`);
+  }
+  let totalYearlyAPR = 0;
+  let totalWeeklyAPR = 0;
+  let totalDailyAPR = 0;
+  let totalusdCoinsPerDay = 0;
+  let totalusdCoinsPerWeek = 0;
+  let totalusdCoinsPerYear = 0;
+  let totalUSDPerWeek = 0;
+  for(let i = 0; i < info.rewardTokenTickers.length; i++){
+    let weeklyAPR = info.usdCoinsPerWeek[i] / info.staked_tvl * 100;
+    let dailyAPR = weeklyAPR / 7;
+    yearlyAPR = weeklyAPR * 52;
+    totalYearlyAPR += yearlyAPR;
+    totalWeeklyAPR += weeklyAPR;
+    totalDailyAPR += dailyAPR;
+    totalUSDPerWeek += info.usdCoinsPerWeek[i];
+    _print(`${info.rewardTokenTickers[i]} Per Week: ${info.weeklyRewards[i].toFixed(2)} ($${formatMoney(info.usdCoinsPerWeek[i])}) APR: Year ${yearlyAPR.toFixed(2)}%`);
+  }
+  _print(`Total Per Week: $${formatMoney(totalUSDPerWeek)}`);
+  _print(`Total APR: Day ${totalDailyAPR.toFixed(4)}% Week ${totalWeeklyAPR.toFixed(2)}% Year ${totalYearlyAPR.toFixed(2)}%`);
+  const userStakedUsd = info.userStaked * info.stakeTokenPrice;
+  const userStakedPct = userStakedUsd / info.staked_tvl * 100;
+  _print(`You are staking ${info.userStaked.toFixed(6)} ${info.stakeTokenTicker} ` +
+         `$${formatMoney(userStakedUsd)} (${userStakedPct.toFixed(2)}% of the pool).`);
+  if (info.userStaked > 0) {
+    info.poolPrices.print_contained_price(info.userStaked);
+    for(let i = 0; i < info.rewardTokenTickers.length; i++){
+      let userWeeklyRewards = userStakedPct * info.weeklyRewards[i] / 100;
+      let userDailyRewards = userWeeklyRewards / 7;
+      let userYearlyRewards = userWeeklyRewards * 52;
 
-    return {
-        staked_tvl: info.poolPrices.staked_tvl,
-        userStaked : userStakedUsd,
-        apr : yearlyAPR
+      totalusdCoinsPerDay += userDailyRewards;
+      totalusdCoinsPerWeek += userWeeklyRewards;
+      totalusdCoinsPerYear += userYearlyRewards;
     }
+    _print(`Total Earnings: Day ${totalusdCoinsPerDay.toFixed(4)}% Week ${totalusdCoinsPerWeek.toFixed(2)}% Year ${totalusdCoinsPerYear.toFixed(2)}%`);
+  }
+  const approveTENDAndStake = async function() {
+    return looksContract_stake(info.stakeTokenAddress, info.stakingAddress, App)
+  }
+  const unstake = async function() {
+    return looksContract_unstake(info.stakingAddress, App)
+  }
+  const claim = async function() {
+    return looksContract_claim(info.stakingAddress, App)
+  }
+  const exit = async function() {
+    return rewardsContract_exit(info.stakingAddress, App)
+  }
+  const revoke = async function() {
+    return rewardsContract_resetApprove(info.stakeTokenAddress, info.stakingAddress, App)
+  }
+  _print(`<a target="_blank" href="https://arbiscan.io/address/${info.stakingAddress}">Explorer</a>`);
+  if (info.stakeTokenTicker != "ETH") {
+    _print_link(`Stake ${info.userUnstaked.toFixed(6)} ${info.stakeTokenTicker}`, approveTENDAndStake)
+  }
+  else {
+    _print("Please use the official website to stake ETH.");
+  }
+  _print_link(`Unstake ${info.userStaked.toFixed(6)} ${info.stakeTokenTicker}`, unstake)
+  _print_link(`Claim ${info.earned.toFixed(6)} ${info.rewardTokenTickers[1]} ($${formatMoney(info.earned*info.rewardTokenPrices[1])})`, claim)
+  if (info.stakeTokenTicker != "ETH") {
+    _print_link(`Revoke (set approval to 0)`, revoke)
+  }
+  _print_link(`Exit`, exit)
+  _print("");
+
+  return {
+      staked_tvl: info.poolPrices.staked_tvl,
+      userStaked : userStakedUsd,
+      apr : yearlyAPR
+  }
 }
 
 const looksContract_claim = async function(rewardPoolAddr, App) {
