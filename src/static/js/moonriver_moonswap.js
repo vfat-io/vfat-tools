@@ -24,8 +24,7 @@ async function main() {
        if(currentBlock < startBlock){
          _print(`REWARDS HAVE NOT YET STARTED!\n\tRewards start at block ${startBlock}\n`);
        }else{
-        rewardsPerWeek = await MOONSWAP_CHEF.moonPerSecond() / 1e18 *
-                604800 / blocksPerSeconds;
+        rewardsPerWeek = await MOONSWAP_CHEF.moonPerSecond() / 1e18 * 604800;
        }
 
     const tokens = {};
