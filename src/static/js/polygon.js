@@ -8,9 +8,9 @@ const main = async () => {
     heading: ["Pool Provider","MCN", "LP", "Reward Tokens", "INFO"],
     rows: [
       ["Parrotdefi          ",`<a href="https://twitter.com/MCNVentures/status/1440498902688358402?s=20" target="_blank" class="mcn-reviewed">REVIEW</a>`, `<a href="parrotdefi"  >Various</a>`,"pPEGG              ","https://polygon.parrotdefi.com"],
-      ['Quickswap *         ',"", `<a href="quick"            >Various</a>`,'QUICK         ','https://quickswap.exchange/#/quick'],
+      ['Quickswap           ',"", `<a href="quick"            >Various</a>`,'QUICK         ','https://quickswap.exchange/#/quick'],
       ['Kyber               ',"", `<a href="kyber"           >Various</a>`, 'KNC          ', 'https://dmm.exchange'],
-      ['Cometh *            ',"", `<a href="cometh"           >Various</a>`,'MUST          ','https://swap.cometh.io/#/stake'],
+      ['Cometh              ',"", `<a href="cometh"           >Various</a>`,'MUST          ','https://swap.cometh.io/#/stake'],
       ['Dark                ',"", `<a href="dark"            >Various</a>`, 'DB           ', 'https://www.dark.build'],
       ['Smartdex            ',"", `<a href="smartdex"        >Various</a>`, 'NIOX         ', 'https://swap.smartdex.app'],
       ['Elk                 ',"", `<a href="elk"             >Various</a>`, 'ELK          ', 'https://app.elk.finance'],
@@ -415,7 +415,7 @@ const main = async () => {
       ['TacoParty Salsa     ',"",  `<a href="tacopartysalsa"  >Various</a>`, 'SALSA        ', 'https://salsa.tacoparty.finance'],
       ['Autofarm            ',"",  `<a href="autofarm"        >Various</a>`, 'Various      ','https://autofarm.network/polygon'],
       ['DesireFarm          ',"",  `<a href="desirefarm"      >Various</a>`, 'Various      ','https://desire.sandman.finance'],
-      ["BambooDeFi          ","",  `<a href="bamboodefi"      >Various</a>`, 'BAMBOO       ', 'https://polygon.bamboodefi.com/'],
+      ["BambooDeFi          ", "", `<a href="bamboodefi"      >Various</a>`, 'BAMBOO       ','https://polygon.bamboodefi.com/'],
       ['Mirai               ',"",  `<a href="mirai"           >Various</a>`, 'MIRAI        ','https://mirai.farm'],
       ['Nacho               ',"",  `<a href="nacho"           >Various</a>`, 'NACHO/NSHARE ','https://nachoxyz.com'],
       ['Salem Finance       ',"",  `<a href="salem"           >Various</a>`, 'SALEM        ','https://polygon.salem.finance'],
@@ -423,6 +423,9 @@ const main = async () => {
       ['Destiny             ',"",  `<a href="destinyfarm"     >Various</a>`, 'Various      ','https://destiny.sandman.finance'],
       ['Popsicle            ',"",  `<a href="popsicle"        >Various</a>`, 'ICE          ','https://popsicle.finance'],
       ['Bag Finance         ',"",  `<a href="bag"             >Various</a>`, 'BGLD         ','https://app.thisistheway.finance'],
+      ['DFX                 ',"",  `<a href="dfx"             >Various</a>`, 'DFX          ','https://app.dfx.finance'],
+      ['DeFiner             ',"",  `<a href="definer"         >Various</a>`, 'FIN          ','https://app.definer.org'],
+      ['Plotx               ',"",  `<a href="plotx"           >Various</a>`, 'MATIC/bPLOT  ','https://plotx.io']
       ['Argano              ',"",  `<a href="argano"          >Various</a>`, 'AGOy         ','https://www.argano.io/']
     ],
   }
@@ -431,3 +434,6 @@ const main = async () => {
   document.getElementById('log').innerHTML += table + '<br />'
   hideLoading()
 }
+
+
+
