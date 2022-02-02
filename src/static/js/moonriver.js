@@ -29,7 +29,8 @@ const main = async() => {
       ["RivrKitty                ", `<a href="rivrkitty"     >Various</a>`,"PAWS        ","https://www.rivrkitty.com"],
       ["WePiggy                  ", `<a href="wepiggy"       >Various</a>`,"WPC         ","https://app.wepiggy.com"],
       ["Athena                   ", `<a href="athena"        >Various</a>`,"OSHARE      ","https://www.athenamoney.org"],
-      ["Neku                     ", `<a href="neku"          >Various</a>`,"NEKU        ","https://neku.io"]
+      ["Neku                     ", `<a href="neku"          >Various</a>`,"NEKU        ","https://neku.io"],
+      ["MoonSwap                 ", `<a href="moonswap"      >Various</a>`,"MOON        ","https://moonswap.tech"],
     ]
   }
 
