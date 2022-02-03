@@ -17,7 +17,8 @@ const main = async() => {
         ["Seagull Finance     ","", `<a href="seagull"       >Various</a>`,"FISH             ","https://minmax.finance"],
         ["MinMax              ","", `<a href="minmax"        >Various</a>`,"MAX / iMAGIC     ","https://minmax.finance"],
         ["Mermaidswap         ","", `<a href="mermaidswap"   >Various</a>`,"MERD             ","https://mermaidswap.com"],
-        ["Elk                 ","", `<a href="elk"           >Various</a>`,"ELK              ","https://app.elk.finance"]
+        ["Elk                 ","", `<a href="elk"           >Various</a>`,"ELK              ","https://app.elk.finance"],
+        ["Ska                 ","", `<a href="skaswap"       >Various</a>`,"SKA              ","https://skaswap.finance"]
     
         ]
     }
