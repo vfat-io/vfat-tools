@@ -12,7 +12,8 @@ const optimisticTokens = [
     { "id": "tether","symbol": "USDT", "contract": "0x94b008aA00579c1307B0EF2c499aD98a8ce58e58" },
     { "id": "dai","symbol": "DAI", "contract": "0xDA10009cBd5D07dd0CeCc66161FC93D7c9000da1" },
     { "id": "havven","symbol": "SNX", "contract": "0x8700dAec35aF8Ff88c16BdF0418774CB3D7599B4" },
-    { "id": "wrapped-bitcoin","symbol": "WBTC", "contract": "0x68f180fcCe6836688e9084f035309E29Bf0A2095" }
+    { "id": "wrapped-bitcoin","symbol": "WBTC", "contract": "0x68f180fcCe6836688e9084f035309E29Bf0A2095" },
+    { "id": "thales","symbol": "THALES", "contract": "0x217d47011b23bb961eb6d93ca9945b7501a5bb11" }
 ];
 
 async function getOptimisticPrices() {
