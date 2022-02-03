@@ -43,7 +43,8 @@ const main = async() => {
       ["WePiggy             ",""                                                                                               , `<a href="/arbitrum/wepiggy"     >Various</a>`,"WPC                ","https://app.wepiggy.com"],
       ["Saddle              ",""                                                                                               , `<a href="/arbitrum/saddle"      >Various</a>`,"SADDLE             ","https://saddle.exchange"],
       ["ONYX                ",""                                                                                               , `<a href="/arbitrum/onyx"        >Various</a>`,"ONYX               ","https://arbi.onyx.farm/"],
-      ["JAGUAR              ",""                                                                                               , `<a href="/arbitrum/jaguar"        >Various</a>`,"JAGUAR               ","https://arbi.jaguarswap.com"],
+      ["JAGUAR              ",""                                                                                               , `<a href="/arbitrum/jaguar"      >Various</a>`,"JAGUAR             ","https://arbi.jaguarswap.com"],
+      ["L2Swap              ",""                                                                                               , `<a href="/arbitrum/l2swap"      >Various</a>`,"LSP                ","https://l2swap.finance"],
     ]
   }
 
