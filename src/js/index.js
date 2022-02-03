@@ -245,7 +245,7 @@ window.NETWORKS = {
       "decimals": 18
     },
     "rpcUrls": [
-      "https://nameless-damp-log.fantom.quiknode.pro/b8ae993f5e0169b37b2b329a670e934472b13983",
+      "https://nameless-damp-log.fantom.quiknode.pro/c129afc78492c37ab654744a97306180c7e4e94e/",
       "https://rpc.ftm.tools"
     ],
     "blockExplorerUrls": [
