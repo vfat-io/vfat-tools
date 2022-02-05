@@ -205,6 +205,11 @@ async function loadTelosChefContract(App, tokens, prices, chef, chefAddress, che
 
   let aprs = []
   for (i = 0; i < poolCount; i++) {
+    
+    if(poolInfos[i].address == "0x389A833f83aAF096C6D3a550624C26151AaddcDC" || poolInfos[i].address == "0x4942fc8b88dF31349d384Bb24455C1Ba42c5B1d7") {
+      continue;
+    }
+    
     if (poolPrices[i]) {
       const apr = printChefPool(App, chefAbi, chefAddress, prices, tokens, poolInfos[i], i, poolPrices[i],
         totalAllocPoints, rewardsPerWeek, rewardTokenTicker, rewardTokenAddress,
@@ -237,8 +242,8 @@ async function loadTelosChefContract(App, tokens, prices, chef, chefAddress, che
 
 const telosTokens = [
   { "id": "telos", "symbol": "WTLOS","contract": "0xD102cE6A4dB07D247fcc28F366A623Df0938CA9E" },
-  { "id": "dogecoin", "symbol": "CHARM","contract": "0xd2504a02fABd7E546e41aD39597c377cA8B0E1Df" },
-  { "id": "dogecoin", "symbol": "xCHARM","contract": "0x65a5f4636233B7B4c4B134BA414c6EaB9fF79594" },
+  { "id": "charm", "symbol": "CHARM","contract": "0xd2504a02fABd7E546e41aD39597c377cA8B0E1Df" },
+  { "id": "charm", "symbol": "xCHARM","contract": "0x65a5f4636233B7B4c4B134BA414c6EaB9fF79594" },
   { "id": "douge", "symbol": "DOUGE", "contract": "0xc6BC7A8dfA0f57Fe7746Ac434c01cD39679b372c"  },
   { "id": "wrapped-bitcoin", "symbol": "WBTC", "contract": "0xf390830df829cf22c53c8840554b98eafc5dcbc2"  },
   { "id": "weth", "symbol": "WETH", "contract": "0xfa9343c3897324496a05fc75abed6bac29f8a40f" },
