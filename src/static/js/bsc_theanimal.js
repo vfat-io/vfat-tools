@@ -27,11 +27,14 @@ async function main() {
     const tokens = {};
     const prices = await getBscPrices();
 
+    //to receive the price from LP PIGS/WBNB
+    await loadAnimalsSynthetixPoolInfo(App, tokens, prices, "0x7aaad708ea6ce3acae4c02aa51cef89a5b359eef");
+
     await loadAnimalsContract(App, tokens, prices, PIGS_CHEF, PIGS_CHEF_ADDR, PIGS_CHEF_ABI, rewardTokenTicker,
       "token", null, rewardsPerWeek, "pendingPigs");
     _print("");
     await loadAnimalsContract(App, tokens, prices, DOGS_CHEF, DOGS_CHEF_ADDR, DOGS_CHEF_ABI, rewardTokenTicker2,
-      "token", null, rewardsPerWeek2, "pendingPigs");
+      "token", null, rewardsPerWeek2, "pendingDogs");
 
     hideLoading();
   }
@@ -51,7 +54,7 @@ async function getAnimalsPoolInfo(App, chefContract, chefAddress, poolIndex, pen
     };
   }
   const poolToken = await getBscToken(App, poolInfo.lpToken ?? poolInfo.token, chefAddress);
-  poolToken.staked = poolInfo.lpSupply;
+  poolToken.staked = poolInfo.lpSupply / 10 ** poolToken.decimals;
   const userInfo = await chefContract.userInfo(poolIndex, App.YOUR_ADDRESS);
   const pendingRewardTokens = await chefContract.callStatic[pendingRewardsFunction](poolIndex, App.YOUR_ADDRESS);
   const staked = userInfo.amount / 10 ** poolToken.decimals;
@@ -88,7 +91,7 @@ async function loadAnimalsContract(App, tokens, prices, chef, chefAddress, chefA
     / 10 ** rewardToken.decimals * 604800 / 3
 
   const poolInfos = await Promise.all([...Array(poolCount).keys()].map(async (x) =>
-    await getBscPoolInfo(App, chefContract, chefAddress, x, pendingRewardsFunction)));
+    await getAnimalsPoolInfo(App, chefContract, chefAddress, x, pendingRewardsFunction)));
 
   var tokenAddresses = [].concat.apply([], poolInfos.filter(x => x.poolToken).map(x => x.poolToken.tokens));
 
@@ -136,4 +139,36 @@ async function loadAnimalsContract(App, tokens, prices, chef, chefAddress, chefA
         + ` Year $${formatMoney(totalUserStaked*averageApr)}\n`);
   }
   return { prices, totalUserStaked, totalStaked, averageApr }
+}
+
+async function loadAnimalsSynthetixPoolInfo(App, tokens, prices, stakeTokenAddress) {
+  var stakeToken = await getBscToken(App, stakeTokenAddress, stakeTokenAddress);
+  var newPriceAddresses = stakeToken.tokens.filter(x =>
+    !getParameterCaseInsensitive(prices, x));
+  var newPrices = await lookUpTokenPrices(newPriceAddresses);
+  for (const key in newPrices) {
+    if (newPrices[key]?.usd)
+        prices[key] = newPrices[key];
+  }
+  var newTokenAddresses = stakeToken.tokens.filter(x =>
+    !getParameterCaseInsensitive(tokens,x));
+  for (const address of newTokenAddresses) {
+      tokens[address] = await getBscToken(App, address, stakeTokenAddress);
+  }
+  const poolPrices = getPoolPrices(tokens, prices, stakeToken, "bsc");
+  if (!poolPrices)
+  {
+    console.log(`Couldn't calculate prices for pool ${stakeTokenAddress}`);
+    return null;
+  }
+  const stakeTokenTicker = poolPrices.stakeTokenTicker;
+
+  const stakeTokenPrice =
+      prices[stakeTokenAddress]?.usd ?? getParameterCaseInsensitive(prices, stakeTokenAddress)?.usd;
+  return  {
+    poolPrices,
+    stakeTokenAddress,
+    stakeTokenTicker,
+    stakeTokenPrice
+  }
 }
