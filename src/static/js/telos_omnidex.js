@@ -11,149 +11,39 @@ const Addresses = [
 ]
 
 async function main() {
-    const App = await init_ethers();
+  const App = await init_ethers();
 
-    _print(`Initialized ${App.YOUR_ADDRESS}\n`);
-    _print("Reading smart contracts...\n");
+  _print(`Initialized ${App.YOUR_ADDRESS}\n`);
+  _print("Reading smart contracts...\n");
 
-   const OMNIDEX_ZEN_ADDR = "0x79f5A8BD0d6a00A41EA62cdA426CEf0115117a61";
-   const rewardTokenTicker = "CHARM";
-   const OMNIDEX_ZEN = new ethers.Contract(OMNIDEX_ZEN_ADDR, OMNIDEX_ZEN_ABI, App.provider);
+  const OMNIDEX_ZEN_ADDR = "0x79f5A8BD0d6a00A41EA62cdA426CEf0115117a61";
+  const rewardTokenTicker = "CHARM";
+  const OMNIDEX_ZEN = new ethers.Contract(OMNIDEX_ZEN_ADDR, OMNIDEX_ZEN_ABI, App.provider);
+  
+  const tokens = {};
+  const prices = await getTelosPrices();
+  
+  const charmToken = await getTelosToken(App, "0xd2504a02fABd7E546e41aD39597c377cA8B0E1Df", OMNIDEX_ZEN_ADDR);
+  const dougeToken = await getTelosToken(App, "0xc6BC7A8dfA0f57Fe7746Ac434c01cD39679b372c", OMNIDEX_ZEN_ADDR);
+  const usdcToken = await getTelosToken(App, "0x818ec0a7fe18ff94269904fced6ae3dae6d6dc0b", OMNIDEX_ZEN_ADDR);
+  const charmUsdcPool = await getTelosPoolInfo(App, OMNIDEX_ZEN, OMNIDEX_ZEN_ADDR, 7, "pendingCharm");
+  const charmDougePool = await getTelosPoolInfo(App, OMNIDEX_ZEN, OMNIDEX_ZEN_ADDR, 6, "pendingCharm")
+  
+  var usdcAmountInCharmUsdcPool = charmUsdcPool.poolToken.q0 / 10 ** usdcToken.decimals;
+  var charmAmountInCharmUsdcPool = charmUsdcPool.poolToken.q1 / 10 ** charmToken.decimals;
+  
+  var dougeAmountInCharmDougePool = charmDougePool.poolToken.q0 / 10 ** dougeToken.decimals;
+  var charmAmountInCharmDougePool = charmDougePool.poolToken.q1 / 10 ** charmToken.decimals;
+  
+  var charmUsdPrice = usdcAmountInCharmUsdcPool / charmAmountInCharmUsdcPool;
+  var dougeUsdPrice = charmUsdPrice / (dougeAmountInCharmDougePool / charmAmountInCharmDougePool);
+  
+  prices["0xd2504a02fABd7E546e41aD39597c377cA8B0E1Df"].usd = charmUsdPrice;
+  prices["0x65a5f4636233B7B4c4B134BA414c6EaB9fF79594"].usd = charmUsdPrice;
+  prices["0xc6BC7A8dfA0f57Fe7746Ac434c01cD39679b372c"] = { usd: dougeUsdPrice };
+  
+  await loadTelosChefContract(App, tokens, prices, OMNIDEX_ZEN, OMNIDEX_ZEN_ADDR, OMNIDEX_ZEN_ABI, rewardTokenTicker,
+      "charm", "charmPerBlock", null, "pendingCharm");
 
-   const rewardsPerWeek = await OMNIDEX_ZEN.charmPerBlock() /1e18
-        * 604800 / 3;
-
-    const tokens = {};
-    const prices = await getTelosPrices();
-
-    await loadTelosChefContract(App, tokens, prices, OMNIDEX_ZEN, OMNIDEX_ZEN_ADDR, OMNIDEX_ZEN_ABI, rewardTokenTicker,
-        "charm", null, rewardsPerWeek, "pendingCharm");
-
-    _print("")
-    _print("Loading omnidex vaults\n")
-    _print("Please check the site for withdrawal fees\n")
-
-    const poolInfos = await Promise.all(Addresses.map(a => loadOmnidexPoolInfo(App, tokens, prices, a)));
-    let tvl = 0, userTvl = 0
-    for(const p of poolInfos.filter(p => p))
-    {
-      printOmnidexContract(p);
-      if (!isNaN(p.poolPrices.tvl)) tvl += p.poolPrices.tvl;
-      if (!isNaN(p.userStaked * p.poolPrices.price)) userTvl += p.userStaked * p.poolPrices.price;
-    }
-    _print_bold(`\nTotal Value Locked: $${formatMoney(tvl)}`);
-    if (userTvl > 0) {
-      _print_bold(`You are staking a total of $${formatMoney(userTvl)}`);
-    }
-
-    hideLoading();
-  }
-
-async function loadOmnidexPoolInfo(App, tokens, prices, contractAddress) {
-      try {
-        const contract = await new ethers.Contract(contractAddress, OMNIDEX_VAULT_ABI, App.provider);
-        const tokenAddress = await contract.token();
-        const token = await getTelosToken(App, tokenAddress, App.YOUR_ADDRESS);
-        var newTokenAddresses = token.tokens.filter(x => !getParameterCaseInsensitive(tokens, x));
-        for (const address of newTokenAddresses) {
-            tokens[address] = await getTelosToken(App, address, contractAddress);
-        }
-        token.staked = await contract.balanceOf() / 10 ** token.decimals;
-        const ppfs = await contract.getPricePerFullShare() / 1e18;
-        const _userStaked = await contract.userInfo(App.YOUR_ADDRESS);
-        const userStaked = _userStaked.shares / 10 ** token.decimals;
-        const poolPrices = getPoolPrices(tokens, prices, token, "telos");
-        return { token, poolPrices, userStaked, ppfs, contractAddress }
-      }
-      catch (err) {
-        console.log(contractAddress, err);
-        return null;
-      }
-  }
-    
-async function printOmnidexContract(poolInfo) {
-      const poolPrices = poolInfo.poolPrices;
-      poolPrices.print_price();
-      var userStakedUsd = poolInfo.userStaked * poolPrices.price;
-      var userStakedPct = userStakedUsd / poolPrices.tvl * 100;
-      _print(`You are staking ${poolInfo.userStaked.toFixed(4)} ${poolInfo.token.name} ($${formatMoney(userStakedUsd)}), ${userStakedPct.toFixed(2)}% of the pool.`);
-      if (poolInfo.userStaked > 0) {
-        _print(`Your stake comprises of ${poolInfo.userStaked * poolInfo.ppfs} ${poolInfo.token.symbol}.`)
-      }
-      const deposit = async function() {
-        return omnidexVaultDeposit(App, poolInfo.token, poolInfo.contractAddress)
-      }
-      const withdraw = async function() {
-        return omnidexVaultWithdraw(App, poolInfo.contractAddress)
-      }
-      _print_link(`Deposit ${poolInfo.token.unstaked.toFixed(6)} ${poolInfo.token.symbol}`, deposit);
-      _print_link(`Withdraw ${poolInfo.userStaked.toFixed(6)} ${poolInfo.token.symbol}`, withdraw)
-      _print("");
-  }
-
-async function omnidexVaultDeposit(App, token, stakingAddress) {
-  const signer = await App.provider.getSigner();
-
-  const STAKING_TOKEN = new ethers.Contract(token.address, ERC20_ABI, signer)
-  const VAULT_CONTRACT = new ethers.Contract(stakingAddress, OMNIDEX_VAULT_ABI, signer)
-
-  const balanceToStake = await STAKING_TOKEN.balanceOf(App.YOUR_ADDRESS)
-  const allowedTokens = await STAKING_TOKEN.allowance(App.YOUR_ADDRESS, vaultToken.token.address)
-
-  const decimals = await STAKING_TOKEN.decimals();
-  let allow = Promise.resolve()
-
-  if (allowedTokens / 10 ** decimals < balanceToStake / 10 ** decimals) {
-    showLoading()
-    allow = STAKING_TOKEN.approve(vaultToken.token.address, ethers.constants.MaxUint256)
-      .then(function(t) {
-        return App.provider.waitForTransaction(t.hash)
-      })
-      .catch(function() {
-        hideLoading()
-        alert('Try resetting your approval to 0 first')
-      })
-  }
-
-  if (balanceToStake / 10 ** decimals > 0) {
-    showLoading()
-    allow
-      .then(async function() {
-        VAULT_CONTRACT["deposit(uint256)"](balanceToStake, {gasLimit: 500000})
-          .then(function(t) {
-            App.provider.waitForTransaction(t.hash).then(function() {
-              hideLoading()
-            })
-          })
-          .catch(function() {
-            hideLoading()
-            _print('Something went wrong.\n')
-          })
-      })
-      .catch(function(ex) {
-        hideLoading()
-        _print('Something went wrong.')
-        _print(ex)
-      })
-  } else {
-    alert('You have no tokens to stake!!')
-  }
-}
-
-async function omnidexVaultWithdraw(App, stakingAddress) {
-  const signer = App.provider.getSigner()
-  const VAULT_CONTRACT = new ethers.Contract(stakingAddress, OMNIDEX_VAULT_ABI, signer)
-
-  const currentStakedAmount = await VAULT_CONTRACT.userInfo(App.YOUR_ADDRESS).shares
-
-  if (currentStakedAmount / 1e18 > 0) {
-    showLoading()
-    VAULT_CONTRACT["withdraw(uint256)"](currentStakedAmount, {gasLimit: 500000})
-      .then(function(t) {
-        return App.provider.waitForTransaction(t.hash)
-      })
-      .catch(function() {
-        hideLoading()
-      })
-  }
+  hideLoading();
 }

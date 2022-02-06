@@ -77,7 +77,7 @@ async function getOmniDexPool(App, pool, poolAddress, stakingAddress) {
 
 async function getTelosStoredToken(App, tokenAddress, stakingAddress, type) {
   switch (type) {
-    case "uniswap":
+    case "omnidex":
       const pool = new ethers.Contract(tokenAddress, UNI_ABI, App.provider);
       return await getOmniDexPool(App, pool, tokenAddress, stakingAddress);
     case "erc20":
@@ -102,7 +102,7 @@ async function getTelosToken(App, tokenAddress, stakingAddress) {
       const pool = new ethers.Contract(tokenAddress, UNI_ABI, App.provider);
       const _token0 = await pool.token0();
       const uniPool = await getOmniDexPool(App, pool, tokenAddress, stakingAddress);
-      window.localStorage.setItem(tokenAddress, "uniswap");
+      window.localStorage.setItem(tokenAddress, "omnidex");
       return uniPool;
     }
     catch(err) {
@@ -181,7 +181,7 @@ async function loadTelosChefContract(App, tokens, prices, chef, chefAddress, che
   const rewardToken = await getTelosToken(App, rewardTokenAddress, chefAddress);
   const rewardsPerWeek = rewardsPerWeekFixed ??
     await chefContract.callStatic[rewardsPerBlockFunction]()
-    / 10 ** rewardToken.decimals * 604800 / 3
+    / 10 ** rewardToken.decimals * 604800 * 2; // Telos block time: 0.5s = 2 blocks/s
 
   const poolInfos = await Promise.all([...Array(poolCount).keys()].map(async (x) =>
     await getTelosPoolInfo(App, chefContract, chefAddress, x, pendingRewardsFunction)));
@@ -200,7 +200,6 @@ async function loadTelosChefContract(App, tokens, prices, chef, chefAddress, che
 
   const poolPrices = poolInfos.map(poolInfo => poolInfo.poolToken ? getPoolPrices(tokens, prices, poolInfo.poolToken, "telos") : undefined);
 
-
   _print("Finished reading smart contracts.\n");
 
   let aprs = []
@@ -217,6 +216,7 @@ async function loadTelosChefContract(App, tokens, prices, chef, chefAddress, che
       aprs.push(apr);
     }
   }
+  
   let totalUserStaked=0, totalStaked=0, averageApr=0;
   for (const a of aprs) {
     if (!isNaN(a.totalStakedUsd)) {
@@ -227,6 +227,7 @@ async function loadTelosChefContract(App, tokens, prices, chef, chefAddress, che
       averageApr += a.userStakedUsd * a.yearlyAPR / 100;
     }
   }
+  
   averageApr = averageApr / totalUserStaked;
   _print_bold(`Total Staked: $${formatMoney(totalStaked)}`);
   if (totalUserStaked > 0) {
