@@ -33,7 +33,7 @@ const main = async() => {
       ["Hundred             ",""                                                                                               , `<a href="/arbitrum/hundred"     >Various</a>`,"HND                ","https://hundred.finance"],
       ["Polarbi             ",""                                                                                               , `<a href="/arbitrum/polarbi"     >Various</a>`,"POLAR              ","https://www.polarbi.net"],
       ["GMArbitrum          ",""                                                                                               , `<a href="/arbitrum/gmarb"       >Various</a>`,"GM                 ","https://gmarb.finance"],
-      ["Swapr *             ",""                                                                                               , `<a href="/arbitrum/swapr"       >Various</a>`,"SWPR               ","https://swapr.eth.link"],
+      ["Swapr               ",""                                                                                               , `<a href="/arbitrum/swapr"       >Various</a>`,"SWPR               ","https://swapr.eth.link"],
       ["Dopex               ",""                                                                                               , `<a href="/arbitrum/dopex"       >Various</a>`,"DPX, rDPX          ","https://app.dopex.io/farms"],
       ["Beefy               ",""                                                                                               , `<a href="/arbitrum/beefy"       >Various</a>`,"Various            ","https://www.beefy.finance/Arbitrum"],
       ["Curve               ",""                                                                                               , `<a href="/arbitrum/curve"       >Various</a>`,"CRV                ","https://arbitrum.curve.fi"],
@@ -43,7 +43,8 @@ const main = async() => {
       ["WePiggy             ",""                                                                                               , `<a href="/arbitrum/wepiggy"     >Various</a>`,"WPC                ","https://app.wepiggy.com"],
       ["Saddle              ",""                                                                                               , `<a href="/arbitrum/saddle"      >Various</a>`,"SADDLE             ","https://saddle.exchange"],
       ["ONYX                ",""                                                                                               , `<a href="/arbitrum/onyx"        >Various</a>`,"ONYX               ","https://arbi.onyx.farm/"],
-      ["JAGUAR              ",""                                                                                               , `<a href="/arbitrum/jaguar"        >Various</a>`,"JAGUAR               ","https://arbi.jaguarswap.com"],
+      ["JAGUAR              ",""                                                                                               , `<a href="/arbitrum/jaguar"      >Various</a>`,"JAGUAR             ","https://arbi.jaguarswap.com"],
+      ["L2Swap              ",""                                                                                               , `<a href="/arbitrum/l2swap"      >Various</a>`,"LSP                ","https://l2swap.finance"],
     ]
   }
 
