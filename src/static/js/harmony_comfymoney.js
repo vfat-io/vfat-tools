@@ -1602,52 +1602,35 @@ async function main() {
   const currentTime = Date.now() / 1000
 
   const ZENDEN_ADDR = '0x108426718E67da46e09E841bC4e8430A824BDaFc'
-  const ORACLE_ADDR = '0xCce042637e567a06aC53086C2289BdEc7Df05347'
+  const ORACLE_ADDR = '0x2a944e33CC7EB7e3Fb6b90a88993a6C10DEfbde9'
   const zenDenRewardTicker = 'COMFY'
   const zenDenStakeTicker = 'CSHARE'
   const lpAddress = '0xF2d9E493a280545699E3C07aEe22eaE9EF24DDb7' // COMFY-WONE-LP
   const epochsPerDay = 4
   const maxSupplyIncrease = await getExpansion(App)
   const decimals = 18
-  const ratio = 1.0
+  const ratio = 0.8
   const targetMantissa = 12
 
   const rewardTokenTicker = 'CSHARE'
   const rewardsPerWeek = ((await cshareRewardPoolContract.cSharePerSecond()) / 1e18) * 604800
 
-  //   const zenDen = await loadZenDen(
-  //     App,
-  //     prices,
-  //     ZENDEN_ADDR,
-  //     ORACLE_ADDR,
-  //     lpAddress,
-  //     COMFY_ADDR,
-  //     zenDenStakeTicker,
-  //     zenDenRewardTicker,
-  //     epochsPerDay,
-  //     maxSupplyIncrease,
-  //     decimals,
-  //     ratio,
-  //     targetMantissa
-  //   )
-
-  //   _print('-------------------------------------------------')
-  _print('')
-  _print('Comfy Reward Pool')
-  const comfyRewardPool = await loadRewardPoolContract(
+  const zenDen = await loadZenDen(
     App,
-    tokens,
     prices,
-    comfyRewardPoolContract,
-    COMFY_REWARD_POOL_ADDR,
-    COMFY_REWARD_POOL_ABI,
-    'COMFY',
-    'comfy',
-    'pendingCOMFY',
-    1,
-    comfyStartTime,
-    currentTime
+    ZENDEN_ADDR,
+    ORACLE_ADDR,
+    lpAddress,
+    COMFY_ADDR,
+    zenDenStakeTicker,
+    zenDenRewardTicker,
+    epochsPerDay,
+    maxSupplyIncrease,
+    decimals,
+    ratio,
+    targetMantissa
   )
+
   _print('-------------------------------------------------')
   _print('')
   _print('CShare Reward Pool')
@@ -1668,8 +1651,29 @@ async function main() {
   )
 
   _print('')
+  _print_bold(`Total Staked: $${formatMoney(cshareRewardPool.totalStaked + zenDen.staked_tvl)}`)
+
   _print('')
-  _print_bold(`Total Staked: $${formatMoney(cshareRewardPool.totalStaked + comfyRewardPool.totalStaked)}`)
+  _print('')
+  _print('-------------------------------------------------')
+  _print('')
+  _print('Comfy Reward Pool')
+  _print_bold('The below pool is now closed and there are no more rewards to be received. Please ensure you unstake.')
+  _print('')
+  const comfyRewardPool = await loadRewardPoolContract(
+    App,
+    tokens,
+    prices,
+    comfyRewardPoolContract,
+    COMFY_REWARD_POOL_ADDR,
+    COMFY_REWARD_POOL_ABI,
+    'COMFY',
+    'comfy',
+    'pendingCOMFY',
+    1,
+    comfyStartTime,
+    currentTime
+  )
 
   hideLoading()
 }
@@ -1786,6 +1790,7 @@ async function loadZenDen(
   const SHARE = new ethers.Contract(share, ERC20_ABI, App.provider)
   const userUnstaked = (await SHARE.balanceOf(App.YOUR_ADDRESS)) / 1e18
   const sharePrice = getParameterCaseInsensitive(prices, share)?.usd
+  const comfyPrice = getParameterCaseInsensitive(prices, COMFY_ADDR)?.usd
   const userStaked = (await ZENDEN.balanceOf(App.YOUR_ADDRESS)) / 1e18
   const userStakedUsd = userStaked * sharePrice
   const totalStaked = (await ZENDEN.totalSupply()) / 1e18
@@ -1822,24 +1827,31 @@ async function loadZenDen(
     const circulatingSupply = await getCirculatingSupply(App)
 
     const newTokens = circulatingSupply * Math.min(twap - 1, maxSupplyIncrease) * ratio
-    _print(`There will be ${newTokens.toFixed(decimals)} ${rewardTicker} issued at next expansion.`)
+    _print(
+      `There will be ${newTokens.toFixed(decimals)} ${rewardTicker} ($${comfyPrice *
+        newTokens}) issued at next expansion.`
+    )
     const zenDenReturn = (newTokens * rewardPrice * 100 * epochsPerDay) / totalStakedUsd
     _print(
-      `Zen Den APR: Day ${zenDenReturn.toFixed(2)}% Week ${(zenDenReturn * 7).toFixed(2)}% Year ${(
+      `Zen Den APR: Day ${zenDenReturn.toFixed(2)}% / Week ${(zenDenReturn * 7).toFixed(2)}% / Year ${(
         zenDenReturn * 365
       ).toFixed(2)}%`
     )
   }
+
+  const canClaim = ZENDEN.canClaimReward(App.YOUR_ADDRESS)
+  console.log(canClaim)
 
   const approveTENDAndStake = async () => rewardsContract_stake(share, zenDenAddress, App)
   const unstake = async () => rewardsContract_unstake(zenDenAddress, App)
   const claim = async () => boardroom_claim(zenDenAddress, App)
   const exit = async () => rewardsContract_exit(zenDenAddress, App)
   const revoke = async () => rewardsContract_resetApprove(share, zenDenAddress, App)
-
+  _print('')
   _print_link(`Stake ${userUnstaked.toFixed(decimals)} ${stakeTicker}`, approveTENDAndStake)
   _print_link(`Unstake ${userStaked.toFixed(decimals)} ${stakeTicker}`, unstake)
-  _print_link(`Claim ${earned.toFixed(decimals)} ${rewardTicker} ($${formatMoney(earned * rewardPrice)})`, claim)
+  if (canClaim && earned > 0)
+    _print_link(`Claim ${earned.toFixed(decimals)} ${rewardTicker} ($${formatMoney(earned * rewardPrice)})`, claim)
   _print_link(`Revoke (set approval to 0)`, revoke)
   _print_link(`Exit`, exit)
   _print(`\n`)
@@ -1898,22 +1910,24 @@ async function getCirculatingSupply(App) {
 
 async function getExpansion(App) {
   const circulatingSupply = await getCirculatingSupply(App)
-  if (circulatingSupply < 500000) {
-    return 0.045
-  } else if (circulatingSupply < 1000000) {
-    return 0.035
-  } else if (circulatingSupply < 1500000) {
-    return 0.03
-  } else if (circulatingSupply < 2000000) {
-    return 0.025
-  } else if (circulatingSupply < 5000000) {
-    return 0.02
-  } else if (circulatingSupply < 10000000) {
-    return 0.015
-  } else if (circulatingSupply < 20000000) {
-    return 0.0125
-  } else {
+  if (circulatingSupply >= 50000000) {
     return 0.01
+  } else if (circulatingSupply > 20000000) {
+    return 0.0125
+  } else if (circulatingSupply > 10000000) {
+    return 0.015
+  } else if (circulatingSupply > 5000000) {
+    return 0.02
+  } else if (circulatingSupply > 2000000) {
+    return 0.025
+  } else if (circulatingSupply > 1500000) {
+    return 0.03
+  } else if (circulatingSupply > 1000000) {
+    return 0.035
+  } else if (circulatingSupply > 500000) {
+    return 0.04
+  } else {
+    return 0.045
   }
 }
 
