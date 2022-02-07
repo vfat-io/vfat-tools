@@ -591,7 +591,10 @@ const maticTokens = [
   { "id": "synapse-2", "symbol": "SYN", "contract":"0xf8f9efc0db77d8881500bb06ff5d6abc3070e695"},
   { "id": "blockchain-adventurers-guild", "symbol": "BAG", "contract":"0xB1d82666384bE5F8C59AA18e650493ABb8A614Ad"},
   { "id": "plotx", "symbol": "PLOT", "contract":"0xe82808eaA78339b06a691fd92E1Be79671cAd8D3"},
-  { "id": "paraswap", "symbol": "PSP", "contract":"0x42d61D766B85431666B39B89C43011f24451bFf6"}
+  { "id": "paraswap", "symbol": "PSP", "contract":"0x42d61D766B85431666B39B89C43011f24451bFf6"},
+  { "id": "true-usd", "symbol": "TUSD", "contract":"0x2e1ad108ff1d8c782fcbbb89aad783ac49586756"},
+  { "id": "musd", "symbol": "MUSD", "contract":"0xE840B73E5287865EEc17d250bFb1536704B43B21"},
+  { "id": "denarius", "symbol": "D", "contract":"0xa286eeDAa5aBbAE98F65b152B5057b8bE9893fbB"}
 ]
 
 

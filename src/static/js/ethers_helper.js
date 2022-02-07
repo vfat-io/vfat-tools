@@ -3710,5 +3710,7 @@ function getChainExplorerUrl(chain, address){
       return `https://explorer.emerald.oasis.dev/token/${address}`;
     case "telos" :
       return `https://www.teloscan.io/address/${address}`;
+    case "matic" :
+      return `https://polygonscan.com/address/${address}`;
   }
 }
