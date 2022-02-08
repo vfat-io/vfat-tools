@@ -110,7 +110,7 @@ async function loadJonesSynthetixPoolInfo(App, tokens, prices, stakingAbi, staki
       STAKING_MULTI.boost(), STAKING_MULTI.boostedFinish()]
     const [periodFinish, rewardRate, balance, earned_, boost, boostedFinish] = await App.ethcallProvider.all(calls);
 
-    const weeklyRewards = (Date.now() / 1000 > periodFinish) ? 0 : ((Date.now() / 1000 > boostedFinish) ? rewardRate : rewardRate * boost) / 1e18 * 604800;
+    const weeklyRewards = (Date.now() / 1000 > periodFinish) ? 0 : ((Date.now() / 1000 > boostedFinish) ? rewardRate : rewardRate * boost / 100) / 1e18 * 604800;
 
     const usdPerWeek = weeklyRewards * rewardTokenPrice;
 
