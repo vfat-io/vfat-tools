@@ -427,7 +427,8 @@ const main = async () => {
       ['DeFiner             ',"",  `<a href="definer"         >Various</a>`, 'FIN          ','https://app.definer.org'],
       ['Plotx               ',"",  `<a href="plotx"           >Various</a>`, 'MATIC/bPLOT  ','https://plotx.io'],
       ['Argano              ',"",  `<a href="argano"          >Various</a>`, 'AGOy         ','https://www.argano.io'],
-      ['Harvest             ',"",  `<a href="harvest"         >Various</a>`, 'Various      ','https://harvest.finance']
+      ['Harvest             ',"",  `<a href="harvest"         >Various</a>`, 'Various      ','https://harvest.finance'],
+      ['Beverage            ',"",  `<a href="beverage"        >Various</a>`, 'DRINK        ','https://matic.beverage.finance']
     ],
   }
 
