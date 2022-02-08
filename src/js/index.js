@@ -526,6 +526,21 @@ window.NETWORKS = {
       "https://scan.meter.io"
     ],
   },
+  TELOS: {
+    "chainId": "0x28",
+    "chainName": "Telos EVM Mainnet",
+    "nativeCurrency": {
+      "name": "Telos",
+      "symbol": "TLOS",
+      "decimals": 18
+    },
+    "rpcUrls": [
+      "https://mainnet.telos.net/evm"
+    ],
+    "blockExplorerUrls": [
+      "https://teloscan.io"
+    ],
+  },
 }
 
 const infuraId = atob(window.ETHEREUM_NODE_URL).split('/').pop()
@@ -555,7 +570,8 @@ const providerOptions = {
         10000: "https://global.uat.cash",
         333999: "https://rpc.polis.tech",
         25: "https://rpc.crodex.app/",
-        82: "https://rpc.meter.io"
+        82: "https://rpc.meter.io",
+        40: "https://mainnet.telos.net/evm"
       }
     }
   }

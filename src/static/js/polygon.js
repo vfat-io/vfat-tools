@@ -426,7 +426,8 @@ const main = async () => {
       ['DFX                 ',"",  `<a href="dfx"             >Various</a>`, 'DFX          ','https://app.dfx.finance'],
       ['DeFiner             ',"",  `<a href="definer"         >Various</a>`, 'FIN          ','https://app.definer.org'],
       ['Plotx               ',"",  `<a href="plotx"           >Various</a>`, 'MATIC/bPLOT  ','https://plotx.io'],
-      ['Argano              ',"",  `<a href="argano"          >Various</a>`, 'AGOy         ','https://www.argano.io']
+      ['Argano              ',"",  `<a href="argano"          >Various</a>`, 'AGOy         ','https://www.argano.io'],
+      ['Harvest             ',"",  `<a href="harvest"         >Various</a>`, 'Various      ','https://harvest.finance']
     ],
   }
 

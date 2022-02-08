@@ -93,6 +93,9 @@ const pageNetwork = function() {
   if (network.toLowerCase() === 'meter') {
     return window.NETWORKS.METER
   }
+  if (network.toLowerCase() === 'telos') {
+    return window.NETWORKS.TELOS
+  }
 
   return window.NETWORKS.ETHEREUM
 }
@@ -1957,7 +1960,8 @@ function getUniPrices(tokens, prices, pool, chain="eth")
   else if (pool.symbol.includes("TLP") && !pool.name.includes("Thorus LP")) stakeTokenTicker += " Trisolaris LP Token";
   else if (pool.symbol.includes("TLP") && pool.name.includes("Thorus LP")) stakeTokenTicker += " Thorus LP Token";
   else if (pool.symbol.includes("SCLP")) stakeTokenTicker += " SwapperChan LP Token";
-  else if (pool.symbol.includes('VENOM-LP')) stakeTokenTicker += ' VENOM-LP Token'
+  else if (pool.symbol.includes('VENOM-LP')) stakeTokenTicker += ' VENOM-LP Token';
+  else if (pool.symbol.includes('Charm-LP')) stakeTokenTicker += ' OmniDex LP Token';
   else stakeTokenTicker += " Uni LP";
   return {
       t0: t0,
@@ -2074,6 +2078,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
               }[chain]) : pool.symbol.includes('VENOM-LP')
           ? `https://info.viper.exchange/pairs/${pool.address}`
           : chain == "matic" ? `https://info.quickswap.exchange/pair/${pool.address}` :
+          pool.symbol.includes("Charm-LP") ?  `https://analytics.omnidex.finance/pair/${pool.address}` :
             `http://v2.uniswap.info/pair/${pool.address}`;
           const helperUrls = pool.is1inch ? [] :
           pool.symbol.includes("LSLP") ? [
@@ -2388,6 +2393,11 @@ function getUniPrices(tokens, prices, pool, chain="eth")
               `https://viper.exchange/#/remove/${t0address}/${t1address}`,
               `https://viper.exchange/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`,
             ] :
+          pool.symbol.includes("Charm-LP") ? [
+            `https://omnidex.finance/add/${t0address}/${t1address}`,
+            `https://omnidex.finance/remove/${t0address}/${t1address}`,
+            `https://omnidex.finance/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+          ] :
           [ `https://app.uniswap.org/#/add/v2/${t0address}/${t1address}`,
             `https://app.uniswap.org/#/remove/v2/${t0address}/${t1address}`,
             `https://app.uniswap.org/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}&use=v2` ]
@@ -2445,6 +2455,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
                             "fantom": `https://fantom-exchange.galaxyfinance.one/#/swap`
                           }[chain]) :
                             chain == "matic" ? `https://info.quickswap.exchange/pair/${pool.address}` :
+                          pool.symbol.includes("Charm-LP") ?  `https://analytics.omnidex.finance/pair/${pool.address}` : 
                               `http://v2.uniswap.info/pair/${pool.address}`;
           const helperUrls = pool.is1inch ? [] :
             pool.symbol.includes("LSLP") ? [
@@ -2526,6 +2537,11 @@ function getUniPrices(tokens, prices, pool, chain="eth")
                             `https://fantom-exchange.galaxyfinance.one/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
                             ]
                         }[chain]) :
+                        pool.symbol.includes("Charm-LP") ? [
+                          `https://omnidex.finance/add/${t0address}/${t1address}`,
+                          `https://omnidex.finance/remove/${t0address}/${t1address}`,
+                          `https://omnidex.finance/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+                        ] :
                             [ `https://app.uniswap.org/#/add/v2/${t0address}/${t1address}`,
                               `https://app.uniswap.org/#/remove/v2/${t0address}/${t1address}`,
                               `https://app.uniswap.org/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}&use=v2` ]
@@ -2715,7 +2731,8 @@ function getWrapPrices(tokens, prices, pool, chain)
     const contractUrl = getChainExplorerUrl(chain, pool.address)
     const poolUrl = pool.is1inch ? "https://1inch.exchange/#/dao/pools" :
     pool.symbol.includes("SLP") ?  `http://analytics.sushi.com/pairs/${wrappedToken.address}` :
-    (pool.symbol.includes("Cake") || pool.symbol.includes("Pancake")) ?  `http://pancakeswap.info/pair/${wrappedToken.address}`
+    (pool.symbol.includes("Cake") || pool.symbol.includes("Pancake")) ?  `http://pancakeswap.info/pair/${wrappedToken.address}` :
+    pool.symbol.includes("Charm-LP") ?  `https://analytics.omnidex.finance/pair/${wrappedToken.address}`
       : `http://v2.uniswap.info/pair/${wrappedToken.address}`;
     const name = `<a href='${contractUrl}' target='_blank'>${pool.symbol}</a> (Wrapped <a href='${poolUrl}' target='_blank'>${uniPrices.stakeTokenTicker}</a>)`;
     const price = (pool.balance / 10 ** wrappedToken.decimals) * uniPrices.price / (pool.totalSupply / 10 ** pool.decimals);
@@ -2852,6 +2869,9 @@ function getErc20Prices(prices, pool, chain="eth") {
       break;
     case "polis":
       poolUrl=`https://explorer.polis.tech/address/${pool.address}`;
+      break;
+    case "telos":
+      poolUrl=`https://www.teloscan.io/address/${pool.address}`;
       break;
   }
 
@@ -3665,5 +3685,9 @@ function getChainExplorerUrl(chain, address){
       return `https://scan.meter.io/address/${address}`;
     case "emerald" :
       return `https://explorer.emerald.oasis.dev/token/${address}`;
+    case "telos" :
+      return `https://www.teloscan.io/address/${address}`;
+    case "matic" :
+      return `https://polygonscan.com/address/${address}`;
   }
 }
