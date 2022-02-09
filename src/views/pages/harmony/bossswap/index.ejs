@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include(`${partials}/head`); -%>
+
+<body>
+<%- include(`${partials}/header_main`); -%>
+<pre id="log">
+*************** 👨‍🌾 UNOFFICIAL BOSSSWAP FARMING CALCULATOR 👨‍🌾 ***************
+INFO  : https://www.bossswap.finance
+**************************************************************************************
+
+</pre>
+<div class="loader--1"></div>
+<%- include(`${partials}/scripts`, {scriptname: 'harmony_bossswap'}); -%>
+</body>
+</html>

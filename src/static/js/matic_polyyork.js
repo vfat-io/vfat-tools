@@ -23,7 +23,7 @@ $(function() {
        if(currentBlock < startBlock){
          _print(`REWARDS HAVE NOT YET STARTED!\n\tRewards start at block ${startBlock}\n`);
        }else{
-        rewardsPerWeek = await York_CHEF.YorkPerBlock() /1e18
+        rewardsPerWeek = await York_CHEF.eggPerBlock() /1e18
           * 604800 / 2.1;
        }
     
@@ -31,7 +31,7 @@ $(function() {
         const prices = await getMaticPrices();
     
         await loadMaticChefContract(App, tokens, prices, York_CHEF, York_CHEF_ADDR, York_CHEF_ABI, rewardTokenTicker,
-            "York", null, rewardsPerWeek, "pendingEgg", [11]);
+            "egg", null, rewardsPerWeek, "pendingEgg", [11]);
     
     
         hideLoading();

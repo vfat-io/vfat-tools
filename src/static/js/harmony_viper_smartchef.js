@@ -8,34 +8,36 @@ const VIPER_SMARTCHEF_INITIALIZABLE_ABI = [{"inputs":[],"stateMutability":"nonpa
 const VIPER_SMARTCHEF_FACTORY_ADDR = "0x410ce9879d14919cbc9693406d5950a60d3b0f48";
 
 const EXTRACTED_POOLS = [
-  '0x5c84935da00817c167b3e2e857d9269f9e211334', 
-  // '0xfd93797ef7154650314d1e820071f145504eea83', 
-  // '0xe8bf74b6062f633c35e9ea4879538192ab817c0c', 
-  // '0xd21863ffc3ee64dc4e5bfc147e226791f88c9561', 
-  // '0x1ab9074e61fc816c2741f89caf4379b9d85c6563', 
-  // '0xccf3b92c18edf3ee66398af25cdb523db86c8240', 
-  // '0xbff7711839f5afafe79e6eae9fe1298c3092d686', 
-  // '0x7bb4479cabcf7246bce45b90ccbff07eab0ff79f', 
-  // '0x5a1488ef677addf07fbf09b8b3dc542755a42480', 
-  // '0x09d240553d7df155d45557adcec16ae60f2d3821', 
-  // '0x23c3d5540d5eaf2b71f7f005215c293d979c8943', 
-  '0xae2d26605c293d0c8b68c905f0dc81f1d3ac2ac1', 
-  '0xf37d2132c358cc51386fae9f8485d38d42be21a5', 
-  '0xf2ac00a3ba3e04cca11a1b62cf366b1c3fa2f196', 
-  '0xbd19b4af9e4a03575d92d127708b0c142a7ec1b7', 
-  '0x9b37d0017eae7a5027b1536f8c9f4b5cdbb971e2', 
-  // '0x54496b3a08d93adbe59047b7d2b41d0d7744e2e0', 
-  '0x6cf157a593de05026b691dcd850c472c8cb75b89', 
-  // '0xb9ca09a6d85644dca941bb2ea1df8a6a55cc9123', 
-  '0xf33e9c1ad490d760e9a1ea9e24e56bdcdc87f279'
+  '0x5c84935da00817c167b3e2e857d9269f9e211334',
+  '0xae2d26605c293d0c8b68c905f0dc81f1d3ac2ac1',
+  '0xf37d2132c358cc51386fae9f8485d38d42be21a5',
+  '0xf2ac00a3ba3e04cca11a1b62cf366b1c3fa2f196',
+  '0xbd19b4af9e4a03575d92d127708b0c142a7ec1b7',
+  '0x9b37d0017eae7a5027b1536f8c9f4b5cdbb971e2',
+  '0x6cf157a593de05026b691dcd850c472c8cb75b89',
+  '0xf33e9c1ad490d760e9a1ea9e24e56bdcdc87f279',
+  '0x3e3a5850714541c573ecb746bdfb4900fd8717d7',
+  '0xa58c2cbf2050f47749c44b6fb249ab77f109ef39',
+  '0x2af8c7bfbc2ba194a4853262b1a3ec86595022d9',
+  "0xa0cb12f792b11f4098a83fd4d5bc6fa02bfb0625",
+  "0x55b20ba7b948a46b1c30a639b5b870614004a5ea",
+  "0x3aecf4edec6ed3cdf5b7eebf73fd16e2e8319e1e",
+  "0x75de75158b0ce2fe38eaf61632f96ecd713a6ff7",
+  "0xe112217c21661623a90bc64f5cbe644906d9e923",
+  "0x577a687abd94830eab7a9f44b1e632adb1a695c4" // 0xc2d940ac9c20a8e5a51bcce8f76a8d0369fab3aab959ddc7d27652fdbc3dae59
 ];
 
 const PRELOAD_PRICES_POOL = [
   '0x96025483bd32c645b822a5a08004b84d674537cb', // ONE-VIPER
-  '0x54918b8ca826659cc8aa8d4524ee5ac71ba104bd', // NFT-ONE
 ]
 
-const LAST_EXTRACTED_BLOCK = 15774660;
+const PRELOAD_TOKEN_INDICES = [
+  '0xcf664087a5bb0237a0bad6742852ec6c8d69a27a', // ONE
+  '0xea589e93ff18b1a1f1e9bac7ef3e86ab62addc79', // VIPER
+]
+
+const LAST_EXTRACTED_BLOCK = 16009205;
+const BLOCKS_TO_EXTRACT = 1000;
 
 const FIXED_DECIMALS = 2;
 
@@ -48,20 +50,34 @@ async function main() {
   const blockNumber = await App.provider.getBlockNumber();
   let pools = EXTRACTED_POOLS;
 
-  const VIPER_SMARTCHEF_FACTORY = new ethers.Contract(VIPER_SMARTCHEF_FACTORY_ADDR, VIPER_SMARTCHEF_FACTORY_ABI, App.provider);
-  const smartchefFilter = VIPER_SMARTCHEF_FACTORY.filters.NewSmartChefContract();
-  const poolsDynExtracted = (await VIPER_SMARTCHEF_FACTORY.queryFilter(
-    smartchefFilter, 
-    Math.max(blockNumber - 500000, LAST_EXTRACTED_BLOCK)
-  )).map(log => ethers.utils.hexDataSlice(log.topics[1], 12));
-
-  console.log(poolsDynExtracted);
-  pools = [].concat(pools, poolsDynExtracted);
-
-  if (LAST_EXTRACTED_BLOCK + 500000 < blockNumber) {
-    _print(`Too many blocks have passed after the pool was last extracted manually.`);
-    _print(`Not querying for all of the pools for performance reasons.\n`);
+  if (LAST_EXTRACTED_BLOCK + BLOCKS_TO_EXTRACT < blockNumber) {
+    _print(`Pools was last extracted on block ${LAST_EXTRACTED_BLOCK}.`);
+    _print(`Not querying for new pools for performance reasons.\n`);
     _print_bold(`Some newer pools may not show up.\n`);
+  }
+  else {
+    const VIPER_SMARTCHEF_FACTORY = new ethers.Contract(VIPER_SMARTCHEF_FACTORY_ADDR, VIPER_SMARTCHEF_FACTORY_ABI, App.provider);
+    const smartchefFilter = VIPER_SMARTCHEF_FACTORY.filters.NewSmartChefContract();
+
+    try {
+      const poolsDynExtracted = (await VIPER_SMARTCHEF_FACTORY.queryFilter(
+        smartchefFilter, 
+        Math.max(blockNumber - BLOCKS_TO_EXTRACT, LAST_EXTRACTED_BLOCK)
+      )).map(log => ethers.utils.hexDataSlice(log.topics[1], 12));
+  
+      if(poolsDynExtracted.length > 0) {
+        _print_bold(`Found additional pools after last extracted.`);
+        _print_bold(`Those pool might disappear from vfat in the future until it is added to vfat manually`);
+      }
+  
+      console.log(poolsDynExtracted);
+      pools = [].concat(pools, poolsDynExtracted);
+
+    } catch (error) {
+      console.error(error);
+      _print(`Pools was last extracted on block ${LAST_EXTRACTED_BLOCK}.`);
+      _print_bold(`Some newer pools may not show up.\n`);
+    }
   }
 
   const basePrices = await getHarmonyPrices();
@@ -69,6 +85,19 @@ async function main() {
   await loadViperSmartChefContracts(App, basePrices, pools, blockNumber);
 
   hideLoading();
+}
+
+function getViperUniPair(token0, token1) {
+  if (ethers.utils.hexlify(token0) > ethers.utils.hexlify(token1)) [token0, token1] = [token1, token0];
+  return ethers.utils.hexDataSlice(
+    ethers.utils.solidityKeccak256(['bytes', 'address', 'bytes', 'bytes'], [
+      '0xff',
+      '0x7D02c116b98d0965ba7B642ace0183ad8b8D2196',
+      ethers.utils.solidityKeccak256(['address', 'address'], [token0, token1]),
+      '0x162f79e638367cd45a118c778971dfd8d96c625d2798d3b71994b035cfe9b6dc'
+    ]),
+    12
+  )
 }
 
 async function loadViperSmartChefContracts(App, prices, chefAddresses, blockNumber) {
@@ -87,8 +116,9 @@ async function loadViperSmartChefContracts(App, prices, chefAddresses, blockNumb
     tokens[x.stakedToken.address] = x.stakedToken;
     tokens[x.rewardToken.address] = x.rewardToken;
     if(x.stakedToken.tokens) {
-      tokens[x.stakedToken.tokens[0]] = await getHarmonyToken(App, x.stakedToken.tokens[0], "0x0000000000000000000000000000000000000000");
-      tokens[x.stakedToken.tokens[1]] = await getHarmonyToken(App, x.stakedToken.tokens[1], "0x0000000000000000000000000000000000000000");
+      await Promise.all(x.stakedToken.tokens.map(async (x) => {
+        tokens[x] = await getHarmonyToken(App, x, "0x0000000000000000000000000000000000000000");
+      }));
     }
   }));
 
@@ -97,17 +127,29 @@ async function loadViperSmartChefContracts(App, prices, chefAddresses, blockNumb
     getPoolPrices(tokens, prices, pool, "Harmony");
   }));
 
+  // TODO: multicall?
+  await Promise.all(Object.keys(tokens).filter(x => (x !== 'undefined' && !x.tokens && !prices[x])).map(x =>
+    Promise.all(PRELOAD_TOKEN_INDICES.map(
+      async (index) => {
+        const poolAddr = getViperUniPair(index, x)
+        if(await App.provider.getCode(poolAddr) === ethers.utils.hexlify("0x")) return;
+        const pool = await getHarmonyToken(App, poolAddr, "0x0000000000000000000000000000000000000000");
+        if (pool) getPoolPrices(tokens, prices, pool, "Harmony");
+      }
+    ))
+  ));
+
   const poolPrices = poolInfos.map(poolInfo => poolInfo.stakedToken ? getPoolPrices(tokens, prices, poolInfo.stakedToken, "Harmony") : undefined);
 
   _print("Finished reading smart contracts.\n");
 
   let aprs = []
   for (i = 0; i < poolCount; i++) {
-    console.log([poolInfos[i], poolPrices[i]])
-    if (poolPrices[i]) {
+    if (poolInfos[i].rewardPerBlock && poolPrices[i]) {
       const apr = printViperSmartChefPool(App, chefAddresses[i], prices, poolInfos[i], i, poolPrices[i])
       aprs.push(apr);
     }
+    else console.log([i, chefAddresses[i], poolInfos[i].stakedToken, poolInfos[i].rewardToken])
   }
   let totalUserStaked=0, totalStaked=0, averageApr=0;
   for (const a of aprs) {
@@ -143,17 +185,20 @@ async function getViperSmartChefPoolInfo(App, chefAddress, blockNumber) {
     startBlock: await chefContract.startBlock(),
     endBlock: await chefContract.endBlock(),
   }
-  if (poolInfo.rewardPerBlock == 0 || blockNumber < poolInfo.startBlock || blockNumber > poolInfo.endBlock) {
-    return {
-      stakedToken: null,
-      rewardToken: null,
-      rewardPerBlock: 0,
-      userStaked : 0,
-      pendingRewardTokens : 0,
-    };
-  }
+  
   const stakedToken = await getHarmonyToken(App, poolInfo.stakedToken, chefAddress);
   const rewardToken = await getHarmonyToken(App, poolInfo.rewardToken, chefAddress);
+
+  const emptyPool = {
+    stakedToken,
+    rewardToken,
+    rewardPerBlock: 0,
+    userStaked : 0,
+    pendingRewardTokens : 0,
+  }
+
+  if (rewardToken.staked === 0 || poolInfo.rewardPerBlock === 0 || blockNumber < poolInfo.startBlock || blockNumber > poolInfo.endBlock) return emptyPool;
+
   const userInfo = await chefContract.userInfo(App.YOUR_ADDRESS);
   const pendingRewardTokens = await chefContract.pendingReward(App.YOUR_ADDRESS);
   const userStaked = userInfo.amount / 10 ** stakedToken.decimals;

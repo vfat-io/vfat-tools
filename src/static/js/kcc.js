@@ -19,7 +19,12 @@ const main = async() => {
       [ "KuBone",     `<a href="kubone"       >Various</a>`,     "KUBONE",    "https://kubone.finance" ],
       [ "GemSwap",    `<a href="gemswap"      >Various</a>`,     "GEM",       "https://farm.gemswap.exchange" ],
       [ "Kukaburra",  `<a href="kukaburra"    >Various</a>`,     "🐦KUKA",    "https://kukaburra.io/" ],
-      [ "KuCow",      `<a href="kucow"        >Various</a>`,     "KUCOW",     "https://kucow.finance" ]
+      [ "KuCow",      `<a href="kucow"        >Various</a>`,     "KUCOW",     "https://kucow.finance" ],
+      [ "Kukafe",     `<a href="kukafe"       >Various</a>`,     "KAFE",      "https://kukafe.finance" ],
+      [ "Kuulaid",    `<a href="kuulaid"      >Various</a>`,     "KUUL",      "https://kuulaid.finance" ],
+      [ "KsfSwap",    `<a href="ksfswap"      >Various</a>`,     "KSF",       "https://ksfswap.finance" ],
+      [ "Elk",        `<a href="elk"          >Various</a>`,     "ELK",       "https://elk.finance" ],
+      [ "MojitoSwap", `<a href="mojitoswap"   >Various</a>`,     "MJT",       "https://app.mojitoswap.finance" ]
     ]
   }
 

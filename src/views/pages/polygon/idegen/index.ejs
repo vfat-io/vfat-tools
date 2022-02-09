@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include(`${partials}/head`); -%>
+<body>
+<%- include(`${partials}/header_main`); -%>
+<pre id="log">
+*****************************| POLYGON NETWORK |******************************|
+***               ___________|-----------------|_____________                 |                                                   
+***______________| OFFICIAL iDegen FINANCE FARMING FRONT-END |________________^^______________________________________________
+***                                                                           |                                               |
+***                                                                           |-> Token: $iDegen                              |
+***                                                                           |                                               ***
+***   \/                    __/   .::::.-'-(/-/)                              |-> Max Supply: 250,500 $iDegen 		      ***
+***                      _/:  .::::.-' .-'\/\_`*******          __ (_))       |                                               ***
+***         \/          /:  .::::./   -._-.  d\|               (_))_(__))     |-> $iDegen per Block: 0.03 $iDegen	      ***
+***                      /: (""""/    '.  (__/||           (_))__(_))--(__))  |                                               ***
+***                       \::).-'  -._  \/ \\/\|			      |-> Initial Liquidity: 500 $iDegen              ***
+***               __ _ .-'`)/  '-'. . '. |  (i_O			      |                                               ***
+***           .-'      \       -'      '\|				      |-> Add Liquidity: 15/8/2021                    ***
+***      _ _./      .-'|       '.  (    \\                         % % %      |                                               ***
+***   .-'   :      '_  \         '-'\  /|/      @ @ @             % % % %     |-> Start Farm: 16/8/2021                       ***
+***  /      )\_      '- )_________.-|_/^\      @ @ @@@           % %\/% %     |	                                              ***
+***  (   .-'   )-._-:  /        \(/\'-._ `.     @|@@@@@            ..|........|-> Deposit Fees ( no withdraw fees )   	      ***
+***   (   )  _//_/|:  /          `\()   `\_\     |/_@@             )'-._.-._.-|   -> 0% Deposit fee native token	      ***
+***    ( (   \()^_/)_/             )/      \\    /                /   /       |	  -> 4% Deposit fee non-native tokens	      ***
+***     )  _.-\\.\(_)__._.-'-.-'-.//_.-'-.-.)\-'/._              /            |	  -> 5% Deposit fee stable tokens             ***
+*** .-.-.-'   _o\ \\\     '::'   (o_ '-.-' |__\'-.-;~ ~ ~ ~ ~ ~~/   /\        |		                                      |
+***           \ /  \\\__          )_\    .:::::::.-'\        /\ '- - -|       |-> Be Honest, Safe Farm                        |
+***      :::''':::::^)__\:::::::::::::::::'''''''-.  \      /  \       '- - - |	  -> Timelock 12 hr.	                      |
+***     :::::::  '''''''''''   ''''''''''''':::. -'\  \    /    \             |   -> 250,000 $iDegen to be farmed             |
+*** _____':::::_____________________________________\__\__/______\____________|_______________________________________________|
+***                						              |
+*** Dev Wallet: 0x98312bB93063c5F5a9EF8a7F8b48aea5F24276BE                    |   -> <a href="https://xdegenfinance.gitbook.io/idegen-finance/" target="_blank">Docs</a>                                             
+*** Fee Wallet: 0xE5A71f092182C4ca0D78118cE84Cc6dB46647573                    |   -> <a href="https://t.me/iDegenFinance" target="_blank">Telegram</a>                         
+*** Master Contract: 0xaDC9A7Bc1705758FcB1d7289466c4cc39DC2C2BC               |	  -> <a href="https://twitter.com/iDegenFinance" target="_blank">Twitter</a>		              
+*** Token Contract: 0x8C6E566986ACa670b3C14A92C9581DdD282AC2a9                |   -> <a href="https://github.com/xDegen" target="_blank">Github</a>			             
+*** Timelock: 0x8DFAa04f04ec4849334C234A9ccF0b42C40C6D2C                      |   -> <a href="https://polygon.poocoin.app/tokens/0x8c6e566986aca670b3c14a92c9581ddd282ac2a9" target="_blank">Graph</a>                                    
+***___________________________________________________________________________|_______________________________________________
+
+*** If you are being rate limited, please select a different RPC URL from here https://docs.matic.network/docs/develop/network-details/network/ ***
+
+</pre>
+<div class="loader--1"></div>
+<%- include(`${partials}/scripts`, {scriptname: 'matic_idegen'}); -%>
+</body>
+</html> 

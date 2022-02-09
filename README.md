@@ -6,6 +6,10 @@ App : https://vfat.tools
 
 Original work: https://yieldfarming.info
 
+## vfat.tools listing + review service in partnership with MCN Ventures ##
+
+Please seee https://mcn.ventures/review for more details on this service.
+
 ## How to run locally
 
 Fork the repo and clone it to your PC, or just clone the original.
