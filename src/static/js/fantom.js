@@ -254,6 +254,12 @@ const main = async() => {
         "BONE",
         "https://shibafantom.finance"
       ],
+      [
+        "Based Finance",
+        `<a href='based'>Various</a>`,
+        "BASED",
+        "https://basedfinance.io/"
+      ],
     ]
   }
 
