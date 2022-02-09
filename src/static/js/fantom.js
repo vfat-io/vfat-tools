@@ -214,7 +214,8 @@ const main = async () => {
       ['ViveLaBouje        ', `<a href='vivelabouje'        >Various</a>`, 'VIVE    ', 'https://vive.bouje.finance'],
       ['FATFIRE Finance        ', `<a href='fatfire'        >Various</a>`, 'FATFIRE    ', 'https://fatfire.finance'],
       ['Astral Farm        ', `<a href='astralfarm'        >Various</a>`, 'ASTRAL    ', 'https://astral-farm.com'],
-      ['Knights of Fantom        ', `<a href='knightsfantom'        >Various</a>`, 'KNIGHTS    ', 'https://www.knights-of-fantom.com']  
+      ['Knights of Fantom        ', `<a href='knightsfantom'        >Various</a>`, 'KNIGHTS    ', 'https://www.knights-of-fantom.com'],
+      ['Based Finance', `<a href='based'        >Various</a>`, 'BASED    ', 'https://based.finance'],
 
     ],
   }
