@@ -8,7 +8,8 @@ const main = async() => {
     "title":"EMERALD OASIS Network",
     "heading":["Pool Provider","LP", "Reward Tokens", "INFO"],
     "rows": [
-      ["Dune Swap         ", `<a href='duneswap'    >Various</a>`,"DUNE        ","https://www.duneswap.com"]
+      ["Dune Swap         ", `<a href='duneswap'    >Various</a>`,"DUNE        ","https://www.duneswap.com"],
+      ["Sahara Exchange   ", `<a href='sahara'      >Various</a>`,"ANKH        ","https://sahara.exchange"]
     ]
   }
 
