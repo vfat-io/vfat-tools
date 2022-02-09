@@ -22,7 +22,7 @@ $(function() {
     const blockNumber = await App.provider.getBlockNumber();
     const multiplier = await MASTERBREEDER.getMultiplier(blockNumber, blockNumber+1);
     const rewardPerBlock = await MASTERBREEDER.REWARD_PER_BLOCK();
-    const rewardsPerWeek = rewardPerBlock / 1e18 * multiplier * 604800 / 6
+    const rewardsPerWeek = rewardPerBlock / 1e18 * multiplier * 604800 / 6.7
   
     const tokens = {};
     const basePrices = await getEmeraldPrices();
