@@ -216,6 +216,7 @@ const main = async () => {
       ['Astral Farm        ', `<a href='astralfarm'        >Various</a>`, 'ASTRAL    ', 'https://astral-farm.com'],
       ['Knights of Fantom        ', `<a href='knightsfantom'        >Various</a>`, 'KNIGHTS    ', 'https://www.knights-of-fantom.com'],
       ['Based Finance', `<a href='based'        >Various</a>`, 'BASED    ', 'https://based.finance'],
+      ['MyMine  ', `<a href='mymine'>Various</a>`, 'MYMINE ', 'https://mymine.defiwaterfall.com']
 
     ],
   }
