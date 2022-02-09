@@ -9,7 +9,7 @@ const main = async () => {
     rows: [
       ['Popsicle           ', `<a href='popsicle'     >Various</a>`, 'ICE          ', 'https://popsicle.finance'],
       ['Spooky             ', `<a href='spooky'       >Various</a>`, 'boo          ', 'https://spookyswap.finance'],
-      ['Spirit *           ', `<a href='spirit'       >Various</a>`, 'SPIRIT       ', 'https://app.spiritswap.finance'],
+      ['Spirit             ', `<a href='spirit'       >Various</a>`, 'SPIRIT       ', 'https://app.spiritswap.finance'],
       ['Borg               ', `<a href='borg'         >Various</a>`, 'SON          ', 'https://ftm.borgswap.exchange'],
       ['Hyperjump          ', `<a href='hyperjump'    >Various</a>`, 'ORI          ', 'https://hyperjump.fi'],
       ['Ester              ', `<a href='ester'        >Various</a>`, 'EST          ', 'https://ester.finance'],
@@ -203,7 +203,7 @@ const main = async () => {
       ['WeVE               ', `<a href='weve'         >Various</a>`, 'WEVE         ', 'https://vedao.io'],
       ['2omb               ', `<a href='2omb'         >Various</a>`, '2SHARES      ', 'https://2omb.finance'],
       ['Degen Haus         ', `<a href='degenhaus'    >Various</a>`, 'TRIP         ', 'https://degen.haus'],
-      ['Age *              ', `<a href='age'          >Various</a>`, 'AOD          ', 'https://agefantom.com'],
+      ['Age                ', `<a href='age'          >Various</a>`, 'AOD          ', 'https://agefantom.com'],
       ['Protofi            ', `<a href="protofi"      >Various</a>`, 'PROTO        ', 'https://fantombank.protofi.app'],
       ['Vapedao            ', `<a href="vapedao"      >Various</a>`, 'vAPE         ', 'https://vapedao.finance'],
       ['Radial Finance     ', `<a href='radial'       >Various</a>`, 'RDL          ', 'https://www.radialfinance.com/farms'],
