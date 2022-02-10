@@ -98,7 +98,8 @@ const main = async() => {
         ["Zilla Finance           ",`<a href="zilla"            >Various</a>`,"ZSHARE / ZILLA","https://zillafinance.io"],
         ["Krypton                 ",`<a href="krypton"          >Various</a>`,"KRYPTON      ","https://krypton.periodic.farm"],
         ["Benqi                   ",`<a href="benqi"            >Various</a>`,"QI           ","https://benqi.fi"],
-        ["Beefy                   ",`<a href="beefy"            >Various</a>`,"BIFI         ","https://app.beefy.finance/#/avax"]
+        ["Beefy                   ",`<a href="beefy"            >Various</a>`,"BIFI         ","https://app.beefy.finance/#/avax"],
+        ["WOWswap                 ",`<a href="wowswap"          >Various</a>`,"WOW          ","https://wowswap.io"]
     ]
   }
 

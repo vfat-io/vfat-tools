@@ -434,6 +434,7 @@ const main = async () => {
       ["Arth                ","", `<a href="arth"             >Various</a>`, "ARTH         ","https://app.arthcoin.com"],
       ["GOGOcoin            ", "", `<a href="gogocoin"         >Various</a>`, "GOGO         ", "https://app.gogocoin.io"],
       ['Opportunity         ', '', `<a href="opportunity"     >Various</a>`, 'OPT          ', 'https://opport.unityfarm.org'],
+      ['WOWswap             ',"",  `<a href="wowswap"         >Various</a>`, 'WOW          ','https://wowswap.io'],
     ],
   }
 

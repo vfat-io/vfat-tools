@@ -73,6 +73,7 @@ const main = async() => {
       ["Yam                 ",`<a href="yam/"               >YAM-ETH SLP</a>`,"YAM   ","https://yam.finance/farm"],
       ["yAxis               ",`<a href="yaxis/"             >Various</a>`,"yAxis     ","https://yaxis.io/farms"],
       ['DeFiner             ',`<a href="definer"            >Various</a>`,'FIN       ','https://app.definer.org'],
+      ['WOWswap             ',`<a href="wowswap"            >Various</a>`,'WOW       ','https://wowswap.io'],
     ]
   }
 

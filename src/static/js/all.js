@@ -170,7 +170,8 @@ const main = async () => {
       ["Curve                        ", `<a href="../curve/"             >Various</a>`, "Various            ", "https://curve.fi"],
       ["DeFiner                      ", `<a href="../definer/"           >Various</a>`, "FIN                ", "https://app.definer.org"],
       ["Looksrare                    ", `<a href="../looksrare/"         >Various</a>`, "LOOKS              ", "https://looksrare.org"],
-      ["Vader                        ", `<a href="../vader/"             >Various</a>`, "VADER              ", "https://www.vaderprotocol.app"]
+      ["Vader                        ", `<a href="../vader/"             >Various</a>`, "VADER              ", "https://www.vaderprotocol.app"],
+      ["WOWswap                      ", `<a href="../wowswap/"            >Various</a>`,"WOW                ", "https://wowswap.io"],
     ]
   }
 
