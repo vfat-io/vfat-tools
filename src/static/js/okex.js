@@ -9,7 +9,7 @@ const main = async() => {
     "heading":["Pool Provider","LP", "Reward Tokens", "INFO"],
     "rows": [
       ["Sakeswap",      `<a href='sakeswap'     >Various</a>`,  "SAKE",    "https://okapp.sakeswap.fi"],
-      ["WePiggy",       `<a href='wepiggy'      >Various</a>`,  "WPC",     "https://okexchain.wepiggy.com/markets"],
+      ["WePiggy",       `<a href='wepiggy'      >Various</a>`,  "WPC",     "https://app.wepiggy.com"],
       ["KSwap",         `<a href='kswap'        >Various</a>`,  "KST",     "https://kswap.finance"],
       ["CherrySwap",    `<a href='cherryswap'   >Various</a>`,  "CHE",     "https://www.cherryswap.net"],
       ["BoneSwap",      `<a href='boneswap'     >Various</a>`,  "BONE",    "https://farm-okex.boneswap.finance"],

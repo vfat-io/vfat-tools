@@ -20,6 +20,20 @@ consoleInit(main)
       rewardTokenAddress : "0x5DE7Cc4BcBCa31c473F6D2F27825Cfb09cc0Bb16" //XBE token address
     }
 
+    const SlpPool2 = {
+      address : "0x4f2499a9aeb4f65ddc85c2cc77561abbcf090089",
+      abi : XBE_SLP_STAKING_ABI,
+      stakeTokenFunction : "stakingToken",
+      rewardTokenAddress : "0x5DE7Cc4BcBCa31c473F6D2F27825Cfb09cc0Bb16" //XBE token address
+    }
+
+    const SlpPool3 = {
+      address : "0xa4D94Ff014c48F1032fe2c558Ec7ECD035276F3b",
+      abi : XBE_SLP_STAKING_ABI,
+      stakeTokenFunction : "stakingToken",
+      rewardTokenAddress : "0x5DE7Cc4BcBCa31c473F6D2F27825Cfb09cc0Bb16" //XBE token address
+    }
+
     const App = await init_ethers();
 
     _print(`Initialized ${App.YOUR_ADDRESS}`);
@@ -30,9 +44,11 @@ consoleInit(main)
 
     let p = await loadSynthetixPool(App, tokens, prices, Pool.abi, Pool.address, Pool.rewardTokenFunction, Pool.stakeTokenFunction);
     let p0 = await loadSynthetixSlpXbePool(App, tokens, prices, SlpPool.abi, SlpPool.address, SlpPool.rewardTokenAddress, SlpPool.stakeTokenFunction);
-    _print_bold(`Total staked: $${formatMoney(p.staked_tvl+p0.staked_tvl)}`);
-    if (p.totalUserStaked >  0 || p0.totalUserStaked > 0) {
-      _print(`You are staking a total of $${formatMoney(p.totalUserStaked+p0.totalUserStaked)} at an APR of ${(p.totalAPR+p0.totalAPR * 100).toFixed(2)}%\n`);
+    let p1 = await loadSynthetixSlpXbePool(App, tokens, prices, SlpPool2.abi, SlpPool2.address, SlpPool2.rewardTokenAddress, SlpPool2.stakeTokenFunction);
+    let p2= await loadSynthetixSlpXbePool(App, tokens, prices, SlpPool3.abi, SlpPool3.address, SlpPool3.rewardTokenAddress, SlpPool3.stakeTokenFunction);
+    _print_bold(`Total staked: $${formatMoney(p.staked_tvl+p0.staked_tvl+p1.staked_tvl+p2.staked_tvl)}`);
+    if (p.totalUserStaked >  0 || p0.totalUserStaked > 0 || p1.totalUserStaked > 0 || p2.totalUserStaked > 0) {
+      _print(`You are staking a total of $${formatMoney(p.totalUserStaked+p0.totalUserStaked+p1.totalUserStaked+p2.totalUserStaked)} at an APR of ${(p.totalAPR+(p0.totalAPR+p1.totalAPR+p2.totalAPR) * 100).toFixed(2)}%\n`);
   }
 
   hideLoading();
@@ -40,7 +56,7 @@ consoleInit(main)
 
 async function loadSynthetixSlpXbePool(App, tokens, prices, abi, address, rewardTokenAddress, stakeTokenFunction) {
   const info = await loadSynthetixSlpXbePoolInfo(App, tokens, prices, abi, address, rewardTokenAddress, stakeTokenFunction);
-  return await printSynthetixPool(App, info);
+  return await printXbeSynthetixPool(App, info);
 }
 
 async function loadSynthetixSlpXbePoolInfo(App, tokens, prices, stakingAbi, stakingAddress,
@@ -119,4 +135,83 @@ async function loadSynthetixSlpXbePoolInfo(App, tokens, prices, stakingAbi, stak
       userUnstaked,
       earned
     }
+}
+
+async function printXbeSynthetixPool(App, info, chain="eth", customURLs) {
+    info.poolPrices.print_price(chain, 4, customURLs);
+    _print(`${info.rewardTokenTicker} Per Week: ${info.weeklyRewards.toFixed(2)} ($${formatMoney(info.usdPerWeek)})`);
+    const weeklyAPR = info.usdPerWeek / info.staked_tvl * 100;
+    const dailyAPR = weeklyAPR / 7;
+    const yearlyAPR = weeklyAPR * 52;
+    _print(`APR: Day ${dailyAPR.toFixed(2)}% Week ${weeklyAPR.toFixed(2)}% Year ${yearlyAPR.toFixed(2)}%`);
+    const userStakedUsd = info.userStaked * info.stakeTokenPrice;
+    const userStakedPct = userStakedUsd / info.staked_tvl * 100;
+    _print(`You are staking ${info.userStaked.toFixed(6)} ${info.stakeTokenTicker} ` +
+           `$${formatMoney(userStakedUsd)} (${userStakedPct.toFixed(2)}% of the pool).`);
+    if (info.userStaked > 0) {
+      info.poolPrices.print_contained_price(info.userStaked);
+        const userWeeklyRewards = userStakedPct * info.weeklyRewards / 100;
+        const userDailyRewards = userWeeklyRewards / 7;
+        const userYearlyRewards = userWeeklyRewards * 52;
+        _print(`Estimated ${info.rewardTokenTicker} earnings:`
+            + ` Day ${userDailyRewards.toFixed(2)} ($${formatMoney(userDailyRewards*info.rewardTokenPrice)})`
+            + ` Week ${userWeeklyRewards.toFixed(2)} ($${formatMoney(userWeeklyRewards*info.rewardTokenPrice)})`
+            + ` Year ${userYearlyRewards.toFixed(2)} ($${formatMoney(userYearlyRewards*info.rewardTokenPrice)})`);
+    }
+    const approveTENDAndStake = async function() {
+      return rewardsContract_stake(info.stakeTokenAddress, info.stakingAddress, App)
+    }
+    const unstake = async function() {
+      return rewardsContract_unstake(info.stakingAddress, App)
+    }
+    const claim = async function() {
+      return rewardsXbeContract_claim(info.stakingAddress, App)
+    }
+    const exit = async function() {
+      return rewardsContract_exit(info.stakingAddress, App)
+    }
+    const revoke = async function() {
+      return rewardsContract_resetApprove(info.stakeTokenAddress, info.stakingAddress, App)
+    }
+    _print(`<a target="_blank" href="https://etherscan.io/address/${info.stakingAddress}#code">Etherscan</a>`);
+    if (info.stakeTokenAddress != "0x0000000000000000000000000000000000000000") {
+      _print_link(`Stake ${info.userUnstaked.toFixed(6)} ${info.stakeTokenTicker}`, approveTENDAndStake)
+    }
+    else {
+      _print(`Please use the official website to stake ${info.stakeTokenTicker}.`);
+    }
+    _print_link(`Unstake ${info.userStaked.toFixed(6)} ${info.stakeTokenTicker}`, unstake)
+    _print_link(`Claim ${info.earned.toFixed(6)} ${info.rewardTokenTicker} ($${formatMoney(info.earned*info.rewardTokenPrice)})`, claim)
+    if (info.stakeTokenTicker != "ETH") {
+      _print_link(`Revoke (set approval to 0)`, revoke)
+    }
+    _print_link(`Exit`, exit)
+    _print("");
+
+    return {
+        staked_tvl: info.poolPrices.staked_tvl,
+        userStaked : userStakedUsd,
+        apr : yearlyAPR
+    }
+}
+
+const rewardsXbeContract_claim = async function(rewardPoolAddr, App) {
+  const signer = App.provider.getSigner()
+
+  const REWARD_POOL = new ethers.Contract(rewardPoolAddr, Y_STAKING_POOL_ABI, signer)
+
+  console.log(App.YOUR_ADDRESS)
+
+  const earnedYFFI = (await REWARD_POOL.earned(App.YOUR_ADDRESS)) / 1e18
+
+  if (earnedYFFI > 0) {
+    showLoading()
+    REWARD_POOL.getReward(true, {gasLimit: 250000})
+      .then(function(t) {
+        return App.provider.waitForTransaction(t.hash)
+      })
+      .catch(function() {
+        hideLoading()
+      })
+  }
 }

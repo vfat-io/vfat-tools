@@ -6,19 +6,21 @@ $(function() {
 
   SwaprStakingAddresses = [
     {
-    "id": "0x0cc0d8bdd60eec41d41b83e156b26a1aae298d06"
+    "id": "0x1aa2099aebcd14c687267a0c81c6c16929f2acf7"
     },    {
-    "id": "0x6cf77bda52b30cdf194ace4dfd303a4b74f2fbd9"
+    "id": "0x2ad5986957a772dfa9e640c923082c653bcd0f08"
     },    {
-    "id": "0x826a19214899bd42162544f0f3d0e0e6bf9123f1"
+    "id": "0x2cd853c6737c092e1eda89f2ccb0050a871d1495"
     },    {
-    "id": "0x89b64345831bf6cac089c1abfb7f217d35ad4695"
+    "id": "0x39293782281eaa8188852095d3e43b97909926bc"
     },    {
-    "id": "0xc7ce9f19d284ae74e20d6a15ff98f0d475852f66"
+    "id": "0x5fa1124bb17806577beb04bb0af16c50b592b2df"
     },    {
-    "id": "0xd29c5802eefb6b9e39ed022fb2e058ed3b766821"
+    "id": "0xbb41ec470363b8b43a3615bb285af1b226e76437"
     },    {
-    "id": "0xd55f9f246efda240f32f33594e2be40c02550b43"
+    "id": "0xc65cc53556a28299ac695491934982cfad92d85b"
+    },    {
+    "id": "0xf73929012458bba751c16a65ec10078a4c050984"
     }
   ]
   async function main() {

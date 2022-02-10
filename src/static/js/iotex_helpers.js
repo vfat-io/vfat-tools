@@ -15,7 +15,8 @@ const IotexTokens = [
     { "id": "usd-coin","symbol": "USDC", "contract": "0x3B2bf2b523f54C4E454F08Aa286D03115aFF326c" },
     { "id": "wmatic","symbol": "WMATIC", "contract": "0x8e66c0d6B70C0B23d39f4B21A1eAC52BBA8eD89a" },
     { "id": "tether","symbol": "USDT", "contract": "0x3CDb7c48E70B854ED2Fa392E21687501D84B3AFc" },
-    { "id": "dai","symbol": "DAI", "contract": "0x62a9D987Cbf4C45a550DEEd5B57b200d7a319632" }
+    { "id": "dai","symbol": "DAI", "contract": "0x62a9D987Cbf4C45a550DEEd5B57b200d7a319632" },
+    { "id": "imagictoken","symbol": "IMAGIC", "contract": "0x490CfbF9b9C43633DdD1968d062996227ef438A9" }
 ];
 
 async function getIotexPrices() {
@@ -218,6 +219,28 @@ async function getIotexDlpPool(App, dlpPool, tokenAddress, originTokenAddress, s
   }
 }
 
+async function getIotexSaddleToken(App, saddle, address, stakingAddress, swapAddress) {
+  const swap = new ethcall.Contract(swapAddress, SADDLE_SWAP_ABI)
+  const [virtualPrice, coin0] = await App.ethcallProvider.all([swap.getVirtualPrice(), swap.getToken(0)]);
+  const token = await getIotexToken(App, coin0, address);
+  const calls = [saddle.decimals(), saddle.balanceOf(stakingAddress), saddle.balanceOf(App.YOUR_ADDRESS),
+    saddle.name(), saddle.symbol(), saddle.totalSupply()];
+  const [decimals, staked, unstaked, name, symbol, totalSupply] = await App.ethcallProvider.all(calls);
+  return {
+      address,
+      name,
+      symbol,
+      totalSupply,
+      decimals : decimals,
+      staked:  staked / 10 ** decimals,
+      unstaked: unstaked  / 10 ** decimals,
+      contract: saddle,
+      tokens : [address, coin0],
+      token,
+      virtualPrice : virtualPrice / 1e18
+  };
+}
+
 async function getIotexStoredToken(App, tokenAddress, stakingAddress, type) {
   switch (type) {
     case "uniswap":
@@ -226,6 +249,10 @@ async function getIotexStoredToken(App, tokenAddress, stakingAddress, type) {
     case "doualIotexDlp":
       const doualDlpPool = new ethcall.Contract(tokenAddress, DLP_IOTEX_DUAL_TOKEN_ABI);
       return await getDodoIotexDualPoolToken(App, doualDlpPool, tokenAddress, stakingAddress);
+    case "saddle":
+      const saddle = new ethcall.Contract(tokenAddress, SADDLE_LP_TOKEN_ABI);
+      const [swap] = await App.ethcallProvider.all([saddle.swap()]);
+      return await getSaddleToken(App, saddle, tokenAddress, stakingAddress, swap);
     case "iotexVault":
       const vault = new ethcall.Contract(tokenAddress, IOTEX_VAULT_TOKEN_ABI);
       return await getIotexVault(App, vault, tokenAddress, stakingAddress);
@@ -273,6 +300,15 @@ async function getIotexToken(App, tokenAddress, stakingAddress) {
       const dlpPool = await getIotexDlpPool(App, pool, tokenAddress, originTokenAddress, stakingAddress);
       window.localStorage.setItem(tokenAddress, "dlp");
       return dlpPool;
+    }
+    catch(err) {
+    }
+    try {
+      const saddle = new ethcall.Contract(tokenAddress, SADDLE_LP_TOKEN_ABI);
+      const [swap] = await App.ethcallProvider.all([saddle.swap()]);
+      const res = await getSaddleToken(App, saddle, tokenAddress, stakingAddress, swap);
+      window.localStorage.setItem(tokenAddress, "saddle");
+      return res;
     }
     catch(err) {
     }

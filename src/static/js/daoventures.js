@@ -31,6 +31,10 @@ async function getTotalPool(Contract_Object, Eth_Contract){
     const Total_Pool = await Eth_Contract.getTotalValueInPool()/ 10**Contract_Object.decimals    
     return Total_Pool
   }
+  else if(Contract_Object.name === "Citadel"){
+    const Total_Pool = await Eth_Contract.getAllPoolInUSD()/ 10**Contract_Object.decimals    
+    return Total_Pool
+  }
   else{
     const Total_Pool = await Eth_Contract.getAllPoolInUSD()/ 10**Contract_Object.decimals    
     return Total_Pool
@@ -285,7 +289,7 @@ const tokensMinInfo = [
       name: 'Citadel', 
       address: '0x8fE826cC1225B03Aa06477Ad5AF745aEd5FE7066', 
       abi: DAO_Citadel_ABI,
-      decimals: 18,
+      decimals: 6,
     },
     {
       name: 'FAANG', 

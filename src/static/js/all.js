@@ -68,7 +68,7 @@ const main = async () => {
       ["Sakeswap                     ", `<a href="../sakeswap"           >Various</a>`, "SAKE               ", "https://sakeswap.finance"],
       ["Defiville                    ", `<a href="../defiville"          >Various</a>`, "ISLA               ", "https://defiville.finance"],
       ["Benchmark                    ", `<a href="../benchmark/"         >Various</a>`, "MARK               ", "https://launchpad.benchmarkprotocol.finance/pools"],
-      ["Governor                     ", `<a href="../governordao"        >Various</a>`, "GDAO               ", "https://governordao.org"],
+      ["Governor *                   ", `<a href="../governordao"        >Various</a>`, "GDAO               ", "https://governordao.org"],
       ["Optionroom                   ", `<a href="../optionroom"         >Various</a>`, "COURT              ", "https://app.optionroom.finance"],
       ["Mint                         ", `<a href="../mint"               >Various</a>`, "MINT               ", "https://stake.publicmint.com"],
       ["Proof Of Humanity            ", `<a href="../proofofhumanity"    >Various</a>`, "UBI                ", "https://www.proofofhumanity.id"],
@@ -136,7 +136,7 @@ const main = async () => {
       ["Shiba Swap                   ", `<a href="../shibaswap"          >Various</a>`, "BONE               ", "https://shibaswap.com"],
       ["BambooDeFi                   ", `<a href="../bamboodefi"         >Various</a>`, "BAMBOO             ", "https://www.bamboodefi.com"],
       ["Emi Swap`                    ", `<a href="../emiswap"            >Various</a>`, "ESW                ", "https://emiswap.com"],
-      ["WePiggy                      ", `<a href="../wepiggy/"           >Various</a>`, "WPC                ", "https://www.wepiggy.com/markets"],
+      ["WePiggy                      ", `<a href="../wepiggy/"           >Various</a>`, "WPC                ", "https://app.wepiggy.com"],
       ["Saddle                       ", `<a href="../saddle/"            >Various</a>`, "Various            ", "https://saddle.exchange"],
       ["Composable                   ", `<a href="../composable/"        >Various</a>`, "Composable         ", "https://app.composable.finance"],
       ["MCN Ventures                 ", `<a href="../mcn/"               >Various</a>`, "MCN                ", "https://farm.mcn.ventures"],
@@ -159,7 +159,13 @@ const main = async () => {
       ["Botto                        ", `<a href="../botto/"             >Various</a>`, "BOTTO              ", "https://app.botto.com"],
       ["Swapr                        ", `<a href="../swapr/"             >Various</a>`, "SWPR               ", "https://swapr.eth.link"],
       ["Merit Circle                 ", `<a href="../meritcircle/"       >Various</a>`, "MC                 ", "https://swap.meritcircle.io"],
-      ["DAOventures                  ", `<a href="../daoventures/"       >Various</a>`, "DAOVENTURES        ", "https://app.daoventures.co/invest"]
+      ["DAOventures                  ", `<a href="../daoventures/"       >Various</a>`, "DAOVENTURES        ", "https://app.daoventures.co/invest"],
+      ["Angle                        ", `<a href="../angle/"             >Various</a>`, "ANGLE              ", "https://app.angle.money"],
+      ["Beverage                     ", `<a href="../beverage/"          >Various</a>`, "DRINK              ", "https://beverage.finance"],
+      ["Nildao                       ", `<a href="../nildao/"            >Various</a>`, "NIL                ", "https://www.nildao.xyz"],
+      ["Sushi V2                     ", `<a href="../sushiv2/"           >Various</a>`, "Various            ", "https://app.sushi.com"],
+      ["GenomesDAO                   ", `<a href="../genomesdao/"        >Various</a>`, "Various            ", "https://staking.genomes.io"],
+      ["Yearn                        ", `<a href="../yearn/"             >Various</a>`, "Various            ", "https://yearn.finance"]
     ]
   }
 
