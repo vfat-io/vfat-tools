@@ -87,7 +87,7 @@ async function loadFateRewardControllerContract(
     const BLOCKS_PER_WEEK = window.ethers.BigNumber.from('302400')
     const index = parseInt((currentBlock.sub(startBlock)).div(BLOCKS_PER_WEEK).toString())
     const EPOCH_0 = 13
-    const EPOCH_1 = 21
+    const EPOCH_1 = 29
 
     let multiplier;
     if (index < EPOCH_0) {
@@ -95,7 +95,8 @@ async function loadFateRewardControllerContract(
     } else if (index < EPOCH_1) {
         multiplier = 12.5
     } else {
-        multiplier = 1
+        // default to the last known epoch's data
+        multiplier = 12.5
     }
 
     let divisor;
@@ -104,7 +105,8 @@ async function loadFateRewardControllerContract(
     } else if (index < EPOCH_1) {
         divisor = 10
     } else {
-        divisor = 1
+        // default to the last known epoch's data
+        divisor = 10
     }
 
     const rewardsPerWeek = rewardsPerWeekOrNull ??
