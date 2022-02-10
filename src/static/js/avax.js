@@ -82,8 +82,15 @@ const main = async() => {
         ["The Blossom Farm        ",`<a href="bloom"            >Various</a>`,"BLM          ","https://bloom.theseedfarm.app"],
         ["AvaxRush                ",`<a href="avaxrush"         >Various</a>`,"SONIC        ","https://avaxrush.com"],
         ["FarmersOnly ONION       ",`<a href="onion"            >Various</a>`,"ONION        ","https://onion.farmersonly.farm"],
-        ["Autofarm                ", `<a href='autofatm'        >Various</a>`,"Various      ","https://autofarm.network/fantom"],
-        ["IceFlake                ",`<a href="iceflake"         >Various</a>`,"FLAKE        ","https://iceflake.finance"]
+        ["Autofarm                ", `<a href='autofarm'        >Various</a>`,"Various      ","https://autofarm.network"],
+        ["IceFlake                ",`<a href="iceflake"         >Various</a>`,"FLAKE        ","https://iceflake.finance"],
+        ["BanksyFarm              ",`<a href="banksyfarm"       >Various</a>`,"BanksyFarm   ","https://banksy.farm"],
+        ["Topshelf                ",`<a href="topshelf"         >Various</a>`,"LIQR         ","https://topshelf.finance"],
+        ["Avaviking               ",`<a href="avaviking"        >Various</a>`,"VIKING       ","https://www.avaviking.com"],
+        ["Coup Farm               ",`<a href="coup"             >Various</a>`,"COUP         ","https://coup.farm"],
+        ["ThorusFi                ",`<a href="thorusfi"         >Various</a>`,"THO          ","https://thorus.fi"],
+        ["Selenium                ",`<a href="selenium"         >Various</a>`,"SELENIUM     ","https://selenium.finance"],
+        ["GMX                     ",`<a href="gmx"              >Various</a>`,"Various      ","https://gmx.io"]
     ]
   }
 

@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include(`${partials}/head`); -%>
+
+<body>
+<%- include(`${partials}/header_main`); -%>
+<pre id="log">
+*************** 👨‍🌾 UNOFFICIAL NYAN FARMING CALCULATOR 👨‍🌾 ***************
+INFO  : https://optinyan.xyz/
+**************************************************************************
+
+WARNING: Staking through vfat is currently broken.
+         Visit <a href="https://optinyan.xyz/">https://optinyan.xyz/</a> to single stake ETH and NYAN!
+
+</pre>
+<div class="loader--1"></div>
+<%- include(`${partials}/scripts`, {scriptname: 'optimism_nyan'}); -%>
+</body>
+</html>

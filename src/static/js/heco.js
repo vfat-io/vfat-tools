@@ -23,7 +23,8 @@ const main = async() => {
       ["Butter    ",`<a href="butter"    >Various</a>`,"BUTTER  ","https://butterswap.me/"],
       ["WePiggy   ",`<a href="wepiggy"   >Various</a>`,"WPC     ","https://app.wepiggy.com"],
       ["Galaxy Finance One", `<a href="galaxy_triton" >Various</a>`, "TRITON  ","https://heco-triton.galaxyfinance.one/"],
-      ["OberonFinance",      `<a href="galaxy_oberon" >Various</a>`, "OBERON  ","https://heco-oberon.galaxyfinance.one/"]
+      ["OberonFinance",      `<a href="galaxy_oberon" >Various</a>`, "OBERON  ","https://heco-oberon.galaxyfinance.one/"],
+      ["Beefy     ",`<a href="beefy"     >Various</a>`, "BIFI   ","https://app.beefy.finance/#/heco"]
     ]
   }
 

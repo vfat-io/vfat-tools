@@ -52,6 +52,8 @@ const avaxTokens = [
     { "id": "orca-avai", "symbol": "AVAI", "contract": "0x346a59146b9b4a77100d369a3d18e8007a9f46a6"},
     { "id": "synapse-2", "symbol": "SYN", "contract": "0x1f1E7c893855525b303f99bDF5c3c05Be09ca251"},
     { "id": "sonic-token", "symbol": "SONIC", "contract": "0x4Aca0ad6357b918e3d06BB1a0BCC403619177523"},
+    { "id": "topshelf-finance", "symbol": "LIQR", "contract": "0x33333ee26a7d02e41c33828b42fb1e0889143477"},
+    { "id": "gmx", "symbol": "GMX", "contract": "0x62edc0692BD897D2295872a9FFCac5425011c661"}
 ]
 
 async function getAvaxPrices() {

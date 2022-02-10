@@ -76,6 +76,21 @@ window.NETWORKS = {
       "https://moonbeam.network/networks/moonriver/"
     ]
   },
+  MOONBEAM: {
+    "chainId": "0x504",
+    "chainName": "Moonbeam",
+    "nativeCurrency": {
+      "name": "moonbeam",
+      "symbol": "GLMR",
+      "decimals": 18
+    },
+    "rpcUrls": [
+      "https://rpc.api.moonbeam.network"
+    ],
+    "blockExplorerUrls": [
+      "https://moonscan.io/"
+    ]
+  },
   OPTIMISM: {
     "chainId": "0xA",
     "chainName": "Optimistic Ethereum",
@@ -89,6 +104,21 @@ window.NETWORKS = {
     ],
     "blockExplorerUrls": [
       "https://optimistic.etherscan.io/"
+    ]
+  },
+  EMERALD: {
+    "chainId": "0xA516",
+    "chainName": "Emerald Paratime Mainnet",
+    "nativeCurrency": {
+      "name": "oasis-network",
+      "symbol": "ROSE",
+      "decimals": 18
+    },
+    "rpcUrls": [
+      "https://emerald.oasis.dev"
+    ],
+    "blockExplorerUrls": [
+      "https://explorer.emerald.oasis.dev"
     ]
   },
   BINANCE_SMART_CHAIN: {
@@ -167,7 +197,7 @@ window.NETWORKS = {
       "https://backup-explorer.matic.network"
     ]
   },
-  XDAI: {
+  GNOSIS: {
     "chainId": "0x64",
     "chainName": "xDAI Chain",
     "nativeCurrency": {
@@ -478,6 +508,36 @@ window.NETWORKS = {
       "https://andromeda-explorer.metis.io/"
     ],
   },
+  METER: {
+    "chainId": "0x52",
+    "chainName": "Meter Mainnet",
+    "nativeCurrency": {
+      "name": "Meter token",
+      "symbol": "MTR",
+      "decimals": 18
+    },
+    "rpcUrls": [
+      "https://rpc.meter.io"
+    ],
+    "blockExplorerUrls": [
+      "https://scan.meter.io"
+    ],
+  },
+  TELOS: {
+    "chainId": "0x28",
+    "chainName": "Telos EVM Mainnet",
+    "nativeCurrency": {
+      "name": "Telos",
+      "symbol": "TLOS",
+      "decimals": 18
+    },
+    "rpcUrls": [
+      "https://mainnet.telos.net/evm"
+    ],
+    "blockExplorerUrls": [
+      "https://teloscan.io"
+    ],
+  },
 }
 
 const infuraId = atob(window.ETHEREUM_NODE_URL).split('/').pop()
@@ -506,7 +566,9 @@ const providerOptions = {
         321: "https://rpc-mainnet.kcc.network",
         10000: "https://global.uat.cash",
         333999: "https://rpc.polis.tech",
-        25: "https://rpc.crodex.app/"
+        25: "https://rpc.crodex.app/",
+        82: "https://rpc.meter.io",
+        40: "https://mainnet.telos.net/evm"
       }
     }
   }

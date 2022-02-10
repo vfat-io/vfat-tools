@@ -36,17 +36,23 @@ const pageNetwork = function() {
   if (network.toLowerCase() === 'okex') {
     return window.NETWORKS.OKEX
   }
+  if (network.toLowerCase() === 'emerald') {
+    return window.NETWORKS.EMERALD
+  }
   if (network.toLowerCase() === 'kcc') {
     return window.NETWORKS.KCC
   }
-  if (network.toLowerCase() === 'xdai') {
-    return window.NETWORKS.XDAI
+  if (network.toLowerCase() === 'gnosis') {
+    return window.NETWORKS.GNOSIS
   }
   if (network.toLowerCase() === 'fantom') {
     return window.NETWORKS.FANTOM
   }
   if (network.toLowerCase() === 'cronos') {
     return window.NETWORKS.CRONOS
+  }
+  if (network.toLowerCase() === 'moonbeam') {
+    return window.NETWORKS.MOONBEAM
   }
   if (network.toLowerCase() === 'harmony') {
     return window.NETWORKS.HARMONY_S0
@@ -83,6 +89,12 @@ const pageNetwork = function() {
   }
   if (network.toLowerCase() === 'metis') {
     return window.NETWORKS.METIS
+  }
+  if (network.toLowerCase() === 'meter') {
+    return window.NETWORKS.METER
+  }
+  if (network.toLowerCase() === 'telos') {
+    return window.NETWORKS.TELOS
   }
 
   return window.NETWORKS.ETHEREUM
@@ -912,9 +924,8 @@ const chefContract_unstake = async function(chefAbi, chefAddress, poolIndex, App
   const CHEF_CONTRACT = new ethers.Contract(chefAddress, chefAbi, signer)
 
   const currentStakedAmount = (await CHEF_CONTRACT.userInfo(poolIndex, App.YOUR_ADDRESS)).amount
-  const earnedTokenAmount = await CHEF_CONTRACT.callStatic[pendingRewardsFunction](poolIndex, App.YOUR_ADDRESS) / 1e18
 
-  if (earnedTokenAmount > 0) {
+  if (currentStakedAmount / 1e18 > 0) {
     showLoading()
     CHEF_CONTRACT.withdraw(poolIndex, currentStakedAmount, {gasLimit: 500000})
       .then(function(t) {
@@ -1185,6 +1196,40 @@ async function getBalancerPool(app, pool, poolAddress, stakingAddress, tokens, s
   };
 }
 
+async function getBalancerV2Pool(app, pool, poolAddress, stakingAddress, tokens, smartToken) {
+  const calls = [pool.decimals(), pool.symbol(), pool.name(), pool.totalSupply(),
+    pool.balanceOf(stakingAddress), pool.balanceOf(app.YOUR_ADDRESS), pool.getNormalizedWeights()]
+  const results = await app.ethcallProvider.all(calls);
+  let [decimals, symbol, name, totalSupply, staked, unstaked, weights] = results
+
+  let poolTokens = [];
+  let j = 0;
+  for (let i = 0; i < tokens.balances.length; i++) {
+    poolTokens.push({
+      address : tokens.tokens[i],
+      weight: weights[i] / 1e18,
+      balance : tokens.balances[i]
+    })
+  };
+  if (smartToken) {
+    [totalSupply, staked, unstaked] = await app.ethcallProvider.all([smartToken.totalSupply(),
+      smartToken.balanceOf(stakingAddress), smartToken.balanceOf(app.YOUR_ADDRESS)]);
+  }
+  return {
+      symbol,
+      name,
+      address: poolAddress,
+      poolTokens, //address, weight and balance
+      totalSupply: totalSupply / 10 ** decimals,
+      stakingAddress,
+      staked: staked / 10 ** decimals,
+      decimals: decimals,
+      unstaked: unstaked / 10 ** decimals,
+      contract: pool,
+      tokens : tokens.tokens
+  };
+}
+
 async function getJar(app, jar, address, stakingAddress) {
   const calls = [jar.decimals(), jar.token(), jar.name(), jar.symbol(), jar.totalSupply(),
     jar.balanceOf(stakingAddress), jar.balanceOf(app.YOUR_ADDRESS), jar.balance()];
@@ -1273,7 +1318,7 @@ async function getStableswapToken(app, stable, address, stakingAddress) {
 }
 
 async function getErc20(app, token, address, stakingAddress) {
-  if (address == "0x0000000000000000000000000000000000000000" || 
+  if (address == "0x0000000000000000000000000000000000000000" ||
       address == "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE") {
     return {
       address,
@@ -1380,7 +1425,7 @@ async function getCToken(app, cToken, address, stakingAddress) {
     staked: staked / 10 ** decimals,
     unstaked: unstaked / 10 ** decimals,
     token: token,
-    balance: totalSupply * (exchangeRate / 1e18),
+    balance: totalSupply * exchangeRate / 1e18,
     contract: cToken,
     tokens : [address].concat(token.tokens)
   }
@@ -1461,47 +1506,8 @@ async function getYearnVault(app, yearn, address, stakingAddress) {
   }
 }
 
-async function getCurveCryptoToken2(app, curve, address, stakingAddress, minterAddress) {
-  const minter = new ethcall.Contract(minterAddress, ETH_TRITOKEN_MINTER_ABI)
-  const registryAddress = "0x90E00ACe148ca3b23Ac1bC8C240C2a7Dd9c2d7f5";
-  const registry = new ethcall.Contract(registryAddress, REGISTRY_ABI);
-  let coins = [];
-  const [coinAddresses, coinsCount, balances] = 
-    await app.ethcallProvider.all([registry.get_coins(minterAddress), 
-                                   registry.get_n_coins(minterAddress), 
-                                   registry.get_balances(minterAddress)]);
-  for(let i = 0; i < coinsCount[0]; i++){
-      const token = await getToken(app, coinAddresses[i], address);
-      coins.push(
-        {address : coinAddresses[i],
-         token   : token,
-         balance : balances[i] / 10 ** token.decimals}
-      )
-    }
-  const [virtualPrice, A_precise] = await app.ethcallProvider.all([minter.get_virtual_price(), minter.A_precise()]);
-  const calls = [curve.decimals(), curve.balanceOf(stakingAddress), curve.balanceOf(app.YOUR_ADDRESS),
-    curve.name(), curve.symbol(), curve.totalSupply()];
-  const [_decimals, staked, unstaked, name, symbol, totalSupply] = await app.ethcallProvider.all(calls);
-  const tokens = coins.map(c => c.address).concat([address]);
-  const decimals = _decimals / 1;
-  return {
-      address,
-      name,
-      symbol,
-      totalSupply,
-      decimals : decimals,
-      staked:  staked / 10 ** decimals,
-      unstaked: unstaked  / 10 ** decimals,
-      contract: curve,
-      tokens,
-      coins,
-      virtualPrice : virtualPrice / 1e18,
-      A_precise : A_precise * 1
-  };
-}
-
 async function getCurveMinterToken(app, curve, address, stakingAddress) {
-  const calls = [curve.get_virtual_price(), curve.coins(0), curve.decimals(), curve.balanceOf(stakingAddress), 
+  const calls = [curve.get_virtual_price(), curve.coins(0), curve.decimals(), curve.balanceOf(stakingAddress),
                  curve.balanceOf(app.YOUR_ADDRESS), curve.name(), curve.symbol(), curve.totalSupply()];
   const [virtualPrice, coin0, decimals_, staked, unstaked, name, symbol, totalSupply] = await app.ethcallProvider.all(calls);
   const token = await getToken(app, coin0, address);
@@ -1553,10 +1559,6 @@ async function getStoredToken(app, tokenAddress, stakingAddress, type) {
     case "yearn":
       const yearnVault = new ethcall.Contract(tokenAddress, YEARN_VAULT_ABI);
       return await getYearnVault(app, yearnVault, tokenAddress, stakingAddress);
-    case "curveToken2":
-      const tri = new ethcall.Contract(tokenAddress, TRITOKEN_ABI);
-      const [triMinter] = await app.ethcallProvider.all([tri.minter()]);
-      return await getCurveCryptoToken2(app, tri, tokenAddress, stakingAddress, triMinter);
     case "doualDlp":
       const doualDlpPool = new ethcall.Contract(tokenAddress, DLP_DUAL_TOKEN_ABI);
       return await getDodoDualPoolToken(app, doualDlpPool, tokenAddress, stakingAddress);
@@ -1573,6 +1575,12 @@ async function getStoredToken(app, tokenAddress, stakingAddress, type) {
       const bal2 = new ethcall.Contract(bPool, BPOOL_ABI);
       const [tokens2] = await app.ethcallProvider.all([bal2.getCurrentTokens()]);
       return await getBalancerPool(app, bal2, tokenAddress, stakingAddress, tokens2, sbal);
+    case "balancerV2":
+      const balV2 = new ethcall.Contract(tokenAddress, BALANCER_V2_POOL_ABI);
+      const [vaultAddress, poolId] = await app.ethcallProvider.all([balV2.getVault(), balV2.getPoolId()]);
+      const vaultBal = new ethcall.Contract(vaultAddress, BALANCER_VAULT_ABI);
+      const [tokensBv2] = await app.ethcallProvider.all([vaultBal.getPoolTokens(poolId)]);
+      return await getBalancerV2Pool(app, balV2, tokenAddress, stakingAddress, tokensBv2);
     case "jar":
       const jar = new ethcall.Contract(tokenAddress, JAR_ABI);
       return await getJar(app, jar, tokenAddress, stakingAddress);
@@ -1630,7 +1638,7 @@ async function getStoredToken(app, tokenAddress, stakingAddress, type) {
 }
 
 async function getToken(app, tokenAddress, stakingAddress) {
-  if (tokenAddress == "0x0000000000000000000000000000000000000000" || 
+  if (tokenAddress == "0x0000000000000000000000000000000000000000" ||
       tokenAddress == "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE") {
     return getErc20(app, null, tokenAddress, stakingAddress)
   }
@@ -1674,22 +1682,22 @@ async function getToken(app, tokenAddress, stakingAddress) {
   catch(err) {
   }
   try {
-    const curveToken2 = new ethcall.Contract(tokenAddress, CURVE_ABI);
-    const [curveToken2Minter] = await app.ethcallProvider.all([curveToken2.minter()]);
-    const minterContract = new ethcall.Contract(curveToken2Minter, ETH_CURVE2_MINTER_ABI);
-    const [A_precise] = await app.ethcallProvider.all([minterContract.A_precise()]);
-    const res = await getCurveCryptoToken2(app, curveToken2, tokenAddress, stakingAddress, curveToken2Minter);
-    window.localStorage.setItem(tokenAddress, "curveToken2");
-    return res;
-  }
-  catch(err) {
-  }
-  try {
     const nPool = new ethcall.Contract(tokenAddress, N_TOKEN_ABI);
     const _tokenByIndex = await app.ethcallProvider.all([nPool.tokenByIndex(0)]);
     const nToken = await getNToken(app, nPool, tokenAddress, stakingAddress);
     window.localStorage.setItem(tokenAddress, "NToken");
     return nToken;
+  }
+  catch(err) {
+  }
+  try {
+    const bal2 = new ethcall.Contract(tokenAddress, BALANCER_V2_POOL_ABI);
+    const [vaultAddress, poolId] = await app.ethcallProvider.all([bal2.getVault(), bal2.getPoolId()]);
+    const vault = new ethcall.Contract(vaultAddress, BALANCER_VAULT_ABI);
+    const [tokens] = await app.ethcallProvider.all([vault.getPoolTokens(poolId)]);
+    const balPool2 = await getBalancerV2Pool(app, bal2, tokenAddress, stakingAddress, tokens);
+    window.localStorage.setItem(tokenAddress, "balancerV2");
+    return balPool2;
   }
   catch(err) {
   }
@@ -1971,14 +1979,17 @@ function getUniPrices(tokens, prices, pool, chain="eth")
   var staked_tvl = pool.staked * price;
   let stakeTokenTicker = `[${t0.symbol}]-[${t1.symbol}]`;
   if (pool.is1inch) stakeTokenTicker += " 1INCH LP";
+  else if (pool.symbol.includes("TETHYSLP")) stakeTokenTicker += " TETHYS LP";
   else if (pool.symbol.includes("LSLP")) stakeTokenTicker += " LSLP";
   else if (pool.symbol.includes("HBLP")) stakeTokenTicker += " Huckleberry LP";
   else if (pool.symbol.includes("BLP")) stakeTokenTicker += " BLP";
+  else if (pool.symbol.includes("BEAM-LP")) stakeTokenTicker += " BEAM-LP";
   else if (pool.symbol.includes("ZDEXLP")) stakeTokenTicker += " ZooDex LP";
   else if (pool.symbol.includes("OperaSwap")) stakeTokenTicker += " Opera Swap LP";
   else if (pool.symbol.includes("SLP")) stakeTokenTicker += " SLP";
   else if (pool.symbol.includes("Cake")) stakeTokenTicker += " Cake LP";
   else if (pool.name.includes("Value LP")) stakeTokenTicker += " Value LP";
+  else if (pool.name.includes("Duneswap LP Token")) stakeTokenTicker += " Duneswap LP";
   else if (pool.symbol.includes("PGL")) stakeTokenTicker += " PGL";
   else if (pool.symbol.includes("JLP")) stakeTokenTicker += " JLP";
   else if (pool.symbol.includes("CS-LP")) stakeTokenTicker += " CSS LP";
@@ -1993,6 +2004,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
   else if (pool.symbol.includes("BenSwap")) stakeTokenTicker += " BenSwap LP";
   else if (pool.name.includes("MISTswap LP Token")) stakeTokenTicker += " MistSwap LP";
   else if (pool.name.includes("TANGOswap LP Token")) stakeTokenTicker += " TangoSwap LP";
+  else if (pool.name.includes("Flare LP Token")) stakeTokenTicker += " FLP LP";
   else if (pool.symbol.includes("BRUSH-LP")) stakeTokenTicker += " BRUSH LP";
   else if (pool.symbol.includes("APE-LP")) stakeTokenTicker += " APE LP";
   else if (pool.symbol.includes("Galaxy-LP")) stakeTokenTicker += " Galaxy LP";
@@ -2010,15 +2022,20 @@ function getUniPrices(tokens, prices, pool, chain="eth")
   else if (pool.symbol.includes("LOOT-LP")) stakeTokenTicker += " Loot LP Token";
   else if (pool.symbol.includes("MIMO-LP")) stakeTokenTicker += " Mimo LP Token";
   else if (pool.symbol.includes("HLP")) stakeTokenTicker += " Hades Swap LP Token";
+  else if (pool.name.includes("1BCH LP Token")) stakeTokenTicker += " 1BCH LP";
   else if (pool.symbol.includes("MOCHI-LP")) stakeTokenTicker += " Mochi LP Token";
   else if (pool.symbol.includes("SMUG-LP")) stakeTokenTicker += " Smug LP Token";
   else if (pool.symbol.includes("VVS-LP")) stakeTokenTicker += " VVS LP Token";
+  else if (pool.symbol.includes("CNO-LP")) stakeTokenTicker += " CNO LP Token";
   else if (pool.symbol.includes("Crona-LP")) stakeTokenTicker += " Crona LP Token";
   else if (pool.symbol.includes("Genesis-LP")) stakeTokenTicker += " Genesis LP Token";
   else if (pool.symbol.includes("Wagyu-LP")) stakeTokenTicker += " Wagyu LP Token";
   else if (pool.symbol.includes("OLP")) stakeTokenTicker += " Oolong LP Token";
-  else if (pool.symbol.includes("TLP")) stakeTokenTicker += " Trisolaris LP Token";
+  else if (pool.symbol.includes("TLP") && !pool.name.includes("Thorus LP")) stakeTokenTicker += " Trisolaris LP Token";
+  else if (pool.symbol.includes("TLP") && pool.name.includes("Thorus LP")) stakeTokenTicker += " Thorus LP Token";
   else if (pool.symbol.includes("SCLP")) stakeTokenTicker += " SwapperChan LP Token";
+  else if (pool.symbol.includes('VENOM-LP')) stakeTokenTicker += ' VENOM-LP Token';
+  else if (pool.symbol.includes('Charm-LP')) stakeTokenTicker += ' OmniDex LP Token';
   else stakeTokenTicker += " Uni LP";
   return {
       t0: t0,
@@ -2051,6 +2068,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
         }
         else {
           const poolUrl = pool.is1inch ? "https://1inch.exchange/#/dao/pools" :
+          pool.symbol.includes("TETHYSLP") ?  `https://info.tethys.finance/pair/${pool.address}` :
           pool.symbol.includes("LSLP") ? `https://info.linkswap.app/pair/${pool.address}` :
             pool.symbol.includes("SLP") ? (
               {
@@ -2059,7 +2077,8 @@ function getUniPrices(tokens, prices, pool, chain="eth")
                 "bsc": `http://analytics-ftm.sushi.com/pairs/${pool.address}`,
                 "fantom": `http://analytics-ftm.sushi.com/pairs/${pool.address}`,
                 "matic": `http://analytics-polygon.sushi.com/pairs/${pool.address}`,
-                "xdai": `https://analytics-xdai.sushi.com/pairs/${pool.address}`
+                "xdai": `https://analytics-xdai.sushi.com/pairs/${pool.address}`,
+                "harmony": `https://analytics-harmony.sushi.com/pairs/${pool.address}`
               }[chain]) :
               pool.symbol.includes("Cake") ?  `https://pancakeswap.info/pair/${pool.address}` :
               pool.symbol.includes("CAT-LP") ?  `https://polycat.finance` :
@@ -2074,6 +2093,8 @@ function getUniPrices(tokens, prices, pool, chain="eth")
               [chain]):
               pool.symbol.includes("CS-LP") ?  `https://app.coinswap.space/#/` :
               pool.name.includes("Value LP") ?  `https://info.vswap.fi/pool/${pool.address}` :
+              pool.name.includes("Duneswap LP Token") ?  `https://explorer.emerald.oasis.dev/token/${pool.address}` :
+              pool.name.includes("Flare LP Token") ?  `https://analytics.solarflare.io/pairs/${pool.address}` :
               pool.symbol.includes("SCLP") ?  `https://analytics.swapperchan.com/pairs/${pool.address}` :
               pool.name.includes("Ubeswap") ?  `https://info.ubeswap.org/pair/${pool.address}` :
               pool.name.includes("OperaSwap") ?  `https://www.operaswap.finance/` :
@@ -2086,6 +2107,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
               pool.symbol.includes("PLP") ?  `https://exchange.pureswap.finance/#/swap` :
               pool.symbol.includes("HBLP") ?  `https://info.huckleberry.finance/pair/${pool.address}` :
               pool.symbol.includes("BLP") ?  `https://info.bakeryswap.org/#/pair/${pool.address}` :
+              pool.symbol.includes("BEAM-LP") ?  `https://analytics.beamswap.io/pairs/${pool.address}` :
               pool.symbol.includes("KUS-LP") ?  `https://kuswap.info/pair/#/${pool.address}` :
               pool.symbol.includes("Wagyu-LP") ?  `https://exchange.wagyuswap.app/info/pool/${pool.address}` :
               pool.symbol.includes("OLP") ?  `https://info.oolongswap.com/#/pair/${pool.address}` :
@@ -2102,8 +2124,11 @@ function getUniPrices(tokens, prices, pool, chain="eth")
               pool.symbol.includes("lv_") ?  `https://app.lixir.finance/vaults/${pool.address}` :
               pool.symbol.includes("HLP") ?  `https://analytics.hadesswap.finance/pairs/${pool.address}` :
               pool.symbol.includes("LOOT-LP") ?  `https://analytics.lootswap.finance/pair/${pool.address}` :
+              pool.symbol.includes("JEWEL-LP") ? `https://explorer.harmony.one/address/${pool.address}`:
               pool.symbol.includes("VVS-LP") ?  `https://vvs.finance/info/farm/${pool.address}` :
-              pool.symbol.includes("TLP") ?  `https://explorer.mainnet.aurora.dev/address/${pool.address}` :
+              pool.symbol.includes("CNO-LP") ?  `https://chronoswap.org/info/pool/${pool.address}` :
+              pool.symbol.includes("TLP") && !pool.name.includes("Thorus LP") ?  `https://explorer.mainnet.aurora.dev/address/${pool.address}` :
+              pool.symbol.includes("TLP") && !pool.name.includes("Thorus LP") ?  `https://snowtrace.io/address/${pool.address}` :
               pool.symbol.includes("Crona-LP") ?  `https://app.cronaswap.org/info/${pool.address}` : //wait for real version
               pool.symbol.includes("Genesis-LP") ?  `https://app.cronaswap.org/info/${pool.address}` : //wait for real version
               pool.symbol.includes("BenSwap") ? ({
@@ -2111,7 +2136,10 @@ function getUniPrices(tokens, prices, pool, chain="eth")
                 "smartbch": `https://info.benswap.cash/pair/${pool.address}`
               }[chain]) :
               pool.name.includes("MISTswap LP Token") ?  `https://analytics.mistswap.fi/pairs/${pool.address}` :
-              pool.symbol.includes("Proto-LP") ? `https://polygonscan.com/${pool.address}` :
+              pool.symbol.includes("Proto-LP")? ({
+                "matic":`https://polygonscan.com/${pool.address}` ,
+                "fantom": `https://fantomscan.com/address/${pool.address}`
+            }[chain]):
               pool.symbol.includes("Galaxy-LP") ? (
                 {
                     "bsc": `https://bsc-exchange.galaxyfinance.one/#/swap`,
@@ -2121,8 +2149,10 @@ function getUniPrices(tokens, prices, pool, chain="eth")
                 }[chain]) :
               pool.symbol.includes("LOVE LP") ? ({
                 "matic": `https://info.loveboat.exchange/pair/${pool.address}`
-              }[chain]) :
-              chain == "matic" ? `https://info.quickswap.exchange/pair/${pool.address}` :
+              }[chain]) : pool.symbol.includes('VENOM-LP')
+          ? `https://info.viper.exchange/pairs/${pool.address}`
+          : chain == "matic" ? `https://info.quickswap.exchange/pair/${pool.address}` :
+          pool.symbol.includes("Charm-LP") ?  `https://analytics.omnidex.finance/pair/${pool.address}` :
             `http://v2.uniswap.info/pair/${pool.address}`;
           const helperUrls = pool.is1inch ? [] :
           pool.symbol.includes("LSLP") ? [
@@ -2135,15 +2165,30 @@ function getUniPrices(tokens, prices, pool, chain="eth")
             `https://www.huckleberry.finance/#/remove/${t0address}/${t1address}`,
             `https://www.huckleberry.finance/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
           ] :
-          pool.symbol.includes("TLP") ? [
+          pool.symbol.includes("BEAM-LP") ? [
+            `https://app.beamswap.io/exchange/add/${t0address}/${t1address}`,
+            `https://app.beamswap.io/exchange/remove/${t0address}/${t1address}`,
+            `https://app.beamswap.io/exchange/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+          ] :
+          pool.symbol.includes("TLP") && !pool.name.includes("Thorus LP") ? [
             `https://www.trisolaris.io/#/add/${t0address}/${t1address}`,
             `https://www.trisolaris.io/#/remove/${t0address}/${t1address}`,
             `https://www.trisolaris.io/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+          ] :
+          pool.symbol.includes("TLP") && pool.name.includes("Thorus LP") ? [
+            `https://app.thorus.fi/add/${t0address}/${t1address}`,
+            `https://app.thorus.fi/remove/${t0address}/${t1address}`,
+            `https://app.thorus.fi/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
           ] :
           pool.symbol.includes("VVS") ? [
             `https://vvs.finance/add/${t0address}/${t1address}`,
             `https://vvs.finance/remove/${t0address}/${t1address}`,
             `https://vvs.finance/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+          ] :
+          pool.symbol.includes("CNO") ? [
+            `https://chronoswap.org/add/${t0address}/${t1address}`,
+            `https://chronoswap.org/remove/${t0address}/${t1address}`,
+            `https://chronoswap.org/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
           ] :
           pool.symbol.includes("OLP") ? [
             `https://oolongswap.com/#/add/${t0address}/${t1address}`,
@@ -2179,6 +2224,16 @@ function getUniPrices(tokens, prices, pool, chain="eth")
             `https://harmony.mochiswap.io/add/${t0address}/${t1address}`,
             `https://harmony.mochiswap.io/remove/${t0address}/${t1address}`,
             `https://harmony.mochiswap.io/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+          ] :
+          pool.symbol.includes("TETHYSLP") ? [
+            `https://tethys.finance/pool/add?inputCurrency=${t0address}&outputCurrency=${t1address}`,
+            `https://tethys.finance/pool/remove?inputCurrency=${t0address}&outputCurrency=${t1address}`,
+            `https://tethys.finance/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+          ] :
+          pool.name.includes("Duneswap LP Token") ? [
+            `https://www.duneswap.com/exchange/add/${t0address}/${t1address}`,
+            `https://www.duneswap.com/exchange/remove/${t0address}/${t1address}`,
+            `https://www.duneswap.com/exchange/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
           ] :
           pool.symbol.includes("SMUG-LP") ? [
             `https://smugswap.com/add/${t0address}/${t1address}`,
@@ -2260,6 +2315,11 @@ function getUniPrices(tokens, prices, pool, chain="eth")
             `hhttps://app.elk.finance/#/remove/${t0address}/${t1address}`,
             `https://app.elk.finance/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
           ] :
+          pool.symbol.includes("JEWEL-LP") ? [
+            `https://game.defikingdoms.com/#/add/${t0address}/${t1address}`,
+            `https://game.defikingdoms.com/#/remove/${t0address}/${t1address}`,
+            `https://game.defikingdoms.com/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+          ] :
           pool.symbol.includes("DLP") ? [
             `https://app.dodoex.io/pool/list?${pool.address}`,
             `https://app.dodoex.io/pool/list?${pool.address}`,
@@ -2295,11 +2355,17 @@ function getUniPrices(tokens, prices, pool, chain="eth")
             `https://exchange.pureswap.finance/#/remove/${t0address}/${t1address}`,
             `https://exchange.pureswap.finance/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
           ] :
-          pool.symbol.includes("Proto-LP") ? [
+          pool.symbol.includes("Proto-LP") ? ({
+            "matic":[
             `https://dex.protofi.app/#/add/${t0address}/${t1address}`,
             `https://dex.protofi.app/#/remove/${t0address}/${t1address}`,
             `https://dex.protofi.app/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
-          ] :
+          ],
+          "fantom":[
+            `https://fantomdex.protofi.app/#/add/${t0address}/${t1address}`,
+            `https://fantomdex.protofi.app/#/remove/${t0address}/${t1address}`,
+            `https://fantomdex.protofi.app/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+          ]}[chain])  :
           pool.symbol.includes("Field-LP") ? [
             `https://exchange.yieldfields.finance/#/add/${t0address}/${t1address}`,
             `https://exchange.yieldfields.finance/#/remove/${t0address}/${t1address}`,
@@ -2341,6 +2407,16 @@ function getUniPrices(tokens, prices, pool, chain="eth")
             `https://tangoswap.cash/add/${t0address}/${t1address}`,
             `https://tangoswap.cash/remove/${t0address}/${t1address}`,
             `https://tangoswap.cash/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+          ] :
+          pool.name.includes("Flare LP Token") ? [
+            `https://www.solarflare.io/exchange/add/${t0address}/${t1address}`,
+            `https://www.solarflare.io/exchange/remove/${t0address}/${t1address}`,
+            `https://www.solarflare.io/exchange/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+          ] :
+          pool.name.includes("1BCH LP Token") ? [
+            `https://1bch.com/add/${t0address}/${t1address}`,
+            `https://1bch.com/remove/${t0address}/${t1address}`,
+            `https://1bch.com/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
           ] :
           pool.symbol.includes("Galaxy-LP") ? ({
             "bsc": [
@@ -2385,7 +2461,17 @@ function getUniPrices(tokens, prices, pool, chain="eth")
               `https://loveboat.exchange/#/remove/${t0address}/${t1address}`,
               `https://loveboat.exchange/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
             ]
-          }[chain]) :
+          }[chain]) : pool.symbol.includes('VENOM-LP')
+          ? [
+              `https://viper.exchange/#/add/${t0address}/${t1address}`,
+              `https://viper.exchange/#/remove/${t0address}/${t1address}`,
+              `https://viper.exchange/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`,
+            ] :
+          pool.symbol.includes("Charm-LP") ? [
+            `https://omnidex.finance/add/${t0address}/${t1address}`,
+            `https://omnidex.finance/remove/${t0address}/${t1address}`,
+            `https://omnidex.finance/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+          ] :
           [ `https://app.uniswap.org/#/add/v2/${t0address}/${t1address}`,
             `https://app.uniswap.org/#/remove/v2/${t0address}/${t1address}`,
             `https://app.uniswap.org/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}&use=v2` ]
@@ -2443,6 +2529,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
                             "fantom": `https://fantom-exchange.galaxyfinance.one/#/swap`
                           }[chain]) :
                             chain == "matic" ? `https://info.quickswap.exchange/pair/${pool.address}` :
+                          pool.symbol.includes("Charm-LP") ?  `https://analytics.omnidex.finance/pair/${pool.address}` : 
                               `http://v2.uniswap.info/pair/${pool.address}`;
           const helperUrls = pool.is1inch ? [] :
             pool.symbol.includes("LSLP") ? [
@@ -2524,6 +2611,11 @@ function getUniPrices(tokens, prices, pool, chain="eth")
                             `https://fantom-exchange.galaxyfinance.one/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
                             ]
                         }[chain]) :
+                        pool.symbol.includes("Charm-LP") ? [
+                          `https://omnidex.finance/add/${t0address}/${t1address}`,
+                          `https://omnidex.finance/remove/${t0address}/${t1address}`,
+                          `https://omnidex.finance/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+                        ] :
                             [ `https://app.uniswap.org/#/add/v2/${t0address}/${t1address}`,
                               `https://app.uniswap.org/#/remove/v2/${t0address}/${t1address}`,
                               `https://app.uniswap.org/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}&use=v2` ]
@@ -2705,17 +2797,18 @@ function getBunicornPrices(tokens, prices, pool)
     }}
 }
 
-function getWrapPrices(tokens, prices, pool)
+function getWrapPrices(tokens, prices, pool, chain)
 {
   const wrappedToken = pool.token;
   if (wrappedToken.token0 != null) { //Uniswap
     const uniPrices = getUniPrices(tokens, prices, wrappedToken);
-    const etherscanUrl = "https://etherscan.io/address/" + pool.address;
+    const contractUrl = getChainExplorerUrl(chain, pool.address)
     const poolUrl = pool.is1inch ? "https://1inch.exchange/#/dao/pools" :
     pool.symbol.includes("SLP") ?  `http://analytics.sushi.com/pairs/${wrappedToken.address}` :
-    (pool.symbol.includes("Cake") || pool.symbol.includes("Pancake")) ?  `http://pancakeswap.info/pair/${wrappedToken.address}`
+    (pool.symbol.includes("Cake") || pool.symbol.includes("Pancake")) ?  `http://pancakeswap.info/pair/${wrappedToken.address}` :
+    pool.symbol.includes("Charm-LP") ?  `https://analytics.omnidex.finance/pair/${wrappedToken.address}`
       : `http://v2.uniswap.info/pair/${wrappedToken.address}`;
-    const name = `<a href='${etherscanUrl}' target='_blank'>${pool.symbol}</a> (Wrapped <a href='${poolUrl}' target='_blank'>${uniPrices.stakeTokenTicker}</a>)`;
+    const name = `<a href='${contractUrl}' target='_blank'>${pool.symbol}</a> (Wrapped <a href='${poolUrl}' target='_blank'>${uniPrices.stakeTokenTicker}</a>)`;
     const price = (pool.balance / 10 ** wrappedToken.decimals) * uniPrices.price / (pool.totalSupply / 10 ** pool.decimals);
     const tvl = pool.balance / 10 ** wrappedToken.decimals * price;
     const staked_tvl = pool.staked * price;
@@ -2744,11 +2837,11 @@ function getWrapPrices(tokens, prices, pool)
     else {
       tokenPrice = getParameterCaseInsensitive(prices, wrappedToken.address)?.usd;
     }
-    const poolUrl = "https://etherscan.io/address/" + pool.address;
-    const etherscanUrl = "https://etherscan.io/address/" + pool.address;
-    const name = `<a href='${etherscanUrl}' target='_blank'>${pool.symbol}</a> (Wrapped <a href='${poolUrl}' target='_blank'>${wrappedToken.symbol}</a>)`;
+    const poolUrl = getChainExplorerUrl(chain, pool.token.address)
+    const contractUrl = getChainExplorerUrl(chain, pool.address)
+    const name = `<a href='${contractUrl}' target='_blank'>${pool.symbol}</a> (Wrapped <a href='${poolUrl}' target='_blank'>${wrappedToken.symbol}</a>)`;
     const price = (pool.balance / 10 ** wrappedToken.decimals) * tokenPrice / (pool.totalSupply / 10 ** pool.decimals);
-    const tvl = pool.balance / 10 ** wrappedToken.decimals * price;
+    const tvl = pool.totalSupply / 10 ** pool.decimals * price
     const staked_tvl = pool.staked * price;
     prices[pool.address] = { usd : price };
     return {
@@ -2797,11 +2890,20 @@ function getErc20Prices(prices, pool, chain="eth") {
     case "fantom":
       poolUrl=`https://ftmscan.com/token/${pool.address}`;
       break;
+    case "emerald":
+      poolUrl=`https://explorer.emerald.oasis.dev/token/${pool.address}`;
+      break;
     case "metis":
       poolUrl=`https://andromeda-explorer.metis.io/token/${pool.address}`;
       break;
+    case "meter":
+      poolUrl=`https://scan.meter.io/token/${pool.address}`;
+      break;
     case "cronos":
-      poolUrl=`https://cronos.crypto.org/explorer/address/${pool.address}`;
+      poolUrl=`https://cronoscan.com/address/${pool.address}`;
+      break;
+    case "moonbeam":
+      poolUrl=`https://moonscan.io/address/${pool.address}`;
       break;
     case "velas":
       poolUrl=`https://evmexplorer.velas.com/address/${pool.address}`;
@@ -2828,7 +2930,7 @@ function getErc20Prices(prices, pool, chain="eth") {
       poolUrl=`https://iotexscan.io/token/${pool.address}`;
       break;
     case "moonriver":
-      poolUrl=`https://blockscout.moonriver.moonbeam.network/address/${pool.address}`;
+      poolUrl=`https://moonriver.moonscan.io/address/${pool.address}`;
       break;
     case "arbitrum":
       poolUrl=`https://arbiscan.io/address/${pool.address}`;
@@ -2841,6 +2943,9 @@ function getErc20Prices(prices, pool, chain="eth") {
       break;
     case "polis":
       poolUrl=`https://explorer.polis.tech/address/${pool.address}`;
+      break;
+    case "telos":
+      poolUrl=`https://www.teloscan.io/address/${pool.address}`;
       break;
   }
 
@@ -2863,6 +2968,7 @@ function getErc20Prices(prices, pool, chain="eth") {
     staked_tvl : staked_tvl,
     price : price,
     stakeTokenTicker : pool.symbol,
+    tvl : tvl,
     print_price() {
       _print(`${name} Price: $${displayPrice(price)} Market Cap: $${formatMoney(tvl)} ${getDexguruTokenlink()}`);
       _print(`Staked: ${pool.staked.toFixed(4)} ${pool.symbol} ($${formatMoney(staked_tvl)})`);
@@ -2886,7 +2992,12 @@ function getErc20Prices(prices, pool, chain="eth") {
 }
 
 function getCurvePrices(prices, pool, chain) {
-  var price = (getParameterCaseInsensitive(prices,pool.token.address)?.usd);
+  var price;
+    if(pool.token !=undefined){
+        price = (getParameterCaseInsensitive(prices,pool.token.address)?.usd);
+    }else{
+        return {}
+    }
   if(price){
     price = price * pool.virtualPrice;
   }else{
@@ -2925,40 +3036,6 @@ function getCurvePrices(prices, pool, chain) {
     print_contained_price() {
     },
     tvl : tvl
-  }
-}
-
-function getCurveCryptoPrices2(prices, pool, chain){
-  let tvl = 0;
-  let pprice = 0;
-  for(let i = 0; i < pool.coins.length; i++){
-    pprice = (getParameterCaseInsensitive(prices,pool.coins[i].address)?.usd);
-    if(pprice){
-      if (getParameterCaseInsensitive(prices, pool.address)?.usd ?? 0 == 0) {
-        prices[pool.address] = { usd : pprice };
-      }
-      tvl += pool.coins[i].balance * pprice;
-    }else{
-      pprice = getPoolPrices(pool.token.tokens, prices, pool.token, chain).price;
-      prices[pool.address] = { usd : pprice };
-      tvl += pool.coins[i].balance * pprice;
-    }
-  }
-  const price = tvl / (pool.totalSupply / 10 ** pool.decimals);
-  const staked_tvl = pool.balance * price;
-  const poolUrl = getChainExplorerUrl(chain, pool.address);
-  const name = `<a href='${poolUrl}' target='_blank'>${pool.name}</a>`;
-  return {
-    staked_tvl : staked_tvl,
-    price,
-    stakeTokenTicker : pool.symbol,
-    print_price() {
-      _print(`${name} Price: $${formatMoney(price)} Market Cap: $${formatMoney(tvl)}`);
-      _print(`Staked: ${pool.balance.toFixed(4)} ${pool.symbol} ($${formatMoney(staked_tvl)})`);
-    },
-    print_contained_price() {
-    },
-    staked_tvl
   }
 }
 
@@ -3038,10 +3115,9 @@ function getPoolPrices(tokens, prices, pool, chain = "eth") {
   if (pool.isGelato) return getGelatoPrices(tokens, prices, pool, chain);
   if (pool.token0 != null) return getUniPrices(tokens, prices, pool, chain);
   if (pool.xcp_profit != null) return getTriCryptoPrices(prices, pool, chain);
-  if (pool.A_precise != null) return getCurveCryptoPrices2(prices, pool, chain);
   if (pool.yearn) return getYearnPrices(prices, pool, chain);
   if (pool.virtualPrice != null) return getCurvePrices(prices, pool, chain); //should work for saddle too
-  if (pool.token != null) return getWrapPrices(tokens, prices, pool);
+  if (pool.token != null) return getWrapPrices(tokens, prices, pool, chain);
   return getErc20Prices(prices, pool, chain);
 }
 
@@ -3479,11 +3555,23 @@ async function printSynthetixPool(App, info, chain="eth", customURLs) {
       case "fantom":
         _print(`<a target="_blank" href="https://ftmscan.com/address/${info.stakingAddress}#code">FTM Scan</a>`);
         break;
+      case "emerald":
+        _print(`<a target="_blank" href="https://explorer.emerald.oasis.dev/address/${info.stakingAddress}#code">FTM Scan</a>`);
+        break;
       case "metis":
         _print(`<a target="_blank" href="https://andromeda-explorer.metis.io/address/${info.stakingAddress}#code">Andromeda Explorer</a>`);
         break;
+      case "meter":
+        _print(`<a target="_blank" href="https://scan.meter.io/address/${info.stakingAddress}#code">Andromeda Explorer</a>`);
+        break;
       case "cronos":
-        _print(`<a target="_blank" href="https://cronos.crypto.org/explorer/address/${info.stakingAddress}#code">Cronos Scan</a>`);
+        _print(`<a target="_blank" href="https://cronoscan.com/address/${info.stakingAddress}#code">Cronos Scan</a>`);
+        break;
+      case "moonriver":
+        _print(`<a target="_blank" https://moonriver.moonscan.io/address/${info.stakingAddress}#code">Moonriver Explorer</a>`);
+        break;
+      case "moonbeam":
+        _print(`<a target="_blank" href="https://moonscan.io/address/${info.stakingAddress}#code">Moonbeam Scan</a>`);
         break;
       case "velas":
         _print(`<a target="_blank" href="https://evmexplorer.velas.com/address/${info.stakingAddress}#code">Velas Scan</a>`);
@@ -3645,14 +3733,20 @@ function getChainExplorerUrl(chain, address){
   switch(chain){
     case "eth" :
       return `https://etherscan.io/token/${address}`;
+    case "bsc" :
+      return `https://bscscan.com/token/${address}`;
     case "fantom" :
       return `https://ftmscan.com/token/${address}`;
     case "harmony" :
       return `https://explorer.harmony.one/address/${address}`;
     case "arbitrum" :
-      return `https://arbiscan.io/token/${address}`;
+      return `https://arbiscan.io/address/${address}`;
     case "cronos" :
-      return `https://cronos.crypto.org/explorer/address/${address}`;
+      return `https://cronoscan.com/address/${address}`;
+    case "moonbeam" :
+      return `https://moonscan.io/address/${address}`;
+    case "moonriver" :
+      return `https://moonriver.moonscan.io/address/${address}`
     case "velas" :
       return `https://evmexplorer.velas.com/address/${address}`;
     case "aurora" :
@@ -3661,5 +3755,13 @@ function getChainExplorerUrl(chain, address){
       return `https://blockexplorer.boba.network/address/${address}`;
     case "metis" :
       return `https://andromeda-explorer.metis.io/address/${address}`;
+    case "meter" :
+      return `https://scan.meter.io/address/${address}`;
+    case "emerald" :
+      return `https://explorer.emerald.oasis.dev/token/${address}`;
+    case "telos" :
+      return `https://www.teloscan.io/address/${address}`;
+    case "matic" :
+      return `https://polygonscan.com/address/${address}`;
   }
 }

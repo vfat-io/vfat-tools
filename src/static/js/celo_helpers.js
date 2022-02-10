@@ -9,7 +9,7 @@ const celoTokens = [
     { "id": "wrapped-bitcoin","symbol": "WBTC","contract": "0xD629eb00dEced2a080B7EC630eF6aC117e614f1b" },
     { "id": "usd-coin","symbol": "USDC","contract": "0x765DE816845861e75A25fCA122bb6898B8B1282a" },
     { "id": "weth","symbol": "WETH","contract": "0x2DEf4285787d58a2f811AF24755A8150622f4361" },
-    { "id": "sushi","symbol": "SUSHI","contract": "0xD15EC721C2A896512Ad29C671997DD68f9593226" }
+    { "id": "sushi","symbol": "SUSHI","contract": "0x29dFce9c22003A4999930382Fd00f9Fd6133Acd1" }
 ]
 
 async function getCeloPrices() {
