@@ -89,7 +89,8 @@ const main = async() => {
         ["Avaviking               ",`<a href="avaviking"        >Various</a>`,"VIKING       ","https://www.avaviking.com"],
         ["Coup Farm               ",`<a href="coup"             >Various</a>`,"COUP         ","https://coup.farm"],
         ["ThorusFi                ",`<a href="thorusfi"         >Various</a>`,"THO          ","https://thorus.fi"],
-        ["Selenium                ",`<a href="selenium"         >Various</a>`,"SELENIUM     ","https://selenium.finance"]
+        ["Selenium                ",`<a href="selenium"         >Various</a>`,"SELENIUM     ","https://selenium.finance"],
+        ["WOWswap                 ",`<a href="wowswap"          >Various</a>`,"WOW          ","https://wowswap.io"]
     ]
   }
 

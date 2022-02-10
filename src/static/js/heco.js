@@ -24,7 +24,8 @@ const main = async() => {
       ["WePiggy   ",`<a href="wepiggy"   >Various</a>`,"WPC     ","https://app.wepiggy.com"],
       ["Galaxy Finance One", `<a href="galaxy_triton" >Various</a>`, "TRITON  ","https://heco-triton.galaxyfinance.one/"],
       ["OberonFinance",      `<a href="galaxy_oberon" >Various</a>`, "OBERON  ","https://heco-oberon.galaxyfinance.one/"],
-      ["Beefy     ",`<a href="beefy"     >Various</a>`, "BIFI   ","https://app.beefy.finance/#/heco"]
+      ["Beefy     ",`<a href="beefy"     >Various</a>`, "BIFI   ","https://app.beefy.finance/#/heco"],
+      ["WOWswap   ",`<a href="wowswap"   >Various</a>`, "WOW    ","https://wowswap.io"],
     ]
   }
 

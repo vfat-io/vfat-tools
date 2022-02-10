@@ -428,7 +428,8 @@ const main = async () => {
       ['Plotx               ',"",  `<a href="plotx"           >Various</a>`, 'MATIC/bPLOT  ','https://plotx.io'],
       ['Argano              ',"",  `<a href="argano"          >Various</a>`, 'AGOy         ','https://www.argano.io'],
       ['Harvest             ',"",  `<a href="harvest"         >Various</a>`, 'Various      ','https://harvest.finance'],
-      ['Beverage            ',"",  `<a href="beverage"        >Various</a>`, 'DRINK        ','https://matic.beverage.finance']
+      ['Beverage            ',"",  `<a href="beverage"        >Various</a>`, 'DRINK        ','https://matic.beverage.finance'],
+      ['WOWswap             ',"",  `<a href="wowswap"         >Various</a>`, 'WOW          ','https://wowswap.io'],
     ],
   }
 
