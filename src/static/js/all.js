@@ -169,7 +169,8 @@ const main = async () => {
       ["Instrumental                 ", `<a href="../instrumental/"      >Various</a>`, "Instrumental       ", "https://app.instrumental.finance"],
       ["Curve                        ", `<a href="../curve/"             >Various</a>`, "Various            ", "https://curve.fi"],
       ["DeFiner                      ", `<a href="../definer/"           >Various</a>`, "FIN                ", "https://app.definer.org"],
-      ["Looksrare                    ", `<a href="../looksrare/"         >Various</a>`, "LOOKS              ", "https://looksrare.org"]
+      ["Looksrare                    ", `<a href="../looksrare/"         >Various</a>`, "LOOKS              ", "https://looksrare.org"],
+      ["WOWswap                      ", `<a href="../wowswap/"            >Various</a>`,"WOW                ", "https://wowswap.io"],
     ]
   }
 
