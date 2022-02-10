@@ -47,6 +47,7 @@ const main = async() => {
       ["L2Swap              ",""                                                                                               , `<a href="/arbitrum/l2swap"      >Various</a>`,"LSP                ","https://l2swap.finance"],
       ["Arbiz               ",""                                                                                               , `<a href="/arbitrum/arbiz"       >Various</a>`,"ARBIZ              ","https://farm.arbiz.io"],
       ["JonesDAO            ",""                                                                                               , `<a href="/arbitrum/jones"       >Various</a>`,"JONES              ","https://jonesdao.io/farms"],
+      ["Vesta               ",""                                                                                               , `<a href="/arbitrum/vesta"       >Various</a>`,"VSTA               ","https://vestafinance.xyz"]
     ]
   }
 

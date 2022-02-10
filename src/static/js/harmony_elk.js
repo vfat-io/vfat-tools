@@ -37,5 +37,5 @@ $(function() {
     "0xB37910e0daA452dE7f69Bd7D2BAde86c4fba982d",
     "0x296CF20137fD77B6C6D7ef43120528Fc3eDfC7fd",
     "0xf4f3495a35c0a73268eEa08b258C7968E976F5D4",
-    //"0x8ecb654c30f7ba69adf1e70be9e20b1b6ca3798f"  MAI / ELK stakingToken function error. I cant read the code from the contract
+    "0x834Ce3bae42Bb69097a752e0a3Ccac7E4b0e24A7"
   ]
