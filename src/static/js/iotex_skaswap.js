@@ -11,7 +11,7 @@ $(function() {
       _print(`Initialized ${App.YOUR_ADDRESS}\n`);
       _print("Reading smart contracts...\n");
 
-     const SKA_CHEF_ADDR = "0xa5B582BA808543D50f0980E684300Ecb0898423C";
+     const SKA_CHEF_ADDR = "0xB9fb2a489b80ce9bd1b4b5E743f17A9877AA7206";
      const IDOENDED = false;
      const rewardTokenTicker = "SKA";
      const SKA_CHEF = new ethers.Contract(SKA_CHEF_ADDR, SKA_CHEF_ABI, App.provider);
@@ -24,14 +24,14 @@ $(function() {
 
      if(currentBlock < startBlock && !IDOENDED){
       _print(`  ` ); 
-      _print(`********** Liquidity mining starts on Thursday, February 10, 2022. ********** ` ); 
+      _print(`********** Liquidity mining starts on February 17, 2022 10PM UTC. ********** ` ); 
       _print(` ` ); 
       _print(`-` ); 
       _print(`-` ); 
       _print(` ` ); 
       _print(`Twitter - https://twitter.com/SkaSwapFinance` ); 
       _print(`Discord - https://discord.gg/jRwj4VrUc4` ); 
-      _print(`Telegram (Announcements) - https://t.me/skaswapfinance` ); 
+      _print(`Telegram (Announcements) - https://t.me/skaswap` ); 
 
 
      }else{
