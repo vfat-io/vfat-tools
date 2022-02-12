@@ -201,7 +201,9 @@ const main = async () => {
       ['Astral Farm        ', `<a href='astralfarm'   >Various</a>`, 'ASTRAL       ', 'https://astral-farm.com'],
       ['Knights of Fantom  ', `<a href='knightsfantom'>Various</a>`, 'KNIGHTS      ', 'https://www.knights-of-fantom.com'],
       ['Based Finance      ', `<a href='based'        >Various</a>`, 'BASED        ', 'https://basedfinance.io'],
-      ['MyMine             ', `<a href='mymine'       >Various</a>`, 'MYMINE       ', 'https://mymine.defiwaterfall.com']
+      ['MyMine             ', `<a href='mymine'       >Various</a>`, 'MYMINE       ', 'https://mymine.defiwaterfall.com'],
+      ['Platinum Finance   ', `<a href='platinumfi'   >Various</a>`, 'SPLAT / PLAT ', 'https://platinumfi.app'],
+      ['3omb               ', `<a href='3omb'         >Various</a>`, '3SHARES / 3OMB', 'https://3omb.finance']
 
     ],
   }
