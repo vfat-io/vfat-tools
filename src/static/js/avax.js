@@ -90,7 +90,8 @@ const main = async() => {
         ["Coup Farm               ",`<a href="coup"             >Various</a>`,"COUP         ","https://coup.farm"],
         ["ThorusFi                ",`<a href="thorusfi"         >Various</a>`,"THO          ","https://thorus.fi"],
         ["Selenium                ",`<a href="selenium"         >Various</a>`,"SELENIUM     ","https://selenium.finance"],
-        ["GMX                     ",`<a href="gmx"              >Various</a>`,"Various      ","https://gmx.io"]
+        ["GMX                     ",`<a href="gmx"              >Various</a>`,"Various      ","https://gmx.io"],
+        ["HakuSwap                ",`<a href="hakuswap"         >Various</a>`,"HAKU         ","https://hakuswap.com"]
     ]
   }
 
