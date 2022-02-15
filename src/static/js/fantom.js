@@ -205,7 +205,9 @@ const main = async () => {
       ['Platinum Finance   ', `<a href='platinumfi'   >Various</a>`, 'SPLAT / PLAT ', 'https://platinumfi.app'],
       ['3omb               ', `<a href='3omb'         >Various</a>`, '3SHARES / 3OMB', 'https://3omb.finance'],
       ['SpectreFi          ', `<a href='spectrefi'    >Various</a>`, 'SPECT        ', 'https://spectrefi.com'],
-      ['Scarface Finance   ', `<a href='scarface'     >Various</a>`, 'SSHARE / SCAR', 'https://scarface.finance']
+      ['Scarface Finance   ', `<a href='scarface'     >Various</a>`, 'SSHARE / SCAR', 'https://scarface.finance'],
+      ['The Don Finance    ', `<a href='thedon'       >Various</a>`, 'THEDON        ', 'https://thedon.finance']
+
 
     ],
   }
