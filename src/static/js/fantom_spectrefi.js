@@ -11,7 +11,7 @@ $(function () {
         _print(`Initialized ${App.YOUR_ADDRESS}\n`);		
         _print("Reading smart contracts...\n");		
   
-        const SPECT_CHEF_ADDR = "0x0B04f0AbC7613A0221ea036797D2a32f7E5AaD05";		
+        const SPECT_CHEF_ADDR = "0x0a53F16a00c593cbe5F6C890E751338396FE680f";		
         const rewardTokenTicker = "SPECT";		
         const SPECT_CHEF = new ethers.Contract(SPECT_CHEF_ADDR, SPECT_CHEF_ABI, App.provider);
   
