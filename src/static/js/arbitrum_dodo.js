@@ -16,9 +16,10 @@ async function main() {
    const DODO_CHEF = new ethers.Contract(DODO_CHEF_ADDR, DODO_CHEF_ABI, App.provider);
 
    //new??? 0x38dbb42c4972116c88e27edfacd2451cf1b14255
-
+   
    const DODO_CHEF_ADDR0 = "0xE3C10989dDc5Df5B1b9c0E6229c2E4e0862fDe3e";  //contract ok
-   const DODO_CHEF_ADDR1 = "0x06633cd8E46C3048621A517D6bb5f0A84b4919c6";
+   //const DODO_CHEF_ADDR1 = "0x06633cd8E46C3048621A517D6bb5f0A84b4919c6";
+   const DODO_CHEF_ADDR1 = "0x23fFB3687d3800FDDde75E7e604392fEa15c8757";
      const rewardTokenTicker = "DODO";
      const DODO_CHEF0 = new ethers.Contract(DODO_CHEF_ADDR0, DODO_CHEF_ABI0, App.provider);
      const DODO_CHEF1 = new ethers.Contract(DODO_CHEF_ADDR1, DODO_CHEF_ABI, App.provider);
@@ -259,7 +260,7 @@ function printDodoChefContractLinks(App, chefAbi, chefAddr, poolIndex, poolAddre
   }else{
     _print_link(`Unstake ${userStaked.toFixed(fixedDecimals)} ${stakeTokenTicker}`, unstake)
   }
-  _print_link(`Claim ${pendingRewardTokens[0].toFixed(fixedDecimals)} ${rewardTokenTickers[0]} ($${formatMoney(pendingRewardTokens[0]*rewardTokenPrices[0])}) + ${pendingRewardTokens[1].toFixed(fixedDecimals)} ${rewardTokenTickers[1]} ($${formatMoney(pendingRewardTokens[1]*rewardTokenPrices[1])})`, claim)
+  _print_link(`Claim ${pendingRewardTokens[0].toFixed(fixedDecimals)} ${rewardTokenTickers[0]} ($${formatMoney(pendingRewardTokens[0]*rewardTokenPrices[0])})`, claim)
   _print(`Staking or unstaking also claims rewards.`)
   _print("");
 }
