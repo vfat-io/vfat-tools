@@ -159,7 +159,6 @@ const main = async() => {
       ["The Farming Den     ","", `<a href="tft"           >Various</a>`,"TFT              ","https://thefarmingden.com"],
       ["ThunderSwap         ","", `<a href="thunder"       >Various</a>`,"TNDR             ","https://thunderswap.finance"],
       ["PoseidonSwap        ","", `<a href="poseidon"      >Various</a>`,"POS              ","https://poseidonswap.com"],
-      ["Bourbon             ","", `<a href="bourbon"       >Various</a>`,"BRRL             ","https://bourbondefi.com"],
       ["The Lab             ","", `<a href="lab"           >Various</a>`,"LABO             ","https://thelab.finance"],
       ["Pepper              ","", `<a href="pepper"        >Various</a>`,"PEPR             ","https://old.pepr.finance"],
       ["Pepper v2           ","", `<a href="pepper_v2"     >Various</a>`,"PEPR             ","https://app.pepr.finance"],
@@ -569,7 +568,8 @@ const main = async() => {
       ["Metacosmix (Old Pokemoon)","", `<a href="metacosmix">Various</a>`,"KBN             ","https://www.metacosmix.io"],
       ["BostonSwap          ","", `<a href="bostonswap"    >Various</a>`,"BEANS            ","https://bostonswap.finance"],
       ["Too Farm            ","", `<a href="too"           >Various</a>`,"TFARM            ","https://too.farm"],
-      ["The Animal Farm     ","", `<a href="theanimal"     >Various</a>`,"PIGS / DOGS      ","https://theanimal.farm"]
+      ["The Animal Farm     ","", `<a href="theanimal"     >Various</a>`,"PIGS / DOGS      ","https://theanimal.farm"],
+      ["Bourbon             ","", `<a href="bourbon"       >Various</a>`,"BSHARES / BOURBONCAKE","https://bourbondefi.com"]
     ]}
 
   let table = new AsciiTable().fromJSON(tableData);
