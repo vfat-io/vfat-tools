@@ -2201,7 +2201,7 @@ async function loadData(App, token, comptroller, prices) {
   const borrowAPY = ((1 + borrowRatePerTimestamp_ / 1e18) ** 31536000 - 1) * 100;
 
   let supplyFarmingAPY = 0;
-  const [farmingRewards_] = await App.ethcallProvider.all([comptroller.rewardSpeeds(0, "0xc63AB8c72e636C9961c5e9288b697eC5F0B8E1F7")])
+  const [farmingRewards_] = await App.ethcallProvider.all([comptroller.rewardSpeeds(0, token)])
   const farmingRewards = farmingRewards_ / 1e18;
   const blocksPerYear_ = blocksPerYear * 1
   const tvl = totalSupply * underlyingPrice;
