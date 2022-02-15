@@ -2165,19 +2165,19 @@ async function loadData(App, token, comptroller, prices) {
       PTOKEN_CONTRACT.interestRateModel(),
   ]);
 
-  //let underlyingSymbol, underlyingDecimals;
+  let underlyingSymbol, underlyingDecimals;
 
   if (token.toLowerCase() === contracts.gas.p_address.toLowerCase()) {
-      let underlyingSymbol_ = contracts.gas.symbol;
-      let underlyingDecimals_ = contracts.gas.decimals;
+      underlyingSymbol = contracts.gas.symbol;
+      underlyingDecimals = contracts.gas.decimals;
   } else {
       const [underlying] = await App.ethcallProvider.all([PTOKEN_CONTRACT.underlying()]);
       //const UNDERLYING_CONTRACT = new ethcall.Contract(underlying, TRANQ_ABI.erc20, App.provider);
       //[underlyingSymbol] = await App.ethcallProvider.all([UNDERLYING_CONTRACT.symbol()]);
       //[underlyingDecimals] = await App.ethcallProvider.all([UNDERLYING_CONTRACT.decimals()]);
       const UNDERLYING_CONTRACT = new ethers.Contract(underlying, TRANQ_ABI.erc20, App.provider)
-      let underlyingSymbol = await UNDERLYING_CONTRACT.symbol();
-      let underlyingDecimals = await UNDERLYING_CONTRACT.decimals();
+      underlyingSymbol = await UNDERLYING_CONTRACT.symbol();
+      underlyingDecimals = await UNDERLYING_CONTRACT.decimals();
   }
 
   const ORACLE_CONTRACT = new ethcall.Contract(contracts.oracle, TRANQ_ABI.oracle, App.provider);
