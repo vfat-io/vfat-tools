@@ -1990,6 +1990,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
   else if (pool.symbol.includes("Cake")) stakeTokenTicker += " Cake LP";
   else if (pool.name.includes("Value LP")) stakeTokenTicker += " Value LP";
   else if (pool.name.includes("Duneswap LP Token")) stakeTokenTicker += " Duneswap LP";
+  else if (pool.name.includes("Lizard LPs")) stakeTokenTicker += " LLP";
   else if (pool.symbol.includes("PGL")) stakeTokenTicker += " PGL";
   else if (pool.symbol.includes("JLP")) stakeTokenTicker += " JLP";
   else if (pool.symbol.includes("CS-LP")) stakeTokenTicker += " CSS LP";
@@ -2094,6 +2095,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
               pool.symbol.includes("CS-LP") ?  `https://app.coinswap.space/#/` :
               pool.name.includes("Value LP") ?  `https://info.vswap.fi/pool/${pool.address}` :
               pool.name.includes("Duneswap LP Token") ?  `https://explorer.emerald.oasis.dev/token/${pool.address}` :
+              pool.name.includes("Lizard LPs") ?  `https://explorer.emerald.oasis.dev/token/${pool.address}` :
               pool.name.includes("Flare LP Token") ?  `https://analytics.solarflare.io/pairs/${pool.address}` :
               pool.symbol.includes("SCLP") ?  `https://analytics.swapperchan.com/pairs/${pool.address}` :
               pool.name.includes("Ubeswap") ?  `https://info.ubeswap.org/pair/${pool.address}` :
@@ -2234,6 +2236,11 @@ function getUniPrices(tokens, prices, pool, chain="eth")
             `https://www.duneswap.com/exchange/add/${t0address}/${t1address}`,
             `https://www.duneswap.com/exchange/remove/${t0address}/${t1address}`,
             `https://www.duneswap.com/exchange/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+          ] :
+          pool.name.includes("Lizard LPs") ? [
+            `https://app.lizard.exchange/add/${t0address}/${t1address}`,
+            `https://app.lizard.exchange/remove/${t0address}/${t1address}`,
+            `https://app.lizard.exchange/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
           ] :
           pool.symbol.includes("SMUG-LP") ? [
             `https://smugswap.com/add/${t0address}/${t1address}`,
@@ -2529,7 +2536,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
                             "fantom": `https://fantom-exchange.galaxyfinance.one/#/swap`
                           }[chain]) :
                             chain == "matic" ? `https://info.quickswap.exchange/pair/${pool.address}` :
-                          pool.symbol.includes("Charm-LP") ?  `https://analytics.omnidex.finance/pair/${pool.address}` : 
+                          pool.symbol.includes("Charm-LP") ?  `https://analytics.omnidex.finance/pair/${pool.address}` :
                               `http://v2.uniswap.info/pair/${pool.address}`;
           const helperUrls = pool.is1inch ? [] :
             pool.symbol.includes("LSLP") ? [
