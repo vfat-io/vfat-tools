@@ -20,6 +20,7 @@ const HarmonyTokens = [
   {id: 'crypto-royale', symbol: 'ROY', contract: '0xfe1b516A7297eb03229A8B5AfAD80703911E81cB'},
   {id: 'comfy', symbol: 'COMFY', contract: '0x702f78E81Cf3DfaE89648b5a9e2e1aa8db1De546'},
   {id: 'comfy-share', symbol: 'CSHARE', contract: '0x3CB98cacd44Ee77eb35E99EB74Ace91bF550c964'},
+  {id: 'tranquil-finance', symbol: 'TRANQ', contract: '0xcf1709ad76a79d5a60210f23e81ce2460542a836'},
 ]
 
 async function getHarmonyPrices() {

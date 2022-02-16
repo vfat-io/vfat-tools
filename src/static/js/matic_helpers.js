@@ -433,7 +433,6 @@ async function loadMaticBasisFork(data) {
     hideLoading();
 }
 
-
 async function getMaticPoolInfo(app, chefContract, chefAddress, poolIndex, pendingRewardsFunction) {  
   const poolInfo = await chefContract.poolInfo(poolIndex);  
   if (poolInfo.allocPoint == 0) {

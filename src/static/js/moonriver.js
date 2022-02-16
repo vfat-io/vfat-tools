@@ -31,6 +31,7 @@ const main = async() => {
       ["Athena                   ", `<a href="athena"        >Various</a>`,"OSHARE      ","https://www.athenamoney.org"],
       ["Neku                     ", `<a href="neku"          >Various</a>`,"NEKU        ","https://neku.io"],
       ["MoonSwap                 ", `<a href="moonswap"      >Various</a>`,"MOON        ","https://moonswap.tech"],
+      ["Moonwell                 ", `<a href="moonwell"      >Various</a>`,"APOLLO      ","https://moonwell.fi"]
     ]
   }
 
