@@ -102,7 +102,7 @@ async function loadFantomLiquidContract(App, tokens, prices, chef, chefAddress, 
 async function getLiquidPoolInfo(app, chefContract, chefAddress, poolIndex, pendingRewardsFunction) {
   const poolInfo = await chefContract.poolInfo(poolIndex);
   const lpToken = await chefContract.lpToken(poolIndex);
-  if (poolInfo.allocPoint == 0) {
+  if (poolInfo.allocPoint == 0 || poolIndex == 26) {  //problem with poolToken with id 26. address 0x000...001
     return {
       address: lpToken,
       allocPoints: poolInfo.allocPoint ?? 1,

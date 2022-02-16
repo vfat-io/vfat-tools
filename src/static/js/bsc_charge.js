@@ -47,7 +47,7 @@ async function main() {
 
 
     let table = `<table style="width:400px"><tbody><tr>`
-        +`<td style="width:100px"><img src="https://www.chargedefi.fi/static/media/static.180ec003.png" style="height:64px"/></td>`
+        +`<td style="width:100px"><img src="https://www.chargedefi.fi/static/media/static-wb.110b300e.png" style="height:64px"/></td>`
         +`<td style="width:300px">Current Supply: ${parseFloat(staticTotalSupply).toFixed(0)} Static`
         +`<br>Fully diluted marketcap: $${formatMoney(staticPrice * staticTotalSupply)}`
         +`<br><b>Price: 1 Static = $${parseFloat(staticPrice).toFixed(4)}</b>`
@@ -56,7 +56,7 @@ async function main() {
     _print(table)
 
     table = `<table style="width:400px"><tbody><tr>`
-        +`<td style="width:100px"><img src="https://www.chargedefi.fi/static/media/charge.53089c19.png" style="height:64px"/></td>`
+        +`<td style="width:100px"><img src="https://www.chargedefi.fi/static/media/charge-wb.2725bf56.png" style="height:64px"/></td>`
         +`<td style="width:300px">Current Supply: ${parseFloat(chargeTotalSupply).toFixed(0)} Charge`
         +`<br>Max Supply: ${parseFloat(chargeMaxSupply).toFixed(0)} Charge`
         +`<br>Fully diluted marketcap: $${formatMoney(chargePrice * chargeMaxSupply)}`

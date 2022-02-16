@@ -12,11 +12,14 @@ async function main() {
     _print(`Initialized ${App.YOUR_ADDRESS}\n`);
     _print("Reading smart contracts...\n");
 
-   const DODO_CHEF_ADDR = "0x98CEb851aF3d8627287885D56AEA863B848CeB6F";
+   const DODO_CHEF_ADDR = "0x98CEb851aF3d8627287885D56AEA863B848CeB6F"; //doesnt work
    const DODO_CHEF = new ethers.Contract(DODO_CHEF_ADDR, DODO_CHEF_ABI, App.provider);
 
-   const DODO_CHEF_ADDR0 = "0xE3C10989dDc5Df5B1b9c0E6229c2E4e0862fDe3e";
-   const DODO_CHEF_ADDR1 = "0x06633cd8E46C3048621A517D6bb5f0A84b4919c6";
+   //new??? 0x38dbb42c4972116c88e27edfacd2451cf1b14255
+   
+   const DODO_CHEF_ADDR0 = "0xE3C10989dDc5Df5B1b9c0E6229c2E4e0862fDe3e";  //contract ok
+   //const DODO_CHEF_ADDR1 = "0x06633cd8E46C3048621A517D6bb5f0A84b4919c6";
+   const DODO_CHEF_ADDR1 = "0x23fFB3687d3800FDDde75E7e604392fEa15c8757";
      const rewardTokenTicker = "DODO";
      const DODO_CHEF0 = new ethers.Contract(DODO_CHEF_ADDR0, DODO_CHEF_ABI0, App.provider);
      const DODO_CHEF1 = new ethers.Contract(DODO_CHEF_ADDR1, DODO_CHEF_ABI, App.provider);
@@ -30,16 +33,16 @@ async function main() {
     let p0 = await loadArbitrumDodoContract0(App, tokens, prices, DODO_CHEF0, DODO_CHEF_ADDR0, DODO_CHEF_ABI0, rewardTokenTicker,
       null, rewardsPerWeek0, "getPendingReward");
 
-    let p1 = await loadArbitrumDodoContract(App, tokens, prices, DODO_CHEF, DODO_CHEF_ADDR, DODO_CHEF_ABI,
-        "getPendingRewardByToken");
+    /*let p1 = await loadArbitrumDodoContract(App, tokens, prices, DODO_CHEF, DODO_CHEF_ADDR, DODO_CHEF_ABI,
+        "getPendingRewardByToken");*/
 
     let p2 = await loadArbitrumDodoContract(App, tokens, prices, DODO_CHEF1, DODO_CHEF_ADDR1, DODO_CHEF_ABI,
       "getPendingRewardByToken");
 
-    _print_bold(`Total Staked: $${formatMoney(p0.totalStaked+p1.totalStaked+p2.totalStaked)}`);
-    const userYearlyEarnings = p0.totalUserStaked * p0.averageApr + p1.totalUserStaked * p1.averageApr + p2.totalUserStaked * p2.averageApr
-    const totalUserStaked = p0.totalUserStaked+p1.totalUserStaked+p2.totalUserStaked;
-    if (p0.totalUserStaked > 0 || p1.totalUserStaked > 0 || p2.totalUserStaked > 0) {
+    _print_bold(`Total Staked: $${formatMoney(p0.totalStaked+p2.totalStaked)}`);
+    const userYearlyEarnings = p0.totalUserStaked * p0.averageApr + p2.totalUserStaked * p2.averageApr
+    const totalUserStaked = p0.totalUserStaked+p2.totalUserStaked;
+    if (p0.totalUserStaked > 0 || p2.totalUserStaked > 0) {
       _print_bold(`\nYou are staking a total of $${formatMoney(totalUserStaked)} at an average APR of ${(userYearlyEarnings / totalUserStaked * 100).toFixed(2)}%`)
       _print(`Estimated earnings:`
           + ` Day $${formatMoney(userYearlyEarnings/365)}`
@@ -257,7 +260,7 @@ function printDodoChefContractLinks(App, chefAbi, chefAddr, poolIndex, poolAddre
   }else{
     _print_link(`Unstake ${userStaked.toFixed(fixedDecimals)} ${stakeTokenTicker}`, unstake)
   }
-  _print_link(`Claim ${pendingRewardTokens[0].toFixed(fixedDecimals)} ${rewardTokenTickers[0]} ($${formatMoney(pendingRewardTokens[0]*rewardTokenPrices[0])}) + ${pendingRewardTokens[1].toFixed(fixedDecimals)} ${rewardTokenTickers[1]} ($${formatMoney(pendingRewardTokens[1]*rewardTokenPrices[1])})`, claim)
+  _print_link(`Claim ${pendingRewardTokens[0].toFixed(fixedDecimals)} ${rewardTokenTickers[0]} ($${formatMoney(pendingRewardTokens[0]*rewardTokenPrices[0])})`, claim)
   _print(`Staking or unstaking also claims rewards.`)
   _print("");
 }
@@ -314,9 +317,8 @@ async function dodoArbitrumContract_unstake(chefAbi, chefAddress, App) {
   const CHEF_CONTRACT = new ethers.Contract(chefAddress, chefAbi, signer)
 
   const userStaked = await CHEF_CONTRACT.balanceOf(App.YOUR_ADDRESS)
-  const earnedTokenAmount = await CHEF_CONTRACT.getPendingRewardByToken(App.YOUR_ADDRESS, "0x10010078a54396f62c96df8532dc2b4847d47ed3") / 1e18
-
-  if (earnedTokenAmount > 0) {
+  
+  if (userStaked / 1e18 > 0) {
     showLoading()
     CHEF_CONTRACT.withdraw(userStaked)
       .then(function(t) {

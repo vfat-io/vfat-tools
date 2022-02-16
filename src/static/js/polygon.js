@@ -389,7 +389,6 @@ const main = async () => {
       ['Flerovium           ',"",  '<a href="flerovium"       >Various</a>', 'FLEROVIUM    ', 'https://flerovium.finance'],
       ['Covid Finance       ',"",  `<a href="covidfinance"    >Various</a>`, 'COVID        ', 'https://covidfinance.pro'],
       ['Sentient Swap       ',"",  `<a href="sentientswap"    >Various</a>`, 'STN          ', 'https://sentientswap.live'],
-      ['Tower Finance       ',"",  `<a href="tower"           >Various</a>`, 'IVORY        ', 'https://app.towerfinance.io'],
       ['Jam Finance         ',"",  `<a href="jamfinance"      >Various</a>`, 'JAM          ', 'https://jamfinance.cc'],
       ['WAVE                ',"",  `<a href="wave"            >Various</a>`, 'WAVE         ', 'https://www.wavedefi.io'],
       ['Snake Finance       ',"",  `<a href="snakefinance"    >Various</a>`, 'SNAKE        ', 'https://snakefinance.club'],
@@ -415,11 +414,22 @@ const main = async () => {
       ['TacoParty Salsa     ',"",  `<a href="tacopartysalsa"  >Various</a>`, 'SALSA        ', 'https://salsa.tacoparty.finance'],
       ['Autofarm            ',"",  `<a href="autofarm"        >Various</a>`, 'Various      ','https://autofarm.network/polygon'],
       ['DesireFarm          ',"",  `<a href="desirefarm"      >Various</a>`, 'Various      ','https://desire.sandman.finance'],
-      ["BambooDeFi          ","",  `<a href="bamboodefi"      >Various</a>`, 'BAMBOO       ', 'https://polygon.bamboodefi.com/'],
+      ["BambooDeFi          ", "", `<a href="bamboodefi"      >Various</a>`, 'BAMBOO       ','https://polygon.bamboodefi.com/'],
       ['Mirai               ',"",  `<a href="mirai"           >Various</a>`, 'MIRAI        ','https://mirai.farm'],
       ['Nacho               ',"",  `<a href="nacho"           >Various</a>`, 'NACHO/NSHARE ','https://nachoxyz.com'],
       ['Salem Finance       ',"",  `<a href="salem"           >Various</a>`, 'SALEM        ','https://polygon.salem.finance'],
-      ['Sandbox             ',"",  `<a href="sandbox"         >Various</a>`, 'SAND         ','https://www.sandbox.game']
+      ['Sandbox             ',"",  `<a href="sandbox"         >Various</a>`, 'SAND         ','https://www.sandbox.game'],
+      ['Destiny             ',"",  `<a href="destinyfarm"     >Various</a>`, 'Various      ','https://destiny.sandman.finance'],
+      ['Popsicle            ',"",  `<a href="popsicle"        >Various</a>`, 'ICE          ','https://popsicle.finance'],
+      ['Bag Finance         ',"",  `<a href="bag"             >Various</a>`, 'BGLD         ','https://app.thisistheway.finance'],
+      ['DFX                 ',"",  `<a href="dfx"             >Various</a>`, 'DFX          ','https://app.dfx.finance'],
+      ['DeFiner             ',"",  `<a href="definer"         >Various</a>`, 'FIN          ','https://app.definer.org'],
+      ['Plotx               ',"",  `<a href="plotx"           >Various</a>`, 'MATIC/bPLOT  ','https://plotx.io'],
+      ['Argano              ',"",  `<a href="argano"          >Various</a>`, 'AGOy         ','https://www.argano.io'],
+      ['Harvest             ',"",  `<a href="harvest"         >Various</a>`, 'Various      ','https://harvest.finance'],
+      ['Beverage            ',"",  `<a href="beverage"        >Various</a>`, 'DRINK        ','https://matic.beverage.finance'],
+      ['Unity               ',"",  `<a href="unity"           >Various</a>`, 'UNITY        ','https://unityfarm.org'],
+      ['Tower Finance       ',"",  `<a href="tower"           >Various</a>`, 'CUBE         ','https://app.towerfinance.io']
     ],
   }
 
@@ -427,3 +437,6 @@ const main = async () => {
   document.getElementById('log').innerHTML += table + '<br />'
   hideLoading()
 }
+
+
+

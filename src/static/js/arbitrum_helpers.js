@@ -28,7 +28,8 @@ const ArbitrumTokens = [
     { "id": "synapse-2", "symbol": "SYN", "contract": "0x080F6AEd32Fc474DD5717105Dba5ea57268F46eb"},
     { "id": "pickle-finance", "symbol": "PICKLE", "contract": "0x965772e0E9c84b6f359c8597C891108DcF1c5B1A"},
     { "id": "saddle-finance", "symbol": "SDL", "contract": "0x75c9bc761d88f70156daf83aa010e84680baf131"},
-    { "id": "frax", "symbol": "FRAX", "contract": "0x17FC002b466eEc40DaE837Fc4bE5c67993ddBd6F"}
+    { "id": "frax", "symbol": "FRAX", "contract": "0x17FC002b466eEc40DaE837Fc4bE5c67993ddBd6F"},
+    { "id": "governance-ohm", "symbol": "gOHM", "contract": "0x8D9bA570D6cb60C7e3e0F31343Efe75AB8E65FB1"}
 ];
 
 const uniSqrtPrice = (tokenDecimals, sqrtRatioX96) => {
@@ -448,9 +449,9 @@ async function getArbitrumStoredToken(App, tokenAddress, stakingAddress, type) {
     case "arbitrumArbisVault":
       const arbisVault = new ethcall.Contract(tokenAddress, ARBIS_VAULT_UNDERLYING_ABI);
       return await getArbitrumArbisVault(App, arbisVault, tokenAddress, stakingAddress);
-    case "cArbitrumToken":
-      const cArbitrumToken = new ethcall.Contract(tokenAddress, CTOKEN_ABI);
-      return await getCArbitrumToken(App, cArbitrumToken, tokenAddress, stakingAddress);
+    case "cToken":
+      const cToken = new ethcall.Contract(tokenAddress, CTOKEN_ABI);
+      return await getCArbitrumToken(App, cToken, tokenAddress, stakingAddress);
     case "triToken":
       const tri = new ethcall.Contract(tokenAddress, TRITOKEN_ABI);
       const [triMinter] = await App.ethcallProvider.all([tri.minter()]);
@@ -510,7 +511,7 @@ async function getArbitrumToken(App, tokenAddress, stakingAddress) {
       const cArbitrumToken = new ethcall.Contract(tokenAddress, CTOKEN_ABI);
       const _totalBorrows = await App.ethcallProvider.all([cArbitrumToken.totalBorrows()]);
       const res = await getCArbitrumToken(App, cArbitrumToken, tokenAddress, stakingAddress);
-      window.localStorage.setItem(tokenAddress, "cArbitrumToken");
+      window.localStorage.setItem(tokenAddress, "cToken");
       return res;
     }
     catch(err) {
@@ -957,9 +958,8 @@ const chefArbitrumContract_unstake = async function(chefAbi, chefAddress, poolIn
   const CHEF_CONTRACT = new ethers.Contract(chefAddress, chefAbi, signer)
 
   const currentStakedAmount = (await CHEF_CONTRACT.userInfo(poolIndex, App.YOUR_ADDRESS)).amount
-  const earnedTokenAmount = await CHEF_CONTRACT.callStatic[pendingRewardsFunction](poolIndex, App.YOUR_ADDRESS) / 1e18
 
-  if (earnedTokenAmount > 0) {
+  if (currentStakedAmount / 1e18 > 0) {
     showLoading()
     CHEF_CONTRACT.withdraw(poolIndex, currentStakedAmount)
       .then(function(t) {
