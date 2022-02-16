@@ -3,7 +3,11 @@ const EmeraldTokens = [
   { "id": "usd-coin", "symbol": "USDC", "contract": "0xE8A638b3B7565Ee7c5eb9755E58552aFc87b94DD"},
   { "id": "oasis-network", "symbol": "ROSE", "contract": "0x5C78A65AD6D0eC6618788b6E8e211F31729111Ca"},
   { "id": "weth", "symbol": "WETH", "contract": "0x3223f17957Ba502cbe71401D55A0DB26E5F7c68F"},
-  { "id": "wrapped-bitcoin", "symbol": "WBTC", "contract": "0xd43ce0aa2a29DCb75bDb83085703dc589DE6C7eb"}
+  { "id": "wrapped-bitcoin", "symbol": "WBTC", "contract": "0xd43ce0aa2a29DCb75bDb83085703dc589DE6C7eb"},
+  { "id": "wrapped-rose", "symbol": "wROSE", "contract": "0x21c718c22d52d0f3a789b752d4c2fd5908a8a733"},
+  { "id": "lizard", "symbol": "LIZ", "contract": "0x6a977d5f48d57ef125c98469d511ef4e0ce44e10"}
+
+
 ];
 
 async function getEmeraldPrices() {
@@ -27,6 +31,7 @@ async function getEmeraldUniPool(App, pool, poolAddress, stakingAddress) {
     const [reserves] = await App.ethcallProvider.all([pool.getReserves()]);
     q0 = reserves._reserve0;
     q1 = reserves._reserve1;
+    console.log(q0, q1);
     is1inch = false;
   }
   catch { //for 1inch
