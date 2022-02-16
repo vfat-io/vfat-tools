@@ -1995,6 +1995,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
   else if (pool.symbol.includes("JLP")) stakeTokenTicker += " JLP";
   else if (pool.symbol.includes("CS-LP")) stakeTokenTicker += " CSS LP";
   else if (pool.symbol.includes("DFYN")) stakeTokenTicker += " DFYN LP";
+  else if (pool.symbol.includes("NMX-LP")) stakeTokenTicker += " NMX LP";
   else if (pool.symbol.includes("SPIRIT")) stakeTokenTicker += " SPIRIT LP";
   else if (pool.symbol.includes("spLP")) stakeTokenTicker += " SPOOKY LP";
   else if (pool.symbol.includes("Lv1")) stakeTokenTicker += " STEAK LP";
@@ -2093,6 +2094,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
                 }
               [chain]):
               pool.symbol.includes("CS-LP") ?  `https://app.coinswap.space/#/` :
+              pool.symbol.includes("NMX-LP") ?  `https://nomiswap.io/swap` :
               pool.name.includes("Value LP") ?  `https://info.vswap.fi/pool/${pool.address}` :
               pool.name.includes("Duneswap LP Token") ?  `https://explorer.emerald.oasis.dev/token/${pool.address}` :
               pool.name.includes("Lizard LPs") ?  `https://explorer.emerald.oasis.dev/token/${pool.address}` :
@@ -2171,6 +2173,11 @@ function getUniPrices(tokens, prices, pool, chain="eth")
             `https://app.beamswap.io/exchange/add/${t0address}/${t1address}`,
             `https://app.beamswap.io/exchange/remove/${t0address}/${t1address}`,
             `https://app.beamswap.io/exchange/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+          ] :
+          pool.symbol.includes("NMX-LP") ? [
+            `https://nomiswap.io/liquidity/add/${t0address}/${t1address}`,
+            `https://nomiswap.io/liquidity/remove/${t0address}/${t1address}`,
+            `https://nomiswap.io/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
           ] :
           pool.symbol.includes("TLP") && !pool.name.includes("Thorus LP") ? [
             `https://www.trisolaris.io/#/add/${t0address}/${t1address}`,
