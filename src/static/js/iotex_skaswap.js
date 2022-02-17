@@ -12,7 +12,7 @@ $(function() {
       _print("Reading smart contracts...\n");
 
      const SKA_CHEF_ADDR = "0xB9fb2a489b80ce9bd1b4b5E743f17A9877AA7206";
-     const IDOENDED = false;
+     const IDOENDED = true;
      const rewardTokenTicker = "SKA";
      const SKA_CHEF = new ethers.Contract(SKA_CHEF_ADDR, SKA_CHEF_ABI, App.provider);
      const currentBlock = await App.provider.getBlockNumber();
@@ -22,27 +22,25 @@ $(function() {
 
      const blocksPerSeconds = await getAverageBlockTime(App);
 
-     if(currentBlock < startBlock && !IDOENDED){
-      _print(`  ` ); 
-      _print(`********** Liquidity mining starts on February 17, 2022 10PM UTC. ********** ` ); 
+     if(currentBlock < startBlock){
+      _print(`Rewards start at block ${startBlock}\n`);
       _print(` ` ); 
       _print(`-` ); 
       _print(`-` ); 
       _print(` ` ); 
       _print(`Twitter - https://twitter.com/SkaSwapFinance` ); 
       _print(`Discord - https://discord.gg/jRwj4VrUc4` ); 
-      _print(`Telegram (Announcements) - https://t.me/skaswap` ); 
-
-
+      _print(`Telegram - https://t.me/skaswap` ); 
+      
      }else{
       rewardsPerWeek = await SKA_CHEF.skaPerBlock() /1e18 * multiplier * 604800 / blocksPerSeconds;
-     
+     }
 
       const tokens = {};
       const prices = await getIotexPrices();
 
       await loadIotexChefContract(App, tokens, prices, SKA_CHEF, SKA_CHEF_ADDR, SKA_CHEF_ABI, rewardTokenTicker,
         "ska", null, rewardsPerWeek, "pendingSka");
-      }
+
       hideLoading();
     }
