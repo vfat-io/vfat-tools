@@ -39,7 +39,7 @@ $(function() {
       const tokens = {};
       const prices = await getIotexPrices();
 
-      await loadEmeraldChefContract(App, tokens, prices, SKA_CHEF, SKA_CHEF_ADDR, SKA_CHEF_ABI, rewardTokenTicker,
+      await loadIotexChefContract(App, tokens, prices, SKA_CHEF, SKA_CHEF_ADDR, SKA_CHEF_ABI, rewardTokenTicker,
         "ska", null, rewardsPerWeek, "pendingSka");
 
       hideLoading();
