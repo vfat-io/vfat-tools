@@ -170,7 +170,8 @@ const main = async () => {
       ['The Don Finance    ', `<a href='thedon'       >Various</a>`, 'THEDON       ', 'https://thedon.finance'],
       ['GemMine            ', `<a href='gemmine'      >Various</a>`, 'GEMMINE      ', 'https://gemmine.defiwaterfall.com'],
       ["Scream             ", `<a href='scream'       >Various</a>`, "SCREAM       ","https://scream.sh"],
-      ["Ripae             ", `<a href='ripae'         >Various</a>`, "PAE / pFTM   ","https://ripae.finance"]
+      ["Ripae              ", `<a href='ripae'        >Various</a>`, "PAE / pFTM   ","https://ripae.finance"],
+      ["HuntDefi           ", `<a href='huntdefi'     >Various</a>`, "HUNT         ","https://ftm.huntdefi.com"]
     ],
   }
 

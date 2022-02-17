@@ -409,7 +409,6 @@ async function loadAvaxBasisFork(data) {
     hideLoading();
 }
 
-
 async function getAvaxPoolInfo(app, chefContract, chefAddress, poolIndex, pendingRewardsFunction) {
   const poolInfo = await chefContract.poolInfo(poolIndex);
   if (poolInfo.allocPoint == 0) {
