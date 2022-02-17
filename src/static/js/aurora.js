@@ -16,7 +16,8 @@ const main = async() => {
         ["Cocoon",                    `<a href="cocoon"           >Various</a>`,      "COCOON",       "https://cocoon.farm" ],
         ["AuroraSwap",                `<a href="auroraswap"       >Various</a>`,      "BRL",          "https://app.auroraswap.finance" ],
         ["Polaris (AuroraPunks)",     `<a href="polaristoken"     >Various</a>`,      "PLRS",         "https://polaristoken.io" ],
-        ["FlippySwap",                `<a href="flippyswap"       >Various</a>`,      "FLIPPY",       "https://flippyswap.com" ]
+        ["FlippySwap",                `<a href="flippyswap"       >Various</a>`,      "FLIPPY",       "https://flippyswap.com" ],
+        ["MoonFlowerFarmers",         `<a href="moonflowerfarmers">Various</a>`,      "MFF",          "https://moonflowerfarmers.com" ]
     ]
   }
 
