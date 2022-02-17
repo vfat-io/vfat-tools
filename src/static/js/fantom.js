@@ -169,7 +169,8 @@ const main = async () => {
       ['Scarface Finance   ', `<a href='scarface'     >Various</a>`, 'SSHARE / SCAR', 'https://scarface.finance'],
       ['The Don Finance    ', `<a href='thedon'       >Various</a>`, 'THEDON       ', 'https://thedon.finance'],
       ['GemMine            ', `<a href='gemmine'      >Various</a>`, 'GEMMINE      ', 'https://gemmine.defiwaterfall.com'],
-      ["Scream             ", `<a href='scream'       >Various</a>`,"SCREAM        ","https://scream.sh"]
+      ["Scream             ", `<a href='scream'       >Various</a>`, "SCREAM       ","https://scream.sh"],
+      ["Ripae             ", `<a href='ripae'         >Various</a>`, "PAE / pFTM   ","https://ripae.finance"]
     ],
   }
 
