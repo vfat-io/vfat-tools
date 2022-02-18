@@ -48,7 +48,7 @@ async function main() {
     }
 
     hideLoading();
-  }
+}
 
 async function loadPancakePoolInfo(App, tokens, prices, contractAddress) {
       try {
