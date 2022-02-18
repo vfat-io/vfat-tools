@@ -429,7 +429,8 @@ const main = async () => {
       ['Harvest             ',"",  `<a href="harvest"         >Various</a>`, 'Various      ','https://harvest.finance'],
       ['Beverage            ',"",  `<a href="beverage"        >Various</a>`, 'DRINK        ','https://matic.beverage.finance'],
       ['Unity               ',"",  `<a href="unity"           >Various</a>`, 'UNITY        ','https://unityfarm.org'],
-      ['Tower Finance       ',"",  `<a href="tower"           >Various</a>`, 'CUBE         ','https://app.towerfinance.io']
+      ['Tower Finance       ',"",  `<a href="tower"           >Various</a>`, 'CUBE         ','https://app.towerfinance.io'],
+      ['HuntDefi            ',"",  `<a href="huntdefi"        >Various</a>`, 'HUNT         ','https://polygon.huntdefi.com']
     ],
   }
 

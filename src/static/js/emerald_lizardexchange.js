@@ -432,9 +432,6 @@ async function main() {
 
   const rewardTokenTicker = 'LIZ'
   const LIZARD_CHEF = new ethers.Contract(LIZARD_CHEF_ADDR, LIZARD_CHEF_ABI, App.provider)
-  const currentBlocknumber = await App.provider.getBlockNumber()
-  const currentBlock = await App.provider.getBlock(currentBlocknumber)
-  const lastrewardblock = await LIZARD_CHEF.poolInfo(0).lastRewardTime
   const startTime = await LIZARD_CHEF.startTime()
   let rewardsPerWeek = 0
   // const multiplier = await LIZARD_CHEF.getMultiplier(lastrewardblock,currentBlock.timestamp);
@@ -442,7 +439,7 @@ async function main() {
   if (new Date(Date.now()).getTime() < startTime) {
     _print(`Rewards start at time ${startTime}\n`)
   } else {
-    rewardsPerWeek = ((await LIZARD_CHEF.lizardPerTime())/ 1e18)  * 604800
+    rewardsPerWeek = ((await LIZARD_CHEF.lizardPerTime())/ 1e18)/2  * 604800
   }
 
   const tokens = {}
