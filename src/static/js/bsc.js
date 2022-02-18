@@ -572,7 +572,8 @@ const main = async() => {
       ["Bourbon             ","", `<a href="bourbon"       >Various</a>`,"BSHARES / BOURBONCAKE","https://bourbondefi.com"],
       ["NomiSwap            ","", `<a href="nomiswap"      >Various</a>`,"NMX              ","https://nomiswap.io"],
       ["Newspace            ","", `<a href="newspace"      >Various</a>`,"NEWSPACE         ","https://newspace.finance"],
-      ["HuntDefi            ","", `<a href="huntdefi"      >Various</a>`,"HUNT             ","https://bsc.huntdefi.com"]
+      ["HuntDefi            ","", `<a href="huntdefi"      >Various</a>`,"HUNT             ","https://bsc.huntdefi.com"],
+      ["Ygg                 ","", `<a href="ygg"           >Various</a>`,"YSHARE / YGG     ","https://www.ygg.money"]
     ]}
 
   let table = new AsciiTable().fromJSON(tableData);
