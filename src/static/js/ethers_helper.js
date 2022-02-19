@@ -2923,7 +2923,7 @@ function getErc20Prices(prices, pool, chain="eth") {
       poolUrl=`https://evmexplorer.velas.com/address/${pool.address}`;
       break;
     case "aurora":
-      poolUrl=`https://explorer.mainnet.aurora.dev/address/${pool.address}`;
+      poolUrl=`https://aurorascan.dev/address/${pool.address}`;
       break;
     case "boba":
       poolUrl=`https://blockexplorer.boba.network/address/${pool.address}`;
@@ -3591,7 +3591,7 @@ async function printSynthetixPool(App, info, chain="eth", customURLs) {
         _print(`<a target="_blank" href="https://evmexplorer.velas.com/address/${info.stakingAddress}#code">Velas Scan</a>`);
         break;
       case "aurora":
-        _print(`<a target="_blank" href="https://explorer.mainnet.aurora.dev/address/${info.stakingAddress}#code">Aurora Explorer</a>`);
+        _print(`<a target="_blank" href="https://aurorascan.dev/address/${info.stakingAddress}#code">Aurora Scan</a>`);
         break;
       case "boba":
         _print(`<a target="_blank" href="https://blockexplorer.boba.network/address/${info.stakingAddress}#code">Boba Explorer</a>`);
@@ -3764,7 +3764,7 @@ function getChainExplorerUrl(chain, address){
     case "velas" :
       return `https://evmexplorer.velas.com/address/${address}`;
     case "aurora" :
-      return `https://explorer.mainnet.aurora.dev/address/${address}`;
+      return `https://aurorascan.dev/token/${address}`;
     case "boba" :
       return `https://blockexplorer.boba.network/address/${address}`;
     case "metis" :
