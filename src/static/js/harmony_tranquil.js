@@ -141,10 +141,413 @@ const contracts = {
     },
 };
 
+const TRANQ_ABI = [
+    {
+        "type": "constructor",
+        "payable": false,
+        "stateMutability": "nonpayable",
+        "inputs": []
+    },
+    {
+        "stateMutability": "payable",
+        "payable": true,
+        "type": "fallback"
+    },
+    {
+        "name": "accrualBlockTimestamp",
+        "inputs": [],
+        "type": "function",
+        "payable": false,
+        "outputs": [
+            {
+                "type": "uint256",
+                "name": "",
+                "internalType": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "constant": true
+    },
+    {
+        "payable": false,
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            },
+            {
+                "name": "",
+                "type": "uint256",
+                "internalType": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "outputs": [
+            {
+                "name": "",
+                "internalType": "uint256",
+                "type": "uint256"
+            }
+        ],
+        "constant": true,
+        "type": "function",
+        "name": "accruedReward"
+    },
+    {
+        "inputs": [],
+        "outputs": [
+            {
+                "name": "",
+                "type": "address",
+                "internalType": "address"
+            }
+        ],
+        "payable": false,
+        "constant": true,
+        "type": "function",
+        "name": "admin",
+        "stateMutability": "view"
+    },
+    {
+        "inputs": [],
+        "payable": false,
+        "outputs": [
+            {
+                "internalType": "address",
+                "type": "address",
+                "name": ""
+            }
+        ],
+        "type": "function",
+        "name": "implementation",
+        "constant": true,
+        "stateMutability": "view"
+    },
+    {
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "inputs": [],
+        "constant": true,
+        "type": "function",
+        "name": "pendingAdmin",
+        "payable": false,
+        "stateMutability": "view"
+    },
+    {
+        "payable": false,
+        "outputs": [
+            {
+                "type": "address",
+                "internalType": "address",
+                "name": ""
+            }
+        ],
+        "stateMutability": "view",
+        "name": "pendingImplementation",
+        "constant": true,
+        "inputs": [],
+        "type": "function"
+    },
+    {
+        "constant": true,
+        "stateMutability": "view",
+        "name": "rewardIndex",
+        "payable": false,
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "inputs": [
+            {
+                "name": "",
+                "internalType": "uint256",
+                "type": "uint256"
+            }
+        ],
+        "type": "function"
+    },
+    {
+        "name": "rewardSpeeds",
+        "payable": false,
+        "inputs": [
+            {
+                "type": "uint256",
+                "name": "",
+                "internalType": "uint256"
+            }
+        ],
+        "type": "function",
+        "outputs": [
+            {
+                "type": "uint256",
+                "name": "",
+                "internalType": "uint256"
+            }
+        ],
+        "constant": true,
+        "stateMutability": "view"
+    },
+    {
+        "payable": false,
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "constant": true,
+        "type": "function",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "name": "rewardTokenAddresses",
+        "stateMutability": "view"
+    },
+    {
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "constant": true,
+        "inputs": [],
+        "stateMutability": "view",
+        "name": "stakedTokenAddress",
+        "type": "function",
+        "payable": false
+    },
+    {
+        "stateMutability": "view",
+        "name": "supplierRewardIndex",
+        "payable": false,
+        "type": "function",
+        "inputs": [
+            {
+                "type": "address",
+                "name": "",
+                "internalType": "address"
+            },
+            {
+                "name": "",
+                "type": "uint256",
+                "internalType": "uint256"
+            }
+        ],
+        "constant": true,
+        "outputs": [
+            {
+                "name": "",
+                "internalType": "uint256",
+                "type": "uint256"
+            }
+        ]
+    },
+    {
+        "stateMutability": "view",
+        "constant": true,
+        "outputs": [
+            {
+                "type": "uint256",
+                "internalType": "uint256",
+                "name": ""
+            }
+        ],
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "payable": false,
+        "type": "function",
+        "name": "supplyAmount"
+    },
+    {
+        "payable": false,
+        "outputs": [
+            {
+                "type": "uint256",
+                "name": "",
+                "internalType": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function",
+        "name": "totalSupplies",
+        "inputs": [],
+        "constant": true
+    },
+    {
+        "name": "deposit",
+        "outputs": [],
+        "inputs": [
+            {
+                "name": "amount",
+                "type": "uint256",
+                "internalType": "uint256"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "payable": false,
+        "constant": false,
+        "type": "function"
+    },
+    {
+        "stateMutability": "nonpayable",
+        "payable": false,
+        "inputs": [
+            {
+                "name": "amount",
+                "type": "uint256",
+                "internalType": "uint256"
+            }
+        ],
+        "type": "function",
+        "name": "redeem",
+        "constant": false,
+        "outputs": []
+    },
+    {
+        "payable": false,
+        "constant": false,
+        "name": "claimRewards",
+        "stateMutability": "nonpayable",
+        "type": "function",
+        "inputs": [],
+        "outputs": []
+    },
+    {
+        "inputs": [
+            {
+                "type": "uint256",
+                "name": "rewardToken",
+                "internalType": "uint256"
+            }
+        ],
+        "name": "getClaimableRewards",
+        "payable": false,
+        "type": "function",
+        "constant": true,
+        "stateMutability": "view",
+        "outputs": [
+            {
+                "name": "",
+                "type": "uint256",
+                "internalType": "uint256"
+            }
+        ]
+    },
+    {
+        "name": "setRewardSpeed",
+        "outputs": [],
+        "constant": false,
+        "type": "function",
+        "stateMutability": "nonpayable",
+        "payable": false,
+        "inputs": [
+            {
+                "type": "uint256",
+                "internalType": "uint256",
+                "name": "rewardToken"
+            },
+            {
+                "type": "uint256",
+                "name": "speed",
+                "internalType": "uint256"
+            }
+        ]
+    },
+    {
+        "name": "setRewardTokenAddress",
+        "constant": false,
+        "type": "function",
+        "outputs": [],
+        "inputs": [
+            {
+                "name": "rewardToken",
+                "internalType": "uint256",
+                "type": "uint256"
+            },
+            {
+                "internalType": "address",
+                "name": "rewardTokenAddress",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "payable": false
+    },
+    {
+        "outputs": [],
+        "type": "function",
+        "payable": false,
+        "constant": false,
+        "name": "setStakedTokenAddress",
+        "stateMutability": "nonpayable",
+        "inputs": [
+            {
+                "name": "newStakedTokenAddress",
+                "type": "address",
+                "internalType": "address"
+            }
+        ]
+    },
+    {
+        "type": "function",
+        "inputs": [
+            {
+                "type": "address",
+                "internalType": "contract TranquilStakingProxy",
+                "name": "proxy"
+            }
+        ],
+        "constant": false,
+        "stateMutability": "nonpayable",
+        "outputs": [],
+        "name": "becomeImplementation",
+        "payable": false
+    }
+]
+
+const Pools = [
+    "0x40e73d483412dbb1cacafc04a87ae1544c9571a9"
+].map(a => ({
+    address: a,
+    abi: TRANQ_ABI,
+    stakeTokenFunction: "stakedTokenAddress"
+}))
+
 async function main() {
     const App = await init_ethers();
     _print(`Initialized ${App.YOUR_ADDRESS}\n`);
-    _print("Reading smart contracts...\n");
+    _print("Reading smart contracts...\n");    
+
+    var tokens = {};
+    const prices = await getHarmonyPrices();
+
+    let p = await loadMultipleTranqSynthetixPools(App, tokens, prices, Pools)
+    _print_bold(`Total staked: $${formatMoney(p.staked_tvl)}`);
+    if (p.totalUserStaked > 0) {
+        _print(`You are staking a total of $${formatMoney(p.totalUserStaked)} at an APR of ${(p.totalApr * 100).toFixed(2)}%\n`);
+    }
+    _print("");
 
     const COMPTROLLER = new ethers.Contract(contracts.comptroller, WEPIGGY_ABI.comptroller, App.provider);
 
@@ -173,6 +576,113 @@ async function main() {
     }
 
     hideLoading();
+}
+
+async function loadMultipleTranqSynthetixPools(App, tokens, prices, pools) {
+    let totalStaked = 0,
+      totalUserStaked = 0,
+      individualAPRs = []
+    const infos = await Promise.all(
+      pools.map(p =>
+        loadTranqSynthetixPoolInfo(App, tokens, prices, p.abi, p.address, p.stakeTokenFunction)
+      )
+    )
+    for (const i of infos) {
+      let p = await printSynthetixPool(App, i, 'harmony')
+      totalStaked += p.staked_tvl || 0
+      totalUserStaked += p.userStaked || 0
+      if (p.userStaked > 0) {
+        individualAPRs.push((p.userStaked * p.apr) / 100)
+      }
+    }
+    let totalApr = totalUserStaked == 0 ? 0 : individualAPRs.reduce((x, y) => x + y, 0) / totalUserStaked
+    return {staked_tvl: totalStaked, totalUserStaked, totalApr}
+  }
+
+async function loadTranqSynthetixPoolInfo(
+  App,
+  tokens,
+  prices,
+  stakingAbi,
+  stakingAddress,
+  stakeTokenFunction
+) {
+  const STAKING_POOL = new ethers.Contract(stakingAddress, stakingAbi, App.provider)
+  const STAKING_MULTI = new ethcall.Contract(stakingAddress, stakingAbi)
+
+  if (!STAKING_POOL.callStatic[stakeTokenFunction]) {
+    console.log("Couldn't find stake function ", stakeTokenFunction)
+  }
+  const stakeTokenAddress = await STAKING_POOL.callStatic[stakeTokenFunction]()
+
+  const rewardTokenAddress = await STAKING_POOL.rewardTokenAddresses(0)
+
+  var stakeToken = await getHarmonyToken(App, stakeTokenAddress, stakingAddress)
+  stakeToken.staked = await STAKING_POOL.totalSupplies() / 10 ** stakeToken.decimals;
+
+  var newPriceAddresses = stakeToken.tokens.filter(x => !getParameterCaseInsensitive(prices, x))
+  var newPrices = await lookUpTokenPrices(newPriceAddresses)
+  for (const key in newPrices) {
+    if (newPrices[key]?.usd) prices[key] = newPrices[key]
+  }
+  var newTokenAddresses = stakeToken.tokens.filter(x => !getParameterCaseInsensitive(tokens, x))
+  for (const address of newTokenAddresses) {
+    tokens[address] = await getHarmonyToken(App, address, stakingAddress)
+  }
+  if (!getParameterCaseInsensitive(tokens, rewardTokenAddress)) {
+    tokens[rewardTokenAddress] = await getHarmonyToken(App, rewardTokenAddress, stakingAddress)
+  }
+  const rewardToken = getParameterCaseInsensitive(tokens, rewardTokenAddress)
+
+  const rewardTokenTicker = rewardToken.symbol
+
+  const poolPrices = getPoolPrices(tokens, prices, stakeToken, 'harmony')
+
+  if (!poolPrices) {
+    console.log(`Couldn't calculate prices for pool ${stakeTokenAddress}`)
+    return null
+  }
+
+  const stakeTokenTicker = poolPrices.stakeTokenTicker
+
+  const stakeTokenPrice = prices[stakeTokenAddress]?.usd ?? getParameterCaseInsensitive(prices, stakeTokenAddress)?.usd
+  const rewardTokenPrice = getParameterCaseInsensitive(prices, rewardTokenAddress)?.usd
+
+  const calls = [
+    STAKING_MULTI.rewardSpeeds(0),
+    STAKING_MULTI.supplyAmount(App.YOUR_ADDRESS),
+    STAKING_MULTI.accruedReward(App.YOUR_ADDRESS, 0)
+  ]
+  const [rewardRate, balance, earned_] = await App.ethcallProvider.all(calls)
+
+  const weeklyRewards = (rewardRate / 10 ** rewardToken.decimals) * 604800
+
+  const usdPerWeek = weeklyRewards * rewardTokenPrice
+
+  const staked_tvl = poolPrices.staked_tvl
+
+  const userStaked = balance / 10 ** stakeToken.decimals
+
+  const userUnstaked = stakeToken.unstaked
+
+  const earned = earned_ / 10 ** rewardToken.decimals
+
+  return {
+    stakingAddress,
+    poolPrices,
+    stakeTokenAddress,
+    rewardTokenAddress,
+    stakeTokenTicker,
+    rewardTokenTicker,
+    stakeTokenPrice,
+    rewardTokenPrice,
+    weeklyRewards,
+    usdPerWeek,
+    staked_tvl,
+    userStaked,
+    userUnstaked,
+    earned,
+  }
 }
 
 async function loadData(App, token) {
