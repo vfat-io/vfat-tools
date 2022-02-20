@@ -18,7 +18,8 @@ const main = async() => {
         ["Polaris (AuroraPunks)",     `<a href="polaristoken"     >Various</a>`,      "PLRS",         "https://polaristoken.io" ],
         ["FlippySwap",                `<a href="flippyswap"       >Various</a>`,      "FLIPPY",       "https://flippyswap.com" ],
         ["MoonFlowerFarmers",         `<a href="moonflowerfarmers">Various</a>`,      "MFF",          "https://moonflowerfarmers.com" ],
-        ["Polaris Finance",           `<a href="polarisfinance"   >Various</a>`,      "SPOLAR / POLAR","https://polarisfinance.io" ]
+        ["Polaris Finance",           `<a href="polarisfinance"   >Various</a>`,      "SPOLAR / POLAR","https://polarisfinance.io" ],
+        ["Auroratag",                 `<a href="auroratag"        >Various</a>`,      "AURORATAG",    "https://auroratag.com" ]
     ]
   }
 

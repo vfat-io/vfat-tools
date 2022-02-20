@@ -74,8 +74,7 @@ const main = async () => {
       ['WraithSwap         ', `<a href='wraith'       >Various</a>`, 'WRA          ', 'https://wraithswap.finance'],
       ['FoxyFinance        ', `<a href='foxyfinance'  >Various</a>`, 'FOXY         ', 'https://foxyfinance.co'],
       ['Eleven             ', `<a href='eleven'       >Various</a>`, 'Various      ', 'https://eleven.finance'],
-      ['Fantom Cougar      ', `<a href='cougar'       >Various</a>`, 'CGS          ', 'https://fantomapp.cougarswap.io',
-      ],
+      ['Fantom Cougar      ', `<a href='cougar'       >Various</a>`, 'CGS          ', 'https://fantomapp.cougarswap.io'],
       ['Meso Finance       ', `<a href='meso'         >Various</a>`, 'MESO         ', 'https://www.meso.finance'],
       ['Fantom Berry       ', `<a href='berry'        >Various</a>`, 'BERRY        ', 'https://fantomberry.world'],
       ['Procyon            ', `<a href='procyon'      >Various</a>`, 'PROCYON      ', 'https://procyonswap.com'],
@@ -172,7 +171,8 @@ const main = async () => {
       ["Scream             ", `<a href='scream'       >Various</a>`, "SCREAM       ","https://scream.sh"],
       ["Ripae              ", `<a href='ripae'        >Various</a>`, "PAE / pFTM   ","https://ripae.finance"],
       ["HuntDefi           ", `<a href='huntdefi'     >Various</a>`, "HUNT         ","https://ftm.huntdefi.com"],
-      ['Partial Finance    ', `<a href='partialfinance'>Various</a>`, 'PARTIAL      ', 'https://partial.finance']
+      ['Partial Finance    ', `<a href='partialfinance'>Various</a>`, 'PARTIAL      ', 'https://partial.finance'],
+      ["Farmtom            ", `<a href='farmtom'      >Various</a>`, "FRTM         ","https://farmtom.com"]
     ],
   }
 
