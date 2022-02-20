@@ -906,7 +906,7 @@ $(function () {
         const prices = await getSmartbchPrices();
 
         await loadSmartbchChefContract(App, tokens, prices, MIST_CHEF, MIST_CHEF_ADDR, MIST_CHEF_ABI, rewardTokenTicker,
-                "sushi", null, rewardsPerWeek, "pendingSushi", null, false, true, {xSushiAddress, xSushiAbi, xSushiRatio, exchangeGraph});
+                "sushi", null, rewardsPerWeek, "pendingSushi", null, false, true/*{xSushiAddress, xSushiAbi, xSushiRatio, exchangeGraph}*/);
 
         hideLoading();
     }
