@@ -1964,6 +1964,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
   else if (pool.symbol.includes("ZDEXLP")) stakeTokenTicker += " ZooDex LP";
   else if (pool.symbol.includes("OperaSwap")) stakeTokenTicker += " Opera Swap LP";
   else if (pool.symbol.includes("SLP")) stakeTokenTicker += " SLP";
+  else if (pool.symbol.includes("Farmtom-LP")) stakeTokenTicker += " Farmtom LP";
   else if (pool.symbol.includes("Cake")) stakeTokenTicker += " Cake LP";
   else if (pool.name.includes("Value LP")) stakeTokenTicker += " Value LP";
   else if (pool.name.includes("Duneswap LP Token")) stakeTokenTicker += " Duneswap LP";
@@ -2078,6 +2079,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
               pool.name.includes("Flare LP Token") ?  `https://analytics.solarflare.io/pairs/${pool.address}` :
               pool.symbol.includes("SCLP") ?  `https://analytics.swapperchan.com/pairs/${pool.address}` :
               pool.name.includes("Ubeswap") ?  `https://info.ubeswap.org/pair/${pool.address}` :
+              pool.symbol.includes("Farmtom-LP") ?  `https://farmtom.com/swap` :
               pool.name.includes("OperaSwap") ?  `https://www.operaswap.finance/` :
               pool.symbol.includes("SPIRIT") ?  `https://swap.spiritswap.finance/#/swap` :
               pool.symbol.includes("spLP") ?  `https://info.spookyswap.finance/pair/${pool.address}` :
@@ -2145,6 +2147,11 @@ function getUniPrices(tokens, prices, pool, chain="eth")
             `https://www.huckleberry.finance/#/add/${t0address}/${t1address}`,
             `https://www.huckleberry.finance/#/remove/${t0address}/${t1address}`,
             `https://www.huckleberry.finance/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+          ] :
+          pool.symbol.includes("Farmtom-LP") ? [
+            `https://farmtom.com/add/${t0address}/${t1address}`,
+            `https://farmtom.com/remove/${t0address}/${t1address}`,
+            `https://farmtom.com/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
           ] :
           pool.symbol.includes("BEAM-LP") ? [
             `https://app.beamswap.io/exchange/add/${t0address}/${t1address}`,
@@ -2717,7 +2724,7 @@ function getValuePrices(tokens, prices, pool)
   }
 }
 
-function getBalancerPrices(tokens, prices, pool)
+function getBalancerPrices(tokens, prices, pool, chain)
 {
   var poolTokens = pool.poolTokens.map(t => getParameterCaseInsensitive(tokens, t.address));
   var poolPrices = pool.poolTokens.map(t => getParameterCaseInsensitive(prices, t.address)?.usd);
@@ -2751,7 +2758,8 @@ function getBalancerPrices(tokens, prices, pool)
       staked_tvl : staked_tvl,
       stakeTokenTicker : stakeTokenTicker,
       print_price() {
-        let poolUrl = `http://pools.balancer.exchange/#/pool/${pool.address}`;
+        let poolUrl = "";
+        chain == "fantom" ? poolUrl = "https://beets.fi/#/" : poolUrl = `http://pools.balancer.exchange/#/pool/${pool.address}`;
         _print(`<a href='${poolUrl}' target='_blank'>${stakeTokenTicker}</a> BPT Price: $${formatMoney(price)} TVL: $${formatMoney(tvl)}`);
         poolPrices.forEach((p, i) =>
           _print(`${poolTokens[i].symbol} Price: $${formatMoney(p)}`)
@@ -3102,7 +3110,7 @@ function getYearnPrices(prices, pool, chain){
 function getPoolPrices(tokens, prices, pool, chain = "eth") {
   if (pool.w0 != null) return getValuePrices(tokens, prices, pool);
   if (pool.buniPoolTokens != null) return getBunicornPrices(tokens, prices, pool);
-  if (pool.poolTokens != null) return getBalancerPrices(tokens, prices, pool);
+  if (pool.poolTokens != null) return getBalancerPrices(tokens, prices, pool, chain);
   if (pool.isGelato) return getGelatoPrices(tokens, prices, pool, chain);
   if (pool.token0 != null) return getUniPrices(tokens, prices, pool, chain);
   if (pool.xcp_profit != null) return getTriCryptoPrices(prices, pool, chain);
