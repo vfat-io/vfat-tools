@@ -12,6 +12,7 @@ const main = async() => {
       ["Sahara Exchange   ", `<a href='sahara'      >Various</a>`,"ANKH        ","https://sahara.exchange"],
       ["Lizard Exchange   ", `<a href='lizardexchange'>Various</a>`,"LIZ       ","https://lizard.exchange"],
       ["WePiggy           ", `<a href='wepiggy'     >Various</a>`,"WPC         ","https://app.wepiggy.com"],
+      ["Valley Swap       ", `<a href='valleyswap'  >Various</a>`,"VS          ","https://valleyswap.com"]
     ]
   }
 
