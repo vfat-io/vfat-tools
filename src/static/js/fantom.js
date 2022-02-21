@@ -172,7 +172,8 @@ const main = async () => {
       ["Ripae              ", `<a href='ripae'        >Various</a>`, "PAE / pFTM   ","https://ripae.finance"],
       ["HuntDefi           ", `<a href='huntdefi'     >Various</a>`, "HUNT         ","https://ftm.huntdefi.com"],
       ["Farmtom            ", `<a href='farmtom'      >Various</a>`, "FRTM         ","https://farmtom.com"],
-      ['Partial Finance    ', `<a href='partialfinance'>Various</a>`,'PARTIAL      ','https://partial.finance']
+      ['Partial Finance    ', `<a href='partialfinance'>Various</a>`,'PARTIAL      ','https://partial.finance'],
+      ['Kyrios             ', `<a href='kyrios'       >Various</a>`, 'KYRIOS       ','https://kyrios.finance']
     ],
   }
 
