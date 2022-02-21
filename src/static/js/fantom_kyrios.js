@@ -12,7 +12,7 @@ $(function() {
     
        const fKYRIOS_CHEF_ADDR = "0x7aAa607A456607dd03496065ebBAC52f74c905bE";
     
-       const rewardTokenTicker = "fKAVIAN";
+       const rewardTokenTicker = "KYRIOS";
        const fKYRIOS_CHEF = new ethers.Contract(fKYRIOS_CHEF_ADDR, fKYRIOS_CHEF_ABI, App.provider);
     
        let rewardsPerWeek = 0
