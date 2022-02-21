@@ -171,8 +171,8 @@ const main = async () => {
       ["Scream             ", `<a href='scream'       >Various</a>`, "SCREAM       ","https://scream.sh"],
       ["Ripae              ", `<a href='ripae'        >Various</a>`, "PAE / pFTM   ","https://ripae.finance"],
       ["HuntDefi           ", `<a href='huntdefi'     >Various</a>`, "HUNT         ","https://ftm.huntdefi.com"],
-      ['Partial Finance    ', `<a href='partialfinance'>Various</a>`, 'PARTIAL      ', 'https://partial.finance'],
-      ["Farmtom            ", `<a href='farmtom'      >Various</a>`, "FRTM         ","https://farmtom.com"]
+      ["Farmtom            ", `<a href='farmtom'      >Various</a>`, "FRTM         ","https://farmtom.com"],
+      ['Partial Finance    ', `<a href='partialfinance'>Various</a>`,'PARTIAL      ','https://partial.finance']
     ],
   }
 
