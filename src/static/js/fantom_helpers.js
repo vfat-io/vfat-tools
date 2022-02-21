@@ -47,7 +47,9 @@ const FantomTokens = [
   { "id": "tarot", "symbol": "TAROT", "contract":"0xc5e2b037d30a390e62180970b3aa4e91868764cd"},
   { "id": "creditum", "symbol": "CREDIT", "contract":"0x77128dfdd0ac859b33f44050c6fa272f34872b5e"},
   { "id": "scream", "symbol": "SCREAM", "contract":"0xe0654c8e6fd4d733349ac7e09f6f23da256bf475"},
-  { "id": "governance-ohm", "symbol": "GOHM", "contract":"0x91fa20244Fb509e8289CA630E5db3E9166233FDc"}
+  { "id": "governance-ohm", "symbol": "GOHM", "contract":"0x91fa20244Fb509e8289CA630E5db3E9166233FDc"},
+  { "id": "partial-share", "symbol": "PSHARE", "contract": "0x8C64D18E9d4A7b8e8c10C5c5a4b8D6D83cb15002"},
+  { "id": "partial", "symbol": "PARTIAL", "contract": "0x9486fDA4C1192db69a08CA7235E2E6bAf31B467B"}
 ];
 
 async function getFantomPrices() {
