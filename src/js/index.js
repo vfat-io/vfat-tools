@@ -86,6 +86,7 @@ window.NETWORKS = {
       "decimals": 18
     },
     "rpcUrls": [
+      "https://moonbeam.api.onfinality.io/public",
       "https://rpc.api.moonbeam.network"
     ],
     "blockExplorerUrls": [
@@ -208,6 +209,7 @@ window.NETWORKS = {
       "decimals": 18
     },
     "rpcUrls": [
+      "https://rpc.gnosischain.com/",
       "https://rpc.xdaichain.com",
       "https://xdai.poanetwork.dev",
       "wss://rpc.xdaichain.com/wss",
