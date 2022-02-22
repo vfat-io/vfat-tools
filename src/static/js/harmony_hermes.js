@@ -994,8 +994,170 @@ async function main() {
     const tokens = {};
     const prices = await getHarmonyPrices();
 
-    await loadHarmonyChefContract(App, tokens, prices, PLTS_CHEF, PLTS_CHEF_ADDR, PLTS_CHEF_ABI, rewardTokenTicker,
+    await loadHermesChefContract(App, tokens, prices, PLTS_CHEF, PLTS_CHEF_ADDR, PLTS_CHEF_ABI, rewardTokenTicker,
         "token", null, rewardsPerWeek, "pendingApollo", [4,5,11]);
 
     hideLoading();
   }
+
+async function getHermesPoolInfo(app, chefContract, chefAddress, poolIndex, pendingRewardsFunction) {
+  const poolInfo = await chefContract.poolInfo(poolIndex)
+  const poolToken = await getToken(app, poolInfo.lpToken ?? poolInfo.token, chefAddress)
+  const userInfo = await chefContract.userInfo(poolIndex, app.YOUR_ADDRESS)
+  const pendingRewardTokens = await chefContract.callStatic[pendingRewardsFunction](poolIndex, app.YOUR_ADDRESS)
+  const staked = userInfo.amount / 10 ** poolToken.decimals
+  return {
+    address: poolInfo.lpToken ?? poolInfo.token,
+    allocPoints: poolInfo.allocPoint ?? 1,
+    poolToken: poolToken,
+    userStaked: staked,
+    pendingRewardTokens: pendingRewardTokens / 10 ** 18,
+    depositFee: (poolInfo.depositFeeBP ?? poolInfo.depositFee ?? 0) / 100,
+    withdrawFee: (poolInfo.withdrawFeeBP ?? poolInfo.withdrawalFee ?? 0) / 100,
+  }
+}
+
+async function loadHermesChefContract(
+  App,
+  tokens,
+  prices,
+  chef,
+  chefAddress,
+  chefAbi,
+  rewardTokenTicker,
+  rewardTokenFunction,
+  rewardsPerBlockFunction,
+  rewardsPerWeekFixed,
+  pendingRewardsFunction,
+  deathPoolIndices,
+  hideFooter
+) {
+  const chefContract = chef ?? new ethers.Contract(chefAddress, chefAbi, App.provider)
+
+  const poolCount = parseInt(await chefContract.poolLength(), 10)
+  const totalAllocPoints = await chefContract.totalAllocPoint()
+
+  _print(`Found ${poolCount} pools.\n`)
+
+  _print(`Showing incentivized pools only.\n`)
+
+  var tokens = {}
+
+  const rewardTokenAddress = await chefContract.callStatic[rewardTokenFunction]()
+  const rewardToken = await getToken(App, rewardTokenAddress, chefAddress)
+  const rewardsPerWeek =
+    rewardsPerWeekFixed ??
+    (((await chefContract.callStatic[rewardsPerBlockFunction]()) / 10 ** rewardToken.decimals) * 604800) / 3
+
+  const poolInfos = await Promise.all(
+    [...Array(poolCount).keys()].map(
+      async x => await getHermesPoolInfo(App, chefContract, chefAddress, x, pendingRewardsFunction)
+    )
+  )
+
+  var tokenAddresses = [].concat.apply(
+    [],
+    poolInfos.filter(x => x.poolToken).map(x => x.poolToken.tokens)
+  )
+
+  await Promise.all(
+    tokenAddresses.map(async address => {
+      tokens[address] = await getToken(App, address, chefAddress)
+    })
+  )
+
+  if (deathPoolIndices) {
+    //load prices for the deathpool assets
+    deathPoolIndices
+      .map(i => poolInfos[i])
+      .map(poolInfo => (poolInfo.poolToken ? getPoolPrices(tokens, prices, poolInfo.poolToken, 'harmony') : undefined))
+  }
+
+  const poolPrices = poolInfos.map(poolInfo =>
+    poolInfo.poolToken ? getPoolPrices(tokens, prices, poolInfo.poolToken, 'harmony') : undefined
+  )
+
+  _print('Finished reading smart contracts.\n')
+
+  let aprs = []
+  for (i = 0; i < poolCount; i++) {
+    if (poolPrices[i]) {
+      const apr = printHermesChefPool(
+        App,
+        chefAbi,
+        chefAddress,
+        prices,
+        tokens,
+        poolInfos[i],
+        i,
+        poolPrices[i],
+        totalAllocPoints,
+        rewardsPerWeek,
+        rewardTokenTicker,
+        rewardTokenAddress,
+        pendingRewardsFunction,
+        null,
+        null,
+        'harmony',
+        poolInfos[i].depositFee,
+        poolInfos[i].withdrawFee
+      )
+      aprs.push(apr)
+    }
+  }
+  let totalUserStaked = 0,
+    totalStaked = 0,
+    averageApr = 0
+  for (const a of aprs) {
+    if (!isNaN(a.totalStakedUsd)) {
+      totalStaked += a.totalStakedUsd
+    }
+    if (a.userStakedUsd > 0) {
+      totalUserStaked += a.userStakedUsd
+      averageApr += (a.userStakedUsd * a.yearlyAPR) / 100
+    }
+  }
+  averageApr = averageApr / totalUserStaked
+
+  if (!hideFooter) {
+    _print_bold(`Total Staked: $${formatMoney(totalStaked)}`)
+    if (totalUserStaked > 0) {
+      _print_bold(
+        `\nYou are staking a total of $${formatMoney(totalUserStaked)} at an average APR of ${(
+          averageApr * 100
+        ).toFixed(2)}%`
+      )
+      _print(
+        `Estimated earnings:` +
+          ` Day $${formatMoney((totalUserStaked * averageApr) / 365)}` +
+          ` Week $${formatMoney((totalUserStaked * averageApr) / 52)}` +
+          ` Year $${formatMoney(totalUserStaked * averageApr)}\n`
+      )
+    }
+  }
+
+  return {prices, totalUserStaked, totalStaked, averageApr}
+}
+
+function printHermesChefPool(App, chefAbi, chefAddr, prices, tokens, poolInfo, poolIndex, poolPrices,
+                       totalAllocPoints, rewardsPerWeek, rewardTokenTicker, rewardTokenAddress,
+                       pendingRewardsFunction, fixedDecimals, claimFunction, chain="eth", depositFee=0, withdrawFee=0) {
+  fixedDecimals = fixedDecimals ?? 2;
+  const sp = (poolInfo.stakedToken == null) ? null : getPoolPrices(tokens, prices, poolInfo.stakedToken, chain);
+  var poolRewardsPerWeek = poolInfo.allocPoints / totalAllocPoints * rewardsPerWeek;
+  //if (poolRewardsPerWeek == 0 && rewardsPerWeek != 0) return;
+  const userStaked = poolInfo.userLPStaked ?? poolInfo.userStaked;
+  const rewardPrice = getParameterCaseInsensitive(prices, rewardTokenAddress)?.usd;
+  const staked_tvl = sp?.staked_tvl ?? poolPrices.staked_tvl;
+  _print_inline(`${poolIndex} - `);
+  poolPrices.print_price(chain);
+  sp?.print_price(chain);
+  let apr = printAPR(rewardTokenTicker, rewardPrice, poolRewardsPerWeek, poolPrices.stakeTokenTicker,
+    staked_tvl, userStaked, poolPrices.price, fixedDecimals);
+  if (poolInfo.userLPStaked > 0) sp?.print_contained_price(userStaked);
+  if (poolInfo.userStaked > 0) poolPrices.print_contained_price(userStaked);
+  printChefContractLinks(App, chefAbi, chefAddr, poolIndex, poolInfo.address, pendingRewardsFunction,
+    rewardTokenTicker, poolPrices.stakeTokenTicker, poolInfo.poolToken.unstaked,
+    poolInfo.userStaked, poolInfo.pendingRewardTokens, fixedDecimals, claimFunction, rewardPrice, chain, depositFee, withdrawFee);
+  return apr;
+}
