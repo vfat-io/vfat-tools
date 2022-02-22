@@ -53,7 +53,11 @@ const avaxTokens = [
     { "id": "synapse-2", "symbol": "SYN", "contract": "0x1f1E7c893855525b303f99bDF5c3c05Be09ca251"},
     { "id": "sonic-token", "symbol": "SONIC", "contract": "0x4Aca0ad6357b918e3d06BB1a0BCC403619177523"},
     { "id": "topshelf-finance", "symbol": "LIQR", "contract": "0x33333ee26a7d02e41c33828b42fb1e0889143477"},
-    { "id": "gmx", "symbol": "GMX", "contract": "0x62edc0692BD897D2295872a9FFCac5425011c661"}
+    { "id": "gmx", "symbol": "GMX", "contract": "0x62edc0692BD897D2295872a9FFCac5425011c661"},
+    { "id": "avaware-usd", "symbol": "AUSD", "contract": "0x783C08b5F26E3daf8C4681F3bf49844e425b6393"},
+    { "id": "embr", "symbol": "EMBR", "contract": "0xD81D45E7635400dDD9c028839e9a9eF479006B28"},
+    { "id": "avaware", "symbol": "AVE", "contract": "0x78ea17559B3D2CF85a7F9C2C704eda119Db5E6dE"},
+    { "id": "usd-coin", "symbol": "USDC", "contract": "0xB97EF9Ef8734C71904D8002F8b6Bc66Dd9c48a6E"}
 ]
 
 async function getAvaxPrices() {
@@ -189,6 +193,40 @@ async function getAvaxVault(App, vault, address, stakingAddress) {
   }
 }
 
+async function getAvaxBalancerV2Pool(App, pool, poolAddress, stakingAddress, tokens, smartToken) {
+  const calls = [pool.decimals(), pool.symbol(), pool.name(), pool.totalSupply(),
+    pool.balanceOf(stakingAddress), pool.balanceOf(App.YOUR_ADDRESS), pool.getNormalizedWeights()]
+  const results = await App.ethcallProvider.all(calls);
+  let [decimals, symbol, name, totalSupply, staked, unstaked, weights] = results
+
+  let poolTokens = [];
+  let j = 0;
+  for (let i = 0; i < tokens.balances.length; i++) {
+    poolTokens.push({
+      address : tokens.tokens[i],
+      weight: weights[i] / 1e18,
+      balance : tokens.balances[i]
+    })
+  };
+  if (smartToken) {
+    [totalSupply, staked, unstaked] = await App.ethcallProvider.all([smartToken.totalSupply(),
+      smartToken.balanceOf(stakingAddress), smartToken.balanceOf(App.YOUR_ADDRESS)]);
+  }
+  return {
+      symbol,
+      name,
+      address: poolAddress,
+      poolTokens, //address, weight and balance
+      totalSupply: totalSupply / 10 ** decimals,
+      stakingAddress,
+      staked: staked / 10 ** decimals,
+      decimals: decimals,
+      unstaked: unstaked / 10 ** decimals,
+      contract: pool,
+      tokens : tokens.tokens
+  };
+}
+
 const AVAX_VAULT_ABI = [{"type":"constructor","stateMutability":"nonpayable","inputs":[{"type":"address","name":"_token","internalType":"address"},{"type":"address","name":"_governance","internalType":"address"},{"type":"address","name":"_timelock","internalType":"address"},{"type":"address","name":"_controller","internalType":"address"}]},{"type":"event","name":"Approval","inputs":[{"type":"address","name":"owner","internalType":"address","indexed":true},{"type":"address","name":"spender","internalType":"address","indexed":true},{"type":"uint256","name":"value","internalType":"uint256","indexed":false}],"anonymous":false},{"type":"event","name":"Transfer","inputs":[{"type":"address","name":"from","internalType":"address","indexed":true},{"type":"address","name":"to","internalType":"address","indexed":true},{"type":"uint256","name":"value","internalType":"uint256","indexed":false}],"anonymous":false},{"type":"function","stateMutability":"view","outputs":[{"type":"uint256","name":"","internalType":"uint256"}],"name":"allowance","inputs":[{"type":"address","name":"owner","internalType":"address"},{"type":"address","name":"spender","internalType":"address"}]},{"type":"function","stateMutability":"nonpayable","outputs":[{"type":"bool","name":"","internalType":"bool"}],"name":"approve","inputs":[{"type":"address","name":"spender","internalType":"address"},{"type":"uint256","name":"amount","internalType":"uint256"}]},{"type":"function","stateMutability":"view","outputs":[{"type":"uint256","name":"","internalType":"uint256"}],"name":"available","inputs":[]},{"type":"function","stateMutability":"view","outputs":[{"type":"uint256","name":"","internalType":"uint256"}],"name":"balance","inputs":[]},{"type":"function","stateMutability":"view","outputs":[{"type":"uint256","name":"","internalType":"uint256"}],"name":"balanceOf","inputs":[{"type":"address","name":"account","internalType":"address"}]},{"type":"function","stateMutability":"view","outputs":[{"type":"address","name":"","internalType":"address"}],"name":"controller","inputs":[]},{"type":"function","stateMutability":"view","outputs":[{"type":"uint8","name":"","internalType":"uint8"}],"name":"decimals","inputs":[]},{"type":"function","stateMutability":"nonpayable","outputs":[{"type":"bool","name":"","internalType":"bool"}],"name":"decreaseAllowance","inputs":[{"type":"address","name":"spender","internalType":"address"},{"type":"uint256","name":"subtractedValue","internalType":"uint256"}]},{"type":"function","stateMutability":"nonpayable","outputs":[],"name":"deposit","inputs":[{"type":"uint256","name":"_amount","internalType":"uint256"}]},{"type":"function","stateMutability":"nonpayable","outputs":[],"name":"depositAll","inputs":[]},{"type":"function","stateMutability":"nonpayable","outputs":[],"name":"earn","inputs":[]},{"type":"function","stateMutability":"view","outputs":[{"type":"uint256","name":"","internalType":"uint256"}],"name":"getRatio","inputs":[]},{"type":"function","stateMutability":"view","outputs":[{"type":"address","name":"","internalType":"address"}],"name":"governance","inputs":[]},{"type":"function","stateMutability":"nonpayable","outputs":[],"name":"harvest","inputs":[{"type":"address","name":"reserve","internalType":"address"},{"type":"uint256","name":"amount","internalType":"uint256"}]},{"type":"function","stateMutability":"nonpayable","outputs":[{"type":"bool","name":"","internalType":"bool"}],"name":"increaseAllowance","inputs":[{"type":"address","name":"spender","internalType":"address"},{"type":"uint256","name":"addedValue","internalType":"uint256"}]},{"type":"function","stateMutability":"view","outputs":[{"type":"uint256","name":"","internalType":"uint256"}],"name":"max","inputs":[]},{"type":"function","stateMutability":"view","outputs":[{"type":"uint256","name":"","internalType":"uint256"}],"name":"min","inputs":[]},{"type":"function","stateMutability":"view","outputs":[{"type":"string","name":"","internalType":"string"}],"name":"name","inputs":[]},{"type":"function","stateMutability":"nonpayable","outputs":[],"name":"setController","inputs":[{"type":"address","name":"_controller","internalType":"address"}]},{"type":"function","stateMutability":"nonpayable","outputs":[],"name":"setGovernance","inputs":[{"type":"address","name":"_governance","internalType":"address"}]},{"type":"function","stateMutability":"nonpayable","outputs":[],"name":"setMin","inputs":[{"type":"uint256","name":"_min","internalType":"uint256"}]},{"type":"function","stateMutability":"nonpayable","outputs":[],"name":"setTimelock","inputs":[{"type":"address","name":"_timelock","internalType":"address"}]},{"type":"function","stateMutability":"view","outputs":[{"type":"string","name":"","internalType":"string"}],"name":"symbol","inputs":[]},{"type":"function","stateMutability":"view","outputs":[{"type":"address","name":"","internalType":"address"}],"name":"timelock","inputs":[]},{"type":"function","stateMutability":"view","outputs":[{"type":"address","name":"","internalType":"contract IERC20"}],"name":"token","inputs":[]},{"type":"function","stateMutability":"view","outputs":[{"type":"uint256","name":"","internalType":"uint256"}],"name":"totalSupply","inputs":[]},{"type":"function","stateMutability":"nonpayable","outputs":[{"type":"bool","name":"","internalType":"bool"}],"name":"transfer","inputs":[{"type":"address","name":"recipient","internalType":"address"},{"type":"uint256","name":"amount","internalType":"uint256"}]},{"type":"function","stateMutability":"nonpayable","outputs":[{"type":"bool","name":"","internalType":"bool"}],"name":"transferFrom","inputs":[{"type":"address","name":"sender","internalType":"address"},{"type":"address","name":"recipient","internalType":"address"},{"type":"uint256","name":"amount","internalType":"uint256"}]},{"type":"function","stateMutability":"nonpayable","outputs":[],"name":"withdraw","inputs":[{"type":"uint256","name":"_shares","internalType":"uint256"}]},{"type":"function","stateMutability":"nonpayable","outputs":[],"name":"withdrawAll","inputs":[]}]
 
 async function getAvaxStoredToken(App, tokenAddress, stakingAddress, type) {
@@ -208,6 +246,12 @@ async function getAvaxStoredToken(App, tokenAddress, stakingAddress, type) {
     case "vault":
       const vault = new ethers.Contract(tokenAddress, AVAX_VAULT_ABI, App.provider);
       return await getAvaxVault(App, vault, tokenAddress, stakingAddress);
+    case "avaxBalancer":
+      const bal = new ethcall.Contract(tokenAddress, BALANCER_V2_POOL_ABI);
+      const [vaultAddress, poolId] = await App.ethcallProvider.all([bal.getVault(), bal.getPoolId()]);
+      const vaultBal = new ethcall.Contract(vaultAddress, BALANCER_VAULT_ABI);
+      const [tokens] = await App.ethcallProvider.all([vaultBal.getPoolTokens(poolId)]);
+      return await getAvaxBalancerV2Pool(App, bal, tokenAddress, stakingAddress, tokens);
   }
 }
 
@@ -250,6 +294,17 @@ async function getAvaxToken(App, tokenAddress, stakingAddress) {
       const yieldyakVault = await getArbitrumYieldyakVault(App, YIELDYAK_VAULT, tokenAddress, stakingAddress);
       window.localStorage.setItem(tokenAddress, "arbitrumYieldyakVault");
       return yieldyakVault;
+    }
+    catch(err) {
+    }
+    try {
+      const bal = new ethcall.Contract(tokenAddress, BALANCER_V2_POOL_ABI);
+      const [vaultAddress, poolId] = await App.ethcallProvider.all([bal.getVault(), bal.getPoolId()]);
+      const vault = new ethcall.Contract(vaultAddress, BALANCER_VAULT_ABI);
+      const [tokens] = await App.ethcallProvider.all([vault.getPoolTokens(poolId)]);
+      const balPool = await getAvaxBalancerV2Pool(App, bal, tokenAddress, stakingAddress, tokens);
+      window.localStorage.setItem(tokenAddress, "avaxBalancer");
+      return balPool;
     }
     catch(err) {
     }

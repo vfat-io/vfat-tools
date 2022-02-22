@@ -2782,7 +2782,7 @@ function getBalancerPrices(tokens, prices, pool, chain)
       stakeTokenTicker : stakeTokenTicker,
       print_price() {
         let poolUrl = "";
-        chain == "fantom" ? poolUrl = "https://beets.fi/#/" : poolUrl = `http://pools.balancer.exchange/#/pool/${pool.address}`;
+        chain == "fantom" ? poolUrl = "https://beets.fi/#/" : "avax" ? poolUrl = "https://analytics.embr.finance/" : poolUrl = `http://pools.balancer.exchange/#/pool/${pool.address}`;
         _print(`<a href='${poolUrl}' target='_blank'>${stakeTokenTicker}</a> BPT Price: $${formatMoney(price)} TVL: $${formatMoney(tvl)}`);
         poolPrices.forEach((p, i) =>
           _print(`${poolTokens[i].symbol} Price: $${formatMoney(p)}`)
