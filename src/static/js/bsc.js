@@ -12,7 +12,6 @@ const main = async() => {
       ["Space               ",`<a href="https://twitter.com/MCNVentures/status/1442278437805170691?s=20" target="_blank" class="mcn-reviewed">REVIEW</a>`,                     `<a href="space"              >Various</a>`,"SPACE            ","https://farm.space"],
       ["Pancake             ","", `<a href="pancake"       >Various</a>`,"CAKE             ","https://pancakeswap.finance"],
       ["Apeswap             ","", `<a href="apeswap"       >Various</a>`,"BANANA           ","https://apeswap.finance"],
-      ["Arth                ","", `<a href="arth"          >Various</a>`,"ARTH             ","https://app.arthcoin.com"],
       ["Autofarm            ","", `<a href="autofarm"      >Various</a>`,"AUTOFARM         ","https://autofarm.network"],
       ["Kyber               ","", `<a href="kyber"         >Various</a>`,"KNC              ","https://dmm.exchange"],
       ["Bake                ","", `<a href="bake"          >Various</a>`,"BAKE             ","https://www.bakeryswap.org"],
@@ -574,7 +573,8 @@ const main = async() => {
       ["NomiSwap            ","", `<a href="nomiswap"      >Various</a>`,"NMX              ","https://nomiswap.io"],
       ["Newspace            ","", `<a href="newspace"      >Various</a>`,"NEWSPACE         ","https://newspace.finance"],
       ["HuntDefi            ","", `<a href="huntdefi"      >Various</a>`,"HUNT             ","https://bsc.huntdefi.com"],
-      ["Ygg                 ","", `<a href="ygg"           >Various</a>`,"YSHARE / YGG     ","https://www.ygg.money"]
+      ["Ygg                 ","", `<a href="ygg"           >Various</a>`,"YSHARE / YGG     ","https://www.ygg.money"],
+      ["Arth                ","", `<a href="arth"          >Various</a>`,"ARTH             ","https://app.arthcoin.com"]
     ]}
 
   let table = new AsciiTable().fromJSON(tableData);

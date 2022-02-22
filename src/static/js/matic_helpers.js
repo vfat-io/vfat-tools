@@ -594,8 +594,8 @@ const maticTokens = [
   { "id": "true-usd", "symbol": "TUSD", "contract":"0x2e1ad108ff1d8c782fcbbb89aad783ac49586756"},
   { "id": "musd", "symbol": "MUSD", "contract":"0xE840B73E5287865EEc17d250bFb1536704B43B21"},
   { "id": "denarius", "symbol": "D", "contract":"0xa286eeDAa5aBbAE98F65b152B5057b8bE9893fbB"},
-  { "id": "arth", "symbol": "arth","contract": "0xe52509181feb30eb4979e29ec70d50fd5c44d590" },
-  { "id": "maha", "symbol": "maha","contract": "0xedd6ca8a4202d4a36611e2fff109648c4863ae19" },
+  { "id": "arth", "symbol": "ARTH","contract": "0xe52509181feb30eb4979e29ec70d50fd5c44d590" },
+  { "id": "mahadao", "symbol": "MAHA","contract": "0xedd6ca8a4202d4a36611e2fff109648c4863ae19" },
 ]
 
 
