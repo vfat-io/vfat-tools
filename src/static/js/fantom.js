@@ -173,7 +173,8 @@ const main = async () => {
       ["HuntDefi           ", `<a href='huntdefi'     >Various</a>`, "HUNT         ","https://ftm.huntdefi.com"],
       ["Farmtom            ", `<a href='farmtom'      >Various</a>`, "FRTM         ","https://farmtom.com"],
       ['Partial Finance    ', `<a href='partialfinance'>Various</a>`,'PARTIAL      ','https://partial.finance'],
-      ['Kyrios             ', `<a href='kyrios'       >Various</a>`, 'KYRIOS       ','https://kyrios.finance']
+      ['Kyrios             ', `<a href='kyrios'       >Various</a>`, 'KYRIOS       ','https://kyrios.finance'],
+      ['fDoge              ', `<a href='fdoge'        >Various</a>`, 'SDOGE / FDOGE','https://fdoge.finance']
     ],
   }
 
