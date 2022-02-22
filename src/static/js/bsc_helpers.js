@@ -620,6 +620,8 @@ async function loadBscChefContract(App, tokens, prices, chef, chefAddress, chefA
 
 const bscTokens = [
   { "id": "wbnb", "symbol": "wbnb","contract": "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c" },
+  { "id": "arth", "symbol": "arth","contract": "0xB69A424Df8C737a122D0e60695382B3Eec07fF4B" },
+  { "id": "maha", "symbol": "maha","contract": "0xCE86F7fcD3B40791F63B86C3ea3B8B355Ce2685b" },
   { "id": "binance-usd", "symbol": "busd", "contract": "0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56"  },
   { "id": "pancakeswap-token", "symbol": "CAKE", "contract": "0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82"  },
   { "id": "beefy-finance", "symbol": "BIFI", "contract": "0xca3f508b8e4dd382ee878a314789373d80a5190a" },
