@@ -10,13 +10,13 @@ async function main() {
   _print(`Initialized ${App.YOUR_ADDRESS}\n`);
   _print("Reading smart contracts...\n");
 
-  const ZEN_FARM_ADDR = "0xAfaFf19679ab6baF75eD8098227Be189BA47ba0F";
+  const ZEN_FARM_ADDR = "0xA226877393fC4e3B5F2B43a1BaE3c5D72C918c2d";
   const tokens = {};
-  const prices = await getMoonriverPrices();
+  const prices = await getMoonbeamPrices();
 
   _print(`\nPlease use the official site in order to unstake your funds\n`)
 
-  await loadZenContract(App, tokens, prices, ZEN_FARM_ADDR, ZEN_FARM_ABI, [1]);
+  await loadZenContract(App, tokens, prices, ZEN_FARM_ADDR, ZEN_FARM_ABI);
 
   hideLoading();
 }
@@ -24,14 +24,13 @@ async function main() {
 async function getZenPoolInfo(app, chefContract, chefAddress, poolIndex) {
   const blocksPerSeconds = await getAverageBlockTime(app)
   const poolInfo = await chefContract.getPoolInfo(poolIndex);
-  const poolToken = await getMoonriverToken(app, poolInfo.farmingToken, chefAddress);
-  //poolToken.staked = poolInfo.amount / 10 ** poolToken.decimals;
+  const poolToken = await getMoonbeamToken(app, poolInfo.farmingToken, chefAddress);
   const userInfo = await chefContract.getUserInfo(poolIndex, app.YOUR_ADDRESS);
   const staked = userInfo.amount / 10 ** poolToken.decimals;
   let rewardsPerWeek = [], rewardTokenTickers = [], pendingRewardTokens = [], rewardTokens = []
   const rewardTokenAddresses = poolInfo.rewardTokens;
   for(const rewardTokenAddress of rewardTokenAddresses){
-    const rewardToken = await getMoonriverToken(app, rewardTokenAddress, chefAddress)
+    const rewardToken = await getMoonbeamToken(app, rewardTokenAddress, chefAddress)
     const rewardTokenTicker = rewardToken.symbol;
     rewardTokens.push(rewardToken);
     rewardTokenTickers.push(rewardTokenTicker);
@@ -74,7 +73,7 @@ async function loadZenContract(App, tokens, prices, chefAddress, chefAbi, deathP
   const chefContract = new ethers.Contract(chefAddress, chefAbi, App.provider);
   const poolCount = parseInt(await chefContract.poolLength(), 10);
 
-  _print(`<a href='https://moonriver.moonscan.io/address/${chefAddress}' target='_blank'>Staking Contract</a>`);
+  _print(`<a href='https://moonbeam.moonscan.io/address/${chefAddress}' target='_blank'>Staking Contract</a>`);
   _print(`Found ${poolCount} pools.\n`)
   _print(`Showing incentivized pools only.\n`);
 
@@ -84,16 +83,16 @@ async function loadZenContract(App, tokens, prices, chefAddress, chefAbi, deathP
   var tokenAddresses = [].concat.apply([], poolInfos.filter(x => x.poolToken).map(x => x.poolToken.tokens));
 
   await Promise.all(tokenAddresses.map(async (address) => {
-      tokens[address] = await getMoonriverToken(App, address, chefAddress);
+      tokens[address] = await getMoonbeamToken(App, address, chefAddress);
   }));
 
   if (deathPoolIndices) {   //load prices for the deathpool assets
     deathPoolIndices.map(i => poolInfos[i])
                      .map(poolInfo =>
-      poolInfo.poolToken ? getPoolPrices(tokens, prices, poolInfo.poolToken, "moonriver") : undefined);
+      poolInfo.poolToken ? getPoolPrices(tokens, prices, poolInfo.poolToken, "moonbeam") : undefined);
   }
 
-  const poolPrices = poolInfos.map(poolInfo => poolInfo.poolToken ? getPoolPrices(tokens, prices, poolInfo.poolToken, "moonriver") : undefined);
+  const poolPrices = poolInfos.map(poolInfo => poolInfo.poolToken ? getPoolPrices(tokens, prices, poolInfo.poolToken, "moonbeam") : undefined);
 
 
   _print("Finished reading smart contracts.\n");
@@ -103,7 +102,7 @@ async function loadZenContract(App, tokens, prices, chefAddress, chefAbi, deathP
     if (poolPrices[i]) {
       const apr = printZenPool(App, chefAbi, chefAddress, prices, tokens, poolInfos[i], i, poolPrices[i],
         poolInfos[i].rewardsPerWeek, poolInfos[i].rewardTokenTickers, poolInfos[i].rewardTokenAddresses,
-        poolInfos[i].pendingRewardTokens, null, "moonriver", poolInfos[i].depositFee, poolInfos[i].withdrawFee)
+        poolInfos[i].pendingRewardTokens, null, "moonbeam", poolInfos[i].depositFee, poolInfos[i].withdrawFee)
       aprs.push(apr);
     }
   }
