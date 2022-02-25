@@ -108,7 +108,7 @@ const main = async () => {
       ['Babypig Finance    ', `<a href="babypig"      >Various</a>`, 'fBABYPIG     ', 'https://babypig.finance'],
       ['Draco Force        ', `<a href="dracoforce"   >Various</a>`, 'DRC          ', 'https://dracoforce.com'],
       ['Smurf Clever       ', `<a href="smurf"        >Various</a>`, 'CLEVER       ', 'https://smurf.money'],
-      ['Hundred            ', `<a href="hundred"      >Various</a>`, 'HND          ', 'https://hundred.finance'],
+      ['Hundred *          ', `<a href="hundred"      >Various</a>`, 'HND          ', 'https://hundred.finance'],
       ['FantomPup          ', `<a href="fantompup"    >Various</a>`, 'PUP          ', 'https://fantompup.finance'],
       ['UndeadFinance      ', `<a href="undeadfinance">Various</a>`, 'UNDEAD       ', 'https://undeadfinance.com'],
       ['FanTerra           ', `<a href="fanterra"     >Various</a>`, 'FANTERRA     ', 'https://app.fanterra.finance'],
@@ -174,7 +174,8 @@ const main = async () => {
       ["Farmtom            ", `<a href='farmtom'      >Various</a>`, "FRTM         ","https://farmtom.com"],
       ['Partial Finance    ', `<a href='partialfinance'>Various</a>`,'PARTIAL      ','https://partial.finance'],
       ['Kyrios             ', `<a href='kyrios'       >Various</a>`, 'KYRIOS       ','https://kyrios.finance'],
-      ['fDoge              ', `<a href='fdoge'        >Various</a>`, 'SDOGE / FDOGE','https://fdoge.finance']
+      ['fDoge              ', `<a href='fdoge'        >Various</a>`, 'SDOGE / FDOGE','https://fdoge.finance'],
+      //['Solidly            ', `<a href='solidly'      >Various</a>`, 'Various      ','https://solidly.exchange']
     ],
   }
 
