@@ -1991,6 +1991,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
   else if (pool.symbol.includes("KUS-LP")) stakeTokenTicker += " KUS LP";
   else if (pool.symbol.includes("KoffeeMug")) stakeTokenTicker += " KoffeeMug";
   else if (pool.symbol.includes("DMM-LP")) stakeTokenTicker += " DMM-LP";
+  else if (pool.symbol.includes("ZLK-LP")) stakeTokenTicker += " ZLK-LP";
   else if (pool.symbol.includes("CAT-LP")) stakeTokenTicker += " PolyCat LP";
   else if (pool.symbol.includes("VLP")) stakeTokenTicker += " AURO LP";
   else if (pool.symbol.includes("DLP")) stakeTokenTicker += " DLP";
@@ -2073,6 +2074,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
               [chain]):
               pool.symbol.includes("CS-LP") ?  `https://app.coinswap.space/#/` :
               pool.symbol.includes("NMX-LP") ?  `https://nomiswap.io/swap` :
+              pool.symbol.includes("ZLK-LP") ?  `https://dex.zenlink.pro/#/info/overview` :
               pool.name.includes("Value LP") ?  `https://info.vswap.fi/pool/${pool.address}` :
               pool.name.includes("Duneswap LP Token") ?  `https://explorer.emerald.oasis.dev/token/${pool.address}` :
               pool.name.includes("Lizard LPs") ?  `https://explorer.emerald.oasis.dev/token/${pool.address}` :
@@ -2147,6 +2149,11 @@ function getUniPrices(tokens, prices, pool, chain="eth")
             `https://www.huckleberry.finance/#/add/${t0address}/${t1address}`,
             `https://www.huckleberry.finance/#/remove/${t0address}/${t1address}`,
             `https://www.huckleberry.finance/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+          ] :
+          pool.symbol.includes("ZLK-LP") ? [
+            `https://dex.zenlink.pro/#/swap`,
+            `https://dex.zenlink.pro/#/swap`,
+            `https://dex.zenlink.pro/#/swap`
           ] :
           pool.symbol.includes("Farmtom-LP") ? [
             `https://farmtom.com/add/${t0address}/${t1address}`,
