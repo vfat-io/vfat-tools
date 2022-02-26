@@ -180,13 +180,13 @@ async function printSolidlySynthetixPool(App, info, chain="eth", customURLs) {
            `$${formatMoney(userStakedUsd)} (${userStakedPct.toFixed(2)}% of the pool).`);
     if (info.userStaked > 0) {
       info.poolPrices.print_contained_price(info.userStaked);
-        const userWeeklyRewards = userStakedPct * totalWeeklyRewards / 100;
+        const userWeeklyRewards = userStakedPct * info.weeklyRewards[0] / 100;
         const userDailyRewards = userWeeklyRewards / 7;
         const userYearlyRewards = userWeeklyRewards * 52;
         _print(`Estimated ${info.rewardTokenTicker} earnings:`
-            + ` Day ${userDailyRewards.toFixed(2)} ($${formatMoney(userDailyRewards*totalRewardPrices)})`
-            + ` Week ${userWeeklyRewards.toFixed(2)} ($${formatMoney(userWeeklyRewards*totalRewardPrices)})`
-            + ` Year ${userYearlyRewards.toFixed(2)} ($${formatMoney(userYearlyRewards*totalRewardPrices)})`);
+            + ` Day ${userDailyRewards.toFixed(2)} ($${formatMoney(userDailyRewards*info.rewardTokenPrices[0])})`
+            + ` Week ${userWeeklyRewards.toFixed(2)} ($${formatMoney(userWeeklyRewards*info.rewardTokenPrices[0])})`
+            + ` Year ${userYearlyRewards.toFixed(2)} ($${formatMoney(userYearlyRewards*info.rewardTokenPrices[0])})`);
     }
   const claim = async function() {
     return solidlyContract_claim(info.rewardTokenAddress, info.stakingAddress, App)
