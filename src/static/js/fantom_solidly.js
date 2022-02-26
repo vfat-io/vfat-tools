@@ -16,7 +16,7 @@ async function main() {
   const tokens = {};
   const prices = await getFantomPrices();
 
-  /*const SOLIDLY_STAKING_ADDR = "0xdC819F5d05a6859D2faCbB4A44E5aB105762dbaE"
+  const SOLIDLY_STAKING_ADDR = "0xdC819F5d05a6859D2faCbB4A44E5aB105762dbaE"
   const SOLIDLY_STAKING_CONTRACT = new ethcall.Contract(SOLIDLY_STAKING_ADDR, SOLIDLY_STAKING_ABI);
   const [_poolsLegth] = await App.ethcallProvider.all([SOLIDLY_STAKING_CONTRACT.length()]);
   const poolsLegth = _poolsLegth / 1;
@@ -30,15 +30,9 @@ async function main() {
       abi: SOLIDLY_GAUGE_ABI,
       stakeTokenFunction: "stake"
     }
-  });*/
+  });
 
-  const gauges = ["0xbcab7d083Cf6a01e0DdA9ed7F8a02b47d125e682"].map(c => { return {
-    address: c,
-    abi: SOLIDLY_GAUGE_ABI,
-    stakeTokenFunction: "stake",
-  }})
-
-  //await loadSolidlySynthetixPoolInfoPrice(App, tokens, prices, App.YOUR_ADDRESS, "0xc8cc1b89820791665b6f26b00b3111b00e021f19")
+  await loadSolidlySynthetixPoolInfoPrice(App, tokens, prices, App.YOUR_ADDRESS, "0xc8cc1b89820791665b6f26b00b3111b00e021f19")
 
   let p = await loadSolidlyFantomSynthetixPools(App, tokens, prices, gauges)
   _print_bold(`Total staked: $${formatMoney(p.staked_tvl)}\n`);
@@ -99,6 +93,9 @@ async function loadSolidlySynthetixPoolInfo(App, tokens, prices, stakingAbi, sta
       earnings.push(earned);
       usdCoinsPerWeek.push(usdPerWeek);
     }
+    if(weeklyRewards.length <=0){
+      return;
+    }
 
     var stakeToken = await getFantomToken(App, stakeTokenAddress, stakingAddress);
 
@@ -157,7 +154,7 @@ async function loadSolidlySynthetixPoolInfo(App, tokens, prices, stakingAbi, sta
 }
 
 async function printSolidlySynthetixPool(App, info, chain="eth", customURLs) {
-  if(info == null || info.weeklyRewards.length <=0 || info.stakeTokenAddress == "0x61DdD2Dab9d2EEB38109dA03906b4616edf3Dcee"){
+  if(info == null){
     return{
       staked_tvl: 0,
       userStaked : 0,
@@ -174,10 +171,9 @@ async function printSolidlySynthetixPool(App, info, chain="eth", customURLs) {
     totalWeeklyAPR += weeklyAPR;
     totalDailyAPR += dailyAPR;
     totalUSDPerWeek += info.usdCoinsPerWeek[i];
-    _print(`${info.rewardTokenTickers[i]} Per Week: ${info.weeklyRewards[i].toFixed(2)} ($${formatMoney(info.usdCoinsPerWeek[i])}) APR: Year ${yearlyAPR.toFixed(2)}%`);
+    _print(`${info.rewardTokenTickers[i]} Per Week: ${info.weeklyRewards[i].toFixed(2)} ($${formatMoney(info.usdCoinsPerWeek[i])})`);
   }
-  _print(`Total Per Week: $${formatMoney(totalUSDPerWeek)}`);
-  _print(`Total APR: Day ${totalDailyAPR.toFixed(4)}% Week ${totalWeeklyAPR.toFixed(2)}% Year ${totalYearlyAPR.toFixed(2)}%`);
+  _print(`APR: Day ${totalDailyAPR.toFixed(4)}% Week ${totalWeeklyAPR.toFixed(2)}% Year ${totalYearlyAPR.toFixed(2)}%`);
     const userStakedUsd = info.userStaked * info.stakeTokenPrice;
     const userStakedPct = userStakedUsd / info.staked_tvl * 100;
     _print(`You are staking ${info.userStaked.toFixed(6)} ${info.stakeTokenTicker} ` +
