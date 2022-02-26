@@ -16,7 +16,7 @@ async function main() {
   const tokens = {};
   const prices = await getFantomPrices();
 
-  const SOLIDLY_STAKING_ADDR = "0xdC819F5d05a6859D2faCbB4A44E5aB105762dbaE"
+  /*const SOLIDLY_STAKING_ADDR = "0xdC819F5d05a6859D2faCbB4A44E5aB105762dbaE"
   const SOLIDLY_STAKING_CONTRACT = new ethcall.Contract(SOLIDLY_STAKING_ADDR, SOLIDLY_STAKING_ABI);
   const [_poolsLegth] = await App.ethcallProvider.all([SOLIDLY_STAKING_CONTRACT.length()]);
   const poolsLegth = _poolsLegth / 1;
@@ -30,9 +30,15 @@ async function main() {
       abi: SOLIDLY_GAUGE_ABI,
       stakeTokenFunction: "stake"
     }
-  });
+  });*/
 
-  await loadSolidlySynthetixPoolInfoPrice(App, tokens, prices, App.YOUR_ADDRESS, "0xc8cc1b89820791665b6f26b00b3111b00e021f19")
+  const gauges = ["0xbcab7d083Cf6a01e0DdA9ed7F8a02b47d125e682"].map(c => { return {
+    address: c,
+    abi: SOLIDLY_GAUGE_ABI,
+    stakeTokenFunction: "stake",
+  }})
+
+  //await loadSolidlySynthetixPoolInfoPrice(App, tokens, prices, App.YOUR_ADDRESS, "0xc8cc1b89820791665b6f26b00b3111b00e021f19")
 
   let p = await loadSolidlyFantomSynthetixPools(App, tokens, prices, gauges)
   _print_bold(`Total staked: $${formatMoney(p.staked_tvl)}\n`);
@@ -96,6 +102,10 @@ async function loadSolidlySynthetixPoolInfo(App, tokens, prices, stakingAbi, sta
 
     var stakeToken = await getFantomToken(App, stakeTokenAddress, stakingAddress);
 
+    const calls = [STAKING_MULTI.balanceOf(App.YOUR_ADDRESS), STAKING_MULTI.derivedSupply()]
+    const [balance, totalStaked] = await App.ethcallProvider.all(calls);
+    stakeToken.staked = totalStaked / 10 ** stakeToken.decimals
+
     var newPriceAddresses = stakeToken.tokens.filter(x =>
       !getParameterCaseInsensitive(prices, x));
     var newPrices = await lookUpTokenPrices(newPriceAddresses);
@@ -121,9 +131,6 @@ async function loadSolidlySynthetixPoolInfo(App, tokens, prices, stakingAbi, sta
 
     const stakeTokenPrice =
         prices[stakeTokenAddress]?.usd ?? getParameterCaseInsensitive(prices, stakeTokenAddress)?.usd;
-
-    const calls = [STAKING_MULTI.balanceOf(App.YOUR_ADDRESS)]
-    const [balance] = await App.ethcallProvider.all(calls);
 
     const staked_tvl = poolPrices.staked_tvl;
 
