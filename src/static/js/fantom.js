@@ -175,7 +175,9 @@ const main = async () => {
       ['Partial Finance    ', `<a href='partialfinance'>Various</a>`,'PARTIAL      ','https://partial.finance'],
       ['Kyrios             ', `<a href='kyrios'       >Various</a>`, 'KYRIOS       ','https://kyrios.finance'],
       ['fDoge              ', `<a href='fdoge'        >Various</a>`, 'SDOGE / FDOGE','https://fdoge.finance'],
-      //['Solidly            ', `<a href='solidly'      >Various</a>`, 'Various      ','https://solidly.exchange']
+      ['2Doge              ', `<a href='2doge'        >Various</a>`, '2DOGE / 2SDOGE','https://2doge.finance'],
+      ["Pulsedao           ", `<a href='pulsedao'     >Various</a>`, "pSHARE / PLD ","https://pulsedao.finance"],
+      ['Solidly            ', `<a href='solidly'      >Various</a>`, 'Various      ','https://solidly.exchange']
     ],
   }
 

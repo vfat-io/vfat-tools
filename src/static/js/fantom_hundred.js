@@ -296,6 +296,7 @@ async function loadSolidlySynthetixPoolInfo(App, tokens, prices, stakingAbi, sta
     const rewardTokenAddress = await STAKING_POOL.rewards(0)  //check for additional reward tokens in the future
 
     var stakeToken = await getFantomToken(App, stakeTokenAddress, stakingAddress);
+    stakeToken.staked = await STAKING_POOL.derivedSupply() / 10 ** stakeToken.decimals
 
     var newPriceAddresses = stakeToken.tokens.filter(x =>
       !getParameterCaseInsensitive(prices, x));
@@ -331,7 +332,8 @@ async function loadSolidlySynthetixPoolInfo(App, tokens, prices, stakingAbi, sta
     const rewardTokenPrice = getParameterCaseInsensitive(prices, rewardTokenAddress)?.usd;
 
     const calls = [STAKING_MULTI.periodFinish(rewardTokenAddress), STAKING_MULTI.rewardRate(rewardTokenAddress),
-      STAKING_MULTI.balanceOf(App.YOUR_ADDRESS), STAKING_MULTI.earned(rewardTokenAddress, App.YOUR_ADDRESS)]
+      STAKING_MULTI.balanceOf(App.YOUR_ADDRESS), STAKING_MULTI.earned(rewardTokenAddress, App.YOUR_ADDRESS),
+      STAKING_MULTI.tokenIds(App.YOUR_ADDRESS)]
     const [periodFinish, rewardRate, balance, earned_] = await App.ethcallProvider.all(calls);
 
     const weeklyRewards = (Date.now() / 1000 > periodFinish) ? 0 : rewardRate / 10 ** rewardToken.decimals * 604800;
