@@ -296,7 +296,6 @@ async function loadSolidlySynthetixPoolInfo(App, tokens, prices, stakingAbi, sta
     const rewardTokenAddress = await STAKING_POOL.rewards(0)  //check for additional reward tokens in the future
 
     var stakeToken = await getFantomToken(App, stakeTokenAddress, stakingAddress);
-    //stakeToken.staked = await STAKING_POOL.derivedSupply() / 10 ** stakeToken.decimals
 
     var newPriceAddresses = stakeToken.tokens.filter(x =>
       !getParameterCaseInsensitive(prices, x));
@@ -333,8 +332,11 @@ async function loadSolidlySynthetixPoolInfo(App, tokens, prices, stakingAbi, sta
 
     const calls = [STAKING_MULTI.periodFinish(rewardTokenAddress), STAKING_MULTI.rewardRate(rewardTokenAddress),
       STAKING_MULTI.balanceOf(App.YOUR_ADDRESS), STAKING_MULTI.earned(rewardTokenAddress, App.YOUR_ADDRESS),
-      STAKING_MULTI.tokenIds(App.YOUR_ADDRESS)]
-    const [periodFinish, rewardRate, balance, earned_] = await App.ethcallProvider.all(calls);
+      STAKING_MULTI.derivedSupply(), STAKING_MULTI.derivedBalance(App.YOUR_ADDRESS)]
+    const [periodFinish, rewardRate, balance, earned_, derivedSupply_, derivedBalance_] = await App.ethcallProvider.all(calls);
+
+    const derivedSupply = derivedSupply_ / 10 ** stakeToken.decimals
+    const derivedBalance = derivedBalance_ / 10 ** stakeToken.decimals
 
     const weeklyRewards = (Date.now() / 1000 > periodFinish) ? 0 : rewardRate / 10 ** rewardToken.decimals * 604800;
 
@@ -362,7 +364,9 @@ async function loadSolidlySynthetixPoolInfo(App, tokens, prices, stakingAbi, sta
       staked_tvl,
       userStaked,
       userUnstaked,
-      earned
+      earned,
+      derivedSupply,
+      derivedBalance
     }
 }
 
@@ -375,6 +379,14 @@ async function printSolidlySynthetixPool(App, info, chain="eth", customURLs) {
   _print(`APR: Day ${dailyAPR.toFixed(2)}% Week ${weeklyAPR.toFixed(2)}% Year ${yearlyAPR.toFixed(2)}%`);
   const userStakedUsd = info.userStaked * info.stakeTokenPrice;
   const userStakedPct = userStakedUsd / info.staked_tvl * 100;
+  const usersDailyAPR = dailyAPR * (info.derivedBalance / info.derivedSupply) / userStakedPct * 100
+  const usersWeeklyAPR = weeklyAPR * (info.derivedBalance / info.derivedSupply) / userStakedPct * 100
+  const usersYearlyAPR = yearlyAPR * (info.derivedBalance / info.derivedSupply) / userStakedPct * 100
+  if(info.derivedBalance <= 0){
+    _print(`YOUR APR: Day 0% Week 0% Year 0%`);
+  }else{
+    _print(`YOUR APR: Day ${usersDailyAPR.toFixed(4)}% Week ${usersWeeklyAPR.toFixed(2)}% Year ${usersYearlyAPR.toFixed(2)}%`);
+  }
   _print(`You are staking ${info.userStaked.toFixed(6)} ${info.stakeTokenTicker} ` +
          `$${formatMoney(userStakedUsd)} (${userStakedPct.toFixed(2)}% of the pool).`);
   if (info.userStaked > 0) {
