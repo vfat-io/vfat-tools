@@ -93,7 +93,8 @@ const main = async() => {
         ["GMX                     ",`<a href="gmx"              >Various</a>`,"Various      ","https://gmx.io"],
         ["HakuSwap                ",`<a href="hakuswap"         >Various</a>`,"HAKU         ","https://hakuswap.com"],
         ["HuntDefi                ",`<a href="huntdefi"         >Various</a>`,"HUNT         ","https://avax.huntdefi.com"],
-        ["Embr                    ",`<a href="embr"             >Various</a>`,"EMBR         ","https://app.embr.finance"]
+        ["Embr                    ",`<a href="embr"             >Various</a>`,"EMBR         ","https://app.embr.finance"],
+        ["Spectrevax              ",`<a href="spectrevax"       >Various</a>`,"SPECTA       ","https://avax.spectrefi.com/"]
     ]
   }
 
