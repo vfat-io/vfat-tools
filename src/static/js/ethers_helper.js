@@ -1981,6 +1981,8 @@ function getUniPrices(tokens, prices, pool, chain="eth")
   if (pool.is1inch) stakeTokenTicker += " 1INCH LP";
   else if (pool.symbol.includes("TETHYSLP")) stakeTokenTicker += " TETHYS LP";
   else if (pool.symbol.includes("LSLP")) stakeTokenTicker += " LSLP";
+  else if (pool.symbol.includes("vAMM")) stakeTokenTicker += " vAMM";
+  else if (pool.symbol.includes("sAMM")) stakeTokenTicker += " sAMM";
   else if (pool.symbol.includes("HBLP")) stakeTokenTicker += " Huckleberry LP";
   else if (pool.symbol.includes("BLP")) stakeTokenTicker += " BLP";
   else if (pool.symbol.includes("BEAM-LP")) stakeTokenTicker += " BEAM-LP";
@@ -2097,6 +2099,8 @@ function getUniPrices(tokens, prices, pool, chain="eth")
               [chain]):
               pool.symbol.includes("CS-LP") ?  `https://app.coinswap.space/#/` :
               pool.symbol.includes("NMX-LP") ?  `https://nomiswap.io/swap` :
+              pool.symbol.includes("vAMM") ?  `https://solidly.exchange` :
+              pool.symbol.includes("sAMM") ?  `https://solidly.exchange` :
               pool.symbol.includes("ZLK-LP") ?  `https://dex.zenlink.pro/#/info/overview` :
               pool.name.includes("Value LP") ?  `https://info.vswap.fi/pool/${pool.address}` :
               pool.name.includes("Duneswap LP Token") ?  `https://explorer.emerald.oasis.dev/token/${pool.address}` :
@@ -2167,6 +2171,16 @@ function getUniPrices(tokens, prices, pool, chain="eth")
             `https://linkswap.app/#/add/${t0address}/${t1address}`,
             `https://linkswap.app/#/remove/${t0address}/${t1address}`,
             `https://linkswap.app/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+          ] :
+          pool.symbol.includes("vAMM") ? [
+            `https://solidly.exchange/liquidity/create`,
+            `https://solidly.exchange/liquidity/create`,
+            `https://solidly.exchange/swap`
+          ] :
+          pool.symbol.includes("sAMM") ? [
+            `https://solidly.exchange/liquidity/create`,
+            `https://solidly.exchange/liquidity/create`,
+            `https://solidly.exchange/swap`
           ] :
           pool.symbol.includes("HBLP") ? [
             `https://www.huckleberry.finance/#/add/${t0address}/${t1address}`,
