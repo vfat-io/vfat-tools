@@ -230,7 +230,7 @@ async function main() {
     _print_bold(`You are staking a total of $${formatMoney(userTvl)}`);
   }
   _print("");
-  
+
   /*================================      GAUGES      ====================================================== */
 
   const COMPTROLLER = new ethcall.Contract(contracts.comptroller, HUNDRED_ABI.comptroller, App.provider);
@@ -383,9 +383,9 @@ async function printSolidlySynthetixPool(App, info, chain="eth", customURLs) {
   const usersWeeklyAPR = weeklyAPR * (info.derivedBalance / info.derivedSupply) / userStakedPct * 100
   const usersYearlyAPR = yearlyAPR * (info.derivedBalance / info.derivedSupply) / userStakedPct * 100
   if(info.derivedBalance <= 0){
-    _print(`YOUR APR: Day 0% Week 0% Year 0%`);
+    _print(`Your APR: Day 0% Week 0% Year 0%`);
   }else{
-    _print(`YOUR APR: Day ${usersDailyAPR.toFixed(4)}% Week ${usersWeeklyAPR.toFixed(2)}% Year ${usersYearlyAPR.toFixed(2)}%`);
+    _print(`Your APR: Day ${usersDailyAPR.toFixed(4)}% Week ${usersWeeklyAPR.toFixed(2)}% Year ${usersYearlyAPR.toFixed(2)}%`);
   }
   _print(`You are staking ${info.userStaked.toFixed(6)} ${info.stakeTokenTicker} ` +
          `$${formatMoney(userStakedUsd)} (${userStakedPct.toFixed(2)}% of the pool).`);
@@ -834,7 +834,7 @@ function printRewarderPool(App, chefAbi, chefAddr, prices, tokens, poolInfo, poo
     _print("");
     return apr;
   }
-  
+
   function printRewarderAPR(rewardTokenTicker, rewardPrice, poolRewardsPerWeek,
                     stakeTokenTicker, staked_tvl, userStaked, poolTokenPrice,
                     fixedDecimals, poolRewarderRewardsPerWeek, rewardRewarderPrice, rewarderTicker) {

@@ -47,14 +47,15 @@ async function main() {
   }
 
   const claimAll = async function() {
-    return solidlyContract_claimAll(p.gaugeAddresses, [SOLID_TOKEN_ADDR], SOLIDLY_STAKING_ADDR, App)
+    const rewardTokenAddresses = p.gaugeAddresses.map((g) => [SOLID_TOKEN_ADDR]);
+    return solidlyContract_claimAll(p.gaugeAddresses, rewardTokenAddresses, SOLIDLY_STAKING_ADDR, App)
   }
   _print_link(`Claim All`, claimAll)
 
   hideLoading();
 }
 
-const solidlyContract_claimAll = async function(gaugeAddresses, rewardTokenAddress, rewardPoolAddr, App) {
+const solidlyContract_claimAll = async function(gaugeAddresses, rewardTokenAddresses, rewardPoolAddr, App) {
   const signer = App.provider.getSigner()
 
   const REWARD_POOL = new ethers.Contract(rewardPoolAddr, SOLIDLY_STAKING_ABI, signer)
@@ -62,7 +63,7 @@ const solidlyContract_claimAll = async function(gaugeAddresses, rewardTokenAddre
   console.log(App.YOUR_ADDRESS)
 
   showLoading()
-    REWARD_POOL.claimRewards(gaugeAddresses, [rewardTokenAddress], {gasLimit: 250000})
+    REWARD_POOL.claimRewards(gaugeAddresses, rewardTokenAddresses)
       .then(function(t) {
         return App.provider.waitForTransaction(t.hash)
       })
@@ -119,7 +120,7 @@ async function loadSolidlySynthetixPoolInfo(App, tokens, prices, stakingAbi, sta
       const rewardToken = getParameterCaseInsensitive(tokens, rewardTokenAddress);
       const rewardTokenTicker = rewardToken.symbol;
       const rewardTokenPrice = getParameterCaseInsensitive(prices, rewardTokenAddress)?.usd;
-      const [periodFinish, rewardRate, earned_] = await App.ethcallProvider.all([STAKING_MULTI.periodFinish(rewardTokenAddress), 
+      const [periodFinish, rewardRate, earned_] = await App.ethcallProvider.all([STAKING_MULTI.periodFinish(rewardTokenAddress),
                                                                                  STAKING_MULTI.rewardRate(rewardTokenAddress),
                                                                                  STAKING_MULTI.earned(rewardTokenAddress, App.YOUR_ADDRESS)])
       const weeklyReward = (Date.now() / 1000 > periodFinish) ? 0 : rewardRate / 10 ** rewardToken.decimals * 604800;
@@ -138,7 +139,7 @@ async function loadSolidlySynthetixPoolInfo(App, tokens, prices, stakingAbi, sta
 
     var stakeToken = await getFantomToken(App, stakeTokenAddress, stakingAddress);
 
-    const calls = [STAKING_MULTI.balanceOf(App.YOUR_ADDRESS), STAKING_MULTI.derivedSupply(), 
+    const calls = [STAKING_MULTI.balanceOf(App.YOUR_ADDRESS), STAKING_MULTI.derivedSupply(),
                    STAKING_MULTI.derivedBalance(App.YOUR_ADDRESS)]
     const [balance, derivedSupply_, derivedBalance_] = await App.ethcallProvider.all(calls);
 
@@ -224,9 +225,9 @@ async function printSolidlySynthetixPool(App, info, chain="eth", customURLs) {
   const usersWeeklyAPR = totalWeeklyAPR * (info.derivedBalance / info.derivedSupply) / userStakedPct * 100
   const usersYearlyAPR = totalYearlyAPR * (info.derivedBalance / info.derivedSupply) / userStakedPct * 100
   if(info.derivedBalance <= 0){
-    _print(`YOUR APR: Day 0% Week 0% Year 0%`);
+    _print(`Your APR: Day 0% Week 0% Year 0%`);
   }else{
-    _print(`YOUR APR: Day ${usersDailyAPR.toFixed(4)}% Week ${usersWeeklyAPR.toFixed(2)}% Year ${usersYearlyAPR.toFixed(2)}%`);
+    _print(`Your APR: Day ${usersDailyAPR.toFixed(4)}% Week ${usersWeeklyAPR.toFixed(2)}% Year ${usersYearlyAPR.toFixed(2)}%`);
   }
   _print(`You are staking ${info.userStaked.toFixed(6)} ${info.stakeTokenTicker} ` +
            `$${formatMoney(userStakedUsd)} (${userStakedPct.toFixed(2)}% of the pool).`);
