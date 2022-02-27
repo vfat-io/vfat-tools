@@ -112,9 +112,9 @@ async function loadSolidlySynthetixPoolInfo(App, tokens, prices, stakingAbi, sta
 
     var stakeToken = await getFantomToken(App, stakeTokenAddress, stakingAddress);
 
-    const calls = [STAKING_MULTI.balanceOf(App.YOUR_ADDRESS), STAKING_MULTI.derivedSupply()]
-    const [balance, totalStaked] = await App.ethcallProvider.all(calls);
-    stakeToken.staked = totalStaked / 10 ** stakeToken.decimals
+    const calls = [STAKING_MULTI.balanceOf(App.YOUR_ADDRESS)/*, STAKING_MULTI.derivedSupply()*/]
+    const [balance, /*totalStaked*/] = await App.ethcallProvider.all(calls);
+    //stakeToken.staked = totalStaked / 10 ** stakeToken.decimals
 
     var newPriceAddresses = stakeToken.tokens.filter(x =>
       !getParameterCaseInsensitive(prices, x));

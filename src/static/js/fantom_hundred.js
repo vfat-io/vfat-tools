@@ -296,7 +296,7 @@ async function loadSolidlySynthetixPoolInfo(App, tokens, prices, stakingAbi, sta
     const rewardTokenAddress = await STAKING_POOL.rewards(0)  //check for additional reward tokens in the future
 
     var stakeToken = await getFantomToken(App, stakeTokenAddress, stakingAddress);
-    stakeToken.staked = await STAKING_POOL.derivedSupply() / 10 ** stakeToken.decimals
+    //stakeToken.staked = await STAKING_POOL.derivedSupply() / 10 ** stakeToken.decimals
 
     var newPriceAddresses = stakeToken.tokens.filter(x =>
       !getParameterCaseInsensitive(prices, x));
