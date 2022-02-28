@@ -52,6 +52,7 @@ const FantomTokens = [
   { "id": "partial", "symbol": "PARTIAL", "contract": "0x9486fDA4C1192db69a08CA7235E2E6bAf31B467B" },
   { "id": "beefy-finance", "symbol": "BIFI", "contract": "0xd6070ae98b8069de6B494332d1A1a81B6179D960" },
   { "id": "linspirit", "symbol": "LINSPIRIT", "contract": "0xc5713b6a0f26bf0fdc1c52b90cd184d950be515c" },
+  { "id": "solidsex-tokenized-vesolid", "symbol": "SOLIDSEX", "contract": "0x41adac6c1ff52c5e27568f27998d747f7b69795b" },
 ];
 
 async function getFantomPrices() {
