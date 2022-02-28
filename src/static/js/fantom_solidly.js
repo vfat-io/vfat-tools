@@ -283,11 +283,11 @@ async function printSolidlySynthetixPool(App, info, chain="eth", customURLs) {
 const solidlyContract_claim = async function(rewardTokenAddress, rewardPoolAddr, App) {
   const signer = App.provider.getSigner()
 
-  const REWARD_POOL = new ethers.Contract(rewardPoolAddr, Y_STAKING_POOL_ABI, signer)
+  const REWARD_POOL = new ethers.Contract(rewardPoolAddr, SOLIDLY_GAUGE_ABI, signer)
 
   console.log(App.YOUR_ADDRESS)
 
-  const earnedYFFI = (await REWARD_POOL.earned(App.YOUR_ADDRESS)) / 1e18
+  const earnedYFFI = (await REWARD_POOL.earned(rewardTokenAddress, App.YOUR_ADDRESS)) / 1e18
 
   if (earnedYFFI > 0) {
     showLoading()
