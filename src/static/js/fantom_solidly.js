@@ -50,7 +50,7 @@ async function main() {
     const rewardTokenAddresses = p.gaugeAddresses.map((g) => [SOLID_TOKEN_ADDR]);
     return solidlyContract_claimAll(p.gaugeAddresses, rewardTokenAddresses, SOLIDLY_STAKING_ADDR, App)
   }
-  _print_link(`Claim All`, claimAll)
+  _print_link(`Claim All ${p.earnings.toFixed(6)} SOLID ($${formatMoney(p.earningsUSD)})`, claimAll)
 
   hideLoading();
 }
@@ -75,7 +75,7 @@ const solidlyContract_claimAll = async function(gaugeAddresses, rewardTokenAddre
 async function loadSolidlyFantomSynthetixPools(App, tokens, prices, pools) {
   let totalStaked  = 0, totalUserStaked = 0, individualAPRs = [];
   let totalUserDailyRewards = 0, totalUserWeeklyRewards = 0, totalUserYearlyRewards = 0, totalUserDailyRewardsUSD = 0, totalUserWeeklyRewardsUSD = 0, totalUserYearlyRewardsUSD = 0
-  let gaugeAddresses = [];
+  let gaugeAddresses = [], earnings = 0, earningsUSD = 0;
   const infos = await Promise.all(pools.map(p =>
       loadSolidlySynthetixPoolInfo(App, tokens, prices, p.abi, p.address, p.stakeTokenFunction)));
   for (const i of infos) {
@@ -91,12 +91,14 @@ async function loadSolidlyFantomSynthetixPools(App, tokens, prices, pools) {
       totalUserWeeklyRewardsUSD += p.userWeeklyRewardsUSD;
       totalUserYearlyRewardsUSD += p.userYearlyRewardsUSD;
       gaugeAddresses.push(p.stakingAddress);
+      earnings += p.earned;
+      earningsUSD += p.earningsUSD;
     }
   }
   let totalApr = totalUserStaked == 0 ? 0 : individualAPRs.reduce((x,y)=>x+y, 0) / totalUserStaked;
   return { staked_tvl : totalStaked, totalUserStaked, totalApr, totalUserDailyRewards,  totalUserWeeklyRewards,
            totalUserYearlyRewards, totalUserDailyRewardsUSD, totalUserWeeklyRewardsUSD, totalUserYearlyRewardsUSD,
-           gaugeAddresses};
+           gaugeAddresses, earnings, earningsUSD};
 }
 
 async function loadSolidlySynthetixPoolInfo(App, tokens, prices, stakingAbi, stakingAddress,
@@ -237,6 +239,7 @@ async function printSolidlySynthetixPool(App, info, chain="eth", customURLs) {
   const userDailyRewardsUSD = userDailyRewards*info.rewardTokenPrices[0]
   const userWeeklyRewardsUSD = userWeeklyRewards*info.rewardTokenPrices[0]
   const userYearlyRewardsUSD = userYearlyRewards*info.rewardTokenPrices[0]
+  const earningsUSD = info.earnings[0]*info.rewardTokenPrices[0];
     if (info.userStaked > 0) {
       info.poolPrices.print_contained_price(info.userStaked);
         _print(`Estimated ${info.rewardTokenTicker} earnings:`
@@ -276,7 +279,9 @@ async function printSolidlySynthetixPool(App, info, chain="eth", customURLs) {
       userWeeklyRewardsUSD : userWeeklyRewardsUSD,
       userYearlyRewardsUSD : userYearlyRewardsUSD,
       stakingAddress : info.stakingAddress,
-      rewardTokenAddress : info.rewardTokenAddresses[0]
+      rewardTokenAddress : info.rewardTokenAddresses[0],
+      earned : info.earnings[0],
+      earningsUSD : earningsUSD
   }
 }
 
