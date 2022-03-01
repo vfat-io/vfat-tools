@@ -64,14 +64,16 @@ const solidlyContract_claimAll = async function(gaugeAddresses, rewardTokenAddre
 
   console.log(App.YOUR_ADDRESS)
 
-  showLoading()
-    REWARD_POOL.claimRewards(gaugeAddresses, rewardTokenAddresses)
-      .then(function(t) {
-        return App.provider.waitForTransaction(t.hash)
-      })
-      .catch(function() {
-        hideLoading()
-      })
+  showLoading();
+  REWARD_POOL.claimRewards(gaugeAddresses, rewardTokenAddresses, { gasLimit: 5000000 })
+  .then(function(t) {
+      return App.provider.waitForTransaction(t.hash)
+    })
+    .catch(function(ex) {
+        console.log(ex);
+    }
+  )
+  hideLoading();
 }
 
 async function loadSolidlyFantomSynthetixPools(App, tokens, prices, pools) {
