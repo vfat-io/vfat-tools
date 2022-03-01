@@ -177,7 +177,8 @@ const main = async () => {
       ['fDoge              ', `<a href='fdoge'        >Various</a>`, 'SDOGE / FDOGE','https://fdoge.finance'],
       ['2Doge              ', `<a href='2doge'        >Various</a>`, '2DOGE / 2SDOGE','https://2doge.finance'],
       ["Pulsedao           ", `<a href='pulsedao'     >Various</a>`, "pSHARE / PLD ","https://pulsedao.finance"],
-      ['Solidly            ', `<a href='solidly'      >Various</a>`, 'Various      ','https://solidly.exchange']
+      ['Solidly            ', `<a href='solidly'      >Various</a>`, 'Various      ','https://solidly.exchange'],
+      ['Bastille De La Bouje', `<a href='bastilledelabouje'      >Various</a>`, 'Various      ','https://bastille.bouje.finance']
     ],
   }
 
