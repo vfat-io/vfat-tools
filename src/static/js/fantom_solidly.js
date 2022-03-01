@@ -65,12 +65,12 @@ const solidlyContract_claimAll = async function(gaugeAddresses, rewardTokenAddre
   console.log(App.YOUR_ADDRESS)
 
   showLoading();
-  const estimation = await REWARD_POOL.estimateGas.claimRewards(gaugeAddresses, rewardTokenAddresses);
-  REWARD_POOL.claimRewards(gaugeAddresses, rewardTokenAddresses, { gasLimit: estimation * 1.2 })
+  REWARD_POOL.claimRewards(gaugeAddresses, rewardTokenAddresses, { gasLimit: 5000000 })
   .then(function(t) {
       return App.provider.waitForTransaction(t.hash)
     })
-    .catch(function() {
+    .catch(function(ex) {
+        console.log(ex);
     }
   )
   hideLoading();
