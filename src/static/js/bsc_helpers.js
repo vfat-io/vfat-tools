@@ -724,7 +724,9 @@ const bscTokens = [
   { "id": "the-killbox-game", "symbol": "KBOX", "contract": "0x3523d58d8036b1c5c9a13493143c97aefc5ad422" },
   { "id": "orakler", "symbol": "ORKL", "contract": "0x36bc1f4d4af21df024398150ad39627fb2c8a847" },
   { "id": "lucky-block", "symbol": "LBLOCK", "contract": "0x2cd96e8c3ff6b5e01169f6e3b61d28204e7810bb" },
-  { "id": "luna-rush", "symbol": "LUS", "contract": "0xde301d6a2569aefcfe271b9d98f318baee1d30a4" }
+  { "id": "luna-rush", "symbol": "LUS", "contract": "0xde301d6a2569aefcfe271b9d98f318baee1d30a4" },
+  { "id": "amethyst", "symbol": "AMES", "contract": "0xb9e05b4c168b56f73940980ae6ef366354357009" },
+  { "id": "quartz-defi-ashare", "symbol": "ASHARE", "contract": "0xfa4b16b0f63f5a6d0651592620d585d308f749a4" }
 ]
 
 async function getBscPrices() {

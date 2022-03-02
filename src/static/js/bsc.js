@@ -574,7 +574,9 @@ const main = async() => {
       ["Newspace            ","", `<a href="newspace"      >Various</a>`,"NEWSPACE         ","https://newspace.finance"],
       ["HuntDefi            ","", `<a href="huntdefi"      >Various</a>`,"HUNT             ","https://bsc.huntdefi.com"],
       ["Ygg                 ","", `<a href="ygg"           >Various</a>`,"YSHARE / YGG     ","https://www.ygg.money"],
-      ["Arth                ","", `<a href="arth"          >Various</a>`,"ARTH             ","https://app.arthcoin.com"]
+      ["Arth                ","", `<a href="arth"          >Various</a>`,"ARTH             ","https://app.arthcoin.com"],
+      ["Xray Swap           ","", `<a href="xrayswap"      >Various</a>`,"XRAY             ","https://xrayswap.com"],
+      ["Quartz.defi          ","", `<a href="quartzdefi"    >Various</a>`, "AMES / ASHARE  ","https://bsc-quartz-defi.app/"],
     ]}
 
   let table = new AsciiTable().fromJSON(tableData);

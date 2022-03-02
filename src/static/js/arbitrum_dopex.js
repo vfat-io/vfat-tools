@@ -10,7 +10,8 @@ $(function() {
     _print(`Initialized ${App.YOUR_ADDRESS}\n`);
     _print("Reading smart contracts...\n");
   
-    const pools = ["0xc6D714170fE766691670f12c2b45C1f34405AAb6", "0x96B0d9c85415C69F4b2FAC6ee9e9CE37717335B4", "0x03ac1Aa1ff470cf376e6b7cD3A3389Ad6D922A74", "0x8d481245801907b45823fb032e6848d0d3c29ae5"]
+    //const pools = ["0xc6D714170fE766691670f12c2b45C1f34405AAb6", "0x96B0d9c85415C69F4b2FAC6ee9e9CE37717335B4", "0x03ac1Aa1ff470cf376e6b7cD3A3389Ad6D922A74", "0x8d481245801907b45823fb032e6848d0d3c29ae5"]
+    const pools = ["0xc6d714170fe766691670f12c2b45c1f34405aab6", "0x96b0d9c85415c69f4b2fac6ee9e9ce37717335b4", "0x03ac1aa1ff470cf376e6b7cd3a3389ad6d922a74", "0x125cc7cce81a809c825c945e5aa874e60cccb6bb"]
   
     let tokens = {};
     let prices = await getArbitrumPrices();
