@@ -179,7 +179,8 @@ const main = async () => {
       ["Pulsedao           ", `<a href='pulsedao'     >Various</a>`, "pSHARE / PLD ","https://pulsedao.finance"],
       ['Solidly            ', `<a href='solidly'      >Various</a>`, 'Various      ','https://solidly.exchange'],
       ['Bastille De La Bouje', `<a href='bastilledelabouje'      >Various</a>`, 'Various      ','https://bastille.bouje.finance'],
-      ['pDollar            ', `<a href='pdollar'      >Various</a>`, 'PDO          ','https://pdo.partial.finance']
+      ['pDollar            ', `<a href='pdollar'      >Various</a>`, 'PDO          ','https://pdo.partial.finance'],
+      ['Lavafall          ', `<a href='lavafall'    >Various</a>`, 'LAVAFALL        ', 'https://lava.defiwaterfall.com']  
     ],
   }
 
