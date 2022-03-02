@@ -178,7 +178,8 @@ const main = async () => {
       ['2Doge              ', `<a href='2doge'        >Various</a>`, '2DOGE / 2SDOGE','https://2doge.finance'],
       ["Pulsedao           ", `<a href='pulsedao'     >Various</a>`, "pSHARE / PLD ","https://pulsedao.finance"],
       ['Solidly            ', `<a href='solidly'      >Various</a>`, 'Various      ','https://solidly.exchange'],
-      ['Bastille De La Bouje', `<a href='bastilledelabouje'      >Various</a>`, 'Various      ','https://bastille.bouje.finance']
+      ['Bastille De La Bouje', `<a href='bastilledelabouje'      >Various</a>`, 'Various      ','https://bastille.bouje.finance'],
+      ['pDollar            ', `<a href='pdollar'      >Various</a>`, 'PDO          ','https://pdo.partial.finance']
     ],
   }
 
