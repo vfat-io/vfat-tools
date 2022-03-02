@@ -11,7 +11,7 @@ $(function () {
         _print(`Initialized ${App.YOUR_ADDRESS}\n`);		
         _print("Reading smart contracts...\n");		
   
-        const LAVAFALL_CHEF_ADDR = "0x0a53F16a00c593cbe5F6C890E751338396FE680f";		
+        const LAVAFALL_CHEF_ADDR = "0x04f9433A2CD21413Bc5641b84CaE0E40E86f9101";		
         const rewardTokenTicker = "LAVAFALL";		
         const LAVAFALL_CHEF = new ethers.Contract(LAVAFALL_CHEF_ADDR, LAVAFALL_CHEF_ABI, App.provider);
   
