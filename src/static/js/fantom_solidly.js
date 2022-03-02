@@ -283,7 +283,7 @@ async function printSolidlySynthetixPool(App, info, chain="eth", customURLs) {
   return {
       staked_tvl: info.poolPrices.staked_tvl,
       userStaked : userStakedUsd,
-      apr : totalYearlyAPR,
+      apr : usersYearlyAPR,
       userDailyRewards : userDailyRewards,
       userWeeklyRewards : userWeeklyRewards,
       userYearlyRewards : userYearlyRewards,
