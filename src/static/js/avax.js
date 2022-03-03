@@ -94,7 +94,8 @@ const main = async() => {
         ["HakuSwap                ",`<a href="hakuswap"         >Various</a>`,"HAKU         ","https://hakuswap.com"],
         ["HuntDefi                ",`<a href="huntdefi"         >Various</a>`,"HUNT         ","https://avax.huntdefi.com"],
         ["Embr                    ",`<a href="embr"             >Various</a>`,"EMBR         ","https://app.embr.finance"],
-        ["Spectrevax              ",`<a href="spectrevax"       >Various</a>`,"SPECTA       ","https://avax.spectrefi.com/"]
+        ["Spectrevax              ",`<a href="spectrevax"       >Various</a>`,"SPECTA       ","https://avax.spectrefi.com"],
+        ["Zilla Finance           ",`<a href="zilla"            >Various</a>`,"ZSHARE / ZILLA","https://zillafinance.io"]
     ]
   }
 
