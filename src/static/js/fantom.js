@@ -180,6 +180,7 @@ const main = async () => {
       ['Solidly            ', `<a href='solidly'      >Various</a>`, 'Various      ','https://solidly.exchange'],
       ['Bastille De La Bouje', `<a href='bastilledelabouje'      >Various</a>`, 'Various      ','https://bastille.bouje.finance'],
       ['pDollar            ', `<a href='pdollar'      >Various</a>`, 'PDO          ','https://pdo.partial.finance'],
+      ['Lavafall           ', `<a href='lavafall'     >Various</a>`, 'LAVAFALL     ', 'https://lava.defiwaterfall.com'],
       ['WigoSwap           ', `<a href='wigoswap'     >Various</a>`, 'WIGO         ','https://wigoswap.io']
     ],
   }
