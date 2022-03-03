@@ -1983,6 +1983,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
   else if (pool.symbol.includes("LSLP")) stakeTokenTicker += " LSLP";
   else if (pool.symbol.includes("vAMM")) stakeTokenTicker += " vAMM";
   else if (pool.symbol.includes("sAMM")) stakeTokenTicker += " sAMM";
+  else if (pool.symbol.includes("Wigo-LP")) stakeTokenTicker += " Wigo-LP";
   else if (pool.symbol.includes("HBLP")) stakeTokenTicker += " Huckleberry LP";
   else if (pool.symbol.includes("BLP")) stakeTokenTicker += " BLP";
   else if (pool.symbol.includes("BEAM-LP")) stakeTokenTicker += " BEAM-LP";
@@ -2118,6 +2119,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
               pool.symbol.includes("BRUSH-LP") ?  `https://paintswap.finance` :
               pool.symbol.includes("PLP") ?  `https://exchange.pureswap.finance/#/swap` :
               pool.symbol.includes("HBLP") ?  `https://info.huckleberry.finance/pair/${pool.address}` :
+              pool.symbol.includes("Wigo-LP") ?  `https://wigoswap.io/analytics/pool/${pool.address}` :
               pool.symbol.includes("BLP") ?  `https://info.bakeryswap.org/#/pair/${pool.address}` :
               pool.symbol.includes("BEAM-LP") ?  `https://analytics.beamswap.io/pairs/${pool.address}` :
               pool.symbol.includes("KUS-LP") ?  `https://kuswap.info/pair/#/${pool.address}` :
@@ -2186,6 +2188,11 @@ function getUniPrices(tokens, prices, pool, chain="eth")
             `https://www.huckleberry.finance/#/add/${t0address}/${t1address}`,
             `https://www.huckleberry.finance/#/remove/${t0address}/${t1address}`,
             `https://www.huckleberry.finance/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+          ] :
+          pool.symbol.includes("Wigo-LP") ? [
+            `https://wigoswap.io/add/${t0address}/${t1address}`,
+            `https://wigoswap.io/remove/${t0address}/${t1address}`,
+            `https://wigoswap.io/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
           ] :
           pool.symbol.includes("ZLK-LP") ? [
             `https://dex.zenlink.pro/#/swap`,
