@@ -2043,6 +2043,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
   else if (pool.symbol.includes("SCLP")) stakeTokenTicker += " SwapperChan LP Token";
   else if (pool.symbol.includes('VENOM-LP')) stakeTokenTicker += ' VENOM-LP Token';
   else if (pool.symbol.includes('Charm-LP')) stakeTokenTicker += ' OmniDex LP Token';
+  else if (pool.symbol.includes('zLP')) stakeTokenTicker += ' Zappy LP Token';
   else stakeTokenTicker += " Uni LP";
   return {
       t0: t0,
@@ -2167,6 +2168,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
           ? `https://info.viper.exchange/pairs/${pool.address}`
           : chain == "matic" ? `https://info.quickswap.exchange/pair/${pool.address}` :
           pool.symbol.includes("Charm-LP") ?  `https://analytics.omnidex.finance/pair/${pool.address}` :
+          pool.symbol.includes("zLP") ?  `https://analytics.zappy.finance/pair/${pool.address}` :
             `http://v2.uniswap.info/pair/${pool.address}`;
           const helperUrls = pool.is1inch ? [] :
           pool.symbol.includes("LSLP") ? [
@@ -2521,6 +2523,11 @@ function getUniPrices(tokens, prices, pool, chain="eth")
             `https://omnidex.finance/remove/${t0address}/${t1address}`,
             `https://omnidex.finance/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
           ] :
+          pool.symbol.includes("zLP") ? [
+            `https://zappy.finance/liquidity/pool?main=${t0address}&base=${t1address}`,
+            `https://zappy.finance/liquidity/pool?main=${t0address}&base=${t1address}`,
+            `https://zappy.finance/swap?from=${t0address}&to=${t1address}`
+          ] :
           [ `https://app.uniswap.org/#/add/v2/${t0address}/${t1address}`,
             `https://app.uniswap.org/#/remove/v2/${t0address}/${t1address}`,
             `https://app.uniswap.org/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}&use=v2` ]
@@ -2579,6 +2586,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
                           }[chain]) :
                             chain == "matic" ? `https://info.quickswap.exchange/pair/${pool.address}` :
                           pool.symbol.includes("Charm-LP") ?  `https://analytics.omnidex.finance/pair/${pool.address}` :
+                          pool.symbol.includes("zLP") ?  `https://analytics.omnidex.finance/pair/${pool.address}` :
                               `http://v2.uniswap.info/pair/${pool.address}`;
           const helperUrls = pool.is1inch ? [] :
             pool.symbol.includes("LSLP") ? [
@@ -2664,6 +2672,11 @@ function getUniPrices(tokens, prices, pool, chain="eth")
                           `https://omnidex.finance/add/${t0address}/${t1address}`,
                           `https://omnidex.finance/remove/${t0address}/${t1address}`,
                           `https://omnidex.finance/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+                        ] :
+                        pool.symbol.includes("zLP") ? [
+                          `https://zappy.finance/liquidity/pool?main=${t0address}&base=${t1address}`,
+                          `https://zappy.finance/liquidity/pool?main=${t0address}&base=${t1address}`,
+                          `https://zappy.finance/swap?from=${t0address}&to=${t1address}`
                         ] :
                             [ `https://app.uniswap.org/#/add/v2/${t0address}/${t1address}`,
                               `https://app.uniswap.org/#/remove/v2/${t0address}/${t1address}`,
@@ -2856,7 +2869,8 @@ function getWrapPrices(tokens, prices, pool, chain)
     const poolUrl = pool.is1inch ? "https://1inch.exchange/#/dao/pools" :
     pool.symbol.includes("SLP") ?  `http://analytics.sushi.com/pairs/${wrappedToken.address}` :
     (pool.symbol.includes("Cake") || pool.symbol.includes("Pancake")) ?  `http://pancakeswap.info/pair/${wrappedToken.address}` :
-    pool.symbol.includes("Charm-LP") ?  `https://analytics.omnidex.finance/pair/${wrappedToken.address}`
+    pool.symbol.includes("Charm-LP") ?  `https://analytics.omnidex.finance/pair/${wrappedToken.address}`:
+    pool.symbol.includes("zLP") ?  `https://analytics.zappy.finance/pair/${wrappedToken.address}`
       : `http://v2.uniswap.info/pair/${wrappedToken.address}`;
     const name = `<a href='${contractUrl}' target='_blank'>${pool.symbol}</a> (Wrapped <a href='${poolUrl}' target='_blank'>${uniPrices.stakeTokenTicker}</a>)`;
     const price = (pool.balance / 10 ** wrappedToken.decimals) * uniPrices.price / (pool.totalSupply / 10 ** pool.decimals);

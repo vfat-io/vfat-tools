@@ -48,7 +48,7 @@ async function getCharmVault(App, vault, address, stakingAddress) {
   }
 }
 
-async function getOmniDexPool(App, pool, poolAddress, stakingAddress) {
+async function getTelosUniPool(App, pool, poolAddress, stakingAddress) {
   let q0, q1;
   const reserves = await pool.getReserves();
   q0 = reserves._reserve0;
@@ -77,9 +77,9 @@ async function getOmniDexPool(App, pool, poolAddress, stakingAddress) {
 
 async function getTelosStoredToken(App, tokenAddress, stakingAddress, type) {
   switch (type) {
-    case "omnidex":
+    case "uniswap":
       const pool = new ethers.Contract(tokenAddress, UNI_ABI, App.provider);
-      return await getOmniDexPool(App, pool, tokenAddress, stakingAddress);
+      return await getTelosUniPool(App, pool, tokenAddress, stakingAddress);
     case "erc20":
       const erc20 = new ethers.Contract(tokenAddress, ERC20_ABI, App.provider);
       return await getBep20(App, erc20, tokenAddress, stakingAddress);
@@ -101,8 +101,8 @@ async function getTelosToken(App, tokenAddress, stakingAddress) {
     try {
       const pool = new ethers.Contract(tokenAddress, UNI_ABI, App.provider);
       const _token0 = await pool.token0();
-      const uniPool = await getOmniDexPool(App, pool, tokenAddress, stakingAddress);
-      window.localStorage.setItem(tokenAddress, "omnidex");
+      const uniPool = await getTelosUniPool(App, pool, tokenAddress, stakingAddress);
+      window.localStorage.setItem(tokenAddress, "uniswap");
       return uniPool;
     }
     catch(err) {
@@ -243,6 +243,7 @@ async function loadTelosChefContract(App, tokens, prices, chef, chefAddress, che
 
 const telosTokens = [
   { "id": "telos", "symbol": "WTLOS","contract": "0xD102cE6A4dB07D247fcc28F366A623Df0938CA9E" },
+  { "id": "zappy", "symbol": "ZAP","contract": "0x9A271E3748F59222f5581BaE2540dAa5806b3F77" },
   { "id": "charm", "symbol": "CHARM","contract": "0xd2504a02fABd7E546e41aD39597c377cA8B0E1Df" },
   { "id": "charm", "symbol": "xCHARM","contract": "0x65a5f4636233B7B4c4B134BA414c6EaB9fF79594" },
   { "id": "douge", "symbol": "DOUGE", "contract": "0xc6BC7A8dfA0f57Fe7746Ac434c01cD39679b372c"  },
