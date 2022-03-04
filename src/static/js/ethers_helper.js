@@ -1995,6 +1995,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
   else if (pool.name.includes("Value LP")) stakeTokenTicker += " Value LP";
   else if (pool.name.includes("Duneswap LP Token")) stakeTokenTicker += " Duneswap LP";
   else if (pool.name.includes("Lizard LPs")) stakeTokenTicker += " LLP";
+  else if (pool.name.includes("Gemkeeper LP Token")) stakeTokenTicker += " GLP";
   else if (pool.symbol.includes("PGL")) stakeTokenTicker += " PGL";
   else if (pool.symbol.includes("JLP")) stakeTokenTicker += " JLP";
   else if (pool.symbol.includes("CS-LP")) stakeTokenTicker += " CSS LP";
@@ -2107,6 +2108,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
               pool.name.includes("Value LP") ?  `https://info.vswap.fi/pool/${pool.address}` :
               pool.name.includes("Duneswap LP Token") ?  `https://explorer.emerald.oasis.dev/token/${pool.address}` :
               pool.name.includes("Lizard LPs") ?  `https://explorer.emerald.oasis.dev/token/${pool.address}` :
+              pool.name.includes("Gemkeeper LP Token") ?  `https://explorer.emerald.oasis.dev/token/${pool.address}` :
               pool.name.includes("Flare LP Token") ?  `https://analytics.solarflare.io/pairs/${pool.address}` :
               pool.symbol.includes("SCLP") ?  `https://analytics.swapperchan.com/pairs/${pool.address}` :
               pool.name.includes("Ubeswap") ?  `https://info.ubeswap.org/pair/${pool.address}` :
@@ -2285,6 +2287,11 @@ function getUniPrices(tokens, prices, pool, chain="eth")
             `https://app.lizard.exchange/add/${t0address}/${t1address}`,
             `https://app.lizard.exchange/remove/${t0address}/${t1address}`,
             `https://app.lizard.exchange/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+          ] :
+          pool.name.includes("Gemkeeper LP Token") ? [
+            `https://app.gemkeeper.finance/#/add/${t0address}/${t1address}`,
+            `https://app.gemkeeper.finance/#/remove/${t0address}/${t1address}`,
+            `https://app.gemkeeper.finance/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
           ] :
           pool.symbol.includes("SMUG-LP") ? [
             `https://smugswap.com/add/${t0address}/${t1address}`,
