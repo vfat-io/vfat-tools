@@ -432,7 +432,8 @@ const main = async () => {
       ['Tower Finance       ',"",  `<a href="tower"           >Various</a>`, 'CUBE         ','https://app.towerfinance.io'],
       ['HuntDefi            ',"",  `<a href="huntdefi"        >Various</a>`, 'HUNT         ','https://polygon.huntdefi.com'],
       ["Arth                ","", `<a href="arth"             >Various</a>`, "ARTH         ","https://app.arthcoin.com"],
-      ["GOGOcoin            ","", `<a href="gogocoin"         >Various</a>`, "GOGO         ","https://app.gogocoin.io"]
+      ["GOGOcoin            ", "", `<a href="gogocoin"         >Various</a>`, "GOGO         ", "https://app.gogocoin.io"],
+      ['Opportunity         ', '', `<a href="opportunity"     >Various</a>`, 'OPT          ', 'https://opport.unityfarm.org'],
     ],
   }
 
