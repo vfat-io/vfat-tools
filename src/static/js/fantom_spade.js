@@ -11,7 +11,7 @@ $(function() {
         _print(`Initialized ${App.YOUR_ADDRESS}\n`);
         _print("Reading smart contracts...\n");
     
-       const SPADE_CHEF_ADDR = "0xc1Ba10A28F562CF33eA5796e48d3fa94e2C04753";
+       const SPADE_CHEF_ADDR = "0x7c799af459c86069fea65ee8c0ff3c059cdc021d";
     
        const rewardTokenTicker = "SPADE";
        const SPADE_CHEF = new ethers.Contract(SPADE_CHEF_ADDR, SPADE_CHEF_ABI, App.provider);
