@@ -182,7 +182,8 @@ const main = async () => {
       ['pDollar            ', `<a href='pdollar'      >Various</a>`, 'PDO          ','https://pdo.partial.finance'],
       ['Lavafall           ', `<a href='lavafall'     >Various</a>`, 'LAVAFALL     ', 'https://lava.defiwaterfall.com'],
       ['WigoSwap           ', `<a href='wigoswap'     >Various</a>`, 'WIGO         ','https://wigoswap.io'],
-      ['SpadeFinance       ', `<a href='spadefinance' >Various</a>`, 'SPADE        ','https://spadefinance.farm']
+      ['SpadeFinance       ', `<a href='spadefinance' >Various</a>`, 'SPADE        ','https://spadefinance.farm'],
+      ['Fantasm Finance    ', `<a href="fantasm"      >Various</a>`, 'FSM          ','https://fantasm.finance'],
     ],
   }
 
