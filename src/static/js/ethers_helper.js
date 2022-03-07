@@ -2045,6 +2045,8 @@ function getUniPrices(tokens, prices, pool, chain="eth")
   else if (pool.symbol.includes('VENOM-LP')) stakeTokenTicker += ' VENOM-LP Token';
   else if (pool.symbol.includes('Charm-LP')) stakeTokenTicker += ' OmniDex LP Token';
   else if (pool.symbol.includes('zLP')) stakeTokenTicker += ' Zappy LP Token';
+  else if (pool.symbol.includes('MEERKAT-LP')) stakeTokenTicker += ' MEERKAT-LP Token';
+  else if (pool.symbol.includes('STELLA LP')) stakeTokenTicker += ' STELLA LP Token';
   else stakeTokenTicker += " Uni LP";
   return {
       t0: t0,

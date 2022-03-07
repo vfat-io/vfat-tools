@@ -38,7 +38,8 @@ const main = async() => {
       ["Cronos Cougar        ","", `<a href='cougar'       >Various</a>`,"CGS          ","https://cronosapp.cougarswap.io/"],
       ["Gaur                 ","", `<a href='gaur'         >Various</a>`,"GSHARE/GAUR  ","https://gaur.money"],
       ["ChronoSwap           ","", `<a href='chronoswap'   >Various</a>`,"CNO          ","https://chronoswap.org"],
-      ["Agilefi              ","", `<a href='agilefi'      >Various</a>`,"AGL          ","https://app.agilefi.org"]
+      ["Agilefi              ","", `<a href='agilefi'      >Various</a>`,"AGL          ","https://app.agilefi.org"],
+      ["1Cronos              ","", `<a href='1cronos'      >Various</a>`,"1CRO         ","https://1beam.io"]
     ]
   }
 
