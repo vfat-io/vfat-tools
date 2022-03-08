@@ -153,7 +153,7 @@ const main = async () => {
       ['Vapedao            ', `<a href="vapedao"      >Various</a>`, 'vAPE         ', 'https://vapedao.finance'],
       ['Radial Finance     ', `<a href='radial'       >Various</a>`, 'RDL          ', 'https://www.radialfinance.com/farms'],
       ['Webribe            ', `<a href='webribe'      >Various</a>`, 'VBRB         ', 'https://webribe.me'],
-      ['0xDAO              ', `<a href='0xdao'        >Various</a>`, 'OXD          ', 'https://www.oxdao.fi'],
+      ['0xDAO *            ', `<a href='0xdao'        >Various</a>`, 'OXD          ', 'https://www.oxdao.fi'],
       ['Moneyrain Finance  ', `<a href='moneyrainfinance'>Various</a>`, 'MONEYRAIN ', 'https://defimoneyrain.com'],
       ['Sushi              ', `<a href='sushi'        >Various</a>`, 'SUSHI/FTM    ', 'https://app.sushi.com'],
       ['ViveLaBouje        ', `<a href='vivelabouje'  >Various</a>`, 'VIVE         ', 'https://vive.bouje.finance'],
@@ -184,8 +184,8 @@ const main = async () => {
       ['WigoSwap           ', `<a href='wigoswap'     >Various</a>`, 'WIGO         ','https://wigoswap.io'],
       ['SpadeFinance       ', `<a href='spadefinance' >Various</a>`, 'SPADE        ','https://spadefinance.farm'],
       ['Fantasm Finance    ', `<a href="fantasm"      >Various</a>`, 'FSM          ','https://fantasm.finance'],
-      ['Zombi       ', `<a href='zombi' >Various</a>`, 'ZOMBI        ', 'https://zombi.finance/'],
-      ['Zomb2       ', `<a href='zomb2' >Various</a>`, 'ZOMB2        ', 'https://zomb2.finance/']
+      ['Zombi              ', `<a href='zombi'        >Various</a>`, 'ZOMBI        ', 'https://zombi.finance/'],
+      ['Zomb2              ', `<a href='zomb2'        >Various</a>`, 'ZOMB2        ', 'https://zomb2.finance/']
     ],
   }
 
