@@ -1,4 +1,4 @@
-$(function() {
+$(function () {
   main()
 })
 
@@ -168,21 +168,23 @@ const main = async () => {
       ['Scarface Finance   ', `<a href='scarface'     >Various</a>`, 'SSHARE / SCAR', 'https://scarface.finance'],
       ['The Don Finance    ', `<a href='thedon'       >Various</a>`, 'THEDON       ', 'https://thedon.finance'],
       ['GemMine            ', `<a href='gemmine'      >Various</a>`, 'GEMMINE      ', 'https://gemmine.defiwaterfall.com'],
-      ["Scream             ", `<a href='scream'       >Various</a>`, "SCREAM       ","https://scream.sh"],
-      ["Ripae              ", `<a href='ripae'        >Various</a>`, "PAE / pFTM   ","https://ripae.finance"],
-      ["HuntDefi           ", `<a href='huntdefi'     >Various</a>`, "HUNT         ","https://ftm.huntdefi.com"],
-      ["Farmtom            ", `<a href='farmtom'      >Various</a>`, "FRTM         ","https://farmtom.com"],
-      ['Partial Finance    ', `<a href='partialfinance'>Various</a>`,'PARTIAL      ','https://partial.finance'],
-      ['Kyrios             ', `<a href='kyrios'       >Various</a>`, 'KYRIOS       ','https://kyrios.finance'],
-      ['fDoge              ', `<a href='fdoge'        >Various</a>`, 'SDOGE / FDOGE','https://fdoge.finance'],
-      ['2Doge              ', `<a href='2doge'        >Various</a>`, '2DOGE / 2SDOGE','https://2doge.finance'],
-      ["Pulsedao           ", `<a href='pulsedao'     >Various</a>`, "pSHARE / PLD ","https://pulsedao.finance"],
-      ['Solidly            ', `<a href='solidly'      >Various</a>`, 'Various      ','https://solidly.exchange'],
-      ['Bastille De La Bouje', `<a href='bastilledelabouje'      >Various</a>`, 'Various      ','https://bastille.bouje.finance'],
-      ['pDollar            ', `<a href='pdollar'      >Various</a>`, 'PDO          ','https://pdo.partial.finance'],
+      ["Scream             ", `<a href='scream'       >Various</a>`, "SCREAM       ", "https://scream.sh"],
+      ["Ripae              ", `<a href='ripae'        >Various</a>`, "PAE / pFTM   ", "https://ripae.finance"],
+      ["HuntDefi           ", `<a href='huntdefi'     >Various</a>`, "HUNT         ", "https://ftm.huntdefi.com"],
+      ["Farmtom            ", `<a href='farmtom'      >Various</a>`, "FRTM         ", "https://farmtom.com"],
+      ['Partial Finance    ', `<a href='partialfinance'>Various</a>`, 'PARTIAL      ', 'https://partial.finance'],
+      ['Kyrios             ', `<a href='kyrios'       >Various</a>`, 'KYRIOS       ', 'https://kyrios.finance'],
+      ['fDoge              ', `<a href='fdoge'        >Various</a>`, 'SDOGE / FDOGE', 'https://fdoge.finance'],
+      ['2Doge              ', `<a href='2doge'        >Various</a>`, '2DOGE / 2SDOGE', 'https://2doge.finance'],
+      ["Pulsedao           ", `<a href='pulsedao'     >Various</a>`, "pSHARE / PLD ", "https://pulsedao.finance"],
+      ['Solidly            ', `<a href='solidly'      >Various</a>`, 'Various      ', 'https://solidly.exchange'],
+      ['Bastille De La Bouje', `<a href='bastilledelabouje'      >Various</a>`, 'Various      ', 'https://bastille.bouje.finance'],
+      ['pDollar            ', `<a href='pdollar'      >Various</a>`, 'PDO          ', 'https://pdo.partial.finance'],
       ['Lavafall           ', `<a href='lavafall'     >Various</a>`, 'LAVAFALL     ', 'https://lava.defiwaterfall.com'],
-      ['WigoSwap           ', `<a href='wigoswap'     >Various</a>`, 'WIGO         ','https://wigoswap.io'],
-      ['SpadeFinance       ', `<a href='spadefinance' >Various</a>`, 'SPADE        ','https://spadefinance.farm']
+      ['WigoSwap           ', `<a href='wigoswap'     >Various</a>`, 'WIGO         ', 'https://wigoswap.io'],
+      ['SpadeFinance       ', `<a href='spadefinance' >Various</a>`, 'SPADE        ', 'https://spadefinance.farm'],
+      ['Zombi       ', `<a href='zombi' >Various</a>`, 'ZOMBI        ', 'https://zombi.finance/'],
+      ['Zomb2       ', `<a href='zomb2' >Various</a>`, 'ZOMB2        ', 'https://zomb2.finance/']
     ],
   }
 
