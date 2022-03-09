@@ -3121,7 +3121,7 @@ function getTriCryptoPrices(prices, pool, chain){
     }
     tvl += pool.coins[i].balance * price;
   }
-  const price = tvl / pool.totalSupply;
+  const price = tvl / (pool.totalSupply / 10 ** pool.decimals);
   const staked_tvl = pool.staked * price;
   const poolUrl = getChainExplorerUrl(chain, pool.address);
   const name = `<a href='${poolUrl}' target='_blank'>${pool.symbol}</a>`;
