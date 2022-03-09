@@ -428,7 +428,6 @@ const main = async() => {
       ["Deedee              ","", `<a href="deedee"        >Various</a>`,"DEEDEE           ","https://deedee.dexterlab.finance"],
       ["Scarab              ","", `<a href="scarab"        >Various</a>`,"SCARAB           ","https://scarab.farm"],
       ["Infinity            ","", `<a href="infinity"      >Various</a>`,"INF              ","https://infinity.space-defi.com"],
-      ["Halloween           ","", `<a href="soul"          >Various</a>`,"SOUL             ","https://halloweenswap.finance"],
       ["SpacePortDeFi       ","", `<a href="spaceport"     >Various</a>`,"STARSHIP         ","https://bsc.spaceportdefi.com"],
       ["Galena              ","", `<a href="galena"        >Various</a>`,"GAL              ","https://www.galenaswap.com"],
       ["SmokingCucumber     ","", `<a href="smokingcucumber">Various</a>`,"CCB             ","https://www.smokingcucumber.finance"],
@@ -577,6 +576,7 @@ const main = async() => {
       ["Arth                ","", `<a href="arth"          >Various</a>`,"ARTH             ","https://app.arthcoin.com"],
       ["Xray Swap           ","", `<a href="xrayswap"      >Various</a>`,"XRAY             ","https://xrayswap.com"],
       ["Quartz.defi          ","", `<a href="quartzdefi"    >Various</a>`, "AMES / ASHARE  ","https://bsc-quartz-defi.app/"],
+      ["WOWswap             ","", `<a href="wowswap"       >Various</a>`,"WOW              ","https://wowswap.io"],
     ]}
 
   let table = new AsciiTable().fromJSON(tableData);
