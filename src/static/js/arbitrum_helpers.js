@@ -380,7 +380,7 @@ async function getArbitrumTriCryptoToken(App, curve, address, stakingAddress, mi
       address,
       name,
       symbol,
-      totalSupply /*: totalSupply / 10 ** decimals*/,
+      totalSupply,
       decimals : decimals,
       staked:  staked / 10 ** decimals,
       unstaked: unstaked  / 10 ** decimals,

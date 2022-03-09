@@ -12,7 +12,7 @@ const Address = [
     "0x87267285Bd7990B05950703f7bA6b24dF88aa302",
     "0xD78d5464690544F5D838dAEF0D7650fA03c64598",
     "0x2c0E2Ec5C2C84346497cc82F5afF72f8A29dA835",
-    //"0x1B156C5c75E9dF4CAAb2a5cc5999aC58ff4F9090",
+    "0x1B156C5c75E9dF4CAAb2a5cc5999aC58ff4F9090",
     "0xB6aE1f6Be8575a44D22af3cD2C5385CC9c293978",
     "0xbaCeC852971EB461DA6Ad8F5C2e37694dca56002",
     "0xEd7208d44f5cC209DE534461a5D5b3cf60fDdeE5",
@@ -174,10 +174,10 @@ async function main() {
   async function loadBeefyPoolInfo(App, tokens, prices, contractAddress) {
     try {
       const contract = await new ethers.Contract(contractAddress, BEEFY_VAULT_ABI, App.provider);
-      const vault = await getMaticToken(App, contractAddress, App.YOUR_ADDRESS);
+      const vault = await getAvaxToken(App, contractAddress, App.YOUR_ADDRESS);
       var newTokenAddresses = vault.tokens.filter(x => !getParameterCaseInsensitive(tokens, x));
       for (const address of newTokenAddresses) {
-          tokens[address] = await getMaticToken(App, address, contractAddress);
+          tokens[address] = await getAvaxToken(App, address, contractAddress);
       }
       const totalSupply = await contract.totalSupply() / 1e18;
       const ppfs = await contract.getPricePerFullShare() / 1e18;
