@@ -19,7 +19,6 @@ const main = async() => {
         ["Mermaidswap         ","", `<a href="mermaidswap"   >Various</a>`,"MERD             ","https://mermaidswap.com"],
         ["Elk                 ","", `<a href="elk"           >Various</a>`,"ELK              ","https://app.elk.finance"],
         ["SkaSwap             ","", `<a href="skaswap"       >Various</a>`,"SKA              ","https://skaswap.finance"],
-        ["Ska                 ","", `<a href="skaswap"       >Various</a>`,"SKA              ","https://skaswap.finance"],
         ["WOWswap             ","", `<a href="wowswap"       >Various</a>`,"WOW              ","https://wowswap.io"],
 
         ]
