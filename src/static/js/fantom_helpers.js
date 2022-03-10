@@ -57,8 +57,16 @@ const FantomTokens = [
   { "id": "pdollar", "symbol": "PDO", "contract": "0xb9D62c829fbF7eAff1EbA4E50F3D0480b66c1748"},
   { "id": "pdollar-share", "symbol": "sPDO", "contract": "0x1D3918043d22de2D799a4d80f72Efd50Db90B5Af"},
   { "id": "solidly", "symbol": "SOLID", "contract": "0x888ef71766ca594ded1f0fa3ae64ed2941740a20"},
-  { "id": "0xdao", "symbol": "OXD", "contract": "0xc5A9848b9d145965d821AaeC8fA32aaEE026492d"},
-  { "id": "0xdao", "symbol": "OXD", "contract": "0xc165d941481e68696f43ee6e99bfb2b23e0e3114"}
+  { "id": "mooncoin", "symbol": "MOON", "contract": "0x7FB5c0A098Fbea90D254861979c321493E18da84"},
+  { "id": "scarab-finance", "symbol": "SCARAB", "contract": "0x2e79205648b85485731cfe3025d66cf2d3b059c4"},
+  { "id": "gscarab", "symbol": "GSCARAB", "contract": "0x6ab5660f0b1f174cfa84e9977c15645e4848f5d6"},
+  { "id": "solidex", "symbol": "SEX", "contract": "0xd31fcd1f7ba190dbc75354046f6024a9b86014d7"},
+  { "id": "dei-token", "symbol": "DEI", "contract": "0xde12c7959e1a72bbe8a5f7a1dc8f8eef9ab011b3"},
+  { "id": "cre8r-dao", "symbol": "CRE8R", "contract": "0x2aD402655243203fcfa7dCB62F8A08cc2BA88ae0"},
+  { "id": "fbomb", "symbol": "BOMB", "contract": "0x8503eb4a136bdbeb323e37aa6e0fa0c772228378"},
+  { "id": "charm", "symbol": "CHARM", "contract": "0x248cb87dda803028dfead98101c9465a2fbda0d4"},
+  { "id": "ginspirit", "symbol": "GINSPIRIT", "contract": "0x2787bea3366335068bf8b4a253044d09ea4e1c96"},
+  { "id": "0xdao", "symbol": "OXD", "contract": "0xc165d941481e68696f43ee6e99bfb2b23e0e3114"} //this is v1
 ];
 
 async function getFantomPrices() {

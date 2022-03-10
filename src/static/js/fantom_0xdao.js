@@ -33,6 +33,8 @@ async function main() {
       stakeTokenFunction: "stakingToken"
     }})
 
+    await loadload0xdaoPrice(App, tokens, prices, "0xcB6eAB779780c7FD6d014ab90d8b10e97A1227E2")
+
     let p = await loadMultiple0xdaoSynthetixPools(App, tokens, prices, pools)
     _print_bold(`Total staked: $${formatMoney(p.staked_tvl)}`);
     if (p.totalUserStaked > 0) {
@@ -82,14 +84,6 @@ async function loadMultiple0xdaoSynthetixPools(App, tokens, prices, pools) {
         var stakeToken = await getFantomToken(App, stakeTokenAddress, stakingAddress);
         stakeToken.staked = await STAKING_POOL.totalSupply() / 10 ** stakeToken.decimals;
   
-        var _newPriceAddresses = stakeToken.tokens.filter(x =>
-          !getParameterCaseInsensitive(prices, x));
-        let newPriceAddresses = _newPriceAddresses.concat(rewardTokenAddresses)
-        var newPrices = await lookUpTokenPrices(newPriceAddresses);
-        for (const key in newPrices) {
-          if (newPrices[key]?.usd)
-              prices[key] = newPrices[key];
-        }
         var newTokenAddresses = stakeToken.tokens.filter(x =>
           !getParameterCaseInsensitive(tokens,x));
         for (const address of newTokenAddresses) {
@@ -204,7 +198,7 @@ async function loadMultiple0xdaoSynthetixPools(App, tokens, prices, pools) {
       return rewardsContract_unstake(info.stakingAddress,info.userStakedWei, App)
     }
     const claim = async function() {
-      return claimTopshelf(info.stakingAddress, App)
+      return rewardsContract_claim(info.stakingAddress, App)
     }
     const exit = async function() {
       return rewardsContract_exit(info.stakingAddress, App)
@@ -234,7 +228,7 @@ async function loadMultiple0xdaoSynthetixPools(App, tokens, prices, pools) {
     return {
         staked_tvl: info.poolPrices.staked_tvl,
         userStaked : userStakedUsd,
-        apr : yearlyAPR
+        apr : totalYearlyAPR
     }
 }
 
@@ -329,7 +323,6 @@ const StakingContracts = [
   "0x2799e089550979D5E268559bEbca3990dCbeD18b",
   "0x63378ED6d07091EC18bB80b450241A09851cc559",
   "0xA4Ab1391b84A3D46c50d560D7315c57Ce6ad83f8",
-  "0x258B32FddBA9c63B0061078544D49c837467Ca9e",
   "0x3f6696B06F9479C9e538351F260e0dee109F4490",
   "0x6Ff7FbC62D2F0Cbb8ee597f8bA3fA23ddfCE3900",
   "0xeb8F4A0a41BAcF4440906dc2f66C6ab922C31c24",
@@ -358,22 +351,20 @@ const StakingContracts = [
   "0xCF8e24a412c1c25526c5D2a8d4b350d91fE018c7",
   "0x38B7501bCbb28591B220e4e17DD5138f7150690E",
   "0x6030C1A2B1f16e439D90fd554D3f923b0e05d78D",
-  "0x4ce6f0174602aCD45A6E7B2B242eFACF7A2c15cF",
   "0xD6BE317E34A2BF10e16Fa029A845Fc5BeE76d66f",
   "0xeE802F3d1F99c5e1aDD9Bdb64Ad1Fa1A07d16156",
+  "0x4ce6f0174602aCD45A6E7B2B242eFACF7A2c15cF",
   "0x413e8bCb492474F66a816a4f5fB6413A3EF18c56",
-  "0xC18C14709BCE40C3Fca99e49c0562b19907C0123",
   "0x94ffFD83cac67BfADF46b32aD2a7f4fd4Bd42Ff6",
   "0xD177267Aa0c09eA31A6dA53911d191fa05DE984f",
   "0xdaaD610A5145B8AF82b38A5e3035463BcbfF0237",
   "0x260c3FD3B89aeBD7584eec07b5ee1cE58ae715E1",
-  "0x77AbfD435E9E34eC42C08B10D9fC42393B3D20FB",
-  "0x0D25515f8FCE369abb265a53D0E6F1B810576991",
-  "0x833955cE0bf63A1C688BeefD84224250D3ba9960",
-  "0x33b9967359A3eF60a48ADFceE78E4d0D8AFe554e",
   "0xa26DA4Bf51741e4bc18223bBC247cc461C232a0d",
   "0x9128598dbD9921b9886f82EbF5B686a0A23cD7e4",
   "0x7591FB82421ec9Ae0d4FCe140373Ba15752b5892",
+  "0x77AbfD435E9E34eC42C08B10D9fC42393B3D20FB",
+  "0x0D25515f8FCE369abb265a53D0E6F1B810576991",
+  "0x833955cE0bf63A1C688BeefD84224250D3ba9960",
   "0xAb7238ED8B64aDeFfe719d1FA3B8F179852e092e",
   "0xDaAb1398d3bD906cA48B4c43d43093174153c75F",
   "0xE5CAf98f41D5123AC8906b01a83531c8c6227509",
@@ -387,17 +378,8 @@ const StakingContracts = [
   "0x64767527b8dcAD27739ae1c7Ee863379C1ceafe5",
   "0xfCB3Ea7Fdc7819c4853e9A1CafA3e7393012F052",
   "0x6b854eEd02eb5A2dfC6bea6F63738107af5d2214",
-  "0x771DC695dEe6BC9661d9a7bA91e4C95555260717",
   "0x2aC69ac6CAdB024608E36D5C3d5Dc32ec72Cab76",
-  "0x517Bbbc14c4836CbA83C7e92d5c0ae46e6059c0C",
   "0x6E5F9f2bF74d5438803fA753547cfaB764a4ec98",
-  "0xAc3329eecFCB3BFC93716f0c8D79055560AC26dA",
-  "0xA44f85Da6b2AD8E64a931716caf9DAaFa38bf24c",
-  "0x8c1aA5DD03F3fa8C738a5ee14d8231B3566F3d33",
-  "0x3F88cb9d7BcA1F4321FE0aac20a65f7C2806BA72",
-  "0x040bb9e951D47F7263DAeEc3F12234975Cc6BF17",
-  "0x6C75cB4E2604c9eC6Da88de4cb8589739D3aa0ce",
-  "0x2eaFAFC614420f1Ed38375F3F3B577CFE09B6Ad1",
   "0xBe3aF0eEdE19921A6f385f2d8eF0959646060125",
   "0xd382759F9b6e87a89383a84A6667f5B5d7203238",
   "0x531680F63276fbA79D8361aB8E5D18042dE4818c",
@@ -405,3 +387,24 @@ const StakingContracts = [
   "0x6796a1D3d39eD528DCDcADB7edd21E2d91DFd745",
   "0x8362ceCE7d6C4fDCb2c4080883755478ca5C255A"
 ]
+
+async function loadload0xdaoPrice(App, tokens, prices, stakeTokenAddress) {
+    var stakeToken = await getFantomToken(App, stakeTokenAddress, App.YOUR_ADDRESS);
+    var newTokenAddresses = stakeToken.tokens.filter(x =>
+      !getParameterCaseInsensitive(tokens,x));
+    for (const address of newTokenAddresses) {
+        tokens[address] = await getFantomToken(App, address, App.YOUR_ADDRESS);
+    }
+    const poolPrices = getPoolPrices(tokens, prices, stakeToken, "fantom");
+    const stakeTokenTicker = poolPrices.stakeTokenTicker;
+    const stakeTokenPrice =
+        prices[stakeTokenAddress]?.usd ?? getParameterCaseInsensitive(prices, stakeTokenAddress)?.usd;
+    const staked_tvl = poolPrices.staked_tvl;
+    return  {
+      poolPrices,
+      stakeTokenAddress,
+      stakeTokenTicker,
+      stakeTokenPrice,
+      staked_tvl,
+    }
+}
