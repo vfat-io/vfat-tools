@@ -207,7 +207,9 @@ const main = async () => {
       ['SpectreFi          ', `<a href='spectrefi'    >Various</a>`, 'SPECT        ', 'https://spectrefi.com'],
       ['Scarface Finance   ', `<a href='scarface'     >Various</a>`, 'SSHARE / SCAR', 'https://scarface.finance'],
       ['The Don Finance    ', `<a href='thedon'       >Various</a>`, 'THEDON       ', 'https://thedon.finance'],
-      ['GemMine            ', `<a href='gemmine'      >Various</a>`, 'GEMMINE      ', 'https://gemmine.defiwaterfall.com']
+      ['GemMine            ', `<a href='gemmine'      >Various</a>`, 'GEMMINE      ', 'https://gemmine.defiwaterfall.com'],
+      ['LIFE               ', `<a href='life'         >Various</a>`, 'LIFE          ', 'https://lif3.exchange']
+
     ],
   }
 
