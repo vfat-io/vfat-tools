@@ -577,7 +577,7 @@ const main = async() => {
       ["Xray Swap           ","", `<a href="xrayswap"      >Various</a>`,"XRAY             ","https://xrayswap.com"],
       ["Quartz.defi          ","", `<a href="quartzdefi"    >Various</a>`, "AMES / ASHARE  ","https://bsc-quartz-defi.app/"],
       ["WOWswap             ","", `<a href="wowswap"       >Various</a>`,"WOW              ","https://wowswap.io"],
-      ["AtomDefi             ","",`<a href="atomdefi"      >Various</a>`,"ATOM             ","https://atomdefi.app"],
+      ["Atom Defi            ","",`<a href="atomdefi"      >Various</a>`,"ATOM             ","https://atomdefi.app"],
     ]}
 
   let table = new AsciiTable().fromJSON(tableData);
