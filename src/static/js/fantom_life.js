@@ -15,7 +15,7 @@ async function main() {
    const rewardTokenTicker = "LIFE";
    const LIFE_CHEF = new ethers.Contract(LIFE_CHEF_ADDR, LIFE_CHEF_ABI, App.provider);
 
-   const rewardsPerWeek = await LIFE_CHEF.LifePerSecond() /1e18 * 604800 ;
+   const rewardsPerWeek = await LIFE_CHEF.LifePerSecond() /1e18 * 604800;
 
     const tokens = {};
     const prices = await getFantomPrices();
