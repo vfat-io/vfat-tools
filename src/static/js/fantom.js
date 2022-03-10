@@ -184,8 +184,10 @@ const main = async () => {
       ['WigoSwap           ', `<a href='wigoswap'     >Various</a>`, 'WIGO         ','https://wigoswap.io'],
       ['SpadeFinance       ', `<a href='spadefinance' >Various</a>`, 'SPADE        ','https://spadefinance.farm'],
       ['Fantasm Finance    ', `<a href="fantasm"      >Various</a>`, 'FSM          ','https://fantasm.finance'],
-      ['Zombi       ', `<a href='zombi' >Various</a>`, 'ZOMBI        ', 'https://zombi.finance/'],
-      ['Zomb2       ', `<a href='zomb2' >Various</a>`, 'ZOMB2        ', 'https://zomb2.finance/']
+      ['Zombi               ', `<a href='zombi' >Various</a>`, 'ZOMBI        ', 'https://zombi.finance/'],
+      ['Zomb2               ', `<a href='zomb2' >Various</a>`, 'ZOMB2        ', 'https://zomb2.finance/'],
+      ['LIFE               ', `<a href='life' >Various</a>`, 'LIFE        ', 'https://lif3.exchange/']
+
     ],
   }
 
