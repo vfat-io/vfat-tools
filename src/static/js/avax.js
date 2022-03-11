@@ -16,7 +16,7 @@ const main = async() => {
         ["Pandaswap               ",`<a href="panda"            >Various</a>`,"BAMBOO       ","https://pandaswap.exchange"],
         ["Pefi                    ",`<a href="pefi"             >Various</a>`,"PEFI         ","https://penguinfinance.org"],
         ["Elk                     ",`<a href="elk"              >Various</a>`,"ELK          ","https://elk.finance"],
-        ["Snowball                ",`<a href="snowball"         >Various</a>`,"SNOB         ","https://snowball.network/earn"],
+        ["Snowball *              ",`<a href="snowball"         >Various</a>`,"SNOB         ","https://www.snowball.network"],
         ["Olive                   ",`<a href="olive"            >Various</a>`,"OLIVE        ","https://avax.olive.cash"],
         ["Lydia                   ",`<a href="lydia"            >Various</a>`,"LYD          ","https://www.lydia.finance"],
         ["Baguette                ",`<a href="baguette"         >Various</a>`,"BAG          ","https://app.baguette.exchange"],
