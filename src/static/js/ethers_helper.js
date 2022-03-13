@@ -2104,8 +2104,18 @@ function getUniPrices(tokens, prices, pool, chain="eth")
               [chain]):
               pool.symbol.includes("CS-LP") ?  `https://app.coinswap.space/#/` :
               pool.symbol.includes("NMX-LP") ?  `https://nomiswap.io/swap` :
-              pool.symbol.includes("vAMM") ?  `https://solidly.exchange` :
-              pool.symbol.includes("sAMM") ?  `https://solidly.exchange` :
+              pool.symbol.includes("vAMM") ?  (
+                {
+                  "fantom": `https://solidly.exchange`,
+                  "metis": `https://hermes.maiadao.io/#/swap`
+                }
+              [chain]):
+              pool.symbol.includes("sAMM") ?  (
+                {
+                  "fantom" : `https://solidly.exchange`,
+                  "metis" : `https://hermes.maiadao.io/#/swap`
+                }
+              [chain]):
               pool.symbol.includes("ZLK-LP") ?  `https://dex.zenlink.pro/#/info/overview` :
               pool.name.includes("Value LP") ?  `https://info.vswap.fi/pool/${pool.address}` :
               pool.name.includes("Duneswap LP Token") ?  `https://explorer.emerald.oasis.dev/token/${pool.address}` :
@@ -2180,16 +2190,42 @@ function getUniPrices(tokens, prices, pool, chain="eth")
             `https://linkswap.app/#/remove/${t0address}/${t1address}`,
             `https://linkswap.app/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
           ] :
-          pool.symbol.includes("vAMM") ? [
-            `https://solidly.exchange/liquidity/create`,
-            `https://solidly.exchange/liquidity/create`,
-            `https://solidly.exchange/swap`
-          ] :
-          pool.symbol.includes("sAMM") ? [
-            `https://solidly.exchange/liquidity/create`,
-            `https://solidly.exchange/liquidity/create`,
-            `https://solidly.exchange/swap`
-          ] :
+          pool.symbol.includes("BenSwap") ? ({
+            "bsc": [
+              `https://dex.benswap.finance/#/add/${t0address}/${t1address}`,
+              `https://dex.benswap.finance/#/remove/${t0address}/${t1address}`,
+              `https://dex.benswap.finance/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+            ],
+            "smartbch": [
+              `https://dex.benswap.cash/#/add/${t0address}/${t1address}`,
+              `https://dex.benswap.cash/#/remove/${t0address}/${t1address}`,
+              `https://dex.benswap.cash/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+            ]
+          }[chain]) :
+          pool.symbol.includes("vAMM") ? ({
+            "fantom" : [
+              `https://solidly.exchange/liquidity/create`,
+              `https://solidly.exchange/liquidity/create`,
+              `https://solidly.exchange/swap`
+            ],
+            "metis" : [
+              `https://hermes.maiadao.io/#/add/${t0address}/${t1address}/false`,
+              `https://hermes.maiadao.io/#/find`,
+              `https://hermes.maiadao.io/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+            ]
+          } [chain]):
+          pool.symbol.includes("sAMM") ? ({
+            "fantom" : [
+              `https://solidly.exchange/liquidity/create`,
+              `https://solidly.exchange/liquidity/create`,
+              `https://solidly.exchange/swap`
+            ],
+            "metis" : [
+              `https://hermes.maiadao.io/#/add/${t0address}/${t1address}/true`,
+              `https://hermes.maiadao.io/#/find`,
+              `https://hermes.maiadao.io/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+            ]
+          } [chain]):
           pool.symbol.includes("HBLP") ? [
             `https://www.huckleberry.finance/#/add/${t0address}/${t1address}`,
             `https://www.huckleberry.finance/#/remove/${t0address}/${t1address}`,
