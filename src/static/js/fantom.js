@@ -188,7 +188,8 @@ const main = async () => {
       ['Zomb2              ', `<a href='zomb2'        >Various</a>`, 'ZOMB2        ', 'https://zomb2.finance/'],
       ['LIFE               ', `<a href='life'         >Various</a>`, 'LIFE         ', 'https://lif3.exchange'],
       ['JetMine            ', `<a href='jetmine'      >Various</a>`, 'JETMINE      ', 'https://jetmine.defiwaterfall.com'],
-      ['Hamster            ', `<a href='hamster'      >Various</a>`, 'HAM / HSHARE ', 'https://hamster.money']
+      ['Hamster            ', `<a href='hamster'      >Various</a>`, 'HAM / HSHARE ', 'https://hamster.money'],
+      ['YieldWolf          ', `<a href='yieldwolf'    >Various</a>`, 'Various      ', 'https://yieldwolf.finance']
 
     ],
   }
