@@ -192,7 +192,6 @@ const main = async () => {
       ['YieldWolf          ', `<a href='yieldwolf'    >Various</a>`, 'Various      ', 'https://yieldwolf.finance'],
       ['Zomb Finance       ', `<a href='zombfinance'  >Various</a>`, 'ZOMB / ZSHARE', 'https://zombfinance.com'],
       ['Lendly (Hundred Finance)', `<a href='lendly'  >Various</a>`, 'HND / WEVE   ', 'https://lendly.dashboard.hundred.finance']
-
     ],
   }
 

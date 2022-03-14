@@ -245,6 +245,7 @@ async function main() {
 
   let staked_tvl = 0;
   let userTvl = 0;
+  //auto to for thelei allagi gia auto to gauge 0x35594E4992DFefcB0C20EC487d7af22a30bDec60. exei allo reward token to (WEVE)
   for(let i = 0; i < gageInfos.length; i++){
     const lpToken = await getFantomToken(App, gageInfos[i].lpTokenAddress, gaugeAddresses[i]);
     const totalSupply = gageInfos[i].totalSupply / 10 ** lpToken.decimals;
