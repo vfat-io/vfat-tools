@@ -66,7 +66,8 @@ const FantomTokens = [
   { "id": "fbomb", "symbol": "BOMB", "contract": "0x8503eb4a136bdbeb323e37aa6e0fa0c772228378"},
   { "id": "charm", "symbol": "CHARM", "contract": "0x248cb87dda803028dfead98101c9465a2fbda0d4"},
   { "id": "ginspirit", "symbol": "GINSPIRIT", "contract": "0x2787bea3366335068bf8b4a253044d09ea4e1c96"},
-  { "id": "0xdao", "symbol": "OXD", "contract": "0xc165d941481e68696f43ee6e99bfb2b23e0e3114"} //this is v1
+  { "id": "0xdao", "symbol": "OXD", "contract": "0xc165d941481e68696f43ee6e99bfb2b23e0e3114"}, //this is v1
+  { "id": "30mb-token", "symbol": "3OMB", "contract": "0x14def7584a6c52f470ca4f4b9671056b22f4ffde"}
 ];
 
 async function getFantomPrices() {
