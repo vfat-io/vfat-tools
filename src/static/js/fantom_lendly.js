@@ -139,6 +139,7 @@ const LENDLY_ABI = {
 }
 
 const HND_GAUGE_ABI = [{"name":"Deposit","inputs":[{"name":"provider","type":"address","indexed":true},{"name":"value","type":"uint256","indexed":false}],"anonymous":false,"type":"event"},{"name":"Withdraw","inputs":[{"name":"provider","type":"address","indexed":true},{"name":"value","type":"uint256","indexed":false}],"anonymous":false,"type":"event"},{"name":"UpdateLiquidityLimit","inputs":[{"name":"user","type":"address","indexed":false},{"name":"original_balance","type":"uint256","indexed":false},{"name":"original_supply","type":"uint256","indexed":false},{"name":"working_balance","type":"uint256","indexed":false},{"name":"working_supply","type":"uint256","indexed":false}],"anonymous":false,"type":"event"},{"name":"CommitOwnership","inputs":[{"name":"admin","type":"address","indexed":false}],"anonymous":false,"type":"event"},{"name":"ApplyOwnership","inputs":[{"name":"admin","type":"address","indexed":false}],"anonymous":false,"type":"event"},{"name":"Transfer","inputs":[{"name":"_from","type":"address","indexed":true},{"name":"_to","type":"address","indexed":true},{"name":"_value","type":"uint256","indexed":false}],"anonymous":false,"type":"event"},{"name":"Approval","inputs":[{"name":"_owner","type":"address","indexed":true},{"name":"_spender","type":"address","indexed":true},{"name":"_value","type":"uint256","indexed":false}],"anonymous":false,"type":"event"},{"stateMutability":"nonpayable","type":"constructor","inputs":[{"name":"_lp_token","type":"address"},{"name":"_minter","type":"address"},{"name":"_admin","type":"address"},{"name":"_reward_policy_maker","type":"address"}],"outputs":[]},{"stateMutability":"view","type":"function","name":"decimals","inputs":[],"outputs":[{"name":"","type":"uint256"}],"gas":288},{"stateMutability":"view","type":"function","name":"integrate_checkpoint","inputs":[],"outputs":[{"name":"","type":"uint256"}],"gas":4624},{"stateMutability":"nonpayable","type":"function","name":"user_checkpoint","inputs":[{"name":"addr","type":"address"}],"outputs":[{"name":"","type":"bool"}],"gas":9161388},{"stateMutability":"view","type":"function","name":"claimable_tokens","inputs":[{"name":"addr","type":"address"}],"outputs":[{"name":"","type":"uint256"}],"gas":9074455},{"stateMutability":"view","type":"function","name":"reward_contract","inputs":[],"outputs":[{"name":"","type":"address"}],"gas":2718},{"stateMutability":"view","type":"function","name":"last_claim","inputs":[],"outputs":[{"name":"","type":"uint256"}],"gas":2544},{"stateMutability":"view","type":"function","name":"claimed_reward","inputs":[{"name":"_addr","type":"address"},{"name":"_token","type":"address"}],"outputs":[{"name":"","type":"uint256"}],"gas":3066},{"stateMutability":"view","type":"function","name":"claimable_reward","inputs":[{"name":"_addr","type":"address"},{"name":"_token","type":"address"}],"outputs":[{"name":"","type":"uint256"}],"gas":3034},{"stateMutability":"nonpayable","type":"function","name":"claimable_reward_write","inputs":[{"name":"_addr","type":"address"},{"name":"_token","type":"address"}],"outputs":[{"name":"","type":"uint256"}],"gas":1211018},{"stateMutability":"nonpayable","type":"function","name":"set_rewards_receiver","inputs":[{"name":"_receiver","type":"address"}],"outputs":[],"gas":35733},{"stateMutability":"nonpayable","type":"function","name":"claim_rewards","inputs":[],"outputs":[]},{"stateMutability":"nonpayable","type":"function","name":"claim_rewards","inputs":[{"name":"_addr","type":"address"}],"outputs":[]},{"stateMutability":"nonpayable","type":"function","name":"claim_rewards","inputs":[{"name":"_addr","type":"address"},{"name":"_receiver","type":"address"}],"outputs":[]},{"stateMutability":"nonpayable","type":"function","name":"kick","inputs":[{"name":"addr","type":"address"}],"outputs":[],"gas":9175979},{"stateMutability":"nonpayable","type":"function","name":"deposit","inputs":[{"name":"_value","type":"uint256"}],"outputs":[]},{"stateMutability":"nonpayable","type":"function","name":"deposit","inputs":[{"name":"_value","type":"uint256"},{"name":"_addr","type":"address"}],"outputs":[]},{"stateMutability":"nonpayable","type":"function","name":"deposit","inputs":[{"name":"_value","type":"uint256"},{"name":"_addr","type":"address"},{"name":"_claim_rewards","type":"bool"}],"outputs":[]},{"stateMutability":"nonpayable","type":"function","name":"withdraw","inputs":[{"name":"_value","type":"uint256"}],"outputs":[]},{"stateMutability":"nonpayable","type":"function","name":"withdraw","inputs":[{"name":"_value","type":"uint256"},{"name":"_claim_rewards","type":"bool"}],"outputs":[]},{"stateMutability":"nonpayable","type":"function","name":"transfer","inputs":[{"name":"_to","type":"address"},{"name":"_value","type":"uint256"}],"outputs":[{"name":"","type":"bool"}],"gas":41283316},{"stateMutability":"nonpayable","type":"function","name":"transferFrom","inputs":[{"name":"_from","type":"address"},{"name":"_to","type":"address"},{"name":"_value","type":"uint256"}],"outputs":[{"name":"","type":"bool"}],"gas":41321266},{"stateMutability":"nonpayable","type":"function","name":"approve","inputs":[{"name":"_spender","type":"address"},{"name":"_value","type":"uint256"}],"outputs":[{"name":"","type":"bool"}],"gas":38211},{"stateMutability":"nonpayable","type":"function","name":"increaseAllowance","inputs":[{"name":"_spender","type":"address"},{"name":"_added_value","type":"uint256"}],"outputs":[{"name":"","type":"bool"}],"gas":40755},{"stateMutability":"nonpayable","type":"function","name":"decreaseAllowance","inputs":[{"name":"_spender","type":"address"},{"name":"_subtracted_value","type":"uint256"}],"outputs":[{"name":"","type":"bool"}],"gas":40779},{"stateMutability":"nonpayable","type":"function","name":"set_rewards","inputs":[{"name":"_reward_contract","type":"address"},{"name":"_sigs","type":"bytes32"},{"name":"_reward_tokens","type":"address[8]"}],"outputs":[],"gas":2743591},{"stateMutability":"nonpayable","type":"function","name":"set_killed","inputs":[{"name":"_is_killed","type":"bool"}],"outputs":[],"gas":38145},{"stateMutability":"nonpayable","type":"function","name":"commit_transfer_ownership","inputs":[{"name":"addr","type":"address"}],"outputs":[],"gas":39525},{"stateMutability":"nonpayable","type":"function","name":"accept_transfer_ownership","inputs":[],"outputs":[],"gas":39470},{"stateMutability":"view","type":"function","name":"minter","inputs":[],"outputs":[{"name":"","type":"address"}],"gas":3078},{"stateMutability":"view","type":"function","name":"reward_policy_maker","inputs":[],"outputs":[{"name":"","type":"address"}],"gas":3108},{"stateMutability":"view","type":"function","name":"lp_token","inputs":[],"outputs":[{"name":"","type":"address"}],"gas":3138},{"stateMutability":"view","type":"function","name":"controller","inputs":[],"outputs":[{"name":"","type":"address"}],"gas":3168},{"stateMutability":"view","type":"function","name":"voting_escrow","inputs":[],"outputs":[{"name":"","type":"address"}],"gas":3198},{"stateMutability":"view","type":"function","name":"balanceOf","inputs":[{"name":"arg0","type":"address"}],"outputs":[{"name":"","type":"uint256"}],"gas":3443},{"stateMutability":"view","type":"function","name":"totalSupply","inputs":[],"outputs":[{"name":"","type":"uint256"}],"gas":3258},{"stateMutability":"view","type":"function","name":"allowance","inputs":[{"name":"arg0","type":"address"},{"name":"arg1","type":"address"}],"outputs":[{"name":"","type":"uint256"}],"gas":3718},{"stateMutability":"view","type":"function","name":"name","inputs":[],"outputs":[{"name":"","type":"string"}],"gas":13620},{"stateMutability":"view","type":"function","name":"symbol","inputs":[],"outputs":[{"name":"","type":"string"}],"gas":11373},{"stateMutability":"view","type":"function","name":"working_balances","inputs":[{"name":"arg0","type":"address"}],"outputs":[{"name":"","type":"uint256"}],"gas":3593},{"stateMutability":"view","type":"function","name":"working_supply","inputs":[],"outputs":[{"name":"","type":"uint256"}],"gas":3408},{"stateMutability":"view","type":"function","name":"period","inputs":[],"outputs":[{"name":"","type":"int128"}],"gas":3438},{"stateMutability":"view","type":"function","name":"period_timestamp","inputs":[{"name":"arg0","type":"uint256"}],"outputs":[{"name":"","type":"uint256"}],"gas":3577},{"stateMutability":"view","type":"function","name":"integrate_inv_supply","inputs":[{"name":"arg0","type":"uint256"}],"outputs":[{"name":"","type":"uint256"}],"gas":3607},{"stateMutability":"view","type":"function","name":"integrate_inv_supply_of","inputs":[{"name":"arg0","type":"address"}],"outputs":[{"name":"","type":"uint256"}],"gas":3743},{"stateMutability":"view","type":"function","name":"integrate_checkpoint_of","inputs":[{"name":"arg0","type":"address"}],"outputs":[{"name":"","type":"uint256"}],"gas":3773},{"stateMutability":"view","type":"function","name":"integrate_fraction","inputs":[{"name":"arg0","type":"address"}],"outputs":[{"name":"","type":"uint256"}],"gas":3803},{"stateMutability":"view","type":"function","name":"reward_tokens","inputs":[{"name":"arg0","type":"uint256"}],"outputs":[{"name":"","type":"address"}],"gas":3727},{"stateMutability":"view","type":"function","name":"rewards_receiver","inputs":[{"name":"arg0","type":"address"}],"outputs":[{"name":"","type":"address"}],"gas":3863},{"stateMutability":"view","type":"function","name":"reward_integral","inputs":[{"name":"arg0","type":"address"}],"outputs":[{"name":"","type":"uint256"}],"gas":3893},{"stateMutability":"view","type":"function","name":"reward_integral_for","inputs":[{"name":"arg0","type":"address"},{"name":"arg1","type":"address"}],"outputs":[{"name":"","type":"uint256"}],"gas":4138},{"stateMutability":"view","type":"function","name":"admin","inputs":[],"outputs":[{"name":"","type":"address"}],"gas":3738},{"stateMutability":"view","type":"function","name":"future_admin","inputs":[],"outputs":[{"name":"","type":"address"}],"gas":3768},{"stateMutability":"view","type":"function","name":"is_killed","inputs":[],"outputs":[{"name":"","type":"bool"}],"gas":3798}]
+const REWARDS_POLICY_ABI = [{"name":"SetAdmin","inputs":[{"name":"admin","type":"address","indexed":false}],"anonymous":false,"type":"event"},{"stateMutability":"nonpayable","type":"constructor","inputs":[{"name":"_epoch_length","type":"uint256"}],"outputs":[]},{"stateMutability":"view","type":"function","name":"epoch_at","inputs":[{"name":"_timestamp","type":"uint256"}],"outputs":[{"name":"","type":"uint256"}],"gas":7475},{"stateMutability":"view","type":"function","name":"epoch_start_time","inputs":[{"name":"_epoch","type":"uint256"}],"outputs":[{"name":"","type":"uint256"}],"gas":4918},{"stateMutability":"view","type":"function","name":"rate_at","inputs":[{"name":"_timestamp","type":"uint256"}],"outputs":[{"name":"","type":"uint256"}],"gas":14134},{"stateMutability":"view","type":"function","name":"current_epoch","inputs":[],"outputs":[{"name":"","type":"uint256"}],"gas":14997},{"stateMutability":"view","type":"function","name":"future_epoch_time","inputs":[],"outputs":[{"name":"","type":"uint256"}],"gas":36854},{"stateMutability":"view","type":"function","name":"future_epoch_rate","inputs":[],"outputs":[{"name":"","type":"uint256"}],"gas":19623},{"stateMutability":"nonpayable","type":"function","name":"set_admin","inputs":[{"name":"_admin","type":"address"}],"outputs":[],"gas":39075},{"stateMutability":"nonpayable","type":"function","name":"set_rewards_at","inputs":[{"name":"_epoch","type":"uint256"},{"name":"_reward","type":"uint256"}],"outputs":[],"gas":52480},{"stateMutability":"nonpayable","type":"function","name":"set_rewards_starting_at","inputs":[{"name":"_epoch","type":"uint256"},{"name":"_rewards","type":"uint256[10]"}],"outputs":[],"gas":371612},{"stateMutability":"view","type":"function","name":"admin","inputs":[],"outputs":[{"name":"","type":"address"}],"gas":2658},{"stateMutability":"view","type":"function","name":"first_epoch_time","inputs":[],"outputs":[{"name":"","type":"uint256"}],"gas":2688},{"stateMutability":"view","type":"function","name":"epoch_length","inputs":[],"outputs":[{"name":"","type":"uint256"}],"gas":2718},{"stateMutability":"view","type":"function","name":"rewards","inputs":[{"name":"arg0","type":"uint256"}],"outputs":[{"name":"","type":"uint256"}],"gas":2857}]
 
 const contracts = {
   comptroller: '0xeea62ed232ff4ccb6425d41afb1b0b41d34f3114',
@@ -225,7 +226,7 @@ async function main() {
   const gaugeAddresses = ["0x1A61A72F5Cf5e857f15ee502210b81f8B3a66263", "0x35594E4992DFefcB0C20EC487d7af22a30bDec60"];
 
   const gaugeContracts = gaugeAddresses.map(a => new ethcall.Contract(a, HND_GAUGE_ABI));
-  const gaugeCalls = gaugeContracts.map(c => [c.lp_token(), c.totalSupply(), c.balanceOf(App.YOUR_ADDRESS)]).flat();
+  const gaugeCalls = gaugeContracts.map(c => [c.lp_token(), c.totalSupply(), c.balanceOf(App.YOUR_ADDRESS), c.reward_policy_maker()]).flat();
   const gaugeValues = await App.ethcallProvider.all(gaugeCalls);
 
   let gageInfos = []
@@ -233,17 +234,18 @@ async function main() {
     const gageInfo = {
       lpTokenAddress : gaugeValues[i],
       totalSupply    : gaugeValues[i+1],
-      balance        : gaugeValues[i+2]
+      balance        : gaugeValues[i+2],
+      rewardsAddress : gaugeValues[i+3]
     }
     gageInfos.push(gageInfo);
-    i=i+2
+    i=i+3
   }
 
   //HND reward token
-  const rewradToken = await getFantomToken(App, "0x10010078a54396f62c96df8532dc2b4847d47ed3", App.YOUR_ADDRESS);
+  const rewardToken = await getFantomToken(App, "0x10010078a54396f62c96df8532dc2b4847d47ed3", App.YOUR_ADDRESS);
   const rewardTokenPrice = getParameterCaseInsensitive(prices, "0x10010078a54396f62c96df8532dc2b4847d47ed3")?.usd;
   //WeVE reward token
-  const rewradTokenWeve = await getFantomToken(App, "0x911da02c1232a3c3e1418b834a311921143b04d7", App.YOUR_ADDRESS);
+  const rewardTokenWeve = await getFantomToken(App, "0x911da02c1232a3c3e1418b834a311921143b04d7", App.YOUR_ADDRESS);
   const rewardTokenPriceWeve = getParameterCaseInsensitive(prices, "0x911da02c1232a3c3e1418b834a311921143b04d7")?.usd;
 
   let staked_tvl = 0;
@@ -254,21 +256,32 @@ async function main() {
       const totalSupply = gageInfos[i].totalSupply / 10 ** lpToken.decimals;
       const usersStaked = gageInfos[i].balance / 10 ** lpToken.decimals;
       const _claimableRewards = await App.ethcallProvider.all([gaugeContracts[i].claimable_tokens(App.YOUR_ADDRESS)]);
-      const claimableTokens = _claimableRewards / 10 ** rewradTokenWeve.decimals;
+      const claimableTokens = _claimableRewards / 10 ** rewardTokenWeve.decimals;
       const poolPrice = getPoolPrices(tokens, prices, lpToken, "fantom")
       staked_tvl += totalSupply * poolPrice.price;
       userTvl += usersStaked * poolPrice.price;
-      await printHndGaugeContract(App, lpToken, poolPrice, gageInfos[i], gaugeAddresses[i], claimableTokens, rewradTokenWeve, rewardTokenPriceWeve);
+      const timestampNow_ = Date.now() / 1000;
+      const timestampNow = parseInt(timestampNow_);
+      const rewardsContract = new ethcall.Contract(gageInfos[i].rewardsAddress, REWARDS_POLICY_ABI);
+      const rewardsPerWeek_ = await App.ethcallProvider.all([rewardsContract.rate_at(timestampNow)]);
+      const rewardsPerWeek = rewardsPerWeek_ / 10 ** rewardToken.decimals * 604800;
+      await printHndGaugeContract(App, lpToken, poolPrice, gageInfos[i], gaugeAddresses[i], claimableTokens, rewardTokenWeve, rewardTokenPriceWeve, rewardsPerWeek);
     }else{
       const lpToken = await getFantomToken(App, gageInfos[i].lpTokenAddress, gaugeAddresses[i]);
       const totalSupply = gageInfos[i].totalSupply / 10 ** lpToken.decimals;
       const usersStaked = gageInfos[i].balance / 10 ** lpToken.decimals;
       const _claimableRewards = await App.ethcallProvider.all([gaugeContracts[i].claimable_tokens(App.YOUR_ADDRESS)]);
-      const claimableTokens = _claimableRewards / 10 ** rewradToken.decimals;
+      const claimableTokens = _claimableRewards / 10 ** rewardToken.decimals;
       const poolPrice = getPoolPrices(tokens, prices, lpToken, "fantom")
       staked_tvl += totalSupply * poolPrice.price;
+      const staked_tvlForCurrentPool = totalSupply * poolPrice.price;
       userTvl += usersStaked * poolPrice.price;
-      await printHndGaugeContract(App, lpToken, poolPrice, gageInfos[i], gaugeAddresses[i], claimableTokens, rewradToken, rewardTokenPrice);
+      const timestampNow_ = Date.now() / 1000;
+      const timestampNow = parseInt(timestampNow_);
+      const rewardsContract = new ethcall.Contract(gageInfos[i].rewardsAddress, REWARDS_POLICY_ABI);
+      const rewardsPerWeek_ = await App.ethcallProvider.all([rewardsContract.rate_at(timestampNow)]);
+      const rewardsPerWeek = rewardsPerWeek_ / 10 ** rewardToken.decimals * 604800;
+      await printHndGaugeContract(App, lpToken, poolPrice, gageInfos[i], gaugeAddresses[i], claimableTokens, rewardToken, rewardTokenPrice, rewardsPerWeek, staked_tvlForCurrentPool);
     }
   }
   _print_bold(`\nTotal Value Staked: $${formatMoney(staked_tvl)}`);
@@ -279,14 +292,27 @@ async function main() {
   hideLoading();
 }
 
-async function printHndGaugeContract(App, lpToken, poolPrice, gaugeResult, gauge, claimableTokens, rewradToken, rewardTokenPrice) {
+async function printHndGaugeContract(App, lpToken, poolPrice, gaugeResult, gauge, claimableTokens, rewardToken, rewardTokenPrice, rewardsPerWeek, staked_tvl) {
   poolPrice.print_price();
+  const usdPerWeek = rewardsPerWeek * rewardTokenPrice;
+  _print(`${rewardToken.symbol} Per Week: ${rewardsPerWeek.toFixed(2)} ($${formatMoney(usdPerWeek)})`);
+  const weeklyAPR = usdPerWeek / staked_tvl * 100;
+  const dailyAPR = weeklyAPR / 7;
+  const yearlyAPR = weeklyAPR * 52;
+  _print(`APR: Day ${dailyAPR.toFixed(2)}% Week ${weeklyAPR.toFixed(2)}% Year ${yearlyAPR.toFixed(2)}%`);
   const userStaked = gaugeResult.balance / 10 ** lpToken.decimals;
   var userStakedUsd = userStaked * poolPrice.price;
   var userStakedPct = userStakedUsd / poolPrice.tvl * 100;
   _print(`You are staking ${userStaked.toFixed(4)} ${poolPrice.stakeTokenTicker} ($${formatMoney(userStakedUsd)}), ${userStakedPct.toFixed(2)}% of the pool.`);
   if (userStaked > 0) {
-    _print(`Your stake comprises of ${userStaked} ${poolPrice.stakeTokenTicker}.`)
+    poolPrice.print_contained_price(userStaked);
+      const userWeeklyRewards = userStakedPct * rewardsPerWeek / 100;
+      const userDailyRewards = userWeeklyRewards / 7;
+      const userYearlyRewards = userWeeklyRewards * 52;
+      _print(`Estimated ${rewardToken.symbol} earnings:`
+          + ` Day ${userDailyRewards.toFixed(2)} ($${formatMoney(userDailyRewards*rewardTokenPrice)})`
+          + ` Week ${userWeeklyRewards.toFixed(2)} ($${formatMoney(userWeeklyRewards*rewardTokenPrice)})`
+          + ` Year ${userYearlyRewards.toFixed(2)} ($${formatMoney(userYearlyRewards*rewardTokenPrice)})`);
   }
   const deposit = async function() {
     return hndGaugetDeposit(App, gauge, lpToken)
@@ -295,11 +321,11 @@ async function printHndGaugeContract(App, lpToken, poolPrice, gaugeResult, gauge
     return hndGaugeWithdraw(App, gauge, lpToken)
   }
   const claim = async function() {
-    return hndGaugeClaim(App, gauge, rewradToken)
+    return hndGaugeClaim(App, gauge, rewardToken)
   }
   _print_link(`Deposit ${lpToken.unstaked.toFixed(6)} ${lpToken.symbol}`, deposit);
   _print_link(`Withdraw ${userStaked.toFixed(6)} ${lpToken.symbol}`, withdraw);
-  _print_link(`Claim ${claimableTokens.toFixed(6)} ${rewradToken.symbol} ($${formatMoney(claimableTokens*rewardTokenPrice)})`, claim);
+  _print_link(`Claim ${claimableTokens.toFixed(6)} ${rewardToken.symbol} ($${formatMoney(claimableTokens*rewardTokenPrice)})`, claim);
   _print("");
 }
 
@@ -370,11 +396,11 @@ async function hndGaugeWithdraw(App, gauge, token){
   }
 }
 
-async function hndGaugeClaim(App, gauge, rewradToken) {
+async function hndGaugeClaim(App, gauge, rewardToken) {
   const signer = App.provider.getSigner()
   const GAUGE_CONTRACT = new ethers.Contract(gauge, HND_GAUGE_ABI, signer)
 
-  const earnedTokenAmount = await GAUGE_CONTRACT.claimable_reward(App.YOUR_ADDRESS, rewradToken.address) / 1e18
+  const earnedTokenAmount = await GAUGE_CONTRACT.claimable_reward(App.YOUR_ADDRESS, rewardToken.address) / 1e18
 
   if (earnedTokenAmount > 0) {
     showLoading()
