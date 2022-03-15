@@ -172,6 +172,13 @@ async function main() {
   const tokens = {};
   const prices = await getFantomPrices();
 
+  //HND reward token
+  const rewardToken = await getFantomToken(App, "0x10010078a54396f62c96df8532dc2b4847d47ed3", App.YOUR_ADDRESS);
+  const rewardTokenPrice = getParameterCaseInsensitive(prices, "0x10010078a54396f62c96df8532dc2b4847d47ed3")?.usd;
+  //WeVE reward token
+  const rewardTokenWeve = await getFantomToken(App, "0x911da02c1232a3c3e1418b834a311921143b04d7", App.YOUR_ADDRESS);
+  const rewardTokenPriceWeve = getParameterCaseInsensitive(prices, "0x911da02c1232a3c3e1418b834a311921143b04d7")?.usd;
+
   const COMPTROLLER = new ethcall.Contract(contracts.comptroller, LENDLY_ABI.comptroller, App.provider);
 
   const [allMarkets] = await App.ethcallProvider.all([COMPTROLLER.getAllMarkets()]);
@@ -226,50 +233,31 @@ async function main() {
   const gaugeAddresses = ["0x1A61A72F5Cf5e857f15ee502210b81f8B3a66263", "0x35594E4992DFefcB0C20EC487d7af22a30bDec60"];
 
   const gaugeContracts = gaugeAddresses.map(a => new ethcall.Contract(a, HND_GAUGE_ABI));
-  const gaugeCalls = gaugeContracts.map(c => [c.lp_token(), c.totalSupply(), c.balanceOf(App.YOUR_ADDRESS), c.reward_policy_maker()]).flat();
+  const gaugeCalls = gaugeContracts.map(c => [c.lp_token(), c.totalSupply(), c.balanceOf(App.YOUR_ADDRESS), c.reward_policy_maker(), c.working_balances(App.YOUR_ADDRESS), c.working_supply()]).flat();
   const gaugeValues = await App.ethcallProvider.all(gaugeCalls);
 
   let gageInfos = []
   for(let i = 0; i < gaugeValues.length; i++){
     const gageInfo = {
-      lpTokenAddress : gaugeValues[i],
-      totalSupply    : gaugeValues[i+1],
-      balance        : gaugeValues[i+2],
-      rewardsAddress : gaugeValues[i+3]
+      lpTokenAddress   : gaugeValues[i],
+      totalSupply      : gaugeValues[i+1],
+      balance          : gaugeValues[i+2],
+      rewardsAddress   : gaugeValues[i+3],
+      working_balances : gaugeValues[i+4],
+      working_supply   : gaugeValues[i+5]
     }
     gageInfos.push(gageInfo);
-    i=i+3
+    i=i+5
   }
-
-  //HND reward token
-  const rewardToken = await getFantomToken(App, "0x10010078a54396f62c96df8532dc2b4847d47ed3", App.YOUR_ADDRESS);
-  const rewardTokenPrice = getParameterCaseInsensitive(prices, "0x10010078a54396f62c96df8532dc2b4847d47ed3")?.usd;
-  //WeVE reward token
-  const rewardTokenWeve = await getFantomToken(App, "0x911da02c1232a3c3e1418b834a311921143b04d7", App.YOUR_ADDRESS);
-  const rewardTokenPriceWeve = getParameterCaseInsensitive(prices, "0x911da02c1232a3c3e1418b834a311921143b04d7")?.usd;
 
   let staked_tvl = 0;
   let userTvl = 0;
   for(let i = 0; i < gageInfos.length; i++){
-    if(gaugeAddresses[i] == "0x35594E4992DFefcB0C20EC487d7af22a30bDec60"){
-      const lpToken = await getFantomToken(App, gageInfos[i].lpTokenAddress, gaugeAddresses[i]);
+    const lpToken = await getFantomToken(App, gageInfos[i].lpTokenAddress, gaugeAddresses[i]);
       const totalSupply = gageInfos[i].totalSupply / 10 ** lpToken.decimals;
       const usersStaked = gageInfos[i].balance / 10 ** lpToken.decimals;
-      const _claimableRewards = await App.ethcallProvider.all([gaugeContracts[i].claimable_tokens(App.YOUR_ADDRESS)]);
-      const claimableTokens = _claimableRewards / 10 ** rewardTokenWeve.decimals;
-      const poolPrice = getPoolPrices(tokens, prices, lpToken, "fantom")
-      staked_tvl += totalSupply * poolPrice.price;
-      userTvl += usersStaked * poolPrice.price;
-      const timestampNow_ = Date.now() / 1000;
-      const timestampNow = parseInt(timestampNow_);
-      const rewardsContract = new ethcall.Contract(gageInfos[i].rewardsAddress, REWARDS_POLICY_ABI);
-      const rewardsPerWeek_ = await App.ethcallProvider.all([rewardsContract.rate_at(timestampNow)]);
-      const rewardsPerWeek = rewardsPerWeek_ / 10 ** rewardToken.decimals * 604800;
-      await printHndGaugeContract(App, lpToken, poolPrice, gageInfos[i], gaugeAddresses[i], claimableTokens, rewardTokenWeve, rewardTokenPriceWeve, rewardsPerWeek);
-    }else{
-      const lpToken = await getFantomToken(App, gageInfos[i].lpTokenAddress, gaugeAddresses[i]);
-      const totalSupply = gageInfos[i].totalSupply / 10 ** lpToken.decimals;
-      const usersStaked = gageInfos[i].balance / 10 ** lpToken.decimals;
+      const working_balances = gageInfos[i].working_balances / 10 ** lpToken.decimals;
+      const working_supply = gageInfos[i].working_supply / 10 ** lpToken.decimals;
       const _claimableRewards = await App.ethcallProvider.all([gaugeContracts[i].claimable_tokens(App.YOUR_ADDRESS)]);
       const claimableTokens = _claimableRewards / 10 ** rewardToken.decimals;
       const poolPrice = getPoolPrices(tokens, prices, lpToken, "fantom")
@@ -281,8 +269,7 @@ async function main() {
       const rewardsContract = new ethcall.Contract(gageInfos[i].rewardsAddress, REWARDS_POLICY_ABI);
       const rewardsPerWeek_ = await App.ethcallProvider.all([rewardsContract.rate_at(timestampNow)]);
       const rewardsPerWeek = rewardsPerWeek_ / 10 ** rewardToken.decimals * 604800;
-      await printHndGaugeContract(App, lpToken, poolPrice, gageInfos[i], gaugeAddresses[i], claimableTokens, rewardToken, rewardTokenPrice, rewardsPerWeek, staked_tvlForCurrentPool);
-    }
+      await printHndGaugeContract(App, lpToken, poolPrice, gageInfos[i], gaugeAddresses[i], claimableTokens, rewardToken, rewardTokenPrice, rewardsPerWeek, staked_tvlForCurrentPool, working_balances, working_supply);
   }
   _print_bold(`\nTotal Value Staked: $${formatMoney(staked_tvl)}`);
   if (userTvl > 0) {
@@ -292,7 +279,7 @@ async function main() {
   hideLoading();
 }
 
-async function printHndGaugeContract(App, lpToken, poolPrice, gaugeResult, gauge, claimableTokens, rewardToken, rewardTokenPrice, rewardsPerWeek, staked_tvl) {
+async function printHndGaugeContract(App, lpToken, poolPrice, gaugeResult, gauge, claimableTokens, rewardToken, rewardTokenPrice, rewardsPerWeek, staked_tvl, working_balances, working_supply) {
   poolPrice.print_price();
   const usdPerWeek = rewardsPerWeek * rewardTokenPrice;
   _print(`${rewardToken.symbol} Per Week: ${rewardsPerWeek.toFixed(2)} ($${formatMoney(usdPerWeek)})`);
@@ -303,6 +290,14 @@ async function printHndGaugeContract(App, lpToken, poolPrice, gaugeResult, gauge
   const userStaked = gaugeResult.balance / 10 ** lpToken.decimals;
   var userStakedUsd = userStaked * poolPrice.price;
   var userStakedPct = userStakedUsd / poolPrice.tvl * 100;
+  const usersDailyAPR = dailyAPR * (working_balances / working_supply) / userStakedPct * 100
+  const usersWeeklyAPR = weeklyAPR * (working_balances / working_supply) / userStakedPct * 100
+  const usersYearlyAPR = yearlyAPR * (working_balances / working_supply) / userStakedPct * 100
+  if(working_balances <= 0){
+    _print(`Your APR: Day 0% Week 0% Year 0%`);
+  }else{
+    _print(`Your APR: Day ${usersDailyAPR.toFixed(4)}% Week ${usersWeeklyAPR.toFixed(2)}% Year ${usersYearlyAPR.toFixed(2)}%`);
+  }
   _print(`You are staking ${userStaked.toFixed(4)} ${poolPrice.stakeTokenTicker} ($${formatMoney(userStakedUsd)}), ${userStakedPct.toFixed(2)}% of the pool.`);
   if (userStaked > 0) {
     poolPrice.print_contained_price(userStaked);
