@@ -238,9 +238,9 @@ async function getExpansion(App) {
   } else if (circulatingSupply < 5000000) {
     return 0.02
   } else if (circulatingSupply < 10000000) {
-    return 0.01
+    return 0.015
   } else {
-    return 0.005
+    return 0.01
   }
 }
 
