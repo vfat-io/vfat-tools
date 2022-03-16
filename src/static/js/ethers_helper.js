@@ -1545,6 +1545,44 @@ async function getIronBankToken(app, ibToken, address, stakingAddress) {
   }
 }
 
+async function getTriCryptoToken(app, curve, address, stakingAddress, minterAddress) {
+  const minter = new ethcall.Contract(minterAddress, TRITOKEN_MINTER_ABI)
+  const registryAddress = "0x90e00ace148ca3b23ac1bc8c240c2a7dd9c2d7f5"; //cant find the correct registry which is my pool
+  const registry = new ethcall.Contract(registryAddress, REGISTRY_ABI);
+  let coins = [];
+  const [coinAddresses, coinsCount, balances] =
+    await app.ethcallProvider.all([registry.get_coins(minterAddress),
+                                   registry.get_n_coins(minterAddress),
+                                   registry.get_balances(minterAddress)]);
+  for(let i = 0; i < coinsCount[1]; i++){
+      const token = await getAvaxToken(app, coinAddresses[i], address);
+      coins.push(
+        {address : coinAddresses[i],
+         token   : token,
+         balance : balances[i] / 10 ** token.decimals}
+      )
+    }
+  const [virtualPrice, xcp_profit] = await app.ethcallProvider.all([minter.get_virtual_price(), minter.xcp_profit()]);
+  const calls = [curve.decimals(), curve.balanceOf(stakingAddress), curve.balanceOf(app.YOUR_ADDRESS),
+    curve.name(), curve.symbol(), curve.totalSupply()];
+  const [decimals, staked, unstaked, name, symbol, totalSupply] = await app.ethcallProvider.all(calls);
+  const tokens = coins.map(c => c.address).concat([address]);
+  return {
+      address,
+      name,
+      symbol,
+      totalSupply,
+      decimals : decimals,
+      staked:  staked / 10 ** decimals,
+      unstaked: unstaked  / 10 ** decimals,
+      contract: curve,
+      tokens,
+      coins,
+      virtualPrice : virtualPrice / 1e18,
+      xcp_profit : xcp_profit / 10 ** decimals
+  };
+}
+
 async function getStoredToken(app, tokenAddress, stakingAddress, type) {
   switch (type) {
     case "uniswap":
@@ -1553,6 +1591,10 @@ async function getStoredToken(app, tokenAddress, stakingAddress, type) {
     case "lixir":
       const lixirPool = new ethcall.Contract(tokenAddress, LIXIR_TOKEN_ABI);
       return await getLixirPool(app, lixirPool, tokenAddress, stakingAddress);
+    case "triToken":
+      const tri = new ethcall.Contract(tokenAddress, TRITOKEN_ABI);
+      const [triMinter] = await app.ethcallProvider.all([tri.minter()]);
+      return await getTriCryptoToken(app, tri, tokenAddress, stakingAddress, triMinter);
     case "ironBank":
       const ironBankPool = new ethcall.Contract(tokenAddress, IRONBANK_TOKEN_ABI);
       return await getIronBankToken(app, ironBankPool, tokenAddress, stakingAddress);
@@ -1660,6 +1702,17 @@ async function getToken(app, tokenAddress, stakingAddress) {
     const lixir = await getLixirPool(app, lixirPool, tokenAddress, stakingAddress);
     window.localStorage.setItem(tokenAddress, "lixir");
     return lixir;
+  }
+  catch(err) {
+  }
+  try {
+    const tri = new ethcall.Contract(tokenAddress, CURVE_ABI);
+    const [triMinter] = await app.ethcallProvider.all([tri.minter()]);
+    const minterContract = new ethcall.Contract(triMinter, TRITOKEN_MINTER_ABI);
+    const [xcp_profit] = await app.ethcallProvider.all([minterContract.xcp_profit()]);
+    const res = await getTriCryptoToken(app, tri, tokenAddress, stakingAddress, triMinter);
+    window.localStorage.setItem(tokenAddress, "triToken");
+    return res;
   }
   catch(err) {
   }

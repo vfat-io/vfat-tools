@@ -172,6 +172,7 @@ const main = async () => {
       ["Looksrare                    ", `<a href="../looksrare/"         >Various</a>`, "LOOKS              ", "https://looksrare.org"],
       ["Vader                        ", `<a href="../vader/"             >Various</a>`, "VADER              ", "https://www.vaderprotocol.app"],
       ["WOWswap                      ", `<a href="../wowswap/"            >Various</a>`,"WOW                ", "https://wowswap.io"],
+      ["Aladdin (Concentrator)       ", `<a href="../aladdin/"            >Various</a>`,"aCRV               ", "https://concentrator.aladdin.club/#/vault"],
     ]
   }
 
