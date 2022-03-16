@@ -171,8 +171,8 @@ const main = async () => {
       ["DeFiner                      ", `<a href="../definer/"           >Various</a>`, "FIN                ", "https://app.definer.org"],
       ["Looksrare                    ", `<a href="../looksrare/"         >Various</a>`, "LOOKS              ", "https://looksrare.org"],
       ["Vader                        ", `<a href="../vader/"             >Various</a>`, "VADER              ", "https://www.vaderprotocol.app"],
-      ["WOWswap                      ", `<a href="../wowswap/"            >Various</a>`,"WOW                ", "https://wowswap.io"],
-      ["Aladdin (Concentrator)       ", `<a href="../aladdin/"            >Various</a>`,"aCRV               ", "https://concentrator.aladdin.club/#/vault"],
+      ["WOWswap                      ", `<a href="../wowswap/"           >Various</a>`,"WOW                 ", "https://wowswap.io"],
+      ["Aladdin (Concentrator)       ", `<a href="../concentrator/"      >Various</a>`,"aCRV                ", "https://concentrator.aladdin.club/#/vault"],
     ]
   }
 

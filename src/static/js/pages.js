@@ -11,7 +11,7 @@ const main = async() => {
       ["1inch               ",`<a href="1inch/"             >Various</a>`,"1INCH     ","https://1inch.exchange/#/dao/farming"],
       ["Aave                ",`<a href="aave"               >Various</a>`,"stkAAVE   ","https://aave.com"],
       ["Aladdin             ",`<a href="ald/"               >Various</a>`,"ALD       ","https://app.aladdin.club"],
-      ["* Aladdin (Concentrator) *",`<a href="aladdin/"     >Various</a>`,"aCRV      ","https://concentrator.aladdin.club/#/vault"],
+      ["* Aladdin (Concentrator) *",`<a href="concentrator/">Various</a>`,"aCRV      ","https://concentrator.aladdin.club/#/vault"],
       ["Alchemix            ",`<a href="alcx/"              >Various</a>`,"ALCX      ","https://app.alchemix.fi/farms"],
       ["Alpha DEX           ",`<a href="alphadex/"          >Various</a>`,"DEX       ","https://kitten.finance"],
       ["Angle               ",`<a href="angle/"             >Various</a>`,"ANGLE     ","https://app.angle.money"],

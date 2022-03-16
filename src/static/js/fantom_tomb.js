@@ -43,7 +43,7 @@ $(function() {
       _print('')
       
       let tShareRewardPool = await loadRewardPoolContract(App, tokens, prices, tShareRewardPoolContract, TSHARE_REWARD_POOL_ADDR, TSHARE_REWARD_POOL_ABI, "TSHARE",
-      "tshare", "pendingShare", 2, startTime1, currentTime);
+      "tshare", "pendingShare", 3, startTime1, currentTime);
       
 
       _print_bold(`Total Staked: $${formatMoney(tShareRewardPool.totalStaked + masonry.staked_tvl)}`);
