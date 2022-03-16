@@ -1547,15 +1547,14 @@ async function getIronBankToken(app, ibToken, address, stakingAddress) {
 
 async function getTriCryptoToken(app, curve, address, stakingAddress, minterAddress) {
   const minter = new ethcall.Contract(minterAddress, TRITOKEN_MINTER_ABI)
-  const registryAddress = "0x90e00ace148ca3b23ac1bc8c240c2a7dd9c2d7f5"; //cant find the correct registry which is my pool
-  const registry = new ethcall.Contract(registryAddress, REGISTRY_ABI);
-  let coins = [];
-  const [coinAddresses, coinsCount, balances] =
-    await app.ethcallProvider.all([registry.get_coins(minterAddress),
-                                   registry.get_n_coins(minterAddress),
-                                   registry.get_balances(minterAddress)]);
-  for(let i = 0; i < coinsCount[1]; i++){
-      const token = await getAvaxToken(app, coinAddresses[i], address);
+  let coins = [], coinAddresses = [], balances = [];
+  for(let i = 0; i < 3; i++){
+    const [coinAddress, balance] = await app.ethcallProvider.all([minter.coins(i), minter.balances(i)])
+    coinAddresses.push(coinAddress);
+    balances.push(balance);
+  }
+  for(let i = 0; i < 3; i++){
+      const token = await getToken(app, coinAddresses[i], address);
       coins.push(
         {address : coinAddresses[i],
          token   : token,
