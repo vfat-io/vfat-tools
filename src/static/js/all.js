@@ -16,6 +16,7 @@ const main = async () => {
       ["Arth                         ", `<a href="../arth/"              >Various</a>`, "ARTH/MAHA          ", "https://www.arthcoin.com"],
       ["Basis                        ", `<a href="../basis/"             >Various</a>`, "BAS,BAC            ", "https://basis.cash"],
       ["Basis Gold                   ", `<a href="../bsg"                >Various</a>`, "BSGS               ", "https://basis.gold"],
+      ["Bancor                       ", `<a href="bancor"                >Various</a>`, "BNT                ","https://app.bancor.network"],
       ["BIOPset                      ", `<a href="../biopset"            >BIOP-ETH</a>`, "BIOP              ", "https://biopset.com"],
       ["Daiq                         ", `<a href="../daiq"               >Various</a>`, "DAIQ               ", "https://daiq.io"],
       ["Debase                       ", `<a href="../debase"             >Various</a>`, "DEBASE             ", "https://debaseonomics.io"],
