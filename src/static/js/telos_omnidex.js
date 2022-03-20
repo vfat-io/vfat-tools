@@ -26,8 +26,10 @@ async function main() {
   const charmToken = await getTelosToken(App, "0xd2504a02fABd7E546e41aD39597c377cA8B0E1Df", OMNIDEX_ZEN_ADDR);
   const dougeToken = await getTelosToken(App, "0xc6BC7A8dfA0f57Fe7746Ac434c01cD39679b372c", OMNIDEX_ZEN_ADDR);
   const usdcToken = await getTelosToken(App, "0x818ec0a7fe18ff94269904fced6ae3dae6d6dc0b", OMNIDEX_ZEN_ADDR);
+  const karmaToken = await getTelosToken(App, "0x730d2Fa7dC7642E041bcE231E85b39e9bF4a6a64", OMNIDEX_ZEN_ADDR);
   const charmUsdcPool = await getTelosPoolInfo(App, OMNIDEX_ZEN, OMNIDEX_ZEN_ADDR, 7, "pendingCharm");
-  const charmDougePool = await getTelosPoolInfo(App, OMNIDEX_ZEN, OMNIDEX_ZEN_ADDR, 6, "pendingCharm")
+  const charmDougePool = await getTelosPoolInfo(App, OMNIDEX_ZEN, OMNIDEX_ZEN_ADDR, 6, "pendingCharm");
+  const charmKarmaPool = await getTelosPoolInfo(App, OMNIDEX_ZEN, OMNIDEX_ZEN_ADDR, 25, "pendingCharm");
   
   var usdcAmountInCharmUsdcPool = charmUsdcPool.poolToken.q0 / 10 ** usdcToken.decimals;
   var charmAmountInCharmUsdcPool = charmUsdcPool.poolToken.q1 / 10 ** charmToken.decimals;
@@ -35,12 +37,17 @@ async function main() {
   var dougeAmountInCharmDougePool = charmDougePool.poolToken.q0 / 10 ** dougeToken.decimals;
   var charmAmountInCharmDougePool = charmDougePool.poolToken.q1 / 10 ** charmToken.decimals;
   
+  var karmaAmountInCharmKarmaPool = charmKarmaPool.poolToken.q0 / 10 ** karmaToken.decimals;
+  var charmAmountInCharmKarmaPool = charmKarmaPool.poolToken.q1 / 10 ** charmToken.decimals;
+  
   var charmUsdPrice = usdcAmountInCharmUsdcPool / charmAmountInCharmUsdcPool;
   var dougeUsdPrice = charmUsdPrice / (dougeAmountInCharmDougePool / charmAmountInCharmDougePool);
+  var karmaUsdPrice = charmUsdPrice / (karmaAmountInCharmKarmaPool / charmAmountInCharmKarmaPool);
   
   prices["0xd2504a02fABd7E546e41aD39597c377cA8B0E1Df"].usd = charmUsdPrice;
   prices["0x65a5f4636233B7B4c4B134BA414c6EaB9fF79594"].usd = charmUsdPrice;
   prices["0xc6BC7A8dfA0f57Fe7746Ac434c01cD39679b372c"] = { usd: dougeUsdPrice };
+  prices["0x730d2Fa7dC7642E041bcE231E85b39e9bF4a6a64"] = { usd: karmaUsdPrice };
   
   await loadTelosChefContract(App, tokens, prices, OMNIDEX_ZEN, OMNIDEX_ZEN_ADDR, OMNIDEX_ZEN_ABI, rewardTokenTicker,
       "charm", "charmPerBlock", null, "pendingCharm");

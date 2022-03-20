@@ -134,19 +134,6 @@ async function getTelosToken(App, tokenAddress, stakingAddress) {
 async function getTelosPoolInfo(App, chefContract, chefAddress, poolIndex, pendingRewardsFunction) {
   const poolInfo = await chefContract.poolInfo(poolIndex);
   
-  if (poolInfo.allocPoint == 0 || poolIndex == 105) {
-    return {
-      address: poolInfo.lpToken ?? poolInfo.token,
-      allocPoints: poolInfo.allocPoint ?? 1,
-      poolToken: null,
-      userStaked : 0,
-      pendingRewardTokens : 0,
-      stakedToken : null,
-      userLPStaked : 0,
-      lastRewardBlock : poolInfo.lastRewardBlock
-    };
-  }
-  
   const poolToken = await getTelosToken(App, poolInfo.lpToken ?? poolInfo.token, chefAddress);
   const userInfo = await chefContract.userInfo(poolIndex, App.YOUR_ADDRESS);
   const pendingRewardTokens = await chefContract.callStatic[pendingRewardsFunction](poolIndex, App.YOUR_ADDRESS);
@@ -219,6 +206,10 @@ async function loadTelosChefContract(App, tokens, prices, chef, chefAddress, che
   
   let totalUserStaked=0, totalStaked=0, averageApr=0;
   for (const a of aprs) {
+    if(a == undefined) {
+      continue;
+    }
+    
     if (!isNaN(a.totalStakedUsd)) {
       totalStaked += a.totalStakedUsd;
     }
@@ -256,7 +247,8 @@ const telosTokens = [
   { "id": "wbnb","symbol": "BNB", "contract": "0x2c78f1b70ccf63cdee49f9233e9faa99d43aa07e" },
   { "id": "wrapped-fantom","symbol": "FTM", "contract": "0xc1be9a4d5d45beeacae296a7bd5fadbfc14602c4" },
   { "id": "wmatic","symbol": "MATIC", "contract": "0x332730a4f6e03d9c55829435f10360e13cfa41ff" },
-  { "id": "sushi","symbol": "SUSHI", "contract": "0x922d641a426dcffaef11680e5358f34d97d112e1" }
+  { "id": "sushi","symbol": "SUSHI", "contract": "0x922d641a426dcffaef11680e5358f34d97d112e1" },
+  { "id": "karma", "symbol": "KARMA","contract": "0x730d2Fa7dC7642E041bcE231E85b39e9bF4a6a64" }
 ];
 
 async function getTelosPrices() {
