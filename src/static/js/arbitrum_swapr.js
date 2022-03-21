@@ -181,9 +181,9 @@ async function printSwaprSynthetixPool(App, info, chain="eth", customURLs) {
   let totalYearlyAPR = 0;
   let totalWeeklyAPR = 0;
   let totalDailyAPR = 0;
-  let totalusdCoinsPerDay = 0;
-  let totalusdCoinsPerWeek = 0;
-  let totalusdCoinsPerYear = 0;
+  let totalCoinsPerDay = 0;
+  let totalCoinsPerWeek = 0;
+  let totalCoinsPerYear = 0;
   let totalUSDPerWeek = 0;
   for(let i = 0; i < info.rewardTokenTickers.length; i++){
     let weeklyAPR = info.usdCoinsPerWeek[i] / info.staked_tvl * 100;
@@ -208,11 +208,11 @@ async function printSwaprSynthetixPool(App, info, chain="eth", customURLs) {
       let userDailyRewards = userWeeklyRewards / 7;
       let userYearlyRewards = userWeeklyRewards * 52;
 
-      totalusdCoinsPerDay += userDailyRewards;
-      totalusdCoinsPerWeek += userWeeklyRewards;
-      totalusdCoinsPerYear += userYearlyRewards;
+      totalCoinsPerDay += userDailyRewards;
+      totalCoinsPerWeek += userWeeklyRewards;
+      totalCoinsPerYear += userYearlyRewards;
     }
-    _print(`Total Earnings: Day ${totalusdCoinsPerDay.toFixed(4)}% Week ${totalusdCoinsPerWeek.toFixed(2)}% Year ${totalusdCoinsPerYear.toFixed(2)}%`);
+    _print(`Total Earnings: Day ${totalCoinsPerDay.toFixed(4)} Week ${totalCoinsPerWeek.toFixed(2)} Year ${totalCoinsPerYear.toFixed(2)}`);
   }
   const approveTENDAndStake = async function() {
     return rewardsContract_stake(info.stakeTokenAddress, info.stakingAddress, App)

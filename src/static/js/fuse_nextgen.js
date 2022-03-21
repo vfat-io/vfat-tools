@@ -21,7 +21,7 @@ async function main() {
     const prices = await getFusePrices();
 
     await loadFuseChefContract(App, tokens, prices, NGEN_CHEF, NGEN_CHEF_ADDR, NGEN_CHEF_ABI, rewardTokenTicker,
-      "ngen", null, rewardsPerWeek, "pendingNgen");
+      "ngen", null, rewardsPerWeek, "pendingNgen", [1]);
 
     hideLoading();
   }
