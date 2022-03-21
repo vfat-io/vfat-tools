@@ -7,6 +7,7 @@ const JUL_STAKING_ABI = [{"inputs":[{"internalType":"address","name":"_owner","t
 const Pools = [
     "0x7699d230Ba47796fc2E13fba1D2D52Ecb0318c33",
     "0xe8b16cab47505708a093085926560a3eb32584b8",
+    "0x6398c73761a802a7db8f6418ef0a299301bc1fb0"
 ].map(a => {
     return {
         address: a,
@@ -24,9 +25,9 @@ async function main() {
 
     var tokens = {};
     var prices = await getBscPrices();
+    prices['0xB38B49bAE104BbB6A82640094fd61b341a858f78'] = { usd: 1.0009 };
 
-    console.log(prices)
-    let p = await loadMultipleBscSynthetixPools(App, tokens, prices, Pools)
+    let p = await loadMultipleBscSynthetixPools(App, tokens, prices, Pools);
     _print_bold(`Total staked: $${formatMoney(p.staked_tvl)}`);
     if (p.totalUserStaked > 0) {
         _print(`You are staking a total of $${formatMoney(p.totalUserStaked)} at an APR of ${(p.totalAPR * 100).toFixed(2)}%\n`);
