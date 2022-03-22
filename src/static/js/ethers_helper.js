@@ -2214,7 +2214,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
               pool.symbol.includes("JEWEL-LP") ? `https://explorer.harmony.one/address/${pool.address}`:
               pool.symbol.includes("VVS-LP") ?  `https://vvs.finance/info/farm/${pool.address}` :
               pool.symbol.includes("CNO-LP") ?  `https://chronoswap.org/info/pool/${pool.address}` :
-              pool.symbol.includes("TLP") && !pool.name.includes("Thorus LP") ?  `https://explorer.mainnet.aurora.dev/address/${pool.address}` :
+              pool.symbol.includes("TLP") && !pool.name.includes("Thorus LP") ?  `https://aurorascan.dev/address/${pool.address}` :
               pool.symbol.includes("TLP") && !pool.name.includes("Thorus LP") ?  `https://snowtrace.io/address/${pool.address}` :
               pool.symbol.includes("Crona-LP") ?  `https://app.cronaswap.org/info/${pool.address}` : //wait for real version
               pool.symbol.includes("Genesis-LP") ?  `https://app.cronaswap.org/info/${pool.address}` : //wait for real version
