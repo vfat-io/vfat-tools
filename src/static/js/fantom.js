@@ -191,8 +191,9 @@ const main = async () => {
       ['Hamster            ', `<a href='hamster'      >Various</a>`, 'HAM / HSHARE ', 'https://hamster.money'],
       ['YieldWolf          ', `<a href='yieldwolf'    >Various</a>`, 'Various      ', 'https://yieldwolf.finance'],
       ['Zomb Finance       ', `<a href='zombfinance'  >Various</a>`, 'ZOMB / ZSHARE', 'https://zombfinance.com'],
-      ['Lendly (Hundred Finance)', `<a href='lendly'  >Various</a>`, 'HND / WEVE   ', 'https://lendly.dashboard.hundred.finance'],
-      ['Philetairus socius        ', `<a href='philetairussocius'  >Various</a>`, 'SOCIUS         ', 'https://www.philetairus-socius.com']
+      ['Lendly (Hundred Finance)', `<a href='lendly'  >Various</a>`, 'HND          ', 'https://lendly.dashboard.hundred.finance'],
+      ['Philetairus socius ', `<a href='philetairussocius'>Various</a>`, 'SOCIUS   ', 'https://www.philetairus-socius.com'],
+      ['Excalibur          ', `<a href='excalibur'    >Various</a>`, 'EXC          ', 'https://app.excalibur.exchange']
     ],
   }
 
