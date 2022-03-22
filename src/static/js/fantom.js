@@ -193,7 +193,8 @@ const main = async () => {
       ['Zomb Finance       ', `<a href='zombfinance'  >Various</a>`, 'ZOMB / ZSHARE', 'https://zombfinance.com'],
       ['Lendly (Hundred Finance)', `<a href='lendly'  >Various</a>`, 'HND          ', 'https://lendly.dashboard.hundred.finance'],
       ['Philetairus socius ', `<a href='philetairussocius'>Various</a>`, 'SOCIUS   ', 'https://www.philetairus-socius.com'],
-      ['Excalibur          ', `<a href='excalibur'    >Various</a>`, 'EXC          ', 'https://app.excalibur.exchange']
+      ['Excalibur          ', `<a href='excalibur'    >Various</a>`, 'EXC          ', 'https://app.excalibur.exchange'],
+      ['Stargate           ', `<a href='stargate'     >Various</a>`, 'STG          ', 'https://stargate.finance']
     ],
   }
 

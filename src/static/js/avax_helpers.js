@@ -61,7 +61,8 @@ const avaxTokens = [
     { "id": "embr", "symbol": "EMBR", "contract": "0xD81D45E7635400dDD9c028839e9a9eF479006B28"},
     { "id": "avaware", "symbol": "AVE", "contract": "0x78ea17559B3D2CF85a7F9C2C704eda119Db5E6dE"},
     { "id": "usd-coin", "symbol": "USDC", "contract": "0xB97EF9Ef8734C71904D8002F8b6Bc66Dd9c48a6E"},
-    { "id": "beefy-finance", "symbol": "BIFI", "contract": "0xd6070ae98b8069de6b494332d1a1a81b6179d960"}
+    { "id": "beefy-finance", "symbol": "BIFI", "contract": "0xd6070ae98b8069de6b494332d1a1a81b6179d960"},
+    { "id": "stargate-finance", "symbol": "STG", "contract": "0x2F6F07CDcf3588944Bf4C42aC74ff24bF56e7590"}
 ]
 
 async function getAvaxPrices() {
