@@ -19,7 +19,8 @@ const main = async() => {
         ["FlippySwap",                `<a href="flippyswap"       >Various</a>`,      "FLIPPY",       "https://flippyswap.com" ],
         ["MoonFlowerFarmers",         `<a href="moonflowerfarmers">Various</a>`,      "MFF",          "https://moonflowerfarmers.com" ],
         ["Polaris Finance *",         `<a href="polarisfinance"   >Various</a>`,      "SPOLAR / POLAR","https://polarisfinance.io" ],
-        ["Auroratag",                 `<a href="auroratag"        >Various</a>`,      "AURORATAG",    "https://auroratag.com" ]
+        ["Auroratag",                 `<a href="auroratag"        >Various</a>`,      "AURORATAG",    "https://auroratag.com" ],
+        ["Rose",                      `<a href="rose"             >Various</a>`,      "ROSE",         "https://app.rose.fi" ]
     ]
   }
 
