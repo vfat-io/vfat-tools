@@ -597,6 +597,7 @@ const maticTokens = [
   { "id": "arth", "symbol": "ARTH","contract": "0xe52509181feb30eb4979e29ec70d50fd5c44d590" },
   { "id": "mahadao", "symbol": "MAHA","contract": "0xedd6ca8a4202d4a36611e2fff109648c4863ae19" },
   { "id": "stargate-finance", "symbol": "STG","contract": "0x2F6F07CDcf3588944Bf4C42aC74ff24bF56e7590" },
+  { "id": "gains-network", "symbol": "GNS","contract": "0xe5417af564e4bfda1c483642db72007871397896" }
 ]
 
 
