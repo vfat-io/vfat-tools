@@ -21,7 +21,7 @@ async function main() {
     const prices = await getAvaxPrices();		
 
     await loadAvaxChefContract(App, tokens, prices, WEAVE_CHEF, WEAVE_CHEF_ADDR, WEAVE_CHEF_ABI, rewardTokenTicker,		
-        "WeaveToken", null, rewardsPerWeek, "pendingWeave");		
+        "weaveToken", null, rewardsPerWeek, "pendingWeave");		
 
     hideLoading();		
 }		
