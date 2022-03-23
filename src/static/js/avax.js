@@ -100,7 +100,8 @@ const main = async() => {
         ["Benqi                   ",`<a href="benqi"            >Various</a>`,"QI           ","https://benqi.fi"],
         ["Beefy                   ",`<a href="beefy"            >Various</a>`,"BIFI         ","https://app.beefy.finance/#/avax"],
         ["WOWswap                 ",`<a href="wowswap"          >Various</a>`,"WOW          ","https://wowswap.io"],
-        ["Stargate                ",`<a href="stargate"         >Various</a>`,"STG          ","https://stargate.finance"]
+        ["Stargate                ",`<a href="stargate"         >Various</a>`,"STG          ","https://stargate.finance"],
+        ["Weaver Ant Defi         ",`<a href="antdefi"          >Various</a>`,"WEAVE        ","https://weaver.antcolonydefi.com/"]
     ]
   }
 
