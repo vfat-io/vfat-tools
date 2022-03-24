@@ -40,7 +40,7 @@ async function loadMultipleGnsSynthetixPools(App, tokens, prices, pools, customU
   const infos = await Promise.all(pools.map(p =>
       loadGnsSynthetixPoolInfo(App, tokens, prices, p.abi, p.address, p.rewardTokenFunction1, p.rewardTokenFunction2, p.stakeTokenFunction)));
   for (const i of infos.filter(i => i?.poolPrices)) {
-    let p = await printSynthetixPool(App, i, "matic", customURLs);
+    let p = await printGnsPool(App, i, "matic", customURLs);
     totalStaked += p.staked_tvl || 0;
     totalUserStaked += p.userStaked || 0;
     if (p.userStaked > 0) {
@@ -65,9 +65,9 @@ async function loadGnsSynthetixPoolInfo(App, tokens, prices, stakingAbi, staking
     rewardTokenAddresses.push(rewardTokenAddress1);
     rewardTokenAddresses.push(rewardTokenAddress2);
 
-    //const lpBalance = await STAKING_POOL.lpBalance();
+    const lpBalance = await STAKING_POOL.lpBalance();
     var stakeToken = await getMaticToken(App, stakeTokenAddress, stakingAddress);
-    //stakeToken.staked = lpBalance / stakeToken.decimals;
+    stakeToken.staked = lpBalance / 1e18
 
     var newTokenAddresses = stakeToken.tokens.filter(x =>
       !getParameterCaseInsensitive(tokens,x));
@@ -131,5 +131,84 @@ async function loadGnsSynthetixPoolInfo(App, tokens, prices, stakingAbi, staking
       userUnstaked,
       gnsEarnings,
       quickEarnings
+    }
+}
+
+async function printGnsPool(App, info, chain="fantom", customURLs) {
+  _print("The TVL of the staked tokens is the sum of the staked tokens plus the boost amount of the users.\n")
+    info.poolPrices.print_price(chain, 4, customURLs);
+    for(let i = 0; i < info.rewardTokenTickers; i++){
+      _print(`${info.rewardTokenTickers[i]} Per Week: ${info.weeklyRewards[i].toFixed(2)} ($${formatMoney(info.usdCoinsPerWeek[i])})`);
+    }
+    let totalYearlyAPR = 0;
+    let totalWeeklyAPR = 0;
+    let totalDailyAPR = 0;
+    let totalusdCoinsPerDay = 0;
+    let totalusdCoinsPerWeek = 0;
+    let totalusdCoinsPerYear = 0;
+    let totalUSDPerWeek = 0;
+    for(let i = 0; i < info.rewardTokenTickers.length; i++){
+      let weeklyAPR = info.usdCoinsPerWeek[i] / info.staked_tvl * 100;
+      let dailyAPR = weeklyAPR / 7;
+      yearlyAPR = weeklyAPR * 52;
+      totalYearlyAPR += yearlyAPR;
+      totalWeeklyAPR += weeklyAPR;
+      totalDailyAPR += dailyAPR;
+      totalUSDPerWeek += info.usdCoinsPerWeek[i];
+      _print(`${info.rewardTokenTickers[i]} Per Week: ${info.weeklyRewards[i].toFixed(2)} ($${formatMoney(info.usdCoinsPerWeek[i])}) APR: Year ${yearlyAPR.toFixed(2)}%`);
+    }
+    _print(`Total Per Week: $${formatMoney(totalUSDPerWeek)}`);
+    _print(`Total APR: Day ${totalDailyAPR.toFixed(4)}% Week ${totalWeeklyAPR.toFixed(2)}% Year ${totalYearlyAPR.toFixed(2)}%`);
+    const userStakedUsd = info.userStaked * info.stakeTokenPrice;
+    const userStakedPct = userStakedUsd / info.staked_tvl * 100;
+    _print(`You are staking ${info.userStaked.toFixed(6)} ${info.stakeTokenTicker} ` +
+           `$${formatMoney(userStakedUsd)} (${userStakedPct.toFixed(2)}% of the pool).`);
+    if (info.userStaked > 0) {
+      info.poolPrices.print_contained_price(info.userStaked);
+      for(let i = 0; i < info.rewardTokenTickers.length; i++){
+        let userWeeklyRewards = userStakedPct * info.weeklyRewards[i] / 100;
+        let userDailyRewards = userWeeklyRewards / 7;
+        let userYearlyRewards = userWeeklyRewards * 52;
+  
+        totalusdCoinsPerDay += userDailyRewards;
+        totalusdCoinsPerWeek += userWeeklyRewards;
+        totalusdCoinsPerYear += userYearlyRewards;
+      }
+      _print(`Total Earnings: Day ${totalusdCoinsPerDay.toFixed(4)}% Week ${totalusdCoinsPerWeek.toFixed(2)}% Year ${totalusdCoinsPerYear.toFixed(2)}%`);
+    }
+    const approveTENDAndStake = async function() {
+      return rewardsContract_stake(info.stakeTokenAddress, info.stakingAddress, App)
+    }
+    const unstake = async function() {
+      return rewardsContract_unstake(info.stakingAddress,info.userStakedWei, App)
+    }
+    const claim = async function() {
+      return rewardsContract_claim(info.stakingAddress, App)
+    }
+    const exit = async function() {
+      return rewardsContract_exit(info.stakingAddress, App)
+    }
+    const revoke = async function() {
+      return rewardsContract_resetApprove(info.stakeTokenAddress, info.stakingAddress, App)
+    }
+    _print(`<a target="_blank" href="https://ftmscan.com/address/${info.stakingAddress}#code">Fantom Explorer</a>`);
+    if (info.stakeTokenTicker != "ETH") {
+      _print_link(`Stake ${info.userUnstaked.toFixed(6)} ${info.stakeTokenTicker}`, approveTENDAndStake)
+    }
+    else {
+      _print("Please use the official website to stake ETH.");
+    }
+    _print_link(`Unstake ${info.userStaked.toFixed(6)} ${info.stakeTokenTicker}`, unstake)
+    _print_link(`Claim ${info.gnsEarnings.toFixed(6)} ${info.rewardTokenTickers[0]} ($${formatMoney(info.gnsEarnings*info.rewardTokenPrices[0])}) + ${info.quickEarnings.toFixed(6)} ${info.rewardTokenTickers[1]} ($${formatMoney(info.quickEarnings*info.rewardTokenPrices[1])})`, claim)
+    if (info.stakeTokenTicker != "ETH") {
+      _print_link(`Revoke (set approval to 0)`, revoke)
+    }
+    _print_link(`Exit`, exit)
+    _print("");
+
+    return {
+        staked_tvl: info.poolPrices.staked_tvl,
+        userStaked : userStakedUsd,
+        apr : totalYearlyAPR
     }
 }
