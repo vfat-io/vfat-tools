@@ -136,7 +136,7 @@ const contracts = {
     oracle: '0xb205d0AeF84C666FBBe441C61DC04fEb844444E6',
     gas: {
         p_address: '0x33A32f0ad4AA704e28C93eD8Ffa61d50d51622a7',
-        symbol: 'ETH',
+        symbol: 'ROSE',
         decimals: 18,
     },
 };
