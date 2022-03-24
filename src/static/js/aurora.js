@@ -20,6 +20,7 @@ const main = async() => {
         ["MoonFlowerFarmers",         `<a href="moonflowerfarmers">Various</a>`,      "MFF",          "https://moonflowerfarmers.com" ],
         ["Polaris Finance *",         `<a href="polarisfinance"   >Various</a>`,      "SPOLAR / POLAR","https://polarisfinance.io" ],
         ["Auroratag",                 `<a href="auroratag"        >Various</a>`,      "AURORATAG",    "https://auroratag.com" ],
+        ["WePiggy",                   `<a href="wepiggy"          >Various</a>`,      "WPC",          "https://app.wepiggy.com" ],
         ["Rose",                      `<a href="rose"             >Various</a>`,      "ROSE",         "https://app.rose.fi" ]
     ]
   }
