@@ -194,7 +194,9 @@ const main = async () => {
       ['Lendly (Hundred Finance)', `<a href='lendly'  >Various</a>`, 'HND          ', 'https://lendly.dashboard.hundred.finance'],
       ['Philetairus socius ', `<a href='philetairussocius'>Various</a>`, 'SOCIUS   ', 'https://www.philetairus-socius.com'],
       ['Excalibur          ', `<a href='excalibur'    >Various</a>`, 'EXC          ', 'https://app.excalibur.exchange'],
-      ['Stargate           ', `<a href='stargate'     >Various</a>`, 'STG          ', 'https://stargate.finance']
+      ['Stargate           ', `<a href='stargate'     >Various</a>`, 'STG          ', 'https://stargate.finance'],
+      ['Alternates (Layer 1)', `<a href='alternates1' >Various</a>`, 'ALT / ASHARE ', 'https://alt1.alternates.finance'],
+      ['Alternates (Layer 2)', `<a href='alternates2' >Various</a>`, 'ALT2 / ASHARE2', 'https://alt2.alternates.finance']
     ],
   }
 
