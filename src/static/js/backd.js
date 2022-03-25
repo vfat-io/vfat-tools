@@ -104,30 +104,7 @@ async function printBackdVault(App, info, chain="eth", customURLs) {
   const userStakedPct = userStakedUsd / info.staked_tvl * 100;
   _print(`You are staking ${info.userStaked.toFixed(6)} ${info.stakeTokenTicker} ` +
          `$${formatMoney(userStakedUsd)} (${userStakedPct.toFixed(2)}% of the pool).`);
-  const approveTENDAndStake = async function() {
-    return rewardsContract_stake(info.stakeTokenAddress, info.stakingAddress, App)
-  }
-  const unstake = async function() {
-    return rewardsContract_unstake(info.stakingAddress, App)
-  }
-  const exit = async function() {
-    return rewardsContract_exit(info.stakingAddress, App)
-  }
-  const revoke = async function() {
-    return rewardsContract_resetApprove(info.stakeTokenAddress, info.stakingAddress, App)
-  }
   _print(`<a target="_blank" href="https://etherscan.io/address/${info.stakingAddress}#code">Etherscan</a>`);
-  /*if (info.stakeTokenAddress != "0x0000000000000000000000000000000000000000") {
-    _print_link(`Stake ${info.userUnstaked.toFixed(6)} ${info.stakeTokenTicker}`, approveTENDAndStake)
-  }
-  else {
-    _print(`Please use the official website to stake ${info.stakeTokenTicker}.`);
-  }
-  _print_link(`Unstake ${info.userStaked.toFixed(6)} ${info.stakeTokenTicker}`, unstake)
-  if (info.stakeTokenTicker != "ETH") {
-    _print_link(`Revoke (set approval to 0)`, revoke)
-  }
-  _print_link(`Exit`, exit)*/
   _print("");
 
   return {
