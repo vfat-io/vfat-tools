@@ -173,7 +173,8 @@ const main = async () => {
       ["Vader                        ", `<a href="../vader/"             >Various</a>`, "VADER              ", "https://www.vaderprotocol.app"],
       ["WOWswap                      ", `<a href="../wowswap/"           >Various</a>`,"WOW                 ", "https://wowswap.io"],
       ["Aladdin (Concentrator)       ", `<a href="../concentrator/"      >Various</a>`,"aCRV                ", "https://concentrator.aladdin.club/#/vault"],
-      ["Stargate                     ", `<a href="../stargate/"          >Various</a>`,"STG                 ", "https://stargate.finance"]
+      ["Stargate                     ", `<a href="../stargate/"          >Various</a>`,"STG                 ", "https://stargate.finance"],
+      ["Stargate                     ", `<a href="../backd/"             >Various</a>`,"                    ", "https://backd.fund"]
     ]
   }
 
