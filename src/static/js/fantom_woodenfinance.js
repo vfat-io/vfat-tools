@@ -28,7 +28,7 @@ $(function () {
         const prices = await getFantomPrices();
         
         await loadFantomWtrunkContract(App, tokens, prices, WTRUNK_CHEF, WTRUNK_CHEF_ADDR, WTRUNK_CHEF_ABI, rewardTokenTicker,		
-            "wTRUNK", null, rewardsPerWeek, "pendingShare");
+            "wTrunk", null, rewardsPerWeek, "pendingShare");
         _print("");
         _print("Staked wTRUNKs can only be withdrawn after 6 epochs since deposit.\n")
         const p0 = await loadFantomWOODSynthetixPool(App, tokens, prices, StakingPool.abi, 
@@ -181,7 +181,7 @@ $(function () {
     deathPoolIndices, claimFunction) {
     const chefContract = chef ?? new ethers.Contract(chefAddress, chefAbi, App.provider);
   
-    const poolCount = 3;
+    const poolCount = 4;
     const totalAllocPoints = await chefContract.totalAllocPoint();
   
     _print(`<a href='https://ftmscan.com/address/${chefAddress}' target='_blank'>Staking Contract</a>`);
