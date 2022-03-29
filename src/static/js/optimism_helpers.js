@@ -14,7 +14,8 @@ const optimisticTokens = [
     { "id": "havven","symbol": "SNX", "contract": "0x8700dAec35aF8Ff88c16BdF0418774CB3D7599B4" },
     { "id": "wrapped-bitcoin","symbol": "WBTC", "contract": "0x68f180fcCe6836688e9084f035309E29Bf0A2095" },
     { "id": "thales","symbol": "THALES", "contract": "0x217d47011b23bb961eb6d93ca9945b7501a5bb11" },
-    { "id": "stargate-finance","symbol": "STG", "contract": "0x296F55F8Fb28E498B858d0BcDA06D955B2Cb3f97" }
+    { "id": "stargate-finance","symbol": "STG", "contract": "0x296F55F8Fb28E498B858d0BcDA06D955B2Cb3f97" },
+    { "id": "hundred-finance","symbol": "HND", "contract": "0x10010078a54396F62c96dF8532dc2B4847d47ED3" }
 ];
 
 async function getOptimisticPrices() {

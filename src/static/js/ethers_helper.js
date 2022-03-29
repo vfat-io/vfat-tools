@@ -3947,5 +3947,7 @@ function getChainExplorerUrl(chain, address){
       return `https://polygonscan.com/address/${address}`;
     case "avax" :
       return `https://snowtrace.io/address/${address}`;
+    case "optimism" :
+      return `https://optimistic.etherscan.io/address/${address}`;
   }
 }

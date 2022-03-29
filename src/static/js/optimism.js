@@ -16,7 +16,8 @@ const main = async() => {
       ["Rubicon               ", `<a href="rubicon"    >Various</a>`,"Various      ","https://app.rubicon.finance"],
       ["Synthetix             ", `<a href="synthetix"  >Various</a>`,"SNX          ","https://staking.synthetix.io"],
       ["Thales                ", `<a href="thales"     >Various</a>`,"THALES       ","https://thalesmarket.io"],
-      ["Stargate              ", `<a href="stargate"   >Various</a>`,"STG          ","https://stargate.finance"]
+      ["Stargate              ", `<a href="stargate"   >Various</a>`,"STG          ","https://stargate.finance"],
+      ["Hundred               ", `<a href="hundred"    >Various</a>`,"HND          ","https://hundred.finance"]
     ]
   }
 
