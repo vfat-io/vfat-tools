@@ -29,6 +29,7 @@ $(function () {
         
         await loadFantomPSHAREContract(App, tokens, prices, PSHARE_CHEF, PSHARE_CHEF_ADDR, PSHARE_CHEF_ABI, rewardTokenTicker,		
             "pshare", null, rewardsPerWeek, "pendingShare");
+            
         /*_print("");
         _print("Staked PSHAREs can only be withdrawn after 6 epochs since deposit.\n")
         const p0 = await loadFantomPIGGYSynthetixPool(App, tokens, prices, StakingPool.abi, 
