@@ -16,6 +16,7 @@ const avaxTokens = [
     { "id": "benqi","symbol": "QI", "contract": "0x8729438eb15e2c8b576fcc6aecda6a148776c0f5" },
     { "id": "joe","symbol": "JOE", "contract": "0x6e84a6216ea6dacc71ee8e6b0a5b7322eebc0fdd" },
     { "id": "tether", "symbol": "USDT.e", "contract": "0xc7198437980c041c805a1edcba50c1ce5db95118" },
+    { "id": "tether", "symbol": "USDT.e", "contract": "0x9702230A8Ea53601f5cD2dc00fDBc13d4dF4A8c7" },
     { "id": 'uniswap', "symbol": 'UNI', "contract": '0x8eBAf22B6F053dFFeaf46f4Dd9eFA95D89ba8580' },
     { "id": 'chainlink', "symbol": 'LINK', "contract": '0x5947BB275c521040051D82396192181b413227A3' },
     { "id": 'aave', "symbol": 'AAVE', "contract": '0x63a72806098Bd3D9520cC43356dD78afe5D386D9' },
@@ -62,7 +63,9 @@ const avaxTokens = [
     { "id": "avaware", "symbol": "AVE", "contract": "0x78ea17559B3D2CF85a7F9C2C704eda119Db5E6dE"},
     { "id": "usd-coin", "symbol": "USDC", "contract": "0xB97EF9Ef8734C71904D8002F8b6Bc66Dd9c48a6E"},
     { "id": "beefy-finance", "symbol": "BIFI", "contract": "0xd6070ae98b8069de6b494332d1a1a81b6179d960"},
-    { "id": "stargate-finance", "symbol": "STG", "contract": "0x2F6F07CDcf3588944Bf4C42aC74ff24bF56e7590"}
+    { "id": "stargate-finance", "symbol": "STG", "contract": "0x2F6F07CDcf3588944Bf4C42aC74ff24bF56e7590"},
+    { "id": "platypus-finance", "symbol": "PTP", "contract": "0x22d4002028f537599be9f666d1c4fa138522f9c8"},
+    { "id": "vector-finance", "symbol": "VTX", "contract": "0x5817d4f0b62a59b17f75207da1848c2ce75e7af4"}
 ]
 
 async function getAvaxPrices() {
