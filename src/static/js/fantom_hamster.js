@@ -187,7 +187,7 @@ async function loadFantomHshareContract(App, tokens, prices, chef, chefAddress, 
   deathPoolIndices, claimFunction) {
   const chefContract = chef ?? new ethers.Contract(chefAddress, chefAbi, App.provider);
 
-  const poolCount = 2;
+  const poolCount = 3;
   const totalAllocPoints = await chefContract.totalAllocPoint();
 
   _print(`<a href='https://ftmscan.com/address/${chefAddress}' target='_blank'>Staking Contract</a>`);
