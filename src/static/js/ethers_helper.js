@@ -33,6 +33,9 @@ const pageNetwork = function() {
   if (network.toLowerCase() === 'polygon') {
     return window.NETWORKS.POLYGON
   }
+  if (network.toLowerCase() === 'dfk') {
+    return window.NETWORKS.DFK
+  }
   if (network.toLowerCase() === 'okex') {
     return window.NETWORKS.OKEX
   }
@@ -3069,6 +3072,9 @@ function getErc20Prices(prices, pool, chain="eth") {
     case "avax":
       poolUrl=`https://cchain.explorer.avax.network/address/${pool.address}`;
       break;
+    case "dfk":
+      poolUrl=`https://subnets.avax.network/defi-kingdoms/dfk-chain/explorer/address/${pool.address}`;
+      break;
     case "fantom":
       poolUrl=`https://ftmscan.com/token/${pool.address}`;
       break;
@@ -3728,6 +3734,9 @@ async function printSynthetixPool(App, info, chain="eth", customURLs) {
       case "matic":
         _print(`<a target="_blank" href="https://explorer-mainnet.maticvigil.com/address/${info.stakingAddress}#code">Polygon Explorer</a>`);
         break;
+      case "dfk":
+        _print(`<a target="_blank" href="https://subnets.avax.network/defi-kingdoms/dfk-chain/explorer/address/${info.stakingAddress}#code">DFK Explorer</a>`);
+        break;
       case "okex":
         _print(`<a target="_blank" href="https://www.oklink.com/okexchain/address/${info.stakingAddress}#code">Okex Explorer</a>`);
         break;
@@ -3945,6 +3954,8 @@ function getChainExplorerUrl(chain, address){
       return `https://www.teloscan.io/address/${address}`;
     case "matic" :
       return `https://polygonscan.com/address/${address}`;
+    case "dfk" :
+      return `https://subnets.avax.network/defi-kingdoms/dfk-chain/explorer/address/${address}`;
     case "avax" :
       return `https://snowtrace.io/address/${address}`;
     case "optimism" :
