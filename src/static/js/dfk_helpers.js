@@ -519,7 +519,7 @@ async function loadDfkChefContract(App, tokens, prices, chef, chefAddress, chefA
 }
 
 const DfkTokens = [
-  //{ "id": "matic-network","symbol": "WMATIC","contract": "0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270" },
+  { "id": "defi-kingdoms","symbol": "JEWEL","contract": "0xCCb93dABD71c8Dad03Fc4CE5559dC3D89F67a260" },
 ]
 
 

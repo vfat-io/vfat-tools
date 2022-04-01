@@ -7,7 +7,7 @@ const main = async () => {
     title: 'DFK Network',
     heading: ["Pool Provider","MCN", "LP", "Reward Tokens", "INFO"],
     rows: [
-      //['Quickswap           ',"", `<a href="quick"            >Various</a>`,'QUICK         ','https://quickswap.exchange/#/quick'],
+      ['Crystalvale           ',"", `<a href="crystalvale"            >Various</a>`,'CRYSTAL         ','https://defikingdoms.com/crystalvale'],
     ],
   }
 
