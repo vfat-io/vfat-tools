@@ -727,7 +727,8 @@ const bscTokens = [
   { "id": "luna-rush", "symbol": "LUS", "contract": "0xde301d6a2569aefcfe271b9d98f318baee1d30a4" },
   { "id": "amethyst", "symbol": "AMES", "contract": "0xb9e05b4c168b56f73940980ae6ef366354357009" },
   { "id": "quartz-defi-ashare", "symbol": "ASHARE", "contract": "0xfa4b16b0f63f5a6d0651592620d585d308f749a4" },
-  { "id": "stargate-finance", "symbol": "STG", "contract": "0xB0D502E938ed5f4df2E681fE6E419ff29631d62b" }
+  { "id": "stargate-finance", "symbol": "STG", "contract": "0xB0D502E938ed5f4df2E681fE6E419ff29631d62b" },
+  { "id": "space-corsair-key", "symbol": "SCK", "contract": "0x227a3ef4d41d0215123f3197faa087bf71d2236a" }
 ]
 
 async function getBscPrices() {
