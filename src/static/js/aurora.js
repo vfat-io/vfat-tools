@@ -21,7 +21,8 @@ const main = async() => {
         ["Polaris Finance *",         `<a href="polarisfinance"   >Various</a>`,      "SPOLAR / POLAR","https://polarisfinance.io" ],
         ["Auroratag",                 `<a href="auroratag"        >Various</a>`,      "AURORATAG",    "https://auroratag.com" ],
         ["WePiggy",                   `<a href="wepiggy"          >Various</a>`,      "WPC",          "https://app.wepiggy.com" ],
-        ["Rose",                      `<a href="rose"             >Various</a>`,      "ROSE",         "https://app.rose.fi" ]
+        ["Rose",                      `<a href="rose"             >Various</a>`,      "ROSE",         "https://app.rose.fi" ],
+        ["Amaterasu",                 `<a href="amaterasu"        >Various</a>`,      "IZA",          "https://app.amaterasu.finance" ]
     ]
   }
 
