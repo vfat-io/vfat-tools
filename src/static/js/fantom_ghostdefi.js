@@ -247,3 +247,4 @@ $(function () {
     }
     return { prices, totalUserStaked, totalStaked, averageApr }
   }
+  
