@@ -199,7 +199,8 @@ const main = async () => {
       ['Alternates (Layer 2)',`<a href='alternates2'  >Various</a>`, 'ALT2 / ASHARE2','https://alt2.alternates.finance'],
       ['Sturdy             ', `<a href='sturdy'       >Various</a>`, '             ', 'https://app.sturdy.finance'],
       ['Wooden Finance     ', `<a href='woodenfinance'>Various</a>`, 'WOOD / wTRUNK', 'https://wooden.finance'],
-      ['Piggy Finance      ', `<a href='piggyfinance' >Various</a>`, 'PSHARE / TPIGGY', 'https://ftm.piggyfinance.io']
+      ['Piggy Finance      ', `<a href='piggyfinance' >Various</a>`, 'PSHARE / TPIGGY', 'https://ftm.piggyfinance.io'],
+      ['Ghost DeFi         ', `<a href='ghostdefi'    >Various</a>`, 'GSHARE / GHOST', 'https://ghostdefi.io']
     ],
   }
 
