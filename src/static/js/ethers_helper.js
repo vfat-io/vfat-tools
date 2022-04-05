@@ -3747,7 +3747,7 @@ async function printSynthetixPool(App, info, chain="eth", customURLs) {
         _print(`<a target="_blank" href="https://ftmscan.com/address/${info.stakingAddress}#code">FTM Scan</a>`);
         break;
       case "emerald":
-        _print(`<a target="_blank" href="https://explorer.emerald.oasis.dev/address/${info.stakingAddress}#code">FTM Scan</a>`);
+        _print(`<a target="_blank" href="https://explorer.emerald.oasis.dev/address/${info.stakingAddress}#code">Emerald Explorer</a>`);
         break;
       case "metis":
         _print(`<a target="_blank" href="https://andromeda-explorer.metis.io/address/${info.stakingAddress}#code">Andromeda Explorer</a>`);

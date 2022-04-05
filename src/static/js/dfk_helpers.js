@@ -520,6 +520,7 @@ async function loadDfkChefContract(App, tokens, prices, chef, chefAddress, chefA
 
 const DfkTokens = [
   { "id": "defi-kingdoms","symbol": "JEWEL","contract": "0xCCb93dABD71c8Dad03Fc4CE5559dC3D89F67a260" },
+  { "id": "avalanche-2","symbol": "AVAX","contract": "0xB57B60DeBDB0b8172bb6316a9164bd3C695F133a" },
 ]
 
 
