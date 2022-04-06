@@ -200,8 +200,8 @@ const main = async () => {
       ['Sturdy             ', `<a href='sturdy'       >Various</a>`, '             ', 'https://app.sturdy.finance'],
       ['Wooden Finance     ', `<a href='woodenfinance'>Various</a>`, 'WOOD / wTRUNK', 'https://wooden.finance'],
       ['Piggy Finance      ', `<a href='piggyfinance' >Various</a>`, 'PSHARE / TPIGGY', 'https://ftm.piggyfinance.io'],
+      ['Mockingbird        ', `<a href='mockingbird'  >Various</a>`, 'MOCK          ', 'https://mockingbird.philetairus-socius.com'],
       ['Ghost DeFi         ', `<a href='ghostdefi'    >Various</a>`, 'GSHARE / GHOST', 'https://ghostdefi.io']
-      ['Mockingbird            ', `<a href='mockingbird'      >Various</a>`, 'MOCK      ', 'https://mockingbird.philetairus-socius.com']  
     ],
   }
 
