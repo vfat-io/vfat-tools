@@ -35,7 +35,7 @@ async function main() {
   const targetMantissa = 12;
 
   let bShareRewardPool = await loadRewardPoolContract(App, tokens, prices, bShareRewardPoolContract, BSHARE_REWARD_POOL_ADDR, BSHARE_REWARD_POOL_ABI, "BSHARE",
-    "bshare", "pendingShare", 6, startTime, currentTime);
+    "bshare", "pendingShare", 8, startTime, currentTime);
 
   _print('-------------------------------------------------')
   _print('')
