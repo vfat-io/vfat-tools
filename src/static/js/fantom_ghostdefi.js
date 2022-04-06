@@ -15,7 +15,7 @@ $(function () {
           address : "0x062396d2dafc6b73e4084bE5f408f9149F3f0628",
           abi : GHOST_STAKING_ABI,
           stakeTokenFunction : "share",
-          rewardTokenAddresses : "ghost"
+          rewardTokenAddresses : "tomb"
         }
         
         const GSHARE_CHEF_ADDR = "0x9BFA4847aa8c949f2e73F5F9c4a59626a1dB0E3D";
@@ -28,7 +28,7 @@ $(function () {
         const prices = await getFantomPrices();
         
         await loadFantomGshareContract(App, tokens, prices, GSHARE_CHEF, GSHARE_CHEF_ADDR, GSHARE_CHEF_ABI, rewardTokenTicker,		
-            "gShare", null, rewardsPerWeek, "pendingShare");
+            "tshare", null, rewardsPerWeek, "pendingShare");
         _print("");
         _print("Staked gSHAREs can only be withdrawn after 6 epochs since deposit.\n")
         const p0 = await loadFantomGHOSTSynthetixPool(App, tokens, prices, StakingPool.abi, 
