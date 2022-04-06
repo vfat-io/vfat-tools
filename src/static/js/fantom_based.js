@@ -127,23 +127,23 @@ async function getCrv3CryptoPrice(App) {
   return (ethBalance * ethPrice * 3) / totalSupply;
 }
 
-async function loadAcropolis(App, prices, boardroomAddress, oracleAddress, lptAddress, rewardTokenAddress, stakeTicker, rewardTicker,
+async function loadAcropolis(App, prices, acropolisAddress, oracleAddress, lptAddress, rewardTokenAddress, stakeTicker, rewardTicker,
   epochsPerDay, decimals, targetMantissa) {
 
-  _print(`<a href='https://ftmscan.com/address/${boardroomAddress}' target='_blank'>Acropolis Contract</a>`);
+  _print(`<a href='https://ftmscan.com/address/${acropolisAddress}' target='_blank'>Acropolis Contract</a>`);
   _print("");
-  const BOARDROOM = new ethers.Contract(boardroomAddress, ACROPOLIS_ABI, App.provider);
+  const ACROPOLIS = new ethers.Contract(acropolisAddress, ACROPOLIS_ABI, App.provider);
   const ORACLE = new ethers.Contract(oracleAddress, BASIS_ORACLE_ABI, App.provider);
-  const share = await BOARDROOM.share();
+  const share = await ACROPOLIS.share();
   const SHARE = new ethers.Contract(share, ERC20_ABI, App.provider);
   const userUnstaked = await SHARE.balanceOf(App.YOUR_ADDRESS) / 1e18;
   const sharePrice = getParameterCaseInsensitive(prices, share)?.usd;
-  const userStaked = await BOARDROOM.balanceOf(App.YOUR_ADDRESS) / 1e18;
+  const userStaked = await ACROPOLIS.balanceOf(App.YOUR_ADDRESS) / 1e18;
   const userStakedUsd = userStaked * sharePrice;
-  const totalStaked = await BOARDROOM.totalSupply() / 1e18;
+  const totalStaked = await ACROPOLIS.totalSupply() / 1e18;
   const totalStakedUsd = totalStaked * sharePrice;
   const userPct = userStaked / totalStaked * 100;
-  const earned = await BOARDROOM.earned(App.YOUR_ADDRESS) / 1e18;
+  const earned = await ACROPOLIS.earned(App.YOUR_ADDRESS) / 1e18;
   _print(`Acropolis`);
   _print(`There is a total ${totalStaked.toFixed(2)} ${stakeTicker} ($${formatMoney(totalStakedUsd)}) staked in the Acropolis.`)
   _print(`You are staking ${userStaked} ${stakeTicker} ($${formatMoney(userStakedUsd)}), ${userPct.toFixed(2)}% of the pool.`);
@@ -164,17 +164,17 @@ async function loadAcropolis(App, prices, boardroomAddress, oracleAddress, lptAd
     twap = await calculateTwap(oldPrice1, oldTimestamp, price1, timestamp, targetMantissa);
   }
   if (twap > 1) {
-    const newTokens = await getNewBasedAmount(BOARDROOM);
+    const newTokens = await getNewBasedAmount(ACROPOLIS);
     _print(`There will be ${newTokens.toFixed(3)} ${rewardTicker} issued at next expansion.`);
     const acropolisReturn = newTokens * rewardPrice * 100 * epochsPerDay / totalStakedUsd;
     _print(`Acropolis APR: Day ${(acropolisReturn).toFixed(2)}% Week ${(acropolisReturn * 7).toFixed(2)}% Year ${(acropolisReturn * 365).toFixed(2)}%`)
   }
 
-  const approveTENDAndStake = async () => rewardsContract_stake(share, boardroomAddress, App);
-  const unstake = async () => rewardsContract_unstake(boardroomAddress, App);
-  const claim = async () => boardroom_claim(boardroomAddress, App);
-  const exit = async () => rewardsContract_exit(boardroomAddress, App);
-  const revoke = async () => rewardsContract_resetApprove(share, boardroomAddress, App);
+  const approveTENDAndStake = async () => rewardsContract_stake(share, acropolisAddress, App);
+  const unstake = async () => rewardsContract_unstake(acropolisAddress, App);
+  const claim = async () => boardroom_claim(acropolisAddress, App);
+  const exit = async () => rewardsContract_exit(acropolisAddress, App);
+  const revoke = async () => rewardsContract_resetApprove(share, acropolisAddress, App);
 
   _print_link(`Stake ${userUnstaked.toFixed(decimals)} ${stakeTicker}`, approveTENDAndStake)
   _print_link(`Unstake ${userStaked.toFixed(decimals)} ${stakeTicker}`, unstake)
@@ -223,9 +223,9 @@ async function getCirculatingSupply(App) {
   return (totalSupply / 1e18)
 }
 
-async function getNewBasedAmount(BOARDROOM) {
-  const latestSnapshotIndex = await BOARDROOM.latestSnapshotIndex();
-  const lastHistory = await BOARDROOM.acropolisHistory(latestSnapshotIndex);
+async function getNewBasedAmount(ACROPOLIS) {
+  const latestSnapshotIndex = await ACROPOLIS.latestSnapshotIndex();
+  const lastHistory = await ACROPOLIS.acropolisHistory(latestSnapshotIndex);
   const lastRewardsReceived = lastHistory[1];
   const epochRewardsPerShare = lastRewardsReceived / 1e18;
   return epochRewardsPerShare;
