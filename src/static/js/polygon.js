@@ -436,7 +436,8 @@ const main = async () => {
       ['Opportunity         ','',  `<a href="opportunity"     >Various</a>`, 'OPT          ','https://opport.unityfarm.org'],
       ['WOWswap             ',"",  `<a href="wowswap"         >Various</a>`, 'WOW          ','https://wowswap.io'],
       ['Stargate            ',"",  `<a href="stargate"        >Various</a>`, 'STG          ','https://stargate.finance'],
-      ['Gains Network       ',"",  `<a href="gainsnetwork"    >Various</a>`, 'Various      ','https://gainsnetwork.io']
+      ['Gains Network       ',"",  `<a href="gainsnetwork"    >Various</a>`, 'Various      ','https://gainsnetwork.io'],
+      ['Hundred             ',"",  `<a href="hundred"         >Various</a>`, 'HND          ','https://hundred.finance']
     ],
   }
 

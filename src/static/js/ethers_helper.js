@@ -3016,7 +3016,7 @@ function getWrapPrices(tokens, prices, pool, chain)
   else {
     let tokenPrice = 0;
     if (wrappedToken.token != null) { //e.g. stakedao crv token vault
-      const pp = getPoolPrices(tokens, prices, wrappedToken.token)
+      const pp = getPoolPrices(tokens, prices, wrappedToken)
       tokenPrice = pp.price;
     }
     else {
