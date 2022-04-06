@@ -19,7 +19,8 @@ const PoolsLp = [
 const PoolsStable = [
   "0x64cA46508ad4559E1fD94B3cf48f3164B4a77E42",
   "0x3282dfAf0fBba4d3E771C4E5F669Cb4E14D8adb0",
-  "0x6e53D20d674C27b858a005Cf4A72CFAaf4434ECB"
+  "0x6e53D20d674C27b858a005Cf4A72CFAaf4434ECB",
+  "0x78D46Cecf0AE4757F430d95B2d7Eaa18D7087872"
 ].map(a => ({
       address: a,
       abi: VST_ABI,
@@ -36,7 +37,7 @@ async function main() {
   var tokens = {};
   const prices = await getArbitrumPrices();
 
-  prices["0x64343594Ab9b56e99087BfA6F2335Db24c2d1F17"] = { usd : 1 }; //add the price of Vesta Stable manualy 1?
+  prices["0x64343594Ab9b56e99087BfA6F2335Db24c2d1F17"] = { usd : 1 }; //add the price of Vesta Stable manualy 1? chainlink oracle in the works ser
 
   let p = await loadMultipleLpVstaSynthetixPools(App, tokens, prices, PoolsLp)
   _print_bold(`Total staked: $${formatMoney(p.staked_tvl)}`);
@@ -77,6 +78,9 @@ async function loadLpVstSynthetixPoolInfo(App, tokens, prices, stakingAbi, staki
     }
     else if(stakingAddress.toLowerCase() === "0x6e53D20d674C27b858a005Cf4A72CFAaf4434ECB".toLowerCase()){
       name = "gOHM"
+    }
+    else if(stakingAddress.toLowerCase() === "0x78D46Cecf0AE4757F430d95B2d7Eaa18D7087872".toLowerCase()){
+      name = "GMX"
     }
 
     var stakeToken = await getToken(App, stakeTokenAddress, stakingAddress);
