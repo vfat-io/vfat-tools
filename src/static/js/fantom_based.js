@@ -3,6 +3,7 @@ $(function () {
 });
 
 const BSHARE_REWARD_POOL_ABI = [{ "inputs": [{ "internalType": "address", "name": "_bshare", "type": "address" }, { "internalType": "address", "name": "_daoFund", "type": "address" }, { "internalType": "uint256", "name": "_poolStartTime", "type": "uint256" }], "stateMutability": "nonpayable", "type": "constructor" }, { "anonymous": false, "inputs": [{ "indexed": true, "internalType": "address", "name": "user", "type": "address" }, { "indexed": true, "internalType": "uint256", "name": "pid", "type": "uint256" }, { "indexed": false, "internalType": "uint256", "name": "amount", "type": "uint256" }], "name": "Deposit", "type": "event" }, { "anonymous": false, "inputs": [{ "indexed": true, "internalType": "address", "name": "user", "type": "address" }, { "indexed": true, "internalType": "uint256", "name": "pid", "type": "uint256" }, { "indexed": false, "internalType": "uint256", "name": "amount", "type": "uint256" }], "name": "EmergencyWithdraw", "type": "event" }, { "anonymous": false, "inputs": [{ "indexed": true, "internalType": "address", "name": "user", "type": "address" }, { "indexed": false, "internalType": "uint256", "name": "amount", "type": "uint256" }], "name": "RewardPaid", "type": "event" }, { "anonymous": false, "inputs": [{ "indexed": true, "internalType": "address", "name": "user", "type": "address" }, { "indexed": true, "internalType": "uint256", "name": "pid", "type": "uint256" }, { "indexed": false, "internalType": "uint256", "name": "amount", "type": "uint256" }], "name": "Withdraw", "type": "event" }, { "inputs": [], "name": "TOTAL_REWARDS", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "uint256", "name": "_allocPoint", "type": "uint256" }, { "internalType": "contract IERC20", "name": "_token", "type": "address" }, { "internalType": "bool", "name": "_withUpdate", "type": "bool" }, { "internalType": "uint256", "name": "_lastRewardTime", "type": "uint256" }], "name": "add", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [], "name": "bSharePerSecond", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "bshare", "outputs": [{ "internalType": "contract IERC20", "name": "", "type": "address" }], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "daoFundAddress", "outputs": [{ "internalType": "address", "name": "", "type": "address" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "uint256", "name": "_pid", "type": "uint256" }, { "internalType": "uint256", "name": "_amount", "type": "uint256" }], "name": "deposit", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [{ "internalType": "uint256", "name": "_pid", "type": "uint256" }], "name": "emergencyWithdraw", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [{ "internalType": "uint256", "name": "_fromTime", "type": "uint256" }, { "internalType": "uint256", "name": "_toTime", "type": "uint256" }], "name": "getGeneratedReward", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "contract IERC20", "name": "_token", "type": "address" }, { "internalType": "uint256", "name": "amount", "type": "uint256" }, { "internalType": "address", "name": "to", "type": "address" }], "name": "governanceRecoverUnsupported", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [], "name": "massUpdatePools", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [], "name": "operator", "outputs": [{ "internalType": "address", "name": "", "type": "address" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "uint256", "name": "_pid", "type": "uint256" }, { "internalType": "address", "name": "_user", "type": "address" }], "name": "pendingShare", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "poolEndTime", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "name": "poolInfo", "outputs": [{ "internalType": "contract IERC20", "name": "token", "type": "address" }, { "internalType": "uint256", "name": "allocPoint", "type": "uint256" }, { "internalType": "uint256", "name": "lastRewardTime", "type": "uint256" }, { "internalType": "uint256", "name": "accBSharePerShare", "type": "uint256" }, { "internalType": "bool", "name": "isStarted", "type": "bool" }], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "poolStartTime", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "runningTime", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "uint256", "name": "_pid", "type": "uint256" }, { "internalType": "uint256", "name": "_allocPoint", "type": "uint256" }], "name": "set", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "_operator", "type": "address" }], "name": "setOperator", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [], "name": "totalAllocPoint", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "uint256", "name": "_pid", "type": "uint256" }], "name": "updatePool", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }, { "internalType": "address", "name": "", "type": "address" }], "name": "userInfo", "outputs": [{ "internalType": "uint256", "name": "amount", "type": "uint256" }, { "internalType": "uint256", "name": "rewardDebt", "type": "uint256" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "uint256", "name": "_pid", "type": "uint256" }, { "internalType": "uint256", "name": "_amount", "type": "uint256" }], "name": "withdraw", "outputs": [], "stateMutability": "nonpayable", "type": "function" }]
+const ACROPOLIS_ABI = [{ "anonymous": false, "inputs": [{ "indexed": true, "internalType": "address", "name": "executor", "type": "address" }, { "indexed": false, "internalType": "uint256", "name": "at", "type": "uint256" }], "name": "Initialized", "type": "event" }, { "anonymous": false, "inputs": [{ "indexed": true, "internalType": "address", "name": "user", "type": "address" }, { "indexed": false, "internalType": "uint256", "name": "reward", "type": "uint256" }], "name": "RewardAdded", "type": "event" }, { "anonymous": false, "inputs": [{ "indexed": true, "internalType": "address", "name": "user", "type": "address" }, { "indexed": false, "internalType": "uint256", "name": "reward", "type": "uint256" }], "name": "RewardPaid", "type": "event" }, { "anonymous": false, "inputs": [{ "indexed": true, "internalType": "address", "name": "user", "type": "address" }, { "indexed": false, "internalType": "uint256", "name": "amount", "type": "uint256" }], "name": "Staked", "type": "event" }, { "anonymous": false, "inputs": [{ "indexed": true, "internalType": "address", "name": "user", "type": "address" }, { "indexed": false, "internalType": "uint256", "name": "amount", "type": "uint256" }], "name": "Withdrawn", "type": "event" }, { "inputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "name": "acropolisHistory", "outputs": [{ "internalType": "uint256", "name": "time", "type": "uint256" }, { "internalType": "uint256", "name": "rewardReceived", "type": "uint256" }, { "internalType": "uint256", "name": "rewardPerShare", "type": "uint256" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "uint256", "name": "amount", "type": "uint256" }], "name": "allocateSeigniorage", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "account", "type": "address" }], "name": "balanceOf", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "based", "outputs": [{ "internalType": "contract IERC20", "name": "", "type": "address" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "andras", "type": "address" }], "name": "canClaimReward", "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "andras", "type": "address" }], "name": "canWithdraw", "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "claimReward", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "", "type": "address" }], "name": "demos", "outputs": [{ "internalType": "uint256", "name": "lastSnapshotIndex", "type": "uint256" }, { "internalType": "uint256", "name": "rewardEarned", "type": "uint256" }, { "internalType": "uint256", "name": "epochTimerStart", "type": "uint256" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "andras", "type": "address" }], "name": "earned", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "epoch", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "exit", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [], "name": "getBasedPrice", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "andras", "type": "address" }], "name": "getLastSnapshotIndexOf", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "contract IERC20", "name": "_token", "type": "address" }, { "internalType": "uint256", "name": "_amount", "type": "uint256" }, { "internalType": "address", "name": "_to", "type": "address" }], "name": "governanceRecoverUnsupported", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [{ "internalType": "contract IERC20", "name": "_based", "type": "address" }, { "internalType": "contract IERC20", "name": "_share", "type": "address" }, { "internalType": "contract ITreasury", "name": "_treasury", "type": "address" }], "name": "initialize", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [], "name": "initialized", "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "latestSnapshotIndex", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "nextEpochPoint", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "operator", "outputs": [{ "internalType": "address", "name": "", "type": "address" }], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "rewardLockupEpochs", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "rewardPerShare", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "uint256", "name": "_withdrawLockupEpochs", "type": "uint256" }, { "internalType": "uint256", "name": "_rewardLockupEpochs", "type": "uint256" }], "name": "setLockUp", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "_operator", "type": "address" }], "name": "setOperator", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [], "name": "share", "outputs": [{ "internalType": "contract IERC20", "name": "", "type": "address" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "uint256", "name": "amount", "type": "uint256" }], "name": "stake", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [], "name": "totalSupply", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "treasury", "outputs": [{ "internalType": "contract ITreasury", "name": "", "type": "address" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "uint256", "name": "amount", "type": "uint256" }], "name": "withdraw", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [], "name": "withdrawLockupEpochs", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "view", "type": "function" }]
 const BSHARE_REWARD_POOL_ADDR = "0xAc0fa95058616D7539b6Eecb6418A68e7c18A746";
 const BASED_ADDR = "0x8D7d3409881b51466B483B11Ea1B8A03cdEd89ae";
 const G3CRV_ADDR = "0xd4F94D0aaa640BBb72b5EEc2D85F6D114D81a88E";
@@ -29,19 +30,17 @@ async function main() {
   const stakeTicker = "BSHARE";
   const rewardTicker = "BASED";
   const epochsPerDay = 4;
-  const maxSupplyIncrease = await getExpansion(App);
   const decimals = 18;
-  const ratio = 0.8;
   const targetMantissa = 12;
 
   let bShareRewardPool = await loadRewardPoolContract(App, tokens, prices, bShareRewardPoolContract, BSHARE_REWARD_POOL_ADDR, BSHARE_REWARD_POOL_ABI, "BSHARE",
-    "bshare", "pendingShare", 6, startTime, currentTime);
+    "bshare", "pendingShare", 8, startTime, currentTime);
 
   _print('-------------------------------------------------')
   _print('')
 
   let acropolis = await loadAcropolis(App, prices, ACROPOLIS_ADDR, ORACLE_ADDR, lptAddress, rewardTokenAddress, stakeTicker,
-    rewardTicker, epochsPerDay, maxSupplyIncrease, decimals, ratio, targetMantissa);
+    rewardTicker, epochsPerDay, decimals, targetMantissa);
 
 
   _print_bold(`Total Staked: $${formatMoney(bShareRewardPool.totalStaked + acropolis.staked_tvl)}`);
@@ -65,7 +64,7 @@ async function loadRewardPoolContract(
 ) {
   const poolContract = contract ?? new ethers.Contract(contractAddress, contractAbi)
 
-  _print(`<a href='https://ftmscan.com/address/${poolContract.address}' target='_blank'>Marketplace Contract</a>`);
+  _print(`<a href='https://ftmscan.com/address/${poolContract.address}' target='_blank'>Agora Contract</a>`);
   _print("");
 
   const totalAllocPoints = await poolContract.totalAllocPoint()
@@ -128,23 +127,23 @@ async function getCrv3CryptoPrice(App) {
   return (ethBalance * ethPrice * 3) / totalSupply;
 }
 
-async function loadAcropolis(App, prices, boardroomAddress, oracleAddress, lptAddress, rewardTokenAddress, stakeTicker, rewardTicker,
-  epochsPerDay, maxSupplyIncrease, decimals, ratio, targetMantissa) {
+async function loadAcropolis(App, prices, acropolisAddress, oracleAddress, lptAddress, rewardTokenAddress, stakeTicker, rewardTicker,
+  epochsPerDay, decimals, targetMantissa) {
 
-  _print(`<a href='https://ftmscan.com/address/${boardroomAddress}' target='_blank'>Acropolis Contract</a>`);
+  _print(`<a href='https://ftmscan.com/address/${acropolisAddress}' target='_blank'>Acropolis Contract</a>`);
   _print("");
-  const BOARDROOM = new ethers.Contract(boardroomAddress, BOARDROOM_ABI, App.provider);
+  const ACROPOLIS = new ethers.Contract(acropolisAddress, ACROPOLIS_ABI, App.provider);
   const ORACLE = new ethers.Contract(oracleAddress, BASIS_ORACLE_ABI, App.provider);
-  const share = await BOARDROOM.share();
+  const share = await ACROPOLIS.share();
   const SHARE = new ethers.Contract(share, ERC20_ABI, App.provider);
   const userUnstaked = await SHARE.balanceOf(App.YOUR_ADDRESS) / 1e18;
   const sharePrice = getParameterCaseInsensitive(prices, share)?.usd;
-  const userStaked = await BOARDROOM.balanceOf(App.YOUR_ADDRESS) / 1e18;
+  const userStaked = await ACROPOLIS.balanceOf(App.YOUR_ADDRESS) / 1e18;
   const userStakedUsd = userStaked * sharePrice;
-  const totalStaked = await BOARDROOM.totalSupply() / 1e18;
+  const totalStaked = await ACROPOLIS.totalSupply() / 1e18;
   const totalStakedUsd = totalStaked * sharePrice;
   const userPct = userStaked / totalStaked * 100;
-  const earned = await BOARDROOM.earned(App.YOUR_ADDRESS) / 1e18;
+  const earned = await ACROPOLIS.earned(App.YOUR_ADDRESS) / 1e18;
   _print(`Acropolis`);
   _print(`There is a total ${totalStaked.toFixed(2)} ${stakeTicker} ($${formatMoney(totalStakedUsd)}) staked in the Acropolis.`)
   _print(`You are staking ${userStaked} ${stakeTicker} ($${formatMoney(userStakedUsd)}), ${userPct.toFixed(2)}% of the pool.`);
@@ -165,18 +164,17 @@ async function loadAcropolis(App, prices, boardroomAddress, oracleAddress, lptAd
     twap = await calculateTwap(oldPrice1, oldTimestamp, price1, timestamp, targetMantissa);
   }
   if (twap > 1) {
-    const circulatingSupply = await getCirculatingSupply(App);
-    const newTokens = circulatingSupply * Math.min(twap - 1, maxSupplyIncrease) * ratio;
-    _print(`There will be ${newTokens.toFixed(decimals)} ${rewardTicker} issued at next expansion.`);
+    const newTokens = await getNewBasedAmount(ACROPOLIS);
+    _print(`There will be ${newTokens.toFixed(3)} ${rewardTicker} issued at next expansion.`);
     const acropolisReturn = newTokens * rewardPrice * 100 * epochsPerDay / totalStakedUsd;
     _print(`Acropolis APR: Day ${(acropolisReturn).toFixed(2)}% Week ${(acropolisReturn * 7).toFixed(2)}% Year ${(acropolisReturn * 365).toFixed(2)}%`)
   }
 
-  const approveTENDAndStake = async () => rewardsContract_stake(share, boardroomAddress, App);
-  const unstake = async () => rewardsContract_unstake(boardroomAddress, App);
-  const claim = async () => boardroom_claim(boardroomAddress, App);
-  const exit = async () => rewardsContract_exit(boardroomAddress, App);
-  const revoke = async () => rewardsContract_resetApprove(share, boardroomAddress, App);
+  const approveTENDAndStake = async () => rewardsContract_stake(share, acropolisAddress, App);
+  const unstake = async () => rewardsContract_unstake(acropolisAddress, App);
+  const claim = async () => boardroom_claim(acropolisAddress, App);
+  const exit = async () => rewardsContract_exit(acropolisAddress, App);
+  const revoke = async () => rewardsContract_resetApprove(share, acropolisAddress, App);
 
   _print_link(`Stake ${userUnstaked.toFixed(decimals)} ${stakeTicker}`, approveTENDAndStake)
   _print_link(`Unstake ${userStaked.toFixed(decimals)} ${stakeTicker}`, unstake)
@@ -225,23 +223,12 @@ async function getCirculatingSupply(App) {
   return (totalSupply / 1e18)
 }
 
-async function getExpansion(App) {
-  const circulatingSupply = await getCirculatingSupply(App);
-  if (circulatingSupply < 206000) {
-    return 0.06
-  } else if (circulatingSupply < 386000) {
-    return 0.05
-  } else if (circulatingSupply < 530000) {
-    return 0.045
-  } else if (circulatingSupply < 1300000) {
-    return 0.04
-  } else if (circulatingSupply < 5000000) {
-    return 0.02
-  } else if (circulatingSupply < 10000000) {
-    return 0.015
-  } else {
-    return 0.01
-  }
+async function getNewBasedAmount(ACROPOLIS) {
+  const latestSnapshotIndex = await ACROPOLIS.latestSnapshotIndex();
+  const lastHistory = await ACROPOLIS.acropolisHistory(latestSnapshotIndex);
+  const lastRewardsReceived = lastHistory[1];
+  const epochRewardsPerShare = lastRewardsReceived / 1e18;
+  return epochRewardsPerShare;
 }
 
 function printBasedPool(App, chefAbi, chefAddr, prices, tokens, poolInfo, poolIndex, poolPrices,
