@@ -64,7 +64,7 @@ async function loadRewardPoolContract(
 ) {
   const poolContract = contract ?? new ethers.Contract(contractAddress, contractAbi)
 
-  _print(`<a href='https://ftmscan.com/address/${poolContract.address}' target='_blank'>Marketplace Contract</a>`);
+  _print(`<a href='https://ftmscan.com/address/${poolContract.address}' target='_blank'>Agora Contract</a>`);
   _print("");
 
   const totalAllocPoints = await poolContract.totalAllocPoint()
