@@ -153,7 +153,7 @@ const main = async () => {
       ['Vapedao            ', `<a href="vapedao"      >Various</a>`, 'vAPE         ', 'https://vapedao.finance'],
       ['Radial Finance     ', `<a href='radial'       >Various</a>`, 'RDL          ', 'https://www.radialfinance.com/farms'],
       ['Webribe            ', `<a href='webribe'      >Various</a>`, 'VBRB         ', 'https://webribe.me'],
-      ['0xDAO *            ', `<a href='0xdao'        >Various</a>`, 'OXD          ', 'https://www.oxdao.fi'],
+      ['0xDAO              ', `<a href='0xdao'        >Various</a>`, 'OXD          ', 'https://www.oxdao.fi'],
       ['Moneyrain Finance  ', `<a href='moneyrainfinance'>Various</a>`, 'MONEYRAIN ', 'https://defimoneyrain.com'],
       ['Sushi              ', `<a href='sushi'        >Various</a>`, 'SUSHI/FTM    ', 'https://app.sushi.com'],
       ['ViveLaBouje        ', `<a href='vivelabouje'  >Various</a>`, 'VIVE         ', 'https://vive.bouje.finance'],
@@ -199,7 +199,9 @@ const main = async () => {
       ['Alternates (Layer 2)',`<a href='alternates2'  >Various</a>`, 'ALT2 / ASHARE2','https://alt2.alternates.finance'],
       ['Sturdy             ', `<a href='sturdy'       >Various</a>`, '             ', 'https://app.sturdy.finance'],
       ['Wooden Finance     ', `<a href='woodenfinance'>Various</a>`, 'WOOD / wTRUNK', 'https://wooden.finance'],
-      ['Piggy Finance      ', `<a href='piggyfinance' >Various</a>`, 'PSHARE / TPIGGY', 'https://ftm.piggyfinance.io']
+      ['Piggy Finance      ', `<a href='piggyfinance' >Various</a>`, 'PSHARE / TPIGGY', 'https://ftm.piggyfinance.io'],
+      ['Mockingbird        ', `<a href='mockingbird'  >Various</a>`, 'MOCK          ', 'https://mockingbird.philetairus-socius.com'],
+      ['Ghost DeFi         ', `<a href='ghostdefi'    >Various</a>`, 'GSHARE / GHOST', 'https://ghostdefi.io']
     ],
   }
 

@@ -20,7 +20,7 @@ $(function() {
         const startBlock = await COUGAR_CHEF.startBlock();
         const currentBlock = await App.provider.getBlockNumber();
 
-        const blocksPerSeconds = await getAverageBlockTime(App);
+        const blocksPerSeconds = 5.6
 
         if (currentBlock < startBlock) {
             _print(`Rewards start at block <a href="https://cronoscan.com/block/${startBlock}" target="_blank">${startBlock}</a>\n`);
@@ -32,7 +32,7 @@ $(function() {
         const prices = await getCronosPrices();
 
         const cgsUsdcPoolInfo = await getCronosToken(App, COUGAR_USDC_ADDR, COUGAR_CHEF_ADDR);
-        
+
         if (cgsUsdcPoolInfo) {
              // Add CGS price
             var q0 = cgsUsdcPoolInfo.q0 / 10 ** 18;

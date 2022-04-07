@@ -223,6 +223,8 @@ async function main() {
   let userTvl = 0;
   for(let i = 0; i < gageInfos.length; i++){
     const lpToken = await getFantomToken(App, gageInfos[i].lpTokenAddress, gaugeAddresses[i]);
+    const [_gauge_relative_weight] = await App.ethcallProvider.all([HND_GAUGES_CONTROLLER.gauge_relative_weight(gaugeAddresses[i])]);
+    const gauge_relative_weight = _gauge_relative_weight / 1e18;
     const totalSupply = gageInfos[i].totalSupply / 10 ** lpToken.decimals;
     const usersStaked = gageInfos[i].balance / 10 ** lpToken.decimals;
     const working_balances = gageInfos[i].working_balances / 10 ** lpToken.decimals;
@@ -237,7 +239,7 @@ async function main() {
     const timestampNow = parseInt(timestampNow_);
     const rewardsContract = new ethcall.Contract(gageInfos[i].rewardsAddress, REWARDS_POLICY_ABI);
     const rewardsPerWeek_ = await App.ethcallProvider.all([rewardsContract.rate_at(timestampNow)]);
-    const rewardsPerWeek = rewardsPerWeek_ / 10 ** rewardToken.decimals * 604800;
+    const rewardsPerWeek = (rewardsPerWeek_ / 10 ** rewardToken.decimals * 604800) * gauge_relative_weight;
     await printHndContract(App, lpToken, poolPrice, gageInfos[i], gaugeAddresses[i], claimableTokens, rewardToken, rewardTokenPrice, rewardsPerWeek, staked_tvlForCurrentPool, working_balances, working_supply);
   }
   _print_bold(`\nTotal Value Staked: $${formatMoney(staked_tvl)}`);
@@ -806,7 +808,7 @@ async function loadBeethovenxChefContract(App, tokens, prices, chef, chefAddress
 async function getBeethovenxPoolInfo(app, chefContract, chefAddress, poolIndex, pendingRewardsFunction) {
   const poolInfo = await chefContract.poolInfo(poolIndex);
   const lpToken = await chefContract.lpTokens(poolIndex);
-  if (poolInfo.allocPoint == 0) {
+  if (poolIndex != 20) {
     return {
       address: lpToken,
       allocPoints: poolInfo.allocPoint ?? 1,

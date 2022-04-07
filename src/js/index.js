@@ -121,6 +121,21 @@ window.NETWORKS = {
       "https://explorer.emerald.oasis.dev"
     ]
   },
+  DFK: {
+    "chainId": "0xD2AF",
+    "chainName": "DFK Chain",
+    "nativeCurrency": {
+      "name": "defi-kingdoms",
+      "symbol": "JEWEL",
+      "decimals": 18
+    },
+    "rpcUrls": [
+      "https://subnets.avax.network/defi-kingdoms/dfk-chain/rpc"
+    ],
+    "blockExplorerUrls": [
+      "https://explorer.dfkchain.com"
+    ]
+  },
   BINANCE_SMART_CHAIN: {
     "chainId": "0x38",
     "chainName": "Binance Smart Chain Mainnet",
