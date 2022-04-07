@@ -437,7 +437,8 @@ const main = async () => {
       ['WOWswap             ',"",  `<a href="wowswap"         >Various</a>`, 'WOW          ','https://wowswap.io'],
       ['Stargate            ',"",  `<a href="stargate"        >Various</a>`, 'STG          ','https://stargate.finance'],
       ['Gains Network       ',"",  `<a href="gainsnetwork"    >Various</a>`, 'Various      ','https://gainsnetwork.io'],
-      ['Hundred             ',"",  `<a href="hundred"         >Various</a>`, 'HND          ','https://hundred.finance']
+      ['Hundred             ',"",  `<a href="hundred"         >Various</a>`, 'HND          ','https://hundred.finance'],
+      ["Monox Finance       ","", `<a href="monox"         >Various</a>`,"vUNIT            ", "https://monox.finance"],
     ],
   }
 
