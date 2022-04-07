@@ -1122,12 +1122,9 @@ async function main() {
   let stakingRebase = stakingReward / sVUnitCircSupply
 
   let nextEpochRewards = userStakingBalance * stakingRebase
-
-  let dayRate = (Math.pow(1 + stakingRebase, 1 * 4) - 1) * 100
-  //let weekRate = (Math.pow(1 + stakingRebase, 7 * 4) - 1) * 100;
-  let weekRate = dayRate * 7
-  //let stakingAPY = Math.pow(1 + stakingRebase, 365 * 4) * 100;
-  let stakingAPY = dayRate * 365
+  let dayRate = (Math.pow(1 + stakingRebase, 1 * 3) - 1) * 100
+  let weekRate = (Math.pow(1 + stakingRebase, 7 * 3) - 1) * 100;
+  let stakingAPY = (Math.pow(1 + stakingRebase, 365 * 3) - 1) * 100;
 
   const approveAndStakeVUNIT = async function() {
     return vUnitContract_stake(App, VUNIT_STAKE_ABI, STAKING_ADDRESS, VUNIT_ADDRESS)
@@ -1147,11 +1144,11 @@ async function main() {
   _print(
     `<a href='https://bscscan.com/address/${VUNIT_ADDRESS}' target='_blank'>${rewardTokenTicker}</a> Price: $${formatMoney(
       VUNIT_PRICE
-    )} Circulating Market Cap: $${formatMoney(rewardPrice * vUnitCircSupply)} ${dexguruTokenlink}`
+    )} Circulating Market Cap: $${formatMoney(VUNIT_PRICE * vUnitCircSupply)} ${dexguruTokenlink}`
   )
   _print(
     `Staked: ${parseFloat(totalStakingBalance.toString()).toFixed(4)} ${rewardTokenTicker} ($${formatMoney(
-      totalStakingBalance * rewardPrice
+      totalStakingBalance * VUNIT_PRICE
     )})`
   )
   _print(
@@ -1240,28 +1237,8 @@ const getVUnitPrice = async () => {
   try {
     const res = await fetch('https://api.monox.finance/bsc/vcash/usdc/price')
     const data = await res.json()
-    console.log(data.response.price)
     return data.response.price
   } catch (error) {
     return 0
   }
 }
-
-// const humpDaoContract_claim = async function(App, stackingAbi, stackingAddress) {
-//   const signer = App.provider.getSigner()
-
-//   const STACKING_CONTRACT = new ethers.Contract(stackingAddress, stackingAbi, signer)
-
-//   const currentEarnedAmount = await STACKING_CONTRACT.pendingRewards(App.YOUR_ADDRESS)
-
-//   if (currentEarnedAmount > 0) {
-//     showLoading()
-//     STACKING_CONTRACT.claimRewards({gasLimit: 500000})
-//       .then(function(t) {
-//         return App.provider.waitForTransaction(t.hash)
-//       })
-//       .catch(function() {
-//         hideLoading()
-//       })
-//   }
-// }
