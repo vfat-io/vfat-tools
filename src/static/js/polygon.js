@@ -440,6 +440,7 @@ const main = async () => {
       ['Hundred             ',"",  `<a href="hundred"         >Various</a>`, 'HND          ','https://hundred.finance'],
       ['PolyDogeDAO         ',"",  `<a href="polydogedao"     >Various</a>`, 'PDSHARE / PDDOLLAR','https://polydogedao.net'],
       ["Monox Finance       ","", `<a href="monox"         >Various</a>`,"vUNIT            ", "https://monox.finance"],
+      ['PolyDogeDAO         ',"",  `<a href="polydogedao"     >Various</a>`, 'PDSHARE / PDDOLLAR','https://polydogedao.net'],
     ],
   }
 
