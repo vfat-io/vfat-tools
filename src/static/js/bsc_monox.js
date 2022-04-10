@@ -3304,10 +3304,17 @@ async function main() {
   _print(
     `APR: Day ${apyDay}% (${amountVUnitDay} vUNIT) Week ${apyWeek}% (${amountVUnitWeek} vUNIT) Year ${apyYear}% (${amountVUnitYear} vUNIT)`
   )
+  let tableData = {
+    "title":"Bond Details",
+    "heading": ["Bond Name", "Bond Price", "Bond ROI"],
+    rows: bondDataList?.map(bondData => {
+      return [bondData.bondName,bondData.bondName === "USDC" || bondData.bondName === "USDT" ? parseFloat(bondData.bondPrice * 10**12).toFixed(2) : formatMoney(bondData.bondPrice),`${formatMoney(bondData.bondDiscount * 100)}% ROI`]
+    })
+  }
 
-  bondDataList?.map(bondData => {
-    _print(`${bondData.bondName}($${bondData.bondName === "USDC" || bondData.bondName === "USDT" ? parseFloat(bondData.bondPrice * 10**12).toFixed(2) : formatMoney(bondData.bondPrice)},${formatMoney(bondData.bondDiscount * 100)} ROI)`)
-  })
+
+  let table = new AsciiTable().fromJSON(tableData);
+  document.getElementById('log').innerHTML += table + '<br />';
 
   _print_link(`Stake ${parseFloat(userVUnitBalance.toString()).toFixed(4)} ${rewardTokenTicker}`, approveAndStakeVUNIT)
   _print_link(`Unstake ${parseFloat(userStakingBalance.toString()).toFixed(4)} ${rewardTokenTicker}`, unstakeVUNIT)
