@@ -1,3 +1,5 @@
+const {BigNumber} = ethers
+
 $(function() {
   consoleInit(main)
 })
@@ -1078,11 +1080,2152 @@ const BOND_STAKE_HELPER_ABI = [
   },
 ]
 
+const wETHBondContractAbi = [
+  {
+    inputs: [
+      {internalType: 'address', name: '_OHM', type: 'address'},
+      {internalType: 'address', name: '_principle', type: 'address'},
+      {internalType: 'address', name: '_treasury', type: 'address'},
+      {internalType: 'address', name: '_DAO', type: 'address'},
+      {internalType: 'address', name: '_feed', type: 'address'},
+    ],
+    stateMutability: 'nonpayable',
+    type: 'constructor',
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: 'uint256',
+        name: 'deposit',
+        type: 'uint256',
+      },
+      {
+        indexed: true,
+        internalType: 'uint256',
+        name: 'payout',
+        type: 'uint256',
+      },
+      {
+        indexed: true,
+        internalType: 'uint256',
+        name: 'expires',
+        type: 'uint256',
+      },
+      {
+        indexed: true,
+        internalType: 'uint256',
+        name: 'priceInUSD',
+        type: 'uint256',
+      },
+    ],
+    name: 'BondCreated',
+    type: 'event',
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: 'uint256',
+        name: 'priceInUSD',
+        type: 'uint256',
+      },
+      {
+        indexed: true,
+        internalType: 'uint256',
+        name: 'internalPrice',
+        type: 'uint256',
+      },
+      {
+        indexed: true,
+        internalType: 'uint256',
+        name: 'debtRatio',
+        type: 'uint256',
+      },
+    ],
+    name: 'BondPriceChanged',
+    type: 'event',
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: 'address',
+        name: 'recipient',
+        type: 'address',
+      },
+      {
+        indexed: false,
+        internalType: 'uint256',
+        name: 'payout',
+        type: 'uint256',
+      },
+      {
+        indexed: false,
+        internalType: 'uint256',
+        name: 'remaining',
+        type: 'uint256',
+      },
+    ],
+    name: 'BondRedeemed',
+    type: 'event',
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: 'uint256',
+        name: 'initialBCV',
+        type: 'uint256',
+      },
+      {
+        indexed: false,
+        internalType: 'uint256',
+        name: 'newBCV',
+        type: 'uint256',
+      },
+      {
+        indexed: false,
+        internalType: 'uint256',
+        name: 'adjustment',
+        type: 'uint256',
+      },
+      {
+        indexed: false,
+        internalType: 'bool',
+        name: 'addition',
+        type: 'bool',
+      },
+    ],
+    name: 'ControlVariableAdjustment',
+    type: 'event',
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: 'address',
+        name: 'previousOwner',
+        type: 'address',
+      },
+      {
+        indexed: true,
+        internalType: 'address',
+        name: 'newOwner',
+        type: 'address',
+      },
+    ],
+    name: 'OwnershipPulled',
+    type: 'event',
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: 'address',
+        name: 'previousOwner',
+        type: 'address',
+      },
+      {
+        indexed: true,
+        internalType: 'address',
+        name: 'newOwner',
+        type: 'address',
+      },
+    ],
+    name: 'OwnershipPushed',
+    type: 'event',
+  },
+  {
+    inputs: [],
+    name: 'DAO',
+    outputs: [{internalType: 'address', name: '', type: 'address'}],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'OHM',
+    outputs: [{internalType: 'address', name: '', type: 'address'}],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'adjustment',
+    outputs: [
+      {internalType: 'bool', name: 'add', type: 'bool'},
+      {internalType: 'uint256', name: 'rate', type: 'uint256'},
+      {internalType: 'uint256', name: 'target', type: 'uint256'},
+      {internalType: 'uint256', name: 'buffer', type: 'uint256'},
+      {internalType: 'uint256', name: 'lastBlock', type: 'uint256'},
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'assetPrice',
+    outputs: [{internalType: 'int256', name: '', type: 'int256'}],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [{internalType: 'address', name: '', type: 'address'}],
+    name: 'bondInfo',
+    outputs: [
+      {internalType: 'uint256', name: 'payout', type: 'uint256'},
+      {internalType: 'uint256', name: 'vesting', type: 'uint256'},
+      {internalType: 'uint256', name: 'lastBlock', type: 'uint256'},
+      {internalType: 'uint256', name: 'pricePaid', type: 'uint256'},
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'bondPrice',
+    outputs: [{internalType: 'uint256', name: 'price_', type: 'uint256'}],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'bondPriceInUSD',
+    outputs: [{internalType: 'uint256', name: 'price_', type: 'uint256'}],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'currentDebt',
+    outputs: [{internalType: 'uint256', name: '', type: 'uint256'}],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'debtDecay',
+    outputs: [{internalType: 'uint256', name: 'decay_', type: 'uint256'}],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'debtRatio',
+    outputs: [{internalType: 'uint256', name: 'debtRatio_', type: 'uint256'}],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {internalType: 'uint256', name: '_amount', type: 'uint256'},
+      {internalType: 'uint256', name: '_maxPrice', type: 'uint256'},
+      {internalType: 'address', name: '_depositor', type: 'address'},
+    ],
+    name: 'deposit',
+    outputs: [{internalType: 'uint256', name: '', type: 'uint256'}],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {internalType: 'uint256', name: '_controlVariable', type: 'uint256'},
+      {internalType: 'uint256', name: '_vestingTerm', type: 'uint256'},
+      {internalType: 'uint256', name: '_minimumPrice', type: 'uint256'},
+      {internalType: 'uint256', name: '_maxPayout', type: 'uint256'},
+      {internalType: 'uint256', name: '_maxDebt', type: 'uint256'},
+      {internalType: 'uint256', name: '_initialDebt', type: 'uint256'},
+    ],
+    name: 'initializeBondTerms',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'lastDecay',
+    outputs: [{internalType: 'uint256', name: '', type: 'uint256'}],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'maxPayout',
+    outputs: [{internalType: 'uint256', name: '', type: 'uint256'}],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [{internalType: 'uint256', name: '_value', type: 'uint256'}],
+    name: 'payoutFor',
+    outputs: [{internalType: 'uint256', name: '', type: 'uint256'}],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [{internalType: 'address', name: '_depositor', type: 'address'}],
+    name: 'pendingPayoutFor',
+    outputs: [{internalType: 'uint256', name: 'pendingPayout_', type: 'uint256'}],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [{internalType: 'address', name: '_depositor', type: 'address'}],
+    name: 'percentVestedFor',
+    outputs: [{internalType: 'uint256', name: 'percentVested_', type: 'uint256'}],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'policy',
+    outputs: [{internalType: 'address', name: '', type: 'address'}],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'principle',
+    outputs: [{internalType: 'address', name: '', type: 'address'}],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'pullManagement',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [{internalType: 'address', name: 'newOwner_', type: 'address'}],
+    name: 'pushManagement',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [{internalType: 'address', name: '_token', type: 'address'}],
+    name: 'recoverLostToken',
+    outputs: [{internalType: 'bool', name: '', type: 'bool'}],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {internalType: 'address', name: '_recipient', type: 'address'},
+      {internalType: 'bool', name: '_stake', type: 'bool'},
+    ],
+    name: 'redeem',
+    outputs: [{internalType: 'uint256', name: '', type: 'uint256'}],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'renounceManagement',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {internalType: 'bool', name: '_addition', type: 'bool'},
+      {internalType: 'uint256', name: '_increment', type: 'uint256'},
+      {internalType: 'uint256', name: '_target', type: 'uint256'},
+      {internalType: 'uint256', name: '_buffer', type: 'uint256'},
+    ],
+    name: 'setAdjustment',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'enum wETHBondDepository.PARAMETER',
+        name: '_parameter',
+        type: 'uint8',
+      },
+      {internalType: 'uint256', name: '_input', type: 'uint256'},
+    ],
+    name: 'setBondTerms',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {internalType: 'address', name: '_staking', type: 'address'},
+      {internalType: 'bool', name: '_helper', type: 'bool'},
+    ],
+    name: 'setStaking',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'staking',
+    outputs: [{internalType: 'address', name: '', type: 'address'}],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'stakingHelper',
+    outputs: [{internalType: 'address', name: '', type: 'address'}],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'standardizedDebtRatio',
+    outputs: [{internalType: 'uint256', name: '', type: 'uint256'}],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'terms',
+    outputs: [
+      {internalType: 'uint256', name: 'controlVariable', type: 'uint256'},
+      {internalType: 'uint256', name: 'vestingTerm', type: 'uint256'},
+      {internalType: 'uint256', name: 'minimumPrice', type: 'uint256'},
+      {internalType: 'uint256', name: 'maxPayout', type: 'uint256'},
+      {internalType: 'uint256', name: 'maxDebt', type: 'uint256'},
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'totalDebt',
+    outputs: [{internalType: 'uint256', name: '', type: 'uint256'}],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'treasury',
+    outputs: [{internalType: 'address', name: '', type: 'address'}],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'useHelper',
+    outputs: [{internalType: 'bool', name: '', type: 'bool'}],
+    stateMutability: 'view',
+    type: 'function',
+  },
+]
+
+const BondContractAbi = [
+  {
+    inputs: [
+      {internalType: 'address', name: '_OHM', type: 'address'},
+      {internalType: 'address', name: '_principle', type: 'address'},
+      {internalType: 'address', name: '_treasury', type: 'address'},
+      {internalType: 'address', name: '_DAO', type: 'address'},
+      {internalType: 'address', name: '_bondCalculator', type: 'address'},
+    ],
+    stateMutability: 'nonpayable',
+    type: 'constructor',
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: 'uint256',
+        name: 'deposit',
+        type: 'uint256',
+      },
+      {
+        indexed: true,
+        internalType: 'uint256',
+        name: 'payout',
+        type: 'uint256',
+      },
+      {
+        indexed: true,
+        internalType: 'uint256',
+        name: 'expires',
+        type: 'uint256',
+      },
+      {
+        indexed: true,
+        internalType: 'uint256',
+        name: 'priceInUSD',
+        type: 'uint256',
+      },
+    ],
+    name: 'BondCreated',
+    type: 'event',
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: 'uint256',
+        name: 'priceInUSD',
+        type: 'uint256',
+      },
+      {
+        indexed: true,
+        internalType: 'uint256',
+        name: 'internalPrice',
+        type: 'uint256',
+      },
+      {
+        indexed: true,
+        internalType: 'uint256',
+        name: 'debtRatio',
+        type: 'uint256',
+      },
+    ],
+    name: 'BondPriceChanged',
+    type: 'event',
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: 'address',
+        name: 'recipient',
+        type: 'address',
+      },
+      {
+        indexed: false,
+        internalType: 'uint256',
+        name: 'payout',
+        type: 'uint256',
+      },
+      {
+        indexed: false,
+        internalType: 'uint256',
+        name: 'remaining',
+        type: 'uint256',
+      },
+    ],
+    name: 'BondRedeemed',
+    type: 'event',
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: 'uint256',
+        name: 'initialBCV',
+        type: 'uint256',
+      },
+      {
+        indexed: false,
+        internalType: 'uint256',
+        name: 'newBCV',
+        type: 'uint256',
+      },
+      {
+        indexed: false,
+        internalType: 'uint256',
+        name: 'adjustment',
+        type: 'uint256',
+      },
+      {
+        indexed: false,
+        internalType: 'bool',
+        name: 'addition',
+        type: 'bool',
+      },
+    ],
+    name: 'ControlVariableAdjustment',
+    type: 'event',
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: 'address',
+        name: 'previousOwner',
+        type: 'address',
+      },
+      {
+        indexed: true,
+        internalType: 'address',
+        name: 'newOwner',
+        type: 'address',
+      },
+    ],
+    name: 'OwnershipPulled',
+    type: 'event',
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: 'address',
+        name: 'previousOwner',
+        type: 'address',
+      },
+      {
+        indexed: true,
+        internalType: 'address',
+        name: 'newOwner',
+        type: 'address',
+      },
+    ],
+    name: 'OwnershipPushed',
+    type: 'event',
+  },
+  {
+    inputs: [],
+    name: 'DAO',
+    outputs: [{internalType: 'address', name: '', type: 'address'}],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'OHM',
+    outputs: [{internalType: 'address', name: '', type: 'address'}],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'adjustment',
+    outputs: [
+      {internalType: 'bool', name: 'add', type: 'bool'},
+      {internalType: 'uint256', name: 'rate', type: 'uint256'},
+      {internalType: 'uint256', name: 'target', type: 'uint256'},
+      {internalType: 'uint256', name: 'buffer', type: 'uint256'},
+      {internalType: 'uint256', name: 'lastBlock', type: 'uint256'},
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'bondCalculator',
+    outputs: [{internalType: 'address', name: '', type: 'address'}],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [{internalType: 'address', name: '', type: 'address'}],
+    name: 'bondInfo',
+    outputs: [
+      {internalType: 'uint256', name: 'payout', type: 'uint256'},
+      {internalType: 'uint256', name: 'vesting', type: 'uint256'},
+      {internalType: 'uint256', name: 'lastBlock', type: 'uint256'},
+      {internalType: 'uint256', name: 'pricePaid', type: 'uint256'},
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'bondPrice',
+    outputs: [{internalType: 'uint256', name: 'price_', type: 'uint256'}],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'bondPriceInUSD',
+    outputs: [{internalType: 'uint256', name: 'price_', type: 'uint256'}],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'currentDebt',
+    outputs: [{internalType: 'uint256', name: '', type: 'uint256'}],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'debtDecay',
+    outputs: [{internalType: 'uint256', name: 'decay_', type: 'uint256'}],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'debtRatio',
+    outputs: [{internalType: 'uint256', name: 'debtRatio_', type: 'uint256'}],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {internalType: 'uint256', name: '_amount', type: 'uint256'},
+      {internalType: 'uint256', name: '_maxPrice', type: 'uint256'},
+      {internalType: 'address', name: '_depositor', type: 'address'},
+    ],
+    name: 'deposit',
+    outputs: [{internalType: 'uint256', name: '', type: 'uint256'}],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {internalType: 'uint256', name: '_controlVariable', type: 'uint256'},
+      {internalType: 'uint256', name: '_vestingTerm', type: 'uint256'},
+      {internalType: 'uint256', name: '_minimumPrice', type: 'uint256'},
+      {internalType: 'uint256', name: '_maxPayout', type: 'uint256'},
+      {internalType: 'uint256', name: '_fee', type: 'uint256'},
+      {internalType: 'uint256', name: '_maxDebt', type: 'uint256'},
+      {internalType: 'uint256', name: '_initialDebt', type: 'uint256'},
+    ],
+    name: 'initializeBondTerms',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'isLiquidityBond',
+    outputs: [{internalType: 'bool', name: '', type: 'bool'}],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'lastDecay',
+    outputs: [{internalType: 'uint256', name: '', type: 'uint256'}],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'maxPayout',
+    outputs: [{internalType: 'uint256', name: '', type: 'uint256'}],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [{internalType: 'uint256', name: '_value', type: 'uint256'}],
+    name: 'payoutFor',
+    outputs: [{internalType: 'uint256', name: '', type: 'uint256'}],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [{internalType: 'address', name: '_depositor', type: 'address'}],
+    name: 'pendingPayoutFor',
+    outputs: [{internalType: 'uint256', name: 'pendingPayout_', type: 'uint256'}],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [{internalType: 'address', name: '_depositor', type: 'address'}],
+    name: 'percentVestedFor',
+    outputs: [{internalType: 'uint256', name: 'percentVested_', type: 'uint256'}],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'policy',
+    outputs: [{internalType: 'address', name: '', type: 'address'}],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'principle',
+    outputs: [{internalType: 'address', name: '', type: 'address'}],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'pullManagement',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [{internalType: 'address', name: 'newOwner_', type: 'address'}],
+    name: 'pushManagement',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [{internalType: 'address', name: '_token', type: 'address'}],
+    name: 'recoverLostToken',
+    outputs: [{internalType: 'bool', name: '', type: 'bool'}],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {internalType: 'address', name: '_recipient', type: 'address'},
+      {internalType: 'bool', name: '_stake', type: 'bool'},
+    ],
+    name: 'redeem',
+    outputs: [{internalType: 'uint256', name: '', type: 'uint256'}],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'renounceManagement',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {internalType: 'bool', name: '_addition', type: 'bool'},
+      {internalType: 'uint256', name: '_increment', type: 'uint256'},
+      {internalType: 'uint256', name: '_target', type: 'uint256'},
+      {internalType: 'uint256', name: '_buffer', type: 'uint256'},
+    ],
+    name: 'setAdjustment',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'enum OlympusBondDepository.PARAMETER',
+        name: '_parameter',
+        type: 'uint8',
+      },
+      {internalType: 'uint256', name: '_input', type: 'uint256'},
+    ],
+    name: 'setBondTerms',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {internalType: 'address', name: '_staking', type: 'address'},
+      {internalType: 'bool', name: '_helper', type: 'bool'},
+    ],
+    name: 'setStaking',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'staking',
+    outputs: [{internalType: 'address', name: '', type: 'address'}],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'stakingHelper',
+    outputs: [{internalType: 'address', name: '', type: 'address'}],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'standardizedDebtRatio',
+    outputs: [{internalType: 'uint256', name: '', type: 'uint256'}],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'terms',
+    outputs: [
+      {internalType: 'uint256', name: 'controlVariable', type: 'uint256'},
+      {internalType: 'uint256', name: 'vestingTerm', type: 'uint256'},
+      {internalType: 'uint256', name: 'minimumPrice', type: 'uint256'},
+      {internalType: 'uint256', name: 'maxPayout', type: 'uint256'},
+      {internalType: 'uint256', name: 'fee', type: 'uint256'},
+      {internalType: 'uint256', name: 'maxDebt', type: 'uint256'},
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'totalDebt',
+    outputs: [{internalType: 'uint256', name: '', type: 'uint256'}],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'treasury',
+    outputs: [{internalType: 'address', name: '', type: 'address'}],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'useHelper',
+    outputs: [{internalType: 'bool', name: '', type: 'bool'}],
+    stateMutability: 'view',
+    type: 'function',
+  },
+]
+
+const iERC20ABI = [
+  {
+    constant: true,
+    inputs: [],
+    name: 'name',
+    outputs: [
+      {
+        name: '',
+        type: 'string',
+      },
+    ],
+    payable: false,
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    constant: false,
+    inputs: [
+      {
+        name: '_spender',
+        type: 'address',
+      },
+      {
+        name: '_value',
+        type: 'uint256',
+      },
+    ],
+    name: 'approve',
+    outputs: [
+      {
+        name: '',
+        type: 'bool',
+      },
+    ],
+    payable: false,
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    constant: true,
+    inputs: [],
+    name: 'totalSupply',
+    outputs: [
+      {
+        name: '',
+        type: 'uint256',
+      },
+    ],
+    payable: false,
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    constant: false,
+    inputs: [
+      {
+        name: '_from',
+        type: 'address',
+      },
+      {
+        name: '_to',
+        type: 'address',
+      },
+      {
+        name: '_value',
+        type: 'uint256',
+      },
+    ],
+    name: 'transferFrom',
+    outputs: [
+      {
+        name: '',
+        type: 'bool',
+      },
+    ],
+    payable: false,
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    constant: true,
+    inputs: [],
+    name: 'decimals',
+    outputs: [
+      {
+        name: '',
+        type: 'uint8',
+      },
+    ],
+    payable: false,
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    constant: true,
+    inputs: [
+      {
+        name: '_owner',
+        type: 'address',
+      },
+    ],
+    name: 'balanceOf',
+    outputs: [
+      {
+        name: 'balance',
+        type: 'uint256',
+      },
+    ],
+    payable: false,
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    constant: true,
+    inputs: [],
+    name: 'symbol',
+    outputs: [
+      {
+        name: '',
+        type: 'string',
+      },
+    ],
+    payable: false,
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    constant: false,
+    inputs: [
+      {
+        name: '_to',
+        type: 'address',
+      },
+      {
+        name: '_value',
+        type: 'uint256',
+      },
+    ],
+    name: 'transfer',
+    outputs: [
+      {
+        name: '',
+        type: 'bool',
+      },
+    ],
+    payable: false,
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    constant: true,
+    inputs: [
+      {
+        name: '_owner',
+        type: 'address',
+      },
+      {
+        name: '_spender',
+        type: 'address',
+      },
+    ],
+    name: 'allowance',
+    outputs: [
+      {
+        name: '',
+        type: 'uint256',
+      },
+    ],
+    payable: false,
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    payable: true,
+    stateMutability: 'payable',
+    type: 'fallback',
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        name: 'owner',
+        type: 'address',
+      },
+      {
+        indexed: true,
+        name: 'spender',
+        type: 'address',
+      },
+      {
+        indexed: false,
+        name: 'value',
+        type: 'uint256',
+      },
+    ],
+    name: 'Approval',
+    type: 'event',
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        name: 'from',
+        type: 'address',
+      },
+      {
+        indexed: true,
+        name: 'to',
+        type: 'address',
+      },
+      {
+        indexed: false,
+        name: 'value',
+        type: 'uint256',
+      },
+    ],
+    name: 'Transfer',
+    type: 'event',
+  },
+]
+
+const LPContractAbi = [
+  {
+    "inputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "constructor"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "owner",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "spender",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "value",
+        "type": "uint256"
+      }
+    ],
+    "name": "Approval",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "sender",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "amount0",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "amount1",
+        "type": "uint256"
+      },
+      { "indexed": true, "internalType": "address", "name": "to", "type": "address" }
+    ],
+    "name": "Burn",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "sender",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "amount0",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "amount1",
+        "type": "uint256"
+      }
+    ],
+    "name": "Mint",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "sender",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "amount0In",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "amount1In",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "amount0Out",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "amount1Out",
+        "type": "uint256"
+      },
+      { "indexed": true, "internalType": "address", "name": "to", "type": "address" }
+    ],
+    "name": "Swap",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint112",
+        "name": "reserve0",
+        "type": "uint112"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint112",
+        "name": "reserve1",
+        "type": "uint112"
+      }
+    ],
+    "name": "Sync",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "from",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "to",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "value",
+        "type": "uint256"
+      }
+    ],
+    "name": "Transfer",
+    "type": "event"
+  },
+  {
+    "constant": true,
+    "inputs": [],
+    "name": "DOMAIN_SEPARATOR",
+    "outputs": [{ "internalType": "bytes32", "name": "", "type": "bytes32" }],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [],
+    "name": "MINIMUM_LIQUIDITY",
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [],
+    "name": "PERMIT_TYPEHASH",
+    "outputs": [{ "internalType": "bytes32", "name": "", "type": "bytes32" }],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [
+      { "internalType": "address", "name": "", "type": "address" },
+      { "internalType": "address", "name": "", "type": "address" }
+    ],
+    "name": "allowance",
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [
+      { "internalType": "address", "name": "spender", "type": "address" },
+      { "internalType": "uint256", "name": "value", "type": "uint256" }
+    ],
+    "name": "approve",
+    "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "name": "balanceOf",
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [{ "internalType": "address", "name": "to", "type": "address" }],
+    "name": "burn",
+    "outputs": [
+      { "internalType": "uint256", "name": "amount0", "type": "uint256" },
+      { "internalType": "uint256", "name": "amount1", "type": "uint256" }
+    ],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [],
+    "name": "decimals",
+    "outputs": [{ "internalType": "uint8", "name": "", "type": "uint8" }],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [],
+    "name": "factory",
+    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [],
+    "name": "getReserves",
+    "outputs": [
+      { "internalType": "uint112", "name": "_reserve0", "type": "uint112" },
+      { "internalType": "uint112", "name": "_reserve1", "type": "uint112" },
+      { "internalType": "uint32", "name": "_blockTimestampLast", "type": "uint32" }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [
+      { "internalType": "address", "name": "_token0", "type": "address" },
+      { "internalType": "address", "name": "_token1", "type": "address" }
+    ],
+    "name": "initialize",
+    "outputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [],
+    "name": "kLast",
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [{ "internalType": "address", "name": "to", "type": "address" }],
+    "name": "mint",
+    "outputs": [
+      { "internalType": "uint256", "name": "liquidity", "type": "uint256" }
+    ],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [],
+    "name": "name",
+    "outputs": [{ "internalType": "string", "name": "", "type": "string" }],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "name": "nonces",
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [
+      { "internalType": "address", "name": "owner", "type": "address" },
+      { "internalType": "address", "name": "spender", "type": "address" },
+      { "internalType": "uint256", "name": "value", "type": "uint256" },
+      { "internalType": "uint256", "name": "deadline", "type": "uint256" },
+      { "internalType": "uint8", "name": "v", "type": "uint8" },
+      { "internalType": "bytes32", "name": "r", "type": "bytes32" },
+      { "internalType": "bytes32", "name": "s", "type": "bytes32" }
+    ],
+    "name": "permit",
+    "outputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [],
+    "name": "price0CumulativeLast",
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [],
+    "name": "price1CumulativeLast",
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [{ "internalType": "address", "name": "to", "type": "address" }],
+    "name": "skim",
+    "outputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [
+      { "internalType": "uint256", "name": "amount0Out", "type": "uint256" },
+      { "internalType": "uint256", "name": "amount1Out", "type": "uint256" },
+      { "internalType": "address", "name": "to", "type": "address" },
+      { "internalType": "bytes", "name": "data", "type": "bytes" }
+    ],
+    "name": "swap",
+    "outputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [],
+    "name": "symbol",
+    "outputs": [{ "internalType": "string", "name": "", "type": "string" }],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [],
+    "name": "sync",
+    "outputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [],
+    "name": "token0",
+    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [],
+    "name": "token1",
+    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [],
+    "name": "totalSupply",
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [
+      { "internalType": "address", "name": "to", "type": "address" },
+      { "internalType": "uint256", "name": "value", "type": "uint256" }
+    ],
+    "name": "transfer",
+    "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [
+      { "internalType": "address", "name": "from", "type": "address" },
+      { "internalType": "address", "name": "to", "type": "address" },
+      { "internalType": "uint256", "name": "value", "type": "uint256" }
+    ],
+    "name": "transferFrom",
+    "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+  }
+]
+
+const bondCalcContractAbi = [
+  {
+    "inputs": [{ "internalType": "address", "name": "_OHM", "type": "address" }],
+    "stateMutability": "nonpayable",
+    "type": "constructor"
+  },
+  {
+    "inputs": [],
+    "name": "OHM",
+    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "internalType": "address", "name": "_pair", "type": "address" }],
+    "name": "getKValue",
+    "outputs": [{ "internalType": "uint256", "name": "k_", "type": "uint256" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "internalType": "address", "name": "_pair", "type": "address" }],
+    "name": "getTotalValue",
+    "outputs": [{ "internalType": "uint256", "name": "_value", "type": "uint256" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "internalType": "address", "name": "_pair", "type": "address" }],
+    "name": "markdown",
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "address", "name": "_pair", "type": "address" },
+      { "internalType": "uint256", "name": "amount_", "type": "uint256" }
+    ],
+    "name": "valuation",
+    "outputs": [{ "internalType": "uint256", "name": "_value", "type": "uint256" }],
+    "stateMutability": "view",
+    "type": "function"
+  }
+]
+
+const VUSDTLPBondContractAbi = [
+  {
+    inputs: [
+      {internalType: 'address', name: '_OHM', type: 'address'},
+      {internalType: 'address', name: '_principle', type: 'address'},
+      {internalType: 'address', name: '_treasury', type: 'address'},
+      {internalType: 'address', name: '_DAO', type: 'address'},
+      {internalType: 'address', name: '_bondCalculator', type: 'address'},
+    ],
+    stateMutability: 'nonpayable',
+    type: 'constructor',
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: 'uint256',
+        name: 'deposit',
+        type: 'uint256',
+      },
+      {
+        indexed: true,
+        internalType: 'uint256',
+        name: 'payout',
+        type: 'uint256',
+      },
+      {
+        indexed: true,
+        internalType: 'uint256',
+        name: 'expires',
+        type: 'uint256',
+      },
+      {
+        indexed: true,
+        internalType: 'uint256',
+        name: 'priceInUSD',
+        type: 'uint256',
+      },
+    ],
+    name: 'BondCreated',
+    type: 'event',
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: 'uint256',
+        name: 'priceInUSD',
+        type: 'uint256',
+      },
+      {
+        indexed: true,
+        internalType: 'uint256',
+        name: 'internalPrice',
+        type: 'uint256',
+      },
+      {
+        indexed: true,
+        internalType: 'uint256',
+        name: 'debtRatio',
+        type: 'uint256',
+      },
+    ],
+    name: 'BondPriceChanged',
+    type: 'event',
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: 'address',
+        name: 'recipient',
+        type: 'address',
+      },
+      {
+        indexed: false,
+        internalType: 'uint256',
+        name: 'payout',
+        type: 'uint256',
+      },
+      {
+        indexed: false,
+        internalType: 'uint256',
+        name: 'remaining',
+        type: 'uint256',
+      },
+    ],
+    name: 'BondRedeemed',
+    type: 'event',
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: 'uint256',
+        name: 'initialBCV',
+        type: 'uint256',
+      },
+      {
+        indexed: false,
+        internalType: 'uint256',
+        name: 'newBCV',
+        type: 'uint256',
+      },
+      {
+        indexed: false,
+        internalType: 'uint256',
+        name: 'adjustment',
+        type: 'uint256',
+      },
+      {
+        indexed: false,
+        internalType: 'bool',
+        name: 'addition',
+        type: 'bool',
+      },
+    ],
+    name: 'ControlVariableAdjustment',
+    type: 'event',
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: 'address',
+        name: 'previousOwner',
+        type: 'address',
+      },
+      {
+        indexed: true,
+        internalType: 'address',
+        name: 'newOwner',
+        type: 'address',
+      },
+    ],
+    name: 'OwnershipPulled',
+    type: 'event',
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: 'address',
+        name: 'previousOwner',
+        type: 'address',
+      },
+      {
+        indexed: true,
+        internalType: 'address',
+        name: 'newOwner',
+        type: 'address',
+      },
+    ],
+    name: 'OwnershipPushed',
+    type: 'event',
+  },
+  {
+    inputs: [],
+    name: 'DAO',
+    outputs: [{internalType: 'address', name: '', type: 'address'}],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'OHM',
+    outputs: [{internalType: 'address', name: '', type: 'address'}],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'adjustment',
+    outputs: [
+      {internalType: 'bool', name: 'add', type: 'bool'},
+      {internalType: 'uint256', name: 'rate', type: 'uint256'},
+      {internalType: 'uint256', name: 'target', type: 'uint256'},
+      {internalType: 'uint256', name: 'buffer', type: 'uint256'},
+      {internalType: 'uint256', name: 'lastBlock', type: 'uint256'},
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'bondCalculator',
+    outputs: [{internalType: 'address', name: '', type: 'address'}],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [{internalType: 'address', name: '', type: 'address'}],
+    name: 'bondInfo',
+    outputs: [
+      {internalType: 'uint256', name: 'payout', type: 'uint256'},
+      {internalType: 'uint256', name: 'vesting', type: 'uint256'},
+      {internalType: 'uint256', name: 'lastBlock', type: 'uint256'},
+      {internalType: 'uint256', name: 'pricePaid', type: 'uint256'},
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'bondPrice',
+    outputs: [{internalType: 'uint256', name: 'price_', type: 'uint256'}],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'bondPriceInUSD',
+    outputs: [{internalType: 'uint256', name: 'price_', type: 'uint256'}],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'currentDebt',
+    outputs: [{internalType: 'uint256', name: '', type: 'uint256'}],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'debtDecay',
+    outputs: [{internalType: 'uint256', name: 'decay_', type: 'uint256'}],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'debtRatio',
+    outputs: [{internalType: 'uint256', name: 'debtRatio_', type: 'uint256'}],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {internalType: 'uint256', name: '_amount', type: 'uint256'},
+      {internalType: 'uint256', name: '_maxPrice', type: 'uint256'},
+      {internalType: 'address', name: '_depositor', type: 'address'},
+    ],
+    name: 'deposit',
+    outputs: [{internalType: 'uint256', name: '', type: 'uint256'}],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {internalType: 'uint256', name: '_controlVariable', type: 'uint256'},
+      {internalType: 'uint256', name: '_vestingTerm', type: 'uint256'},
+      {internalType: 'uint256', name: '_minimumPrice', type: 'uint256'},
+      {internalType: 'uint256', name: '_maxPayout', type: 'uint256'},
+      {internalType: 'uint256', name: '_fee', type: 'uint256'},
+      {internalType: 'uint256', name: '_maxDebt', type: 'uint256'},
+      {internalType: 'uint256', name: '_initialDebt', type: 'uint256'},
+    ],
+    name: 'initializeBondTerms',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'isLiquidityBond',
+    outputs: [{internalType: 'bool', name: '', type: 'bool'}],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'lastDecay',
+    outputs: [{internalType: 'uint256', name: '', type: 'uint256'}],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'maxPayout',
+    outputs: [{internalType: 'uint256', name: '', type: 'uint256'}],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [{internalType: 'uint256', name: '_value', type: 'uint256'}],
+    name: 'payoutFor',
+    outputs: [{internalType: 'uint256', name: '', type: 'uint256'}],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [{internalType: 'address', name: '_depositor', type: 'address'}],
+    name: 'pendingPayoutFor',
+    outputs: [{internalType: 'uint256', name: 'pendingPayout_', type: 'uint256'}],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [{internalType: 'address', name: '_depositor', type: 'address'}],
+    name: 'percentVestedFor',
+    outputs: [{internalType: 'uint256', name: 'percentVested_', type: 'uint256'}],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'policy',
+    outputs: [{internalType: 'address', name: '', type: 'address'}],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'principle',
+    outputs: [{internalType: 'address', name: '', type: 'address'}],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'pullManagement',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [{internalType: 'address', name: 'newOwner_', type: 'address'}],
+    name: 'pushManagement',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [{internalType: 'address', name: '_token', type: 'address'}],
+    name: 'recoverLostToken',
+    outputs: [{internalType: 'bool', name: '', type: 'bool'}],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {internalType: 'address', name: '_recipient', type: 'address'},
+      {internalType: 'bool', name: '_stake', type: 'bool'},
+    ],
+    name: 'redeem',
+    outputs: [{internalType: 'uint256', name: '', type: 'uint256'}],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'renounceManagement',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {internalType: 'bool', name: '_addition', type: 'bool'},
+      {internalType: 'uint256', name: '_increment', type: 'uint256'},
+      {internalType: 'uint256', name: '_target', type: 'uint256'},
+      {internalType: 'uint256', name: '_buffer', type: 'uint256'},
+    ],
+    name: 'setAdjustment',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'enum OlympusBondDepository.PARAMETER',
+        name: '_parameter',
+        type: 'uint8',
+      },
+      {internalType: 'uint256', name: '_input', type: 'uint256'},
+    ],
+    name: 'setBondTerms',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {internalType: 'address', name: '_staking', type: 'address'},
+      {internalType: 'bool', name: '_helper', type: 'bool'},
+    ],
+    name: 'setStaking',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'staking',
+    outputs: [{internalType: 'address', name: '', type: 'address'}],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'stakingHelper',
+    outputs: [{internalType: 'address', name: '', type: 'address'}],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'standardizedDebtRatio',
+    outputs: [{internalType: 'uint256', name: '', type: 'uint256'}],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'terms',
+    outputs: [
+      {internalType: 'uint256', name: 'controlVariable', type: 'uint256'},
+      {internalType: 'uint256', name: 'vestingTerm', type: 'uint256'},
+      {internalType: 'uint256', name: 'minimumPrice', type: 'uint256'},
+      {internalType: 'uint256', name: 'maxPayout', type: 'uint256'},
+      {internalType: 'uint256', name: 'fee', type: 'uint256'},
+      {internalType: 'uint256', name: 'maxDebt', type: 'uint256'},
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'totalDebt',
+    outputs: [{internalType: 'uint256', name: '', type: 'uint256'}],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'treasury',
+    outputs: [{internalType: 'address', name: '', type: 'address'}],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'useHelper',
+    outputs: [{internalType: 'bool', name: '', type: 'bool'}],
+    stateMutability: 'view',
+    type: 'function',
+  },
+]
+
 const VUNIT_ADDRESS = '0x632fbF85F77978437073a8CE5CEEC29e3209514c'
 const DISTRIBUTOR_ADDRESS = '0x78c5B52a59729c4b0Ab646c4902dF1ec959E7fE1'
 const BOND_ADDRESS = '0x1FC976Bdb9dCA3d5125687656F40C9f16Be5E7d6'
 const sVUNIT_ADDRESS = '0xA1d476d66867e6692aFB46887Bbae84180E2b871'
 const STAKING_ADDRESS = '0x79D13d36d90AD54d4734313252b7eAc56784B231'
+const BOND_CALCULATOR_ADDRESS = '0x266aC667206820058EFb02DE646F159057f7a321'
+const networkId = 56
+
+const bondList = [
+  {
+    token1: {
+      name: 'Binance-Peg BUSD',
+      symbol: 'BUSD',
+      chainId: 56,
+      address: '0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56',
+      decimals: 18,
+    },
+    token2: {},
+    bondABI: BondContractAbi,
+    bondAddress: '0x1FC976Bdb9dCA3d5125687656F40C9f16Be5E7d6',
+    reserveAddress: '0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56',
+    bondRoute: 'busd',
+    bondName: 'BUSD',
+  },
+  {
+    token1: {
+      name: 'Binance-Peg Ethereum',
+      symbol: 'ETH',
+      chainId: networkId,
+      address: '0x2170ed0880ac9a755fd29b2688956bd959f933f8',
+      decimals: 18,
+    },
+    token2: {},
+    bondABI: wETHBondContractAbi,
+    isWethBond: true,
+    bondAddress: '0x505803F5C920856608209d31671f3D2CFa154FD5',
+    reserveAddress: '0x2170ed0880ac9a755fd29b2688956bd959f933f8',
+    bondRoute: 'eth',
+    bondName: 'ETH',
+  },
+  {
+    token1: {
+      name: 'Wrapped BNB',
+      symbol: 'WBNB',
+      chainId: networkId,
+      address: '0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c',
+      decimals: 18,
+    },
+    token2: {},
+    bondABI: wETHBondContractAbi,
+    isWethBond: true,
+    bondAddress: '0x7668Cd461D264ac8ff42A2f0ffd4FD2d3bA43016',
+    reserveAddress: '0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c',
+    bondRoute: 'wbnb',
+    bondName: 'WBNB',
+  },
+]
+
+const getVUnitPrice = async () => {
+  try {
+    const res = await fetch('https://api.monox.finance/bsc/vcash/usdc/price')
+    const data = await res.json()
+    return data.response.price
+  } catch (error) {
+    return 0
+  }
+}
 
 async function main() {
   const App = await init_ethers()
@@ -1097,6 +3240,8 @@ async function main() {
   const vUnitDecimals = await VUNIT_CONTRACT.decimals()
   const distributorBalance = await VUNIT_CONTRACT.balanceOf(DISTRIBUTOR_ADDRESS)
   const VUNIT_PRICE = await getVUnitPrice()
+
+  const bondDataList = await fetchBondDataList(VUNIT_PRICE, App.provider)
 
   let userVUnitBalance = await VUNIT_CONTRACT.balanceOf(App.YOUR_ADDRESS)
   let userStakingBalance = await sVUNIT_CONTRACT.balanceOf(App.YOUR_ADDRESS)
@@ -1123,8 +3268,8 @@ async function main() {
 
   let nextEpochRewards = userStakingBalance * stakingRebase
   let dayRate = (Math.pow(1 + stakingRebase, 1 * 3) - 1) * 100
-  let weekRate = (Math.pow(1 + stakingRebase, 7 * 3) - 1) * 100;
-  let stakingAPY = (Math.pow(1 + stakingRebase, 365 * 3) - 1) * 100;
+  let weekRate = (Math.pow(1 + stakingRebase, 7 * 3) - 1) * 100
+  let stakingAPY = (Math.pow(1 + stakingRebase, 365 * 3) - 1) * 100
 
   const approveAndStakeVUNIT = async function() {
     return vUnitContract_stake(App, VUNIT_STAKE_ABI, STAKING_ADDRESS, VUNIT_ADDRESS)
@@ -1159,6 +3304,18 @@ async function main() {
   _print(
     `APR: Day ${apyDay}% (${amountVUnitDay} vUNIT) Week ${apyWeek}% (${amountVUnitWeek} vUNIT) Year ${apyYear}% (${amountVUnitYear} vUNIT)`
   )
+  let tableData = {
+    "title":"Bond Details",
+    "heading": ["Bond Name", "Bond Price", "Bond ROI"],
+    rows: bondDataList?.map(bondData => {
+      return [bondData.bondName,bondData.bondName === "USDC" || bondData.bondName === "USDT" ? parseFloat(bondData.bondPrice * 10**12).toFixed(2) : formatMoney(bondData.bondPrice),`${formatMoney(bondData.bondDiscount * 100)}% ROI`]
+    })
+  }
+
+
+  let table = new AsciiTable().fromJSON(tableData);
+  document.getElementById('log').innerHTML += table + '<br />';
+
   _print_link(`Stake ${parseFloat(userVUnitBalance.toString()).toFixed(4)} ${rewardTokenTicker}`, approveAndStakeVUNIT)
   _print_link(`Unstake ${parseFloat(userStakingBalance.toString()).toFixed(4)} ${rewardTokenTicker}`, unstakeVUNIT)
   _print(`\n`)
@@ -1233,12 +3390,47 @@ const vUnitContract_unstake = async function(App, stackingAbi, vUnitAddress) {
   }
 }
 
-const getVUnitPrice = async () => {
-  try {
-    const res = await fetch('https://api.monox.finance/bsc/vcash/usdc/price')
-    const data = await res.json()
-    return data.response.price
-  } catch (error) {
-    return 0
+const fetchBondDataList = async (vcashPrice, provider) => {
+  if (networkId !== bondList?.[0]?.token1?.chainId) {
+    return
   }
+  const bondListData = await Promise.all(
+    bondList?.map(async item => {
+      try {
+        const bondContract = new ethers.Contract(item.bondAddress, item.bondABI, provider)
+        const bondCalcContract = new ethers.Contract(BOND_CALCULATOR_ADDRESS, bondCalcContractAbi, provider)
+        const isLP = item.isLP
+        const isvUnitBond = item.isvUnitBond
+        const {token1: currency, token2: currency2, isWethBond, reserveAddress} = item
+        const LPTokenContract = isLP ? new ethers.Contract(reserveAddress,LPContractAbi ,provider) : null
+
+        const [bondPrice, totalValue, token0, reserves, vUnitBondReceiveBig] = await Promise.all([
+          !isLP ? bondContract.bondPriceInUSD() : bondContract.bondPrice(),
+          isLP ? bondCalcContract.getTotalValue(reserveAddress) : 1,
+          isLP ? LPTokenContract?.token0() : 1,
+          isLP ? LPTokenContract?.getReserves() : {},
+          isvUnitBond ? bondContract?.payoutFor(ethers.BigNumber.from(10).pow(18)) : 1,
+        ])
+        const {_reserve0, _reserve1} = reserves
+        const stableReserve = token0 === VUNIT_ADDRESS ? _reserve1 : _reserve0
+        const bondPriceInUSD = isLP
+          ? (2 * ethers.utils.formatEther(stableReserve) * Number(bondPrice)) /
+            100 / ethers.utils.formatEther(totalValue)
+          : ethers.utils.formatEther(bondPrice)
+        let ethPrice = isWethBond ? await bondContract?.assetPrice() : 1
+        ethPrice = Number(ethPrice?.toString()) / Math.pow(10, 8)
+        const bondDiscount  = isvUnitBond
+          ? (ethers.utils.formatEther(vUnitBondReceiveBig) - 1) * 100
+          : item.bondName.includes("USDT") || item.bondName.includes("USDC") ? (vcashPrice - (bondPriceInUSD * 10 ** 12)) / (bondPriceInUSD * 10 ** 12) * 100 : (vcashPrice - bondPriceInUSD) / bondPriceInUSD
+        return {
+          ...item,
+          bondPrice: isvUnitBond ? bondPriceInUSD * vcashPrice : bondPriceInUSD,
+          bondDiscount,
+        }
+      } catch (err) {
+        return item
+      }
+    })
+  )
+  return bondListData
 }
