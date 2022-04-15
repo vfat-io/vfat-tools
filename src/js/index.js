@@ -61,6 +61,21 @@ window.NETWORKS = {
       "https://explorer.arbitrum.io"
     ]
   },
+  ASTAR: {
+    "chainId": "0x250",
+    "chainName": "Astar Network",
+    "nativeCurrency": {
+      "name": "Astar",
+      "symbol": "ASTR",
+      "decimals": 18
+    },
+    "rpcUrls": [
+      "https://astar.api.onfinality.io/public"
+    ],
+    "blockExplorerUrls": [
+      "https://blockscout.com/astar/"
+    ]
+  },
   MOONRIVER: {
     "chainId": "0x505",
     "chainName": "Moonriver",
