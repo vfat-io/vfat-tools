@@ -40,7 +40,8 @@ const main = async() => {
       ["ChronoSwap           ","", `<a href='chronoswap'   >Various</a>`,"CNO          ","https://chronoswap.org"],
       ["Agilefi              ","", `<a href='agilefi'      >Various</a>`,"AGL          ","https://app.agilefi.org"],
       ["1Beam                ","", `<a href='1beam'        >Various</a>`,"1CRO         ","https://1beam.io"],
-      ["CGX Finance          ","", `<a href='cgx'          >Various</a>`,"CGX          ","https://cgx.finance/"]
+      ["CGX Finance          ","", `<a href='cgx'          >Various</a>`,"CGX          ","https://cgx.finance"],
+      ["Scrub Finance        ","", `<a href='scrub'        >Various</a>`,"TIGER / LION ","https://scrub.finance"]
     ]
   }
 

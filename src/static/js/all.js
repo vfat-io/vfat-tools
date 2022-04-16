@@ -174,7 +174,8 @@ const main = async () => {
       ["WOWswap                      ", `<a href="../wowswap/"           >Various</a>`,"WOW                 ", "https://wowswap.io"],
       ["Aladdin (Concentrator)       ", `<a href="../concentrator/"      >Various</a>`,"aCRV                ", "https://concentrator.aladdin.club/#/vault"],
       ["Stargate                     ", `<a href="../stargate/"          >Various</a>`,"STG                 ", "https://stargate.finance"],
-      ["Backd                        ", `<a href="../backd/"             >Various</a>`,"                    ", "https://backd.fund"]
+      ["Backd                        ", `<a href="../backd/"             >Various</a>`,"                    ", "https://backd.fund"],
+      ["Jpegd                        ", `<a href="../jpegd/"             >Various</a>`,"JPEG                ", "https://jpegd.io"]
     ]
   }
 
