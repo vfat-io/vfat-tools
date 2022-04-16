@@ -104,7 +104,7 @@ const main = async() => {
         ["Weaver Ant Defi         ",`<a href="antdefi"          >Various</a>`,"WEAVE        ","https://weaver.antcolonydefi.com/"],
         ["BanksyDAO               ",`<a href="banksydao"        >Various</a>`,"BanksyDao    ","https://banksydao.finance"],
         ["Vector Finance          ",`<a href="vector"           >Various</a>`,"VTX          ","https://vectorfinance.io"],
-        ["Radium Finance          ",`<a href="radium"           >Various</a>`,"RD           ",""]
+        ["Radium Finance          ",`<a href="radium"           >Various</a>`,"RD           ","https://radium.periodic.farm"]
 
     ]
   }
