@@ -202,7 +202,8 @@ const main = async () => {
       ['Piggy Finance      ', `<a href='piggyfinance' >Various</a>`, 'PSHARE / TPIGGY', 'https://ftm.piggyfinance.io'],
       ['Mockingbird        ', `<a href='mockingbird'  >Various</a>`, 'MOCK          ', 'https://mockingbird.philetairus-socius.com'],
       ['Ghost DeFi         ', `<a href='ghostdefi'    >Various</a>`, 'GSHARE / GHOST', 'https://ghostdefi.io'],
-      ['Charge DeFi        ', `<a href='charge'       >Various</a>`, 'CHARGE        ', 'https://ftm.chargedefi.fi']
+      ['Charge DeFi        ', `<a href='charge'       >Various</a>`, 'CHARGE        ', 'https://ftm.chargedefi.fi'],
+      ['hermes               ', `<a href='hermes'         >Various</a>`, 'ARES      ', 'https://www.olympus-fi.com'],  
     ],
   }
 
