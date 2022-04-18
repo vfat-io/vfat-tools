@@ -203,7 +203,7 @@ const main = async () => {
       ['Mockingbird        ', `<a href='mockingbird'  >Various</a>`, 'MOCK          ', 'https://mockingbird.philetairus-socius.com'],
       ['Ghost DeFi         ', `<a href='ghostdefi'    >Various</a>`, 'GSHARE / GHOST', 'https://ghostdefi.io'],
       ['Charge DeFi        ', `<a href='charge'       >Various</a>`, 'CHARGE        ', 'https://ftm.chargedefi.fi'],
-      ['Olympus Finance               ', `<a href='olympus-finance'         >Various</a>`, 'ARES      ', 'https://www.olympus-fi.com'],  
+      ['Olympus Finance               ', `<a href='olympus-finance'         >Various</a>`, 'ARES      ', 'https://www.olympus-fi.com']  
     ],
   }
 
