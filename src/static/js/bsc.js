@@ -558,7 +558,6 @@ const main = async() => {
       ["Bag Finance         ","", `<a href="bag"           >Various</a>`,"BGLD             ","https://app.thisistheway.finance"],
       ["Dibs                ","", `<a href="dibs"          >Various</a>`,"DSHARE/DIBS      ","https://www.dibs.money"],
       ["UFX                 ","", `<a href="ufx"           >Various</a>`,"UFX              ","https://app.unitedfarmers.finance/farms"],
-      ["UFGRAIN             ","", `<a href="ufgrain"       >Various</a>`,"UFGRAIN          ","https://app.unitedfarmers.finance/farms"],
       ["Tokyo Swap          ","", `<a href="tokyoswap"     >Various</a>`,"TOKYO            ","https://www.tokyoswap.finance"],
       ["Latte Swap          ","", `<a href="latteswap"     >Various</a>`,"LATTE            ","https://app.latteswap.com"],
       ["The Manor           ","", `<a href="manor"         >Various</a>`,"REV              ","https://themanor.farm"],
@@ -584,7 +583,9 @@ const main = async() => {
       ["Rubik               ","",`<a href="rubik"          >Various</a>`,"RUBIK            ","https://rubik.farm"],
       ["Sphere Swap         ","",`<a href="sphereswap"     >Various</a>`,"SPHERE           ","https://sphereswap.com"],
       ["Outerring           ","",`<a href="outerring"      >Various</a>`,"Various          ","https://dapp.outerringmmo.com"],
-      ["Troy Defi           ","",`<a href="troydefi"       >Various</a>`,"TROY              ","https://troydefi.com"],
+      ["Troy Defi           ","",`<a href="troydefi"       >Various</a>`,"TROY             ","https://troydefi.com"],
+      ["Goldman             ","",`<a href="goldman"        >Various</a>`,"GOLD             ","https://goldman.farm"],
+      ["DotDot              ","",`<a href="dotdot"         >Various</a>`,"DDD              ","https://dotdot.finance"]
       ["Monox Finance       ","", `<a href="monox"         >Various</a>`,"vUNIT            ", "https://monox.finance"],
     ]}
 

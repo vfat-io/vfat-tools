@@ -43,6 +43,7 @@ const main = async() => {
       ["Harvest Finance     ",`<a href="harvest-finance/"   >Various</a>`,"FARM      ","https://harvest.finance"],
       ["Ichi                ",`<a href="ichi/"              >Various</a>`,"Ichi      ","https://ichi.farm"],
       ["Inverse             ",`<a href="inverse/"           >Various</a>`,"INV       ","https://inverse.finance/stake"],
+      ["* Jpegd *           ",`<a href="jpegd/"             >Various</a>`,"JPEG      ","https://jpegd.io"],
       ["Keep                ",`<a href="keep"               >Various</a>`,"KEEP      ","https://dashboard.keep.network/liquidity"],
       ["Kyber               ",`<a href="kyber"              >Various</a>`,"KNC       ","http://dmm.exchange"],
       ["Launchpool          ",`<a href="lpool/"             >Various</a>`,"LPOOL     ","https://staking.launchpool.xyz/"],

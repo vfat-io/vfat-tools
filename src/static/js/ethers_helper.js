@@ -51,6 +51,9 @@ const pageNetwork = function() {
   if (network.toLowerCase() === 'fantom') {
     return window.NETWORKS.FANTOM
   }
+  if (network.toLowerCase() === 'astar') {
+    return window.NETWORKS.ASTAR
+  }
   if (network.toLowerCase() === 'cronos') {
     return window.NETWORKS.CRONOS
   }
@@ -3078,6 +3081,9 @@ function getErc20Prices(prices, pool, chain="eth") {
     case "fantom":
       poolUrl=`https://ftmscan.com/token/${pool.address}`;
       break;
+    case "astar":
+      poolUrl=`https://blockscout.com/astar/address/${pool.address}`;
+      break;
     case "emerald":
       poolUrl=`https://explorer.emerald.oasis.dev/token/${pool.address}`;
       break;
@@ -3746,6 +3752,9 @@ async function printSynthetixPool(App, info, chain="eth", customURLs) {
       case "fantom":
         _print(`<a target="_blank" href="https://ftmscan.com/address/${info.stakingAddress}#code">FTM Scan</a>`);
         break;
+      case "astar":
+        _print(`<a target="_blank" href="https://blockscout.com/astar/address/${info.stakingAddress}">Astar Explorer</a>`);
+        break;
       case "emerald":
         _print(`<a target="_blank" href="https://explorer.emerald.oasis.dev/address/${info.stakingAddress}#code">Emerald Explorer</a>`);
         break;
@@ -3928,6 +3937,8 @@ function getChainExplorerUrl(chain, address){
       return `https://bscscan.com/token/${address}`;
     case "fantom" :
       return `https://ftmscan.com/token/${address}`;
+    case "astar" :
+      return `https://blockscout.com/astar/address/${address}`;
     case "harmony" :
       return `https://explorer.harmony.one/address/${address}`;
     case "arbitrum" :
