@@ -1,4 +1,4 @@
-$(function() {
+$(function () {
   main()
 })
 
@@ -24,7 +24,7 @@ const main = async () => {
       ['Waka               ', `<a href='waka'         >Various</a>`, 'WAKA         ', 'https://waka.finance'],
       ['Elk                ', `<a href='elk'          >Various</a>`, 'ELK          ', 'https://app.elk.finance'],
       ['Paintswap          ', `<a href='paintswap'    >Various</a>`, 'BRUSH        ', 'https://paintswap.finance'],
-      ['Tomb               ', `<a href='tomb'         >Various</a>`, 'TOMB         ', 'https://tomb.finance'],
+      ['Tomb               ', `<a href='tomb'         >Various</a>`, 'TOMB         ', 'https://tomb.com'],
       ['Shadow             ', `<a href='shadow'       >Various</a>`, 'SHADOW       ', 'https://shadowswap.app'],
       ['Borgswap           ', `<a href='borgswap'     >Various</a>`, 'KLING        ', 'https://klingftm.borgswap.exchange'],
       ['Opera              ', `<a href='opera'        >Various</a>`, 'OPERA        ', 'https://www.operaswap.finance'],
@@ -74,8 +74,7 @@ const main = async () => {
       ['WraithSwap         ', `<a href='wraith'       >Various</a>`, 'WRA          ', 'https://wraithswap.finance'],
       ['FoxyFinance        ', `<a href='foxyfinance'  >Various</a>`, 'FOXY         ', 'https://foxyfinance.co'],
       ['Eleven             ', `<a href='eleven'       >Various</a>`, 'Various      ', 'https://eleven.finance'],
-      ['Fantom Cougar      ', `<a href='cougar'       >Various</a>`, 'CGS          ', 'https://fantomapp.cougarswap.io',
-      ],
+      ['Fantom Cougar      ', `<a href='cougar'       >Various</a>`, 'CGS          ', 'https://fantomapp.cougarswap.io'],
       ['Meso Finance       ', `<a href='meso'         >Various</a>`, 'MESO         ', 'https://www.meso.finance'],
       ['Fantom Berry       ', `<a href='berry'        >Various</a>`, 'BERRY        ', 'https://fantomberry.world'],
       ['Procyon            ', `<a href='procyon'      >Various</a>`, 'PROCYON      ', 'https://procyonswap.com'],
@@ -154,7 +153,7 @@ const main = async () => {
       ['Vapedao            ', `<a href="vapedao"      >Various</a>`, 'vAPE         ', 'https://vapedao.finance'],
       ['Radial Finance     ', `<a href='radial'       >Various</a>`, 'RDL          ', 'https://www.radialfinance.com/farms'],
       ['Webribe            ', `<a href='webribe'      >Various</a>`, 'VBRB         ', 'https://webribe.me'],
-      ['0xDAO              ', `<a href='0xdao'        >Various</a>`, 'OXD          ', 'https://www.oxdao.fi'],
+      ['0xDAO *            ', `<a href='0xdao'        >Various</a>`, 'OXD          ', 'https://www.oxdao.fi'],
       ['Moneyrain Finance  ', `<a href='moneyrainfinance'>Various</a>`, 'MONEYRAIN ', 'https://defimoneyrain.com'],
       ['Sushi              ', `<a href='sushi'        >Various</a>`, 'SUSHI/FTM    ', 'https://app.sushi.com'],
       ['ViveLaBouje        ', `<a href='vivelabouje'  >Various</a>`, 'VIVE         ', 'https://vive.bouje.finance'],
@@ -169,7 +168,30 @@ const main = async () => {
       ['Scarface Finance   ', `<a href='scarface'     >Various</a>`, 'SSHARE / SCAR', 'https://scarface.finance'],
       ['The Don Finance    ', `<a href='thedon'       >Various</a>`, 'THEDON       ', 'https://thedon.finance'],
       ['GemMine            ', `<a href='gemmine'      >Various</a>`, 'GEMMINE      ', 'https://gemmine.defiwaterfall.com'],
-      ["Scream             ", `<a href='scream'       >Various</a>`,"SCREAM        ","https://scream.sh"]
+      ["Scream             ", `<a href='scream'       >Various</a>`, "SCREAM       ", "https://scream.sh"],
+      ["Ripae              ", `<a href='ripae'        >Various</a>`, "PAE / pFTM   ", "https://ripae.finance"],
+      ["HuntDefi           ", `<a href='huntdefi'     >Various</a>`, "HUNT         ", "https://ftm.huntdefi.com"],
+      ["Farmtom            ", `<a href='farmtom'      >Various</a>`, "FRTM         ", "https://farmtom.com"],
+      ['Partial Finance    ', `<a href='partialfinance'>Various</a>`, 'PARTIAL      ', 'https://partial.finance'],
+      ['Kyrios             ', `<a href='kyrios'       >Various</a>`, 'KYRIOS       ', 'https://kyrios.finance'],
+      ['fDoge              ', `<a href='fdoge'        >Various</a>`, 'SDOGE / FDOGE', 'https://fdoge.finance'],
+      ['2Doge              ', `<a href='2doge'        >Various</a>`, '2DOGE / 2SDOGE', 'https://2doge.finance'],
+      ["Pulsedao           ", `<a href='pulsedao'     >Various</a>`, "pSHARE / PLD ", "https://pulsedao.finance"],
+      ['Solidly            ', `<a href='solidly'      >Various</a>`, 'Various      ', 'https://solidly.exchange'],
+      ['Bastille De La Bouje', `<a href='bastilledelabouje'      >Various</a>`, 'Various      ', 'https://bastille.bouje.finance'],
+      ['pDollar            ', `<a href='pdollar'      >Various</a>`, 'PDO          ', 'https://pdo.partial.finance'],
+      ['Lavafall           ', `<a href='lavafall'     >Various</a>`, 'LAVAFALL     ', 'https://lava.defiwaterfall.com'],
+      ['WigoSwap           ', `<a href='wigoswap'     >Various</a>`, 'WIGO         ','https://wigoswap.io'],
+      ['SpadeFinance       ', `<a href='spadefinance' >Various</a>`, 'SPADE        ','https://spadefinance.farm'],
+      ['Fantasm Finance    ', `<a href="fantasm"      >Various</a>`, 'FSM          ','https://fantasm.finance'],
+      ['Zombi              ', `<a href='zombi'        >Various</a>`, 'ZOMBI        ', 'https://zombi.finance/'],
+      ['Zomb2              ', `<a href='zomb2'        >Various</a>`, 'ZOMB2        ', 'https://zomb2.finance/'],
+      ['LIFE               ', `<a href='life'         >Various</a>`, 'LIFE         ', 'https://lif3.exchange'],
+      ['JetMine            ', `<a href='jetmine'      >Various</a>`, 'JETMINE      ', 'https://jetmine.defiwaterfall.com'],
+      ['Hamster            ', `<a href='hamster'      >Various</a>`, 'HAM / HSHARE ', 'https://hamster.money'],
+      ['YieldWolf          ', `<a href='yieldwolf'    >Various</a>`, 'Various      ', 'https://yieldwolf.finance'],
+      ['Zomb Finance       ', `<a href='zombfinance'  >Various</a>`, 'ZOMB / ZSHARE', 'https://zombfinance.com'],
+      ['Lendly (Hundred Finance)', `<a href='lendly'  >Various</a>`, 'HND / WEVE   ', 'https://lendly.dashboard.hundred.finance']
     ],
   }
 

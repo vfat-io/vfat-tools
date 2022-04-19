@@ -3,7 +3,12 @@ const MetisTokens = [
     { "id": "metis-token", "symbol": "METIS", "contract": "0xdeaddeaddeaddeaddeaddeaddeaddeaddead0000"},
     { "id": "tether", "symbol": "USDT", "contract": "0xbb06dca3ae6887fabf931640f67cab3e3a16f4dc"},
     { "id": "weth", "symbol": "WETH", "contract": "0x420000000000000000000000000000000000000a"},
+    { "id": "dai", "symbol": "DAI", "contract": "0x4651b38e7ec14bb3db731369bfe5b08f2466bd0a"},
     { "id": "usd-coin", "symbol": "USDC", "contract": "0xea32a96608495e54156ae48931a7c20f0dcc1a21"},
+    { "id": "maia", "symbol": "MAIA", "contract": "0x72c232d56542ba082592dee7c77b1c6cfa758bcd"},
+    { "id": "tethys-finance", "symbol": "TETHYS", "contract": "0x69fdb77064ec5c84fa2f21072973eb28441f43f3"},
+    { "id": "binance-usd", "symbol": "BUSD", "contract": "0x12d84f1cfe870ca9c9df9785f8954341d7fbb249"},
+    { "id": "magic-internet-money", "symbol": "MIM", "contract": "0x44dd7c98885cd3086e723b8554a90c9cc4089c4c"},
   ];
 
   async function getMetisPrices() {

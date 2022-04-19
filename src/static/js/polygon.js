@@ -70,7 +70,7 @@ const main = async () => {
       ['Polygold            ',"", `<a href="polygold"        >Various</a>`, 'POLYGOLD     ', 'https://polygold.finance'],
       ['Polyswan            ',"", `<a href="polyswan"        >Various</a>`,'SWAN         ','https://www.polyswan.finance',],
       ['Polyion             ',"", `<a href="polyion"         >Various</a>`, 'LION         ', 'https://www.polyion.net'],
-      ['Eleven              ',"", `<a href="eleven"          >Various</a>`, 'ELE          ', 'https://eleven.finance'],
+      ['Eleven *            ',"", `<a href="eleven"          >Various</a>`, 'ELE          ', 'https://eleven.finance'],
       ['Pirate Dice         ',"", `<a href="piratedice"      >Various</a>`, 'BOOTY        ', 'http://piratedice.xyz'],
       ['PolyPingu           ',"", `<a href="polypingu"       >Various</a>`, 'PINGU        ', 'https://polypingu.finance'],
       ['Goldenbull          ',"", `<a href="goldenbull"      >Various</a>`,'GBULL        ','https://farms.goldenbull.finance',],
@@ -429,7 +429,12 @@ const main = async () => {
       ['Harvest             ',"",  `<a href="harvest"         >Various</a>`, 'Various      ','https://harvest.finance'],
       ['Beverage            ',"",  `<a href="beverage"        >Various</a>`, 'DRINK        ','https://matic.beverage.finance'],
       ['Unity               ',"",  `<a href="unity"           >Various</a>`, 'UNITY        ','https://unityfarm.org'],
-      ['Tower Finance       ',"",  `<a href="tower"           >Various</a>`, 'CUBE         ','https://app.towerfinance.io']
+      ['Tower Finance       ',"",  `<a href="tower"           >Various</a>`, 'CUBE         ','https://app.towerfinance.io'],
+      ['HuntDefi            ',"",  `<a href="huntdefi"        >Various</a>`, 'HUNT         ','https://polygon.huntdefi.com'],
+      ["Arth                ","", `<a href="arth"             >Various</a>`, "ARTH         ","https://arth.mahadao.com"],
+      ["GOGOcoin            ", "", `<a href="gogocoin"         >Various</a>`, "GOGO         ", "https://app.gogocoin.io"],
+      ['Opportunity         ', '', `<a href="opportunity"     >Various</a>`, 'OPT          ', 'https://opport.unityfarm.org'],
+      ['WOWswap             ',"",  `<a href="wowswap"         >Various</a>`, 'WOW          ','https://wowswap.io'],
     ],
   }
 
@@ -437,6 +442,3 @@ const main = async () => {
   document.getElementById('log').innerHTML += table + '<br />'
   hideLoading()
 }
-
-
-

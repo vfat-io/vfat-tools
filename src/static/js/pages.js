@@ -11,6 +11,7 @@ const main = async() => {
       ["1inch               ",`<a href="1inch/"             >Various</a>`,"1INCH     ","https://1inch.exchange/#/dao/farming"],
       ["Aave                ",`<a href="aave"               >Various</a>`,"stkAAVE   ","https://aave.com"],
       ["Aladdin             ",`<a href="ald/"               >Various</a>`,"ALD       ","https://app.aladdin.club"],
+      ["* Aladdin (Concentrator) *",`<a href="concentrator/">Various</a>`,"aCRV      ","https://concentrator.aladdin.club/#/vault"],
       ["Alchemix            ",`<a href="alcx/"              >Various</a>`,"ALCX      ","https://app.alchemix.fi/farms"],
       ["Alpha DEX           ",`<a href="alphadex/"          >Various</a>`,"DEX       ","https://kitten.finance"],
       ["Angle               ",`<a href="angle/"             >Various</a>`,"ANGLE     ","https://app.angle.money"],
@@ -26,6 +27,7 @@ const main = async() => {
       ["Cover Protocol      ",`<a href="cover/"             >Various</a>`,"Various   ","https://app.coverprotocol.com"],
       ["Cryptex             ",`<a href="cryptex"            >Various</a>`,"CTX       ","https://app.cryptex.finance"],
       ["Curve               ",`<a href="curve/"             >Various</a>`,"Various   ","https://curve.fi"],
+      ['DeFiner             ',`<a href="definer"            >Various</a>`,'FIN       ','https://app.definer.org'],
       ["DFX                 ",`<a href="dfx/"               >Various</a>`,"DFX       ","https://v0.dfx.finance/"],
       ["Dopex               ",`<a href="dopex/"             >Various</a>`,"DPX, rDPX ","https://app.dopex.io/farms"],
       ["DODO                ",`<a href="dodo/"              >Various</a>`,"DODO      ","https://app.dodoex.io"],
@@ -45,7 +47,7 @@ const main = async() => {
       ["Kyber               ",`<a href="kyber"              >Various</a>`,"KNC       ","http://dmm.exchange"],
       ["Launchpool          ",`<a href="lpool/"             >Various</a>`,"LPOOL     ","https://staking.launchpool.xyz/"],
       ["Lift.Kitchen        ",`<a href="liftkitchen/"       >Various</a>`,"LIFT      ","https://lift.kitchen"],
-      ["* Looksrare *       ",`<a href="looksrare/"         >Various</a>`,"LOOKS     ","https://looksrare.org"],
+      ["Looksrare           ",`<a href="looksrare/"         >Various</a>`,"LOOKS     ","https://looksrare.org"],
       ["Merit Circle        ",`<a href="meritcircle/"       >Various</a>`,"MC        ","https://swap.meritcircle.io"],
       ["MITH Cash           ",`<a href="mithcash/"          >Various</a>`,"MIS,MIC   ","https://mith.cash"],
       ["Optionroom          ",`<a href="optionroom"         >Various</a>`,"COURT     ","https://app.optionroom.finance"],
@@ -72,7 +74,6 @@ const main = async() => {
       ["Yearn               ",`<a href="yearn/"             >Various</a>`,"Various   ","https://yearn.finance"],
       ["Yam                 ",`<a href="yam/"               >YAM-ETH SLP</a>`,"YAM   ","https://yam.finance/farm"],
       ["yAxis               ",`<a href="yaxis/"             >Various</a>`,"yAxis     ","https://yaxis.io/farms"],
-      ['DeFiner             ',`<a href="definer"            >Various</a>`,'FIN       ','https://app.definer.org'],
     ]
   }
 

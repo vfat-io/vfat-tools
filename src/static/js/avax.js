@@ -16,7 +16,7 @@ const main = async() => {
         ["Pandaswap               ",`<a href="panda"            >Various</a>`,"BAMBOO       ","https://pandaswap.exchange"],
         ["Pefi                    ",`<a href="pefi"             >Various</a>`,"PEFI         ","https://penguinfinance.org"],
         ["Elk                     ",`<a href="elk"              >Various</a>`,"ELK          ","https://elk.finance"],
-        ["Snowball                ",`<a href="snowball"         >Various</a>`,"SNOB         ","https://snowball.network/earn"],
+        ["Snowball *              ",`<a href="snowball"         >Various</a>`,"SNOB         ","https://www.snowball.network"],
         ["Olive                   ",`<a href="olive"            >Various</a>`,"OLIVE        ","https://avax.olive.cash"],
         ["Lydia                   ",`<a href="lydia"            >Various</a>`,"LYD          ","https://www.lydia.finance"],
         ["Baguette                ",`<a href="baguette"         >Various</a>`,"BAG          ","https://app.baguette.exchange"],
@@ -91,7 +91,15 @@ const main = async() => {
         ["ThorusFi                ",`<a href="thorusfi"         >Various</a>`,"THO          ","https://thorus.fi"],
         ["Selenium                ",`<a href="selenium"         >Various</a>`,"SELENIUM     ","https://selenium.finance"],
         ["GMX                     ",`<a href="gmx"              >Various</a>`,"Various      ","https://gmx.io"],
-        ["HakuSwap                ",`<a href="hakuswap"         >Various</a>`,"HAKU         ","https://hakuswap.com"]
+        ["HakuSwap                ",`<a href="hakuswap"         >Various</a>`,"HAKU         ","https://hakuswap.com"],
+        ["HuntDefi                ",`<a href="huntdefi"         >Various</a>`,"HUNT         ","https://avax.huntdefi.com"],
+        ["Embr                    ",`<a href="embr"             >Various</a>`,"EMBR         ","https://app.embr.finance"],
+        ["Spectrevax              ",`<a href="spectrevax"       >Various</a>`,"SPECTA       ","https://avax.spectrefi.com"],
+        ["Zilla Finance           ",`<a href="zilla"            >Various</a>`,"ZSHARE / ZILLA","https://zillafinance.io"],
+        ["Krypton                 ",`<a href="krypton"          >Various</a>`,"KRYPTON      ","https://krypton.periodic.farm"],
+        ["Benqi                   ",`<a href="benqi"            >Various</a>`,"QI           ","https://benqi.fi"],
+        ["Beefy                   ",`<a href="beefy"            >Various</a>`,"BIFI         ","https://app.beefy.finance/#/avax"],
+        ["WOWswap                 ",`<a href="wowswap"          >Various</a>`,"WOW          ","https://wowswap.io"]
     ]
   }
 

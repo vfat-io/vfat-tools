@@ -428,7 +428,6 @@ const main = async() => {
       ["Deedee              ","", `<a href="deedee"        >Various</a>`,"DEEDEE           ","https://deedee.dexterlab.finance"],
       ["Scarab              ","", `<a href="scarab"        >Various</a>`,"SCARAB           ","https://scarab.farm"],
       ["Infinity            ","", `<a href="infinity"      >Various</a>`,"INF              ","https://infinity.space-defi.com"],
-      ["Halloween           ","", `<a href="soul"          >Various</a>`,"SOUL             ","https://halloweenswap.finance"],
       ["SpacePortDeFi       ","", `<a href="spaceport"     >Various</a>`,"STARSHIP         ","https://bsc.spaceportdefi.com"],
       ["Galena              ","", `<a href="galena"        >Various</a>`,"GAL              ","https://www.galenaswap.com"],
       ["SmokingCucumber     ","", `<a href="smokingcucumber">Various</a>`,"CCB             ","https://www.smokingcucumber.finance"],
@@ -571,7 +570,16 @@ const main = async() => {
       ["Too Farm            ","", `<a href="too"           >Various</a>`,"TFARM            ","https://too.farm"],
       ["The Animal Farm     ","", `<a href="theanimal"     >Various</a>`,"PIGS / DOGS      ","https://theanimal.farm"],
       ["Bourbon             ","", `<a href="bourbon"       >Various</a>`,"BSHARES / BOURBONCAKE","https://bourbondefi.com"],
-      ["NomiSwap            ","", `<a href="nomiswap"      >Various</a>`,"NMX              ","https://nomiswap.io"]
+      ["NomiSwap            ","", `<a href="nomiswap"      >Various</a>`,"NMX              ","https://nomiswap.io"],
+      ["Newspace            ","", `<a href="newspace"      >Various</a>`,"NEWSPACE         ","https://newspace.finance"],
+      ["HuntDefi            ","", `<a href="huntdefi"      >Various</a>`,"HUNT             ","https://bsc.huntdefi.com"],
+      ["Ygg                 ","", `<a href="ygg"           >Various</a>`,"YSHARE / YGG     ","https://www.ygg.money"],
+      ["Arth                ","", `<a href="arth"          >Various</a>`,"ARTH             ","https://arth.mahadao.com"],
+      ["Xray Swap           ","", `<a href="xrayswap"      >Various</a>`,"XRAY             ","https://xrayswap.com"],
+      ["Quartz.defi         ","", `<a href="quartzdefi"    >Various</a>`, "AMES / ASHARE  ","https://bsc-quartz-defi.app/"],
+      ["WOWswap             ","", `<a href="wowswap"       >Various</a>`,"WOW              ","https://wowswap.io"],
+      ["Atom Defi           ","",`<a href="atomdefi"       >Various</a>`,"ATOM             ","https://atomdefi.app"],
+      ["Clay Swap           ","",`<a href="clayswap"       >Various</a>`,"CLAY             ","https://clayswap.finance"]
     ]}
 
   let table = new AsciiTable().fromJSON(tableData);

@@ -15,7 +15,7 @@ const main = async() => {
       ["Bcharity                 ", `<a href="bcharity"      >Various</a>`,"GIVE        ","https://moongive.netlify.app"],
       ["MoonLake                 ", `<a href="moonlake"      >Various</a>`,"MOONLAKE    ","https://moonlake.finance"],
       ["FoxyFinance              ", `<a href="foxy"          >Various</a>`,"FOXY        ","https://moon.foxyfinance.co"],
-      ["1Swap                    ", `<a href="1swap"         >Various</a>`,"1SWAP       ","https://1swap.fi"],
+      ["1Beam                    ", `<a href="1beam"         >Various</a>`,"1SWAP       ","https://1beam.io"],
       ["ApolloSwap               ", `<a href="apollo"        >Various</a>`,"APOLLO      ","https://apolloswap.farm"],
       ["MoonWhale                ", `<a href="moonwhale"     >Various</a>`,"WHALE       ","https://whale.moonlake.finance"],
       ["LandSwap                 ", `<a href="landswap"      >Various</a>`,"LAND        ","https://landswap.app"],
@@ -31,7 +31,8 @@ const main = async() => {
       ["Athena                   ", `<a href="athena"        >Various</a>`,"OSHARE      ","https://www.athenamoney.org"],
       ["Neku                     ", `<a href="neku"          >Various</a>`,"NEKU        ","https://neku.io"],
       ["MoonSwap                 ", `<a href="moonswap"      >Various</a>`,"MOON        ","https://moonswap.tech"],
-      ["Moonwell                 ", `<a href="moonwell"      >Various</a>`,"APOLLO      ","https://moonwell.fi"]
+      ["Moonwell                 ", `<a href="moonwell"      >Various</a>`,"APOLLO      ","https://moonwell.fi"],
+      ["Zenlink                  ", `<a href="zenlink"       >Various</a>`,"Various     ","https://dex.zenlink.pro"]
     ]
   }
 

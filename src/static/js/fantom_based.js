@@ -31,11 +31,11 @@ async function main() {
   const epochsPerDay = 4;
   const maxSupplyIncrease = await getExpansion(App);
   const decimals = 18;
-  const ratio = 1.0;
+  const ratio = 0.8;
   const targetMantissa = 12;
 
   let bShareRewardPool = await loadRewardPoolContract(App, tokens, prices, bShareRewardPoolContract, BSHARE_REWARD_POOL_ADDR, BSHARE_REWARD_POOL_ABI, "BSHARE",
-    "bshare", "pendingShare", 5, startTime, currentTime);
+    "bshare", "pendingShare", 6, startTime, currentTime);
 
   _print('-------------------------------------------------')
   _print('')
@@ -238,9 +238,9 @@ async function getExpansion(App) {
   } else if (circulatingSupply < 5000000) {
     return 0.02
   } else if (circulatingSupply < 10000000) {
-    return 0.01
+    return 0.015
   } else {
-    return 0.005
+    return 0.01
   }
 }
 
