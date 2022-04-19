@@ -17,7 +17,7 @@ $(function() {
     const tokens = {};
     const prices = await getFantomPrices();
     await load2ombChefContract(App, tokens, prices, SHARES_CHEF, SHARES_CHEF_ADDR, SHARES_CHEF_ABI, rewardTokenTicker,
-      "bshare", null, rewardsPerWeek, "pendingShare");
+      "ares", null, rewardsPerWeek, "pendingShare");
       hideLoading();
     }
 
@@ -26,7 +26,7 @@ async function load2ombChefContract(App, tokens, prices, chef, chefAddress, chef
   deathPoolIndices, claimFunction) {
   const chefContract = chef ?? new ethers.Contract(chefAddress, chefAbi, App.provider);
 
-  const poolCount = 3
+  const poolCount = 2
   const totalAllocPoints = await chefContract.totalAllocPoint();
 
   _print(`<a href='https://ftmscan.com/address/${chefAddress}' target='_blank'>Staking Contract</a>`);
