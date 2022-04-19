@@ -50,7 +50,7 @@ const main = async() => {
       ["Vesta               ",""                                                                                               , `<a href="/arbitrum/vesta"       >Various</a>`,"VSTA               ","https://vestafinance.xyz"],
       ["Yearn               ",""                                                                                               , `<a href="/arbitrum/yearn"       >Various</a>`,"Various            ","https://yearn.finance"],
       ["Stargate            ",""                                                                                               , `<a href="/arbitrum/stargate"    >Various</a>`,"STG                ","https://stargate.finance"],
-      ["Monox Finance            ",""                                                                                               , `<a href="/arbitrum/monox"    >Various</a>`,"vUNIT                ","https://monox.finance"],
+      ["Monox Finance       ",""                                                                                               , `<a href="/arbitrum/monox"       >Various</a>`,"vUNIT              ","https://monox.finance"],
     ]
   }
 
