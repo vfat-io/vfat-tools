@@ -7,7 +7,9 @@ const JUL_STAKING_ABI = [{"inputs":[{"internalType":"address","name":"_owner","t
 const Pools = [
     "0x7699d230Ba47796fc2E13fba1D2D52Ecb0318c33",
     "0xe8b16cab47505708a093085926560a3eb32584b8",
-    "0x6398c73761a802a7db8f6418ef0a299301bc1fb0"
+    "0x6398c73761a802a7db8f6418ef0a299301bc1fb0",
+    "0x41efe9AD56D328449439c330b327Ca496C3e38BB",
+    "0x1599a0A579aD3Fc86DBe6953dfEc04eb365dd8e6"
 ].map(a => {
     return {
         address: a,
