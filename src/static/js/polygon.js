@@ -438,10 +438,8 @@ const main = async () => {
       ['Stargate            ',"",  `<a href="stargate"        >Various</a>`, 'STG          ','https://stargate.finance'],
       ['Gains Network       ',"",  `<a href="gainsnetwork"    >Various</a>`, 'Various      ','https://gainsnetwork.io'],
       ['Hundred             ',"",  `<a href="hundred"         >Various</a>`, 'HND          ','https://hundred.finance'],
-      ["Monox Finance       ","", `<a href="monox"         >Various</a>`,"vUNIT            ", "https://monox.finance"],
       ['PolyDogeDAO         ',"",  `<a href="polydogedao"     >Various</a>`, 'PDSHARE / PDDOLLAR','https://polydogedao.net'],
-      ["Monox Finance       ","", `<a href="monox"         >Various</a>`,"vUNIT            ", "https://monox.finance"],
-      ['PolyDogeDAO         ',"",  `<a href="polydogedao"     >Various</a>`, 'PDSHARE / PDDOLLAR','https://polydogedao.net'],
+      ["Monox Finance       ","",  `<a href="monox"           >Various</a>`, "vUNIT        ", "https://monox.finance"],
     ],
   }
 
