@@ -108,7 +108,7 @@ const main = async () => {
       ["Alchemydao                   ", `<a href="../alchemydao"         >Various</a>`, "ALCH               ", "https://alchemydao.com"],
       ["Centaur                      ", `<a href="../centaur"            >Various</a>`, "WHEY               ", "https://cntr.finance"],
       ["EPNS                         ", `<a href="../epns"               >Various</a>`, "PUSH               ", "https://incentives.epns.io"],
-      ["Tornado                      ", `<a href="../tornado"            >Various</a>`, "TORN               ", "https://app.tornado.cash"],
+      ["Tornado                      ", `<a href="../tornado"            >Various</a>`, "TORN               ", "https://tornado.cash"],
       ["Cyclone                      ", `<a href="../cyclone"            >Various</a>`, "CYC                ", "https://cyclone.xyz/eth"],
       ["Elena                        ", `<a href="../elena"              >Various</a>`, "ELENA              ", "https://app.elena.finance"],
       ["Dogen                        ", `<a href="../dogen"              >Various</a>`, "DOGEN              ", "https://dogen.finance"],
