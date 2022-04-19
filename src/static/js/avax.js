@@ -105,7 +105,7 @@ const main = async() => {
         ["BanksyDAO               ",`<a href="banksydao"        >Various</a>`,"BanksyDao    ","https://banksydao.finance"],
         ["Vector Finance          ",`<a href="vector"           >Various</a>`,"VTX          ","https://vectorfinance.io"],
         ["Radium Finance          ",`<a href="radium"           >Various</a>`,"RD           ","https://radium.periodic.farm"]
-
+        ["Monox Finance          ",`<a href="monox"           >Various</a>`,"vUNIT          ","https://monox.finance"]
     ]
   }
 
