@@ -66,7 +66,6 @@ async function loadBntContract(App, chef, chefAddress, chefAbi, rewardTokenTicke
   }
 
   const poolPrices = poolInfos.map(poolInfo => poolInfo?.poolToken ? getPoolPrices(tokens, prices, poolInfo.poolToken) : undefined);
-
   _print("Finished reading smart contracts.\n");
 
   let aprs = []
@@ -110,6 +109,9 @@ function printBntPool(App, chefAbi, chefAddr, prices, tokens, poolInfo, poolInde
   const rewardPrice = getParameterCaseInsensitive(prices, rewardTokenAddress)?.usd;
   const staked_tvl = sp?.staked_tvl ?? poolPrices.staked_tvl;
   _print_inline(`Program ID : ${poolIndex+1} - `);
+  /*if(poolPrices.stakeTokenTicker == "bnBNT"){
+    poolPrices.price = getParameterCaseInsensitive(prices,  "0x1f573d6fb3f13d689ff844b4ce37794d79a7ff1c");
+  }*/
   poolPrices.print_price(chain);
   sp?.print_price(chain);
   const apr = printAPR(rewardTokenTicker, rewardPrice, poolRewardsPerWeek, poolPrices.stakeTokenTicker,
