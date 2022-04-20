@@ -586,7 +586,8 @@ const main = async() => {
       ["Troy Defi           ","",`<a href="troydefi"       >Various</a>`,"TROY             ","https://troydefi.com"],
       ["Goldman             ","",`<a href="goldman"        >Various</a>`,"GOLD             ","https://goldman.farm"],
       ["DotDot              ","",`<a href="dotdot"         >Various</a>`,"DDD              ","https://dotdot.finance"],
-      ["Monox Finance       ","", `<a href="monox"         >Various</a>`,"vUNIT            ", "https://monox.finance"],
+      ["Monox Finance       ","", `<a href="monox"         >Various</a>`,"vUNIT            ","https://monox.finance"],
+      ["Printer Financial   ","", `<a href="printer_financial">Various</a>`,"INK           ","https://bsc.printer.financial"]
     ]}
 
   let table = new AsciiTable().fromJSON(tableData);
