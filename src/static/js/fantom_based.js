@@ -93,7 +93,6 @@ async function loadRewardPoolContract(
 
   let aprs = [];
   for (i = 0; i < poolCount; i++) {
-    if (i === 2) continue; // Skip team pool (made for dev allocation)
     const apr = printBasedPool(App, BSHARE_REWARD_POOL_ABI, contractAddress, prices, tokens, poolInfos[i], i,
       poolPrices[i], totalAllocPoints, rewardsPerWeek, rewardTokenTicker, rewardTokenAddress, pendingRewardsFunction, "fantom")
     aprs.push(apr);
