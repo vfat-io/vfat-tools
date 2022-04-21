@@ -14,8 +14,6 @@ consoleInit(main)
     const BNT_CHEF = new ethers.Contract(BNT_CHEF_ADDR, BNT_CHEF_ABI, App.provider);
     const rewardTokenAddress = "0x1F573D6Fb3F13d689FF844B4cE37794d79a7FF1C";
 
-    _print("Please use the official site in order to stake and unstake your funds.\n")
-
     await loadBntContract(App, BNT_CHEF, BNT_CHEF_ADDR, BNT_CHEF_ABI, "BNT", rewardTokenAddress, [0]);
 
     hideLoading();
@@ -109,9 +107,6 @@ function printBntPool(App, chefAbi, chefAddr, prices, tokens, poolInfo, poolInde
   const rewardPrice = getParameterCaseInsensitive(prices, rewardTokenAddress)?.usd;
   const staked_tvl = sp?.staked_tvl ?? poolPrices.staked_tvl;
   _print_inline(`Program ID : ${poolIndex+1} - `);
-  /*if(poolPrices.stakeTokenTicker == "bnBNT"){
-    poolPrices.price = getParameterCaseInsensitive(prices,  "0x1f573d6fb3f13d689ff844b4ce37794d79a7ff1c");
-  }*/
   poolPrices.print_price(chain);
   sp?.print_price(chain);
   const apr = printAPR(rewardTokenTicker, rewardPrice, poolRewardsPerWeek, poolPrices.stakeTokenTicker,
@@ -128,11 +123,83 @@ function printBntContractLinks(App, chefAbi, chefAddr, poolIndex, poolAddress,
     rewardTokenTicker, stakeTokenTicker, unstaked, userStaked, pendingRewardTokens, fixedDecimals,
     claimFunction, rewardTokenPrice, chain, depositFee, withdrawFee) {
   fixedDecimals = fixedDecimals ?? 2;
+  const approveAndStake = async function() {
+    return bntContract_stake(chefAbi, chefAddr, poolIndex, poolAddress, App)
+  }
+  const unstake = async function() {
+    return bntContract_unstake(chefAbi, chefAddr, poolIndex, App)
+  }
   const claim = async function() {
     return bntContract_claim(chefAbi, chefAddr, poolIndex, App, claimFunction)
   }
+  _print_link(`Stake ${unstaked.toFixed(fixedDecimals)} ${stakeTokenTicker}`, approveAndStake)
+  _print_link(`Unstake ${userStaked.toFixed(fixedDecimals)} ${stakeTokenTicker}`, unstake)
   _print_link(`Claim ${pendingRewardTokens.toFixed(fixedDecimals)} ${rewardTokenTicker} ($${formatMoney(pendingRewardTokens*rewardTokenPrice)})`, claim)
   _print("");
+}
+
+const bntContract_stake = async function(chefAbi, chefAddress, poolIndex, poolTokenAddr, App) {
+  const signer = App.provider.getSigner()
+
+  const STAKING_TOKEN = new ethers.Contract(poolTokenAddr, BANCOR_POOL_ABI, signer)
+  const CHEF_CONTRACT = new ethers.Contract(chefAddress, chefAbi, signer)
+
+  const currentTokens = await STAKING_TOKEN.balanceOf(App.YOUR_ADDRESS)
+  const allowedTokens = await STAKING_TOKEN.allowance(App.YOUR_ADDRESS, chefAddress)
+
+  let allow = Promise.resolve()
+
+  if (allowedTokens / 1e18 < currentTokens / 1e18) {
+    showLoading()
+    allow = STAKING_TOKEN.approve(chefAddress, ethers.constants.MaxUint256)
+      .then(function(t) {
+        return App.provider.waitForTransaction(t.hash)
+      })
+      .catch(function() {
+        hideLoading()
+        alert('Try resetting your approval to 0 first')
+      })
+  }
+
+  if (currentTokens / 1e18 > 0) {
+    showLoading()
+    allow
+      .then(async function() {
+          CHEF_CONTRACT.join(poolIndex+1, currentTokens, {gasLimit: 500000})
+          .then(function(t) {
+            App.provider.waitForTransaction(t.hash).then(function() {
+              hideLoading()
+            })
+          })
+          .catch(function() {
+            hideLoading()
+            _print('Something went wrong.')
+          })
+      })
+      .catch(function() {
+        hideLoading()
+        _print('Something went wrong.')
+      })
+  } else {
+    alert('You have no tokens to stake!!')
+  }
+}
+
+const bntContract_unstake = async function(chefAbi, chefAddress, poolIndex, App) {
+  const signer = App.provider.getSigner()
+  const CHEF_CONTRACT = new ethers.Contract(chefAddress, chefAbi, signer)
+  const currentStakedAmount = await CHEF_CONTRACT.providerStake(App.YOUR_ADDRESS, poolIndex+1) / 10 ** poolToken.decimals;
+
+  if (currentStakedAmount / 1e18 > 0) {
+    showLoading()
+    CHEF_CONTRACT.leave(poolIndex+1, currentStakedAmount, {gasLimit: 500000})
+      .then(function(t) {
+        return App.provider.waitForTransaction(t.hash)
+      })
+      .catch(function() {
+        hideLoading()
+      })
+  }
 }
 
 const bntContract_claim = async function(chefAbi, chefAddress, poolIndex, App) {
