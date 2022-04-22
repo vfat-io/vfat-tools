@@ -15,7 +15,8 @@ const CronosTokens = [
   { "id": "fantom", "symbol": "FTM", "contract": "0xB44a9B6905aF7c801311e8F4E76932ee959c663C"},
   { "id": "avalanche-2", "symbol": "AVAX", "contract": "0x765277EebeCA2e31912C9946eAe1021199B39C61"},
   { "id": "crow-token", "symbol": "CROW", "contract": "0x285c3329930a3fd3c7c14bc041d3e50e165b1517"},
-  { "id": "cronaswap", "symbol": "CRONA", "contract": "0xadbd1231fb360047525bedf962581f3eee7b49fe"}
+  { "id": "cronaswap", "symbol": "CRONA", "contract": "0xadbd1231fb360047525bedf962581f3eee7b49fe"},
+  { "id": "savanna", "symbol": "SVN", "contract": "0x654bac3ec77d6db497892478f854cf6e8245dca9"}
 ];
 
 async function getCronosPrices() {

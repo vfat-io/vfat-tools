@@ -29,7 +29,8 @@ const ArbitrumTokens = [
     { "id": "pickle-finance", "symbol": "PICKLE", "contract": "0x965772e0E9c84b6f359c8597C891108DcF1c5B1A"},
     { "id": "saddle-finance", "symbol": "SDL", "contract": "0x75c9bc761d88f70156daf83aa010e84680baf131"},
     { "id": "frax", "symbol": "FRAX", "contract": "0x17FC002b466eEc40DaE837Fc4bE5c67993ddBd6F"},
-    { "id": "governance-ohm", "symbol": "gOHM", "contract": "0x8D9bA570D6cb60C7e3e0F31343Efe75AB8E65FB1"}
+    { "id": "governance-ohm", "symbol": "gOHM", "contract": "0x8D9bA570D6cb60C7e3e0F31343Efe75AB8E65FB1"},
+    { "id": "stargate-finance", "symbol": "STG", "contract": "0x6694340fc020c5E6B96567843da2df01b2CE1eb6"}
 ];
 
 const uniSqrtPrice = (tokenDecimals, sqrtRatioX96) => {

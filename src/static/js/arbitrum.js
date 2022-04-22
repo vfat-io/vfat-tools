@@ -33,7 +33,7 @@ const main = async() => {
       ["Hundred             ",""                                                                                               , `<a href="/arbitrum/hundred"     >Various</a>`,"HND                ","https://hundred.finance"],
       ["Polarbi             ",""                                                                                               , `<a href="/arbitrum/polarbi"     >Various</a>`,"POLAR              ","https://www.polarbi.net"],
       ["GMArbitrum          ",""                                                                                               , `<a href="/arbitrum/gmarb"       >Various</a>`,"GM                 ","https://gmarb.finance"],
-      ["Swapr *             ",""                                                                                               , `<a href="/arbitrum/swapr"       >Various</a>`,"SWPR               ","https://swapr.eth.link"],
+      ["Swapr               ",""                                                                                               , `<a href="/arbitrum/swapr"       >Various</a>`,"SWPR               ","https://swapr.eth.link"],
       ["Dopex               ",""                                                                                               , `<a href="/arbitrum/dopex"       >Various</a>`,"DPX, rDPX          ","https://app.dopex.io/farms"],
       ["Beefy               ",""                                                                                               , `<a href="/arbitrum/beefy"       >Various</a>`,"Various            ","https://www.beefy.finance/Arbitrum"],
       ["Curve               ",""                                                                                               , `<a href="/arbitrum/curve"       >Various</a>`,"CRV                ","https://arbitrum.curve.fi"],
@@ -48,7 +48,9 @@ const main = async() => {
       ["Arbiz               ",""                                                                                               , `<a href="/arbitrum/arbiz"       >Various</a>`,"ARBIZ              ","https://farm.arbiz.io"],
       ["JonesDAO            ",""                                                                                               , `<a href="/arbitrum/jones"       >Various</a>`,"JONES              ","https://jonesdao.io/farms"],
       ["Vesta               ",""                                                                                               , `<a href="/arbitrum/vesta"       >Various</a>`,"VSTA               ","https://vestafinance.xyz"],
-      ["Yearn               ",""                                                                                               , `<a href="/arbitrum/yearn"       >Various</a>`,"Various            ","https://yearn.finance"]
+      ["Yearn               ",""                                                                                               , `<a href="/arbitrum/yearn"       >Various</a>`,"Various            ","https://yearn.finance"],
+      ["Stargate            ",""                                                                                               , `<a href="/arbitrum/stargate"    >Various</a>`,"STG                ","https://stargate.finance"],
+      ["Monox Finance       ",""                                                                                               , `<a href="/arbitrum/monox"       >Various</a>`,"vUNIT              ","https://monox.finance"],
     ]
   }
 

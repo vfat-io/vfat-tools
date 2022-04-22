@@ -34,7 +34,7 @@ const main = async () => {
       ["HarmoNYAN",              "",`<a href='harmonyan'>Various</a>`,      "HNYAN",         "https://harmonyan.one"],
       ["BossSwap",               "",`<a href='bossswap'>Various</a>`,       "BOSS",          "https://www.bossswap.finance"],
       ["ParadiseFi",             "","<a href='paradisefi'>Various</a>",     "EDEN",          "https://paradisefi.io"],
-      ["Elk *",                  "",`<a href='elk'>Various</a>`,            "ELK",           "https://elk.finance"],
+      ["Elk",                    "",`<a href='elk'>Various</a>`,            "ELK",           "https://elk.finance"],
       ["Eggtart",                "",`<a href='eggtart'>Various</a>`,        "EGGT",          "https://eggtartswap.com"],
       ["OpenSwap",               "",`<a href='openx'>Various</a>`,          "OpenX",         "https://app.openswap.one"],
       ["Fool",                   "",`<a href='fool'>Various</a>`,           "FOOL",          "https://lootswap.finance/guilds/fool"],
@@ -51,7 +51,8 @@ const main = async () => {
       ["Comfy Money",            "",`<a href='comfymoney'>Various</a>`,     "COMFY & CSHARE","https://comfy.money"],
       ["Quartz Defi",            "",`<a href='quartzdefi'>Various</a>`,     "QUARTZ",        "https://quartz-defi.one"],
       ["HolyGrail",              "",`<a href='holygrail'>Various</a>`,      "HLY",           "https://holygrail.one"],
-      ["Tranquil",               "",`<a href='tranquil'>Various</a>`,       "TRANQ",         "https://app.tranquil.finance"]
+      ["Tranquil",               "",`<a href='tranquil'>Various</a>`,       "TRANQ",         "https://app.tranquil.finance"],
+      ["Printer Financial",      "",`<a href='printer'>Various</a>`,        "INK",           "https://harmony.printer.financial"]
     ]
   }
 

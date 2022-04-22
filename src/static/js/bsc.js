@@ -10,7 +10,7 @@ const main = async() => {
     "rows": [
       ["Whale Loans         ",`<a href="https://twitter.com/MCNVentures/status/1482936116374564866?cxt=HHwWhMDTkc-iuZQpAAAA" target="_blank" class="mcn-reviewed">REVIEW</a>`, `<a href="whaleloans"         >Various</a>`,"HUMP             ","https://www.whale.loans"],
       ["Space               ",`<a href="https://twitter.com/MCNVentures/status/1442278437805170691?s=20" target="_blank" class="mcn-reviewed">REVIEW</a>`,                     `<a href="space"              >Various</a>`,"SPACE            ","https://farm.space"],
-      ["Pancake             ","", `<a href="pancake"       >Various</a>`,"CAKE             ","https://pancakeswap.finance"],
+      ["Pancake *           ","", `<a href="pancake"       >Various</a>`,"CAKE             ","https://pancakeswap.finance"],
       ["Apeswap             ","", `<a href="apeswap"       >Various</a>`,"BANANA           ","https://apeswap.finance"],
       ["Autofarm            ","", `<a href="autofarm"      >Various</a>`,"AUTOFARM         ","https://autofarm.network"],
       ["Kyber               ","", `<a href="kyber"         >Various</a>`,"KNC              ","https://dmm.exchange"],
@@ -559,7 +559,6 @@ const main = async() => {
       ["Bag Finance         ","", `<a href="bag"           >Various</a>`,"BGLD             ","https://app.thisistheway.finance"],
       ["Dibs                ","", `<a href="dibs"          >Various</a>`,"DSHARE/DIBS      ","https://www.dibs.money"],
       ["UFX                 ","", `<a href="ufx"           >Various</a>`,"UFX              ","https://app.unitedfarmers.finance/farms"],
-      ["UFGRAIN             ","", `<a href="ufgrain"       >Various</a>`,"UFGRAIN          ","https://app.unitedfarmers.finance/farms"],
       ["Tokyo Swap          ","", `<a href="tokyoswap"     >Various</a>`,"TOKYO            ","https://www.tokyoswap.finance"],
       ["Latte Swap          ","", `<a href="latteswap"     >Various</a>`,"LATTE            ","https://app.latteswap.com"],
       ["The Manor           ","", `<a href="manor"         >Various</a>`,"REV              ","https://themanor.farm"],
@@ -576,10 +575,20 @@ const main = async() => {
       ["Ygg                 ","", `<a href="ygg"           >Various</a>`,"YSHARE / YGG     ","https://www.ygg.money"],
       ["Arth                ","", `<a href="arth"          >Various</a>`,"ARTH             ","https://arth.mahadao.com"],
       ["Xray Swap           ","", `<a href="xrayswap"      >Various</a>`,"XRAY             ","https://xrayswap.com"],
-      ["Quartz.defi         ","", `<a href="quartzdefi"    >Various</a>`, "AMES / ASHARE  ","https://bsc-quartz-defi.app/"],
+      ["Quartz.defi         ","", `<a href="quartzdefi"    >Various</a>`, "AMES / ASHARE   ","https://bsc-quartz-defi.app/"],
       ["WOWswap             ","", `<a href="wowswap"       >Various</a>`,"WOW              ","https://wowswap.io"],
       ["Atom Defi           ","",`<a href="atomdefi"       >Various</a>`,"ATOM             ","https://atomdefi.app"],
-      ["Clay Swap           ","",`<a href="clayswap"       >Various</a>`,"CLAY             ","https://clayswap.finance"]
+      ["Clay Swap           ","",`<a href="clayswap"       >Various</a>`,"CLAY             ","https://clayswap.finance"],
+      ["Stargate            ","",`<a href="stargate"       >Various</a>`,"STG              ","https://stargate.finance"],
+      ["LowCost Swap        ","",`<a href="lowcostswap"    >Various</a>`,"LOWCOST          ","https://lowcostswap.com"],
+      ["Rubik               ","",`<a href="rubik"          >Various</a>`,"RUBIK            ","https://rubik.farm"],
+      ["Sphere Swap         ","",`<a href="sphereswap"     >Various</a>`,"SPHERE           ","https://sphereswap.com"],
+      ["Outerring           ","",`<a href="outerring"      >Various</a>`,"Various          ","https://dapp.outerringmmo.com"],
+      ["Troy Defi           ","",`<a href="troydefi"       >Various</a>`,"TROY             ","https://troydefi.com"],
+      ["Goldman             ","",`<a href="goldman"        >Various</a>`,"GOLD             ","https://goldman.farm"],
+      ["DotDot              ","",`<a href="dotdot"         >Various</a>`,"DDD              ","https://dotdot.finance"],
+      ["Monox Finance       ","", `<a href="monox"         >Various</a>`,"vUNIT            ","https://monox.finance"],
+      ["Printer Financial   ","", `<a href="printer_financial">Various</a>`,"INK           ","https://bsc.printer.financial"]
     ]}
 
   let table = new AsciiTable().fromJSON(tableData);

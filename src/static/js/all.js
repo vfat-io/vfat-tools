@@ -108,7 +108,7 @@ const main = async () => {
       ["Alchemydao                   ", `<a href="../alchemydao"         >Various</a>`, "ALCH               ", "https://alchemydao.com"],
       ["Centaur                      ", `<a href="../centaur"            >Various</a>`, "WHEY               ", "https://cntr.finance"],
       ["EPNS                         ", `<a href="../epns"               >Various</a>`, "PUSH               ", "https://incentives.epns.io"],
-      ["Tornado                      ", `<a href="../tornado"            >Various</a>`, "TORN               ", "https://app.tornado.cash"],
+      ["Tornado                      ", `<a href="../tornado"            >Various</a>`, "TORN               ", "https://tornado.cash"],
       ["Cyclone                      ", `<a href="../cyclone"            >Various</a>`, "CYC                ", "https://cyclone.xyz/eth"],
       ["Elena                        ", `<a href="../elena"              >Various</a>`, "ELENA              ", "https://app.elena.finance"],
       ["Dogen                        ", `<a href="../dogen"              >Various</a>`, "DOGEN              ", "https://dogen.finance"],
@@ -173,6 +173,9 @@ const main = async () => {
       ["Vader                        ", `<a href="../vader/"             >Various</a>`, "VADER              ", "https://www.vaderprotocol.app"],
       ["WOWswap                      ", `<a href="../wowswap/"           >Various</a>`,"WOW                 ", "https://wowswap.io"],
       ["Aladdin (Concentrator)       ", `<a href="../concentrator/"      >Various</a>`,"aCRV                ", "https://concentrator.aladdin.club/#/vault"],
+      ["Stargate                     ", `<a href="../stargate/"          >Various</a>`,"STG                 ", "https://stargate.finance"],
+      ["Backd                        ", `<a href="../backd/"             >Various</a>`,"                    ", "https://backd.fund"],
+      ["Jpegd                        ", `<a href="../jpegd/"             >Various</a>`,"JPEG                ", "https://jpegd.io"]
     ]
   }
 

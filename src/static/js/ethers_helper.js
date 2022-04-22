@@ -33,6 +33,9 @@ const pageNetwork = function() {
   if (network.toLowerCase() === 'polygon') {
     return window.NETWORKS.POLYGON
   }
+  if (network.toLowerCase() === 'dfk') {
+    return window.NETWORKS.DFK
+  }
   if (network.toLowerCase() === 'okex') {
     return window.NETWORKS.OKEX
   }
@@ -47,6 +50,9 @@ const pageNetwork = function() {
   }
   if (network.toLowerCase() === 'fantom') {
     return window.NETWORKS.FANTOM
+  }
+  if (network.toLowerCase() === 'astar') {
+    return window.NETWORKS.ASTAR
   }
   if (network.toLowerCase() === 'cronos') {
     return window.NETWORKS.CRONOS
@@ -2037,6 +2043,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
   else if (pool.symbol.includes("sAMM")) stakeTokenTicker += " sAMM";
   else if (pool.symbol.includes("Wigo-LP")) stakeTokenTicker += " Wigo-LP";
   else if (pool.symbol.includes("DXS")) stakeTokenTicker += " DXS-LP";
+  else if (pool.symbol.includes("HAUS-LP")) stakeTokenTicker += " HAUS-LP";
   else if (pool.symbol.includes("HBLP")) stakeTokenTicker += " Huckleberry LP";
   else if (pool.symbol.includes("BLP")) stakeTokenTicker += " BLP";
   else if (pool.symbol.includes("BEAM-LP")) stakeTokenTicker += " BEAM-LP";
@@ -2184,6 +2191,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
               pool.name.includes("OperaSwap") ?  `https://www.operaswap.finance/` :
               pool.symbol.includes("SPIRIT") ?  `https://swap.spiritswap.finance/#/swap` :
               pool.symbol.includes("spLP") ?  `https://info.spookyswap.finance/pair/${pool.address}` :
+              pool.symbol.includes("HAUS-LP") ?  `https://app.next-gen.finance/info/pool/${pool.address}` :
               pool.symbol.includes("Lv1") ?  `https://info.steakhouse.finance/pair/${pool.address}` :
               pool.symbol.includes("JLP") ?  `https://cchain.explorer.avax.network/address/${pool.address}` :
               pool.symbol.includes("ELP") ?  `https://app.elk.finance/#/swap` :
@@ -2212,7 +2220,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
               pool.symbol.includes("JEWEL-LP") ? `https://explorer.harmony.one/address/${pool.address}`:
               pool.symbol.includes("VVS-LP") ?  `https://vvs.finance/info/farm/${pool.address}` :
               pool.symbol.includes("CNO-LP") ?  `https://chronoswap.org/info/pool/${pool.address}` :
-              pool.symbol.includes("TLP") && !pool.name.includes("Thorus LP") ?  `https://explorer.mainnet.aurora.dev/address/${pool.address}` :
+              pool.symbol.includes("TLP") && !pool.name.includes("Thorus LP") ?  `https://aurorascan.dev/address/${pool.address}` :
               pool.symbol.includes("TLP") && !pool.name.includes("Thorus LP") ?  `https://snowtrace.io/address/${pool.address}` :
               pool.symbol.includes("Crona-LP") ?  `https://app.cronaswap.org/info/${pool.address}` : //wait for real version
               pool.symbol.includes("Genesis-LP") ?  `https://app.cronaswap.org/info/${pool.address}` : //wait for real version
@@ -2291,6 +2299,11 @@ function getUniPrices(tokens, prices, pool, chain="eth")
             `https://swapr.eth.link/#/add/${t0address}/${t1address}`,
             `https://swapr.eth.link/#/remove/${t0address}/${t1address}`,
             `https://swapr.eth.link/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+          ] :
+          pool.symbol.includes("HAUS-LP") ? [
+            `https://app.next-gen.finance/add/${t0address}/${t1address}`,
+            `https://app.next-gen.finance/remove/${t0address}/${t1address}`,
+            `https://app.next-gen.finance/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
           ] :
           pool.symbol.includes("TOMB-V2-LP") ? [
             `https://swap.tomb.com/#/add/${t0address}/${t1address}`,
@@ -3006,7 +3019,7 @@ function getWrapPrices(tokens, prices, pool, chain)
   else {
     let tokenPrice = 0;
     if (wrappedToken.token != null) { //e.g. stakedao crv token vault
-      const pp = getPoolPrices(tokens, prices, wrappedToken.token)
+      const pp = getPoolPrices(tokens, prices, wrappedToken)
       tokenPrice = pp.price;
     }
     else {
@@ -3062,8 +3075,14 @@ function getErc20Prices(prices, pool, chain="eth") {
     case "avax":
       poolUrl=`https://cchain.explorer.avax.network/address/${pool.address}`;
       break;
+    case "dfk":
+      poolUrl=`https://subnets.avax.network/defi-kingdoms/dfk-chain/explorer/address/${pool.address}`;
+      break;
     case "fantom":
       poolUrl=`https://ftmscan.com/token/${pool.address}`;
+      break;
+    case "astar":
+      poolUrl=`https://blockscout.com/astar/address/${pool.address}`;
       break;
     case "emerald":
       poolUrl=`https://explorer.emerald.oasis.dev/token/${pool.address}`;
@@ -3721,6 +3740,9 @@ async function printSynthetixPool(App, info, chain="eth", customURLs) {
       case "matic":
         _print(`<a target="_blank" href="https://explorer-mainnet.maticvigil.com/address/${info.stakingAddress}#code">Polygon Explorer</a>`);
         break;
+      case "dfk":
+        _print(`<a target="_blank" href="https://subnets.avax.network/defi-kingdoms/dfk-chain/explorer/address/${info.stakingAddress}#code">DFK Explorer</a>`);
+        break;
       case "okex":
         _print(`<a target="_blank" href="https://www.oklink.com/okexchain/address/${info.stakingAddress}#code">Okex Explorer</a>`);
         break;
@@ -3730,8 +3752,11 @@ async function printSynthetixPool(App, info, chain="eth", customURLs) {
       case "fantom":
         _print(`<a target="_blank" href="https://ftmscan.com/address/${info.stakingAddress}#code">FTM Scan</a>`);
         break;
+      case "astar":
+        _print(`<a target="_blank" href="https://blockscout.com/astar/address/${info.stakingAddress}">Astar Explorer</a>`);
+        break;
       case "emerald":
-        _print(`<a target="_blank" href="https://explorer.emerald.oasis.dev/address/${info.stakingAddress}#code">FTM Scan</a>`);
+        _print(`<a target="_blank" href="https://explorer.emerald.oasis.dev/address/${info.stakingAddress}#code">Emerald Explorer</a>`);
         break;
       case "metis":
         _print(`<a target="_blank" href="https://andromeda-explorer.metis.io/address/${info.stakingAddress}#code">Andromeda Explorer</a>`);
@@ -3912,6 +3937,8 @@ function getChainExplorerUrl(chain, address){
       return `https://bscscan.com/token/${address}`;
     case "fantom" :
       return `https://ftmscan.com/token/${address}`;
+    case "astar" :
+      return `https://blockscout.com/astar/address/${address}`;
     case "harmony" :
       return `https://explorer.harmony.one/address/${address}`;
     case "arbitrum" :
@@ -3938,7 +3965,11 @@ function getChainExplorerUrl(chain, address){
       return `https://www.teloscan.io/address/${address}`;
     case "matic" :
       return `https://polygonscan.com/address/${address}`;
+    case "dfk" :
+      return `https://subnets.avax.network/defi-kingdoms/dfk-chain/explorer/address/${address}`;
     case "avax" :
       return `https://snowtrace.io/address/${address}`;
+    case "optimism" :
+      return `https://optimistic.etherscan.io/address/${address}`;
   }
 }

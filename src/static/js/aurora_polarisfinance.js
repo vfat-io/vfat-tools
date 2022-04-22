@@ -17,6 +17,13 @@ $(function () {
         stakeTokenFunction : "share",
         rewardTokenAddresses : "polar"
       }
+
+      const StakingPool2 = {
+        address : "0xf3cd8f422ffe23434c011f43f61879373b31a913",
+        abi : POLAR_STAKING_ABI,
+        stakeTokenFunction : "share",
+        rewardTokenAddresses : "polar"
+      }
       
       const SPOLAR_CHEF_ADDR = "0xa5df6d8d59a7fbdb8a11e23fda9d11c4103dc49f";
       const rewardTokenTicker = "SPOLAR";
@@ -29,14 +36,26 @@ $(function () {
       
       await loadSPolarContract(App, tokens, prices, SPOLAR_CHEF, SPOLAR_CHEF_ADDR, SPOLAR_CHEF_ABI, rewardTokenTicker,		
           "spolar", null, rewardsPerWeek, "pendingShare");
-      _print(`\nStaked SPOLARs can only be withdrawn after 6 epochs since deposit.\n`);
+      _print(`\nStaked SPOLARs can only be withdrawn after 6 epochs since deposit.`);
+      _print(`POLAR Earnings\n`);
       const p0 = await loadAuroraPOLARSynthetixPool(App, tokens, prices, StakingPool.abi, 
-                                                                            StakingPool.address, 
-                                                                            StakingPool.rewardTokenAddresses, 
-                                                                            StakingPool.stakeTokenFunction);
+                                                                         StakingPool.address, 
+                                                                         StakingPool.rewardTokenAddresses, 
+                                                                         StakingPool.stakeTokenFunction);
       _print_bold(`Total staked: $${formatMoney(p0.staked_tvl)}`);
       if (p0.totalUserStaked > 0) {
         _print(`You are staking a total of $${formatMoney(p0.totalUserStaked)}\n`);
+      }
+
+      _print(`\nStaked SPOLARs can only be withdrawn after 6 epochs since deposit.`);
+      _print(`LUNAR Earnings\n`);
+      const p2 = await loadAuroraPOLARSynthetixPool(App, tokens, prices, StakingPool2.abi, 
+                                                                         StakingPool2.address, 
+                                                                         StakingPool2.rewardTokenAddresses, 
+                                                                         StakingPool2.stakeTokenFunction);
+      _print_bold(`Total staked: $${formatMoney(p2.staked_tvl)}`);
+      if (p2.totalUserStaked > 0) {
+        _print(`You are staking a total of $${formatMoney(p2.totalUserStaked)}\n`);
       }
       
       hideLoading();		
@@ -150,7 +169,7 @@ async function printPOLARSynthetixPool(App, info, chain="eth", customURLs) {
   const revoke = async function() {
     return rewardsContract_resetApprove(info.stakeTokenAddress, info.stakingAddress, App)
   }
-  _print(`<a target="_blank" href="https://explorer.mainnet.aurora.dev/address/${info.stakingAddress}#code">Aurora Scan</a>`);
+  _print(`<a target="_blank" href="https://aurorascan.dev/address/${info.stakingAddress}#code">Aurora Scan</a>`);
   if (info.stakeTokenAddress != "0x0000000000000000000000000000000000000000") {
     _print_link(`Stake ${info.userUnstaked.toFixed(6)} ${info.stakeTokenTicker}`, approveTENDAndStake)
   }
@@ -180,10 +199,10 @@ async function loadSPolarContract(App, tokens, prices, chef, chefAddress, chefAb
   deathPoolIndices, claimFunction) {
   const chefContract = chef ?? new ethers.Contract(chefAddress, chefAbi, App.provider);
 
-  const poolCount = 2;
+  const poolCount = 5;
   const totalAllocPoints = await chefContract.totalAllocPoint();
 
-  _print(`<a href='https://explorer.mainnet.aurora.dev/address/${chefAddress}' target='_blank'>Staking Contract</a>`);
+  _print(`<a href='https://aurorascan.dev/address/${chefAddress}' target='_blank'>Staking Contract</a>`);
   _print(`Found ${poolCount} pools.\n`)
 
   _print(`Showing incentivized pools only.\n`);

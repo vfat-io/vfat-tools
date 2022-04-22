@@ -62,6 +62,7 @@ async function loadTornDataInfo(App, tokens, prices, abiBalance, abiRewards, bal
     const [lockedBalance, lockedPeriod] = await App.ethcallProvider.all(balanceCalls);
     const [rewards_] = await App.ethcallProvider.all([REWARDS_MULTI.checkReward(App.YOUR_ADDRESS)]);
     const userStaked = lockedBalance / 10 ** tornToken.decimals;
+    const userUnstaked = tornToken.unstaked;
     const earned = rewards_ / 10 ** tornToken.decimals;
     return  {
       rewardsAddr,
@@ -71,7 +72,9 @@ async function loadTornDataInfo(App, tokens, prices, abiBalance, abiRewards, bal
       tornTokenPrice,
       userStaked,
       earned,
-      lockedPeriod
+      lockedPeriod,
+      userUnstaked,
+      balanceAddr
     }
 }
 
@@ -79,12 +82,16 @@ async function printTornData(App, info, chain="eth", customURLs) {
     _print(`${info.tornTokenTicker} Price : $${formatMoney(info.tornTokenPrice)}`)
     const userStakedUsd = info.userStaked * info.tornTokenPrice;
     _print(`You are staking ${info.userStaked.toFixed(6)} ${info.tornTokenTicker} ` + `$${formatMoney(userStakedUsd)}`);
+    const approveTENDAndStake = async function() {
+      return tornContract_stake(info.tornTokenAddress, info.balanceAddr, App)
+    }
     const unstake = async function() {
       return tornContract_unstake(info.rewardsAddr, App)
     }
     const claim = async function() {
       return tornContract_claim(info.rewardsAddr, App)
     }
+    _print_link(`Stake ${info.userUnstaked.toFixed(6)} ${info.tornTokenTicker}`, approveTENDAndStake)
     if(info.userStaked > 0){
       if(info.lockedPeriod > Date.now()/1000){
         _print("Your deposit is still locked")
@@ -95,6 +102,57 @@ async function printTornData(App, info, chain="eth", customURLs) {
       _print_link(`Claim ${info.earned.toFixed(6)} ${info.tornTokenTicker} ($${formatMoney(info.earned*info.tornTokenPrice)})`, claim)
     }
     _print("");
+}
+
+const tornContract_stake = async function(stakeTokenAddr, rewardPoolAddr, App, maxAllowance) {
+  const signer = App.provider.getSigner()
+
+  const TEND_TOKEN = new ethers.Contract(stakeTokenAddr, ERC20_ABI, signer)
+  const WEEBTEND_V2_TOKEN = new ethers.Contract(rewardPoolAddr, TORN_ABI_BALANCE, signer)
+
+  const balanceOf = await TEND_TOKEN.balanceOf(App.YOUR_ADDRESS)
+  const currentTEND =  maxAllowance ? (maxAllowance / 1e18 < balanceOf / 1e18
+    ? maxAllowance : balanceOf) : balanceOf
+  const allowedTEND = await TEND_TOKEN.allowance(App.YOUR_ADDRESS, rewardPoolAddr)
+
+  let allow = Promise.resolve()
+
+  if (allowedTEND / 1e18 < currentTEND / 1e18) {
+    showLoading()
+    allow = TEND_TOKEN.approve(rewardPoolAddr, ethers.constants.MaxUint256)
+      .then(function(t) {
+        return App.provider.waitForTransaction(t.hash)
+      })
+      .catch(function() {
+        hideLoading()
+        alert('Try resetting your approval to 0 first')
+      })
+  }
+
+  if (currentTEND / 1e18 > 0) {
+    showLoading()
+    allow
+      .then(async function() {
+        WEEBTEND_V2_TOKEN.lockWithApproval(currentTEND, {gasLimit: 500000})
+          .then(function(t) {
+            App.provider.waitForTransaction(t.hash).then(function() {
+              hideLoading()
+            })
+          })
+          .catch(x => {
+            hideLoading()
+            console.log(x);
+            _print('Something went wrong.')
+          })
+      })
+      .catch(x => {
+        hideLoading()
+        console.log(x);
+        _print('Something went wrong.')
+      })
+  } else {
+    alert('You have no tokens to stake!!')
+  }
 }
 
 const tornContract_unstake = async function(rewardPoolAddr, App) {
