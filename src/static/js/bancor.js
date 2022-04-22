@@ -113,7 +113,7 @@ function printBntPool(App, chefAbi, chefAddr, prices, tokens, poolInfo, poolInde
     staked_tvl, userStaked, poolPrices.price, fixedDecimals);
   if (poolInfo.userLPStaked > 0) sp?.print_contained_price(userStaked);
   if (poolInfo.userStaked > 0) poolPrices.print_contained_price(userStaked);
-  printBntContractLinks(App, chefAbi, chefAddr, poolIndex, poolInfo.address,
+  printBntContractLinks(App, chefAbi, chefAddr, poolIndex, poolInfo.poolAddress,
     rewardTokenTicker, poolPrices.stakeTokenTicker, poolInfo.poolToken.unstaked,
     poolInfo.userStaked, poolInfo.pendingRewardTokens, fixedDecimals, claimFunction, rewardPrice, chain, depositFee, withdrawFee);
   return apr;
@@ -132,7 +132,11 @@ function printBntContractLinks(App, chefAbi, chefAddr, poolIndex, poolAddress,
   const claim = async function() {
     return bntContract_claim(chefAbi, chefAddr, poolIndex, App, claimFunction)
   }
-  _print_link(`Stake ${unstaked.toFixed(fixedDecimals)} ${stakeTokenTicker}`, approveAndStake)
+  if(poolAddress == "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE"){
+    _print("Please use the official site for this deposit");
+  }else{
+    _print_link(`Stake ${unstaked.toFixed(fixedDecimals)} ${stakeTokenTicker}`, approveAndStake)
+  }
   _print_link(`Unstake ${userStaked.toFixed(fixedDecimals)} ${stakeTokenTicker}`, unstake)
   _print_link(`Claim ${pendingRewardTokens.toFixed(fixedDecimals)} ${rewardTokenTicker} ($${formatMoney(pendingRewardTokens*rewardTokenPrice)})`, claim)
   _print("");
@@ -141,7 +145,7 @@ function printBntContractLinks(App, chefAbi, chefAddr, poolIndex, poolAddress,
 const bntContract_stake = async function(chefAbi, chefAddress, poolIndex, poolTokenAddr, App) {
   const signer = App.provider.getSigner()
 
-  const STAKING_TOKEN = new ethers.Contract(poolTokenAddr, BANCOR_POOL_ABI, signer)
+  const STAKING_TOKEN = new ethers.Contract(poolTokenAddr, ERC20_ABI, signer)
   const CHEF_CONTRACT = new ethers.Contract(chefAddress, chefAbi, signer)
 
   const currentTokens = await STAKING_TOKEN.balanceOf(App.YOUR_ADDRESS)
@@ -165,7 +169,7 @@ const bntContract_stake = async function(chefAbi, chefAddress, poolIndex, poolTo
     showLoading()
     allow
       .then(async function() {
-          CHEF_CONTRACT.join(poolIndex+1, currentTokens, {gasLimit: 500000})
+          CHEF_CONTRACT.depositAndJoin(poolIndex+1, currentTokens, {gasLimit: 500000})
           .then(function(t) {
             App.provider.waitForTransaction(t.hash).then(function() {
               hideLoading()
@@ -218,6 +222,7 @@ const bntContract_claim = async function(chefAbi, chefAddress, poolIndex, App) {
 async function getBntPoolInfo(app, chefContract, chefAddress, poolIndex) {
   const poolInfo = await chefContract.programs([poolIndex+1]);
   const poolToken = await getToken(app, poolInfo[0].poolToken, chefAddress);
+  const poolAddress = poolInfo[0].pool;
   //poolToken.staked = await chefContract.programStake(poolIndex+1) / 10 ** poolToken.decimals;
   const pendingRewardTokens = await chefContract.pendingRewards(app.YOUR_ADDRESS, [poolIndex+1])
   const staked = await chefContract.providerStake(app.YOUR_ADDRESS, poolIndex+1) / 10 ** poolToken.decimals;
@@ -228,5 +233,6 @@ async function getBntPoolInfo(app, chefContract, chefAddress, poolIndex) {
       userStaked : staked,
       rewardsPerWeek : rewardsPerWeek,
       pendingRewardTokens : pendingRewardTokens / 10 ** 18,
+      poolAddress : poolAddress
   };
 }
