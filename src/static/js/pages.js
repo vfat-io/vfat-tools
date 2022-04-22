@@ -17,7 +17,6 @@ const main = async() => {
       ["Angle               ",`<a href="angle/"             >Various</a>`,"ANGLE     ","https://app.angle.money"],
       ["Armor               ",`<a href="armor/"             >Various</a>`,"ARMOR     ","https://armor.fi"],
       ["Badger              ",`<a href="badger/"            >Various</a>`,"BADGER    ","https://app.badger.finance"],
-      ["* Bancor *          ",`<a href="bancor/"            >Various</a>`,"BNT       ","https://app.bancor.network"],
       ["Bao                 ",`<a href="bao"                >Various</a>`,"BAO       ","https://www.bao.finance"],
       ["Basis               ",`<a href="basis/"             >Various</a>`,"BAS,BAC   ","https://basis.cash"],
       ["Basket DAO          ",`<a href="basketdao"          >Various</a>`,"BASK      ","https://basketdao.org"],
