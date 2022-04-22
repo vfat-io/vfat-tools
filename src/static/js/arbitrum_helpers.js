@@ -35,7 +35,7 @@ const ArbitrumTokens = [
 const uniSqrtPrice = (tokenDecimals, sqrtRatioX96) => {
   const [token0Decimals, token1Decimals] = tokenDecimals;
   const scalarNumerator = ethers.BigNumber.from(10).pow(token0Decimals);
-  const scalarDenominator = ethers.er.from(10).pow(token1Decimals);
+  const scalarDenominator = ethers.BigNumber.from(10).pow(token1Decimals);
 
   const sqrtRatioX96BI = ethers.BigNumber.from(sqrtRatioX96);
 
