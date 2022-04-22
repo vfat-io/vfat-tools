@@ -25,4 +25,4 @@ async function main() {
         "mango", null, rewardsPerWeek, "pendingMango");
 
     hideLoading();
-  }
+}
