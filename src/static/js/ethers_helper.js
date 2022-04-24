@@ -33,6 +33,9 @@ const pageNetwork = function() {
   if (network.toLowerCase() === 'polygon') {
     return window.NETWORKS.POLYGON
   }
+  if (network.toLowerCase() === 'milkomeda') {
+    return window.NETWORKS.MILKOMEDA
+  }
   if (network.toLowerCase() === 'dfk') {
     return window.NETWORKS.DFK
   }
@@ -2083,6 +2086,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
   else if (pool.symbol.includes("BEAM-LP")) stakeTokenTicker += " BEAM-LP";
   else if (pool.symbol.includes("ZDEXLP")) stakeTokenTicker += " ZooDex LP";
   else if (pool.symbol.includes("OperaSwap")) stakeTokenTicker += " Opera Swap LP";
+  else if (pool.symbol.includes("MSLP")) stakeTokenTicker += " MilkySwap LP Token";
   else if (pool.symbol.includes("SLP")) stakeTokenTicker += " SLP";
   else if (pool.symbol.includes("Farmtom-LP")) stakeTokenTicker += " Farmtom LP";
   else if (pool.symbol.includes("Cake")) stakeTokenTicker += " Cake LP";
@@ -2176,6 +2180,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
           const poolUrl = pool.is1inch ? "https://1inch.exchange/#/dao/pools" :
           pool.symbol.includes("TETHYSLP") ?  `https://info.tethys.finance/pair/${pool.address}` :
           pool.symbol.includes("LSLP") ? `https://info.linkswap.app/pair/${pool.address}` :
+          pool.symbol.includes("MSLP") ? `https://www.milkyswap.exchange/` :
             pool.symbol.includes("SLP") ? (
               {
                 "eth": `http://analytics.sushi.com/pairs/${pool.address}`,
@@ -2287,6 +2292,11 @@ function getUniPrices(tokens, prices, pool, chain="eth")
             `https://linkswap.app/#/add/${t0address}/${t1address}`,
             `https://linkswap.app/#/remove/${t0address}/${t1address}`,
             `https://linkswap.app/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+          ] :
+          pool.symbol.includes("MSLP") ? [
+            `https://www.milkyswap.exchange/add/${t0address}/${t1address}`,
+            `https://www.milkyswap.exchange/remove/${t0address}/${t1address}`,
+            `https://www.milkyswap.exchange/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
           ] :
           pool.symbol.includes("BenSwap") ? ({
             "bsc": [
@@ -3100,6 +3110,9 @@ function getErc20Prices(prices, pool, chain="eth") {
     case "matic":
       poolUrl=`https://explorer-mainnet.maticvigil.com/address/${pool.address}`;
       break;
+    case "milkomeda":
+      poolUrl=`https://explorer-mainnet-cardano-evm.c1.milkomeda.com/address/${pool.address}`;
+      break;
     case "okex":
       poolUrl=`https://www.oklink.com/okexchain/address/${pool.address}`;
       break;
@@ -3774,6 +3787,9 @@ async function printSynthetixPool(App, info, chain="eth", customURLs) {
       case "matic":
         _print(`<a target="_blank" href="https://explorer-mainnet.maticvigil.com/address/${info.stakingAddress}#code">Polygon Explorer</a>`);
         break;
+      case "milkomeda":
+        _print(`<a target="_blank" href="https://explorer-mainnet-cardano-evm.c1.milkomeda.com/address/${info.stakingAddress}#code">Milkomeda Explorer</a>`);
+        break;
       case "dfk":
         _print(`<a target="_blank" href="https://subnets.avax.network/defi-kingdoms/dfk-chain/explorer/address/${info.stakingAddress}#code">DFK Explorer</a>`);
         break;
@@ -3999,6 +4015,8 @@ function getChainExplorerUrl(chain, address){
       return `https://www.teloscan.io/address/${address}`;
     case "matic" :
       return `https://polygonscan.com/address/${address}`;
+    case "milkomeda" :
+      return `https://explorer-mainnet-cardano-evm.c1.milkomeda.com/address/${address}`;
     case "dfk" :
       return `https://subnets.avax.network/defi-kingdoms/dfk-chain/explorer/address/${address}`;
     case "avax" :

@@ -76,6 +76,21 @@ window.NETWORKS = {
       "https://blockscout.com/astar/"
     ]
   },
+  MILKOMEDA: {
+    "chainId": "0x7D1",
+    "chainName": "Milkomeda C1 Mainnet",
+    "nativeCurrency": {
+      "name": "Mada",
+      "symbol": "mADA",
+      "decimals": 18
+    },
+    "rpcUrls": [
+      "https://rpc-mainnet-cardano-evm.c1.milkomeda.com"
+    ],
+    "blockExplorerUrls": [
+      "https://explorer-mainnet-cardano-evm.c1.milkomeda.com"
+    ]
+  },
   MOONRIVER: {
     "chainId": "0x505",
     "chainName": "Moonriver",
