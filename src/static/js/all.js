@@ -167,7 +167,8 @@ const main = async () => {
       ["GenomesDAO                   ", `<a href="../genomesdao/"        >Various</a>`, "Various            ", "https://staking.genomes.io"],
       ["Yearn                        ", `<a href="../yearn/"             >Various</a>`, "Various            ", "https://yearn.finance"],
       ["Instrumental                 ", `<a href="../instrumental/"      >Various</a>`, "Instrumental       ", "https://app.instrumental.finance"],
-      ["Curve                        ", `<a href="../curve/"             >Various</a>`, "Various            ", "https://curve.fi"]
+      ["Curve                        ", `<a href="../curve/"             >Various</a>`, "Various            ", "https://curve.fi"],
+      ["UnoRe                        ", `<a href="../unore/"             >Various</a>`, "UnoRe              ", "https://appv2.unore.io"]
     ]
   }
 
