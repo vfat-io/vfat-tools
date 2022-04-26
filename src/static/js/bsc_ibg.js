@@ -11,7 +11,7 @@ async function main() {
     _print(`Initialized ${App.YOUR_ADDRESS}\n`);
     _print("Reading smart contracts...\n");
 
-   const iBG_CHEF_ADDR = "0xf217968e63FE9af4e9E2755A5dCB4530B55b8F5B";
+   const iBG_CHEF_ADDR = "0x28AE4ED5b4FdAb3091A15514B6765C304D0F3eEb";
    const rewardTokenTicker = "iBG";
    const iBG_CHEF = new ethers.Contract(iBG_CHEF_ADDR, iBG_CHEF_ABI, App.provider);
 
