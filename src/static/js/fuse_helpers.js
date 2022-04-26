@@ -3,7 +3,11 @@ const FUSE_VAULT_WANT_ABI = [{"inputs":[{"internalType":"contract IStrategy","na
 
 const FuseTokens = [ 
   { "id": "fuse-network-token", "symbol": "FUSE", "contract": "0x0BE9e53fd7EDaC9F859882AfdDa116645287C629"},
-  { "id": "usd-coin", "symbol": "USDC", "contract": "0x620fd5fa44BE6af63715Ef4E65DDFA0387aD13F5"}
+  { "id": "usd-coin", "symbol": "USDC", "contract": "0x620fd5fa44BE6af63715Ef4E65DDFA0387aD13F5"},
+  { "id": "sushi", "symbol": "SUSHI", "contract": "0x90708b20ccC1eb95a4FA7C8b18Fd2C22a0Ff9E78"},
+  { "id": "wrapped-bitcoin", "symbol": "WBTC", "contract": "0x33284f95ccb7B948d9D352e1439561CF83d8d00d"},
+  { "id": "weth", "symbol": "WETH", "contract": "0xa722c13135930332Eb3d749B2F0906559D2C5b99"},
+  { "id": "terrausd", "symbol": "UST", "contract": "0x0D58a44be3dCA0aB449965dcc2c46932547Fea2f"}
 ];
 
 async function getFusePrices() {

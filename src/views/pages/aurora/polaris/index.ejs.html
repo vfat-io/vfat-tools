@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include(`${partials}/head`); -%>
+
+<body>
+<%- include(`${partials}/header_main`); -%>
+<pre id="log">
+*************** 👨‍🌾 UNOFFICIAL PLRS FARMING CALCULATOR 👨‍🌾 ***************
+INFO  : https://polaristoken.fi/
+**************************************************************************
+
+WARNING: Staking through vfat is currently broken. 
+         Visit <a href="https://polaristoken.fi">https://polaristoken.fi/</a> to single stake AURORA, ETH and PLRS!
+
+</pre>
+<div class="loader--1"></div>
+<%- include(`${partials}/scripts`, {scriptname: 'aurora_polaris'}); -%>
+</body>
+</html> 

@@ -11,7 +11,8 @@ const main = async() => {
       ["Oolong Swap           ", `<a href='oolong'        >Various</a>`,"OLO          ","https://oolongswap.com"],
       ["Synapse               ", `<a href='synapse'       >Various</a>`,"SYN          ","https://synapseprotocol.com"],
       ["SwapperChan           ", `<a href='swapperchan'   >Various</a>`,"WAIFU        ","https://swapperchan.com"],
-      ["Autofarm              ", `<a href='autofarm'      >Various</a>`,"Various      ","https://autofarm.network/boba"]
+      ["Autofarm              ", `<a href='autofarm'      >Various</a>`,"Various      ","https://autofarm.network/boba"],
+      ["Bodh                  ", `<a href='bodh'          >Various</a>`,"BODH         ","https://app.bodh.finance"]
     ]
   }
 

@@ -6,34 +6,24 @@ $(function() {
 
   SwaprStakingAddresses = [
     {
-    "id": "0x0463e8a24f4f71f706bcb57802060cb15bb94f64"
+    "id": "0x1bb8e6368b7c63565654fe1bef631c7f268beedf"
     },    {
-    "id": "0x190aa002834e1563959274d6d2425cd6f7b4e7e4"
+    "id": "0x28f2a93d9e41c703b5199007c3e22692a2d335ef"
     },    {
-    "id": "0x2416f5a3b15972378144ce881d622bcefb505446"
+    "id": "0x43cd1cb531632fa488d7a16fb4ada610b09420fd"
     },    {
-    "id": "0x43d4524585b36bdca06d5d9dc0b814fac1be4402"
+    "id": "0x56eea3787efa7d3a78e3c3d047dd9186ac1ab801"
     },    {
-    "id": "0x51f8a22facab2e6239b0113fd7c140c3a908477e"
+    "id": "0x5b948d87b002ebb79e77df0400961d41eaab402e"
     },    {
-    "id": "0x5648c16640e92f67a52165766e1e9d86792b4138"
+    "id": "0x6e8807e0d108269d017a8958aae36634fa75742b"
     },    {
-    "id": "0x61a03c3fdc2e0986170da71af252053447ec54e1"
+    "id": "0x741bea7433a60af6ac941ff47c50f400a31468fc"
     },    {
-    "id": "0x6e7abe63090a50a0ce48f7201ded435635e13a9d"
+    "id": "0x7e08dfe65eafd951fe1544096befdbbf0f703580"
     },    {
-    "id": "0x7f73e94e25118cadafbca7065b0b92b33a57762f"
-    },    {
-    "id": "0xd253c427f0655b5e731a49f2c5623679ea4b50a6"
-    },    {
-    "id": "0xda7e52d6c185ad132ff0b92199adca18b37b728a"
-    },    {
-    "id": "0xeb093cc25e3f99f323ceb420b28c7995e6abe153"
-    },    {
-    "id": "0xf33959b40745b33c781d7974cba9613a1444f951"
-    },    {
-    "id": "0xf87e0d22f400c50a84bd5d2025cb295f73ba12f3"
-    },
+    "id": "0xd9a998f2998bc4810a0303b603a7d4ad312fdcb2"
+    }
   ]
   async function main() {
     const App = await init_ethers();
@@ -48,8 +38,8 @@ $(function() {
       rewardTokensFunction: "getRewardTokens"
     }})
   
-    await loadSwaprSynthetixPoolInfo(App, tokens, prices, pools[6].abi, pools[6].address,
-      pools[6].rewardTokensFunction, pools[6].stakeTokenFunction)
+    await loadSwaprSynthetixPoolInfo(App, tokens, prices, pools[8].abi, pools[8].address,
+      pools[8].rewardTokensFunction, pools[8].stakeTokenFunction)
   
     let p = await loadMultipleSwaprSynthetixPools(App, tokens, prices, pools)
     _print_bold(`Total staked: $${formatMoney(p.staked_tvl)}`);
@@ -191,9 +181,9 @@ async function printSwaprSynthetixPool(App, info, chain="eth", customURLs) {
   let totalYearlyAPR = 0;
   let totalWeeklyAPR = 0;
   let totalDailyAPR = 0;
-  let totalusdCoinsPerDay = 0;
-  let totalusdCoinsPerWeek = 0;
-  let totalusdCoinsPerYear = 0;
+  let totalCoinsPerDay = 0;
+  let totalCoinsPerWeek = 0;
+  let totalCoinsPerYear = 0;
   let totalUSDPerWeek = 0;
   for(let i = 0; i < info.rewardTokenTickers.length; i++){
     let weeklyAPR = info.usdCoinsPerWeek[i] / info.staked_tvl * 100;
@@ -218,11 +208,11 @@ async function printSwaprSynthetixPool(App, info, chain="eth", customURLs) {
       let userDailyRewards = userWeeklyRewards / 7;
       let userYearlyRewards = userWeeklyRewards * 52;
 
-      totalusdCoinsPerDay += userDailyRewards;
-      totalusdCoinsPerWeek += userWeeklyRewards;
-      totalusdCoinsPerYear += userYearlyRewards;
+      totalCoinsPerDay += userDailyRewards;
+      totalCoinsPerWeek += userWeeklyRewards;
+      totalCoinsPerYear += userYearlyRewards;
     }
-    _print(`Total Earnings: Day ${totalusdCoinsPerDay.toFixed(4)}% Week ${totalusdCoinsPerWeek.toFixed(2)}% Year ${totalusdCoinsPerYear.toFixed(2)}%`);
+    _print(`Total Earnings: Day ${totalCoinsPerDay.toFixed(4)} Week ${totalCoinsPerWeek.toFixed(2)} Year ${totalCoinsPerYear.toFixed(2)}`);
   }
   const approveTENDAndStake = async function() {
     return rewardsContract_stake(info.stakeTokenAddress, info.stakingAddress, App)

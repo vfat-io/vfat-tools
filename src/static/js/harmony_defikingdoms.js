@@ -47,7 +47,7 @@ async function main() {
   const JEWEL_PIT = new ethers.Contract(JEWEL_PIT_ADDR, JEWEL_PIT_ABI, App.provider.getSigner());
   const jewelPit = await jewelPitData(JEWEL, JEWEL_PIT, App, prices);
 
-  const totalStakedInclJewelPit = totalStaked + jewelPit.totalBalanceUSD
+  const totalStakedInclJewelPit = totalStaked //+ jewelPit.totalBalanceUSD
 
   _print_bold(`Total Staked: $${formatMoney(totalStakedInclJewelPit)}`);
   if (totalUserStaked > 0) {

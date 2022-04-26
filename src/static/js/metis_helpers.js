@@ -1,6 +1,14 @@
 
 const MetisTokens = [
-    { "id": "metis", "symbol": "METIS", "contract": "0xDeadDeAddeAddEAddeadDEaDDEAdDeaDDeAD0000"},
+    { "id": "metis-token", "symbol": "METIS", "contract": "0xdeaddeaddeaddeaddeaddeaddeaddeaddead0000"},
+    { "id": "tether", "symbol": "USDT", "contract": "0xbb06dca3ae6887fabf931640f67cab3e3a16f4dc"},
+    { "id": "weth", "symbol": "WETH", "contract": "0x420000000000000000000000000000000000000a"},
+    { "id": "dai", "symbol": "DAI", "contract": "0x4651b38e7ec14bb3db731369bfe5b08f2466bd0a"},
+    { "id": "usd-coin", "symbol": "USDC", "contract": "0xea32a96608495e54156ae48931a7c20f0dcc1a21"},
+    { "id": "maia", "symbol": "MAIA", "contract": "0x72c232d56542ba082592dee7c77b1c6cfa758bcd"},
+    { "id": "tethys-finance", "symbol": "TETHYS", "contract": "0x69fdb77064ec5c84fa2f21072973eb28441f43f3"},
+    { "id": "binance-usd", "symbol": "BUSD", "contract": "0x12d84f1cfe870ca9c9df9785f8954341d7fbb249"},
+    { "id": "magic-internet-money", "symbol": "MIM", "contract": "0x44dd7c98885cd3086e723b8554a90c9cc4089c4c"},
   ];
 
   async function getMetisPrices() {
@@ -117,7 +125,7 @@ const MetisTokens = [
   async function getMetisCurveToken(App, curve, address, stakingAddress, minterAddress) {
     const minter = new ethcall.Contract(minterAddress, MINTER_ABI)
     const [virtualPrice, coin0] = await App.ethcallProvider.all([minter.get_virtual_price(), minter.coins(0)]);
-    const token = await getToken(App, coin0, address);
+    const token = await getMetisToken(App, coin0, address);
     const calls = [curve.decimals(), curve.balanceOf(stakingAddress), curve.balanceOf(App.YOUR_ADDRESS),
       curve.name(), curve.symbol(), curve.totalSupply()];
     const [decimals, staked, unstaked, name, symbol, totalSupply] = await App.ethcallProvider.all(calls);
@@ -141,7 +149,7 @@ const MetisTokens = [
       stable.name(), stable.symbol(), stable.totalSupply(), stable.get_virtual_price(), stable.coins(0)];
     const [decimals, staked, unstaked, name, symbol, totalSupply, virtualPrice, coin0]
       = await App.ethcallProvider.all(calls);
-    const token = await getToken(App, coin0, address);
+    const token = await getMetisToken(App, coin0, address);
     return {
         address,
         name,
@@ -269,7 +277,7 @@ const MetisTokens = [
 
         const rewardTokenTicker = rewardToken.symbol;
 
-        const poolPrices = getPoolPrices(tokens, prices, stakeToken, "Metis");
+        const poolPrices = getPoolPrices(tokens, prices, stakeToken, "metis");
 
         if (!poolPrices)
         {
@@ -320,7 +328,7 @@ const MetisTokens = [
   async function loadMetisSynthetixPool(App, tokens, prices, abi, address, rewardTokenFunction, stakeTokenFunction) {
       const info = await loadMetisSynthetixPoolInfo(App, tokens, prices, abi, address, rewardTokenFunction, stakeTokenFunction);
       if (!info) return null;
-      return await printSynthetixPool(App, info, "Metis");
+      return await printSynthetixPool(App, info, "metis");
   }
 
   async function loadMetisBasisFork(data) {
@@ -436,10 +444,10 @@ const MetisTokens = [
     if (deathPoolIndices) {   //load prices for the deathpool assets
       deathPoolIndices.map(i => poolInfos[i])
                        .map(poolInfo =>
-        poolInfo.poolToken ? getPoolPrices(tokens, prices, poolInfo.poolToken, "Metis") : undefined);
+        poolInfo.poolToken ? getPoolPrices(tokens, prices, poolInfo.poolToken, "metis") : undefined);
     }
 
-    const poolPrices = poolInfos.map(poolInfo => poolInfo.poolToken ? getPoolPrices(tokens, prices, poolInfo.poolToken, "Metis") : undefined);
+    const poolPrices = poolInfos.map(poolInfo => poolInfo.poolToken ? getPoolPrices(tokens, prices, poolInfo.poolToken, "metis") : undefined);
 
 
     _print("Finished reading smart contracts.\n");
@@ -449,7 +457,7 @@ const MetisTokens = [
       if (poolPrices[i]) {
         const apr = printChefPool(App, chefAbi, chefAddress, prices, tokens, poolInfos[i], i, poolPrices[i],
           totalAllocPoints, rewardsPerWeek, rewardTokenTicker, rewardTokenAddress,
-          pendingRewardsFunction, null, claimFunction, "Metis", poolInfos[i].depositFee, poolInfos[i].withdrawFee)
+          pendingRewardsFunction, null, claimFunction, "metis", poolInfos[i].depositFee, poolInfos[i].withdrawFee)
         aprs.push(apr);
       }
     }
@@ -481,7 +489,7 @@ const MetisTokens = [
     const infos = await Promise.all(pools.map(p =>
         loadMetisSynthetixPoolInfo(App, tokens, prices, p.abi, p.address, p.rewardTokenFunction, p.stakeTokenFunction)));
     for (const i of infos) {
-      let p = await printSynthetixPool(App, i, "Metis");
+      let p = await printSynthetixPool(App, i, "metis");
       totalStaked += p.staked_tvl || 0;
       totalUserStaked += p.userStaked || 0;
       if (p.userStaked > 0) {

@@ -41,7 +41,7 @@ async function loadBscEllipsisContract(App, tokens, prices, chef, chefAddress, c
   _print(`Showing incentivized pools only.\n`);
 
   const rewardTokenAddress = tokenRewardsAddress;
-  const rewardToken = await getBscToken(App, rewardTokenAddress, chefAddress);
+  const rewardToken = await getToken(App, rewardTokenAddress, chefAddress);
   const rewardsPerWeek = rewardsPerWeekFixed ??
     await chefContract.callStatic[rewardsPerBlockFunction]()
     / 10 ** rewardToken.decimals * 604800 / 3
@@ -52,7 +52,7 @@ async function loadBscEllipsisContract(App, tokens, prices, chef, chefAddress, c
   var tokenAddresses = [].concat.apply([], poolInfos.filter(x => x.poolToken).map(x => x.poolToken.tokens));
 
   await Promise.all(tokenAddresses.map(async (address) => {
-      tokens[address] = await getBscToken(App, address, chefAddress);
+      tokens[address] = await getToken(App, address, chefAddress);
   }));
 
   if (deathPoolIndices) {   //load prices for the deathpool assets
@@ -99,7 +99,7 @@ async function loadBscEllipsisContract(App, tokens, prices, chef, chefAddress, c
 
 async function getBscEllipsisPoolInfo(App, chefContract, chefAddress, poolIndex, pendingRewardsFunction) {
   const poolInfo = await chefContract.poolInfo(poolIndex);
-  const poolToken = await getBscToken(App, poolInfo.lpToken, chefAddress);
+  const poolToken = await getToken(App, poolInfo.lpToken, chefAddress);
   const userInfo = await chefContract.userInfo(poolIndex, App.YOUR_ADDRESS);
   const pendingRewardTokens = await chefContract.callStatic[pendingRewardsFunction](poolIndex, App.YOUR_ADDRESS);
   const staked = userInfo.amount / 10 ** poolToken.decimals;

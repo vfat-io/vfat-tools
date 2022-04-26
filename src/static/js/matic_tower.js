@@ -1,72 +1,52 @@
+$(function () {		
+  consoleInit(main)		
+  });		
+      
+      
+  const CUBE_CHEF_ABI = [{"inputs":[{"internalType":"address","name":"_cube","type":"address"},{"internalType":"address","name":"_cubePair","type":"address"},{"internalType":"address","name":"_swapController","type":"address"},{"internalType":"address","name":"_profitController","type":"address"},{"internalType":"address","name":"_bankSafe","type":"address"},{"internalType":"address","name":"_treasury","type":"address"},{"internalType":"uint64","name":"_startTime","type":"uint64"}],"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":true,"internalType":"uint256","name":"pid","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"vid","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"Claim","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":true,"internalType":"uint256","name":"pid","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"vid","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"penalty","type":"uint256"}],"name":"ClaimWithPenalty","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":true,"internalType":"address","name":"to","type":"address"},{"indexed":true,"internalType":"uint256","name":"pid","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"Deposit","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"bankSafeAmt","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"profitControllerAmt","type":"uint256"}],"name":"DistributePenalty","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":true,"internalType":"uint256","name":"pid","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"},{"indexed":true,"internalType":"address","name":"to","type":"address"}],"name":"EmergencyWithdraw","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":true,"internalType":"uint256","name":"pid","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"Harvest","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"cubePerSecond","type":"uint256"}],"name":"LogCubePerSecond","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"uint256","name":"pid","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"allocPoint","type":"uint256"},{"indexed":true,"internalType":"contract IERC20","name":"lpToken","type":"address"},{"indexed":false,"internalType":"uint64","name":"lockDuration","type":"uint64"}],"name":"LogPoolAddition","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"bankSafe","type":"address"}],"name":"LogSetBankSafe","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"_cube","type":"address"},{"indexed":false,"internalType":"address","name":"cubePair","type":"address"}],"name":"LogSetCube","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"uint256","name":"pid","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"allocPoint","type":"uint256"},{"indexed":false,"internalType":"uint64","name":"lockDuration","type":"uint64"}],"name":"LogSetPool","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"swapController","type":"address"}],"name":"LogSetSwapController","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"treasury","type":"address"}],"name":"LogSetTreasury","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"uint256","name":"pid","type":"uint256"},{"indexed":false,"internalType":"uint64","name":"lastRewardTime","type":"uint64"},{"indexed":false,"internalType":"uint256","name":"accAdded","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"accCubePerShare","type":"uint256"}],"name":"LogUpdatePool","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"penalty","type":"uint256"}],"name":"LogVestingPenalty","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"newOperator","type":"address"}],"name":"OperatorUpdated","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"previousOwner","type":"address"},{"indexed":true,"internalType":"address","name":"newOwner","type":"address"}],"name":"OwnershipTransferred","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"profitController","type":"address"}],"name":"ProfitControllerUpdated","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":true,"internalType":"uint256","name":"pid","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"Withdraw","type":"event"},{"inputs":[{"internalType":"uint256","name":"_allocPoint","type":"uint256"},{"internalType":"contract IERC20","name":"_lpToken","type":"address"},{"internalType":"uint64","name":"_lockDuration","type":"uint64"}],"name":"add","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"addedTokens","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"bankSafe","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint64","name":"_startTime","type":"uint64"}],"name":"canClaimVesting","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"_pid","type":"uint256"},{"internalType":"uint256","name":"_vid","type":"uint256"}],"name":"claim","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_pid","type":"uint256"},{"internalType":"uint256","name":"_vid","type":"uint256"}],"name":"claimWithPenalty","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"cube","outputs":[{"internalType":"contract ITowerERC20","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"cubePair","outputs":[{"internalType":"contract IUniswapV2Pair","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"cubePerSecond","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"_pid","type":"uint256"},{"internalType":"uint256","name":"_amount","type":"uint256"},{"internalType":"address","name":"_to","type":"address"}],"name":"deposit","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_pid","type":"uint256"}],"name":"getLpToken","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"_user","type":"address"}],"name":"getUserInfo","outputs":[{"components":[{"internalType":"uint256","name":"pid","type":"uint256"},{"internalType":"uint256","name":"amount","type":"uint256"},{"internalType":"int256","name":"rewardDebt","type":"int256"},{"internalType":"uint64","name":"depositTime","type":"uint64"},{"components":[{"internalType":"uint64","name":"startTime","type":"uint64"},{"internalType":"uint256","name":"amount","type":"uint256"}],"internalType":"struct Farm.VestingInfo[]","name":"vestings","type":"tuple[]"}],"internalType":"struct Farm.UserInfo[]","name":"","type":"tuple[]"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"_pid","type":"uint256"}],"name":"harvest","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"","type":"uint256"}],"name":"lpToken","outputs":[{"internalType":"contract IERC20","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"massUpdatePools","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"operator","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"owner","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"_pid","type":"uint256"},{"internalType":"address","name":"_user","type":"address"}],"name":"pendingCube","outputs":[{"internalType":"uint256","name":"pending","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"","type":"uint256"}],"name":"poolInfo","outputs":[{"internalType":"uint64","name":"allocPoint","type":"uint64"},{"internalType":"uint64","name":"lastRewardTime","type":"uint64"},{"internalType":"uint256","name":"accCubePerShare","type":"uint256"},{"internalType":"uint64","name":"lockDuration","type":"uint64"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"poolLength","outputs":[{"internalType":"uint256","name":"pools","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"profitController","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"renounceOwnership","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_pid","type":"uint256"},{"internalType":"uint256","name":"_allocPoint","type":"uint256"},{"internalType":"uint64","name":"_lockDuration","type":"uint64"}],"name":"set","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"_bankSafe","type":"address"}],"name":"setBankSafe","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"_cube","type":"address"},{"internalType":"address","name":"_cubePair","type":"address"}],"name":"setCube","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_cubePerSecond","type":"uint256"}],"name":"setCubePerSecond","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"_operator","type":"address"}],"name":"setOperator","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"_profitController","type":"address"}],"name":"setProfitController","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"_swapController","type":"address"}],"name":"setSwapController","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"_treasury","type":"address"}],"name":"setTreasury","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_penalty","type":"uint256"}],"name":"setVestingPenalty","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"startTime","outputs":[{"internalType":"uint64","name":"","type":"uint64"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"swapController","outputs":[{"internalType":"contract ISwapController","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"totalAllocPoint","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"newOwner","type":"address"}],"name":"transferOwnership","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"treasury","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"_pid","type":"uint256"}],"name":"updatePool","outputs":[{"components":[{"internalType":"uint64","name":"allocPoint","type":"uint64"},{"internalType":"uint64","name":"lastRewardTime","type":"uint64"},{"internalType":"uint256","name":"accCubePerShare","type":"uint256"},{"internalType":"uint64","name":"lockDuration","type":"uint64"}],"internalType":"struct Farm.PoolInfo","name":"pool","type":"tuple"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"","type":"uint256"},{"internalType":"address","name":"","type":"address"}],"name":"userInfo","outputs":[{"internalType":"uint256","name":"pid","type":"uint256"},{"internalType":"uint256","name":"amount","type":"uint256"},{"internalType":"int256","name":"rewardDebt","type":"int256"},{"internalType":"uint64","name":"depositTime","type":"uint64"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"vestingPenalty","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"vestingSlot","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"_pid","type":"uint256"},{"internalType":"uint256","name":"_amount","type":"uint256"}],"name":"withdraw","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_pid","type":"uint256"},{"internalType":"uint256","name":"_amount","type":"uint256"}],"name":"withdrawAndHarvest","outputs":[],"stateMutability":"nonpayable","type":"function"}]
 
-$(function() {
-consoleInit(main)
-  });
+  async function main() {		
+      const App = await init_ethers();		
+      
+      _print(`Initialized ${App.YOUR_ADDRESS}\n`);		
+      _print("Reading smart contracts...\n");		
+      
+      const CUBE_CHEF_ADDR = "0xd2d485a9d9471582433bf9e8a1500e44a7890d4d";		
+      const rewardTokenTicker = "CUBE";		
+      const CUBE_CHEF = new ethers.Contract(CUBE_CHEF_ADDR, CUBE_CHEF_ABI, App.provider);
+      const rewardsPerWeek = await CUBE_CHEF.cubePerSecond() / 1e18 *	604800
+      const tokens = {};		
+      const prices = await getMaticPrices();
 
-const IVORY_CHEF_ABI = [{"inputs":[{"internalType":"contract IERC20","name":"_rewardToken","type":"address"},{"internalType":"address","name":"_fund","type":"address"},{"internalType":"uint256","name":"_rewardPerBlock","type":"uint256"},{"internalType":"uint256","name":"_startBlock","type":"uint256"}],"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"lpToken","type":"address"},{"indexed":false,"internalType":"uint256","name":"allocPoint","type":"uint256"}],"name":"Add","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":true,"internalType":"uint256","name":"pid","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"Deposit","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":true,"internalType":"uint256","name":"pid","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"EmergencyWithdraw","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"fund","type":"address"}],"name":"FundUpdated","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"previousOwner","type":"address"},{"indexed":true,"internalType":"address","name":"newOwner","type":"address"}],"name":"OwnershipTransferred","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"newRewardPerBlock","type":"uint256"}],"name":"RewardPerBlockUpdated","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"uint256","name":"pid","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"allocPoint","type":"uint256"}],"name":"Set","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"startBlock","type":"uint256"}],"name":"StartBlockSet","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":true,"internalType":"uint256","name":"pid","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"Withdraw","type":"event"},{"inputs":[],"name":"BONUS_MULTIPLIER","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"_allocPoint","type":"uint256"},{"internalType":"contract IERC20","name":"_lpToken","type":"address"}],"name":"add","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_pid","type":"uint256"},{"internalType":"uint256","name":"_amount","type":"uint256"}],"name":"deposit","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_pid","type":"uint256"}],"name":"emergencyWithdraw","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"fund","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"fundBalance","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"_from","type":"uint256"},{"internalType":"uint256","name":"_to","type":"uint256"}],"name":"getMultiplier","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"massUpdatePools","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"owner","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"_pid","type":"uint256"},{"internalType":"address","name":"_user","type":"address"}],"name":"pendingReward","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"contract IERC20","name":"","type":"address"}],"name":"poolExistence","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"","type":"uint256"}],"name":"poolInfo","outputs":[{"internalType":"contract IERC20","name":"lpToken","type":"address"},{"internalType":"uint256","name":"allocPoint","type":"uint256"},{"internalType":"uint256","name":"lastRewardBlock","type":"uint256"},{"internalType":"uint256","name":"accRewardPerShare","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"poolLength","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"renounceOwnership","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"rewardPerBlock","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"rewardToken","outputs":[{"internalType":"contract IERC20","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"_pid","type":"uint256"},{"internalType":"uint256","name":"_allocPoint","type":"uint256"}],"name":"set","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_rewardPerBlock","type":"uint256"}],"name":"setRewardPerBlock","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_startBlock","type":"uint256"}],"name":"setStartBlockOnce","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"_fund","type":"address"}],"name":"setfund","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"startBlock","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"totalAllocPoint","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"newOwner","type":"address"}],"name":"transferOwnership","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_pid","type":"uint256"}],"name":"updatePool","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"","type":"uint256"},{"internalType":"address","name":"","type":"address"}],"name":"userInfo","outputs":[{"internalType":"uint256","name":"amount","type":"uint256"},{"internalType":"uint256","name":"rewardDebt","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"_pid","type":"uint256"},{"internalType":"uint256","name":"_amount","type":"uint256"}],"name":"withdraw","outputs":[],"stateMutability":"nonpayable","type":"function"}]
-
-async function main() {
-    const App = await init_ethers();
-
-    _print(`Initialized ${App.YOUR_ADDRESS}\n`);
-    _print("Reading smart contracts...\n");
-
-   const IVORY_CHEF_ADDR = "0x43d78BA76dc2C5dF8C1cF3423C5b8Db7f476f33a";
-   const IVORY_CHEF_ADDR2 = "0x4696B1A198407BFb8bB8dd59030Bf30FaC258f1D";
-   const rewardTokenTicker = "IVORY";
-   const IVORY_CHEF = new ethers.Contract(IVORY_CHEF_ADDR, IVORY_CHEF_ABI, App.provider);
-   const IVORY_CHEF2 = new ethers.Contract(IVORY_CHEF_ADDR2, IVORY_CHEF_ABI, App.provider);
-
-   const startBlock = await IVORY_CHEF.startBlock();
-   const currentBlock = await App.provider.getBlockNumber();
-
-   const multiplier = await IVORY_CHEF.getMultiplier(currentBlock, currentBlock + 1);
-   const multiplier2 = await IVORY_CHEF2.getMultiplier(currentBlock, currentBlock + 1);
-
-   let rewardsPerWeek = 0
-   if(currentBlock < startBlock){
-     _print(`Rewards start at block <a href="https://polygonscan.com/block/countdown/${startBlock}" target="_blank">${startBlock}</a>\n`);
-   }else{
-    rewardsPerWeek = await IVORY_CHEF.rewardPerBlock() /1e18
-      * 604800 * multiplier / 2.1;
-   }
-
-   let rewardsPerWeek2 = 0
-   if(currentBlock < startBlock){
-     _print(`Rewards start at block <a href="https://polygonscan.com/block/countdown/${startBlock}" target="_blank">${startBlock}</a>\n`);
-   }else{
-    rewardsPerWeek2 = await IVORY_CHEF2.rewardPerBlock() /1e18
-      * 604800 * multiplier2 / 2.1;
-   }
-
-    const tokens = {};
-    const prices = await getMaticPrices();
-
-    let p1 = await loadTowerChefContract(App, tokens, prices, IVORY_CHEF, IVORY_CHEF_ADDR, IVORY_CHEF_ABI, rewardTokenTicker,
-        "rewardToken", null, rewardsPerWeek, "pendingReward", [1]);
-    let p2 = await loadTowerChefContract(App, tokens, prices, IVORY_CHEF2, IVORY_CHEF_ADDR2, IVORY_CHEF_ABI, rewardTokenTicker,
-        "rewardToken", null, rewardsPerWeek2, "pendingReward");
-
-    _print_bold(`Total Staked: $${formatMoney(p1.totalStaked+p2.totalStaked)}`);
-    const userYearlyEarnings = p1.totalUserStaked * p1.averageApr + p2.totalUserStaked * p2.averageApr
-    const totalUserStaked = p1.totalUserStaked+p2.totalUserStaked;
-    if (p1.totalUserStaked > 0 || p2.totalUserStaked > 0) {
-      _print_bold(`\nYou are staking a total of $${formatMoney(totalUserStaked)} at an average APR of ${(userYearlyEarnings / totalUserStaked * 100).toFixed(2)}%`)
-      _print(`Estimated earnings:`
-          + ` Day $${formatMoney(userYearlyEarnings/365)}`
-          + ` Week $${formatMoney(userYearlyEarnings/52)}`
-          + ` Year $${formatMoney(userYearlyEarnings)}\n`);
-    }
-
-    hideLoading();
+      _print('\nThere is a locking period, please check the official site for more information\n')
+      
+      await loadMaticTowerContract(App, tokens, prices, CUBE_CHEF, CUBE_CHEF_ADDR, CUBE_CHEF_ABI, rewardTokenTicker,		
+          "cube", null, rewardsPerWeek, "pendingCube", [1]);	
+      
+      hideLoading();		
   }
 
-async function loadTowerChefContract(App, tokens, prices, chef, chefAddress, chefAbi, rewardTokenTicker,
+async function loadMaticSynthetixPool(App, tokens, prices, abi, address, rewardTokenFunction, stakeTokenFunction) {
+    const info = await loadMaticSynthetixPoolInfo(App, tokens, prices, abi, address, rewardTokenFunction, stakeTokenFunction);
+    if (!info) return null;
+    return await printSynthetixPool(App, info, "matic");
+}
+
+async function loadMaticTowerContract(App, tokens, prices, chef, chefAddress, chefAbi, rewardTokenTicker,
   rewardTokenFunction, rewardsPerBlockFunction, rewardsPerWeekFixed, pendingRewardsFunction,
   deathPoolIndices) {
   const chefContract = chef ?? new ethers.Contract(chefAddress, chefAbi, App.provider);
+
   const poolCount = parseInt(await chefContract.poolLength(), 10);
   const totalAllocPoints = await chefContract.totalAllocPoint();
+
+  _print(`<a href='https://polygonscan.com/address/${chefAddress}' target='_blank'>Staking Contract</a>`);
+  _print(`Found ${poolCount} pools.\n`)
+
+  _print(`Showing incentivized pools only.\n`);
+
+  var tokens = {};
+
   const rewardTokenAddress = await chefContract.callStatic[rewardTokenFunction]();
   const rewardToken = await getMaticToken(App, rewardTokenAddress, chefAddress);
   const rewardsPerWeek = rewardsPerWeekFixed ?? 
@@ -74,7 +54,7 @@ async function loadTowerChefContract(App, tokens, prices, chef, chefAddress, che
     / 10 ** rewardToken.decimals * 604800 / 3
 
   const poolInfos = await Promise.all([...Array(poolCount).keys()].map(async (x) =>
-    await getMaticPoolInfo(App, chefContract, chefAddress, x, pendingRewardsFunction)));
+    await getTowerPoolInfo(App, chefContract, chefAddress, x, pendingRewardsFunction)));
 
   var tokenAddresses = [].concat.apply([], poolInfos.filter(x => x.poolToken).map(x => x.poolToken.tokens));
 
@@ -89,6 +69,10 @@ async function loadTowerChefContract(App, tokens, prices, chef, chefAddress, che
   }
 
   const poolPrices = poolInfos.map(poolInfo => poolInfo.poolToken ? getPoolPrices(tokens, prices, poolInfo.poolToken, "matic") : undefined);
+
+
+  _print("Finished reading smart contracts.\n");
+  
   let aprs = []
   for (i = 0; i < poolCount; i++) {
     if (poolPrices[i]) {
@@ -109,5 +93,40 @@ async function loadTowerChefContract(App, tokens, prices, chef, chefAddress, che
     }
   }
   averageApr = averageApr / totalUserStaked;
+  _print_bold(`Total Staked: $${formatMoney(totalStaked)}`);
+  if (totalUserStaked > 0) {
+    _print_bold(`\nYou are staking a total of $${formatMoney(totalUserStaked)} at an average APR of ${(averageApr * 100).toFixed(2)}%`)
+    _print(`Estimated earnings:`
+        + ` Day $${formatMoney(totalUserStaked*averageApr/365)}`
+        + ` Week $${formatMoney(totalUserStaked*averageApr/52)}`
+        + ` Year $${formatMoney(totalUserStaked*averageApr)}\n`);
+  }
   return { prices, totalUserStaked, totalStaked, averageApr }
+}
+
+async function getTowerPoolInfo(app, chefContract, chefAddress, poolIndex, pendingRewardsFunction) {  
+  const poolInfo = await chefContract.poolInfo(poolIndex);
+  const lpToken = await chefContract.lpToken(poolIndex);
+  if (poolInfo.allocPoint == 0) {
+    return {
+      address: lpToken,
+      allocPoints: poolInfo.allocPoint ?? 1,
+      poolToken: null,
+      userStaked : 0,
+      pendingRewardTokens : 0,
+    };
+  }
+  const poolToken = await getMaticToken(app, lpToken, chefAddress);
+  const userInfo = await chefContract.userInfo(poolIndex, app.YOUR_ADDRESS);
+  const pendingRewardTokens = await chefContract.callStatic[pendingRewardsFunction](poolIndex, app.YOUR_ADDRESS);
+  const staked = userInfo.amount / 10 ** poolToken.decimals;
+  return {
+      address: lpToken,
+      allocPoints: poolInfo.allocPoint ?? 1,
+      poolToken: poolToken,
+      userStaked : staked,
+      pendingRewardTokens : pendingRewardTokens / 10 ** 18,
+      depositFee : (poolInfo.depositFeeBP ?? 0) / 100,
+      withdrawFee : (poolInfo.withdrawFeeBP ?? 0) / 100
+  };
 }

@@ -13,7 +13,7 @@ const main = async () => {
       ["Alpha DEX                    ", `<a href="../alphadex/"          >Various</a>`, "DEX                ", "https://kitten.finance"],
       ["Alphr.Finance                ", `<a href="../alphr/"             >Various</a>`, "ALPHR              ", "https://alphr.finance"],
       ["Armor                        ", `<a href="../armor/"             >Various</a>`, "ARMOR              ", "https://armor.fi"],
-      ["Arth                         ", `<a href="../arth/"              >Various</a>`, "ARTH/MAHA          ", "https://www.arthcoin.com"],
+      ["Arth                         ", `<a href="../arth/"              >Various</a>`, "ARTH/MAHA          ", "https://mahadao.com/arth"],
       ["Basis                        ", `<a href="../basis/"             >Various</a>`, "BAS,BAC            ", "https://basis.cash"],
       ["Basis Gold                   ", `<a href="../bsg"                >Various</a>`, "BSGS               ", "https://basis.gold"],
       ["BIOPset                      ", `<a href="../biopset"            >BIOP-ETH</a>`, "BIOP              ", "https://biopset.com"],
@@ -54,7 +54,7 @@ const main = async () => {
       ["Sushiswap                    ", `<a href="../sushi/"             >Various</a>`, "SUSHI              ", "https://app.sushi.com/farms"],
       ["xSigma                       ", `<a href="../xsigma/"            >Various</a>`, "SIG                ", "https://app.xsigma.fi/stake"],
       ["Alchemix                     ", `<a href="../alcx/"              >Various</a>`, "ALCX               ", "https://app.alchemix.fi/farms"],
-      ["DFX                          ", `<a href="../dfx/"               >Various</a>`, "DFX                ", "https://v0.dfx.finance/"],
+      ["DFX                          ", `<a href="../dfx/"               >Various</a>`, "DFX                ", "https://app.dfx.finance"],
       ["xToken                       ", `<a href="../xtoken/"            >Various</a>`, "XTK                ", "https://xtoken.cafe/app/dashboard"],
       ["Ethic                        ", `<a href="../ethic"              >Various</a>`, "ETHC               ", "https://ethic.money"],
       ["Ruler Protocol               ", `<a href="../ruler/"             >Various</a>`, "RULER              ", "https://app.rulerprotocol.com/app/farms"],
@@ -68,7 +68,7 @@ const main = async () => {
       ["Sakeswap                     ", `<a href="../sakeswap"           >Various</a>`, "SAKE               ", "https://sakeswap.finance"],
       ["Defiville                    ", `<a href="../defiville"          >Various</a>`, "ISLA               ", "https://defiville.finance"],
       ["Benchmark                    ", `<a href="../benchmark/"         >Various</a>`, "MARK               ", "https://launchpad.benchmarkprotocol.finance/pools"],
-      ["Governor *                   ", `<a href="../governordao"        >Various</a>`, "GDAO               ", "https://governordao.org"],
+      ["Governor                     ", `<a href="../governordao"        >Various</a>`, "GDAO               ", "https://governordao.org"],
       ["Optionroom                   ", `<a href="../optionroom"         >Various</a>`, "COURT              ", "https://app.optionroom.finance"],
       ["Mint                         ", `<a href="../mint"               >Various</a>`, "MINT               ", "https://stake.publicmint.com"],
       ["Proof Of Humanity            ", `<a href="../proofofhumanity"    >Various</a>`, "UBI                ", "https://www.proofofhumanity.id"],
@@ -108,7 +108,7 @@ const main = async () => {
       ["Alchemydao                   ", `<a href="../alchemydao"         >Various</a>`, "ALCH               ", "https://alchemydao.com"],
       ["Centaur                      ", `<a href="../centaur"            >Various</a>`, "WHEY               ", "https://cntr.finance"],
       ["EPNS                         ", `<a href="../epns"               >Various</a>`, "PUSH               ", "https://incentives.epns.io"],
-      ["Tornado                      ", `<a href="../tornado"            >Various</a>`, "TORN               ", "https://app.tornado.cash"],
+      ["Tornado                      ", `<a href="../tornado"            >Various</a>`, "TORN               ", "https://tornado.cash"],
       ["Cyclone                      ", `<a href="../cyclone"            >Various</a>`, "CYC                ", "https://cyclone.xyz/eth"],
       ["Elena                        ", `<a href="../elena"              >Various</a>`, "ELENA              ", "https://app.elena.finance"],
       ["Dogen                        ", `<a href="../dogen"              >Various</a>`, "DOGEN              ", "https://dogen.finance"],
@@ -168,7 +168,16 @@ const main = async () => {
       ["Yearn                        ", `<a href="../yearn/"             >Various</a>`, "Various            ", "https://yearn.finance"],
       ["Instrumental                 ", `<a href="../instrumental/"      >Various</a>`, "Instrumental       ", "https://app.instrumental.finance"],
       ["Curve                        ", `<a href="../curve/"             >Various</a>`, "Various            ", "https://curve.fi"],
-      ["UnoRe                        ", `<a href="../unore/"             >Various</a>`, "UnoRe              ", "https://appv2.unore.io"]
+      ["UnoRe                        ", `<a href="../unore/"             >Various</a>`, "UnoRe              ", "https://appv2.unore.io"],
+      ["DeFiner                      ", `<a href="../definer/"           >Various</a>`, "FIN                ", "https://app.definer.org"],
+      ["Looksrare                    ", `<a href="../looksrare/"         >Various</a>`, "LOOKS              ", "https://looksrare.org"],
+      ["Vader                        ", `<a href="../vader/"             >Various</a>`, "VADER              ", "https://www.vaderprotocol.app"],
+      ["WOWswap                      ", `<a href="../wowswap/"           >Various</a>`,"WOW                 ", "https://wowswap.io"],
+      ["Aladdin (Concentrator)       ", `<a href="../concentrator/"      >Various</a>`,"aCRV                ", "https://concentrator.aladdin.club/#/vault"],
+      ["Stargate                     ", `<a href="../stargate/"          >Various</a>`,"STG                 ", "https://stargate.finance"],
+      ["Backd                        ", `<a href="../backd/"             >Various</a>`,"                    ", "https://backd.fund"],
+      ["Jpegd                        ", `<a href="../jpegd/"             >Various</a>`,"JPEG                ", "https://jpegd.io"],
+      ["Bancor                       ", `<a href="../bancor/"            >Various</a>`,"BNT                 ", "https://app.bancor.network"]
     ]
   }
 

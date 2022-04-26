@@ -61,6 +61,36 @@ window.NETWORKS = {
       "https://explorer.arbitrum.io"
     ]
   },
+  ASTAR: {
+    "chainId": "0x250",
+    "chainName": "Astar Network",
+    "nativeCurrency": {
+      "name": "Astar",
+      "symbol": "ASTR",
+      "decimals": 18
+    },
+    "rpcUrls": [
+      "https://astar.api.onfinality.io/public"
+    ],
+    "blockExplorerUrls": [
+      "https://blockscout.com/astar/"
+    ]
+  },
+  MILKOMEDA: {
+    "chainId": "0x7D1",
+    "chainName": "Milkomeda C1 Mainnet",
+    "nativeCurrency": {
+      "name": "Mada",
+      "symbol": "mADA",
+      "decimals": 18
+    },
+    "rpcUrls": [
+      "https://rpc-mainnet-cardano-evm.c1.milkomeda.com"
+    ],
+    "blockExplorerUrls": [
+      "https://explorer-mainnet-cardano-evm.c1.milkomeda.com"
+    ]
+  },
   MOONRIVER: {
     "chainId": "0x505",
     "chainName": "Moonriver",
@@ -76,6 +106,21 @@ window.NETWORKS = {
       "https://moonbeam.network/networks/moonriver/"
     ]
   },
+  MOONBEAM: {
+    "chainId": "0x504",
+    "chainName": "Moonbeam",
+    "nativeCurrency": {
+      "name": "moonbeam",
+      "symbol": "GLMR",
+      "decimals": 18
+    },
+    "rpcUrls": [
+      "https://rpc.api.moonbeam.network"
+    ],
+    "blockExplorerUrls": [
+      "https://moonscan.io/"
+    ]
+  },
   OPTIMISM: {
     "chainId": "0xA",
     "chainName": "Optimistic Ethereum",
@@ -89,6 +134,36 @@ window.NETWORKS = {
     ],
     "blockExplorerUrls": [
       "https://optimistic.etherscan.io/"
+    ]
+  },
+  EMERALD: {
+    "chainId": "0xA516",
+    "chainName": "Emerald Paratime Mainnet",
+    "nativeCurrency": {
+      "name": "oasis-network",
+      "symbol": "ROSE",
+      "decimals": 18
+    },
+    "rpcUrls": [
+      "https://emerald.oasis.dev"
+    ],
+    "blockExplorerUrls": [
+      "https://explorer.emerald.oasis.dev"
+    ]
+  },
+  DFK: {
+    "chainId": "0xD2AF",
+    "chainName": "DFK Chain",
+    "nativeCurrency": {
+      "name": "defi-kingdoms",
+      "symbol": "JEWEL",
+      "decimals": 18
+    },
+    "rpcUrls": [
+      "https://subnets.avax.network/defi-kingdoms/dfk-chain/rpc"
+    ],
+    "blockExplorerUrls": [
+      "https://explorer.dfkchain.com"
     ]
   },
   BINANCE_SMART_CHAIN: {
@@ -167,7 +242,7 @@ window.NETWORKS = {
       "https://backup-explorer.matic.network"
     ]
   },
-  XDAI: {
+  GNOSIS: {
     "chainId": "0x64",
     "chainName": "xDAI Chain",
     "nativeCurrency": {
@@ -493,6 +568,21 @@ window.NETWORKS = {
       "https://scan.meter.io"
     ],
   },
+  TELOS: {
+    "chainId": "0x28",
+    "chainName": "Telos EVM Mainnet",
+    "nativeCurrency": {
+      "name": "Telos",
+      "symbol": "TLOS",
+      "decimals": 18
+    },
+    "rpcUrls": [
+      "https://mainnet.telos.net/evm"
+    ],
+    "blockExplorerUrls": [
+      "https://teloscan.io"
+    ],
+  },
 }
 
 const infuraId = atob(window.ETHEREUM_NODE_URL).split('/').pop()
@@ -522,7 +612,8 @@ const providerOptions = {
         10000: "https://global.uat.cash",
         333999: "https://rpc.polis.tech",
         25: "https://rpc.crodex.app/",
-        82: "https://rpc.meter.io"
+        82: "https://rpc.meter.io",
+        40: "https://mainnet.telos.net/evm"
       }
     }
   }

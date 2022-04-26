@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include(`${partials}/head`); -%>
+
+    <body>
+        <%- include(`${partials}/header_main`); -%>
+            <pre id="log">
+*************** 👨‍🌾 UNOFFICIAL ZOMB2.FINANCE FARMING CALCULATOR 👨‍🌾 ***************
+INFO  : https://zomb2.finance/
+*********************************************************************************
+
+</pre>
+            <div class="loader--1"></div>
+            <%- include(`${partials}/scripts`, {scriptname: 'fantom_zomb2' }); -%>
+    </body>
+
+</html>

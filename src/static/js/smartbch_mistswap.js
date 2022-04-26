@@ -3,8 +3,10 @@ $(function () {
     });
 
     const exchangeGraph = "https://thegraph.mistswap.fi/subgraphs/name/mistswap/exchange";
-    const xSushiRatio = 0.05;
+    const barGraph = "https://thegraph.mistswap.fi/subgraphs/name/mistswap/bar";
+    const sushiAddress = "0x5fA664f69c2A4A3ec94FaC3cBf7049BD9CA73129";
     const xSushiAddress = "0xC41C680c60309d4646379eD62020c534eB67b6f4";
+    const xSushiRatio = 0.05;
     const xSushiAbi = [
       {
         "inputs": [
@@ -906,7 +908,7 @@ $(function () {
         const prices = await getSmartbchPrices();
 
         await loadSmartbchChefContract(App, tokens, prices, MIST_CHEF, MIST_CHEF_ADDR, MIST_CHEF_ABI, rewardTokenTicker,
-                "sushi", null, rewardsPerWeek, "pendingSushi", null, false, true, {xSushiAddress, xSushiAbi, xSushiRatio, exchangeGraph});
+                "sushi", null, rewardsPerWeek, "pendingSushi", null, false, true, {sushiAddress, xSushiAddress, xSushiAbi, xSushiRatio, exchangeGraph, barGraph});
 
         hideLoading();
     }

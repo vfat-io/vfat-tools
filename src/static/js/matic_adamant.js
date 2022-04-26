@@ -149,15 +149,16 @@ const Address = [
     "0xAe049D38183C3A53543E1CF5AD2032366742080f",
     "0x7f8c46a165E87aeb244f0205E3Dae572907588B5",
     "0xd49394c7442c499382976fd2b524c787d6a2b167",
-    "0xeeb570cCd8c17bc38988C04a0678Ea85593219d4"
+    "0xeeb570cCd8c17bc38988C04a0678Ea85593219d4",
+    "0x40dCaE9f309134BB48a9ac7AF543A4536B36d8BA"
   ]
-  
+
 async function main() {
     const App = await init_ethers();
-  
+
     _print(`Initialized ${App.YOUR_ADDRESS}\n`);
     _print("Reading smart contracts...\n");
-  
+
     const prices = await getMaticPrices();
     const tokens = {};
     const poolInfos = await Promise.all(Address.map(a => loadAdamantPoolInfo(App, tokens, prices, a)));
@@ -172,10 +173,10 @@ async function main() {
     if (userTvl > 0) {
       _print_bold(`You are staking a total of $${formatMoney(userTvl)}`);
     }
-  
+
     hideLoading();
   }
-  
+
   async function loadAdamantPoolInfo(App, tokens, prices, contractAddress) {
     try {
       const contract = await new ethers.Contract(contractAddress, MATIC_ADAMANT_VAULT_TOKEN_ABI, App.provider);
@@ -196,7 +197,7 @@ async function main() {
       return null;
     }
   }
-  
+
   async function printAdamantContract(poolInfo) {
     const poolPrices = poolInfo.poolPrices;
     _print(`${poolPrices.name} Price: $${formatMoney(poolPrices.price)} TVL: $${formatMoney(poolPrices.tvl)}`);
@@ -208,4 +209,3 @@ async function main() {
     }
     _print("");
   }
-  
