@@ -2189,7 +2189,8 @@ function getUniPrices(tokens, prices, pool, chain="eth")
                 "fantom": `http://analytics-ftm.sushi.com/pairs/${pool.address}`,
                 "matic": `http://analytics-polygon.sushi.com/pairs/${pool.address}`,
                 "xdai": `https://analytics-xdai.sushi.com/pairs/${pool.address}`,
-                "harmony": `https://analytics-harmony.sushi.com/pairs/${pool.address}`
+                "harmony": `https://analytics-harmony.sushi.com/pairs/${pool.address}`,
+                "moonriver": `https://app.sushi.com/analytics/pools/${pool.address}`
               }[chain]) :
               pool.symbol.includes("Cake") ?  `https://pancakeswap.info/pair/${pool.address}` :
               pool.symbol.includes("CAT-LP") ?  `https://polycat.finance` :
