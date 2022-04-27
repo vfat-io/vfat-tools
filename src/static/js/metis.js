@@ -12,7 +12,8 @@ $(function() {
         ["Netswap",          `<a href="netswap"        >Various</a>`,        "NETT",                "https://netswap.io"],
         ["Andro",            `<a href="andro"          >Various</a>`,        "ANDRO",               "https://androfinance.com"],
         ["WOWswap",          `<a href="wowswap"        >Various</a>`,        "WOW",                 "https://wowswap.io"],
-        ["Hermes (MaiaDAO)", `<a href="hermes"         >Various</a>`,        "HERMES",              "https://hermes.maiadao.io"]
+        ["Hermes (MaiaDAO)", `<a href="hermes"         >Various</a>`,        "HERMES",              "https://hermes.maiadao.io"],
+        ["Hummus",           `<a href="hummus"         >Various</a>`,        "HUM",                 "https://www.hummus.exchange"]
       ]
     }
 
