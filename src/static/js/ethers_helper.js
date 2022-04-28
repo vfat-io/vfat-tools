@@ -33,6 +33,9 @@ const pageNetwork = function() {
   if (network.toLowerCase() === 'polygon') {
     return window.NETWORKS.POLYGON
   }
+  if (network.toLowerCase() === 'milkomeda') {
+    return window.NETWORKS.MILKOMEDA
+  }
   if (network.toLowerCase() === 'dfk') {
     return window.NETWORKS.DFK
   }
@@ -1462,6 +1465,28 @@ async function getAngleToken(app, angelToken, address, stakingAddress) {
   }
 }
 
+async function getBancorToken(app, bancorToken, address, stakingAddress) {
+  const calls = [bancorToken.decimals(), bancorToken.totalSupply(),
+    bancorToken.name(), bancorToken.symbol(), bancorToken.balanceOf(stakingAddress),
+    bancorToken.balanceOf(app.YOUR_ADDRESS), bancorToken.reserveToken()];
+  const [decimals, totalSupply, name, symbol, staked, unstaked, _token] =
+    await app.ethcallProvider.all(calls);
+  const token = await getToken(app, _token, address);
+  return {
+    address,
+    name,
+    symbol,
+    totalSupply,
+    decimals,
+    staked: staked / 10 ** decimals,
+    unstaked: unstaked / 10 ** decimals,
+    token: token,
+    balance: totalSupply,
+    contract: bancorToken,
+    tokens : [address].concat(token.tokens)
+  }
+}
+
 function hex_to_ascii(str1)
 {
  var hex  = str1.toString();
@@ -1616,6 +1641,9 @@ async function getStoredToken(app, tokenAddress, stakingAddress, type) {
     case "angle":
       const angle = new ethcall.Contract(tokenAddress, ANGLE_POOL_ABI);
       return await getAngleToken(app, angle, tokenAddress, stakingAddress);
+    case "bancor":
+      const bancor = new ethcall.Contract(tokenAddress, BANCOR_POOL_ABI);
+      return await getBancorToken(app, bancor, tokenAddress, stakingAddress);
     case "balancerSmart":
       const sbal = new ethcall.Contract(tokenAddress, BPOOL_TOKEN_ABI);
       const [bPool] = await app.ethcallProvider.all([sbal.bPool()]);
@@ -1792,6 +1820,15 @@ async function getToken(app, tokenAddress, stakingAddress) {
     const anglePool = await getAngleToken(app, angle, tokenAddress, stakingAddress);
     window.localStorage.setItem(tokenAddress, "angle");
     return anglePool;
+  }
+  catch(err) {
+  }
+  try {
+    const bancor = new ethcall.Contract(tokenAddress, BANCOR_POOL_ABI);
+    const [_reserveToken] = await app.ethcallProvider.all([bancor.reserveToken()]);
+    const bancorPool = await getBancorToken(app, bancor, tokenAddress, stakingAddress);
+    window.localStorage.setItem(tokenAddress, "bancor");
+    return bancorPool;
   }
   catch(err) {
   }
@@ -2049,6 +2086,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
   else if (pool.symbol.includes("BEAM-LP")) stakeTokenTicker += " BEAM-LP";
   else if (pool.symbol.includes("ZDEXLP")) stakeTokenTicker += " ZooDex LP";
   else if (pool.symbol.includes("OperaSwap")) stakeTokenTicker += " Opera Swap LP";
+  else if (pool.symbol.includes("MSLP")) stakeTokenTicker += " MilkySwap LP Token";
   else if (pool.symbol.includes("SLP")) stakeTokenTicker += " SLP";
   else if (pool.symbol.includes("Farmtom-LP")) stakeTokenTicker += " Farmtom LP";
   else if (pool.symbol.includes("Cake")) stakeTokenTicker += " Cake LP";
@@ -2142,6 +2180,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
           const poolUrl = pool.is1inch ? "https://1inch.exchange/#/dao/pools" :
           pool.symbol.includes("TETHYSLP") ?  `https://info.tethys.finance/pair/${pool.address}` :
           pool.symbol.includes("LSLP") ? `https://info.linkswap.app/pair/${pool.address}` :
+          pool.symbol.includes("MSLP") ? `https://www.milkyswap.exchange/` :
             pool.symbol.includes("SLP") ? (
               {
                 "eth": `http://analytics.sushi.com/pairs/${pool.address}`,
@@ -2150,7 +2189,8 @@ function getUniPrices(tokens, prices, pool, chain="eth")
                 "fantom": `http://analytics-ftm.sushi.com/pairs/${pool.address}`,
                 "matic": `http://analytics-polygon.sushi.com/pairs/${pool.address}`,
                 "xdai": `https://analytics-xdai.sushi.com/pairs/${pool.address}`,
-                "harmony": `https://analytics-harmony.sushi.com/pairs/${pool.address}`
+                "harmony": `https://analytics-harmony.sushi.com/pairs/${pool.address}`,
+                "moonriver": `https://app.sushi.com/analytics/pools/${pool.address}`
               }[chain]) :
               pool.symbol.includes("Cake") ?  `https://pancakeswap.info/pair/${pool.address}` :
               pool.symbol.includes("CAT-LP") ?  `https://polycat.finance` :
@@ -2253,6 +2293,11 @@ function getUniPrices(tokens, prices, pool, chain="eth")
             `https://linkswap.app/#/add/${t0address}/${t1address}`,
             `https://linkswap.app/#/remove/${t0address}/${t1address}`,
             `https://linkswap.app/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+          ] :
+          pool.symbol.includes("MSLP") ? [
+            `https://www.milkyswap.exchange/add/${t0address}/${t1address}`,
+            `https://www.milkyswap.exchange/remove/${t0address}/${t1address}`,
+            `https://www.milkyswap.exchange/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
           ] :
           pool.symbol.includes("BenSwap") ? ({
             "bsc": [
@@ -3066,6 +3111,9 @@ function getErc20Prices(prices, pool, chain="eth") {
     case "matic":
       poolUrl=`https://explorer-mainnet.maticvigil.com/address/${pool.address}`;
       break;
+    case "milkomeda":
+      poolUrl=`https://explorer-mainnet-cardano-evm.c1.milkomeda.com/address/${pool.address}`;
+      break;
     case "okex":
       poolUrl=`https://www.oklink.com/okexchain/address/${pool.address}`;
       break;
@@ -3740,6 +3788,9 @@ async function printSynthetixPool(App, info, chain="eth", customURLs) {
       case "matic":
         _print(`<a target="_blank" href="https://explorer-mainnet.maticvigil.com/address/${info.stakingAddress}#code">Polygon Explorer</a>`);
         break;
+      case "milkomeda":
+        _print(`<a target="_blank" href="https://explorer-mainnet-cardano-evm.c1.milkomeda.com/address/${info.stakingAddress}#code">Milkomeda Explorer</a>`);
+        break;
       case "dfk":
         _print(`<a target="_blank" href="https://subnets.avax.network/defi-kingdoms/dfk-chain/explorer/address/${info.stakingAddress}#code">DFK Explorer</a>`);
         break;
@@ -3965,6 +4016,8 @@ function getChainExplorerUrl(chain, address){
       return `https://www.teloscan.io/address/${address}`;
     case "matic" :
       return `https://polygonscan.com/address/${address}`;
+    case "milkomeda" :
+      return `https://explorer-mainnet-cardano-evm.c1.milkomeda.com/address/${address}`;
     case "dfk" :
       return `https://subnets.avax.network/defi-kingdoms/dfk-chain/explorer/address/${address}`;
     case "avax" :

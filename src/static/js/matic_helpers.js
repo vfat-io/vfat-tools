@@ -518,19 +518,19 @@ async function getMaticPoolInfo(app, chefContract, chefAddress, poolIndex, pendi
   const poolInfo = await chefContract.poolInfo(poolIndex);
   if (poolInfo.allocPoint == 0) {
     return {
-      address: poolInfo.lpToken ?? poolInfo.stakingToken,
+      address: poolInfo.lpToken ?? poolInfo.stakingToken ?? poolInfo.token,
       allocPoints: poolInfo.allocPoint ?? 1,
       poolToken: null,
       userStaked : 0,
       pendingRewardTokens : 0,
     };
   }
-  const poolToken = await getMaticToken(app, poolInfo.lpToken ?? poolInfo.stakingToken, chefAddress);
+  const poolToken = await getMaticToken(app, poolInfo.lpToken ?? poolInfo.stakingToken ?? poolInfo.token, chefAddress);
   const userInfo = await chefContract.userInfo(poolIndex, app.YOUR_ADDRESS);
   const pendingRewardTokens = await chefContract.callStatic[pendingRewardsFunction](poolIndex, app.YOUR_ADDRESS);
   const staked = userInfo.amount / 10 ** poolToken.decimals;
   return {
-      address: poolInfo.lpToken ?? poolInfo.stakingToken,
+      address: poolInfo.lpToken ?? poolInfo.stakingToken ?? poolInfo.token,
       allocPoints: poolInfo.allocPoint ?? 1,
       poolToken: poolToken,
       userStaked : staked,

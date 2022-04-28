@@ -188,7 +188,7 @@ const main = async () => {
       ['Zomb2              ', `<a href='zomb2'        >Various</a>`, 'ZOMB2        ', 'https://zomb2.finance/'],
       ['LIFE               ', `<a href='life'         >Various</a>`, 'LIFE         ', 'https://lif3.exchange'],
       ['JetMine            ', `<a href='jetmine'      >Various</a>`, 'JETMINE      ', 'https://jetmine.defiwaterfall.com'],
-      ['Hamster *          ', `<a href='hamster'      >Various</a>`, 'HAM / HSHARE ', 'https://hamster.money'],
+      ['Hamster            ', `<a href='hamster'      >Various</a>`, 'HAM / HSHARE ', 'https://hamster.money'],
       ['YieldWolf          ', `<a href='yieldwolf'    >Various</a>`, 'Various      ', 'https://yieldwolf.finance'],
       ['Zomb Finance       ', `<a href='zombfinance'  >Various</a>`, 'ZOMB / ZSHARE', 'https://zombfinance.com'],
       ['Lendly (Hundred Finance)', `<a href='lendly'  >Various</a>`, 'HND          ', 'https://lendly.dashboard.hundred.finance'],
@@ -203,7 +203,8 @@ const main = async () => {
       ['Mockingbird        ', `<a href='mockingbird'  >Various</a>`, 'MOCK          ', 'https://mockingbird.philetairus-socius.com'],
       ['Ghost DeFi         ', `<a href='ghostdefi'    >Various</a>`, 'GSHARE / GHOST', 'https://ghostdefi.io'],
       ['Charge DeFi        ', `<a href='charge'       >Various</a>`, 'CHARGE        ', 'https://ftm.chargedefi.fi'],
-      ['Olympus Finance    ', `<a href='olympus-finance'>Various</a>`, 'ARES        ', 'https://www.olympus-fi.com']  
+      ['Olympus Finance    ', `<a href='olympus-finance'>Various</a>`, 'ARES        ', 'https://www.olympus-fi.com'],
+      ['Printer Financial  ', `<a href='printer'      >Various</a>`, 'INK           ', 'https://printer.financial']  
     ],
   }
 

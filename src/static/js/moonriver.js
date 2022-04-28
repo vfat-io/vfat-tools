@@ -32,7 +32,8 @@ const main = async() => {
       ["Neku                     ", `<a href="neku"          >Various</a>`,"NEKU        ","https://neku.io"],
       ["MoonSwap                 ", `<a href="moonswap"      >Various</a>`,"MOON        ","https://moonswap.tech"],
       ["Moonwell                 ", `<a href="moonwell"      >Various</a>`,"APOLLO      ","https://moonwell.fi"],
-      ["Zenlink                  ", `<a href="zenlink"       >Various</a>`,"Various     ","https://dex.zenlink.pro"]
+      ["Zenlink                  ", `<a href="zenlink"       >Various</a>`,"Various     ","https://dex.zenlink.pro"],
+      ["MoonroverDao             ", `<a href="moonroverdao"  >Various</a>`,"ROVR        ","https://moonroverdao.com"]
     ]
   }
 

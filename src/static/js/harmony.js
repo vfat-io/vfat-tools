@@ -51,7 +51,8 @@ const main = async () => {
       ["Comfy Money",            "",`<a href='comfymoney'>Various</a>`,     "COMFY & CSHARE","https://comfy.money"],
       ["Quartz Defi",            "",`<a href='quartzdefi'>Various</a>`,     "QUARTZ",        "https://quartz-defi.one"],
       ["HolyGrail",              "",`<a href='holygrail'>Various</a>`,      "HLY",           "https://holygrail.one"],
-      ["Tranquil",               "",`<a href='tranquil'>Various</a>`,       "TRANQ",         "https://app.tranquil.finance"]
+      ["Tranquil",               "",`<a href='tranquil'>Various</a>`,       "TRANQ",         "https://app.tranquil.finance"],
+      ["Printer Financial",      "",`<a href='printer'>Various</a>`,        "INK",           "https://harmony.printer.financial"]
     ]
   }
 

@@ -5,6 +5,7 @@ const MOVR_UNI_ABI = [{"inputs":[],"stateMutability":"nonpayable","type":"constr
 
 const MoonriverTokens = [
     { "id": "moonriver","symbol": "MOVR", "contract": "0x98878B06940aE243284CA214f92Bb71a2b032B8A" },
+    { "id": "moonriver","symbol": "MOVR", "contract": "0xf50225a84382c74cbdea10b0c176f71fc3de0c4d" },
     { "id": "weth","symbol": "WETH", "contract": "0x639A647fbe20b6c8ac19E48E2de44ea792c62c5C" },
     { "id": "usd-coin","symbol": "USDC", "contract": "0xE3F5a90F9cb311505cd691a46596599aA1A0AD7D" },
     { "id": "tether","symbol": "USDT", "contract": "0xB44a9B6905aF7c801311e8F4E76932ee959c663C" },
