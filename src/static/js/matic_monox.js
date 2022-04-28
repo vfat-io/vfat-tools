@@ -3361,7 +3361,7 @@ async function main() {
     "title":"Bond Details",
     "heading": ["Bond Name", "Bond Price", "Bond ROI"],
     rows: bondDataList?.map(bondData => {
-      return [bondData.bondName,bondData.bondName === "USDC" || bondData.bondName === "USDT" ? parseFloat(bondData.bondPrice * 10**12).toFixed(2) : formatMoney(bondData.bondPrice),`${formatMoney(bondData.bondDiscount)}% ROI`]
+      return [bondData.bondName,bondData.bondName === "USDC" || bondData.bondName === "USDT" ? parseFloat(bondData.bondPrice * 10**12).toFixed(2) : formatMoney(bondData.bondPrice),`${bondData.bondName === "WETH 7-day" ? formatMoney(bondData.bondDiscount * 100) : formatMoney(bondData.bondDiscount)}% ROI`]
     })
   }
 
@@ -3462,7 +3462,7 @@ const fetchBondDataList = async (vcashPrice, provider) => {
       try {
         const bondContract = new ethers.Contract(item.bondAddress, item.bondABI, provider)
         const bondCalcContract = new ethers.Contract(BOND_CALCULATOR_ADDRESS, bondCalcContractAbi, provider)
-        const isLP = item.isLP
+        let isLP = item.isLP
         const isvUnitBond = item.isvUnitBond
         const {token1: currency, token2: currency2, isWethBond, reserveAddress} = item
         const LPTokenContract = isLP ? new ethers.Contract(reserveAddress,LPContractAbi ,provider) : null
@@ -3474,9 +3474,12 @@ const fetchBondDataList = async (vcashPrice, provider) => {
           isLP ? LPTokenContract?.getReserves() : {},
           isvUnitBond ? bondContract?.payoutFor(ethers.BigNumber.from(10).pow(18)) : 1,
         ])
+        if(item.bondName.includes("LP")){
+          isLP = true;
+        }
         const {_reserve0, _reserve1} = reserves
         const stableReserve = token0 === VUNIT_ADDRESS ? _reserve1 : _reserve0
-        const bondPriceInUSD = isLP
+        let bondPriceInUSD = isLP
           ? (2 * ethers.utils.formatEther(stableReserve) * Number(bondPrice)) /
             100 / ethers.utils.formatEther(totalValue)
           : ethers.utils.formatEther(bondPrice)
@@ -3485,6 +3488,13 @@ const fetchBondDataList = async (vcashPrice, provider) => {
         const bondDiscount  = isvUnitBond
           ? (ethers.utils.formatEther(vUnitBondReceiveBig) - 1) * 100
           : item.bondName.includes("USDT") || item.bondName.includes("USDC") ? (vcashPrice - (bondPriceInUSD * 10 ** 12)) / (bondPriceInUSD * 10 ** 12) * 100 : (vcashPrice - bondPriceInUSD) / bondPriceInUSD
+        if(item.bondName.includes("USDT 7-day") || item.bondName.includes("USDC 7-day") && !isLP){
+          bondPriceInUSD *= Math.pow(10, 12)
+        }
+        if(isLP){
+          bondPriceInUSD *= Math.pow(10,12)
+        }
+
         return {
           ...item,
           bondPrice: isvUnitBond ? bondPriceInUSD * vcashPrice : bondPriceInUSD,
