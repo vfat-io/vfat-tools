@@ -7,7 +7,8 @@ const main = async () => {
     title: 'Astar Network',
     heading: ['Pool Provider', 'LP', 'Reward Tokens', 'INFO'],
     rows: [
-      ['FunBeast           ', `<a href='funbeast'     >Various</a>`, 'BEAST          ', 'https://funbeast.xyz']
+      ['FunBeast           ', `<a href='funbeast'     >Various</a>`, 'BEAST          ', 'https://funbeast.xyz'],
+      ['PandoraSwap        ', `<a href='pandora'      >Various</a>`, 'PANDORA        ', 'https://pandoraswapxyz.org']
     ],
   }
 
