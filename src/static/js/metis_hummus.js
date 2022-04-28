@@ -136,8 +136,12 @@ const contract_unstake = async function(abi, contractAddress, stakedAmount, App)
     }
     const poolToken = await getMetisToken(app, poolInfo.lpToken ?? poolInfo.token ?? poolInfo.stakingToken, chefAddress);
     const userInfo = await chefContract.userInfo(poolIndex, app.YOUR_ADDRESS);
-    const pendingRewardTokens = await chefContract.callStatic[pendingRewardsFunction](poolIndex, app.YOUR_ADDRESS);
+    const pendingRewards = await chefContract.callStatic[pendingRewardsFunction](poolIndex, app.YOUR_ADDRESS);
+    const pendingRewardTokens = pendingRewards.pendingHum;
     const staked = userInfo.amount / 10 ** poolToken.decimals;
+    const humPerSec = await chefContract.humPerSec() / 1e18
+    const dialutingRepartition = await chefContract.dialutingRepartition()
+    const nonDialutingRepartition = await chefContract.nonDialutingRepartition()
     return {
         address : poolInfo.lpToken ?? poolInfo.token ?? poolInfo.stakingToken,
         allocPoints: poolInfo.adjustedAllocPoint ?? 1,
@@ -145,9 +149,72 @@ const contract_unstake = async function(abi, contractAddress, stakedAmount, App)
         userStaked : staked,
         pendingRewardTokens : pendingRewardTokens / 10 ** 18,
         depositFee : (poolInfo.depositFeeBP ?? 0) / 100,
-        withdrawFee : (poolInfo.withdrawFeeBP ?? 0) / 100
+        withdrawFee : (poolInfo.withdrawFeeBP ?? 0) / 100,
+        humPerSec : humPerSec,
+        dialutingRepartition : dialutingRepartition / 1,
+        nonDialutingRepartition : nonDialutingRepartition / 1
     };
   }
+
+function printHummusPool(App, chefAbi, chefAddr, prices, tokens, poolInfo, poolIndex, poolPrices,
+                       totalAllocPoints, rewardsPerWeek, rewardTokenTicker, rewardTokenAddress,
+                       pendingRewardsFunction, fixedDecimals, claimFunction, chain="eth", depositFee=0, withdrawFee=0, humPerSec, dialutingRepartition, poolToken, nonDialutingRepartition) {
+  fixedDecimals = fixedDecimals ?? 2;
+  const sp = (poolInfo.stakedToken == null) ? null : getPoolPrices(tokens, prices, poolInfo.stakedToken, chain);
+  var poolRewardsPerWeekBase = poolInfo.allocPoints / totalAllocPoints * rewardsPerWeek * dialutingRepartition / 1000
+  var poolRewardsPerWeekMedian = poolInfo.allocPoints / totalAllocPoints * rewardsPerWeek * nonDialutingRepartition / 1000 * 0.5
+  const userStaked = poolInfo.userLPStaked ?? poolInfo.userStaked;
+  const rewardPrice = getParameterCaseInsensitive(prices, rewardTokenAddress)?.usd;
+  const staked_tvl = sp?.staked_tvl ?? poolPrices.staked_tvl;
+  _print_inline(`${poolIndex} - `);
+  poolPrices.print_price(chain);
+  sp?.print_price(chain);
+  const apr = printHummusAPR(rewardTokenTicker, rewardPrice, poolRewardsPerWeekBase, poolRewardsPerWeekMedian, poolPrices.stakeTokenTicker,
+    staked_tvl, userStaked, poolPrices.price, fixedDecimals, humPerSec, dialutingRepartition, poolToken, poolInfo.allocPoints, totalAllocPoints, nonDialutingRepartition);
+  if (poolInfo.userLPStaked > 0) sp?.print_contained_price(userStaked);
+  if (poolInfo.userStaked > 0) poolPrices.print_contained_price(userStaked);
+  printChefContractLinks(App, chefAbi, chefAddr, poolIndex, poolInfo.address, pendingRewardsFunction,
+    rewardTokenTicker, poolPrices.stakeTokenTicker, poolInfo.poolToken.unstaked,
+    poolInfo.userStaked, poolInfo.pendingRewardTokens, fixedDecimals, claimFunction, rewardPrice, chain, depositFee, withdrawFee);
+  return apr;
+}
+
+function printHummusAPR(rewardTokenTicker, rewardPrice, poolRewardsPerWeek, poolRewardsPerWeekMedian,
+                  stakeTokenTicker, staked_tvl, userStaked, poolTokenPrice,
+                  fixedDecimals, humPerSec, dialutingRepartition, poolToken, adjustedAllocPoint, totalAdjustedAllocPoint, nonDialutingRepartition) {
+  var usdPerWeek = poolRewardsPerWeek * rewardPrice;
+  var usdPerWeekMedian = poolRewardsPerWeekMedian * rewardPrice;
+  fixedDecimals = fixedDecimals ?? 2;
+  _print(`${rewardTokenTicker} Per Week: ${poolRewardsPerWeek.toFixed(fixedDecimals)} ($${formatMoney(usdPerWeek)})`);
+  var weeklyAPR = usdPerWeek / staked_tvl * 100;
+  var dailyAPR = weeklyAPR / 7;
+  var yearlyAPR = weeklyAPR * 52;
+  var weeklyMedianAPR = usdPerWeekMedian / staked_tvl * 100;
+  var dailyMedianAPR = weeklyMedianAPR / 7;
+  var yearlyMedianAPR = weeklyMedianAPR * 52;
+  //Boosted APR: humPerSec * secondsPerYear * (poolInfo.adjustedAllocPoint / totalAdjustedAllocPoint) * (nonDialutingRepartition / 1000) * (userInfo.factor / poolInfo.sumOfFactors) * humPrice / userInfo.amount -> this calculates the boosted APR based on the individual user's stake.
+  _print(`Base APR: Day ${dailyAPR.toFixed(2)}% Week ${weeklyAPR.toFixed(2)}% Year ${yearlyAPR.toFixed(2)}%`);
+  _print(`Median Boosted APR: Day ${dailyMedianAPR.toFixed(2)}% Week ${weeklyMedianAPR.toFixed(2)}% Year ${yearlyMedianAPR.toFixed(2)}%`);
+  var userStakedUsd = userStaked * poolTokenPrice;
+  var userStakedPct = userStakedUsd / staked_tvl * 100;
+  _print(`You are staking ${userStaked.toFixed(fixedDecimals)} ${stakeTokenTicker} ($${formatMoney(userStakedUsd)}), ${userStakedPct.toFixed(2)}% of the pool.`);
+  var userWeeklyRewards = userStakedPct * poolRewardsPerWeek / 100;
+  var userDailyRewards = userWeeklyRewards / 7;
+  var userYearlyRewards = userWeeklyRewards * 52;
+  if (userStaked > 0) {
+    _print(`Estimated ${rewardTokenTicker} earnings:`
+        + ` Day ${userDailyRewards.toFixed(fixedDecimals)} ($${formatMoney(userDailyRewards*rewardPrice)})`
+        + ` Week ${userWeeklyRewards.toFixed(fixedDecimals)} ($${formatMoney(userWeeklyRewards*rewardPrice)})`
+        + ` Year ${userYearlyRewards.toFixed(fixedDecimals)} ($${formatMoney(userYearlyRewards*rewardPrice)})`);
+  }
+  return {
+    userStakedUsd,
+    totalStakedUsd : staked_tvl,
+    userStakedPct,
+    yearlyAPR,
+    userYearlyUsd : userYearlyRewards * rewardPrice
+  }
+}
 
   async function loadHumChefContract(App, tokens, prices, chef, chefAddress, chefAbi, rewardTokenTicker,
     rewardTokenFunction, rewardsPerBlockFunction, rewardsPerWeekFixed, pendingRewardsFunction,
@@ -194,9 +261,10 @@ const contract_unstake = async function(abi, contractAddress, stakedAmount, App)
     let aprs = []
     for (i = 0; i < poolCount; i++) {
       if (poolPrices[i]) {
-        const apr = printChefPool(App, chefAbi, chefAddress, prices, tokens, poolInfos[i], i, poolPrices[i],
+        const apr = printHummusPool(App, chefAbi, chefAddress, prices, tokens, poolInfos[i], i, poolPrices[i],
           totalAllocPoints, rewardsPerWeek, rewardTokenTicker, rewardTokenAddress,
-          pendingRewardsFunction, null, claimFunction, "metis", poolInfos[i].depositFee, poolInfos[i].withdrawFee)
+          pendingRewardsFunction, null, claimFunction, "metis", poolInfos[i].depositFee, poolInfos[i].withdrawFee, 
+          poolInfos[i].humPerSec, poolInfos[i].dialutingRepartition, poolInfos[i].poolToken, poolInfos[i].nonDialutingRepartition)
         aprs.push(apr);
       }
     }
