@@ -8,6 +8,7 @@ const main = async () => {
     heading: ["Pool Provider","MCN", "LP", "Reward Tokens", "INFO"],
     rows: [
       ['MilkySwap           ',"", `<a href="milkyswap"            >Various</a>`,'MILKY         ','https://www.milkyswap.exchange'],
+      ['Occam-x             ',"", `<a href="occam-x"              >Various</a>`,'OCX           ','https://app.occam-x.fi']
     ],
   }
 
