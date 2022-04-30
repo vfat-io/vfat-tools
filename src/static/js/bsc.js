@@ -589,7 +589,7 @@ const main = async() => {
       ["Monox Finance       ","", `<a href="monox"         >Various</a>`,"vUNIT            ","https://monox.finance"],
       ["Printer Financial   ","", `<a href="printer_financial">Various</a>`,"INK           ","https://bsc.printer.financial"],
       ["Spectrum Swap       ","", `<a href="spectrumswap"  >Various</a>`,"SPECTRUM         ","https://spectrumswap.com"],
-      ["Space Tour      ","", `<a href="spacetour"  >Various</a>`,"SPACE         ","https://spacetour.farm"]
+      ["Space Tour          ","", `<a href="spacetour"     >Various</a>`,"SPACE            ","https://spacetour.farm"]
     ]}
 
   let table = new AsciiTable().fromJSON(tableData);
