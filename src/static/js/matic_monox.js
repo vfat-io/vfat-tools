@@ -39,14 +39,6 @@ const calculateApy = (roi, n, name) => {
   } else {
     apy = precise(((1 + roi / 100) ** (365 / n) - 1) * 100, 2)
   }
-  switch(name){
-    case "vUNIT 1-year Staking":
-      return roi + "%"
-    case "vUnit-USDC Sushi LP 1-year":
-      return roi + "%"
-    default:
-      return apy > 0 ? apy + "%" : "0%"
-  }
 }
 
 const VUNIT_STAKE_ABI = [
