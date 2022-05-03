@@ -39,6 +39,7 @@ const calculateApy = (roi, n) => {
   } else {
     apy = precise(((1 + roi / 100) ** (365 / n) - 1) * 100, 2)
   }
+  return apy > 0 ? apy + "%" : "0%"
 }
 
 const VUNIT_STAKE_ABI = [
