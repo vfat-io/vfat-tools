@@ -2,6 +2,46 @@ $(function() {
   consoleInit(main)
 })
 
+function precise(value, digit, fixedDigit) {
+  if (!parseFloat(value) || !isFinite(parseFloat(value))) {
+    return 0
+  }
+  const sign = Math.sign(parseFloat(value))
+  if (parseFloat(Math.abs(value)) >= 1) {
+    return fixedDigit
+      ? parseFloat(Math.abs(value))
+          .toFixed(digit)
+          .match(/^0*(\d+(?:\.(?:(?!0+$)\d)+)?)/)
+          .input.replace(/(\.0+|0+)$/, '')
+      : sign *
+          parseFloat(Math.abs(value))
+            .toFixed(digit)
+            .match(/^0*(\d+(?:\.(?:(?!0+$)\d)+)?)/)[1]
+  } else if (parseFloat(Math.abs(value)) >= 0) {
+    const zeroCount = -Math.floor(Math.log10(parseFloat(Math.abs(value))) + 1)
+    if (zeroCount >= 17) return 0
+    return fixedDigit
+      ? parseFloat(Math.abs(value))
+          .toFixed(zeroCount >= digit ? zeroCount + 1 : digit)
+          .match(/^0*(\d+(?:\.(?:(?!0+$)\d)+)?)/)
+          .input.replace(/(\.0+|0+)$/, '')
+      : sign *
+          parseFloat(Math.abs(value))
+            .toFixed(digit + zeroCount > 18 ? 18 : digit + zeroCount)
+            .match(/^0*(\d+(?:\.(?:(?!0+$)\d)+)?)/)[1]
+  }
+}
+
+const calculateApy = (roi, n) => {
+  let apy
+  if (roi > 0) {
+    apy = precise(((1 + roi / 100) ** (365 / n) - 1) * 100, 2)
+  } else {
+    apy = precise(((1 + roi / 100) ** (365 / n) - 1) * 100, 2)
+  }
+  return apy > 0 ? apy + '%' : '0%'
+}
+
 const VUNIT_STAKE_ABI = [
   {
     inputs: [
@@ -3157,7 +3197,6 @@ const VUSDTLPBondContractAbi = [
   },
 ]
 
-
 const VUNIT_ADDRESS = '0x94695C9942b1F306bC9A6dC38563EC02312446Ff'
 const DISTRIBUTOR_ADDRESS = '0x3e9fA143E63D6e163212335931c2Dd8EA2406beb'
 const sVUNIT_ADDRESS = '0x82f6fa2457C203E1756F038a9bb00a253d609866'
@@ -3180,6 +3219,7 @@ const bondList = [
     reserveAddress: '0xc7198437980c041c805A1EDcbA50c1Ce5db95118',
     bondRoute: 'usdt',
     bondName: 'USDT',
+    period: 7,
   },
   {
     token1: {
@@ -3195,6 +3235,7 @@ const bondList = [
     reserveAddress: '0xA7D7079b0FEaD91F3e65f86E8915Cb59c1a4C664',
     bondRoute: 'usdc',
     bondName: 'USDC',
+    period: 7,
   },
   {
     token1: {
@@ -3207,10 +3248,11 @@ const bondList = [
     token2: {},
     isWethBond: true,
     bondABI: wETHBondContractAbi,
-    bondAddress: '0xe7c0460bE1025d1749449c07E8d159ddD109C089',
+    bondAddress: '0xe7c0460be1025d1749449c07e8d159ddd109c089',
     reserveAddress: '0x49D5c2BdFfac6CE2BFdB6640F4F80f226bc10bAB',
     bondRoute: 'weth',
     bondName: 'WETH',
+    period: 7,
   },
 ]
 
@@ -3292,15 +3334,22 @@ async function main() {
   )
 
   let tableData = {
-    "title":"Bond Details",
-    "heading": ["Bond Name", "Bond Price", "Bond ROI"],
+    title: 'Bond Details',
+    heading: ['Bond Name', 'Bond Price', 'Bond ROI', 'Bond APY'],
     rows: bondDataList?.map(bondData => {
-      return [bondData.bondName,bondData.bondName === "USDC" || bondData.bondName === "USDT" ? parseFloat(bondData.bondPrice * 10**12).toFixed(2) : formatMoney(bondData.bondPrice),`${formatMoney(bondData.bondDiscount)}% ROI`]
-    })
+      return [
+        bondData.bondName,
+        bondData.bondName === 'USDC' || bondData.bondName === 'USDT'
+          ? parseFloat(bondData.bondPrice * 10 ** 12).toFixed(2)
+          : formatMoney(bondData.bondPrice),
+        `${formatMoney(bondData.bondDiscount)}% ROI`,
+          calculateApy(precise(bondData.bondDiscount * 100, 2), bondData.period)
+      ]
+    }),
   }
 
-  let table = new AsciiTable().fromJSON(tableData);
-  document.getElementById('log').innerHTML += table + '<br />';
+  let table = new AsciiTable().fromJSON(tableData)
+  document.getElementById('log').innerHTML += table + '<br />'
 
   _print_link(`Stake ${parseFloat(userVUnitBalance.toString()).toFixed(4)} ${rewardTokenTicker}`, approveAndStakeVUNIT)
   _print_link(`Unstake ${parseFloat(userStakingBalance.toString()).toFixed(4)} ${rewardTokenTicker}`, unstakeVUNIT)
@@ -3398,7 +3447,7 @@ const fetchBondDataList = async (vcashPrice, provider) => {
         const isLP = item.isLP
         const isvUnitBond = item.isvUnitBond
         const {token1: currency, token2: currency2, isWethBond, reserveAddress} = item
-        const LPTokenContract = isLP ? new ethers.Contract(reserveAddress,LPContractAbi ,provider) : null
+        const LPTokenContract = isLP ? new ethers.Contract(reserveAddress, LPContractAbi, provider) : null
 
         const [bondPrice, totalValue, token0, reserves, vUnitBondReceiveBig] = await Promise.all([
           !isLP ? bondContract.bondPriceInUSD() : bondContract.bondPrice(),
@@ -3411,13 +3460,16 @@ const fetchBondDataList = async (vcashPrice, provider) => {
         const stableReserve = token0 === VUNIT_ADDRESS ? _reserve1 : _reserve0
         const bondPriceInUSD = isLP
           ? (2 * ethers.utils.formatEther(stableReserve) * Number(bondPrice)) /
-            100 / ethers.utils.formatEther(totalValue)
+            100 /
+            ethers.utils.formatEther(totalValue)
           : ethers.utils.formatEther(bondPrice)
         let ethPrice = isWethBond ? await bondContract?.assetPrice() : 1
         ethPrice = Number(ethPrice?.toString()) / Math.pow(10, 8)
-        const bondDiscount  = isvUnitBond
+        const bondDiscount = isvUnitBond
           ? (ethers.utils.formatEther(vUnitBondReceiveBig) - 1) * 100
-          : item.bondName.includes("USDT") || item.bondName.includes("USDC") ? (vcashPrice - (bondPriceInUSD * 10 ** 12)) / (bondPriceInUSD * 10 ** 12) * 100 : (vcashPrice - bondPriceInUSD) / bondPriceInUSD
+          : item.bondName.includes('USDT') || item.bondName.includes('USDC')
+          ? ((vcashPrice - bondPriceInUSD * 10 ** 12) / (bondPriceInUSD * 10 ** 12)) * 100
+          : (vcashPrice - bondPriceInUSD) / bondPriceInUSD
         return {
           ...item,
           bondPrice: isvUnitBond ? bondPriceInUSD * vcashPrice : bondPriceInUSD,
