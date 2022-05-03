@@ -32,7 +32,7 @@ function precise(value, digit, fixedDigit) {
   }
 }
 
-const calculateApy = (roi, n, name) => {
+const calculateApy = (roi, n) => {
   let apy
   if (roi > 0) {
     apy = precise(((1 + roi / 100) ** (365 / n) - 1) * 100, 2)
