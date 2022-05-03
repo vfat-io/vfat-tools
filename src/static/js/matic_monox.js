@@ -32,14 +32,21 @@ function precise(value, digit, fixedDigit) {
   }
 }
 
-const calculateApy = (roi, n) => {
+const calculateApy = (roi, n, name) => {
   let apy
   if (roi > 0) {
     apy = precise(((1 + roi / 100) ** (365 / n) - 1) * 100, 2)
   } else {
     apy = precise(((1 + roi / 100) ** (365 / n) - 1) * 100, 2)
   }
-  return apy > 0 ? apy + '%' : '0%'
+  switch(name){
+    case "vUNIT 1-year Staking":
+      return roi + "%"
+    case "vUnit-USDC Sushi LP 1-year":
+      return roi + "%"
+    default:
+      return apy > 0 ? apy + "%" : "0%"
+  }
 }
 
 const VUNIT_STAKE_ABI = [
@@ -3430,7 +3437,7 @@ async function main() {
             ? formatMoney(bondData.bondDiscount * 100)
             : formatMoney(bondData.bondDiscount)
         }% ROI`,
-          calculateApy(precise(bondData.bondDiscount * 100, 2), bondData.period)
+          bondData.bondName === 'WETH 7-day' ? calculateApy(formatMoney(bondData.bondDiscount * 100), bondData.period): calculateApy(formatMoney(bondData.bondDiscount), bondData.period)
       ]
     }),
   }
