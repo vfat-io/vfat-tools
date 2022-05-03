@@ -24,9 +24,10 @@ $(function() {
      if(currentBlock < startBlock){
       _print(`Rewards start at block <a href="https://bscscan.com/block/countdown/${startBlock}" target="_blank">${startBlock}</a>\n`)
      }else{
-      rewardsPerWeek = await KRONOS_CHEF.kronosPerBlock() /1e18
-          * 604800 * multiplier / 3;
-     }
+      rewardsPerWeek = await KRONOS_CHEF.kronosPerBlock() /1e9
+          * 604800 / 3;
+    }
+
   
       const tokens = {};
       const prices = await getBscPrices();
