@@ -39,7 +39,6 @@ const calculateApy = (roi, n) => {
   } else {
     apy = precise(((1 + roi / 100) ** (365 / n) - 1) * 100, 2)
   }
-  return apy > 0 ? apy + '%' : '0%'
 }
 
 const VUNIT_STAKE_ABI = [
@@ -3430,7 +3429,7 @@ async function main() {
             ? formatMoney(bondData.bondDiscount * 100)
             : formatMoney(bondData.bondDiscount)
         }% ROI`,
-          calculateApy(precise(bondData.bondDiscount * 100, 2), bondData.period)
+          bondData.bondName === 'WETH 7-day' ? calculateApy(formatMoney(bondData.bondDiscount * 100), bondData.period): calculateApy(formatMoney(bondData.bondDiscount), bondData.period)
       ]
     }),
   }
