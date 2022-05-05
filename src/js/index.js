@@ -91,6 +91,21 @@ window.NETWORKS = {
       "https://explorer-mainnet-cardano-evm.c1.milkomeda.com"
     ]
   },
+  EVMOS: {
+    "chainId": "0x2329",
+    "chainName": "EVMOS",
+    "nativeCurrency": {
+      "name": "Evmos",
+      "symbol": "EVMOS",
+      "decimals": 18
+    },
+    "rpcUrls": [
+      "https://evmos-rpc2.binary.host"
+    ],
+    "blockExplorerUrls": [
+      "https://evm.evmos.org"
+    ]
+  },
   MOONRIVER: {
     "chainId": "0x505",
     "chainName": "Moonriver",

@@ -60,6 +60,9 @@ const pageNetwork = function() {
   if (network.toLowerCase() === 'cronos') {
     return window.NETWORKS.CRONOS
   }
+  if (network.toLowerCase() === 'evmos') {
+    return window.NETWORKS.EVMOS
+  }
   if (network.toLowerCase() === 'moonbeam') {
     return window.NETWORKS.MOONBEAM
   }
@@ -2091,6 +2094,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
   else if (pool.symbol.includes("Farmtom-LP")) stakeTokenTicker += " Farmtom LP";
   else if (pool.symbol.includes("Cake")) stakeTokenTicker += " Cake LP";
   else if (pool.name.includes("Value LP")) stakeTokenTicker += " Value LP";
+  else if (pool.name.includes("Diffusion LP Token")) stakeTokenTicker += " Diffusion LP";
   else if (pool.name.includes("Duneswap LP Token")) stakeTokenTicker += " Duneswap LP";
   else if (pool.name.includes("Lizard LPs")) stakeTokenTicker += " LLP";
   else if (pool.name.includes("Gemkeeper LP Token")) stakeTokenTicker += " GLP";
@@ -2220,6 +2224,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
               pool.symbol.includes("ZLK-LP") ?  `https://dex.zenlink.pro/#/info/overview` :
               pool.name.includes("Value LP") ?  `https://info.vswap.fi/pool/${pool.address}` :
               pool.name.includes("Duneswap LP Token") ?  `https://explorer.emerald.oasis.dev/token/${pool.address}` :
+              pool.name.includes("Diffusion LP Token") ?  `https://app.diffusion.fi/` :
               pool.name.includes("Lizard LPs") ?  `https://explorer.emerald.oasis.dev/token/${pool.address}` :
               pool.name.includes("Gemkeeper LP Token") ?  `https://explorer.emerald.oasis.dev/token/${pool.address}` :
               pool.name.includes("Flare LP Token") ?  `https://analytics.solarflare.io/pairs/${pool.address}` :
@@ -2293,6 +2298,11 @@ function getUniPrices(tokens, prices, pool, chain="eth")
             `https://linkswap.app/#/add/${t0address}/${t1address}`,
             `https://linkswap.app/#/remove/${t0address}/${t1address}`,
             `https://linkswap.app/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+          ] :
+          pool.name.includes("Diffusion LP Token") ? [
+            `https://app.diffusion.fi/#/add/v2/${t0address}/${t1address}`,
+            `https://app.diffusion.fi/#/remove/v2/${t0address}/${t1address}`,
+            `https://app.diffusion.fi/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
           ] :
           pool.symbol.includes("MSLP") ? [
             `https://www.milkyswap.exchange/add/${t0address}/${t1address}`,
@@ -3129,6 +3139,9 @@ function getErc20Prices(prices, pool, chain="eth") {
     case "fantom":
       poolUrl=`https://ftmscan.com/token/${pool.address}`;
       break;
+    case "evmos":
+      poolUrl=`https://evm.evmos.org/address/${pool.address}`;
+      break;
     case "astar":
       poolUrl=`https://blockscout.com/astar/address/${pool.address}`;
       break;
@@ -3803,6 +3816,9 @@ async function printSynthetixPool(App, info, chain="eth", customURLs) {
       case "fantom":
         _print(`<a target="_blank" href="https://ftmscan.com/address/${info.stakingAddress}#code">FTM Scan</a>`);
         break;
+      case "evmos":
+        _print(`<a target="_blank" href="https://evm.evmos.org/address/${info.stakingAddress}#code">EVMOS Explorer</a>`);
+        break;
       case "astar":
         _print(`<a target="_blank" href="https://blockscout.com/astar/address/${info.stakingAddress}">Astar Explorer</a>`);
         break;
@@ -3988,6 +4004,8 @@ function getChainExplorerUrl(chain, address){
       return `https://bscscan.com/token/${address}`;
     case "fantom" :
       return `https://ftmscan.com/token/${address}`;
+    case "evmos" :
+      return `https://evm.evmos.org/address/${address}`;
     case "astar" :
       return `https://blockscout.com/astar/address/${address}`;
     case "harmony" :
