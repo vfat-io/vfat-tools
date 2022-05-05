@@ -4,11 +4,10 @@ $(function() {
 
 const main = async () => {
   let tableData = {
-    title: 'Milkomeda Network',
+    title: 'EVMOS Network',
     heading: ["Pool Provider","MCN", "LP", "Reward Tokens", "INFO"],
     rows: [
-      ['MilkySwap           ',"", `<a href="milkyswap"            >Various</a>`,'MILKY         ','https://www.milkyswap.exchange'],
-      ['Occam-x             ',"", `<a href="occam-x"              >Various</a>`,'OCX           ','https://app.occam-x.fi']
+      ['Diffusion           ',"", `<a href="diffusion"            >Various</a>`,'DIFF         ','https://app.diffusion.fi'],
     ],
   }
 

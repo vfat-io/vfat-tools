@@ -176,7 +176,8 @@ const main = async () => {
       ["Stargate                     ", `<a href="../stargate/"          >Various</a>`,"STG                 ", "https://stargate.finance"],
       ["Backd                        ", `<a href="../backd/"             >Various</a>`,"                    ", "https://backd.fund"],
       ["Jpegd                        ", `<a href="../jpegd/"             >Various</a>`,"JPEG                ", "https://jpegd.io"],
-      ["Bancor                       ", `<a href="../bancor/"            >Various</a>`,"BNT                 ", "https://app.bancor.network"]
+      ["Bancor                       ", `<a href="../bancor/"            >Various</a>`,"BNT                 ", "https://app.bancor.network"],
+      ["UnoRe                        ", `<a href="../unore/"             >Various</a>`, "UnoRe              ", "https://appv2.unore.io"]
     ]
   }
 

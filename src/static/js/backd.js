@@ -53,6 +53,9 @@ async function loadBackdVaultInfo(App, tokens, prices, stakingAbi, stakingAddres
     const [stakeTokenAddress, staker, underlyingToken, totalUnderlying] = await App.ethcallProvider.all([STAKING_MULTI.lpToken(), STAKING_MULTI.staker(), STAKING_MULTI.getUnderlying(), STAKING_MULTI.totalUnderlying()])
 
     var stakeToken = await getToken(App, underlyingToken, stakingAddress);
+    const lpToken = await getToken(App, stakeTokenAddress, stakingAddress);
+    const ownedLPs = lpToken.unstaked
+    const lpTokenSymbol = lpToken.symbol;
     stakeToken.staked = totalUnderlying / 10 ** stakeToken.decimals;
     const STAKER_MULTI = new ethcall.Contract(staker, STAKER_ABI);
 
@@ -95,6 +98,8 @@ async function loadBackdVaultInfo(App, tokens, prices, stakingAbi, stakingAddres
       staked_tvl,
       userStaked,
       userUnstaked,
+      ownedLPs,
+      lpTokenSymbol
     }
 }
 
@@ -102,8 +107,9 @@ async function printBackdVault(App, info, chain="eth", customURLs) {
   info.poolPrices.print_price(chain, 4, customURLs);
   const userStakedUsd = info.userStaked * info.stakeTokenPrice;
   const userStakedPct = userStakedUsd / info.staked_tvl * 100;
-  _print(`You are staking ${info.userStaked.toFixed(6)} ${info.stakeTokenTicker} ` +
-         `$${formatMoney(userStakedUsd)} (${userStakedPct.toFixed(2)}% of the pool).`);
+  /*_print(`You are staking ${info.userStaked.toFixed(6)} ${info.stakeTokenTicker} ` +
+         `$${formatMoney(userStakedUsd)} (${userStakedPct.toFixed(2)}% of the pool).`);*/
+  _print(`You owned ${info.ownedLPs.toFixed(2)} ${info.lpTokenSymbol}`)
   _print(`<a target="_blank" href="https://etherscan.io/address/${info.stakingAddress}#code">Etherscan</a>`);
   _print("");
 

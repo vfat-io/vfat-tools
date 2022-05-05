@@ -31,6 +31,22 @@ $(function () {
         await loadNachoxyzContract(App, tokens, prices, PDSHARE_CHEF, PDSHARE_CHEF_ADDR, PDSHARE_CHEF_ABI, rewardTokenTicker,		
             "bshare", null, rewardsPerWeek, "pendingShare");	
         _print("");
+
+        /*const BOARDROOM_ADDR = "0x83c3972eefb3326b5098c6dbec01dcc8988b2886";
+        const ORACLE_ADDR = "0x911211346c585b3a5c0270ad7433b58582f936a2";
+        const rewardTokenAddress = "0x3068382885602fc0089aec774944b5ad6123ae60";
+        const lptAddress = "0xEBcA34c9Fc0be6a37dEAF62DDd064941f53Ed246";
+        const stakeTicker = "PDSHARE";
+        const rewardTicker = "PDDOLLAR";
+        const epochsPerDay = ;
+        const maxSupplyIncrease = ???
+        const decimals = 18;
+        const ratio = ???;
+        const targetMantissa = ???;
+        let boardroom = await loadBoardroom(App, prices, BOARDROOM_ADDR, ORACLE_ADDR,  lptAddress, rewardTokenAddress, stakeTicker,
+          rewardTicker, epochsPerDay, maxSupplyIncrease, decimals, ratio, targetMantissa)
+
+        _print("")*/
         _print("Staked gSHAREs can only be withdrawn after 6 epochs since deposit.\n")
         const p0 = await loadFantomPDDOLLARSynthetixPool(App, tokens, prices, StakingPool.abi, 
                                                                             StakingPool.address, 
@@ -204,7 +220,7 @@ async function loadNachoxyzContract(App, tokens, prices, chef, chefAddress, chef
   deathPoolIndices) {
   const chefContract = chef ?? new ethers.Contract(chefAddress, chefAbi, App.provider);
 
-  const poolCount = 4;
+  const poolCount = 7;
   const totalAllocPoints = await chefContract.totalAllocPoint();
 
   _print(`Found ${poolCount} pools.\n`)

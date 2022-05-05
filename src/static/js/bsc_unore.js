@@ -415,9 +415,7 @@ async function loadPool(App, tokens, prices, stakingAddress) {
   const STAKING_POOL = new ethers.Contract(stakingAddress, RISKPOOL_ABI, App.provider);
 
   const APR = await STAKING_POOL.APR();
-  // const name = await STAKING_POOL.name();
   const symbol = await STAKING_POOL.symbol()
-  // const stakeTokenAddress = await STAKING_POOL.currency();
 
   const userStaked = await STAKING_POOL.balanceOf(App.YOUR_ADDRESS) / 10 ** 18;
 
