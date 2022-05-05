@@ -612,22 +612,6 @@ async function loadEvmosChefContract(App, tokens, prices, chef, chefAddress, che
   return { prices, totalUserStaked, totalStaked, averageApr }
 }
 
-const evmosTokens = [
-  { "id": "usd-coin","symbol": "USDC", "contract": "0x51e44FfaD5C2B122C8b635671FCC8139dc636E82" },
-  { "id": "evmos","symbol": "EVMOS", "contract": "0xD4949664cD82660AaE99bEdc034a0deA8A0bd517" },
-  { "id": "weth","symbol": "WETH", "contract": "0x5842C5532b61aCF3227679a8b1BD0242a41752f2" }
-]
-
-
-async function getEvmosPrices() {
-  const idPrices = await lookUpPrices(evmosTokens.map(x => x.id));
-  const prices = {}
-  for (const bt of evmosTokens)
-      if (idPrices[bt.id])
-          prices[bt.contract] = idPrices[bt.id];
-  return prices;
-}
-
 async function loadMultipleEvmosSynthetixPools(App, tokens, prices, pools, customURLs) {
   let totalStaked  = 0, totalUserStaked = 0, individualAPRs = [];
   const infos = await Promise.all(pools.map(p =>

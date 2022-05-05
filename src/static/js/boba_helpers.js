@@ -1,18 +1,3 @@
-
-const BobaTokens = [
-  { "id": "weth", "symbol": "WETH", "contract": "0xDeadDeAddeAddEAddeadDEaDDEAdDeaDDeAD0000"},
-  { "id": "synapse-2", "symbol": "SYN", "contract": "0xb554A55358fF0382Fb21F0a478C3546d1106Be8c"}
-];
-
-async function getBobaPrices() {
-    const idPrices = await lookUpPrices(BobaTokens.map(x => x.id));
-    const prices = {}
-    for (const bt of BobaTokens)
-        if (idPrices[bt.id])
-            prices[bt.contract] = idPrices[bt.id];
-    return prices;
-}
-
 async function getBobaUniPool(App, pool, poolAddress, stakingAddress) {
   const calls = [
     pool.decimals(), pool.token0(), pool.token1(), pool.symbol(), pool.name(),

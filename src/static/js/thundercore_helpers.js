@@ -4,23 +4,6 @@ const TTSwapFactoryABI = [ { "name": "NewExchange", "inputs": [ { "type": "addre
 const TT_SWAP_FACTORY_ADDRESS = "0xce393b11872ee5020828e443f6ec9de58cd8b6c5"
 const ether = ethers.BigNumber.from(10).pow(18)
 
-const ttTokens = [
-  { "id": "thunder-token","symbol": "TT","contract": "0x0000000000000000000000000000000000000000" },
-  { "id": "usd-coin","symbol": "USDC","contract": "0x22e89898A04eaf43379BeB70bf4E38b1faf8A31e" },
-  { "id": "tether", "symbol": "USDT", "contract": "0x4f3C8E20942461e2c3Bdd8311AC57B0c222f2b82"},
-  { "id":"binance-usd", "symbol": "BUSD", "contract": "0xBEB0131D95AC3F03fd15894D0aDE5DBf7451d171" },
-  { "id":"ethereum", "symbol": "ETHER", "contract": "0x6576bb918709906dcbfdceae4bb1e6df7c8a1077" }
-]
-
-async function getTTPrices() {
-  const idPrices = await lookUpPrices(ttTokens.map(x => x.id));
-  const prices = {}
-  for (const bt of ttTokens)
-      if (idPrices[bt.id])
-          prices[bt.contract] = idPrices[bt.id];
-  return prices;
-}
-
 async function geterc20(App, token, address, stakingAddress) {
   if (address == "0x0000000000000000000000000000000000000000") {
     return {

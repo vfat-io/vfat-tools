@@ -1,17 +1,4 @@
-const SmartbchTokens = [
-    { "id": "bitcoin-cash","symbol": "WBCH", "contract": "0x3743eC0673453E5009310C727Ba4eaF7b3a1cc04" }
-  ];
-  
-  async function getSmartbchPrices() {
-      const idPrices = await lookUpPrices(SmartbchTokens.map(x => x.id));
-      const prices = {}
-      for (const bt of SmartbchTokens)
-          if (idPrices[bt.id])
-              prices[bt.contract] = idPrices[bt.id];
-      return prices;
-  }
-  
-  async function getSmartbchUniPool(App, pool, poolAddress, stakingAddress) {
+async function getSmartbchUniPool(App, pool, poolAddress, stakingAddress) {
       let q0, q1;
       const reserves = await pool.getReserves();
       q0 = reserves._reserve0;

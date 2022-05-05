@@ -518,21 +518,6 @@ async function loadDfkChefContract(App, tokens, prices, chef, chefAddress, chefA
   return { prices, totalUserStaked, totalStaked, averageApr }
 }
 
-const DfkTokens = [
-  { "id": "defi-kingdoms","symbol": "JEWEL","contract": "0xCCb93dABD71c8Dad03Fc4CE5559dC3D89F67a260" },
-  { "id": "avalanche-2","symbol": "AVAX","contract": "0xB57B60DeBDB0b8172bb6316a9164bd3C695F133a" },
-]
-
-
-async function getDfkPrices() {
-  const idPrices = await lookUpPrices(DfkTokens.map(x => x.id));
-  const prices = {}
-  for (const bt of DfkTokens)
-      if (idPrices[bt.id])
-          prices[bt.contract] = idPrices[bt.id];
-  return prices;
-}
-
 async function loadMultipleDfkSynthetixPools(App, tokens, prices, pools, customURLs) {
   let totalStaked  = 0, totalUserStaked = 0, individualAPRs = [];
   const infos = await Promise.all(pools.map(p =>

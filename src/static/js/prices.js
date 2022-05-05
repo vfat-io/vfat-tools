@@ -273,6 +273,12 @@ const EmeraldTokens = [
   { "id": "wrapped-bitcoin", "symbol": "WBTC", "contract": "0xd43ce0aa2a29DCb75bDb83085703dc589DE6C7eb"},
 ];
 
+const evmosTokens = [
+  { "id": "usd-coin","symbol": "USDC", "contract": "0x51e44FfaD5C2B122C8b635671FCC8139dc636E82" },
+  { "id": "evmos","symbol": "EVMOS", "contract": "0xD4949664cD82660AaE99bEdc034a0deA8A0bd517" },
+  { "id": "weth","symbol": "WETH", "contract": "0x5842C5532b61aCF3227679a8b1BD0242a41752f2" }
+]
+
 const FantomTokens = [
   { "id": "tether", "symbol": "USDT", "contract": "0x049d68029688eAbF473097a2fC38ef61633A3C7A" },
   { "id": "usd-coin", "symbol": "USDC", "contract": "0x04068DA6C83AFCFA0e13ba15A6696662335D5B75" },
@@ -704,6 +710,15 @@ async function getFantomPrices() {
   const idPrices = await lookUpPrices(FantomTokens.map(x => x.id));
   const prices = {}
   for (const bt of FantomTokens)
+      if (idPrices[bt.id])
+          prices[bt.contract] = idPrices[bt.id];
+  return prices;
+}
+
+async function getEvmosPrices() {
+  const idPrices = await lookUpPrices(evmosTokens.map(x => x.id));
+  const prices = {}
+  for (const bt of evmosTokens)
       if (idPrices[bt.id])
           prices[bt.contract] = idPrices[bt.id];
   return prices;
