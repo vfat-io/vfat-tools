@@ -59,7 +59,9 @@ async function loadJonesSynthetixPoolInfo(App, tokens, prices, stakingAbi, staki
 
   var newPriceAddresses = stakeToken.tokens.filter(x =>
     !getParameterCaseInsensitive(prices, x));
+
   var newPrices = await lookUpTokenPrices(newPriceAddresses);
+
   for (const key in newPrices) {
     if (newPrices[key]?.usd)
       prices[key] = newPrices[key];
@@ -69,6 +71,7 @@ async function loadJonesSynthetixPoolInfo(App, tokens, prices, stakingAbi, staki
   for (const address of newTokenAddresses) {
     tokens[address] = await getArbitrumToken(App, address, stakingAddress);
   }
+
   if (!getParameterCaseInsensitive(tokens, rewardTokenAddress)) {
     tokens[rewardTokenAddress] = await getArbitrumToken(App, rewardTokenAddress, stakingAddress);
   }
