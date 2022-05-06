@@ -1,9 +1,16 @@
+const HUMMUS_ABI = [{"type":"event","name":"Approval","inputs":[{"type":"address","name":"owner","internalType":"address","indexed":true},{"type":"address","name":"spender","internalType":"address","indexed":true},{"type":"uint256","name":"value","internalType":"uint256","indexed":false}],"anonymous":false},{"type":"event","name":"CashAdded","inputs":[{"type":"uint256","name":"previousCashPosition","internalType":"uint256","indexed":false},{"type":"uint256","name":"cashBeingAdded","internalType":"uint256","indexed":false}],"anonymous":false},{"type":"event","name":"CashRemoved","inputs":[{"type":"uint256","name":"previousCashPosition","internalType":"uint256","indexed":false},{"type":"uint256","name":"cashBeingRemoved","internalType":"uint256","indexed":false}],"anonymous":false},{"type":"event","name":"LiabilityAdded","inputs":[{"type":"uint256","name":"previousLiabilityPosition","internalType":"uint256","indexed":false},{"type":"uint256","name":"liabilityBeingAdded","internalType":"uint256","indexed":false}],"anonymous":false},{"type":"event","name":"LiabilityRemoved","inputs":[{"type":"uint256","name":"previousLiabilityPosition","internalType":"uint256","indexed":false},{"type":"uint256","name":"liabilityBeingRemoved","internalType":"uint256","indexed":false}],"anonymous":false},{"type":"event","name":"MaxSupplyUpdated","inputs":[{"type":"uint256","name":"previousMaxSupply","internalType":"uint256","indexed":false},{"type":"uint256","name":"newMaxSupply","internalType":"uint256","indexed":false}],"anonymous":false},{"type":"event","name":"OwnershipTransferred","inputs":[{"type":"address","name":"previousOwner","internalType":"address","indexed":true},{"type":"address","name":"newOwner","internalType":"address","indexed":true}],"anonymous":false},{"type":"event","name":"PoolUpdated","inputs":[{"type":"address","name":"previousPool","internalType":"address","indexed":true},{"type":"address","name":"newPool","internalType":"address","indexed":true}],"anonymous":false},{"type":"event","name":"Transfer","inputs":[{"type":"address","name":"from","internalType":"address","indexed":true},{"type":"address","name":"to","internalType":"address","indexed":true},{"type":"uint256","name":"value","internalType":"uint256","indexed":false}],"anonymous":false},{"type":"function","stateMutability":"nonpayable","outputs":[],"name":"addCash","inputs":[{"type":"uint256","name":"amount","internalType":"uint256"}]},{"type":"function","stateMutability":"nonpayable","outputs":[],"name":"addLiability","inputs":[{"type":"uint256","name":"amount","internalType":"uint256"}]},{"type":"function","stateMutability":"view","outputs":[{"type":"address","name":"","internalType":"address"}],"name":"aggregateAccount","inputs":[]},{"type":"function","stateMutability":"view","outputs":[{"type":"uint256","name":"","internalType":"uint256"}],"name":"allowance","inputs":[{"type":"address","name":"owner","internalType":"address"},{"type":"address","name":"spender","internalType":"address"}]},{"type":"function","stateMutability":"nonpayable","outputs":[{"type":"bool","name":"","internalType":"bool"}],"name":"approve","inputs":[{"type":"address","name":"spender","internalType":"address"},{"type":"uint256","name":"amount","internalType":"uint256"}]},{"type":"function","stateMutability":"view","outputs":[{"type":"uint256","name":"","internalType":"uint256"}],"name":"balanceOf","inputs":[{"type":"address","name":"account","internalType":"address"}]},{"type":"function","stateMutability":"nonpayable","outputs":[],"name":"burn","inputs":[{"type":"address","name":"to","internalType":"address"},{"type":"uint256","name":"amount","internalType":"uint256"}]},{"type":"function","stateMutability":"view","outputs":[{"type":"uint256","name":"","internalType":"uint256"}],"name":"cash","inputs":[]},{"type":"function","stateMutability":"view","outputs":[{"type":"uint8","name":"","internalType":"uint8"}],"name":"decimals","inputs":[]},{"type":"function","stateMutability":"nonpayable","outputs":[{"type":"bool","name":"","internalType":"bool"}],"name":"decreaseAllowance","inputs":[{"type":"address","name":"spender","internalType":"address"},{"type":"uint256","name":"subtractedValue","internalType":"uint256"}]},{"type":"function","stateMutability":"nonpayable","outputs":[{"type":"bool","name":"","internalType":"bool"}],"name":"increaseAllowance","inputs":[{"type":"address","name":"spender","internalType":"address"},{"type":"uint256","name":"addedValue","internalType":"uint256"}]},{"type":"function","stateMutability":"nonpayable","outputs":[],"name":"initialize","inputs":[{"type":"address","name":"underlyingToken_","internalType":"address"},{"type":"string","name":"name_","internalType":"string"},{"type":"string","name":"symbol_","internalType":"string"},{"type":"address","name":"aggregateAccount_","internalType":"address"}]},{"type":"function","stateMutability":"view","outputs":[{"type":"uint256","name":"","internalType":"uint256"}],"name":"liability","inputs":[]},{"type":"function","stateMutability":"view","outputs":[{"type":"uint256","name":"","internalType":"uint256"}],"name":"maxSupply","inputs":[]},{"type":"function","stateMutability":"nonpayable","outputs":[],"name":"mint","inputs":[{"type":"address","name":"to","internalType":"address"},{"type":"uint256","name":"amount","internalType":"uint256"}]},{"type":"function","stateMutability":"view","outputs":[{"type":"string","name":"","internalType":"string"}],"name":"name","inputs":[]},{"type":"function","stateMutability":"view","outputs":[{"type":"address","name":"","internalType":"address"}],"name":"owner","inputs":[]},{"type":"function","stateMutability":"view","outputs":[{"type":"address","name":"","internalType":"address"}],"name":"pool","inputs":[]},{"type":"function","stateMutability":"nonpayable","outputs":[],"name":"removeCash","inputs":[{"type":"uint256","name":"amount","internalType":"uint256"}]},{"type":"function","stateMutability":"nonpayable","outputs":[],"name":"removeLiability","inputs":[{"type":"uint256","name":"amount","internalType":"uint256"}]},{"type":"function","stateMutability":"nonpayable","outputs":[],"name":"renounceOwnership","inputs":[]},{"type":"function","stateMutability":"nonpayable","outputs":[],"name":"setAggregateAccount","inputs":[{"type":"address","name":"aggregateAccount_","internalType":"address"}]},{"type":"function","stateMutability":"nonpayable","outputs":[],"name":"setMaxSupply","inputs":[{"type":"uint256","name":"maxSupply_","internalType":"uint256"}]},{"type":"function","stateMutability":"nonpayable","outputs":[],"name":"setPool","inputs":[{"type":"address","name":"pool_","internalType":"address"}]},{"type":"function","stateMutability":"view","outputs":[{"type":"string","name":"","internalType":"string"}],"name":"symbol","inputs":[]},{"type":"function","stateMutability":"view","outputs":[{"type":"uint256","name":"","internalType":"uint256"}],"name":"totalSupply","inputs":[]},{"type":"function","stateMutability":"nonpayable","outputs":[{"type":"bool","name":"","internalType":"bool"}],"name":"transfer","inputs":[{"type":"address","name":"recipient","internalType":"address"},{"type":"uint256","name":"amount","internalType":"uint256"}]},{"type":"function","stateMutability":"nonpayable","outputs":[{"type":"bool","name":"","internalType":"bool"}],"name":"transferFrom","inputs":[{"type":"address","name":"sender","internalType":"address"},{"type":"address","name":"recipient","internalType":"address"},{"type":"uint256","name":"amount","internalType":"uint256"}]},{"type":"function","stateMutability":"nonpayable","outputs":[],"name":"transferOwnership","inputs":[{"type":"address","name":"newOwner","internalType":"address"}]},{"type":"function","stateMutability":"nonpayable","outputs":[],"name":"transferUnderlyingToken","inputs":[{"type":"address","name":"to","internalType":"address"},{"type":"uint256","name":"amount","internalType":"uint256"}]},{"type":"function","stateMutability":"view","outputs":[{"type":"address","name":"","internalType":"address"}],"name":"underlyingToken","inputs":[]},{"type":"function","stateMutability":"view","outputs":[{"type":"uint256","name":"","internalType":"uint256"}],"name":"underlyingTokenBalance","inputs":[]}]
 
 const MetisTokens = [
     { "id": "metis-token", "symbol": "METIS", "contract": "0xdeaddeaddeaddeaddeaddeaddeaddeaddead0000"},
     { "id": "tether", "symbol": "USDT", "contract": "0xbb06dca3ae6887fabf931640f67cab3e3a16f4dc"},
     { "id": "weth", "symbol": "WETH", "contract": "0x420000000000000000000000000000000000000a"},
+    { "id": "dai", "symbol": "DAI", "contract": "0x4651b38e7ec14bb3db731369bfe5b08f2466bd0a"},
     { "id": "usd-coin", "symbol": "USDC", "contract": "0xea32a96608495e54156ae48931a7c20f0dcc1a21"},
+    { "id": "maia", "symbol": "MAIA", "contract": "0x72c232d56542ba082592dee7c77b1c6cfa758bcd"},
+    { "id": "tethys-finance", "symbol": "TETHYS", "contract": "0x69fdb77064ec5c84fa2f21072973eb28441f43f3"},
+    { "id": "binance-usd", "symbol": "BUSD", "contract": "0x12d84f1cfe870ca9c9df9785f8954341d7fbb249"},
+    { "id": "magic-internet-money", "symbol": "MIM", "contract": "0x44dd7c98885cd3086e723b8554a90c9cc4089c4c"},
+    { "id": "hummus", "symbol": "HUM", "contract": "0x4aAC94985cD83be30164DfE7e9AF7C054D7d2121"}
   ];
 
   async function getMetisPrices() {
@@ -160,6 +167,28 @@ const MetisTokens = [
     };
   }
 
+  async function getMetisHummus(App, vault, address, stakingAddress) {
+    const calls = [vault.decimals(), vault.underlyingToken(), vault.name(), vault.symbol(),
+      vault.totalSupply(), vault.balanceOf(stakingAddress), vault.balanceOf(App.YOUR_ADDRESS),
+      vault.underlyingTokenBalance()];
+    const [ decimals, underlying, name, symbol, totalSupply, staked, unstaked, balance] =
+      await App.ethcallProvider.all(calls);
+    const token = await getMetisToken(App, underlying, address);
+    return {
+      address,
+      name,
+      symbol,
+      totalSupply,
+      decimals,
+      staked: staked / 10 ** decimals,
+      unstaked: unstaked / 10 ** decimals,
+      token: token,
+      balance,
+      contract: vault,
+      tokens : token.tokens
+    }
+  }
+
   async function getMetisStoredToken(App, tokenAddress, stakingAddress, type) {
     switch (type) {
       case "curve":
@@ -169,6 +198,9 @@ const MetisTokens = [
       case "stableswap":
         const stable = new ethcall.Contract(tokenAddress, STABLESWAP_ABI);
         return await getMetisStableswapToken(App, stable, tokenAddress, stakingAddress);
+      case "hummus":
+        const hummus = new ethcall.Contract(tokenAddress, HUMMUS_ABI);
+        return await getMetisHummus(App, hummus, tokenAddress, stakingAddress);
       case "uniswap":
         const pool = new ethcall.Contract(tokenAddress, UNI_ABI);
         return await getMetisUniPool(App, pool, tokenAddress, stakingAddress);
@@ -218,6 +250,15 @@ const MetisTokens = [
         const _token = await App.ethcallProvider.all([basicVault.underlying()]);
         const res = await getMetisBasicVault(App, basicVault, tokenAddress, stakingAddress);
         window.localStorage.setItem(tokenAddress, "basicMetisVault");
+        return res;
+      }
+      catch(err) {
+      }
+      try {
+        const hummus = new ethcall.Contract(tokenAddress, HUMMUS_ABI);
+        const _hummus = await App.ethcallProvider.all([hummus.underlyingToken()]);
+        const res = await getMetisHummus(App, hummus, tokenAddress, stakingAddress);
+        window.localStorage.setItem(tokenAddress, "hummus");
         return res;
       }
       catch(err) {

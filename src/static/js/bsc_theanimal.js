@@ -29,12 +29,11 @@ async function main() {
 
     //to receive the price from LP PIGS/WBNB
     await loadAnimalsSynthetixPoolInfo(App, tokens, prices, "0x7aaad708ea6ce3acae4c02aa51cef89a5b359eef");
-
-    await loadAnimalsContract(App, tokens, prices, PIGS_CHEF, PIGS_CHEF_ADDR, PIGS_CHEF_ABI, rewardTokenTicker,
-      "token", null, rewardsPerWeek, "pendingPigs");
-    _print("");
     await loadAnimalsContract(App, tokens, prices, DOGS_CHEF, DOGS_CHEF_ADDR, DOGS_CHEF_ABI, rewardTokenTicker2,
       "token", null, rewardsPerWeek2, "pendingDogs");
+    _print("");
+    await loadAnimalsContract(App, tokens, prices, PIGS_CHEF, PIGS_CHEF_ADDR, PIGS_CHEF_ABI, rewardTokenTicker,
+      "token", null, rewardsPerWeek, "pendingPigs");
 
     hideLoading();
   }

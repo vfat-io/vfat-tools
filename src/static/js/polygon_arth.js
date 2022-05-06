@@ -7,6 +7,7 @@ const JUL_STAKING_ABI = [{"inputs":[{"internalType":"address","name":"_owner","t
 const Pools = [
     "0xc82c95666be4e89aed8ae10bab4b714cae6655d5",
     "0xD585bfCF37db3C2507e2D44562F0Dbe2E4ec37Bc",
+    "0x245ae0bbc1e31e7279f0835ce8e93127a13a3781"
 ].map(a => {
     return {
         address: a,
@@ -24,8 +25,9 @@ async function main() {
 
     var tokens = {};
     var prices = await getMaticPrices();
+    prices['0xdde5fdb48b2ec6bc26bb4487f8e3a4eb99b3d633'] = { usd: 1.0009 };
 
-    let p = await loadMultipleMaticSynthetixPools(App, tokens, prices, Pools)
+    let p = await loadMultipleMaticSynthetixPools(App, tokens, prices, Pools);
     _print_bold(`Total staked: $${formatMoney(p.staked_tvl)}`);
     if (p.totalUserStaked > 0) {
         _print(`You are staking a total of $${formatMoney(p.totalUserStaked)} at an APR of ${(p.totalAPR * 100).toFixed(2)}%\n`);

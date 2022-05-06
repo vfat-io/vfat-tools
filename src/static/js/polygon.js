@@ -70,7 +70,7 @@ const main = async () => {
       ['Polygold            ',"", `<a href="polygold"        >Various</a>`, 'POLYGOLD     ', 'https://polygold.finance'],
       ['Polyswan            ',"", `<a href="polyswan"        >Various</a>`,'SWAN         ','https://www.polyswan.finance',],
       ['Polyion             ',"", `<a href="polyion"         >Various</a>`, 'LION         ', 'https://www.polyion.net'],
-      ['Eleven *            ',"", `<a href="eleven"          >Various</a>`, 'ELE          ', 'https://eleven.finance'],
+      ['Eleven              ',"", `<a href="eleven"          >Various</a>`, 'ELE          ', 'https://eleven.finance'],
       ['Pirate Dice         ',"", `<a href="piratedice"      >Various</a>`, 'BOOTY        ', 'http://piratedice.xyz'],
       ['PolyPingu           ',"", `<a href="polypingu"       >Various</a>`, 'PINGU        ', 'https://polypingu.finance'],
       ['Goldenbull          ',"", `<a href="goldenbull"      >Various</a>`,'GBULL        ','https://farms.goldenbull.finance',],
@@ -431,7 +431,16 @@ const main = async () => {
       ['Unity               ',"",  `<a href="unity"           >Various</a>`, 'UNITY        ','https://unityfarm.org'],
       ['Tower Finance       ',"",  `<a href="tower"           >Various</a>`, 'CUBE         ','https://app.towerfinance.io'],
       ['HuntDefi            ',"",  `<a href="huntdefi"        >Various</a>`, 'HUNT         ','https://polygon.huntdefi.com'],
-      ["Arth                ","", `<a href="arth"             >Various</a>`, "ARTH          ","https://app.arthcoin.com"]
+      ["Arth                ","",  `<a href="arth"            >Various</a>`, "ARTH         ","https://arth.mahadao.com"],
+      ["GOGOcoin            ","",  `<a href="gogocoin"        >Various</a>`, "GOGO         ","https://app.gogocoin.io"],
+      ['Opportunity         ','',  `<a href="opportunity"     >Various</a>`, 'OPT          ','https://opport.unityfarm.org'],
+      ['WOWswap             ',"",  `<a href="wowswap"         >Various</a>`, 'WOW          ','https://wowswap.io'],
+      ['Stargate            ',"",  `<a href="stargate"        >Various</a>`, 'STG          ','https://stargate.finance'],
+      ['Gains Network       ',"",  `<a href="gainsnetwork"    >Various</a>`, 'Various      ','https://gainsnetwork.io'],
+      ['Hundred             ',"",  `<a href="hundred"         >Various</a>`, 'HND          ','https://hundred.finance'],
+      ['PolyDogeDAO         ',"",  `<a href="polydogedao"     >Various</a>`, 'PDSHARE / PDDOLLAR','https://polydogedao.net'],
+      ["Printer Financial   ","",  `<a href="printer"         >Various</a>`, "INK          ", "https://polygon.printer.financial"],
+      ["Monox Finance       ","", `<a href="monox"         >Various</a>`,"vUNIT            ","https://monox.finance"],
     ],
   }
 

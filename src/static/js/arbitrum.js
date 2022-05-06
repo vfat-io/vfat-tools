@@ -34,7 +34,7 @@ const main = async() => {
       ["Polarbi             ",""                                                                                               , `<a href="/arbitrum/polarbi"     >Various</a>`,"POLAR              ","https://www.polarbi.net"],
       ["GMArbitrum          ",""                                                                                               , `<a href="/arbitrum/gmarb"       >Various</a>`,"GM                 ","https://gmarb.finance"],
       ["Swapr               ",""                                                                                               , `<a href="/arbitrum/swapr"       >Various</a>`,"SWPR               ","https://swapr.eth.link"],
-      ["Dopex *             ",""                                                                                               , `<a href="/arbitrum/dopex"       >Various</a>`,"DPX, rDPX          ","https://app.dopex.io/farms"],
+      ["Dopex               ",""                                                                                               , `<a href="/arbitrum/dopex"       >Various</a>`,"DPX, rDPX          ","https://app.dopex.io/farms"],
       ["Beefy               ",""                                                                                               , `<a href="/arbitrum/beefy"       >Various</a>`,"Various            ","https://www.beefy.finance/Arbitrum"],
       ["Curve               ",""                                                                                               , `<a href="/arbitrum/curve"       >Various</a>`,"CRV                ","https://arbitrum.curve.fi"],
       ["Synapse             ",""                                                                                               , `<a href="/arbitrum/synapse"     >Various</a>`,"SYNAPSE            ","https://synapseprotocol.com"],
@@ -47,7 +47,10 @@ const main = async() => {
       ["L2Swap              ",""                                                                                               , `<a href="/arbitrum/l2swap"      >Various</a>`,"LSP                ","https://l2swap.finance"],
       ["Arbiz               ",""                                                                                               , `<a href="/arbitrum/arbiz"       >Various</a>`,"ARBIZ              ","https://farm.arbiz.io"],
       ["JonesDAO            ",""                                                                                               , `<a href="/arbitrum/jones"       >Various</a>`,"JONES              ","https://jonesdao.io/farms"],
-      ["Vesta               ",""                                                                                               , `<a href="/arbitrum/vesta"       >Various</a>`,"VSTA               ","https://vestafinance.xyz"]
+      ["Vesta               ",""                                                                                               , `<a href="/arbitrum/vesta"       >Various</a>`,"VSTA               ","https://vestafinance.xyz"],
+      ["Yearn               ",""                                                                                               , `<a href="/arbitrum/yearn"       >Various</a>`,"Various            ","https://yearn.finance"],
+      ["Stargate            ",""                                                                                               , `<a href="/arbitrum/stargate"    >Various</a>`,"STG                ","https://stargate.finance"],
+      ["Monox Finance       ",""                                                                                               , `<a href="/arbitrum/monox"       >Various</a>`,"vUNIT              ","https://monox.finance"],
     ]
   }
 
