@@ -92,8 +92,11 @@ async function loadJonesSynthetixPoolInfo(App, tokens, prices, stakingAbi, staki
     prices[stakeTokenAddress]?.usd ?? getParameterCaseInsensitive(prices, stakeTokenAddress)?.usd;
   const rewardTokenPrice = getParameterCaseInsensitive(prices, rewardTokenAddress)?.usd;
 
-  const calls = [STAKING_MULTI.jonesPerSecond(), STAKING_MULTI.deposited(poolId, App.YOUR_ADDRESS), STAKING_MULTI.pendingJones(poolId, App.YOUR_ADDRESS)]
-  const [rewardRate, balance, earned_,] = await App.ethcallProvider.all(calls);
+  const calls = [STAKING_MULTI.jonesPerSecond(), STAKING_MULTI.deposited(poolId, App.YOUR_ADDRESS), STAKING_MULTI.pendingJones(poolId, App.YOUR_ADDRESS), STAKING_MULTI.poolInfo(poolId)]
+  var [rewardRate, balance, earned_, poolInfo] = await App.ethcallProvider.all(calls);
+
+
+  rewardRate = (rewardRate * poolInfo.allocPoint) / 100;
 
   const weeklyRewards = (rewardRate / 1e18) * 604800;
 
