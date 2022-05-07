@@ -2,15 +2,16 @@
 <html lang="en">
 <%- include(`${partials}/head`); -%>
 
-<body>
-<%- include(`${partials}/header_main`); -%>
-<pre id="log">
+    <body>
+        <%- include(`${partials}/header_main`); -%>
+            <pre id="log">
 *********************** 👨‍🌾 UNOFFICIAL JONES CALCULATOR 👨‍🌾 ***********************
-INFO  : https://jonesdao.io/farms
+INFO  : https://jonesdao.io/staking
 ********************************************************************************
 
 </pre>
-<div class="loader--1"></div>
-<%- include(`${partials}/scripts`, {scriptname: 'arbitrum_jones'}); -%>
-</body>
-</html> 
+            <div class="loader--1"></div>
+            <%- include(`${partials}/scripts`, {scriptname: 'arbitrum_jones' }); -%>
+    </body>
+
+</html>
