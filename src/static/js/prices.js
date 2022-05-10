@@ -22,7 +22,8 @@ const ArbitrumTokens = [
   { "id": "saddle-finance", "symbol": "SDL", "contract": "0x75c9bc761d88f70156daf83aa010e84680baf131"},
   { "id": "frax", "symbol": "FRAX", "contract": "0x17FC002b466eEc40DaE837Fc4bE5c67993ddBd6F"},
   { "id": "governance-ohm", "symbol": "gOHM", "contract": "0x8D9bA570D6cb60C7e3e0F31343Efe75AB8E65FB1"},
-  { "id": "stargate-finance", "symbol": "STG", "contract": "0x6694340fc020c5E6B96567843da2df01b2CE1eb6"}
+  { "id": "stargate-finance", "symbol": "STG", "contract": "0x6694340fc020c5E6B96567843da2df01b2CE1eb6"},
+  { "id": "jones-dao", "symbol": "JONES", "contract": "0x10393c20975cF177a3513071bC110f7962CD67da" }
 ];
 
 const AstarTokens = [
@@ -227,7 +228,8 @@ const bscTokens = [
   { "id": "amethyst", "symbol": "AMES", "contract": "0xb9e05b4c168b56f73940980ae6ef366354357009" },
   { "id": "quartz-defi-ashare", "symbol": "ASHARE", "contract": "0xfa4b16b0f63f5a6d0651592620d585d308f749a4" },
   { "id": "stargate-finance", "symbol": "STG", "contract": "0xB0D502E938ed5f4df2E681fE6E419ff29631d62b" },
-  { "id": "space-corsair-key", "symbol": "SCK", "contract": "0x227a3ef4d41d0215123f3197faa087bf71d2236a" }
+  { "id": "space-corsair-key", "symbol": "SCK", "contract": "0x227a3ef4d41d0215123f3197faa087bf71d2236a" },
+  { "id": "dogs", "symbol": "DOGS", "contract": "0xdbdc73b95cc0d5e7e99dc95523045fc8d075fb9e" }
 ]
 
 const celoTokens = [
