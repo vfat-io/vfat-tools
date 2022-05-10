@@ -29,7 +29,7 @@ async function main() {
     const tokens = {};
     const prices = await getOkexPrices();
 
-    await loadOkexChefContract(App, tokens, prices, BONESWAP_MC, BONESWAP_CHEF_ADDR, BONESWAP_CHEF_ABI, rewardTokenTicker,
-        "boneToken", null, rewardsPerWeek, "pendingBone");
+    await loadGeneralChefContract(App, tokens, prices, BONESWAP_MC, BONESWAP_CHEF_ADDR, BONESWAP_CHEF_ABI, rewardTokenTicker,
+        "boneToken", null, rewardsPerWeek, "pendingBone", [], "okex");
     hideLoading();
 }

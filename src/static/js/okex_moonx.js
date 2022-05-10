@@ -28,8 +28,8 @@ async function main() {
     const tokens = {};
     const prices = await getOkexPrices();
 
-    await loadOkexChefContract(App, tokens, prices, MOONX_CHEF, MOONX_CHEF_ADDR, MOONX_CHEF_ABI, rewardTokenTicker,
-        "moonxToken", null, rewardsPerWeek, "pendingMoonX");
+    await loadGeneralChefContract(App, tokens, prices, MOONX_CHEF, MOONX_CHEF_ADDR, MOONX_CHEF_ABI, rewardTokenTicker,
+        "moonxToken", null, rewardsPerWeek, "pendingMoonX", [], "okex");
 
     hideLoading();
   }

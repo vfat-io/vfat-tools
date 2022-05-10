@@ -144,26 +144,14 @@ async function getGeneralWantVault(App, vault, address, stakingAddress) {
 }
 
 async function getCGeneralToken(App, cToken, address, stakingAddress) {
-  const calls = [
-    cToken.decimals(),
-    cToken.underlying(),
-    cToken.totalSupply(),
-    cToken.name(),
-    cToken.symbol(),
-    cToken.balanceOf(stakingAddress),
-    cToken.balanceOf(App.YOUR_ADDRESS),
-    cToken.exchangeRateStored(),
-  ]
-  const [
-    decimals,
-    underlying,
-    totalSupply,
-    name,
-    symbol,
-    staked,
-    unstaked,
-    exchangeRate,
-  ] = await App.ethcallProvider.all(calls)
+  const decimals = await cToken.decimals()
+  const underlying = await cToken.underlying()
+  const totalSupply = await cToken.totalSupply()
+  const name = await cToken.name()
+  const symbol = await cToken.symbol()
+  const staked = await cToken.balanceOf(stakingAddress)
+  const unstaked = await cToken.balanceOf(App.YOUR_ADDRESS)
+  const exchangeRate = await cToken.exchangeRateStored()
   const token = await getGeneralToken(App, underlying, address)
   return {
     address,
@@ -231,8 +219,8 @@ async function getGeneralStoredToken(App, tokenAddress, stakingAddress, type) {
       const swap = await saddle.swap();
       return await getGeneralSaddleToken(App, saddle, tokenAddress, stakingAddress, swap);
     case 'cToken':
-      const cGeneralToken = new ethcall.Contract(tokenAddress, CTOKEN_ABI)
-      return await getCGeneralToken(App, cGeneralToken, tokenAddress, stakingAddress)
+      const cGeneralToken = new ethers.Contract(tokenAddress, CTOKEN_ABI, App.provider);
+      return await getCGeneralToken(App, cGeneralToken, tokenAddress, stakingAddress);
     case "erc20":
       const erc20 = new ethers.Contract(tokenAddress, ERC20_ABI, App.provider);
       return await getGeneral20(App, erc20, tokenAddress, stakingAddress);
@@ -288,10 +276,10 @@ async function getGeneralToken(App, tokenAddress, stakingAddress) {
     catch(err) {
     }
     try {
-      const cToken = new ethcall.Contract(tokenAddress, CTOKEN_ABI)
-      const _totalBorrows = await App.ethcallProvider.all([cToken.totalBorrows()])
-      const res = await getCGeneralToken(App, cToken, tokenAddress, stakingAddress)
-      window.localStorage.setItem(tokenAddress, 'cToken')
+      const cToken = new ethers.Contract(tokenAddress, CTOKEN_ABI, App.provider);
+      const _totalBorrows = await cToken.totalBorrows();
+      const res = await getCGeneralToken(App, cToken, tokenAddress, stakingAddress);
+      window.localStorage.setItem(tokenAddress, 'cToken');
       return res
     } catch (err) {}
     try {
@@ -599,7 +587,7 @@ async function loadGeneralChefContract(App, tokens, prices, chef, chefAddress, c
   return { prices, totalUserStaked, totalStaked, averageApr }
 }
 
-async function loadMultipleGeneralSynthetixPools(App, tokens, prices, pools, customURLs, chain) {
+async function loadMultipleGeneralSynthetixPools(App, tokens, prices, pools, chain, customURLs) {
   let totalStaked  = 0, totalUserStaked = 0, individualAPRs = [];
   const infos = await Promise.all(pools.map(p =>
       loadGeneralSynthetixPoolInfo(App, tokens, prices, p.abi, p.address, p.rewardTokenFunction, p.stakeTokenFunction)));
