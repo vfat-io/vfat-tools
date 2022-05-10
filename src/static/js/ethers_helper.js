@@ -54,6 +54,9 @@ const pageNetwork = function() {
   if (network.toLowerCase() === 'fantom') {
     return window.NETWORKS.FANTOM
   }
+  if (network.toLowerCase() === 'hoo') {
+    return window.NETWORKS.HOO
+  }
   if (network.toLowerCase() === 'astar') {
     return window.NETWORKS.ASTAR
   }
@@ -2082,6 +2085,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
   else if (pool.symbol.includes("vAMM")) stakeTokenTicker += " vAMM";
   else if (pool.symbol.includes("sAMM")) stakeTokenTicker += " sAMM";
   else if (pool.symbol.includes("Wigo-LP")) stakeTokenTicker += " Wigo-LP";
+  else if (pool.symbol.includes("PUD-LP")) stakeTokenTicker += " PUD-LP";
   else if (pool.symbol.includes("DXS")) stakeTokenTicker += " DXS-LP";
   else if (pool.symbol.includes("HAUS-LP")) stakeTokenTicker += " HAUS-LP";
   else if (pool.symbol.includes("HBLP")) stakeTokenTicker += " Huckleberry LP";
@@ -2183,6 +2187,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
         else {
           const poolUrl = pool.is1inch ? "https://1inch.exchange/#/dao/pools" :
           pool.symbol.includes("TETHYSLP") ?  `https://info.tethys.finance/pair/${pool.address}` :
+          pool.symbol.includes("PUD-LP") ?  `https://info.puddingswap.finance/pair/${pool.address}` :
           pool.symbol.includes("LSLP") ? `https://info.linkswap.app/pair/${pool.address}` :
           pool.symbol.includes("MSLP") ? `https://www.milkyswap.exchange/` :
             pool.symbol.includes("SLP") ? (
@@ -2308,6 +2313,11 @@ function getUniPrices(tokens, prices, pool, chain="eth")
             `https://www.milkyswap.exchange/add/${t0address}/${t1address}`,
             `https://www.milkyswap.exchange/remove/${t0address}/${t1address}`,
             `https://www.milkyswap.exchange/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+          ] :
+          pool.symbol.includes("PUD-LP") ? [
+            `https://exchange.puddingswap.finance/#/add/${t0address}/${t1address}`,
+            `https://exchange.puddingswap.finance/#/remove/${t0address}/${t1address}`,
+            `https://exchange.puddingswap.finance/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
           ] :
           pool.symbol.includes("BenSwap") ? ({
             "bsc": [
@@ -3139,6 +3149,9 @@ function getErc20Prices(prices, pool, chain="eth") {
     case "fantom":
       poolUrl=`https://ftmscan.com/token/${pool.address}`;
       break;
+    case "hoo":
+      poolUrl=`https://hooscan.com/token/${pool.address}`;
+      break;
     case "evmos":
       poolUrl=`https://evm.evmos.org/address/${pool.address}`;
       break;
@@ -3816,6 +3829,9 @@ async function printSynthetixPool(App, info, chain="eth", customURLs) {
       case "fantom":
         _print(`<a target="_blank" href="https://ftmscan.com/address/${info.stakingAddress}#code">FTM Scan</a>`);
         break;
+      case "hoo":
+        _print(`<a target="_blank" href="https://hooscan.com/address/${info.stakingAddress}#code">Hoo Scan</a>`);
+        break;
       case "evmos":
         _print(`<a target="_blank" href="https://evm.evmos.org/address/${info.stakingAddress}#code">EVMOS Explorer</a>`);
         break;
@@ -4004,6 +4020,8 @@ function getChainExplorerUrl(chain, address){
       return `https://bscscan.com/token/${address}`;
     case "fantom" :
       return `https://ftmscan.com/token/${address}`;
+    case "hoo" :
+      return `https://hooscan.com/token/${address}`;
     case "evmos" :
       return `https://evm.evmos.org/address/${address}`;
     case "astar" :

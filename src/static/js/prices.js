@@ -394,6 +394,12 @@ const HarmonyTokens = [
   {id: 'tranquil-finance', symbol: 'TRANQ', contract: '0xcf1709ad76a79d5a60210f23e81ce2460542a836'},
 ]
 
+const hooTokens = [
+  { "id": "elk-finance","symbol": "ELK", "contract": "0xeEeEEb57642040bE42185f49C52F7E9B38f8eeeE" },
+  { "id": "usd-coin","symbol": "USDC", "contract": "0x92a0bd4584c147d1b0e8f9185db0bda10b05ed7e" },
+  { "id": "hoo-token","symbol": "HOO", "contract": "0x3eff9d389d13d6352bfb498bcf616ef9b1beac87" }
+]
+
 const hrcTokens = [
   { "id": "huobi-token","symbol": "HT","contract":"0x6f259637dcd74c767781e37bc6133cd6a68aa161" },
   { "id": "mdex","symbol": "MDX","contract":"0x25d2e80cb6b86881fd7e07dd263fb79f4abe033c" },
@@ -755,6 +761,15 @@ async function getHecoPrices() {
   const idPrices = await lookUpPrices(hrcTokens.map(x => x.id));
   const prices = {}
   for (const bt of hrcTokens)
+      if (idPrices[bt.id])
+          prices[bt.contract] = idPrices[bt.id];
+  return prices;
+}
+
+async function getHooPrices() {
+  const idPrices = await lookUpPrices(hooTokens.map(x => x.id));
+  const prices = {}
+  for (const bt of hooTokens)
       if (idPrices[bt.id])
           prices[bt.contract] = idPrices[bt.id];
   return prices;
