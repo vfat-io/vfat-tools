@@ -2477,7 +2477,7 @@ async function main() {
     var tokens = {};
 
     const rewardTokenAddress = await chefContract.callStatic[rewardTokenFunction]();
-    const rewardToken = await getOkexToken(App, rewardTokenAddress, chefAddress);
+    const rewardToken = await getGeneralToken(App, rewardTokenAddress, chefAddress);
     const rewardsPerWeek = rewardsPerWeekFixed ??
       await chefContract.callStatic[rewardsPerBlockFunction]()
       / 10 ** rewardToken.decimals * 604800 * 0.3
@@ -2488,7 +2488,7 @@ async function main() {
     var tokenAddresses = [].concat.apply([], poolInfos.filter(x => x.poolToken).map(x => x.poolToken.tokens));
 
     await Promise.all(tokenAddresses.map(async (address) => {
-        tokens[address] = await getOkexToken(App, address, chefAddress);
+        tokens[address] = await getGeneralToken(App, address, chefAddress);
     }));
 
     if (deathPoolIndices) {   //load prices for the deathpool assets
@@ -2526,7 +2526,7 @@ async function main() {
         lastRewardTime : poolInfo.lastRewardTime
       };
     }
-    const poolToken = await getOkexToken(app, poolInfo.want, poolInfo.strat); //staked is 0
+    const poolToken = await getGeneralToken(app, poolInfo.want, poolInfo.strat); //staked is 0
     const strat = new ethers.Contract(poolInfo.strat, STRAT_ABI, app.provider);
     poolToken.staked = await strat.wantLockedTotal() / 1e18;
     const totalShares = await strat.sharesTotal();
