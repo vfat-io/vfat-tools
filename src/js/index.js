@@ -106,6 +106,21 @@ window.NETWORKS = {
       "https://evm.evmos.org"
     ]
   },
+  HOO: {
+    "chainId": "0x46",
+    "chainName": "Hoo Smart Chain",
+    "nativeCurrency": {
+      "name": "Hoo",
+      "symbol": "HOO",
+      "decimals": 18
+    },
+    "rpcUrls": [
+      "https://http-mainnet.hoosmartchain.com"
+    ],
+    "blockExplorerUrls": [
+      "https://www.hooscan.com"
+    ]
+  },
   MOONRIVER: {
     "chainId": "0x505",
     "chainName": "Moonriver",
