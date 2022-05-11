@@ -21,7 +21,7 @@ $(function() {
       rewardTokenFunction: "rewardsToken"
     }})
   
-    let p = await loadMultipleHooSynthetixPools(App, tokens, prices, pools)
+    let p = await loadMultipleGeneralSynthetixPools(App, tokens, prices, pools, "hoo")
     _print_bold(`Total staked: $${formatMoney(p.staked_tvl)}`);
     if (p.totalUserStaked > 0) {
       _print(`You are staking a total of $${formatMoney(p.totalUserStaked)} at an APR of ${(p.totalApr * 100).toFixed(2)}%\n`);

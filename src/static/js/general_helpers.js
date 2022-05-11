@@ -194,16 +194,16 @@ async function getGeneralStoredToken(App, tokenAddress, stakingAddress, type) {
     case "uniswap":
       const pool = new ethers.Contract(tokenAddress, UNI_ABI, App.provider);
       return await getGeneralUniPool(App, pool, tokenAddress, stakingAddress);
-    case "generalVault":
+    case "vault":
       const vault = new ethers.Contract(tokenAddress, GENERAL_VAULT_TOKEN_ABI, App.provider);
       return await getGeneralVault(App, vault, tokenAddress, stakingAddress);
     case "bhToken":
       const bhToken = new ethers.Contract(tokenAddress, GENERAL_BH_TOKEN_ABI, App.provider);
       return await getGeneralBhToken(App, bhToken, tokenAddress, stakingAddress);
-    case "generalAdamantVault":
+    case "adamantVault":
       const adamantVault = new ethers.Contract(tokenAddress, GENERAL_ADAMANT_VAULT_TOKEN_ABI, App.provider);
       return await getGeneralAdamantVault(App, adamantVault, tokenAddress, stakingAddress);
-    case "generalWantVault":
+    case "wantVault":
       const wantVault = new ethers.Contract(tokenAddress, GENERAL_VAULT_WANT_ABI, App.provider);
       return await getGeneralWantVault(App, wantVault, tokenAddress, stakingAddress);
     case "curve":
@@ -214,7 +214,7 @@ async function getGeneralStoredToken(App, tokenAddress, stakingAddress, type) {
       }
       const minter = await crv.minter();
       return await getCurveGeneralToken(App, crv, tokenAddress, stakingAddress, minter);
-    case "generalSaddle":
+    case "saddle":
       const saddle = new ethers.Contract(tokenAddress, GENERAL_SADDLE_LP_TOKEN_ABI, App.provider);
       const swap = await saddle.swap();
       return await getGeneralSaddleToken(App, saddle, tokenAddress, stakingAddress, swap);
@@ -261,7 +261,7 @@ async function getGeneralToken(App, tokenAddress, stakingAddress) {
       const VAULT = new ethers.Contract(tokenAddress, GENERAL_VAULT_TOKEN_ABI, App.provider);
       const _token = await VAULT.token();
       const vault = await getGeneralVault(App, VAULT, tokenAddress, stakingAddress);
-      window.localStorage.setItem(tokenAddress, "generalVault");
+      window.localStorage.setItem(tokenAddress, "vault");
       return vault;
     }
     catch(err) {
@@ -286,7 +286,7 @@ async function getGeneralToken(App, tokenAddress, stakingAddress) {
       const ADAMANT_VAULT = new ethers.Contract(tokenAddress, GENERAL_ADAMANT_VAULT_TOKEN_ABI, App.provider);
       const _totalShares = await ADAMANT_VAULT.totalShares();
       const vault = await getGeneralAdamantVault(App, ADAMANT_VAULT, tokenAddress, stakingAddress);
-      window.localStorage.setItem(tokenAddress, "generalAdamantVault");
+      window.localStorage.setItem(tokenAddress, "adamantVault");
       return vault;
     }
     catch(err) {
@@ -295,7 +295,7 @@ async function getGeneralToken(App, tokenAddress, stakingAddress) {
       const WANT_VAULT = new ethers.Contract(tokenAddress, GENERAL_VAULT_WANT_ABI, App.provider);
       const _want = await await WANT_VAULT.want();
       const wantVault = await getGeneralWantVault(App, WANT_VAULT, tokenAddress, stakingAddress);
-      window.localStorage.setItem(tokenAddress, "generalWantVault");
+      window.localStorage.setItem(tokenAddress, "wantVault");
       return wantVault;
     }
     catch(err) {
@@ -304,7 +304,7 @@ async function getGeneralToken(App, tokenAddress, stakingAddress) {
       const saddle = new ethers.Contract(tokenAddress, GENERAL_SADDLE_LP_TOKEN_ABI, App.provider);
       const swap = await saddle.swap();
       const res = await getGeneralSaddleToken(App, saddle, tokenAddress, stakingAddress, swap);
-      window.localStorage.setItem(tokenAddress, "generalSaddle");
+      window.localStorage.setItem(tokenAddress, "saddle");
       return res;
     }
     catch(err) {
@@ -523,7 +523,12 @@ async function loadGeneralChefContract(App, tokens, prices, chef, chefAddress, c
   const poolCount = parseInt(await chefContract.poolLength(), 10);
   const totalAllocPoints = await chefContract.totalAllocPoint();
 
-  _print(`<a href='https://polygonscan.com/address/${chefAddress}' target='_blank'>Staking Contract</a>`);
+  switch(chain){
+    case "okex" : _print(`<a href='https://www.oklink.com/en/okc/address/${chefAddress}' target='_blank'>Staking Contract</a>`);
+    break;
+    case "hoo" : _print(`<a href='https://hooscan.com/address/${chefAddress}' target='_blank'>Staking Contract</a>`);
+    break;
+  }
   _print(`Found ${poolCount} pools.\n`)
 
   _print(`Showing incentivized pools only.\n`);

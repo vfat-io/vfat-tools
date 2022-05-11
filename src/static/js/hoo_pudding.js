@@ -17,8 +17,8 @@ async function main() {
   const tokens = {};
   const prices = await getHooPrices();
 
-  await loadHooChefContract(App, tokens, prices, PUD_CHEF, PUD_CHEF_ADDR, PUD_CHEF_ABI, "PUD",
-      "pud", "pudPerBlock", null, "pendingPudding", [1,3,4,11,18,19,20,21]);
+  await loadGeneralChefContract(App, tokens, prices, PUD_CHEF, PUD_CHEF_ADDR, PUD_CHEF_ABI, "PUD",
+      "pud", "pudPerBlock", null, "pendingPudding", [1,3,4,11,18,19,20,21], "hoo");
 
   hideLoading();
 }
