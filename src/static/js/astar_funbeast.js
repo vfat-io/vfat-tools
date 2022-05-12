@@ -19,8 +19,8 @@ $(function() {
         const tokens = {};
         const prices = await getAstarPrices();
      
-        await loadAstarChefContract(App, tokens, prices, BEAST_CHEF, BEAST_CHEF_ADDR, BEAST_CHEF_ABI, rewardTokenTicker,
-            "beast", null, rewardsPerWeek, "pendingBeast", [1]);
+        await loadGeneralChefContract(App, tokens, prices, BEAST_CHEF, BEAST_CHEF_ADDR, BEAST_CHEF_ABI, rewardTokenTicker,
+            "beast", null, rewardsPerWeek, "pendingBeast", [1], "astar");
         hideLoading();
       }
     

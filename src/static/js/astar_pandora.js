@@ -20,8 +20,8 @@ $(function() {
         const tokens = {};
         const prices = await getAstarPrices();
      
-        await loadAstarChefContract(App, tokens, prices, PANDORA_CHEF, PANDORA_CHEF_ADDR, PANDORA_CHEF_ABI, rewardTokenTicker,
-            "pandora", null, rewardsPerWeek, "pendingpandora", [1]);
+        await loadGeneralChefContract(App, tokens, prices, PANDORA_CHEF, PANDORA_CHEF_ADDR, PANDORA_CHEF_ABI, rewardTokenTicker,
+            "pandora", null, rewardsPerWeek, "pendingpandora", [1], "astar");
         hideLoading();
       }
     
