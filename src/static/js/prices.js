@@ -539,7 +539,7 @@ const milkomedaTokens = [
   { "id": "weth","symbol": "WETH", "contract": "0x5950F9B6EF36f3127Ea66799e64D0ea1f5fdb9D1" },
   { "id": "weth","symbol": "WETH", "contract": "0x81ECac0D6Be0550A00FF064a4f9dd2400585FE9c" },
   { "id": "binance-usd","symbol": "BUSD", "contract": "0x4Bf769b05E832FCdc9053fFFBC78Ca889aCb5E1E" },
-  //{ "id": "binance-usd","symbol": "BUSD", "contract": "0x218c3c3D49d0E7B37aff0D8bB079de36Ae61A4c0" },
+  { "id": "milkyswap","symbol": "MILKY", "contract": "0x063a5e4cd5e15ac66ea47134eb60e6b30a51b2bf" },
   { "id": "wrapped-ada","symbol": "WADA", "contract": "0xAE83571000aF4499798d1e3b0fA0070EB3A3E3F9" }
 ]
 
