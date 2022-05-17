@@ -30,7 +30,7 @@ async function main() {
     const tokens = {};
     const prices = await getAuroraPrices();
  
-    await loadAuroraChefContract(App, tokens, prices, AURORATAG_CHEF, AURORATAG_CHEF_ADDR, AURORATAG_CHEF_ABI, rewardTokenTicker,
-        "auroratag", null, rewardsPerWeek, "pendingAuroratag", [3,4,5,0,8]);
+    await loadGeneralEthcallChefContract(App, tokens, prices, AURORATAG_CHEF, AURORATAG_CHEF_ADDR, AURORATAG_CHEF_ABI, rewardTokenTicker,
+        "auroratag", null, rewardsPerWeek, "pendingAuroratag", [3,4,5,0,8], "aurora");
     hideLoading();
   }

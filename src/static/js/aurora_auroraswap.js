@@ -24,7 +24,7 @@ async function main() {
     const tokens = {};
     const prices = await getAuroraPrices();
  
-    await loadAuroraChefContract(App, tokens, prices, BRL_CHEF, BRL_CHEF_ADDR, BRL_CHEF_ABI, rewardTokenTicker,
-        "BRL", null, rewardsPerWeek, "pendingBRL", [14]);
+    await loadGeneralEthcallChefContract(App, tokens, prices, BRL_CHEF, BRL_CHEF_ADDR, BRL_CHEF_ABI, rewardTokenTicker,
+        "BRL", null, rewardsPerWeek, "pendingBRL", [14], "aurora");
     hideLoading();
   }

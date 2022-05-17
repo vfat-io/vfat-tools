@@ -418,7 +418,7 @@ async function getGeneralEthcallToken(App, tokenAddress, stakingAddress) {
     }
     try {
       const VAULT = new ethcall.Contract(tokenAddress, GENERAL_ETHCALL_VAULT_TOKEN_ABI);
-      const _token = App.ethcallProvider.all([VAULT.token()]);
+      const _token = await App.ethcallProvider.all([VAULT.token()]);
       const vault = await getGeneralEthcallVault(App, VAULT, tokenAddress, stakingAddress);
       window.localStorage.setItem(tokenAddress, "vault");
       return vault;
@@ -658,6 +658,8 @@ async function loadGeneralEthcallChefContract(App, tokens, prices, chef, chefAdd
 
   switch(chain){
     case "fantom" : _print(`<a href='https://ftmscan.com/address/${chefAddress}' target='_blank'>Staking Contract</a>`);
+    break;
+    case "aurora" : _print(`<a href='https://aurorascan.dev/address/${chefAddress}' target='_blank'>Staking Contract</a>`);
     break;
   }
   _print(`Found ${poolCount} pools.\n`)

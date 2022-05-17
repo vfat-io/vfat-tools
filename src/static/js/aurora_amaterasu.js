@@ -31,8 +31,8 @@ async function main() {
     const tokens = {};
     const prices = await getAuroraPrices();
  
-    await loadAuroraChefContract(App, tokens, prices, IZA_CHEF, IZA_CHEF_ADDR, IZA_CHEF_ABI, rewardTokenTicker,
-        "token", null, rewardsPerWeek, "pendingToken");
+    await loadGeneralEthcallChefContract(App, tokens, prices, IZA_CHEF, IZA_CHEF_ADDR, IZA_CHEF_ABI, rewardTokenTicker,
+        "token", null, rewardsPerWeek, "pendingToken", [1], "aurora");
     hideLoading();
   }
 
