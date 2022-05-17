@@ -30,8 +30,8 @@ async function main() {
     const tokens = {};
     const prices = await getAuroraPrices();
  
-    await loadAuroraChefContract(App, tokens, prices, FLIPPY_CHEF, FLIPPY_CHEF_ADDR, FLIPPY_CHEF_ABI, rewardTokenTicker,
-        "flippy", null, rewardsPerWeek, "pendingFlippy", [5,11,12]);
+    await loadGeneralEthcallChefContract(App, tokens, prices, FLIPPY_CHEF, FLIPPY_CHEF_ADDR, FLIPPY_CHEF_ABI, rewardTokenTicker,
+        "flippy", null, rewardsPerWeek, "pendingFlippy", [5,11,12], "aurora");
     hideLoading();
   }
 

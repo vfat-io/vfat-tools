@@ -39,20 +39,20 @@ async function loadNearPadChefContract(App, tokens, prices, chef, chefAddress, c
   _print(`Showing incentivized pools only.\n`);
 
   const rewardTokenAddress = "0x885f8CF6E45bdd3fdcDc644efdcd0AC93880c781"
-  const rewardToken = await getAuroraToken(App, rewardTokenAddress, chefAddress);
+  const rewardToken = await getGeneralEthcallToken(App, rewardTokenAddress, chefAddress);
 
   const rewardsPerWeek = rewardsPerWeekFixed ??
     await chefContract.callStatic[rewardsPerBlockFunction]()
     / 10 ** rewardToken.decimals * 604800 / 3
 
   const poolInfos = await Promise.all([...Array(poolCount).keys()].map(async (x) =>
-    await getAuroraPoolInfo(App, chefContract, chefAddress, x, pendingRewardsFunction)));
+    await getGeneralEthcallPoolInfo(App, chefContract, chefAddress, x, pendingRewardsFunction)));
 
   var tokenAddresses = [].concat.apply([], poolInfos.filter(x => x.poolToken).map(x => x.poolToken.tokens));
   tokenAddresses.push(rewardTokenAddress);
 
   await Promise.all(tokenAddresses.map(async (address) => {
-      tokens[address] = await getAuroraToken(App, address, chefAddress);
+      tokens[address] = await getGeneralEthcallToken(App, address, chefAddress);
   }));
 
   if (deathPoolIndices) {   //load prices for the deathpool assets
@@ -61,7 +61,7 @@ async function loadNearPadChefContract(App, tokens, prices, chef, chefAddress, c
       poolInfo.poolToken ? getPoolPrices(tokens, prices, poolInfo.poolToken, "aurora") : undefined);
   }
 
-  const NEARPADLP = await getAuroraToken(App, "0x1FD6CBBFC0363AA394bd77FC74F64009BF54A7e9", chefAddress);
+  const NEARPADLP = await getGeneralEthcallToken(App, "0x1FD6CBBFC0363AA394bd77FC74F64009BF54A7e9", chefAddress);
   getPoolPrices(tokens, prices, NEARPADLP, "aurora");
 
   const poolPrices = poolInfos.map(poolInfo => poolInfo.poolToken ? getPoolPrices(tokens, prices, poolInfo.poolToken, "aurora") : undefined);
