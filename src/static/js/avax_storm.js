@@ -23,8 +23,8 @@ async function main() {
     const tokens = {};
     const prices = await getAvaxPrices();
 
-    await loadAvaxChefContract(App, tokens, prices, STORM_CHEF, STORM_CHEF_ADDR, STORM_CHEF_ABI, rewardTokenTicker,
-        "Storm", null, rewardsPerWeek, "pendingStorm", [8]);
+    await loadGeneralEthcallChefContract(App, tokens, prices, STORM_CHEF, STORM_CHEF_ADDR, STORM_CHEF_ABI, rewardTokenTicker,
+        "Storm", null, rewardsPerWeek, "pendingStorm", [8], "avax");
 
     hideLoading();
 }

@@ -20,8 +20,8 @@ async function main() {
     const tokens = {};		
     const prices = await getAvaxPrices();		
 
-    await loadAvaxChefContract(App, tokens, prices, WEAVE_CHEF, WEAVE_CHEF_ADDR, WEAVE_CHEF_ABI, rewardTokenTicker,		
-        "weaveToken", null, rewardsPerWeek, "pendingWeave");		
+    await loadGeneralEthcallChefContract(App, tokens, prices, WEAVE_CHEF, WEAVE_CHEF_ADDR, WEAVE_CHEF_ABI, rewardTokenTicker,		
+        "weaveToken", null, rewardsPerWeek, "pendingWeave", [], "avax");		
 
     hideLoading();		
 }		

@@ -30,8 +30,8 @@ $(function () {
         const tokens = {};		
         const prices = await getAvaxPrices();		
     		
-        await loadAvaxChefContract(App, tokens, prices, SMRTr_CHEF, SMRTr_CHEF_ADDR, SMRTr_CHEF_ABI, rewardTokenTicker,		
-            "joe", null, rewardsPerWeek, "pendingTokens");		
+        await loadGeneralEthcallChefContract(App, tokens, prices, SMRTr_CHEF, SMRTr_CHEF_ADDR, SMRTr_CHEF_ABI, rewardTokenTicker,		
+            "joe", null, rewardsPerWeek, "pendingTokens", [], "avax");		
     		
         hideLoading();		
     }		

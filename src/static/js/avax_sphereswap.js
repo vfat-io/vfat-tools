@@ -1212,8 +1212,8 @@ $(function () {
         const tokens = {};		
         const prices = await getAvaxPrices();		
     		
-        await loadAvaxChefContract(App, tokens, prices, MASTER_STAR, SPHERESWAP_MASTER_ADDY, SPHERESPWAP_ABI, rewardTokenTicker,		
-            "SphereToken", null, rewardsPerWeek, "pendingSphere", [1]);		
+        await loadGeneralEthcallChefContract(App, tokens, prices, MASTER_STAR, SPHERESWAP_MASTER_ADDY, SPHERESPWAP_ABI, rewardTokenTicker,		
+            "SphereToken", null, rewardsPerWeek, "pendingSphere", [1], "avax");		
     		
         hideLoading();		
     }		

@@ -25,11 +25,11 @@ async function main() {
   var tokens = {};
   const prices = await getAvaxPrices();
 
-  await loadAvaxSynthetixPoolInfo(App, tokens, prices, Pools[0].abi, Pools[0].address, Pools[0].rewardTokenFunction, Pools[0].stakeTokenFunction)
+  await loadGeneralEthcallSynthetixPoolInfo(App, tokens, prices, Pools[0].abi, Pools[0].address, Pools[0].rewardTokenFunction, Pools[0].stakeTokenFunction, "avax")
   //await loadAvaxSynthetixPoolInfo(App, tokens, prices, Pools[2].abi, Pools[2].address, Pools[2].rewardTokenFunction, Pools[2].stakeTokenFunction)
   prices["0x0000000000000000000000000000000000000000"] = prices["0xb31f66aa3c1e785363f0875a1b74e27b85fd66c7"];
 
-  let p = await loadMultipleAvaxSynthetixPools(App, tokens, prices, Pools)
+  let p = await loadMultipleGeneralEthcallSynthetixPools(App, tokens, prices, Pools, "avax")
   _print_bold(`Total staked: $${formatMoney(p.staked_tvl)}`);
   if (p.totalUserStaked > 0) {
   _print(`You are staking a total of $${formatMoney(p.totalUserStaked)} at an APR of ${(p.totalAPR * 100).toFixed(2)}%\n`);

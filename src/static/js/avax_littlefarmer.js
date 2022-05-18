@@ -23,8 +23,8 @@ $(function () {
         const tokens = {};		
         const prices = await getAvaxPrices();		
     		
-        await loadAvaxChefContract(App, tokens, prices, LITTLEFARMER_CHEF, LITTLEFARMER_CHEF_ADDR, LITTLEFARMER_CHEF_ABI, rewardTokenTicker,		
-            "littlefarmer", null, rewardsPerWeek, "pendingLittleFarmer");		
+        await loadGeneralEthcallChefContract(App, tokens, prices, LITTLEFARMER_CHEF, LITTLEFARMER_CHEF_ADDR, LITTLEFARMER_CHEF_ABI, rewardTokenTicker,		
+            "littlefarmer", null, rewardsPerWeek, "pendingLittleFarmer", [], "avax");		
     		
         hideLoading();		
     }		

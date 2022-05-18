@@ -24,7 +24,7 @@ async function main() {
     const tokens = {};		
     const prices = await getAvaxPrices();		
         
-    await loadAvaxChefContract(
+    await loadGeneralEthcallChefContract(
         App,
         tokens,
         prices,
@@ -35,7 +35,9 @@ async function main() {
         "Sonic",
         null,
         rewardsPerWeek,
-        "pendingSonic"
+        "pendingSonic",
+        [],
+        "avax"
     );		
         
     hideLoading();		

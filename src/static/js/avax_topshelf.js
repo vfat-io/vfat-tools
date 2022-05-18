@@ -122,7 +122,7 @@ async function loadloadLiqrPoolInfo(App, tokens, prices, stakingAbi, stakingAddr
         rewardTokenAddresses.push(rewardTokenAddress);
       }
 
-      var stakeToken = await getAvaxToken(App, stakeTokenAddress, stakingAddress);
+      var stakeToken = await getGeneralEthcallToken(App, stakeTokenAddress, stakingAddress);
 
       var newPriceAddresses = stakeToken.tokens.filter(x =>
         !getParameterCaseInsensitive(prices, x));
@@ -134,11 +134,11 @@ async function loadloadLiqrPoolInfo(App, tokens, prices, stakingAbi, stakingAddr
       var newTokenAddresses = stakeToken.tokens.filter(x =>
         !getParameterCaseInsensitive(tokens,x));
       for (const address of newTokenAddresses) {
-          tokens[address] = await getAvaxToken(App, address, stakingAddress);
+          tokens[address] = await getGeneralEthcallToken(App, address, stakingAddress);
       }
       for(const rewardTokenAddress of rewardTokenAddresses){
         if (!getParameterCaseInsensitive(tokens, rewardTokenAddress)) {
-          tokens[rewardTokenAddress] = await getAvaxToken(App, rewardTokenAddress, stakingAddress);
+          tokens[rewardTokenAddress] = await getGeneralEthcallToken(App, rewardTokenAddress, stakingAddress);
         }
       }
       let rewardTokens = [];
@@ -211,7 +211,7 @@ async function loadLpStakingPoolInfo(App, tokens, prices, stakingAbi, stakingAdd
       }
       const stakeTokenAddress = await STAKING_POOL.callStatic[stakeTokenFunction]();
 
-      var stakeToken = await getAvaxToken(App, stakeTokenAddress, stakingAddress);
+      var stakeToken = await getGeneralEthcallToken(App, stakeTokenAddress, stakingAddress);
 
       if (stakeTokenAddress.toLowerCase() === rewardTokenAddress.toLowerCase()) {
         stakeToken.staked = await STAKING_POOL.totalSupply() / 10 ** stakeToken.decimals;
@@ -227,10 +227,10 @@ async function loadLpStakingPoolInfo(App, tokens, prices, stakingAbi, stakingAdd
       var newTokenAddresses = stakeToken.tokens.filter(x =>
         !getParameterCaseInsensitive(tokens,x));
       for (const address of newTokenAddresses) {
-          tokens[address] = await getAvaxToken(App, address, stakingAddress);
+          tokens[address] = await getGeneralEthcallToken(App, address, stakingAddress);
       }
       if (!getParameterCaseInsensitive(tokens, rewardTokenAddress)) {
-          tokens[rewardTokenAddress] = await getAvaxToken(App, rewardTokenAddress, stakingAddress);
+          tokens[rewardTokenAddress] = await getGeneralEthcallToken(App, rewardTokenAddress, stakingAddress);
       }
       const rewardToken = getParameterCaseInsensitive(tokens, rewardTokenAddress);
 
@@ -347,17 +347,17 @@ async function loadStablePoolInfo(App, tokens, prices, stakingAbi, stakingAddres
     }
     const stakeTokenAddress = await STAKING_POOL.callStatic[stakeTokenFunction]();
 
-    let stakeToken = await getAvaxToken(App, stakeTokenAddress, stakeTokenAddress);
+    let stakeToken = await getGeneralEthcallToken(App, stakeTokenAddress, stakeTokenAddress);
     stakeToken.staked = await STAKING_POOL.getTotalLUSDDeposits() / 10 ** stakeToken.decimals;
 
     var newTokenAddresses = stakeToken.tokens.filter(x =>
       !getParameterCaseInsensitive(tokens,x));
     for (const address of newTokenAddresses) {
-        tokens[address] = await getAvaxToken(App, address, stakingAddress);
+        tokens[address] = await getGeneralEthcallToken(App, address, stakingAddress);
     }
     for(const rewardTokenAddress of rewardTokenAddresses){
       if (!getParameterCaseInsensitive(tokens, rewardTokenAddress)) {
-        tokens[rewardTokenAddress] = await getAvaxToken(App, rewardTokenAddress, stakingAddress);
+        tokens[rewardTokenAddress] = await getGeneralEthcallToken(App, rewardTokenAddress, stakingAddress);
       }
     }
     let rewardTokens = [];

@@ -17,8 +17,8 @@ async function main() {
   const tokens = {};
   const prices = await getAvaxPrices();
 
-  await loadAvaxChefContract(App, tokens, prices, OBERON_CHEF, OBERON_CHEF_ADDR, OBERON_CHEF_ABI, "OBERON",
-      "oberon", null, rewardsPerWeek, "pendingOberon");
+  await loadGeneralEthcallChefContract(App, tokens, prices, OBERON_CHEF, OBERON_CHEF_ADDR, OBERON_CHEF_ABI, "OBERON",
+      "oberon", null, rewardsPerWeek, "pendingOberon", [], "avax");
 
   hideLoading();
 }

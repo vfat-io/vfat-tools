@@ -1487,7 +1487,7 @@ async function loadAvaxPodContract(App, tokens, prices, chef, chefAddress, chefA
     var tokens = {};
   
     const rewardTokenAddress = await chefContract.callStatic[rewardTokenFunction]();
-    const rewardToken = await getAvaxToken(App, rewardTokenAddress, chefAddress);
+    const rewardToken = await getGeneralEthcallToken(App, rewardTokenAddress, chefAddress);
   
     const rewardsPerWeek = rewardsPerWeekFixed ??
       await chefContract.callStatic[rewardsPerBlockFunction]()
@@ -1501,7 +1501,7 @@ async function loadAvaxPodContract(App, tokens, prices, chef, chefAddress, chefA
     var tokenAddresses = [].concat.apply([], poolInfos.filter(x => x?.poolToken).map(x => x.poolToken.tokens));
   
     await Promise.all(tokenAddresses.map(async (address) => {
-        tokens[address] = await getAvaxToken(App, address, chefAddress);
+        tokens[address] = await getGeneralEthcallToken(App, address, chefAddress);
     }));
   
     if (deathPoolIndices) {   //load prices for the deathpool assets
@@ -1573,7 +1573,7 @@ async function loadAvaxStakingContract(App, tokens, prices, chef, chefAddress, c
     var tokenAddresses = [].concat.apply([], poolInfos.filter(x => x?.poolToken).map(x => x.poolToken.tokens));
   
     await Promise.all(tokenAddresses.map(async (address) => {
-        tokens[address] = await getAvaxToken(App, address, chefAddress);
+        tokens[address] = await getGeneralEthcallToken(App, address, chefAddress);
     }));
   
     if (deathPoolIndices) {   //load prices for the deathpool assets
@@ -1631,7 +1631,7 @@ async function getPodPoolInfo(app, chefContract, chefAddress, poolIndex, pending
         pendingRewardTokens : 0,
       };
     }
-    const poolToken = await getAvaxToken(app, poolInfo.token, chefAddress);
+    const poolToken = await getGeneralEthcallToken(app, poolInfo.token, chefAddress);
     const userInfo = await chefContract.userInfo(poolIndex, app.YOUR_ADDRESS);
     const pendingRewardTokens = await chefContract.callStatic[pendingRewardsFunction](poolIndex, app.YOUR_ADDRESS);
     const staked = userInfo.amount / 10 ** poolToken.decimals;

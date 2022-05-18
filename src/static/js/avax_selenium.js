@@ -29,8 +29,8 @@ async function main() {
     const tokens = {};
     const prices = await getAvaxPrices();
 
-    await loadAvaxChefContract(App, tokens, prices, SELENIUM_CHEF, SELENIUM_CHEF_ADDR, SELENIUM_CHEF_ABI, rewardTokenTicker,
-        "selenium", null, rewardsPerWeek, "pendingSelenium");
+    await loadGeneralEthcallChefContract(App, tokens, prices, SELENIUM_CHEF, SELENIUM_CHEF_ADDR, SELENIUM_CHEF_ABI, rewardTokenTicker,
+        "selenium", null, rewardsPerWeek, "pendingSelenium", [], "avax");
 
     hideLoading();
 }

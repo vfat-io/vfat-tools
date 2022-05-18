@@ -30,8 +30,8 @@ $(function () {
 
         _print(`There is a Harvest Lockup of 2 hours for some pools. Please check the site for more information\n`)
     		
-        await loadAvaxChefContract(App, tokens, prices, KRYPTON_CHEF, KRYPTON_CHEF_ADDR, KRYPTON_CHEF_ABI, rewardTokenTicker,		
-            "krypton", null, rewardsPerWeek, "pendingKrypton");		
+        await loadGeneralEthcallChefContract(App, tokens, prices, KRYPTON_CHEF, KRYPTON_CHEF_ADDR, KRYPTON_CHEF_ABI, rewardTokenTicker,		
+            "krypton", null, rewardsPerWeek, "pendingKrypton", [], "avax");		
     		
         hideLoading();		
     }		

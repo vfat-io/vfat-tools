@@ -23,8 +23,8 @@ $(function () {
         const tokens = {};		
         const prices = await getAvaxPrices();		
     		
-        await loadAvaxChefContract(App, tokens, prices, DOLPHIN_CHEF, DOLPHIN_CHEF_ADDR, DOLPHIN_CHEF_ABI, rewardTokenTicker,		
-            "Dolphin", null, rewardsPerWeek, "pendingDolphin");		
+        await loadGeneralEthcallChefContract(App, tokens, prices, DOLPHIN_CHEF, DOLPHIN_CHEF_ADDR, DOLPHIN_CHEF_ABI, rewardTokenTicker,		
+            "Dolphin", null, rewardsPerWeek, "pendingDolphin", [], "avax");		
     		
         hideLoading();		
     }		

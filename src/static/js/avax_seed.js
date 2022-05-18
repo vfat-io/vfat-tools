@@ -20,8 +20,8 @@ $(function () {
         const tokens = {};		
         const prices = await getAvaxPrices();		
     		
-        await loadAvaxChefContract(App, tokens, prices, SEED_CHEF, SEED_CHEF_ADDR, SEED_CHEF_ABI, rewardTokenTicker,		
-            "seed", null, rewardsPerWeek, "pendingSeed");		
+        await loadGeneralEthcallChefContract(App, tokens, prices, SEED_CHEF, SEED_CHEF_ADDR, SEED_CHEF_ABI, rewardTokenTicker,		
+            "seed", null, rewardsPerWeek, "pendingSeed", [], "avax");		
     		
         hideLoading();		
     }		

@@ -23,8 +23,8 @@ $(function () {
         const tokens = {};		
         const prices = await getAvaxPrices();		
     		
-        await loadAvaxChefContract(App, tokens, prices, OMEGA_CHEF, OMEGA_CHEF_ADDR, OMEGA_CHEF_ABI, rewardTokenTicker,		
-            "omega", null, rewardsPerWeek, "pendingOmega");		
+        await loadGeneralEthcallChefContract(App, tokens, prices, OMEGA_CHEF, OMEGA_CHEF_ADDR, OMEGA_CHEF_ABI, rewardTokenTicker,		
+            "omega", null, rewardsPerWeek, "pendingOmega", [], "avax");		
     		
         hideLoading();		
     }		

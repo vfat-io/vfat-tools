@@ -203,7 +203,7 @@ async function loadAvaxQiPoolInfo(App, tokens, prices, stakingAbi, stakingAddres
       }
       const stakeTokenAddress = await STAKING_POOL.callStatic[stakeTokenFunction]();
 
-      var stakeToken = await getAvaxToken(App, stakeTokenAddress, stakingAddress);
+      var stakeToken = await getGeneralEthcallToken(App, stakeTokenAddress, stakingAddress);
 
       var newPriceAddresses = stakeToken.tokens.filter(x =>
         !getParameterCaseInsensitive(prices, x));
@@ -215,10 +215,10 @@ async function loadAvaxQiPoolInfo(App, tokens, prices, stakingAbi, stakingAddres
       var newTokenAddresses = stakeToken.tokens.filter(x =>
         !getParameterCaseInsensitive(tokens,x));
       for (const address of newTokenAddresses) {
-          tokens[address] = await getAvaxToken(App, address, stakingAddress);
+          tokens[address] = await getGeneralEthcallToken(App, address, stakingAddress);
       }
       if (!getParameterCaseInsensitive(tokens, rewardTokenAddress)) {
-          tokens[rewardTokenAddress] = await getAvaxToken(App, rewardTokenAddress, stakingAddress);
+          tokens[rewardTokenAddress] = await getGeneralEthcallToken(App, rewardTokenAddress, stakingAddress);
       }
       const rewardToken = getParameterCaseInsensitive(tokens, rewardTokenAddress);
 

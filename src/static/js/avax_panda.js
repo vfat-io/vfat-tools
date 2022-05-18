@@ -23,8 +23,8 @@ async function main() {
     const tokens = {};
     const prices = await getAvaxPrices();
 
-    await loadAvaxChefContract(App, tokens, prices, BAMBOO_CHEF, BAMBOO_CHEF_ADDR, BAMBOO_CHEF_ABI, rewardTokenTicker,
-        "bamboo", null, rewardsPerWeek, "pendingBamboo", [1]);
+    await loadGeneralEthcallChefContract(App, tokens, prices, BAMBOO_CHEF, BAMBOO_CHEF_ADDR, BAMBOO_CHEF_ABI, rewardTokenTicker,
+        "bamboo", null, rewardsPerWeek, "pendingBamboo", [1], "avax");
 
     hideLoading();
   }

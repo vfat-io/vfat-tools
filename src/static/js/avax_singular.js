@@ -726,7 +726,7 @@ async function loadAvaxSingChefContract(
 
   console.log('rewardTokenAddress', rewardTokenAddress)
 
-  const rewardToken = await getAvaxToken(App, rewardTokenAddress, chefAddress)
+  const rewardToken = await getGeneralEthcallToken(App, rewardTokenAddress, chefAddress)
 
   console.log('rewardToken', rewardToken)
 
@@ -738,7 +738,7 @@ async function loadAvaxSingChefContract(
 
   const poolInfos = await Promise.all(
     [...Array(poolCount).keys()].map(
-      async x => await getAvaxPoolInfo(App, chefContract, chefAddress, x, pendingRewardsFunction)
+      async x => await getGeneralEthcallPoolInfo(App, chefContract, chefAddress, x, pendingRewardsFunction)
     )
   )
 
@@ -751,7 +751,7 @@ async function loadAvaxSingChefContract(
 
   await Promise.all(
     tokenAddresses.map(async address => {
-      tokens[address] = await getAvaxToken(App, address, chefAddress)
+      tokens[address] = await getGeneralEthcallToken(App, address, chefAddress)
     })
   )
 
@@ -820,33 +820,4 @@ async function loadAvaxSingChefContract(
   }
 
   return {prices, totalUserStaked, totalStaked, averageApr}
-}
-
-async function getAvaxSingPoolInfo(app, chefContract, chefAddress, poolIndex, pendingRewardsFunction) {
-  const poolInfo = await chefContract.poolInfo(poolIndex)
-
-  if (poolInfo.allocPoint == 0) {
-    return {
-      address: poolInfo.lpToken,
-      allocPoints: poolInfo.allocPoint ?? 1,
-      poolToken: null,
-      userStaked: 0,
-      pendingRewardTokens: 0,
-    }
-  }
-
-  const poolToken = await getAvaxToken(app, poolInfo.lpToken, chefAddress)
-
-  const userInfo = await chefContract.userInfo(poolIndex, app.YOUR_ADDRESS)
-  const pendingRewardTokens = await chefContract.callStatic[pendingRewardsFunction](poolIndex, app.YOUR_ADDRESS)
-  const staked = userInfo.amount / 10 ** poolToken.decimals
-  return {
-    address: poolInfo.stakingToken,
-    allocPoints: poolInfo.allocPoint ?? 1,
-    poolToken: poolToken,
-    userStaked: staked,
-    pendingRewardTokens: pendingRewardTokens / 10 ** 18,
-    depositFee: (poolInfo.depositFeeBP ?? 0) / 100,
-    withdrawFee: (poolInfo.withdrawFeeBP ?? 0) / 100,
-  }
 }

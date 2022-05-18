@@ -65,7 +65,7 @@ async function loadVectorSynthetixPoolInfo(App, tokens, prices, stakingAddress) 
 
       const rewardTokenAddress = "0x22d4002028f537599bE9f666d1c4Fa138522f9c8"
 
-      var stakeToken = await getAvaxToken(App, stakeTokenAddress, stakingAddress);
+      var stakeToken = await getGeneralEthcallToken(App, stakeTokenAddress, stakingAddress);
       stakeToken.staked = await STAKING_POOL.totalSupply() / 10 ** stakeToken.decimals;
 
       if (stakeTokenAddress.toLowerCase() === rewardTokenAddress.toLowerCase()) {
@@ -82,10 +82,10 @@ async function loadVectorSynthetixPoolInfo(App, tokens, prices, stakingAddress) 
       var newTokenAddresses = stakeToken.tokens.filter(x =>
         !getParameterCaseInsensitive(tokens,x));
       for (const address of newTokenAddresses) {
-          tokens[address] = await getAvaxToken(App, address, stakingAddress);
+          tokens[address] = await getGeneralEthcallToken(App, address, stakingAddress);
       }
       if (!getParameterCaseInsensitive(tokens, rewardTokenAddress)) {
-          tokens[rewardTokenAddress] = await getAvaxToken(App, rewardTokenAddress, stakingAddress);
+          tokens[rewardTokenAddress] = await getGeneralEthcallToken(App, rewardTokenAddress, stakingAddress);
       }
       const rewardToken = getParameterCaseInsensitive(tokens, rewardTokenAddress);
 
@@ -179,7 +179,7 @@ async function loadVtxV2ChefContract(App, tokens, prices, chef, chefAddress, che
     _print(`Showing incentivized pools only.\n`);
   
     const rewardTokenAddress = await chefContract.callStatic[rewardTokenFunction]();
-    const rewardToken = await getAvaxToken(App, rewardTokenAddress, chefAddress);
+    const rewardToken = await getGeneralEthcallToken(App, rewardTokenAddress, chefAddress);
     const rewardsPerWeek = rewardsPerWeekFixed ??
       await chefContract.callStatic[rewardsPerBlockFunction]()
       / 10 ** rewardToken.decimals * 604800 / 13.5
@@ -197,7 +197,7 @@ async function loadVtxV2ChefContract(App, tokens, prices, chef, chefAddress, che
     var tokenAddresses = [].concat.apply([], poolInfos.filter(x => x?.poolToken).map(x => x.poolToken.tokens).concat([rewardTokenAddress]));
   
     await Promise.all(tokenAddresses.map(async (address) => {
-        tokens[address] = await getAvaxToken(App, address, chefAddress);
+        tokens[address] = await getGeneralEthcallToken(App, address, chefAddress);
     }));
   
     if (deathPoolIndices) {   //load prices for the deathpool assets
@@ -252,7 +252,7 @@ async function getVtxv2PoolInfo(app, chefContract, chefAddress, stakingToken, pe
         pendingRewardTokens : 0,
       };
     }
-    const poolToken = await getAvaxToken(app, stakingToken, chefAddress);
+    const poolToken = await getGeneralEthcallToken(app, stakingToken, chefAddress);
     const userInfo = await chefContract.depositInfo(stakingToken, app.YOUR_ADDRESS);
     const pendingRewardTokens = await chefContract.pendingTokens(stakingToken, app.YOUR_ADDRESS, "0x5817d4f0b62a59b17f75207da1848c2ce75e7af4");
     const staked = userInfo.availableAmount / 10 ** poolToken.decimals;

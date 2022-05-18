@@ -30,8 +30,8 @@ async function main() {
     await loadJoeV2ChefContract(App, tokens, prices, JOE_CHEF_V2, JOE_CHEF_ADDR_V2, JOE_CHEF_ABI_V2, rewardTokenTicker,
       "JOE", null, rewardsPerWeekv2, "pendingTokens");
 
-    await loadAvaxChefContract(App, tokens, prices, JOE_CHEF, JOE_CHEF_ADDR, JOE_CHEF_ABI, rewardTokenTicker,
-        "joe", null, rewardsPerWeek, "pendingTokens");
+    await loadGeneralEthcallChefContract(App, tokens, prices, JOE_CHEF, JOE_CHEF_ADDR, JOE_CHEF_ABI, rewardTokenTicker,
+        "joe", null, rewardsPerWeek, "pendingTokens", [], "avax");
 
     hideLoading();
   }
@@ -48,7 +48,7 @@ async function loadJoeV2ChefContract(App, tokens, prices, chef, chefAddress, che
     _print(`Showing incentivized pools only.\n`);
   
     const rewardTokenAddress = await chefContract.callStatic[rewardTokenFunction]();
-    const rewardToken = await getAvaxToken(App, rewardTokenAddress, chefAddress);
+    const rewardToken = await getGeneralEthcallToken(App, rewardTokenAddress, chefAddress);
     const rewardsPerWeek = rewardsPerWeekFixed ??
       await chefContract.callStatic[rewardsPerBlockFunction]()
       / 10 ** rewardToken.decimals * 604800 / 13.5
@@ -66,7 +66,7 @@ async function loadJoeV2ChefContract(App, tokens, prices, chef, chefAddress, che
     var tokenAddresses = [].concat.apply([], poolInfos.filter(x => x?.poolToken).map(x => x.poolToken.tokens).concat([rewardTokenAddress]));
   
     await Promise.all(tokenAddresses.map(async (address) => {
-        tokens[address] = await getAvaxToken(App, address, chefAddress);
+        tokens[address] = await getGeneralEthcallToken(App, address, chefAddress);
     }));
   
     if (deathPoolIndices) {   //load prices for the deathpool assets
@@ -132,7 +132,7 @@ async function getJoev2PoolInfo(app, chefContract, chefAddress, poolIndex, pendi
     }
     const rewarder = poolInfo.rewarder;
     if(rewarder == "0x0000000000000000000000000000000000000000"){
-      const poolToken = await getAvaxToken(app, lpToken, chefAddress);
+      const poolToken = await getGeneralEthcallToken(app, lpToken, chefAddress);
       const userInfo = await chefContract.userInfo(poolIndex, app.YOUR_ADDRESS);
       const pendingRewardTokens = await chefContract.pendingReward(poolIndex, app.YOUR_ADDRESS);
       const staked = userInfo.amount / 10 ** poolToken.decimals;
@@ -146,14 +146,14 @@ async function getJoev2PoolInfo(app, chefContract, chefAddress, poolIndex, pendi
           withdrawFee : (poolInfo.withdrawFeeBP ?? 0) / 100
       };
     }else{
-      const poolToken = await getAvaxToken(app, lpToken, chefAddress);
+      const poolToken = await getGeneralEthcallToken(app, lpToken, chefAddress);
       const userInfo = await chefContract.userInfo(poolIndex, app.YOUR_ADDRESS);
       const _pendingRewardTokens = await chefContract.pendingTokens(poolIndex, app.YOUR_ADDRESS);
       const pendingRewardTokens = _pendingRewardTokens.pendingJoe;
       const staked = userInfo.amount / 10 ** poolToken.decimals;
       const rewarderContract = new ethers.Contract(rewarder, JOE_REWARDER_ABI, app.provider);
       const rewarderTokenAddress = await rewarderContract.rewardToken();
-      const rewarderToken = await getAvaxToken(app, rewarderTokenAddress, chefAddress);
+      const rewarderToken = await getGeneralEthcallToken(app, rewarderTokenAddress, chefAddress);
       const pendingRewarderTokens = await rewarderContract.pendingTokens(app.YOUR_ADDRESS)
       const rewarderRewardsPerSecond = await rewarderContract.tokenPerSec() / 10 ** rewarderToken.decimals;
       const rewarderRewardsPerWeek = rewarderRewardsPerSecond * 604800;

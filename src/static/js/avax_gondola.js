@@ -25,8 +25,8 @@ async function main() {
     prices["0xE586dB7Db75B87A3E84110a73b99960F5f106c6A"] = { usd : 1 }; //gondolaUSDT
     prices["0x2036C0EB5C42eF7f1ca06dF57D07F79eb3a2e0C8"] = { usd : 1 }; //gondolaDAI
 
-    await loadAvaxChefContract(App, tokens, prices, GDL_CHEF, GDL_CHEF_ADDR, GDL_CHEF_ABI, rewardTokenTicker,
-        "gondola", null, rewardsPerWeek, "pendingGondola", [0,1,2,3,4,5,6,7,8,9,10,11,12]);
+    await loadGeneralEthcallChefContract(App, tokens, prices, GDL_CHEF, GDL_CHEF_ADDR, GDL_CHEF_ABI, rewardTokenTicker,
+        "gondola", null, rewardsPerWeek, "pendingGondola", [0,1,2,3,4,5,6,7,8,9,10,11,12], "avax");
 
     hideLoading();
   }
