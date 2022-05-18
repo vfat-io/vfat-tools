@@ -20,8 +20,8 @@ async function main() {
     const tokens = {};		
     const prices = await getAvaxPrices();		
 
-    await loadAvaxChefContract(App, tokens, prices, SPECTA_CHEF, SPECTA_CHEF_ADDR, SPECTA_CHEF_ABI, rewardTokenTicker,		
-        "spectaToken", null, rewardsPerWeek, "pendingSpecta");		
+    await loadGeneralEthcallChefContract(App, tokens, prices, SPECTA_CHEF, SPECTA_CHEF_ADDR, SPECTA_CHEF_ABI, rewardTokenTicker,		
+        "spectaToken", null, rewardsPerWeek, "pendingSpecta", [], "avax");		
 
     hideLoading();		
 }		

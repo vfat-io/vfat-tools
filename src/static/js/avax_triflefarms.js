@@ -23,8 +23,8 @@ $(function () {
         const tokens = {};		
         const prices = await getAvaxPrices();		
     		
-        await loadAvaxChefContract(App, tokens, prices, TRIFLE_CHEF, TRIFLE_CHEF_ADDR, TRIFLE_CHEF_ABI, rewardTokenTicker,		
-            "trifle", null, rewardsPerWeek, "pendingTrifle");		
+        await loadGeneralEthcallChefContract(App, tokens, prices, TRIFLE_CHEF, TRIFLE_CHEF_ADDR, TRIFLE_CHEF_ABI, rewardTokenTicker,		
+            "trifle", null, rewardsPerWeek, "pendingTrifle", [], "avax");		
     		
         hideLoading();		
     }		

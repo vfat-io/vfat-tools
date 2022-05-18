@@ -55,7 +55,7 @@ async function getHuntPoolInfo(app, chefContract, chefAddress, poolIndex, pendin
       pendingRewardTokens : 0,
     };
   }
-  const poolToken = await getAvaxToken(app, poolInfo.lpToken, chefAddress);
+  const poolToken = await getGeneralEthcallToken(app, poolInfo.lpToken, chefAddress);
   poolToken.staked = poolInfo.lpSupply / 10 ** poolToken.decimals
   const userInfo = await chefContract.userInfo(poolIndex, app.YOUR_ADDRESS);
   const pendingRewardTokens = await chefContract.callStatic[pendingRewardsFunction](poolIndex, app.YOUR_ADDRESS);
@@ -86,7 +86,7 @@ async function loadHuntChefContract(App, tokens, prices, chef, chefAddress, chef
   var tokens = {};
 
   const rewardTokenAddress = await chefContract.callStatic[rewardTokenFunction]();
-  const rewardToken = await getAvaxToken(App, rewardTokenAddress, chefAddress);
+  const rewardToken = await getGeneralEthcallToken(App, rewardTokenAddress, chefAddress);
   const rewardsPerWeek = rewardsPerWeekFixed ??
     await chefContract.callStatic[rewardsPerBlockFunction]()
     / 10 ** rewardToken.decimals * 604800 / 3
@@ -98,7 +98,7 @@ async function loadHuntChefContract(App, tokens, prices, chef, chefAddress, chef
   var tokenAddresses = [].concat.apply([], poolInfos.filter(x => x?.poolToken).map(x => x.poolToken.tokens));
 
   await Promise.all(tokenAddresses.map(async (address) => {
-      tokens[address] = await getAvaxToken(App, address, chefAddress);
+      tokens[address] = await getGeneralEthcallToken(App, address, chefAddress);
   }));
 
   if (deathPoolIndices) {   //load prices for the deathpool assets

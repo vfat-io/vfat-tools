@@ -23,8 +23,8 @@ $(function () {
         const tokens = {};		
         const prices = await getAvaxPrices();		
     		
-        await loadAvaxChefContract(App, tokens, prices, THENA_CHEF, THENA_CHEF_ADDR, THENA_CHEF_ABI, rewardTokenTicker,		
-            "thena", null, rewardsPerWeek, "pendingThena");		
+        await loadGeneralEthcallChefContract(App, tokens, prices, THENA_CHEF, THENA_CHEF_ADDR, THENA_CHEF_ABI, rewardTokenTicker,		
+            "thena", null, rewardsPerWeek, "pendingThena", [], "avax");		
     		
         hideLoading();		
     }		

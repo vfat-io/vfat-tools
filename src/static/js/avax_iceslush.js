@@ -749,8 +749,8 @@ $(function () {
         const tokens = {};
         const prices = await getAvaxPrices();
 
-        await loadAvaxChefContract(App, tokens, prices, SLUSH_CHEF, SLUSH_CHEF_ADDR, SLUSH_CHEF_ABI, rewardTokenTicker,
-            "token", null, rewardsPerWeek, "pendingToken");
+        await loadGeneralEthcallChefContract(App, tokens, prices, SLUSH_CHEF, SLUSH_CHEF_ADDR, SLUSH_CHEF_ABI, rewardTokenTicker,
+            "token", null, rewardsPerWeek, "pendingToken", [], "avax");
 
         hideLoading();
     }

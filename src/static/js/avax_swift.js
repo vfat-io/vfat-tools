@@ -31,8 +31,8 @@ $(function () {
         const tokens = {};		
         const prices = await getAvaxPrices();		
     		
-        await loadAvaxChefContract(App, tokens, prices, SWIFT_CHEF, SWIFT_CHEF_ADDR, SWIFT_CHEF_ABI, rewardTokenTicker,		
-            "swiftToken", null, rewardsPerWeek, "pendingSwift");		
+        await loadGeneralEthcallChefContract(App, tokens, prices, SWIFT_CHEF, SWIFT_CHEF_ADDR, SWIFT_CHEF_ABI, rewardTokenTicker,		
+            "swiftToken", null, rewardsPerWeek, "pendingSwift", [], "avax");		
     		
         hideLoading();		
     }		

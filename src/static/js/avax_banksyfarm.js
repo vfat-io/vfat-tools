@@ -21,8 +21,8 @@ $(function() {
         const tokens = {};
         const prices = await getAvaxPrices();
     
-        await loadAvaxChefContract(App, tokens, prices, BANKSY_CHEF, BANKSY_CHEF_ADDR, BANKSY_CHEF_ABI, rewardTokenTicker,
-            "banksy", null, rewardsPerWeek, "pendingBanksy");
+        await loadGeneralEthcallChefContract(App, tokens, prices, BANKSY_CHEF, BANKSY_CHEF_ADDR, BANKSY_CHEF_ABI, rewardTokenTicker,
+            "banksy", null, rewardsPerWeek, "pendingBanksy", [], "avax");
     
         hideLoading();
       }

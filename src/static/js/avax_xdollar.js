@@ -58,7 +58,7 @@ async function main() {
     const tokens = {};
     const prices = await getAvaxPrices();
 
-    const p = await loadMultipleAvaxSynthetixPools(App, tokens, prices, [xusdWAVAXPool]);
+    const p = await loadMultipleGeneralEthcallSynthetixPools(App, tokens, prices, [xusdWAVAXPool], "avax");
 
     const p2 = await loadKyberDMMPools(App, tokens, prices, [xusdUsdcPool]);
 
@@ -104,17 +104,17 @@ async function loadXdoPoolInfo(App, tokens, prices, stakingAbi, stakingAddress, 
     }
     const stakeTokenAddress = await STAKING_POOL.callStatic[stakeTokenFunction]();
 
-    let stakeToken = await getAvaxToken(App, stakeTokenAddress, stakeTokenAddress);
+    let stakeToken = await getGeneralEthcallToken(App, stakeTokenAddress, stakeTokenAddress);
     stakeToken.staked = await STAKING_POOL.totalLQTYStaked() / 10 ** stakeToken.decimals;
 
     var newTokenAddresses = stakeToken.tokens.filter(x =>
       !getParameterCaseInsensitive(tokens,x));
     for (const address of newTokenAddresses) {
-        tokens[address] = await getAvaxToken(App, address, stakingAddress);
+        tokens[address] = await getGeneralEthcallToken(App, address, stakingAddress);
     }
     for(rewardTokenAddress of rewardTokenAddresses){
       if (!getParameterCaseInsensitive(tokens, rewardTokenAddress)) {
-        tokens[rewardTokenAddress] = await getAvaxToken(App, rewardTokenAddress, stakingAddress);
+        tokens[rewardTokenAddress] = await getGeneralEthcallToken(App, rewardTokenAddress, stakingAddress);
       }
     }
     let rewardTokens = [];
@@ -184,17 +184,17 @@ async function loadXDollarPoolInfo(App, tokens, prices, stakingAbi, stakingAddre
     }
     const stakeTokenAddress = await STAKING_POOL.callStatic[stakeTokenFunction]();
 
-    let stakeToken = await getAvaxToken(App, stakeTokenAddress, stakeTokenAddress);
+    let stakeToken = await getGeneralEthcallToken(App, stakeTokenAddress, stakeTokenAddress);
     stakeToken.staked = await STAKING_POOL.getTotalLUSDDeposits() / 10 ** stakeToken.decimals;
 
     var newTokenAddresses = stakeToken.tokens.filter(x =>
       !getParameterCaseInsensitive(tokens,x));
     for (const address of newTokenAddresses) {
-        tokens[address] = await getAvaxToken(App, address, stakingAddress);
+        tokens[address] = await getGeneralEthcallToken(App, address, stakingAddress);
     }
     for(rewardTokenAddress of rewardTokenAddresses){
       if (!getParameterCaseInsensitive(tokens, rewardTokenAddress)) {
-        tokens[rewardTokenAddress] = await getAvaxToken(App, rewardTokenAddress, stakingAddress);
+        tokens[rewardTokenAddress] = await getGeneralEthcallToken(App, rewardTokenAddress, stakingAddress);
       }
     }
     let rewardTokens = [];
@@ -391,15 +391,15 @@ async function loadKyberDMMPoolInfo(App, tokens, prices, stakingAbi, stakingAddr
 
     const rewardTokenAddress = await STAKING_POOL.callStatic[rewardTokenFunction]();
 
-    let stakeToken = await getKyberDMMToken(App, stakeTokenAddress, stakingAddress);
+    let stakeToken = await getGeneralEthcallToken(App, stakeTokenAddress, stakingAddress);
 
     var newTokenAddresses = stakeToken.tokens.filter(x =>
       !getParameterCaseInsensitive(tokens,x));
     for (const address of newTokenAddresses) {
-        tokens[address] = await getAvaxToken(App, address, stakingAddress);
+        tokens[address] = await getGeneralEthcallToken(App, address, stakingAddress);
     }
     if (!getParameterCaseInsensitive(tokens, rewardTokenAddress)) {
-      tokens[rewardTokenAddress] = await getAvaxToken(App, rewardTokenAddress, stakingAddress);
+      tokens[rewardTokenAddress] = await getGeneralEthcallToken(App, rewardTokenAddress, stakingAddress);
     }
     const rewardToken = getParameterCaseInsensitive(tokens, rewardTokenAddress);
 
@@ -454,7 +454,7 @@ async function loadKyberDMMPoolInfo(App, tokens, prices, stakingAbi, stakingAddr
 async function getKyberDMMToken(App, tokenAddress, stakingAddress) {
   try {
     const kyber = new ethers.Contract(tokenAddress, KYBER_DMM_ABI, App.provider);
-    return await getAvaxUniPool(App, kyber, tokenAddress, stakingAddress);
+    return await getGeneralEthcallUniPool(App, kyber, tokenAddress, stakingAddress);
   }
   catch(err) {
     console.log(err);

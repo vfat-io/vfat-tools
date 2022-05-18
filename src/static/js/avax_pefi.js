@@ -26,8 +26,8 @@ async function main() {
     const tokens = {};
     const prices = await getAvaxPrices();
 
-    await loadAvaxChefContract(App, tokens, prices, PEFI_CHEF, PEFI_CHEF_ADDR, PEFI_CHEF_ABI, rewardTokenTicker,
-        "pefi", null, rewardsPerWeek, "pendingPEFI", [1]);
+    await loadGeneralEthcallChefContract(App, tokens, prices, PEFI_CHEF, PEFI_CHEF_ADDR, PEFI_CHEF_ABI, rewardTokenTicker,
+        "pefi", null, rewardsPerWeek, "pendingPEFI", [1], "avax");
     await loadXPefi(App, prices);
 
     _print("");
@@ -160,7 +160,7 @@ async function loadPefiVaults(App, tokens, prices, pools) {
   const infos = await Promise.all(pools.map(p => 
     loadPefiVaultInfo(App, tokens, prices, p.abi, p.vaultAddress, p.rewardTokenFunction, p.stakeTokenFunction)));
   for (const i of infos.filter(i => i?.poolPrices)) {
-    printPefiVault(i, "matic");
+    printPefiVault(i, "avax");
   }
 }
 
@@ -175,7 +175,7 @@ async function loadPefiVaultInfo(App, tokens, prices, stakingAbi, stakingAddress
   
       const rewardTokenAddress = await STAKING_POOL.callStatic[rewardTokenFunction]();
   
-      let stakeToken = await getMaticToken(App, stakeTokenAddress, stakingAddress);
+      let stakeToken = await getGeneralEthcallToken(App, stakeTokenAddress, stakingAddress);
       stakeToken.staked = await STAKING_POOL.totalDeposits() / 10 ** stakeToken.decimals
   
       if (stakeTokenAddress.toLowerCase() === rewardTokenAddress.toLowerCase()) {
@@ -185,16 +185,16 @@ async function loadPefiVaultInfo(App, tokens, prices, stakingAbi, stakingAddress
       var newTokenAddresses = stakeToken.tokens.filter(x =>
         !getParameterCaseInsensitive(tokens,x));
       for (const address of newTokenAddresses) {
-          tokens[address] = await getMaticToken(App, address, stakingAddress);
+          tokens[address] = await getGeneralEthcallToken(App, address, stakingAddress);
       }
       if (!getParameterCaseInsensitive(tokens, rewardTokenAddress)) {
-          tokens[rewardTokenAddress] = await getMaticToken(App, rewardTokenAddress, stakingAddress);
+          tokens[rewardTokenAddress] = await getGeneralEthcallToken(App, rewardTokenAddress, stakingAddress);
       }
       const rewardToken = getParameterCaseInsensitive(tokens, rewardTokenAddress);
   
       const rewardTokenTicker = rewardToken.symbol;
   
-      const poolPrices = getPoolPrices(tokens, prices, stakeToken, "matic");
+      const poolPrices = getPoolPrices(tokens, prices, stakeToken, "avax");
 
       if (!poolPrices) 
       {

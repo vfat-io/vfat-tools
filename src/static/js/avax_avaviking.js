@@ -30,8 +30,8 @@ $(function () {
         const tokens = {};		
         const prices = await getAvaxPrices();		
     		
-        await loadAvaxChefContract(App, tokens, prices, VIKING_CHEF, VIKING_CHEF_ADDR, VIKING_CHEF_ABI, rewardTokenTicker,		
-            "token", null, rewardsPerWeek, "pendingViking", [1]);		
+        await loadGeneralEthcallChefContract(App, tokens, prices, VIKING_CHEF, VIKING_CHEF_ADDR, VIKING_CHEF_ABI, rewardTokenTicker,		
+            "token", null, rewardsPerWeek, "pendingViking", [1], "avax");		
     		
         hideLoading();		
     }		

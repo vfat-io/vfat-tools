@@ -20,8 +20,8 @@ async function main() {
     const tokens = {};
     const prices = await getAvaxPrices();
 
-    await loadAvaxChefContract(App, tokens, prices, ESKI_CHEF, ESKI_CHEF_ADDR, ESKI_CHEF_ABI, rewardTokenTicker,
-        "eski", null, rewardsPerWeek, "pendingEski");
+    await loadGeneralEthcallChefContract(App, tokens, prices, ESKI_CHEF, ESKI_CHEF_ADDR, ESKI_CHEF_ABI, rewardTokenTicker,
+        "eski", null, rewardsPerWeek, "pendingEski", [], "avax");
 
     hideLoading();
   }

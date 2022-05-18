@@ -24,8 +24,8 @@ $(function () {
         const tokens = {};		
         const prices = await getAvaxPrices();		
     		
-        await loadAvaxChefContract(App, tokens, prices, MELT_CHEF, MELT_CHEF_ADDR, MELT_CHEF_ABI, rewardTokenTicker,		
-            "melt", null, rewardsPerWeek, "pendingMelt", [1]);		
+        await loadGeneralEthcallChefContract(App, tokens, prices, MELT_CHEF, MELT_CHEF_ADDR, MELT_CHEF_ABI, rewardTokenTicker,		
+            "melt", null, rewardsPerWeek, "pendingMelt", [1], "avax");		
     		
         hideLoading();		
     }		

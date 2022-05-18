@@ -23,8 +23,8 @@ $(function () {
         const tokens = {};		
         const prices = await getAvaxPrices();		
     		
-        await loadAvaxChefContract(App, tokens, prices, IKARIS_CHEF, IKARIS_CHEF_ADDR, IKARIS_CHEF_ABI, rewardTokenTicker,		
-            "ikaris", null, rewardsPerWeek, "pendingIkaris");		
+        await loadGeneralEthcallChefContract(App, tokens, prices, IKARIS_CHEF, IKARIS_CHEF_ADDR, IKARIS_CHEF_ABI, rewardTokenTicker,		
+            "ikaris", null, rewardsPerWeek, "pendingIkaris", [], "avax");		
     		
         hideLoading();		
     }		

@@ -22,8 +22,8 @@ $(function () {
         const tokens = {};		
         const prices = await getAvaxPrices();		
     		
-        await loadAvaxChefContract(App, tokens, prices, RD_CHEF, RD_CHEF_ADDR, RD_CHEF_ABI, rewardTokenTicker,		
-            "radium", null, rewardsPerWeek, "pendingRadium");		
+        await loadGeneralEthcallChefContract(App, tokens, prices, RD_CHEF, RD_CHEF_ADDR, RD_CHEF_ABI, rewardTokenTicker,		
+            "radium", null, rewardsPerWeek, "pendingRadium", [], "avax");		
     		
         hideLoading();		
     }		

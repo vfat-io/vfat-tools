@@ -253,10 +253,10 @@ async function main() {
 async function loadYieldyakPoolInfo(App, tokens, prices, contractAddress) {
   try {
     const contract = await new ethers.Contract(contractAddress, ARBIS_VAULT_UNDERLYING_ABI, App.provider);
-    const vault = await getAvaxToken(App, contractAddress, App.YOUR_ADDRESS);
+    const vault = await getGeneralEthcallToken(App, contractAddress, App.YOUR_ADDRESS);
     var newTokenAddresses = vault.tokens.filter(x => !getParameterCaseInsensitive(tokens, x));
     for (const address of newTokenAddresses) {
-      tokens[address] = await getAvaxToken(App, address, contractAddress);
+      tokens[address] = await getGeneralEthcallToken(App, address, contractAddress);
     }
     const totalSupply = await contract.totalSupply() / 1e18;
     const totalDeposits = await contract.totalDeposits() / 1e18;
@@ -268,10 +268,10 @@ async function loadYieldyakPoolInfo(App, tokens, prices, contractAddress) {
   }
   catch (err) {
     const contract = await new ethers.Contract(contractAddress, ARBIS_VAULT_UNDERLYING_ABI2, App.provider);
-    const vault = await getAvaxToken(App, contractAddress, App.YOUR_ADDRESS);
+    const vault = await getGeneralEthcallToken(App, contractAddress, App.YOUR_ADDRESS);
     var newTokenAddresses = vault.tokens.filter(x => !getParameterCaseInsensitive(tokens, x));
     for (const address of newTokenAddresses) {
-      tokens[address] = await getAvaxToken(App, address, contractAddress);
+      tokens[address] = await getGeneralEthcallToken(App, address, contractAddress);
     }
     const totalSupply = await contract.totalSupply() / 1e18;
     const totalDeposits = await contract.totalDeposits() / 1e18;

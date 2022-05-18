@@ -31,8 +31,8 @@ $(function () {
         const tokens = {};		
         const prices = await getAvaxPrices();		
     		
-        await loadAvaxChefContract(App, tokens, prices, TUSK_CHEF, TUSK_CHEF_ADDR, TUSK_CHEF_ABI, rewardTokenTicker,		
-            "tusk", null, rewardsPerWeek, "pendingTusk");		
+        await loadGeneralEthcallChefContract(App, tokens, prices, TUSK_CHEF, TUSK_CHEF_ADDR, TUSK_CHEF_ABI, rewardTokenTicker,		
+            "tusk", null, rewardsPerWeek, "pendingTusk", [], "avax");		
     		
         hideLoading();		
     }		
