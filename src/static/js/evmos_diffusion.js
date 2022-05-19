@@ -879,7 +879,7 @@ async function getDiffPoolInfo(app, chefContract, chefAddress, poolIndex, pendin
       pendingRewardTokens : 0,
     };
   }
-  const poolToken = await getEvmosToken(app, lpToken, chefAddress);
+  const poolToken = await getGeneralToken(app, lpToken, chefAddress);
   const userInfo = await chefContract.userInfo(poolIndex, app.YOUR_ADDRESS);
   const pendingRewardTokens = await chefContract.callStatic[pendingRewardsFunction](poolIndex, app.YOUR_ADDRESS);
   const staked = userInfo.amount / 10 ** poolToken.decimals;
@@ -910,7 +910,7 @@ async function loadDiffChefContract(App, tokens, prices, chef, chefAddress, chef
   var tokens = {};
 
   const rewardTokenAddress = await chefContract.callStatic[rewardTokenFunction]();
-  const rewardToken = await getEvmosToken(App, rewardTokenAddress, chefAddress);
+  const rewardToken = await getGeneralToken(App, rewardTokenAddress, chefAddress);
   const rewardsPerWeek = rewardsPerWeekFixed ??
     await chefContract.callStatic[rewardsPerBlockFunction]()
     / 10 ** rewardToken.decimals * 604800 / 3
@@ -921,7 +921,7 @@ async function loadDiffChefContract(App, tokens, prices, chef, chefAddress, chef
   var tokenAddresses = [].concat.apply([], poolInfos.filter(x => x.poolToken).map(x => x.poolToken.tokens));
 
   await Promise.all(tokenAddresses.map(async (address) => {
-      tokens[address] = await getEvmosToken(App, address, chefAddress);
+      tokens[address] = await getGeneralToken(App, address, chefAddress);
   }));
 
   if (deathPoolIndices) {   //load prices for the deathpool assets

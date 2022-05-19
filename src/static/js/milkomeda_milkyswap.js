@@ -35,8 +35,8 @@ async function main() {
     const tokens = {};
     const prices = await getMilkomedaPrices();
 
-    await loadMilkomedaChefContract(App, tokens, prices, MILKY_CHEF, MILKY_CHEF_ADDR, MILKY_CHEF_ABI, rewardTokenTicker,
-        "milky", null, rewardsPerWeek, "pendingMilky");
+    await loadGeneralChefContract(App, tokens, prices, MILKY_CHEF, MILKY_CHEF_ADDR, MILKY_CHEF_ABI, rewardTokenTicker,
+        "milky", null, rewardsPerWeek, "pendingMilky", [], "milkomeda");
     _print("");
     const stakingTokens = await MILKY_STAKING.tokens();
     let gauges = [];
@@ -52,7 +52,7 @@ async function main() {
       rewardTokenFunction: "MILKY"
     }})
   
-    let p = await loadMultipleMilkomedaSynthetixPools(App, tokens, prices, pools)
+    let p = await loadMultipleGeneralSynthetixPools(App, tokens, prices, pools, "milkomeda")
     _print_bold(`Total staked: $${formatMoney(p.staked_tvl)}`);
     if (p.totalUserStaked > 0) {
       _print(`You are staking a total of $${formatMoney(p.totalUserStaked)} at an APR of ${(p.totalAPR * 100).toFixed(2)}%\n`);

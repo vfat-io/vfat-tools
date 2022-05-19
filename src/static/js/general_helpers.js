@@ -530,6 +530,10 @@ async function loadGeneralChefContract(App, tokens, prices, chef, chefAddress, c
     break;
     case "astar" : _print(`<a href='https://blockscout.com/astar/address/${chefAddress}' target='_blank'>Staking Contract</a>`);
     break;
+    case "evmos" : _print(`<a href='https://evm.evmos.org/address/${chefAddress}' target='_blank'>Staking Contract</a>`);
+    break;
+    case "milkomeda" : _print(`<a href='https://explorer-mainnet-cardano-evm.c1.milkomeda.com/address/${chefAddress}' target='_blank'>Staking Contract</a>`);
+    break;
   }
   _print(`Found ${poolCount} pools.\n`)
 

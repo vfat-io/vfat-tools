@@ -83,7 +83,7 @@ async function loadOCXSynthetixPoolInfo(App, tokens, prices, stakingAbi, staking
 
     const rewardTokenAddress = await STAKING_POOL.callStatic[rewardTokenFunction]();
 
-    var stakeToken = await getMilkomedaToken(App, stakeTokenAddress, stakingAddress);
+    var stakeToken = await getGeneralToken(App, stakeTokenAddress, stakingAddress);
     stakeToken.staked = await STAKING_POOL.totalStake() / 10 ** stakeToken.decimals;
 
     const rewardsPerSecond = await STAKING_POOL.getRewardPerSecond();
@@ -95,10 +95,10 @@ async function loadOCXSynthetixPoolInfo(App, tokens, prices, stakingAbi, staking
     var newTokenAddresses = stakeToken.tokens.filter(x =>
       !getParameterCaseInsensitive(tokens,x));
     for (const address of newTokenAddresses) {
-        tokens[address] = await getMilkomedaToken(App, address, stakingAddress);
+        tokens[address] = await getGeneralToken(App, address, stakingAddress);
     }
     if (!getParameterCaseInsensitive(tokens, rewardTokenAddress)) {
-        tokens[rewardTokenAddress] = await getMilkomedaToken(App, rewardTokenAddress, stakingAddress);
+        tokens[rewardTokenAddress] = await getGeneralToken(App, rewardTokenAddress, stakingAddress);
     }
     const rewardToken = getParameterCaseInsensitive(tokens, rewardTokenAddress);
 
