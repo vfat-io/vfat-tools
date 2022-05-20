@@ -43,7 +43,7 @@ $(function() {
       _print('')
       
       let tShareRewardPool = await loadRewardPoolContract(App, tokens, prices, tShareRewardPoolContract, TSHARE_REWARD_POOL_ADDR, TSHARE_REWARD_POOL_ABI, "TSHARE",
-      "tshare", "pendingShare", 13, startTime1, currentTime);
+      "tshare", "pendingShare", 14, startTime1, currentTime);
       
 
       _print_bold(`Total Staked: $${formatMoney(tShareRewardPool.totalStaked + masonry.staked_tvl)}`);
@@ -104,15 +104,17 @@ $(function() {
 
       let aprs = [];
       for (i = 0; i < poolCount; i++){
-      const apr = printTombPool(App,TOMB_REWARD_POOL_ABI, contractAddress, prices, tokens, poolInfos[i], i,
-           poolPrices[i], totalAllocPoints, rewardsPerWeek, rewardTokenTicker, rewardTokenAddress, pendingRewardsFunction, "fantom")
-      aprs.push(apr);
+        if (poolPrices[i]){
+          const apr = printTombPool(App,TOMB_REWARD_POOL_ABI, contractAddress, prices, tokens, poolInfos[i], i,
+            poolPrices[i], totalAllocPoints, rewardsPerWeek, rewardTokenTicker, rewardTokenAddress, pendingRewardsFunction, "fantom")
+          aprs.push(apr);
+        }
       }
         let totalUserStaked = 0,
           totalStaked = 0,
           averageApr = 0
         for (const a of aprs) {
-          if (!isNaN(a.totalStakedUsd)) {
+          if (!isNaN(a.totalStakedUsd) || (!a.totalStakedUsd)) {
             totalStaked += a.totalStakedUsd
           }
           if (a.userStakedUsd > 0) {
@@ -186,6 +188,7 @@ $(function() {
 
     async function getTombRewardPoolInfo(app, chefContract, chefAddress, poolIndex, pendingRewardsFunction) {
       const poolInfo = await chefContract.poolInfo(poolIndex)
+      const poolToken = await getFantomToken(app, poolInfo.token, chefAddress)
       if (poolInfo.allocPoint == 0) {
         return {
           address: poolInfo.token,
@@ -196,8 +199,6 @@ $(function() {
           pendingRewardTokens: 0,
         }
       }
-
-      const poolToken = await getFantomToken(app, poolInfo.token, chefAddress)
       const userInfo = await chefContract.userInfo(poolIndex, app.YOUR_ADDRESS)
       const pendingRewardTokens = await chefContract.callStatic[pendingRewardsFunction](poolIndex, app.YOUR_ADDRESS)
       const staked = userInfo.amount / 10 ** poolToken.decimals

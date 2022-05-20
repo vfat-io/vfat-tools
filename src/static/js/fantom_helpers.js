@@ -418,7 +418,7 @@ async function getFantomToken(App, tokenAddress, stakingAddress) {
     }
     try {
       const VAULT = new ethcall.Contract(tokenAddress, FANTOM_VAULT_TOKEN_ABI);
-      const _token = App.ethcallProvider.all([VAULT.token()]);
+      const _token = await App.ethcallProvider.all([VAULT.token()]);
       const vault = await getFantomVault(App, VAULT, tokenAddress, stakingAddress);
       window.localStorage.setItem(tokenAddress, "fantomVault");
       return vault;
