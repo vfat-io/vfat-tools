@@ -46,7 +46,8 @@ const AuroraTokens = [
   { "id": "dai", "symbol": "DAI", "contract": "0x53810e4c71bc89d39df76754c069680b26b20c3d"},
   { "id": "terrausd", "symbol": "UST", "contract": "0x5ce9F0B6AFb36135b5ddBF11705cEB65E634A9dC"},
   { "id": "mimatic", "symbol": "MIMATIC", "contract": "0xdFA46478F9e5EA86d57387849598dbFB2e964b02"},
-  { "id": "tripolar", "symbol": "TRIPOLAR", "contract": "0x60527a2751a827ec0adf861efcacbf111587d748"}
+  { "id": "tripolar", "symbol": "TRIPOLAR", "contract": "0x60527a2751A827ec0Adf861EfcAcbf111587d748"},
+  { "id": "tribar", "symbol": "XTRI", "contract": "0x802119e4e253d5c19aa06a5d567c5a41596d6803"}
 ];
 
 const avaxTokens = [
