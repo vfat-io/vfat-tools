@@ -275,7 +275,7 @@ async function getMoonbeamToken(App, tokenAddress, stakingAddress) {
     }
     try {
       const VAULT = new ethcall.Contract(tokenAddress, MOONBEAM_VAULT_TOKEN_ABI);
-      const _token = App.ethcallProvider.all([VAULT.token()]);
+      const _token = await App.ethcallProvider.all([VAULT.token()]);
       const vault = await getMoonbeamVault(App, VAULT, tokenAddress, stakingAddress);
       window.localStorage.setItem(tokenAddress, "moonbeamVault");
       return vault;

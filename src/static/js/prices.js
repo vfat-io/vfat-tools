@@ -547,7 +547,10 @@ const milkomedaTokens = [
 const MoonbeamTokens = [
   { "id": "moonbeam", "symbol": "GLMR", "contract": "0xacc15dc74880c9944775448304b263d191c6077f"},
   { "id": "weth", "symbol": "WETH", "contract": "0x30d2a9f5fdf90ace8c17952cbb4ee48a55d916a7"},
+  { "id": "tether", "symbol": "USDT", "contract": "0xefaeee334f0fd1712f9a8cc375f427d9cdd40d73"},
+  { "id": "dai", "symbol": "DAI", "contract": "0x765277EebeCA2e31912C9946eAe1021199B39C61"},
   { "id": "usd-coin", "symbol": "USDC", "contract": "0x8f552a71efe5eefc207bf75485b356a0b3f01ec9"},
+  { "id": "usd-coin", "symbol": "USDC", "contract": "0x818ec0A7Fe18Ff94269904fCED6AE3DaE6d6dC0b"},  //USDC any
   { "id": "wrapped-bitcoin", "symbol": "WBTC", "contract": "0x1dc78acda13a8bc4408b207c9e48cdbc096d95e0"}
 ];
 
