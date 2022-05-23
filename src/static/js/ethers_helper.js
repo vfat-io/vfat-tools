@@ -2187,6 +2187,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
         else {
           const poolUrl = pool.is1inch ? "https://1inch.exchange/#/dao/pools" :
           pool.symbol.includes("TETHYSLP") ?  `https://info.tethys.finance/pair/${pool.address}` :
+          pool.symbol.includes("STELLA LP") ?  `https://analytics.stellaswap.com/pairs/${pool.address}` :
           pool.symbol.includes("PUD-LP") ?  `https://info.puddingswap.finance/pair/${pool.address}` :
           pool.symbol.includes("LSLP") ? `https://info.linkswap.app/pair/${pool.address}` :
           pool.symbol.includes("MSLP") ? `https://www.milkyswap.exchange/` :
@@ -2303,6 +2304,11 @@ function getUniPrices(tokens, prices, pool, chain="eth")
             `https://linkswap.app/#/add/${t0address}/${t1address}`,
             `https://linkswap.app/#/remove/${t0address}/${t1address}`,
             `https://linkswap.app/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+          ] :
+          pool.symbol.includes("STELLA LP") ? [
+            `https://app.stellaswap.com/exchange/add/${t0address}/${t1address}`,
+            `https://app.stellaswap.com/exchange/remove/${t0address}/${t1address}`,
+            `https://app.stellaswap.com/exchange/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
           ] :
           pool.name.includes("Diffusion LP Token") ? [
             `https://app.diffusion.fi/#/add/v2/${t0address}/${t1address}`,
