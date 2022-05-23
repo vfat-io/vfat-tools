@@ -177,7 +177,8 @@ const main = async () => {
       ["Backd                        ", `<a href="../backd/"             >Various</a>`,"                    ", "https://backd.fund"],
       ["Jpegd                        ", `<a href="../jpegd/"             >Various</a>`,"JPEG                ", "https://jpegd.io"],
       ["Bancor                       ", `<a href="../bancor/"            >Various</a>`,"BNT                 ", "https://app.bancor.network"],
-      ["UnoRe                        ", `<a href="../unore/"             >Various</a>`, "UnoRe              ", "https://appv2.unore.io"]
+      ["UnoRe                        ", `<a href="../unore/"             >Various</a>`, "UnoRe              ", "https://appv2.unore.io"],
+      ["Convex (Frax)                ", `<a href="../convex_frax/"       >Various</a>`, "Various            ", "https://frax.convexfinance.com"]
     ]
   }
 
