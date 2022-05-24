@@ -76,12 +76,16 @@ async function loadCvxFrxSynthetixPoolInfo(App, tokens, prices, stakingAbi, stak
     let stakeToken = await getToken(App, stakeTokenAddress, stakingAddress);
     stakeToken.staked = await STAKING_POOL.totalLiquidityLocked() / 10 ** stakeToken.decimals;
 
+    //newPriceAddresses.push("0x7fc66500c84a76ad7e9c93437bfc5ac33e2ddae9");
+    let aavePrice = await $.ajax({
+      url: 'https://api.coingecko.com/api/v3/simple/price?ids=aave&vs_currencies=usd',
+      type: 'GET'
+    })
     let newPriceAddresses = stakeToken.tokens.filter(x =>
       x.toLowerCase() !=  "0xb34ab2f65c6e4f764ffe740ab83f982021faed6d" && //BSG can't be retrieved from Coingecko
       !getParameterCaseInsensitive(prices, x));
     for(const rewardTokenAddress of rewardTokenAddresses){
       newPriceAddresses.push(rewardTokenAddress)
-      newPriceAddresses.push("0x7fc66500c84a76ad7e9c93437bfc5ac33e2ddae9");
     }
     let newPrices = await lookUpTokenPrices(newPriceAddresses);
     for (const key in newPrices) {
@@ -107,6 +111,8 @@ async function loadCvxFrxSynthetixPoolInfo(App, tokens, prices, stakingAbi, stak
       rewardTokens.push(rewardToken);
       rewardTokenTickers.push(rewardTokenTicker);
     }
+
+    prices["0x4da27a545c0c5B758a6BA100e3a049001de870f5"] = aavePrice.aave;
 
     const poolPrices = getPoolPrices(tokens, prices, stakeToken);
 
