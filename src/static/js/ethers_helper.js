@@ -1424,6 +1424,69 @@ async function getTokemakVault(app, vault, address, stakingAddress) {
   }
 }
 
+async function getAFraxVault(app, vault, address, stakingAddress) {
+  const calls = [vault.decimals(), vault.UNDERLYING_ASSET_ADDRESS(), vault.name(), vault.symbol(),
+    vault.totalSupply(), vault.balanceOf(stakingAddress), vault.balanceOf(app.YOUR_ADDRESS)];
+  const [ decimals, underlying, name, symbol, totalSupply, staked, unstaked] =
+    await app.ethcallProvider.all(calls);
+  const token = await getToken(app, underlying, address);
+  return {
+    address,
+    name,
+    symbol,
+    totalSupply,
+    decimals,
+    staked: staked / 10 ** decimals,
+    unstaked: unstaked / 10 ** decimals,
+    token: token,
+    balance : totalSupply,
+    contract: vault,
+    tokens : token.tokens
+  }
+}
+
+async function getAaveToken(app, aToken, address, stakingAddress) {
+  const calls = [aToken.decimals(), aToken.REWARD_TOKEN(), aToken.name(), aToken.symbol(),
+    aToken.totalSupply(), aToken.balanceOf(stakingAddress), aToken.balanceOf(app.YOUR_ADDRESS)];
+  const [ decimals, underlying, name, symbol, totalSupply, staked, unstaked] =
+    await app.ethcallProvider.all(calls);
+  const token = await getToken(app, underlying, address);
+  return {
+    address,
+    name,
+    symbol,
+    totalSupply,
+    decimals,
+    staked: staked / 10 ** decimals,
+    unstaked: unstaked / 10 ** decimals,
+    token: token,
+    balance : totalSupply,
+    contract: aToken,
+    tokens : token.tokens
+  }
+}
+
+async function getConvexToken(app, cvxToken, address, stakingAddress) {
+  const calls = [cvxToken.decimals(), cvxToken.curveToken(), cvxToken.name(), cvxToken.symbol(),
+    cvxToken.totalSupply(), cvxToken.balanceOf(stakingAddress), cvxToken.balanceOf(app.YOUR_ADDRESS)];
+  const [ decimals, underlying, name, symbol, totalSupply, staked, unstaked] =
+    await app.ethcallProvider.all(calls);
+  const token = await getToken(app, underlying, address);
+  return {
+    address,
+    name,
+    symbol,
+    totalSupply,
+    decimals,
+    staked: staked / 10 ** decimals,
+    unstaked: unstaked / 10 ** decimals,
+    token: token,
+    balance : totalSupply,
+    contract: cvxToken,
+    tokens : token.tokens
+  }
+}
+
 async function getCToken(app, cToken, address, stakingAddress) {
   const calls = [cToken.decimals(), cToken.underlying(), cToken.totalSupply(),
     cToken.name(), cToken.symbol(), cToken.balanceOf(stakingAddress),
@@ -1543,6 +1606,29 @@ async function getYearnVault(app, yearn, address, stakingAddress) {
   }
 }
 
+async function getFraxVault(app, frax, address, stakingAddress) {
+  const calls = [frax.decimals(), frax.token(), frax.name(), frax.symbol(), frax.totalSupply(),
+    frax.balanceOf(stakingAddress), frax.balanceOf(app.YOUR_ADDRESS), frax.totalValue(), frax.pricePerShare()];
+  const [decimals, token_, name, symbol, totalSupply, staked, unstaked, balance, ppfs] =
+    await app.ethcallProvider.all(calls);
+  const token = await getToken(app, token_, address);
+  return {
+    address,
+    name,
+    symbol,
+    totalSupply,
+    decimals : decimals,
+    staked: staked / 10 ** decimals,
+    unstaked: unstaked / 10 ** decimals,
+    token: token,
+    balance : balance / 10 ** decimals,
+    contract: frax,
+    tokens : [address].concat(token.tokens),
+    ppfs : ppfs / 10 ** decimals,
+    yearn : true  //price calculated such as yearn
+  }
+}
+
 async function getCurveMinterToken(app, curve, address, stakingAddress) {
   const calls = [curve.get_virtual_price(), curve.coins(0), curve.decimals(), curve.balanceOf(stakingAddress),
                  curve.balanceOf(app.YOUR_ADDRESS), curve.name(), curve.symbol(), curve.totalSupply()];
@@ -1637,6 +1723,9 @@ async function getStoredToken(app, tokenAddress, stakingAddress, type) {
     case "yearn":
       const yearnVault = new ethcall.Contract(tokenAddress, YEARN_VAULT_ABI);
       return await getYearnVault(app, yearnVault, tokenAddress, stakingAddress);
+    case "frax":
+      const fraxVault = new ethcall.Contract(tokenAddress, FRAX_VAULT_ABI);
+      return await getFraxVault(app, fraxVault, tokenAddress, stakingAddress);
     case "doualDlp":
       const doualDlpPool = new ethcall.Contract(tokenAddress, DLP_DUAL_TOKEN_ABI);
       return await getDodoDualPoolToken(app, doualDlpPool, tokenAddress, stakingAddress);
@@ -1681,6 +1770,15 @@ async function getStoredToken(app, tokenAddress, stakingAddress, type) {
     case "vault":
       const vault = new ethcall.Contract(tokenAddress, HARVEST_VAULT_ABI);
       return await getVault(app, vault, tokenAddress, stakingAddress);
+    case "aFrax":
+      const aFrax = new ethcall.Contract(tokenAddress, AFRAX_TOKEN_ABI);
+      return await getAFraxVault(app, aFrax, tokenAddress, stakingAddress);
+    case "aaveToken":
+      const aaveToken = new ethcall.Contract(tokenAddress, AAVE_TOKEN_ABI);
+      return await getAaveToken(app, aaveToken, tokenAddress, stakingAddress);
+    case "cvxToken":
+      const cvxToken = new ethcall.Contract(tokenAddress, CONVEX_TOKEN_ABI);
+      return await getConvexToken(app, cvxToken, tokenAddress, stakingAddress);
     case "erc20":
       const erc20 = new ethcall.Contract(tokenAddress, ERC20_ABI);
       return await getErc20(app, erc20, tokenAddress, stakingAddress);
@@ -1770,6 +1868,42 @@ async function getToken(app, tokenAddress, stakingAddress) {
     const yearn = await getYearnVault(app, yearnVault, tokenAddress, stakingAddress);
     window.localStorage.setItem(tokenAddress, "yearn");
     return yearn;
+  }
+  catch(err) {
+  }
+  try {
+    const aFraxVault = new ethcall.Contract(tokenAddress, AFRAX_TOKEN_ABI);
+    const _underlyingToken = await app.ethcallProvider.all([aFraxVault.UNDERLYING_ASSET_ADDRESS()]);
+    const aFrax = await getAFraxVault(app, aFraxVault, tokenAddress, stakingAddress);
+    window.localStorage.setItem(tokenAddress, "aFrax");
+    return aFrax;
+  }
+  catch(err) {
+  }
+  try {
+    const aaveToken = new ethcall.Contract(tokenAddress, AAVE_TOKEN_ABI);
+    const _underlyingToken = await app.ethcallProvider.all([aaveToken.REWARD_TOKEN()]);
+    const aave = await getAaveToken(app, aaveToken, tokenAddress, stakingAddress);
+    window.localStorage.setItem(tokenAddress, "aaveToken");
+    return aave;
+  }
+  catch(err) {
+  }
+  try {
+    const cvxToken = new ethcall.Contract(tokenAddress, CONVEX_TOKEN_ABI);
+    const _underlyingToken = await app.ethcallProvider.all([cvxToken.curveToken()]);
+    const cvx = await getConvexToken(app, cvxToken, tokenAddress, stakingAddress);
+    window.localStorage.setItem(tokenAddress, "cvxToken");
+    return cvx;
+  }
+  catch(err) {
+  }
+  try {
+    const fraxVault = new ethcall.Contract(tokenAddress, FRAX_VAULT_ABI);
+    const _totalValue = await app.ethcallProvider.all([fraxVault.totalValue()]);
+    const frax = await getFraxVault(app, fraxVault, tokenAddress, stakingAddress);
+    window.localStorage.setItem(tokenAddress, "frax");
+    return frax;
   }
   catch(err) {
   }
