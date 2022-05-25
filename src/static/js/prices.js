@@ -548,10 +548,13 @@ const MoonbeamTokens = [
   { "id": "moonbeam", "symbol": "GLMR", "contract": "0xacc15dc74880c9944775448304b263d191c6077f"},
   { "id": "weth", "symbol": "WETH", "contract": "0x30d2a9f5fdf90ace8c17952cbb4ee48a55d916a7"},
   { "id": "tether", "symbol": "USDT", "contract": "0xefaeee334f0fd1712f9a8cc375f427d9cdd40d73"},
+  { "id": "tether", "symbol": "USDT", "contract": "0x81ecac0d6be0550a00ff064a4f9dd2400585fe9c"},  //celer usdt
+  { "id": "dai", "symbol": "DAI", "contract": "0x765277EebeCA2e31912C9946eAe1021199B39C61"},
   { "id": "dai", "symbol": "DAI", "contract": "0x765277EebeCA2e31912C9946eAe1021199B39C61"},
   { "id": "usd-coin", "symbol": "USDC", "contract": "0x8f552a71efe5eefc207bf75485b356a0b3f01ec9"},
   { "id": "usd-coin", "symbol": "USDC", "contract": "0x818ec0A7Fe18Ff94269904fCED6AE3DaE6d6dC0b"},  //USDC any
-  { "id": "wrapped-bitcoin", "symbol": "WBTC", "contract": "0x1dc78acda13a8bc4408b207c9e48cdbc096d95e0"}
+  { "id": "wrapped-bitcoin", "symbol": "WBTC", "contract": "0x1dc78acda13a8bc4408b207c9e48cdbc096d95e0"},
+  { "id": "celer-network", "symbol": "CELR", "contract": "0x3795C36e7D12A8c252A20C5a7B455f7c57b60283"}
 ];
 
 const MoonriverTokens = [
