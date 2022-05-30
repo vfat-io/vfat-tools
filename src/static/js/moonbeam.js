@@ -15,6 +15,7 @@ const main = async() => {
       ["Moonbeam Cougar    ","", `<a href='cougar'         >Various</a>`,"CGS            ","https://moonbeam.cougarswap.io"],
       ["1Beam              ","", `<a href='1beam'          >Various</a>`,"1BEAM          ","https://1beam.io"],
       ["Monox Finance      ","", `<a href='monox'          >Various</a>`,"vUNIT          ","https://monox.finance"],
+      ["WePiggy            ","", `<a href="wepiggy"        >Various</a>`,"WPC.           ","https://app.wepiggy.com"],
       ["StellaSwap         ","", `<a href='stellaswap'     >Various</a>`,"STELLA         ","https://stellaswap.com"]
     ]
   }
