@@ -42,7 +42,8 @@ const main = async() => {
       ["1Beam                ","", `<a href='1beam'        >Various</a>`,"1CRO         ","https://1beam.io"],
       ["CGX Finance          ","", `<a href='cgx'          >Various</a>`,"CGX          ","https://cgx.finance"],
       ["Scrub Finance        ","", `<a href='scrub'        >Various</a>`,"TIGER / LION ","https://scrub.finance"],
-      ["Printer Financial    ","", `<a href='printer'      >Various</a>`,"INK          ","https://cro.printer.financial"]
+      ["Printer Financial    ","", `<a href='printer'      >Various</a>`,"INK          ","https://cro.printer.financial"],
+      ["CGO Finance          ","", `<a href='cgo'          >Various</a>`,"CGO          ","https://cgo.finance"]
     ]
   }
 
