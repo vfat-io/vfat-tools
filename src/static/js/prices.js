@@ -230,7 +230,15 @@ const bscTokens = [
   { "id": "quartz-defi-ashare", "symbol": "ASHARE", "contract": "0xfa4b16b0f63f5a6d0651592620d585d308f749a4" },
   { "id": "stargate-finance", "symbol": "STG", "contract": "0xB0D502E938ed5f4df2E681fE6E419ff29631d62b" },
   { "id": "space-corsair-key", "symbol": "SCK", "contract": "0x227a3ef4d41d0215123f3197faa087bf71d2236a" },
-  { "id": "dogs", "symbol": "DOGS", "contract": "0xdbdc73b95cc0d5e7e99dc95523045fc8d075fb9e" }
+  { "id": "dogs", "symbol": "DOGS", "contract": "0xdbdc73b95cc0d5e7e99dc95523045fc8d075fb9e" },
+  { "id": "bamboo-defi", "symbol": "BAMBOO", "contract": "0x198abB2D13fAA2e52e577D59209B5c23c20CD6B3" },
+  { "id": "babyswap", "symbol": "BABY", "contract": "0x53e562b9b7e5e94b81f10e96ee70ad06df3d2657" },
+  { "id": "infinitypad", "symbol": "INFP", "contract": "0xfe82eff54a58c21ffc9523c4998d5dad84dcbd50" },
+  { "id": "dextools", "symbol": "DEXT", "contract": "0xe91a8D2c584Ca93C7405F15c22CdFE53C29896E3" },
+  { "id": "babylons", "symbol": "BABI", "contract": "0xec15a508a187e8ddfe572a5423faa82bbdd65120" },
+  { "id": "seedify-fund", "symbol": "SFUND", "contract": "0x477bc8d23c634c154061869478bce96be6045d12" },
+  { "id": "anonverse", "symbol": "ANON", "contract": "0x9a980a084d8d72b219e1c79d91faf06bec874d51" },
+  { "id": "beglobaldao", "symbol": "GLBD", "contract": "0xd177e36377e71775d6f9956b3fdd0f02664c6996" }
 ]
 
 const celoTokens = [
