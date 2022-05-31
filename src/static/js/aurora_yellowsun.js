@@ -20,8 +20,8 @@ async function main() {
     const tokens = {};
     const prices = await getAuroraPrices();
  
-    await loadAuroraChefContract(App, tokens, prices, YELLOWSUN_CHEF, YELLOWSUN_CHEF_ADDR, YELLOWSUN_CHEF_ABI, rewardTokenTicker,
-        "yellowsun", null, rewardsPerWeek, "pendingYellowSun", [0]);
+    await loadGeneralEthcallChefContract(App, tokens, prices, YELLOWSUN_CHEF, YELLOWSUN_CHEF_ADDR, YELLOWSUN_CHEF_ABI, rewardTokenTicker,
+        "yellowsun", null, rewardsPerWeek, "pendingYellowSun", [0], "aurora");
     hideLoading();
   }
 

@@ -902,8 +902,8 @@ $(function() {
         const tokens = {};
         const prices = await getAvaxPrices();
     
-        await loadAvaxChefContract(App, tokens, prices, PANCAKE_CHEF, PANCAKE_CHEF_ADDR, PANCAKE_CHEF_ABI, rewardTokenTicker,
-            "merd", null, rewardsPerWeek, "pendingMerd");
+        await loadGeneralEthcallChefContract(App, tokens, prices, PANCAKE_CHEF, PANCAKE_CHEF_ADDR, PANCAKE_CHEF_ABI, rewardTokenTicker,
+            "merd", null, rewardsPerWeek, "pendingMerd", [], "avax");
     
         hideLoading();
       }

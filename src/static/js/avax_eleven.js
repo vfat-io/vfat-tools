@@ -96,8 +96,8 @@ async function main() {
     const tokens = {};
     const prices = await getAvaxPrices();
 
-    await loadAvaxChefContract(App, tokens, prices, ELE_CHEF, ELE_CHEF_ADDR, ELE_CHEF_ABI, rewardTokenTicker,
-        "eleven", null, rewardsPerWeek, "pendingEleven");
+    await loadGeneralEthcallChefContract(App, tokens, prices, ELE_CHEF, ELE_CHEF_ADDR, ELE_CHEF_ABI, rewardTokenTicker,
+        "eleven", null, rewardsPerWeek, "pendingEleven", [], "avax");
 
     _print("")
 
@@ -120,10 +120,10 @@ async function main() {
 async function loadElePoolInfo(App, tokens, prices, contractAddress) {
   try {
     const contract = await new ethers.Contract(contractAddress, ELE_VAULT_ABI, App.provider);
-    const vault = await getAvaxToken(App, contractAddress, App.YOUR_ADDRESS);
+    const vault = await getGeneralEthcallToken(App, contractAddress, App.YOUR_ADDRESS);
     var newTokenAddresses = vault.tokens.filter(x => !getParameterCaseInsensitive(tokens, x));
     for (const address of newTokenAddresses) {
-        tokens[address] = await getAvaxToken(App, address, contractAddress);
+        tokens[address] = await getGeneralEthcallToken(App, address, contractAddress);
     }
     const totalSupply = await contract.totalSupply() / 1e18;
     const ppfs = await contract.getPricePerFullShare() / 1e18;

@@ -32,9 +32,8 @@ $(function () {
         const tokens = {};		
         const prices = await getAvaxPrices();		
     		
-        await loadAvaxChefContract(App, tokens, prices, EAGLE_CHEF, EAGLE_CHEF_ADDR, EAGLE_CHEF_ABI, rewardTokenTicker,		
-            "egg", null, rewardsPerWeek, "pendingEgg");		
+        await loadGeneralEthcallChefContract(App, tokens, prices, EAGLE_CHEF, EAGLE_CHEF_ADDR, EAGLE_CHEF_ABI, rewardTokenTicker,		
+            "egg", null, rewardsPerWeek, "pendingEgg", [], "avax");		
     		
         hideLoading();		
     }		
-    	

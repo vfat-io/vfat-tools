@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include(`${partials}/head`); -%>
+
+<body>
+<%- include(`${partials}/header_main`); -%>
+<pre id="log">
+*************** 👨‍🌾 UNOFFICIAL ZENLINK FARMING CALCULATOR 👨‍🌾 ***************
+INFO  : https://dex.zenlink.pro
+****************************************************************************
+
+</pre>
+<div class="loader--1"></div>
+<%- include(`${partials}/scripts`, {scriptname: 'moonbeam_zenlink'}); -%>
+</body>
+</html>

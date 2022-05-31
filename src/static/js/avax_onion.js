@@ -20,8 +20,8 @@ $(function () {
         const tokens = {};		
         const prices = await getAvaxPrices();		
     		
-        await loadAvaxChefContract(App, tokens, prices, ONION_CHEF, ONION_CHEF_ADDR, ONION_CHEF_ABI, rewardTokenTicker,		
-            "onion", null, rewardsPerWeek, "pendingOnion", [13,15,11]);		
+        await loadGeneralEthcallChefContract(App, tokens, prices, ONION_CHEF, ONION_CHEF_ADDR, ONION_CHEF_ABI, rewardTokenTicker,		
+            "onion", null, rewardsPerWeek, "pendingOnion", [13,15,11], "avax");		
     		
         hideLoading();		
     }		

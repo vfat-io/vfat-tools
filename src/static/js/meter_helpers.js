@@ -1,17 +1,3 @@
-
-const MeterTokens = [
-    //{ "id": "metis", "symbol": "METIS", "contract": "0xDeadDeAddeAddEAddeadDEaDDEAdDeaDDeAD0000"},
-  ];
-
-  async function getMeterPrices() {
-      const idPrices = await lookUpPrices(MeterTokens.map(x => x.id));
-      const prices = {}
-      for (const bt of MeterTokens)
-          if (idPrices[bt.id])
-              prices[bt.contract] = idPrices[bt.id];
-      return prices;
-  }
-
   async function getMeterUniPool(App, pool, poolAddress, stakingAddress) {
     const calls = [
       pool.decimals(), pool.token0(), pool.token1(), pool.symbol(), pool.name(),

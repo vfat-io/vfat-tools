@@ -48,7 +48,7 @@ async function getCharmVault(App, vault, address, stakingAddress) {
   }
 }
 
-async function getOmniDexPool(App, pool, poolAddress, stakingAddress) {
+async function getTelosUniPool(App, pool, poolAddress, stakingAddress) {
   let q0, q1;
   const reserves = await pool.getReserves();
   q0 = reserves._reserve0;
@@ -77,9 +77,9 @@ async function getOmniDexPool(App, pool, poolAddress, stakingAddress) {
 
 async function getTelosStoredToken(App, tokenAddress, stakingAddress, type) {
   switch (type) {
-    case "omnidex":
+    case "uniswap":
       const pool = new ethers.Contract(tokenAddress, UNI_ABI, App.provider);
-      return await getOmniDexPool(App, pool, tokenAddress, stakingAddress);
+      return await getTelosUniPool(App, pool, tokenAddress, stakingAddress);
     case "erc20":
       const erc20 = new ethers.Contract(tokenAddress, ERC20_ABI, App.provider);
       return await getBep20(App, erc20, tokenAddress, stakingAddress);
@@ -101,8 +101,8 @@ async function getTelosToken(App, tokenAddress, stakingAddress) {
     try {
       const pool = new ethers.Contract(tokenAddress, UNI_ABI, App.provider);
       const _token0 = await pool.token0();
-      const uniPool = await getOmniDexPool(App, pool, tokenAddress, stakingAddress);
-      window.localStorage.setItem(tokenAddress, "omnidex");
+      const uniPool = await getTelosUniPool(App, pool, tokenAddress, stakingAddress);
+      window.localStorage.setItem(tokenAddress, "uniswap");
       return uniPool;
     }
     catch(err) {
@@ -238,31 +238,4 @@ async function loadTelosChefContract(App, tokens, prices, chef, chefAddress, che
         + ` Year $${formatMoney(totalUserStaked*averageApr)}\n`);
   }
   return { prices, totalUserStaked, totalStaked, averageApr }
-}
-
-
-const telosTokens = [
-  { "id": "telos", "symbol": "WTLOS","contract": "0xD102cE6A4dB07D247fcc28F366A623Df0938CA9E" },
-  { "id": "charm", "symbol": "CHARM","contract": "0xd2504a02fABd7E546e41aD39597c377cA8B0E1Df" },
-  { "id": "charm", "symbol": "xCHARM","contract": "0x65a5f4636233B7B4c4B134BA414c6EaB9fF79594" },
-  { "id": "douge", "symbol": "DOUGE", "contract": "0xc6BC7A8dfA0f57Fe7746Ac434c01cD39679b372c"  },
-  { "id": "wrapped-bitcoin", "symbol": "WBTC", "contract": "0xf390830df829cf22c53c8840554b98eafc5dcbc2"  },
-  { "id": "weth", "symbol": "WETH", "contract": "0xfa9343c3897324496a05fc75abed6bac29f8a40f" },
-  { "id": "usd-coin", "symbol": "USDC", "contract": "0x818ec0a7fe18ff94269904fced6ae3dae6d6dc0b"  },
-  { "id": "tether","symbol": "USDT", "contract": "0xefaeee334f0fd1712f9a8cc375f427d9cdd40d73" },
-  { "id": "elk-finance","symbol": "ELK","contract":"0xE1C110E1B1b4A1deD0cAf3E42BfBdbB7b5d7cE1C" },
-  { "id": "wrapped-avax","symbol": "AVAX", "contract": "0x7c598c96d02398d89fbcb9d41eab3df0c16f227d" },
-  { "id": "wbnb","symbol": "BNB", "contract": "0x2c78f1b70ccf63cdee49f9233e9faa99d43aa07e" },
-  { "id": "wrapped-fantom","symbol": "FTM", "contract": "0xc1be9a4d5d45beeacae296a7bd5fadbfc14602c4" },
-  { "id": "wmatic","symbol": "MATIC", "contract": "0x332730a4f6e03d9c55829435f10360e13cfa41ff" },
-  { "id": "sushi","symbol": "SUSHI", "contract": "0x922d641a426dcffaef11680e5358f34d97d112e1" }
-];
-
-async function getTelosPrices() {
-  const idPrices = await lookUpPrices(telosTokens.map(x => x.id));
-  const prices = {}
-  for (const tt of telosTokens)
-      if (idPrices[tt.id])
-          prices[tt.contract] = idPrices[tt.id];
-  return prices;
 }

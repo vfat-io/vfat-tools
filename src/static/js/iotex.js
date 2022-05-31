@@ -18,8 +18,9 @@ const main = async() => {
         ["MinMax              ","", `<a href="minmax"        >Various</a>`,"MAX / iMAGIC     ","https://minmax.finance"],
         ["Mermaidswap         ","", `<a href="mermaidswap"   >Various</a>`,"MERD             ","https://mermaidswap.com"],
         ["Elk                 ","", `<a href="elk"           >Various</a>`,"ELK              ","https://app.elk.finance"],
-        ["Ska                 ","", `<a href="skaswap"       >Various</a>`,"SKA              ","https://skaswap.finance"]
-    
+        ["SkaSwap             ","", `<a href="skaswap"       >Various</a>`,"SKA              ","https://skaswap.finance"],
+        ["WOWswap             ","", `<a href="wowswap"       >Various</a>`,"WOW              ","https://wowswap.io"],
+
         ]
     }
   let table = new AsciiTable().fromJSON(tableData);

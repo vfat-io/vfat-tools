@@ -31,8 +31,8 @@ async function main() {
     const tokens = {};
     const prices = await getOkexPrices();
 
-    await loadOkexChefContract(App, tokens, prices, SAKE_CHEF, SAKE_CHEF_ADDR, SAKE_CHEF_ABI, rewardTokenTicker,
-        "sake", null, rewardsPerWeek, "pendingSake", [0,1]);
+    await loadGeneralChefContract(App, tokens, prices, SAKE_CHEF, SAKE_CHEF_ADDR, SAKE_CHEF_ABI, rewardTokenTicker,
+        "sake", null, rewardsPerWeek, "pendingSake", [0,1], "okex");
 
     hideLoading();
   }

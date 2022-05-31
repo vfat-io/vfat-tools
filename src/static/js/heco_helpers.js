@@ -325,42 +325,6 @@ async function loadHecoChefContract(App, tokens, prices, chef, chefAddress, chef
   return { prices, totalUserStaked, totalStaked, averageApr }
 }
 
-
-const hrcTokens = [
-  { "id": "huobi-token","symbol": "HT","contract":"0x6f259637dcd74c767781e37bc6133cd6a68aa161" },
-  { "id": "mdex","symbol": "MDX","contract":"0x25d2e80cb6b86881fd7e07dd263fb79f4abe033c" },
-  { "id": "tether","symbol": "USDT", "contract": "0xa71edc38d189767582c38a3145b5873052c3e47a" },
-  { "id": "ethereum","symbol": "ETH", "contract": "0xb55569893b397324c0d048c9709f40c23445540e" },
-  { "id": "bitcoin","symbol": "HBTC", "contract": "0x66a79d23e58475d2738179ca52cd0b41d73f0bea" },
-  { "id": "ethereum","symbol": "HETH", "contract": "0x64FF637fB478863B7468bc97D30a5bF3A428a1fD" },
-  { "id": "hoo-token","symbol": "HOO", "contract": "0xE1d1F66215998786110Ba0102ef558b22224C016" },
-  { "id": "gene","symbol": "GENE", "contract": "0x2CFa849e8506910b2564aFE5BdEF33Ba66C730Aa" },
-  { "id": "husd","symbol": "HUSD", "contract": "0x0298c2b32eaE4da002a15f36fdf7615BEa3DA047" },
-  { "id": "huobi-btc","symbol": "HBTC", "contract": "0x0316eb71485b0ab14103307bf65a021042c6d380" },
-  { "id": "wrapped-huobi-token","symbol": "WHT", "contract": "0x105E11915B80dD8aa59aC3d58f10303C75606d46" },
-  { "id": "wrapped-huobi-token","symbol": "WHT", "contract": "0x5545153CCFcA01fbd7Dd11C0b23ba694D9509A6F" },
-  { "id": "coinwind","symbol": "COW", "contract": "0x80861a817106665bca173db6ac2ab628a738c737" },
-  { "id": "yearn-finance","symbol": "YFI", "contract": "0xB4F019bEAc758AbBEe2F906033AAa2f0F6Dacb35" },
-  { "id": "dai","symbol": "DAI", "contract": "0x3D760a45D0887DFD89A2F5385a236B29Cb46ED2a" },
-  { "id": "usd-coin","symbol": "USDC", "contract": "0x9362Bbef4B8313A8Aa9f0c9808B80577Aa26B73B" },
-  { "id": "galaxy-triton", "symbol": "TRITON", "contract": "0x9cf4009e62429Db3F57Aa9e7e8E898427cF6865f" },
-  { "id": "galaxy-oberon", "symbol": "OBERON", "contract": "0xc979E70611D997Aa109528c6A9aa73D82Eaa2881"},
-  { "id": "lendhub", "symbol": "LHB", "contract": "0x8f67854497218043e1f72908ffe38d0ed7f24721"},
-  { "id": "balancer", "symbol": "BAL", "contract": "0xba100000625a3754423978a60c9317c58a424e3d"},
-  { "id": "chainlink", "symbol": "LINK", "contract": "0x514910771af9ca656af840dff83e8264ecf986ca"},
-  { "id": "oec-dot", "symbol": "DOTK", "contract": "0xabc732f6f69a519f6d508434481376b6221eb7d5"},
-  { "id": "huobi-polkadot", "symbol": "HDOT", "contract": "0x9ffc3bcde7b68c46a6dc34f0718009925c1867cb"},
-]
-
-async function getHecoPrices() {
-  const idPrices = await lookUpPrices(hrcTokens.map(x => x.id));
-  const prices = {}
-  for (const bt of hrcTokens)
-      if (idPrices[bt.id])
-          prices[bt.contract] = idPrices[bt.id];
-  return prices;
-}
-
 async function loadMultipleHecoSynthetixPools(App, tokens, prices, pools) {
   let totalStaked  = 0, totalUserStaked = 0, individualAPRs = [];
   const infos = await Promise.all(pools.map(p =>

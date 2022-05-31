@@ -24,8 +24,8 @@ async function main() {
         const tokens = {};		
         const prices = await getAvaxPrices();		
     		
-        await loadAvaxChefContract(App, tokens, prices, TERRA_CHEF, TERRA_CHEF_ADDR, TERRA_CHEF_ABI, rewardTokenTicker,		
-            "terra", null, rewardsPerWeek, "pendingTerra");		
+        await loadGeneralEthcallChefContract(App, tokens, prices, TERRA_CHEF, TERRA_CHEF_ADDR, TERRA_CHEF_ABI, rewardTokenTicker,		
+            "terra", null, rewardsPerWeek, "pendingTerra", [], "avax");		
     		
         hideLoading();		
     }		

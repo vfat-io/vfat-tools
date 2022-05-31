@@ -1,17 +1,3 @@
-
-const VelasTokens = [
-  { "id": "velas", "symbol": "VLX", "contract": "0xc579D1f3CF86749E05CD06f7ADe17856c2CE3126"}
-];
-
-async function getVelasPrices() {
-    const idPrices = await lookUpPrices(VelasTokens.map(x => x.id));
-    const prices = {}
-    for (const bt of VelasTokens)
-        if (idPrices[bt.id])
-            prices[bt.contract] = idPrices[bt.id];
-    return prices;
-}
-
 async function getVelasUniPool(App, pool, poolAddress, stakingAddress) {
   const calls = [
     pool.decimals(), pool.token0(), pool.token1(), pool.symbol(), pool.name(),

@@ -50,7 +50,7 @@ async function loadKstChefContract(App, tokens, prices, chef, chefAddress, chefA
   _print(`Showing incentivized pools only.\n`);
 
   const rewardTokenAddress = await chefContract.callStatic[rewardTokenFunction]();
-  const rewardToken = await getOkexToken(App, rewardTokenAddress, chefAddress);
+  const rewardToken = await getGeneralToken(App, rewardTokenAddress, chefAddress);
   const rewardsPerWeek = rewardsPerWeekFixed ??
     await chefContract.callStatic[rewardsPerBlockFunction]()
     / 10 ** rewardToken.decimals * 604800 / 3
@@ -61,7 +61,7 @@ async function loadKstChefContract(App, tokens, prices, chef, chefAddress, chefA
   var tokenAddresses = [].concat.apply([], poolInfos.filter(x => x.poolToken).map(x => x.poolToken.tokens));
 
   await Promise.all(tokenAddresses.map(async (address) => {
-      tokens[address] = await getOkexToken(App, address, chefAddress);
+      tokens[address] = await getGeneralToken(App, address, chefAddress);
   }));
 
   if (deathPoolIndices) {   //load prices for the deathpool assets
@@ -117,7 +117,7 @@ async function getKstPoolInfo(app, chefContract, chefAddress, poolIndex, pending
       pendingRewardTokens : 0,
     };
   }
-  const poolToken = await getOkexToken(app, poolInfo.lpToken ?? poolInfo.token ?? poolInfo.stakingToken, chefAddress);
+  const poolToken = await getGeneralToken(app, poolInfo.lpToken ?? poolInfo.token ?? poolInfo.stakingToken, chefAddress);
   const userInfo = await chefContract.userInfo(poolIndex, app.YOUR_ADDRESS);
   const pendingRewardTokens = await chefContract.callStatic[pendingRewardsFunction](poolIndex, app.YOUR_ADDRESS);
   const staked = userInfo.amount / 10 ** poolToken.decimals;

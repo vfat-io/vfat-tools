@@ -22,8 +22,8 @@ $(function() {
         const tokens = {};		
         const prices = await getAvaxPrices();		
     		
-        await loadAvaxChefContract(App, tokens, prices, WISE_CHEF, WISE_CHEF_ADDR, WISE_CHEF_ABI, rewardTokenTicker,		
-            "wise", null, rewardsPerWeek, "pendingWise", [1]);		
+        await loadGeneralEthcallChefContract(App, tokens, prices, WISE_CHEF, WISE_CHEF_ADDR, WISE_CHEF_ABI, rewardTokenTicker,		
+            "wise", null, rewardsPerWeek, "pendingWise", [1], "avax");		
     		
         hideLoading();		
     }		

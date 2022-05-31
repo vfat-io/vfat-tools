@@ -1,17 +1,4 @@
-const SmartbchTokens = [
-    { "id": "bitcoin-cash","symbol": "WBCH", "contract": "0x3743eC0673453E5009310C727Ba4eaF7b3a1cc04" }
-  ];
-  
-  async function getSmartbchPrices() {
-      const idPrices = await lookUpPrices(SmartbchTokens.map(x => x.id));
-      const prices = {}
-      for (const bt of SmartbchTokens)
-          if (idPrices[bt.id])
-              prices[bt.contract] = idPrices[bt.id];
-      return prices;
-  }
-  
-  async function getSmartbchUniPool(App, pool, poolAddress, stakingAddress) {
+async function getSmartbchUniPool(App, pool, poolAddress, stakingAddress) {
       let q0, q1;
       const reserves = await pool.getReserves();
       q0 = reserves._reserve0;
@@ -315,19 +302,45 @@ async function loadSmartbchSynthetixPoolInfo(App, tokens, prices, stakingAbi, st
 
     let xSushiTableData;
     if (xSushiInfo) {
-      const {xSushiAddress, xSushiAbi, xSushiRatio, exchangeGraph} = xSushiInfo
+      const {sushiAddress, xSushiAddress, xSushiAbi, xSushiRatio, exchangeGraph, barGraph} = xSushiInfo
+
       const xSushiContract = new ethers.Contract(xSushiAddress, xSushiAbi, App.provider);
       const xSushiDecimals = await xSushiContract.decimals();
-      const xSushiSymbol = await xSushiContract.symbol();
-      const xSushiTotalSupply = await xSushiContract.totalSupply() / 10 ** xSushiDecimals;
-      const xSushiBalance = await xSushiContract.balanceOf(App.YOUR_ADDRESS) / 10 ** xSushiDecimals;
-      const xSushiPools = poolPrices.filter(val => val && (val.t0.address === xSushiAddress || val.t1.address === xSushiAddress))
-      const xSushiPrices = xSushiPools.map(val => val.t0.address === xSushiAddress ? val.p0 : val.p1)
-      const average = (array) => array.reduce((a, b) => a + b) / array.length;
-      const xSushiPrice = average(xSushiPrices);
+      const [xSushiSymbol, totalSupply, balance ] =
+        await Promise.all([
+          xSushiContract.symbol(),
+          xSushiContract.totalSupply(),
+          xSushiContract.balanceOf(App.YOUR_ADDRESS)
+        ]);
+      const xSushiTotalSupply = totalSupply / 10 ** xSushiDecimals
+      const xSushiBalance = await balance / 10 ** xSushiDecimals;
+      const sushiPools = poolPrices.filter(val => val && (val.t0.address === sushiAddress || val.t1.address === sushiAddress))
+      const sushiPrices = sushiPools.map(val => val.t0.address === sushiAddress ? val.p0 : val.p1)
+      const average = (array) => {
+        if (!array.length)
+          return 0;
+        return array.reduce((a, b) => a + b) / array.length;
+      }
+      const sushiPrice = average(sushiPrices);
+
+      // get sushi/xsushi ratio from bar graph
+      const barResponse = await fetch(barGraph, {
+        "headers": {
+          "accept": "application/json",
+          "content-type": "application/json",
+        },
+        "body": `{\"query\":\"{bar(id: \\\"${xSushiAddress.toLowerCase()}\\\") {ratio}}\"}`,
+        "method": "POST",
+      });
+      const barJson = await barResponse.json();
+      const ratio = barJson.data.bar.ratio;
+
+      // derive xsushi price
+      const xSushiPrice = sushiPrice * ratio;
       const tvl = xSushiTotalSupply * xSushiPrice;
 
-      const response = await fetch(exchangeGraph, {
+      // get last day volume from exchange graph
+      const volumeResponse = await fetch(exchangeGraph, {
         "headers": {
           "accept": "application/json",
           "content-type": "application/json",
@@ -335,13 +348,13 @@ async function loadSmartbchSynthetixPoolInfo(App, tokens, prices, stakingAbi, st
         "body": "{\"query\":\"query volume {\\n  dayDatas(first: 100, skip: 1, orderBy: date, orderDirection: desc) {\\n     volumeUSD\\n  }\\n}\",\"variables\":null,\"operationName\":\"volume\"}",
         "method": "POST",
       });
-      const jsonResponse = await response.json();
-      const volumes = jsonResponse.data.dayDatas.map(val => val.volumeUSD);
+      const volumeJson = await volumeResponse.json();
+      const volumes = volumeJson.data.dayDatas.map(val => val.volumeUSD);
       const apr = ((volumes[0] * xSushiRatio / xSushiTotalSupply) * 365) / xSushiPrice;
 
       _print(`----------------------------------------------------------------`);
       _print(`Bar Staking Contract: ${xSushiSymbol} (${xSushiAddress})`);
-      _print(`Price: $${formatMoney(xSushiPrice)} TVL: $${formatMoney(tvl)} Total Supply: ${xSushiTotalSupply.toFixed(2)}`);
+      _print(`Price: $${formatMoney(xSushiPrice, 3)} TVL: $${formatMoney(tvl)} Total Supply: ${xSushiTotalSupply.toFixed(2)}`);
       _print(`APR: Day ${(apr / 364).toFixed(3)}% Week ${(apr / 52).toFixed(2)}% Year ${(apr).toFixed(2)}%`);
       _print(`You are staking ${xSushiBalance.toFixed(2)} ${xSushiSymbol} ($${formatMoney(xSushiBalance * xSushiPrice)}), ${(100 * xSushiBalance/xSushiTotalSupply).toFixed(2)}% of the pool.`);
       _print(`----------------------------------------------------------------`);

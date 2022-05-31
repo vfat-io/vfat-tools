@@ -61,6 +61,66 @@ window.NETWORKS = {
       "https://explorer.arbitrum.io"
     ]
   },
+  ASTAR: {
+    "chainId": "0x250",
+    "chainName": "Astar Network",
+    "nativeCurrency": {
+      "name": "Astar",
+      "symbol": "ASTR",
+      "decimals": 18
+    },
+    "rpcUrls": [
+      "https://astar.api.onfinality.io/public"
+    ],
+    "blockExplorerUrls": [
+      "https://blockscout.com/astar/"
+    ]
+  },
+  MILKOMEDA: {
+    "chainId": "0x7D1",
+    "chainName": "Milkomeda C1 Mainnet",
+    "nativeCurrency": {
+      "name": "Mada",
+      "symbol": "mADA",
+      "decimals": 18
+    },
+    "rpcUrls": [
+      "https://rpc-mainnet-cardano-evm.c1.milkomeda.com"
+    ],
+    "blockExplorerUrls": [
+      "https://explorer-mainnet-cardano-evm.c1.milkomeda.com"
+    ]
+  },
+  EVMOS: {
+    "chainId": "0x2329",
+    "chainName": "EVMOS",
+    "nativeCurrency": {
+      "name": "Evmos",
+      "symbol": "EVMOS",
+      "decimals": 18
+    },
+    "rpcUrls": [
+      "https://evmos-rpc2.binary.host"
+    ],
+    "blockExplorerUrls": [
+      "https://evm.evmos.org"
+    ]
+  },
+  HOO: {
+    "chainId": "0x46",
+    "chainName": "Hoo Smart Chain",
+    "nativeCurrency": {
+      "name": "Hoo",
+      "symbol": "HOO",
+      "decimals": 18
+    },
+    "rpcUrls": [
+      "https://http-mainnet.hoosmartchain.com"
+    ],
+    "blockExplorerUrls": [
+      "https://www.hooscan.com"
+    ]
+  },
   MOONRIVER: {
     "chainId": "0x505",
     "chainName": "Moonriver",
@@ -119,6 +179,21 @@ window.NETWORKS = {
     ],
     "blockExplorerUrls": [
       "https://explorer.emerald.oasis.dev"
+    ]
+  },
+  DFK: {
+    "chainId": "0xD2AF",
+    "chainName": "DFK Chain",
+    "nativeCurrency": {
+      "name": "defi-kingdoms",
+      "symbol": "JEWEL",
+      "decimals": 18
+    },
+    "rpcUrls": [
+      "https://subnets.avax.network/defi-kingdoms/dfk-chain/rpc"
+    ],
+    "blockExplorerUrls": [
+      "https://explorer.dfkchain.com"
     ]
   },
   BINANCE_SMART_CHAIN: {

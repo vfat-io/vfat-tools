@@ -33,7 +33,7 @@ async function main() {
     await loadPngChefContract(App, tokens, prices, PNG_CHEF, PNG_CHEF_ADDR, PNG_CHEF_ABI, rewardTokenTicker,
         "REWARD", null, rewardsPerWeek, "pendingReward");
 
-    let p = await loadMultipleAvaxSynthetixPools(App, tokens, prices, pools)
+    let p = await loadMultipleGeneralEthcallSynthetixPools(App, tokens, prices, pools, "avax")
     _print_bold(`Total staked: $${formatMoney(p.staked_tvl)}`);
     if (p.totalUserStaked > 0) {
         _print(`You are staking a total of $${formatMoney(p.totalUserStaked)} at an APR of ${(p.totalApr * 100).toFixed(2)}%\n`);
@@ -54,7 +54,7 @@ async function loadPngChefContract(App, tokens, prices, chef, chefAddress, chefA
     _print(`Showing incentivized pools only.\n`);
   
     const rewardTokenAddress = await chefContract.callStatic[rewardTokenFunction]();
-    const rewardToken = await getAvaxToken(App, rewardTokenAddress, chefAddress);
+    const rewardToken = await getGeneralEthcallToken(App, rewardTokenAddress, chefAddress);
     const rewardsPerWeek = rewardsPerWeekFixed ??
       await chefContract.callStatic[rewardsPerBlockFunction]()
       / 10 ** rewardToken.decimals * 604800 / 13.5
@@ -72,7 +72,7 @@ async function loadPngChefContract(App, tokens, prices, chef, chefAddress, chefA
     var tokenAddresses = [].concat.apply([], poolInfos.filter(x => x?.poolToken).map(x => x.poolToken.tokens).concat([rewardTokenAddress]));
   
     await Promise.all(tokenAddresses.map(async (address) => {
-        tokens[address] = await getAvaxToken(App, address, chefAddress);
+        tokens[address] = await getGeneralEthcallToken(App, address, chefAddress);
     }));
   
     if (deathPoolIndices) {   //load prices for the deathpool assets
@@ -138,7 +138,7 @@ async function loadPngChefContract(App, tokens, prices, chef, chefAddress, chefA
     }
     const rewarder = await chefContract.rewarder(poolIndex);
     if(rewarder == "0x0000000000000000000000000000000000000000"){
-      const poolToken = await getAvaxToken(app, lpToken, chefAddress);
+      const poolToken = await getGeneralEthcallToken(app, lpToken, chefAddress);
       const userInfo = await chefContract.userInfo(poolIndex, app.YOUR_ADDRESS);
       const pendingRewardTokens = await chefContract.pendingReward(poolIndex, app.YOUR_ADDRESS);
       const staked = userInfo.amount / 10 ** poolToken.decimals;
@@ -152,14 +152,14 @@ async function loadPngChefContract(App, tokens, prices, chef, chefAddress, chefA
           withdrawFee : (poolInfo.withdrawFeeBP ?? 0) / 100
       };
     }else{
-      const poolToken = await getAvaxToken(app, lpToken, chefAddress);
+      const poolToken = await getGeneralEthcallToken(app, lpToken, chefAddress);
       const userInfo = await chefContract.userInfo(poolIndex, app.YOUR_ADDRESS);
       const pendingRewardTokens = await chefContract.pendingReward(poolIndex, app.YOUR_ADDRESS);
       const staked = userInfo.amount / 10 ** poolToken.decimals;
       const REWARDER_PNG_CHEF_ABI = [{"inputs":[{"internalType":"contract IERC20","name":"_rewardToken","type":"address"},{"internalType":"contract IERC20","name":"_lpToken","type":"address"},{"internalType":"uint256","name":"_tokenPerBlock","type":"uint256"},{"internalType":"contract IMasterChefV2","name":"_mcv2","type":"address"}],"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"oldAllocPoint","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"newAllocPoint","type":"uint256"}],"name":"AllocPointUpdated","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"OnReward","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"previousOwner","type":"address"},{"indexed":true,"internalType":"address","name":"newOwner","type":"address"}],"name":"OwnershipTransferred","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"oldRate","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"newRate","type":"uint256"}],"name":"RewardRateUpdated","type":"event"},{"inputs":[],"name":"MCV2","outputs":[{"internalType":"contract IMasterChefV2","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"lpToken","outputs":[{"internalType":"contract IERC20","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"","type":"uint256"},{"internalType":"address","name":"_user","type":"address"},{"internalType":"address","name":"","type":"address"},{"internalType":"uint256","name":"","type":"uint256"},{"internalType":"uint256","name":"_lpAmount","type":"uint256"}],"name":"onTriReward","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"owner","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"","type":"uint256"},{"internalType":"address","name":"_user","type":"address"},{"internalType":"uint256","name":"","type":"uint256"}],"name":"pendingTokens","outputs":[{"internalType":"contract IERC20[]","name":"rewardTokens","type":"address[]"},{"internalType":"uint256[]","name":"rewardAmounts","type":"uint256[]"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"poolInfo","outputs":[{"internalType":"uint256","name":"accTokenPerShare","type":"uint256"},{"internalType":"uint256","name":"lastRewardBlock","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"token","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"},{"internalType":"address payable","name":"to","type":"address"}],"name":"reclaimTokens","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"renounceOwnership","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"rewardToken","outputs":[{"internalType":"contract IERC20","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"_tokenPerBlock","type":"uint256"}],"name":"setRewardRate","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"tokenPerBlock","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"newOwner","type":"address"}],"name":"transferOwnership","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"updatePool","outputs":[{"components":[{"internalType":"uint256","name":"accTokenPerShare","type":"uint256"},{"internalType":"uint256","name":"lastRewardBlock","type":"uint256"}],"internalType":"struct ComplexRewarder.PoolInfo","name":"pool","type":"tuple"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"userInfo","outputs":[{"internalType":"uint256","name":"amount","type":"uint256"},{"internalType":"uint256","name":"rewardDebt","type":"uint256"}],"stateMutability":"view","type":"function"}]
       const rewarderContract = new ethers.Contract(rewarder, REWARDER_PNG_CHEF_ABI, app.provider);
       const rewarderTokenAddress = await rewarderContract.rewardToken();
-      const rewarderToken = await getAvaxToken(app, rewarderTokenAddress, chefAddress);
+      const rewarderToken = await getGeneralEthcallToken(app, rewarderTokenAddress, chefAddress);
       const pendingRewarderTokens = await rewarderContract.pendingTokens(poolIndex, app.YOUR_ADDRESS, pendingRewardTokens / 1e18)
       const rewarderRewardsPerSecond = await rewarderContract.tokenPerBlock() / 10 ** rewarderToken.decimals;
       const rewarderRewardsPerWeek = rewarderRewardsPerSecond * 604800;

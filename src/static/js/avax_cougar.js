@@ -29,7 +29,7 @@ $(function() {
         const tokens = {};
         const prices = await getAvaxPrices();
 
-        await loadAvaxChefContract(App,
+        await loadGeneralEthcallChefContract(App,
             tokens,
             prices,
             COUGAR_CHEF,
@@ -39,7 +39,9 @@ $(function() {
             "cougar",
             null,
             rewardsPerWeek,
-            "pendingCougar");
+            "pendingCougar",
+            [],
+            "avax");
 
         hideLoading();
     }

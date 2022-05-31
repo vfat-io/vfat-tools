@@ -22,8 +22,8 @@ async function main() {
     const tokens = {};
     const prices = await getAvaxPrices();
 
-    await loadAvaxChefContract(App, tokens, prices, ZABU_CHEF, ZABU_CHEF_ADDR, ZABU_CHEF_ABI, rewardTokenTicker,
-        "zabuToken", null, rewardsPerWeek, "pendingRewards");
+    await loadGeneralEthcallChefContract(App, tokens, prices, ZABU_CHEF, ZABU_CHEF_ADDR, ZABU_CHEF_ABI, rewardTokenTicker,
+        "zabuToken", null, rewardsPerWeek, "pendingRewards", [], "avax");
 
     hideLoading();
 }

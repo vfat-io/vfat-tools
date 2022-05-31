@@ -20,8 +20,8 @@ $(function() {
         const tokens = {};
         const prices = await getAuroraPrices();
      
-        await loadAuroraChefContract(App, tokens, prices, COC_CHEF, COC_CHEF_ADDR, COC_CHEF_ABI, rewardTokenTicker,
-            "coc", null, rewardsPerWeek, "pendingCoc", [0]);
+        await loadGeneralEthcallChefContract(App, tokens, prices, COC_CHEF, COC_CHEF_ADDR, COC_CHEF_ABI, rewardTokenTicker,
+            "coc", null, rewardsPerWeek, "pendingCoc", [0], "aurora");
         hideLoading();
       }
     

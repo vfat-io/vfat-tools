@@ -48,10 +48,10 @@ async function main() {
         rewardTokenFunction: "rewardsToken"
     }})
 
-    await loadAvaxSynthetixPoolInfo(App, tokens, prices, ZERO_STAKING_ABI, "0x45eD4A1f9D573A6bFec9B9fDCE2954aDD62D8e77",
-        "rewardsToken", "stakingToken");
+    await loadGeneralEthcallSynthetixPoolInfo(App, tokens, prices, ZERO_STAKING_ABI, "0x45eD4A1f9D573A6bFec9B9fDCE2954aDD62D8e77",
+        "rewardsToken", "stakingToken", "avax");
 
-    let p = await loadMultipleAvaxSynthetixPools(App, tokens, prices, pools)
+    let p = await loadMultipleGeneralEthcallSynthetixPools(App, tokens, prices, pools, "avax")
     _print_bold(`Total staked: $${formatMoney(p.staked_tvl)}`);
     if (p.totalUserStaked > 0) {
         _print(`You are staking a total of $${formatMoney(p.totalUserStaked)} at an APR of ${(p.totalApr * 100).toFixed(2)}%\n`);

@@ -23,8 +23,8 @@ $(function () {
         const tokens = {};		
         const prices = await getAvaxPrices();		
     		
-        await loadAvaxChefContract(App, tokens, prices, SILVER_CHEF, SILVER_CHEF_ADDR, SILVER_CHEF_ABI, rewardTokenTicker,		
-            "silver", null, rewardsPerWeek, "pendingSilver");		
+        await loadGeneralEthcallChefContract(App, tokens, prices, SILVER_CHEF, SILVER_CHEF_ADDR, SILVER_CHEF_ABI, rewardTokenTicker,		
+            "silver", null, rewardsPerWeek, "pendingSilver", [], "avax");		
     		
         hideLoading();		
     }		

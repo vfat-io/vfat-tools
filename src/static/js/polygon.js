@@ -389,7 +389,6 @@ const main = async () => {
       ['Flerovium           ',"",  '<a href="flerovium"       >Various</a>', 'FLEROVIUM    ', 'https://flerovium.finance'],
       ['Covid Finance       ',"",  `<a href="covidfinance"    >Various</a>`, 'COVID        ', 'https://covidfinance.pro'],
       ['Sentient Swap       ',"",  `<a href="sentientswap"    >Various</a>`, 'STN          ', 'https://sentientswap.live'],
-      ['Tower Finance       ',"",  `<a href="tower"           >Various</a>`, 'IVORY        ', 'https://app.towerfinance.io'],
       ['Jam Finance         ',"",  `<a href="jamfinance"      >Various</a>`, 'JAM          ', 'https://jamfinance.cc'],
       ['WAVE                ',"",  `<a href="wave"            >Various</a>`, 'WAVE         ', 'https://www.wavedefi.io'],
       ['Snake Finance       ',"",  `<a href="snakefinance"    >Various</a>`, 'SNAKE        ', 'https://snakefinance.club'],
@@ -428,7 +427,22 @@ const main = async () => {
       ['Plotx               ',"",  `<a href="plotx"           >Various</a>`, 'MATIC/bPLOT  ','https://plotx.io'],
       ['Argano              ',"",  `<a href="argano"          >Various</a>`, 'AGOy         ','https://www.argano.io'],
       ['Harvest             ',"",  `<a href="harvest"         >Various</a>`, 'Various      ','https://harvest.finance'],
-      ['Beverage            ',"",  `<a href="beverage"        >Various</a>`, 'DRINK        ','https://matic.beverage.finance']
+      ['Beverage            ',"",  `<a href="beverage"        >Various</a>`, 'DRINK        ','https://matic.beverage.finance'],
+      ['Unity               ',"",  `<a href="unity"           >Various</a>`, 'UNITY        ','https://unityfarm.org'],
+      ['Tower Finance       ',"",  `<a href="tower"           >Various</a>`, 'CUBE         ','https://app.towerfinance.io'],
+      ['HuntDefi            ',"",  `<a href="huntdefi"        >Various</a>`, 'HUNT         ','https://polygon.huntdefi.com'],
+      ["Arth                ","",  `<a href="arth"            >Various</a>`, "ARTH         ","https://arth.mahadao.com"],
+      ["GOGOcoin            ","",  `<a href="gogocoin"        >Various</a>`, "GOGO         ","https://app.gogocoin.io"],
+      ['Opportunity         ','',  `<a href="opportunity"     >Various</a>`, 'OPT          ','https://opport.unityfarm.org'],
+      ['WOWswap             ',"",  `<a href="wowswap"         >Various</a>`, 'WOW          ','https://wowswap.io'],
+      ['Stargate            ',"",  `<a href="stargate"        >Various</a>`, 'STG          ','https://stargate.finance'],
+      ['Gains Network       ',"",  `<a href="gainsnetwork"    >Various</a>`, 'Various      ','https://gainsnetwork.io'],
+      ['Hundred             ',"",  `<a href="hundred"         >Various</a>`, 'HND          ','https://hundred.finance'],
+      ['PolyDogeDAO         ',"",  `<a href="polydogedao"     >Various</a>`, 'PDSHARE / PDDOLLAR','https://polydogedao.net'],
+      ["Printer Financial   ","",  `<a href="printer"         >Various</a>`, "INK          ", "https://polygon.printer.financial"],
+      ["Monox Finance       ","", `<a href="monox"            >Various</a>`,"vUNIT         ","https://monox.finance"],
+      ["FungFi              ","", `<a href="fungfi"           >Various</a>`,"MUSH          ","https://fungfi.com"],
+      ["Piginu              ","", `<a href="piginu"           >Various</a>`,"PIG           ","https://piginu.com"]
     ],
   }
 
@@ -436,6 +450,3 @@ const main = async () => {
   document.getElementById('log').innerHTML += table + '<br />'
   hideLoading()
 }
-
-
-
