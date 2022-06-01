@@ -43,7 +43,8 @@ const main = async() => {
       ["CGX Finance          ","", `<a href='cgx'          >Various</a>`,"CGX          ","https://cgx.finance"],
       ["Scrub Finance        ","", `<a href='scrub'        >Various</a>`,"TIGER / LION ","https://scrub.finance"],
       ["Printer Financial    ","", `<a href='printer'      >Various</a>`,"INK          ","https://cro.printer.financial"],
-      ["CGO Finance          ","", `<a href='cgo'          >Various</a>`,"CGO          ","https://cgo.finance"]
+      ["CGO Finance          ","", `<a href='cgo'          >Various</a>`,"CGO          ","https://cgo.finance"],
+      ["Smx Swap             ","", `<a href='smx'          >Various</a>`,"SMX          ","https://smxswap.com"]
     ]
   }
 
