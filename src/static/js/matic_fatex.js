@@ -114,7 +114,6 @@ async function loadFateRewardControllerContract(
             withdrawFee: parseInt(feePercent) / 10000,
         }
     }));
-    console.log('poolInfos', poolInfos);
 
     const tokenAddresses = [].concat.apply([], poolInfos.filter(x => x.poolToken).map(x => x.poolToken.tokens));
 
