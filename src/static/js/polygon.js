@@ -7,6 +7,7 @@ const main = async () => {
     title: 'POLYGON Network',
     heading: ["Pool Provider","MCN", "LP", "Reward Tokens", "INFO"],
     rows: [
+      ['FatexFi             ',"", `<a href="fatex"            >Various</a>`,'FATE         ','https://app.fatexfi.io'],
       ["Parrotdefi          ",`<a href="https://twitter.com/MCNVentures/status/1440498902688358402?s=20" target="_blank" class="mcn-reviewed">REVIEW</a>`, `<a href="parrotdefi"  >Various</a>`,"pPEGG              ","https://polygon.parrotdefi.com"],
       ['Quickswap           ',"", `<a href="quick"            >Various</a>`,'QUICK         ','https://quickswap.exchange/#/quick'],
       ['Kyber               ',"", `<a href="kyber"           >Various</a>`, 'KNC          ', 'https://dmm.exchange'],
