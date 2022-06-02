@@ -597,7 +597,8 @@ const optimisticTokens = [
   { "id": "wrapped-bitcoin","symbol": "WBTC", "contract": "0x68f180fcCe6836688e9084f035309E29Bf0A2095" },
   { "id": "thales","symbol": "THALES", "contract": "0x217d47011b23bb961eb6d93ca9945b7501a5bb11" },
   { "id": "stargate-finance","symbol": "STG", "contract": "0x296F55F8Fb28E498B858d0BcDA06D955B2Cb3f97" },
-  { "id": "hundred-finance","symbol": "HND", "contract": "0x10010078a54396F62c96dF8532dc2B4847d47ED3" }
+  { "id": "hundred-finance","symbol": "HND", "contract": "0x10010078a54396F62c96dF8532dc2B4847d47ED3" },
+  { "id": "optimism","symbol": "OP", "contract": "0x4200000000000000000000000000000000000042" }
 ];
 
 const polisTokens = [

@@ -106,7 +106,7 @@ async function main() {
     const pendingRewardTokens = await chefContract.callStatic[pendingRewardsFunction](poolIndex, App.YOUR_ADDRESS);
     const staked = userInfo.amount / 10 ** poolToken.decimals;
     return {
-        address: poolInfo.lpToken,
+        address: poolInfo.token,
         allocPoints: poolInfo.allocPoint ?? 1,
         poolToken: poolToken,
         userStaked : staked,

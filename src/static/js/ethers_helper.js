@@ -2352,13 +2352,15 @@ function getUniPrices(tokens, prices, pool, chain="eth")
               pool.symbol.includes("vAMM") ?  (
                 {
                   "fantom": `https://solidly.exchange`,
-                  "metis": `https://hermes.maiadao.io/#/swap`
+                  "metis": `https://hermes.maiadao.io/#/swap`,
+                  "optimism": `https://app.velodrome.finance/swap`
                 }
               [chain]):
               pool.symbol.includes("sAMM") ?  (
                 {
                   "fantom" : `https://solidly.exchange`,
-                  "metis" : `https://hermes.maiadao.io/#/swap`
+                  "metis" : `https://hermes.maiadao.io/#/swap`,
+                  "optimism" : `https://app.velodrome.finance/swap`
                 }
               [chain]):
               pool.symbol.includes("ZLK-LP") ?  `https://dex.zenlink.pro/#/info/overview` :
@@ -2481,6 +2483,11 @@ function getUniPrices(tokens, prices, pool, chain="eth")
               `https://hermes.maiadao.io/#/add/${t0address}/${t1address}/false`,
               `https://hermes.maiadao.io/#/find`,
               `https://hermes.maiadao.io/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+            ],
+            "optimism" : [
+              `https://app.velodrome.finance/liquidity/create/`,
+              `https://app.velodrome.finance/liquidity/create/`,
+              `https://app.velodrome.finance/swap`
             ]
           } [chain]):
           pool.symbol.includes("sAMM") ? ({
@@ -2493,6 +2500,11 @@ function getUniPrices(tokens, prices, pool, chain="eth")
               `https://hermes.maiadao.io/#/add/${t0address}/${t1address}/true`,
               `https://hermes.maiadao.io/#/find`,
               `https://hermes.maiadao.io/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+            ],
+            "optimism" : [
+              `https://app.velodrome.finance/liquidity/create/`,
+              `https://app.velodrome.finance/liquidity/create/`,
+              `https://app.velodrome.finance/swap`
             ]
           } [chain]):
           pool.symbol.includes("HBLP") ? [
