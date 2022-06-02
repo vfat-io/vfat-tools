@@ -442,6 +442,8 @@ const main = async () => {
       ["Printer Financial   ","",  `<a href="printer"         >Various</a>`, "INK          ", "https://polygon.printer.financial"],
       ["Monox Finance       ","", `<a href="monox"            >Various</a>`,"vUNIT         ","https://monox.finance"],
       ["FungFi              ","", `<a href="fungfi"           >Various</a>`,"MUSH          ","https://fungfi.com"],
+      ["Piginu              ","", `<a href="piginu"           >Various</a>`,"PIG           ","https://piginu.com"],
+      ['FatexFi             ',"", `<a href="fatex"            >Various</a>`,'FATE         ','https://app.fatexfi.io']
     ],
   }
 
