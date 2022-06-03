@@ -19,7 +19,8 @@ const main = async() => {
       ["Stargate              ", `<a href="stargate"          >Various</a>`,"STG          ","https://stargate.finance"],
       ["Hundred               ", `<a href="hundred"           >Various</a>`,"HND          ","https://hundred.finance"],
       ["Xtoken Terminal       ", `<a href="xtokenterminal"    >Various</a>`,"HND          ","https://app.xtokenterminal.io"],
-      ["Velodrome             ", `<a href="velodrome"         >Various</a>`,"VELO         ","https://app.velodrome.finance"]
+      ["Velodrome             ", `<a href="velodrome"         >Various</a>`,"VELO         ","https://app.velodrome.finance"],
+      ["Lyra                  ", `<a href="lyra"              >Various</a>`,"LYRA         ","https://app.lyra.finance"]
     ]
   }
 
