@@ -33,11 +33,6 @@ $(function() {
         stakeTokenFunction: "stake"
       }
     });
-    
-    await loadVelodromeSynthetixPoolInfoPrice(App, tokens, prices, App.YOUR_ADDRESS, "0xe8537b6ff1039cb9ed0b71713f697ddbadbb717d");
-    await loadVelodromeSynthetixPoolInfoPrice(App, tokens, prices, App.YOUR_ADDRESS, "0xd16232ad60188b68076a235c65d692090caba155");
-    await loadVelodromeSynthetixPoolInfoPrice(App, tokens, prices, App.YOUR_ADDRESS, "0x207addb05c548f262219f6bfc6e11c02d0f7fdbe");
-    await loadVelodromeSynthetixPoolInfoPrice(App, tokens, prices, App.YOUR_ADDRESS, "0xdee1856d7b75abf4c1bdf986da4e1c6c7864d640");
   
     let p = await loadVelodromeOptimismSynthetixPools(App, tokens, prices, gauges)
     _print_bold(`Total staked: $${formatMoney(p.staked_tvl)}\n`);

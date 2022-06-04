@@ -598,7 +598,11 @@ const optimisticTokens = [
   { "id": "thales","symbol": "THALES", "contract": "0x217d47011b23bb961eb6d93ca9945b7501a5bb11" },
   { "id": "stargate-finance","symbol": "STG", "contract": "0x296F55F8Fb28E498B858d0BcDA06D955B2Cb3f97" },
   { "id": "hundred-finance","symbol": "HND", "contract": "0x10010078a54396F62c96dF8532dc2B4847d47ED3" },
-  { "id": "optimism","symbol": "OP", "contract": "0x4200000000000000000000000000000000000042" }
+  { "id": "optimism","symbol": "OP", "contract": "0x4200000000000000000000000000000000000042" },
+  { "id": "velodrome-finance","symbol": "VELO", "contract": "0x3c8b650257cfb5f272f799f5e2b4e65093a11a05" },
+  { "id": "lyra-finance","symbol": "LYRA", "contract": "0x50c5725949A6F0c72E6C4a641F24049A917DB0Cb" },
+  { "id": "nusd","symbol": "SUSD", "contract": "0x8c6f28f2F1A3C87F0f938b96d27520d9751ec8d9" },
+  { "id": "liquity-usd","symbol": "LUSD", "contract": "0xc40F949F8a4e094D1b49a23ea9241D289B7b2819" }
 ];
 
 const polisTokens = [
