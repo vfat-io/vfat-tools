@@ -47,7 +47,8 @@ const AuroraTokens = [
   { "id": "terrausd", "symbol": "UST", "contract": "0x5ce9F0B6AFb36135b5ddBF11705cEB65E634A9dC"},
   { "id": "mimatic", "symbol": "MIMATIC", "contract": "0xdFA46478F9e5EA86d57387849598dbFB2e964b02"},
   { "id": "tripolar", "symbol": "TRIPOLAR", "contract": "0x60527a2751A827ec0Adf861EfcAcbf111587d748"},
-  { "id": "tribar", "symbol": "XTRI", "contract": "0x802119e4e253d5c19aa06a5d567c5a41596d6803"}
+  { "id": "tribar", "symbol": "XTRI", "contract": "0x802119e4e253d5c19aa06a5d567c5a41596d6803"},
+  { "id": "wrapped-bitcoin", "symbol": "WBTC", "contract": "0xF4eB217Ba2454613b15dBdea6e5f22276410e89e"}
 ];
 
 const avaxTokens = [
