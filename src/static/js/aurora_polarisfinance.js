@@ -32,6 +32,13 @@ $(function () {
         stakeTokenFunction : "share",
         rewardTokenAddresses : "polar"
       }
+
+      const StakingPool4 = {
+        address : "0x154ad27d2c8bc616a90a5eec3e6297f9fb7ab88e",
+        abi : POLAR_STAKING_ABI,
+        stakeTokenFunction : "share",
+        rewardTokenAddresses : "polar"
+      }
       
       const SPOLAR_CHEF_ADDR = "0xa5df6d8d59a7fbdb8a11e23fda9d11c4103dc49f";
       const ORBITAL_CHEF_ADDR = "0x9D63D94A6f9a176B3F99108a08144cbB6Fd9Ea14";
@@ -49,9 +56,9 @@ $(function () {
       
       await loadSPolarContract(App, tokens, prices, SPOLAR_CHEF, SPOLAR_CHEF_ADDR, SPOLAR_CHEF_ABI, rewardTokenTicker,		
           "spolar", null, rewardsPerWeek, "pendingShare");
-      _print("");
+      /*_print("");
       await loadORBITALContract(App, tokens, prices, ORBITAL_CHEF, ORBITAL_CHEF_ADDR, ORBITAL_CHEF_ABI, rewardORBITALTokenTicker,		
-        "orbital", null, rewardsORBITALPerWeek, "pendingOrbital");
+        "orbital", null, rewardsORBITALPerWeek, "pendingOrbital");*/
       _print(`\nStaked SPOLARs can only be withdrawn after 3 epochs since deposit.`);
       _print(`\nPOLAR Earnings\n`);
       const p0 = await loadAuroraPOLARSynthetixPool(App, tokens, prices, StakingPool.abi, 
@@ -83,6 +90,17 @@ $(function () {
       _print_bold(`Total staked: $${formatMoney(p3.staked_tvl)}`);
       if (p3.totalUserStaked > 0) {
         _print(`You are staking a total of $${formatMoney(p3.totalUserStaked)}\n`);
+      }
+
+      _print(`\nStaked SPOLARs can only be withdrawn after 3 epochs since deposit.`);
+      _print(`\nORBITAL Earnings\n`);
+      const p4 = await loadAuroraPOLARSynthetixPool(App, tokens, prices, StakingPool4.abi, 
+                                                                         StakingPool4.address, 
+                                                                         StakingPool4.rewardTokenAddresses, 
+                                                                         StakingPool4.stakeTokenFunction);
+      _print_bold(`Total staked: $${formatMoney(p4.staked_tvl)}`);
+      if (p4.totalUserStaked > 0) {
+        _print(`You are staking a total of $${formatMoney(p4.totalUserStaked)}\n`);
       }
       
       hideLoading();		
@@ -226,7 +244,7 @@ async function loadSPolarContract(App, tokens, prices, chef, chefAddress, chefAb
   deathPoolIndices, claimFunction) {
   const chefContract = chef ?? new ethers.Contract(chefAddress, chefAbi, App.provider);
 
-  const poolCount = 9;
+  const poolCount = 10;
   const totalAllocPoints = await chefContract.totalAllocPoint();
 
   _print(`<a href='https://aurorascan.dev/address/${chefAddress}' target='_blank'>Staking Contract</a>`);
