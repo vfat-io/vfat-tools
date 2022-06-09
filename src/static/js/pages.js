@@ -24,7 +24,7 @@ const main = async() => {
       ["Bella Protocol      ",`<a href="bella/"             >Various</a>`,"BEL       ","https://bella.fi"],
       ["Big Data Protocol   ",`<a href="bdp/"               >Various</a>`,"BDP,bALPHA","https://www.bigdataprotocol.com/datavault"],
       ["Botto               ", `<a href="botto/"            >Various</a>`,"BOTTO     ","https://app.botto.com"],
-      ["* Convex (Frax) *   ",`<a href="convex_frax/"       >Various</a>`,"Various   ","https://frax.convexfinance.com"],
+      ["Convex (Frax)       ",`<a href="convex_frax/"       >Various</a>`,"Various   ","https://frax.convexfinance.com"],
       ["Cover Protocol      ",`<a href="cover/"             >Various</a>`,"Various   ","https://app.coverprotocol.com"],
       ["Cryptex             ",`<a href="cryptex"            >Various</a>`,"CTX       ","https://app.cryptex.finance"],
       ["Curve               ",`<a href="curve/"             >Various</a>`,"Various   ","https://curve.fi"],

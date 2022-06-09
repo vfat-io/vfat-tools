@@ -244,7 +244,7 @@ async function loadSPolarContract(App, tokens, prices, chef, chefAddress, chefAb
   deathPoolIndices, claimFunction) {
   const chefContract = chef ?? new ethers.Contract(chefAddress, chefAbi, App.provider);
 
-  const poolCount = 10;
+  const poolCount = 11;
   const totalAllocPoints = await chefContract.totalAllocPoint();
 
   _print(`<a href='https://aurorascan.dev/address/${chefAddress}' target='_blank'>Staking Contract</a>`);
