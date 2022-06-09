@@ -603,7 +603,11 @@ const optimisticTokens = [
   { "id": "velodrome-finance","symbol": "VELO", "contract": "0x3c8b650257cfb5f272f799f5e2b4e65093a11a05" },
   { "id": "lyra-finance","symbol": "LYRA", "contract": "0x50c5725949A6F0c72E6C4a641F24049A917DB0Cb" },
   { "id": "nusd","symbol": "SUSD", "contract": "0x8c6f28f2F1A3C87F0f938b96d27520d9751ec8d9" },
-  { "id": "liquity-usd","symbol": "LUSD", "contract": "0xc40F949F8a4e094D1b49a23ea9241D289B7b2819" }
+  { "id": "liquity-usd","symbol": "LUSD", "contract": "0xc40F949F8a4e094D1b49a23ea9241D289B7b2819" },
+  { "id": "frax","symbol": "FRAX", "contract": "0x2E3D870790dC77A83DD1d18184Acc7439A53f475" },
+  { "id": "frax-share","symbol": "FXS", "contract": "0x67CCEA5bb16181E7b4109c9c2143c24a1c2205Be" },
+  { "id": "alchemix-usd","symbol": "ALUSD", "contract": "0xCB8FA9a76b8e203D8C3797bF438d8FB81Ea3326A" },
+  { "id": "dola-usd","symbol": "DOLA", "contract": "0x8aE125E8653821E851F12A49F7765db9a9ce7384" }
 ];
 
 const polisTokens = [

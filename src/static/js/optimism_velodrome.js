@@ -26,7 +26,17 @@ $(function() {
                     "0xFC4B6deA9276D906AD36828dc2e7DbaCfC01B47f",
                     "0x631dCe3a422e1af1AD9d3952B06f9320e2f2ed72",
                     "0xb03f52D2DB3e758DD49982Defd6AeEFEa9454e80",
-                    "0xc4fF55A961bC04b880e60219CCBBDD139c6451A4"].map(a => {
+                    "0xc4fF55A961bC04b880e60219CCBBDD139c6451A4",
+                    "0x2f733b00127449fcf8b5a195bc51abb73b7f7a75",
+                    "0x883c6d437d45b7ce61c07606fb390e6c28be27b8",
+                    "0x3a8883381e4416488db94a8e0469394ecfa8a024",
+                    "0xef9a5ff5d3057d539543bc223efccbc2168b19d6", //sAMM - alETH/WETH
+                    "0x1d87cee5c2f88b60588dd97e24d4b7c3d4f74935",
+                    "0xafd2c84b9d1cd50e7e18a55e419749a6c9055e1f",
+                    "0x49ab32dc8c870ab033ca87df2b954c4c24405e64",
+                    "0x14d60f07924e3a7226ddd368409243edf87e6205",
+                    "0x77b9a432b23ff5fc798c92a1435b0e51772bc538",
+                    "0xbf6c935a2b6ec453704ea72c8e14592f2fb27130"].map(a => {
       return {
         address: a,
         abi: VELODROME_GAUGE_ABI,
