@@ -204,7 +204,8 @@ const main = async () => {
       ['Ghost DeFi         ', `<a href='ghostdefi'    >Various</a>`, 'GSHARE / GHOST', 'https://ghostdefi.io'],
       ['Charge DeFi        ', `<a href='charge'       >Various</a>`, 'CHARGE        ', 'https://ftm.chargedefi.fi'],
       ['Olympus Finance    ', `<a href='olympus-finance'>Various</a>`, 'ARES        ', 'https://www.olympus-fi.com'],
-      ['Printer Financial  ', `<a href='printer'      >Various</a>`, 'INK           ', 'https://printer.financial']  
+      ['Printer Financial  ', `<a href='printer'      >Various</a>`, 'INK           ', 'https://printer.financial'],
+      ['The Story of Draco ', `<a href='draco-story'  >Various</a>`, 'DRACO         ', 'https://dracodefi.com']
     ],
   }
 
