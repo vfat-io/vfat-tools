@@ -443,7 +443,9 @@ const main = async () => {
       ["Monox Finance       ","", `<a href="monox"            >Various</a>`,"vUNIT         ","https://monox.finance"],
       ["FungFi              ","", `<a href="fungfi"           >Various</a>`,"MUSH          ","https://fungfi.com"],
       ["Piginu              ","", `<a href="piginu"           >Various</a>`,"PIG           ","https://piginu.com"],
-      ['FatexFi             ',"", `<a href="fatex"            >Various</a>`,'FATE         ','https://app.fatexfi.io']
+      ['FatexFi             ', "", `<a href="fatex"            >Various</a>`, 'FATE         ', 'https://app.fatexfi.io'],
+      ['Cutey               ', "", `<a href="cutey"            >Various</a>`, 'CUTE         ', 'https://cutey.farm'],
+
     ],
   }
 
