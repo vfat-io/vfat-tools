@@ -357,7 +357,8 @@ const FantomTokens = [
   { "id": "30mb-token", "symbol": "3OMB", "contract": "0x14def7584a6c52f470ca4f4b9671056b22f4ffde"},
   { "id": "vedao", "symbol": "WEVE", "contract": "0x911da02c1232a3c3e1418b834a311921143b04d7"},
   { "id": "terrausd", "symbol": "UST", "contract": "0xe2d27f06f63d98b8e11b38b5b08a75d0c8dd62b9"},
-  { "id": "stargate-finance", "symbol": "STG", "contract": "0x2F6F07CDcf3588944Bf4C42aC74ff24bF56e7590"}
+  { "id": "stargate-finance", "symbol": "STG", "contract": "0x2F6F07CDcf3588944Bf4C42aC74ff24bF56e7590"},
+  { "id": "deus-finance-2", "symbol": "DEUS", "contract": "0xde5ed76e7c05ec5e4572cfc88d1acea165109e44"}
 ];
 
 const FuseTokens = [ 
