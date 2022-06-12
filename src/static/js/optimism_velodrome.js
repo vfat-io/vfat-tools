@@ -132,7 +132,9 @@ $(function() {
   
       const calls = [STAKING_MULTI.balanceOf(App.YOUR_ADDRESS), STAKING_MULTI.derivedSupply(),
                      STAKING_MULTI.derivedBalance(App.YOUR_ADDRESS), STAKING_MULTI.tokenIds(App.YOUR_ADDRESS)]
-      const [balance, derivedSupply_, derivedBalance_, tokenId] = await App.ethcallProvider.all(calls);
+      const [balance, derivedSupply_, derivedBalance_, _tokenId] = await App.ethcallProvider.all(calls);
+
+      const tokenId = _tokenId / 1;
   
       const [nftValue] = await App.ethcallProvider.all([STAKING_MULTI_NFT.balanceOfNFT(tokenId)]);
   
@@ -226,17 +228,20 @@ $(function() {
     }
     _print(`You are staking ${info.userStaked.toFixed(6)} ${info.stakeTokenTicker} ` +
              `$${formatMoney(userStakedUsd)} (${userStakedPct.toFixed(2)}% of the pool).`);
-    const userWeeklyRewards = userStakedPct * info.weeklyRewards[0] / 100;
-    const userDailyRewards = userWeeklyRewards / 7;
-    const userYearlyRewards = userWeeklyRewards * 52;
-    const userDailyRewardsUSD = userDailyRewards*info.rewardTokenPrices[0]
-    const userWeeklyRewardsUSD = userWeeklyRewards*info.rewardTokenPrices[0]
-    const userYearlyRewardsUSD = userYearlyRewards*info.rewardTokenPrices[0]
-    const earningsUSD = info.earnings[0]*info.rewardTokenPrices[0];
+    let userWeeklyRewards = 0, userDailyRewards = 0, userYearlyRewards = 0,userDailyRewardsUSD = 0, userWeeklyRewardsUSD = 0, userYearlyRewardsUSD = 0, earningsUSD = 0;
+    for(let i = 0; i < info.weeklyRewards.length; i++){
+      userWeeklyRewards += userStakedPct * info.weeklyRewards[i] / 100;
+      userDailyRewards += userWeeklyRewards / 7;
+      userYearlyRewards += userWeeklyRewards * 52;
+      userDailyRewardsUSD += userDailyRewards*info.rewardTokenPrices[i]
+      userWeeklyRewardsUSD += userWeeklyRewards*info.rewardTokenPrices[i]
+      userYearlyRewardsUSD += userYearlyRewards*info.rewardTokenPrices[i]
+      earningsUSD += info.earnings[i]*info.rewardTokenPrices[i];
+    }
       if (info.userStaked > 0) {
         info.poolPrices.print_contained_price(info.userStaked);
         _print(`You are using NFT ID ${info.tokenId} which has a value of ${formatMoney(info.nftValue)} veNFT.`);
-          _print(`Estimated ${info.rewardTokenTicker} earnings:`
+          _print(`Estimated earnings:`
               + ` Day ${userDailyRewards.toFixed(2)} ($${formatMoney(userDailyRewardsUSD)})`
               + ` Week ${userWeeklyRewards.toFixed(2)} ($${formatMoney(userWeeklyRewardsUSD)})`
               + ` Year ${userYearlyRewards.toFixed(2)} ($${formatMoney(userYearlyRewardsUSD)})`);
