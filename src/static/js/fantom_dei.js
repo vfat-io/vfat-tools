@@ -25,7 +25,9 @@ async function main() {
     const tokens = {};
     const prices = await getFantomPrices();
 
-    const lpTokenPrice = await LP_TOKEN_DATA.getVirtualPrice() / 1e18;
+    const virtualPrice = await LP_TOKEN_DATA.getVirtualPrice() / 1e18;
+    const deiPrice = getParameterCaseInsensitive(prices, "0xde12c7959e1a72bbe8a5f7a1dc8f8eef9ab011b3")?.usd;
+    const lpTokenPrice = deiPrice * virtualPrice;
 
     prices["0xDce9EC1eB454829B6fe0f54F504FEF3c3C0642Fc"] = { usd : lpTokenPrice }
 
