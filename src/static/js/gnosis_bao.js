@@ -23,8 +23,8 @@ async function main() {
   const rewardPerBlock = await BAO_CHEF.REWARD_PER_BLOCK();
   const rewardsPerWeek = rewardPerBlock / 1e18 * multiplier * 604800 / 5
 
-  await loadXdaiChefContract(App, tokens, prices, BAO_CHEF, BAO_CHEF_ADDR, BAO_CHEF_ABI, "BAO",
-      "Bao", null, rewardsPerWeek, "pendingReward");
+  await loadGeneralChefContract(App, tokens, prices, BAO_CHEF, BAO_CHEF_ADDR, BAO_CHEF_ABI, "BAO",
+      "Bao", null, rewardsPerWeek, "pendingReward", [], "xdai");
 
   hideLoading();
 }

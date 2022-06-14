@@ -536,6 +536,8 @@ async function loadGeneralChefContract(App, tokens, prices, chef, chefAddress, c
     break;
     case "celo" : _print(`<a href='https://explorer.celo.org/address/${chefAddress}' target='_blank'>Staking Contract</a>`);
     break;
+    case "xdai" : _print(`<a href='https://blockscout.com/xdai/mainnet/address/${chefAddress}' target='_blank'>Staking Contract</a>`);
+    break;
   }
   _print(`Found ${poolCount} pools.\n`)
 

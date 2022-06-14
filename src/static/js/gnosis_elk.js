@@ -24,7 +24,7 @@ async function main() {
   /*await loadXdaiSynthetixPoolInfo(App, tokens, prices, pools[0].abi, pools[0].address,
     pools[0].rewardTokenFunction, pools[0].stakeTokenFunction)*/
 
-  let p = await loadMultipleXdaiSynthetixPools(App, tokens, prices, pools)
+  let p = await loadMultipleGeneralSynthetixPools(App, tokens, prices, pools, "xdai")
   _print_bold(`Total staked: $${formatMoney(p.staked_tvl)}`);
   if (p.totalUserStaked > 0) {
     _print(`You are staking a total of $${formatMoney(p.totalUserStaked)} at an APR of ${(p.totalAPR * 100).toFixed(2)}%\n`);

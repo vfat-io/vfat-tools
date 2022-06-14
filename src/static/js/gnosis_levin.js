@@ -19,8 +19,8 @@ async function main() {
   const rewardPerBlock = await LEVIN.sushiPerBlock();
   const rewardsPerWeek = rewardPerBlock / 1e18 * multiplier * 604800 / 5
 
-  await loadXdaiChefContract(App, tokens, prices, LEVIN, LEVIN_ADDR, LEVIN_ABI, "LEVIN",
-      "sushi", null, rewardsPerWeek, "pendingSushi");
+  await loadGeneralChefContract(App, tokens, prices, LEVIN, LEVIN_ADDR, LEVIN_ABI, "LEVIN",
+      "sushi", null, rewardsPerWeek, "pendingSushi", [], "xdai");
 
   hideLoading();
 }

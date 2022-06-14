@@ -87,7 +87,7 @@ $(function() {
   
       const rewardTokenAddresses = await STAKING_POOL.callStatic[rewardTokensFunction]();
   
-      let stakeToken = await getXdaiToken(App, stakeTokenAddress, stakingAddress);
+      let stakeToken = await getGeneralToken(App, stakeTokenAddress, stakingAddress);
   
       var newPriceAddresses = stakeToken.tokens.filter(x =>
         !getParameterCaseInsensitive(prices, x));
@@ -99,11 +99,11 @@ $(function() {
       var newTokenAddresses = stakeToken.tokens.filter(x =>
         !getParameterCaseInsensitive(tokens,x));
       for (const address of newTokenAddresses) {
-          tokens[address] = await getXdaiToken(App, address, stakingAddress);
+          tokens[address] = await getGeneralToken(App, address, stakingAddress);
       }
       for(const rewardTokenAddress of rewardTokenAddresses){
         if (!getParameterCaseInsensitive(tokens, rewardTokenAddress)) {
-          tokens[rewardTokenAddress] = await getXdaiToken(App, rewardTokenAddress, stakingAddress);
+          tokens[rewardTokenAddress] = await getGeneralToken(App, rewardTokenAddress, stakingAddress);
         }
       }
       let rewardTokens = [];
