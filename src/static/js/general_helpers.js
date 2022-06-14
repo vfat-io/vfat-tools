@@ -538,6 +538,8 @@ async function loadGeneralChefContract(App, tokens, prices, chef, chefAddress, c
     break;
     case "xdai" : _print(`<a href='https://blockscout.com/xdai/mainnet/address/${chefAddress}' target='_blank'>Staking Contract</a>`);
     break;
+    case "dfk" : _print(`<a href='https://subnets.avax.network/defi-kingdoms/dfk-chain/explorer/address/${chefAddress}' target='_blank'>Staking Contract</a>`);
+    break;
   }
   _print(`Found ${poolCount} pools.\n`)
 

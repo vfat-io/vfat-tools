@@ -28,8 +28,8 @@ async function main() {
   //const rewardPerBlock = await CRYSTAL_CHEF.tokenPerBlock();
   //const rewardsPerWeek = rewardPerBlock / 1e18 * multiplier * 604800 / 2
 
-  await loadDfkChefContract(App, tokens, prices, CRYSTAL_CHEF, CRYSTAL_CHEF_ADDR, CRYSTAL_CHEF_ABI, rewardTokenTicker,
-    "govToken", null, 0, "pendingReward");
+  await loadGeneralChefContract(App, tokens, prices, CRYSTAL_CHEF, CRYSTAL_CHEF_ADDR, CRYSTAL_CHEF_ABI, rewardTokenTicker,
+    "govToken", null, 0, "pendingReward", [], "dfk");
   await loadXCrystal(App, prices);
 
   hideLoading();
