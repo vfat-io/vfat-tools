@@ -23,10 +23,10 @@ $(function() {
     const tokens = {};
     const prices = await getTelosPrices();
     
-    const charmToken = await getTelosToken(App, "0xd2504a02fABd7E546e41aD39597c377cA8B0E1Df", OMNIDEX_ZEN_ADDR);
-    const dougeToken = await getTelosToken(App, "0xc6BC7A8dfA0f57Fe7746Ac434c01cD39679b372c", OMNIDEX_ZEN_ADDR);
-    const usdcToken = await getTelosToken(App, "0x818ec0a7fe18ff94269904fced6ae3dae6d6dc0b", OMNIDEX_ZEN_ADDR);
-    const karmaToken = await getTelosToken(App, "0x730d2Fa7dC7642E041bcE231E85b39e9bF4a6a64", OMNIDEX_ZEN_ADDR);
+    const charmToken = await getGeneralToken(App, "0xd2504a02fABd7E546e41aD39597c377cA8B0E1Df", OMNIDEX_ZEN_ADDR);
+    const dougeToken = await getGeneralToken(App, "0xc6BC7A8dfA0f57Fe7746Ac434c01cD39679b372c", OMNIDEX_ZEN_ADDR);
+    const usdcToken = await getGeneralToken(App, "0x818ec0a7fe18ff94269904fced6ae3dae6d6dc0b", OMNIDEX_ZEN_ADDR);
+    const karmaToken = await getGeneralToken(App, "0x730d2Fa7dC7642E041bcE231E85b39e9bF4a6a64", OMNIDEX_ZEN_ADDR);
     const charmUsdcPool = await getTelosPoolInfo(App, OMNIDEX_ZEN, OMNIDEX_ZEN_ADDR, 7, "pendingCharm");
     const charmDougePool = await getTelosPoolInfo(App, OMNIDEX_ZEN, OMNIDEX_ZEN_ADDR, 6, "pendingCharm");
     const charmKarmaPool = await getTelosPoolInfo(App, OMNIDEX_ZEN, OMNIDEX_ZEN_ADDR, 25, "pendingCharm");
@@ -57,7 +57,7 @@ $(function() {
 
 async function getTelosPoolInfo(App, chefContract, chefAddress, poolIndex, pendingRewardsFunction) {
   const poolInfo = await chefContract.poolInfo(poolIndex);  
-  const poolToken = await getTelosToken(App, poolInfo.lpToken ?? poolInfo.token, chefAddress);
+  const poolToken = await getGeneralToken(App, poolInfo.lpToken ?? poolInfo.token, chefAddress);
   const userInfo = await chefContract.userInfo(poolIndex, App.YOUR_ADDRESS);
   const pendingRewardTokens = await chefContract.callStatic[pendingRewardsFunction](poolIndex, App.YOUR_ADDRESS);
   const staked = userInfo.amount / 10 ** poolToken.decimals;
@@ -88,7 +88,7 @@ async function loadOmniChefContract(App, tokens, prices, chef, chefAddress, chef
   var tokens = {};
 
   const rewardTokenAddress = await chefContract.callStatic[rewardTokenFunction]();
-  const rewardToken = await getTelosToken(App, rewardTokenAddress, chefAddress);
+  const rewardToken = await getGeneralToken(App, rewardTokenAddress, chefAddress);
   const rewardsPerWeek = rewardsPerWeekFixed ??
     await chefContract.callStatic[rewardsPerBlockFunction]()
     / 10 ** rewardToken.decimals * 604800 * 2; // Telos block time: 0.5s = 2 blocks/s
@@ -99,7 +99,7 @@ async function loadOmniChefContract(App, tokens, prices, chef, chefAddress, chef
   var tokenAddresses = [].concat.apply([], poolInfos.filter(x => x.poolToken).map(x => x.poolToken.tokens));
 
   await Promise.all(tokenAddresses.map(async (address) => {
-      tokens[address] = await getTelosToken(App, address, chefAddress);
+      tokens[address] = await getGeneralToken(App, address, chefAddress);
   }));
 
   if (deathPoolIndices) {   //load prices for the deathpool assets

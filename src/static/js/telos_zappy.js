@@ -30,8 +30,8 @@ async function main() {
     const rewardsPerWeek = await ZAPPY_CHEF.zapPerSecond() / 1e18 * 604800;
     const singleRewardsPerWeek = await (ZAPPY_IFO.rewardTokenPerBlock() / 1e18 * 604800) * 2;
 
-    /* const zapToken = await getTelosToken(App, "0x9A271E3748F59222f5581BaE2540dAa5806b3F77", ZAPPY_CHEF_ADDR);
-    const usdcToken = await getTelosToken(App, "0x818ec0a7fe18ff94269904fced6ae3dae6d6dc0b", ZAPPY_CHEF_ADDR);
+    /* const zapToken = await getGeneralToken(App, "0x9A271E3748F59222f5581BaE2540dAa5806b3F77", ZAPPY_CHEF_ADDR);
+    const usdcToken = await getGeneralToken(App, "0x818ec0a7fe18ff94269904fced6ae3dae6d6dc0b", ZAPPY_CHEF_ADDR);
     const zapUsdcPool = await getTelosPoolInfo(App, ZAPPY_CHEF, ZAPPY_CHEF_ADDR, 1, "pendingZap");
     
     var usdcAmountInZapUsdcPool = zapUsdcPool.poolToken.q0 / 10 ** usdcToken.decimals;
@@ -42,8 +42,8 @@ async function main() {
     
     prices["0x9A271E3748F59222f5581BaE2540dAa5806b3F77"].usd = zapUsdPrice; */
 
-    await loadTelosChefContract(App, tokens, prices, ZAPPY_CHEF, ZAPPY_CHEF_ADDR, ZAPPY_CHEF_ABI, rewardTokenTicker,
-        "zap", "zapPerSecond", rewardsPerWeek, "pendingZAP");
+    await loadGeneralChefContract(App, tokens, prices, ZAPPY_CHEF, ZAPPY_CHEF_ADDR, ZAPPY_CHEF_ABI, rewardTokenTicker,
+        "zap", "zapPerSecond", rewardsPerWeek, "pendingZAP", [], "telos");
 
     await loadZappyIFO(App, tokens, prices, ZAPPY_IFO, ZAPPY_IFO_ADDR, ZAPPY_IFO_ABI, rewardTokenTicker,
         "rewardToken", "rewardTokenPerBlock", null, "pendingRewardToken");
@@ -66,7 +66,7 @@ async function loadZappyIFO(App, tokens, prices, chef, chefAddress, chefAbi, rew
     var tokens = {};
 
     const rewardTokenAddress = await chefContract.callStatic[rewardTokenFunction]();
-    const rewardToken = await getTelosToken(App, rewardTokenAddress, chefAddress);
+    const rewardToken = await getGeneralToken(App, rewardTokenAddress, chefAddress);
     const rewardsPerWeek = rewardsPerWeekFixed ??
         await chefContract.callStatic[rewardsPerBlockFunction]()
         / 10 ** rewardToken.decimals * 604800 * 2; // Telos block time: 0.5s = 2 blocks/s
@@ -77,7 +77,7 @@ async function loadZappyIFO(App, tokens, prices, chef, chefAddress, chefAbi, rew
     var tokenAddresses = [].concat.apply([], poolInfos.filter(x => x.poolToken).map(x => x.poolToken.tokens));
 
     await Promise.all(tokenAddresses.map(async (address) => {
-        tokens[address] = await getTelosToken(App, address, chefAddress);
+        tokens[address] = await getGeneralToken(App, address, chefAddress);
     }));
 
     if (deathPoolIndices) {   //load prices for the deathpool assets
@@ -141,7 +141,7 @@ async function getZappyIFOInfo(App, chefContract, chefAddress, poolIndex, pendin
       };
     }
     
-    const poolToken = await getTelosToken(App, poolInfo.lpToken ?? poolInfo.token, chefAddress);
+    const poolToken = await getGeneralToken(App, poolInfo.lpToken ?? poolInfo.token, chefAddress);
     const userInfo = await chefContract.userInfo(poolIndex, App.YOUR_ADDRESS);
     const pendingRewardTokens = await chefContract.callStatic[pendingRewardsFunction](poolIndex, App.YOUR_ADDRESS);
     const staked = userInfo.amount / 10 ** poolToken.decimals;

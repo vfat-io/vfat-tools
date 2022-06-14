@@ -540,6 +540,7 @@ async function loadGeneralChefContract(App, tokens, prices, chef, chefAddress, c
     break;
     case "dfk" : _print(`<a href='https://subnets.avax.network/defi-kingdoms/dfk-chain/explorer/address/${chefAddress}' target='_blank'>Staking Contract</a>`);
     break;
+    case "telos" : _print(`<a href='https://www.teloscan.io/address/${chefAddress}' target='_blank'>Staking Contract</a>`);
   }
   _print(`Found ${poolCount} pools.\n`)
 
