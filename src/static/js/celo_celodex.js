@@ -22,7 +22,7 @@ async function main() {
 
   const chefContract = new ethers.Contract(CELODEX_CHEF_ADDR, POLYDEX_CHEF_ABI, App.provider);
 
-  const lpToken = await getCeloToken(App, CLX_USD_ADDRESS, CELODEX_CHEF_ADDR);
+  const lpToken = await getGeneralToken(App, CLX_USD_ADDRESS, CELODEX_CHEF_ADDR);
   const index =  lpToken.token0 === CLX_ADDR ? 1 : 0;
   const basePrice = prices[lpToken.tokens[index]] || {usd: 1};
   const clxPrice =  lpToken["q" + index] / lpToken["q" + (index === 0 ? 1 : 0)] * basePrice.usd;
@@ -34,8 +34,8 @@ async function main() {
 
   const tokens = {};
 
-  await loadCeloChefContract(App, tokens, prices, chefContract, CELODEX_CHEF_ADDR, POLYDEX_CHEF_ABI, rewardTokenTicker,
-    "clx", null, rewardsPerWeek, "pendingReward",[], []);
+  await loadGeneralChefContract(App, tokens, prices, chefContract, CELODEX_CHEF_ADDR, POLYDEX_CHEF_ABI, rewardTokenTicker,
+    "clx", null, rewardsPerWeek, "pendingReward",[], "celo");
 
   hideLoading();
 }

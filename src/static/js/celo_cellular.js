@@ -28,8 +28,8 @@ async function main() {
     const tokens = {};
     const prices = await getCeloPrices();
 
-    await loadCeloChefContract(App, tokens, prices, CELLULAR_CHEF, CELLULAR_CHEF_ADDR, CELLULAR_CHEF_ABI, rewardTokenTicker,
-        "cell", null, rewardsPerWeek, "pendingCell");
+    await loadGeneralChefContract(App, tokens, prices, CELLULAR_CHEF, CELLULAR_CHEF_ADDR, CELLULAR_CHEF_ABI, rewardTokenTicker,
+        "cell", null, rewardsPerWeek, "pendingCell", [], "celo");
 
     hideLoading();
 }

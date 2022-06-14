@@ -132,7 +132,7 @@ $(function() {
   
     _print("");
   
-    let p = await loadMultipleCeloSynthetixPools(App, tokens, prices, pools)
+    let p = await loadMultipleGeneralSynthetixPools(App, tokens, prices, pools, "celo")
     _print_bold(`Total staked: $${formatMoney(p.staked_tvl)}`);
     if (p.totalUserStaked > 0) {
       _print(`You are staking a total of $${formatMoney(p.totalUserStaked)} at an APR of ${(p.totalAPR * 100).toFixed(2)}%\n`);
@@ -171,7 +171,7 @@ $(function() {
       }
       rewardTokenAddresses.push(internalRewardTokenAddress);
   
-      const stakeToken = await getCeloToken(App, stakeTokenAddress, stakingAddress);
+      const stakeToken = await getGeneralToken(App, stakeTokenAddress, stakingAddress);
       stakeToken.staked = await STAKING_POOL.totalSupply() / 10 ** stakeToken.decimals;
   
       var newPriceAddresses = stakeToken.tokens.filter(x =>
@@ -184,12 +184,12 @@ $(function() {
       var newTokenAddresses = stakeToken.tokens.filter(x =>
         !getParameterCaseInsensitive(tokens,x));
       for (const address of newTokenAddresses) {
-          tokens[address] = await getCeloToken(App, address, stakingAddress);
+          tokens[address] = await getGeneralToken(App, address, stakingAddress);
       }
   
       for(let rewardTokenAddress of rewardTokenAddresses){
         if (!getParameterCaseInsensitive(tokens, rewardTokenAddress)) {
-          tokens[rewardTokenAddress] = await getCeloToken(App, rewardTokenAddress, stakingAddress);
+          tokens[rewardTokenAddress] = await getGeneralToken(App, rewardTokenAddress, stakingAddress);
         }
       }
   

@@ -28,8 +28,8 @@ async function main() {
     const tokens = {};
     const prices = await getCeloPrices();
 
-    await loadCeloChefContract(App, tokens, prices, HAREM_CHEF, CELO_CHEF_ADDR, CELO_CHEF_ABI, rewardTokenTicker,
-        "Harem", null, rewardsPerWeek, "pendingHarem");
+    await loadGeneralChefContract(App, tokens, prices, HAREM_CHEF, CELO_CHEF_ADDR, CELO_CHEF_ABI, rewardTokenTicker,
+        "Harem", null, rewardsPerWeek, "pendingHarem", [], "celo");
 
     hideLoading();
 }

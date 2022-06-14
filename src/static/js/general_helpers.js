@@ -534,6 +534,8 @@ async function loadGeneralChefContract(App, tokens, prices, chef, chefAddress, c
     break;
     case "milkomeda" : _print(`<a href='https://explorer-mainnet-cardano-evm.c1.milkomeda.com/address/${chefAddress}' target='_blank'>Staking Contract</a>`);
     break;
+    case "celo" : _print(`<a href='https://explorer.celo.org/address/${chefAddress}' target='_blank'>Staking Contract</a>`);
+    break;
   }
   _print(`Found ${poolCount} pools.\n`)
 

@@ -43,10 +43,10 @@ $(function() {
     async function loadMobiusPoolInfo(App, tokens, prices, contractAddress) {
       try {
         const contract = await new ethers.Contract(contractAddress, MOBIUS_VAULT_ABI, App.provider);
-        const vault = await getCeloToken(App, contractAddress, App.YOUR_ADDRESS);
+        const vault = await getGeneralToken(App, contractAddress, App.YOUR_ADDRESS);
         var newTokenAddresses = vault.tokens.filter(x => !getParameterCaseInsensitive(tokens, x));
         for (const address of newTokenAddresses) {
-            tokens[address] = await getCeloToken(App, address, contractAddress);
+            tokens[address] = await getGeneralToken(App, address, contractAddress);
         }
         const totalSupply = await contract.totalSupply() / 1e18;
         const userStaked = await contract.balanceOf(App.YOUR_ADDRESS) / 1e18;

@@ -881,7 +881,7 @@ $(function () {
     var tokens = {};
   
     const rewardTokenAddress = await chefContract.callStatic[rewardTokenFunction]();
-    const rewardToken = await getCeloToken(App, rewardTokenAddress, chefAddress);
+    const rewardToken = await getGeneralToken(App, rewardTokenAddress, chefAddress);
     const rewardsPerWeek = rewardsPerWeekFixed ??
       await chefContract.callStatic[rewardsPerBlockFunction]()
       / 10 ** rewardToken.decimals * 604800 / 3
@@ -893,7 +893,7 @@ $(function () {
     var tokenAddresses = [].concat.apply([], poolInfos.filter(x => x.poolToken).map(x => x.poolToken.tokens));
   
     await Promise.all(tokenAddresses.map(async (address) => {
-        tokens[address] = await getCeloToken(App, address, chefAddress);
+        tokens[address] = await getGeneralToken(App, address, chefAddress);
     }));
   
     if (deathPoolIndices) {   //load prices for the deathpool assets
@@ -952,7 +952,7 @@ $(function () {
           pendingRewardTokens : 0,
         };
       }
-      const poolToken = await getCeloToken(app, lpToken, chefAddress);
+      const poolToken = await getGeneralToken(app, lpToken, chefAddress);
       const userInfo = await chefContract.userInfo(poolIndex, app.YOUR_ADDRESS);
       //const userInfoMatic = await chefMaticRewardsContract.userInfo(poolIndex, app.YOUR_ADDRESS);
       const pendingRewardTokens = await chefContract.callStatic[pendingRewardsFunction](poolIndex, app.YOUR_ADDRESS);
