@@ -35,8 +35,8 @@ $(function() {
         const tokens = {};
         const prices = await getMoonbeamPrices();
     
-        await loadMoonbeamChefContract(App, tokens, prices, STELLA_CHEF, STELLA_CHEF_ADDR, STELLA_CHEF_ABI, rewardTokenTicker,
-            "stella", null, rewardsPerWeek, "pendingStella", [0,2,3,4,5,6,7,8,9]);
+        await loadGeneralEthcallChefContract(App, tokens, prices, STELLA_CHEF, STELLA_CHEF_ADDR, STELLA_CHEF_ABI, rewardTokenTicker,
+            "stella", null, rewardsPerWeek, "pendingStella", [0,2,3,4,5,6,7,8,9], "moonbeam");
 
         _print_bold(`\nMultiple Reward Pools\n`);
 
