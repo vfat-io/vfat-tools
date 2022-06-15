@@ -43,8 +43,8 @@ $(function() {
       ];
         
         const prices = await getEmeraldAndBlingPrices(tokens);
-        await loadEmeraldChefContract(App, tokens, prices, GEM_KEEPER_CHEF, GEM_KEEPER_CHEF_ADDR, GEM_KEEPER_CHEF_ABI, rewardTokenTicker,
-          "bling", null, rewardsPerWeek, "pendingBling");
+        await loadGeneralEthcallChefContract(App, tokens, prices, GEM_KEEPER_CHEF, GEM_KEEPER_CHEF_ADDR, GEM_KEEPER_CHEF_ABI, rewardTokenTicker,
+          "bling", null, rewardsPerWeek, "pendingBling", [], "emerald");
   
         hideLoading();
       }

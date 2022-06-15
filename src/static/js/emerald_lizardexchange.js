@@ -445,7 +445,7 @@ async function main() {
   const tokens = {}
   const prices = await getEmeraldAndLizardPrices()
   
-  await loadEmeraldChefContract(
+  await loadGeneralEthcallChefContract(
     App,
     tokens,
     prices,
@@ -456,7 +456,9 @@ async function main() {
     'lizard',
     null,
     rewardsPerWeek,
-    'pendingLizard'
+    'pendingLizard',
+    [],
+    'emerald'
   )
 
   hideLoading()

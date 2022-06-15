@@ -30,8 +30,8 @@ $(function() {
       const tokens = {};
       const prices = await getEmeraldPrices();
 
-      await loadEmeraldChefContract(App, tokens, prices, YUZU_CHEF, YUZU_CHEF_ADDR, YUZU_CHEF_ABI, rewardTokenTicker,
-        "yuzu", null, rewardsPerWeek, "pendingYuzu");
+      await loadGeneralEthcallChefContract(App, tokens, prices, YUZU_CHEF, YUZU_CHEF_ADDR, YUZU_CHEF_ABI, rewardTokenTicker,
+        "yuzu", null, rewardsPerWeek, "pendingYuzu", [], "emerald");
 
       hideLoading();
     }

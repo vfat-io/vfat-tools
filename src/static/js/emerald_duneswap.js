@@ -31,8 +31,8 @@ $(function() {
       const tokens = {};
       const prices = await getEmeraldPrices();
 
-      await loadEmeraldChefContract(App, tokens, prices, DUNE_CHEF, DUNE_CHEF_ADDR, DUNE_CHEF_ABI, rewardTokenTicker,
-        "dune", null, rewardsPerWeek, "pendingDune");
+      await loadGeneralEthcallChefContract(App, tokens, prices, DUNE_CHEF, DUNE_CHEF_ADDR, DUNE_CHEF_ABI, rewardTokenTicker,
+        "dune", null, rewardsPerWeek, "pendingDune", [], "emerald");
 
       hideLoading();
     }
