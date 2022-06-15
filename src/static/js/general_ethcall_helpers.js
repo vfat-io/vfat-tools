@@ -822,6 +822,8 @@ async function loadGeneralEthcallChefContract(App, tokens, prices, chef, chefAdd
     break;
     case "metis" : _print(`<a href='http://andromeda-explorer.metis.io/address/${chefAddress}' target='_blank'>Staking Contract</a>`);
     break;
+    case "boba" : _print(`<a href='https://blockexplorer.boba.network/address/${chefAddress}' target='_blank'>Staking Contract</a>`);
+    break;
   }
   _print(`Found ${poolCount} pools.\n`)
 

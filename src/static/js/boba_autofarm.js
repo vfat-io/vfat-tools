@@ -60,10 +60,10 @@ async function main() {
       const wantLockedTotal = await stratContract.wantLockedTotal()
       const farmContractAddress = await stratContract.farmContractAddress()
 
-      const wantToken = await getBobaToken(App, poolInfo.want, App.YOUR_ADDRESS);
+      const wantToken = await getGeneralEthcallToken(App, poolInfo.want, App.YOUR_ADDRESS);
       var newTokenAddresses = wantToken.tokens.filter(x => !getParameterCaseInsensitive(tokens, x));
       for (const address of newTokenAddresses) {
-          tokens[address] = await getBobaToken(App, address, farmContractAddress);
+          tokens[address] = await getGeneralEthcallToken(App, address, farmContractAddress);
       }
 
       const poolPrices = getPoolPrices(tokens, prices, wantToken, "boba");

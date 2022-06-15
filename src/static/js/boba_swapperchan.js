@@ -20,14 +20,14 @@ async function loadMasterSimpContract(App, tokens, prices, chef, chefAddress, ch
   _print(`Showing incentivized pools only.\n`);
 
   const rewardTokenAddress = await chefContract.callStatic[rewardTokenFunction]();
-  const rewardToken = await getBobaToken(App, rewardTokenAddress, chefAddress);
+  const rewardToken = await getGeneralEthcallToken(App, rewardTokenAddress, chefAddress);
 
   const rewardsPerWeek = rewardsPerWeekFixed ??
     await chefContract.callStatic[rewardsPerBlockFunction]()
     / 10 ** rewardToken.decimals * 604800 / 3
 
   var poolInfos = await Promise.all([...Array(poolCount).keys()].map(async (x) =>
-    await getBobaPoolInfo(App, chefContract, chefAddress, x, pendingRewardsFunction)));
+    await getGeneralEthcallPoolInfo(App, chefContract, chefAddress, x, pendingRewardsFunction)));
 
   const pendingWaifus = await Promise.all([...Array(poolCount).keys()].map(async (x) =>
   await waifuLibrary.callStatic[pendingRewardsFunction](x, App.YOUR_ADDRESS)));
@@ -42,7 +42,7 @@ async function loadMasterSimpContract(App, tokens, prices, chef, chefAddress, ch
   var tokenAddresses = [].concat.apply([], poolInfos.filter(x => x.poolToken).map(x => x.poolToken.tokens));
 
   await Promise.all(tokenAddresses.map(async (address) => {
-      tokens[address] = await getBobaToken(App, address, chefAddress);
+      tokens[address] = await getGeneralEthcallToken(App, address, chefAddress);
   }));
   
   if (deathPoolIndices) {   //load prices for the deathpool assets

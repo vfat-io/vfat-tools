@@ -24,8 +24,8 @@ async function main() {
 
     await loadOLOSynthetixPoolInfo(App, tokens, prices, "0xf5ffa0aabf101e651f6cf722031d4efedc835b67")
 
-    let p = await loadBobaChefContract(App, tokens, prices, OLO_CHEF, OLO_CHEF_ADDR, OLO_CHEF_ABI, rewardTokenTicker,
-        "oolong", null, rewardsPerWeek, "pendingOolong");
+    let p = await loadGeneralEthcallChefContract(App, tokens, prices, OLO_CHEF, OLO_CHEF_ADDR, OLO_CHEF_ABI, rewardTokenTicker,
+        "oolong", null, rewardsPerWeek, "pendingOolong", [], "boba");
     
     const claimAll = async function() {
       return rewardsOloContract_claimAll(OLO_CHEF_ABI, OLO_CHEF_ADDR, p.totalUserStaked, App)
@@ -38,7 +38,7 @@ async function main() {
   }
 
 async function loadOLOSynthetixPoolInfo(App, tokens, prices, stakeTokenAddress) {
-      var stakeToken = await getBobaToken(App, stakeTokenAddress, stakeTokenAddress);
+      var stakeToken = await getGeneralEthcallToken(App, stakeTokenAddress, stakeTokenAddress);
       var newPriceAddresses = stakeToken.tokens.filter(x =>
         !getParameterCaseInsensitive(prices, x));
       var newPrices = await lookUpTokenPrices(newPriceAddresses);
@@ -49,7 +49,7 @@ async function loadOLOSynthetixPoolInfo(App, tokens, prices, stakeTokenAddress) 
       var newTokenAddresses = stakeToken.tokens.filter(x =>
         !getParameterCaseInsensitive(tokens,x));
       for (const address of newTokenAddresses) {
-          tokens[address] = await getBobaToken(App, address, stakeTokenAddress);
+          tokens[address] = await getGeneralEthcallToken(App, address, stakeTokenAddress);
       }
       const poolPrices = getPoolPrices(tokens, prices, stakeToken, "boba");
       if (!poolPrices)
