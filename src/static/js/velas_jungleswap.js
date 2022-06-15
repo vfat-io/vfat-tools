@@ -24,8 +24,8 @@ async function main() {
     const tokens = {};
     const prices = await getVelasPrices();
 
-    await loadVelasChefContract(App, tokens, prices, JUNGLE_CHEF, JUNGLE_CHEF_ADDR, JUNGLE_CHEF_ABI, rewardTokenTicker,
-        "token", null, rewardsPerWeek, "pendingToken", [1, 10]);
+    await loadGeneralEthcallChefContract(App, tokens, prices, JUNGLE_CHEF, JUNGLE_CHEF_ADDR, JUNGLE_CHEF_ABI, rewardTokenTicker,
+        "token", null, rewardsPerWeek, "pendingToken", [1, 10], "velas");
 
     hideLoading();
   }

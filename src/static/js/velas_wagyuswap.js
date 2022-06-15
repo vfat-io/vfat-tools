@@ -21,8 +21,8 @@ async function main() {
     const tokens = {};
     const prices = await getVelasPrices();
 
-    await loadVelasChefContract(App, tokens, prices, WAG_CHEF, WAG_CHEF_ADDR, WAG_CHEF_ABI, rewardTokenTicker,
-        "cake", null, rewardsPerWeek, "pendingCake", [1]);
+    await loadGeneralEthcallChefContract(App, tokens, prices, WAG_CHEF, WAG_CHEF_ADDR, WAG_CHEF_ABI, rewardTokenTicker,
+        "cake", null, rewardsPerWeek, "pendingCake", [1], "velas");
 
     hideLoading();
   }

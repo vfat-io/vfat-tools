@@ -861,6 +861,8 @@ async function loadGeneralEthcallChefContract(App, tokens, prices, chef, chefAdd
     break;
     case "moonbeam" : _print(`<a href='https://moonscan.io/address/${chefAddress}' target='_blank'>Staking Contract</a>`);
     break;
+    case "velas" : _print(`<a href='https://evmexplorer.velas.com/address/${chefAddress}' target='_blank'>Staking Contract</a>`);
+    break;
   }
   _print(`Found ${poolCount} pools.\n`)
 
