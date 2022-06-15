@@ -137,7 +137,7 @@ async function loadMaiaSynthetixPoolInfo(App, tokens, prices, stakingAbi, stakin
     const rewardTokenAddress = "0xb27BbeaACA2C00d6258C3118BAB6b5B6975161c8";
     rewardTokenAddresses.push(rewardTokenAddress);
     if (!getParameterCaseInsensitive(tokens, rewardTokenAddress)) {
-      tokens[rewardTokenAddress] = await getMetisToken(App, rewardTokenAddress, stakingAddress);
+      tokens[rewardTokenAddress] = await getGeneralEthcallToken(App, rewardTokenAddress, stakingAddress);
     }
     const rewardToken = getParameterCaseInsensitive(tokens, rewardTokenAddress);
     const rewardTokenTicker = rewardToken.symbol;
@@ -155,7 +155,7 @@ async function loadMaiaSynthetixPoolInfo(App, tokens, prices, stakingAbi, stakin
     earnings.push(earned);
     usdCoinsPerWeek.push(usdPerWeek);
 
-    var stakeToken = await getMetisToken(App, stakeTokenAddress, stakingAddress);
+    var stakeToken = await getGeneralEthcallToken(App, stakeTokenAddress, stakingAddress);
 
     const balance = await STAKING_POOL.balanceOf(App.YOUR_ADDRESS)
     const derivedSupply_ = await STAKING_POOL.derivedSupply()
@@ -173,7 +173,7 @@ async function loadMaiaSynthetixPoolInfo(App, tokens, prices, stakingAbi, stakin
     var newTokenAddresses = stakeToken.tokens.filter(x =>
       !getParameterCaseInsensitive(tokens,x));
     for (const address of newTokenAddresses) {
-        tokens[address] = await getMetisToken(App, address, stakingAddress);
+        tokens[address] = await getGeneralEthcallToken(App, address, stakingAddress);
     }
 
     const poolPrices = getPoolPrices(tokens, prices, stakeToken, "metis");
@@ -315,7 +315,7 @@ const maiaContract_claim = async function(rewardTokenAddress, rewardPoolAddr, Ap
 }
 
 async function loadMaiaSynthetixPoolInfoPrice(App, tokens, prices, stakingAddress, stakeTokenAddress) {
-  var stakeToken = await getMetisToken(App, stakeTokenAddress, stakingAddress);
+  var stakeToken = await getGeneralEthcallToken(App, stakeTokenAddress, stakingAddress);
   var newPriceAddresses = stakeToken.tokens.filter(x =>
     !getParameterCaseInsensitive(prices, x));
   var newPrices = await lookUpTokenPrices(newPriceAddresses);
@@ -326,7 +326,7 @@ async function loadMaiaSynthetixPoolInfoPrice(App, tokens, prices, stakingAddres
   var newTokenAddresses = stakeToken.tokens.filter(x =>
     !getParameterCaseInsensitive(tokens,x));
   for (const address of newTokenAddresses) {
-      tokens[address] = await getMetisToken(App, address, stakingAddress);
+      tokens[address] = await getGeneralEthcallToken(App, address, stakingAddress);
   }
   const poolPrices = getPoolPrices(tokens, prices, stakeToken, "metis");
 

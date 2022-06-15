@@ -25,8 +25,8 @@ async function main() {
     const tokens = {};
     const prices = await getMetisPrices();
 
-    await loadMetisChefContract(App, tokens, prices, TETHYS_CHEF, TETHYS_CHEF_ADDR, TETHYS_CHEF_ABI, rewardTokenTicker,
-        "tethys", null, rewardsPerWeek, "pendingTethys");
+    await loadGeneralEthcallChefContract(App, tokens, prices, TETHYS_CHEF, TETHYS_CHEF_ADDR, TETHYS_CHEF_ABI, rewardTokenTicker,
+        "tethys", null, rewardsPerWeek, "pendingTethys", [], "metis");
 
     hideLoading();
   }

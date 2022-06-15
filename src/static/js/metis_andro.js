@@ -31,8 +31,8 @@ async function main() {
     const tokens = {};
     const prices = await getMetisPrices();
 
-    await loadMetisChefContract(App, tokens, prices, ANDRO_CHEF, ANDRO_CHEF_ADDR, ANDRO_CHEF_ABI, rewardTokenTicker,
-        "Andro", null, rewardsPerWeek, "pendingAndro");
+    await loadGeneralEthcallChefContract(App, tokens, prices, ANDRO_CHEF, ANDRO_CHEF_ADDR, ANDRO_CHEF_ABI, rewardTokenTicker,
+        "Andro", null, rewardsPerWeek, "pendingAndro", [], "metis");
 
     hideLoading();
   }

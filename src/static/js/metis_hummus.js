@@ -134,7 +134,7 @@ const contract_unstake = async function(abi, contractAddress, stakedAmount, App)
         pendingRewardTokens : 0,
       };
     }
-    const poolToken = await getMetisToken(app, poolInfo.lpToken ?? poolInfo.token ?? poolInfo.stakingToken, chefAddress);
+    const poolToken = await getGeneralEthcallToken(app, poolInfo.lpToken ?? poolInfo.token ?? poolInfo.stakingToken, chefAddress);
     const userInfo = await chefContract.userInfo(poolIndex, app.YOUR_ADDRESS);
     const pendingRewards = await chefContract.callStatic[pendingRewardsFunction](poolIndex, app.YOUR_ADDRESS);
     const pendingRewardTokens = pendingRewards.pendingHum;
@@ -232,7 +232,7 @@ function printHummusAPR(rewardTokenTicker, rewardPrice, poolRewardsPerWeek, pool
     _print(`Showing incentivized pools only.\n`);
 
     const rewardTokenAddress = await chefContract.callStatic[rewardTokenFunction]();
-    const rewardToken = await getMetisToken(App, rewardTokenAddress, chefAddress);
+    const rewardToken = await getGeneralEthcallToken(App, rewardTokenAddress, chefAddress);
 
     const rewardsPerWeek = rewardsPerWeekFixed ??
       await chefContract.callStatic[rewardsPerBlockFunction]()
@@ -244,7 +244,7 @@ function printHummusAPR(rewardTokenTicker, rewardPrice, poolRewardsPerWeek, pool
     var tokenAddresses = [].concat.apply([], poolInfos.filter(x => x.poolToken).map(x => x.poolToken.tokens));
 
     await Promise.all(tokenAddresses.map(async (address) => {
-        tokens[address] = await getMetisToken(App, address, chefAddress);
+        tokens[address] = await getGeneralEthcallToken(App, address, chefAddress);
     }));
 
     if (deathPoolIndices) {   //load prices for the deathpool assets

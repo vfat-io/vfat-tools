@@ -29,14 +29,14 @@ async function main() {
   const rewardsPerWeek = await NETT_CHEF.nettPerSec() /1e18
       * 604800;
 
-  await loadMetisChefContract(App, tokens, prices, NETT_CHEF, NETT_CHEF_ADDR, NETT_CHEF_ABI, rewardTokenTicker,
-    "nett", null, rewardsPerWeek, "pendingTokens");
+  await loadGeneralEthcallChefContract(App, tokens, prices, NETT_CHEF, NETT_CHEF_ADDR, NETT_CHEF_ABI, rewardTokenTicker,
+    "nett", null, rewardsPerWeek, "pendingTokens", [], "metis");
 
   _print("");
 
   await loadNettSynthetixPoolInfo(App, tokens, prices, pool0.abi, pool0.address, "0x60312d4EbBF3617d3D33841906b5868A86931Cbd")
 
-  let p0 = await loadMetisSynthetixPool(App, tokens, prices, pool0.abi, pool0.address, pool0.rewardTokenFunction, pool0.stakeTokenFunction)
+  let p0 = await loadGeneralEthcallSynthetixPool(App, tokens, prices, pool0.abi, pool0.address, pool0.rewardTokenFunction, pool0.stakeTokenFunction, "metis")
 
   _print_bold(`Total staked: $${formatMoney(p0.staked_tvl )}`);
   if (p0.totalUserStaked > 0) {
@@ -50,7 +50,7 @@ async function loadNettSynthetixPoolInfo(App, tokens, prices, stakingAbi, stakin
   stakeTokenAddress) {
         const STAKING_POOL = new ethers.Contract(stakingAddress, stakingAbi, App.provider);
 
-        var stakeToken = await getMetisToken(App, stakeTokenAddress, stakingAddress);
+        var stakeToken = await getGeneralEthcallToken(App, stakeTokenAddress, stakingAddress);
 
         var newPriceAddresses = stakeToken.tokens.filter(x =>
           !getParameterCaseInsensitive(prices, x));
@@ -62,7 +62,7 @@ async function loadNettSynthetixPoolInfo(App, tokens, prices, stakingAbi, stakin
         var newTokenAddresses = stakeToken.tokens.filter(x =>
           !getParameterCaseInsensitive(tokens,x));
         for (const address of newTokenAddresses) {
-            tokens[address] = await getMetisToken(App, address, stakingAddress);
+            tokens[address] = await getGeneralEthcallToken(App, address, stakingAddress);
         }
 
         const poolPrices = getPoolPrices(tokens, prices, stakeToken, "metis");
