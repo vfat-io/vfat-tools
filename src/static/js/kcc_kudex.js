@@ -31,8 +31,8 @@ $(function() {
       const tokens = {};
       const prices = await getKccPrices();
 
-      await loadKccChefContract(App, tokens, prices, KUDEX_CHEF, KUDEX_CHEF_ADDR, KUDEX_CHEF_ABI, rewardTokenTicker,
-          "kudex", null, rewardsPerWeek, "pendingKudex", [1]);
+      await loadGeneralChefContract(App, tokens, prices, KUDEX_CHEF, KUDEX_CHEF_ADDR, KUDEX_CHEF_ABI, rewardTokenTicker,
+          "kudex", null, rewardsPerWeek, "pendingKudex", [1], "kcc");
 
       hideLoading();
     }

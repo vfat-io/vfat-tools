@@ -33,7 +33,7 @@ async function main() {
     
           const rewardTokenAddress = await STAKING_POOL.callStatic[rewardTokenFunction]();
     
-          var stakeToken = await getKccToken(App, stakeTokenAddress, stakingAddress);
+          var stakeToken = await getGeneralToken(App, stakeTokenAddress, stakingAddress);
     
           if (stakeTokenAddress.toLowerCase() === rewardTokenAddress.toLowerCase()) {
             stakeToken.staked = await STAKING_POOL.totalSupply() / 10 ** stakeToken.decimals;
@@ -49,10 +49,10 @@ async function main() {
           var newTokenAddresses = stakeToken.tokens.filter(x =>
             !getParameterCaseInsensitive(tokens,x));
           for (const address of newTokenAddresses) {
-              tokens[address] = await getKccToken(App, address, stakingAddress);
+              tokens[address] = await getGeneralToken(App, address, stakingAddress);
           }
           if (!getParameterCaseInsensitive(tokens, rewardTokenAddress)) {
-              tokens[rewardTokenAddress] = await getKccToken(App, rewardTokenAddress, stakingAddress);
+              tokens[rewardTokenAddress] = await getGeneralToken(App, rewardTokenAddress, stakingAddress);
           }
           const rewardToken = getParameterCaseInsensitive(tokens, rewardTokenAddress);
     
@@ -131,7 +131,7 @@ async function loadKukaKccSynthetixPoolInfo(App, tokens, prices, stakingAbi, sta
 
       const rewardTokenAddress = await STAKING_POOL.callStatic[rewardTokenFunction]();
 
-      var stakeToken = await getKccToken(App, stakeTokenAddress, stakingAddress);
+      var stakeToken = await getGeneralToken(App, stakeTokenAddress, stakingAddress);
 
       if (stakeTokenAddress.toLowerCase() === rewardTokenAddress.toLowerCase()) {
         stakeToken.staked = await STAKING_POOL.totalSupply() / 10 ** stakeToken.decimals;
@@ -147,10 +147,10 @@ async function loadKukaKccSynthetixPoolInfo(App, tokens, prices, stakingAbi, sta
       var newTokenAddresses = stakeToken.tokens.filter(x =>
         !getParameterCaseInsensitive(tokens,x));
       for (const address of newTokenAddresses) {
-          tokens[address] = await getKccToken(App, address, stakingAddress);
+          tokens[address] = await getGeneralToken(App, address, stakingAddress);
       }
       if (!getParameterCaseInsensitive(tokens, rewardTokenAddress)) {
-          tokens[rewardTokenAddress] = await getKccToken(App, rewardTokenAddress, stakingAddress);
+          tokens[rewardTokenAddress] = await getGeneralToken(App, rewardTokenAddress, stakingAddress);
       }
       const rewardToken = getParameterCaseInsensitive(tokens, rewardTokenAddress);
 

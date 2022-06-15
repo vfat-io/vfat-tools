@@ -31,8 +31,8 @@ async function main() {
     const tokens = {};
     const prices = await getKccPrices();
 
-    await loadKccChefContract(App, tokens, prices, GEM_CHEF, GEM_CHEF_ADDR, GEM_CHEF_ABI, rewardTokenTicker,
-        "gem", "gemPerBlock", rewardsPerWeek, "pendingGem");
+    await loadGeneralChefContract(App, tokens, prices, GEM_CHEF, GEM_CHEF_ADDR, GEM_CHEF_ABI, rewardTokenTicker,
+        "gem", "gemPerBlock", rewardsPerWeek, "pendingGem", [], "kcc");
 
     hideLoading();
 }

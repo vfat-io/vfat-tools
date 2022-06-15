@@ -31,8 +31,8 @@ async function main() {
     const tokens = {};
     const prices = await getKccPrices();
 
-    await loadKccChefContract(App, tokens, prices, KUBONE_CHEF, KUBONE_CHEF_ADDR, KUBONE_CHEF_ABI, rewardTokenTicker,
-        "kubone", "kubonePerBlock", rewardsPerWeek, "pendingKubone");
+    await loadGeneralChefContract(App, tokens, prices, KUBONE_CHEF, KUBONE_CHEF_ADDR, KUBONE_CHEF_ABI, rewardTokenTicker,
+        "kubone", "kubonePerBlock", rewardsPerWeek, "pendingKubone", [], "kcc");
 
     hideLoading();
 }

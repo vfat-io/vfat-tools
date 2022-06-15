@@ -31,8 +31,8 @@ async function main() {
     const tokens = {};
     const prices = await getKccPrices();
 
-    await loadKccChefContract(App, tokens, prices, MJT_CHEF, MJT_CHEF_ADDR, MJT_CHEF_ABI, rewardTokenTicker,
-        "mojito", null, rewardsPerWeek, "pendingMojito", [1]);
+    await loadGeneralChefContract(App, tokens, prices, MJT_CHEF, MJT_CHEF_ADDR, MJT_CHEF_ABI, rewardTokenTicker,
+        "mojito", null, rewardsPerWeek, "pendingMojito", [1], "kcc");
 
     hideLoading();
 }

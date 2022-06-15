@@ -31,8 +31,8 @@ async function main() {
     const tokens = {};
     const prices = await getKccPrices();
 
-    await loadKccChefContract(App, tokens, prices, SAFEDEX_CHEF, SAFEDEX_CHEF_ADDR, SAFEDEX_CHEF_ABI, rewardTokenTicker,
-        "egg", "eggPerBlock", rewardsPerWeek, "pendingEgg");
+    await loadGeneralChefContract(App, tokens, prices, SAFEDEX_CHEF, SAFEDEX_CHEF_ADDR, SAFEDEX_CHEF_ABI, rewardTokenTicker,
+        "egg", "eggPerBlock", rewardsPerWeek, "pendingEgg", [], "kcc");
 
     hideLoading();
 }

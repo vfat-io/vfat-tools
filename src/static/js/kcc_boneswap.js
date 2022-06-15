@@ -30,8 +30,8 @@ async function main() {
     const tokens = {};
     const prices = await getKccPrices();
 
-    await loadMaticChefContract(App, tokens, prices, BONESWAP_MC, BONESWAP_MC_ADDR, BONESWAP_CHEF_ABI, rewardTokenTicker,
-        "boneToken", null, rewardsPerWeek, "pendingBone");
+    await loadGeneralChefContract(App, tokens, prices, BONESWAP_MC, BONESWAP_MC_ADDR, BONESWAP_CHEF_ABI, rewardTokenTicker,
+        "boneToken", null, rewardsPerWeek, "pendingBone", [], "kcc");
 
     hideLoading();
   }

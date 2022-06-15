@@ -31,9 +31,8 @@ async function main() {
     const tokens = {};
     const prices = await getKccPrices();
 
-    await loadKccChefContract(App, tokens, prices, KAFE_CHEF, KAFE_CHEF_ADDR, KAFE_CHEF_ABI, rewardTokenTicker,
-        "kafe", "kafePerBlock", rewardsPerWeek, "pendingKafe");
+    await loadGeneralChefContract(App, tokens, prices, KAFE_CHEF, KAFE_CHEF_ADDR, KAFE_CHEF_ABI, rewardTokenTicker,
+        "kafe", "kafePerBlock", rewardsPerWeek, "pendingKafe", [], "kcc");
 
     hideLoading();
 }
-

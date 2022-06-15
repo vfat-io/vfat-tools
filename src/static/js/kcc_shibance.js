@@ -31,8 +31,8 @@ $(function() {
         const tokens = {};
         const prices = await getKccPrices();
 
-        await loadKccChefContract(App, tokens, prices, SHIB_CHEF, SHIB_CHEF_ADDR, SHIB_CHEF_ABI, rewardTokenTicker,
-            "cake", null, rewardsPerWeek, "pendingCake");
+        await loadGeneralChefContract(App, tokens, prices, SHIB_CHEF, SHIB_CHEF_ADDR, SHIB_CHEF_ABI, rewardTokenTicker,
+            "cake", null, rewardsPerWeek, "pendingCake", [], "kcc");
 
         hideLoading();
       }
