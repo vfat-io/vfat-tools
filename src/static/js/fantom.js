@@ -24,7 +24,7 @@ const main = async () => {
       ['Waka               ', `<a href='waka'         >Various</a>`, 'WAKA         ', 'https://waka.finance'],
       ['Elk                ', `<a href='elk'          >Various</a>`, 'ELK          ', 'https://app.elk.finance'],
       ['Paintswap          ', `<a href='paintswap'    >Various</a>`, 'BRUSH        ', 'https://paintswap.finance'],
-      ['Tomb *             ', `<a href='tomb'         >Various</a>`, 'TOMB         ', 'https://tomb.com'],
+      ['Tomb               ', `<a href='tomb'         >Various</a>`, 'TOMB         ', 'https://tomb.com'],
       ['Shadow             ', `<a href='shadow'       >Various</a>`, 'SHADOW       ', 'https://shadowswap.app'],
       ['Borgswap           ', `<a href='borgswap'     >Various</a>`, 'KLING        ', 'https://klingftm.borgswap.exchange'],
       ['Opera              ', `<a href='opera'        >Various</a>`, 'OPERA        ', 'https://www.operaswap.finance'],

@@ -29,8 +29,8 @@ $(function() {
         const tokens = {};
         const prices = await getFantomPrices();
     
-        await loadFantomChefContract(App, tokens, prices, WITCHER_CHEF, WITCHER_CHEF_ADDR, WITCHER_CHEF_ABI, rewardTokenTicker,
-          "witcher", null, rewardsPerWeek, "pendingWitcher");
+        await loadGeneralEthcallChefContract(App, tokens, prices, WITCHER_CHEF, WITCHER_CHEF_ADDR, WITCHER_CHEF_ABI, rewardTokenTicker,
+          "witcher", null, rewardsPerWeek, "pendingWitcher", [], "fantom");
     
         hideLoading();
       }

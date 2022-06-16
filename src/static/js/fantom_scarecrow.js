@@ -26,13 +26,13 @@ $(function() {
       const tokens = {};
       const prices = await getFantomPrices();
 
-      await loadFantomChefContract(App, tokens, prices, RAVEN_CHEF, RAVEN_CHEF_ADDR, RAVEN_CHEF_ABI, rewardTokenTicker2,
-        "raven", null, rewardsPerWeek2, "pendingRaven", [1]);
+      await loadGeneralEthcallChefContract(App, tokens, prices, RAVEN_CHEF, RAVEN_CHEF_ADDR, RAVEN_CHEF_ABI, rewardTokenTicker2,
+        "raven", null, rewardsPerWeek2, "pendingRaven", [1], "fantom");
 
       _print("");
   
-      await loadFantomChefContract(App, tokens, prices, SCARECROW_CHEF, SCARECROW_CHEF_ADDR, SCARECROW_CHEF_ABI, rewardTokenTicker,
-        "scare", null, rewardsPerWeek, "pendingScare", [1]);
+      await loadGeneralEthcallChefContract(App, tokens, prices, SCARECROW_CHEF, SCARECROW_CHEF_ADDR, SCARECROW_CHEF_ABI, rewardTokenTicker,
+        "scare", null, rewardsPerWeek, "pendingScare", [1], "fantom");
   
   
       hideLoading();

@@ -29,8 +29,8 @@ $(function() {
         const tokens = {};
         const prices = await getFantomPrices();
     
-        await loadFantomChefContract(App, tokens, prices, ZMUMMY_CHEF, ZMUMMY_CHEF_ADDR, ZMUMMY_CHEF_ABI, rewardTokenTicker,
-          "zmummy", null, rewardsPerWeek, "pendingZmummy");
+        await loadGeneralEthcallChefContract(App, tokens, prices, ZMUMMY_CHEF, ZMUMMY_CHEF_ADDR, ZMUMMY_CHEF_ABI, rewardTokenTicker,
+          "zmummy", null, rewardsPerWeek, "pendingZmummy", [], "fantom");
     
         hideLoading();
       }

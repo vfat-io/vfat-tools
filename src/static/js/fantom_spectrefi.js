@@ -20,8 +20,8 @@ $(function () {
         const tokens = {};		
         const prices = await getFantomPrices();		
   
-        await loadFantomChefContract(App, tokens, prices, SPECT_CHEF, SPECT_CHEF_ADDR, SPECT_CHEF_ABI, rewardTokenTicker,		
-            "spectToken", null, rewardsPerWeek, "pendingSpect");		
+        await loadGeneralEthcallChefContract(App, tokens, prices, SPECT_CHEF, SPECT_CHEF_ADDR, SPECT_CHEF_ABI, rewardTokenTicker,		
+            "spectToken", null, rewardsPerWeek, "pendingSpect", [], "fantom");		
   
         hideLoading();		
     }		

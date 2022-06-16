@@ -21,8 +21,8 @@ async function main() {
     const prices = await getFantomPrices();
 
 
-    await loadFantomChefContract(App, tokens, prices, SOCIUS_CHEF, SOCIUS_CHEF_ADDR, SOCIUS_CHEF_ABI, rewardTokenTicker,
-      "philetairussociusToken", null, rewardsPerWeek, "pendingPhiletairuss", [1]);
+    await loadGeneralEthcallChefContract(App, tokens, prices, SOCIUS_CHEF, SOCIUS_CHEF_ADDR, SOCIUS_CHEF_ABI, rewardTokenTicker,
+      "philetairussociusToken", null, rewardsPerWeek, "pendingPhiletairuss", [1], "fantom");
 
     hideLoading();
   }

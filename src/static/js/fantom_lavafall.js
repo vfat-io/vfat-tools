@@ -20,8 +20,8 @@ $(function () {
         const tokens = {};		
         const prices = await getFantomPrices();		
   
-        await loadFantomChefContract(App, tokens, prices, LAVAFALL_CHEF, LAVAFALL_CHEF_ADDR, LAVAFALL_CHEF_ABI, rewardTokenTicker,		
-            "lavafallToken", null, rewardsPerWeek, "pendingLavafall");		
+        await loadGeneralEthcallChefContract(App, tokens, prices, LAVAFALL_CHEF, LAVAFALL_CHEF_ADDR, LAVAFALL_CHEF_ABI, rewardTokenTicker,		
+            "lavafallToken", null, rewardsPerWeek, "pendingLavafall", [], "fantom");		
   
         hideLoading();		
     }		

@@ -20,8 +20,8 @@ $(function () {
         const tokens = {};		
         const prices = await getFantomPrices();		
   
-        await loadFantomChefContract(App, tokens, prices, ASTRAL_CHEF, ASTRAL_CHEF_ADDR, ASTRAL_CHEF_ABI, rewardTokenTicker,		
-            "astralToken", null, rewardsPerWeek, "pendingAstral");		
+        await loadGeneralEthcallChefContract(App, tokens, prices, ASTRAL_CHEF, ASTRAL_CHEF_ADDR, ASTRAL_CHEF_ABI, rewardTokenTicker,		
+            "astralToken", null, rewardsPerWeek, "pendingAstral", [], "fantom");		
   
         hideLoading();		
     }		

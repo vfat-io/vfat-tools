@@ -20,8 +20,8 @@ async function main() {
     const tokens = {};
     const prices = await getFantomPrices();
 
-    await loadFantomChefContract(App, tokens, prices, GOBLIN_CHEF, GOBLIN_CHEF_ADDR, GOBLIN_CHEF_ABI, rewardTokenTicker,
-        "goblin", null, rewardsPerWeek, "pendinggoblin");
+    await loadGeneralEthcallChefContract(App, tokens, prices, GOBLIN_CHEF, GOBLIN_CHEF_ADDR, GOBLIN_CHEF_ABI, rewardTokenTicker,
+        "goblin", null, rewardsPerWeek, "pendinggoblin", [], "fantom");
 
     hideLoading();
 }

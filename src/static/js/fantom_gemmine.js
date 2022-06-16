@@ -20,8 +20,8 @@ $(function () {
         const tokens = {};		
         const prices = await getFantomPrices();		
     		
-        await loadFantomChefContract(App, tokens, prices, GEMMINE_CHEF, GEMMINE_CHEF_ADDR, GEMMINE_CHEF_ABI, rewardTokenTicker,		
-            "gemmine", null, rewardsPerWeek, "pendingGemmine");		
+        await loadGeneralEthcallChefContract(App, tokens, prices, GEMMINE_CHEF, GEMMINE_CHEF_ADDR, GEMMINE_CHEF_ABI, rewardTokenTicker,		
+            "gemmine", null, rewardsPerWeek, "pendingGemmine", [], "fantom");		
     		
         hideLoading();		
     }		

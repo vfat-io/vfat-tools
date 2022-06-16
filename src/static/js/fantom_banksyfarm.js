@@ -25,8 +25,8 @@ async function main() {
   const tokens = {};
   const prices = await getFantomPrices();
 
-  await loadFantomChefContract(App, tokens, prices, BANKSY_CHEF, BANKSY_CHEF_ADDR, BANKSY_CHEF_ABI, rewardTokenTicker,
-      "banksy", null, rewardsPerWeek, "pendingBanksy");
+  await loadGeneralEthcallChefContract(App, tokens, prices, BANKSY_CHEF, BANKSY_CHEF_ADDR, BANKSY_CHEF_ABI, rewardTokenTicker,
+      "banksy", null, rewardsPerWeek, "pendingBanksy", [], "fantom");
 
   _print("");
 
@@ -49,7 +49,7 @@ async function loadBanskyVaultContract(App, tokens, prices, chef, chefAddress, c
   var tokenAddresses = [].concat.apply([], poolInfos.filter(x => x.poolToken).map(x => x.poolToken.tokens));
 
   await Promise.all(tokenAddresses.map(async (address) => {
-      tokens[address] = await getFantomToken(App, address, chefAddress);
+      tokens[address] = await getGeneralEthcallToken(App, address, chefAddress);
   }));
 
   const poolPrices = poolInfos.map(poolInfo => poolInfo.poolToken ? getPoolPrices(tokens, prices, poolInfo.poolToken, "fantom") : undefined);
@@ -99,7 +99,7 @@ function printBanskyVault(App, chefAbi, chefAddr, prices, tokens, poolInfo, pool
 
 async function getBanskyVaultInfo(app, chefContract, chefAddress, poolIndex) {
   const poolInfo = await chefContract.poolInfo(poolIndex);
-  const poolToken = await getFantomToken(app, poolInfo.want, chefAddress);
+  const poolToken = await getGeneralEthcallToken(app, poolInfo.want, chefAddress);
   const strat = poolInfo.strat;
   const stratContract = new ethers.Contract(strat, BANKSY_STRAT_ABI, app.provider);
   const totalStaked = await stratContract.wantLockedTotal() / 10 ** poolToken.decimals;

@@ -29,8 +29,8 @@ $(function() {
         const tokens = {};
         const prices = await getFantomPrices();
     
-        await loadFantomChefContract(App, tokens, prices, SCUB_CHEF, SCUB_CHEF_ADDR, SCUB_CHEF_ABI, rewardTokenTicker,
-          "scub", null, rewardsPerWeek, "pendingScub", [1]);
+        await loadGeneralEthcallChefContract(App, tokens, prices, SCUB_CHEF, SCUB_CHEF_ADDR, SCUB_CHEF_ABI, rewardTokenTicker,
+          "scub", null, rewardsPerWeek, "pendingScub", [1], "fantom");
     
         hideLoading();
       }

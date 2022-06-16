@@ -11,26 +11,26 @@ $(function() {
       _print(`Initialized ${App.YOUR_ADDRESS}\n`);
       _print("Reading smart contracts...\n");
   
-     const Krampus_CHEF_ABI = "0xfa0c8e045bc9ff79648f8cc616f93aaaf2d956df";
+     const Krampus_CHEF_Addr = "0xfa0c8e045bc9ff79648f8cc616f93aaaf2d956df";
   
      const rewardTokenTicker = "Krampus";
-     const Krampus_CHEF_ABI = new ethers.Contract(Krampus_CHEF_ABI, Krampus_CHEF_ABI, App.provider);
+     const Krampus_CHEF = new ethers.Contract(Krampus_CHEF_Addr, Krampus_CHEF_ABI, App.provider);
   
      let rewardsPerWeek = 0
-     const startBlock = await Krampus_CHEF_ABI.startBlock();
+     const startBlock = await Krampus_CHEF.startBlock();
      const currentBlock = await App.provider.getBlockNumber();
   
      if(currentBlock < startBlock){
       _print(`Rewards start at block <a href="https://ftmscan.com/block/countdown/${startBlock}" target="_blank">${startBlock}</a>\n`);
      }else{
-      rewardsPerWeek = await Krampus_CHEF_ABI.KrampusPerBlock() /1e18 * 604800;
+      rewardsPerWeek = await Krampus_CHEF.KrampusPerBlock() /1e18 * 604800;
      }
   
       const tokens = {};
       const prices = await getFantomPrices();
   
-      await loadFantomChefContract(App, tokens, prices, Krampus_CHEF_ABI, Krampus_CHEF_ABI, Krampus_CHEF_ABI, rewardTokenTicker,
-        "krampus", null, rewardsPerWeek, "pendingKrampus");
+      await loadGeneralEthcallChefContract(App, tokens, prices, Krampus_CHEF, Krampus_CHEF_Addr, Krampus_CHEF_ABI, rewardTokenTicker,
+        "krampus", null, rewardsPerWeek, "pendingKrampus", [], "fantom");
   
       hideLoading();
     }

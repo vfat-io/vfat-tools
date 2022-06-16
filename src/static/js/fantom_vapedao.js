@@ -29,8 +29,8 @@ async function main() {
     const tokens = {};
     const prices = await getFantomPrices();
 
-    await loadFantomChefContract(App, tokens, prices, vAPE_CHEF, vAPE_CHEF_ADDR, vAPE_CHEF_ABI, rewardTokenTicker,
-      "rewardsToken", null, rewardsPerWeek, "pendingRewards");
+    await loadGeneralEthcallChefContract(App, tokens, prices, vAPE_CHEF, vAPE_CHEF_ADDR, vAPE_CHEF_ABI, rewardTokenTicker,
+      "rewardsToken", null, rewardsPerWeek, "pendingRewards", [], "fantom");
 
     hideLoading();
   }

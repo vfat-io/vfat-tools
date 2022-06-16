@@ -17,11 +17,11 @@ $(function () {
 
         const rewardsPerWeek = await JETMINE_CHEF.JetminePerSecond() / 1e18 * 604800;
         		
-        const tokens = {};		
+        const tokens = {};
         const prices = await getFantomPrices();		
     		
-        await loadFantomChefContract(App, tokens, prices, JETMINE_CHEF, JETMINE_CHEF_ADDR, JETMINE_CHEF_ABI, rewardTokenTicker,		
-            "jetmine", null, rewardsPerWeek, "pendingJetmine");		
+        await loadGeneralEthcallChefContract(App, tokens, prices, JETMINE_CHEF, JETMINE_CHEF_ADDR, JETMINE_CHEF_ABI, rewardTokenTicker,		
+            "jetmine", null, rewardsPerWeek, "pendingJetmine", [], "fantom");		
     		
         hideLoading();		
     }		

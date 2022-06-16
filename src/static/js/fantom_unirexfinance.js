@@ -31,7 +31,7 @@ $(function() {
         const tokens = {};
         const prices = await getFantomPrices();
     
-        await loadFantomChefContract(App,
+        await loadGeneralEthcallChefContract(App,
             tokens,
             prices,
             UNIREX_CHEF,
@@ -41,7 +41,9 @@ $(function() {
             "unirex",
             null,
             rewardsPerWeek,
-            "pendingUnirex");
+            "pendingUnirex",
+            [],
+            "fantom");
     
         hideLoading();
       }

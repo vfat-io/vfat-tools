@@ -29,8 +29,8 @@ async function main() {
     const tokens = {};
     const prices = await getFantomPrices();
 
-    await loadFantomChefContract(App, tokens, prices, SAPPHIRE_CHEF, SAPPHIRE_CHEF_ADDR, SAPPHIRE_CHEF_ABI, rewardTokenTicker,
-      "token", null, rewardsPerWeek, "pendingSapphire");
+    await loadGeneralEthcallChefContract(App, tokens, prices, SAPPHIRE_CHEF, SAPPHIRE_CHEF_ADDR, SAPPHIRE_CHEF_ABI, rewardTokenTicker,
+      "token", null, rewardsPerWeek, "pendingSapphire", [], "fantom");
 
     hideLoading();
   }

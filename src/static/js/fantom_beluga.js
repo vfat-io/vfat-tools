@@ -52,10 +52,10 @@ async function main() {
 async function loadBelugaPoolInfo(App, tokens, prices, contractAddress) {
   try {
     const contract = await new ethers.Contract(contractAddress, BELUGA_VAULT_ABI, App.provider);
-    const vault = await getFantomToken(App, contractAddress, App.YOUR_ADDRESS);
+    const vault = await getGeneralEthcallToken(App, contractAddress, App.YOUR_ADDRESS);
     var newTokenAddresses = vault.tokens.filter(x => !getParameterCaseInsensitive(tokens, x));
     for (const address of newTokenAddresses) {
-        tokens[address] = await getFantomToken(App, address, contractAddress);
+        tokens[address] = await getGeneralEthcallToken(App, address, contractAddress);
     }
     const totalTokenStaked = await contract.underlyingBalanceWithInvestment() / 1e18;
     const ppfs = await contract.getPricePerFullShare() / 1e18;

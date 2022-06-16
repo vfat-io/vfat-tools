@@ -44,7 +44,7 @@ async function getSynPoolInfo(App, chefContract, chefAddress, poolIndex, pending
       lastRewardBlock : poolInfo.lastRewardBlock
     };
   }
-  const poolToken = await getFantomToken(App, lpToken, chefAddress);
+  const poolToken = await getGeneralEthcallToken(App, lpToken, chefAddress);
   const userInfo = await chefContract.userInfo(poolIndex, App.YOUR_ADDRESS);
   const pendingRewardTokens = await chefContract.callStatic[pendingRewardsFunction](poolIndex, App.YOUR_ADDRESS);
   const staked = userInfo.amount / 10 ** poolToken.decimals;
@@ -75,7 +75,7 @@ async function loadSynChefContract(App, tokens, prices, chef, chefAddress, chefA
   var tokens = {};
 
   const rewardTokenAddress = await chefContract.callStatic[rewardTokenFunction]();
-  const rewardToken = await getFantomToken(App, rewardTokenAddress, chefAddress);
+  const rewardToken = await getGeneralEthcallToken(App, rewardTokenAddress, chefAddress);
   const rewardsPerWeek = rewardsPerWeekFixed ??
     await chefContract.callStatic[rewardsPerBlockFunction]()
     / 10 ** rewardToken.decimals * 604800 / 3
@@ -86,7 +86,7 @@ async function loadSynChefContract(App, tokens, prices, chef, chefAddress, chefA
   var tokenAddresses = [].concat.apply([], poolInfos.filter(x => x.poolToken).map(x => x.poolToken.tokens));
 
   await Promise.all(tokenAddresses.map(async (address) => {
-      tokens[address] = await getFantomToken(App, address, chefAddress);
+      tokens[address] = await getGeneralEthcallToken(App, address, chefAddress);
   }));
 
   if (deathPoolIndices) {   //load prices for the deathpool assets

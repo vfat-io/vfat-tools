@@ -20,8 +20,8 @@ async function main() {
     const tokens = {};
     const prices = await getFantomPrices();
 
-    await loadFantomChefContract(App, tokens, prices, LIFE_CHEF, LIFE_CHEF_ADDR, LIFE_CHEF_ABI, rewardTokenTicker,
-      "life", null, rewardsPerWeek, "pendingLife");
+    await loadGeneralEthcallChefContract(App, tokens, prices, LIFE_CHEF, LIFE_CHEF_ADDR, LIFE_CHEF_ABI, rewardTokenTicker,
+      "life", null, rewardsPerWeek, "pendingLife", [], "fantom");
 
     hideLoading();
   }

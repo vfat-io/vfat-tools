@@ -36,7 +36,7 @@ async function getFarmtomPoolInfo(app, chefContract, chefAddress, poolIndex, pen
       pendingRewardTokens : 0,
     };
   }
-  const poolToken = await getFantomToken(app, poolInfo.lpToken ?? poolInfo.token ?? poolInfo.stakingToken, chefAddress);
+  const poolToken = await getGeneralEthcallToken(app, poolInfo.lpToken ?? poolInfo.token ?? poolInfo.stakingToken, chefAddress);
   poolToken.staked = poolInfo.lpSupply / 10 ** poolToken.decimals;
   let rewardTokenTicker = "";
   let rewardTokenAddress = "";
@@ -44,11 +44,11 @@ async function getFarmtomPoolInfo(app, chefContract, chefAddress, poolIndex, pen
   if(isSecondaryRewards){
     rewardTokenTicker = "ANML";
     rewardTokenAddress = await chefContract.secondaryToken();
-    rewardToken = await getFantomToken(app, rewardTokenAddress, chefAddress);
+    rewardToken = await getGeneralEthcallToken(app, rewardTokenAddress, chefAddress);
   }else{
     rewardTokenTicker = "FRTM";
     rewardTokenAddress = await chefContract.primaryToken()
-    rewardToken = await getFantomToken(app, rewardTokenAddress, chefAddress);
+    rewardToken = await getGeneralEthcallToken(app, rewardTokenAddress, chefAddress);
   }
   const userInfo = await chefContract.userInfo(poolIndex, app.YOUR_ADDRESS);
   const pendingRewardTokens = await chefContract.callStatic[pendingRewardsFunction](poolIndex, app.YOUR_ADDRESS);
@@ -88,7 +88,7 @@ async function loadFarmtomChefContract(App, tokens, prices, chef, chefAddress, c
   var tokenAddresses = [].concat.apply([], poolInfos.filter(x => x.poolToken).map(x => x.poolToken.tokens));
 
   await Promise.all(tokenAddresses.map(async (address) => {
-      tokens[address] = await getFantomToken(App, address, chefAddress);
+      tokens[address] = await getGeneralEthcallToken(App, address, chefAddress);
   }));
 
   if (deathPoolIndices) {   //load prices for the deathpool assets

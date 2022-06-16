@@ -20,8 +20,8 @@ $(function () {
         const tokens = {};		
         const prices = await getFantomPrices();		
     		
-        await loadFantomChefContract(App, tokens, prices, MONEYRAIN_CHEF, MONEYRAIN_CHEF_ADDR, MONEYRAIN_CHEF_ABI, rewardTokenTicker,		
-            "moneyrain", null, rewardsPerWeek, "pendingMoneyrain");		
+        await loadGeneralEthcallChefContract(App, tokens, prices, MONEYRAIN_CHEF, MONEYRAIN_CHEF_ADDR, MONEYRAIN_CHEF_ABI, rewardTokenTicker,		
+            "moneyrain", null, rewardsPerWeek, "pendingMoneyrain", [], "fantom");		
     		
         hideLoading();		
     }		

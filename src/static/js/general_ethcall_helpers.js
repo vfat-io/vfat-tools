@@ -865,6 +865,8 @@ async function loadGeneralEthcallChefContract(App, tokens, prices, chef, chefAdd
     break;
     case "emerald" : _print(`<a href='https://explorer.emerald.oasis.dev/address/${chefAddress}' target='_blank'>Staking Contract</a>`);
     break;
+    case "fantom" : _print(`<a href='https://ftmscan.com/address/${chefAddress}' target='_blank'>Staking Contract</a>`);
+    break;
   }
   _print(`Found ${poolCount} pools.\n`)
 

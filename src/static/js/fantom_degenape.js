@@ -28,8 +28,8 @@ async function main() {
     const tokens = {};
     const prices = await getFantomPrices();
 
-    await loadFantomChefContract(App, tokens, prices, DAPE_CHEF, DAPE_CHEF_ADDR, DAPE_CHEF_ABI, rewardTokenTicker,
-      "dape", null, rewardsPerWeek, "pendingDape");
+    await loadGeneralEthcallChefContract(App, tokens, prices, DAPE_CHEF, DAPE_CHEF_ADDR, DAPE_CHEF_ABI, rewardTokenTicker,
+      "dape", null, rewardsPerWeek, "pendingDape", [], "fantom");
 
     hideLoading();
   }

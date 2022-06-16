@@ -61,7 +61,7 @@ $(function() {
 
 async function loadJonesFtmLptSynthetixPoolInfo(App, tokens, prices, stakingAddress, stakeTokenAddress) {
 
-      var stakeToken = await getFantomToken(App, stakeTokenAddress, stakingAddress);
+      var stakeToken = await getGeneralEthcallToken(App, stakeTokenAddress, stakingAddress);
 
       var newPriceAddresses = stakeToken.tokens.filter(x =>
         !getParameterCaseInsensitive(prices, x));
@@ -73,7 +73,7 @@ async function loadJonesFtmLptSynthetixPoolInfo(App, tokens, prices, stakingAddr
       var newTokenAddresses = stakeToken.tokens.filter(x =>
         !getParameterCaseInsensitive(tokens,x));
       for (const address of newTokenAddresses) {
-          tokens[address] = await getFantomToken(App, address, stakingAddress);
+          tokens[address] = await getGeneralEthcallToken(App, address, stakingAddress);
       }
 
       const poolPrices = getPoolPrices(tokens, prices, stakeToken, "fantom");
@@ -106,19 +106,19 @@ async function loadDavyChefContract2(App, tokens, prices, chef, chefAddress, che
   _print(`Showing incentivized pools only.\n`);
 
   const rewardTokenAddress = await chefContract.callStatic[rewardTokenFunction]();
-  const rewardToken = await getFantomToken(App, rewardTokenAddress, chefAddress);
+  const rewardToken = await getGeneralEthcallToken(App, rewardTokenAddress, chefAddress);
 
   const rewardsPerWeek = rewardsPerWeekFixed ??
     await chefContract.callStatic[rewardsPerBlockFunction]()
     / 10 ** rewardToken.decimals * 604800 / 3
 
   const poolInfos = await Promise.all([...Array(poolCount).keys()].map(async (x) =>
-    await getFantomPoolInfo(App, chefContract, chefAddress, x, pendingRewardsFunction)));
+    await getGeneralEthcallPoolInfo(App, chefContract, chefAddress, x, pendingRewardsFunction)));
 
   var tokenAddresses = [].concat.apply([], poolInfos.filter(x => x.poolToken).map(x => x.poolToken.tokens));
 
   await Promise.all(tokenAddresses.map(async (address) => {
-      tokens[address] = await getFantomToken(App, address, chefAddress);
+      tokens[address] = await getGeneralEthcallToken(App, address, chefAddress);
   }));
 
   if (deathPoolIndices) {   //load prices for the deathpool assets
@@ -178,19 +178,19 @@ async function loadDavyChefContract(App, tokens, prices, chef, chefAddress, chef
   _print(`Showing incentivized pools only.\n`);
 
   const rewardTokenAddress = await chefContract.callStatic[rewardTokenFunction]();
-  const rewardToken = await getFantomToken(App, rewardTokenAddress, chefAddress);
+  const rewardToken = await getGeneralEthcallToken(App, rewardTokenAddress, chefAddress);
 
   const rewardsPerWeek = rewardsPerWeekFixed ??
     await chefContract.callStatic[rewardsPerBlockFunction]()
     / 10 ** rewardToken.decimals * 604800 / 3
 
   const poolInfos = await Promise.all([...Array(poolCount).keys()].map(async (x) =>
-    await getFantomPoolInfo(App, chefContract, chefAddress, x, pendingRewardsFunction)));
+    await getGeneralEthcallPoolInfo(App, chefContract, chefAddress, x, pendingRewardsFunction)));
 
   var tokenAddresses = [].concat.apply([], poolInfos.filter(x => x.poolToken).map(x => x.poolToken.tokens));
 
   await Promise.all(tokenAddresses.map(async (address) => {
-      tokens[address] = await getFantomToken(App, address, chefAddress);
+      tokens[address] = await getGeneralEthcallToken(App, address, chefAddress);
   }));
 
   if (deathPoolIndices) {   //load prices for the deathpool assets

@@ -25,8 +25,8 @@ async function main() {
     const tokens = {};
     const prices = await getFantomPrices();
 
-    await loadFantomChefContract(App, tokens, prices, FLUAN_CHEF, FLUAN_CHEF_ADDR, FLUAN_CHEF_ABI, rewardTokenTicker,
-      "luan", null, rewardsPerWeek, "pendingLuan");
+    await loadGeneralEthcallChefContract(App, tokens, prices, FLUAN_CHEF, FLUAN_CHEF_ADDR, FLUAN_CHEF_ABI, rewardTokenTicker,
+      "luan", null, rewardsPerWeek, "pendingLuan", [], "fantom");
 
     hideLoading();
   }

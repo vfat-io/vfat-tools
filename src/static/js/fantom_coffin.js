@@ -31,12 +31,12 @@ const MASTERCHEF_V1_ABI = [{"inputs":[],"stateMutability":"nonpayable","type":"c
       const prices = await getFantomPrices();
 
       _print("---- ⚰️🌾 Farms COFFIN MAKER V1 🌾⚰️ ----\n");
-      await loadFantomChefContract(App, tokens, prices, MASTERCHEF_V1, MASTERCHEF_V1_ADDR, MASTERCHEF_V1_ABI, rewardTokenTicker,
-        "rewardToken", null, rewardsPerWeekV1, "pendingReward");
+      await loadGeneralEthcallChefContract(App, tokens, prices, MASTERCHEF_V1, MASTERCHEF_V1_ADDR, MASTERCHEF_V1_ABI, rewardTokenTicker,
+        "rewardToken", null, rewardsPerWeekV1, "pendingReward", [], "fantom");
 
       _print("---- ⚰️🌾 Farms COFFIN MAKER V2 🌾⚰️ ----\n");
-      await loadFantomChefContract(App, tokens, prices, MASTERCHEF_V2, MASTERCHEF_V2_ADDR, MASTERCHEF_V2_ABI, rewardTokenTicker,
-        "rewardToken", null, rewardsPerWeekV2, "pendingReward");
+      await loadGeneralEthcallChefContract(App, tokens, prices, MASTERCHEF_V2, MASTERCHEF_V2_ADDR, MASTERCHEF_V2_ABI, rewardTokenTicker,
+        "rewardToken", null, rewardsPerWeekV2, "pendingReward", [], "fantom");
 
       hideLoading();
     } catch (error) {

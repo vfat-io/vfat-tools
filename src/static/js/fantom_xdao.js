@@ -21,8 +21,8 @@ async function main() {
     const tokens = {};
     const prices = await getFantomPrices();
 
-    await loadFantomChefContract(App, tokens, prices, HTZ_CHEF, HTZ_CHEF_ADDR, HTZ_CHEF_ABI, rewardTokenTicker,
-      "htz", null, rewardsPerWeek, "pendingHtz", [3,4]);
+    await loadGeneralEthcallChefContract(App, tokens, prices, HTZ_CHEF, HTZ_CHEF_ADDR, HTZ_CHEF_ABI, rewardTokenTicker,
+      "htz", null, rewardsPerWeek, "pendingHtz", [3,4],"fantom");
 
     hideLoading();
   }

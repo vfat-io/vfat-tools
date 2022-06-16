@@ -20,8 +20,8 @@ $(function () {
         const tokens = {};		
         const prices = await getFantomPrices();		
     		
-        await loadFantomChefContract(App, tokens, prices, TOKYO_CHEF, TOKYO_CHEF_ADDR, TOKYO_CHEF_ABI, rewardTokenTicker,		
-            "tokyo", null, rewardsPerWeek, "pendingTokyo");		
+        await loadGeneralEthcallChefContract(App, tokens, prices, TOKYO_CHEF, TOKYO_CHEF_ADDR, TOKYO_CHEF_ABI, rewardTokenTicker,		
+            "tokyo", null, rewardsPerWeek, "pendingTokyo", [], "fantom");		
     		
         hideLoading();		
     }

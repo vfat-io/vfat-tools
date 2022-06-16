@@ -8,7 +8,7 @@ $(function () {
     async function main() {		
         const App = await init_ethers();		
     		
-        _print(`Initialized ${App.YOUR_ADDRESS}\n`);		
+        _print(`Initialized ${App.YOUR_ADDRESS}\n`);
         _print("Reading smart contracts...\n");		
     		
         const STG_CHEF_ADDR = "0x224D8Fd7aB6AD4c6eb4611Ce56EF35Dec2277F03";		
@@ -21,7 +21,7 @@ $(function () {
         await loadStgChefContract(App, tokens, prices, STG_CHEF, STG_CHEF_ADDR, STG_CHEF_ABI, rewardTokenTicker,		
             "stargate", null, rewardsPerWeek, "pendingStargate");		
     		
-        hideLoading();		
+        hideLoading();
     }		
     	
 async function getStgPoolInfo(app, chefContract, chefAddress, poolIndex, pendingRewardsFunction) {
@@ -35,7 +35,7 @@ async function getStgPoolInfo(app, chefContract, chefAddress, poolIndex, pending
       pendingRewardTokens : 0,
     };
   }
-  const poolToken = await getFantomToken(app, poolInfo.lpToken ?? poolInfo.token ?? poolInfo.stakingToken, chefAddress);
+  const poolToken = await getGeneralEthcallToken(app, poolInfo.lpToken ?? poolInfo.token ?? poolInfo.stakingToken, chefAddress);
   const lpSupply = await chefContract.lpBalances(poolIndex);
   poolToken.staked = lpSupply / 10 ** poolToken.decimals;
   const userInfo = await chefContract.userInfo(poolIndex, app.YOUR_ADDRESS);
@@ -66,7 +66,7 @@ async function loadStgChefContract(App, tokens, prices, chef, chefAddress, chefA
   _print(`Showing incentivized pools only.\n`);
 
   const rewardTokenAddress = await chefContract.callStatic[rewardTokenFunction]();
-  const rewardToken = await getFantomToken(App, rewardTokenAddress, chefAddress);
+  const rewardToken = await getGeneralEthcallToken(App, rewardTokenAddress, chefAddress);
 
   const rewardsPerWeek = rewardsPerWeekFixed ??
     await chefContract.callStatic[rewardsPerBlockFunction]()
@@ -78,7 +78,7 @@ async function loadStgChefContract(App, tokens, prices, chef, chefAddress, chefA
   var tokenAddresses = [].concat.apply([], poolInfos.filter(x => x.poolToken).map(x => x.poolToken.tokens));
 
   await Promise.all(tokenAddresses.map(async (address) => {
-      tokens[address] = await getFantomToken(App, address, chefAddress);
+      tokens[address] = await getGeneralEthcallToken(App, address, chefAddress);
   }));
 
   if (deathPoolIndices) {   //load prices for the deathpool assets

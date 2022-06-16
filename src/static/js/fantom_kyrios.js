@@ -28,8 +28,8 @@ $(function() {
         const tokens = {};
         const prices = await getFantomPrices();
     
-        await loadFantomChefContract(App, tokens, prices, fKYRIOS_CHEF, fKYRIOS_CHEF_ADDR, fKYRIOS_CHEF_ABI, rewardTokenTicker,
-          "kyrios", null, rewardsPerWeek, "pendingKyrios");
+        await loadGeneralEthcallChefContract(App, tokens, prices, fKYRIOS_CHEF, fKYRIOS_CHEF_ADDR, fKYRIOS_CHEF_ABI, rewardTokenTicker,
+          "kyrios", null, rewardsPerWeek, "pendingKyrios", [], "fantom");
     
         hideLoading();
       }

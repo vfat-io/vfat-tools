@@ -47,7 +47,7 @@ async function loadShadeChefContract(App, tokens, prices, chef, chefAddress, che
   _print(`Showing incentivized pools only.\n`);
 
   const rewardTokenAddress = await chefContract.callStatic[rewardTokenFunction]();
-  const rewardToken = await getFantomToken(App, rewardTokenAddress, chefAddress);
+  const rewardToken = await getGeneralEthcallToken(App, rewardTokenAddress, chefAddress);
   const rewardsPerWeek = rewardsPerWeekFixed ??
     await chefContract.callStatic[rewardsPerBlockFunction]()
     / 10 ** rewardToken.decimals * 604800 / 3
@@ -58,7 +58,7 @@ async function loadShadeChefContract(App, tokens, prices, chef, chefAddress, che
   var tokenAddresses = [].concat.apply([], poolInfos.filter(x => x.poolToken).map(x => x.poolToken.tokens));
 
   await Promise.all(tokenAddresses.map(async (address) => {
-      tokens[address] = await getFantomToken(App, address, chefAddress);
+      tokens[address] = await getGeneralEthcallToken(App, address, chefAddress);
   }));
 
   if (deathPoolIndices) {   //load prices for the deathpool assets
@@ -114,7 +114,7 @@ async function getShadePoolInfo(app, chefContract, chefAddress, poolIndex, pendi
       pendingRewardTokens : 0,
     };
   }
-  const poolToken = await getFantomToken(app, poolInfo.lpToken ?? poolInfo.Token ?? poolInfo.stakingToken, chefAddress);
+  const poolToken = await getGeneralEthcallToken(app, poolInfo.lpToken ?? poolInfo.Token ?? poolInfo.stakingToken, chefAddress);
   const userInfo = await chefContract.userInfo(poolIndex, app.YOUR_ADDRESS);
   const pendingRewardTokens = await chefContract.callStatic[pendingRewardsFunction](poolIndex, app.YOUR_ADDRESS);
   const staked = userInfo.amount / 10 ** poolToken.decimals;

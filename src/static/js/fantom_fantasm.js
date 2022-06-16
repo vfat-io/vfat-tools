@@ -242,7 +242,7 @@ $(function() {
           pendingRewardTokens: 0,
         }
       }
-      const poolToken = await getFantomToken(app, lpToken ?? poolInfo.token ?? poolInfo.stakingToken, chefAddress)
+      const poolToken = await getGeneralEthcallToken(app, lpToken ?? poolInfo.token ?? poolInfo.stakingToken, chefAddress)
       const userInfo = await chefContract.userInfo(poolIndex, app.YOUR_ADDRESS)
       const pendingRewardTokens = await chefContract.callStatic[pendingRewardsFunction](poolIndex, app.YOUR_ADDRESS)
       const staked = userInfo.amount / 10 ** poolToken.decimals
@@ -284,7 +284,7 @@ $(function() {
 
       _print(`Showing incentivized pools only.\n`)
 
-      const rewardToken = await getFantomToken(App, rewardTokenAddress, chefAddress)
+      const rewardToken = await getGeneralEthcallToken(App, rewardTokenAddress, chefAddress)
       const rewardsPerWeek =
         rewardsPerWeekFixed ??
         (((await chefContract.callStatic[rewardsPerBlockFunction]()) / 10 ** rewardToken.decimals) * 604800) / 3
@@ -302,7 +302,7 @@ $(function() {
 
       await Promise.all(
         tokenAddresses.map(async address => {
-          tokens[address] = await getFantomToken(App, address, chefAddress)
+          tokens[address] = await getGeneralEthcallToken(App, address, chefAddress)
         })
       )
 

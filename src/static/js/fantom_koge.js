@@ -47,10 +47,10 @@ async function main() {
   async function loadKogePoolInfo(App, tokens, prices, contractAddress) {
     try {
       const contract = await new ethers.Contract(contractAddress, KOGE_VAULT_ABI, App.provider);
-      const vault = await getFantomToken(App, contractAddress, App.YOUR_ADDRESS);
+      const vault = await getGeneralEthcallToken(App, contractAddress, App.YOUR_ADDRESS);
       var newTokenAddresses = vault.tokens.filter(x => !getParameterCaseInsensitive(tokens, x));
       for (const address of newTokenAddresses) {
-          tokens[address] = await getFantomToken(App, address, contractAddress);
+          tokens[address] = await getGeneralEthcallToken(App, address, contractAddress);
       }
       const totalSupply = await contract.totalSupply() / 1e18;
       const balance = await contract.balance() / 1e18;

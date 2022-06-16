@@ -24,10 +24,10 @@ async function main() {
     const tokens = {};
     const prices = await getFantomPrices();
 
-    await loadFantomChefContract(App, tokens, prices, YEL_CHEF0, YEL_CHEF_ADDR0, YEL_CHEF_ABI, rewardTokenTicker,
-      "yel", null, rewardsPerWeek0, "pendingYel", [1]);
-    await loadFantomChefContract(App, tokens, prices, YEL_CHEF1, YEL_CHEF_ADDR1, YEL_CHEF_ABI, rewardTokenTicker,
-      "yel", null, rewardsPerWeek1, "pendingYel");
+    await loadGeneralEthcallChefContract(App, tokens, prices, YEL_CHEF0, YEL_CHEF_ADDR0, YEL_CHEF_ABI, rewardTokenTicker,
+      "yel", null, rewardsPerWeek0, "pendingYel", [1], "fantom");
+    await loadGeneralEthcallChefContract(App, tokens, prices, YEL_CHEF1, YEL_CHEF_ADDR1, YEL_CHEF_ABI, rewardTokenTicker,
+      "yel", null, rewardsPerWeek1, "pendingYel", [], "fantom");
 
     hideLoading();
   }

@@ -31,8 +31,8 @@ $(function() {
       const tokens = {};
       const prices = await getFantomPrices();
   
-      await loadFantomChefContract(App, tokens, prices, KINS_MASTER, KINS_MASTER_ADDR, KINS_MASTER_ABI, rewardTokenTicker,
-        "kins", null, rewardsPerWeek, "pendingkins");
+      await loadGeneralEthcallChefContract(App, tokens, prices, KINS_MASTER, KINS_MASTER_ADDR, KINS_MASTER_ABI, rewardTokenTicker,
+        "kins", null, rewardsPerWeek, "pendingkins", [], "fantom");
   
       hideLoading();
     }

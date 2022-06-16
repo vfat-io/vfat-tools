@@ -29,8 +29,8 @@ async function main() {
     const tokens = {};
     const prices = await getFantomPrices();
 
-    await loadFantomChefContract(App, tokens, prices, KUZO_CHEF, KUZO_CHEF_ADDR, KUZO_CHEF_ABI, rewardTokenTicker,
-      "token", null, rewardsPerWeek, "pendingKuzo");
+    await loadGeneralEthcallChefContract(App, tokens, prices, KUZO_CHEF, KUZO_CHEF_ADDR, KUZO_CHEF_ABI, rewardTokenTicker,
+      "token", null, rewardsPerWeek, "pendingKuzo", [], "fantom");
 
     hideLoading();
   }

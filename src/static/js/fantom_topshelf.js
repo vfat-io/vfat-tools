@@ -122,7 +122,7 @@ $(function() {
           rewardTokenAddresses.push(rewardTokenAddress);
         }
   
-        var stakeToken = await getFantomToken(App, stakeTokenAddress, stakingAddress);
+        var stakeToken = await getGeneralEthcallToken(App, stakeTokenAddress, stakingAddress);
   
         var newPriceAddresses = stakeToken.tokens.filter(x =>
           !getParameterCaseInsensitive(prices, x));
@@ -134,11 +134,11 @@ $(function() {
         var newTokenAddresses = stakeToken.tokens.filter(x =>
           !getParameterCaseInsensitive(tokens,x));
         for (const address of newTokenAddresses) {
-            tokens[address] = await getFantomToken(App, address, stakingAddress);
+            tokens[address] = await getGeneralEthcallToken(App, address, stakingAddress);
         }
         for(const rewardTokenAddress of rewardTokenAddresses){
           if (!getParameterCaseInsensitive(tokens, rewardTokenAddress)) {
-            tokens[rewardTokenAddress] = await getFantomToken(App, rewardTokenAddress, stakingAddress);
+            tokens[rewardTokenAddress] = await getGeneralEthcallToken(App, rewardTokenAddress, stakingAddress);
           }
         }
         let rewardTokens = [];
@@ -211,7 +211,7 @@ $(function() {
         }
         const stakeTokenAddress = await STAKING_POOL.callStatic[stakeTokenFunction]();
   
-        var stakeToken = await getFantomToken(App, stakeTokenAddress, stakingAddress);
+        var stakeToken = await getGeneralEthcallToken(App, stakeTokenAddress, stakingAddress);
   
         if (stakeTokenAddress.toLowerCase() === rewardTokenAddress.toLowerCase()) {
           stakeToken.staked = await STAKING_POOL.totalSupply() / 10 ** stakeToken.decimals;
@@ -227,10 +227,10 @@ $(function() {
         var newTokenAddresses = stakeToken.tokens.filter(x =>
           !getParameterCaseInsensitive(tokens,x));
         for (const address of newTokenAddresses) {
-            tokens[address] = await getFantomToken(App, address, stakingAddress);
+            tokens[address] = await getGeneralEthcallToken(App, address, stakingAddress);
         }
         if (!getParameterCaseInsensitive(tokens, rewardTokenAddress)) {
-            tokens[rewardTokenAddress] = await getFantomToken(App, rewardTokenAddress, stakingAddress);
+            tokens[rewardTokenAddress] = await getGeneralEthcallToken(App, rewardTokenAddress, stakingAddress);
         }
         const rewardToken = getParameterCaseInsensitive(tokens, rewardTokenAddress);
   
@@ -347,17 +347,17 @@ $(function() {
       }
       const stakeTokenAddress = await STAKING_POOL.callStatic[stakeTokenFunction]();
   
-      let stakeToken = await getFantomToken(App, stakeTokenAddress, stakeTokenAddress);
+      let stakeToken = await getGeneralEthcallToken(App, stakeTokenAddress, stakeTokenAddress);
       stakeToken.staked = await STAKING_POOL.getTotalLUSDDeposits() / 10 ** stakeToken.decimals;
   
       var newTokenAddresses = stakeToken.tokens.filter(x =>
         !getParameterCaseInsensitive(tokens,x));
       for (const address of newTokenAddresses) {
-          tokens[address] = await getFantomToken(App, address, stakingAddress);
+          tokens[address] = await getGeneralEthcallToken(App, address, stakingAddress);
       }
       for(const rewardTokenAddress of rewardTokenAddresses){
         if (!getParameterCaseInsensitive(tokens, rewardTokenAddress)) {
-          tokens[rewardTokenAddress] = await getFantomToken(App, rewardTokenAddress, stakingAddress);
+          tokens[rewardTokenAddress] = await getGeneralEthcallToken(App, rewardTokenAddress, stakingAddress);
         }
       }
       let rewardTokens = [];

@@ -81,7 +81,7 @@ $(function() {
 
       const rewardTokenAddress = await poolContract.callStatic[rewardTokenFunction]()
 
-      const rewardToken = await getFantomToken(App, rewardTokenAddress, contractAddress)
+      const rewardToken = await getGeneralEthcallToken(App, rewardTokenAddress, contractAddress)
 
       let rewardsPerWeek = 0;
       if(currentTime < startTime){
@@ -96,7 +96,7 @@ $(function() {
       var tokenAddresses = [].concat.apply([], poolInfos.filter(x => x.poolToken).map(x => x.poolToken.tokens))
 
       await Promise.all(tokenAddresses.map(async (address) => {
-          tokens[address] = await getFantomToken(App, address, contractAddress);
+          tokens[address] = await getGeneralEthcallToken(App, address, contractAddress);
       }))
 
       const poolPrices = poolInfos.map( pInfo => pInfo.poolToken ? getPoolPrices(tokens, prices, pInfo.poolToken, "fantom") : undefined);
@@ -196,7 +196,7 @@ $(function() {
         }
       }
 
-      const poolToken = await getFantomToken(app, poolInfo.token, chefAddress)
+      const poolToken = await getGeneralEthcallToken(app, poolInfo.token, chefAddress)
       const userInfo = await chefContract.userInfo(poolIndex, app.YOUR_ADDRESS)
       const pendingRewardTokens = await chefContract.callStatic[pendingRewardsFunction](poolIndex, app.YOUR_ADDRESS)
       const staked = userInfo.amount / 10 ** poolToken.decimals

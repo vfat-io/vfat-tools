@@ -41,18 +41,18 @@ async function loadBombingRangeChefContract(App, tokens, prices, chef, chefAddre
   _print(`Showing incentivized pools only.\n`);
 
   const rewardTokenAddress = await chefContract.callStatic[rewardTokenFunction]();
-  const rewardToken = await getFantomToken(App, rewardTokenAddress, chefAddress);
+  const rewardToken = await getGeneralEthcallToken(App, rewardTokenAddress, chefAddress);
   const rewardsPerWeek = rewardsPerWeekFixed ??
     await chefContract.callStatic[rewardsPerBlockFunction]()
     / 10 ** rewardToken.decimals * 604800 / 3
 
   const poolInfos = await Promise.all([...Array(poolCount).keys()].map(async (x) =>
-    await getFantomPoolInfo(App, chefContract, chefAddress, x, pendingRewardsFunction)));
+    await getGeneralEthcallPoolInfo(App, chefContract, chefAddress, x, pendingRewardsFunction)));
 
   var tokenAddresses = [].concat.apply([], poolInfos.filter(x => x.poolToken).map(x => x.poolToken.tokens));
 
   await Promise.all(tokenAddresses.map(async (address) => {
-      tokens[address] = await getFantomToken(App, address, chefAddress);
+      tokens[address] = await getGeneralEthcallToken(App, address, chefAddress);
   }));
 
   const poolPrices = poolInfos.map(poolInfo => poolInfo.poolToken ? getPoolPrices(tokens, prices, poolInfo.poolToken, "fantom") : undefined);

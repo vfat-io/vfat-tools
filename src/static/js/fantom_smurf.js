@@ -29,8 +29,8 @@ async function main() {
     const tokens = {};
     const prices = await getFantomPrices();
 
-    await loadFantomChefContract(App, tokens, prices, CLEVER_CHEF, CLEVER_CHEF_ADDR, CLEVER_CHEF_ABI, rewardTokenTicker,
-      "token", null, rewardsPerWeek, "pendingToken");
+    await loadGeneralEthcallChefContract(App, tokens, prices, CLEVER_CHEF, CLEVER_CHEF_ADDR, CLEVER_CHEF_ABI, rewardTokenTicker,
+      "token", null, rewardsPerWeek, "pendingToken", [], "fantom");
 
     hideLoading();
   }

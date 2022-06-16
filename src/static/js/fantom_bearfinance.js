@@ -31,7 +31,7 @@ async function main() {
     const tokens = {};
     const prices = await getFantomPrices();
 
-    await loadFantomChefContract(App,
+    await loadGeneralEthcallChefContract(App,
         tokens,
         prices,
         BEAR_CHEF,
@@ -41,7 +41,9 @@ async function main() {
         "bear",
         null,
         rewardsPerWeek,
-        "pendingBear");
+        "pendingBear",
+        [],
+        "fantom");
 
     hideLoading();
   }

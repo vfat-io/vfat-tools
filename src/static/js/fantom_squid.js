@@ -29,8 +29,8 @@ async function main() {
     const tokens = {};
     const prices = await getFantomPrices();
 
-    await loadFantomChefContract(App, tokens, prices, SQUID_CHEF, SQUID_CHEF_ADDR, SQUID_CHEF_ABI, rewardTokenTicker,
-      "token", null, rewardsPerWeek, "pendingSquid");
+    await loadGeneralEthcallChefContract(App, tokens, prices, SQUID_CHEF, SQUID_CHEF_ADDR, SQUID_CHEF_ABI, rewardTokenTicker,
+      "token", null, rewardsPerWeek, "pendingSquid", [], "fantom");
 
     hideLoading();
   }

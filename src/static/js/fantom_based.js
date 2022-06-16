@@ -69,7 +69,7 @@ async function loadRewardPoolContract(
 
   const rewardTokenAddress = await poolContract.callStatic[rewardTokenFunction]()
 
-  const rewardToken = await getFantomToken(App, rewardTokenAddress, contractAddress)
+  const rewardToken = await getGeneralEthcallToken(App, rewardTokenAddress, contractAddress)
 
   let rewardsPerWeek = 0;
   if (currentTime < startTime) {
@@ -84,7 +84,7 @@ async function loadRewardPoolContract(
   var tokenAddresses = [].concat.apply([], poolInfos.filter(x => x.poolToken).map(x => x.poolToken.tokens))
 
   await Promise.all(tokenAddresses.map(async (address) => {
-    tokens[address] = await getFantomToken(App, address, contractAddress);
+    tokens[address] = await getGeneralEthcallToken(App, address, contractAddress);
   }))
 
   const poolPrices = poolInfos.map(pInfo => pInfo.poolToken ? getPoolPrices(tokens, prices, pInfo.poolToken, "fantom") : undefined);
@@ -184,7 +184,7 @@ async function loadAcropolis(App, prices, acropolisAddress, oracleAddress, lptAd
 
 async function getBasedRewardPoolInfo(app, chefContract, chefAddress, poolIndex, pendingRewardsFunction) {
   const poolInfo = await chefContract.poolInfo(poolIndex)
-  const poolToken = await getFantomToken(app, poolInfo.token, chefAddress)
+  const poolToken = await getGeneralEthcallToken(app, poolInfo.token, chefAddress)
 
   if (poolInfo.token === CRV3_ADDR) { // To preserve curve receipt token prices
     delete poolToken['virtualPrice']

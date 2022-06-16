@@ -98,7 +98,7 @@ async function loadFantomGeistSynthetixPoolInfo(App, tokens, prices, stakingAbi,
       }
       const stakeTokenAddress = await STAKING_POOL.callStatic[stakeTokenFunction]();
 
-      var stakeToken = await getFantomToken(App, stakeTokenAddress, stakingAddress);
+      var stakeToken = await getGeneralEthcallToken(App, stakeTokenAddress, stakingAddress);
 
       if (stakeTokenAddress.toLowerCase() === rewardTokenAddress.toLowerCase()) {
         stakeToken.staked = await STAKING_POOL.totalSupply() / 10 ** stakeToken.decimals;
@@ -114,10 +114,10 @@ async function loadFantomGeistSynthetixPoolInfo(App, tokens, prices, stakingAbi,
       var newTokenAddresses = stakeToken.tokens.filter(x =>
         !getParameterCaseInsensitive(tokens,x));
       for (const address of newTokenAddresses) {
-          tokens[address] = await getFantomToken(App, address, stakingAddress);
+          tokens[address] = await getGeneralEthcallToken(App, address, stakingAddress);
       }
       if (!getParameterCaseInsensitive(tokens, rewardTokenAddress)) {
-          tokens[rewardTokenAddress] = await getFantomToken(App, rewardTokenAddress, stakingAddress);
+          tokens[rewardTokenAddress] = await getGeneralEthcallToken(App, rewardTokenAddress, stakingAddress);
       }
       const rewardToken = getParameterCaseInsensitive(tokens, rewardTokenAddress);
 

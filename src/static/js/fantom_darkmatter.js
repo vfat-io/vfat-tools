@@ -20,8 +20,8 @@ $(function() {
       const tokens = {};
       const prices = await getFantomPrices();
 
-      await loadFantomChefContract(App, tokens, prices, DMD_CHEF, DMD_CHEF_ADDR, DMD_CHEF_ABI, rewardTokenTicker,
-        "DMD", null, rewardsPerWeek, "pendingDMD", [1]);
+      await loadGeneralEthcallChefContract(App, tokens, prices, DMD_CHEF, DMD_CHEF_ADDR, DMD_CHEF_ABI, rewardTokenTicker,
+        "DMD", null, rewardsPerWeek, "pendingDMD", [1], "fantom");
 
 
       hideLoading();

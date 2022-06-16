@@ -24,8 +24,8 @@ const GOAT_ABI = [{"inputs":[{"internalType":"contract GoatToken","name":"_goat"
       const tokens = {};
       const prices = await getFantomPrices();
   
-      await loadFantomChefContract(App, tokens, prices, GOAT_INIT, GOAT_ADDR, GOAT_ABI, rewardTokenTicker,
-        "goat", null, rewardsPerWeek, "pendingGoat");
+      await loadGeneralEthcallChefContract(App, tokens, prices, GOAT_INIT, GOAT_ADDR, GOAT_ABI, rewardTokenTicker,
+        "goat", null, rewardsPerWeek, "pendingGoat", [], "fantom");
   
       hideLoading();
     }

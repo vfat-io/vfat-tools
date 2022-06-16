@@ -19,10 +19,10 @@ const DRACO_CHEF_ABI = [{"inputs":[{"internalType":"contract Draco","name":"_dra
        const rewardsPerWeek = await DRACO_CHEF.dracoPerBlock() / 1e18 * 604800 / 5.8;
     
         const tokens = {};
-        const prices = await getCronosPrices();
+        const prices = await getFantomPrices();
     
-        await loadCronosChefContract(App, tokens, prices, DRACO_CHEF, DRACO_CHEF_ADDR, DRACO_CHEF_ABI, rewardTokenTicker,
-          "draco", null, rewardsPerWeek, "pendingDraco");
+        await loadGeneralEthcallChefContract(App, tokens, prices, DRACO_CHEF, DRACO_CHEF_ADDR, DRACO_CHEF_ABI, rewardTokenTicker,
+          "draco", null, rewardsPerWeek, "pendingDraco", [], "fantom");
     
     
         hideLoading();

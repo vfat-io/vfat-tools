@@ -21,8 +21,8 @@ async function main() {
     const prices = await getFantomPrices();
 
 
-    await loadFantomChefContract(App, tokens, prices, BASTILLE_CHEF, BASTILLE_CHEF_ADDR, BASTILLE_CHEF_ABI, rewardTokenTicker,
-      "bastilledelaboujeToken", null, rewardsPerWeek, "pendingBastille", [1]);
+    await loadGeneralEthcallChefContract(App, tokens, prices, BASTILLE_CHEF, BASTILLE_CHEF_ADDR, BASTILLE_CHEF_ABI, rewardTokenTicker,
+      "bastilledelaboujeToken", null, rewardsPerWeek, "pendingBastille", [1], "fantom");
 
     hideLoading();
   }

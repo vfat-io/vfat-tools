@@ -29,8 +29,8 @@ async function main() {
     const tokens = {};
     const prices = await getFantomPrices();
 
-    await loadFantomChefContract(App, tokens, prices, CATNIP_CHEF, CATNIP_CHEF_ADDR, CATNIP_CHEF_ABI, rewardTokenTicker,
-      "catnip", null, rewardsPerWeek, "pendingCatnip");
+    await loadGeneralEthcallChefContract(App, tokens, prices, CATNIP_CHEF, CATNIP_CHEF_ADDR, CATNIP_CHEF_ABI, rewardTokenTicker,
+      "catnip", null, rewardsPerWeek, "pendingCatnip", [], "fantom");
 
     hideLoading();
   }

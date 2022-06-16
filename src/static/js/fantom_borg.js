@@ -30,8 +30,8 @@ async function main() {
     const prices = await getFantomPrices();
     prices["0xAd84341756Bf337f5a0164515b1f6F993D194E1f"] = { usd : 1 };
 
-    await loadFantomChefContract(App, tokens, prices, SON_CHEF, SON_CHEF_ADDR, SON_CHEF_ABI, rewardTokenTicker,
-      "viking", null, rewardsPerWeek, "pendingEgg");
+    await loadGeneralEthcallChefContract(App, tokens, prices, SON_CHEF, SON_CHEF_ADDR, SON_CHEF_ABI, rewardTokenTicker,
+      "viking", null, rewardsPerWeek, "pendingEgg", [], "fantom");
 
     hideLoading();
   }

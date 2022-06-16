@@ -21,7 +21,7 @@ async function main() {
     rewardTokenFunction: "farmrewa"
   }
 
-  let p = await loadFantomSynthetixPool(App, tokens, prices, pool.abi, pool.address, pool.rewardTokenFunction, pool.stakeTokenFunction)
+  let p = await loadGeneralEthcallSynthetixPool(App, tokens, prices, pool.abi, pool.address, pool.rewardTokenFunction, pool.stakeTokenFunction, "fantom")
   _print_bold(`Total staked: $${formatMoney(p.staked_tvl)}`);
   if (p.totalUserStaked > 0) {
     _print(`You are staking a total of $${formatMoney(p.totalUserStaked)} at an APR of ${(p.totalAPR * 100).toFixed(2)}%\n`);

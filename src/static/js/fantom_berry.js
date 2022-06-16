@@ -21,8 +21,8 @@ $(function() {
         const tokens = {};
         const prices = await getFantomPrices();
     
-        await loadFantomChefContract(App, tokens, prices, BERRY_CHEF, BERRY_CHEF_ADDR, BERRY_CHEF_ABI, rewardTokenTicker,
-          "Berry", null, rewardsPerWeek, "pendingBerry", [1]);
+        await loadGeneralEthcallChefContract(App, tokens, prices, BERRY_CHEF, BERRY_CHEF_ADDR, BERRY_CHEF_ABI, rewardTokenTicker,
+          "Berry", null, rewardsPerWeek, "pendingBerry", [1], "fantom");
     
     
         hideLoading();

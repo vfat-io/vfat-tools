@@ -29,8 +29,8 @@ async function main() {
     const tokens = {};
     const prices = await getFantomPrices();
 
-  await loadFantomChefContract(App, tokens, prices, OLIVE_CHEF, OLIVE_CHEF_ADDR, OLIVE_CHEF_ABI, rewardTokenTicker,
-      "olive", null, rewardsPerWeek, "pendingOlive", [1]);
+  await loadGeneralEthcallChefContract(App, tokens, prices, OLIVE_CHEF, OLIVE_CHEF_ADDR, OLIVE_CHEF_ABI, rewardTokenTicker,
+      "olive", null, rewardsPerWeek, "pendingOlive", [1], "fantom");
 
     hideLoading();
   }

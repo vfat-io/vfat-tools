@@ -30,7 +30,7 @@ $(function() {
       const tokens = {};
       const prices = await getFantomPrices();
   
-      const cgsvUsdcPoolInfo = await getFantomToken(App, CGSV_USDC_ADDR, CGSVFARM_CHEF_ADDR);
+      const cgsvUsdcPoolInfo = await getGeneralEthcallToken(App, CGSV_USDC_ADDR, CGSVFARM_CHEF_ADDR);
 
       if (cgsvUsdcPoolInfo) {
 
@@ -40,7 +40,7 @@ $(function() {
           prices[CGSV_ADDR] = {usd: q0 / q1};
       }
 
-      const cgsUsdcPoolInfo = await getFantomToken(App, CGS_USDC_ADDR, CGSFARM_CHEF_ADDR);
+      const cgsUsdcPoolInfo = await getGeneralEthcallToken(App, CGS_USDC_ADDR, CGSFARM_CHEF_ADDR);
 
       if (cgsUsdcPoolInfo) {
           // Add CGS price
@@ -70,7 +70,7 @@ $(function() {
       var tokens = {};
   
       const rewardTokenAddress = await chefContract.callStatic[rewardTokenFunction]();
-      const rewardToken = await getFantomToken(App, rewardTokenAddress, chefAddress);
+      const rewardToken = await getGeneralEthcallToken(App, rewardTokenAddress, chefAddress);
       const rewardsPerWeek = rewardsPerWeekFixed ??
         await chefContract.callStatic[rewardsPerBlockFunction]()
         / 10 ** rewardToken.decimals * 604800 / 3
@@ -81,7 +81,7 @@ $(function() {
       var tokenAddresses = [].concat.apply([], poolInfos.filter(x => x.poolToken).map(x => x.poolToken.tokens));
   
       await Promise.all(tokenAddresses.map(async (address) => {
-          tokens[address] = await getFantomToken(App, address, chefAddress);
+          tokens[address] = await getGeneralEthcallToken(App, address, chefAddress);
       }));
   
       if (deathPoolIndices) {   //load prices for the deathpool assets
@@ -117,7 +117,7 @@ $(function() {
           lastRewardBlock : poolInfo.lastRewardBlock
         };
       }
-      const poolToken = await getFantomToken(app, poolInfo.want, poolInfo.strat); //staked is 0
+      const poolToken = await getGeneralEthcallToken(app, poolInfo.want, poolInfo.strat); //staked is 0
       const strat = new ethers.Contract(poolInfo.strat, STRAT_ABI, app.provider);
       poolToken.staked = await strat.wantLockedTotal() / 1e18;
       const totalShares = await strat.sharesTotal();

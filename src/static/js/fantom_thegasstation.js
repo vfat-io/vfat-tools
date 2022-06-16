@@ -438,7 +438,7 @@ async function getGasStationFantomPoolInfo(app, poolContract, poolAddress, rewar
     withdrawFee = await poolContract.withdrawFee()
   } catch (err) {}
 
-  var poolToken = await getFantomToken(app, stakeToken, poolAddress)
+  var poolToken = await getGeneralEthcallToken(app, stakeToken, poolAddress)
   var userInfo = await poolContract.userInfo(app.YOUR_ADDRESS)
   var pendingRewards = {}
 
@@ -831,14 +831,14 @@ async function main() {
   var tokens = {}
   var prices = await getFantomPrices()
 
-  var lpToken = await getFantomToken(
+  var lpToken = await getGeneralEthcallToken(
     App,
     '0x2ae4249f5a33a3ceadc10ddcbc5a9e8abe7680ef',
     '0x0000000000000000000000000000000000000000'
   )
   await Promise.all(
     lpToken.tokens.map(async address => {
-      tokens[address] = await getFantomToken(App, address, '0x0000000000000000000000000000000000000000')
+      tokens[address] = await getGeneralEthcallToken(App, address, '0x0000000000000000000000000000000000000000')
     })
   )
   getPoolPrices(tokens, prices, lpToken, 'fantom')
@@ -865,7 +865,7 @@ async function main() {
 
       rewardTokenAddresses.push(rewardTokenAddress)
 
-      rewardTokens[rewardTokenAddress] = await getFantomToken(App, rewardTokenAddress, pool.address)
+      rewardTokens[rewardTokenAddress] = await getGeneralEthcallToken(App, rewardTokenAddress, pool.address)
       rewardsPerWeek[rewardTokenAddress] =
         ((await poolContract.rewardPerBlock()) / 10 ** rewardTokens[rewardTokenAddress].decimals) * 604800
     } catch (err) {
@@ -877,11 +877,11 @@ async function main() {
 
       rewardTokenAddresses.push(rewardToken0Address, rewardToken1Address)
 
-      rewardTokens[rewardToken0Address] = await getFantomToken(App, rewardToken0Address, pool.address)
+      rewardTokens[rewardToken0Address] = await getGeneralEthcallToken(App, rewardToken0Address, pool.address)
       rewardsPerWeek[rewardToken0Address] =
         ((await poolContract.reward0PerBlock()) / 10 ** rewardTokens[rewardToken0Address].decimals) * 604800
 
-      rewardTokens[rewardToken1Address] = await getFantomToken(App, rewardToken1Address, pool.address)
+      rewardTokens[rewardToken1Address] = await getGeneralEthcallToken(App, rewardToken1Address, pool.address)
       rewardsPerWeek[rewardToken1Address] =
         ((await poolContract.reward1PerBlock()) / 10 ** rewardTokens[rewardToken1Address].decimals) * 604800
     }
@@ -896,7 +896,7 @@ async function main() {
 
     await Promise.all(
       poolInfo.poolToken.tokens.map(async address => {
-        tokens[address] = await getFantomToken(App, address, pool.address)
+        tokens[address] = await getGeneralEthcallToken(App, address, pool.address)
       })
     )
 

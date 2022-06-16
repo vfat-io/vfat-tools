@@ -21,8 +21,8 @@ async function main() {
     const tokens = {};
     const prices = await getFantomPrices();
 
-    await loadFantomChefContract(App, tokens, prices, WRA_CHEF, WRA_CHEF_ADDR, WRA_CHEF_ABI, rewardTokenTicker,
-      "wra", null, rewardsPerWeek, "pendingWRA", [1]);
+    await loadGeneralEthcallChefContract(App, tokens, prices, WRA_CHEF, WRA_CHEF_ADDR, WRA_CHEF_ABI, rewardTokenTicker,
+      "wra", null, rewardsPerWeek, "pendingWRA", [1], "fantom");
 
     hideLoading();  
   }

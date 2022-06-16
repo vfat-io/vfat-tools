@@ -29,8 +29,8 @@ $(function() {
         const tokens = {};
         const prices = await getFantomPrices();
     
-        await loadFantomChefContract(App, tokens, prices, CARIBOU_CHEF, CARIBOU_CHEF_ADDR, CARIBOU_CHEF_ABI, rewardTokenTicker,
-          "caribou", null, rewardsPerWeek, "pendingCaribou");
+        await loadGeneralEthcallChefContract(App, tokens, prices, CARIBOU_CHEF, CARIBOU_CHEF_ADDR, CARIBOU_CHEF_ABI, rewardTokenTicker,
+          "caribou", null, rewardsPerWeek, "pendingCaribou", [], "fantom");
     
         hideLoading();
       }

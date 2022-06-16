@@ -25,8 +25,8 @@ async function main() {
     const tokens = {};
     const prices = await getFantomPrices();
 
-    await loadFantomChefContract(App, tokens, prices, BOO_CHEF, BOO_CHEF_ADDR, BOO_CHEF_ABI, rewardTokenTicker,
-      "boo", null, rewardsPerWeek, "pendingBOO", [1]);
+    await loadGeneralEthcallChefContract(App, tokens, prices, BOO_CHEF, BOO_CHEF_ADDR, BOO_CHEF_ABI, rewardTokenTicker,
+      "boo", null, rewardsPerWeek, "pendingBOO", [1], "fantom");
 
     await loadSingleSpookyContract(App, tokens, prices, SINGLE_BOO_CHEF, SINGLE_BOO_CHEF_ADDR, SINGLE_BOO_CHEF_ABI, rewardTokenTicker,
       "boo", null, singleRewardsPerWeek, "pendingBOO");
@@ -49,7 +49,7 @@ async function loadSingleSpookyContract(App, tokens, prices, chef, chefAddress, 
   var tokens = {};
 
   const rewardTokenAddress = await chefContract.callStatic[rewardTokenFunction]();
-  const rewardToken = await getFantomToken(App, rewardTokenAddress, chefAddress);
+  const rewardToken = await getGeneralEthcallToken(App, rewardTokenAddress, chefAddress);
   const rewardsPerWeek = rewardsPerWeekFixed ??
     await chefContract.callStatic[rewardsPerBlockFunction]()
     / 10 ** rewardToken.decimals * 604800 / 3
@@ -60,7 +60,7 @@ async function loadSingleSpookyContract(App, tokens, prices, chef, chefAddress, 
   var tokenAddresses = [].concat.apply([], poolInfos.filter(x => x.poolToken).map(x => x.poolToken.tokens));
 
   await Promise.all(tokenAddresses.map(async (address) => {
-      tokens[address] = await getFantomToken(App, address, chefAddress);
+      tokens[address] = await getGeneralEthcallToken(App, address, chefAddress);
   }));
 
   if (deathPoolIndices) {   //load prices for the deathpool assets
@@ -116,7 +116,7 @@ async function getSpookyPoolInfo(app, chefContract, chefAddress, poolIndex, pend
       pendingRewardTokens : 0,
     };
   }
-  const poolToken = await getFantomToken(app, poolInfo.Token, chefAddress);
+  const poolToken = await getGeneralEthcallToken(app, poolInfo.Token, chefAddress);
   const userInfo = await chefContract.userInfo(poolIndex, app.YOUR_ADDRESS);
   const pendingRewardTokens = await chefContract.callStatic[pendingRewardsFunction](poolIndex, app.YOUR_ADDRESS);
   const staked = userInfo.amount / 10 ** poolToken.decimals;

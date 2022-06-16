@@ -20,8 +20,8 @@ $(function () {
         const tokens = {};		
         const prices = await getFantomPrices();		
     		
-        await loadFantomChefContract(App, tokens, prices, MOCK_CHEF, MOCK_CHEF_ADDR, MOCK_CHEF_ABI, rewardTokenTicker,		
-            "mockingbird", null, rewardsPerWeek, "pendingMockingbird");		
+        await loadGeneralEthcallChefContract(App, tokens, prices, MOCK_CHEF, MOCK_CHEF_ADDR, MOCK_CHEF_ABI, rewardTokenTicker,		
+            "mockingbird", null, rewardsPerWeek, "pendingMockingbird", [], "fantom");		
     		
         hideLoading();		
     }		

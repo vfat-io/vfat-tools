@@ -20,8 +20,8 @@ $(function () {
         const tokens = {};		
         const prices = await getFantomPrices();		
     		
-        await loadFantomChefContract(App, tokens, prices, XPAST_CHEF, XPAST_CHEF_ADDR, XPAST_CHEF_ABI, rewardTokenTicker,		
-            "xpast", null, rewardsPerWeek, "pendingXpast");		
+        await loadGeneralEthcallChefContract(App, tokens, prices, XPAST_CHEF, XPAST_CHEF_ADDR, XPAST_CHEF_ABI, rewardTokenTicker,		
+            "xpast", null, rewardsPerWeek, "pendingXpast", [], "fantom");		
     		
         hideLoading();		
     }		

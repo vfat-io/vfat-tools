@@ -29,8 +29,8 @@ $(function() {
       const tokens = {};
       const prices = await getFantomPrices();
 
-      await loadFantomChefContract(App, tokens, prices, fBABYPIG_CHEF, fBABYPIG_CHEF_ADDR, fBABYPIG_CHEF_ABI, rewardTokenTicker,
-        "fbabypig", null, rewardsPerWeek, "pendingFbabypig");
+      await loadGeneralEthcallChefContract(App, tokens, prices, fBABYPIG_CHEF, fBABYPIG_CHEF_ADDR, fBABYPIG_CHEF_ABI, rewardTokenTicker,
+        "fbabypig", null, rewardsPerWeek, "pendingFbabypig", [], "fantom");
 
       hideLoading();
     }

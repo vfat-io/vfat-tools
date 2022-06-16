@@ -29,8 +29,8 @@ async function main() {
     const tokens = {};
     const prices = await getFantomPrices();
 
-    await loadFantomChefContract(App, tokens, prices, UNIRON_CHEF, UNIRON_CHEF_ADDR, UNIRON_CHEF_ABI, rewardTokenTicker,
-      "uniron", null, rewardsPerWeek, "pendingUniron");
+    await loadGeneralEthcallChefContract(App, tokens, prices, UNIRON_CHEF, UNIRON_CHEF_ADDR, UNIRON_CHEF_ABI, rewardTokenTicker,
+      "uniron", null, rewardsPerWeek, "pendingUniron", [], "fantom");
 
     hideLoading();
   }

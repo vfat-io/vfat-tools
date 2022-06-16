@@ -29,8 +29,8 @@ async function main() {
     const tokens = {};
     const prices = await getFantomPrices();
 
-    await loadFantomChefContract(App, tokens, prices, BULL_CHEF, BULL_CHEF_ADDR, BULL_CHEF_ABI, rewardTokenTicker,
-      "bull", null, rewardsPerWeek, "pendingBull", [6]);
+    await loadGeneralEthcallChefContract(App, tokens, prices, BULL_CHEF, BULL_CHEF_ADDR, BULL_CHEF_ABI, rewardTokenTicker,
+      "bull", null, rewardsPerWeek, "pendingBull", [6], "fantom");
 
     hideLoading();
   }

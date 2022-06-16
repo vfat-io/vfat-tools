@@ -20,8 +20,8 @@ $(function () {
         const tokens = {};		
         const prices = await getFantomPrices();		
     		
-        await loadFantomChefContract(App, tokens, prices, DNA_CHEF, DNA_CHEF_ADDR, DNA_CHEF_ABI, rewardTokenTicker,		
-            "dna", null, rewardsPerWeek, "pendingDna");		
+        await loadGeneralEthcallChefContract(App, tokens, prices, DNA_CHEF, DNA_CHEF_ADDR, DNA_CHEF_ABI, rewardTokenTicker,		
+            "dna", null, rewardsPerWeek, "pendingDna", [], "fantom");		
     		
         hideLoading();		
     }		

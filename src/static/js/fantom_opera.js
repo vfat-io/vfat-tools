@@ -29,8 +29,8 @@ async function main() {
     const tokens = {};
     const prices = await getFantomPrices();
 
-    await loadFantomChefContract(App, tokens, prices, OPERA_CHEF, OPERA_CHEF_ADDR, OPERA_CHEF_ABI, rewardTokenTicker,
-      "opera", null, rewardsPerWeek, "pendingOpera", [1]);
+    await loadGeneralEthcallChefContract(App, tokens, prices, OPERA_CHEF, OPERA_CHEF_ADDR, OPERA_CHEF_ABI, rewardTokenTicker,
+      "opera", null, rewardsPerWeek, "pendingOpera", [1], "fantom");
 
     hideLoading();
   }

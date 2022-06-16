@@ -25,8 +25,8 @@ async function main() {
     const tokens = {};
     const prices = await getFantomPrices();
 
-    await loadFantomChefContract(App, tokens, prices, FTERRA_CHEF, FTERRA_CHEF_ADDR, FTERRA_CHEF_ABI, rewardTokenTicker,
-      "terra", null, rewardsPerWeek, "pendingTerra");
+    await loadGeneralEthcallChefContract(App, tokens, prices, FTERRA_CHEF, FTERRA_CHEF_ADDR, FTERRA_CHEF_ABI, rewardTokenTicker,
+      "terra", null, rewardsPerWeek, "pendingTerra", [], "fantom");
 
     hideLoading();
   }

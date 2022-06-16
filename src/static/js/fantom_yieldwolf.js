@@ -27,7 +27,7 @@ async function getWolfPoolInfo(app, chefContract, chefAddress, poolIndex) {
   const poolInfo = await chefContract.poolInfo(poolIndex);
   const stratAddress = poolInfo.strategy;
   const stratContract = new ethers.Contract(stratAddress, STRATEGY_ABI, app.provider);
-  const poolToken = await getFantomToken(app, poolInfo.stakeToken, chefAddress);
+  const poolToken = await getGeneralEthcallToken(app, poolInfo.stakeToken, chefAddress);
   poolToken.staked = await stratContract.totalStakeTokens() / 10 ** poolToken.decimals;
   const staked = await chefContract.userInfo(poolIndex, app.YOUR_ADDRESS) / 10 ** poolToken.decimals;
   return {
@@ -52,7 +52,7 @@ async function loadYieldWolfContract(App, tokens, prices, chef, chefAddress, che
   var tokenAddresses = [].concat.apply([], poolInfos.filter(x => x.poolToken).map(x => x.poolToken.tokens));
 
   await Promise.all(tokenAddresses.map(async (address) => {
-      tokens[address] = await getFantomToken(App, address, chefAddress);
+      tokens[address] = await getGeneralEthcallToken(App, address, chefAddress);
   }));
 
   const poolPrices = poolInfos.map(poolInfo => poolInfo.poolToken ? getPoolPrices(tokens, prices, poolInfo.poolToken, "fantom") : undefined);

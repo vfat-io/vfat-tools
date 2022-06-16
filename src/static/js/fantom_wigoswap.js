@@ -21,8 +21,8 @@ async function main() {
     const tokens = {};
     const prices = await getFantomPrices();
 
-    await loadFantomChefContract(App, tokens, prices, WIGO_CHEF, WIGO_CHEF_ADDR, WIGO_CHEF_ABI, rewardTokenTicker,
-      "wigo", null, rewardsPerWeek, "pendingWigo", [2]);
+    await loadGeneralEthcallChefContract(App, tokens, prices, WIGO_CHEF, WIGO_CHEF_ADDR, WIGO_CHEF_ABI, rewardTokenTicker,
+      "wigo", null, rewardsPerWeek, "pendingWigo", [2], "fantom");
 
     hideLoading();
   }

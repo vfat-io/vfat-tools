@@ -21,8 +21,8 @@ $(function() {
         const tokens = {};
         const prices = await getFantomPrices();
     
-        await loadFantomChefContract(App, tokens, prices, VENOM_CHEF, VENOM_CHEF_ADDR, VENOM_CHEF_ABI, rewardTokenTicker,
-          "venom", null, rewardsPerWeek, "pendingVenom", [1]);
+        await loadGeneralEthcallChefContract(App, tokens, prices, VENOM_CHEF, VENOM_CHEF_ADDR, VENOM_CHEF_ABI, rewardTokenTicker,
+          "venom", null, rewardsPerWeek, "pendingVenom", [1], "fantom");
     
     
         hideLoading();

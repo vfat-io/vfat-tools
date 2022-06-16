@@ -535,7 +535,7 @@ async function main() {
   const tokens = {}
   const prices = await getFantomPrices()
 
-  await loadFantomChefContract(
+  await loadGeneralEthcallChefContract(
     App,
     tokens,
     prices,
@@ -547,7 +547,8 @@ async function main() {
     null,
     rewardsPerWeek,
     'pendingRKITTEN',
-    [0]
+    [0],
+    'fantom'
   )
 
   hideLoading()

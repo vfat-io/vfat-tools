@@ -21,8 +21,8 @@ $(function() {
       const tokens = {};
       const prices = await getFantomPrices();
 
-      await loadFantomChefContract(App, tokens, prices, ELDRITCH_CHEF, ELDRITCH_CHEF_ADDR, ELDRITCH_CHEF_ABI, rewardTokenTicker,
-        "eldr", null, rewardsPerWeek, "pendingEldr", [1]);
+      await loadGeneralEthcallChefContract(App, tokens, prices, ELDRITCH_CHEF, ELDRITCH_CHEF_ADDR, ELDRITCH_CHEF_ABI, rewardTokenTicker,
+        "eldr", null, rewardsPerWeek, "pendingEldr", [1], "fantom");
 
 
       hideLoading();

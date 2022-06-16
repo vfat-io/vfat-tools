@@ -29,8 +29,8 @@ async function main() {
     const tokens = {};
     const prices = await getFantomPrices();
 
-    await loadFantomChefContract(App, tokens, prices, CAVE_CHEF, CAVE_CHEF_ADDR, CAVE_CHEF_ABI, rewardTokenTicker,
-      "drc", null, rewardsPerWeek, "pendingDrc");
+    await loadGeneralEthcallChefContract(App, tokens, prices, CAVE_CHEF, CAVE_CHEF_ADDR, CAVE_CHEF_ABI, rewardTokenTicker,
+      "drc", null, rewardsPerWeek, "pendingDrc", [], "fantom");
 
     hideLoading();
   }

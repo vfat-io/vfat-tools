@@ -29,8 +29,8 @@ async function main() {
     const tokens = {};
     const prices = await getFantomPrices();
 
-    await loadFantomChefContract(App, tokens, prices, MESO_CHEF, MESO_CHEF_ADDR, MESO_CHEF_ABI, rewardTokenTicker,
-      "token", null, rewardsPerWeek, "pendingMeso", [21]);
+    await loadGeneralEthcallChefContract(App, tokens, prices, MESO_CHEF, MESO_CHEF_ADDR, MESO_CHEF_ABI, rewardTokenTicker,
+      "token", null, rewardsPerWeek, "pendingMeso", [21], "fantom");
 
     hideLoading();
   }

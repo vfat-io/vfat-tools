@@ -43,8 +43,8 @@ async function main() {
 
     _print("");
 
-    await loadFantomChefContract(App, tokens, prices, OXD_CHEF, OXD_CHEF_ADDR, OXD_CHEF_ABI, rewardTokenTicker,
-      "oxd", null, rewardsPerWeek, "pendingOXD", [1]);
+    await loadGeneralEthcallChefContract(App, tokens, prices, OXD_CHEF, OXD_CHEF_ADDR, OXD_CHEF_ABI, rewardTokenTicker,
+      "oxd", null, rewardsPerWeek, "pendingOXD", [1], "fantom");
 
     hideLoading();
   }
@@ -81,17 +81,17 @@ async function loadMultiple0xdaoSynthetixPools(App, tokens, prices, pools) {
           rewardTokenAddresses.push(rewardTokenAddress);
         }
   
-        var stakeToken = await getFantomToken(App, stakeTokenAddress, stakingAddress);
+        var stakeToken = await getGeneralEthcallToken(App, stakeTokenAddress, stakingAddress);
         stakeToken.staked = await STAKING_POOL.totalSupply() / 10 ** stakeToken.decimals;
   
         var newTokenAddresses = stakeToken.tokens.filter(x =>
           !getParameterCaseInsensitive(tokens,x));
         for (const address of newTokenAddresses) {
-            tokens[address] = await getFantomToken(App, address, stakingAddress);
+            tokens[address] = await getGeneralEthcallToken(App, address, stakingAddress);
         }
         for(const rewardTokenAddress of rewardTokenAddresses){
           if (!getParameterCaseInsensitive(tokens, rewardTokenAddress)) {
-            tokens[rewardTokenAddress] = await getFantomToken(App, rewardTokenAddress, stakingAddress);
+            tokens[rewardTokenAddress] = await getGeneralEthcallToken(App, rewardTokenAddress, stakingAddress);
           }
         }
         let rewardTokens = [], rewardTokenTickers = [], rewardTokenPrices = [], weeklyRewards = [], usdCoinsPerWeek = [], earnings = [];
@@ -389,11 +389,11 @@ const StakingContracts = [
 ]
 
 async function loadload0xdaoPrice(App, tokens, prices, stakeTokenAddress) {
-    var stakeToken = await getFantomToken(App, stakeTokenAddress, App.YOUR_ADDRESS);
+    var stakeToken = await getGeneralEthcallToken(App, stakeTokenAddress, App.YOUR_ADDRESS);
     var newTokenAddresses = stakeToken.tokens.filter(x =>
       !getParameterCaseInsensitive(tokens,x));
     for (const address of newTokenAddresses) {
-        tokens[address] = await getFantomToken(App, address, App.YOUR_ADDRESS);
+        tokens[address] = await getGeneralEthcallToken(App, address, App.YOUR_ADDRESS);
     }
     const poolPrices = getPoolPrices(tokens, prices, stakeToken, "fantom");
     const stakeTokenTicker = poolPrices.stakeTokenTicker;

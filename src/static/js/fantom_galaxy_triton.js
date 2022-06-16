@@ -18,8 +18,8 @@ async function main() {
   const tokens = {};
   const prices = await getFantomPrices();
 
-  await loadFantomChefContract(App, tokens, prices, TRITON_CHEF, TRITON_CHEF_ADDR, TRITON_CHEF_ABI, "TRITON",
-      "token", null, rewardsPerWeek, "pendingToken");
+  await loadGeneralEthcallChefContract(App, tokens, prices, TRITON_CHEF, TRITON_CHEF_ADDR, TRITON_CHEF_ABI, "TRITON",
+      "token", null, rewardsPerWeek, "pendingToken", [], "fantom");
 
   hideLoading();
 }

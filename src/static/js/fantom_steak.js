@@ -77,7 +77,7 @@ $(function() {
       const XSTEAK = new ethers.Contract(XSTEAK_ADDR, XSTEAK_ABI, signer)
       const userBalance = (await XSTEAK.balanceOf(App.YOUR_ADDRESS)).toString();
 
-      const steak = await getFantomToken(App, STEAK_ADDR, XSTEAK_ADDR)
+      const steak = await getGeneralEthcallToken(App, STEAK_ADDR, XSTEAK_ADDR)
       const poolPrices = getPoolPrices(tokens, prices, steak, "fantom");
       const weeklyRewards =  2000 * 7 //Fees are sent manually and vary day-by-day
       const steakPrice = getParameterCaseInsensitive(prices, STEAK_ADDR).usd
@@ -162,7 +162,7 @@ $(function() {
     const IFUSD = new ethers.Contract(IFUSD_ADDR, IFUSD_ABI, signer)
     const userBalance = (await IFUSD.balanceOf(App.YOUR_ADDRESS)).toString();
 
-    const fusd = await getFantomToken(App, FUSD_ADDR, IFUSD_ADDR)
+    const fusd = await getGeneralEthcallToken(App, FUSD_ADDR, IFUSD_ADDR)
     const poolPrices = getPoolPrices(tokens, prices, fusd, "fantom");
     const weeklyRewards =  2000 * 7 //Fees are sent manually and vary day-by-day
     const fusdPrice = getParameterCaseInsensitive(prices, FUSD_ADDR).usd
@@ -197,11 +197,11 @@ $(function() {
     let tokens = {}
     let prices = await getFantomPrices()
 
-    tokens[STEAK_ADDR] = await getFantomToken(App, STEAK_ADDR, STEAK_CHEF_ADDR);
-    tokens[FUSD_ADDR] = await getFantomToken(App, FUSD_ADDR, STEAK_CHEF_ADDR);
-    tokens[USDC_ADDR] = await getFantomToken(App, USDC_ADDR, STEAK_CHEF_ADDR);
+    tokens[STEAK_ADDR] = await getGeneralEthcallToken(App, STEAK_ADDR, STEAK_CHEF_ADDR);
+    tokens[FUSD_ADDR] = await getGeneralEthcallToken(App, FUSD_ADDR, STEAK_CHEF_ADDR);
+    tokens[USDC_ADDR] = await getGeneralEthcallToken(App, USDC_ADDR, STEAK_CHEF_ADDR);
 
-    const USDC_FUSD = await getFantomToken(App, USDC_FUSD_LP_ADDR, STEAK_CHEF_ADDR);
+    const USDC_FUSD = await getGeneralEthcallToken(App, USDC_FUSD_LP_ADDR, STEAK_CHEF_ADDR);
     getPoolPrices(tokens, prices, USDC_FUSD, 'fantom');
 
     // get iFUSD price from FUSD price
@@ -247,18 +247,18 @@ async function loadSteakChefContract(App, tokens, prices, chef, chefAddress, che
     _print(`Showing incentivized pools only.\n`);
 
     const rewardTokenAddress = await chefContract.callStatic[rewardTokenFunction]();
-    const rewardToken = await getFantomToken(App, rewardTokenAddress, chefAddress);
+    const rewardToken = await getGeneralEthcallToken(App, rewardTokenAddress, chefAddress);
     const rewardsPerWeek = rewardsPerWeekFixed ??
       await chefContract.callStatic[rewardsPerBlockFunction]() //Add 10% deposit fees to APR calculations?
       / 10 ** rewardToken.decimals * 604800 / 3 //*0.9
 
     const poolInfos = await Promise.all([...Array(poolCount).keys()].map(async (x) =>
-      await getFantomPoolInfo(App, chefContract, chefAddress, x, pendingRewardsFunction)));
+      await getGeneralEthcallPoolInfo(App, chefContract, chefAddress, x, pendingRewardsFunction)));
 
     var tokenAddresses = [].concat.apply([], poolInfos.filter(x => x.poolToken).map(x => x.poolToken.tokens));
 
     await Promise.all(tokenAddresses.map(async (address) => {
-        tokens[address] = await getFantomToken(App, address, chefAddress);
+        tokens[address] = await getGeneralEthcallToken(App, address, chefAddress);
     }));
 
     if (deathPoolIndices) {   //load prices for the deathpool assets

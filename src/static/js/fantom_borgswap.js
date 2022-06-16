@@ -29,8 +29,8 @@ async function main() {
     const tokens = {};
     const prices = await getFantomPrices();
 
-    await loadFantomChefContract(App, tokens, prices, KLING_CHEF, KLING_CHEF_ADDR, KLING_CHEF_ABI, rewardTokenTicker,
-      "lqdr", null, rewardsPerWeek, "pendingLqdr");
+    await loadGeneralEthcallChefContract(App, tokens, prices, KLING_CHEF, KLING_CHEF_ADDR, KLING_CHEF_ABI, rewardTokenTicker,
+      "lqdr", null, rewardsPerWeek, "pendingLqdr", [], "fantom");
 
     hideLoading();
   }

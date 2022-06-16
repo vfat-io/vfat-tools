@@ -318,7 +318,7 @@ async function loadFantomChefContract(App, tokens, prices, chef, chefAddress, ch
   _print(`Showing incentivized pools only.\n`);
 
   const rewardTokenAddress = await chefContract.callStatic[rewardTokenFunction]();
-  const rewardToken = await getFantomToken(App, rewardTokenAddress, chefAddress);
+  const rewardToken = await getGeneralEthcallToken(App, rewardTokenAddress, chefAddress);
   const rewardsPerWeek = rewardsPerWeekFixed ??
       await chefContract.callStatic[rewardsPerBlockFunction]()
       / 10 ** rewardToken.decimals * 604800 / 3
@@ -329,7 +329,7 @@ async function loadFantomChefContract(App, tokens, prices, chef, chefAddress, ch
   const tokenAddresses = [].concat.apply([], poolInfos.filter(x => x.poolToken).map(x => x.poolToken.tokens));
 
   await Promise.all(tokenAddresses.map(async (address) => {
-      tokens[address] = await getFantomToken(App, address, chefAddress);
+      tokens[address] = await getGeneralEthcallToken(App, address, chefAddress);
   }));
 
   if (deathPoolIndices) {   //load prices for the deathpool assets
@@ -389,7 +389,7 @@ async function getChargeDefiPoolInfo(App, chefContract, chefAddress, poolIndex, 
           lastRewardBlock : poolInfo.lastRewardBlock
       };
   }
-  const poolToken = await getFantomToken(App, poolInfo.stakedToken, poolInfo.strategy);
+  const poolToken = await getGeneralEthcallToken(App, poolInfo.stakedToken, poolInfo.strategy);
   const strat = new ethers.Contract(poolInfo.strategy, STRAT_ABI, App.provider);
   poolToken.staked = await strat.stakedLockedTotal() / 1e18;
   const userInfo = await chefContract.userInfo(poolIndex, App.YOUR_ADDRESS);

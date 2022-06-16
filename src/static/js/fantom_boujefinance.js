@@ -29,8 +29,8 @@ async function main() {
     const tokens = {};
     const prices = await getFantomPrices();
 
-    await loadFantomChefContract(App, tokens, prices, BOUJE_CHEF, BOUJE_CHEF_ADDR, BOUJE_CHEF_ABI, rewardTokenTicker,
-      "boujeToken", null, rewardsPerWeek, "pendingBouje");
+    await loadGeneralEthcallChefContract(App, tokens, prices, BOUJE_CHEF, BOUJE_CHEF_ADDR, BOUJE_CHEF_ABI, rewardTokenTicker,
+      "boujeToken", null, rewardsPerWeek, "pendingBouje", [], "fantom");
 
     hideLoading();
   }

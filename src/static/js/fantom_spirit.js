@@ -40,7 +40,7 @@ async function main() {
       rewardTokenFunction: "SPIRIT"
     }})
 
-    let p = await loadMultipleFantomSynthetixPools(App, tokens, prices, Pools)
+    let p = await loadMultipleGeneralEthcallSynthetixPools(App, tokens, prices, Pools, "fantom")
     _print_bold(`Total staked: $${formatMoney(p.staked_tvl)}`);
     if (p.totalUserStaked > 0) {
       _print(`You are staking a total of $${formatMoney(p.totalUserStaked)} at an APR of ${(p.totalApr * 100).toFixed(2)}%\n`);
@@ -48,8 +48,8 @@ async function main() {
 
     _print("");
 
-    await loadFantomChefContract(App, tokens, prices, SPIRIT_CHEF, SPIRIT_CHEF_ADDR, SPIRIT_CHEF_ABI, rewardTokenTicker,
-      "spirit", null, rewardsPerWeek, "pendingSpirit", [1,2,3,4,5,6,7,8,9,10,11,12,13]);
+    await loadGeneralEthcallChefContract(App, tokens, prices, SPIRIT_CHEF, SPIRIT_CHEF_ADDR, SPIRIT_CHEF_ABI, rewardTokenTicker,
+      "spirit", null, rewardsPerWeek, "pendingSpirit", [1,2,3,4,5,6,7,8,9,10,11,12,13], "fantom");
 
     _print("");
 
@@ -72,10 +72,10 @@ async function main() {
 async function loadSpiritPoolInfo(App, tokens, prices, contractAddress) {
   try {
     const contract = await new ethers.Contract(contractAddress, SPIRIT_VAULT_ABI, App.provider);
-    const vault = await getFantomToken(App, contractAddress, App.YOUR_ADDRESS);
+    const vault = await getGeneralEthcallToken(App, contractAddress, App.YOUR_ADDRESS);
     var newTokenAddresses = vault.tokens.filter(x => !getParameterCaseInsensitive(tokens, x));
     for (const address of newTokenAddresses) {
-        tokens[address] = await getFantomToken(App, address, contractAddress);
+        tokens[address] = await getGeneralEthcallToken(App, address, contractAddress);
     }
     const totalSupply = await contract.totalSupply() / 1e18;
     const ppfs = await contract.getPricePerFullShare() / 1e18;

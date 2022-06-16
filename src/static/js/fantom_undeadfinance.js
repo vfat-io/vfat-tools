@@ -31,8 +31,8 @@ async function main() {
     const tokens = {};
     const prices = await getFantomPrices();
 
-    await loadFantomChefContract(App, tokens, prices, UNDEAD_CHEF, UNDEAD_CHEF_ADDR, UNDEAD_CHEF_ABI, rewardTokenTicker,
-      "undead", null, rewardsPerWeek, "pendingUndead");
+    await loadGeneralEthcallChefContract(App, tokens, prices, UNDEAD_CHEF, UNDEAD_CHEF_ADDR, UNDEAD_CHEF_ABI, rewardTokenTicker,
+      "undead", null, rewardsPerWeek, "pendingUndead", [], "fantom");
 
     hideLoading();
   }

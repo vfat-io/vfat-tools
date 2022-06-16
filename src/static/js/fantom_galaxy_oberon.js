@@ -17,8 +17,8 @@ async function main() {
   const tokens = {};
   const prices = await getFantomPrices();
 
-  await loadFantomChefContract(App, tokens, prices, OBERON_CHEF, OBERON_CHEF_ADDR, OBERON_CHEF_ABI, "OBERON",
-      "oberon", null, rewardsPerWeek, "pendingOberon");
+  await loadGeneralEthcallChefContract(App, tokens, prices, OBERON_CHEF, OBERON_CHEF_ADDR, OBERON_CHEF_ABI, "OBERON",
+      "oberon", null, rewardsPerWeek, "pendingOberon", [], "fantom");
 
   hideLoading();
 }

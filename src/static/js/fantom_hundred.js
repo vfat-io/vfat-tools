@@ -216,13 +216,13 @@ async function main() {
                                       g => g.lpTokenAddress.toLowerCase() !== "0xA33138a5A6A32d12b2Ac7Fc261378d6C6AB2eF90".toLowerCase())
 
   //HND reward token
-  const rewardToken = await getFantomToken(App, "0x10010078a54396f62c96df8532dc2b4847d47ed3", App.YOUR_ADDRESS);
+  const rewardToken = await getGeneralEthcallToken(App, "0x10010078a54396f62c96df8532dc2b4847d47ed3", App.YOUR_ADDRESS);
   const rewardTokenPrice = getParameterCaseInsensitive(prices, "0x10010078a54396f62c96df8532dc2b4847d47ed3")?.usd;
 
   let staked_tvl = 0;
   let userTvl = 0;
   for(let i = 0; i < gageInfos.length; i++){
-    const lpToken = await getFantomToken(App, gageInfos[i].lpTokenAddress, gaugeAddresses[i]);
+    const lpToken = await getGeneralEthcallToken(App, gageInfos[i].lpTokenAddress, gaugeAddresses[i]);
     const [_gauge_relative_weight] = await App.ethcallProvider.all([HND_GAUGES_CONTROLLER.gauge_relative_weight(gaugeAddresses[i])]);
     const gauge_relative_weight = _gauge_relative_weight / 1e18;
     const totalSupply = gageInfos[i].totalSupply / 10 ** lpToken.decimals;
@@ -315,7 +315,7 @@ async function loadSolidlySynthetixPoolInfo(App, tokens, prices, stakingAbi, sta
 
     const rewardTokenAddress = await STAKING_POOL.rewards(0)  //check for additional reward tokens in the future
 
-    var stakeToken = await getFantomToken(App, stakeTokenAddress, stakingAddress);
+    var stakeToken = await getGeneralEthcallToken(App, stakeTokenAddress, stakingAddress);
 
     var newPriceAddresses = stakeToken.tokens.filter(x =>
       !getParameterCaseInsensitive(prices, x));
@@ -327,10 +327,10 @@ async function loadSolidlySynthetixPoolInfo(App, tokens, prices, stakingAbi, sta
     var newTokenAddresses = stakeToken.tokens.filter(x =>
       !getParameterCaseInsensitive(tokens,x));
     for (const address of newTokenAddresses) {
-        tokens[address] = await getFantomToken(App, address, stakingAddress);
+        tokens[address] = await getGeneralEthcallToken(App, address, stakingAddress);
     }
     if (!getParameterCaseInsensitive(tokens, rewardTokenAddress)) {
-        tokens[rewardTokenAddress] = await getFantomToken(App, rewardTokenAddress, stakingAddress);
+        tokens[rewardTokenAddress] = await getGeneralEthcallToken(App, rewardTokenAddress, stakingAddress);
     }
     const rewardToken = getParameterCaseInsensitive(tokens, rewardTokenAddress);
 
@@ -741,7 +741,7 @@ async function loadBeethovenxChefContract(App, tokens, prices, chef, chefAddress
   _print(`Showing incentivized pools only.\n`);
 
   const rewardTokenAddress = await chefContract.callStatic[rewardTokenFunction]();
-  const rewardToken = await getFantomToken(App, rewardTokenAddress, chefAddress);
+  const rewardToken = await getGeneralEthcallToken(App, rewardTokenAddress, chefAddress);
   const rewardsPerWeek = rewardsPerWeekFixed ??
     await chefContract.callStatic[rewardsPerBlockFunction]()
     / 10 ** rewardToken.decimals * 604800 / 3
@@ -752,7 +752,7 @@ async function loadBeethovenxChefContract(App, tokens, prices, chef, chefAddress
   var tokenAddresses = [].concat.apply([], poolInfos.filter(x => x.poolToken).map(x => x.poolToken.tokens));
 
   await Promise.all(tokenAddresses.map(async (address) => {
-      tokens[address] = await getFantomToken(App, address, chefAddress);
+      tokens[address] = await getGeneralEthcallToken(App, address, chefAddress);
   }));
 
   if (deathPoolIndices) {   //load prices for the deathpool assets
@@ -819,13 +819,13 @@ async function getBeethovenxPoolInfo(app, chefContract, chefAddress, poolIndex, 
   }
   const rewarder = await chefContract.rewarder(poolIndex);
   if(rewarder != "0x0000000000000000000000000000000000000000"){
-    const poolToken = await getFantomToken(app, lpToken, chefAddress);
+    const poolToken = await getGeneralEthcallToken(app, lpToken, chefAddress);
     const userInfo = await chefContract.userInfo(poolIndex, app.YOUR_ADDRESS);
     const pendingRewardTokens = await chefContract.pendingBeets(poolIndex, app.YOUR_ADDRESS);
     const staked = userInfo.amount / 10 ** poolToken.decimals;
     const rewarderContract = new ethers.Contract(rewarder, REWARDER_BEETS_CHEF_ABI, app.provider);
     const rewarderTokenAddress = await rewarderContract.rewardToken();
-    const rewarderToken = await getFantomToken(app, rewarderTokenAddress, chefAddress);
+    const rewarderToken = await getGeneralEthcallToken(app, rewarderTokenAddress, chefAddress);
     const pendingRewarderTokens = await rewarderContract.pendingToken(poolIndex, app.YOUR_ADDRESS) / 10 ** rewarderToken.decimals;
     const rewarderRewardsPerSecond = await rewarderContract.rewardPerSecond() / 10 ** rewarderToken.decimals;
     const rewarderRewardsPerWeek = rewarderRewardsPerSecond * 604800;
@@ -1091,7 +1091,7 @@ const beethovenContract_claim = async function(chefAbi, chefAddress, poolIndex, 
 }
 
 async function loadSolidlySynthetixPoolInfoPrice(App, tokens, prices, stakingAddress, stakeTokenAddress) {
-    var stakeToken = await getFantomToken(App, stakeTokenAddress, stakingAddress);
+    var stakeToken = await getGeneralEthcallToken(App, stakeTokenAddress, stakingAddress);
     var newPriceAddresses = stakeToken.tokens.filter(x =>
       !getParameterCaseInsensitive(prices, x));
     var newPrices = await lookUpTokenPrices(newPriceAddresses);
@@ -1102,7 +1102,7 @@ async function loadSolidlySynthetixPoolInfoPrice(App, tokens, prices, stakingAdd
     var newTokenAddresses = stakeToken.tokens.filter(x =>
       !getParameterCaseInsensitive(tokens,x));
     for (const address of newTokenAddresses) {
-        tokens[address] = await getFantomToken(App, address, stakingAddress);
+        tokens[address] = await getGeneralEthcallToken(App, address, stakingAddress);
     }
     const poolPrices = getPoolPrices(tokens, prices, stakeToken, "fantom");
 

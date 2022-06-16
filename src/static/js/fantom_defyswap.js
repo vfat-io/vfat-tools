@@ -25,8 +25,8 @@ $(function() {
       const tokens = {};
       const prices = await getFantomPrices();
   
-      await loadFantomChefContract(App, tokens, prices, DFY_MASTER, DFY_MASTER_ADDR, DFY_MASTER_ABI, rewardTokenTicker,
-        "defy", null, rewardsPerWeek, "pendingDefy", [1]);
+      await loadGeneralEthcallChefContract(App, tokens, prices, DFY_MASTER, DFY_MASTER_ADDR, DFY_MASTER_ABI, rewardTokenTicker,
+        "defy", null, rewardsPerWeek, "pendingDefy", [1], "fantom");
   
       hideLoading();
     }

@@ -29,8 +29,8 @@ async function main() {
     const tokens = {};
     const prices = await getFantomPrices();
 
-    await loadFantomChefContract(App, tokens, prices, AURA_CHEF, AURA_CHEF_ADDR, AURA_CHEF_ABI, rewardTokenTicker,
-        "aura", null, rewardsPerWeek, "pendingAura");
+    await loadGeneralEthcallChefContract(App, tokens, prices, AURA_CHEF, AURA_CHEF_ADDR, AURA_CHEF_ABI, rewardTokenTicker,
+        "aura", null, rewardsPerWeek, "pendingAura", [], "fantom");
 
     hideLoading();
 }

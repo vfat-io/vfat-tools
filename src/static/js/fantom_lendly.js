@@ -173,10 +173,10 @@ async function main() {
   const prices = await getFantomPrices();
 
   //HND reward token
-  const rewardToken = await getFantomToken(App, "0x10010078a54396f62c96df8532dc2b4847d47ed3", App.YOUR_ADDRESS);
+  const rewardToken = await getGeneralEthcallToken(App, "0x10010078a54396f62c96df8532dc2b4847d47ed3", App.YOUR_ADDRESS);
   const rewardTokenPrice = getParameterCaseInsensitive(prices, "0x10010078a54396f62c96df8532dc2b4847d47ed3")?.usd;
   //WeVE reward token
-  const rewardTokenWeve = await getFantomToken(App, "0x911da02c1232a3c3e1418b834a311921143b04d7", App.YOUR_ADDRESS);
+  const rewardTokenWeve = await getGeneralEthcallToken(App, "0x911da02c1232a3c3e1418b834a311921143b04d7", App.YOUR_ADDRESS);
   const rewardTokenPriceWeve = getParameterCaseInsensitive(prices, "0x911da02c1232a3c3e1418b834a311921143b04d7")?.usd;
 
   const COMPTROLLER = new ethcall.Contract(contracts.comptroller, LENDLY_ABI.comptroller, App.provider);
@@ -253,7 +253,7 @@ async function main() {
   let staked_tvl = 0;
   let userTvl = 0;
   for(let i = 0; i < gageInfos.length; i++){
-    const lpToken = await getFantomToken(App, gageInfos[i].lpTokenAddress, gaugeAddresses[i]);
+    const lpToken = await getGeneralEthcallToken(App, gageInfos[i].lpTokenAddress, gaugeAddresses[i]);
       const totalSupply = gageInfos[i].totalSupply / 10 ** lpToken.decimals;
       const usersStaked = gageInfos[i].balance / 10 ** lpToken.decimals;
       const working_balances = gageInfos[i].working_balances / 10 ** lpToken.decimals;

@@ -43,7 +43,7 @@ async function main() {
     _print(`Showing incentivized pools only.\n`);
 
     const rewardTokenAddress = tokenRewardsAddress;
-    const rewardToken = await getFantomToken(App, rewardTokenAddress, chefAddress);
+    const rewardToken = await getGeneralEthcallToken(App, rewardTokenAddress, chefAddress);
     const rewardsPerWeek = rewardsPerWeekFixed ??
       await chefContract.callStatic[rewardsPerBlockFunction]()
       / 10 ** rewardToken.decimals * 604800 / 3
@@ -54,7 +54,7 @@ async function main() {
     var tokenAddresses = [].concat.apply([], poolInfos.filter(x => x.poolToken).map(x => x.poolToken.tokens));
 
     await Promise.all(tokenAddresses.map(async (address) => {
-        tokens[address] = await getFantomToken(App, address, chefAddress);
+        tokens[address] = await getGeneralEthcallToken(App, address, chefAddress);
     }));
 
     if (deathPoolIndices) {   //load prices for the deathpool assets
@@ -101,7 +101,7 @@ async function main() {
 
   async function getFantomFroyoPoolInfo(App, chefContract, chefAddress, poolIndex, pendingRewardsFunction) {
     const poolInfo = await chefContract.poolInfo(poolIndex);
-    const poolToken = await getFantomToken(App, poolInfo.lpToken, chefAddress);
+    const poolToken = await getGeneralEthcallToken(App, poolInfo.lpToken, chefAddress);
     const userInfo = await chefContract.userInfo(poolIndex, App.YOUR_ADDRESS);
     const pendingRewardTokens = await chefContract.callStatic[pendingRewardsFunction](poolIndex, App.YOUR_ADDRESS);
     const staked = userInfo.amount / 10 ** poolToken.decimals;

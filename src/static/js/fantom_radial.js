@@ -50,7 +50,7 @@ async function loadRadialChefContract(App, tokens, prices, chef, chefAddress, ch
   _print(`Showing incentivized pools only.\n`);
 
   const rewardTokenAddress = await chefContract.callStatic[rewardTokenFunction]();
-  const rewardToken = await getFantomToken(App, rewardTokenAddress, chefAddress);
+  const rewardToken = await getGeneralEthcallToken(App, rewardTokenAddress, chefAddress);
 
   const rewardsPerWeek = rewardsPerWeekFixed ??
     await chefContract.callStatic[rewardsPerBlockFunction]()
@@ -62,7 +62,7 @@ async function loadRadialChefContract(App, tokens, prices, chef, chefAddress, ch
   var tokenAddresses = [].concat.apply([], poolInfos.filter(x => x.poolToken).map(x => x.poolToken.tokens));
 
   await Promise.all(tokenAddresses.map(async (address) => {
-      tokens[address] = await getFantomToken(App, address, chefAddress);
+      tokens[address] = await getGeneralEthcallToken(App, address, chefAddress);
   }));
 
   if (deathPoolIndices) {   //load prices for the deathpool assets
@@ -141,7 +141,7 @@ async function loadMultipleFantomSynthetixPoolsSequential(App, tokens, prices, p
 
 async function getRadialPoolInfo(app, chefContract, chefAddress, poolIndex, pendingRewardsFunction) {
   const poolInfo = await chefContract.poolInfo(poolIndex);
-  const poolToken = await getFantomToken(app, poolInfo.lpToken ?? poolInfo.token ?? poolInfo.stakingToken, chefAddress);
+  const poolToken = await getGeneralEthcallToken(app, poolInfo.lpToken ?? poolInfo.token ?? poolInfo.stakingToken, chefAddress);
   const userInfo = await chefContract.userInfo(poolIndex, app.YOUR_ADDRESS);
   const pendingRewardTokens = await chefContract.callStatic[pendingRewardsFunction](poolIndex, app.YOUR_ADDRESS);
   const staked = userInfo.amount / 10 ** poolToken.decimals;

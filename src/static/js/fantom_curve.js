@@ -61,7 +61,7 @@ async function main() {
 
       const stakeTokenAddress = await rewardReceiverContract.lp_token();
 
-      let stakeToken = await getFantomToken(App, stakeTokenAddress, rewardReceiver);
+      let stakeToken = await getGeneralEthcallToken(App, stakeTokenAddress, rewardReceiver);
       //stakeToken.staked = await rewardReceiverContract.totalSupply() / 10 ** stakeToken.decimals;
 
       var newPriceAddresses = stakeToken.tokens.filter(x =>
@@ -74,11 +74,11 @@ async function main() {
       var newTokenAddresses = stakeToken.tokens.filter(x =>
         !getParameterCaseInsensitive(tokens,x));
       for (const address of newTokenAddresses) {
-          tokens[address] = await getFantomToken(App, address, stakingAddress);
+          tokens[address] = await getGeneralEthcallToken(App, address, stakingAddress);
       }
       for(const rewardTokenAddress of rewardTokenAddresses){
         if (!getParameterCaseInsensitive(tokens, rewardTokenAddress)) {
-          tokens[rewardTokenAddress] = await getFantomToken(App, rewardTokenAddress, stakingAddress);
+          tokens[rewardTokenAddress] = await getGeneralEthcallToken(App, rewardTokenAddress, stakingAddress);
         }
         const rewardToken = getParameterCaseInsensitive(tokens, rewardTokenAddress);
         const rewardTokenTicker = rewardToken.symbol;

@@ -35,8 +35,8 @@ async function getBagPoolInfo(App, chefContract, chefAddress, poolIndex, pending
     };
   }
   const rewardTokenAddress = "0xb1d82666384be5f8c59aa18e650493abb8a614ad";
-  const rewardToken = await getFantomToken(App, rewardTokenAddress, chefAddress);
-  const poolToken = await getFantomToken(App, poolInfo.stakingToken, chefAddress);
+  const rewardToken = await getGeneralEthcallToken(App, rewardTokenAddress, chefAddress);
+  const poolToken = await getGeneralEthcallToken(App, poolInfo.stakingToken, chefAddress);
   const userInfo = await chefContract.userInfo(poolIndex, App.YOUR_ADDRESS);
   const pendingRewardTokens = await chefContract.callStatic[pendingRewardsFunction](poolIndex, App.YOUR_ADDRESS);
   const staked = userInfo.staked / 10 ** poolToken.decimals;
@@ -74,7 +74,7 @@ async function loadBagChefContract(App, tokens, prices, chef, chefAddress, chefA
   var tokenAddresses = [].concat.apply([], poolInfos.filter(x => x.poolToken).map(x => x.poolToken.tokens));
 
   await Promise.all(tokenAddresses.map(async (address) => {
-      tokens[address] = await getFantomToken(App, address, chefAddress);
+      tokens[address] = await getGeneralEthcallToken(App, address, chefAddress);
   }));
 
   if (deathPoolIndices) {   //load prices for the deathpool assets

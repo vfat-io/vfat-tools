@@ -31,8 +31,8 @@ async function main() {
     const tokens = {};
     const prices = await getFantomPrices();
 
-    await loadFantomChefContract(App, tokens, prices, BEERMONEY_CHEF, BEERMONEY_CHEF_ADDR, BEERMONEY_CHEF_ABI, rewardTokenTicker,
-      "BEERMONEY", null, rewardsPerWeek, "pendingBEERMONEY", [1]);
+    await loadGeneralEthcallChefContract(App, tokens, prices, BEERMONEY_CHEF, BEERMONEY_CHEF_ADDR, BEERMONEY_CHEF_ABI, rewardTokenTicker,
+      "BEERMONEY", null, rewardsPerWeek, "pendingBEERMONEY", [1], "fantom");
 
     hideLoading();
   }

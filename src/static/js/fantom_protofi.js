@@ -39,7 +39,7 @@ $(function () {
     var tokenAddresses = [].concat.apply([], poolInfos.filter(x => x.poolToken).map(x => x.poolToken.tokens));
   
     await Promise.all(tokenAddresses.map(async (address) => {
-      tokens[address] = await getFantomToken(App, address, chefAddress);
+      tokens[address] = await getGeneralEthcallToken(App, address, chefAddress);
     }));
   
     if (deathPoolIndices) {   //load prices for the deathpool assets
@@ -116,8 +116,8 @@ $(function () {
   async function getProtofiPoolInfo(App, chefContract, chefAddress, poolIndex, pendingRewardsFunction) {
     const poolInfo = await chefContract.poolInfo(poolIndex);
     let rewardTokenAddress = await chefContract.proton();
-    let rewardToken = await getFantomToken(App, rewardTokenAddress, chefAddress);
-    const poolToken = await getFantomToken(App, poolInfo.lpToken, chefAddress);
+    let rewardToken = await getGeneralEthcallToken(App, rewardTokenAddress, chefAddress);
+    const poolToken = await getGeneralEthcallToken(App, poolInfo.lpToken, chefAddress);
     const userInfo = await chefContract.userInfo(poolIndex, App.YOUR_ADDRESS);
     const userCanHarvest = await chefContract.canHarvest(poolIndex, App.YOUR_ADDRESS);
     const pendingRewardTokens = await chefContract.callStatic[pendingRewardsFunction](poolIndex, App.YOUR_ADDRESS);
@@ -125,7 +125,7 @@ $(function () {
     const rewardsPerWeek = await chefContract.protonPerBlock() / 10 ** rewardToken.decimals * 604800 / 0.89
     if (poolInfo.isElectronRewards == false) {
       rewardTokenAddress = await chefContract.proton();
-      rewardToken = await getFantomToken(App, rewardTokenAddress, chefAddress);
+      rewardToken = await getGeneralEthcallToken(App, rewardTokenAddress, chefAddress);
       return {
         address: poolInfo.lpToken,
         allocPoints: poolInfo.allocPoint ?? 1,
