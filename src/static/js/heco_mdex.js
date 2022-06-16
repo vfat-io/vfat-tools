@@ -18,8 +18,8 @@ async function main() {
   const tokens = {};
   const prices = await getHecoPrices();
 
-  await loadHecoChefContract(App, tokens, prices, MDEX_CHEF, MDEX_CHEF_ADDR, MDEX_CHEF_ABI, "MDX",
-      "mdx", "mdxPerBlock", null, "pending");
+  await loadGeneralChefContract(App, tokens, prices, MDEX_CHEF, MDEX_CHEF_ADDR, MDEX_CHEF_ABI, "MDX",
+      "mdx", "mdxPerBlock", null, "pending", [], "heco");
 
   hideLoading();
 }

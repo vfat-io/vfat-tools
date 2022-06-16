@@ -17,8 +17,8 @@ async function main() {
   const tokens = {};
   const prices = await getHecoPrices();
 
-  await loadHecoChefContract(App, tokens, prices, MAKI_CHEF, MAKI_CHEF_ADDR, MAKI_CHEF_ABI, "MAKI",
-      "maki", "makiPerBlock", null, "pendingMaki", [3]);
+  await loadGeneralChefContract(App, tokens, prices, MAKI_CHEF, MAKI_CHEF_ADDR, MAKI_CHEF_ABI, "MAKI",
+      "maki", "makiPerBlock", null, "pendingMaki", [3], "heco");
 
   hideLoading();
 }

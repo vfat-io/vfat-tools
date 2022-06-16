@@ -17,8 +17,8 @@ async function main() {
   const tokens = {};
   const prices = await getHecoPrices();
 
-  await loadHecoChefContract(App, tokens, prices, OBERON_CHEF, OBERON_CHEF_ADDR, OBERON_CHEF_ABI, "OBERON",
-      "oberon", null, rewardsPerWeek, "pendingOberon");
+  await loadGeneralChefContract(App, tokens, prices, OBERON_CHEF, OBERON_CHEF_ADDR, OBERON_CHEF_ABI, "OBERON",
+      "oberon", null, rewardsPerWeek, "pendingOberon", [], "heco");
 
   hideLoading();
 }

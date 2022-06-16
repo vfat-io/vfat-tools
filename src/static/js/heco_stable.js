@@ -28,10 +28,10 @@ async function main() {
   var tokens = {};
   var prices = await getHecoPrices();
 
-  await loadHecoSynthetixPoolInfo(App, tokens, prices, StablePools[0].abi, StablePools[0].address,
-    StablePools[0].rewardTokenFunction, StablePools[0].stakeTokenFunction);
+  await loadGeneralSynthetixPoolInfo(App, tokens, prices, StablePools[0].abi, StablePools[0].address,
+    StablePools[0].rewardTokenFunction, StablePools[0].stakeTokenFunction, "heco");
 
-  let p0 = await loadMultipleHecoSynthetixPools(App, tokens, prices, StablePools)
+  let p0 = await loadMultipleGeneralSynthetixPools(App, tokens, prices, StablePools, "heco")
   _print_bold(`Total staked: $${formatMoney(p0.staked_tvl)}`);
   if (p0.totalUserStaked > 0) {
     _print(`You are staking a total of $${formatMoney(p0.totalUserStaked)} at an APR of ${(p0.totalAPR * 100).toFixed(2)}%\n`);

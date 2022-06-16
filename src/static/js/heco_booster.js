@@ -29,8 +29,8 @@ async function main() {
   prices["0x0e908182AA6989be3Fe452DcF625127873f9231e"] = { usd : bofUSDT.usd / 50 }
   prices["0x485E75ed3083CC1C3016D08eA049538b24094620"] = { usd : bofHUSD.usd / 50 }
 
-  await loadHecoChefContract(App, tokens, prices, BOO_CHEF, BOO_CHEF_ADDR, BOO_CHEF_ABI, "BOO",
-      "rewardToken", "rewardPerBlock", null, "pendingRewards");
+  await loadGeneralChefContract(App, tokens, prices, BOO_CHEF, BOO_CHEF_ADDR, BOO_CHEF_ABI, "BOO",
+      "rewardToken", "rewardPerBlock", null, "pendingRewards", [], "heco");
 
   hideLoading();
 }

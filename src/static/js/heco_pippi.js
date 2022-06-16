@@ -17,8 +17,8 @@ async function main() {
   const tokens = {};
   const prices = await getHecoPrices();
 
-  await loadHecoChefContract(App, tokens, prices, PIPI_CHEF, PIPI_CHEF_ADDR, PIPI_CHEF_ABI, "PIPI",
-      "pipi", "pipiPerBlock", null, "pendingPipi", [11,12,13,14,15]);
+  await loadGeneralChefContract(App, tokens, prices, PIPI_CHEF, PIPI_CHEF_ADDR, PIPI_CHEF_ABI, "PIPI",
+      "pipi", "pipiPerBlock", null, "pendingPipi", [11,12,13,14,15], "heco");
 
   hideLoading();
 }

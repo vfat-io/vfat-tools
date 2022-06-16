@@ -17,8 +17,8 @@ async function main() {
   const tokens = {};
   const prices = await getHecoPrices();
 
-  await loadHecoChefContract(App, tokens, prices, COM_CHEF, COM_CHEF_ADDR, COM_CHEF_ABI, "COM",
-      "com", "comPerBlock", null, "pendingCom");
+  await loadGeneralChefContract(App, tokens, prices, COM_CHEF, COM_CHEF_ADDR, COM_CHEF_ABI, "COM",
+      "com", "comPerBlock", null, "pendingCom", [], "heco");
 
   hideLoading();
 }

@@ -16,8 +16,8 @@ async function main() {
   const tokens = {};
   const prices = await getHecoPrices();
 
-  await loadHecoChefContract(App, tokens, prices, TRITON_CHEF, TRITON_CHEF_ADDR, TRITON_CHEF_ABI, "TRITON",
-      "token", "TokenPerBlock", null, "pendingToken");
+  await loadGeneralChefContract(App, tokens, prices, TRITON_CHEF, TRITON_CHEF_ADDR, TRITON_CHEF_ABI, "TRITON",
+      "token", "TokenPerBlock", null, "pendingToken", [], "heco");
 
   hideLoading();
 }

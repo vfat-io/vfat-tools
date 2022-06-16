@@ -20,8 +20,8 @@ async function main() {
     const tokens = {};
     const prices = await getHecoPrices();
 
-    await loadHecoChefContract(App, tokens, prices, NINJA_CHEF, NINJA_CHEF_ADDR, NINJA_CHEF_ABI, rewardTokenTicker,
-        "srk", null, rewardsPerWeek, "pendingSRK",[1]);
+    await loadGeneralChefContract(App, tokens, prices, NINJA_CHEF, NINJA_CHEF_ADDR, NINJA_CHEF_ABI, rewardTokenTicker,
+        "srk", null, rewardsPerWeek, "pendingSRK",[1],"heco");
 
     hideLoading();
 }

@@ -17,8 +17,8 @@ async function main() {
     const tokens = {};
     const prices = await getHecoPrices();
 
-    await loadHecoChefContract(App, tokens, prices, BUTTER_CHEF, BUTTER_CHEF_ADDR, BUTTER_CHEF_ABI, "BUTTER",
-        "butter", "butterPerBlock", null, "pendingButter");
+    await loadGeneralChefContract(App, tokens, prices, BUTTER_CHEF, BUTTER_CHEF_ADDR, BUTTER_CHEF_ABI, "BUTTER",
+        "butter", "butterPerBlock", null, "pendingButter", [], "heco");
 
     hideLoading();
 }

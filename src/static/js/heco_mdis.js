@@ -17,8 +17,8 @@ async function main() {
   const tokens = {};
   const prices = await getHecoPrices();
 
-  await loadHecoChefContract(App, tokens, prices, MDIS_CHEF, MDIS_CHEF_ADDR, MDIS_CHEF_ABI, "MDIS",
-      "mdis", "sushiPerBlock", null, "pendingSushi");
+  await loadGeneralChefContract(App, tokens, prices, MDIS_CHEF, MDIS_CHEF_ADDR, MDIS_CHEF_ABI, "MDIS",
+      "mdis", "sushiPerBlock", null, "pendingSushi", [], "heco");
 
   hideLoading();
 }

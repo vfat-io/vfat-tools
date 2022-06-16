@@ -57,16 +57,16 @@ async function main() {
 
   const LAVA_CHEF = new ethers.Contract(LAVA_CHEF_ADDRESS, LAVA_CHEF_ABI, App.provider);
 
-  await loadHecoChefContract(App, tokens, prices, LAVA_CHEF, LAVA_CHEF_ADDRESS, LAVA_CHEF_ABI,
-    "LAVA", "lava", "sushiPerBlock", null, "pendingSushi", null);
+  await loadGeneralChefContract(App, tokens, prices, LAVA_CHEF, LAVA_CHEF_ADDRESS, LAVA_CHEF_ABI,
+    "LAVA", "lava", "sushiPerBlock", null, "pendingSushi", [], "heco");
 
-  let p0 = await loadMultipleHecoSynthetixPools(App, tokens, prices, LavaPools0)
+  let p0 = await loadMultipleGeneralSynthetixPools(App, tokens, prices, LavaPools0, "heco")
   _print_bold(`Total staked: $${formatMoney(p0.staked_tvl)}`);
   if (p0.totalUserStaked > 0) {
     _print(`You are staking a total of $${formatMoney(p0.totalUserStaked)} at an APR of ${(p0.totalAPR * 100).toFixed(2)}%\n`);
   }
 
-  let p1 = await loadMultipleHecoSynthetixPools(App, tokens, prices, LavaPools1)
+  let p1 = await loadMultipleGeneralSynthetixPools(App, tokens, prices, LavaPools1, "heco")
   _print_bold(`Total staked: $${formatMoney(p1.staked_tvl)}`);
   if (p1.totalUserStaked > 0) {
     _print(`You are staking a total of $${formatMoney(p1.totalUserStaked)} at an APR of ${(p1.totalAPR * 100).toFixed(2)}%\n`);
