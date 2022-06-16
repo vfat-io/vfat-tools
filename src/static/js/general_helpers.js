@@ -548,6 +548,8 @@ async function loadGeneralChefContract(App, tokens, prices, chef, chefAddress, c
     break;
     case "heco" : _print(`<a href='https://hecoinfo.com/address/${chefAddress}' target='_blank'>Staking Contract</a>`);
     break;
+    case "fuse" : _print(`<a href='https://explorer.fuse.io/address/${chefAddress}' target='_blank'>Staking Contract</a>`);
+    break;
   }
   _print(`Found ${poolCount} pools.\n`)
 

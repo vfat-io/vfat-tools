@@ -65,7 +65,7 @@ async function loadFusePoolInfo(App, tokens, prices, stakingAbi, stakingAddress,
     const stakeTokenAddress = await STAKING_POOL.callStatic[stakeTokenFunction]();
 
     const rewardTokenAddress = await STAKING_POOL.rewardTokens(0);
-    let stakeToken = await getFuseToken(App, stakeTokenAddress, stakingAddress);
+    let stakeToken = await getGeneralToken(App, stakeTokenAddress, stakingAddress);
 
     let newPriceAddresses = stakeToken.tokens.filter(x =>
       !getParameterCaseInsensitive(prices, x));
@@ -77,10 +77,10 @@ async function loadFusePoolInfo(App, tokens, prices, stakingAbi, stakingAddress,
     let newTokenAddresses = stakeToken.tokens.filter(x =>
       !getParameterCaseInsensitive(tokens,x));
     for (const address of newTokenAddresses) {
-        tokens[address] = await getFuseToken(App, address, stakingAddress);
+        tokens[address] = await getGeneralToken(App, address, stakingAddress);
     }
     if (!getParameterCaseInsensitive(tokens, rewardTokenAddress)) {
-        tokens[rewardTokenAddress] = await getFuseToken(App, rewardTokenAddress, stakingAddress);
+        tokens[rewardTokenAddress] = await getGeneralToken(App, rewardTokenAddress, stakingAddress);
     }
     const rewardToken = getParameterCaseInsensitive(tokens, rewardTokenAddress);
 
