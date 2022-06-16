@@ -39,8 +39,8 @@ $(function() {
       const tokens = {};
       const prices = await getIotexPrices();
 
-      await loadIotexChefContract(App, tokens, prices, SKA_CHEF, SKA_CHEF_ADDR, SKA_CHEF_ABI, rewardTokenTicker,
-        "ska", null, rewardsPerWeek, "pendingSka");
+      await loadGeneralEthcallChefContract(App, tokens, prices, SKA_CHEF, SKA_CHEF_ADDR, SKA_CHEF_ABI, rewardTokenTicker,
+        "ska", null, rewardsPerWeek, "pendingSka", [], "iotex");
 
       hideLoading();
     }

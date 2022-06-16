@@ -21,8 +21,8 @@ async function main() {
     const tokens = {};
     const prices = await getIotexPrices();
 
-    await loadIotexChefContract(App, tokens, prices, MAGIC_CHEF, MAGIC_CHEF_ADDR, MAGIC_CHEF_ABI, rewardTokenTicker,
-        "Magic", null, rewardsPerWeek, "pendingMagic", [1]);
+    await loadGeneralEthcallChefContract(App, tokens, prices, MAGIC_CHEF, MAGIC_CHEF_ADDR, MAGIC_CHEF_ABI, rewardTokenTicker,
+        "Magic", null, rewardsPerWeek, "pendingMagic", [1], "iotex");
 
     hideLoading();
   }

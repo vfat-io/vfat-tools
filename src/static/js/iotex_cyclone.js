@@ -16,8 +16,8 @@ $(function() {
       const rewardsPerWeek = await CYC_CHEF.rewardPerBlock() / 1e18
           * 604800 / 5;
 
-      await loadIotexChefContract(App, CYC_CHEF, CYC_CHEF_ADDR, CYC_CHEF_ABI, rewardTokenTicker,
-          "cycToken", null, rewardsPerWeek, "pendingReward");
+      await loadGeneralEthcallChefContract(App, CYC_CHEF, CYC_CHEF_ADDR, CYC_CHEF_ABI, rewardTokenTicker,
+          "cycToken", null, rewardsPerWeek, "pendingReward", [], "iotex");
 
       hideLoading();
     }

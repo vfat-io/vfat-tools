@@ -21,8 +21,8 @@ $(function() {
         const tokens = {};
         const prices = await getIotexPrices();
     
-        await loadIotexChefContract(App, tokens, prices, FISH_CHEF, FISH_CHEF_ADDR, FISH_CHEF_ABI, rewardTokenTicker,
-            "fish", null, rewardsPerWeek, "pendingFish", [1]);
+        await loadGeneralEthcallChefContract(App, tokens, prices, FISH_CHEF, FISH_CHEF_ADDR, FISH_CHEF_ABI, rewardTokenTicker,
+            "fish", null, rewardsPerWeek, "pendingFish", [1], "iotex");
     
         hideLoading();
       }

@@ -25,8 +25,8 @@ $(function() {
         const tokens = {};
         const prices = await getIotexPrices();
 
-        await loadIotexChefContract(App, tokens, prices, ZOOM_CHEF, ZOOM_CHEF_ADDR, ZOOM_CHEF_ABI, rewardTokenTicker,
-          "zoom", null, rewardsPerWeek, "pendingZoom");
+        await loadGeneralEthcallChefContract(App, tokens, prices, ZOOM_CHEF, ZOOM_CHEF_ADDR, ZOOM_CHEF_ABI, rewardTokenTicker,
+          "zoom", null, rewardsPerWeek, "pendingZoom", [], "iotex");
         
         _print("")
         _print("printing old pools to remove your funds")
@@ -51,7 +51,7 @@ async function loadZoomChefContract(App, tokens, prices, chef, chefAddress, chef
   var tokenAddresses = [].concat.apply([], poolInfos.filter(x => x.poolToken).map(x => x.poolToken.tokens));
 
   await Promise.all(tokenAddresses.map(async (address) => {
-      tokens[address] = await getIotexToken(App, address, chefAddress);
+      tokens[address] = await getGeneralEthcallToken(App, address, chefAddress);
   }));
 
   if (deathPoolIndices) {   //load prices for the deathpool assets
@@ -84,7 +84,7 @@ async function getzoomswapPoolInfo(app, chefContract, chefAddress, poolIndex) {
       pendingRewardTokens : 0,
     };
   }
-  const poolToken = await getIotexToken(app, poolInfo.lpToken ?? poolInfo.token ?? poolInfo.stakingToken, chefAddress);
+  const poolToken = await getGeneralEthcallToken(app, poolInfo.lpToken ?? poolInfo.token ?? poolInfo.stakingToken, chefAddress);
   const userInfo = await chefContract.userInfo(poolIndex, app.YOUR_ADDRESS);
   const staked = userInfo.amount / 10 ** poolToken.decimals;
   return {

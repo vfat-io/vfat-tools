@@ -94,7 +94,7 @@ async function loadMcnprotocolPoolInfo(App, tokens, stakingAddress, stakeTokenAd
   rewards, mcnContract, stakedAmount) {
     const rewardTokens = await Promise.all(rewards.map(async r => {
       if (!getParameterCaseInsensitive(tokens, r.rewardToken)) {
-        tokens[r.rewardToken] = await getIotexToken(App, r.rewardToken, stakingAddress);
+        tokens[r.rewardToken] = await getGeneralEthcallToken(App, r.rewardToken, stakingAddress);
       }
       const rewardToken = getParameterCaseInsensitive(tokens, r.rewardToken);
       const rewardTokenTicker = rewardToken.symbol;
@@ -109,7 +109,7 @@ async function loadMcnprotocolPoolInfo(App, tokens, stakingAddress, stakeTokenAd
       }
     }));
 
-    const stakeToken = await getIotexToken(App, stakeTokenAddress, stakingAddress);
+    const stakeToken = await getGeneralEthcallToken(App, stakeTokenAddress, stakingAddress);
     stakeToken.staked = stakedAmount;
 
     const userInfos = await mcnContract.getUser(stakeTokenAddress, App.YOUR_ADDRESS);
@@ -348,7 +348,7 @@ const rewardsMcnContract_stake = async function(stakeTokenAddr, rewardPoolAddr, 
 
     const rewardTokenAddress = rewardTokenFunction
 
-    var stakeToken = await getIotexToken(App, stakeTokenAddress, stakingAddress);
+    var stakeToken = await getGeneralEthcallToken(App, stakeTokenAddress, stakingAddress);
 
     var newPriceAddresses = stakeToken.tokens.filter(x =>
       x.toLowerCase() !=  "0xb34ab2f65c6e4f764ffe740ab83f982021faed6d" && //BSG can't be retrieved from Coingecko
@@ -361,10 +361,10 @@ const rewardsMcnContract_stake = async function(stakeTokenAddr, rewardPoolAddr, 
     var newTokenAddresses = stakeToken.tokens.filter(x =>
       !getParameterCaseInsensitive(tokens,x));
     for (const address of newTokenAddresses) {
-        tokens[address] = await getIotexToken(App, address, stakingAddress);
+        tokens[address] = await getGeneralEthcallToken(App, address, stakingAddress);
     }
     if (!getParameterCaseInsensitive(tokens, rewardTokenAddress)) {
-        tokens[rewardTokenAddress] = await getIotexToken(App, rewardTokenAddress, stakingAddress);
+        tokens[rewardTokenAddress] = await getGeneralEthcallToken(App, rewardTokenAddress, stakingAddress);
     }
     const rewardToken = getParameterCaseInsensitive(tokens, rewardTokenAddress);
 

@@ -21,8 +21,8 @@ $(function() {
         const tokens = {};
         const prices = await getIotexPrices();
     
-        await loadIotexChefContract(App, tokens, prices, CLOUD_CHEF, CLOUD_CHEF_ADDR, CLOUD_CHEF_ABI, rewardTokenTicker,
-            "Cloud", null, rewardsPerWeek, "pendingCloud", [1]);
+        await loadGeneralEthcallChefContract(App, tokens, prices, CLOUD_CHEF, CLOUD_CHEF_ADDR, CLOUD_CHEF_ABI, rewardTokenTicker,
+            "Cloud", null, rewardsPerWeek, "pendingCloud", [1], "iotex");
     
         hideLoading();
       }

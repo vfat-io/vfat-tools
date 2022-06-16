@@ -14,7 +14,6 @@ const main = async() => {
         ["ZoomSwap            ","", `<a href="zoomswap"      >Various</a>`,"ZOOM             ","https://zoomswap.io"],
         ["IotxCloudSwapFinance","", `<a href="cloudswap"     >Various</a>`,"CLOUD            ","https://iotxcloudswap.finance"],
         ["Seagull Finance     ","", `<a href="seagull"       >Various</a>`,"FISH             ","https://seagull.finance"],
-        ["Seagull Finance     ","", `<a href="seagull"       >Various</a>`,"FISH             ","https://minmax.finance"],
         ["MinMax              ","", `<a href="minmax"        >Various</a>`,"MAX / iMAGIC     ","https://minmax.finance"],
         ["Mermaidswap         ","", `<a href="mermaidswap"   >Various</a>`,"MERD             ","https://mermaidswap.com"],
         ["Elk                 ","", `<a href="elk"           >Various</a>`,"ELK              ","https://app.elk.finance"],
