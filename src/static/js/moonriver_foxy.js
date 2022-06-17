@@ -16,23 +16,15 @@ $(function() {
        const FOXY_CHEF = new ethers.Contract(FOXY_CHEF_ADDR, FOXY_CHEF_ABI, App.provider);
         
        const blocksPerSeconds = await getAverageBlockTime(App);
-       const startBlock = await MOON_CHEF.startBlock();
-        const currentBlock = await App.provider.getBlockNumber();
         
-       
-             let rewardsPerWeek = 0
-           if(currentBlock < startBlock){
-             _print(`REWARDS HAVE NOT YET STARTED!\n\tRewards start at block ${startBlock}\n`);
-           }else{
-            rewardsPerWeek = await FOXY_CHEF.FoxyPerBlock() / 1e18 *		
-                    604800 / blocksPerSeconds;
-           }
+      const rewardsPerWeek = await FOXY_CHEF.FoxyPerBlock() / 1e18 *		
+            604800 / blocksPerSeconds;
     
         const tokens = {};
         const prices = await getMoonriverPrices();
     
-        await loadMoonriverChefContract(App, tokens, prices, FOXY_CHEF, FOXY_CHEF_ADDR, FOXY_CHEF_ABI, rewardTokenTicker,
-            "Foxy", null, rewardsPerWeek, "pendingFoxy", [1]);
+        await loadGeneralChefContract(App, tokens, prices, FOXY_CHEF, FOXY_CHEF_ADDR, FOXY_CHEF_ABI, rewardTokenTicker,
+            "Foxy", null, rewardsPerWeek, "pendingFoxy", [1], "moonriver");
     
         hideLoading();
       }

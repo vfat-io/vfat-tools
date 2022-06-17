@@ -248,7 +248,7 @@ async function main() {
         pendingRewardTokens: 0,
       }
     }
-    const poolToken = await getMoonriverToken(app, lpToken ?? poolInfo.token ?? poolInfo.stakingToken, chefAddress)
+    const poolToken = await getGeneralToken(app, lpToken ?? poolInfo.token ?? poolInfo.stakingToken, chefAddress)
     const userInfo = await chefContract.userInfo(poolIndex, app.YOUR_ADDRESS)
     const pendingRewardTokens = await chefContract.callStatic[pendingRewardsFunction](poolIndex, app.YOUR_ADDRESS)
     const staked = userInfo.amount / 10 ** poolToken.decimals
@@ -291,7 +291,7 @@ async function main() {
 
     _print(`Showing incentivized pools only.\n`)
 
-    const rewardToken = await getMoonriverToken(App, rewardTokenAddress, chefAddress)
+    const rewardToken = await getGeneralToken(App, rewardTokenAddress, chefAddress)
     const rewardsPerWeek =
       rewardsPerWeekFixed ??
       (((await chefContract.callStatic[rewardsPerBlockFunction]()) / 10 ** rewardToken.decimals) * 604800) / 3
@@ -309,7 +309,7 @@ async function main() {
 
     await Promise.all(
       tokenAddresses.map(async address => {
-        tokens[address] = await getMoonriverToken(App, address, chefAddress)
+        tokens[address] = await getGeneralToken(App, address, chefAddress)
       })
     )
 

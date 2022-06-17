@@ -56,7 +56,7 @@ async function fetchTokenPrices(App, pid, lpAddress, prices){
 
     for(let idx = 0; idx< poolInfo.tokens.length; idx++){
         const address = poolInfo.tokens[idx];
-        const token = await getMoonriverToken(App, address, App.YOUR_ADDRESS)
+        const token = await getGeneralToken(App, address, App.YOUR_ADDRESS)
         balanceInPool[address] = poolInfo.balances[idx] / Math.pow(10, (token.decimals || 18));
         if(prices[address]){
             baseToken = address;
@@ -72,7 +72,7 @@ async function fetchTokenPrices(App, pid, lpAddress, prices){
     })
 
     if(!prices[lpAddress]){
-        const tokenLP = await getMoonriverToken(App, lpAddress, App.YOUR_ADDRESS)
+        const tokenLP = await getGeneralToken(App, lpAddress, App.YOUR_ADDRESS)
         const totalSupply = (tokenLP?.totalSupply || 0) / Math.pow(10, (tokenLP.decimals || 18));
         const poolValue = (balanceInPool[baseToken] * basePrice.usd) * poolInfo.tokens.length;
         prices[lpAddress] = {usd: poolValue / totalSupply}
@@ -98,8 +98,8 @@ async function main() {
 
     let rewardsPerWeek = await Chef.rewardPerSecond() / 1e18 * 604800;
 
-    await loadMoonriverChefContract(App, tokens, prices, Chef, NIL_CHEF_ADDR, NIL_CHEF_ABI, rewardTokenTicker,
-        "nil", null, rewardsPerWeek, "pendingReward",[1], "harvestAllRewards");
+    await loadGeneralChefContract(App, tokens, prices, Chef, NIL_CHEF_ADDR, NIL_CHEF_ABI, rewardTokenTicker,
+        "nil", null, rewardsPerWeek, "pendingReward",[1], "moonriver");
 
     hideLoading();
 }

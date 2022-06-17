@@ -818,8 +818,8 @@ $(function () {
         const tokens = {};		
         const prices = await getMoonriverPrices();
     		
-        await loadMoonriverChefContract(App, tokens, prices, CHEF, CHEF_ADDR, CHEF_ABI, rewardTokenTicker,		
-            "kafe", null, rewardsPerWeek, "pendingKafe");		
+        await loadGeneralChefContract(App, tokens, prices, CHEF, CHEF_ADDR, CHEF_ABI, rewardTokenTicker,		
+            "kafe", null, rewardsPerWeek, "pendingKafe", [], "moonriver");
     		
 
             // (App, tokens, prices, chef, chefAddress, chefAbi, rewardTokenTicker,

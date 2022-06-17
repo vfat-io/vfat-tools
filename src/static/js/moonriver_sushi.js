@@ -49,7 +49,7 @@ async function loadMoonriverSushiContract(App, tokens, prices, chef, chefAddress
   var tokens = {};
 
   const rewardTokenAddress = await chefContract.callStatic[rewardTokenFunction]();
-  const rewardToken = await getMoonriverToken(App, rewardTokenAddress, chefAddress);
+  const rewardToken = await getGeneralToken(App, rewardTokenAddress, chefAddress);
   const rewardsPerWeek = rewardsPerWeekFixed ??
     await chefContract.callStatic[rewardsPerBlockFunction]()
     / 10 ** rewardToken.decimals * 604800 / 3
@@ -61,7 +61,7 @@ async function loadMoonriverSushiContract(App, tokens, prices, chef, chefAddress
   var tokenAddresses = [].concat.apply([], poolInfos.filter(x => x.poolToken).map(x => x.poolToken.tokens));
 
   await Promise.all(tokenAddresses.map(async (address) => {
-      tokens[address] = await getMoonriverToken(App, address, chefAddress);
+      tokens[address] = await getGeneralToken(App, address, chefAddress);
   }));
 
   if (deathPoolIndices) {   //load prices for the deathpool assets
@@ -120,7 +120,7 @@ async function getSushiPoolInfo(app, chefContract, chefAddress, poolIndex, pendi
         pendingRewardTokens : 0,
       };
     }
-    const poolToken = await getMoonriverToken(app, lpToken, chefAddress);
+    const poolToken = await getGeneralToken(app, lpToken, chefAddress);
     const userInfo = await chefContract.userInfo(poolIndex, app.YOUR_ADDRESS);
     const pendingRewardTokens = await chefContract.callStatic[pendingRewardsFunction](poolIndex, app.YOUR_ADDRESS);
     const pendingMoonriverTokens = await chefMoonriverRewardsContract.pendingToken(poolIndex, app.YOUR_ADDRESS);

@@ -16,23 +16,15 @@ async function main() {
    const MOONENGINE_CHEF = new ethers.Contract(MOONENGINE_CHEF_ADDR, MOONENGINE_CHEF_ABI, App.provider);
     
    const blocksPerSeconds = await getAverageBlockTime(App);
-   const startBlock = await MOON_CHEF.startBlock();
-    const currentBlock = await App.provider.getBlockNumber();
-    
-   
-         let rewardsPerWeek = 0
-       if(currentBlock < startBlock){
-         _print(`REWARDS HAVE NOT YET STARTED!\n\tRewards start at block ${startBlock}\n`);
-       }else{
-        rewardsPerWeek = await MOONENGINE_CHEF.MoonenginePerBlock() / 1e18 *		
-                604800 / blocksPerSeconds;
-       }
+
+   const rewardsPerWeek = await MOONENGINE_CHEF.MoonenginePerBlock() / 1e18 *		
+        604800 / blocksPerSeconds;
 
     const tokens = {};
     const prices = await getMoonriverPrices();
 
-    await loadMoonriverChefContract(App, tokens, prices, MOONENGINE_CHEF, MOONENGINE_CHEF_ADDR, MOONENGINE_CHEF_ABI, rewardTokenTicker,
-        "Moonengine", null, rewardsPerWeek, "pendingMoonengine", [1]);
+    await loadGeneralChefContract(App, tokens, prices, MOONENGINE_CHEF, MOONENGINE_CHEF_ADDR, MOONENGINE_CHEF_ABI, rewardTokenTicker,
+        "Moonengine", null, rewardsPerWeek, "pendingMoonengine", [1], "moonriver");
 
     hideLoading();
   }

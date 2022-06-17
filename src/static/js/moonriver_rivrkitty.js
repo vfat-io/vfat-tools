@@ -26,7 +26,7 @@ async function main() {
   })
   prices["0xC2b0435276139731d82Ae2Fa8928c9b9De0761c1"] = res['rivrkitty'];
 
-  await loadMoonriverChefContract(
+  await loadGeneralChefContract(
     App,
     tokens,
     prices,
@@ -37,7 +37,9 @@ async function main() {
     'paws',
     null,
     rewardsPerWeek,
-    'pendingReward'
+    'pendingReward',
+    [],
+    'moonriver'
   )
 
   hideLoading()

@@ -32,9 +32,8 @@ $(function () {
         const tokens = {};		
         const prices = await getMoonriverPrices();
     		
-        await loadMoonriverChefContract(App, tokens, prices, SOLAR_CHEF, SOLAR_CHEF_ADDR, SOLAR_CHEF_ABI, rewardTokenTicker,		
-            "solar", null, rewardsPerWeek, "pendingSolar");		
+        await loadGeneralChefContract(App, tokens, prices, SOLAR_CHEF, SOLAR_CHEF_ADDR, SOLAR_CHEF_ABI, rewardTokenTicker,		
+            "solar", null, rewardsPerWeek, "pendingSolar", [], "moonriver");		
     		
         hideLoading();		
-    }		
-    	
+    }

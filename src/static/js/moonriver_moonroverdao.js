@@ -38,8 +38,8 @@ $(function() {
         const tokens = {};
         const prices = await getMoonriverPrices();
     
-        await loadMoonriverChefContract(App, tokens, prices, ROVR_CHEF, ROVR_CHEF_ADDR, ROVR_CHEF_ABI, rewardTokenTicker,
-            "rovrToken", null, rewardsPerWeek, "pendingRovr");
+        await loadGeneralChefContract(App, tokens, prices, ROVR_CHEF, ROVR_CHEF_ADDR, ROVR_CHEF_ABI, rewardTokenTicker,
+            "rovrToken", null, rewardsPerWeek, "pendingRovr", [], "moonriver");
 
         _print("\nThere is a locking period for the current vaults. Please check the official site for more information.\n")
 
@@ -60,7 +60,7 @@ async function getMoonroverPoolInfo(app, chefContract, chefAddress, poolIndex, p
       pendingRewardTokens : 0,
     };
   }
-  const poolToken = await getMoonriverToken(app, poolInfo.lpToken ?? poolInfo.token ?? poolInfo.stakingToken, chefAddress);
+  const poolToken = await getGeneralToken(app, poolInfo.lpToken ?? poolInfo.token ?? poolInfo.stakingToken, chefAddress);
   poolToken.staked = poolInfo.totalLp / 10 ** poolToken.decimals;
   const userInfo = await chefContract.userInfo(poolIndex, app.YOUR_ADDRESS);
   const pendingRewardTokens = await chefContract.callStatic[pendingRewardsFunction](poolIndex, app.YOUR_ADDRESS);
@@ -90,7 +90,7 @@ async function loadMoonroverChefContract(App, tokens, prices, chef, chefAddress,
   _print(`Showing incentivized pools only.\n`);
 
   const rewardTokenAddress = await chefContract.callStatic[rewardTokenFunction]();
-  const rewardToken = await getMoonriverToken(App, rewardTokenAddress, chefAddress);
+  const rewardToken = await getGeneralToken(App, rewardTokenAddress, chefAddress);
   const rewardsPerWeek = rewardsPerWeekFixed ??
     await chefContract.callStatic[rewardsPerBlockFunction]()
     / 10 ** rewardToken.decimals * 604800 / 3
@@ -101,7 +101,7 @@ async function loadMoonroverChefContract(App, tokens, prices, chef, chefAddress,
   var tokenAddresses = [].concat.apply([], poolInfos.filter(x => x.poolToken).map(x => x.poolToken.tokens));
 
   await Promise.all(tokenAddresses.map(async (address) => {
-      tokens[address] = await getMoonriverToken(App, address, chefAddress);
+      tokens[address] = await getGeneralToken(App, address, chefAddress);
   }));
 
   if (deathPoolIndices) {   //load prices for the deathpool assets

@@ -24,14 +24,14 @@ async function main() {
 async function getZenPoolInfo(app, chefContract, chefAddress, poolIndex) {
   const blocksPerSeconds = await getAverageBlockTime(app)
   const poolInfo = await chefContract.getPoolInfo(poolIndex);
-  const poolToken = await getMoonriverToken(app, poolInfo.farmingToken, chefAddress);
+  const poolToken = await getGeneralToken(app, poolInfo.farmingToken, chefAddress);
   //poolToken.staked = poolInfo.amount / 10 ** poolToken.decimals;
   const userInfo = await chefContract.getUserInfo(poolIndex, app.YOUR_ADDRESS);
   const staked = userInfo.amount / 10 ** poolToken.decimals;
   let rewardsPerWeek = [], rewardTokenTickers = [], pendingRewardTokens = [], rewardTokens = []
   const rewardTokenAddresses = poolInfo.rewardTokens;
   for(const rewardTokenAddress of rewardTokenAddresses){
-    const rewardToken = await getMoonriverToken(app, rewardTokenAddress, chefAddress)
+    const rewardToken = await getGeneralToken(app, rewardTokenAddress, chefAddress)
     const rewardTokenTicker = rewardToken.symbol;
     rewardTokens.push(rewardToken);
     rewardTokenTickers.push(rewardTokenTicker);
@@ -84,7 +84,7 @@ async function loadZenContract(App, tokens, prices, chefAddress, chefAbi, deathP
   var tokenAddresses = [].concat.apply([], poolInfos.filter(x => x.poolToken).map(x => x.poolToken.tokens));
 
   await Promise.all(tokenAddresses.map(async (address) => {
-      tokens[address] = await getMoonriverToken(App, address, chefAddress);
+      tokens[address] = await getGeneralToken(App, address, chefAddress);
   }));
 
   if (deathPoolIndices) {   //load prices for the deathpool assets

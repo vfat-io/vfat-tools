@@ -31,8 +31,8 @@ $(function() {
         const tokens = {};
         const prices = await getMoonriverPrices();
 
-        await loadMoonriverChefContract(App, tokens, prices, NEKU_CHEF, NEKU_CHEF_ADDR, NEKU_CHEF_ABI, rewardTokenTicker,
-            "Ore", null, rewardsPerWeek, "pendingOre");
+        await loadGeneralChefContract(App, tokens, prices, NEKU_CHEF, NEKU_CHEF_ADDR, NEKU_CHEF_ABI, rewardTokenTicker,
+            "Ore", null, rewardsPerWeek, "pendingOre", [], "moonriver");
 
         hideLoading();
       }

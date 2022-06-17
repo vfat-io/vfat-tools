@@ -30,8 +30,8 @@ async function main() {
     const tokens = {};
     const prices = await getMoonriverPrices();
 
-    await loadMoonriverChefContract(App, tokens, prices, MOONSWAP_CHEF, MOONSWAP_CHEF_ADDR, MOONSWAP_CHEF_ABI, rewardTokenTicker,
-        "moon", null, rewardsPerWeek, "pendingMOON");
+    await loadGeneralChefContract(App, tokens, prices, MOONSWAP_CHEF, MOONSWAP_CHEF_ADDR, MOONSWAP_CHEF_ABI, rewardTokenTicker,
+        "moon", null, rewardsPerWeek, "pendingMOON", [], "moonriver");
 
     hideLoading();
   }

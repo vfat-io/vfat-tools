@@ -31,8 +31,8 @@ $(function() {
         const tokens = {};
         const prices = await getMoonriverPrices();
     
-        await loadMoonriverChefContract(App, tokens, prices, APOLLO_CHEF, APOLLO_CHEF_ADDR, APOLLO_CHEF_ABI, rewardTokenTicker,
-            "apollo", null, rewardsPerWeek, "pendingApollo", [1]);
+        await loadGeneralChefContract(App, tokens, prices, APOLLO_CHEF, APOLLO_CHEF_ADDR, APOLLO_CHEF_ABI, rewardTokenTicker,
+            "apollo", null, rewardsPerWeek, "pendingApollo", [1], "moonriver");
     
         hideLoading();
       }
