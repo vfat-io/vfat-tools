@@ -38,7 +38,7 @@ async function getMtxPoolInfo(app, chefContract, chefAddress, poolIndex, pending
         pendingRewardTokens : 0,
       };
     }
-    const poolToken = await getCronosToken(app, poolInfo.lpToken ?? poolInfo.token ?? poolInfo.stakingToken, chefAddress);
+    const poolToken = await getGeneralEthcallToken(app, poolInfo.lpToken ?? poolInfo.token ?? poolInfo.stakingToken, chefAddress);
     const userInfo = await chefContract.userInfo(poolIndex, app.YOUR_ADDRESS);
     const pendingRewardTokens = await chefContract.callStatic[pendingRewardsFunction](poolIndex, app.YOUR_ADDRESS);
     const staked = userInfo.amount / 10 ** poolToken.decimals;
@@ -67,7 +67,7 @@ async function getMtxPoolInfo(app, chefContract, chefAddress, poolIndex, pending
     _print(`Showing incentivized pools only.\n`);
   
     const rewardTokenAddress = await chefContract.callStatic[rewardTokenFunction]();
-    const rewardToken = await getCronosToken(App, rewardTokenAddress, chefAddress);
+    const rewardToken = await getGeneralEthcallToken(App, rewardTokenAddress, chefAddress);
   
     const rewardsPerWeek = rewardsPerWeekFixed ??
       await chefContract.callStatic[rewardsPerBlockFunction]()
@@ -79,7 +79,7 @@ async function getMtxPoolInfo(app, chefContract, chefAddress, poolIndex, pending
     var tokenAddresses = [].concat.apply([], poolInfos.filter(x => x.poolToken).map(x => x.poolToken.tokens));
   
     await Promise.all(tokenAddresses.map(async (address) => {
-        tokens[address] = await getCronosToken(App, address, chefAddress);
+        tokens[address] = await getGeneralEthcallToken(App, address, chefAddress);
     }));
   
     if (deathPoolIndices) {   //load prices for the deathpool assets

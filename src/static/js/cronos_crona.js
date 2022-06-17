@@ -23,8 +23,8 @@ async function main() {
     const tokens = {};
     const prices = await getCronosPrices();
 
-    await loadCronosChefContract(App, tokens, prices, CRONA_CHEF, CRONA_CHEF_ADDR, CRONA_CHEF_ABI, rewardTokenTicker,
-        "crona", null, rewardsPerWeek, "pendingCrona", [1,2,3,4,5]);
+    await loadGeneralEthcallChefContract(App, tokens, prices, CRONA_CHEF, CRONA_CHEF_ADDR, CRONA_CHEF_ABI, rewardTokenTicker,
+        "crona", null, rewardsPerWeek, "pendingCrona", [1,2,3,4,5], "cronos");
 
     hideLoading();
 }

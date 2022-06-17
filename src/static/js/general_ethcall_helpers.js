@@ -869,6 +869,8 @@ async function loadGeneralEthcallChefContract(App, tokens, prices, chef, chefAdd
     break;
     case "iotex" : _print(`<a href='https://iotexscan.io/address/${chefAddress}' target='_blank'>Staking Contract</a>`);
     break;
+    case "cronos" : _print(`<a href='https://cronoscan.com/address/${chefAddress}' target='_blank'>Staking Contract</a>`);
+    break;
   }
   _print(`Found ${poolCount} pools.\n`)
 

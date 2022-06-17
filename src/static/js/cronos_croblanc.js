@@ -44,7 +44,7 @@ async function loadCroblancContract(App, tokens, prices, chef, chefAddress, chef
   _print(`<a href='https://cronoscan.com/address/${chefAddress}' target='_blank'>Staking Vaults</a>`);
   _print(`Found ${poolCount} vaults.\n`)
 
-  const rewardToken = await getCronosToken(App, rewardTokenAddress, chefAddress);
+  const rewardToken = await getGeneralEthcallToken(App, rewardTokenAddress, chefAddress);
 
   const rewardsPerWeek = rewardsPerWeekFixed;
 
@@ -54,7 +54,7 @@ async function loadCroblancContract(App, tokens, prices, chef, chefAddress, chef
   var tokenAddresses = [].concat.apply([], poolInfos.filter(x => x.poolToken).map(x => x.poolToken.tokens));
 
   await Promise.all(tokenAddresses.map(async (address) => {
-      tokens[address] = await getCronosToken(App, address, chefAddress);
+      tokens[address] = await getGeneralEthcallToken(App, address, chefAddress);
   }));
 
   if (deathPoolIndices) {   //load prices for the deathpool assets
@@ -99,11 +99,11 @@ async function getCroblancPoolInfo(app, chefContract, chefAddress, farmToken) {
       poolToken: null
     };
   }
-  const poolToken = await getCronosToken(app, farmToken, stakingAddress);
+  const poolToken = await getGeneralEthcallToken(app, farmToken, stakingAddress);
   const croblancAddress = await vaultContract.croblanc();
   const wheatAddress = await vaultContract.wheat();
-  const croblanc = await getCronosToken(app, croblancAddress, chefAddress);
-  const wheat = await getCronosToken(app, wheatAddress, chefAddress);
+  const croblanc = await getGeneralEthcallToken(app, croblancAddress, chefAddress);
+  const wheat = await getGeneralEthcallToken(app, wheatAddress, chefAddress);
   const pendingCroblanc = await vaultContract.pendingCroblanc(app.YOUR_ADDRESS) / 10 ** croblanc.decimals;
   const pendingWheat = await vaultContract.pendingCroblanc(app.YOUR_ADDRESS) / 10 ** wheat.decimals;
   const CHEF_CONTRACT = new ethers.Contract(stakingAddress, GENERAL_CHEF_ABI, app.provider)

@@ -30,8 +30,8 @@ async function main() {
     const tokens = {};
     const prices = await getCronosPrices();
 
-    await loadCronosChefContract(App, tokens, prices, ZEUS_CHEF, ZEUS_CHEF_ADDR, ZEUS_CHEF_ABI, rewardTokenTicker,
-      "ZEUS", null, rewardsPerWeek, "pendingZEUS", [7]);
+    await loadGeneralEthcallChefContract(App, tokens, prices, ZEUS_CHEF, ZEUS_CHEF_ADDR, ZEUS_CHEF_ABI, rewardTokenTicker,
+      "ZEUS", null, rewardsPerWeek, "pendingZEUS", [7], "cronos");
 
     hideLoading();
   }

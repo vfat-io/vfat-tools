@@ -20,8 +20,8 @@ $(function () {
         const tokens = {};		
         const prices = await getCronosPrices();		
     		
-        await loadCronosChefContract(App, tokens, prices, CRA_CHEF, CRA_CHEF_ADDR, CRA_CHEF_ABI, rewardTokenTicker,		
-            "cra", null, rewardsPerWeek, "pendingCra");		
+        await loadGeneralEthcallChefContract(App, tokens, prices, CRA_CHEF, CRA_CHEF_ADDR, CRA_CHEF_ABI, rewardTokenTicker,		
+            "cra", null, rewardsPerWeek, "pendingCra", [], "cronos");		
     		
         hideLoading();		
     }		

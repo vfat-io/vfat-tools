@@ -21,8 +21,8 @@ $(function() {
         const tokens = {};
         const prices = await getCronosPrices();
     
-        await loadCronosChefContract(App, tokens, prices, BIRD_CHEF, BIRD_CHEF_ADDR, BIRD_CHEF_ABI, rewardTokenTicker,
-          "bird", null, rewardsPerWeek, "pendingBird", [1]);
+        await loadGeneralEthcallChefContract(App, tokens, prices, BIRD_CHEF, BIRD_CHEF_ADDR, BIRD_CHEF_ABI, rewardTokenTicker,
+          "bird", null, rewardsPerWeek, "pendingBird", [1], "cronos");
     
     
         hideLoading();

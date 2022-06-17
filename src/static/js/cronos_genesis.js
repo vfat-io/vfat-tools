@@ -31,8 +31,8 @@ async function main() {
     const tokens = {};
     const prices = await getCronosPrices();
 
-    await loadCronosChefContract(App, tokens, prices, GENESIS_CHEF, GENESIS_CHEF_ADDR, GENESIS_CHEF_ABI, rewardTokenTicker,
-        "Genesis", null, rewardsPerWeek, "pendingGenesis", [7]);
+    await loadGeneralEthcallChefContract(App, tokens, prices, GENESIS_CHEF, GENESIS_CHEF_ADDR, GENESIS_CHEF_ABI, rewardTokenTicker,
+        "Genesis", null, rewardsPerWeek, "pendingGenesis", [7], "cronos");
 
     hideLoading();
 }

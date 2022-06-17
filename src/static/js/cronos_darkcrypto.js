@@ -102,7 +102,7 @@ async function getSkyPoolInfo(app, chefContract, chefAddress, poolIndex, pending
           pendingRewardTokens: 0,
       };
   }
-  const poolToken = await getCronosToken(app, poolInfo[lpTokenFunction], chefAddress);
+  const poolToken = await getGeneralEthcallToken(app, poolInfo[lpTokenFunction], chefAddress);
   const contract = new ethers.Contract(poolInfo[lpTokenFunction], ERC20, app.provider);
 
   poolToken.staked = (await contract.callStatic["balanceOf"](chefAddress)) / 10 ** poolToken.decimals;
@@ -135,7 +135,7 @@ async function loadSkyChefContract(App, tokens, prices, chef, chefAddress, chefA
   var tokens = {};
 
   const rewardTokenAddress = await chefContract.callStatic[rewardTokenFunction]();
-  const rewardToken = await getCronosToken(App, rewardTokenAddress, chefAddress);
+  const rewardToken = await getGeneralEthcallToken(App, rewardTokenAddress, chefAddress);
   const rewardsPerWeek = rewardsPerWeekFixed ??
       await chefContract.callStatic[rewardsPerBlockFunction]()
       / 10 ** rewardToken.decimals * 604800 / 3
@@ -145,7 +145,7 @@ async function loadSkyChefContract(App, tokens, prices, chef, chefAddress, chefA
   var tokenAddresses = [].concat.apply([], poolInfos.filter(x => x.poolToken).map(x => x.poolToken.tokens));
 
   await Promise.all(tokenAddresses.map(async (address) => {
-      tokens[address] = await getCronosToken(App, address, chefAddress);
+      tokens[address] = await getGeneralEthcallToken(App, address, chefAddress);
   }));
 
   if (deathPoolIndices) {   //load prices for the deathpool assets
@@ -207,7 +207,7 @@ async function loadDarkChefContract(App, tokens, prices, chef, chefAddress, chef
   var tokens = {};
 
   const rewardTokenAddress = await chefContract.callStatic[rewardTokenFunction]();
-  const rewardToken = await getCronosToken(App, rewardTokenAddress, chefAddress);
+  const rewardToken = await getGeneralEthcallToken(App, rewardTokenAddress, chefAddress);
   const rewardsPerWeek = rewardsPerWeekFixed ??
       await chefContract.callStatic[rewardsPerBlockFunction]()
       / 10 ** rewardToken.decimals * 604800 / 3
@@ -217,7 +217,7 @@ async function loadDarkChefContract(App, tokens, prices, chef, chefAddress, chef
   var tokenAddresses = [].concat.apply([], poolInfos.filter(x => x.poolToken).map(x => x.poolToken.tokens));
 
   await Promise.all(tokenAddresses.map(async (address) => {
-      tokens[address] = await getCronosToken(App, address, chefAddress);
+      tokens[address] = await getGeneralEthcallToken(App, address, chefAddress);
   }));
 
   if (deathPoolIndices) {   //load prices for the deathpool assets
@@ -262,7 +262,7 @@ async function loadDarkChefContract(App, tokens, prices, chef, chefAddress, chef
 
 async function getPoolBoardroom(App, boardroomAddress, boardroom) {
   const SKY_ADDR = '0x9d3bbb0e988d9fb2d55d07fe471be2266ad9c81c'
-  const poolToken = await getCronosToken(App, SKY_ADDR, SKY_CHEF_ADDR);
+  const poolToken = await getGeneralEthcallToken(App, SKY_ADDR, SKY_CHEF_ADDR);
   const contract = new ethers.Contract(SKY_ADDR, ERC20, App.provider);
 
   poolToken.staked = (await contract.callStatic["balanceOf"](boardroomAddress)) / 10 ** poolToken.decimals;
@@ -303,7 +303,7 @@ async function loadBoardroom(App, tokens, prices, boardroomAddress, boardroom, t
   var tokenAddresses = [].concat.apply([], poolInfos.filter(x => x.poolToken).map(x => x.poolToken.tokens));
 
   await Promise.all(tokenAddresses.map(async (address) => {
-      tokens[address] = await getCronosToken(App, address, boardroomAddress);
+      tokens[address] = await getGeneralEthcallToken(App, address, boardroomAddress);
   }));
   const poolPrices = poolInfos.map(poolInfo => poolInfo.poolToken ? getPoolPrices(tokens, prices, poolInfo.poolToken, "cronos") : undefined);
   let apr = printChefPool(App, BR_ABI, boardroomAddress, prices, tokens, poolInfos[0], 0, poolPrices[0],

@@ -20,8 +20,8 @@ $(function () {
         const tokens = {};		
         const prices = await getCronosPrices();		
     		
-        await loadCronosChefContract(App, tokens, prices, CSP_CHEF, CSP_CHEF_ADDR, CSP_CHEF_ABI, rewardTokenTicker,		
-            "csp", null, rewardsPerWeek, "pendingCsp");		
+        await loadGeneralEthcallChefContract(App, tokens, prices, CSP_CHEF, CSP_CHEF_ADDR, CSP_CHEF_ABI, rewardTokenTicker,		
+            "csp", null, rewardsPerWeek, "pendingCsp", [], "cronos");		
     		
         hideLoading();		
     }		

@@ -25,9 +25,8 @@ $(function() {
         const tokens = {};
         const prices = await getCronosPrices();
     
-        await loadCronosChefContract(App, tokens, prices, MMF_CHEF, MMF_CHEF_ADDR, MMF_CHEF_ABI, rewardTokenTicker,
-          "meerkat", null, rewardsPerWeek, "pendingMeerkat", [1]);
-    
+        await loadGeneralEthcallChefContract(App, tokens, prices, MMF_CHEF, MMF_CHEF_ADDR, MMF_CHEF_ABI, rewardTokenTicker,
+          "meerkat", null, rewardsPerWeek, "pendingMeerkat", [1], "cronos");
     
         hideLoading();
       }    

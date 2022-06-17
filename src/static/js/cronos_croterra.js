@@ -21,8 +21,8 @@ const TERRA_CHEF_ABI = [{"type":"constructor","stateMutability":"nonpayable","in
         const tokens = {};
         const prices = await getCronosPrices();
     
-        await loadCronosChefContract(App, tokens, prices, TERRA_CHEF, TERRA_CHEF_ADDR, TERRA_CHEF_ABI, rewardTokenTicker,
-          "terra", null, rewardsPerWeek, "pendingTerra");
+        await loadGeneralEthcallChefContract(App, tokens, prices, TERRA_CHEF, TERRA_CHEF_ADDR, TERRA_CHEF_ABI, rewardTokenTicker,
+          "terra", null, rewardsPerWeek, "pendingTerra", [], "cronos");
     
     
         hideLoading();

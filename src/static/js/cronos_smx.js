@@ -21,10 +21,10 @@ async function main() {
     rewardTokenFunction: "rewardsToken"
   }})
 
-  await loadCronosSynthetixPoolInfo(App, tokens, prices, pools[0].abi, pools[0].address,
-    pools[0].rewardTokenFunction, pools[0].stakeTokenFunction)
+  await loadGeneralEthcallSynthetixPoolInfo(App, tokens, prices, pools[0].abi, pools[0].address,
+    pools[0].rewardTokenFunction, pools[0].stakeTokenFunction, "cronos")
 
-  let p = await loadMultipleCronosSynthetixPools(App, tokens, prices, pools)
+  let p = await loadMultipleGeneralEthcallSynthetixPools(App, tokens, prices, pools, "cronos")
   _print_bold(`Total staked: $${formatMoney(p.staked_tvl)}`);
   if (p.totalUserStaked > 0) {
     _print(`You are staking a total of $${formatMoney(p.totalUserStaked)} at an APR of ${(p.totalApr * 100).toFixed(2)}%\n`);

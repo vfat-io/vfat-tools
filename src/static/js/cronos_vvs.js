@@ -29,8 +29,8 @@ async function main() {
     const tokens = {};
     const prices = await getCronosPrices();
 
-    await loadCronosChefContract(App, tokens, prices, VVS_CHEF, VVS_CHEF_ADDR, VVS_CHEF_ABI, rewardTokenTicker,
-      "vvs", null, rewardsPerWeek, "pendingVVS", [4, 5]);
+    await loadGeneralEthcallChefContract(App, tokens, prices, VVS_CHEF, VVS_CHEF_ADDR, VVS_CHEF_ABI, rewardTokenTicker,
+      "vvs", null, rewardsPerWeek, "pendingVVS", [4, 5], "cronos");
 
     hideLoading();
   }

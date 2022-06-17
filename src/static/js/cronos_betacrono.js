@@ -22,8 +22,8 @@ async function main() {
     const tokens = {};
     const prices = await getCronosPrices();
 
-  await loadCronosChefContract(App, tokens, prices, BETACRONO_CHEF, BETACRONO_CHEF_ADDR, BETACRONO_CHEF_ABI, rewardTokenTicker,
-        "BetaCrono", null, rewardsPerWeek, "pendingBetaCrono", [1]);
+  await loadGeneralEthcallChefContract(App, tokens, prices, BETACRONO_CHEF, BETACRONO_CHEF_ADDR, BETACRONO_CHEF_ABI, rewardTokenTicker,
+        "BetaCrono", null, rewardsPerWeek, "pendingBetaCrono", [1], "cronos");
 
     hideLoading();
   }

@@ -33,7 +33,7 @@ $(function() {
       }
 
       const prices = await getCronosPrices();
-      const cgoUsdcPoolInfo = await getCronosToken(App, CGO_USDC_ADDR, CGO_CHEF_ADDR);
+      const cgoUsdcPoolInfo = await getGeneralEthcallToken(App, CGO_USDC_ADDR, CGO_CHEF_ADDR);
 
       if (cgoUsdcPoolInfo) {
            // Add CGO price
@@ -90,11 +90,11 @@ async function getPoolInfo(App, tokens, prices, pid) {
       const stakedWantTokens = await cgofarmContract.stakedWantTokens(pid, App.YOUR_ADDRESS)
       const farmContractAddress = MANUAL_POOLS.includes(pid) ? CGO_CHEF_ADDR : await stratContract.farmContractAddress()
 
-      const wantToken = await getCronosToken(App, poolInfo.want, App.YOUR_ADDRESS);
+      const wantToken = await getGeneralEthcallToken(App, poolInfo.want, App.YOUR_ADDRESS);
 
       var newTokenAddresses = wantToken.tokens.filter(x => !getParameterCaseInsensitive(tokens, x));
       for (const address of newTokenAddresses) {
-          tokens[address] = await getCronosToken(App, address, farmContractAddress);
+          tokens[address] = await getGeneralEthcallToken(App, address, farmContractAddress);
       }
 
       const poolPrices = getPoolPrices(tokens, prices, wantToken, "cronos");

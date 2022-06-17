@@ -21,8 +21,8 @@ const LUAN_CHEF_ABI = [{"type":"constructor","stateMutability":"nonpayable","inp
         const tokens = {};
         const prices = await getCronosPrices();
     
-        await loadCronosChefContract(App, tokens, prices, LUAN_CHEF, LUAN_CHEF_ADDR, LUAN_CHEF_ABI, rewardTokenTicker,
-          "luan", null, rewardsPerWeek, "pendingLuan");
+        await loadGeneralEthcallChefContract(App, tokens, prices, LUAN_CHEF, LUAN_CHEF_ADDR, LUAN_CHEF_ABI, rewardTokenTicker,
+          "luan", null, rewardsPerWeek, "pendingLuan", [], "cronos");
     
     
         hideLoading();

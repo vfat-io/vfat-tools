@@ -21,8 +21,8 @@ $(function() {
         const tokens = {};
         const prices = await getCronosPrices();
     
-        await loadCronosChefContract(App, tokens, prices, METACRONO_CHEF, METACRONO_CHEF_ADDR, METACRONO_CHEF_ABI, rewardTokenTicker,
-          "Metacrono", null, rewardsPerWeek, "pendingMetacrono", [1]);
+        await loadGeneralEthcallChefContract(App, tokens, prices, METACRONO_CHEF, METACRONO_CHEF_ADDR, METACRONO_CHEF_ABI, rewardTokenTicker,
+          "Metacrono", null, rewardsPerWeek, "pendingMetacrono", [1], "cronos");
     
     
         hideLoading();

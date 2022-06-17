@@ -31,8 +31,8 @@ async function main() {
     const tokens = {};
     const prices = await getCronosPrices();
 
-    await loadCronosChefContract(App, tokens, prices, MESO_CHEF, MESO_CHEF_ADDR, MESO_CHEF_ABI, rewardTokenTicker,
-      "token", null, rewardsPerWeek, "pendingMeso", [2]);
+    await loadGeneralEthcallChefContract(App, tokens, prices, MESO_CHEF, MESO_CHEF_ADDR, MESO_CHEF_ABI, rewardTokenTicker,
+      "token", null, rewardsPerWeek, "pendingMeso", [2], "cronos");
 
     hideLoading();
   }

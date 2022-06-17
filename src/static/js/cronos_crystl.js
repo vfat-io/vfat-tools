@@ -25,7 +25,7 @@ async function main() {
 
 async function getCrystalVaultInfo(app, chefContract, chefAddress, poolIndex) {
   const poolInfo = await chefContract.poolInfo(poolIndex);
-  const poolToken = await getCronosToken(app, poolInfo.want, chefAddress);
+  const poolToken = await getGeneralEthcallToken(app, poolInfo.want, chefAddress);
   const staked = await chefContract.stakedWantTokens(poolIndex, app.YOUR_ADDRESS) / 10 ** poolToken.decimals;
   const strat = new ethers.Contract(poolInfo.strat, STRAT_ABI, app.provider);
   poolToken.staked = await strat.wantLockedTotal() / 1e18;
@@ -50,7 +50,7 @@ async function loadCrystalVaultsContract(App, tokens, prices, chef, chefAddress)
   var tokenAddresses = [].concat.apply([], poolInfos.filter(x => x.poolToken).map(x => x.poolToken.tokens));
 
   await Promise.all(tokenAddresses.map(async (address) => {
-      tokens[address] = await getCronosToken(App, address, chefAddress);
+      tokens[address] = await getGeneralEthcallToken(App, address, chefAddress);
   }));
 
   const poolPrices = poolInfos.map(poolInfo => poolInfo.poolToken ? getPoolPrices(tokens, prices, poolInfo.poolToken, "cronos") : undefined);

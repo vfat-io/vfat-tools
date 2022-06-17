@@ -31,7 +31,7 @@ $(function() {
         const tokens = {};
         const prices = await getCronosPrices();
 
-        const cgxUsdcPoolInfo = await getCronosToken(App, CGX_USDC_ADDR, CGX_CHEF_ADDR);
+        const cgxUsdcPoolInfo = await getGeneralEthcallToken(App, CGX_USDC_ADDR, CGX_CHEF_ADDR);
 
         if (cgxUsdcPoolInfo) {
              // Add CGX price
@@ -40,7 +40,7 @@ $(function() {
             prices[CGX_ADDR] = {usd: q1 / q0};
         }
 
-        await loadCronosChefContract(App,
+        await loadGeneralEthcallChefContract(App,
             tokens,
             prices,
             CGX_CHEF,
@@ -50,7 +50,9 @@ $(function() {
             "cgx",
             null,
             rewardsPerWeek,
-            "pendingCGX");
+            "pendingCGX",
+            [],
+            "cronos");
 
         hideLoading();
     }
