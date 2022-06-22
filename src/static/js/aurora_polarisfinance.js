@@ -380,7 +380,7 @@ async function loadORBITALContract(App, tokens, prices, chef, chefAddress, chefA
 }
 
 async function loadOrbitalSynthetixPoolInfoPrice(App, tokens, prices, stakingAddress, stakeTokenAddress) {
-  var stakeToken = await getFantomToken(App, stakeTokenAddress, stakingAddress);
+  var stakeToken = await getGeneralEthcallToken(App, stakeTokenAddress, stakingAddress);
   var newPriceAddresses = stakeToken.tokens.filter(x =>
     !getParameterCaseInsensitive(prices, x));
   var newPrices = await lookUpTokenPrices(newPriceAddresses);
@@ -391,7 +391,7 @@ async function loadOrbitalSynthetixPoolInfoPrice(App, tokens, prices, stakingAdd
   var newTokenAddresses = stakeToken.tokens.filter(x =>
     !getParameterCaseInsensitive(tokens,x));
   for (const address of newTokenAddresses) {
-      tokens[address] = await getFantomToken(App, address, stakingAddress);
+      tokens[address] = await getGeneralEthcallToken(App, address, stakingAddress);
   }
   const poolPrices = getPoolPrices(tokens, prices, stakeToken, "optimism");
 

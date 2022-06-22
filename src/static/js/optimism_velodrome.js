@@ -106,7 +106,7 @@ $(function() {
         const rewardTokenAddress = await STAKING_POOL.rewards(i)
         rewardTokenAddresses.push(rewardTokenAddress);
         if (!getParameterCaseInsensitive(tokens, rewardTokenAddress)) {
-          tokens[rewardTokenAddress] = await getFantomToken(App, rewardTokenAddress, stakingAddress);
+          tokens[rewardTokenAddress] = await getGeneralEthcallToken(App, rewardTokenAddress, stakingAddress);
         }
         const rewardToken = getParameterCaseInsensitive(tokens, rewardTokenAddress);
         const rewardTokenTicker = rewardToken.symbol;
@@ -128,7 +128,7 @@ $(function() {
         return;
       }
   
-      var stakeToken = await getFantomToken(App, stakeTokenAddress, stakingAddress);
+      var stakeToken = await getGeneralEthcallToken(App, stakeTokenAddress, stakingAddress);
   
       const calls = [STAKING_MULTI.balanceOf(App.YOUR_ADDRESS), STAKING_MULTI.derivedSupply(),
                      STAKING_MULTI.derivedBalance(App.YOUR_ADDRESS), STAKING_MULTI.tokenIds(App.YOUR_ADDRESS)]
@@ -151,7 +151,7 @@ $(function() {
       var newTokenAddresses = stakeToken.tokens.filter(x =>
         !getParameterCaseInsensitive(tokens,x));
       for (const address of newTokenAddresses) {
-          tokens[address] = await getFantomToken(App, address, stakingAddress);
+          tokens[address] = await getGeneralEthcallToken(App, address, stakingAddress);
       }
   
       const poolPrices = getPoolPrices(tokens, prices, stakeToken, "optimism");
@@ -306,7 +306,7 @@ $(function() {
   }
   
   async function loadVelodromeSynthetixPoolInfoPrice(App, tokens, prices, stakingAddress, stakeTokenAddress) {
-    var stakeToken = await getFantomToken(App, stakeTokenAddress, stakingAddress);
+    var stakeToken = await getGeneralEthcallToken(App, stakeTokenAddress, stakingAddress);
     var newPriceAddresses = stakeToken.tokens.filter(x =>
       !getParameterCaseInsensitive(prices, x));
     var newPrices = await lookUpTokenPrices(newPriceAddresses);
@@ -317,7 +317,7 @@ $(function() {
     var newTokenAddresses = stakeToken.tokens.filter(x =>
       !getParameterCaseInsensitive(tokens,x));
     for (const address of newTokenAddresses) {
-        tokens[address] = await getFantomToken(App, address, stakingAddress);
+        tokens[address] = await getGeneralEthcallToken(App, address, stakingAddress);
     }
     const poolPrices = getPoolPrices(tokens, prices, stakeToken, "optimism");
   
