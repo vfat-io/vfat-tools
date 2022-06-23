@@ -76,6 +76,21 @@ window.NETWORKS = {
       "https://blockscout.com/astar/"
     ]
   },
+  KAVA: {
+    "chainId": "0x8AE",
+    "chainName": "Kava Network",
+    "nativeCurrency": {
+      "name": "Kava",
+      "symbol": "KAVA",
+      "decimals": 18
+    },
+    "rpcUrls": [
+      "https://evm.kava.io"
+    ],
+    "blockExplorerUrls": [
+      "https://explorer.kava.io"
+    ]
+  },
   MILKOMEDA: {
     "chainId": "0x7D1",
     "chainName": "Milkomeda C1 Mainnet",

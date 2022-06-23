@@ -452,6 +452,12 @@ const IotexTokens = [
   { "id": "imagictoken","symbol": "IMAGIC", "contract": "0x490CfbF9b9C43633DdD1968d062996227ef438A9" }
 ];
 
+const KavaTokens = [
+  { "id": "weth", "symbol": "WETH", "contract": "0xE3F5a90F9cb311505cd691a46596599aA1A0AD7D"},
+  { "id": "kava", "symbol": "KAVA", "contract": "0xc86c7C0eFbd6A49B35E8714C5f59D99De09A225b"},
+  { "id": "usd-coin","symbol": "USDC", "contract": "0xfA9343C3897324496A05fC75abeD6bAC29f8A40f" }
+];
+
 const KccTokens = [
   { "id": "kucoin-shares", "symbol": "KCS", "contract": "0x6c021Ae822BEa943b2E66552bDe1D2696a53fbB7"},
   { "id": "kucoin-shares", "symbol": "WKCS", "contract": "0x4446fc4eb47f2f6586f9faab68b3498f86c07521"},
@@ -805,6 +811,15 @@ async function getIotexPrices() {
   const idPrices = await lookUpPrices(IotexTokens.map(x => x.id));
   const prices = {}
   for (const bt of IotexTokens)
+      if (idPrices[bt.id])
+          prices[bt.contract] = idPrices[bt.id];
+  return prices;
+}
+
+async function getKavaPrices() {
+  const idPrices = await lookUpPrices(KavaTokens.map(x => x.id));
+  const prices = {}
+  for (const bt of KavaTokens)
       if (idPrices[bt.id])
           prices[bt.contract] = idPrices[bt.id];
   return prices;
