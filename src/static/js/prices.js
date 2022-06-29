@@ -23,7 +23,8 @@ const ArbitrumTokens = [
   { "id": "frax", "symbol": "FRAX", "contract": "0x17FC002b466eEc40DaE837Fc4bE5c67993ddBd6F"},
   { "id": "governance-ohm", "symbol": "gOHM", "contract": "0x8D9bA570D6cb60C7e3e0F31343Efe75AB8E65FB1"},
   { "id": "stargate-finance", "symbol": "STG", "contract": "0x6694340fc020c5E6B96567843da2df01b2CE1eb6"},
-  { "id": "jones-dao", "symbol": "JONES", "contract": "0x10393c20975cF177a3513071bC110f7962CD67da" }
+  { "id": "jones-dao", "symbol": "JONES", "contract": "0x10393c20975cF177a3513071bC110f7962CD67da" },
+  { "id": "impermax", "symbol": "IMX", "contract": "0x9c67ee39e3c4954396b9142010653f17257dd39c" }
 ];
 
 const AstarTokens = [
