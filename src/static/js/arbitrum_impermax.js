@@ -67,13 +67,205 @@ const PAIRS = [
     },
     {
         borrowable0: {
-            symbol: "SUSHI",
-            address: "0x929c2Ad7a4b22E4968ecB6B87c9698CEb20DdB3f",
+            symbol: "USDT",
+            address: "0xd1A4A9cCe9f6AF30aDe0b15F0ABD38922868852b",
+            decimals: 18,
+        },
+        borrowable1: {
+            symbol: "USDC",
+            address: "0x2B392AcA451909cb583Ea497dD7dc3eC415fd742",
+            decimals: 18,
+        },
+    },
+    /*{
+        borrowable0: {
+            symbol: "ETH",
+            address: "0xA64A370D077E42f496902CBfD7eF82e643C9502d",
+            decimals: 18,
+        },
+        borrowable1: {
+            symbol: "LINK",
+            address: "0x0280BaFd9f2A08827d6E933c832008Cf414A0A26",
+            decimals: 18,
+        },
+    },*/
+    {
+        borrowable0: {
+            symbol: "MIM",
+            address: "0x0fA1417668190ed8916a17f8867B2bf0E54C4280",
             decimals: 18,
         },
         borrowable1: {
             symbol: "ETH",
-            address: "0x908221669C081a79b13F656f0F814C2c419167f9",
+            address: "0xCd43695E650D8f56405fE262190483BCe774A8DE",
+            decimals: 18,
+        },
+    },
+    {
+        borrowable0: {
+            symbol: "SPELL",
+            address: "0x4e3985931Aa4ce680A506f5B7302F670ec97428f",
+            decimals: 18,
+        },
+        borrowable1: {
+            symbol: "ETH",
+            address: "0x0Cf0eC28869367A4fe6B24A487991FaFF9788BF1",
+            decimals: 18,
+        },
+    },
+    /*{
+        borrowable0: {
+            symbol: "ARC",
+            address: "0x8758C8A1383Bf60F0E8ebc92C5E4693524e8939e",
+            decimals: 18,
+        },
+        borrowable1: {
+            symbol: "ETH",
+            address: "0xb0d74C8dda0fdD70b64b9b78d212c42F0defC69C",
+            decimals: 18,
+        },
+    },
+    {
+        borrowable0: {
+            symbol: "USDC",
+            address: "0x68809540deC11F7c5F0b83f7688E159314649382",
+            decimals: 18,
+        },
+        borrowable1: {
+            symbol: "ETH",
+            address: "0x2ce3E91C4844Bd121544D0F70a249C5b942bAbCc",
+            decimals: 18,
+        },
+    },*/
+    {
+        borrowable0: {
+            symbol: "BTC",
+            address: "0xB6c4Db04B8f99750c07FF8529dd35174F64a4674",
+            decimals: 18,
+        },
+        borrowable1: {
+            symbol: "ETH",
+            address: "0x85726E58dDfF14b5bC7CFee7BF7EFd2B39CD31a2",
+            decimals: 18,
+        },
+    },
+    {
+        borrowable0: {
+            symbol: "USDC",
+            address: "0xA63C208d2Fbb9a46E86cD783dfa859cD0b38A51f",
+            decimals: 18,
+        },
+        borrowable1: {
+            symbol: "ETH",
+            address: "0x638F8E35F97F30eCe93D4ceB0eCe4Ed00bF0F7F1",
+            decimals: 18,
+        },
+    },
+    {
+        borrowable0: {
+            symbol: "SWPR",
+            address: "0x9c912D53522ccC6bf1687A5a6A2a79FeC8FFaC25",
+            decimals: 18,
+        },
+        borrowable1: {
+            symbol: "ETH",
+            address: "0xBDEB3A7CCf96096aEA9CBf4f1A55D30cc1627540",
+            decimals: 18,
+        },
+    },
+    {
+        borrowable0: {
+            symbol: "DAI",
+            address: "0x89F64D9af5Cc069C0859dCC49A5926271700Fe7D",
+            decimals: 18,
+        },
+        borrowable1: {
+            symbol: "ETH",
+            address: "0xA290dd13CcaA4Eb195decCcF83EbC211cCF06f61",
+            decimals: 18,
+        },
+    },
+    {
+        borrowable0: {
+            symbol: "IMX",
+            address: "0x1c66266dDcb3A7a4dC0cf409FB86637208C390C5",
+            decimals: 18,
+        },
+        borrowable1: {
+            symbol: "ETH",
+            address: "0xafcF39Df4c47F1DCcedF26B9c75Da6EBcfCe8840",
+            decimals: 18,
+        },
+    },
+    {
+        borrowable0: {
+            symbol: "USDT",
+            address: "0x1eBE3ccb5aDb788020AA7f7A612C9988DC3Aaf1d",
+            decimals: 18,
+        },
+        borrowable1: {
+            symbol: "USDC",
+            address: "0x6487520cbb1a8D6c09704a091A15EA09B46884b4",
+            decimals: 18,
+        },
+    },
+    {
+        borrowable0: {
+            symbol: "LINK",
+            address: "0xeeD6e942b58C5422602471873A706748e3Ed94Ea",
+            decimals: 18,
+        },
+        borrowable1: {
+            symbol: "ETH",
+            address: "0x0306a59E747692eA1F716172d4f7e0C9D31e3BB7",
+            decimals: 18,
+        },
+    },
+    /*{
+        borrowable0: {
+            symbol: "DPX",
+            address: "0x31cB8AB1dBB3eefED49Bf2736c48AA006eD4381E",
+            decimals: 18,
+        },
+        borrowable1: {
+            symbol: "ETH",
+            address: "0x318C478E3e4aA6e7eDD493c36F1D1dDe2ff3C865",
+            decimals: 18,
+        },
+    },
+    {
+        borrowable0: {
+            symbol: "RDPX",
+            address: "0xF54b17b80011e69573dfE7D60B3D64a3b40f82b1",
+            decimals: 18,
+        },
+        borrowable1: {
+            symbol: "ETH",
+            address: "0xB97682B1C08E8C284E86F5a819002490AfA9051b",
+            decimals: 18,
+        },
+    },*/
+    {
+        borrowable0: {
+            symbol: "gOHM",
+            address: "0x3920e5abc7b52b22028c3D856Bb20fcb606EAeb1",
+            decimals: 18,
+        },
+        borrowable1: {
+            symbol: "ETH",
+            address: "0x8CBe3495CF37ad65F5F1c63ED8713613d8E537bC",
+            decimals: 18,
+        },
+    },
+    {
+        borrowable0: {
+            symbol: "MAGIC",
+            address: "0x0c68CF21672F0d563eBD5F83a11cFEB514e008d0",
+            decimals: 18,
+        },
+        borrowable1: {
+            symbol: "ETH",
+            address: "0x608B8DA26CF1DD94aE62bfe3798f808d65a51600",
             decimals: 18,
         },
     },
