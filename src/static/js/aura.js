@@ -35,13 +35,13 @@ consoleInit(main)
           rewardTokenFunction: "rewardToken"
       }))
 
-    /*await loadAuraChefContract(App, AURA_CHEF, AURA_CHEF_ADDR, AURA_CHEF_ABI,
-        "AURA", "cvx", null, rewardsPerWeek, "pendingCvx");*/
+    const data = await loadAuraChefContract(App, AURA_CHEF, AURA_CHEF_ADDR, AURA_CHEF_ABI,
+        "AURA", "cvx", null, rewardsPerWeek, "pendingCvx");
 
     _print("");
 
     var tokens = {};
-    var prices = {};
+    var prices = data.prices;
     
     let p = await loadMultipleAuraSynthetixPools(App, tokens, prices, Pools)
     _print_bold(`Total staked: $${formatMoney(p.staked_tvl)}`);
@@ -122,13 +122,16 @@ async function loadAuraSynthetixPoolInfo(App, tokens, prices, stakingAbi, stakin
     const stakeTokenPrice =
         prices[stakeTokenAddress]?.usd ?? getParameterCaseInsensitive(prices, stakeTokenAddress)?.usd;
     const rewardTokenPrice = getParameterCaseInsensitive(prices, rewardTokenAddress)?.usd;
+    const rewardTokenAuraPrice = getParameterCaseInsensitive(prices, "0xc0c293ce456ff0ed870add98a0828dd4d2903dbf")?.usd;
 
     const calls = [STAKING_MULTI.periodFinish(), STAKING_MULTI.rewardRate(),
       STAKING_MULTI.balanceOf(App.YOUR_ADDRESS), STAKING_MULTI.earned(App.YOUR_ADDRESS)]
     const [periodFinish, rewardRate, balance, earned_] = await App.ethcallProvider.all(calls);
     const weeklyRewards = (Date.now() / 1000 > periodFinish) ? 0 : rewardRate / 1e18 * 604800;
+    const weeklyAuraRewards = weeklyRewards * 3.8;
 
     const usdPerWeek = weeklyRewards * rewardTokenPrice;
+    const usdAuraPerWeek = weeklyAuraRewards * rewardTokenAuraPrice;
 
     const staked_tvl = poolPrices.staked_tvl;
 
@@ -137,6 +140,7 @@ async function loadAuraSynthetixPoolInfo(App, tokens, prices, stakingAbi, stakin
     const userUnstaked = stakeToken.unstaked;
 
     const earned = earned_ / 10 ** rewardToken.decimals;
+    const earnedAura = earned * 3.8
 
     return  {
       stakingAddress,
@@ -152,8 +156,85 @@ async function loadAuraSynthetixPoolInfo(App, tokens, prices, stakingAbi, stakin
       staked_tvl,
       userStaked,
       userUnstaked,
-      earned
+      earned,
+      rewardTokenAuraAddress : "0xc0c293ce456ff0ed870add98a0828dd4d2903dbf",
+      rewardTokenAuraTicker : "AURA",
+      rewardTokenAuraPrice,
+      weeklyAuraRewards,
+      usdAuraPerWeek,
+      earnedAura
     }
+}
+
+async function printSynthetixPool(App, info, chain="eth", customURLs) {
+  info.poolPrices.print_price(chain, 4, customURLs);
+  _print(`${info.rewardTokenTicker} Per Week: ${info.weeklyRewards.toFixed(2)} ($${formatMoney(info.usdPerWeek)})`);
+  _print(`${info.rewardTokenAuraTicker} Per Week: ${info.weeklyAuraRewards.toFixed(2)} ($${formatMoney(info.usdAuraPerWeek)})`);
+  const weeklyAPR = info.usdPerWeek / info.staked_tvl * 100;
+  const dailyAPR = weeklyAPR / 7;
+  const yearlyAPR = weeklyAPR * 52;
+  const weeklyAuraAPR = info.usdAuraPerWeek / info.staked_tvl * 100;
+  const dailyAuraAPR = weeklyAuraAPR / 7;
+  const yearlyAuraAPR = weeklyAuraAPR * 52;
+
+  const totalYearlyAPR = yearlyAPR + yearlyAuraAPR;
+  const totalWeeklyAPR = weeklyAPR + weeklyAuraAPR;
+  const totalDailyAPR = dailyAPR + dailyAuraAPR;
+  const totalUSDPerWeek = info.usdPerWeek + info.usdAuraPerWeek;
+  _print(`Total Per Week: $${formatMoney(totalUSDPerWeek)}`);
+  _print(`Total APR: Day ${totalDailyAPR.toFixed(4)}% Week ${totalWeeklyAPR.toFixed(2)}% Year ${totalYearlyAPR.toFixed(2)}%`);
+  const userStakedUsd = info.userStaked * info.stakeTokenPrice;
+  const userStakedPct = userStakedUsd / info.staked_tvl * 100;
+  _print(`You are staking ${info.userStaked.toFixed(6)} ${info.stakeTokenTicker} ` +
+         `$${formatMoney(userStakedUsd)} (${userStakedPct.toFixed(2)}% of the pool).`);
+  if (info.userStaked > 0) {
+    info.poolPrices.print_contained_price(info.userStaked);
+    const userWeeklyRewards = userStakedPct * info.weeklyRewards / 100;
+    const userDailyRewards = userWeeklyRewards / 7;
+    const userYearlyRewards = userWeeklyRewards * 52;
+    const userAuraWeeklyRewards = userStakedPct * info.weeklyAuraRewards / 100;
+    const userAuraDailyRewards = userAuraWeeklyRewards / 7;
+    const userAuraYearlyRewards = userAuraWeeklyRewards * 52;
+    const totalUsdCoinsPerDay = userDailyRewards + userAuraDailyRewards;
+    const totalUsdCoinsPerWeek = userWeeklyRewards + userAuraWeeklyRewards;
+    const totalUsdCoinsPerYear = userYearlyRewards + userAuraYearlyRewards;
+    _print(`Total Earnings: Day ${totalUsdCoinsPerDay.toFixed(4)}% Week ${totalUsdCoinsPerWeek.toFixed(2)}% Year ${totalUsdCoinsPerYear.toFixed(2)}%`);
+  }
+  const approveTENDAndStake = async function() {
+    return rewardsContract_stake(info.stakeTokenAddress, info.stakingAddress, App)
+  }
+  const unstake = async function() {
+    return rewardsContract_unstake(info.stakingAddress, App)
+  }
+  const claim = async function() {
+    return rewardsContract_claim(info.stakingAddress, App)
+  }
+  const exit = async function() {
+    return rewardsContract_exit(info.stakingAddress, App)
+  }
+  const revoke = async function() {
+    return rewardsContract_resetApprove(info.stakeTokenAddress, info.stakingAddress, App)
+  }
+  _print(`<a target="_blank" href="https://etherscan.io/address/${info.stakingAddress}#code">Etherscan</a>`);
+  if (info.stakeTokenAddress != "0x0000000000000000000000000000000000000000") {
+    _print_link(`Stake ${info.userUnstaked.toFixed(6)} ${info.stakeTokenTicker}`, approveTENDAndStake)
+  }
+  else {
+    _print(`Please use the official website to stake ${info.stakeTokenTicker}.`);
+  }
+  _print_link(`Unstake ${info.userStaked.toFixed(6)} ${info.stakeTokenTicker}`, unstake)
+  _print_link(`Claim ${info.earned.toFixed(6)} ${info.rewardTokenTicker} ($${formatMoney(info.earned*info.rewardTokenPrice)}) + ${info.earnedAura.toFixed(6)} ${info.rewardTokenAuraTicker} ($${formatMoney(info.earnedAura*info.rewardTokenAuraPrice)})`, claim);
+  if (info.stakeTokenTicker != "ETH") {
+    _print_link(`Revoke (set approval to 0)`, revoke)
+  }
+  _print_link(`Exit`, exit)
+  _print("");
+
+  return {
+      staked_tvl: info.poolPrices.staked_tvl,
+      userStaked : userStakedUsd,
+      apr : totalYearlyAPR
+  }
 }
 
 async function loadAuraChefContract(App, chef, chefAddress, chefAbi, rewardTokenTicker,
@@ -179,7 +260,7 @@ async function loadAuraChefContract(App, chef, chefAddress, chefAbi, rewardToken
 
   const poolInfos = await Promise.all([...Array(poolCount).keys()].map(async (x) => {
     try {
-      return await getPoolInfo(App, chefContract, chefAddress, x, pendingRewardsFunction, showAll);
+      return await getAuraPoolInfo(App, chefContract, chefAddress, x, pendingRewardsFunction, showAll);
     }
     catch (ex) {
       console.log(`Error loading pool ${x}: ${ex}`);
@@ -197,7 +278,7 @@ async function loadAuraChefContract(App, chef, chefAddress, chefAbi, rewardToken
       }
     }
   }
-  prices["0x3dd0843A028C86e0b760b1A76929d1C5Ef93a2dd"] = { usd : 1 }
+  //prices["0x3dd0843A028C86e0b760b1A76929d1C5Ef93a2dd"] = { usd : 1 }
 
   await Promise.all(tokenAddresses.map(async (address) => {
       tokens[address] = await getToken(App, address, chefAddress);
@@ -242,4 +323,44 @@ async function loadAuraChefContract(App, chef, chefAddress, chefAbi, rewardToken
         + ` Year $${formatMoney(totalUserStaked*averageApr)}\n`);
   }
   return { prices, totalUserStaked, totalStaked, averageApr }
+}
+
+async function getAuraPoolInfo(app, chefContract, chefAddress, poolIndex, pendingRewardsFunction, showAll=false) {
+  const poolInfo = await chefContract.poolInfo(poolIndex);
+  if (poolInfo.allocPoint == 0 && !showAll) {
+    return {
+      address: poolInfo.lpToken,
+      allocPoints: poolInfo.allocPoint ?? 1,
+      poolToken: null,
+      userStaked : 0,
+      pendingRewardTokens : 0,
+      stakedToken : null,
+      userLPStaked : 0,
+      lastRewardBlock : poolInfo.lastRewardBlock
+    };
+  }
+  const originalPoolToken = await getToken(app, poolInfo.lpToken ?? poolInfo.stakingToken, chefAddress);
+  const poolToken = await getToken(app, "0x5c6Ee304399DBdB9C8Ef030aB642B10820DB8F56", chefAddress);
+  poolToken.address = originalPoolToken.address;
+  poolToken.staked = originalPoolToken.staked
+  const userInfo = await chefContract.userInfo(poolIndex, app.YOUR_ADDRESS);
+  const pendingRewardTokens = await chefContract.callStatic[pendingRewardsFunction](poolIndex, app.YOUR_ADDRESS);
+  const staked = userInfo.amount / 10 ** poolToken.decimals;
+  var stakedToken;
+  var userLPStaked;
+  if (poolInfo.stakedHoldableToken != null &&
+    poolInfo.stakedHoldableToken != "0x0000000000000000000000000000000000000000") {
+    stakedToken = await getToken(app, poolInfo.stakedHoldableToken, chefAddress);
+    userLPStaked = userInfo.stakedLPAmount / 10 ** poolToken.decimals
+  }
+  return {
+      address: poolInfo.lpToken ?? poolInfo.stakingToken,
+      allocPoints: poolInfo.allocPoint ?? 1,
+      poolToken: poolToken,
+      userStaked : staked,
+      pendingRewardTokens : pendingRewardTokens / 10 ** 18,
+      stakedToken : stakedToken,
+      userLPStaked : userLPStaked,
+      lastRewardBlock : poolInfo.lastRewardBlock
+  };
 }

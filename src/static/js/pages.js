@@ -16,6 +16,7 @@ const main = async() => {
       ["Alpha DEX           ",`<a href="alphadex/"          >Various</a>`,"DEX       ","https://kitten.finance"],
       ["Angle               ",`<a href="angle/"             >Various</a>`,"ANGLE     ","https://app.angle.money"],
       ["Armor               ",`<a href="armor/"             >Various</a>`,"ARMOR     ","https://armor.fi"],
+      ["* Aura *            ",`<a href="aura/"              >Various</a>`,"AURA      ","https://app.aura.finance"],
       ["Badger              ",`<a href="badger/"            >Various</a>`,"BADGER    ","https://app.badger.finance"],
       ["Bao                 ",`<a href="bao"                >Various</a>`,"BAO       ","https://www.bao.finance"],
       ["Basis               ",`<a href="basis/"             >Various</a>`,"BAS,BAC   ","https://basis.cash"],
