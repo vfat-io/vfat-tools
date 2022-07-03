@@ -206,7 +206,8 @@ const main = async () => {
       ['Olympus Finance    ', `<a href='olympus-finance'>Various</a>`, 'ARES        ', 'https://www.olympus-fi.com'],
       ['Printer Financial  ', `<a href='printer'      >Various</a>`, 'INK           ', 'https://printer.financial'],
       ['The Story of Draco ', `<a href='draco-story'  >Various</a>`, 'DRACO         ', 'https://dracodefi.com'],
-      ['Dei Finance        ', `<a href='dei'          >Various</a>`, 'DEUS          ', 'https://app.dei.finance']
+      ['Dei Finance        ', `<a href='dei'          >Various</a>`, 'DEUS          ', 'https://app.dei.finance'],
+      ['Strategyx Finance  ', `<a href='strategyx'    >Various</a>`, 'STAY          ', 'https://strategyx.finance']
     ],
   }
 
