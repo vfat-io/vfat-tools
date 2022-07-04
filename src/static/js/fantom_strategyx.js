@@ -263,7 +263,10 @@ async function main() {
     }
     const poolToken = await getGeneralEthcallToken(app, poolInfo.lpToken ?? poolInfo.token ?? poolInfo.stakingToken, chefAddress);
     const userInfo = await chefContract.userInfo(poolIndex, app.YOUR_ADDRESS);
-    const pendingRewardTokens = await chefContract.callStatic[pendingRewardsFunction](poolIndex, app.YOUR_ADDRESS, 100);
+    let pendingRewardTokens = 0;
+    try{
+      pendingRewardTokens= await chefContract.callStatic[pendingRewardsFunction](poolIndex, app.YOUR_ADDRESS, false);
+    }catch{}
     const staked = userInfo.amount / 10 ** poolToken.decimals;
     return {
       address: poolInfo.lpToken ?? poolInfo.token ?? poolInfo.stakingToken,
