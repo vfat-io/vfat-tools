@@ -2542,6 +2542,11 @@ function getUniPrices(tokens, prices, pool, chain="eth")
               `https://app.velodrome.finance/liquidity/create/`,
               `https://app.velodrome.finance/liquidity/create/`,
               `https://app.velodrome.finance/swap`
+            ],
+            "bsc" : [
+              `https://whaleswap.finance/add/`,
+              `https://whaleswap.finance/add/`,
+              `https://whaleswap.finance/swap`
             ]
           } [chain]):
           pool.symbol.includes("sAMM") ? ({
@@ -2559,6 +2564,11 @@ function getUniPrices(tokens, prices, pool, chain="eth")
               `https://app.velodrome.finance/liquidity/create/`,
               `https://app.velodrome.finance/liquidity/create/`,
               `https://app.velodrome.finance/swap`
+            ],
+            "bsc" : [
+              `https://whaleswap.finance/add/`,
+              `https://whaleswap.finance/add/`,
+              `https://whaleswap.finance/swap`
             ]
           } [chain]):
           pool.symbol.includes("HBLP") ? [
