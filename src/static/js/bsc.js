@@ -556,7 +556,7 @@ const main = async() => {
       ["Topshelf            ","", `<a href="topshelf"      >Various</a>`,"LIQR             ","https://topshelf.finance"],
       ["Niob Finance        ","", `<a href="niob"          >Various</a>`,"NIOB             ","https://niob.finance"],
       ["Bag Finance         ","", `<a href="bag"           >Various</a>`,"BGLD             ","https://app.thisistheway.finance"],
-      ["Dibs                ","", `<a href="dibs"          >Various</a>`,"DSHARE/DIBS      ","https://www.dibs.money"],
+      ["Dibs *              ","", `<a href="dibs"          >Various</a>`,"DSHARE/DIBS      ","https://www.dibs.money"],
       ["UFX                 ","", `<a href="ufx"           >Various</a>`,"UFX              ","https://app.unitedfarmers.finance/farms"],
       ["Tokyo Swap          ","", `<a href="tokyoswap"     >Various</a>`,"TOKYO            ","https://www.tokyoswap.finance"],
       ["Latte Swap          ","", `<a href="latteswap"     >Various</a>`,"LATTE            ","https://app.latteswap.com"],
