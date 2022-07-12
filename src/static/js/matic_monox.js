@@ -8352,9 +8352,9 @@ async function main() {
       return [
         farmData.name,
         farmData.symbol,
-        `${new Intl.NumberFormat().format(precise(yearROI, 2))}%(1y),${new Intl.NumberFormat().format(
+        `${new Intl.NumberFormat().format(precise(yearROI, 2))}% / ${new Intl.NumberFormat().format(
           precise(monthROI, 2)
-        )}%(1m),${new Intl.NumberFormat().format(precise(dailyROI, 2))}%(1d)`,
+        )}% / ${new Intl.NumberFormat().format(precise(dailyROI, 2))}%`,
       ]
     }),
   }
