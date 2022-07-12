@@ -10,12 +10,8 @@ import {ethers} from 'ethers'
 import * as ethcall from 'ethcall'
 import lodash from 'lodash'
 import {matchSorter} from 'match-sorter'
-import {arrayify, BytesLike, concat, hexDataLength, hexDataSlice, isHexString, stripZeros} from '@ethersproject/bytes'
-import {BigNumber, BigNumberish, _base16To36, _base36To16} from '@ethersproject/bignumber'
-import {keccak256} from '@ethersproject/keccak256'
-import {encode} from '@ethersproject/rlp'
 
-//import dompurify from 'dompurify'
+// import dompurify from 'dompurify'
 
 import 'picturefill'
 import 'utils/errors'
