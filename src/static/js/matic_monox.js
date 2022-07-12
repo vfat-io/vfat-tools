@@ -8178,7 +8178,6 @@ async function main() {
           status: 1,
           decimals: searchedTokenDecimals,
         }
-        // console.log('details ->', details)
         data.push(details)
       }
     })
@@ -8243,13 +8242,7 @@ async function main() {
           ])
           if (!stakePool?.bActive) continue
           const pool = poolsInfo?.find(p => Number(stakePool?.lpTokenId) === p?.pid && !!p.status)
-          console.log('pool -> ', pool)
-          // const {name} = pool
-          // console.log('poolData ->', weiToEthNum(poolsData.price))
-          // console.log('stakePool ->', stakePool)
           const poolData = await swapRouterContract?.pools(pool.token)
-          console.log('poolData -> ', poolData)
-          // if (!poolData?.status) continue
           const [tokenData, isApproved] = await Promise.all([
             onGetToken(poolData?.token),
             poolsContract?.isApprovedForAll(App.YOUR_ADDRESS, STAKE_ADDRESS),
@@ -8277,7 +8270,6 @@ async function main() {
     }
   }
   const pools = await getFullPoolList()
-  console.log(pools)
 
   const getStakedLpInPool = async lpTokenId => {
     const allStakedLpInPool = await poolsContract.balanceOf(STAKE_ADDRESS, lpTokenId)
@@ -8288,7 +8280,7 @@ async function main() {
   const calculateTotalSupply = async pid => {
     try {
       const totalSupply = await poolsContract?.totalSupply(pid)
-      return parseFloat(ethers.utils.formatEther(totalSupply))
+      return weiToEthNum(totalSupply)
     } catch (err) {
       console.log(err)
       return 0
@@ -8324,54 +8316,80 @@ async function main() {
   const stakeContractData = await getStakeData()
 
   // console.log('pools ->', pools)
-  pools.map(async pool => {
-    const {
-      pid,
-      price: priceData,
-      lpTokenId,
-      stakedAmount,
-      totalAllocPoint,
-      allocPoint,
-      tokenBalance,
-      vcashCredit,
-      vcashDebt,
-      name,
-    } = pool
+  const farmDataList = await Promise.all(
+    pools.map(async pool => {
+      const {
+        pid,
+        price: priceData,
+        lpTokenId,
+        stakedAmount,
+        totalAllocPoint,
+        allocPoint,
+        tokenBalance,
+        vcashCredit,
+        vcashDebt,
+        name,
+        symbol,
+      } = pool
 
-    const stakedLpInPool = await getStakedLpInPool(lpTokenId)
-    const lpTotalSupply = await calculateTotalSupply(pid)
-    const {monoPerPeriod, ratios, decay: decayValue, monoPrice, periodsPerDay} = stakeContractData
-    const currentMonoPerPeriod = monoPerPeriod * ratios
+      const stakedLpInPool = await getStakedLpInPool(lpTokenId)
+      const lpTotalSupply = await calculateTotalSupply(pid)
+      const {monoPerPeriod, ratios, decay, monoPrice, periodsPerDay} = stakeContractData
+      const currentMonoPerPeriod = monoPerPeriod * ratios
 
-    const dailyMONOs =
-      decayValue !== 1
-        ? (currentMonoPerPeriod * (1 - Math.pow(decayValue, periodsPerDay))) / (1 - decayValue)
-        : currentMonoPerPeriod
+      const decayValue = decay * Math.pow(10, 6)
+      const dailyMONOs =
+        decayValue !== 1
+          ? (currentMonoPerPeriod * (1 - Math.pow(decayValue, periodsPerDay))) / (1 - decayValue)
+          : currentMonoPerPeriod
 
-    const dailyMONOsPerPool = (dailyMONOs * allocPoint) / totalAllocPoint
+      const dailyMONOsPerPool =
+        (dailyMONOs * Math.pow(10, 6) * parseFloat(allocPoint.toString())) / parseFloat(totalAllocPoint.toString())
 
-    const yieldMONOPerDayLP = stakedLpInPool ? dailyMONOsPerPool / stakedLpInPool : 0
-    console.log(name, weiToEthNum(priceData), weiToEthNum(tokenBalance))
+      const yieldMONOPerDayLP = stakedLpInPool ? dailyMONOsPerPool / stakedLpInPool : 0
+      // console.log(name, stakedLpInPool, dailyMONOs, allocPoint.toString(), totalAllocPoint.toString())
 
-    const tokenPrice = parseFloat(ethers.utils.formatEther(priceData))
-    const tokenValue = parseFloat(ethers.utils.formatEther(tokenBalance))
-    const formattedVcashValue = weiToEthNum(
-      ethers.BigNumber.from((parseFloat(vcashCredit) - parseFloat(vcashDebt)).toString())
-    )
-    // console.log(vcashCredit, vcashDebt)
-    // const vcashValue = parseFloat(ethers.utils.formatEther(formattedVcashValue))
-    // const poolBalance = poolValue(vcashValue, tokenValue, tokenPrice)
-    // const valuePerLp = poolBalance / lpTotalSupply
-    // const yieldMonoPerDayPerDollar = yieldMONOPerDayLP / valuePerLp
-    // const dailyROI = yieldMonoPerDayPerDollar * monoPrice * 100
-    // console.log(yieldMonoPerDayPerDollar, monoPrice, 100)
-    // const monthFactor = decayValue !== 1 ? (1 - Math.pow(decayValue, 30)) / (1 - decayValue) : 1
-    // const yearFactor = decayValue !== 1 ? (1 - Math.pow(decayValue, 365)) / (1 - decayValue) : 1
-    // const monthROI = dailyROI * monthFactor
-    // const yearROI = dailyROI * yearFactor
-    // console.log(name, dailyROI, monthROI, yearROI)
-  })
-  // console.log('stakeContractData ->', stakeContractData)
+      const tokenPrice = weiToEthNum(priceData)
+      const tokenValue = weiToEthNum(tokenBalance)
+      const vcashValue = weiToEthNum(vcashCredit) - weiToEthNum(vcashDebt)
+      const poolBalance = poolValue(vcashValue, tokenValue, tokenPrice)
+      const valuePerLp = poolBalance / lpTotalSupply
+
+      const yieldMonoPerDayPerDollar = yieldMONOPerDayLP / valuePerLp
+      // console.log(name, yieldMonoPerDayPerDollar, dailyMONOs)
+      const dailyROI = yieldMonoPerDayPerDollar * monoPrice * 100
+      // console.log(name, decayValue)
+      const monthFactor = decayValue !== 1 ? (1 - Math.pow(decayValue, 30)) / (1 - decayValue) : 1
+      const yearFactor = decayValue !== 1 ? (1 - Math.pow(decayValue, 365)) / (1 - decayValue) : 1
+      const monthROI = dailyROI * monthFactor
+      const yearROI = dailyROI * yearFactor
+      // console.log(name, dailyROI, monthROI, yearROI)
+      return {
+        name,
+        symbol,
+        dailyROI,
+        monthROI,
+        yearROI,
+      }
+    })
+  )
+
+  let farmTableData = {
+    title: 'Farm Details',
+    heading: ['Farm', 'Symbol', 'Yearly / Monthly / Daily ROI'],
+    rows: farmDataList?.map(farmData => {
+      const {yearROI, monthROI, dailyROI} = farmData
+      return [
+        farmData.name,
+        farmData.symbol,
+        `${new Intl.NumberFormat().format(precise(yearROI, 2))}%(1y),${new Intl.NumberFormat().format(
+          precise(monthROI, 2)
+        )}%(1m),${new Intl.NumberFormat().format(precise(dailyROI, 2))}%(1d)`,
+      ]
+    }),
+  }
+  let farmTable = new AsciiTable().fromJSON(farmTableData)
+  document.getElementById('log').innerHTML += farmTable + '<br />'
 }
 
 const vUnitContract_stake = async function(App, stackingAbi, stackingAddress, vUnitAddress) {
@@ -8681,7 +8699,7 @@ const getPoolList = async () => {
     }
   }
 }
-const weiToEthNum = (balance, decimals = 18) => {
-  const displayBalance = ethers.utils.formatEther(balance.div(ethers.BigNumber.from(10).pow(decimals)))
+const weiToEthNum = balance => {
+  const displayBalance = ethers.utils.formatEther(balance)
   return parseFloat(displayBalance)
 }
