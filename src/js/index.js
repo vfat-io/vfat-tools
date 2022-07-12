@@ -5,28 +5,33 @@
 /** Directories available as aliases
  * all the paths within Dir in globals.js
  */
-import $ from "jquery";
-import { ethers } from "ethers";
-import * as ethcall from "ethcall";
+import $ from "jquery"
+import {ethers} from "ethers"
+import * as ethcall from "ethcall"
+import lodash from "lodash"
+import {matchSorter} from "match-sorter"
 
-//import dompurify from 'dompurify'
+//import dompurify from "dompurify"
 
-import 'picturefill'
-import 'utils/errors'
-import 'utils/validation'
-import 'utils/quick';
-import "core-js/stable";
-import "regenerator-runtime/runtime";
-import WalletConnectProvider from "@walletconnect/web3-provider";
-import Web3Modal from "web3modal";
+import "picturefill"
+import "utils/errors"
+import "utils/validation"
+import "utils/quick"
+import "core-js/stable"
+import "regenerator-runtime/runtime"
+import WalletConnectProvider from "@walletconnect/web3-provider"
+import Web3Modal from "web3modal"
 
-window.$ = $;
-window.ethers = ethers;
-window.ethcall = ethcall;
-window.asciichart = require("asciichart");
-window.AsciiTable = require("./ascii-table");
-window.Diff = require("diff");
-window.ETHEREUM_NODE_URL = 'aHR0cHM6Ly9tYWlubmV0LmluZnVyYS5pby92My9hNmYzNmI4OWM0OGM0ZmE4YjE0NjYwNWY2ZDdhNWI2Zg==';
+window.$ = $
+window.ethers = ethers
+window.ethcall = ethcall
+window.matchSorter = matchSorter
+window.asciichart = require("asciichart")
+window.AsciiTable = require("./ascii-table")
+window.lodash = lodash
+window.Diff = require("diff")
+window.ETHEREUM_NODE_URL = "aHR0cHM6Ly9tYWlubmV0LmluZnVyYS5pby92My9hNmYzNmI4OWM0OGM0ZmE4YjE0NjYwNWY2ZDdhNWI2Zg=="
+
 window.NETWORKS = {
   ETHEREUM: {
     "chainId": '0x1',
