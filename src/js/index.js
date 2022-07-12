@@ -671,8 +671,8 @@ const providerOptions = {
 
 window.web3Modal = new Web3Modal({
   cacheProvider: true,
-  providerOptions,
-})
+  providerOptions
+});
 
 // eslint-disable-next-line no-console
 console.log(`NODE_ENV: ${process.env.NODE_ENV}`)
