@@ -48,10 +48,6 @@ $(function() {
     _print_bold(`Total staked: $${formatMoney(p.staked_tvl)}\n`);
     if (p.totalUserStaked > 0) {
       _print(`You are staking a total of $${formatMoney(p.totalUserStaked)} at an APR of ${(p.totalApr * 100).toFixed(2)}%\n`);
-      _print(`Estimated VELO earnings:`
-              + ` Day ${p.totalUserDailyRewards.toFixed(2)} ($${formatMoney(p.totalUserDailyRewardsUSD)})`
-              + ` Week ${p.totalUserWeeklyRewards.toFixed(2)} ($${formatMoney(p.totalUserWeeklyRewardsUSD)})`
-              + ` Year ${p.totalUserYearlyRewards.toFixed(2)} ($${formatMoney(p.totalUserYearlyRewardsUSD)})`);
       _print("");
     }
   
@@ -60,7 +56,6 @@ $(function() {
   
   async function loadVelodromeOptimismSynthetixPools(App, tokens, prices, pools) {
     let totalStaked  = 0, totalUserStaked = 0, individualAPRs = [];
-    let totalUserDailyRewards = 0, totalUserWeeklyRewards = 0, totalUserYearlyRewards = 0, totalUserDailyRewardsUSD = 0, totalUserWeeklyRewardsUSD = 0, totalUserYearlyRewardsUSD = 0
     let gaugeAddresses = [], earnings = 0, earningsUSD = 0;
     const infos = await Promise.all(pools.map(p =>
         loadVelodromeSynthetixPoolInfo(App, tokens, prices, p.abi, p.address, p.stakeTokenFunction)));
@@ -70,21 +65,13 @@ $(function() {
       totalUserStaked += p.userStaked || 0;
       if (p.userStaked > 0) {
         individualAPRs.push(p.userStaked * p.apr / 100);
-        totalUserDailyRewards += p.userDailyRewards;
-        totalUserWeeklyRewards += p.userWeeklyRewards;
-        totalUserYearlyRewards += p.userYearlyRewards;
-        totalUserDailyRewardsUSD += p.userDailyRewardsUSD;
-        totalUserWeeklyRewardsUSD += p.userWeeklyRewardsUSD;
-        totalUserYearlyRewardsUSD += p.userYearlyRewardsUSD;
         gaugeAddresses.push(p.stakingAddress);
         earnings += p.earned;
         earningsUSD += p.earningsUSD;
       }
     }
     let totalApr = totalUserStaked == 0 ? 0 : individualAPRs.reduce((x,y)=>x+y, 0) / totalUserStaked;
-    return { staked_tvl : totalStaked, totalUserStaked, totalApr, totalUserDailyRewards,  totalUserWeeklyRewards,
-             totalUserYearlyRewards, totalUserDailyRewardsUSD, totalUserWeeklyRewardsUSD, totalUserYearlyRewardsUSD,
-             gaugeAddresses, earnings, earningsUSD};
+    return { staked_tvl : totalStaked, totalUserStaked, totalApr, gaugeAddresses, earnings, earningsUSD};
   }
   
   async function loadVelodromeSynthetixPoolInfo(App, tokens, prices, stakingAbi, stakingAddress,
@@ -228,23 +215,23 @@ $(function() {
     }
     _print(`You are staking ${info.userStaked.toFixed(6)} ${info.stakeTokenTicker} ` +
              `$${formatMoney(userStakedUsd)} (${userStakedPct.toFixed(2)}% of the pool).`);
-    let userWeeklyRewards = 0, userDailyRewards = 0, userYearlyRewards = 0,userDailyRewardsUSD = 0, userWeeklyRewardsUSD = 0, userYearlyRewardsUSD = 0, earningsUSD = 0;
+    let earningsUSD = 0;
+    let rewardsString = "Estimated earnings:";
     for(let i = 0; i < info.weeklyRewards.length; i++){
-      userWeeklyRewards += userStakedPct * info.weeklyRewards[i] / 100;
-      userDailyRewards += userWeeklyRewards / 7;
-      userYearlyRewards += userWeeklyRewards * 52;
-      userDailyRewardsUSD += userDailyRewards*info.rewardTokenPrices[i]
-      userWeeklyRewardsUSD += userWeeklyRewards*info.rewardTokenPrices[i]
-      userYearlyRewardsUSD += userYearlyRewards*info.rewardTokenPrices[i]
+      const userWeeklyRewards = userStakedPct * info.weeklyRewards[i] / 100;
+      const userDailyRewards = userWeeklyRewards / 7;
+      const userYearlyRewards = userWeeklyRewards * 52;
+      const userDailyRewardsUSD = userDailyRewards*info.rewardTokenPrices[i]
+      const userWeeklyRewardsUSD = userWeeklyRewards*info.rewardTokenPrices[i]
+      const userYearlyRewardsUSD = userYearlyRewards*info.rewardTokenPrices[i]
+
+      rewardsString += ` ${info.rewardTokenTickers[i]} Day ${userDailyRewards.toFixed(2)} ($${formatMoney(userDailyRewardsUSD)}) Week ${userWeeklyRewards.toFixed(2)} ($${formatMoney(userWeeklyRewardsUSD)}) Year ${userYearlyRewards.toFixed(2)} ($${formatMoney(userYearlyRewardsUSD)})`
       earningsUSD += info.earnings[i]*info.rewardTokenPrices[i];
     }
       if (info.userStaked > 0) {
         info.poolPrices.print_contained_price(info.userStaked);
         _print(`You are using NFT ID ${info.tokenId} which has a value of ${formatMoney(info.nftValue)} veNFT.`);
-          _print(`Estimated earnings:`
-              + ` Day ${userDailyRewards.toFixed(2)} ($${formatMoney(userDailyRewardsUSD)})`
-              + ` Week ${userWeeklyRewards.toFixed(2)} ($${formatMoney(userWeeklyRewardsUSD)})`
-              + ` Year ${userYearlyRewards.toFixed(2)} ($${formatMoney(userYearlyRewardsUSD)})`);
+          _print(rewardsString);
       }
     const claim = async function() {
       return velodromeContract_claim(info.rewardTokenAddresses[0], info.stakingAddress, App)
@@ -271,12 +258,12 @@ $(function() {
         staked_tvl: info.poolPrices.staked_tvl,
         userStaked : userStakedUsd,
         apr : usersYearlyAPR,
-        userDailyRewards : userDailyRewards,
-        userWeeklyRewards : userWeeklyRewards,
-        userYearlyRewards : userYearlyRewards,
-        userDailyRewardsUSD : userDailyRewardsUSD,
-        userWeeklyRewardsUSD : userWeeklyRewardsUSD,
-        userYearlyRewardsUSD : userYearlyRewardsUSD,
+        //userDailyRewards : userDailyRewards,
+        //userWeeklyRewards : userWeeklyRewards,
+        //userYearlyRewards : userYearlyRewards,
+        //userDailyRewardsUSD : userDailyRewardsUSD,
+        //userWeeklyRewardsUSD : userWeeklyRewardsUSD,
+        //userYearlyRewardsUSD : userYearlyRewardsUSD,
         stakingAddress : info.stakingAddress,
         rewardTokenAddress : info.rewardTokenAddresses[0],
         earned : info.earnings[0],
