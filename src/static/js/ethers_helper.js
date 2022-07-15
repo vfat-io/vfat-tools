@@ -2275,6 +2275,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
   else if (pool.symbol.includes("Wigo-LP")) stakeTokenTicker += " Wigo-LP";
   else if (pool.symbol.includes("PUD-LP")) stakeTokenTicker += " PUD-LP";
   else if (pool.symbol.includes("DXS")) stakeTokenTicker += " DXS-LP";
+  else if (pool.symbol.includes("CELL")) stakeTokenTicker += " CELL-LP";
   else if (pool.symbol.includes("Milky-LP")) stakeTokenTicker += " Milky-LP";
   else if (pool.symbol.includes("HAUS-LP")) stakeTokenTicker += " HAUS-LP";
   else if (pool.symbol.includes("HBLP")) stakeTokenTicker += " Huckleberry LP";
