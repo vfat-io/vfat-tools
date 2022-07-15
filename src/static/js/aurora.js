@@ -23,7 +23,7 @@ const main = async() => {
         ["WePiggy",                   `<a href="wepiggy"          >Various</a>`,      "WPC",          "https://app.wepiggy.com" ],
         ["Rose",                      `<a href="rose"             >Various</a>`,      "ROSE",         "https://app.rose.fi" ],
         ["Amaterasu",                 `<a href="amaterasu"        >Various</a>`,      "IZA",          "https://app.amaterasu.finance" ],
-        ["Mind Games",                `<a href="mindgames"        >Various</a>`,      "NERVE",        "https://play.mindgames.io" ]
+        ["MIND Games",                `<a href="mindgames"        >Various</a>`,      "CELL",         "https://play.mindgames.io" ]
     ]
   }
 
