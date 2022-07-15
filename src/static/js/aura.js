@@ -26,7 +26,16 @@ consoleInit(main)
       "0x635bc596948d45fa08a2ed3bc74c3934780c4fed",
       "0x88e3c651b57245e13183d553a7573cbfbd4fddc0",
       "0xae327c28d13a497357ad2189b75c83e6ba8cadc6",
-      "0xcea3aa5b2a50e39c7c7755ebff1e9e1e1516d3f5"
+      "0xcea3aa5b2a50e39c7c7755ebff1e9e1e1516d3f5",
+      "0xb0bb1aab600efc50bc726d5bd83adbf4a5687d8e",
+      "0xdffc232ed74a25031a3e16c81013da22ac75806f",
+      "0xc531a6135142b1532433e334e215eb2f32b069c1",
+      "0xb4047ab92ed82c3f29c14010a955da6708a41244",
+      "0xbd388844c3f1e969f395a567875fede8b3cf6bb1",
+      "0x8ae9e3fc8d3cc96583dd2bc9560e36cc8195dea1",
+      "0x10ca519614b0f3463890387c24819001affc5152",
+      "0x2aef2f950e507a23cc19a882dc9b33c03b55d3f2",
+      "0xba1d6afac97f0aa45de2b1c2ced510e167e9e736"
     ].map(a => ({
           address: a,
           abi: AURA_ABI,
@@ -113,7 +122,7 @@ async function loadAuraSynthetixPoolInfo(App, tokens, prices, stakingAbi, stakin
 
     prices["0x06Df3b2bbB68adc8B0e302443692037ED9f91b42"] = { usd : 1 }
     prices["0x32296969Ef14EB0c6d29669C550D4a0449130230"] = prices["0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"]
-    //prices["0x7B50775383d3D6f0215A8F290f2C9e2eEBBEceb2"] = { usd : 1 }
+    prices["0x178E029173417b1F9C8bC16DCeC6f697bC323746"] = { usd : 1 }
 
     const poolPrices = getPoolPrices(tokens, prices, stakeToken);
 
