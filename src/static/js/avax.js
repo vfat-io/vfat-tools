@@ -109,7 +109,7 @@ const main = async() => {
         ["Printer Financial       ",`<a href="printer"          >Various</a>`,"INK          ","https://avax.printer.financial"],
         ["Frozenwalrus Finance *  ",`<a href="frozenwalrus"     >Various</a>`,"WLRS / WSHARE","https://frozenwalrus.finance"],
         ["Grape Finance           ",`<a href="grape"            >Various</a>`,"WINE / GRAPE ","https://grapefinance.app"],
-        ["7GODS: Prelude          ",`<a href="7gods"            >Various</a>`, "ARCANA      ","<a href='https://7gods.xyz/en/prelude' target='_blank'>https://7gods.xyz/prelude</a>"]
+        ["7GODS: Prelude          ",`<a href="7gods"            >Various</a>`, "ARCANA      ","https://7gods.xyz/en/prelude"]
     ]
   }
 
