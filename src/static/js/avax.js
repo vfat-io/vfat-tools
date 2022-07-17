@@ -108,7 +108,7 @@ const main = async () => {
       ["Monox Finance           ", `<a href="monox"            >Various</a>`, "vUNIT        ", "https://monox.finance"],
       ["Printer Financial       ", `<a href="printer"          >Various</a>`, "INK          ", "https://avax.printer.financial"],
       ["Frozenwalrus Finance    ", `<a href="frozenwalrus"     >Various</a>`, "WLRS / WSHARE", "https://frozenwalrus.finance"],
-      ["7GODS: Prelude          ", `<a href="7gods"            >Various</a>`, "ARCANA       ", "https://7gods.xyz/prelude"]
+      ["7GODS: Prelude          ", `<a href="7gods"            >Various</a>`, "ARCANA       ", "<a href='https://7gods.xyz/prelude' target='_blank'>https://7gods.xyz/prelude</a>"],
     ]
   }
 
