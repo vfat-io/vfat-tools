@@ -39,6 +39,13 @@ $(function () {
         stakeTokenFunction : "share",
         rewardTokenAddresses : "polar"
       }
+
+      const StakingPool5 = {
+        address : "0x37223e0066969027954a5499ea4445bB9F55b36F",
+        abi : POLAR_STAKING_ABI,
+        stakeTokenFunction : "share",
+        rewardTokenAddresses : "polar"
+      }
       
       const SPOLAR_CHEF_ADDR = "0xa5df6d8d59a7fbdb8a11e23fda9d11c4103dc49f";
       const ORBITAL_CHEF_ADDR = "0x9D63D94A6f9a176B3F99108a08144cbB6Fd9Ea14";
@@ -101,6 +108,17 @@ $(function () {
       _print_bold(`Total staked: $${formatMoney(p4.staked_tvl)}`);
       if (p4.totalUserStaked > 0) {
         _print(`You are staking a total of $${formatMoney(p4.totalUserStaked)}\n`);
+      }
+
+      _print(`\nStaked SPOLARs can only be withdrawn after 3 epochs since deposit.`);
+      _print(`\nUSP Earnings\n`);
+      const p5 = await loadAuroraPOLARSynthetixPool(App, tokens, prices, StakingPool5.abi, 
+                                                                         StakingPool5.address, 
+                                                                         StakingPool5.rewardTokenAddresses, 
+                                                                         StakingPool5.stakeTokenFunction);
+      _print_bold(`Total staked: $${formatMoney(p5.staked_tvl)}`);
+      if (p5.totalUserStaked > 0) {
+        _print(`You are staking a total of $${formatMoney(p5.totalUserStaked)}\n`);
       }
       
       hideLoading();		
@@ -244,7 +262,7 @@ async function loadSPolarContract(App, tokens, prices, chef, chefAddress, chefAb
   deathPoolIndices, claimFunction) {
   const chefContract = chef ?? new ethers.Contract(chefAddress, chefAbi, App.provider);
 
-  const poolCount = 11;
+  const poolCount = 14;
   const totalAllocPoints = await chefContract.totalAllocPoint();
 
   _print(`<a href='https://aurorascan.dev/address/${chefAddress}' target='_blank'>Staking Contract</a>`);
