@@ -181,11 +181,10 @@ async function loadAvaxWSHAREContract(App, tokens, prices, chef, chefAddress, ch
   deathPoolIndices, claimFunction) {
   const chefContract = chef ?? new ethers.Contract(chefAddress, chefAbi, App.provider);
 
-  const poolCount = 2;
+  const poolCount = 4;
   const totalAllocPoints = await chefContract.totalAllocPoint();
 
   _print(`<a href='https://snowtrace.io/address/${chefAddress}' target='_blank'>Staking Contract</a>`);
-  _print(`Found ${poolCount} pools.\n`)
 
   _print(`Showing incentivized pools only.\n`);
 
