@@ -15,11 +15,11 @@ const main = async() => {
       ["OptiDOGE              ", `<a href="optidoge"          >Various</a>`,"OPTIDOGE     ","https://optidoge.xyz"],
       ["Rubicon               ", `<a href="rubicon"           >Various</a>`,"Various      ","https://app.rubicon.finance"],
       ["Synthetix             ", `<a href="synthetix"         >Various</a>`,"SNX          ","https://staking.synthetix.io"],
-      ["Thales *              ", `<a href="thales"            >Various</a>`,"THALES       ","https://thalesmarket.io"],
+      ["Thales                ", `<a href="thales"            >Various</a>`,"THALES       ","https://thalesmarket.io"],
       ["Stargate              ", `<a href="stargate"          >Various</a>`,"STG          ","https://stargate.finance"],
       ["Hundred               ", `<a href="hundred"           >Various</a>`,"HND          ","https://hundred.finance"],
       ["Xtoken Terminal       ", `<a href="xtokenterminal"    >Various</a>`,"HND          ","https://app.xtokenterminal.io"],
-      ["Velodrome             ", `<a href="velodrome"         >Various</a>`,"VELO         ","https://app.velodrome.finance"],
+      ["Velodrome *           ", `<a href="velodrome"         >Various</a>`,"VELO         ","https://app.velodrome.finance"],
       ["Lyra                  ", `<a href="lyra"              >Various</a>`,"LYRA         ","https://app.lyra.finance"]
     ]
   }
