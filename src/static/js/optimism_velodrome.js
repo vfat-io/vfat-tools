@@ -30,7 +30,7 @@ $(function() {
                     "0x2f733b00127449fcf8b5a195bc51abb73b7f7a75",
                     "0x883c6d437d45b7ce61c07606fb390e6c28be27b8",
                     "0x3a8883381e4416488db94a8e0469394ecfa8a024",
-                    "0xef9a5ff5d3057d539543bc223efccbc2168b19d6", //sAMM - alETH/WETH
+                    "0xef9a5ff5d3057d539543bc223efccbc2168b19d6",
                     "0x1d87cee5c2f88b60588dd97e24d4b7c3d4f74935",
                     "0xafd2c84b9d1cd50e7e18a55e419749a6c9055e1f",
                     "0x49ab32dc8c870ab033ca87df2b954c4c24405e64",
@@ -41,23 +41,23 @@ $(function() {
                     "0x099b3368eb5BBE6f67f14a791ECAeF8bC1628A7F",
                     "0x6aF999D0Cb99773398Ddb265aDf0243fbf5125DF",
                     "0xb3cAc293c3bF27F4f0232f66ACd2b79705b888d4",
-                    "0x3324539a66203EddBE8DA4E45DFa8D8fD8985eBb",
+                    //"0x3324539a66203EddBE8DA4E45DFa8D8fD8985eBb", //unkowing token
                     "0x101D5e5651D7f949154258C1C7516da1eC273476",
                     "0x1C5472efDF8CE67259D6f44ef548c68703797fA2",
                     "0xDF479E13E71ce207CE1e58D6f342c039c3D90b7D",
                     "0x99347C4c68dE5F661194e9854eF8399cD57ca0e5",
                     "0x3dac764b79AcDbc9FC4d3F6A58C15260Ed3dB230",
                     "0xc8f650131f160Da1f362777E3D5D7162ae3ac077",
-                    "0x8B57098ee6EafbE85fC3977Cb974B5ab929e63f2",
-                    "0x9F808baac4CC2efC80467440D918E5EB23B03f97",
+                    //"0x8B57098ee6EafbE85fC3977Cb974B5ab929e63f2", //unkowing token
+                    //"0x9F808baac4CC2efC80467440D918E5EB23B03f97", //unkowing token
                     "0x2414D571E490981B4dD8f554d0e719aed114525B",
-                    "0x90C80b2A2F32B4f5646a79364fafd5099246eb88",
+                    //"0x90C80b2A2F32B4f5646a79364fafd5099246eb88", //unkowing token
                     "0xd15c4a55e4c2CA9B9AD6243200FF46EF12E4A421",
                     "0xB4d9036B81b9B6A7De1C70887c29938eC8df6048",
                     "0x3460ddf1E3Ed8db401fe3f2DF9A7CC9f3e5D85d0",
                     "0x0e2cC300673129E08e50eA9136dcA3b6468133DD",
                     "0xAF307D86B08C54Bb840Ab17ef66AbBBA87C6aaBe",
-                    "0x1d37704877e38b48F4600c20Ac8E5EfEC768094A",
+                    //"0x1d37704877e38b48F4600c20Ac8E5EfEC768094A", //unkowing token
                     //"0x55c50eA1Ff75558AE282E7D04a22D4bB39118c9f",unkowing token
                     //"0x267A10d6053a8D52b7D91De34791D61e9E8353D1",unkowing token
                     "0x45bC4ffb31A40a99a22236A579c0D9A9957591af",
@@ -80,6 +80,8 @@ $(function() {
         stakeTokenFunction: "stake"
       }
     });
+
+    await loadVelodromeSynthetixPoolInfoPrice(App, tokens, prices, "0xA853D38197Be4E9ED8A466852f5bD2E7daA36abD", "0x6fD5BEe1Ddb4dbBB0b7368B080Ab99b8BA765902");
   
     let p = await loadVelodromeOptimismSynthetixPools(App, tokens, prices, gauges)
     _print_bold(`Total staked: $${formatMoney(p.staked_tvl)}\n`);

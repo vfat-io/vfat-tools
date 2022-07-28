@@ -617,7 +617,16 @@ const optimisticTokens = [
   { "id": "frax","symbol": "FRAX", "contract": "0x2E3D870790dC77A83DD1d18184Acc7439A53f475" },
   { "id": "frax-share","symbol": "FXS", "contract": "0x67CCEA5bb16181E7b4109c9c2143c24a1c2205Be" },
   { "id": "alchemix-usd","symbol": "ALUSD", "contract": "0xCB8FA9a76b8e203D8C3797bF438d8FB81Ea3326A" },
-  { "id": "dola-usd","symbol": "DOLA", "contract": "0x8aE125E8653821E851F12A49F7765db9a9ce7384" }
+  { "id": "dola-usd","symbol": "DOLA", "contract": "0x8aE125E8653821E851F12A49F7765db9a9ce7384" },
+  { "id": "perpetual-protocol","symbol": "PERP", "contract": "0x9e1028F5F1D5eDE59748FFceE5532509976840E0" },
+  { "id": "seth","symbol": "SETH", "contract": "0xE405de8F52ba7559f9df3C368500B6E6ae6Cee49" },
+  { "id": "mindsync","symbol": "MAI", "contract": "0xdFA46478F9e5EA86d57387849598dbFB2e964b02" },
+  { "id": "layer2dao","symbol": "L2DAO", "contract": "0xd52f94DF742a6F4B4C8b033369fE13A41782Bf44" },
+  { "id": "aelin","symbol": "AELIN", "contract": "0x61BAADcF22d2565B0F471b291C475db5555e0b76" },
+  { "id": "renbtc","symbol": "RENBTC", "contract": "0x85f6583762Bc76d775eAB9A7456db344f12409F7" },
+  { "id": "dforce-token","symbol": "DF", "contract": "0x9e5AAC1Ba1a2e6aEd6b32689DFcF62A509Ca96f3" },
+  { "id": "token-dforce-usd","symbol": "USX", "contract": "0xbfD291DA8A403DAAF7e5E9DC1ec0aCEaCd4848B9" },
+  { "id": "ageur","symbol": "AGEUR", "contract": "0x9485aca5bbBE1667AD97c7fE7C4531a624C8b1ED" }
 ];
 
 const polisTokens = [
