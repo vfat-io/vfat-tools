@@ -17,6 +17,13 @@ $(function () {
         stakeTokenFunction : "share",
         rewardTokenAddresses : "wlrs"
       }
+
+      const StakingPool1 = {
+        address : "0xc06715dc67969c81069b0f91d95a611feb3d526e",
+        abi : WLRS_STAKING_ABI,
+        stakeTokenFunction : "share",
+        rewardTokenAddresses : "wlrs"
+      }
       
       const WSHARE_CHEF_ADDR = "0x752FEacFdA5c3B440Fd6D40ECf338a86b568c2d2";
       const rewardTokenTicker = "WSHARE";
@@ -31,13 +38,20 @@ $(function () {
       await loadAvaxWSHAREContract(App, tokens, prices, WSHARE_CHEF, WSHARE_CHEF_ADDR, WSHARE_CHEF_ABI, rewardTokenTicker,		
           "wShare", null, rewardsPerWeek, "pendingShare");
       _print(`\nStaked WSHAREs can only be withdrawn after 2 epochs since deposit.\n`);
+      _print(`WLRS Earnings.\n`)
       const p0 = await loadAvaxWLRSSynthetixPool(App, tokens, prices, StakingPool.abi, 
                                                                       StakingPool.address, 
                                                                       StakingPool.rewardTokenAddresses, 
                                                                       StakingPool.stakeTokenFunction);
-      _print_bold(`Total staked: $${formatMoney(p0.staked_tvl)}`);
-      if (p0.totalUserStaked > 0) {
-        _print(`You are staking a total of $${formatMoney(p0.totalUserStaked)}\n`);
+      _print(`\nEarned NRWL can only be withdrawn after 2 epochs since deposit.\n`);
+      _print(`NRWL Earnings.\n`)
+      const p1 = await loadAvaxWLRSSynthetixPool(App, tokens, prices, StakingPool1.abi, 
+                                                                      StakingPool1.address, 
+                                                                      StakingPool1.rewardTokenAddresses, 
+                                                                      StakingPool1.stakeTokenFunction);
+      _print_bold(`Total staked: $${formatMoney(p0.staked_tvl + p1.staked_tvl)}`);
+      if (p0.totalUserStaked > 0 || p1.totalUserStaked) {
+        _print(`You are staking a total of $${formatMoney(p0.totalUserStaked + p1.totalUserStaked)}\n`);
       }
       
       hideLoading();		
@@ -181,7 +195,7 @@ async function loadAvaxWSHAREContract(App, tokens, prices, chef, chefAddress, ch
   deathPoolIndices, claimFunction) {
   const chefContract = chef ?? new ethers.Contract(chefAddress, chefAbi, App.provider);
 
-  const poolCount = 4;
+  const poolCount = 5;
   const totalAllocPoints = await chefContract.totalAllocPoint();
 
   _print(`<a href='https://snowtrace.io/address/${chefAddress}' target='_blank'>Staking Contract</a>`);

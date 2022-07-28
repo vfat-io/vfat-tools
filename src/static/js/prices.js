@@ -113,7 +113,8 @@ const avaxTokens = [
   { "id": "beefy-finance", "symbol": "BIFI", "contract": "0xd6070ae98b8069de6b494332d1a1a81b6179d960"},
   { "id": "stargate-finance", "symbol": "STG", "contract": "0x2F6F07CDcf3588944Bf4C42aC74ff24bF56e7590"},
   { "id": "platypus-finance", "symbol": "PTP", "contract": "0x22d4002028f537599be9f666d1c4fa138522f9c8"},
-  { "id": "vector-finance", "symbol": "VTX", "contract": "0x5817d4f0b62a59b17f75207da1848c2ce75e7af4"}
+  { "id": "vector-finance", "symbol": "VTX", "contract": "0x5817d4f0b62a59b17f75207da1848c2ce75e7af4"},
+  { "id": "yusd-stablecoin", "symbol": "YUSD", "contract": "0x111111111111ed1d73f860f57b2798b683f2d325"}
 ]
 
 const BobaTokens = [
