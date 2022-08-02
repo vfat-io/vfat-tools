@@ -15,7 +15,7 @@ const networkNameFromId = function (id) {
 
 const pageNetwork = function() {
   let network = window.location.pathname.split("/")[1]
-  if (network.toLowerCase() === 'bsc') {
+  if (network.toLowerCase() === 'bnb') {
     return window.NETWORKS.BINANCE_SMART_CHAIN
   }
   if (network.toLowerCase() === 'arbitrum') {
@@ -4033,7 +4033,7 @@ async function printSynthetixPool(App, info, chain="eth", customURLs) {
         _print(`<a target="_blank" href="https://cchain.explorer.avax.network/address/${info.stakingAddress}#code">Explorer</a>`);
         break;
       case "bsc":
-        _print(`<a target="_blank" href="https://bscscan.com/address/${info.stakingAddress}#code">BSC Scan</a>`);
+        _print(`<a target="_blank" href="https://bscscan.com/address/${info.stakingAddress}#code">BNB Scan</a>`);
         break;
       case "heco":
         _print(`<a target="_blank" href="https://hecoinfo.com/address/${info.stakingAddress}#code">Heco Scan</a>`);

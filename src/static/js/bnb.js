@@ -5,7 +5,7 @@ $(function() {
 const main = async() => {
 
   let tableData = {
-    "title":"BSC Network",
+    "title":"BNB Network",
     "heading":["Pool Provider","MCN","LP", "Reward Tokens", "INFO"],
     "rows": [
       ["Whale Loans         ",`<a href="https://twitter.com/MCNVentures/status/1482936116374564866?cxt=HHwWhMDTkc-iuZQpAAAA" target="_blank" class="mcn-reviewed">REVIEW</a>`, `<a href="whaleloans"         >Various</a>`,"HUMP             ","https://www.whale.loans"],
@@ -556,7 +556,7 @@ const main = async() => {
       ["Topshelf            ","", `<a href="topshelf"      >Various</a>`,"LIQR             ","https://topshelf.finance"],
       ["Niob Finance        ","", `<a href="niob"          >Various</a>`,"NIOB             ","https://niob.finance"],
       ["Bag Finance         ","", `<a href="bag"           >Various</a>`,"BGLD             ","https://app.thisistheway.finance"],
-      ["Dibs *              ","", `<a href="dibs"          >Various</a>`,"DSHARE/DIBS      ","https://www.dibs.money"],
+      ["Dibs                ","", `<a href="dibs"          >Various</a>`,"DSHARE/DIBS      ","https://www.dibs.money"],
       ["UFX                 ","", `<a href="ufx"           >Various</a>`,"UFX              ","https://app.unitedfarmers.finance/farms"],
       ["Tokyo Swap          ","", `<a href="tokyoswap"     >Various</a>`,"TOKYO            ","https://www.tokyoswap.finance"],
       ["Latte Swap          ","", `<a href="latteswap"     >Various</a>`,"LATTE            ","https://app.latteswap.com"],
@@ -582,7 +582,7 @@ const main = async() => {
       ["LowCost Swap        ","",`<a href="lowcostswap"    >Various</a>`,"LOWCOST          ","https://lowcostswap.com"],
       ["Rubik               ","",`<a href="rubik"          >Various</a>`,"RUBIK            ","https://rubik.farm"],
       ["Sphere Swap         ","",`<a href="sphereswap"     >Various</a>`,"SPHERE           ","https://sphereswap.com"],
-      ["Outerring *         ","",`<a href="outerring"      >Various</a>`,"Various          ","https://dapp.outerringmmo.com"],
+      ["Outerring           ","",`<a href="outerring"      >Various</a>`,"Various          ","https://dapp.outerringmmo.com"],
       ["Troy Defi           ","",`<a href="troydefi"       >Various</a>`,"TROY             ","https://troydefi.com"],
       ["Goldman             ","",`<a href="goldman"        >Various</a>`,"GOLD             ","https://goldman.farm"],
       ["DotDot              ","",`<a href="dotdot"         >Various</a>`,"DDD              ","https://dotdot.finance"],
