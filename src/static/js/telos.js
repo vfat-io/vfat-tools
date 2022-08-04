@@ -10,7 +10,7 @@ const main = async() => {
     "rows": [
       ["OmniDex             ","", `<a href="omnidex"       >Various</a>`,"CHARM            ","https://omnidex.finance"],
       ["Zappy               ","", `<a href="zappy"         >Various</a>`,"ZAP              ","https://zappy.finance"],
-      ["7GODS: Prelude      ",    `<a href="7gods"         >Various</a>`,"ARCANA           ","https://7gods.xyz/prelude"]
+      ["7GODS: Prelude      ","",  `<a href="7gods"         >Various</a>`,"ARCANA           ","https://7gods.xyz/prelude"]
 
     ]}
 
