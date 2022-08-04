@@ -34,7 +34,7 @@ async function main() {
 
         <b>JOIN OFFICIAL CHANNELS AND DON'T MISS THE LAUNCH DATE!  <b>
 
-        <a href='https://twitter.com/7godsxyz' target='_blank'>[Twitter]</a> - <a href='https://t.me/sevengodsxyz' target='_blank'>[Telegram]</a> - <a href='https://discord.com/invite/tRVdpYZWE2' target='_blank'>[Discord]</a> - <a href='https://medium.com/@7godsxyz/7gods-decentralized-open-world-mmorpg-launching-on-avalanche-5d7b4af2f824' target='_blank'>[Medium]</a>
+        <a href='https://twitter.com/7godsxyz' target='_blank'>[Twitter]</a> - <a href='https://t.me/sevengodsxyz' target='_blank'>[Telegram]</a> - <a href='https://discord.com/invite/tRVdpYZWE2' target='_blank'>[Discord]</a> - <a href='https://medium.com/@7godsxyz' target='_blank'>[Medium]</a>
 
         \n`
 
@@ -50,7 +50,7 @@ async function main() {
     const prices = await getTelosPrices();
 
     await loadGeneralChefContract(App, tokens, prices, ARCANA_CHEF, ARCANA_CHEF_ADDR, ARCANA_CHEF_ABI, rewardTokenTicker,
-        "arcana", null, rewardsPerWeek, "pendingArcana", [], "avax");
+        "arcana", null, rewardsPerWeek, "pendingArcana", [], "telos");
 
     hideLoading();
 }
