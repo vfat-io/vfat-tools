@@ -30,12 +30,14 @@ async function main() {
     if (currentBlock < startBlock) {
         _print(`
        \n
-        <b><i>*REWARDS HAVE NOT YET STARTED</i> </b>
+        *REWARDS HAVE NOT YET STARTED
 
-        <b>JOIN OFFICIAL CHANNELS AND DON'T MISS THE LAUNCH DATE!  <b>
+        JOIN OFFICIAL CHANNELS AND DON'T MISS THE LAUNCH DATE!
 
-        <a href='https://twitter.com/7godsxyz' target='_blank'>[Twitter]</a> - <a href='https://t.me/sevengodsxyz' target='_blank'>[Telegram]</a> - <a href='https://discord.com/invite/tRVdpYZWE2' target='_blank'>[Discord]</a> - <a href='https://medium.com/@7godsxyz' target='_blank'>[Medium]</a>
-
+        [Twitter]  https://twitter.com/7godsxyz 
+        [Telegram] https://t.me/sevengodsxyz 
+        [Discord]  https://discord.com/invite/tRVdpYZWE2 
+        [Medium]   https://medium.com/@7godsxyz
         \n`
 
         );

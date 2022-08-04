@@ -172,14 +172,14 @@ const main = async () => {
       ["Looksrare                    ", `<a href="../looksrare/"         >Various</a>`, "LOOKS              ", "https://looksrare.org"],
       ["Vader                        ", `<a href="../vader/"             >Various</a>`, "VADER              ", "https://www.vaderprotocol.app"],
       ["WOWswap                      ", `<a href="../wowswap/"           >Various</a>`,"WOW                 ", "https://wowswap.io"],
-      ["Aladdin (Concentrator) *     ", `<a href="../concentrator/"      >Various</a>`,"aCRV                ", "https://concentrator.aladdin.club/#/vault"],
+      ["Aladdin (Concentrator)       ", `<a href="../concentrator/"      >Various</a>`,"aCRV                ", "https://concentrator.aladdin.club/#/vault"],
       ["Stargate                     ", `<a href="../stargate/"          >Various</a>`,"STG                 ", "https://stargate.finance"],
       ["Backd                        ", `<a href="../backd/"             >Various</a>`,"                    ", "https://backd.fund"],
       ["Jpegd                        ", `<a href="../jpegd/"             >Various</a>`,"JPEG                ", "https://jpegd.io"],
       ["Bancor                       ", `<a href="../bancor/"            >Various</a>`,"BNT                 ", "https://app.bancor.network"],
       ["UnoRe                        ", `<a href="../unore/"             >Various</a>`, "UnoRe              ", "https://appv2.unore.io"],
       ["Convex (Frax)                ", `<a href="../convex_frax/"       >Various</a>`, "Various            ", "https://frax.convexfinance.com"],
-      ["Aura *                       ", `<a href="../aura/"              >Various</a>`, "AURA               ", "https://app.aura.finance"],
+      ["Aura                         ", `<a href="../aura/"              >Various</a>`, "AURA               ", "https://app.aura.finance"],
       ["Serenity Capital             ", `<a href="../serenity/"          >Various</a>`, "PBL                ", "https://ethchain.serenitycapital.io"]
     ]
   }
