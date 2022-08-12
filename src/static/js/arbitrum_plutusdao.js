@@ -28,6 +28,8 @@ async function main() {
     //prices["0xe7f6c3c1f0018e4c08acc52965e5cbff99e34a44"] = prices["0x10393c20975cF177a3513071bC110f7962CD67da"] //JONES may be differents between plsJONES and JONES
     prices["0xf236ea74b515ef96a9898f5a4ed4aa591f253ce1"] = prices["0x6C2C06790b3E3E3c38e12Ee22F8183b37a13EE55"] //DPX
 
+    
+
     await loadArbitrumChefContract(App, tokens, prices, PLS_CHEF, PLS_CHEF_ADDR, PLS_CHEF_ABI, rewardTokenTicker,
         "PLS", null, rewardsPerWeek, "pendingPls");
 
@@ -83,13 +85,21 @@ async function loadPlutusChefContract(App, tokens, prices, chef, chefAddress, ch
     await getPlutusPoolInfo(App, chefContract, chefAddress, x, pendingRewardsFunction, rewardToken)));
 
   var tokenAddresses = [].concat.apply([], poolInfos.filter(x => x.poolToken).map(x => x.poolToken.tokens));
+  tokenAddresses.push("0x10393c20975cf177a3513071bc110f7962cd67da")
 
   await Promise.all(tokenAddresses.map(async (address) => {
     tokens[address] = await getArbitrumToken(App, address, chefAddress);
   }));
 
-  const poolPrices = poolInfos.map(poolInfo => poolInfo.poolToken ? getPoolPrices(tokens, prices, poolInfo.poolToken, "arbitrum") : undefined);
+  const jonesSlp = await getArbitrumToken(App, "0xe8ee01ae5959d3231506fcdef2d5f3e85987a39c", "0xb94d1959084081c5a11c460012ab522f5a0fd756");
+  const plsJONES = getParameterCaseInsensitive(tokens, "0xe7f6C3c1F0018E4C08aCC52965e5cbfF99e34A44");
+  const jonesSlpPrice = getPoolPrices(tokens, prices, jonesSlp, "arbitrum")
+  const calc = jonesSlp.staked * jonesSlpPrice.price;
+  const plsJonesTotalSupply = plsJONES.totalSupply / 1e18;
+  const plsJonesPrice = calc / plsJonesTotalSupply;
+  prices["0xe7f6c3c1f0018e4c08acc52965e5cbff99e34a44"] = { usd : plsJonesPrice };
 
+  const poolPrices = poolInfos.map(poolInfo => poolInfo.poolToken ? getPoolPrices(tokens, prices, poolInfo.poolToken, "arbitrum") : undefined);
 
   _print("Finished reading smart contracts.\n");
 
