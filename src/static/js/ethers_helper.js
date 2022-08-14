@@ -30,6 +30,9 @@ const pageNetwork = function() {
   if (network.toLowerCase() === 'kava') {
     return window.NETWORKS.KAVA
   }
+  if (network.toLowerCase() === 'doge') {
+    return window.NETWORKS.DOGE
+  }
   if (network.toLowerCase() === 'heco') {
     return window.NETWORKS.HECO
   }
@@ -3355,6 +3358,9 @@ function getErc20Prices(prices, pool, chain="eth") {
     case "kava":
       poolUrl=`https://explorer.kava.io/token/${pool.address}`;
       break;
+    case "doge":
+      poolUrl=`https://explorer.dogechain.dog/token/${pool.address}`;
+      break;
     case "matic":
       poolUrl=`https://explorer-mainnet.maticvigil.com/address/${pool.address}`;
       break;
@@ -4056,6 +4062,9 @@ async function printSynthetixPool(App, info, chain="eth", customURLs) {
       case "kava":
         _print(`<a target="_blank" href="https://explorer.kava.io/address/${info.stakingAddress}#code">Kava Explorer</a>`);
         break;
+      case "doge":
+        _print(`<a target="_blank" href="https://explorer.dogechain.dog/address/${info.stakingAddress}#code">Doge Explorer</a>`);
+        break;
       case "fantom":
         _print(`<a target="_blank" href="https://ftmscan.com/address/${info.stakingAddress}#code">FTM Scan</a>`);
         break;
@@ -4258,6 +4267,8 @@ function getChainExplorerUrl(chain, address){
       return `https://blockscout.com/astar/address/${address}`;
     case "kava" :
       return `https://explorer.kava.io/token/${address}`;
+    case "doge" :
+      return `https://explorer.dogechain.dog/token/${address}`;
     case "harmony" :
       return `https://explorer.harmony.one/address/${address}`;
     case "arbitrum" :

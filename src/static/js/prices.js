@@ -277,6 +277,11 @@ const DfkTokens = [
   { "id": "avalanche-2","symbol": "AVAX","contract": "0xB57B60DeBDB0b8172bb6316a9164bd3C695F133a" },
 ]
 
+const dogeTokens = [
+  //{ "id": "usd-coin","symbol": "USDC","contract": "0x765277EebeCA2e31912C9946eAe1021199B39C61" },
+  { "id": "dogecoin", "symbol": "DOGE", "contract": "0xB7ddC6414bf4F5515b52D8BdD69973Ae205ff101"}
+];
+
 const EmeraldTokens = [
   { "id": "tether", "symbol": "USDT", "contract": "0xdC19A122e268128B5eE20366299fc7b5b199C8e3"},
   { "id": "tether", "symbol": "USDT", "contract": "0x6Cb9750a92643382e020eA9a170AbB83Df05F30B"},
@@ -744,6 +749,15 @@ async function getDfkPrices() {
   const idPrices = await lookUpPrices(DfkTokens.map(x => x.id));
   const prices = {}
   for (const bt of DfkTokens)
+      if (idPrices[bt.id])
+          prices[bt.contract] = idPrices[bt.id];
+  return prices;
+}
+
+async function getDogePrices() {
+  const idPrices = await lookUpPrices(dogeTokens.map(x => x.id));
+  const prices = {}
+  for (const bt of dogeTokens)
       if (idPrices[bt.id])
           prices[bt.contract] = idPrices[bt.id];
   return prices;
