@@ -8,7 +8,7 @@ const main = async() => {
     "title":"Doge Network",
     "heading":["Pool Provider","LP", "Reward Tokens", "INFO"],
     "rows": [
-        //["test",                `<a href="trisolaris"       >Various</a>`,      "TRI",          "https://www.trisolaris.io" ],
+        ["DogeShrek",                `<a href="dogeshrek"       >Various</a>`,      "TRI",          "https://dogeshrek.com" ],
     ]
   }
 
