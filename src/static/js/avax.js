@@ -107,7 +107,7 @@ const main = async() => {
         ["Radium Finance          ",`<a href="radium"           >Various</a>`,"RD           ","https://radium.periodic.farm"],
         ["Monox Finance           ",`<a href="monox"            >Various</a>`,"vUNIT        ","https://monox.finance"],
         ["Printer Financial       ",`<a href="printer"          >Various</a>`,"INK          ","https://avax.printer.financial"],
-        ["Frozenwalrus Finance    ",`<a href="frozenwalrus"     >Various</a>`,"WLRS / WSHARE","https://frozenwalrus.finance"],
+        ["Frozenwalrus Finance *  ",`<a href="frozenwalrus"     >Various</a>`,"WLRS / WSHARE","https://frozenwalrus.finance"],
         ["Grape Finance           ",`<a href="grape"            >Various</a>`,"WINE / GRAPE ","https://grapefinance.app"]
     ]
   }
