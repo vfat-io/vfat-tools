@@ -8,7 +8,7 @@ const main = async() => {
     "title":"Doge Network",
     "heading":["Pool Provider","LP", "Reward Tokens", "INFO"],
     "rows": [
-        ["DogeShrek",                `<a href="dogeshrek"       >Various</a>`,      "TRI",          "https://dogeshrek.com" ],
+        ["DogeCorn",          `<a href="dogecorn"       >Various</a>`,      "DOGECORN",          "https://dogecorntestapp.netlify.app"]
     ]
   }
 
