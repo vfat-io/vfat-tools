@@ -2291,6 +2291,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
   else if (pool.symbol.includes("Farmtom-LP")) stakeTokenTicker += " Farmtom LP";
   else if (pool.symbol.includes("Cake")) stakeTokenTicker += " Cake LP";
   else if (pool.name.includes("Value LP")) stakeTokenTicker += " Value LP";
+  else if (pool.symbol.includes("dogeshrek-lp")) stakeTokenTicker += " DogeShrek LP";
   else if (pool.name.includes("Diffusion LP Token")) stakeTokenTicker += " Diffusion LP";
   else if (pool.name.includes("Duneswap LP Token")) stakeTokenTicker += " Duneswap LP";
   else if (pool.name.includes("Lizard LPs")) stakeTokenTicker += " LLP";
@@ -2433,6 +2434,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
               pool.symbol.includes("SCLP") ?  `https://analytics.swapperchan.com/pairs/${pool.address}` :
               pool.symbol.includes("DXS") ?  `https://dxstats.eth.link/#/pair/${pool.address}` :
               pool.name.includes("Ubeswap") ?  `https://info.ubeswap.org/pair/${pool.address}` :
+              pool.symbol.includes("dogeshrek-lp") ?  `https://dogeshrek.com` :
               pool.symbol.includes("Farmtom-LP") ?  `https://farmtom.com/swap` :
               pool.symbol.includes("TOMB-V2-LP") ?  `https://swap.tomb.com/#/swap` :
               pool.name.includes("OperaSwap") ?  `https://www.operaswap.finance/` :
@@ -2510,6 +2512,11 @@ function getUniPrices(tokens, prices, pool, chain="eth")
             `https://app.diffusion.fi/#/add/v2/${t0address}/${t1address}`,
             `https://app.diffusion.fi/#/remove/v2/${t0address}/${t1address}`,
             `https://app.diffusion.fi/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+          ] :
+          pool.symbol.includes("dogeshrek-lp") ? [
+            `https://dogeshrek.com/#/add/${t0address}/${t1address}`,
+            `https://dogeshrek.com/#/remove/${t0address}/${t1address}`,
+            `https://dogeshrek.com/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
           ] :
           pool.symbol.includes("MSLP") ? [
             `https://www.milkyswap.exchange/add/${t0address}/${t1address}`,
