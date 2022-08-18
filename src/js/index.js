@@ -96,6 +96,21 @@ window.NETWORKS = {
       "https://explorer.kava.io"
     ]
   },
+  DOGE: {
+    "chainId": "0x7D0",
+    "chainName": "DogeChain",
+    "nativeCurrency": {
+      "name": "wDOGE",
+      "symbol": "wDOGE",
+      "decimals": 18
+    },
+    "rpcUrls": [
+      "https://rpc01-sg.dogechain.dog"
+    ],
+    "blockExplorerUrls": [
+      "https://explorer.dogechain.dog"
+    ]
+  },
   MILKOMEDA: {
     "chainId": "0x7D1",
     "chainName": "Milkomeda C1 Mainnet",
