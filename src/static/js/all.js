@@ -181,7 +181,8 @@ const main = async () => {
       ["Convex (Frax)                ", `<a href="../convex_frax/"       >Various</a>`, "Various            ", "https://frax.convexfinance.com"],
       ["Aura                         ", `<a href="../aura/"              >Various</a>`, "AURA               ", "https://app.aura.finance"],
       ["Serenity Capital             ", `<a href="../serenity/"          >Various</a>`, "PBL                ", "https://ethchain.serenitycapital.io"],
-      ["Mero                         ", `<a href="../mero/"              >Various</a>`, "                   ", "https://mero.finance"]
+      ["Mero                         ", `<a href="../mero/"              >Various</a>`, "                   ", "https://mero.finance"],
+      ["Xconsoles                    ", `<a href="../xconsoles/"         >Various</a>`, "GAME               ", "https://app.xconsoles.tv"]
     ]
   }
 
