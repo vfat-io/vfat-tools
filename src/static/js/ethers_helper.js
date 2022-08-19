@@ -2272,6 +2272,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
   let stakeTokenTicker = `[${t0.symbol}]-[${t1.symbol}]`;
   if (pool.is1inch) stakeTokenTicker += " 1INCH LP";
   else if (pool.symbol.includes("TETHYSLP")) stakeTokenTicker += " TETHYS LP";
+  else if (pool.symbol.includes("DST-V2")) stakeTokenTicker += " DogeSwap LP";
   else if (pool.symbol.includes("LSLP")) stakeTokenTicker += " LSLP";
   else if (pool.symbol.includes("vAMM")) stakeTokenTicker += " vAMM";
   else if (pool.symbol.includes("sAMM")) stakeTokenTicker += " sAMM";
@@ -2381,6 +2382,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
           const poolUrl = pool.is1inch ? "https://1inch.exchange/#/dao/pools" :
           pool.symbol.includes("TETHYSLP") ?  `https://info.tethys.finance/pair/${pool.address}` :
           pool.symbol.includes("STELLA LP") ?  `https://analytics.stellaswap.com/pairs/${pool.address}` :
+          pool.symbol.includes("DST-V2") ?  `https://dexscreener.com/dogechain/${pool.address}` :
           pool.symbol.includes("PUD-LP") ?  `https://info.puddingswap.finance/pair/${pool.address}` :
           pool.symbol.includes("LSLP") ? `https://info.linkswap.app/pair/${pool.address}` :
           pool.symbol.includes("Milky-LP") ? `https://milkyway.exchange/` :
@@ -2626,6 +2628,11 @@ function getUniPrices(tokens, prices, pool, chain="eth")
             `https://nomiswap.io/liquidity/add/${t0address}/${t1address}`,
             `https://nomiswap.io/liquidity/remove/${t0address}/${t1address}`,
             `https://nomiswap.io/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+          ] :
+          pool.symbol.includes("DST-V2") ? [
+            `https://dexscreener.com/dogechain/`,
+            `https://dexscreener.com/dogechain/`,
+            `https://dexscreener.com/dogechain/`
           ] :
           pool.symbol.includes("TLP") && !pool.name.includes("Thorus LP") ? [
             `https://www.trisolaris.io/#/add/${t0address}/${t1address}`,
