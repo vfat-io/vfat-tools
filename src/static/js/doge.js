@@ -10,7 +10,8 @@ const main = async() => {
     "rows": [
         ["DogeCorn",          `<a href="dogecorn"       >Various</a>`,      "DOGECORN",          "https://dogecorntestapp.netlify.app"],
         ["DragonFruit",       `<a href="dragonfruit"    >Various</a>`,      "DFRUIT",            "https://dragonfruit.cash"],
-        ["FruitsOfRyoshi",    `<a href="fruitsofryoshi" >Various</a>`,      "NONI",              "https://fruitsofryoshi.com"]
+        ["FruitsOfRyoshi",    `<a href="fruitsofryoshi" >Various</a>`,      "NONI",              "https://fruitsofryoshi.com"],
+        ["YodeSwap",          `<a href="yodeswap"       >Various</a>`,      "YODE",              "https://yodeswap.dog"]
     ]
   }
 
