@@ -30,7 +30,7 @@ async function getNoniPoolInfo(app, chefContract, chefAddress, poolIndex, pendin
   const poolToken = await getGeneralToken(app,poolInfo.stakingToken, chefAddress);
   const userInfo = await chefContract.balanceOf(poolIndex, app.YOUR_ADDRESS);
   const pendingRewardTokens = await chefContract.callStatic[pendingRewardsFunction](poolIndex, app.YOUR_ADDRESS);
-  const staked = userInfo.amount / 10 ** poolToken.decimals;
+  const staked = userInfo / 10 ** poolToken.decimals;
   return {
       address: poolInfo.stakingToken,
       poolToken: poolToken,
