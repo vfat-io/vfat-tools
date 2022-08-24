@@ -14,6 +14,15 @@ $(function() {
     async function main() {
       const App = await init_ethers();
     
+      _print(`8% fee if a user deposits and withdraws in between same block and 59 minutes.`);
+      _print(`4% fee if a user deposits and withdraws after 1 hour but before 1 day.`);
+      _print(`2% fee if a user deposits and withdraws between after 1 day but before 3 days.`);
+      _print(`1% fee if a user deposits and withdraws after 3 days but before 5 days.`);
+      _print(`0.5% fee if a user deposits and withdraws if the user withdraws after 5 days but before 2 weeks.`);
+      _print(`0.25% fee if a user deposits and withdraws after 2 weeks.`);
+      _print(`0.1% fee if a user deposits and withdraws after 4 weeks.\n`);
+
+
       _print(`Initialized ${App.YOUR_ADDRESS}\n`);
       _print("Reading smart contracts...\n");
     
@@ -22,7 +31,7 @@ $(function() {
       const blockNumber = await App.provider.getBlockNumber();
       const multiplier = await CLEVERPROTOCOL_CHEF.getMultiplier(blockNumber, blockNumber+1);
       const rewardPerBlock = await CLEVERPROTOCOL_CHEF.REWARD_PER_BLOCK();
-      const rewardsPerWeek = rewardPerBlock / 1e18 * multiplier * 604800 / 6
+      const rewardsPerWeek = rewardPerBlock / 1e18 * multiplier * 604800 / 2
     
       const tokens = {};
       const basePrices = await getDogePrices();
@@ -80,18 +89,18 @@ $(function() {
       var tokens = {};
     
       const rewardTokenAddress = await chefContract.callStatic[rewardTokenFunction]();
-      const rewardToken = await getdogeToken(App, rewardTokenAddress, chefAddress);
+      const rewardToken = await getGeneralToken(App, rewardTokenAddress, chefAddress);
       const rewardsPerWeek = rewardsPerWeekFixed ??
         await chefContract.callStatic[rewardsPerBlockFunction]()
         / 10 ** rewardToken.decimals * 604800 / 6
   
       const poolInfos = await Promise.all([...Array(poolCount).keys()].map(async (x) =>
-        await getdogePoolInfo(App, chefContract, chefAddress, x, pendingRewardsFunction)));
+        await getGeneralPoolInfo(App, chefContract, chefAddress, x, pendingRewardsFunction)));
     
       var tokenAddresses = [].concat.apply([], poolInfos.filter(x => x.poolToken).map(x => x.poolToken.tokens));
     
       await Promise.all(tokenAddresses.map(async (address) => {
-          tokens[address] = await getdogeToken(App, address, chefAddress);
+          tokens[address] = await getGeneralToken(App, address, chefAddress);
       }));
     
       if (deathPoolIndices) {   //load prices for the deathpool assets
@@ -109,7 +118,7 @@ $(function() {
         if (poolPrices[i]) {
           const apr = printCleverProtocolChefPool(App, chefAbi, chefAddress, prices, tokens, poolInfos[i], i, poolPrices[i],
             totalAllocPoints, rewardsPerWeek, rewardTokenTicker, rewardTokenAddress,
-            pendingRewardsFunction, null, null, "doge")
+            pendingRewardsFunction, poolInfos[i].depositFee, poolInfos[i].withdrawFee, "doge")
           aprs.push(apr);
         }
       }
