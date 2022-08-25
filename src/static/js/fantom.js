@@ -208,7 +208,8 @@ const main = async () => {
       ['The Story of Draco ', `<a href='draco-story'  >Various</a>`, 'DRACO         ', 'https://dracodefi.com'],
       ['Dei Finance        ', `<a href='dei'          >Various</a>`, 'DEUS          ', 'https://app.dei.finance'],
       ['Strategyx Finance  ', `<a href='strategyx'    >Various</a>`, 'STAY          ', 'https://strategyx.finance'],
-      ['Serenity Capital   ', `<a href='serenity'     >Various</a>`, 'PBL / SERENE  ', 'https://app.serenitycapital.io']
+      ['Serenity Capital   ', `<a href='serenity'     >Various</a>`, 'PBL / SERENE  ', 'https://app.serenitycapital.io'],
+      ['Based Finance (Next-Gen)', `<a href='basedfinance'>Various</a>`, 'OBOL / SMELT', 'https://next-gen.basedfinance.io']
     ],
   }
 
