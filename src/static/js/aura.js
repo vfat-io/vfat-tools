@@ -254,10 +254,10 @@ async function loadAuraChefContract(App, chef, chefAddress, chefAbi, rewardToken
   const poolCount = parseInt(await chefContract.poolLength(), 10);
   const totalAllocPoints = await chefContract.totalAllocPoint();
 
-  _print(`<a href='https://etherscan.io/address/${chefAddress}' target='_blank'>Staking Contract</a>`);
+  /*_print(`<a href='https://etherscan.io/address/${chefAddress}' target='_blank'>Staking Contract</a>`);
   _print(`Found ${poolCount} pools.\n`)
 
-  _print(`Showing incentivized pools only.\n`);
+  _print(`Showing incentivized pools only.\n`);*/
 
   var tokens = {};
 
@@ -301,7 +301,7 @@ async function loadAuraChefContract(App, chef, chefAddress, chefAbi, rewardToken
 
   const poolPrices = poolInfos.map(poolInfo => poolInfo?.poolToken ? getPoolPrices(tokens, prices, poolInfo.poolToken) : undefined);
 
-  _print("Finished reading smart contracts.\n");
+  /*_print("Finished reading smart contracts.\n");
 
   let aprs = []
   for (let i = 0; i < poolCount; i++) {
@@ -331,7 +331,8 @@ async function loadAuraChefContract(App, chef, chefAddress, chefAbi, rewardToken
         + ` Week $${formatMoney(totalUserStaked*averageApr/52)}`
         + ` Year $${formatMoney(totalUserStaked*averageApr)}\n`);
   }
-  return { prices, totalUserStaked, totalStaked, averageApr }
+  return { prices, totalUserStaked, totalStaked, averageApr }*/
+  return { prices }
 }
 
 async function getAuraPoolInfo(app, chefContract, chefAddress, poolIndex, pendingRewardsFunction, showAll=false) {
