@@ -12,8 +12,7 @@ const main = async() => {
         ["DragonFruit",       `<a href="dragonfruit"    >Various</a>`,      "DFRUIT",            "https://dragonfruit.cash"],
         ["FruitsOfRyoshi",    `<a href="fruitsofryoshi" >Various</a>`,      "NONI",              "https://fruitsofryoshi.com"],
         ["YodeSwap",          `<a href="yodeswap"       >Various</a>`,      "YODE",              "https://yodeswap.dog"],
-        ["DogePup",           `<a href="dogepup"        >Various</a>`,      "DOGEPUP",           "https://dogepup.dog"],
-        ["CleverProtocol",    `<a href="cleverprotocol" >Various</a>`,      "CLEVER",            "https://clever.smartdoge.cash"]
+        ["DogePup",           `<a href="dogepup"        >Various</a>`,      "DOGEPUP",           "https://dogepup.dog"]
     ]
   }
 
