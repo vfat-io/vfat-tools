@@ -2527,6 +2527,11 @@ function getUniPrices(tokens, prices, pool, chain="eth")
             `https://www.milkyswap.exchange/remove/${t0address}/${t1address}`,
             `https://www.milkyswap.exchange/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
           ] :
+          pool.symbol.includes("JLP") ? [
+            `https://traderjoexyz.com/pool/${t0address}/${t1address}`,
+            `https://traderjoexyz.com/pool/${t0address}/${t1address}`,
+            `https://traderjoexyz.com/trade?inputCurrency=${t0address}&outputCurrency=${t1address}`
+          ] :
           pool.symbol.includes("YLP") ? [
             `https://yodeswap.dog/exchange/add/${t0address}/${t1address}`,
             `https://yodeswap.dog/exchange/remove/${t0address}/${t1address}`,
