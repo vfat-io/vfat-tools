@@ -10,6 +10,8 @@ const MAIA_GAUGE_ABI = [{"inputs":[{"internalType":"address","name":"_stake","ty
 async function main() {
   const App = await init_ethers();
 
+  let clicked = false;
+
   _print(`Initialized ${App.YOUR_ADDRESS}\n`);
   _print("Reading smart contracts...\n");
   _print("This may take few minutes...\n");
@@ -38,7 +40,7 @@ async function main() {
   //metis/hermes to receive the price
   await loadMaiaSynthetixPoolInfoPrice(App, tokens, prices, App.YOUR_ADDRESS, "0x191Aa0E43d6DDac6797EcB1cB6c63cC55474Eb59")
 
-  let p = await loadMaiaSynthetixPools(App, tokens, prices, gauges)
+  let p = await loadMaiaSynthetixPools(App, tokens, prices, gauges, clicked)
   _print_bold(`Total staked: $${formatMoney(p.staked_tvl)}\n`);
   if (p.totalUserStaked > 0) {
     _print(`You are staking a total of $${formatMoney(p.totalUserStaked)} at an APR of ${(p.totalApr * 100).toFixed(2)}%\n`);
@@ -53,7 +55,16 @@ async function main() {
     const rewardTokenAddresses = p.gaugeAddresses.map((g) => [HERMES_TOKEN_ADDR]);
     return maiaContract_claimAll(p.gaugeAddresses, rewardTokenAddresses, MAIA_VOTER_ADDR, App)
   }
-  _print_link(`Claim All ${p.earnings.toFixed(6)} HERMES ($${formatMoney(p.earningsUSD)})`, claimAll)
+  const reload = async function(){
+    _print("Reading smart contracts...\n");
+    _print("This may take few minutes...\n");
+    const App = await init_ethers();
+    return reloadFun(App, p.tokens, p.prices, p.pools, p.clicked);
+  }
+  _print_link(`Claim All ${p.earnings.toFixed(6)} HERMES ($${formatMoney(p.earningsUSD)})\n`, claimAll)
+  _print("");
+  _print_link(`\nClick here to see just your staked pools`, reload);
+  _print("");
 
   hideLoading();
 }
@@ -77,14 +88,40 @@ const maiaContract_claimAll = async function(gaugeAddresses, rewardTokenAddresse
   hideLoading();
 }
 
-async function loadMaiaSynthetixPools(App, tokens, prices, pools) {
+const reloadFun = async function (App, tokens, prices, pools, clicked){
+  if(clicked == false){
+    clicked = true;
+    let p = await loadMaiaSynthetixPools(App, tokens, prices, pools, clicked)
+    if (p.totalUserStaked > 0) {
+      _print(`You are staking a total of $${formatMoney(p.totalUserStaked)} at an APR of ${(p.totalApr * 100).toFixed(2)}%\n`);
+      _print(`Estimated HERMES earnings:`
+              + ` Day ${p.totalUserDailyRewards.toFixed(2)} ($${formatMoney(p.totalUserDailyRewardsUSD)})`
+              + ` Week ${p.totalUserWeeklyRewards.toFixed(2)} ($${formatMoney(p.totalUserWeeklyRewardsUSD)})`
+              + ` Year ${p.totalUserYearlyRewards.toFixed(2)} ($${formatMoney(p.totalUserYearlyRewardsUSD)})`);
+      _print("");
+    }
+  }else{
+    clicked = false;
+    let p = await loadMaiaSynthetixPools(App, tokens, prices, pools, clicked)
+    if (p.totalUserStaked > 0) {
+      _print(`You are staking a total of $${formatMoney(p.totalUserStaked)} at an APR of ${(p.totalApr * 100).toFixed(2)}%\n`);
+      _print(`Estimated HERMES earnings:`
+              + ` Day ${p.totalUserDailyRewards.toFixed(2)} ($${formatMoney(p.totalUserDailyRewardsUSD)})`
+              + ` Week ${p.totalUserWeeklyRewards.toFixed(2)} ($${formatMoney(p.totalUserWeeklyRewardsUSD)})`
+              + ` Year ${p.totalUserYearlyRewards.toFixed(2)} ($${formatMoney(p.totalUserYearlyRewardsUSD)})`);
+      _print("");
+    }
+  }
+}
+
+async function loadMaiaSynthetixPools(App, tokens, prices, pools, clicked) {
   let totalStaked  = 0, totalUserStaked = 0, individualAPRs = [];
   let totalUserDailyRewards = 0, totalUserWeeklyRewards = 0, totalUserYearlyRewards = 0, totalUserDailyRewardsUSD = 0, totalUserWeeklyRewardsUSD = 0, totalUserYearlyRewardsUSD = 0
   let gaugeAddresses = [], earnings = 0, earningsUSD = 0;
   const infos = await Promise.all(pools.map(p =>
       loadMaiaSynthetixPoolInfo(App, tokens, prices, p.abi, p.address, p.stakeTokenFunction)));
   for (const i of infos) {
-    let p = await printMaiaSynthetixPool(App, i, "metis");
+    let p = await printMaiaSynthetixPool(App, i, "metis", clicked);
     totalStaked += p.staked_tvl || 0;
     totalUserStaked += p.userStaked || 0;
     if (p.userStaked > 0) {
@@ -103,7 +140,7 @@ async function loadMaiaSynthetixPools(App, tokens, prices, pools) {
   let totalApr = totalUserStaked == 0 ? 0 : individualAPRs.reduce((x,y)=>x+y, 0) / totalUserStaked;
   return { staked_tvl : totalStaked, totalUserStaked, totalApr, totalUserDailyRewards,  totalUserWeeklyRewards,
            totalUserYearlyRewards, totalUserDailyRewardsUSD, totalUserWeeklyRewardsUSD, totalUserYearlyRewardsUSD,
-           gaugeAddresses, earnings, earningsUSD};
+           gaugeAddresses, earnings, earningsUSD, tokens, prices, pools, clicked};
 }
 
 async function loadMaiaSynthetixPoolInfo(App, tokens, prices, stakingAbi, stakingAddress,
@@ -161,12 +198,6 @@ async function loadMaiaSynthetixPoolInfo(App, tokens, prices, stakingAbi, stakin
 
     const poolPrices = getPoolPrices(tokens, prices, stakeToken, "metis");
 
-    if (!poolPrices)
-    {
-      console.log(`Couldn't calculate prices for pool ${stakeTokenAddress}`);
-      return null;
-    }
-
     const stakeTokenTicker = poolPrices.stakeTokenTicker;
 
     const stakeTokenPrice =
@@ -198,10 +229,24 @@ async function loadMaiaSynthetixPoolInfo(App, tokens, prices, stakingAbi, stakin
     }
 }
 
-async function printMaiaSynthetixPool(App, info, chain="eth", customURLs) {
-  /*if(info.weeklyRewards == 0){
-    return
-  }*/
+async function printMaiaSynthetixPool(App, info, chain="eth", clicked, customURLs) {
+  if(clicked == true && info.userStaked == 0){
+    return {
+      staked_tvl: 0,
+      userStaked : 0,
+      apr : 0,
+      userDailyRewards : 0,
+      userWeeklyRewards : 0,
+      userYearlyRewards : 0,
+      userDailyRewardsUSD : 0,
+      userWeeklyRewardsUSD : 0,
+      userYearlyRewardsUSD : 0,
+      stakingAddress : info.stakingAddress,
+      rewardTokenAddress : info.rewardTokenAddresses[0],
+      earned : info.earnings[0],
+      earningsUSD : 0
+    }
+  }
   info.poolPrices.print_price(chain, 4, customURLs);
   let totalYearlyAPR = 0, totalWeeklyAPR = 0, totalDailyAPR = 0, totalUSDPerWeek = 0
   for(let i = 0; i < info.rewardTokenTickers.length; i++){
