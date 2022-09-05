@@ -78,8 +78,8 @@ async function loadXBling(App, prices){
   const tvl = totalDepositedBlings * blingPrice
   const usersPercentage = totalOwnedXBling / totalXblingTokens * 100;
   const usersXBlingUsd = totalOwnedXBling * blingPrice;
-  _print(`\n${rewardTicker} Price: $${toFixed(xBlingPrice, 2)} Total Supply: ${toFixed(totalXblingTokens, 4)} TVL: $${formatMoney(tvl)}`);
-  _print(`${stakeTicker} Price: $${toFixed(blingPrice, 2)}`);
+  _print(`\n${rewardTicker} Price: $${toFixed(xBlingPrice, 7)} Total Supply: ${toFixed(totalXblingTokens, 4)} TVL: $${formatMoney(tvl)}`);
+  _print(`${stakeTicker} Price: $${toFixed(blingPrice, 7)}`);
   _print(`There is a total of ${toFixed(totalDepositedBlings, 2)} BLING staked in xBLING`);
   _print(`Your balance is ${totalOwnedXBling.toFixed(2)} ${rewardTicker} (${totalOwnedBling.toFixed(2)} ${stakeTicker}), $${formatMoney(usersXBlingUsd)}, ${usersPercentage.toFixed(2)}% of the pool`);
   const unstake = async function() {
