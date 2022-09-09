@@ -2276,6 +2276,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
   else if (pool.symbol.includes("DST-V2")) stakeTokenTicker += " DogeSwap LP";
   else if (pool.symbol.includes("LSLP")) stakeTokenTicker += " LSLP";
   else if (pool.symbol.includes("vAMM")) stakeTokenTicker += " vAMM";
+  else if (pool.symbol.includes("HELIX-LP")) stakeTokenTicker += " HELIX-LP";
   else if (pool.symbol.includes("sAMM")) stakeTokenTicker += " sAMM";
   else if (pool.symbol.includes("Wigo-LP")) stakeTokenTicker += " Wigo-LP";
   else if (pool.symbol.includes("PUD-LP")) stakeTokenTicker += " PUD-LP";
@@ -2386,6 +2387,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
           pool.symbol.includes("STELLA LP") ?  `https://analytics.stellaswap.com/pairs/${pool.address}` :
           pool.symbol.includes("DST-V2") ?  `https://dexscreener.com/dogechain/${pool.address}` :
           pool.symbol.includes("PUD-LP") ?  `https://info.puddingswap.finance/pair/${pool.address}` :
+          pool.symbol.includes("HELIX-LP") ?  `https://helix.finance/data/trading-pool/${pool.address}` :
           pool.symbol.includes("LSLP") ? `https://info.linkswap.app/pair/${pool.address}` :
           pool.symbol.includes("Milky-LP") ? `https://milkyway.exchange/` :
           pool.symbol.includes("YLP") ? `https://dexscreener.com/dogechain/yodeswap` :
@@ -2526,6 +2528,11 @@ function getUniPrices(tokens, prices, pool, chain="eth")
             `https://www.milkyswap.exchange/add/${t0address}/${t1address}`,
             `https://www.milkyswap.exchange/remove/${t0address}/${t1address}`,
             `https://www.milkyswap.exchange/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+          ] :
+          pool.symbol.includes("HELIX-LP") ? [
+            `https://helix.finance/add/${t0address}/${t1address}`,
+            `https://helix.finance/remove/${t0address}/${t1address}`,
+            `https://helix.finance/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
           ] :
           pool.symbol.includes("JLP") ? [
             `https://traderjoexyz.com/pool/${t0address}/${t1address}`,

@@ -182,7 +182,8 @@ const main = async () => {
       ["Aura                         ", `<a href="../aura/"              >Various</a>`, "AURA               ", "https://app.aura.finance"],
       ["Serenity Capital             ", `<a href="../serenity/"          >Various</a>`, "PBL                ", "https://ethchain.serenitycapital.io"],
       ["Mero                         ", `<a href="../mero/"              >Various</a>`, "                   ", "https://mero.finance"],
-      ["Xconsoles                    ", `<a href="../xconsoles/"         >Various</a>`, "GAME               ", "https://app.xconsoles.tv"]
+      ["Xconsoles                    ", `<a href="../xconsoles/"         >Various</a>`, "GAME               ", "https://app.xconsoles.tv"],
+      ["Helix Finance                ", `<a href="../helix/"             >Various</a>`, "HELIX              ", "https://helix.finance"]
     ]
   }
 
