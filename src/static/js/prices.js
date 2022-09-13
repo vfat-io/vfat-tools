@@ -283,7 +283,8 @@ const dogeTokens = [
   { "id": "weth","symbol": "WETH","contract": "0xB44a9B6905aF7c801311e8F4E76932ee959c663C"},
   { "id": "binance-usd","symbol": "BUSD","contract": "0x332730a4F6E03D9C55829435f10360E13cfA41Ff"},
   { "id": "binancecoin","symbol": "BNB","contract": "0xA649325Aa7C5093d12D6F98EB4378deAe68CE23F"},
-  { "id": "dogecoin", "symbol": "DOGE", "contract": "0xB7ddC6414bf4F5515b52D8BdD69973Ae205ff101"}
+  { "id": "dogecoin", "symbol": "DOGE", "contract": "0xB7ddC6414bf4F5515b52D8BdD69973Ae205ff101"},
+  { "id": "tether", "symbol": "USDT", "contract": "0xE3F5a90F9cb311505cd691a46596599aA1A0AD7D"}
 ];
 
 const EmeraldTokens = [

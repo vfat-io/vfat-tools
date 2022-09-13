@@ -642,9 +642,12 @@ $(function() {
         const multiplier = await INUCHEF.getMultiplier(currentBlock, currentBlock + 1);
         const blocksPerSeconds = await getAverageBlockTime(App);
         const rewardsPerWeek = await INUCHEF.inuPerBlock() / 1e18 * multiplier * 604800 / blocksPerSeconds;
-    
-        await loadFarmContract(App, INUCHEF, MASTERCHEF_ADDR, MASTERCHEF_ABI,
-            "INU", "inu", null, rewardsPerWeek, "pendingInu", [15]);
+
+        const tokens = {};
+        const prices = await getDogePrices();
+
+        await loadGeneralChefContract(App, tokens, prices, INUCHEF, MASTERCHEF_ADDR, MASTERCHEF_ABI, "INU",
+          "inu", null, rewardsPerWeek, "pendingInu", [], "doge");
     
         hideLoading();
       }
