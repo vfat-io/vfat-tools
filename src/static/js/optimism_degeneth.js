@@ -2,36 +2,36 @@ $(function() {
     consoleInit(main)
       });
     
-    const TRZ_CHEF_ABI = [{"inputs":[{"internalType":"address","name":"_router","type":"address"},{"internalType":"address","name":"_devAddress","type":"address"},{"internalType":"uint256","name":"_startBlock","type":"uint256"},{"internalType":"uint256","name":"_endBlock","type":"uint256"}],"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"_user","type":"address"},{"indexed":true,"internalType":"uint256","name":"_pid","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"_amount","type":"uint256"}],"name":"Deposit","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":true,"internalType":"uint256","name":"_pid","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"_amount","type":"uint256"}],"name":"EmergencyWithdraw","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"previousOwner","type":"address"},{"indexed":true,"internalType":"address","name":"newOwner","type":"address"}],"name":"OwnershipTransferred","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"_user","type":"address"},{"indexed":true,"internalType":"uint256","name":"_pid","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"_amount","type":"uint256"}],"name":"Withdraw","type":"event"},{"inputs":[],"name":"DAI","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"USDC","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"USDT","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"devAddress","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"endBlock","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"native","outputs":[{"internalType":"contract PolyTreasureToken","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"nativePerBlock","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"owner","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"","type":"uint256"}],"name":"poolInfo","outputs":[{"internalType":"contract IERC20","name":"lpToken","type":"address"},{"internalType":"uint256","name":"allocPoint","type":"uint256"},{"internalType":"uint256","name":"lastRewardBlock","type":"uint256"},{"internalType":"uint256","name":"accNativePerShare","type":"uint256"},{"internalType":"uint16","name":"depositFeeBP","type":"uint16"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"renounceOwnership","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"startBlock","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"totalAllocPoint","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"newOwner","type":"address"}],"name":"transferOwnership","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"treasury","outputs":[{"internalType":"contract Treasury","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"","type":"uint256"},{"internalType":"address","name":"","type":"address"}],"name":"userInfo","outputs":[{"internalType":"uint256","name":"amount","type":"uint256"},{"internalType":"uint256","name":"rewardDebt","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"poolLength","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"_from","type":"uint256"},{"internalType":"uint256","name":"_to","type":"uint256"}],"name":"getMultiplier","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"pure","type":"function"},{"inputs":[{"internalType":"uint256","name":"_pid","type":"uint256"},{"internalType":"address","name":"_user","type":"address"}],"name":"pendingNative","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"massUpdatePools","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_pid","type":"uint256"}],"name":"updatePool","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_pid","type":"uint256"},{"internalType":"uint256","name":"_amount","type":"uint256"}],"name":"deposit","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_pid","type":"uint256"},{"internalType":"uint256","name":"_amount","type":"uint256"}],"name":"withdraw","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_pid","type":"uint256"}],"name":"emergencyWithdraw","outputs":[],"stateMutability":"nonpayable","type":"function"}]
-    const TREASURY_ABI = [{"inputs":[{"internalType":"address","name":"_native","type":"address"}],"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"previousOwner","type":"address"},{"indexed":true,"internalType":"address","name":"newOwner","type":"address"}],"name":"OwnershipTransferred","type":"event"},{"inputs":[],"name":"WBTC","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"WETH","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"native","outputs":[{"internalType":"contract PolyTreasureToken","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"owner","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"renounceOwnership","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"newOwner","type":"address"}],"name":"transferOwnership","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_amount","type":"uint256"}],"name":"claimETH","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_amount","type":"uint256"}],"name":"claimBTC","outputs":[],"stateMutability":"nonpayable","type":"function"}];
+    const BANDIT_CHEF_ABI = [{"inputs":[{"internalType":"address","name":"_router","type":"address"},{"internalType":"address","name":"_devAddress","type":"address"},{"internalType":"uint256","name":"_startBlock","type":"uint256"},{"internalType":"uint256","name":"_endBlock","type":"uint256"}],"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"_user","type":"address"},{"indexed":true,"internalType":"uint256","name":"_pid","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"_amount","type":"uint256"}],"name":"Deposit","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":true,"internalType":"uint256","name":"_pid","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"_amount","type":"uint256"}],"name":"EmergencyWithdraw","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"previousOwner","type":"address"},{"indexed":true,"internalType":"address","name":"newOwner","type":"address"}],"name":"OwnershipTransferred","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"_user","type":"address"},{"indexed":true,"internalType":"uint256","name":"_pid","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"_amount","type":"uint256"}],"name":"Withdraw","type":"event"},{"inputs":[],"name":"DAI","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"USDC","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"USDT","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"devAddress","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"endBlock","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"native","outputs":[{"internalType":"contract PolyTreasureToken","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"nativePerBlock","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"owner","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"","type":"uint256"}],"name":"poolInfo","outputs":[{"internalType":"contract IERC20","name":"lpToken","type":"address"},{"internalType":"uint256","name":"allocPoint","type":"uint256"},{"internalType":"uint256","name":"lastRewardBlock","type":"uint256"},{"internalType":"uint256","name":"accNativePerShare","type":"uint256"},{"internalType":"uint16","name":"depositFeeBP","type":"uint16"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"renounceOwnership","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"startBlock","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"totalAllocPoint","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"newOwner","type":"address"}],"name":"transferOwnership","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"treasury","outputs":[{"internalType":"contract Treasury","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"","type":"uint256"},{"internalType":"address","name":"","type":"address"}],"name":"userInfo","outputs":[{"internalType":"uint256","name":"amount","type":"uint256"},{"internalType":"uint256","name":"rewardDebt","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"poolLength","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"_from","type":"uint256"},{"internalType":"uint256","name":"_to","type":"uint256"}],"name":"getMultiplier","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"pure","type":"function"},{"inputs":[{"internalType":"uint256","name":"_pid","type":"uint256"},{"internalType":"address","name":"_user","type":"address"}],"name":"pendingNative","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"massUpdatePools","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_pid","type":"uint256"}],"name":"updatePool","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_pid","type":"uint256"},{"internalType":"uint256","name":"_amount","type":"uint256"}],"name":"deposit","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_pid","type":"uint256"},{"internalType":"uint256","name":"_amount","type":"uint256"}],"name":"withdraw","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_pid","type":"uint256"}],"name":"emergencyWithdraw","outputs":[],"stateMutability":"nonpayable","type":"function"}]
+    const LOOTBAGS_ABI = [{"inputs":[{"internalType":"address","name":"_native","type":"address"}],"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"previousOwner","type":"address"},{"indexed":true,"internalType":"address","name":"newOwner","type":"address"}],"name":"OwnershipTransferred","type":"event"},{"inputs":[],"name":"WBTC","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"WETH","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"native","outputs":[{"internalType":"contract PolyTreasureToken","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"owner","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"renounceOwnership","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"newOwner","type":"address"}],"name":"transferOwnership","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_amount","type":"uint256"}],"name":"claimETH","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_amount","type":"uint256"}],"name":"claimBTC","outputs":[],"stateMutability":"nonpayable","type":"function"}];
     
     async function main() {
        const App = await init_ethers();
        
        _print(`Initialized ${App.YOUR_ADDRESS}\n`);
     
-       const TOKEN_ADDR = "0xa53E8f867EF3FBA91090F1547A68983c350f6502";
-       const TREASURY_ADDR = "0x23E2806A524d25543321b46084021A23540D5f01";
+       const BANDIT_ADDR = "0xa53E8f867EF3FBA91090F1547A68983c350f6502";
+       const LOOTBAGS_ADDR = "0x23E2806A524d25543321b46084021A23540D5f01";
        const WBTC_ADDR = "0x68f180fcCe6836688e9084f035309E29Bf0A2095";   
        const WETH_ADDR = "0x4200000000000000000000000000000000000006";
        const wethContract = new ethers.Contract(WETH_ADDR, ERC20_ABI, App.provider);
        const wbtcContract = new ethers.Contract(WBTC_ADDR, ERC20_ABI, App.provider);
-       const eth = ethers.utils.formatUnits(await wethContract.balanceOf(TREASURY_ADDR), 18);
-       const btc = ethers.utils.formatUnits(await wbtcContract.balanceOf(TREASURY_ADDR), 8);
+       const eth = ethers.utils.formatUnits(await wethContract.balanceOf(LOOTBAGS_ADDR), 18);
+       const btc = ethers.utils.formatUnits(await wbtcContract.balanceOf(LOOTBAGS_ADDR), 8);
     
        _print_link("Claim ETH", async() => {
          const signer = App.provider.getSigner();
-         const treasuryContract = new ethers.Contract(TREASURY_ADDR, TREASURY_ABI, signer);
-         const tokenContract = new ethers.Contract(TOKEN_ADDR, ERC20_ABI, signer);
+         const treasuryContract = new ethers.Contract(LOOTBAGS_ADDR, LOOTBAGS_ABI, signer);
+         const tokenContract = new ethers.Contract(BANDIT_ADDR, ERC20_ABI, signer);
          
          const currentTokens = await tokenContract.balanceOf(App.YOUR_ADDRESS)
-         const allowedTokens = await tokenContract.allowance(App.YOUR_ADDRESS, TREASURY_ADDR)
+         const allowedTokens = await tokenContract.allowance(App.YOUR_ADDRESS, LOOTBAGS_ADDR)
     
       let allow = Promise.resolve()
     
       if (allowedTokens / 1e18 < currentTokens / 1e18) {
         showLoading()
-        allow = tokenContract.approve(TREASURY_ADDR, ethers.constants.MaxUint256)
+        allow = tokenContract.approve(LOOTBAGS_ADDR, ethers.constants.MaxUint256)
           .then(function(t) {
             return App.provider.waitForTransaction(t.hash)
           })
@@ -65,106 +65,106 @@ $(function() {
       }
        });
        
-       const TRZ_CHEF_ADDR = "0xF4FdAcaA85cD04d9fa961f032D2A4cF3A58A5050";
+       const BANDIT_CHEF_ADDR = "0xF4FdAcaA85cD04d9fa961f032D2A4cF3A58A5050";
        const rewardTokenTicker = "BANDIT";
-       const TRZ_CHEF = new ethers.Contract(TRZ_CHEF_ADDR, TRZ_CHEF_ABI, App.provider);
-       const rewardsPerWeek = await TRZ_CHEF.nativePerBlock() / 1e18 * 604800 / 2;
+       const BANDIT_CHEF = new ethers.Contract(BANDIT_CHEF_ADDR, BANDIT_CHEF_ABI, App.provider);
+       const rewardsPerWeek = await BANDIT_CHEF.nativePerBlock() / 1e18 * 604800 / 2;
     
         const tokens = {};
         const prices = await getOptimisticPrices();
     
-        await loadMaticTrzChefContract(App, tokens, prices, TRZ_CHEF, TRZ_CHEF_ADDR, TRZ_CHEF_ABI, rewardTokenTicker, "native", null, rewardsPerWeek, "pendingNative");
+        await loadMaticTrzChefContract(App, tokens, prices, BANDIT_CHEF, BANDIT_CHEF_ADDR, BANDIT_CHEF_ABI, rewardTokenTicker, "native", null, rewardsPerWeek, "pendingNative");
     
         hideLoading();
       }
     
     async function depositLP(signer, userBalance) {
-      const TRZ_CHEF_ADDR = "0xF4FdAcaA85cD04d9fa961f032D2A4cF3A58A5050";
-      const masterChef = new ethers.Contract(TRZ_CHEF_ADDR, TRZ_CHEF_ABI, signer);
+      const BANDIT_CHEF_ADDR = "0xF4FdAcaA85cD04d9fa961f032D2A4cF3A58A5050";
+      const masterChef = new ethers.Contract(BANDIT_CHEF_ADDR, BANDIT_CHEF_ABI, signer);
       await masterChef.deposit(0, userBalance);
     }
     
     async function withdrawLP(signer, userBalance) {
-      const TRZ_CHEF_ADDR = "0xF4FdAcaA85cD04d9fa961f032D2A4cF3A58A5050";
-      const masterChef = new ethers.Contract(TRZ_CHEF_ADDR, TRZ_CHEF_ABI, signer);
+      const BANDIT_CHEF_ADDR = "0xF4FdAcaA85cD04d9fa961f032D2A4cF3A58A5050";
+      const masterChef = new ethers.Contract(BANDIT_CHEF_ADDR, BANDIT_CHEF_ABI, signer);
       await masterChef.withdraw(0, userBalance);
     }
     
     async function claimLP(signer) {
-      const TRZ_CHEF_ADDR = "0xF4FdAcaA85cD04d9fa961f032D2A4cF3A58A5050";
-      const masterChef = new ethers.Contract(TRZ_CHEF_ADDR, TRZ_CHEF_ABI, signer);
+      const BANDIT_CHEF_ADDR = "0xF4FdAcaA85cD04d9fa961f032D2A4cF3A58A5050";
+      const masterChef = new ethers.Contract(BANDIT_CHEF_ADDR, BANDIT_CHEF_ABI, signer);
       await masterChef.withdraw(0, 0);
     }
     
     async function depositDETH(signer, userBalance) {
-      const TRZ_CHEF_ADDR = "0xF4FdAcaA85cD04d9fa961f032D2A4cF3A58A5050";
-      const masterChef = new ethers.Contract(TRZ_CHEF_ADDR, TRZ_CHEF_ABI, signer);
+      const BANDIT_CHEF_ADDR = "0xF4FdAcaA85cD04d9fa961f032D2A4cF3A58A5050";
+      const masterChef = new ethers.Contract(BANDIT_CHEF_ADDR, BANDIT_CHEF_ABI, signer);
       await masterChef.deposit(4, userBalance);
     }
     
     async function withdrawDETH(signer, userBalance) {
-      const TRZ_CHEF_ADDR = "0xF4FdAcaA85cD04d9fa961f032D2A4cF3A58A5050";
-      const masterChef = new ethers.Contract(TRZ_CHEF_ADDR, TRZ_CHEF_ABI, signer);
+      const BANDIT_CHEF_ADDR = "0xF4FdAcaA85cD04d9fa961f032D2A4cF3A58A5050";
+      const masterChef = new ethers.Contract(BANDIT_CHEF_ADDR, BANDIT_CHEF_ABI, signer);
       await masterChef.withdraw(4, userBalance);
     }
     
     async function claimDETH(signer) {
-      const TRZ_CHEF_ADDR = "0xF4FdAcaA85cD04d9fa961f032D2A4cF3A58A5050";
-      const masterChef = new ethers.Contract(TRZ_CHEF_ADDR, TRZ_CHEF_ABI, signer);
+      const BANDIT_CHEF_ADDR = "0xF4FdAcaA85cD04d9fa961f032D2A4cF3A58A5050";
+      const masterChef = new ethers.Contract(BANDIT_CHEF_ADDR, BANDIT_CHEF_ABI, signer);
       await masterChef.withdraw(4, 0);
     }
     
     async function depositBandit(signer, userBalance) {
-      const TRZ_CHEF_ADDR = "0xF4FdAcaA85cD04d9fa961f032D2A4cF3A58A5050";
-      const masterChef = new ethers.Contract(TRZ_CHEF_ADDR, TRZ_CHEF_ABI, signer);
+      const BANDIT_CHEF_ADDR = "0xF4FdAcaA85cD04d9fa961f032D2A4cF3A58A5050";
+      const masterChef = new ethers.Contract(BANDIT_CHEF_ADDR, BANDIT_CHEF_ABI, signer);
       await masterChef.deposit(1, userBalance);
     }
     
     async function withdrawBandit(signer, userBalance) {
-      const TRZ_CHEF_ADDR = "0xF4FdAcaA85cD04d9fa961f032D2A4cF3A58A5050";
-      const masterChef = new ethers.Contract(TRZ_CHEF_ADDR, TRZ_CHEF_ABI, signer);
+      const BANDIT_CHEF_ADDR = "0xF4FdAcaA85cD04d9fa961f032D2A4cF3A58A5050";
+      const masterChef = new ethers.Contract(BANDIT_CHEF_ADDR, BANDIT_CHEF_ABI, signer);
       await masterChef.withdraw(1, userBalance);
     }
     
     async function claimBandit(signer) {
-      const TRZ_CHEF_ADDR = "0xF4FdAcaA85cD04d9fa961f032D2A4cF3A58A5050";
-      const masterChef = new ethers.Contract(TRZ_CHEF_ADDR, TRZ_CHEF_ABI, signer);
+      const BANDIT_CHEF_ADDR = "0xF4FdAcaA85cD04d9fa961f032D2A4cF3A58A5050";
+      const masterChef = new ethers.Contract(BANDIT_CHEF_ADDR, BANDIT_CHEF_ABI, signer);
       await masterChef.withdraw(1, 0);
     }
     
     async function depositWETH(signer, userBalance) {
-      const TRZ_CHEF_ADDR = "0xF4FdAcaA85cD04d9fa961f032D2A4cF3A58A5050";
-      const masterChef = new ethers.Contract(TRZ_CHEF_ADDR, TRZ_CHEF_ABI, signer);
+      const BANDIT_CHEF_ADDR = "0xF4FdAcaA85cD04d9fa961f032D2A4cF3A58A5050";
+      const masterChef = new ethers.Contract(BANDIT_CHEF_ADDR, BANDIT_CHEF_ABI, signer);
       await masterChef.deposit(2, userBalance);
     }
     
     async function withdrawWETH(signer, userBalance) {
-      const TRZ_CHEF_ADDR = "0xF4FdAcaA85cD04d9fa961f032D2A4cF3A58A5050";
-      const masterChef = new ethers.Contract(TRZ_CHEF_ADDR, TRZ_CHEF_ABI, signer);
+      const BANDIT_CHEF_ADDR = "0xF4FdAcaA85cD04d9fa961f032D2A4cF3A58A5050";
+      const masterChef = new ethers.Contract(BANDIT_CHEF_ADDR, BANDIT_CHEF_ABI, signer);
       await masterChef.withdraw(2, userBalance);
     }
     
     async function claimWETH(signer) {
-      const TRZ_CHEF_ADDR = "0xF4FdAcaA85cD04d9fa961f032D2A4cF3A58A5050";
-      const masterChef = new ethers.Contract(TRZ_CHEF_ADDR, TRZ_CHEF_ABI, signer);
+      const BANDIT_CHEF_ADDR = "0xF4FdAcaA85cD04d9fa961f032D2A4cF3A58A5050";
+      const masterChef = new ethers.Contract(BANDIT_CHEF_ADDR, BANDIT_CHEF_ABI, signer);
       await masterChef.withdraw(2, 0);
     }
     
     async function depositWBTC(signer, userBalance) {
-      const TRZ_CHEF_ADDR = "0xF4FdAcaA85cD04d9fa961f032D2A4cF3A58A5050";
-      const masterChef = new ethers.Contract(TRZ_CHEF_ADDR, TRZ_CHEF_ABI, signer);
+      const BANDIT_CHEF_ADDR = "0xF4FdAcaA85cD04d9fa961f032D2A4cF3A58A5050";
+      const masterChef = new ethers.Contract(BANDIT_CHEF_ADDR, BANDIT_CHEF_ABI, signer);
       await masterChef.deposit(3, userBalance);
     }
     
     async function withdrawWBTC(signer, userBalance) {
-      const TRZ_CHEF_ADDR = "0xF4FdAcaA85cD04d9fa961f032D2A4cF3A58A5050";
-      const masterChef = new ethers.Contract(TRZ_CHEF_ADDR, TRZ_CHEF_ABI, signer);
+      const BANDIT_CHEF_ADDR = "0xF4FdAcaA85cD04d9fa961f032D2A4cF3A58A5050";
+      const masterChef = new ethers.Contract(BANDIT_CHEF_ADDR, BANDIT_CHEF_ABI, signer);
       await masterChef.withdraw(3, userBalance);
     }
     
     async function claimWBTC(signer) {
-      const TRZ_CHEF_ADDR = "0xF4FdAcaA85cD04d9fa961f032D2A4cF3A58A5050";
-      const masterChef = new ethers.Contract(TRZ_CHEF_ADDR, TRZ_CHEF_ABI, signer);
+      const BANDIT_CHEF_ADDR = "0xF4FdAcaA85cD04d9fa961f032D2A4cF3A58A5050";
+      const masterChef = new ethers.Contract(BANDIT_CHEF_ADDR, BANDIT_CHEF_ABI, signer);
       await masterChef.withdraw(3, 0);
     }
     
@@ -187,14 +187,14 @@ $(function() {
       const WETH_ADDRESS = "0x4200000000000000000000000000000000000006";
       const WBTC_ADDRESS = "0x68f180fcCe6836688e9084f035309E29Bf0A2095";
       const BANDIT_ADDRESS = "0xa53E8f867EF3FBA91090F1547A68983c350f6502";
-      const TRZ_CHEF_ADDR = "0xF4FdAcaA85cD04d9fa961f032D2A4cF3A58A5050";
+      const BANDIT_CHEF_ADDR = "0xF4FdAcaA85cD04d9fa961f032D2A4cF3A58A5050";
     
       const lpContract = new ethers.Contract(LP_ADDRESS, ERC20_ABI, signer);
       const dethContract = new ethers.Contract(DETH_ADDRESS, ERC20_ABI, signer);
       const wethContract = new ethers.Contract(WETH_ADDRESS, ERC20_ABI, signer);
       const wbtcContract = new ethers.Contract(WBTC_ADDRESS, ERC20_ABI, signer);
       const banditContract = new ethers.Contract(BANDIT_ADDRESS, ERC20_ABI, signer);
-      const masterChef = new ethers.Contract(TRZ_CHEF_ADDR, TRZ_CHEF_ABI, signer);
+      const masterChef = new ethers.Contract(BANDIT_CHEF_ADDR, BANDIT_CHEF_ABI, signer);
     
       const userLPBalance = await lpContract.balanceOf(App.YOUR_ADDRESS);
       const userLPInfo = await masterChef.userInfo(0, App.YOUR_ADDRESS);
@@ -231,11 +231,11 @@ $(function() {
       const userPendingWBTC = await masterChef.pendingNative(3, App.YOUR_ADDRESS);
     
     
-      const totalBandit = await banditContract.balanceOf(TRZ_CHEF_ADDR);
-      const totalLP = await lpContract.balanceOf(TRZ_CHEF_ADDR);
-      const totalDETH = await dethContract.balanceOf(TRZ_CHEF_ADDR);
-      const totalWETH = await wethContract.balanceOf(TRZ_CHEF_ADDR);
-      const erc20WBTC = await wbtcContract.balanceOf(TRZ_CHEF_ADDR);
+      const totalBandit = await banditContract.balanceOf(BANDIT_CHEF_ADDR);
+      const totalLP = await lpContract.balanceOf(BANDIT_CHEF_ADDR);
+      const totalDETH = await dethContract.balanceOf(BANDIT_CHEF_ADDR);
+      const totalWETH = await wethContract.balanceOf(BANDIT_CHEF_ADDR);
+      const erc20WBTC = await wbtcContract.balanceOf(BANDIT_CHEF_ADDR);
       const totalWBTC = erc20WBTC * 10000000000; // Convert to 8 decimal
   
       const wethPrice = prices["0x4200000000000000000000000000000000000006"]["usd"];
@@ -313,17 +313,17 @@ $(function() {
       _print('                      ``````       ');
       _print_link("Claim BTC", async() => {
         const signer = App.provider.getSigner();
-        const treasuryContract = new ethers.Contract(TREASURY_ADDR, TREASURY_ABI, signer);
-        const tokenContract = new ethers.Contract(TOKEN_ADDR, ERC20_ABI, signer);
+        const treasuryContract = new ethers.Contract(LOOTBAGS_ADDR, LOOTBAGS_ABI, signer);
+        const tokenContract = new ethers.Contract(BANDIT_ADDR, ERC20_ABI, signer);
         
         const currentTokens = await tokenContract.balanceOf(App.YOUR_ADDRESS)
-     const allowedTokens = await tokenContract.allowance(App.YOUR_ADDRESS, TREASURY_ADDR)
+     const allowedTokens = await tokenContract.allowance(App.YOUR_ADDRESS, LOOTBAGS_ADDR)
    
      let allow = Promise.resolve()
    
      if (allowedTokens / 1e18 < currentTokens / 1e18) {
        showLoading()
-       allow = tokenContract.approve(TREASURY_ADDR, ethers.constants.MaxUint256)
+       allow = tokenContract.approve(LOOTBAGS_ADDR, ethers.constants.MaxUint256)
          .then(function(t) {
            return App.provider.waitForTransaction(t.hash)
          })
