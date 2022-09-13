@@ -13,7 +13,8 @@ const main = async() => {
         ["FruitsOfRyoshi",    `<a href="fruitsofryoshi" >Various</a>`,      "NONI",              "https://fruitsofryoshi.com"],
         ["YodeSwap",          `<a href="yodeswap"       >Various</a>`,      "YODE",              "https://yodeswap.dog"],
         ["DogePup",           `<a href="dogepup"        >Various</a>`,      "DOGEPUP",           "https://dogepup.dog"],
-        ["Cowaii",            `<a href="cowaii"         >Various</a>`,      "MILK / COWAII",     "https://cowaii.cash"]
+        ["Cowaii",            `<a href="cowaii"         >Various</a>`,      "MILK / COWAII",     "https://cowaii.cash"],
+        ["Inuswap",            `<a href="inuswap"         >Various</a>`,      "INU",     "https://inuswap.fi"],
     ]
   }
 
