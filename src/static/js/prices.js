@@ -269,7 +269,8 @@ const CronosTokens = [
   { "id": "avalanche-2", "symbol": "AVAX", "contract": "0x765277EebeCA2e31912C9946eAe1021199B39C61"},
   { "id": "crow-token", "symbol": "CROW", "contract": "0x285c3329930a3fd3c7c14bc041d3e50e165b1517"},
   { "id": "cronaswap", "symbol": "CRONA", "contract": "0xadbd1231fb360047525bedf962581f3eee7b49fe"},
-  { "id": "savanna", "symbol": "SVN", "contract": "0x654bac3ec77d6db497892478f854cf6e8245dca9"}
+  { "id": "savanna", "symbol": "SVN", "contract": "0x654bac3ec77d6db497892478f854cf6e8245dca9"},
+  { "id": "mmfinance", "symbol": "MMF", "contract": "0x97749c9b61f878a880dfe312d2594ae07aed7656"}
 ];
 
 const DfkTokens = [

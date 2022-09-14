@@ -46,7 +46,8 @@ const main = async() => {
       ["CGO Finance          ","", `<a href='cgo'          >Various</a>`,"CGO          ","https://cgo.finance"],
       ["Smx Swap             ","", `<a href='smx'          >Various</a>`,"SMX          ","https://smxswap.com"],
       ["Dark Crystal         ","", `<a href='darkcrystl'   >Various</a>`,"MINE         ","https://cronos.darkcrystl.com"],
-      ["Procyon Finance      ","", `<a href='procyon'      >Various</a>`,"PCY          ","https://procyon.finance"]
+      ["Procyon Finance      ","", `<a href='procyon'      >Various</a>`,"PCY          ","https://procyon.finance"],
+      ["Cronos Steakhouse    ","", `<a href='steakhouse'   >Various</a>`,"             ","https://www.cronossteakhouse.com"]
     ]
   }
 
