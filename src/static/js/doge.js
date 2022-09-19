@@ -15,6 +15,7 @@ const main = async() => {
         ["DogePup",           `<a href="dogepup"        >Various</a>`,      "DOGEPUP",           "https://dogepup.dog"],
         ["Cowaii",            `<a href="cowaii"         >Various</a>`,      "MILK / COWAII",     "https://cowaii.cash"],
         ["Inuswap",           `<a href="inuswap"        >Various</a>`,      "INU",               "https://inuswap.fi"],
+        ["BoneSwap",           `<a href="boneswap"        >Various</a>`,      "BONE",           "https://www.boneswap.dog"]
     ]
   }
 
