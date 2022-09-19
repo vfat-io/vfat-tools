@@ -19,13 +19,13 @@ async function main() {
       _print_bold(`******************** ☢️ ${item.name} ☢️ ********************`)
       _print('')
       _print_reward_title()
-      _print(`LP reward : ${parse(item.liquidityProviderReward, 3)}`)
-      _print(`LD reward : ${parse(item.liquidityDirectorReward, 3)}`)
+      _print(`LP reward : ${parseReward(item.liquidityProviderReward)}`)
+      _print(`LD reward : ${parseReward(item.liquidityDirectorReward)}`)
 
       _print('')
       _print_bold('APRS')
-      _print(`LP apr : ${parse(item.liquidityProviderApr, 2)}%`)
-      _print(`LD apr : ${parse(item.liquidityDirectorApr, 2)}%`)
+      _print(`LP apr : ${parseApr(item.liquidityProviderApr)}%`)
+      _print(`LD apr : ${parseApr(item.liquidityDirectorApr)}%`)
       _print('')
     }
   })
@@ -33,9 +33,14 @@ async function main() {
   hideLoading()
 }
 
-function parse(i, fractionDigits) {
+function parseApr(i) {
   return (parseFloat(i) * 100).toFixed(2)
 }
+
+function parseReward(i) {
+  return (Math.trunc(parseFloat(i)*100)/100).toLocaleString('en-US')
+}
+
 
 const _print_reward_title = function() {
   if (!logger) {
