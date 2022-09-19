@@ -25,7 +25,7 @@ async function main() {
     const prices = await getDogePrices();
 
     await loadGeneralChefContract(App, tokens, prices, BONE_MC, BONE_ADDR, BONE_CHEF_ABI, rewardTokenTicker,
-        "boneswap", null, rewardsPerWeek, "pendingBone", [], "bone");
+        "bone", null, rewardsPerWeek, "pendingBone", [], "doge");
 
     hideLoading();
   }
