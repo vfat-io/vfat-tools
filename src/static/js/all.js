@@ -183,7 +183,8 @@ const main = async () => {
       ["Serenity Capital             ", `<a href="../serenity/"          >Various</a>`, "PBL                ", "https://ethchain.serenitycapital.io"],
       ["Mero                         ", `<a href="../mero/"              >Various</a>`, "                   ", "https://mero.finance"],
       ["Xconsoles                    ", `<a href="../xconsoles/"         >Various</a>`, "GAME               ", "https://app.xconsoles.tv"],
-      ["Helix Finance                ", `<a href="../helix/"             >Various</a>`, "HELIX              ", "https://helix.finance"]
+      ["Helix Finance                ", `<a href="../helix/"             >Various</a>`, "HELIX              ", "https://helix.finance"],
+      ["Tokemak                      ", `<a href="../tokemak/"           >Various</a>`, "TOKE               ", "https://app.tokemak.xyz/"],
     ]
   }
 
