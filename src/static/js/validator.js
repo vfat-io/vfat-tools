@@ -9,17 +9,26 @@ async function main() {
     _print("details of your validators")
     _print("");
 
-    const _ownedValidators = await $.ajax({
+    const _validatorsData = await $.ajax({
       url  : `https://beaconcha.in/api/v1/validator/eth1/${App.YOUR_ADDRESS}`,
       type : 'GET'
     });
 
-    //const ownedValidators = _ownedValidators.data;
-    const ownedValidators = ["128460", "128461", "128462", "128463"];
+    let ownedValidators = [];
+
+    //if there is only one validator return an object and not an array
+    const validatorsData = _validatorsData.data;
+    if(validatorsData.validatorindex){
+      const ownedValidator = validatorsData.validatorindex;
+      ownedValidators.push(ownedValidator);
+    }else{
+      for(const validatorData of validatorsData){
+        const ownedValidator = validatorData.validatorindex;
+        ownedValidators.push(ownedValidator);
+      }
+    }
 
     _print("")
-
-    //_print(validatorsData);
 
     if(ownedValidators.length <= 0){
       _print("You do not owned any validators")
@@ -29,15 +38,36 @@ async function main() {
       const validatorsToString = ownedValidators.toString();
       const validatorsParameter = validatorsToString.replaceAll(',', '%2C');
 
-      const validatorsData = await $.ajax({
+      const validatorsDetails = await $.ajax({
         url  : `https://beaconcha.in/api/v1/validator/${validatorsParameter}`,
         type : `GET`
       });
 
-      for(const validator of validatorsData.data){
-        const state = validator.status == "active_online" ? "Online" : "Offline";
-        _print(`Vlidator : ${validator.validatorindex}, State : ${state}`);
-        _print("");
+      const validatorsBalanceDetails = await $.ajax({
+        url  : `https://beaconcha.in/api/v1/validator/${validatorsParameter}/balancehistory`,
+        type : `GET`
+      });
+
+      if(validatorsDetails.data.status){
+        const balance = validatorsBalanceDetails.data[0].balance / 1e9;
+        const startingBalance = validatorsBalanceDetails.data[0].effectivebalance / 1e9;
+        const state = validatorsDetails.data.status == "active_online" ? "Online" : "Offline";
+        _print_bold(`Vlidator : ${validatorsDetails.data.validatorindex}`);
+        _print_bold(`State : ${state}`);
+        _print_bold(`Your Staking Balance : ${startingBalance}`);
+        _print_bold(`Your Balance : ${balance}`);
+      }else{
+        for(let i = 0; i < validatorsDetails.data.length; i++){
+          const balance = validatorsBalanceDetails.data[i].balance / 1e9;
+          const startingBalance = validatorsBalanceDetails.data[i].effectivebalance / 1e9;
+          const state = validatorsDetails.data[i].status == "active_online" ? "Online" : "Offline";
+          _print_bold(`Vlidator : ${validatorsDetails.data[i].validatorindex}`);
+          _print_bold(`State : ${state}`);
+          _print_bold(`Your Staking Balance : ${startingBalance}`);
+          _print_bold(`Your Balance : ${balance}`);
+          _print("-------------------------------");
+          _print("");
+        }
       }
     }
 
