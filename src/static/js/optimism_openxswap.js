@@ -20,7 +20,7 @@ async function main() {
   const lastBlockTimestamp = (await App.provider.getBlock(blockNumber)).timestamp;
   const multiplier = await CHEF.getPoolMultiplier(lastBlockTimestamp);
   const rewardPerBlock = await CHEF.rewardsPerSecond();
-  const rewardsPerWeek = rewardPerBlock / 1e18 * multiplier * 604800 / 2
+  const rewardsPerWeek = rewardPerBlock / 1e18 * multiplier * 604800;
 
     const tokens = {};
     const prices = await getOptimisticPrices();
