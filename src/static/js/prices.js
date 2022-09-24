@@ -375,6 +375,22 @@ const FantomTokens = [
   { "id": "strategyx", "symbol": "STAY", "contract": "0xA5365f2E77bCe1cb2D42F5c808012C01b1548d3C" }
 ];
 
+const FindoraTokens = [
+  {id: 'findora', symbol: 'FRA', contract: '0x0000000000000000000000000000000000001000'},
+  {id: 'fairy', symbol: 'FAIRY', contract: '0xcCC94d78b01D94330F25f7B8e827ef24249132DE'},
+  {id: 'forlend', symbol: 'FLD', contract: '0x020cF6c12B08AcbE78544C4F3319A749b0601780'},
+  {id: 'usdc-b', symbol: 'USDC.b', contract: '0xdA33eF1A7b48beBbF579eE86DFA735a9529C4950'},
+  {id: 'usdc-e', symbol: 'USDC.e', contract: '0x2e8079E0fE49626AF8716fC38aDEa6799065D7f7'},
+  {id: 'usdt-b', symbol: 'USDT.b', contract: '0x93EDFa31D7ac69999E964DAC9c25Cd6402c75DB3'},
+  {id: 'usdt-e', symbol: 'USDT.e', contract: '0x0632baa26299C9972eD4D9AfFa3FD057A72252Ff'},
+  {id: 'wbtc-b', symbol: 'WBTC.b', contract: '0x07EfA82E00E458ca3D53f2CD5B162e520F46d911'},
+  {id: 'wbtc-e', symbol: 'WBTC.e', contract: '0x38f9dA0D8A84Ad841281080Ad4a2D9D89Eff3bFf'},
+  {id: 'weth-b', symbol: 'WETH.b', contract: '0x008A628826E9470337e0Cd9c0C944143A83F32f3'},
+  {id: 'weth-e', symbol: 'WETH.e', contract: '0xaFfAac009Af35d6069E79Ef3763A39A2BA5BF65f'},
+  {id: 'wbnb-b', symbol: 'WBNB.b', contract: '0xABc979788c7089B516B8F2f1b5cEaBd2E27Fd78b'},
+  {id: 'busd-b', symbol: 'BUSD.b', contract: '0xE80EB4a234f718eDc5B76Bb442653827D20Ebb2d'}
+]
+
 const FuseTokens = [ 
   { "id": "fuse-network-token", "symbol": "FUSE", "contract": "0x0BE9e53fd7EDaC9F859882AfdDa116645287C629"},
   { "id": "usd-coin", "symbol": "USDC", "contract": "0x620fd5fa44BE6af63715Ef4E65DDFA0387aD13F5"},
@@ -791,6 +807,15 @@ async function getEvmosPrices() {
   const idPrices = await lookUpPrices(evmosTokens.map(x => x.id));
   const prices = {}
   for (const bt of evmosTokens)
+      if (idPrices[bt.id])
+          prices[bt.contract] = idPrices[bt.id];
+  return prices;
+}
+
+async function getFindoraPrices() {
+  const idPrices = await lookUpPrices(FindoraTokens.map(x => x.id));
+  const prices = {}
+  for (const bt of FindoraTokens)
       if (idPrices[bt.id])
           prices[bt.contract] = idPrices[bt.id];
   return prices;
