@@ -11,6 +11,10 @@ async function main() {
 
     const _validatorsData = await $.ajax({
       url  : `https://beaconcha.in/api/v1/Validator/eth1/${App.YOUR_ADDRESS}`,
+      //dataType: 'jsonp',
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+      },
       type : 'GET'
     });
 
@@ -40,11 +44,19 @@ async function main() {
 
       const validatorsDetails = await $.ajax({
         url  : `https://beaconcha.in/api/v1/Validator/${validatorsParameter}`,
+        //dataType: 'jsonp',
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+        },
         type : `GET`
       });
 
       const ValidatorsBalanceDetails = await $.ajax({
         url  : `https://beaconcha.in/api/v1/Validator/${validatorsParameter}/balancehistory`,
+        //dataType: 'jsonp',
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+        },
         type : `GET`
       });
 
@@ -91,33 +103,45 @@ async function main() {
   
       const validatorsDetails = await $.ajax({
         url  : `https://beaconcha.in/api/v1/Validator/${validatorsParameter}`,
+        //dataType: 'jsonp',
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+        },
         type : `GET`
       });
   
       const ValidatorsBalanceDetails = await $.ajax({
         url  : `https://beaconcha.in/api/v1/Validator/${validatorsParameter}/balancehistory`,
+        //dataType: 'jsonp',
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+        },
         type : `GET`
       });
-  
-      if(validatorsDetails.data.status){
-        const balance = ValidatorsBalanceDetails.data[0].balance / 1e9;
-        const startingBalance = ValidatorsBalanceDetails.data[0].effectivebalance / 1e9;
-        const state = validatorsDetails.data.status == "active_online" ? "Online" : "Offline";
-        _print_bold(`Validator : ${validatorsDetails.data.Validatorindex}`);
-        _print_bold(`State : ${state}`);
-        _print_bold(`Your Staking Balance : ${startingBalance}`);
-        _print_bold(`Your Balance : ${balance}`);
+
+      if(validatorsDetails.data == null || ValidatorsBalanceDetails.data == null){
+        _print(validatorsDetails.status);
       }else{
-        for(let i = 0; i < validatorsDetails.data.length; i++){
-          const balance = ValidatorsBalanceDetails.data[i].balance / 1e9;
-          const startingBalance = ValidatorsBalanceDetails.data[i].effectivebalance / 1e9;
-          const state = validatorsDetails.data[i].status == "active_online" ? "Online" : "Offline";
-          _print_bold(`Validator : ${validatorsDetails.data[i].Validatorindex}`);
+        if(validatorsDetails.data.status){
+          const balance = ValidatorsBalanceDetails.data[0].balance / 1e9;
+          const startingBalance = ValidatorsBalanceDetails.data[0].effectivebalance / 1e9;
+          const state = validatorsDetails.data.status == "active_online" ? "Online" : "Offline";
+          _print_bold(`Validator : ${validatorsDetails.data.Validatorindex}`);
           _print_bold(`State : ${state}`);
           _print_bold(`Your Staking Balance : ${startingBalance}`);
           _print_bold(`Your Balance : ${balance}`);
-          _print("-------------------------------");
-          _print("");
+        }else{
+          for(let i = 0; i < validatorsDetails.data.length; i++){
+            const balance = ValidatorsBalanceDetails.data[i].balance / 1e9;
+            const startingBalance = ValidatorsBalanceDetails.data[i].effectivebalance / 1e9;
+            const state = validatorsDetails.data[i].status == "active_online" ? "Online" : "Offline";
+            _print_bold(`Validator : ${validatorsDetails.data[i].Validatorindex}`);
+            _print_bold(`State : ${state}`);
+            _print_bold(`Your Staking Balance : ${startingBalance}`);
+            _print_bold(`Your Balance : ${balance}`);
+            _print("-------------------------------");
+            _print("");
+          }
         }
       }
     }
