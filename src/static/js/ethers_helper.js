@@ -117,6 +117,9 @@ const pageNetwork = function() {
   if (network.toLowerCase() === 'telos') {
     return window.NETWORKS.TELOS
   }
+  if (network.toLowerCase() === 'findora'){
+    return window.NETWORKS.FINDORA
+  }
 
   return window.NETWORKS.ETHEREUM
 }

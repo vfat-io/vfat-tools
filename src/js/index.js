@@ -648,6 +648,21 @@ window.NETWORKS = {
       "https://teloscan.io"
     ],
   },
+  FINDORA: {
+    "chainId": "0x868",
+    "chainName": "Findora EVM Mainnet",
+    "nativeCurrency": {
+      "name": "Findora",
+      "symbol": "FRA",
+      "decimals": 18
+    },
+    "rpcUrls": [
+      "https://rpc-mainnet.findora.org"
+    ],
+    "blockExplorerUrls": [
+      "https://evm.findorascan.io"
+    ],
+  },
 }
 
 const infuraId = atob(window.ETHEREUM_NODE_URL).split('/').pop()
@@ -678,7 +693,8 @@ const providerOptions = {
         333999: "https://rpc.polis.tech",
         25: "https://rpc.crodex.app/",
         82: "https://rpc.meter.io",
-        40: "https://mainnet.telos.net/evm"
+        40: "https://mainnet.telos.net/evm",
+        2152: "https://rpc-mainnet.findora.org"
       }
     }
   }
