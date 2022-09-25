@@ -10,11 +10,7 @@ async function main() {
     _print("");
 
     const _validatorsData = await $.ajax({
-      url  : `https://beaconcha.in/api/v1/Validator/eth1/${App.YOUR_ADDRESS}`,
-      //dataType: 'jsonp',
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-      },
+      url  : `https://beaconcha.in/api/v1/validator/eth1/${App.YOUR_ADDRESS}`,
       type : 'GET'
     });
 
@@ -22,12 +18,12 @@ async function main() {
 
     //if there is only one Validator return an object and not an array
     const validatorsData = _validatorsData.data;
-    if(validatorsData.Validatorindex){
-      const ownedValidator = validatorsData.Validatorindex;
+    if(validatorsData.validatorindex){
+      const ownedValidator = validatorsData.validatorindex;
       ownedValidators.push(ownedValidator);
     }else{
       for(const ValidatorData of validatorsData){
-        const ownedValidator = ValidatorData.Validatorindex;
+        const ownedValidator = ValidatorData.validatorindex;
         ownedValidators.push(ownedValidator);
       }
     }
@@ -43,28 +39,21 @@ async function main() {
       const validatorsParameter = ValidatorsToString.replaceAll(',', '%2C');
 
       const validatorsDetails = await $.ajax({
-        url  : `https://beaconcha.in/api/v1/Validator/${validatorsParameter}`,
-        //dataType: 'jsonp',
-        headers: {
-          'Access-Control-Allow-Origin': '*',
-        },
+        url  : `https://beaconcha.in/api/v1/validator/${validatorsParameter}`,
         type : `GET`
       });
 
       const ValidatorsBalanceDetails = await $.ajax({
-        url  : `https://beaconcha.in/api/v1/Validator/${validatorsParameter}/balancehistory`,
-        //dataType: 'jsonp',
-        headers: {
-          'Access-Control-Allow-Origin': '*',
-        },
+        url  : `https://beaconcha.in/api/v1/validator/${validatorsParameter}/balancehistory`,
         type : `GET`
       });
 
       if(validatorsDetails.data.status){
         const balance = ValidatorsBalanceDetails.data[0].balance / 1e9;
         const startingBalance = ValidatorsBalanceDetails.data[0].effectivebalance / 1e9;
-        const state = validatorsDetails.data.status == "active_online" ? "Online" : "Offline";
-        _print_bold(`Validator : ${validatorsDetails.data.Validatorindex}`);
+        //const state = validatorsDetails.data.status == "active_online" ? "Online" : "Offline";
+        const state = validatorsDetails.data.status;
+        _print_bold(`Validator : ${validatorsDetails.data.validatorindex}`);
         _print_bold(`State : ${state}`);
         _print_bold(`Your Staking Balance : ${startingBalance}`);
         _print_bold(`Your Balance : ${balance}`);
@@ -72,8 +61,9 @@ async function main() {
         for(let i = 0; i < validatorsDetails.data.length; i++){
           const balance = ValidatorsBalanceDetails.data[i].balance / 1e9;
           const startingBalance = ValidatorsBalanceDetails.data[i].effectivebalance / 1e9;
-          const state = validatorsDetails.data[i].status == "active_online" ? "Online" : "Offline";
-          _print_bold(`Validator : ${validatorsDetails.data[i].Validatorindex}`);
+          //const state = validatorsDetails.data[i].status == "active_online" ? "Online" : "Offline";
+          const state = validatorsDetails.data[i].status;
+          _print_bold(`Validator : ${validatorsDetails.data[i].validatorindex}`);
           _print_bold(`State : ${state}`);
           _print_bold(`Your Staking Balance : ${startingBalance}`);
           _print_bold(`Your Balance : ${balance}`);
@@ -102,20 +92,12 @@ async function main() {
       const validatorsParameter = _validatorsParameter.replaceAll(' ', '');
   
       const validatorsDetails = await $.ajax({
-        url  : `https://beaconcha.in/api/v1/Validator/${validatorsParameter}`,
-        //dataType: 'jsonp',
-        headers: {
-          'Access-Control-Allow-Origin': '*',
-        },
+        url  : `https://beaconcha.in/api/v1/validator/${validatorsParameter}`,
         type : `GET`
       });
   
       const ValidatorsBalanceDetails = await $.ajax({
-        url  : `https://beaconcha.in/api/v1/Validator/${validatorsParameter}/balancehistory`,
-        //dataType: 'jsonp',
-        headers: {
-          'Access-Control-Allow-Origin': '*',
-        },
+        url  : `https://beaconcha.in/api/v1/validator/${validatorsParameter}/balancehistory`,
         type : `GET`
       });
 
@@ -125,8 +107,9 @@ async function main() {
         if(validatorsDetails.data.status){
           const balance = ValidatorsBalanceDetails.data[0].balance / 1e9;
           const startingBalance = ValidatorsBalanceDetails.data[0].effectivebalance / 1e9;
-          const state = validatorsDetails.data.status == "active_online" ? "Online" : "Offline";
-          _print_bold(`Validator : ${validatorsDetails.data.Validatorindex}`);
+          //const state = validatorsDetails.data.status == "active_online" ? "Online" : "Offline";
+          const state = validatorsDetails.data.status;
+          _print_bold(`Validator : ${validatorsDetails.data.validatorindex}`);
           _print_bold(`State : ${state}`);
           _print_bold(`Your Staking Balance : ${startingBalance}`);
           _print_bold(`Your Balance : ${balance}`);
@@ -134,8 +117,9 @@ async function main() {
           for(let i = 0; i < validatorsDetails.data.length; i++){
             const balance = ValidatorsBalanceDetails.data[i].balance / 1e9;
             const startingBalance = ValidatorsBalanceDetails.data[i].effectivebalance / 1e9;
-            const state = validatorsDetails.data[i].status == "active_online" ? "Online" : "Offline";
-            _print_bold(`Validator : ${validatorsDetails.data[i].Validatorindex}`);
+            //const state = validatorsDetails.data[i].status == "active_online" ? "Online" : "Offline";
+            const state = validatorsDetails.data[i].status;
+            _print_bold(`Validator : ${validatorsDetails.data[i].validatorindex}`);
             _print_bold(`State : ${state}`);
             _print_bold(`Your Staking Balance : ${startingBalance}`);
             _print_bold(`Your Balance : ${balance}`);
