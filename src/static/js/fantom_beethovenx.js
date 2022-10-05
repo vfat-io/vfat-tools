@@ -117,7 +117,8 @@ async function loadBeethovenxChefContract(App, tokens, prices, chef, chefAddress
 async function getBeethovenxPoolInfo(app, chefContract, chefAddress, poolIndex, pendingRewardsFunction) {
   const poolInfo = await chefContract.poolInfo(poolIndex);
   const lpToken = await chefContract.lpTokens(poolIndex);
-  if (poolInfo.allocPoint == 0) {
+  if (poolInfo.allocPoint == 0 || lpToken.toLowerCase() === "0x64b301E21d640F9bef90458B0987d81fb4cf1B9e".toLowerCase()
+    || lpToken.toLowerCase() === "0x10441785A928040b456A179691141c48356Eb3A5".toLowerCase()) {
     return {
       address: lpToken,
       allocPoints: poolInfo.allocPoint ?? 1,
@@ -404,3 +405,19 @@ const beethovenContract_claim = async function(chefAbi, chefAddress, poolIndex, 
     }
   }
 }
+
+
+
+
+/**
+ * "0xbF07093ccd6adFC3dEB259C557b61E94c1F66945", "Moo Fantom BIFI"
+ * "0x44F7237df00E386af8e79B817D05ED9f6FE0f296", "SOL"
+ * "0x85dec8c4B2680793661bCA91a8F129607571863d", "PaintSwap Token"
+ * "0x1C1d786f88eaf8fD1E0939757520beC1413310FE", "IMP"
+ * "0xA7727db8DB5afcA6d88eb7FB9E8e322dc043325a", "Wrapped Staked Secure"
+ * 
+ * ERROR FOR THIS POOL, CANT GET THE PRICE FROM THESE 2 TOKENS
+ * THE POOL WITH THESE 2 TOKENS IS THIS "0x64b301E21d640F9bef90458B0987d81fb4cf1B9e"
+ * "0x5ddb92A5340FD0eaD3987D3661AfcD6104c3b757", "Beets Yearn Boosted StablePool (USD)" "bb-yv-USD"
+ * "0xC3BF643799237588b7a6B407B3fc028Dd4e037d2", "Beets Yearn Boosted Pool (FTM)" "bb-yv-FTM"
+ */
