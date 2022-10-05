@@ -82,7 +82,7 @@ const main = async () => {
       ['Kavian Finance     ', `<a href='kavian'       >Various</a>`, 'fKAVIAN      ', 'https://fantom.kavian.finance'],
       ['Sapphire DeFi      ', `<a href='sapphire'     >Various</a>`, 'SAPPHIRE     ', 'https://sapphiredefi.com'],
       ['Geist Finance      ', `<a href='geist'        >Various</a>`, 'GEIST        ', 'https://geist.finance'],
-      ['Beethovenx         ', `<a href='beethovenx'   >Various</a>`, 'BEETS        ', 'https://app.beethovenx.io'],
+      ['Beethovenx *       ', `<a href='beethovenx'   >Various</a>`, 'BEETS        ', 'https://app.beethovenx.io'],
       ['Curve              ', `<a href='curve'        >Various</a>`, 'CRV/FTM      ', 'https://ftm.curve.fi'],
       ['Singular           ', `<a href='singular'     >Various</a>`, 'SING         ', 'https://singular.farm'],
       ['KogeFarm           ', `<a href="koge"         >Various</a>`, 'Various      ', 'https://kogefarm.io'],
