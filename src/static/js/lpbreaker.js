@@ -10,12 +10,11 @@ const LP_TOKEN_ABI = [{"inputs":[],"payable":false,"stateMutability":"nonpayable
 async function main() {
     const App = await init_ethers();
 
-    //helper
-    //https://docs.uniswap.org/protocol/V2/reference/smart-contracts/router-02
-
     //TODO create an object with FactoryAddress and RouterAddress
+    //tutorial https://www.youtube.com/watch?v=X0ipw1k7ygU
 
-    //const LP_ADDRESS = "0xb4e16d0168e52d35cacd2c6185b44281ec28c9dc";  //USDC-ETH PAIR for testing purposes
+    //test lpt address
+    //https://etherscan.io/address/0xc4da39e646e7f5d233b89ca0f7b75344e7ddb2cc#readContract
 
     _print_bold("Please add the LP address that you want to break")
 
@@ -30,12 +29,16 @@ async function main() {
     lptAddressBtn.innerHTML = "Search";
     lptAddressBtn.onclick = async function() {
       const signer = App.provider.getSigner();
-      const router_contract = new ethers.Contract(UNI_ROUTER_V2_ADDR, UNI_ROUTER_V2_ABI, signer);
-
       const lp_token_address = document.getElementById("lptAddress").value;
 
       const lp_contract = new ethers.Contract(lp_token_address, LP_TOKEN_ABI, App.provider);
 
+      const factory = await lp_contract.factory();
+      const router_address = getParameterCaseInsensitive(LpRouters, factory);//returns undefined
+      console.log(LpRouters);
+      //const router_address = LpRouters.forEach(routers => routers.factory === factory);
+      //const router_contract = new ethers.Contract(router_address, UNI_ROUTER_V2_ABI, signer);
+      const router_contract = new ethers.Contract(UNI_ROUTER_V2_ADDR, UNI_ROUTER_V2_ABI, signer);
       const token0Address = await lp_contract.token0();
       const token1Address = await lp_contract.token1();
       const lpToken = await getToken(App, lp_token_address, App.YOUR_ADDRESS);
@@ -61,7 +64,8 @@ async function main() {
       const amountAMin = 0;
       const amountBMin = 0;
       const currentTime = Date.now() / 1000;
-      const deadline = currentTime + 1000;
+      const _deadline = currentTime + 1000;
+      const deadline = Math.round(_deadline);
       let breakButton = document.createElement("button");
       breakButton.innerHTML = "Break";
       breakButton.onclick = async function() {
@@ -70,7 +74,8 @@ async function main() {
           .then(function(t) {
             return App.provider.waitForTransaction(t.hash)
           })
-          .catch(function() {
+          .catch(function(ex) {
+            console.log(ex);
             hideLoading()
           })
       }
@@ -81,25 +86,7 @@ async function main() {
     hideLoading();
   }
 
-/**
-     function removeLiquidity(
-        address tokenA,
-        address tokenB,
-        uint liquidity,
-        uint amountAMin,
-        uint amountBMin,
-        address to,
-        uint deadline
-    ) public virtual override ensure(deadline) returns (uint amountA, uint amountB) {
-        address pair = UniswapV2Library.pairFor(factory, tokenA, tokenB);
-        IUniswapV2Pair(pair).transferFrom(msg.sender, pair, liquidity); // send liquidity to pair
-        (uint amount0, uint amount1) = IUniswapV2Pair(pair).burn(to);
-        (address token0,) = UniswapV2Library.sortTokens(tokenA, tokenB);
-        (amountA, amountB) = tokenA == token0 ? (amount0, amount1) : (amount1, amount0);
-        require(amountA >= amountAMin, 'UniswapV2Router: INSUFFICIENT_A_AMOUNT');
-        require(amountB >= amountBMin, 'UniswapV2Router: INSUFFICIENT_B_AMOUNT');
-    }
-
-    einai se posh wra to afhneis na ginei execute
-    prepei na valeis to twrino epoch timestamp + 1000 sec as poume
-     */
+  //will take the router from here by giving the factory, check if i need abi too.
+  const LpRouters = [
+    { name : "Uni-V2", factory : "0x5C69bEe701ef814a2B6a3EDD4B1652CB9cc5aA6f", router : "0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D" }
+  ]
