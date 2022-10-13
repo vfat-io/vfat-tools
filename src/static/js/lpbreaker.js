@@ -15,10 +15,13 @@ async function main() {
 
     _print_bold("Please add the LP address that you want to break")
 
+    let log = document.getElementById("log");
+
     let lptAddressInput = document.createElement("input");
     lptAddressInput.setAttribute("id", "lptAddress");
     lptAddressInput.setAttribute("type", "text");
-    document.body.appendChild(lptAddressInput);
+    lptAddressInput.setAttribute("size", "45");
+    log.appendChild(lptAddressInput);
 
     let lptAddressBtn = document.createElement("button")
     lptAddressBtn.innerHTML = "Search";
@@ -61,6 +64,12 @@ async function main() {
       const deadline = Math.round(_deadline);
       let breakButton = document.createElement("button");
       breakButton.innerHTML = "Break";
+      
+      //I will add this in order after the user break his LP to refresh the page manually
+      /*setTimeout(function(){
+        window.location.reload();
+      }, 5000);*/
+
       breakButton.onclick = async function() {
         showLoading()
         router_contract.removeLiquidity(tokenA, tokenB, _liquidity, amountAMin, amountBMin, addressToGo, deadline, {gasLimit: 500000})
@@ -72,9 +81,9 @@ async function main() {
             hideLoading()
           })
       }
-      document.body.appendChild(breakButton);
+      log.appendChild(breakButton);
     }
-    document.body.appendChild(lptAddressBtn);
+    log.appendChild(lptAddressBtn);
 
     hideLoading();
   }
