@@ -285,7 +285,9 @@ const dogeTokens = [
   { "id": "binance-usd","symbol": "BUSD","contract": "0x332730a4F6E03D9C55829435f10360E13cfA41Ff"},
   { "id": "binancecoin","symbol": "BNB","contract": "0xA649325Aa7C5093d12D6F98EB4378deAe68CE23F"},
   { "id": "dogecoin", "symbol": "DOGE", "contract": "0xB7ddC6414bf4F5515b52D8BdD69973Ae205ff101"},
-  { "id": "tether", "symbol": "USDT", "contract": "0xE3F5a90F9cb311505cd691a46596599aA1A0AD7D"}
+  { "id": "tether", "symbol": "USDT", "contract": "0xE3F5a90F9cb311505cd691a46596599aA1A0AD7D"},
+  { "id": "dai", "symbol": "DAI", "contract": "0x639A647fbe20b6c8ac19E48E2de44ea792c62c5C"},
+  { "id": "dai", "symbol": "DAI", "contract": "0xB3306f03595490e5cC3a1b1704a5a158D3436ffC"}
 ];
 
 const EmeraldTokens = [
