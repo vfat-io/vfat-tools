@@ -69,11 +69,25 @@ async function main() {
         let breakButton = document.createElement("button");
         breakButton.innerHTML = "Break";
         breakButton.onclick = async function() {
+
+          const lp_write_contract = new ethers.Contract(lp_token_address, GENERAL_V2_LP_TOKEN_ABI, signer);
+          let allow = Promise.resolve()
+
           showLoading()
-          router_contract.removeLiquidity(tokenA, tokenB, _liquidity, amountAMin, amountBMin, addressToGo, deadline, {gasLimit: 500000})
+          allow = lp_write_contract.approve(router.routerAddress, _liquidity, {gasLimit: 500000})
             .then(function(t) {
               return App.provider.waitForTransaction(t.hash)
-                .then(t => refresh(t))
+            })
+            .catch(function() {
+              hideLoading()
+            })
+
+          showLoading()
+          allow.then(async function () {
+            router_contract.removeLiquidity(tokenA, tokenB, _liquidity, amountAMin, amountBMin, addressToGo, deadline, {gasLimit: 500000})
+            .then(function(t) {
+              return App.provider.waitForTransaction(t.hash)
+                .then(t => refresh(t.hash))
                 .catch(err => transactionFailed(err));
             })
             .catch(function(ex) {
@@ -81,6 +95,9 @@ async function main() {
               hideLoading()
               transactionFailed(ex);
             })
+          }).catch(function () {
+            hideLoading()
+          })
         }
         log.appendChild(breakButton);
       }catch(err){
