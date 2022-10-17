@@ -14,64 +14,9 @@ $(function() {
     const tokens = {};
     const prices = await getOptimisticPrices();
 
-    const gauges = ["0x6b8EDC43de878Fd5Cd5113C42747d32500Db3873",
-                    "0x0299d40E99F2a5a1390261f5A71d13C3932E214C",
-                    "0xE2CEc8aB811B648bA7B1691Ce08d5E800Dd0a60a",
-                    "0x1F36f95a02C744f2B3cD196b5e44E749c153D3B9",
-                    "0x461ba7FA5c2e94EB93e881b7C7E3A7DC4c1CD6b4",
-                    "0x05eF41Da0B0c76b6E17Be79BdaacF66306CbeBB5",
-                    "0x055EE7DDc298Dca46172a7A9A43E28b76C17Ad26",
-                    "0xFC4B6deA9276D906AD36828dc2e7DbaCfC01B47f",
-                    "0x631dCe3a422e1af1AD9d3952B06f9320e2f2ed72",
-                    "0xb03f52D2DB3e758DD49982Defd6AeEFEa9454e80",
-                    "0xc4fF55A961bC04b880e60219CCBBDD139c6451A4",
-                    "0x2f733b00127449fcf8b5a195bc51abb73b7f7a75",
-                    "0x883c6d437d45b7ce61c07606fb390e6c28be27b8",
-                    "0x3a8883381e4416488db94a8e0469394ecfa8a024",
-                    "0xef9a5ff5d3057d539543bc223efccbc2168b19d6",
-                    "0x1d87cee5c2f88b60588dd97e24d4b7c3d4f74935",
-                    "0xafd2c84b9d1cd50e7e18a55e419749a6c9055e1f",
-                    "0x49ab32dc8c870ab033ca87df2b954c4c24405e64",
-                    "0x14d60f07924e3a7226ddd368409243edf87e6205",
-                    "0x77b9a432b23ff5fc798c92a1435b0e51772bc538",
-                    "0xbf6c935a2b6ec453704ea72c8e14592f2fb27130",
-                    "0x0aAf1de71910D9f2BE10e6C75B3eB6Eca377CBF2",
-                    "0x099b3368eb5BBE6f67f14a791ECAeF8bC1628A7F",
-                    "0x6aF999D0Cb99773398Ddb265aDf0243fbf5125DF",
-                    "0xb3cAc293c3bF27F4f0232f66ACd2b79705b888d4",
-                    //"0x3324539a66203EddBE8DA4E45DFa8D8fD8985eBb", //unkowing token
-                    "0x101D5e5651D7f949154258C1C7516da1eC273476",
-                    "0x1C5472efDF8CE67259D6f44ef548c68703797fA2",
-                    "0xDF479E13E71ce207CE1e58D6f342c039c3D90b7D",
-                    "0x99347C4c68dE5F661194e9854eF8399cD57ca0e5",
-                    "0x3dac764b79AcDbc9FC4d3F6A58C15260Ed3dB230",
-                    "0xc8f650131f160Da1f362777E3D5D7162ae3ac077",
-                    //"0x8B57098ee6EafbE85fC3977Cb974B5ab929e63f2", //unkowing token
-                    //"0x9F808baac4CC2efC80467440D918E5EB23B03f97", //unkowing token
-                    "0x2414D571E490981B4dD8f554d0e719aed114525B",
-                    //"0x90C80b2A2F32B4f5646a79364fafd5099246eb88", //unkowing token
-                    "0xd15c4a55e4c2CA9B9AD6243200FF46EF12E4A421",
-                    "0xB4d9036B81b9B6A7De1C70887c29938eC8df6048",
-                    "0x3460ddf1E3Ed8db401fe3f2DF9A7CC9f3e5D85d0",
-                    "0x0e2cC300673129E08e50eA9136dcA3b6468133DD",
-                    "0xAF307D86B08C54Bb840Ab17ef66AbBBA87C6aaBe",
-                    //"0x1d37704877e38b48F4600c20Ac8E5EfEC768094A", //unkowing token
-                    //"0x55c50eA1Ff75558AE282E7D04a22D4bB39118c9f",unkowing token
-                    //"0x267A10d6053a8D52b7D91De34791D61e9E8353D1",unkowing token
-                    "0x45bC4ffb31A40a99a22236A579c0D9A9957591af",
-                    "0xc8110F2544a8E5075a9b3f00dC1c95543342c7a2",
-                    "0xd60F580254DFdECd88EfED627b286eB5E5BB34a4",
-                    "0x6FA6fC9ecDbB0917731cb90d596210d7D5e6CD7b",
-                    "0x59Bc700Acd8826675C3B729794B1647978be2d7F",
-                    "0xE225cc39749fb79936b0dA0C482F7385f169E507",
-                    "0xB57A824EC021E8Bdbbb762044fF3B8ae9fB1aAC3",
-                    "0xA853D38197Be4E9ED8A466852f5bD2E7daA36abD",
-                    //"0x871f1AA4a607B2f7a62971b95840adD41E6A5d45",unkowing token
-                    "0xAEA343b1EF5ECfa0D252d7078425BaC047cf5d18",
-                    "0x97f7884C1e57cA991B949B9aC2c6A04599e8F988",
-                    "0xFa3F4061622BF8Ed257366373765f87Ca3c1947A",
-                    "0x3B6B729e32ed640C05C7dC790324BDDc961E1a18",
-                    "0x6ab1A7a258718E49fBd65b0fe86A1c36A34A23a8"].map(a => {
+    const gauges = [
+                    "0x883c6d437d45b7ce61c07606fb390e6c28be27b8", //USDC HND
+                  ].map(a => {
       return {
         address: a,
         abi: VELODROME_GAUGE_ABI,
@@ -118,7 +63,7 @@ $(function() {
       }
       const stakeTokenAddress = await STAKING_POOL.callStatic[stakeTokenFunction]();
 
-      var stakeToken = await getOptimisticToken(App, stakeTokenAddress, stakingAddress);
+      var stakeToken = await getToken(App, stakeTokenAddress, stakingAddress);
 
       if (stakeTokenAddress.toLowerCase() === rewardTokenAddress.toLowerCase()) {
         stakeToken.staked = await STAKING_POOL.totalSupply() / 10 ** stakeToken.decimals;
@@ -134,10 +79,10 @@ $(function() {
       var newTokenAddresses = stakeToken.tokens.filter(x =>
         !getParameterCaseInsensitive(tokens,x));
       for (const address of newTokenAddresses) {
-          tokens[address] = await getOptimisticToken(App, address, stakingAddress);
+          tokens[address] = await getToken(App, address, stakingAddress);
       }
       if (!getParameterCaseInsensitive(tokens, rewardTokenAddress)) {
-          tokens[rewardTokenAddress] = await getOptimisticToken(App, rewardTokenAddress, stakingAddress);
+          tokens[rewardTokenAddress] = await getToken(App, rewardTokenAddress, stakingAddress);
       }
       const rewardToken = getParameterCaseInsensitive(tokens, rewardTokenAddress);
 
@@ -158,7 +103,7 @@ $(function() {
       const rewardTokenPrice = getParameterCaseInsensitive(prices, rewardTokenAddress)?.usd;
 
       const calls = [STAKING_MULTI.periodFinish(rewardTokenAddress), STAKING_MULTI.rewardRate(rewardTokenAddress),
-        STAKING_MULTI.balanceOf(App.YOUR_ADDRESS), STAKING_MULTI.earned(App.YOUR_ADDRESS)]
+        STAKING_MULTI.balanceOf(App.YOUR_ADDRESS), STAKING_MULTI.earned(rewardTokenAddress, App.YOUR_ADDRESS)]
       const [periodFinish, rewardRate, balance, earned_] = await App.ethcallProvider.all(calls);
 
       const weeklyRewards = (Date.now() / 1000 > periodFinish) ? 0 : rewardRate / 10 ** rewardToken.decimals * 604800;
@@ -271,7 +216,7 @@ async function printVelodromeSynthetixPool(App, info, chain="eth", customURLs) {
   }
   
   async function loadVelodromeSynthetixPoolInfoPrice(App, tokens, prices, stakingAddress, stakeTokenAddress) {
-    var stakeToken = await getGeneralEthcallToken(App, stakeTokenAddress, stakingAddress);
+    var stakeToken = await getToken(App, stakeTokenAddress, stakingAddress);
     var newPriceAddresses = stakeToken.tokens.filter(x =>
       !getParameterCaseInsensitive(prices, x));
     var newPrices = await lookUpTokenPrices(newPriceAddresses);
@@ -282,7 +227,7 @@ async function printVelodromeSynthetixPool(App, info, chain="eth", customURLs) {
     var newTokenAddresses = stakeToken.tokens.filter(x =>
       !getParameterCaseInsensitive(tokens,x));
     for (const address of newTokenAddresses) {
-        tokens[address] = await getGeneralEthcallToken(App, address, stakingAddress);
+        tokens[address] = await getToken(App, address, stakingAddress);
     }
     const poolPrices = getPoolPrices(tokens, prices, stakeToken, "optimism");
   
