@@ -11,7 +11,7 @@ async function main() {
     _print("Reading smart contracts...\n");
 
 
-   const CHEF_ADDR = "0x10fD095543E3a1Feb26CC1F57F20a8f4002b0220";
+   const CHEF_ADDR = "0x237aeF9e106f35406ba435d865Ab151E2bA82d7B";
    const rewardTokenTicker = "OpenX";
    const CHEF = new ethers.Contract(CHEF_ADDR, CHEF_ABI, App.provider);
    const OPENX = "0xc3864f98f2a61A7cAeb95b039D031b4E2f55e0e9";
