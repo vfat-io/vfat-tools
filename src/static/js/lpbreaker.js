@@ -5,6 +5,10 @@ $(function() {
 async function main() {
     const App = await init_ethers();
 
+    /*const router_contract = new ethers.Contract("0x267bAbbE93B9E9499aCA9938Dd46922590428643", GENERAL_ROUTER_ABI, App.provider);
+    const router_factory = await router_contract.factory();
+    console.log(router_factory);*/
+
     let connectedNetwork = await App.provider.getNetwork();
     let connectedNetworkName = networkNameFromId(connectedNetwork.chainId);
 
@@ -103,7 +107,7 @@ async function main() {
       }catch(err){
         console.log(err);
         _print("");
-        _print(`\nCannot find this token. Please check your connected netwrok and try again.`);
+        _print(`\nCannot find this LP token.`);
         _print(`The page will be refreshed in 15 seconds.`);
         transactionFailedWithoutErrorMessage();
       }
