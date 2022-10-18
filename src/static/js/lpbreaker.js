@@ -5,7 +5,7 @@ $(function() {
 async function main() {
     const App = await init_ethers();
 
-    /*const router_contract = new ethers.Contract("0x267bAbbE93B9E9499aCA9938Dd46922590428643", GENERAL_ROUTER_ABI, App.provider);
+    /*const router_contract = new ethers.Contract("0x73f7790344815a0e100eb12dbfd55f0d9df6d171", GENERAL_ROUTER_ABI, App.provider);
     const router_factory = await router_contract.factory();
     console.log(router_factory);*/
 
