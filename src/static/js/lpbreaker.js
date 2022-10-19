@@ -5,10 +5,6 @@ $(function() {
 async function main() {
     const App = await init_ethers();
 
-    /*const router_contract = new ethers.Contract("0x73f7790344815a0e100eb12dbfd55f0d9df6d171", GENERAL_ROUTER_ABI, App.provider);
-    const router_factory = await router_contract.factory();
-    console.log(router_factory);*/
-
     let connectedNetwork = await App.provider.getNetwork();
     let connectedNetworkName = networkNameFromId(connectedNetwork.chainId);
 
