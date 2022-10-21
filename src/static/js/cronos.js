@@ -47,7 +47,8 @@ const main = async() => {
       ["Smx Swap             ","", `<a href='smx'          >Various</a>`,"SMX          ","https://smxswap.com"],
       ["Dark Crystal         ","", `<a href='darkcrystl'   >Various</a>`,"MINE         ","https://cronos.darkcrystl.com"],
       ["Procyon Finance      ","", `<a href='procyon'      >Various</a>`,"PCY          ","https://procyon.finance"],
-      ["Cronos Steakhouse    ","", `<a href='steakhouse'   >Various</a>`,"             ","https://www.cronossteakhouse.com"]
+      ["Cronos Steakhouse    ","", `<a href='steakhouse'   >Various</a>`,"             ","https://www.cronossteakhouse.com"],
+      ["Evolve Finance       ","", `<a href='evolve'       >Various</a>`,"EVL          ","https://www.evl.finance"]
     ]
   }
 
