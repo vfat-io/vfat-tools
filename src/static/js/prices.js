@@ -569,7 +569,11 @@ const maticTokens = [
   { "id": "arth", "symbol": "ARTH","contract": "0xe52509181feb30eb4979e29ec70d50fd5c44d590" },
   { "id": "mahadao", "symbol": "MAHA","contract": "0xedd6ca8a4202d4a36611e2fff109648c4863ae19" },
   { "id": "stargate-finance", "symbol": "STG","contract": "0x2F6F07CDcf3588944Bf4C42aC74ff24bF56e7590" },
-  { "id": "gains-network", "symbol": "GNS","contract": "0xe5417af564e4bfda1c483642db72007871397896" }
+  { "id": "gains-network", "symbol": "GNS","contract": "0xe5417af564e4bfda1c483642db72007871397896" },
+  { "id": "frax-share", "symbol": "FXS","contract": "0x1a3acf6D19267E2d3e7f898f42803e90C9219062" },
+  { "id": "klima-dao", "symbol": "KLIMA","contract": "0x4e78011ce80ee02d2c3e649fb657e45898257815" },
+  { "id": "toucan-protocol-base-carbon-tonne", "symbol": "BCT","contract": "0x2f800db0fdb5223b3c3f354886d907a671414a7f" },
+  { "id": "frax", "symbol": "FRAX","contract": "0x45c32fA6DF82ead1e2EF74d17b76547EDdFaFF89" }
 ]
 
 const MeterTokens = [

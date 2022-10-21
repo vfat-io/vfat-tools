@@ -44,10 +44,6 @@ async function loadMaticSushiContract(App, tokens, prices, chef, chefAddress, ch
 
   _print(`Found ${poolCount} pools.\n`)
 
-  _print(`Showing incentivized pools only.\n`);
-
-  var tokens = {};
-
   const rewardTokenAddress = await chefContract.callStatic[rewardTokenFunction]();
   const rewardToken = await getMaticToken(App, rewardTokenAddress, chefAddress);
   const rewardsPerWeek = rewardsPerWeekFixed ??
@@ -111,7 +107,7 @@ async function getSushiPoolInfo(app, chefContract, chefAddress, poolIndex, pendi
     chefMaticRewardsAddress) {
     const poolInfo = await chefContract.poolInfo(poolIndex);
     const lpToken = await chefContract.lpToken(poolIndex);
-    if (poolInfo.allocPoint == 0) {
+    /*if (poolInfo.allocPoint == 0) {
       return {
         address: lpToken,
         allocPoints: poolInfo.allocPoint ?? 1,
@@ -119,7 +115,7 @@ async function getSushiPoolInfo(app, chefContract, chefAddress, poolIndex, pendi
         userStaked : 0,
         pendingRewardTokens : 0,
       };
-    }
+    }*/
     const poolToken = await getMaticToken(app, lpToken, chefAddress);
     const userInfo = await chefContract.userInfo(poolIndex, app.YOUR_ADDRESS);
     //const userInfoMatic = await chefMaticRewardsContract.userInfo(poolIndex, app.YOUR_ADDRESS);
@@ -128,7 +124,7 @@ async function getSushiPoolInfo(app, chefContract, chefAddress, poolIndex, pendi
     const staked = userInfo.amount / 10 ** poolToken.decimals;
     return {
         address: lpToken,
-        allocPoints: poolInfo.allocPoint ?? 1,
+        allocPoints: poolInfo.allocPoint,
         poolToken: poolToken,
         userStaked : staked,
         pendingRewardTokens : pendingRewardTokens / 10 ** 18,
@@ -145,7 +141,7 @@ function printSushiPool(App, chefAbi, chefAddr, prices, tokens, poolInfo, poolIn
   const sp = (poolInfo.stakedToken == null) ? null : getPoolPrices(tokens, prices, poolInfo.stakedToken);
   var poolRewardsPerWeek = poolInfo.allocPoints / totalAllocPoints * rewardsPerWeek;
   let poolMaticRewardsPerWeek = poolInfo.allocPoints / totalAllocPoints * maticRewardsPerWeek;
-  if (poolRewardsPerWeek == 0 && rewardsPerWeek != 0) return;
+  //if (poolRewardsPerWeek == 0 && rewardsPerWeek != 0) return;
   const userStaked = poolInfo.userLPStaked ?? poolInfo.userStaked;
   const rewardPrice = getParameterCaseInsensitive(prices, rewardTokenAddress)?.usd;
   const rewardMaticPrice = getParameterCaseInsensitive(prices, maticTokenAddress)?.usd;
