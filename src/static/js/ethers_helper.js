@@ -51,6 +51,9 @@ const pageNetwork = function() {
   if (network.toLowerCase() === 'emerald') {
     return window.NETWORKS.EMERALD
   }
+  if (network.toLowerCase() === 'canto') {
+    return window.NETWORKS.CANTO
+  }
   if (network.toLowerCase() === 'kcc') {
     return window.NETWORKS.KCC
   }
@@ -2423,14 +2426,16 @@ function getUniPrices(tokens, prices, pool, chain="eth")
                 {
                   "fantom": `https://solidly.exchange`,
                   "metis": `https://hermes.maiadao.io/#/swap`,
-                  "optimism": `https://app.velodrome.finance/swap`
+                  "optimism": `https://app.velodrome.finance/swap`,
+                  "canto": `https://forteswap.xyz/`,
                 }
               [chain]):
               pool.symbol.includes("sAMM") ?  (
                 {
                   "fantom" : `https://solidly.exchange`,
                   "metis" : `https://hermes.maiadao.io/#/swap`,
-                  "optimism" : `https://app.velodrome.finance/swap`
+                  "optimism" : `https://app.velodrome.finance/swap`,
+                  "canto": `https://forteswap.xyz/`,
                 }
               [chain]):
               pool.symbol.includes("ZLK-LP") ?  `https://dex.zenlink.pro/#/info/overview` :
@@ -2589,6 +2594,11 @@ function getUniPrices(tokens, prices, pool, chain="eth")
               `https://whaleswap.finance/add/`,
               `https://whaleswap.finance/add/`,
               `https://whaleswap.finance/swap`
+            ],
+            "canto" : [
+              `https://forteswap.xyz/pool/add-liquidity/`,
+              `https://forteswap.xyz/pool/remove-liquidity/`,
+              `https://forteswap.xyz/`
             ]
           } [chain]):
           pool.symbol.includes("sAMM") ? ({
@@ -2611,6 +2621,11 @@ function getUniPrices(tokens, prices, pool, chain="eth")
               `https://whaleswap.finance/add/`,
               `https://whaleswap.finance/add/`,
               `https://whaleswap.finance/swap`
+            ],
+            "canto" : [
+              `https://forteswap.xyz/pool/add-liquidity/`,
+              `https://forteswap.xyz/pool/remove-liquidity/`,
+              `https://forteswap.xyz/`
             ]
           } [chain]):
           pool.symbol.includes("HBLP") ? [
@@ -3439,6 +3454,9 @@ function getErc20Prices(prices, pool, chain="eth") {
     case "cronos":
       poolUrl=`https://cronoscan.com/address/${pool.address}`;
       break;
+    case "canto":
+      poolUrl=`https://evm.explorer.canto.io/address/${pool.address}`;
+      break;
     case "moonbeam":
       poolUrl=`https://moonscan.io/address/${pool.address}`;
       break;
@@ -4125,6 +4143,9 @@ async function printSynthetixPool(App, info, chain="eth", customURLs) {
       case "cronos":
         _print(`<a target="_blank" href="https://cronoscan.com/address/${info.stakingAddress}#code">Cronos Scan</a>`);
         break;
+      case "canto":
+        _print(`<a target="_blank" href="https://evm.explorer.canto.io/address/${info.stakingAddress}#code">CANTO Scan</a>`);
+        break;
       case "moonriver":
         _print(`<a target="_blank" https://moonriver.moonscan.io/address/${info.stakingAddress}#code">Moonriver Explorer</a>`);
         break;
@@ -4311,6 +4332,8 @@ function getChainExplorerUrl(chain, address){
       return `https://arbiscan.io/address/${address}`;
     case "cronos" :
       return `https://cronoscan.com/address/${address}`;
+    case "canto" :
+      return `https://evm.explorer.canto.io/address/${address}`;
     case "moonbeam" :
       return `https://moonscan.io/address/${address}`;
     case "moonriver" :
