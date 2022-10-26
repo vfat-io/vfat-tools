@@ -111,6 +111,21 @@ window.NETWORKS = {
       "https://explorer.dogechain.dog"
     ]
   },
+  CANTO: {
+    "chainId": "0x1E14",
+    "chainName": "CANTO",
+    "nativeCurrency": {
+      "name": "CANTO",
+      "symbol": "CANTO",
+      "decimals": 18
+    },
+    "rpcUrls": [
+      "https://canto.slingshot.finance"
+    ],
+    "blockExplorerUrls": [
+      "https://evm.explorer.canto.io"
+    ]
+  },
   MILKOMEDA: {
     "chainId": "0x7D1",
     "chainName": "Milkomeda C1 Mainnet",

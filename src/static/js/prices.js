@@ -244,6 +244,15 @@ const bscTokens = [
   { "id": "beglobaldao", "symbol": "GLBD", "contract": "0xd177e36377e71775d6f9956b3fdd0f02664c6996" }
 ]
 
+const cantoTokens = [
+  { "id": "note","symbol": "NOTE","contract": "0x4e71a2e537b7f9d9413d3991d37958c0b5e1e503" },
+  { "id": "canto","symbol": "CANTO","contract": "0x826551890Dc65655a0Aceca109aB11AbDbD7a07B" },
+  { "id": "weth","symbol": "WETH","contract": "0x5FD55A1B9FC24967C4dB09C513C3BA0DFa7FF687" },
+  { "id": "cosmos","symbol": "ATOM","contract": "0xecEEEfCEE421D8062EF8d6b4D814efe4dc898265" },
+  { "id": "canto-inu","symbol": "CINU","contract": "0x7264610A66EcA758A8ce95CF11Ff5741E1fd0455" },
+  { "id": "usd-coin","symbol": "USDC","contract": "0x80b5a32E4F032B2a058b4F29EC95EEfEEB87aDcd" }
+]
+
 const celoTokens = [
   { "id": "ubeswap","symbol": "UBE","contract": "0x00be915b9dcf56a3cbe739d9b9c202ca692409ec" },
   { "id": "celo-dollar","symbol": "CUSD","contract": "0x64dEFa3544c695db8c535D289d843a189aa26b98" },
@@ -757,6 +766,15 @@ async function getBscPrices() {
   const idPrices = await lookUpPrices(bscTokens.map(x => x.id));
   const prices = {}
   for (const bt of bscTokens)
+      if (idPrices[bt.id])
+          prices[bt.contract] = idPrices[bt.id];
+  return prices;
+}
+
+async function getCantoPrices() {
+  const idPrices = await lookUpPrices(cantoTokens.map(x => x.id));
+  const prices = {}
+  for (const bt of cantoTokens)
       if (idPrices[bt.id])
           prices[bt.contract] = idPrices[bt.id];
   return prices;
