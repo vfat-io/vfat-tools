@@ -582,7 +582,8 @@ const maticTokens = [
   { "id": "frax-share", "symbol": "FXS","contract": "0x1a3acf6D19267E2d3e7f898f42803e90C9219062" },
   { "id": "klima-dao", "symbol": "KLIMA","contract": "0x4e78011ce80ee02d2c3e649fb657e45898257815" },
   { "id": "toucan-protocol-base-carbon-tonne", "symbol": "BCT","contract": "0x2f800db0fdb5223b3c3f354886d907a671414a7f" },
-  { "id": "frax", "symbol": "FRAX","contract": "0x45c32fA6DF82ead1e2EF74d17b76547EDdFaFF89" }
+  { "id": "frax", "symbol": "FRAX","contract": "0x45c32fA6DF82ead1e2EF74d17b76547EDdFaFF89" },
+  { "id": "hop-protocol", "symbol": "HOP","contract": "0xc5102fE9359FD9a28f877a67E36B0F050d81a3CC" }
 ]
 
 const MeterTokens = [
