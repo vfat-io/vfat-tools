@@ -251,7 +251,8 @@ const cantoTokens = [
   { "id": "weth","symbol": "WETH","contract": "0x5FD55A1B9FC24967C4dB09C513C3BA0DFa7FF687" },
   { "id": "cosmos","symbol": "ATOM","contract": "0xecEEEfCEE421D8062EF8d6b4D814efe4dc898265" },
   { "id": "canto-inu","symbol": "CINU","contract": "0x7264610A66EcA758A8ce95CF11Ff5741E1fd0455" },
-  { "id": "usd-coin","symbol": "USDC","contract": "0x80b5a32E4F032B2a058b4F29EC95EEfEEB87aDcd" }
+  { "id": "usd-coin","symbol": "USDC","contract": "0x80b5a32E4F032B2a058b4F29EC95EEfEEB87aDcd" },
+  { "id": "tether","symbol": "USDT","contract": "0xd567B3d7B8FE3C79a1AD8dA978812cfC4Fa05e75" },
 ]
 
 const celoTokens = [
