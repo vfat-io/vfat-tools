@@ -24,7 +24,8 @@ const ArbitrumTokens = [
   { "id": "governance-ohm", "symbol": "gOHM", "contract": "0x8D9bA570D6cb60C7e3e0F31343Efe75AB8E65FB1"},
   { "id": "stargate-finance", "symbol": "STG", "contract": "0x6694340fc020c5E6B96567843da2df01b2CE1eb6"},
   { "id": "jones-dao", "symbol": "JONES", "contract": "0x10393c20975cF177a3513071bC110f7962CD67da" },
-  { "id": "impermax", "symbol": "IMX", "contract": "0x9c67ee39e3c4954396b9142010653f17257dd39c" }
+  { "id": "impermax", "symbol": "IMX", "contract": "0x9c67ee39e3c4954396b9142010653f17257dd39c" },
+  { "id": "hop-protocol", "symbol": "HOP", "contract": "0xc5102fe9359fd9a28f877a67e36b0f050d81a3cc" }
 ];
 
 const AstarTokens = [
@@ -250,7 +251,8 @@ const cantoTokens = [
   { "id": "weth","symbol": "WETH","contract": "0x5FD55A1B9FC24967C4dB09C513C3BA0DFa7FF687" },
   { "id": "cosmos","symbol": "ATOM","contract": "0xecEEEfCEE421D8062EF8d6b4D814efe4dc898265" },
   { "id": "canto-inu","symbol": "CINU","contract": "0x7264610A66EcA758A8ce95CF11Ff5741E1fd0455" },
-  { "id": "usd-coin","symbol": "USDC","contract": "0x80b5a32E4F032B2a058b4F29EC95EEfEEB87aDcd" }
+  { "id": "usd-coin","symbol": "USDC","contract": "0x80b5a32E4F032B2a058b4F29EC95EEfEEB87aDcd" },
+  { "id": "tether","symbol": "USDT","contract": "0xd567B3d7B8FE3C79a1AD8dA978812cfC4Fa05e75" },
 ]
 
 const celoTokens = [
@@ -420,12 +422,15 @@ const FuseTokens = [
 
 const xdaiTokens = [ 
   { "id": "xdai","symbol": "xDAI","contract": "0xe91D153E0b41518A2Ce8Dd3D7944Fa863463a97d" },
+  { "id": "tether","symbol": "USDT","contract": "0x4ECaBa5870353805a9F068101A40E0f32ed605C6" },
+  { "id": "usd-coin","symbol": "USDC","contract": "0xDDAfbb505ad214D7b80b1f830fcCc89B60fb7A83" },
   { "id": "weth","symbol": "WETH","contract": "0x6A023CCd1ff6F2045C3309768eAd9E68F978f6e1" },
   { "id": "lever-network","symbol": "LEV","contract": "0xaCb954Db4F51558016455cE9b1Ba32a5bd8b529d" },
   { "id": "honey","symbol": "HNY","contract": "0x71850b7e9ee3f13ab46d67167341e4bdc905eef9" },
   { "id": "xdai-native-comb","symbol": "XCOMB","contract": "0x38fb649ad3d6ba1113be5f57b927053e97fc5bf7" },
   { "id": "elk-finance","symbol": "ELK","contract": "0xE1C110E1B1b4A1deD0cAf3E42BfBdbB7b5d7cE1C" },
-  { "id": "gnosis","symbol": "GNO","contract": "0x9C58BAcC331c9aa871AFD802DB6379a98e80CEdb" }
+  { "id": "gnosis","symbol": "GNO","contract": "0x9C58BAcC331c9aa871AFD802DB6379a98e80CEdb" },
+  { "id": "hop-protocol","symbol": "HOP","contract": "0xc5102fE9359FD9a28f877a67E36B0F050d81a3CC" }
 ]
 
 const HarmonyTokens = [
@@ -582,7 +587,8 @@ const maticTokens = [
   { "id": "frax-share", "symbol": "FXS","contract": "0x1a3acf6D19267E2d3e7f898f42803e90C9219062" },
   { "id": "klima-dao", "symbol": "KLIMA","contract": "0x4e78011ce80ee02d2c3e649fb657e45898257815" },
   { "id": "toucan-protocol-base-carbon-tonne", "symbol": "BCT","contract": "0x2f800db0fdb5223b3c3f354886d907a671414a7f" },
-  { "id": "frax", "symbol": "FRAX","contract": "0x45c32fA6DF82ead1e2EF74d17b76547EDdFaFF89" }
+  { "id": "frax", "symbol": "FRAX","contract": "0x45c32fA6DF82ead1e2EF74d17b76547EDdFaFF89" },
+  { "id": "hop-protocol", "symbol": "HOP","contract": "0xc5102fE9359FD9a28f877a67E36B0F050d81a3CC" }
 ]
 
 const MeterTokens = [
@@ -675,7 +681,8 @@ const optimisticTokens = [
   { "id": "renbtc","symbol": "RENBTC", "contract": "0x85f6583762Bc76d775eAB9A7456db344f12409F7" },
   { "id": "dforce-token","symbol": "DF", "contract": "0x9e5AAC1Ba1a2e6aEd6b32689DFcF62A509Ca96f3" },
   { "id": "token-dforce-usd","symbol": "USX", "contract": "0xbfD291DA8A403DAAF7e5E9DC1ec0aCEaCd4848B9" },
-  { "id": "ageur","symbol": "AGEUR", "contract": "0x9485aca5bbBE1667AD97c7fE7C4531a624C8b1ED" }
+  { "id": "ageur","symbol": "AGEUR", "contract": "0x9485aca5bbBE1667AD97c7fE7C4531a624C8b1ED" },
+  { "id": "hop-protocol","symbol": "HOP", "contract": "0xc5102fe9359fd9a28f877a67e36b0f050d81a3cc" }
 ];
 
 const polisTokens = [

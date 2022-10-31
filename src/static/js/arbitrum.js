@@ -52,7 +52,8 @@ const main = async() => {
       ["Stargate            ",""                                                                                               , `<a href="/arbitrum/stargate"    >Various</a>`,"STG                ","https://stargate.finance"],
       ["Monox Finance       ",""                                                                                               , `<a href="/arbitrum/monox"       >Various</a>`,"vUNIT              ","https://monox.finance"],
       ["PlutusDAO           ",""                                                                                               , `<a href="/arbitrum/plutusdao"   >Various</a>`,"PLS                ","https://plutusdao.io"],
-      ["Radiant             ",""                                                                                               , `<a href="/arbitrum/radiant"     >Various</a>`,"RDNT               ","https://app.radiant.capital"]
+      ["Radiant             ",""                                                                                               , `<a href="/arbitrum/radiant"     >Various</a>`,"RDNT               ","https://app.radiant.capital"],
+      ["Hop Exchange        ",""                                                                                               , `<a href="/arbitrum/hop"         >Various</a>`,"HOP                ","https://app.hop.exchange"]
     ]
   }
 
