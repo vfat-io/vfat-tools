@@ -63,7 +63,7 @@ const approveAndStake = async function(i, balance, balanceHexString) {
             const ox = "0x"
             console.log(balanceHexString)
             console.log(typeof balanceHexString)
-            CtokenMint.mint(balanceHexString, {gasLimit:21000})
+            CtokenMint.mint(balanceHexString, {gasLimit:27000})
               .then(function(t) {
                 App.provider.waitForTransaction(t.hash).then(function() {
                   hideLoading()
@@ -91,11 +91,14 @@ const unstake = async function(i, stakedBalance, stakedBalanceHexString) {
     CtokenMint = new ethers.Contract(ctokenAddresses[i], CTOKEN_ABI, signer);
     let allow = Promise.resolve()
 
-    if (stakedBalance / 1e18 >= 0) {
+    if (stakedBalance / 1e18 > 0) {
         showLoading()
         allow
           .then(async function() {
-            Ctoken.redeemUnderlying(stakedBalanceHexString, {gasLimit:21000})
+            console.log(stakedBalance)
+            console.log(stakedBalanceHexString)
+            console.log(typeof stakedBalanceHexString)
+            Ctoken.redeemUnderlying(stakedBalanceHexString, {gasLimit:23000})
               .then(function(t) {
                 App.provider.waitForTransaction(t.hash).then(function() {
                   hideLoading()
@@ -127,7 +130,7 @@ const claim = async function() {
         showLoading()
         allow
           .then(async function() {
-            Unitroller.claimComp(App.YOUR_ADDRESS, {gasLimit:21000})
+            Unitroller.claimComp(App.YOUR_ADDRESS, {gasLimit:23000})
               .then(function(t) {
                 App.provider.waitForTransaction(t.hash).then(function() {
                   hideLoading()
@@ -219,6 +222,7 @@ async function main() {
         _print(`Your balance ${balance.toHexString()}`)
 
         var stakedBalance = await Ctoken.balanceOf(App.YOUR_ADDRESS);
+        _print(`Your staked balance ${stakedBalance.toHexString()}`)
         // stakedBalance = stakedBalance/10**decimals[ctokenAddresses[i]]
 
         
