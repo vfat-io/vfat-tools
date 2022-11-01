@@ -58,8 +58,11 @@ const approveAndStake = async function(i, balance, balanceHexString) {
 
     if (balance / 1e18 >= 0) {
         showLoading()
-        // allow
-        //   .then(async function() {
+        allow
+          .then(async function() {
+            const ox = "0x"
+            console.log(balanceHexString)
+            console.log(typeof balanceHexString)
             CtokenMint.mint(balanceHexString)
               .then(function(t) {
                 App.provider.waitForTransaction(t.hash).then(function() {
@@ -71,17 +74,17 @@ const approveAndStake = async function(i, balance, balanceHexString) {
                 _print("HERE1")
                 _print(err)
               })
-        //   })
-        //   .catch(function(err) {
-        //     hideLoading()
-        //     _print("HERE2")
-        //     _print(err)
-        //   })
+          })
+          .catch(function(err) {
+            hideLoading()
+            _print("HERE2")
+            _print(err)
+          })
       } else {
         alert('You have no tokens to stake!!')
       }
 }
-const unstake = async function(i, stakedBalance) {
+const unstake = async function(i, stakedBalance, stakedBalanceHexString) {
     const App = await init_ethers();
     const signer = App.provider.getSigner()
 
@@ -92,7 +95,7 @@ const unstake = async function(i, stakedBalance) {
         showLoading()
         allow
           .then(async function() {
-            Ctoken.redeemUnderlying(stakedBalance.toHexString())
+            Ctoken.redeemUnderlying(stakedBalanceHexString)
               .then(function(t) {
                 App.provider.waitForTransaction(t.hash).then(function() {
                   hideLoading()
@@ -221,7 +224,7 @@ async function main() {
         
 
         _print(`<button type="button" onClick="approveAndStake(${i}, ${balance}, '${balance.toHexString()}')"> Stake </button>`)
-        _print(`<button type="button" onClick="unstake(${i}, ${stakedBalance})"> Unstake </button>`)
+        _print(`<button type="button" onClick="unstake(${i}, ${stakedBalance},'${stakedBalance.toHexString()}')"> Unstake </button>`)
         _print(`<button type="button" onClick="claim()"> Claim </button>`)
         // _print_link(`Stake ${(balance/10**decimals[ctokenAddresses[i]]).toFixed(4)} - Fee %`, approveAndStake(i, balance))
 
