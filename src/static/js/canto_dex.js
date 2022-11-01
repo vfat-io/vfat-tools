@@ -63,7 +63,7 @@ const approveAndStake = async function(i, balance, balanceHexString) {
             const ox = "0x"
             console.log(balanceHexString)
             console.log(typeof balanceHexString)
-            CtokenMint.mint(balanceHexString)
+            CtokenMint.mint(balanceHexString, {gasLimit:21000})
               .then(function(t) {
                 App.provider.waitForTransaction(t.hash).then(function() {
                   hideLoading()
@@ -95,7 +95,7 @@ const unstake = async function(i, stakedBalance, stakedBalanceHexString) {
         showLoading()
         allow
           .then(async function() {
-            Ctoken.redeemUnderlying(stakedBalanceHexString)
+            Ctoken.redeemUnderlying(stakedBalanceHexString, {gasLimit:21000})
               .then(function(t) {
                 App.provider.waitForTransaction(t.hash).then(function() {
                   hideLoading()
@@ -127,7 +127,7 @@ const claim = async function() {
         showLoading()
         allow
           .then(async function() {
-            Unitroller.claimComp(App.YOUR_ADDRESS)
+            Unitroller.claimComp(App.YOUR_ADDRESS, {gasLimit:21000})
               .then(function(t) {
                 App.provider.waitForTransaction(t.hash).then(function() {
                   hideLoading()
