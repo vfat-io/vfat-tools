@@ -35,59 +35,123 @@ async function main() {
     const tokens = {};
     const prices = await getBscPrices();
 
+    //*******************************************************************************************************************************************
+    //Button to show only the pools of the user
+
+    let log = document.getElementById("log");
+
+    let userButton = document.createElement("button");
+    userButton.innerHTML = "Show My Pools";
+
+    userButton.onclick = async function() {
+      _print("");
+      _print_bold(`Your Staking Pools`);
+      showLoading();
+      _print("");
+      await loadAnimalsContract(App, tokens, prices, DOGS_CHEF, DOGS_CHEF_ADDR, DOGS_CHEF_ABI, rewardTokenTicker2,
+        "dogsToken", null, rewardsPerWeek2, "pendingDogs", [], true);
+      _print("");
+      await loadAnimalsContract(App, tokens, prices, PIGS_CHEF, PIGS_CHEF_ADDR, PIGS_CHEF_ABI, rewardTokenTicker,
+        "PigsV2Token", null, rewardsPerWeek, "pendingPigs", [], true);
+
+      hideLoading();
+    }
+
+    //log.appendChild(userButton);
+    document.body.appendChild(userButton);
+
+    //*******************************************************************************************************************************************
+
     //to receive the price from LP DOGS
     await loadAnimalsSynthetixPoolInfo(App, tokens, prices, "0xb5151965b13872b183eba08e33d0d06743ac8132");
     await loadAnimalsContract(App, tokens, prices, DOGS_CHEF, DOGS_CHEF_ADDR, DOGS_CHEF_ABI, rewardTokenTicker2,
-      "dogsToken", null, rewardsPerWeek2, "pendingDogs");
+      "dogsToken", null, rewardsPerWeek2, "pendingDogs", [], false);
     _print("");
     await loadAnimalsContract(App, tokens, prices, PIGS_CHEF, PIGS_CHEF_ADDR, PIGS_CHEF_ABI, rewardTokenTicker,
-      "PigsV2Token", null, rewardsPerWeek, "pendingPigs");
+      "PigsV2Token", null, rewardsPerWeek, "pendingPigs", [], false);
 
     hideLoading();
   }
 
-async function getAnimalsPoolInfo(App, chefContract, chefAddress, poolIndex, pendingRewardsFunction) {
-  const poolInfo = await chefContract.poolInfo(poolIndex);
-  if (poolInfo.allocPoint == 0 || poolIndex == 105) {
+async function getAnimalsPoolInfo(App, chefContract, chefAddress, poolIndex, pendingRewardsFunction, clicked) {
+  if(!clicked){
+    const poolInfo = await chefContract.poolInfo(poolIndex);
+    if (poolInfo.allocPoint == 0 || poolIndex == 105) {
+      return {
+        address: poolInfo.lpToken ?? poolInfo.token,
+        allocPoints: poolInfo.allocPoint ?? 1,
+        poolToken: null,
+        userStaked : 0,
+        pendingRewardTokens : 0,
+        stakedToken : null,
+        userLPStaked : 0,
+        lastRewardBlock : poolInfo.lastRewardBlock
+      };
+    }
+    const poolToken = await getBscToken(App, poolInfo.lpToken ?? poolInfo.token, chefAddress);
+    poolToken.staked = poolInfo.lpSupply / 10 ** poolToken.decimals;
+    const userInfo = await chefContract.userInfo(poolIndex, App.YOUR_ADDRESS);
+    const pendingRewardTokens = await chefContract.callStatic[pendingRewardsFunction](poolIndex, App.YOUR_ADDRESS);
+    const staked = userInfo.amount / 10 ** poolToken.decimals;
     return {
-      address: poolInfo.lpToken ?? poolInfo.token,
-      allocPoints: poolInfo.allocPoint ?? 1,
-      poolToken: null,
-      userStaked : 0,
-      pendingRewardTokens : 0,
-      stakedToken : null,
-      userLPStaked : 0,
-      lastRewardBlock : poolInfo.lastRewardBlock
+        address: poolInfo.lpToken ?? poolInfo.token,
+        allocPoints: poolInfo.allocPoint ?? 1,
+        poolToken: poolToken,
+        userStaked : staked,
+        pendingRewardTokens : pendingRewardTokens / 10 ** 18,
+        depositFee : (poolInfo.depositFeeBP ?? 0) / 100,
+        withdrawFee : (poolInfo.withdrawFeeBP ?? 0) / 100
+    };
+  }else{
+    const poolInfo = await chefContract.poolInfo(poolIndex);
+    const poolToken = await getBscToken(App, poolInfo.lpToken ?? poolInfo.token, chefAddress);
+    poolToken.staked = poolInfo.lpSupply / 10 ** poolToken.decimals;
+    const userInfo = await chefContract.userInfo(poolIndex, App.YOUR_ADDRESS);
+    const pendingRewardTokens = await chefContract.callStatic[pendingRewardsFunction](poolIndex, App.YOUR_ADDRESS);
+    const staked = userInfo.amount / 10 ** poolToken.decimals;
+    if (staked <= 0) {
+      return {
+        address: poolInfo.lpToken ?? poolInfo.token,
+        allocPoints: poolInfo.allocPoint ?? 1,
+        poolToken: null,
+        userStaked : 0,
+        pendingRewardTokens : 0,
+        stakedToken : null,
+        userLPStaked : 0,
+        lastRewardBlock : poolInfo.lastRewardBlock
+      };
+    }
+    return {
+        address: poolInfo.lpToken ?? poolInfo.token,
+        allocPoints: poolInfo.allocPoint ?? 1,
+        poolToken: poolToken,
+        userStaked : staked,
+        pendingRewardTokens : pendingRewardTokens / 10 ** 18,
+        depositFee : (poolInfo.depositFeeBP ?? 0) / 100,
+        withdrawFee : (poolInfo.withdrawFeeBP ?? 0) / 100
     };
   }
-  const poolToken = await getBscToken(App, poolInfo.lpToken ?? poolInfo.token, chefAddress);
-  poolToken.staked = poolInfo.lpSupply / 10 ** poolToken.decimals;
-  const userInfo = await chefContract.userInfo(poolIndex, App.YOUR_ADDRESS);
-  const pendingRewardTokens = await chefContract.callStatic[pendingRewardsFunction](poolIndex, App.YOUR_ADDRESS);
-  const staked = userInfo.amount / 10 ** poolToken.decimals;
-  return {
-      address: poolInfo.lpToken ?? poolInfo.token,
-      allocPoints: poolInfo.allocPoint ?? 1,
-      poolToken: poolToken,
-      userStaked : staked,
-      pendingRewardTokens : pendingRewardTokens / 10 ** 18,
-      depositFee : (poolInfo.depositFeeBP ?? 0) / 100,
-      withdrawFee : (poolInfo.withdrawFeeBP ?? 0) / 100
-  };
 }
 
 async function loadAnimalsContract(App, tokens, prices, chef, chefAddress, chefAbi, rewardTokenTicker,
   rewardTokenFunction, rewardsPerBlockFunction, rewardsPerWeekFixed, pendingRewardsFunction,
-  deathPoolIndices) {
+  deathPoolIndices, clicked) {
   const chefContract = chef ?? new ethers.Contract(chefAddress, chefAbi, App.provider);
 
   const poolCount = parseInt(await chefContract.poolLength(), 10);
   const totalAllocPoints = await chefContract.totalAllocPoint();
 
-  _print(`<a href='https://bscscan.com/address/${chefAddress}' target='_blank'>Staking Contract</a>`);
-  _print(`Found ${poolCount} pools.\n`)
+  if(!clicked){
+    _print(`<a href='https://bscscan.com/address/${chefAddress}' target='_blank'>Staking Contract</a>`);
+    _print(`Found ${poolCount} pools.\n`)
 
-  _print(`Showing incentivized pools only.\n`);
+    _print(`Showing incentivized pools only.\n`);
+  }else{
+    _print(`<a href='https://bscscan.com/address/${chefAddress}' target='_blank'>Staking Contract</a>`);
+    _print(`Found ${poolCount} pools.\n`)
+
+    _print(`Showing your staking pools only\n`);
+  }
 
   var tokens = {};
 
@@ -98,7 +162,7 @@ async function loadAnimalsContract(App, tokens, prices, chef, chefAddress, chefA
     / 10 ** rewardToken.decimals * 604800 / 3
 
   const poolInfos = await Promise.all([...Array(poolCount).keys()].map(async (x) =>
-    await getAnimalsPoolInfo(App, chefContract, chefAddress, x, pendingRewardsFunction)));
+    await getAnimalsPoolInfo(App, chefContract, chefAddress, x, pendingRewardsFunction, clicked)));
 
   var tokenAddresses = [].concat.apply([], poolInfos.filter(x => x.poolToken).map(x => x.poolToken.tokens));
 
@@ -137,7 +201,9 @@ async function loadAnimalsContract(App, tokens, prices, chef, chefAddress, chefA
     }
   }
   averageApr = averageApr / totalUserStaked;
-  _print_bold(`Total Staked: $${formatMoney(totalStaked)}`);
+  if(!clicked){
+    _print_bold(`Total Staked: $${formatMoney(totalStaked)}`);
+  }
   if (totalUserStaked > 0) {
     _print_bold(`\nYou are staking a total of $${formatMoney(totalUserStaked)} at an average APR of ${(averageApr * 100).toFixed(2)}%`)
     _print(`Estimated earnings:`
