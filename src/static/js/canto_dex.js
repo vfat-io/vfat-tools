@@ -92,8 +92,6 @@ const stake = async function(i, balance, balanceHexString) {
         showLoading()
         allow
           .then(async function() {
-            console.log(balanceHexString)
-            console.log(typeof balanceHexString)
             CtokenMint.mint(balanceHexString)
                 .then(function(t) {
                   App.provider.waitForTransaction(t.hash).then(function() {
@@ -127,9 +125,6 @@ const unstake = async function(i, stakedBalance, stakedBalanceHexString) {
         showLoading()
         allow
           .then(async function() {
-            console.log(stakedBalance)
-            console.log(stakedBalanceHexString)
-            console.log(typeof stakedBalanceHexString)
             CtokenMint.redeemUnderlying(stakedBalanceHexString)
               .then(function(t) {
                 App.provider.waitForTransaction(t.hash).then(function() {
@@ -254,41 +249,25 @@ async function main() {
 
 
         var balance = await BaseV1Pair.balanceOf(App.YOUR_ADDRESS);
-
-        _print(typeof balance)
-        console.log(balance)
-        // var useBalanceStake = balance - 27000;
-        // balance = balance/10**decimals[ctokenAddresses[i]]
-        _print(`Your balance ${(balance/10**18).toFixed(2)}`)
-        // _print(useBalanceStake.toHexString())
-        // _print(useBalanceStake)
+        _print(`Your balance ${(balance/10**decimals[ctokenAddresses[i]]).toFixed(2)}`)
 
         var stakedBalance = await Ctoken.balanceOf(App.YOUR_ADDRESS);
-        _print(`Your staked balance ${(stakedBalance/10**18).toFixed(2)}`)
-        // stakedBalance = stakedBalance/10**decimals[ctokenAddresses[i]]
+        _print(`Your staked balance ${(stakedBalance/10**decimals[ctokenAddresses[i]]).toFixed(2)}`)
+
 
         var allowance = await BaseV1Pair.allowance(App.YOUR_ADDRESS, ctokenAddresses[i])
-        _print(`You can stake ${(allowance/10**18).toFixed(2)} without having to re-allow`)
+        _print(`You can stake ${(allowance/10**decimals[ctokenAddresses[i]]).toFixed(2)} without having to re-allow`)
         
         
         if(allowance.lt(balance)){
           _print_bold("You cannot stake without approving first.");
           _print(`<button type="button" onClick="approve(${i})"> Approve </button>`)
-
         }
         else{
           _print(`<button type="button" onClick="stake(${i}, ${balance}, '${balance.toHexString()}')"> Stake Your Balance</button>`)
         }
 
-
         _print(`<button type="button" onClick="unstake(${i}, ${stakedBalance},'${stakedBalance.toHexString()}')"> Unstake Your Staked Balance</button>`)
-
-        // _print_link(`Stake ${(balance/10**decimals[ctokenAddresses[i]]).toFixed(4)} - Fee %`, approveAndStake(i, balance))
-        
-        
-        // _print_link(`Unstake ${(stakedBalance/10**decimals[ctokenAddresses[i]]).toFixed(4)} - Fee %`, unstake(i))
-        
-        // _print_link(`Claim - Fee %`, claim(i))
       }
     let rewards = await Comptroller.compAccrued(App.YOUR_ADDRESS)
     _print(`You have earned ${(rewards/10**18).toFixed(2)}`)
