@@ -26,7 +26,7 @@ const ctokenAddresses = [
 
 const decimals = {
     "0x4e71a2e537b7f9d9413d3991d37958c0b5e1e503": 18, // NOTE
-    "0x826551890dc65655a0aceca109ab11abdbd7a07b": 18, // CANTO
+    "0x826551890dc65655a0aceca109ab11abdbd7a07b": 18, // wCANTO
     "0x5fd55a1b9fc24967c4db09c513c3ba0dfa7ff687": 18, // WETH
     "0xeceeefcee421d8062ef8d6b4d814efe4dc898265": 6, // ATOM
     "0x7264610a66eca758a8ce95cf11ff5741e1fd0455": 18, //CINU
@@ -39,7 +39,7 @@ const decimals = {
     "0xc0d6574b2fe71eed8cd305df0da2323237322557": 18, // wCANTO-ATOM
 }
 
-const cantoAddress = "0x826551890dc65655a0aceca109ab11abdbd7a07b"
+const wcantoAddress = "0x826551890dc65655a0aceca109ab11abdbd7a07b"
 
 const pairNames = [
     ["NOTE", "USDC"],
@@ -236,11 +236,13 @@ async function main() {
         _print(`Supply APR - ${apr.toFixed(2)}%`)
 
         var compSupplySpeed = await Comptroller.compSupplySpeeds(ctokenAddresses[i]);
-        const cantoPrice = prices[cantoAddress]["usd"];
+        const wcantoPrice = prices[wcantoAddress]["usd"];
         const tokenSupply = await Ctoken.getCash();
-        const distApyYearly = ((compSupplySpeed * blocksPerYear) / tokenSupply) * (cantoPrice / tokenPrice) * 100;
+        const dailywcanto = ((((compSupplySpeed*blocksPerYear)/365)/10**18))
+        const distApyYearly = ((compSupplySpeed * blocksPerYear) / tokenSupply) * (wcantoPrice / tokenPrice) * 100;
         const distApyDaily = distApyYearly/365;
         const distApyWeekly = distApyYearly/52;
+        _print(`WCANTO per week - ${dailywcanto.toFixed(2)} ($${formatMoney(dailywcanto*wcantoPrice)})`)
         _print(`Daily Distribution APR - ${distApyDaily.toFixed(2)}%`)
         _print(`Weekly Distribution APR - ${distApyWeekly.toFixed(2)}%`)
         _print(`Yearly Distribution APR - ${distApyYearly.toFixed(2)}%`)
