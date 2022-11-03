@@ -241,9 +241,9 @@ async function main() {
         const distApyYearly = ((compSupplySpeed * blocksPerYear) / tokenSupply) * (cantoPrice / tokenPrice) * 100;
         const distApyDaily = distApyYearly/365;
         const distApyWeekly = distApyYearly/52;
-        _print(`Yearly Distribution APR - ${distApyYearly.toFixed(2)}%`)
         _print(`Daily Distribution APR - ${distApyDaily.toFixed(2)}%`)
         _print(`Weekly Distribution APR - ${distApyWeekly.toFixed(2)}%`)
+        _print(`Yearly Distribution APR - ${distApyYearly.toFixed(2)}%`)
 
         _print(`<a href='https://evm.explorer.canto.io/address/${ctokenAddresses[i]}' target='_blank'>Canto Explorer</a>\n`);
 
@@ -268,10 +268,10 @@ async function main() {
         }
 
         _print(`<a href="#" onClick="unstake(${i}, ${stakedBalance},'${stakedBalance.toHexString()}')">Unstake Your Staked Balance</a>`)
+        // let rewards = await Comptroller.compAccrued(App.YOUR_ADDRESS)
+        // console.log(rewards)
+        // _print(`You have earned ${rewards.toString()}`)
+        _print(`<a href="#" onClick="claim()">Claim</a>`)
       }
-    let rewards = await Comptroller.compAccrued(App.YOUR_ADDRESS)
-    console.log(rewards)
-    _print(`You have earned ${rewards.toString()}`)
-    _print(`<a href="#" onClick="claim()">Claim</a>`)
     hideLoading();
 }
