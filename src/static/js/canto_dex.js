@@ -88,7 +88,7 @@ const stake = async function(i, balance, balanceHexString) {
     CtokenMint = new ethers.Contract(ctokenAddresses[i], CTOKEN_ABI, signer);
     let allow = Promise.resolve()
 
-    if (balance / 1e18 >= 0) {
+    if (balance / 1e18 > 0) {
         showLoading()
         allow
           .then(async function() {
@@ -261,16 +261,17 @@ async function main() {
         
         if(allowance.lt(balance)){
           _print_bold("You cannot stake without approving first.");
-          _print(`<button type="button" onClick="approve(${i})"> Approve </button>`)
+          _print(`<a href="#" onClick="approve(${i})">Approve</a>`)
         }
         else{
-          _print(`<button type="button" onClick="stake(${i}, ${balance}, '${balance.toHexString()}')"> Stake Your Balance</button>`)
+          _print(`<a href="#" onClick="stake(${i}, ${balance}, '${balance.toHexString()}')">Stake Your Balance</a>`)
         }
 
-        _print(`<button type="button" onClick="unstake(${i}, ${stakedBalance},'${stakedBalance.toHexString()}')"> Unstake Your Staked Balance</button>`)
+        _print(`<a href="#" onClick="unstake(${i}, ${stakedBalance},'${stakedBalance.toHexString()}')">Unstake Your Staked Balance</a>`)
       }
     let rewards = await Comptroller.compAccrued(App.YOUR_ADDRESS)
-    _print(`You have earned ${(rewards/10**18).toFixed(2)}`)
-    _print(`<button type="button" onClick="claim()"> Claim </button>`)
+    console.log(rewards)
+    _print(`You have earned ${rewards.toString()}`)
+    _print(`<a href="#" onClick="claim()">Claim</a>`)
     hideLoading();
 }
