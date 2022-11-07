@@ -69,14 +69,12 @@ const approve = async function(i) {
       })
       .catch(function(err) {
         hideLoading()
-        _print("HERE3")
         _print(err)
       })
       
     })
     .catch(function(err) {
       hideLoading()
-      _print("HERE2")
       _print(err)
     })
 }
@@ -100,13 +98,11 @@ const stake = async function(i, balance, balanceHexString) {
                 })
                 .catch(function(err) {
                   hideLoading()
-                  _print("HERE1")
                   _print(err)
                 })
           })
           .catch(function(err) {
             hideLoading()
-            _print("HERE2")
             _print(err)
           })
       } else {
@@ -133,13 +129,11 @@ const unstake = async function(i, stakedBalance, stakedBalanceHexString) {
               })
               .catch(function(err) {
                 hideLoading()
-                _print("HERE1")
                 _print(err)
               })
           })
           .catch(function(err) {
             hideLoading()
-            _print("HERE2")
             _print(err)
           })
       } else {
@@ -167,13 +161,11 @@ const claim = async function() {
               })
               .catch(function(err) {
                 hideLoading()
-                _print("HERE1")
                 _print(err)
               })
           })
           .catch(function(err) {
             hideLoading()
-            _print("HERE2")
             _print(err)
           })
       } else {
@@ -270,9 +262,6 @@ async function main() {
         }
 
         _print(`<a href="#" onClick="unstake(${i}, ${stakedBalance},'${stakedBalance.toHexString()}')">Unstake Your Staked Balance</a>`)
-        // let rewards = await Comptroller.compAccrued(App.YOUR_ADDRESS)
-        // console.log(rewards)
-        // _print(`You have earned ${rewards.toString()}`)
         _print(`<a href="#" onClick="claim()">Claim</a>`)
       }
     hideLoading();
