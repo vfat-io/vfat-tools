@@ -69,14 +69,12 @@ const approve = async function(i) {
       })
       .catch(function(err) {
         hideLoading()
-        _print("HERE3")
         _print(err)
       })
       
     })
     .catch(function(err) {
       hideLoading()
-      _print("HERE2")
       _print(err)
     })
 }
@@ -88,7 +86,7 @@ const stake = async function(i, balance, balanceHexString) {
     CtokenMint = new ethers.Contract(ctokenAddresses[i], CTOKEN_ABI, signer);
     let allow = Promise.resolve()
 
-    if (balance / 1e18 > 0) {
+    if (balance / 10**decimals[ctokenAddresses[i]] > 0) {
         showLoading()
         allow
           .then(async function() {
@@ -100,13 +98,11 @@ const stake = async function(i, balance, balanceHexString) {
                 })
                 .catch(function(err) {
                   hideLoading()
-                  _print("HERE1")
                   _print(err)
                 })
           })
           .catch(function(err) {
             hideLoading()
-            _print("HERE2")
             _print(err)
           })
       } else {
@@ -121,7 +117,7 @@ const unstake = async function(i, stakedBalance, stakedBalanceHexString) {
     CtokenMint = new ethers.Contract(ctokenAddresses[i], CTOKEN_ABI, signer);
     let allow = Promise.resolve()
 
-    if (stakedBalance / 1e18 > 0) {
+    if (stakedBalance / 10**decimals[ctokenAddresses[i]] > 0) {
         showLoading()
         allow
           .then(async function() {
@@ -133,13 +129,11 @@ const unstake = async function(i, stakedBalance, stakedBalanceHexString) {
               })
               .catch(function(err) {
                 hideLoading()
-                _print("HERE1")
                 _print(err)
               })
           })
           .catch(function(err) {
             hideLoading()
-            _print("HERE2")
             _print(err)
           })
       } else {
@@ -155,30 +149,26 @@ const claim = async function() {
 
     let allow = Promise.resolve()
 
-    if (1e18 / 1e18 >= 0) {
-        showLoading()
-        allow
-          .then(async function() {
-            Comptroller.claimComp(App.YOUR_ADDRESS)
-              .then(function(t) {
-                App.provider.waitForTransaction(t.hash).then(function() {
-                  hideLoading()
-                })
-              })
-              .catch(function(err) {
-                hideLoading()
-                _print("HERE1")
-                _print(err)
-              })
+
+    showLoading()
+    allow
+      .then(async function() {
+        Comptroller.claimComp(App.YOUR_ADDRESS)
+          .then(function(t) {
+            App.provider.waitForTransaction(t.hash).then(function() {
+              hideLoading()
+            })
           })
           .catch(function(err) {
             hideLoading()
-            _print("HERE2")
             _print(err)
           })
-      } else {
-        alert('You have no tokens to claim!!')
-      }
+      })
+      .catch(function(err) {
+        hideLoading()
+        _print(err)
+      })
+      
 }
 
 async function main() {
@@ -270,9 +260,6 @@ async function main() {
         }
 
         _print(`<a href="#" onClick="unstake(${i}, ${stakedBalance},'${stakedBalance.toHexString()}')">Unstake Your Staked Balance</a>`)
-        // let rewards = await Comptroller.compAccrued(App.YOUR_ADDRESS)
-        // console.log(rewards)
-        // _print(`You have earned ${rewards.toString()}`)
         _print(`<a href="#" onClick="claim()">Claim</a>`)
       }
     hideLoading();
