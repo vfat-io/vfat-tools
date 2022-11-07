@@ -313,6 +313,12 @@ const EmeraldTokens = [
   { "id": "wrapped-bitcoin", "symbol": "WBTC", "contract": "0xd43ce0aa2a29DCb75bDb83085703dc589DE6C7eb"},
 ];
 
+const EthwTokens = [
+  { "id": "uniwswap", "symbol": "UNIW", "contract": "0x2a0cf46ecaaead92487577e9b737ec63b0208a33"},
+  { "id": "weth", "symbol": "WETH", "contract": "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2"},
+  { "id": "usd-coin", "symbol": "USDC", "contract": "0x11bbB41B3E8baf7f75773DB7428d5AcEe25FEC75"}
+];
+
 const evmosTokens = [
   { "id": "usd-coin","symbol": "USDC", "contract": "0x51e44FfaD5C2B122C8b635671FCC8139dc636E82" },
   { "id": "evmos","symbol": "EVMOS", "contract": "0xD4949664cD82660AaE99bEdc034a0deA8A0bd517" },
@@ -829,6 +835,15 @@ async function getEmeraldPrices() {
   const idPrices = await lookUpPrices(EmeraldTokens.map(x => x.id));
   const prices = {}
   for (const bt of EmeraldTokens)
+      if (idPrices[bt.id])
+          prices[bt.contract] = idPrices[bt.id];
+  return prices;
+}
+
+async function getEthwPrices() {
+  const idPrices = await lookUpPrices(EthwTokens.map(x => x.id));
+  const prices = {}
+  for (const bt of EthwTokens)
       if (idPrices[bt.id])
           prices[bt.contract] = idPrices[bt.id];
   return prices;

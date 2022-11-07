@@ -201,6 +201,21 @@ window.NETWORKS = {
       "https://moonscan.io/"
     ]
   },
+  ETHW: {
+    "chainId": "0x2711",
+    "chainName": "ETHW-mainnet",
+    "nativeCurrency": {
+      "name": "EthereumPoW",
+      "symbol": "ETHW",
+      "decimals": 18
+    },
+    "rpcUrls": [
+      "https://mainnet.ethereumpow.org"
+    ],
+    "blockExplorerUrls": [
+      "https://mainnet.ethwscan.com"
+    ]
+  },
   OPTIMISM: {
     "chainId": "0xA",
     "chainName": "Optimistic Ethereum",
