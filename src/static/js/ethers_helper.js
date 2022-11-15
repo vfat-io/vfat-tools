@@ -42,6 +42,9 @@ const pageNetwork = function() {
   if (network.toLowerCase() === 'milkomeda') {
     return window.NETWORKS.MILKOMEDA
   }
+  if (network.toLowerCase() === 'ethw') {
+    return window.NETWORKS.ETHW
+  }
   if (network.toLowerCase() === 'dfk') {
     return window.NETWORKS.DFK
   }
@@ -2322,6 +2325,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
   else if (pool.name.includes("MISTswap LP Token")) stakeTokenTicker += " MistSwap LP";
   else if (pool.name.includes("TANGOswap LP Token")) stakeTokenTicker += " TangoSwap LP";
   else if (pool.name.includes("Flare LP Token")) stakeTokenTicker += " FLP LP";
+  else if (pool.name.includes("UniW")) stakeTokenTicker += " UniW LP";
   else if (pool.symbol.includes("BRUSH-LP")) stakeTokenTicker += " BRUSH LP";
   else if (pool.symbol.includes("APE-LP")) stakeTokenTicker += " APE LP";
   else if (pool.symbol.includes("Galaxy-LP")) stakeTokenTicker += " Galaxy LP";
@@ -2448,6 +2452,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
               pool.symbol.includes("SCLP") ?  `https://analytics.swapperchan.com/pairs/${pool.address}` :
               pool.symbol.includes("DXS") ?  `https://dxstats.eth.link/#/pair/${pool.address}` :
               pool.name.includes("Ubeswap") ?  `https://info.ubeswap.org/pair/${pool.address}` :
+              pool.name.includes("UniW") ?  `https://app.uniwswap.com/#/swap` :
               pool.symbol.includes("dogeshrek-lp") ?  `https://dogeshrek.com` :
               pool.symbol.includes("Farmtom-LP") ?  `https://farmtom.com/swap` :
               pool.symbol.includes("TOMB-V2-LP") ?  `https://swap.tomb.com/#/swap` :
@@ -2792,6 +2797,11 @@ function getUniPrices(tokens, prices, pool, chain="eth")
             `https://app.ubeswap.org/#/add/${t0address}/${t1address}`,
             `https://app.ubeswap.org/#/remove/${t0address}/${t1address}`,
             `https://app.ubeswap.org/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+          ] :
+          pool.name.includes("UniW") ? [
+            `https://app.uniwswap.com/#/add/${t0address}/${t1address}`,
+            `https://app.uniwswap.com/#/remove/${t0address}/${t1address}`,
+            `https://app.uniwswap.com/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
           ] :
           pool.symbol.includes("VLP") ? [
             `https://app.viralata.finance/add/${t0address}/${t1address}`,
@@ -3417,6 +3427,9 @@ function getErc20Prices(prices, pool, chain="eth") {
       break;
     case "milkomeda":
       poolUrl=`https://explorer-mainnet-cardano-evm.c1.milkomeda.com/address/${pool.address}`;
+      break;
+    case "ethw":
+      poolUrl=`https://www.oklink.com/en/ethw/address/${pool.address}`;
       break;
     case "okex":
       poolUrl=`https://www.oklink.com/okexchain/address/${pool.address}`;
@@ -4104,6 +4117,9 @@ async function printSynthetixPool(App, info, chain="eth", customURLs) {
       case "milkomeda":
         _print(`<a target="_blank" href="https://explorer-mainnet-cardano-evm.c1.milkomeda.com/address/${info.stakingAddress}#code">Milkomeda Explorer</a>`);
         break;
+      case "ethw":
+        _print(`<a target="_blank" href="https://www.oklink.com/en/ethw/address/${info.stakingAddress}#code">ETHW Explorer</a>`);
+        break;
       case "dfk":
         _print(`<a target="_blank" href="https://subnets.avax.network/defi-kingdoms/dfk-chain/explorer/address/${info.stakingAddress}#code">DFK Explorer</a>`);
         break;
@@ -4356,6 +4372,8 @@ function getChainExplorerUrl(chain, address){
       return `https://polygonscan.com/address/${address}`;
     case "milkomeda" :
       return `https://explorer-mainnet-cardano-evm.c1.milkomeda.com/address/${address}`;
+    case "ethw" :
+      return `https://www.oklink.com/en/ethw/address/${address}`;
     case "dfk" :
       return `https://subnets.avax.network/defi-kingdoms/dfk-chain/explorer/address/${address}`;
     case "avax" :

@@ -125,8 +125,12 @@ async function dogPoundPerformance(App, prices) {
   _print("------------------------------------------------")
   _print(`Total Dogs Staked : ${autoTotalstaked.toFixed(2)} $(${formatMoney(totalUsdAutoStaked)})`);
   _print(`You are staking : ${userAutoStaked.toFixed(2)} $(${formatMoney(userAutoStakedUsd)})`);
-  _print(`Pending PIGS Earned : ${pendingAutoPigs.toFixed(2)}`);
-  _print(`Pending LP (AFD/WBNB) Earned : ${pendingAutoLps.toFixed(2)}`);
+  if(pendingAutoPigs > 0.00001){
+    _print(`Pending PIGS Earned : ${pendingAutoPigs.toFixed(6)}`);
+  }else{
+    _print(`Pending PIGS Earned : ${pendingAutoPigs.toFixed(4)}`);
+  }
+  _print(`Pending LP (AFD/WBNB) Earned : ${pendingAutoLps.toFixed(4)}`);
 
   _print("")
 

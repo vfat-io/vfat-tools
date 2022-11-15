@@ -545,7 +545,7 @@ async function getGeneralPoolInfo(app, chefContract, chefAddress, poolIndex, pen
       poolToken: poolToken,
       userStaked : staked,
       pendingRewardTokens : pendingRewardTokens / 10 ** 18,
-      depositFee : (poolInfo.depositFeeBP ?? 0) / 100,
+      depositFee : (poolInfo.depositFeeBP ?? poolInfo.depositFee ?? 0) / 100,
       withdrawFee : (poolInfo.withdrawFeeBP ?? 0) / 100
   };
 }
@@ -592,6 +592,8 @@ async function loadGeneralChefContract(App, tokens, prices, chef, chefAddress, c
     case "doge" : _print(`<a href='https://explorer.dogechain.dog/address/${chefAddress}' target='_blank'>Staking Contract</a>`);
     break;
     case "canto" : _print(`<a href='https://evm.explorer.canto.io/address/${chefAddress}' target='_blank'>Staking Contract</a>`);
+    break;
+    case "ethw" : _print(`<a href='https://www.oklink.com/en/ethw/address/${chefAddress}' target='_blank'>Staking Contract</a>`);
     break;
   }
   _print(`Found ${poolCount} pools.\n`)
