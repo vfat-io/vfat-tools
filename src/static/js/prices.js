@@ -516,7 +516,9 @@ const IotexTokens = [
 const KavaTokens = [
   { "id": "weth", "symbol": "WETH", "contract": "0xE3F5a90F9cb311505cd691a46596599aA1A0AD7D"},
   { "id": "kava", "symbol": "KAVA", "contract": "0xc86c7C0eFbd6A49B35E8714C5f59D99De09A225b"},
-  { "id": "usd-coin","symbol": "USDC", "contract": "0xfA9343C3897324496A05fC75abeD6bAC29f8A40f" }
+  { "id": "usd-coin","symbol": "USDC", "contract": "0xfA9343C3897324496A05fC75abeD6bAC29f8A40f" },
+  { "id": "tether","symbol": "USDT", "contract": "0xB44a9B6905aF7c801311e8F4E76932ee959c663C" },
+  { "id": "dai","symbol": "DAI", "contract": "0x765277EebeCA2e31912C9946eAe1021199B39C61" }
 ];
 
 const KccTokens = [
