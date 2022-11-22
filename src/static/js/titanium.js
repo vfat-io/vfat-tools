@@ -24,7 +24,7 @@ async function main() {
     await loadEmptySetLP(App, LP, Dollars.T.CurveLP.address,
         "T3CRV-f",144, epoch, "T", uniPrices);
 
-    const resp = await fetch('https://api.vfat.tools/twap/' + Dollars.T.CurveLP.address);
+    /*const resp = await fetch('https://api.vfat.tools/twap/' + Dollars.T.CurveLP.address);
     const text = await resp.text();
     const array = text.split("\n");
     if (array.length > 0 && array[0][0] != '<') {
@@ -72,12 +72,16 @@ async function main() {
             _print(`DAO APY: Day 0% Week 0% Year 0%`)
             _print(`LP APR: Day 0% Week 0% Year 0%`)
         }
-        _print(`\nDAO Unbonds`)
-        await printDaoUnbonds(App.provider, DAO, epoch + 1, 240, 30 * 60,);
-        _print(`\LP Unbonds`)
-        await printLPUnbonds(App.provider, LP, epoch + 1, 144, 30 * 60);
-        hideLoading();
-    }
+    }*/
+
+    const tPrice = getParameterCaseInsensitive(prices, "0x6c3F90f043a72FA612cbac8115EE7e52BDe6E490").usd;
+
+    _print(`\nDAO Unbonds`)
+    await printDaoUnbonds(App.provider, DAO, epoch + 1, 240, 30 * 60, tPrice);
+    _print(`\LP Unbonds`)
+    await printLPUnbonds(App.provider, LP, epoch + 1, 144, 30 * 60, tPrice, "T");
+
+    hideLoading();
 }
 
 const loadTitaniumDAO = async (App, DAO, DOLLAR, uniswapAddress, liquidityPoolAddress, tokens, prices, fluidEpochs,
@@ -100,7 +104,8 @@ const loadTitaniumDAO = async (App, DAO, DOLLAR, uniswapAddress, liquidityPoolAd
     }));
     const uniPrices = getPoolPrices(tokens, prices, uniPool);
 
-    const tPrice = getParameterCaseInsensitive(prices, DOLLAR.address).usd;
+    //const tPrice = getParameterCaseInsensitive(prices, DOLLAR.address).usd;   //there is no 0x6967299e9F3d5312740Aa61dEe6E9ea658958e31
+    const tPrice = getParameterCaseInsensitive(prices, "0x6c3F90f043a72FA612cbac8115EE7e52BDe6E490").usd;
 
     const decimals = displayDecimals ?? 2;
 
