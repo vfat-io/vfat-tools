@@ -33,6 +33,7 @@ $(function() {
     //now i can use multiple synthetix function with different logic and pass new_gauges as a parameter
     //from now I have all the gauge addresses and i can interact with the contracts but some gauges are different e.g. gauge 100 and gauge 0 have different functions
     //a solution is to check for function lp_token() and if ! return and continue to the next contract
+    //example of a gauge 0x69Fb7c45726cfE2baDeE8317005d3F94bE838840
 
     const ASSETS_ADDRESS = "0x90E00ACe148ca3b23Ac1bC8C240C2a7Dd9c2d7f5"
     const ASSETS_CONTRACT = new ethcall.Contract(ASSETS_ADDRESS, ASSETS_CONTRACT_ABI);
