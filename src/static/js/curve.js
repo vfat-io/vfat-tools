@@ -19,21 +19,23 @@ $(function() {
     const NEW_GAUGE_CONTROLLER_ADDRESS = "0x2F50D538606Fa9EDD2B11E2446BEb18C9D5846bB"
     const NEW_GAUGE_CONTROLLER = new ethcall.Contract(NEW_GAUGE_CONTROLLER_ADDRESS, NEW_GAUGE_CONTROLLER_ABI);
 
+    const tokens = {};
+    let prices = {};
+
     const [_gauge_count] = await App.ethcallProvider.all([NEW_GAUGE_CONTROLLER.n_gauges()])
     const gauge_count = _gauge_count / 1;
     const gauge_controller_calls = [...Array(gauge_count).keys()].map(i => NEW_GAUGE_CONTROLLER.gauges(i));
     const gauge_controller_addresses = await App.ethcallProvider.all(gauge_controller_calls);
-    const new_gauges = gauge_controller_addresses.map(a => {
+    const new_gauges = gauge_controller_addresses
+    .map(a => {
       return {
         address : a,
         abi : NEW_GAUGE_ABI
       }
     })
 
-    //now i can use multiple synthetix function with different logic and pass new_gauges as a parameter
-    //from now I have all the gauge addresses and i can interact with the contracts but some gauges are different e.g. gauge 100 and gauge 0 have different functions
-    //a solution is to check for function lp_token() and if ! return and continue to the next contract
-    //example of a gauge 0x69Fb7c45726cfE2baDeE8317005d3F94bE838840
+    const stakeTokens = await tryGetAllNewCurveStakeTokens(App, NEW_GAUGE_ABI, new_gauges)
+    await tryGetAllNewCurvePricesAndTokens(App, tokens, prices, stakeTokens.stakeTokens);
 
     const ASSETS_ADDRESS = "0x90E00ACe148ca3b23Ac1bC8C240C2a7Dd9c2d7f5"
     const ASSETS_CONTRACT = new ethcall.Contract(ASSETS_ADDRESS, ASSETS_CONTRACT_ABI);
@@ -75,9 +77,6 @@ $(function() {
       }
     }
 
-    const tokens = {};
-    let prices = {};
-
     let lpTokens = []
     for(let i = 0; i < lpTokenAddresses.length; i++){
       const lpToken = await getToken(App, lpTokenAddresses[i], App.YOUR_ADDRESS);
@@ -105,6 +104,13 @@ $(function() {
     _print_bold(`\nTotal Value Staked: $${formatMoney(staked_tvl)}`);
     if (userTvl > 0) {
       _print_bold(`You are staking a total of $${formatMoney(userTvl)}`);
+    }
+    _print("");
+    //NEW POOLS HERE
+    let p = await loadMultipleCurveSynthetixPools(App, tokens, prices, new_gauges)
+    _print_bold(`Total staked: $${formatMoney(p.staked_tvl)}`);
+    if (p.totalUserStaked > 0) {
+      _print(`You are staking a total of $${formatMoney(p.totalUserStaked)} at an APR of ${(p.totalAPR * 100).toFixed(2)}%\n`);
     }
 
     hideLoading();
@@ -204,5 +210,225 @@ function tryGetPoolPrices(tokens, prices, pool, chain = "eth"){
   }catch(err){
     console.log(pool.address, err);
     return null;
+  }
+}
+
+async function loadMultipleCurveSynthetixPools(App, tokens, prices, gauges) {
+  let totalStaked  = 0, totalUserStaked = 0;
+  const infos = await Promise.all(gauges.map(p =>
+    loadCurveSynthetixPoolInfo(App, tokens, prices, p.abi, p.address)));
+  for (const i of infos) {
+    let p = await printCurveSynthetixPool(App, i);
+    totalStaked += p.staked_tvl && 0;
+    totalUserStaked += p.userStaked && 0;
+  }
+  return { staked_tvl : totalStaked, totalUserStaked };
+}
+
+async function loadCurveSynthetixPoolInfo(App, tokens, prices, stakingAbi, stakingAddress) {
+
+    const STAKING_MULTI = new ethcall.Contract(stakingAddress, stakingAbi);
+
+    const [stakeTokenAddress, balance] = await App.ethcallProvider.all([STAKING_MULTI.lp_token(), STAKING_MULTI.balanceOf(App.YOUR_ADDRESS)]);
+
+    //another option is to pass my stakeTokens array as a parameter here and the stakeTokens to tokens like this tokens[address] = await getToken(App, address, App.YOUR_ADDRESS);
+    var stakeToken = getParameterCaseInsensitive(tokens, stakeTokenAddress) ?? await getToken(App, stakeTokenAddress, stakingAddress);
+
+    const poolPrices = tryGetPoolPrices(tokens, prices, stakeToken);
+
+    const stakeTokenTicker = poolPrices.stakeTokenTicker;
+
+    const stakeTokenPrice =
+        prices[stakeTokenAddress]?.usd ?? getParameterCaseInsensitive(prices, stakeTokenAddress)?.usd;
+
+    const staked_tvl = poolPrices.staked_tvl;
+
+    const userStaked = balance / 10 ** stakeToken.decimals;
+
+    const userUnstaked = stakeToken.unstaked;
+
+    return  {
+      stakingAddress,
+      poolPrices,
+      stakeTokenAddress,
+      stakeTokenTicker,
+      stakeTokenPrice,
+      staked_tvl,
+      userStaked,
+      userUnstaked
+    }
+}
+
+async function printCurveSynthetixPool(App, info, chain="eth", customURLs) {
+  info.poolPrices.print_price(chain, 4, customURLs);
+  const userStakedUsd = info.userStaked * info.stakeTokenPrice;
+  const userStakedPct = userStakedUsd / info.staked_tvl * 100;
+  _print(`You are staking ${info.userStaked.toFixed(6)} ${info.stakeTokenTicker} ` +
+         `$${formatMoney(userStakedUsd)} (${userStakedPct.toFixed(2)}% of the pool).`);
+  const approveTENDAndStake = async function() {
+    return newCurveContract_stake(info.stakeTokenAddress, info.stakingAddress, App)
+  }
+  const unstake = async function() {
+    return rewardsContract_unstake(info.stakingAddress, App)
+  }
+  _print(`<a target="_blank" href="https://etherscan.io/address/${info.stakingAddress}#code">Etherscan</a>`);
+  if (info.stakeTokenAddress != "0x0000000000000000000000000000000000000000") {
+    _print_link(`Stake ${info.userUnstaked.toFixed(6)} ${info.stakeTokenTicker}`, approveTENDAndStake)
+  }
+  else {
+    _print(`Please use the official website to stake ${info.stakeTokenTicker}.`);
+  }
+  _print_link(`Unstake ${info.userStaked.toFixed(6)} ${info.stakeTokenTicker}`, unstake)
+
+  _print("");
+
+  return {
+      staked_tvl: info.poolPrices.staked_tvl,
+      userStaked : userStakedUsd
+  }
+}
+
+const newCurveContract_stake = async function(stakeTokenAddr, rewardPoolAddr, App, maxAllowance) {
+  const signer = App.provider.getSigner()
+
+  const TEND_TOKEN = new ethers.Contract(stakeTokenAddr, ERC20_ABI, signer)
+  const WEEBTEND_V2_TOKEN = new ethers.Contract(rewardPoolAddr, YFFI_REWARD_CONTRACT_ABI, signer)
+
+  const balanceOf = await TEND_TOKEN.balanceOf(App.YOUR_ADDRESS)
+  const currentTEND =  maxAllowance ? (maxAllowance / 1e18 < balanceOf / 1e18
+    ? maxAllowance : balanceOf) : balanceOf
+  const allowedTEND = await TEND_TOKEN.allowance(App.YOUR_ADDRESS, rewardPoolAddr)
+
+  let allow = Promise.resolve()
+
+  if (allowedTEND / 1e18 < currentTEND / 1e18) {
+    showLoading()
+    allow = TEND_TOKEN.approve(rewardPoolAddr, ethers.constants.MaxUint256)
+      .then(function(t) {
+        return App.provider.waitForTransaction(t.hash)
+      })
+      .catch(function() {
+        hideLoading()
+        alert('Try resetting your approval to 0 first')
+      })
+  }
+
+  if (currentTEND / 1e18 > 0) {
+    showLoading()
+    allow
+      .then(async function() {
+        WEEBTEND_V2_TOKEN.deposit(currentTEND, {gasLimit: 500000})
+          .then(function(t) {
+            App.provider.waitForTransaction(t.hash).then(function() {
+              hideLoading()
+            })
+          })
+          .catch(x => {
+            hideLoading()
+            console.log(x);
+            _print('Something went wrong.')
+          })
+      })
+      .catch(x => {
+        hideLoading()
+        console.log(x);
+        _print('Something went wrong.')
+      })
+  } else {
+    alert('You have no tokens to stake!!')
+  }
+}
+
+async function tryGetAllNewCurveStakeTokens(App, stakingAbi, _gauges) {
+  let stakeTokens = []
+  const gauges = _gauges.filter(g => 
+    g.address.toLowerCase() != "0xfDb129ea4b6f557b07BcDCedE54F665b7b6Bc281".toLowerCase() &&
+    g.address.toLowerCase() != "0x6C09F6727113543Fd061a721da512B7eFCDD0267".toLowerCase() &&
+    g.address.toLowerCase() != "0x060e386eCfBacf42Aa72171Af9EFe17b3993fC4F".toLowerCase() &&
+    g.address.toLowerCase() != "0x9044E12fB1732f88ed0c93cfa5E9bB9bD2990cE5".toLowerCase() &&
+    g.address.toLowerCase() != "0xFf17560d746F85674FE7629cE986E949602EF948".toLowerCase() &&
+    g.address.toLowerCase() != "0x9F86c5142369B1Ffd4223E5A2F2005FC66807894".toLowerCase() &&
+    g.address.toLowerCase() != "0x260e4fBb13DD91e187AE992c3435D0cf97172316".toLowerCase() &&
+    g.address.toLowerCase() != "0xB504b6EB06760019801a91B451d3f7BD9f027fC9".toLowerCase() &&
+    g.address.toLowerCase() != "0xa05E565cA0a103FcD999c7A7b8de7Bd15D5f6505".toLowerCase() &&
+    g.address.toLowerCase() != "0xf2Cde8c47C20aCbffC598217Ad5FE6DB9E00b163".toLowerCase() &&
+    g.address.toLowerCase() != "0x75D05190f35567e79012c2F0a02330D3Ed8a1F74".toLowerCase() &&
+    g.address.toLowerCase() != "0x56eda719d82aE45cBB87B7030D3FB485685Bea45".toLowerCase() &&
+    g.address.toLowerCase() != "0xAF78381216a8eCC7Ad5957f3cD12a431500E0B0D".toLowerCase() &&
+    g.address.toLowerCase() != "0x279f11F8E2825dbe0b00F6776376601AC948d868".toLowerCase() &&
+    g.address.toLowerCase() != "0xF2dDF89C04d702369Ab9eF8399Edb99a76e951Ce".toLowerCase() &&
+    g.address.toLowerCase() != "0x95069889DF0BCdf15bc3182c1A4D6B20631F3B46".toLowerCase() &&
+    g.address.toLowerCase() != "0xc1c5B8aAfE653592627B54B9527C7E98326e83Ff".toLowerCase() &&
+    g.address.toLowerCase() != "0x1c77fB5486545810679D53E325d5bCf6C6A45081".toLowerCase() &&
+    g.address.toLowerCase() != "0x9562c4D2E06aAf85efC5367Fb4544ECeB788465E".toLowerCase() &&
+    g.address.toLowerCase() != "0xbAF05d7aa4129CA14eC45cC9d4103a9aB9A9fF60".toLowerCase() &&
+    g.address.toLowerCase() != "0xfbb5b8f2f9b7a4d21ff44dC724C1Fb7b531A6612".toLowerCase() &&
+    g.address.toLowerCase() != "0xc5aE4B5F86332e70f3205a8151Ee9eD9F71e0797".toLowerCase() &&
+    g.address.toLowerCase() != "0x18006c6A7955Bf6Db72DE34089B975f733601660".toLowerCase() &&
+    g.address.toLowerCase() != "0x34eD182D0812D119c92907852D2B429f095A9b07".toLowerCase() &&
+    g.address.toLowerCase() != "0xd0698b2E41C42bcE42B51f977F962Fd127cF82eA".toLowerCase() &&
+    g.address.toLowerCase() != "0x1AEAA1b998307217D62E9eeFb6407B10598eF3b8".toLowerCase() &&
+    g.address.toLowerCase() != "0x82049b520cAc8b05E703bb35d1691B5005A92848".toLowerCase() &&
+    g.address.toLowerCase() != "0xdA690c2EA49a058a9966C69f46a05Bfc225939f4".toLowerCase() &&
+    g.address.toLowerCase() != "0x15bB164F9827De760174d3d3dAD6816eF50dE13c".toLowerCase() &&
+    g.address.toLowerCase() != "0xA6ff75281eACa4cD5fEEb333e8E15558208295e5".toLowerCase() &&
+    g.address.toLowerCase() != "0xF7b9c402c4D6c2eDbA04a7a515b53D11B1E9b2cc".toLowerCase() &&
+    g.address.toLowerCase() != "0x20759F567BB3EcDB55c817c9a1d13076aB215EdC".toLowerCase() &&
+    g.address.toLowerCase() != "0xbC38bD19227F91424eD4132F630f51C9A42Fa338".toLowerCase() &&
+    g.address.toLowerCase() != "0x319E268f0A4C85D404734ee7958857F5891506d7".toLowerCase() &&
+    g.address.toLowerCase() != "0xBb1B19495B8FE7C402427479B9aC14886cbbaaeE".toLowerCase() &&
+    g.address.toLowerCase() != "0x8D9649e50A0d1da8E939f800fB926cdE8f18B47D".toLowerCase() &&
+    g.address.toLowerCase() != "0xCE5F24B7A95e9cBa7df4B54E911B4A3Dc8CDAf6f".toLowerCase() &&
+    g.address.toLowerCase() != "0xDB3fd1bfC67b5D4325cb31C04E0Cae52f1787FD6".toLowerCase() &&
+    g.address.toLowerCase() != "0x8b397084699Cc64E429F610F81Fac13bf061ef55".toLowerCase() &&
+    g.address.toLowerCase() != "0x555766f3da968ecBefa690Ffd49A2Ac02f47aa5f".toLowerCase() &&
+    g.address.toLowerCase() != "0x1879075f1c055564CB968905aC404A5A01a1699A".toLowerCase() &&
+    g.address.toLowerCase() != "0x94A5E05D66834c6C6961E199D34dA576679fC187".toLowerCase() &&
+    g.address.toLowerCase() != "0xB721Cc32160Ab0da2614CC6aB16eD822Aeebc101".toLowerCase() &&
+    g.address.toLowerCase() != "0x172a5AF37f69C69CC59E748D090a70615830A5Dd".toLowerCase() &&
+    g.address.toLowerCase() != "0xCB8883D1D8c560003489Df43B30612AAbB8013bb".toLowerCase() &&
+    g.address.toLowerCase() != "0x15F52286C0FF1d7A7dDbC9E300dd66628D46D4e6".toLowerCase() &&
+    g.address.toLowerCase() != "0x6339eF8Df0C2d3d3E7eE697E241666a916B81587".toLowerCase() &&
+    g.address.toLowerCase() != "0x4620D46b4db7fB04a01A75fFed228Bc027C9A899".toLowerCase() &&
+    g.address.toLowerCase() != "0x00F7d467ef51E44f11f52a0c0Bef2E56C271b264".toLowerCase() &&
+    g.address.toLowerCase() != "0xF4eA7617E7999710244e2eAbfC8730d35482EE76".toLowerCase() &&
+    g.address.toLowerCase() != "0xD1426C391A7Cbe9DeCd302ac9c44e65C3505d1f0".toLowerCase() &&
+    g.address.toLowerCase() != "0x95285Ea6fF14F80A2fD3989a6bAb993Bd6b5fA13".toLowerCase() &&
+    g.address.toLowerCase() != "0x4B960396011A914B4ccCC3b33DFEE83A97A9D766".toLowerCase() &&
+    g.address.toLowerCase() != "0x488E6ef919C2bB9de535C634a80afb0114DA8F62".toLowerCase() &&
+    g.address.toLowerCase() != "0xC48f4653dd6a9509De44c92beb0604BEA3AEe714".toLowerCase() &&
+    g.address.toLowerCase() != "0xb9C05B8EE41FDCbd9956114B3aF15834FDEDCb54".toLowerCase() &&
+    g.address.toLowerCase() != "0xfE1A3dD8b169fB5BF0D5dbFe813d956F39fF6310".toLowerCase());
+  for(let gauge of gauges){
+    const STAKING_MULTI = new ethcall.Contract(gauge.address, stakingAbi);
+
+    const [stakeTokenAddress] = await App.ethcallProvider.all([STAKING_MULTI.lp_token()]);
+
+    var stakeToken = await getToken(App, stakeTokenAddress, gauge.address);
+    stakeTokens.push(stakeToken);
+  }
+
+  return  {
+    stakeTokens
+  }
+}
+
+async function tryGetAllNewCurvePricesAndTokens(App, tokens, prices, stakeTokens){
+  let newPriceAddresses = [], newTokenAddresses = [];
+  for(let stakeToken of stakeTokens){
+    newPriceAddresses.push(stakeToken.tokens.filter(x =>
+      !getParameterCaseInsensitive(prices,x)));
+    
+    newTokenAddresses.push(stakeToken.tokens.filter(x =>
+      !getParameterCaseInsensitive(tokens,x)));
+  }
+  
+  var newPrices = await lookUpTokenPrices(newPriceAddresses);
+  for (const key in newPrices) {
+    if (newPrices[key]?.usd)
+        prices[key] = newPrices[key];
+  }
+  for (const address of newTokenAddresses) {
+    tokens[address[0]] = await getToken(App, address[0], App.YOUR_ADDRESS);
   }
 }
