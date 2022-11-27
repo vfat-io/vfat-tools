@@ -229,12 +229,18 @@ async function loadCurveSynthetixPoolInfo(App, tokens, prices, stakingAbi, staki
 
     const STAKING_MULTI = new ethcall.Contract(stakingAddress, stakingAbi);
 
-    const [stakeTokenAddress, balance] = await App.ethcallProvider.all([STAKING_MULTI.lp_token(), STAKING_MULTI.balanceOf(App.YOUR_ADDRESS)]);
+    let stakeTokenAddress = "";
+    try{
+      [stakeTokenAddress] = await App.ethcallProvider.all([STAKING_MULTI.lp_token()]);
+    }catch(err){
+      console.log(stakingAddress);
+      return;
+    }
+    const [balance] = await App.ethcallProvider.all([STAKING_MULTI.balanceOf(App.YOUR_ADDRESS)]);
+    
+    const stakeToken = getParameterCaseInsensitive(tokens, stakeTokenAddress) ?? await getToken(App, stakeTokenAddress, stakingAddress);
 
-    //another option is to pass my stakeTokens array as a parameter here and the stakeTokens to tokens like this tokens[address] = await getToken(App, address, App.YOUR_ADDRESS);
-    var stakeToken = getParameterCaseInsensitive(tokens, stakeTokenAddress) ?? await getToken(App, stakeTokenAddress, stakingAddress);
-
-    const poolPrices = tryGetPoolPrices(tokens, prices, stakeToken);
+    const poolPrices = getPoolPrices(tokens, prices, stakeToken);
 
     const stakeTokenTicker = poolPrices.stakeTokenTicker;
 
@@ -260,6 +266,14 @@ async function loadCurveSynthetixPoolInfo(App, tokens, prices, stakingAbi, staki
 }
 
 async function printCurveSynthetixPool(App, info, chain="eth", customURLs) {
+  //I have to add and elseif in order to check !info.poolPrices?
+  //TypeError: Cannot read properties of undefined (reading 'poolPrices')
+  if(!info.poolPrices.price){
+    return {
+      staked_tvl: 0,
+      userStaked : 0
+    }
+  }
   info.poolPrices.print_price(chain, 4, customURLs);
   const userStakedUsd = info.userStaked * info.stakeTokenPrice;
   const userStakedPct = userStakedUsd / info.staked_tvl * 100;
