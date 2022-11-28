@@ -9,7 +9,7 @@ const main = async() => {
     "heading":["Pool Provider","LP", "Reward Tokens", "INFO"],
     "rows": [
       ["1inch               ",`<a href="1inch/"             >Various</a>`,"1INCH     ","https://1inch.exchange/#/dao/farming"],
-      ["Aave                ",`<a href="aave"               >Various</a>`,"stkAAVE   ","https://aave.com"],
+      ["Aave *              ",`<a href="aave"               >Various</a>`,"stkAAVE   ","https://aave.com"],
       ["Aladdin             ",`<a href="ald/"               >Various</a>`,"ALD       ","https://app.aladdin.club"],
       ["Aladdin (Concentrator) ",`<a href="concentrator/"   >Various</a>`,"aCRV      ","https://concentrator.aladdin.club/#/vault"],
       ["Alchemix            ",`<a href="alcx/"              >Various</a>`,"ALCX      ","https://app.alchemix.fi/farms"],
@@ -28,7 +28,7 @@ const main = async() => {
       ["Convex (Frax)       ",`<a href="convex_frax/"       >Various</a>`,"Various   ","https://frax.convexfinance.com"],
       ["Cover Protocol      ",`<a href="cover/"             >Various</a>`,"Various   ","https://app.coverprotocol.com"],
       ["Cryptex             ",`<a href="cryptex"            >Various</a>`,"CTX       ","https://app.cryptex.finance"],
-      ["Curve               ",`<a href="curve/"             >Various</a>`,"Various   ","https://curve.fi"],
+      ["Curve *             ",`<a href="curve/"             >Various</a>`,"Various   ","https://curve.fi"],
       ['DeFiner             ',`<a href="definer"            >Various</a>`,'FIN       ','https://app.definer.org'],
       ["DFX                 ",`<a href="dfx/"               >Various</a>`,"DFX       ","https://v0.dfx.finance/"],
       ["Dopex               ",`<a href="dopex/"             >Various</a>`,"DPX, rDPX ","https://app.dopex.io/farms"],

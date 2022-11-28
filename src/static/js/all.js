@@ -112,7 +112,7 @@ const main = async () => {
       ["Cyclone                      ", `<a href="../cyclone"            >Various</a>`, "CYC                ", "https://cyclone.xyz/eth"],
       ["Elena                        ", `<a href="../elena"              >Various</a>`, "ELENA              ", "https://app.elena.finance"],
       ["Dogen                        ", `<a href="../dogen"              >Various</a>`, "DOGEN              ", "https://dogen.finance"],
-      ["Aave                         ", `<a href="../aave"               >Various</a>`, "stkAAVE            ", "https://aave.com"],
+      ["Aave *                       ", `<a href="../aave"               >Various</a>`, "stkAAVE            ", "https://aave.com"],
       ["Mochi                        ", `<a href="../moma"               >Various</a>`, "MOMA               ", "https://mochi.market"],
       ["Synthetix                    ", `<a href="../snx"                >Various</a>`, "SNX                ", "https://staking.synthetix.io"],
       ["Lift kitchen                 ", `<a href="../liftkitchen"        >Various</a>`, "LIFT               ", "https://app.lift.kitchen"],

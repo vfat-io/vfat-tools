@@ -107,10 +107,12 @@ $(function() {
     }
     _print("");
     //NEW POOLS HERE
+    _print_bold("--------------------------------------------------------------------------\n")
+    _print_bold("New Pools\n")
     let p = await loadMultipleCurveSynthetixPools(App, tokens, prices, new_gauges)
     _print_bold(`Total staked: $${formatMoney(p.staked_tvl)}`);
     if (p.totalUserStaked > 0) {
-      _print(`You are staking a total of $${formatMoney(p.totalUserStaked)} at an APR of ${(p.totalAPR * 100).toFixed(2)}%\n`);
+      _print(`You are staking a total of $${formatMoney(p.totalUserStaked)}\n`);
     }
 
     hideLoading();
@@ -219,8 +221,10 @@ async function loadMultipleCurveSynthetixPools(App, tokens, prices, gauges) {
     loadCurveSynthetixPoolInfo(App, tokens, prices, p.abi, p.address)));
   for (const i of infos) {
     let p = await printCurveSynthetixPool(App, i);
-    totalStaked += p.staked_tvl && 0;
-    totalUserStaked += p.userStaked && 0;
+    //totalStaked += p.staked_tvl && 0;
+    totalStaked += p.staked_tvl;
+    //totalUserStaked += p.userStaked && 0;
+    totalUserStaked += p.userStaked;
   }
   return { staked_tvl : totalStaked, totalUserStaked };
 }
@@ -239,8 +243,11 @@ async function loadCurveSynthetixPoolInfo(App, tokens, prices, stakingAbi, staki
     const [balance] = await App.ethcallProvider.all([STAKING_MULTI.balanceOf(App.YOUR_ADDRESS)]);
     
     const stakeToken = getParameterCaseInsensitive(tokens, stakeTokenAddress) ?? await getToken(App, stakeTokenAddress, stakingAddress);
+    if(stakeToken.staked <= 0){
+      return;
+    }
 
-    const poolPrices = getPoolPrices(tokens, prices, stakeToken);
+    const poolPrices = tryGetPoolPrices(tokens, prices, stakeToken);
 
     const stakeTokenTicker = poolPrices.stakeTokenTicker;
 
@@ -266,9 +273,7 @@ async function loadCurveSynthetixPoolInfo(App, tokens, prices, stakingAbi, staki
 }
 
 async function printCurveSynthetixPool(App, info, chain="eth", customURLs) {
-  //I have to add and elseif in order to check !info.poolPrices?
-  //TypeError: Cannot read properties of undefined (reading 'poolPrices')
-  if(!info.poolPrices.price){
+  if(!info || !info.poolPrices || !info.poolPrices.price){
     return {
       staked_tvl: 0,
       userStaked : 0
