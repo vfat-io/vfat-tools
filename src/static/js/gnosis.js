@@ -13,7 +13,8 @@ const main = async() => {
         ["Swapr"          ,`<a href="swapr">Various</a>`       ,"SWPR"        ,"https://swapr.eth.link/#/pools"],
         ["Sushi"          ,`<a href="sushi">Various</a>`       ,"SUSHI/XDAI"  ,"https://app.sushi.com"],
         ["Elk"            ,`<a href="elk">Various</a>`         ,"ELK"         ,"https://app.elk.finance"],
-        ["Hop Exchange"   ,`<a href="hop">Various</a>`         ,"HOP"         ,"https://app.hop.exchange"]
+        ["Hop Exchange"   ,`<a href="hop">Various</a>`         ,"HOP"         ,"https://app.hop.exchange"],
+        ["Hundred Finance",`<a href="hundred">Various</a>`     ,"HND"         ,"https://hundred.finance"]
       ]
   }
 

@@ -438,7 +438,8 @@ const xdaiTokens = [
   { "id": "xdai-native-comb","symbol": "XCOMB","contract": "0x38fb649ad3d6ba1113be5f57b927053e97fc5bf7" },
   { "id": "elk-finance","symbol": "ELK","contract": "0xE1C110E1B1b4A1deD0cAf3E42BfBdbB7b5d7cE1C" },
   { "id": "gnosis","symbol": "GNO","contract": "0x9C58BAcC331c9aa871AFD802DB6379a98e80CEdb" },
-  { "id": "hop-protocol","symbol": "HOP","contract": "0xc5102fE9359FD9a28f877a67E36B0F050d81a3CC" }
+  { "id": "hop-protocol","symbol": "HOP","contract": "0xc5102fE9359FD9a28f877a67E36B0F050d81a3CC" },
+  { "id": "hundred-finance","symbol": "HND","contract": "0x10010078a54396F62c96dF8532dc2B4847d47ED3" }
 ]
 
 const HarmonyTokens = [
