@@ -2286,6 +2286,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
   else if (pool.symbol.includes("LSLP")) stakeTokenTicker += " LSLP";
   else if (pool.symbol.includes("vAMM")) stakeTokenTicker += " vAMM";
   else if (pool.symbol.includes("HELIX-LP")) stakeTokenTicker += " HELIX-LP";
+  else if (pool.symbol.includes("FISH")) stakeTokenTicker += " FISH LP";
   else if (pool.symbol.includes("sAMM")) stakeTokenTicker += " sAMM";
   else if (pool.symbol.includes("Wigo-LP")) stakeTokenTicker += " Wigo-LP";
   else if (pool.symbol.includes("PUD-LP")) stakeTokenTicker += " PUD-LP";
@@ -2521,6 +2522,11 @@ function getUniPrices(tokens, prices, pool, chain="eth")
             `https://linkswap.app/#/add/${t0address}/${t1address}`,
             `https://linkswap.app/#/remove/${t0address}/${t1address}`,
             `https://linkswap.app/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+          ] :
+          pool.symbol.includes("FISH") ? [
+            `https://swapfish.fi/add/${t0address}/${t1address}`,
+            `https://swapfish.fi/remove/${t0address}/${t1address}`,
+            `https://swapfish.fi/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
           ] :
           pool.symbol.includes("STELLA LP") ? [
             `https://app.stellaswap.com/exchange/add/${t0address}/${t1address}`,

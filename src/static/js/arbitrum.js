@@ -53,7 +53,8 @@ const main = async() => {
       ["Monox Finance       ",""                                                                                               , `<a href="/arbitrum/monox"       >Various</a>`,"vUNIT              ","https://monox.finance"],
       ["PlutusDAO           ",""                                                                                               , `<a href="/arbitrum/plutusdao"   >Various</a>`,"PLS                ","https://plutusdao.io"],
       ["Radiant             ",""                                                                                               , `<a href="/arbitrum/radiant"     >Various</a>`,"RDNT               ","https://app.radiant.capital"],
-      ["Hop Exchange        ",""                                                                                               , `<a href="/arbitrum/hop"         >Various</a>`,"HOP                ","https://app.hop.exchange"]
+      ["Hop Exchange        ",""                                                                                               , `<a href="/arbitrum/hop"         >Various</a>`,"HOP                ","https://app.hop.exchange"],
+      ["SwapFish            ",""                                                                                               , `<a href="/arbitrum/swapfish"    >Various</a>`,"FISH               ","https://swapfish.fi"]
     ]
   }
 
