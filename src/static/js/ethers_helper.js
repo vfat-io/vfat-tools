@@ -2287,6 +2287,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
   else if (pool.symbol.includes("vAMM")) stakeTokenTicker += " vAMM";
   else if (pool.symbol.includes("HELIX-LP")) stakeTokenTicker += " HELIX-LP";
   else if (pool.symbol.includes("FISH")) stakeTokenTicker += " FISH LP";
+  else if (pool.symbol.includes("MDEX")) stakeTokenTicker += " MDEX LP";
   else if (pool.symbol.includes("sAMM")) stakeTokenTicker += " sAMM";
   else if (pool.symbol.includes("Wigo-LP")) stakeTokenTicker += " Wigo-LP";
   else if (pool.symbol.includes("PUD-LP")) stakeTokenTicker += " PUD-LP";
@@ -2400,6 +2401,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
           pool.symbol.includes("PUD-LP") ?  `https://info.puddingswap.finance/pair/${pool.address}` :
           pool.symbol.includes("HELIX-LP") ?  `https://helix.finance/data/trading-pool/${pool.address}` :
           pool.symbol.includes("LSLP") ? `https://info.linkswap.app/pair/${pool.address}` :
+          pool.symbol.includes("MDEX") ? `https://info.mdex.com/#/pools/${pool.address}` :
           pool.symbol.includes("Milky-LP") ? `https://milkyway.exchange/` :
           pool.symbol.includes("YLP") ? `https://dexscreener.com/dogechain/yodeswap` :
           pool.symbol.includes("MSLP") ? `https://www.milkyswap.exchange/` :
@@ -2567,6 +2569,11 @@ function getUniPrices(tokens, prices, pool, chain="eth")
             `https://milkyway.exchange/swap`,
             `https://milkyway.exchange/swap`,
             `https://milkyway.exchange/swap`
+          ] :
+          pool.symbol.includes("MDEX") ? [
+            `https://bsc.mdex.com/#/add/${t0address}/${t1address}`,
+            `https://bsc.mdex.com/#/remove/${t0address}/${t1address}`,
+            `https://bsc.mdex.com/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
           ] :
           pool.symbol.includes("PUD-LP") ? [
             `https://exchange.puddingswap.finance/#/add/${t0address}/${t1address}`,

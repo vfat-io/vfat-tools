@@ -14,9 +14,11 @@ async function main() {
    const MDX_CHEF_ADDR = "0xc48FE252Aa631017dF253578B1405ea399728A50";
    const rewardTokenTicker = "MDX";
    const MDX_CHEF = new ethers.Contract(MDX_CHEF_ADDR, MDX_CHEF_ABI, App.provider);
+   const currentBlock = await App.provider.getBlockNumber();
 
-   const rewardsPerWeek = await MDX_CHEF.mdxPerBlock() /1e18
-        * 604800 / 3;
+  //  const rewardsPerWeek = await MDX_CHEF.mdxPerBlock() /1e18
+  //       * 604800 / 3;
+    const rewardsPerWeek = await MDX_CHEF.reward(currentBlock) / 1e18 * 604800 / 3;
 
     const tokens = {};
     const prices = await getBscPrices();
