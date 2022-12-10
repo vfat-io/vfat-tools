@@ -24,7 +24,7 @@ async function main() {
     const tokens = {};
     const prices = await getArbitrumPrices();
 
-    await loadArbitrumChefContract(App, tokens, prices, WATERFALL_MC, WATERFALL_ADDR, WATERFALL_CHEF_ABI, rewardTokenTicker,
+    await loadArbitrumChefContract(App, tokens, prices, WATERFALL_MC, WATERFALL_MC_ADDR, WATERFALL_CHEF_ABI, rewardTokenTicker,
         "waterfall", null, rewardsPerWeek, "pendingWaterfall", [], "arbitrum");
 
     hideLoading();
