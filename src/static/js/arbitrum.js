@@ -54,7 +54,8 @@ const main = async() => {
       ["PlutusDAO           ",""                                                                                               , `<a href="/arbitrum/plutusdao"   >Various</a>`,"PLS                ","https://plutusdao.io"],
       ["Radiant             ",""                                                                                               , `<a href="/arbitrum/radiant"     >Various</a>`,"RDNT               ","https://app.radiant.capital"],
       ["Hop Exchange        ",""                                                                                               , `<a href="/arbitrum/hop"         >Various</a>`,"HOP                ","https://app.hop.exchange"],
-      ["SwapFish            ",""                                                                                               , `<a href="/arbitrum/swapfish"    >Various</a>`,"FISH               ","https://swapfish.fi"]
+      ["SwapFish            ",""                                                                                               , `<a href="/arbitrum/swapfish"    >Various</a>`,"FISH               ","https://swapfish.fi"],
+      ["Waterfall Arbitrum   ",""                                                                                               , `<a href="/arbitrum/waterfall"     >Various</a>`,"WATERFALL              ","https://www.defiwaterfall.com"]  
     ]
   }
 
