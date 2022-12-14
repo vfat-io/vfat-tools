@@ -45,6 +45,9 @@ const pageNetwork = function() {
   if (network.toLowerCase() === 'ethw') {
     return window.NETWORKS.ETHW
   }
+  if (network.toLowerCase() === 'klaytn') {
+    return window.NETWORKS.KLAYTN
+  }
   if (network.toLowerCase() === 'dfk') {
     return window.NETWORKS.DFK
   }
@@ -3444,6 +3447,9 @@ function getErc20Prices(prices, pool, chain="eth") {
     case "ethw":
       poolUrl=`https://www.oklink.com/en/ethw/address/${pool.address}`;
       break;
+    case "klaytn":
+      poolUrl=`hhttps://scope.klaytn.com/account/${pool.address}`;
+      break;
     case "okex":
       poolUrl=`https://www.oklink.com/okexchain/address/${pool.address}`;
       break;
@@ -4133,6 +4139,9 @@ async function printSynthetixPool(App, info, chain="eth", customURLs) {
       case "ethw":
         _print(`<a target="_blank" href="https://www.oklink.com/en/ethw/address/${info.stakingAddress}#code">ETHW Explorer</a>`);
         break;
+      case "klaytn":
+        _print(`<a target="_blank" href="https://scope.klaytn.com/account/${info.stakingAddress}?tabId=contractCode">Klaytn Explorer</a>`);
+        break;
       case "dfk":
         _print(`<a target="_blank" href="https://subnets.avax.network/defi-kingdoms/dfk-chain/explorer/address/${info.stakingAddress}#code">DFK Explorer</a>`);
         break;
@@ -4387,6 +4396,8 @@ function getChainExplorerUrl(chain, address){
       return `https://explorer-mainnet-cardano-evm.c1.milkomeda.com/address/${address}`;
     case "ethw" :
       return `https://www.oklink.com/en/ethw/address/${address}`;
+    case "klaytn" :
+      return `https://scope.klaytn.com/account/${address}`;
     case "dfk" :
       return `https://subnets.avax.network/defi-kingdoms/dfk-chain/explorer/address/${address}`;
     case "avax" :

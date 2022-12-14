@@ -96,6 +96,21 @@ window.NETWORKS = {
       "https://explorer.kava.io"
     ]
   },
+  KLAYTN: {
+    "chainId": "0x2019",
+    "chainName": "Klaytn Mainnet Cypress",
+    "nativeCurrency": {
+      "name": "Klaytn",
+      "symbol": "KLAY",
+      "decimals": 18
+    },
+    "rpcUrls": [
+      "https://public-node-api.klaytnapi.com/v1/cypress"
+    ],
+    "blockExplorerUrls": [
+      "https://scope.klaytn.com"
+    ]
+  },
   DOGE: {
     "chainId": "0x7D0",
     "chainName": "DogeChain",

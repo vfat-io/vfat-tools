@@ -528,6 +528,15 @@ const KccTokens = [
   { "id": "elk-finance", "symbol": "ELK", "contract": "0xE1C110E1B1b4A1deD0cAf3E42BfBdbB7b5d7cE1C"}
 ];
 
+const KlaytnTokens = [
+  { "id": "usd-coin", "symbol": "USDC", "contract": "0x754288077d0ff82af7a5317c7cb8c444d421d103"},
+  { "id": "klay-token", "symbol": "KLAY", "contract": "0xe4f05a66ec68b54a58b17c22107b02e0232cc817"},
+  { "id": "klay-token", "symbol": "KLAY", "contract": "0xfd844c2fca5e595004b17615f891620d1cb9bbb2"},
+  { "id": "weth", "symbol": "WETH", "contract": "0x34d21b1e550d73cee41151c77f3c73359527a396"},
+  { "id": "wrapped-bitcoin", "symbol": "WBTC", "contract": "0x16d0e1fbd024c600ca0380a4c5d57ee7a2ecbf9c"},
+  { "id": "tether", "symbol": "USDT", "contract": "0xcee8faf64bb97a73bb51e115aa89c17ffa8dd167"}
+];
+
 const maticTokens = [
   { "id": "matic-network","symbol": "WMATIC","contract": "0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270" },
   { "id": "matic-network","symbol": "MATIC","contract": "0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270" },
@@ -954,6 +963,15 @@ async function getKccPrices() {
   const idPrices = await lookUpPrices(KccTokens.map(x => x.id));
   const prices = {}
   for (const bt of KccTokens)
+      if (idPrices[bt.id])
+          prices[bt.contract] = idPrices[bt.id];
+  return prices;
+}
+
+async function getKlaytnPrices() {
+  const idPrices = await lookUpPrices(KlaytnTokens.map(x => x.id));
+  const prices = {}
+  for (const bt of KlaytnTokens)
       if (idPrices[bt.id])
           prices[bt.contract] = idPrices[bt.id];
   return prices;
