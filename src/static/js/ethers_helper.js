@@ -2291,6 +2291,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
   else if (pool.symbol.includes("HELIX-LP")) stakeTokenTicker += " HELIX-LP";
   else if (pool.symbol.includes("FISH")) stakeTokenTicker += " FISH LP";
   else if (pool.symbol.includes("MDEX")) stakeTokenTicker += " MDEX LP";
+  else if (pool.symbol.includes("JEWEL-LP")) stakeTokenTicker += " Jewel LP Token";
   else if (pool.symbol.includes("sAMM")) stakeTokenTicker += " sAMM";
   else if (pool.symbol.includes("Wigo-LP")) stakeTokenTicker += " Wigo-LP";
   else if (pool.symbol.includes("PUD-LP")) stakeTokenTicker += " PUD-LP";
@@ -2448,6 +2449,13 @@ function getUniPrices(tokens, prices, pool, chain="eth")
                   "canto": `https://forteswap.xyz/`,
                 }
               [chain]):
+              pool.symbol.includes("JEWEL-LP") ?  (
+                {
+                  "dfk" : `https://subnets.avax.network/defi-kingdoms/address/${pool.address}`,
+                  "klaytn" : `https://scope.klaytn.com/account/${pool.address}`
+                }
+              [chain]):
+              pool.symbol.includes("") ? ``:
               pool.symbol.includes("ZLK-LP") ?  `https://dex.zenlink.pro/#/info/overview` :
               pool.name.includes("Value LP") ?  `https://info.vswap.fi/pool/${pool.address}` :
               pool.name.includes("Duneswap LP Token") ?  `https://explorer.emerald.oasis.dev/token/${pool.address}` :
@@ -2491,7 +2499,6 @@ function getUniPrices(tokens, prices, pool, chain="eth")
               pool.symbol.includes("lv_") ?  `https://app.lixir.finance/vaults/${pool.address}` :
               pool.symbol.includes("HLP") ?  `https://analytics.hadesswap.finance/pairs/${pool.address}` :
               pool.symbol.includes("LOOT-LP") ?  `https://analytics.lootswap.finance/pair/${pool.address}` :
-              pool.symbol.includes("JEWEL-LP") ? `https://explorer.harmony.one/address/${pool.address}`:
               pool.symbol.includes("VVS-LP") ?  `https://vvs.finance/info/farm/${pool.address}` :
               pool.symbol.includes("CNO-LP") ?  `https://chronoswap.org/info/pool/${pool.address}` :
               pool.symbol.includes("TLP") && !pool.name.includes("Thorus LP") ?  `https://aurorascan.dev/address/${pool.address}` :
@@ -2653,6 +2660,11 @@ function getUniPrices(tokens, prices, pool, chain="eth")
             `https://www.huckleberry.finance/#/add/${t0address}/${t1address}`,
             `https://www.huckleberry.finance/#/remove/${t0address}/${t1address}`,
             `https://www.huckleberry.finance/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+          ] :
+          pool.symbol.includes("JEWEL-LP") ? [
+            `https://game.defikingdoms.com/#/add/${t0address}/${t1address}`,
+            `https://game.defikingdoms.com/#/remove/${t0address}/${t1address}`,
+            `https://game.defikingdoms.com/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
           ] :
           pool.symbol.includes("DXS") ? [
             `https://swapr.eth.link/#/add/${t0address}/${t1address}`,
@@ -2858,11 +2870,6 @@ function getUniPrices(tokens, prices, pool, chain="eth")
             `https://app.elk.finance/#/add/${t0address}/${t1address}`,
             `hhttps://app.elk.finance/#/remove/${t0address}/${t1address}`,
             `https://app.elk.finance/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
-          ] :
-          pool.symbol.includes("JEWEL-LP") ? [
-            `https://game.defikingdoms.com/#/add/${t0address}/${t1address}`,
-            `https://game.defikingdoms.com/#/remove/${t0address}/${t1address}`,
-            `https://game.defikingdoms.com/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
           ] :
           pool.symbol.includes("DLP") ? [
             `https://app.dodoex.io/pool/list?${pool.address}`,
