@@ -2284,6 +2284,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
   let stakeTokenTicker = `[${t0.symbol}]-[${t1.symbol}]`;
   if (pool.is1inch) stakeTokenTicker += " 1INCH LP";
   else if (pool.symbol.includes("TETHYSLP")) stakeTokenTicker += " TETHYS LP";
+  else if (pool.symbol.includes("Oreo-LP")) stakeTokenTicker += " OREO-SWAP LP";
   else if (pool.symbol.includes("YLP")) stakeTokenTicker += " Yodedex LP";
   else if (pool.symbol.includes("DST-V2")) stakeTokenTicker += " DogeSwap LP";
   else if (pool.symbol.includes("LSLP")) stakeTokenTicker += " LSLP";
@@ -2400,6 +2401,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
         else {
           const poolUrl = pool.is1inch ? "https://1inch.exchange/#/dao/pools" :
           pool.symbol.includes("TETHYSLP") ?  `https://info.tethys.finance/pair/${pool.address}` :
+          pool.symbol.includes("Oreo-LP") ?  `https://oreoswap.finance` :
           pool.symbol.includes("STELLA LP") ?  `https://analytics.stellaswap.com/pairs/${pool.address}` :
           pool.symbol.includes("DST-V2") ?  `https://dexscreener.com/dogechain/${pool.address}` :
           pool.symbol.includes("PUD-LP") ?  `https://info.puddingswap.finance/pair/${pool.address}` :
@@ -2770,6 +2772,11 @@ function getUniPrices(tokens, prices, pool, chain="eth")
             `https://tethys.finance/pool/add?inputCurrency=${t0address}&outputCurrency=${t1address}`,
             `https://tethys.finance/pool/remove?inputCurrency=${t0address}&outputCurrency=${t1address}`,
             `https://tethys.finance/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+          ] :
+          pool.symbol.includes("Oreo-LP") ? [
+            `https://oreoswap.finance/add/${t0address}/${t1address}`,
+            `https://oreoswap.finance/remove/${t0address}/${t1address}`,
+            `https://oreoswap.finance/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
           ] :
           pool.name.includes("Duneswap LP Token") ? [
             `https://www.duneswap.com/exchange/add/${t0address}/${t1address}`,
