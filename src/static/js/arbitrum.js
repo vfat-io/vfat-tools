@@ -58,7 +58,7 @@ const main = async() => {
       ["Waterfall Arbitrum  ",""                                                                                               , `<a href="/arbitrum/waterfall"   >Various</a>`,"WATERFALL          ","https://www.defiwaterfall.com"],
       ["Oreo Swap           ",""                                                                                               , `<a href="/arbitrum/oreo"        >Various</a>`,"OREO               ","https://oreoswap.finance"],
       ["Sugar Finance       ",""                                                                                               , `<a href="/arbitrum/sugar"       >Various</a>`,"SUGAR              ","https://sugarfinance.io"],
-      ["Waterfall DEX  ",""                                                                                               , `<a href="/arbitrum/wtfdex"   >Various</a>`,"WTFX          ","https://exchange.wtfdex.com/#/swap"]  
+      ["Waterfall DEX       ",""                                                                                               , `<a href="/arbitrum/wtfdex"      >Various</a>`,"WTFX               ","https://exchange.wtfdex.com/#/swap"]  
     ]
   }
 
