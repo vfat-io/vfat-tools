@@ -25,7 +25,7 @@ async function main() {
     const prices = await getArbitrumPrices();
 
     await loadArbitrumChefContract(App, tokens, prices, WTFX_MC, WTFX_MC_ADDR, WTFX_CHEF_ABI, rewardTokenTicker,
-        "waterfall", null, rewardsPerWeek, "pendingWaterfall", [], "arbitrum");
+        "waterfall", null, rewardsPerWeek, "pendingWaterfall");
 
     hideLoading();
   }
