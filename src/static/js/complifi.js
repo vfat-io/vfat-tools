@@ -191,6 +191,7 @@ async function getComplifiPoolInfo(app, chefContract, chefAddress, poolIndex, pe
   const pendingUnlockedRewardTokens = pendingRewards.unlocked / 10 ** 18;
   const pendingLockedRewardTokens = totalPendingRewardTokens - pendingUnlockedRewardTokens;
   const staked = userInfo.amount / 10 ** poolToken.decimals;
+  const bigNumberStaked = userInfo.amount;
   const unstaked = poolToken.unstaked;
 
   return {
@@ -198,6 +199,7 @@ async function getComplifiPoolInfo(app, chefContract, chefAddress, poolIndex, pe
     allocPoints: poolInfo.allocPoint ?? 1,
     poolToken: poolToken,
     userStaked : staked,
+    bigNumberUserStaked : bigNumberStaked,
     userUnstaked : unstaked,
     pendingLockedRewardTokens : pendingLockedRewardTokens,
     pendingUnlockedRewardTokens : pendingUnlockedRewardTokens,
@@ -212,6 +214,7 @@ async function printComplifiPool(App, chefAbi, chefAddr, prices, tokens, poolInf
   let poolRewardsPerWeek = poolInfo.allocPoints / totalAllocPoints * rewardsPerWeek;
   if (poolRewardsPerWeek == 0 && rewardsPerWeek != 0) return;
   const userStaked = poolInfo.userStaked;
+  const bigNumberUserStaked = poolInfo.bigNumberUserStaked;
   const userUnstaked = poolInfo.userUnstaked;
   const rewardPrice = getParameterCaseInsensitive(prices, rewardTokenAddress)?.usd;
   const staked_tvl = poolPrices.staked_tvl;
@@ -224,7 +227,7 @@ async function printComplifiPool(App, chefAbi, chefAddr, prices, tokens, poolInf
   const currentTokens = await STAKING_TOKEN.balanceOf(App.YOUR_ADDRESS)
 
   const approveAndStake = async () => deposit(App, userProxyAddress, PROXY_ACTIONS_ADDR, chefAddr, poolInfo.poolToken.address, currentTokens);
-  const unstake = async () => withdraw(App, userProxyAddress, PROXY_ACTIONS_ADDR, chefAddr, poolInfo.poolToken.address, userStaked);
+  const unstake = async () => withdraw(App, userProxyAddress, PROXY_ACTIONS_ADDR, chefAddr, poolInfo.poolToken.address, bigNumberUserStaked);
 
   _print_link(`Stake ${userUnstaked.toFixed(fixedDecimals)} ${poolPrices.stakeTokenTicker}`, approveAndStake)
   _print_link(`Unstake ${userStaked.toFixed(fixedDecimals)} ${poolPrices.stakeTokenTicker}`, unstake)
@@ -301,7 +304,7 @@ async function deposit(App, userProxyAddress, proxyActionsAddress, miningAddress
         proxyActionsAddress,
         functionName,
         functionParams,
-        250000,
+        2000000,
     );
 
 }
@@ -332,7 +335,7 @@ async function withdraw(App, userProxyAddress, proxyActionsAddress, miningAddres
         proxyActionsAddress,
         functionName,
         functionParams,
-        200000,
+        2000000,
     );
 }
 
@@ -352,7 +355,7 @@ async function claim(App, userProxyAddress, proxyActionsAddress, miningAddress) 
         proxyActionsAddress,
         functionName,
         functionParams,
-        500000,
+        2000000,
     );
 }
 
