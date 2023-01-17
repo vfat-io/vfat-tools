@@ -42,6 +42,8 @@ async function main() {
 
   await loadSGTv2Chef(App, prices);
 
+  _print("")
+
   _print_bold("Old SGT pools are below. Please withdraw your staked tokens...\n");
   let p0 = await loadMultipleSynthetixPools(App, tokens, prices, Pools.slice(0, 1))
   let p = await loadMultipleSynthetixPools(App, tokens, prices, Pools.slice(1))
@@ -198,9 +200,8 @@ const _ironChefContract_unstake = async function (chefAbi, chefAddress, poolInde
   const CHEF_CONTRACT = new ethers.Contract(chefAddress, chefAbi, signer)
 
   const currentStakedAmount = (await CHEF_CONTRACT.userInfo(poolIndex, App.YOUR_ADDRESS)).amount
-  const earnedTokenAmount = await CHEF_CONTRACT.callStatic[pendingRewardsFunction](poolIndex, App.YOUR_ADDRESS) / 1e18
 
-  if (earnedTokenAmount > 0) {
+  if (currentStakedAmount / 1e18 > 0) {
     showLoading()
     CHEF_CONTRACT.withdrawAndHarvest(poolIndex, currentStakedAmount, App.YOUR_ADDRESS, { gasLimit: GAS_LIMIT })
       .then(function (t) {
