@@ -17,6 +17,7 @@ const main = async() => {
         ["Inuswap",           `<a href="inuswap"        >Various</a>`,      "INU",               "https://inuswap.fi"],
         ["BoneSwap",          `<a href="boneswap"       >Various</a>`,      "BONE",              "https://www.boneswap.dog"],
         ["KibbleSwap",        `<a href="kibble"         >Various</a>`,      "KIB",               "https://www.kibbleswap.dog"]
+        ["DoglandsSwap",      `<a href="doglandsswap"   >Various</a>`,      "GIL",               "https://swap.doglands.dog"]
     ]
   }
 
