@@ -2443,6 +2443,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
                   "metis": `https://hermes.maiadao.io/#/swap`,
                   "optimism": `https://app.velodrome.finance/swap`,
                   "canto": `https://forteswap.xyz/`,
+                  "eth": `https://solidly.com/`,
                 }
               [chain]):
               pool.symbol.includes("sAMM") ?  (
@@ -2451,6 +2452,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
                   "metis" : `https://hermes.maiadao.io/#/swap`,
                   "optimism" : `https://app.velodrome.finance/swap`,
                   "canto": `https://forteswap.xyz/`,
+                  "eth": `https://solidly.com/`,
                 }
               [chain]):
               pool.symbol.includes("JEWEL-LP") ?  (
@@ -2631,6 +2633,11 @@ function getUniPrices(tokens, prices, pool, chain="eth")
               `https://forteswap.xyz/pool/add-liquidity/`,
               `https://forteswap.xyz/pool/remove-liquidity/`,
               `https://forteswap.xyz/`
+            ],
+            "eth" : [
+              `https://solidly.com/liquidity/`,
+              `https://solidly.com/liquidity/`,
+              `https://solidly.com/swap`
             ]
           } [chain]):
           pool.symbol.includes("sAMM") ? ({
@@ -2658,6 +2665,11 @@ function getUniPrices(tokens, prices, pool, chain="eth")
               `https://forteswap.xyz/pool/add-liquidity/`,
               `https://forteswap.xyz/pool/remove-liquidity/`,
               `https://forteswap.xyz/`
+            ],
+            "eth" : [
+              `https://solidly.com/liquidity/`,
+              `https://solidly.com/liquidity/`,
+              `https://solidly.com/swap`
             ]
           } [chain]):
           pool.symbol.includes("HBLP") ? [
