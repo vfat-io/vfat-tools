@@ -40,9 +40,9 @@ async function main() {
     }
   }
 
-  _allTokensAddresses.push("0x00a35fd824c717879bf370e70ac6868b95870dfb");
+  _allTokensAddresses.push("0x00a35fd824c717879bf370e70ac6868b95870dfb"); //adding IB token cant take the price from coingecko
 
-  const allTokensAddresses = [..._allTokensAddresses, "0x777172d858dc1599914a1c4c6c9fc48c99a60990"];  //adding IB token
+  const allTokensAddresses = [..._allTokensAddresses, "0x777172d858dc1599914a1c4c6c9fc48c99a60990"];
 
   const pools = stakingTokensAddresses.map(stakingToken => {
     return {
@@ -56,6 +56,7 @@ async function main() {
   let prices = {};
 
   await getNewPricesAndTokens(App, tokens, prices, allTokensAddresses, "0x64A07ac478367245f4A84b96d5EcB8DF1691E425");
+  //await getNewPricesAndTokens(App, tokens, prices, ["0x00a35fd824c717879bf370e70ac6868b95870dfb"], "0x64A07ac478367245f4A84b96d5EcB8DF1691E425");
 
   let p = await loadMonolithSynthetixPools(App, tokens, prices, pools)
   _print_bold(`Total staked: $${formatMoney(p.staked_tvl)}`);
