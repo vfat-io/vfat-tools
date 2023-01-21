@@ -53,7 +53,7 @@ const main = async() => {
       ["Looksrare           ",`<a href="looksrare/"         >Various</a>`,"LOOKS     ","https://looksrare.org"],
       ["Merit Circle        ",`<a href="meritcircle/"       >Various</a>`,"MC        ","https://swap.meritcircle.io"],
       ["MITH Cash           ",`<a href="mithcash/"          >Various</a>`,"MIS,MIC   ","https://mith.cash"],
-      //["Monolith            ",`<a href="monolith/"          >Various</a>`,"SOLID     ","https://alpha.mono.farm"],
+      ["* Monolith *        ",`<a href="monolith/"          >Various</a>`,"SOLID     ","https://alpha.mono.farm"],
       ["Optionroom          ",`<a href="optionroom"         >Various</a>`,"COURT     ","https://app.optionroom.finance"],
       ["Pickle              ",`<a href="pickle/"            >Various</a>`,"Pickle    ","https://pickle.finance/farms"],
       ["PowerIndex          ",`<a href="powerindex/"        >Various</a>`,"CVP       ","https://powerindex.io"],

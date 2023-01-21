@@ -61,7 +61,7 @@ async function main() {
   let p = await loadMonolithSynthetixPools(App, tokens, prices, pools)
   _print_bold(`Total staked: $${formatMoney(p.staked_tvl)}`);
   if (p.totalUserStaked > 0) {
-    _print(`You are staking a total of $${formatMoney(p.totalUserStaked)} at an APR of ${(p.totalAPR * 100).toFixed(2)}%\n`);
+    _print(`You are staking a total of $${formatMoney(p.totalUserStaked)} \n`);
   }
 
   hideLoading();
@@ -75,12 +75,12 @@ async function loadMonolithSynthetixPools(App, tokens, prices, pools) {
     let p = await printSynthetixPool(App, i);
     totalStaked += p.staked_tvl || 0;
     totalUserStaked += p.userStaked || 0;
-    if (p.userStaked > 0) {
-      individualAPRs.push(p.userStaked * p.apr / 100);
-    }
+    // if (p.userStaked > 0) {
+    //   individualAPRs.push(p.userStaked * p.apr / 100);
+    // }
   }
-  let totalAPR = totalUserStaked == 0 ? 0 : individualAPRs.reduce((x,y)=>x+y, 0) / totalUserStaked;
-  return { staked_tvl : totalStaked, totalUserStaked, totalAPR };
+  //let totalAPR = totalUserStaked == 0 ? 0 : individualAPRs.reduce((x,y)=>x+y, 0) / totalUserStaked;
+  return { staked_tvl : totalStaked, totalUserStaked };
 }
 
 async function loadMonolithPoolInfo(App, tokens, prices, stakingAbi, stakingAddress, stakeTokenAddress) {
@@ -186,33 +186,33 @@ async function printSynthetixPool(App, info, chain="eth", customURLs) {
       }
     }
     info.poolPrices.print_price(chain, 4, customURLs);
-    let totalYearlyAPR = 0, totalWeeklyAPR = 0, totalDailyAPR = 0, totalUSDPerWeek = 0
-    for(let i = 0; i < info.weeklyRewards.length; i++){
-      _print(`${info.rewardTokenTickers[i]} Per Week: ${info.weeklyRewards[i].toFixed(2)} ($${formatMoney(info.usdCoinsPerWeek[i])})`);
-      const weeklyAPR = info.usdCoinsPerWeek[i] / info.staked_tvl * 100;
-      const dailyAPR = weeklyAPR / 7;
-      const yearlyAPR = weeklyAPR * 52;
-      totalYearlyAPR += yearlyAPR;
-      totalWeeklyAPR += weeklyAPR;
-      totalDailyAPR += dailyAPR;
-      totalUSDPerWeek += info.usdCoinsPerWeek[i];
-      _print(`APR: Day ${dailyAPR.toFixed(2)}% Week ${weeklyAPR.toFixed(2)}% Year ${yearlyAPR.toFixed(2)}%`);
-    }
-    _print(`Total APR: ${totalDailyAPR.toFixed(4)}% Week ${totalWeeklyAPR.toFixed(2)}% Year ${totalYearlyAPR.toFixed(2)}%`);
+    // let totalYearlyAPR = 0, totalWeeklyAPR = 0, totalDailyAPR = 0, totalUSDPerWeek = 0
+    // for(let i = 0; i < info.weeklyRewards.length; i++){
+    //   _print(`${info.rewardTokenTickers[i]} Per Week: ${info.weeklyRewards[i].toFixed(2)} ($${formatMoney(info.usdCoinsPerWeek[i])})`);
+    //   const weeklyAPR = info.usdCoinsPerWeek[i] / info.staked_tvl * 100;
+    //   const dailyAPR = weeklyAPR / 7;
+    //   const yearlyAPR = weeklyAPR * 52;
+    //   totalYearlyAPR += yearlyAPR;
+    //   totalWeeklyAPR += weeklyAPR;
+    //   totalDailyAPR += dailyAPR;
+    //   totalUSDPerWeek += info.usdCoinsPerWeek[i];
+    //   _print(`APR: Day ${dailyAPR.toFixed(2)}% Week ${weeklyAPR.toFixed(2)}% Year ${yearlyAPR.toFixed(2)}%`);
+    // }
+    // _print(`Total APR: ${totalDailyAPR.toFixed(4)}% Week ${totalWeeklyAPR.toFixed(2)}% Year ${totalYearlyAPR.toFixed(2)}%`);
     const userStakedUsd = info.userStaked * info.stakeTokenPrice;
     const userStakedPct = userStakedUsd / info.staked_tvl * 100;
     _print(`You are staking ${info.userStaked.toFixed(6)} ${info.stakeTokenTicker} ` +
            `$${formatMoney(userStakedUsd)} (${userStakedPct.toFixed(2)}% of the pool).`);
-    if (info.userStaked > 0) {
-      info.poolPrices.print_contained_price(info.userStaked);
-        const userWeeklyRewards = userStakedPct * info.weeklyRewards / 100;
-        const userDailyRewards = userWeeklyRewards / 7;
-        const userYearlyRewards = userWeeklyRewards * 52;
-        _print(`Estimated ${info.rewardTokenTicker} earnings:`
-            + ` Day ${userDailyRewards.toFixed(2)} ($${formatMoney(userDailyRewards*info.rewardTokenPrice)})`
-            + ` Week ${userWeeklyRewards.toFixed(2)} ($${formatMoney(userWeeklyRewards*info.rewardTokenPrice)})`
-            + ` Year ${userYearlyRewards.toFixed(2)} ($${formatMoney(userYearlyRewards*info.rewardTokenPrice)})`);
-    }
+    // if (info.userStaked > 0) {
+    //   info.poolPrices.print_contained_price(info.userStaked);
+    //     const userWeeklyRewards = userStakedPct * info.weeklyRewards / 100;
+    //     const userDailyRewards = userWeeklyRewards / 7;
+    //     const userYearlyRewards = userWeeklyRewards * 52;
+    //     _print(`Estimated ${info.rewardTokenTicker} earnings:`
+    //         + ` Day ${userDailyRewards.toFixed(2)} ($${formatMoney(userDailyRewards*info.rewardTokenPrice)})`
+    //         + ` Week ${userWeeklyRewards.toFixed(2)} ($${formatMoney(userWeeklyRewards*info.rewardTokenPrice)})`
+    //         + ` Year ${userYearlyRewards.toFixed(2)} ($${formatMoney(userYearlyRewards*info.rewardTokenPrice)})`);
+    // }
 
     const stakingGaugeAddress = "0x822ef744c568466d40ba28b0f9e4a4961837a46a";
 
@@ -248,7 +248,7 @@ async function printSynthetixPool(App, info, chain="eth", customURLs) {
     return {
         staked_tvl: info.poolPrices.staked_tvl,
         userStaked : userStakedUsd,
-        apr : totalYearlyAPR
+        //apr : totalYearlyAPR
     }
 }
 
