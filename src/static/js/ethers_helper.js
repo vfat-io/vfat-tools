@@ -2315,6 +2315,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
   else if (pool.name.includes("Diffusion LP Token")) stakeTokenTicker += " Diffusion LP";
   else if (pool.name.includes("Duneswap LP Token")) stakeTokenTicker += " Duneswap LP";
   else if (pool.name.includes("Lizard LPs")) stakeTokenTicker += " LLP";
+  else if (pool.name.includes("Voltage")) stakeTokenTicker += " Voltage LP Token";
   else if (pool.name.includes("Gemkeeper LP Token")) stakeTokenTicker += " GLP";
   else if (pool.symbol.includes("PGL")) stakeTokenTicker += " PGL";
   else if (pool.symbol.includes("JLP")) stakeTokenTicker += " JLP";
@@ -2402,6 +2403,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
         else {
           const poolUrl = pool.is1inch ? "https://1inch.exchange/#/dao/pools" :
           pool.symbol.includes("TETHYSLP") ?  `https://info.tethys.finance/pair/${pool.address}` :
+          pool.name.includes("Voltage") ?  `https://info.voltage.finance/pair/${pool.address}` :
           pool.symbol.includes("Oreo-LP") ?  `https://oreoswap.finance` :
           pool.symbol.includes("Sugar-LP") ?  `https://sugarfinance.io` :
           pool.symbol.includes("STELLA LP") ?  `https://analytics.stellaswap.com/pairs/${pool.address}` :
@@ -2676,6 +2678,11 @@ function getUniPrices(tokens, prices, pool, chain="eth")
             `https://www.huckleberry.finance/#/add/${t0address}/${t1address}`,
             `https://www.huckleberry.finance/#/remove/${t0address}/${t1address}`,
             `https://www.huckleberry.finance/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+          ] :
+          pool.name.includes("Voltage") ? [
+            `https://app.voltage.finance/#/add/${t0address}/${t1address}`,
+            `https://app.voltage.finance/#/remove/${t0address}/${t1address}`,
+            `https://app.voltage.finance/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
           ] :
           pool.symbol.includes("JEWEL-LP") ? [
             `https://game.defikingdoms.com/#/add/${t0address}/${t1address}`,
