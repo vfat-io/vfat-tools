@@ -33,6 +33,9 @@ const pageNetwork = function() {
   if (network.toLowerCase() === 'doge') {
     return window.NETWORKS.DOGE
   }
+  if (network.toLowerCase() === 'fx') {
+    return window.NETWORKS.FX
+  }
   if (network.toLowerCase() === 'heco') {
     return window.NETWORKS.HECO
   }
@@ -2288,6 +2291,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
   else if (pool.symbol.includes("Sugar-LP")) stakeTokenTicker += " SUGAR-SWAP LP";
   else if (pool.symbol.includes("YLP")) stakeTokenTicker += " Yodedex LP";
   else if (pool.symbol.includes("DST-V2")) stakeTokenTicker += " DogeSwap LP";
+  else if (pool.symbol.includes("FX-V2")) stakeTokenTicker += " FX Swap LP";
   else if (pool.symbol.includes("LSLP")) stakeTokenTicker += " LSLP";
   else if (pool.symbol.includes("vAMM")) stakeTokenTicker += " vAMM";
   else if (pool.symbol.includes("HELIX-LP")) stakeTokenTicker += " HELIX-LP";
@@ -2408,6 +2412,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
           pool.symbol.includes("Sugar-LP") ?  `https://sugarfinance.io` :
           pool.symbol.includes("STELLA LP") ?  `https://analytics.stellaswap.com/pairs/${pool.address}` :
           pool.symbol.includes("DST-V2") ?  `https://dexscreener.com/dogechain/${pool.address}` :
+          pool.symbol.includes("FX-V2") ?  `https://app.fx-swap.io/pair/${pool.address}` :
           pool.symbol.includes("PUD-LP") ?  `https://info.puddingswap.finance/pair/${pool.address}` :
           pool.symbol.includes("HELIX-LP") ?  `https://helix.finance/data/trading-pool/${pool.address}` :
           pool.symbol.includes("LSLP") ? `https://info.linkswap.app/pair/${pool.address}` :
@@ -2562,6 +2567,11 @@ function getUniPrices(tokens, prices, pool, chain="eth")
             `https://dogeshrek.com/#/add/${t0address}/${t1address}`,
             `https://dogeshrek.com/#/remove/${t0address}/${t1address}`,
             `https://dogeshrek.com/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+          ] :
+          pool.symbol.includes("FX-V2") ? [
+            `https://fx-swap.io/#/add/${t0address}/${t1address}`,
+            `https://fx-swap.io/#/remove/${t0address}/${t1address}`,
+            `https://fx-swap.io/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
           ] :
           pool.symbol.includes("MSLP") ? [
             `https://www.milkyswap.exchange/add/${t0address}/${t1address}`,
@@ -3478,6 +3488,9 @@ function getErc20Prices(prices, pool, chain="eth") {
     case "doge":
       poolUrl=`https://explorer.dogechain.dog/token/${pool.address}`;
       break;
+    case "fx":
+      poolUrl=`https://explorer.starscan.io/evm/token/${pool.address}`;
+      break;
     case "matic":
       poolUrl=`https://explorer-mainnet.maticvigil.com/address/${pool.address}`;
       break;
@@ -4197,6 +4210,9 @@ async function printSynthetixPool(App, info, chain="eth", customURLs) {
       case "doge":
         _print(`<a target="_blank" href="https://explorer.dogechain.dog/address/${info.stakingAddress}#code">Doge Explorer</a>`);
         break;
+      case "fx":
+        _print(`<a target="_blank" href="https://explorer.starscan.io/evm/address/${info.stakingAddress}">Function X Scan</a>`);
+        break;
       case "fantom":
         _print(`<a target="_blank" href="https://ftmscan.com/address/${info.stakingAddress}#code">FTM Scan</a>`);
         break;
@@ -4404,6 +4420,8 @@ function getChainExplorerUrl(chain, address){
       return `https://explorer.kava.io/token/${address}`;
     case "doge" :
       return `https://explorer.dogechain.dog/token/${address}`;
+    case "fx" :
+      return `https://explorer.starscan.io/evm/token/${address}`;
     case "harmony" :
       return `https://explorer.harmony.one/address/${address}`;
     case "arbitrum" :

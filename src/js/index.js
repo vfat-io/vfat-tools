@@ -126,6 +126,21 @@ window.NETWORKS = {
       "https://explorer.dogechain.dog"
     ]
   },
+  FX: {
+    "chainId": "0x212",
+    "chainName": "FX Mainnet",
+    "nativeCurrency": {
+      "name": "Function X",
+      "symbol": "FX",
+      "decimals": 18
+    },
+    "rpcUrls": [
+      "https://fx-json-web3.functionx.io:8545"
+    ],
+    "blockExplorerUrls": [
+      "https://explorer.starscan.io"
+    ]
+  },
   CANTO: {
     "chainId": "0x1E14",
     "chainName": "CANTO",

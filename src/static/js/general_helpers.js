@@ -597,6 +597,8 @@ async function loadGeneralChefContract(App, tokens, prices, chef, chefAddress, c
     break;
     case "klaytn" : _print(`<a href='https://scope.klaytn.com/account/${chefAddress}' target='_blank'>Staking Contract</a>`);
     break;
+    case "fx" : _print(`<a href='https://explorer.starscan.io/evm/address/${chefAddress}' target='_blank'>Staking Contract</a>`);
+    break;
   }
   _print(`Found ${poolCount} pools.\n`)
 
