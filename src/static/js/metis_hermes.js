@@ -183,13 +183,13 @@ async function loadMaiaSynthetixPoolInfo(App, tokens, prices, stakingAbi, stakin
     const derivedSupply = derivedSupply_ / 10 ** stakeToken.decimals
     const derivedBalance = derivedBalance_ / 10 ** stakeToken.decimals
 
-    var newPriceAddresses = stakeToken.tokens.filter(x =>
-      !getParameterCaseInsensitive(prices, x));
-    var newPrices = await lookUpTokenPrices(newPriceAddresses);
-    for (const key in newPrices) {
-      if (newPrices[key]?.usd)
-          prices[key] = newPrices[key];
-    }
+    // var newPriceAddresses = stakeToken.tokens.filter(x =>
+    //   !getParameterCaseInsensitive(prices, x));
+    // var newPrices = await lookUpTokenPrices(newPriceAddresses);
+    // for (const key in newPrices) {
+    //   if (newPrices[key]?.usd)
+    //       prices[key] = newPrices[key];
+    // }
     var newTokenAddresses = stakeToken.tokens.filter(x =>
       !getParameterCaseInsensitive(tokens,x));
     for (const address of newTokenAddresses) {
