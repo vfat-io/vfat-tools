@@ -68,11 +68,11 @@ const compliVaults_redeem = async function(App, primaryTokenAddress, complementT
     const COLLATERAL = new ethers.Contract(collateralTokenAddress, ERC20Json, signer);
     const VAULT = new ethers.Contract(vaultAddress, VAULT_ABI, signer);
 
-    // await PRIMARY.approve(vaultAddress, ethers.constants.MaxUint256);
-    // console.log("PRIMARY token Approved to vault");
+    await PRIMARY.approve(vaultAddress, ethers.constants.MaxUint256);
+    console.log("PRIMARY token Approved to vault");
 
-    // await COMPLEMENT.approve(vaultAddress, ethers.constants.MaxUint256);
-    // console.log("COMPLEMENT token Approved to vault");
+    await COMPLEMENT.approve(vaultAddress, ethers.constants.MaxUint256);
+    console.log("COMPLEMENT token Approved to vault");
 
     const collateralAmountBefore = await COLLATERAL.balanceOf(App.YOUR_ADDRESS);
     _print(`Collateral amount before: ${collateralAmountBefore}`);
