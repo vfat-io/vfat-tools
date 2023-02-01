@@ -47,11 +47,14 @@ async function showVault(App, vaultAddress){
     const COMPLEMENT_TOKEN_CONTRACT = new ethers.Contract(complementTokenAddress, ERC20Json, App.provider);
     console.log("complementTokenAddress ", complementTokenAddress);
 
+    const primaryTokenName = await PRIMARY_TOKEN_CONTRACT.name();
+    const complementTokenName = await COMPLEMENT_TOKEN_CONTRACT.name();
+
     const primaryAmount = await PRIMARY_TOKEN_CONTRACT.balanceOf(App.YOUR_ADDRESS);
-    _print(`primaryAmount: ${primaryAmount}`);
+    _print(`Primary: ${primaryAmount} ${primaryTokenName}`);
 
     const complementAmount = await COMPLEMENT_TOKEN_CONTRACT.balanceOf(App.YOUR_ADDRESS);
-    _print(`complementAmount: ${complementAmount}`);
+    _print(`Complement: ${complementAmount} ${complementTokenName}`);
 
     const redeem = async function() {
         return compliVaults_redeem(App, primaryTokenAddress, complementTokenAddress, collateralTokenAddress, vaultAddress, primaryAmount, complementAmount)
@@ -68,11 +71,18 @@ const compliVaults_redeem = async function(App, primaryTokenAddress, complementT
     const COLLATERAL = new ethers.Contract(collateralTokenAddress, ERC20Json, signer);
     const VAULT = new ethers.Contract(vaultAddress, VAULT_ABI, signer);
 
-    await PRIMARY.approve(vaultAddress, ethers.constants.MaxUint256);
-    console.log("PRIMARY token Approved to vault");
+    const approvedPrimaryAmount = await PRIMARY.allowance(App.YOUR_ADDRESS);
+    const approvedComplementAmount = await COMPLEMENT.allowance(App.YOUR_ADDRESS);
 
-    await COMPLEMENT.approve(vaultAddress, ethers.constants.MaxUint256);
-    console.log("COMPLEMENT token Approved to vault");
+    if(approvedPrimaryAmount / 1e18 == 0){
+      await PRIMARY.approve(vaultAddress, ethers.constants.MaxUint256);
+      console.log("PRIMARY token Approved to vault");
+    }
+
+    if(approvedComplementAmount / 1e18 == 0){
+      await COMPLEMENT.approve(vaultAddress, ethers.constants.MaxUint256);
+      console.log("COMPLEMENT token Approved to vault");
+    }
 
     const collateralAmountBefore = await COLLATERAL.balanceOf(App.YOUR_ADDRESS);
     _print(`Collateral amount before: ${collateralAmountBefore}`);
