@@ -53,12 +53,6 @@ async function showVault(App, vaultAddress){
     const complementAmount = await COMPLEMENT_TOKEN_CONTRACT.balanceOf(App.YOUR_ADDRESS);
     _print(`complementAmount: ${complementAmount}`);
 
-    if(primaryAmount.toString() !== complementAmount.toString()){
-        _print("Incorrect amounts")
-    }else{
-        _print("everything ok");
-    }
-
     const redeem = async function() {
         return compliVaults_redeem(App, primaryTokenAddress, complementTokenAddress, collateralTokenAddress, vaultAddress, primaryAmount, complementAmount)
       }
@@ -72,7 +66,7 @@ const compliVaults_redeem = async function(App, primaryTokenAddress, complementT
     const PRIMARY = new ethers.Contract(primaryTokenAddress, ERC20Json, signer);
     const COMPLEMENT = new ethers.Contract(complementTokenAddress, ERC20Json, signer);
     const COLLATERAL = new ethers.Contract(collateralTokenAddress, ERC20Json, signer);
-    const VAULT = new ethers.Contract(vaultAddress, ERC20Json, signer);
+    const VAULT = new ethers.Contract(vaultAddress, VAULT_ABI, signer);
 
     // await PRIMARY.approve(vaultAddress, ethers.constants.MaxUint256);
     // console.log("PRIMARY token Approved to vault");
@@ -83,7 +77,7 @@ const compliVaults_redeem = async function(App, primaryTokenAddress, complementT
     const collateralAmountBefore = await COLLATERAL.balanceOf(App.YOUR_ADDRESS);
     _print(`Collateral amount before: ${collateralAmountBefore}`);
 
-    await VAULT.redeem(primaryAmount, complementAmount, {gasLimit: 500000});
+    await VAULT.redeem(primaryAmount, complementAmount, [], {gasLimit: 500000});
     _print("Redeeming derivatives...");
 
     const collateralAmountAfter = await COLLATERAL.balanceOf(App.YOUR_ADDRESS);
