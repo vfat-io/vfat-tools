@@ -10,6 +10,7 @@ const main = async() => {
     "rows": [
       ["Croblanc",        `<a href="https://twitter.com/MCNVentures/status/1476907800726892544?cxt=HHwWgMCjxbv0g_8oAAAA" target="_blank" class="mcn-reviewed">REVIEW</a>`, `<a href="croblanc"  >Various</a>`,"CROBLANC              ","https://app.croblanc.com"],
       ["CrodexSwap           ","", `<a href='crodex'       >Various</a>`,"CRX          ","https://swap.crodex.app"],
+      ["CasinoCronos.com           ","", `<a href='casinocronos'       >Various</a>`,"CASINO          ","https://casinocronos.com"],
       ["VVS Finance          ","", `<a href='vvs'          >Various</a>`,"VVS          ","https://vvs.finance"],
       ["CroFarm              ","", `<a href='crofarm'      >Various</a>`,"CRF          ","https://crofarm.app"],
       ["CronaSwap            ","", `<a href='crona'        >Various</a>`,"CRONA        ","https://app.cronaswap.org"],
