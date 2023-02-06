@@ -187,7 +187,8 @@ const main = async () => {
       ["Tokemak                      ", `<a href="../tokemak/"           >Various</a>`, "TOKE               ", "https://app.tokemak.xyz"],
       ["Titanium                     ", `<a href="../titanium/"          >Various</a>`, "T                  ", "https://t1.money"],
       ["Monolith                     ", `<a href="../monolith/"          >Various</a>`, "SOLID              ", "https://alpha.mono.farm"],
-      ["Complifi Vaults              ", `<a href="../complifi_vaults/"   >Various</a>`, "                   ", ""]
+      ["Complifi Vaults              ", `<a href="../complifi_vaults/"   >Various</a>`, "                   ", ""],
+      ["Verse                        ", `<a href="../verse/"             >Various</a>`, "VERSE              ", "https://verse.bitcoin.com"]
     ]
   }
 

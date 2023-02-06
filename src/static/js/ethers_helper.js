@@ -2287,6 +2287,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
   let stakeTokenTicker = `[${t0.symbol}]-[${t1.symbol}]`;
   if (pool.is1inch) stakeTokenTicker += " 1INCH LP";
   else if (pool.symbol.includes("TETHYSLP")) stakeTokenTicker += " TETHYS LP";
+  else if (pool.symbol.includes("VERSE-X")) stakeTokenTicker += " VERSE-X";
   else if (pool.symbol.includes("Oreo-LP")) stakeTokenTicker += " OREO-SWAP LP";
   else if (pool.symbol.includes("Sugar-LP")) stakeTokenTicker += " SUGAR-SWAP LP";
   else if (pool.symbol.includes("YLP")) stakeTokenTicker += " Yodedex LP";
@@ -2408,6 +2409,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
         else {
           const poolUrl = pool.is1inch ? "https://1inch.exchange/#/dao/pools" :
           pool.symbol.includes("TETHYSLP") ?  `https://info.tethys.finance/pair/${pool.address}` :
+          pool.symbol.includes("VERSE-X") ?  `https://analytics.verse.bitcoin.com/pairs/${pool.address}` :
           pool.name.includes("Voltage") ?  `https://info.voltage.finance/pair/${pool.address}` :
           pool.symbol.includes("Oreo-LP") ?  `https://oreoswap.finance` :
           pool.symbol.includes("Sugar-LP") ?  `https://sugarfinance.io` :
@@ -2559,6 +2561,11 @@ function getUniPrices(tokens, prices, pool, chain="eth")
             `https://app.stellaswap.com/exchange/add/${t0address}/${t1address}`,
             `https://app.stellaswap.com/exchange/remove/${t0address}/${t1address}`,
             `https://app.stellaswap.com/exchange/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+          ] :
+          pool.symbol.includes("VERSE-X") ? [
+            `https://verse.bitcoin.com/pools/`,
+            `https://verse.bitcoin.com/pools/`,
+            `https://verse.bitcoin.com/`
           ] :
           pool.name.includes("Diffusion LP Token") ? [
             `https://app.diffusion.fi/#/add/v2/${t0address}/${t1address}`,
