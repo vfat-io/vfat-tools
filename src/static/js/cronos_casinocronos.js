@@ -86,7 +86,7 @@ $(function() {
       / 10 ** rewardToken.decimals * 604800 / 3
   
     const poolInfos = await Promise.all([...Array(poolCount).keys()].map(async (x) =>
-      await getPoolInfo(App, chefContract, chefAddress, x, pendingRewardsFunction)));
+      await getGeneralEthcallPoolInfo(App, chefContract, chefAddress, x, pendingRewardsFunction)));
   
     var tokenAddresses = [].concat.apply([], poolInfos.filter(x => x.poolToken).map(x => x.poolToken.tokens));
   
