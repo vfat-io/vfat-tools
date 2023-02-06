@@ -2315,6 +2315,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
   else if (pool.symbol.includes("Farmtom-LP")) stakeTokenTicker += " Farmtom LP";
   else if (pool.symbol.includes("Cake")) stakeTokenTicker += " Cake LP";
   else if (pool.name.includes("Value LP")) stakeTokenTicker += " Value LP";
+  else if (pool.name.includes("Zyber LP")) stakeTokenTicker += " Zyber LP";
   else if (pool.symbol.includes("dogeshrek-lp")) stakeTokenTicker += " DogeShrek LP";
   else if (pool.name.includes("Diffusion LP Token")) stakeTokenTicker += " Diffusion LP";
   else if (pool.name.includes("Duneswap LP Token")) stakeTokenTicker += " Duneswap LP";
@@ -2416,6 +2417,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
           pool.symbol.includes("PUD-LP") ?  `https://info.puddingswap.finance/pair/${pool.address}` :
           pool.symbol.includes("HELIX-LP") ?  `https://helix.finance/data/trading-pool/${pool.address}` :
           pool.symbol.includes("LSLP") ? `https://info.linkswap.app/pair/${pool.address}` :
+          pool.name.includes("Zyber LP") ? `https://analytics.zyberswap.io/pairs/${pool.address}` :
           pool.symbol.includes("MDEX") ? `https://info.mdex.com/#/pools/${pool.address}` :
           pool.symbol.includes("Milky-LP") ? `https://milkyway.exchange/` :
           pool.symbol.includes("YLP") ? `https://dexscreener.com/dogechain/yodeswap` :
@@ -2562,6 +2564,11 @@ function getUniPrices(tokens, prices, pool, chain="eth")
             `https://app.diffusion.fi/#/add/v2/${t0address}/${t1address}`,
             `https://app.diffusion.fi/#/remove/v2/${t0address}/${t1address}`,
             `https://app.diffusion.fi/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+          ] :
+          pool.name.includes("Zyber LP") ? [
+            `https://app.zyberswap.io/exchange/add/${t0address}/${t1address}`,
+            `https://app.zyberswap.io/exchange/remove/${t0address}/${t1address}`,
+            `https://app.zyberswap.io/exchange/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
           ] :
           pool.symbol.includes("dogeshrek-lp") ? [
             `https://dogeshrek.com/#/add/${t0address}/${t1address}`,
