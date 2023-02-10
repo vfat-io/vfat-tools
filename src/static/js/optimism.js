@@ -23,7 +23,8 @@ const main = async() => {
       ["Lyra                  ", `<a href="lyra"              >Various</a>`,"LYRA         ","https://app.lyra.finance"],
       ["Degen Eth             ", `<a href="degeneth"          >Various</a>`,"BANDIT       ","https://degeneth.xyz/"],
       ["OpenXSwap             ", `<a href="openxswap"         >Various</a>`,"OPENX        ","https://openxswap.exchange"],
-      ["Hop Exchange          ", `<a href="hop"               >Various</a>`,"HOP          ","https://app.hop.exchange"]
+      ["Hop Exchange          ", `<a href="hop"               >Various</a>`,"HOP          ","https://app.hop.exchange"],
+      ["Reaper.Farm           ", `<a href="reaperfarm"        >Various</a>`,"Various      ","https://reaper.farm"]
     ]
   }
 
