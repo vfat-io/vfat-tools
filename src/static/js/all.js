@@ -112,7 +112,7 @@ const main = async () => {
       ["Cyclone                      ", `<a href="../cyclone"            >Various</a>`, "CYC                ", "https://cyclone.xyz/eth"],
       ["Elena                        ", `<a href="../elena"              >Various</a>`, "ELENA              ", "https://app.elena.finance"],
       ["Dogen                        ", `<a href="../dogen"              >Various</a>`, "DOGEN              ", "https://dogen.finance"],
-      ["Aave *                       ", `<a href="../aave"               >Various</a>`, "stkAAVE            ", "https://aave.com"],
+      ["Aave                         ", `<a href="../aave"               >Various</a>`, "stkAAVE            ", "https://aave.com"],
       ["Mochi                        ", `<a href="../moma"               >Various</a>`, "MOMA               ", "https://mochi.market"],
       ["Synthetix                    ", `<a href="../snx"                >Various</a>`, "SNX                ", "https://staking.synthetix.io"],
       ["Lift kitchen                 ", `<a href="../liftkitchen"        >Various</a>`, "LIFT               ", "https://app.lift.kitchen"],
@@ -167,7 +167,7 @@ const main = async () => {
       ["GenomesDAO                   ", `<a href="../genomesdao/"        >Various</a>`, "Various            ", "https://staking.genomes.io"],
       ["Yearn                        ", `<a href="../yearn/"             >Various</a>`, "Various            ", "https://yearn.finance"],
       ["Instrumental                 ", `<a href="../instrumental/"      >Various</a>`, "Instrumental       ", "https://app.instrumental.finance"],
-      ["Curve *                      ", `<a href="../curve/"             >Various</a>`, "Various            ", "https://curve.fi"],
+      ["Curve                        ", `<a href="../curve/"             >Various</a>`, "Various            ", "https://curve.fi"],
       ["DeFiner                      ", `<a href="../definer/"           >Various</a>`, "FIN                ", "https://app.definer.org"],
       ["Looksrare                    ", `<a href="../looksrare/"         >Various</a>`, "LOOKS              ", "https://looksrare.org"],
       ["Vader                        ", `<a href="../vader/"             >Various</a>`, "VADER              ", "https://www.vaderprotocol.app"],
@@ -188,7 +188,8 @@ const main = async () => {
       ["Titanium                     ", `<a href="../titanium/"          >Various</a>`, "T                  ", "https://t1.money"],
       ["Monolith                     ", `<a href="../monolith/"          >Various</a>`, "SOLID              ", "https://alpha.mono.farm"],
       ["Complifi Vaults              ", `<a href="../complifi_vaults/"   >Various</a>`, "                   ", ""],
-      ["Verse                        ", `<a href="../verse/"             >Various</a>`, "VERSE              ", "https://verse.bitcoin.com"]
+      ["Verse                        ", `<a href="../verse/"             >Various</a>`, "VERSE              ", "https://verse.bitcoin.com"],
+      ["Archimedes                   ", `<a href="../archimedes/"        >Various</a>`, "ARCH               ", "https://archimedesfi.com"]
     ]
   }
 
