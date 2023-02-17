@@ -25,7 +25,8 @@ const ArbitrumTokens = [
   { "id": "stargate-finance", "symbol": "STG", "contract": "0x6694340fc020c5E6B96567843da2df01b2CE1eb6"},
   { "id": "jones-dao", "symbol": "JONES", "contract": "0x10393c20975cF177a3513071bC110f7962CD67da" },
   { "id": "impermax", "symbol": "IMX", "contract": "0x9c67ee39e3c4954396b9142010653f17257dd39c" },
-  { "id": "hop-protocol", "symbol": "HOP", "contract": "0xc5102fe9359fd9a28f877a67e36b0f050d81a3cc" }
+  { "id": "hop-protocol", "symbol": "HOP", "contract": "0xc5102fe9359fd9a28f877a67e36b0f050d81a3cc" },
+  { "id": "stabilize", "symbol": "STBZ", "contract": "0x2C110867CA90e43D372C1C2E92990B00EA32818b" }
 ];
 
 const AstarTokens = [
