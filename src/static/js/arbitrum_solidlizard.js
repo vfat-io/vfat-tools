@@ -42,11 +42,7 @@ async function main() {
   let p = await loadSlizSynthetixPools(App, tokens, prices, gauges, clicked)
   _print_bold(`Total staked: $${formatMoney(p.staked_tvl)}\n`);
   if (p.totalUserStaked > 0) {
-    _print(`You are staking a total of $${formatMoney(p.totalUserStaked)} at an APR of ${(p.totalApr * 100).toFixed(2)}%\n`);
-    _print(`Estimated SLIZ earnings:`
-            + ` Day ${p.totalUserDailyRewards.toFixed(2)} ($${formatMoney(p.totalUserDailyRewardsUSD)})`
-            + ` Week ${p.totalUserWeeklyRewards.toFixed(2)} ($${formatMoney(p.totalUserWeeklyRewardsUSD)})`
-            + ` Year ${p.totalUserYearlyRewards.toFixed(2)} ($${formatMoney(p.totalUserYearlyRewardsUSD)})`);
+    _print(`You are staking a total of $${formatMoney(p.totalUserStaked)}\n`);
     _print("");
   }
 
@@ -92,30 +88,21 @@ const reloadFun = async function (App, tokens, prices, pools, clicked){
     clicked = true;
     let p = await loadSlizSynthetixPools(App, tokens, prices, pools, clicked)
     if (p.totalUserStaked > 0) {
-      _print(`You are staking a total of $${formatMoney(p.totalUserStaked)} at an APR of ${(p.totalApr * 100).toFixed(2)}%\n`);
-      _print(`Estimated SLIZ earnings:`
-              + ` Day ${p.totalUserDailyRewards.toFixed(2)} ($${formatMoney(p.totalUserDailyRewardsUSD)})`
-              + ` Week ${p.totalUserWeeklyRewards.toFixed(2)} ($${formatMoney(p.totalUserWeeklyRewardsUSD)})`
-              + ` Year ${p.totalUserYearlyRewards.toFixed(2)} ($${formatMoney(p.totalUserYearlyRewardsUSD)})`);
+      _print(`You are staking a total of $${formatMoney(p.totalUserStaked)}\n`);
       _print("");
     }
   }else{
     clicked = false;
     let p = await loadSlizSynthetixPools(App, tokens, prices, pools, clicked)
     if (p.totalUserStaked > 0) {
-      _print(`You are staking a total of $${formatMoney(p.totalUserStaked)} at an APR of ${(p.totalApr * 100).toFixed(2)}%\n`);
-      _print(`Estimated SLIZ earnings:`
-              + ` Day ${p.totalUserDailyRewards.toFixed(2)} ($${formatMoney(p.totalUserDailyRewardsUSD)})`
-              + ` Week ${p.totalUserWeeklyRewards.toFixed(2)} ($${formatMoney(p.totalUserWeeklyRewardsUSD)})`
-              + ` Year ${p.totalUserYearlyRewards.toFixed(2)} ($${formatMoney(p.totalUserYearlyRewardsUSD)})`);
+      _print(`You are staking a total of $${formatMoney(p.totalUserStaked)}\n`);
       _print("");
     }
   }
 }
 
 async function loadSlizSynthetixPools(App, tokens, prices, pools, clicked) {
-  let totalStaked  = 0, totalUserStaked = 0, individualAPRs = [];
-  let totalUserDailyRewards = 0, totalUserWeeklyRewards = 0, totalUserYearlyRewards = 0, totalUserDailyRewardsUSD = 0, totalUserWeeklyRewardsUSD = 0, totalUserYearlyRewardsUSD = 0
+  let totalStaked  = 0, totalUserStaked = 0;
   let gaugeAddresses = [], earnings = 0, earningsUSD = 0;
   const infos = await Promise.all(pools.map(p =>
       loadSlizSynthetixPoolInfo(App, tokens, prices, p.abi, p.address, p.stakeTokenFunction)));
@@ -124,22 +111,12 @@ async function loadSlizSynthetixPools(App, tokens, prices, pools, clicked) {
     totalStaked += p.staked_tvl || 0;
     totalUserStaked += p.userStaked || 0;
     if (p.userStaked > 0) {
-      individualAPRs.push(p.userStaked * p.apr / 100);
-      totalUserDailyRewards += p.userDailyRewards;
-      totalUserWeeklyRewards += p.userWeeklyRewards;
-      totalUserYearlyRewards += p.userYearlyRewards;
-      totalUserDailyRewardsUSD += p.userDailyRewardsUSD;
-      totalUserWeeklyRewardsUSD += p.userWeeklyRewardsUSD;
-      totalUserYearlyRewardsUSD += p.userYearlyRewardsUSD;
       gaugeAddresses.push(p.stakingAddress);
       earnings += p.earned;
       earningsUSD += p.earningsUSD;
     }
   }
-  let totalApr = totalUserStaked == 0 ? 0 : individualAPRs.reduce((x,y)=>x+y, 0) / totalUserStaked;
-  return { staked_tvl : totalStaked, totalUserStaked, totalApr, totalUserDailyRewards,  totalUserWeeklyRewards,
-           totalUserYearlyRewards, totalUserDailyRewardsUSD, totalUserWeeklyRewardsUSD, totalUserYearlyRewardsUSD,
-           gaugeAddresses, earnings, earningsUSD, tokens, prices, pools, clicked};
+  return { staked_tvl : totalStaked, totalUserStaked, gaugeAddresses, earnings, earningsUSD, tokens, prices, pools, clicked};
 }
 
 async function loadSlizSynthetixPoolInfo(App, tokens, prices, stakingAbi, stakingAddress,
@@ -151,7 +128,7 @@ async function loadSlizSynthetixPoolInfo(App, tokens, prices, stakingAbi, stakin
     }
     const stakeTokenAddress = await STAKING_POOL.callStatic[stakeTokenFunction]();
 
-    let rewardTokenAddresses = [], rewardTokens = [], rewardTokenTickers = [], rewardTokenPrices = [], weeklyRewards = [], earnings = [], usdCoinsPerWeek = [];
+    let rewardTokenAddresses = [], rewardTokens = [], rewardTokenTickers = [], rewardTokenPrices = [], earnings = [];
     //Added with manually reward
     const rewardTokenAddress = "0x463913D3a3D3D291667D53B8325c598Eb88D3B0e";
     rewardTokenAddresses.push(rewardTokenAddress);
@@ -161,18 +138,12 @@ async function loadSlizSynthetixPoolInfo(App, tokens, prices, stakingAbi, stakin
     const rewardToken = getParameterCaseInsensitive(tokens, rewardTokenAddress);
     const rewardTokenTicker = rewardToken.symbol;
     const rewardTokenPrice = getParameterCaseInsensitive(prices, rewardTokenAddress)?.usd;
-    const periodFinish = await STAKING_POOL.periodFinish(rewardTokenAddress)
-    const rewardRate = await STAKING_POOL.rewardRate(rewardTokenAddress)
     const earned_ = await STAKING_POOL.earned(rewardTokenAddress, App.YOUR_ADDRESS)
-    const weeklyReward = (Date.now() / 1000 > periodFinish) ? 0 : rewardRate / 10 ** rewardToken.decimals * 604800;
-    const usdPerWeek = weeklyReward * rewardTokenPrice;
     const earned = earned_ / 10 ** rewardToken.decimals;
     rewardTokens.push(rewardToken);
     rewardTokenTickers.push(rewardTokenTicker);
     rewardTokenPrices.push(rewardTokenPrice);
-    weeklyRewards.push(weeklyReward);
     earnings.push(earned);
-    usdCoinsPerWeek.push(usdPerWeek);
 
     var stakeToken = await getGeneralEthcallToken(App, stakeTokenAddress, stakingAddress);
 
@@ -205,19 +176,18 @@ async function loadSlizSynthetixPoolInfo(App, tokens, prices, stakingAbi, stakin
       stakingAddress,
       poolPrices,
       stakeTokenAddress,
-      rewardTokenAddresses,
       stakeTokenTicker,
-      rewardTokenTickers,
       stakeTokenPrice,
-      rewardTokenPrices,
-      weeklyRewards,
-      usdCoinsPerWeek,
       staked_tvl,
       userStaked,
       userUnstaked,
       earnings,
       derivedSupply,
-      derivedBalance
+      derivedBalance,
+      rewardTokenPrices,
+      rewardTokenAddresses,
+      rewardTokens,
+      rewardTokenTickers
     }
 }
 
@@ -226,13 +196,6 @@ async function printSlizSynthetixPool(App, info, chain="eth", clicked, customURL
     return {
       staked_tvl: 0,
       userStaked : 0,
-      apr : 0,
-      userDailyRewards : 0,
-      userWeeklyRewards : 0,
-      userYearlyRewards : 0,
-      userDailyRewardsUSD : 0,
-      userWeeklyRewardsUSD : 0,
-      userYearlyRewardsUSD : 0,
       stakingAddress : info.stakingAddress,
       rewardTokenAddress : info.rewardTokenAddresses[0],
       earned : info.earnings[0],
@@ -240,43 +203,13 @@ async function printSlizSynthetixPool(App, info, chain="eth", clicked, customURL
     }
   }
   info.poolPrices.print_price(chain, 4, customURLs);
-  let totalYearlyAPR = 0, totalWeeklyAPR = 0, totalDailyAPR = 0, totalUSDPerWeek = 0
-  for(let i = 0; i < info.rewardTokenTickers.length; i++){
-    let weeklyAPR = info.usdCoinsPerWeek[i] / info.staked_tvl * 100;
-    let dailyAPR = weeklyAPR / 7;
-    yearlyAPR = weeklyAPR * 52;
-    totalYearlyAPR += yearlyAPR;
-    totalWeeklyAPR += weeklyAPR;
-    totalDailyAPR += dailyAPR;
-    totalUSDPerWeek += info.usdCoinsPerWeek[i];
-    _print(`${info.rewardTokenTickers[i]} Per Week: ${info.weeklyRewards[i].toFixed(2)} ($${formatMoney(info.usdCoinsPerWeek[i])})`);
-  }
-  _print(`APR: Day ${totalDailyAPR.toFixed(4)}% Week ${totalWeeklyAPR.toFixed(2)}% Year ${totalYearlyAPR.toFixed(2)}%`);
   const userStakedUsd = info.userStaked * info.stakeTokenPrice;
   const userStakedPct = userStakedUsd / info.staked_tvl * 100;
-  const usersDailyAPR = totalDailyAPR * (info.derivedBalance / info.derivedSupply) / userStakedPct * 100
-  const usersWeeklyAPR = totalWeeklyAPR * (info.derivedBalance / info.derivedSupply) / userStakedPct * 100
-  const usersYearlyAPR = totalYearlyAPR * (info.derivedBalance / info.derivedSupply) / userStakedPct * 100
-  if(info.derivedBalance <= 0){
-    _print(`Your APR: Day 0% Week 0% Year 0%`);
-  }else{
-    _print(`Your APR: Day ${usersDailyAPR.toFixed(4)}% Week ${usersWeeklyAPR.toFixed(2)}% Year ${usersYearlyAPR.toFixed(2)}%`);
-  }
   _print(`You are staking ${info.userStaked.toFixed(6)} ${info.stakeTokenTicker} ` +
            `$${formatMoney(userStakedUsd)} (${userStakedPct.toFixed(2)}% of the pool).`);
-  const userWeeklyRewards = userStakedPct * info.weeklyRewards[0] / 100;
-  const userDailyRewards = userWeeklyRewards / 7;
-  const userYearlyRewards = userWeeklyRewards * 52;
-  const userDailyRewardsUSD = userDailyRewards*info.rewardTokenPrices[0]
-  const userWeeklyRewardsUSD = userWeeklyRewards*info.rewardTokenPrices[0]
-  const userYearlyRewardsUSD = userYearlyRewards*info.rewardTokenPrices[0]
   const earningsUSD = info.earnings[0]*info.rewardTokenPrices[0];
     if (info.userStaked > 0) {
       info.poolPrices.print_contained_price(info.userStaked);
-        _print(`Estimated ${info.rewardTokenTicker} earnings:`
-            + ` Day ${userDailyRewards.toFixed(2)} ($${formatMoney(userDailyRewardsUSD)})`
-            + ` Week ${userWeeklyRewards.toFixed(2)} ($${formatMoney(userWeeklyRewardsUSD)})`
-            + ` Year ${userYearlyRewards.toFixed(2)} ($${formatMoney(userYearlyRewardsUSD)})`);
     }
   const claim = async function() {
     return slizContract_claim(info.rewardTokenAddresses[0], info.stakingAddress, App)
@@ -302,13 +235,6 @@ async function printSlizSynthetixPool(App, info, chain="eth", clicked, customURL
   return {
       staked_tvl: info.poolPrices.staked_tvl,
       userStaked : userStakedUsd,
-      apr : usersYearlyAPR,
-      userDailyRewards : userDailyRewards,
-      userWeeklyRewards : userWeeklyRewards,
-      userYearlyRewards : userYearlyRewards,
-      userDailyRewardsUSD : userDailyRewardsUSD,
-      userWeeklyRewardsUSD : userWeeklyRewardsUSD,
-      userYearlyRewardsUSD : userYearlyRewardsUSD,
       stakingAddress : info.stakingAddress,
       rewardTokenAddress : info.rewardTokenAddresses[0],
       earned : info.earnings[0],

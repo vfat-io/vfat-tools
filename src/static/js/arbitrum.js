@@ -60,6 +60,7 @@ const main = async() => {
       ["Sugar Finance       ",""                                                                                               , `<a href="/arbitrum/sugar"       >Various</a>`,"SUGAR              ","https://sugarfinance.io"],
       ["Waterfall DEX       ",""                                                                                               , `<a href="/arbitrum/wtfdex"      >Various</a>`,"WTFX               ","https://exchange.wtfdex.com/#/swap"],
       ["Zyber Swap          ",""                                                                                               , `<a href="/arbitrum/zyber"       >Various</a>`,"ZYBER              ","https://app.zyberswap.io"],
+      ["Stabilize           ",""                                                                                               , `<a href="/arbitrum/stabilize"   >Various</a>`,"STBZ               ","https://www.stabilize.finance"],
       ["Solidlizard         ",""                                                                                               , `<a href="/arbitrum/solidlizard" >Various</a>`,"SLIZ               ","https://solidlizard.finance"]
     ]
   }

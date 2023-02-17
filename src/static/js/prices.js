@@ -28,7 +28,8 @@ const ArbitrumTokens = [
   { "id": "hop-protocol", "symbol": "HOP", "contract": "0xc5102fe9359fd9a28f877a67e36b0f050d81a3cc" },
   { "id": "solidlizard", "symbol": "SLIZ", "contract": "0x463913D3a3D3D291667D53B8325c598Eb88D3B0e" },
   { "id": "gmx", "symbol": "GMX", "contract": "0xfc5A1A6EB076a2C7aD06eD22C90d7E710E35ad0a" },
-  { "id": "vela-token", "symbol": "VELA", "contract": "0x088cd8f5ef3652623c22d48b1605dcfe860cd704" }
+  { "id": "vela-token", "symbol": "VELA", "contract": "0x088cd8f5ef3652623c22d48b1605dcfe860cd704" },
+  { "id": "stabilize", "symbol": "STBZ", "contract": "0x2C110867CA90e43D372C1C2E92990B00EA32818b" }
 ];
 
 const AstarTokens = [
