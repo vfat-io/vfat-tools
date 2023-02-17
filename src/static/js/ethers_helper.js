@@ -2455,6 +2455,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
                   "optimism": `https://app.velodrome.finance/swap`,
                   "canto": `https://forteswap.xyz/`,
                   "eth": `https://solidly.com/`,
+                  "arbitrum": `https://solidlizard.finance/`,
                 }
               [chain]):
               pool.symbol.includes("sAMM") ?  (
@@ -2464,6 +2465,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
                   "optimism" : `https://app.velodrome.finance/swap`,
                   "canto": `https://forteswap.xyz/`,
                   "eth": `https://solidly.com/`,
+                  "arbitrum": `https://solidlizard.finance/`,
                 }
               [chain]):
               pool.symbol.includes("JEWEL-LP") ?  (
@@ -2664,6 +2666,11 @@ function getUniPrices(tokens, prices, pool, chain="eth")
               `https://solidly.com/liquidity/`,
               `https://solidly.com/liquidity/`,
               `https://solidly.com/swap`
+            ],
+            "arbitrum" : [
+              `https://solidlizard.finance/liquidity`,
+              `https://solidlizard.finance/liquidity`,
+              `https://solidlizard.finance/swap`
             ]
           } [chain]):
           pool.symbol.includes("sAMM") ? ({
@@ -2696,6 +2703,11 @@ function getUniPrices(tokens, prices, pool, chain="eth")
               `https://solidly.com/liquidity/`,
               `https://solidly.com/liquidity/`,
               `https://solidly.com/swap`
+            ],
+            "arbitrum" : [
+              `https://solidlizard.finance/liquidity`,
+              `https://solidlizard.finance/liquidity`,
+              `https://solidlizard.finance/swap`
             ]
           } [chain]):
           pool.symbol.includes("HBLP") ? [
