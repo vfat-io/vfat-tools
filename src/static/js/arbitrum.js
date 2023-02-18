@@ -61,7 +61,8 @@ const main = async() => {
       ["Waterfall DEX       ",""                                                                                               , `<a href="/arbitrum/wtfdex"      >Various</a>`,"WTFX               ","https://exchange.wtfdex.com/#/swap"],
       ["Zyber Swap          ",""                                                                                               , `<a href="/arbitrum/zyber"       >Various</a>`,"ZYBER              ","https://app.zyberswap.io"],
       ["Stabilize           ",""                                                                                               , `<a href="/arbitrum/stabilize"   >Various</a>`,"STBZ               ","https://www.stabilize.finance"],
-      ["Solidlizard         ",""                                                                                               , `<a href="/arbitrum/solidlizard" >Various</a>`,"SLIZ               ","https://solidlizard.finance"]
+      ["Solidlizard         ",""                                                                                               , `<a href="/arbitrum/solidlizard" >Various</a>`,"SLIZ               ","https://solidlizard.finance"],
+      ["Sharky Swap         ",""                                                                                               , `<a href="/arbitrum/sharky"      >Various</a>`,"SHARKY             ","https://sharkyswap.xyz"]
     ]
   }
 
