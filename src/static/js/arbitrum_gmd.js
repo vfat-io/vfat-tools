@@ -80,17 +80,12 @@ async function loadGmdContract(App, tokens, prices, chef, chefAddress, chefAbi, 
     }
     if (a.userStakedUsd > 0) {
       totalUserStaked += a.userStakedUsd;
-      averageApr += a.userStakedUsd * a.yearlyAPR / 100;
     }
   }
-  averageApr = averageApr / totalUserStaked;
   _print_bold(`Total Staked: $${formatMoney(totalStaked)}`);
   if (totalUserStaked > 0) {
-    _print_bold(`\nYou are staking a total of $${formatMoney(totalUserStaked)} at an average APR of ${(averageApr * 100).toFixed(2)}%`)
-    _print(`Estimated earnings:`
-      + ` Day $${formatMoney(totalUserStaked * averageApr / 365)}`
-      + ` Week $${formatMoney(totalUserStaked * averageApr / 52)}`
-      + ` Year $${formatMoney(totalUserStaked * averageApr)}\n`);
+    _print_bold(`\nYou are staking a total of $${formatMoney(totalUserStaked)}`)
+
   }
   return { prices, totalUserStaked, totalStaked, averageApr }
 }
@@ -108,7 +103,7 @@ function printGmdChefPool(App, chefAbi, chefAddr, prices, tokens, poolInfo, pool
   _print_inline(`${poolIndex} - `);
   poolPrices.print_price(chain);
   sp?.print_price(chain);
-  const apr = printAPR(rewardTokenTicker, rewardPrice, poolRewardsPerWeek, poolPrices.stakeTokenTicker,
+  const apr = printGmdAPR(rewardTokenTicker, rewardPrice, poolRewardsPerWeek, poolPrices.stakeTokenTicker,
     staked_tvl, userStaked, poolPrices.price, fixedDecimals);
   if (poolInfo.userLPStaked > 0) sp?.print_contained_price(userStaked);
   if (poolInfo.userStaked > 0) poolPrices.print_contained_price(userStaked);
@@ -132,4 +127,19 @@ function printGmdChefContractLinks(App, chefAbi, chefAddr, poolIndex, poolAddres
   }
   _print(`Staking or unstaking also claims rewards.`)
   _print("");
+}
+
+function printGmdAPR(rewardTokenTicker, rewardPrice, poolRewardsPerWeek,
+                  stakeTokenTicker, staked_tvl, userStaked, poolTokenPrice,
+                  fixedDecimals) {
+  var usdPerWeek = poolRewardsPerWeek * rewardPrice;
+  fixedDecimals = fixedDecimals ?? 2;
+  var userStakedUsd = userStaked * poolTokenPrice;
+  var userStakedPct = userStakedUsd / staked_tvl * 100;
+  _print(`You are staking ${userStaked.toFixed(fixedDecimals)} ${stakeTokenTicker} ($${formatMoney(userStakedUsd)}), ${userStakedPct.toFixed(2)}% of the pool.`);
+  return {
+    userStakedUsd,
+    totalStakedUsd : staked_tvl,
+    userStakedPct
+  }
 }
