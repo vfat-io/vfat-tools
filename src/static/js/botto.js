@@ -283,12 +283,12 @@ async function printBottoLpPool(App, info, chain="eth", customURLs) {
 const bottoLpContract_unstake = async function(rewardPoolAddr, App) {
   const signer = App.provider.getSigner()
 
-  const REWARD_POOL = new ethers.Contract(rewardPoolAddr, Y_STAKING_POOL_ABI, signer)
-  const currentStakedAmount = await REWARD_POOL.userStakes(App.YOUR_ADDRESS)
+  const REWARD_POOL = new ethers.Contract(rewardPoolAddr, BOTTO_WETH_STAKING_ABI, signer)
+  const currentStakedAmount = await REWARD_POOL.totalUserStake(App.YOUR_ADDRESS)
 
   if (currentStakedAmount > 0) {
     showLoading()
-    REWARD_POOL.withdraw(currentStakedAmount, {gasLimit: 250000})
+    REWARD_POOL.withdraw({gasLimit: 250000})
       .then(function(t) {
         return App.provider.waitForTransaction(t.hash)
       })
@@ -301,11 +301,11 @@ const bottoLpContract_unstake = async function(rewardPoolAddr, App) {
 const bottoLpContract_claim = async function(rewardPoolAddr, App) {
   const signer = App.provider.getSigner()
 
-  const REWARD_POOL = new ethers.Contract(rewardPoolAddr, Y_STAKING_POOL_ABI, signer)
+  const REWARD_POOL = new ethers.Contract(rewardPoolAddr, BOTTO_WETH_STAKING_ABI, signer)
 
   console.log(App.YOUR_ADDRESS)
 
-  const earnedYFFI = (await REWARD_POOL.earned(App.YOUR_ADDRESS)) / 1e18
+  const earnedYFFI = (await REWARD_POOL.userClaimedRewards(App.YOUR_ADDRESS)) / 1e18
 
   if (earnedYFFI > 0) {
     showLoading()
@@ -322,7 +322,7 @@ const bottoLpContract_claim = async function(rewardPoolAddr, App) {
 const bottoContract_unstake = async function(rewardPoolAddr, App) {
   const signer = App.provider.getSigner()
 
-  const REWARD_POOL = new ethers.Contract(rewardPoolAddr, Y_STAKING_POOL_ABI, signer)
+  const REWARD_POOL = new ethers.Contract(rewardPoolAddr, BOTTO_WETH_STAKING_ABI, signer)
   const currentStakedAmount = await REWARD_POOL.userStakes(App.YOUR_ADDRESS)
 
   if (currentStakedAmount > 0) {
