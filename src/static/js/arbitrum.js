@@ -63,7 +63,8 @@ const main = async() => {
       ["Stabilize           ",""                                                                                               , `<a href="/arbitrum/stabilize"   >Various</a>`,"STBZ               ","https://www.stabilize.finance"],
       ["Solidlizard         ",""                                                                                               , `<a href="/arbitrum/solidlizard" >Various</a>`,"SLIZ               ","https://solidlizard.finance"],
       ["Sharky Swap         ",""                                                                                               , `<a href="/arbitrum/sharky"      >Various</a>`,"SHARKY             ","https://sharkyswap.xyz"],
-      ["Gmd-Protocol        ",""                                                                                               , `<a href="/arbitrum/gmd"         >Various</a>`,"GMD                ","https://gmdprotocol.com"]
+      ["Gmd-Protocol        ",""                                                                                               , `<a href="/arbitrum/gmd"         >Various</a>`,"GMD                ","https://gmdprotocol.com"],
+      ["Bluelobster         ",""                                                                                               , `<a href="/arbitrum/bluelobster" >Various</a>`,"BLOB               ","https://bluelobster.money"]
     ]
   }
 
