@@ -600,7 +600,8 @@ const main = async() => {
       ["Bolide Finance      ","", `<a href="bolide"        >Various</a>`,"BLID             ","https://app.bolide.fi"],
       ["BabyDoge            ","", `<a href="babydoge"      >Various</a>`,"BabyDoge         ","https://babydogeswap.com"],
       ["Animal Farm         ","", `<a href="animalfarm"    >Various</a>`,"PIGS / DOGS      ","https://defi.animalfarm.app"],
-      ["Naruto Defi         ","", `<a href="narutodefi"    >Various</a>`,"NARUTO           ","https://www.narutodefi.com"]
+      ["Naruto Defi         ","", `<a href="narutodefi"    >Various</a>`,"NARUTO           ","https://www.narutodefi.com"],
+      ["Thena               ","", `<a href="thena"         >Various</a>`,"THE              ","https://thena.fi"]
     ]}
 
   let table = new AsciiTable().fromJSON(tableData);
