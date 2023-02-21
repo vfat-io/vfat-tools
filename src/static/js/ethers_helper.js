@@ -2456,7 +2456,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
                   "canto": `https://forteswap.xyz/`,
                   "eth": `https://solidly.com/`,
                   "arbitrum": `https://solidlizard.finance/`,
-                  "bnb": `https://info.thena.fi/pair/${pool.address}`,
+                  "bsc": `https://info.thena.fi/pair/${pool.address}`,
                 }
               [chain]):
               pool.symbol.includes("sAMM") ?  (
@@ -2467,7 +2467,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
                   "canto": `https://forteswap.xyz/`,
                   "eth": `https://solidly.com/`,
                   "arbitrum": `https://solidlizard.finance/`,
-                  "bnb": `https://info.thena.fi/pair/${pool.address}`,
+                  "bsc": `https://info.thena.fi/pair/${pool.address}`,
                 }
               [chain]):
               pool.symbol.includes("JEWEL-LP") ?  (
@@ -2674,7 +2674,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
               `https://solidlizard.finance/liquidity`,
               `https://solidlizard.finance/swap`
             ],
-            "bnb" : [
+            "bsc" : [
               `https://thena.fi/liquidity/manage`,
               `https://thena.fi/liquidity/manage`,
               `https://thena.fi/swap`
@@ -2716,7 +2716,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
               `https://solidlizard.finance/liquidity`,
               `https://solidlizard.finance/swap`
             ],
-            "bnb" : [
+            "bsc" : [
               `https://thena.fi/liquidity/manage`,
               `https://thena.fi/liquidity/manage`,
               `https://thena.fi/swap`
