@@ -8,7 +8,7 @@ const main = async () => {
     heading: ['Pool Provider', 'LP', 'Reward Tokens', 'INFO'],
     rows: [
       ['Defikingdoms           ', `<a href='defikingdoms'     >Various</a>`, 'JADE          ', 'https://game.defikingdoms.com'],
-    ],
+    ].reverse()
   }
 
   let table = new AsciiTable().fromJSON(tableData)

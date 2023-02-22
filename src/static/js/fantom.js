@@ -210,7 +210,7 @@ const main = async () => {
       ['Strategyx Finance  ', `<a href='strategyx'    >Various</a>`, 'STAY          ', 'https://strategyx.finance'],
       ['Serenity Capital   ', `<a href='serenity'     >Various</a>`, 'PBL / SERENE  ', 'https://app.serenitycapital.io'],
       ['Based Finance (Next-Gen)', `<a href='based-nextgen'>Various</a>`, 'OBOL / SMELT', 'https://next-gen.basedfinance.io']
-    ],
+    ].reverse()
   }
 
   let table = new AsciiTable().fromJSON(tableData)

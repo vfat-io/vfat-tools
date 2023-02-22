@@ -14,7 +14,7 @@ $(function() {
         ["WOWswap",          `<a href="wowswap"        >Various</a>`,        "WOW",                 "https://wowswap.io"],
         ["Hermes (MaiaDAO) *",`<a href="hermes"        >Various</a>`,        "HERMES",              "https://hermes.maiadao.io"],
         ["Hummus",           `<a href="hummus"         >Various</a>`,        "HUM",                 "https://www.hummus.exchange"]
-      ]
+      ].reverse()
     }
 
     let table = new AsciiTable().fromJSON(tableData);

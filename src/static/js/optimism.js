@@ -25,7 +25,7 @@ const main = async() => {
       ["OpenXSwap             ", `<a href="openxswap"         >Various</a>`,"OPENX        ","https://openxswap.exchange"],
       ["Hop Exchange          ", `<a href="hop"               >Various</a>`,"HOP          ","https://app.hop.exchange"],
       ["Reaper.Farm           ", `<a href="reaperfarm"        >Various</a>`,"Various      ","https://reaper.farm"]
-    ]
+    ].reverse()
   }
 
   let table = new AsciiTable().fromJSON(tableData);

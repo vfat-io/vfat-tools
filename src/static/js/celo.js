@@ -14,7 +14,7 @@ const main = async() => {
         ["Sushi   ",      `<a href="sushi"         >Various</a>`,      "SUSHI/CELO","https://app.sushi.com" ],
         ["Cellular   ",   `<a href="cellular"      >Various</a>`,      "CELL",      "https://cellular.finance" ],
         ["CeloDex   ",    `<a href="celodex"       >Various</a>`,      "CLX",       "https://www.celodex.org" ]
-    ]
+    ].reverse()
   }
 
   let table = new AsciiTable().fromJSON(tableData);

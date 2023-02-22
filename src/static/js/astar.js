@@ -9,7 +9,7 @@ const main = async () => {
     rows: [
       ['FunBeast           ', `<a href='funbeast'     >Various</a>`, 'BEAST          ', 'https://funbeast.xyz'],
       ['PandoraSwap        ', `<a href='pandora'      >Various</a>`, 'PANDORA        ', 'https://pandoraswapxyz.org']
-    ],
+    ].reverse()
   }
 
   let table = new AsciiTable().fromJSON(tableData)

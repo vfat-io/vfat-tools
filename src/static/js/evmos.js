@@ -5,10 +5,10 @@ $(function() {
 const main = async () => {
   let tableData = {
     title: 'EVMOS Network',
-    heading: ["Pool Provider","MCN", "LP", "Reward Tokens", "INFO"],
+    heading: ["Pool Provider","LP", "Reward Tokens", "INFO"],
     rows: [
-      ['Diffusion           ',"", `<a href="diffusion"            >Various</a>`,'DIFF         ','https://app.diffusion.fi'],
-    ],
+      ['Diffusion           ',`<a href="diffusion"            >Various</a>`,'DIFF         ','https://app.diffusion.fi'],
+    ].reverse()
   }
 
   let table = new AsciiTable().fromJSON(tableData)

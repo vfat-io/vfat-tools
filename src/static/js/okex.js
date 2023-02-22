@@ -18,7 +18,7 @@ const main = async() => {
       ["PandaSwap",     `<a href='pandaswap'    >Various</a>`,  "PND",     "https://app.pandaex.org"],
       ["Elk",           `<a href='elk'          >Various</a>`,  "ELK",     "https://elk.finance"],
       ['DeFiner',       `<a href="definer"      >Various</a>`,  'FIN',     'https://app.definer.org'],
-    ]
+    ].reverse()
   }
 
   let table = new AsciiTable().fromJSON(tableData);

@@ -6,11 +6,11 @@ const main = async () => {
 
   let tableData = {
     "title": "CANTO Network",
-    "heading": ["Pool Provider", "MCN", "LP", "Reward Tokens", "INFO"],
+    "heading": ["Pool Provider", "LP", "Reward Tokens", "INFO"],
     "rows": [
-      ["Encanto       ", "", `<a href='encanto'       >Various</a>`, "ENCANTO          ", "https://encantowetrust.com"],
-      ["Canto DEX     ", "", `<a href='cantodex'      >Various</a>`, "WCANTO           ", "https://canto.io/         "]
-    ]
+      ["Encanto       ",  `<a href='encanto'       >Various</a>`, "ENCANTO          ", "https://encantowetrust.com"],
+      ["Canto DEX     ",  `<a href='cantodex'      >Various</a>`, "WCANTO           ", "https://canto.io/         "]
+    ].reverse()
   }
 
   let table = new AsciiTable().fromJSON(tableData);

@@ -14,7 +14,7 @@ const main = async() => {
       ["TangoSwap           ", `<a href="tangoswap"     >Various</a>`,"TANGO            ","https://tangoswap.cash"],
       ["1BCH                ", `<a href="1bch"          >Various</a>`,"1BCH             ","https://1bch.com"],
       ["SmartDEX            ", `<a href="smartdex"      >Various</a>`,"dSMART, xSMART   ","https://smartdex.cash"]
-    ]}
+    ].reverse()}
 
   let table = new AsciiTable().fromJSON(tableData);
   document.getElementById('log').innerHTML += table + '<br />';

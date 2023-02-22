@@ -34,7 +34,7 @@ const main = async() => {
       ["Moonwell                 ", `<a href="moonwell"      >Various</a>`,"APOLLO      ","https://moonwell.fi"],
       ["Zenlink                  ", `<a href="zenlink"       >Various</a>`,"Various     ","https://dex.zenlink.pro"],
       ["MoonroverDao             ", `<a href="moonroverdao"  >Various</a>`,"ROVR        ","https://moonroverdao.com"]
-    ]
+    ].reverse()
   }
 
   let table = new AsciiTable().fromJSON(tableData);

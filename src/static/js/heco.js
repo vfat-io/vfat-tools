@@ -26,7 +26,7 @@ const main = async() => {
       ["OberonFinance",      `<a href="galaxy_oberon" >Various</a>`, "OBERON  ","https://heco-oberon.galaxyfinance.one/"],
       ["Beefy     ",`<a href="beefy"     >Various</a>`, "BIFI   ","https://app.beefy.finance/#/heco"],
       ["WOWswap   ",`<a href="wowswap"   >Various</a>`, "WOW    ","https://wowswap.io"],
-    ]
+    ].reverse()
   }
 
   let table = new AsciiTable().fromJSON(tableData);

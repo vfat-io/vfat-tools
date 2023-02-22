@@ -110,7 +110,7 @@ const main = async() => {
         ["Frozenwalrus Finance    ",`<a href="frozenwalrus"     >Various</a>`,"WLRS / WSHARE","https://frozenwalrus.finance"],
         ["Grape Finance           ",`<a href="grape"            >Various</a>`,"WINE / GRAPE ","https://grapefinance.app"],
         ["Subzero                 ",`<a href="subzero"          >Various</a>`,"ZSHARE / SUB ","https://app.subzero.plus"]
-    ]
+    ].reverse()
   }
 
   let table = new AsciiTable().fromJSON(tableData);

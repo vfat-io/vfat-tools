@@ -9,7 +9,7 @@ const main = async() => {
     "heading":["Pool Provider","LP", "Reward Tokens", "INFO"],
     "rows": [
       ["Voltswap               ", `<a href="voltswap"         >Various</a>`,"VOLT            ","https://farm.voltswap.finance"]
-    ]}
+    ].reverse()}
 
   let table = new AsciiTable().fromJSON(tableData);
   document.getElementById('log').innerHTML += table + '<br />';

@@ -10,7 +10,7 @@ $(function() {
       rows: [
         ['FairySwap           ', `<a href='fairyswap'     >Various</a>`, 'FAIRY          ', 'https://fairyswap.finance'],
         ['Forlend             ', `<a href='forlend'       >Various</a>`, 'FLD          ', 'https://forlend.io'],
-      ]
+      ].reverse()
     }
   
     let table = new AsciiTable().fromJSON(tableData);
