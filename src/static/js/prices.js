@@ -404,7 +404,9 @@ const FantomTokens = [
     { "id": "stargate-finance", "symbol": "STG", "contract": "0x2F6F07CDcf3588944Bf4C42aC74ff24bF56e7590"},
     { "id": "deus-finance-2", "symbol": "DEUS", "contract": "0xde5ed76e7c05ec5e4572cfc88d1acea165109e44"},
     { "id": "strategyx", "symbol": "STAY", "contract": "0xA5365f2E77bCe1cb2D42F5c808012C01b1548d3C" },
-    { "id": "fang-token", "symbol": "FANG", "contract": "0x49894fcc07233957c35462cfc3418ef0cc26129f" }
+    { "id": "fang-token", "symbol": "FANG", "contract": "0x49894fcc07233957c35462cfc3418ef0cc26129f" },
+    { "id": "skullswap-exchange", "symbol": "SKULL", "contract": "0xfa5992a8a47af7029e04ec6a95203ad3f301460b" },
+    { "id": "skullswap-exchange", "symbol": "dSKULL", "contract": "0x3c69f76b462201572e8d40c2c90e78fd95395af6" }
   ]
 ];
 

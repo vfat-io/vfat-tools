@@ -209,7 +209,8 @@ const main = async () => {
       ['Dei Finance        ', `<a href='dei'          >Various</a>`, 'DEUS          ', 'https://app.dei.finance'],
       ['Strategyx Finance  ', `<a href='strategyx'    >Various</a>`, 'STAY          ', 'https://strategyx.finance'],
       ['Serenity Capital   ', `<a href='serenity'     >Various</a>`, 'PBL / SERENE  ', 'https://app.serenitycapital.io'],
-      ['Based Finance (Next-Gen)', `<a href='based-nextgen'>Various</a>`, 'OBOL / SMELT', 'https://next-gen.basedfinance.io']
+      ['Based Finance (Next-Gen)', `<a href='based-nextgen'>Various</a>`, 'OBOL / SMELT', 'https://next-gen.basedfinance.io'],
+      ['Skull Swap         ', `<a href='skullswap'    >Various</a>`, 'SKULL         ', 'https://www.skullswap.exchange']
     ].reverse()
   }
 
