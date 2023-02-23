@@ -84,7 +84,7 @@ async function main() {
             let allow = Promise.resolve()
 
             showLoading()
-            allow = lp_write_contract.approve(router.routerAddress, _liquidity, {gasLimit: 500000})
+            allow = lp_write_contract.approve(router.routerAddress, _liquidity)
               .then(function(t) {
                 return App.provider.waitForTransaction(t.hash)
               })
