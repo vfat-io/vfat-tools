@@ -175,8 +175,13 @@ const GENERAL_SOLIDLY_FACTORY_ABI = [{"inputs":[],"stateMutability":"nonpayable"
       _print_link("[CLEAR BROWSER STORAGE]", clearLocalStorage, "clear_browser_storage");
       start(callback);
       _print_bold(`\nYou are connected to ${networkNameFromId(connectedNetwork.chainId)}`)
-    _print('')
+  }else {
+    _print_link("[CONNECT WALLET]", () => connectWallet(callback), "connect_wallet_button", false);
+    _print_inline(' -=- ');
+    _print_link("[CLEAR BROWSER STORAGE]", clearLocalStorage, "clear_browser_storage");
+    hideLoading()
   }
+  _print('')
 }
 
 function refresh(t){
