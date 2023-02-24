@@ -354,6 +354,7 @@ const FantomTokens = [
     { "id": "galaxy-triton", "symbol": "TRITON", "contract": "0x9cf4009e62429Db3F57Aa9e7e8E898427cF6865f" },
     { "id": "galaxy-oberon", "symbol": "OBERON", "contract": "0xc979E70611D997Aa109528c6A9aa73D82Eaa2881" },
     { "id": "pumpkins", "symbol": "KINS", "contract": "0x6eced8e16eda61e65292f019b165542a5906ecd6" },
+    { "id": "skullswap-exchange", "symbol": "SKULL", "contract": "0xfa5992a8a47af7029e04ec6a95203ad3f301460b" },
   ],
   [
     { "id": "wraithswap", "symbol": "WRA", "contract": "0x4CF098d3775Bd78a4508a13E126798Da5911b6cd" },
@@ -405,8 +406,6 @@ const FantomTokens = [
     { "id": "deus-finance-2", "symbol": "DEUS", "contract": "0xde5ed76e7c05ec5e4572cfc88d1acea165109e44"},
     { "id": "strategyx", "symbol": "STAY", "contract": "0xA5365f2E77bCe1cb2D42F5c808012C01b1548d3C" },
     { "id": "fang-token", "symbol": "FANG", "contract": "0x49894fcc07233957c35462cfc3418ef0cc26129f" },
-    { "id": "skullswap-exchange", "symbol": "SKULL", "contract": "0xfa5992a8a47af7029e04ec6a95203ad3f301460b" },
-    { "id": "skullswap-exchange", "symbol": "dSKULL", "contract": "0x3c69f76b462201572e8d40c2c90e78fd95395af6" }
   ]
 ];
 
