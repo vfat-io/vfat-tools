@@ -30,7 +30,9 @@ const ArbitrumTokens = [
   { "id": "gmx", "symbol": "GMX", "contract": "0xfc5A1A6EB076a2C7aD06eD22C90d7E710E35ad0a" },
   { "id": "vela-token", "symbol": "VELA", "contract": "0x088cd8f5ef3652623c22d48b1605dcfe860cd704" },
   { "id": "stabilize", "symbol": "STBZ", "contract": "0x2C110867CA90e43D372C1C2E92990B00EA32818b" },
-  { "id": "gmd-protocol", "symbol": "GMD", "contract": "0x4945970efeec98d393b4b979b9be265a3ae28a8b" }
+  { "id": "gmd-protocol", "symbol": "GMD", "contract": "0x4945970efeec98d393b4b979b9be265a3ae28a8b" },
+  { "id": "zyberswap", "symbol": "ZYB", "contract": "0x3b475f6f2f41853706afc9fa6a6b8c5df1a2724c" },
+  { "id": "swapfish", "symbol": "FISH", "contract": "0xb348b87b23d5977e2948e6f36ca07e1ec94d7328" }
 ];
 
 const AstarTokens = [

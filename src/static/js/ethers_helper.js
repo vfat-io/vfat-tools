@@ -2296,6 +2296,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
   else if (pool.symbol.includes("LSLP")) stakeTokenTicker += " LSLP";
   else if (pool.symbol.includes("vAMM")) stakeTokenTicker += " vAMM";
   else if (pool.symbol.includes("HELIX-LP")) stakeTokenTicker += " HELIX-LP";
+  else if (pool.symbol.includes("Arbi-LP")) stakeTokenTicker += " Arbi-LP";
   else if (pool.symbol.includes("FISH")) stakeTokenTicker += " FISH LP";
   else if (pool.symbol.includes("MDEX")) stakeTokenTicker += " MDEX LP";
   else if (pool.symbol.includes("JEWEL-LP")) stakeTokenTicker += " Jewel LP Token";
@@ -2418,6 +2419,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
           pool.symbol.includes("FX-V2") ?  `https://app.fx-swap.io/pair/${pool.address}` :
           pool.symbol.includes("PUD-LP") ?  `https://info.puddingswap.finance/pair/${pool.address}` :
           pool.symbol.includes("HELIX-LP") ?  `https://helix.finance/data/trading-pool/${pool.address}` :
+          pool.symbol.includes("Arbi-LP") ?  `https://arbiswap.io/swap/` :
           pool.symbol.includes("LSLP") ? `https://info.linkswap.app/pair/${pool.address}` :
           pool.name.includes("Zyber LP") ? `https://analytics.zyberswap.io/pairs/${pool.address}` :
           pool.symbol.includes("MDEX") ? `https://info.mdex.com/#/pools/${pool.address}` :
@@ -2600,6 +2602,11 @@ function getUniPrices(tokens, prices, pool, chain="eth")
             `https://helix.finance/add/${t0address}/${t1address}`,
             `https://helix.finance/remove/${t0address}/${t1address}`,
             `https://helix.finance/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+          ] :
+          pool.symbol.includes("Arbi-LP") ? [
+            `https://arbiswap.io/add/${t0address}/${t1address}`,
+            `https://arbiswap.io/remove/${t0address}/${t1address}`,
+            `https://arbiswap.io/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
           ] :
           pool.symbol.includes("JLP") ? [
             `https://traderjoexyz.com/pool/${t0address}/${t1address}`,
