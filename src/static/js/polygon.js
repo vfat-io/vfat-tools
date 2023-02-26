@@ -443,6 +443,7 @@ const main = async () => {
       ["Piginu              ", `<a href="piginu"           >Various</a>`,"PIG           ","https://piginu.com"],
       ['FatexFi             ',  `<a href="fatex"            >Various</a>`, 'FATE         ', 'https://app.fatexfi.io'],
       ['Cutey               ',  `<a href="cutey"            >Various</a>`, 'CUTE         ', 'https://cutey.farm'],
+      ['GenomesDAO          ',  `<a href="genomesdao"            >Various</a>`, 'GNOME / GENE', 'https://genomes.io'],
     ].reverse()
   }
 
