@@ -150,7 +150,7 @@ window.NETWORKS = {
       "decimals": 18
     },
     "rpcUrls": [
-      "https://canto.slingshot.finance"
+      "https://mainnode.plexnode.org:8545"
     ],
     "blockExplorerUrls": [
       "https://evm.explorer.canto.io"
