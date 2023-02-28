@@ -2455,7 +2455,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
                   "fantom": `https://solidly.exchange`,
                   "metis": `https://hermes.maiadao.io/#/swap`,
                   "optimism": `https://app.velodrome.finance/swap`,
-                  "canto": `https://forteswap.xyz/`,
+                  "canto": `https://canto.velocimeter.xyz/`,
                   "eth": `https://solidly.com/`,
                   "arbitrum": `https://solidlizard.finance/`,
                   "bsc": `https://info.thena.fi/pair/${pool.address}`,
@@ -2466,7 +2466,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
                   "fantom" : `https://solidly.exchange`,
                   "metis" : `https://hermes.maiadao.io/#/swap`,
                   "optimism" : `https://app.velodrome.finance/swap`,
-                  "canto": `https://forteswap.xyz/`,
+                  "canto": `https://canto.velocimeter.xyz/`,
                   "eth": `https://solidly.com/`,
                   "arbitrum": `https://solidlizard.finance/`,
                   "bsc": `https://info.thena.fi/pair/${pool.address}`,
@@ -2667,9 +2667,9 @@ function getUniPrices(tokens, prices, pool, chain="eth")
               `https://whaleswap.finance/swap`
             ],
             "canto" : [
-              `https://forteswap.xyz/pool/add-liquidity/`,
-              `https://forteswap.xyz/pool/remove-liquidity/`,
-              `https://forteswap.xyz/`
+              `https://canto.velocimeter.xyz/liquidity/${pool.address}`,
+              `https://canto.velocimeter.xyz/liquidity/${pool.address}`,
+              `https://canto.velocimeter.xyz`
             ],
             "eth" : [
               `https://solidly.com/liquidity/`,
@@ -2709,9 +2709,9 @@ function getUniPrices(tokens, prices, pool, chain="eth")
               `https://whaleswap.finance/swap`
             ],
             "canto" : [
-              `https://forteswap.xyz/pool/add-liquidity/`,
-              `https://forteswap.xyz/pool/remove-liquidity/`,
-              `https://forteswap.xyz/`
+              `https://canto.velocimeter.xyz/liquidity/${pool.address}`,
+              `https://canto.velocimeter.xyz/liquidity/${pool.address}`,
+              `https://canto.velocimeter.xyz/`
             ],
             "eth" : [
               `https://solidly.com/liquidity/`,
