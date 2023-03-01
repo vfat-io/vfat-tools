@@ -32,7 +32,9 @@ const ArbitrumTokens = [
   { "id": "stabilize", "symbol": "STBZ", "contract": "0x2C110867CA90e43D372C1C2E92990B00EA32818b" },
   { "id": "gmd-protocol", "symbol": "GMD", "contract": "0x4945970efeec98d393b4b979b9be265a3ae28a8b" },
   { "id": "zyberswap", "symbol": "ZYB", "contract": "0x3b475f6f2f41853706afc9fa6a6b8c5df1a2724c" },
-  { "id": "swapfish", "symbol": "FISH", "contract": "0xb348b87b23d5977e2948e6f36ca07e1ec94d7328" }
+  { "id": "swapfish", "symbol": "FISH", "contract": "0xb348b87b23d5977e2948e6f36ca07e1ec94d7328" },
+  { "id": "staked-ether", "symbol": "STETH", "contract": "0x5979D7b546E38E414F7E9822514be443A4800529" },
+  { "id": "sterling-finance", "symbol": "STR", "contract": "0x5DB7b150c5F38c5F5db11dCBDB885028fcC51D68" }
 ];
 
 const AstarTokens = [

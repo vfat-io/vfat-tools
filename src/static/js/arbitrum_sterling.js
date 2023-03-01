@@ -30,7 +30,7 @@ async function main() {
   });
 
   //STR/USDC to receive the price
-  await loadStrSynthetixPoolInfoPrice(App, tokens, prices, App.YOUR_ADDRESS, "0xb30d2814fada91c97c2ffbb27c9187a099617e3f")
+  //await loadStrSynthetixPoolInfoPrice(App, tokens, prices, App.YOUR_ADDRESS, "0xb30d2814fada91c97c2ffbb27c9187a099617e3f")
 
   let p = await loadStrSynthetixPools(App, tokens, prices, gauges, clicked)
   _print_bold(`Total staked: $${formatMoney(p.staked_tvl)}\n`);
