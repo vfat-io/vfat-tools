@@ -11,6 +11,9 @@ async function main() {
     _print(`Initialized ${App.YOUR_ADDRESS}\n`);
     _print("Reading smart contracts...\n");
 
+    _print_bold("----- Scam Project Please Remove Your funds! -----");
+    _print("");
+
    const ARBI_CHEF_ADDR = "0x21e185462FEafCd807330B11A46D1F934D5392B4";
    const rewardArbiTokenTicker = "ARBI";
    const rewardWhaleTokenTicker = "WHALE";
@@ -80,26 +83,18 @@ async function loadArbiChefContract(App, tokens, prices, chef, chefAddress, chef
       aprs.push(apr);
     }
   }
-  let totalUserStaked = 0, totalStaked = 0, averageApr = 0;
+  let totalUserStaked = 0, totalStaked = 0;
   for (const a of aprs) {
     if (!isNaN(a.totalStakedUsd)) {
       totalStaked += a.totalStakedUsd;
     }
     if (a.userStakedUsd > 0) {
       totalUserStaked += a.userStakedUsd;
-      averageApr += a.userStakedUsd * a.yearlyAPR / 100;
     }
   }
-  averageApr = averageApr / totalUserStaked;
   _print_bold(`Total Staked: $${formatMoney(totalStaked)}`);
-  if (totalUserStaked > 0) {
-    _print_bold(`\nYou are staking a total of $${formatMoney(totalUserStaked)} at an average APR of ${(averageApr * 100).toFixed(2)}%`)
-    _print(`Estimated earnings:`
-      + ` Day $${formatMoney(totalUserStaked * averageApr / 365)}`
-      + ` Week $${formatMoney(totalUserStaked * averageApr / 52)}`
-      + ` Year $${formatMoney(totalUserStaked * averageApr)}\n`);
-  }
-  return { prices, totalUserStaked, totalStaked, averageApr }
+
+  return { prices, totalUserStaked, totalStaked }
 }
 
 function printArbiChefPool(App, chefAbi, chefAddr, prices, tokens, poolInfo, poolIndex, poolPrices,
@@ -135,28 +130,29 @@ function printArbiChefContractLinks(App, chefAbi, chefAddr, poolIndex, poolAddre
   rewardArbiTokenTicker, rewardWhaleTokenTicker, stakeTokenTicker, unstaked, userStaked, pendingRewardArbiTokens, pendingRewardWhaleTokens, fixedDecimals,
   claimFunction, rewardArbiPrice, rewardWhalePrice, chain, depositFee, withdrawFee) {
   fixedDecimals = fixedDecimals ?? 2;
-  const approveAndStake = async function () {
-    return chefArbitrumContract_stake(chefAbi, chefAddr, poolIndex, poolAddress, App)
-  }
   const unstake = async function () {
-    return chefArbitrumContract_unstake(chefAbi, chefAddr, poolIndex, App, pendingRewardsFunction)
+    return arbiswapArbitrumContract_unstake(chefAbi, chefAddr, poolIndex, App, pendingRewardsFunction)
   }
-  const claim = async function () {
-    return chefArbitrumContract_claim(chefAbi, chefAddr, poolIndex, App, pendingRewardsFunction, claimFunction)
-  }
-  if (depositFee > 0) {
-    _print_link(`Stake ${unstaked.toFixed(fixedDecimals)} ${stakeTokenTicker} - Fee ${depositFee}%`, approveAndStake)
-  } else {
-    _print_link(`Stake ${unstaked.toFixed(fixedDecimals)} ${stakeTokenTicker}`, approveAndStake)
-  }
-  if (withdrawFee > 0) {
-    _print_link(`Unstake ${userStaked.toFixed(fixedDecimals)} ${stakeTokenTicker} - Fee ${withdrawFee}%`, unstake)
-  } else {
-    _print_link(`Unstake ${userStaked.toFixed(fixedDecimals)} ${stakeTokenTicker}`, unstake)
-  }
-  _print_link(`Claim ${pendingRewardArbiTokens.toFixed(fixedDecimals)} ${rewardArbiTokenTicker} ($${formatMoney(pendingRewardArbiTokens * rewardArbiPrice)}) + ${pendingRewardWhaleTokens.toFixed(fixedDecimals)} ${rewardWhaleTokenTicker} ($${formatMoney(pendingRewardWhaleTokens * rewardWhalePrice)})`, claim)
-  _print(`Staking or unstaking also claims rewards.`)
+  _print_link(`Emergency Withdraw ${userStaked.toFixed(fixedDecimals)} ${stakeTokenTicker}`, unstake)
   _print("");
+}
+
+const arbiswapArbitrumContract_unstake = async function (chefAbi, chefAddress, poolIndex, App, pendingRewardsFunction) {
+  const signer = App.provider.getSigner()
+  const CHEF_CONTRACT = new ethers.Contract(chefAddress, chefAbi, signer)
+
+  const currentStakedAmount = (await CHEF_CONTRACT.userInfo(poolIndex, App.YOUR_ADDRESS)).amount
+
+  if (currentStakedAmount / 1e18 > 0) {
+    showLoading()
+    CHEF_CONTRACT.emergencyWithdraw(poolIndex, currentStakedAmount)
+      .then(function (t) {
+        return App.provider.waitForTransaction(t.hash)
+      })
+      .catch(function () {
+        hideLoading()
+      })
+  }
 }
 
 function printArbiAPR(rewardArbiTokenTicker, rewardWhaleTokenTicker, rewardArbiPrice, rewardWhalePrice, poolRewardsArbiPerWeek,
@@ -165,51 +161,51 @@ function printArbiAPR(rewardArbiTokenTicker, rewardWhaleTokenTicker, rewardArbiP
   var usdArbiPerWeek = poolRewardsArbiPerWeek * rewardArbiPrice;
   var usdWhalePerWeek = poolRewardsWhalePerWeek * rewardWhalePrice;
   fixedDecimals = fixedDecimals ?? 2;
-  _print(`${rewardArbiTokenTicker} Per Week: ${poolRewardsArbiPerWeek.toFixed(fixedDecimals)} ($${formatMoney(usdArbiPerWeek)})`);
-  _print(`${rewardWhaleTokenTicker} Per Week: ${poolRewardsWhalePerWeek.toFixed(fixedDecimals)} ($${formatMoney(usdWhalePerWeek)})`);
+  // _print(`${rewardArbiTokenTicker} Per Week: ${poolRewardsArbiPerWeek.toFixed(fixedDecimals)} ($${formatMoney(usdArbiPerWeek)})`);
+  // _print(`${rewardWhaleTokenTicker} Per Week: ${poolRewardsWhalePerWeek.toFixed(fixedDecimals)} ($${formatMoney(usdWhalePerWeek)})`);
 
-  var weeklyArbiAPR = usdArbiPerWeek / staked_tvl * 100;
-  var dailyArbiAPR = weeklyArbiAPR / 7;
-  var yearlyArbiAPR = weeklyArbiAPR * 52;
+  // var weeklyArbiAPR = usdArbiPerWeek / staked_tvl * 100;
+  // var dailyArbiAPR = weeklyArbiAPR / 7;
+  // var yearlyArbiAPR = weeklyArbiAPR * 52;
 
-  var weeklyWhaleAPR = usdWhalePerWeek / staked_tvl * 100;
-  var dailyWhaleAPR = weeklyWhaleAPR / 7;
-  var yearlyWhaleAPR = weeklyWhaleAPR * 52;
+  // var weeklyWhaleAPR = usdWhalePerWeek / staked_tvl * 100;
+  // var dailyWhaleAPR = weeklyWhaleAPR / 7;
+  // var yearlyWhaleAPR = weeklyWhaleAPR * 52;
 
-  _print(`APR ARBI: Day ${dailyArbiAPR.toFixed(2)}% Week ${weeklyArbiAPR.toFixed(2)}% Year ${yearlyArbiAPR.toFixed(2)}%`);
-  _print(`APR WHALE: Day ${dailyWhaleAPR.toFixed(2)}% Week ${weeklyWhaleAPR.toFixed(2)}% Year ${yearlyWhaleAPR.toFixed(2)}%`);
+  // _print(`APR ARBI: Day ${dailyArbiAPR.toFixed(2)}% Week ${weeklyArbiAPR.toFixed(2)}% Year ${yearlyArbiAPR.toFixed(2)}%`);
+  // _print(`APR WHALE: Day ${dailyWhaleAPR.toFixed(2)}% Week ${weeklyWhaleAPR.toFixed(2)}% Year ${yearlyWhaleAPR.toFixed(2)}%`);
 
-  const totalDailyAPR = dailyArbiAPR + dailyWhaleAPR;
-  const totalWeeklyAPR = weeklyArbiAPR + weeklyWhaleAPR;
-  const totalYearlyAPR = yearlyArbiAPR + yearlyWhaleAPR;
-  _print(`Total APR: Day ${totalDailyAPR.toFixed(4)}% Week ${totalWeeklyAPR.toFixed(2)}% Year ${totalYearlyAPR.toFixed(2)}%`);
+  // const totalDailyAPR = dailyArbiAPR + dailyWhaleAPR;
+  // const totalWeeklyAPR = weeklyArbiAPR + weeklyWhaleAPR;
+  // const totalYearlyAPR = yearlyArbiAPR + yearlyWhaleAPR;
+  // _print(`Total APR: Day ${totalDailyAPR.toFixed(4)}% Week ${totalWeeklyAPR.toFixed(2)}% Year ${totalYearlyAPR.toFixed(2)}%`);
 
   var userStakedUsd = userStaked * poolTokenPrice;
   var userStakedPct = userStakedUsd / staked_tvl * 100;
 
   _print(`You are staking ${userStaked.toFixed(fixedDecimals)} ${stakeTokenTicker} ($${formatMoney(userStakedUsd)}), ${userStakedPct.toFixed(2)}% of the pool.`);
 
-  var userArbiWeeklyRewards = userStakedPct * poolRewardsArbiPerWeek / 100;
-  var userArbiDailyRewards = userArbiWeeklyRewards / 7;
-  var userArbiYearlyRewards = userArbiWeeklyRewards * 52;
+  // var userArbiWeeklyRewards = userStakedPct * poolRewardsArbiPerWeek / 100;
+  // var userArbiDailyRewards = userArbiWeeklyRewards / 7;
+  // var userArbiYearlyRewards = userArbiWeeklyRewards * 52;
 
-  var userWhaleWeeklyRewards = userStakedPct * poolRewardsWhalePerWeek / 100;
-  var userWhaleDailyRewards = userWhaleWeeklyRewards / 7;
-  var userWhaleYearlyRewards = userWhaleWeeklyRewards * 52;
+  // var userWhaleWeeklyRewards = userStakedPct * poolRewardsWhalePerWeek / 100;
+  // var userWhaleDailyRewards = userWhaleWeeklyRewards / 7;
+  // var userWhaleYearlyRewards = userWhaleWeeklyRewards * 52;
 
-  if (userStaked > 0) {
-    _print(`Estimated ${rewardArbiTokenTicker} earnings:`
-        + ` Day ${userArbiDailyRewards.toFixed(fixedDecimals)} ($${formatMoney(userArbiDailyRewards*rewardArbiPrice)} + ${userWhaleDailyRewards.toFixed(fixedDecimals)} ($${formatMoney(userWhaleDailyRewards*rewardWhalePrice)})`
-        + ` Week ${userArbiWeeklyRewards.toFixed(fixedDecimals)} ($${formatMoney(userArbiWeeklyRewards*rewardArbiPrice)} + ${userWhaleWeeklyRewards.toFixed(fixedDecimals)} ($${formatMoney(userWhaleWeeklyRewards*rewardWhalePrice)})`
-        + ` Year ${userArbiYearlyRewards.toFixed(fixedDecimals)} ($${formatMoney(userArbiYearlyRewards*rewardArbiPrice)} + ${userWhaleYearlyRewards.toFixed(fixedDecimals)} ($${formatMoney(userWhaleYearlyRewards*rewardWhalePrice)})`);
-  }
-  const userYearlyUsd = userArbiYearlyRewards * rewardArbiPrice + userWhaleYearlyRewards * rewardWhalePrice;
+  // if (userStaked > 0) {
+  //   _print(`Estimated ${rewardArbiTokenTicker} earnings:`
+  //       + ` Day ${userArbiDailyRewards.toFixed(fixedDecimals)} ($${formatMoney(userArbiDailyRewards*rewardArbiPrice)} + ${userWhaleDailyRewards.toFixed(fixedDecimals)} ($${formatMoney(userWhaleDailyRewards*rewardWhalePrice)})`
+  //       + ` Week ${userArbiWeeklyRewards.toFixed(fixedDecimals)} ($${formatMoney(userArbiWeeklyRewards*rewardArbiPrice)} + ${userWhaleWeeklyRewards.toFixed(fixedDecimals)} ($${formatMoney(userWhaleWeeklyRewards*rewardWhalePrice)})`
+  //       + ` Year ${userArbiYearlyRewards.toFixed(fixedDecimals)} ($${formatMoney(userArbiYearlyRewards*rewardArbiPrice)} + ${userWhaleYearlyRewards.toFixed(fixedDecimals)} ($${formatMoney(userWhaleYearlyRewards*rewardWhalePrice)})`);
+  // }
+  //  const userYearlyUsd = userArbiYearlyRewards * rewardArbiPrice + userWhaleYearlyRewards * rewardWhalePrice;
   return {
     userStakedUsd,
     totalStakedUsd : staked_tvl,
     userStakedPct,
-    yearlyAPR : totalYearlyAPR,
-    userYearlyUsd : userYearlyUsd
+    // yearlyAPR : totalYearlyAPR,
+    // userYearlyUsd : userYearlyUsd
   }
 }
 
