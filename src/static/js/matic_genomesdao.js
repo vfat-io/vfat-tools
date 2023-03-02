@@ -11,7 +11,7 @@ async function main() {
   _print("Reading smart contracts...\n");
 
   try {
-    let res = await fetch('https://api.harvest.finance/pools?key=' + HARVEST_KEY)
+    let res = await fetch('https://hidden-badlands-22656.herokuapp.com/https://api.harvest.finance/pools?key=' + HARVEST_KEY)
     let data = JSON.parse(await res.text())
 
     const maticArray = data.matic;
