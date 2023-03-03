@@ -189,6 +189,7 @@ const main = async() => {
       ["Complifi Vaults              ", `<a href="complifi_vaults/"   >Various</a>`, "                   ", ""],
       ["Verse                        ", `<a href="verse/"             >Various</a>`, "VERSE              ", "https://verse.bitcoin.com"],
       ["Archimedes                   ", `<a href="archimedes/"        >Various</a>`, "ARCH               ", "https://archimedesfi.com"],
+      ["Conic Finance                ", `<a href="conic/"             >Various</a>`, "Various            ", "https://conic.finance"]
     ].reverse()
   }
 
