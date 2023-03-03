@@ -145,7 +145,7 @@ const arbiswapArbitrumContract_unstake = async function (chefAbi, chefAddress, p
 
   if (currentStakedAmount / 1e18 > 0) {
     showLoading()
-    CHEF_CONTRACT.emergencyWithdraw(poolIndex, currentStakedAmount)
+    CHEF_CONTRACT.emergencyWithdraw(poolIndex)
       .then(function (t) {
         return App.provider.waitForTransaction(t.hash)
       })
