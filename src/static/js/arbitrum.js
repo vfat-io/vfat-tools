@@ -67,7 +67,8 @@ const main = async() => {
       ["Bluelobster         ", `<a href="/arbitrum/bluelobster" >Various</a>`,"BLOB               ","https://bluelobster.money"],
       ["Atlantis Finance    ", `<a href="/arbitrum/atlantis"    >Various</a>`,"WHALE              ","https://atlantisfinance.xyz"],
       ["Arbi Swap           ", `<a href="/arbitrum/arbiswap"    >Various</a>`,"ARBI / WHALE       ","https://arbiswap.io"],
-      ["Sterling Finance    ", `<a href="/arbitrum/sterling"    >Various</a>`,"STR                ","https://www.sterling.finance"]
+      ["Sterling Finance    ", `<a href="/arbitrum/sterling"    >Various</a>`,"STR                ","https://www.sterling.finance"],
+      ["Mindgames           ", `<a href="/arbitrum/mindgames"   >Various</a>`,"CRX                ","https://play.mindgames.io"]
     ].reverse()
   }
 
