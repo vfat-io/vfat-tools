@@ -253,7 +253,8 @@ const bscTokens = [
   { "id": "anonverse", "symbol": "ANON", "contract": "0x9a980a084d8d72b219e1c79d91faf06bec874d51" },
   { "id": "beglobaldao", "symbol": "GLBD", "contract": "0xd177e36377e71775d6f9956b3fdd0f02664c6996" },
   { "id": "pigs-2", "symbol": "PIGS", "contract": "0x9a3321e1acd3b9f6debee5e042dd2411a1742002" },
-  { "id": "beglobaldao", "symbol": "GLBD", "contract": "0xd177e36377e71775d6f9956b3fdd0f02664c6996" }
+  { "id": "beglobaldao", "symbol": "GLBD", "contract": "0xd177e36377e71775d6f9956b3fdd0f02664c6996" },
+  { "id": "level-governance", "symbol": "LGO", "contract": "0xBe2B6C5E31F292009f495DDBda88e28391C9815E" }
 ]
 
 const cantoTokens = [
