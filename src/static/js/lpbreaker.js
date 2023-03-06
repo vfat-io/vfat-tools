@@ -34,9 +34,77 @@ async function main() {
         solidly_smart_contract_factory = new ethers.Contract("0xF7A23B9A9dCB8d0aff67012565C5844C20C11AFC", GENERAL_SOLIDLY_FACTORY_ABI, App.provider);
       }
 
-      const isSolidlyPair = await solidly_smart_contract_factory.isPair(lp_token_address)
+      let isSolidlyPair = false;
 
-      if(isSolidlyPair){
+      try{
+        isSolidlyPair = await solidly_smart_contract_factory.isPair(lp_token_address);
+      }catch(err){
+        console.log("no solidly token");
+      }
+
+      if(lp_token_address.toLowerCase() === "0xf2511b5e4fb0e5e2d123004b672ba14850478c14".toLowerCase()){
+        const lp_contract = new ethers.Contract(lp_token_address, GENERAL_STABLESWAP_TOKEN_ABI, App.provider);
+        try{
+          const _liquidity = await lp_contract.balanceOf(App.YOUR_ADDRESS);
+          const router_contract = new ethers.Contract("0x1B3771a66ee31180906972580adE9b81AFc5fCDc", GENERAL_STABLESWAP_ROUTER_ABI, signer);
+          const lpToken = await getToken(App, lp_token_address, App.YOUR_ADDRESS);
+          const liquidity = _liquidity / 10 ** lpToken.decimals;
+          _print("");
+          _print(`\nLP Token Address : ${lp_token_address} (Stable Swap) `);
+          _print("");
+          if(liquidity < 0.01){
+            _print("Your balance is < 0.01");
+          }else{
+            _print(`Your LP token balance is : ${liquidity}`);
+          }
+          _print("------------------------------------------------------------------------------------------------------------");
+          _print("");
+          hideLoading()
+          const currentTime = Date.now() / 1000;
+          const _deadline = currentTime + 1000;
+          const deadline = Math.round(_deadline);
+          let breakButton = document.createElement("button");
+          breakButton.innerHTML = "Break";
+          breakButton.onclick = async function() {
+
+            const lp_write_contract = new ethers.Contract(lp_token_address, GENERAL_STABLESWAP_TOKEN_ABI, signer);
+            let allow = Promise.resolve()
+
+            showLoading()
+            allow = lp_write_contract.approve("0x1B3771a66ee31180906972580adE9b81AFc5fCDc", _liquidity)
+              .then(function(t) {
+                return App.provider.waitForTransaction(t.hash)
+              })
+              .catch(function() {
+                hideLoading()
+              })
+
+            showLoading()
+            allow.then(async function () {
+              router_contract.removeLiquidity(_liquidity, [0,0,0], deadline)
+              .then(function(t) {
+                return App.provider.waitForTransaction(t.hash)
+                  .then(t => refresh(t.hash))
+                  .catch(err => transactionFailed(err));
+              })
+              .catch(function(ex) {
+                console.log(ex);
+                hideLoading()
+                transactionFailed(ex);
+              })
+            }).catch(function () {
+              hideLoading()
+            })
+          }
+          log.appendChild(breakButton);
+        }catch(err){
+          console.log(err);
+          _print("");
+          _print(`\nCannot find this LP token.`);
+          _print(`The page will be refreshed in 15 seconds.`);
+          transactionFailedWithoutErrorMessage();
+        }
+      }else if(isSolidlyPair){
         const lp_contract = new ethcall.Contract(lp_token_address, GENERAL_SOLIDLY_TOKEN_ABI);
         let calls;
         try{
