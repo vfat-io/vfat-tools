@@ -3793,6 +3793,37 @@ function getYearnPrices(prices, pool, chain){
   }
 }
 
+function getTranchePrices(prices, pool, chain){
+  let price = 0, tvl = 0;
+  for(let i = 0; i < pool.assets.length; i++){
+      const assetPrice = getParameterCaseInsensitive(prices, pool.assets[i])?.usd;
+      //price += assetPrice;
+      const assetTVL = pool.trancheAssetsData[i].poolAmount / 10 ** pool.assetTokens[i].decimals * assetPrice;
+      tvl += assetTVL;
+    }
+  price = tvl / pool.totalSupply;
+  const staked_tvl = pool.staked * price;
+  const poolUrl = getChainExplorerUrl(chain, pool.address);
+  let printAssetSymbols = ``;
+  for(const assetToken of pool.assetTokens){
+    printAssetSymbols += `${assetToken.symbol} `
+  }
+  const name = `<a href='${poolUrl}' target='_blank'>${pool.symbol} - [${printAssetSymbols}]</a> Market Cap: $${formatMoney(tvl)}`;
+  return {
+    staked_tvl : staked_tvl,
+    price,
+    stakeTokenTicker : pool.symbol,
+    print_price() {
+      _print(`${name} Price: $${price.toFixed(2)}`);
+      _print(`Staked: ${pool.staked.toFixed(4)} ${pool.symbol} ($${formatMoney(staked_tvl)})`);
+    },
+    print_contained_price() {
+    },
+    staked_tvl,
+    tvl
+  }
+}
+
 function getPoolPrices(tokens, prices, pool, chain = "eth") {
   if (pool.w0 != null) return getValuePrices(tokens, prices, pool);
   if (pool.buniPoolTokens != null) return getBunicornPrices(tokens, prices, pool);
@@ -3801,6 +3832,7 @@ function getPoolPrices(tokens, prices, pool, chain = "eth") {
   if (pool.token0 != null) return getUniPrices(tokens, prices, pool, chain);
   if (pool.xcp_profit != null) return getTriCryptoPrices(prices, pool, chain);
   if (pool.yearn) return getYearnPrices(prices, pool, chain);
+  if (pool.trancheAssetsData) return getTranchePrices(prices, pool, chain);
   if (pool.virtualPrice != null) return getCurvePrices(prices, pool, chain); //should work for saddle too
   if (pool.token != null) return getWrapPrices(tokens, prices, pool, chain);
   return getErc20Prices(prices, pool, chain);
