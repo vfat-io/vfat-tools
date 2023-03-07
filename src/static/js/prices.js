@@ -537,7 +537,8 @@ const KavaTokens = [
   { "id": "kava", "symbol": "KAVA", "contract": "0xc86c7C0eFbd6A49B35E8714C5f59D99De09A225b"},
   { "id": "usd-coin","symbol": "USDC", "contract": "0xfA9343C3897324496A05fC75abeD6bAC29f8A40f" },
   { "id": "tether","symbol": "USDT", "contract": "0xB44a9B6905aF7c801311e8F4E76932ee959c663C" },
-  { "id": "dai","symbol": "DAI", "contract": "0x765277EebeCA2e31912C9946eAe1021199B39C61" }
+  { "id": "dai","symbol": "DAI", "contract": "0x765277EebeCA2e31912C9946eAe1021199B39C61" },
+  { "id": "equilibre","symbol": "VARA", "contract": "0xe1da44c0da55b075ae8e2e4b6986adc76ac77d73" }
 ];
 
 const KccTokens = [

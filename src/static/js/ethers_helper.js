@@ -2459,6 +2459,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
                   "eth": `https://solidly.com/`,
                   "arbitrum": `https://solidlizard.finance/`,
                   "bsc": `https://info.thena.fi/pair/${pool.address}`,
+                  "kava": `https://equilibrefinance.com/`
                 }
               [chain]):
               pool.symbol.includes("sAMM") ?  (
@@ -2470,6 +2471,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
                   "eth": `https://solidly.com/`,
                   "arbitrum": `https://solidlizard.finance/`,
                   "bsc": `https://info.thena.fi/pair/${pool.address}`,
+                  "kava": `https://equilibrefinance.com/`
                 }
               [chain]):
               pool.symbol.includes("JEWEL-LP") ?  (
@@ -2685,6 +2687,11 @@ function getUniPrices(tokens, prices, pool, chain="eth")
               `https://thena.fi/liquidity/manage`,
               `https://thena.fi/liquidity/manage`,
               `https://thena.fi/swap`
+            ],
+            "kava" : [
+              `https://equilibrefinance.com/liquidity/${pool.address}`,
+              `https://equilibrefinance.com/liquidity/${pool.address}`,
+              `https://equilibrefinance.com/swap`
             ]
           } [chain]):
           pool.symbol.includes("sAMM") ? ({
@@ -2727,6 +2734,11 @@ function getUniPrices(tokens, prices, pool, chain="eth")
               `https://thena.fi/liquidity/manage`,
               `https://thena.fi/liquidity/manage`,
               `https://thena.fi/swap`
+            ],
+            "kava" : [
+              `https://equilibrefinance.com/liquidity/${pool.address}`,
+              `https://equilibrefinance.com/liquidity/${pool.address}`,
+              `https://equilibrefinance.com/swap`
             ]
           } [chain]):
           pool.symbol.includes("HBLP") ? [
