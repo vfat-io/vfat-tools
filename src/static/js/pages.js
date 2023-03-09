@@ -187,9 +187,10 @@ const main = async() => {
       ["Titanium                     ", `<a href="titanium/"          >Various</a>`, "T                  ", "https://t1.money"],
       ["Monolith                     ", `<a href="monolith/"          >Various</a>`, "SOLID              ", "https://alpha.mono.farm"],
       ["Complifi Vaults              ", `<a href="complifi_vaults/"   >Various</a>`, "                   ", ""],
-      ["Verse                        ", `<a href="verse/"             >Various</a>`, "VERSE              ", "https://verse.bitcoin.com"],
+      ["Verse *                      ", `<a href="verse/"             >Various</a>`, "VERSE              ", "https://verse.bitcoin.com"],
       ["Archimedes                   ", `<a href="archimedes/"        >Various</a>`, "ARCH               ", "https://archimedesfi.com"],
-      ["Conic Finance                ", `<a href="conic/"             >Various</a>`, "Various            ", "https://conic.finance"]
+      ["Conic Finance                ", `<a href="conic/"             >Various</a>`, "Various            ", "https://conic.finance"],
+      ["Oceanpoint                   ", `<a href="oceanpoint/"        >Various</a>`, "BST                ", "https://app.oceanpoint.fi"]
     ].reverse()
   }
 
