@@ -7,7 +7,9 @@ const VERSE_ABI = [{"inputs":[{"internalType":"contract IERC20","name":"_stakeTo
 const Pools = [
   "0xded0c22acd80e7a4bd6ec91ced451fc83f04cab2",
   "0xdd5a9EEc299b74B2db2D3430608c1c5A8d9598eb",
-  "0x4E1F1206f2B9a651EcF2D49C5d33761861D4910C"
+  "0x4E1F1206f2B9a651EcF2D49C5d33761861D4910C",
+  "0x4efff28192029bdb1Ac027c53674721875DA6B10",
+  "0x4BA48Df24008429aE9140A01e0D002F5FA6A125D"
 ].map(a => {
   return {
     address: a,
