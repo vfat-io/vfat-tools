@@ -65,7 +65,6 @@ const main = async() => {
       ["Sharky Swap         ", `<a href="/arbitrum/sharky"      >Various</a>`,"SHARKY             ","https://sharkyswap.xyz"],
       ["Gmd-Protocol        ", `<a href="/arbitrum/gmd"         >Various</a>`,"GMD                ","https://gmdprotocol.com"],
       ["Bluelobster         ", `<a href="/arbitrum/bluelobster" >Various</a>`,"BLOB               ","https://bluelobster.money"],
-      ["Atlantis Finance    ", `<a href="/arbitrum/atlantis"    >Various</a>`,"WHALE              ","https://atlantisfinance.xyz"],
       ["Arbi Swap           ", `<a href="/arbitrum/arbiswap"    >Various</a>`,"ARBI / WHALE       ","https://arbiswap.io"],
       ["Sterling Finance    ", `<a href="/arbitrum/sterling"    >Various</a>`,"STR                ","https://www.sterling.finance"],
       ["Mindgames           ", `<a href="/arbitrum/mindgames"   >Various</a>`,"CRX                ","https://play.mindgames.io"],

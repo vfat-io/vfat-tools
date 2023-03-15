@@ -19,9 +19,9 @@ async function main() {
   const tokens = {};
   const prices = await getCantoPrices();
 
-  const FLOW_VOTER_ADDR = "0xC5B58aE761a77fF16d548dE9b42933c8FBfe4c33"
+  const FLOW_VOTER_ADDR = "0x8e3525Dbc8356c08d2d55F3ACb6416b5979D3389"
   const FLOW_VOTER_CONTRACT = new ethers.Contract(FLOW_VOTER_ADDR, FLOW_VOTER_ABI, App.provider);
-  const FLOW_TOKEN_ADDR = "0x2Baec546a92cA3469f71b7A091f7dF61e5569889"
+  const FLOW_TOKEN_ADDR = "0xB5b060055F0d1eF5174329913ef861bC3aDdF029"
   const _poolLength = await FLOW_VOTER_CONTRACT.length();
   const poolLength = _poolLength / 1;
   let lpTokens = [], _gauges = [];
@@ -40,7 +40,7 @@ async function main() {
     }
   });
 
-  await loadFlowSynthetixPoolInfoPrice(App, tokens, prices, "0x572255DB686352E110b79b846c76dCF255f9b4dc", "0x572255DB686352E110b79b846c76dCF255f9b4dc");
+  await loadFlowSynthetixPoolInfoPrice(App, tokens, prices, "0x2Cc24302fa019C5A8F252afC9A69fCfBB8Dd8D2F", "0x2Cc24302fa019C5A8F252afC9A69fCfBB8Dd8D2F");
 
   let p = await loadFlowSynthetixPools(App, tokens, prices, gauges, clicked)
   _print_bold(`Total staked: $${formatMoney(p.staked_tvl)}\n`);
@@ -133,7 +133,7 @@ async function loadFlowSynthetixPoolInfo(App, tokens, prices, stakingAbi, stakin
 
     let rewardTokenAddresses = [], rewardTokens = [], rewardTokenTickers = [], rewardTokenPrices = [], earnings = [];
     //Added with manually reward
-    const rewardTokenAddress = "0x2Baec546a92cA3469f71b7A091f7dF61e5569889";
+    const rewardTokenAddress = "0xB5b060055F0d1eF5174329913ef861bC3aDdF029";
     rewardTokenAddresses.push(rewardTokenAddress);
     if (!getParameterCaseInsensitive(tokens, rewardTokenAddress)) {
       tokens[rewardTokenAddress] = await getGeneralToken(App, rewardTokenAddress, stakingAddress);

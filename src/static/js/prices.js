@@ -265,6 +265,7 @@ const cantoTokens = [
   { "id": "canto-inu","symbol": "CINU","contract": "0x7264610A66EcA758A8ce95CF11Ff5741E1fd0455" },
   { "id": "usd-coin","symbol": "USDC","contract": "0x80b5a32E4F032B2a058b4F29EC95EEfEEB87aDcd" },
   { "id": "tether","symbol": "USDT","contract": "0xd567B3d7B8FE3C79a1AD8dA978812cfC4Fa05e75" },
+  { "id": "velocimeter-flow","symbol": "FLOW","contract": "0xB5b060055F0d1eF5174329913ef861bC3aDdF029" },
 ]
 
 const celoTokens = [
