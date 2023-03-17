@@ -73,7 +73,13 @@ $(function() {
                     "0x97f7884C1e57cA991B949B9aC2c6A04599e8F988",
                     "0xFa3F4061622BF8Ed257366373765f87Ca3c1947A",
                     "0x3B6B729e32ed640C05C7dC790324BDDc961E1a18",
-                    "0x6ab1A7a258718E49fBd65b0fe86A1c36A34A23a8"].map(a => {
+                    "0x6ab1A7a258718E49fBd65b0fe86A1c36A34A23a8",
+                    "0x02146da20e781cfd3c7541bdef8fe45693843e99", //new openx/xopenx
+                    "0x53668535d3709e597a4f26d2575635980d646dd7", //new sAMM opxvevelo/velo
+                    "0x58d556a59fdb96a411662adb9d5efe6526763f2e", //new vAMM opxvevelo/velo
+                    "0x53Af9d703C42Cbf26582E0FEb28dcf1551d35f02", //new xopenx/wbtc
+                    "0x72c85ca5f68b0e327233618ea777d9e2071e71da"
+                  ].map(a => {
       return {
         address: a,
         abi: VELODROME_GAUGE_ABI,

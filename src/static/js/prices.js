@@ -723,7 +723,10 @@ const optimisticTokens = [
   { "id": "dforce-token","symbol": "DF", "contract": "0x9e5AAC1Ba1a2e6aEd6b32689DFcF62A509Ca96f3" },
   { "id": "token-dforce-usd","symbol": "USX", "contract": "0xbfD291DA8A403DAAF7e5E9DC1ec0aCEaCd4848B9" },
   { "id": "ageur","symbol": "AGEUR", "contract": "0x9485aca5bbBE1667AD97c7fE7C4531a624C8b1ED" },
-  { "id": "hop-protocol","symbol": "HOP", "contract": "0xc5102fe9359fd9a28f877a67e36b0f050d81a3cc" }
+  { "id": "hop-protocol","symbol": "HOP", "contract": "0xc5102fe9359fd9a28f877a67e36b0f050d81a3cc" },
+  { "id": "openxswap-gov-token","symbol": "XOPENX", "contract": "0x2513486f18eee1498d7b6281f668b955181dd0d9" },
+  { "id": "openx-locked-velo","symbol": "OPXVEVELO", "contract": "0x46f21fda29f1339e0ab543763ff683d399e393ec" },
+  { "id": "openxswap","symbol": "OPENX", "contract": "0xc3864f98f2a61a7caeb95b039d031b4e2f55e0e9" }
 ];
 
 const polisTokens = [
