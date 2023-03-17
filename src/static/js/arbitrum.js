@@ -69,7 +69,8 @@ const main = async() => {
       ["Sterling Finance    ", `<a href="/arbitrum/sterling"    >Various</a>`,"STR                ","https://www.sterling.finance"],
       ["Mindgames           ", `<a href="/arbitrum/mindgames"   >Various</a>`,"CRX                ","https://play.mindgames.io"],
       ["xBlue Finance       ", `<a href="/arbitrum/xblue"       >Various</a>`,"XB                 ","https://www.xblue.finance"],
-      ["Ramses Exchange     ", `<a href="/arbitrum/ramses"      >Various</a>`,"RAM                ","https://app.ramses.exchange"]
+      ["Ramses Exchange     ", `<a href="/arbitrum/ramses"      >Various</a>`,"RAM                ","https://app.ramses.exchange"],
+      ["Arbidex             ", `<a href="/arbitrum/arbidex"     >Various</a>`,"ARX / WETH         ","https://arbidex.fi"]
     ].reverse()
   }
 
