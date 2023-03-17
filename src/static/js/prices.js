@@ -5,6 +5,7 @@ const ArbitrumTokens = [
   { "id": "usd-coin","symbol": "USDC", "contract": "0xff970a61a04b1ca14834a43f5de4533ebddb5cc8" },
   { "id": "tether","symbol": "USDT", "contract": "0xfd086bc7cd5c481dcc9c85ebe478a1c0b69fcbb9" },
   { "id": "dai","symbol": "DAI", "contract": "0xda10009cbd5d07dd0cecc66161fc93d7c9000da1" },
+  { "id": "dai","symbol": "DAI", "contract": "0xeb8e93a0c7504bffd8a8ffa56cd754c63aaebfe8" },    //this +DAI and its temporary
   { "id": "arbinyan","symbol": "NYAN", "contract": "0xed3fb761414da74b74f33e5c5a1f78104b188dfc" },
   { "id": "wrapped-ether", "symbol": "WETH", "contract": "0x82aF49447D8a07e3bd95BD0d56f35241523fBab1"},
   { "id": "sushi", "symbol": "SUSHI", "contract": "0xd4d42F0b6DEF4CE0383636770eF773390d85c61A"},
@@ -34,7 +35,12 @@ const ArbitrumTokens = [
   { "id": "zyberswap", "symbol": "ZYB", "contract": "0x3b475f6f2f41853706afc9fa6a6b8c5df1a2724c" },
   { "id": "swapfish", "symbol": "FISH", "contract": "0xb348b87b23d5977e2948e6f36ca07e1ec94d7328" },
   { "id": "staked-ether", "symbol": "STETH", "contract": "0x5979D7b546E38E414F7E9822514be443A4800529" },
-  { "id": "sterling-finance", "symbol": "STR", "contract": "0x5DB7b150c5F38c5F5db11dCBDB885028fcC51D68" }
+  { "id": "sterling-finance", "symbol": "STR", "contract": "0x5DB7b150c5F38c5F5db11dCBDB885028fcC51D68" },
+  { "id": "ramses-exchange", "symbol": "RAM", "contract": "0xaaa6c1e32c55a7bfa8066a6fae9b42650f262418" },
+  { "id": "gains-network", "symbol": "GNS", "contract": "0x18c11FD286C5EC11c3b683Caa813B77f5163A122" },
+  { "id": "dola-usd", "symbol": "DOLA", "contract": "0x6a7661795c374c0bfc635934efaddff3a7ee23b6" },
+  { "id": "mimatic", "symbol": "MAI", "contract": "0x3F56e0c36d275367b8C502090EDF38289b3dEa0d" },
+  { "id": "usd", "symbol": "USD+", "contract": "0xe80772Eaf6e2E18B651F160Bc9158b2A5caFCA65" }
 ];
 
 const AstarTokens = [

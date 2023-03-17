@@ -2295,12 +2295,14 @@ function getUniPrices(tokens, prices, pool, chain="eth")
   else if (pool.symbol.includes("FX-V2")) stakeTokenTicker += " FX Swap LP";
   else if (pool.symbol.includes("LSLP")) stakeTokenTicker += " LSLP";
   else if (pool.symbol.includes("vAMM")) stakeTokenTicker += " vAMM";
+  else if (pool.symbol.includes("vrAMM")) stakeTokenTicker += " vrAMM";
   else if (pool.symbol.includes("HELIX-LP")) stakeTokenTicker += " HELIX-LP";
   else if (pool.symbol.includes("Arbi-LP")) stakeTokenTicker += " Arbi-LP";
   else if (pool.symbol.includes("FISH")) stakeTokenTicker += " FISH LP";
   else if (pool.symbol.includes("MDEX")) stakeTokenTicker += " MDEX LP";
   else if (pool.symbol.includes("JEWEL-LP")) stakeTokenTicker += " Jewel LP Token";
   else if (pool.symbol.includes("sAMM")) stakeTokenTicker += " sAMM";
+  else if (pool.symbol.includes("crAMM")) stakeTokenTicker += " crAMM";
   else if (pool.symbol.includes("Wigo-LP")) stakeTokenTicker += " Wigo-LP";
   else if (pool.symbol.includes("PUD-LP")) stakeTokenTicker += " PUD-LP";
   else if (pool.symbol.includes("DXS")) stakeTokenTicker += " DXS-LP";
@@ -2450,6 +2452,8 @@ function getUniPrices(tokens, prices, pool, chain="eth")
               [chain]):
               pool.symbol.includes("CS-LP") ?  `https://app.coinswap.space/#/` :
               pool.symbol.includes("NMX-LP") ?  `https://nomiswap.io/swap` :
+              pool.symbol.includes("crAMM") ?  `https://app.ramses.exchange/swap` :
+              pool.symbol.includes("vrAMM") ?  `https://app.ramses.exchange/swap` :
               pool.symbol.includes("vAMM") ?  (
                 {
                   "fantom": `https://solidly.exchange`,
@@ -2619,6 +2623,16 @@ function getUniPrices(tokens, prices, pool, chain="eth")
             `https://yodeswap.dog/exchange/add/${t0address}/${t1address}`,
             `https://yodeswap.dog/exchange/remove/${t0address}/${t1address}`,
             `https://yodeswap.dog/exchange/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+          ] :
+          pool.symbol.includes("vrAMM") ? [
+            `https://app.ramses.exchange/liquidity/create`,
+            `https://app.ramses.exchange/liquidity/create`,
+            `https://app.ramses.exchange/swap`
+          ] :
+          pool.symbol.includes("crAMM") ? [
+            `https://app.ramses.exchange/liquidity/create`,
+            `https://app.ramses.exchange/liquidity/create`,
+            `https://app.ramses.exchange/swap`
           ] :
           pool.symbol.includes("Milky-LP") ? [
             `https://milkyway.exchange/swap`,
