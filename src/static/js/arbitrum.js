@@ -8,6 +8,7 @@ const main = async() => {
     "title":"Arbitrum Network",
     "heading":["Pool Provider", "LP", "Reward Tokens", "INFO"],
     "rows": [
+      ["DooraInu            ", `<a href="/arbitrum/doorainu"    >Various</a>`,"DINU               ","https://doorainu.world"],
       ["MagicLand           ", `<a href="/arbitrum/magicland"   >Various</a>`,"MAGIC              ","https://magicland.fi"],
       ["Parrotdefi          ", `<a href="/arbitrum/parrotdefi"  >Various</a>`,"PPEGG              ","https://parrotdefi.com"],
       ["GMX                 ", `<a href="/arbitrum/gmx"         >Various</a>`,"ETH,Escrowed GMX   ","https://gmx.financial"],
