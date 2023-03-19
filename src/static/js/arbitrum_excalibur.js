@@ -61,7 +61,8 @@ async function loadGrailContract(App, tokens, prices, pools, rewardTokenTicker, 
     if (poolPrices[i]) {
       const apr = printGrailPool(App, prices, tokens, poolInfos[i], poolPrices[i],
         poolInfos[i].rewardsPerWeek, rewardTokenTicker, rewardTokenAddress,
-        null, "arbitrum", poolInfos[i].depositFee, poolInfos[i].withdrawFee)
+        null, "arbitrum", poolInfos[i].depositFee, poolInfos[i].withdrawFee,
+        poolInfos[i].pendingRewardTokens, )
       aprs.push(apr);
     }
   }
@@ -115,8 +116,16 @@ async function getGrailPoolInfo(app, pool) {
   const poolContract = new ethers.Contract(poolAddress, GRAIL_POOL_ABI, app.provider);
   const poolInfo = await poolContract.getPoolInfo();
   const poolToken = await getArbitrumToken(app, poolInfo.lpToken, poolAddress);
-  const staked = await poolContract.balanceOf(app.YOUR_ADDRESS) / 10 ** poolToken.decimals;
+  const _nftOwned = await poolContract.balanceOf(app.YOUR_ADDRESS) / 1;
+  const nftIndex = _nftOwned == 1 ? 0 : _nftOwned
   const rewardsPerWeek = rewardRate / 1e18 * 604800;
+  const tokenID = await poolContract.tokenOfOwnerByIndex(app.YOUR_ADDRESS, nftIndex);
+  const userStakingDetails = await poolContract.getStakingPosition(tokenID);
+  const pendingRewardTokens = pendingRewards(tokenID);
+  const staked = userStakingDetails.amount / 10 ** poolToken.decimals;
+  // const lockDurationSecs = userStakingDetails.lockDuration;
+  // const lockDurationHours = Math.floor(lockDurationSecs % (3600*24) / 3600);
+  // const lockDurationDays = Math.floor(lockDurationSecs / (3600*24));
   return {
     address: poolInfo.lpToken ?? poolInfo.token ?? poolInfo.stakingToken,
     allocPoints: poolInfo.allocPoint ?? 1,
@@ -124,6 +133,9 @@ async function getGrailPoolInfo(app, pool) {
     userStaked: staked,
     depositFee: (poolInfo.depositFeeBP ?? 0) / 100,
     withdrawFee: (poolInfo.withdrawFeeBP ?? 0) / 100,
-    rewardsPerWeek: rewardsPerWeek
+    rewardsPerWeek: rewardsPerWeek,
+    pendingRewardTokens: pendingRewardTokens,
+    lockDurationHours : lockDurationHours,
+    lockDurationDays : lockDurationDays
   };
 }
