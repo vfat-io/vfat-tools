@@ -8,7 +8,6 @@ const main = async() => {
     "title":"Arbitrum Network",
     "heading":["Pool Provider", "LP", "Reward Tokens", "INFO"],
     "rows": [
-      ["DooraInu            ", `<a href="/arbitrum/doorainu"    >Various</a>`,"DINU               ","https://doorainu.world"],
       ["MagicLand           ", `<a href="/arbitrum/magicland"   >Various</a>`,"MAGIC              ","https://magicland.fi"],
       ["Parrotdefi          ", `<a href="/arbitrum/parrotdefi"  >Various</a>`,"PPEGG              ","https://parrotdefi.com"],
       ["GMX                 ", `<a href="/arbitrum/gmx"         >Various</a>`,"ETH,Escrowed GMX   ","https://gmx.financial"],
@@ -72,6 +71,7 @@ const main = async() => {
       ["xBlue Finance       ", `<a href="/arbitrum/xblue"       >Various</a>`,"XB                 ","https://www.xblue.finance"],
       ["Ramses Exchange     ", `<a href="/arbitrum/ramses"      >Various</a>`,"RAM                ","https://app.ramses.exchange"],
       ["Arbidex             ", `<a href="/arbitrum/arbidex"     >Various</a>`,"ARX / WETH         ","https://arbidex.fi"],
+      ["DooraInu            ", `<a href="/arbitrum/doorainu"    >Various</a>`,"DINU               ","https://doorainu.world"],
       ["Excalibur           ", `<a href="/arbitrum/excalibur"   >Various</a>`,"GRAIL              ","https://excalibur.exchange"]
     ].reverse()
   }
