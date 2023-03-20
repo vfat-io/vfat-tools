@@ -60,9 +60,7 @@ async function loadGrailContract(App, tokens, prices, pools, rewardTokenTicker, 
   for (i = 0; i < poolInfos.length; i++) {
     if (poolPrices[i]) {
       const apr = printGrailPool(App, prices, tokens, poolInfos[i], poolPrices[i],
-        poolInfos[i].rewardsPerWeek, rewardTokenTicker, rewardTokenAddress,
-        null, "arbitrum", poolInfos[i].depositFee, poolInfos[i].withdrawFee,
-        poolInfos[i].pendingRewardTokens, )
+        poolInfos[i].rewardsPerWeek, rewardTokenTicker, rewardTokenAddress, null, "arbitrum")
       aprs.push(apr);
     }
   }
@@ -90,24 +88,129 @@ async function loadGrailContract(App, tokens, prices, pools, rewardTokenTicker, 
 
 function printGrailPool(App, prices, tokens, poolInfo, poolPrices,
   rewardsPerWeek, rewardTokenTicker, rewardTokenAddress,
-  fixedDecimals, chain = "eth", depositFee = 0, withdrawFee = 0) {
+  fixedDecimals, chain = "eth") {
   fixedDecimals = fixedDecimals ?? 2;
   const sp = (poolInfo.stakedToken == null) ? null : getPoolPrices(tokens, prices, poolInfo.stakedToken, chain);
   var poolRewardsPerWeek = rewardsPerWeek;
-  const userStaked = poolInfo.userLPStaked ?? poolInfo.userStaked;
   const rewardPrice = getParameterCaseInsensitive(prices, rewardTokenAddress)?.usd;
   const staked_tvl = sp?.staked_tvl ?? poolPrices.staked_tvl;
   poolPrices.print_price(chain);
   sp?.print_price(chain);
-  const apr = printAPR(rewardTokenTicker, rewardPrice, poolRewardsPerWeek, poolPrices.stakeTokenTicker,
-    staked_tvl, userStaked, poolPrices.price, fixedDecimals);
-  if (poolInfo.userLPStaked > 0) sp?.print_contained_price(userStaked);
-  if (poolInfo.userStaked > 0) poolPrices.print_contained_price(userStaked);
-  // printArbitrumChefContractLinks(App, chefAbi, chefAddr, poolIndex, poolInfo.address, pendingRewardsFunction,
-  //   rewardTokenTicker, poolPrices.stakeTokenTicker, poolInfo.poolToken.unstaked,
-  //   poolInfo.userStaked, poolInfo.pendingRewardTokens, fixedDecimals, claimFunction, rewardPrice, chain, depositFee, withdrawFee);
+  const apr = printGrailAPR(poolInfo.userStakingDetails, rewardTokenTicker, rewardPrice, poolRewardsPerWeek, poolPrices.stakeTokenTicker,
+    staked_tvl, poolPrices.price, fixedDecimals, poolInfo.poolToken, poolPrices);
+  printGrailContractLinks(App, poolInfo.poolAddress, poolInfo.address, rewardTokenTicker, poolPrices.stakeTokenTicker, poolInfo.poolToken.unstaked, fixedDecimals, rewardPrice, chain, poolInfo.userStakingDetails, poolInfo.poolToken);
   _print("");
   return apr;
+}
+
+function printGrailContractLinks(App, poolAddress, poolTokenAddress, rewardTokenTicker, stakeTokenTicker, unstaked, fixedDecimals,
+  rewardTokenPrice, chain, userStakingDetails, stakedToken) {
+  fixedDecimals = fixedDecimals ?? 2;
+  // const approveAndStake = async function () {
+  //   return chefArbitrumContract_stake(GRAIL_POOL_ABI, poolAddress, poolIndex, poolTokenAddress, App)
+  // }
+  let unstakes = [], claims = [];
+  for(const userStakingDetail of userStakingDetails){
+    const currentStakedAmount = userStakingDetail.details.amount;
+    const tokenID = userStakingDetail.nftID;
+    const unstake = async function () {
+      return grailContract_unstake(GRAIL_POOL_ABI, poolAddress, tokenID, App, currentStakedAmount)
+    }
+    const claim = async function () {
+      return grailContract_claim(GRAIL_POOL_ABI, poolAddress, tokenID, App)
+    }
+    unstakes.push(unstake);
+    claims.push(claim);
+  }
+  // _print_link(`Stake ${unstaked.toFixed(fixedDecimals)} ${stakeTokenTicker}`, approveAndStake)
+  for(let i = 0; i < userStakingDetails.length; i++){
+    const userStaked = userStakingDetails[i].details.amount / 10 ** stakedToken.decimals;
+    const tokenID = userStakingDetails[i].nftID / 1;
+    _print_link(`Unstake for position with NFT ID : ${tokenID} - ${userStaked.toFixed(5)} ${stakeTokenTicker}`, unstakes[i])
+  }
+  for(let i = 0; i < userStakingDetails.length; i++){
+    const pendingRewardTokens = userStakingDetails[i].details.rewardDebt / 1e18;
+    const tokenID = userStakingDetails[i].nftID / 1;
+    _print_link(`Claim for position with NFT ID : ${tokenID} - ${pendingRewardTokens.toFixed(fixedDecimals)} ${rewardTokenTicker} ($${formatMoney(pendingRewardTokens * rewardTokenPrice)})`, claims[i]);
+    _print("");
+  }
+}
+
+const grailContract_claim = async function (chefAbi, chefAddress, tokenID, App) {
+  const signer = App.provider.getSigner()
+
+  const CHEF_CONTRACT = new ethers.Contract(chefAddress, chefAbi, signer)
+
+  showLoading()
+  CHEF_CONTRACT.harvestPosition(tokenID)
+        .then(function (t) {
+          return App.provider.waitForTransaction(t.hash)
+        })
+        .catch(function () {
+          hideLoading()
+        })
+}
+
+const grailContract_unstake = async function (chefAbi, chefAddress, tokenID, App, currentStakedAmount) {
+  const signer = App.provider.getSigner()
+  const CHEF_CONTRACT = new ethers.Contract(chefAddress, chefAbi, signer)
+
+  if (currentStakedAmount / 1e18 > 0) {
+    showLoading()
+    CHEF_CONTRACT.withdrawFromPosition(tokenID, currentStakedAmount)
+      .then(function (t) {
+        return App.provider.waitForTransaction(t.hash)
+      })
+      .catch(function () {
+        hideLoading()
+      })
+  }
+}
+
+function printGrailAPR(userStakingDetails, rewardTokenTicker, rewardPrice, poolRewardsPerWeek,
+                  stakeTokenTicker, staked_tvl, poolTokenPrice, fixedDecimals, stakedToken, poolPrices) {
+  var usdPerWeek = poolRewardsPerWeek * rewardPrice;
+  fixedDecimals = fixedDecimals ?? 2;
+  _print(`${rewardTokenTicker} Per Week: ${poolRewardsPerWeek.toFixed(fixedDecimals)} ($${formatMoney(usdPerWeek)})`);
+  var weeklyAPR = usdPerWeek / staked_tvl * 100;
+  var dailyAPR = weeklyAPR / 7;
+  var yearlyAPR = weeklyAPR * 52;
+  _print(`APR: Day ${dailyAPR.toFixed(2)}% Week ${weeklyAPR.toFixed(2)}% Year ${yearlyAPR.toFixed(2)}%`);
+  let totalUserStaked = 0, totalUserStakedUsd = 0, totalUserStakedPct = 0, totalUserYearlyRewards = 0;
+  for(const userStakingDetail of userStakingDetails){
+    const userStaked = userStakingDetail.details.amount / 10 ** stakedToken.decimals;
+    const userStakedUsd = userStaked * poolTokenPrice;
+    const userStakedPct = userStakedUsd / staked_tvl * 100;
+    _print(`Owned NFT ID: ${userStakingDetail.nftID}`)
+    _print(`You are staking ${userStaked.toFixed(5)} ${stakeTokenTicker} ($${formatMoney(userStakedUsd)}), ${userStakedPct.toFixed(2)}% of the pool.`);
+    const lockSeconds = userStakingDetail.details.lockDuration / 1;
+    const startLockingTimestamp = userStakingDetail.details.startLockTime / 1;
+    const endLockingTimestamp = startLockingTimestamp + lockSeconds;
+    const _unlockingDate = new Date(endLockingTimestamp * 1000);
+    const unlockingDate = _unlockingDate.toLocaleString();
+    _print(`Your NFT will be unlocked on : ${unlockingDate}`);
+    var userWeeklyRewards = userStakedPct * poolRewardsPerWeek / 100;
+    var userDailyRewards = userWeeklyRewards / 7;
+    var userYearlyRewards = userWeeklyRewards * 52;
+    if (userStaked > 0) {
+      _print(`Estimated ${rewardTokenTicker} earnings:`
+          + ` Day ${userDailyRewards.toFixed(fixedDecimals)} ($${formatMoney(userDailyRewards*rewardPrice)})`
+          + ` Week ${userWeeklyRewards.toFixed(fixedDecimals)} ($${formatMoney(userWeeklyRewards*rewardPrice)})`
+          + ` Year ${userYearlyRewards.toFixed(fixedDecimals)} ($${formatMoney(userYearlyRewards*rewardPrice)})`);
+    }
+    totalUserStaked += userStaked;
+    totalUserStakedUsd += userStakedUsd;
+    totalUserStakedPct += userStakedPct;
+    totalUserYearlyRewards += userYearlyRewards;
+  }
+  if (totalUserStaked > 0) poolPrices.print_contained_price(totalUserStaked);
+  return {
+    userStakedUsd : totalUserStakedUsd,
+    totalStakedUsd : staked_tvl,
+    userStakedPct: totalUserStakedPct,
+    yearlyAPR,
+    userYearlyUsd : totalUserYearlyRewards * rewardPrice
+  }
 }
 
 async function getGrailPoolInfo(app, pool) {
@@ -116,26 +219,24 @@ async function getGrailPoolInfo(app, pool) {
   const poolContract = new ethers.Contract(poolAddress, GRAIL_POOL_ABI, app.provider);
   const poolInfo = await poolContract.getPoolInfo();
   const poolToken = await getArbitrumToken(app, poolInfo.lpToken, poolAddress);
-  const _nftOwned = await poolContract.balanceOf(app.YOUR_ADDRESS) / 1;
-  const nftIndex = _nftOwned == 1 ? 0 : _nftOwned
+  poolToken.staked = poolInfo.lpSupply / 10 ** poolToken.decimals;
+  const nftOwned = await poolContract.balanceOf(app.YOUR_ADDRESS) / 1;
+  let userStakingDetails = [];
+  for(let i = 0; i < nftOwned; i++){
+    const tokenID = await poolContract.tokenOfOwnerByIndex(app.YOUR_ADDRESS, i);
+    const _userStakingDetail = await poolContract.getStakingPosition(tokenID);
+    const userStakingDetail = {
+      details : _userStakingDetail,
+      nftID : tokenID
+    }
+    userStakingDetails.push(userStakingDetail);
+  }
   const rewardsPerWeek = rewardRate / 1e18 * 604800;
-  const tokenID = await poolContract.tokenOfOwnerByIndex(app.YOUR_ADDRESS, nftIndex);
-  const userStakingDetails = await poolContract.getStakingPosition(tokenID);
-  const pendingRewardTokens = pendingRewards(tokenID);
-  const staked = userStakingDetails.amount / 10 ** poolToken.decimals;
-  // const lockDurationSecs = userStakingDetails.lockDuration;
-  // const lockDurationHours = Math.floor(lockDurationSecs % (3600*24) / 3600);
-  // const lockDurationDays = Math.floor(lockDurationSecs / (3600*24));
   return {
-    address: poolInfo.lpToken ?? poolInfo.token ?? poolInfo.stakingToken,
-    allocPoints: poolInfo.allocPoint ?? 1,
+    address: poolInfo.lpToken,
+    poolAddress: poolAddress,
     poolToken: poolToken,
-    userStaked: staked,
-    depositFee: (poolInfo.depositFeeBP ?? 0) / 100,
-    withdrawFee: (poolInfo.withdrawFeeBP ?? 0) / 100,
-    rewardsPerWeek: rewardsPerWeek,
-    pendingRewardTokens: pendingRewardTokens,
-    lockDurationHours : lockDurationHours,
-    lockDurationDays : lockDurationDays
+    userStakingDetails: userStakingDetails,
+    rewardsPerWeek: rewardsPerWeek
   };
 }
