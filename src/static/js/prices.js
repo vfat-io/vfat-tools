@@ -41,7 +41,7 @@ const ArbitrumTokens = [
   { "id": "dola-usd", "symbol": "DOLA", "contract": "0x6a7661795c374c0bfc635934efaddff3a7ee23b6" },
   { "id": "mimatic", "symbol": "MAI", "contract": "0x3F56e0c36d275367b8C502090EDF38289b3dEa0d" },
   { "id": "usd", "symbol": "USD+", "contract": "0xe80772Eaf6e2E18B651F160Bc9158b2A5caFCA65" },
-  { "id": "doorainu", "symbol": "DINU", "contract": "0xb7ffA0D35597d2e166384fc88Ed746a4c74be001" }
+  { "id": "camelot-token", "symbol": "GRAIL", "contract": "0x3d9907f9a368ad0a51be60f7da3b97cf940982d8" }
 ];
 
 const AstarTokens = [

@@ -2290,6 +2290,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
   else if (pool.symbol.includes("VERSE-X")) stakeTokenTicker += " VERSE-X";
   else if (pool.symbol.includes("Oreo-LP")) stakeTokenTicker += " OREO-SWAP LP";
   else if (pool.symbol.includes("Sugar-LP")) stakeTokenTicker += " SUGAR-SWAP LP";
+  else if (pool.symbol.includes("CMLT-LP")) stakeTokenTicker += " Camelot LP";
   else if (pool.symbol.includes("YLP")) stakeTokenTicker += " Yodedex LP";
   else if (pool.symbol.includes("DST-V2")) stakeTokenTicker += " DogeSwap LP";
   else if (pool.symbol.includes("FX-V2")) stakeTokenTicker += " FX Swap LP";
@@ -2427,6 +2428,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
           pool.symbol.includes("MDEX") ? `https://info.mdex.com/#/pools/${pool.address}` :
           pool.symbol.includes("Milky-LP") ? `https://milkyway.exchange/` :
           pool.symbol.includes("YLP") ? `https://dexscreener.com/dogechain/yodeswap` :
+          pool.symbol.includes("CMLT-LP") ? `https://info.camelot.exchange/pair/${pool.address}` :
           pool.symbol.includes("MSLP") ? `https://www.milkyswap.exchange/` :
             pool.symbol.includes("SLP") ? (
               {
@@ -2623,6 +2625,11 @@ function getUniPrices(tokens, prices, pool, chain="eth")
             `https://yodeswap.dog/exchange/add/${t0address}/${t1address}`,
             `https://yodeswap.dog/exchange/remove/${t0address}/${t1address}`,
             `https://yodeswap.dog/exchange/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+          ] :
+          pool.symbol.includes("CMLT-LP") ? [
+            `https://app.camelot.exchange/liquidity`,
+            `https://app.camelot.exchange/liquidity`,
+            `https://app.camelot.exchange/`
           ] :
           pool.symbol.includes("vrAMM") ? [
             `https://app.ramses.exchange/liquidity/create`,
