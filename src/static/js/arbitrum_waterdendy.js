@@ -21,7 +21,7 @@ async function main() {
     const prices = await getArbitrumPrices();
 
     await loadArbitrumChefContract(App, tokens, prices, WD_CHEF, WD_CHEF_ADDR, WD_CHEF_ABI, rewardTokenTicker,
-        "wd", null, rewardsPerWeek, "pendingWaterDendy", [1]);
+        "waterdendy", null, rewardsPerWeek, "pendingWaterDendy", [1]);
 
     hideLoading();
   }
