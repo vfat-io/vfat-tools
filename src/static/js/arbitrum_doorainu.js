@@ -25,7 +25,7 @@ $(function() {
       const prices = await getArbitrumPrices();
   
       await loadGeneralEthcallChefContract(App, tokens, prices, DOORA_FARM, DOORA_FARM_ADDR, DOORA_FARM_ABI, rewardTokenTicker,
-        "rewardToken", null, rewardsPerWeek, "pendingReward", []);
+        "rewardToken", null, rewardsPerWeek, "pendingReward", [1]);
   
       hideLoading();
     }
