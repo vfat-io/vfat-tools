@@ -4,7 +4,9 @@ const ArbitrumTokens = [
   { "id": "wrapped-bitcoin","symbol": "WBTC", "contract": "0x2f2a2543b76a4166549f7aab2e75bef0aefc5b0f" },
   { "id": "usd-coin","symbol": "USDC", "contract": "0xff970a61a04b1ca14834a43f5de4533ebddb5cc8" },
   { "id": "tether","symbol": "USDT", "contract": "0xfd086bc7cd5c481dcc9c85ebe478a1c0b69fcbb9" },
+  { "id": "tether","symbol": "USDT", "contract": "0xEC13336bbd50790a00CDc0fEddF11287eaF92529" },  //this gmUSD and its temporary
   { "id": "dai","symbol": "DAI", "contract": "0xda10009cbd5d07dd0cecc66161fc93d7c9000da1" },
+  { "id": "dai","symbol": "DAI", "contract": "0xd85E038593d7A098614721EaE955EC2022B9B91B" },    //this gDAI and its temporary
   { "id": "dai","symbol": "DAI", "contract": "0xeb8e93a0c7504bffd8a8ffa56cd754c63aaebfe8" },    //this +DAI and its temporary
   { "id": "arbinyan","symbol": "NYAN", "contract": "0xed3fb761414da74b74f33e5c5a1f78104b188dfc" },
   { "id": "wrapped-ether", "symbol": "WETH", "contract": "0x82aF49447D8a07e3bd95BD0d56f35241523fBab1"},
@@ -41,7 +43,11 @@ const ArbitrumTokens = [
   { "id": "dola-usd", "symbol": "DOLA", "contract": "0x6a7661795c374c0bfc635934efaddff3a7ee23b6" },
   { "id": "mimatic", "symbol": "MAI", "contract": "0x3F56e0c36d275367b8C502090EDF38289b3dEa0d" },
   { "id": "usd", "symbol": "USD+", "contract": "0xe80772Eaf6e2E18B651F160Bc9158b2A5caFCA65" },
-  { "id": "camelot-token", "symbol": "GRAIL", "contract": "0x3d9907f9a368ad0a51be60f7da3b97cf940982d8" }
+  { "id": "camelot-token", "symbol": "GRAIL", "contract": "0x3d9907f9a368ad0a51be60f7da3b97cf940982d8" },
+  { "id": "liquity-usd", "symbol": "LUSD", "contract": "0x93b346b6bc2548da6a1e7d98e9a421b42541425b" },
+  { "id": "dei-token", "symbol": "DEI", "contract": "0xDE1E704dae0B4051e80DAbB26ab6ad6c12262DA0" },
+  { "id": "yieldfarming-index", "symbol": "YFX", "contract": "0xaae0c3856e665ff9b3e2872b6d75939d810b7e40" },
+  { "id": "liquity", "symbol": "LQTY", "contract": "0xfb9E5D956D889D91a82737B9bFCDaC1DCE3e1449" }
 ];
 
 const AstarTokens = [
