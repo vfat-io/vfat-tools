@@ -22,9 +22,9 @@ async function main() {
   }
 
    if(claimableTokens / 1e18 == 0){
-    _print("Unfortunately you are not elidgible for the airdrop");
+    _print("Unfortunately you are not eligible for the airdrop");
    }else{
-    _print(`You are elidgible for ${claimableTokens / 1e18} ARB`);
+    _print(`You are eligible for ${claimableTokens / 1e18} ARB`);
     _print("");
     _print_link(`Claim ${claimableTokens / 1e18} ${rewardTokenTicker}`, claim)
    }
