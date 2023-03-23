@@ -40,7 +40,7 @@ const airdropContract_claim = async function(rewardPoolAddr, App, claimableToken
   console.log(App.YOUR_ADDRESS)
 
     showLoading()
-    REWARD_POOL.claim({gasLimit: 250000})
+    REWARD_POOL.claim()
       .then(function(t) {
         return App.provider.waitForTransaction(t.hash)
       })
