@@ -74,7 +74,8 @@ const main = async() => {
       ["DooraInu            ", `<a href="/arbitrum/doorainu"    >Various</a>`,"DINU               ","https://doorainu.world"],
       ["Excalibur           ", `<a href="/arbitrum/excalibur"   >Various</a>`,"GRAIL              ","https://excalibur.exchange"],
       ["WaterDendy          ", `<a href="/arbitrum/waterdendy"  >Various</a>`,"WD                 ","https://dendy.defiwaterfall.com"],
-      ["Onyx Dao            ", `<a href="/arbitrum/onyx_dao"    >Various</a>`,"ONYX               ","https://app.onyxdao.finance"]
+      ["Onyx Dao            ", `<a href="/arbitrum/onyx_dao"    >Various</a>`,"ONYX               ","https://app.onyxdao.finance"],
+      ["ARB Airdrop         ", `<a href="/arbitrum/arb_airdrop" >Various</a>`,"ARB                ","https://arbitrum.foundation"]
     ].reverse()
   }
 
