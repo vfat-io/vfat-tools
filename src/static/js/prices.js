@@ -292,6 +292,10 @@ const celoTokens = [
   { "id": "sushi","symbol": "SUSHI","contract": "0x29dFce9c22003A4999930382Fd00f9Fd6133Acd1" }
 ]
 
+const coreTokens = [
+  { "id": "weth","symbol": "WETH","contract": "0xef6b7bc74c9354bcf2e3f2a068e4b0b5cdf08f29" },
+]
+
 const CronosTokens = [
   { "id": "crypto-com-chain", "symbol": "CRO", "contract": "0x5C7F8A570d578ED84E63fdFA7b1eE72dEae1AE23"},
   { "id": "crypto-com-chain", "symbol": "WCRO", "contract": "0x5C7F8A570d578ED84E63fdFA7b1eE72dEae1AE23"},
@@ -848,6 +852,15 @@ async function getCeloPrices() {
   const idPrices = await lookUpPrices(celoTokens.map(x => x.id));
   const prices = {}
   for (const bt of celoTokens)
+      if (idPrices[bt.id])
+          prices[bt.contract] = idPrices[bt.id];
+  return prices;
+}
+
+async function getCeloPrices() {
+  const idPrices = await lookUpPrices(coreTokens.map(x => x.id));
+  const prices = {}
+  for (const bt of coreTokens)
       if (idPrices[bt.id])
           prices[bt.contract] = idPrices[bt.id];
   return prices;

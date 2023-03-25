@@ -111,6 +111,9 @@ const pageNetwork = function() {
   if (network.toLowerCase() === 'celo') {
     return window.NETWORKS.CELO
   }
+  if (network.toLowerCase() === 'core') {
+    return window.NETWORKS.CORE
+  }
   if (network.toLowerCase() === 'iotex') {
     return window.NETWORKS.IOTEX
   }
@@ -3644,6 +3647,9 @@ function getErc20Prices(prices, pool, chain="eth") {
     case "celo":
       poolUrl=`https://explorer.celo.org/address/${pool.address}`;
       break;
+    case "core":
+      poolUrl=`https://scan.coredao.org/token/${pool.address}`;
+      break;
     case "iotex":
       poolUrl=`https://iotexscan.io/token/${pool.address}`;
       break;
@@ -4374,6 +4380,9 @@ async function printSynthetixPool(App, info, chain="eth", customURLs) {
       case "celo":
         _print(`<a target="_blank" href="https://explorer.celo.org/address/${info.stakingAddress}/contracts">Celo Explorer</a>`);
         break;
+      case "core":
+        _print(`<a target="_blank" href="https://scan.coredao.org/address/${info.stakingAddress}#code">Core Scan</a>`);
+        break;
       case "iotex":
           _print(`<a target="_blank" href="https://iotexscan.io/address/${info.stakingAddress}#code">IoTeX Explorer</a>`);
           break;
@@ -4532,6 +4541,8 @@ function getChainExplorerUrl(chain, address){
       return `https://explorer.dogechain.dog/token/${address}`;
     case "fx" :
       return `https://explorer.starscan.io/evm/token/${address}`;
+    case "core" :
+      return `https://scan.coredao.org/token/${address}`;
     case "harmony" :
       return `https://explorer.harmony.one/address/${address}`;
     case "arbitrum" :

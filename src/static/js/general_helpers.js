@@ -599,6 +599,8 @@ async function loadGeneralChefContract(App, tokens, prices, chef, chefAddress, c
     break;
     case "fx" : _print(`<a href='https://explorer.starscan.io/evm/address/${chefAddress}' target='_blank'>Staking Contract</a>`);
     break;
+    case "core" : _print(`<a href='https://scan.coredao.org/address/${chefAddress}' target='_blank'>Staking Contract</a>`);
+    break;
   }
   _print(`Found ${poolCount} pools.\n`)
 
