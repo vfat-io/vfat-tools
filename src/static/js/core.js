@@ -8,7 +8,7 @@ const main = async() => {
     "title":"Core Network",
     "heading":["Pool Provider","LP", "Reward Tokens", "INFO"],
     "rows": [
-        //["MIND Games",                `<a href="mindgames"        >Various</a>`,      "CELL",         "https://play.mindgames.io" ]
+        ["Shadow Swap",                `<a href="shadowswap"        >Various</a>`,      "SHDW",         "https://shadowswap.xyz" ]
     ].reverse()
   }
 

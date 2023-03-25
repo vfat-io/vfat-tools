@@ -294,6 +294,8 @@ const celoTokens = [
 
 const coreTokens = [
   { "id": "weth","symbol": "WETH","contract": "0xef6b7bc74c9354bcf2e3f2a068e4b0b5cdf08f29" },
+  { "id": "shadowswap-token","symbol": "SHDW","contract": "0xddBa66C1eBA873e26Ac0215Ca44892a07d83aDF5" },
+  { "id": "tether","symbol": "USDT","contract": "0x900101d06A7426441Ae63e9AB3B9b0F63Be145F1" }
 ]
 
 const CronosTokens = [
@@ -857,7 +859,7 @@ async function getCeloPrices() {
   return prices;
 }
 
-async function getCeloPrices() {
+async function getCorePrices() {
   const idPrices = await lookUpPrices(coreTokens.map(x => x.id));
   const prices = {}
   for (const bt of coreTokens)

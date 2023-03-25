@@ -2322,6 +2322,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
   else if (pool.symbol.includes("SLP")) stakeTokenTicker += " SLP";
   else if (pool.symbol.includes("Farmtom-LP")) stakeTokenTicker += " Farmtom LP";
   else if (pool.symbol.includes("Cake")) stakeTokenTicker += " Cake LP";
+  else if (pool.symbol.includes("Shdw-LP")) stakeTokenTicker += " Shadow LP";
   else if (pool.name.includes("Value LP")) stakeTokenTicker += " Value LP";
   else if (pool.name.includes("Zyber LP")) stakeTokenTicker += " Zyber LP";
   else if (pool.symbol.includes("dogeshrek-lp")) stakeTokenTicker += " DogeShrek LP";
@@ -2445,6 +2446,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
                 "moonriver": `https://app.sushi.com/analytics/pools/${pool.address}`
               }[chain]) :
               pool.symbol.includes("Cake") ?  `https://pancakeswap.info/pair/${pool.address}` :
+              pool.symbol.includes("Shdw-LP") ?  `https://shadowswap.xyz/info/pool/${pool.address}` :
               pool.symbol.includes("CAT-LP") ?  `https://polycat.finance` :
               pool.symbol.includes("PGL") ?  `https://info.pangolin.exchange/#/pair/${pool.address}` :
               pool.symbol.includes("DMM-LP") ?  (
@@ -2969,6 +2971,11 @@ function getUniPrices(tokens, prices, pool, chain="eth")
             `https://pancakeswap.finance/add/${t0address}/${t1address}`,
             `https://pancakeswap.finance/remove/${t0address}/${t1address}`,
             `https://pancakeswap.finance/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+          ] :
+          pool.symbol.includes("Shdw-LP") ? [
+            `https://shadowswap.xyz/add/${t0address}/${t1address}`,
+            `https://shadowswap.xyz/remove/${t0address}/${t1address}`,
+            `https://shadowswap.xyz/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
           ] :
           pool.symbol.includes("Lv1") ? [ // adding before matic
             `https://swap.steakhouse.finance/#/add/${t0address}/${t1address}`,
