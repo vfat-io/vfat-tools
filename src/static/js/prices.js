@@ -298,7 +298,8 @@ const coreTokens = [
   { "id": "tether","symbol": "USDT","contract": "0x900101d06A7426441Ae63e9AB3B9b0F63Be145F1" },
   { "id": "archerswap-bow","symbol": "BOW","contract": "0x1a639e150d2210a4be4a5f0857a9151b241e7ae4" },
   { "id": "coredaoorg","symbol": "CORE","contract": "0x40375c92d9faf44d2f9db9bd9ba41a3317a2404f" },
-  { "id": "weth","symbol": "WETH","contract": "0xeab3ac417c4d6df6b143346a46fee1b847b50296" }
+  { "id": "weth","symbol": "WETH","contract": "0xeab3ac417c4d6df6b143346a46fee1b847b50296" },
+  { "id": "lfgswap-finance-core","symbol": "LFG","contract": "0xF7a0b80681eC935d6dd9f3Af9826E68B99897d6D" }
 ]
 
 const CronosTokens = [

@@ -9,7 +9,8 @@ const main = async() => {
     "heading":["Pool Provider","LP", "Reward Tokens", "INFO"],
     "rows": [
         ["Shadow Swap",                `<a href="shadowswap"        >Various</a>`,      "SHDW",         "https://shadowswap.xyz" ],
-        ["Archer Swap",                `<a href="archerswap"        >Various</a>`,      "BOW",          "https://archerswap.finance" ]
+        ["Archer Swap",                `<a href="archerswap"        >Various</a>`,      "BOW",          "https://archerswap.finance" ],
+        //["LFG Swap",                   `<a href="lfgswap"           >Various</a>`,      "LFG",          "https://www.lfgswap.finance" ]
     ].reverse()
   }
 
