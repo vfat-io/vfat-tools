@@ -295,7 +295,10 @@ const celoTokens = [
 const coreTokens = [
   { "id": "weth","symbol": "WETH","contract": "0xef6b7bc74c9354bcf2e3f2a068e4b0b5cdf08f29" },
   { "id": "shadowswap-token","symbol": "SHDW","contract": "0xddBa66C1eBA873e26Ac0215Ca44892a07d83aDF5" },
-  { "id": "tether","symbol": "USDT","contract": "0x900101d06A7426441Ae63e9AB3B9b0F63Be145F1" }
+  { "id": "tether","symbol": "USDT","contract": "0x900101d06A7426441Ae63e9AB3B9b0F63Be145F1" },
+  { "id": "archerswap-bow","symbol": "BOW","contract": "0x1a639e150d2210a4be4a5f0857a9151b241e7ae4" },
+  { "id": "coredaoorg","symbol": "CORE","contract": "0x40375c92d9faf44d2f9db9bd9ba41a3317a2404f" },
+  { "id": "weth","symbol": "WETH","contract": "0xeab3ac417c4d6df6b143346a46fee1b847b50296" }
 ]
 
 const CronosTokens = [
