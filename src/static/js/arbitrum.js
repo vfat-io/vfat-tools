@@ -70,7 +70,8 @@ const main = async() => {
       ["Mindgames           ", `<a href="/arbitrum/mindgames"   >Various</a>`,"CRX                ","https://play.mindgames.io"],
       ["xBlue Finance       ", `<a href="/arbitrum/xblue"       >Various</a>`,"XB                 ","https://www.xblue.finance"],
       ["Ramses Exchange     ", `<a href="/arbitrum/ramses"      >Various</a>`,"RAM                ","https://app.ramses.exchange"],
-      ["Arbidex             ", `<a href="/arbitrum/arbidex"     >Various</a>`,"ARX / WETH         ","https://arbidex.fi"]
+      ["Arbidex             ", `<a href="/arbitrum/arbidex"     >Various</a>`,"ARX / WETH         ","https://arbidex.fi"],
+      ["Silo Finance        ", `<a href="/arbitrum/silo"        >Various</a>`,"SILO               ","https://www.silo.finance"]
     ].reverse()
   }
 
