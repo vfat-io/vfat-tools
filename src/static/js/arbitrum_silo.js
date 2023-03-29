@@ -43,7 +43,7 @@ const getAllDepositApy = async data => {
     for (let j = 0; j < data[i].marketAssets.length; j++) {
       let assetAddress = data[i].marketAssets[j].id
       let depositApy = await getDepositApy(marketAddress, assetAddress)
-      data[i].marketAssets[j]['deposit APY'] = (+ethers.utils.formatEther(depositApy, 18) * 100).toFixed(2)
+      data[i].marketAssets[j]['deposit APY'] = (+ethers.utils.formatEther(depositApy, 18) * 100).toFixed(5)
     }
     printSiloData(data[i])
   }
@@ -131,7 +131,7 @@ async function main() {
 
   await getAllDepositApy(data)
 
-  _print_bold('SILO / ETH sushi')
+  _print_bold('SILO / ETH Sushi LP')
   let siloEthApy = await getSiloEthApySushi()
   _print(`APY :- ${(Number(siloEthApy) * 100).toFixed(4)}%`)
 

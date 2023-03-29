@@ -43,7 +43,7 @@ const getAllDepositApy = async data => {
     for (let j = 0; j < data[i].marketAssets.length; j++) {
       let assetAddress = data[i].marketAssets[j].id
       let depositApy = await getDepositApy(marketAddress, assetAddress)
-      data[i].marketAssets[j]['deposit APY'] = (+ethers.utils.formatEther(depositApy, 18) * 100).toFixed(2)
+      data[i].marketAssets[j]['deposit APY'] = (+ethers.utils.formatEther(depositApy, 18) * 100).toFixed(5)
     }
     printSiloData(data[i])
   }
@@ -135,7 +135,7 @@ const getConvexLPPosition = async function() {
   const query = `
    {
       vaultHourlySnapshots(
-        first: 1
+        first: 10
         orderBy: timestamp
         orderDirection: desc
         where: {vault: "0xf403c135812408bfbe8713b5a23a04b3d48aae31-129"}
@@ -153,7 +153,11 @@ const getConvexLPPosition = async function() {
 
   const resp = await fetch(url, opts)
   const respJson = await resp.json()
-  return respJson
+  let data = respJson.data.vaultHourlySnapshots
+  let filterdData = data.filter(i => {
+    return i.totalValueLockedUSD > 0
+  })
+  return filterdData
 }
 
 const getFraxMaxApy = async function() {
@@ -185,21 +189,21 @@ async function main() {
 
   let XAI_FRAXBP_Convex_pool = await getConvexLPPosition()
   _print_bold('XAI / FRAXBP Convex Pool')
-  let rewardsTokenEmissionsUSD = XAI_FRAXBP_Convex_pool.data.vaultHourlySnapshots[0].rewardTokenEmissionsUSD
+  let rewardsTokenEmissionsUSD = XAI_FRAXBP_Convex_pool[0].rewardTokenEmissionsUSD
   let rewardsTotal =
     Number(Number(rewardsTokenEmissionsUSD[0]).toFixed(2)) + Number(Number(rewardsTokenEmissionsUSD[1]).toFixed(2))
   let yearlyRewards = Number(rewardsTotal) * 365
-  let totalValueLockedUSD = Number(XAI_FRAXBP_Convex_pool.data.vaultHourlySnapshots[0].totalValueLockedUSD).toFixed(2)
+  let totalValueLockedUSD = Number(XAI_FRAXBP_Convex_pool[0].totalValueLockedUSD).toFixed(2)
   let crv_Cvx_APY = (yearlyRewards / Number(totalValueLockedUSD)) * 100
   let max_apy = await getFraxMaxApy()
   let fxs_apy = Number(max_apy) - Number(crv_Cvx_APY)
   let fxs_fess_percentage = 0.17
   let apy = fxs_apy * (1 - fxs_fess_percentage)
-  _print(`APY :- ${apy.toFixed(4)}%`)
+  _print(`APY :- ${apy.toFixed(5)}%`)
   _print('')
 
   _print_bold('SILO / Balancer ')
-  _print(`APY :- ${siloBalancerApy}%`)
+  _print(`APY :- ${siloBalancerApy.toFixed(5)}%`)
 
   hideLoading()
 }
