@@ -118,7 +118,8 @@ async function getBeethovenxPoolInfo(app, chefContract, chefAddress, poolIndex, 
   const poolInfo = await chefContract.poolInfo(poolIndex);
   const lpToken = await chefContract.lpTokens(poolIndex);
   if (poolInfo.allocPoint == 0 || lpToken.toLowerCase() === "0x64b301E21d640F9bef90458B0987d81fb4cf1B9e".toLowerCase()
-    || lpToken.toLowerCase() === "0x10441785A928040b456A179691141c48356Eb3A5".toLowerCase()) {
+  || lpToken.toLowerCase() === "0x10441785A928040b456A179691141c48356Eb3A5".toLowerCase()
+  || lpToken.toLowerCase() === "0x302B8b64795b064CAdC32f74993A637249860807".toLowerCase()) {
     return {
       address: lpToken,
       allocPoints: poolInfo.allocPoint ?? 1,

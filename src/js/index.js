@@ -156,6 +156,21 @@ window.NETWORKS = {
       "https://evm.explorer.canto.io"
     ]
   },
+  CORE: {
+    "chainId": "0x45C",
+    "chainName": "Core Blockchain Mainnet",
+    "nativeCurrency": {
+      "name": "CORE",
+      "symbol": "CORE",
+      "decimals": 18
+    },
+    "rpcUrls": [
+      "https://rpc.coredao.org"
+    ],
+    "blockExplorerUrls": [
+      "https://scan.coredao.org"
+    ]
+  },
   MILKOMEDA: {
     "chainId": "0x7D1",
     "chainName": "Milkomeda C1 Mainnet",

@@ -111,6 +111,9 @@ const pageNetwork = function() {
   if (network.toLowerCase() === 'celo') {
     return window.NETWORKS.CELO
   }
+  if (network.toLowerCase() === 'core') {
+    return window.NETWORKS.CORE
+  }
   if (network.toLowerCase() === 'iotex') {
     return window.NETWORKS.IOTEX
   }
@@ -2290,6 +2293,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
   else if (pool.symbol.includes("VERSE-X")) stakeTokenTicker += " VERSE-X";
   else if (pool.symbol.includes("Oreo-LP")) stakeTokenTicker += " OREO-SWAP LP";
   else if (pool.symbol.includes("Sugar-LP")) stakeTokenTicker += " SUGAR-SWAP LP";
+  else if (pool.symbol.includes("CMLT-LP")) stakeTokenTicker += " Camelot LP";
   else if (pool.symbol.includes("YLP")) stakeTokenTicker += " Yodedex LP";
   else if (pool.symbol.includes("DST-V2")) stakeTokenTicker += " DogeSwap LP";
   else if (pool.symbol.includes("FX-V2")) stakeTokenTicker += " FX Swap LP";
@@ -2318,6 +2322,9 @@ function getUniPrices(tokens, prices, pool, chain="eth")
   else if (pool.symbol.includes("SLP")) stakeTokenTicker += " SLP";
   else if (pool.symbol.includes("Farmtom-LP")) stakeTokenTicker += " Farmtom LP";
   else if (pool.symbol.includes("Cake")) stakeTokenTicker += " Cake LP";
+  else if (pool.symbol.includes("Shdw-LP")) stakeTokenTicker += " Shadow LP";
+  else if (pool.symbol.includes("LFG_LP")) stakeTokenTicker += " LFG LP";
+  else if (pool.symbol.includes("Archer-LP")) stakeTokenTicker += " Archer LP";
   else if (pool.name.includes("Value LP")) stakeTokenTicker += " Value LP";
   else if (pool.name.includes("Zyber LP")) stakeTokenTicker += " Zyber LP";
   else if (pool.symbol.includes("dogeshrek-lp")) stakeTokenTicker += " DogeShrek LP";
@@ -2427,6 +2434,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
           pool.symbol.includes("MDEX") ? `https://info.mdex.com/#/pools/${pool.address}` :
           pool.symbol.includes("Milky-LP") ? `https://milkyway.exchange/` :
           pool.symbol.includes("YLP") ? `https://dexscreener.com/dogechain/yodeswap` :
+          pool.symbol.includes("CMLT-LP") ? `https://info.camelot.exchange/pair/${pool.address}` :
           pool.symbol.includes("MSLP") ? `https://www.milkyswap.exchange/` :
             pool.symbol.includes("SLP") ? (
               {
@@ -2440,6 +2448,9 @@ function getUniPrices(tokens, prices, pool, chain="eth")
                 "moonriver": `https://app.sushi.com/analytics/pools/${pool.address}`
               }[chain]) :
               pool.symbol.includes("Cake") ?  `https://pancakeswap.info/pair/${pool.address}` :
+              pool.symbol.includes("Shdw-LP") ?  `https://shadowswap.xyz/info/pool/${pool.address}` :
+              pool.symbol.includes("Archer-LP") ?  `https://info.archerswap.finance/pair/${pool.address}` :
+              pool.symbol.includes("LFG_LP") ?  `https://www.lfgswap.finance/` :
               pool.symbol.includes("CAT-LP") ?  `https://polycat.finance` :
               pool.symbol.includes("PGL") ?  `https://info.pangolin.exchange/#/pair/${pool.address}` :
               pool.symbol.includes("DMM-LP") ?  (
@@ -2623,6 +2634,11 @@ function getUniPrices(tokens, prices, pool, chain="eth")
             `https://yodeswap.dog/exchange/add/${t0address}/${t1address}`,
             `https://yodeswap.dog/exchange/remove/${t0address}/${t1address}`,
             `https://yodeswap.dog/exchange/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+          ] :
+          pool.symbol.includes("CMLT-LP") ? [
+            `https://app.camelot.exchange/liquidity`,
+            `https://app.camelot.exchange/liquidity`,
+            `https://app.camelot.exchange/`
           ] :
           pool.symbol.includes("vrAMM") ? [
             `https://app.ramses.exchange/liquidity/create`,
@@ -2959,6 +2975,21 @@ function getUniPrices(tokens, prices, pool, chain="eth")
             `https://pancakeswap.finance/add/${t0address}/${t1address}`,
             `https://pancakeswap.finance/remove/${t0address}/${t1address}`,
             `https://pancakeswap.finance/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+          ] :
+          pool.symbol.includes("Shdw-LP") ? [
+            `https://shadowswap.xyz/add/${t0address}/${t1address}`,
+            `https://shadowswap.xyz/remove/${t0address}/${t1address}`,
+            `https://shadowswap.xyz/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+          ] :
+          pool.symbol.includes("LFG_LP") ? [
+            `https://www.lfgswap.finance/add/${t0address}/${t1address}?chainId=1116`,
+            `https://www.lfgswap.finance/remove/${t0address}/${t1address}?chainId=1116`,
+            `https://shadowswap.xyz/swap??chainId=1116&inputCurrency=${t0address}&outputCurrency=${t1address}`
+          ] :
+          pool.symbol.includes("Archer-LP") ? [
+            `https://exchange.archerswap.finance/#/add/${t0address}/${t1address}`,
+            `https://exchange.archerswap.finance/#/remove/${t0address}/${t1address}`,
+            `https://exchange.archerswap.finance/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
           ] :
           pool.symbol.includes("Lv1") ? [ // adding before matic
             `https://swap.steakhouse.finance/#/add/${t0address}/${t1address}`,
@@ -3636,6 +3667,9 @@ function getErc20Prices(prices, pool, chain="eth") {
       break;
     case "celo":
       poolUrl=`https://explorer.celo.org/address/${pool.address}`;
+      break;
+    case "core":
+      poolUrl=`https://scan.coredao.org/token/${pool.address}`;
       break;
     case "iotex":
       poolUrl=`https://iotexscan.io/token/${pool.address}`;
@@ -4367,6 +4401,9 @@ async function printSynthetixPool(App, info, chain="eth", customURLs) {
       case "celo":
         _print(`<a target="_blank" href="https://explorer.celo.org/address/${info.stakingAddress}/contracts">Celo Explorer</a>`);
         break;
+      case "core":
+        _print(`<a target="_blank" href="https://scan.coredao.org/address/${info.stakingAddress}#code">Core Scan</a>`);
+        break;
       case "iotex":
           _print(`<a target="_blank" href="https://iotexscan.io/address/${info.stakingAddress}#code">IoTeX Explorer</a>`);
           break;
@@ -4525,6 +4562,8 @@ function getChainExplorerUrl(chain, address){
       return `https://explorer.dogechain.dog/token/${address}`;
     case "fx" :
       return `https://explorer.starscan.io/evm/token/${address}`;
+    case "core" :
+      return `https://scan.coredao.org/token/${address}`;
     case "harmony" :
       return `https://explorer.harmony.one/address/${address}`;
     case "arbitrum" :
