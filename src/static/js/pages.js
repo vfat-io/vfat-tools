@@ -1,12 +1,12 @@
-$(function() {
+$(function () {
   main()
 });
 
-const main = async() => {
+const main = async () => {
 
   let tableData = {
-    "title":"Front Page",
-    "heading":["Pool Provider","LP", "Reward Tokens", "INFO"],
+    "title": "Front Page",
+    "heading": ["Pool Provider", "LP", "Reward Tokens", "INFO"],
     "rows": [
       ["1inch                        ", `<a href="1inch/"             >Various</a>`, "1INCH              ", "https://1inch.exchange/#/dao/farming"],
       ["Alpha DEX                    ", `<a href="alphadex/"          >Various</a>`, "DEX                ", "https://kitten.finance"],
@@ -170,12 +170,12 @@ const main = async() => {
       ["DeFiner                      ", `<a href="definer/"           >Various</a>`, "FIN                ", "https://app.definer.org"],
       ["Looksrare                    ", `<a href="looksrare/"         >Various</a>`, "LOOKS              ", "https://looksrare.org"],
       ["Vader                        ", `<a href="vader/"             >Various</a>`, "VADER              ", "https://www.vaderprotocol.app"],
-      ["WOWswap                      ", `<a href="wowswap/"           >Various</a>`,"WOW                 ", "https://wowswap.io"],
-      ["Aladdin (Concentrator)       ", `<a href="concentrator/"      >Various</a>`,"aCRV                ", "https://concentrator.aladdin.club/#/vault"],
-      ["Stargate                     ", `<a href="stargate/"          >Various</a>`,"STG                 ", "https://stargate.finance"],
-      ["Backd                        ", `<a href="backd/"             >Various</a>`,"                    ", "https://backd.fund"],
-      ["Jpegd                        ", `<a href="jpegd/"             >Various</a>`,"JPEG                ", "https://jpegd.io"],
-      ["Bancor                       ", `<a href="bancor/"            >Various</a>`,"BNT                 ", "https://app.bancor.network"],
+      ["WOWswap                      ", `<a href="wowswap/"           >Various</a>`, "WOW                 ", "https://wowswap.io"],
+      ["Aladdin (Concentrator)       ", `<a href="concentrator/"      >Various</a>`, "aCRV                ", "https://concentrator.aladdin.club/#/vault"],
+      ["Stargate                     ", `<a href="stargate/"          >Various</a>`, "STG                 ", "https://stargate.finance"],
+      ["Backd                        ", `<a href="backd/"             >Various</a>`, "                    ", "https://backd.fund"],
+      ["Jpegd                        ", `<a href="jpegd/"             >Various</a>`, "JPEG                ", "https://jpegd.io"],
+      ["Bancor                       ", `<a href="bancor/"            >Various</a>`, "BNT                 ", "https://app.bancor.network"],
       ["UnoRe                        ", `<a href="unore/"             >Various</a>`, "UnoRe              ", "https://appv2.unore.io"],
       ["Convex (Frax)                ", `<a href="convex_frax/"       >Various</a>`, "Various            ", "https://frax.convexfinance.com"],
       ["Aura                         ", `<a href="aura/"              >Various</a>`, "AURA               ", "https://app.aura.finance"],
@@ -190,7 +190,8 @@ const main = async() => {
       ["Verse *                      ", `<a href="verse/"             >Various</a>`, "VERSE              ", "https://verse.bitcoin.com"],
       ["Archimedes                   ", `<a href="archimedes/"        >Various</a>`, "ARCH               ", "https://archimedesfi.com"],
       ["Conic Finance                ", `<a href="conic/"             >Various</a>`, "Various            ", "https://conic.finance"],
-      ["Oceanpoint                   ", `<a href="oceanpoint/"        >Various</a>`, "BST                ", "https://app.oceanpoint.fi"]
+      ["Oceanpoint                   ", `<a href="oceanpoint/"        >Various</a>`, "BST                ", "https://app.oceanpoint.fi"],
+      ["Silo Finance                 ", `<a href="silo/"              >Various</a>`, "SILO               ", "https://www.silo.finance"]
     ].reverse()
   }
 
