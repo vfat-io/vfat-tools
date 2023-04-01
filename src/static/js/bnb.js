@@ -602,7 +602,8 @@ const main = async() => {
       ["Animal Farm         ",`<a href="animalfarm"    >Various</a>`,"PIGS / DOGS      ","https://defi.animalfarm.app"],
       ["Naruto Defi         ",`<a href="narutodefi"    >Various</a>`,"NARUTO           ","https://www.narutodefi.com"],
       ["Thena               ",`<a href="thena"         >Various</a>`,"THE              ","https://thena.fi"],
-      ["Level Finance       ",`<a href="level"         >Various</a>`,"LVL              ","https://app.level.finance"]
+      ["Level Finance       ",`<a href="level"         >Various</a>`,"LVL              ","https://app.level.finance"],
+      ["Radiant             ",`<a href="radiant"       >Various</a>`,"RDNT             ","https://app.radiant.capital"]
     ].reverse()}
 
   let table = new AsciiTable().fromJSON(tableData);

@@ -47,7 +47,8 @@ const ArbitrumTokens = [
   { "id": "liquity-usd", "symbol": "LUSD", "contract": "0x93b346b6bc2548da6a1e7d98e9a421b42541425b" },
   { "id": "dei-token", "symbol": "DEI", "contract": "0xDE1E704dae0B4051e80DAbB26ab6ad6c12262DA0" },
   { "id": "yieldfarming-index", "symbol": "YFX", "contract": "0xaae0c3856e665ff9b3e2872b6d75939d810b7e40" },
-  { "id": "liquity", "symbol": "LQTY", "contract": "0xfb9E5D956D889D91a82737B9bFCDaC1DCE3e1449" }
+  { "id": "liquity", "symbol": "LQTY", "contract": "0xfb9E5D956D889D91a82737B9bFCDaC1DCE3e1449" },
+  { "id": "radiant-capital", "symbol": "RDNT", "contract": "0x3082CC23568eA640225c2467653dB90e9250AaA0" }
 ];
 
 const AstarTokens = [
@@ -267,7 +268,8 @@ const bscTokens = [
   { "id": "beglobaldao", "symbol": "GLBD", "contract": "0xd177e36377e71775d6f9956b3fdd0f02664c6996" },
   { "id": "pigs-2", "symbol": "PIGS", "contract": "0x9a3321e1acd3b9f6debee5e042dd2411a1742002" },
   { "id": "beglobaldao", "symbol": "GLBD", "contract": "0xd177e36377e71775d6f9956b3fdd0f02664c6996" },
-  { "id": "level-governance", "symbol": "LGO", "contract": "0xBe2B6C5E31F292009f495DDBda88e28391C9815E" }
+  { "id": "level-governance", "symbol": "LGO", "contract": "0xBe2B6C5E31F292009f495DDBda88e28391C9815E" },
+  { "id": "radiant-capital", "symbol": "RDNT", "contract": "0xf7DE7E8A6bd59ED41a4b5fe50278b3B7f31384dF" }
 ]
 
 const cantoTokens = [
