@@ -37,13 +37,102 @@ const getDepositApy = async (market, asset) => {
   return despositApy
 }
 
+let siloIncentivesControllerAddress = '0x6c1603aB6CecF89DD60C24530DdE23F97DA3C229'
+let siloIncentivesControllerAbi = [
+  {
+    inputs: [],
+    name: 'DISTRIBUTION_END',
+    outputs: [{internalType: 'uint256', name: '', type: 'uint256'}],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [{internalType: 'address', name: '', type: 'address'}],
+    name: 'assets',
+    outputs: [
+      {
+        internalType: 'uint104',
+        name: 'emissionPerSecond',
+        type: 'uint104',
+      },
+      {internalType: 'uint104', name: 'index', type: 'uint104'},
+      {
+        internalType: 'uint40',
+        name: 'lastUpdateTimestamp',
+        type: 'uint40',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+]
+
+const getEmissionPerSecAndDistributionEnd = async address => {
+  const App = await init_ethers()
+  const SiloIncentivesController = new ethers.Contract(
+    siloIncentivesControllerAddress,
+    siloIncentivesControllerAbi,
+    App.provider
+  )
+  let data = {
+    distributionEnd: await SiloIncentivesController.DISTRIBUTION_END(),
+    emissionPerSecond: await SiloIncentivesController.assets(address),
+  }
+  return data
+}
+
+const getSiloPriceFromApi = async () => {
+  let url = 'https://api.diadata.org/v1/assetQuotation/Ethereum/0x6f80310ca7f2c654691d1383149fa1a57d8ab1f8'
+  const opts = {
+    method: 'GET',
+    headers: {'Content-Type': 'application/json'},
+  }
+  const resp = await fetch(url, opts)
+  const respJson = await resp.json()
+  let price = respJson.Price
+  return price
+}
+
+let siloPrice = 0
+const getSiloPrice = async () => {
+  if (siloPrice <= 0) {
+    siloPrice = await getSiloPriceFromApi()
+    return siloPrice
+  } else {
+    return siloPrice
+  }
+}
+
+const calculateSiloInsentiveAPY = async (tvl, sToken) => {
+  let siloPrice = await getSiloPrice()
+  let distributionEndAndemissionPerSecond = await getEmissionPerSecAndDistributionEnd(sToken)
+  let distributionEnd = distributionEndAndemissionPerSecond.distributionEnd
+  let emissionPerSecond = distributionEndAndemissionPerSecond.emissionPerSecond.emissionPerSecond
+  let timeStamp = Math.floor(new Date().getTime() / 1000)
+  let xSecDifferance = distributionEnd.sub(timeStamp)
+  let emissionPerXSec = emissionPerSecond.mul(60 * 60 * 24 * 365)
+  let apy = (((+ethers.utils.formatEther(emissionPerXSec, 18) * siloPrice) / tvl) * 100).toFixed(5)
+  return apy
+}
+
 const getAllDepositApy = async data => {
   for (let i = 0; i < data.length; i++) {
     let marketAddress = data[i].id
     for (let j = 0; j < data[i].marketAssets.length; j++) {
       let assetAddress = data[i].marketAssets[j].id
+      let sToken = data[i].marketAssets[j].sToken
+      let sTokenTotalSupply = data[i].marketAssets[j].sTokenTotalSupply
+      let sTokensTokenDerivativeConversion = data[i].marketAssets[j].sTokenDerivativeConversion
+      let sTokenDecimals = data[i].marketAssets[j].sTokenDecimals
+      let assetLastUsdPrice = data[i].marketAssets[j].assetLastUsd
+
+      let tvl =
+        +ethers.utils.formatUnits(sTokenTotalSupply, sTokenDecimals) *
+        Number(sTokensTokenDerivativeConversion) *
+        assetLastUsdPrice
       let depositApy = await getDepositApy(marketAddress, assetAddress)
       data[i].marketAssets[j]['deposit APY'] = (+ethers.utils.formatEther(depositApy, 18) * 100).toFixed(5)
+      data[i].marketAssets[j]['Silo APY'] = await calculateSiloInsentiveAPY(tvl, sToken)
     }
     printSiloData(data[i])
   }
@@ -58,14 +147,24 @@ const getSiloMarketsData = async function() {
       markets(orderBy: totalValueLockedUSD, orderDirection: desc, where: { inputToken_: { activeOracle_not: "null" } }) {
         id
         name
+        totalValueLockedUSD
         marketAssets {
-          asset {
-            id
-            name
-          }
-          rates {
-            id
-          }
+         exchangeRate
+         sToken {
+           id
+           lastPriceUSD
+           totalSupply
+           derivativeConversion
+           decimals
+         }
+         asset {
+           id
+           name
+           lastPriceUSD
+         }
+         rates {
+           id
+         }
         }
       }
    }
@@ -82,15 +181,22 @@ const getSiloMarketsData = async function() {
   for (let i = 0; i < respJson.data.markets.length; i++) {
     let marketAddressId = respJson.data.markets[i].id
     let marketAddressName = respJson.data.markets[i].name
+    let tvl = respJson.data.markets[i].totalValueLockedUSD
     let data = {
       id: marketAddressId,
       name: marketAddressName,
+      totalValueLockedUSD: tvl,
       marketAssets: [],
     }
     for (let j = 0; j < respJson.data.markets[i].marketAssets.length; j++) {
       let assetData = {
         id: respJson.data.markets[i].marketAssets[j].asset.id,
         name: respJson.data.markets[i].marketAssets[j].asset.name,
+        sToken: respJson.data.markets[i].marketAssets[j].sToken.id,
+        sTokenTotalSupply: respJson.data.markets[i].marketAssets[j].sToken.totalSupply,
+        sTokenDerivativeConversion: respJson.data.markets[i].marketAssets[j].sToken.derivativeConversion,
+        sTokenDecimals: respJson.data.markets[i].marketAssets[j].sToken.decimals,
+        assetLastUsd: respJson.data.markets[i].marketAssets[j].asset.lastPriceUSD,
       }
       data.marketAssets.push(assetData)
     }
@@ -212,6 +318,10 @@ async function printSiloData(data) {
   for (let i = 0; i < data.marketAssets.length; i++) {
     _print_bold(`${data.name} - ${data.marketAssets[i].name}`)
     _print(`Deposit APY :- ${data.marketAssets[i]['deposit APY']}%`)
+    let siloApy = Number(data.marketAssets[i][`Silo APY`])
+    if (siloApy > 0) {
+      _print(`SILO reward APR :- ${siloApy}%`)
+    }
     _print(``)
   }
 }
