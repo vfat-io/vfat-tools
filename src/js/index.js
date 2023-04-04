@@ -66,6 +66,21 @@ window.NETWORKS = {
       "https://explorer.arbitrum.io"
     ]
   },
+  ARBITRUM_NOVA: {
+    "chainId": "0xA4BA",
+    "chainName": "Arbitrum Nova",
+    "nativeCurrency": {
+      "name": "Ether",
+      "symbol": "ETH",
+      "decimals": 18
+    },
+    "rpcUrls": [
+      "https://nova.arbitrum.io/rpc"
+    ],
+    "blockExplorerUrls": [
+      "https://nova-explorer.arbitrum.io"
+    ]
+  },
   ASTAR: {
     "chainId": "0x250",
     "chainName": "Astar Network",

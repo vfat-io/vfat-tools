@@ -21,6 +21,9 @@ const pageNetwork = function() {
   if (network.toLowerCase() === 'arbitrum') {
     return window.NETWORKS.ARBITRUM
   }
+  if (network.toLowerCase() === 'arbitrum_nova') {
+    return window.NETWORKS.ARBITRUM_NOVA
+  }
   if (network.toLowerCase() === 'moonriver') {
     return window.NETWORKS.MOONRIVER
   }
@@ -2440,6 +2443,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
               {
                 "eth": `http://analytics.sushi.com/pairs/${pool.address}`,
                 "arbitrum": `http://analytics-arbitrum.sushi.com/pairs/${pool.address}`,
+                "arbitrum_nova": `https://www.sushi.com/analytics`,
                 "bsc": `http://analytics-ftm.sushi.com/pairs/${pool.address}`,
                 "fantom": `http://analytics-ftm.sushi.com/pairs/${pool.address}`,
                 "matic": `http://analytics-polygon.sushi.com/pairs/${pool.address}`,
@@ -3680,6 +3684,9 @@ function getErc20Prices(prices, pool, chain="eth") {
     case "arbitrum":
       poolUrl=`https://arbiscan.io/address/${pool.address}`;
       break;
+    case "arbitrum_nova":
+      poolUrl=`https://nova.arbiscan.io/token/${pool.address}`;
+      break;
     case "smartbch":
       poolUrl=`https://smartscan.cash/address/${pool.address}`;
       break;
@@ -4410,6 +4417,9 @@ async function printSynthetixPool(App, info, chain="eth", customURLs) {
       case "arbitrum":
         _print(`<a target="_blank" href="https://arbiscan.io/address/${info.stakingAddress}#code">Arbitrum Explorer</a>`);
         break;
+      case "arbitrum_nova":
+        _print(`<a target="_blank" href="https://nova.arbiscan.io/address/${info.stakingAddress}#code">Arbitrum Nova Explorer</a>`);
+        break;
       case "smartbch":
         _print(`<a target="_blank" href="https://smartscan.cash/address/${info.stakingAddress}#code">SmartScan</a>`);
         break;
@@ -4568,6 +4578,8 @@ function getChainExplorerUrl(chain, address){
       return `https://explorer.harmony.one/address/${address}`;
     case "arbitrum" :
       return `https://arbiscan.io/address/${address}`;
+    case "arbitrum_nova" :
+      return `https://nova.arbiscan.io/token/${address}`;
     case "cronos" :
       return `https://cronoscan.com/address/${address}`;
     case "canto" :

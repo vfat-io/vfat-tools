@@ -51,6 +51,13 @@ const ArbitrumTokens = [
   { "id": "radiant-capital", "symbol": "RDNT", "contract": "0x3082CC23568eA640225c2467653dB90e9250AaA0" }
 ];
 
+const ArbitrumNovaTokens = [
+  { "id": "arbitrum","symbol": "ARB", "contract": "0xf823C3cD3CeBE0a1fA952ba88Dc9EEf8e0Bf46AD" },
+  { "id": "usd-coin","symbol": "USDC", "contract": "0x750ba8b76187092B0D1E87E28daaf484d1b5273b" },
+  { "id": "weth","symbol": "WETH", "contract": "0x722E8BdD2ce80A4422E880164f2079488e115365" },
+  { "id": "sushi","symbol": "SUSHI", "contract": "0xfe60A48a0bCf4636aFEcC9642a145D2F241A7011" }
+];
+
 const AstarTokens = [
   { "id": "tether", "symbol": "USDT", "contract": "0x3795C36e7D12A8c252A20C5a7B455f7c57b60283" },
   { "id": "usd-coin", "symbol": "USDC", "contract": "0x6a2d262D56735DbA19Dd70682B39F6bE9a931D98" },
@@ -797,6 +804,15 @@ async function getArbitrumPrices() {
   const idPrices = await lookUpPrices(ArbitrumTokens.map(x => x.id));
   const prices = {}
   for (const bt of ArbitrumTokens)
+      if (idPrices[bt.id])
+          prices[bt.contract] = idPrices[bt.id];
+  return prices;
+}
+
+async function getArbitrumNovaPrices() {
+  const idPrices = await lookUpPrices(ArbitrumNovaTokens.map(x => x.id));
+  const prices = {}
+  for (const bt of ArbitrumNovaTokens)
       if (idPrices[bt.id])
           prices[bt.contract] = idPrices[bt.id];
   return prices;

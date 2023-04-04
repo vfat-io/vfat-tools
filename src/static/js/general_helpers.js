@@ -601,6 +601,8 @@ async function loadGeneralChefContract(App, tokens, prices, chef, chefAddress, c
     break;
     case "core" : _print(`<a href='https://scan.coredao.org/address/${chefAddress}' target='_blank'>Staking Contract</a>`);
     break;
+    case "arbitrum_nova" : _print(`<a href='https://nova.arbiscan.io/address/${chefAddress}' target='_blank'>Staking Contract</a>`);
+    break;
   }
   _print(`Found ${poolCount} pools.\n`)
 
