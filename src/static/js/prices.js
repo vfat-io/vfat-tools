@@ -48,7 +48,9 @@ const ArbitrumTokens = [
   { "id": "dei-token", "symbol": "DEI", "contract": "0xDE1E704dae0B4051e80DAbB26ab6ad6c12262DA0" },
   { "id": "yieldfarming-index", "symbol": "YFX", "contract": "0xaae0c3856e665ff9b3e2872b6d75939d810b7e40" },
   { "id": "liquity", "symbol": "LQTY", "contract": "0xfb9E5D956D889D91a82737B9bFCDaC1DCE3e1449" },
-  { "id": "radiant-capital", "symbol": "RDNT", "contract": "0x3082CC23568eA640225c2467653dB90e9250AaA0" }
+  { "id": "radiant-capital", "symbol": "RDNT", "contract": "0x3082CC23568eA640225c2467653dB90e9250AaA0" },
+  { "id": "ibuffer-token", "symbol": "BFR", "contract": "0x1a5b0aaf478bf1fda7b934c76e7692d722982a6d" },
+  { "id": "arbitrum", "symbol": "ARB", "contract": "0x912ce59144191c1204e64559fe8253a0e49e6548" }
 ];
 
 const ArbitrumNovaTokens = [
