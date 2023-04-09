@@ -77,7 +77,8 @@ const main = async() => {
       ["Onyx Dao            ", `<a href="/arbitrum/onyx_dao"    >Various</a>`,"ONYX               ","https://app.onyxdao.finance"],
       ["ARB Airdrop         ", `<a href="/arbitrum/arb_airdrop" >Various</a>`,"ARB                ","https://arbitrum.foundation"],
       ["Silo Finance        ", `<a href="/arbitrum/silo"        >Various</a>`,"SILO               ","https://www.silo.finance"],
-      ["Buffer Finance      ", `<a href="/arbitrum/buffer"      >Various</a>`,"Various            ","https://app.buffer.finance"]
+      ["Buffer Finance      ", `<a href="/arbitrum/buffer"      >Various</a>`,"Various            ","https://app.buffer.finance"],
+      ["Lodestar Finance    ", `<a href="/arbitrum/lodestar"    >Various</a>`,"LODE               ","https://app.lodestarfinance.io"]
     ].reverse()
   }
 
