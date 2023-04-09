@@ -297,10 +297,10 @@ async function loadData(App, token, comptroller, prices) {
 }
 
 async function printData(data) {
-    _print_bold(`${data.underlyingSymbol} ($${formatMoney(data.underlyingPrice.toFixed(5))})`);
+    _print_bold(`${data.underlyingSymbol} ($${data.underlyingPrice.toFixed(5)})`);
     _print(`Supplied : ${formatMoney(data.totalSupply)} ($${formatMoney(data.totalSupply * data.underlyingPrice)}) at ${data.supplyAPY.toFixed(2)}% APY`)
     _print(`Borrowed : ${formatMoney(data.totalBorrows)} ($${formatMoney(data.totalBorrows * data.underlyingPrice)}) at ${data.borrowAPY.toFixed(2)}% APY`)
-    _print(`Reserves : ${formatMoney(data.totalReserves)} ($${formatMoney(data.totalReserves * data.underlyingPrice.toFixed(5))})`);
+    _print(`Reserves : ${formatMoney(data.totalReserves)} ($${(data.totalReserves * data.underlyingPrice).toFixed(4)})`);
     _print(`Farming APR Supply ${data.supplyFarmingAPY.toFixed(2)}% Borrow ${data.borrowFarmingAPY.toFixed(2)}%`);
     _print(`Net APY Supply ${data.supplyNetAPY.toFixed(2)}% Borrow ${data.borrowNetAPY.toFixed(2)}%`);
     if (data.supply > 0) {
