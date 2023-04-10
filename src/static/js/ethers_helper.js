@@ -2333,6 +2333,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
   else if (pool.symbol.includes("Archer-LP")) stakeTokenTicker += " Archer LP";
   else if (pool.name.includes("Value LP")) stakeTokenTicker += " Value LP";
   else if (pool.name.includes("Zyber LP")) stakeTokenTicker += " Zyber LP";
+  else if (pool.name.includes("GemSwap")) stakeTokenTicker += " Gem Swap LP";
   else if (pool.symbol.includes("dogeshrek-lp")) stakeTokenTicker += " DogeShrek LP";
   else if (pool.name.includes("Diffusion LP Token")) stakeTokenTicker += " Diffusion LP";
   else if (pool.name.includes("Duneswap LP Token")) stakeTokenTicker += " Duneswap LP";
@@ -2437,6 +2438,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
           pool.symbol.includes("Arbi-LP") ?  `https://arbiswap.io/swap/` :
           pool.symbol.includes("LSLP") ? `https://info.linkswap.app/pair/${pool.address}` :
           pool.name.includes("Zyber LP") ? `https://analytics.zyberswap.io/pairs/${pool.address}` :
+          pool.name.includes("GemSwap") ? `https://zks.gemswap.online/swap` :
           pool.symbol.includes("MDEX") ? `https://info.mdex.com/#/pools/${pool.address}` :
           pool.symbol.includes("Milky-LP") ? `https://milkyway.exchange/` :
           pool.symbol.includes("YLP") ? `https://dexscreener.com/dogechain/yodeswap` :
@@ -2606,6 +2608,11 @@ function getUniPrices(tokens, prices, pool, chain="eth")
             `https://app.zyberswap.io/exchange/add/${t0address}/${t1address}`,
             `https://app.zyberswap.io/exchange/remove/${t0address}/${t1address}`,
             `https://app.zyberswap.io/exchange/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+          ] :
+          pool.name.includes("GemSwap") ? [
+            `https://zks.gemswap.online/pool/add/${t0address}/${t1address}`,
+            `https://zks.gemswap.online/pool/remove/${t0address}/${t1address}`,
+            `https://zks.gemswap.online/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
           ] :
           pool.symbol.includes("dogeshrek-lp") ? [
             `https://dogeshrek.com/#/add/${t0address}/${t1address}`,

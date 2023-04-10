@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include(`${partials}/head`); -%>
+
+<body>
+<%- include(`${partials}/header_main`); -%>
+<pre id="log">
+*************** 👨‍🌾 UNOFFICIAL NEXON.FINANCE FARMING CALCULATOR 👨‍🌾 ***************
+INFO  : https://zks.gemswap.online
+**********************************************************************************
+
+</pre>
+<div class="loader--1"></div>
+<%- include(`${partials}/scripts`, {scriptname: 'zksync_era_gem'}); -%>
+</body>
+</html>
