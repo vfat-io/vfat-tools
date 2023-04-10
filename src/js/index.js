@@ -216,7 +216,7 @@ window.NETWORKS = {
       "https://evm.evmos.org"
     ]
   },
-  ERA: {
+  ZKSYNC_ERA: {
     "chainId": "0x144",
     "chainName": "zkSync Era Mainnet",
     "nativeCurrency": {

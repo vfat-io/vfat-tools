@@ -27,8 +27,8 @@ const pageNetwork = function() {
   if (network.toLowerCase() === 'moonriver') {
     return window.NETWORKS.MOONRIVER
   }
-  if (network.toLowerCase() === 'era') {
-    return window.NETWORKS.ERA
+  if (network.toLowerCase() === 'zksync_era') {
+    return window.NETWORKS.ZKSYNC_ERA
   }
   if (network.toLowerCase() === 'optimism') {
     return window.NETWORKS.OPTIMISM

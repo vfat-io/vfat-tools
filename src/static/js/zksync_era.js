@@ -8,7 +8,7 @@ const main = async() => {
     "title":"zkSync Era Network",
     "heading":["Pool Provider","LP", "Reward Tokens", "INFO"],
     "rows": [
-        ["Nexon Finance",                `<a href="nexon"        >Various</a>`,      "???",         "https://app.nexon.finance" ]
+        ["Nexon Finance",                `<a href="nexon"        >Various</a>`,      "NXN",         "https://app.nexon.finance" ]
     ].reverse()
   }
 
