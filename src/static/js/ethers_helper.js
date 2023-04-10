@@ -27,6 +27,9 @@ const pageNetwork = function() {
   if (network.toLowerCase() === 'moonriver') {
     return window.NETWORKS.MOONRIVER
   }
+  if (network.toLowerCase() === 'era') {
+    return window.NETWORKS.ERA
+  }
   if (network.toLowerCase() === 'optimism') {
     return window.NETWORKS.OPTIMISM
   }
@@ -3687,6 +3690,9 @@ function getErc20Prices(prices, pool, chain="eth") {
     case "arbitrum_nova":
       poolUrl=`https://nova.arbiscan.io/token/${pool.address}`;
       break;
+    case "zksync_era":
+      poolUrl=`https://explorer.zksync.io/address/${pool.address}`;
+      break;
     case "smartbch":
       poolUrl=`https://smartscan.cash/address/${pool.address}`;
       break;
@@ -4420,6 +4426,9 @@ async function printSynthetixPool(App, info, chain="eth", customURLs) {
       case "arbitrum_nova":
         _print(`<a target="_blank" href="https://nova.arbiscan.io/address/${info.stakingAddress}#code">Arbitrum Nova Explorer</a>`);
         break;
+      case "zksync_era":
+        _print(`<a target="_blank" href="https://explorer.zksync.io/address/${info.stakingAddress}#code">zkSync Era Scan</a>`);
+        break;
       case "smartbch":
         _print(`<a target="_blank" href="https://smartscan.cash/address/${info.stakingAddress}#code">SmartScan</a>`);
         break;
@@ -4580,6 +4589,8 @@ function getChainExplorerUrl(chain, address){
       return `https://arbiscan.io/address/${address}`;
     case "arbitrum_nova" :
       return `https://nova.arbiscan.io/token/${address}`;
+    case "zksync_era" :
+      return `https://explorer.zksync.io/address/${address}`;
     case "cronos" :
       return `https://cronoscan.com/address/${address}`;
     case "canto" :

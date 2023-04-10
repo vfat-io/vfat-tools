@@ -216,6 +216,21 @@ window.NETWORKS = {
       "https://evm.evmos.org"
     ]
   },
+  ERA: {
+    "chainId": "0x144",
+    "chainName": "zkSync Era Mainnet",
+    "nativeCurrency": {
+      "name": "Ethereum",
+      "symbol": "ETH",
+      "decimals": 18
+    },
+    "rpcUrls": [
+      "https://mainnet.era.zksync.io"
+    ],
+    "blockExplorerUrls": [
+      "https://explorer.zksync.io"
+    ]
+  },
   HOO: {
     "chainId": "0x46",
     "chainName": "Hoo Smart Chain",

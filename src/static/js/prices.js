@@ -803,6 +803,10 @@ const VelasTokens = [
   { "id": "velas", "symbol": "VLX", "contract": "0xc579D1f3CF86749E05CD06f7ADe17856c2CE3126"}
 ];
 
+const zksyncEraTokens = [
+  //{ "id": "nexon","symbol": "NXN", "contract": "0xf823C3cD3CeBE0a1fA952ba88Dc9EEf8e0Bf46AD" },
+];
+
 async function getArbitrumPrices() {
   const idPrices = await lookUpPrices(ArbitrumTokens.map(x => x.id));
   const prices = {}
@@ -1175,6 +1179,15 @@ async function getVelasPrices() {
   const idPrices = await lookUpPrices(VelasTokens.map(x => x.id));
   const prices = {}
   for (const bt of VelasTokens)
+      if (idPrices[bt.id])
+          prices[bt.contract] = idPrices[bt.id];
+  return prices;
+}
+
+async function getZkSyncEraPrices() {
+  const idPrices = await lookUpPrices(zksyncEraTokens.map(x => x.id));
+  const prices = {}
+  for (const bt of zksyncEraTokens)
       if (idPrices[bt.id])
           prices[bt.contract] = idPrices[bt.id];
   return prices;
