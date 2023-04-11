@@ -9,7 +9,7 @@ const main = async() => {
     "heading":["Pool Provider","LP", "Reward Tokens", "INFO"],
     "rows": [
         ["Nexon Finance",                `<a href="nexon"        >Various</a>`,      "NXN",         "https://app.nexon.finance" ],
-        //["Gem Swap",                     `<a href="gem"          >Various</a>`,      "ZGEM",        "https://zks.gemswap.online" ]
+        ["Gem Swap",                     `<a href="gem"          >Various</a>`,      "ZGEM",        "https://zks.gemswap.online" ]
     ].reverse()
   }
 
