@@ -51,7 +51,8 @@ const ArbitrumTokens = [
   { "id": "radiant-capital", "symbol": "RDNT", "contract": "0x3082CC23568eA640225c2467653dB90e9250AaA0" },
   { "id": "ibuffer-token", "symbol": "BFR", "contract": "0x1a5b0aaf478bf1fda7b934c76e7692d722982a6d" },
   { "id": "arbitrum", "symbol": "ARB", "contract": "0x912ce59144191c1204e64559fe8253a0e49e6548" },
-  { "id": "lodestar", "symbol": "LODE", "contract": "0xf19547f9ed24aa66b03c3a552d181ae334fbb8db" }
+  { "id": "lodestar", "symbol": "LODE", "contract": "0xf19547f9ed24aa66b03c3a552d181ae334fbb8db" },
+  { "id": "the-ennead", "symbol": "NEADRAM", "contract": "0x40301951af3f80b8c1744ca77e55111dd3c1dba1" }
 ];
 
 const ArbitrumNovaTokens = [
