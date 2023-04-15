@@ -31,16 +31,10 @@ async function main() {
 
   const ENNEAD_MASTER_ADDR = "0x1863736c768f232189f95428b5ed9a51b0eccae5"
 
-  const RAM_TOKEN_ADDR = "0xaaa6c1e32c55a7bfa8066a6fae9b42650f262418"
+  const RAM_TOKEN_ADDR = "0xAAA6C1E32C55A7Bfa8066A6FAE9b42650F262418"
 
-  // const gauges = _gauges.filter(g => g != "0x0000000000000000000000000000000000000000").map(a => {
-  //   return {
-  //     address: a,
-  //     abi: ENNEAD_GAUGE_ABI,
-  //     stakeTokenFunction: "stake",
-  //     rewardTokenAddress: RAM_TOKEN_ADDR
-  //   }
-  // });
+  //WETH/RAM to receive the price
+  await loadRamSynthetixPoolInfoPrice(App, tokens, prices, App.YOUR_ADDRESS, "0x1E50482e9185D9DAC418768D14b2F2AC2b4DAF39")
 
   const stakingPools = lpTokens.map(a => {
     return {
@@ -103,9 +97,9 @@ async function loadEnneadSynthetixPoolInfo(App, tokens, prices, poolAddress, mas
 
     const STAKING_POOL = new ethcall.Contract(gaugeAddress, ENNEAD_GAUGE_ABI);
 
-    if (!getParameterCaseInsensitive(tokens, rewardTokenAddress)) {
-      tokens[rewardTokenAddress] = await getArbitrumToken(App, rewardTokenAddress, gaugeAddress);
-    }
+    // if (!getParameterCaseInsensitive(tokens, rewardTokenAddress)) {
+    //   tokens[rewardTokenAddress] = await getGeneralEthcallToken(App, rewardTokenAddress, gaugeAddress);
+    // }
     const rewardToken = getParameterCaseInsensitive(tokens, rewardTokenAddress);
     const rewardTokenTicker = rewardToken.symbol;
     const rewardTokenPrice = getParameterCaseInsensitive(prices, rewardTokenAddress)?.usd;
@@ -119,7 +113,7 @@ async function loadEnneadSynthetixPoolInfo(App, tokens, prices, poolAddress, mas
     const usdPerWeek = weeklyReward * rewardTokenPrice;
     const earned = earned_ / 10 ** rewardToken.decimals;
 
-    var stakeToken = await getArbitrumToken(App, stakeTokenAddress, gaugeAddress);
+    var stakeToken = await getGeneralEthcallToken(App, stakeTokenAddress, gaugeAddress);
 
     const derivedSupply = derivedSupply_ / 10 ** stakeToken.decimals
     const derivedBalance = derivedBalance_ / 10 ** stakeToken.decimals
@@ -127,7 +121,7 @@ async function loadEnneadSynthetixPoolInfo(App, tokens, prices, poolAddress, mas
     var newTokenAddresses = stakeToken.tokens.filter(x =>
       !getParameterCaseInsensitive(tokens,x));
     for (const address of newTokenAddresses) {
-        tokens[address] = await getArbitrumToken(App, address, gaugeAddress);
+        tokens[address] = await getGeneralEthcallToken(App, address, gaugeAddress);
     }
 
     const poolPrices = getPoolPrices(tokens, prices, stakeToken, "arbitrum");
@@ -166,7 +160,7 @@ async function loadEnneadSynthetixPoolInfo(App, tokens, prices, poolAddress, mas
     }
 }
 
-async function printRamSynthetixPool(App, info, chain="eth", customURLs) {
+async function printEnneadSynthetixPool(App, info, chain="eth", customURLs) {
   if(info.weeklyReward == 0 || info.gaugeAddress === "0x0000000000000000000000000000000000000000"){
     return {
       staked_tvl: 0,
@@ -343,4 +337,43 @@ const enneadContract_claim = async function(masterAddress, poolAddress, App) {
   .catch(function() {
     hideLoading()
   })
+}
+
+async function loadRamSynthetixPoolInfoPrice(App, tokens, prices, stakingAddress, stakeTokenAddress) {
+  var stakeToken = await getGeneralEthcallToken(App, stakeTokenAddress, stakingAddress);
+  var newPriceAddresses = stakeToken.tokens.filter(x =>
+    !getParameterCaseInsensitive(prices, x));
+  var newPrices = await lookUpTokenPrices(newPriceAddresses);
+  for (const key in newPrices) {
+    if (newPrices[key]?.usd)
+        prices[key] = newPrices[key];
+  }
+  var newTokenAddresses = stakeToken.tokens.filter(x =>
+    !getParameterCaseInsensitive(tokens,x));
+  for (const address of newTokenAddresses) {
+      tokens[address] = await getGeneralEthcallToken(App, address, stakingAddress);
+  }
+  const poolPrices = getPoolPrices(tokens, prices, stakeToken, "arbitrum");
+
+  if (!poolPrices)
+  {
+    console.log(`Couldn't calculate prices for pool ${stakeTokenAddress}`);
+    return null;
+  }
+
+  const stakeTokenTicker = poolPrices.stakeTokenTicker;
+
+  const stakeTokenPrice =
+      prices[stakeTokenAddress]?.usd ?? getParameterCaseInsensitive(prices, stakeTokenAddress)?.usd;
+
+  const staked_tvl = poolPrices.staked_tvl;
+
+  return  {
+    stakingAddress,
+    poolPrices,
+    stakeTokenAddress,
+    stakeTokenTicker,
+    stakeTokenPrice,
+    staked_tvl,
+  }
 }
