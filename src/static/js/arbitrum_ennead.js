@@ -11,6 +11,8 @@ const RAM_VOTER_ABI = [{"type":"constructor","stateMutability":"nonpayable","inp
 
 const REWARDER_ABI = [{"inputs":[],"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"owner","type":"address"},{"indexed":true,"internalType":"address","name":"spender","type":"address"},{"indexed":false,"internalType":"uint256","name":"value","type":"uint256"}],"name":"Approval","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint8","name":"version","type":"uint8"}],"name":"Initialized","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":true,"internalType":"address","name":"rewardsToken","type":"address"},{"indexed":false,"internalType":"uint256","name":"reward","type":"uint256"}],"name":"RewardPaid","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"from","type":"address"},{"indexed":true,"internalType":"address","name":"to","type":"address"},{"indexed":false,"internalType":"uint256","name":"value","type":"uint256"}],"name":"Transfer","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"from","type":"address"},{"indexed":true,"internalType":"address","name":"to","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"TransferDeposit","type":"event"},{"inputs":[{"internalType":"address","name":"token","type":"address"}],"name":"addRewardToken","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"},{"internalType":"address","name":"","type":"address"}],"name":"allowance","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"_spender","type":"address"},{"internalType":"uint256","name":"_value","type":"uint256"}],"name":"approve","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"balanceOf","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"},{"internalType":"address","name":"","type":"address"}],"name":"claimable","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"decimals","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"account","type":"address"},{"internalType":"address[]","name":"tokens","type":"address[]"}],"name":"earned","outputs":[{"internalType":"uint256[]","name":"","type":"uint256[]"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"account","type":"address"}],"name":"getReward","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"_pool","type":"address"},{"internalType":"address","name":"_reward","type":"address"},{"internalType":"address","name":"_depositor","type":"address"}],"name":"initialize","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"name","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"token","type":"address"}],"name":"removeRewardToken","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"rewardIntegral","outputs":[{"internalType":"uint256","name":"integral","type":"uint256"},{"internalType":"uint256","name":"delta","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"},{"internalType":"address","name":"","type":"address"}],"name":"rewardIntegralFor","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"","type":"uint256"}],"name":"rewards","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"rewardsListLength","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"account","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"stakeFor","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"symbol","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"totalSupply","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"to","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"transfer","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"from","type":"address"},{"internalType":"address","name":"to","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"transferFrom","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"account","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"withdraw","outputs":[],"stateMutability":"nonpayable","type":"function"}]
 
+const ENNEAD_STAKE_ABI = [{"inputs":[],"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"from","type":"address"},{"indexed":true,"internalType":"address","name":"reward","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"ClaimRewards","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"from","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"Deposit","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint8","name":"version","type":"uint8"}],"name":"Initialized","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"from","type":"address"},{"indexed":true,"internalType":"address","name":"reward","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"NotifyReward","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"account","type":"address"}],"name":"Paused","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"bytes32","name":"role","type":"bytes32"},{"indexed":true,"internalType":"bytes32","name":"previousAdminRole","type":"bytes32"},{"indexed":true,"internalType":"bytes32","name":"newAdminRole","type":"bytes32"}],"name":"RoleAdminChanged","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"bytes32","name":"role","type":"bytes32"},{"indexed":true,"internalType":"address","name":"account","type":"address"},{"indexed":true,"internalType":"address","name":"sender","type":"address"}],"name":"RoleGranted","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"bytes32","name":"role","type":"bytes32"},{"indexed":true,"internalType":"address","name":"account","type":"address"},{"indexed":true,"internalType":"address","name":"sender","type":"address"}],"name":"RoleRevoked","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"account","type":"address"}],"name":"Unpaused","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"from","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"Withdraw","type":"event"},{"inputs":[],"name":"DEFAULT_ADMIN_ROLE","outputs":[{"internalType":"bytes32","name":"","type":"bytes32"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"NOTIFIER_ROLE","outputs":[{"internalType":"bytes32","name":"","type":"bytes32"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"PAUSER_ROLE","outputs":[{"internalType":"bytes32","name":"","type":"bytes32"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"balanceOf","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"deposit","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"depositAll","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"account","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"depositFor","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"token","type":"address"},{"internalType":"address","name":"account","type":"address"}],"name":"earned","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getReward","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"bytes32","name":"role","type":"bytes32"}],"name":"getRoleAdmin","outputs":[{"internalType":"bytes32","name":"","type":"bytes32"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"bytes32","name":"role","type":"bytes32"},{"internalType":"uint256","name":"index","type":"uint256"}],"name":"getRoleMember","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"bytes32","name":"role","type":"bytes32"}],"name":"getRoleMemberCount","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"bytes32","name":"role","type":"bytes32"},{"internalType":"address","name":"account","type":"address"}],"name":"grantRole","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"bytes32","name":"role","type":"bytes32"},{"internalType":"address","name":"account","type":"address"}],"name":"hasRole","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"_stake","type":"address"},{"internalType":"address","name":"admin","type":"address"},{"internalType":"address","name":"pauser","type":"address"},{"internalType":"address","name":"notifier","type":"address"}],"name":"initialize","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"isReward","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"token","type":"address"}],"name":"lastTimeRewardApplicable","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"token","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"notifyRewardAmount","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"pause","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"paused","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"token","type":"address"}],"name":"removeReward","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"bytes32","name":"role","type":"bytes32"},{"internalType":"address","name":"account","type":"address"}],"name":"renounceRole","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"bytes32","name":"role","type":"bytes32"},{"internalType":"address","name":"account","type":"address"}],"name":"revokeRole","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"rewardData","outputs":[{"internalType":"uint256","name":"rewardRate","type":"uint256"},{"internalType":"uint256","name":"periodFinish","type":"uint256"},{"internalType":"uint256","name":"lastUpdateTime","type":"uint256"},{"internalType":"uint256","name":"rewardPerTokenStored","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"token","type":"address"}],"name":"rewardPerToken","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"","type":"uint256"}],"name":"rewards","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"rewardsListLength","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"stake","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"},{"internalType":"address","name":"","type":"address"}],"name":"storedRewardsPerUser","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"bytes4","name":"interfaceId","type":"bytes4"}],"name":"supportsInterface","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"totalSupply","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"unpause","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"},{"internalType":"address","name":"","type":"address"}],"name":"userRewardPerTokenStored","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"withdraw","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"withdrawAll","outputs":[],"stateMutability":"nonpayable","type":"function"}]
+
 async function main() {
   const App = await init_ethers();
 
@@ -52,6 +54,23 @@ async function main() {
             + ` Day ${p.totalUserDailyRewards.toFixed(2)} ($${formatMoney(p.totalUserDailyRewardsUSD)})`
             + ` Week ${p.totalUserWeeklyRewards.toFixed(2)} ($${formatMoney(p.totalUserWeeklyRewardsUSD)})`
             + ` Year ${p.totalUserYearlyRewards.toFixed(2)} ($${formatMoney(p.totalUserYearlyRewardsUSD)})`);
+    _print("");
+  }
+
+  const stakingPool = {
+    address: "0x7d07a61b8c18cb614b99af7b90cbbc8cd8c72680",
+    abi: ENNEAD_STAKE_ABI,
+    stakeTokenAddress: "0x40301951af3f80b8c1744ca77e55111dd3c1dba1"
+  }
+
+  let p2 = await loadEnneadStakeSynthetixPools(App, tokens, prices, [stakingPool])
+  _print_bold(`Total staked: $${formatMoney(p2.staked_tvl)}\n`);
+  if (p2.totalUserStaked > 0) {
+    _print(`You are staking a total of $${formatMoney(p2.totalUserStaked)} at an APR of ${(p2.totalApr * 100).toFixed(2)}%\n`);
+    _print(`Estimated RAM earnings:`
+            + ` Day ${p2.totalUserDailyRewards.toFixed(2)} ($${formatMoney(p2.totalUserDailyRewardsUSD)})`
+            + ` Week ${p2.totalUserWeeklyRewards.toFixed(2)} ($${formatMoney(p2.totalUserWeeklyRewardsUSD)})`
+            + ` Year ${p2.totalUserYearlyRewards.toFixed(2)} ($${formatMoney(p2.totalUserYearlyRewardsUSD)})`);
     _print("");
   }
 
@@ -382,5 +401,224 @@ async function loadRamSynthetixPoolInfoPrice(App, tokens, prices, stakingAddress
     stakeTokenTicker,
     stakeTokenPrice,
     staked_tvl,
+  }
+}
+
+async function loadEnneadStakeSynthetixPools(App, tokens, prices, pools) {
+  let totalStaked = 0, totalUserStaked = 0, individualAPRs = [];
+  const infos = await Promise.all(pools.map(p =>
+    loadEnneadStakeSynthetixPoolInfo(App, tokens, prices, p.abi, p.address, p.stakeTokenAddress)));
+  for (const i of infos) {
+    let p = await printEnneadStakeSynthetixPool(App, i, "arbitrum");
+    totalStaked += p.staked_tvl || 0;
+    totalUserStaked += p.userStaked || 0;
+    if (p.userStaked > 0) {
+      individualAPRs.push(p.userStaked * p.apr / 100);
+    }
+  }
+  let totalApr = totalUserStaked == 0 ? 0 : individualAPRs.reduce((x, y) => x + y, 0) / totalUserStaked;
+  return { staked_tvl: totalStaked, totalUserStaked, totalApr };
+}
+
+async function loadEnneadStakeSynthetixPoolInfo(App, tokens, prices, stakingAbi, stakingAddress, stakeTokenAddress) {
+  const STAKING_CONTRACT = new ethers.Contract(stakingAddress, stakingAbi, App.provider);
+
+  let rewardTokenAddresses = [], earnings = [], weeklyRewards = [], rewardTokens = [], rewardTokenTickers = [], rewardTokenPrices = [], usdCoinsPerWeek = [];
+
+  const rewardTokensLength = await STAKING_CONTRACT.rewardsListLength();
+  const balance = await STAKING_CONTRACT.balanceOf(App.YOUR_ADDRESS)
+
+  for(let i = 0; i < rewardTokensLength; i++){
+    const rewardTokenAddress = await STAKING_CONTRACT.rewards(i);
+    rewardTokenAddresses.push(rewardTokenAddress);
+
+    const rewardToken = getParameterCaseInsensitive(tokens, rewardTokenAddress);
+    rewardTokens.push(rewardToken);
+
+    const rewardTokenTicker = rewardToken.symbol;
+    rewardTokenTickers.push(rewardTokenTicker);
+
+    const rewardTokenPrice = getParameterCaseInsensitive(prices, rewardTokenAddress)?.usd;
+    rewardTokenPrices.push(rewardTokenPrice);
+
+    const rewardData = await STAKING_CONTRACT.rewardData(rewardTokenAddress);
+
+    const periodFinish = rewardData.periodFinish;
+    const rewardRate = rewardData.rewardRate;
+
+    const weeklyReward = (Date.now() / 1000 > periodFinish) ? 0 : rewardRate / 10 ** rewardToken.decimals * 604800;
+    weeklyRewards.push(weeklyReward);
+
+    const usdPerWeek = weeklyReward * rewardTokenPrice;
+    usdCoinsPerWeek.push(usdPerWeek);
+
+    const earned_ = await STAKING_CONTRACT.earned(rewardTokenAddress, App.YOUR_ADDRESS);
+    const earned = earned_ / 10 ** rewardToken.decimals;
+    earnings.push(earned);
+  }
+
+  var stakeToken = await getArbitrumToken(App, stakeTokenAddress, stakingAddress);
+
+  const poolPrices = getPoolPrices(tokens, prices, stakeToken, "arbitrum");
+
+  if (!poolPrices) {
+    console.log(`Couldn't calculate prices for pool ${stakeTokenAddress}`);
+    return null;
+  }
+
+  const stakeTokenTicker = poolPrices.stakeTokenTicker;
+
+  const stakeTokenPrice =
+    prices[stakeTokenAddress]?.usd ?? getParameterCaseInsensitive(prices, stakeTokenAddress)?.usd;
+
+  const staked_tvl = poolPrices.staked_tvl;
+
+  const userStaked = balance / 10 ** stakeToken.decimals;
+
+  const userUnstaked = stakeToken.unstaked;
+
+  return {
+    stakingAddress,
+    poolPrices,
+    stakeTokenAddress,
+    rewardTokenAddresses,
+    stakeTokenTicker,
+    rewardTokenTickers,
+    stakeTokenPrice,
+    rewardTokenPrices,
+    weeklyRewards,
+    usdCoinsPerWeek,
+    staked_tvl,
+    userStaked,
+    userUnstaked,
+    earnings
+  }
+}
+
+async function printEnneadStakeSynthetixPool(App, info, chain = "eth", customURLs) {
+  info.poolPrices.print_price(chain, 4, customURLs);
+  let totalYearlyAPR = 0, totalWeeklyAPR = 0, totalDailyAPR = 0, totalUSDPerWeek = 0;
+
+  for(let i = 0; i < info.rewardTokenTickers.length; i++){
+    let weeklyAPR = info.usdCoinsPerWeek[i] / info.staked_tvl * 100;
+    let dailyAPR = weeklyAPR / 7;
+    yearlyAPR = weeklyAPR * 52;
+    totalYearlyAPR += yearlyAPR;
+    totalWeeklyAPR += weeklyAPR;
+    totalDailyAPR += dailyAPR;
+    totalUSDPerWeek += info.usdCoinsPerWeek[i];
+    _print(`${info.rewardTokenTickers[i]} Per Week: ${info.weeklyRewards[i].toFixed(2)} ($${formatMoney(info.usdCoinsPerWeek[i])})`);
+  }
+
+  _print(`APR: Day ${totalDailyAPR.toFixed(2)}% Week ${totalWeeklyAPR.toFixed(2)}% Year ${totalYearlyAPR.toFixed(2)}%`);
+
+  const userStakedUsd = info.userStaked * info.stakeTokenPrice;
+  const userStakedPct = userStakedUsd / info.staked_tvl * 100;
+  _print(`You are staking ${info.userStaked.toFixed(6)} ${info.stakeTokenTicker} ` +
+    `$${formatMoney(userStakedUsd)} (${userStakedPct.toFixed(2)}% of the pool).`);
+
+  if (info.userStaked > 0) {
+    info.poolPrices.print_contained_price(info.userStaked);
+    let userWeeklyRewards = 0;
+    for(const weeklyReward of info.weeklyRewards){
+      const userWeeklyReward = userStakedPct * weeklyReward / 100;
+      userWeeklyRewards += userWeeklyReward;
+    }
+    const userDailyRewards = userWeeklyRewards / 7;
+    const userYearlyRewards = userWeeklyRewards * 52;
+
+    let totalRewardPrices = 0;
+    for(const rewardTokenPrice of info.rewardTokenPrices){
+      totalRewardPrices += rewardTokenPrice;
+    }
+    _print(`Estimated ${info.rewardTokenTicker} earnings:`
+      + ` Day ${userDailyRewards.toFixed(2)} ($${formatMoney(userDailyRewards * totalRewardPrices)})`
+      + ` Week ${userWeeklyRewards.toFixed(2)} ($${formatMoney(userWeeklyRewards * totalRewardPrices)})`
+      + ` Year ${userYearlyRewards.toFixed(2)} ($${formatMoney(userYearlyRewards * totalRewardPrices)})`);
+  }
+  const approveTENDAndStake = async function () {
+    return ennead_stake(info.stakeTokenAddress, info.stakingAddress, App)
+  }
+  const unstake = async function () {
+    return rewardsContractArbitrum_unstake(info.stakingAddress, App)
+  }
+  const claim = async function () {
+    return rewardsContractArbitrum_claim(info.stakingAddress, App)
+  }
+  const exit = async function () {
+    return rewardsContract_exit(info.stakingAddress, App)
+  }
+  const revoke = async function () {
+    return rewardsContract_resetApprove(info.stakeTokenAddress, info.stakingAddress, App)
+  }
+  _print(`<a target="_blank" href="https://arbiscan.io/address/${info.stakingAddress}#code">Arbitrum Explorer</a>`);
+  _print_link(`Stake ${info.userUnstaked.toFixed(6)} ${info.stakeTokenTicker}`, approveTENDAndStake)
+  _print_link(`Unstake ${info.userStaked.toFixed(6)} ${info.stakeTokenTicker}`, unstake)
+  let claimLink = "";
+  for(let i = 0; i < info.earnings.length; i++){
+    claimLink += `${info.earnings[i].toFixed(6)} ${info.rewardTokenTickers[i]} ($${formatMoney(info.earnings[i]*info.rewardTokenPrices[i])}) `
+  }
+  _print_link(`Claim ${claimLink}`, claim);
+  if (info.stakeTokenTicker != "ETH") {
+    _print_link(`Revoke (set approval to 0)`, revoke)
+  }
+  _print_link(`Exit`, exit)
+  _print("");
+
+  return {
+    staked_tvl: info.poolPrices.staked_tvl,
+    userStaked: userStakedUsd,
+    apr: totalYearlyAPR
+  }
+}
+
+const ennead_stake = async function (stakeTokenAddr, rewardPoolAddr, App, maxAllowance) {
+  const signer = App.provider.getSigner()
+
+  const TEND_TOKEN = new ethers.Contract(stakeTokenAddr, ERC20_ABI, signer)
+  const WEEBTEND_V2_TOKEN = new ethers.Contract(rewardPoolAddr, ENNEAD_STAKE_ABI, signer)
+
+  const balanceOf = await TEND_TOKEN.balanceOf(App.YOUR_ADDRESS)
+  const currentTEND = maxAllowance ? (maxAllowance / 1e18 < balanceOf / 1e18
+    ? maxAllowance : balanceOf) : balanceOf
+  const allowedTEND = await TEND_TOKEN.allowance(App.YOUR_ADDRESS, rewardPoolAddr)
+
+  let allow = Promise.resolve()
+
+  if (allowedTEND / 1e18 < currentTEND / 1e18) {
+    showLoading()
+    allow = TEND_TOKEN.approve(rewardPoolAddr, ethers.constants.MaxUint256)
+      .then(function (t) {
+        return App.provider.waitForTransaction(t.hash)
+      })
+      .catch(function () {
+        hideLoading()
+        alert('Try resetting your approval to 0 first')
+      })
+  }
+
+  if (currentTEND / 1e18 > 0) {
+    showLoading()
+    allow
+      .then(async function () {
+        WEEBTEND_V2_TOKEN.deposit(currentTEND)
+          .then(function (t) {
+            App.provider.waitForTransaction(t.hash).then(function () {
+              hideLoading()
+            })
+          })
+          .catch(x => {
+            hideLoading()
+            console.log(x);
+            _print('Something went wrong.')
+          })
+      })
+      .catch(x => {
+        hideLoading()
+        console.log(x);
+        _print('Something went wrong.')
+      })
+  } else {
+    alert('You have no tokens to stake!!')
   }
 }
