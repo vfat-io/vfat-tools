@@ -34,7 +34,7 @@ async function main() {
   const RAM_TOKEN_ADDR = "0xAAA6C1E32C55A7Bfa8066A6FAE9b42650F262418"
 
   //WETH/RAM to receive the price
-  await loadRamSynthetixPoolInfoPrice(App, tokens, prices, App.YOUR_ADDRESS, "0x1E50482e9185D9DAC418768D14b2F2AC2b4DAF39")
+  await loadRamSynthetixPoolInfoPrice(App, tokens, prices, App.YOUR_ADDRESS, "0x1E50482e9185D9DAC418768D14b2F2AC2b4DAF39");
 
   const stakingPools = lpTokens.map(a => {
     return {
@@ -88,18 +88,25 @@ async function loadEnneadSynthetixPools(App, tokens, prices, pools) {
 }
 
 async function loadEnneadSynthetixPoolInfo(App, tokens, prices, poolAddress, masterAddress, rewardTokenAddress) {
-    const ENNEAD_MASTER_CONTRACT = new ethcall.Contract(masterAddress, ENNEAD_MASTER_ABI);
+    //const ENNEAD_MASTER_CONTRACT = new ethcall.Contract(masterAddress, ENNEAD_MASTER_ABI);
 
-    const [gaugeAddress, tokenAddress] = await App.ethcallProvider.all([ENNEAD_MASTER_CONTRACT.gaugeForPool(poolAddress), ENNEAD_MASTER_CONTRACT.tokenForPool(poolAddress)]);
+    //const [gaugeAddress, tokenAddress] = await App.ethcallProvider.all([ENNEAD_MASTER_CONTRACT.gaugeForPool(poolAddress), ENNEAD_MASTER_CONTRACT.tokenForPool(poolAddress)]);
+
+    const ENNEAD_MASTER_CONTRACT = new ethers.Contract(masterAddress, ENNEAD_MASTER_ABI, App.provider);
+    const gaugeAddress = await ENNEAD_MASTER_CONTRACT.gaugeForPool(poolAddress);
+    const tokenAddress = await ENNEAD_MASTER_CONTRACT.tokenForPool(poolAddress);
+    if(gaugeAddress == "0x0000000000000000000000000000000000000000"){
+      return {
+        gaugeAddress : "0x0000000000000000000000000000000000000000",
+        weeklyRewards : 0
+      }
+    }
 
     const REWARDER = new ethcall.Contract(tokenAddress, REWARDER_ABI);
     const [balance] = await App.ethcallProvider.all([REWARDER.balanceOf(App.YOUR_ADDRESS)]);
 
     const STAKING_POOL = new ethcall.Contract(gaugeAddress, ENNEAD_GAUGE_ABI);
 
-    // if (!getParameterCaseInsensitive(tokens, rewardTokenAddress)) {
-    //   tokens[rewardTokenAddress] = await getGeneralEthcallToken(App, rewardTokenAddress, gaugeAddress);
-    // }
     const rewardToken = getParameterCaseInsensitive(tokens, rewardTokenAddress);
     const rewardTokenTicker = rewardToken.symbol;
     const rewardTokenPrice = getParameterCaseInsensitive(prices, rewardTokenAddress)?.usd;
@@ -109,8 +116,8 @@ async function loadEnneadSynthetixPoolInfo(App, tokens, prices, poolAddress, mas
                    STAKING_POOL.derivedSupply(), STAKING_POOL.derivedBalance(App.YOUR_ADDRESS)]
     const [stakeTokenAddress, periodFinish, rewardRate, earned_, derivedSupply_, derivedBalance_] = await App.ethcallProvider.all(calls);
 
-    const weeklyReward = (Date.now() / 1000 > periodFinish) ? 0 : rewardRate / 10 ** rewardToken.decimals * 604800;
-    const usdPerWeek = weeklyReward * rewardTokenPrice;
+    const weeklyRewards = (Date.now() / 1000 > periodFinish) ? 0 : rewardRate / 10 ** rewardToken.decimals * 604800;
+    const usdPerWeek = weeklyRewards * rewardTokenPrice;
     const earned = earned_ / 10 ** rewardToken.decimals;
 
     var stakeToken = await getGeneralEthcallToken(App, stakeTokenAddress, gaugeAddress);
@@ -161,7 +168,7 @@ async function loadEnneadSynthetixPoolInfo(App, tokens, prices, poolAddress, mas
 }
 
 async function printEnneadSynthetixPool(App, info, chain="eth", customURLs) {
-  if(info.weeklyReward == 0 || info.gaugeAddress === "0x0000000000000000000000000000000000000000"){
+  if(info.weeklyRewards == 0 || info.gaugeAddress === "0x0000000000000000000000000000000000000000"){
     return {
       staked_tvl: 0,
       userStaked : 0,

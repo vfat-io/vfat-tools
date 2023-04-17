@@ -8,7 +8,11 @@ consoleInit(main)
 
     const Pools = [
       "0xC8187048f7Ab0db0774b674fEf3f4F4285A01bF4",
-      "0xB3db4e3238c1656fb6b832FB692643f4Fa452010"
+      "0xB3db4e3238c1656fb6b832FB692643f4Fa452010",
+      "0xefd8a0b5e0e01a95fcc15656dad61d5b5436b2b4",
+      "0x9775F32737f141AB1b661dD83F7afdf4ef749F3D",
+      "0xabb828565d46F9Db074d55241D82621B129bcF16",
+      "0x5d5897797287a3c2552251A9D9185E09dd25b558"
     ].map(a => {
       return {
         address: a,
