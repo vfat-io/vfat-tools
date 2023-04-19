@@ -78,7 +78,8 @@ const main = async() => {
       ["ARB Airdrop         ", `<a href="/arbitrum/arb_airdrop" >Various</a>`,"ARB                ","https://arbitrum.foundation"],
       ["Silo Finance        ", `<a href="/arbitrum/silo"        >Various</a>`,"SILO               ","https://www.silo.finance"],
       ["Buffer Finance      ", `<a href="/arbitrum/buffer"      >Various</a>`,"Various            ","https://app.buffer.finance"],
-      ["Ennead              ", `<a href="/arbitrum/ennead"      >Various</a>`,"RAM                ","https://beta.ennead.farm"]
+      ["Ennead              ", `<a href="/arbitrum/ennead"      >Various</a>`,"RAM                ","https://beta.ennead.farm"],
+      ["Hamburger           ", `<a href="/arbitrum/hamburger"   >Various</a>`,"veBURGER           ","https://hamburger.finance"]
     ].reverse()
   }
 
