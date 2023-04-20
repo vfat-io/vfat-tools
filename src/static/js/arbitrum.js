@@ -79,7 +79,7 @@ const main = async() => {
       ["Silo Finance        ", `<a href="/arbitrum/silo"        >Various</a>`,"SILO               ","https://www.silo.finance"],
       ["Buffer Finance      ", `<a href="/arbitrum/buffer"      >Various</a>`,"Various            ","https://app.buffer.finance"],
       ["Ennead              ", `<a href="/arbitrum/ennead"      >Various</a>`,"RAM                ","https://beta.ennead.farm"],
-      ["Hamburger           ", `<a href="/arbitrum/hamburger"   >Various</a>`,"BURGER             ","https://hamburger.finance"]
+      ["Hamburger           ", `<a href="/arbitrum/hamburger"   >Various</a>`,"veBURGER / BURGER  ","https://hamburger.finance"]
     ].reverse()
   }
 
