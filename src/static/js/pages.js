@@ -192,7 +192,8 @@ const main = async () => {
       ["Conic Finance                ", `<a href="conic/"             >Various</a>`, "Various            ", "https://conic.finance"],
       ["Oceanpoint                   ", `<a href="oceanpoint/"        >Various</a>`, "BST                ", "https://app.oceanpoint.fi"],
       ["Silo Finance                 ", `<a href="silo/"              >Various</a>`, "SILO               ", "https://www.silo.finance"],
-      ["Agility                      ", `<a href="agility/"           >Various</a>`, "esAGI              ", "https://agilitylsd.com"]
+      ["Agility                      ", `<a href="agility/"           >Various</a>`, "esAGI              ", "https://agilitylsd.com"],
+      ["lybra                        ", `<a href="lybra/"             >Various</a>`, "esLBR              ", "https://lybra.finance"]
     ].reverse()
   }
 
