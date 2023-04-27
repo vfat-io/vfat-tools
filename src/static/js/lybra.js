@@ -38,19 +38,17 @@ consoleInit(main)
     var prices = {};
 
     let p = await loadLybraSynthetixPools(App, tokens, prices, Pools)
-    _print_bold(`Total staked: $${formatMoney(p.staked_tvl)}`);
     if (p.totalUserStaked > 0) {
       _print(`You are staking a total of $${formatMoney(p.totalUserStaked)} at an APR of ${(p.totalAPR * 100).toFixed(2)}%\n`);
     }
 
     prices["0x97de57eC338AB5d51557DA3434828C5DbFaDA371"] = { usd : 1 };
 
-    _print("");
-
     let p2 = await loadLybraUsdSynthetixPools(App, tokens, prices, Pools2)
     if (p2.totalUserStaked > 0) {
       _print(`You are staking a total of $${formatMoney(p2.totalUserStaked)} at an APR of ${(p2.totalAPR * 100).toFixed(2)}%\n`);
     }
+    _print_bold(`Total staked: $${formatMoney(p.staked_tvl + p2.staked_tvl)}`);
 
   hideLoading();
 }
@@ -115,6 +113,8 @@ async function loadLybraPoolInfo(App, tokens, prices, stakingAbi, stakingAddress
 
     const stakeTokenPrice =
         prices[stakeTokenAddress]?.usd ?? getParameterCaseInsensitive(prices, stakeTokenAddress)?.usd;
+
+    prices["0x571042B7138ee957a96A6820FCe79c48fe2DA816"] = getParameterCaseInsensitive(prices, "0xc98835e792553e505ae46e73a6fd27a23985acca")
     const rewardTokenPrice = getParameterCaseInsensitive(prices, rewardTokenAddress)?.usd;
 
     const calls = [STAKING_MULTI.finishAt(), STAKING_MULTI.rewardRate(),
@@ -179,6 +179,7 @@ async function loadLybraUsdPoolInfo(App, tokens, prices, stakingAbi, stakingAddr
     const rewardTokenAddress = await STAKING_POOL.callStatic[rewardTokenFunction]();
 
     var stakeToken = await getToken(App, stakeTokenAddress, stakingAddress);
+    stakeToken.staked = stakeToken.totalSupply / 10 ** stakeToken.decimals;
 
     if (stakeTokenAddress.toLowerCase() === rewardTokenAddress.toLowerCase()) {
       stakeToken.staked = await STAKING_POOL.totalSupply() / 10 ** stakeToken.decimals;
@@ -247,26 +248,36 @@ async function loadLybraUsdPoolInfo(App, tokens, prices, stakingAbi, stakingAddr
 }
 
 async function printLybraUsdPool(App, info, chain="eth", customURLs) {
-  const tvl = (info.stakeToken.totalSupply / 10 ** info.stakeToken.decimals) * info.stakeTokenPrice
-  _print(`${info.stakeToken.name} Price: $${formatMoney(info.stakeTokenPrice)} Market Cap: $${formatMoney(tvl)}`);
-    _print(`${info.rewardTokenTicker} Per Week: ${info.weeklyRewards.toFixed(2)} ($${formatMoney(info.usdPerWeek)})`);
-    const weeklyAPR = info.usdPerWeek / info.staked_tvl * 100;
-    const dailyAPR = weeklyAPR / 7;
-    const yearlyAPR = weeklyAPR * 52;
-    _print(`APR: Day ${dailyAPR.toFixed(2)}% Week ${weeklyAPR.toFixed(2)}% Year ${yearlyAPR.toFixed(2)}%`);
-    const userStakedUsd = info.userStaked * info.stakeTokenPrice;
-    _print(`You are staking ${info.userStaked.toFixed(6)} ${info.stakeTokenTicker} ` +
-           `$${formatMoney(userStakedUsd)}`);
-    const claim = async function() {
-      return rewardsContract_claim(info.stakingAddress, App)
-    }
-    _print(`<a target="_blank" href="https://etherscan.io/address/${info.stakingAddress}#code">Etherscan</a>`);
-    _print_link(`Claim ${info.earned.toFixed(6)} ${info.rewardTokenTicker} ($${formatMoney(info.earned*info.rewardTokenPrice)})`, claim)
-    _print("");
+  info.poolPrices.print_price(chain, 4, customURLs);
+  _print(`${info.rewardTokenTicker} Per Week: ${info.weeklyRewards.toFixed(2)} ($${formatMoney(info.usdPerWeek)})`);
+  const weeklyAPR = info.usdPerWeek / info.staked_tvl * 100;
+  const dailyAPR = weeklyAPR / 7;
+  const yearlyAPR = weeklyAPR * 52;
+  _print(`APR: Day ${dailyAPR.toFixed(2)}% Week ${weeklyAPR.toFixed(2)}% Year ${yearlyAPR.toFixed(2)}%`);
+  const userStakedUsd = info.userStaked * info.stakeTokenPrice;
+  const userStakedPct = userStakedUsd / info.staked_tvl * 100;
+  _print(`You are staking ${info.userStaked.toFixed(6)} ${info.stakeTokenTicker} ` +
+         `$${formatMoney(userStakedUsd)} (${userStakedPct.toFixed(2)}% of the pool).`);
+  if (info.userStaked > 0) {
+    info.poolPrices.print_contained_price(info.userStaked);
+      const userWeeklyRewards = userStakedPct * info.weeklyRewards / 100;
+      const userDailyRewards = userWeeklyRewards / 7;
+      const userYearlyRewards = userWeeklyRewards * 52;
+      _print(`Estimated ${info.rewardTokenTicker} earnings:`
+          + ` Day ${userDailyRewards.toFixed(2)} ($${formatMoney(userDailyRewards*info.rewardTokenPrice)})`
+          + ` Week ${userWeeklyRewards.toFixed(2)} ($${formatMoney(userWeeklyRewards*info.rewardTokenPrice)})`
+          + ` Year ${userYearlyRewards.toFixed(2)} ($${formatMoney(userYearlyRewards*info.rewardTokenPrice)})`);
+  }
+  const claim = async function() {
+    return rewardsContract_claim(info.stakingAddress, App)
+  }
+  _print(`<a target="_blank" href="https://etherscan.io/address/${info.stakingAddress}#code">Etherscan</a>`);
+  _print_link(`Claim ${info.earned.toFixed(6)} ${info.rewardTokenTicker} ($${formatMoney(info.earned*info.rewardTokenPrice)})`, claim)
+  _print("");
 
-    return {
-        staked_tvl: info.poolPrices.staked_tvl,
-        userStaked : userStakedUsd,
-        apr : yearlyAPR
-    }
+  return {
+      staked_tvl: info.poolPrices.staked_tvl,
+      userStaked : userStakedUsd,
+      apr : yearlyAPR
+  }
 }
