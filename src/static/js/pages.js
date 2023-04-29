@@ -178,7 +178,6 @@ const main = async () => {
       ["Bancor                       ", `<a href="bancor/"            >Various</a>`, "BNT                 ", "https://app.bancor.network"],
       ["UnoRe                        ", `<a href="unore/"             >Various</a>`, "UnoRe              ", "https://appv2.unore.io"],
       ["Convex (Frax)                ", `<a href="convex_frax/"       >Various</a>`, "Various            ", "https://frax.convexfinance.com"],
-      ["Aura                         ", `<a href="aura/"              >Various</a>`, "AURA               ", "https://app.aura.finance"],
       ["Serenity Capital             ", `<a href="serenity/"          >Various</a>`, "PBL                ", "https://ethchain.serenitycapital.io"],
       ["Mero                         ", `<a href="mero/"              >Various</a>`, "                   ", "https://mero.finance"],
       ["Xconsoles                    ", `<a href="xconsoles/"         >Various</a>`, "GAME               ", "https://app.xconsoles.tv"],
@@ -193,7 +192,8 @@ const main = async () => {
       ["Oceanpoint                   ", `<a href="oceanpoint/"        >Various</a>`, "BST                ", "https://app.oceanpoint.fi"],
       ["Silo Finance                 ", `<a href="silo/"              >Various</a>`, "SILO               ", "https://www.silo.finance"],
       ["Agility                      ", `<a href="agility/"           >Various</a>`, "esAGI              ", "https://agilitylsd.com"],
-      ["lybra                        ", `<a href="lybra/"             >Various</a>`, "esLBR              ", "https://lybra.finance"]
+      ["lybra                        ", `<a href="lybra/"             >Various</a>`, "esLBR              ", "https://lybra.finance"],
+      ["Aura                         ", `<a href="aura/"              >Various</a>`, "AURA               ", "https://app.aura.finance"]
     ].reverse()
   }
 
