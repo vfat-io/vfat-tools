@@ -80,7 +80,8 @@ const main = async() => {
       ["Buffer Finance      ", `<a href="/arbitrum/buffer"      >Various</a>`,"Various            ","https://app.buffer.finance"],
       ["Ennead              ", `<a href="/arbitrum/ennead"      >Various</a>`,"RAM                ","https://beta.ennead.farm"],
       ["Hamburger           ", `<a href="/arbitrum/hamburger"   >Various</a>`,"veBURGER / BURGER  ","https://hamburger.finance"],
-      ["Monopoly            ", `<a href="/arbitrum/monopoly"    >Various</a>`,"DUO                ","https://monopoly.finance"]
+      ["Monopoly            ", `<a href="/arbitrum/monopoly"    >Various</a>`,"DUO                ","https://monopoly.finance"],
+      ["GND Protocol        ", `<a href="/arbitrum/gnd"         >Various</a>`,"GND / XGND         ","https://gndprotocol.com"]
     ].reverse()
   }
 
