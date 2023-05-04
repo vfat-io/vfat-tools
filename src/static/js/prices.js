@@ -53,7 +53,11 @@ const ArbitrumTokens = [
   { "id": "arbitrum", "symbol": "ARB", "contract": "0x912ce59144191c1204e64559fe8253a0e49e6548" },
   { "id": "lodestar", "symbol": "LODE", "contract": "0xf19547f9ed24aa66b03c3a552d181ae334fbb8db" },
   { "id": "the-ennead", "symbol": "NEADRAM", "contract": "0x40301951af3f80b8c1744ca77e55111dd3c1dba1" },
-  { "id": "gnd-protocol", "symbol": "GND", "contract": "0xd67a097dce9d4474737e6871684ae3c05460f571" }
+  { "id": "gnd-protocol", "symbol": "GND", "contract": "0xd67a097dce9d4474737e6871684ae3c05460f571" },
+  { "id": "chronos-finance", "symbol": "CHR", "contract": "0x15b2fb8f08e4ac1ce019eadae02ee92aedf06851" },
+  { "id": "lido-dao", "symbol": "LDO", "contract": "0x13ad51ed4f1b7e9dc168d8a00cb3f4ddd85efa60" },
+  { "id": "the-graph", "symbol": "GRT", "contract": "0x9623063377AD1B27544C965cCd7342f7EA7e88C7" },
+  { "id": "frax-ether", "symbol": "FRXETH", "contract": "0x178412e79c25968a32e89b11f63B33F733770c2A" }
 ];
 
 const ArbitrumNovaTokens = [

@@ -81,7 +81,8 @@ const main = async() => {
       ["Ennead              ", `<a href="/arbitrum/ennead"      >Various</a>`,"RAM                ","https://beta.ennead.farm"],
       ["Hamburger           ", `<a href="/arbitrum/hamburger"   >Various</a>`,"veBURGER / BURGER  ","https://hamburger.finance"],
       ["Monopoly            ", `<a href="/arbitrum/monopoly"    >Various</a>`,"DUO                ","https://monopoly.finance"],
-      ["GND Protocol        ", `<a href="/arbitrum/gnd"         >Various</a>`,"GND / XGND         ","https://gndprotocol.com"]
+      ["GND Protocol        ", `<a href="/arbitrum/gnd"         >Various</a>`,"GND / XGND         ","https://gndprotocol.com"],
+      ["Chronos             ", `<a href="/arbitrum/chronos"     >Various</a>`,"CHR                ","https://app.chronos.exchange"]
     ].reverse()
   }
 
