@@ -1714,6 +1714,28 @@ async function getCurveMinterToken(app, curve, address, stakingAddress) {
   };
 }
 
+async function getJpegdVault(app, vault, address, stakingAddress) {
+  const calls = [vault.decimals(), vault.token(), vault.name(), vault.symbol(), vault.totalSupply(),
+    vault.balanceOf(stakingAddress), vault.balanceOf(app.YOUR_ADDRESS), vault.totalAssets(), vault.depositFeeRate()];
+  const [decimals, token_, name, symbol, totalSupply, staked, unstaked, balance, depositFeeRate] =
+    await app.ethcallProvider.all(calls);
+  const token = await getToken(app, token_, address);
+  return {
+    address,
+    name,
+    symbol,
+    totalSupply,
+    decimals : decimals,
+    staked: staked / 10 ** decimals,
+    unstaked: unstaked / 10 ** decimals,
+    token: token,
+    balance : balance,
+    contract: vault,
+    tokens : [address].concat(token.tokens),
+    depositFee : depositFeeRate.numerator / 100
+  }
+}
+
 async function getIronBankToken(app, ibToken, address, stakingAddress) {
   const calls = [ibToken.decimals(), ibToken.name(), ibToken.symbol(),
     ibToken.totalSupply(), ibToken.balanceOf(stakingAddress), ibToken.balanceOf(app.YOUR_ADDRESS)];
@@ -1787,6 +1809,9 @@ async function getStoredToken(app, tokenAddress, stakingAddress, type) {
     case "yearn":
       const yearnVault = new ethcall.Contract(tokenAddress, YEARN_VAULT_ABI);
       return await getYearnVault(app, yearnVault, tokenAddress, stakingAddress);
+    case "jpegd":
+      const jpegdVault = new ethcall.Contract(tokenAddress, JPEGD_VAULT_ABI);
+      return await getJpegdVault(app, jpegdVault, tokenAddress, stakingAddress);
     case "frax":
       const fraxVault = new ethcall.Contract(tokenAddress, FRAX_VAULT_ABI);
       return await getFraxVault(app, fraxVault, tokenAddress, stakingAddress);
@@ -1938,6 +1963,15 @@ async function getToken(app, tokenAddress, stakingAddress) {
     const yearn = await getYearnVault(app, yearnVault, tokenAddress, stakingAddress);
     window.localStorage.setItem(tokenAddress, "yearn");
     return yearn;
+  }
+  catch(err) {
+  }
+  try {
+    const jpegdVault = new ethcall.Contract(tokenAddress, JPEGD_VAULT_ABI);
+    const _fee = await app.ethcallProvider.all([jpegdVault.depositFeeRate()]);
+    const jpegd = await getJpegdVault(app, jpegdVault, tokenAddress, stakingAddress);
+    window.localStorage.setItem(tokenAddress, "jpegd");
+    return jpegd;
   }
   catch(err) {
   }
