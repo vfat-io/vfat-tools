@@ -193,7 +193,8 @@ const main = async () => {
       ["Silo Finance                 ", `<a href="silo/"              >Various</a>`, "SILO               ", "https://www.silo.finance"],
       ["Agility                      ", `<a href="agility/"           >Various</a>`, "esAGI              ", "https://agilitylsd.com"],
       ["lybra                        ", `<a href="lybra/"             >Various</a>`, "esLBR              ", "https://lybra.finance"],
-      ["Aura                         ", `<a href="aura/"              >Various</a>`, "AURA               ", "https://app.aura.finance"]
+      ["Aura                         ", `<a href="aura/"              >Various</a>`, "AURA               ", "https://app.aura.finance"],
+      ["Mellow Protocol              ", `<a href="mellow-protocol/"   >Various</a>`, "LDO                ", "https://app.mellow.finance"],
     ].reverse()
   }
 
