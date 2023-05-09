@@ -233,7 +233,7 @@ async function main() {
             let allow = Promise.resolve()
 
             showLoading()
-            allow = lp_write_contract.approve(router.routerAddress, _liquidity, {gasLimit: 500000})
+            allow = lp_write_contract.approve(router.routerAddress, _liquidity)
               .then(function(t) {
                 return App.provider.waitForTransaction(t.hash)
               })
@@ -243,7 +243,7 @@ async function main() {
 
             showLoading()
             allow.then(async function () {
-              router_contract.removeLiquidity(tokenA, tokenB, _liquidity, amountAMin, amountBMin, addressToGo, deadline, {gasLimit: 500000})
+              router_contract.removeLiquidity(tokenA, tokenB, _liquidity, amountAMin, amountBMin, addressToGo, deadline)
               .then(function(t) {
                 return App.provider.waitForTransaction(t.hash)
                   .then(t => refresh(t.hash))
