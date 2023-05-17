@@ -231,6 +231,21 @@ window.NETWORKS = {
       "https://explorer.zksync.io"
     ]
   },
+  ZKEVM_POLYGON: {
+    "chainId": "0x44D",
+    "chainName": "Polygon zkEVM",
+    "nativeCurrency": {
+      "name": "Ethereum",
+      "symbol": "ETH",
+      "decimals": 18
+    },
+    "rpcUrls": [
+      "https://zkevm-rpc.com"
+    ],
+    "blockExplorerUrls": [
+      "https://zkevm.polygonscan.com"
+    ]
+  },
   HOO: {
     "chainId": "0x46",
     "chainName": "Hoo Smart Chain",

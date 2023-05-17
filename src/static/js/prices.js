@@ -816,6 +816,11 @@ const zksyncEraTokens = [
   { "id": "usd-coin","symbol": "USDC","contract": "0x3355df6D4c9C3035724Fd0e3914dE96A5a83aaf4" },
 ];
 
+const zkevmPolygonTokens = [
+  { "id": "weth","symbol": "WETH", "contract": "0x4F9A0e7FD2Bf6067db6994CF12E4495Df938E6e9" },
+  { "id": "usd-coin","symbol": "USDC","contract": "0xa8ce8aee21bc2a48a5ef670afcc9274c7bbbc035" },
+];
+
 async function getArbitrumPrices() {
   const idPrices = await lookUpPrices(ArbitrumTokens.map(x => x.id));
   const prices = {}
@@ -1197,6 +1202,15 @@ async function getZkSyncEraPrices() {
   const idPrices = await lookUpPrices(zksyncEraTokens.map(x => x.id));
   const prices = {}
   for (const bt of zksyncEraTokens)
+      if (idPrices[bt.id])
+          prices[bt.contract] = idPrices[bt.id];
+  return prices;
+}
+
+async function getZkEvmPolygonPrices() {
+  const idPrices = await lookUpPrices(zkevmPolygonTokens.map(x => x.id));
+  const prices = {}
+  for (const bt of zkevmPolygonTokens)
       if (idPrices[bt.id])
           prices[bt.contract] = idPrices[bt.id];
   return prices;
