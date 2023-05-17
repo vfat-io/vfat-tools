@@ -13,14 +13,17 @@ async function main() {
     _print("No given time for claiming your airdrop, it will be random\n");
 
     //checking elidgibility
-    // function reqListener() {
-    //   console.log(this.responseText);
-    // }
+    let elidgible = false;
+    function reqListener() {
+      //console.log(this.responseText);
+      const data = this.responseText;
+      console.log(data);
+    }
 
-    // const req = new XMLHttpRequest();
-    // req.addEventListener("load", reqListener);
-    // req.open("GET", "https://raw.githubusercontent.com/ltj866/airdrop-0/main/addresses");
-    // req.send();
+    const req = new XMLHttpRequest();
+    req.addEventListener("load", reqListener);
+    req.open("GET", "https://raw.githubusercontent.com/ltj866/airdrop-0/main/addresses");
+    req.send();
 
       const FIRE_AIRDROP_ADDR = "0xC53de7B2248fc2CB3ee0AA1C2FE6EBb80A78c6b8";
       const FIRE_AIRDROP = new ethers.Contract(FIRE_AIRDROP_ADDR, FIRE_AIRDROP_ABI, App.provider);
@@ -35,7 +38,7 @@ async function main() {
         _print(`Your chosen network is ${chosenNetwork}\n`);
         _print(`Your referral address is ${userData.referralENS}\n`);
 
-        let node1 = document.createTextNode("You can change your network from here ");
+        let node1 = document.createTextNode("You can change your network from here. 1 for Arbitrum, 2 for Optimism ");
         let node2 = document.createTextNode("You can change your referral from here ");
         let br1 = document.createElement("br");
         let br2 = document.createElement("br");
