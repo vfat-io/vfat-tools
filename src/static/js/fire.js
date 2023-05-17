@@ -23,15 +23,16 @@ async function main() {
 
     const req = new XMLHttpRequest();
     req.addEventListener("load", reqListener);
-    req.open("GET", "https://raw.githubusercontent.com/ltj866/airdrop-0/main/addresses");
+    req.open("GET", "https://raw.githubusercontent.com/ltj866/airdrop-0/main/addresses", false);
     req.send();
 
-    if(eligible){
-      const FIRE_AIRDROP_ADDR = "0xC53de7B2248fc2CB3ee0AA1C2FE6EBb80A78c6b8";
-      const FIRE_AIRDROP = new ethers.Contract(FIRE_AIRDROP_ADDR, FIRE_AIRDROP_ABI, App.provider);
-      const rewardTokenTicker = "FIRE";
+    const FIRE_AIRDROP_ADDR = "0xC53de7B2248fc2CB3ee0AA1C2FE6EBb80A78c6b8";
+    const FIRE_AIRDROP = new ethers.Contract(FIRE_AIRDROP_ADDR, FIRE_AIRDROP_ABI, App.provider);
+    const rewardTokenTicker = "FIRE";
 
-      const userData = await FIRE_AIRDROP.claimrs(App.YOUR_ADDRESS);
+    const userData = await FIRE_AIRDROP.claimrs(App.YOUR_ADDRESS);
+
+    if(eligible || userData.chain > 0){
 
       let log = document.getElementById("log");
 
@@ -68,7 +69,6 @@ async function main() {
         }
         _print_link(`Change your referral address`, changeRef);
       }else{
-
         const node1 = document.createTextNode("Please add 1 to claim your airdrop on Arbitrum or 2 to claim your airdrop on Optimism ");
         log.appendChild(node1);
         let chainInput = document.createElement("input");
@@ -94,7 +94,7 @@ async function main() {
         _print_link(`Claim ${rewardTokenTicker}`, claim)
       }
     }else{
-      _print("You are not eligible for this airdrop");
+      _print("You are not eligible, but you can still claim in case you get referred by an eligible address.");
     }
 
     hideLoading();
