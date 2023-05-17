@@ -30,8 +30,8 @@ const pageNetwork = function() {
   if (network.toLowerCase() === 'zksync_era') {
     return window.NETWORKS.ZKSYNC_ERA
   }
-  if (network.toLowerCase() === 'zkevm_polygon') {
-    return window.NETWORKS.ZKEVM_POLYGON
+  if (network.toLowerCase() === 'zkevm') {
+    return window.NETWORKS.ZKEVM
   }
   if (network.toLowerCase() === 'optimism') {
     return window.NETWORKS.OPTIMISM

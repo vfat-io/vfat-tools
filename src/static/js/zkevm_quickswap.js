@@ -21,7 +21,7 @@ $(function() {
         const prices = await getZkEvmPolygonPrices();
      
         await loadQuickChefContract(App, tokens, prices, QUICK_CHEF, QUICK_CHEF_ADDR, QUICK_CHEF_ABI, rewardTokenTicker,
-            "rewardToken", null, rewardsPerWeek, "pendingToken", [1], "zkevm_polygon");
+            "rewardToken", null, rewardsPerWeek, "pendingToken", [1], "zkevm");
         hideLoading();
       }
     

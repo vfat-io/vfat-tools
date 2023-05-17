@@ -231,7 +231,7 @@ window.NETWORKS = {
       "https://explorer.zksync.io"
     ]
   },
-  ZKEVM_POLYGON: {
+  ZKEVM: {
     "chainId": "0x44D",
     "chainName": "Polygon zkEVM",
     "nativeCurrency": {
