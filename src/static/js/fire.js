@@ -32,9 +32,9 @@ async function main() {
 
     const userData = await FIRE_AIRDROP.claimrs(App.YOUR_ADDRESS);
 
-    // if(eligible || userData.chain > 0){
+    console.log(eligible);
 
-      if(!eligible){
+      if(!eligible && userData.chain <= 0){
         _print_bold("You are not eligible, but you can still claim in case you get referred by an eligible address.\n");
       }
 
@@ -97,10 +97,6 @@ async function main() {
 
         _print_link(`Claim ${rewardTokenTicker}`, claim)
       }
-    // }
-    // else{
-    //   _print("You are not eligible, but you can still claim in case you get referred by an eligible address.");
-    // }
 
     hideLoading();
   }
