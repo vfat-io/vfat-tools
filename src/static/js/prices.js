@@ -823,6 +823,7 @@ const zksyncEraTokens = [
 const zkevmPolygonTokens = [
   { "id": "weth","symbol": "WETH", "contract": "0x4F9A0e7FD2Bf6067db6994CF12E4495Df938E6e9" },
   { "id": "usd-coin","symbol": "USDC","contract": "0xa8ce8aee21bc2a48a5ef670afcc9274c7bbbc035" },
+  { "id": "quickswap","symbol": "QUICK","contract": "0x68286607a1d43602d880d349187c3c48c0fd05e6" }
 ];
 
 async function getArbitrumPrices() {
