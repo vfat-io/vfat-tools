@@ -767,7 +767,11 @@ const optimisticTokens = [
   { "id": "hop-protocol","symbol": "HOP", "contract": "0xc5102fe9359fd9a28f877a67e36b0f050d81a3cc" },
   { "id": "openxswap-gov-token","symbol": "XOPENX", "contract": "0x2513486f18eee1498d7b6281f668b955181dd0d9" },
   { "id": "openx-locked-velo","symbol": "OPXVEVELO", "contract": "0x46f21fda29f1339e0ab543763ff683d399e393ec" },
-  { "id": "openxswap","symbol": "OPENX", "contract": "0xc3864f98f2a61a7caeb95b039d031b4e2f55e0e9" }
+  { "id": "openxswap","symbol": "OPENX", "contract": "0xc3864f98f2a61a7caeb95b039d031b4e2f55e0e9" },
+  { "id": "unidex","symbol": "UNIDX", "contract": "0x5d47bAbA0d66083C52009271faF3F50DCc01023C" },
+  { "id": "rocket-pool-eth","symbol": "RETH", "contract": "0x9Bcef72be871e61ED4fBbc7630889beE758eb81D" },
+  { "id": "coinbase-wrapped-staked-eth","symbol": "CBETH", "contract": "0xadDb6A0412DE1BA0F936DCaeb8Aaa24578dcF3B2" },
+  { "id": "wrapped-steth","symbol": "WSTETH", "contract": "0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb" }
 ];
 
 const polisTokens = [
