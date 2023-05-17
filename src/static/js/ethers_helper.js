@@ -2463,6 +2463,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
         else {
           const poolUrl = pool.is1inch ? "https://1inch.exchange/#/dao/pools" :
           pool.symbol.includes("TETHYSLP") ?  `https://info.tethys.finance/pair/${pool.address}` :
+          pool.totalAmounts ?  `https://quickswap.exchange/#/analytics` :
           pool.symbol.includes("VERSE-X") ?  `https://analytics.verse.bitcoin.com/pairs/${pool.address}` :
           pool.name.includes("Voltage") ?  `https://info.voltage.finance/pair/${pool.address}` :
           pool.symbol.includes("Oreo-LP") ?  `https://oreoswap.finance` :
@@ -2620,6 +2621,11 @@ function getUniPrices(tokens, prices, pool, chain="eth")
             `https://linkswap.app/#/add/${t0address}/${t1address}`,
             `https://linkswap.app/#/remove/${t0address}/${t1address}`,
             `https://linkswap.app/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+          ] :
+          pool.totalAmounts ? [
+            `https://quickswap.exchange/#/pools`,
+            `https://quickswap.exchange/#/pools`,
+            `https://quickswap.exchange/#/swap`
           ] :
           pool.symbol.includes("FISH") ? [
             `https://swapfish.fi/add/${t0address}/${t1address}`,

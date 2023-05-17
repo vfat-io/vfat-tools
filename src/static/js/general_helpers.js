@@ -58,7 +58,8 @@ async function getGeneralQuickPool(App, pool, poolAddress, stakingAddress) {
       unstaked: await pool.balanceOf(App.YOUR_ADDRESS) / 10 ** decimals,
       contract: pool,
       tokens : [token0, token1],
-      is1inch : false
+      is1inch : false,
+      totalAmounts: reserves
   };
 }
 
