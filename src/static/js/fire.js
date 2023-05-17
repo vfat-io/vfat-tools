@@ -12,12 +12,13 @@ async function main() {
     _print("Reading smart contracts...\n");
     _print("No given time for claiming your airdrop, it will be random\n");
 
-    //checking elidgibility
-    let elidgible = false;
+    let eligible = false;
     function reqListener() {
-      //console.log(this.responseText);
-      const data = this.responseText;
-      console.log(data);
+      const resp = this.responseText;
+      const _data = resp.split();
+      const data = _data[0].split('\n');
+      eligible = data.includes(App.YOUR_ADDRESS);
+      console.log(eligible);
     }
 
     const req = new XMLHttpRequest();
@@ -25,6 +26,7 @@ async function main() {
     req.open("GET", "https://raw.githubusercontent.com/ltj866/airdrop-0/main/addresses");
     req.send();
 
+    if(eligible){
       const FIRE_AIRDROP_ADDR = "0xC53de7B2248fc2CB3ee0AA1C2FE6EBb80A78c6b8";
       const FIRE_AIRDROP = new ethers.Contract(FIRE_AIRDROP_ADDR, FIRE_AIRDROP_ABI, App.provider);
       const rewardTokenTicker = "FIRE";
@@ -91,6 +93,9 @@ async function main() {
 
         _print_link(`Claim ${rewardTokenTicker}`, claim)
       }
+    }else{
+      _print("You are not eligible for this airdrop");
+    }
 
     hideLoading();
   }
