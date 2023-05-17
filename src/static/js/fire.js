@@ -32,7 +32,11 @@ async function main() {
 
     const userData = await FIRE_AIRDROP.claimrs(App.YOUR_ADDRESS);
 
-    if(eligible || userData.chain > 0){
+    // if(eligible || userData.chain > 0){
+
+      if(!eligible){
+        _print_bold("You are not eligible, but you can still claim in case you get referred by an eligible address.\n");
+      }
 
       let log = document.getElementById("log");
 
@@ -93,9 +97,10 @@ async function main() {
 
         _print_link(`Claim ${rewardTokenTicker}`, claim)
       }
-    }else{
-      _print("You are not eligible, but you can still claim in case you get referred by an eligible address.");
-    }
+    // }
+    // else{
+    //   _print("You are not eligible, but you can still claim in case you get referred by an eligible address.");
+    // }
 
     hideLoading();
   }
@@ -111,7 +116,7 @@ const airdropContract_changeChain = async function(airdropAddr, App){
     _print("Invalid chain input. Please type 1 for Arbitrum or 2 for Optimism");
   }else{
     showLoading()
-    REWARD_POOL.setChain(chainIdInput)
+    REWARD_POOL.setChain(chainIdInput, {gasLimit: 250000})
       .then(function(t) {
         return App.provider.waitForTransaction(t.hash)
       })
@@ -129,7 +134,7 @@ const airdropContract_changeRef = async function(airdropAddr, App) {
   const REWARD_POOL = new ethers.Contract(airdropAddr, FIRE_AIRDROP_ABI, signer);
 
   showLoading()
-  REWARD_POOL.setReferralENS(referalInput)
+  REWARD_POOL.setReferralENS(referalInput, {gasLimit: 250000})
     .then(function(t) {
       return App.provider.waitForTransaction(t.hash)
     })
@@ -154,7 +159,7 @@ const airdropContract_claim = async function(airdropAddr, App) {
     _print("Invalid chain input. Please type 1 for Arbitrum or 2 for Optimism");
   }else{
     showLoading()
-    REWARD_POOL.claimOn(chainIdInput, referalInput)
+    REWARD_POOL.claimOn(chainIdInput, referalInput, {gasLimit: 250000})
       .then(function(t) {
         return App.provider.waitForTransaction(t.hash)
       })
