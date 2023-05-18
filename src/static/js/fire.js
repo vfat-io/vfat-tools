@@ -43,10 +43,10 @@ async function main() {
       if(userData.chain != 0){
         const chosenNetwork = userData.chain == 1 ? "Arbitrum" : "Optimism";
         _print(`Your chosen network is ${chosenNetwork}\n`);
-        _print(`Your referral address is ${userData.referralENS}\n`);
+        _print(`Your referral ENS is ${userData.referralENS}\n`);
 
         let node1 = document.createTextNode("You can change your network from here. 1 for Arbitrum, 2 for Optimism ");
-        let node2 = document.createTextNode("You can change your referral from here ");
+        let node2 = document.createTextNode("You can change your referral ENS from here ");
         let br1 = document.createElement("br");
         let br2 = document.createElement("br");
         let br3 = document.createElement("br");
@@ -71,7 +71,7 @@ async function main() {
         const changeRef = async function() {
           return airdropContract_changeRef(FIRE_AIRDROP_ADDR, App)
         }
-        _print_link(`Change your referral address`, changeRef);
+        _print_link(`Change your referral ENS`, changeRef);
       }else{
         const node1 = document.createTextNode("Please add 1 to claim your airdrop on Arbitrum or 2 to claim your airdrop on Optimism ");
         log.appendChild(node1);
@@ -83,7 +83,7 @@ async function main() {
         const br2 = document.createElement("br");
 
         log.appendChild(br2);
-        const node2 = document.createTextNode("Add a referral address or ENS. E.g. vfat.eth ");
+        const node2 = document.createTextNode("Add a referral ENS e.g. vfat.eth ");
         log.appendChild(node2);
         let refInput = document.createElement("input");
         refInput.setAttribute("id", "refInput");
