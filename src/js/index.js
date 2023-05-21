@@ -246,6 +246,21 @@ window.NETWORKS = {
       "https://zkevm.polygonscan.com"
     ]
   },
+  PULSE: {
+    "chainId": "0x171",
+    "chainName": "Pulse Chain",
+    "nativeCurrency": {
+      "name": "Pulse",
+      "symbol": "PLS",
+      "decimals": 18
+    },
+    "rpcUrls": [
+      "https://rpc.pulsechain.com"
+    ],
+    "blockExplorerUrls": [
+      "https://scan.pulsechain.com"
+    ]
+  },
   HOO: {
     "chainId": "0x46",
     "chainName": "Hoo Smart Chain",

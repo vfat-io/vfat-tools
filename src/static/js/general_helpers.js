@@ -648,6 +648,8 @@ async function loadGeneralChefContract(App, tokens, prices, chef, chefAddress, c
     break;
     case "zkevm" : _print(`<a href='https://zkevm.polygonscan.com/address/${chefAddress}' target='_blank'>Staking Contract</a>`);
     break;
+    case "pulse" : _print(`<a href='https://scan.pulsechain.com/address/${chefAddress}' target='_blank'>Staking Contract</a>`);
+    break;
   }
   _print(`Found ${poolCount} pools.\n`)
 

@@ -783,6 +783,12 @@ const polisTokens = [
   { "id": "dai","symbol": "DAI","contract": "0x247123e806a27Ea322bFd93e0273D04602dC942D" },
 ]
 
+const pulseTokens = [
+  { "id": "wrapped-pulse-wpls","symbol": "WPLS","contract": "0xa1077a294dde1b09bb078844df40758a5d0f9a27" },
+  { "id": "dai","symbol": "DAI","contract": "0xefD766cCb38EaF1dfd701853BFCe31359239F305" },
+  { "id": "pulsex","symbol": "PLSX","contract": "0x95b303987a60c71504d99aa1b13b4da07b0790ab" }
+]
+
 const SmartbchTokens = [
   { "id": "bitcoin-cash","symbol": "WBCH", "contract": "0x3743eC0673453E5009310C727Ba4eaF7b3a1cc04" }
 ];
@@ -1166,6 +1172,15 @@ async function getPolisPrices() {
   const idPrices = await lookUpPrices(polisTokens.map(x => x.id));
   const prices = {}
   for (const bt of polisTokens)
+      if (idPrices[bt.id])
+          prices[bt.contract] = idPrices[bt.id];
+  return prices;
+}
+
+async function getPulsePrices() {
+  const idPrices = await lookUpPrices(pulseTokens.map(x => x.id));
+  const prices = {}
+  for (const bt of pulseTokens)
       if (idPrices[bt.id])
           prices[bt.contract] = idPrices[bt.id];
   return prices;
