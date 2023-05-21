@@ -57,7 +57,11 @@ const ArbitrumTokens = [
   { "id": "chronos-finance", "symbol": "CHR", "contract": "0x15b2fb8f08e4ac1ce019eadae02ee92aedf06851" },
   { "id": "lido-dao", "symbol": "LDO", "contract": "0x13ad51ed4f1b7e9dc168d8a00cb3f4ddd85efa60" },
   { "id": "the-graph", "symbol": "GRT", "contract": "0x9623063377AD1B27544C965cCd7342f7EA7e88C7" },
-  { "id": "frax-ether", "symbol": "FRXETH", "contract": "0x178412e79c25968a32e89b11f63B33F733770c2A" }
+  { "id": "frax-ether", "symbol": "FRXETH", "contract": "0x178412e79c25968a32e89b11f63B33F733770c2A" },
+  { "id": "wombat-exchange", "symbol": "WOM", "contract": "0x7B5EB3940021Ec0e8e463D5dBB4B7B09a89DDF96" },
+  { "id": "bob", "symbol": "BOB", "contract": "0xb0b195aefa3650a6908f15cdac7d92f8a5791b0b" },
+  { "id": "staked-frax-ether", "symbol": "SFRXETH", "contract": "0x95ab45875cffdba1e5f451b950bc2e42c0053f39" },
+  { "id": "jones-usdc", "symbol": "JUSDC", "contract": "0xe66998533a1992ece9ea99cdf47686f4fc8458e0" }
 ];
 
 const ArbitrumNovaTokens = [
