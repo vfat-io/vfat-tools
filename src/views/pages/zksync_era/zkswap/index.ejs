@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include(`${partials}/head`); -%>
+
+<body>
+<%- include(`${partials}/header_main`); -%>
+<pre id="log">
+*************** 👨‍🌾 UNOFFICIAL ZKSWAP FARMING CALCULATOR 👨‍🌾 ***************
+
+WEBSITE: https://zkswap.biz/
+INFO : https://docs.zkswap.biz/
+FARM : https://app.zkswap.biz/farms
+TELEGRAM : https://t.me/zkswap_official
+TWITTER :  https://twitter.com/zkswap_official
+
+ZKS CONTRACT : 0xAbdb137D013b8B328FA43Fc04a6fA340D1CeA733
+
+*****************************************************************************
+
+</pre>
+<div class="loader--1"></div>
+<%- include(`${partials}/scripts`, {scriptname: 'zksync_era_zkswap'}); -%>
+</body>
+</html> 
