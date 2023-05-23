@@ -1179,7 +1179,7 @@ $(function() {
       const prices = await getZkSyncEraPrices();
   
         await loadChefContract(App, tokens, prices, ZKSMASTER, ZKSMASTER_ADDR, ZKSMASTER_ABI, rewardTokenTicker,
-            "rewardToken", null, rewardsPerWeek, "pendingReward", [], "zksync_era");
+            "rewardToken", null, rewardsPerWeek, "pendingReward", [1], "zksync_era");
     
         hideLoading();
       }

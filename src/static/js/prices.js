@@ -825,7 +825,6 @@ const VelasTokens = [
 
 const zksyncEraTokens = [
   //{ "id": "nexon","symbol": "NXN", "contract": "0xf823C3cD3CeBE0a1fA952ba88Dc9EEf8e0Bf46AD" },
-  { "id": "zkswap","symbol": "ZKS", "contract": "0xAbdb137D013b8B328FA43Fc04a6fA340D1CeA733" },
   { "id": "gemswap-2","symbol": "ZGEM", "contract": "0x2b64237277c605d07f17b96f9627712340c32981" },
   { "id": "weth","symbol": "WETH", "contract": "0x5AEa5775959fBC2557Cc8789bC1bf90A239D9a91" },
   { "id": "usd-coin","symbol": "USDC","contract": "0x3355df6D4c9C3035724Fd0e3914dE96A5a83aaf4" },
