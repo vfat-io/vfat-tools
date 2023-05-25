@@ -2339,6 +2339,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
   else if (pool.symbol.includes("VERSE-X")) stakeTokenTicker += " VERSE-X";
   else if (pool.name.includes("Pulse")) stakeTokenTicker += " PulseX LP";
   else if (pool.symbol.includes("Oreo-LP")) stakeTokenTicker += " OREO-SWAP LP";
+  else if (pool.symbol.includes("KS2-RT")) stakeTokenTicker += " Kyber Swap LP";
   else if (pool.symbol.includes("Sugar-LP")) stakeTokenTicker += " SUGAR-SWAP LP";
   else if (pool.symbol.includes("CMLT-LP")) stakeTokenTicker += " Camelot LP";
   else if (pool.symbol.includes("YLP")) stakeTokenTicker += " Yodedex LP";
@@ -2475,6 +2476,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
           pool.symbol.includes("Oreo-LP") ?  `https://oreoswap.finance` :
           pool.symbol.includes("Sugar-LP") ?  `https://sugarfinance.io` :
           pool.symbol.includes("STELLA LP") ?  `https://analytics.stellaswap.com/pairs/${pool.address}` :
+          pool.symbol.includes("KS2-RT") ?  `https://analytics.kyberswap.com/elastic/arbitrum/pool/${pool.address}` :
           pool.symbol.includes("DST-V2") ?  `https://dexscreener.com/dogechain/${pool.address}` :
           pool.symbol.includes("FX-V2") ?  `https://app.fx-swap.io/pair/${pool.address}` :
           pool.symbol.includes("PUD-LP") ?  `https://info.puddingswap.finance/pair/${pool.address}` :
@@ -2642,6 +2644,11 @@ function getUniPrices(tokens, prices, pool, chain="eth")
             `https://app.stellaswap.com/exchange/add/${t0address}/${t1address}`,
             `https://app.stellaswap.com/exchange/remove/${t0address}/${t1address}`,
             `https://app.stellaswap.com/exchange/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+          ] :
+          pool.symbol.includes("KS2-RT") ? [
+            `https://kyberswap.com/elastic/add/${t0address}/${t1address}`,
+            `https://kyberswap.com/elastic/remove/${t0address}/${t1address}`,
+            `https://kyberswap.com/swap/arbitrum/`
           ] :
           pool.symbol.includes("VERSE-X") ? [
             `https://verse.bitcoin.com/pools/`,

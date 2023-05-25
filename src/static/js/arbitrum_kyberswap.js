@@ -60,7 +60,7 @@ async function loadKyberChefContract(App, tokens, prices, chef, chefAddress, che
     if (poolPrices[i]) {
       const apr = printKyberChefPool(App, chefAbi, chefAddress, prices, tokens, poolInfos[i], i, poolPrices[i],
         poolInfos[i].rewardsPerWeek1, poolInfos[i].rewardsPerWeek2, poolInfos[i].rewardTokenTicker1, poolInfos[i].rewardTokenTicker2, poolInfos[i].rewardTokenAddress1, poolInfos[i].rewardTokenAddress2,
-        poolInfos[i].pendingRewards1, poolInfos[i].pendingRewards2, null, "arbitrum")
+        poolInfos[i].pendingRewards1, poolInfos[i].pendingRewards2, null, "arbitrum", poolInfos[i].userNftIds)
       aprs.push(apr);
     }
   }
@@ -88,7 +88,7 @@ async function loadKyberChefContract(App, tokens, prices, chef, chefAddress, che
 
 function printKyberChefPool(App, chefAbi, chefAddr, prices, tokens, poolInfo, poolIndex, poolPrices,
   rewardsPerWeek1, rewardsPerWeek2, rewardTokenTicker1, rewardTokenTicker2, rewardTokenAddress1, rewardTokenAddress2,
-  pendingRewards1, pendingRewards2, fixedDecimals, chain = "eth") {
+  pendingRewards1, pendingRewards2, fixedDecimals, chain = "eth", userNftIds) {
   fixedDecimals = fixedDecimals ?? 2;
   const sp = (poolInfo.stakedToken == null) ? null : getPoolPrices(tokens, prices, poolInfo.stakedToken, chain);
   var poolRewardsPerWeek1 = rewardsPerWeek1;
@@ -110,12 +110,12 @@ function printKyberChefPool(App, chefAbi, chefAddr, prices, tokens, poolInfo, po
   if (poolInfo.userStaked > 0) poolPrices.print_contained_price(userStaked);
   printKyberChefContractLinks(App, chefAbi, chefAddr, poolIndex, poolInfo.address, pendingRewards1, pendingRewards2,
     rewardTokenTicker1, rewardTokenTicker2, poolPrices.stakeTokenTicker, poolInfo.poolToken.unstaked,
-    poolInfo.userStaked, pendingRewardTokens1, pendingRewardTokens2, fixedDecimals, rewardPrice1, rewardPrice2, chain);
+    poolInfo.userStaked, pendingRewardTokens1, pendingRewardTokens2, fixedDecimals, rewardPrice1, rewardPrice2, chain, userNftIds);
   return apr;
 }
 
 function printKyberChefContractLinks(App, chefAbi, chefAddr, poolIndex, poolAddress, pendingRewards1, pendingRewards2,
-  rewardTokenTicker1, rewardTokenTicker2, stakeTokenTicker, unstaked, userStaked, pendingRewardTokens1, pendingRewardTokens2,fixedDecimals, rewardTokenPrice1, rewardTokenPrice2, chain) {
+  rewardTokenTicker1, rewardTokenTicker2, stakeTokenTicker, unstaked, userStaked, pendingRewardTokens1, pendingRewardTokens2,fixedDecimals, rewardTokenPrice1, rewardTokenPrice2, chain, userNftIds) {
   fixedDecimals = fixedDecimals ?? 2;
   const approveAndStake = async function () {
     return chefArbitrumContract_stake(chefAbi, chefAddr, poolIndex, poolAddress, App)
@@ -186,11 +186,12 @@ async function getKyberPoolInfo(app, chefContract, chefAddress, poolIndex) {
   let staked = 0;
   if(userNftIds.length > 0){
     try{
-      const userNftId = userNftIds[0] / 1;
-      const userInfo = await chefContract.getUserInfo(userNftId, poolIndex);
-      pendingRewardTokens1 = userInfo.rewardPending[0]
-      pendingRewardTokens2 = userInfo.rewardPending[1]
-      staked = userInfo.liquidity / 10 ** poolToken.decimals;
+      for(const userNftId of userNftIds){
+        const userInfo = await chefContract.getUserInfo(userNftId, poolIndex);
+        pendingRewardTokens1 += userInfo.rewardPending[0] //may have more than one NFT
+        pendingRewardTokens2 += userInfo.rewardPending[1]
+        staked = userInfo.liquidity / 10 ** poolToken.decimals;
+      }
     }catch(err){
       pendingRewardTokens1 = 0
       pendingRewardTokens2 = 0
@@ -214,6 +215,7 @@ async function getKyberPoolInfo(app, chefContract, chefAddress, poolIndex) {
     rewardTokenTicker1: rewardTokenTicker1,
     rewardTokenTicker2: rewardTokenTicker2,
     rewardsPerWeek1: rewardsPerWeek1,
-    rewardsPerWeek2: rewardsPerWeek2
+    rewardsPerWeek2: rewardsPerWeek2,
+    userNftIds: userNftIds
   };
 }
