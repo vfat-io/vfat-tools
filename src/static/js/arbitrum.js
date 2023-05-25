@@ -83,7 +83,8 @@ const main = async() => {
       ["Monopoly            ", `<a href="/arbitrum/monopoly"    >Various</a>`,"DUO                ","https://monopoly.finance"],
       ["GND Protocol        ", `<a href="/arbitrum/gnd"         >Various</a>`,"GND / XGND         ","https://gndprotocol.com"],
       ["Chronos             ", `<a href="/arbitrum/chronos"     >Various</a>`,"CHR                ","https://app.chronos.exchange"],
-      ["Wombex Finance      ", `<a href="/arbitrum/wombex"      >Various</a>`,"WOM                ","https://wombex.finance"]
+      ["Wombex Finance      ", `<a href="/arbitrum/wombex"      >Various</a>`,"WOM                ","https://wombex.finance"],
+      ["Kyber Swap          ", `<a href="/arbitrum/kyberswap"   >Various</a>`,"Varius             ","https://kyberswap.com"]
     ].reverse()
   }
 
