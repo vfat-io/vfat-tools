@@ -84,7 +84,7 @@ const main = async() => {
       ["GND Protocol        ", `<a href="/arbitrum/gnd"         >Various</a>`,"GND / XGND         ","https://gndprotocol.com"],
       ["Chronos             ", `<a href="/arbitrum/chronos"     >Various</a>`,"CHR                ","https://app.chronos.exchange"],
       ["Wombex Finance      ", `<a href="/arbitrum/wombex"      >Various</a>`,"WOM                ","https://wombex.finance"],
-      ["Kyber Swap          ", `<a href="/arbitrum/kyberswap"   >Various</a>`,"Varius             ","https://kyberswap.com"]
+      //["Kyber Swap          ", `<a href="/arbitrum/kyberswap"   >Various</a>`,"Varius             ","https://kyberswap.com"]
     ].reverse()
   }
 
