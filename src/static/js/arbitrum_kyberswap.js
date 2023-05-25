@@ -177,19 +177,26 @@ function printKyberAPR(rewardTokenTicker1, rewardTokenTicker2, rewardPrice1, rew
   }
 }
 
-async function getKyberPoolInfo(app, chefContract, chefAddress, poolIndex, pendingRewardsFunction) {
-  const nftAddress = "0xe222fbe074a436145b255442d919e4e3a6c6a480";
-  const nftContract = new ethers.Contract(nftAddress, KYBER_NFT_ABI, app.provider);
-  const userNftID = await nftContract.balanceOf(app.YOUR_ADDRESS);
+async function getKyberPoolInfo(app, chefContract, chefAddress, poolIndex) {
+  const userNftIds = await chefContract.getDepositedNFTs(app.YOUR_ADDRESS);
   const poolInfo = await chefContract.getPoolInfo(poolIndex);
   const poolToken = await getArbitrumToken(app, poolInfo.poolAddress, chefAddress);
-  // const userInfo = await chefContract.getUserInfo(userNftID, poolIndex);//provlima edw
-  // const pendingRewardTokens1 = userInfo.rewardPending[0]
-  // const pendingRewardTokens2 = userInfo.rewardPending[1]
-  // const staked = userInfo.liquidity / 10 ** poolToken.decimals;
-  const pendingRewardTokens1 = 0;
-  const pendingRewardTokens2 = 0;
-  const staked = 0;
+  let pendingRewardTokens1 = 0;
+  let pendingRewardTokens2 = 0;
+  let staked = 0;
+  if(userNftIds.length > 0){
+    try{
+      const userNftId = userNftIds[0] / 1;
+      const userInfo = await chefContract.getUserInfo(userNftId, poolIndex);
+      pendingRewardTokens1 = userInfo.rewardPending[0]
+      pendingRewardTokens2 = userInfo.rewardPending[1]
+      staked = userInfo.liquidity / 10 ** poolToken.decimals;
+    }catch(err){
+      pendingRewardTokens1 = 0
+      pendingRewardTokens2 = 0
+      staked = 0
+    }
+  }
   const rewardTokenAddress1 = "0xe4DDDfe67E7164b0FE14E218d80dC4C08eDC01cB"; //KNC
   const rewardTokenAddress2 = "0x912CE59144191C1204E64559FE8253a0e49E6548"; //ARB
   const rewardTokenTicker1 = "KNC";
