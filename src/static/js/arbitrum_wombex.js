@@ -16,15 +16,15 @@ const Pools = [
   "0x7d62c611896c2e0d1454b5c135d7bf4ac5eb0ba5",
   "0x3DaBea1853E1536b3Fe20bcD061c6843BE8a9538",
   "0x4bfcfa4b55f8445781f5c1118b115b8e315a5296",
-  // "0xee8e44ac5cd5d22704e09c1cfb11a601a5d020d6",
-  // "0x7febe9b6b1f48b4e8c7e7c2f2b0923111533158b",
+  "0xee8e44ac5cd5d22704e09c1cfb11a601a5d020d6",
+  "0x7febe9b6b1f48b4e8c7e7c2f2b0923111533158b",
   "0x28df708bc28bd29c41fb9e0002453c333086ffc1",
   "0xcd8a57c71f7a27d34adf85e0dd6689533b3a8adc",
   "0x9e39c7401bf657966ba0b1cb28d7894ca1923f15",
   "0x027d3316672f4e0fc6e9de5b05ac27304eb52c00",
   "0xd13CE1E6D08331cc37892B21F29927C379ff7d08",
-  // "0x431be1507762c72b9a16a26953cdda6d1340f13d",
-  // "0x12d5dc663d443b0d5207bdf23f95817bd184bb25",
+  "0x431be1507762c72b9a16a26953cdda6d1340f13d",
+  "0x12d5dc663d443b0d5207bdf23f95817bd184bb25",
 
 ].map(a => ({
       address: a,
@@ -89,13 +89,13 @@ async function loadWomSynthetixPoolInfo(App, tokens, prices, stakingAbi, staking
     stakeToken.staked = await STAKING_POOL.totalSupply() / 10 ** stakeToken.decimals;
   }
 
-  var newPriceAddresses = stakeToken.tokens.filter(x =>
-    !getParameterCaseInsensitive(prices, x));
-  var newPrices = await lookUpTokenPrices(newPriceAddresses);
-  for (const key in newPrices) {
-    if (newPrices[key]?.usd)
-      prices[key] = newPrices[key];
-  }
+  // var newPriceAddresses = stakeToken.tokens.filter(x =>
+  //   !getParameterCaseInsensitive(prices, x));
+  // var newPrices = await lookUpTokenPrices(newPriceAddresses);
+  // for (const key in newPrices) {
+  //   if (newPrices[key]?.usd)
+  //     prices[key] = newPrices[key];
+  // }
   var newTokenAddresses = stakeToken.tokens.filter(x =>
     !getParameterCaseInsensitive(tokens, x));
   for (const address of newTokenAddresses) {
