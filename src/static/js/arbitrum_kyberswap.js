@@ -180,21 +180,24 @@ function printKyberAPR(rewardTokenTicker1, rewardTokenTicker2, rewardPrice1, rew
 
 async function getKyberPoolInfo(app, chefContract, chefAddress, poolIndex) {
   const nftContractAddr = "0xe222fbe074a436145b255442d919e4e3a6c6a480";
-  // const nftContract = new ethers.Contract(nftContractAddr, KYBER_NFT_ABI, app.provider);
-  // const totalSupplyNfts = await nftContract.totalSupply() / 1;
+  const nftContract = new ethers.Contract(nftContractAddr, KYBER_NFT_ABI, app.provider);
+  const totalStakedNfts = await nftContract.balanceOf(chefAddress);
   const poolInfo = await chefContract.getPoolInfo(poolIndex);
   const poolToken = await getArbitrumToken(app, poolInfo.poolAddress, nftContractAddr);
-  // let totalStaked = 0;
-  // for(let i = 1; i <= totalSupplyNfts; i++){
-  //   try{
-  //     const userInfo = await chefContract.getUserInfo(i, poolIndex);
-  //     totalStaked += userInfo.liquidity / 10 ** poolToken.decimals;
-  //   }catch(err){
-  //     console.log(err);
-  //   }
-  // }
-  const userNftIds = await chefContract.getDepositedNFTs(app.YOUR_ADDRESS);
+  let totalStaked = 0;
+  for(let i = 0; i < totalStakedNfts - 1; i++){
+    const nftId = await nftContract.tokenOfOwnerByIndex(chefAddress, i);
+    const poolIds = await chefContract.getJoinedPools(nftId);
+    for(const _poolId of poolIds){
+      const poolId = _poolId / 1;
+      if(poolId === poolIndex){
+        const info = await chefContract.getUserInfo(nftId, poolId);
+        totalStaked += info.liquidity / 10 ** poolToken.decimals;
+      }
+    }
+  }
   poolToken.staked = totalStaked;
+  const userNftIds = await chefContract.getDepositedNFTs(app.YOUR_ADDRESS);
   let pendingRewardTokens1 = 0;
   let pendingRewardTokens2 = 0;
   let staked = 0;
