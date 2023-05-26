@@ -10,7 +10,7 @@ async function main() {
 
     _print(`Initialized ${App.YOUR_ADDRESS}\n`);
     _print("Reading smart contracts...\n");
-    _print("No given time for claiming your airdrop, it will be random\n");
+    _print("Claim your airdrop by June 2nd. The airdrop will be sent June 3rd 2023\n");
 
     let eligible = false;
     function reqListener() {
