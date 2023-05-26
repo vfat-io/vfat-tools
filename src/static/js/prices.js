@@ -7,7 +7,7 @@ const ArbitrumTokens = [
   { "id": "tether","symbol": "USDT", "contract": "0xEC13336bbd50790a00CDc0fEddF11287eaF92529" },  //this gmUSD and its temporary
   { "id": "dai","symbol": "DAI", "contract": "0xda10009cbd5d07dd0cecc66161fc93d7c9000da1" },
   { "id": "dai","symbol": "DAI", "contract": "0xd85E038593d7A098614721EaE955EC2022B9B91B" },    //this gDAI and its temporary
-  { "id": "dai","symbol": "DAI", "contract": "0xeb8e93a0c7504bffd8a8ffa56cd754c63aaebfe8" },    //this +DAI and its temporary
+  { "id": "overnight-dai","symbol": "DAI+", "contract": "0xeb8e93a0c7504bffd8a8ffa56cd754c63aaebfe8" },
   { "id": "arbinyan","symbol": "NYAN", "contract": "0xed3fb761414da74b74f33e5c5a1f78104b188dfc" },
   { "id": "wrapped-ether", "symbol": "WETH", "contract": "0x82aF49447D8a07e3bd95BD0d56f35241523fBab1"},
   { "id": "sushi", "symbol": "SUSHI", "contract": "0xd4d42F0b6DEF4CE0383636770eF773390d85c61A"},
@@ -42,7 +42,6 @@ const ArbitrumTokens = [
   { "id": "gains-network", "symbol": "GNS", "contract": "0x18c11FD286C5EC11c3b683Caa813B77f5163A122" },
   { "id": "dola-usd", "symbol": "DOLA", "contract": "0x6a7661795c374c0bfc635934efaddff3a7ee23b6" },
   { "id": "mimatic", "symbol": "MAI", "contract": "0x3F56e0c36d275367b8C502090EDF38289b3dEa0d" },
-  { "id": "usd", "symbol": "USD+", "contract": "0xe80772Eaf6e2E18B651F160Bc9158b2A5caFCA65" },
   { "id": "camelot-token", "symbol": "GRAIL", "contract": "0x3d9907f9a368ad0a51be60f7da3b97cf940982d8" },
   { "id": "liquity-usd", "symbol": "LUSD", "contract": "0x93b346b6bc2548da6a1e7d98e9a421b42541425b" },
   { "id": "dei-token", "symbol": "DEI", "contract": "0xDE1E704dae0B4051e80DAbB26ab6ad6c12262DA0" },
@@ -61,7 +60,8 @@ const ArbitrumTokens = [
   { "id": "wombat-exchange", "symbol": "WOM", "contract": "0x7B5EB3940021Ec0e8e463D5dBB4B7B09a89DDF96" },
   { "id": "bob", "symbol": "BOB", "contract": "0xb0b195aefa3650a6908f15cdac7d92f8a5791b0b" },
   { "id": "staked-frax-ether", "symbol": "SFRXETH", "contract": "0x95ab45875cffdba1e5f451b950bc2e42c0053f39" },
-  { "id": "jones-usdc", "symbol": "JUSDC", "contract": "0xe66998533a1992ece9ea99cdf47686f4fc8458e0" }
+  { "id": "jones-usdc", "symbol": "JUSDC", "contract": "0xe66998533a1992ece9ea99cdf47686f4fc8458e0" },
+  { "id": "usd", "symbol": "USD+", "contract": "0xe80772eaf6e2e18b651f160bc9158b2a5cafca65" }
 ];
 
 const ArbitrumNovaTokens = [
