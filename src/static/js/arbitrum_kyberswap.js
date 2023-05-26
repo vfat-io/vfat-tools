@@ -34,6 +34,7 @@ async function loadKyberChefContract(App, tokens, prices, chef, chefAddress, che
   _print(`Found ${poolCount} pools.\n`)
 
   _print(`Showing incentivized pools only.\n`);
+  _print(`Calculating the total staked for each pool... This may take more than 5 minutes please be patient\n`);
 
   const poolInfos = await Promise.all([...Array(poolCount).keys()].map(async (x) =>
     await getKyberPoolInfo(App, chefContract, chefAddress, x)));
@@ -118,10 +119,10 @@ function printKyberChefContractLinks(App, chefAbi, chefAddr, poolIndex, poolAddr
   rewardTokenTicker1, rewardTokenTicker2, stakeTokenTicker, unstaked, userStaked, pendingRewardTokens1, pendingRewardTokens2,fixedDecimals, rewardTokenPrice1, rewardTokenPrice2, chain, userNftIds) {
   fixedDecimals = fixedDecimals ?? 2;
   const approveAndStake = async function () {
-    return chefArbitrumContract_stake(chefAbi, chefAddr, poolIndex, poolAddress, App)
+    return kyberArbitrumContract_stake(chefAbi, chefAddr, poolIndex, poolAddress, App, userNftIds)
   }
   const unstake = async function () {
-    return chefArbitrumContract_unstake(chefAbi, chefAddr, poolIndex, App, pendingRewardsFunction)
+    return kyberArbitrumContract_unstake(chefAbi, chefAddr, poolIndex, App, userNftIds)
   }
   const claim = async function () {
     return chefArbitrumContract_claim(chefAbi, chefAddr, poolIndex, App, pendingRewardsFunction, claimFunction)
@@ -178,9 +179,22 @@ function printKyberAPR(rewardTokenTicker1, rewardTokenTicker2, rewardPrice1, rew
 }
 
 async function getKyberPoolInfo(app, chefContract, chefAddress, poolIndex) {
-  const userNftIds = await chefContract.getDepositedNFTs(app.YOUR_ADDRESS);
+  const nftContractAddr = "0xe222fbe074a436145b255442d919e4e3a6c6a480";
+  // const nftContract = new ethers.Contract(nftContractAddr, KYBER_NFT_ABI, app.provider);
+  // const totalSupplyNfts = await nftContract.totalSupply() / 1;
   const poolInfo = await chefContract.getPoolInfo(poolIndex);
-  const poolToken = await getArbitrumToken(app, poolInfo.poolAddress, chefAddress);
+  const poolToken = await getArbitrumToken(app, poolInfo.poolAddress, nftContractAddr);
+  // let totalStaked = 0;
+  // for(let i = 1; i <= totalSupplyNfts; i++){
+  //   try{
+  //     const userInfo = await chefContract.getUserInfo(i, poolIndex);
+  //     totalStaked += userInfo.liquidity / 10 ** poolToken.decimals;
+  //   }catch(err){
+  //     console.log(err);
+  //   }
+  // }
+  const userNftIds = await chefContract.getDepositedNFTs(app.YOUR_ADDRESS);
+  poolToken.staked = totalStaked;
   let pendingRewardTokens1 = 0;
   let pendingRewardTokens2 = 0;
   let staked = 0;
@@ -218,4 +232,63 @@ async function getKyberPoolInfo(app, chefContract, chefAddress, poolIndex) {
     rewardsPerWeek2: rewardsPerWeek2,
     userNftIds: userNftIds
   };
+}
+
+const kyberArbitrumContract_stake = async function (chefAbi, chefAddress, poolIndex, stakeTokenAddr, App, userNftIds) {
+  const signer = App.provider.getSigner()
+
+  const STAKING_TOKEN = new ethers.Contract("0xe222fbe074a436145b255442d919e4e3a6c6a480", KYBER_NFT_ABI, signer)
+  const CHEF_CONTRACT = new ethers.Contract(chefAddress, chefAbi, signer)
+
+  let allow = Promise.resolve()
+
+  if (userNftIds.length > 0) {
+    showLoading()
+    for(const userNftId of userNftIds){
+      allow = STAKING_TOKEN.approve(chefAddress, userNftId, ethers.constants.MaxUint256)
+      .then(function (t) {
+        return App.provider.waitForTransaction(t.hash)
+      })
+      .catch(function () {
+        hideLoading()
+        alert('Try resetting your approval to 0 first')
+      })
+    }
+  }
+
+  if (userNftIds.length > 0) {
+    showLoading()
+    allow
+      .then(async function () {
+        CHEF_CONTRACT.depositAndJoin(poolIndex, userNftIds)
+          .then(function (t) {
+            App.provider.waitForTransaction(t.hash).then(function () {
+              hideLoading()
+            })
+          })
+          .catch(function () {
+            hideLoading()
+            _print('Something went wrong.')
+          })
+      })
+      .catch(function () {
+        hideLoading()
+        _print('Something went wrong.')
+      })
+  } else {
+    alert('You have no nft to stake!!')
+  }
+}
+
+const kyberArbitrumContract_unstake = async function (chefAbi, chefAddress, poolIndex, App, userNftIds) {
+  const signer = App.provider.getSigner()
+  const CHEF_CONTRACT = new ethers.Contract(chefAddress, chefAbi, signer)
+  showLoading()
+    CHEF_CONTRACT.withdraw(userNftIds)
+      .then(function (t) {
+        return App.provider.waitForTransaction(t.hash)
+      })
+      .catch(function () {
+        hideLoading()
+      })
 }
