@@ -2317,8 +2317,8 @@ function getUniPrices(tokens, prices, pool, chain="eth")
     console.log(`Missing information for token ${pool.token1}.`);
     return undefined;
   }
-  var q0 = pool.q0 / 10 ** t0.decimals;
-  var q1 = pool.q1 / 10 ** t1.decimals;
+  var q0 = pool.name.includes("KyberSwap") ? pool.q0 : pool.q0 / 10 ** t0.decimals;
+  var q1 = pool.name.includes("KyberSwap") ? pool.q1 : pool.q1 / 10 ** t1.decimals;
   if (p0 == null)
   {
       p0 = q1 * p1 / q0;

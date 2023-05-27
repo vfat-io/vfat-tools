@@ -119,10 +119,12 @@ async function getArbitrumKyberPool(App, pool, poolAddress, stakingAddress) {
   ];
   const [decimals, token0, token1, symbol, name, totalSupply, staked, unstaked]
     = await App.ethcallProvider.all(calls);
-  const c0 = new ethers.Contract(token0, ERC20_ABI, App.provider);
-  q0 = await c0.balanceOf(poolAddress);
-  const c1 = new ethers.Contract(token1, ERC20_ABI, App.provider);
-  q1 = await c1.balanceOf(poolAddress);
+  const token_0 = await getArbitrumToken(App, token0, poolAddress);
+  const token_1 = await getArbitrumToken(App, token1, poolAddress);
+  // const q0 = token_0.staked / 10 ** token_0.decimals;
+  // const q1 = token_1.staked / 10 ** token_1.decimals;
+  const q0 = token_0.staked;
+  const q1 = token_1.staked;
   return {
     symbol,
     name,
