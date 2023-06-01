@@ -8,7 +8,8 @@ const main = async() => {
     "title":"Pulse Network",
     "heading":["Pool Provider","LP", "Reward Tokens", "INFO"],
     "rows": [
-      ["Pulsex                 ", `<a href="pulsex"      >Various</a>`,"INC        ","https://app.pulsex.com"]
+      ["Pulsex                 ", `<a href="pulsex"      >Various</a>`,"INC        ","https://app.pulsex.com"],
+      ["Daytona Finance        ", `<a href="daytona"     >Various</a>`,"TONI       ","https://www.daytona.finance"]
     ].reverse()
   }
 
