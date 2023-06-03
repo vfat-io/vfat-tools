@@ -14,10 +14,10 @@ async function main() {
   _print("Reading smart contracts...\n");
 
   const tokens = {};
-  const prices = await getOptimisticPrices();
+  const prices = await getArbitrumPrices();
 
   //load fire price from usdc/fire lp
-  await loadSynthetixPoolInfoPrice(App, tokens, prices, App.YOUR_ADDRESS, "0x9251514625f4fd4aec6c0bce89c95ec247e9e6f0");
+  await loadSynthetixPoolInfoPrice(App, tokens, prices, App.YOUR_ADDRESS, "0x38d3f9f8539ee300575108d072c9bff7fa009cdf");
 
   await loadXFire(App, prices);
 
@@ -122,7 +122,7 @@ if (currentTokens / 1e18 > 0) {
   showLoading()
   allow
     .then(async function() {
-      MAIN_FIRE_ABI.deposit(currentTokens, {gasLimit: 500000})
+      MAIN_FIRE_ABI.deposit(currentTokens)
         .then(function(t) {
           App.provider.waitForTransaction(t.hash).then(function() {
             hideLoading()
@@ -146,7 +146,7 @@ const contract_unstake = async function(contractAddress, App) {
 const signer = App.provider.getSigner()
 const MAIN_FIRE_WRITE_CONTRACT = new ethers.Contract(contractAddress, MAIN_FIRE_ABI, signer)
 showLoading()
-MAIN_FIRE_WRITE_CONTRACT.withdraw({gasLimit: 500000})
+MAIN_FIRE_WRITE_CONTRACT.withdraw()
     .then(function(t) {
       return App.provider.waitForTransaction(t.hash)
     })
