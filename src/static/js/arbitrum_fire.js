@@ -67,13 +67,10 @@ const usersStakedAmount = wFireAmount * fireTotalSupply / wFireMaxSupply;
 _print(`Starting date : ${startDate}\n`);
 _print(`Ending date : ${endDate}\n`);
 
-if(eligible){
+if(fireAmount > 0){
   _print("You are a part of the airdrop\n");
 
   _print(`You are staking ${usersStakedAmount * multiplier} FIRE $${((usersStakedAmount * multiplier) * firePrice).toFixed(2)}\n`);
-
-  // _print(`You have ${fireAmount} FIRE $${(fireAmount * firePrice).toFixed(2)} to stake\n`);
-  // _print(`You have ${wFireAmount} wFIRE to unstake\n`)
 
   const approveAndStake = async function() {
     return contract_stake(MAIN_CONTRACT_ADDR, App, FIRE_ADDR)
@@ -82,7 +79,7 @@ if(eligible){
     return contract_unstake(MAIN_CONTRACT_ADDR, App)
   }
   if(Date.now() / 1000 < startTime){
-    _print_link(`Stake ${fireAmount.toFixed(2)} FIRE`, approveAndStake);
+    _print_link(`Stake ${fireAmount.toFixed(6)} FIRE`, approveAndStake);
   }else{
     _print("Deposit period has closed");
   }
