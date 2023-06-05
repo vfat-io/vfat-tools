@@ -67,7 +67,7 @@ async function loadXFire(App, prices){
   _print(`Starting date : ${startDate}\n`);
   _print(`Ending date : ${endDate}\n`);
 
-  if(eligible){
+  if(fireAmount > 0){
     _print("You are a part of the airdrop\n");
 
     _print(`You are staking ${usersStakedAmount * multiplier} FIRE $${((usersStakedAmount * multiplier) * firePrice).toFixed(2)}\n`);
