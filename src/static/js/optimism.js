@@ -26,7 +26,8 @@ const main = async() => {
       ["Hop Exchange          ", `<a href="hop"               >Various</a>`,"HOP          ","https://app.hop.exchange"],
       ["Reaper.Farm           ", `<a href="reaperfarm"        >Various</a>`,"Various      ","https://reaper.farm"],
       ["Arrakis               ", `<a href="arrakis"           >Various</a>`,"OP           ","https://www.arrakis.finance"],
-      ["Fire                  ", `<a href="fire"              >Various</a>`,"wFIRE        ",""]
+      ["Fire                  ", `<a href="fire"              >Various</a>`,"wFIRE        ",""],
+      ["Exactly               ", `<a href="exactly"           >Various</a>`,"OP           ","https://app.exact.ly"]
     ].reverse()
   }
 
