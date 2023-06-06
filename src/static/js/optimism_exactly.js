@@ -8,6 +8,7 @@ const REWARD_ABI = [{"inputs":[],"stateMutability":"nonpayable","type":"construc
 
 const Pools = [
   "0xc4d4500326981eacD020e20A81b1c479c161c7EF",
+  "0x81C9A7B55A4df39A9B7B5F781ec0e53539694873"
 
 ].map(a => ({
       address: a,
@@ -65,6 +66,7 @@ async function loadExactlySynthetixPoolInfo(App, tokens, prices, stakingAbi, sta
     stakeToken.staked = await STAKING_POOL.totalAssets() / 10 ** stakeToken.decimals;
 
     const totalShares = await STAKING_POOL.totalSupply() / 10 ** stakeToken.decimals;
+    const symbol = await STAKING_POOL.symbol();
 
     var newPriceAddresses = stakeToken.tokens.filter(x =>
       !getParameterCaseInsensitive(prices, x));
@@ -104,7 +106,8 @@ async function loadExactlySynthetixPoolInfo(App, tokens, prices, stakingAbi, sta
 
     const STAKING_REWARD_MULTI = new ethcall.Contract("0xBd1ba78A3976cAB420A9203E6ef14D18C2B2E031", REWARD_ABI);
 
-    const calls2 = [STAKING_REWARD_MULTI.claimable([stakeTokenAddress,true,false], App.YOUR_ADDRESS, rewardTokenAddress)]
+    const ops = [true,false]
+    const calls2 = [STAKING_REWARD_MULTI.claimable([{ market: stakeTokenAddress, operations: ops}], App.YOUR_ADDRESS, rewardTokenAddress)]
     const [earned_] = await App.ethcallProvider.all(calls2);
 
     const staked_tvl = poolPrices.staked_tvl;
@@ -128,12 +131,17 @@ async function loadExactlySynthetixPoolInfo(App, tokens, prices, stakingAbi, sta
       staked_tvl,
       userStaked,
       userUnstaked,
-      earned
+      earned,
+      totalShares,
+      symbol,
+      userSharesStaked,
+      stakeToken
     }
 }
 
 async function printExactlySynthetixPool(App, info, chain="eth", customURLs) {
-  info.poolPrices.print_price(chain, 4, customURLs);
+  _print(`${info.stakeTokenTicker} Price: $${info.stakeTokenPrice.toFixed(2)} Market Cap: $${formatMoney(info.poolPrices.tvl)}`);
+  _print(`Staked: ${info.stakeToken.staked.toFixed(4)} ${info.stakeTokenTicker} ($${formatMoney(info.poolPrices.staked_tvl)}) (${info.totalShares.toFixed(4)} ${info.symbol} ($${formatMoney((info.totalShares * info.stakeTokenPrice).toFixed(2))}))`);
   const userStakedUsd = info.userStaked * info.stakeTokenPrice;
   const userStakedPct = userStakedUsd / info.staked_tvl * 100;
   _print(`You are staking ${info.userStaked.toFixed(6)} ${info.stakeTokenTicker} ` +
