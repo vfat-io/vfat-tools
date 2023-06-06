@@ -8,7 +8,7 @@ const main = async() => {
     "title":"Goerli Network",
     "heading":["Pool Provider","LP", "Reward Tokens", "INFO"],
     "rows": [
-      ["Fire                ", `<a href="/arbitrum/fire"        >Various</a>`,"wFIRE          ","https://twitter.com/promethios_fire"]
+      ["Fire                ", `<a href="/goerli/fire"        >Various</a>`,"wFIRE          ","https://twitter.com/promethios_fire"]
     ].reverse()
   }
 
