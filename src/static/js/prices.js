@@ -492,6 +492,10 @@ const FxTokens = [
   { "id": "fx-coin", "symbol": "FX", "contract": "0x80b5a32E4F032B2a058b4F29EC95EEfEEB87aDcd"}
 ];
 
+const GoerliTokens = [ 
+  { "id": "tether", "symbol": "USDT", "contract": "0x966289b2c448e189664EC3268766335da7079b6b"}
+];
+
 const xdaiTokens = [ 
   { "id": "xdai","symbol": "xDAI","contract": "0xe91D153E0b41518A2Ce8Dd3D7944Fa863463a97d" },
   { "id": "tether","symbol": "USDT","contract": "0x4ECaBa5870353805a9F068101A40E0f32ed605C6" },
@@ -1021,6 +1025,15 @@ async function getFxPrices() {
   const idPrices = await lookUpPrices(FxTokens.map(x => x.id));
   const prices = {}
   for (const bt of FxTokens)
+      if (idPrices[bt.id])
+          prices[bt.contract] = idPrices[bt.id];
+  return prices;
+}
+
+async function getGoerliPrices() {
+  const idPrices = await lookUpPrices(GoerliTokens.map(x => x.id));
+  const prices = {}
+  for (const bt of GoerliTokens)
       if (idPrices[bt.id])
           prices[bt.contract] = idPrices[bt.id];
   return prices;

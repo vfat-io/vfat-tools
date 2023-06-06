@@ -33,6 +33,9 @@ const pageNetwork = function() {
   if (network.toLowerCase() === 'zkevm') {
     return window.NETWORKS.ZKEVM
   }
+  if (network.toLowerCase() === 'goerli') {
+    return window.NETWORKS.GOERLI
+  }
   if (network.toLowerCase() === 'pulse') {
     return window.NETWORKS.PULSE
   }
@@ -3764,6 +3767,9 @@ function getErc20Prices(prices, pool, chain="eth") {
     case "zkevm_polygon":
       poolUrl=`https://zkevm.polygonscan.com/token/${pool.address}`;
       break;
+    case "goerli":
+      poolUrl=`https://goerli.etherscan.io/token/${pool.address}`;
+      break;
     case "pulse":
       poolUrl=`https://scan.pulsechain.com/token/${pool.address}`;
       break;
@@ -4506,6 +4512,9 @@ async function printSynthetixPool(App, info, chain="eth", customURLs) {
       case "zkevm_polygon":
         _print(`<a target="_blank" href="https://zkevm.polygonscan.com/address/${info.stakingAddress}#code">zkEVM POLYGON Scan</a>`);
         break;
+      case "goerli":
+        _print(`<a target="_blank" href="https://goerli.etherscan.io/address/${info.stakingAddress}#code">Goerli Scan</a>`);
+        break;
       case "pulse":
         _print(`<a target="_blank" href="https://scan.pulsechain.com/address/${info.stakingAddress}#code">Pulse Scan</a>`);
         break;
@@ -4673,6 +4682,8 @@ function getChainExplorerUrl(chain, address){
       return `https://explorer.zksync.io/address/${address}`;
     case "zkevm_polygon" :
       return `https://zkevm.polygonscan.com/address/${address}`;
+    case "goerli" :
+      return `https://goerli.etherscan.io/token/${address}`;
     case "pulse" :
       return `https://scan.pulsechain.com/address/${address}`;
     case "cronos" :
