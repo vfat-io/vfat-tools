@@ -52,7 +52,7 @@ async function loadXFire(App, prices){
   const endTime = await MAIN_CONTRACT.endTime() / 1;
   const multiplier = await MAIN_CONTRACT.multiplier() / 1e18;
   const wFireAmount = await MAIN_CONTRACT.userInfo(App.YOUR_ADDRESS) / 1e18;
-  const fireAmount = await FIRE_CONTRACT.balanceOf(App.YOUR_ADDRESS) / 1e18;
+  const fireAmount = await FIRE_CONTRACT.balanceOf(App.YOUR_ADDRESS) / 1e9;
 
   const fireTotalSupply = await FIRE_CONTRACT.totalSupply();
   const wFireMaxSupply = await WFIRE_CONTRACT.MAX_WFIRE_SUPPLY();
@@ -100,13 +100,14 @@ const contract_stake = async function(contractAddress, App, stakeTokenAddr) {
   const signer = App.provider.getSigner()
 
   const STAKING_TOKEN = new ethers.Contract(stakeTokenAddr, ERC20_ABI, signer)
+  const STAKING_CONTRACT = new ethers.Contract(contractAddress, MAIN_FIRE_ABI, signer)
 
   const currentTokens = await STAKING_TOKEN.balanceOf(App.YOUR_ADDRESS)
   const allowedTokens = await STAKING_TOKEN.allowance(App.YOUR_ADDRESS, contractAddress)
 
   let allow = Promise.resolve()
 
-  if (allowedTokens / 1e18 < currentTokens / 1e18) {
+  if (allowedTokens / 1e9 < currentTokens / 1e9) {
     showLoading()
     allow = STAKING_TOKEN.approve(contractAddress, ethers.constants.MaxUint256)
       .then(function(t) {
@@ -118,11 +119,11 @@ const contract_stake = async function(contractAddress, App, stakeTokenAddr) {
       })
   }
 
-  if (currentTokens / 1e18 > 0) {
+  if (currentTokens / 1e9 > 0) {
     showLoading()
     allow
       .then(async function() {
-        MAIN_FIRE_ABI.deposit(currentTokens, {gasLimit: 500000})
+        STAKING_CONTRACT.deposit(currentTokens, {gasLimit: 500000})
           .then(function(t) {
             App.provider.waitForTransaction(t.hash).then(function() {
               hideLoading()
