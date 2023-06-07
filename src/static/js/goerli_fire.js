@@ -79,11 +79,11 @@ async function loadXFire(App, prices){
   _print(`Ending date : ${endDate}\n`);
 
   if(fireAirdropAmountUi > 0){
-    _print("You are a part of the airdrop\n");
+    _print("My brother in flames, you received Airdrop 0 and are eligible to 3x your FIRE in 3 weeks.\n");
 
-    _print(`You are staking ${usersStakedAmount.toFixed(4)} FIRE $${((usersStakedAmount) * firePrice).toFixed(4)} (Multiplied 3x = ${(usersStakedAmount * multiplier).toFixed(4)})\n`);
+    _print(`Currently staking ${usersStakedAmount.toFixed(4)} FIRE $${((usersStakedAmount) * firePrice).toFixed(4)} (To receive multiplied 3x = ${(usersStakedAmount * multiplier).toFixed(4)})\n`);
 
-    _print(`Your total airdrop amount was: ${fireAirdropAmountUi.toFixed(4)}\n`)
+    _print(`Your total airdrop was: ${fireAirdropAmountUi.toFixed(4)}\n`)
 
     _print(`Your current FIRE balance is: ${fireAmountUi.toFixed(4)}\n`)    
 
@@ -96,15 +96,15 @@ async function loadXFire(App, prices){
     if(Date.now() / 1000 < startTime){
       _print_link(`Stake ${fireRemainAmountUi.toFixed(4)} FIRE`, approveAndStake);
     }else{
-      _print("Deposit period has closed");
+      _print("The deposit period has closed");
     }
     if(Date.now() / 1000 > endTime){
-      _print_link(`Unstake ${(usersStakedAmount * multiplier).toFixed(2)} FIRE (Multiplied 3x = ${(usersStakedAmount * multiplier)})`, unstake);
+      _print_link(`Unstake ${(usersStakedAmount * multiplier).toFixed(2)} and claime your FIRE (Multiplied 3x = ${(usersStakedAmount * multiplier)})`, unstake);
     }else{
-      _print(`You can withdraw you FIRE after ${endDate}`);
+      _print(`Withdraw your FIRE after ${endDate}`);
     }
   }else{
-    _print("You are not a part of the airdrop");
+    _print("My brother in flames, you did not receive Airdrop 0 and are ineligible for this contract. Stay tuned for information on depositing for LP Rewards. https://t.me/promethios_main");
   }
 }
 
