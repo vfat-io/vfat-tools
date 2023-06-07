@@ -59,8 +59,10 @@ async function loadXFire(App, prices){
   const AIRDROP_CONTRACT = new ethers.Contract(airdropHelperAddr, AIRDROP_CONTRACT_ABI, App.provider);
   const fireAmount = await FIRE_CONTRACT.balanceOf(App.YOUR_ADDRESS);
   const fireAmountUi = await FIRE_CONTRACT.balanceOf(App.YOUR_ADDRESS) / 1e9;
-  const fireAirdropAmountUi = await AIRDROP_CONTRACT.userAirdrop(App.YOUR_ADDRESS) / 1e9;
-  const fireAirdropAmount = await AIRDROP_CONTRACT.userAirdrop(App.YOUR_ADDRESS);
+  const wFireAirdropAmount = await AIRDROP_CONTRACT.userAirdrop(App.YOUR_ADDRESS);
+
+  const fireAirdropAmountUi = await WFIRE_CONTRACT.wrapperToUnderlying(wFireAirdropAmount) / 1e9;
+  const fireAirdropAmount = await WFIRE_CONTRACT.wrapperToUnderlying(wFireAirdropAmount);
 
   const firePrice = getParameterCaseInsensitive(prices, FIRE_ADDR)?.usd;
 
@@ -79,11 +81,11 @@ async function loadXFire(App, prices){
   if(fireAirdropAmountUi > 0){
     _print("You are a part of the airdrop\n");
 
-    _print(`You are staking ${usersStakedAmount} FIRE $${((usersStakedAmount * multiplier) * firePrice).toFixed(2)} (Multiplied 3x = ${(usersStakedAmount * multiplier)})\n`);
+    _print(`You are staking ${usersStakedAmount.toFixed(4)} FIRE $${((usersStakedAmount) * firePrice).toFixed(4)} (Multiplied 3x = ${(usersStakedAmount * multiplier).toFixed(4)})\n`);
 
-    _print(`Your total airdrop amount was: ${fireAirdropAmountUi}\n`)
+    _print(`Your total airdrop amount was: ${fireAirdropAmountUi.toFixed(4)}\n`)
 
-    _print(`Your current FIRE balance is: ${fireAmountUi}\n`)    
+    _print(`Your current FIRE balance is: ${fireAmountUi.toFixed(4)}\n`)    
 
     const approveAndStake = async function() {
       return contract_stake(MAIN_CONTRACT_ADDR, App, FIRE_ADDR, fireRemainAmount)
@@ -92,7 +94,7 @@ async function loadXFire(App, prices){
       return contract_unstake(MAIN_CONTRACT_ADDR, App)
     }
     if(Date.now() / 1000 < startTime){
-      _print_link(`Stake ${fireRemainAmountUi.toFixed(2)} FIRE`, approveAndStake);
+      _print_link(`Stake ${fireRemainAmountUi.toFixed(4)} FIRE`, approveAndStake);
     }else{
       _print("Deposit period has closed");
     }
@@ -111,9 +113,6 @@ const contract_stake = async function(contractAddress, App, stakeTokenAddr, curr
 
   const STAKING_TOKEN = new ethers.Contract(stakeTokenAddr, FIRE_TOKEN_ABI, signer)
   const STAKING_CONTRACT = new ethers.Contract(contractAddress, MAIN_FIRE_ABI, signer)
-
-  // const _currentTokensHexDecimals = BigNumber.from(currentTokens * 1e9);
-  // const currentTokensHexDecimals = Math.round(_currentTokensHexDecimals);
   const allowedTokens = await STAKING_TOKEN.allowance(App.YOUR_ADDRESS, contractAddress)
 
   let allow = Promise.resolve()
