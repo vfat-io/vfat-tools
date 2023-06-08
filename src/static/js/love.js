@@ -123,10 +123,38 @@ function printLoveChefPool(App, chefAbi, chefAddr, prices, tokens, poolInfo, poo
     staked_tvl, userStaked, poolPrices.price, fixedDecimals);
   if (poolInfo.userLPStaked > 0) sp?.print_contained_price(userStaked);
   if (poolInfo.userStaked > 0) poolPrices.print_contained_price(userStaked);
-  printChefContractLinks(App, chefAbi, chefAddr, poolIndex, poolInfo.address, pendingRewardsFunction,
+  printLoveContractLinks(App, chefAbi, chefAddr, poolIndex, poolInfo.address, pendingRewardsFunction,
     rewardTokenTicker, poolPrices.stakeTokenTicker, poolInfo.poolToken.unstaked,
     poolInfo.userStaked, poolInfo.pendingRewardTokens, fixedDecimals, claimFunction, rewardPrice, chain, depositFee, withdrawFee);
   return apr;
+}
+
+function printLoveContractLinks(App, chefAbi, chefAddr, poolIndex, poolAddress, pendingRewardsFunction,
+    rewardTokenTicker, stakeTokenTicker, unstaked, userStaked, pendingRewardTokens, fixedDecimals,
+    claimFunction, rewardTokenPrice, chain, depositFee, withdrawFee) {
+  fixedDecimals = fixedDecimals ?? 2;
+  const approveAndStake = async function() {
+    return chefContract_stake(chefAbi, chefAddr, poolIndex, poolAddress, App)
+  }
+  const unstake = async function() {
+    return chefContract_unstake(chefAbi, chefAddr, poolIndex, App, pendingRewardsFunction)
+  }
+  const claim = async function() {
+    return chefContract_claim(chefAbi, chefAddr, poolIndex, App, pendingRewardsFunction, claimFunction)
+  }
+  if(depositFee > 0){
+    _print_link(`Stake ${unstaked.toFixed(6)} ${stakeTokenTicker} - Fee ${depositFee}%`, approveAndStake)
+  }else{
+    _print_link(`Stake ${unstaked.toFixed(6)} ${stakeTokenTicker}`, approveAndStake)
+  }
+  if(withdrawFee > 0){
+    _print_link(`Unstake ${userStaked.toFixed(6)} ${stakeTokenTicker} - Fee ${withdrawFee}%`, unstake)
+  }else{
+    _print_link(`Unstake ${userStaked.toFixed(6)} ${stakeTokenTicker}`, unstake)
+  }
+  _print_link(`Claim ${pendingRewardTokens.toFixed(6)} ${rewardTokenTicker} ($${formatMoney(pendingRewardTokens*rewardTokenPrice)})`, claim)
+  _print(`Staking or unstaking also claims rewards.`)
+  _print("");
 }
 
 function printLoveAPR(rewardTokenTicker, rewardPrice, poolRewardsPerWeek,
