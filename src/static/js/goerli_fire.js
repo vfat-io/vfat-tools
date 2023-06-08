@@ -104,7 +104,9 @@ async function loadXFire(App, prices){
       _print(`Withdraw your FIRE after ${endDate}`);
     }
   }else{
-    _print("My brother in flames, you did not receive Airdrop 0 and are ineligible for this contract. Stay tuned for information on depositing for LP Rewards. https://t.me/promethios_main");
+    _print("My brother in flames, you did not receive Airdrop 0 and are ineligible for this contract.");
+    _print("Stay tuned for information on depositing for LP Rewards.");
+    _print("https://t.me/promethios_main");
   }
 }
 
