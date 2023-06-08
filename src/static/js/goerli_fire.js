@@ -99,7 +99,7 @@ async function loadXFire(App, prices){
       _print("The deposit period has closed");
     }
     if(Date.now() / 1000 > endTime){
-      _print_link(`Unstake ${(usersStakedAmount * multiplier).toFixed(2)} and claime your FIRE (Multiplied 3x = ${(usersStakedAmount * multiplier)})`, unstake);
+      _print_link(`Unstake ${(usersStakedAmount * multiplier).toFixed(2)} and claime your FIRE (Multiplied 3x = ${(usersStakedAmount * multiplier).toFixed(4)})`, unstake);
     }else{
       _print(`Withdraw your FIRE after ${endDate}`);
     }
