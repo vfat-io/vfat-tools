@@ -255,7 +255,7 @@ window.NETWORKS = {
       "decimals": 18
     },
     "rpcUrls": [
-      "https://rpc.ankr.com/eth_goerli"
+      "https://ethereum-goerli.publicnode.com"
     ],
     "blockExplorerUrls": [
       "https://goerli.etherscan.io"
