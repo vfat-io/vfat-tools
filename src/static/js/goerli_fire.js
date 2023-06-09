@@ -19,9 +19,11 @@ async function main() {
     const FIRE_CHEF_ADDR = "0x704B3ae5D885c33979b4F0d759f9080635098D61"
     const FIRE_CHEF = new ethers.Contract(FIRE_CHEF_ADDR, FIRE_CHEF_ABI, App.provider);
 
-    const rewardTokenTicker = "FIRE";
+    //const rewardTokenTicker = "FIRE";
+    const rewardTokenTicker = "wFIRE";
 
-    let rewardsPerWeek = await FIRE_CHEF.tokenPerSecond();
+    const rewardsPerWeek = await FIRE_CHEF.tokenPerSecond() / 1e18 * 604800;
+    //let rewardsPerWeek = await FIRE_CHEF.tokenPerSecond();
 
     const tokens = {};
     const prices = await getGoerliPrices();
@@ -35,12 +37,12 @@ async function main() {
     _print_bold("Staking Contract\n");
 
     await loadFireChefContract(App, tokens, prices, FIRE_CHEF, FIRE_CHEF_ADDR, FIRE_CHEF_ABI, rewardTokenTicker,
-      "0x4e9417eABbb17a5A4a0A97c040C02423Eb5A0173", null, rewardsPerWeek, "pendingToken", [], "goerli");
+      "token", null, rewardsPerWeek, "pendingToken", [], "goerli");
 
     hideLoading();
   }
 
-async function getFirePoolInfo(app, chefContract, chefAddress, poolIndex, pendingRewardsFunction) {
+async function getFirePoolInfo(app, chefContract, chefAddress, poolIndex, pendingRewardsFunction, wfireContract) {
   const poolInfo = await chefContract.poolInfo(poolIndex);
   if (poolInfo.allocPoint == 0) {
     return {
@@ -54,32 +56,38 @@ async function getFirePoolInfo(app, chefContract, chefAddress, poolIndex, pendin
   const poolToken = await getGeneralToken(app, poolInfo.lpToken ?? poolInfo.stakingToken ?? poolInfo.token, chefAddress);
   const userInfo = await chefContract.userInfo(poolIndex, app.YOUR_ADDRESS);
   const pendingRewardTokens = await chefContract.callStatic[pendingRewardsFunction](poolIndex, app.YOUR_ADDRESS);
+  // const _pendingRewardTokens = await chefContract.callStatic[pendingRewardsFunction](poolIndex, app.YOUR_ADDRESS);
+  // const pendingRewardTokens = await wfireContract.wrapperToUnderlying(_pendingRewardTokens);
   const staked = userInfo.amount / 10 ** poolToken.decimals;
   const emergencyWithdrawFee = await chefContract.emergencyWithdrawFee() / 100;
-  const currentEpoch = Date.now();
+  const currentEpoch = Date.now() / 1000;
   const unlockEpoch = (userInfo.lastClaim / 1) + (poolInfo.lockupDuration / 1);
   const locked = unlockEpoch > currentEpoch ? true : false;
-  const unlockedDate = new Date(unlockEpoch).toLocaleString();
-  //const unlockEpochToDays = Math.floor(unlockEpoch / (3600*24));
-  const unlockEpochToDays = (unlockEpoch / (3600*24)).toFixed(2); //needs Math.floor in order to show integer
+  const unlockedDate = new Date(unlockEpoch * 1000).toLocaleString();
+  //const unlockEpochToDays = Math.floor(poolInfo.lockupDuration / (3600*24));
+  const unlockEpochToDays = (poolInfo.lockupDuration / (3600*24)).toFixed(2); //needs Math.floor in order to show integer
+  //const wrapperToUnderlying = await wfireContract.wrapperToUnderlying(1e18) / 1e9;
+  const wrapperToUnderlying = await wfireContract.wrapperToUnderlying('1000000000000000000') / 1e9;
   _print(`Please note there is a withdrawal fee of ${emergencyWithdrawFee}% if withdrawing within ${unlockEpochToDays} days of your last deposit.\n`)
   return {
       address: poolInfo.lpToken ?? poolInfo.stakingToken ?? poolInfo.token,
       allocPoints: poolInfo.allocPoint ?? 1,
       poolToken: poolToken,
       userStaked : staked,
-      pendingRewardTokens : pendingRewardTokens / 10 ** 9,
+      //pendingRewardTokens : pendingRewardTokens / 10 ** 9,
+      pendingRewardTokens : pendingRewardTokens / 10 ** 18,
       depositFee : (poolInfo.depositFeeBP ?? poolInfo.depositFee ?? 0) / 100,
       withdrawFee : (poolInfo.withdrawFeeBP ?? 0) / 100,
       emergencyWithdrawFee: emergencyWithdrawFee,
       locked: locked,
       unlockedDate: unlockedDate,
-      unlockEpoch: unlockEpoch
+      unlockEpoch: unlockEpoch,
+      wrapperToUnderlying: wrapperToUnderlying
   };
 }
 
 async function loadFireChefContract(App, tokens, prices, chef, chefAddress, chefAbi, rewardTokenTicker,
-  rewardTokenAddress, rewardsPerBlockFunction, _rewardsPerWeekFixed, pendingRewardsFunction,
+  rewardTokenFunction, rewardsPerBlockFunction, _rewardsPerWeekFixed, pendingRewardsFunction,
   deathPoolIndices, chain) {
   const chefContract = chef ?? new ethers.Contract(chefAddress, chefAbi, App.provider);
 
@@ -91,17 +99,16 @@ async function loadFireChefContract(App, tokens, prices, chef, chefAddress, chef
 
   _print(`Showing incentivized pools only.\n`);
 
-  var tokens = {};
-
+  const rewardTokenAddress = await chefContract.callStatic[rewardTokenFunction]();
   const rewardToken = await getGeneralToken(App, rewardTokenAddress, chefAddress);
-  //transformation wFIRE to FIRE
   const WFIRE_ADDR = "0x4a6c5cB223Fd2a3C994A86ce381c535fb8D8125B";
   const WFIRE_CONTRACT = new ethers.Contract(WFIRE_ADDR, xFIRE_ABI, App.provider);
-  const rewardsPerWeekFixed = await WFIRE_CONTRACT.wrapperToUnderlying(_rewardsPerWeekFixed);
-  const rewardsPerWeek = rewardsPerWeekFixed / 10 ** rewardToken.decimals * 604800;
+  // const rewardsPerWeekFixed = await WFIRE_CONTRACT.wrapperToUnderlying(_rewardsPerWeekFixed);
+  // const rewardsPerWeek = rewardsPerWeekFixed / 10 ** rewardToken.decimals * 604800;
+  const rewardsPerWeek = _rewardsPerWeekFixed;
 
   const poolInfos = await Promise.all([...Array(poolCount).keys()].map(async (x) =>
-    await getFirePoolInfo(App, chefContract, chefAddress, x, pendingRewardsFunction)));
+    await getFirePoolInfo(App, chefContract, chefAddress, x, pendingRewardsFunction, WFIRE_CONTRACT)));
 
   var tokenAddresses = [].concat.apply([], poolInfos.filter(x => x.poolToken).map(x => x.poolToken.tokens));
 
@@ -126,7 +133,8 @@ async function loadFireChefContract(App, tokens, prices, chef, chefAddress, chef
       const apr = printFirePool(App, chefAbi, chefAddress, prices, tokens, poolInfos[i], i, poolPrices[i],
         totalAllocPoints, rewardsPerWeek, rewardTokenTicker, rewardTokenAddress,
         pendingRewardsFunction, null, null, chain, poolInfos[i].depositFee, poolInfos[i].withdrawFee, 
-        poolInfos[i].emergencyWithdrawFee, poolInfos[i].locked, poolInfos[i].unlockedDate, poolInfos[i].unlockEpoch)
+        poolInfos[i].emergencyWithdrawFee, poolInfos[i].locked, poolInfos[i].unlockedDate, poolInfos[i].unlockEpoch,
+        poolInfos[i].wrapperToUnderlying)
       aprs.push(apr);
     }
   }
@@ -155,18 +163,20 @@ async function loadFireChefContract(App, tokens, prices, chef, chefAddress, chef
 function printFirePool(App, chefAbi, chefAddr, prices, tokens, poolInfo, poolIndex, poolPrices,
                        totalAllocPoints, rewardsPerWeek, rewardTokenTicker, rewardTokenAddress,
                        pendingRewardsFunction, fixedDecimals, claimFunction, chain="eth", depositFee=0, withdrawFee=0,
-                       emergencyWithdrawFee, locked, unlockedDate, unlockEpoch) {
+                       emergencyWithdrawFee, locked, unlockedDate, unlockEpoch, wrapperToUnderlying) {
   fixedDecimals = fixedDecimals ?? 2;
   const sp = (poolInfo.stakedToken == null) ? null : getPoolPrices(tokens, prices, poolInfo.stakedToken, chain);
   var poolRewardsPerWeek = poolInfo.allocPoints / totalAllocPoints * rewardsPerWeek;
   if (poolRewardsPerWeek == 0 && rewardsPerWeek != 0) return;
   const userStaked = poolInfo.userLPStaked ?? poolInfo.userStaked;
-  const rewardPrice = getParameterCaseInsensitive(prices, rewardTokenAddress)?.usd;
+  const firePrice = getParameterCaseInsensitive(prices, "0x4e9417eABbb17a5A4a0A97c040C02423Eb5A0173")?.usd;
+  //const rewardPrice = getParameterCaseInsensitive(prices, rewardTokenAddress)?.usd;
+  const rewardPrice = firePrice * wrapperToUnderlying;
   const staked_tvl = sp?.staked_tvl ?? poolPrices.staked_tvl;
   _print_inline(`${poolIndex} - `);
   poolPrices.print_price(chain);
   sp?.print_price(chain);
-  const apr = printAPR(rewardTokenTicker, rewardPrice, poolRewardsPerWeek, poolPrices.stakeTokenTicker,
+  const apr = printFireAPR(rewardTokenTicker, rewardPrice, poolRewardsPerWeek, poolPrices.stakeTokenTicker,
     staked_tvl, userStaked, poolPrices.price, fixedDecimals);
   if (poolInfo.userLPStaked > 0) sp?.print_contained_price(userStaked);
   if (poolInfo.userStaked > 0) poolPrices.print_contained_price(userStaked);
@@ -175,6 +185,37 @@ function printFirePool(App, chefAbi, chefAddr, prices, tokens, poolInfo, poolInd
     poolInfo.userStaked, poolInfo.pendingRewardTokens, fixedDecimals, claimFunction, rewardPrice, chain, depositFee, withdrawFee,
     emergencyWithdrawFee, locked, unlockedDate, unlockEpoch);
   return apr;
+}
+
+function printFireAPR(rewardTokenTicker, rewardPrice, poolRewardsPerWeek,
+                  stakeTokenTicker, staked_tvl, userStaked, poolTokenPrice,
+                  fixedDecimals) {
+  var usdPerWeek = poolRewardsPerWeek * rewardPrice;
+  fixedDecimals = fixedDecimals ?? 2;
+  _print(`${rewardTokenTicker} Per Week: ${poolRewardsPerWeek.toFixed(fixedDecimals)} ($${formatMoney(usdPerWeek)})`);
+  var weeklyAPR = usdPerWeek / staked_tvl * 100;
+  var dailyAPR = weeklyAPR / 7;
+  var yearlyAPR = weeklyAPR * 52;
+  _print(`APR: Day ${dailyAPR.toFixed(2)}% Week ${weeklyAPR.toFixed(2)}% Year ${yearlyAPR.toFixed(2)}%`);
+  var userStakedUsd = userStaked * poolTokenPrice;
+  var userStakedPct = userStakedUsd / staked_tvl * 100;
+  _print(`You are staking ${userStaked.toFixed(9)} ${stakeTokenTicker} ($${formatMoney(userStakedUsd)}), ${userStakedPct.toFixed(2)}% of the pool.`);
+  var userWeeklyRewards = userStakedPct * poolRewardsPerWeek / 100;
+  var userDailyRewards = userWeeklyRewards / 7;
+  var userYearlyRewards = userWeeklyRewards * 52;
+  if (userStaked > 0) {
+    _print(`Estimated ${rewardTokenTicker} earnings:`
+        + ` Day ${userDailyRewards.toFixed(fixedDecimals)} ($${formatMoney(userDailyRewards*rewardPrice)})`
+        + ` Week ${userWeeklyRewards.toFixed(fixedDecimals)} ($${formatMoney(userWeeklyRewards*rewardPrice)})`
+        + ` Year ${userYearlyRewards.toFixed(fixedDecimals)} ($${formatMoney(userYearlyRewards*rewardPrice)})`);
+  }
+  return {
+    userStakedUsd,
+    totalStakedUsd : staked_tvl,
+    userStakedPct,
+    yearlyAPR,
+    userYearlyUsd : userYearlyRewards * rewardPrice
+  }
 }
 
 function printFireContractLinks(App, chefAbi, chefAddr, poolIndex, poolAddress, pendingRewardsFunction,
@@ -191,14 +232,14 @@ function printFireContractLinks(App, chefAbi, chefAddr, poolIndex, poolAddress, 
     return chefContract_claim(chefAbi, chefAddr, poolIndex, App, pendingRewardsFunction, claimFunction)
   }
   if(depositFee > 0){
-    _print_link(`Stake ${unstaked.toFixed(fixedDecimals)} ${stakeTokenTicker} - Fee ${depositFee}%`, approveAndStake)
+    _print_link(`Stake ${unstaked.toFixed(9)} ${stakeTokenTicker} - Fee ${depositFee}%`, approveAndStake)
   }else{
-    _print_link(`Stake ${unstaked.toFixed(fixedDecimals)} ${stakeTokenTicker}`, approveAndStake)
+    _print_link(`Stake ${unstaked.toFixed(9)} ${stakeTokenTicker}`, approveAndStake)
   }
   if(locked){
-    _print_link(`Unstake ${userStaked.toFixed(fixedDecimals)} ${stakeTokenTicker} - Fee ${emergencyWithdrawFee}% before ${unlockedDate}`, unstake)
+    _print_link(`Unstake ${userStaked.toFixed(9)} ${stakeTokenTicker} - Fee ${emergencyWithdrawFee}% before ${unlockedDate}`, unstake)
   }else{
-    _print_link(`Unstake ${userStaked.toFixed(fixedDecimals)} ${stakeTokenTicker}`, unstake)
+    _print_link(`Unstake ${userStaked.toFixed(9)} ${stakeTokenTicker}`, unstake)
   }
   _print_link(`Claim ${pendingRewardTokens.toFixed(fixedDecimals)} ${rewardTokenTicker} ($${formatMoney(pendingRewardTokens*rewardTokenPrice)})`, claim)
   _print(`Staking or unstaking also claims rewards.`)
