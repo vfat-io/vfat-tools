@@ -2532,7 +2532,8 @@ function getUniPrices(tokens, prices, pool, chain="eth")
                   "eth": `https://solidly.com/`,
                   "arbitrum": `https://solidlizard.finance/`,
                   "bsc": `https://info.thena.fi/pair/${pool.address}`,
-                  "kava": `https://equilibrefinance.com/`
+                  "kava": `https://equilibrefinance.com/`,
+                  "pulse": `https://pulse.velocimeter.xyz`
                 }
               [chain]):
               pool.symbol.includes("sAMM") ?  (
@@ -2541,6 +2542,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
                   "metis" : `https://hermes.maiadao.io/#/swap`,
                   "optimism" : `https://app.velodrome.finance/swap`,
                   "canto": `https://canto.velocimeter.xyz/`,
+                  "pulse": `https://pulse.velocimeter.xyz/`,
                   "eth": `https://solidly.com/`,
                   "arbitrum": `https://solidlizard.finance/`,
                   "bsc": `https://info.thena.fi/pair/${pool.address}`,
@@ -2781,6 +2783,11 @@ function getUniPrices(tokens, prices, pool, chain="eth")
               `https://canto.velocimeter.xyz/liquidity/${pool.address}`,
               `https://canto.velocimeter.xyz`
             ],
+            "pulse" : [
+              `https://pulse.velocimeter.xyz/liquidity/${pool.address}`,
+              `https://pulse.velocimeter.xyz/liquidity/${pool.address}`,
+              `https://pulse.velocimeter.xyz`
+            ],
             "eth" : [
               `https://solidly.com/liquidity/`,
               `https://solidly.com/liquidity/`,
@@ -2827,6 +2834,11 @@ function getUniPrices(tokens, prices, pool, chain="eth")
               `https://canto.velocimeter.xyz/liquidity/${pool.address}`,
               `https://canto.velocimeter.xyz/liquidity/${pool.address}`,
               `https://canto.velocimeter.xyz/`
+            ],
+            "pulse" : [
+              `https://pulse.velocimeter.xyz/liquidity/${pool.address}`,
+              `https://pulse.velocimeter.xyz/liquidity/${pool.address}`,
+              `https://pulse.velocimeter.xyz/`
             ],
             "eth" : [
               `https://solidly.com/liquidity/`,

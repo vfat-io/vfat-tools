@@ -110,7 +110,7 @@ async function loadFlowSynthetixPools(App, tokens, prices, pools, clicked) {
   const infos = await Promise.all(pools.map(p =>
       loadFlowSynthetixPoolInfo(App, tokens, prices, p.abi, p.address, p.stakeTokenFunction)));
   for (const i of infos) {
-    let p = await printFlowSynthetixPool(App, i, "canto", clicked);
+    let p = await printFlowSynthetixPool(App, i, "pulse", clicked);
     totalStaked += p.staked_tvl || 0;
     totalUserStaked += p.userStaked || 0;
     if (p.userStaked > 0) {
@@ -162,7 +162,7 @@ async function loadFlowSynthetixPoolInfo(App, tokens, prices, stakingAbi, stakin
         tokens[address] = await getGeneralToken(App, address, stakingAddress);
     }
 
-    const poolPrices = getPoolPrices(tokens, prices, stakeToken, "canto");
+    const poolPrices = getPoolPrices(tokens, prices, stakeToken, "pulse");
 
     const stakeTokenTicker = poolPrices.stakeTokenTicker;
 
@@ -223,7 +223,7 @@ async function printFlowSynthetixPool(App, info, chain="eth", clicked, customURL
   const revoke = async function() {
     return rewardsContract_resetApprove(info.stakeTokenAddress, info.stakingAddress, App)
   }
-  _print(`<a target="_blank" href="https://evm.explorer.canto.io/address/${info.stakingAddress}#code">Canto Scan</a>`);
+  _print(`<a target="_blank" href="https://scan.pulsechain.com/address/${info.stakingAddress}#code">Pulse Scan</a>`);
   let claimLink = "";
   for(let i = 0; i < info.earnings.length; i++){
     claimLink += `${info.earnings[i].toFixed(6)} ${info.rewardTokenTickers[i]} ($${formatMoney(info.earnings[i]*info.rewardTokenPrices[i])}) `
@@ -280,7 +280,7 @@ async function loadFlowSynthetixPoolInfoPrice(App, tokens, prices, stakingAddres
   for (const address of newTokenAddresses) {
       tokens[address] = await getGeneralToken(App, address, stakingAddress);
   }
-  const poolPrices = getPoolPrices(tokens, prices, stakeToken, "canto");
+  const poolPrices = getPoolPrices(tokens, prices, stakeToken, "pulse");
 
   if (!poolPrices)
   {
