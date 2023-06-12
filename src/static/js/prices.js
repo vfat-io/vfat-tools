@@ -790,7 +790,12 @@ const polisTokens = [
 const pulseTokens = [
   { "id": "wrapped-pulse-wpls","symbol": "WPLS","contract": "0xa1077a294dde1b09bb078844df40758a5d0f9a27" },
   { "id": "dai","symbol": "DAI","contract": "0xefD766cCb38EaF1dfd701853BFCe31359239F305" },
-  { "id": "pulsex","symbol": "PLSX","contract": "0x95b303987a60c71504d99aa1b13b4da07b0790ab" }
+  { "id": "weth","symbol": "WETH","contract": "0x02DcdD04e3F455D838cd1249292C58f3B79e3C3C" },
+  { "id": "hex","symbol": "HEX","contract": "0x57fde0a71132198BBeC939B98976993d8D89D225" },   //HEX FROM ETHEREUM NETWORK
+  { "id": "hex-pulsechain","symbol": "HEX","contract": "0x2b591e99afe9f32eaa6214f7b7629768c40eeb39" },    //HEX FROM PULSE NETWORK
+  { "id": "wrapped-bitcoin","symbol": "WBTC","contract": "0xb17D901469B9208B17d916112988A3FeD19b5cA1" },
+  { "id": "pulsex","symbol": "PLSX","contract": "0x95b303987a60c71504d99aa1b13b4da07b0790ab" },
+  { "id": "velocimeter-flow","symbol": "FLOW","contract": "0x39b9d781dad0810d07e24426c876217218ad353d" }
 ]
 
 const SmartbchTokens = [

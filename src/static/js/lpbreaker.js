@@ -32,6 +32,8 @@ async function main() {
         solidly_smart_contract_factory = new ethers.Contract("0x25CbdDb98b35ab1FF77413456B31EC81A6B6B746", GENERAL_SOLIDLY_FACTORY_ABI, App.provider);
       }else if(connectedNetworkName.includes("Arbit")){ //sterling.finance
         solidly_smart_contract_factory = new ethers.Contract("0xF7A23B9A9dCB8d0aff67012565C5844C20C11AFC", GENERAL_SOLIDLY_FACTORY_ABI, App.provider);
+      }else if(connectedNetworkName.includes("Pulse")){ //velocimeter
+        solidly_smart_contract_factory = new ethers.Contract("0x6B4449C74a9aF269A5f72B88B2B7B8604685D9B9", GENERAL_SOLIDLY_FACTORY_ABI, App.provider);
       }
 
       let isSolidlyPair = false;
