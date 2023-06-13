@@ -223,13 +223,13 @@ function printFireContractLinks(App, chefAbi, chefAddr, poolIndex, poolAddress, 
   claimFunction, rewardTokenPrice, chain, depositFee, withdrawFee, earlyWithdrawFee, locked, unlockedDate, unlockEpoch) {
 fixedDecimals = fixedDecimals ?? 2;
 const approveAndStake = async function() {
-  return chefContract_stake(chefAbi, chefAddr, poolIndex, poolAddress, App)
+  return chefArbitrumContract_stake(chefAbi, chefAddr, poolIndex, poolAddress, App)
 }
 const unstake = async function() {
-  return chefContract_unstake(chefAbi, chefAddr, poolIndex, App, pendingRewardsFunction)
+  return chefArbitrumContract_unstake(chefAbi, chefAddr, poolIndex, App, pendingRewardsFunction)
 }
 const claim = async function() {
-  return chefContract_claim(chefAbi, chefAddr, poolIndex, App, pendingRewardsFunction, claimFunction)
+  return chefArbitrumContract_claim(chefAbi, chefAddr, poolIndex, App, pendingRewardsFunction, claimFunction)
 }
 if(depositFee > 0){
   _print_link(`Stake ${unstaked.toFixed(9)} ${stakeTokenTicker} - Fee ${depositFee}%`, approveAndStake)
