@@ -44,7 +44,9 @@ async function getBabyDogePoolInfo(App, chefAbi, chefAddress, poolIndex, pending
   const userInfo = await stakingContract.userInfo(App.YOUR_ADDRESS);
   const pendingRewardTokens = await stakingContract.callStatic[pendingRewardsFunction](App.YOUR_ADDRESS);
   const staked = userInfo.shares / 10 ** poolToken.decimals;
-  const rewardsPerWeek = await stakingContract.rewardPerBlock() / 10 ** rewardToken.decimals * 604800 / 3
+  const endedBlock = await stakingContract.getFinalBlockNumber();
+  const currentBlock = await App.provider.getBlockNumber();
+  const rewardsPerWeek = endedBlock > currentBlock ? await stakingContract.rewardPerBlock() / 10 ** rewardToken.decimals * 604800 / 3 : 0;
   const withdrawFee = await stakingContract.earlyWithdrawalFee() / 100;
   return {
       chefAddress : chefAddress,

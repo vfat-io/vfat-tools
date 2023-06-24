@@ -2399,6 +2399,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
   else if (pool.symbol.includes("UPT")) stakeTokenTicker += " Unic Swap LP";
   else if (pool.symbol.includes("ELP")) stakeTokenTicker += " ELK LP";
   else if (pool.symbol.includes("BenSwap")) stakeTokenTicker += " BenSwap LP";
+  else if (pool.symbol.includes("Treat-LP")) stakeTokenTicker += " Treat LP";
   else if (pool.name.includes("MISTswap LP Token")) stakeTokenTicker += " MistSwap LP";
   else if (pool.name.includes("TANGOswap LP Token")) stakeTokenTicker += " TangoSwap LP";
   else if (pool.name.includes("Flare LP Token")) stakeTokenTicker += " FLP LP";
@@ -2574,6 +2575,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
               pool.symbol.includes("SPIRIT") ?  `https://swap.spiritswap.finance/#/swap` :
               pool.symbol.includes("spLP") ?  `https://info.spookyswap.finance/pair/${pool.address}` :
               pool.symbol.includes("HAUS-LP") ?  `https://app.next-gen.finance/info/pool/${pool.address}` :
+              pool.symbol.includes("Treat-LP") ?  `https://babydogeswap.com/info/pool/${pool.address}` :
               pool.symbol.includes("Lv1") ?  `https://info.steakhouse.finance/pair/${pool.address}` :
               pool.symbol.includes("JLP") ?  `https://cchain.explorer.avax.network/address/${pool.address}` :
               pool.symbol.includes("ELP") ?  `https://app.elk.finance/#/swap` :
@@ -2875,6 +2877,11 @@ function getUniPrices(tokens, prices, pool, chain="eth")
             `https://game.defikingdoms.com/#/add/${t0address}/${t1address}`,
             `https://game.defikingdoms.com/#/remove/${t0address}/${t1address}`,
             `https://game.defikingdoms.com/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+          ] :
+          pool.symbol.includes("Treat-LP") ? [
+            `https://babydogeswap.com/add/${t0address}/${t1address}`,
+            `https://babydogeswap.com/remove/${t0address}/${t1address}`,
+            `https://babydogeswap.com/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
           ] :
           pool.symbol.includes("DXS") ? [
             `https://swapr.eth.link/#/add/${t0address}/${t1address}`,
