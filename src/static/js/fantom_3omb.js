@@ -31,12 +31,12 @@ $(function () {
           "bshare", null, rewardsPerWeek, "pendingShare");
       _print(`\nStaked 3SHARES can only be withdrawn after 3 epochs since deposit.\n`);
       const p0 = await loadFantom3omSynthetixPool(App, tokens, prices, StakingPool.abi, 
-                                                                            StakingPool.address, 
-                                                                            StakingPool.rewardTokenAddresses, 
-                                                                            StakingPool.stakeTokenFunction);
+                                                                       StakingPool.address, 
+                                                                       StakingPool.rewardTokenAddresses, 
+                                                                       StakingPool.stakeTokenFunction);
       _print_bold(`Total staked: $${formatMoney(p0.staked_tvl)}`);
-      if (p0.totalUserStaked > 0) {
-        _print(`You are staking a total of $${formatMoney(p0.totalUserStaked)}\n`);
+      if (p0.userStaked > 0) {
+        _print(`You are staking a total of $${formatMoney(p0.userStaked)}\n`);
       }
       
       hideLoading();		
