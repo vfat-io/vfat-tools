@@ -2340,6 +2340,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
   if (pool.is1inch) stakeTokenTicker += " 1INCH LP";
   else if (pool.symbol.includes("TETHYSLP")) stakeTokenTicker += " TETHYS LP";
   else if (pool.symbol.includes("VERSE-X")) stakeTokenTicker += " VERSE-X";
+  else if (pool.symbol.includes("PepeDex-LP")) stakeTokenTicker += " PepeDex LP";
   else if (pool.name.includes("Pulse")) stakeTokenTicker += " PulseX LP";
   else if (pool.symbol.includes("Oreo-LP")) stakeTokenTicker += " OREO-SWAP LP";
   else if (pool.symbol.includes("KS2-RT")) stakeTokenTicker += " Kyber Swap LP";
@@ -2475,6 +2476,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
           pool.symbol.includes("TETHYSLP") ?  `https://info.tethys.finance/pair/${pool.address}` :
           pool.totalAmounts ?  `https://quickswap.exchange/#/analytics` :
           pool.symbol.includes("VERSE-X") ?  `https://analytics.verse.bitcoin.com/pairs/${pool.address}` :
+          pool.symbol.includes("PepeDex-LP") ?  `https://pepedex.pepepal.com/info/${pool.address}` :
           pool.name.includes("Voltage") ?  `https://info.voltage.finance/pair/${pool.address}` :
           pool.name.includes("Pulse") ?  `https://app.pulsex.com/info/pool/${pool.address}` :
           pool.symbol.includes("Oreo-LP") ?  `https://oreoswap.finance` :
@@ -2661,6 +2663,11 @@ function getUniPrices(tokens, prices, pool, chain="eth")
             `https://verse.bitcoin.com/pools/`,
             `https://verse.bitcoin.com/pools/`,
             `https://verse.bitcoin.com/`
+          ] :
+          pool.symbol.includes("PepeDex-LP") ? [
+            `https://pepedex.pepepal.com/add/${t0address}/${t1address}`,
+            `https://pepedex.pepepal.com/remove/${t0address}/${t1address}`,
+            `https://pepedex.pepepal.com/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
           ] :
           pool.name.includes("Diffusion LP Token") ? [
             `https://app.diffusion.fi/#/add/v2/${t0address}/${t1address}`,

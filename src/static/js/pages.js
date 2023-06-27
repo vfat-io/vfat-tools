@@ -196,7 +196,8 @@ const main = async () => {
       ["Aura                         ", `<a href="aura/"              >Various</a>`, "AURA               ", "https://app.aura.finance"],
       ["Mellow Protocol              ", `<a href="mellow-protocol/"   >Various</a>`, "LDO                ", "https://app.mellow.finance"],
       ["FIRE Airdrop                 ", `<a href="fire/"              >Various</a>`, "FIRE               ", ""],
-      ["Love Game                    ", `<a href="love/"              >Various</a>`, "LOVE               ", "https://www.love.game"]
+      ["Love Game                    ", `<a href="love/"              >Various</a>`, "LOVE               ", "https://www.love.game"],
+      ["Seethe                       ", `<a href="seethe/"            >Various</a>`, "SEETHE             ", "https://seethe.pepepal.com"]
     ].reverse()
   }
 
