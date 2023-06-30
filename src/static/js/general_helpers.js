@@ -652,6 +652,8 @@ async function loadGeneralChefContract(App, tokens, prices, chef, chefAddress, c
     break;
     case "goerli" : _print(`<a href='https://goerli.etherscan.io/address/${chefAddress}' target='_blank'>Staking Contract</a>`);
     break;
+    case "tenet" : _print(`<a href='https://tenetscan.io/address/${chefAddress}' target='_blank'>Staking Contract</a>`);
+    break;
   }
   _print(`Found ${poolCount} pools.\n`)
 

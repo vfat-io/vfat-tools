@@ -820,6 +820,11 @@ const telosTokens = [
   { "id": "sushi","symbol": "SUSHI", "contract": "0x922d641a426dcffaef11680e5358f34d97d112e1" }
 ];
 
+const tenetTokens = [
+  { "id": "weth", "symbol": "WETH", "contract": "0x40e8140DDb8E5D9FE1AfB8288Ab06259355a6D4B" },
+  { "id": "tenet-1b000f7b-59cb-4e06-89ce-d62b32d362b9", "symbol": "TENET", "contract": "0xd6cb8a253e12893b0cF39Ca78F7d858652cCa1fe" }
+];
+
 const ttTokens = [
   { "id": "thunder-token","symbol": "TT","contract": "0x0000000000000000000000000000000000000000" },
   { "id": "usd-coin","symbol": "USDC","contract": "0x22e89898A04eaf43379BeB70bf4E38b1faf8A31e" },
@@ -1217,6 +1222,15 @@ async function getTelosPrices() {
   const idPrices = await lookUpPrices(telosTokens.map(x => x.id));
   const prices = {}
   for (const tt of telosTokens)
+      if (idPrices[tt.id])
+          prices[tt.contract] = idPrices[tt.id];
+  return prices;
+}
+
+async function getTenetPrices() {
+  const idPrices = await lookUpPrices(tenetTokens.map(x => x.id));
+  const prices = {}
+  for (const tt of tenetTokens)
       if (idPrices[tt.id])
           prices[tt.contract] = idPrices[tt.id];
   return prices;

@@ -276,6 +276,21 @@ window.NETWORKS = {
       "https://scan.pulsechain.com"
     ]
   },
+  TENET: {
+    "chainId": "0x617",
+    "chainName": "Tenet Chain",
+    "nativeCurrency": {
+      "name": "Tenet",
+      "symbol": "TENET",
+      "decimals": 18
+    },
+    "rpcUrls": [
+      "https://rpc.tenet.org"
+    ],
+    "blockExplorerUrls": [
+      "https://tenetscan.io/"
+    ]
+  },
   HOO: {
     "chainId": "0x46",
     "chainName": "Hoo Smart Chain",

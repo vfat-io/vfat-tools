@@ -126,6 +126,9 @@ const pageNetwork = function() {
   if (network.toLowerCase() === 'celo') {
     return window.NETWORKS.CELO
   }
+  if (network.toLowerCase() === 'tenet') {
+    return window.NETWORKS.TENET
+  }
   if (network.toLowerCase() === 'core') {
     return window.NETWORKS.CORE
   }
@@ -3772,6 +3775,9 @@ function getErc20Prices(prices, pool, chain="eth") {
     case "celo":
       poolUrl=`https://explorer.celo.org/address/${pool.address}`;
       break;
+    case "tenet":
+      poolUrl=`https://tenetscan.io/address/${pool.address}`;
+      break;
     case "core":
       poolUrl=`https://scan.coredao.org/token/${pool.address}`;
       break;
@@ -4519,6 +4525,9 @@ async function printSynthetixPool(App, info, chain="eth", customURLs) {
         break;
       case "celo":
         _print(`<a target="_blank" href="https://explorer.celo.org/address/${info.stakingAddress}/contracts">Celo Explorer</a>`);
+        break;
+      case "tenet":
+        _print(`<a target="_blank" href="https://tenetscan.io/address/${info.stakingAddress}/contracts">Tenet Scan</a>`);
         break;
       case "core":
         _print(`<a target="_blank" href="https://scan.coredao.org/address/${info.stakingAddress}#code">Core Scan</a>`);
