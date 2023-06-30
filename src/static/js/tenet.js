@@ -8,7 +8,7 @@ const main = async() => {
     "title":"Tenet Network",
     "heading":["Pool Provider","LP", "Reward Tokens", "INFO"],
     "rows": [
-        //["Ubeswap ",      `<a href="ubeswap"       >Various</a>`,      "UBE",       "https://app.ubeswap.org" ]
+        ["Tenx ",      `<a href="tenx"       >Various</a>`,      "TENX",       "https://www.tenx.exchange" ]
     ].reverse()
   }
 

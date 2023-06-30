@@ -2343,6 +2343,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
   if (pool.is1inch) stakeTokenTicker += " 1INCH LP";
   else if (pool.symbol.includes("TETHYSLP")) stakeTokenTicker += " TETHYS LP";
   else if (pool.symbol.includes("VERSE-X")) stakeTokenTicker += " VERSE-X";
+  else if (pool.symbol.includes("TENX-LP")) stakeTokenTicker += " TENX LP";
   else if (pool.symbol.includes("PepeDex-LP")) stakeTokenTicker += " PepeDex LP";
   else if (pool.name.includes("Pulse")) stakeTokenTicker += " PulseX LP";
   else if (pool.symbol.includes("Oreo-LP")) stakeTokenTicker += " OREO-SWAP LP";
@@ -2477,6 +2478,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
         else {
           const poolUrl = pool.is1inch ? "https://1inch.exchange/#/dao/pools" :
           pool.symbol.includes("TETHYSLP") ?  `https://info.tethys.finance/pair/${pool.address}` :
+          pool.symbol.includes("TENX-LP") ?  `https://www.tenx.exchange/#/swap` :
           pool.totalAmounts ?  `https://quickswap.exchange/#/analytics` :
           pool.symbol.includes("VERSE-X") ?  `https://analytics.verse.bitcoin.com/pairs/${pool.address}` :
           pool.symbol.includes("PepeDex-LP") ?  `https://pepedex.pepepal.com/info/${pool.address}` :
@@ -2997,6 +2999,11 @@ function getUniPrices(tokens, prices, pool, chain="eth")
             `https://tethys.finance/pool/add?inputCurrency=${t0address}&outputCurrency=${t1address}`,
             `https://tethys.finance/pool/remove?inputCurrency=${t0address}&outputCurrency=${t1address}`,
             `https://tethys.finance/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+          ] :
+          pool.symbol.includes("TENX-LP") ? [
+            `https://www.tenx.exchange/#/add/${t0address}/${t1address}`,
+            `https://www.tenx.exchange/#/remove/${t0address}/${t1address}`,
+            `https://www.tenx.exchange/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
           ] :
           pool.symbol.includes("Oreo-LP") ? [
             `https://oreoswap.finance/add/${t0address}/${t1address}`,
