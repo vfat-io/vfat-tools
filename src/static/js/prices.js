@@ -476,7 +476,7 @@ const FindoraTokens = [
   {id: 'busd-b', symbol: 'BUSD.b', contract: '0xE80EB4a234f718eDc5B76Bb442653827D20Ebb2d'}
 ]
 
-const FuseTokens = [ 
+const FuseTokens = [
   { "id": "fuse-network-token", "symbol": "FUSE", "contract": "0x0BE9e53fd7EDaC9F859882AfdDa116645287C629"},
   { "id": "usd-coin", "symbol": "USDC", "contract": "0x620fd5fa44BE6af63715Ef4E65DDFA0387aD13F5"},
   { "id": "sushi", "symbol": "SUSHI", "contract": "0x90708b20ccC1eb95a4FA7C8b18Fd2C22a0Ff9E78"},
@@ -485,18 +485,18 @@ const FuseTokens = [
   { "id": "terrausd", "symbol": "UST", "contract": "0x0D58a44be3dCA0aB449965dcc2c46932547Fea2f"}
 ];
 
-const FxTokens = [ 
+const FxTokens = [
   { "id": "tether", "symbol": "USDT", "contract": "0xecEEEfCEE421D8062EF8d6b4D814efe4dc898265"},
   { "id": "pundi-x-2", "symbol": "PUNDIX", "contract": "0xd567B3d7B8FE3C79a1AD8dA978812cfC4Fa05e75"},
   { "id": "weth", "symbol": "WETH", "contract": "0x0CE35b0D42608Ca54Eb7bcc8044f7087C18E7717"},
   { "id": "fx-coin", "symbol": "FX", "contract": "0x80b5a32E4F032B2a058b4F29EC95EEfEEB87aDcd"}
 ];
 
-const GoerliTokens = [ 
+const GoerliTokens = [
   { "id": "tether", "symbol": "USDT", "contract": "0x966289b2c448e189664EC3268766335da7079b6b"}
 ];
 
-const xdaiTokens = [ 
+const xdaiTokens = [
   { "id": "xdai","symbol": "xDAI","contract": "0xe91D153E0b41518A2Ce8Dd3D7944Fa863463a97d" },
   { "id": "tether","symbol": "USDT","contract": "0x4ECaBa5870353805a9F068101A40E0f32ed605C6" },
   { "id": "usd-coin","symbol": "USDC","contract": "0xDDAfbb505ad214D7b80b1f830fcCc89B60fb7A83" },
@@ -842,6 +842,11 @@ const zksyncEraTokens = [
   { "id": "gemswap-2","symbol": "ZGEM", "contract": "0x2b64237277c605d07f17b96f9627712340c32981" },
   { "id": "weth","symbol": "WETH", "contract": "0x5AEa5775959fBC2557Cc8789bC1bf90A239D9a91" },
   { "id": "usd-coin","symbol": "USDC","contract": "0x3355df6D4c9C3035724Fd0e3914dE96A5a83aaf4" },
+  { "id": "tether","symbol": "USDT","contract": "0x493257fD37EDB34451f62EDf8D2a0C418852bA4C" },
+  { "id": "binance-usd","symbol": "BUSD","contract": "0x2039bb4116B4EFc145Ec4f0e2eA75012D6C0f181" },
+  { "id": "matic-network","symbol": "MATIC","contract": "0x28a487240e4D45CfF4A2980D334CC933B7483842" },
+  { "id": "avalanche-2","symbol": "AVAX","contract": "0x6A5279E99CA7786fb13F827Fc1Fb4F61684933d6" },
+  { "id": "binancecoin","symbol": "BNB","contract": "0x7400793aAd94C8CA801aa036357d10F5Fd0ce08f"}
 ];
 
 const zkevmPolygonTokens = [
