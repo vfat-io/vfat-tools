@@ -873,7 +873,12 @@ const zksyncEraTokens = [
 const zkevmPolygonTokens = [
   { "id": "weth","symbol": "WETH", "contract": "0x4F9A0e7FD2Bf6067db6994CF12E4495Df938E6e9" },
   { "id": "usd-coin","symbol": "USDC","contract": "0xa8ce8aee21bc2a48a5ef670afcc9274c7bbbc035" },
-  { "id": "quickswap","symbol": "QUICK","contract": "0x68286607a1d43602d880d349187c3c48c0fd05e6" }
+  { "id": "quickswap","symbol": "QUICK","contract": "0x68286607a1d43602d880d349187c3c48c0fd05e6" },
+  { "id": "tether","symbol": "USDT","contract": "0x493257fD37EDB34451f62EDf8D2a0C418852bA4C" },
+  { "id": "binance-usd","symbol": "BUSD","contract": "0x2039bb4116B4EFc145Ec4f0e2eA75012D6C0f181" },
+  { "id": "matic-network","symbol": "MATIC","contract": "0x28a487240e4D45CfF4A2980D334CC933B7483842" },
+  { "id": "avalanche-2","symbol": "AVAX","contract": "0x6A5279E99CA7786fb13F827Fc1Fb4F61684933d6" },
+  { "id": "binancecoin","symbol": "BNB","contract": "0x7400793aAd94C8CA801aa036357d10F5Fd0ce08f"}
 ];
 
 async function getArbitrumPrices() {
