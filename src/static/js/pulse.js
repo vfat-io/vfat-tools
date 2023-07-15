@@ -11,7 +11,7 @@ const main = async() => {
       ["Pulsex                 ", `<a href="pulsex"      >Various</a>`,"INC               ","https://app.pulsex.com"],
       ["Daytona Finance        ", `<a href="daytona"     >Various</a>`,"TONI              ","https://www.daytona.finance"],
       ["Velocimeter            ", `<a href="velocimeter" >Various</a>`,"FLOW              ","https://pulse.velocimeter.xyz"],
-      ["Pulserate              ", `<a href="pulserate"   >Various</a>`,"PSHARE / PRATE    ","https://pulserate.io"]
+      ["Pulserate              ", `<a href="pulserate"   >Various</a>`,"PSHARE / PRATE    ","https://pulserate.io"],
       ["YieldPulse Finance     ", `<a href="yieldx"      >Various</a>`,"YIELDX            ","https://yieldpulse.finance/"]
 
     ].reverse()
