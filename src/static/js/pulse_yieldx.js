@@ -14,8 +14,10 @@ $(function() {
        const YIELDX_CHEF_ADDR = "0xc9649cd27cFe8D74a47D711e04fEF3AbC4B56bae";
        const rewardTokenTicker = "YIELDX";
        const YIELDX_CHEF = new ethers.Contract(YIELDX_CHEF_ADDR, YIELDX_CHEF_ABI, App.provider);
+
+       const blocksPerSeconds = await getAverageBlockTime(App);
     
-       const rewardsPerWeek = await YIELDX_CHEF.yieldxPerBlock() /1e18 * 604800 / 10.2;
+       const rewardsPerWeek = await YIELDX_CHEF.yieldxPerBlock() /1e18 * 604800 / blocksPerSeconds;
     
         const tokens = {};
         const prices = await getPulsePrices();

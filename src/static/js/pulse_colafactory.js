@@ -14,8 +14,10 @@ $(function() {
      const COLA_CHEF_ADDR = "0x5Fe423A22d4bFD1caFd6044042f4269Fc930F8dC";
      const rewardTokenTicker = "COLA";
      const COLA_CHEF = new ethers.Contract(COLA_CHEF_ADDR, COLA_CHEF_ABI, App.provider);
+
+     const blocksPerSeconds = await getAverageBlockTime(App);
   
-     const rewardsPerWeek = await COLA_CHEF.ColaPerBlock /1e18 * 604800 / 10.2;
+     const rewardsPerWeek = await COLA_CHEF.ColaPerBlock /1e18 * 604800 / blocksPerSeconds;
   
       const tokens = {};
       const prices = await getPulsePrices();
