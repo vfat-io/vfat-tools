@@ -17,7 +17,7 @@ $(function() {
 
      const blocksPerSeconds = await getAverageBlockTime(App);
   
-     const rewardsPerWeek = await COLA_CHEF.ColaPerBlock /1e18 * 604800 / blocksPerSeconds;
+     const rewardsPerWeek = await COLA_CHEF.ColaPerBlock() /1e18 * 604800 / blocksPerSeconds;
   
       const tokens = {};
       const prices = await getPulsePrices();
