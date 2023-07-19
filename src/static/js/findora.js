@@ -8,6 +8,7 @@ $(function() {
       title:"Findora EVM Mainnet",
       heading: ['Pool Provider', 'LP', 'Reward Tokens', 'INFO'],
       rows: [
+        ['SonicSwap           ', `<a href='sonicswap'       >Various</a>`, 'SONIC          ', 'https://sonicswap.io'],
         ['FairySwap           ', `<a href='fairyswap'     >Various</a>`, 'FAIRY          ', 'https://fairyswap.finance'],
         ['Forlend             ', `<a href='forlend'       >Various</a>`, 'FLD          ', 'https://forlend.io'],
       ].reverse()

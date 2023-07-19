@@ -463,6 +463,7 @@ const FantomTokens = [
 const FindoraTokens = [
   {id: 'findora', symbol: 'FRA', contract: '0x0000000000000000000000000000000000001000'},
   {id: 'fairy', symbol: 'FAIRY', contract: '0xcCC94d78b01D94330F25f7B8e827ef24249132DE'},
+  {id: 'sonic', symbol: 'SONIC', contract: '0xfCF1f95899E9872088dc7ACcf9Fb0E879A9AF444'},
   {id: 'forlend', symbol: 'FLD', contract: '0x020cF6c12B08AcbE78544C4F3319A749b0601780'},
   {id: 'usdc-b', symbol: 'USDC.b', contract: '0xdA33eF1A7b48beBbF579eE86DFA735a9529C4950'},
   {id: 'usdc-e', symbol: 'USDC.e', contract: '0x2e8079E0fE49626AF8716fC38aDEa6799065D7f7'},
@@ -473,7 +474,9 @@ const FindoraTokens = [
   {id: 'weth-b', symbol: 'WETH.b', contract: '0x008A628826E9470337e0Cd9c0C944143A83F32f3'},
   {id: 'weth-e', symbol: 'WETH.e', contract: '0xaFfAac009Af35d6069E79Ef3763A39A2BA5BF65f'},
   {id: 'wbnb-b', symbol: 'WBNB.b', contract: '0xABc979788c7089B516B8F2f1b5cEaBd2E27Fd78b'},
-  {id: 'busd-b', symbol: 'BUSD.b', contract: '0xE80EB4a234f718eDc5B76Bb442653827D20Ebb2d'}
+  {id: 'busd-b', symbol: 'BUSD.b', contract: '0xE80EB4a234f718eDc5B76Bb442653827D20Ebb2d'},
+  {id: 'wfra', symbol: 'WFRA', contract: '0x228b04158c6Eff4F3594B0a7A56eb7A2d6DD8874'}
+
 ]
 
 const FuseTokens = [ 
