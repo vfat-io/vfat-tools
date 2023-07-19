@@ -60,7 +60,7 @@ window.NETWORKS = {
       "decimals": 18
     },
     "rpcUrls": [
-      "https://arb1.arbitrum.io/rpc"
+      "https://arb-mainnet-public.unifra.io"
     ],
     "blockExplorerUrls": [
       "https://explorer.arbitrum.io"

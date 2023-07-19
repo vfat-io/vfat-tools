@@ -24,6 +24,7 @@ async function main() {
   const CHR_TOKEN_ADDR = "0x15b2fb8f08e4ac1ce019eadae02ee92aedf06851"
   const [_poolLength] = await App.ethcallProvider.all([CHR_VOTER_CONTRACT.length()]);
   const poolLength = _poolLength / 1;
+  // const poolLength = 100;
   const calls = [...Array(poolLength).keys()].map(i => CHR_VOTER_CONTRACT.pools(i));
   const lpTokens = await App.ethcallProvider.all(calls);
   const calls2 = lpTokens.map(a => CHR_VOTER_CONTRACT.gauges(a));
@@ -155,7 +156,7 @@ async function loadChrSynthetixPoolInfo(App, tokens, prices, stakingAbi, staking
     const rewardTokenAddress = "0x15b2fb8f08e4ac1ce019eadae02ee92aedf06851";
     rewardTokenAddresses.push(rewardTokenAddress);
     if (!getParameterCaseInsensitive(tokens, rewardTokenAddress)) {
-      tokens[rewardTokenAddress] = await getGeneralEthcallToken(App, rewardTokenAddress, stakingAddress);
+      tokens[rewardTokenAddress] = await getArbitrumToken(App, rewardTokenAddress, stakingAddress);
     }
     const rewardToken = getParameterCaseInsensitive(tokens, rewardTokenAddress);
     const rewardTokenTicker = rewardToken.symbol;
@@ -173,7 +174,7 @@ async function loadChrSynthetixPoolInfo(App, tokens, prices, stakingAbi, staking
     earnings.push(earned);
     usdCoinsPerWeek.push(usdPerWeek);
 
-    var stakeToken = await getGeneralEthcallToken(App, stakeTokenAddress, stakingAddress);
+    var stakeToken = await getArbitrumToken(App, stakeTokenAddress, stakingAddress);
 
     const balance = await STAKING_POOL.balanceOf(App.YOUR_ADDRESS)
     // const derivedSupply_ = await STAKING_POOL.derivedSupply()
@@ -184,7 +185,7 @@ async function loadChrSynthetixPoolInfo(App, tokens, prices, stakingAbi, staking
     var newTokenAddresses = stakeToken.tokens.filter(x =>
       !getParameterCaseInsensitive(tokens,x));
     for (const address of newTokenAddresses) {
-        tokens[address] = await getGeneralEthcallToken(App, address, stakingAddress);
+        tokens[address] = await getArbitrumToken(App, address, stakingAddress);
     }
 
     const poolPrices = tryGetPoolPrices(tokens, prices, stakeToken, "arbitrum");
