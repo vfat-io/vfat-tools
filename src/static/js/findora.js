@@ -9,7 +9,8 @@ $(function() {
       heading: ['Pool Provider', 'LP', 'Reward Tokens', 'INFO'],
       rows: [
         ['FairySwap           ', `<a href='fairyswap'     >Various</a>`, 'FAIRY          ', 'https://fairyswap.finance'],
-        ['Forlend             ', `<a href='forlend'       >Various</a>`, 'FLD          ', 'https://forlend.io'],
+        ['Forlend             ', `<a href='forlend'       >Various</a>`, 'FLD            ', 'https://forlend.io'],
+        ['SonicSwap           ', `<a href='sonic'         >Various</a>`, 'SONIC          ', 'https://sonicswap.io']
       ].reverse()
     }
   

@@ -473,7 +473,8 @@ const FindoraTokens = [
   {id: 'weth-b', symbol: 'WETH.b', contract: '0x008A628826E9470337e0Cd9c0C944143A83F32f3'},
   {id: 'weth-e', symbol: 'WETH.e', contract: '0xaFfAac009Af35d6069E79Ef3763A39A2BA5BF65f'},
   {id: 'wbnb-b', symbol: 'WBNB.b', contract: '0xABc979788c7089B516B8F2f1b5cEaBd2E27Fd78b'},
-  {id: 'busd-b', symbol: 'BUSD.b', contract: '0xE80EB4a234f718eDc5B76Bb442653827D20Ebb2d'}
+  {id: 'busd-b', symbol: 'BUSD.b', contract: '0xE80EB4a234f718eDc5B76Bb442653827D20Ebb2d'},
+  {id: 'findora', symbol: 'FRA', contract: '0x228b04158c6Eff4F3594B0a7A56eb7A2d6DD8874'}
 ]
 
 const FuseTokens = [ 
