@@ -13,7 +13,8 @@ const main = async() => {
       ["Velocimeter            ", `<a href="velocimeter" >Various</a>`,"FLOW              ","https://pulse.velocimeter.xyz"],
       ["Pulserate              ", `<a href="pulserate"   >Various</a>`,"PSHARE / PRATE    ","https://pulserate.io"],
       ["YieldPulse Finance     ", `<a href="yieldx"      >Various</a>`,"YIELDX            ","https://yieldpulse.finance"],
-      ["ColaFactory            ", `<a href="colaFactory" >Various</a>`,"COLAFACTORY       ","https://colafactory.com"]
+      ["ColaFactory            ", `<a href="colaFactory" >Various</a>`,"COLAFACTORY       ","https://colafactory.com"],
+      ["Chirp Finance          ", `<a href="chirp"       >Various</a>`,"CHIRP             ","https://chirp.finance"]
 
     ].reverse()
   }
