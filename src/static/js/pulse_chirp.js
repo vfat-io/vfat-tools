@@ -27,7 +27,7 @@ $(function() {
         const prices = await getPulsePrices();
     
         await loadGeneralChefContract(App, tokens, prices, CHIRP_CHEF, CHIRP_CHEF_ADDR, CHIRP_CHEF_ABI, rewardTokenTicker,
-            "cub", null, rewardsPerWeek, "pendingCub", [5], "pulse");
+            "cub", null, rewardsPerWeek, "pendingCub", [5, 20], "pulse");
     
         hideLoading();
       }
