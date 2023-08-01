@@ -19,7 +19,16 @@ consoleInit(main)
 
     const AJNA_FACTORY_INFO = new ethers.Contract(AJNA_FACTORY_INFO_ADDR, AJNA_FACTORY_INFO_ABI, App.provider);
 
+    let allTokens = [];
     const pairs = await AJNA_FACTORY_INFO.getDeployedPoolsList();
+
+    for(const pair of pairs){
+      const AJNA_POOL_INFO = new ethers.Contract(pair, AJNA_POOL_INFO_ABI, App.provider);
+      const tokenAddress0 = await AJNA_POOL_INFO.quoteTokenAddress();
+      allTokens.push(tokenAddress0);
+      const tokenAddress1 = await AJNA_POOL_INFO.collateralAddress();
+      allTokens.push(tokenAddress1);
+    }
 
     const infos = pairs.map(p => {
       return {
@@ -35,9 +44,21 @@ consoleInit(main)
     let tokens = {};
     let prices = {};
 
+    await getAllTokenPrices(App, prices, allTokens)
+
     await loadAjnaPairInfos(App, tokens, prices, infos)
 
     hideLoading();
+  }
+
+  async function getAllTokenPrices(App, prices, allTokens){
+    var newPriceAddresses = allTokens.filter(x =>
+      !getParameterCaseInsensitive(prices, x));
+    var newPrices = await lookUpTokenPrices(newPriceAddresses);
+    for (const key in newPrices) {
+      if (newPrices[key]?.usd)
+          prices[key] = newPrices[key];
+    }
   }
 
   async function loadAjnaPairInfos(App, tokens, prices, infos) {
@@ -59,24 +80,45 @@ async function loadAjnaPairInfo(App, tokens, prices, pairAddress, infoAddress, p
   const quoteToken = await getToken(App, quoteTokenAddress, infoAddress);
   const collateralToken = await getToken(App, collateralTokenAddress, infoAddress);
 
-  var newPriceAddresses = [quoteTokenAddress, collateralTokenAddress].filter(x =>
-    !getParameterCaseInsensitive(prices, x));
-  var newPrices = await lookUpTokenPrices(newPriceAddresses);
-  for (const key in newPrices) {
-    if (newPrices[key]?.usd)
-        prices[key] = newPrices[key];
-  }
+  const AJNA_POOL_INFO_MULTI = new ethcall.Contract(pairAddress, pairAbi);
+
+  const calls = [AJNA_POOL_INFO_MULTI.interestRateInfo(), AJNA_POOL_INFO_MULTI.depositSize(),
+                 AJNA_POOL_INFO_MULTI.debtInfo(), AJNA_POOL_INFO_MULTI.borrowerInfo(App.YOUR_ADDRESS), 
+                 AJNA_POOL_INFO_MULTI.auctionInfo(App.YOUR_ADDRESS)]
+
+  const [interestRateInfo, depositSize, debtInfo, borrowerInfo, auctionInfo] = await App.ethcallProvider.all(calls);
+
+  const collateralPrice = getParameterCaseInsensitive(prices, collateralTokenAddress)?.usd;
+  const quotePrice = getParameterCaseInsensitive(prices, quoteTokenAddress)?.usd;
   
   return {
     quoteTokenAddress,
     collateralTokenAddress,
     quoteTokenSymbol : quoteToken.symbol,
-    collateralTokenSymbol : collateralToken.symbol
+    collateralTokenSymbol : collateralToken.symbol,
+    interestRateInfo,
+    depositSize,
+    debtInfo,
+    borrowerInfo,
+    auctionInfo,
+    quoteToken,
+    collateralToken,
+    collateralPrice,
+    quotePrice
   }
 }
 
 async function printAjnaPairInfo(App, pairInfo){
-  _print(`${pairInfo.quoteTokenSymbol} - ${pairInfo.quoteTokenAddress}`)
-  _print(`${pairInfo.collateralTokenSymbol} - ${pairInfo.collateralTokenAddress}`)
+  const depositSize = pairInfo.depositSize / 10 ** pairInfo.collateralToken.decimals;
+  const tvl = depositSize * pairInfo.collateralPrice;
+  const usersCollateral = pairInfo.borrowerInfo[1] / 10 ** pairInfo.collateralToken.decimals;
+  const usersCollateralUsd = usersCollateral * pairInfo.collateralPrice;
+  const usersDebt = pairInfo.borrowerInfo[0] / 10 ** pairInfo.quoteToken.decimals;
+  const usersDebtUsd = usersDebt * pairInfo.quotePrice;
+  
+  _print_bold(`Pool ${pairInfo.collateralTokenSymbol} / ${pairInfo.quoteTokenSymbol}`)
+  _print(`Total Collateral ${pairInfo.collateralTokenSymbol} ${depositSize.toFixed(2)} ($${formatMoney(tvl)})`)
+  _print(`Your collateral is ${pairInfo.collateralTokenSymbol} ${usersCollateral.toFixed(2)} ($${formatMoney(usersCollateralUsd)})`)
+  _print(`Your debt is ${pairInfo.quoteTokenSymbol} ${usersDebt.toFixed(2)} ($${formatMoney(usersDebtUsd)})`)
   _print("")
 }
