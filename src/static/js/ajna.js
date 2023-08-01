@@ -84,9 +84,9 @@ async function loadAjnaPairInfo(App, tokens, prices, pairAddress, infoAddress, p
 
   const calls = [AJNA_POOL_INFO_MULTI.interestRateInfo(), AJNA_POOL_INFO_MULTI.depositSize(),
                  AJNA_POOL_INFO_MULTI.debtInfo(), AJNA_POOL_INFO_MULTI.borrowerInfo(App.YOUR_ADDRESS), 
-                 AJNA_POOL_INFO_MULTI.auctionInfo(App.YOUR_ADDRESS)]
+                 AJNA_POOL_INFO_MULTI.auctionInfo(App.YOUR_ADDRESS), AJNA_POOL_INFO_MULTI.lenderInfo(0, App.YOUR_ADDRESS)]
 
-  const [interestRateInfo, depositSize, debtInfo, borrowerInfo, auctionInfo] = await App.ethcallProvider.all(calls);
+  const [interestRateInfo, depositSize, debtInfo, borrowerInfo, auctionInfo, lenderInfo] = await App.ethcallProvider.all(calls);
 
   const collateralPrice = getParameterCaseInsensitive(prices, collateralTokenAddress)?.usd;
   const quotePrice = getParameterCaseInsensitive(prices, quoteTokenAddress)?.usd;
@@ -104,7 +104,8 @@ async function loadAjnaPairInfo(App, tokens, prices, pairAddress, infoAddress, p
     quoteToken,
     collateralToken,
     collateralPrice,
-    quotePrice
+    quotePrice,
+    lenderInfo
   }
 }
 
