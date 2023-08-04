@@ -2344,6 +2344,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
   else if (pool.symbol.includes("TETHYSLP")) stakeTokenTicker += " TETHYS LP";
   else if (pool.symbol.includes("VERSE-X")) stakeTokenTicker += " VERSE-X";
   else if (pool.symbol.includes("TENX-LP")) stakeTokenTicker += " TENX LP";
+  else if (pool.symbol.includes("SRTDX")) stakeTokenTicker += " SPARTA LP";
   else if (pool.symbol.includes("PepeDex-LP")) stakeTokenTicker += " PepeDex LP";
   else if (pool.name.includes("Pulse")) stakeTokenTicker += " PulseX LP";
   else if (pool.symbol.includes("Oreo-LP")) stakeTokenTicker += " OREO-SWAP LP";
@@ -2479,6 +2480,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
           const poolUrl = pool.is1inch ? "https://1inch.exchange/#/dao/pools" :
           pool.symbol.includes("TETHYSLP") ?  `https://info.tethys.finance/pair/${pool.address}` :
           pool.symbol.includes("TENX-LP") ?  `https://www.tenx.exchange/#/swap` :
+          pool.symbol.includes("SRTDX") ?  `https://app.spartadex.io/dex/` :
           pool.totalAmounts ?  `https://quickswap.exchange/#/analytics` :
           pool.symbol.includes("VERSE-X") ?  `https://analytics.verse.bitcoin.com/pairs/${pool.address}` :
           pool.symbol.includes("PepeDex-LP") ?  `https://pepedex.pepepal.com/info/${pool.address}` :
@@ -3004,6 +3006,11 @@ function getUniPrices(tokens, prices, pool, chain="eth")
             `https://www.tenx.exchange/#/add/${t0address}/${t1address}`,
             `https://www.tenx.exchange/#/remove/${t0address}/${t1address}`,
             `https://www.tenx.exchange/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+          ] :
+          pool.symbol.includes("SRTDX") ? [
+            `https://app.spartadex.io/dex/pools/add-liquidity/${pool.address}`,
+            `https://app.spartadex.io/dex/pools/remove-liquidity/${pool.address}`,
+            `https://app.spartadex.io/dex/swap`
           ] :
           pool.symbol.includes("Oreo-LP") ? [
             `https://oreoswap.finance/add/${t0address}/${t1address}`,
