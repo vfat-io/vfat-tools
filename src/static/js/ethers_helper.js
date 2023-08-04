@@ -120,6 +120,9 @@ const pageNetwork = function() {
   if (network.toLowerCase() === 'fuse') {
     return window.NETWORKS.FUSE
   }
+  if (network.toLowerCase() === 'base') {
+    return window.NETWORKS.BASE
+  }
   if (network.toLowerCase() === 'thundercore') {
     return window.NETWORKS.THUNDERCORE
   }
@@ -3776,6 +3779,9 @@ function getErc20Prices(prices, pool, chain="eth") {
     case "fuse":
       poolUrl=`https://explorer.fuse.io/address/${pool.address}`;
       break;
+    case "base":
+      poolUrl=`https://basescan.org/token/${pool.address}`;
+      break;
     case "xdai":
       poolUrl=`https://blockscout.com/xdai/mainnet/tokens/${pool.address}`;
       break;
@@ -4527,6 +4533,9 @@ async function printSynthetixPool(App, info, chain="eth", customURLs) {
       case "fuse":
         _print(`<a target="_blank" href="https://explorer.fuse.io/address/${info.stakingAddress}#code">FUSE Scan</a>`);
         break;
+      case "base":
+        _print(`<a target="_blank" href="https://basescan.org/address/${info.stakingAddress}#code">Base Scan</a>`);
+        break;
       case "xdai":
         _print(`<a target="_blank" href="https://blockscout.com/xdai/mainnet/address/${info.stakingAddress}/contracts">Explorer</a>`);
         break;
@@ -4728,6 +4737,8 @@ function getChainExplorerUrl(chain, address){
       return `https://goerli.etherscan.io/token/${address}`;
     case "pulse" :
       return `https://scan.pulsechain.com/address/${address}`;
+    case "base" :
+      return `https://basescan.org/token/${address}`;
     case "cronos" :
       return `https://cronoscan.com/address/${address}`;
     case "canto" :

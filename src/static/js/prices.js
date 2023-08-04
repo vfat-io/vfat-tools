@@ -161,6 +161,10 @@ const avaxTokens = [
   { "id": "yusd-stablecoin", "symbol": "YUSD", "contract": "0x111111111111ed1d73f860f57b2798b683f2d325"}
 ]
 
+const BaseTokens = [
+  { "id": "weth", "symbol": "WETH", "contract": "0x4200000000000000000000000000000000000006"}
+];
+
 const BobaTokens = [
   { "id": "weth", "symbol": "WETH", "contract": "0xDeadDeAddeAddEAddeadDEaDDEAdDeaDDeAD0000"},
   { "id": "synapse-2", "symbol": "SYN", "contract": "0xb554A55358fF0382Fb21F0a478C3546d1106Be8c"}

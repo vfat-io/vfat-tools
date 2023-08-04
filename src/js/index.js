@@ -141,6 +141,21 @@ window.NETWORKS = {
       "https://explorer.dogechain.dog"
     ]
   },
+  BASE: {
+    "chainId": "0x2105",
+    "chainName": "Base",
+    "nativeCurrency": {
+      "name": "Ethereum",
+      "symbol": "ETH",
+      "decimals": 18
+    },
+    "rpcUrls": [
+      "https://developer-access-mainnet.base.org"
+    ],
+    "blockExplorerUrls": [
+      "https://basescan.org"
+    ]
+  },
   FX: {
     "chainId": "0x212",
     "chainName": "FX Mainnet",
