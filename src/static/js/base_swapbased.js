@@ -31,7 +31,8 @@ async function loadBasedChefContract(App, tokens, prices, chef, chefAddress, che
   rewardTokenFunction, rewardsPerBlockFunction, rewardsPerWeekFixed, deathPoolIndices, chain) {
   const chefContract = chef ?? new ethers.Contract(chefAddress, chefAbi, App.provider);
 
-  const poolCount = parseInt(await chefContract.poolLength(), 10);
+  //const poolCount = parseInt(await chefContract.poolLength(), 10);
+  const poolCount = 19
   const totalAllocPoints = await chefContract.totalAllocPoint();
 
   _print(`<a href='https://basescan.org/address/${chefAddress}' target='_blank'>Staking Contract</a>`);
@@ -70,32 +71,20 @@ async function loadBasedChefContract(App, tokens, prices, chef, chefAddress, che
   let aprs = []
   for (i = 0; i < poolCount; i++) {
     if (poolPrices[i]) {
-      const apr = printChefPool(App, chefAbi, chefAddress, prices, tokens, poolInfos[i], i, poolPrices[i],
+      const apr = printBasedPool(App, chefAbi, chefAddress, prices, tokens, poolInfos[i], i, poolPrices[i],
         totalAllocPoints, rewardsPerWeek, rewardTokenTicker, rewardTokenAddress,
-        pendingRewardsFunction, null, null, chain, poolInfos[i].depositFee, poolInfos[i].withdrawFee)
+        null, null, chain)
       aprs.push(apr);
     }
   }
-  let totalUserStaked=0, totalStaked=0, averageApr=0;
+  let totalStaked=0;
   for (const a of aprs) {
     if (!isNaN(a.totalStakedUsd)) {
       totalStaked += a.totalStakedUsd;
     }
-    if (a.userStakedUsd > 0) {
-      totalUserStaked += a.userStakedUsd;
-      averageApr += a.userStakedUsd * a.yearlyAPR / 100;
-    }
   }
-  averageApr = averageApr / totalUserStaked;
   _print_bold(`Total Staked: $${formatMoney(totalStaked)}`);
-  if (totalUserStaked > 0) {
-    _print_bold(`\nYou are staking a total of $${formatMoney(totalUserStaked)} at an average APR of ${(averageApr * 100).toFixed(2)}%`)
-    _print(`Estimated earnings:`
-        + ` Day $${formatMoney(totalUserStaked*averageApr/365)}`
-        + ` Week $${formatMoney(totalUserStaked*averageApr/52)}`
-        + ` Year $${formatMoney(totalUserStaked*averageApr)}\n`);
-  }
-  return { prices, totalUserStaked, totalStaked, averageApr }
+  return { prices, totalStaked }
 }
 
 async function getBasedPoolInfo(app, chefContract, chefAddress, poolIndex) {
@@ -104,20 +93,50 @@ async function getBasedPoolInfo(app, chefContract, chefAddress, poolIndex) {
     return {
       address: poolInfo.lpToken ?? poolInfo.stakingToken ?? poolInfo.token,
       allocPoints: poolInfo.allocPoint ?? 1,
-      poolToken: null,
-      userStaked : 0,
-      pendingRewardTokens : 0,
+      poolToken: null
     };
   }
-  const poolToken = await getGeneralToken(app, poolInfo.lpToken ?? poolInfo.stakingToken ?? poolInfo.token, chefAddress);
-  const userInfo = await chefContract.userInfo(poolIndex, app.YOUR_ADDRESS);
-  const staked = userInfo.amount / 10 ** poolToken.decimals;
+  const stakingContractAddress = await chefContract.stakingRewardsInfoByStakingToken(poolInfo.lpToken);
+  const poolToken = await getGeneralToken(app, poolInfo.lpToken ?? poolInfo.stakingToken ?? poolInfo.token, stakingContractAddress);
   return {
       address: poolInfo.lpToken ?? poolInfo.stakingToken ?? poolInfo.token,
       allocPoints: poolInfo.allocPoint ?? 1,
       poolToken: poolToken,
-      userStaked : staked,
-      depositFee : (poolInfo.depositFeeBP ?? poolInfo.depositFee ?? 0) / 100,
-      withdrawFee : (poolInfo.withdrawFeeBP ?? 0) / 100
   };
+}
+
+function printBasedPool(App, chefAbi, chefAddr, prices, tokens, poolInfo, poolIndex, poolPrices,
+                       totalAllocPoints, rewardsPerWeek, rewardTokenTicker, rewardTokenAddress,
+                       fixedDecimals, claimFunction, chain="eth") {
+  fixedDecimals = fixedDecimals ?? 2;
+  const sp = (poolInfo.stakedToken == null) ? null : getPoolPrices(tokens, prices, poolInfo.stakedToken, chain);
+  var poolRewardsPerWeek = poolInfo.allocPoints / totalAllocPoints * rewardsPerWeek;
+  if (poolRewardsPerWeek == 0 && rewardsPerWeek != 0) return;
+  const rewardPrice = getParameterCaseInsensitive(prices, rewardTokenAddress)?.usd;
+  const staked_tvl = sp?.staked_tvl ?? poolPrices.staked_tvl;
+  _print_inline(`${poolIndex} - `);
+  poolPrices.print_price(chain);
+  sp?.print_price(chain);
+  const apr = printBasedAPR(rewardTokenTicker, rewardPrice, poolRewardsPerWeek, poolPrices.stakeTokenTicker,
+    staked_tvl, poolPrices.price, fixedDecimals);
+  if (poolInfo.userLPStaked > 0) sp?.print_contained_price(userStaked);
+  if (poolInfo.userStaked > 0) poolPrices.print_contained_price(userStaked);
+  return apr;
+}
+
+function printBasedAPR(rewardTokenTicker, rewardPrice, poolRewardsPerWeek,
+                  stakeTokenTicker, staked_tvl, userStaked, poolTokenPrice,
+                  fixedDecimals) {
+  var usdPerWeek = poolRewardsPerWeek * rewardPrice;
+  fixedDecimals = fixedDecimals ?? 2;
+  _print(`${rewardTokenTicker} Per Week: ${poolRewardsPerWeek.toFixed(fixedDecimals)} ($${formatMoney(usdPerWeek)})`);
+  var weeklyAPR = usdPerWeek / staked_tvl * 100;
+  var dailyAPR = weeklyAPR / 7;
+  var yearlyAPR = weeklyAPR * 52;
+  _print(`APR: Day ${dailyAPR.toFixed(2)}% Week ${weeklyAPR.toFixed(2)}% Year ${yearlyAPR.toFixed(2)}%`);
+  _print("");
+  return {
+    totalStakedUsd : staked_tvl,
+    yearlyAPR
+  }
 }

@@ -931,6 +931,15 @@ async function getAvaxPrices() {
   return prices;
 }
 
+async function getBasePrices() {
+  const idPrices = await lookUpPrices(BaseTokens.map(x => x.id));
+  const prices = {}
+  for (const bt of BaseTokens)
+      if (idPrices[bt.id])
+          prices[bt.contract] = idPrices[bt.id];
+  return prices;
+}
+
 async function getBobaPrices() {
   const idPrices = await lookUpPrices(BobaTokens.map(x => x.id));
   const prices = {}
