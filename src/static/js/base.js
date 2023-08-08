@@ -8,7 +8,8 @@ const main = async() => {
     "title":"Base Network",
     "heading":["Pool Provider","LP", "Reward Tokens", "INFO"],
     "rows": [
-      ["SwapBased Finance              ",`<a href="swapbased"            >Various</a>`,"BASE            ","https://swapbased.finance"]
+      ["SwapBased Finance              ",`<a href="swapbased"            >Various</a>`,"BASE            ","https://swapbased.finance"],
+      ["Chz Finance                    ",`<a href="chz"                  >Various</a>`,"CHZ             ","https://chz.finance"]
     ].reverse()
   }
 
