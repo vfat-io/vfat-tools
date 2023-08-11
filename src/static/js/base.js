@@ -11,7 +11,8 @@ const main = async() => {
       ["SwapBased Finance              ",`<a href="swapbased"            >Various</a>`,"BASE            ","https://swapbased.finance"],
       ["Chz Finance                    ",`<a href="chz"                  >Various</a>`,"CHZ             ","https://chz.finance"],
       ["BaseSwap Finance               ",`<a href="baseswap"             >Various</a>`,"BSWAP           ","https://baseswap.fi"],
-      ["SynthSwap                      ",`<a href="synthswap"            >Various</a>`,"SYNTH           ","https://www.synthswap.io"]
+      ["SynthSwap                      ",`<a href="synthswap"            >Various</a>`,"SYNTH           ","https://www.synthswap.io"],
+      ["Balancer                       ",`<a href="balancer"             >Various</a>`,"Various         ","https://app.balancer.fi/#/base"]
     ].reverse()
   }
 
