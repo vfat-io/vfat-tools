@@ -2347,6 +2347,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
   else if (pool.symbol.includes("TETHYSLP")) stakeTokenTicker += " TETHYS LP";
   else if (pool.symbol.includes("VERSE-X")) stakeTokenTicker += " VERSE-X";
   else if (pool.symbol.includes("BSWAP")) stakeTokenTicker += " BSWAP LP";
+  else if (pool.name.includes("Synth")) stakeTokenTicker += " Synth LP";
   else if (pool.symbol.includes("TENX-LP")) stakeTokenTicker += " TENX LP";
   else if (pool.symbol.includes("SRTDX")) stakeTokenTicker += " SPARTA LP";
   else if (pool.symbol.includes("PepeDex-LP")) stakeTokenTicker += " PepeDex LP";
@@ -2487,6 +2488,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
           pool.symbol.includes("SRTDX") ?  `https://app.spartadex.io/dex/` :
           pool.totalAmounts ?  `https://quickswap.exchange/#/analytics` :
           pool.symbol.includes("VERSE-X") ?  `https://analytics.verse.bitcoin.com/pairs/${pool.address}` :
+          pool.name.includes("Synth") ?  `https://analytics.synthswap.io/pairs/${pool.address}` :
           pool.symbol.includes("BSWAP") ?  `https://baseswap.fi/liquidity` :
           pool.symbol.includes("PepeDex-LP") ?  `https://pepedex.pepepal.com/info/${pool.address}` :
           pool.name.includes("Voltage") ?  `https://info.voltage.finance/pair/${pool.address}` :
@@ -2680,6 +2682,11 @@ function getUniPrices(tokens, prices, pool, chain="eth")
             `https://baseswap.fi/add/${t0address}/${t1address}`,
             `https://baseswap.fi/remove/${t0address}/${t1address}`,
             `https://baseswap.fi/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+          ] :
+          pool.name.includes("Synth") ? [
+            `https://www.synthswap.io/exchange/add/${t0address}/${t1address}`,
+            `https://www.synthswap.io/exchange/remove/${t0address}/${t1address}`,
+            `https://www.synthswap.io/exchange/swapv2?inputCurrency=${t0address}&outputCurrency=${t1address}`
           ] :
           pool.symbol.includes("PepeDex-LP") ? [
             `https://pepedex.pepepal.com/add/${t0address}/${t1address}`,
