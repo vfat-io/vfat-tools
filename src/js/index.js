@@ -150,7 +150,7 @@ window.NETWORKS = {
       "decimals": 18
     },
     "rpcUrls": [
-      "https://developer-access-mainnet.base.org"
+      "https://base.meowrpc.com"
     ],
     "blockExplorerUrls": [
       "https://basescan.org"
