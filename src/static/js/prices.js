@@ -165,7 +165,9 @@ const BaseTokens = [
   { "id": "weth", "symbol": "WETH", "contract": "0x4200000000000000000000000000000000000006"},
   { "id": "bridged-usd-coin-base", "symbol": "USDBC", "contract": "0xd9aaec86b65d86f6a7b5b1b0c42ffa531710b6ca"},
   { "id": "dai", "symbol": "DAI", "contract": "0x50c5725949a6f0c72e6c4a641f24049a917db0cb"},
-  { "id": "balancer", "symbol": "BAL", "contract": "0x7c6b91d9be155a6db01f749217d76ff02a7227f2"}
+  { "id": "balancer", "symbol": "BAL", "contract": "0x7c6b91d9be155a6db01f749217d76ff02a7227f2"},
+  { "id": "ethos-reserve-note", "symbol": "ERN", "contract": "0xa334884bF6b0A066d553D19e507315E839409e62"},
+  { "id": "usd", "symbol": "USD+", "contract": "0xB79DD08EA68A908A97220C76d19A6aA9cBDE4376"}
 ];
 
 const BobaTokens = [
