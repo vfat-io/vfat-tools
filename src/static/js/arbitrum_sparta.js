@@ -6,6 +6,11 @@ $(function() {
 
   const Addresses = [
     "0x0cf665a9ff61618f003ded415085738f1004be82",
+    "0xcdd593c8f83efddf7495e0c2205f0ffc0af0afed",
+    "0xc9cfb2617fa03d0e4650a80ae20bfd9d884e1f01",
+    "0xf0c25a31e7e75c941eddfac431465c662e0ca698",
+    "0xad822a7786464adb597f411bbe53a4b592be9ca4",
+    "0x7f92A5B164D9a8377984392273FAa6A0C8063eD5"
   ]
   
   async function main() {
