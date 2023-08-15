@@ -13,7 +13,8 @@ const main = async() => {
       ["BaseSwap Finance               ",`<a href="baseswap"             >Various</a>`,"BSWAP           ","https://baseswap.fi"],
       ["SynthSwap                      ",`<a href="synthswap"            >Various</a>`,"SYNTH           ","https://www.synthswap.io"],
       ["Balancer                       ",`<a href="balancer"             >Various</a>`,"Various         ","https://app.balancer.fi/#/base"],
-      ["velocimeter                    ",`<a href="velocimeter"          >Various</a>`,"BVM             ","https://base.velocimeter.xyz"]
+      ["velocimeter                    ",`<a href="velocimeter"          >Various</a>`,"BVM             ","https://base.velocimeter.xyz"],
+      ["Alienbase                      ",`<a href="alienbase"            >Various</a>`,"ALB             ","https://app.alienbase.xyz"]
     ].reverse()
   }
 
