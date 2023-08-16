@@ -15,13 +15,13 @@ async function main() {
    const rewardTokenTicker = "COOKIE";
    const COOKIE_CHEF = new ethers.Contract(COOKIE_CHEF_ADDR, COOKIEBASE_CHEF_ABI, App.provider);
 
-   const rewardsPerWeek = await COOKIE_CHEF.cookiePerBlock() /1e18 * 604800;
+   const rewardsPerWeek = await COOKIE_CHEF.CookiePerBlock() /1e18 * 604800;
 
     const tokens = {};
     const prices = await getPulsePrices();
 
     await loadGeneralChefContract(App, tokens, prices, COOKIE_CHEF, COOKIE_CHEF_ADDR, COOKIEBASE_CHEF_ABI, rewardTokenTicker,
-        "cookie", null, rewardsPerWeek, "pendingCookie", [0], "base");
+        "Cookie", null, rewardsPerWeek, "pendingCookie", [0], "base");
 
     hideLoading();
   }
