@@ -15,7 +15,7 @@ const main = async() => {
       ["Balancer                       ",`<a href="balancer"             >Various</a>`,"Various         ","https://app.balancer.fi/#/base"],
       ["velocimeter                    ",`<a href="velocimeter"          >Various</a>`,"BVM             ","https://base.velocimeter.xyz"],
       ["Alienbase                      ",`<a href="alienbase"            >Various</a>`,"ALB             ","https://app.alienbase.xyz"],
-      ["CookieBase                     ",`<a href="cookiebase"           >Various</a>`,"BASE            ","https://cookiebase.xyz"],
+      ["CookieBase                     ",`<a href="cookiebase"           >Various</a>`,"COOKIE          ","https://cookiebase.xyz"]
     ].reverse()
   }
 
