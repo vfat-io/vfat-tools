@@ -25,6 +25,8 @@ async function main() {
     await loadBasedChefContract(App, tokens, prices, BASE_CHEF, BASE_CHEF_ADDR, BASE_CHEF_ABI, rewardTokenTicker,
       "rewardsToken", null, rewardsPerWeek, [], "base");
 
+    prices["0xef94c12ba5bb2bf56e19babfa56880487fea6e82"] = getParameterCaseInsensitive(prices,  "0xd07379a755a8f11b57610154861d694b2a0f615a");
+
     const Pools = [
       "0xEfE632dB3A07FeBcEc04f76Ea54D9d49f27bCd57",
       "0xE39226E0864252E0fC9bD668FB796FD63a1B75A4"
