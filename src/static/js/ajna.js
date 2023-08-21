@@ -77,8 +77,8 @@ async function loadAjnaPairInfo(App, tokens, prices, pairAddress, infoAddress, p
   const quoteTokenAddress = await AJNA_POOL_INFO.callStatic[quoteTokenFunction]();
   const collateralTokenAddress = await AJNA_POOL_INFO.callStatic[collateralTokenFunction]();
 
-  const quoteToken = await getToken(App, quoteTokenAddress, infoAddress);
-  const collateralToken = await getToken(App, collateralTokenAddress, infoAddress);
+  const quoteToken = await getToken(App, quoteTokenAddress, pairAddress);
+  const collateralToken = await getToken(App, collateralTokenAddress, pairAddress);
 
   const AJNA_POOL_INFO_MULTI = new ethcall.Contract(pairAddress, pairAbi);
 
@@ -96,7 +96,7 @@ async function loadAjnaPairInfo(App, tokens, prices, pairAddress, infoAddress, p
     collateralTokenAddress,
     quoteTokenSymbol : quoteToken.symbol,
     collateralTokenSymbol : collateralToken.symbol,
-    interestRateInfo,
+    interestRateInfo : interestRateInfo[0],
     depositSize,
     debtInfo,
     borrowerInfo,
@@ -110,15 +110,22 @@ async function loadAjnaPairInfo(App, tokens, prices, pairAddress, infoAddress, p
 }
 
 async function printAjnaPairInfo(App, pairInfo){
-  const depositSize = pairInfo.depositSize / 10 ** pairInfo.collateralToken.decimals;
-  const tvl = depositSize * pairInfo.collateralPrice;
+  // const depositSize = pairInfo.depositSize / 10 ** pairInfo.collateralToken.decimals;
+  const borrowRate_ = pairInfo.interestRateInfo / 10 ** pairInfo.quoteToken.decimals;
+  const borrowRate = borrowRate_;
+  // const tvl = depositSize * pairInfo.collateralPrice;
+  const tvl = pairInfo.collateralToken.staked * pairInfo.collateralPrice;
+  const quoteTVL = pairInfo.quoteToken.staked * pairInfo.quotePrice;
   const usersCollateral = pairInfo.borrowerInfo[1] / 10 ** pairInfo.collateralToken.decimals;
   const usersCollateralUsd = usersCollateral * pairInfo.collateralPrice;
   const usersDebt = pairInfo.borrowerInfo[0] / 10 ** pairInfo.quoteToken.decimals;
   const usersDebtUsd = usersDebt * pairInfo.quotePrice;
   
   _print_bold(`Pool ${pairInfo.collateralTokenSymbol} / ${pairInfo.quoteTokenSymbol}`)
-  _print(`Total Collateral ${pairInfo.collateralTokenSymbol} ${depositSize.toFixed(2)} ($${formatMoney(tvl)})`)
+  // _print(`Total Collateral ${pairInfo.collateralTokenSymbol} ${depositSize.toFixed(2)} ($${formatMoney(tvl)})`)
+  _print(`Total Collateral ${pairInfo.collateralTokenSymbol} ${pairInfo.collateralToken.staked.toFixed(2)} ($${formatMoney(tvl)})`)
+  _print(`Total Borrows ${pairInfo.quoteTokenSymbol} ${pairInfo.quoteToken.staked.toFixed(2)} ($${formatMoney(quoteTVL)})`)
+  _print(`APR Borrow ${borrowRate.toFixed(2)}%`)
   _print(`Your collateral is ${pairInfo.collateralTokenSymbol} ${usersCollateral.toFixed(2)} ($${formatMoney(usersCollateralUsd)})`)
   _print(`Your debt is ${pairInfo.quoteTokenSymbol} ${usersDebt.toFixed(2)} ($${formatMoney(usersDebtUsd)})`)
   _print("")
