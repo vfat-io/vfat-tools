@@ -161,6 +161,15 @@ const avaxTokens = [
   { "id": "yusd-stablecoin", "symbol": "YUSD", "contract": "0x111111111111ed1d73f860f57b2798b683f2d325"}
 ]
 
+const BaseTokens = [
+  { "id": "weth", "symbol": "WETH", "contract": "0x4200000000000000000000000000000000000006"},
+  { "id": "bridged-usd-coin-base", "symbol": "USDBC", "contract": "0xd9aaec86b65d86f6a7b5b1b0c42ffa531710b6ca"},
+  { "id": "dai", "symbol": "DAI", "contract": "0x50c5725949a6f0c72e6c4a641f24049a917db0cb"},
+  { "id": "balancer", "symbol": "BAL", "contract": "0x7c6b91d9be155a6db01f749217d76ff02a7227f2"},
+  { "id": "ethos-reserve-note", "symbol": "ERN", "contract": "0xa334884bF6b0A066d553D19e507315E839409e62"},
+  { "id": "usd", "symbol": "USD+", "contract": "0xB79DD08EA68A908A97220C76d19A6aA9cBDE4376"}
+];
+
 const BobaTokens = [
   { "id": "weth", "symbol": "WETH", "contract": "0xDeadDeAddeAddEAddeadDEaDDEAdDeaDDeAD0000"},
   { "id": "synapse-2", "symbol": "SYN", "contract": "0xb554A55358fF0382Fb21F0a478C3546d1106Be8c"}
@@ -922,6 +931,15 @@ async function getAvaxPrices() {
   const idPrices = await lookUpPrices(avaxTokens.map(x => x.id));
   const prices = {}
   for (const bt of avaxTokens)
+      if (idPrices[bt.id])
+          prices[bt.contract] = idPrices[bt.id];
+  return prices;
+}
+
+async function getBasePrices() {
+  const idPrices = await lookUpPrices(BaseTokens.map(x => x.id));
+  const prices = {}
+  for (const bt of BaseTokens)
       if (idPrices[bt.id])
           prices[bt.contract] = idPrices[bt.id];
   return prices;
