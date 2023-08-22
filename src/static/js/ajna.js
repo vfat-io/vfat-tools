@@ -98,7 +98,7 @@ async function loadAjnaPairInfo(App, tokens, prices, pairAddress, infoAddress, p
     collateralTokenSymbol : collateralToken.symbol,
     interestRateInfo : interestRateInfo[0],
     depositSize,
-    debtInfo,
+    debtInfo : debtInfo[3],
     borrowerInfo,
     auctionInfo,
     quoteToken,
@@ -112,6 +112,8 @@ async function loadAjnaPairInfo(App, tokens, prices, pairAddress, infoAddress, p
 async function printAjnaPairInfo(App, pairInfo){
   const borrowRate_ = pairInfo.interestRateInfo / 1e18;
   const borrowRate = borrowRate_ * 100;
+  //const collateralRate = borrowRate * 88.5 / 100;
+  //const collateralRate = pairInfo.debtInfo / 1e18 * 100;
   const tvl = pairInfo.collateralToken.staked * pairInfo.collateralPrice;
   const quoteTVL = pairInfo.quoteToken.staked * pairInfo.quotePrice;
   const usersCollateral = pairInfo.borrowerInfo[1] / 10 ** pairInfo.collateralToken.decimals;
@@ -123,6 +125,7 @@ async function printAjnaPairInfo(App, pairInfo){
   _print(`Total Collateral ${pairInfo.collateralTokenSymbol} ${pairInfo.collateralToken.staked.toFixed(2)} ($${formatMoney(tvl)})`)
   _print(`Total Borrows ${pairInfo.quoteTokenSymbol} ${pairInfo.quoteToken.staked.toFixed(2)} ($${formatMoney(quoteTVL)})`)
   _print(`APR Borrow ${borrowRate.toFixed(2)}%`)
+  //_print(`APR Lend ${collateralRate.toFixed(2)}%`)
   _print(`Your collateral is ${pairInfo.collateralTokenSymbol} ${usersCollateral.toFixed(2)} ($${formatMoney(usersCollateralUsd)})`)
   _print(`Your debt is ${pairInfo.quoteTokenSymbol} ${usersDebt.toFixed(2)} ($${formatMoney(usersDebtUsd)})`)
   _print("")
