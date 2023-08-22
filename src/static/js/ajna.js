@@ -110,8 +110,8 @@ async function loadAjnaPairInfo(App, tokens, prices, pairAddress, infoAddress, p
 }
 
 async function printAjnaPairInfo(App, pairInfo){
-  const borrowRate_ = pairInfo.interestRateInfo / 10 ** pairInfo.quoteToken.decimals;
-  const borrowRate = borrowRate_; //make a calculation
+  const borrowRate_ = pairInfo.interestRateInfo / 1e18;
+  const borrowRate = borrowRate_ * 100;
   const tvl = pairInfo.collateralToken.staked * pairInfo.collateralPrice;
   const quoteTVL = pairInfo.quoteToken.staked * pairInfo.quotePrice;
   const usersCollateral = pairInfo.borrowerInfo[1] / 10 ** pairInfo.collateralToken.decimals;
