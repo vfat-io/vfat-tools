@@ -37,18 +37,18 @@ $(function() {
     //getting the staking token price from its LP address
     await loadAdamantSynthetixPoolInfoPrice(App, tokens, prices, App.YOUR_ADDRESS, "0xc5fFd083B983AAF823a9b485b207F898ed2f32DC")
 
-    let p1 = await loadAdamantSynthetixPools1(App, tokens, prices, pools1)
-    _print_bold(`Total staked: $${formatMoney(p1.staked_tvl)}`);
-    if (p1.totalUserStaked > 0) {
-      _print(`You are staking a total of $${formatMoney(p1.totalUserStaked)} at an APR of ${(p1.totalAPR * 100).toFixed(2)}%\n`);
-    }
-
-    _print("");
-  
     let p = await loadAdamantSynthetixPools(App, tokens, prices, pools)
     _print_bold(`Total staked: $${formatMoney(p.staked_tvl)}`);
     if (p.totalUserStaked > 0) {
       _print(`You are staking a total of $${formatMoney(p.totalUserStaked)} at an APR of ${(p.totalAPR * 100).toFixed(2)}%\n`);
+    }
+
+    _print("");
+
+    let p1 = await loadAdamantSynthetixPools1(App, tokens, prices, pools1)
+    _print_bold(`Total staked: $${formatMoney(p1.staked_tvl)}`);
+    if (p1.totalUserStaked > 0) {
+      _print(`You are staking a total of $${formatMoney(p1.totalUserStaked)} at an APR of ${(p1.totalAPR * 100).toFixed(2)}%\n`);
     }
   
     hideLoading();
