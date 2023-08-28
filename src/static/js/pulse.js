@@ -16,7 +16,8 @@ const main = async() => {
       ["ColaFactory            ", `<a href="colaFactory"   >Various</a>`,"COLAFACTORY       ","https://colafactory.com"],
       ["Chirp Finance          ", `<a href="chirp"         >Various</a>`,"CHIRP             ","https://chirp.finance"],
       ["Pulseaxe               ", `<a href="pulseaxe"      >Various</a>`,"CHOP / AXE        ","https://pulseaxe.com"],
-      ["Yogurt Finance         ", `<a href="yogurtfinance" >Various</a>`,"YOGURTFINANCE     ","https://yogurtfinance.com"]
+      ["Yogurt Finance         ", `<a href="yogurtfinance" >Various</a>`,"YOGURTFINANCE     ","https://yogurtfinance.com"],
+      ["PulseLorian            ", `<a href="pulselorian"   >Various</a>`,"ELIXIR            ","https://pulselorian.com"]
 
     ].reverse()
   }
