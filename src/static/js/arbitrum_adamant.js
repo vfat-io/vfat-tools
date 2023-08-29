@@ -28,7 +28,7 @@ $(function() {
       stakeTokenFunction: "stakingToken"
     }})
 
-    const pools1 = Addresses.map(a => { return {
+    const pools1 = Addresses1.map(a => { return {
       address: a,
       abi: ARBY_STAKING_ABI1,
       stakeTokenFunction: "stakingToken"
