@@ -75,7 +75,7 @@ async function loadAdamantSynthetixPools1(App, tokens, prices, pools) {
   const infos = await Promise.all(pools.map(p =>
     loadAdamantSynthetixPoolInfo1(App, tokens, prices, p.abi, p.address, p.stakeTokenFunction)));
   for (const i of infos) {
-    let p = await printAdamantSynthetixPool(App, i, "arbitrum");
+    let p = await printAdamantSynthetixPool1(App, i, "arbitrum");
     totalStaked += p.staked_tvl || 0;
     totalUserStaked += p.userStaked || 0;
     if (p.userStaked > 0) {
@@ -304,6 +304,48 @@ async function printAdamantSynthetixPool(App, info, chain = "eth", customURLs) {
   }
 }
 
+async function printAdamantSynthetixPool1(App, info, chain = "eth", customURLs) {
+  info.poolPrices.print_price(chain, 4, customURLs);
+  let totalYearlyAPR = 0;
+  for(let i = 0; i < info.rewardTokenTickers.length; i++){
+    _print(`${info.rewardTokenTickers[i]} Per Week: ${info.weeklyRewards[i].toFixed(2)} ($${formatMoney(info.usdCoinsPerWeek[i])})`);
+    const weeklyAPR = info.usdCoinsPerWeek[i] / info.staked_tvl * 100;
+    const dailyAPR = weeklyAPR / 7;
+    const yearlyAPR = weeklyAPR * 52;
+    totalYearlyAPR += yearlyAPR;
+    _print(`APR: ${info.rewardTokenTickers[i]} Day ${dailyAPR.toFixed(2)}% Week ${weeklyAPR.toFixed(2)}% Year ${yearlyAPR.toFixed(2)}%`);
+  }
+  const userStakedUsd = info.userStaked * info.stakeTokenPrice;
+  const userStakedPct = userStakedUsd / info.staked_tvl * 100;
+  _print(`You are staking ${info.userStaked.toFixed(6)} ${info.stakeTokenTicker} ` +
+    `$${formatMoney(userStakedUsd)} (${userStakedPct.toFixed(2)}% of the pool).`);
+
+  const approveTENDAndStake = async function () {
+    return rewardsContractArbitrum_stake(info.stakeTokenAddress, info.stakingAddress, App)
+  }
+  const unstake = async function () {
+    return rewardsContractArbitrum_unstake(info.stakingAddress, App)
+  }
+  const claim = async function () {
+    return adamantContractArbitrum_claim1(info.stakingAddress, App)
+  }
+  _print(`<a target="_blank" href="https://arbiscan.io/address/${info.stakingAddress}#code">Arbitrum Explorer</a>`);
+  //_print_link(`Stake ${info.userUnstaked.toFixed(6)} ${info.stakeTokenTicker}`, approveTENDAndStake)
+  _print_link(`Unstake ${info.userStaked.toFixed(6)} ${info.stakeTokenTicker}`, unstake)
+  let claimLink = ``;
+  for(let i = 0; i < info.earnings.length; i++){
+    claimLink += `${info.earnings[i].toFixed(6)} ${info.rewardTokenTickers[i]} ($${formatMoney(info.earnings[i]*info.rewardTokenPrices[i])}) `
+  }
+  _print_link(`Claim ${claimLink}`, claim);
+  _print("");
+
+  return {
+    staked_tvl: info.poolPrices.staked_tvl,
+    userStaked: userStakedUsd,
+    apr: totalYearlyAPR
+  }
+}
+
 const adamantContractArbitrum_claim = async function (rewardPoolAddr, App) {
   const signer = App.provider.getSigner()
 
@@ -313,6 +355,23 @@ const adamantContractArbitrum_claim = async function (rewardPoolAddr, App) {
 
   showLoading()
     REWARD_POOL.getReward()
+      .then(function (t) {
+        return App.provider.waitForTransaction(t.hash)
+      })
+      .catch(function () {
+        hideLoading()
+      })
+}
+
+const adamantContractArbitrum_claim1 = async function (rewardPoolAddr, App) {
+  const signer = App.provider.getSigner()
+
+  const REWARD_POOL = new ethers.Contract(rewardPoolAddr, ARBY_STAKING_ABI1, signer)
+
+  console.log(App.YOUR_ADDRESS)
+
+  showLoading()
+    REWARD_POOL.claim()
       .then(function (t) {
         return App.provider.waitForTransaction(t.hash)
       })
