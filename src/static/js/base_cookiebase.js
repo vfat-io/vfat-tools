@@ -18,7 +18,7 @@ async function main() {
    const rewardsPerWeek = await COOKIE_CHEF.CookiePerBlock() /1e18 * 604800;
 
     const tokens = {};
-    const prices = await getPulsePrices();
+    const prices = await getBasePrices();
 
     await loadGeneralChefContract(App, tokens, prices, COOKIE_CHEF, COOKIE_CHEF_ADDR, COOKIEBASE_CHEF_ABI, rewardTokenTicker,
         "Cookie", null, rewardsPerWeek, "pendingCookie", [0], "base");
