@@ -46,12 +46,12 @@ async function main() {
   '0xaD3d4aFd779e4A57734557CcE25F87032614fE47',
   // '0xf05a3De3dD6910042f506c6105bC14920C4289B6',
   // '0xeAE066C25106006fB386A3a8b1698A0cB6931c1a',
-  // '0x98F44CE76BDCaD37f00a98B275631B1D796862fa',
-  // '0x5072261dE01Ca7D933C39893C4c4B009a351DF43',
-  // '0x109Cc0f2640457b2A483C2eef189827750A676bB',
-  // '0xC01E2ff20501839db7B28F5Cb3eD2876fEa3d6b1',
-  // '0xDe23611176b16720346f4Df071D1aA01752c68C1',
-  // '0x9a8D9F5C698C1F2B0d48a955BC531F2c7D67Af84',
+  '0x98F44CE76BDCaD37f00a98B275631B1D796862fa',
+  '0x5072261dE01Ca7D933C39893C4c4B009a351DF43',
+  '0x109Cc0f2640457b2A483C2eef189827750A676bB',
+  '0xC01E2ff20501839db7B28F5Cb3eD2876fEa3d6b1',
+  '0xDe23611176b16720346f4Df071D1aA01752c68C1',
+  '0x9a8D9F5C698C1F2B0d48a955BC531F2c7D67Af84',
   // '0xa81dac2e9caa218Fcd039D7CEdEB7847cf362213',
   // '0xBb0b5819Fa91076a1D6aaFa0D018E27a416DE029',
   // '0x81387016224D4EA8F938A1c2207c5Cc4A5AEa393',
@@ -67,26 +67,28 @@ async function main() {
   // '0x36BdA777CCBefE881ed729AfF7F1f06779f4199a',
   // '0xcEa0a2228145d0fD25dE083e3786ddB1eA184296',
   // '0xe5Cf7Ec83BA94c4AdF833d7DCdb800a53f28410E',
+  
   // '0xD2121Cb13A28Ab16Cb0f0F19A665e9a9311F9aBb',
   // '0xF64957C35409055776C7122AC655347ef88eaF9B',
   // '0x9915D03D62b1d83f9a8890bAeBd72Ed4bCa49701',
   // '0x2692CC440416B7f8252406D84e9D66f0C48C069E',
-  // '0x62052D68A7DBa58079B7D70a40796CAbAab2a95f',
-  // '0x76c48576822Cd955C320f5d5A163E738dbFEcc01',
+
+  '0x62052D68A7DBa58079B7D70a40796CAbAab2a95f',
+  '0x76c48576822Cd955C320f5d5A163E738dbFEcc01',
   // '0xE5Ff63862097b32d3ed30551e290D66f1548973F',
   // '0xDf9D427711CCE46b52fEB6B2a20e4aEaeA12B2b7',
-  // '0xC91ed60A0E0EA668A3489F6039054C6d93c76A9b',
-  // '0x12E45bE50dd4f3Bc430B65d399B1e3b90275661c',
-  // '0x275535F82F287073CEEbC653862E4E43868AA65C',
-  // '0x744462994510ccd987F697752bD46d1155F8022F',
-  // '0xB38440A467a34d992E4B5bF538c087784E811C06',
-  // '0x4a1137D7C00b40B2f821056Baa35A57325BC6287',
-  // '0x2d8b33A0dc95F0eb9429551eA4d2297729828558',
+  '0xC91ed60A0E0EA668A3489F6039054C6d93c76A9b',
+  '0x12E45bE50dd4f3Bc430B65d399B1e3b90275661c',
+  '0x275535F82F287073CEEbC653862E4E43868AA65C',
+  '0x744462994510ccd987F697752bD46d1155F8022F',
+  '0xB38440A467a34d992E4B5bF538c087784E811C06',
+  '0x4a1137D7C00b40B2f821056Baa35A57325BC6287',
+  '0x2d8b33A0dc95F0eb9429551eA4d2297729828558',
   // '0x6664867531c0FDd058881153FaBE7D2162833b07',
   // '0x46110ac9100A027bAec01bf1C211522ce0B02540',
-  // '0xEAE7C8fc569DAC58047898970225CbD0c8Cda2B1',
-  // '0x1AF743E6EbF9C4f90aE9A37E6e61Bca31a867676',
-  // '0x28F62fE643351104e7D57BB6802A931d387D9Ee2'
+  '0xEAE7C8fc569DAC58047898970225CbD0c8Cda2B1',
+  '0x1AF743E6EbF9C4f90aE9A37E6e61Bca31a867676',
+  '0x28F62fE643351104e7D57BB6802A931d387D9Ee2'
 ].map(a => {return{
   address: a,
   abi: FLOW_GAUGE_ABI,
@@ -110,7 +112,7 @@ async function loadFlowSynthetixPools(App, tokens, prices, pools, customURLs) {
   const infos = await Promise.all(pools.map(p =>
     loadFlowSynthetixPoolInfo(App, tokens, prices, p.abi, p.address, p.stakeTokenFunction)));
   for (const i of infos.filter(i => i?.poolPrices)) {
-    let p = await printSynthetixPool(App, i, "base", customURLs);
+    let p = await printAerodromePool(App, i, "base", customURLs);
     totalStaked += p.staked_tvl || 0;
     totalUserStaked += p.userStaked || 0;
     if (p.userStaked > 0) {
@@ -193,6 +195,71 @@ async function loadFlowSynthetixPoolInfo(App, tokens, prices, stakingAbi, stakin
       userStaked,
       userUnstaked,
       earned
+    }
+}
+
+async function printAerodromePool(App, info, chain="eth", customURLs) {
+  if(info.weeklyRewards<= 0){
+    return{
+      staked_tvl: 0,
+      userStaked : 0,
+      apr : 0
+    }
+  }
+    info.poolPrices.print_price(chain, 4, customURLs);
+    _print(`${info.rewardTokenTicker} Per Week: ${info.weeklyRewards.toFixed(2)} ($${formatMoney(info.usdPerWeek)})`);
+    const weeklyAPR = info.usdPerWeek / info.staked_tvl * 100;
+    const dailyAPR = weeklyAPR / 7;
+    const yearlyAPR = weeklyAPR * 52;
+    _print(`APR: Day ${dailyAPR.toFixed(2)}% Week ${weeklyAPR.toFixed(2)}% Year ${yearlyAPR.toFixed(2)}%`);
+    const userStakedUsd = info.userStaked * info.stakeTokenPrice;
+    const userStakedPct = userStakedUsd / info.staked_tvl * 100;
+    _print(`You are staking ${info.userStaked.toFixed(6)} ${info.stakeTokenTicker} ` +
+           `$${formatMoney(userStakedUsd)} (${userStakedPct.toFixed(2)}% of the pool).`);
+    if (info.userStaked > 0) {
+      info.poolPrices.print_contained_price(info.userStaked);
+        const userWeeklyRewards = userStakedPct * info.weeklyRewards / 100;
+        const userDailyRewards = userWeeklyRewards / 7;
+        const userYearlyRewards = userWeeklyRewards * 52;
+        _print(`Estimated ${info.rewardTokenTicker} earnings:`
+            + ` Day ${userDailyRewards.toFixed(2)} ($${formatMoney(userDailyRewards*info.rewardTokenPrice)})`
+            + ` Week ${userWeeklyRewards.toFixed(2)} ($${formatMoney(userWeeklyRewards*info.rewardTokenPrice)})`
+            + ` Year ${userYearlyRewards.toFixed(2)} ($${formatMoney(userYearlyRewards*info.rewardTokenPrice)})`);
+    }
+    const approveTENDAndStake = async function() {
+      return rewardsContract_stake(info.stakeTokenAddress, info.stakingAddress, App)
+    }
+    const unstake = async function() {
+      return rewardsContract_unstake(info.stakingAddress, App)
+    }
+    const claim = async function() {
+      return rewardsContract_claim(info.stakingAddress, App)
+    }
+    const exit = async function() {
+      return rewardsContract_exit(info.stakingAddress, App)
+    }
+    const revoke = async function() {
+      return rewardsContract_resetApprove(info.stakeTokenAddress, info.stakingAddress, App)
+    }
+    _print(`<a target="_blank" href="https://basescan.org/address/${info.stakingAddress}#code">Base Scan</a>`);
+    if (info.stakeTokenAddress != "0x0000000000000000000000000000000000000000") {
+      _print_link(`Stake ${info.userUnstaked.toFixed(6)} ${info.stakeTokenTicker}`, approveTENDAndStake)
+    }
+    else {
+      _print(`Please use the official website to stake ${info.stakeTokenTicker}.`);
+    }
+    _print_link(`Unstake ${info.userStaked.toFixed(6)} ${info.stakeTokenTicker}`, unstake)
+    _print_link(`Claim ${info.earned.toFixed(6)} ${info.rewardTokenTicker} ($${formatMoney(info.earned*info.rewardTokenPrice)})`, claim)
+    if (info.stakeTokenTicker != "ETH") {
+      _print_link(`Revoke (set approval to 0)`, revoke)
+    }
+    _print_link(`Exit`, exit)
+    _print("");
+
+    return {
+        staked_tvl: info.poolPrices.staked_tvl,
+        userStaked : userStakedUsd,
+        apr : yearlyAPR
     }
 }
 
