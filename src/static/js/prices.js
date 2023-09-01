@@ -171,7 +171,10 @@ const BaseTokens = [
   { "id": "baseswap", "symbol": "BSWAP", "contract": "0x78a087d713be963bf307b18f2ff8122ef9a63ae9"},
   { "id": "basex", "symbol": "BSX", "contract": "0xd5046b976188eb40f6de40fb527f89c05b323385"},
   { "id": "cookiebase", "symbol": "COOKIE", "contract": "0x614747C53CB1636b4b962E15e1D66D3214621100"},
-  { "id": "toshi", "symbol": "TOSHI", "contract": "0x8544FE9D190fD7EC52860abBf45088E81Ee24a8c"}
+  { "id": "toshi", "symbol": "TOSHI", "contract": "0x8544FE9D190fD7EC52860abBf45088E81Ee24a8c"},
+  { "id": "mimatic", "symbol": "MAI", "contract": "0xbf1aeA8670D2528E08334083616dD9C5F3B087aE"},
+  { "id": "overnight-dai", "symbol": "DAI+", "contract": "0x65a2508C429a6078a7BC2f7dF81aB575BD9D9275"},
+  { "id": "dola-usd", "symbol": "DOLA", "contract": "0x4621b7a9c75199271f773ebd9a499dbd165c3191"}
 ];
 
 const BobaTokens = [
