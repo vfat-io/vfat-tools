@@ -173,6 +173,7 @@ const BaseTokens = [
   { "id": "cookiebase", "symbol": "COOKIE", "contract": "0x614747C53CB1636b4b962E15e1D66D3214621100"},
   { "id": "toshi", "symbol": "TOSHI", "contract": "0x8544FE9D190fD7EC52860abBf45088E81Ee24a8c"},
   { "id": "mimatic", "symbol": "MAI", "contract": "0xbf1aeA8670D2528E08334083616dD9C5F3B087aE"},
+  { "id": "curve-dao-token", "symbol": "CRV", "contract": "0x8Ee73c484A26e0A5df2Ee2a4960B789967dd0415"},
   { "id": "overnight-dai", "symbol": "DAI+", "contract": "0x65a2508C429a6078a7BC2f7dF81aB575BD9D9275"},
   { "id": "dola-usd", "symbol": "DOLA", "contract": "0x4621b7a9c75199271f773ebd9a499dbd165c3191"}
 ];
