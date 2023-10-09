@@ -7,7 +7,7 @@ const ArbitrumTokens = [
   { "id": "tether","symbol": "USDT", "contract": "0xEC13336bbd50790a00CDc0fEddF11287eaF92529" },  //this gmUSD and its temporary
   { "id": "dai","symbol": "DAI", "contract": "0xda10009cbd5d07dd0cecc66161fc93d7c9000da1" },
   { "id": "dai","symbol": "DAI", "contract": "0xd85E038593d7A098614721EaE955EC2022B9B91B" },    //this gDAI and its temporary
-  { "id": "dai","symbol": "DAI", "contract": "0xeb8e93a0c7504bffd8a8ffa56cd754c63aaebfe8" },    //this +DAI and its temporary
+  { "id": "overnight-dai","symbol": "DAI+", "contract": "0xeb8e93a0c7504bffd8a8ffa56cd754c63aaebfe8" },
   { "id": "arbinyan","symbol": "NYAN", "contract": "0xed3fb761414da74b74f33e5c5a1f78104b188dfc" },
   { "id": "wrapped-ether", "symbol": "WETH", "contract": "0x82aF49447D8a07e3bd95BD0d56f35241523fBab1"},
   { "id": "sushi", "symbol": "SUSHI", "contract": "0xd4d42F0b6DEF4CE0383636770eF773390d85c61A"},
@@ -42,7 +42,6 @@ const ArbitrumTokens = [
   { "id": "gains-network", "symbol": "GNS", "contract": "0x18c11FD286C5EC11c3b683Caa813B77f5163A122" },
   { "id": "dola-usd", "symbol": "DOLA", "contract": "0x6a7661795c374c0bfc635934efaddff3a7ee23b6" },
   { "id": "mimatic", "symbol": "MAI", "contract": "0x3F56e0c36d275367b8C502090EDF38289b3dEa0d" },
-  { "id": "usd", "symbol": "USD+", "contract": "0xe80772Eaf6e2E18B651F160Bc9158b2A5caFCA65" },
   { "id": "camelot-token", "symbol": "GRAIL", "contract": "0x3d9907f9a368ad0a51be60f7da3b97cf940982d8" },
   { "id": "liquity-usd", "symbol": "LUSD", "contract": "0x93b346b6bc2548da6a1e7d98e9a421b42541425b" },
   { "id": "dei-token", "symbol": "DEI", "contract": "0xDE1E704dae0B4051e80DAbB26ab6ad6c12262DA0" },
@@ -57,7 +56,12 @@ const ArbitrumTokens = [
   { "id": "chronos-finance", "symbol": "CHR", "contract": "0x15b2fb8f08e4ac1ce019eadae02ee92aedf06851" },
   { "id": "lido-dao", "symbol": "LDO", "contract": "0x13ad51ed4f1b7e9dc168d8a00cb3f4ddd85efa60" },
   { "id": "the-graph", "symbol": "GRT", "contract": "0x9623063377AD1B27544C965cCd7342f7EA7e88C7" },
-  { "id": "frax-ether", "symbol": "FRXETH", "contract": "0x178412e79c25968a32e89b11f63B33F733770c2A" }
+  { "id": "frax-ether", "symbol": "FRXETH", "contract": "0x178412e79c25968a32e89b11f63B33F733770c2A" },
+  { "id": "wombat-exchange", "symbol": "WOM", "contract": "0x7B5EB3940021Ec0e8e463D5dBB4B7B09a89DDF96" },
+  { "id": "bob", "symbol": "BOB", "contract": "0xb0b195aefa3650a6908f15cdac7d92f8a5791b0b" },
+  { "id": "staked-frax-ether", "symbol": "SFRXETH", "contract": "0x95ab45875cffdba1e5f451b950bc2e42c0053f39" },
+  { "id": "jones-usdc", "symbol": "JUSDC", "contract": "0xe66998533a1992ece9ea99cdf47686f4fc8458e0" },
+  { "id": "usd", "symbol": "USD+", "contract": "0xe80772eaf6e2e18b651f160bc9158b2a5cafca65" }
 ];
 
 const ArbitrumNovaTokens = [
@@ -156,6 +160,23 @@ const avaxTokens = [
   { "id": "vector-finance", "symbol": "VTX", "contract": "0x5817d4f0b62a59b17f75207da1848c2ce75e7af4"},
   { "id": "yusd-stablecoin", "symbol": "YUSD", "contract": "0x111111111111ed1d73f860f57b2798b683f2d325"}
 ]
+
+const BaseTokens = [
+  { "id": "weth", "symbol": "WETH", "contract": "0x4200000000000000000000000000000000000006"},
+  { "id": "bridged-usd-coin-base", "symbol": "USDBC", "contract": "0xd9aaec86b65d86f6a7b5b1b0c42ffa531710b6ca"},
+  { "id": "dai", "symbol": "DAI", "contract": "0x50c5725949a6f0c72e6c4a641f24049a917db0cb"},
+  { "id": "balancer", "symbol": "BAL", "contract": "0x7c6b91d9be155a6db01f749217d76ff02a7227f2"},
+  { "id": "ethos-reserve-note", "symbol": "ERN", "contract": "0xa334884bF6b0A066d553D19e507315E839409e62"},
+  { "id": "usd", "symbol": "USD+", "contract": "0xB79DD08EA68A908A97220C76d19A6aA9cBDE4376"},
+  { "id": "baseswap", "symbol": "BSWAP", "contract": "0x78a087d713be963bf307b18f2ff8122ef9a63ae9"},
+  { "id": "basex", "symbol": "BSX", "contract": "0xd5046b976188eb40f6de40fb527f89c05b323385"},
+  { "id": "cookiebase", "symbol": "COOKIE", "contract": "0x614747C53CB1636b4b962E15e1D66D3214621100"},
+  { "id": "toshi", "symbol": "TOSHI", "contract": "0x8544FE9D190fD7EC52860abBf45088E81Ee24a8c"},
+  { "id": "mimatic", "symbol": "MAI", "contract": "0xbf1aeA8670D2528E08334083616dD9C5F3B087aE"},
+  { "id": "curve-dao-token", "symbol": "CRV", "contract": "0x8Ee73c484A26e0A5df2Ee2a4960B789967dd0415"},
+  { "id": "overnight-dai", "symbol": "DAI+", "contract": "0x65a2508C429a6078a7BC2f7dF81aB575BD9D9275"},
+  { "id": "dola-usd", "symbol": "DOLA", "contract": "0x4621b7a9c75199271f773ebd9a499dbd165c3191"}
+];
 
 const BobaTokens = [
   { "id": "weth", "symbol": "WETH", "contract": "0xDeadDeAddeAddEAddeadDEaDDEAdDeaDDeAD0000"},
@@ -469,7 +490,8 @@ const FindoraTokens = [
   {id: 'weth-b', symbol: 'WETH.b', contract: '0x008A628826E9470337e0Cd9c0C944143A83F32f3'},
   {id: 'weth-e', symbol: 'WETH.e', contract: '0xaFfAac009Af35d6069E79Ef3763A39A2BA5BF65f'},
   {id: 'wbnb-b', symbol: 'WBNB.b', contract: '0xABc979788c7089B516B8F2f1b5cEaBd2E27Fd78b'},
-  {id: 'busd-b', symbol: 'BUSD.b', contract: '0xE80EB4a234f718eDc5B76Bb442653827D20Ebb2d'}
+  {id: 'busd-b', symbol: 'BUSD.b', contract: '0xE80EB4a234f718eDc5B76Bb442653827D20Ebb2d'},
+  {id: 'findora', symbol: 'FRA', contract: '0x228b04158c6Eff4F3594B0a7A56eb7A2d6DD8874'}
 ]
 
 const FuseTokens = [ 
@@ -486,6 +508,10 @@ const FxTokens = [
   { "id": "pundi-x-2", "symbol": "PUNDIX", "contract": "0xd567B3d7B8FE3C79a1AD8dA978812cfC4Fa05e75"},
   { "id": "weth", "symbol": "WETH", "contract": "0x0CE35b0D42608Ca54Eb7bcc8044f7087C18E7717"},
   { "id": "fx-coin", "symbol": "FX", "contract": "0x80b5a32E4F032B2a058b4F29EC95EEfEEB87aDcd"}
+];
+
+const GoerliTokens = [ 
+  { "id": "tether", "symbol": "USDT", "contract": "0x966289b2c448e189664EC3268766335da7079b6b"}
 ];
 
 const xdaiTokens = [ 
@@ -767,12 +793,53 @@ const optimisticTokens = [
   { "id": "hop-protocol","symbol": "HOP", "contract": "0xc5102fe9359fd9a28f877a67e36b0f050d81a3cc" },
   { "id": "openxswap-gov-token","symbol": "XOPENX", "contract": "0x2513486f18eee1498d7b6281f668b955181dd0d9" },
   { "id": "openx-locked-velo","symbol": "OPXVEVELO", "contract": "0x46f21fda29f1339e0ab543763ff683d399e393ec" },
-  { "id": "openxswap","symbol": "OPENX", "contract": "0xc3864f98f2a61a7caeb95b039d031b4e2f55e0e9" }
+  { "id": "openxswap","symbol": "OPENX", "contract": "0xc3864f98f2a61a7caeb95b039d031b4e2f55e0e9" },
+  { "id": "unidex","symbol": "UNIDX", "contract": "0x5d47bAbA0d66083C52009271faF3F50DCc01023C" },
+  { "id": "rocket-pool-eth","symbol": "RETH", "contract": "0x9Bcef72be871e61ED4fBbc7630889beE758eb81D" },
+  { "id": "coinbase-wrapped-staked-eth","symbol": "CBETH", "contract": "0xadDb6A0412DE1BA0F936DCaeb8Aaa24578dcF3B2" },
+  { "id": "wrapped-steth","symbol": "WSTETH", "contract": "0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb" },
+  { "id": "frax-ether","symbol": "FRXETH", "contract": "0x6806411765af15bddd26f8f544a34cc40cb9838b" },
+  { "id": "alchemix-eth","symbol": "ALETH", "contract": "0x3e29d3a9316dab217754d13b28646b76607c5f04" },
+  { "id": "lido-dao","symbol": "LDO", "contract": "0xFdb794692724153d1488CcdBE0C56c252596735F" },
+  { "id": "wrapped-usdr","symbol": "WUSDR", "contract": "0x340fE1D898ECCAad394e2ba0fC1F93d27c7b717A" },
+  { "id": "ethos-reserve-note","symbol": "ERN", "contract": "0xc5b001dc33727f8f26880b184090d3e252470d45" },
+  { "id": "usd","symbol": "USD+", "contract": "0x73cb180bf0521828d8849bc8CF2B920918e23032" },
+  { "id": "beefy-finance","symbol": "BIFI", "contract": "0x4E720DD3Ac5CFe1e1fbDE4935f386Bb1C66F4642" },
+  { "id": "oath","symbol": "OATH", "contract": "0x39fde572a18448f8139b7788099f0a0740f51205" },
+  { "id": "overnight-dai","symbol": "DAI+", "contract": "0x970d50d09f3a656b43e11b0d45241a84e3a6e011" },
+  { "id": "kwenta","symbol": "KWENTA", "contract": "0x920cf626a271321c151d027030d5d08af699456b" },
+  { "id": "sonne-finance","symbol": "SONNE", "contract": "0x1DB2466d9F5e10D7090E7152B68d62703a2245F0" },
+  { "id": "bob","symbol": "BOB", "contract": "0xB0B195aEFA3650A6908f15CdaC7D92F8a5791B0B" },
+  { "id": "tarot","symbol": "TAROT", "contract": "0x375488F097176507e39B9653b88FDc52cDE736Bf" },
+  { "id": "jarvis-synthetic-euro","symbol": "JEUR", "contract": "0x79af5dd14e855823fa3e9ecacdf001d99647d043" },
+  { "id": "dhedge-dao","symbol": "DHT", "contract": "0xaf9fe3b5ccdae78188b1f8b9a49da7ae9510f151" },
+  { "id": "staked-frax-ether","symbol": "SFRXETH", "contract": "0x484c2D6e3cDd945a8B2DF735e079178C1036578c" },
+  { "id": "meta","symbol": "MTA", "contract": "0x929b939f8524c3be977af57a4a0ad3fb1e374b50" },
+  { "id": "seur","symbol": "SEUR", "contract": "0xFBc4198702E81aE77c06D58f81b629BDf36f0a71" },
+  { "id": "reth","symbol": "RETH", "contract": "0x6c2f7b6110a37b3b0fbdd811876be368df02e8b0" },
+  { "id": "stafi","symbol": "FIS", "contract": "0xd8737ca46aa6285de7b8777a8e3db232911bad41" },
+  { "id": "jarvis-reward-token","symbol": "JRT", "contract": "0x15e770b95edd73fd96b02ece0266247d50895e76" },
+  { "id": "pepe","symbol": "PEPE", "contract": "0x12ff4a259e14d4dcd239c447d23c9b00f7781d8f" },
+  { "id": "onering","symbol": "RING", "contract": "0xb0ae108669ceb86e9e98e8fe9e40d98b867855fd" },
+  { "id": "iron-bank","symbol": "IB", "contract": "0x00a35FD824c717879BF370E70AC6868b95870Dfb" },
+  { "id": "granary","symbol": "GRAIN", "contract": "0xfD389Dc9533717239856190F42475d3f263a270d" },
+  { "id": "pooltogether","symbol": "POOL", "contract": "0x395ae52bb17aef68c2888d941736a71dc6d4e125" }
 ];
 
 const polisTokens = [
   { "id": "polis","symbol": "POLIS","contract": "0x6FC851B8D66116627Fb1137b9D5FE4E2e1BeA978" },
   { "id": "dai","symbol": "DAI","contract": "0x247123e806a27Ea322bFd93e0273D04602dC942D" },
+]
+
+const pulseTokens = [
+  { "id": "wrapped-pulse-wpls","symbol": "WPLS","contract": "0xa1077a294dde1b09bb078844df40758a5d0f9a27" },
+  { "id": "dai","symbol": "DAI","contract": "0xefD766cCb38EaF1dfd701853BFCe31359239F305" },
+  { "id": "weth","symbol": "WETH","contract": "0x02DcdD04e3F455D838cd1249292C58f3B79e3C3C" },
+  { "id": "hex","symbol": "HEX","contract": "0x57fde0a71132198BBeC939B98976993d8D89D225" },   //HEX FROM ETHEREUM NETWORK
+  { "id": "hex-pulsechain","symbol": "HEX","contract": "0x2b591e99afe9f32eaa6214f7b7629768c40eeb39" },    //HEX FROM PULSE NETWORK
+  { "id": "wrapped-bitcoin","symbol": "WBTC","contract": "0xb17D901469B9208B17d916112988A3FeD19b5cA1" },
+  { "id": "pulsex","symbol": "PLSX","contract": "0x95b303987a60c71504d99aa1b13b4da07b0790ab" },
+  { "id": "velocimeter-flow","symbol": "FLOW","contract": "0x39b9d781dad0810d07e24426c876217218ad353d" }
 ]
 
 const SmartbchTokens = [
@@ -797,6 +864,11 @@ const telosTokens = [
   { "id": "sushi","symbol": "SUSHI", "contract": "0x922d641a426dcffaef11680e5358f34d97d112e1" }
 ];
 
+const tenetTokens = [
+  { "id": "weth", "symbol": "WETH", "contract": "0x40e8140DDb8E5D9FE1AfB8288Ab06259355a6D4B" },
+  { "id": "tenet-1b000f7b-59cb-4e06-89ce-d62b32d362b9", "symbol": "TENET", "contract": "0xd6cb8a253e12893b0cF39Ca78F7d858652cCa1fe" }
+];
+
 const ttTokens = [
   { "id": "thunder-token","symbol": "TT","contract": "0x0000000000000000000000000000000000000000" },
   { "id": "usd-coin","symbol": "USDC","contract": "0x22e89898A04eaf43379BeB70bf4E38b1faf8A31e" },
@@ -814,6 +886,17 @@ const zksyncEraTokens = [
   { "id": "gemswap-2","symbol": "ZGEM", "contract": "0x2b64237277c605d07f17b96f9627712340c32981" },
   { "id": "weth","symbol": "WETH", "contract": "0x5AEa5775959fBC2557Cc8789bC1bf90A239D9a91" },
   { "id": "usd-coin","symbol": "USDC","contract": "0x3355df6D4c9C3035724Fd0e3914dE96A5a83aaf4" },
+];
+
+const zkevmPolygonTokens = [
+  { "id": "weth","symbol": "WETH", "contract": "0x4F9A0e7FD2Bf6067db6994CF12E4495Df938E6e9" },
+  { "id": "usd-coin","symbol": "USDC","contract": "0xa8ce8aee21bc2a48a5ef670afcc9274c7bbbc035" },
+  { "id": "quickswap","symbol": "QUICK","contract": "0x68286607a1d43602d880d349187c3c48c0fd05e6" },
+  { "id": "tether","symbol": "USDT","contract": "0x493257fD37EDB34451f62EDf8D2a0C418852bA4C" },
+  { "id": "binance-usd","symbol": "BUSD","contract": "0x2039bb4116B4EFc145Ec4f0e2eA75012D6C0f181" },
+  { "id": "matic-network","symbol": "MATIC","contract": "0x28a487240e4D45CfF4A2980D334CC933B7483842" },
+  { "id": "avalanche-2","symbol": "AVAX","contract": "0x6A5279E99CA7786fb13F827Fc1Fb4F61684933d6" },
+  { "id": "binancecoin","symbol": "BNB","contract": "0x7400793aAd94C8CA801aa036357d10F5Fd0ce08f"}
 ];
 
 async function getArbitrumPrices() {
@@ -856,6 +939,15 @@ async function getAvaxPrices() {
   const idPrices = await lookUpPrices(avaxTokens.map(x => x.id));
   const prices = {}
   for (const bt of avaxTokens)
+      if (idPrices[bt.id])
+          prices[bt.contract] = idPrices[bt.id];
+  return prices;
+}
+
+async function getBasePrices() {
+  const idPrices = await lookUpPrices(BaseTokens.map(x => x.id));
+  const prices = {}
+  for (const bt of BaseTokens)
       if (idPrices[bt.id])
           prices[bt.contract] = idPrices[bt.id];
   return prices;
@@ -1001,6 +1093,15 @@ async function getFxPrices() {
   const idPrices = await lookUpPrices(FxTokens.map(x => x.id));
   const prices = {}
   for (const bt of FxTokens)
+      if (idPrices[bt.id])
+          prices[bt.contract] = idPrices[bt.id];
+  return prices;
+}
+
+async function getGoerliPrices() {
+  const idPrices = await lookUpPrices(GoerliTokens.map(x => x.id));
+  const prices = {}
+  for (const bt of GoerliTokens)
       if (idPrices[bt.id])
           prices[bt.contract] = idPrices[bt.id];
   return prices;
@@ -1157,6 +1258,15 @@ async function getPolisPrices() {
   return prices;
 }
 
+async function getPulsePrices() {
+  const idPrices = await lookUpPrices(pulseTokens.map(x => x.id));
+  const prices = {}
+  for (const bt of pulseTokens)
+      if (idPrices[bt.id])
+          prices[bt.contract] = idPrices[bt.id];
+  return prices;
+}
+
 async function getSmartbchPrices() {
   const idPrices = await lookUpPrices(SmartbchTokens.map(x => x.id));
   const prices = {}
@@ -1170,6 +1280,15 @@ async function getTelosPrices() {
   const idPrices = await lookUpPrices(telosTokens.map(x => x.id));
   const prices = {}
   for (const tt of telosTokens)
+      if (idPrices[tt.id])
+          prices[tt.contract] = idPrices[tt.id];
+  return prices;
+}
+
+async function getTenetPrices() {
+  const idPrices = await lookUpPrices(tenetTokens.map(x => x.id));
+  const prices = {}
+  for (const tt of tenetTokens)
       if (idPrices[tt.id])
           prices[tt.contract] = idPrices[tt.id];
   return prices;
@@ -1197,6 +1316,15 @@ async function getZkSyncEraPrices() {
   const idPrices = await lookUpPrices(zksyncEraTokens.map(x => x.id));
   const prices = {}
   for (const bt of zksyncEraTokens)
+      if (idPrices[bt.id])
+          prices[bt.contract] = idPrices[bt.id];
+  return prices;
+}
+
+async function getZkEvmPolygonPrices() {
+  const idPrices = await lookUpPrices(zkevmPolygonTokens.map(x => x.id));
+  const prices = {}
+  for (const bt of zkevmPolygonTokens)
       if (idPrices[bt.id])
           prices[bt.contract] = idPrices[bt.id];
   return prices;

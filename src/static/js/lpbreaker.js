@@ -32,6 +32,8 @@ async function main() {
         solidly_smart_contract_factory = new ethers.Contract("0x25CbdDb98b35ab1FF77413456B31EC81A6B6B746", GENERAL_SOLIDLY_FACTORY_ABI, App.provider);
       }else if(connectedNetworkName.includes("Arbit")){ //sterling.finance
         solidly_smart_contract_factory = new ethers.Contract("0xF7A23B9A9dCB8d0aff67012565C5844C20C11AFC", GENERAL_SOLIDLY_FACTORY_ABI, App.provider);
+      }else if(connectedNetworkName.includes("Pulse")){ //velocimeter
+        solidly_smart_contract_factory = new ethers.Contract("0x6B4449C74a9aF269A5f72B88B2B7B8604685D9B9", GENERAL_SOLIDLY_FACTORY_ABI, App.provider);
       }
 
       let isSolidlyPair = false;
@@ -233,7 +235,7 @@ async function main() {
             let allow = Promise.resolve()
 
             showLoading()
-            allow = lp_write_contract.approve(router.routerAddress, _liquidity, {gasLimit: 500000})
+            allow = lp_write_contract.approve(router.routerAddress, _liquidity)
               .then(function(t) {
                 return App.provider.waitForTransaction(t.hash)
               })
@@ -243,7 +245,7 @@ async function main() {
 
             showLoading()
             allow.then(async function () {
-              router_contract.removeLiquidity(tokenA, tokenB, _liquidity, amountAMin, amountBMin, addressToGo, deadline, {gasLimit: 500000})
+              router_contract.removeLiquidity(tokenA, tokenB, _liquidity, amountAMin, amountBMin, addressToGo, deadline)
               .then(function(t) {
                 return App.provider.waitForTransaction(t.hash)
                   .then(t => refresh(t.hash))

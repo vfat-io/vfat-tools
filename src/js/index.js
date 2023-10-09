@@ -60,7 +60,7 @@ window.NETWORKS = {
       "decimals": 18
     },
     "rpcUrls": [
-      "https://arb1.arbitrum.io/rpc"
+      "https://arb-mainnet-public.unifra.io"
     ],
     "blockExplorerUrls": [
       "https://explorer.arbitrum.io"
@@ -139,6 +139,21 @@ window.NETWORKS = {
     ],
     "blockExplorerUrls": [
       "https://explorer.dogechain.dog"
+    ]
+  },
+  BASE: {
+    "chainId": "0x2105",
+    "chainName": "Base",
+    "nativeCurrency": {
+      "name": "Ethereum",
+      "symbol": "ETH",
+      "decimals": 18
+    },
+    "rpcUrls": [
+      "https://base.publicnode.com"
+    ],
+    "blockExplorerUrls": [
+      "https://basescan.org"
     ]
   },
   FX: {
@@ -229,6 +244,66 @@ window.NETWORKS = {
     ],
     "blockExplorerUrls": [
       "https://explorer.zksync.io"
+    ]
+  },
+  ZKEVM: {
+    "chainId": "0x44D",
+    "chainName": "Polygon zkEVM",
+    "nativeCurrency": {
+      "name": "Ethereum",
+      "symbol": "ETH",
+      "decimals": 18
+    },
+    "rpcUrls": [
+      "https://zkevm-rpc.com"
+    ],
+    "blockExplorerUrls": [
+      "https://zkevm.polygonscan.com"
+    ]
+  },
+  GOERLI: {
+    "chainId": "0x5",
+    "chainName": "Goerli",
+    "nativeCurrency": {
+      "name": "Ethereum",
+      "symbol": "ETH",
+      "decimals": 18
+    },
+    "rpcUrls": [
+      "https://ethereum-goerli.publicnode.com"
+    ],
+    "blockExplorerUrls": [
+      "https://goerli.etherscan.io"
+    ]
+  },
+  PULSE: {
+    "chainId": "0x171",
+    "chainName": "Pulse Chain",
+    "nativeCurrency": {
+      "name": "Pulse",
+      "symbol": "PLS",
+      "decimals": 18
+    },
+    "rpcUrls": [
+      "https://rpc.pulsechain.com"
+    ],
+    "blockExplorerUrls": [
+      "https://scan.pulsechain.com"
+    ]
+  },
+  TENET: {
+    "chainId": "0x617",
+    "chainName": "Tenet Chain",
+    "nativeCurrency": {
+      "name": "Tenet",
+      "symbol": "TENET",
+      "decimals": 18
+    },
+    "rpcUrls": [
+      "https://rpc.tenet.org"
+    ],
+    "blockExplorerUrls": [
+      "https://tenetscan.io/"
     ]
   },
   HOO: {

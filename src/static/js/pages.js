@@ -174,7 +174,7 @@ const main = async () => {
       ["Aladdin (Concentrator)       ", `<a href="concentrator/"      >Various</a>`, "aCRV                ", "https://concentrator.aladdin.club/#/vault"],
       ["Stargate                     ", `<a href="stargate/"          >Various</a>`, "STG                 ", "https://stargate.finance"],
       ["Backd                        ", `<a href="backd/"             >Various</a>`, "                    ", "https://backd.fund"],
-      ["Jpegd *                      ", `<a href="jpegd/"             >Various</a>`, "JPEG                ", "https://jpegd.io"],
+      ["Jpegd                        ", `<a href="jpegd/"             >Various</a>`, "JPEG                ", "https://jpegd.io"],
       ["Bancor                       ", `<a href="bancor/"            >Various</a>`, "BNT                 ", "https://app.bancor.network"],
       ["UnoRe                        ", `<a href="unore/"             >Various</a>`, "UnoRe              ", "https://appv2.unore.io"],
       ["Convex (Frax)                ", `<a href="convex_frax/"       >Various</a>`, "Various            ", "https://frax.convexfinance.com"],
@@ -195,6 +195,10 @@ const main = async () => {
       ["lybra                        ", `<a href="lybra/"             >Various</a>`, "esLBR              ", "https://lybra.finance"],
       ["Aura                         ", `<a href="aura/"              >Various</a>`, "AURA               ", "https://app.aura.finance"],
       ["Mellow Protocol              ", `<a href="mellow-protocol/"   >Various</a>`, "LDO                ", "https://app.mellow.finance"],
+      ["FIRE Airdrop                 ", `<a href="fire/"              >Various</a>`, "FIRE               ", ""],
+      ["Love Game                    ", `<a href="love/"              >Various</a>`, "LOVE               ", "https://www.love.game"],
+      ["Seethe                       ", `<a href="seethe/"            >Various</a>`, "SEETHE             ", "https://seethe.pepepal.com"],
+      ["Ajna                         ", `<a href="ajna/"              >Various</a>`, "AJNA               ", "https://app.ajna.finance"]
     ].reverse()
   }
 
