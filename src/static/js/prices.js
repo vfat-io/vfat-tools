@@ -175,7 +175,9 @@ const BaseTokens = [
   { "id": "mimatic", "symbol": "MAI", "contract": "0xbf1aeA8670D2528E08334083616dD9C5F3B087aE"},
   { "id": "curve-dao-token", "symbol": "CRV", "contract": "0x8Ee73c484A26e0A5df2Ee2a4960B789967dd0415"},
   { "id": "overnight-dai", "symbol": "DAI+", "contract": "0x65a2508C429a6078a7BC2f7dF81aB575BD9D9275"},
-  { "id": "dola-usd", "symbol": "DOLA", "contract": "0x4621b7a9c75199271f773ebd9a499dbd165c3191"}
+  { "id": "dola-usd", "symbol": "DOLA", "contract": "0x4621b7a9c75199271f773ebd9a499dbd165c3191"},
+  { "id": "usd-coin", "symbol": "USDC", "contract": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913"},
+  { "id": "aerodrome-finance", "symbol": "AERO", "contract": "0x940181a94A35A4569E4529A3CDfB74e38FD98631"}
 ];
 
 const BobaTokens = [
