@@ -758,13 +758,13 @@ $(function() {
        const rewardTokenTicker = "RDMP";
        const RDMP_CHEF = new ethers.Contract(RDMP_CHEF_ADDR, RDMP_CHEF_ABI, App.provider);
     
-       const rewardsPerWeek = await RDMP_CHEF.rdmpPerSec() / 1e18 * 604800;
+       const rewardsPerWeek = await RDMP_CHEF.rdmpPerSecond() / 1e18 * 604800;
     
         const tokens = {};
         const prices = await getBasePrices();
     
         await loadGeneralChefContract(App, tokens, prices, RDMP_CHEF, RDMP_CHEF_ADDR, RDMP_CHEF_ABI, rewardTokenTicker,
-            "rdmp", null, rewardsPerWeek, "pendingRdmp", [], "base");
+            "rdmpToken", null, rewardsPerWeek, "pendingRdmp", [], "base");
     
         hideLoading();
       }
