@@ -18,7 +18,8 @@ const main = async() => {
       ["CookieBase                     ",`<a href="cookiebase"           >Various</a>`,"COOKIE          ","https://cookiebase.xyz"],
       ["Aerodrome Finance              ",`<a href="aerodrome"            >Various</a>`,"AERO            ","https://aerodrome.finance"],
       ["Curve Finance                  ",`<a href="curve"                >Various</a>`,"CRV             ","https://curve.fi/#/base"],
-      ["Redemption Finance             ",`<a href="redemptionfi"         >Various</a>`,"RDMP            ","https://rdmp.finance"]
+      ["Redemption Finance             ",`<a href="redemptionfi"         >Various</a>`,"RDMP            ","https://rdmp.finance"],
+      ["NanoSwap                       ",`<a href="nanoswap"             >Various</a>`,"NANO            ","https://nanoswap.xyz"]
     ].reverse()
   }
 
