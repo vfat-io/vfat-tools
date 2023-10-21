@@ -19,7 +19,8 @@ const main = async() => {
       ["Aerodrome Finance              ",`<a href="aerodrome"            >Various</a>`,"AERO            ","https://aerodrome.finance"],
       ["Curve Finance                  ",`<a href="curve"                >Various</a>`,"CRV             ","https://curve.fi/#/base"],
       ["Redemption Finance             ",`<a href="redemptionfi"         >Various</a>`,"RDMP            ","https://rdmp.finance"],
-      ["NanoSwap                       ",`<a href="nanoswap"             >Various</a>`,"NANO            ","https://nanoswap.xyz"]
+      ["NanoSwap                       ",`<a href="nanoswap"             >Various</a>`,"NANO            ","https://nanoswap.xyz"],
+      ["Statix Farm                    ",`<a href="statix"               >Various</a>`,"STATIX          ","https://statix.farm"]
     ].reverse()
   }
 
