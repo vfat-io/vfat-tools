@@ -733,7 +733,7 @@ $(function() {
         const prices = await getBasePrices();
     
         await loadGeneralChefContract(App, tokens, prices, STATIX_CHEF, STATIX_CHEF_ADDR, STATIX_CHEF_ABI, rewardTokenTicker,
-            "statixToken", null, rewardsPerWeek, "pendingStatix", [], "base");
+            "statix", null, rewardsPerWeek, "pendingStatix", [], "base");
     
         hideLoading();
       }
