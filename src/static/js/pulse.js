@@ -18,7 +18,8 @@ const main = async() => {
       ["Pulseaxe               ", `<a href="pulseaxe"      >Various</a>`,"CHOP / AXE        ","https://pulseaxe.com"],
       ["Yogurt Finance         ", `<a href="yogurtfinance" >Various</a>`,"YOGURTFINANCE     ","https://yogurtfinance.com"],
       ["PulseLorian            ", `<a href="pulselorian"   >Various</a>`,"ELIXIR            ","https://pulselorian.com"],
-      ["SparkSwap              ", `<a href="spark"         >Various</a>`,"SPARK             ","https://sparkswap.xyz"]
+      ["SparkSwap              ", `<a href="spark"         >Various</a>`,"SPARK             ","https://sparkswap.xyz"],
+      ["9inch                  ", `<a href="9inch"         >Various</a>`,"BBC               ","https://app.9inch.io"]
 
     ].reverse()
   }
