@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include(`${partials}/head`); -%>
+
+<body>
+<%- include(`${partials}/header_main`); -%>
+<pre id="log">
+***************************** SORA NETWORK ********************************
+
+*************** 👨‍🌾 UNOFFICIAL POLKASWAP FARMING CALCULATOR 👨‍🌾 ****************
+INFO  : https://polkaswap.io/#/pool/
+******************************************************************************
+
+</pre>
+<div class="loader--1"></div>
+<%- include(`${partials}/scripts`, {scriptname: 'sora_polkaswap'}); -%>
+</body>
+</html>
