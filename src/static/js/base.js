@@ -20,7 +20,8 @@ const main = async() => {
       ["Curve Finance                  ",`<a href="curve"                >Various</a>`,"CRV             ","https://curve.fi/#/base"],
       ["Redemption Finance             ",`<a href="redemptionfi"         >Various</a>`,"RDMP            ","https://rdmp.finance"],
       ["NanoSwap                       ",`<a href="nanoswap"             >Various</a>`,"NANO            ","https://nanoswap.xyz"],
-      ["Statix Farm                    ",`<a href="statix"               >Various</a>`,"STATIX          ","https://statix.farm"]
+      ["Statix Farm                    ",`<a href="statix"               >Various</a>`,"STATIX          ","https://statix.farm"],
+      ["Toupee Tech                    ",`<a href="toupee"               >Various</a>`,"oWIG            ","https://www.toupee.tech"]
     ].reverse()
   }
 
