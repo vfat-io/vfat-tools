@@ -10,8 +10,6 @@ const WIG_GAUGE_ABI = [{"inputs":[{"internalType":"address","name":"_forwarder",
 async function main() {
   const App = await init_ethers();
 
-  let clicked = false;
-
   _print(`Initialized ${App.YOUR_ADDRESS}\n`);
   _print("Reading smart contracts...\n");
   _print("This may take few minutes...\n");
