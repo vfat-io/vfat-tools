@@ -177,7 +177,10 @@ const BaseTokens = [
   { "id": "overnight-dai", "symbol": "DAI+", "contract": "0x65a2508C429a6078a7BC2f7dF81aB575BD9D9275"},
   { "id": "dola-usd", "symbol": "DOLA", "contract": "0x4621b7a9c75199271f773ebd9a499dbd165c3191"},
   { "id": "usd-coin", "symbol": "USDC", "contract": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913"},
-  { "id": "aerodrome-finance", "symbol": "AERO", "contract": "0x940181a94A35A4569E4529A3CDfB74e38FD98631"}
+  { "id": "aerodrome-finance", "symbol": "AERO", "contract": "0x940181a94A35A4569E4529A3CDfB74e38FD98631"},
+  { "id": "wrapped-bmx-liquidity-token", "symbol": "WBLT", "contract": "0x4E74D4Db6c0726ccded4656d0BCE448876BB4C7A"},
+  { "id": "yearn-finance", "symbol": "YFI", "contract": "0x9EaF8C1E34F05a589EDa6BAfdF391Cf6Ad3CB239"},
+  { "id": "bmx", "symbol": "BMX", "contract": "0x548f93779fbc992010c07467cbaf329dd5f059b7"}
 ];
 
 const BobaTokens = [
