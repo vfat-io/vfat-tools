@@ -52,6 +52,23 @@ consoleInit(main)
       }; }
     )
 
+    const allPools = [
+      "0x0Ae09f649e9dA1b6aEA0c10527aC4e8a88a37480",
+      "0xf6aA46869220Ae703924d5331D88A21DceF3b19d",
+      "0x3D56E0Ea536A78976503618d663921c97A3cBA3C",
+      "0x5F8D4319C27a940B5783b4495cCa6626E880532E",
+      "0x71aD6c1d92546065B13bf701a7524c69B409E25C",
+      "0x6D3cD0dD2c05FA4Eb8d1159159BEF445593a93fc",
+      "0xB5376AB455194328Fe41450a587f11bcDA2363fa"
+    ].map(a => {
+      return {
+        address: a,
+        abi: PRISMA_CONVEX_STAKING_ABI,
+        stakeTokenFunction: "lpToken",
+        rewardTokenAddress: "0xdA47862a83dac0c112BA89c6abC2159b95afd71C"
+      }; }
+    )
+
     const App = await init_ethers();
 
     _print(`Initialized ${App.YOUR_ADDRESS}`);
@@ -59,6 +76,17 @@ consoleInit(main)
 
     var tokens = {};
     var prices = {};
+
+    let _allTokenAddresses = [];
+    for(const pool of allPools){
+      const obj = await loadAllTokenAddresses(App, pool.abi, pool.address, pool.rewardTokenAddress, pool.stakeTokenFunction);
+      const tokens = Object.values(obj)
+      _allTokenAddresses.push(tokens);
+    }
+
+    let allTokenAddresses = _allTokenAddresses.flat(3);
+
+    await getNewPricesAndTokens(App, tokens, prices, allTokenAddresses, App.YOUR_ADDRESS);
 
     _print_bold("Stable Pools");
     _print("");
@@ -217,15 +245,6 @@ async function loadPrismaCurvePoolInfo(App, tokens, prices, stakingAbi, stakingA
       stakeToken.staked = await STAKING_POOL.totalSupply() / 10 ** stakeToken.decimals;
     }
 
-    var newPriceAddresses = stakeToken.tokens.filter(x =>
-      !getParameterCaseInsensitive(prices, x));
-    newPriceAddresses.push(rewardTokenAddress);
-    newPriceAddresses.push("0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2");
-    var newPrices = await lookUpTokenPrices(newPriceAddresses);
-    for (const key in newPrices) {
-      if (newPrices[key]?.usd)
-          prices[key] = newPrices[key];
-    }
     var newTokenAddresses = stakeToken.tokens.filter(x =>
       !getParameterCaseInsensitive(tokens,x));
     for (const address of newTokenAddresses) {
@@ -332,15 +351,6 @@ async function loadPrismaConvexPoolInfo(App, tokens, prices, stakingAbi, staking
       stakeToken.staked = await STAKING_POOL.totalSupply() / 10 ** stakeToken.decimals;
     }
 
-    var newPriceAddresses = stakeToken.tokens.filter(x =>
-      !getParameterCaseInsensitive(prices, x));
-    newPriceAddresses.push(rewardTokenAddress);
-    newPriceAddresses.push("0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2");
-    var newPrices = await lookUpTokenPrices(newPriceAddresses);
-    for (const key in newPrices) {
-      if (newPrices[key]?.usd)
-          prices[key] = newPrices[key];
-    }
     var newTokenAddresses = stakeToken.tokens.filter(x =>
       !getParameterCaseInsensitive(tokens,x));
     for (const address of newTokenAddresses) {
@@ -442,4 +452,21 @@ function getNewCurvePrices(price, pool, chain) {
     },
     tvl : tvl
   }
+}
+
+async function loadAllTokenAddresses(App, stakingAbi, stakingAddress,
+  rewardTokenAddress, stakeTokenFunction) {
+    const STAKING_POOL = new ethers.Contract(stakingAddress, stakingAbi, App.provider);
+
+    const stakeTokenAddress = await STAKING_POOL.callStatic[stakeTokenFunction]();
+
+    var stakeToken = await getToken(App, stakeTokenAddress, stakingAddress);
+
+    var newPriceAddresses = stakeToken.tokens;
+
+    newPriceAddresses.push(rewardTokenAddress)
+
+    return  {
+      newPriceAddresses
+    }
 }
