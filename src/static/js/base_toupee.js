@@ -68,10 +68,8 @@ async function loadMultipleWigSynthetixPools(App, tokens, prices, pools, chain, 
 
 async function loadWigSynthetixPoolInfo(App, tokens, prices, stakingAbi, stakingAddress, stakeTokenFunction, chain) {
     const STAKING_POOL = new ethers.Contract(stakingAddress, stakingAbi, App.provider);
+    const STAKING_MULTI = new ethcall.Contract(stakingAddress, stakingAbi);
 
-    if (!STAKING_POOL.callStatic[stakeTokenFunction]) {
-      console.log("Couldn't find stake function ", stakeTokenFunction);
-    }
     const pluginAddress = await STAKING_POOL.callStatic[stakeTokenFunction]();
     const PLUGIN_CONTRACT = new ethers.Contract(pluginAddress, PLUGIN_CONTRACT_ABI, App.provider);
 
@@ -112,7 +110,9 @@ async function loadWigSynthetixPoolInfo(App, tokens, prices, stakingAbi, staking
     const wethPrice = getParameterCaseInsensitive(prices, "0x4200000000000000000000000000000000000006")?.usd;
     const rewardTokenPrice = wigPrice - wethPrice;
 
-    const rewardData = await STAKING_POOL.rewardData(rewardTokenAddress);
+    const [rewardData, balance, _earned] = await App.ethcallProvider.all([STAKING_MULTI.rewardData(rewardTokenAddress), STAKING_MULTI.balanceOf(App.YOUR_ADDRESS), STAKING_MULTI.earned(App.YOUR_ADDRESS, rewardTokenAddress)])
+
+    //const rewardData = await STAKING_POOL.rewardData(rewardTokenAddress);
     const periodFinish = rewardData.periodFinish;
     const rewardRate = rewardData.rewardRate;
     const weeklyRewards = (Date.now() / 1000 > periodFinish) ? 0 : (rewardRate / 1e18 * 604800) / 13;
@@ -121,11 +121,13 @@ async function loadWigSynthetixPoolInfo(App, tokens, prices, stakingAbi, staking
 
     const staked_tvl = poolPrices.staked_tvl;
 
-    const userStaked = await STAKING_POOL.balanceOf(App.YOUR_ADDRESS) / 10 ** stakeToken.decimals;
+    //const userStaked = await STAKING_POOL.balanceOf(App.YOUR_ADDRESS) / 10 ** stakeToken.decimals;
+    const userStaked = balance / 10 ** stakeToken.decimals;
 
     const userUnstaked = stakeToken.unstaked;
 
-    const earned = await STAKING_POOL.earned(App.YOUR_ADDRESS, rewardTokenAddress) / 10 ** rewardToken.decimals;
+    //const earned = await STAKING_POOL.earned(App.YOUR_ADDRESS, rewardTokenAddress) / 10 ** rewardToken.decimals;
+    const earned = _earned / 10 ** rewardToken.decimals;
 
     return  {
       stakingAddress,
