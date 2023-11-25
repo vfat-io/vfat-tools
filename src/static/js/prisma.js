@@ -42,7 +42,10 @@ consoleInit(main)
     const PrismaConvexStables = [
       "0x0Ae09f649e9dA1b6aEA0c10527aC4e8a88a37480",
       "0xf6aA46869220Ae703924d5331D88A21DceF3b19d",
-      "0x3D56E0Ea536A78976503618d663921c97A3cBA3C"
+      "0x3D56E0Ea536A78976503618d663921c97A3cBA3C",
+      "0x685E852E4c18c2c554a1D25c1197684fd9593145",
+      "0xd91fBa4919b7BF3B757320ea48bA102F543dE341",
+      "0x48c5e00c63e327F73F789E300472F1744AAa7e34"
     ].map(a => {
       return {
         address: a,
@@ -59,7 +62,10 @@ consoleInit(main)
       "0x5F8D4319C27a940B5783b4495cCa6626E880532E",
       "0x71aD6c1d92546065B13bf701a7524c69B409E25C",
       "0x6D3cD0dD2c05FA4Eb8d1159159BEF445593a93fc",
-      "0xB5376AB455194328Fe41450a587f11bcDA2363fa"
+      "0xB5376AB455194328Fe41450a587f11bcDA2363fa",
+      "0x685E852E4c18c2c554a1D25c1197684fd9593145",
+      "0xd91fBa4919b7BF3B757320ea48bA102F543dE341",
+      "0x48c5e00c63e327F73F789E300472F1744AAa7e34"
     ].map(a => {
       return {
         address: a,
@@ -73,6 +79,7 @@ consoleInit(main)
 
     _print(`Initialized ${App.YOUR_ADDRESS}`);
     _print("Reading smart contracts...\n");
+    _print("Calculating prices, please be patient...\n");
 
     var tokens = {};
     var prices = {};
@@ -364,24 +371,29 @@ async function loadPrismaConvexPoolInfo(App, tokens, prices, stakingAbi, staking
     const rewardTokenTicker = rewardToken.symbol;
 
     let minter;
-    if(stakeTokenAddress.toLowerCase() === "0x65f228ED6a6001eD6485535e0Dc33E525734f54c".toLowerCase()){
+    if(stakeTokenAddress.toLowerCase() === "0x65f228ED6a6001eD6485535e0Dc33E525734f54c".toLowerCase() || stakeTokenAddress.toLowerCase() === "0xb34e1a3D07f9D180Bc2FDb9Fd90B8994423e33c1".toLowerCase() || stakeTokenAddress.toLowerCase() === "0x067079c14B85169e6a29703769dadDef90816f4C".toLowerCase()){
       const STAKING_TOKEN = new ethers.Contract(stakeTokenAddress, CURVE_STAKING_TOKEN_ABI, App.provider);
       minter = await STAKING_TOKEN.minter();
     }
 
     let stakeTokenPrice;
-    if(stakeTokenAddress.toLowerCase() === "0x65f228ED6a6001eD6485535e0Dc33E525734f54c".toLowerCase()){
+    if(stakeTokenAddress.toLowerCase() === "0x65f228ED6a6001eD6485535e0Dc33E525734f54c".toLowerCase() || stakeTokenAddress.toLowerCase() === "0xb34e1a3D07f9D180Bc2FDb9Fd90B8994423e33c1".toLowerCase() || stakeTokenAddress.toLowerCase() === "0x067079c14B85169e6a29703769dadDef90816f4C".toLowerCase()){
       const STAKING_TOKEN_MINTER = new ethers.Contract(minter, CURVE_STAKING_TOKEN_MINTER_ABI, App.provider);
       const wethPrice = getParameterCaseInsensitive(prices, "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2")?.usd;
+      const usdPrice = getParameterCaseInsensitive(prices, "0x0CFe5C777A7438C9Dd8Add53ed671cEc7A5FAeE5")?.usd;
       _stakeTokenPrice = await STAKING_TOKEN_MINTER.lp_price() / 1e18;
-      stakeTokenPrice = _stakeTokenPrice * wethPrice;  //eg 0.15 * 1800
+      if(stakeTokenAddress.toLowerCase() === "0x067079c14B85169e6a29703769dadDef90816f4C".toLowerCase()){
+        stakeTokenPrice = _stakeTokenPrice * usdPrice;  //eg 0.15 * 1800
+      }else{
+        stakeTokenPrice = _stakeTokenPrice * wethPrice;  //eg 0.15 * 1800
+      }
     }else{
       stakeTokenPrice =
         prices[stakeTokenAddress]?.usd ?? getParameterCaseInsensitive(prices, stakeTokenAddress)?.usd;
     }
 
     let poolPrices;
-    if(stakeTokenAddress.toLowerCase() === "0x65f228ED6a6001eD6485535e0Dc33E525734f54c".toLowerCase()){
+    if(stakeTokenAddress.toLowerCase() === "0x65f228ED6a6001eD6485535e0Dc33E525734f54c".toLowerCase() || stakeTokenAddress.toLowerCase() === "0xb34e1a3D07f9D180Bc2FDb9Fd90B8994423e33c1".toLowerCase() || stakeTokenAddress.toLowerCase() === "0x067079c14B85169e6a29703769dadDef90816f4C".toLowerCase()){
       poolPrices = getNewCurvePrices(stakeTokenPrice, stakeToken);
     }else{
       poolPrices = getPoolPrices(tokens, prices, stakeToken);
