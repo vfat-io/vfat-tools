@@ -480,14 +480,17 @@ const lookUpPrices = async function(id_array) {
 
 const lookUpTokenPrices = async function(id_array) {
   const prices = {}
-  for (const id_chunk of chunk(id_array, 50)) {
-    let ids = id_chunk.join('%2C')
-    let res = await $.ajax({
-      url: 'https://api.coingecko.com/api/v3/simple/token_price/ethereum?contract_addresses=' + ids + '&vs_currencies=usd',
-      type: 'GET',
-    })
-    for (const [key, v] of Object.entries(res)) {
-      if (v.usd) prices[key] = v;
+  for (const _id_chunk of chunk(id_array, 50)) {
+    while(_id_chunk.length > 0){
+      let id_chunk = _id_chunk.splice(0,10);
+      let ids = id_chunk.join('%2C')
+      let res = await $.ajax({
+        url: 'https://api.coingecko.com/api/v3/simple/token_price/ethereum?contract_addresses=' + ids + '&vs_currencies=usd',
+        type: 'GET',
+      })
+      for (const [key, v] of Object.entries(res)) {
+        if (v.usd) prices[key] = v;
+      }
     }
   }
   return prices
