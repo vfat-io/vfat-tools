@@ -496,23 +496,6 @@ const lookUpTokenPrices = async function(id_array) {
   return prices
 }
 
-// const lookUpTokenPrices = async function(id_array) {
-//   const prices = {}
-//   for (const id_chunk of chunk(id_array, 50)) {
-//     let ids = id_chunk.join('%2C')
-//     let res = await $.ajax({
-//       url: 'https://api.staging.vfat.io/v1/token?chainId=1&address=' + ids,
-//       type: 'GET',
-//     })
-//     for(const obj of res){
-//       if(obj.price){
-//         prices[obj.address] = {usd: obj.price};
-//       }
-//     }
-//   }
-//   return prices
-// }
-
 const lookUpPricesHistorical = async function(id, from, to) {
   return $.ajax({
     url: `https://api.coingecko.com/api/v3/coins/${id}/market_chart/range?vs_currency=usd&from=${from}&to=${to}`,
