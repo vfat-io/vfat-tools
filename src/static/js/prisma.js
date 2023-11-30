@@ -29,7 +29,10 @@ consoleInit(main)
       "0x5F8D4319C27a940B5783b4495cCa6626E880532E",
       "0x71aD6c1d92546065B13bf701a7524c69B409E25C",
       "0x6D3cD0dD2c05FA4Eb8d1159159BEF445593a93fc",
-      "0xB5376AB455194328Fe41450a587f11bcDA2363fa"
+      "0xB5376AB455194328Fe41450a587f11bcDA2363fa",
+      "0xa9aA35B5481A7B7936d1680911D478F7A639fE48",
+      "0xbCED0F33beDD1D325f069D5481C7076A5d0709a4",
+      "0x49cd193227a896F867AFDB6A5edFb53A3Ee7fb49"
     ].map(a => {
       return {
         address: a,
@@ -65,7 +68,10 @@ consoleInit(main)
       "0xB5376AB455194328Fe41450a587f11bcDA2363fa",
       "0x685E852E4c18c2c554a1D25c1197684fd9593145",
       "0xd91fBa4919b7BF3B757320ea48bA102F543dE341",
-      "0x48c5e00c63e327F73F789E300472F1744AAa7e34"
+      "0x48c5e00c63e327F73F789E300472F1744AAa7e34",
+      "0xa9aA35B5481A7B7936d1680911D478F7A639fE48",
+      "0xbCED0F33beDD1D325f069D5481C7076A5d0709a4",
+      "0x49cd193227a896F867AFDB6A5edFb53A3Ee7fb49"
     ].map(a => {
       return {
         address: a,
@@ -265,24 +271,29 @@ async function loadPrismaCurvePoolInfo(App, tokens, prices, stakingAbi, stakingA
     const rewardTokenTicker = rewardToken.symbol;
 
     let minter;
-    if(stakeTokenAddress.toLowerCase() === "0xb34e1a3D07f9D180Bc2FDb9Fd90B8994423e33c1".toLowerCase() || stakeTokenAddress.toLowerCase() === "0x65f228ED6a6001eD6485535e0Dc33E525734f54c".toLowerCase()){
+    if(stakeTokenAddress.toLowerCase() === "0xb34e1a3D07f9D180Bc2FDb9Fd90B8994423e33c1".toLowerCase() || stakeTokenAddress.toLowerCase() === "0x65f228ED6a6001eD6485535e0Dc33E525734f54c".toLowerCase() || stakeTokenAddress.toLowerCase() === "0x067079c14B85169e6a29703769dadDef90816f4C".toLowerCase()){
       const STAKING_TOKEN = new ethers.Contract(stakeTokenAddress, CURVE_STAKING_TOKEN_ABI, App.provider);
       minter = await STAKING_TOKEN.minter();
     }
 
     let stakeTokenPrice;
-    if(stakeTokenAddress.toLowerCase() === "0xb34e1a3D07f9D180Bc2FDb9Fd90B8994423e33c1".toLowerCase() || stakeTokenAddress.toLowerCase() === "0x65f228ED6a6001eD6485535e0Dc33E525734f54c".toLowerCase()){
+    if(stakeTokenAddress.toLowerCase() === "0xb34e1a3D07f9D180Bc2FDb9Fd90B8994423e33c1".toLowerCase() || stakeTokenAddress.toLowerCase() === "0x65f228ED6a6001eD6485535e0Dc33E525734f54c".toLowerCase() || stakeTokenAddress.toLowerCase() === "0x067079c14B85169e6a29703769dadDef90816f4C".toLowerCase()){
       const STAKING_TOKEN_MINTER = new ethers.Contract(minter, CURVE_STAKING_TOKEN_MINTER_ABI, App.provider);
       const wethPrice = getParameterCaseInsensitive(prices, "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2")?.usd;
-        _stakeTokenPrice = await STAKING_TOKEN_MINTER.lp_price() / 1e18;
+      const usdPrice = getParameterCaseInsensitive(prices, "0x0CFe5C777A7438C9Dd8Add53ed671cEc7A5FAeE5")?.usd;
+      _stakeTokenPrice = await STAKING_TOKEN_MINTER.lp_price() / 1e18;
+      if(stakeTokenAddress.toLowerCase() === "0x067079c14B85169e6a29703769dadDef90816f4C".toLowerCase()){
+        stakeTokenPrice = _stakeTokenPrice * usdPrice;  //eg 0.15 * 1800
+      }else{
         stakeTokenPrice = _stakeTokenPrice * wethPrice;  //eg 0.15 * 1800
+      }
     }else{
       stakeTokenPrice =
         prices[stakeTokenAddress]?.usd ?? getParameterCaseInsensitive(prices, stakeTokenAddress)?.usd;
     }
 
     let poolPrices;
-    if(stakeTokenAddress.toLowerCase() === "0xb34e1a3D07f9D180Bc2FDb9Fd90B8994423e33c1".toLowerCase() || stakeTokenAddress.toLowerCase() === "0x65f228ED6a6001eD6485535e0Dc33E525734f54c".toLowerCase()){
+    if(stakeTokenAddress.toLowerCase() === "0xb34e1a3D07f9D180Bc2FDb9Fd90B8994423e33c1".toLowerCase() || stakeTokenAddress.toLowerCase() === "0x65f228ED6a6001eD6485535e0Dc33E525734f54c".toLowerCase() || stakeTokenAddress.toLowerCase() === "0x067079c14B85169e6a29703769dadDef90816f4C".toLowerCase()){
       poolPrices = getNewCurvePrices(stakeTokenPrice, stakeToken);
     }else{
       poolPrices = getPoolPrices(tokens, prices, stakeToken);
