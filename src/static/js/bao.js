@@ -14,16 +14,17 @@ consoleInit(main)
     const rewardsPerWeek = await BAO_CHEF.REWARD_PER_BLOCK() / 1e18 * 604800 / 13.5;
 
     await loadChefBaoContract(App, BAO_CHEF, BAO_CHEF_ADDR, BAO_CHEF_ABI,
-        "BAO", "Bao", null, rewardsPerWeek, "pendingReward");
+      "BAO", "Bao", null, rewardsPerWeek);
 
     hideLoading();
   }
 
   async function loadChefBaoContract(App, chef, chefAddress, chefAbi, rewardTokenTicker,
-    rewardTokenFunction, rewardsPerBlockFunction, rewardsPerWeekFixed, pendingRewardsFunction, extraPrices) {
+    rewardTokenFunction, rewardsPerBlockFunction, rewardsPerWeekFixed, extraPrices) {
   const chefContract = chef ?? new ethers.Contract(chefAddress, chefAbi, App.provider);
 
-  const poolCount = parseInt(await chefContract.poolLength(), 10);
+  // const poolCount = parseInt(await chefContract.poolLength(), 10);
+  const poolCount = 200
   const totalAllocPoints = await chefContract.totalAllocPoint();
 
   _print(`<a href='https://etherscan.io/address/${chefAddress}' target='_blank'>Staking Contract</a>`);
@@ -40,59 +41,80 @@ consoleInit(main)
     / 10 ** rewardToken.decimals * 604800 / 13.5
 
   const poolInfos = await Promise.all([...Array(poolCount).keys()].map(async (x) =>
-    await getBaoPoolInfo(App, chefContract, chefAddress, x, pendingRewardsFunction)));
+    await getBaoPoolInfo(App, chefContract, chefAddress, x)));
 
   var tokenAddresses = [].concat.apply([], poolInfos.filter(x => x?.poolToken).map(x => x.poolToken.tokens));
-  var prices = await lookUpTokenPrices(tokenAddresses);
-  if (extraPrices) {
-    for (const [k,v] of Object.entries(extraPrices)) {
-      if (v.usd) {
-        prices[k] = v
-      }
-    }
-  }
-  //prices["0x194ebd173f6cdace046c53eacce9b953f28411d1"] = { usd : 1.22 } //"temporary" solution
 
   await Promise.all(tokenAddresses.map(async (address) => {
       tokens[address] = await getToken(App, address, chefAddress);
   }));
 
-  const poolPrices = poolInfos.map(poolInfo => poolInfo?.poolToken ? getPoolPrices(tokens, prices, poolInfo.poolToken) : undefined);
+  const poolPrices = poolInfos.map(poolInfo => poolInfo?.poolToken ? getBaoLpInfos(tokens, poolInfo.poolToken) : undefined);
 
   _print("Finished reading smart contracts.\n");
 
-  let aprs = []
   for (i = 0; i < poolCount; i++) {
     if (poolPrices[i]) {
-      const apr = printChefPool(App, chefAbi, chefAddress, prices, tokens, poolInfos[i], i, poolPrices[i],
-        totalAllocPoints, rewardsPerWeek, rewardTokenTicker, rewardTokenAddress,
-        pendingRewardsFunction)
-      aprs.push(apr);
+      printBaoChefPool(App, chefAbi, chefAddress, tokens, poolInfos[i], i, poolPrices[i],
+        totalAllocPoints, rewardsPerWeek, rewardTokenTicker, rewardTokenAddress)
     }
   }
-  let totalUserStaked=0, totalStaked=0, averageApr=0;
-  for (const a of aprs) {
-    if (a && !isNaN(a.totalStakedUsd)) {
-      totalStaked += a.totalStakedUsd;
-    }
-    if (a && a.userStakedUsd > 0) {
-      totalUserStaked += a.userStakedUsd;
-      averageApr += a.userStakedUsd * a.yearlyAPR / 100;
-    }
-  }
-  averageApr = averageApr / totalUserStaked;
-  _print_bold(`Total Staked: $${formatMoney(totalStaked)}`);
-  if (totalUserStaked > 0) {
-    _print_bold(`\nYou are staking a total of $${formatMoney(totalUserStaked)} at an average APR of ${(averageApr * 100).toFixed(2)}%`)
-    _print(`Estimated earnings:`
-        + ` Day $${formatMoney(totalUserStaked*averageApr/365)}`
-        + ` Week $${formatMoney(totalUserStaked*averageApr/52)}`
-        + ` Year $${formatMoney(totalUserStaked*averageApr)}\n`);
-  }
-  return { prices, totalUserStaked, totalStaked, averageApr }
 }
 
-async function getBaoPoolInfo(app, chefContract, chefAddress, poolIndex, pendingRewardsFunction) {
+function printBaoChefPool(App, chefAbi, chefAddr, tokens, poolInfo, poolIndex, poolPrices,
+                       totalAllocPoints, rewardsPerWeek, rewardTokenTicker, rewardTokenAddress,
+                       fixedDecimals, claimFunction, chain="eth", depositFee=0, withdrawFee=0) {
+  fixedDecimals = fixedDecimals ?? 2;
+  const sp = (poolInfo.stakedToken == null) ? null : getBaoLpInfos(tokens, poolInfo.stakedToken, chain);
+  var poolRewardsPerWeek = poolInfo.allocPoints / totalAllocPoints * rewardsPerWeek;
+  if (poolRewardsPerWeek == 0 && rewardsPerWeek != 0) return;
+  const userStaked = poolInfo.userLPStaked ?? poolInfo.userStaked;
+  _print_inline(`${poolIndex} - `);
+  poolPrices.print_info(chain);
+  sp?.print_info(chain);
+  printBaoAPR(rewardTokenTicker, poolRewardsPerWeek, poolPrices.stakeTokenTicker,
+    userStaked, fixedDecimals);
+  if (poolInfo.userLPStaked > 0) sp?.print_contained(userStaked);
+  if (poolInfo.userStaked > 0) poolPrices.print_contained(userStaked);
+  printBaoContractLinks(App, chefAbi, chefAddr, poolIndex, poolInfo.address,
+    rewardTokenTicker, poolPrices.stakeTokenTicker, poolInfo.poolToken.unstaked,
+    poolInfo.userStaked, fixedDecimals, claimFunction, chain, depositFee, withdrawFee);
+}
+
+function printBaoAPR(rewardTokenTicker, poolRewardsPerWeek,
+                  stakeTokenTicker, userStaked, poolTokenPrice,
+                  fixedDecimals) {
+  fixedDecimals = fixedDecimals ?? 2;
+  _print(`${rewardTokenTicker} Per Week: ${poolRewardsPerWeek.toFixed(fixedDecimals)}`);
+  _print(`You are staking ${userStaked.toFixed(fixedDecimals)} ${stakeTokenTicker}`);
+}
+
+function printBaoContractLinks(App, chefAbi, chefAddr, poolIndex, poolAddress,
+    rewardTokenTicker, stakeTokenTicker, unstaked, userStaked, fixedDecimals,
+    claimFunction, rewardTokenPrice, chain, depositFee, withdrawFee) {
+  fixedDecimals = fixedDecimals ?? 2;
+  const emergencyWithdraw = async function() {
+    return baoContract_emergencyWithdraw(chefAbi, chefAddr, poolIndex, App)
+  }
+  _print_link(`Emergency Withdraw ${userStaked.toFixed(fixedDecimals)} ${stakeTokenTicker}`, emergencyWithdraw)
+  _print("");
+}
+
+const baoContract_emergencyWithdraw = async function(chefAbi, chefAddress, poolIndex, App) {
+  const signer = App.provider.getSigner()
+  const CHEF_CONTRACT = new ethers.Contract(chefAddress, chefAbi, signer)
+
+  showLoading()
+    CHEF_CONTRACT.emergencyWithdraw(poolIndex, {gasLimit: 500000})
+      .then(function(t) {
+        return App.provider.waitForTransaction(t.hash)
+      })
+      .catch(function() {
+        hideLoading()
+      })
+}
+
+async function getBaoPoolInfo(app, chefContract, chefAddress, poolIndex) {
   const poolInfo = await chefContract.poolInfo(poolIndex);
   const poolToken = await getToken(app, poolInfo.lpToken, chefAddress);
   if(poolToken.token0 == "0x0Ba45A8b5d5575935B8158a88C631E9F9C95a2e5" || poolToken.token1 ==
@@ -100,14 +122,49 @@ async function getBaoPoolInfo(app, chefContract, chefAddress, poolIndex, pending
     return null;
   }
   const userInfo = await chefContract.userInfo(poolIndex, app.YOUR_ADDRESS);
-  const pendingRewardTokens = await chefContract.callStatic[pendingRewardsFunction](poolIndex, app.YOUR_ADDRESS);
   const staked = userInfo.amount / 10 ** poolToken.decimals;
   return {
       address: poolInfo.lpToken,
       allocPoints: poolInfo.allocPoint ?? 1,
       poolToken: poolToken,
       userStaked : staked,
-      pendingRewardTokens : pendingRewardTokens / 10 ** 18,
       lastRewardBlock : poolInfo.lastRewardBlock
   };
+}
+
+function getBaoLpInfos(tokens, pool, chain="eth")
+{
+  var t0 = getParameterCaseInsensitive(tokens,pool.token0);
+  var t1 = getParameterCaseInsensitive(tokens,pool.token1);
+
+  var q0 = pool.q0 / 10 ** t0.decimals;
+  var q1 = pool.q1 / 10 ** t1.decimals;
+  if (t0?.decimals == null) {
+    console.log(`Missing information for token ${pool.token0}.`);
+    return undefined;
+  }
+  if (t1?.decimals == null) {
+    console.log(`Missing information for token ${pool.token1}.`);
+    return undefined;
+  }
+  let stakeTokenTicker = `[${t0.symbol}]-[${t1.symbol}]`;
+  
+  stakeTokenTicker += " Uni LP";
+  return {
+      t0: t0,
+      q0  : q0,
+      t1: t1,
+      q1  : q1,
+      stakeTokenTicker : stakeTokenTicker,
+      print_info(chain="eth", decimals) {
+        _print(`${stakeTokenTicker}`);
+        _print(`Staked: ${pool.staked.toFixed(decimals ?? 4)} ${pool.symbol}`);
+      },
+      print_contained(userStaked) {
+        var userPct = userStaked / pool.totalSupply;
+        var q0user = userPct * q0;
+        var q1user = userPct * q1;
+        _print(`Your LP tokens comprise of ${q0user.toFixed(4)} ${t0.symbol} + ${q1user.toFixed(4)} ${t1.symbol}`);
+      }
+  }
 }
