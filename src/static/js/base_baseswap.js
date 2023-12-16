@@ -49,6 +49,16 @@ $(function() {
 async function getBaseSwapPoolInfo(app, chefContract, chefAddress, poolIndex) {
   const poolAddress = await chefContract.getActivePoolAddressByIndex(poolIndex);
   const poolInfo = await chefContract.getPoolInfo(poolAddress);
+  if(/*poolIndex == 0 || poolIndex == 1 || poolIndex == 2 || poolIndex == 3 || poolIndex == 4 || poolIndex == 5 || poolIndex == 6 || poolIndex == 7 || poolIndex == 8 || poolIndex == 9 || poolIndex == 10 || poolIndex == 11 || poolIndex == 12 || poolIndex == 13
+     || */poolIndex == 23 || poolIndex == 24 || poolIndex == 25 || poolIndex == 26 || poolIndex == 27){
+    return {
+      address: poolInfo.lpToken ?? poolInfo.stakingToken ?? poolInfo.token,
+      allocPoints: poolInfo.allocPoint ?? 1,
+      poolToken: null,
+      userStaked : 0,
+      pendingRewardTokens : 0,
+    };
+  }
   const nftAddress = poolInfo.poolAddress;
   const nftContract = new ethers.Contract(nftAddress, NFT_POOL_ABI, app.provider);
   const nftPoolInfo = await nftContract.getPoolInfo();
@@ -188,7 +198,7 @@ function printBaseSwapAPR(bsxRewardTokenTicker, bswapRewardTokenTicker, rewardPr
     _print(`Total APR: Day ${totalDailyAPR.toFixed(2)}% Week ${totalWeeklyAPR.toFixed(2)}% Year ${totalYearlyAPR.toFixed(2)}%`)
   }else{
     _print(`${bsxRewardTokenTicker} Per Week: ${poolRewardsBsxPerWeek.toFixed(fixedDecimals)} ($${formatMoney(usdBsxPerWeek)})`);
-    _print(`APR: Day ${dailyBsxAPR.toFixed(2)}% Week ${weeklyBswapAPR.toFixed(2)}% Year ${yearlyBsxAPR.toFixed(2)}%`);
+    _print(`APR: Day ${dailyBsxAPR.toFixed(2)}% Week ${weeklyBsxAPR.toFixed(2)}% Year ${yearlyBsxAPR.toFixed(2)}%`);
   }
   return {
     totalStakedUsd : staked_tvl,
