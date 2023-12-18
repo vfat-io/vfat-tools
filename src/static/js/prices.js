@@ -180,7 +180,9 @@ const BaseTokens = [
   { "id": "aerodrome-finance", "symbol": "AERO", "contract": "0x940181a94A35A4569E4529A3CDfB74e38FD98631"},
   { "id": "wrapped-bmx-liquidity-token", "symbol": "WBLT", "contract": "0x4E74D4Db6c0726ccded4656d0BCE448876BB4C7A"},
   { "id": "yearn-finance", "symbol": "YFI", "contract": "0x9EaF8C1E34F05a589EDa6BAfdF391Cf6Ad3CB239"},
-  { "id": "bmx", "symbol": "BMX", "contract": "0x548f93779fbc992010c07467cbaf329dd5f059b7"}
+  { "id": "bmx", "symbol": "BMX", "contract": "0x548f93779fbc992010c07467cbaf329dd5f059b7"},
+  { "id": "friendtech33", "symbol": "FTW", "contract": "0x3347453ced85bd288d783d85cdec9b01ab90f9d8"},
+  { "id": "wrapped-bmx-liquidity-token", "symbol": "WBLT", "contract": "0x4e74d4db6c0726ccded4656d0bce448876bb4c7a"}
 ];
 
 const BobaTokens = [

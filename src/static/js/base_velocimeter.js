@@ -39,78 +39,36 @@ async function main() {
       stakeTokenFunction: "stake"
     }
   });
+  // gauges.push({address: "0x1f7b5e65c09df12742255bb8fe26958f4b52f9bb", abi: FLOW_GAUGE_ABI, stakeTokenFunction: "stake"});
 
   await loadFlowSynthetixPoolInfoPrice(App, tokens, prices, "0x53713f956a4da3f08b55a390b20657edf9e0897b", "0x53713f956a4da3f08b55a390b20657edf9e0897b");
 
-  let p = await loadFlowSynthetixPools(App, tokens, prices, gauges, clicked)
-  _print_bold(`Total staked: $${formatMoney(p.staked_tvl)}\n`);
-  if (p.totalUserStaked > 0) {
-    _print(`You are staking a total of $${formatMoney(p.totalUserStaked)}\n`);
-    _print("");
+  let _staked_tvl = 0, _totalUserStaked = 0
+  for(const gauge of gauges){
+    if(gauge.address != "0x6DdF49297066c63F8979FA270BB3bdBECe2bD41B" &&
+       gauge.address != "0x34C13687F5a9A19768A0B7719fc075c13BE9207A" &&
+       gauge.address != "0xc89AFAc1b61D4EF0Fa43353746c313Ffa3A97E96" &&
+       gauge.address != "0xEF36dd99EEb4654fD230e9913755Af78edB3D871" &&
+       gauge.address != "0xA19f886eF19A7b543d8119D6e95892cf1237f5d9"){
+      let p = await loadFlowSynthetixPools(App, tokens, prices, gauge, clicked)
+      _staked_tvl += p.staked_tvl;
+      _totalUserStaked += p.totalUserStaked;
+    }
   }
-
-  const claimAll = async function() {
-    const rewardTokenAddresses = p.gaugeAddresses.map((g) => [FLOW_TOKEN_ADDR]);
-    return flowContract_claimAll(p.gaugeAddresses, rewardTokenAddresses, FLOW_VOTER_ADDR, App)
-  }
-  const reload = async function(){
-    _print("Reading smart contracts...\n");
-    _print("This may take few minutes...\n");
-    const App = await init_ethers();
-    return reloadFun(App, p.tokens, p.prices, p.pools, p.clicked);
-  }
-  _print_link(`Claim All ${p.earnings.toFixed(6)} FLOW ($${formatMoney(p.earningsUSD)})\n`, claimAll)
-  _print("");
-  _print_link(`\nClick here to see just your staked pools`, reload);
-  _print("");
+  _print_bold(`Total staked: $${formatMoney(_staked_tvl)}\n`);
+  if (_totalUserStaked > 0) {
+      _print(`You are staking a total of $${formatMoney(_totalUserStaked)}\n`);
+      _print("");
+    }
 
   hideLoading();
 }
 
-const flowContract_claimAll = async function(gaugeAddresses, rewardTokenAddresses, voterAddress, App) {
-  const signer = App.provider.getSigner()
-
-  const REWARD_POOL = new ethers.Contract(voterAddress, FLOW_VOTER_ABI, signer)
-
-  console.log(App.YOUR_ADDRESS)
-
-  showLoading();
-  REWARD_POOL.claimRewards(gaugeAddresses, rewardTokenAddresses, { gasLimit: 5000000 })
-  .then(function(t) {
-      return App.provider.waitForTransaction(t.hash)
-    })
-    .catch(function(ex) {
-        console.log(ex);
-    }
-  )
-  hideLoading();
-}
-
-const reloadFun = async function (App, tokens, prices, pools, clicked){
-  if(clicked == false){
-    clicked = true;
-    let p = await loadFlowSynthetixPools(App, tokens, prices, pools, clicked)
-    if (p.totalUserStaked > 0) {
-      _print(`You are staking a total of $${formatMoney(p.totalUserStaked)}\n`);
-      _print("");
-    }
-  }else{
-    clicked = false;
-    let p = await loadFlowSynthetixPools(App, tokens, prices, pools, clicked)
-    if (p.totalUserStaked > 0) {
-      _print(`You are staking a total of $${formatMoney(p.totalUserStaked)}\n`);
-      _print("");
-    }
-  }
-}
-
-async function loadFlowSynthetixPools(App, tokens, prices, pools, clicked) {
+async function loadFlowSynthetixPools(App, tokens, prices, pool, clicked) {
   let totalStaked  = 0, totalUserStaked = 0;
   let gaugeAddresses = [], earnings = 0, earningsUSD = 0;
-  const infos = await Promise.all(pools.map(p =>
-      loadFlowSynthetixPoolInfo(App, tokens, prices, p.abi, p.address, p.stakeTokenFunction)));
-  for (const i of infos) {
-    let p = await printFlowSynthetixPool(App, i, "base", clicked);
+  const info = await loadFlowSynthetixPoolInfo(App, tokens, prices, pool.abi, pool.address, pool.stakeTokenFunction);
+    let p = await printFlowSynthetixPool(App, info, "base", clicked);
     totalStaked += p.staked_tvl || 0;
     totalUserStaked += p.userStaked || 0;
     if (p.userStaked > 0) {
@@ -118,13 +76,13 @@ async function loadFlowSynthetixPools(App, tokens, prices, pools, clicked) {
       earnings += p.earned;
       earningsUSD += p.earningsUSD;
     }
-  }
-  return { staked_tvl : totalStaked, totalUserStaked, gaugeAddresses, earnings, earningsUSD, tokens, prices, pools, clicked};
+  return { staked_tvl : totalStaked, totalUserStaked, gaugeAddresses, earnings, earningsUSD, tokens, prices, pool, clicked};
 }
 
 async function loadFlowSynthetixPoolInfo(App, tokens, prices, stakingAbi, stakingAddress,
   stakeTokenFunction) {
     const STAKING_POOL = new ethers.Contract(stakingAddress, stakingAbi, App.provider);
+    const STAKING_MULTI = new ethcall.Contract(stakingAddress, stakingAbi);
 
     if (!STAKING_POOL.callStatic[stakeTokenFunction]) {
       console.log("Couldn't find stake function ", stakeTokenFunction);
@@ -138,13 +96,11 @@ async function loadFlowSynthetixPoolInfo(App, tokens, prices, stakingAbi, stakin
     if (!getParameterCaseInsensitive(tokens, rewardTokenAddress)) {
       tokens[rewardTokenAddress] = await getGeneralToken(App, rewardTokenAddress, stakingAddress);
     }
+    const [rewardRate, periodFinish, balance, _earned, derivedSupply_, derivedBalance_] = await App.ethcallProvider.all([STAKING_MULTI.rewardRate(rewardTokenAddress), STAKING_MULTI.periodFinish(rewardTokenAddress), STAKING_MULTI.balanceOf(App.YOUR_ADDRESS), STAKING_MULTI.earned(rewardTokenAddress, App.YOUR_ADDRESS), STAKING_MULTI.derivedSupply(), STAKING_MULTI.derivedBalance(App.YOUR_ADDRESS)])
     const rewardToken = getParameterCaseInsensitive(tokens, rewardTokenAddress);
     const rewardTokenTicker = rewardToken.symbol;
     const rewardTokenPrice = getParameterCaseInsensitive(prices, rewardTokenAddress)?.usd;
-    const earned_ = await STAKING_POOL.earned(rewardTokenAddress, App.YOUR_ADDRESS)
-    const earned = earned_ / 10 ** rewardToken.decimals;
-    const rewardRate = await STAKING_POOL.rewardRate(rewardTokenAddress);
-    const periodFinish = await STAKING_POOL.periodFinish(rewardTokenAddress);
+    const earned = _earned / 10 ** rewardToken.decimals;
     const weeklyRewards = (Date.now() / 1000 > periodFinish) ? 0 : rewardRate / 1e18 * 604800;
     const usdPerWeek = weeklyRewards * rewardTokenPrice;
     rewardTokens.push(rewardToken);
@@ -154,9 +110,6 @@ async function loadFlowSynthetixPoolInfo(App, tokens, prices, stakingAbi, stakin
 
     var stakeToken = await getGeneralToken(App, stakeTokenAddress, stakingAddress);
 
-    const balance = await STAKING_POOL.balanceOf(App.YOUR_ADDRESS)
-    const derivedSupply_ = await STAKING_POOL.derivedSupply()
-    const derivedBalance_ = await STAKING_POOL.derivedBalance(App.YOUR_ADDRESS)
     const derivedSupply = derivedSupply_ / 10 ** stakeToken.decimals
     const derivedBalance = derivedBalance_ / 10 ** stakeToken.decimals
 
@@ -212,11 +165,7 @@ async function printFlowSynthetixPool(App, info, chain="eth", clicked, customURL
     }
   }
   info.poolPrices.print_price(chain, 4, customURLs);
-  // _print(`${info.rewardTokenTickers[0]} Per Week: ${info.weeklyRewards.toFixed(2)} ($${formatMoney(info.usdPerWeek)})`);
-  // const weeklyAPR = info.usdPerWeek / info.staked_tvl * 100;
-  // const dailyAPR = weeklyAPR / 7;
-  // const yearlyAPR = weeklyAPR * 52;
-  // _print(`APR: Day ${dailyAPR.toFixed(2)}% Week ${weeklyAPR.toFixed(2)}% Year ${yearlyAPR.toFixed(2)}%`);
+
   const userStakedUsd = info.userStaked * info.stakeTokenPrice;
   const userStakedPct = userStakedUsd / info.staked_tvl * 100;
   _print(`You are staking ${info.userStaked.toFixed(6)} ${info.stakeTokenTicker} ` +
