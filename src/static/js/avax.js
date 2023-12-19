@@ -109,7 +109,8 @@ const main = async() => {
         ["Printer Financial       ",`<a href="printer"          >Various</a>`,"INK          ","https://avax.printer.financial"],
         ["Frozenwalrus Finance    ",`<a href="frozenwalrus"     >Various</a>`,"WLRS / WSHARE","https://frozenwalrus.finance"],
         ["Grape Finance           ",`<a href="grape"            >Various</a>`,"WINE / GRAPE ","https://grapefinance.app"],
-        ["Subzero                 ",`<a href="subzero"          >Various</a>`,"ZSHARE / SUB ","https://app.subzero.plus"]
+        ["Subzero                 ",`<a href="subzero"          >Various</a>`,"ZSHARE / SUB ","https://app.subzero.plus"],
+        ["Butterfly Finance             ",`<a href="bfly"         >Various</a>`,"BFLY            ","https://app.butterflydefi.xyz"]
     ].reverse()
   }
 
