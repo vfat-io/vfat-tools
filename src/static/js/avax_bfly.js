@@ -764,7 +764,7 @@ $(function() {
         const prices = await getBasePrices();
     
         await loadGeneralChefContract(App, tokens, prices, BFLY_CHEF, BFLY_CHEF_ADDR, BFLY_CHEF_ABI, rewardTokenTicker,
-            "bflyToken", null, rewardsPerWeek, "pendingBfly", [], "base");
+            "bflyToken", null, rewardsPerWeek, "pendingBfly", [], "avax");
     
         hideLoading();
       }
