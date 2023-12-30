@@ -38,7 +38,7 @@ async function main() {
         if (!isNaN(poolUserTVL)) userTvl += poolUserTVL
       }
 
-      printAutofarmContract(p, poolTVL, userStakedPct, poolUserTVL);
+      printAutofarmContract(App, p, poolTVL, userStakedPct, poolUserTVL, p.autofarmContractAddress, p.userShares, p.pid, p.stakedTokenAddress);
 
     }
     _print_bold(`\nTotal Value Locked: $${formatMoney(tvl)}`);
@@ -60,6 +60,7 @@ async function main() {
       const sharesTotal = await stratContract.sharesTotal()
       const wantLockedTotal = await stratContract.wantLockedTotal()
       const farmContractAddress = await stratContract.farmContractAddress()
+      const stakedTokenAddress = poolInfo.want;
 
       const wantToken = await getBscToken(App, poolInfo.want, App.YOUR_ADDRESS);
       var newTokenAddresses = wantToken.tokens.filter(x => !getParameterCaseInsensitive(tokens, x));
@@ -68,19 +69,41 @@ async function main() {
       }
 
       const poolPrices = getPoolPrices(tokens, prices, wantToken, "bsc");
-      return { userShares, sharesTotal, wantLockedTotal, wantToken, poolPrices }
+      return { userShares, sharesTotal, wantLockedTotal, wantToken, poolPrices, autofarmContractAddress, pid, stakedTokenAddress }
     }
     catch (err) {
       console.log(err);
       return null;
     }
   }
-  
-  async function printAutofarmContract(poolInfo, poolTVL, userStakedPct, poolUserTVL) {
+
+  async function printAutofarmContract(App, poolInfo, poolTVL, userStakedPct, poolUserTVL, autofarmContractAddress, userShares, pid, stakedTokenAddress) {
     const poolPrices = poolInfo.poolPrices;
+    const unstake = async function() {
+      return autoContract_unstake(AUTOFARM_CROSSCHAIN_ABI, autofarmContractAddress, pid, App)
+    }
     _print(`${poolPrices.stakeTokenTicker} Price: $${formatMoney(poolPrices.price)} TVL: $${formatMoney(poolTVL)}`);
     _print(`You are staking $${formatMoney(poolUserTVL)}, ${userStakedPct.toFixed(2)}% of the pool.`);
+    _print_link(`Unstake ${(userShares / 1e18).toFixed(2)} ${poolPrices.stakeTokenTicker}`, unstake)
     _print("");
 
     return 
+  }
+
+  const autoContract_unstake = async function(chefAbi, chefAddress, poolIndex, App) {
+    const signer = App.provider.getSigner()
+    const CHEF_CONTRACT = new ethers.Contract(chefAddress, chefAbi, signer)
+  
+    const currentStakedAmount = await CHEF_CONTRACT.userInfo(poolIndex, App.YOUR_ADDRESS)
+  
+    if (currentStakedAmount / 1e18 > 0) {
+      showLoading()
+      CHEF_CONTRACT.withdraw(poolIndex, currentStakedAmount, {gasLimit: 500000})
+        .then(function(t) {
+          return App.provider.waitForTransaction(t.hash)
+        })
+        .catch(function() {
+          hideLoading()
+        })
+    }
   }
