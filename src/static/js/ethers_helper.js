@@ -147,6 +147,9 @@ const pageNetwork = function() {
   if (network.toLowerCase() === 'metis') {
     return window.NETWORKS.METIS
   }
+  if (network.toLowerCase() === 'mantle') {
+    return window.NETWORKS.MANTLE
+  }
   if (network.toLowerCase() === 'meter') {
     return window.NETWORKS.METER
   }
@@ -2380,6 +2383,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
   else if (pool.symbol.includes("DXS")) stakeTokenTicker += " DXS-LP";
   else if (pool.symbol.includes("CELL")) stakeTokenTicker += " CELL-LP";
   else if (pool.symbol.includes("Milky-LP")) stakeTokenTicker += " Milky-LP";
+  else if (pool.symbol.includes("MoeLP")) stakeTokenTicker += " Moe LP Token";
   else if (pool.symbol.includes("HAUS-LP")) stakeTokenTicker += " HAUS-LP";
   else if (pool.symbol.includes("HBLP")) stakeTokenTicker += " Huckleberry LP";
   else if (pool.symbol.includes("BLP")) stakeTokenTicker += " BLP";
@@ -2513,6 +2517,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
           pool.name.includes("GemSwap") ? `https://zks.gemswap.online/swap` :
           pool.symbol.includes("MDEX") ? `https://info.mdex.com/#/pools/${pool.address}` :
           pool.symbol.includes("Milky-LP") ? `https://milkyway.exchange/` :
+          pool.symbol.includes("MoeLP") ? `https://merchantmoe.com/pool/v1/${pool.address}` :
           pool.symbol.includes("YLP") ? `https://dexscreener.com/dogechain/yodeswap` :
           pool.symbol.includes("CMLT-LP") ? `https://info.camelot.exchange/pair/${pool.address}` :
           pool.symbol.includes("MSLP") ? `https://www.milkyswap.exchange/` :
@@ -2775,6 +2780,11 @@ function getUniPrices(tokens, prices, pool, chain="eth")
             `https://milkyway.exchange/swap`,
             `https://milkyway.exchange/swap`,
             `https://milkyway.exchange/swap`
+          ] :
+          pool.symbol.includes("MoeLP") ? [
+            `https://merchantmoe.com/pool/v1/${pool.address}`,
+            `https://merchantmoe.com/pool/v1/${pool.address}`,
+            `https://merchantmoe.com/trade`
           ] :
           pool.symbol.includes("MDEX") ? [
             `https://bsc.mdex.com/#/add/${t0address}/${t1address}`,
@@ -3791,6 +3801,9 @@ function getErc20Prices(prices, pool, chain="eth") {
     case "metis":
       poolUrl=`https://andromeda-explorer.metis.io/token/${pool.address}`;
       break;
+    case "mantle":
+      poolUrl=`https://explorer.mantle.xyz/address/${pool.address}`;
+      break;
     case "meter":
       poolUrl=`https://scan.meter.io/token/${pool.address}`;
       break;
@@ -4545,6 +4558,9 @@ async function printSynthetixPool(App, info, chain="eth", customURLs) {
       case "metis":
         _print(`<a target="_blank" href="https://andromeda-explorer.metis.io/address/${info.stakingAddress}#code">Andromeda Explorer</a>`);
         break;
+      case "mantle":
+        _print(`<a target="_blank" href="https://explorer.mantle.xyz/address/${info.stakingAddress}#code">Mantle Explorer</a>`);
+        break;
       case "meter":
         _print(`<a target="_blank" href="https://scan.meter.io/address/${info.stakingAddress}#code">Andromeda Explorer</a>`);
         break;
@@ -4794,6 +4810,8 @@ function getChainExplorerUrl(chain, address){
       return `https://blockexplorer.boba.network/address/${address}`;
     case "metis" :
       return `https://andromeda-explorer.metis.io/address/${address}`;
+    case "mantle" :
+      return `https://explorer.mantle.xyz/address/${address}`;
     case "meter" :
       return `https://scan.meter.io/address/${address}`;
     case "emerald" :

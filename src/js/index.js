@@ -396,6 +396,21 @@ window.NETWORKS = {
       "https://explorer.emerald.oasis.dev"
     ]
   },
+  MANTLE: {
+    "chainId": "0x1388",
+    "chainName": "Mantle",
+    "nativeCurrency": {
+      "name": "Mantle",
+      "symbol": "MNT",
+      "decimals": 18
+    },
+    "rpcUrls": [
+      "https://mantle.publicnode.com"
+    ],
+    "blockExplorerUrls": [
+      "https://explorer.mantle.xyz"
+    ]
+  },
   DFK: {
     "chainId": "0xD2AF",
     "chainName": "DFK Chain",

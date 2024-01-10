@@ -707,6 +707,11 @@ const maticTokens = [
   { "id": "dfx-finance", "symbol": "DFX","contract": "0xE7804D91dfCDE7F776c90043E03eAa6Df87E6395" }
 ]
 
+const MantleTokens = [
+  { "id": "weth", "symbol": "WETH", "contract": "0xdEAddEaDdeadDEadDEADDEAddEADDEAddead1111"},
+  { "id": "usd-coin", "symbol": "USDC", "contract": "0x09Bc4E0D864854c6aFB6eB9A9cdF58aC190D0dF9"},
+];
+
 const MeterTokens = [
   //{ "id": "metis", "symbol": "METIS", "contract": "0xDeadDeAddeAddEAddeadDEaDDEAdDeaDDeAD0000"},
 ];
@@ -1189,6 +1194,15 @@ async function getMaticPrices() {
   const idPrices = await lookUpPrices(maticTokens.map(x => x.id));
   const prices = {}
   for (const bt of maticTokens)
+      if (idPrices[bt.id])
+          prices[bt.contract] = idPrices[bt.id];
+  return prices;
+}
+
+async function getMantlePrices() {
+  const idPrices = await lookUpPrices(MantleTokens.map(x => x.id));
+  const prices = {}
+  for (const bt of MantleTokens)
       if (idPrices[bt.id])
           prices[bt.contract] = idPrices[bt.id];
   return prices;
