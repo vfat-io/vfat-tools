@@ -405,7 +405,7 @@ window.NETWORKS = {
       "decimals": 18
     },
     "rpcUrls": [
-      "https://mantle.publicnode.com"
+      "https://rpc.mantle.xyz"
     ],
     "blockExplorerUrls": [
       "https://explorer.mantle.xyz"
