@@ -28,7 +28,6 @@ async function loadMoeChefContract(App, tokens, prices, chef, chefAddress, chefA
   rewardTokenFunction, deathPoolIndices, chain) {
   const chefContract = chef ?? new ethers.Contract(chefAddress, chefAbi, App.provider);
 
-  //const poolCount = 1;
   const poolCount = parseInt(await chefContract.getNumberOfFarms(), 10);
 
   _print(`<a href='https://explorer.mantle.xyz/address/${chefAddress}' target='_blank'>Staking Contract</a>`);
@@ -39,8 +38,11 @@ async function loadMoeChefContract(App, tokens, prices, chef, chefAddress, chefA
   const rewardTokenAddress = await chefContract.callStatic[rewardTokenFunction]();
   const rewardToken = await getGeneralToken(App, rewardTokenAddress, chefAddress);
 
-  const poolInfos = await Promise.all([...Array(poolCount).keys()].map(async (x) =>
-    await getMoePoolInfo(App, chefContract, chefAddress, x)));
+  let poolInfos = []
+  for(let i = 0; i < poolCount; i++){
+    const poolInfo = await getMoePoolInfo(App, chefContract, chefAddress, i)
+    poolInfos.push(poolInfo);
+  }
 
   var tokenAddresses = [].concat.apply([], poolInfos.filter(x => x.poolToken).map(x => x.poolToken.tokens));
 
