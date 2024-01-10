@@ -10,6 +10,7 @@ async function main() {
 
     _print(`Initialized ${App.YOUR_ADDRESS}\n`);
     _print("Reading smart contracts...\n");
+    _print("This may take a minute...\n");
 
    const MOE_CHEF_ADDR = "0xA756f7D419e1A5cbd656A438443011a7dE1955b5";
    const rewardTokenTicker = "MOE";
