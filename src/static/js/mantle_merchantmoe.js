@@ -168,7 +168,11 @@ async function getMoePoolInfo(app, chefContract, chefAddress, poolIndex) {
   const poolTokenAddress = await chefContract.getToken(poolIndex);
   const poolToken = await getGeneralToken(app, poolTokenAddress, chefAddress);
   const staked = await chefContract.getDeposit(poolIndex, app.YOUR_ADDRESS) / 10 ** poolToken.decimals;
-  const rewardsPerWeek = await chefContract.getMoePerSecondForPid(poolIndex) / 1e18 * 604800;
+  const treasuryShare = await chefContract.getTreasuryShare() / 1e18;
+  const _rewardsPerSecond = await chefContract.getMoePerSecondForPid(poolIndex) / 1e18
+  const treasuryFee = _rewardsPerSecond * treasuryShare;
+  const rewardsPerSecond = _rewardsPerSecond - treasuryFee;
+  const rewardsPerWeek = rewardsPerSecond * 604800;
   const _pendingRewardTokens = await chefContract.getPendingRewards(app.YOUR_ADDRESS, [poolIndex]);
   const pendingRewardTokens = _pendingRewardTokens.moeRewards[0];
   return {
