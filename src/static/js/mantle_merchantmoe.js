@@ -39,11 +39,13 @@ async function loadMoeChefContract(App, tokens, prices, chef, chefAddress, chefA
   const rewardTokenAddress = await chefContract.callStatic[rewardTokenFunction]();
   const rewardToken = await getGeneralToken(App, rewardTokenAddress, chefAddress);
 
-  let poolInfos = []
-  for(let i = 0; i < poolCount; i++){
-    const poolInfo = await getMoePoolInfo(App, chefContract, chefAddress, i)
-    poolInfos.push(poolInfo);
-  }
+  // let poolInfos = []
+  // for(let i = 0; i < poolCount; i++){
+  //   const poolInfo = await getMoePoolInfo(App, chefContract, chefAddress, i)
+  //   poolInfos.push(poolInfo);
+  // }
+  const poolInfos = await Promise.all([...Array(poolCount).keys()].map(async (x) =>
+      await getMoePoolInfo(App, chefContract, chefAddress, x)));
 
   var tokenAddresses = [].concat.apply([], poolInfos.filter(x => x.poolToken).map(x => x.poolToken.tokens));
 
