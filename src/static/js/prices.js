@@ -707,6 +707,13 @@ const maticTokens = [
   { "id": "dfx-finance", "symbol": "DFX","contract": "0xE7804D91dfCDE7F776c90043E03eAa6Df87E6395" }
 ]
 
+const MantaTokens = [
+  { "id": "weth", "symbol": "WETH", "contract": "0x0Dc808adcE2099A9F62AA87D9670745AbA741746"},
+  { "id": "stakestone-ether", "symbol": "STONE", "contract": "0xf447999bb954ae5191bce1181ac3a671edc24673"},
+  { "id": "mountain-protocol-usdm", "symbol": "USDM", "contract": "0xbdAd407F77f44F7Da6684B416b1951ECa461FB07"},
+  { "id": "quickswap", "symbol": "QUICK", "contract": "0xE22E3D44Ea9Fb0A87Ea3F7a8f41D869C677f0020"}
+];
+
 const MantleTokens = [
   { "id": "weth", "symbol": "WETH", "contract": "0xdEAddEaDdeadDEadDEADDEAddEADDEAddead1111"},
   { "id": "usd-coin", "symbol": "USDC", "contract": "0x09Bc4E0D864854c6aFB6eB9A9cdF58aC190D0dF9"},
@@ -1194,6 +1201,15 @@ async function getMaticPrices() {
   const idPrices = await lookUpPrices(maticTokens.map(x => x.id));
   const prices = {}
   for (const bt of maticTokens)
+      if (idPrices[bt.id])
+          prices[bt.contract] = idPrices[bt.id];
+  return prices;
+}
+
+async function getMantaPrices() {
+  const idPrices = await lookUpPrices(MantaTokens.map(x => x.id));
+  const prices = {}
+  for (const bt of MantaTokens)
       if (idPrices[bt.id])
           prices[bt.contract] = idPrices[bt.id];
   return prices;

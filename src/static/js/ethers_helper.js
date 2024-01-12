@@ -150,6 +150,9 @@ const pageNetwork = function() {
   if (network.toLowerCase() === 'mantle') {
     return window.NETWORKS.MANTLE
   }
+  if (network.toLowerCase() === 'manta') {
+    return window.NETWORKS.MANTA
+  }
   if (network.toLowerCase() === 'meter') {
     return window.NETWORKS.METER
   }
@@ -3804,6 +3807,9 @@ function getErc20Prices(prices, pool, chain="eth") {
     case "mantle":
       poolUrl=`https://explorer.mantle.xyz/address/${pool.address}`;
       break;
+    case "manta":
+      poolUrl=`https://pacific-explorer.manta.network/address/${pool.address}`;
+      break;
     case "meter":
       poolUrl=`https://scan.meter.io/token/${pool.address}`;
       break;
@@ -4561,6 +4567,9 @@ async function printSynthetixPool(App, info, chain="eth", customURLs) {
       case "mantle":
         _print(`<a target="_blank" href="https://explorer.mantle.xyz/address/${info.stakingAddress}#code">Mantle Explorer</a>`);
         break;
+      case "manta":
+        _print(`<a target="_blank" href="https://pacific-explorer.manta.network/address/${info.stakingAddress}">Manta Explorer</a>`);
+        break;
       case "meter":
         _print(`<a target="_blank" href="https://scan.meter.io/address/${info.stakingAddress}#code">Andromeda Explorer</a>`);
         break;
@@ -4812,6 +4821,8 @@ function getChainExplorerUrl(chain, address){
       return `https://andromeda-explorer.metis.io/address/${address}`;
     case "mantle" :
       return `https://explorer.mantle.xyz/address/${address}`;
+    case "manta" :
+      return `https://pacific-explorer.manta.network/address/${address}`;
     case "meter" :
       return `https://scan.meter.io/address/${address}`;
     case "emerald" :

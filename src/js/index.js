@@ -411,6 +411,21 @@ window.NETWORKS = {
       "https://explorer.mantle.xyz"
     ]
   },
+  MANTA: {
+    "chainId": "0xa9",
+    "chainName": "Manta Pacific Mainnet",
+    "nativeCurrency": {
+      "name": "Manta",
+      "symbol": "ETH",
+      "decimals": 18
+    },
+    "rpcUrls": [
+      "https://pacific-rpc.manta.network/http"
+    ],
+    "blockExplorerUrls": [
+      "https://pacific-explorer.manta.network"
+    ]
+  },
   DFK: {
     "chainId": "0xD2AF",
     "chainName": "DFK Chain",
