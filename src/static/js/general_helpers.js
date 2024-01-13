@@ -660,6 +660,8 @@ async function loadGeneralChefContract(App, tokens, prices, chef, chefAddress, c
     break;
     case "manta" : _print(`<a href='https://pacific-explorer.manta.network/address/${chefAddress}' target='_blank'>Staking Contract</a>`);
     break;
+    case "shimmer" : _print(`<a href='https://explorer.evm.shimmer.network/address/${chefAddress}' target='_blank'>Staking Contract</a>`);
+    break;
   }
   _print(`Found ${poolCount} pools.\n`)
 

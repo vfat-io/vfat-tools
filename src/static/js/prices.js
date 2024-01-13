@@ -878,6 +878,10 @@ const SmartbchTokens = [
   { "id": "bitcoin-cash","symbol": "WBCH", "contract": "0x3743eC0673453E5009310C727Ba4eaF7b3a1cc04" }
 ];
 
+const ShimmerTokens = [
+  { "id": "shimmer","symbol": "SMR", "contract": "0x1074010000000000000000000000000000000000" }
+];
+
 const telosTokens = [
   { "id": "telos", "symbol": "WTLOS","contract": "0xD102cE6A4dB07D247fcc28F366A623Df0938CA9E" },
   { "id": "zappy", "symbol": "ZAP","contract": "0x9A271E3748F59222f5581BaE2540dAa5806b3F77" },
@@ -1321,6 +1325,15 @@ async function getSmartbchPrices() {
   const idPrices = await lookUpPrices(SmartbchTokens.map(x => x.id));
   const prices = {}
   for (const bt of SmartbchTokens)
+      if (idPrices[bt.id])
+          prices[bt.contract] = idPrices[bt.id];
+  return prices;
+}
+
+async function getShimmerPrices() {
+  const idPrices = await lookUpPrices(ShimmerTokens.map(x => x.id));
+  const prices = {}
+  for (const bt of ShimmerTokens)
       if (idPrices[bt.id])
           prices[bt.contract] = idPrices[bt.id];
   return prices;

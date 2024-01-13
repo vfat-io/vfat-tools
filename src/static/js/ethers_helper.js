@@ -153,6 +153,9 @@ const pageNetwork = function() {
   if (network.toLowerCase() === 'manta') {
     return window.NETWORKS.MANTA
   }
+  if (network.toLowerCase() === 'shimmer') {
+    return window.NETWORKS.SHIMMER
+  }
   if (network.toLowerCase() === 'meter') {
     return window.NETWORKS.METER
   }
@@ -2357,6 +2360,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
   let stakeTokenTicker = `[${t0.symbol}]-[${t1.symbol}]`;
   if (pool.is1inch) stakeTokenTicker += " 1INCH LP";
   else if (pool.symbol.includes("TETHYSLP")) stakeTokenTicker += " TETHYS LP";
+  else if (pool.symbol.includes("TANGLE-LP")) stakeTokenTicker += " TANGLE LP";
   else if (pool.symbol.includes("VERSE-X")) stakeTokenTicker += " VERSE-X";
   else if (pool.symbol.includes("BSWAP")) stakeTokenTicker += " BSWAP LP";
   else if (pool.name.includes("Synth")) stakeTokenTicker += " Synth LP";
@@ -2497,6 +2501,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
         else {
           const poolUrl = pool.is1inch ? "https://1inch.exchange/#/dao/pools" :
           pool.symbol.includes("TETHYSLP") ?  `https://info.tethys.finance/pair/${pool.address}` :
+          pool.symbol.includes("TANGLE-LP") ?  `https://shimmersea.finance/liquidity/pool/${pool.address}` :
           pool.symbol.includes("TENX-LP") ?  `https://www.tenx.exchange/#/swap` :
           pool.symbol.includes("SRTDX") ?  `https://app.spartadex.io/dex/` :
           pool.totalAmounts ?  `https://quickswap.exchange/#/analytics` :
@@ -3049,6 +3054,11 @@ function getUniPrices(tokens, prices, pool, chain="eth")
             `https://tethys.finance/pool/add?inputCurrency=${t0address}&outputCurrency=${t1address}`,
             `https://tethys.finance/pool/remove?inputCurrency=${t0address}&outputCurrency=${t1address}`,
             `https://tethys.finance/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
+          ] :
+          pool.symbol.includes("TANGLE-LP") ? [
+            `https://shimmersea.finance/add/${t0address}/${t1address}`,
+            `https://shimmersea.finance/remove/${t0address}/${t1address}`,
+            `https://shimmersea.finance/swap`
           ] :
           pool.symbol.includes("TENX-LP") ? [
             `https://www.tenx.exchange/#/add/${t0address}/${t1address}`,
@@ -3810,6 +3820,9 @@ function getErc20Prices(prices, pool, chain="eth") {
     case "manta":
       poolUrl=`https://pacific-explorer.manta.network/address/${pool.address}`;
       break;
+    case "shimmer":
+      poolUrl=`https://explorer.evm.shimmer.network/address/${pool.address}`;
+      break;
     case "meter":
       poolUrl=`https://scan.meter.io/token/${pool.address}`;
       break;
@@ -4570,6 +4583,9 @@ async function printSynthetixPool(App, info, chain="eth", customURLs) {
       case "manta":
         _print(`<a target="_blank" href="https://pacific-explorer.manta.network/address/${info.stakingAddress}">Manta Explorer</a>`);
         break;
+      case "shimmer":
+        _print(`<a target="_blank" href="https://explorer.evm.shimmer.network/address/${info.stakingAddress}">Shimmer Explorer</a>`);
+        break;
       case "meter":
         _print(`<a target="_blank" href="https://scan.meter.io/address/${info.stakingAddress}#code">Andromeda Explorer</a>`);
         break;
@@ -4823,6 +4839,8 @@ function getChainExplorerUrl(chain, address){
       return `https://explorer.mantle.xyz/address/${address}`;
     case "manta" :
       return `https://pacific-explorer.manta.network/address/${address}`;
+    case "shimmer" :
+      return `https://explorer.evm.shimmer.network/address/${address}`;
     case "meter" :
       return `https://scan.meter.io/address/${address}`;
     case "emerald" :

@@ -426,6 +426,21 @@ window.NETWORKS = {
       "https://pacific-explorer.manta.network"
     ]
   },
+  SHIMMER: {
+    "chainId": "0x94",
+    "chainName": "ShimmerEVM",
+    "nativeCurrency": {
+      "name": "Shimmer",
+      "symbol": "SMR",
+      "decimals": 18
+    },
+    "rpcUrls": [
+      "https://json-rpc.evm.shimmer.network"
+    ],
+    "blockExplorerUrls": [
+      "https://explorer.evm.shimmer.network"
+    ]
+  },
   DFK: {
     "chainId": "0xD2AF",
     "chainName": "DFK Chain",
