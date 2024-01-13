@@ -15,7 +15,7 @@ consoleInit(main)
     _print("Reading smart contracts...\n");
 
     const AJNA_INFO_ADDR = "0x154FFf344f426F99E328bacf70f4Eb632210ecdc";
-    const AJNA_FACTORY_INFO_ADDR = "0xe6F4d9711121e5304b30aC2Aae57E3b085ad3c4d";
+    const AJNA_FACTORY_INFO_ADDR = "0x6146DD43C5622bB6D12A5240ab9CF4de14eDC625";
 
     const AJNA_FACTORY_INFO = new ethers.Contract(AJNA_FACTORY_INFO_ADDR, AJNA_FACTORY_INFO_ABI, App.provider);
 
