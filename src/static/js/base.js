@@ -21,7 +21,8 @@ const main = async() => {
       ["Redemption Finance             ",`<a href="redemptionfi"         >Various</a>`,"RDMP            ","https://rdmp.finance"],
       ["NanoSwap                       ",`<a href="nanoswap"             >Various</a>`,"NANO            ","https://nanoswap.xyz"],
       ["Statix Farm                    ",`<a href="statix"               >Various</a>`,"STATIX          ","https://statix.farm"],
-      ["Toupee Tech                    ",`<a href="toupee"               >Various</a>`,"oWIG            ","https://www.toupee.tech"]
+      ["Toupee Tech                    ",`<a href="toupee"               >Various</a>`,"oWIG            ","https://www.toupee.tech"],
+      ["Ajna                           ",`<a href="ajna"                 >Various</a>`,"AJNA            ","https://app.ajna.finance"]
     ].reverse()
   }
 

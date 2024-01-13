@@ -86,6 +86,7 @@ const main = async() => {
       ["Wombex Finance      ", `<a href="/arbitrum/wombex"      >Various</a>`,"WOM                ","https://wombex.finance"],
       ["Fire                ", `<a href="/arbitrum/fire"        >Various</a>`,"wFIRE              ",""],
       ["Spartadex           ", `<a href="/arbitrum/sparta"      >Various</a>`,"SPARTA             ","https://app.spartadex.io"],
+      ["Ajna                ", `<a href="/arbitrum/ajna"        >Various</a>`,"AJNA               ","https://app.ajna.finance"],
       //["Adamant Finance     ", `<a href="/arbitrum/adamant"     >Various</a>`,"ARBY / ETH         ","https://adamant.finance"]
     ].reverse()
   }

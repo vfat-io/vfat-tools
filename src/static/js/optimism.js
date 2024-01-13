@@ -28,7 +28,8 @@ const main = async() => {
       ["Arrakis               ", `<a href="arrakis"           >Various</a>`,"OP           ","https://www.arrakis.finance"],
       ["Fire                  ", `<a href="fire"              >Various</a>`,"wFIRE        ",""],
       ["Exactly               ", `<a href="exactly"           >Various</a>`,"OP           ","https://app.exact.ly"],
-      ["Velodrome V2          ", `<a href="velodrome_v2"      >Various</a>`,"VELO         ","https://app.velodrome.finance"]
+      ["Velodrome V2          ", `<a href="velodrome_v2"      >Various</a>`,"VELO         ","https://app.velodrome.finance"],
+      ["Ajna                  ", `<a href="ajna"              >Various</a>`,"AJNA         ","https://app.ajna.finance"]
     ].reverse()
   }
 
