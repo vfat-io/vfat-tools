@@ -198,7 +198,7 @@ const main = async () => {
       ["FIRE Airdrop                 ", `<a href="fire/"              >Various</a>`, "FIRE               ", ""],
       ["Love Game                    ", `<a href="love/"              >Various</a>`, "LOVE               ", "https://www.love.game"],
       ["Seethe                       ", `<a href="seethe/"            >Various</a>`, "SEETHE             ", "https://seethe.pepepal.com"],
-      ["Ajna                         ", `<a href="ajna/"              >Various</a>`, "AJNA               ", "https://app.ajna.finance"],
+      ["Ajna *                       ", `<a href="ajna/"              >Various</a>`, "AJNA               ", "https://app.ajna.finance"],
       ["Prisma Finance               ", `<a href="prisma/"            >Various</a>`, "PRISMA             ", "https://app.prismafinance.com"],
       ["9inch                        ", `<a href="9inch/"             >Various</a>`, "BBC                ", "https://app.9inch.io"]
     ].reverse()

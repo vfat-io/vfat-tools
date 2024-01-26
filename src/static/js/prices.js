@@ -879,7 +879,8 @@ const SmartbchTokens = [
 ];
 
 const ShimmerTokens = [
-  { "id": "shimmer","symbol": "SMR", "contract": "0x1074010000000000000000000000000000000000" }
+  { "id": "shimmer","symbol": "SMR", "contract": "0x1074010000000000000000000000000000000000" },
+  { "id": "tangleswap-void","symbol": "VOID", "contract": "0xE5f3dCC241Dd008E3c308e57cf4F7880eA9210F8" }
 ];
 
 const telosTokens = [

@@ -1700,6 +1700,29 @@ async function getYearnVault(app, yearn, address, stakingAddress) {
   }
 }
 
+async function getYearnV3Vault(app, yearn, address, stakingAddress) {
+  const calls = [yearn.decimals(), yearn.asset(), yearn.name(), yearn.symbol(), yearn.totalSupply(),
+    yearn.balanceOf(stakingAddress), yearn.balanceOf(app.YOUR_ADDRESS), yearn.totalAssets(), yearn.pricePerShare()];
+  const [decimals, token_, name, symbol, totalSupply, staked, unstaked, balance, ppfs] =
+    await app.ethcallProvider.all(calls);
+  const token = await getToken(app, token_, address);
+  return {
+    address,
+    name,
+    symbol,
+    totalSupply,
+    decimals : decimals,
+    staked: staked / 10 ** decimals,
+    unstaked: unstaked / 10 ** decimals,
+    token: token,
+    balance : balance / 10 ** decimals,
+    contract: yearn,
+    tokens : [address].concat(token.tokens),
+    ppfs : ppfs / 10 ** decimals,
+    yearn : true
+  }
+}
+
 async function getFraxVault(app, frax, address, stakingAddress) {
   const calls = [frax.decimals(), frax.token(), frax.name(), frax.symbol(), frax.totalSupply(),
     frax.balanceOf(stakingAddress), frax.balanceOf(app.YOUR_ADDRESS), frax.totalValue(), frax.pricePerShare()];
@@ -1839,6 +1862,9 @@ async function getStoredToken(app, tokenAddress, stakingAddress, type) {
     case "yearn":
       const yearnVault = new ethcall.Contract(tokenAddress, YEARN_VAULT_ABI);
       return await getYearnVault(app, yearnVault, tokenAddress, stakingAddress);
+    case "yearnV3":
+      const yearnV3Vault = new ethcall.Contract(tokenAddress, YEARN_V3_VAULT_ABI);
+      return await getYearnV3Vault(app, yearnV3Vault, tokenAddress, stakingAddress);
     case "jpegd":
       const jpegdVault = new ethcall.Contract(tokenAddress, JPEGD_VAULT_ABI);
       return await getJpegdVault(app, jpegdVault, tokenAddress, stakingAddress);
@@ -1984,6 +2010,15 @@ async function getToken(app, tokenAddress, stakingAddress) {
     const ironBank = await getIronBankToken(app, ironBankPool, tokenAddress, stakingAddress);
     window.localStorage.setItem(tokenAddress, "ironBank");
     return ironBank;
+  }
+  catch(err) {
+  }
+  try {
+    const yearnV3Vault = new ethcall.Contract(tokenAddress, YEARN_V3_VAULT_ABI);
+    const _asset = await app.ethcallProvider.all([yearnV3Vault.asset()]);
+    const yearnV3 = await getYearnV3Vault(app, yearnV3Vault, tokenAddress, stakingAddress);
+    window.localStorage.setItem(tokenAddress, "yearnV3");
+    return yearnV3;
   }
   catch(err) {
   }
