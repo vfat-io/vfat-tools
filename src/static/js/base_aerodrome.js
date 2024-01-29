@@ -41,6 +41,7 @@ async function main() {
   // });
 
   const gauges = [
+  '0x4f09bab2f0e15e2a078a227fe1537665f55b8360',
   '0x50f0249B824033Cf0AF0C8b9fe1c67c2842A34d5',
   '0xfaE8C18D83655Fbf31af10d2e9A1Ad5bA77D0377',
   '0xaD3d4aFd779e4A57734557CcE25F87032614fE47',
