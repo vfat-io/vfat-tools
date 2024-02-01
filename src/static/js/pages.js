@@ -188,7 +188,7 @@ const main = async () => {
       ["Complifi Vaults              ", `<a href="complifi_vaults/"   >Various</a>`, "                   ", ""],
       ["Verse                        ", `<a href="verse/"             >Various</a>`, "VERSE              ", "https://verse.bitcoin.com"],
       ["Archimedes                   ", `<a href="archimedes/"        >Various</a>`, "ARCH               ", "https://archimedesfi.com"],
-      ["Conic Finance                ", `<a href="conic/"             >Various</a>`, "Various            ", "https://conic.finance"],
+      ["Conic Finance *              ", `<a href="conic/"             >Various</a>`, "Various            ", "https://conic.finance"],
       ["Oceanpoint                   ", `<a href="oceanpoint/"        >Various</a>`, "BST                ", "https://app.oceanpoint.fi"],
       ["Silo Finance                 ", `<a href="silo/"              >Various</a>`, "SILO               ", "https://www.silo.finance"],
       ["Agility                      ", `<a href="agility/"           >Various</a>`, "esAGI              ", "https://agilitylsd.com"],

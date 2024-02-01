@@ -12,7 +12,10 @@ consoleInit(main)
     _print(`Initialized ${App.YOUR_ADDRESS}\n`);
     _print("Reading smart contracts...\n");
 
-    const pools = ["0x40293380F5292Bb13905608b35a936c332f07f94",
+    const pools = ["0x89dc3E9d493512F6CFb923E15369ebFddE591988",
+                   "0x80a3604977270B7Ef2e637f9Eb78cE1c3FA64316",
+                   "0x3367070ed152e2b715eef48D157685Cf496f3543",
+                   "0x40293380F5292Bb13905608b35a936c332f07f94",
                    "0x07b577f10d4e00f3018542d08a87F255a49175A5",
                    "0xAbb735648a076d570AfF2A61D8D141099823EAe9"].map((a) => {
       return {
