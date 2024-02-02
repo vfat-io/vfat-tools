@@ -3,6 +3,7 @@ const ArbitrumTokens = [
   { "id": "dodo","symbol": "DODO", "contract": "0x69eb4fa4a2fbd498c257c57ea8b7655a2559a581" },
   { "id": "wrapped-bitcoin","symbol": "WBTC", "contract": "0x2f2a2543b76a4166549f7aab2e75bef0aefc5b0f" },
   { "id": "usd-coin","symbol": "USDC", "contract": "0xff970a61a04b1ca14834a43f5de4533ebddb5cc8" },
+  { "id": "usd-coin","symbol": "USDC", "contract": "0xaf88d065e77c8cc2239327c5edb3a432268e5831" },
   { "id": "tether","symbol": "USDT", "contract": "0xfd086bc7cd5c481dcc9c85ebe478a1c0b69fcbb9" },
   { "id": "tether","symbol": "USDT", "contract": "0xEC13336bbd50790a00CDc0fEddF11287eaF92529" },  //this gmUSD and its temporary
   { "id": "dai","symbol": "DAI", "contract": "0xda10009cbd5d07dd0cecc66161fc93d7c9000da1" },
