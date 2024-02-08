@@ -68,7 +68,7 @@ async function loadMorheusPool(App, tokens, prices, abi, address){
   if(userUnstaked > 0.011){
     _print_link(`Stake ${userUnstaked.toFixed(6)} ${stakeToken.symbol}`, approveTENDAndStake)
   }else{
-    _print(`minimum deposit 0.011 ${stakeToken.symbol}`);
+    _print(`Minimum deposit 0.011 ${stakeToken.symbol}`);
   }
 
   if(usersLastStake > withdrawLockPeriod){
