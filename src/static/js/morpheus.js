@@ -64,7 +64,13 @@ async function loadMorheusPool(App, tokens, prices, abi, address){
     return morContract_unstake(address, usersData.deposited, App)
   }
   _print(`<a target="_blank" href="https://etherscan.io/address/${address}#code">Etherscan</a>`);
-  _print_link(`Stake ${userUnstaked.toFixed(6)} ${stakeToken.symbol}`, approveTENDAndStake)
+
+  if(userUnstaked > 0.011){
+    _print_link(`Stake ${userUnstaked.toFixed(6)} ${stakeToken.symbol}`, approveTENDAndStake)
+  }else{
+    _print(`minimum deposit 0.011 ${stakeToken.symbol}`);
+  }
+
   if(usersLastStake > withdrawLockPeriod){
     _print_link(`Unstake ${userStaked.toFixed(6)} ${stakeToken.symbol}`, unstake)
   }
