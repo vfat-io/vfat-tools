@@ -166,14 +166,6 @@ async function loadPrismaStablePoolInfo(App, tokens, prices, stakingAbi, staking
       stakeToken.staked = await STAKING_POOL.totalSupply() / 10 ** stakeToken.decimals;
     }
 
-    var newPriceAddresses = stakeToken.tokens.filter(x =>
-      !getParameterCaseInsensitive(prices, x));
-    newPriceAddresses.push(rewardTokenAddress);
-    var newPrices = await lookUpTokenPrices(newPriceAddresses);
-    for (const key in newPrices) {
-      if (newPrices[key]?.usd)
-          prices[key] = newPrices[key];
-    }
     var newTokenAddresses = stakeToken.tokens.filter(x =>
       !getParameterCaseInsensitive(tokens,x));
     for (const address of newTokenAddresses) {
