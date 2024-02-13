@@ -142,7 +142,7 @@ async function loadPrismaStablePools(App, tokens, prices, pools) {
   const infos = await Promise.all(pools.map(p =>
     loadPrismaStablePoolInfo(App, tokens, prices, p.abi, p.address, p.rewardTokenAddress, p.stakeTokenFunction)));
   for (const i of infos) {
-    let p = await printSynthetixPool(App, i);
+    let p = await printPrismaPool(App, i);
     totalStaked += p.staked_tvl || 0;
     totalUserStaked += p.userStaked || 0;
     if (p.userStaked > 0) {
@@ -166,14 +166,6 @@ async function loadPrismaStablePoolInfo(App, tokens, prices, stakingAbi, staking
       stakeToken.staked = await STAKING_POOL.totalSupply() / 10 ** stakeToken.decimals;
     }
 
-    var newPriceAddresses = stakeToken.tokens.filter(x =>
-      !getParameterCaseInsensitive(prices, x));
-    newPriceAddresses.push(rewardTokenAddress);
-    var newPrices = await lookUpTokenPrices(newPriceAddresses);
-    for (const key in newPrices) {
-      if (newPrices[key]?.usd)
-          prices[key] = newPrices[key];
-    }
     var newTokenAddresses = stakeToken.tokens.filter(x =>
       !getParameterCaseInsensitive(tokens,x));
     for (const address of newTokenAddresses) {
@@ -232,7 +224,7 @@ async function loadMultiplePrismaCurvePools(App, tokens, prices, pools) {
   const infos = await Promise.all(pools.map(p =>
     loadPrismaCurvePoolInfo(App, tokens, prices, p.abi, p.address, p.rewardTokenAddress, p.stakeTokenFunction)));
   for (const i of infos) {
-    let p = await printSynthetixPool(App, i);
+    let p = await printPrismaPool(App, i);
     totalStaked += p.staked_tvl || 0;
     totalUserStaked += p.userStaked || 0;
     if (p.userStaked > 0) {
@@ -285,7 +277,7 @@ async function loadPrismaCurvePoolInfo(App, tokens, prices, stakingAbi, stakingA
       const STAKING_TOKEN_MINTER = new ethers.Contract(minter, CURVE_STAKING_TOKEN_MINTER_ABI, App.provider);
       const wethPrice = getParameterCaseInsensitive(prices, "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2")?.usd;
       const usdPrice = getParameterCaseInsensitive(prices, "0x0CFe5C777A7438C9Dd8Add53ed671cEc7A5FAeE5")?.usd;
-      _stakeTokenPrice = await STAKING_TOKEN_MINTER.lp_price() / 1e18;
+      const _stakeTokenPrice = await STAKING_TOKEN_MINTER.lp_price() / 1e18;
       if(stakeTokenAddress.toLowerCase() === "0x067079c14B85169e6a29703769dadDef90816f4C".toLowerCase()){
         stakeTokenPrice = _stakeTokenPrice * usdPrice;  //eg 0.15 * 1800
       }else{
@@ -301,6 +293,10 @@ async function loadPrismaCurvePoolInfo(App, tokens, prices, stakingAbi, stakingA
       poolPrices = getNewCurvePrices(stakeTokenPrice, stakeToken);
     }else{
       poolPrices = getPoolPrices(tokens, prices, stakeToken);
+    }
+
+    if(stakeTokenPrice === undefined){
+      stakeTokenPrice = poolPrices.price;
     }
 
     const stakeTokenTicker = poolPrices.stakeTokenTicker;
@@ -345,7 +341,7 @@ async function loadMultiplePrismaConvexPools(App, tokens, prices, pools) {
   const infos = await Promise.all(pools.map(p =>
     loadPrismaConvexPoolInfo(App, tokens, prices, p.abi, p.address, p.rewardTokenAddress, p.stakeTokenFunction)));
   for (const i of infos) {
-    let p = await printSynthetixPool(App, i);
+    let p = await printPrismaPool(App, i);
     totalStaked += p.staked_tvl || 0;
     totalUserStaked += p.userStaked || 0;
     if (p.userStaked > 0) {
@@ -396,7 +392,7 @@ async function loadPrismaConvexPoolInfo(App, tokens, prices, stakingAbi, staking
       const STAKING_TOKEN_MINTER = new ethers.Contract(minter, CURVE_STAKING_TOKEN_MINTER_ABI, App.provider);
       const wethPrice = getParameterCaseInsensitive(prices, "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2")?.usd;
       const usdPrice = getParameterCaseInsensitive(prices, "0x0CFe5C777A7438C9Dd8Add53ed671cEc7A5FAeE5")?.usd;
-      _stakeTokenPrice = await STAKING_TOKEN_MINTER.lp_price() / 1e18;
+      const _stakeTokenPrice = await STAKING_TOKEN_MINTER.lp_price() / 1e18;
       if(stakeTokenAddress.toLowerCase() === "0x067079c14B85169e6a29703769dadDef90816f4C".toLowerCase()){
         stakeTokenPrice = _stakeTokenPrice * usdPrice;  //eg 0.15 * 1800
       }else{
@@ -412,6 +408,10 @@ async function loadPrismaConvexPoolInfo(App, tokens, prices, stakingAbi, staking
       poolPrices = getNewCurvePrices(stakeTokenPrice, stakeToken);
     }else{
       poolPrices = getPoolPrices(tokens, prices, stakeToken);
+    }
+
+    if(stakeTokenPrice === undefined){
+      stakeTokenPrice = poolPrices.price;
     }
 
     const stakeTokenTicker = poolPrices.stakeTokenTicker;
@@ -496,4 +496,62 @@ async function loadAllTokenAddresses(App, stakingAbi, stakingAddress,
     return  {
       newPriceAddresses
     }
+}
+
+async function printPrismaPool(App, info, chain="eth", customURLs) {
+  info.poolPrices.print_price(chain, 4, customURLs);
+  _print(`${info.rewardTokenTicker} Per Week: ${info.weeklyRewards.toFixed(2)} ($${formatMoney(info.usdPerWeek)})`);
+  const weeklyAPR = info.usdPerWeek / info.staked_tvl * 100;
+  const dailyAPR = weeklyAPR / 7;
+  const yearlyAPR = weeklyAPR * 52;
+  _print(`APR: Day ${dailyAPR.toFixed(2)}% Week ${weeklyAPR.toFixed(2)}% Year ${yearlyAPR.toFixed(2)}%`);
+  const userStakedUsd = info.userStaked * info.stakeTokenPrice;
+  const userStakedPct = userStakedUsd / info.staked_tvl * 100;
+  _print(`You are staking ${info.userStaked.toFixed(6)} ${info.stakeTokenTicker} ` +
+         `$${formatMoney(userStakedUsd)} (${userStakedPct.toFixed(2)}% of the pool).`);
+  if (info.userStaked > 0) {
+    info.poolPrices.print_contained_price(info.userStaked);
+      const userWeeklyRewards = userStakedPct * info.weeklyRewards / 100;
+      const userDailyRewards = userWeeklyRewards / 7;
+      const userYearlyRewards = userWeeklyRewards * 52;
+      _print(`Estimated ${info.rewardTokenTicker} earnings:`
+          + ` Day ${userDailyRewards.toFixed(2)} ($${formatMoney(userDailyRewards*info.rewardTokenPrice)})`
+          + ` Week ${userWeeklyRewards.toFixed(2)} ($${formatMoney(userWeeklyRewards*info.rewardTokenPrice)})`
+          + ` Year ${userYearlyRewards.toFixed(2)} ($${formatMoney(userYearlyRewards*info.rewardTokenPrice)})`);
+  }
+  const approveTENDAndStake = async function() {
+    return rewardsContract_stake(info.stakeTokenAddress, info.stakingAddress, App)
+  }
+  const unstake = async function() {
+    return rewardsContract_unstake(info.stakingAddress, App)
+  }
+  const claim = async function() {
+    return rewardsContract_claim(info.stakingAddress, App)
+  }
+  const exit = async function() {
+    return rewardsContract_exit(info.stakingAddress, App)
+  }
+  const revoke = async function() {
+    return rewardsContract_resetApprove(info.stakeTokenAddress, info.stakingAddress, App)
+  }
+  _print(`<a target="_blank" href="https://etherscan.io/address/${info.stakingAddress}#code">Etherscan</a>`);
+  if (info.stakeTokenAddress != "0x0000000000000000000000000000000000000000") {
+    _print_link(`Stake ${info.userUnstaked.toFixed(6)} ${info.stakeTokenTicker}`, approveTENDAndStake)
+  }
+  else {
+    _print(`Please use the official website to stake ${info.stakeTokenTicker}.`);
+  }
+  _print_link(`Unstake ${info.userStaked.toFixed(6)} ${info.stakeTokenTicker}`, unstake)
+  _print_link(`Claim ${info.earned.toFixed(6)} ${info.rewardTokenTicker} ($${formatMoney(info.earned*info.rewardTokenPrice)})`, claim)
+  if (info.stakeTokenTicker != "ETH") {
+    _print_link(`Revoke (set approval to 0)`, revoke)
+  }
+  _print_link(`Exit`, exit)
+  _print("");
+
+  return {
+      staked_tvl: info.poolPrices.staked_tvl,
+      userStaked : userStakedUsd,
+      apr : yearlyAPR
+  }
 }
