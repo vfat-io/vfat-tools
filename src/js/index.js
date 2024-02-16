@@ -441,6 +441,21 @@ window.NETWORKS = {
       "https://explorer.evm.shimmer.network"
     ]
   },
+  SCROLL: {
+    "chainId": "0x82750",
+    "chainName": "Scroll",
+    "nativeCurrency": {
+      "name": "ethereum",
+      "symbol": "ETH",
+      "decimals": 18
+    },
+    "rpcUrls": [
+      "https://rpc.scroll.io"
+    ],
+    "blockExplorerUrls": [
+      "https://scrollscan.com"
+    ]
+  },
   DFK: {
     "chainId": "0xD2AF",
     "chainName": "DFK Chain",

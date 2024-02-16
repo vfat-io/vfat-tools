@@ -884,6 +884,11 @@ const ShimmerTokens = [
   { "id": "tangleswap-void","symbol": "VOID", "contract": "0xE5f3dCC241Dd008E3c308e57cf4F7880eA9210F8" }
 ];
 
+const ScrollTokens = [
+  { "id": "weth","symbol": "WETH", "contract": "0x5300000000000000000000000000000000000004" },
+  { "id": "usd-coin", "symbol": "USDC", "contract": "0x06efdbff2a14a7c8e15944d1f4a48f9f95f663a4" }
+];
+
 const telosTokens = [
   { "id": "telos", "symbol": "WTLOS","contract": "0xD102cE6A4dB07D247fcc28F366A623Df0938CA9E" },
   { "id": "zappy", "symbol": "ZAP","contract": "0x9A271E3748F59222f5581BaE2540dAa5806b3F77" },
@@ -1336,6 +1341,15 @@ async function getShimmerPrices() {
   const idPrices = await lookUpPrices(ShimmerTokens.map(x => x.id));
   const prices = {}
   for (const bt of ShimmerTokens)
+      if (idPrices[bt.id])
+          prices[bt.contract] = idPrices[bt.id];
+  return prices;
+}
+
+async function getScrollPrices() {
+  const idPrices = await lookUpPrices(ScrollTokens.map(x => x.id));
+  const prices = {}
+  for (const bt of ScrollTokens)
       if (idPrices[bt.id])
           prices[bt.contract] = idPrices[bt.id];
   return prices;

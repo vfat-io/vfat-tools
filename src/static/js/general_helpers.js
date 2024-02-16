@@ -662,6 +662,8 @@ async function loadGeneralChefContract(App, tokens, prices, chef, chefAddress, c
     break;
     case "shimmer" : _print(`<a href='https://explorer.evm.shimmer.network/address/${chefAddress}' target='_blank'>Staking Contract</a>`);
     break;
+    case "scroll" : _print(`<a href='https://scrollscan.com/address/${chefAddress}' target='_blank'>Staking Contract</a>`);
+    break;
   }
   _print(`Found ${poolCount} pools.\n`)
 

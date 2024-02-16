@@ -150,6 +150,9 @@ const pageNetwork = function() {
   if (network.toLowerCase() === 'mantle') {
     return window.NETWORKS.MANTLE
   }
+  if (network.toLowerCase() === 'scroll') {
+    return window.NETWORKS.SCROLL
+  }
   if (network.toLowerCase() === 'manta') {
     return window.NETWORKS.MANTA
   }
@@ -3858,6 +3861,9 @@ function getErc20Prices(prices, pool, chain="eth") {
     case "shimmer":
       poolUrl=`https://explorer.evm.shimmer.network/address/${pool.address}`;
       break;
+    case "scroll":
+      poolUrl=`https://scrollscan.com/token/${pool.address}`;
+      break;
     case "meter":
       poolUrl=`https://scan.meter.io/token/${pool.address}`;
       break;
@@ -4615,6 +4621,9 @@ async function printSynthetixPool(App, info, chain="eth", customURLs) {
       case "mantle":
         _print(`<a target="_blank" href="https://explorer.mantle.xyz/address/${info.stakingAddress}#code">Mantle Explorer</a>`);
         break;
+      case "scroll":
+        _print(`<a target="_blank" href="https://scrollscan.com/address/${info.stakingAddress}#code">Scroll Scan</a>`);
+        break;
       case "manta":
         _print(`<a target="_blank" href="https://pacific-explorer.manta.network/address/${info.stakingAddress}">Manta Explorer</a>`);
         break;
@@ -4872,6 +4881,8 @@ function getChainExplorerUrl(chain, address){
       return `https://andromeda-explorer.metis.io/address/${address}`;
     case "mantle" :
       return `https://explorer.mantle.xyz/address/${address}`;
+    case "scroll" :
+      return `https://scrollscan.com/token/${address}`;
     case "manta" :
       return `https://pacific-explorer.manta.network/address/${address}`;
     case "shimmer" :
