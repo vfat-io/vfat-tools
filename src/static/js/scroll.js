@@ -8,7 +8,7 @@ const main = async() => {
     "title":"SCROLL Network",
     "heading":["Pool Provider","LP", "Reward Tokens", "INFO"],
     "rows": [
-      //["Merchant Moe         ", `<a href='merchantmoe'        >Various</a>`,"MOE        ","https://merchantmoe.com"]
+      ["Dodo         ", `<a href='dodo'        >Various</a>`,"DODO        ","https://app.dodoex.io"]
     ].reverse()
   }
 
