@@ -158,9 +158,9 @@ const LP_TOKEN_ABI = [{"name":"Transfer","inputs":[{"name":"sender","type":"addr
 
   async function printEthenaPool(App, info, chain="eth", customURLs) {
     _print(`Staked: ${info.totalAssetTokens.toFixed(4)} ${info.assetTokenTicker} ($${formatMoney(info.staked_tvl)})`);
-    _print(`For: ${info.totalVaultTokens.toFixed(6)} ${info.vaultTokenTicker} ($${formatMoney(info.staked_vault_token_tvl)})`);
+    _print(`For: ${info.totalVaultTokens.toFixed(6)} ${info.vaultTokenTicker}`);
     _print(`You are staking: ${info.userStakedAssetsTokens.toFixed(4)} ${info.assetTokenTicker} ($${formatMoney(info.userStakedAssetsTokens * info.assetTokenPrice)})`);
-    _print(`For: ${info.userStakedVaultTokens.toFixed(6)} ${info.vaultTokenTicker} ($${formatMoney(info.userStakedVaultTokens * info.assetTokenTicker)})`);
+    _print(`For: ${info.userStakedVaultTokens.toFixed(6)} ${info.vaultTokenTicker}`);
     _print(`<a target="_blank" href="https://etherscan.io/address/${info.stakingAddress}#code">Etherscan</a>`);
     _print("");
     return {
@@ -170,9 +170,7 @@ const LP_TOKEN_ABI = [{"name":"Transfer","inputs":[{"name":"sender","type":"addr
 
 async function printEthenaLpPool(App, info, chain="eth", customURLs) {
   _print(`Staked: ${info.totalLpTokenStaked.toFixed(4)} ${info.lpTokenTicker} ($${formatMoney(info.staked_tvl)})`);
-  // _print(`For: ${info.totalVaultTokens.toFixed(6)} ${info.vaultTokenTicker} ($${formatMoney(info.staked_vault_token_tvl)})`);
   _print(`You are staking: ${info.userStaked.toFixed(4)} ${info.lpTokenTicker} ($${formatMoney(info.userStakedTvl)})`);
-  // _print(`For: ${info.userStakedVaultTokens.toFixed(6)} ${info.vaultTokenTicker} ($${formatMoney(info.userStakedVaultTokens * info.assetTokenTicker)})`);
   _print(`Current Epoch: ${info.currentEpoch}`);
   _print(`You have: ${info.userUnstaked} to stake`);
   _print(`<a target="_blank" href="https://etherscan.io/address/${info.stakingAddress}#code">Etherscan</a>`);
