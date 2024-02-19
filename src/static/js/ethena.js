@@ -130,7 +130,7 @@ const LP_TOKEN_ABI = [{"name":"Transfer","inputs":[{"name":"sender","type":"addr
 
     const lpTokenTicker = lpToken.symbol;
 
-    const lpTokenPrice = await LP_TOKEN.price_oracle(0) / 10 ** lpToken.decimals;
+    const lpTokenPrice = await LP_TOKEN.get_virtual_price() / 10 ** lpToken.decimals;
 
     const userUnstaked = lpToken.unstaked;
 
