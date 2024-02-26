@@ -6,6 +6,8 @@ const CAKE_V3_CHEF_ABI = [{"inputs":[{"internalType":"contract IERC20","name":"_
 
 const UNI_PANCAKE_V3_ABI = [{"inputs":[],"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"owner","type":"address"},{"indexed":true,"internalType":"int24","name":"tickLower","type":"int24"},{"indexed":true,"internalType":"int24","name":"tickUpper","type":"int24"},{"indexed":false,"internalType":"uint128","name":"amount","type":"uint128"},{"indexed":false,"internalType":"uint256","name":"amount0","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"amount1","type":"uint256"}],"name":"Burn","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"owner","type":"address"},{"indexed":false,"internalType":"address","name":"recipient","type":"address"},{"indexed":true,"internalType":"int24","name":"tickLower","type":"int24"},{"indexed":true,"internalType":"int24","name":"tickUpper","type":"int24"},{"indexed":false,"internalType":"uint128","name":"amount0","type":"uint128"},{"indexed":false,"internalType":"uint128","name":"amount1","type":"uint128"}],"name":"Collect","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"sender","type":"address"},{"indexed":true,"internalType":"address","name":"recipient","type":"address"},{"indexed":false,"internalType":"uint128","name":"amount0","type":"uint128"},{"indexed":false,"internalType":"uint128","name":"amount1","type":"uint128"}],"name":"CollectProtocol","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"sender","type":"address"},{"indexed":true,"internalType":"address","name":"recipient","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount0","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"amount1","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"paid0","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"paid1","type":"uint256"}],"name":"Flash","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint16","name":"observationCardinalityNextOld","type":"uint16"},{"indexed":false,"internalType":"uint16","name":"observationCardinalityNextNew","type":"uint16"}],"name":"IncreaseObservationCardinalityNext","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint160","name":"sqrtPriceX96","type":"uint160"},{"indexed":false,"internalType":"int24","name":"tick","type":"int24"}],"name":"Initialize","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"sender","type":"address"},{"indexed":true,"internalType":"address","name":"owner","type":"address"},{"indexed":true,"internalType":"int24","name":"tickLower","type":"int24"},{"indexed":true,"internalType":"int24","name":"tickUpper","type":"int24"},{"indexed":false,"internalType":"uint128","name":"amount","type":"uint128"},{"indexed":false,"internalType":"uint256","name":"amount0","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"amount1","type":"uint256"}],"name":"Mint","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint32","name":"feeProtocol0Old","type":"uint32"},{"indexed":false,"internalType":"uint32","name":"feeProtocol1Old","type":"uint32"},{"indexed":false,"internalType":"uint32","name":"feeProtocol0New","type":"uint32"},{"indexed":false,"internalType":"uint32","name":"feeProtocol1New","type":"uint32"}],"name":"SetFeeProtocol","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"addr","type":"address"}],"name":"SetLmPoolEvent","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"sender","type":"address"},{"indexed":true,"internalType":"address","name":"recipient","type":"address"},{"indexed":false,"internalType":"int256","name":"amount0","type":"int256"},{"indexed":false,"internalType":"int256","name":"amount1","type":"int256"},{"indexed":false,"internalType":"uint160","name":"sqrtPriceX96","type":"uint160"},{"indexed":false,"internalType":"uint128","name":"liquidity","type":"uint128"},{"indexed":false,"internalType":"int24","name":"tick","type":"int24"},{"indexed":false,"internalType":"uint128","name":"protocolFeesToken0","type":"uint128"},{"indexed":false,"internalType":"uint128","name":"protocolFeesToken1","type":"uint128"}],"name":"Swap","type":"event"},{"inputs":[{"internalType":"int24","name":"tickLower","type":"int24"},{"internalType":"int24","name":"tickUpper","type":"int24"},{"internalType":"uint128","name":"amount","type":"uint128"}],"name":"burn","outputs":[{"internalType":"uint256","name":"amount0","type":"uint256"},{"internalType":"uint256","name":"amount1","type":"uint256"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"recipient","type":"address"},{"internalType":"int24","name":"tickLower","type":"int24"},{"internalType":"int24","name":"tickUpper","type":"int24"},{"internalType":"uint128","name":"amount0Requested","type":"uint128"},{"internalType":"uint128","name":"amount1Requested","type":"uint128"}],"name":"collect","outputs":[{"internalType":"uint128","name":"amount0","type":"uint128"},{"internalType":"uint128","name":"amount1","type":"uint128"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"recipient","type":"address"},{"internalType":"uint128","name":"amount0Requested","type":"uint128"},{"internalType":"uint128","name":"amount1Requested","type":"uint128"}],"name":"collectProtocol","outputs":[{"internalType":"uint128","name":"amount0","type":"uint128"},{"internalType":"uint128","name":"amount1","type":"uint128"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"factory","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"fee","outputs":[{"internalType":"uint24","name":"","type":"uint24"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"feeGrowthGlobal0X128","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"feeGrowthGlobal1X128","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"recipient","type":"address"},{"internalType":"uint256","name":"amount0","type":"uint256"},{"internalType":"uint256","name":"amount1","type":"uint256"},{"internalType":"bytes","name":"data","type":"bytes"}],"name":"flash","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint16","name":"observationCardinalityNext","type":"uint16"}],"name":"increaseObservationCardinalityNext","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint160","name":"sqrtPriceX96","type":"uint160"}],"name":"initialize","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"liquidity","outputs":[{"internalType":"uint128","name":"","type":"uint128"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"lmPool","outputs":[{"internalType":"contract IPancakeV3LmPool","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"maxLiquidityPerTick","outputs":[{"internalType":"uint128","name":"","type":"uint128"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"recipient","type":"address"},{"internalType":"int24","name":"tickLower","type":"int24"},{"internalType":"int24","name":"tickUpper","type":"int24"},{"internalType":"uint128","name":"amount","type":"uint128"},{"internalType":"bytes","name":"data","type":"bytes"}],"name":"mint","outputs":[{"internalType":"uint256","name":"amount0","type":"uint256"},{"internalType":"uint256","name":"amount1","type":"uint256"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"","type":"uint256"}],"name":"observations","outputs":[{"internalType":"uint32","name":"blockTimestamp","type":"uint32"},{"internalType":"int56","name":"tickCumulative","type":"int56"},{"internalType":"uint160","name":"secondsPerLiquidityCumulativeX128","type":"uint160"},{"internalType":"bool","name":"initialized","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint32[]","name":"secondsAgos","type":"uint32[]"}],"name":"observe","outputs":[{"internalType":"int56[]","name":"tickCumulatives","type":"int56[]"},{"internalType":"uint160[]","name":"secondsPerLiquidityCumulativeX128s","type":"uint160[]"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"bytes32","name":"","type":"bytes32"}],"name":"positions","outputs":[{"internalType":"uint128","name":"liquidity","type":"uint128"},{"internalType":"uint256","name":"feeGrowthInside0LastX128","type":"uint256"},{"internalType":"uint256","name":"feeGrowthInside1LastX128","type":"uint256"},{"internalType":"uint128","name":"tokensOwed0","type":"uint128"},{"internalType":"uint128","name":"tokensOwed1","type":"uint128"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"protocolFees","outputs":[{"internalType":"uint128","name":"token0","type":"uint128"},{"internalType":"uint128","name":"token1","type":"uint128"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint32","name":"feeProtocol0","type":"uint32"},{"internalType":"uint32","name":"feeProtocol1","type":"uint32"}],"name":"setFeeProtocol","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"_lmPool","type":"address"}],"name":"setLmPool","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"slot0","outputs":[{"internalType":"uint160","name":"sqrtPriceX96","type":"uint160"},{"internalType":"int24","name":"tick","type":"int24"},{"internalType":"uint16","name":"observationIndex","type":"uint16"},{"internalType":"uint16","name":"observationCardinality","type":"uint16"},{"internalType":"uint16","name":"observationCardinalityNext","type":"uint16"},{"internalType":"uint32","name":"feeProtocol","type":"uint32"},{"internalType":"bool","name":"unlocked","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"int24","name":"tickLower","type":"int24"},{"internalType":"int24","name":"tickUpper","type":"int24"}],"name":"snapshotCumulativesInside","outputs":[{"internalType":"int56","name":"tickCumulativeInside","type":"int56"},{"internalType":"uint160","name":"secondsPerLiquidityInsideX128","type":"uint160"},{"internalType":"uint32","name":"secondsInside","type":"uint32"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"recipient","type":"address"},{"internalType":"bool","name":"zeroForOne","type":"bool"},{"internalType":"int256","name":"amountSpecified","type":"int256"},{"internalType":"uint160","name":"sqrtPriceLimitX96","type":"uint160"},{"internalType":"bytes","name":"data","type":"bytes"}],"name":"swap","outputs":[{"internalType":"int256","name":"amount0","type":"int256"},{"internalType":"int256","name":"amount1","type":"int256"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"int16","name":"","type":"int16"}],"name":"tickBitmap","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"tickSpacing","outputs":[{"internalType":"int24","name":"","type":"int24"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"int24","name":"","type":"int24"}],"name":"ticks","outputs":[{"internalType":"uint128","name":"liquidityGross","type":"uint128"},{"internalType":"int128","name":"liquidityNet","type":"int128"},{"internalType":"uint256","name":"feeGrowthOutside0X128","type":"uint256"},{"internalType":"uint256","name":"feeGrowthOutside1X128","type":"uint256"},{"internalType":"int56","name":"tickCumulativeOutside","type":"int56"},{"internalType":"uint160","name":"secondsPerLiquidityOutsideX128","type":"uint160"},{"internalType":"uint32","name":"secondsOutside","type":"uint32"},{"internalType":"bool","name":"initialized","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"token0","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"token1","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"}]
 
+const LM_POOL_ABI = [{"inputs":[],"stateMutability":"nonpayable","type":"constructor"},{"inputs":[],"name":"REWARD_PRECISION","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint32","name":"currTimestamp","type":"uint32"}],"name":"accumulateReward","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"int24","name":"","type":"int24"},{"internalType":"int24","name":"","type":"int24"}],"name":"checkThirdLMPool","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"int24","name":"tick","type":"int24"},{"internalType":"bool","name":"zeroForOne","type":"bool"}],"name":"crossLmTick","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"firstLMPool","outputs":[{"internalType":"contract ILMPool","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"int24","name":"tickLower","type":"int24"},{"internalType":"int24","name":"tickUpper","type":"int24"}],"name":"getRewardGrowthInside","outputs":[{"internalType":"uint256","name":"rewardGrowthInsideX128","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"initialization","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"initialize","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"lastRewardTimestamp","outputs":[{"internalType":"uint32","name":"","type":"uint32"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"lmLiquidity","outputs":[{"internalType":"uint128","name":"","type":"uint128"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"int24","name":"","type":"int24"}],"name":"lmTicks","outputs":[{"internalType":"uint128","name":"liquidityGross","type":"uint128"},{"internalType":"int128","name":"liquidityNet","type":"int128"},{"internalType":"uint256","name":"rewardGrowthOutsideX128","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"int24","name":"","type":"int24"}],"name":"lmTicksFlag","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"masterChef","outputs":[{"internalType":"contract IMasterChefV3","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"int24","name":"","type":"int24"},{"internalType":"int24","name":"","type":"int24"}],"name":"negativeRewardGrowthInsideInitValue","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"pool","outputs":[{"internalType":"contract IPancakeV3Pool","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"rewardGrowthGlobalX128","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"secondLMPool","outputs":[{"internalType":"contract ILMPool","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"thirdLMPool","outputs":[{"internalType":"contract ILMPool","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"int24","name":"tickLower","type":"int24"},{"internalType":"int24","name":"tickUpper","type":"int24"},{"internalType":"int128","name":"liquidityDelta","type":"int128"}],"name":"updatePosition","outputs":[],"stateMutability":"nonpayable","type":"function"}]
+
 async function main() {
   const App = await init_ethers();
 
@@ -46,6 +48,18 @@ async function getPancakeV3PoolInfo(App, chefContract, chefAddress, poolIndex, u
       lastRewardBlock : poolInfo.lastRewardBlock
     };
   }
+  const pancake_v3_pool = new ethers.Contract(poolInfo.v3Pool, UNI_PANCAKE_V3_ABI, App.provider);
+  const lmPoolAddress = await pancake_v3_pool.lmPool();
+  const slot0 = await pancake_v3_pool.slot0();
+  const tickSpacing = await pancake_v3_pool.tickSpacing();
+  const tick = slot0.tick;
+  const tickLower = tick - tick % tickSpacing;
+  const tickUpper = tickLower + tickSpacing;
+  const sqrtPrice = Math.sqrt(1.0001 ** tick);
+  const sqrtPriceLower = Math.sqrt(1.0001 ** tickLower);
+  const sqrtPriceUpper = Math.sqrt(1.0001 ** tickUpper);
+  const lmPool = new ethers.Contract(lmPoolAddress, LM_POOL_ABI, App.provider);
+  const lmLiquidity = await lmPool.lmLiquidity() / 1e18;
   let pendingRewardTokens = 0;
   let staked = 0;
   const fee = poolInfo.fee / 100;
@@ -55,14 +69,16 @@ async function getPancakeV3PoolInfo(App, chefContract, chefAddress, poolIndex, u
   const token1 = await getToken(App, token1Address, poolInfo.v3Pool);
   const token0Price = getParameterCaseInsensitive(prices, token0Address)?.usd;
   const token1Price = getParameterCaseInsensitive(prices, token1Address)?.usd;
-  const totalStaked = poolInfo.totalLiquidity / 1e18;
+  const totalStaked = poolInfo.totalBoostLiquidity / 1e18;
   const token0Staked = token0.staked;
   const token1Staked = token1.staked;
   const totalLpLiquidity = token0Staked + token1Staked;
   const token0StakedTvl = token0Staked * token0Price;
   const token1StakedTvl = token1Staked * token1Price;
   const tvl = token0StakedTvl + token1StakedTvl;
-  const totalStakedTvl = totalStaked * (token0Price + token1Price);
+  const stakedMasterchefToken0 = lmLiquidity * (sqrtPriceUpper - sqrtPrice) / (sqrtPriceUpper * sqrtPrice);
+  const stakedMasterchefToken1 = lmLiquidity * (sqrtPrice - sqrtPriceLower);
+  const totalStakedTvl = stakedMasterchefToken0 * token0Price + stakedMasterchefToken1 * token1Price;
   const rewardPoolInfo = await chefContract.getLatestPeriodInfo(poolInfo.v3Pool);
   const rewardToken = await getToken(App, rewardTokenAddress, chefAddress);
   const rewardsPerWeek = rewardPoolInfo.cakePerSecond / 10 ** rewardToken.decimals * 604800;
@@ -94,7 +110,9 @@ async function getPancakeV3PoolInfo(App, chefContract, chefAddress, poolIndex, u
       token0StakedTvl: token0StakedTvl,
       token1StakedTvl: token1StakedTvl,
       tvl: tvl,
-      totalStakedTvl: totalStakedTvl
+      totalStakedTvl: totalStakedTvl,
+      stakedMasterchefToken0: stakedMasterchefToken0,
+      stakedMasterchefToken1: stakedMasterchefToken1,
   };
 }
 
@@ -143,20 +161,8 @@ async function loadPancakeV3Contract(App, tokens, prices, chef, chefAddress, che
     if (!isNaN(a.totalStakedUsd)) {
       totalStaked += a.totalStakedUsd;
     }
-    if (a.userStakedUsd > 0) {
-      totalUserStaked += a.userStakedUsd;
-      averageApr += a.userStakedUsd * a.yearlyAPR / 100;
-    }
   }
-  averageApr = averageApr / totalUserStaked;
   _print_bold(`Total Staked: $${formatMoney(totalStaked)}`);
-  if (totalUserStaked > 0) {
-    _print_bold(`\nYou are staking a total of $${formatMoney(totalUserStaked)} at an average APR of ${(averageApr * 100).toFixed(2)}%`)
-    _print(`Estimated earnings:`
-        + ` Day $${formatMoney(totalUserStaked*averageApr/365)}`
-        + ` Week $${formatMoney(totalUserStaked*averageApr/52)}`
-        + ` Year $${formatMoney(totalUserStaked*averageApr)}\n`);
-  }
   return { prices, totalUserStaked, totalStaked, averageApr }
 }
 
@@ -170,13 +176,12 @@ function printPancakePool(App, chefAbi, chefAddr, prices, tokens, poolInfo, pool
   const rewardPrice = getParameterCaseInsensitive(prices, rewardTokenAddress)?.usd;
   const staked_tvl = poolInfo.totalStakedTvl;
   const stakeTokenTicker = `${poolInfo.token0.symbol} - ${poolInfo.token1.symbol}`
-  // const stakeTokenPrice = poolInfo.token0Price + poolInfo.token1Price;
   _print(`<a href='https://bscscan.com/address/${poolInfo.address}' target='_blank'>${stakeTokenTicker}</a> TVL: $${formatMoney(poolInfo.tvl)}`);
-  // _print(`${t0.symbol} Price: $${displayPrice(p0)}`);
-  // _print(`${t1.symbol} Price: $${displayPrice(p1)}`);
-  _print(`Staked: ${poolInfo.totalStaked.toFixed(4)} ${stakeTokenTicker} ($${formatMoney(staked_tvl)})`);
+  _print(`${poolInfo.token0.symbol} Price: $${displayPrice(poolInfo.token0Price)}`);
+  _print(`${poolInfo.token1.symbol} Price: $${displayPrice(poolInfo.token1Price)}`);
+  _print(`Staked: ${poolInfo.token0.symbol} ${poolInfo.stakedMasterchefToken0.toFixed(2)} ($${formatMoney(poolInfo.stakedMasterchefToken0 * poolInfo.token0Price)}), ${poolInfo.token1.symbol} ${poolInfo.stakedMasterchefToken1.toFixed(2)} ($${formatMoney(poolInfo.stakedMasterchefToken1 * poolInfo.token1Price)})`);
   const apr = printCakeV3APR(rewardTokenTicker, rewardPrice, poolRewardsPerWeek, stakeTokenTicker,
-    staked_tvl, userStaked, stakeTokenPrice, fixedDecimals);
+    staked_tvl, userStaked, fixedDecimals);
   if (poolInfo.userStaked > 0){
     var userPct = userStaked / poolInfo.totalLpLiquidity;
       var q0user = userPct * poolInfo.token0Staked;
@@ -189,8 +194,7 @@ function printPancakePool(App, chefAbi, chefAddr, prices, tokens, poolInfo, pool
 }
 
 function printCakeV3APR(rewardTokenTicker, rewardPrice, poolRewardsPerWeek,
-                  stakeTokenTicker, staked_tvl, userStaked, poolTokenPrice,
-                  fixedDecimals) {
+                  stakeTokenTicker, staked_tvl, userStaked, fixedDecimals) {
   var usdPerWeek = poolRewardsPerWeek * rewardPrice;
   fixedDecimals = fixedDecimals ?? 2;
   _print(`${rewardTokenTicker} Per Week: ${poolRewardsPerWeek.toFixed(fixedDecimals)} ($${formatMoney(usdPerWeek)})`);
@@ -198,24 +202,9 @@ function printCakeV3APR(rewardTokenTicker, rewardPrice, poolRewardsPerWeek,
   var dailyAPR = weeklyAPR / 7;
   var yearlyAPR = weeklyAPR * 52;
   _print(`APR: Day ${dailyAPR.toFixed(2)}% Week ${weeklyAPR.toFixed(2)}% Year ${yearlyAPR.toFixed(2)}%`);
-  var userStakedUsd = userStaked * poolTokenPrice;
-  var userStakedPct = userStakedUsd / staked_tvl * 100;
-  _print(`You are staking ${userStaked.toFixed(fixedDecimals)} ${stakeTokenTicker} ($${formatMoney(userStakedUsd)}), ${userStakedPct.toFixed(2)}% of the pool.`);
-  var userWeeklyRewards = userStakedPct * poolRewardsPerWeek / 100;
-  var userDailyRewards = userWeeklyRewards / 7;
-  var userYearlyRewards = userWeeklyRewards * 52;
-  if (userStaked > 0) {
-    _print(`Estimated ${rewardTokenTicker} earnings:`
-        + ` Day ${userDailyRewards.toFixed(fixedDecimals)} ($${formatMoney(userDailyRewards*rewardPrice)})`
-        + ` Week ${userWeeklyRewards.toFixed(fixedDecimals)} ($${formatMoney(userWeeklyRewards*rewardPrice)})`
-        + ` Year ${userYearlyRewards.toFixed(fixedDecimals)} ($${formatMoney(userYearlyRewards*rewardPrice)})`);
-  }
   return {
-    userStakedUsd,
     totalStakedUsd : staked_tvl,
-    userStakedPct,
     yearlyAPR,
-    userYearlyUsd : userYearlyRewards * rewardPrice
   }
 }
 
