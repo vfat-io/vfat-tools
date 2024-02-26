@@ -15,18 +15,18 @@ async function main() {
     const MOVER_STAKING = new ethers.Contract(MOVER_STAKING_ADDRESS, MOVER_STAKING_ABI, App.provider);
 
     const _move_balance = await MOVER_STAKING.userInfoMove(App.YOUR_ADDRESS);
-    const move_balance = _move_balance.amount / 1e18;
+    const move_balance = _move_balance.amount;
 
     const _move_lp_balance = await MOVER_STAKING.userInfoMoveEthLP(App.YOUR_ADDRESS);
-    const move_lp_balance = _move_lp_balance.amount / 1e18;
+    const move_lp_balance = _move_lp_balance.amount;
 
     const unstake = async function() {
-      return moveContract_unstake(MOVER_STAKING_ABI, MOVER_STAKING_ADDRESS, App, _move_balance, _move_lp_balance);
+      return moveContract_unstake(MOVER_STAKING_ABI, MOVER_STAKING_ADDRESS, App, move_balance, move_lp_balance);
     }
 
     _print(`Your MOVE balance is ${move_balance}`);
     _print(`Your MOVE - ETH balance is ${move_lp_balance}`);
-    _print_link(`Withdraw ${move_balance.toFixed(2)} MOVE and ${move_lp_balance.toFixed(2)} MOVE - ETH`, unstake)
+    _print_link(`Withdraw ${(move_balance / 1e18).toFixed(2)} MOVE and ${(move_lp_balance / 1e18).toFixed(2)} MOVE - ETH`, unstake)
 
     hideLoading();
   }
