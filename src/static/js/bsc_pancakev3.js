@@ -79,9 +79,10 @@ async function getPancakeV3PoolInfo(App, chefContract, chefAddress, poolIndex, u
   const stakedMasterchefToken0 = lmLiquidity * (sqrtPriceUpper - sqrtPrice) / (sqrtPriceUpper * sqrtPrice);
   const stakedMasterchefToken1 = lmLiquidity * (sqrtPrice - sqrtPriceLower);
   const totalStakedTvl = stakedMasterchefToken0 * token0Price + stakedMasterchefToken1 * token1Price;
-  const rewardPoolInfo = await chefContract.getLatestPeriodInfo(poolInfo.v3Pool);
+  // const rewardPoolInfo = await chefContract.getLatestPeriodInfo(poolInfo.v3Pool);
+  const cakePerSecond = await chefContract.latestPeriodCakePerSecond() / 1e30;
   const rewardToken = await getToken(App, rewardTokenAddress, chefAddress);
-  const rewardsPerWeek = rewardPoolInfo.cakePerSecond / 10 ** rewardToken.decimals * 604800;
+  const rewardsPerWeek = cakePerSecond * 604800;
   const poolToken = {tokens: [token0Address, token1Address]};
   for(let i = 0; i < userPositionInfos.length; i++){
     if(userPositionInfos[i].userPositionInfo.pid === poolIndex){
@@ -120,6 +121,7 @@ async function loadPancakeV3Contract(App, tokens, prices, chef, chefAddress, che
   const chefContract = chef ?? new ethers.Contract(chefAddress, chefAbi, App.provider);
   const poolCount = parseInt(await chefContract.poolLength(), 10);
   const totalUsersStakedNfts = await chefContract.balanceOf(App.YOUR_ADDRESS) / 1;
+  const totalAllocPoints = await chefContract.totalAllocPoint();
   let userPositionInfos = [];
   for(let i = 0; i < totalUsersStakedNfts; i++){
     const userNftId = await chefContract.tokenOfOwnerByIndex(i);
@@ -152,7 +154,7 @@ async function loadPancakeV3Contract(App, tokens, prices, chef, chefAddress, che
   for (i = 0; i < poolCount; i++) {
     if (poolPrices[i]) {
       const apr = printPancakePool(App, chefAbi, chefAddress, prices, tokens, poolInfos[i], i, poolPrices[i],
-        poolInfos[i].rewardsPerWeek, rewardTokenTicker, rewardTokenAddress, "bsc")
+        poolInfos[i].rewardsPerWeek, rewardTokenTicker, rewardTokenAddress, "bsc", totalAllocPoints)
       aprs.push(apr);
     }
   }
@@ -168,9 +170,10 @@ async function loadPancakeV3Contract(App, tokens, prices, chef, chefAddress, che
 
 function printPancakePool(App, chefAbi, chefAddr, prices, tokens, poolInfo, poolIndex, poolPrices,
                        rewardsPerWeek, rewardTokenTicker, rewardTokenAddress,
-                       fixedDecimals, chain="eth",) {
-  fixedDecimals = 2;
-  var poolRewardsPerWeek = rewardsPerWeek;
+                       chain="eth", totalAllocPoints) {
+  const fixedDecimals = 2;
+  var poolRewardsPerWeek = poolInfo.allocPoints / totalAllocPoints * rewardsPerWeek;
+  // var poolRewardsPerWeek = rewardsPerWeek;
   if (poolRewardsPerWeek == 0 || !poolInfo.token0Price || !poolInfo.token1Price) return;
   const userStaked = poolInfo.userStaked;
   const rewardPrice = getParameterCaseInsensitive(prices, rewardTokenAddress)?.usd;
