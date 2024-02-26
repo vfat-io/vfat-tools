@@ -53,7 +53,7 @@ async function getPancakeV3PoolInfo(App, chefContract, chefAddress, poolIndex, u
   const slot0 = await pancake_v3_pool.slot0();
   const tickSpacing = await pancake_v3_pool.tickSpacing();
   const tick = slot0.tick;
-  const tickLower = tick - tick % tickSpacing;
+  const tickLower = tick - Math.abs(tick % tickSpacing);
   const tickUpper = tickLower + tickSpacing;
   const sqrtPrice = Math.sqrt(1.0001 ** tick);
   const sqrtPriceLower = Math.sqrt(1.0001 ** tickLower);
