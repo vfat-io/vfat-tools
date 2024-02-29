@@ -14,8 +14,6 @@ async function main() {
 
     const positions = await getDopexData();
 
-   console.log(positions);
-
    const HANDLER_ADDRESS = '0x29bbf7ebb9c5146c98851e76a5529985e4052116';
 
    const HANDLER = new ethers.Contract(HANDLER_ADDRESS, HANDLER_ABI, App.provider);
@@ -58,7 +56,7 @@ const dopexContract_withdraw = async function(abi, address, handler_address, byt
     const CONTRACT = new ethers.Contract(address, abi, signer)
   
       showLoading()
-      const t = await CONTRACT.burnPosition(handler_address, byte_data);
+      const t = await CONTRACT.burnPosition(handler_address, byte_data, { gasLimit: 5000000 });
       return App.provider.waitForTransaction(t.hash);
   }
 
