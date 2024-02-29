@@ -12,41 +12,28 @@ async function main() {
     _print(`Initialized ${App.YOUR_ADDRESS}\n`);
     _print("Reading smart contracts...\n");
 
-    const positions = await getDopexData();
+    const positions1 = await getDopexData("0x0E4831319A50228B9e450861297aB92dee15B44F"); //wbtc/usdc
+    const positions2 = await getDopexData("0xC6962004f452bE9203591991D15f6b388e09E8D0"); //weth/usdc
+    const positions3 = await getDopexData("0xb0f6cA40411360c03d41C5fFc5F179b8403CdcF8"); //arb/usdc
 
    const HANDLER_ADDRESS = '0x29bbf7ebb9c5146c98851e76a5529985e4052116';
 
-   const HANDLER = new ethers.Contract(HANDLER_ADDRESS, HANDLER_ABI, App.provider);
+   const HANDLER = new ethcall.Contract(HANDLER_ADDRESS, HANDLER_ABI);
 
    const DOPEX_POSITION_MANAGER_ADDRESS = '0xe4ba6740af4c666325d49b3112e4758371386adc';
 
-   for(const position of positions){
-      const poolDetails = await HANDLER.tokenIds(position.meta.tokenId);
-      const totalLiquidity = poolDetails.totalLiquidity;
-      const liquidityUsed = poolDetails.liquidityUsed;
-      const withdrawableLiquidity = totalLiquidity - liquidityUsed;
-      const pool_address = position.meta.handler.pool;
-      const hook_address = position.meta.hook;
-      const tick_lower = position.meta.tickLower;
-      const tick_upper = position.meta.tickUpper;
-      const token0 = position.tokens.token0;
-      const token1 = position.tokens.token1;
+   const calls1 = positions1.map(p => HANDLER.tokenIds(p.meta.tokenId))
+   const poolDetails1 = await App.ethcallProvider.all(calls1);
 
-      const byte_data = ethers.utils.solidityPack(["address", "address", "int24", "int24", "int128"], [pool_address, hook_address, tick_lower, tick_upper, withdrawableLiquidity])
+   const calls2 = positions2.map(p => HANDLER.tokenIds(p.meta.tokenId))
+   const poolDetails2 = await App.ethcallProvider.all(calls2);
 
-      const withdraw = async function() {
-        return dopexContract_withdraw(DOPEX_POSITION_MANAGER_ABI, DOPEX_POSITION_MANAGER_ADDRESS, HANDLER_ADDRESS, byte_data, App);
-      }
-    
-       _print(`Pool: ${pool_address} - (${token0.symbol} / ${token1.symbol})`);
-       _print(`Strikes: Call (${(position.strikes.call / 1).toFixed(2)}) Put (${(position.strikes.put / 1).toFixed(2)})`);
-       _print(`Liquidity: ${token0.symbol} (${(position.liquidity.token0 / 10 ** token0.decimals).toFixed(2)}) ${token1.symbol} (${(position.liquidity.token1 / 10 ** token1.decimals).toFixed(2)})`);
-       _print(`Earned: ${token0.symbol} (${(position.earned.token0 / 10 ** token0.decimals).toFixed(2)}) ${token1.symbol} (${(position.earned.token1 / 10 ** token1.decimals).toFixed(2)})`);
-       _print(`Withdrawable: ${token0.symbol} (${(position.reserved.withdrawable.token0 / 10 ** token0.decimals).toFixed(2)}) ${token1.symbol} (${(position.reserved.withdrawable.token1 / 10 ** token1.decimals).toFixed(2)})`);
-       _print(`Withdrawable Liquidity: ${withdrawableLiquidity}`);
-       _print_link(`Withdraw`, withdraw);
-       _print("");
-   }
+   const calls3 = positions3.map(p => HANDLER.tokenIds(p.meta.tokenId))
+   const poolDetails3 = await App.ethcallProvider.all(calls3);
+
+   await printPositions(poolDetails1, positions1, HANDLER_ADDRESS, DOPEX_POSITION_MANAGER_ADDRESS, App);
+   await printPositions(poolDetails2, positions2, HANDLER_ADDRESS, DOPEX_POSITION_MANAGER_ADDRESS, App);
+   await printPositions(poolDetails3, positions3, HANDLER_ADDRESS, DOPEX_POSITION_MANAGER_ADDRESS, App);
 
     hideLoading();
   }
@@ -60,12 +47,42 @@ const dopexContract_withdraw = async function(abi, address, handler_address, byt
       return App.provider.waitForTransaction(t.hash);
   }
 
-const getDopexData = async function() {
+const getDopexData = async function(pool_address) {
   return await $.ajax({
-    url: 'https://varrock.dopex.io/clamm/deposit/positions?chainId=42161&pool=0x0E4831319A50228B9e450861297aB92dee15B44F&user=0xa8D092b8b1A07EF7b8b409cEd7CFB13C0E46E439&first=100&skip=0',
+    url: `https://varrock.dopex.io/clamm/deposit/positions?chainId=42161&pool=${pool_address}&user=0xa8D092b8b1A07EF7b8b409cEd7CFB13C0E46E439&first=100&skip=0`,
     type: 'GET',
     headers: {
       'Access-Control-Allow-Methods': 'GET'
     }
    });
+}
+
+const printPositions = async function (poolDetails, positions, HANDLER_ADDRESS, DOPEX_POSITION_MANAGER_ADDRESS, App) {
+  for(let i = 0; i < poolDetails.length; i++){
+    const totalLiquidity = poolDetails[i].totalLiquidity;
+    const liquidityUsed = poolDetails[i].liquidityUsed;
+    const _withdrawableLiquidity = totalLiquidity - liquidityUsed;
+    const withdrawableLiquidity = _withdrawableLiquidity.toString();
+    const pool_address = positions[i].meta.handler.pool;
+    const hook_address = positions[i].meta.hook;
+    const tick_lower = positions[i].meta.tickLower;
+    const tick_upper = positions[i].meta.tickUpper;
+    const token0 = positions[i].tokens.token0;
+    const token1 = positions[i].tokens.token1;
+
+    const byte_data = ethers.utils.solidityPack(["address", "address", "int24", "int24", "int128"], [pool_address, hook_address, tick_lower, tick_upper, withdrawableLiquidity])
+
+    const withdraw = async function() {
+      return dopexContract_withdraw(DOPEX_POSITION_MANAGER_ABI, DOPEX_POSITION_MANAGER_ADDRESS, HANDLER_ADDRESS, byte_data, App);
+    }
+  
+     _print(`Pool: ${pool_address} - (${token0.symbol} / ${token1.symbol})`);
+     _print(`Strikes: Call (${(positions[i].strikes.call / 1).toFixed(4)}) Put (${(positions[i].strikes.put / 1).toFixed(4)})`);
+     _print(`Liquidity: ${token0.symbol} (${(positions[i].liquidity.token0 / 10 ** token0.decimals).toFixed(2)}) ${token1.symbol} (${(positions[i].liquidity.token1 / 10 ** token1.decimals).toFixed(2)})`);
+     _print(`Earned: ${token0.symbol} (${(positions[i].earned.token0 / 10 ** token0.decimals).toFixed(2)}) ${token1.symbol} (${(positions[i].earned.token1 / 10 ** token1.decimals).toFixed(2)})`);
+     _print(`Withdrawable: ${token0.symbol} (${(positions[i].reserved.withdrawable.token0 / 10 ** token0.decimals).toFixed(2)}) ${token1.symbol} (${(positions[i].reserved.withdrawable.token1 / 10 ** token1.decimals).toFixed(2)})`);
+     _print(`Withdrawable Liquidity: ${withdrawableLiquidity}`);
+     _print_link(`Withdraw`, withdraw);
+     _print("");
+ }
 }
