@@ -195,6 +195,10 @@ const BaseTokens = [
   { "id": "havven", "symbol": "SNX", "contract": "0x22e6966B799c4D5B13BE962E1D117b56327FDa66"}
 ];
 
+const BlastTokens = [
+  { "id": "weth", "symbol": "WETH", "contract": "0x4300000000000000000000000000000000000004"}
+];
+
 const BobaTokens = [
   { "id": "weth", "symbol": "WETH", "contract": "0xDeadDeAddeAddEAddeadDEaDDEAdDeaDDeAD0000"},
   { "id": "synapse-2", "symbol": "SYN", "contract": "0xb554A55358fF0382Fb21F0a478C3546d1106Be8c"}
@@ -993,6 +997,15 @@ async function getBasePrices() {
   const idPrices = await lookUpPrices(BaseTokens.map(x => x.id));
   const prices = {}
   for (const bt of BaseTokens)
+      if (idPrices[bt.id])
+          prices[bt.contract] = idPrices[bt.id];
+  return prices;
+}
+
+async function getBlastPrices() {
+  const idPrices = await lookUpPrices(BlastTokens.map(x => x.id));
+  const prices = {}
+  for (const bt of BlastTokens)
       if (idPrices[bt.id])
           prices[bt.contract] = idPrices[bt.id];
   return prices;

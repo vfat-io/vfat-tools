@@ -456,6 +456,21 @@ window.NETWORKS = {
       "https://scrollscan.com"
     ]
   },
+  BLAST: {
+    "chainId": "0x13E31",
+    "chainName": "Blast",
+    "nativeCurrency": {
+      "name": "ethereum",
+      "symbol": "ETH",
+      "decimals": 18
+    },
+    "rpcUrls": [
+      "https://rpc.blast.io"
+    ],
+    "blockExplorerUrls": [
+      "https://blastscan.io"
+    ]
+  },
   DFK: {
     "chainId": "0xD2AF",
     "chainName": "DFK Chain",

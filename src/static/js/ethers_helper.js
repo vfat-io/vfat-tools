@@ -153,6 +153,9 @@ const pageNetwork = function() {
   if (network.toLowerCase() === 'scroll') {
     return window.NETWORKS.SCROLL
   }
+  if (network.toLowerCase() === 'blast') {
+    return window.NETWORKS.BLAST
+  }
   if (network.toLowerCase() === 'manta') {
     return window.NETWORKS.MANTA
   }
@@ -3864,6 +3867,9 @@ function getErc20Prices(prices, pool, chain="eth") {
     case "scroll":
       poolUrl=`https://scrollscan.com/token/${pool.address}`;
       break;
+    case "blast":
+      poolUrl=`https://blastscan.io/token/${pool.address}`;
+      break;
     case "meter":
       poolUrl=`https://scan.meter.io/token/${pool.address}`;
       break;
@@ -4624,6 +4630,9 @@ async function printSynthetixPool(App, info, chain="eth", customURLs) {
       case "scroll":
         _print(`<a target="_blank" href="https://scrollscan.com/address/${info.stakingAddress}#code">Scroll Scan</a>`);
         break;
+      case "blast":
+        _print(`<a target="_blank" href="https://blastscan.io/address/${info.stakingAddress}#code">Blast Scan</a>`);
+        break;
       case "manta":
         _print(`<a target="_blank" href="https://pacific-explorer.manta.network/address/${info.stakingAddress}">Manta Explorer</a>`);
         break;
@@ -4883,6 +4892,8 @@ function getChainExplorerUrl(chain, address){
       return `https://explorer.mantle.xyz/address/${address}`;
     case "scroll" :
       return `https://scrollscan.com/token/${address}`;
+    case "blast" :
+      return `https://blastscan.io/token/${address}`;
     case "manta" :
       return `https://pacific-explorer.manta.network/address/${address}`;
     case "shimmer" :
