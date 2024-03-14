@@ -375,7 +375,7 @@ window.NETWORKS = {
       "decimals": 18
     },
     "rpcUrls": [
-      "https://mainnet.optimism.io/"
+      "https://optimism.drpc.org"
     ],
     "blockExplorerUrls": [
       "https://optimistic.etherscan.io/"

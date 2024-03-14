@@ -860,7 +860,8 @@ const optimisticTokens = [
   { "id": "granary","symbol": "GRAIN", "contract": "0xfD389Dc9533717239856190F42475d3f263a270d" },
   { "id": "pooltogether","symbol": "POOL", "contract": "0x395ae52bb17aef68c2888d941736a71dc6d4e125" },
   { "id": "tbtc","symbol": "tBTC", "contract": "0x6c84a8f1c29108F47a79964b5Fe888D4f4D0dE40" },
-  { "id": "wrapped-optidoge","symbol": "WOPTIDOGE", "contract": "0xc26921b5b9ee80773774d36c84328ccb22c3a819" }
+  { "id": "wrapped-optidoge","symbol": "WOPTIDOGE", "contract": "0xc26921b5b9ee80773774d36c84328ccb22c3a819" },
+  { "id": "fbomb","symbol": "BOMB", "contract": "0x74ccbe53F77b08632ce0CB91D3A545bF6B8E0979" }
 ];
 
 const polisTokens = [
