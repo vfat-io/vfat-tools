@@ -62,7 +62,15 @@ const ArbitrumTokens = [
   { "id": "bob", "symbol": "BOB", "contract": "0xb0b195aefa3650a6908f15cdac7d92f8a5791b0b" },
   { "id": "staked-frax-ether", "symbol": "SFRXETH", "contract": "0x95ab45875cffdba1e5f451b950bc2e42c0053f39" },
   { "id": "jones-usdc", "symbol": "JUSDC", "contract": "0xe66998533a1992ece9ea99cdf47686f4fc8458e0" },
-  { "id": "usd", "symbol": "USD+", "contract": "0xe80772eaf6e2e18b651f160bc9158b2a5cafca65" }
+  { "id": "usd", "symbol": "USD+", "contract": "0xe80772eaf6e2e18b651f160bc9158b2a5cafca65" },
+  { "id": "jarvis-synthetic-euro", "symbol": "JEUR", "contract": "0xad435674417520aeeed6b504bbe654d4f556182f" },
+  { "id": "euroe-stablecoin", "symbol": "EUROE", "contract": "0xcf985aba4647a432e60efceeb8054bbd64244305" },
+  { "id": "ankr", "symbol": "ANKR", "contract": "0x46F74778b265Df3a15EC9695CCd2fD3869ca848c" },
+  { "id": "ankreth", "symbol": "ANKRETH", "contract": "0xe05A08226c49b636ACf99c40Da8DC6aF83CE5bB3" },
+  { "id": "alchemix-eth", "symbol": "ALETH", "contract": "0x17573150d67d820542efb24210371545a4868b03" },
+  { "id": "alchemix", "symbol": "ALCX", "contract": "0x27b58D226fe8f792730a795764945Cf146815AA7" },
+  { "id": "grai", "symbol": "GRAI", "contract": "0x894134a25a5fac1c2c26f1d8fbf05111a3cb9487" },
+  { "id": "alchemix-usd", "symbol": "ALUSD", "contract": "0xCB8FA9a76b8e203D8C3797bF438d8FB81Ea3326A" }
 ];
 
 const ArbitrumNovaTokens = [
