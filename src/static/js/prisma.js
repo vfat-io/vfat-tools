@@ -94,7 +94,7 @@ $(function() {
       _print("Calculating prices, please be patient...\n");
   
       var tokens = {};
-      var prices = {};
+      var prices = await getPrismaPrices();
   
       let _allTokenAddresses = [];
       for(const pool of allPools){
@@ -105,7 +105,7 @@ $(function() {
   
       let allTokenAddresses = _allTokenAddresses.flat(3);
   
-      await getNewPricesAndTokens(App, tokens, prices, allTokenAddresses, App.YOUR_ADDRESS);
+      await getNewTokens(App, tokens, allTokenAddresses, App.YOUR_ADDRESS);
   
       _print_bold("Stable Pools");
       _print("");
@@ -557,3 +557,32 @@ $(function() {
         apr : yearlyAPR
     }
   }
+
+async function getNewTokens(App, tokens, newAddresses, stakingAddress) {
+  var newTokenAddresses = newAddresses.filter(x =>
+      !getParameterCaseInsensitive(tokens,x));
+  for (const address of newTokenAddresses) {
+      tokens[address] = await getToken(App, address, stakingAddress);
+  }
+}
+
+const prismaTokens = [
+  { "id": "prisma-mkusd","symbol": "MKUSD", "contract": "0x4591DBfF62656E7859Afe5e45f6f47D3669fBB28" },
+  { "id": "curve-fi-frax-usdc","symbol": "CRVFRAX", "contract": "0x3175df0976dfa876431c2e9ee6bc45b65d3473cc" },
+  { "id": "prisma-governance-token","symbol": "PRISMA", "contract": "0xda47862a83dac0c112ba89c6abc2159b95afd71c" },
+  { "id": "convex-prisma","symbol": "CVXPRISMA", "contract": "0x34635280737b5bfe6c7dc2fc3065d60d66e78185" },
+  { "id": "crvusd","symbol": "CRVUSD", "contract": "0xf939e0a03fb07f59a73314e73794be0e57ac1b4e" },
+  { "id": "dinero-staked-eth","symbol": "PXETH", "contract": "0x04c154b66cb340f3ae24111cc767e0184ed00cc6" },
+  { "id": "weth","symbol": "WETH", "contract": "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2" },
+  { "id": "yearn-yprisma","symbol": "YPRISMA", "contract": "0xe3668873D944E4A949DA05fc8bDE419eFF543882" },
+  { "id": "usd-coin","symbol": "USDC", "contract": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48" }
+];
+
+async function getPrismaPrices() {
+  const idPrices = await lookUpPrices(prismaTokens.map(x => x.id));
+  const prices = {}
+  for (const bt of prismaTokens)
+      if (idPrices[bt.id])
+          prices[bt.contract] = idPrices[bt.id];
+  return prices;
+}
