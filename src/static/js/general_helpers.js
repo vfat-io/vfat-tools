@@ -336,9 +336,17 @@ async function getGeneralToken(App, tokenAddress, stakingAddress) {
     try {
       const VAULT = new ethers.Contract(tokenAddress, GENERAL_VAULT_TOKEN_ABI, App.provider);
       const _token = await VAULT.token();
-      const vault = await getGeneralVault(App, VAULT, tokenAddress, stakingAddress);
-      window.localStorage.setItem(tokenAddress, "vault");
-      return vault;
+      if(_token.toLowerCase() === tokenAddress.toLowerCase()){
+        const erc20 = new ethers.Contract(tokenAddress, ERC20_ABI, App.provider);
+        const _name = await erc20.name();
+        const erc20tok = await getGeneral20(App, erc20, tokenAddress, stakingAddress);
+        window.localStorage.setItem(tokenAddress, "erc20");
+        return erc20tok;
+      }else {
+        const vault = await getGeneralVault(App, VAULT, tokenAddress, stakingAddress);
+        window.localStorage.setItem(tokenAddress, "vault");
+        return vault;
+      }
     }
     catch(err) {
     }
