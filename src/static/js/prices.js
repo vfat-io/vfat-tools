@@ -70,7 +70,13 @@ const ArbitrumTokens = [
   { "id": "alchemix-eth", "symbol": "ALETH", "contract": "0x17573150d67d820542efb24210371545a4868b03" },
   { "id": "alchemix", "symbol": "ALCX", "contract": "0x27b58D226fe8f792730a795764945Cf146815AA7" },
   { "id": "grai", "symbol": "GRAI", "contract": "0x894134a25a5fac1c2c26f1d8fbf05111a3cb9487" },
-  { "id": "alchemix-usd", "symbol": "ALUSD", "contract": "0xCB8FA9a76b8e203D8C3797bF438d8FB81Ea3326A" }
+  { "id": "alchemix-usd", "symbol": "ALUSD", "contract": "0xCB8FA9a76b8e203D8C3797bF438d8FB81Ea3326A" },
+  { "id": "radiant-capital", "symbol": "RDNT", "contract": "0x0C4681e6C0235179ec3D4F4fc4DF3d14FDD96017" },
+  { "id": "magic", "symbol": "MAGIC", "contract": "0x539bde0d7dbd336b79148aa742883198bbf60342" },
+  { "id": "solidlizard-synthetic-usd", "symbol": "SLZUSDC", "contract": "0x54355cc6913B26A15ccA1F820cf17D362FA65DB5" },
+  { "id": "layer2dao", "symbol": "L2DAO", "contract": "0x2cab3abfc1670d1a452df502e216a66883cdf079" },
+  { "id": "ageur", "symbol": "EURA", "contract": "0xFA5Ed56A203466CbBC2430a43c66b9D8723528E7" },
+  { "id": "sperax", "symbol": "SPA", "contract": "0x5575552988a3a80504bbaeb1311674fcfd40ad4b" }
 ];
 
 const ArbitrumNovaTokens = [
