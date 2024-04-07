@@ -919,6 +919,21 @@ window.NETWORKS = {
       "https://evm.findorascan.io"
     ],
   },
+    DEGEN: {
+        "chainId": "0x27bc86aa",
+        "chainName": "DegenChain",
+        "nativeCurrency": {
+            "name": "Degen",
+            "symbol": "DEGEN",
+            "decimals": 18
+        },
+        "rpcUrls": [
+            "https://rpc.degen.tips"
+        ],
+        "blockExplorerUrls": [
+            "https://explorer.degen.tips/"
+        ],
+    },
 }
 
 const infuraId = atob(window.ETHEREUM_NODE_URL).split('/').pop()
@@ -950,7 +965,8 @@ const providerOptions = {
         25: "https://rpc.crodex.app/",
         82: "https://rpc.meter.io",
         40: "https://mainnet.telos.net/evm",
-        2152: "https://rpc-mainnet.findora.org"
+        2152: "https://rpc-mainnet.findora.org",
+        666666666 : "https://rpc.degen.tips"
       }
     }
   }

@@ -531,7 +531,7 @@ const FindoraTokens = [
   {id: 'findora', symbol: 'FRA', contract: '0x228b04158c6Eff4F3594B0a7A56eb7A2d6DD8874'}
 ]
 
-const FuseTokens = [ 
+const FuseTokens = [
   { "id": "fuse-network-token", "symbol": "FUSE", "contract": "0x0BE9e53fd7EDaC9F859882AfdDa116645287C629"},
   { "id": "usd-coin", "symbol": "USDC", "contract": "0x620fd5fa44BE6af63715Ef4E65DDFA0387aD13F5"},
   { "id": "sushi", "symbol": "SUSHI", "contract": "0x90708b20ccC1eb95a4FA7C8b18Fd2C22a0Ff9E78"},
@@ -540,18 +540,18 @@ const FuseTokens = [
   { "id": "terrausd", "symbol": "UST", "contract": "0x0D58a44be3dCA0aB449965dcc2c46932547Fea2f"}
 ];
 
-const FxTokens = [ 
+const FxTokens = [
   { "id": "tether", "symbol": "USDT", "contract": "0xecEEEfCEE421D8062EF8d6b4D814efe4dc898265"},
   { "id": "pundi-x-2", "symbol": "PUNDIX", "contract": "0xd567B3d7B8FE3C79a1AD8dA978812cfC4Fa05e75"},
   { "id": "weth", "symbol": "WETH", "contract": "0x0CE35b0D42608Ca54Eb7bcc8044f7087C18E7717"},
   { "id": "fx-coin", "symbol": "FX", "contract": "0x80b5a32E4F032B2a058b4F29EC95EEfEEB87aDcd"}
 ];
 
-const GoerliTokens = [ 
+const GoerliTokens = [
   { "id": "tether", "symbol": "USDT", "contract": "0x966289b2c448e189664EC3268766335da7079b6b"}
 ];
 
-const xdaiTokens = [ 
+const xdaiTokens = [
   { "id": "xdai","symbol": "xDAI","contract": "0xe91D153E0b41518A2Ce8Dd3D7944Fa863463a97d" },
   { "id": "tether","symbol": "USDT","contract": "0x4ECaBa5870353805a9F068101A40E0f32ed605C6" },
   { "id": "usd-coin","symbol": "USDC","contract": "0xDDAfbb505ad214D7b80b1f830fcCc89B60fb7A83" },
@@ -882,6 +882,10 @@ const optimisticTokens = [
 const polisTokens = [
   { "id": "polis","symbol": "POLIS","contract": "0x6FC851B8D66116627Fb1137b9D5FE4E2e1BeA978" },
   { "id": "dai","symbol": "DAI","contract": "0x247123e806a27Ea322bFd93e0273D04602dC942D" },
+]
+
+const degenTokens = [
+    { "id": "degen","symbol": "WDEGEN","contract": "0xEb54dACB4C2ccb64F8074eceEa33b5eBb38E5387" }
 ]
 
 const pulseTokens = [
@@ -1438,4 +1442,13 @@ async function getZkEvmPolygonPrices() {
       if (idPrices[bt.id])
           prices[bt.contract] = idPrices[bt.id];
   return prices;
+}
+
+async function getDegenPrices() {
+    const idPrices = await lookUpPrices(degenTokens.map(x => x.id));
+    const prices = {}
+    for (const bt of degenTokens)
+        if (idPrices[bt.id])
+            prices[bt.contract] = idPrices[bt.id];
+    return prices;
 }
