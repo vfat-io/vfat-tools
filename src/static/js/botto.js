@@ -27,7 +27,7 @@ consoleInit(main)
     _print("Reading smart contracts...\n");
 
     var tokens = {};
-    var prices = {};
+    var prices = await getBottoPrices();
 
     let p = await loadBottoSynthetixPool(App, tokens, prices, Pool.abi, Pool.address, Pool.rewardTokenFunction, Pool.stakeTokenFunction);
     let p1 = await loadBottoPoolSynthetixPool(App, tokens, prices, PoolBotto.abi, PoolBotto.address, PoolBotto.rewardTokenFunction, PoolBotto.stakeTokenFunction);
@@ -64,14 +64,6 @@ async function loadBottoSynthetixPoolInfo(App, tokens, prices, stakingAbi, staki
     var stakeToken = await getToken(App, stakeTokenAddress, stakingAddress);
     stakeToken.staked = await STAKING_POOL.totalStake() / 10 ** stakeToken.decimals;
 
-    var newPriceAddresses = stakeToken.tokens.filter(x =>
-      x.toLowerCase() !=  "0xb34ab2f65c6e4f764ffe740ab83f982021faed6d" && //BSG can't be retrieved from Coingecko
-      !getParameterCaseInsensitive(prices, x));
-    var newPrices = await lookUpTokenPrices(newPriceAddresses);
-    for (const key in newPrices) {
-      if (newPrices[key]?.usd)
-          prices[key] = newPrices[key];
-    }
     var newTokenAddresses = stakeToken.tokens.filter(x =>
       !getParameterCaseInsensitive(tokens,x));
     for (const address of newTokenAddresses) {
@@ -143,14 +135,6 @@ async function loadBottoPoolSynthetixPoolInfo(App, tokens, prices, stakingAbi, s
     var stakeToken = await getToken(App, stakeTokenAddress, stakingAddress);
     stakeToken.staked = await STAKING_POOL.totalStaked() / 10 ** stakeToken.decimals;
 
-    var newPriceAddresses = stakeToken.tokens.filter(x =>
-      x.toLowerCase() !=  "0xb34ab2f65c6e4f764ffe740ab83f982021faed6d" && //BSG can't be retrieved from Coingecko
-      !getParameterCaseInsensitive(prices, x));
-    var newPrices = await lookUpTokenPrices(newPriceAddresses);
-    for (const key in newPrices) {
-      if (newPrices[key]?.usd)
-          prices[key] = newPrices[key];
-    }
     var newTokenAddresses = stakeToken.tokens.filter(x =>
       !getParameterCaseInsensitive(tokens,x));
     for (const address of newTokenAddresses) {
@@ -335,4 +319,18 @@ const bottoContract_unstake = async function(rewardPoolAddr, App) {
         hideLoading()
       })
   }
+}
+
+const bottoTokens = [
+  { "id": "weth","symbol": "WETH","contract": "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2" },
+  { "id": "botto","symbol": "BOTTO","contract": "0x9dfad1b7102d46b1b197b90095b5c4e9f5845bba" }
+]
+
+async function getBottoPrices() {
+  const idPrices = await lookUpPrices(bottoTokens.map(x => x.id));
+  const prices = {}
+  for (const bt of bottoTokens)
+      if (idPrices[bt.id])
+          prices[bt.contract] = idPrices[bt.id];
+  return prices;
 }
