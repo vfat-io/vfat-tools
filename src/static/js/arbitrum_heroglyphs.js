@@ -31,6 +31,22 @@ $(function() {
                                "0x32E707B2Fa13851Ae5A8D5d610B236aB3ad5687f",
                               //  "0xD37e64dD683BeDD72259e861D53c29bE51Ee8E04"
                               ];
+
+      const inputTokens = [
+        "0x498Bf2B1e120FeD3ad3D42EA2165E9b73f99C1e5",
+        "0xDA10009cBd5D07dd0CeCc66161FC93D7c9000da1",
+        "0x1509706a6c66CA549ff0cB464de88231DDBe213B",
+        "0xa0b862F60edEf4452F25B4160F177db44DeB6Cf1",
+        "0x59D9356E565Ab3A36dD77763Fc0d87fEaf85508C",
+        "0x178412e79c25968a32e89b11f63B33F733770c2A",
+        "0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9",
+        "0xaf88d065e77c8cC2239327C5EDb3A432268e5831",
+        "0x4425742F1EC8D98779690b5A3A6276Db85Ddc01A"
+      ]
+
+      for (const address of inputTokens) {
+        tokens[address] = await getArbitrumToken(App, address, App.YOUR_ADDRESS);
+      }
   
       for(const HEROGLYPH_ADDR of HEROGLYPHS_ADDR){
         await showGlyphs(App, HEROGLYPH_ADDR, tokens, prices);
@@ -40,14 +56,13 @@ $(function() {
     }
   
     async function showGlyphs(App, contractAddress, tokens, prices) {
-      const HEROGLYPHS = new ethers.Contract(contractAddress, HEROGLYPHS_ABI, App.provider);
-  
-      const totalMinted = await HEROGLYPHS.totalSupply();
-      const maxSupply = await HEROGLYPHS.maxSupply();
-      const usersGlyphs = await HEROGLYPHS.balanceOf(App.YOUR_ADDRESS);
-      const costInWei = await HEROGLYPHS.cost();
-      const inputTokenAddress = await HEROGLYPHS.inputToken();
-      let nftSymbol_key = await HEROGLYPHS.symbol();
+      const HEROGLYPHS = new ethcall.Contract(contractAddress, HEROGLYPHS_ABI);
+
+      const calls = [HEROGLYPHS.totalSupply(), HEROGLYPHS.maxSupply(), HEROGLYPHS.balanceOf(App.YOUR_ADDRESS),
+                     HEROGLYPHS.cost(), HEROGLYPHS.inputToken(), HEROGLYPHS.symbol()];
+
+      const [totalMinted, maxSupply, usersGlyphs, costInWei, inputTokenAddress, nftSymbol_key] = await App.ethcallProvider.all(calls);
+
       const nftSymbol = nftSymbol_key.replace("_KEY", "");
   
       const mintNewGlyph_ETH = async function() {
@@ -58,7 +73,7 @@ $(function() {
         return mint_New_Glyph(inputTokenAddress, costInWei, contractAddress, App)
       }
   
-      _print_bold(`Glyph - (${nftSymbol})`)
+      _print_bold(`Glyph - (${nftSymbol})`);
       _print(`Total Minted: ${totalMinted} of ${maxSupply}`);
       _print(`Owned Glyphs: ${usersGlyphs}`);
       if(maxSupply > 0){
@@ -66,7 +81,7 @@ $(function() {
           _print(`Cost to mint: ${costInWei / 1e18} ETH`);
           _print_link(`Mint ${costInWei / 1e18}with ETH`, mintNewGlyph_ETH);
         }else{
-          const inputToken = await getArbitrumToken(App, inputTokenAddress, App.YOUR_ADDRESS);
+          const inputToken = getParameterCaseInsensitive(tokens, inputTokenAddress);
           _print(`Cost to mint: ${costInWei / 10 ** inputToken.decimals} ${inputToken.symbol}`);
           _print_link(`Mint with ${costInWei / 10 ** inputToken.decimals} ${inputToken.symbol}`, mintNewGlyph);
         }
