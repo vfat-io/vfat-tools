@@ -79,7 +79,7 @@ $(function() {
       if(maxSupply > 0){
         if(inputTokenAddress === "0x0000000000000000000000000000000000000000"){
           _print(`Cost to mint: ${costInWei / 1e18} ETH`);
-          _print_link(`Mint ${costInWei / 1e18}with ETH`, mintNewGlyph_ETH);
+          _print_link(`Mint ${costInWei / 1e18} with ETH`, mintNewGlyph_ETH);
         }else{
           const inputToken = getParameterCaseInsensitive(tokens, inputTokenAddress);
           _print(`Cost to mint: ${costInWei / 10 ** inputToken.decimals} ${inputToken.symbol}`);
