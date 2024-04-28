@@ -88,7 +88,7 @@ const main = async() => {
       ["Spartadex           ", `<a href="/arbitrum/sparta"      >Various</a>`,"SPARTA             ","https://app.spartadex.io"],
       ["Ajna                ", `<a href="/arbitrum/ajna"        >Various</a>`,"AJNA               ","https://app.ajna.finance"],
       ["Umami               ", `<a href="/arbitrum/umami"       >Various</a>`,"Various            ","https://umami.finance"],
-      //["Adamant Finance     ", `<a href="/arbitrum/adamant"     >Various</a>`,"ARBY / ETH         ","https://adamant.finance"]
+      ["Heroglyphs          ", `<a href="/arbitrum/heroglyphs"  >Various</a>`,"                   ","https://heroglyphs.com"]
     ].reverse()
   }
 
