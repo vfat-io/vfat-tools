@@ -85,6 +85,8 @@ $(function() {
           _print(`Cost to mint: ${costInWei / 10 ** inputToken.decimals} ${inputToken.symbol}`);
           _print_link(`Mint with ${costInWei / 10 ** inputToken.decimals} ${inputToken.symbol}`, mintNewGlyph);
         }
+      }else {
+        _print("Minted out");
       }
       _print("");
     }
