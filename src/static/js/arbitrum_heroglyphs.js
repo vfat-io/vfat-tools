@@ -43,6 +43,7 @@ $(function() {
       const HEROGLYPHS = new ethers.Contract(contractAddress, HEROGLYPHS_ABI, App.provider);
   
       const totalMinted = await HEROGLYPHS.totalSupply();
+      const maxSupply = await HEROGLYPHS.maxSupply();
       const usersGlyphs = await HEROGLYPHS.balanceOf(App.YOUR_ADDRESS);
       const costInWei = await HEROGLYPHS.cost();
       const inputTokenAddress = await HEROGLYPHS.inputToken();
@@ -58,7 +59,7 @@ $(function() {
       }
   
       _print_bold(`Glyph - (${nftSymbol})`)
-      _print(`Total Minted: ${totalMinted}`);
+      _print(`Total Minted: ${totalMinted} of ${maxSupply}`);
       _print(`Owned Glyphs: ${usersGlyphs}`);
       if(inputTokenAddress === "0x0000000000000000000000000000000000000000"){
         _print(`Cost to mint: ${costInWei / 1e18} ETH`);
