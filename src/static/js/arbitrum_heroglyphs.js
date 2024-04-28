@@ -61,13 +61,15 @@ $(function() {
       _print_bold(`Glyph - (${nftSymbol})`)
       _print(`Total Minted: ${totalMinted} of ${maxSupply}`);
       _print(`Owned Glyphs: ${usersGlyphs}`);
-      if(inputTokenAddress === "0x0000000000000000000000000000000000000000"){
-        _print(`Cost to mint: ${costInWei / 1e18} ETH`);
-        _print_link(`Mint ${costInWei / 1e18} ETH`, mintNewGlyph_ETH);
-      }else{
-        const inputToken = await getArbitrumToken(App, inputTokenAddress, App.YOUR_ADDRESS);
-        _print(`Cost to mint: ${costInWei / 10 ** inputToken.decimals} ${inputToken.symbol}`);
-        _print_link(`Mint ${costInWei / 10 ** inputToken.decimals} ${inputToken.symbol}`, mintNewGlyph);
+      _print(`Cost to mint: ${costInWei / 1e18} ETH`);
+      if(maxSupply > 0){
+        if(inputTokenAddress === "0x0000000000000000000000000000000000000000"){
+          _print_link(`Mint ${costInWei / 1e18} ETH`, mintNewGlyph_ETH);
+        }else{
+          const inputToken = await getArbitrumToken(App, inputTokenAddress, App.YOUR_ADDRESS);
+          _print(`Cost to mint: ${costInWei / 10 ** inputToken.decimals} ${inputToken.symbol}`);
+          _print_link(`Mint ${costInWei / 10 ** inputToken.decimals} ${inputToken.symbol}`, mintNewGlyph);
+        }
       }
       _print("");
     }
