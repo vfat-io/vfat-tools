@@ -45,7 +45,7 @@ $(function() {
       ]
 
       for (const address of inputTokens) {
-        tokens[address] = await getArbitrumToken(App, address, App.YOUR_ADDRESS);
+        tokens[address] = await getGlyphTokens(App, address, App.YOUR_ADDRESS);
       }
   
       for(const HEROGLYPH_ADDR of HEROGLYPHS_ADDR){
@@ -155,3 +155,21 @@ $(function() {
         alert('You have no tokens to stake!!')
       }
     }
+
+async function getGlyphTokens(app, address, stakingAddress) {
+  const token = new ethcall.Contract(address, ERC20_ABI);
+  const calls = [token.decimals(), token.balanceOf(stakingAddress), token.balanceOf(app.YOUR_ADDRESS),
+    token.name(), token.symbol(), token.totalSupply()];
+  const [decimals, staked, unstaked, name, symbol, totalSupply] = await app.ethcallProvider.all(calls);
+  return {
+      address,
+      name,
+      symbol,
+      totalSupply,
+      decimals : decimals,
+      staked:  staked / 10 ** decimals,
+      unstaked: unstaked  / 10 ** decimals,
+      contract: token,
+      tokens : [address]
+  };
+}
