@@ -76,7 +76,7 @@ async function showGlyphs(App, contractAddress, tokens, prices) {
   _print_bold(`Glyph - (${nftSymbol})`);
   _print(`Total Minted: ${totalMinted} of ${maxSupply}`);
   _print(`Owned Glyphs: ${usersGlyphs}`);
-  if (totalMinted !== maxSupply) {
+  if (+totalMinted !== +maxSupply) {
     if (inputTokenAddress === "0x0000000000000000000000000000000000000000") {
       _print(`Cost to mint: ${costInWei / 1e18} ETH`);
       _print_link(`Mint with ${costInWei / 1e18} ETH`, mintNewGlyph_ETH);
