@@ -85,6 +85,8 @@ async function showGlyphs(App, contractAddress, tokens, prices) {
       _print(`Cost to mint: ${costInWei / 10 ** inputToken.decimals} ${inputToken.symbol}`);
       _print_link(`Mint with ${costInWei / 10 ** inputToken.decimals} ${inputToken.symbol}`, mintNewGlyph);
     }
+  } else {
+    _print("Minted out");
   }
   _print("");
 }
@@ -100,7 +102,7 @@ const mint_New_Glyph_ETH = async function (costInWei, contractAddress, App) {
       return App.provider.waitForTransaction(t.hash);
     })
     .catch(function () {
-      alert("You don't have the appropriate amount to buy a Glyph");
+      alert("you don't have the appropriate amount to buy a Glyph");
       hideLoading();
     });
 };
