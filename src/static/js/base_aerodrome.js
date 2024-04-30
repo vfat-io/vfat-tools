@@ -24,8 +24,26 @@ async function main() {
   const prices = await getBasePrices();
 
   const FLOW_VOTER_ADDR = "0x16613524e02ad97eDfeF371bC883F2F5d6C480A5"
-  const FLOW_VOTER_CONTRACT = new ethers.Contract(FLOW_VOTER_ADDR, FLOW_VOTER_ABI, App.provider);
+  const FLOW_VOTER_CONTRACT = new ethcall.Contract(FLOW_VOTER_ADDR, FLOW_VOTER_ABI);
   const FLOW_TOKEN_ADDR = "0x940181a94a35a4569e4529a3cdfb74e38fd98631"
+
+  let lpTokens = [], arrayOfGauges = [], calls = [], calls2 = [];
+
+  const [_poolLength] = await App.ethcallProvider.all([FLOW_VOTER_CONTRACT.length()]);
+  const poolLength = _poolLength / 1;
+  const _calls = [...Array(poolLength).keys()].map(i => FLOW_VOTER_CONTRACT.pools(i));
+  while (_calls.length > 0) {
+    calls.push(_calls.splice(0,90));  
+  }
+  for(const call of calls){
+    const _lpTokens = await App.ethcallProvider.all(call);
+    lpTokens.push(_lpTokens);
+  }
+  for(const lpTokenArray of lpTokens){
+    const calls2 = lpTokenArray.map(a => FLOW_VOTER_CONTRACT.gauges(a));
+    const _gauges = await App.ethcallProvider.all(calls2);
+    arrayOfGauges.push(_gauges);
+  }
 
   const SICKLE_FACTORY_ADDR = "0x71D234A3e1dfC161cc1d081E6496e76627baAc31";
   const SICKLE_FACTORY = new ethers.Contract(SICKLE_FACTORY_ADDR, SICKLE_FACTORY_ABI, App.provider);
@@ -34,59 +52,13 @@ async function main() {
   const has_sickle_account = sickle_account_address === "0x0000000000000000000000000000000000000000" ? false : true;
   const owner_sickle_address = App.YOUR_ADDRESS;
 
-  const gauges = [
-  '0x4f09bab2f0e15e2a078a227fe1537665f55b8360',
-  '0x50f0249B824033Cf0AF0C8b9fe1c67c2842A34d5',
-  '0xfaE8C18D83655Fbf31af10d2e9A1Ad5bA77D0377',
-  '0xaD3d4aFd779e4A57734557CcE25F87032614fE47',
-  '0xeAE066C25106006fB386A3a8b1698A0cB6931c1a',
-  '0x98F44CE76BDCaD37f00a98B275631B1D796862fa',
-  '0x5072261dE01Ca7D933C39893C4c4B009a351DF43',
-  '0x109Cc0f2640457b2A483C2eef189827750A676bB',
-  '0xC01E2ff20501839db7B28F5Cb3eD2876fEa3d6b1',
-  '0xDe23611176b16720346f4Df071D1aA01752c68C1',
-  '0x9a8D9F5C698C1F2B0d48a955BC531F2c7D67Af84',
-  '0xBb0b5819Fa91076a1D6aaFa0D018E27a416DE029',
-  '0x81387016224D4EA8F938A1c2207c5Cc4A5AEa393',
-  '0xb42A9e58773993ed15A5eED65633e85870185e13',
-  '0x87803Cb321624921cedaAD4555F07Daa0D1Ed325',
-  '0xa5972f0C07a2D1cc5A8457c28d88ec4f3C009864',
-  '0x7eC1926A50D2D253011cC9891935eBc476713bb1',
-  '0xCF1D5Aa63083fda05c7f8871a9fDbfed7bA49060',
-  '0x9a202c932453fB3d04003979B121E80e5A14eE7b',
-  '0x96a24aB830D4ec8b1F6f04Ceac104F1A3b211a01',
-  '0xeca7Ff920E7162334634c721133F3183B83B0323',
-  '0x07CBcB5eB7b501365DD244d12245B1188dF4ed57',
-  '0x36BdA777CCBefE881ed729AfF7F1f06779f4199a',
-  '0xcEa0a2228145d0fD25dE083e3786ddB1eA184296',
-  '0xe5Cf7Ec83BA94c4AdF833d7DCdb800a53f28410E',
-  '0xD2121Cb13A28Ab16Cb0f0F19A665e9a9311F9aBb',
-  '0x9915D03D62b1d83f9a8890bAeBd72Ed4bCa49701',
-  '0x2692CC440416B7f8252406D84e9D66f0C48C069E',
-  '0x62052D68A7DBa58079B7D70a40796CAbAab2a95f',
-  '0x76c48576822Cd955C320f5d5A163E738dbFEcc01',
-  '0xDf9D427711CCE46b52fEB6B2a20e4aEaeA12B2b7',
-  '0xC91ed60A0E0EA668A3489F6039054C6d93c76A9b',
-  '0x12E45bE50dd4f3Bc430B65d399B1e3b90275661c',
-  '0x275535F82F287073CEEbC653862E4E43868AA65C',
-  '0x744462994510ccd987F697752bD46d1155F8022F',
-  '0xB38440A467a34d992E4B5bF538c087784E811C06',
-  '0x4a1137D7C00b40B2f821056Baa35A57325BC6287',
-  '0x2d8b33A0dc95F0eb9429551eA4d2297729828558',
-  '0xEAE7C8fc569DAC58047898970225CbD0c8Cda2B1',
-  '0x1AF743E6EbF9C4f90aE9A37E6e61Bca31a867676',
-  '0x28F62fE643351104e7D57BB6802A931d387D9Ee2',
-  '0xf05a3De3dD6910042f506c6105bC14920C4289B6',
-  '0xa81dac2e9caa218Fcd039D7CEdEB7847cf362213',
-  '0xF64957C35409055776C7122AC655347ef88eaF9B',
-  '0xE5Ff63862097b32d3ed30551e290D66f1548973F',
-  '0x6664867531c0FDd058881153FaBE7D2162833b07',
-  '0x46110ac9100A027bAec01bf1C211522ce0B02540',
-].map(a => {return{
-  address: a,
-  abi: FLOW_GAUGE_ABI,
-  stakeTokenFunction: "stakingToken"
-}})
+  const gauges = arrayOfGauges.flat().map(a => {
+    return {
+      address: a,
+      abi: FLOW_GAUGE_ABI,
+     stakeTokenFunction: "stakingToken"
+    }
+  })
 
   await loadFlowSynthetixPoolInfoPrice(App, tokens, prices, "0x2223F9FE624F69Da4D8256A7bCc9104FBA7F8f75", "0x2223F9FE624F69Da4D8256A7bCc9104FBA7F8f75");
 
@@ -139,7 +111,30 @@ async function loadFlowSynthetixPoolInfo(App, tokens, prices, stakingAbi, stakin
     if (!STAKING_POOL.callStatic[stakeTokenFunction]) {
       console.log("Couldn't find stake function ", stakeTokenFunction);
     }
-    const stakeTokenAddress = await STAKING_POOL.callStatic[stakeTokenFunction]();
+
+    let stakeTokenAddress = "";
+    try{
+      stakeTokenAddress = await STAKING_POOL.callStatic[stakeTokenFunction]();
+    }catch{
+      console.log(stakingAddress);
+      return {
+        stakingAddress: "",
+        poolPrices: "",
+        stakeTokenAddress: "",
+        rewardTokenAddress: "",
+        stakeTokenTicker: "",
+        rewardTokenTicker: "",
+        stakeTokenPrice: 0,
+        rewardTokenPrice: 0,
+        weeklyRewards: 0,
+        usdPerWeek: 0,
+        staked_tvl: 0,
+        userStaked: 0,
+        userUnstaked: 0,
+        earned: 0,
+        has_sickle_account: false
+      }
+    }
 
     const rewardTokenAddress = "0x940181a94a35a4569e4529a3cdfb74e38fd98631";
 
@@ -390,3 +385,27 @@ const aeroContract_claim = async function(rewardPoolAddr, App) {
       })
   }
 }
+
+//  some CL pools
+
+const clPools = [
+  "0x23E3fF7e1ca9294BC4D9FB3454ce76663E7ce9a4",
+  "0xF7E12191EAa4EC540AAfaE1c9289E1F00912c63f",
+  "0x19E4EF08CC826B566b98aAd7e959691b28EeA965",
+  "0x9ed29B9518DD807b19d1bC8E3045246094Da81A8",
+  "0x41678d68dea4f6b5EFecA5882406903fE668b527",
+  "0x53431b835C4dFf80c0Ac585907dc50251047C6c1",
+  "0x154123d7090dC7B712C7bfc0DC0C247d574D7E69",
+  "0x6F00D370D951742Fb4EC6C5a065ABDbbC612444b",
+  "0xE9a2183aC35768Fb187620672C0CeB9e53381ABa",
+  "0xAe4ad2d6f5fE6ec886f3492EEd2F7da396f94a09",
+  "0xC92fA3538bC7075143BaE69850E5394c8d530C88",
+  "0x1DcC0e87b89FB316BE5C3C13585193244aEbaf05",
+  "0x025EDE7dafE9E6Ebf6Dd1EF72deD084371cd0e48",
+  "0x18157558c6CEBe6b76764DE1F211321EBBB8CD6A",
+  "0x81ec6143F0B65b1576A6F5a34740d8Cc39DB3d3b",
+  "0x557f885c63a287D0b969BCcEbc1C29c1E02b4eeC",
+  "0x8A07161e21A91D7EEc4Aab9A2073f9672edd6fA6",
+  "0x67bDce361CDCC671b056Eeec1a97c11d3CD1a1fF",
+  "0x4a5B0dc1aB3E195C805E3352cF8cF025d4fD9945"
+]
