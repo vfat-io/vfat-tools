@@ -16,7 +16,17 @@ const CL_TOKEN_ABI = [{"anonymous":false,"inputs":[{"indexed":true,"internalType
 
 const NFT_AERO_ABI = [{"inputs":[{"internalType":"address","name":"_factory","type":"address"},{"internalType":"address","name":"_WETH9","type":"address"},{"internalType":"address","name":"_tokenDescriptor","type":"address"},{"internalType":"string","name":"name","type":"string"},{"internalType":"string","name":"symbol","type":"string"}],"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"owner","type":"address"},{"indexed":true,"internalType":"address","name":"approved","type":"address"},{"indexed":true,"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"Approval","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"owner","type":"address"},{"indexed":true,"internalType":"address","name":"operator","type":"address"},{"indexed":false,"internalType":"bool","name":"approved","type":"bool"}],"name":"ApprovalForAll","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"_fromTokenId","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"_toTokenId","type":"uint256"}],"name":"BatchMetadataUpdate","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"uint256","name":"tokenId","type":"uint256"},{"indexed":false,"internalType":"address","name":"recipient","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount0","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"amount1","type":"uint256"}],"name":"Collect","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"uint256","name":"tokenId","type":"uint256"},{"indexed":false,"internalType":"uint128","name":"liquidity","type":"uint128"},{"indexed":false,"internalType":"uint256","name":"amount0","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"amount1","type":"uint256"}],"name":"DecreaseLiquidity","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"uint256","name":"tokenId","type":"uint256"},{"indexed":false,"internalType":"uint128","name":"liquidity","type":"uint128"},{"indexed":false,"internalType":"uint256","name":"amount0","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"amount1","type":"uint256"}],"name":"IncreaseLiquidity","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"_tokenId","type":"uint256"}],"name":"MetadataUpdate","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"tokenDescriptor","type":"address"}],"name":"TokenDescriptorChanged","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"from","type":"address"},{"indexed":true,"internalType":"address","name":"to","type":"address"},{"indexed":true,"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"Transfer","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"owner","type":"address"}],"name":"TransferOwnership","type":"event"},{"inputs":[],"name":"DOMAIN_SEPARATOR","outputs":[{"internalType":"bytes32","name":"","type":"bytes32"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"PERMIT_TYPEHASH","outputs":[{"internalType":"bytes32","name":"","type":"bytes32"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"WETH9","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"to","type":"address"},{"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"approve","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"owner","type":"address"}],"name":"balanceOf","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"baseURI","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"pure","type":"function"},{"inputs":[{"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"burn","outputs":[],"stateMutability":"payable","type":"function"},{"inputs":[{"components":[{"internalType":"uint256","name":"tokenId","type":"uint256"},{"internalType":"address","name":"recipient","type":"address"},{"internalType":"uint128","name":"amount0Max","type":"uint128"},{"internalType":"uint128","name":"amount1Max","type":"uint128"}],"internalType":"struct INonfungiblePositionManager.CollectParams","name":"params","type":"tuple"}],"name":"collect","outputs":[{"internalType":"uint256","name":"amount0","type":"uint256"},{"internalType":"uint256","name":"amount1","type":"uint256"}],"stateMutability":"payable","type":"function"},{"inputs":[{"components":[{"internalType":"uint256","name":"tokenId","type":"uint256"},{"internalType":"uint128","name":"liquidity","type":"uint128"},{"internalType":"uint256","name":"amount0Min","type":"uint256"},{"internalType":"uint256","name":"amount1Min","type":"uint256"},{"internalType":"uint256","name":"deadline","type":"uint256"}],"internalType":"struct INonfungiblePositionManager.DecreaseLiquidityParams","name":"params","type":"tuple"}],"name":"decreaseLiquidity","outputs":[{"internalType":"uint256","name":"amount0","type":"uint256"},{"internalType":"uint256","name":"amount1","type":"uint256"}],"stateMutability":"payable","type":"function"},{"inputs":[],"name":"factory","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"getApproved","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"components":[{"internalType":"uint256","name":"tokenId","type":"uint256"},{"internalType":"uint256","name":"amount0Desired","type":"uint256"},{"internalType":"uint256","name":"amount1Desired","type":"uint256"},{"internalType":"uint256","name":"amount0Min","type":"uint256"},{"internalType":"uint256","name":"amount1Min","type":"uint256"},{"internalType":"uint256","name":"deadline","type":"uint256"}],"internalType":"struct INonfungiblePositionManager.IncreaseLiquidityParams","name":"params","type":"tuple"}],"name":"increaseLiquidity","outputs":[{"internalType":"uint128","name":"liquidity","type":"uint128"},{"internalType":"uint256","name":"amount0","type":"uint256"},{"internalType":"uint256","name":"amount1","type":"uint256"}],"stateMutability":"payable","type":"function"},{"inputs":[{"internalType":"address","name":"owner","type":"address"},{"internalType":"address","name":"operator","type":"address"}],"name":"isApprovedForAll","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"components":[{"internalType":"address","name":"token0","type":"address"},{"internalType":"address","name":"token1","type":"address"},{"internalType":"int24","name":"tickSpacing","type":"int24"},{"internalType":"int24","name":"tickLower","type":"int24"},{"internalType":"int24","name":"tickUpper","type":"int24"},{"internalType":"uint256","name":"amount0Desired","type":"uint256"},{"internalType":"uint256","name":"amount1Desired","type":"uint256"},{"internalType":"uint256","name":"amount0Min","type":"uint256"},{"internalType":"uint256","name":"amount1Min","type":"uint256"},{"internalType":"address","name":"recipient","type":"address"},{"internalType":"uint256","name":"deadline","type":"uint256"},{"internalType":"uint160","name":"sqrtPriceX96","type":"uint160"}],"internalType":"struct INonfungiblePositionManager.MintParams","name":"params","type":"tuple"}],"name":"mint","outputs":[{"internalType":"uint256","name":"tokenId","type":"uint256"},{"internalType":"uint128","name":"liquidity","type":"uint128"},{"internalType":"uint256","name":"amount0","type":"uint256"},{"internalType":"uint256","name":"amount1","type":"uint256"}],"stateMutability":"payable","type":"function"},{"inputs":[{"internalType":"bytes[]","name":"data","type":"bytes[]"}],"name":"multicall","outputs":[{"internalType":"bytes[]","name":"results","type":"bytes[]"}],"stateMutability":"payable","type":"function"},{"inputs":[],"name":"name","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"owner","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"ownerOf","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"spender","type":"address"},{"internalType":"uint256","name":"tokenId","type":"uint256"},{"internalType":"uint256","name":"deadline","type":"uint256"},{"internalType":"uint8","name":"v","type":"uint8"},{"internalType":"bytes32","name":"r","type":"bytes32"},{"internalType":"bytes32","name":"s","type":"bytes32"}],"name":"permit","outputs":[],"stateMutability":"payable","type":"function"},{"inputs":[{"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"positions","outputs":[{"internalType":"uint96","name":"nonce","type":"uint96"},{"internalType":"address","name":"operator","type":"address"},{"internalType":"address","name":"token0","type":"address"},{"internalType":"address","name":"token1","type":"address"},{"internalType":"int24","name":"tickSpacing","type":"int24"},{"internalType":"int24","name":"tickLower","type":"int24"},{"internalType":"int24","name":"tickUpper","type":"int24"},{"internalType":"uint128","name":"liquidity","type":"uint128"},{"internalType":"uint256","name":"feeGrowthInside0LastX128","type":"uint256"},{"internalType":"uint256","name":"feeGrowthInside1LastX128","type":"uint256"},{"internalType":"uint128","name":"tokensOwed0","type":"uint128"},{"internalType":"uint128","name":"tokensOwed1","type":"uint128"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"refundETH","outputs":[],"stateMutability":"payable","type":"function"},{"inputs":[{"internalType":"address","name":"from","type":"address"},{"internalType":"address","name":"to","type":"address"},{"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"safeTransferFrom","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"from","type":"address"},{"internalType":"address","name":"to","type":"address"},{"internalType":"uint256","name":"tokenId","type":"uint256"},{"internalType":"bytes","name":"_data","type":"bytes"}],"name":"safeTransferFrom","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"token","type":"address"},{"internalType":"uint256","name":"value","type":"uint256"},{"internalType":"uint256","name":"deadline","type":"uint256"},{"internalType":"uint8","name":"v","type":"uint8"},{"internalType":"bytes32","name":"r","type":"bytes32"},{"internalType":"bytes32","name":"s","type":"bytes32"}],"name":"selfPermit","outputs":[],"stateMutability":"payable","type":"function"},{"inputs":[{"internalType":"address","name":"token","type":"address"},{"internalType":"uint256","name":"nonce","type":"uint256"},{"internalType":"uint256","name":"expiry","type":"uint256"},{"internalType":"uint8","name":"v","type":"uint8"},{"internalType":"bytes32","name":"r","type":"bytes32"},{"internalType":"bytes32","name":"s","type":"bytes32"}],"name":"selfPermitAllowed","outputs":[],"stateMutability":"payable","type":"function"},{"inputs":[{"internalType":"address","name":"token","type":"address"},{"internalType":"uint256","name":"nonce","type":"uint256"},{"internalType":"uint256","name":"expiry","type":"uint256"},{"internalType":"uint8","name":"v","type":"uint8"},{"internalType":"bytes32","name":"r","type":"bytes32"},{"internalType":"bytes32","name":"s","type":"bytes32"}],"name":"selfPermitAllowedIfNecessary","outputs":[],"stateMutability":"payable","type":"function"},{"inputs":[{"internalType":"address","name":"token","type":"address"},{"internalType":"uint256","name":"value","type":"uint256"},{"internalType":"uint256","name":"deadline","type":"uint256"},{"internalType":"uint8","name":"v","type":"uint8"},{"internalType":"bytes32","name":"r","type":"bytes32"},{"internalType":"bytes32","name":"s","type":"bytes32"}],"name":"selfPermitIfNecessary","outputs":[],"stateMutability":"payable","type":"function"},{"inputs":[{"internalType":"address","name":"operator","type":"address"},{"internalType":"bool","name":"approved","type":"bool"}],"name":"setApprovalForAll","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"_owner","type":"address"}],"name":"setOwner","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"_tokenDescriptor","type":"address"}],"name":"setTokenDescriptor","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"bytes4","name":"interfaceId","type":"bytes4"}],"name":"supportsInterface","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"token","type":"address"},{"internalType":"uint256","name":"amountMinimum","type":"uint256"},{"internalType":"address","name":"recipient","type":"address"}],"name":"sweepToken","outputs":[],"stateMutability":"payable","type":"function"},{"inputs":[],"name":"symbol","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"index","type":"uint256"}],"name":"tokenByIndex","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"tokenDescriptor","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"owner","type":"address"},{"internalType":"uint256","name":"index","type":"uint256"}],"name":"tokenOfOwnerByIndex","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"tokenURI","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"totalSupply","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"from","type":"address"},{"internalType":"address","name":"to","type":"address"},{"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"transferFrom","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"amount0Owed","type":"uint256"},{"internalType":"uint256","name":"amount1Owed","type":"uint256"},{"internalType":"bytes","name":"data","type":"bytes"}],"name":"uniswapV3MintCallback","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"amountMinimum","type":"uint256"},{"internalType":"address","name":"recipient","type":"address"}],"name":"unwrapWETH9","outputs":[],"stateMutability":"payable","type":"function"},{"stateMutability":"payable","type":"receive"}]
 
-const NFT_TOKEN_ADDRESS = "0xc741beb2156827704A1466575ccA1cBf726a1178";
+const NFT_FARM_STRATEGY_ABI = [{"inputs":[{"internalType":"contract SickleFactory","name":"factory_","type":"address"},{"internalType":"contract FeesLib","name":"feesLib_","type":"address"},{"internalType":"contract ConnectorRegistry","name":"connectorRegistry_","type":"address"},{"internalType":"address","name":"wrappedNativeAddress_","type":"address"}],"stateMutability":"nonpayable","type":"constructor"},{"inputs":[],"name":"ETHTransferFailed","type":"error"},{"inputs":[],"name":"IncorrectMsgValue","type":"error"},{"inputs":[{"internalType":"address","name":"sender","type":"address"}],"name":"NotOwner","type":"error"},{"inputs":[],"name":"NotOwnerOrApproved","type":"error"},{"inputs":[],"name":"NotOwnerOrApprovedOrInternal","type":"error"},{"inputs":[],"name":"NotOwnerOrInternal","type":"error"},{"inputs":[],"name":"NotRegisteredSickle","type":"error"},{"inputs":[],"name":"SickleNotDeployed","type":"error"},{"inputs":[],"name":"TransferFailed","type":"error"},{"inputs":[],"name":"TransferFromFailed","type":"error"},{"inputs":[{"internalType":"address","name":"recipient","type":"address"},{"internalType":"address","name":"wrappedNative","type":"address"},{"internalType":"uint256","name":"amountToCharge","type":"uint256"}],"name":"_sickle_chargeTransactionCost","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"strategy","type":"address"},{"internalType":"bytes4","name":"feeDescriptor","type":"bytes4"},{"internalType":"address","name":"tokenOut","type":"address"}],"name":"_sickle_charge_fees","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"nftContractAddress","type":"address"},{"internalType":"uint256","name":"tokenId","type":"uint256"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"_sickle_transfer_erc1155_from_user","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"nftContractAddress","type":"address"},{"internalType":"uint256","name":"tokenId","type":"uint256"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"_sickle_transfer_erc1155_to_user","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"tokenIn","type":"address"},{"internalType":"uint256","name":"amountIn","type":"uint256"},{"internalType":"address","name":"strategy","type":"address"},{"internalType":"bytes4","name":"feeSelector","type":"bytes4"}],"name":"_sickle_transfer_from_user","outputs":[],"stateMutability":"payable","type":"function"},{"inputs":[{"internalType":"address","name":"nftContractAddress","type":"address"},{"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"_sickle_transfer_nft_from_user","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"nftContractAddress","type":"address"},{"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"_sickle_transfer_nft_to_user","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address[]","name":"tokens","type":"address[]"}],"name":"_sickle_transfer_to_user","outputs":[],"stateMutability":"payable","type":"function"},{"inputs":[],"name":"connectorRegistry","outputs":[{"internalType":"contract ConnectorRegistry","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"nftContractAddress","type":"address"},{"internalType":"uint256","name":"tokenId","type":"uint256"},{"internalType":"address","name":"stakingContractAddress","type":"address"},{"internalType":"bytes","name":"extraData","type":"bytes"},{"internalType":"address","name":"approved","type":"address"},{"internalType":"bytes32","name":"referralCode","type":"bytes32"}],"name":"depositErc721","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"factory","outputs":[{"internalType":"contract SickleFactory","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"feesLib","outputs":[{"internalType":"contract FeesLib","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"nftContractAddress","type":"address"},{"internalType":"uint256","name":"tokenId","type":"uint256"},{"internalType":"address","name":"stakingContractAddress","type":"address"},{"internalType":"bytes","name":"extraData","type":"bytes"},{"internalType":"address[]","name":"sweepTokens","type":"address[]"}],"name":"withdrawErc721","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"wrappedNativeAddress","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"}]
+
+const FARM_STRATEGY_ABI = [{"inputs":[{"internalType":"contract SickleFactory","name":"factory_","type":"address"},{"internalType":"contract FeesLib","name":"feesLib_","type":"address"},{"internalType":"contract ConnectorRegistry","name":"connectorRegistry_","type":"address"},{"internalType":"address","name":"wrappedNativeAddress_","type":"address"}],"stateMutability":"nonpayable","type":"constructor"},{"inputs":[],"name":"ArrayLengthMismatch","type":"error"},{"inputs":[],"name":"ETHTransferFailed","type":"error"},{"inputs":[],"name":"IncorrectMsgValue","type":"error"},{"inputs":[{"internalType":"address","name":"sender","type":"address"}],"name":"NotOwner","type":"error"},{"inputs":[],"name":"NotOwnerOrApproved","type":"error"},{"inputs":[],"name":"NotOwnerOrApprovedOrInternal","type":"error"},{"inputs":[],"name":"NotOwnerOrInternal","type":"error"},{"inputs":[],"name":"NotRegisteredSickle","type":"error"},{"inputs":[],"name":"SickleNotDeployed","type":"error"},{"inputs":[],"name":"TokenInRequired","type":"error"},{"inputs":[],"name":"TransferFailed","type":"error"},{"inputs":[],"name":"TransferFromFailed","type":"error"},{"inputs":[{"internalType":"address","name":"strategy","type":"address"},{"internalType":"bytes4","name":"feeDescriptor","type":"bytes4"},{"internalType":"address","name":"feeToken","type":"address"}],"name":"_sickle_charge_fee","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"strategy","type":"address"},{"internalType":"bytes4","name":"feeDescriptor","type":"bytes4"},{"internalType":"address[]","name":"feeTokens","type":"address[]"}],"name":"_sickle_charge_fees","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"recipient","type":"address"},{"internalType":"address","name":"wrappedNative","type":"address"},{"internalType":"uint256","name":"amountToCharge","type":"uint256"}],"name":"_sickle_charge_transaction_cost","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"tokenIn","type":"address"},{"internalType":"uint256","name":"amountIn","type":"uint256"},{"internalType":"address","name":"strategy","type":"address"},{"internalType":"bytes4","name":"feeSelector","type":"bytes4"}],"name":"_sickle_transfer_token_from_user","outputs":[],"stateMutability":"payable","type":"function"},{"inputs":[{"internalType":"address","name":"token","type":"address"}],"name":"_sickle_transfer_token_to_user","outputs":[],"stateMutability":"payable","type":"function"},{"inputs":[{"internalType":"address[]","name":"tokensIn","type":"address[]"},{"internalType":"uint256[]","name":"amountsIn","type":"uint256[]"},{"internalType":"address","name":"strategy","type":"address"},{"internalType":"bytes4","name":"feeSelector","type":"bytes4"}],"name":"_sickle_transfer_tokens_from_user","outputs":[],"stateMutability":"payable","type":"function"},{"inputs":[{"internalType":"address[]","name":"tokens","type":"address[]"}],"name":"_sickle_transfer_tokens_to_user","outputs":[],"stateMutability":"payable","type":"function"},{"inputs":[{"components":[{"internalType":"address","name":"lpToken","type":"address"},{"internalType":"uint256","name":"amountIn","type":"uint256"},{"internalType":"address","name":"stakingContractAddress","type":"address"},{"internalType":"bytes","name":"extraData","type":"bytes"}],"internalType":"struct SimpleFarmStrategy.DepositParams","name":"params","type":"tuple"},{"internalType":"address","name":"approved","type":"address"},{"internalType":"bytes32","name":"referralCode","type":"bytes32"}],"name":"deposit","outputs":[],"stateMutability":"payable","type":"function"},{"inputs":[{"components":[{"internalType":"address[]","name":"tokensOut","type":"address[]"},{"internalType":"address","name":"stakingContractAddress","type":"address"},{"internalType":"bytes","name":"extraData","type":"bytes"}],"internalType":"struct SimpleFarmStrategy.HarvestParams","name":"harvestParams","type":"tuple"},{"components":[{"internalType":"address","name":"lpToken","type":"address"},{"internalType":"uint256","name":"amountOut","type":"uint256"},{"internalType":"address","name":"stakingContractAddress","type":"address"},{"internalType":"bytes","name":"extraData","type":"bytes"}],"internalType":"struct SimpleFarmStrategy.WithdrawParams","name":"withdrawParams","type":"tuple"}],"name":"exit","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"factory","outputs":[{"internalType":"contract SickleFactory","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"feesLib","outputs":[{"internalType":"contract FeesLib","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"components":[{"internalType":"address[]","name":"tokensOut","type":"address[]"},{"internalType":"address","name":"stakingContractAddress","type":"address"},{"internalType":"bytes","name":"extraData","type":"bytes"}],"internalType":"struct SimpleFarmStrategy.HarvestParams","name":"params","type":"tuple"}],"name":"harvest","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"components":[{"internalType":"address","name":"lpToken","type":"address"},{"internalType":"uint256","name":"amountOut","type":"uint256"},{"internalType":"address","name":"stakingContractAddress","type":"address"},{"internalType":"bytes","name":"extraData","type":"bytes"}],"internalType":"struct SimpleFarmStrategy.WithdrawParams","name":"params","type":"tuple"}],"name":"withdraw","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"wrappedNativeAddress","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"}]
+
+const OLD_NFT_TOKEN_ADDRESS = "0xc741beb2156827704A1466575ccA1cBf726a1178";
+
+const NFT_TOKEN_ADDRESS = "0x827922686190790b37229fd06084350E74485b72";
+
+const NFT_FARM_STRATEGY_ADDRESS = "0x9774e26f467f1ac603b63444bcdeb4b519a4f3ea";
+
+const FARM_STRATEGY_ADDRESS = "0x9b381108Ef12A138a5b7cF231Fbbef4f20e72306";
 
 async function main() {
   const App = await init_ethers();
@@ -71,6 +81,28 @@ async function main() {
 //  some CL pools
 
 const clGauges = [
+  "0x4ef636E9eF2B07A62fa22Ef5Bc50e0f3F3DBc58A",
+  "0x527B83782B2eF0C5506e79333ca709D81644952f",
+  "0xF5550F8F0331B8CAA165046667f4E6628E9E3Aac",
+  "0x2A1f7bf46bd975b5004b61c6040597E1B6117040",
+  "0xF33a96b5932D9E9B9A0eDA447AbD8C9d48d2e0c8",
+  "0xfCfEE5f453728BaA5ffDA151f25A0e53B8C5A01C",
+  "0x956d84430523fd383E790956eEaAB5b448620cdc",
+  "0xC6B4fe83Fb284bDdE1f1d19F0B5beB31011B280A",
+  "0x45F8b8eC9c92D09BA8495074436fD97073423041",
+  "0x319e23D38d8ee58783Ff5331507b808709bd00b0",
+  "0xFd73Ab1100a60Ba64686ef9dcdE36d0209773f6a",
+  "0xe09b0630d255aC51406A6f2C3dFf1428DB573F6A",
+  "0x4a3E1294d7869567B387FC3d5e5Ccf14BE2Bbe0a"
+].map(a => {
+  return {
+    address: a,
+    abi: CL_GAUGE_ABI,
+    stakeTokenFunction: "pool"
+  }
+})
+
+const deprecatedClGauges = [
   "0x23E3fF7e1ca9294BC4D9FB3454ce76663E7ce9a4",
   "0xF7E12191EAa4EC540AAfaE1c9289E1F00912c63f",
   "0x19E4EF08CC826B566b98aAd7e959691b28EeA965",
@@ -106,7 +138,7 @@ const clGauges = [
     _print("");
     App.YOUR_ADDRESS = sickle_account_address;
 
-    let p = await loadFlowSynthetixPools(App, tokens, prices, gauges, has_sickle_account)
+    let p = await loadFlowSynthetixPools(App, tokens, prices, gauges, has_sickle_account, owner_sickle_address)
     _print_bold(`Total staked: $${formatMoney(p.staked_tvl)}\n`);
     if (p.totalUserStaked > 0) {
       _print(`You are staking a total of $${formatMoney(p.totalUserStaked)}\n`);
@@ -117,9 +149,20 @@ const clGauges = [
     _print_bold(`------------------------------------`)
     _print(``)
 
-    let cl = await loadClSynthetixPools(App, tokens, prices, clGauges, has_sickle_account)
+    let cl = await loadClSynthetixPools(App, tokens, prices, clGauges, has_sickle_account, owner_sickle_address)
     if (cl.totalUserStaked > 0) {
       _print(`You are staking a total of ${cl.totalUserStaked} NFTs\n`);
+      _print("");
+    }
+
+    _print_bold(`DEPRECATED Cl POOLS`)
+    _print_bold(`------------------------------------`)
+    _print_bold(`Will show only your staked cl pools`)
+    _print(``)
+
+    let dpcl = await loadDpClSynthetixPools(App, tokens, prices, deprecatedClGauges, has_sickle_account, owner_sickle_address)
+    if (dpcl.totalUserStaked > 0) {
+      _print(`You are staking a total of ${dpcl.totalUserStaked} NFTs\n`);
       _print("");
     }
 
@@ -143,23 +186,34 @@ const clGauges = [
       _print("");
     }
 
+    _print_bold(`DEPRECATED Cl POOLS`)
+    _print_bold(`------------------------------------`)
+    _print_bold(`Will show only your staked cl pools`)
+    _print(``)
+
+    let dpcl = await loadDpClSynthetixPools(App, tokens, prices, deprecatedClGauges, has_sickle_account)
+    if (dpcl.totalUserStaked > 0) {
+      _print(`You are staking a total of ${dpcl.totalUserStaked} NFTs\n`);
+      _print("");
+    }
+
     hideLoading();
   }
 }
 
-async function loadClSynthetixPools(App, tokens, prices, pools, has_sickle_account, customURLs) {
+async function loadDpClSynthetixPools(App, tokens, prices, pools, has_sickle_account, owner_sickle_address) {
   let totalUserStaked = 0;
   const infos = await Promise.all(pools.map(p =>
-    loadClSynthetixPoolInfo(App, tokens, prices, p.abi, p.address, p.stakeTokenFunction, has_sickle_account)));
+    loadDpClSynthetixPoolInfo(App, tokens, prices, p.abi, p.address, p.stakeTokenFunction, has_sickle_account, owner_sickle_address)));
   for (const i of infos) {
-    let p = await printAerodromeClPool(App, i, "base", customURLs);
+    let p = await printAerodromeDpClPool(App, i, "base");
     totalUserStaked += p.userStaked || 0;
   }
   return { totalUserStaked };
 }
 
-async function loadClSynthetixPoolInfo(App, tokens, prices, stakingAbi, stakingAddress,
-  stakeTokenFunction, has_sickle_account) {
+async function loadDpClSynthetixPoolInfo(App, tokens, prices, stakingAbi, stakingAddress,
+  stakeTokenFunction, has_sickle_account, owner_sickle_address) {
     const STAKING_POOL = new ethers.Contract(stakingAddress, stakingAbi, App.provider);
 
     let stakeTokenAddress = "";
@@ -195,11 +249,11 @@ async function loadClSynthetixPoolInfo(App, tokens, prices, stakingAbi, stakingA
     const rewardTokenAddress = "0x940181a94a35a4569e4529a3cdfb74e38fd98631";
 
     const nftToken = new ethers.Contract(NFT_TOKEN_ADDRESS, NFT_AERO_ABI, App.provider);
-    let userOwnedNfts = await nftToken.balanceOf(App.YOUR_ADDRESS) / 1;
+    let userOwnedNfts = await nftToken.balanceOf(owner_sickle_address) / 1;
     let userOwnedNftIds = []
 
     for(let i = 0; i < userOwnedNfts; i++){
-      const userOwnedNftId = await nftToken.tokenOfOwnerByIndex(App.YOUR_ADDRESS, i);
+      const userOwnedNftId = await nftToken.tokenOfOwnerByIndex(owner_sickle_address, i);
       userOwnedNftIds.push(userOwnedNftId);
     }
 
@@ -247,12 +301,152 @@ async function loadClSynthetixPoolInfo(App, tokens, prices, stakingAbi, stakingA
     }
 }
 
-async function printAerodromeClPool(App, info, chain="eth", customURLs) {
-  if(info.has_sickle_account && info.userStaked <= 0){
+async function printAerodromeDpClPool(App, info, chain="eth", customURLs) {
+  if(info.userStaked <= 0){
     return {
       userStaked : 0,
     }
   }
+    _print(`Pool - ${info.stakeTokenTicker}`)
+    _print(`${info.rewardTokenTicker} Per Week: ${info.weeklyRewards.toFixed(2)} ($${formatMoney(info.usdPerWeek)})`);
+    _print(`You are staking ${info.userStaked} ${info.stakeTokenTicker}`);
+    for(userStakedNft of info.userStakedNfts){
+      _print(`Nft ID: ${userStakedNft}`)
+    }
+
+    const unstake = async function(nftId) {
+      return clContract_withdraw(info.stakingAddress, nftId, App)
+    }
+    const decrease = async function(nftId) {
+      return clContract_decrease(info.stakingAddress, nftId, App)
+    }
+    const claim = async function(nftId) {
+      return clContract_claim(info.stakingAddress, nftId, App)
+    }
+    const sickle_unstake = async function(nftId) {
+      return sickle_old_clContract_withdraw(info.stakingAddress, nftId, App)
+    }
+    _print(`<a target="_blank" href="https://basescan.org/address/${info.stakingAddress}#code">Base Scan</a>`);
+    if(info.userStakedNfts.length <= 0){
+      _print(`You have not staked NFTs in order to withdraw`);
+    }else{
+      for(const userStakedNft of info.userStakedNfts){
+        if(info.has_sickle_account){
+          _print_link(`Withdraw NFT ID: ${userStakedNft}`, () => sickle_unstake(userStakedNft))
+          _print_link(`Decrease Liquidity NFT ID: ${userStakedNft}`, () => decrease(userStakedNft))
+        }else{
+          _print_link(`Withdraw NFT ID: ${userStakedNft}`, () => unstake(userStakedNft))
+          _print_link(`Decrease Liquidity NFT ID: ${userStakedNft}`, () => decrease(userStakedNft))
+        }
+      }
+    }
+    _print("");
+
+    return {
+        userStaked : info.userStaked
+    }
+}
+
+async function loadClSynthetixPools(App, tokens, prices, pools, has_sickle_account, owner_sickle_address) {
+  let totalUserStaked = 0;
+  const infos = await Promise.all(pools.map(p =>
+    loadClSynthetixPoolInfo(App, tokens, prices, p.abi, p.address, p.stakeTokenFunction, has_sickle_account, owner_sickle_address)));
+  for (const i of infos) {
+    let p = await printAerodromeClPool(App, i, "base");
+    totalUserStaked += p.userStaked || 0;
+  }
+  return { totalUserStaked };
+}
+
+async function loadClSynthetixPoolInfo(App, tokens, prices, stakingAbi, stakingAddress,
+  stakeTokenFunction, has_sickle_account, owner_sickle_address) {
+    const STAKING_POOL = new ethers.Contract(stakingAddress, stakingAbi, App.provider);
+
+    let stakeTokenAddress = "";
+    try{
+      stakeTokenAddress = await STAKING_POOL.callStatic[stakeTokenFunction]();
+    }catch{
+      return {
+        stakingAddress: "",
+        stakeTokenAddress: "",
+        rewardTokenAddress: "",
+        stakeTokenTicker: "",
+        rewardTokenTicker: "",
+        rewardTokenPrice: 0,
+        weeklyRewards: 0,
+        usdPerWeek: 0,
+        userStaked: 0,
+        earnings: 0,
+        totalStakedNfts: 0,
+        has_sickle_account: false
+      }
+    }
+    
+    const clPool = new ethers.Contract(stakeTokenAddress, CL_TOKEN_ABI, App.provider);
+
+    const tokenAddress0 = await clPool.token0();
+    const tokenAddress1 = await clPool.token1();
+
+    const token0 = new ethers.Contract(tokenAddress0, ERC20_ABI, App.provider);
+    const token1 = new ethers.Contract(tokenAddress1, ERC20_ABI, App.provider);
+
+    const stakeToken = await getClToken(token0, token1, stakingAddress);
+
+    const rewardTokenAddress = "0x940181a94a35a4569e4529a3cdfb74e38fd98631";
+
+    const nftToken = new ethers.Contract(NFT_TOKEN_ADDRESS, NFT_AERO_ABI, App.provider);
+    let userOwnedNfts = await nftToken.balanceOf(owner_sickle_address) / 1;
+    let userOwnedNftIds = []
+
+    for(let i = 0; i < userOwnedNfts; i++){
+      const userOwnedNftId = await nftToken.tokenOfOwnerByIndex(owner_sickle_address, i);
+      userOwnedNftIds.push(userOwnedNftId);
+    }
+
+    const rewardToken = getParameterCaseInsensitive(tokens, rewardTokenAddress);
+
+    const stakeTokenTicker = stakeToken.symbol0 + '-' + stakeToken.symbol1;
+    const rewardTokenTicker = rewardToken.symbol;
+
+    const totalStakedNfts = await nftToken.balanceOf(stakingAddress);
+
+    const rewardTokenPrice = getParameterCaseInsensitive(prices, rewardTokenAddress)?.usd;
+
+    const periodFinish = await STAKING_POOL.periodFinish();
+    const rewardRate = await STAKING_POOL.rewardRate();
+    const weeklyRewards = (Date.now() / 1000 > periodFinish) ? 0 : rewardRate / 1e18 * 604800;
+
+    const usdPerWeek = weeklyRewards * rewardTokenPrice;
+
+    const userStakedNfts = await STAKING_POOL.stakedValues(App.YOUR_ADDRESS);
+    const userStaked = userStakedNfts.length;
+
+    let earnings = [];
+
+    for(const userNft of userStakedNfts){
+      const earned = await STAKING_POOL.earned(App.YOUR_ADDRESS, userNft) / 10 ** rewardToken.decimals;
+      earnings.push(earned);
+    }
+
+    return  {
+      stakingAddress,
+      stakeTokenAddress,
+      rewardTokenAddress,
+      stakeTokenTicker,
+      rewardTokenTicker,
+      rewardTokenPrice,
+      weeklyRewards,
+      usdPerWeek,
+      userStaked,
+      earnings,
+      totalStakedNfts,
+      userOwnedNftIds,
+      userStakedNfts,
+      has_sickle_account
+    }
+}
+
+async function printAerodromeClPool(App, info, chain="eth", customURLs) {
     _print(`Pool - ${info.stakeTokenTicker}`)
     _print(`${info.rewardTokenTicker} Per Week: ${info.weeklyRewards.toFixed(2)} ($${formatMoney(info.usdPerWeek)})`);
     _print(`You are staking ${info.userStaked} ${info.stakeTokenTicker}`);
@@ -266,36 +460,83 @@ async function printAerodromeClPool(App, info, chain="eth", customURLs) {
     const unstake = async function(nftId) {
       return clContract_withdraw(info.stakingAddress, nftId, App)
     }
-    const decrease = async function(nftId) {
-      return clContract_decrease(info.stakingAddress, nftId, App)
-    }
     const claim = async function(nftId) {
       return clContract_claim(info.stakingAddress, nftId, App)
+    }
+    const sickle_approveTENDAndStake = async function(nftId) {
+      return sickle_clContract_stake(info.stakingAddress, nftId, App)
+    }
+    const sickle_unstake = async function(nftId) {
+      return sickle_clContract_withdraw(info.stakingAddress, nftId, App)
+    }
+    const sickle_claim = async function(nftId) {
+      return sickle_clContract_claim(info.stakingAddress, nftId, App)
     }
     _print(`<a target="_blank" href="https://basescan.org/address/${info.stakingAddress}#code">Base Scan</a>`);
     if(info.userOwnedNftIds.length <= 0){
       _print(`You have no NFTs to deposit`);
     }else{
       for(const userOwnedNftId of info.userOwnedNftIds){
-        _print_link(`Deposit NFT ID: ${userOwnedNftId}`, () => approveTENDAndStake(userOwnedNftId))
+        if(info.has_sickle_account){
+          _print_link(`Deposit NFT ID: ${userOwnedNftId}`, () => sickle_approveTENDAndStake(userOwnedNftId))
+        }else{
+          _print_link(`Deposit via Sickle NFT ID: ${userOwnedNftId}`, () => sickle_approveTENDAndStake(userOwnedNftId))
+          _print("")
+          _print_link(`Deposit directly NFT ID: ${userOwnedNftId}`, () => approveTENDAndStake(userOwnedNftId))
+        }
       }
     }
     if(info.userStakedNfts.length <= 0){
       _print(`You have not staked NFTs in order to withdraw`);
     }else{
       for(const userStakedNft of info.userStakedNfts){
-        _print_link(`Withdraw NFT ID: ${userStakedNft}`, () => unstake(userStakedNft))
-        _print_link(`Decrease Liquidity NFT ID: ${userStakedNft}`, () => decrease(userStakedNft))
+        if(info.has_sickle_account){
+          _print_link(`Withdraw NFT ID: ${userStakedNft}`, () => sickle_unstake(userStakedNft))
+        }else{
+          _print_link(`Withdraw NFT ID: ${userStakedNft}`, () => unstake(userStakedNft))
+        }
       }
     }
     for(let i = 0; i < info.userStakedNfts.length; i++){
-      _print_link(`Claim rewards, NFT ID: ${info.userStakedNfts[i]} ${info.earnings[i].toFixed(6)} ($${formatMoney(info.earnings[i]*info.rewardTokenPrice)})`, () => claim(info.userStakedNfts[i]))
+      if(info.has_sickle_account){
+        _print_link(`Claim rewards, NFT ID: ${info.userStakedNfts[i]} ${info.earnings[i].toFixed(6)} ($${formatMoney(info.earnings[i]*info.rewardTokenPrice)})`, () => sickle_claim(info.userStakedNfts[i]))
+      }else{
+        _print_link(`Claim rewards, NFT ID: ${info.userStakedNfts[i]} ${info.earnings[i].toFixed(6)} ($${formatMoney(info.earnings[i]*info.rewardTokenPrice)})`, () => claim(info.userStakedNfts[i]))
+      }
     }
     _print("");
 
     return {
         userStaked : info.userStaked
     }
+}
+
+const sickle_clContract_stake = async function(rewardPoolAddr, nftId, App) {
+  const signer = App.provider.getSigner()
+
+  const NFT_CONTRACT = new ethers.Contract(NFT_TOKEN_ADDRESS, NFT_AERO_ABI, signer)
+
+  const REWARD_POOL = new ethers.Contract(NFT_FARM_STRATEGY_ADDRESS, NFT_FARM_STRATEGY_ABI, signer)
+
+  const decodedExtraData = {
+    tokenId: +nftId,
+    maxAmount0: 0,
+    maxAmount1: 0,
+    isIncrease: false
+  }
+
+  const extraData = ethers.utils.defaultAbiCoder.encode(["tuple(uint256 tokenId, uint256 maxAmount0, uint256 maxAmount1, bool isIncrease)"], [decodedExtraData]);
+
+  await NFT_CONTRACT.approve(App.YOUR_ADDRESS, nftId);
+
+    showLoading()
+    REWARD_POOL.depositErc721(NFT_TOKEN_ADDRESS, nftId, rewardPoolAddr, extraData, "0x0000000000000000000000000000000000000000", "0x0000000000000000000000000000000000000000000000000000000000000000")
+      .then(function(t) {
+        return App.provider.waitForTransaction(t.hash)
+      })
+      .catch(function() {
+        hideLoading()
+      })
 }
 
 const clContract_stake = async function(rewardPoolAddr, nftId, App) {
@@ -305,6 +546,58 @@ const clContract_stake = async function(rewardPoolAddr, nftId, App) {
 
     showLoading()
     REWARD_POOL.deposit(nftId, {gasLimit: 250000})
+      .then(function(t) {
+        return App.provider.waitForTransaction(t.hash)
+      })
+      .catch(function() {
+        hideLoading()
+      })
+}
+
+const sickle_clContract_withdraw = async function(rewardPoolAddr, nftId, App) {
+  const signer = App.provider.getSigner()
+
+  const REWARD_POOL = new ethers.Contract(NFT_FARM_STRATEGY_ADDRESS, NFT_FARM_STRATEGY_ABI, signer)
+
+  const decodedExtraData = {
+    tokenId: +nftId,
+    maxAmount0: 0,
+    maxAmount1: 0,
+    isIncrease: false
+  }
+
+  const extraData = ethers.utils.defaultAbiCoder.encode(["tuple(uint256 tokenId, uint256 maxAmount0, uint256 maxAmount1, bool isIncrease)"], [decodedExtraData]);
+
+  const sweepTokens = ["0x940181a94a35a4569e4529a3cdfb74e38fd98631"];
+
+    showLoading()
+    REWARD_POOL.withdrawErc721(NFT_TOKEN_ADDRESS, nftId, rewardPoolAddr, extraData, sweepTokens)
+      .then(function(t) {
+        return App.provider.waitForTransaction(t.hash)
+      })
+      .catch(function() {
+        hideLoading()
+      })
+}
+
+const sickle_old_clContract_withdraw = async function(rewardPoolAddr, nftId, App) {
+  const signer = App.provider.getSigner()
+
+  const REWARD_POOL = new ethers.Contract(NFT_FARM_STRATEGY_ADDRESS, NFT_FARM_STRATEGY_ABI, signer)
+
+  const decodedExtraData = {
+    tokenId: +nftId,
+    maxAmount0: 0,
+    maxAmount1: 0,
+    isIncrease: false
+  }
+
+  const extraData = ethers.utils.defaultAbiCoder.encode(["tuple(uint256 tokenId, uint256 maxAmount0, uint256 maxAmount1, bool isIncrease)"], [decodedExtraData]);
+
+  const sweepTokens = ["0x940181a94a35a4569e4529a3cdfb74e38fd98631"];
+
+    showLoading()
+    REWARD_POOL.withdrawErc721(OLD_NFT_TOKEN_ADDRESS, nftId, rewardPoolAddr, extraData, sweepTokens)
       .then(function(t) {
         return App.provider.waitForTransaction(t.hash)
       })
@@ -333,7 +626,7 @@ const clContract_decrease = async function(rewardPoolAddr, nftId, App) {
 
   const REWARD_POOL = new ethers.Contract(rewardPoolAddr, CL_GAUGE_ABI, signer)
 
-  const NFT_MANAGER = new ethers.Contract(NFT_TOKEN_ADDRESS, NFT_AERO_ABI, App.provider);
+  const NFT_MANAGER = new ethers.Contract(OLD_NFT_TOKEN_ADDRESS, NFT_AERO_ABI, App.provider);
 
   const position = await NFT_MANAGER.positions(nftId)
 
@@ -341,6 +634,36 @@ const clContract_decrease = async function(rewardPoolAddr, nftId, App) {
 
     showLoading()
     REWARD_POOL.decreaseStakedLiquidity(nftId,position[7],0,0,block+100,{gasLimit: 250000})
+      .then(function(t) {
+        return App.provider.waitForTransaction(t.hash)
+      })
+      .catch(function() {
+        hideLoading()
+      })
+}
+
+const sickle_clContract_claim = async function(rewardPoolAddr, nftId, App) {
+  const signer = App.provider.getSigner()
+
+  const decodedExtraData = {
+    tokenId: +nftId,
+    maxAmount0: 0,
+    maxAmount1: 0,
+    isIncrease: false
+  }
+
+  const extraData = ethers.utils.defaultAbiCoder.encode(["tuple(uint256 tokenId, uint256 maxAmount0, uint256 maxAmount1, bool isIncrease)"], [decodedExtraData]);
+
+  const params = {
+    tokensOut: ["0x940181a94a35a4569e4529a3cdfb74e38fd98631"],
+    stakingContractAddress: rewardPoolAddr,
+    extraData: extraData
+  }
+
+  const REWARD_POOL = new ethers.Contract(FARM_STRATEGY_ADDRESS, FARM_STRATEGY_ABI, signer)
+
+    showLoading()
+    REWARD_POOL.harvest(params)
       .then(function(t) {
         return App.provider.waitForTransaction(t.hash)
       })

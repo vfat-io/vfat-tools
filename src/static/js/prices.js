@@ -207,7 +207,8 @@ const BaseTokens = [
   { "id": "ajna-protocol", "symbol": "AJNA", "contract": "0xf0f326af3b1Ed943ab95C29470730CC8Cf66ae47"},
   { "id": "base-velocimeter", "symbol": "BVM", "contract": "0xd386a121991e51eab5e3433bf5b1cf4c8884b47a"},
   { "id": "havven", "symbol": "SNX", "contract": "0x22e6966B799c4D5B13BE962E1D117b56327FDa66"},
-  { "id": "extra-finance", "symbol": "EXTRA", "contract": "0x2dad3a13ef0c6366220f989157009e501e7938f8"}
+  { "id": "extra-finance", "symbol": "EXTRA", "contract": "0x2dad3a13ef0c6366220f989157009e501e7938f8"},
+  { "id": "oath", "symbol": "OATH", "contract": "0x00e1724885473b63bce08a9f0a52f35b0979e35a"}
 ];
 
 const BlastTokens = [
