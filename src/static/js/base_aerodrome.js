@@ -50,7 +50,7 @@ async function main() {
   const poolLength = _poolLength / 1;
   const _calls = [...Array(poolLength).keys()].map(i => FLOW_VOTER_CONTRACT.pools(i));
   while (_calls.length > 0) {
-    calls.push(_calls.splice(0, 60));
+    calls.push(_calls.splice(0, 100));
   }
   for(const call of calls){
     const _lpTokens = await App.ethcallProvider.all(call);
