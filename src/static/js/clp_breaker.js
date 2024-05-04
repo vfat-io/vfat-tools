@@ -43,18 +43,10 @@ async function main() {
           amount1Max: amount1Max,
         }
         const withdraw = async function() {
-          return cl_withdraw(params, nftAddress, App)
-        }
-        const collect = async function() {
-          return cl_collect(collectParams, nftAddress, App)
-        }
-        const burn = async function() {
-          return cl_burn(nftId, nftAddress, App)
+          return cl_withdraw(params, collectParams, nftId, nftAddress, App)
         }
         _print(`NFT ID: ${nftId} NFT ADDRESS: ${nftObj.nftAddress}`);
         _print_link(`BREAK NFT`, withdraw);
-        _print_link(`COLLECT YOUR TOKENS`, collect);
-        _print_link(`BURN YOUR NFT`, burn);
         _print("");
       }
     }
@@ -62,49 +54,23 @@ async function main() {
     hideLoading();
 }
 
-const cl_withdraw = async function(params, nftAddress, App) {
+const cl_withdraw = async function(params, collectParams, nftId, nftAddress, App) {
   const signer = App.provider.getSigner()
 
   const NFT_MANAGER = new ethers.Contract(nftAddress, AERO_NFT_MANAGER_ABI, signer);
 
-    showLoading()
-    NFT_MANAGER.decreaseLiquidity(params)
-      .then(function(t) {
-        return App.provider.waitForTransaction(t.hash)
-          .then(t => refresh(t.hash))
-          .catch(err => transactionFailed(err));
-      })
-      .catch(function(err) {
-        console.log(err)
-        hideLoading()
-      })
-}
+  const iface = new ethers.utils.Interface(AERO_NFT_MANAGER_ABI);
 
-const cl_collect = async function(params, nftAddress, App) {
-  const signer = App.provider.getSigner()
+  const decreaseLiquidity = iface.encodeFunctionData("decreaseLiquidity", [params]);
+  
+  const collect = iface.encodeFunctionData("collect", [collectParams]);
 
-  const NFT_MANAGER = new ethers.Contract(nftAddress, AERO_NFT_MANAGER_ABI, signer);
+  const burn = iface.encodeFunctionData("burn", [nftId]);
+
+  const data = [decreaseLiquidity, collect, burn]
 
     showLoading()
-    NFT_MANAGER.collect(params)
-      .then(function(t) {
-        return App.provider.waitForTransaction(t.hash)
-          .then(t => refresh(t.hash))
-          .catch(err => transactionFailed(err));
-      })
-      .catch(function(err) {
-        console.log(err)
-        hideLoading()
-      })
-}
-
-const cl_burn = async function(nftId, nftAddress, App) {
-  const signer = App.provider.getSigner()
-
-  const NFT_MANAGER = new ethers.Contract(nftAddress, AERO_NFT_MANAGER_ABI, signer);
-
-    showLoading()
-    NFT_MANAGER.burn(nftId)
+    NFT_MANAGER.multicall(data)
       .then(function(t) {
         return App.provider.waitForTransaction(t.hash)
           .then(t => refresh(t.hash))
