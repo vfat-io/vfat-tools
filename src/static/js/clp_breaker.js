@@ -27,8 +27,8 @@ async function main() {
         const liquidity = positions[7];
         const currentTimestamp = Math.floor(Date.now() / 1000);
         const nftAddress = nftObj.nftAddress;
-        const amount0Max = positions[10];
-        const amount1Max = positions[11];
+        const amount0Max = 340282366920938463463374607431768211455n;
+        const amount1Max = 340282366920938463463374607431768211455n;
         const params = {
           tokenId: nftId,
           liquidity: liquidity,
@@ -58,45 +58,6 @@ const cl_withdraw = async function(params, collectParams, nftId, nftAddress, App
   const signer = App.provider.getSigner()
 
   const NFT_MANAGER = new ethers.Contract(nftAddress, AERO_NFT_MANAGER_ABI, signer);
-
-  // DecreaseLiquidity
-// struct DecreaseLiquidityParams {
-//   uint256 tokenId;
-//   uint128 liquidity;
-//   uint256 amount0Min;
-//   uint256 amount1Min;
-//   uint256 deadline;
-// }
-
-// Collect
-// struct CollectParams {
-//   uint256 tokenId;
-//   address recipient;
-//   uint128 amount0Max;
-//   uint128 amount1Max;
-// }
-
-  // const NFT_DECREASE_FUNCTION_ABI = [
-  //   "function decreaseLiquidity((uint256 tokenId, uint128 liquidity, uint256 amount0Min, uint256 amount1Min, uint256 deadline) params)"
-  // ]
-  // const NFT_COLLECT_FUNCTION_ABI = [
-  //   "function collect((uint256 tokenId, address recipient, uint128 amount0Max, uint128 amount1Max) params)"
-  // ]
-  // const NFT_BURN_FUNCTION_ABI = [
-  //   "function burn(uint256 tokenId)"
-  // ]
-
-  // const ifaceDecrease = new ethers.utils.Interface(NFT_DECREASE_FUNCTION_ABI);
-  // const ifaceCollect = new ethers.utils.Interface(NFT_COLLECT_FUNCTION_ABI);
-  // const ifaceBurn = new ethers.utils.Interface(NFT_BURN_FUNCTION_ABI);
-
-  // const decreaseLiquidity = ifaceDecrease.encodeFunctionData("decreaseLiquidity", [params]);
-  
-  // const collect = ifaceCollect.encodeFunctionData("collect", [collectParams]);
-
-  // const burn = ifaceBurn.encodeFunctionData("burn", [nftId]);
-
-  // const data = [decreaseLiquidity, collect, burn];
 
   const iface = new ethers.utils.Interface(AERO_NFT_MANAGER_ABI);
 
