@@ -15,7 +15,7 @@ async function main() {
     _print_bold("");
 
     for(nftObj of targetNetworkNfts){
-      const NFT = new ethers.Contract(nftObj.nftAddress, AERO_NFT_MANAGER_ABI, App.provider);
+      const NFT = new ethers.Contract(nftObj.nftAddress, GENERAL_NFT_MANAGER_ABI, App.provider);
       const ownedNfts = await NFT.balanceOf(App.YOUR_ADDRESS) / 1;
       if(ownedNfts <= 0){
         _print(`You dont have (${nftObj.nftAddress}) NFT to break on ${connectedNetworkName} network`);
@@ -57,9 +57,9 @@ async function main() {
 const cl_withdraw = async function(params, collectParams, nftId, nftAddress, App) {
   const signer = App.provider.getSigner()
 
-  const NFT_MANAGER = new ethers.Contract(nftAddress, AERO_NFT_MANAGER_ABI, signer);
+  const NFT_MANAGER = new ethers.Contract(nftAddress, GENERAL_NFT_MANAGER_ABI, signer);
 
-  const iface = new ethers.utils.Interface(AERO_NFT_MANAGER_ABI);
+  const iface = new ethers.utils.Interface(GENERAL_NFT_MANAGER_ABI);
 
   const decreaseLiquidity = iface.encodeFunctionData("decreaseLiquidity", [params]);
   const collect = iface.encodeFunctionData("collect", [collectParams]);
