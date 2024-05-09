@@ -555,15 +555,32 @@ $(function() {
       const rewardToken = getParameterCaseInsensitive(tokens, rewardTokenAddress);
   
       const rewardTokenTicker = rewardToken.symbol;
+
+      let poolPrices;
   
-      const poolPrices = getPoolPrices(tokens, prices, stakeToken, "optimism");
-  
-      if (!poolPrices)
-      {
+      try{
+        poolPrices = getPoolPrices(tokens, prices, stakeToken, "optimism");
+      }catch(err){
         console.log(`Couldn't calculate prices for pool ${stakeTokenAddress}`);
-        return null;
+        return {
+          stakingAddress: "",
+          poolPrices: "",
+          stakeTokenAddress: "",
+          rewardTokenAddress: "",
+          stakeTokenTicker: "",
+          rewardTokenTicker: "",
+          stakeTokenPrice: 0,
+          rewardTokenPrice: 0,
+          weeklyRewards: 0,
+          usdPerWeek: 0,
+          staked_tvl: 0,
+          userStaked: 0,
+          userUnstaked: 0,
+          earned: 0,
+          has_sickle_account: false
+        }
       }
-  
+
       const stakeTokenTicker = poolPrices.stakeTokenTicker;
   
       const stakeTokenPrice =
@@ -689,12 +706,29 @@ $(function() {
     for (const address of newTokenAddresses) {
         tokens[address] = await getGeneralEthcallToken(App, address, stakingAddress);
     }
-    const poolPrices = getPoolPrices(tokens, prices, stakeToken, "optimism");
+    let poolPrices;
   
-    if (!poolPrices)
-    {
+    try{
+      poolPrices = getPoolPrices(tokens, prices, stakeToken, "optimism");
+    }catch(err){
       console.log(`Couldn't calculate prices for pool ${stakeTokenAddress}`);
-      return null;
+      return {
+        stakingAddress: "",
+        poolPrices: "",
+        stakeTokenAddress: "",
+        rewardTokenAddress: "",
+        stakeTokenTicker: "",
+        rewardTokenTicker: "",
+        stakeTokenPrice: 0,
+        rewardTokenPrice: 0,
+        weeklyRewards: 0,
+        usdPerWeek: 0,
+        staked_tvl: 0,
+        userStaked: 0,
+        userUnstaked: 0,
+        earned: 0,
+        has_sickle_account: false
+      }
     }
   
     const stakeTokenTicker = poolPrices.stakeTokenTicker;
@@ -815,12 +849,29 @@ $(function() {
     for (const address of newTokenAddresses) {
         tokens[address] = await getToken(App, address, stakingAddress);
     }
-    const poolPrices = getPoolPrices(tokens, prices, stakeToken, "optimism");
+    let poolPrices;
   
-    if (!poolPrices)
-    {
+    try{
+      poolPrices = getPoolPrices(tokens, prices, stakeToken, "optimism");
+    }catch(err){
       console.log(`Couldn't calculate prices for pool ${stakeTokenAddress}`);
-      return null;
+      return {
+        stakingAddress: "",
+        poolPrices: "",
+        stakeTokenAddress: "",
+        rewardTokenAddress: "",
+        stakeTokenTicker: "",
+        rewardTokenTicker: "",
+        stakeTokenPrice: 0,
+        rewardTokenPrice: 0,
+        weeklyRewards: 0,
+        usdPerWeek: 0,
+        staked_tvl: 0,
+        userStaked: 0,
+        userUnstaked: 0,
+        earned: 0,
+        has_sickle_account: false
+      }
     }
   
     const stakeTokenTicker = poolPrices.stakeTokenTicker;
