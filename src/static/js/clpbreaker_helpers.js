@@ -43,3 +43,6 @@ const GENERAL_NFT_MANAGER_ABI = [{"inputs":[{"internalType":"address","name":"_f
   }
   _print('')
 }
+
+//delay function for the loops
+const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));

@@ -48,6 +48,8 @@ async function main() {
         _print(`NFT ID: ${nftId} NFT ADDRESS: ${nftObj.nftAddress}`);
         _print_link(`BREAK NFT`, withdraw);
         _print("");
+
+        await sleep(1000);
       }
     }
 
