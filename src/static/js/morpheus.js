@@ -63,6 +63,9 @@ async function loadMorheusPool(App, tokens, prices, abi, address){
   const unstake = async function() {
     return morContract_unstake(address, usersData.deposited, App)
   }
+  const claim = async function() {
+    return morContract_claim(address, pendingRewards, App)
+  }
   _print(`<a target="_blank" href="https://etherscan.io/address/${address}#code">Etherscan</a>`);
 
   if(userUnstaked > 0.011){
@@ -73,6 +76,26 @@ async function loadMorheusPool(App, tokens, prices, abi, address){
 
   if(usersLastStake > withdrawLockPeriod){
     _print_link(`Unstake ${userStaked.toFixed(6)} ${stakeToken.symbol}`, unstake)
+  }
+  _print_link(`Claim ${pendingRewards.toFixed(6)} MOR`, claim)
+}
+
+const morContract_claim = async function(rewardPoolAddr, pendingRewards, App) {
+  const signer = App.provider.getSigner()
+
+  const REWARD_POOL = new ethers.Contract(rewardPoolAddr, MOR_STAKING_ABI, signer)
+
+  console.log(App.YOUR_ADDRESS)
+
+  if (pendingRewards > 0) {
+    showLoading()
+    REWARD_POOL.claim(0, App.YOUR_ADDRESS, {gasLimit: 250000})
+      .then(function(t) {
+        return App.provider.waitForTransaction(t.hash)
+      })
+      .catch(function() {
+        hideLoading()
+      })
   }
 }
 
