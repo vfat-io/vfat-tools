@@ -180,7 +180,7 @@ const deprecatedClGauges = [
     _print_bold(`------------------------------------`)
     _print(``)
 
-    let cl = await loadClSynthetixPools(App, tokens, prices, clGauges, has_sickle_account)
+    let cl = await loadClSynthetixPools(App, tokens, prices, clGauges, has_sickle_account, owner_sickle_address)
     if (cl.totalUserStaked > 0) {
       _print(`You are staking a total of ${cl.totalUserStaked} NFTs\n`);
       _print("");
@@ -191,7 +191,7 @@ const deprecatedClGauges = [
     _print_bold(`Will show only your staked cl pools`)
     _print(``)
 
-    let dpcl = await loadDpClSynthetixPools(App, tokens, prices, deprecatedClGauges, has_sickle_account)
+    let dpcl = await loadDpClSynthetixPools(App, tokens, prices, deprecatedClGauges, has_sickle_account, owner_sickle_address)
     if (dpcl.totalUserStaked > 0) {
       _print(`You are staking a total of ${dpcl.totalUserStaked} NFTs\n`);
       _print("");
@@ -328,7 +328,7 @@ async function printAerodromeDpClPool(App, info, chain="eth", customURLs) {
     }
     _print(`<a target="_blank" href="https://basescan.org/address/${info.stakingAddress}#code">Base Scan</a>`);
     if(info.userStakedNfts.length <= 0){
-      _print(`You have not staked NFTs in order to withdraw`);
+      _print(`You have no staked NFTs in order to withdraw`);
     }else{
       for(const userStakedNft of info.userStakedNfts){
         if(info.has_sickle_account){
@@ -487,7 +487,7 @@ async function printAerodromeClPool(App, info, chain="eth", customURLs) {
       }
     }
     if(info.userStakedNfts.length <= 0){
-      _print(`You have not staked NFTs in order to withdraw`);
+      _print(`You have no staked NFTs in order to withdraw`);
     }else{
       for(const userStakedNft of info.userStakedNfts){
         if(info.has_sickle_account){
