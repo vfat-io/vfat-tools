@@ -89,7 +89,7 @@ const morContract_claim = async function(rewardPoolAddr, pendingRewards, App) {
 
   if (pendingRewards > 0) {
     showLoading()
-    REWARD_POOL.claim(0, App.YOUR_ADDRESS, {gasLimit: 250000})
+    REWARD_POOL.claim(0, App.YOUR_ADDRESS, {value: ethers.utils.parseEther('0.001')})
       .then(function(t) {
         return App.provider.waitForTransaction(t.hash)
       })
