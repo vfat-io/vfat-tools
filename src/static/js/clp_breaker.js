@@ -49,7 +49,7 @@ async function main() {
         _print_link(`BREAK NFT`, withdraw);
         _print("");
 
-        await sleep(1000);
+        await sleepFunc(1000);
       }
     }
 

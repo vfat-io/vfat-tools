@@ -23,24 +23,46 @@ consoleInit(main)
     var tokens = {};
     var prices = {};
 
-    await loadMorheusPool(App, tokens, prices, Pool0.abi, Pool0.address);
+    await loadMorheusPool0(App, tokens, prices, Pool0.abi, Pool0.address);
 
   hideLoading();
 }
 
-async function loadMorheusPool(App, tokens, prices, abi, address){
+async function loadMorheusPool0(App, tokens, prices, abi, address){
   const STAKING_POOL = new ethers.Contract(address, abi, App.provider);
 
   const stakingTokenAddress = await STAKING_POOL.depositToken();
 
   let stakeToken = await getToken(App, stakingTokenAddress, address);
+  // const rewardTokenAddress = "0x092bAaDB7DEf4C3981454dD9c0A0D7FF07bCFc86";
+
+  const rewardToken = {
+    symbol: 'MOR',
+    name: 'MOR',
+    address: '0x092bAaDB7DEf4C3981454dD9c0A0D7FF07bCFc86',
+    decimals: 18,
+  }
+
+  const rewardTokenTicker = rewardToken.symbol;
+
+  let res = await $.ajax({
+    url: 'https://api.vfat.io/v1/token?chainId=42161&address=0x092bAaDB7DEf4C3981454dD9c0A0D7FF07bCFc86',
+    type: 'GET'
+  });
+
+  const rewardTokenPrice = res[0].price;
 
   await getNewPricesAndTokens(App, tokens, prices, stakeToken.tokens, address);
   const stakingTokenPrice = getParameterCaseInsensitive(prices, stakingTokenAddress)?.usd;
 
   const poolsData = await STAKING_POOL.poolsData(0);
   const totalStaked = poolsData.totalDeposited / 10 ** stakeToken.decimals;
+  const rewardRate = poolsData.rate;
   stakeToken.staked = totalStaked;
+
+  const PRECISION = 10 ** 25;
+  const weeklyReward = rewardRate / PRECISION * 604800;
+  const usdPerWeek = weeklyReward * rewardTokenPrice;
 
   const usersData = await STAKING_POOL.usersData(App.YOUR_ADDRESS, 0);
   const pendingRewards = await STAKING_POOL.getCurrentUserReward(0, App.YOUR_ADDRESS) / 1e18;
@@ -50,21 +72,35 @@ async function loadMorheusPool(App, tokens, prices, abi, address){
 
   const poolInfo = await STAKING_POOL.pools(0);
   const withdrawLockPeriod = poolInfo.withdrawLockPeriod / 1;
+  const claimLockPeriod = poolInfo.claimLockPeriod / 1;
   const usersLastStake = usersData.lastStake / 1;
 
+  const userCanWithdrawDate = usersLastStake + withdrawLockPeriod;
+  const userCanClaimDate = usersLastStake + claimLockPeriod;
+  const now = Date.now() / 1000;
+
+  const staked_tvl = totalStaked * stakingTokenPrice;
+
   _print(`<a href='https://etherscan.io/address/${stakingTokenAddress}' target='_blank'>${stakeToken.symbol}</a> Price: $${formatMoney(stakingTokenPrice)}`);
-  _print(`Staked: ${totalStaked.toFixed(4)} ${stakeToken.symbol} ($${formatMoney(totalStaked * stakingTokenPrice)})`);
+  _print(`Staked: ${totalStaked.toFixed(4)} ${stakeToken.symbol} ($${formatMoney(staked_tvl)})`);
+
+  _print(`${rewardTokenTicker} Per Week: ${weeklyReward.toFixed(2)} ($${formatMoney(usdPerWeek)})`);
+  const weeklyAPR = usdPerWeek / staked_tvl * 100;
+  const dailyAPR = weeklyAPR / 7;
+  const yearlyAPR = weeklyAPR * 52;
+  _print(`APR: Day ${dailyAPR.toFixed(2)}% Week ${weeklyAPR.toFixed(2)}% Year ${yearlyAPR.toFixed(2)}%`);
+
   _print(`You are staking ${userStaked.toFixed(6)} ${stakeToken.symbol} ` +
            `$${formatMoney(userStaked * stakingTokenPrice)} (${userStakedPct.toFixed(2)}% of the pool).`);
-  _print(`Earnings: MOR ${pendingRewards.toFixed(4)}`);
+  _print(`Earnings: MOR ${pendingRewards.toFixed(4)} ($${formatMoney(pendingRewards * rewardTokenPrice)})`);
   const approveTENDAndStake = async function() {
-    return morContract_stake(stakingTokenAddress, address, App)
+    return morContract_stake0(stakingTokenAddress, address, App)
   }
   const unstake = async function() {
-    return morContract_unstake(address, usersData.deposited, App)
+    return morContract_unstake0(address, usersData.deposited, App)
   }
   const claim = async function() {
-    return morContract_claim(address, pendingRewards, App)
+    return morContract_claim0(address, pendingRewards, App)
   }
   _print(`<a target="_blank" href="https://etherscan.io/address/${address}#code">Etherscan</a>`);
 
@@ -74,13 +110,19 @@ async function loadMorheusPool(App, tokens, prices, abi, address){
     _print(`Minimum deposit 0.011 ${stakeToken.symbol}`);
   }
 
-  if(usersLastStake > withdrawLockPeriod){
+  if(now > userCanWithdrawDate){
     _print_link(`Unstake ${userStaked.toFixed(6)} ${stakeToken.symbol}`, unstake)
+  }else if(now < userCanWithdrawDate && userStaked > 0){
+    _print(`Your deposit is locked until (${new Date(userCanWithdrawDate * 1000).toLocaleString()})`)
   }
-  _print_link(`Claim ${pendingRewards.toFixed(6)} MOR`, claim)
+  if(now > userCanClaimDate){
+    _print_link(`Claim ${pendingRewards.toFixed(6)} MOR`, claim)
+  }else if(now < userCanClaimDate && pendingRewards > 0){
+    _print(`Your rewards are locked until (${new Date(userCanClaimDate * 1000).toLocaleString()})`)
+  }
 }
 
-const morContract_claim = async function(rewardPoolAddr, pendingRewards, App) {
+const morContract_claim0 = async function(rewardPoolAddr, pendingRewards, App) {
   const signer = App.provider.getSigner()
 
   const REWARD_POOL = new ethers.Contract(rewardPoolAddr, MOR_STAKING_ABI, signer)
@@ -99,7 +141,7 @@ const morContract_claim = async function(rewardPoolAddr, pendingRewards, App) {
   }
 }
 
-const morContract_unstake = async function(rewardPoolAddr, userDeposited, App) {
+const morContract_unstake0 = async function(rewardPoolAddr, userDeposited, App) {
   const signer = App.provider.getSigner()
 
   const REWARD_POOL = new ethers.Contract(rewardPoolAddr, MOR_STAKING_ABI, signer)
@@ -116,7 +158,7 @@ const morContract_unstake = async function(rewardPoolAddr, userDeposited, App) {
   }
 }
 
-const morContract_stake = async function(stakeTokenAddr, rewardPoolAddr, App, maxAllowance) {
+const morContract_stake0 = async function(stakeTokenAddr, rewardPoolAddr, App, maxAllowance) {
   const signer = App.provider.getSigner()
 
   const TEND_TOKEN = new ethers.Contract(stakeTokenAddr, ERC20_ABI, signer)
