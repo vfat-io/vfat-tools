@@ -60,10 +60,6 @@ async function loadMorheusPool0(App, tokens, prices, abi, address){
   const rewardRate = poolsData.rate;
   stakeToken.staked = totalStaked;
 
-  const PRECISION = 10 ** 25;
-  const weeklyReward = rewardRate / PRECISION * 604800;
-  const usdPerWeek = weeklyReward * rewardTokenPrice;
-
   const usersData = await STAKING_POOL.usersData(App.YOUR_ADDRESS, 0);
   const pendingRewards = await STAKING_POOL.getCurrentUserReward(0, App.YOUR_ADDRESS) / 1e18;
   const userStaked = usersData.deposited / 10 ** stakeToken.decimals;
@@ -71,9 +67,15 @@ async function loadMorheusPool0(App, tokens, prices, abi, address){
   const userUnstaked = stakeToken.unstaked;
 
   const poolInfo = await STAKING_POOL.pools(0);
+  const initialReward = poolInfo.initialReward / 1e18;
+  const rewardDecrease = poolInfo.rewardDecrease / 1e18;
   const withdrawLockPeriod = poolInfo.withdrawLockPeriod / 1;
   const claimLockPeriod = poolInfo.claimLockPeriod / 1;
   const usersLastStake = usersData.lastStake / 1;
+
+  const PRECISION = 10 ** 25;
+  const weeklyReward = initialReward * 7;
+  const usdPerWeek = weeklyReward * rewardTokenPrice;
 
   const userCanWithdrawDate = usersLastStake + withdrawLockPeriod;
   const userCanClaimDate = usersLastStake + claimLockPeriod;
