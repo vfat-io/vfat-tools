@@ -480,9 +480,10 @@ async function loadClSynthetixPoolInfo(App, tokens, prices, stakingAbi, stakingA
 
 async function printAerodromeClPool(App, info, chain="eth", customURLs) {
   if(info.weeklyRewards <= 0){
-    console.log(`${info.stakingAddress} THIS POOL HAS NOT HAVE REWARDS`)
+    console.log(`THIS POOL HAS NOT HAVE REWARDS`)
   }else{
-    console.log(`${info.stakingAddress} REWARDS!!!!!!!!!!!!!!!!!!!!!!!!!!!`)
+    console.log(`CL REWARDS!!!!!!!!!!!!!!!!!!!!!!!!!!!`)
+    console.log(`"${info.stakingAddress}",`)
   }
     _print(`Pool - ${info.stakeTokenTicker}`)
     _print(`${info.rewardTokenTicker} Per Week: ${info.weeklyRewards.toFixed(2)} ($${formatMoney(info.usdPerWeek)})`);
@@ -752,7 +753,6 @@ async function loadFlowSynthetixPoolInfo(App, tokens, prices, stakingAbi, stakin
     try{
       stakeTokenAddress = await STAKING_POOL.callStatic[stakeTokenFunction]();
     }catch{
-      console.log(stakingAddress);
       return {
         stakingAddress: "",
         poolPrices: "",
@@ -848,7 +848,7 @@ async function printAerodromePool(App, info, chain="eth", customURLs) {
     }
   }else{
     console.log(`V2 GAUGE WITH REWARDS`)
-    console.log(`${info.stakingAddress}`)
+    console.log(`"${info.stakingAddress}",`)
   }
   if(info.has_sickle_account && info.userStaked <= 0){
     return {
