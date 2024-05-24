@@ -485,6 +485,13 @@ async function printAerodromeClPool(App, info, chain="eth", customURLs) {
     console.log(`CL REWARDS!!!!!!!!!!!!!!!!!!!!!!!!!!!`)
     console.log(`"${info.stakingAddress}",`)
   }
+  if(info.has_sickle_account && info.userStaked <= 0){
+    return {
+      staked_tvl: 0,
+      userStaked : 0,
+      apr : 0
+    }
+  }
     _print(`Pool - ${info.stakeTokenTicker}`)
     _print(`${info.rewardTokenTicker} Per Week: ${info.weeklyRewards.toFixed(2)} ($${formatMoney(info.usdPerWeek)})`);
     _print(`You are staking ${info.userStaked} ${info.stakeTokenTicker}`);

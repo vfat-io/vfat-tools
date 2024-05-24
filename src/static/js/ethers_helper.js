@@ -225,8 +225,20 @@ async function init_ethers() {
 
     // Modern dapp browsers...
     if (walletProvider) {
+
+      // see if the user has put rpc by hand
+      const queryString = window.location.search;
+      const urlParams = new URLSearchParams(queryString);
+      const rpc = urlParams.get('rpc');
+
       App.web3Provider = walletProvider
       App.provider = new ethers.providers.Web3Provider(walletProvider)
+      if(rpc){
+        App.rpcProvider = new ethers.providers.JsonRpcProvider(rpc)
+      }else{
+        App.rpcProvider = null;
+      }
+
       try {
         // Request account access
         const accounts = await walletProvider.request({ method: 'eth_requestAccounts' })
