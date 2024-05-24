@@ -952,7 +952,7 @@ const sickle_aeroContract_unstake = async function(rewardPoolAddr, lpToken, user
     lpToken: lpToken,
     amountOut: userStaked,
     stakingContractAddress: rewardPoolAddr,
-    extraData: "0x00" //ean den doulepsei na valw "0x00"
+    extraData: "0x00"
   }
 
     showLoading()
@@ -971,7 +971,7 @@ const sickle_aeroContract_claim = async function(rewardPoolAddr, App) {
   const params = {
     tokensOut: ["0x940181a94a35a4569e4529a3cdfb74e38fd98631"],
     stakingContractAddress: rewardPoolAddr,
-    extraData: "0x00" //ean den doulepsei na valw "0x00"
+    extraData: "0x00"
   }
 
   const REWARD_POOL = new ethers.Contract(SIMPLE_FARM_STRATEGY_ADDRESS, SIMPLE_FARM_STRATEGY_ABI, signer)
@@ -995,7 +995,7 @@ const sickle_aeroContract_stake = async function(lpToken, rewardPoolAddr, userUn
     lpToken: lpToken,
     amountIn: userUnstaked,
     stakingContractAddress: rewardPoolAddr,
-    extraData: "0x00" //ean den doulepsei na valw "0x00"
+    extraData: "0x00"
   }
 
     showLoading()
