@@ -63,7 +63,7 @@ async function main() {
   }
 
   const SICKLE_FACTORY_ADDR = "0x71D234A3e1dfC161cc1d081E6496e76627baAc31";
-  const SICKLE_FACTORY = new ethers.Contract(SICKLE_FACTORY_ADDR, SICKLE_FACTORY_ABI, App.provider);
+  const SICKLE_FACTORY = new ethers.Contract(SICKLE_FACTORY_ADDR, SICKLE_FACTORY_ABI, App.rpcProvider ?? App.provider);
 
   const sickle_account_address = await SICKLE_FACTORY.sickles(App.YOUR_ADDRESS);
   const has_sickle_account = sickle_account_address === "0x0000000000000000000000000000000000000000" ? false : true;
@@ -246,7 +246,7 @@ async function loadDpClSynthetixPools(App, tokens, prices, pools, has_sickle_acc
 
 async function loadDpClSynthetixPoolInfo(App, tokens, prices, stakingAbi, stakingAddress,
   stakeTokenFunction, has_sickle_account, owner_sickle_address) {
-    const STAKING_POOL = new ethers.Contract(stakingAddress, stakingAbi, App.provider);
+    const STAKING_POOL = new ethers.Contract(stakingAddress, stakingAbi, App.rpcProvider ?? App.provider);
 
     let stakeTokenAddress = "";
     try{
@@ -268,19 +268,19 @@ async function loadDpClSynthetixPoolInfo(App, tokens, prices, stakingAbi, stakin
       }
     }
     
-    const clPool = new ethers.Contract(stakeTokenAddress, CL_TOKEN_ABI, App.provider);
+    const clPool = new ethers.Contract(stakeTokenAddress, CL_TOKEN_ABI, App.rpcProvider ?? App.provider);
 
     const tokenAddress0 = await clPool.token0();
     const tokenAddress1 = await clPool.token1();
 
-    const token0 = new ethers.Contract(tokenAddress0, ERC20_ABI, App.provider);
-    const token1 = new ethers.Contract(tokenAddress1, ERC20_ABI, App.provider);
+    const token0 = new ethers.Contract(tokenAddress0, ERC20_ABI, App.rpcProvider ?? App.provider);
+    const token1 = new ethers.Contract(tokenAddress1, ERC20_ABI, App.rpcProvider ?? App.provider);
 
     const stakeToken = await getClToken(token0, token1, stakingAddress);
 
     const rewardTokenAddress = "0x940181a94a35a4569e4529a3cdfb74e38fd98631";
 
-    const nftToken = new ethers.Contract(NFT_TOKEN_ADDRESS, NFT_AERO_ABI, App.provider);
+    const nftToken = new ethers.Contract(NFT_TOKEN_ADDRESS, NFT_AERO_ABI, App.rpcProvider ?? App.provider);
     let userOwnedNfts = await nftToken.balanceOf(owner_sickle_address) / 1;
     let userOwnedNftIds = []
 
@@ -392,7 +392,7 @@ async function loadClSynthetixPools(App, tokens, prices, pools, has_sickle_accou
 
 async function loadClSynthetixPoolInfo(App, tokens, prices, stakingAbi, stakingAddress,
   stakeTokenFunction, has_sickle_account, owner_sickle_address) {
-    const STAKING_POOL = new ethers.Contract(stakingAddress, stakingAbi, App.provider);
+    const STAKING_POOL = new ethers.Contract(stakingAddress, stakingAbi, App.rpcProvider ?? App.provider);
 
     let stakeTokenAddress = "";
     try{
@@ -414,19 +414,19 @@ async function loadClSynthetixPoolInfo(App, tokens, prices, stakingAbi, stakingA
       }
     }
     
-    const clPool = new ethers.Contract(stakeTokenAddress, CL_TOKEN_ABI, App.provider);
+    const clPool = new ethers.Contract(stakeTokenAddress, CL_TOKEN_ABI, App.rpcProvider ?? App.provider);
 
     const tokenAddress0 = await clPool.token0();
     const tokenAddress1 = await clPool.token1();
 
-    const token0 = new ethers.Contract(tokenAddress0, ERC20_ABI, App.provider);
-    const token1 = new ethers.Contract(tokenAddress1, ERC20_ABI, App.provider);
+    const token0 = new ethers.Contract(tokenAddress0, ERC20_ABI, App.rpcProvider ?? App.provider);
+    const token1 = new ethers.Contract(tokenAddress1, ERC20_ABI, App.rpcProvider ?? App.provider);
 
     const stakeToken = await getClToken(token0, token1, stakingAddress);
 
     const rewardTokenAddress = "0x940181a94a35a4569e4529a3cdfb74e38fd98631";
 
-    const nftToken = new ethers.Contract(NFT_TOKEN_ADDRESS, NFT_AERO_ABI, App.provider);
+    const nftToken = new ethers.Contract(NFT_TOKEN_ADDRESS, NFT_AERO_ABI, App.rpcProvider ?? App.provider);
     let userOwnedNfts = await nftToken.balanceOf(owner_sickle_address) / 1;
     let userOwnedNftIds = []
 
@@ -671,7 +671,7 @@ const clContract_decrease = async function(rewardPoolAddr, nftId, App) {
 
   const REWARD_POOL = new ethers.Contract(rewardPoolAddr, CL_GAUGE_ABI, signer)
 
-  const NFT_MANAGER = new ethers.Contract(OLD_NFT_TOKEN_ADDRESS, NFT_AERO_ABI, App.provider);
+  const NFT_MANAGER = new ethers.Contract(OLD_NFT_TOKEN_ADDRESS, NFT_AERO_ABI, App.rpcProvider ?? App.provider);
 
   const position = await NFT_MANAGER.positions(nftId)
 
@@ -750,7 +750,7 @@ async function loadFlowSynthetixPools(App, tokens, prices, pools, has_sickle_acc
 
 async function loadFlowSynthetixPoolInfo(App, tokens, prices, stakingAbi, stakingAddress,
   stakeTokenFunction, has_sickle_account) {
-    const STAKING_POOL = new ethers.Contract(stakingAddress, stakingAbi, App.provider);
+    const STAKING_POOL = new ethers.Contract(stakingAddress, stakingAbi, App.rpcProvider ?? App.provider);
 
     if (!STAKING_POOL.callStatic[stakeTokenFunction]) {
       console.log("Couldn't find stake function ", stakeTokenFunction);
