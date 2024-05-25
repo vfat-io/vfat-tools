@@ -22,6 +22,8 @@ const FARM_STRATEGY_ABI = [{"inputs":[{"internalType":"contract SickleFactory","
 
 const SIMPLE_FARM_STRATEGY_ABI = [{"inputs":[{"internalType":"contract SickleFactory","name":"factory_","type":"address"},{"internalType":"contract FeesLib","name":"feesLib_","type":"address"},{"internalType":"contract ConnectorRegistry","name":"connectorRegistry_","type":"address"},{"internalType":"address","name":"wrappedNativeAddress_","type":"address"}],"stateMutability":"nonpayable","type":"constructor"},{"inputs":[],"name":"ArrayLengthMismatch","type":"error"},{"inputs":[],"name":"ETHTransferFailed","type":"error"},{"inputs":[],"name":"IncorrectMsgValue","type":"error"},{"inputs":[{"internalType":"address","name":"sender","type":"address"}],"name":"NotOwner","type":"error"},{"inputs":[],"name":"NotOwnerOrApproved","type":"error"},{"inputs":[],"name":"NotOwnerOrApprovedOrInternal","type":"error"},{"inputs":[],"name":"NotOwnerOrInternal","type":"error"},{"inputs":[],"name":"NotRegisteredSickle","type":"error"},{"inputs":[],"name":"SickleNotDeployed","type":"error"},{"inputs":[],"name":"TokenInRequired","type":"error"},{"inputs":[],"name":"TransferFailed","type":"error"},{"inputs":[],"name":"TransferFromFailed","type":"error"},{"inputs":[{"internalType":"address","name":"strategy","type":"address"},{"internalType":"bytes4","name":"feeDescriptor","type":"bytes4"},{"internalType":"address","name":"feeToken","type":"address"}],"name":"_sickle_charge_fee","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"strategy","type":"address"},{"internalType":"bytes4","name":"feeDescriptor","type":"bytes4"},{"internalType":"address[]","name":"feeTokens","type":"address[]"}],"name":"_sickle_charge_fees","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"recipient","type":"address"},{"internalType":"address","name":"wrappedNative","type":"address"},{"internalType":"uint256","name":"amountToCharge","type":"uint256"}],"name":"_sickle_charge_transaction_cost","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"tokenIn","type":"address"},{"internalType":"uint256","name":"amountIn","type":"uint256"},{"internalType":"address","name":"strategy","type":"address"},{"internalType":"bytes4","name":"feeSelector","type":"bytes4"}],"name":"_sickle_transfer_token_from_user","outputs":[],"stateMutability":"payable","type":"function"},{"inputs":[{"internalType":"address","name":"token","type":"address"}],"name":"_sickle_transfer_token_to_user","outputs":[],"stateMutability":"payable","type":"function"},{"inputs":[{"internalType":"address[]","name":"tokensIn","type":"address[]"},{"internalType":"uint256[]","name":"amountsIn","type":"uint256[]"},{"internalType":"address","name":"strategy","type":"address"},{"internalType":"bytes4","name":"feeSelector","type":"bytes4"}],"name":"_sickle_transfer_tokens_from_user","outputs":[],"stateMutability":"payable","type":"function"},{"inputs":[{"internalType":"address[]","name":"tokens","type":"address[]"}],"name":"_sickle_transfer_tokens_to_user","outputs":[],"stateMutability":"payable","type":"function"},{"inputs":[{"components":[{"internalType":"address","name":"lpToken","type":"address"},{"internalType":"uint256","name":"amountIn","type":"uint256"},{"internalType":"address","name":"stakingContractAddress","type":"address"},{"internalType":"bytes","name":"extraData","type":"bytes"}],"internalType":"struct SimpleFarmStrategy.DepositParams","name":"params","type":"tuple"},{"internalType":"address","name":"approved","type":"address"},{"internalType":"bytes32","name":"referralCode","type":"bytes32"}],"name":"deposit","outputs":[],"stateMutability":"payable","type":"function"},{"inputs":[{"components":[{"internalType":"address[]","name":"tokensOut","type":"address[]"},{"internalType":"address","name":"stakingContractAddress","type":"address"},{"internalType":"bytes","name":"extraData","type":"bytes"}],"internalType":"struct SimpleFarmStrategy.HarvestParams","name":"harvestParams","type":"tuple"},{"components":[{"internalType":"address","name":"lpToken","type":"address"},{"internalType":"uint256","name":"amountOut","type":"uint256"},{"internalType":"address","name":"stakingContractAddress","type":"address"},{"internalType":"bytes","name":"extraData","type":"bytes"}],"internalType":"struct SimpleFarmStrategy.WithdrawParams","name":"withdrawParams","type":"tuple"}],"name":"exit","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"factory","outputs":[{"internalType":"contract SickleFactory","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"feesLib","outputs":[{"internalType":"contract FeesLib","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"components":[{"internalType":"address[]","name":"tokensOut","type":"address[]"},{"internalType":"address","name":"stakingContractAddress","type":"address"},{"internalType":"bytes","name":"extraData","type":"bytes"}],"internalType":"struct SimpleFarmStrategy.HarvestParams","name":"params","type":"tuple"}],"name":"harvest","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"components":[{"internalType":"address","name":"lpToken","type":"address"},{"internalType":"uint256","name":"amountOut","type":"uint256"},{"internalType":"address","name":"stakingContractAddress","type":"address"},{"internalType":"bytes","name":"extraData","type":"bytes"}],"internalType":"struct SimpleFarmStrategy.WithdrawParams","name":"params","type":"tuple"}],"name":"withdraw","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"wrappedNativeAddress","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"}]
 
+const V2_GAUGE_ABI = [{"inputs":[{"internalType":"address","name":"_forwarder","type":"address"},{"internalType":"address","name":"_stakingToken","type":"address"},{"internalType":"address","name":"_feesVotingReward","type":"address"},{"internalType":"address","name":"_rewardToken","type":"address"},{"internalType":"address","name":"_voter","type":"address"},{"internalType":"bool","name":"_isPool","type":"bool"}],"stateMutability":"nonpayable","type":"constructor"},{"inputs":[],"name":"NotAlive","type":"error"},{"inputs":[],"name":"NotAuthorized","type":"error"},{"inputs":[],"name":"NotTeam","type":"error"},{"inputs":[],"name":"NotVoter","type":"error"},{"inputs":[],"name":"RewardRateTooHigh","type":"error"},{"inputs":[],"name":"ZeroAmount","type":"error"},{"inputs":[],"name":"ZeroRewardRate","type":"error"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"from","type":"address"},{"indexed":false,"internalType":"uint256","name":"claimed0","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"claimed1","type":"uint256"}],"name":"ClaimFees","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"from","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"ClaimRewards","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"from","type":"address"},{"indexed":true,"internalType":"address","name":"to","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"Deposit","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"from","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"NotifyReward","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"from","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"Withdraw","type":"event"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"balanceOf","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"_amount","type":"uint256"},{"internalType":"address","name":"_recipient","type":"address"}],"name":"deposit","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_amount","type":"uint256"}],"name":"deposit","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"_account","type":"address"}],"name":"earned","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"fees0","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"fees1","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"feesVotingReward","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"_account","type":"address"}],"name":"getReward","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"isPool","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"forwarder","type":"address"}],"name":"isTrustedForwarder","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"lastTimeRewardApplicable","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"lastUpdateTime","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"left","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"_amount","type":"uint256"}],"name":"notifyRewardAmount","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_amount","type":"uint256"}],"name":"notifyRewardWithoutClaim","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"periodFinish","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"rewardPerToken","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"rewardPerTokenStored","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"rewardRate","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"","type":"uint256"}],"name":"rewardRateByEpoch","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"rewardToken","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"rewards","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"stakingToken","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"totalSupply","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"userRewardPerTokenPaid","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"ve","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"voter","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"_amount","type":"uint256"}],"name":"withdraw","outputs":[],"stateMutability":"nonpayable","type":"function"}]
+
 const OLD_NFT_TOKEN_ADDRESS = "0xc741beb2156827704A1466575ccA1cBf726a1178";
 
 const NFT_TOKEN_ADDRESS = "0x827922686190790b37229fd06084350E74485b72";
@@ -46,7 +48,6 @@ async function main() {
 
   const FLOW_VOTER_ADDR = "0x16613524e02ad97eDfeF371bC883F2F5d6C480A5"
   const FLOW_VOTER_CONTRACT = new ethcall.Contract(FLOW_VOTER_ADDR, FLOW_VOTER_ABI);
-  const FLOW_TOKEN_ADDR = "0x940181a94a35a4569e4529a3cdfb74e38fd98631"
 
   let lpTokens = [], arrayOfGauges = [], calls = [], calls2 = [];
 
@@ -67,9 +68,9 @@ async function main() {
   }
 
   const SICKLE_FACTORY_ADDR = "0x71D234A3e1dfC161cc1d081E6496e76627baAc31";
-  const SICKLE_FACTORY = new ethers.Contract(SICKLE_FACTORY_ADDR, SICKLE_FACTORY_ABI, App.rpcProvider ?? App.provider);
+  const SICKLE_FACTORY = new ethcall.Contract(SICKLE_FACTORY_ADDR, SICKLE_FACTORY_ABI);
 
-  const sickle_account_address = await SICKLE_FACTORY.sickles(App.YOUR_ADDRESS);
+  const [sickle_account_address] = await App.ethcallProvider.all([SICKLE_FACTORY.sickles(App.YOUR_ADDRESS)]);
   const has_sickle_account = sickle_account_address === "0x0000000000000000000000000000000000000000" ? false : true;
   const owner_sickle_address = App.YOUR_ADDRESS;
 
@@ -81,6 +82,16 @@ async function main() {
     }
   })
 
+  //TESTING FROM HERE
+  //=========================================================================================================
+  let _balanceOfs = [];
+  for(let arrayOfGauge of arrayOfGauges){
+    const balanceOf = await Promise.all(arrayOfGauge.map(a => new ethcall.Contract(a, V2_GAUGE_ABI)).map(contract => contract.balanceOf(App.YOUR_ADDRESS)).map(async(c) => await App.ethcallProvider.all([c])))
+    _balanceOfs.push(balanceOf[0]);
+  }
+
+  const balanceOfs = _balanceOfs.flat()
+  //=========================================================================================================
   
 //  some CL pools
 
@@ -250,11 +261,11 @@ async function loadDpClSynthetixPools(App, tokens, prices, pools, has_sickle_acc
 
 async function loadDpClSynthetixPoolInfo(App, tokens, prices, stakingAbi, stakingAddress,
   stakeTokenFunction, has_sickle_account, owner_sickle_address) {
-    const STAKING_POOL = new ethers.Contract(stakingAddress, stakingAbi, App.rpcProvider ?? App.provider);
-
-    let stakeTokenAddress = "";
+    const STAKING_POOL = new ethcall.Contract(stakingAddress, stakingAbi);
+    
+    let stakeTokenAddress, periodFinish, rewardRate, userStakedNfts;
     try{
-      stakeTokenAddress = await STAKING_POOL.callStatic[stakeTokenFunction]();
+      [stakeTokenAddress, periodFinish, rewardRate, userStakedNfts] = await App.ethcallProvider.all([STAKING_POOL.pool(), STAKING_POOL.periodFinish(), STAKING_POOL.rewardRate(), STAKING_POOL.stakedValues(App.YOUR_ADDRESS)]);
     }catch{
       return {
         stakingAddress: "",
@@ -272,50 +283,45 @@ async function loadDpClSynthetixPoolInfo(App, tokens, prices, stakingAbi, stakin
       }
     }
     
-    const clPool = new ethers.Contract(stakeTokenAddress, CL_TOKEN_ABI, App.rpcProvider ?? App.provider);
+    const clPool = new ethcall.Contract(stakeTokenAddress, CL_TOKEN_ABI);
 
-    const tokenAddress0 = await clPool.token0();
-    const tokenAddress1 = await clPool.token1();
+    const [tokenAddress0, tokenAddress1] = await App.ethcallProvider.all([clPool.token0(), clPool.token1()]);
 
-    const token0 = new ethers.Contract(tokenAddress0, ERC20_ABI, App.rpcProvider ?? App.provider);
-    const token1 = new ethers.Contract(tokenAddress1, ERC20_ABI, App.rpcProvider ?? App.provider);
+    const token0 = new ethcall.Contract(tokenAddress0, ERC20_ABI);
+    const token1 = new ethcall.Contract(tokenAddress1, ERC20_ABI);
 
-    const stakeToken = await getClToken(token0, token1, stakingAddress);
+    const stakeToken = await getClToken(App, token0, token1, stakingAddress);
 
     const rewardTokenAddress = "0x940181a94a35a4569e4529a3cdfb74e38fd98631";
 
-    const nftToken = new ethers.Contract(NFT_TOKEN_ADDRESS, NFT_AERO_ABI, App.rpcProvider ?? App.provider);
-    let userOwnedNfts = await nftToken.balanceOf(owner_sickle_address) / 1;
+    const nftToken = new ethcall.Contract(NFT_TOKEN_ADDRESS, NFT_AERO_ABI);
+
+    const [userOwnedNfts, totalStakedNfts] = await App.ethcallProvider.all([nftToken.balanceOf(owner_sickle_address), nftToken.balanceOf(stakingAddress)]);
     let userOwnedNftIds = []
 
     for(let i = 0; i < userOwnedNfts; i++){
-      const userOwnedNftId = await nftToken.tokenOfOwnerByIndex(owner_sickle_address, i);
+      const [userOwnedNftId] = await App.ethcallProvider.all([nftToken.tokenOfOwnerByIndex(owner_sickle_address, i)]);
       userOwnedNftIds.push(userOwnedNftId);
     }
 
     const rewardToken = getParameterCaseInsensitive(tokens, rewardTokenAddress);
 
-    // const stakeTokenTicker = await nftToken.name();
     const stakeTokenTicker = stakeToken.symbol0 + '-' + stakeToken.symbol1;
     const rewardTokenTicker = rewardToken.symbol;
 
-    const totalStakedNfts = await nftToken.balanceOf(stakingAddress);
-
     const rewardTokenPrice = getParameterCaseInsensitive(prices, rewardTokenAddress)?.usd;
 
-    const periodFinish = await STAKING_POOL.periodFinish();
-    const rewardRate = await STAKING_POOL.rewardRate();
     const weeklyRewards = (Date.now() / 1000 > periodFinish) ? 0 : rewardRate / 1e18 * 604800;
 
     const usdPerWeek = weeklyRewards * rewardTokenPrice;
 
-    const userStakedNfts = await STAKING_POOL.stakedValues(App.YOUR_ADDRESS);
     const userStaked = userStakedNfts.length;
 
     let earnings = [];
 
     for(const userNft of userStakedNfts){
-      const earned = await STAKING_POOL.earned(App.YOUR_ADDRESS, userNft) / 10 ** rewardToken.decimals;
+      const [_earned] = await App.ethcallProvider.all([STAKING_POOL.earned(App.YOUR_ADDRESS, userNft)]);
+      const earned = _earned / 10 ** rewardToken.decimals;
       earnings.push(earned);
     }
 
@@ -396,11 +402,11 @@ async function loadClSynthetixPools(App, tokens, prices, pools, has_sickle_accou
 
 async function loadClSynthetixPoolInfo(App, tokens, prices, stakingAbi, stakingAddress,
   stakeTokenFunction, has_sickle_account, owner_sickle_address) {
-    const STAKING_POOL = new ethers.Contract(stakingAddress, stakingAbi, App.rpcProvider ?? App.provider);
+    const STAKING_POOL = new ethcall.Contract(stakingAddress, stakingAbi);
 
-    let stakeTokenAddress = "";
+    let stakeTokenAddress, periodFinish, rewardRate, userStakedNfts;
     try{
-      stakeTokenAddress = await STAKING_POOL.callStatic[stakeTokenFunction]();
+      [stakeTokenAddress, periodFinish, rewardRate, userStakedNfts] = await App.ethcallProvider.all([STAKING_POOL.pool(), STAKING_POOL.periodFinish(), STAKING_POOL.rewardRate(), STAKING_POOL.stakedValues(App.YOUR_ADDRESS)]);
     }catch{
       return {
         stakingAddress: "",
@@ -418,24 +424,24 @@ async function loadClSynthetixPoolInfo(App, tokens, prices, stakingAbi, stakingA
       }
     }
     
-    const clPool = new ethers.Contract(stakeTokenAddress, CL_TOKEN_ABI, App.rpcProvider ?? App.provider);
+    const clPool = new ethcall.Contract(stakeTokenAddress, CL_TOKEN_ABI);
 
-    const tokenAddress0 = await clPool.token0();
-    const tokenAddress1 = await clPool.token1();
+    const [tokenAddress0, tokenAddress1] = await App.ethcallProvider.all([clPool.token0(), clPool.token1()]);
 
-    const token0 = new ethers.Contract(tokenAddress0, ERC20_ABI, App.rpcProvider ?? App.provider);
-    const token1 = new ethers.Contract(tokenAddress1, ERC20_ABI, App.rpcProvider ?? App.provider);
+    const token0 = new ethcall.Contract(tokenAddress0, ERC20_ABI);
+    const token1 = new ethcall.Contract(tokenAddress1, ERC20_ABI);
 
-    const stakeToken = await getClToken(token0, token1, stakingAddress);
+    const stakeToken = await getClToken(App, token0, token1, stakingAddress);
 
     const rewardTokenAddress = "0x940181a94a35a4569e4529a3cdfb74e38fd98631";
 
-    const nftToken = new ethers.Contract(NFT_TOKEN_ADDRESS, NFT_AERO_ABI, App.rpcProvider ?? App.provider);
-    let userOwnedNfts = await nftToken.balanceOf(owner_sickle_address) / 1;
+    const nftToken = new ethcall.Contract(NFT_TOKEN_ADDRESS, NFT_AERO_ABI);
+    const [userOwnedNfts, totalStakedNfts] = await App.ethcallProvider.all([nftToken.balanceOf(owner_sickle_address), nftToken.balanceOf(stakingAddress)]);
+
     let userOwnedNftIds = []
 
     for(let i = 0; i < userOwnedNfts; i++){
-      const userOwnedNftId = await nftToken.tokenOfOwnerByIndex(owner_sickle_address, i);
+      const [userOwnedNftId] = await App.ethcallProvider.all([nftToken.tokenOfOwnerByIndex(owner_sickle_address, i)]);
       userOwnedNftIds.push(userOwnedNftId);
     }
 
@@ -444,23 +450,19 @@ async function loadClSynthetixPoolInfo(App, tokens, prices, stakingAbi, stakingA
     const stakeTokenTicker = stakeToken.symbol0 + '-' + stakeToken.symbol1;
     const rewardTokenTicker = rewardToken.symbol;
 
-    const totalStakedNfts = await nftToken.balanceOf(stakingAddress);
-
     const rewardTokenPrice = getParameterCaseInsensitive(prices, rewardTokenAddress)?.usd;
 
-    const periodFinish = await STAKING_POOL.periodFinish();
-    const rewardRate = await STAKING_POOL.rewardRate();
     const weeklyRewards = (Date.now() / 1000 > periodFinish) ? 0 : rewardRate / 1e18 * 604800;
 
     const usdPerWeek = weeklyRewards * rewardTokenPrice;
 
-    const userStakedNfts = await STAKING_POOL.stakedValues(App.YOUR_ADDRESS);
     const userStaked = userStakedNfts.length;
 
     let earnings = [];
 
     for(const userNft of userStakedNfts){
-      const earned = await STAKING_POOL.earned(App.YOUR_ADDRESS, userNft) / 10 ** rewardToken.decimals;
+      const [_earned] = await App.ethcallProvider.all([STAKING_POOL.earned(App.YOUR_ADDRESS, userNft)]);
+      const earned = _earned / 10 ** rewardToken.decimals;
       earnings.push(earned);
     }
 
@@ -786,10 +788,6 @@ async function loadFlowSynthetixPoolInfo(App, tokens, prices, stakingAbi, stakin
     const rewardTokenAddress = "0x940181a94a35a4569e4529a3cdfb74e38fd98631";
 
     var stakeToken = await getGeneralToken(App, stakeTokenAddress, stakingAddress);
-
-    if (stakeTokenAddress.toLowerCase() === rewardTokenAddress.toLowerCase()) {
-      stakeToken.staked = await STAKING_POOL.totalSupply() / 10 ** stakeToken.decimals;
-    }
 
     var newTokenAddresses = stakeToken.tokens.filter(x =>
       !getParameterCaseInsensitive(tokens,x));
@@ -1119,12 +1117,14 @@ const aeroContract_claim = async function(rewardPoolAddr, App) {
   }
 }
 
-async function getClToken(contract0, contract1, address) {
+async function getClToken(App, contract0, contract1, address) {
+  const [name0, symbol0] = await App.ethcallProvider.all([contract0.name(), contract0.symbol()]);
+  const [name1, symbol1] = await App.ethcallProvider.all([contract1.name(), contract1.symbol()]);
   return {
     address,
-    name0 : await contract0.name(),
-    name1 : await contract1.name(),
-    symbol0 : await contract0.symbol(),
-    symbol1 : await contract1.symbol(),
+    name0,
+    name1,
+    symbol0,
+    symbol1,
   }
 }
