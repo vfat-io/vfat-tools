@@ -84,13 +84,27 @@ async function main() {
 
   //TESTING FROM HERE
   //=========================================================================================================
-  let _balanceOfs = [];
-  for(let arrayOfGauge of arrayOfGauges){
-    const balanceOf = await Promise.all(arrayOfGauge.map(a => new ethcall.Contract(a, V2_GAUGE_ABI)).map(contract => contract.balanceOf(App.YOUR_ADDRESS)).map(async(c) => await App.ethcallProvider.all([c])))
-    _balanceOfs.push(balanceOf[0]);
-  }
+  // let _balanceOfs = [];
+  // for(let arrayOfGauge of arrayOfGauges){
+  //   const balanceOf = await Promise.all(arrayOfGauge.map(a => new ethcall.Contract(a, V2_GAUGE_ABI)).map(contract => contract.balanceOf(App.YOUR_ADDRESS)).map(async(c) => await App.ethcallProvider.all([c])))
+  //   _balanceOfs.push(balanceOf);
+  // }
 
-  const balanceOfs = _balanceOfs.flat()
+  // const balanceOfs = await Promise.all(arrayOfGauges[0].map(a => new ethcall.Contract(a, V2_GAUGE_ABI))
+  //                                                        .map(contract => contract.balanceOf(App.YOUR_ADDRESS))
+  //                                                        .map(async(c) => await App.ethcallProvider.all([c])))
+
+  // let balanceOfs = [];
+  // for(const arrayOfGauge of arrayOfGauges){
+  //   const contracts = arrayOfGauge.map(a => new ethcall.Contract(a, V2_GAUGE_ABI));
+  //   const gaugeCalls = contracts.map(c => c.balanceOf(App.YOUR_ADDRESS));
+  //   const _balanceOfs = await App.ethcallProvider.all(gaugeCalls);
+  //   balanceOfs.push(_balanceOfs);
+  // }
+
+  const contracts = arrayOfGauges[2].map(a => new ethcall.Contract(a, V2_GAUGE_ABI));
+  const gaugeCalls = contracts.map(c => c.balanceOf(App.YOUR_ADDRESS));
+  const _balanceOfs = await App.ethcallProvider.all(gaugeCalls);
   //=========================================================================================================
   
 //  some CL pools
