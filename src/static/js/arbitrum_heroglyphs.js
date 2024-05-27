@@ -136,7 +136,7 @@ const mint_New_Glyph = async function (inputTokenAddress, costInWei, contractAdd
     showLoading();
     allow
       .then(async function () {
-        WEEBTEND_V2_TOKEN.buy(costInWei)
+        WEEBTEND_V2_TOKEN.buy()
           .then(function (t) {
             App.provider.waitForTransaction(t.hash).then(function () {
               hideLoading();
