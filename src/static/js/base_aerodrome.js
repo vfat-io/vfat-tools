@@ -94,17 +94,27 @@ async function main() {
   //                                                        .map(contract => contract.balanceOf(App.YOUR_ADDRESS))
   //                                                        .map(async(c) => await App.ethcallProvider.all([c])))
 
-  // let balanceOfs = [];
+  // let userGauges = [];
   // for(const arrayOfGauge of arrayOfGauges){
   //   const contracts = arrayOfGauge.map(a => new ethcall.Contract(a, V2_GAUGE_ABI));
   //   const gaugeCalls = contracts.map(c => c.balanceOf(App.YOUR_ADDRESS));
-  //   const _balanceOfs = await App.ethcallProvider.all(gaugeCalls);
-  //   balanceOfs.push(_balanceOfs);
+  //   const balanceOfs = await App.ethcallProvider.all(gaugeCalls);
+  //   for(const balanceOf of balanceOfs){
+  //     if(balanceOf > 0){
+  //       userGauges.push(balanceOf);
+  //     }
+  //   }
   // }
 
-  const contracts = arrayOfGauges[2].map(a => new ethcall.Contract(a, V2_GAUGE_ABI));
-  const gaugeCalls = contracts.map(c => c.balanceOf(App.YOUR_ADDRESS));
-  const _balanceOfs = await App.ethcallProvider.all(gaugeCalls);
+  let balanceOfs = []
+  try{
+    const contracts = arrayOfGauges[3].map(a => new ethcall.Contract(a, V2_GAUGE_ABI));
+    const gaugeCalls = contracts.map(c => c.balanceOf(App.YOUR_ADDRESS));
+    const _balanceOfs = await App.ethcallProvider.all(gaugeCalls);
+    balanceOfs.push(_balanceOfs);
+  }catch(e){
+    console.log(e);
+  }
   //=========================================================================================================
   
 //  some CL pools
@@ -770,15 +780,13 @@ async function loadFlowSynthetixPools(App, tokens, prices, pools, has_sickle_acc
 
 async function loadFlowSynthetixPoolInfo(App, tokens, prices, stakingAbi, stakingAddress,
   stakeTokenFunction, has_sickle_account) {
-    const STAKING_POOL = new ethers.Contract(stakingAddress, stakingAbi, App.rpcProvider ?? App.provider);
+    const STAKING_POOL = new ethcall.Contract(stakingAddress, stakingAbi);
 
-    if (!STAKING_POOL.callStatic[stakeTokenFunction]) {
-      console.log("Couldn't find stake function ", stakeTokenFunction);
-    }
-
-    let stakeTokenAddress = "";
+    let stakeTokenAddress, periodFinish, rewardRate, _userStaked, _earned;
     try{
-      stakeTokenAddress = await STAKING_POOL.callStatic[stakeTokenFunction]();
+      [stakeTokenAddress, periodFinish, rewardRate, _userStaked, _earned] = 
+        await App.ethcallProvider.all([STAKING_POOL.stakingToken(), STAKING_POOL.periodFinish(), STAKING_POOL.rewardRate(),
+                                       STAKING_POOL.balanceOf(App.YOUR_ADDRESS), STAKING_POOL.earned(App.YOUR_ADDRESS)]);
     }catch{
       return {
         stakingAddress: "",
@@ -829,20 +837,17 @@ async function loadFlowSynthetixPoolInfo(App, tokens, prices, stakingAbi, stakin
         prices[stakeTokenAddress]?.usd ?? getParameterCaseInsensitive(prices, stakeTokenAddress)?.usd;
     const rewardTokenPrice = getParameterCaseInsensitive(prices, rewardTokenAddress)?.usd;
 
-    const periodFinish = await STAKING_POOL.periodFinish();
-    const rewardRate = await STAKING_POOL.rewardRate();
     const weeklyRewards = (Date.now() / 1000 > periodFinish) ? 0 : rewardRate / 1e18 * 604800;
 
     const usdPerWeek = weeklyRewards * rewardTokenPrice;
 
     const staked_tvl = poolPrices.staked_tvl;
 
-    const _userStaked = await STAKING_POOL.balanceOf(App.YOUR_ADDRESS);
     const userStaked = _userStaked / 10 ** stakeToken.decimals;
 
     const userUnstaked = stakeToken.unstaked;
 
-    const earned = await STAKING_POOL.earned(App.YOUR_ADDRESS) / 10 ** rewardToken.decimals;
+    const earned = _earned / 10 ** rewardToken.decimals;
 
     return  {
       stakingAddress,
