@@ -85,129 +85,65 @@ async function main() {
   const has_sickle_account = sickle_account_address === "0x0000000000000000000000000000000000000000" ? false : true;
   const owner_sickle_address = App.YOUR_ADDRESS;
 
-  const gauges = arrayOfGauges.flat().map(a => {
-    return {
-      address: a,
-      abi: FLOW_GAUGE_ABI,
-      stakeTokenFunction: "stakingToken"
-    }
-  })
+  let cl_pools = [], userV2Gauges = [], userClGauges = [];
 
-  //TESTING FROM HERE
-  //=========================================================================================================
-
-  let v2_pools = [], cl_pools = [], allPools = [], userV2Gauges = [], userClGauges = [];
-
-  const isPools = lpTokens[0].map(pool => V2_FACTORY_CONTRACT.isPool(pool));
-  const pools = await App.ethcallProvider.all(isPools);
-
-  for(let i = 0; i < lpTokens[0].length; i++){
-    const pool = {lpToken: lpTokens[0][i], isV2: pools[i]}
-    allPools.push(pool);
+  if(has_sickle_account){
+    App.YOUR_ADDRESS = sickle_account_address;
   }
-
-  for(const pool of allPools){
-    if(pool.isV2){
-      v2_pools.push(pool.lpToken)
-    }else{
-      cl_pools.push(pool.lpToken);
+  
+  for(const lpTokenBatch of lpTokens){
+    let v2_pools = [], allPools = [];
+    const isPools = lpTokenBatch.map(pool => V2_FACTORY_CONTRACT.isPool(pool));
+    const pools = await App.ethcallProvider.all(isPools);
+  
+    for(let i = 0; i < lpTokenBatch.length; i++){
+      const pool = {lpToken: lpTokenBatch[i], isV2: pools[i]}
+      allPools.push(pool);
     }
-  }
-
-  const v2_gauge_calls = v2_pools.map(a => FLOW_VOTER_CONTRACT.gauges(a));
-  const v2_gauges = await App.ethcallProvider.all(v2_gauge_calls);
-
-  const v2_gauge_contracts = v2_gauges.map(a => new ethcall.Contract(a, V2_GAUGE_ABI));
-  const balanceOfCalls = v2_gauge_contracts.map(c => c.balanceOf(App.YOUR_ADDRESS));
-  const balanceOfs = await App.ethcallProvider.all(balanceOfCalls);
-
-  for(const balanceOf of balanceOfs){
-    if(balanceOf > 0){
-      userV2Gauges.push(balanceOf);
+  
+    for(const pool of allPools){
+      if(pool.isV2){
+        v2_pools.push(pool.lpToken)
+      }else{
+        cl_pools.push(pool.lpToken);
+      }
+    }
+  
+    const v2_gauge_calls = v2_pools.map(a => FLOW_VOTER_CONTRACT.gauges(a));
+    const v2_gauges = await App.ethcallProvider.all(v2_gauge_calls);
+  
+    const v2_gauge_contracts = v2_gauges.map(a => new ethcall.Contract(a, V2_GAUGE_ABI));
+    const balanceOf_calls = v2_gauge_contracts.map(c => c.balanceOf(App.YOUR_ADDRESS));
+    const balanceOfs = await App.ethcallProvider.all(balanceOf_calls);
+  
+    for(let i = 0; i < v2_gauges.length; i++){
+      if(balanceOfs[i] / 1 > 0){
+        userV2Gauges.push(v2_gauges[i])
+      }
     }
   }
 
   const cl_gauge_calls = cl_pools.map(a => FLOW_VOTER_CONTRACT.gauges(a));
   const cl_gauges = await App.ethcallProvider.all(cl_gauge_calls);
-  //=========================================================================================================
-  
-//  some CL pools
+  const cl_gauge_contracts = cl_gauges.map(a => new ethcall.Contract(a, CL_GAUGE_ABI));
+  const cl_balanceOf_calls = cl_gauge_contracts.map(c => c.stakedValues(App.YOUR_ADDRESS));
+  const cl_balanceOfs = await App.ethcallProvider.all(cl_balanceOf_calls);
 
-const clGauges = [
-  "0x4ef636E9eF2B07A62fa22Ef5Bc50e0f3F3DBc58A",
-  "0x527B83782B2eF0C5506e79333ca709D81644952f",
-  "0xF5550F8F0331B8CAA165046667f4E6628E9E3Aac",
-  "0x2A1f7bf46bd975b5004b61c6040597E1B6117040",
-  "0xF33a96b5932D9E9B9A0eDA447AbD8C9d48d2e0c8",
-  "0xfCfEE5f453728BaA5ffDA151f25A0e53B8C5A01C",
-  "0x956d84430523fd383E790956eEaAB5b448620cdc",
-  "0xC6B4fe83Fb284bDdE1f1d19F0B5beB31011B280A",
-  "0x45F8b8eC9c92D09BA8495074436fD97073423041",
-  "0x319e23D38d8ee58783Ff5331507b808709bd00b0",
-  "0xFd73Ab1100a60Ba64686ef9dcdE36d0209773f6a",
-  "0xe09b0630d255aC51406A6f2C3dFf1428DB573F6A",
-  "0x4a3E1294d7869567B387FC3d5e5Ccf14BE2Bbe0a",
-  "0xd45eF71ef6a8108F9c8e4b1D9DEDCb77B1F5B96f",
-  "0xeA22A3AAdA580bD75Fb6caC35034e09046cbFf72",
-  "0x56D0547938948BEAe5ADeF21B0dCf92Bd16B97Ff",
-  "0xA9edd05F8d82f4050d4649FEf30bEC9378f499e7",
-  "0xFC9C7A01517F958736c468229D59cFe34F80C83f",
-  "0xdE8FF0D3e8ab225110B088a250b546015C567E27",
-  "0x3E848AF39c45Cf45c97A622440411C4141dF3e82",
-  "0xdB2A2bdEC6fd19a01a4A8ea9a767e0d8631BE9f7",
-  "0x44e6F4D58A81531338d11aE6374F199A35c787Be",
-  "0xcC2714BF50F3c7174a868bec8f4D4d284A0b07cc",
-  "0x601377635D6C852e27CC49633694449B6E9475c8",
-  "0xdF628e37E89486FbeF037FBf73EBC90D1367d786",
-  "0xBF58afee32FFa0Bd24E4c6e43b443aa9679b7c64",
-  "0x960e492525177420a741dF5f1F9242e419FA4942",
-  "0xBb9FA2e124dD7fA35621aDe57d42C2d40cB9Ab7A",
-  "0xf00d67799Cd4E1A77D14671149b599A96DcD38eC",
-  "0x6c44652cbF0fc9c31149682Eba60aA0D601B6787",
-  "0x0b537aC41400433F09d97Cd370C1ea9CE78D8a74",
-  "0x63806fa58774B013458aA4C9a7FDD8a72db5Fe70",
-  "0x1e210791d844A37435d0B1aCCeFD1c94013218A7",
-  "0xCB4B8aeD321e22B0B87D9e41538408404433Ac70",
-  "0x42d80fdf14f13CA7019FD5A77fd53F1C1f4099a6",
-  "0x4A7212433200428571B069AeC82620573eE2cbc0",
-  "0x9d8C4C6558f53Fa24C18936C0015f81a5A1344ae",
-  "0xf9f8138150F67a469Fa5437e75ad16EAAab8C09e",
-  "0x996802075582Af2eE133fb30Cc5A9E8A671d3c3a",
-  "0x37E1a626b09faDE99E94752942a88f17EA2170fd",
-  "0x79eFe300783f448283E54ce7caD08118A52849f6",
-  "0x1Dd8e44b202fe7D3E85ce7788311374E2E9df950",
-  "0x7E62007c19C9b9D581354B29c57c61C41b50851a",
-  "0x1B8317D79279a9B31eD171177cAa459c5B012265",
-  "0x3dF8c1bB17725C699c62c281AE681cd50b0E62FE"
-].map(a => {
+  for(let i = 0; i < cl_gauges.length; i++){
+    if(cl_balanceOfs[i].length > 0){
+      userClGauges.push(cl_gauges[i])
+    }
+  }
+
+const gauges = userV2Gauges.map(a => {
   return {
     address: a,
-    abi: CL_GAUGE_ABI,
-    stakeTokenFunction: "pool"
+    abi: FLOW_GAUGE_ABI,
+    stakeTokenFunction: "stakingToken"
   }
 })
 
-const deprecatedClGauges = [
-  "0x23E3fF7e1ca9294BC4D9FB3454ce76663E7ce9a4",
-  "0xF7E12191EAa4EC540AAfaE1c9289E1F00912c63f",
-  "0x19E4EF08CC826B566b98aAd7e959691b28EeA965",
-  "0x9ed29B9518DD807b19d1bC8E3045246094Da81A8",
-  "0x41678d68dea4f6b5EFecA5882406903fE668b527",
-  "0x53431b835C4dFf80c0Ac585907dc50251047C6c1",
-  "0x154123d7090dC7B712C7bfc0DC0C247d574D7E69",
-  "0x6F00D370D951742Fb4EC6C5a065ABDbbC612444b",
-  "0xE9a2183aC35768Fb187620672C0CeB9e53381ABa",
-  "0xAe4ad2d6f5fE6ec886f3492EEd2F7da396f94a09",
-  "0xC92fA3538bC7075143BaE69850E5394c8d530C88",
-  "0x1DcC0e87b89FB316BE5C3C13585193244aEbaf05",
-  "0x025EDE7dafE9E6Ebf6Dd1EF72deD084371cd0e48",
-  "0x18157558c6CEBe6b76764DE1F211321EBBB8CD6A",
-  "0x81ec6143F0B65b1576A6F5a34740d8Cc39DB3d3b",
-  "0x557f885c63a287D0b969BCcEbc1C29c1E02b4eeC",
-  "0x8A07161e21A91D7EEc4Aab9A2073f9672edd6fA6",
-  "0x67bDce361CDCC671b056Eeec1a97c11d3CD1a1fF",
-  "0x4a5B0dc1aB3E195C805E3352cF8cF025d4fD9945"
-].map(a => {
+const clGauges = userClGauges.map(a => {
   return {
     address: a,
     abi: CL_GAUGE_ABI,
@@ -240,17 +176,6 @@ const deprecatedClGauges = [
       _print("");
     }
 
-    _print_bold(`DEPRECATED Cl POOLS`)
-    _print_bold(`------------------------------------`)
-    _print_bold(`Will show only your staked cl pools`)
-    _print(``)
-
-    let dpcl = await loadDpClSynthetixPools(App, tokens, prices, deprecatedClGauges, has_sickle_account, owner_sickle_address)
-    if (dpcl.totalUserStaked > 0) {
-      _print(`You are staking a total of ${dpcl.totalUserStaked} NFTs\n`);
-      _print("");
-    }
-
     hideLoading();
 
   }else{
@@ -271,160 +196,8 @@ const deprecatedClGauges = [
       _print("");
     }
 
-    _print_bold(`DEPRECATED Cl POOLS`)
-    _print_bold(`------------------------------------`)
-    _print_bold(`Will show only your staked cl pools`)
-    _print(``)
-
-    let dpcl = await loadDpClSynthetixPools(App, tokens, prices, deprecatedClGauges, has_sickle_account, owner_sickle_address)
-    if (dpcl.totalUserStaked > 0) {
-      _print(`You are staking a total of ${dpcl.totalUserStaked} NFTs\n`);
-      _print("");
-    }
-
     hideLoading();
   }
-}
-
-async function loadDpClSynthetixPools(App, tokens, prices, pools, has_sickle_account, owner_sickle_address) {
-  let totalUserStaked = 0;
-  const infos = await Promise.all(pools.map(p =>
-    loadDpClSynthetixPoolInfo(App, tokens, prices, p.abi, p.address, p.stakeTokenFunction, has_sickle_account, owner_sickle_address)));
-  for (const i of infos) {
-    let p = await printAerodromeDpClPool(App, i, "base");
-    totalUserStaked += p.userStaked || 0;
-  }
-  return { totalUserStaked };
-}
-
-async function loadDpClSynthetixPoolInfo(App, tokens, prices, stakingAbi, stakingAddress,
-  stakeTokenFunction, has_sickle_account, owner_sickle_address) {
-    const STAKING_POOL = new ethcall.Contract(stakingAddress, stakingAbi);
-    
-    let stakeTokenAddress, periodFinish, rewardRate, userStakedNfts;
-    try{
-      [stakeTokenAddress, periodFinish, rewardRate, userStakedNfts] = await App.ethcallProvider.all([STAKING_POOL.pool(), STAKING_POOL.periodFinish(), STAKING_POOL.rewardRate(), STAKING_POOL.stakedValues(App.YOUR_ADDRESS)]);
-    }catch{
-      return {
-        stakingAddress: "",
-        stakeTokenAddress: "",
-        rewardTokenAddress: "",
-        stakeTokenTicker: "",
-        rewardTokenTicker: "",
-        rewardTokenPrice: 0,
-        weeklyRewards: 0,
-        usdPerWeek: 0,
-        userStaked: 0,
-        earnings: 0,
-        totalStakedNfts: 0,
-        has_sickle_account: false
-      }
-    }
-    
-    const clPool = new ethcall.Contract(stakeTokenAddress, CL_TOKEN_ABI);
-
-    const [tokenAddress0, tokenAddress1] = await App.ethcallProvider.all([clPool.token0(), clPool.token1()]);
-
-    const token0 = new ethcall.Contract(tokenAddress0, ERC20_ABI);
-    const token1 = new ethcall.Contract(tokenAddress1, ERC20_ABI);
-
-    const stakeToken = await getClToken(App, token0, token1, stakingAddress);
-
-    const rewardTokenAddress = "0x940181a94a35a4569e4529a3cdfb74e38fd98631";
-
-    const nftToken = new ethcall.Contract(NFT_TOKEN_ADDRESS, NFT_AERO_ABI);
-
-    const [userOwnedNfts, totalStakedNfts] = await App.ethcallProvider.all([nftToken.balanceOf(owner_sickle_address), nftToken.balanceOf(stakingAddress)]);
-    let userOwnedNftIds = []
-
-    for(let i = 0; i < userOwnedNfts; i++){
-      const [userOwnedNftId] = await App.ethcallProvider.all([nftToken.tokenOfOwnerByIndex(owner_sickle_address, i)]);
-      userOwnedNftIds.push(userOwnedNftId);
-    }
-
-    const rewardToken = getParameterCaseInsensitive(tokens, rewardTokenAddress);
-
-    const stakeTokenTicker = stakeToken.symbol0 + '-' + stakeToken.symbol1;
-    const rewardTokenTicker = rewardToken.symbol;
-
-    const rewardTokenPrice = getParameterCaseInsensitive(prices, rewardTokenAddress)?.usd;
-
-    const weeklyRewards = (Date.now() / 1000 > periodFinish) ? 0 : rewardRate / 1e18 * 604800;
-
-    const usdPerWeek = weeklyRewards * rewardTokenPrice;
-
-    const userStaked = userStakedNfts.length;
-
-    let earnings = [];
-
-    for(const userNft of userStakedNfts){
-      const [_earned] = await App.ethcallProvider.all([STAKING_POOL.earned(App.YOUR_ADDRESS, userNft)]);
-      const earned = _earned / 10 ** rewardToken.decimals;
-      earnings.push(earned);
-    }
-
-    return  {
-      stakingAddress,
-      stakeTokenAddress,
-      rewardTokenAddress,
-      stakeTokenTicker,
-      rewardTokenTicker,
-      rewardTokenPrice,
-      weeklyRewards,
-      usdPerWeek,
-      userStaked,
-      earnings,
-      totalStakedNfts,
-      userOwnedNftIds,
-      userStakedNfts,
-      has_sickle_account
-    }
-}
-
-async function printAerodromeDpClPool(App, info, chain="eth", customURLs) {
-  if(info.userStaked <= 0){
-    return {
-      userStaked : 0,
-    }
-  }
-    _print(`Pool - ${info.stakeTokenTicker}`)
-    _print(`${info.rewardTokenTicker} Per Week: ${info.weeklyRewards.toFixed(2)} ($${formatMoney(info.usdPerWeek)})`);
-    _print(`You are staking ${info.userStaked} ${info.stakeTokenTicker}`);
-    for(userStakedNft of info.userStakedNfts){
-      _print(`Nft ID: ${userStakedNft}`)
-    }
-
-    const unstake = async function(nftId) {
-      return clContract_withdraw(info.stakingAddress, nftId, App)
-    }
-    const decrease = async function(nftId) {
-      return clContract_decrease(info.stakingAddress, nftId, App)
-    }
-    const claim = async function(nftId) {
-      return clContract_claim(info.stakingAddress, nftId, App)
-    }
-    const sickle_unstake = async function(nftId) {
-      return sickle_old_clContract_withdraw(info.stakingAddress, nftId, App)
-    }
-    _print(`<a target="_blank" href="https://basescan.org/address/${info.stakingAddress}#code">Base Scan</a>`);
-    if(info.userStakedNfts.length <= 0){
-      _print(`You have no staked NFTs in order to withdraw`);
-    }else{
-      for(const userStakedNft of info.userStakedNfts){
-        if(info.has_sickle_account){
-          _print_link(`Withdraw NFT ID: ${userStakedNft}`, () => sickle_unstake(userStakedNft))
-          _print_link(`Decrease Liquidity NFT ID: ${userStakedNft}`, () => decrease(userStakedNft))
-        }else{
-          _print_link(`Withdraw NFT ID: ${userStakedNft}`, () => unstake(userStakedNft))
-          _print_link(`Decrease Liquidity NFT ID: ${userStakedNft}`, () => decrease(userStakedNft))
-        }
-      }
-    }
-    _print("");
-
-    return {
-        userStaked : info.userStaked
-    }
 }
 
 async function loadClSynthetixPools(App, tokens, prices, pools, has_sickle_account, owner_sickle_address) {
