@@ -106,14 +106,17 @@ async function main() {
   //   }
   // }
 
-  let balanceOfs = []
+  let balanceOfs = [], stakingTokens = [];
+  const _contracts = arrayOfGauges[3].map(a => new ethcall.Contract(a, V2_GAUGE_ABI));
+  const _gaugeCalls = _contracts.map(c => c.stakingToken());
   try{
     const contracts = arrayOfGauges[3].map(a => new ethcall.Contract(a, V2_GAUGE_ABI));
     const gaugeCalls = contracts.map(c => c.balanceOf(App.YOUR_ADDRESS));
     const _balanceOfs = await App.ethcallProvider.all(gaugeCalls);
     balanceOfs.push(_balanceOfs);
   }catch(e){
-    console.log(e);
+    const _stakingTokens = await App.ethcallProvider.tryAll(_gaugeCalls);
+    stakingTokens.push(_stakingTokens);
   }
   //=========================================================================================================
   
