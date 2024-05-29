@@ -81,6 +81,7 @@ async function main() {
     console.log('call lp tokens');
     const _lpTokens = await App.ethcallProvider.all(call);
     const calls2 = _lpTokens.map(a => FLOW_VOTER_CONTRACT.gauges(a));
+    console.log('call gauges');
     const gauges = await App.ethcallProvider.all(calls2);
     const lpTokenBatch = [];
     for (let i = 0; i < gauges.length; i++) {
