@@ -45,6 +45,15 @@ const V2_FACTORY_ADDRESS = "0x420DD381b31aEf6683db6B902084cB0FFECe40Da";
 async function main() {
   const App = await init_ethers();
 
+  App.ethcallProvider.multicall = {
+    address: '0xcA11bde05977b3631167028862bE2a173976CA11',
+    block: 0,
+  }
+  App.ethcallProvider.multicall2 = {
+    address: '0xcA11bde05977b3631167028862bE2a173976CA11',
+    block: 0,
+  }
+
   let clicked = false;
 
   _print(`Initialized ${App.YOUR_ADDRESS}\n`);
@@ -60,27 +69,33 @@ async function main() {
   const CL_FACTORY_CONTRACT = new ethcall.Contract(CL_FACTORY_ADDRESS, CL_FACTORY_ABI);
   const V2_FACTORY_CONTRACT = new ethcall.Contract(V2_FACTORY_ADDRESS, V2_FACTORY_ABI);
 
-  let lpTokens = [], arrayOfGauges = [], calls = [], calls2 = [];
+  let lpTokens = [], arrayOfGauges = [], calls = [];
 
   const [_poolLength] = await App.ethcallProvider.all([FLOW_VOTER_CONTRACT.length()]);
   const poolLength = _poolLength / 1;
   const _calls = [...Array(poolLength).keys()].map(i => FLOW_VOTER_CONTRACT.pools(i));
   while (_calls.length > 0) {
-    calls.push(_calls.splice(0, 100));
+    calls.push(_calls.splice(0, 200));
   }
   for(const call of calls){
+    console.log('call lp tokens');
     const _lpTokens = await App.ethcallProvider.all(call);
-    lpTokens.push(_lpTokens);
-  }
-  for(const lpTokenArray of lpTokens){
-    const calls2 = lpTokenArray.map(a => FLOW_VOTER_CONTRACT.gauges(a));
-    const _gauges = await App.ethcallProvider.all(calls2);
-    arrayOfGauges.push(_gauges);
+    const calls2 = _lpTokens.map(a => FLOW_VOTER_CONTRACT.gauges(a));
+    const gauges = await App.ethcallProvider.all(calls2);
+    const lpTokenBatch = [];
+    for (let i = 0; i < gauges.length; i++) {
+      lpTokenBatch.push({
+        lpToken: _lpTokens[i],
+        gauge: gauges[i]
+      })
+    }
+    lpTokens.push(lpTokenBatch);
   }
 
   const SICKLE_FACTORY_ADDR = "0x71D234A3e1dfC161cc1d081E6496e76627baAc31";
   const SICKLE_FACTORY = new ethcall.Contract(SICKLE_FACTORY_ADDR, SICKLE_FACTORY_ABI);
 
+  console.log('call sickles');
   const [sickle_account_address] = await App.ethcallProvider.all([SICKLE_FACTORY.sickles(App.YOUR_ADDRESS)]);
   const has_sickle_account = sickle_account_address === "0x0000000000000000000000000000000000000000" ? false : true;
   const owner_sickle_address = App.YOUR_ADDRESS;
@@ -93,45 +108,43 @@ async function main() {
   
   for(const lpTokenBatch of lpTokens){
     let v2_pools = [], allPools = [];
-    const isPools = lpTokenBatch.map(pool => V2_FACTORY_CONTRACT.isPool(pool));
-    const pools = await App.ethcallProvider.all(isPools);
+    const isPoolCalls = lpTokenBatch.map(pool => V2_FACTORY_CONTRACT.isPool(pool.lpToken));
+    console.log('call ispool');
+    const isPools = await App.ethcallProvider.all(isPoolCalls);
   
     for(let i = 0; i < lpTokenBatch.length; i++){
-      const pool = {lpToken: lpTokenBatch[i], isV2: pools[i]}
+      const pool = {isV2: isPools[i], ...lpTokenBatch[i]}
       allPools.push(pool);
     }
   
     for(const pool of allPools){
       if(pool.isV2){
-        v2_pools.push(pool.lpToken)
+        v2_pools.push(pool)
       }else{
-        cl_pools.push(pool.lpToken);
+        cl_pools.push(pool);
       }
     }
   
-    const v2_gauge_calls = v2_pools.map(a => FLOW_VOTER_CONTRACT.gauges(a));
-    const v2_gauges = await App.ethcallProvider.all(v2_gauge_calls);
-  
-    const v2_gauge_contracts = v2_gauges.map(a => new ethcall.Contract(a, V2_GAUGE_ABI));
+    const v2_gauge_contracts = v2_pools.map(a => new ethcall.Contract(a.gauge, V2_GAUGE_ABI));
     const balanceOf_calls = v2_gauge_contracts.map(c => c.balanceOf(App.YOUR_ADDRESS));
+    console.log('call balanceOf');
     const balanceOfs = await App.ethcallProvider.all(balanceOf_calls);
   
-    for(let i = 0; i < v2_gauges.length; i++){
+    for(let i = 0; i < v2_pools.length; i++){
       if(balanceOfs[i] / 1 > 0){
-        userV2Gauges.push(v2_gauges[i])
+        userV2Gauges.push(v2_pools[i].gauge)
       }
     }
   }
 
-  const cl_gauge_calls = cl_pools.map(a => FLOW_VOTER_CONTRACT.gauges(a));
-  const cl_gauges = await App.ethcallProvider.all(cl_gauge_calls);
-  const cl_gauge_contracts = cl_gauges.map(a => new ethcall.Contract(a, CL_GAUGE_ABI));
+  const cl_gauge_contracts = cl_pools.map(a => new ethcall.Contract(a.gauge, CL_GAUGE_ABI));
   const cl_balanceOf_calls = cl_gauge_contracts.map(c => c.stakedValues(App.YOUR_ADDRESS));
+  console.log('call stakedValues');
   const cl_balanceOfs = await App.ethcallProvider.all(cl_balanceOf_calls);
 
-  for(let i = 0; i < cl_gauges.length; i++){
+  for(let i = 0; i < cl_pools.length; i++){
     if(cl_balanceOfs[i].length > 0){
-      userClGauges.push(cl_gauges[i])
+      userClGauges.push(cl_pools[i].gauge)
     }
   }
 
