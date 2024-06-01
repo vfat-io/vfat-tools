@@ -250,6 +250,7 @@ async function loadClSynthetixPoolInfo(App, tokens, prices, stakingAbi, stakingA
     }
     
     const clPool = new ethcall.Contract(stakeTokenAddress, CL_TOKEN_ABI);
+    const nftContract = new ethcall.Contract(NFT_TOKEN_ADDRESS, NFT_AERO_ABI);
 
     const [tokenAddress0, tokenAddress1] = await App.ethcallProvider.all([clPool.token0(), clPool.token1()]);
 
@@ -267,7 +268,10 @@ async function loadClSynthetixPoolInfo(App, tokens, prices, stakingAbi, stakingA
 
     for(let i = 0; i < userOwnedNfts; i++){
       const [userOwnedNftId] = await App.ethcallProvider.all([nftToken.tokenOfOwnerByIndex(owner_sickle_address, i)]);
-      userOwnedNftIds.push(userOwnedNftId);
+      const [liquidity] = await App.ethcallProvider.all([nftContract.positions(userOwnedNftId)])
+        if(liquidity > 0){
+          userOwnedNftIds.push(userOwnedNftId);
+        }
     }
 
     const rewardToken = getParameterCaseInsensitive(tokens, rewardTokenAddress);
