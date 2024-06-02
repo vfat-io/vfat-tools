@@ -41,15 +41,6 @@ $(function() {
   async function main() {
     const App = await init_ethers();
   
-    // App.ethcallProvider.multicall = {
-    //   address: '0xcA11bde05977b3631167028862bE2a173976CA11',
-    //   block: 0,
-    // }
-    // App.ethcallProvider.multicall2 = {
-    //   address: '0xcA11bde05977b3631167028862bE2a173976CA11',
-    //   block: 0,
-    // }
-  
     _print(`Initialized ${App.YOUR_ADDRESS}\n`);
     _print("Reading smart contracts...\n");
     _print("This may take few minutes, please be patient...\n");
