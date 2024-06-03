@@ -8,13 +8,17 @@ consoleInit(main)
     _print(`Initialized ${App.YOUR_ADDRESS}\n`);
     _print("Reading smart contracts...\n");
     _print_bold("Program End - June 13 2024\n");
+    _print("GP / Day 12.593M\n");
+    _print("GP / 1 NFT 200,000\n");
+    _print("NFTs / Day 63\n");
 
     // const data = await getInfinexData();
 
     const tvl = 111000000;
     const rewardedTvl = 38920000;
+    const totalTvl = tvl - rewardedTvl;
     const nftPrice = 5000;
-    const dailyAPR = (68 * nftPrice / tvl) * 100;
+    const dailyAPR = (68 * nftPrice / totalTvl) * 100;
     const weeklyAPR = dailyAPR * 7;
     const yearlyAPR = weeklyAPR * 52;
 
