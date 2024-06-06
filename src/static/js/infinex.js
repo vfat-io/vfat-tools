@@ -12,7 +12,7 @@ consoleInit(main)
     _print("GP / 1 NFT 200,000\n");
     _print("NFTs / Day 63\n");
 
-    // const data = await getInfinexData();
+    const data = await getInfinexData();
 
     const tvl = 111000000;
     const rewardedTvl = 38920000;
@@ -34,8 +34,7 @@ consoleInit(main)
     return await $.ajax({
       url: `https://api.app.infinex.xyz/getPlatformStatistics?batch=1&input=%7B%7D`,
       type: 'GET',
-      headers: {
-        'Access-Control-Allow-Methods': 'GET'
-      }
      });
   }
+
+  // https://cors-anywhere.herokuapp.com/

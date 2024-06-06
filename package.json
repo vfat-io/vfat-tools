@@ -11,7 +11,6 @@
     "build:html": "NODE_ENV=development babel-node build-tools/ejs-to-html.mjs",
     "build:js": "NODE_ENV=development npx webpack -d",
     "build:css": "NODE_ENV=development npm run sass && npm run autoprefixer",
-    "watch:html": "NODE_ENV=development babel-node build-tools/ejs-to-html.mjs --watch",
     "watch:js": "NODE_ENV=development npx webpack -w -d --display minimal",
     "watch:css": "NODE_ENV=development npm run sass && node-sass -w -r src/css -o dist/css --source-map true",
     "minify:html": "NODE_ENV=production npm run build:html && babel-node build-tools/minify-html.js",

@@ -61,7 +61,13 @@ async function main() {
   _print("This may take few minutes, please be patient...\n");
 
   const tokens = {};
-  const prices = await getBasePrices();
+  let prices = {};
+
+    try{
+      prices = await getBasePrices();
+    }catch(e){
+      prices = await getBasePrices2();
+    }
 
   const FLOW_VOTER_ADDR = "0x16613524e02ad97eDfeF371bC883F2F5d6C480A5"
   const FLOW_VOTER_CONTRACT = new ethcall.Contract(FLOW_VOTER_ADDR, FLOW_VOTER_ABI);
@@ -164,8 +170,6 @@ const clGauges = userClGauges.map(a => {
     stakeTokenFunction: "pool"
   }
 })
-
-  await loadFlowSynthetixPoolInfoPrice(App, tokens, prices, "0x2223F9FE624F69Da4D8256A7bCc9104FBA7F8f75", "0x2223F9FE624F69Da4D8256A7bCc9104FBA7F8f75");
 
   if(has_sickle_account) {
     _print_bold(`You have connected with your sickle account: ${sickle_account_address}`);
@@ -279,7 +283,7 @@ async function loadClSynthetixPoolInfo(App, tokens, prices, stakingAbi, stakingA
     const stakeTokenTicker = stakeToken.symbol0 + '-' + stakeToken.symbol1;
     const rewardTokenTicker = rewardToken.symbol;
 
-    const rewardTokenPrice = getParameterCaseInsensitive(prices, rewardTokenAddress)?.usd;
+    const rewardTokenPrice = prices[rewardTokenAddress]?.usd;
 
     const weeklyRewards = (Date.now() / 1000 > periodFinish) ? 0 : rewardRate / 1e18 * 604800;
 
@@ -640,7 +644,7 @@ async function loadFlowSynthetixPoolInfo(App, tokens, prices, stakingAbi, stakin
 
     const stakeTokenPrice =
         prices[stakeTokenAddress]?.usd ?? getParameterCaseInsensitive(prices, stakeTokenAddress)?.usd;
-    const rewardTokenPrice = getParameterCaseInsensitive(prices, rewardTokenAddress)?.usd;
+    const rewardTokenPrice = prices[rewardTokenAddress]?.usd;
 
     const weeklyRewards = (Date.now() / 1000 > periodFinish) ? 0 : rewardRate / 1e18 * 604800;
 
@@ -830,45 +834,6 @@ const sickle_aeroContract_stake = async function(lpToken, rewardPoolAddr, userUn
       })
 }
 
-async function loadFlowSynthetixPoolInfoPrice(App, tokens, prices, stakingAddress, stakeTokenAddress) {
-  var stakeToken = await getGeneralToken(App, stakeTokenAddress, stakingAddress);
-  var newPriceAddresses = stakeToken.tokens.filter(x =>
-    !getParameterCaseInsensitive(prices, x));
-  var newPrices = await lookUpTokenPrices(newPriceAddresses);
-  for (const key in newPrices) {
-    if (newPrices[key]?.usd)
-        prices[key] = newPrices[key];
-  }
-  var newTokenAddresses = stakeToken.tokens.filter(x =>
-    !getParameterCaseInsensitive(tokens,x));
-  for (const address of newTokenAddresses) {
-      tokens[address] = await getGeneralToken(App, address, stakingAddress);
-  }
-  const poolPrices = getPoolPrices(tokens, prices, stakeToken, "base");
-
-  if (!poolPrices)
-  {
-    console.log(`Couldn't calculate prices for pool ${stakeTokenAddress}`);
-    return null;
-  }
-
-  const stakeTokenTicker = poolPrices.stakeTokenTicker;
-
-  const stakeTokenPrice =
-      prices[stakeTokenAddress]?.usd ?? getParameterCaseInsensitive(prices, stakeTokenAddress)?.usd;
-
-  const staked_tvl = poolPrices.staked_tvl;
-
-  return  {
-    stakingAddress,
-    poolPrices,
-    stakeTokenAddress,
-    stakeTokenTicker,
-    stakeTokenPrice,
-    staked_tvl,
-  }
-}
-
 const aeroContract_stake = async function(stakeTokenAddr, rewardPoolAddr, App, maxAllowance) {
   const signer = App.provider.getSigner()
 
@@ -951,4 +916,27 @@ async function getClToken(App, contract0, contract1, address) {
     symbol0,
     symbol1,
   }
+}
+
+async function getBasePrices2() {
+  const BaseTokenContracts = BaseTokens.map(x => x.contract.toLowerCase())
+  const idPrices = await lookUpPrices2(BaseTokenContracts);
+  const prices = {}
+  for (const bt of BaseTokens)
+      if (idPrices[bt.contract])
+          prices[bt.contract] = {usd: idPrices[bt.contract]};
+  return prices;
+}
+
+const lookUpPrices2 = async function(id_array) {
+  const prices = {}
+  let ids = id_array.join('%2C')
+  let res = await $.ajax({
+    url: 'https://api.vfat.io/v1/token?chainId=8453&address='+ids,
+    type: 'GET',
+  })
+  for (const [key, v] of Object.entries(res)) {
+    if (v.price) prices[v.address] = v.price;
+  }
+  return prices
 }
