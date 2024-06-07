@@ -674,6 +674,8 @@ async function loadGeneralChefContract(App, tokens, prices, chef, chefAddress, c
     break;
     case "blast" : _print(`<a href='https://blastscan.io/address/${chefAddress}' target='_blank'>Staking Contract</a>`);
     break;
+    case "linea" : _print(`<a href='https://lineascan.build/address/${chefAddress}' target='_blank'>Staking Contract</a>`);
+    break;
   }
   _print(`Found ${poolCount} pools.\n`)
 

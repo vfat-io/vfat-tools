@@ -664,6 +664,15 @@ const KlaytnTokens = [
   { "id": "tether", "symbol": "USDT", "contract": "0xcee8faf64bb97a73bb51e115aa89c17ffa8dd167"}
 ];
 
+const LineaTokens = [
+  { "id": "weth", "symbol": "WETH", "contract": "0xe5d7c2a44ffddf6b295a15c148167daaaf5cf34f"},
+  { "id": "usd-coin", "symbol": "USDC", "contract": "0x176211869cA2b568f2A7D4EE941E073a821EE1ff"},
+  { "id": "tether", "symbol": "USDT", "contract": "0xa219439258ca9da29e9cc4ce5596924745e12b93"},
+  { "id": "nile", "symbol": "NILE", "contract": "0xaaaac83751090c6ea42379626435f805ddf54dc8"},
+  { "id": "wrapped-bitcoin", "symbol": "WBTC", "contract": "0x3aab2285ddcddad8edf438c1bab47e1a9d05a9b4"},
+  { "id": "millenniumclub-coin-new", "symbol": "MCLB", "contract": "0xc308c807bf32bd26ee249deaaa6e04aba463962d"}
+];
+
 const maticTokens = [
   { "id": "matic-network","symbol": "WMATIC","contract": "0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270" },
   { "id": "matic-network","symbol": "MATIC","contract": "0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270" },
@@ -1249,6 +1258,15 @@ async function getKlaytnPrices() {
   const idPrices = await lookUpPrices(KlaytnTokens.map(x => x.id));
   const prices = {}
   for (const bt of KlaytnTokens)
+      if (idPrices[bt.id])
+          prices[bt.contract] = idPrices[bt.id];
+  return prices;
+}
+
+async function getLineaPrices() {
+  const idPrices = await lookUpPrices(LineaTokens.map(x => x.id));
+  const prices = {}
+  for (const bt of LineaTokens)
       if (idPrices[bt.id])
           prices[bt.contract] = idPrices[bt.id];
   return prices;

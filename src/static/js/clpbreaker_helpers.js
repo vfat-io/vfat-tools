@@ -8,6 +8,7 @@ const GENERAL_NFT_MANAGER_ABI = [{"inputs":[{"internalType":"address","name":"_f
     { network : "Base", name : "Aero CL100 NFT", clFactoryAddress : "0x9592CD9B267748cbfBDe90Ac9F7DF3c437A6d51B", nftAddress : "0xc741beb2156827704A1466575ccA1cBf726a1178", abi : GENERAL_NFT_MANAGER_ABI },
     { network : "Binance Smart Chain Mainnet", name : "Pancake V3 NFT", clFactoryAddress : "0x0BFbCF9fa4f9C56B0F40a671Ad40E0805A091865", nftAddress : "0x46a15b0b27311cedf172ab29e4f4766fbe7f4364", abi : GENERAL_NFT_MANAGER_ABI },
     { network : "Ethereum Mainnet", name : "Pancake V3 NFT", clFactoryAddress : "0x0BFbCF9fa4f9C56B0F40a671Ad40E0805A091865", nftAddress : "0x46a15b0b27311cedf172ab29e4f4766fbe7f4364", abi : GENERAL_NFT_MANAGER_ABI },
+    { network : "Linea", name : "NILE CL POS", clFactoryAddress : "0xAAA32926fcE6bE95ea2c51cB4Fcb60836D320C42", nftAddress : "0xAAA78E8C4241990B4ce159E105dA08129345946A", abi : GENERAL_NFT_MANAGER_ABI },
     { network : "Optimistic Ethereum", name : "Velo CL100 NFT", clFactoryAddress : "0x548118C7E0B865C2CfA94D15EC86B666468ac758", nftAddress : "0xbB5DFE1380333CEE4c2EeBd7202c80dE2256AdF4", abi : GENERAL_NFT_MANAGER_ABI },
   ]
 

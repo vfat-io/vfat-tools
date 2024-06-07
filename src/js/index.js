@@ -156,6 +156,21 @@ window.NETWORKS = {
       "https://basescan.org"
     ]
   },
+  LINEA: {
+    "chainId": "0xe708",
+    "chainName": "Linea",
+    "nativeCurrency": {
+      "name": "Ethereum",
+      "symbol": "ETH",
+      "decimals": 18
+    },
+    "rpcUrls": [
+      "https://rpc.linea.build"
+    ],
+    "blockExplorerUrls": [
+      "https://lineascan.build"
+    ]
+  },
   FX: {
     "chainId": "0x212",
     "chainName": "FX Mainnet",
