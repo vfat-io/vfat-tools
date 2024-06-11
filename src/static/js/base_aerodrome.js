@@ -278,7 +278,7 @@ async function loadClSynthetixPoolInfo(App, tokens, prices, stakingAbi, stakingA
         }
     }
 
-    const rewardToken = getParameterCaseInsensitive(tokens, rewardTokenAddress);
+    const rewardToken = await getGeneralToken(App, rewardTokenAddress, stakingAddress);
 
     const stakeTokenTicker = stakeToken.symbol0 + '-' + stakeToken.symbol1;
     const rewardTokenTicker = rewardToken.symbol;
