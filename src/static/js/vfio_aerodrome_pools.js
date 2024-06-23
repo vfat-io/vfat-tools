@@ -62,7 +62,7 @@ $(function() {
       lpTokens.push(lpTokenBatch);
     }
   
-    let cl_pools = [], userV2Gauges = [], userClGauges = [];
+    let cl_pools = [];
     
     for(const lpTokenBatch of lpTokens){
       let v2_pools = [], allPools = [];
@@ -81,32 +81,31 @@ $(function() {
           cl_pools.push(pool);
         }
       }
-    
+
+      const v2_gauge_contracts = v2_pools.map(a => new ethcall.Contract(a.gauge, FLOW_GAUGE_ABI));
+      const rewardRate_calls = v2_gauge_contracts.map(c => c.rewardRate());
+      const periodFinish_calls = v2_gauge_contracts.map(c => c.periodFinish());
+      const rewardRates = await App.ethcallProvider.all(rewardRate_calls);
+      const periodFinishes = await App.ethcallProvider.all(periodFinish_calls);
+
       for(let i = 0; i < v2_pools.length; i++){
-        userV2Gauges.push(v2_pools[i].gauge)
+        if((Date.now() / 1000 > periodFinishes[i] && rewardRates[i] > 0)){
+          v2_gauges_array.push(v2_pools[i].gauge)
+        }
       }
     }
-  
+
+    const cl_gauge_contracts = cl_pools.map(a => new ethcall.Contract(a.gauge, CL_GAUGE_ABI));
+    const cl_rewardRate_calls = cl_gauge_contracts.map(c => c.rewardRate());
+    const cl_periodFinish_calls = cl_gauge_contracts.map(c => c.periodFinish());
+    const cl_rewardRates = await App.ethcallProvider.all(cl_rewardRate_calls);
+    const cl_periodFinishes = await App.ethcallProvider.all(cl_periodFinish_calls);
+
     for(let i = 0; i < cl_pools.length; i++){
-      userClGauges.push(cl_pools[i].gauge)
+      if((Date.now() / 1000 > cl_periodFinishes[i] && cl_rewardRates[i] > 0)){
+        cl_gauges_array.push(cl_pools[i].gauge)
+      }
     }
-  
-  const gauges = userV2Gauges.map(a => {
-    return {
-      address: a,
-      abi: FLOW_GAUGE_ABI
-    }
-  })
-  
-  const clGauges = userClGauges.map(a => {
-    return {
-      address: a,
-      abi: CL_GAUGE_ABI
-    }
-  })
-  
-    await loadFlowSynthetixPools(App, gauges, v2_gauges_array)
-    await loadClSynthetixPools(App, clGauges, cl_gauges_array)
 
     const v2_gages_to_lowercase = v2_gauges_array.map(a => a.toLowerCase());
     const cl_gages_to_lowercase = cl_gauges_array.map(a => a.toLowerCase());
@@ -174,40 +173,6 @@ $(function() {
   }
 
     hideLoading();
-  }
-  
-  async function loadClSynthetixPools(App, pools, cl_gauges_array) {
-    await Promise.all(pools.map(p => loadClSynthetixPoolInfo(App, p.abi, p.address, cl_gauges_array)));
-  }
-  
-  async function loadClSynthetixPoolInfo(App, stakingAbi, stakingAddress, cl_gauges_array) {
-      const STAKING_POOL = new ethcall.Contract(stakingAddress, stakingAbi);
-  
-      let periodFinish, rewardRate;
-      [periodFinish, rewardRate] = await App.ethcallProvider.all([STAKING_POOL.periodFinish(), STAKING_POOL.rewardRate()]);
-  
-      const weeklyRewards = (Date.now() / 1000 > periodFinish) ? 0 : rewardRate / 1e18 * 604800;
-  
-      if(weeklyRewards > 0){
-        cl_gauges_array.push(stakingAddress)
-      }
-  }
-  
-  async function loadFlowSynthetixPools(App, pools, v2_gauges_array) {
-    await Promise.all(pools.map(p => loadFlowSynthetixPoolInfo(App, p.abi, p.address, v2_gauges_array)));
-  }
-  
-  async function loadFlowSynthetixPoolInfo(App, stakingAbi, stakingAddress, v2_gauges_array) {
-      const STAKING_POOL = new ethcall.Contract(stakingAddress, stakingAbi);
-  
-      let periodFinish, rewardRate;
-      [periodFinish, rewardRate] = await App.ethcallProvider.all([STAKING_POOL.periodFinish(), STAKING_POOL.rewardRate()]);
-  
-      const weeklyRewards = (Date.now() / 1000 > periodFinish) ? 0 : rewardRate / 1e18 * 604800;
-  
-      if(weeklyRewards > 0){
-        v2_gauges_array.push(stakingAddress)
-      }
   }
 
   function remove_dublicates(arr, key){

@@ -33,6 +33,8 @@ $(function() {
   
     const FLOW_VOTER_ADDR = "0xAAAf3D9CDD3602d117c67D80eEC37a160C8d9869"
     const FLOW_VOTER_CONTRACT = new ethcall.Contract(FLOW_VOTER_ADDR, FLOW_VOTER_ABI);
+
+    const rewardTokenAddress = "0xaaaac83751090c6ea42379626435f805ddf54dc8";
   
     const V2_FACTORY_CONTRACT = new ethcall.Contract(V2_FACTORY_ADDRESS, V2_RAM_FACTORY_ABI);
   
@@ -77,31 +79,20 @@ $(function() {
           cl_pools.push(pool);
         }
       }
-    
+
+      const v2_gauge_contracts = v2_pools.map(a => new ethcall.Contract(a.gauge, FLOW_GAUGE_ABI));
+      const rewardData_calls = v2_gauge_contracts.map(c => c.rewardData(rewardTokenAddress));
+      const rewardsData = await App.ethcallProvider.all(rewardData_calls);
+
       for(let i = 0; i < v2_pools.length; i++){
-        userV2Gauges.push(v2_pools[i].gauge)
+        if((Date.now() / 1000 > rewardsData[i].periodFinish && rewardsData[i].rewardRate > 0)){
+          v2_gauges_array.push(v2_pools[i].gauge)
+        }
       }
     }
-  
-  const gauges = userV2Gauges.map(a => {
-    return {
-      address: a,
-      abi: FLOW_GAUGE_ABI,
-    }
-  })
-
-  const clGauges = cl_pools.map(d => {
-    return {
-      address: d.gauge,
-      abi: CL_GAUGE_ABI
-    }
-  })
-  
-  await loadFlowSynthetixPools(App, gauges, v2_gauges_array)
-  await loadClSynthetixPools(App, clGauges, cl_gauges_array)
 
   const v2_gages_to_lowercase = v2_gauges_array.map(a => a.toLowerCase());
-  const cl_gages_to_lowercase = cl_gauges_array.map(a => a.toLowerCase());
+  const cl_gages_to_lowercase = cl_pools.map(c => c.gauge.toLowerCase());
 
   // starting second part of the script
 
@@ -151,7 +142,6 @@ _print(``);
   }
 
   _print_bold(`CL POOLS`);
-  _print_bold("Missing cl pools count " + missing_cl_gauges.length);
   _print(``);
 
   for(const cl_gauge of missing_cl_gauges){
@@ -168,58 +158,28 @@ _print(``);
   hideLoading();
 }
 
-  async function loadClSynthetixPools(App, pools, cl_gauges_array) {
-    await Promise.all(pools.map(p => loadClSynthetixPoolInfo(App, p.abi, p.address, cl_gauges_array)));
-  }
-  
-  async function loadClSynthetixPoolInfo(App, stakingAbi, stakingAddress, cl_gauges_array) {
-      const STAKING_POOL = new ethcall.Contract(stakingAddress, stakingAbi);
-
-      const rewardTokenAddress = "0xaaaac83751090c6ea42379626435f805ddf54dc8";
-
-      let rewardRate = 0;
-
-      try{
-        [rewardRate] = await App.ethcallProvider.all([STAKING_POOL.rewardRate(rewardTokenAddress)]);
-      }catch(err){
-        rewardRate = 0;
-      }
-  
-      const weeklyRewards = rewardRate / 1e18 * 604800;
-
-      if(weeklyRewards > 0){
-        cl_gauges_array.push(stakingAddress);
-      }
-  }
-  
-  async function loadFlowSynthetixPools(App, pools, v2_gauges_array) {
-    await Promise.all(pools.map(p => loadFlowSynthetixPoolInfo(App, p.abi, p.address, v2_gauges_array)));
-  }
-  
-  async function loadFlowSynthetixPoolInfo(App, stakingAbi, stakingAddress, v2_gauges_array) {
-      const STAKING_POOL = new ethcall.Contract(stakingAddress, stakingAbi);
-
-      const rewardTokenAddress = "0xaaaac83751090c6ea42379626435f805ddf54dc8";
-
-      const [rewardData] = await App.ethcallProvider.all([STAKING_POOL.rewardData(rewardTokenAddress)]);
-  
-      const weeklyRewards = (Date.now() / 1000 > rewardData.periodFinish) ? 0 : rewardData.rewardRate / 1e18 * 604800;
-
-      if(weeklyRewards > 0){
-        v2_gauges_array.push(stakingAddress);
-      }
-  }
-
-  function remove_dublicates(arr, key){
-    return [
-        ...new Map(
-            arr.map(x => [key(x), x])
-        ).values()
-    ]
-  }
+function remove_dublicates(arr, key){
+  return [
+      ...new Map(
+          arr.map(x => [key(x), x])
+      ).values()
+  ]
+}
 
 async function getClData(App, address){
 const cl_contract = new ethcall.Contract(address, CL_GAUGE_ABI);
+const rewardTokenAddress = "0xaaaac83751090c6ea42379626435f805ddf54dc8";
+
+let rewardRate;
+try{
+  [rewardRate] = await App.ethcallProvider.all([cl_contract.rewardRate(rewardTokenAddress)]);
+}catch(err){
+  return [];
+}
+
+if(rewardRate <= 0){
+  return [];
+}
 
 const [pool] = await App.ethcallProvider.all([cl_contract.pool()]);
 
@@ -255,7 +215,7 @@ return [
         decimals: Number(token1Decimals),
         chainId: 10
     }
-]
+  ]
 }
 
 async function getV2Data(App, address) {
