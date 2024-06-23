@@ -31,7 +31,7 @@ $(function() {
     
       const V2_FACTORY_CONTRACT = new ethcall.Contract(V2_FACTORY_ADDRESS, V2_FACTORY_ABI);
     
-      let lpTokens = [], calls = [], v2_gages_array = [], cl_gages_array = [];;
+      let lpTokens = [], calls = [], v2_gauges_array = [], cl_gauges_array = [];;
     
       const [_poolLength] = await App.ethcallProvider.all([FLOW_VOTER_CONTRACT.length()]);
       const poolLength = _poolLength / 1;
@@ -96,11 +96,11 @@ $(function() {
       }
     })
     
-    await loadFlowSynthetixPools(App, gauges, v2_gages_array);
-    await loadClSynthetixPools(App, clGauges, cl_gages_array);
+    await loadFlowSynthetixPools(App, gauges, v2_gauges_array);
+    await loadClSynthetixPools(App, clGauges, cl_gauges_array);
 
-    const v2_gages_to_lowercase = v2_gages_array.map(a => a.toLowerCase());
-    const cl_gages_to_lowercase = cl_gages_array.map(a => a.toLowerCase());
+    const v2_gages_to_lowercase = v2_gauges_array.map(a => a.toLowerCase());
+    const cl_gages_to_lowercase = cl_gauges_array.map(a => a.toLowerCase());
 
     // starting second part of the script
 
@@ -168,12 +168,12 @@ $(function() {
     hideLoading();
 }
     
-    async function loadClSynthetixPools(App, pools, cl_gages_array) {
+    async function loadClSynthetixPools(App, pools, cl_gauges_array) {
       await Promise.all(pools.map(p =>
-        loadClSynthetixPoolInfo(App, p.abi, p.address, cl_gages_array)));
+        loadClSynthetixPoolInfo(App, p.abi, p.address, cl_gauges_array)));
     }
     
-    async function loadClSynthetixPoolInfo(App, stakingAbi, stakingAddress, cl_gages_array) {
+    async function loadClSynthetixPoolInfo(App, stakingAbi, stakingAddress, cl_gauges_array) {
         const STAKING_POOL = new ethcall.Contract(stakingAddress, stakingAbi);
     
         let periodFinish, rewardRate;
@@ -182,16 +182,16 @@ $(function() {
         const weeklyRewards = (Date.now() / 1000 > periodFinish) ? 0 : rewardRate / 1e18 * 604800;
 
         if(weeklyRewards > 0){
-            cl_gages_array.push(stakingAddress)
+            cl_gauges_array.push(stakingAddress)
           }
     }
     
-    async function loadFlowSynthetixPools(App, pools, v2_gages_array) {
+    async function loadFlowSynthetixPools(App, pools, v2_gauges_array) {
       await Promise.all(pools.map(p =>
-        loadFlowSynthetixPoolInfo(App, p.abi, p.address, v2_gages_array)));
+        loadFlowSynthetixPoolInfo(App, p.abi, p.address, v2_gauges_array)));
     }
     
-    async function loadFlowSynthetixPoolInfo(App, stakingAbi, stakingAddress, v2_gages_array) {
+    async function loadFlowSynthetixPoolInfo(App, stakingAbi, stakingAddress, v2_gauges_array) {
         const STAKING_POOL = new ethcall.Contract(stakingAddress, stakingAbi);
     
         let periodFinish, rewardRate;
@@ -201,7 +201,7 @@ $(function() {
         const weeklyRewards = (Date.now() / 1000 > periodFinish) ? 0 : rewardRate / 1e18 * 604800;
 
         if(weeklyRewards > 0){
-            v2_gages_array.push(stakingAddress)
+            v2_gauges_array.push(stakingAddress)
           }
     }
 
@@ -225,7 +225,7 @@ async function getClData(App, address){
     const [token1Symbol, token1Decimals] = await App.ethcallProvider.all([token1Contract.symbol(), token1Contract.decimals()])
 
     _print(`GAUGE ADDRESS - ${address}`);
-    _print(`LP TOKEN ADDRESS - ${pool}`);
+    _print(`CL TOKEN ADDRESS - ${pool}`);
     _print(`TOKEN 0 ADDRESS  - ${token0}`);
     _print(`TOKEN 0 SYMBOL  - ${token0Symbol}`);
     _print(`TOKEN 0 DECIMALS  - ${token0Decimals}`);
