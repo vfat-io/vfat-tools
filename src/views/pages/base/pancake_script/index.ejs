@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include(`${partials}/head`); -%>
+
+<body>
+<%- include(`${partials}/header_main`); -%>
+<pre id="log">
+*************** 👨‍🌾 UNOFFICIAL PANCAKE DEV SCRIPT CALCULATOR 👨‍🌾 ***************
+INFO  : dev script to receive pancake pools on base
+*******************************************************************************
+
+</pre>
+<div class="loader--1"></div>
+<%- include(`${partials}/scripts`, {scriptname: 'vfio_base_pancake_pools'}); -%>
+</body>
+</html> 
