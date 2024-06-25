@@ -118,6 +118,13 @@ $(function() {
       type: 'GET',
     });
 
+    const response2 = await $.ajax({
+      url: 'https://api.vfat.io/v1/tokens?chainId=8453&pageSize=999',
+      type: 'GET',
+    });
+
+    const vfat_io_tokens = response2.tokens.map(t => t.address.toLowerCase());
+
     const vfat_gauges = response.filter(d => d.chainId == 8453).map(ob => ob.address.toLowerCase());
 
     let missing_v2_gauges = [];
@@ -137,7 +144,7 @@ $(function() {
   _print(``);
 
   for(const v2_address of missing_v2_gauges){
-      const v2_data = await getV2Data(App, v2_address);
+      const v2_data = await getV2Data(App, v2_address, vfat_io_tokens);
       _v2_list.push(v2_data);
   }
 
@@ -162,7 +169,7 @@ $(function() {
   _print(``);
 
   for(const cl_gauge of missing_cl_gauges){
-      const cl_data = await getClData(App, cl_gauge);
+      const cl_data = await getClData(App, cl_gauge, vfat_io_tokens);
       _cl_list.push(cl_data);
   }
 
@@ -183,7 +190,7 @@ $(function() {
     ]
   }
 
-async function getClData(App, address){
+async function getClData(App, address, vfat_io_tokens){
 const cl_contract = new ethcall.Contract(address, CL_ABI);
 
 const [pool, token0, token1] = await App.ethcallProvider.all([cl_contract.pool(), cl_contract.token0(), cl_contract.token1()]);
@@ -204,23 +211,45 @@ _print(`TOKEN 1 SYMBOL  - ${token1Symbol}`);
 _print(`TOKEN 1 DECIMALS  - ${token1Decimals}`);
 _print(``);
 
-return [
+if(vfat_io_tokens.includes(token0.toLowerCase()) && vfat_io_tokens.includes(token1.toLowerCase())){
+  return []
+}else if(vfat_io_tokens.includes(token0.toLowerCase()) && !vfat_io_tokens.includes(token1.toLowerCase())){
+  return [
+        {
+          address: token1,
+          symbol: token1Symbol,
+          decimals: Number(token1Decimals),
+          chainId: 8453
+        }
+  ]
+}else if(!vfat_io_tokens.includes(token0.toLowerCase()) && vfat_io_tokens.includes(token1.toLowerCase())){
+  return [
+        {
+          address: token0,
+          symbol: token0Symbol,
+          decimals: Number(token0Decimals),
+          chainId: 8453
+        }
+  ]
+}else{
+  return [
     {
         address: token0,
         symbol: token0Symbol,
         decimals: Number(token0Decimals),
-        chainId: 10
+        chainId: 8453
     },
     {
         address: token1,
         symbol: token1Symbol,
         decimals: Number(token1Decimals),
-        chainId: 10
+        chainId: 8453
     }
-]
+  ]
+}
 }
 
-async function getV2Data(App, address) {
+async function getV2Data(App, address, vfat_io_tokens) {
 const v2_contract = new ethcall.Contract(address, V2_ABI);
 
 const [stakingTokenAddress] = await App.ethcallProvider.all([v2_contract.stakingToken()]);
@@ -245,18 +274,40 @@ _print(`TOKEN 1 SYMBOL  - ${token1Symbol}`);
 _print(`TOKEN 1 DECIMALS  - ${token1Decimals}`);
 _print(``);
 
-return [
+if(vfat_io_tokens.includes(token0.toLowerCase()) && vfat_io_tokens.includes(token1.toLowerCase())){
+  return []
+}else if(vfat_io_tokens.includes(token0.toLowerCase()) && !vfat_io_tokens.includes(token1.toLowerCase())){
+  return [
+        {
+          address: token1,
+          symbol: token1Symbol,
+          decimals: Number(token1Decimals),
+          chainId: 8453
+        }
+  ]
+}else if(!vfat_io_tokens.includes(token0.toLowerCase()) && vfat_io_tokens.includes(token1.toLowerCase())){
+  return [
+        {
+          address: token0,
+          symbol: token0Symbol,
+          decimals: Number(token0Decimals),
+          chainId: 8453
+        }
+  ]
+}else{
+  return [
     {
         address: token0,
         symbol: token0Symbol,
         decimals: Number(token0Decimals),
-        chainId: 10
+        chainId: 8453
     },
     {
         address: token1,
         symbol: token1Symbol,
         decimals: Number(token1Decimals),
-        chainId: 10
+        chainId: 8453
     }
   ]
+}
 }

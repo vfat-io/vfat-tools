@@ -47,6 +47,27 @@ $(function() {
       type: 'GET',
     });
 
+    const tokenResponse1 = await $.ajax({
+      url: 'https://api.vfat.io/v1/tokens?chainId=1&page=1&pageSize=999',
+      type: 'GET',
+    });
+
+    const tokenResponse2 = await $.ajax({
+      url: 'https://api.vfat.io/v1/tokens?chainId=1&page=2&pageSize=999',
+      type: 'GET',
+    });
+
+    const tokenResponse3 = await $.ajax({
+      url: 'https://api.vfat.io/v1/tokens?chainId=1&page=3&pageSize=999',
+      type: 'GET',
+    });
+
+    const mainnet_tokens1 = tokenResponse1.tokens.map(t => t.address.toLowerCase());
+    const mainnet_tokens2 = tokenResponse2.tokens.map(t => t.address.toLowerCase());
+    const mainnet_tokens3 = tokenResponse3.tokens.map(t => t.address.toLowerCase());
+
+    const vfat_io_tokens = [...mainnet_tokens1, ...mainnet_tokens2, ...mainnet_tokens3];
+
     const vfat_io_pools = response.filter(d => d.chainId == 1 && d.protocol.id === "pancakeSwap").map(ob => ob.pool.address.toLowerCase());
 
     let missing_cl_pools = [];
@@ -63,7 +84,7 @@ $(function() {
   _print(``);
 
   for(const pool of missing_cl_pools){
-    const data = await getData(App, pool.address, pool.token0, pool.token1);
+    const data = await getData(App, pool.address, pool.token0, pool.token1, vfat_io_tokens);
     _cl_list.push(data);
   }
 
@@ -87,7 +108,7 @@ function remove_dublicates(arr, key){
   ]
 }
 
-async function getData(App, pool, token0, token1) {
+async function getData(App, pool, token0, token1, vfat_io_tokens) {
   
     const token0Contract = new ethcall.Contract(token0, ERC20_ABI);
     const [token0Symbol, token0Decimals] = await App.ethcallProvider.all([token0Contract.symbol(), token0Contract.decimals()])
@@ -106,18 +127,40 @@ async function getData(App, pool, token0, token1) {
     _print(`TOKEN 1 DECIMALS  - ${token1Decimals}`);
     _print(``);
 
-    return [
+    if(vfat_io_tokens.includes(token0.toLowerCase()) && vfat_io_tokens.includes(token1.toLowerCase())){
+      return []
+    }else if(vfat_io_tokens.includes(token0.toLowerCase()) && !vfat_io_tokens.includes(token1.toLowerCase())){
+      return [
+            {
+              address: token1,
+              symbol: token1Symbol,
+              decimals: Number(token1Decimals),
+              chainId: 1
+            }
+      ]
+    }else if(!vfat_io_tokens.includes(token0.toLowerCase()) && vfat_io_tokens.includes(token1.toLowerCase())){
+      return [
+            {
+              address: token0,
+              symbol: token0Symbol,
+              decimals: Number(token0Decimals),
+              chainId: 1
+            }
+      ]
+    }else{
+      return [
         {
             address: token0,
             symbol: token0Symbol,
             decimals: Number(token0Decimals),
-            chainId: 10
+            chainId: 1
         },
         {
             address: token1,
             symbol: token1Symbol,
             decimals: Number(token1Decimals),
-            chainId: 10
+            chainId: 1
         }
-    ]
+      ]
+    }
 }
