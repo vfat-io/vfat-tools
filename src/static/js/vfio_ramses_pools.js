@@ -82,7 +82,7 @@ $(function() {
       const periodFinishes = await App.ethcallProvider.all(periodFinish_calls);
 
       for(let i = 0; i < v2_pools.length; i++){
-        if((Date.now() / 1000 > periodFinishes[i] && rewardRates[i] > 0)){
+        if((Date.now() / 1000 < periodFinishes[i] && rewardRates[i] > 0)){
           v2_gauges_array.push(v2_pools[i].gauge)
         }
       }

@@ -79,7 +79,7 @@ $(function() {
         const rewardRates = await App.ethcallProvider.all(rewardRate_calls);
         const periodFinishes = await App.ethcallProvider.all(periodFinish_calls);
         for(let i = 0; i < v2_pools.length; i++){
-          if((Date.now() / 1000 > periodFinishes[i] && rewardRates[i] > 0)){
+          if((Date.now() / 1000 < periodFinishes[i] && rewardRates[i] > 0)){
             v2_gauges_array.push(v2_pools[i].gauge)
           }
         }
@@ -92,7 +92,7 @@ $(function() {
       const cl_periodFinishes = await App.ethcallProvider.all(cl_periodFinish_calls);
       
       for(let i = 0; i < cl_pools.length; i++){
-        if((Date.now() / 1000 > cl_periodFinishes[i] && cl_rewardRates[i] > 0)){
+        if((Date.now() / 1000 < cl_periodFinishes[i] && cl_rewardRates[i] > 0)){
           cl_gauges_array.push(cl_pools[i].gauge)
         }
       }

@@ -85,7 +85,7 @@ $(function() {
       const rewardsData = await App.ethcallProvider.all(rewardData_calls);
 
       for(let i = 0; i < v2_pools.length; i++){
-        if((Date.now() / 1000 > rewardsData[i].periodFinish && rewardsData[i].rewardRate > 0)){
+        if((Date.now() / 1000 < rewardsData[i].periodFinish && rewardsData[i].rewardRate > 0)){
           v2_gauges_array.push(v2_pools[i].gauge)
         }
       }
