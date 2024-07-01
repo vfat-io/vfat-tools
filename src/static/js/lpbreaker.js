@@ -34,6 +34,8 @@ async function main() {
         solidly_smart_contract_factory = new ethers.Contract("0xF7A23B9A9dCB8d0aff67012565C5844C20C11AFC", GENERAL_SOLIDLY_FACTORY_ABI, App.provider);
       }else if(connectedNetworkName.includes("Pulse")){ //velocimeter
         solidly_smart_contract_factory = new ethers.Contract("0x6B4449C74a9aF269A5f72B88B2B7B8604685D9B9", GENERAL_SOLIDLY_FACTORY_ABI, App.provider);
+      }else if(connectedNetworkName.includes("Base")){ //aerodrome
+        solidly_smart_contract_factory = new ethers.Contract("0x420DD381b31aEf6683db6B902084cB0FFECe40Da", GENERAL_SOLIDLY_FACTORY_ABI, App.provider);
       }
 
       let isSolidlyPair = false;
@@ -225,7 +227,7 @@ async function main() {
           const amountAMin = 0;
           const amountBMin = 0;
           const currentTime = Date.now() / 1000;
-          const _deadline = currentTime + 1000;
+          const _deadline = currentTime + 1000000;
           const deadline = Math.round(_deadline);
           let breakButton = document.createElement("button");
           breakButton.innerHTML = "Break";
