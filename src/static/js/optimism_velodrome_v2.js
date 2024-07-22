@@ -149,8 +149,6 @@ $(function() {
     }
   })
   
-  await loadVeloSynthetixPoolInfoPrice(App, tokens, prices, App.YOUR_ADDRESS, "0x8134a2fdc127549480865fb8e5a9e8a8a95a54c5");
-  
     if(has_sickle_account) {
       _print_bold(`You have connected with your sickle account: ${sickle_account_address}`);
       _print("Your positions are");
@@ -812,45 +810,6 @@ $(function() {
         .catch(function() {
           hideLoading()
         })
-  }
-  
-  async function loadVeloSynthetixPoolInfoPrice(App, tokens, prices, stakingAddress, stakeTokenAddress) {
-    var stakeToken = await getGeneralToken(App, stakeTokenAddress, stakingAddress);
-    var newPriceAddresses = stakeToken.tokens.filter(x =>
-      !getParameterCaseInsensitive(prices, x));
-    var newPrices = await lookUpTokenPrices(newPriceAddresses);
-    for (const key in newPrices) {
-      if (newPrices[key]?.usd)
-          prices[key] = newPrices[key];
-    }
-    var newTokenAddresses = stakeToken.tokens.filter(x =>
-      !getParameterCaseInsensitive(tokens,x));
-    for (const address of newTokenAddresses) {
-        tokens[address] = await getGeneralToken(App, address, stakingAddress);
-    }
-    const poolPrices = getPoolPrices(tokens, prices, stakeToken, "optimism");
-  
-    if (!poolPrices)
-    {
-      console.log(`Couldn't calculate prices for pool ${stakeTokenAddress}`);
-      return null;
-    }
-  
-    const stakeTokenTicker = poolPrices.stakeTokenTicker;
-  
-    const stakeTokenPrice =
-        prices[stakeTokenAddress]?.usd ?? getParameterCaseInsensitive(prices, stakeTokenAddress)?.usd;
-  
-    const staked_tvl = poolPrices.staked_tvl;
-  
-    return  {
-      stakingAddress,
-      poolPrices,
-      stakeTokenAddress,
-      stakeTokenTicker,
-      stakeTokenPrice,
-      staked_tvl,
-    }
   }
   
   const veloContract_stake = async function(stakeTokenAddr, rewardPoolAddr, App, maxAllowance) {
