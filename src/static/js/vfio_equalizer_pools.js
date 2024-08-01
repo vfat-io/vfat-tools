@@ -18,18 +18,18 @@ $(function() {
 
   const V2_RAM_CL_FACTORY_ABI = [{"inputs":[],"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"uint24","name":"fee","type":"uint24"},{"indexed":true,"internalType":"int24","name":"tickSpacing","type":"int24"}],"name":"FeeAmountEnabled","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"oldFeeCollector","type":"address"},{"indexed":true,"internalType":"address","name":"newFeeCollector","type":"address"}],"name":"FeeCollectorChanged","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"oldSetter","type":"address"},{"indexed":true,"internalType":"address","name":"newSetter","type":"address"}],"name":"FeeSetterChanged","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"oldImplementation","type":"address"},{"indexed":true,"internalType":"address","name":"newImplementation","type":"address"}],"name":"ImplementationChanged","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"oldOwner","type":"address"},{"indexed":true,"internalType":"address","name":"newOwner","type":"address"}],"name":"OwnerChanged","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"token0","type":"address"},{"indexed":true,"internalType":"address","name":"token1","type":"address"},{"indexed":true,"internalType":"uint24","name":"fee","type":"uint24"},{"indexed":false,"internalType":"int24","name":"tickSpacing","type":"int24"},{"indexed":false,"internalType":"address","name":"pool","type":"address"}],"name":"PoolCreated","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint8","name":"feeProtocol0Old","type":"uint8"},{"indexed":false,"internalType":"uint8","name":"feeProtocol1Old","type":"uint8"},{"indexed":false,"internalType":"uint8","name":"feeProtocol0New","type":"uint8"},{"indexed":false,"internalType":"uint8","name":"feeProtocol1New","type":"uint8"}],"name":"SetFeeProtocol","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"pool","type":"address"},{"indexed":false,"internalType":"uint8","name":"feeProtocol0Old","type":"uint8"},{"indexed":false,"internalType":"uint8","name":"feeProtocol1Old","type":"uint8"},{"indexed":false,"internalType":"uint8","name":"feeProtocol0New","type":"uint8"},{"indexed":false,"internalType":"uint8","name":"feeProtocol1New","type":"uint8"}],"name":"SetPoolFeeProtocol","type":"event"},{"inputs":[],"name":"POOL_INIT_CODE_HASH","outputs":[{"internalType":"bytes32","name":"","type":"bytes32"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"tokenA","type":"address"},{"internalType":"address","name":"tokenB","type":"address"},{"internalType":"uint24","name":"fee","type":"uint24"}],"name":"createPool","outputs":[{"internalType":"address","name":"pool","type":"address"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint24","name":"fee","type":"uint24"},{"internalType":"int24","name":"tickSpacing","type":"int24"}],"name":"enableFeeAmount","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint24","name":"","type":"uint24"}],"name":"feeAmountTickSpacing","outputs":[{"internalType":"int24","name":"","type":"int24"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"feeCollector","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"feeProtocol","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"feeSetter","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"},{"internalType":"address","name":"","type":"address"},{"internalType":"uint24","name":"","type":"uint24"}],"name":"getPool","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"implementation","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"_nfpManager","type":"address"},{"internalType":"address","name":"_veRam","type":"address"},{"internalType":"address","name":"_voter","type":"address"},{"internalType":"address","name":"_implementation","type":"address"}],"name":"initialize","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"nfpManager","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"owner","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"pool","type":"address"}],"name":"poolFeeProtocol","outputs":[{"internalType":"uint8","name":"__poolFeeProtocol","type":"uint8"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"_pool","type":"address"},{"internalType":"uint24","name":"_fee","type":"uint24"}],"name":"setFee","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"_feeCollector","type":"address"}],"name":"setFeeCollector","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint8","name":"_feeProtocol","type":"uint8"}],"name":"setFeeProtocol","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"_newFeeSetter","type":"address"}],"name":"setFeeSetter","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"_implementation","type":"address"}],"name":"setImplementation","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"_owner","type":"address"}],"name":"setOwner","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"pool","type":"address"},{"internalType":"uint8","name":"_feeProtocol","type":"uint8"}],"name":"setPoolFeeProtocol","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"pool","type":"address"},{"internalType":"uint8","name":"feeProtocol0","type":"uint8"},{"internalType":"uint8","name":"feeProtocol1","type":"uint8"}],"name":"setPoolFeeProtocol","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"veRam","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"voter","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"}]
   
-  const V2_FACTORY_ADDRESS = "0xAAA20D08e59F6561f242b08513D36266C5A29415";
+  const V2_FACTORY_ADDRESS = "0xc6366EFD0AF1d09171fe0EBF32c7943BB310832a";
   
   async function main() {
     const App = await init_ethers();
   
     _print(`Initialized ${App.YOUR_ADDRESS}\n`);
-    _print("Loading ramses gauges...\n");
+    _print("Loading equalizer gauges...\n");
   
-    const FLOW_VOTER_ADDR = "0xAAA2564DEb34763E3d05162ed3f5C2658691f499"
+    const FLOW_VOTER_ADDR = "0xe3d1a117df7dcac2eb0ac8219341bad92f18dac1"
     const FLOW_VOTER_CONTRACT = new ethcall.Contract(FLOW_VOTER_ADDR, FLOW_VOTER_ABI);
 
-    const rewardTokenAddress = "0xaaa6c1e32c55a7bfa8066a6fae9b42650f262418";
+    const rewardTokenAddress = "0x3fd3a0c85b70754efc07ac9ac0cbbdce664865a6";
   
     const V2_FACTORY_CONTRACT = new ethcall.Contract(V2_FACTORY_ADDRESS, V2_RAM_FACTORY_ABI);
   
@@ -100,13 +100,13 @@ $(function() {
     });
 
     const response2 = await $.ajax({
-      url: 'https://api.vfat.io/v1/tokens?chainId=42161&pageSize=999',
+      url: 'https://api.vfat.io/v1/tokens?chainId=250&pageSize=999',
       type: 'GET',
     });
 
     const vfat_io_tokens = response2.tokens.map(t => t.address.toLowerCase());
 
-    const vfat_gauges = response.filter(d => d.chainId == 42161).map(ob => ob.address.toLowerCase());
+    const vfat_gauges = response.filter(d => d.chainId == 250).map(ob => ob.address.toLowerCase());
 
     let missing_v2_gauges = [];
     let missing_cl_gauges = [];
@@ -173,7 +173,7 @@ _print(``);
 async function getClData(App, address, vfat_io_tokens){
 const cl_contract = new ethcall.Contract(address, CL_GAUGE_ABI);
 
-const rewardTokenAddress = "0xaaa6c1e32c55a7bfa8066a6fae9b42650f262418";
+const rewardTokenAddress = "0x3fd3a0c85b70754efc07ac9ac0cbbdce664865a6";
 
 let rewardRate;
 try{
@@ -215,7 +215,7 @@ if(vfat_io_tokens.includes(token0.toLowerCase()) && vfat_io_tokens.includes(toke
           address: token1,
           symbol: token1Symbol,
           decimals: Number(token1Decimals),
-          chainId: 42161
+          chainId: 250
         }
   ]
 }else if(!vfat_io_tokens.includes(token0.toLowerCase()) && vfat_io_tokens.includes(token1.toLowerCase())){
@@ -224,7 +224,7 @@ if(vfat_io_tokens.includes(token0.toLowerCase()) && vfat_io_tokens.includes(toke
           address: token0,
           symbol: token0Symbol,
           decimals: Number(token0Decimals),
-          chainId: 42161
+          chainId: 250
         }
   ]
 }else{
@@ -233,13 +233,13 @@ if(vfat_io_tokens.includes(token0.toLowerCase()) && vfat_io_tokens.includes(toke
         address: token0,
         symbol: token0Symbol,
         decimals: Number(token0Decimals),
-        chainId: 42161
+        chainId: 250
     },
     {
         address: token1,
         symbol: token1Symbol,
         decimals: Number(token1Decimals),
-        chainId: 42161
+        chainId: 250
     }
   ]
 }
@@ -278,7 +278,7 @@ if(vfat_io_tokens.includes(token0.toLowerCase()) && vfat_io_tokens.includes(toke
           address: token1,
           symbol: token1Symbol,
           decimals: Number(token1Decimals),
-          chainId: 42161
+          chainId: 250
         }
   ]
 }else if(!vfat_io_tokens.includes(token0.toLowerCase()) && vfat_io_tokens.includes(token1.toLowerCase())){
@@ -287,7 +287,7 @@ if(vfat_io_tokens.includes(token0.toLowerCase()) && vfat_io_tokens.includes(toke
           address: token0,
           symbol: token0Symbol,
           decimals: Number(token0Decimals),
-          chainId: 42161
+          chainId: 250
         }
   ]
 }else{
@@ -296,13 +296,13 @@ if(vfat_io_tokens.includes(token0.toLowerCase()) && vfat_io_tokens.includes(toke
         address: token0,
         symbol: token0Symbol,
         decimals: Number(token0Decimals),
-        chainId: 42161
+        chainId: 250
     },
     {
         address: token1,
         symbol: token1Symbol,
         decimals: Number(token1Decimals),
-        chainId: 42161
+        chainId: 250
     }
   ]
 }
