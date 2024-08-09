@@ -210,7 +210,8 @@ const BaseTokens = [
   { "id": "extra-finance", "symbol": "EXTRA", "contract": "0x2dad3a13ef0c6366220f989157009e501e7938f8"},
   { "id": "oath", "symbol": "OATH", "contract": "0x00e1724885473b63bce08a9f0a52f35b0979e35a"},
   { "id": "sumer-money-suusd", "symbol": "suUSD", "contract": "0x8bf591eae535f93a242d5a954d3cde648b48a5a8"},
-  { "id": "meter", "symbol": "MTRG", "contract": "0xa023e6f6b4862ea38cbe45e377abd908abab2f82"}
+  { "id": "meter", "symbol": "MTRG", "contract": "0xa023e6f6b4862ea38cbe45e377abd908abab2f82"},
+  { "id": "zunami-usd", "symbol": "ZUNUSD", "contract": "0x6ef3864876424ade834a7c1be8c0cf3d71208b84"}
 ];
 
 const BlastTokens = [
