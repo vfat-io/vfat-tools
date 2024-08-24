@@ -171,6 +171,21 @@ window.NETWORKS = {
       "https://lineascan.build"
     ]
   },
+  OPBNB: {
+    "chainId": "0xcc",
+    "chainName": "opBNB",
+    "nativeCurrency": {
+      "name": "BNB",
+      "symbol": "BNB",
+      "decimals": 18
+    },
+    "rpcUrls": [
+      "https://opbnb-rpc.publicnode.com"
+    ],
+    "blockExplorerUrls": [
+      "https://opbnbscan.com/"
+    ]
+  },
   FX: {
     "chainId": "0x212",
     "chainName": "FX Mainnet",

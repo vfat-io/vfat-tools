@@ -210,7 +210,8 @@ const BaseTokens = [
   { "id": "extra-finance", "symbol": "EXTRA", "contract": "0x2dad3a13ef0c6366220f989157009e501e7938f8"},
   { "id": "oath", "symbol": "OATH", "contract": "0x00e1724885473b63bce08a9f0a52f35b0979e35a"},
   { "id": "sumer-money-suusd", "symbol": "suUSD", "contract": "0x8bf591eae535f93a242d5a954d3cde648b48a5a8"},
-  { "id": "meter", "symbol": "MTRG", "contract": "0xa023e6f6b4862ea38cbe45e377abd908abab2f82"}
+  { "id": "meter", "symbol": "MTRG", "contract": "0xa023e6f6b4862ea38cbe45e377abd908abab2f82"},
+  { "id": "zunami-usd", "symbol": "ZUNUSD", "contract": "0x6ef3864876424ade834a7c1be8c0cf3d71208b84"}
 ];
 
 const BlastTokens = [
@@ -836,6 +837,7 @@ const optimisticTokens = [
   { "id": "hundred-finance","symbol": "HND", "contract": "0x10010078a54396F62c96dF8532dc2B4847d47ED3" },
   { "id": "optimism","symbol": "OP", "contract": "0x4200000000000000000000000000000000000042" },
   { "id": "velodrome-finance","symbol": "VELO", "contract": "0x3c8b650257cfb5f272f799f5e2b4e65093a11a05" },
+  { "id": "velodrome-finance","symbol": "VELO", "contract": "0x9560e827af36c94d2ac33a39bce1fe78631088db" },
   { "id": "lyra-finance","symbol": "LYRA", "contract": "0x50c5725949A6F0c72E6C4a641F24049A917DB0Cb" },
   { "id": "nusd","symbol": "SUSD", "contract": "0x8c6f28f2F1A3C87F0f938b96d27520d9751ec8d9" },
   { "id": "liquity-usd","symbol": "LUSD", "contract": "0xc40F949F8a4e094D1b49a23ea9241D289B7b2819" },
@@ -865,13 +867,13 @@ const optimisticTokens = [
   { "id": "lido-dao","symbol": "LDO", "contract": "0xFdb794692724153d1488CcdBE0C56c252596735F" },
   { "id": "wrapped-usdr","symbol": "WUSDR", "contract": "0x340fE1D898ECCAad394e2ba0fC1F93d27c7b717A" },
   { "id": "ethos-reserve-note","symbol": "ERN", "contract": "0xc5b001dc33727f8f26880b184090d3e252470d45" },
-  { "id": "usd","symbol": "USD+", "contract": "0x73cb180bf0521828d8849bc8CF2B920918e23032" },
+  { "id": "usd","symbol": "USD+", "contract": "0x73cb180bf0521828d8849bc8cf2b920918e23032" },
   { "id": "beefy-finance","symbol": "BIFI", "contract": "0x4E720DD3Ac5CFe1e1fbDE4935f386Bb1C66F4642" },
   { "id": "oath","symbol": "OATH", "contract": "0x39fde572a18448f8139b7788099f0a0740f51205" },
   { "id": "overnight-dai","symbol": "DAI+", "contract": "0x970d50d09f3a656b43e11b0d45241a84e3a6e011" },
   { "id": "kwenta","symbol": "KWENTA", "contract": "0x920cf626a271321c151d027030d5d08af699456b" },
   { "id": "sonne-finance","symbol": "SONNE", "contract": "0x1DB2466d9F5e10D7090E7152B68d62703a2245F0" },
-  { "id": "bob","symbol": "BOB", "contract": "0xB0B195aEFA3650A6908f15CdaC7D92F8a5791B0B" },
+  { "id": "bob","symbol": "BOB", "contract": "0xb0b195aefa3650a6908f15cdac7d92f8a5791b0b" },
   { "id": "tarot","symbol": "TAROT", "contract": "0x375488F097176507e39B9653b88FDc52cDE736Bf" },
   { "id": "jarvis-synthetic-euro","symbol": "JEUR", "contract": "0x79af5dd14e855823fa3e9ecacdf001d99647d043" },
   { "id": "dhedge-dao","symbol": "DHT", "contract": "0xaf9fe3b5ccdae78188b1f8b9a49da7ae9510f151" },
@@ -886,9 +888,9 @@ const optimisticTokens = [
   { "id": "iron-bank","symbol": "IB", "contract": "0x00a35FD824c717879BF370E70AC6868b95870Dfb" },
   { "id": "granary","symbol": "GRAIN", "contract": "0xfD389Dc9533717239856190F42475d3f263a270d" },
   { "id": "pooltogether","symbol": "POOL", "contract": "0x395ae52bb17aef68c2888d941736a71dc6d4e125" },
-  { "id": "tbtc","symbol": "tBTC", "contract": "0x6c84a8f1c29108F47a79964b5Fe888D4f4D0dE40" },
+  { "id": "tbtc","symbol": "tBTC", "contract": "0x6c84a8f1c29108f47a79964b5fe888d4f4d0de40" },
   { "id": "wrapped-optidoge","symbol": "WOPTIDOGE", "contract": "0xc26921b5b9ee80773774d36c84328ccb22c3a819" },
-  { "id": "fbomb","symbol": "BOMB", "contract": "0x74ccbe53F77b08632ce0CB91D3A545bF6B8E0979" }
+  { "id": "fbomb","symbol": "BOMB", "contract": "0x74ccbe53f77b08632ce0cb91d3a545bf6b8e0979" }
 ];
 
 const polisTokens = [

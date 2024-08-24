@@ -123,6 +123,9 @@ const pageNetwork = function() {
   if (network.toLowerCase() === 'base') {
     return window.NETWORKS.BASE
   }
+  if (network.toLowerCase() === 'opbnb') {
+    return window.NETWORKS.OPBNB
+  }
   if (network.toLowerCase() === 'thundercore') {
     return window.NETWORKS.THUNDERCORE
   }
@@ -3915,6 +3918,9 @@ function getErc20Prices(prices, pool, chain="eth") {
     case "fuse":
       poolUrl=`https://explorer.fuse.io/address/${pool.address}`;
       break;
+    case "opbnb":
+      poolUrl=`https://opbnbscan.com/address/${pool.address}`;
+      break;
     case "base":
       poolUrl=`https://basescan.org/token/${pool.address}`;
       break;
@@ -4687,6 +4693,9 @@ async function printSynthetixPool(App, info, chain="eth", customURLs) {
       case "fuse":
         _print(`<a target="_blank" href="https://explorer.fuse.io/address/${info.stakingAddress}#code">FUSE Scan</a>`);
         break;
+      case "opbnb":
+        _print(`<a target="_blank" href="https://opbnbscan.com/address/${info.stakingAddress}#code">opBNB Scan</a>`);
+        break;
       case "base":
         _print(`<a target="_blank" href="https://basescan.org/address/${info.stakingAddress}#code">Base Scan</a>`);
         break;
@@ -4905,6 +4914,8 @@ function getChainExplorerUrl(chain, address){
       return `https://evmexplorer.velas.com/address/${address}`;
     case "aurora" :
       return `https://aurorascan.dev/token/${address}`;
+    case "opbnb" :
+      return `https://opbnbscan.com/address/${address}`;
     case "boba" :
       return `https://blockexplorer.boba.network/address/${address}`;
     case "metis" :
