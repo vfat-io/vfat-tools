@@ -37,7 +37,7 @@ async function main() {
       }else if(connectedNetworkName.includes("Base")){ //aerodrome
         solidly_smart_contract_factory = new ethers.Contract("0x420DD381b31aEf6683db6B902084cB0FFECe40Da", GENERAL_SOLIDLY_FACTORY_ABI, App.provider);
       }else if(connectedNetworkName.includes("Fant")){ //degenexpress
-        solidly_smart_contract_factory = new ethers.Contract("0x420DD381b31aEf6683db6B902084cB0FFECe40Da", GENERAL_SOLIDLY_FACTORY_ABI, App.provider);
+        solidly_smart_contract_factory = new ethers.Contract("0x1C2Aa07EF924616042DD5FA4b0b48CB2e725BFb1", GENERAL_SOLIDLY_FACTORY_ABI, App.provider);
       }
 
       let isSolidlyPair = false;
