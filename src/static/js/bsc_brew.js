@@ -29,8 +29,8 @@ async function main() {
     const tokens = {};
     const prices = await getBscPrices();
 
-    await loadBscChefContract(App, tokens, prices, BREW_CHEF, BREW_CHEF_ADDR, BREW_CHEF_ABI, rewardTokenTicker,
-        "cake", null, rewardsPerWeek, "pendingCake", [10,11,12,13,14,15,16,17,18,19,20]);
+    await loadBrewChefContract(App, tokens, prices, BREW_CHEF, BREW_CHEF_ADDR, BREW_CHEF_ABI, rewardTokenTicker,
+        "cake", null, rewardsPerWeek, "pendingCake", [10,11,12,13,14,15], "bnb");
     _print("")
 
     const poolInfos = await Promise.all(Address.map(a => loadBrewPoolInfo(App, tokens, prices, a)));
@@ -79,4 +79,116 @@ async function printBrewContract(poolInfo) {
     _print(`Your stake comprises of ${poolInfo.userStaked * poolInfo.ppfs} ${poolInfo.vault.token.symbol}.`)
   }
   _print("");
+}
+
+async function loadBrewChefContract(App, tokens, prices, chef, chefAddress, chefAbi, rewardTokenTicker,
+  rewardTokenFunction, rewardsPerBlockFunction, rewardsPerWeekFixed, pendingRewardsFunction,
+  deathPoolIndices, chain) {
+  const chefContract = chef ?? new ethers.Contract(chefAddress, chefAbi, App.provider);
+
+  const poolCount = parseInt(await chefContract.poolLength(), 10);
+  const totalAllocPoints = await chefContract.totalAllocPoint();
+
+  _print(`<a href='https://bscscan.com/address/${chefAddress}' target='_blank'>Staking Contract</a>`);
+  _print(`Found ${poolCount} pools.\n`)
+
+  _print(`Showing incentivized pools only.\n`);
+
+  var tokens = {};
+
+  const rewardTokenAddress = await chefContract.callStatic[rewardTokenFunction]();
+  const rewardToken = await getGeneralToken(App, rewardTokenAddress, chefAddress);
+  const rewardsPerWeek = rewardsPerWeekFixed ??
+    await chefContract.callStatic[rewardsPerBlockFunction]()
+    / 10 ** rewardToken.decimals * 604800 / 3
+
+  let poolInfos = [];
+  for(let i = 0; i < poolCount; i++){
+    const poolInfo = await getBrewPoolInfo(App, chefContract, chefAddress, i, pendingRewardsFunction);
+    poolInfos.push(poolInfo);
+  }
+  // const poolInfos = await Promise.all([...Array(poolCount).keys()].map(async (x) =>
+  //   await getBrewPoolInfo(App, chefContract, chefAddress, x, pendingRewardsFunction)));
+
+  var tokenAddresses = [].concat.apply([], poolInfos.filter(x => x.poolToken).map(x => x.poolToken.tokens));
+
+  await Promise.all(tokenAddresses.map(async (address) => {
+      tokens[address] = await getGeneralToken(App, address, chefAddress);
+  }));
+
+  if (deathPoolIndices) {   //load prices for the deathpool assets
+    deathPoolIndices.map(i => poolInfos[i])
+                     .map(poolInfo =>
+      poolInfo.poolToken ? getPoolPrices(tokens, prices, poolInfo.poolToken, chain) : undefined);
+  }
+
+  const poolPrices = poolInfos.map(poolInfo => poolInfo.poolToken ? getPoolPrices(tokens, prices, poolInfo.poolToken, chain) : undefined);
+
+
+  _print("Finished reading smart contracts.\n");
+
+  let aprs = []
+  for (i = 0; i < poolCount; i++) {
+    if (poolPrices[i]) {
+      const apr = printChefPool(App, chefAbi, chefAddress, prices, tokens, poolInfos[i], i, poolPrices[i],
+        totalAllocPoints, rewardsPerWeek, rewardTokenTicker, rewardTokenAddress,
+        pendingRewardsFunction, null, null, chain, poolInfos[i].depositFee, poolInfos[i].withdrawFee)
+      aprs.push(apr);
+    }
+  }
+  let totalUserStaked=0, totalStaked=0, averageApr=0;
+  for (const a of aprs) {
+    if (!isNaN(a.totalStakedUsd)) {
+      totalStaked += a.totalStakedUsd;
+    }
+    if (a.userStakedUsd > 0) {
+      totalUserStaked += a.userStakedUsd;
+      averageApr += a.userStakedUsd * a.yearlyAPR / 100;
+    }
+  }
+  averageApr = averageApr / totalUserStaked;
+  _print_bold(`Total Staked: $${formatMoney(totalStaked)}`);
+  if (totalUserStaked > 0) {
+    _print_bold(`\nYou are staking a total of $${formatMoney(totalUserStaked)} at an average APR of ${(averageApr * 100).toFixed(2)}%`)
+    _print(`Estimated earnings:`
+        + ` Day $${formatMoney(totalUserStaked*averageApr/365)}`
+        + ` Week $${formatMoney(totalUserStaked*averageApr/52)}`
+        + ` Year $${formatMoney(totalUserStaked*averageApr)}\n`);
+  }
+  return { prices, totalUserStaked, totalStaked, averageApr }
+}
+
+async function getBrewPoolInfo(app, chefContract, chefAddress, poolIndex, pendingRewardsFunction) {
+  const poolInfo = await chefContract.poolInfo(poolIndex);
+  if (poolInfo.allocPoint == 0) {
+    return {
+      address: poolInfo.lpToken ?? poolInfo.stakingToken ?? poolInfo.token,
+      allocPoints: poolInfo.allocPoint ?? 1,
+      poolToken: null,
+      userStaked : 0,
+      pendingRewardTokens : 0,
+    };
+  }
+  const poolToken = await getGeneralToken(app, poolInfo.lpToken ?? poolInfo.stakingToken ?? poolInfo.token, chefAddress);
+  const userInfo = await chefContract.userInfo(poolIndex, app.YOUR_ADDRESS);
+  const pendingRewardTokens = await chefContract.callStatic[pendingRewardsFunction](poolIndex, app.YOUR_ADDRESS);
+  if(!poolToken){
+    return {
+      address: poolInfo.lpToken ?? poolInfo.stakingToken ?? poolInfo.token,
+      allocPoints: poolInfo.allocPoint ?? 1,
+      poolToken: null,
+      userStaked : 0,
+      pendingRewardTokens : 0,
+    };
+  }
+  const staked = userInfo.amount / 10 ** poolToken.decimals;
+  return {
+      address: poolInfo.lpToken ?? poolInfo.stakingToken ?? poolInfo.token,
+      allocPoints: poolInfo.allocPoint ?? 1,
+      poolToken: poolToken,
+      userStaked : staked,
+      pendingRewardTokens : pendingRewardTokens / 10 ** 18,
+      depositFee : (poolInfo.depositFeeBP ?? poolInfo.depositFee ?? 0) / 100,
+      withdrawFee : (poolInfo.withdrawFeeBP ?? 0) / 100
+  };
 }
