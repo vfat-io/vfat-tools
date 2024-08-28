@@ -107,8 +107,6 @@ async function loadBrewChefContract(App, tokens, prices, chef, chefAddress, chef
     const poolInfo = await getBrewPoolInfo(App, chefContract, chefAddress, i, pendingRewardsFunction);
     poolInfos.push(poolInfo);
   }
-  // const poolInfos = await Promise.all([...Array(poolCount).keys()].map(async (x) =>
-  //   await getBrewPoolInfo(App, chefContract, chefAddress, x, pendingRewardsFunction)));
 
   var tokenAddresses = [].concat.apply([], poolInfos.filter(x => x.poolToken).map(x => x.poolToken.tokens));
 
