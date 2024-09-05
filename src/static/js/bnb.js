@@ -608,6 +608,7 @@ const main = async() => {
       ["CZBLUE              ",`<a href="czblue"        >Various</a>`,"CZBLUE           ","https://cz.farm"],
       ["Maduck Club         ",`<a href="maduck"        >Various</a>`,"MADUCK           ","https://www.maduck.club"],
       ["JetSwap             ",`<a href="jetswap"       >Various</a>`,"WINGS            ","https://jetswap.finance"],
+      ["Pacoca              ",`<a href="pacoca"        >Various</a>`,"PACOCA           ","https://pacoca.io"],
       //["Pancake Swap V3     ",`<a href="pancakev3"     >Various</a>`,"CAKE             ","https://pancakeswap.finance"]
     ].reverse()}
 
