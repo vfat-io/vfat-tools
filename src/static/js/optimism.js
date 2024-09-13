@@ -19,7 +19,6 @@ const main = async() => {
       ["Stargate              ", `<a href="stargate"          >Various</a>`,"STG          ","https://stargate.finance"],
       ["Hundred               ", `<a href="hundred"           >Various</a>`,"HND          ","https://hundred.finance"],
       ["Xtoken Terminal       ", `<a href="xtokenterminal"    >Various</a>`,"HND          ","https://app.xtokenterminal.io"],
-      ["Velodrome V1          ", `<a href="velodrome"         >Various</a>`,"VELO         ","https://app.velodrome.finance"],
       ["Lyra                  ", `<a href="lyra"              >Various</a>`,"LYRA         ","https://app.lyra.finance"],
       ["Degen Eth             ", `<a href="degeneth"          >Various</a>`,"BANDIT       ","https://degeneth.xyz/"],
       ["OpenXSwap             ", `<a href="openxswap"         >Various</a>`,"OPENX        ","https://openxswap.exchange"],
@@ -28,7 +27,7 @@ const main = async() => {
       ["Arrakis               ", `<a href="arrakis"           >Various</a>`,"OP           ","https://www.arrakis.finance"],
       ["Fire                  ", `<a href="fire"              >Various</a>`,"wFIRE        ",""],
       ["Exactly               ", `<a href="exactly"           >Various</a>`,"OP           ","https://app.exact.ly"],
-      ["Velodrome V2          ", `<a href="velodrome_v2"      >Various</a>`,"VELO         ","https://app.velodrome.finance"],
+      ["Velodrome             ", `<a href="velodrome_v2"      >Various</a>`,"VELO         ","https://app.velodrome.finance"],
       ["Ajna                  ", `<a href="ajna"              >Various</a>`,"AJNA         ","https://app.ajna.finance"]
     ].reverse()
   }
