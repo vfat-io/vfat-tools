@@ -240,9 +240,9 @@ async function init_ethers() {
       App.web3Provider = walletProvider
       App.provider = new ethers.providers.Web3Provider(walletProvider)
       if(rpc){
-        App.rpcProvider = new ethers.providers.JsonRpcProvider(rpc)
+        App.rpcProvider = new ethers.providers.JsonRpcProvider(rpc);
       }else{
-        App.rpcProvider = null;
+        App.rpcProvider = new ethers.providers.Web3Provider(walletProvider);
       }
 
       try {

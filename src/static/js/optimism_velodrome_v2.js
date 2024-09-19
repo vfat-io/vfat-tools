@@ -42,6 +42,7 @@ $(function() {
     const App = await init_ethers();
   
     _print(`Initialized ${App.YOUR_ADDRESS}\n`);
+    _print(`Connected to RPC: ${App.rpcProvider.connection.url}\n`);
     _print("Reading smart contracts...\n");
     _print("This may take few minutes, please be patient...\n");
   
