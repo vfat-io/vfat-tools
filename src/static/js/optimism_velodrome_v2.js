@@ -45,9 +45,13 @@ $(function() {
     _print(`Connected to RPC: ${App.rpcProvider.connection.url}\n`);
     _print("Reading smart contracts...\n");
     _print("This may take few minutes, please be patient...\n");
-  
+
     const tokens = {};
-    const prices = await getOptimisticPrices();
+    try{
+      prices = await getOptimisticPrices();
+    }catch(e){
+      prices = await getOptimismPrices2();
+    }
   
     const FLOW_VOTER_ADDR = "0x41C914ee0c7E1A5edCD0295623e6dC557B5aBf3C"
     const FLOW_VOTER_CONTRACT = new ethcall.Contract(FLOW_VOTER_ADDR, FLOW_VOTER_ABI);
@@ -257,7 +261,7 @@ $(function() {
         }
       }
   
-      const rewardToken = getParameterCaseInsensitive(tokens, rewardTokenAddress);
+      const rewardToken = await getGeneralToken(App, rewardTokenAddress, stakingAddress);
   
       const stakeTokenTicker = stakeToken.symbol0 + '-' + stakeToken.symbol1;
       const rewardTokenTicker = rewardToken.symbol;
@@ -897,3 +901,25 @@ $(function() {
     }
   }
   
+async function getOptimismPrices2() {
+  const BaseTokenContracts = BaseTokens.map(x => x.contract.toLowerCase())
+  const idPrices = await lookUpPrices2(BaseTokenContracts);
+  const prices = {}
+  for (const bt of BaseTokens)
+      if (idPrices[bt.contract])
+          prices[bt.contract] = {usd: idPrices[bt.contract]};
+  return prices;
+}
+
+const lookUpPrices2 = async function(id_array) {
+  const prices = {}
+  let ids = id_array.join('%2C')
+  let res = await $.ajax({
+    url: 'https://api.vfat.io/v1/token?chainId=8453&address='+ids,
+    type: 'GET',
+  })
+  for (const [key, v] of Object.entries(res)) {
+    if (v.price) prices[v.address] = v.price;
+  }
+  return prices
+}
