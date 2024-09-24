@@ -902,10 +902,10 @@ $(function() {
   }
   
 async function getOptimismPrices2() {
-  const BaseTokenContracts = BaseTokens.map(x => x.contract.toLowerCase())
-  const idPrices = await lookUpPrices2(BaseTokenContracts);
+  const OptTokenContracts = optimisticTokens.map(x => x.contract.toLowerCase())
+  const idPrices = await lookUpPrices2(OptTokenContracts);
   const prices = {}
-  for (const bt of BaseTokens)
+  for (const bt of optimisticTokens)
       if (idPrices[bt.contract])
           prices[bt.contract] = {usd: idPrices[bt.contract]};
   return prices;
@@ -915,7 +915,7 @@ const lookUpPrices2 = async function(id_array) {
   const prices = {}
   let ids = id_array.join('%2C')
   let res = await $.ajax({
-    url: 'https://api.vfat.io/v1/token?chainId=8453&address='+ids,
+    url: 'https://api.vfat.io/v1/token?chainId=10&address='+ids,
     type: 'GET',
   })
   for (const [key, v] of Object.entries(res)) {

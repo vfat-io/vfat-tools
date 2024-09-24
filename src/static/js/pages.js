@@ -204,7 +204,8 @@ const main = async () => {
       ["9inch                        ", `<a href="9inch/"             >Various</a>`, "BBC                ", "https://app.9inch.io"],
       ["Morpheus                     ", `<a href="morpheus/"          >Various</a>`, "MOR                ", "https://mor.org"],
       ["Ethena                       ", `<a href="ethena/"            >Various</a>`, "                   ", "https://app.ethena.fi"],
-      ["Infinex                      ", `<a href="infinex/"           >Various</a>`, "                   ", "https://app.infinex.xyz"]
+      ["Infinex                      ", `<a href="infinex/"           >Various</a>`, "                   ", "https://app.infinex.xyz"],
+      ["Pancake Swap V3              ", `<a href="pancakev3/"         >Various</a>`, "CAKE               ", "https://pancakeswap.finance"]
     ].reverse()
   }
 
