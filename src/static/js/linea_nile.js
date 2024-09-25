@@ -38,13 +38,13 @@ $(function() {
   
   const FARM_STRATEGY_ADDRESS = "0x4F025Aba4887631a6D601AE3156bf53568f5A5Fd";
   
-  const SIMPLE_FARM_STRATEGY_ADDRESS = "0x78a5159141Ca0E84617F454BbbbbC5b41A9889cF";
+  const SIMPLE_FARM_STRATEGY_ADDRESS = "0x71D234A3e1dfC161cc1d081E6496e76627baAc31";
 
   const V2_FACTORY_ADDRESS = "0xAAA16c016BF556fcD620328f0759252E29b1AB57";
 
   const V2_NILE_CL_FACTORY_ADDRESS = "0xAAA32926fcE6bE95ea2c51cB4Fcb60836D320C42";
 
-  const SWEEP_STRATEGY_ADDRESS = "0x2EdCC187e0eb6a04D792ceaA1A1b7aD537295BD1";
+  const SWEEP_STRATEGY_ADDRESS = "0x50F3c65c6B2c754fD1A3C86c61284C631e6F493f";
   
   async function main() {
     const App = await init_ethers();
@@ -285,7 +285,7 @@ $(function() {
       _print(`${info.rewardTokenTicker} Per Week: ${info.weeklyRewards.toFixed(2)} ($${formatMoney(info.usdPerWeek)})`);
       _print(`You are staking ${info.stakeTokenTicker} (Nft ID: ${info.nftId})`);
       const sickle_unstake = async function() {
-        return sickle_clContract_withdraw(info.stakingAddress, info.nftId, info.rewardTokenAddress, App)
+        return sickle_clContract_withdraw(info.stakingAddress, info.nftId, App)
       }
       const claim = async function() {
         return clContract_claim(info.stakingAddress, info.nftId, App)
@@ -319,33 +319,34 @@ $(function() {
           hideLoading()
         })
   }
-  
+
   const sickle_clContract_claim = async function(rewardPoolAddr, nftId, App) {
     const signer = App.provider.getSigner()
   
     const decodedExtraData = {
       tokenId: +nftId,
-      maxAmount0: 0,
-      maxAmount1: 0,
-      isIncrease: false
+      tokens: ["0xaaaac83751090c6ea42379626435f805ddf54dc8"],
+      maxAmount0: "340282366920938463463374607431768211455",
+      maxAmount1: "340282366920938463463374607431768211455",
     }
   
-    const extraData = ethers.utils.defaultAbiCoder.encode(["tuple(uint256 tokenId, uint256 maxAmount0, uint256 maxAmount1, bool isIncrease)"], [decodedExtraData]);
+    const extraData = ethers.utils.defaultAbiCoder.encode(["tuple(uint256 tokenId, address[] tokens, uint128 maxAmount0, uint128 maxAmount1)"], [decodedExtraData]);
   
     const params = {
       tokensOut: ["0xaaaac83751090c6ea42379626435f805ddf54dc8"],
-      stakingContractAddress: rewardPoolAddr,
+      stakingContractAddress: NFT_TOKEN_ADDRESS,
       extraData: extraData
     }
   
-    const REWARD_POOL = new ethers.Contract(FARM_STRATEGY_ADDRESS, FARM_STRATEGY_ABI, signer)
+    const REWARD_POOL = new ethers.Contract(SIMPLE_FARM_STRATEGY_ADDRESS, SIMPLE_FARM_STRATEGY_ABI, signer)
   
       showLoading()
       REWARD_POOL.harvest(params)
         .then(function(t) {
           return App.provider.waitForTransaction(t.hash)
         })
-        .catch(function() {
+        .catch(function(t) {
+          console.log(t);
           hideLoading()
         })
   }
