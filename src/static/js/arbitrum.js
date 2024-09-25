@@ -69,7 +69,6 @@ const main = async() => {
       ["Sterling Finance    ", `<a href="/arbitrum/sterling"    >Various</a>`,"STR                ","https://www.sterling.finance"],
       ["Mindgames           ", `<a href="/arbitrum/mindgames"   >Various</a>`,"CRX                ","https://play.mindgames.io"],
       ["xBlue Finance       ", `<a href="/arbitrum/xblue"       >Various</a>`,"XB                 ","https://www.xblue.finance"],
-      ["Ramses Exchange     ", `<a href="/arbitrum/ramses"      >Various</a>`,"RAM                ","https://app.ramses.exchange"],
       ["Arbidex             ", `<a href="/arbitrum/arbidex"     >Various</a>`,"ARX / WETH         ","https://arbidex.fi"],
       ["DooraInu            ", `<a href="/arbitrum/doorainu"    >Various</a>`,"DINU               ","https://doorainu.world"],
       ["Excalibur           ", `<a href="/arbitrum/excalibur"   >Various</a>`,"GRAIL              ","https://excalibur.exchange"],
@@ -88,7 +87,8 @@ const main = async() => {
       ["Spartadex           ", `<a href="/arbitrum/sparta"      >Various</a>`,"SPARTA             ","https://app.spartadex.io"],
       ["Ajna                ", `<a href="/arbitrum/ajna"        >Various</a>`,"AJNA               ","https://app.ajna.finance"],
       ["Umami               ", `<a href="/arbitrum/umami"       >Various</a>`,"Various            ","https://umami.finance"],
-      ["Heroglyphs          ", `<a href="/arbitrum/heroglyphs"  >Various</a>`,"                   ","https://heroglyphs.com"]
+      ["Heroglyphs          ", `<a href="/arbitrum/heroglyphs"  >Various</a>`,"                   ","https://heroglyphs.com"],
+      ["Ramses Exchange     ", `<a href="/arbitrum/ramses"      >Various</a>`,"RAM                ","https://app.ramses.exchange"]
     ].reverse()
   }
 
