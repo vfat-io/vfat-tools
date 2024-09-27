@@ -30,11 +30,11 @@ $(function() {
   
   const NFT_TOKEN_ADDRESS = "0xbB5DFE1380333CEE4c2EeBd7202c80dE2256AdF4";
   
-  const NFT_FARM_STRATEGY_ADDRESS = "0x84676ee313cd7C7b85869B208D2EfFB7Af136f8a";
+  const NFT_FARM_STRATEGY_ADDRESS = "0xa8d2de45490c563b1e9524f49cbc07cc3da44baf";
   
   const FARM_STRATEGY_ADDRESS = "0x76384443B91A576809dfC2CDc0f7Ae8f3148147a";
   
-  const SIMPLE_FARM_STRATEGY_ADDRESS = "0x5C7077C9A4708A57e21de73F5636C769938b508E";
+  const SIMPLE_FARM_STRATEGY_ADDRESS = "0xff638dc7605065e33c74620c1f859d49183d9452";
   
   const V2_FACTORY_ADDRESS = "0xF1046053aa5682b4F9a81b5481394DA16BE5FF5a";
   
@@ -527,7 +527,7 @@ $(function() {
       extraData: extraData
     }
   
-    const REWARD_POOL = new ethers.Contract(FARM_STRATEGY_ADDRESS, FARM_STRATEGY_ABI, signer)
+    const REWARD_POOL = new ethers.Contract(SIMPLE_FARM_STRATEGY_ADDRESS, SIMPLE_FARM_STRATEGY_ABI, signer)
   
       showLoading()
       REWARD_POOL.harvest(params)
@@ -601,7 +601,7 @@ $(function() {
   
       const rewardTokenAddress = "0x9560e827aF36c94D2Ac33a39bCE1Fe78631088Db";
   
-      var stakeToken = await getGeneralToken(App, stakeTokenAddress, stakingAddress);
+      var stakeToken = await getGeneralEthcallToken(App, stakeTokenAddress, stakingAddress);
   
       var newTokenAddresses = stakeToken.tokens.filter(x =>
         !getParameterCaseInsensitive(tokens,x));
