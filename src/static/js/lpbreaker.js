@@ -35,7 +35,7 @@ async function main() {
       }else if(connectedNetworkName.includes("Pulse")){ //velocimeter
         solidly_smart_contract_factory = new ethers.Contract("0x6B4449C74a9aF269A5f72B88B2B7B8604685D9B9", GENERAL_SOLIDLY_FACTORY_ABI, App.provider);
       }else if(connectedNetworkName.includes("Base")){ //aerodrome
-        solidly_smart_contract_factory = new ethers.Contract("0x420DD381b31aEf6683db6B902084cB0FFECe40Da", GENERAL_SOLIDLY_FACTORY_ABI, App.provider);
+        solidly_smart_contract_factory = new ethers.Contract("0x420DD381b31aEf6683db6B902084cB0FFECe40Da", AERO_FACTORY_ABI, App.provider);
       }else if(connectedNetworkName.includes("Fant")){ //degenexpress
         solidly_smart_contract_factory = new ethers.Contract("0x1C2Aa07EF924616042DD5FA4b0b48CB2e725BFb1", GENERAL_SOLIDLY_FACTORY_ABI, App.provider);
       }
@@ -43,7 +43,12 @@ async function main() {
       let isSolidlyPair = false;
 
       try{
-        isSolidlyPair = await solidly_smart_contract_factory.isPair(lp_token_address);
+        if(solidly_smart_contract_factory.address == "0x420DD381b31aEf6683db6B902084cB0FFECe40Da"){ // if the address is the aerodrome factory
+          isSolidlyPair = await solidly_smart_contract_factory.isPool(lp_token_address);
+        }else{
+          isSolidlyPair = await solidly_smart_contract_factory.isPair(lp_token_address);
+        }
+        
       }catch(err){
         console.log("no solidly token");
       }
