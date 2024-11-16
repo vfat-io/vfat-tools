@@ -677,7 +677,8 @@ const LineaTokens = [
 const ModeTokens = [
   { "id": "weth", "symbol": "WETH", "contract": "0x4200000000000000000000000000000000000006"},
   { "id": "usd-coin", "symbol": "USDC", "contract": "0xd988097fb8612cc24eec14542bc03424c656005f"},
-  { "id": "mode", "symbol": "MODE", "contract": "0xdfc7c877a950e49d2610114102175a06c2e3167a"}
+  { "id": "mode", "symbol": "MODE", "contract": "0xdfc7c877a950e49d2610114102175a06c2e3167a"},
+  { "id": "velodrome-finance", "symbol": "XVELO", "contract": "0x7f9adfbd38b669f03d1d11000bc76b9aaea28a81"}
 ];
 
 const maticTokens = [

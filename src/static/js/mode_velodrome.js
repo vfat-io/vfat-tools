@@ -2,7 +2,481 @@ $(function() {
   consoleInit(main)
   });
   
-  const FLOW_VOTER_ABI = [{"type":"constructor","stateMutability":"nonpayable","inputs":[{"type":"address","name":"__ve","internalType":"address"},{"type":"address","name":"_factory","internalType":"address"},{"type":"address","name":"_gauges","internalType":"address"},{"type":"address","name":"_bribes","internalType":"address"},{"type":"address","name":"_wrappedxbribefactory","internalType":"address"}]},{"type":"event","name":"Abstained","inputs":[{"type":"uint256","name":"tokenId","internalType":"uint256","indexed":false},{"type":"uint256","name":"weight","internalType":"uint256","indexed":false}],"anonymous":false},{"type":"event","name":"Attach","inputs":[{"type":"address","name":"owner","internalType":"address","indexed":true},{"type":"address","name":"gauge","internalType":"address","indexed":true},{"type":"uint256","name":"tokenId","internalType":"uint256","indexed":false}],"anonymous":false},{"type":"event","name":"Deposit","inputs":[{"type":"address","name":"lp","internalType":"address","indexed":true},{"type":"address","name":"gauge","internalType":"address","indexed":true},{"type":"uint256","name":"tokenId","internalType":"uint256","indexed":false},{"type":"uint256","name":"amount","internalType":"uint256","indexed":false}],"anonymous":false},{"type":"event","name":"Detach","inputs":[{"type":"address","name":"owner","internalType":"address","indexed":true},{"type":"address","name":"gauge","internalType":"address","indexed":true},{"type":"uint256","name":"tokenId","internalType":"uint256","indexed":false}],"anonymous":false},{"type":"event","name":"DistributeReward","inputs":[{"type":"address","name":"sender","internalType":"address","indexed":true},{"type":"address","name":"gauge","internalType":"address","indexed":true},{"type":"uint256","name":"amount","internalType":"uint256","indexed":false}],"anonymous":false},{"type":"event","name":"GaugeCreated","inputs":[{"type":"address","name":"gauge","internalType":"address","indexed":true},{"type":"address","name":"creator","internalType":"address","indexed":false},{"type":"address","name":"internal_bribe","internalType":"address","indexed":false},{"type":"address","name":"external_bribe","internalType":"address","indexed":true},{"type":"address","name":"wxbribe","internalType":"address","indexed":false},{"type":"address","name":"pool","internalType":"address","indexed":true}],"anonymous":false},{"type":"event","name":"GaugeKilled","inputs":[{"type":"address","name":"gauge","internalType":"address","indexed":true}],"anonymous":false},{"type":"event","name":"GaugeRevived","inputs":[{"type":"address","name":"gauge","internalType":"address","indexed":true}],"anonymous":false},{"type":"event","name":"NotifyReward","inputs":[{"type":"address","name":"sender","internalType":"address","indexed":true},{"type":"address","name":"reward","internalType":"address","indexed":true},{"type":"uint256","name":"amount","internalType":"uint256","indexed":false}],"anonymous":false},{"type":"event","name":"Voted","inputs":[{"type":"address","name":"voter","internalType":"address","indexed":true},{"type":"uint256","name":"tokenId","internalType":"uint256","indexed":false},{"type":"uint256","name":"weight","internalType":"uint256","indexed":false}],"anonymous":false},{"type":"event","name":"Whitelisted","inputs":[{"type":"address","name":"whitelister","internalType":"address","indexed":true},{"type":"address","name":"token","internalType":"address","indexed":true}],"anonymous":false},{"type":"event","name":"Withdraw","inputs":[{"type":"address","name":"lp","internalType":"address","indexed":true},{"type":"address","name":"gauge","internalType":"address","indexed":true},{"type":"uint256","name":"tokenId","internalType":"uint256","indexed":false},{"type":"uint256","name":"amount","internalType":"uint256","indexed":false}],"anonymous":false},{"type":"function","stateMutability":"view","outputs":[{"type":"address","name":"","internalType":"address"}],"name":"_ve","inputs":[]},{"type":"function","stateMutability":"nonpayable","outputs":[],"name":"attachTokenToGauge","inputs":[{"type":"uint256","name":"tokenId","internalType":"uint256"},{"type":"address","name":"account","internalType":"address"}]},{"type":"function","stateMutability":"view","outputs":[{"type":"address","name":"","internalType":"address"}],"name":"bribefactory","inputs":[]},{"type":"function","stateMutability":"nonpayable","outputs":[],"name":"claimBribes","inputs":[{"type":"address[]","name":"_bribes","internalType":"address[]"},{"type":"address[][]","name":"_tokens","internalType":"address[][]"},{"type":"uint256","name":"_tokenId","internalType":"uint256"}]},{"type":"function","stateMutability":"nonpayable","outputs":[],"name":"claimFees","inputs":[{"type":"address[]","name":"_fees","internalType":"address[]"},{"type":"address[][]","name":"_tokens","internalType":"address[][]"},{"type":"uint256","name":"_tokenId","internalType":"uint256"}]},{"type":"function","stateMutability":"nonpayable","outputs":[],"name":"claimRewards","inputs":[{"type":"address[]","name":"_gauges","internalType":"address[]"},{"type":"address[][]","name":"_tokens","internalType":"address[][]"}]},{"type":"function","stateMutability":"view","outputs":[{"type":"uint256","name":"","internalType":"uint256"}],"name":"claimable","inputs":[{"type":"address","name":"","internalType":"address"}]},{"type":"function","stateMutability":"nonpayable","outputs":[{"type":"address","name":"","internalType":"address"}],"name":"createGauge","inputs":[{"type":"address","name":"_pool","internalType":"address"}]},{"type":"function","stateMutability":"nonpayable","outputs":[],"name":"detachTokenFromGauge","inputs":[{"type":"uint256","name":"tokenId","internalType":"uint256"},{"type":"address","name":"account","internalType":"address"}]},{"type":"function","stateMutability":"nonpayable","outputs":[],"name":"distribute","inputs":[{"type":"address[]","name":"_gauges","internalType":"address[]"}]},{"type":"function","stateMutability":"nonpayable","outputs":[],"name":"distribute","inputs":[{"type":"address","name":"_gauge","internalType":"address"}]},{"type":"function","stateMutability":"nonpayable","outputs":[],"name":"distribute","inputs":[{"type":"uint256","name":"start","internalType":"uint256"},{"type":"uint256","name":"finish","internalType":"uint256"}]},{"type":"function","stateMutability":"nonpayable","outputs":[],"name":"distribute","inputs":[]},{"type":"function","stateMutability":"nonpayable","outputs":[],"name":"distributeFees","inputs":[{"type":"address[]","name":"_gauges","internalType":"address[]"}]},{"type":"function","stateMutability":"nonpayable","outputs":[],"name":"distro","inputs":[]},{"type":"function","stateMutability":"view","outputs":[{"type":"address","name":"","internalType":"address"}],"name":"emergencyCouncil","inputs":[]},{"type":"function","stateMutability":"nonpayable","outputs":[],"name":"emitDeposit","inputs":[{"type":"uint256","name":"tokenId","internalType":"uint256"},{"type":"address","name":"account","internalType":"address"},{"type":"uint256","name":"amount","internalType":"uint256"}]},{"type":"function","stateMutability":"nonpayable","outputs":[],"name":"emitWithdraw","inputs":[{"type":"uint256","name":"tokenId","internalType":"uint256"},{"type":"address","name":"account","internalType":"address"},{"type":"uint256","name":"amount","internalType":"uint256"}]},{"type":"function","stateMutability":"view","outputs":[{"type":"address","name":"","internalType":"address"}],"name":"external_bribes","inputs":[{"type":"address","name":"","internalType":"address"}]},{"type":"function","stateMutability":"view","outputs":[{"type":"address","name":"","internalType":"address"}],"name":"factory","inputs":[]},{"type":"function","stateMutability":"view","outputs":[{"type":"address","name":"","internalType":"address"}],"name":"gaugefactory","inputs":[]},{"type":"function","stateMutability":"view","outputs":[{"type":"address","name":"","internalType":"address"}],"name":"gauges","inputs":[{"type":"address","name":"","internalType":"address"}]},{"type":"function","stateMutability":"view","outputs":[{"type":"address","name":"","internalType":"address"}],"name":"governor","inputs":[]},{"type":"function","stateMutability":"nonpayable","outputs":[],"name":"initialize","inputs":[{"type":"address[]","name":"_tokens","internalType":"address[]"},{"type":"address","name":"_minter","internalType":"address"}]},{"type":"function","stateMutability":"view","outputs":[{"type":"address","name":"","internalType":"address"}],"name":"internal_bribes","inputs":[{"type":"address","name":"","internalType":"address"}]},{"type":"function","stateMutability":"view","outputs":[{"type":"bool","name":"","internalType":"bool"}],"name":"isAlive","inputs":[{"type":"address","name":"","internalType":"address"}]},{"type":"function","stateMutability":"view","outputs":[{"type":"bool","name":"","internalType":"bool"}],"name":"isGauge","inputs":[{"type":"address","name":"","internalType":"address"}]},{"type":"function","stateMutability":"view","outputs":[{"type":"bool","name":"","internalType":"bool"}],"name":"isWhitelisted","inputs":[{"type":"address","name":"","internalType":"address"}]},{"type":"function","stateMutability":"nonpayable","outputs":[],"name":"killGauge","inputs":[{"type":"address","name":"_gauge","internalType":"address"}]},{"type":"function","stateMutability":"view","outputs":[{"type":"uint256","name":"","internalType":"uint256"}],"name":"lastVoted","inputs":[{"type":"uint256","name":"","internalType":"uint256"}]},{"type":"function","stateMutability":"view","outputs":[{"type":"uint256","name":"","internalType":"uint256"}],"name":"length","inputs":[]},{"type":"function","stateMutability":"view","outputs":[{"type":"address","name":"","internalType":"address"}],"name":"minter","inputs":[]},{"type":"function","stateMutability":"nonpayable","outputs":[],"name":"notifyRewardAmount","inputs":[{"type":"uint256","name":"amount","internalType":"uint256"}]},{"type":"function","stateMutability":"nonpayable","outputs":[],"name":"poke","inputs":[{"type":"uint256","name":"_tokenId","internalType":"uint256"}]},{"type":"function","stateMutability":"view","outputs":[{"type":"address","name":"","internalType":"address"}],"name":"poolForGauge","inputs":[{"type":"address","name":"","internalType":"address"}]},{"type":"function","stateMutability":"view","outputs":[{"type":"address","name":"","internalType":"address"}],"name":"poolVote","inputs":[{"type":"uint256","name":"","internalType":"uint256"},{"type":"uint256","name":"","internalType":"uint256"}]},{"type":"function","stateMutability":"view","outputs":[{"type":"address","name":"","internalType":"address"}],"name":"pools","inputs":[{"type":"uint256","name":"","internalType":"uint256"}]},{"type":"function","stateMutability":"nonpayable","outputs":[],"name":"reset","inputs":[{"type":"uint256","name":"_tokenId","internalType":"uint256"}]},{"type":"function","stateMutability":"nonpayable","outputs":[],"name":"reviveGauge","inputs":[{"type":"address","name":"_gauge","internalType":"address"}]},{"type":"function","stateMutability":"nonpayable","outputs":[],"name":"setEmergencyCouncil","inputs":[{"type":"address","name":"_council","internalType":"address"}]},{"type":"function","stateMutability":"nonpayable","outputs":[],"name":"setGovernor","inputs":[{"type":"address","name":"_governor","internalType":"address"}]},{"type":"function","stateMutability":"view","outputs":[{"type":"uint256","name":"","internalType":"uint256"}],"name":"totalWeight","inputs":[]},{"type":"function","stateMutability":"nonpayable","outputs":[],"name":"updateAll","inputs":[]},{"type":"function","stateMutability":"nonpayable","outputs":[],"name":"updateFor","inputs":[{"type":"address[]","name":"_gauges","internalType":"address[]"}]},{"type":"function","stateMutability":"nonpayable","outputs":[],"name":"updateForRange","inputs":[{"type":"uint256","name":"start","internalType":"uint256"},{"type":"uint256","name":"end","internalType":"uint256"}]},{"type":"function","stateMutability":"nonpayable","outputs":[],"name":"updateGauge","inputs":[{"type":"address","name":"_gauge","internalType":"address"}]},{"type":"function","stateMutability":"view","outputs":[{"type":"uint256","name":"","internalType":"uint256"}],"name":"usedWeights","inputs":[{"type":"uint256","name":"","internalType":"uint256"}]},{"type":"function","stateMutability":"nonpayable","outputs":[],"name":"vote","inputs":[{"type":"uint256","name":"tokenId","internalType":"uint256"},{"type":"address[]","name":"_poolVote","internalType":"address[]"},{"type":"uint256[]","name":"_weights","internalType":"uint256[]"}]},{"type":"function","stateMutability":"view","outputs":[{"type":"uint256","name":"","internalType":"uint256"}],"name":"votes","inputs":[{"type":"uint256","name":"","internalType":"uint256"},{"type":"address","name":"","internalType":"address"}]},{"type":"function","stateMutability":"view","outputs":[{"type":"uint256","name":"","internalType":"uint256"}],"name":"weights","inputs":[{"type":"address","name":"","internalType":"address"}]},{"type":"function","stateMutability":"nonpayable","outputs":[],"name":"whitelist","inputs":[{"type":"address","name":"_token","internalType":"address"}]},{"type":"function","stateMutability":"view","outputs":[{"type":"address","name":"","internalType":"address"}],"name":"wrappedxbribefactory","inputs":[]}]
+  const FLOW_VOTER_ABI = [
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_bridge",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "_recipient",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "constructor"
+    },
+    {
+      "inputs": [],
+      "name": "GaugeAlreadyKilled",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "GaugeAlreadyRevived",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "NotAGauge",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "NotAuthorized",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "ReentrancyGuardReentrantCall",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "ZeroAddress",
+      "type": "error"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "poolFactory",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "votingRewardsFactory",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "gaugeFactory",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "pool",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "incentiveVotingReward",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "feeVotingReward",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "gauge",
+          "type": "address"
+        }
+      ],
+      "name": "GaugeCreated",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "gauge",
+          "type": "address"
+        }
+      ],
+      "name": "GaugeKilled",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "gauge",
+          "type": "address"
+        }
+      ],
+      "name": "GaugeRevived",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "token",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "bool",
+          "name": "_bool",
+          "type": "bool"
+        }
+      ],
+      "name": "WhitelistToken",
+      "type": "event"
+    },
+    {
+      "inputs": [],
+      "name": "bridge",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address[]",
+          "name": "_gauges",
+          "type": "address[]"
+        }
+      ],
+      "name": "claimRewards",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_poolFactory",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "_pool",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "_votingRewardsFactory",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "_gaugeFactory",
+          "type": "address"
+        }
+      ],
+      "name": "createGauge",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "_gauge",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "name": "gaugeToFees",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "name": "gaugeToIncentive",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "name": "gauges",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "name": "isAlive",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "name": "isGauge",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_token",
+          "type": "address"
+        }
+      ],
+      "name": "isWhitelistedToken",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_gauge",
+          "type": "address"
+        }
+      ],
+      "name": "killGauge",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "name": "poolForGauge",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "name": "pools",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_gauge",
+          "type": "address"
+        }
+      ],
+      "name": "reviveGauge",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "sfs",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "tokenId",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "name": "whitelistTokenCount",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "whitelistedTokens",
+      "outputs": [
+        {
+          "internalType": "address[]",
+          "name": "",
+          "type": "address[]"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_start",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_end",
+          "type": "uint256"
+        }
+      ],
+      "name": "whitelistedTokens",
+      "outputs": [
+        {
+          "internalType": "address[]",
+          "name": "_tokens",
+          "type": "address[]"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "whitelistedTokensLength",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    }
+  ]
   
   const FLOW_GAUGE_ABI = [{"inputs":[{"internalType":"address","name":"_forwarder","type":"address"},{"internalType":"address","name":"_stakingToken","type":"address"},{"internalType":"address","name":"_feesVotingReward","type":"address"},{"internalType":"address","name":"_rewardToken","type":"address"},{"internalType":"address","name":"_voter","type":"address"},{"internalType":"bool","name":"_isPool","type":"bool"}],"stateMutability":"nonpayable","type":"constructor"},{"inputs":[],"name":"NotAlive","type":"error"},{"inputs":[],"name":"NotAuthorized","type":"error"},{"inputs":[],"name":"NotTeam","type":"error"},{"inputs":[],"name":"NotVoter","type":"error"},{"inputs":[],"name":"RewardRateTooHigh","type":"error"},{"inputs":[],"name":"ZeroAmount","type":"error"},{"inputs":[],"name":"ZeroRewardRate","type":"error"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"from","type":"address"},{"indexed":false,"internalType":"uint256","name":"claimed0","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"claimed1","type":"uint256"}],"name":"ClaimFees","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"from","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"ClaimRewards","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"from","type":"address"},{"indexed":true,"internalType":"address","name":"to","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"Deposit","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"from","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"NotifyReward","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"from","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"Withdraw","type":"event"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"balanceOf","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"_amount","type":"uint256"},{"internalType":"address","name":"_recipient","type":"address"}],"name":"deposit","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_amount","type":"uint256"}],"name":"deposit","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"_account","type":"address"}],"name":"earned","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"fees0","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"fees1","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"feesVotingReward","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"_account","type":"address"}],"name":"getReward","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"isPool","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"forwarder","type":"address"}],"name":"isTrustedForwarder","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"lastTimeRewardApplicable","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"lastUpdateTime","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"left","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"_amount","type":"uint256"}],"name":"notifyRewardAmount","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_amount","type":"uint256"}],"name":"notifyRewardWithoutClaim","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"periodFinish","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"rewardPerToken","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"rewardPerTokenStored","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"rewardRate","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"","type":"uint256"}],"name":"rewardRateByEpoch","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"rewardToken","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"rewards","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"stakingToken","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"totalSupply","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"userRewardPerTokenPaid","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"ve","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"voter","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"_amount","type":"uint256"}],"name":"withdraw","outputs":[],"stateMutability":"nonpayable","type":"function"}]
   
@@ -16,11 +490,6423 @@ $(function() {
   
   const NFT_VELO_ABI = [{"inputs":[{"internalType":"address","name":"_factory","type":"address"},{"internalType":"address","name":"_WETH9","type":"address"},{"internalType":"address","name":"_tokenDescriptor","type":"address"},{"internalType":"string","name":"name","type":"string"},{"internalType":"string","name":"symbol","type":"string"}],"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"owner","type":"address"},{"indexed":true,"internalType":"address","name":"approved","type":"address"},{"indexed":true,"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"Approval","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"owner","type":"address"},{"indexed":true,"internalType":"address","name":"operator","type":"address"},{"indexed":false,"internalType":"bool","name":"approved","type":"bool"}],"name":"ApprovalForAll","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"_fromTokenId","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"_toTokenId","type":"uint256"}],"name":"BatchMetadataUpdate","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"uint256","name":"tokenId","type":"uint256"},{"indexed":false,"internalType":"address","name":"recipient","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount0","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"amount1","type":"uint256"}],"name":"Collect","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"uint256","name":"tokenId","type":"uint256"},{"indexed":false,"internalType":"uint128","name":"liquidity","type":"uint128"},{"indexed":false,"internalType":"uint256","name":"amount0","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"amount1","type":"uint256"}],"name":"DecreaseLiquidity","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"uint256","name":"tokenId","type":"uint256"},{"indexed":false,"internalType":"uint128","name":"liquidity","type":"uint128"},{"indexed":false,"internalType":"uint256","name":"amount0","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"amount1","type":"uint256"}],"name":"IncreaseLiquidity","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"_tokenId","type":"uint256"}],"name":"MetadataUpdate","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"tokenDescriptor","type":"address"}],"name":"TokenDescriptorChanged","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"from","type":"address"},{"indexed":true,"internalType":"address","name":"to","type":"address"},{"indexed":true,"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"Transfer","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"owner","type":"address"}],"name":"TransferOwnership","type":"event"},{"inputs":[],"name":"DOMAIN_SEPARATOR","outputs":[{"internalType":"bytes32","name":"","type":"bytes32"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"PERMIT_TYPEHASH","outputs":[{"internalType":"bytes32","name":"","type":"bytes32"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"WETH9","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"to","type":"address"},{"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"approve","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"owner","type":"address"}],"name":"balanceOf","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"baseURI","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"pure","type":"function"},{"inputs":[{"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"burn","outputs":[],"stateMutability":"payable","type":"function"},{"inputs":[{"components":[{"internalType":"uint256","name":"tokenId","type":"uint256"},{"internalType":"address","name":"recipient","type":"address"},{"internalType":"uint128","name":"amount0Max","type":"uint128"},{"internalType":"uint128","name":"amount1Max","type":"uint128"}],"internalType":"struct INonfungiblePositionManager.CollectParams","name":"params","type":"tuple"}],"name":"collect","outputs":[{"internalType":"uint256","name":"amount0","type":"uint256"},{"internalType":"uint256","name":"amount1","type":"uint256"}],"stateMutability":"payable","type":"function"},{"inputs":[{"components":[{"internalType":"uint256","name":"tokenId","type":"uint256"},{"internalType":"uint128","name":"liquidity","type":"uint128"},{"internalType":"uint256","name":"amount0Min","type":"uint256"},{"internalType":"uint256","name":"amount1Min","type":"uint256"},{"internalType":"uint256","name":"deadline","type":"uint256"}],"internalType":"struct INonfungiblePositionManager.DecreaseLiquidityParams","name":"params","type":"tuple"}],"name":"decreaseLiquidity","outputs":[{"internalType":"uint256","name":"amount0","type":"uint256"},{"internalType":"uint256","name":"amount1","type":"uint256"}],"stateMutability":"payable","type":"function"},{"inputs":[],"name":"factory","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"getApproved","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"components":[{"internalType":"uint256","name":"tokenId","type":"uint256"},{"internalType":"uint256","name":"amount0Desired","type":"uint256"},{"internalType":"uint256","name":"amount1Desired","type":"uint256"},{"internalType":"uint256","name":"amount0Min","type":"uint256"},{"internalType":"uint256","name":"amount1Min","type":"uint256"},{"internalType":"uint256","name":"deadline","type":"uint256"}],"internalType":"struct INonfungiblePositionManager.IncreaseLiquidityParams","name":"params","type":"tuple"}],"name":"increaseLiquidity","outputs":[{"internalType":"uint128","name":"liquidity","type":"uint128"},{"internalType":"uint256","name":"amount0","type":"uint256"},{"internalType":"uint256","name":"amount1","type":"uint256"}],"stateMutability":"payable","type":"function"},{"inputs":[{"internalType":"address","name":"owner","type":"address"},{"internalType":"address","name":"operator","type":"address"}],"name":"isApprovedForAll","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"components":[{"internalType":"address","name":"token0","type":"address"},{"internalType":"address","name":"token1","type":"address"},{"internalType":"int24","name":"tickSpacing","type":"int24"},{"internalType":"int24","name":"tickLower","type":"int24"},{"internalType":"int24","name":"tickUpper","type":"int24"},{"internalType":"uint256","name":"amount0Desired","type":"uint256"},{"internalType":"uint256","name":"amount1Desired","type":"uint256"},{"internalType":"uint256","name":"amount0Min","type":"uint256"},{"internalType":"uint256","name":"amount1Min","type":"uint256"},{"internalType":"address","name":"recipient","type":"address"},{"internalType":"uint256","name":"deadline","type":"uint256"},{"internalType":"uint160","name":"sqrtPriceX96","type":"uint160"}],"internalType":"struct INonfungiblePositionManager.MintParams","name":"params","type":"tuple"}],"name":"mint","outputs":[{"internalType":"uint256","name":"tokenId","type":"uint256"},{"internalType":"uint128","name":"liquidity","type":"uint128"},{"internalType":"uint256","name":"amount0","type":"uint256"},{"internalType":"uint256","name":"amount1","type":"uint256"}],"stateMutability":"payable","type":"function"},{"inputs":[{"internalType":"bytes[]","name":"data","type":"bytes[]"}],"name":"multicall","outputs":[{"internalType":"bytes[]","name":"results","type":"bytes[]"}],"stateMutability":"payable","type":"function"},{"inputs":[],"name":"name","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"owner","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"ownerOf","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"spender","type":"address"},{"internalType":"uint256","name":"tokenId","type":"uint256"},{"internalType":"uint256","name":"deadline","type":"uint256"},{"internalType":"uint8","name":"v","type":"uint8"},{"internalType":"bytes32","name":"r","type":"bytes32"},{"internalType":"bytes32","name":"s","type":"bytes32"}],"name":"permit","outputs":[],"stateMutability":"payable","type":"function"},{"inputs":[{"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"positions","outputs":[{"internalType":"uint96","name":"nonce","type":"uint96"},{"internalType":"address","name":"operator","type":"address"},{"internalType":"address","name":"token0","type":"address"},{"internalType":"address","name":"token1","type":"address"},{"internalType":"int24","name":"tickSpacing","type":"int24"},{"internalType":"int24","name":"tickLower","type":"int24"},{"internalType":"int24","name":"tickUpper","type":"int24"},{"internalType":"uint128","name":"liquidity","type":"uint128"},{"internalType":"uint256","name":"feeGrowthInside0LastX128","type":"uint256"},{"internalType":"uint256","name":"feeGrowthInside1LastX128","type":"uint256"},{"internalType":"uint128","name":"tokensOwed0","type":"uint128"},{"internalType":"uint128","name":"tokensOwed1","type":"uint128"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"refundETH","outputs":[],"stateMutability":"payable","type":"function"},{"inputs":[{"internalType":"address","name":"from","type":"address"},{"internalType":"address","name":"to","type":"address"},{"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"safeTransferFrom","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"from","type":"address"},{"internalType":"address","name":"to","type":"address"},{"internalType":"uint256","name":"tokenId","type":"uint256"},{"internalType":"bytes","name":"_data","type":"bytes"}],"name":"safeTransferFrom","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"token","type":"address"},{"internalType":"uint256","name":"value","type":"uint256"},{"internalType":"uint256","name":"deadline","type":"uint256"},{"internalType":"uint8","name":"v","type":"uint8"},{"internalType":"bytes32","name":"r","type":"bytes32"},{"internalType":"bytes32","name":"s","type":"bytes32"}],"name":"selfPermit","outputs":[],"stateMutability":"payable","type":"function"},{"inputs":[{"internalType":"address","name":"token","type":"address"},{"internalType":"uint256","name":"nonce","type":"uint256"},{"internalType":"uint256","name":"expiry","type":"uint256"},{"internalType":"uint8","name":"v","type":"uint8"},{"internalType":"bytes32","name":"r","type":"bytes32"},{"internalType":"bytes32","name":"s","type":"bytes32"}],"name":"selfPermitAllowed","outputs":[],"stateMutability":"payable","type":"function"},{"inputs":[{"internalType":"address","name":"token","type":"address"},{"internalType":"uint256","name":"nonce","type":"uint256"},{"internalType":"uint256","name":"expiry","type":"uint256"},{"internalType":"uint8","name":"v","type":"uint8"},{"internalType":"bytes32","name":"r","type":"bytes32"},{"internalType":"bytes32","name":"s","type":"bytes32"}],"name":"selfPermitAllowedIfNecessary","outputs":[],"stateMutability":"payable","type":"function"},{"inputs":[{"internalType":"address","name":"token","type":"address"},{"internalType":"uint256","name":"value","type":"uint256"},{"internalType":"uint256","name":"deadline","type":"uint256"},{"internalType":"uint8","name":"v","type":"uint8"},{"internalType":"bytes32","name":"r","type":"bytes32"},{"internalType":"bytes32","name":"s","type":"bytes32"}],"name":"selfPermitIfNecessary","outputs":[],"stateMutability":"payable","type":"function"},{"inputs":[{"internalType":"address","name":"operator","type":"address"},{"internalType":"bool","name":"approved","type":"bool"}],"name":"setApprovalForAll","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"_owner","type":"address"}],"name":"setOwner","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"_tokenDescriptor","type":"address"}],"name":"setTokenDescriptor","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"bytes4","name":"interfaceId","type":"bytes4"}],"name":"supportsInterface","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"token","type":"address"},{"internalType":"uint256","name":"amountMinimum","type":"uint256"},{"internalType":"address","name":"recipient","type":"address"}],"name":"sweepToken","outputs":[],"stateMutability":"payable","type":"function"},{"inputs":[],"name":"symbol","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"index","type":"uint256"}],"name":"tokenByIndex","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"tokenDescriptor","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"owner","type":"address"},{"internalType":"uint256","name":"index","type":"uint256"}],"name":"tokenOfOwnerByIndex","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"tokenURI","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"totalSupply","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"from","type":"address"},{"internalType":"address","name":"to","type":"address"},{"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"transferFrom","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"amount0Owed","type":"uint256"},{"internalType":"uint256","name":"amount1Owed","type":"uint256"},{"internalType":"bytes","name":"data","type":"bytes"}],"name":"uniswapV3MintCallback","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"amountMinimum","type":"uint256"},{"internalType":"address","name":"recipient","type":"address"}],"name":"unwrapWETH9","outputs":[],"stateMutability":"payable","type":"function"},{"stateMutability":"payable","type":"receive"}]
   
-  const NFT_FARM_STRATEGY_ABI = [{"inputs":[{"internalType":"contract SickleFactory","name":"factory_","type":"address"},{"internalType":"contract FeesLib","name":"feesLib_","type":"address"},{"internalType":"contract ConnectorRegistry","name":"connectorRegistry_","type":"address"},{"internalType":"address","name":"wrappedNativeAddress_","type":"address"}],"stateMutability":"nonpayable","type":"constructor"},{"inputs":[],"name":"ETHTransferFailed","type":"error"},{"inputs":[],"name":"IncorrectMsgValue","type":"error"},{"inputs":[{"internalType":"address","name":"sender","type":"address"}],"name":"NotOwner","type":"error"},{"inputs":[],"name":"NotOwnerOrApproved","type":"error"},{"inputs":[],"name":"NotOwnerOrApprovedOrInternal","type":"error"},{"inputs":[],"name":"NotOwnerOrInternal","type":"error"},{"inputs":[],"name":"NotRegisteredSickle","type":"error"},{"inputs":[],"name":"SickleNotDeployed","type":"error"},{"inputs":[],"name":"TransferFailed","type":"error"},{"inputs":[],"name":"TransferFromFailed","type":"error"},{"inputs":[{"internalType":"address","name":"recipient","type":"address"},{"internalType":"address","name":"wrappedNative","type":"address"},{"internalType":"uint256","name":"amountToCharge","type":"uint256"}],"name":"_sickle_chargeTransactionCost","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"strategy","type":"address"},{"internalType":"bytes4","name":"feeDescriptor","type":"bytes4"},{"internalType":"address","name":"tokenOut","type":"address"}],"name":"_sickle_charge_fees","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"nftContractAddress","type":"address"},{"internalType":"uint256","name":"tokenId","type":"uint256"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"_sickle_transfer_erc1155_from_user","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"nftContractAddress","type":"address"},{"internalType":"uint256","name":"tokenId","type":"uint256"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"_sickle_transfer_erc1155_to_user","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"tokenIn","type":"address"},{"internalType":"uint256","name":"amountIn","type":"uint256"},{"internalType":"address","name":"strategy","type":"address"},{"internalType":"bytes4","name":"feeSelector","type":"bytes4"}],"name":"_sickle_transfer_from_user","outputs":[],"stateMutability":"payable","type":"function"},{"inputs":[{"internalType":"address","name":"nftContractAddress","type":"address"},{"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"_sickle_transfer_nft_from_user","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"nftContractAddress","type":"address"},{"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"_sickle_transfer_nft_to_user","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address[]","name":"tokens","type":"address[]"}],"name":"_sickle_transfer_to_user","outputs":[],"stateMutability":"payable","type":"function"},{"inputs":[],"name":"connectorRegistry","outputs":[{"internalType":"contract ConnectorRegistry","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"nftContractAddress","type":"address"},{"internalType":"uint256","name":"tokenId","type":"uint256"},{"internalType":"address","name":"stakingContractAddress","type":"address"},{"internalType":"bytes","name":"extraData","type":"bytes"},{"internalType":"address","name":"approved","type":"address"},{"internalType":"bytes32","name":"referralCode","type":"bytes32"}],"name":"depositErc721","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"factory","outputs":[{"internalType":"contract SickleFactory","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"feesLib","outputs":[{"internalType":"contract FeesLib","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"nftContractAddress","type":"address"},{"internalType":"uint256","name":"tokenId","type":"uint256"},{"internalType":"address","name":"stakingContractAddress","type":"address"},{"internalType":"bytes","name":"extraData","type":"bytes"},{"internalType":"address[]","name":"sweepTokens","type":"address[]"}],"name":"withdrawErc721","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"wrappedNativeAddress","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"}]
-  
-  const FARM_STRATEGY_ABI = [{"inputs":[{"internalType":"contract SickleFactory","name":"factory_","type":"address"},{"internalType":"contract FeesLib","name":"feesLib_","type":"address"},{"internalType":"contract ConnectorRegistry","name":"connectorRegistry_","type":"address"},{"internalType":"address","name":"wrappedNativeAddress_","type":"address"}],"stateMutability":"nonpayable","type":"constructor"},{"inputs":[],"name":"ArrayLengthMismatch","type":"error"},{"inputs":[],"name":"ETHTransferFailed","type":"error"},{"inputs":[],"name":"IncorrectMsgValue","type":"error"},{"inputs":[{"internalType":"address","name":"sender","type":"address"}],"name":"NotOwner","type":"error"},{"inputs":[],"name":"NotOwnerOrApproved","type":"error"},{"inputs":[],"name":"NotOwnerOrApprovedOrInternal","type":"error"},{"inputs":[],"name":"NotOwnerOrInternal","type":"error"},{"inputs":[],"name":"NotRegisteredSickle","type":"error"},{"inputs":[],"name":"SickleNotDeployed","type":"error"},{"inputs":[],"name":"TokenInRequired","type":"error"},{"inputs":[],"name":"TransferFailed","type":"error"},{"inputs":[],"name":"TransferFromFailed","type":"error"},{"inputs":[{"internalType":"address","name":"strategy","type":"address"},{"internalType":"bytes4","name":"feeDescriptor","type":"bytes4"},{"internalType":"address","name":"feeToken","type":"address"}],"name":"_sickle_charge_fee","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"strategy","type":"address"},{"internalType":"bytes4","name":"feeDescriptor","type":"bytes4"},{"internalType":"address[]","name":"feeTokens","type":"address[]"}],"name":"_sickle_charge_fees","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"recipient","type":"address"},{"internalType":"address","name":"wrappedNative","type":"address"},{"internalType":"uint256","name":"amountToCharge","type":"uint256"}],"name":"_sickle_charge_transaction_cost","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"tokenIn","type":"address"},{"internalType":"uint256","name":"amountIn","type":"uint256"},{"internalType":"address","name":"strategy","type":"address"},{"internalType":"bytes4","name":"feeSelector","type":"bytes4"}],"name":"_sickle_transfer_token_from_user","outputs":[],"stateMutability":"payable","type":"function"},{"inputs":[{"internalType":"address","name":"token","type":"address"}],"name":"_sickle_transfer_token_to_user","outputs":[],"stateMutability":"payable","type":"function"},{"inputs":[{"internalType":"address[]","name":"tokensIn","type":"address[]"},{"internalType":"uint256[]","name":"amountsIn","type":"uint256[]"},{"internalType":"address","name":"strategy","type":"address"},{"internalType":"bytes4","name":"feeSelector","type":"bytes4"}],"name":"_sickle_transfer_tokens_from_user","outputs":[],"stateMutability":"payable","type":"function"},{"inputs":[{"internalType":"address[]","name":"tokens","type":"address[]"}],"name":"_sickle_transfer_tokens_to_user","outputs":[],"stateMutability":"payable","type":"function"},{"inputs":[{"components":[{"internalType":"address","name":"lpToken","type":"address"},{"internalType":"uint256","name":"amountIn","type":"uint256"},{"internalType":"address","name":"stakingContractAddress","type":"address"},{"internalType":"bytes","name":"extraData","type":"bytes"}],"internalType":"struct SimpleFarmStrategy.DepositParams","name":"params","type":"tuple"},{"internalType":"address","name":"approved","type":"address"},{"internalType":"bytes32","name":"referralCode","type":"bytes32"}],"name":"deposit","outputs":[],"stateMutability":"payable","type":"function"},{"inputs":[{"components":[{"internalType":"address[]","name":"tokensOut","type":"address[]"},{"internalType":"address","name":"stakingContractAddress","type":"address"},{"internalType":"bytes","name":"extraData","type":"bytes"}],"internalType":"struct SimpleFarmStrategy.HarvestParams","name":"harvestParams","type":"tuple"},{"components":[{"internalType":"address","name":"lpToken","type":"address"},{"internalType":"uint256","name":"amountOut","type":"uint256"},{"internalType":"address","name":"stakingContractAddress","type":"address"},{"internalType":"bytes","name":"extraData","type":"bytes"}],"internalType":"struct SimpleFarmStrategy.WithdrawParams","name":"withdrawParams","type":"tuple"}],"name":"exit","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"factory","outputs":[{"internalType":"contract SickleFactory","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"feesLib","outputs":[{"internalType":"contract FeesLib","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"components":[{"internalType":"address[]","name":"tokensOut","type":"address[]"},{"internalType":"address","name":"stakingContractAddress","type":"address"},{"internalType":"bytes","name":"extraData","type":"bytes"}],"internalType":"struct SimpleFarmStrategy.HarvestParams","name":"params","type":"tuple"}],"name":"harvest","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"components":[{"internalType":"address","name":"lpToken","type":"address"},{"internalType":"uint256","name":"amountOut","type":"uint256"},{"internalType":"address","name":"stakingContractAddress","type":"address"},{"internalType":"bytes","name":"extraData","type":"bytes"}],"internalType":"struct SimpleFarmStrategy.WithdrawParams","name":"params","type":"tuple"}],"name":"withdraw","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"wrappedNativeAddress","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"}]
-  
-  const SIMPLE_FARM_STRATEGY_ABI = [{"inputs":[{"internalType":"contract SickleFactory","name":"factory_","type":"address"},{"internalType":"contract FeesLib","name":"feesLib_","type":"address"},{"internalType":"contract ConnectorRegistry","name":"connectorRegistry_","type":"address"},{"internalType":"address","name":"wrappedNativeAddress_","type":"address"}],"stateMutability":"nonpayable","type":"constructor"},{"inputs":[],"name":"ArrayLengthMismatch","type":"error"},{"inputs":[],"name":"ETHTransferFailed","type":"error"},{"inputs":[],"name":"IncorrectMsgValue","type":"error"},{"inputs":[{"internalType":"address","name":"sender","type":"address"}],"name":"NotOwner","type":"error"},{"inputs":[],"name":"NotOwnerOrApproved","type":"error"},{"inputs":[],"name":"NotOwnerOrApprovedOrInternal","type":"error"},{"inputs":[],"name":"NotOwnerOrInternal","type":"error"},{"inputs":[],"name":"NotRegisteredSickle","type":"error"},{"inputs":[],"name":"SickleNotDeployed","type":"error"},{"inputs":[],"name":"TokenInRequired","type":"error"},{"inputs":[],"name":"TransferFailed","type":"error"},{"inputs":[],"name":"TransferFromFailed","type":"error"},{"inputs":[{"internalType":"address","name":"strategy","type":"address"},{"internalType":"bytes4","name":"feeDescriptor","type":"bytes4"},{"internalType":"address","name":"feeToken","type":"address"}],"name":"_sickle_charge_fee","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"strategy","type":"address"},{"internalType":"bytes4","name":"feeDescriptor","type":"bytes4"},{"internalType":"address[]","name":"feeTokens","type":"address[]"}],"name":"_sickle_charge_fees","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"recipient","type":"address"},{"internalType":"address","name":"wrappedNative","type":"address"},{"internalType":"uint256","name":"amountToCharge","type":"uint256"}],"name":"_sickle_charge_transaction_cost","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"tokenIn","type":"address"},{"internalType":"uint256","name":"amountIn","type":"uint256"},{"internalType":"address","name":"strategy","type":"address"},{"internalType":"bytes4","name":"feeSelector","type":"bytes4"}],"name":"_sickle_transfer_token_from_user","outputs":[],"stateMutability":"payable","type":"function"},{"inputs":[{"internalType":"address","name":"token","type":"address"}],"name":"_sickle_transfer_token_to_user","outputs":[],"stateMutability":"payable","type":"function"},{"inputs":[{"internalType":"address[]","name":"tokensIn","type":"address[]"},{"internalType":"uint256[]","name":"amountsIn","type":"uint256[]"},{"internalType":"address","name":"strategy","type":"address"},{"internalType":"bytes4","name":"feeSelector","type":"bytes4"}],"name":"_sickle_transfer_tokens_from_user","outputs":[],"stateMutability":"payable","type":"function"},{"inputs":[{"internalType":"address[]","name":"tokens","type":"address[]"}],"name":"_sickle_transfer_tokens_to_user","outputs":[],"stateMutability":"payable","type":"function"},{"inputs":[{"components":[{"internalType":"address","name":"lpToken","type":"address"},{"internalType":"uint256","name":"amountIn","type":"uint256"},{"internalType":"address","name":"stakingContractAddress","type":"address"},{"internalType":"bytes","name":"extraData","type":"bytes"}],"internalType":"struct SimpleFarmStrategy.DepositParams","name":"params","type":"tuple"},{"internalType":"address","name":"approved","type":"address"},{"internalType":"bytes32","name":"referralCode","type":"bytes32"}],"name":"deposit","outputs":[],"stateMutability":"payable","type":"function"},{"inputs":[{"components":[{"internalType":"address[]","name":"tokensOut","type":"address[]"},{"internalType":"address","name":"stakingContractAddress","type":"address"},{"internalType":"bytes","name":"extraData","type":"bytes"}],"internalType":"struct SimpleFarmStrategy.HarvestParams","name":"harvestParams","type":"tuple"},{"components":[{"internalType":"address","name":"lpToken","type":"address"},{"internalType":"uint256","name":"amountOut","type":"uint256"},{"internalType":"address","name":"stakingContractAddress","type":"address"},{"internalType":"bytes","name":"extraData","type":"bytes"}],"internalType":"struct SimpleFarmStrategy.WithdrawParams","name":"withdrawParams","type":"tuple"}],"name":"exit","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"factory","outputs":[{"internalType":"contract SickleFactory","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"feesLib","outputs":[{"internalType":"contract FeesLib","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"components":[{"internalType":"address[]","name":"tokensOut","type":"address[]"},{"internalType":"address","name":"stakingContractAddress","type":"address"},{"internalType":"bytes","name":"extraData","type":"bytes"}],"internalType":"struct SimpleFarmStrategy.HarvestParams","name":"params","type":"tuple"}],"name":"harvest","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"components":[{"internalType":"address","name":"lpToken","type":"address"},{"internalType":"uint256","name":"amountOut","type":"uint256"},{"internalType":"address","name":"stakingContractAddress","type":"address"},{"internalType":"bytes","name":"extraData","type":"bytes"}],"internalType":"struct SimpleFarmStrategy.WithdrawParams","name":"params","type":"tuple"}],"name":"withdraw","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"wrappedNativeAddress","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"}]
+  const NFT_FARM_STRATEGY_ABI = [
+    {
+      "inputs": [
+        {
+          "internalType": "contract SickleFactory",
+          "name": "factory",
+          "type": "address"
+        },
+        {
+          "internalType": "contract ConnectorRegistry",
+          "name": "connectorRegistry",
+          "type": "address"
+        },
+        {
+          "internalType": "contract INftSettingsRegistry",
+          "name": "nftSettingsRegistry_",
+          "type": "address"
+        },
+        {
+          "components": [
+            {
+              "internalType": "contract INftTransferLib",
+              "name": "nftTransferLib",
+              "type": "address"
+            },
+            {
+              "internalType": "contract ITransferLib",
+              "name": "transferLib",
+              "type": "address"
+            },
+            {
+              "internalType": "contract ISwapLib",
+              "name": "swapLib",
+              "type": "address"
+            },
+            {
+              "internalType": "contract IFeesLib",
+              "name": "feesLib",
+              "type": "address"
+            },
+            {
+              "internalType": "contract INftZapLib",
+              "name": "nftZapLib",
+              "type": "address"
+            },
+            {
+              "internalType": "contract INftSettingsLib",
+              "name": "nftSettingsLib",
+              "type": "address"
+            }
+          ],
+          "internalType": "struct NftFarmStrategy.Libraries",
+          "name": "libraries",
+          "type": "tuple"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "constructor"
+    },
+    {
+      "inputs": [],
+      "name": "NftSupplyChanged",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "NftSupplyDidntIncrease",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "NotApproved",
+      "type": "error"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "sender",
+          "type": "address"
+        }
+      ],
+      "name": "NotOwner",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "NotRegisteredSickle",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "PleaseUseIncrease",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "SickleNotDeployed",
+      "type": "error"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "contract Sickle",
+          "name": "sickle",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "contract INonfungiblePositionManager",
+          "name": "nft",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "uint256",
+          "name": "tokenId",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "stakingContract",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "poolIndex",
+          "type": "uint256"
+        }
+      ],
+      "name": "SickleCompoundedNft",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "contract Sickle",
+          "name": "sickle",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "contract INonfungiblePositionManager",
+          "name": "nft",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "uint256",
+          "name": "tokenId",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "stakingContract",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "poolIndex",
+          "type": "uint256"
+        }
+      ],
+      "name": "SickleDecreasedNft",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "contract Sickle",
+          "name": "sickle",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "contract INonfungiblePositionManager",
+          "name": "nft",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "uint256",
+          "name": "tokenId",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "stakingContract",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "poolIndex",
+          "type": "uint256"
+        }
+      ],
+      "name": "SickleDepositedNft",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "contract Sickle",
+          "name": "sickle",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "contract INonfungiblePositionManager",
+          "name": "nft",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "uint256",
+          "name": "tokenId",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "stakingContract",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "poolIndex",
+          "type": "uint256"
+        }
+      ],
+      "name": "SickleExitedNft",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "contract Sickle",
+          "name": "sickle",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "contract INonfungiblePositionManager",
+          "name": "nft",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "uint256",
+          "name": "tokenId",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "stakingContract",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "poolIndex",
+          "type": "uint256"
+        }
+      ],
+      "name": "SickleHarvestedNft",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "contract Sickle",
+          "name": "sickle",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "contract INonfungiblePositionManager",
+          "name": "nft",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "uint256",
+          "name": "tokenId",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "stakingContract",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "poolIndex",
+          "type": "uint256"
+        }
+      ],
+      "name": "SickleIncreasedNft",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "contract Sickle",
+          "name": "sickle",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "contract INonfungiblePositionManager",
+          "name": "fromNft",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "uint256",
+          "name": "fromTokenId",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "fromStakingContract",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "fromPoolIndex",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "contract INonfungiblePositionManager",
+          "name": "toNft",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "toTokenId",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "toStakingContract",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "toPoolIndex",
+          "type": "uint256"
+        }
+      ],
+      "name": "SickleMovedNft",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "contract Sickle",
+          "name": "sickle",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "contract INonfungiblePositionManager",
+          "name": "nft",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "uint256",
+          "name": "tokenId",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "stakingContract",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "poolIndex",
+          "type": "uint256"
+        }
+      ],
+      "name": "SickleRebalancedNft",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "contract Sickle",
+          "name": "sickle",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "contract INonfungiblePositionManager",
+          "name": "nft",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "uint256",
+          "name": "tokenId",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "stakingContract",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "poolIndex",
+          "type": "uint256"
+        }
+      ],
+      "name": "SickleWithdrewNft",
+      "type": "event"
+    },
+    {
+      "inputs": [
+        {
+          "components": [
+            {
+              "components": [
+                {
+                  "internalType": "address",
+                  "name": "stakingContract",
+                  "type": "address"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "poolIndex",
+                  "type": "uint256"
+                }
+              ],
+              "internalType": "struct Farm",
+              "name": "farm",
+              "type": "tuple"
+            },
+            {
+              "internalType": "contract INonfungiblePositionManager",
+              "name": "nft",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "tokenId",
+              "type": "uint256"
+            }
+          ],
+          "internalType": "struct NftPosition",
+          "name": "position",
+          "type": "tuple"
+        },
+        {
+          "components": [
+            {
+              "components": [
+                {
+                  "internalType": "address[]",
+                  "name": "rewardTokens",
+                  "type": "address[]"
+                },
+                {
+                  "internalType": "uint128",
+                  "name": "amount0Max",
+                  "type": "uint128"
+                },
+                {
+                  "internalType": "uint128",
+                  "name": "amount1Max",
+                  "type": "uint128"
+                },
+                {
+                  "internalType": "bytes",
+                  "name": "extraData",
+                  "type": "bytes"
+                }
+              ],
+              "internalType": "struct SimpleNftHarvest",
+              "name": "harvest",
+              "type": "tuple"
+            },
+            {
+              "components": [
+                {
+                  "components": [
+                    {
+                      "internalType": "address",
+                      "name": "router",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "amountIn",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "minAmountOut",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "address",
+                      "name": "tokenIn",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "bytes",
+                      "name": "extraData",
+                      "type": "bytes"
+                    }
+                  ],
+                  "internalType": "struct SwapParams[]",
+                  "name": "swaps",
+                  "type": "tuple[]"
+                },
+                {
+                  "components": [
+                    {
+                      "internalType": "contract INonfungiblePositionManager",
+                      "name": "nft",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "tokenId",
+                      "type": "uint256"
+                    },
+                    {
+                      "components": [
+                        {
+                          "internalType": "address",
+                          "name": "token0",
+                          "type": "address"
+                        },
+                        {
+                          "internalType": "address",
+                          "name": "token1",
+                          "type": "address"
+                        },
+                        {
+                          "internalType": "uint24",
+                          "name": "fee",
+                          "type": "uint24"
+                        }
+                      ],
+                      "internalType": "struct Pool",
+                      "name": "pool",
+                      "type": "tuple"
+                    },
+                    {
+                      "internalType": "int24",
+                      "name": "tickLower",
+                      "type": "int24"
+                    },
+                    {
+                      "internalType": "int24",
+                      "name": "tickUpper",
+                      "type": "int24"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "amount0Desired",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "amount1Desired",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "amount0Min",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "amount1Min",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "bytes",
+                      "name": "extraData",
+                      "type": "bytes"
+                    }
+                  ],
+                  "internalType": "struct NftAddLiquidity",
+                  "name": "addLiquidityParams",
+                  "type": "tuple"
+                }
+              ],
+              "internalType": "struct NftZapIn",
+              "name": "zap",
+              "type": "tuple"
+            }
+          ],
+          "internalType": "struct NftCompound",
+          "name": "params",
+          "type": "tuple"
+        },
+        {
+          "internalType": "bool",
+          "name": "inPlace",
+          "type": "bool"
+        },
+        {
+          "internalType": "address[]",
+          "name": "sweepTokens",
+          "type": "address[]"
+        }
+      ],
+      "name": "compound",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "contract Sickle",
+          "name": "sickle",
+          "type": "address"
+        },
+        {
+          "components": [
+            {
+              "components": [
+                {
+                  "internalType": "address",
+                  "name": "stakingContract",
+                  "type": "address"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "poolIndex",
+                  "type": "uint256"
+                }
+              ],
+              "internalType": "struct Farm",
+              "name": "farm",
+              "type": "tuple"
+            },
+            {
+              "internalType": "contract INonfungiblePositionManager",
+              "name": "nft",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "tokenId",
+              "type": "uint256"
+            }
+          ],
+          "internalType": "struct NftPosition",
+          "name": "position",
+          "type": "tuple"
+        },
+        {
+          "components": [
+            {
+              "components": [
+                {
+                  "internalType": "address[]",
+                  "name": "rewardTokens",
+                  "type": "address[]"
+                },
+                {
+                  "internalType": "uint128",
+                  "name": "amount0Max",
+                  "type": "uint128"
+                },
+                {
+                  "internalType": "uint128",
+                  "name": "amount1Max",
+                  "type": "uint128"
+                },
+                {
+                  "internalType": "bytes",
+                  "name": "extraData",
+                  "type": "bytes"
+                }
+              ],
+              "internalType": "struct SimpleNftHarvest",
+              "name": "harvest",
+              "type": "tuple"
+            },
+            {
+              "components": [
+                {
+                  "components": [
+                    {
+                      "internalType": "address",
+                      "name": "router",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "amountIn",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "minAmountOut",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "address",
+                      "name": "tokenIn",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "bytes",
+                      "name": "extraData",
+                      "type": "bytes"
+                    }
+                  ],
+                  "internalType": "struct SwapParams[]",
+                  "name": "swaps",
+                  "type": "tuple[]"
+                },
+                {
+                  "components": [
+                    {
+                      "internalType": "contract INonfungiblePositionManager",
+                      "name": "nft",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "tokenId",
+                      "type": "uint256"
+                    },
+                    {
+                      "components": [
+                        {
+                          "internalType": "address",
+                          "name": "token0",
+                          "type": "address"
+                        },
+                        {
+                          "internalType": "address",
+                          "name": "token1",
+                          "type": "address"
+                        },
+                        {
+                          "internalType": "uint24",
+                          "name": "fee",
+                          "type": "uint24"
+                        }
+                      ],
+                      "internalType": "struct Pool",
+                      "name": "pool",
+                      "type": "tuple"
+                    },
+                    {
+                      "internalType": "int24",
+                      "name": "tickLower",
+                      "type": "int24"
+                    },
+                    {
+                      "internalType": "int24",
+                      "name": "tickUpper",
+                      "type": "int24"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "amount0Desired",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "amount1Desired",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "amount0Min",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "amount1Min",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "bytes",
+                      "name": "extraData",
+                      "type": "bytes"
+                    }
+                  ],
+                  "internalType": "struct NftAddLiquidity",
+                  "name": "addLiquidityParams",
+                  "type": "tuple"
+                }
+              ],
+              "internalType": "struct NftZapIn",
+              "name": "zap",
+              "type": "tuple"
+            }
+          ],
+          "internalType": "struct NftCompound",
+          "name": "params",
+          "type": "tuple"
+        },
+        {
+          "internalType": "bool",
+          "name": "inPlace",
+          "type": "bool"
+        },
+        {
+          "internalType": "address[]",
+          "name": "sweepTokens",
+          "type": "address[]"
+        }
+      ],
+      "name": "compoundFor",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "connectorRegistry",
+      "outputs": [
+        {
+          "internalType": "contract ConnectorRegistry",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "components": [
+            {
+              "components": [
+                {
+                  "internalType": "address",
+                  "name": "stakingContract",
+                  "type": "address"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "poolIndex",
+                  "type": "uint256"
+                }
+              ],
+              "internalType": "struct Farm",
+              "name": "farm",
+              "type": "tuple"
+            },
+            {
+              "internalType": "contract INonfungiblePositionManager",
+              "name": "nft",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "tokenId",
+              "type": "uint256"
+            }
+          ],
+          "internalType": "struct NftPosition",
+          "name": "position",
+          "type": "tuple"
+        },
+        {
+          "components": [
+            {
+              "components": [
+                {
+                  "internalType": "address[]",
+                  "name": "rewardTokens",
+                  "type": "address[]"
+                },
+                {
+                  "internalType": "uint128",
+                  "name": "amount0Max",
+                  "type": "uint128"
+                },
+                {
+                  "internalType": "uint128",
+                  "name": "amount1Max",
+                  "type": "uint128"
+                },
+                {
+                  "internalType": "bytes",
+                  "name": "extraData",
+                  "type": "bytes"
+                }
+              ],
+              "internalType": "struct SimpleNftHarvest",
+              "name": "harvest",
+              "type": "tuple"
+            },
+            {
+              "components": [
+                {
+                  "internalType": "address",
+                  "name": "router",
+                  "type": "address"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "amountIn",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "minAmountOut",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "address",
+                  "name": "tokenIn",
+                  "type": "address"
+                },
+                {
+                  "internalType": "bytes",
+                  "name": "extraData",
+                  "type": "bytes"
+                }
+              ],
+              "internalType": "struct SwapParams[]",
+              "name": "swaps",
+              "type": "tuple[]"
+            },
+            {
+              "internalType": "address[]",
+              "name": "outputTokens",
+              "type": "address[]"
+            }
+          ],
+          "internalType": "struct NftHarvest",
+          "name": "harvestParams",
+          "type": "tuple"
+        },
+        {
+          "components": [
+            {
+              "components": [
+                {
+                  "components": [
+                    {
+                      "internalType": "contract INonfungiblePositionManager",
+                      "name": "nft",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "tokenId",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint128",
+                      "name": "liquidity",
+                      "type": "uint128"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "amount0Min",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "amount1Min",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint128",
+                      "name": "amount0Max",
+                      "type": "uint128"
+                    },
+                    {
+                      "internalType": "uint128",
+                      "name": "amount1Max",
+                      "type": "uint128"
+                    },
+                    {
+                      "internalType": "bytes",
+                      "name": "extraData",
+                      "type": "bytes"
+                    }
+                  ],
+                  "internalType": "struct NftRemoveLiquidity",
+                  "name": "removeLiquidityParams",
+                  "type": "tuple"
+                },
+                {
+                  "components": [
+                    {
+                      "internalType": "address",
+                      "name": "router",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "amountIn",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "minAmountOut",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "address",
+                      "name": "tokenIn",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "bytes",
+                      "name": "extraData",
+                      "type": "bytes"
+                    }
+                  ],
+                  "internalType": "struct SwapParams[]",
+                  "name": "swaps",
+                  "type": "tuple[]"
+                }
+              ],
+              "internalType": "struct NftZapOut",
+              "name": "zap",
+              "type": "tuple"
+            },
+            {
+              "internalType": "address[]",
+              "name": "tokensOut",
+              "type": "address[]"
+            },
+            {
+              "internalType": "bytes",
+              "name": "extraData",
+              "type": "bytes"
+            }
+          ],
+          "internalType": "struct NftWithdraw",
+          "name": "withdrawParams",
+          "type": "tuple"
+        },
+        {
+          "internalType": "bool",
+          "name": "inPlace",
+          "type": "bool"
+        },
+        {
+          "internalType": "address[]",
+          "name": "sweepTokens",
+          "type": "address[]"
+        }
+      ],
+      "name": "decrease",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "components": [
+            {
+              "components": [
+                {
+                  "internalType": "address",
+                  "name": "stakingContract",
+                  "type": "address"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "poolIndex",
+                  "type": "uint256"
+                }
+              ],
+              "internalType": "struct Farm",
+              "name": "farm",
+              "type": "tuple"
+            },
+            {
+              "internalType": "contract INonfungiblePositionManager",
+              "name": "nft",
+              "type": "address"
+            },
+            {
+              "components": [
+                {
+                  "internalType": "address[]",
+                  "name": "tokensIn",
+                  "type": "address[]"
+                },
+                {
+                  "internalType": "uint256[]",
+                  "name": "amountsIn",
+                  "type": "uint256[]"
+                },
+                {
+                  "components": [
+                    {
+                      "components": [
+                        {
+                          "internalType": "address",
+                          "name": "router",
+                          "type": "address"
+                        },
+                        {
+                          "internalType": "uint256",
+                          "name": "amountIn",
+                          "type": "uint256"
+                        },
+                        {
+                          "internalType": "uint256",
+                          "name": "minAmountOut",
+                          "type": "uint256"
+                        },
+                        {
+                          "internalType": "address",
+                          "name": "tokenIn",
+                          "type": "address"
+                        },
+                        {
+                          "internalType": "bytes",
+                          "name": "extraData",
+                          "type": "bytes"
+                        }
+                      ],
+                      "internalType": "struct SwapParams[]",
+                      "name": "swaps",
+                      "type": "tuple[]"
+                    },
+                    {
+                      "components": [
+                        {
+                          "internalType": "contract INonfungiblePositionManager",
+                          "name": "nft",
+                          "type": "address"
+                        },
+                        {
+                          "internalType": "uint256",
+                          "name": "tokenId",
+                          "type": "uint256"
+                        },
+                        {
+                          "components": [
+                            {
+                              "internalType": "address",
+                              "name": "token0",
+                              "type": "address"
+                            },
+                            {
+                              "internalType": "address",
+                              "name": "token1",
+                              "type": "address"
+                            },
+                            {
+                              "internalType": "uint24",
+                              "name": "fee",
+                              "type": "uint24"
+                            }
+                          ],
+                          "internalType": "struct Pool",
+                          "name": "pool",
+                          "type": "tuple"
+                        },
+                        {
+                          "internalType": "int24",
+                          "name": "tickLower",
+                          "type": "int24"
+                        },
+                        {
+                          "internalType": "int24",
+                          "name": "tickUpper",
+                          "type": "int24"
+                        },
+                        {
+                          "internalType": "uint256",
+                          "name": "amount0Desired",
+                          "type": "uint256"
+                        },
+                        {
+                          "internalType": "uint256",
+                          "name": "amount1Desired",
+                          "type": "uint256"
+                        },
+                        {
+                          "internalType": "uint256",
+                          "name": "amount0Min",
+                          "type": "uint256"
+                        },
+                        {
+                          "internalType": "uint256",
+                          "name": "amount1Min",
+                          "type": "uint256"
+                        },
+                        {
+                          "internalType": "bytes",
+                          "name": "extraData",
+                          "type": "bytes"
+                        }
+                      ],
+                      "internalType": "struct NftAddLiquidity",
+                      "name": "addLiquidityParams",
+                      "type": "tuple"
+                    }
+                  ],
+                  "internalType": "struct NftZapIn",
+                  "name": "zap",
+                  "type": "tuple"
+                },
+                {
+                  "internalType": "bytes",
+                  "name": "extraData",
+                  "type": "bytes"
+                }
+              ],
+              "internalType": "struct NftIncrease",
+              "name": "increase",
+              "type": "tuple"
+            }
+          ],
+          "internalType": "struct NftDeposit",
+          "name": "params",
+          "type": "tuple"
+        },
+        {
+          "components": [
+            {
+              "internalType": "contract IUniswapV3Pool",
+              "name": "pool",
+              "type": "address"
+            },
+            {
+              "internalType": "bool",
+              "name": "autoRebalance",
+              "type": "bool"
+            },
+            {
+              "components": [
+                {
+                  "internalType": "uint24",
+                  "name": "tickSpacesBelow",
+                  "type": "uint24"
+                },
+                {
+                  "internalType": "uint24",
+                  "name": "tickSpacesAbove",
+                  "type": "uint24"
+                },
+                {
+                  "internalType": "int24",
+                  "name": "bufferTicksBelow",
+                  "type": "int24"
+                },
+                {
+                  "internalType": "int24",
+                  "name": "bufferTicksAbove",
+                  "type": "int24"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "dustBP",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "priceImpactBP",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "slippageBP",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "int24",
+                  "name": "cutoffTickLow",
+                  "type": "int24"
+                },
+                {
+                  "internalType": "int24",
+                  "name": "cutoffTickHigh",
+                  "type": "int24"
+                },
+                {
+                  "internalType": "uint8",
+                  "name": "delayMin",
+                  "type": "uint8"
+                },
+                {
+                  "components": [
+                    {
+                      "internalType": "enum RewardBehavior",
+                      "name": "rewardBehavior",
+                      "type": "uint8"
+                    },
+                    {
+                      "internalType": "address",
+                      "name": "harvestTokenOut",
+                      "type": "address"
+                    }
+                  ],
+                  "internalType": "struct RewardConfig",
+                  "name": "rewardConfig",
+                  "type": "tuple"
+                }
+              ],
+              "internalType": "struct RebalanceConfig",
+              "name": "rebalanceConfig",
+              "type": "tuple"
+            },
+            {
+              "internalType": "bool",
+              "name": "automateRewards",
+              "type": "bool"
+            },
+            {
+              "components": [
+                {
+                  "internalType": "enum RewardBehavior",
+                  "name": "rewardBehavior",
+                  "type": "uint8"
+                },
+                {
+                  "internalType": "address",
+                  "name": "harvestTokenOut",
+                  "type": "address"
+                }
+              ],
+              "internalType": "struct RewardConfig",
+              "name": "rewardConfig",
+              "type": "tuple"
+            },
+            {
+              "internalType": "bool",
+              "name": "autoExit",
+              "type": "bool"
+            },
+            {
+              "components": [
+                {
+                  "internalType": "int24",
+                  "name": "triggerTickLow",
+                  "type": "int24"
+                },
+                {
+                  "internalType": "int24",
+                  "name": "triggerTickHigh",
+                  "type": "int24"
+                },
+                {
+                  "internalType": "address",
+                  "name": "exitTokenOutLow",
+                  "type": "address"
+                },
+                {
+                  "internalType": "address",
+                  "name": "exitTokenOutHigh",
+                  "type": "address"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "priceImpactBP",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "slippageBP",
+                  "type": "uint256"
+                }
+              ],
+              "internalType": "struct ExitConfig",
+              "name": "exitConfig",
+              "type": "tuple"
+            }
+          ],
+          "internalType": "struct NftSettings",
+          "name": "settings",
+          "type": "tuple"
+        },
+        {
+          "internalType": "address[]",
+          "name": "sweepTokens",
+          "type": "address[]"
+        },
+        {
+          "internalType": "address",
+          "name": "approved",
+          "type": "address"
+        },
+        {
+          "internalType": "bytes32",
+          "name": "referralCode",
+          "type": "bytes32"
+        }
+      ],
+      "name": "deposit",
+      "outputs": [],
+      "stateMutability": "payable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "components": [
+            {
+              "components": [
+                {
+                  "internalType": "address",
+                  "name": "stakingContract",
+                  "type": "address"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "poolIndex",
+                  "type": "uint256"
+                }
+              ],
+              "internalType": "struct Farm",
+              "name": "farm",
+              "type": "tuple"
+            },
+            {
+              "internalType": "contract INonfungiblePositionManager",
+              "name": "nft",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "tokenId",
+              "type": "uint256"
+            }
+          ],
+          "internalType": "struct NftPosition",
+          "name": "position",
+          "type": "tuple"
+        },
+        {
+          "components": [
+            {
+              "components": [
+                {
+                  "internalType": "address[]",
+                  "name": "rewardTokens",
+                  "type": "address[]"
+                },
+                {
+                  "internalType": "uint128",
+                  "name": "amount0Max",
+                  "type": "uint128"
+                },
+                {
+                  "internalType": "uint128",
+                  "name": "amount1Max",
+                  "type": "uint128"
+                },
+                {
+                  "internalType": "bytes",
+                  "name": "extraData",
+                  "type": "bytes"
+                }
+              ],
+              "internalType": "struct SimpleNftHarvest",
+              "name": "harvest",
+              "type": "tuple"
+            },
+            {
+              "components": [
+                {
+                  "internalType": "address",
+                  "name": "router",
+                  "type": "address"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "amountIn",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "minAmountOut",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "address",
+                  "name": "tokenIn",
+                  "type": "address"
+                },
+                {
+                  "internalType": "bytes",
+                  "name": "extraData",
+                  "type": "bytes"
+                }
+              ],
+              "internalType": "struct SwapParams[]",
+              "name": "swaps",
+              "type": "tuple[]"
+            },
+            {
+              "internalType": "address[]",
+              "name": "outputTokens",
+              "type": "address[]"
+            }
+          ],
+          "internalType": "struct NftHarvest",
+          "name": "harvestParams",
+          "type": "tuple"
+        },
+        {
+          "components": [
+            {
+              "components": [
+                {
+                  "components": [
+                    {
+                      "internalType": "contract INonfungiblePositionManager",
+                      "name": "nft",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "tokenId",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint128",
+                      "name": "liquidity",
+                      "type": "uint128"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "amount0Min",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "amount1Min",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint128",
+                      "name": "amount0Max",
+                      "type": "uint128"
+                    },
+                    {
+                      "internalType": "uint128",
+                      "name": "amount1Max",
+                      "type": "uint128"
+                    },
+                    {
+                      "internalType": "bytes",
+                      "name": "extraData",
+                      "type": "bytes"
+                    }
+                  ],
+                  "internalType": "struct NftRemoveLiquidity",
+                  "name": "removeLiquidityParams",
+                  "type": "tuple"
+                },
+                {
+                  "components": [
+                    {
+                      "internalType": "address",
+                      "name": "router",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "amountIn",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "minAmountOut",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "address",
+                      "name": "tokenIn",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "bytes",
+                      "name": "extraData",
+                      "type": "bytes"
+                    }
+                  ],
+                  "internalType": "struct SwapParams[]",
+                  "name": "swaps",
+                  "type": "tuple[]"
+                }
+              ],
+              "internalType": "struct NftZapOut",
+              "name": "zap",
+              "type": "tuple"
+            },
+            {
+              "internalType": "address[]",
+              "name": "tokensOut",
+              "type": "address[]"
+            },
+            {
+              "internalType": "bytes",
+              "name": "extraData",
+              "type": "bytes"
+            }
+          ],
+          "internalType": "struct NftWithdraw",
+          "name": "withdrawParams",
+          "type": "tuple"
+        },
+        {
+          "internalType": "address[]",
+          "name": "sweepTokens",
+          "type": "address[]"
+        }
+      ],
+      "name": "exit",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "contract Sickle",
+          "name": "sickle",
+          "type": "address"
+        },
+        {
+          "components": [
+            {
+              "components": [
+                {
+                  "internalType": "address",
+                  "name": "stakingContract",
+                  "type": "address"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "poolIndex",
+                  "type": "uint256"
+                }
+              ],
+              "internalType": "struct Farm",
+              "name": "farm",
+              "type": "tuple"
+            },
+            {
+              "internalType": "contract INonfungiblePositionManager",
+              "name": "nft",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "tokenId",
+              "type": "uint256"
+            }
+          ],
+          "internalType": "struct NftPosition",
+          "name": "position",
+          "type": "tuple"
+        },
+        {
+          "components": [
+            {
+              "components": [
+                {
+                  "internalType": "address[]",
+                  "name": "rewardTokens",
+                  "type": "address[]"
+                },
+                {
+                  "internalType": "uint128",
+                  "name": "amount0Max",
+                  "type": "uint128"
+                },
+                {
+                  "internalType": "uint128",
+                  "name": "amount1Max",
+                  "type": "uint128"
+                },
+                {
+                  "internalType": "bytes",
+                  "name": "extraData",
+                  "type": "bytes"
+                }
+              ],
+              "internalType": "struct SimpleNftHarvest",
+              "name": "harvest",
+              "type": "tuple"
+            },
+            {
+              "components": [
+                {
+                  "internalType": "address",
+                  "name": "router",
+                  "type": "address"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "amountIn",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "minAmountOut",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "address",
+                  "name": "tokenIn",
+                  "type": "address"
+                },
+                {
+                  "internalType": "bytes",
+                  "name": "extraData",
+                  "type": "bytes"
+                }
+              ],
+              "internalType": "struct SwapParams[]",
+              "name": "swaps",
+              "type": "tuple[]"
+            },
+            {
+              "internalType": "address[]",
+              "name": "outputTokens",
+              "type": "address[]"
+            }
+          ],
+          "internalType": "struct NftHarvest",
+          "name": "harvestParams",
+          "type": "tuple"
+        },
+        {
+          "components": [
+            {
+              "components": [
+                {
+                  "components": [
+                    {
+                      "internalType": "contract INonfungiblePositionManager",
+                      "name": "nft",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "tokenId",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint128",
+                      "name": "liquidity",
+                      "type": "uint128"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "amount0Min",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "amount1Min",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint128",
+                      "name": "amount0Max",
+                      "type": "uint128"
+                    },
+                    {
+                      "internalType": "uint128",
+                      "name": "amount1Max",
+                      "type": "uint128"
+                    },
+                    {
+                      "internalType": "bytes",
+                      "name": "extraData",
+                      "type": "bytes"
+                    }
+                  ],
+                  "internalType": "struct NftRemoveLiquidity",
+                  "name": "removeLiquidityParams",
+                  "type": "tuple"
+                },
+                {
+                  "components": [
+                    {
+                      "internalType": "address",
+                      "name": "router",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "amountIn",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "minAmountOut",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "address",
+                      "name": "tokenIn",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "bytes",
+                      "name": "extraData",
+                      "type": "bytes"
+                    }
+                  ],
+                  "internalType": "struct SwapParams[]",
+                  "name": "swaps",
+                  "type": "tuple[]"
+                }
+              ],
+              "internalType": "struct NftZapOut",
+              "name": "zap",
+              "type": "tuple"
+            },
+            {
+              "internalType": "address[]",
+              "name": "tokensOut",
+              "type": "address[]"
+            },
+            {
+              "internalType": "bytes",
+              "name": "extraData",
+              "type": "bytes"
+            }
+          ],
+          "internalType": "struct NftWithdraw",
+          "name": "withdrawParams",
+          "type": "tuple"
+        },
+        {
+          "internalType": "address[]",
+          "name": "sweepTokens",
+          "type": "address[]"
+        }
+      ],
+      "name": "exitFor",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "factory",
+      "outputs": [
+        {
+          "internalType": "contract SickleFactory",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "feesLib",
+      "outputs": [
+        {
+          "internalType": "contract IFeesLib",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "owner",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "approved",
+          "type": "address"
+        },
+        {
+          "internalType": "bytes32",
+          "name": "referralCode",
+          "type": "bytes32"
+        }
+      ],
+      "name": "getOrDeploySickle",
+      "outputs": [
+        {
+          "internalType": "contract Sickle",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "owner",
+          "type": "address"
+        }
+      ],
+      "name": "getSickle",
+      "outputs": [
+        {
+          "internalType": "contract Sickle",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "components": [
+            {
+              "components": [
+                {
+                  "internalType": "address",
+                  "name": "stakingContract",
+                  "type": "address"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "poolIndex",
+                  "type": "uint256"
+                }
+              ],
+              "internalType": "struct Farm",
+              "name": "farm",
+              "type": "tuple"
+            },
+            {
+              "internalType": "contract INonfungiblePositionManager",
+              "name": "nft",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "tokenId",
+              "type": "uint256"
+            }
+          ],
+          "internalType": "struct NftPosition",
+          "name": "position",
+          "type": "tuple"
+        },
+        {
+          "components": [
+            {
+              "components": [
+                {
+                  "internalType": "address[]",
+                  "name": "rewardTokens",
+                  "type": "address[]"
+                },
+                {
+                  "internalType": "uint128",
+                  "name": "amount0Max",
+                  "type": "uint128"
+                },
+                {
+                  "internalType": "uint128",
+                  "name": "amount1Max",
+                  "type": "uint128"
+                },
+                {
+                  "internalType": "bytes",
+                  "name": "extraData",
+                  "type": "bytes"
+                }
+              ],
+              "internalType": "struct SimpleNftHarvest",
+              "name": "harvest",
+              "type": "tuple"
+            },
+            {
+              "components": [
+                {
+                  "internalType": "address",
+                  "name": "router",
+                  "type": "address"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "amountIn",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "minAmountOut",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "address",
+                  "name": "tokenIn",
+                  "type": "address"
+                },
+                {
+                  "internalType": "bytes",
+                  "name": "extraData",
+                  "type": "bytes"
+                }
+              ],
+              "internalType": "struct SwapParams[]",
+              "name": "swaps",
+              "type": "tuple[]"
+            },
+            {
+              "internalType": "address[]",
+              "name": "outputTokens",
+              "type": "address[]"
+            }
+          ],
+          "internalType": "struct NftHarvest",
+          "name": "params",
+          "type": "tuple"
+        }
+      ],
+      "name": "harvest",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "contract Sickle",
+          "name": "sickle",
+          "type": "address"
+        },
+        {
+          "components": [
+            {
+              "components": [
+                {
+                  "internalType": "address",
+                  "name": "stakingContract",
+                  "type": "address"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "poolIndex",
+                  "type": "uint256"
+                }
+              ],
+              "internalType": "struct Farm",
+              "name": "farm",
+              "type": "tuple"
+            },
+            {
+              "internalType": "contract INonfungiblePositionManager",
+              "name": "nft",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "tokenId",
+              "type": "uint256"
+            }
+          ],
+          "internalType": "struct NftPosition",
+          "name": "position",
+          "type": "tuple"
+        },
+        {
+          "components": [
+            {
+              "components": [
+                {
+                  "internalType": "address[]",
+                  "name": "rewardTokens",
+                  "type": "address[]"
+                },
+                {
+                  "internalType": "uint128",
+                  "name": "amount0Max",
+                  "type": "uint128"
+                },
+                {
+                  "internalType": "uint128",
+                  "name": "amount1Max",
+                  "type": "uint128"
+                },
+                {
+                  "internalType": "bytes",
+                  "name": "extraData",
+                  "type": "bytes"
+                }
+              ],
+              "internalType": "struct SimpleNftHarvest",
+              "name": "harvest",
+              "type": "tuple"
+            },
+            {
+              "components": [
+                {
+                  "internalType": "address",
+                  "name": "router",
+                  "type": "address"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "amountIn",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "minAmountOut",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "address",
+                  "name": "tokenIn",
+                  "type": "address"
+                },
+                {
+                  "internalType": "bytes",
+                  "name": "extraData",
+                  "type": "bytes"
+                }
+              ],
+              "internalType": "struct SwapParams[]",
+              "name": "swaps",
+              "type": "tuple[]"
+            },
+            {
+              "internalType": "address[]",
+              "name": "outputTokens",
+              "type": "address[]"
+            }
+          ],
+          "internalType": "struct NftHarvest",
+          "name": "params",
+          "type": "tuple"
+        }
+      ],
+      "name": "harvestFor",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "components": [
+            {
+              "components": [
+                {
+                  "internalType": "address",
+                  "name": "stakingContract",
+                  "type": "address"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "poolIndex",
+                  "type": "uint256"
+                }
+              ],
+              "internalType": "struct Farm",
+              "name": "farm",
+              "type": "tuple"
+            },
+            {
+              "internalType": "contract INonfungiblePositionManager",
+              "name": "nft",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "tokenId",
+              "type": "uint256"
+            }
+          ],
+          "internalType": "struct NftPosition",
+          "name": "position",
+          "type": "tuple"
+        },
+        {
+          "components": [
+            {
+              "components": [
+                {
+                  "internalType": "address[]",
+                  "name": "rewardTokens",
+                  "type": "address[]"
+                },
+                {
+                  "internalType": "uint128",
+                  "name": "amount0Max",
+                  "type": "uint128"
+                },
+                {
+                  "internalType": "uint128",
+                  "name": "amount1Max",
+                  "type": "uint128"
+                },
+                {
+                  "internalType": "bytes",
+                  "name": "extraData",
+                  "type": "bytes"
+                }
+              ],
+              "internalType": "struct SimpleNftHarvest",
+              "name": "harvest",
+              "type": "tuple"
+            },
+            {
+              "components": [
+                {
+                  "internalType": "address",
+                  "name": "router",
+                  "type": "address"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "amountIn",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "minAmountOut",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "address",
+                  "name": "tokenIn",
+                  "type": "address"
+                },
+                {
+                  "internalType": "bytes",
+                  "name": "extraData",
+                  "type": "bytes"
+                }
+              ],
+              "internalType": "struct SwapParams[]",
+              "name": "swaps",
+              "type": "tuple[]"
+            },
+            {
+              "internalType": "address[]",
+              "name": "outputTokens",
+              "type": "address[]"
+            }
+          ],
+          "internalType": "struct NftHarvest",
+          "name": "harvestParams",
+          "type": "tuple"
+        },
+        {
+          "components": [
+            {
+              "internalType": "address[]",
+              "name": "tokensIn",
+              "type": "address[]"
+            },
+            {
+              "internalType": "uint256[]",
+              "name": "amountsIn",
+              "type": "uint256[]"
+            },
+            {
+              "components": [
+                {
+                  "components": [
+                    {
+                      "internalType": "address",
+                      "name": "router",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "amountIn",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "minAmountOut",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "address",
+                      "name": "tokenIn",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "bytes",
+                      "name": "extraData",
+                      "type": "bytes"
+                    }
+                  ],
+                  "internalType": "struct SwapParams[]",
+                  "name": "swaps",
+                  "type": "tuple[]"
+                },
+                {
+                  "components": [
+                    {
+                      "internalType": "contract INonfungiblePositionManager",
+                      "name": "nft",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "tokenId",
+                      "type": "uint256"
+                    },
+                    {
+                      "components": [
+                        {
+                          "internalType": "address",
+                          "name": "token0",
+                          "type": "address"
+                        },
+                        {
+                          "internalType": "address",
+                          "name": "token1",
+                          "type": "address"
+                        },
+                        {
+                          "internalType": "uint24",
+                          "name": "fee",
+                          "type": "uint24"
+                        }
+                      ],
+                      "internalType": "struct Pool",
+                      "name": "pool",
+                      "type": "tuple"
+                    },
+                    {
+                      "internalType": "int24",
+                      "name": "tickLower",
+                      "type": "int24"
+                    },
+                    {
+                      "internalType": "int24",
+                      "name": "tickUpper",
+                      "type": "int24"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "amount0Desired",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "amount1Desired",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "amount0Min",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "amount1Min",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "bytes",
+                      "name": "extraData",
+                      "type": "bytes"
+                    }
+                  ],
+                  "internalType": "struct NftAddLiquidity",
+                  "name": "addLiquidityParams",
+                  "type": "tuple"
+                }
+              ],
+              "internalType": "struct NftZapIn",
+              "name": "zap",
+              "type": "tuple"
+            },
+            {
+              "internalType": "bytes",
+              "name": "extraData",
+              "type": "bytes"
+            }
+          ],
+          "internalType": "struct NftIncrease",
+          "name": "increaseParams",
+          "type": "tuple"
+        },
+        {
+          "internalType": "bool",
+          "name": "inPlace",
+          "type": "bool"
+        },
+        {
+          "internalType": "address[]",
+          "name": "sweepTokens",
+          "type": "address[]"
+        }
+      ],
+      "name": "increase",
+      "outputs": [],
+      "stateMutability": "payable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "components": [
+            {
+              "internalType": "contract IUniswapV3Pool",
+              "name": "pool",
+              "type": "address"
+            },
+            {
+              "components": [
+                {
+                  "components": [
+                    {
+                      "internalType": "address",
+                      "name": "stakingContract",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "poolIndex",
+                      "type": "uint256"
+                    }
+                  ],
+                  "internalType": "struct Farm",
+                  "name": "farm",
+                  "type": "tuple"
+                },
+                {
+                  "internalType": "contract INonfungiblePositionManager",
+                  "name": "nft",
+                  "type": "address"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "tokenId",
+                  "type": "uint256"
+                }
+              ],
+              "internalType": "struct NftPosition",
+              "name": "position",
+              "type": "tuple"
+            },
+            {
+              "components": [
+                {
+                  "components": [
+                    {
+                      "internalType": "address[]",
+                      "name": "rewardTokens",
+                      "type": "address[]"
+                    },
+                    {
+                      "internalType": "uint128",
+                      "name": "amount0Max",
+                      "type": "uint128"
+                    },
+                    {
+                      "internalType": "uint128",
+                      "name": "amount1Max",
+                      "type": "uint128"
+                    },
+                    {
+                      "internalType": "bytes",
+                      "name": "extraData",
+                      "type": "bytes"
+                    }
+                  ],
+                  "internalType": "struct SimpleNftHarvest",
+                  "name": "harvest",
+                  "type": "tuple"
+                },
+                {
+                  "components": [
+                    {
+                      "internalType": "address",
+                      "name": "router",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "amountIn",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "minAmountOut",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "address",
+                      "name": "tokenIn",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "bytes",
+                      "name": "extraData",
+                      "type": "bytes"
+                    }
+                  ],
+                  "internalType": "struct SwapParams[]",
+                  "name": "swaps",
+                  "type": "tuple[]"
+                },
+                {
+                  "internalType": "address[]",
+                  "name": "outputTokens",
+                  "type": "address[]"
+                }
+              ],
+              "internalType": "struct NftHarvest",
+              "name": "harvest",
+              "type": "tuple"
+            },
+            {
+              "components": [
+                {
+                  "components": [
+                    {
+                      "components": [
+                        {
+                          "internalType": "contract INonfungiblePositionManager",
+                          "name": "nft",
+                          "type": "address"
+                        },
+                        {
+                          "internalType": "uint256",
+                          "name": "tokenId",
+                          "type": "uint256"
+                        },
+                        {
+                          "internalType": "uint128",
+                          "name": "liquidity",
+                          "type": "uint128"
+                        },
+                        {
+                          "internalType": "uint256",
+                          "name": "amount0Min",
+                          "type": "uint256"
+                        },
+                        {
+                          "internalType": "uint256",
+                          "name": "amount1Min",
+                          "type": "uint256"
+                        },
+                        {
+                          "internalType": "uint128",
+                          "name": "amount0Max",
+                          "type": "uint128"
+                        },
+                        {
+                          "internalType": "uint128",
+                          "name": "amount1Max",
+                          "type": "uint128"
+                        },
+                        {
+                          "internalType": "bytes",
+                          "name": "extraData",
+                          "type": "bytes"
+                        }
+                      ],
+                      "internalType": "struct NftRemoveLiquidity",
+                      "name": "removeLiquidityParams",
+                      "type": "tuple"
+                    },
+                    {
+                      "components": [
+                        {
+                          "internalType": "address",
+                          "name": "router",
+                          "type": "address"
+                        },
+                        {
+                          "internalType": "uint256",
+                          "name": "amountIn",
+                          "type": "uint256"
+                        },
+                        {
+                          "internalType": "uint256",
+                          "name": "minAmountOut",
+                          "type": "uint256"
+                        },
+                        {
+                          "internalType": "address",
+                          "name": "tokenIn",
+                          "type": "address"
+                        },
+                        {
+                          "internalType": "bytes",
+                          "name": "extraData",
+                          "type": "bytes"
+                        }
+                      ],
+                      "internalType": "struct SwapParams[]",
+                      "name": "swaps",
+                      "type": "tuple[]"
+                    }
+                  ],
+                  "internalType": "struct NftZapOut",
+                  "name": "zap",
+                  "type": "tuple"
+                },
+                {
+                  "internalType": "address[]",
+                  "name": "tokensOut",
+                  "type": "address[]"
+                },
+                {
+                  "internalType": "bytes",
+                  "name": "extraData",
+                  "type": "bytes"
+                }
+              ],
+              "internalType": "struct NftWithdraw",
+              "name": "withdraw",
+              "type": "tuple"
+            },
+            {
+              "components": [
+                {
+                  "components": [
+                    {
+                      "internalType": "address",
+                      "name": "stakingContract",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "poolIndex",
+                      "type": "uint256"
+                    }
+                  ],
+                  "internalType": "struct Farm",
+                  "name": "farm",
+                  "type": "tuple"
+                },
+                {
+                  "internalType": "contract INonfungiblePositionManager",
+                  "name": "nft",
+                  "type": "address"
+                },
+                {
+                  "components": [
+                    {
+                      "internalType": "address[]",
+                      "name": "tokensIn",
+                      "type": "address[]"
+                    },
+                    {
+                      "internalType": "uint256[]",
+                      "name": "amountsIn",
+                      "type": "uint256[]"
+                    },
+                    {
+                      "components": [
+                        {
+                          "components": [
+                            {
+                              "internalType": "address",
+                              "name": "router",
+                              "type": "address"
+                            },
+                            {
+                              "internalType": "uint256",
+                              "name": "amountIn",
+                              "type": "uint256"
+                            },
+                            {
+                              "internalType": "uint256",
+                              "name": "minAmountOut",
+                              "type": "uint256"
+                            },
+                            {
+                              "internalType": "address",
+                              "name": "tokenIn",
+                              "type": "address"
+                            },
+                            {
+                              "internalType": "bytes",
+                              "name": "extraData",
+                              "type": "bytes"
+                            }
+                          ],
+                          "internalType": "struct SwapParams[]",
+                          "name": "swaps",
+                          "type": "tuple[]"
+                        },
+                        {
+                          "components": [
+                            {
+                              "internalType": "contract INonfungiblePositionManager",
+                              "name": "nft",
+                              "type": "address"
+                            },
+                            {
+                              "internalType": "uint256",
+                              "name": "tokenId",
+                              "type": "uint256"
+                            },
+                            {
+                              "components": [
+                                {
+                                  "internalType": "address",
+                                  "name": "token0",
+                                  "type": "address"
+                                },
+                                {
+                                  "internalType": "address",
+                                  "name": "token1",
+                                  "type": "address"
+                                },
+                                {
+                                  "internalType": "uint24",
+                                  "name": "fee",
+                                  "type": "uint24"
+                                }
+                              ],
+                              "internalType": "struct Pool",
+                              "name": "pool",
+                              "type": "tuple"
+                            },
+                            {
+                              "internalType": "int24",
+                              "name": "tickLower",
+                              "type": "int24"
+                            },
+                            {
+                              "internalType": "int24",
+                              "name": "tickUpper",
+                              "type": "int24"
+                            },
+                            {
+                              "internalType": "uint256",
+                              "name": "amount0Desired",
+                              "type": "uint256"
+                            },
+                            {
+                              "internalType": "uint256",
+                              "name": "amount1Desired",
+                              "type": "uint256"
+                            },
+                            {
+                              "internalType": "uint256",
+                              "name": "amount0Min",
+                              "type": "uint256"
+                            },
+                            {
+                              "internalType": "uint256",
+                              "name": "amount1Min",
+                              "type": "uint256"
+                            },
+                            {
+                              "internalType": "bytes",
+                              "name": "extraData",
+                              "type": "bytes"
+                            }
+                          ],
+                          "internalType": "struct NftAddLiquidity",
+                          "name": "addLiquidityParams",
+                          "type": "tuple"
+                        }
+                      ],
+                      "internalType": "struct NftZapIn",
+                      "name": "zap",
+                      "type": "tuple"
+                    },
+                    {
+                      "internalType": "bytes",
+                      "name": "extraData",
+                      "type": "bytes"
+                    }
+                  ],
+                  "internalType": "struct NftIncrease",
+                  "name": "increase",
+                  "type": "tuple"
+                }
+              ],
+              "internalType": "struct NftDeposit",
+              "name": "deposit",
+              "type": "tuple"
+            }
+          ],
+          "internalType": "struct NftMove",
+          "name": "params",
+          "type": "tuple"
+        },
+        {
+          "components": [
+            {
+              "internalType": "contract IUniswapV3Pool",
+              "name": "pool",
+              "type": "address"
+            },
+            {
+              "internalType": "bool",
+              "name": "autoRebalance",
+              "type": "bool"
+            },
+            {
+              "components": [
+                {
+                  "internalType": "uint24",
+                  "name": "tickSpacesBelow",
+                  "type": "uint24"
+                },
+                {
+                  "internalType": "uint24",
+                  "name": "tickSpacesAbove",
+                  "type": "uint24"
+                },
+                {
+                  "internalType": "int24",
+                  "name": "bufferTicksBelow",
+                  "type": "int24"
+                },
+                {
+                  "internalType": "int24",
+                  "name": "bufferTicksAbove",
+                  "type": "int24"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "dustBP",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "priceImpactBP",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "slippageBP",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "int24",
+                  "name": "cutoffTickLow",
+                  "type": "int24"
+                },
+                {
+                  "internalType": "int24",
+                  "name": "cutoffTickHigh",
+                  "type": "int24"
+                },
+                {
+                  "internalType": "uint8",
+                  "name": "delayMin",
+                  "type": "uint8"
+                },
+                {
+                  "components": [
+                    {
+                      "internalType": "enum RewardBehavior",
+                      "name": "rewardBehavior",
+                      "type": "uint8"
+                    },
+                    {
+                      "internalType": "address",
+                      "name": "harvestTokenOut",
+                      "type": "address"
+                    }
+                  ],
+                  "internalType": "struct RewardConfig",
+                  "name": "rewardConfig",
+                  "type": "tuple"
+                }
+              ],
+              "internalType": "struct RebalanceConfig",
+              "name": "rebalanceConfig",
+              "type": "tuple"
+            },
+            {
+              "internalType": "bool",
+              "name": "automateRewards",
+              "type": "bool"
+            },
+            {
+              "components": [
+                {
+                  "internalType": "enum RewardBehavior",
+                  "name": "rewardBehavior",
+                  "type": "uint8"
+                },
+                {
+                  "internalType": "address",
+                  "name": "harvestTokenOut",
+                  "type": "address"
+                }
+              ],
+              "internalType": "struct RewardConfig",
+              "name": "rewardConfig",
+              "type": "tuple"
+            },
+            {
+              "internalType": "bool",
+              "name": "autoExit",
+              "type": "bool"
+            },
+            {
+              "components": [
+                {
+                  "internalType": "int24",
+                  "name": "triggerTickLow",
+                  "type": "int24"
+                },
+                {
+                  "internalType": "int24",
+                  "name": "triggerTickHigh",
+                  "type": "int24"
+                },
+                {
+                  "internalType": "address",
+                  "name": "exitTokenOutLow",
+                  "type": "address"
+                },
+                {
+                  "internalType": "address",
+                  "name": "exitTokenOutHigh",
+                  "type": "address"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "priceImpactBP",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "slippageBP",
+                  "type": "uint256"
+                }
+              ],
+              "internalType": "struct ExitConfig",
+              "name": "exitConfig",
+              "type": "tuple"
+            }
+          ],
+          "internalType": "struct NftSettings",
+          "name": "settings",
+          "type": "tuple"
+        },
+        {
+          "internalType": "address[]",
+          "name": "sweepTokens",
+          "type": "address[]"
+        }
+      ],
+      "name": "move",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "nftSettingsLib",
+      "outputs": [
+        {
+          "internalType": "contract INftSettingsLib",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "nftSettingsRegistry",
+      "outputs": [
+        {
+          "internalType": "contract INftSettingsRegistry",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "nftTransferLib",
+      "outputs": [
+        {
+          "internalType": "contract INftTransferLib",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "nftZapLib",
+      "outputs": [
+        {
+          "internalType": "contract INftZapLib",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "components": [
+            {
+              "internalType": "contract IUniswapV3Pool",
+              "name": "pool",
+              "type": "address"
+            },
+            {
+              "components": [
+                {
+                  "components": [
+                    {
+                      "internalType": "address",
+                      "name": "stakingContract",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "poolIndex",
+                      "type": "uint256"
+                    }
+                  ],
+                  "internalType": "struct Farm",
+                  "name": "farm",
+                  "type": "tuple"
+                },
+                {
+                  "internalType": "contract INonfungiblePositionManager",
+                  "name": "nft",
+                  "type": "address"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "tokenId",
+                  "type": "uint256"
+                }
+              ],
+              "internalType": "struct NftPosition",
+              "name": "position",
+              "type": "tuple"
+            },
+            {
+              "components": [
+                {
+                  "components": [
+                    {
+                      "internalType": "address[]",
+                      "name": "rewardTokens",
+                      "type": "address[]"
+                    },
+                    {
+                      "internalType": "uint128",
+                      "name": "amount0Max",
+                      "type": "uint128"
+                    },
+                    {
+                      "internalType": "uint128",
+                      "name": "amount1Max",
+                      "type": "uint128"
+                    },
+                    {
+                      "internalType": "bytes",
+                      "name": "extraData",
+                      "type": "bytes"
+                    }
+                  ],
+                  "internalType": "struct SimpleNftHarvest",
+                  "name": "harvest",
+                  "type": "tuple"
+                },
+                {
+                  "components": [
+                    {
+                      "internalType": "address",
+                      "name": "router",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "amountIn",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "minAmountOut",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "address",
+                      "name": "tokenIn",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "bytes",
+                      "name": "extraData",
+                      "type": "bytes"
+                    }
+                  ],
+                  "internalType": "struct SwapParams[]",
+                  "name": "swaps",
+                  "type": "tuple[]"
+                },
+                {
+                  "internalType": "address[]",
+                  "name": "outputTokens",
+                  "type": "address[]"
+                }
+              ],
+              "internalType": "struct NftHarvest",
+              "name": "harvest",
+              "type": "tuple"
+            },
+            {
+              "components": [
+                {
+                  "components": [
+                    {
+                      "components": [
+                        {
+                          "internalType": "contract INonfungiblePositionManager",
+                          "name": "nft",
+                          "type": "address"
+                        },
+                        {
+                          "internalType": "uint256",
+                          "name": "tokenId",
+                          "type": "uint256"
+                        },
+                        {
+                          "internalType": "uint128",
+                          "name": "liquidity",
+                          "type": "uint128"
+                        },
+                        {
+                          "internalType": "uint256",
+                          "name": "amount0Min",
+                          "type": "uint256"
+                        },
+                        {
+                          "internalType": "uint256",
+                          "name": "amount1Min",
+                          "type": "uint256"
+                        },
+                        {
+                          "internalType": "uint128",
+                          "name": "amount0Max",
+                          "type": "uint128"
+                        },
+                        {
+                          "internalType": "uint128",
+                          "name": "amount1Max",
+                          "type": "uint128"
+                        },
+                        {
+                          "internalType": "bytes",
+                          "name": "extraData",
+                          "type": "bytes"
+                        }
+                      ],
+                      "internalType": "struct NftRemoveLiquidity",
+                      "name": "removeLiquidityParams",
+                      "type": "tuple"
+                    },
+                    {
+                      "components": [
+                        {
+                          "internalType": "address",
+                          "name": "router",
+                          "type": "address"
+                        },
+                        {
+                          "internalType": "uint256",
+                          "name": "amountIn",
+                          "type": "uint256"
+                        },
+                        {
+                          "internalType": "uint256",
+                          "name": "minAmountOut",
+                          "type": "uint256"
+                        },
+                        {
+                          "internalType": "address",
+                          "name": "tokenIn",
+                          "type": "address"
+                        },
+                        {
+                          "internalType": "bytes",
+                          "name": "extraData",
+                          "type": "bytes"
+                        }
+                      ],
+                      "internalType": "struct SwapParams[]",
+                      "name": "swaps",
+                      "type": "tuple[]"
+                    }
+                  ],
+                  "internalType": "struct NftZapOut",
+                  "name": "zap",
+                  "type": "tuple"
+                },
+                {
+                  "internalType": "address[]",
+                  "name": "tokensOut",
+                  "type": "address[]"
+                },
+                {
+                  "internalType": "bytes",
+                  "name": "extraData",
+                  "type": "bytes"
+                }
+              ],
+              "internalType": "struct NftWithdraw",
+              "name": "withdraw",
+              "type": "tuple"
+            },
+            {
+              "components": [
+                {
+                  "internalType": "address[]",
+                  "name": "tokensIn",
+                  "type": "address[]"
+                },
+                {
+                  "internalType": "uint256[]",
+                  "name": "amountsIn",
+                  "type": "uint256[]"
+                },
+                {
+                  "components": [
+                    {
+                      "components": [
+                        {
+                          "internalType": "address",
+                          "name": "router",
+                          "type": "address"
+                        },
+                        {
+                          "internalType": "uint256",
+                          "name": "amountIn",
+                          "type": "uint256"
+                        },
+                        {
+                          "internalType": "uint256",
+                          "name": "minAmountOut",
+                          "type": "uint256"
+                        },
+                        {
+                          "internalType": "address",
+                          "name": "tokenIn",
+                          "type": "address"
+                        },
+                        {
+                          "internalType": "bytes",
+                          "name": "extraData",
+                          "type": "bytes"
+                        }
+                      ],
+                      "internalType": "struct SwapParams[]",
+                      "name": "swaps",
+                      "type": "tuple[]"
+                    },
+                    {
+                      "components": [
+                        {
+                          "internalType": "contract INonfungiblePositionManager",
+                          "name": "nft",
+                          "type": "address"
+                        },
+                        {
+                          "internalType": "uint256",
+                          "name": "tokenId",
+                          "type": "uint256"
+                        },
+                        {
+                          "components": [
+                            {
+                              "internalType": "address",
+                              "name": "token0",
+                              "type": "address"
+                            },
+                            {
+                              "internalType": "address",
+                              "name": "token1",
+                              "type": "address"
+                            },
+                            {
+                              "internalType": "uint24",
+                              "name": "fee",
+                              "type": "uint24"
+                            }
+                          ],
+                          "internalType": "struct Pool",
+                          "name": "pool",
+                          "type": "tuple"
+                        },
+                        {
+                          "internalType": "int24",
+                          "name": "tickLower",
+                          "type": "int24"
+                        },
+                        {
+                          "internalType": "int24",
+                          "name": "tickUpper",
+                          "type": "int24"
+                        },
+                        {
+                          "internalType": "uint256",
+                          "name": "amount0Desired",
+                          "type": "uint256"
+                        },
+                        {
+                          "internalType": "uint256",
+                          "name": "amount1Desired",
+                          "type": "uint256"
+                        },
+                        {
+                          "internalType": "uint256",
+                          "name": "amount0Min",
+                          "type": "uint256"
+                        },
+                        {
+                          "internalType": "uint256",
+                          "name": "amount1Min",
+                          "type": "uint256"
+                        },
+                        {
+                          "internalType": "bytes",
+                          "name": "extraData",
+                          "type": "bytes"
+                        }
+                      ],
+                      "internalType": "struct NftAddLiquidity",
+                      "name": "addLiquidityParams",
+                      "type": "tuple"
+                    }
+                  ],
+                  "internalType": "struct NftZapIn",
+                  "name": "zap",
+                  "type": "tuple"
+                },
+                {
+                  "internalType": "bytes",
+                  "name": "extraData",
+                  "type": "bytes"
+                }
+              ],
+              "internalType": "struct NftIncrease",
+              "name": "increase",
+              "type": "tuple"
+            }
+          ],
+          "internalType": "struct NftRebalance",
+          "name": "params",
+          "type": "tuple"
+        },
+        {
+          "internalType": "address[]",
+          "name": "sweepTokens",
+          "type": "address[]"
+        }
+      ],
+      "name": "rebalance",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "contract Sickle",
+          "name": "sickle",
+          "type": "address"
+        },
+        {
+          "components": [
+            {
+              "internalType": "contract IUniswapV3Pool",
+              "name": "pool",
+              "type": "address"
+            },
+            {
+              "components": [
+                {
+                  "components": [
+                    {
+                      "internalType": "address",
+                      "name": "stakingContract",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "poolIndex",
+                      "type": "uint256"
+                    }
+                  ],
+                  "internalType": "struct Farm",
+                  "name": "farm",
+                  "type": "tuple"
+                },
+                {
+                  "internalType": "contract INonfungiblePositionManager",
+                  "name": "nft",
+                  "type": "address"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "tokenId",
+                  "type": "uint256"
+                }
+              ],
+              "internalType": "struct NftPosition",
+              "name": "position",
+              "type": "tuple"
+            },
+            {
+              "components": [
+                {
+                  "components": [
+                    {
+                      "internalType": "address[]",
+                      "name": "rewardTokens",
+                      "type": "address[]"
+                    },
+                    {
+                      "internalType": "uint128",
+                      "name": "amount0Max",
+                      "type": "uint128"
+                    },
+                    {
+                      "internalType": "uint128",
+                      "name": "amount1Max",
+                      "type": "uint128"
+                    },
+                    {
+                      "internalType": "bytes",
+                      "name": "extraData",
+                      "type": "bytes"
+                    }
+                  ],
+                  "internalType": "struct SimpleNftHarvest",
+                  "name": "harvest",
+                  "type": "tuple"
+                },
+                {
+                  "components": [
+                    {
+                      "internalType": "address",
+                      "name": "router",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "amountIn",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "minAmountOut",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "address",
+                      "name": "tokenIn",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "bytes",
+                      "name": "extraData",
+                      "type": "bytes"
+                    }
+                  ],
+                  "internalType": "struct SwapParams[]",
+                  "name": "swaps",
+                  "type": "tuple[]"
+                },
+                {
+                  "internalType": "address[]",
+                  "name": "outputTokens",
+                  "type": "address[]"
+                }
+              ],
+              "internalType": "struct NftHarvest",
+              "name": "harvest",
+              "type": "tuple"
+            },
+            {
+              "components": [
+                {
+                  "components": [
+                    {
+                      "components": [
+                        {
+                          "internalType": "contract INonfungiblePositionManager",
+                          "name": "nft",
+                          "type": "address"
+                        },
+                        {
+                          "internalType": "uint256",
+                          "name": "tokenId",
+                          "type": "uint256"
+                        },
+                        {
+                          "internalType": "uint128",
+                          "name": "liquidity",
+                          "type": "uint128"
+                        },
+                        {
+                          "internalType": "uint256",
+                          "name": "amount0Min",
+                          "type": "uint256"
+                        },
+                        {
+                          "internalType": "uint256",
+                          "name": "amount1Min",
+                          "type": "uint256"
+                        },
+                        {
+                          "internalType": "uint128",
+                          "name": "amount0Max",
+                          "type": "uint128"
+                        },
+                        {
+                          "internalType": "uint128",
+                          "name": "amount1Max",
+                          "type": "uint128"
+                        },
+                        {
+                          "internalType": "bytes",
+                          "name": "extraData",
+                          "type": "bytes"
+                        }
+                      ],
+                      "internalType": "struct NftRemoveLiquidity",
+                      "name": "removeLiquidityParams",
+                      "type": "tuple"
+                    },
+                    {
+                      "components": [
+                        {
+                          "internalType": "address",
+                          "name": "router",
+                          "type": "address"
+                        },
+                        {
+                          "internalType": "uint256",
+                          "name": "amountIn",
+                          "type": "uint256"
+                        },
+                        {
+                          "internalType": "uint256",
+                          "name": "minAmountOut",
+                          "type": "uint256"
+                        },
+                        {
+                          "internalType": "address",
+                          "name": "tokenIn",
+                          "type": "address"
+                        },
+                        {
+                          "internalType": "bytes",
+                          "name": "extraData",
+                          "type": "bytes"
+                        }
+                      ],
+                      "internalType": "struct SwapParams[]",
+                      "name": "swaps",
+                      "type": "tuple[]"
+                    }
+                  ],
+                  "internalType": "struct NftZapOut",
+                  "name": "zap",
+                  "type": "tuple"
+                },
+                {
+                  "internalType": "address[]",
+                  "name": "tokensOut",
+                  "type": "address[]"
+                },
+                {
+                  "internalType": "bytes",
+                  "name": "extraData",
+                  "type": "bytes"
+                }
+              ],
+              "internalType": "struct NftWithdraw",
+              "name": "withdraw",
+              "type": "tuple"
+            },
+            {
+              "components": [
+                {
+                  "internalType": "address[]",
+                  "name": "tokensIn",
+                  "type": "address[]"
+                },
+                {
+                  "internalType": "uint256[]",
+                  "name": "amountsIn",
+                  "type": "uint256[]"
+                },
+                {
+                  "components": [
+                    {
+                      "components": [
+                        {
+                          "internalType": "address",
+                          "name": "router",
+                          "type": "address"
+                        },
+                        {
+                          "internalType": "uint256",
+                          "name": "amountIn",
+                          "type": "uint256"
+                        },
+                        {
+                          "internalType": "uint256",
+                          "name": "minAmountOut",
+                          "type": "uint256"
+                        },
+                        {
+                          "internalType": "address",
+                          "name": "tokenIn",
+                          "type": "address"
+                        },
+                        {
+                          "internalType": "bytes",
+                          "name": "extraData",
+                          "type": "bytes"
+                        }
+                      ],
+                      "internalType": "struct SwapParams[]",
+                      "name": "swaps",
+                      "type": "tuple[]"
+                    },
+                    {
+                      "components": [
+                        {
+                          "internalType": "contract INonfungiblePositionManager",
+                          "name": "nft",
+                          "type": "address"
+                        },
+                        {
+                          "internalType": "uint256",
+                          "name": "tokenId",
+                          "type": "uint256"
+                        },
+                        {
+                          "components": [
+                            {
+                              "internalType": "address",
+                              "name": "token0",
+                              "type": "address"
+                            },
+                            {
+                              "internalType": "address",
+                              "name": "token1",
+                              "type": "address"
+                            },
+                            {
+                              "internalType": "uint24",
+                              "name": "fee",
+                              "type": "uint24"
+                            }
+                          ],
+                          "internalType": "struct Pool",
+                          "name": "pool",
+                          "type": "tuple"
+                        },
+                        {
+                          "internalType": "int24",
+                          "name": "tickLower",
+                          "type": "int24"
+                        },
+                        {
+                          "internalType": "int24",
+                          "name": "tickUpper",
+                          "type": "int24"
+                        },
+                        {
+                          "internalType": "uint256",
+                          "name": "amount0Desired",
+                          "type": "uint256"
+                        },
+                        {
+                          "internalType": "uint256",
+                          "name": "amount1Desired",
+                          "type": "uint256"
+                        },
+                        {
+                          "internalType": "uint256",
+                          "name": "amount0Min",
+                          "type": "uint256"
+                        },
+                        {
+                          "internalType": "uint256",
+                          "name": "amount1Min",
+                          "type": "uint256"
+                        },
+                        {
+                          "internalType": "bytes",
+                          "name": "extraData",
+                          "type": "bytes"
+                        }
+                      ],
+                      "internalType": "struct NftAddLiquidity",
+                      "name": "addLiquidityParams",
+                      "type": "tuple"
+                    }
+                  ],
+                  "internalType": "struct NftZapIn",
+                  "name": "zap",
+                  "type": "tuple"
+                },
+                {
+                  "internalType": "bytes",
+                  "name": "extraData",
+                  "type": "bytes"
+                }
+              ],
+              "internalType": "struct NftIncrease",
+              "name": "increase",
+              "type": "tuple"
+            }
+          ],
+          "internalType": "struct NftRebalance",
+          "name": "params",
+          "type": "tuple"
+        },
+        {
+          "internalType": "address[]",
+          "name": "sweepTokens",
+          "type": "address[]"
+        }
+      ],
+      "name": "rebalanceFor",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "components": [
+            {
+              "components": [
+                {
+                  "internalType": "address",
+                  "name": "stakingContract",
+                  "type": "address"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "poolIndex",
+                  "type": "uint256"
+                }
+              ],
+              "internalType": "struct Farm",
+              "name": "farm",
+              "type": "tuple"
+            },
+            {
+              "internalType": "contract INonfungiblePositionManager",
+              "name": "nft",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "tokenId",
+              "type": "uint256"
+            }
+          ],
+          "internalType": "struct NftPosition",
+          "name": "position",
+          "type": "tuple"
+        },
+        {
+          "internalType": "bytes",
+          "name": "extraData",
+          "type": "bytes"
+        },
+        {
+          "components": [
+            {
+              "internalType": "contract IUniswapV3Pool",
+              "name": "pool",
+              "type": "address"
+            },
+            {
+              "internalType": "bool",
+              "name": "autoRebalance",
+              "type": "bool"
+            },
+            {
+              "components": [
+                {
+                  "internalType": "uint24",
+                  "name": "tickSpacesBelow",
+                  "type": "uint24"
+                },
+                {
+                  "internalType": "uint24",
+                  "name": "tickSpacesAbove",
+                  "type": "uint24"
+                },
+                {
+                  "internalType": "int24",
+                  "name": "bufferTicksBelow",
+                  "type": "int24"
+                },
+                {
+                  "internalType": "int24",
+                  "name": "bufferTicksAbove",
+                  "type": "int24"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "dustBP",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "priceImpactBP",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "slippageBP",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "int24",
+                  "name": "cutoffTickLow",
+                  "type": "int24"
+                },
+                {
+                  "internalType": "int24",
+                  "name": "cutoffTickHigh",
+                  "type": "int24"
+                },
+                {
+                  "internalType": "uint8",
+                  "name": "delayMin",
+                  "type": "uint8"
+                },
+                {
+                  "components": [
+                    {
+                      "internalType": "enum RewardBehavior",
+                      "name": "rewardBehavior",
+                      "type": "uint8"
+                    },
+                    {
+                      "internalType": "address",
+                      "name": "harvestTokenOut",
+                      "type": "address"
+                    }
+                  ],
+                  "internalType": "struct RewardConfig",
+                  "name": "rewardConfig",
+                  "type": "tuple"
+                }
+              ],
+              "internalType": "struct RebalanceConfig",
+              "name": "rebalanceConfig",
+              "type": "tuple"
+            },
+            {
+              "internalType": "bool",
+              "name": "automateRewards",
+              "type": "bool"
+            },
+            {
+              "components": [
+                {
+                  "internalType": "enum RewardBehavior",
+                  "name": "rewardBehavior",
+                  "type": "uint8"
+                },
+                {
+                  "internalType": "address",
+                  "name": "harvestTokenOut",
+                  "type": "address"
+                }
+              ],
+              "internalType": "struct RewardConfig",
+              "name": "rewardConfig",
+              "type": "tuple"
+            },
+            {
+              "internalType": "bool",
+              "name": "autoExit",
+              "type": "bool"
+            },
+            {
+              "components": [
+                {
+                  "internalType": "int24",
+                  "name": "triggerTickLow",
+                  "type": "int24"
+                },
+                {
+                  "internalType": "int24",
+                  "name": "triggerTickHigh",
+                  "type": "int24"
+                },
+                {
+                  "internalType": "address",
+                  "name": "exitTokenOutLow",
+                  "type": "address"
+                },
+                {
+                  "internalType": "address",
+                  "name": "exitTokenOutHigh",
+                  "type": "address"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "priceImpactBP",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "slippageBP",
+                  "type": "uint256"
+                }
+              ],
+              "internalType": "struct ExitConfig",
+              "name": "exitConfig",
+              "type": "tuple"
+            }
+          ],
+          "internalType": "struct NftSettings",
+          "name": "settings",
+          "type": "tuple"
+        },
+        {
+          "internalType": "address",
+          "name": "approved",
+          "type": "address"
+        },
+        {
+          "internalType": "bytes32",
+          "name": "referralCode",
+          "type": "bytes32"
+        }
+      ],
+      "name": "simpleDeposit",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "components": [
+            {
+              "components": [
+                {
+                  "internalType": "address",
+                  "name": "stakingContract",
+                  "type": "address"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "poolIndex",
+                  "type": "uint256"
+                }
+              ],
+              "internalType": "struct Farm",
+              "name": "farm",
+              "type": "tuple"
+            },
+            {
+              "internalType": "contract INonfungiblePositionManager",
+              "name": "nft",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "tokenId",
+              "type": "uint256"
+            }
+          ],
+          "internalType": "struct NftPosition",
+          "name": "position",
+          "type": "tuple"
+        },
+        {
+          "components": [
+            {
+              "internalType": "address[]",
+              "name": "rewardTokens",
+              "type": "address[]"
+            },
+            {
+              "internalType": "uint128",
+              "name": "amount0Max",
+              "type": "uint128"
+            },
+            {
+              "internalType": "uint128",
+              "name": "amount1Max",
+              "type": "uint128"
+            },
+            {
+              "internalType": "bytes",
+              "name": "extraData",
+              "type": "bytes"
+            }
+          ],
+          "internalType": "struct SimpleNftHarvest",
+          "name": "harvestParams",
+          "type": "tuple"
+        },
+        {
+          "internalType": "bytes",
+          "name": "withdrawExtraData",
+          "type": "bytes"
+        }
+      ],
+      "name": "simpleExit",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "components": [
+            {
+              "components": [
+                {
+                  "internalType": "address",
+                  "name": "stakingContract",
+                  "type": "address"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "poolIndex",
+                  "type": "uint256"
+                }
+              ],
+              "internalType": "struct Farm",
+              "name": "farm",
+              "type": "tuple"
+            },
+            {
+              "internalType": "contract INonfungiblePositionManager",
+              "name": "nft",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "tokenId",
+              "type": "uint256"
+            }
+          ],
+          "internalType": "struct NftPosition",
+          "name": "position",
+          "type": "tuple"
+        },
+        {
+          "components": [
+            {
+              "internalType": "address[]",
+              "name": "rewardTokens",
+              "type": "address[]"
+            },
+            {
+              "internalType": "uint128",
+              "name": "amount0Max",
+              "type": "uint128"
+            },
+            {
+              "internalType": "uint128",
+              "name": "amount1Max",
+              "type": "uint128"
+            },
+            {
+              "internalType": "bytes",
+              "name": "extraData",
+              "type": "bytes"
+            }
+          ],
+          "internalType": "struct SimpleNftHarvest",
+          "name": "params",
+          "type": "tuple"
+        }
+      ],
+      "name": "simpleHarvest",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "components": [
+            {
+              "components": [
+                {
+                  "internalType": "address",
+                  "name": "stakingContract",
+                  "type": "address"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "poolIndex",
+                  "type": "uint256"
+                }
+              ],
+              "internalType": "struct Farm",
+              "name": "farm",
+              "type": "tuple"
+            },
+            {
+              "internalType": "contract INonfungiblePositionManager",
+              "name": "nft",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "tokenId",
+              "type": "uint256"
+            }
+          ],
+          "internalType": "struct NftPosition",
+          "name": "position",
+          "type": "tuple"
+        },
+        {
+          "internalType": "bytes",
+          "name": "extraData",
+          "type": "bytes"
+        }
+      ],
+      "name": "simpleWithdraw",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "strategyAddress",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "swapLib",
+      "outputs": [
+        {
+          "internalType": "contract ISwapLib",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "transferLib",
+      "outputs": [
+        {
+          "internalType": "contract ITransferLib",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "components": [
+            {
+              "components": [
+                {
+                  "internalType": "address",
+                  "name": "stakingContract",
+                  "type": "address"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "poolIndex",
+                  "type": "uint256"
+                }
+              ],
+              "internalType": "struct Farm",
+              "name": "farm",
+              "type": "tuple"
+            },
+            {
+              "internalType": "contract INonfungiblePositionManager",
+              "name": "nft",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "tokenId",
+              "type": "uint256"
+            }
+          ],
+          "internalType": "struct NftPosition",
+          "name": "position",
+          "type": "tuple"
+        },
+        {
+          "components": [
+            {
+              "components": [
+                {
+                  "components": [
+                    {
+                      "internalType": "contract INonfungiblePositionManager",
+                      "name": "nft",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "tokenId",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint128",
+                      "name": "liquidity",
+                      "type": "uint128"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "amount0Min",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "amount1Min",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint128",
+                      "name": "amount0Max",
+                      "type": "uint128"
+                    },
+                    {
+                      "internalType": "uint128",
+                      "name": "amount1Max",
+                      "type": "uint128"
+                    },
+                    {
+                      "internalType": "bytes",
+                      "name": "extraData",
+                      "type": "bytes"
+                    }
+                  ],
+                  "internalType": "struct NftRemoveLiquidity",
+                  "name": "removeLiquidityParams",
+                  "type": "tuple"
+                },
+                {
+                  "components": [
+                    {
+                      "internalType": "address",
+                      "name": "router",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "amountIn",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "minAmountOut",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "address",
+                      "name": "tokenIn",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "bytes",
+                      "name": "extraData",
+                      "type": "bytes"
+                    }
+                  ],
+                  "internalType": "struct SwapParams[]",
+                  "name": "swaps",
+                  "type": "tuple[]"
+                }
+              ],
+              "internalType": "struct NftZapOut",
+              "name": "zap",
+              "type": "tuple"
+            },
+            {
+              "internalType": "address[]",
+              "name": "tokensOut",
+              "type": "address[]"
+            },
+            {
+              "internalType": "bytes",
+              "name": "extraData",
+              "type": "bytes"
+            }
+          ],
+          "internalType": "struct NftWithdraw",
+          "name": "params",
+          "type": "tuple"
+        },
+        {
+          "internalType": "address[]",
+          "name": "sweepTokens",
+          "type": "address[]"
+        }
+      ],
+      "name": "withdraw",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }
+  ]
+
+  const FARM_STRATEGY_ABI = [
+    {
+      "inputs": [
+        {
+          "internalType": "contract SickleFactory",
+          "name": "factory",
+          "type": "address"
+        },
+        {
+          "internalType": "contract ConnectorRegistry",
+          "name": "connectorRegistry",
+          "type": "address"
+        },
+        {
+          "components": [
+            {
+              "internalType": "contract ITransferLib",
+              "name": "transferLib",
+              "type": "address"
+            },
+            {
+              "internalType": "contract ISwapLib",
+              "name": "swapLib",
+              "type": "address"
+            },
+            {
+              "internalType": "contract IFeesLib",
+              "name": "feesLib",
+              "type": "address"
+            },
+            {
+              "internalType": "contract IZapLib",
+              "name": "zapLib",
+              "type": "address"
+            },
+            {
+              "internalType": "contract IPositionSettingsLib",
+              "name": "positionSettingsLib",
+              "type": "address"
+            }
+          ],
+          "internalType": "struct FarmStrategy.Libraries",
+          "name": "libraries",
+          "type": "tuple"
+        },
+        {
+          "internalType": "contract IPositionSettingsRegistry",
+          "name": "_positionSettingsRegistry",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "constructor"
+    },
+    {
+      "inputs": [],
+      "name": "NotApproved",
+      "type": "error"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "sender",
+          "type": "address"
+        }
+      ],
+      "name": "NotOwner",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "NotRegisteredSickle",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "SickleNotDeployed",
+      "type": "error"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "contract Sickle",
+          "name": "sickle",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "claimStakingContract",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "claimPoolIndex",
+          "type": "uint256"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "depositStakingContract",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "depositPoolIndex",
+          "type": "uint256"
+        }
+      ],
+      "name": "SickleCompounded",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "contract Sickle",
+          "name": "sickle",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "stakingContract",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "uint256",
+          "name": "poolIndex",
+          "type": "uint256"
+        }
+      ],
+      "name": "SickleDeposited",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "contract Sickle",
+          "name": "sickle",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "stakingContract",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "uint256",
+          "name": "poolIndex",
+          "type": "uint256"
+        }
+      ],
+      "name": "SickleExited",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "contract Sickle",
+          "name": "sickle",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "stakingContract",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "uint256",
+          "name": "poolIndex",
+          "type": "uint256"
+        }
+      ],
+      "name": "SickleHarvested",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "contract Sickle",
+          "name": "sickle",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "stakingContract",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "uint256",
+          "name": "poolIndex",
+          "type": "uint256"
+        }
+      ],
+      "name": "SickleWithdrawn",
+      "type": "event"
+    },
+    {
+      "inputs": [
+        {
+          "components": [
+            {
+              "components": [
+                {
+                  "internalType": "address",
+                  "name": "stakingContract",
+                  "type": "address"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "poolIndex",
+                  "type": "uint256"
+                }
+              ],
+              "internalType": "struct Farm",
+              "name": "claimFarm",
+              "type": "tuple"
+            },
+            {
+              "internalType": "bytes",
+              "name": "claimExtraData",
+              "type": "bytes"
+            },
+            {
+              "internalType": "address[]",
+              "name": "rewardTokens",
+              "type": "address[]"
+            },
+            {
+              "components": [
+                {
+                  "components": [
+                    {
+                      "internalType": "address",
+                      "name": "router",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "amountIn",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "minAmountOut",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "address",
+                      "name": "tokenIn",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "bytes",
+                      "name": "extraData",
+                      "type": "bytes"
+                    }
+                  ],
+                  "internalType": "struct SwapParams[]",
+                  "name": "swaps",
+                  "type": "tuple[]"
+                },
+                {
+                  "components": [
+                    {
+                      "internalType": "address",
+                      "name": "router",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "address",
+                      "name": "lpToken",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "address[]",
+                      "name": "tokens",
+                      "type": "address[]"
+                    },
+                    {
+                      "internalType": "uint256[]",
+                      "name": "desiredAmounts",
+                      "type": "uint256[]"
+                    },
+                    {
+                      "internalType": "uint256[]",
+                      "name": "minAmounts",
+                      "type": "uint256[]"
+                    },
+                    {
+                      "internalType": "bytes",
+                      "name": "extraData",
+                      "type": "bytes"
+                    }
+                  ],
+                  "internalType": "struct AddLiquidityParams",
+                  "name": "addLiquidityParams",
+                  "type": "tuple"
+                }
+              ],
+              "internalType": "struct ZapIn",
+              "name": "zap",
+              "type": "tuple"
+            },
+            {
+              "components": [
+                {
+                  "internalType": "address",
+                  "name": "stakingContract",
+                  "type": "address"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "poolIndex",
+                  "type": "uint256"
+                }
+              ],
+              "internalType": "struct Farm",
+              "name": "depositFarm",
+              "type": "tuple"
+            },
+            {
+              "internalType": "bytes",
+              "name": "depositExtraData",
+              "type": "bytes"
+            }
+          ],
+          "internalType": "struct CompoundParams",
+          "name": "params",
+          "type": "tuple"
+        },
+        {
+          "internalType": "address[]",
+          "name": "sweepTokens",
+          "type": "address[]"
+        }
+      ],
+      "name": "compound",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "contract Sickle",
+          "name": "sickle",
+          "type": "address"
+        },
+        {
+          "components": [
+            {
+              "components": [
+                {
+                  "internalType": "address",
+                  "name": "stakingContract",
+                  "type": "address"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "poolIndex",
+                  "type": "uint256"
+                }
+              ],
+              "internalType": "struct Farm",
+              "name": "claimFarm",
+              "type": "tuple"
+            },
+            {
+              "internalType": "bytes",
+              "name": "claimExtraData",
+              "type": "bytes"
+            },
+            {
+              "internalType": "address[]",
+              "name": "rewardTokens",
+              "type": "address[]"
+            },
+            {
+              "components": [
+                {
+                  "components": [
+                    {
+                      "internalType": "address",
+                      "name": "router",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "amountIn",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "minAmountOut",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "address",
+                      "name": "tokenIn",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "bytes",
+                      "name": "extraData",
+                      "type": "bytes"
+                    }
+                  ],
+                  "internalType": "struct SwapParams[]",
+                  "name": "swaps",
+                  "type": "tuple[]"
+                },
+                {
+                  "components": [
+                    {
+                      "internalType": "address",
+                      "name": "router",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "address",
+                      "name": "lpToken",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "address[]",
+                      "name": "tokens",
+                      "type": "address[]"
+                    },
+                    {
+                      "internalType": "uint256[]",
+                      "name": "desiredAmounts",
+                      "type": "uint256[]"
+                    },
+                    {
+                      "internalType": "uint256[]",
+                      "name": "minAmounts",
+                      "type": "uint256[]"
+                    },
+                    {
+                      "internalType": "bytes",
+                      "name": "extraData",
+                      "type": "bytes"
+                    }
+                  ],
+                  "internalType": "struct AddLiquidityParams",
+                  "name": "addLiquidityParams",
+                  "type": "tuple"
+                }
+              ],
+              "internalType": "struct ZapIn",
+              "name": "zap",
+              "type": "tuple"
+            },
+            {
+              "components": [
+                {
+                  "internalType": "address",
+                  "name": "stakingContract",
+                  "type": "address"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "poolIndex",
+                  "type": "uint256"
+                }
+              ],
+              "internalType": "struct Farm",
+              "name": "depositFarm",
+              "type": "tuple"
+            },
+            {
+              "internalType": "bytes",
+              "name": "depositExtraData",
+              "type": "bytes"
+            }
+          ],
+          "internalType": "struct CompoundParams",
+          "name": "params",
+          "type": "tuple"
+        },
+        {
+          "internalType": "address[]",
+          "name": "sweepTokens",
+          "type": "address[]"
+        }
+      ],
+      "name": "compoundFor",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "connectorRegistry",
+      "outputs": [
+        {
+          "internalType": "contract ConnectorRegistry",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "components": [
+            {
+              "components": [
+                {
+                  "internalType": "address",
+                  "name": "stakingContract",
+                  "type": "address"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "poolIndex",
+                  "type": "uint256"
+                }
+              ],
+              "internalType": "struct Farm",
+              "name": "farm",
+              "type": "tuple"
+            },
+            {
+              "internalType": "address[]",
+              "name": "tokensIn",
+              "type": "address[]"
+            },
+            {
+              "internalType": "uint256[]",
+              "name": "amountsIn",
+              "type": "uint256[]"
+            },
+            {
+              "components": [
+                {
+                  "components": [
+                    {
+                      "internalType": "address",
+                      "name": "router",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "amountIn",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "minAmountOut",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "address",
+                      "name": "tokenIn",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "bytes",
+                      "name": "extraData",
+                      "type": "bytes"
+                    }
+                  ],
+                  "internalType": "struct SwapParams[]",
+                  "name": "swaps",
+                  "type": "tuple[]"
+                },
+                {
+                  "components": [
+                    {
+                      "internalType": "address",
+                      "name": "router",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "address",
+                      "name": "lpToken",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "address[]",
+                      "name": "tokens",
+                      "type": "address[]"
+                    },
+                    {
+                      "internalType": "uint256[]",
+                      "name": "desiredAmounts",
+                      "type": "uint256[]"
+                    },
+                    {
+                      "internalType": "uint256[]",
+                      "name": "minAmounts",
+                      "type": "uint256[]"
+                    },
+                    {
+                      "internalType": "bytes",
+                      "name": "extraData",
+                      "type": "bytes"
+                    }
+                  ],
+                  "internalType": "struct AddLiquidityParams",
+                  "name": "addLiquidityParams",
+                  "type": "tuple"
+                }
+              ],
+              "internalType": "struct ZapIn",
+              "name": "zap",
+              "type": "tuple"
+            },
+            {
+              "internalType": "bytes",
+              "name": "extraData",
+              "type": "bytes"
+            }
+          ],
+          "internalType": "struct DepositParams",
+          "name": "params",
+          "type": "tuple"
+        },
+        {
+          "components": [
+            {
+              "internalType": "contract IPool",
+              "name": "pair",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "router",
+              "type": "address"
+            },
+            {
+              "internalType": "bool",
+              "name": "automateRewards",
+              "type": "bool"
+            },
+            {
+              "components": [
+                {
+                  "internalType": "enum RewardBehavior",
+                  "name": "rewardBehavior",
+                  "type": "uint8"
+                },
+                {
+                  "internalType": "address",
+                  "name": "harvestTokenOut",
+                  "type": "address"
+                }
+              ],
+              "internalType": "struct RewardConfig",
+              "name": "rewardConfig",
+              "type": "tuple"
+            },
+            {
+              "internalType": "bool",
+              "name": "autoExit",
+              "type": "bool"
+            },
+            {
+              "components": [
+                {
+                  "internalType": "uint256",
+                  "name": "triggerPriceHigh",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "triggerPriceLow",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "triggerReserves0",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "triggerReserves1",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "address",
+                  "name": "exitTokenOutLow",
+                  "type": "address"
+                },
+                {
+                  "internalType": "address",
+                  "name": "exitTokenOutHigh",
+                  "type": "address"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "priceImpactBP",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "slippageBP",
+                  "type": "uint256"
+                }
+              ],
+              "internalType": "struct ExitConfig",
+              "name": "exitConfig",
+              "type": "tuple"
+            }
+          ],
+          "internalType": "struct PositionSettings",
+          "name": "positionSettings",
+          "type": "tuple"
+        },
+        {
+          "internalType": "address[]",
+          "name": "sweepTokens",
+          "type": "address[]"
+        },
+        {
+          "internalType": "address",
+          "name": "approved",
+          "type": "address"
+        },
+        {
+          "internalType": "bytes32",
+          "name": "referralCode",
+          "type": "bytes32"
+        }
+      ],
+      "name": "deposit",
+      "outputs": [],
+      "stateMutability": "payable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "components": [
+            {
+              "internalType": "address",
+              "name": "stakingContract",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "poolIndex",
+              "type": "uint256"
+            }
+          ],
+          "internalType": "struct Farm",
+          "name": "farm",
+          "type": "tuple"
+        },
+        {
+          "components": [
+            {
+              "components": [
+                {
+                  "internalType": "address",
+                  "name": "router",
+                  "type": "address"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "amountIn",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "minAmountOut",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "address",
+                  "name": "tokenIn",
+                  "type": "address"
+                },
+                {
+                  "internalType": "bytes",
+                  "name": "extraData",
+                  "type": "bytes"
+                }
+              ],
+              "internalType": "struct SwapParams[]",
+              "name": "swaps",
+              "type": "tuple[]"
+            },
+            {
+              "internalType": "bytes",
+              "name": "extraData",
+              "type": "bytes"
+            },
+            {
+              "internalType": "address[]",
+              "name": "tokensOut",
+              "type": "address[]"
+            }
+          ],
+          "internalType": "struct HarvestParams",
+          "name": "harvestParams",
+          "type": "tuple"
+        },
+        {
+          "internalType": "address[]",
+          "name": "harvestSweepTokens",
+          "type": "address[]"
+        },
+        {
+          "components": [
+            {
+              "internalType": "bytes",
+              "name": "extraData",
+              "type": "bytes"
+            },
+            {
+              "components": [
+                {
+                  "components": [
+                    {
+                      "internalType": "address",
+                      "name": "router",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "address",
+                      "name": "lpToken",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "address[]",
+                      "name": "tokens",
+                      "type": "address[]"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "lpAmountIn",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256[]",
+                      "name": "minAmountsOut",
+                      "type": "uint256[]"
+                    },
+                    {
+                      "internalType": "bytes",
+                      "name": "extraData",
+                      "type": "bytes"
+                    }
+                  ],
+                  "internalType": "struct RemoveLiquidityParams",
+                  "name": "removeLiquidityParams",
+                  "type": "tuple"
+                },
+                {
+                  "components": [
+                    {
+                      "internalType": "address",
+                      "name": "router",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "amountIn",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "minAmountOut",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "address",
+                      "name": "tokenIn",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "bytes",
+                      "name": "extraData",
+                      "type": "bytes"
+                    }
+                  ],
+                  "internalType": "struct SwapParams[]",
+                  "name": "swaps",
+                  "type": "tuple[]"
+                }
+              ],
+              "internalType": "struct ZapOut",
+              "name": "zap",
+              "type": "tuple"
+            },
+            {
+              "internalType": "address[]",
+              "name": "tokensOut",
+              "type": "address[]"
+            }
+          ],
+          "internalType": "struct WithdrawParams",
+          "name": "withdrawParams",
+          "type": "tuple"
+        },
+        {
+          "internalType": "address[]",
+          "name": "withdrawSweepTokens",
+          "type": "address[]"
+        }
+      ],
+      "name": "exit",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "contract Sickle",
+          "name": "sickle",
+          "type": "address"
+        },
+        {
+          "components": [
+            {
+              "internalType": "address",
+              "name": "stakingContract",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "poolIndex",
+              "type": "uint256"
+            }
+          ],
+          "internalType": "struct Farm",
+          "name": "farm",
+          "type": "tuple"
+        },
+        {
+          "components": [
+            {
+              "components": [
+                {
+                  "internalType": "address",
+                  "name": "router",
+                  "type": "address"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "amountIn",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "minAmountOut",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "address",
+                  "name": "tokenIn",
+                  "type": "address"
+                },
+                {
+                  "internalType": "bytes",
+                  "name": "extraData",
+                  "type": "bytes"
+                }
+              ],
+              "internalType": "struct SwapParams[]",
+              "name": "swaps",
+              "type": "tuple[]"
+            },
+            {
+              "internalType": "bytes",
+              "name": "extraData",
+              "type": "bytes"
+            },
+            {
+              "internalType": "address[]",
+              "name": "tokensOut",
+              "type": "address[]"
+            }
+          ],
+          "internalType": "struct HarvestParams",
+          "name": "harvestParams",
+          "type": "tuple"
+        },
+        {
+          "internalType": "address[]",
+          "name": "harvestSweepTokens",
+          "type": "address[]"
+        },
+        {
+          "components": [
+            {
+              "internalType": "bytes",
+              "name": "extraData",
+              "type": "bytes"
+            },
+            {
+              "components": [
+                {
+                  "components": [
+                    {
+                      "internalType": "address",
+                      "name": "router",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "address",
+                      "name": "lpToken",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "address[]",
+                      "name": "tokens",
+                      "type": "address[]"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "lpAmountIn",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256[]",
+                      "name": "minAmountsOut",
+                      "type": "uint256[]"
+                    },
+                    {
+                      "internalType": "bytes",
+                      "name": "extraData",
+                      "type": "bytes"
+                    }
+                  ],
+                  "internalType": "struct RemoveLiquidityParams",
+                  "name": "removeLiquidityParams",
+                  "type": "tuple"
+                },
+                {
+                  "components": [
+                    {
+                      "internalType": "address",
+                      "name": "router",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "amountIn",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "minAmountOut",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "address",
+                      "name": "tokenIn",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "bytes",
+                      "name": "extraData",
+                      "type": "bytes"
+                    }
+                  ],
+                  "internalType": "struct SwapParams[]",
+                  "name": "swaps",
+                  "type": "tuple[]"
+                }
+              ],
+              "internalType": "struct ZapOut",
+              "name": "zap",
+              "type": "tuple"
+            },
+            {
+              "internalType": "address[]",
+              "name": "tokensOut",
+              "type": "address[]"
+            }
+          ],
+          "internalType": "struct WithdrawParams",
+          "name": "withdrawParams",
+          "type": "tuple"
+        },
+        {
+          "internalType": "address[]",
+          "name": "withdrawSweepTokens",
+          "type": "address[]"
+        }
+      ],
+      "name": "exitFor",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "factory",
+      "outputs": [
+        {
+          "internalType": "contract SickleFactory",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "feesLib",
+      "outputs": [
+        {
+          "internalType": "contract IFeesLib",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "owner",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "approved",
+          "type": "address"
+        },
+        {
+          "internalType": "bytes32",
+          "name": "referralCode",
+          "type": "bytes32"
+        }
+      ],
+      "name": "getOrDeploySickle",
+      "outputs": [
+        {
+          "internalType": "contract Sickle",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "owner",
+          "type": "address"
+        }
+      ],
+      "name": "getSickle",
+      "outputs": [
+        {
+          "internalType": "contract Sickle",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "components": [
+            {
+              "internalType": "address",
+              "name": "stakingContract",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "poolIndex",
+              "type": "uint256"
+            }
+          ],
+          "internalType": "struct Farm",
+          "name": "farm",
+          "type": "tuple"
+        },
+        {
+          "components": [
+            {
+              "components": [
+                {
+                  "internalType": "address",
+                  "name": "router",
+                  "type": "address"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "amountIn",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "minAmountOut",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "address",
+                  "name": "tokenIn",
+                  "type": "address"
+                },
+                {
+                  "internalType": "bytes",
+                  "name": "extraData",
+                  "type": "bytes"
+                }
+              ],
+              "internalType": "struct SwapParams[]",
+              "name": "swaps",
+              "type": "tuple[]"
+            },
+            {
+              "internalType": "bytes",
+              "name": "extraData",
+              "type": "bytes"
+            },
+            {
+              "internalType": "address[]",
+              "name": "tokensOut",
+              "type": "address[]"
+            }
+          ],
+          "internalType": "struct HarvestParams",
+          "name": "params",
+          "type": "tuple"
+        },
+        {
+          "internalType": "address[]",
+          "name": "sweepTokens",
+          "type": "address[]"
+        }
+      ],
+      "name": "harvest",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "contract Sickle",
+          "name": "sickle",
+          "type": "address"
+        },
+        {
+          "components": [
+            {
+              "internalType": "address",
+              "name": "stakingContract",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "poolIndex",
+              "type": "uint256"
+            }
+          ],
+          "internalType": "struct Farm",
+          "name": "farm",
+          "type": "tuple"
+        },
+        {
+          "components": [
+            {
+              "components": [
+                {
+                  "internalType": "address",
+                  "name": "router",
+                  "type": "address"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "amountIn",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "minAmountOut",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "address",
+                  "name": "tokenIn",
+                  "type": "address"
+                },
+                {
+                  "internalType": "bytes",
+                  "name": "extraData",
+                  "type": "bytes"
+                }
+              ],
+              "internalType": "struct SwapParams[]",
+              "name": "swaps",
+              "type": "tuple[]"
+            },
+            {
+              "internalType": "bytes",
+              "name": "extraData",
+              "type": "bytes"
+            },
+            {
+              "internalType": "address[]",
+              "name": "tokensOut",
+              "type": "address[]"
+            }
+          ],
+          "internalType": "struct HarvestParams",
+          "name": "params",
+          "type": "tuple"
+        },
+        {
+          "internalType": "address[]",
+          "name": "sweepTokens",
+          "type": "address[]"
+        }
+      ],
+      "name": "harvestFor",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "components": [
+            {
+              "components": [
+                {
+                  "internalType": "address",
+                  "name": "stakingContract",
+                  "type": "address"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "poolIndex",
+                  "type": "uint256"
+                }
+              ],
+              "internalType": "struct Farm",
+              "name": "farm",
+              "type": "tuple"
+            },
+            {
+              "internalType": "address[]",
+              "name": "tokensIn",
+              "type": "address[]"
+            },
+            {
+              "internalType": "uint256[]",
+              "name": "amountsIn",
+              "type": "uint256[]"
+            },
+            {
+              "components": [
+                {
+                  "components": [
+                    {
+                      "internalType": "address",
+                      "name": "router",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "amountIn",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "minAmountOut",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "address",
+                      "name": "tokenIn",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "bytes",
+                      "name": "extraData",
+                      "type": "bytes"
+                    }
+                  ],
+                  "internalType": "struct SwapParams[]",
+                  "name": "swaps",
+                  "type": "tuple[]"
+                },
+                {
+                  "components": [
+                    {
+                      "internalType": "address",
+                      "name": "router",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "address",
+                      "name": "lpToken",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "address[]",
+                      "name": "tokens",
+                      "type": "address[]"
+                    },
+                    {
+                      "internalType": "uint256[]",
+                      "name": "desiredAmounts",
+                      "type": "uint256[]"
+                    },
+                    {
+                      "internalType": "uint256[]",
+                      "name": "minAmounts",
+                      "type": "uint256[]"
+                    },
+                    {
+                      "internalType": "bytes",
+                      "name": "extraData",
+                      "type": "bytes"
+                    }
+                  ],
+                  "internalType": "struct AddLiquidityParams",
+                  "name": "addLiquidityParams",
+                  "type": "tuple"
+                }
+              ],
+              "internalType": "struct ZapIn",
+              "name": "zap",
+              "type": "tuple"
+            },
+            {
+              "internalType": "bytes",
+              "name": "extraData",
+              "type": "bytes"
+            }
+          ],
+          "internalType": "struct DepositParams",
+          "name": "params",
+          "type": "tuple"
+        },
+        {
+          "internalType": "address[]",
+          "name": "sweepTokens",
+          "type": "address[]"
+        }
+      ],
+      "name": "increase",
+      "outputs": [],
+      "stateMutability": "payable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "positionSettingsLib",
+      "outputs": [
+        {
+          "internalType": "contract IPositionSettingsLib",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "positionSettingsRegistry",
+      "outputs": [
+        {
+          "internalType": "contract IPositionSettingsRegistry",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "components": [
+            {
+              "components": [
+                {
+                  "internalType": "address",
+                  "name": "stakingContract",
+                  "type": "address"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "poolIndex",
+                  "type": "uint256"
+                }
+              ],
+              "internalType": "struct Farm",
+              "name": "farm",
+              "type": "tuple"
+            },
+            {
+              "internalType": "address",
+              "name": "lpToken",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amountIn",
+              "type": "uint256"
+            },
+            {
+              "internalType": "bytes",
+              "name": "extraData",
+              "type": "bytes"
+            }
+          ],
+          "internalType": "struct SimpleDepositParams",
+          "name": "params",
+          "type": "tuple"
+        },
+        {
+          "components": [
+            {
+              "internalType": "contract IPool",
+              "name": "pair",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "router",
+              "type": "address"
+            },
+            {
+              "internalType": "bool",
+              "name": "automateRewards",
+              "type": "bool"
+            },
+            {
+              "components": [
+                {
+                  "internalType": "enum RewardBehavior",
+                  "name": "rewardBehavior",
+                  "type": "uint8"
+                },
+                {
+                  "internalType": "address",
+                  "name": "harvestTokenOut",
+                  "type": "address"
+                }
+              ],
+              "internalType": "struct RewardConfig",
+              "name": "rewardConfig",
+              "type": "tuple"
+            },
+            {
+              "internalType": "bool",
+              "name": "autoExit",
+              "type": "bool"
+            },
+            {
+              "components": [
+                {
+                  "internalType": "uint256",
+                  "name": "triggerPriceHigh",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "triggerPriceLow",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "triggerReserves0",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "triggerReserves1",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "address",
+                  "name": "exitTokenOutLow",
+                  "type": "address"
+                },
+                {
+                  "internalType": "address",
+                  "name": "exitTokenOutHigh",
+                  "type": "address"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "priceImpactBP",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "slippageBP",
+                  "type": "uint256"
+                }
+              ],
+              "internalType": "struct ExitConfig",
+              "name": "exitConfig",
+              "type": "tuple"
+            }
+          ],
+          "internalType": "struct PositionSettings",
+          "name": "positionSettings",
+          "type": "tuple"
+        },
+        {
+          "internalType": "address",
+          "name": "approved",
+          "type": "address"
+        },
+        {
+          "internalType": "bytes32",
+          "name": "referralCode",
+          "type": "bytes32"
+        }
+      ],
+      "name": "simpleDeposit",
+      "outputs": [],
+      "stateMutability": "payable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "components": [
+            {
+              "internalType": "address",
+              "name": "stakingContract",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "poolIndex",
+              "type": "uint256"
+            }
+          ],
+          "internalType": "struct Farm",
+          "name": "farm",
+          "type": "tuple"
+        },
+        {
+          "components": [
+            {
+              "internalType": "address[]",
+              "name": "rewardTokens",
+              "type": "address[]"
+            },
+            {
+              "internalType": "bytes",
+              "name": "extraData",
+              "type": "bytes"
+            }
+          ],
+          "internalType": "struct SimpleHarvestParams",
+          "name": "harvestParams",
+          "type": "tuple"
+        },
+        {
+          "components": [
+            {
+              "internalType": "address",
+              "name": "lpToken",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amountOut",
+              "type": "uint256"
+            },
+            {
+              "internalType": "bytes",
+              "name": "extraData",
+              "type": "bytes"
+            }
+          ],
+          "internalType": "struct SimpleWithdrawParams",
+          "name": "withdrawParams",
+          "type": "tuple"
+        }
+      ],
+      "name": "simpleExit",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "components": [
+            {
+              "internalType": "address",
+              "name": "stakingContract",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "poolIndex",
+              "type": "uint256"
+            }
+          ],
+          "internalType": "struct Farm",
+          "name": "farm",
+          "type": "tuple"
+        },
+        {
+          "components": [
+            {
+              "internalType": "address[]",
+              "name": "rewardTokens",
+              "type": "address[]"
+            },
+            {
+              "internalType": "bytes",
+              "name": "extraData",
+              "type": "bytes"
+            }
+          ],
+          "internalType": "struct SimpleHarvestParams",
+          "name": "params",
+          "type": "tuple"
+        }
+      ],
+      "name": "simpleHarvest",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "components": [
+            {
+              "components": [
+                {
+                  "internalType": "address",
+                  "name": "stakingContract",
+                  "type": "address"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "poolIndex",
+                  "type": "uint256"
+                }
+              ],
+              "internalType": "struct Farm",
+              "name": "farm",
+              "type": "tuple"
+            },
+            {
+              "internalType": "address",
+              "name": "lpToken",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amountIn",
+              "type": "uint256"
+            },
+            {
+              "internalType": "bytes",
+              "name": "extraData",
+              "type": "bytes"
+            }
+          ],
+          "internalType": "struct SimpleDepositParams",
+          "name": "params",
+          "type": "tuple"
+        }
+      ],
+      "name": "simpleIncrease",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "components": [
+            {
+              "internalType": "address",
+              "name": "stakingContract",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "poolIndex",
+              "type": "uint256"
+            }
+          ],
+          "internalType": "struct Farm",
+          "name": "farm",
+          "type": "tuple"
+        },
+        {
+          "components": [
+            {
+              "internalType": "address",
+              "name": "lpToken",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amountOut",
+              "type": "uint256"
+            },
+            {
+              "internalType": "bytes",
+              "name": "extraData",
+              "type": "bytes"
+            }
+          ],
+          "internalType": "struct SimpleWithdrawParams",
+          "name": "params",
+          "type": "tuple"
+        }
+      ],
+      "name": "simpleWithdraw",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "strategyAddress",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "swapLib",
+      "outputs": [
+        {
+          "internalType": "contract ISwapLib",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "transferLib",
+      "outputs": [
+        {
+          "internalType": "contract ITransferLib",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "components": [
+            {
+              "internalType": "address",
+              "name": "stakingContract",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "poolIndex",
+              "type": "uint256"
+            }
+          ],
+          "internalType": "struct Farm",
+          "name": "farm",
+          "type": "tuple"
+        },
+        {
+          "components": [
+            {
+              "internalType": "bytes",
+              "name": "extraData",
+              "type": "bytes"
+            },
+            {
+              "components": [
+                {
+                  "components": [
+                    {
+                      "internalType": "address",
+                      "name": "router",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "address",
+                      "name": "lpToken",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "address[]",
+                      "name": "tokens",
+                      "type": "address[]"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "lpAmountIn",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256[]",
+                      "name": "minAmountsOut",
+                      "type": "uint256[]"
+                    },
+                    {
+                      "internalType": "bytes",
+                      "name": "extraData",
+                      "type": "bytes"
+                    }
+                  ],
+                  "internalType": "struct RemoveLiquidityParams",
+                  "name": "removeLiquidityParams",
+                  "type": "tuple"
+                },
+                {
+                  "components": [
+                    {
+                      "internalType": "address",
+                      "name": "router",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "amountIn",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "minAmountOut",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "address",
+                      "name": "tokenIn",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "bytes",
+                      "name": "extraData",
+                      "type": "bytes"
+                    }
+                  ],
+                  "internalType": "struct SwapParams[]",
+                  "name": "swaps",
+                  "type": "tuple[]"
+                }
+              ],
+              "internalType": "struct ZapOut",
+              "name": "zap",
+              "type": "tuple"
+            },
+            {
+              "internalType": "address[]",
+              "name": "tokensOut",
+              "type": "address[]"
+            }
+          ],
+          "internalType": "struct WithdrawParams",
+          "name": "params",
+          "type": "tuple"
+        },
+        {
+          "internalType": "address[]",
+          "name": "sweepTokens",
+          "type": "address[]"
+        }
+      ],
+      "name": "withdraw",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "zapLib",
+      "outputs": [
+        {
+          "internalType": "contract IZapLib",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    }
+  ]
   
   const V2_GAUGE_ABI = [{"inputs":[{"internalType":"address","name":"_forwarder","type":"address"},{"internalType":"address","name":"_stakingToken","type":"address"},{"internalType":"address","name":"_feesVotingReward","type":"address"},{"internalType":"address","name":"_rewardToken","type":"address"},{"internalType":"address","name":"_voter","type":"address"},{"internalType":"bool","name":"_isPool","type":"bool"}],"stateMutability":"nonpayable","type":"constructor"},{"inputs":[],"name":"NotAlive","type":"error"},{"inputs":[],"name":"NotAuthorized","type":"error"},{"inputs":[],"name":"NotTeam","type":"error"},{"inputs":[],"name":"NotVoter","type":"error"},{"inputs":[],"name":"RewardRateTooHigh","type":"error"},{"inputs":[],"name":"ZeroAmount","type":"error"},{"inputs":[],"name":"ZeroRewardRate","type":"error"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"from","type":"address"},{"indexed":false,"internalType":"uint256","name":"claimed0","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"claimed1","type":"uint256"}],"name":"ClaimFees","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"from","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"ClaimRewards","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"from","type":"address"},{"indexed":true,"internalType":"address","name":"to","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"Deposit","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"from","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"NotifyReward","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"from","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"Withdraw","type":"event"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"balanceOf","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"_amount","type":"uint256"},{"internalType":"address","name":"_recipient","type":"address"}],"name":"deposit","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_amount","type":"uint256"}],"name":"deposit","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"_account","type":"address"}],"name":"earned","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"fees0","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"fees1","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"feesVotingReward","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"_account","type":"address"}],"name":"getReward","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"isPool","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"forwarder","type":"address"}],"name":"isTrustedForwarder","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"lastTimeRewardApplicable","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"lastUpdateTime","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"left","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"_amount","type":"uint256"}],"name":"notifyRewardAmount","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_amount","type":"uint256"}],"name":"notifyRewardWithoutClaim","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"periodFinish","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"rewardPerToken","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"rewardPerTokenStored","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"rewardRate","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"","type":"uint256"}],"name":"rewardRateByEpoch","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"rewardToken","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"rewards","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"stakingToken","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"totalSupply","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"userRewardPerTokenPaid","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"ve","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"voter","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"_amount","type":"uint256"}],"name":"withdraw","outputs":[],"stateMutability":"nonpayable","type":"function"}]
   
@@ -28,15 +6914,13 @@ $(function() {
   
   const V2_FACTORY_ABI = [{"inputs":[{"internalType":"address","name":"_implementation","type":"address"}],"stateMutability":"nonpayable","type":"constructor"},{"inputs":[],"name":"FeeInvalid","type":"error"},{"inputs":[],"name":"FeeTooHigh","type":"error"},{"inputs":[],"name":"InvalidPool","type":"error"},{"inputs":[],"name":"NotFeeManager","type":"error"},{"inputs":[],"name":"NotPauser","type":"error"},{"inputs":[],"name":"NotVoter","type":"error"},{"inputs":[],"name":"PoolAlreadyExists","type":"error"},{"inputs":[],"name":"SameAddress","type":"error"},{"inputs":[],"name":"ZeroAddress","type":"error"},{"inputs":[],"name":"ZeroFee","type":"error"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"token0","type":"address"},{"indexed":true,"internalType":"address","name":"token1","type":"address"},{"indexed":true,"internalType":"bool","name":"stable","type":"bool"},{"indexed":false,"internalType":"address","name":"pool","type":"address"},{"indexed":false,"internalType":"uint256","name":"","type":"uint256"}],"name":"PoolCreated","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"pool","type":"address"},{"indexed":false,"internalType":"uint256","name":"fee","type":"uint256"}],"name":"SetCustomFee","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"feeManager","type":"address"}],"name":"SetFeeManager","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"bool","name":"state","type":"bool"}],"name":"SetPauseState","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"pauser","type":"address"}],"name":"SetPauser","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"voter","type":"address"}],"name":"SetVoter","type":"event"},{"inputs":[],"name":"MAX_FEE","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"ZERO_FEE_INDICATOR","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"","type":"uint256"}],"name":"allPools","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"allPoolsLength","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"tokenA","type":"address"},{"internalType":"address","name":"tokenB","type":"address"},{"internalType":"bool","name":"stable","type":"bool"}],"name":"createPool","outputs":[{"internalType":"address","name":"pool","type":"address"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"tokenA","type":"address"},{"internalType":"address","name":"tokenB","type":"address"},{"internalType":"uint24","name":"fee","type":"uint24"}],"name":"createPool","outputs":[{"internalType":"address","name":"pool","type":"address"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"customFee","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"feeManager","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"pool","type":"address"},{"internalType":"bool","name":"_stable","type":"bool"}],"name":"getFee","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"tokenA","type":"address"},{"internalType":"address","name":"tokenB","type":"address"},{"internalType":"uint24","name":"fee","type":"uint24"}],"name":"getPool","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"tokenA","type":"address"},{"internalType":"address","name":"tokenB","type":"address"},{"internalType":"bool","name":"stable","type":"bool"}],"name":"getPool","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"implementation","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"isPaused","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"pool","type":"address"}],"name":"isPool","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"pauser","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"pool","type":"address"},{"internalType":"uint256","name":"fee","type":"uint256"}],"name":"setCustomFee","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"bool","name":"_stable","type":"bool"},{"internalType":"uint256","name":"_fee","type":"uint256"}],"name":"setFee","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"_feeManager","type":"address"}],"name":"setFeeManager","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"bool","name":"_state","type":"bool"}],"name":"setPauseState","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"_pauser","type":"address"}],"name":"setPauser","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"_voter","type":"address"}],"name":"setVoter","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"stableFee","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"volatileFee","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"voter","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"}]
   
-  const NFT_TOKEN_ADDRESS = "0x991d5546C4B442B4c5fdc4c8B8b8d131DEB24702"; // ok
+  const NFT_TOKEN_ADDRESS = "0x991d5546C4B442B4c5fdc4c8B8b8d131DEB24702";
   
-  const NFT_FARM_STRATEGY_ADDRESS = "0xa8d2de45490c563b1e9524f49cbc07cc3da44baf";  // not ok
+  const NFT_FARM_STRATEGY_ADDRESS = "0x32ddFf55910c80b188239fE670F8432094a64B72";
   
-  const FARM_STRATEGY_ADDRESS = "0x76384443B91A576809dfC2CDc0f7Ae8f3148147a";  // not ok
+  const FARM_STRATEGY_ADDRESS = "0x5290487Bb9A8610c844539D4b46F6c6A324D665f";
   
-  const SIMPLE_FARM_STRATEGY_ADDRESS = "0xff638dc7605065e33c74620c1f859d49183d9452";   // not ok
-  
-  const V2_FACTORY_ADDRESS = "0xF1046053aa5682b4F9a81b5481394DA16BE5FF5a";   // not ok
+  const V2_FACTORY_ADDRESS = "0x31832f2a97Fd20664D76Cc421207669b55CE4BC0";
   
   async function main() {
     const App = await init_ethers();
@@ -53,14 +6937,14 @@ $(function() {
       prices = await getModePrices2();
     }
   
-    const FLOW_VOTER_ADDR = "0x41C914ee0c7E1A5edCD0295623e6dC557B5aBf3C"  // not ok
+    const FLOW_VOTER_ADDR = "0x97cDBCe21B6fd0585d29E539B1B99dAd328a1123"
     const FLOW_VOTER_CONTRACT = new ethcall.Contract(FLOW_VOTER_ADDR, FLOW_VOTER_ABI);
   
     const V2_FACTORY_CONTRACT = new ethcall.Contract(V2_FACTORY_ADDRESS, V2_FACTORY_ABI);
   
     let lpTokens = [], arrayOfGauges = [], calls = [];
   
-    const [_poolLength] = await App.ethcallProvider.all([FLOW_VOTER_CONTRACT.length()]);
+    const [_poolLength] = await App.ethcallProvider.all([FLOW_VOTER_CONTRACT.whitelistedTokensLength()]);
     const poolLength = _poolLength / 1;
     const _calls = [...Array(poolLength).keys()].map(i => FLOW_VOTER_CONTRACT.pools(i));
     while (_calls.length > 0) {
@@ -82,7 +6966,7 @@ $(function() {
       lpTokens.push(lpTokenBatch);
     }
   
-    const SICKLE_FACTORY_ADDR = "0xB4C31b0f0B76b351395D4aCC94A54dD4e6fbA1E8"; // not ok
+    const SICKLE_FACTORY_ADDR = "0x53d9780DbD3831E3A797Fd215be4131636cD5FDf";
     const SICKLE_FACTORY = new ethcall.Contract(SICKLE_FACTORY_ADDR, SICKLE_FACTORY_ABI);
   
     console.log('call sickles');
@@ -425,20 +7309,22 @@ $(function() {
     const signer = App.provider.getSigner()
   
     const REWARD_POOL = new ethers.Contract(NFT_FARM_STRATEGY_ADDRESS, NFT_FARM_STRATEGY_ABI, signer)
-  
-    const decodedExtraData = {
-      tokenId: +nftId,
-      maxAmount0: 0,
-      maxAmount1: 0,
-      isIncrease: false
+
+    const farm = {
+      stakingContract: rewardPoolAddr,
+      poolIndex: 0
+    };
+
+    const nftPosition = {
+      farm: farm,
+      nft: NFT_TOKEN_ADDRESS,
+      tokenId: nftId
     }
   
-    const extraData = ethers.utils.defaultAbiCoder.encode(["tuple(uint256 tokenId, uint256 maxAmount0, uint256 maxAmount1, bool isIncrease)"], [decodedExtraData]);
-  
-    const sweepTokens = ["0x7f9adfbd38b669f03d1d11000bc76b9aaea28a81"];
-  
+    const extraData = "0x00";
+
       showLoading()
-      REWARD_POOL.withdrawErc721(NFT_TOKEN_ADDRESS, nftId, rewardPoolAddr, extraData, sweepTokens)
+      REWARD_POOL.simpleWithdraw(nftPosition, extraData)
         .then(function(t) {
           return App.provider.waitForTransaction(t.hash)
         })
@@ -511,26 +7397,29 @@ $(function() {
   
   const sickle_clContract_claim = async function(rewardPoolAddr, nftId, App) {
     const signer = App.provider.getSigner()
-  
-    const decodedExtraData = {
-      tokenId: +nftId,
-      maxAmount0: 0,
-      maxAmount1: 0,
-      isIncrease: false
+
+    const farm = {
+      stakingContract: rewardPoolAddr,
+      poolIndex: 0
+    };
+
+    const nftPosition = {
+      farm: farm,
+      nft: NFT_TOKEN_ADDRESS,
+      tokenId: nftId
     }
-  
-    const extraData = ethers.utils.defaultAbiCoder.encode(["tuple(uint256 tokenId, uint256 maxAmount0, uint256 maxAmount1, bool isIncrease)"], [decodedExtraData]);
   
     const params = {
-      tokensOut: ["0x7f9adfbd38b669f03d1d11000bc76b9aaea28a81"],
-      stakingContractAddress: rewardPoolAddr,
-      extraData: extraData
+      rewardTokens: ["0x7f9adfbd38b669f03d1d11000bc76b9aaea28a81"],
+      amount0Max: 0,
+      amount1Max: 0,
+      extraData: "0x00"
     }
   
-    const REWARD_POOL = new ethers.Contract(SIMPLE_FARM_STRATEGY_ADDRESS, SIMPLE_FARM_STRATEGY_ABI, signer)
+    const REWARD_POOL = new ethers.Contract(NFT_FARM_STRATEGY_ADDRESS, NFT_FARM_STRATEGY_ABI, signer)
   
       showLoading()
-      REWARD_POOL.harvest(params)
+      REWARD_POOL.simpleHarvest(nftPosition, params)
         .then(function(t) {
           return App.provider.waitForTransaction(t.hash)
         })
@@ -755,17 +7644,21 @@ $(function() {
   const sickle_veloContract_unstake = async function(rewardPoolAddr, lpToken, userStaked, App) {
     const signer = App.provider.getSigner()
   
-    const REWARD_POOL = new ethers.Contract(SIMPLE_FARM_STRATEGY_ADDRESS, SIMPLE_FARM_STRATEGY_ABI, signer)
+    const REWARD_POOL = new ethers.Contract(FARM_STRATEGY_ADDRESS, FARM_STRATEGY_ABI, signer);
+
+    const farm = {
+      stakingContract: rewardPoolAddr,
+      poolIndex: 0
+    }
   
     const params = {
       lpToken: lpToken,
       amountOut: userStaked,
-      stakingContractAddress: rewardPoolAddr,
       extraData: "0x00"
     }
   
       showLoading()
-      REWARD_POOL.withdraw(params)
+      REWARD_POOL.simpleWithdraw(farm, params)
         .then(function(t) {
           return App.provider.waitForTransaction(t.hash)
         })
@@ -776,17 +7669,21 @@ $(function() {
   
   const sickle_veloContract_claim = async function(rewardPoolAddr, App) {
     const signer = App.provider.getSigner()
+
+    const farm = {
+      stakingContract: rewardPoolAddr,
+      poolIndex: 0
+    }
   
     const params = {
-      tokensOut: ["0x7f9adfbd38b669f03d1d11000bc76b9aaea28a81"],
-      stakingContractAddress: rewardPoolAddr,
+      rewardTokens: ["0x7f9adfbd38b669f03d1d11000bc76b9aaea28a81"],
       extraData: "0x00"
     }
   
-    const REWARD_POOL = new ethers.Contract(SIMPLE_FARM_STRATEGY_ADDRESS, SIMPLE_FARM_STRATEGY_ABI, signer)
+    const REWARD_POOL = new ethers.Contract(FARM_STRATEGY_ADDRESS, FARM_STRATEGY_ABI, signer)
   
       showLoading()
-      REWARD_POOL.harvest(params)
+      REWARD_POOL.simpleHarvest(farm, params)
         .then(function(t) {
           return App.provider.waitForTransaction(t.hash)
         })
@@ -902,10 +7799,10 @@ $(function() {
   }
   
 async function getModePrices2() {
-  const OptTokenContracts = modeTokens.map(x => x.contract.toLowerCase())
+  const OptTokenContracts = ModeTokens.map(x => x.contract.toLowerCase())
   const idPrices = await lookUpPrices2(OptTokenContracts);
   const prices = {}
-  for (const bt of modeTokens)
+  for (const bt of ModeTokens)
       if (idPrices[bt.contract])
           prices[bt.contract] = {usd: idPrices[bt.contract]};
   return prices;
