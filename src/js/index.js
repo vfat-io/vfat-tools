@@ -171,6 +171,21 @@ window.NETWORKS = {
       "https://lineascan.build"
     ]
   },
+  MODE: {
+    "chainId": "0x868b",
+    "chainName": "Mode Mainnet",
+    "nativeCurrency": {
+      "name": "Ethereum",
+      "symbol": "ETH",
+      "decimals": 18
+    },
+    "rpcUrls": [
+      "https://mainnet.mode.network"
+    ],
+    "blockExplorerUrls": [
+      "https://explorer.mode.network"
+    ]
+  },
   OPBNB: {
     "chainId": "0xcc",
     "chainName": "opBNB",

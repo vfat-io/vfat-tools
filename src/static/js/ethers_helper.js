@@ -162,6 +162,9 @@ const pageNetwork = function() {
   if (network.toLowerCase() === 'linea') {
     return window.NETWORKS.LINEA
   }
+  if (network.toLowerCase() === 'mode') {
+    return window.NETWORKS.MODE
+  }
   if (network.toLowerCase() === 'manta') {
     return window.NETWORKS.MANTA
   }
@@ -3891,6 +3894,9 @@ function getErc20Prices(prices, pool, chain="eth") {
     case "linea":
       poolUrl=`https://lineascan.build/token/${pool.address}`;
       break;
+    case "mode":
+      poolUrl=`https://modescan.io/token/${pool.address}`;
+      break;
     case "meter":
       poolUrl=`https://scan.meter.io/token/${pool.address}`;
       break;
@@ -4660,6 +4666,9 @@ async function printSynthetixPool(App, info, chain="eth", customURLs) {
       case "linea":
         _print(`<a target="_blank" href="https://lineascan.build/address/${info.stakingAddress}#code">Linea Scan</a>`);
         break;
+      case "mode":
+        _print(`<a target="_blank" href="https://modescan.io/address/${info.stakingAddress}#code">Mode Scan</a>`);
+        break;
       case "manta":
         _print(`<a target="_blank" href="https://pacific-explorer.manta.network/address/${info.stakingAddress}">Manta Explorer</a>`);
         break;
@@ -4928,6 +4937,8 @@ function getChainExplorerUrl(chain, address){
       return `https://blastscan.io/token/${address}`;
     case "linea" :
       return `https://lineascan.build/token/${address}`;
+    case "mode" :
+      return `https://modescan.io/token/${address}`;
     case "manta" :
       return `https://pacific-explorer.manta.network/address/${address}`;
     case "shimmer" :

@@ -674,6 +674,12 @@ const LineaTokens = [
   { "id": "millenniumclub-coin-new", "symbol": "MCLB", "contract": "0xc308c807bf32bd26ee249deaaa6e04aba463962d"}
 ];
 
+const ModeTokens = [
+  { "id": "weth", "symbol": "WETH", "contract": "0x4200000000000000000000000000000000000006"},
+  { "id": "usd-coin", "symbol": "USDC", "contract": "0xd988097fb8612cc24eec14542bc03424c656005f"},
+  { "id": "mode", "symbol": "MODE", "contract": "0xdfc7c877a950e49d2610114102175a06c2e3167a"}
+];
+
 const maticTokens = [
   { "id": "matic-network","symbol": "WMATIC","contract": "0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270" },
   { "id": "matic-network","symbol": "MATIC","contract": "0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270" },
