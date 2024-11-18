@@ -28,7 +28,8 @@ const main = async() => {
       ["Fire                  ", `<a href="fire"              >Various</a>`,"wFIRE        ",""],
       ["Exactly               ", `<a href="exactly"           >Various</a>`,"OP           ","https://app.exact.ly"],
       ["Velodrome             ", `<a href="velodrome_v2"      >Various</a>`,"VELO         ","https://app.velodrome.finance"],
-      ["Ajna                  ", `<a href="ajna"              >Various</a>`,"AJNA         ","https://app.ajna.finance"]
+      ["Ajna                  ", `<a href="ajna"              >Various</a>`,"AJNA         ","https://app.ajna.finance"],
+      ["Velodrome Bridge      ", `<a href="bridge"            >Various</a>`,"VELO -> XVELO",""]
     ].reverse()
   }
 
