@@ -221,3 +221,10 @@ function transactionFailedWithoutErrorMessage(){
     window.location.reload();
   }, 15000);
 }
+
+function transactionFailedWithoutErrorMessage2(){
+  _print("");
+  setTimeout(function(){
+    window.location.reload();
+  }, 25000);
+}
