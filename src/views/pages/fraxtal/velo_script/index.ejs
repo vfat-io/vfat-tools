@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include(`${partials}/head`); -%>
+
+<body>
+<%- include(`${partials}/header_main`); -%>
+<pre id="log">
+*************** 👨‍🌾 UNOFFICIAL AERODROME FINANCE FARMING CALCULATOR 👨‍🌾 ***************
+INFO  : dev script to receive velodrome gauges
+**************************************************************************************
+
+</pre>
+<div class="loader--1"></div>
+<%- include(`${partials}/scripts`, {scriptname: 'vfio_velodrome_fraxtal_pools'}); -%>
+</body>
+</html> 

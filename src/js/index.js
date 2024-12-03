@@ -186,6 +186,21 @@ window.NETWORKS = {
       "https://explorer.mode.network"
     ]
   },
+  FRAXTAL: {
+    "chainId": "0xfc",
+    "chainName": "Fraxtal Mainnet",
+    "nativeCurrency": {
+      "name": "FraxEther",
+      "symbol": "frxETH",
+      "decimals": 18
+    },
+    "rpcUrls": [
+      "https://rpc.frax.com"
+    ],
+    "blockExplorerUrls": [
+      "https://fraxscan.com"
+    ]
+  },
   OPBNB: {
     "chainId": "0xcc",
     "chainName": "opBNB",

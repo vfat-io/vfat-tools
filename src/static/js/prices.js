@@ -681,6 +681,14 @@ const ModeTokens = [
   { "id": "velodrome-finance", "symbol": "XVELO", "contract": "0x7f9adfbd38b669f03d1d11000bc76b9aaea28a81"}
 ];
 
+const FraxtalTokens = [
+  { "id": "frax-ether", "symbol": "FRXETH", "contract": "0xfc00000000000000000000000000000000000006"},
+  { "id": "usd-coin", "symbol": "USDC", "contract": "0xdcc0f2d8f90fde85b10ac1c8ab57dc0ae946a543"},
+  { "id": "ethena-usde", "symbol": "USDe", "contract": "0x5d3a1ff2b6bab83b63cd9ad0787074081a52ef34"},
+  { "id": "frax", "symbol": "FRAX", "contract": "0xfc00000000000000000000000000000000000001"},
+  { "id": "velodrome-finance", "symbol": "XVELO", "contract": "0x7f9adfbd38b669f03d1d11000bc76b9aaea28a81"}
+];
+
 const maticTokens = [
   { "id": "matic-network","symbol": "WMATIC","contract": "0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270" },
   { "id": "matic-network","symbol": "MATIC","contract": "0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270" },
@@ -1465,6 +1473,24 @@ async function getZkEvmPolygonPrices() {
   const idPrices = await lookUpPrices(zkevmPolygonTokens.map(x => x.id));
   const prices = {}
   for (const bt of zkevmPolygonTokens)
+      if (idPrices[bt.id])
+          prices[bt.contract] = idPrices[bt.id];
+  return prices;
+}
+
+async function getModePrices() {
+  const idPrices = await lookUpPrices(ModeTokens.map(x => x.id));
+  const prices = {}
+  for (const bt of ModeTokens)
+      if (idPrices[bt.id])
+          prices[bt.contract] = idPrices[bt.id];
+  return prices;
+}
+
+async function getFraxtalPrices() {
+  const idPrices = await lookUpPrices(FraxtalTokens.map(x => x.id));
+  const prices = {}
+  for (const bt of FraxtalTokens)
       if (idPrices[bt.id])
           prices[bt.contract] = idPrices[bt.id];
   return prices;
