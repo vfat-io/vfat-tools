@@ -23,7 +23,8 @@ const main = async() => {
       ["Statix Farm                    ",`<a href="statix"               >Various</a>`,"STATIX          ","https://statix.farm"],
       ["Toupee Tech                    ",`<a href="toupee"               >Various</a>`,"oWIG            ","https://www.toupee.tech"],
       ["Ajna                           ",`<a href="ajna"                 >Various</a>`,"AJNA            ","https://app.ajna.finance"],
-      ["Pancake Swap V3                ",`<a href="pancakev3"            >Various</a>`,"CAKE            ","https://pancakeswap.finance"]
+      ["Pancake Swap V3                ",`<a href="pancakev3"            >Various</a>`,"CAKE            ","https://pancakeswap.finance"],
+      ["Base Stuck                     ",`<a href="stuck"                >Various</a>`,"                ","https://vfat.tools/base/stuck"]
     ].reverse()
   }
 
