@@ -15,9 +15,6 @@ async function main() {
 
     const WCT_CONTRACT = new ethers.Contract(WCT_LOCK_ADDR, WCT_LOCK_ABI, App.provider);
 
-    // const tokens = {};
-    // const prices = await getOptimisticPrices();
-
     await loadUsersData(App, WCT_CONTRACT);
 
     hideLoading();  
@@ -31,6 +28,7 @@ async function loadUsersData(App, wctContract) {
   const usersLockedAmount = usersLocked.amount / 1e18;
   const _usersLockedEnding = usersLocked.end * 1000;
   const usersLockedEnding = new Date(_usersLockedEnding);
+  const now = Date.now() / 1;
 
   _print(`Total WCT Locked ${totalSupply}`);
   if(usersLockedAmount > 0){
@@ -52,7 +50,9 @@ async function loadUsersData(App, wctContract) {
   }
 
   _print_link(`Deposit ${(usersUnstakeBalance/1e18).toFixed(2)} WCT`, deposit);
-  _print_link(`Withdraw ${(userStakedBalance/1e18).toFixed(2)} WCT`, withdraw);
+  if(now > _usersLockedEnding){
+    _print_link(`Withdraw ${(userStakedBalance/1e18).toFixed(2)} WCT`, withdraw);
+  }
 }
 
 const withdraw_wct = async function(App) {
