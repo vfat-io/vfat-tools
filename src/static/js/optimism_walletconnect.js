@@ -24,23 +24,29 @@ async function loadUsersData(App, wctContract) {
   const _totalSupply = await wctContract.totalSupply();
   const totalSupply = _totalSupply / 1e18;
 
+  const _supply = await wctContract.supply();
+  const supply = _supply / 1e18;
+
   const usersLocked = await wctContract.locks(App.YOUR_ADDRESS);
   const usersLockedAmount = usersLocked.amount / 1e18;
   const _usersLockedEnding = usersLocked.end * 1000;
   const usersLockedEnding = new Date(_usersLockedEnding);
   const now = Date.now() / 1;
 
-  _print(`Total WCT Locked ${totalSupply}`);
-  if(usersLockedAmount > 0){
-    _print(`You have locked ${usersLockedAmount.toFixed(2)} WCT`);
-    _print(`Your lock period ends at ${usersLockedEnding.toDateString()}`);
-  }
-
   const WCT_ADDRESS = "0xef4461891dfb3ac8572ccf7c794664a8dd927945";
   const WCT = new ethers.Contract(WCT_ADDRESS, ERC20_ABI, App.provider);
 
   const usersUnstakeBalance = await WCT.balanceOf(App.YOUR_ADDRESS);
-  const userStakedBalance = await wctContract.balanceOf(App.YOUR_ADDRESS);
+  const userStakedBalance = await wctContract.balanceOf(App.YOUR_ADDRESS) / 1e18;
+
+  _print(`Total supply of Stake Weight ${totalSupply.toFixed(2)}`);
+  _print(`Total supply of WCT locked ${supply.toFixed(2)}`);
+  _print("");
+  if(usersLockedAmount > 0){
+    _print(`Your weight is ${userStakedBalance.toFixed(2)} WCT`);
+    _print(`You have locked ${usersLockedAmount.toFixed(2)} WCT`);
+    _print(`Your lock period ends at ${usersLockedEnding.toDateString()}`);
+  }
 
   const deposit = async function() {
     return deposit_wct(App, usersUnstakeBalance, WCT_ADDRESS)
