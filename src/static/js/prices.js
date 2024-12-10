@@ -761,7 +761,8 @@ const maticTokens = [
   { "id": "toucan-protocol-base-carbon-tonne", "symbol": "BCT","contract": "0x2f800db0fdb5223b3c3f354886d907a671414a7f" },
   { "id": "frax", "symbol": "FRAX","contract": "0x45c32fA6DF82ead1e2EF74d17b76547EDdFaFF89" },
   { "id": "hop-protocol", "symbol": "HOP","contract": "0xc5102fE9359FD9a28f877a67E36B0F050d81a3CC" },
-  { "id": "dfx-finance", "symbol": "DFX","contract": "0xE7804D91dfCDE7F776c90043E03eAa6Df87E6395" }
+  { "id": "dfx-finance", "symbol": "DFX","contract": "0xE7804D91dfCDE7F776c90043E03eAa6Df87E6395" },
+  { "id": "avalanche-2", "symbol": "AVAX","contract": "0x2C89bbc92BD86F8075d1DEcc58C7F4E0107f286b" }
 ]
 
 const MantaTokens = [

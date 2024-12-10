@@ -444,7 +444,8 @@ const main = async () => {
       ['FatexFi             ',  `<a href="fatex"           >Various</a>`, 'FATE         ', 'https://app.fatexfi.io'],
       ['Cutey               ',  `<a href="cutey"           >Various</a>`, 'CUTE         ', 'https://cutey.farm'],
       ['GenomesDAO          ',  `<a href="genomesdao"      >Various</a>`, 'GNOME / GENE ', 'https://genomes.io'],
-      ['Ajna *              ',  `<a href="ajna"            >Various</a>`, 'AJNA         ', 'https://app.ajna.finance']
+      ['Ajna                ',  `<a href="ajna"            >Various</a>`, 'AJNA         ', 'https://app.ajna.finance'],
+      ['Collar              ',  `<a href="collar"          >Various</a>`, 'COLLAR       ', '']
     ].reverse()
   }
 
