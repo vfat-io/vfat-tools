@@ -29,7 +29,8 @@ const main = async() => {
       ["Exactly               ", `<a href="exactly"           >Various</a>`,"OP           ","https://app.exact.ly"],
       ["Velodrome             ", `<a href="velodrome_v2"      >Various</a>`,"VELO         ","https://app.velodrome.finance"],
       ["Ajna                  ", `<a href="ajna"              >Various</a>`,"AJNA         ","https://app.ajna.finance"],
-      ["Velodrome Bridge      ", `<a href="bridge"            >Various</a>`,"VELO -> XVELO",""]
+      ["Velodrome Bridge      ", `<a href="bridge"            >Various</a>`,"VELO -> XVELO",""],
+      // ["Wallet Connect        ", `<a href="walletconnect"     >Various</a>`,"WCT          ","https://walletconnect.network"]
     ].reverse()
   }
 

@@ -906,7 +906,8 @@ const optimisticTokens = [
   { "id": "pooltogether","symbol": "POOL", "contract": "0x395ae52bb17aef68c2888d941736a71dc6d4e125" },
   { "id": "tbtc","symbol": "tBTC", "contract": "0x6c84a8f1c29108f47a79964b5fe888d4f4d0de40" },
   { "id": "wrapped-optidoge","symbol": "WOPTIDOGE", "contract": "0xc26921b5b9ee80773774d36c84328ccb22c3a819" },
-  { "id": "fbomb","symbol": "BOMB", "contract": "0x74ccbe53f77b08632ce0cb91d3a545bf6b8e0979" }
+  { "id": "fbomb","symbol": "BOMB", "contract": "0x74ccbe53f77b08632ce0cb91d3a545bf6b8e0979" },
+  { "id": "connect-token-wct","symbol": "WCT", "contract": "0xef4461891dfb3ac8572ccf7c794664a8dd927945" }
 ];
 
 const polisTokens = [
