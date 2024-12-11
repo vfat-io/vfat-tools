@@ -15,6 +15,14 @@ $(function() {
           return approve_hash(App)
         }
 
+        const OCA = new ethers.Contract(OCA_CONTRACT_ADDR, OCA_CONTRACT_ABI, App.provider);
+
+        const approvedHashes = await OCA.approvedHashes(App.YOUR_ADDRESS, "0xe1b8abb427d580d3faa7e616e747e1bb676a6d85b4f9917f3b4ee451ab5fad8d");
+
+        _print_bold(`Approved Hashes: ${approvedHashes}`);
+
+        _print("");
+
         _print_link(`Approve Hash`, approveHash);
     
         hideLoading();
