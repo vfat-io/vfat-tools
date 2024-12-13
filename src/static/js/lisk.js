@@ -5,7 +5,7 @@ $(function() {
 const main = async() => {
 
   let tableData = {
-    "title":"Fraxtal Network",
+    "title":"Lisk Network",
     "heading":["Pool Provider","LP", "Reward Tokens", "INFO"],
     "rows": [
       ["Velodrome             ", `<a href="velodrome"      >Various</a>`,"XVELO         ","https://app.velodrome.finance"],

@@ -674,6 +674,13 @@ const LineaTokens = [
   { "id": "millenniumclub-coin-new", "symbol": "MCLB", "contract": "0xc308c807bf32bd26ee249deaaa6e04aba463962d"}
 ];
 
+const LiskTokens = [
+  { "id": "weth", "symbol": "WETH", "contract": "0x4200000000000000000000000000000000000006"},
+  { "id": "lisk", "symbol": "LSK", "contract": "0xac485391eb2d7d88253a7f1ef18c37f4242d1a24"},
+  { "id": "usd-coin", "symbol": "USDC", "contract": "0xf242275d3a6527d877f2c927a82d9b057609cc71"},
+  { "id": "tether", "symbol": "USDT", "contract": "0x05d032ac25d322df992303dca074ee7392c117b9"}
+];
+
 const ModeTokens = [
   { "id": "weth", "symbol": "WETH", "contract": "0x4200000000000000000000000000000000000006"},
   { "id": "usd-coin", "symbol": "USDC", "contract": "0xd988097fb8612cc24eec14542bc03424c656005f"},
@@ -1286,6 +1293,15 @@ async function getLineaPrices() {
   const idPrices = await lookUpPrices(LineaTokens.map(x => x.id));
   const prices = {}
   for (const bt of LineaTokens)
+      if (idPrices[bt.id])
+          prices[bt.contract] = idPrices[bt.id];
+  return prices;
+}
+
+async function getLiskPrices() {
+  const idPrices = await lookUpPrices(LiskTokens.map(x => x.id));
+  const prices = {}
+  for (const bt of LiskTokens)
       if (idPrices[bt.id])
           prices[bt.contract] = idPrices[bt.id];
   return prices;

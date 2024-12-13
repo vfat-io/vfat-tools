@@ -201,6 +201,21 @@ window.NETWORKS = {
       "https://fraxscan.com"
     ]
   },
+  LISK: {
+    "chainId": "0x46f",
+    "chainName": "Lisk Mainnet",
+    "nativeCurrency": {
+      "name": "Ethereum",
+      "symbol": "ETH",
+      "decimals": 18
+    },
+    "rpcUrls": [
+      "https://lisk.drpc.org"
+    ],
+    "blockExplorerUrls": [
+      "https://blockscout.lisk.com/"
+    ]
+  },
   OPBNB: {
     "chainId": "0xcc",
     "chainName": "opBNB",

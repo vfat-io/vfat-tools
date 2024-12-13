@@ -680,6 +680,8 @@ async function loadGeneralChefContract(App, tokens, prices, chef, chefAddress, c
     break;
     case "fraxtal" : _print(`<a href='https://fraxscan.com/address/${chefAddress}' target='_blank'>Staking Contract</a>`);
     break;
+    case "lisk" : _print(`<a href='https://blockscout.lisk.com/address/${chefAddress}' target='_blank'>Staking Contract</a>`);
+    break;
   }
   _print(`Found ${poolCount} pools.\n`)
 

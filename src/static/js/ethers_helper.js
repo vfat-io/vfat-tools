@@ -168,6 +168,9 @@ const pageNetwork = function() {
   if (network.toLowerCase() === 'fraxtal') {
     return window.NETWORKS.FRAXTAL
   }
+  if (network.toLowerCase() === 'lisk') {
+    return window.NETWORKS.LISK
+  }
   if (network.toLowerCase() === 'manta') {
     return window.NETWORKS.MANTA
   }
@@ -3903,6 +3906,9 @@ function getErc20Prices(prices, pool, chain="eth") {
     case "fraxtal":
       poolUrl=`https://fraxscan.com/token/${pool.address}`;
       break;
+    case "lisk":
+      poolUrl=`https://blockscout.lisk.com/token/${pool.address}`;
+      break;
     case "meter":
       poolUrl=`https://scan.meter.io/token/${pool.address}`;
       break;
@@ -4678,6 +4684,9 @@ async function printSynthetixPool(App, info, chain="eth", customURLs) {
       case "fraxtal":
         _print(`<a target="_blank" href="https://fraxscan.com/address/${info.stakingAddress}#code">Fraxtal Scan</a>`);
         break;
+      case "lisk":
+        _print(`<a target="_blank" href="https://blockscout.lisk.com/address/${info.stakingAddress}">Lisk Explorer</a>`);
+        break;
       case "manta":
         _print(`<a target="_blank" href="https://pacific-explorer.manta.network/address/${info.stakingAddress}">Manta Explorer</a>`);
         break;
@@ -4948,6 +4957,8 @@ function getChainExplorerUrl(chain, address){
       return `https://lineascan.build/token/${address}`;
     case "mode" :
       return `https://modescan.io/token/${address}`;
+    case "lisk" :
+      return `https://blockscout.lisk.com/token/${address}`;
     case "fraxtal" :
       return `https://fraxscan.com/token/${address}`;
     case "manta" :
