@@ -21,6 +21,14 @@ $(function() {
 
         const approvedHashes = await SAFE.approvedHashes(App.YOUR_ADDRESS, HASH);
 
+        _print_bold(`Safe: ${SAFE_CONTRACT_ADDR}`);
+
+        _print("");
+
+        _print_bold(`Hash: ${HASH}`);
+
+        _print("");
+
         _print_bold(`Approved Hashes: ${approvedHashes}`);
 
         _print("");
