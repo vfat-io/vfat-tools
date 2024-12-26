@@ -201,7 +201,7 @@ $(function() {
   
       const rewardTokenTicker = rewardToken.symbol;
   
-      const poolPrices = getPoolPrices(tokens, prices, stakeToken, "arbitrum");
+      const poolPrices = getPoolPrices(tokens, prices, stakeToken, "sonic");
   
       if (!poolPrices)
       {
