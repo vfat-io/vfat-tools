@@ -216,6 +216,21 @@ window.NETWORKS = {
       "https://blockscout.lisk.com/"
     ]
   },
+  SONIC: {
+    "chainId": "0x92",
+    "chainName": "Sonic Mainnet",
+    "nativeCurrency": {
+      "name": "Sonic",
+      "symbol": "S",
+      "decimals": 18
+    },
+    "rpcUrls": [
+      "https://sonic.drpc.org"
+    ],
+    "blockExplorerUrls": [
+      "https://sonicscan.org/"
+    ]
+  },
   OPBNB: {
     "chainId": "0xcc",
     "chainName": "opBNB",
