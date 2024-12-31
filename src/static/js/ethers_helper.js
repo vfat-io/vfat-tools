@@ -171,6 +171,9 @@ const pageNetwork = function() {
   if (network.toLowerCase() === 'lisk') {
     return window.NETWORKS.LISK
   }
+  if (network.toLowerCase() === 'metal_l2') {
+    return window.NETWORKS.METAL_L2
+  }
   if (network.toLowerCase() === 'sonic') {
     return window.NETWORKS.SONIC
   }
@@ -3912,6 +3915,9 @@ function getErc20Prices(prices, pool, chain="eth") {
     case "lisk":
       poolUrl=`https://blockscout.lisk.com/token/${pool.address}`;
       break;
+    case "metal_l2":
+      poolUrl=`https://explorer.metall2.com/token/${pool.address}`;
+      break;
     case "sonic":
       poolUrl=`https://sonicscan.org/token/${pool.address}`;
       break;
@@ -4693,6 +4699,9 @@ async function printSynthetixPool(App, info, chain="eth", customURLs) {
       case "lisk":
         _print(`<a target="_blank" href="https://blockscout.lisk.com/address/${info.stakingAddress}">Lisk Explorer</a>`);
         break;
+      case "metal_l2":
+        _print(`<a target="_blank" href="https://explorer.metall2.com/address/${info.stakingAddress}">Metal-L2 Explorer</a>`);
+        break;
       case "sonic":
         _print(`<a target="_blank" href="https://sonicscan.org/address/${info.stakingAddress}">Sonic Explorer</a>`);
         break;
@@ -4968,6 +4977,8 @@ function getChainExplorerUrl(chain, address){
       return `https://modescan.io/token/${address}`;
     case "lisk" :
       return `https://blockscout.lisk.com/token/${address}`;
+    case "metal_l2" :
+      return `https://explorer.metall2.com/token/${address}`;
     case "sonic" :
       return `https://sonicscan.org/token/${address}`;
     case "fraxtal" :

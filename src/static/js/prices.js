@@ -681,6 +681,12 @@ const LiskTokens = [
   { "id": "tether", "symbol": "USDT", "contract": "0x05d032ac25d322df992303dca074ee7392c117b9"}
 ];
 
+const MetalL2Tokens = [
+  { "id": "weth", "symbol": "WETH", "contract": "0x4200000000000000000000000000000000000006"},
+  { "id": "usd-coin", "symbol": "USDC", "contract": "0xb91cfcca485c6e40e3bc622f9bfa02a8acdeebab"},
+  { "id": "metal", "symbol": "MTL", "contract": "0xbcfc435d8f276585f6431fc1b9ee9a850b5c00a9"}
+];
+
 const SonicTokens = [
   { "id": "wrapped-sonic", "symbol": "WS", "contract": "0x039e2fb66102314ce7b64ce5ce3e5183bc94ad38"},
   { "id": "equalizer-dex", "symbol": "EQUAL", "contract": "0xddf26b42c1d903de8962d3f79a74a501420d5f19"}
@@ -1334,6 +1340,15 @@ async function getMantlePrices() {
   const idPrices = await lookUpPrices(MantleTokens.map(x => x.id));
   const prices = {}
   for (const bt of MantleTokens)
+      if (idPrices[bt.id])
+          prices[bt.contract] = idPrices[bt.id];
+  return prices;
+}
+
+async function getMetalL2Prices() {
+  const idPrices = await lookUpPrices(MetalL2Tokens.map(x => x.id));
+  const prices = {}
+  for (const bt of MetalL2Tokens)
       if (idPrices[bt.id])
           prices[bt.contract] = idPrices[bt.id];
   return prices;

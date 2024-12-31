@@ -231,6 +231,21 @@ window.NETWORKS = {
       "https://sonicscan.org/"
     ]
   },
+  METAL_L2: {
+    "chainId": "0x6d6",
+    "chainName": "Metal L2",
+    "nativeCurrency": {
+      "name": "Ethereum",
+      "symbol": "ETH",
+      "decimals": 18
+    },
+    "rpcUrls": [
+      "https://metall2.drpc.org"
+    ],
+    "blockExplorerUrls": [
+      "https://explorer.metall2.com/"
+    ]
+  },
   OPBNB: {
     "chainId": "0xcc",
     "chainName": "opBNB",
