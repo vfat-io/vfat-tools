@@ -34,9 +34,9 @@ const BRIDGE_ADDR = "0xA7287a56C01ac8Baaf8e7B662bDB41b10889C7A6";
     const deposit_lisk = async function() {
       return velo_deposit_lisk(App, veloBalance)
     }
-    const deposit_metalL2 = async function() {
-      return velo_deposit_metalL2(App, veloBalance)
-    }
+    // const deposit_metalL2 = async function() {
+    //   return velo_deposit_metalL2(App, veloBalance)
+    // }
     const bridge_mode = async function() {
       return xvelo_bridge_mode(App, xVeloBalance)
     }
@@ -46,9 +46,9 @@ const BRIDGE_ADDR = "0xA7287a56C01ac8Baaf8e7B662bDB41b10889C7A6";
     const bridge_lisk = async function() {
       return xvelo_bridge_lisk(App, xVeloBalance)
     }
-    const bridge_metalL2 = async function() {
-      return xvelo_bridge_metalL2(App, xVeloBalance)
-    }
+    // const bridge_metalL2 = async function() {
+    //   return xvelo_bridge_metalL2(App, xVeloBalance)
+    // }
 
     _print_bold("Bridge your VELO and convert them to XVELO on Mode");
     _print_link(`Deposit ${(veloBalance / 1e18).toFixed(2)} VELO`, deposit);
@@ -58,9 +58,9 @@ const BRIDGE_ADDR = "0xA7287a56C01ac8Baaf8e7B662bDB41b10889C7A6";
     _print("");
     _print_bold("Bridge your VELO and convert them to XVELO on Lisk");
     _print_link(`Deposit ${(veloBalance / 1e18).toFixed(2)} VELO`, deposit_lisk);
-    _print("");
-    _print_bold("Bridge your VELO and convert them to XVELO on Metal-L2");
-    _print_link(`Deposit ${(veloBalance / 1e18).toFixed(2)} VELO`, deposit_metalL2);
+    // _print("");
+    // _print_bold("Bridge your VELO and convert them to XVELO on Metal-L2");
+    // _print_link(`Deposit ${(veloBalance / 1e18).toFixed(2)} VELO`, deposit_metalL2);
     _print("");
     _print("");
     _print_bold("Bridge your XVELO on Mode");
@@ -71,9 +71,9 @@ const BRIDGE_ADDR = "0xA7287a56C01ac8Baaf8e7B662bDB41b10889C7A6";
     _print("");
     _print_bold("Bridge your XVELO on Lisk");
     _print_link(`Bridge ${(xVeloBalance / 1e18).toFixed(2)} XVELO`, bridge_lisk);
-    _print("");
-    _print_bold("Bridge your XVELO on Metal-L2");
-    _print_link(`Bridge ${(xVeloBalance / 1e18).toFixed(2)} XVELO`, bridge_metalL2);
+    // _print("");
+    // _print_bold("Bridge your XVELO on Metal-L2");
+    // _print_link(`Bridge ${(xVeloBalance / 1e18).toFixed(2)} XVELO`, bridge_metalL2);
     _print("");
     _print("");
     _print_bold("Convert your XVELO to VELO");
