@@ -117,8 +117,9 @@ async function printBioPool(App, chefAbi, chefAddr, prices, tokens, poolInfo, po
   var poolRewardsPerWeek = poolInfo.allocPoints / totalAllocPoints * rewardsPerWeek;
   if (poolRewardsPerWeek == 0 && rewardsPerWeek != 0) return;
   const userStaked = poolInfo.userLPStaked ?? poolInfo.userStaked;
-  // const rewardPrice = getParameterCaseInsensitive(prices, rewardTokenAddress)?.usd;
-  const rewardPrice = await lookUpTokenPrices([rewardTokenAddress])?.usd;
+  const _rewardPrice = await lookUpTokenPrices([rewardTokenAddress]);
+  const rewardPriceValue = Object.values(_rewardPrice);
+  const rewardPrice = rewardPriceValue[0].usd;
   const staked_tvl = sp?.staked_tvl ?? poolPrices.staked_tvl;
   _print_inline(`${poolIndex} - `);
   poolPrices.print_price(chain);
