@@ -4222,7 +4222,7 @@ async function getPoolInfo(app, chefContract, chefAddress, poolIndex, pendingRew
       lastRewardBlock : poolInfo.lastRewardBlock
     };
   }
-  const poolToken = await getToken(app, poolInfo.lpToken ?? poolInfo.stakingToken, chefAddress);
+  const poolToken = await getToken(app, poolInfo.lpToken ?? poolInfo.token ?? poolInfo.stakingToken, chefAddress);
   const userInfo = await chefContract.userInfo(poolIndex, app.YOUR_ADDRESS);
   const pendingRewardTokens = await chefContract.callStatic[pendingRewardsFunction](poolIndex, app.YOUR_ADDRESS);
   const staked = userInfo.amount / 10 ** poolToken.decimals;
