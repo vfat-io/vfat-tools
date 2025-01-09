@@ -13,7 +13,7 @@ consoleInit(main)
     const BIO_CHEF = new ethers.Contract(BIO_CHEF_ADDR, BIO_CHEF_ABI, App.provider);
 
     const currentBlock = App.provider.getBlockNumber();
-    const multiplier = await ARB_CHEF.getMultiplier(currentBlock, currentBlock+1);
+    const multiplier = await BIO_CHEF.getMultiplier(currentBlock, currentBlock+1);
 
     const rewardsPerWeek = await BIO_CHEF.rewardPerBlock() / 1e18 * 604800 * multiplier / 13.5;
 
