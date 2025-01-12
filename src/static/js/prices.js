@@ -689,7 +689,12 @@ const MetalL2Tokens = [
 
 const SonicTokens = [
   { "id": "wrapped-sonic", "symbol": "WS", "contract": "0x039e2fb66102314ce7b64ce5ce3e5183bc94ad38"},
-  { "id": "equalizer-dex", "symbol": "EQUAL", "contract": "0xddf26b42c1d903de8962d3f79a74a501420d5f19"}
+  { "id": "equalizer-dex", "symbol": "EQUAL", "contract": "0xddf26b42c1d903de8962d3f79a74a501420d5f19"},
+  { "id": "paint-swap", "symbol": "BRUSH", "contract": "0xe51ee9868c1f0d6cd968a8b8c8376dc2991bfe44"},
+  { "id": "fantomsonicinu-2", "symbol": "FSONIC", "contract": "0x05e31a691405d06708a355c029599c12d5da8b28"},
+  { "id": "weth", "symbol": "WETH", "contract": "0x50c42deacd8fc9773493ed674b675be577f2634b"},
+  { "id": "sonic-bridged-usdc-e-sonic", "symbol": "USDC.e", "contract": "0x29219dd400f2bf60e5a23d13be72b486d4038894"},
+  { "id": "rings-scusd", "symbol": "SCUSD", "contract": "0xd3dce716f3ef535c5ff8d041c1a41c3bd89b97ae"}
 ];
 
 const ModeTokens = [
