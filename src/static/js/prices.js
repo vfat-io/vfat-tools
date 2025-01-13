@@ -515,6 +515,7 @@ const FantomTokens = [
     { "id": "deus-finance-2", "symbol": "DEUS", "contract": "0xde5ed76e7c05ec5e4572cfc88d1acea165109e44"},
     { "id": "strategyx", "symbol": "STAY", "contract": "0xA5365f2E77bCe1cb2D42F5c808012C01b1548d3C" },
     { "id": "fang-token", "symbol": "FANG", "contract": "0x49894fcc07233957c35462cfc3418ef0cc26129f" },
+    { "id": "equalizer-dex", "symbol": "EQUAL", "contract": "0x3fd3a0c85b70754efc07ac9ac0cbbdce664865a6"}
   ]
 ];
 
