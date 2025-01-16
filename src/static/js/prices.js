@@ -694,6 +694,12 @@ const InkTokens = [
   { "id": "velodrome-finance", "symbol": "XVELO", "contract": "0x7f9adfbd38b669f03d1d11000bc76b9aaea28a81"}
 ];
 
+const SoneiumTokens = [
+  { "id": "weth", "symbol": "WETH", "contract": "0x4200000000000000000000000000000000000006"},
+  { "id": "usd-coin", "symbol": "USDC", "contract": "0xbA9986D2381edf1DA03B0B9c1f8b00dc4AacC369"},
+  { "id": "velodrome-finance", "symbol": "XVELO", "contract": "0x7f9adfbd38b669f03d1d11000bc76b9aaea28a81"}
+];
+
 const SonicTokens = [
   { "id": "wrapped-sonic", "symbol": "WS", "contract": "0x039e2fb66102314ce7b64ce5ce3e5183bc94ad38"},
   { "id": "equalizer-dex", "symbol": "EQUAL", "contract": "0xddf26b42c1d903de8962d3f79a74a501420d5f19"},
@@ -1460,6 +1466,15 @@ async function getSmartbchPrices() {
   const idPrices = await lookUpPrices(SmartbchTokens.map(x => x.id));
   const prices = {}
   for (const bt of SmartbchTokens)
+      if (idPrices[bt.id])
+          prices[bt.contract] = idPrices[bt.id];
+  return prices;
+}
+
+async function getSoneiumPrices() {
+  const idPrices = await lookUpPrices(SoneiumTokens.map(x => x.id));
+  const prices = {}
+  for (const bt of SoneiumTokens)
       if (idPrices[bt.id])
           prices[bt.contract] = idPrices[bt.id];
   return prices;

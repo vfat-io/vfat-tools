@@ -261,6 +261,21 @@ window.NETWORKS = {
       "https://explorer.inkonchain.com/"
     ]
   },
+  SONEIUM: {
+    "chainId": "0x74c",
+    "chainName": "Soneium",
+    "nativeCurrency": {
+      "name": "Ethereum",
+      "symbol": "ETH",
+      "decimals": 18
+    },
+    "rpcUrls": [
+      "https://rpc.soneium.org"
+    ],
+    "blockExplorerUrls": [
+      "https://soneium.blockscout.com/"
+    ]
+  },
   OPBNB: {
     "chainId": "0xcc",
     "chainName": "opBNB",

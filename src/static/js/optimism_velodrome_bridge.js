@@ -37,6 +37,9 @@ const BRIDGE_ADDR = "0xA7287a56C01ac8Baaf8e7B662bDB41b10889C7A6";
     const deposit_ink = async function() {
       return velo_deposit_ink(App, veloBalance)
     }
+    const deposit_soneium = async function() {
+      return velo_deposit_soneium(App, veloBalance)
+    }
     // const deposit_metalL2 = async function() {
     //   return velo_deposit_metalL2(App, veloBalance)
     // }
@@ -51,6 +54,9 @@ const BRIDGE_ADDR = "0xA7287a56C01ac8Baaf8e7B662bDB41b10889C7A6";
     }
     const bridge_ink = async function() {
       return xvelo_bridge_ink(App, xVeloBalance)
+    }
+    const bridge_soneium = async function() {
+      return xvelo_bridge_soneium(App, xVeloBalance)
     }
     // const bridge_metalL2 = async function() {
     //   return xvelo_bridge_metalL2(App, xVeloBalance)
@@ -67,6 +73,9 @@ const BRIDGE_ADDR = "0xA7287a56C01ac8Baaf8e7B662bDB41b10889C7A6";
     _print("");
     _print_bold("Bridge your VELO and convert them to XVELO on Ink");
     _print_link(`Deposit ${(veloBalance / 1e18).toFixed(2)} VELO`, deposit_ink);
+    _print("");
+    _print_bold("Bridge your VELO and convert them to XVELO on Soneium");
+    _print_link(`Deposit ${(veloBalance / 1e18).toFixed(2)} VELO`, deposit_soneium);
     // _print("");
     // _print_bold("Bridge your VELO and convert them to XVELO on Metal-L2");
     // _print_link(`Deposit ${(veloBalance / 1e18).toFixed(2)} VELO`, deposit_metalL2);
@@ -83,6 +92,9 @@ const BRIDGE_ADDR = "0xA7287a56C01ac8Baaf8e7B662bDB41b10889C7A6";
     _print("");
     _print_bold("Bridge your XVELO on Ink");
     _print_link(`Bridge ${(xVeloBalance / 1e18).toFixed(2)} XVELO`, bridge_ink);
+    _print("");
+    _print_bold("Bridge your XVELO on Soneium");
+    _print_link(`Bridge ${(xVeloBalance / 1e18).toFixed(2)} XVELO`, bridge_soneium);
     // _print("");
     // _print_bold("Bridge your XVELO on Metal-L2");
     // _print_link(`Bridge ${(xVeloBalance / 1e18).toFixed(2)} XVELO`, bridge_metalL2);
@@ -221,6 +233,33 @@ const BRIDGE_ADDR = "0xA7287a56C01ac8Baaf8e7B662bDB41b10889C7A6";
       bridgeContract.sendToken(App.YOUR_ADDRESS, xVeloBalance, 57073, {value: ethers.utils.parseEther("0.001")})
       hideLoading();
       _print_bold(`Available XVELO balance on Ink ${(xVeloBalance / 1e18).toFixed(2)}`);
+      _print(`The page will be refreshed in 25 seconds.`);
+      transactionFailedWithoutErrorMessage2();
+    }).catch(function(e){
+      _print(`Error ${e} The page will be refreshed in 25 seconds.`);
+      transactionFailedWithoutErrorMessage2();
+    })
+  }
+
+  const xvelo_bridge_soneium = async function(App, xVeloBalance){
+    showLoading();
+  
+    const signer = App.provider.getSigner();
+  
+    const xVeloTokenContract = new ethers.Contract(XVELO_ADDR, ERC20_ABI, signer);
+    const bridgeContract = new ethers.Contract(BRIDGE_ADDR, BRIDGE_ABI, signer);
+  
+    xVeloTokenContract.approve(BRIDGE_ADDR, xVeloBalance).then(function(t){
+      showLoading();
+      return App.provider.waitForTransaction(t.hash)
+    }).catch(function(){
+      hideLoading()
+      alert('Try resetting your approval to 0 first');
+      transactionFailedWithoutErrorMessage2();
+    }).then(async function(){
+      bridgeContract.sendToken(App.YOUR_ADDRESS, xVeloBalance, 1868, {value: ethers.utils.parseEther("0.001")})
+      hideLoading();
+      _print_bold(`Available XVELO balance on Soneium ${(xVeloBalance / 1e18).toFixed(2)}`);
       _print(`The page will be refreshed in 25 seconds.`);
       transactionFailedWithoutErrorMessage2();
     }).catch(function(e){
@@ -517,6 +556,64 @@ const velo_deposit_ink = async function (App, veloBalance){
               bridgeContract.sendToken(App.YOUR_ADDRESS, xvb, 57073, {value: ethers.utils.parseEther("0.001")})
               hideLoading();
               _print_bold(`Available XVELO balance on Ink ${(xvb / 1e18).toFixed(2)}`);
+              _print(`The page will be refreshed in 25 seconds.`);
+              transactionFailedWithoutErrorMessage2();
+            }).catch(function(e){
+              _print(`Error ${e} The page will be refreshed in 25 seconds.`);
+              transactionFailedWithoutErrorMessage2();
+            })
+          }).catch(function(e){
+            _print(`Error ${e} The page will be refreshed in 25 seconds.`);
+            transactionFailedWithoutErrorMessage2();
+          })
+        }).catch(function(e){
+          _print(`Error ${e} The page will be refreshed in 25 seconds.`);
+          transactionFailedWithoutErrorMessage2();
+        })
+      }).catch(function(e){
+        _print(`Error ${e} The page will be refreshed in 25 seconds.`);
+        transactionFailedWithoutErrorMessage2();
+      })
+    }).catch(function(e){
+      _print(`Error ${e} The page will be refreshed in 25 seconds.`);
+      transactionFailedWithoutErrorMessage2();
+    })
+  }).catch(function(e){
+    _print(`Error ${e} The page will be refreshed in 25 seconds.`);
+    transactionFailedWithoutErrorMessage2();
+  })
+}
+
+const velo_deposit_soneium = async function (App, veloBalance){
+  showLoading();
+
+  const signer = App.provider.getSigner();
+
+  const veloTokenContract = new ethers.Contract(VELO_ADDR, ERC20_ABI, signer);
+  const xVeloTokenContract = new ethers.Contract(XVELO_ADDR, ERC20_ABI, signer);
+  const lockboxContract = new ethers.Contract(LOCKBOX_ADDR, LOCKBOX_ABI, signer);
+  const bridgeContract = new ethers.Contract(BRIDGE_ADDR, BRIDGE_ABI, signer);
+
+  veloTokenContract.approve(LOCKBOX_ADDR, veloBalance).then(function(t) {
+    showLoading();
+    return App.provider.waitForTransaction(t.hash)
+  }).catch(function() {
+    hideLoading()
+    alert('Try resetting your approval to 0 first');
+    transactionFailedWithoutErrorMessage2();
+  }).then(async function() {
+    lockboxContract.deposit(veloBalance).then(function(t){
+      App.provider.waitForTransaction(t.hash).then(async function (){
+      }).catch(function(e){
+        _print(`Error ${e} The page will be refreshed in 25 seconds.`);
+        transactionFailedWithoutErrorMessage2();
+      }).then(async function(){
+        xVeloTokenContract.balanceOf(App.YOUR_ADDRESS).then(async function(xvb){
+          xVeloTokenContract.approve(BRIDGE_ADDR, xvb).then(async function(){
+            xVeloTokenContract.allowance(App.YOUR_ADDRESS, BRIDGE_ADDR).then(async function(xvb){
+              bridgeContract.sendToken(App.YOUR_ADDRESS, xvb, 1868, {value: ethers.utils.parseEther("0.001")})
+              hideLoading();
+              _print_bold(`Available XVELO balance on Soneium ${(xvb / 1e18).toFixed(2)}`);
               _print(`The page will be refreshed in 25 seconds.`);
               transactionFailedWithoutErrorMessage2();
             }).catch(function(e){

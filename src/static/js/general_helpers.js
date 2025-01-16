@@ -688,6 +688,8 @@ async function loadGeneralChefContract(App, tokens, prices, chef, chefAddress, c
     break;
     case "ink" : _print(`<a href='https://explorer.inkonchain.com/address/${chefAddress}' target='_blank'>Staking Contract</a>`);
     break;
+    case "soneium" : _print(`<a href='https://soneium.blockscout.com/address/${chefAddress}' target='_blank'>Staking Contract</a>`);
+    break;
   }
   _print(`Found ${poolCount} pools.\n`)
 
