@@ -246,6 +246,21 @@ window.NETWORKS = {
       "https://explorer.metall2.com/"
     ]
   },
+  INK: {
+    "chainId": "0xdef1",
+    "chainName": "Ink",
+    "nativeCurrency": {
+      "name": "Ethereum",
+      "symbol": "ETH",
+      "decimals": 18
+    },
+    "rpcUrls": [
+      "https://rpc-qnd.inkonchain.com"
+    ],
+    "blockExplorerUrls": [
+      "https://explorer.inkonchain.com/"
+    ]
+  },
   OPBNB: {
     "chainId": "0xcc",
     "chainName": "opBNB",

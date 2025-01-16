@@ -686,6 +686,8 @@ async function loadGeneralChefContract(App, tokens, prices, chef, chefAddress, c
     break;
     case "metal_l2" : _print(`<a href='https://explorer.metall2.com/address/${chefAddress}' target='_blank'>Staking Contract</a>`);
     break;
+    case "ink" : _print(`<a href='https://explorer.inkonchain.com/address/${chefAddress}' target='_blank'>Staking Contract</a>`);
+    break;
   }
   _print(`Found ${poolCount} pools.\n`)
 

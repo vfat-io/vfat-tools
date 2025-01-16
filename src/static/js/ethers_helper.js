@@ -177,6 +177,9 @@ const pageNetwork = function() {
   if (network.toLowerCase() === 'sonic') {
     return window.NETWORKS.SONIC
   }
+  if (network.toLowerCase() === 'ink') {
+    return window.NETWORKS.INK
+  }
   if (network.toLowerCase() === 'manta') {
     return window.NETWORKS.MANTA
   }
@@ -3921,6 +3924,9 @@ function getErc20Prices(prices, pool, chain="eth") {
     case "sonic":
       poolUrl=`https://sonicscan.org/token/${pool.address}`;
       break;
+    case "ink":
+      poolUrl=`https://explorer.inkonchain.com/token/${pool.address}`;
+      break;
     case "meter":
       poolUrl=`https://scan.meter.io/token/${pool.address}`;
       break;
@@ -4705,6 +4711,9 @@ async function printSynthetixPool(App, info, chain="eth", customURLs) {
       case "sonic":
         _print(`<a target="_blank" href="https://sonicscan.org/address/${info.stakingAddress}">Sonic Explorer</a>`);
         break;
+      case "ink":
+        _print(`<a target="_blank" href="https://explorer.inkonchain.com/address/${info.stakingAddress}">Ink Explorer</a>`);
+        break;
       case "manta":
         _print(`<a target="_blank" href="https://pacific-explorer.manta.network/address/${info.stakingAddress}">Manta Explorer</a>`);
         break;
@@ -4981,6 +4990,8 @@ function getChainExplorerUrl(chain, address){
       return `https://explorer.metall2.com/token/${address}`;
     case "sonic" :
       return `https://sonicscan.org/token/${address}`;
+    case "ink" :
+      return `https://explorer.inkonchain.com/token/${address}`;
     case "fraxtal" :
       return `https://fraxscan.com/token/${address}`;
     case "manta" :
