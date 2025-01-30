@@ -60,7 +60,7 @@ $(function() {
         lpTokens.push(lpTokenBatch);
       }
     
-      let cl_pools = [], userV2Gauges = [], userClGauges = [];
+      let cl_pools = [], cl_pools_new = [], userClGauges = [];
       
       for(const lpTokenBatch of lpTokens){
         let v2_pools = [], allPools = [];
@@ -96,15 +96,22 @@ $(function() {
         }
       }
     
-      const cl_gauge_contracts = cl_pools.map(a => new ethcall.Contract(a.gauge, CL_GAUGE_ABI));
+      for(let i = 0; i < cl_pools.length; i++){
+        const cl_gauge_to_lowercase = cl_pools[i].gauge.toLowerCase();
+        const rootClGauge = RootClGauges.includes(cl_gauge_to_lowercase);
+        if(!rootClGauge){
+          cl_pools_new.push(cl_pools[i]);
+        }
+      }
+      const cl_gauge_contracts = cl_pools_new.map(a => new ethcall.Contract(a.gauge, CL_GAUGE_ABI));
       const cl_rewardRate_calls = cl_gauge_contracts.map(c => c.rewardRate());
       const cl_periodFinish_calls = cl_gauge_contracts.map(c => c.periodFinish());
-      // const cl_rewardRates = await App.ethcallProvider.all(cl_rewardRate_calls);
-      // const cl_periodFinishes = await App.ethcallProvider.all(cl_periodFinish_calls);
+      const cl_rewardRates = await App.ethcallProvider.all(cl_rewardRate_calls);
+      const cl_periodFinishes = await App.ethcallProvider.all(cl_periodFinish_calls);
       
-      for(let i = 0; i < cl_pools.length; i++){
+      for(let i = 0; i < cl_pools_new.length; i++){
         if((Date.now() / 1000 < cl_periodFinishes[i] && cl_rewardRates[i] > 0)){
-          cl_gauges_array.push(cl_pools[i].gauge)
+          cl_gauges_array.push(cl_pools_new[i].gauge)
         }
       }
 
@@ -313,3 +320,49 @@ async function getV2Data(App, address, vfat_io_tokens) {
       ]
     }
 }
+
+const RootClGauges = [
+  "0x7730FCF54D95051faDb0452306Ea68628a9ad1ec",
+  "0x6Fc7DB286Dd4A873F431559Bb23Cc7F40FEBC179",
+  "0xA125D085EF57D9a1B7e58b62314B4ab8fdeD8754",
+  "0x68F9a5cC3cF5c6d2B92d9D21aFc31c418a64b77d",
+  "0x3e9221D5e59882BE53475cf7c1A0D4caA24075C5",
+  "0x001DAD1CC0354C90de8f7304EEaCA732E3e25115",
+  "0xD7FE1e0C17C34874B65b75c88f3B17d422837e61",
+  "0xa170926d2f6506D0145187e46067Fe8E7cB239f4",
+  "0x8bB8d6e5151FFfe9B1d1260360747A4371079D44",
+  "0x3aF261A143280f8a945aeBdC40747122Bb813a5B",
+  "0x9B587b34A14d52C6Bc46b8E04A4B84ee97Ec97E0",
+  "0x8b0acc7017CB6ca412064771F67df1a61c0761c2",
+  "0x55077b387319Fc9efe303FE87196D4082B66338F",
+  "0x9dDD4EBd06606f042d5b713D03e414991d474c83",
+  "0x5165C772fAe96D790aEA968CCdF5F866b34713c9",
+  "0xBd3Ef4f66fE1abB361a596e7e110aB26A7E3D78c",
+  "0xAB824e56d805a93b38F13eA99FDfA441a7947093",
+  "0x3f8C3e32E1d05B13A45Eb334B9a443Dbff41cd6a",
+  "0xB6d76B35184Ec539C27b78D947b59b1e936064E5",
+  "0xA350a2424F3b492BdEd0DAb2b619bC6D53083297",
+  "0x3E456f9AF18e243DB0Dde89E3974A92E3367d4b6",
+  "0x32F0e5Eec6F0Ede01e055c37aFF702EE6cc8b89E",
+  "0x8518818d04Bd31ebcB8DD7D53982FD21D31Cc3C1",
+  "0x04CC0628dAeF25Bc719255a6B19c30B88c1905c3",
+  "0xECa4aa186bB6De65fD73486bfC8B95F2A623b9Cb",
+  "0xd69692cE562504E4C8C60eCF5e57ae49c2596add",
+  "0x78a11B4418DfC9cD514f5c21e166a17b84948c8e",
+  "0x0339D5B6e0f75227Cb5B56346B2bc378CEb2f535",
+  "0xe3C3A08AE41c36b204eF9a980f9eF5C579CC3f0f",
+  "0xa9Ae4a0867aCf60340E9eB3760f75ad992A0CC3f",
+  "0xA0561DBFD47498aEA001C040B04f49Fe8Ff99600",
+  "0x10020F3b4d39Ab1303033330517030234cb0bc71",
+  "0x923EC7E98706153Ce2c984DD802230476D4722B4",
+  "0xDCa50a7D3813A97F98cD48922E51c93fdf9b6dA3",
+  "0x10A2BD31da8582231bA355EC7a6d9C2F06932a77",
+  "0x15362848665918EbE0c6Ece095294f90537073F6",
+  "0x0b2A39eA13f50E0cd7b1cE618386Ce65361F3239",
+  "0xfcD11ec7E9536e7B21C0FA98b95dAF81C0448f33",
+  "0xB736704892ca3233a654afA3Bc29Cc930c7512EA",
+  "0xb1FAC377441263655f54944a77506f0ce9eF40b4",
+  "0x19c7C910A7e3ec00197cfd17b4E53756433AFFa5",
+  "0x3eaa211d25c04A992a79b57c32D6F307332B187e",
+  "0x2C568357E5e4BEee207Ab46b5bA5C1196D0D5Ecf"
+].map(a => a.toLowerCase());

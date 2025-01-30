@@ -86,21 +86,20 @@ $(function() {
       }
     }
   
-    // const cl_gauge_contracts = cl_pools.map(a => new ethcall.Contract(a.gauge, CL_GAUGE_ABI));
-    // const cl_rewardRate_calls = cl_gauge_contracts.map(c => c.rewardRate());
-    // const cl_periodFinish_calls = cl_gauge_contracts.map(c => c.periodFinish());
-    // const cl_rewardRates = await App.ethcallProvider.all(cl_rewardRate_calls);
-    // const cl_periodFinishes = await App.ethcallProvider.all(cl_periodFinish_calls);
+    const cl_gauge_contracts = cl_pools.map(a => new ethcall.Contract(a.gauge, CL_GAUGE_ABI));
+    const cl_rewardRate_calls = cl_gauge_contracts.map(c => c.rewardRate());
+    const cl_periodFinish_calls = cl_gauge_contracts.map(c => c.periodFinish());
+    const cl_rewardRates = await App.ethcallProvider.all(cl_rewardRate_calls);
+    const cl_periodFinishes = await App.ethcallProvider.all(cl_periodFinish_calls);
     
-    // for(let i = 0; i < cl_pools.length; i++){
-    //   if((Date.now() / 1000 < cl_periodFinishes[i] && cl_rewardRates[i] > 0)){
-    //     cl_gauges_array.push(cl_pools[i].gauge)
-    //   }
-    // }
+    for(let i = 0; i < cl_pools.length; i++){
+      if((Date.now() / 1000 < cl_periodFinishes[i] && cl_rewardRates[i] > 0)){
+        cl_gauges_array.push(cl_pools[i].gauge)
+      }
+    }
 
   const v2_gages_to_lowercase = v2_gauges_array.map(a => a.toLowerCase());
-  // const cl_gages_to_lowercase = cl_gauges_array.map(a => a.toLowerCase());
-  const cl_gages_to_lowercase = [];
+  const cl_gages_to_lowercase = cl_gauges_array.map(a => a.toLowerCase());
 
   // starting second part of the script
 
