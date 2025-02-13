@@ -707,7 +707,8 @@ const SonicTokens = [
   { "id": "fantomsonicinu-2", "symbol": "FSONIC", "contract": "0x05e31a691405d06708a355c029599c12d5da8b28"},
   { "id": "weth", "symbol": "WETH", "contract": "0x50c42deacd8fc9773493ed674b675be577f2634b"},
   { "id": "sonic-bridged-usdc-e-sonic", "symbol": "USDC.e", "contract": "0x29219dd400f2bf60e5a23d13be72b486d4038894"},
-  { "id": "rings-scusd", "symbol": "SCUSD", "contract": "0xd3dce716f3ef535c5ff8d041c1a41c3bd89b97ae"}
+  { "id": "rings-scusd", "symbol": "SCUSD", "contract": "0xd3dce716f3ef535c5ff8d041c1a41c3bd89b97ae"},
+  { "id": "shadow-2", "symbol": "SHADOW", "contract": "0x3333b97138d4b086720b5ae8a7844b1345a33333"}
 ];
 
 const ModeTokens = [

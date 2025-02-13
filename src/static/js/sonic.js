@@ -8,7 +8,8 @@ const main = async() => {
     "title":"Sonic Network",
     "heading":["Pool Provider","LP", "Reward Tokens", "INFO"],
     "rows": [
-      ['Equalizer          ', `<a href='equalizer'    >Various</a>`, 'EQUAL         ', 'https://equalizer.exchange']
+      ['Equalizer          ', `<a href='equalizer'    >Various</a>`, 'EQUAL         ', 'https://equalizer.exchange'],
+      ['Shadow             ', `<a href='shadow'       >Various</a>`, 'SHADOW        ', 'https://www.shadow.so']
     ].reverse()
   }
 
