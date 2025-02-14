@@ -369,8 +369,8 @@ async function main() {
       let stakeTokenAddress, rewardData, _userStaked, _earned;
       try{
         [stakeTokenAddress, rewardData, _userStaked, _earned] = 
-          await App.ethcallProvider.all([STAKING_POOL.stake(), STAKING_POOL.rewardData(REWARD_TOKEN), STAKING_POOL.balanceOf(App.YOUR_ADDRESS),
-                                          STAKING_POOL.earned(REWARD_TOKEN, App.YOUR_ADDRESS)]);
+          await App.ethcallProvider.all([STAKING_POOL.stake(), STAKING_POOL.rewardData(REWARD_TOKEN_2), STAKING_POOL.balanceOf(App.YOUR_ADDRESS),
+                                          STAKING_POOL.earned(REWARD_TOKEN_2, App.YOUR_ADDRESS)]);
       }catch{
         return {
           stakingAddress: "",
