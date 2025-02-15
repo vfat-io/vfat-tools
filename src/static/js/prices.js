@@ -976,7 +976,8 @@ const ScrollTokens = [
   { "id": "weth","symbol": "WETH", "contract": "0x5300000000000000000000000000000000000004" },
   { "id": "usd-coin", "symbol": "USDC", "contract": "0x06efdbff2a14a7c8e15944d1f4a48f9f95f663a4" },
   { "id": "tether", "symbol": "USDT", "contract": "0xf55bec9cafdbe8730f096aa55dad6d22d44099df" },
-  { "id": "dodo", "symbol": "DODO", "contract": "0x912aB742e1ab30ffa87038C425F9Bc8ED12B3EF4" }
+  { "id": "dodo", "symbol": "DODO", "contract": "0x912aB742e1ab30ffa87038C425F9Bc8ED12B3EF4" },
+  { "id": "nuri-exchange", "symbol": "NURI", "contract": "0xaaae8378809bb8815c08d3c59eb0c7d1529ad769" }
 ];
 
 const telosTokens = [

@@ -19,7 +19,7 @@ $(function() {
     const App = await init_ethers();
   
     _print(`Initialized ${App.YOUR_ADDRESS}\n`);
-    _print("Loading nile gauges...\n");
+    _print("Loading shadow gauges...\n");
   
     const FLOW_VOTER_ADDR = "0x3aF1dD7A2755201F8e2D6dCDA1a61d9f54838f4f"
     const FLOW_VOTER_CONTRACT = new ethcall.Contract(FLOW_VOTER_ADDR, FLOW_VOTER_ABI);
