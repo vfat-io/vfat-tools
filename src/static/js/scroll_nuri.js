@@ -614,10 +614,21 @@ $(function() {
       extraData: "0x00"
     }
   
-    const REWARD_POOL = new ethers.Contract(FARM_STRATEGY_ADDRESS, FARM_STRATEGY_ABI, signer)
+    const FARM_STRATEGY = new ethers.Contract(FARM_STRATEGY_ADDRESS, FARM_STRATEGY_ABI, signer)
+    const REWARD_POOL = new ethers.Contract(rewardPoolAddr, FLOW_GAUGE_ABI, signer)
+
+    showLoading()
+    REWARD_POOL.claimFees()
+        .then(function(t) {
+          return App.provider.waitForTransaction(t.hash)
+        })
+        .catch(function(t) {
+          console.log(t);
+          hideLoading()
+        })
   
       showLoading()
-      REWARD_POOL.simpleHarvest(farm, params)
+      FARM_STRATEGY.simpleHarvest(farm, params)
         .then(function(t) {
           return App.provider.waitForTransaction(t.hash)
         })
@@ -701,10 +712,17 @@ $(function() {
     const signer = App.provider.getSigner()
   
     const REWARD_POOL = new ethers.Contract(rewardPoolAddr, FLOW_GAUGE_ABI, signer)
-  
-    const earnedYFFI = (await REWARD_POOL.earned(REWARD_TOKEN_ADDRESS, App.YOUR_ADDRESS)) / 1e18
-  
-    if (earnedYFFI > 0) {
+
+    showLoading()
+    REWARD_POOL.claimFees()
+        .then(function(t) {
+          return App.provider.waitForTransaction(t.hash)
+        })
+        .catch(function(t) {
+          console.log(t);
+          hideLoading()
+        })
+
       showLoading()
       REWARD_POOL.getReward(App.YOUR_ADDRESS, [REWARD_TOKEN_ADDRESS], {gasLimit: 250000})
         .then(function(t) {
@@ -713,7 +731,6 @@ $(function() {
         .catch(function() {
           hideLoading()
         })
-    }
   }
   
   async function getClToken(App, contract0, contract1) {
