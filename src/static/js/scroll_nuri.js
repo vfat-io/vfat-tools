@@ -317,7 +317,7 @@ $(function() {
     const REWARD_POOL = new ethers.Contract(NFT_FARM_STRATEGY_ADDRESS, NFT_FARM_STRATEGY_ABI, signer)
   
       showLoading()
-      REWARD_POOL.simpleWithdraw(position, extraData, {gasLimit: 250000})
+      REWARD_POOL.simpleWithdraw(position, extraData)
         .then(function(t) {
           console.log(t)
           return App.provider.waitForTransaction(t.hash)
@@ -368,7 +368,7 @@ $(function() {
     const REWARD_POOL = new ethers.Contract(rewardPoolAddr, CL_GAUGE_ABI, signer)
   
       showLoading()
-      REWARD_POOL.getReward(nftId, [rewardTokenAddress], {gasLimit: 250000})
+      REWARD_POOL.getReward(nftId, [rewardTokenAddress])
         .then(function(t) {
           return App.provider.waitForTransaction(t.hash)
         })
@@ -724,7 +724,7 @@ $(function() {
         })
 
       showLoading()
-      REWARD_POOL.getReward(App.YOUR_ADDRESS, [REWARD_TOKEN_ADDRESS], {gasLimit: 250000})
+      REWARD_POOL.getReward(App.YOUR_ADDRESS, [REWARD_TOKEN_ADDRESS])
         .then(function(t) {
           return App.provider.waitForTransaction(t.hash)
         })

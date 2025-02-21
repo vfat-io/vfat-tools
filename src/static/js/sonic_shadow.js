@@ -337,7 +337,7 @@ async function main() {
     const REWARD_POOL = new ethers.Contract(rewardPoolAddr, CL_GAUGE_ABI, signer)
   
       showLoading()
-      REWARD_POOL.getReward([nftId], [REWARD_TOKEN], {gasLimit: 250000})
+      REWARD_POOL.getReward([nftId], [REWARD_TOKEN])
         .then(function(t) {
           return App.provider.waitForTransaction(t.hash)
         })
@@ -651,7 +651,7 @@ async function main() {
   
     if (earnedYFFI > 0) {
       showLoading()
-      REWARD_POOL.getReward(App.YOUR_ADDRESS, [REWARD_TOKEN], {gasLimit: 250000})
+      REWARD_POOL.getReward(App.YOUR_ADDRESS, [REWARD_TOKEN])
         .then(function(t) {
           return App.provider.waitForTransaction(t.hash)
         })
