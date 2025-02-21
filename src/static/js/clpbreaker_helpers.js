@@ -12,6 +12,7 @@ const GENERAL_NFT_MANAGER_ABI = [{"inputs":[{"internalType":"address","name":"_f
     { network : "Linea", name : "NILE CL POS", clFactoryAddress : "0xAAA32926fcE6bE95ea2c51cB4Fcb60836D320C42", nftAddress : "0xAAA78E8C4241990B4ce159E105dA08129345946A", abi : GENERAL_NFT_MANAGER_ABI },
     { network : "Optimistic Ethereum", name : "Velo CL100 NFT", clFactoryAddress : "0x548118C7E0B865C2CfA94D15EC86B666468ac758", nftAddress : "0xbB5DFE1380333CEE4c2EeBd7202c80dE2256AdF4", abi : GENERAL_NFT_MANAGER_ABI },
     { network : "Mode", name : "Velo CL100 NFT", clFactoryAddress : "0x04625B046C69577EfC40e6c0Bb83CDBAfab5a55F", nftAddress : "0x991d5546C4B442B4c5fdc4c8B8b8d131DEB24702", abi : GENERAL_NFT_MANAGER_ABI },
+    { network : "Sonic", name : "Shadow V3 Positions NFT", clFactoryAddress : "0xcD2d0637c94fe77C2896BbCBB174cefFb08DE6d7", nftAddress : "0x12E66C8F215DdD5d48d150c8f46aD0c6fB0F4406", abi : GENERAL_NFT_MANAGER_ABI },
   ]
 
 //FUNCTIONS FOR THE SCRIPT

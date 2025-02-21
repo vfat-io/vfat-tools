@@ -250,6 +250,9 @@ async function main() {
       const sickle_unstake = async function() {
         return sickle_clContract_withdraw(info.stakingAddress, info.nftId, App)
       }
+      const unstake = async function() {
+        return clContract_withdraw(info.stakingAddress, info.nftId, App)
+      }
       const claim = async function() {
         return clContract_claim(info.stakingAddress, info.nftId, App)
       }
@@ -260,12 +263,44 @@ async function main() {
       if(info.has_sickle_account){
         _print_link(`Withdraw NFT ID: ${info.nftId}`, sickle_unstake)
       }
+      // else{
+      //   _print_link(`Withdraw NFT ID: ${info.nftId}`, unstake)
+      // }
       if(info.has_sickle_account){
         _print_link(`Claim rewards, NFT ID: ${info.nftId} ${info.earned.toFixed(6)} (xSHADOW)`, sickle_claim)
       }else{
         _print_link(`Claim rewards, NFT ID: ${info.nftId} ${info.earned.toFixed(6)} (xSHADOW)`, claim)
       }
       _print("");
+  }
+
+  const clContract_withdraw = async function(rewardPoolAddr, nftId, App) {
+    const signer = App.provider.getSigner()
+
+    const farm = {
+      stakingContract: rewardPoolAddr,
+      poolIndex: 0
+    }
+  
+    const position = {
+      farm: farm,
+      nft: NFT_TOKEN_ADDRESS,
+      tokenId: nftId
+    }
+
+    const extraData = "0x00";
+  
+    const REWARD_POOL = new ethers.Contract(NFT_FARM_STRATEGY_ADDRESS, NFT_FARM_STRATEGY_ABI, signer)
+  
+      showLoading()
+      REWARD_POOL.simpleWithdraw(position, extraData, {gasLimit: 5000})
+        .then(function(t) {
+          return App.provider.waitForTransaction(t.hash)
+        })
+        .catch(function(err) {
+          console.log(err)
+          hideLoading()
+        })
   }
 
   const sickle_clContract_withdraw = async function(rewardPoolAddr, nftId, App) {
@@ -400,10 +435,10 @@ async function main() {
       for (const address of newTokenAddresses) {
           tokens[address] = await getGeneralToken(App, address, stakingAddress);
       }
-      if (!getParameterCaseInsensitive(tokens, REWARD_TOKEN)) {
-          tokens[REWARD_TOKEN] = await getGeneralToken(App, REWARD_TOKEN, stakingAddress);
+      if (!getParameterCaseInsensitive(tokens, REWARD_TOKEN_2)) {
+          tokens[REWARD_TOKEN_2] = await getGeneralToken(App, REWARD_TOKEN_2, stakingAddress);
       }
-      const rewardToken = getParameterCaseInsensitive(tokens, REWARD_TOKEN);
+      const rewardToken = getParameterCaseInsensitive(tokens, REWARD_TOKEN_2);
   
       const rewardTokenTicker = rewardToken.symbol;
   
@@ -419,7 +454,7 @@ async function main() {
   
       const stakeTokenPrice =
           prices[stakeTokenAddress]?.usd ?? getParameterCaseInsensitive(prices, stakeTokenAddress)?.usd;
-      const rewardTokenPrice = getParameterCaseInsensitive(prices, REWARD_TOKEN)?.usd;
+      const rewardTokenPrice = getParameterCaseInsensitive(prices, REWARD_TOKEN_2)?.usd;
   
       const weeklyRewards = (Date.now() / 1000 > periodFinish) ? 0 : rewardRate / 1e18 * 604800;
   
@@ -471,28 +506,13 @@ async function main() {
       }
     }
       info.poolPrices.print_price(chain, 4, customURLs);
-      _print(`${info.rewardTokenTicker} Per Week: ${info.weeklyRewards.toFixed(2)} ($${formatMoney(info.usdPerWeek)})`);
       const weeklyAPR = info.usdPerWeek / info.staked_tvl * 100;
       const dailyAPR = weeklyAPR / 7;
       const yearlyAPR = weeklyAPR * 52;
-      _print(`APR: Day ${dailyAPR.toFixed(2)}% Week ${weeklyAPR.toFixed(2)}% Year ${yearlyAPR.toFixed(2)}%`);
       const userStakedUsd = info.userStaked * info.stakeTokenPrice;
       const userStakedPct = userStakedUsd / info.staked_tvl * 100;
       _print(`You are staking ${info.userStaked.toFixed(6)} ${info.stakeTokenTicker} ` +
              `$${formatMoney(userStakedUsd)} (${userStakedPct.toFixed(2)}% of the pool).`);
-      if (info.userStaked > 0) {
-        info.poolPrices.print_contained_price(info.userStaked);
-          const userWeeklyRewards = userStakedPct * info.weeklyRewards / 100;
-          const userDailyRewards = userWeeklyRewards / 7;
-          const userYearlyRewards = userWeeklyRewards * 52;
-          _print(`Estimated ${info.rewardTokenTicker} earnings:`
-              + ` Day ${userDailyRewards.toFixed(2)} ($${formatMoney(userDailyRewards*info.rewardTokenPrice)})`
-              + ` Week ${userWeeklyRewards.toFixed(2)} ($${formatMoney(userWeeklyRewards*info.rewardTokenPrice)})`
-              + ` Year ${userYearlyRewards.toFixed(2)} ($${formatMoney(userYearlyRewards*info.rewardTokenPrice)})`);
-      }
-      const approveTENDAndStake = async function() {
-        return shadowContract_stake(info.stakeTokenAddress, info.stakingAddress, App)
-      }
       const unstake = async function() {
         return rewardsContract_unstake(info.stakingAddress, App)
       }
@@ -518,9 +538,9 @@ async function main() {
         _print_link(`Unstake ${info.userStaked.toFixed(6)} ${info.stakeTokenTicker}`, unstake)
       }
       if(info.has_sickle_account){
-        _print_link(`Claim ${info.earned.toFixed(6)} ${info.rewardTokenTicker} ($${formatMoney(info.earned*info.rewardTokenPrice)})`, sickle_shadow_claim)
+        _print_link(`Claim ${info.earned.toFixed(6)} ${info.rewardTokenTicker}`, sickle_shadow_claim)
       }else{
-        _print_link(`Claim ${info.earned.toFixed(6)} ${info.rewardTokenTicker} ($${formatMoney(info.earned*info.rewardTokenPrice)})`, claim) 
+        _print_link(`Claim ${info.earned.toFixed(6)} ${info.rewardTokenTicker}`, claim) 
       }
       if (info.stakeTokenTicker != "ETH") {
         _print_link(`Revoke (set approval to 0)`, revoke)
@@ -593,63 +613,11 @@ async function main() {
         })
   }
 
-  const shadowContract_stake = async function(stakeTokenAddr, rewardPoolAddr, App, maxAllowance) {
-    const signer = App.provider.getSigner()
-  
-    const TEND_TOKEN = new ethers.Contract(stakeTokenAddr, ERC20_ABI, signer)
-    const WEEBTEND_V2_TOKEN = new ethers.Contract(rewardPoolAddr, FLOW_GAUGE_ABI, signer)
-  
-    const balanceOf = await TEND_TOKEN.balanceOf(App.YOUR_ADDRESS)
-    const currentTEND =  maxAllowance ? (maxAllowance / 1e18 < balanceOf / 1e18
-      ? maxAllowance : balanceOf) : balanceOf
-    const allowedTEND = await TEND_TOKEN.allowance(App.YOUR_ADDRESS, rewardPoolAddr)
-  
-    let allow = Promise.resolve()
-  
-    if (allowedTEND / 1e18 < currentTEND / 1e18) {
-      showLoading()
-      allow = TEND_TOKEN.approve(rewardPoolAddr, ethers.constants.MaxUint256)
-        .then(function(t) {
-          return App.provider.waitForTransaction(t.hash)
-        })
-        .catch(function() {
-          hideLoading()
-          alert('Try resetting your approval to 0 first')
-        })
-    }
-  
-    if (currentTEND / 1e18 > 0) {
-      showLoading()
-      allow
-        .then(async function() {
-          WEEBTEND_V2_TOKEN.deposit(currentTEND, {gasLimit: 500000})
-            .then(function(t) {
-              App.provider.waitForTransaction(t.hash).then(function() {
-                hideLoading()
-              })
-            })
-            .catch(x => {
-              hideLoading()
-              _print('Something went wrong.')
-            })
-        })
-        .catch(x => {
-          hideLoading()
-          _print('Something went wrong.')
-        })
-    } else {
-      alert('You have no tokens to stake!!')
-    }
-  }
-
   const shadowContract_claim = async function(rewardPoolAddr, App) {
     const signer = App.provider.getSigner()
   
     const REWARD_POOL = new ethers.Contract(rewardPoolAddr, FLOW_GAUGE_ABI, signer)
-  
-    const earnedYFFI = (await REWARD_POOL.earned(REWARD_TOKEN, App.YOUR_ADDRESS)) / 1e18
-  
-    if (earnedYFFI > 0) {
+
       showLoading()
       REWARD_POOL.getReward(App.YOUR_ADDRESS, [REWARD_TOKEN])
         .then(function(t) {
@@ -658,7 +626,6 @@ async function main() {
         .catch(function() {
           hideLoading()
         })
-    }
   }
 
   async function getClToken(App, contract0, contract1) {

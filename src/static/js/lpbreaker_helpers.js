@@ -162,7 +162,8 @@ const AERO_FACTORY_ABI = [{"inputs":[{"internalType":"address","name":"_implemen
     { network : "Gnosis Network",                   name : "Elk Liquidity",          factoryAddress : "0xCB018587dA9590A18f49fFE2b85314c33aF3Ad3B", routerAddress : "0xe5759714998e8B50A33c7333C04C2d02e5dcE77f", abi : GENERAL_ROUTER_ABI },
     { network : "Gnosis Network",                   name : "DXswap LP Token",        factoryAddress : "0x5D48C95AdfFD4B40c1AAADc4e08fc44117E02179", routerAddress : "0xe43e60736b1cb4a75ad25240e2f9a62bff65c0c0", abi : GENERAL_ROUTER_ABI },
     { network : "Smart Bitcoin Cash Mainnet",       name : "BenSwap LP Token",       factoryAddress : "0x8d973bAD782c1FFfd8FcC9d7579542BA7Dd0998D", routerAddress : "0xa194133ed572d86fe27796f2feadbafc062cb9e0", abi : GENERAL_ROUTER_ABI },
-    { network : "Smart Bitcoin Cash Mainnet",       name : "Uknown LP Token",        factoryAddress : "0x72cd8c0B5169Ff1f337E2b8F5b121f8510b52117", routerAddress : "0x87786ffa56d47a3862e272e67c82d9d9fae14347", abi : GENERAL_ROUTER_ABI }
+    { network : "Smart Bitcoin Cash Mainnet",       name : "Uknown LP Token",        factoryAddress : "0x72cd8c0B5169Ff1f337E2b8F5b121f8510b52117", routerAddress : "0x87786ffa56d47a3862e272e67c82d9d9fae14347", abi : GENERAL_ROUTER_ABI },
+    { network : "Sonic Mainnet",                    name : "Uknown LP Token",        factoryAddress : "0x2dA25E7446A70D7be65fd4c053948BEcAA6374c8", routerAddress : "0x1D368773735ee1E678950B7A97bcA2CafB330CDc", abi : GENERAL_SOLIDLY_ROUTER_ABI }
   ]
 
 //FUNCTIONS FOR THE SCRIPT
