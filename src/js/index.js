@@ -261,6 +261,21 @@ window.NETWORKS = {
       "https://explorer.inkonchain.com/"
     ]
   },
+  SWELL: {
+    "chainId": "0x783",
+    "chainName": "Swellchain",
+    "nativeCurrency": {
+      "name": "Ethereum",
+      "symbol": "ETH",
+      "decimals": 18
+    },
+    "rpcUrls": [
+      "https://swell-mainnet.alt.technology"
+    ],
+    "blockExplorerUrls": [
+      "https://explorer.swellnetwork.io/"
+    ]
+  },
   SONEIUM: {
     "chainId": "0x74c",
     "chainName": "Soneium",

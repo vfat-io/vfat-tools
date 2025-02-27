@@ -694,6 +694,12 @@ const InkTokens = [
   { "id": "velodrome-finance", "symbol": "XVELO", "contract": "0x7f9adfbd38b669f03d1d11000bc76b9aaea28a81"}
 ];
 
+const SwellTokens = [
+  { "id": "weth", "symbol": "WETH", "contract": "0x4200000000000000000000000000000000000006"},
+  { "id": "usd-coin", "symbol": "USDC", "contract": "0x99a38322cAF878Ef55AE4d0Eda535535eF8C7960"},
+  { "id": "velodrome-finance", "symbol": "XVELO", "contract": "0x7f9adfbd38b669f03d1d11000bc76b9aaea28a81"}
+];
+
 const SoneiumTokens = [
   { "id": "weth", "symbol": "WETH", "contract": "0x4200000000000000000000000000000000000006"},
   { "id": "usd-coin", "symbol": "USDC", "contract": "0xbA9986D2381edf1DA03B0B9c1f8b00dc4AacC369"},
@@ -1288,6 +1294,15 @@ async function getInkPrices() {
   const idPrices = await lookUpPrices(InkTokens.map(x => x.id));
   const prices = {}
   for (const bt of InkTokens)
+      if (idPrices[bt.id])
+          prices[bt.contract] = idPrices[bt.id];
+  return prices;
+}
+
+async function getSwellPrices() {
+  const idPrices = await lookUpPrices(SwellTokens.map(x => x.id));
+  const prices = {}
+  for (const bt of SwellTokens)
       if (idPrices[bt.id])
           prices[bt.contract] = idPrices[bt.id];
   return prices;

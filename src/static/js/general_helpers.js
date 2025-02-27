@@ -690,6 +690,8 @@ async function loadGeneralChefContract(App, tokens, prices, chef, chefAddress, c
     break;
     case "soneium" : _print(`<a href='https://soneium.blockscout.com/address/${chefAddress}' target='_blank'>Staking Contract</a>`);
     break;
+    case "swell" : _print(`<a href='https://explorer.swellnetwork.io/address/${chefAddress}' target='_blank'>Staking Contract</a>`);
+    break;
   }
   _print(`Found ${poolCount} pools.\n`)
 
