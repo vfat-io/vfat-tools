@@ -235,7 +235,8 @@ async function getClData(App, address, vfat_io_tokens){
               address: token1,
               symbol: token1Symbol,
               decimals: Number(token1Decimals),
-              chainId: 10
+              chainId: 10,
+              logoURI: ""
             }
       ]
     }else if(!vfat_io_tokens.includes(token0.toLowerCase()) && vfat_io_tokens.includes(token1.toLowerCase())){
@@ -244,7 +245,8 @@ async function getClData(App, address, vfat_io_tokens){
               address: token0,
               symbol: token0Symbol,
               decimals: Number(token0Decimals),
-              chainId: 10
+              chainId: 10,
+              logoURI: ""
             }
       ]
     }else{
@@ -253,13 +255,15 @@ async function getClData(App, address, vfat_io_tokens){
             address: token0,
             symbol: token0Symbol,
             decimals: Number(token0Decimals),
-            chainId: 10
+            chainId: 10,
+            logoURI: ""
         },
         {
             address: token1,
             symbol: token1Symbol,
             decimals: Number(token1Decimals),
-            chainId: 10
+            chainId: 10,
+            logoURI: ""
         }
       ]
     }
@@ -298,7 +302,8 @@ async function getV2Data(App, address, vfat_io_tokens) {
               address: token1,
               symbol: token1Symbol,
               decimals: Number(token1Decimals),
-              chainId: 10
+              chainId: 10,
+              logoURI: ""
             }
       ]
     }else if(!vfat_io_tokens.includes(token0.toLowerCase()) && vfat_io_tokens.includes(token1.toLowerCase())){
@@ -307,7 +312,8 @@ async function getV2Data(App, address, vfat_io_tokens) {
               address: token0,
               symbol: token0Symbol,
               decimals: Number(token0Decimals),
-              chainId: 10
+              chainId: 10,
+              logoURI: ""
             }
       ]
     }else{
@@ -316,17 +322,17 @@ async function getV2Data(App, address, vfat_io_tokens) {
             address: token0,
             symbol: token0Symbol,
             decimals: Number(token0Decimals),
-            chainId: 10
+            chainId: 10,
+            logoURI: ""
         },
         {
             address: token1,
             symbol: token1Symbol,
             decimals: Number(token1Decimals),
-            chainId: 10
+            chainId: 10,
+            logoURI: ""
         }
       ]
     }
 }
 
-const RootClGauges = [
-].map(a => a.toLowerCase());

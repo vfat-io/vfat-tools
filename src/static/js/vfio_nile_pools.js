@@ -217,7 +217,8 @@ if(vfat_io_tokens.includes(token0.toLowerCase()) && vfat_io_tokens.includes(toke
           address: token1,
           symbol: token1Symbol,
           decimals: Number(token1Decimals),
-          chainId: 59144
+          chainId: 59144,
+          logoURI: ""
         }
   ]
 }else if(!vfat_io_tokens.includes(token0.toLowerCase()) && vfat_io_tokens.includes(token1.toLowerCase())){
@@ -226,7 +227,8 @@ if(vfat_io_tokens.includes(token0.toLowerCase()) && vfat_io_tokens.includes(toke
           address: token0,
           symbol: token0Symbol,
           decimals: Number(token0Decimals),
-          chainId: 59144
+          chainId: 59144,
+          logoURI: ""
         }
   ]
 }else{
@@ -235,13 +237,15 @@ if(vfat_io_tokens.includes(token0.toLowerCase()) && vfat_io_tokens.includes(toke
         address: token0,
         symbol: token0Symbol,
         decimals: Number(token0Decimals),
-        chainId: 59144
+        chainId: 59144,
+        logoURI: ""
     },
     {
         address: token1,
         symbol: token1Symbol,
         decimals: Number(token1Decimals),
-        chainId: 59144
+        chainId: 59144,
+        logoURI: ""
     }
   ]
 }
@@ -280,7 +284,8 @@ if(vfat_io_tokens.includes(token0.toLowerCase()) && vfat_io_tokens.includes(toke
           address: token1,
           symbol: token1Symbol,
           decimals: Number(token1Decimals),
-          chainId: 59144
+          chainId: 59144,
+          logoURI: ""
         }
   ]
 }else if(!vfat_io_tokens.includes(token0.toLowerCase()) && vfat_io_tokens.includes(token1.toLowerCase())){
@@ -289,7 +294,8 @@ if(vfat_io_tokens.includes(token0.toLowerCase()) && vfat_io_tokens.includes(toke
           address: token0,
           symbol: token0Symbol,
           decimals: Number(token0Decimals),
-          chainId: 59144
+          chainId: 59144,
+          logoURI: ""
         }
   ]
 }else{
@@ -298,13 +304,15 @@ if(vfat_io_tokens.includes(token0.toLowerCase()) && vfat_io_tokens.includes(toke
         address: token0,
         symbol: token0Symbol,
         decimals: Number(token0Decimals),
-        chainId: 59144
+        chainId: 59144,
+        logoURI: ""
     },
     {
         address: token1,
         symbol: token1Symbol,
         decimals: Number(token1Decimals),
-        chainId: 59144
+        chainId: 59144,
+        logoURI: ""
     }
   ]
 }

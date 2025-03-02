@@ -135,7 +135,8 @@ async function getData(App, pool, token0, token1, vfat_io_tokens) {
               address: token1,
               symbol: token1Symbol,
               decimals: Number(token1Decimals),
-              chainId: 1
+              chainId: 1,
+              logoURI: ""
             }
       ]
     }else if(!vfat_io_tokens.includes(token0.toLowerCase()) && vfat_io_tokens.includes(token1.toLowerCase())){
@@ -144,7 +145,8 @@ async function getData(App, pool, token0, token1, vfat_io_tokens) {
               address: token0,
               symbol: token0Symbol,
               decimals: Number(token0Decimals),
-              chainId: 1
+              chainId: 1,
+              logoURI: ""
             }
       ]
     }else{
@@ -153,13 +155,15 @@ async function getData(App, pool, token0, token1, vfat_io_tokens) {
             address: token0,
             symbol: token0Symbol,
             decimals: Number(token0Decimals),
-            chainId: 1
+            chainId: 1,
+            logoURI: ""
         },
         {
             address: token1,
             symbol: token1Symbol,
             decimals: Number(token1Decimals),
-            chainId: 1
+            chainId: 1,
+            logoURI: ""
         }
       ]
     }
