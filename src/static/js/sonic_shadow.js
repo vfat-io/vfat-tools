@@ -53,7 +53,7 @@ async function main() {
     const tokens = {};
     const prices = await getSonicPrices();
 
-    const FLOW_VOTER_ADDR = "0x3aF1dD7A2755201F8e2D6dCDA1a61d9f54838f4f"
+    const FLOW_VOTER_ADDR = "0x9F59398D0a397b2EEB8a6123a6c7295cB0b0062D"
     const FLOW_VOTER_CONTRACT = new ethcall.Contract(FLOW_VOTER_ADDR, FLOW_VOTER_ABI);
 
     const [gauges_] = await App.ethcallProvider.all([FLOW_VOTER_CONTRACT.getAllGauges()]);
@@ -335,6 +335,13 @@ async function main() {
   const sickle_clContract_claim = async function(rewardPoolAddr, nftId, App) {
     const signer = App.provider.getSigner();
 
+    const decodedExtraData = {
+      claimTokens: [REWARD_TOKEN],
+      behavior: 0
+    }
+
+    const extraData = ethers.utils.defaultAbiCoder.encode(["tuple(address[] claimTokens, uint256 behavior)"],[decodedExtraData])
+
     const farm = {
       stakingContract: rewardPoolAddr,
       poolIndex: 0
@@ -350,7 +357,7 @@ async function main() {
       rewardTokens: [REWARD_TOKEN],
       amount0Max: 0,
       amount1Max: 0,
-      extraData: "0x00"
+      extraData: extraData
     }
   
     const REWARD_POOL = new ethers.Contract(NFT_FARM_STRATEGY_ADDRESS, NFT_FARM_STRATEGY_ABI, signer)
