@@ -9,7 +9,8 @@ const main = async() => {
     "heading":["Pool Provider","LP", "Reward Tokens", "INFO"],
     "rows": [
       ["Dodo         ", `<a href='dodo'        >Various</a>`,"DODO        ","https://app.dodoex.io"],
-      ["Nuri         ", `<a href='nuri'        >Various</a>`,"NURI        ","https://www.nuri.exchange"]
+      ["Nuri         ", `<a href='nuri'        >Various</a>`,"NURI        ","https://www.nuri.exchange"],
+      ["Sickle       ", `<a href='sickle'      >Various</a>`,"            ",""]
     ].reverse()
   }
 

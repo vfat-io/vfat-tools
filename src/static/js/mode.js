@@ -9,7 +9,8 @@ const main = async() => {
     "heading":["Pool Provider","LP", "Reward Tokens", "INFO"],
     "rows": [
       ["Velodrome             ", `<a href="velodrome"      >Various</a>`,"XVELO         ","https://app.velodrome.finance"],
-      ["Velodrome Bridge      ", `<a href="bridge"         >Various</a>`,"XVELO -> VELO ",""]
+      ["Velodrome Bridge      ", `<a href="bridge"         >Various</a>`,"XVELO -> VELO ",""],
+      ["Sickle                ", `<a href="sickle"         >Various</a>`,"              ",""]
     ].reverse()
   }
 

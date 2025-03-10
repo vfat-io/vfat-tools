@@ -89,7 +89,8 @@ const main = async() => {
       ["Umami               ", `<a href="/arbitrum/umami"       >Various</a>`,"Various            ","https://umami.finance"],
       ["Heroglyphs          ", `<a href="/arbitrum/heroglyphs"  >Various</a>`,"                   ","https://heroglyphs.com"],
       ["Ramses Exchange     ", `<a href="/arbitrum/ramses"      >Various</a>`,"RAM                ","https://app.ramses.exchange"],
-      ["Pancake Swap V3     ", `<a href="/arbitrum/pancakev3"   >Various</a>`,"CAKE               ","https://pancakeswap.finance"]
+      ["Pancake Swap V3     ", `<a href="/arbitrum/pancakev3"   >Various</a>`,"CAKE               ","https://pancakeswap.finance"],
+      ["Sickle              ", `<a href="/arbitrum/sickle"      >Various</a>`,"                   ",""]
     ].reverse()
   }
 

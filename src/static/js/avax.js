@@ -111,7 +111,8 @@ const main = async() => {
         ["Grape Finance           ",`<a href="grape"            >Various</a>`,"WINE / GRAPE ","https://grapefinance.app"],
         ["Subzero                 ",`<a href="subzero"          >Various</a>`,"ZSHARE / SUB ","https://app.subzero.plus"],
         ["Butterfly Finance       ",`<a href="bfly"             >Various</a>`,"BFLY         ","https://app.butterflydefi.xyz"],
-        ["Pharaoh Finance         ",`<a href="pharaoh"          >Various</a>`,"PHAR         ","https://pharaoh.exchange"]
+        ["Pharaoh Finance         ",`<a href="pharaoh"          >Various</a>`,"PHAR         ","https://pharaoh.exchange"],
+        ["Sickle                  ",`<a href="sickle"           >Various</a>`,"             ",""]
     ].reverse()
   }
 

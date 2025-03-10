@@ -8,7 +8,8 @@ const main = async() => {
     "title":"MANTLE Network",
     "heading":["Pool Provider","LP", "Reward Tokens", "INFO"],
     "rows": [
-      ["Merchant Moe         ", `<a href='merchantmoe'        >Various</a>`,"MOE        ","https://merchantmoe.com"]
+      ["Merchant Moe         ", `<a href='merchantmoe'        >Various</a>`,"MOE        ","https://merchantmoe.com"],
+      ["Sickle               ", `<a href='sickle'             >Various</a>`,"           ",""]
     ].reverse()
   }
 
