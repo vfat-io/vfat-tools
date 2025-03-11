@@ -10,6 +10,7 @@ const main = async() => {
     "rows": [
       ["Velodrome             ", `<a href="velodrome"      >Various</a>`,"XVELO         ","https://app.velodrome.finance"],
       ["Velodrome Bridge      ", `<a href="velo_bridge"    >Various</a>`,"XVELO -> VELO ",""],
+      ["Ra Exchange           ", `<a href="ra"             >Various</a>`,"RA            ","https://www.ra.exchange"],
       ["Sickle                ", `<a href="sickle"         >Various</a>`,"              ",""]
     ].reverse()
   }

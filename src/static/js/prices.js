@@ -730,7 +730,8 @@ const FraxtalTokens = [
   { "id": "usd-coin", "symbol": "USDC", "contract": "0xdcc0f2d8f90fde85b10ac1c8ab57dc0ae946a543"},
   { "id": "ethena-usde", "symbol": "USDe", "contract": "0x5d3a1ff2b6bab83b63cd9ad0787074081a52ef34"},
   { "id": "frax", "symbol": "FRAX", "contract": "0xfc00000000000000000000000000000000000001"},
-  { "id": "velodrome-finance", "symbol": "XVELO", "contract": "0x7f9adfbd38b669f03d1d11000bc76b9aaea28a81"}
+  { "id": "velodrome-finance", "symbol": "XVELO", "contract": "0x7f9adfbd38b669f03d1d11000bc76b9aaea28a81"},
+  { "id": "frax-share", "symbol": "FXS", "contract": "0xfc00000000000000000000000000000000000002"}
 ];
 
 const maticTokens = [
