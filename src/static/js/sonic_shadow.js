@@ -206,6 +206,18 @@ async function main() {
   
   async function loadClSynthetixPoolInfo(App, tokens, prices, stakingAbi, stakingAddress, poolAddress, tokenAddress0, tokenAddress1, liquidity,
     nftId, has_sickle_account, owner_sickle_address) {
+      if(stakingAddress == "0x0000000000000000000000000000000000000000"){
+        const token0 = new ethcall.Contract(tokenAddress0, ERC20_ABI);
+        const token1 = new ethcall.Contract(tokenAddress1, ERC20_ABI);
+        const stakeToken = await getClToken(App, token0, token1, stakingAddress);
+        const stakeTokenTicker = stakeToken.symbol0 + '-' + stakeToken.symbol1;
+        return {
+          stakingAddress,
+          stakeTokenTicker,
+          has_sickle_account,
+          nftId
+        }
+      }
       const STAKING_POOL = new ethcall.Contract(stakingAddress, stakingAbi);
       const rewardToken = await getGeneralToken(App, REWARD_TOKEN_2, stakingAddress);
   
@@ -244,14 +256,24 @@ async function main() {
   }
   
   async function printShadowClPool(App, info) {
+    if(info.stakingAddress == "0x0000000000000000000000000000000000000000"){
+      _print(`Pool - ${info.stakeTokenTicker}`)
+      _print(`You are staking ${info.stakeTokenTicker} (Nft ID: ${info.nftId})`);
+
+      const sickle_nft_manager_unstake = async function() {
+        return sickle_nft_manager_clContract_withdraw(info.stakingAddress, info.nftId, App)
+      }
+      _print(`<a target="_blank" href="https://sonicscan.org/address/${info.stakingAddress}#code">Sonic Scan</a>`);
+      if(info.has_sickle_account){
+        _print_link(`Withdraw NFT ID: ${info.nftId}`, sickle_nft_manager_unstake)
+      }
+      _print("");
+    }else{
       _print(`Pool - ${info.stakeTokenTicker}`)
       _print(`${info.rewardTokenTicker} Per Week: ${info.weeklyRewards.toFixed(2)}`);
       _print(`You are staking ${info.stakeTokenTicker} (Nft ID: ${info.nftId})`);
       const sickle_unstake = async function() {
         return sickle_clContract_withdraw(info.stakingAddress, info.nftId, App)
-      }
-      const unstake = async function() {
-        return clContract_withdraw(info.stakingAddress, info.nftId, App)
       }
       const claim = async function() {
         return clContract_claim(info.stakingAddress, info.nftId, App)
@@ -263,22 +285,20 @@ async function main() {
       if(info.has_sickle_account){
         _print_link(`Withdraw NFT ID: ${info.nftId}`, sickle_unstake)
       }
-      // else{
-      //   _print_link(`Withdraw NFT ID: ${info.nftId}`, unstake)
-      // }
       if(info.has_sickle_account){
         _print_link(`Claim rewards, NFT ID: ${info.nftId} ${info.earned.toFixed(6)} (xSHADOW)`, sickle_claim)
       }else{
         _print_link(`Claim rewards, NFT ID: ${info.nftId} ${info.earned.toFixed(6)} (xSHADOW)`, claim)
       }
       _print("");
+    }
   }
 
-  const clContract_withdraw = async function(rewardPoolAddr, nftId, App) {
+  const sickle_nft_manager_clContract_withdraw = async function(rewardPoolAddr, nftId, App) {
     const signer = App.provider.getSigner()
 
     const farm = {
-      stakingContract: rewardPoolAddr,
+      stakingContract: NFT_TOKEN_ADDRESS,
       poolIndex: 0
     }
   
