@@ -21,7 +21,7 @@ $(function() {
     _print(`Initialized ${App.YOUR_ADDRESS}\n`);
     _print("Loading shadow gauges...\n");
   
-    const FLOW_VOTER_ADDR = "0x3aF1dD7A2755201F8e2D6dCDA1a61d9f54838f4f"
+    const FLOW_VOTER_ADDR = "0x9F59398D0a397b2EEB8a6123a6c7295cB0b0062D"
     const FLOW_VOTER_CONTRACT = new ethcall.Contract(FLOW_VOTER_ADDR, FLOW_VOTER_ABI);
   
     let v2Gauges = [], clGauges = [], activeV2Gauges = [], activeClGauges = [];
