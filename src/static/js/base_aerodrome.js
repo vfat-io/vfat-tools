@@ -120,7 +120,9 @@ async function main() {
   
     for(let i = 0; i < lpTokenBatch.length; i++){
       const pool = {isV2: isPools[i], ...lpTokenBatch[i]}
-      allPools.push(pool);
+      if(pool.gauge.toLowerCase() != "0x287C94a1fE647014317E91A0E42425D6a237081D".toLowerCase()){
+        allPools.push(pool);
+      }
     }
   
     for(const pool of allPools){
