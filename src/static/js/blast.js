@@ -8,8 +8,7 @@ const main = async() => {
     "title":"Velas Network",
     "heading":["Pool Provider","LP", "Reward Tokens", "INFO"],
     "rows": [
-      // NO FARMINGS YET TO ADD
-        //["WagyuSwap",     `<a href="wagyuswap"       >Various</a>`,      "WAG",       "https://exchange.wagyuswap.app" ]
+      ["Uniswap                 ",`<a href="uniswap"          >Various</a>`,"             ","https://app.uniswap.org"]
     ].reverse()
   }
 

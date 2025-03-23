@@ -25,6 +25,7 @@ const main = async() => {
       ["Ajna                           ",`<a href="ajna"                 >Various</a>`,"AJNA            ","https://app.ajna.finance"],
       ["Pancake Swap V3                ",`<a href="pancakev3"            >Various</a>`,"CAKE            ","https://pancakeswap.finance"],
       ["Base Stuck                     ",`<a href="stuck"                >Various</a>`,"                ","https://vfat.tools/base/stuck"],
+      ["Uniswap                        ",`<a href="uniswap"              >Various</a>`,"                ","https://app.uniswap.org"],
       ["Base Sickle                    ",`<a href="sickle"               >Various</a>`,"                ",""]
     ].reverse()
   }

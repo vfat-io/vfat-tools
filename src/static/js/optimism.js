@@ -31,6 +31,7 @@ const main = async() => {
       ["Ajna                  ", `<a href="ajna"              >Various</a>`,"AJNA         ","https://app.ajna.finance"],
       ["Velodrome Bridge      ", `<a href="bridge"            >Various</a>`,"VELO -> XVELO",""],
       ["Wallet Connect        ", `<a href="walletconnect"     >Various</a>`,"WCT          ","https://walletconnect.network"],
+      ["Uniswap               ", `<a href="uniswap"           >Various</a>`,"             ","https://app.uniswap.org"],
       ["Sickle                ", `<a href="sickle"            >Various</a>`,"             ",""]
     ].reverse()
   }

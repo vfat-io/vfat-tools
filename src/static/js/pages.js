@@ -207,6 +207,7 @@ const main = async () => {
       ["Infinex                      ", `<a href="infinex/"           >Various</a>`, "                   ", "https://app.infinex.xyz"],
       ["Pancake Swap V3              ", `<a href="pancakev3/"         >Various</a>`, "CAKE               ", "https://pancakeswap.finance"],
       ["PsyDAO                       ", `<a href="psydao/"            >Various</a>`, "BIO                ", "https://www.psydao.io"],
+      ["Uniswap                      ", `<a href="uniswap/"           >Various</a>`, "                   ", "https://app.uniswap.org"],
       ["Sickle                       ", `<a href="sickle/"            >Various</a>`, "                   ", ""]
     ].reverse()
   }
