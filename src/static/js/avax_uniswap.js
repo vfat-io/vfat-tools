@@ -145,7 +145,7 @@ $(function() {
       const sickle_unstake = async function() {
         return sickle_clContract_withdraw(info.nftId, App)
       }
-      _print(`<a target="_blank" href=https://etherscan.io/address/${NFT_TOKEN_ADDRESS}#code">Etherscan</a>`);
+      _print(`<a target="_blank" href=https://snowscan.xyz/address/${NFT_TOKEN_ADDRESS}#code">Snowscan</a>`);
       if(info.has_sickle_account){
         _print_link(`Withdraw NFT ID: ${info.nftId}`, sickle_unstake)
       }

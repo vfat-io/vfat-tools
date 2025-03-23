@@ -186,6 +186,9 @@ const pageNetwork = function() {
   if (network.toLowerCase() === 'swell') {
     return window.NETWORKS.SWELL
   }
+  if (network.toLowerCase() === 'unichain') {
+    return window.NETWORKS.UNICHAIN
+  }
   if (network.toLowerCase() === 'manta') {
     return window.NETWORKS.MANTA
   }
@@ -3939,6 +3942,9 @@ function getErc20Prices(prices, pool, chain="eth") {
     case "swell":
       poolUrl=`https://explorer.swellnetwork.io/token/${pool.address}`;
       break;
+    case "unichain":
+      poolUrl=`https://uniscan.xyz/token/${pool.address}`;
+      break;
     case "meter":
       poolUrl=`https://scan.meter.io/token/${pool.address}`;
       break;
@@ -4732,6 +4738,9 @@ async function printSynthetixPool(App, info, chain="eth", customURLs) {
       case "swell":
         _print(`<a target="_blank" href="https://explorer.swellnetwork.io/address/${info.stakingAddress}">Swell Explorer</a>`);
         break;
+      case "unichain":
+        _print(`<a target="_blank" href="https://uniscan.xyz/address/${info.stakingAddress}">Unichain Explorer</a>`);
+        break;
       case "manta":
         _print(`<a target="_blank" href="https://pacific-explorer.manta.network/address/${info.stakingAddress}">Manta Explorer</a>`);
         break;
@@ -5014,6 +5023,8 @@ function getChainExplorerUrl(chain, address){
       return `https://soneium.blockscout.com/token/${address}`;
     case "swell" :
       return `https://explorer.swellnetwork.io/token/${address}`;
+    case "unichain" :
+      return `https://uniscan.xyz/token/${address}`;
     case "fraxtal" :
       return `https://fraxscan.com/token/${address}`;
     case "manta" :

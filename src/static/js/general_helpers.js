@@ -692,6 +692,8 @@ async function loadGeneralChefContract(App, tokens, prices, chef, chefAddress, c
     break;
     case "swell" : _print(`<a href='https://explorer.swellnetwork.io/address/${chefAddress}' target='_blank'>Staking Contract</a>`);
     break;
+    case "unichain" : _print(`<a href='https://uniscan.xyz/address/${chefAddress}' target='_blank'>Staking Contract</a>`);
+    break;
   }
   _print(`Found ${poolCount} pools.\n`)
 

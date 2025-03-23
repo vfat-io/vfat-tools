@@ -276,6 +276,21 @@ window.NETWORKS = {
       "https://explorer.swellnetwork.io/"
     ]
   },
+  UNICHAIN: {
+    "chainId": "0x82",
+    "chainName": "Unichain",
+    "nativeCurrency": {
+      "name": "Ethereum",
+      "symbol": "ETH",
+      "decimals": 18
+    },
+    "rpcUrls": [
+      "https://unichain-rpc.publicnode.com"
+    ],
+    "blockExplorerUrls": [
+      "https://uniscan.xyz/"
+    ]
+  },
   SONEIUM: {
     "chainId": "0x74c",
     "chainName": "Soneium",
