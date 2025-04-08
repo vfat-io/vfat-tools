@@ -13,7 +13,7 @@ const BRIDGE_ABI = [{"inputs":[{"internalType":"address","name":"_owner","type":
     _print(`Connected to RPC: ${App.rpcProvider.connection.url}\n`);
 
     const XVELO_ADDR = "0x7f9AdFbd38b669F03d1d11000Bc76b9AaEA28A81";
-    const BRIDGE_ADDR = "0xA7287a56C01ac8Baaf8e7B662bDB41b10889C7A6";
+    const BRIDGE_ADDR = "0x1A9d17828897d6289C6dff9DC9F5cc3bAEa17814";
 
     let log = document.getElementById("log");
 
