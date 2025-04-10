@@ -75,9 +75,6 @@ const MAILBOX_ADDR = "0xd4C1905BB1D26BC93DAC913e13CaCC278CdCC80D";  // you could
     _print_link(`Deposit ${(veloBalance / 1e18).toFixed(2)} VELO`, deposit_swell);
     _print("");
     _print("");
-    _print_bold("Convert your VELO to XVELO");
-    _print_link(`Convert ${(veloBalance / 1e18).toFixed(2)} VELO`, convertVelo);
-    _print("");
     _print_bold("Convert your XVELO to VELO");
     _print_link(`Convert ${(xVeloBalance / 1e18).toFixed(2)} XVELO`, convert);
 
@@ -165,372 +162,177 @@ const velo_deposit_mode = async function (App, veloBalance){
   })
 }
 
-const velo_deposit_fraxtal = async function (App, veloBalance){ //252
-  showLoading();
-
+const velo_deposit_fraxtal = async function (App, veloBalance){
   const signer = App.provider.getSigner();
 
   const veloTokenContract = new ethers.Contract(VELO_ADDR, ERC20_ABI, signer);
-  const xVeloTokenContract = new ethers.Contract(XVELO_ADDR, ERC20_ABI, signer);
-  const lockboxContract = new ethers.Contract(LOCKBOX_ADDR, LOCKBOX_ABI, signer);
   const bridgeContract = new ethers.Contract(BRIDGE_ADDR, BRIDGE_ABI, signer);
 
-
-  veloTokenContract.approve(LOCKBOX_ADDR, veloBalance).then(function(t) {
+  veloTokenContract.approve(BRIDGE_ADDR, veloBalance).then(function(t) {
     showLoading();
     return App.provider.waitForTransaction(t.hash)
   }).catch(function() {
     hideLoading()
     alert('Try resetting your approval to 0 first');
-    transactionFailedWithoutErrorMessage2();
-  }).then(async function() {
-    lockboxContract.deposit(veloBalance).then(function(t){
-      App.provider.waitForTransaction(t.hash).then(async function (){
-      }).catch(function(e){
-        _print(`Error ${e} The page will be refreshed in 25 seconds.`);
-        transactionFailedWithoutErrorMessage2();
-      }).then(async function(){
-        xVeloTokenContract.balanceOf(App.YOUR_ADDRESS).then(async function(xvb){
-          xVeloTokenContract.approve(BRIDGE_ADDR, xvb).then(async function(){
-            xVeloTokenContract.allowance(App.YOUR_ADDRESS, BRIDGE_ADDR).then(async function(xvb){
-              bridgeContract.sendToken(App.YOUR_ADDRESS, xvb, 252, {value: ethers.utils.parseEther("0.001")})
-              hideLoading();
-              _print_bold(`Available XVELO balance on Fraxtal ${(xvb / 1e18).toFixed(2)}`);
-              _print(`The page will be refreshed in 25 seconds.`);
-              transactionFailedWithoutErrorMessage2();
-            }).catch(function(e){
-              _print(`Error ${e} The page will be refreshed in 25 seconds.`);
-              transactionFailedWithoutErrorMessage2();
-            })
-          }).catch(function(e){
-            _print(`Error ${e} The page will be refreshed in 25 seconds.`);
-            transactionFailedWithoutErrorMessage2();
-          })
-        }).catch(function(e){
-          _print(`Error ${e} The page will be refreshed in 25 seconds.`);
-          transactionFailedWithoutErrorMessage2();
-        })
-      }).catch(function(e){
-        _print(`Error ${e} The page will be refreshed in 25 seconds.`);
-        transactionFailedWithoutErrorMessage2();
-      })
-    }).catch(function(e){
-      _print(`Error ${e} The page will be refreshed in 25 seconds.`);
-      transactionFailedWithoutErrorMessage2();
+    transactionFailedWithoutErrorMessage();
+  }).then(async function(){
+    veloTokenContract.allowance(App.YOUR_ADDRESS, BRIDGE_ADDR).then(async function(vb){
+    bridgeContract.sendToken(App.YOUR_ADDRESS, vb, 252, {value: ethers.utils.parseEther("0.001")})
+    hideLoading();
+    _print(`The page will be refreshed in 15 seconds.`);
+    transactionFailedWithoutErrorMessage();
+  }).catch(function(e){
+    _print(`Error ${e} The page will be refreshed in 15 seconds.`);
+    transactionFailedWithoutErrorMessage();
     })
   }).catch(function(e){
-    _print(`Error ${e} The page will be refreshed in 25 seconds.`);
-    transactionFailedWithoutErrorMessage2();
+    _print(`Error ${e} The page will be refreshed in 15 seconds.`);
+    transactionFailedWithoutErrorMessage();
   })
 }
 
-const velo_deposit_lisk = async function (App, veloBalance){ // 1135
-  showLoading();
-
+const velo_deposit_lisk = async function (App, veloBalance){
   const signer = App.provider.getSigner();
 
   const veloTokenContract = new ethers.Contract(VELO_ADDR, ERC20_ABI, signer);
-  const xVeloTokenContract = new ethers.Contract(XVELO_ADDR, ERC20_ABI, signer);
-  const lockboxContract = new ethers.Contract(LOCKBOX_ADDR, LOCKBOX_ABI, signer);
   const bridgeContract = new ethers.Contract(BRIDGE_ADDR, BRIDGE_ABI, signer);
 
-  // const mailboxContract = new ethers.Contract(MAILBOX_ADDR, MAILBOX_ABI, signer);
-
-  // const fee = await mailboxContract.quoteDispatch(1135, App.YOUR_ADDRESS, "");
-
-  veloTokenContract.approve(LOCKBOX_ADDR, veloBalance).then(function(t) {
+  veloTokenContract.approve(BRIDGE_ADDR, veloBalance).then(function(t) {
     showLoading();
     return App.provider.waitForTransaction(t.hash)
   }).catch(function() {
     hideLoading()
     alert('Try resetting your approval to 0 first');
-    transactionFailedWithoutErrorMessage2();
-  }).then(async function() {
-    lockboxContract.deposit(veloBalance).then(function(t){
-      App.provider.waitForTransaction(t.hash).then(async function (){
-      }).catch(function(e){
-        _print(`Error ${e} The page will be refreshed in 25 seconds.`);
-        transactionFailedWithoutErrorMessage2();
-      }).then(async function(){
-        xVeloTokenContract.balanceOf(App.YOUR_ADDRESS).then(async function(xvb){
-          xVeloTokenContract.approve(BRIDGE_ADDR, xvb).then(async function(){
-            xVeloTokenContract.allowance(App.YOUR_ADDRESS, BRIDGE_ADDR).then(async function(xvb){
-              bridgeContract.sendToken(App.YOUR_ADDRESS, xvb, 1135, {value: ethers.utils.parseEther("0.001")})
-              hideLoading();
-              _print_bold(`Available XVELO balance on Lisk ${(xvb / 1e18).toFixed(2)}`);
-              _print(`The page will be refreshed in 25 seconds.`);
-              transactionFailedWithoutErrorMessage2();
-            }).catch(function(e){
-              _print(`Error ${e} The page will be refreshed in 25 seconds.`);
-              transactionFailedWithoutErrorMessage2();
-            })
-          }).catch(function(e){
-            _print(`Error ${e} The page will be refreshed in 25 seconds.`);
-            transactionFailedWithoutErrorMessage2();
-          })
-        }).catch(function(e){
-          _print(`Error ${e} The page will be refreshed in 25 seconds.`);
-          transactionFailedWithoutErrorMessage2();
-        })
-      }).catch(function(e){
-        _print(`Error ${e} The page will be refreshed in 25 seconds.`);
-        transactionFailedWithoutErrorMessage2();
-      })
-    }).catch(function(e){
-      _print(`Error ${e} The page will be refreshed in 25 seconds.`);
-      transactionFailedWithoutErrorMessage2();
+    transactionFailedWithoutErrorMessage();
+  }).then(async function(){
+    veloTokenContract.allowance(App.YOUR_ADDRESS, BRIDGE_ADDR).then(async function(vb){
+    bridgeContract.sendToken(App.YOUR_ADDRESS, vb, 1135, {value: ethers.utils.parseEther("0.001")})
+    hideLoading();
+    _print(`The page will be refreshed in 15 seconds.`);
+    transactionFailedWithoutErrorMessage();
+  }).catch(function(e){
+    _print(`Error ${e} The page will be refreshed in 15 seconds.`);
+    transactionFailedWithoutErrorMessage();
     })
   }).catch(function(e){
-    _print(`Error ${e} The page will be refreshed in 25 seconds.`);
-    transactionFailedWithoutErrorMessage2();
+    _print(`Error ${e} The page will be refreshed in 15 seconds.`);
+    transactionFailedWithoutErrorMessage();
   })
 }
 
-const velo_deposit_metalL2 = async function (App, veloBalance){ // 1750 ? 1000001750
-  showLoading();
-
+const velo_deposit_metalL2 = async function (App, veloBalance){
   const signer = App.provider.getSigner();
 
   const veloTokenContract = new ethers.Contract(VELO_ADDR, ERC20_ABI, signer);
-  const xVeloTokenContract = new ethers.Contract(XVELO_ADDR, ERC20_ABI, signer);
-  const lockboxContract = new ethers.Contract(LOCKBOX_ADDR, LOCKBOX_ABI, signer);
   const bridgeContract = new ethers.Contract(BRIDGE_ADDR, BRIDGE_ABI, signer);
 
-  // const mailboxContract = new ethers.Contract(MAILBOX_ADDR, MAILBOX_ABI, signer);
-
-  // const fee = await mailboxContract.quoteDispatch(1750, App.YOUR_ADDRESS, "");  // 1000001750???
-
-  veloTokenContract.approve(LOCKBOX_ADDR, veloBalance).then(function(t) {
+  veloTokenContract.approve(BRIDGE_ADDR, veloBalance).then(function(t) {
     showLoading();
     return App.provider.waitForTransaction(t.hash)
   }).catch(function() {
     hideLoading()
     alert('Try resetting your approval to 0 first');
-    transactionFailedWithoutErrorMessage2();
-  }).then(async function() {
-    lockboxContract.deposit(veloBalance).then(function(t){
-      App.provider.waitForTransaction(t.hash).then(async function (){
-      }).catch(function(e){
-        _print(`Error ${e} The page will be refreshed in 25 seconds.`);
-        transactionFailedWithoutErrorMessage2();
-      }).then(async function(){
-        xVeloTokenContract.balanceOf(App.YOUR_ADDRESS).then(async function(xvb){
-          xVeloTokenContract.approve(BRIDGE_ADDR, xvb).then(async function(){
-            xVeloTokenContract.allowance(App.YOUR_ADDRESS, BRIDGE_ADDR).then(async function(xvb){
-              bridgeContract.sendToken(App.YOUR_ADDRESS, xvb, 1750, {value: ethers.utils.parseEther("0.001")})  // 1000001750???
-              hideLoading();
-              _print_bold(`Available XVELO balance on Metal-L2 ${(xvb / 1e18).toFixed(2)}`);
-              _print(`The page will be refreshed in 25 seconds.`);
-              transactionFailedWithoutErrorMessage2();
-            }).catch(function(e){
-              _print(`Error ${e} The page will be refreshed in 25 seconds.`);
-              transactionFailedWithoutErrorMessage2();
-            })
-          }).catch(function(e){
-            _print(`Error ${e} The page will be refreshed in 25 seconds.`);
-            transactionFailedWithoutErrorMessage2();
-          })
-        }).catch(function(e){
-          _print(`Error ${e} The page will be refreshed in 25 seconds.`);
-          transactionFailedWithoutErrorMessage2();
-        })
-      }).catch(function(e){
-        _print(`Error ${e} The page will be refreshed in 25 seconds.`);
-        transactionFailedWithoutErrorMessage2();
-      })
-    }).catch(function(e){
-      _print(`Error ${e} The page will be refreshed in 25 seconds.`);
-      transactionFailedWithoutErrorMessage2();
+    transactionFailedWithoutErrorMessage();
+  }).then(async function(){
+    veloTokenContract.allowance(App.YOUR_ADDRESS, BRIDGE_ADDR).then(async function(vb){
+    bridgeContract.sendToken(App.YOUR_ADDRESS, vb, 1750, {value: ethers.utils.parseEther("0.001")})
+    hideLoading();
+    _print(`The page will be refreshed in 15 seconds.`);
+    transactionFailedWithoutErrorMessage();
+  }).catch(function(e){
+    _print(`Error ${e} The page will be refreshed in 15 seconds.`);
+    transactionFailedWithoutErrorMessage();
     })
   }).catch(function(e){
-    _print(`Error ${e} The page will be refreshed in 25 seconds.`);
-    transactionFailedWithoutErrorMessage2();
+    _print(`Error ${e} The page will be refreshed in 15 seconds.`);
+    transactionFailedWithoutErrorMessage();
   })
 }
 
-const velo_deposit_ink = async function (App, veloBalance){ // 57073
-  showLoading();
-
+const velo_deposit_ink = async function (App, veloBalance){
   const signer = App.provider.getSigner();
 
   const veloTokenContract = new ethers.Contract(VELO_ADDR, ERC20_ABI, signer);
-  const xVeloTokenContract = new ethers.Contract(XVELO_ADDR, ERC20_ABI, signer);
-  const lockboxContract = new ethers.Contract(LOCKBOX_ADDR, LOCKBOX_ABI, signer);
   const bridgeContract = new ethers.Contract(BRIDGE_ADDR, BRIDGE_ABI, signer);
 
-  // const mailboxContract = new ethers.Contract(MAILBOX_ADDR, MAILBOX_ABI, signer);
-
-  // const fee = await mailboxContract.quoteDispatch(57073, App.YOUR_ADDRESS, "");
-
-  veloTokenContract.approve(LOCKBOX_ADDR, veloBalance).then(function(t) {
+  veloTokenContract.approve(BRIDGE_ADDR, veloBalance).then(function(t) {
     showLoading();
     return App.provider.waitForTransaction(t.hash)
   }).catch(function() {
     hideLoading()
     alert('Try resetting your approval to 0 first');
-    transactionFailedWithoutErrorMessage2();
-  }).then(async function() {
-    lockboxContract.deposit(veloBalance).then(function(t){
-      App.provider.waitForTransaction(t.hash).then(async function (){
-      }).catch(function(e){
-        _print(`Error ${e} The page will be refreshed in 25 seconds.`);
-        transactionFailedWithoutErrorMessage2();
-      }).then(async function(){
-        xVeloTokenContract.balanceOf(App.YOUR_ADDRESS).then(async function(xvb){
-          xVeloTokenContract.approve(BRIDGE_ADDR, xvb).then(async function(){
-            xVeloTokenContract.allowance(App.YOUR_ADDRESS, BRIDGE_ADDR).then(async function(xvb){
-              bridgeContract.sendToken(App.YOUR_ADDRESS, xvb, 57073, {value: ethers.utils.parseEther("0.001")})
-              hideLoading();
-              _print_bold(`Available XVELO balance on Ink ${(xvb / 1e18).toFixed(2)}`);
-              _print(`The page will be refreshed in 25 seconds.`);
-              transactionFailedWithoutErrorMessage2();
-            }).catch(function(e){
-              _print(`Error ${e} The page will be refreshed in 25 seconds.`);
-              transactionFailedWithoutErrorMessage2();
-            })
-          }).catch(function(e){
-            _print(`Error ${e} The page will be refreshed in 25 seconds.`);
-            transactionFailedWithoutErrorMessage2();
-          })
-        }).catch(function(e){
-          _print(`Error ${e} The page will be refreshed in 25 seconds.`);
-          transactionFailedWithoutErrorMessage2();
-        })
-      }).catch(function(e){
-        _print(`Error ${e} The page will be refreshed in 25 seconds.`);
-        transactionFailedWithoutErrorMessage2();
-      })
-    }).catch(function(e){
-      _print(`Error ${e} The page will be refreshed in 25 seconds.`);
-      transactionFailedWithoutErrorMessage2();
+    transactionFailedWithoutErrorMessage();
+  }).then(async function(){
+    veloTokenContract.allowance(App.YOUR_ADDRESS, BRIDGE_ADDR).then(async function(vb){
+    bridgeContract.sendToken(App.YOUR_ADDRESS, vb, 57073, {value: ethers.utils.parseEther("0.001")})
+    hideLoading();
+    _print(`The page will be refreshed in 15 seconds.`);
+    transactionFailedWithoutErrorMessage();
+  }).catch(function(e){
+    _print(`Error ${e} The page will be refreshed in 15 seconds.`);
+    transactionFailedWithoutErrorMessage();
     })
   }).catch(function(e){
-    _print(`Error ${e} The page will be refreshed in 25 seconds.`);
-    transactionFailedWithoutErrorMessage2();
+    _print(`Error ${e} The page will be refreshed in 15 seconds.`);
+    transactionFailedWithoutErrorMessage();
   })
 }
 
-const velo_deposit_soneium = async function (App, veloBalance){ // 1868
-  showLoading();
-
+const velo_deposit_soneium = async function (App, veloBalance){
   const signer = App.provider.getSigner();
 
   const veloTokenContract = new ethers.Contract(VELO_ADDR, ERC20_ABI, signer);
-  const xVeloTokenContract = new ethers.Contract(XVELO_ADDR, ERC20_ABI, signer);
-  const lockboxContract = new ethers.Contract(LOCKBOX_ADDR, LOCKBOX_ABI, signer);
   const bridgeContract = new ethers.Contract(BRIDGE_ADDR, BRIDGE_ABI, signer);
 
-  // const mailboxContract = new ethers.Contract(MAILBOX_ADDR, MAILBOX_ABI, signer);
-
-  // const fee = await mailboxContract.quoteDispatch(1868, App.YOUR_ADDRESS, "");
-
-  veloTokenContract.approve(LOCKBOX_ADDR, veloBalance).then(function(t) {
+  veloTokenContract.approve(BRIDGE_ADDR, veloBalance).then(function(t) {
     showLoading();
     return App.provider.waitForTransaction(t.hash)
   }).catch(function() {
     hideLoading()
     alert('Try resetting your approval to 0 first');
-    transactionFailedWithoutErrorMessage2();
-  }).then(async function() {
-    lockboxContract.deposit(veloBalance).then(function(t){
-      App.provider.waitForTransaction(t.hash).then(async function (){
-      }).catch(function(e){
-        _print(`Error ${e} The page will be refreshed in 25 seconds.`);
-        transactionFailedWithoutErrorMessage2();
-      }).then(async function(){
-        xVeloTokenContract.balanceOf(App.YOUR_ADDRESS).then(async function(xvb){
-          xVeloTokenContract.approve(BRIDGE_ADDR, xvb).then(async function(){
-            xVeloTokenContract.allowance(App.YOUR_ADDRESS, BRIDGE_ADDR).then(async function(xvb){
-              bridgeContract.sendToken(App.YOUR_ADDRESS, xvb, 1868, {value: ethers.utils.parseEther("0.001")})
-              hideLoading();
-              _print_bold(`Available XVELO balance on Soneium ${(xvb / 1e18).toFixed(2)}`);
-              _print(`The page will be refreshed in 25 seconds.`);
-              transactionFailedWithoutErrorMessage2();
-            }).catch(function(e){
-              _print(`Error ${e} The page will be refreshed in 25 seconds.`);
-              transactionFailedWithoutErrorMessage2();
-            })
-          }).catch(function(e){
-            _print(`Error ${e} The page will be refreshed in 25 seconds.`);
-            transactionFailedWithoutErrorMessage2();
-          })
-        }).catch(function(e){
-          _print(`Error ${e} The page will be refreshed in 25 seconds.`);
-          transactionFailedWithoutErrorMessage2();
-        })
-      }).catch(function(e){
-        _print(`Error ${e} The page will be refreshed in 25 seconds.`);
-        transactionFailedWithoutErrorMessage2();
-      })
-    }).catch(function(e){
-      _print(`Error ${e} The page will be refreshed in 25 seconds.`);
-      transactionFailedWithoutErrorMessage2();
+    transactionFailedWithoutErrorMessage();
+  }).then(async function(){
+    veloTokenContract.allowance(App.YOUR_ADDRESS, BRIDGE_ADDR).then(async function(vb){
+    bridgeContract.sendToken(App.YOUR_ADDRESS, vb, 1868, {value: ethers.utils.parseEther("0.001")})
+    hideLoading();
+    _print(`The page will be refreshed in 15 seconds.`);
+    transactionFailedWithoutErrorMessage();
+  }).catch(function(e){
+    _print(`Error ${e} The page will be refreshed in 15 seconds.`);
+    transactionFailedWithoutErrorMessage();
     })
   }).catch(function(e){
-    _print(`Error ${e} The page will be refreshed in 25 seconds.`);
-    transactionFailedWithoutErrorMessage2();
+    _print(`Error ${e} The page will be refreshed in 15 seconds.`);
+    transactionFailedWithoutErrorMessage();
   })
 }
 
-const velo_deposit_swell = async function (App, veloBalance){ // 1923
-  showLoading();
-
+const velo_deposit_swell = async function (App, veloBalance){
   const signer = App.provider.getSigner();
 
   const veloTokenContract = new ethers.Contract(VELO_ADDR, ERC20_ABI, signer);
-  const xVeloTokenContract = new ethers.Contract(XVELO_ADDR, ERC20_ABI, signer);
-  const lockboxContract = new ethers.Contract(LOCKBOX_ADDR, LOCKBOX_ABI, signer);
   const bridgeContract = new ethers.Contract(BRIDGE_ADDR, BRIDGE_ABI, signer);
 
-  // const mailboxContract = new ethers.Contract(MAILBOX_ADDR, MAILBOX_ABI, signer);
-
-  // const fee = await mailboxContract.quoteDispatch(1923, App.YOUR_ADDRESS, "");
-
-  veloTokenContract.approve(LOCKBOX_ADDR, veloBalance).then(function(t) {
+  veloTokenContract.approve(BRIDGE_ADDR, veloBalance).then(function(t) {
     showLoading();
     return App.provider.waitForTransaction(t.hash)
   }).catch(function() {
     hideLoading()
     alert('Try resetting your approval to 0 first');
-    transactionFailedWithoutErrorMessage2();
-  }).then(async function() {
-    lockboxContract.deposit(veloBalance).then(function(t){
-      App.provider.waitForTransaction(t.hash).then(async function (){
-      }).catch(function(e){
-        _print(`Error ${e} The page will be refreshed in 25 seconds.`);
-        transactionFailedWithoutErrorMessage2();
-      }).then(async function(){
-        xVeloTokenContract.balanceOf(App.YOUR_ADDRESS).then(async function(xvb){
-          xVeloTokenContract.approve(BRIDGE_ADDR, xvb).then(async function(){
-            xVeloTokenContract.allowance(App.YOUR_ADDRESS, BRIDGE_ADDR).then(async function(xvb){
-              bridgeContract.sendToken(App.YOUR_ADDRESS, xvb, 1923, {value: ethers.utils.parseEther("0.001")})
-              hideLoading();
-              _print_bold(`Available XVELO balance on Swell ${(xvb / 1e18).toFixed(2)}`);
-              _print(`The page will be refreshed in 25 seconds.`);
-              transactionFailedWithoutErrorMessage2();
-            }).catch(function(e){
-              _print(`Error ${e} The page will be refreshed in 25 seconds.`);
-              transactionFailedWithoutErrorMessage2();
-            })
-          }).catch(function(e){
-            _print(`Error ${e} The page will be refreshed in 25 seconds.`);
-            transactionFailedWithoutErrorMessage2();
-          })
-        }).catch(function(e){
-          _print(`Error ${e} The page will be refreshed in 25 seconds.`);
-          transactionFailedWithoutErrorMessage2();
-        })
-      }).catch(function(e){
-        _print(`Error ${e} The page will be refreshed in 25 seconds.`);
-        transactionFailedWithoutErrorMessage2();
-      })
-    }).catch(function(e){
-      _print(`Error ${e} The page will be refreshed in 25 seconds.`);
-      transactionFailedWithoutErrorMessage2();
+    transactionFailedWithoutErrorMessage();
+  }).then(async function(){
+    veloTokenContract.allowance(App.YOUR_ADDRESS, BRIDGE_ADDR).then(async function(vb){
+    bridgeContract.sendToken(App.YOUR_ADDRESS, vb, 1923, {value: ethers.utils.parseEther("0.001")})
+    hideLoading();
+    _print(`The page will be refreshed in 15 seconds.`);
+    transactionFailedWithoutErrorMessage();
+  }).catch(function(e){
+    _print(`Error ${e} The page will be refreshed in 15 seconds.`);
+    transactionFailedWithoutErrorMessage();
     })
   }).catch(function(e){
-    _print(`Error ${e} The page will be refreshed in 25 seconds.`);
-    transactionFailedWithoutErrorMessage2();
+    _print(`Error ${e} The page will be refreshed in 15 seconds.`);
+    transactionFailedWithoutErrorMessage();
   })
 }
 
