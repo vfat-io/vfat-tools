@@ -35,7 +35,7 @@ $(function() {
   
     // const [_poolLength] = await App.ethcallProvider.all([FLOW_VOTER_CONTRACT.whitelistedTokensLength()]);
     // const poolLength = _poolLength / 1;
-    const poolLength = 20;
+    const poolLength = 24;
     const _calls = [...Array(poolLength).keys()].map(i => FLOW_VOTER_CONTRACT.pools(i));
     while (_calls.length > 0) {
       calls.push(_calls.splice(0, 200));
