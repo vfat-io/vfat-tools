@@ -48,23 +48,23 @@ $(function() {
     });
 
     const tokenResponse1 = await $.ajax({
-      url: 'https://api.vfat.io/v1/tokens?chainId=1&page=1&pageSize=999',
+      url: 'https://api.vfat.io/v1/chain-tokens?chainId==1&page=1&pageSize=999',
       type: 'GET',
     });
 
     const tokenResponse2 = await $.ajax({
-      url: 'https://api.vfat.io/v1/tokens?chainId=1&page=2&pageSize=999',
+      url: 'https://api.vfat.io/v1/chain-tokens?chainId==1&page=2&pageSize=999',
       type: 'GET',
     });
 
     const tokenResponse3 = await $.ajax({
-      url: 'https://api.vfat.io/v1/tokens?chainId=1&page=3&pageSize=999',
+      url: 'https://api.vfat.io/v1/chain-tokens?chainId==1&page=3&pageSize=999',
       type: 'GET',
     });
 
-    const mainnet_tokens1 = tokenResponse1.tokens.map(t => t.address.toLowerCase());
-    const mainnet_tokens2 = tokenResponse2.tokens.map(t => t.address.toLowerCase());
-    const mainnet_tokens3 = tokenResponse3.tokens.map(t => t.address.toLowerCase());
+    const mainnet_tokens1 = tokenResponse1.map(t => t.address.toLowerCase());
+    const mainnet_tokens2 = tokenResponse2.map(t => t.address.toLowerCase());
+    const mainnet_tokens3 = tokenResponse3.map(t => t.address.toLowerCase());
 
     const vfat_io_tokens = [...mainnet_tokens1, ...mainnet_tokens2, ...mainnet_tokens3];
 

@@ -110,11 +110,11 @@ $(function() {
     });
 
     const response2 = await $.ajax({
-      url: 'https://api.vfat.io/v1/tokens?chainId=34443&pageSize=999',
+      url: 'https://api.vfat.io/v1/chain-tokens?chainId=34443&pageSize=999',
       type: 'GET',
     });
 
-    const vfat_io_tokens = response2.tokens.map(t => t.address.toLowerCase());
+    const vfat_io_tokens = response2.map(t => t.address.toLowerCase());
 
   // filter the gauges to take just the optimism gauges
   const vfat_gauges = response.filter(d => d.chainId == 34443).map(ob => ob.address.toLowerCase());

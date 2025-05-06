@@ -53,11 +53,11 @@ $(function() {
     });
 
     const response2 = await $.ajax({
-      url: 'https://api.vfat.io/v1/tokens?chainId=59144&pageSize=999',
+      url: 'https://api.vfat.io/v1/chain-tokens?chainId=59144&pageSize=999',
       type: 'GET',
     });
 
-    const vfat_io_tokens = response2.tokens.map(t => t.address.toLowerCase());
+    const vfat_io_tokens = response2.map(t => t.address.toLowerCase());
 
     const vfat_io_pools = response.filter(d => d.chainId == 59144 && d.protocol.id === "pancakeSwap").map(ob => ob.pool.address.toLowerCase());
 

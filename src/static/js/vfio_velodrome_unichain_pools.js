@@ -35,7 +35,7 @@ $(function() {
   
     // const [_poolLength] = await App.ethcallProvider.all([FLOW_VOTER_CONTRACT.whitelistedTokensLength()]);
     // const poolLength = _poolLength / 1;
-    const poolLength = 19;
+    const poolLength = 5;
     const _calls = [...Array(poolLength).keys()].map(i => FLOW_VOTER_CONTRACT.pools(i));
     while (_calls.length > 0) {
       calls.push(_calls.splice(0, 200));
@@ -110,14 +110,14 @@ $(function() {
     });
 
     const response2 = await $.ajax({
-      url: 'https://api.vfat.io/v1/chain-tokens?chainId=252&pageSize=999',
+      url: 'https://api.vfat.io/v1/chain-tokens?chainId=130&pageSize=999',
       type: 'GET',
     });
 
     const vfat_io_tokens = response2.map(t => t.address.toLowerCase());
 
   // filter the gauges to take just the optimism gauges
-  const vfat_gauges = response.filter(d => d.chainId == 252).map(ob => ob.address.toLowerCase());
+  const vfat_gauges = response.filter(d => d.chainId == 130).map(ob => ob.address.toLowerCase());
 
   let missing_v2_gauges = [];
   let missing_cl_gauges = [];
@@ -211,7 +211,7 @@ async function getClData(App, address, vfat_io_tokens){
             address: token1,
             symbol: token1Symbol,
             decimals: Number(token1Decimals),
-            chainId: 252,
+            chainId: 130,
             logoURI: ""
           }
     ]
@@ -221,7 +221,7 @@ async function getClData(App, address, vfat_io_tokens){
             address: token0,
             symbol: token0Symbol,
             decimals: Number(token0Decimals),
-            chainId: 252,
+            chainId: 130,
             logoURI: ""
           }
     ]
@@ -231,14 +231,14 @@ async function getClData(App, address, vfat_io_tokens){
           address: token0,
           symbol: token0Symbol,
           decimals: Number(token0Decimals),
-          chainId: 252,
+          chainId: 130,
           logoURI: ""
       },
       {
           address: token1,
           symbol: token1Symbol,
           decimals: Number(token1Decimals),
-          chainId: 252,
+          chainId: 130,
           logoURI: ""
       }
     ]
@@ -278,7 +278,7 @@ async function getV2Data(App, address, vfat_io_tokens) {
             address: token1,
             symbol: token1Symbol,
             decimals: Number(token1Decimals),
-            chainId: 252,
+            chainId: 130,
             logoURI: ""
           }
     ]
@@ -288,7 +288,7 @@ async function getV2Data(App, address, vfat_io_tokens) {
             address: token0,
             symbol: token0Symbol,
             decimals: Number(token0Decimals),
-            chainId: 252,
+            chainId: 130,
             logoURI: ""
           }
     ]
@@ -298,14 +298,14 @@ async function getV2Data(App, address, vfat_io_tokens) {
           address: token0,
           symbol: token0Symbol,
           decimals: Number(token0Decimals),
-          chainId: 252,
+          chainId: 130,
           logoURI: ""
       },
       {
           address: token1,
           symbol: token1Symbol,
           decimals: Number(token1Decimals),
-          chainId: 252,
+          chainId: 130,
           logoURI: ""
       }
     ]

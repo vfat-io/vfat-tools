@@ -132,12 +132,14 @@ $(function() {
       type: 'GET',
     });
 
+    // old url api request = https://api.vfat.io/v1/tokens?chainId=8453&pageSize=999
+    
     const response2 = await $.ajax({
-      url: 'https://api.vfat.io/v1/tokens?chainId=8453&pageSize=999',
+      url: 'https://api.vfat.io/v1/chain-tokens?chainId=8453&pageSize=999',
       type: 'GET',
     });
 
-    const vfat_io_tokens = response2.tokens.map(t => t.address.toLowerCase());
+    const vfat_io_tokens = response2.map(t => t.address.toLowerCase());
 
     const vfat_gauges = response.filter(d => d.chainId == 8453).map(ob => ob.address.toLowerCase());
 

@@ -87,31 +87,18 @@ $(function() {
         }
     }
 
-  //     const v2_gauge_contracts = v2_pools.map(a => new ethcall.Contract(a.gauge, FLOW_GAUGE_ABI));
-  //     for(const v2_gauge_contract of v2_gauge_contracts){
-  //       try{
-  //         const [rewardRate] = await App.ethcallProvider.all([v2_gauge_contract.rewardRate()]);
-  //         if((rewardRate > 0)){
-  //           v2_gauges_array.push(v2_gauge_contract.address)
-  //         }
-  //       }catch(err){
-  //         console.log(v2_gauge_contract.address)
-  //       }
-  //   }
-  // }
-    
       const v2_gauge_contracts = v2_pools.map(a => new ethcall.Contract(a.gauge, FLOW_GAUGE_ABI));
-      const rewardRate_calls = v2_gauge_contracts.map(c => c.rewardRate());
-      const periodFinish_calls = v2_gauge_contracts.map(c => c.periodFinish());
-      const rewardRates = await App.ethcallProvider.all(rewardRate_calls);
-      const periodFinishes = await App.ethcallProvider.all(periodFinish_calls);
-
-      for(let i = 0; i < v2_pools.length; i++){
-        if((Date.now() / 1000 < periodFinishes[i] && rewardRates[i] > 0)){
-          v2_gauges_array.push(v2_pools[i].gauge)
+      for(const v2_gauge_contract of v2_gauge_contracts){
+        try{
+          const [periodFinish] = await App.ethcallProvider.all([v2_gauge_contract.periodFinish()]);
+          if((Date.now() / 1000) < periodFinish){
+            v2_gauges_array.push(v2_gauge_contract.address)
+          }
+        }catch(err){
+          console.log(v2_gauge_contract.address)
         }
-      }
     }
+  }
 
     const v2_gages_to_lowercase = v2_gauges_array.map(a => a.toLowerCase());
     const cl_gages_to_lowercase = active_cl_pools.map(c => c.toLowerCase());
@@ -125,11 +112,11 @@ $(function() {
     });
 
     const response2 = await $.ajax({
-      url: 'https://api.vfat.io/v1/tokens?chainId=56&pageSize=999',
+      url: 'https://api.vfat.io/v1/chain-tokens?chainId=56&pageSize=999',
       type: 'GET',
     });
 
-    const vfat_io_tokens = response2.tokens.map(t => t.address.toLowerCase());
+    const vfat_io_tokens = response2.map(t => t.address.toLowerCase());
 
     const vfat_gauges = response.filter(d => d.chainId == 56).map(ob => ob.address.toLowerCase());
 
