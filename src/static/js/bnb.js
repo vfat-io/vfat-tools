@@ -613,6 +613,7 @@ const main = async() => {
       ["Autoshark Finance   ",`<a href="autoshark"     >Various</a>`,"FINS             ","https://autoshark.finance"],
       ["Emu                 ",`<a href="emu"           >Various</a>`,"EMU              ","https://defi.emumeme.com"],
       ["Uniswap             ",`<a href="uniswap"       >Various</a>`,"                 ","https://app.uniswap.org"],
+      ["Ampleswap           ",`<a href="ampleswap"     >Various</a>`,"AMPLE            ","https://ampleswap.com"],
       ["Sickle              ",`<a href="sickle"        >Various</a>`,"                 ",""]
     ].reverse()}
 
