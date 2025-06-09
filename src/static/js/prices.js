@@ -705,6 +705,10 @@ const UnichainTokens = [
   { "id": "weth", "symbol": "WETH", "contract": "0x4200000000000000000000000000000000000006"}
 ];
 
+const HyperevmTokens = [
+  { "id": "weth", "symbol": "WETH", "contract": "0x4ef82058a7669f1e37d1c55cd747fd1ed04e5156"}
+];
+
 const SoneiumTokens = [
   { "id": "weth", "symbol": "WETH", "contract": "0x4200000000000000000000000000000000000006"},
   { "id": "usd-coin", "symbol": "USDC", "contract": "0xbA9986D2381edf1DA03B0B9c1f8b00dc4AacC369"},
@@ -1318,6 +1322,15 @@ async function getUnichainPrices() {
   const idPrices = await lookUpPrices(UnichainTokens.map(x => x.id));
   const prices = {}
   for (const bt of UnichainTokens)
+      if (idPrices[bt.id])
+          prices[bt.contract] = idPrices[bt.id];
+  return prices;
+}
+
+async function getHyperevmPrices() {
+  const idPrices = await lookUpPrices(HyperevmTokens.map(x => x.id));
+  const prices = {}
+  for (const bt of HyperevmTokens)
       if (idPrices[bt.id])
           prices[bt.contract] = idPrices[bt.id];
   return prices;

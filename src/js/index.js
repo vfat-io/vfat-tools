@@ -979,6 +979,21 @@ window.NETWORKS = {
         "https://explorer.celo.org"
     ],
   },
+  HYPEREVM: {
+    "chainId": "0x3e7",
+    "chainName": "HyperEVM",
+    "nativeCurrency": {
+      "name": "Hyperliquid",
+      "symbol": "HYPE",
+      "decimals": 18
+    },
+    "rpcUrls": [
+        "https://rpc.hyperliquid.xyz/evm"
+    ],
+    "blockExplorerUrls": [
+        "https://www.hyperscan.com/"
+    ],
+  },
   IOTEX: {
     "chainId": "0x1251",
     "chainName": "IoTeX Mainnet",

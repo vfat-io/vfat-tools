@@ -162,6 +162,9 @@ const pageNetwork = function() {
   if (network.toLowerCase() === 'linea') {
     return window.NETWORKS.LINEA
   }
+  if (network.toLowerCase() === 'hyperevm') {
+    return window.NETWORKS.HYPEREVM
+  }
   if (network.toLowerCase() === 'mode') {
     return window.NETWORKS.MODE
   }
@@ -3918,6 +3921,9 @@ function getErc20Prices(prices, pool, chain="eth") {
     case "linea":
       poolUrl=`https://lineascan.build/token/${pool.address}`;
       break;
+    case "hyperevm":
+      poolUrl=`https://www.hyperscan.com/token/${pool.address}`;
+      break;
     case "mode":
       poolUrl=`https://modescan.io/token/${pool.address}`;
       break;
@@ -4714,6 +4720,9 @@ async function printSynthetixPool(App, info, chain="eth", customURLs) {
       case "linea":
         _print(`<a target="_blank" href="https://lineascan.build/address/${info.stakingAddress}#code">Linea Scan</a>`);
         break;
+      case "hyperevm":
+        _print(`<a target="_blank" href="https://www.hyperscan.com/address/${info.stakingAddress}">Hyperevm Scan</a>`);
+        break;
       case "mode":
         _print(`<a target="_blank" href="https://modescan.io/address/${info.stakingAddress}#code">Mode Scan</a>`);
         break;
@@ -5009,6 +5018,8 @@ function getChainExplorerUrl(chain, address){
       return `https://blastscan.io/token/${address}`;
     case "linea" :
       return `https://lineascan.build/token/${address}`;
+    case "hyperevm" :
+      return `https://www.hyperscan.com/token/${address}`;
     case "mode" :
       return `https://modescan.io/token/${address}`;
     case "lisk" :
