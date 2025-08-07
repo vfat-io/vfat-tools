@@ -1,17 +1,8 @@
-/** Variables available in all js files:
- * all the exported constants from globals.js
- */
-
-/** Directories available as aliases
- * all the paths within Dir in globals.js
- */
 import $ from "jquery"
 import {ethers} from "ethers"
 import * as ethcall from "ethcall"
 import lodash from "lodash"
 import {matchSorter} from "match-sorter"
-
-//import dompurify from "dompurify"
 
 import "picturefill"
 import "utils/errors"
@@ -20,12 +11,10 @@ import "utils/quick"
 import "core-js/stable"
 import "regenerator-runtime/runtime"
 
-// Import Reown AppKit with minimal dependencies approach
 import { createAppKit } from '@reown/appkit'
 import { Ethers5Adapter } from '@reown/appkit-adapter-ethers5'
 import { REOWN_PROJECT_ID, customNetworks, appKitMetadata, appKitFeatures, NETWORKS, ETHEREUM_NODE_URL } from './config.js'
 
-// Ethers5 adapter with custom networks
 const ethers5Adapter = new Ethers5Adapter()
 
 window.$ = $
@@ -38,12 +27,10 @@ window.lodash = lodash
 window.Diff = require("diff")
 window.ETHEREUM_NODE_URL = ETHEREUM_NODE_URL
 
-// Import NETWORKS configuration from config.js
 window.NETWORKS = NETWORKS
 
 const infuraId = atob(window.ETHEREUM_NODE_URL).split('/').pop()
 
-// Legacy compatibility layer for backwards compatibility
 window.web3Modal = {
   cachedProvider: null,
   async connect() {
@@ -67,13 +54,44 @@ window.web3Modal = {
   },
   setCachedProvider(provider) {
     this.cachedProvider = provider
+  },
+  
+  async autoReconnect() {
+    try {
+      if (window.appKit && window.appKit.getAccount) {
+        const account = window.appKit.getAccount()
+        if (account && account.isConnected && account.address) {
+          this.cachedProvider = 'appkit'
+          return window.appKit.getProvider ? window.appKit.getProvider() : window.ethereum
+        }
+      }
+      
+      const hasStoredConnection = localStorage.getItem('@w3m/connected_wallet_image_url') || 
+                                   localStorage.getItem('@w3m/wallet_id') ||
+                                   localStorage.getItem('@w3m/connected_connector')
+      
+      if (hasStoredConnection && window.appKit) {
+        return new Promise((resolve) => {
+          setTimeout(() => {
+            const account = window.appKit.getAccount()
+            if (account && account.isConnected && account.address) {
+              this.cachedProvider = 'appkit'
+              resolve(window.appKit.getProvider ? window.appKit.getProvider() : window.ethereum)
+            } else {
+              resolve(null)
+            }
+          }, 500)
+        })
+      }
+    } catch (error) {
+      console.error('Auto-reconnect not available:', error)
+    }
+    return null
   }
 }
 
-// Simple initialization without complex UI dependencies
 document.addEventListener('DOMContentLoaded', function() {
   try {
-    // Check if we have a project ID
     if (!REOWN_PROJECT_ID || REOWN_PROJECT_ID === '') {
       console.warn('AppKit: No project ID provided. Using fallback wallet connection.')
       return
@@ -87,7 +105,41 @@ document.addEventListener('DOMContentLoaded', function() {
       features: appKitFeatures
     })
     
-    console.log('AppKit initialized successfully')
+    setTimeout(async () => {
+      try {
+        if (!window.appKit || !window.appKit.getAccount) {
+          setTimeout(async () => {
+            try {
+              const provider = await window.web3Modal.autoReconnect()
+              if (provider) {
+                const account = window.appKit?.getAccount()
+                if (account && account.address) {
+                  window.dispatchEvent(new CustomEvent('walletConnected', { 
+                    detail: { address: account.address, provider: 'appkit' }
+                  }))
+                }
+              }
+            } catch (error) {
+              console.error('Auto-reconnect check failed (retry):', error)
+            }
+          }, 1000)
+          return
+        }
+        
+        const provider = await window.web3Modal.autoReconnect()
+        if (provider) {
+          const account = window.appKit?.getAccount()
+          if (account && account.address) {
+            window.dispatchEvent(new CustomEvent('walletConnected', { 
+              detail: { address: account.address, provider: 'appkit' }
+            }))
+          }
+        }
+      } catch (error) {
+        console.error('Auto-reconnect check failed:', error)
+      }
+    }, 1000)
+
   } catch (error) {
     console.error('Failed to initialize AppKit:', error)
     console.warn('Falling back to legacy wallet connection methods')

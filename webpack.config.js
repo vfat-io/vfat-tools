@@ -1,6 +1,7 @@
 const path = require('path')
 const globals = require('./globals')
 const webpack = require('webpack')
+require('dotenv').config()
 
 let isProduction
 
@@ -54,7 +55,9 @@ module.exports = (env = {}) => {
         SITE_URL: JSON.stringify(globals.SITE_URL),
         DEVELOPER_NAME: JSON.stringify(globals.DEVELOPER_NAME),
         DEVELOPER_URL: JSON.stringify(globals.DEVELOPER_URL),
-        GOOGLE_ANALYTICS_ID: JSON.stringify(globals.GOOGLE_ANALYTICS_ID)
+        GOOGLE_ANALYTICS_ID: JSON.stringify(globals.GOOGLE_ANALYTICS_ID),
+        'process.env.REOWN_PROJECT_ID': JSON.stringify(process.env.REOWN_PROJECT_ID),
+        'process.env.ETHEREUM_NODE_URL': JSON.stringify(process.env.ETHEREUM_NODE_URL)
       }),
       new webpack.ProvidePlugin({
         Buffer: ['buffer', 'Buffer'],
