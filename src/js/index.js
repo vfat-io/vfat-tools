@@ -74,7 +74,7 @@ window.web3Modal = {
 document.addEventListener('DOMContentLoaded', function() {
   try {
     // Check if we have a project ID
-    if (!REOWN_PROJECT_ID || REOWN_PROJECT_ID === 'YOUR_PROJECT_ID_HERE') {
+    if (!REOWN_PROJECT_ID || REOWN_PROJECT_ID === '') {
       console.warn('AppKit: No project ID provided. Using fallback wallet connection.')
       return
     }
