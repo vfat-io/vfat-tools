@@ -221,17 +221,71 @@ const init_wallet = async function (callback) {
 
   let targetNetwork = pageNetwork()
 
+  // Give AppKit some time to initialize if it's not ready yet
+  if (window.appKit && !window.appKit.getAccount) {
+    await new Promise(resolve => setTimeout(resolve, 1000)) // Increased timeout
+  }
+
   // Check if user is already connected via AppKit
-  const account = window.appKit?.getAccount()
+  let account = window.appKit?.getAccount()
+  
+  // If account is not immediately available, wait a bit more and try again
+  if ((!account || !account.isConnected) && window.appKit) {
+    await new Promise(resolve => setTimeout(resolve, 500))
+    account = window.appKit.getAccount()
+  }
+  
   if (account && account.isConnected && account.address) {
     try {
       walletProvider = window.appKit.getProvider() || window.ethereum
       if (walletProvider) {
         window.web3Modal.cachedProvider = 'appkit'
+        // Proceed directly to wallet logic since we're already connected
+        let provider = new ethers.providers.Web3Provider(walletProvider)
+        let connectedNetwork = await provider.getNetwork()
+        let targetNetworkId = parseInt(targetNetwork.chainId, 16)
+
+        if (connectedNetwork.chainId === targetNetworkId) {
+          _print_link("[CHANGE WALLET]", changeWallet, "connect_wallet_button", false);
+          _print_inline(' -=- ');
+          _print_link("[CLEAR BROWSER STORAGE]", clearLocalStorage, "clear_browser_storage");
+          start(callback);
+          return // Exit early since we're connected
+        } else {
+          _print(`You are connected to ${networkNameFromId(connectedNetwork.chainId)}, please switch to ${targetNetwork.chainName} network`)
+          _print('')
+          _print_link("[SWITCH NETWORK]", () => switchNetwork(targetNetwork), "connect_wallet_button", false)
+          _print_inline(' -=- ');
+          _print_link("[CLEAR BROWSER STORAGE]", clearLocalStorage, "clear_browser_storage");
+          hideLoading()
+          return // Exit early since we need network switch
+        }
       }
     } catch (e) {
       console.warn('Failed to get provider from AppKit in init_wallet:', e)
       walletProvider = window.ethereum
+      // If we have window.ethereum as fallback, try to use it
+      if (walletProvider) {
+        let provider = new ethers.providers.Web3Provider(walletProvider)
+        let connectedNetwork = await provider.getNetwork()
+        let targetNetworkId = parseInt(targetNetwork.chainId, 16)
+
+        if (connectedNetwork.chainId === targetNetworkId) {
+          _print_link("[CHANGE WALLET]", changeWallet, "connect_wallet_button", false);
+          _print_inline(' -=- ');
+          _print_link("[CLEAR BROWSER STORAGE]", clearLocalStorage, "clear_browser_storage");
+          start(callback);
+          return
+        } else {
+          _print(`You are connected to ${networkNameFromId(connectedNetwork.chainId)}, please switch to ${targetNetwork.chainName} network`)
+          _print('')
+          _print_link("[SWITCH NETWORK]", () => switchNetwork(targetNetwork), "connect_wallet_button", false)
+          _print_inline(' -=- ');
+          _print_link("[CLEAR BROWSER STORAGE]", clearLocalStorage, "clear_browser_storage");
+          hideLoading()
+          return
+        }
+      }
     }
   }
 
@@ -256,6 +310,41 @@ const init_wallet = async function (callback) {
       hideLoading()
     }
   } else {
+    const shouldOpenWalletModal = sessionStorage.getItem('changeWallet') === 'true'
+    if (shouldOpenWalletModal) {
+      sessionStorage.removeItem('changeWallet')
+      _print('Opening wallet selection...')
+      _print('')
+      
+      try {
+        await connectWallet(callback)
+        return
+      } catch (error) {
+        _print('Wallet selection failed. Please try again.')
+        _print('')
+      }
+    }
+    
+    const shouldAutoReconnect = localStorage.getItem('@w3m/connected_wallet_image_url') || 
+                                 localStorage.getItem('@w3m/wallet_id') ||
+                                 localStorage.getItem('@w3m/connected_connector') ||
+                                 window.web3Modal.cachedProvider
+    
+    if (shouldAutoReconnect && !shouldOpenWalletModal) {
+      _print('Reconnecting to your wallet...')
+      _print('')
+      
+      // Automatically trigger connection without showing the connect button
+      try {
+        await connectWallet(callback)
+        return // Exit early if auto-reconnection succeeds
+      } catch (error) {
+        _print('Auto-reconnection failed. Please connect manually.')
+        _print('')
+      }
+    }
+    
+    // Only show connect button if auto-reconnection wasn't attempted or failed
     _print_link("[CONNECT WALLET]", () => connectWallet(callback), "connect_wallet_button", false);
     _print_inline(' -=- ');
     _print_link("[CLEAR BROWSER STORAGE]", clearLocalStorage, "clear_browser_storage");
@@ -364,44 +453,83 @@ const switchNetwork = async function(network) {
 }
 
 const changeWallet = async function() {
-  // Disconnect current wallet
-  await window.appKit.disconnect()
-  
-  // Open wallet connection modal
-  await connectWallet(()=> window.location.reload() )
+  try {
+    // Clear the current wallet provider immediately  
+    walletProvider = null
+    window.web3Modal.clearCachedProvider()
+    
+    // Clear any existing localStorage wallet data
+    localStorage.removeItem('@w3m/connected_wallet_image_url')
+    localStorage.removeItem('@w3m/wallet_id') 
+    localStorage.removeItem('@w3m/connected_connector')
+    localStorage.removeItem('addr')
+    
+    // Show disconnection message briefly
+    if (document.getElementById('log')) {
+      document.getElementById('log').innerHTML = ''
+    }
+    
+    _print('Disconnecting current wallet...')
+    
+    // Disconnect current wallet
+    if (window.appKit && window.appKit.disconnect) {
+      await window.appKit.disconnect()
+    }
+    
+    // Force clear any cached connection state
+    if (window.ethereum) {
+      try {
+        // Some wallets need explicit disconnect
+        if (window.ethereum.disconnect) {
+          await window.ethereum.disconnect()
+        }
+      } catch (e) {
+        // Silent fail for disconnect attempts
+      }
+    }
+    
+    sessionStorage.setItem('changeWallet', 'true')
+    
+    window.location.reload()
+    
+  } catch (error) {
+    console.error('Error changing wallet:', error)
+    window.location.reload()
+  }
 }
 
 const connectWallet = async function(callback) {
-  try {
-    // Use AppKit instead of web3Modal.connect()
-    await window.appKit.open()
+  // Check if AppKit is available  
+  if (!window.appKit) {
+    console.error('AppKit is not initialized')
+    throw new Error('AppKit is not available')
+  }
+
+  return new Promise((resolve, reject) => {
+    let timeoutId = null
+    let pollTimeoutId = null
     
-    // Wait for connection to be established
-    return new Promise((resolve, reject) => {
-      let accountUnsubscribe = null
-      let chainUnsubscribe = null
-      
-      const cleanup = () => {
-        if (accountUnsubscribe && typeof accountUnsubscribe === 'function') {
-          try {
-            accountUnsubscribe()
-          } catch (e) {
-            console.warn('Error unsubscribing from account:', e)
-          }
-        }
-        if (chainUnsubscribe && typeof chainUnsubscribe === 'function') {
-          try {
-            chainUnsubscribe()
-          } catch (e) {
-            console.warn('Error unsubscribing from chain:', e)
-          }
-        }
+    const cleanup = () => {
+      if (timeoutId) {
+        clearTimeout(timeoutId)
+        timeoutId = null
       }
-      
-      // Check if already connected first
+      if (pollTimeoutId) {
+        clearTimeout(pollTimeoutId)
+        pollTimeoutId = null
+      }
+    }
+    
+    timeoutId = setTimeout(() => {
+      cleanup()
+      console.error('Wallet connection timed out after 30 seconds')
+      reject(new Error('Wallet connection timed out'))
+    }, 30000)
+    
+    try {
       const currentAccount = window.appKit.getAccount()
       if (currentAccount && currentAccount.isConnected && currentAccount.address) {
-        console.log('Already connected, getting provider...')
+        cleanup()
         try {
           const appKitProvider = window.appKit.getProvider()
           walletProvider = appKitProvider || window.ethereum
@@ -423,13 +551,30 @@ const connectWallet = async function(callback) {
         handleConnectedWallet(callback, walletProvider).then(resolve).catch(reject)
         return
       }
+    } catch (error) {
+      console.error('Error checking initial connection state:', error)
+    }
+
+    try {
+      window.appKit.open().then(() => {
+        
+      }).catch((error) => {
+        console.error('Failed to open AppKit modal (non-blocking):', error)
+      })
+    } catch (error) {
+      console.error('Immediate error opening AppKit modal:', error)
+    }
       
-      try {
-        accountUnsubscribe = window.appKit.subscribeAccount((account) => {
-          if (account.isConnected && account.address) {
+      let pollCount = 0
+      const maxPolls = 60
+      
+      const pollForConnection = () => {
+        try {
+          const account = window.appKit?.getAccount()
+          
+          if (account && account.isConnected && account.address) {
             cleanup()
             
-            // Get the provider from AppKit with fallback
             try {
               const appKitProvider = window.appKit.getProvider()
               walletProvider = appKitProvider || window.ethereum
@@ -450,37 +595,30 @@ const connectWallet = async function(callback) {
             
             window.web3Modal.cachedProvider = 'appkit'
             
-            // Note: AppKit doesn't provide reliable network subscription methods
-            // Network changes will be handled by the existing ethers provider events
-            console.log('Wallet connected successfully via AppKit + MetaMask fallback')
-
-            // Continue with the connection logic
             handleConnectedWallet(callback, walletProvider).then(resolve).catch(reject)
-          } else if (account.isConnected === false) {
-            window.web3Modal.clearCachedProvider()
+            return
           }
-        })
-      } catch (e) {
-        console.error('Failed to subscribe to account changes:', e)
-        reject(e)
-        return
+          
+          pollCount++
+          if (pollCount >= maxPolls) {
+            cleanup()
+            reject(new Error('Connection polling timeout'))
+            return
+          }
+          
+          setTimeout(pollForConnection, 500)
+        } catch (error) {
+          console.error('Error during polling:', error)
+          cleanup()
+          reject(error)
+        }
       }
       
-      // Timeout after 30 seconds
-      setTimeout(() => {
-        cleanup()
-        reject(new Error('Connection timeout'))
-      }, 30000)
+      setTimeout(pollForConnection, 500)
     })
-
-  } catch(e) {
-    console.error('Wallet connection error:', e)
-    throw e
-  }
 }
 
 const handleConnectedWallet = async function(callback, providerParam = null) {
-  // Use passed provider or global walletProvider
   const currentProvider = providerParam || walletProvider
   
   // Validate that we have a provider
@@ -495,27 +633,30 @@ const handleConnectedWallet = async function(callback, providerParam = null) {
   let targetNetworkId = parseInt(targetNetwork.chainId, 16)
 
   if (connectedNetwork.chainId === targetNetworkId) {
-    let button = document.getElementById('connect_wallet_button')
-    if (button) {
-      button.textContent = "[CHANGE WALLET]"
-      $(document).off('click', '#connect_wallet_button')
-      $(document).on('click', '#connect_wallet_button', changeWallet)
+    // Clear the current page content and show connected state
+    if (document.getElementById('log')) {
+      document.getElementById('log').innerHTML = ''
     }
-
+    
+    // Show connected state
+    _print_link("[CHANGE WALLET]", changeWallet, "connect_wallet_button", false);
+    _print_inline(' -=- ');
+    _print_link("[CLEAR BROWSER STORAGE]", clearLocalStorage, "clear_browser_storage");
+    
+    // Start the main application logic
     showLoading()
     start(callback)
   } else {
-    let button = document.getElementById('connect_wallet_button')
-    if (button) {
-      $(document).off('click', '#connect_wallet_button')
-      button.remove()
+    // Clear the current page content
+    if (document.getElementById('log')) {
+      document.getElementById('log').innerHTML = ''
     }
-
+    
     _print(`You are connected to ${networkNameFromId(connectedNetwork.chainId)}, please switch to ${targetNetwork.chainName} network`)
-    if (window.ethereum && targetNetwork.chainId !== '0x1') {
-      _print('')
-      _print_link("[SWITCH NETWORK]", () => switchNetwork(targetNetwork), "connect_wallet_button")
-    }
+    _print('')
+    _print_link("[SWITCH NETWORK]", () => switchNetwork(targetNetwork), "connect_wallet_button", false)
+    _print_inline(' -=- ');
+    _print_link("[CLEAR BROWSER STORAGE]", clearLocalStorage, "clear_browser_storage");
     hideLoading()
   }
 }
@@ -618,7 +759,6 @@ const _print_link = function(message, onclickFunction, uuid = ID(), add_carriage
   }
 
   $(document).on('click', '#' + uuid, function() {
-    console.log('clicked')
     onclickFunction()
     return false
   })
@@ -742,7 +882,6 @@ const _print24HourPrice = async function(id, ticker) {
   _print('')
   try {
     const historicalPrices = await getPrices24HoursStripped(id)
-    console.log(historicalPrices)
     const config = {
       height: 20, // any height you want,
     }

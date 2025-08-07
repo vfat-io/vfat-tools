@@ -1,13 +1,15 @@
-// @import 'sanitize';
-// @import 'html5boilerplate';
-// @import 'base';
-// @import 'helpers';
-// @import 'footer';
-@import 'print';
-@import 'themes';
+// @use 'sanitize';
+// @use 'html5boilerplate';
+// @use 'base';
+// @use 'helpers';
+// @use 'footer';
+@use 'print';
+@use 'themes';
+@use "diff";
 
 body, input {
   font-family: monospace;
+  /* Updated to use @use instead of @import */
 }
 
 .border {
@@ -527,5 +529,3 @@ code {
     font-weight: bold;
     color: var(--highlight-color);
 }
-
-@import "diff.scss";
