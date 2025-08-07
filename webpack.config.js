@@ -10,31 +10,40 @@ module.exports = (env = {}) => {
 
   return {
     entry: {
-      vendor: ['lodash.throttle', 'lodash.debounce', 'dompurify', 'picturefill'],
-      app: ["babel-polyfill", './src/js/index.js'],
+      app: ["core-js/stable", "regenerator-runtime/runtime", 'lodash.throttle', 'lodash.debounce', 'dompurify', 'picturefill', './src/js/index.js'],
     },
     output: {
-      filename: isProduction ? '[name].[chunkhash].js' : '[name].js',
-      chunkFilename: isProduction ? '[name].[chunkhash].js' : '[name].js',
+      filename: isProduction ? '[name].[contenthash].js' : '[name].js',
+      chunkFilename: isProduction ? '[name].[contenthash].js' : '[name].js',
       path: path.resolve(__dirname, 'dist', 'js'),
-      publicPath: `${globals.PP}/js/`
+      publicPath: `${globals.PP}/js/`,
+      clean: false // Don't clean the dist folder to preserve copied files
     },
     module: {
       rules: [{
-        test: /\.js$/,
+        test: /\.m?js$/,
+        exclude: /node_modules/,
         use: [{
           loader: 'babel-loader',
           options: {
             presets: [
-              ['@babel/env', {
-                modules: false
+              ['@babel/preset-env', {
+                modules: false,
+                targets: {
+                  browsers: ['last 2 versions', '> 1%']
+                }
               }],
+            ],
+            plugins: [
+              '@babel/plugin-syntax-dynamic-import'
             ]
           }
         }],
-        parser: {
-          system: true
-        }
+      }, {
+        test: /\.m?js$/,
+        resolve: {
+          fullySpecified: false,
+        },
       }]
     },
     plugins: [
@@ -46,19 +55,12 @@ module.exports = (env = {}) => {
         DEVELOPER_NAME: JSON.stringify(globals.DEVELOPER_NAME),
         DEVELOPER_URL: JSON.stringify(globals.DEVELOPER_URL),
         GOOGLE_ANALYTICS_ID: JSON.stringify(globals.GOOGLE_ANALYTICS_ID)
+      }),
+      new webpack.ProvidePlugin({
+        Buffer: ['buffer', 'Buffer'],
+        process: 'process/browser'
       })
     ],
-    optimization: {
-      splitChunks: {
-        cacheGroups: {
-          commons: {
-            test: /[\\/]node_modules[\\/]/,
-            name: 'vendor',
-            chunks: 'all'
-          }
-        }
-      }
-    },
     resolve: {
       alias: {
         dist: globals.Dir.dist,
@@ -73,9 +75,42 @@ module.exports = (env = {}) => {
         views: globals.Dir.views,
         pages: globals.Dir.pages,
         partials: globals.Dir.partials,
+        "process/browser": require.resolve("process/browser"),
       },
+      fallback: {
+        "buffer": require.resolve("buffer"),
+        "crypto": require.resolve("crypto-browserify"),
+        "stream": require.resolve("stream-browserify"),
+        "assert": require.resolve("assert"),
+        "http": require.resolve("stream-http"),
+        "https": require.resolve("https-browserify"),
+        "os": require.resolve("os-browserify"),
+        "url": require.resolve("url"),
+        "zlib": require.resolve("browserify-zlib"),
+        "path": require.resolve("path-browserify"),
+        "process": require.resolve("process/browser"),
+        "fs": false,
+        "net": false,
+        "tls": false
+      },
+      extensions: ['.js', '.mjs', '.json'],
       symlinks: false
     },
-    devtool: isProduction ? '' : 'eval'
+    optimization: {
+      splitChunks: {
+        cacheGroups: {
+          vendor: {
+            test: /[\\/]node_modules[\\/]/,
+            name: 'vendor',
+            chunks: 'all'
+          }
+        }
+      }
+    },
+    experiments: {
+      topLevelAwait: true
+    },
+    devtool: isProduction ? false : 'eval-source-map',
+    mode: isProduction ? 'production' : 'development'
   }
 }

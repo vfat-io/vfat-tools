@@ -179,8 +179,11 @@ const AERO_FACTORY_ABI = [{"inputs":[{"internalType":"address","name":"_implemen
 
     //let targetNetwork = pageNetwork()
   
-    if (window.web3Modal.cachedProvider) {
-      await connectWallet(() => {})
+    // Check if user is already connected via AppKit
+    const account = window.appKit?.getAccount()
+    if (account && account.isConnected && account.address) {
+      walletProvider = window.appKit.getProvider()
+      window.web3Modal.cachedProvider = 'appkit'
     }
   
     if (walletProvider) {
