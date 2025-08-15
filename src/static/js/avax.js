@@ -113,6 +113,7 @@ const main = async() => {
         ["Butterfly Finance       ",`<a href="bfly"             >Various</a>`,"BFLY         ","https://app.butterflydefi.xyz"],
         ["Pharaoh Finance         ",`<a href="pharaoh"          >Various</a>`,"PHAR         ","https://pharaoh.exchange"],
         ["Uniswap                 ",`<a href="uniswap"          >Various</a>`,"             ","https://app.uniswap.org"],
+        ["Blackhole V2 Positions  ",`<a href="blackhole"        >Various</a>`,"             ","https://blackhole.xyz"],
         ["Sickle                  ",`<a href="sickle"           >Various</a>`,"             ",""]
     ].reverse()
   }
