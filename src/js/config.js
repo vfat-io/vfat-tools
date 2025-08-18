@@ -1,4 +1,7 @@
-export const REOWN_PROJECT_ID = process.env.REOWN_PROJECT_ID || ''
+import { createAppKit } from '@reown/appkit'
+import { Ethers5Adapter } from '@reown/appkit-adapter-ethers5'
+
+export const REOWN_PROJECT_ID = process.env.REOWN_PROJECT_ID || 'c0c2fa07552342eed4052cc752d41827'
 export const ETHEREUM_NODE_URL = process.env.ETHEREUM_NODE_URL || ''
 
 const getInfuraId = () => {
@@ -510,6 +513,30 @@ export const appKitFeatures = {
   email: false,
   socials: []
 }
+
+export const appKit = createAppKit({
+  adapters: [new Ethers5Adapter()],
+  metadata: appKitMetadata,
+  networks: customNetworks,
+  projectId: REOWN_PROJECT_ID,
+  features: {
+    analytics: true, // Optional - defaults to your Cloud configuration
+  },
+});
+
+export const store = {
+    accountState: {},
+    networkState: {},
+    appKitState: {},
+    themeState: { themeMode: 'light', themeVariables: {} },
+    events: [],
+    walletInfo: {},
+    eip155Provider: null
+  }
+  
+  export const updateStore = (key, value) => {
+    store[key] = value
+  }
 
 // Legacy NETWORKS configuration for backwards compatibility
 export const NETWORKS = {

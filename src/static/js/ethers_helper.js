@@ -1,7 +1,13 @@
+// Use global variables available from the main bundle
+const { BrowserProvider } = window.ethers;
+const customNetworks = window.customNetworks; // Use the NETWORKS object that's available globally
+
 const DLP_ABI = [{"inputs":[{"internalType":"address","name":"_originToken","type":"address"}],"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"owner","type":"address"},{"indexed":true,"internalType":"address","name":"spender","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"Approval","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"uint256","name":"value","type":"uint256"}],"name":"Burn","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"uint256","name":"value","type":"uint256"}],"name":"Mint","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"previousOwner","type":"address"},{"indexed":true,"internalType":"address","name":"newOwner","type":"address"}],"name":"OwnershipTransferPrepared","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"previousOwner","type":"address"},{"indexed":true,"internalType":"address","name":"newOwner","type":"address"}],"name":"OwnershipTransferred","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"from","type":"address"},{"indexed":true,"internalType":"address","name":"to","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"Transfer","type":"event"},{"inputs":[],"name":"_NEW_OWNER_","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"_OWNER_","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"owner","type":"address"},{"internalType":"address","name":"spender","type":"address"}],"name":"allowance","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"spender","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"approve","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"owner","type":"address"}],"name":"balanceOf","outputs":[{"internalType":"uint256","name":"balance","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"user","type":"address"},{"internalType":"uint256","name":"value","type":"uint256"}],"name":"burn","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"claimOwnership","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"decimals","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"user","type":"address"},{"internalType":"uint256","name":"value","type":"uint256"}],"name":"mint","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"name","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"originToken","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"symbol","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"totalSupply","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"to","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"transfer","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"from","type":"address"},{"internalType":"address","name":"to","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"transferFrom","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"newOwner","type":"address"}],"name":"transferOwnership","outputs":[],"stateMutability":"nonpayable","type":"function"}]
 const DLP_DUAL_TOKEN_ABI = [{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"owner","type":"address"},{"indexed":true,"internalType":"address","name":"spender","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"Approval","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"uint256","name":"value","type":"uint256"}],"name":"Burn","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"to","type":"address"},{"indexed":false,"internalType":"uint256","name":"increaseShares","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"totalShares","type":"uint256"}],"name":"BuyShares","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"borrower","type":"address"},{"indexed":false,"internalType":"address","name":"assetTo","type":"address"},{"indexed":false,"internalType":"uint256","name":"baseAmount","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"quoteAmount","type":"uint256"}],"name":"DODOFlashLoan","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"fromToken","type":"address"},{"indexed":false,"internalType":"address","name":"toToken","type":"address"},{"indexed":false,"internalType":"uint256","name":"fromAmount","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"toAmount","type":"uint256"},{"indexed":false,"internalType":"address","name":"trader","type":"address"},{"indexed":false,"internalType":"address","name":"receiver","type":"address"}],"name":"DODOSwap","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"uint256","name":"value","type":"uint256"}],"name":"Mint","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"payer","type":"address"},{"indexed":false,"internalType":"address","name":"to","type":"address"},{"indexed":false,"internalType":"uint256","name":"decreaseShares","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"totalShares","type":"uint256"}],"name":"SellShares","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"from","type":"address"},{"indexed":true,"internalType":"address","name":"to","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"Transfer","type":"event"},{"inputs":[],"name":"DOMAIN_SEPARATOR","outputs":[{"internalType":"bytes32","name":"","type":"bytes32"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"PERMIT_TYPEHASH","outputs":[{"internalType":"bytes32","name":"","type":"bytes32"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"_BASE_PRICE_CUMULATIVE_LAST_","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"_BASE_RESERVE_","outputs":[{"internalType":"uint112","name":"","type":"uint112"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"_BASE_TOKEN_","outputs":[{"internalType":"contract IERC20","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"_BLOCK_TIMESTAMP_LAST_","outputs":[{"internalType":"uint32","name":"","type":"uint32"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"_IS_OPEN_TWAP_","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"_I_","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"_K_","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"_LP_FEE_RATE_","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"_MAINTAINER_","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"_MT_FEE_RATE_MODEL_","outputs":[{"internalType":"contract IFeeRateModel","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"_QUOTE_RESERVE_","outputs":[{"internalType":"uint112","name":"","type":"uint112"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"_QUOTE_TOKEN_","outputs":[{"internalType":"contract IERC20","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"_addr","type":"address"}],"name":"addressToShortString","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"pure","type":"function"},{"inputs":[{"internalType":"address","name":"owner","type":"address"},{"internalType":"address","name":"spender","type":"address"}],"name":"allowance","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"spender","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"approve","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"owner","type":"address"}],"name":"balanceOf","outputs":[{"internalType":"uint256","name":"balance","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"to","type":"address"}],"name":"buyShares","outputs":[{"internalType":"uint256","name":"shares","type":"uint256"},{"internalType":"uint256","name":"baseInput","type":"uint256"},{"internalType":"uint256","name":"quoteInput","type":"uint256"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"decimals","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"baseAmount","type":"uint256"},{"internalType":"uint256","name":"quoteAmount","type":"uint256"},{"internalType":"address","name":"assetTo","type":"address"},{"internalType":"bytes","name":"data","type":"bytes"}],"name":"flashLoan","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"getBaseInput","outputs":[{"internalType":"uint256","name":"input","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getMidPrice","outputs":[{"internalType":"uint256","name":"midPrice","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getPMMState","outputs":[{"components":[{"internalType":"uint256","name":"i","type":"uint256"},{"internalType":"uint256","name":"K","type":"uint256"},{"internalType":"uint256","name":"B","type":"uint256"},{"internalType":"uint256","name":"Q","type":"uint256"},{"internalType":"uint256","name":"B0","type":"uint256"},{"internalType":"uint256","name":"Q0","type":"uint256"},{"internalType":"enum PMMPricing.RState","name":"R","type":"uint8"}],"internalType":"struct PMMPricing.PMMState","name":"state","type":"tuple"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getPMMStateForCall","outputs":[{"internalType":"uint256","name":"i","type":"uint256"},{"internalType":"uint256","name":"K","type":"uint256"},{"internalType":"uint256","name":"B","type":"uint256"},{"internalType":"uint256","name":"Q","type":"uint256"},{"internalType":"uint256","name":"B0","type":"uint256"},{"internalType":"uint256","name":"Q0","type":"uint256"},{"internalType":"uint256","name":"R","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getQuoteInput","outputs":[{"internalType":"uint256","name":"input","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"user","type":"address"}],"name":"getUserFeeRate","outputs":[{"internalType":"uint256","name":"lpFeeRate","type":"uint256"},{"internalType":"uint256","name":"mtFeeRate","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getVaultReserve","outputs":[{"internalType":"uint256","name":"baseReserve","type":"uint256"},{"internalType":"uint256","name":"quoteReserve","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"maintainer","type":"address"},{"internalType":"address","name":"baseTokenAddress","type":"address"},{"internalType":"address","name":"quoteTokenAddress","type":"address"},{"internalType":"uint256","name":"lpFeeRate","type":"uint256"},{"internalType":"address","name":"mtFeeRateModel","type":"address"},{"internalType":"uint256","name":"i","type":"uint256"},{"internalType":"uint256","name":"k","type":"uint256"},{"internalType":"bool","name":"isOpenTWAP","type":"bool"}],"name":"init","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"name","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"nonces","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"owner","type":"address"},{"internalType":"address","name":"spender","type":"address"},{"internalType":"uint256","name":"value","type":"uint256"},{"internalType":"uint256","name":"deadline","type":"uint256"},{"internalType":"uint8","name":"v","type":"uint8"},{"internalType":"bytes32","name":"r","type":"bytes32"},{"internalType":"bytes32","name":"s","type":"bytes32"}],"name":"permit","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"trader","type":"address"},{"internalType":"uint256","name":"payBaseAmount","type":"uint256"}],"name":"querySellBase","outputs":[{"internalType":"uint256","name":"receiveQuoteAmount","type":"uint256"},{"internalType":"uint256","name":"mtFee","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"trader","type":"address"},{"internalType":"uint256","name":"payQuoteAmount","type":"uint256"}],"name":"querySellQuote","outputs":[{"internalType":"uint256","name":"receiveBaseAmount","type":"uint256"},{"internalType":"uint256","name":"mtFee","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"to","type":"address"}],"name":"sellBase","outputs":[{"internalType":"uint256","name":"receiveQuoteAmount","type":"uint256"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"to","type":"address"}],"name":"sellQuote","outputs":[{"internalType":"uint256","name":"receiveBaseAmount","type":"uint256"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"shareAmount","type":"uint256"},{"internalType":"address","name":"to","type":"address"},{"internalType":"uint256","name":"baseMinAmount","type":"uint256"},{"internalType":"uint256","name":"quoteMinAmount","type":"uint256"},{"internalType":"bytes","name":"data","type":"bytes"},{"internalType":"uint256","name":"deadline","type":"uint256"}],"name":"sellShares","outputs":[{"internalType":"uint256","name":"baseAmount","type":"uint256"},{"internalType":"uint256","name":"quoteAmount","type":"uint256"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"symbol","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"sync","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"totalSupply","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"to","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"transfer","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"from","type":"address"},{"internalType":"address","name":"to","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"transferFrom","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"version","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"pure","type":"function"}]
 
 let walletProvider = undefined
+let isDataLoading = false // Global flag to prevent multiple data loading
+let isDataLoaded = false // Global flag to track if data has been loaded
 
 const networkNameFromId = function (id) {
   for(let network of Object.values(window.NETWORKS)) {
@@ -219,141 +225,177 @@ const pageNetwork = function() {
 
 const init_wallet = async function (callback) {
 
+  console.log("Init wallet", window.appKit)
   let targetNetwork = pageNetwork()
+  let connectOptionsShown = false // Flag to prevent multiple showConnectOptions calls
+  let dataLoaded = false // Flag to prevent multiple data loading
 
-  // Give AppKit some time to initialize if it's not ready yet
-  if (window.appKit && !window.appKit.getAccount) {
-    await new Promise(resolve => setTimeout(resolve, 1000)) // Increased timeout
+  // Function to handle connection state
+  const handleConnectionState = async () => {
+    const isConnected = window.store?.accountState?.isConnected;
+    let account = window.store?.accountState?.address;
+
+    console.log('Connection state check:', {
+      isConnected, 
+      account, 
+      accountState: window.store?.accountState,
+      status: window.store?.accountState?.status,
+      store: window.store
+    })
+
+    // If we're in connecting state, wait for it to resolve
+    if (window.store?.accountState?.status === 'connecting') {
+      console.log('Account is connecting, waiting for connection to complete...')
+      return false // Don't proceed yet
+    }
+
+    if (account && isConnected) {
+      try {
+        // Get the provider directly from AppKit
+        console.log('Get Provider')
+        const provider = window.store.eip155
+        
+        if (!provider) {
+          console.warn("No provider found")
+          return false
+        }
+
+        walletProvider = provider;
+        console.log('Wallet provider:', walletProvider)
+        if (walletProvider) {
+          let connectedNetwork = window.appKit?.getChainId?.();
+          let targetNetworkId = parseInt(targetNetwork.chainId, 16)
+
+          if (connectedNetwork === targetNetworkId) {
+            // Clear the log since we're now connected
+            if (document.getElementById('log')) {
+              document.getElementById('log').innerHTML = ''
+            }
+            _print_link("[CHANGE WALLET]", changeWallet, "connect_wallet_button", false);
+            _print_inline(' -=- ');
+            _print_link("[CLEAR BROWSER STORAGE]", clearLocalStorage, "clear_browser_storage");
+            
+            // Only start loading data if not already loaded or loading
+            if (!dataLoaded && !isDataLoading && !isDataLoaded) {
+              console.log('Starting data loading for the first time...')
+              isDataLoading = true // Set global loading flag
+              start(callback);
+              dataLoaded = true // Set local flag to prevent multiple data loads
+              isDataLoaded = true // Set global flag to indicate data is loaded
+            } else {
+              console.log('Data already loaded or loading, skipping start() call')
+            }
+            return true // Successfully connected
+          } else {
+            // Clear the log for network switch message
+            if (document.getElementById('log')) {
+              document.getElementById('log').innerHTML = ''
+            }
+            _print(`You are connected to ${networkNameFromId(connectedNetwork)}, please switch to ${targetNetwork.chainName} network`)
+            _print('')
+            _print_link("[SWITCH NETWORK]", () => switchNetwork(targetNetwork), "connect_wallet_button", false)
+            _print_inline(' -=- ');
+            _print_link("[CLEAR BROWSER STORAGE]", clearLocalStorage, "clear_browser_storage");
+            hideLoading()
+            return true // Connected but wrong network
+          }
+        }
+      } catch (e) {
+        console.warn('Failed to get provider from AppKit in init_wallet:', e)
+        return false
+      }
+    }
+    return false // Not connected
   }
 
-  // Check if user is already connected via AppKit
-  let account = window.appKit?.getAccount()
-  
-  // If account is not immediately available, wait a bit more and try again
-  if ((!account || !account.isConnected) && window.appKit) {
-    await new Promise(resolve => setTimeout(resolve, 500))
-    account = window.appKit.getAccount()
+  // Try initial connection check
+  const initialCheck = await handleConnectionState()
+  console.log('initialCheck:', initialCheck)
+  if (initialCheck) return
+
+  // If not connected or still connecting, set up listener for account state changes
+  let unsubscribe
+  const accountStateListener = async (accountState) => {
+    console.log('Account state changed:', accountState)
+    
+    // Update the store
+    window.store.accountState = accountState
+    
+    // Check connection state again
+    const connected = await handleConnectionState()
+    if (connected && unsubscribe) {
+      unsubscribe() // Stop listening once connected
+      connectOptionsShown = false // Reset flag when connected
+      return
+    }
+    
+    // Only show connect options if not already shown and user is disconnected
+    if (!accountState.isConnected && !connectOptionsShown) {
+      showConnectOptions(callback)
+      connectOptionsShown = true // Set flag to prevent multiple calls
+    }
   }
-  
-  if (account && account.isConnected && account.address) {
+
+  // Subscribe to account changes
+  if (window.appKit?.subscribeAccount) {
+    unsubscribe = window.appKit.subscribeAccount(accountStateListener)
+  }
+
+  // Show initial connect options only if not already shown
+  if (!connectOptionsShown) {
+    showConnectOptions(callback)
+    connectOptionsShown = true
+  }
+}
+
+// Helper function to show connect options
+const showConnectOptions = (callback) => {
+  console.log('showConnectOptions called')
+  const shouldOpenWalletModal = sessionStorage.getItem('changeWallet') === 'true'
+  if (shouldOpenWalletModal) {
+    sessionStorage.removeItem('changeWallet')
+    _print('Opening wallet selection...')
+    _print('')
+    
     try {
-      walletProvider = window.appKit.getProvider() || window.ethereum
-      if (walletProvider) {
-        window.web3Modal.cachedProvider = 'appkit'
-        // Proceed directly to wallet logic since we're already connected
-        let provider = new ethers.providers.Web3Provider(walletProvider)
-        let connectedNetwork = await provider.getNetwork()
-        let targetNetworkId = parseInt(targetNetwork.chainId, 16)
-
-        if (connectedNetwork.chainId === targetNetworkId) {
-          _print_link("[CHANGE WALLET]", changeWallet, "connect_wallet_button", false);
-          _print_inline(' -=- ');
-          _print_link("[CLEAR BROWSER STORAGE]", clearLocalStorage, "clear_browser_storage");
-          start(callback);
-          return // Exit early since we're connected
-        } else {
-          _print(`You are connected to ${networkNameFromId(connectedNetwork.chainId)}, please switch to ${targetNetwork.chainName} network`)
-          _print('')
-          _print_link("[SWITCH NETWORK]", () => switchNetwork(targetNetwork), "connect_wallet_button", false)
-          _print_inline(' -=- ');
-          _print_link("[CLEAR BROWSER STORAGE]", clearLocalStorage, "clear_browser_storage");
-          hideLoading()
-          return // Exit early since we need network switch
-        }
-      }
-    } catch (e) {
-      console.warn('Failed to get provider from AppKit in init_wallet:', e)
-      walletProvider = window.ethereum
-      // If we have window.ethereum as fallback, try to use it
-      if (walletProvider) {
-        let provider = new ethers.providers.Web3Provider(walletProvider)
-        let connectedNetwork = await provider.getNetwork()
-        let targetNetworkId = parseInt(targetNetwork.chainId, 16)
-
-        if (connectedNetwork.chainId === targetNetworkId) {
-          _print_link("[CHANGE WALLET]", changeWallet, "connect_wallet_button", false);
-          _print_inline(' -=- ');
-          _print_link("[CLEAR BROWSER STORAGE]", clearLocalStorage, "clear_browser_storage");
-          start(callback);
-          return
-        } else {
-          _print(`You are connected to ${networkNameFromId(connectedNetwork.chainId)}, please switch to ${targetNetwork.chainName} network`)
-          _print('')
-          _print_link("[SWITCH NETWORK]", () => switchNetwork(targetNetwork), "connect_wallet_button", false)
-          _print_inline(' -=- ');
-          _print_link("[CLEAR BROWSER STORAGE]", clearLocalStorage, "clear_browser_storage");
-          hideLoading()
-          return
-        }
-      }
+      connectWallet(callback)
+      return
+    } catch (error) {
+      _print('Wallet selection failed. Please try again.')
+      _print('')
     }
   }
-
-  if (walletProvider) {
-
-    let provider = new ethers.providers.Web3Provider(walletProvider)
-    let connectedNetwork = await provider.getNetwork()
-    let targetNetworkId = parseInt(targetNetwork.chainId, 16)
-
-    if (connectedNetwork.chainId === targetNetworkId) {
-      _print_link("[CHANGE WALLET]", changeWallet, "connect_wallet_button", false);
-      _print_inline(' -=- ');
-      _print_link("[CLEAR BROWSER STORAGE]", clearLocalStorage, "clear_browser_storage");
-      start(callback);
-    } else {
-      _print(`You are connected to ${networkNameFromId(connectedNetwork.chainId)}, please switch to ${targetNetwork.chainName} network`)
-      _print('')
-      _print_link("[SWITCH NETWORK]", () => switchNetwork(targetNetwork), "connect_wallet_button", false)
-      _print_inline(' -=- ');
-      _print_link("[CLEAR BROWSER STORAGE]", clearLocalStorage, "clear_browser_storage");
-
-      hideLoading()
-    }
-  } else {
-    const shouldOpenWalletModal = sessionStorage.getItem('changeWallet') === 'true'
-    if (shouldOpenWalletModal) {
-      sessionStorage.removeItem('changeWallet')
-      _print('Opening wallet selection...')
-      _print('')
-      
-      try {
-        await connectWallet(callback)
-        return
-      } catch (error) {
-        _print('Wallet selection failed. Please try again.')
-        _print('')
-      }
-    }
+  
+  const shouldAutoReconnect = localStorage.getItem('@w3m/connected_wallet_image_url') || 
+                               localStorage.getItem('@w3m/wallet_id') ||
+                               localStorage.getItem('@w3m/connected_connector')
+  
+  if (shouldAutoReconnect && !shouldOpenWalletModal) {
+    _print('Reconnecting to your wallet...')
+    _print('')
     
-    const shouldAutoReconnect = localStorage.getItem('@w3m/connected_wallet_image_url') || 
-                                 localStorage.getItem('@w3m/wallet_id') ||
-                                 localStorage.getItem('@w3m/connected_connector') ||
-                                 window.web3Modal.cachedProvider
-    
-    if (shouldAutoReconnect && !shouldOpenWalletModal) {
-      _print('Reconnecting to your wallet...')
+    // Automatically trigger connection without showing the connect button
+    try {
+      connectWallet(callback)
+      return // Exit early if auto-reconnection succeeds
+    } catch (error) {
+      _print('Auto-reconnection failed. Please connect manually.')
       _print('')
-      
-      // Automatically trigger connection without showing the connect button
-      try {
-        await connectWallet(callback)
-        return // Exit early if auto-reconnection succeeds
-      } catch (error) {
-        _print('Auto-reconnection failed. Please connect manually.')
-        _print('')
-      }
     }
-    
-    // Only show connect button if auto-reconnection wasn't attempted or failed
-    _print_link("[CONNECT WALLET]", () => connectWallet(callback), "connect_wallet_button", false);
-    _print_inline(' -=- ');
-    _print_link("[CLEAR BROWSER STORAGE]", clearLocalStorage, "clear_browser_storage");
-    hideLoading()
   }
+  
+  // Only show connect button if auto-reconnection wasn't attempted or failed
+  _print_link("[CONNECT WALLET]", () => connectWallet(callback), "connect_wallet_button", false);
+  _print_inline(' -=- ');
+  _print_link("[CLEAR BROWSER STORAGE]", clearLocalStorage, "clear_browser_storage");
+  hideLoading()
   _print('')
 }
 
 function clearLocalStorage() {
+  // Reset data loading flags when clearing storage
+  isDataLoading = false
+  isDataLoaded = false
   localStorage.clear()
 }
 
@@ -444,19 +486,19 @@ async function init_ethers() {
 }
 
 const switchNetwork = async function(network) {
-    if (network.chainId === '0x1') {
-        await window.ethereum.request({method: 'wallet_switchEthereumChain', params: [{chainId: network.chainId }]}).catch()
-    } else {
-        await window.ethereum.request({method: 'wallet_addEthereumChain', params: [network]}).catch()
-    }
+  const getNetwork = window.customNetworks?.find(n => n.id === parseInt(network.chainId, 16))
+   if(getNetwork) window.appKit?.switchNetwork?.(getNetwork);
   window.location.reload()
 }
 
 const changeWallet = async function() {
   try {
+    // Reset data loading flags to allow fresh data loading with new wallet
+    isDataLoading = false
+    isDataLoaded = false
+    
     // Clear the current wallet provider immediately  
     walletProvider = null
-    window.web3Modal.clearCachedProvider()
     
     // Clear any existing localStorage wallet data
     localStorage.removeItem('@w3m/connected_wallet_image_url')
@@ -499,123 +541,23 @@ const changeWallet = async function() {
 }
 
 const connectWallet = async function(callback) {
+  console.log("Connecting wallet...", window.appKit)
   // Check if AppKit is available  
   if (!window.appKit) {
     console.error('AppKit is not initialized')
     throw new Error('AppKit is not available')
   }
 
-  return new Promise((resolve, reject) => {
-    let timeoutId = null
-    let pollTimeoutId = null
+  try {
+    console.log('Opening AppKit modal...')
+    await window.appKit.open();
     
-    const cleanup = () => {
-      if (timeoutId) {
-        clearTimeout(timeoutId)
-        timeoutId = null
-      }
-      if (pollTimeoutId) {
-        clearTimeout(pollTimeoutId)
-        pollTimeoutId = null
-      }
-    }
-    
-    timeoutId = setTimeout(() => {
-      cleanup()
-      console.error('Wallet connection timed out after 30 seconds')
-      reject(new Error('Wallet connection timed out'))
-    }, 30000)
-    
-    try {
-      const currentAccount = window.appKit.getAccount()
-      if (currentAccount && currentAccount.isConnected && currentAccount.address) {
-        cleanup()
-        try {
-          const appKitProvider = window.appKit.getProvider()
-          walletProvider = appKitProvider || window.ethereum
-          if (!walletProvider) {
-            console.error('No wallet provider available in initial check')
-            reject(new Error('No wallet provider available'))
-            return
-          }
-        } catch (e) {
-          console.error('Failed to get provider from AppKit:', e)
-          walletProvider = window.ethereum
-          if (!walletProvider) {
-            reject(new Error('No wallet provider available'))
-            return
-          }
-        }
-        window.web3Modal.cachedProvider = 'appkit'
-        
-        handleConnectedWallet(callback, walletProvider).then(resolve).catch(reject)
-        return
-      }
-    } catch (error) {
-      console.error('Error checking initial connection state:', error)
-    }
-
-    try {
-      window.appKit.open().then(() => {
-        
-      }).catch((error) => {
-        console.error('Failed to open AppKit modal (non-blocking):', error)
-      })
-    } catch (error) {
-      console.error('Immediate error opening AppKit modal:', error)
-    }
-      
-      let pollCount = 0
-      const maxPolls = 60
-      
-      const pollForConnection = () => {
-        try {
-          const account = window.appKit?.getAccount()
-          
-          if (account && account.isConnected && account.address) {
-            cleanup()
-            
-            try {
-              const appKitProvider = window.appKit.getProvider()
-              walletProvider = appKitProvider || window.ethereum
-              if (!walletProvider) {
-                console.error('No wallet provider available')
-                reject(new Error('No wallet provider available'))
-                return
-              }
-            } catch (e) {
-              console.error('Failed to get provider from AppKit:', e)
-              walletProvider = window.ethereum
-              if (!walletProvider) {
-                console.error('No fallback provider (window.ethereum) available')
-                reject(new Error('No wallet provider available'))
-                return
-              }
-            }
-            
-            window.web3Modal.cachedProvider = 'appkit'
-            
-            handleConnectedWallet(callback, walletProvider).then(resolve).catch(reject)
-            return
-          }
-          
-          pollCount++
-          if (pollCount >= maxPolls) {
-            cleanup()
-            reject(new Error('Connection polling timeout'))
-            return
-          }
-          
-          setTimeout(pollForConnection, 500)
-        } catch (error) {
-          console.error('Error during polling:', error)
-          cleanup()
-          reject(error)
-        }
-      }
-      
-      setTimeout(pollForConnection, 500)
-    })
+    // The connection will be handled by the account state listener in init_wallet
+    // No need to manually handle the connection here
+  } catch (error) {
+    console.error('Error opening wallet modal:', error)
+    throw error
+  }
 }
 
 const handleConnectedWallet = async function(callback, providerParam = null) {
@@ -644,8 +586,16 @@ const handleConnectedWallet = async function(callback, providerParam = null) {
     _print_link("[CLEAR BROWSER STORAGE]", clearLocalStorage, "clear_browser_storage");
     
     // Start the main application logic
-    showLoading()
-    start(callback)
+    if (!isDataLoading && !isDataLoaded) {
+      console.log('Starting data loading from handleConnectedWallet...')
+      isDataLoading = true
+      showLoading()
+      start(callback)
+      isDataLoaded = true
+    } else {
+      console.log('Data already loaded or loading, skipping start() call from handleConnectedWallet')
+      hideLoading()
+    }
   } else {
     // Clear the current page content
     if (document.getElementById('log')) {
