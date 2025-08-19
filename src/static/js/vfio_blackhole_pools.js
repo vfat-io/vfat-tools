@@ -109,11 +109,17 @@ async function main() {
 
   for (const missing_pool of missing_pools) {
     const tokens = await formatingNewTokens(App, missing_pool, vfat_tokens)
-    missingTokens.push(tokens[0])
+    if(tokens.length > 0){
+      missingTokens.push(tokens[0])
+    }
   }
 
-  const missing_tokens_no_dublicates = remove_dublicates(missingTokens, ob => ob.symbol)
-  _print(missing_tokens_no_dublicates)
+  if(missingTokens.length > 0){
+    const missing_tokens_no_dublicates = remove_dublicates(missingTokens, ob => ob.symbol)
+    _print(missing_tokens_no_dublicates)
+  }else{
+    _print("No new Tokens")
+  }
 
   hideLoading()
 }
@@ -125,8 +131,8 @@ async function formatingNewTokens(App, missing_pool, vfat_tokens) {
   const TOKEN_0_CONTRACT = new ethcall.Contract(token0, POOL_TOKEN_ABI)
   const TOKEN_1_CONTRACT = new ethcall.Contract(token1, POOL_TOKEN_ABI)
 
-  const token_0_exists = vfat_tokens.includes(token0)
-  const token_1_exists = vfat_tokens.includes(token1)
+  const token_0_exists = vfat_tokens.includes(token0.toLowerCase())
+  const token_1_exists = vfat_tokens.includes(token1.toLowerCase())
 
   if (!token_0_exists && !token_1_exists) {
     const [token0Symbol, token0Decimals] = await App.ethcallProvider.all([
