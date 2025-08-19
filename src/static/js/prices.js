@@ -174,7 +174,9 @@ const avaxTokens = [
   { "id": "platypus-finance", "symbol": "PTP", "contract": "0x22d4002028f537599be9f666d1c4fa138522f9c8"},
   { "id": "vector-finance", "symbol": "VTX", "contract": "0x5817d4f0b62a59b17f75207da1848c2ce75e7af4"},
   { "id": "yusd-stablecoin", "symbol": "YUSD", "contract": "0x111111111111ed1d73f860f57b2798b683f2d325"},
-  { "id": "pharaoh", "symbol": "PHAR", "contract": "0xaaab9d12a30504559b0c5a9a5977fee4a6081c6b"}
+  { "id": "pharaoh", "symbol": "PHAR", "contract": "0xaaab9d12a30504559b0c5a9a5977fee4a6081c6b"},
+  { "id": "spx6900", "symbol": "SPX", "contract": "0x6F911b6B39Bcc665A463129c94B5380A4387b7eb"},
+  { "id": "blackhole", "symbol": "BLACK", "contract": "0xcd94a87696FAC69Edae3a70fE5725307Ae1c43f6"}
 ]
 
 const BaseTokens = [

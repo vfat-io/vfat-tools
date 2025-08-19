@@ -2659,6 +2659,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
                   "bsc": `https://info.thena.fi/pair/${pool.address}`,
                   "kava": `https://equilibrefinance.com/`,
                   "pulse": `https://pulse.velocimeter.xyz`,
+                  "avax": `https://blackhole.xyz`,
                   "base": `https://base.velocimeter.xyz`
                 }
               [chain]):
@@ -2673,6 +2674,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
                   "eth": `https://solidly.com/`,
                   "arbitrum": `https://solidlizard.finance/`,
                   "bsc": `https://info.thena.fi/pair/${pool.address}`,
+                  "avax": `https://blackhole.xyz`,
                   "kava": `https://equilibrefinance.com/`
                 }
               [chain]):
@@ -2956,6 +2958,11 @@ function getUniPrices(tokens, prices, pool, chain="eth")
               `https://thena.fi/liquidity/manage`,
               `https://thena.fi/swap`
             ],
+            "avax" : [
+              `https://blackhole.xyz/liquidity`,
+              `https://blackhole.xyz/liquidity`,
+              `https://blackhole.xyz/swap`
+            ],
             "kava" : [
               `https://equilibrefinance.com/liquidity/${pool.address}`,
               `https://equilibrefinance.com/liquidity/${pool.address}`,
@@ -2982,6 +2989,11 @@ function getUniPrices(tokens, prices, pool, chain="eth")
               `https://whaleswap.finance/add/`,
               `https://whaleswap.finance/add/`,
               `https://whaleswap.finance/swap`
+            ],
+            "avax" : [
+              `https://blackhole.xyz/liquidity`,
+              `https://blackhole.xyz/liquidity`,
+              `https://blackhole.xyz/swap`
             ],
             "canto" : [
               `https://canto.velocimeter.xyz/liquidity/${pool.address}`,

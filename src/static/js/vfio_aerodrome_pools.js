@@ -96,18 +96,6 @@ $(function() {
         }
       }
     }
-  
-    // const cl_gauge_contracts = cl_pools.map(a => new ethcall.Contract(a.gauge, CL_GAUGE_ABI));
-    // for(const cl_gauge_contract of cl_gauge_contracts){
-    //   try{
-    //     const [cl_periodFinish] = await App.ethcallProvider.all([cl_gauge_contract.periodFinish()]);
-    //     if((Date.now() / 1000 < cl_periodFinish)){
-    //       cl_gauges_array.push(cl_gauge_contract.address)
-    //     }
-    //   }catch(err){
-    //     console.log(cl_gauge_contract.address)
-    //   }
-    // }
 
     const cl_gauge_contracts = cl_pools.map(a => new ethcall.Contract(a.gauge, CL_GAUGE_ABI));
     const cl_rewardRate_calls = cl_gauge_contracts.map(c => c.rewardRate());
