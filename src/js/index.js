@@ -994,6 +994,21 @@ window.NETWORKS = {
         "https://www.hyperscan.com/"
     ],
   },
+  KATANA: {
+    "chainId": "0xb67d2",
+    "chainName": "Katana",
+    "nativeCurrency": {
+      "name": "Ethereum",
+      "symbol": "ETH",
+      "decimals": 18
+    },
+    "rpcUrls": [
+        "https://rpc.katana.network"
+    ],
+    "blockExplorerUrls": [
+        "https://katanascan.com"
+    ],
+  },
   IOTEX: {
     "chainId": "0x1251",
     "chainName": "IoTeX Mainnet",

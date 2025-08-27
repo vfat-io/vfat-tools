@@ -696,6 +696,8 @@ async function loadGeneralChefContract(App, tokens, prices, chef, chefAddress, c
     break;
     case "hyperevm" : _print(`<a href='https://www.hyperscan.com/address/${chefAddress}' target='_blank'>Staking Contract</a>`);
     break;
+    case "katana" : _print(`<a href='https://katanascan.com/address/${chefAddress}' target='_blank'>Staking Contract</a>`);
+    break;
   }
   _print(`Found ${poolCount} pools.\n`)
 
