@@ -1009,6 +1009,21 @@ window.NETWORKS = {
         "https://katanascan.com"
     ],
   },
+  HEMI: {
+    "chainId": "0xa867",
+    "chainName": "Hemi",
+    "nativeCurrency": {
+      "name": "Ethereum",
+      "symbol": "ETH",
+      "decimals": 18
+    },
+    "rpcUrls": [
+        "https://rpc.hemi.network/rpc"
+    ],
+    "blockExplorerUrls": [
+        "https://explorer.hemi.xyz"
+    ],
+  },
   IOTEX: {
     "chainId": "0x1251",
     "chainName": "IoTeX Mainnet",

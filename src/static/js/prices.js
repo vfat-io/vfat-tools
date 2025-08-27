@@ -715,6 +715,10 @@ const KatanaTokens = [
   { "id": "weth", "symbol": "WETH", "contract": "0xEE7D8BCFb72bC1880D0Cf19822eB0A2e6577aB62"}
 ];
 
+const HemiTokens = [
+  { "id": "weth", "symbol": "WETH", "contract": "0x4200000000000000000000000000000000000006"}
+];
+
 const SoneiumTokens = [
   { "id": "weth", "symbol": "WETH", "contract": "0x4200000000000000000000000000000000000006"},
   { "id": "usd-coin", "symbol": "USDC", "contract": "0xbA9986D2381edf1DA03B0B9c1f8b00dc4AacC369"},
@@ -1346,6 +1350,15 @@ async function getKatanaPrices() {
   const idPrices = await lookUpPrices(KatanaTokens.map(x => x.id));
   const prices = {}
   for (const bt of KatanaTokens)
+      if (idPrices[bt.id])
+          prices[bt.contract] = idPrices[bt.id];
+  return prices;
+}
+
+async function getHemiPrices() {
+  const idPrices = await lookUpPrices(HemiTokens.map(x => x.id));
+  const prices = {}
+  for (const bt of HemiTokens)
       if (idPrices[bt.id])
           prices[bt.contract] = idPrices[bt.id];
   return prices;

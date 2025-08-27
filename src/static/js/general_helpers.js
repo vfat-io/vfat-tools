@@ -698,6 +698,8 @@ async function loadGeneralChefContract(App, tokens, prices, chef, chefAddress, c
     break;
     case "katana" : _print(`<a href='https://katanascan.com/address/${chefAddress}' target='_blank'>Staking Contract</a>`);
     break;
+    case "hemi" : _print(`<a href='https://explorer.hemi.xyz/address/${chefAddress}' target='_blank'>Staking Contract</a>`);
+    break;
   }
   _print(`Found ${poolCount} pools.\n`)
 
