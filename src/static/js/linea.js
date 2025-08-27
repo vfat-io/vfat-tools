@@ -8,9 +8,10 @@ const main = async() => {
     "title":"Linea Network",
     "heading":["Pool Provider","LP", "Reward Tokens", "INFO"],
     "rows": [
-        ["Nile",              `<a href="nile"                 >Various</a>`,      "NILE",          "https://www.nile.build"],
-        ["Pancake Swap V3",   `<a href="pancakev3"            >Various</a>`,      "CAKE",          "https://pancakeswap.finance"],
-        ["Sickle",            `<a href="sickle"               >Various</a>`,      "",              ""]
+        ["Nile",                `<a href="nile"                 >Various</a>`,      "NILE",          "https://www.nile.build"],
+        ["Pancake Swap V3",     `<a href="pancakev3"            >Various</a>`,      "CAKE",          "https://pancakeswap.finance"],
+        ["Etherex V2 Positions",`<a href="etherex"              >Various</a>`,      "",              "https://www.etherex.finance"],
+        ["Sickle",              `<a href="sickle"               >Various</a>`,      "",              ""]
     ].reverse()
   }
 
