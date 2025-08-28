@@ -11,7 +11,7 @@ import "utils/quick"
 import "core-js/stable"
 import "regenerator-runtime/runtime"
 
-import { appKit, REOWN_PROJECT_ID, customNetworks, NETWORKS, ETHEREUM_NODE_URL } from './config.js'
+import { createAppKitInstance, REOWN_PROJECT_ID, customNetworks, NETWORKS, ETHEREUM_NODE_URL } from './config.js'
 import {store} from './appKitStore.js'
 import { initializeSubscribers } from './subscribers.js'
 
@@ -28,12 +28,22 @@ window.customNetworks = customNetworks
 window.NETWORKS = NETWORKS
 window.store = store
 
-// 3. Create a AppKit instance
+// 3. Create a AppKit instance safely
+let appKitInstance = null;
 
-
-window.appKit = appKit
-
-initializeSubscribers(window.appKit)
+try {
+  appKitInstance = createAppKitInstance();
+  window.appKit = appKitInstance;
+  
+  // Only initialize subscribers if AppKit was created successfully
+  if (appKitInstance) {
+    initializeSubscribers(appKitInstance);
+  }
+} catch (error) {
+  console.error('Failed to initialize AppKit in index.js:', error);
+  // Set a fallback or handle gracefully
+  window.appKit = null;
+}
 
 document.addEventListener('DOMContentLoaded', function() {
   try {

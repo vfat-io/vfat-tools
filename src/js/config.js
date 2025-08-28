@@ -1,7 +1,7 @@
 import { createAppKit } from '@reown/appkit'
 import { Ethers5Adapter } from '@reown/appkit-adapter-ethers5'
 
-export const REOWN_PROJECT_ID = process.env.REOWN_PROJECT_ID || 'c0c2fa07552342eed4052cc752d41827'
+export const REOWN_PROJECT_ID = process.env.REOWN_PROJECT_ID || ''
 export const ETHEREUM_NODE_URL = process.env.ETHEREUM_NODE_URL || ''
 
 const getInfuraId = () => {
@@ -514,15 +514,64 @@ export const appKitFeatures = {
   socials: []
 }
 
-export const appKit = createAppKit({
-  adapters: [new Ethers5Adapter()],
-  metadata: appKitMetadata,
-  networks: customNetworks,
-  projectId: REOWN_PROJECT_ID,
-  features: {
-    analytics: true, // Optional - defaults to your Cloud configuration
-  },
-});
+// Create AppKit with error handling
+let appKitInstance = null;
+
+export const createAppKitInstance = () => {
+  if (appKitInstance) {
+    return appKitInstance;
+  }
+  
+  try {
+    appKitInstance = createAppKit({
+      adapters: [new Ethers5Adapter()],
+      metadata: appKitMetadata,
+      networks: customNetworks,
+      projectId: REOWN_PROJECT_ID,
+      features: {
+        analytics: true, // Optional - defaults to your Cloud configuration
+      },
+    });
+    
+    console.log('AppKit instance created successfully');
+    return appKitInstance;
+  } catch (error) {
+    console.error('Failed to create AppKit instance:', error);
+    
+    // If it's a "matching key" error, clear storage and try again
+    if (error.message && error.message.includes('matching key')) {
+      console.log('AppKit storage error detected, clearing and retrying...');
+      try {
+        localStorage.removeItem('@w3m/connected_wallet_image_url');
+        localStorage.removeItem('@w3m/wallet_id');
+        localStorage.removeItem('@w3m/connected_connector');
+        sessionStorage.clear();
+        
+        // Try creating again after clearing
+        appKitInstance = createAppKit({
+          adapters: [new Ethers5Adapter()],
+          metadata: appKitMetadata,
+          networks: customNetworks,
+          projectId: REOWN_PROJECT_ID,
+          features: {
+            analytics: true,
+          },
+        });
+        
+        console.log('AppKit instance created successfully after clearing storage');
+        return appKitInstance;
+      } catch (retryError) {
+        console.error('Failed to create AppKit even after clearing storage:', retryError);
+        throw retryError;
+      }
+    }
+    
+    throw error;
+  }
+};
+
+// Export the getter function instead of direct instance
+export const appKit = createAppKitInstance();
 
 export const store = {
     accountState: {},

@@ -8,6 +8,68 @@ const DLP_DUAL_TOKEN_ABI = [{"anonymous":false,"inputs":[{"indexed":true,"intern
 let walletProvider = undefined
 let isDataLoading = false // Global flag to prevent multiple data loading
 let isDataLoaded = false // Global flag to track if data has been loaded
+let appKitUnsubscribe = null // Global variable to track AppKit subscription
+let lastAccountState = null // Track last account state to prevent duplicate processing
+
+// Global error handler for AppKit/WalletConnect errors
+window.addEventListener('error', function(event) {
+  if (event.error && event.error.message) {
+    const errorMessage = event.error.message
+    
+    // Handle specific AppKit/WalletConnect errors
+    if (errorMessage.includes('No matching key') || 
+        errorMessage.includes('history:') || 
+        errorMessage.includes('getRecord')) {
+      
+      console.warn('Detected AppKit session error, attempting recovery:', errorMessage)
+      
+      // Clear potentially corrupted WalletConnect session data
+      try {
+        Object.keys(localStorage).forEach(key => {
+          if (key.startsWith('wc@') || 
+              key.includes('walletconnect') || 
+              key.includes('@w3m/') ||
+              key.includes('appkit')) {
+            localStorage.removeItem(key)
+          }
+        })
+        
+        Object.keys(sessionStorage).forEach(key => {
+          if (key.startsWith('wc@') || 
+              key.includes('walletconnect') || 
+              key.includes('@w3m/') ||
+              key.includes('appkit')) {
+            sessionStorage.removeItem(key)
+          }
+        })
+        
+        console.log('Cleared corrupted session data, error should resolve on next interaction')
+      } catch (clearError) {
+        console.warn('Failed to clear session data:', clearError)
+      }
+      
+      // Prevent the error from propagating
+      event.preventDefault()
+      return false
+    }
+  }
+})
+
+// Global unhandled promise rejection handler
+window.addEventListener('unhandledrejection', function(event) {
+  if (event.reason && event.reason.message) {
+    const errorMessage = event.reason.message
+    
+    if (errorMessage.includes('No matching key') || 
+        errorMessage.includes('history:') || 
+        errorMessage.includes('getRecord')) {
+      
+      console.warn('Caught unhandled AppKit promise rejection:', errorMessage)
+      event.preventDefault() // Prevent the error from being logged
+      return false
+    }
+  }
+})
 
 const networkNameFromId = function (id) {
   for(let network of Object.values(window.NETWORKS)) {
@@ -224,24 +286,60 @@ const pageNetwork = function() {
 }
 
 const init_wallet = async function (callback) {
-
-  console.log("Init wallet", window.appKit)
   let targetNetwork = pageNetwork()
   let connectOptionsShown = false // Flag to prevent multiple showConnectOptions calls
   let dataLoaded = false // Flag to prevent multiple data loading
+
+  // Wait for AppKit to restore connection state (especially important for WalletConnect)
+  const waitForAppKitRestore = async (maxWaitTime = 3000) => {
+    const startTime = Date.now()
+    
+    while (Date.now() - startTime < maxWaitTime) {
+      try {
+        // Check if AppKit has restored connection state
+        if (window.store?.accountState && window.store.accountState.status !== 'connecting') {
+          return true
+        }
+        
+        // Wait a bit before checking again
+        await new Promise(resolve => setTimeout(resolve, 100))
+      } catch (error) {
+        // Handle AppKit restoration errors gracefully
+        if (error.message && error.message.includes('No matching key')) {
+          console.warn('AppKit restoration error detected, clearing storage:', error.message)
+          // Clear potentially corrupted session data
+          localStorage.removeItem('@w3m/connected_wallet_image_url')
+          localStorage.removeItem('@w3m/wallet_id') 
+          localStorage.removeItem('@w3m/connected_connector')
+          
+          // Clear any WalletConnect storage keys
+          Object.keys(localStorage).forEach(key => {
+            if (key.startsWith('wc@') || key.includes('walletconnect')) {
+              localStorage.removeItem(key)
+            }
+          })
+          
+          console.log('Cleared potentially corrupted AppKit session data')
+          return false // Don't continue restoration
+        }
+        
+        console.warn('AppKit restoration error:', error)
+        return false
+      }
+    }
+    
+    console.log('AppKit state restore timeout after', maxWaitTime, 'ms')
+    return false
+  }
+
+  // Wait for AppKit to restore its state first (important for WalletConnect)
+  console.log('Waiting for AppKit to restore state...')
+  await waitForAppKitRestore()
 
   // Function to handle connection state
   const handleConnectionState = async () => {
     const isConnected = window.store?.accountState?.isConnected;
     let account = window.store?.accountState?.address;
-
-    console.log('Connection state check:', {
-      isConnected, 
-      account, 
-      accountState: window.store?.accountState,
-      status: window.store?.accountState?.status,
-      store: window.store
-    })
 
     // If we're in connecting state, wait for it to resolve
     if (window.store?.accountState?.status === 'connecting') {
@@ -252,33 +350,48 @@ const init_wallet = async function (callback) {
     if (account && isConnected) {
       try {
         // Get the provider directly from AppKit
-        console.log('Get Provider')
         const provider = window.store.eip155
         
         if (!provider) {
-          console.warn("No provider found")
-          return false
+          console.warn("No provider found in store, trying to get from AppKit directly")
+          
+          // Try to get provider from AppKit's getWalletProvider method if available
+          if (window.appKit?.getWalletProvider) {
+            try {
+              const appKitProvider = await window.appKit.getWalletProvider()
+              if (appKitProvider) {
+                window.store.eip155 = appKitProvider
+                console.log('Retrieved provider from AppKit getWalletProvider')
+              }
+            } catch (e) {
+              console.warn('Failed to get provider from AppKit getWalletProvider:', e)
+            }
+          }
+          
+          if (!window.store.eip155) {
+            console.warn("Still no provider found after retry")
+            return false
+          }
         }
 
-        walletProvider = provider;
-        console.log('Wallet provider:', walletProvider)
+        walletProvider = window.store.eip155;
         if (walletProvider) {
           let connectedNetwork = window.appKit?.getChainId?.();
           let targetNetworkId = parseInt(targetNetwork.chainId, 16)
 
           if (connectedNetwork === targetNetworkId) {
             // Clear the log since we're now connected
-            if (document.getElementById('log')) {
-              document.getElementById('log').innerHTML = ''
+            if (document.getElementById('wallet-log')) {
+              document.getElementById('wallet-log').innerHTML = ''
             }
             _print_link("[CHANGE WALLET]", changeWallet, "connect_wallet_button", false);
             _print_inline(' -=- ');
             _print_link("[CLEAR BROWSER STORAGE]", clearLocalStorage, "clear_browser_storage");
-            
+            _print('')
             // Only start loading data if not already loaded or loading
             if (!dataLoaded && !isDataLoading && !isDataLoaded) {
-              console.log('Starting data loading for the first time...')
               isDataLoading = true // Set global loading flag
+              showLoading()
               start(callback);
               dataLoaded = true // Set local flag to prevent multiple data loads
               isDataLoaded = true // Set global flag to indicate data is loaded
@@ -288,8 +401,8 @@ const init_wallet = async function (callback) {
             return true // Successfully connected
           } else {
             // Clear the log for network switch message
-            if (document.getElementById('log')) {
-              document.getElementById('log').innerHTML = ''
+            if (document.getElementById('wallet-log')) {
+              document.getElementById('wallet-log').innerHTML = ''
             }
             _print(`You are connected to ${networkNameFromId(connectedNetwork)}, please switch to ${targetNetwork.chainName} network`)
             _print('')
@@ -310,21 +423,34 @@ const init_wallet = async function (callback) {
 
   // Try initial connection check
   const initialCheck = await handleConnectionState()
-  console.log('initialCheck:', initialCheck)
   if (initialCheck) return
 
   // If not connected or still connecting, set up listener for account state changes
-  let unsubscribe
+  // Only create subscription if one doesn't already exist
+  const subscriptionId = Math.random().toString(36).substr(2, 9) // Unique ID for debugging
   const accountStateListener = async (accountState) => {
-    console.log('Account state changed:', accountState)
+    // Deduplicate identical state changes
+    const stateKey = JSON.stringify({
+      isConnected: accountState.isConnected,
+      address: accountState.address,
+      status: accountState.status
+    })
+    
+    if (lastAccountState === stateKey) {
+      return 
+    }
+    
+    lastAccountState = stateKey
     
     // Update the store
     window.store.accountState = accountState
     
     // Check connection state again
     const connected = await handleConnectionState()
-    if (connected && unsubscribe) {
-      unsubscribe() // Stop listening once connected
+    if (connected && appKitUnsubscribe) {
+      console.log(`Unsubscribing AppKit [${subscriptionId}]`)
+      appKitUnsubscribe() // Stop listening once connected
+      appKitUnsubscribe = null // Clear the global reference
       connectOptionsShown = false // Reset flag when connected
       return
     }
@@ -336,9 +462,15 @@ const init_wallet = async function (callback) {
     }
   }
 
-  // Subscribe to account changes
+  // Subscribe to account changes only if not already subscribed
   if (window.appKit?.subscribeAccount) {
-    unsubscribe = window.appKit.subscribeAccount(accountStateListener)
+    if (!appKitUnsubscribe) {
+      appKitUnsubscribe = window.appKit.subscribeAccount(accountStateListener)
+    } else {
+      console.log('AppKit subscription already exists, skipping')
+    }
+  } else {
+    console.log('AppKit subscribeAccount not available')
   }
 
   // Show initial connect options only if not already shown
@@ -350,20 +482,15 @@ const init_wallet = async function (callback) {
 
 // Helper function to show connect options
 const showConnectOptions = (callback) => {
-  console.log('showConnectOptions called')
   const shouldOpenWalletModal = sessionStorage.getItem('changeWallet') === 'true'
   if (shouldOpenWalletModal) {
     sessionStorage.removeItem('changeWallet')
-    _print('Opening wallet selection...')
-    _print('')
     
-    try {
-      connectWallet(callback)
-      return
-    } catch (error) {
-      _print('Wallet selection failed. Please try again.')
-      _print('')
-    }
+      connectWallet(callback).catch((error) => {
+        _print('Wallet selection failed. Please try again.')
+        _print('')
+      })
+    
   }
   
   const shouldAutoReconnect = localStorage.getItem('@w3m/connected_wallet_image_url') || 
@@ -396,50 +523,74 @@ function clearLocalStorage() {
   // Reset data loading flags when clearing storage
   isDataLoading = false
   isDataLoaded = false
+  
+  // Clean up AppKit subscription
+  if (appKitUnsubscribe) {
+    console.log('Cleaning up AppKit subscription')
+    appKitUnsubscribe()
+    appKitUnsubscribe = null
+  }
+  
+  // Reset deduplication state
+  lastAccountState = null
+  
+  // Clear all storage including AppKit/WalletConnect specific data
   localStorage.clear()
+  sessionStorage.clear()
+  
+  // Also clear IndexedDB for WalletConnect if available
+  if (typeof indexedDB !== 'undefined') {
+    try {
+      // Clear WalletConnect related databases
+      const databases = ['wc@2:core', 'wc@2:client_db', 'keyvaluestorage']
+      databases.forEach(dbName => {
+        const deleteReq = indexedDB.deleteDatabase(dbName)
+        deleteReq.onsuccess = () => console.log(`Cleared ${dbName} database`)
+        deleteReq.onerror = () => console.log(`Failed to clear ${dbName} database`)
+      })
+    } catch (e) {
+      console.log('Failed to clear IndexedDB:', e)
+    }
+  }
 }
 
 async function init_ethers() {
   const App = {}
 
-  let isMetaMaskInstalled = true
+  // Check if walletProvider is already set by init_wallet
+  if (!walletProvider) {
+    throw new Error('Wallet not connected. Please ensure init_wallet completes first.')
+  }
 
   try {
+    // Use the provider set by init_wallet
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    const rpc = urlParams.get('rpc');
 
-    // Modern dapp browsers...
-    if (walletProvider) {
+    App.web3Provider = walletProvider
+    App.provider = new ethers.providers.Web3Provider(walletProvider)
+    if(rpc){
+      App.rpcProvider = new ethers.providers.JsonRpcProvider(rpc);
+    }else{
+      App.rpcProvider = new ethers.providers.Web3Provider(walletProvider);
+    }
 
-      // see if the user has put rpc by hand
-      const queryString = window.location.search;
-      const urlParams = new URLSearchParams(queryString);
-      const rpc = urlParams.get('rpc');
-
-      App.web3Provider = walletProvider
-      App.provider = new ethers.providers.Web3Provider(walletProvider)
-      if(rpc){
-        App.rpcProvider = new ethers.providers.JsonRpcProvider(rpc);
-      }else{
-        App.rpcProvider = new ethers.providers.Web3Provider(walletProvider);
-      }
-
+    // Get the account from AppKit state instead of requesting
+    const account = window.store?.accountState?.address
+    if (account) {
+      App.YOUR_ADDRESS = account
+    } else {
+      // Fallback to requesting accounts
       try {
-        // Request account access
         const accounts = await walletProvider.request({ method: 'eth_requestAccounts' })
         App.YOUR_ADDRESS = accounts[0];
       } catch (error) {
-        // User denied account access...
-        console.error('User denied account access')
+        console.error('Failed to get account:', error)
+        throw new Error('Failed to get wallet account')
       }
     }
-    // If no injected web3 instance is detected, fall back to backup node
-    else {
-      App.provider = new ethers.providers.JsonRpcProvider(atob(window.ETHEREUM_NODE_URL))
-      isMetaMaskInstalled = false
-      _print(
-        "You don't have MetaMask installed! Falling back to backup node...\n (will likely to fail. Please install MetaMask extension).\n"
-      )
-      sleep(10)
-    }
+
     App.ethcallProvider = new ethcall.Provider();
     await App.ethcallProvider.init(App.provider);
 
@@ -458,31 +609,18 @@ async function init_ethers() {
       App.YOUR_ADDRESS = addr
     }
 
-    // Could not load URL parameter
-    if (!App.YOUR_ADDRESS) {
-      if (!isMetaMaskInstalled) {
-        if (localStorage.hasOwnProperty('addr')) {
-          App.YOUR_ADDRESS = localStorage.getItem('addr')
-        } else {
-          App.YOUR_ADDRESS = window.prompt('Enter your eth address.')
-        }
-      } else {
-        let accounts = await App.provider.listAccounts()
-        App.YOUR_ADDRESS = accounts[0]
-      }
+    if (!App.YOUR_ADDRESS || !ethers.utils.isAddress(App.YOUR_ADDRESS)) {
+      throw 'Could not initialize your address. Make sure your address is checksum valid.'
     }
 
+    localStorage.setItem('addr', App.YOUR_ADDRESS)
+
+    return App
+
   } catch (e) {
-
+    console.error('Error in init_ethers:', e)
+    throw e
   }
-
-  if (!App.YOUR_ADDRESS || !ethers.utils.isAddress(App.YOUR_ADDRESS)) {
-    throw 'Could not initialize your address. Make sure your address is checksum valid.'
-  }
-
-  localStorage.setItem('addr', App.YOUR_ADDRESS)
-
-  return App
 }
 
 const switchNetwork = async function(network) {
@@ -507,15 +645,23 @@ const changeWallet = async function() {
     localStorage.removeItem('addr')
     
     // Show disconnection message briefly
-    if (document.getElementById('log')) {
-      document.getElementById('log').innerHTML = ''
+    if (document.getElementById('wallet-log')) {
+      document.getElementById('wallet-log').innerHTML = ''
     }
     
     _print('Disconnecting current wallet...')
     
-    // Disconnect current wallet
+    // Safely disconnect current wallet with error handling
     if (window.appKit && window.appKit.disconnect) {
-      await window.appKit.disconnect()
+      try {
+        await window.appKit.disconnect()
+      } catch (disconnectError) {
+        // If disconnect fails due to session errors, force clear storage
+        if (disconnectError.message && disconnectError.message.includes('No matching key')) {
+          console.warn('AppKit disconnect failed due to session error, force clearing storage')
+          clearLocalStorage() // Use our enhanced clear function
+        }
+      }
     }
     
     // Force clear any cached connection state
@@ -536,6 +682,8 @@ const changeWallet = async function() {
     
   } catch (error) {
     console.error('Error changing wallet:', error)
+    // If any error occurs, force clear and reload
+    clearLocalStorage()
     window.location.reload()
   }
 }
@@ -576,14 +724,15 @@ const handleConnectedWallet = async function(callback, providerParam = null) {
 
   if (connectedNetwork.chainId === targetNetworkId) {
     // Clear the current page content and show connected state
-    if (document.getElementById('log')) {
-      document.getElementById('log').innerHTML = ''
+    if (document.getElementById('wallet-log')) {
+      document.getElementById('wallet-log').innerHTML = ''
     }
     
     // Show connected state
     _print_link("[CHANGE WALLET]", changeWallet, "connect_wallet_button", false);
     _print_inline(' -=- ');
     _print_link("[CLEAR BROWSER STORAGE]", clearLocalStorage, "clear_browser_storage");
+    _print('')
     
     // Start the main application logic
     if (!isDataLoading && !isDataLoaded) {
@@ -594,12 +743,11 @@ const handleConnectedWallet = async function(callback, providerParam = null) {
       isDataLoaded = true
     } else {
       console.log('Data already loaded or loading, skipping start() call from handleConnectedWallet')
-      hideLoading()
     }
   } else {
     // Clear the current page content
-    if (document.getElementById('log')) {
-      document.getElementById('log').innerHTML = ''
+    if (document.getElementById('wallet-log')) {
+      document.getElementById('wallet-log').innerHTML = ''
     }
     
     _print(`You are connected to ${networkNameFromId(connectedNetwork.chainId)}, please switch to ${targetNetwork.chainName} network`)
@@ -645,11 +793,15 @@ const start = function(f) {
 }
 
 let logger
-
+let walletLogger
 const consoleInit = function(callback) {
   logger = document.getElementById('log')
   _print(new Date().toString())
   _print('')
+  walletLogger = document.createElement('div')
+  walletLogger.setAttribute('id', 'wallet-log')
+  logger.appendChild(walletLogger)
+  logger = document.getElementById('wallet-log')
   return init_wallet(callback)
 }
 

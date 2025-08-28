@@ -3,7 +3,6 @@ import { store, updateStore } from './appKitStore.js'
 
 export const initializeSubscribers = (modal) => {
   modal.subscribeProviders(state => {
-    console.log("state", state)
     updateStore('eip155', state['eip155'])
   })
 
