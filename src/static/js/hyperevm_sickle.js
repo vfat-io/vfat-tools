@@ -8,6 +8,7 @@ const SICKLE_FACTORY_ABI = [{"inputs":[{"internalType":"address","name":"admin_"
 const SWEEP_ADDR = "0x266ebC589d5BFCB815c40e7C30112f8d4B74e012";
 const SLIPSTREAM_NFT_MANAGER_ADDRESS_1 = "0x9ea4459c8DefBF561495d95414b9CF1E2242a3E2";
 const SLIPSTREAM_NFT_MANAGER_ADDRESS_2 = "0x6eDA206207c09e5428F281761DdC0D300851fBC8";
+const SLIPSTREAM_NFT_MANAGER_ADDRESS_3 = "0xb9201e89f94a01ff13ad4caecf43a2e232513754";
 
 async function main() {
     const App = await init_ethers();
@@ -28,9 +29,11 @@ async function main() {
 
       const SLIPSTREAM_NFT_MANAGER_1 = new ethcall.Contract(SLIPSTREAM_NFT_MANAGER_ADDRESS_1, SLIPSTREAM_NFT_MANAGER_ABI);  // KITTENSWAP
       const SLIPSTREAM_NFT_MANAGER_2 = new ethcall.Contract(SLIPSTREAM_NFT_MANAGER_ADDRESS_2, SLIPSTREAM_NFT_MANAGER_ABI);  // HYPERSWAP
+      const SLIPSTREAM_NFT_MANAGER_3 = new ethcall.Contract(SLIPSTREAM_NFT_MANAGER_ADDRESS_3, SLIPSTREAM_NFT_MANAGER_ABI);  // HYPERSWAP V1
 
       const [nfts_1] = await App.ethcallProvider.all([SLIPSTREAM_NFT_MANAGER_1.balanceOf(sickleAddress)]);
       const [nfts_2] = await App.ethcallProvider.all([SLIPSTREAM_NFT_MANAGER_2.balanceOf(sickleAddress)]);
+      const [nfts_3] = await App.ethcallProvider.all([SLIPSTREAM_NFT_MANAGER_3.balanceOf(sickleAddress)]);
 
       if(nfts_1 / 1 > 0){
         let nft_ids = [];
@@ -99,6 +102,41 @@ async function main() {
         }
 
         _print_link(`Sweep all HYPERSWAP erc721 tokens: ${token_ids}`, sweepErc721);
+        _print("");
+      }
+
+      if(nfts_3 / 1 > 0){
+        let nft_ids = [];
+        let tokens = [];
+        let token_ids = "";
+
+        const sweepErc721 = async function() {
+          return sweep_nfts_721(App, nft_ids, tokens)
+        }
+
+        _print_bold("KITTENSWAP-V1 nfts");
+
+        for(let i = 0; i < nfts_3; i++){
+          const nft_id = await App.ethcallProvider.all([SLIPSTREAM_NFT_MANAGER_3.tokenOfOwnerByIndex(sickleAddress, i)]) / 1;
+          nft_ids.push(nft_id);
+          tokens.push(SLIPSTREAM_NFT_MANAGER_ADDRESS_3);
+        }
+
+        for(let i = 0; i < nft_ids.length; i++){
+          token_ids += `${nft_ids[i]} - `;
+        }
+
+        for(let i = 0; i < nft_ids.length; i++){
+
+          const singleSweepErc721 = async function() {
+            return single_sweep_nfts_721(App, nft_ids[i], tokens[i])
+          }
+
+          _print_link(`Sweep KITTENSWAP-V1 erc721 token: ${nft_ids[i]}`, singleSweepErc721);
+
+        }
+
+        _print_link(`Sweep all KITTENSWAP-V1 erc721 tokens: ${token_ids}`, sweepErc721);
         _print("");
       }
     }
