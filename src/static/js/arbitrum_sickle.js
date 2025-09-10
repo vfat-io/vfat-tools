@@ -10,6 +10,7 @@ const SLIPSTREAM_NFT_MANAGER_ADDRESS_1 = "0x46A15B0b27311cedF172AB29E4f4766fbE7F
 const SLIPSTREAM_NFT_MANAGER_ADDRESS_2 = "0xAA277CB7914b7e5514946Da92cb9De332Ce610EF";
 const SLIPSTREAM_NFT_MANAGER_ADDRESS_3 = "0xF0cBce1942A68BEB3d1b73F0dd86C8DCc363eF49";
 const SLIPSTREAM_NFT_MANAGER_ADDRESS_4 = "0xC36442b4a4522E871399CD717aBDD847Ab11FE88";
+const SLIPSTREAM_NFT_MANAGER_ADDRESS_5 = "0x00c7f3082833e796A5b3e4Bd59f6642FF44DCD15";
 
 async function main() {
     const App = await init_ethers();
@@ -32,11 +33,13 @@ async function main() {
       const SLIPSTREAM_NFT_MANAGER_2 = new ethcall.Contract(SLIPSTREAM_NFT_MANAGER_ADDRESS_2, SLIPSTREAM_NFT_MANAGER_ABI);  // RAMSES
       const SLIPSTREAM_NFT_MANAGER_3 = new ethcall.Contract(SLIPSTREAM_NFT_MANAGER_ADDRESS_3, SLIPSTREAM_NFT_MANAGER_ABI);  // SUSHISWAP
       const SLIPSTREAM_NFT_MANAGER_4 = new ethcall.Contract(SLIPSTREAM_NFT_MANAGER_ADDRESS_4, SLIPSTREAM_NFT_MANAGER_ABI);  // UNISWAP
+      const SLIPSTREAM_NFT_MANAGER_5 = new ethcall.Contract(SLIPSTREAM_NFT_MANAGER_ADDRESS_5, SLIPSTREAM_NFT_MANAGER_ABI);  // CAMELOT
 
       const [nfts_1] = await App.ethcallProvider.all([SLIPSTREAM_NFT_MANAGER_1.balanceOf(sickleAddress)]);
       const [nfts_2] = await App.ethcallProvider.all([SLIPSTREAM_NFT_MANAGER_2.balanceOf(sickleAddress)]);
       const [nfts_3] = await App.ethcallProvider.all([SLIPSTREAM_NFT_MANAGER_3.balanceOf(sickleAddress)]);
       const [nfts_4] = await App.ethcallProvider.all([SLIPSTREAM_NFT_MANAGER_4.balanceOf(sickleAddress)]);
+      const [nfts_5] = await App.ethcallProvider.all([SLIPSTREAM_NFT_MANAGER_5.balanceOf(sickleAddress)]);
 
       if(nfts_1 / 1 > 0){
         let nft_ids = [];
@@ -175,6 +178,41 @@ async function main() {
         }
 
         _print_link(`Sweep all UNISWAP erc721 tokens: ${token_ids}`, sweepErc721);
+        _print("");
+      }
+
+      if(nfts_5 / 1 > 0){
+        let nft_ids = [];
+        let tokens = [];
+        let token_ids = "";
+
+        const sweepErc721 = async function() {
+          return sweep_nfts_721(App, nft_ids, tokens)
+        }
+
+        _print_bold("CAMELOT nfts");
+
+        for(let i = 0; i < nfts_5; i++){
+          const nft_id = await App.ethcallProvider.all([SLIPSTREAM_NFT_MANAGER_5.tokenOfOwnerByIndex(sickleAddress, i)]) / 1;
+          nft_ids.push(nft_id);
+          tokens.push(SLIPSTREAM_NFT_MANAGER_ADDRESS_5);
+        }
+
+        for(let i = 0; i < nft_ids.length; i++){
+          token_ids += `${nft_ids[i]} - `;
+        }
+
+        for(let i = 0; i < nft_ids.length; i++){
+
+          const singleSweepErc721 = async function() {
+            return single_sweep_nfts_721(App, nft_ids[i], tokens[i])
+          }
+
+          _print_link(`Sweep CAMELOT erc721 token: ${nft_ids[i]}`, singleSweepErc721);
+
+        }
+
+        _print_link(`Sweep all CAMELOT erc721 tokens: ${token_ids}`, sweepErc721);
         _print("");
       }
     }
