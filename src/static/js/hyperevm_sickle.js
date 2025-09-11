@@ -11,6 +11,7 @@ const SLIPSTREAM_NFT_MANAGER_ADDRESS_2 = "0x6eDA206207c09e5428F281761DdC0D300851
 const SLIPSTREAM_NFT_MANAGER_ADDRESS_3 = "0xb9201e89f94a01ff13ad4caecf43a2e232513754";
 const SLIPSTREAM_NFT_MANAGER_ADDRESS_4 = "0x934C4f47B2D3FfcA0156A45DEb3A436202aF1efa";
 const SLIPSTREAM_NFT_MANAGER_ADDRESS_5 = "0xeaD19AE861c29bBb2101E834922B2FEee69B9091";
+const SLIPSTREAM_NFT_MANAGER_ADDRESS_6 = "0x69D57B9D705eaD73a5d2f2476C30c55bD755cc2F";
 
 async function main() {
     const App = await init_ethers();
@@ -34,12 +35,14 @@ async function main() {
       const SLIPSTREAM_NFT_MANAGER_3 = new ethcall.Contract(SLIPSTREAM_NFT_MANAGER_ADDRESS_3, SLIPSTREAM_NFT_MANAGER_ABI);  // HYPERSWAP V1
       const SLIPSTREAM_NFT_MANAGER_4 = new ethcall.Contract(SLIPSTREAM_NFT_MANAGER_ADDRESS_4, SLIPSTREAM_NFT_MANAGER_ABI);  // HYBRA
       const SLIPSTREAM_NFT_MANAGER_5 = new ethcall.Contract(SLIPSTREAM_NFT_MANAGER_ADDRESS_5, SLIPSTREAM_NFT_MANAGER_ABI);  // PROJECTX
+      const SLIPSTREAM_NFT_MANAGER_6 = new ethcall.Contract(SLIPSTREAM_NFT_MANAGER_ADDRESS_6, SLIPSTREAM_NFT_MANAGER_ABI);  // GLIQUID
 
       const [nfts_1] = await App.ethcallProvider.all([SLIPSTREAM_NFT_MANAGER_1.balanceOf(sickleAddress)]);
       const [nfts_2] = await App.ethcallProvider.all([SLIPSTREAM_NFT_MANAGER_2.balanceOf(sickleAddress)]);
       const [nfts_3] = await App.ethcallProvider.all([SLIPSTREAM_NFT_MANAGER_3.balanceOf(sickleAddress)]);
       const [nfts_4] = await App.ethcallProvider.all([SLIPSTREAM_NFT_MANAGER_4.balanceOf(sickleAddress)]);
       const [nfts_5] = await App.ethcallProvider.all([SLIPSTREAM_NFT_MANAGER_5.balanceOf(sickleAddress)]);
+      const [nfts_6] = await App.ethcallProvider.all([SLIPSTREAM_NFT_MANAGER_6.balanceOf(sickleAddress)]);
 
       if(nfts_1 / 1 > 0){
         let nft_ids = [];
@@ -213,6 +216,41 @@ async function main() {
         }
 
         _print_link(`Sweep all PROJECT-X erc721 tokens: ${token_ids}`, sweepErc721);
+        _print("");
+      }
+
+      if(nfts_6 / 1 > 0){
+        let nft_ids = [];
+        let tokens = [];
+        let token_ids = "";
+
+        const sweepErc721 = async function() {
+          return sweep_nfts_721(App, nft_ids, tokens)
+        }
+
+        _print_bold("GLIQUID nfts");
+
+        for(let i = 0; i < nfts_6; i++){
+          const nft_id = await App.ethcallProvider.all([SLIPSTREAM_NFT_MANAGER_6.tokenOfOwnerByIndex(sickleAddress, i)]) / 1;
+          nft_ids.push(nft_id);
+          tokens.push(SLIPSTREAM_NFT_MANAGER_ADDRESS_6);
+        }
+
+        for(let i = 0; i < nft_ids.length; i++){
+          token_ids += `${nft_ids[i]} - `;
+        }
+
+        for(let i = 0; i < nft_ids.length; i++){
+
+          const singleSweepErc721 = async function() {
+            return single_sweep_nfts_721(App, nft_ids[i], tokens[i])
+          }
+
+          _print_link(`Sweep GLIQUID erc721 token: ${nft_ids[i]}`, singleSweepErc721);
+
+        }
+
+        _print_link(`Sweep all GLIQUID erc721 tokens: ${token_ids}`, sweepErc721);
         _print("");
       }
     }
