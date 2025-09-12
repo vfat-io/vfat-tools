@@ -191,3 +191,4 @@ dist/
 
 # vs code
 .vscode/
+deploy.sh
