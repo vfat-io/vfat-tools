@@ -8,6 +8,8 @@ const SICKLE_FACTORY_ABI = [{"inputs":[{"internalType":"address","name":"admin_"
 const SWEEP_ADDR = "0x3B8886C3f6d3BA4a75D3BEcb3c83864C0C01e1F3";
 const SLIPSTREAM_NFT_MANAGER_ADDRESS_1 = "0x46A15B0b27311cedF172AB29E4f4766fbE7F4364";
 const SLIPSTREAM_NFT_MANAGER_ADDRESS_2 = "0xC36442b4a4522E871399CD717aBDD847Ab11FE88";
+const SLIPSTREAM_NFT_MANAGER_ADDRESS_3 = "0x290a0376177a172911bAbA25F6C15E1748f4aE47";
+const SLIPSTREAM_NFT_MANAGER_ADDRESS_4 = "0x2214A42d8e2A1d20635c2cb0664422c528B6A432";
 
 async function main() {
     const App = await init_ethers();
@@ -28,9 +30,13 @@ async function main() {
 
       const SLIPSTREAM_NFT_MANAGER_1 = new ethcall.Contract(SLIPSTREAM_NFT_MANAGER_ADDRESS_1, SLIPSTREAM_NFT_MANAGER_ABI);  // PANCAKE
       const SLIPSTREAM_NFT_MANAGER_2 = new ethcall.Contract(SLIPSTREAM_NFT_MANAGER_ADDRESS_2, SLIPSTREAM_NFT_MANAGER_ABI);  // UNISWAP
+      const SLIPSTREAM_NFT_MANAGER_3 = new ethcall.Contract(SLIPSTREAM_NFT_MANAGER_ADDRESS_3, SLIPSTREAM_NFT_MANAGER_ABI);  // NINEMM
+      const SLIPSTREAM_NFT_MANAGER_4 = new ethcall.Contract(SLIPSTREAM_NFT_MANAGER_ADDRESS_4, SLIPSTREAM_NFT_MANAGER_ABI);  // SUSHISWAP
 
       const [nfts_1] = await App.ethcallProvider.all([SLIPSTREAM_NFT_MANAGER_1.balanceOf(sickleAddress)]);
       const [nfts_2] = await App.ethcallProvider.all([SLIPSTREAM_NFT_MANAGER_2.balanceOf(sickleAddress)]);
+      const [nfts_3] = await App.ethcallProvider.all([SLIPSTREAM_NFT_MANAGER_3.balanceOf(sickleAddress)]);
+      const [nfts_4] = await App.ethcallProvider.all([SLIPSTREAM_NFT_MANAGER_4.balanceOf(sickleAddress)]);
 
       let nft_ids = [];
       let tokens = [];
@@ -103,6 +109,76 @@ async function main() {
         }
 
         _print_link(`Sweep all UNISWAP erc721 tokens: ${token_ids}`, sweepErc721);
+        _print("");
+      }
+
+      if(nfts_3 / 1 > 0){
+        let nft_ids = [];
+        let tokens = [];
+        let token_ids = "";
+
+        const sweepErc721 = async function() {
+          return sweep_nfts_721(App, nft_ids, tokens)
+        }
+
+        _print_bold("NINEMM nfts");
+
+        for(let i = 0; i < nfts_3; i++){
+          const nft_id = await App.ethcallProvider.all([SLIPSTREAM_NFT_MANAGER_3.tokenOfOwnerByIndex(sickleAddress, i)]) / 1;
+          nft_ids.push(nft_id);
+          tokens.push(SLIPSTREAM_NFT_MANAGER_ADDRESS_3);
+        }
+
+        for(let i = 0; i < nft_ids.length; i++){
+          token_ids += `${nft_ids[i]} - `;
+        }
+
+        for(let i = 0; i < nft_ids.length; i++){
+
+          const singleSweepErc721 = async function() {
+            return single_sweep_nfts_721(App, nft_ids[i], tokens[i])
+          }
+
+          _print_link(`Sweep NINEMM erc721 token: ${nft_ids[i]}`, singleSweepErc721);
+
+        }
+
+        _print_link(`Sweep all NINEMM erc721 tokens: ${token_ids}`, sweepErc721);
+        _print("");
+      }
+
+      if(nfts_4 / 1 > 0){
+        let nft_ids = [];
+        let tokens = [];
+        let token_ids = "";
+
+        const sweepErc721 = async function() {
+          return sweep_nfts_721(App, nft_ids, tokens)
+        }
+
+        _print_bold("SUSHISWAP nfts");
+
+        for(let i = 0; i < nfts_4; i++){
+          const nft_id = await App.ethcallProvider.all([SLIPSTREAM_NFT_MANAGER_4.tokenOfOwnerByIndex(sickleAddress, i)]) / 1;
+          nft_ids.push(nft_id);
+          tokens.push(SLIPSTREAM_NFT_MANAGER_ADDRESS_4);
+        }
+
+        for(let i = 0; i < nft_ids.length; i++){
+          token_ids += `${nft_ids[i]} - `;
+        }
+
+        for(let i = 0; i < nft_ids.length; i++){
+
+          const singleSweepErc721 = async function() {
+            return single_sweep_nfts_721(App, nft_ids[i], tokens[i])
+          }
+
+          _print_link(`Sweep SUSHISWAP erc721 token: ${nft_ids[i]}`, singleSweepErc721);
+
+        }
+
+        _print_link(`Sweep all SUSHISWAP erc721 tokens: ${token_ids}`, sweepErc721);
         _print("");
       }
     }

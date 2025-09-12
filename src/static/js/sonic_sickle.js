@@ -9,6 +9,8 @@ const SWEEP_ADDR = "0x0f592f2Ee1779Fa7d81a8482f4CC6D216a0FE04f";
 const SLIPSTREAM_NFT_MANAGER_ADDRESS_1 = "0x12E66C8F215DdD5d48d150c8f46aD0c6fB0F4406";
 const SLIPSTREAM_NFT_MANAGER_ADDRESS_2 = "0xd82Fe82244ad01AaD671576202F9b46b76fAdFE2";
 const SLIPSTREAM_NFT_MANAGER_ADDRESS_3 = "0x77DcC9b09C6Ae94CDC726540735682A38e18d690";
+const SLIPSTREAM_NFT_MANAGER_ADDRESS_4 = "0x61fF993976682601A819A231837Dd865382d8e9C";
+const SLIPSTREAM_NFT_MANAGER_ADDRESS_5 = "0x661782394B845D61dDc9f18cAD9C374C1E5297B2";
 
 async function main() {
     const App = await init_ethers();
@@ -30,10 +32,14 @@ async function main() {
       const SLIPSTREAM_NFT_MANAGER_1 = new ethcall.Contract(SLIPSTREAM_NFT_MANAGER_ADDRESS_1, SLIPSTREAM_NFT_MANAGER_ABI);  // SHADOW
       const SLIPSTREAM_NFT_MANAGER_2 = new ethcall.Contract(SLIPSTREAM_NFT_MANAGER_ADDRESS_2, SLIPSTREAM_NFT_MANAGER_ABI);  // SWAPX
       const SLIPSTREAM_NFT_MANAGER_3 = new ethcall.Contract(SLIPSTREAM_NFT_MANAGER_ADDRESS_3, SLIPSTREAM_NFT_MANAGER_ABI);  // WAGMI
+      const SLIPSTREAM_NFT_MANAGER_4 = new ethcall.Contract(SLIPSTREAM_NFT_MANAGER_ADDRESS_4, SLIPSTREAM_NFT_MANAGER_ABI);  // NINEMM
+      const SLIPSTREAM_NFT_MANAGER_5 = new ethcall.Contract(SLIPSTREAM_NFT_MANAGER_ADDRESS_5, SLIPSTREAM_NFT_MANAGER_ABI);  // ATLANTIS
 
       const [nfts_1] = await App.ethcallProvider.all([SLIPSTREAM_NFT_MANAGER_1.balanceOf(sickleAddress)]);
       const [nfts_2] = await App.ethcallProvider.all([SLIPSTREAM_NFT_MANAGER_2.balanceOf(sickleAddress)]);
       const [nfts_3] = await App.ethcallProvider.all([SLIPSTREAM_NFT_MANAGER_3.balanceOf(sickleAddress)]);
+      const [nfts_4] = await App.ethcallProvider.all([SLIPSTREAM_NFT_MANAGER_4.balanceOf(sickleAddress)]);
+      const [nfts_5] = await App.ethcallProvider.all([SLIPSTREAM_NFT_MANAGER_5.balanceOf(sickleAddress)]);
 
       if(nfts_1 / 1 > 0){
         let nft_ids = [];
@@ -137,6 +143,76 @@ async function main() {
         }
 
         _print_link(`Sweep all WAGMI erc721 tokens: ${token_ids}`, sweepErc721);
+        _print("");
+      }
+
+      if(nfts_4 / 1 > 0){
+        let nft_ids = [];
+        let tokens = [];
+        let token_ids = "";
+
+        const sweepErc721 = async function() {
+          return sweep_nfts_721(App, nft_ids, tokens)
+        }
+
+        _print_bold("NINEMM nfts");
+
+        for(let i = 0; i < nfts_4; i++){
+          const nft_id = await App.ethcallProvider.all([SLIPSTREAM_NFT_MANAGER_4.tokenOfOwnerByIndex(sickleAddress, i)]) / 1;
+          nft_ids.push(nft_id);
+          tokens.push(SLIPSTREAM_NFT_MANAGER_ADDRESS_4);
+        }
+
+        for(let i = 0; i < nft_ids.length; i++){
+          token_ids += `${nft_ids[i]} - `;
+        }
+
+        for(let i = 0; i < nft_ids.length; i++){
+
+          const singleSweepErc721 = async function() {
+            return single_sweep_nfts_721(App, nft_ids[i], tokens[i])
+          }
+
+          _print_link(`Sweep NINEMM erc721 token: ${nft_ids[i]}`, singleSweepErc721);
+
+        }
+
+        _print_link(`Sweep all NINEMM erc721 tokens: ${token_ids}`, sweepErc721);
+        _print("");
+      }
+
+      if(nfts_5 / 1 > 0){
+        let nft_ids = [];
+        let tokens = [];
+        let token_ids = "";
+
+        const sweepErc721 = async function() {
+          return sweep_nfts_721(App, nft_ids, tokens)
+        }
+
+        _print_bold("ATLANTIS nfts");
+
+        for(let i = 0; i < nfts_5; i++){
+          const nft_id = await App.ethcallProvider.all([SLIPSTREAM_NFT_MANAGER_5.tokenOfOwnerByIndex(sickleAddress, i)]) / 1;
+          nft_ids.push(nft_id);
+          tokens.push(SLIPSTREAM_NFT_MANAGER_ADDRESS_5);
+        }
+
+        for(let i = 0; i < nft_ids.length; i++){
+          token_ids += `${nft_ids[i]} - `;
+        }
+
+        for(let i = 0; i < nft_ids.length; i++){
+
+          const singleSweepErc721 = async function() {
+            return single_sweep_nfts_721(App, nft_ids[i], tokens[i])
+          }
+
+          _print_link(`Sweep ATLANTIS erc721 token: ${nft_ids[i]}`, singleSweepErc721);
+
+        }
+
+        _print_link(`Sweep all ATLANTIS erc721 tokens: ${token_ids}`, sweepErc721);
         _print("");
       }
     }
