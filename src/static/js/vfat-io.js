@@ -44,6 +44,7 @@ const main = async() => {
       ["                      ", "Mainnet",   "CL ",     `<a href='/sickle'                   >/sickle</a>`],
       ["SwapX                 ", "Sonic",     "CL ",     `<a href='/sonic/sickle'             >/sonic/sickle</a>`],
       ["Thena                 ", "Bnb",       "CL ",     `<a href='/bnb/sickle'               >/bnb/sickle</a>`],
+      ["                      ", "Bnb",       "V2 ",     `<a href='/bnb/thena'               >/bnb/thena</a>`],
       ["UniSwap               ", "Arbitrum",  "CL ",     `<a href='/arbitrum/sickle'          >/arbitrum/sickle</a>`],
       ["                      ", "Avax",      "CL ",     `<a href='/avax/sickle'              >/avax/sickle</a>`],
       ["                      ", "Base",      "CL ",     `<a href='/base/sickle'              >/base/sickle</a>`],
