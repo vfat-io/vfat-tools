@@ -350,7 +350,9 @@ const bscTokens = [
   { "id": "beglobaldao", "symbol": "GLBD", "contract": "0xd177e36377e71775d6f9956b3fdd0f02664c6996" },
   { "id": "level-governance", "symbol": "LGO", "contract": "0xBe2B6C5E31F292009f495DDBda88e28391C9815E" },
   { "id": "radiant-capital", "symbol": "RDNT", "contract": "0xf7DE7E8A6bd59ED41a4b5fe50278b3B7f31384dF" },
-  { "id": "osk", "symbol": "OSK", "contract": "0x04fA9Eb295266d9d4650EDCB879da204887Dc3Da" }
+  { "id": "osk", "symbol": "OSK", "contract": "0x04fA9Eb295266d9d4650EDCB879da204887Dc3Da" },
+  { "id": "pendle", "symbol": "PENDLE", "contract": "0xb3ed0a426155b79b898849803e3b36552f7ed507" },
+  { "id": "mpendle", "symbol": "MPENDLE", "contract": "0x0465aad9da170798433f4ab7fa7ec8b9b9bf0bb1" }
 ]
 
 const cantoTokens = [
