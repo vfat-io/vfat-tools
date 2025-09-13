@@ -2601,6 +2601,7 @@ async function main() {
 
   if (has_sickle) {
     _print_bold(`You have connected with your sickle account: ${sickle_address}`)
+    _print_bold(``)
   }
 
   await loadThenaSynthetixPools(App, tokens, prices, users_v2_gauges, has_sickle, users_address)
