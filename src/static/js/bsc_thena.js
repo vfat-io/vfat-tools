@@ -2630,7 +2630,7 @@ async function loadThenaSynthetixPoolInfo(App, tokens, prices, gauge, has_sickle
       STAKING_POOL.periodFinish(rewardTokenAddress),
       STAKING_POOL.rewardRate(rewardTokenAddress),
       STAKING_POOL.balanceOf(App.YOUR_ADDRESS),
-      STAKING_POOL.earned(rewardTokenAddress, App.YOUR_ADDRESS),
+      STAKING_POOL.earned(App.YOUR_ADDRESS, rewardTokenAddress),
     ])
   } catch {
     return {
