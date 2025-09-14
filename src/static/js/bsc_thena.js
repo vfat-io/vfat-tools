@@ -2788,7 +2788,7 @@ const sickle_thenaContract_claim = async function(rewardPoolAddr, App) {
   }
 
   const params = {
-    rewardTokens: [REWARD_TOKEN_ADDRESS],
+    rewardTokens: ['0xF4C8E32EaDEC4BFe97E0F595AdD0f4450a863a11'],
     extraData: '0x00',
   }
 
