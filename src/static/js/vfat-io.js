@@ -21,6 +21,7 @@ const main = async() => {
       ["Hybra                 ", "HyperEVM",  "CL ",     `<a href='/hyperevm/sickle'          >/hyperevm/sickle</a>`],
       ["HyperSwap             ", "HyperEVM",  "CL ",     `<a href='/hyperevm/sickle'          >/hyperevm/sickle</a>`],
       ["KittenSwap            ", "HyperEVM",  "CL ",     `<a href='/hyperevm/sickle'          >/hyperevm/sickle</a>`],
+      ["Kyo                   ", "Soneium",  "CL ",      `<a href='/soneium/sickle'           >/soneium/sickle</a>`],
       ["NineMM                ", "Base",      "CL ",     `<a href='/base/sickle'              >/base/sickle</a>`],
       ["                      ", "Mainnet",   "CL ",     `<a href='/sickle'                   >/sickle</a>`],
       ["                      ", "Pulse",     "CL ",     `<a href='/pulse/sickle'             >/pulse/sickle</a>`],

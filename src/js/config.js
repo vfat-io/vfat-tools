@@ -239,6 +239,13 @@ export const customNetworks = [
     blockExplorers: [{ name: 'Metal Explorer', url: 'https://explorer.metall2.com' }]
   },
   {
+    id: 1868,
+    name: 'Soneium',
+    nativeCurrency: { name: 'ETH', symbol: 'ETH', decimals: 18 },
+    rpcUrls: ['https://soneium.drpc.org'],
+    blockExplorers: [{ name: 'Soneium Explorer', url: 'https://soneium.blockscout.com' }]
+  },
+  {
     id: 1923,
     name: 'Swell',
     nativeCurrency: { name: 'ETH', symbol: 'ETH', decimals: 18 },
