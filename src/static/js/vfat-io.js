@@ -36,6 +36,7 @@ const main = async() => {
       ["                      ", "Bnb",       "CL ",     `<a href='/bnb/sickle'               >/bnb/sickle</a>`],
       ["                      ", "Linea",     "CL ",     `<a href='/linea/sickle'             >/linea/sickle</a>`],
       ["                      ", "Mainnet",   "CL ",     `<a href='/sickle'                   >/sickle</a>`],
+      ["PDex                  ", "Pulse",     "CL ",     `<a href='/pulse/sickle'             >/pulse/sickle</a>`],
       ["Pharaoh               ", "Avax",      "CL ",     `<a href='/avax/sickle'              >/avax/sickle</a>`],
       ["Project-X             ", "HyperEVM",  "CL ",     `<a href='/hyperevm/sickle'          >/hyperevm/sickle</a>`],
       ["QuickSwap             ", "Polygon",   "CL ",     `<a href='/polygon/sickle'           >/polygon/sickle</a>`],
@@ -61,7 +62,8 @@ const main = async() => {
       ["Velodrome             ", "Fraxtal",   "CL ",     `<a href='/fraxtal/sickle'           >/fraxtal/sickle</a>`],
       ["                      ", "Ink",       "CL ",     `<a href='/ink/sickle'               >/ink/sickle</a>`],
       ["                      ", "Mode",      "CL ",     `<a href='/mode/sickle'              >/mode/sickle</a>`],
-      ["                      ", "Optimism",  "CL / V2", `<a href='/optimism/sickle'          >/optimism/sickle</a>`],
+      ["                      ", "Optimism",  "CL ",     `<a href='/optimism/velodrome'       >/optimism/velodrome</a>`],
+      ["                      ", "Optimism",  "V2 ",     `<a href='/optimism/velodrome_v2'    >/optimism/velodrome_v2</a>`],
       ["                      ", "Unichain",  "CL ",     `<a href='/unichain/sickle'          >/unichain/sickle</a>`],
       ["Wagmi                 ", "Sonic",     "CL ",     `<a href='/sonic/sickle'             >/sonic/sickle</a>`],
     ]

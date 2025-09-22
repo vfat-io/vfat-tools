@@ -7,6 +7,7 @@ const SLIPSTREAM_NFT_MANAGER_ABI = [{"inputs":[{"internalType":"address","name":
 const SICKLE_FACTORY_ABI = [{"inputs":[{"internalType":"address","name":"admin_","type":"address"},{"internalType":"address","name":"sickleRegistry_","type":"address"},{"internalType":"address","name":"sickleImplementation_","type":"address"},{"internalType":"address","name":"previousFactory_","type":"address"}],"stateMutability":"nonpayable","type":"constructor"},{"inputs":[{"internalType":"address","name":"caller","type":"address"}],"name":"CallerNotWhitelisted","type":"error"},{"inputs":[],"name":"NotActive","type":"error"},{"inputs":[],"name":"NotAdminError","type":"error"},{"inputs":[],"name":"SickleAlreadyDeployed","type":"error"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"oldAdmin","type":"address"},{"indexed":false,"internalType":"address","name":"newAdmin","type":"address"}],"name":"AdminSet","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"admin","type":"address"},{"indexed":false,"internalType":"address","name":"sickle","type":"address"}],"name":"Deploy","type":"event"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"_referralCodes","outputs":[{"internalType":"bytes32","name":"","type":"bytes32"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"admin","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"sickle","type":"address"}],"name":"admins","outputs":[{"internalType":"address","name":"admin","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"approved","type":"address"},{"internalType":"bytes32","name":"referralCode","type":"bytes32"}],"name":"deploy","outputs":[{"internalType":"address","name":"sickle","type":"address"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"admin","type":"address"},{"internalType":"address","name":"approved","type":"address"},{"internalType":"bytes32","name":"referralCode","type":"bytes32"}],"name":"getOrDeploy","outputs":[{"internalType":"address","name":"sickle","type":"address"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"implementation","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"isActive","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"admin","type":"address"}],"name":"predict","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"previousFactory","outputs":[{"internalType":"contract SickleFactory","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"sickle","type":"address"}],"name":"referralCodes","outputs":[{"internalType":"bytes32","name":"referralCode","type":"bytes32"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"registry","outputs":[{"internalType":"contract SickleRegistry","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"bool","name":"active","type":"bool"}],"name":"setActive","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"newAdmin","type":"address"}],"name":"setAdmin","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"admin","type":"address"}],"name":"sickles","outputs":[{"internalType":"address","name":"sickle","type":"address"}],"stateMutability":"view","type":"function"}]
 const SWEEP_ADDR = "0xa452Df37E4f845C15f49489486A9b4e8323Bd7C4";
 const SLIPSTREAM_NFT_MANAGER_ADDRESS_1 = "0xCC05bf158202b4F461Ede8843d76dcd7Bbad07f2";
+const SLIPSTREAM_NFT_MANAGER_ADDRESS_2 = "0x0ab76f9aacD01E08E5D2CBb91fb08aaa231A072a";
 
 async function main() {
     const App = await init_ethers();
@@ -26,8 +27,10 @@ async function main() {
       _print("");
 
       const SLIPSTREAM_NFT_MANAGER_1 = new ethcall.Contract(SLIPSTREAM_NFT_MANAGER_ADDRESS_1, SLIPSTREAM_NFT_MANAGER_ABI);  // NINEMM
+      const SLIPSTREAM_NFT_MANAGER_2 = new ethcall.Contract(SLIPSTREAM_NFT_MANAGER_ADDRESS_2, SLIPSTREAM_NFT_MANAGER_ABI);  // PDEX
 
       const [nfts_1] = await App.ethcallProvider.all([SLIPSTREAM_NFT_MANAGER_1.balanceOf(sickleAddress)]);
+      const [nfts_2] = await App.ethcallProvider.all([SLIPSTREAM_NFT_MANAGER_2.balanceOf(sickleAddress)]);
 
       if(nfts_1 / 1 > 0){
         let nft_ids = [];
@@ -61,6 +64,41 @@ async function main() {
         }
 
         _print_link(`Sweep all NINEMM erc721 tokens: ${token_ids}`, sweepErc721);
+        _print("");
+      }
+
+      if(nfts_2 / 1 > 0){
+        let nft_ids = [];
+        let tokens = [];
+        let token_ids = "";
+
+        const sweepErc721 = async function() {
+          return sweep_nfts_721(App, nft_ids, tokens)
+        }
+
+        _print_bold("PDEX nfts");
+
+        for(let i = 0; i < nfts_2; i++){
+          const nft_id = await App.ethcallProvider.all([SLIPSTREAM_NFT_MANAGER_2.tokenOfOwnerByIndex(sickleAddress, i)]) / 1;
+          nft_ids.push(nft_id);
+          tokens.push(SLIPSTREAM_NFT_MANAGER_ADDRESS_2);
+        }
+
+        for(let i = 0; i < nft_ids.length; i++){
+          token_ids += `${nft_ids[i]} - `;
+        }
+
+        for(let i = 0; i < nft_ids.length; i++){
+
+          const singleSweepErc721 = async function() {
+            return single_sweep_nfts_721(App, nft_ids[i], tokens[i])
+          }
+
+          _print_link(`Sweep PDEX erc721 token: ${nft_ids[i]}`, singleSweepErc721);
+
+        }
+
+        _print_link(`Sweep all PDEX erc721 tokens: ${token_ids}`, sweepErc721);
         _print("");
       }
     }
