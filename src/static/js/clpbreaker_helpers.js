@@ -19,39 +19,5 @@ const GENERAL_NFT_MANAGER_ABI = [{"inputs":[{"internalType":"address","name":"_f
     { network : "Hyperevm", name : "Kittenswap V3 Positions NFT-V1", clFactoryAddress : "0x2E08F5Ff603E4343864B14599CAeDb19918BDCaF", nftAddress : "0xb9201e89f94a01ff13ad4caecf43a2e232513754", abi : GENERAL_NFT_MANAGER_ABI },
   ]
 
-//FUNCTIONS FOR THE SCRIPT
-  const consoleToolsClpInit = function(callback) {
-    logger = document.getElementById('log')
-    _print(new Date().toString())
-    _print('')
-    return init_tools_wallet(callback)
-  }
-
-  //users wallet and network details
-  const init_tools_clp_wallet = async function (callback) {
-
-    //let targetNetwork = pageNetwork()
-  
-    if (window.web3Modal.cachedProvider) {
-      await connectWallet(() => {})
-    }
-  
-    if (walletProvider) {
-      let provider = new ethers.providers.Web3Provider(walletProvider)
-      let connectedNetwork = await provider.getNetwork();
-      _print_link("[CHANGE WALLET]", changeWallet, "connect_wallet_button", false);
-      _print_inline(' -=- ');
-      _print_link("[CLEAR BROWSER STORAGE]", clearLocalStorage, "clear_browser_storage");
-      start(callback);
-      _print_bold(`\nYou are connected to ${networkNameFromId(connectedNetwork.chainId)}`)
-  }else {
-    _print_link("[CONNECT WALLET]", () => connectWallet(callback), "connect_wallet_button", false);
-    _print_inline(' -=- ');
-    _print_link("[CLEAR BROWSER STORAGE]", clearLocalStorage, "clear_browser_storage");
-    hideLoading()
-  }
-  _print('')
-}
-
 //delay function for the loops
 const sleepFunc = ms => new Promise(resolve => setTimeout(resolve, ms));
