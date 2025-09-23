@@ -166,43 +166,6 @@ const AERO_FACTORY_ABI = [{"inputs":[{"internalType":"address","name":"_implemen
     { network : "Sonic Mainnet",                    name : "Uknown LP Token",        factoryAddress : "0x2dA25E7446A70D7be65fd4c053948BEcAA6374c8", routerAddress : "0x1D368773735ee1E678950B7A97bcA2CafB330CDc", abi : GENERAL_SOLIDLY_ROUTER_ABI }
   ]
 
-//FUNCTIONS FOR THE SCRIPT
-  const consoleToolsInit = function(callback) {
-    logger = document.getElementById('log')
-    _print(new Date().toString())
-    _print('')
-    return init_tools_wallet(callback)
-  }
-
-  //users wallet and network details
-  const init_tools_wallet = async function (callback) {
-
-    //let targetNetwork = pageNetwork()
-  
-    // Check if user is already connected via AppKit
-    const account = window.appKit?.getAccount()
-    if (account && account.isConnected && account.address) {
-      walletProvider = window.appKit.getProvider()
-      window.web3Modal.cachedProvider = 'appkit'
-    }
-  
-    if (walletProvider) {
-      let provider = new ethers.providers.Web3Provider(walletProvider)
-      let connectedNetwork = await provider.getNetwork();
-      _print_link("[CHANGE WALLET]", changeWallet, "connect_wallet_button", false);
-      _print_inline(' -=- ');
-      _print_link("[CLEAR BROWSER STORAGE]", clearLocalStorage, "clear_browser_storage");
-      start(callback);
-      _print_bold(`\nYou are connected to ${networkNameFromId(connectedNetwork.chainId)}`)
-  }else {
-    _print_link("[CONNECT WALLET]", () => connectWallet(callback), "connect_wallet_button", false);
-    _print_inline(' -=- ');
-    _print_link("[CLEAR BROWSER STORAGE]", clearLocalStorage, "clear_browser_storage");
-    hideLoading()
-  }
-  _print('')
-}
-
 function refresh(t){
   _print("");
   _print(`\nYour transaction ${t} has been sent and the page will be refreshed in 10 seconds.`)
