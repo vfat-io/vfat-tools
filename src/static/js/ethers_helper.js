@@ -3020,6 +3020,10 @@ function getUniPrices(tokens, prices, pool, chain="eth")
                   "pulse": `https://pulse.velocimeter.xyz`,
                   "avax": `https://blackhole.xyz`,
                   "linea": `https://www.etherex.finance/trade`,
+                  "fraxtal": `https://app.velodrome.finance/swap`,
+                  "mode": `https://app.velodrome.finance/swap`,
+                  "unichain": `https://app.velodrome.finance/swap`,
+                  "ink": `https://app.velodrome.finance/swap`,
                   "base": `https://base.velocimeter.xyz`
                 }
               [chain]):
@@ -3036,6 +3040,10 @@ function getUniPrices(tokens, prices, pool, chain="eth")
                   "bsc": `https://info.thena.fi/pair/${pool.address}`,
                   "avax": `https://blackhole.xyz`,
                   "linea": `https://www.etherex.finance/trade`,
+                  "fraxtal": `https://app.velodrome.finance/swap`,
+                  "mode": `https://app.velodrome.finance/swap`,
+                  "unichain": `https://app.velodrome.finance/swap`,
+                  "ink": `https://app.velodrome.finance/swap`,
                   "kava": `https://equilibrefinance.com/`
                 }
               [chain]):
@@ -3284,6 +3292,26 @@ function getUniPrices(tokens, prices, pool, chain="eth")
               `https://app.velodrome.finance/liquidity/create/`,
               `https://app.velodrome.finance/swap`
             ],
+            "fraxtal" : [
+              `https://app.velodrome.finance/liquidity/create/`,
+              `https://app.velodrome.finance/liquidity/create/`,
+              `https://app.velodrome.finance/swap`
+            ],
+            "mode" : [
+              `https://app.velodrome.finance/liquidity/create/`,
+              `https://app.velodrome.finance/liquidity/create/`,
+              `https://app.velodrome.finance/swap`
+            ],
+            "unichain" : [
+              `https://app.velodrome.finance/liquidity/create/`,
+              `https://app.velodrome.finance/liquidity/create/`,
+              `https://app.velodrome.finance/swap`
+            ],
+            "ink" : [
+              `https://app.velodrome.finance/liquidity/create/`,
+              `https://app.velodrome.finance/liquidity/create/`,
+              `https://app.velodrome.finance/swap`
+            ],
             "bsc" : [
               `https://whaleswap.finance/add/`,
               `https://whaleswap.finance/add/`,
@@ -3347,6 +3375,26 @@ function getUniPrices(tokens, prices, pool, chain="eth")
               `https://hermes.maiadao.io/#/swap?inputCurrency=${t0address}&outputCurrency=${t1address}`
             ],
             "optimism" : [
+              `https://app.velodrome.finance/liquidity/create/`,
+              `https://app.velodrome.finance/liquidity/create/`,
+              `https://app.velodrome.finance/swap`
+            ],
+            "fraxtal" : [
+              `https://app.velodrome.finance/liquidity/create/`,
+              `https://app.velodrome.finance/liquidity/create/`,
+              `https://app.velodrome.finance/swap`
+            ],
+            "mode" : [
+              `https://app.velodrome.finance/liquidity/create/`,
+              `https://app.velodrome.finance/liquidity/create/`,
+              `https://app.velodrome.finance/swap`
+            ],
+            "unichain" : [
+              `https://app.velodrome.finance/liquidity/create/`,
+              `https://app.velodrome.finance/liquidity/create/`,
+              `https://app.velodrome.finance/swap`
+            ],
+            "ink" : [
               `https://app.velodrome.finance/liquidity/create/`,
               `https://app.velodrome.finance/liquidity/create/`,
               `https://app.velodrome.finance/swap`

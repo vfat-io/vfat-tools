@@ -225,7 +225,7 @@ export const customNetworks = [
     blockExplorers: [{ name: 'Moonriver Explorer', url: 'https://moonbeam.network/networks/moonriver/' }]
   },
   {
-    id: 1301,
+    id: 130,
     name: 'Unichain',
     nativeCurrency: { name: 'ETH', symbol: 'ETH', decimals: 18 },
     rpcUrls: ['https://rpc.unichain.org'],
@@ -281,7 +281,7 @@ export const customNetworks = [
     blockExplorers: [{ name: 'Kava Explorer', url: 'https://explorer.kava.io' }]
   },
   {
-    id: 4460,
+    id: 252,
     name: 'Fraxtal',
     nativeCurrency: { name: 'frxETH', symbol: 'frxETH', decimals: 18 },
     rpcUrls: ['https://rpc.frax.com'],

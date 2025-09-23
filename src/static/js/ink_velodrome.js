@@ -5813,8 +5813,8 @@ const FARM_STRATEGY_ABI = [
 
 const REWARD_TOKEN_ADDRESS = '0x7f9adfbd38b669f03d1d11000bc76b9aaea28a81'
 const NFT_POSITION_MANAGER_ADDRESS = '0x991d5546C4B442B4c5fdc4c8B8b8d131DEB24702'
-const NFT_FARM_STRATEGY_ADDRESS = '0x13c59ec73585f1437728cdf29535ae088f125089'
-const FARM_STRATEGY_ADDRESS = '0x629d5c307A6B3A0a71e4188687292b12E8e92262'
+const NFT_FARM_STRATEGY_ADDRESS = '0x7bf22d732268F8F5C9034666bc11AFFfB47f1FbC'
+const FARM_STRATEGY_ADDRESS = '0x991Ce3079450F466Ba3b6e6beCCD1880E2a88581'
 
 async function main() {
   const App = await init_ethers()
@@ -5825,9 +5825,9 @@ async function main() {
   _print('This may take few minutes, please be patient...\n')
 
   const tokens = {}
-  const prices = await getModePrices()
+  const prices = await getInkPrices()
 
-  const SICKLE_FACTORY_ADDR = '0x53d9780DbD3831E3A797Fd215be4131636cD5FDf'
+  const SICKLE_FACTORY_ADDR = '0xc6013E57a0811C7111A8fB07ACd2E248D9489C99'
   const SICKLE_FACTORY = new ethcall.Contract(SICKLE_FACTORY_ADDR, SICKLE_FACTORY_ABI)
 
   const [sickle_account_address] = await App.ethcallProvider.all([SICKLE_FACTORY.sickles(App.YOUR_ADDRESS)])
@@ -5841,7 +5841,7 @@ async function main() {
   const VELO_VOTER_ADDRESS = '0x97cDBCe21B6fd0585d29E539B1B99dAd328a1123'
   const VELO_VOTER = new ethcall.Contract(VELO_VOTER_ADDRESS, VELO_VOTER_ABI)
 
-  const length = 24
+  const length = 18
 
   const pool_calls = [...Array(length).keys()].map(i => VELO_VOTER.pools(i))
   const pools = await App.ethcallProvider.all(pool_calls)
@@ -5962,7 +5962,7 @@ async function loadVelodroneV2SynthetixPools(
     )
   )
   for (const i of infos.filter(i => i?.poolPrices)) {
-    await printVelodromeV2Pool(App, i, 'mode', customURLs)
+    await printVelodromeV2Pool(App, i, 'ink', customURLs)
   }
 }
 
@@ -6022,7 +6022,7 @@ async function loadVelodromeV2SynthetixPoolInfo(
 
   const rewardTokenTicker = rewardToken.symbol
 
-  const poolPrices = getPoolPrices(tokens, prices, stakeToken, 'mode')
+  const poolPrices = getPoolPrices(tokens, prices, stakeToken, 'ink')
 
   if (!poolPrices) {
     console.log(`Couldn't calculate prices for pool ${stakeTokenAddress}`)
@@ -6078,17 +6078,17 @@ async function printVelodromeV2Pool(App, info, chain = 'eth', customURLs) {
     return rewardsContract_unstake(info.stakingAddress, App)
   }
   const claim = async function() {
-    return modeContract_claim(info.stakingAddress, App)
+    return inkContract_claim(info.stakingAddress, App)
   }
-  const sickle_mode_unstake = async function() {
-    return sickle_modeContract_unstake(info.stakingAddress, info.stakeTokenAddress, info._userStaked, App)
+  const sickle_ink_unstake = async function() {
+    return sickle_inkContract_unstake(info.stakingAddress, info.stakeTokenAddress, info._userStaked, App)
   }
-  const sickle_mode_claim = async function() {
-    return sickle_modeContract_claim(info.stakingAddress, App)
+  const sickle_ink_claim = async function() {
+    return sickle_inkContract_claim(info.stakingAddress, App)
   }
-  _print(`<a target="_blank" href="https://modescan.io/address/${info.stakingAddress}#code">Mode Scan</a>`)
+  _print(`<a target="_blank" href="https://explorer.inkonchain.com/address/${info.stakingAddress}#code">Ink Scan</a>`)
   if (info.has_sickle_account) {
-    _print_link(`Unstake ${info.userStaked.toFixed(6)} ${info.stakeTokenTicker}`, sickle_mode_unstake)
+    _print_link(`Unstake ${info.userStaked.toFixed(6)} ${info.stakeTokenTicker}`, sickle_ink_unstake)
   } else {
     _print_link(`Unstake ${info.userStaked.toFixed(6)} ${info.stakeTokenTicker}`, unstake)
   }
@@ -6097,7 +6097,7 @@ async function printVelodromeV2Pool(App, info, chain = 'eth', customURLs) {
       `Claim ${info.earned.toFixed(6)} ${info.rewardTokenTicker} ($${formatMoney(
         info.earned * info.rewardTokenPrice
       )})`,
-      sickle_mode_claim
+      sickle_ink_claim
     )
   } else {
     _print_link(
@@ -6110,7 +6110,7 @@ async function printVelodromeV2Pool(App, info, chain = 'eth', customURLs) {
   _print('')
 }
 
-const sickle_modeContract_unstake = async function(rewardPoolAddr, lpToken, userStaked, App) {
+const sickle_inkContract_unstake = async function(rewardPoolAddr, lpToken, userStaked, App) {
   const signer = App.provider.getSigner()
 
   const REWARD_POOL = new ethers.Contract(FARM_STRATEGY_ADDRESS, FARM_STRATEGY_ABI, signer)
@@ -6138,7 +6138,7 @@ const sickle_modeContract_unstake = async function(rewardPoolAddr, lpToken, user
     })
 }
 
-const sickle_modeContract_claim = async function(rewardPoolAddr, App) {
+const sickle_inkContract_claim = async function(rewardPoolAddr, App) {
   const signer = App.provider.getSigner()
 
   const farm = {
@@ -6189,7 +6189,7 @@ async function loadVelodroneSynthetixPools(
     )
   )
   for (const i of infos) {
-    await printVelodromePool(App, i, 'mode', customURLs)
+    await printVelodromePool(App, i, 'ink', customURLs)
   }
 }
 
@@ -6297,7 +6297,7 @@ async function printVelodromePool(App, info, chain = 'eth', customURLs) {
   const sickle_claim = async function(nftId) {
     return sickle_clContract_claim(info.stakingAddress, nftId, App)
   }
-  _print(`<a target="_blank" href="https://modescan.io/address/${info.stakingAddress}#code">Mode Scan</a>`)
+  _print(`<a target="_blank" href="https://explorer.inkonchain.com/address/${info.stakingAddress}#code">Ink Scan</a>`)
   for (const userStakedNft of info.userStakedNfts) {
     if (info.has_sickle_account) {
       _print_link(`Withdraw NFT ID: ${userStakedNft}`, () => sickle_unstake(userStakedNft))
