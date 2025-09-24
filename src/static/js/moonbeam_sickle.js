@@ -56,11 +56,11 @@ async function main() {
             return single_sweep_nfts_721(App, nft_ids[i], tokens[i])
           }
 
-          _print_link(`Sweep STELLASWAP erc721 token: ${nft_ids[i]}`, singleSweepErc721);
+          _print_link(`Withdraw STELLASWAP erc721 token: ${nft_ids[i]}`, singleSweepErc721);
 
         }
 
-        _print_link(`Sweep all STELLASWAP erc721 tokens: ${token_ids}`, sweepErc721);
+        _print_link(`Withdraw all STELLASWAP erc721 tokens: ${token_ids}`, sweepErc721);
         _print("");
       }
     }

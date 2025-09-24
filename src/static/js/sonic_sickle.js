@@ -71,11 +71,11 @@ async function main() {
             return single_sweep_nfts_721(App, nft_ids[i], tokens[i])
           }
 
-          _print_link(`Sweep SHADOW erc721 token: ${nft_ids[i]}`, singleSweepErc721);
+          _print_link(`Withdraw SHADOW erc721 token: ${nft_ids[i]}`, singleSweepErc721);
 
         }
 
-        _print_link(`Sweep all SHADOW erc721 tokens: ${token_ids}`, sweepErc721);
+        _print_link(`Withdraw all SHADOW erc721 tokens: ${token_ids}`, sweepErc721);
         _print("");
       }
 
@@ -106,11 +106,11 @@ async function main() {
             return single_sweep_nfts_721(App, nft_ids[i], tokens[i])
           }
 
-          _print_link(`Sweep SWAPX erc721 token: ${nft_ids[i]}`, singleSweepErc721);
+          _print_link(`Withdraw SWAPX erc721 token: ${nft_ids[i]}`, singleSweepErc721);
 
         }
 
-        _print_link(`Sweep all SWAPX erc721 tokens: ${token_ids}`, sweepErc721);
+        _print_link(`Withdraw all SWAPX erc721 tokens: ${token_ids}`, sweepErc721);
         _print("");
       }
 
@@ -141,11 +141,11 @@ async function main() {
             return single_sweep_nfts_721(App, nft_ids[i], tokens[i])
           }
 
-          _print_link(`Sweep WAGMI erc721 token: ${nft_ids[i]}`, singleSweepErc721);
+          _print_link(`Withdraw WAGMI erc721 token: ${nft_ids[i]}`, singleSweepErc721);
 
         }
 
-        _print_link(`Sweep all WAGMI erc721 tokens: ${token_ids}`, sweepErc721);
+        _print_link(`Withdraw all WAGMI erc721 tokens: ${token_ids}`, sweepErc721);
         _print("");
       }
 
@@ -176,11 +176,11 @@ async function main() {
             return single_sweep_nfts_721(App, nft_ids[i], tokens[i])
           }
 
-          _print_link(`Sweep NINEMM erc721 token: ${nft_ids[i]}`, singleSweepErc721);
+          _print_link(`Withdraw NINEMM erc721 token: ${nft_ids[i]}`, singleSweepErc721);
 
         }
 
-        _print_link(`Sweep all NINEMM erc721 tokens: ${token_ids}`, sweepErc721);
+        _print_link(`Withdraw all NINEMM erc721 tokens: ${token_ids}`, sweepErc721);
         _print("");
       }
 
@@ -211,11 +211,11 @@ async function main() {
             return single_sweep_nfts_721(App, nft_ids[i], tokens[i])
           }
 
-          _print_link(`Sweep ATLANTIS erc721 token: ${nft_ids[i]}`, singleSweepErc721);
+          _print_link(`Withdraw ATLANTIS erc721 token: ${nft_ids[i]}`, singleSweepErc721);
 
         }
 
-        _print_link(`Sweep all ATLANTIS erc721 tokens: ${token_ids}`, sweepErc721);
+        _print_link(`Withdraw all ATLANTIS erc721 tokens: ${token_ids}`, sweepErc721);
         _print("");
       }
 
@@ -246,11 +246,11 @@ async function main() {
             return single_sweep_nfts_721(App, nft_ids[i], tokens[i])
           }
 
-          _print_link(`Sweep UNISWAP erc721 token: ${nft_ids[i]}`, singleSweepErc721);
+          _print_link(`Withdraw UNISWAP erc721 token: ${nft_ids[i]}`, singleSweepErc721);
 
         }
 
-        _print_link(`Sweep all UNISWAP erc721 tokens: ${token_ids}`, sweepErc721);
+        _print_link(`Withdraw all UNISWAP erc721 tokens: ${token_ids}`, sweepErc721);
         _print("");
       }
     }

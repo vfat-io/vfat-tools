@@ -65,11 +65,11 @@ $(function() {
               return single_sweep_nfts_721(App, nft_ids[i], tokens[i])
             }
   
-            _print_link(`Sweep PANCAKESWAP erc721 token: ${nft_ids[i]}`, singleSweepErc721);
+            _print_link(`Withdraw PANCAKESWAP erc721 token: ${nft_ids[i]}`, singleSweepErc721);
   
           }
   
-          _print_link(`Sweep all PANCAKESWAP erc721 tokens: ${token_ids}`, sweepErc721);
+          _print_link(`Withdraw all PANCAKESWAP erc721 tokens: ${token_ids}`, sweepErc721);
           _print("");
         }
   
@@ -100,11 +100,11 @@ $(function() {
               return single_sweep_nfts_721(App, nft_ids[i], tokens[i])
             }
   
-            _print_link(`Sweep NILE erc721 token: ${nft_ids[i]}`, singleSweepErc721);
+            _print_link(`Withdraw NILE erc721 token: ${nft_ids[i]}`, singleSweepErc721);
   
           }
   
-          _print_link(`Sweep all NILE erc721 tokens: ${token_ids}`, sweepErc721);
+          _print_link(`Withdraw all NILE erc721 tokens: ${token_ids}`, sweepErc721);
           _print("");
         }
 
@@ -135,11 +135,11 @@ $(function() {
               return single_sweep_nfts_721(App, nft_ids[i], tokens[i])
             }
   
-            _print_link(`Sweep ETHEREX erc721 token: ${nft_ids[i]}`, singleSweepErc721);
+            _print_link(`Withdraw ETHEREX erc721 token: ${nft_ids[i]}`, singleSweepErc721);
   
           }
   
-          _print_link(`Sweep all ETHEREX erc721 tokens: ${token_ids}`, sweepErc721);
+          _print_link(`Withdraw all ETHEREX erc721 tokens: ${token_ids}`, sweepErc721);
           _print("");
         }
 
@@ -170,11 +170,11 @@ $(function() {
               return single_sweep_nfts_721(App, nft_ids[i], tokens[i])
             }
   
-            _print_link(`Sweep UNISWAP erc721 token: ${nft_ids[i]}`, singleSweepErc721);
+            _print_link(`Withdraw UNISWAP erc721 token: ${nft_ids[i]}`, singleSweepErc721);
   
           }
   
-          _print_link(`Sweep all UNISWAP erc721 tokens: ${token_ids}`, sweepErc721);
+          _print_link(`Withdraw all UNISWAP erc721 tokens: ${token_ids}`, sweepErc721);
           _print("");
         }
       }

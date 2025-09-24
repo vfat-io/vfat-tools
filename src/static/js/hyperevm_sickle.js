@@ -71,11 +71,11 @@ async function main() {
             return single_sweep_nfts_721(App, nft_ids[i], tokens[i])
           }
 
-          _print_link(`Sweep KITTENSWAP erc721 token: ${nft_ids[i]}`, singleSweepErc721);
+          _print_link(`Withdraw KITTENSWAP erc721 token: ${nft_ids[i]}`, singleSweepErc721);
 
         }
 
-        _print_link(`Sweep all KITTENSWAP erc721 tokens: ${token_ids}`, sweepErc721);
+        _print_link(`Withdraw all KITTENSWAP erc721 tokens: ${token_ids}`, sweepErc721);
         _print("");
       }
 
@@ -106,11 +106,11 @@ async function main() {
             return single_sweep_nfts_721(App, nft_ids[i], tokens[i])
           }
 
-          _print_link(`Sweep HYPERSWAP erc721 token: ${nft_ids[i]}`, singleSweepErc721);
+          _print_link(`Withdraw HYPERSWAP erc721 token: ${nft_ids[i]}`, singleSweepErc721);
 
         }
 
-        _print_link(`Sweep all HYPERSWAP erc721 tokens: ${token_ids}`, sweepErc721);
+        _print_link(`Withdraw all HYPERSWAP erc721 tokens: ${token_ids}`, sweepErc721);
         _print("");
       }
 
@@ -141,11 +141,11 @@ async function main() {
             return single_sweep_nfts_721(App, nft_ids[i], tokens[i])
           }
 
-          _print_link(`Sweep KITTENSWAP-V1 erc721 token: ${nft_ids[i]}`, singleSweepErc721);
+          _print_link(`Withdraw KITTENSWAP-V1 erc721 token: ${nft_ids[i]}`, singleSweepErc721);
 
         }
 
-        _print_link(`Sweep all KITTENSWAP-V1 erc721 tokens: ${token_ids}`, sweepErc721);
+        _print_link(`Withdraw all KITTENSWAP-V1 erc721 tokens: ${token_ids}`, sweepErc721);
         _print("");
       }
 
@@ -176,11 +176,11 @@ async function main() {
             return single_sweep_nfts_721(App, nft_ids[i], tokens[i])
           }
 
-          _print_link(`Sweep HYBRA erc721 token: ${nft_ids[i]}`, singleSweepErc721);
+          _print_link(`Withdraw HYBRA erc721 token: ${nft_ids[i]}`, singleSweepErc721);
 
         }
 
-        _print_link(`Sweep all HYBRA erc721 tokens: ${token_ids}`, sweepErc721);
+        _print_link(`Withdraw all HYBRA erc721 tokens: ${token_ids}`, sweepErc721);
         _print("");
       }
 
@@ -211,11 +211,11 @@ async function main() {
             return single_sweep_nfts_721(App, nft_ids[i], tokens[i])
           }
 
-          _print_link(`Sweep PROJECT-X erc721 token: ${nft_ids[i]}`, singleSweepErc721);
+          _print_link(`Withdraw PROJECT-X erc721 token: ${nft_ids[i]}`, singleSweepErc721);
 
         }
 
-        _print_link(`Sweep all PROJECT-X erc721 tokens: ${token_ids}`, sweepErc721);
+        _print_link(`Withdraw all PROJECT-X erc721 tokens: ${token_ids}`, sweepErc721);
         _print("");
       }
 
@@ -246,11 +246,11 @@ async function main() {
             return single_sweep_nfts_721(App, nft_ids[i], tokens[i])
           }
 
-          _print_link(`Sweep GLIQUID erc721 token: ${nft_ids[i]}`, singleSweepErc721);
+          _print_link(`Withdraw GLIQUID erc721 token: ${nft_ids[i]}`, singleSweepErc721);
 
         }
 
-        _print_link(`Sweep all GLIQUID erc721 tokens: ${token_ids}`, sweepErc721);
+        _print_link(`Withdraw all GLIQUID erc721 tokens: ${token_ids}`, sweepErc721);
         _print("");
       }
     }

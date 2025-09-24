@@ -56,11 +56,11 @@ async function main() {
             return single_sweep_nfts_721(App, nft_ids[i], tokens[i])
           }
 
-          _print_link(`Sweep CLEOPATRA erc721 token: ${nft_ids[i]}`, singleSweepErc721);
+          _print_link(`Withdraw CLEOPATRA erc721 token: ${nft_ids[i]}`, singleSweepErc721);
 
         }
 
-        _print_link(`Sweep all CLEOPATRA erc721 tokens: ${token_ids}`, sweepErc721);
+        _print_link(`Withdraw all CLEOPATRA erc721 tokens: ${token_ids}`, sweepErc721);
         _print("");
       }
     }

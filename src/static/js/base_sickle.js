@@ -69,7 +69,7 @@ async function main() {
           token_ids += `${nft_ids[i]} - `;
         }
 
-        _print_link(`Sweep AERO erc721 tokens: ${token_ids}`, sweepErc721);
+        _print_link(`Withdraw AERO erc721 tokens: ${token_ids}`, sweepErc721);
       }
 
       if(nfts_2 / 1 > 0){
@@ -87,7 +87,7 @@ async function main() {
           token_ids += `${nft_ids[i]}`;
         }
 
-        _print_link(`Sweep AERO erc721 tokens: ${token_ids}`, sweepErc721);
+        _print_link(`Withdraw AERO erc721 tokens: ${token_ids}`, sweepErc721);
       }
 
       if(nfts_3 / 1 > 0){
@@ -105,7 +105,7 @@ async function main() {
           token_ids += `${nft_ids[i]}`;
         }
 
-        _print_link(`Sweep BASESWAP erc721 tokens: ${token_ids}`, sweepErc721);
+        _print_link(`Withdraw BASESWAP erc721 tokens: ${token_ids}`, sweepErc721);
       }
 
       if(nfts_4 / 1 > 0){
@@ -123,7 +123,7 @@ async function main() {
           token_ids += `${nft_ids[i]}`;
         }
 
-        _print_link(`Sweep SUSHI erc721 tokens: ${token_ids}`, sweepErc721);
+        _print_link(`Withdraw SUSHI erc721 tokens: ${token_ids}`, sweepErc721);
       }
 
       if(nfts_5 / 1 > 0){
@@ -141,7 +141,7 @@ async function main() {
           token_ids += `${nft_ids[i]}`;
         }
 
-        _print_link(`Sweep PANCAKE erc721 tokens: ${token_ids}`, sweepErc721);
+        _print_link(`Withdraw PANCAKE erc721 tokens: ${token_ids}`, sweepErc721);
       }
 
       if(nfts_6 / 1 > 0){
@@ -159,7 +159,7 @@ async function main() {
           token_ids += `${nft_ids[i]}`;
         }
 
-        _print_link(`Sweep UNISWAP erc721 tokens: ${token_ids}`, sweepErc721);
+        _print_link(`Withdraw UNISWAP erc721 tokens: ${token_ids}`, sweepErc721);
       }
 
       if(nfts_7 / 1 > 0){
@@ -177,7 +177,7 @@ async function main() {
           token_ids += `${nft_ids[i]}`;
         }
 
-        _print_link(`Sweep NINEMM erc721 tokens: ${token_ids}`, sweepErc721);
+        _print_link(`Withdraw NINEMM erc721 tokens: ${token_ids}`, sweepErc721);
       }
 
       if(nfts_8 / 1 > 0){
@@ -195,7 +195,7 @@ async function main() {
           token_ids += `${nft_ids[i]}`;
         }
 
-        _print_link(`Sweep OMNI erc721 tokens: ${token_ids}`, sweepErc721);
+        _print_link(`Withdraw OMNI erc721 tokens: ${token_ids}`, sweepErc721);
       }
 
       // _print("");
@@ -209,7 +209,7 @@ async function main() {
 
       // const anzBalance = await ANZ_TOKEN.balanceOf(sickleAddress) / 1e18;
   
-      // _print_link(`Sweep ${anzBalance.toFixed(2)} ANZ tokens`, addAnzTokens);
+      // _print_link(`Withdraw ${anzBalance.toFixed(2)} ANZ tokens`, addAnzTokens);
     }
 
     hideLoading();

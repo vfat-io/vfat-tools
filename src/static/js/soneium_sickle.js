@@ -26,46 +26,9 @@ async function main() {
       _print_bold(`Your Sickle Address: ${sickleAddress}`);
       _print("");
 
-      // const SLIPSTREAM_NFT_MANAGER_1 = new ethcall.Contract(SLIPSTREAM_NFT_MANAGER_ADDRESS_1, SLIPSTREAM_NFT_MANAGER_ABI);  // VELODROME
       const SLIPSTREAM_NFT_MANAGER_2 = new ethcall.Contract(SLIPSTREAM_NFT_MANAGER_ADDRESS_2, SLIPSTREAM_NFT_MANAGER_ABI);  // KYO
 
-      // const [nfts_1] = await App.ethcallProvider.all([SLIPSTREAM_NFT_MANAGER_1.balanceOf(sickleAddress)]);
       const [nfts_2] = await App.ethcallProvider.all([SLIPSTREAM_NFT_MANAGER_2.balanceOf(sickleAddress)]);
-
-      // if(nfts_1 / 1 > 0){
-      //   let nft_ids = [];
-      //   let tokens = [];
-      //   let token_ids = "";
-
-      //   const sweepErc721 = async function() {
-      //     return sweep_nfts_721(App, nft_ids, tokens)
-      //   }
-
-      //   _print_bold("VELODROME nfts");
-
-      //   for(let i = 0; i < nfts_1; i++){
-      //     const nft_id = await App.ethcallProvider.all([SLIPSTREAM_NFT_MANAGER_1.tokenOfOwnerByIndex(sickleAddress, i)]) / 1;
-      //     nft_ids.push(nft_id);
-      //     tokens.push(SLIPSTREAM_NFT_MANAGER_ADDRESS_1);
-      //   }
-
-      //   for(let i = 0; i < nft_ids.length; i++){
-      //     token_ids += `${nft_ids[i]} - `;
-      //   }
-
-      //   for(let i = 0; i < nft_ids.length; i++){
-
-      //     const singleSweepErc721 = async function() {
-      //       return single_sweep_nfts_721(App, nft_ids[i], tokens[i])
-      //     }
-
-      //     _print_link(`Sweep VELODROME erc721 token: ${nft_ids[i]}`, singleSweepErc721);
-
-      //   }
-
-      //   _print_link(`Sweep all VELODROME erc721 tokens: ${token_ids}`, sweepErc721);
-      //   _print("");
-      // }
 
       if(nfts_2 / 1 > 0){
         let nft_ids = [];
@@ -94,11 +57,11 @@ async function main() {
             return single_sweep_nfts_721(App, nft_ids[i], tokens[i])
           }
 
-          _print_link(`Sweep KYO erc721 token: ${nft_ids[i]}`, singleSweepErc721);
+          _print_link(`Withdraw KYO erc721 token: ${nft_ids[i]}`, singleSweepErc721);
 
         }
 
-        _print_link(`Sweep all KYO erc721 tokens: ${token_ids}`, sweepErc721);
+        _print_link(`Withdraw all KYO erc721 tokens: ${token_ids}`, sweepErc721);
         _print("");
       }
     }

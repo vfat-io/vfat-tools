@@ -59,11 +59,11 @@ async function main() {
             return single_sweep_nfts_721(App, nft_ids[i], tokens[i])
           }
 
-          _print_link(`Sweep VELO erc721 token: ${nft_ids[i]}`, singleSweepErc721);
+          _print_link(`Withdraw VELO erc721 token: ${nft_ids[i]}`, singleSweepErc721);
 
         }
 
-        _print_link(`Sweep all VELO erc721 tokens: ${token_ids}`, sweepErc721);
+        _print_link(`Withdraw all VELO erc721 tokens: ${token_ids}`, sweepErc721);
         _print("");
       }
 
@@ -94,11 +94,11 @@ async function main() {
             return single_sweep_nfts_721(App, nft_ids[i], tokens[i])
           }
 
-          _print_link(`Sweep RA erc721 token: ${nft_ids[i]}`, singleSweepErc721);
+          _print_link(`Withdraw RA erc721 token: ${nft_ids[i]}`, singleSweepErc721);
 
         }
 
-        _print_link(`Sweep all RA erc721 tokens: ${token_ids}`, sweepErc721);
+        _print_link(`Withdraw all RA erc721 tokens: ${token_ids}`, sweepErc721);
         _print("");
       }
     }

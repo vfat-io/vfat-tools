@@ -59,11 +59,11 @@ async function main() {
             return single_sweep_nfts_721(App, nft_ids[i], tokens[i])
           }
 
-          _print_link(`Sweep QUICKSWAP erc721 token: ${nft_ids[i]}`, singleSweepErc721);
+          _print_link(`Withdraw QUICKSWAP erc721 token: ${nft_ids[i]}`, singleSweepErc721);
 
         }
 
-        _print_link(`Sweep all QUICKSWAP erc721 tokens: ${token_ids}`, sweepErc721);
+        _print_link(`Withdraw all QUICKSWAP erc721 tokens: ${token_ids}`, sweepErc721);
         _print("");
       }
 
@@ -94,11 +94,11 @@ async function main() {
             return single_sweep_nfts_721(App, nft_ids[i], tokens[i])
           }
 
-          _print_link(`Sweep UNISWAP erc721 token: ${nft_ids[i]}`, singleSweepErc721);
+          _print_link(`Withdraw UNISWAP erc721 token: ${nft_ids[i]}`, singleSweepErc721);
 
         }
 
-        _print_link(`Sweep all UNISWAP erc721 tokens: ${token_ids}`, sweepErc721);
+        _print_link(`Withdraw all UNISWAP erc721 tokens: ${token_ids}`, sweepErc721);
         _print("");
       }
     }
