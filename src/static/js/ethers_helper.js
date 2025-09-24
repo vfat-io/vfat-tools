@@ -3024,6 +3024,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
                   "mode": `https://app.velodrome.finance/swap`,
                   "unichain": `https://app.velodrome.finance/swap`,
                   "ink": `https://app.velodrome.finance/swap`,
+                  "soneium": `https://app.velodrome.finance/swap`,
                   "base": `https://base.velocimeter.xyz`
                 }
               [chain]):
@@ -3044,6 +3045,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
                   "mode": `https://app.velodrome.finance/swap`,
                   "unichain": `https://app.velodrome.finance/swap`,
                   "ink": `https://app.velodrome.finance/swap`,
+                  "soneium": `https://app.velodrome.finance/swap`,
                   "kava": `https://equilibrefinance.com/`
                 }
               [chain]):
@@ -3312,6 +3314,11 @@ function getUniPrices(tokens, prices, pool, chain="eth")
               `https://app.velodrome.finance/liquidity/create/`,
               `https://app.velodrome.finance/swap`
             ],
+            "soneium" : [
+              `https://app.velodrome.finance/liquidity/create/`,
+              `https://app.velodrome.finance/liquidity/create/`,
+              `https://app.velodrome.finance/swap`
+            ],
             "bsc" : [
               `https://whaleswap.finance/add/`,
               `https://whaleswap.finance/add/`,
@@ -3395,6 +3402,11 @@ function getUniPrices(tokens, prices, pool, chain="eth")
               `https://app.velodrome.finance/swap`
             ],
             "ink" : [
+              `https://app.velodrome.finance/liquidity/create/`,
+              `https://app.velodrome.finance/liquidity/create/`,
+              `https://app.velodrome.finance/swap`
+            ],
+            "soneium" : [
               `https://app.velodrome.finance/liquidity/create/`,
               `https://app.velodrome.finance/liquidity/create/`,
               `https://app.velodrome.finance/swap`

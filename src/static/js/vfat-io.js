@@ -64,6 +64,7 @@ const main = async() => {
       ["                      ", "Mode",      "CL / V2", `<a href='/mode/velodrome'           >/mode/velodrome</a>`],
       ["                      ", "Optimism",  "CL ",     `<a href='/optimism/velodrome'       >/optimism/velodrome</a>`],
       ["                      ", "Optimism",  "V2 ",     `<a href='/optimism/velodrome_v2'    >/optimism/velodrome_v2</a>`],
+      ["                      ", "Soneium",   "CL / V2", `<a href='/soneium/velodrome'        >/soneium/velodrome</a>`],
       ["                      ", "Unichain",  "CL / V2", `<a href='/unichain/velodrome'       >/unichain/velodrome</a>`],
       ["Wagmi                 ", "Sonic",     "CL ",     `<a href='/sonic/sickle'             >/sonic/sickle</a>`],
     ]
