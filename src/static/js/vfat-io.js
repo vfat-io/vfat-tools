@@ -55,6 +55,7 @@ const main = async() => {
       ["                      ", "Avax",      "CL ",     `<a href='/avax/sickle'              >/avax/sickle</a>`],
       ["                      ", "Base",      "CL ",     `<a href='/base/sickle'              >/base/sickle</a>`],
       ["                      ", "Bnb",       "CL ",     `<a href='/bnb/sickle'               >/bnb/sickle</a>`],
+      ["                      ", "Celo",      "CL ",     `<a href='/celo/sickle'              >/celo/sickle</a>`],
       ["                      ", "Mainnet",   "CL ",     `<a href='/sickle'                   >/sickle</a>`],
       ["                      ", "Optimism",  "CL ",     `<a href='/optimism/sickle'          >/optimism/sickle</a>`],
       ["                      ", "Polygon",   "CL ",     `<a href='/polygon/sickle'           >/polygon/sickle</a>`],
