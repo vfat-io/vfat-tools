@@ -233,6 +233,9 @@ const pageNetwork = function() {
   if (network.toLowerCase() === 'hyperevm') {
     return window.NETWORKS.HYPEREVM
   }
+  if (network.toLowerCase() === 'plasma') {
+    return window.NETWORKS.PLASMA
+  }
   if (network.toLowerCase() === 'katana') {
     return window.NETWORKS.KATANA
   }
@@ -4367,6 +4370,9 @@ function getErc20Prices(prices, pool, chain="eth") {
     case "hyperevm":
       poolUrl=`https://www.hyperscan.com/token/${pool.address}`;
       break;
+    case "plasma":
+      poolUrl=`https://plasmascan.to/token/${pool.address}`;
+      break;
     case "katana":
       poolUrl=`https://katanascan.com/token/${pool.address}`;
       break;
@@ -5172,6 +5178,9 @@ async function printSynthetixPool(App, info, chain="eth", customURLs) {
       case "hyperevm":
         _print(`<a target="_blank" href="https://www.hyperscan.com/address/${info.stakingAddress}">Hyperevm Scan</a>`);
         break;
+      case "plasma":
+        _print(`<a target="_blank" href="https://plasmascan.to/address/${info.stakingAddress}">Plasma Scan</a>`);
+        break;
       case "katana":
         _print(`<a target="_blank" href="https://katanascan.com/address/${info.stakingAddress}">Katana Scan</a>`);
         break;
@@ -5475,6 +5484,8 @@ function getChainExplorerUrl(chain, address){
       return `https://lineascan.build/token/${address}`;
     case "hyperevm" :
       return `https://www.hyperscan.com/token/${address}`;
+    case "plasma" :
+      return `https://plasmascan.to/token/${address}`;
     case "katana" :
       return `https://katanascan.com/token/${address}`;
     case "hemi" :

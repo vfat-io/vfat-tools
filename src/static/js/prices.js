@@ -694,6 +694,10 @@ const MetalL2Tokens = [
   { "id": "metal", "symbol": "MTL", "contract": "0xbcfc435d8f276585f6431fc1b9ee9a850b5c00a9"}
 ];
 
+const PlasmaTokens = [
+  { "id": "plasma", "symbol": "XPL", "contract": "0x6100e367285b01f48d07953803a2d8dca5d19873"}
+];
+
 const InkTokens = [
   { "id": "weth", "symbol": "WETH", "contract": "0x4200000000000000000000000000000000000006"},
   { "id": "usd-coin", "symbol": "USDC", "contract": "0x23f63c65c474f2a5bf80ea845ca496da3689a2b9"},
@@ -1515,6 +1519,15 @@ async function getOptimisticPrices() {
   const idPrices = await lookUpPrices(optimisticTokens.map(x => x.id));
   const prices = {}
   for (const bt of optimisticTokens)
+      if (idPrices[bt.id])
+          prices[bt.contract] = idPrices[bt.id];
+  return prices;
+}
+
+async function getPlasmaPrices() {
+  const idPrices = await lookUpPrices(PlasmaTokens.map(x => x.id));
+  const prices = {}
+  for (const bt of PlasmaTokens)
       if (idPrices[bt.id])
           prices[bt.contract] = idPrices[bt.id];
   return prices;

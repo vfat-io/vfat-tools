@@ -337,6 +337,13 @@ export const customNetworks = [
     blockExplorers: [{ name: 'Evmos Explorer', url: 'https://evm.evmos.org' }]
   },
   {
+    id: 9745,
+    name: 'Plasma Mainnet',
+    nativeCurrency: { name: 'Plasma', symbol: 'XPL', decimals: 18 },
+    rpcUrls: ['https://rpc.plasma.to'],
+    blockExplorers: [{ name: 'PlasmaScan', url: 'https://plasmascan.to' }]
+  },
+  {
     id: 10000,
     name: 'Smart Bitcoin Cash',
     nativeCurrency: { name: 'BCH', symbol: 'BCH', decimals: 18 },
