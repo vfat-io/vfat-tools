@@ -8,8 +8,7 @@ const main = async() => {
     "title":"Telos EVM Mainnet",
     "heading":["Pool Provider","LP", "Reward Tokens", "INFO"],
     "rows": [
-      "No Farming Yet"
-      // ["OmniDex             ", `<a href="omnidex"       >Various</a>`,"CHARM            ","https://omnidex.finance"],
+      ["Sickle                ", `<a href="sickle"         >Various</a>`,"              ",""]
     ].reverse()}  
 
   let table = new AsciiTable().fromJSON(tableData);

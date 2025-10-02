@@ -1549,6 +1549,21 @@ export const NETWORKS = {
         "https://explorer.celo.org"
     ],
   },
+  PLASMA: {
+    "chainId": "0x2611",
+    "chainName": "Plasma Mainnet",
+    "nativeCurrency": {
+      "name": "Plasma",
+      "symbol": "XPL",
+      "decimals": 18
+    },
+    "rpcUrls": [
+        "https://rpc.plasma.to"
+    ],
+    "blockExplorerUrls": [
+        "https://plasmascan.to"
+    ],
+  },
   HYPEREVM: {
     "chainId": "0x3e7",
     "chainName": "HyperEVM",
