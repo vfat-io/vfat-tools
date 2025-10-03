@@ -62,12 +62,12 @@ const main = async() => {
       ["                      ", "Polygon",   "CL ",     `<a href='/polygon/sickle'           >/polygon/sickle</a>`],
       ["                      ", "Unichain",  "CL ",     `<a href='/unichain/uniswap'         >/unichain/uniswap</a>`],
       ["UniSwap-V4            ", "Arbitrum",  "CL ",     `<a href='/arbitrum/uniswap-v4'      >/arbitrum/uniswap-v4</a>`],
-      ["                      ", "Avax",      "CL ",     `<a href='/avax/uniswap-v4'          >/avax/uniswap-v4</a>`], // node requests problem
-      ["                      ", "Base",      "CL ",     `<a href='/base/uniswap-v4'          >/base/uniswap-v4</a>`],  // node requests problem
-      ["                      ", "Bnb",       "CL ",     `<a href='/bnb/uniswap-v4'           >/bnb/uniswap-v4</a>`],  // node requests problem
+      ["                      ", "Avax",      "CL ",     `<a href='/avax/uniswap-v4'          >/avax/uniswap-v4</a>`],
+      ["                      ", "Base",      "CL ",     `<a href='/base/uniswap-v4'          >/base/uniswap-v4</a>`],
+      ["                      ", "Bnb",       "CL ",     `<a href='/bnb/uniswap-v4'           >/bnb/uniswap-v4</a>`],
       ["                      ", "Mainnet",   "CL ",     `<a href='/uniswap-v4'               >/uniswap-v4</a>`],
-      ["                      ", "Optimism",  "CL ",     `<a href='/optimism/uniswap-v4'      >/optimism/uniswap-v4</a>`],  // node requests problem
-      ["                      ", "Unichain",  "CL ",     `<a href='/unichain/uniswap-v4'      >/unichain/uniswap-v4</a>`],  // node requests problem
+      ["                      ", "Optimism",  "CL ",     `<a href='/optimism/uniswap-v4'      >/optimism/uniswap-v4</a>`],
+      ["                      ", "Unichain",  "CL ",     `<a href='/unichain/uniswap-v4'      >/unichain/uniswap-v4</a>`],
       ["Velodrome             ", "Fraxtal",   "CL / V2", `<a href='/fraxtal/velodrome'        >/fraxtal/velodrome</a>`],
       ["                      ", "Ink",       "CL / V2", `<a href='/ink/velodrome'            >/ink/velodrome</a>`],
       ["                      ", "Mode",      "CL / V2", `<a href='/mode/velodrome'           >/mode/velodrome</a>`],
