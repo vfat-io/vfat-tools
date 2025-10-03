@@ -113,9 +113,9 @@ const UNISWAP_POSITION_MANAGER_V4 = [
   },
 ]
 
-const nft_manager_address_v4 = '0xbD216513d74C8cf14cf4747E6AaA6420FF64ee9e'
-const sickle_factory_address = '0x9D70B9E5ac2862C405D64A0193b4A4757Aab7F95'
-const sweep_address = '0xBaa4718B075A4bB467468927Fd790cb65F173Be0'
+const nft_manager_address_v4 = '0xd88F38F930b7952f2DB2432Cb002E7abbF3dD869'
+const sickle_factory_address = '0x53d9780DbD3831E3A797Fd215be4131636cD5FDf'
+const sweep_address = '0xf5090D2d52E9b390A562783B651D1A7480d56FBa'
 
 async function main() {
   const App = await init_ethers()
@@ -134,7 +134,7 @@ async function main() {
     _print('')
 
     const current_block = await App.provider.getBlockNumber()
-    const from_block = current_block - 3000000
+    const from_block = current_block - 90000000
 
     const filtered_users_address = sickleAddress.toLowerCase().slice(2)
 
