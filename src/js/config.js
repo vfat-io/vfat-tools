@@ -176,6 +176,13 @@ export const customNetworks = [
     blockExplorers: [{ name: 'PulseScan', url: 'https://scan.pulsechain.com' }]
   },
   {
+    id: 480,
+    name: 'World Chain',
+    nativeCurrency: { name: 'ETH', symbol: 'ETH', decimals: 18 },
+    rpcUrls: ['https://worldchain-mainnet.g.alchemy.com/public'],
+    blockExplorers: [{ name: 'WorldScan', url: 'https://worldscan.org' }]
+  },
+  {
     id: 592,
     name: 'Astar Network',
     nativeCurrency: { name: 'ASTR', symbol: 'ASTR', decimals: 18 },
@@ -1562,6 +1569,21 @@ export const NETWORKS = {
     ],
     "blockExplorerUrls": [
         "https://plasmascan.to"
+    ],
+  },
+  WORLDCHAIN: {
+    "chainId": "0x1e0",
+    "chainName": "World Chain",
+    "nativeCurrency": {
+      "name": "Ethereum",
+      "symbol": "ETH",
+      "decimals": 18
+    },
+    "rpcUrls": [
+        "https://worldchain-mainnet.g.alchemy.com/public"
+    ],
+    "blockExplorerUrls": [
+        "https://worldscan.org"
     ],
   },
   HYPEREVM: {

@@ -698,6 +698,10 @@ const PlasmaTokens = [
   { "id": "plasma", "symbol": "XPL", "contract": "0x6100e367285b01f48d07953803a2d8dca5d19873"}
 ];
 
+const WorldChainTokens = [
+  { "id": "weth", "symbol": "WETH", "contract": "0x4200000000000000000000000000000000000006"}
+];
+
 const InkTokens = [
   { "id": "weth", "symbol": "WETH", "contract": "0x4200000000000000000000000000000000000006"},
   { "id": "usd-coin", "symbol": "USDC", "contract": "0x23f63c65c474f2a5bf80ea845ca496da3689a2b9"},
@@ -1627,6 +1631,15 @@ async function getVelasPrices() {
   const idPrices = await lookUpPrices(VelasTokens.map(x => x.id));
   const prices = {}
   for (const bt of VelasTokens)
+      if (idPrices[bt.id])
+          prices[bt.contract] = idPrices[bt.id];
+  return prices;
+}
+
+async function getWorldChainPrices() {
+  const idPrices = await lookUpPrices(WorldChainTokens.map(x => x.id));
+  const prices = {}
+  for (const bt of WorldChainTokens)
       if (idPrices[bt.id])
           prices[bt.contract] = idPrices[bt.id];
   return prices;

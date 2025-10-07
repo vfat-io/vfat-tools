@@ -61,6 +61,7 @@ const main = async() => {
       ["                      ", "Plasma",    "CL ",     `<a href='/plasma/sickle'            >/plasma/sickle</a>`],
       ["                      ", "Polygon",   "CL ",     `<a href='/polygon/sickle'           >/polygon/sickle</a>`],
       ["                      ", "Unichain",  "CL ",     `<a href='/unichain/uniswap'         >/unichain/uniswap</a>`],
+      ["                      ", "Worldchain","CL ",     `<a href='/worldchain/sickle'        >/worldchain/sickle</a>`],
       ["UniSwap-V4            ", "Arbitrum",  "CL ",     `<a href='/arbitrum/uniswap-v4'      >/arbitrum/uniswap-v4</a>`],
       ["                      ", "Avax",      "CL ",     `<a href='/avax/uniswap-v4'          >/avax/uniswap-v4</a>`],
       ["                      ", "Base",      "CL ",     `<a href='/base/uniswap-v4'          >/base/uniswap-v4</a>`],
