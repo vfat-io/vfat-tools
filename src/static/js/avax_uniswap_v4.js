@@ -150,54 +150,85 @@ async function main() {
       ],
     }
 
-    const logs = await App.provider.getLogs(filter)
+    try {
+      const logs = await App.provider.getLogs(filter)
 
-    let nft_ids = [],
-      active_nfts = []
+      let nft_ids = [],
+        active_nfts = []
 
-    for (const log of logs) {
-      nft_ids.push(BigInt(log.topics[3]))
-    }
-
-    const liquidity_calls = nft_ids.map(nft => nft_manager_v4.getPositionLiquidity(nft))
-    const liquidities = await App.ethcallProvider.all(liquidity_calls)
-
-    for (let i = 0; i < nft_ids.length; i++) {
-      if (liquidities[i] > 0) {
-        active_nfts.push(nft_ids[i])
-      }
-    }
-
-    if (active_nfts.length > 0) {
-      let token_ids = ''
-
-      let nft_manager_addresses = []
-      for (let i = 0; i < active_nfts.length; i++) {
-        nft_manager_addresses.push(nft_manager_address_v4)
+      for (const log of logs) {
+        nft_ids.push(BigInt(log.topics[3]))
       }
 
-      const sweepErc721 = async function() {
-        return sweep_nfts_721(App, active_nfts, nft_manager_addresses)
+      const liquidity_calls = nft_ids.map(nft => nft_manager_v4.getPositionLiquidity(nft))
+      const liquidities = await App.ethcallProvider.all(liquidity_calls)
+
+      for (let i = 0; i < nft_ids.length; i++) {
+        if (liquidities[i] > 0) {
+          active_nfts.push(nft_ids[i])
+        }
       }
 
-      _print_bold('Uniswap-V4 nfts')
+      if (active_nfts.length > 0) {
+        let token_ids = ''
 
-      for (const nft of active_nfts) {
-        token_ids += `${nft} - `
-      }
-
-      for (const nft of active_nfts) {
-        const singleSweepErc721 = async function() {
-          return single_sweep_nfts_721(App, nft, nft_manager_address_v4)
+        let nft_manager_addresses = []
+        for (let i = 0; i < active_nfts.length; i++) {
+          nft_manager_addresses.push(nft_manager_address_v4)
         }
 
-        _print_link(`Withdraw Uniswap erc721 token: ${nft}`, singleSweepErc721)
-      }
+        const sweepErc721 = async function() {
+          return sweep_nfts_721(App, active_nfts, nft_manager_addresses)
+        }
 
-      _print_link(`Withdraw all Uniswap erc721 tokens: ${token_ids}`, sweepErc721)
+        _print_bold('Uniswap-V4 nfts')
+
+        for (const nft of active_nfts) {
+          token_ids += `${nft} - `
+        }
+
+        for (const nft of active_nfts) {
+          const singleSweepErc721 = async function() {
+            return single_sweep_nfts_721(App, nft, nft_manager_address_v4)
+          }
+
+          _print_link(`Withdraw Uniswap erc721 token: ${nft}`, singleSweepErc721)
+        }
+
+        _print_link(`Withdraw all Uniswap erc721 tokens: ${token_ids}`, sweepErc721)
+        _print('')
+      } else {
+        _print('No active NFTs')
+      }
+    } catch (err) {
+      _print_bold('Please enter the NFT-ID that you want to withdraw')
       _print('')
-    } else {
-      _print('No active NFTs')
+      _print('You could check your nfts on the nft position manager contract below')
+      _print(`<a target="_blank" href="https://snowtrace.io/address/${sickleAddress}/nfts">Nft Position Manager</a>`)
+      _print('')
+      let log = document.getElementById('log')
+
+      let nft_input = document.createElement('input')
+      nft_input.setAttribute('id', 'nft_id')
+      nft_input.setAttribute('type', 'text')
+      nft_input.setAttribute('size', '22')
+      log.appendChild(nft_input)
+
+      let nft_btn = document.createElement('button')
+      nft_btn.innerHTML = 'Withdraw'
+      nft_btn.setAttribute('id', 'nft_withdraw_click')
+      log.appendChild(nft_btn)
+
+      nft_btn.addEventListener('click', async () => {
+        const nft_id_input = document.getElementById('nft_id').value
+        const nft_id = BigInt(nft_id_input)
+
+        try {
+          await single_sweep_nfts_721(App, nft_id, nft_manager_address_v4)
+        } catch (err) {
+          _print('error ocured')
+        }
+      })
     }
   }
 
@@ -226,6 +257,8 @@ const single_sweep_nfts_721 = async function(App, nft, token) {
     .then(function(t) {
       return App.provider.waitForTransaction(t.hash)
     })
-    .catch(function() {})
+    .catch(function() {
+      _print('invalid input (please be sure that is a v4 NFT-ID)')
+    })
   hideLoading()
 }
