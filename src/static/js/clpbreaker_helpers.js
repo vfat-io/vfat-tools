@@ -4,6 +4,7 @@ const GENERAL_NFT_MANAGER_ABI = [{"inputs":[{"internalType":"address","name":"_f
 //LP FACTORIES ARRAY
   const ClpFactories = [
     { network : "Arbitrum", name : "Ramses CL200 NFT", clFactoryAddress : "0xAA2cd7477c451E703f3B9Ba5663334914763edF8", nftAddress : "0xAA277CB7914b7e5514946Da92cb9De332Ce610EF", abi : GENERAL_NFT_MANAGER_ABI },
+    { network : "Arbitrum", name : "UNI V3 POS", clFactoryAddress : "0x1F98431c8aD98523631AE4a59f267346ea31F984", nftAddress : "0xC36442b4a4522E871399CD717aBDD847Ab11FE88", abi : GENERAL_NFT_MANAGER_ABI },
     { network : "Base", name : "Aero CL200 NFT", clFactoryAddress : "0x5e7BB104d84c7CB9B682AaC2F3d509f5F406809A", nftAddress : "0x827922686190790b37229fd06084350E74485b72", abi : GENERAL_NFT_MANAGER_ABI },
     { network : "Base", name : "Aero CL100 NFT", clFactoryAddress : "0x9592CD9B267748cbfBDe90Ac9F7DF3c437A6d51B", nftAddress : "0xc741beb2156827704A1466575ccA1cBf726a1178", abi : GENERAL_NFT_MANAGER_ABI },
     { network : "Binance Smart Chain Mainnet", name : "Pancake V3 NFT", clFactoryAddress : "0x0BFbCF9fa4f9C56B0F40a671Ad40E0805A091865", nftAddress : "0x46a15b0b27311cedf172ab29e4f4766fbe7f4364", abi : GENERAL_NFT_MANAGER_ABI },
