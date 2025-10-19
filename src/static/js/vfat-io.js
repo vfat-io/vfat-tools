@@ -38,6 +38,7 @@ const main = async() => {
       ["                      ", "Mainnet",   "CL ",     `<a href='/pancakev3'                >/pancakev3</a>`],
       ["PDex                  ", "Pulse",     "CL ",     `<a href='/pulse/sickle'             >/pulse/sickle</a>`],
       ["Pharaoh               ", "Avax",      "CL ",     `<a href='/avax/sickle'              >/avax/sickle</a>`],
+      ["Pharaoh-v3            ", "Avax",      "CL ",     `<a href='/avax/sickle'              >/avax/sickle</a>`],
       ["Project-X             ", "HyperEVM",  "CL ",     `<a href='/hyperevm/sickle'          >/hyperevm/sickle</a>`],
       ["QuickSwap             ", "Polygon",   "CL ",     `<a href='/polygon/sickle'           >/polygon/sickle</a>`],
       ["Ramses                ", "Arbitrum",  "CL ",     `<a href='/arbitrum/sickle'          >/arbitrum/sickle</a>`],
