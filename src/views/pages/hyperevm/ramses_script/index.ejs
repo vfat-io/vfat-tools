@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include(`${partials}/head`); -%>
+
+<body>
+<%- include(`${partials}/header_main`); -%>
+<pre id="log">
+*************** 👨‍🌾 UNOFFICIAL RAMSES NEW TOKENS 👨‍🌾 ***************
+INFO  : dev script to receive ramses new tokens
+******************************************************************
+
+</pre>
+<div class="loader--1"></div>
+<%- include(`${partials}/scripts`, {scriptname: 'vfio_ramses_v3_pools'}); -%>
+</body>
+</html>
