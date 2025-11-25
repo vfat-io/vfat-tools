@@ -353,7 +353,8 @@ const bscTokens = [
   { "id": "osk", "symbol": "OSK", "contract": "0x04fA9Eb295266d9d4650EDCB879da204887Dc3Da" },
   { "id": "pendle", "symbol": "PENDLE", "contract": "0xb3ed0a426155b79b898849803e3b36552f7ed507" },
   { "id": "mpendle", "symbol": "MPENDLE", "contract": "0x0465aad9da170798433f4ab7fa7ec8b9b9bf0bb1" },
-  { "id": "thena", "symbol": "THE", "contract": "0xF4C8E32EaDEC4BFe97E0F595AdD0f4450a863a11" }
+  { "id": "thena", "symbol": "THE", "contract": "0xF4C8E32EaDEC4BFe97E0F595AdD0f4450a863a11" },
+  { "id": "alita", "symbol": "ALI", "contract": "0x557233E794d1a5FbCc6D26dca49147379ea5073c" }
 ]
 
 const cantoTokens = [
