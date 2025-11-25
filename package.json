@@ -72,6 +72,9 @@
     "@reown/appkit-ui": "^1.7.17",
     "@reown/appkit-utils": "^1.7.17",
     "@reown/appkit-wallet": "^1.7.17",
+    "@uniswap/sdk-core": "^7.9.0",
+    "@uniswap/v3-sdk": "^3.26.0",
+    "@vfat-io/sickle-sdk": "file:../sickle-sdk",
     "asciichart": "^1.5.24",
     "clear": "^0.1.0",
     "cli-color": "^2.0.0",
@@ -83,13 +86,15 @@
     "ethers": "^5.3.0",
     "fuse.js": "^6.4.1",
     "jquery": "^3.5.1",
+    "jsbi": "^4.3.2",
     "lodash": "^4.17.20",
     "lodash.debounce": "^4.0.8",
     "lodash.throttle": "^4.1.1",
     "match-sorter": "^6.3.1",
     "numbro": "^2.3.2",
     "picturefill": "^3.0.3",
-    "regenerator-runtime": "^0.14.1"
+    "regenerator-runtime": "^0.14.1",
+    "viem": "^2.38.6"
   },
   "browserslist": [
     "last 1 version",

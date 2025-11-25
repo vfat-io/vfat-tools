@@ -3,6 +3,7 @@ import {ethers} from "ethers"
 import * as ethcall from "ethcall"
 import lodash from "lodash"
 import {matchSorter} from "match-sorter"
+import * as viem from "viem"
 
 import "picturefill"
 import "utils/errors"
@@ -15,10 +16,22 @@ import { createAppKitInstance, REOWN_PROJECT_ID, customNetworks, NETWORKS, ETHER
 import {store} from './appKitStore.js'
 import { initializeSubscribers } from './subscribers.js'
 
+// Sickle SDK Integration
+import * as Sickle from './sickle/index.js'
+import * as SickleHelpers from './sickle/helpers.js'
+import * as SickleConstants from './sickle/constants.js'
+import SickleExamples from './sickle/examples.js'
+import SickleTest from './sickle/test.js'
+import SickleRebalance from './sickle/rebalance.js'
+
+// Uniswap V3 Utilities
+import * as UniswapV3 from './uniswap/index.js'
+
 window.$ = $
 window.ethers = ethers
 window.ethcall = ethcall
 window.matchSorter = matchSorter
+window.viem = viem
 window.asciichart = require("asciichart")
 window.AsciiTable = require("./ascii-table")
 window.lodash = lodash
@@ -27,6 +40,22 @@ window.ETHEREUM_NODE_URL = ETHEREUM_NODE_URL
 window.customNetworks = customNetworks
 window.NETWORKS = NETWORKS
 window.store = store
+
+// Sickle SDK Integration
+window.Sickle = {
+  sdk: Sickle.sickle,
+  ...Sickle,
+  helpers: SickleHelpers,
+  constants: SickleConstants,
+  examples: SickleExamples,
+  test: SickleTest,
+  rebalance: SickleRebalance,
+}
+
+// Uniswap V3 Utilities
+window.UniswapV3 = {
+  ...UniswapV3,
+}
 
 // 3. Create a AppKit instance safely
 let appKitInstance = null;
