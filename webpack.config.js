@@ -29,7 +29,7 @@ module.exports = (env = {}) => {
           options: {
             presets: [
               ['@babel/preset-env', {
-                modules: false,
+                modules: 'auto',
                 targets: {
                   browsers: ['last 2 versions', '> 1%']
                 }
@@ -79,6 +79,7 @@ module.exports = (env = {}) => {
         pages: globals.Dir.pages,
         partials: globals.Dir.partials,
         "process/browser": require.resolve("process/browser"),
+        "@vfat-io/sickle-sdk": path.resolve(__dirname, "node_modules/@vfat-io/sickle-sdk/dist/cjs/index.js"),
       },
       fallback: {
         "buffer": require.resolve("buffer"),
