@@ -18,11 +18,9 @@ import { initializeSubscribers } from './subscribers.js'
 
 // Sickle SDK Integration
 import * as Sickle from './sickle/index.js'
-import * as SickleHelpers from './sickle/helpers.js'
-import * as SickleConstants from './sickle/constants.js'
-import SickleExamples from './sickle/examples.js'
-import SickleTest from './sickle/test.js'
 import SickleRebalance from './sickle/rebalance.js'
+import SickleWithdraw from './sickle/withdraw.js'
+import SickleCompound from './sickle/compound.js'
 
 // Uniswap V3 Utilities
 import * as UniswapV3 from './uniswap/index.js'
@@ -45,11 +43,9 @@ window.store = store
 window.Sickle = {
   sdk: Sickle.sickle,
   ...Sickle,
-  helpers: SickleHelpers,
-  constants: SickleConstants,
-  examples: SickleExamples,
-  test: SickleTest,
   rebalance: SickleRebalance,
+  withdraw: SickleWithdraw,
+  compound: SickleCompound,
 }
 
 // Uniswap V3 Utilities
