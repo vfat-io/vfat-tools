@@ -192,6 +192,7 @@ dist/
 # vs code
 .vscode/
 
+# GitHub workflows and actions
 .github/
 
 # Deployment script

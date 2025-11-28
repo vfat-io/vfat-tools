@@ -6362,6 +6362,60 @@ async function printVelodromePool(App, info, chain = 'eth', customURLs) {
       _print_link(`Withdraw NFT ID: ${userStakedNft}`, () => unstake(userStakedNft))
     }
   }
+  
+  // Sickle SDK - Withdraw to Underlying Tokens
+  if (info.has_sickle_account && window.Sickle?.withdraw) {
+    for (const nftId of info.userStakedNfts) {
+      const position = info.nftPositions.find(p => p.nftId === nftId)
+      if (!position) continue
+      
+      _print_link(
+        `Exit NFT #${nftId} to Underlying (${position.amount0.toFixed(4)} ${info.token0Symbol} + ${position.amount1.toFixed(4)} ${info.token1Symbol})`,
+        async () => {
+          try {
+            const poolData = {
+              stakingAddress: info.stakingAddress,
+              poolAddress: info.stakeTokenAddress,
+            }
+            
+            await window.Sickle.withdraw.withdrawToUnderlying(poolData, nftId)
+          } catch (error) {
+            console.error('Withdraw to underlying failed:', error)
+            alert(`Withdraw failed: ${error.message}`)
+          }
+        }
+      )
+    }
+  }
+  
+  // Sickle SDK - Withdraw to Native Token
+  if (info.has_sickle_account && window.Sickle?.withdraw) {
+    for (const nftId of info.userStakedNfts) {
+      const position = info.nftPositions.find(p => p.nftId === nftId)
+      if (!position) continue
+      
+      // Get native token symbol dynamically (Ink chain ID is 57073)
+      const nativeSymbol = window.Sickle?.SickleUtils?.getNativeTokenSymbol?.(57073) || 'ETH'
+      
+      _print_link(
+        `Exit NFT #${nftId} to ${nativeSymbol}`,
+        async () => {
+          try {
+            const poolData = {
+              stakingAddress: info.stakingAddress,
+              poolAddress: info.stakeTokenAddress,
+            }
+            
+            await window.Sickle.withdraw.withdrawToToken(poolData, nftId)
+          } catch (error) {
+            console.error('Withdraw to token failed:', error)
+            alert(`Withdraw failed: ${error.message}`)
+          }
+        }
+      )
+    }
+  }
+  
   for (let i = 0; i < info.userStakedNfts.length; i++) {
     if (info.has_sickle_account) {
       _print_link(
@@ -6428,6 +6482,32 @@ async function printVelodromePool(App, info, chain = 'eth', customURLs) {
           } catch (error) {
             console.error('Rebalance failed:', error)
             alert(`Rebalance failed: ${error.message}`)
+          }
+        }
+      )
+    }
+  }
+  
+  // Sickle SDK - Compound functionality
+  if (info.has_sickle_account && window.Sickle?.compound) {
+    for (let i = 0; i < info.userStakedNfts.length; i++) {
+      const nftId = info.userStakedNfts[i]
+      const earnings = info.earnings[i]
+      const earningsUsd = earnings * info.rewardTokenPrice
+      
+      _print_link(
+        `Compound NFT ID: ${nftId} ${earnings.toFixed(6)} ($${formatMoney(earningsUsd)})`,
+        async () => {
+          try {
+            const poolData = {
+              stakingAddress: info.stakingAddress,
+              poolAddress: info.stakeTokenAddress,
+            }
+            
+            await window.Sickle.compound.compound(poolData, nftId)
+          } catch (error) {
+            console.error('Compound failed:', error)
+            alert(`Compound failed: ${error.message}`)
           }
         }
       )

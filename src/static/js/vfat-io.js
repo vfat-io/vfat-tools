@@ -44,7 +44,7 @@ const main = async() => {
       ["Project-X             ", "HyperEVM",  "CL ",     `<a href='/hyperevm/sickle'          >/hyperevm/sickle</a>`],
       ["QuickSwap             ", "Polygon",   "CL ",     `<a href='/polygon/sickle'           >/polygon/sickle</a>`],
       ["Ramses                ", "Arbitrum",  "CL ",     `<a href='/arbitrum/sickle'          >/arbitrum/sickle</a>`],
-      ["Shadow                ", "Sonic",     "CL ",     `<a href='/sonic/sickle'             >/sonic/sickle</a>`],
+      ["Shadow                ", "Sonic",     "CL ",     `<a href='/sonic/shadow'             >/sonic/shadow</a>`],
       ["StellaSwap            ", "Moonbeam",  "CL ",     `<a href='/moonbeam/sickle'          >/moonbeam/sickle</a>`],
       ["SushiSwap             ", "Arbitrum",  "CL ",     `<a href='/arbitrum/sickle'          >/arbitrum/sickle</a>`],
       ["                      ", "Base",      "CL ",     `<a href='/base/sickle'              >/base/sickle</a>`],

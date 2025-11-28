@@ -4,6 +4,8 @@
  * Automatically rebalances NFT positions to current price while preserving the original margin settings
  */
 
+import { OperationType, initializeWalletProvider, encodeTransactionData, simulateTransaction, sendTransaction, waitForTransaction, handleTransactionReceipt } from './utils.js'
+
 /**
  * Rebalance an NFT position to center it around the current price
  * while maintaining the user's original margin configuration
@@ -18,20 +20,8 @@ export async function rebalance(poolData, nftId, currentTickLower, currentTickUp
   try {
     showLoading()
     
-    if (!window.appKit?.getAddress()) {
-      alert('Please connect your wallet first')
-      return
-    }
-
-    if (!window.Sickle?.NftPool) {
-      alert('Sickle SDK not loaded. Please refresh the page.')
-      return
-    }
-
-    const walletAddress = window.appKit.getAddress()
-    const provider = await window.appKit.getWalletProvider()
-    const chainIdHex = await provider.request({ method: 'eth_chainId' })
-    const chainId = parseInt(chainIdHex, 16)
+    // Initialize wallet and provider
+    const { walletAddress, provider, chainId } = await initializeWalletProvider()
     const tickSpacing = poolData.tickSpacing || 1
 
     // Calculate the actual position width (distance between bounds)
@@ -44,17 +34,18 @@ export async function rebalance(poolData, nftId, currentTickLower, currentTickUp
     
     // Calculate margin ratio based on vfat.io's nftTickBounds logic
     // This preserves the original asymmetric configuration
-    const positionTickWidth = positionWidthTicks / tickSpacing - 1
+    const positionTickWidth = positionWidthTicks / tickSpacing
     let tickSpacesAbove, tickSpacesBelow
     
     if (isInRange) {
       // Position is in range: calculate from current tick position
-      tickSpacesAbove = (currentTickUpper - (currentTick + tickSpacing)) / tickSpacing
-      tickSpacesBelow = (currentTick - currentTickLower) / tickSpacing
+      tickSpacesBelow = Math.floor((currentTick - currentTickLower) / tickSpacing)
+      tickSpacesAbove = Math.ceil((currentTickUpper - currentTick) / tickSpacing)
+      
     } else {
       // Position is out of range: use symmetric distribution
-      tickSpacesAbove = Math.floor(positionTickWidth / 2)
-      tickSpacesBelow = Math.ceil(positionTickWidth / 2)
+      tickSpacesBelow = Math.floor(positionTickWidth / 2)
+      tickSpacesAbove = Math.ceil(positionTickWidth / 2)
     }
     
     const marginLowerTicks = tickSpacesBelow * tickSpacing
@@ -72,16 +63,9 @@ export async function rebalance(poolData, nftId, currentTickLower, currentTickUp
     console.log('Tick spacing:', tickSpacing)
 
     // Show confirmation dialog
-    const confirmMessage = `Rebalance NFT Position #${nftId} (${rangeStatus})
-
-Current Position:
-• Ticks: ${currentTickLower} to ${currentTickUpper}
-• Current Tick: ${currentTick}
-• Position Width: ${positionWidthPercent.toFixed(2)}%
-
-New Position:
-• Position width: ${positionWidthPercent.toFixed(2)}%
-• Margins: -${marginLowerPercent.toFixed(2)}% / +${marginUpperPercent.toFixed(2)}%
+    const confirmMessage = `Rebalance NFT #${nftId} ${rangeStatus}?
+Width: ${positionWidthPercent.toFixed(2)}%
+Margins: -${marginLowerPercent.toFixed(2)}% / +${marginUpperPercent.toFixed(2)}%
 
 Proceed with rebalance?`
 
@@ -90,84 +74,44 @@ Proceed with rebalance?`
       return
     }
 
-    // Create NftPool instance
-    // The constructor expects an object with { chainId, address, poolId }
-    const nftPool = new window.Sickle.NftPool({
-      chainId: chainId,
-      address: poolData.stakingAddress,
-      poolId: poolData.stakingAddress
-    })
-    
-    console.log('Creating NftPool with:', {
-      chainId,
-      address: poolData.stakingAddress,
-      poolId: poolData.stakingAddress
-    })
-
-    // SDK expects upper margin to be 1 tick less (it adds +1 internally)
+    // SDK adds +1 tick internally to upper bound, so we subtract 1 tick to compensate
     const adjustedMaxMargin = Math.max(0, marginUpperPercent - tickSpacing * 0.01)
     
     console.log('Calculated margins: -' + marginLowerPercent.toFixed(2) + '% / +' + marginUpperPercent.toFixed(2) + '%')
     console.log('Passing to SDK: min:', marginLowerPercent, 'max:', adjustedMaxMargin, '(adjusted -' + (tickSpacing * 0.01).toFixed(2) + '% for SDK)')
 
-    // Create rebalance action with adjusted margins
-    const rebalanceAction = nftPool.rebalance({
-      nftId: Number(nftId),
-      pricePercentageMargin: { 
-        min: marginLowerPercent,  // Distance below current tick
-        max: adjustedMaxMargin    // Distance above current tick (adjusted -1 tick for SDK)
-      },
-    })    // Get transaction call data from SDK
-    const callData = await rebalanceAction.getCallData(walletAddress)
+    // Use NftPool fluent API - SDK needs to be updated to accept separate farm/pool addresses
+    const nftPool = new window.Sickle.NftPool({
+      chainId: chainId,
+      address: poolData.stakingAddress,     // MasterChef/Gauge address (farm)
+      poolAddress: poolData.poolAddress,    // V3 Pool address (for API call)
+      poolId: poolData.pid ? String(poolData.pid) : '0'  // Pool ID (or 0 for Velodrome)
+    })
+
+    const callData = await nftPool
+      .rebalance({
+        nftId: Number(nftId),
+        pricePercentageMargin: {
+          min: marginLowerPercent,   // minPricePercentage
+          max: adjustedMaxMargin     // maxPricePercentage
+        }
+      })
+      .getCallData(walletAddress)
 
     // Encode transaction data
-    const encodedData = window.viem.encodeFunctionData({
-      abi: callData.abi,
-      functionName: callData.functionName,
-      args: callData.args,
-    })
+    const encodedData = encodeTransactionData(callData)
 
-    // Simulate transaction before sending
-    try {
-      await provider.request({
-        method: 'eth_call',
-        params: [{
-          from: walletAddress,
-          to: callData.address,
-          data: encodedData,
-          value: callData.value || '0x0',
-        }, 'latest'],
-      })
-    } catch (simError) {
-      console.error('❌ Simulation failed:', simError)
-      alert(`❌ Transaction would fail: ${simError.message || 'Unknown error'}\n\nCheck console for details.`)
-      return
-    }
-
-    // Send transaction
-    const tx = await provider.request({
-      method: 'eth_sendTransaction',
-      params: [{
-        from: walletAddress,
-        to: callData.address,
-        data: encodedData,
-        value: callData.value || '0x0',
-      }],
-    })
+    // Simulate and send transaction
+    await simulateTransaction(provider, walletAddress, callData, encodedData)
+    const tx = await sendTransaction(provider, walletAddress, callData, encodedData)
 
     console.log(`Rebalance transaction submitted!\n\nTx Hash: ${tx}\n\nWaiting for confirmation...`)
 
     // Wait for confirmation
     const receipt = await waitForTransaction(provider, tx)
     
-    if (receipt.status === '0x1') {
-      console.log('✅ Rebalance successful!')
-      alert(`✅ Position rebalanced successfully!\n\nTx Hash: ${tx}`)
-      setTimeout(() => location.reload(), 2000)
-    } else {
-      console.error('❌ Transaction failed')
-      alert(`❌ Transaction failed. Check block explorer for details.\n\nTx Hash: ${tx}`)
-    }
+    // Handle receipt and show messages
+    handleTransactionReceipt(receipt, tx, OperationType.REBALANCE)
 
   } catch (error) {
     console.error('Rebalance failed:', error)
@@ -177,25 +121,7 @@ Proceed with rebalance?`
   }
 }
 
-/**
- * Wait for transaction confirmation
- */
-async function waitForTransaction(provider, txHash, maxAttempts = 60) {
-  for (let i = 0; i < maxAttempts; i++) {
-    try {
-      const receipt = await provider.request({
-        method: 'eth_getTransactionReceipt',
-        params: [txHash],
-      })
-      if (receipt) return receipt
-    } catch (error) {
-      console.error('Error checking transaction:', error)
-    }
-    await new Promise(resolve => setTimeout(resolve, 2000))
-  }
-  throw new Error('Transaction confirmation timeout')
-}
-
 export default {
   rebalance
 }
+
