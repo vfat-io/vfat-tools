@@ -197,3 +197,4 @@ dist/
 
 # Deployment script
 deploy.sh
+deploy-staging.sh
