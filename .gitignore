@@ -192,5 +192,7 @@ dist/
 # vs code
 .vscode/
 
+.github/
+
 # Deployment script
 deploy.sh
