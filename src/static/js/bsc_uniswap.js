@@ -78,13 +78,43 @@ $(function() {
       userClData.push(data);
     }
 
-  const clGauges = userClData.map(d => {
+  // Fetch additional data for each position (slot0, tickSpacing, position details)
+  const clPoolContracts = userClData.map(d => new ethcall.Contract(d.pool, CL_TOKEN_ABI));
+  
+  const poolDataCalls = [];
+  const positionDataCalls = [];
+  for (let i = 0; i < userClData.length; i++) {
+    poolDataCalls.push(clPoolContracts[i].slot0());
+    poolDataCalls.push(clPoolContracts[i].tickSpacing());
+    positionDataCalls.push(nft_manager_contract.positions(userClData[i].nftId));
+  }
+  
+  const poolDataResults = await App.ethcallProvider.all(poolDataCalls);
+  const positionDataResults = await App.ethcallProvider.all(positionDataCalls);
+
+  const clGauges = userClData.map((d, i) => {
+    const slot0 = poolDataResults[i * 2];
+    const tickSpacing = poolDataResults[i * 2 + 1];
+    const positionData = positionDataResults[i];
+    
     return {
       pool: d.pool,
       token0Address: d.token0Address,
       token1Address: d.token1Address,
       nftId: d.nftId,
-      liquidity: d.liquidity
+      liquidity: d.liquidity,
+      slot0: {
+        sqrtPriceX96: slot0.sqrtPriceX96,
+        tick: slot0.tick
+      },
+      tickSpacing: tickSpacing,
+      positionData: {
+        tickLower: positionData.tickLower,
+        tickUpper: positionData.tickUpper,
+        liquidity: positionData.liquidity
+      },
+      tokensOwed0: positionData.tokensOwed0,
+      tokensOwed1: positionData.tokensOwed1
     }
   })
   
@@ -98,7 +128,7 @@ $(function() {
       _print_bold(`------------------------------------`)
       _print(``)
   
-      await loadClSynthetixPools(App, clGauges, has_sickle_account, owner_sickle_address)
+      await loadClSynthetixPools(App, clGauges, has_sickle_account, owner_sickle_address, null)
   
       hideLoading();
   
@@ -107,22 +137,22 @@ $(function() {
       _print_bold(`------------------------------------`)
       _print(``)
   
-      await loadClSynthetixPools(App, clGauges, has_sickle_account, owner_sickle_address)
+      await loadClSynthetixPools(App, clGauges, has_sickle_account, owner_sickle_address, null)
   
       hideLoading();
     }
   }
 
-  async function loadClSynthetixPools(App, pools, has_sickle_account, owner_sickle_address) {
+  async function loadClSynthetixPools(App, pools, has_sickle_account, owner_sickle_address, prices) {
     const infos = await Promise.all(pools.map(p =>
-      loadClSynthetixPoolInfo(App, p.pool, p.token0Address, p.token1Address, p.liquidity, p.nftId, has_sickle_account, owner_sickle_address)));
+      loadClSynthetixPoolInfo(App, p.pool, p.token0Address, p.token1Address, p.liquidity, p.nftId, p.slot0, p.tickSpacing, p.positionData, p.tokensOwed0, p.tokensOwed1, has_sickle_account, owner_sickle_address, prices)));
     for (const i of infos) {
       await printClPool(App, i, "eth");
     }
   }
   
   async function loadClSynthetixPoolInfo(App, poolAddress, tokenAddress0, tokenAddress1, liquidity,
-    nftId, has_sickle_account, owner_sickle_address) {
+    nftId, slot0, tickSpacing, positionData, tokensOwed0, tokensOwed1, has_sickle_account, owner_sickle_address, prices) {
   
       const token0 = new ethcall.Contract(tokenAddress0, ERC20_ABI);
       const token1 = new ethcall.Contract(tokenAddress1, ERC20_ABI);
@@ -130,24 +160,164 @@ $(function() {
       const stakeToken = await getClToken(App, token0, token1, NFT_TOKEN_ADDRESS);
   
       const stakeTokenTicker = stakeToken.symbol0 + '-' + stakeToken.symbol1;
+      
+      // Calculate token amounts from position
+      let amount0 = 0;
+      let amount1 = 0;
+      
+      if (window.UniswapV3?.calculateUserLiquidity && positionData && slot0 && positionData.liquidity) {
+        try {
+          const { liquidity0, liquidity1 } = window.UniswapV3.calculateUserLiquidity(slot0.sqrtPriceX96, {
+            tickLow: positionData.tickLower,
+            tickUp: positionData.tickUpper,
+            liquidity: positionData.liquidity
+          });
+          
+          const decimals0BigInt = BigInt(Math.pow(10, Number(stakeToken.decimals0)));
+          const decimals1BigInt = BigInt(Math.pow(10, Number(stakeToken.decimals1)));
+          
+          amount0 = Number(liquidity0 / decimals0BigInt) + Number(liquidity0 % decimals0BigInt) / Number(decimals0BigInt);
+          amount1 = Number(liquidity1 / decimals1BigInt) + Number(liquidity1 % decimals1BigInt) / Number(decimals1BigInt);
+        } catch (e) {
+          console.log('Error calculating token amounts:', e);
+        }
+      }
+      
+
   
       return  {
         stakeTokenTicker,
         has_sickle_account,
         nftId,
-        liquidity
+        liquidity,
+        token0Address: tokenAddress0,
+        token1Address: tokenAddress1,
+        token0Symbol: stakeToken.symbol0,
+        token1Symbol: stakeToken.symbol1,
+        token0Decimals: stakeToken.decimals0,
+        token1Decimals: stakeToken.decimals1,
+        amount0,
+        amount1,
+        poolAddress,
+        slot0,
+        tickSpacing,
+        positionData,
+        tokensOwed0,
+        tokensOwed1
       }
   }
   
   async function printClPool(App, info) {
       _print(`Pool - ${info.stakeTokenTicker}`)
-      _print(`You are staking ${info.stakeTokenTicker} (Nft ID: ${info.nftId})`);
+      _print(`You are staking ${info.stakeTokenTicker}`);
+      _print(`Nft ID: ${info.nftId} (${info.amount0.toFixed(4)} ${info.token0Symbol} + ${info.amount1.toFixed(4)} ${info.token1Symbol})`);
       const sickle_unstake = async function() {
         return sickle_clContract_withdraw(info.nftId, App)
       }
       _print(`<a target="_blank" href=https://bscscan.com/address/${NFT_TOKEN_ADDRESS}#code">BscScan</a>`);
       if(info.has_sickle_account){
         _print_link(`Withdraw NFT ID: ${info.nftId}`, sickle_unstake)
+        
+        // Sickle SDK - Exit to Underlying Tokens
+        if (window.Sickle?.withdraw) {
+          _print_link(
+            `Exit NFT #${info.nftId} to Underlying (${info.amount0.toFixed(4)} ${info.token0Symbol} + ${info.amount1.toFixed(4)} ${info.token1Symbol})`,
+            async () => {
+              try {
+                const poolData = {
+                  stakingAddress: info.poolAddress,
+                  poolAddress: info.poolAddress
+                }
+                
+                await window.Sickle.withdraw.withdrawToUnderlying(poolData, info.nftId)
+              } catch (error) {
+                console.error('Withdraw to underlying failed:', error)
+                alert(`Withdraw failed: ${error.message}`)
+              }
+            }
+          )
+        }
+        
+        // Sickle SDK - Exit to Native Token (BNB)
+        if (window.Sickle?.withdraw) {
+          const nativeSymbol = window.Sickle?.SickleUtils?.getNativeTokenSymbol?.(56) || 'BNB'
+          
+          _print_link(
+            `Exit NFT #${info.nftId} to ${nativeSymbol}`,
+            async () => {
+              try {
+                const poolData = {
+                  stakingAddress: info.poolAddress,
+                  poolAddress: info.poolAddress
+                }
+                
+                await window.Sickle.withdraw.withdrawToToken(poolData, info.nftId)
+              } catch (error) {
+                console.error('Withdraw to token failed:', error)
+                alert(`Withdraw failed: ${error.message}`)
+              }
+            }
+          )
+        }
+        
+        // Sickle SDK - Rebalance
+        if (window.Sickle?.rebalance && info.positionData && info.slot0) {
+          const tickLower = info.positionData.tickLower;
+          const tickUpper = info.positionData.tickUpper;
+          const currentTick = info.slot0.tick;
+          const isInRange = currentTick >= tickLower && currentTick < tickUpper;
+          const rangeStatus = isInRange ? '✅ In Range' : '⚠️ Out of Range';
+          
+          _print_link(
+            `Rebalance NFT ID: ${info.nftId} (${rangeStatus})`,
+            async () => {
+              try {
+                const tickSpacing = Number(info.tickSpacing) || 1;
+                
+                if (!tickSpacing || isNaN(tickSpacing)) {
+                  alert('Unable to determine pool tick spacing. Cannot rebalance.');
+                  return;
+                }
+              
+                const poolData = {
+                  stakingAddress: info.poolAddress,
+                  poolAddress: info.poolAddress,
+                  tickSpacing: tickSpacing
+                };
+                
+                await window.Sickle.rebalance.rebalance(
+                  poolData,
+                  info.nftId,
+                  tickLower,
+                  tickUpper,
+                  currentTick
+                );
+              } catch (error) {
+                console.error('Rebalance failed:', error);
+                alert(`Rebalance failed: ${error.message}`);
+              }
+            }
+          );
+        }
+
+        if (window.Sickle?.compound) {
+          _print_link(
+            `Compound NFT #${info.nftId}`,
+            async () => {
+              try {
+                const poolData = {
+                  stakingAddress: info.poolAddress, 
+                  poolAddress: info.poolAddress
+                }
+                
+                await window.Sickle.compound.compound(poolData, info.nftId)
+              } catch (error) {
+                console.error('Compound failed:', error)
+                alert(`Compound failed: ${error.message}`)
+              }
+            }
+          )
+        }
       }
       _print("");
   }
@@ -183,13 +353,15 @@ $(function() {
   }
   
   async function getClToken(App, contract0, contract1) {
-    const [name0, symbol0] = await App.ethcallProvider.all([contract0.name(), contract0.symbol()]);
-    const [name1, symbol1] = await App.ethcallProvider.all([contract1.name(), contract1.symbol()]);
+    const [name0, symbol0, decimals0] = await App.ethcallProvider.all([contract0.name(), contract0.symbol(), contract0.decimals()]);
+    const [name1, symbol1, decimals1] = await App.ethcallProvider.all([contract1.name(), contract1.symbol(), contract1.decimals()]);
     return {
       name0,
       name1,
       symbol0,
       symbol1,
+      decimals0,
+      decimals1
     }
   }
   
