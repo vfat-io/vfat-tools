@@ -454,7 +454,7 @@ async function printAerodromeClPool(App, info, chain="eth", customURLs) {
         );
       }
 
-      const nativeSymbol = window.Sickle.helpers.getNativeTokenSymbol(8453);
+      const nativeSymbol = window.Sickle?.SickleUtils?.getNativeTokenSymbol?.(8453) || 'ETH';
       for (const nftId of info.userStakedNfts) {
         const position = info.nftPositions.find(p => p.nftId === nftId);
         if (!position) continue;
@@ -491,16 +491,36 @@ async function printAerodromeClPool(App, info, chain="eth", customURLs) {
         const position = info.nftPositions.find(p => p.nftId === nftId);
         if (!position) continue;
 
+        const tickLower = position.tickLower;
+        const tickUpper = position.tickUpper;
+        const currentTick = info.poolSlot0.tick;
+        const isInRange = currentTick >= tickLower && currentTick < tickUpper;
+        const rangeStatus = isInRange ? '✅ In Range' : '⚠️ Out of Range';
+
         _print_link(
-          `Rebalance NFT #${nftId}`,
+          `Rebalance NFT ID: ${nftId} (${rangeStatus})`,
           async () => {
             try {
+              const tickSpacing = Number(info.poolTickSpacing) || 1;
+              
+              if (!tickSpacing || isNaN(tickSpacing)) {
+                alert('Unable to determine pool tick spacing. Cannot rebalance.');
+                return;
+              }
+
               const poolData = {
                 stakingAddress: info.stakingAddress,
                 poolAddress: info.stakeTokenAddress,
-                tickSpacing: info.poolTickSpacing,
+                tickSpacing: tickSpacing,
               };
-              await window.Sickle.rebalance.rebalanceNFT(poolData, nftId);
+              
+              await window.Sickle.rebalance.rebalance(
+                poolData,
+                nftId,
+                tickLower,
+                tickUpper,
+                currentTick
+              );
             } catch (error) {
               console.error('Rebalance failed:', error);
               alert(`Rebalance failed: ${error.message}`);
@@ -512,19 +532,20 @@ async function printAerodromeClPool(App, info, chain="eth", customURLs) {
 
     // Compound functionality
     if (info.has_sickle_account && window.Sickle?.compound) {
-      for (const nftId of info.userStakedNfts) {
-        const position = info.nftPositions.find(p => p.nftId === nftId);
-        if (!position) continue;
+      for (let i = 0; i < info.userStakedNfts.length; i++) {
+        const nftId = info.userStakedNfts[i];
+        const earnings = info.earnings[i];
+        const earningsUsd = earnings * info.rewardTokenPrice;
 
         _print_link(
-          `Compound NFT #${nftId}`,
+          `Compound NFT ID: ${nftId} ${earnings.toFixed(6)} ($${formatMoney(earningsUsd)})`,
           async () => {
             try {
               const poolData = {
                 stakingAddress: info.stakingAddress,
                 poolAddress: info.stakeTokenAddress,
               };
-              await window.Sickle.compound.compoundNFT(poolData, nftId);
+              await window.Sickle.compound.compound(poolData, nftId);
             } catch (error) {
               console.error('Compound failed:', error);
               alert(`Compound failed: ${error.message}`);
@@ -1053,14 +1074,16 @@ const aeroContract_claim = async function(rewardPoolAddr, App) {
 }
 
 async function getClToken(App, contract0, contract1, address) {
-  const [name0, symbol0] = await App.ethcallProvider.all([contract0.name(), contract0.symbol()]);
-  const [name1, symbol1] = await App.ethcallProvider.all([contract1.name(), contract1.symbol()]);
+  const [name0, symbol0, decimals0] = await App.ethcallProvider.all([contract0.name(), contract0.symbol(), contract0.decimals()]);
+  const [name1, symbol1, decimals1] = await App.ethcallProvider.all([contract1.name(), contract1.symbol(), contract1.decimals()]);
   return {
     address,
     name0,
     name1,
     symbol0,
     symbol1,
+    decimals0,
+    decimals1,
   }
 }
 

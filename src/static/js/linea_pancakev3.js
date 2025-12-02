@@ -10,6 +10,8 @@ const NFT_FARM_STRATEGY_ABI = [{"inputs":[{"internalType":"contract SickleFactor
 
 const FARM_STRATEGY_ABI = [{"inputs":[{"internalType":"contract SickleFactory","name":"factory_","type":"address"},{"internalType":"contract FeesLib","name":"feesLib_","type":"address"},{"internalType":"contract ConnectorRegistry","name":"connectorRegistry_","type":"address"},{"internalType":"address","name":"wrappedNativeAddress_","type":"address"}],"stateMutability":"nonpayable","type":"constructor"},{"inputs":[],"name":"ArrayLengthMismatch","type":"error"},{"inputs":[],"name":"ETHTransferFailed","type":"error"},{"inputs":[],"name":"IncorrectMsgValue","type":"error"},{"inputs":[{"internalType":"address","name":"sender","type":"address"}],"name":"NotOwner","type":"error"},{"inputs":[],"name":"NotOwnerOrApproved","type":"error"},{"inputs":[],"name":"NotOwnerOrApprovedOrInternal","type":"error"},{"inputs":[],"name":"NotOwnerOrInternal","type":"error"},{"inputs":[],"name":"NotRegisteredSickle","type":"error"},{"inputs":[],"name":"SickleNotDeployed","type":"error"},{"inputs":[],"name":"TokenInRequired","type":"error"},{"inputs":[],"name":"TransferFailed","type":"error"},{"inputs":[],"name":"TransferFromFailed","type":"error"},{"inputs":[{"internalType":"address","name":"strategy","type":"address"},{"internalType":"bytes4","name":"feeDescriptor","type":"bytes4"},{"internalType":"address","name":"feeToken","type":"address"}],"name":"_sickle_charge_fee","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"strategy","type":"address"},{"internalType":"bytes4","name":"feeDescriptor","type":"bytes4"},{"internalType":"address[]","name":"feeTokens","type":"address[]"}],"name":"_sickle_charge_fees","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"recipient","type":"address"},{"internalType":"address","name":"wrappedNative","type":"address"},{"internalType":"uint256","name":"amountToCharge","type":"uint256"}],"name":"_sickle_charge_transaction_cost","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"tokenIn","type":"address"},{"internalType":"uint256","name":"amountIn","type":"uint256"},{"internalType":"address","name":"strategy","type":"address"},{"internalType":"bytes4","name":"feeSelector","type":"bytes4"}],"name":"_sickle_transfer_token_from_user","outputs":[],"stateMutability":"payable","type":"function"},{"inputs":[{"internalType":"address","name":"token","type":"address"}],"name":"_sickle_transfer_token_to_user","outputs":[],"stateMutability":"payable","type":"function"},{"inputs":[{"internalType":"address[]","name":"tokensIn","type":"address[]"},{"internalType":"uint256[]","name":"amountsIn","type":"uint256[]"},{"internalType":"address","name":"strategy","type":"address"},{"internalType":"bytes4","name":"feeSelector","type":"bytes4"}],"name":"_sickle_transfer_tokens_from_user","outputs":[],"stateMutability":"payable","type":"function"},{"inputs":[{"internalType":"address[]","name":"tokens","type":"address[]"}],"name":"_sickle_transfer_tokens_to_user","outputs":[],"stateMutability":"payable","type":"function"},{"inputs":[{"components":[{"internalType":"address","name":"lpToken","type":"address"},{"internalType":"uint256","name":"amountIn","type":"uint256"},{"internalType":"address","name":"stakingContractAddress","type":"address"},{"internalType":"bytes","name":"extraData","type":"bytes"}],"internalType":"struct SimpleFarmStrategy.DepositParams","name":"params","type":"tuple"},{"internalType":"address","name":"approved","type":"address"},{"internalType":"bytes32","name":"referralCode","type":"bytes32"}],"name":"deposit","outputs":[],"stateMutability":"payable","type":"function"},{"inputs":[{"components":[{"internalType":"address[]","name":"tokensOut","type":"address[]"},{"internalType":"address","name":"stakingContractAddress","type":"address"},{"internalType":"bytes","name":"extraData","type":"bytes"}],"internalType":"struct SimpleFarmStrategy.HarvestParams","name":"harvestParams","type":"tuple"},{"components":[{"internalType":"address","name":"lpToken","type":"address"},{"internalType":"uint256","name":"amountOut","type":"uint256"},{"internalType":"address","name":"stakingContractAddress","type":"address"},{"internalType":"bytes","name":"extraData","type":"bytes"}],"internalType":"struct SimpleFarmStrategy.WithdrawParams","name":"withdrawParams","type":"tuple"}],"name":"exit","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"factory","outputs":[{"internalType":"contract SickleFactory","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"feesLib","outputs":[{"internalType":"contract FeesLib","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"components":[{"internalType":"address[]","name":"tokensOut","type":"address[]"},{"internalType":"address","name":"stakingContractAddress","type":"address"},{"internalType":"bytes","name":"extraData","type":"bytes"}],"internalType":"struct SimpleFarmStrategy.HarvestParams","name":"params","type":"tuple"}],"name":"harvest","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"components":[{"internalType":"address","name":"lpToken","type":"address"},{"internalType":"uint256","name":"amountOut","type":"uint256"},{"internalType":"address","name":"stakingContractAddress","type":"address"},{"internalType":"bytes","name":"extraData","type":"bytes"}],"internalType":"struct SimpleFarmStrategy.WithdrawParams","name":"params","type":"tuple"}],"name":"withdraw","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"wrappedNativeAddress","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"}]
 
+const NFT_POSITION_MANAGER_ABI = [{"inputs":[{"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"positions","outputs":[{"internalType":"uint96","name":"nonce","type":"uint96"},{"internalType":"address","name":"operator","type":"address"},{"internalType":"address","name":"token0","type":"address"},{"internalType":"address","name":"token1","type":"address"},{"internalType":"uint24","name":"fee","type":"uint24"},{"internalType":"int24","name":"tickLower","type":"int24"},{"internalType":"int24","name":"tickUpper","type":"int24"},{"internalType":"uint128","name":"liquidity","type":"uint128"},{"internalType":"uint256","name":"feeGrowthInside0LastX128","type":"uint256"},{"internalType":"uint256","name":"feeGrowthInside1LastX128","type":"uint256"},{"internalType":"uint128","name":"tokensOwed0","type":"uint128"},{"internalType":"uint128","name":"tokensOwed1","type":"uint128"}],"stateMutability":"view","type":"function"}]
+
 const NFT_TOKEN_ADDRESS = "0x46A15B0b27311cedF172AB29E4f4766fbE7F4364";
 const NFT_FARM_STRATEGY_ADDRESS = "0xFfF75D099baeE29F447866bC5299Cd67C04761C8";
 const FARM_STRATEGY_ADDRESS = "0x71D234A3e1dfC161cc1d081E6496e76627baAc31";
@@ -43,6 +45,8 @@ async function main() {
 async function loadPancakeV3Contract(App, prices, chefContract, chefAddress, chefAbi, rewardTokenTicker, rewardTokenAddress, sickle_account_address, has_sickle_account, owner_sickle_address) {
   const totalUsersStakedNfts = await chefContract.balanceOf(App.YOUR_ADDRESS) / 1;
   const rewardTokenPrice = getParameterCaseInsensitive(prices, rewardTokenAddress)?.usd;
+  const nftManager = new ethers.Contract(NFT_TOKEN_ADDRESS, NFT_POSITION_MANAGER_ABI, App.provider);
+  
   let userPositionInfos = [];
   for(let i = 0; i < totalUsersStakedNfts; i++){
     const userNftId = await chefContract.tokenOfOwnerByIndex(App.YOUR_ADDRESS, i);
@@ -56,7 +60,59 @@ async function loadPancakeV3Contract(App, prices, chefContract, chefAddress, che
     const token1Contract = new ethers.Contract(token1Address, ERC20_ABI, App.provider);
     const token0Symbol = await token0Contract.symbol();
     const token1Symbol = await token1Contract.symbol();
-    userPositionInfos.push({userPositionInfo: userPositionInfo, userNftId: userNftId, pendingCakes: pendingCakes / 1e18, token0Symbol: token0Symbol, token1Symbol: token1Symbol, token0Address: token0Address, token1Address: token1Address});
+    const token0Decimals = await token0Contract.decimals();
+    const token1Decimals = await token1Contract.decimals();
+    
+    // Query NFT position to get position data and calculate token amounts
+    const positionData = await nftManager.positions(userNftId);
+    
+    // Get the actual V3 pool address from poolInfo
+    const poolAddress = poolInfo.v3Pool;
+    
+    const poolContract = new ethers.Contract(poolAddress, ['function slot0() view returns (uint160 sqrtPriceX96, int24 tick, uint16 observationIndex, uint16 observationCardinality, uint16 observationCardinalityNext, uint8 feeProtocol, bool unlocked)', 'function tickSpacing() view returns (int24)'], App.provider);
+    const [poolSlot0, poolTickSpacing] = await Promise.all([
+      poolContract.slot0(),
+      poolContract.tickSpacing()
+    ]);
+    
+    let amount0 = 0;
+    let amount1 = 0;
+    
+    // Calculate token amounts from position using UniswapV3 helper
+    if (window.UniswapV3?.calculateUserLiquidity) {
+      const { liquidity0, liquidity1 } = window.UniswapV3.calculateUserLiquidity(poolSlot0.sqrtPriceX96, {
+        tickLow: positionData.tickLower,
+        tickUp: positionData.tickUpper,
+        liquidity: positionData.liquidity
+      });
+      
+      // Divide as BigInt first, then convert to Number to avoid precision issues
+      const decimals0BigInt = BigInt(Math.pow(10, Number(token0Decimals)));
+      const decimals1BigInt = BigInt(Math.pow(10, Number(token1Decimals)));
+      
+      amount0 = Number(liquidity0 / decimals0BigInt) + Number(liquidity0 % decimals0BigInt) / Number(decimals0BigInt);
+      amount1 = Number(liquidity1 / decimals1BigInt) + Number(liquidity1 % decimals1BigInt) / Number(decimals1BigInt);
+    }
+    
+    userPositionInfos.push({
+      userPositionInfo: userPositionInfo, 
+      userNftId: userNftId, 
+      pid: Number(pid),  // Pool ID from MasterChef (convert BigNumber to number)
+      pendingCakes: pendingCakes / 1e18,
+      pendingCakesRaw: pendingCakes,  // Keep raw BigNumber for SDK
+      token0Symbol: token0Symbol, 
+      token1Symbol: token1Symbol, 
+      token0Address: token0Address, 
+      token1Address: token1Address,
+      token0Decimals: token0Decimals,
+      token1Decimals: token1Decimals,
+      positionData: positionData,
+      poolAddress: poolAddress,
+      poolSlot0: poolSlot0,
+      poolTickSpacing: poolTickSpacing,
+      amount0: amount0,
+      amount1: amount1
+    });
   }
   if(userPositionInfos.length <= 0){
     _print("You have no positions");
@@ -67,20 +123,39 @@ async function loadPancakeV3Contract(App, prices, chefContract, chefAddress, che
     }
     _print(`<a href='https://lineascan.build/address/${chefAddress}' target='_blank'>Staking Contract</a>`);
     _print("");
-    printPancakePool(App, chefAbi, chefAddress, userPositionInfos, rewardTokenTicker, rewardTokenPrice, has_sickle_account, owner_sickle_address);
+    printPancakePool(App, chefAbi, chefAddress, userPositionInfos, rewardTokenTicker, rewardTokenPrice, has_sickle_account, owner_sickle_address, prices);
   }
 }
 
-function printPancakePool(App, chefAbi, chefAddr, userPositionInfos, rewardTokenTicker, rewardTokenPrice, has_sickle_account, owner_sickle_address) {
+function printPancakePool(App, chefAbi, chefAddr, userPositionInfos, rewardTokenTicker, rewardTokenPrice, has_sickle_account, owner_sickle_address, prices) {
   for(let i = 0; i < userPositionInfos.length; i++){
     _print(`Pool: ${userPositionInfos[i].token0Symbol} - ${userPositionInfos[i].token1Symbol}`);
-    _print(`Nft ID: ${userPositionInfos[i].userNftId}`);
-    printCakeV3ContractLinks(App, chefAbi, chefAddr, userPositionInfos[i].pendingCakes, userPositionInfos[i].userNftId, rewardTokenTicker, rewardTokenPrice, has_sickle_account, owner_sickle_address, userPositionInfos[i].token0Address, userPositionInfos[i].token1Address);
+    _print(`Nft ID: ${userPositionInfos[i].userNftId} (${userPositionInfos[i].amount0.toFixed(4)} ${userPositionInfos[i].token0Symbol} - ${userPositionInfos[i].amount1.toFixed(4)} ${userPositionInfos[i].token1Symbol})`);
+    printCakeV3ContractLinks(
+      App, 
+      chefAbi, 
+      chefAddr, 
+      userPositionInfos[i],
+      rewardTokenTicker, 
+      rewardTokenPrice, 
+      has_sickle_account, 
+      owner_sickle_address, 
+      prices
+    );
   }
 }
 
-function printCakeV3ContractLinks(App, chefAbi, chefAddr, pendingCakes, userNftId, rewardTokenTicker, rewardTokenPrice, has_sickle_account, owner_sickle_address, token0Address, token1Address) {
+function printCakeV3ContractLinks(App, chefAbi, chefAddr, positionInfo, rewardTokenTicker, rewardTokenPrice, has_sickle_account, owner_sickle_address, prices) {
   const fixedDecimals = 2;
+  const userNftId = positionInfo.userNftId;
+  const pendingCakes = positionInfo.pendingCakes;
+  const token0Address = positionInfo.token0Address;
+  const token1Address = positionInfo.token1Address;
+  const token0Symbol = positionInfo.token0Symbol;
+  const token1Symbol = positionInfo.token1Symbol;
+  const amount0 = positionInfo.amount0;
+  const amount1 = positionInfo.amount1;
+  
   const unstake = async function() {
     return pancakeV3Contract_unstake(chefAbi, chefAddr, userNftId, App, owner_sickle_address);
   }
@@ -93,16 +168,133 @@ function printCakeV3ContractLinks(App, chefAbi, chefAddr, pendingCakes, userNftI
   const sickle_claim = async function() {
     return sickle_pancakeV3Contract_claim(userNftId, App, token0Address, token1Address);
   }
+  
   if(has_sickle_account){
     _print_link(`Withdraw Nft ID: ${userNftId}`, sickle_unstake);
   }else{
     _print_link(`Withdraw Nft ID: ${userNftId}`, unstake);
+  }
+  
+  // Sickle SDK - Withdraw to Underlying Tokens
+  if (has_sickle_account && window.Sickle?.withdraw) {
+    _print_link(
+      `Exit NFT #${userNftId} to Underlying (${amount0.toFixed(4)} ${token0Symbol} + ${amount1.toFixed(4)} ${token1Symbol})`,
+      async () => {
+        try {
+          const poolData = {
+            stakingAddress: chefAddr,
+            poolAddress: positionInfo.poolAddress,
+            pid: positionInfo.pid
+          }
+          
+          await window.Sickle.withdraw.withdrawToUnderlying(poolData, userNftId)
+        } catch (error) {
+          console.error('Withdraw to underlying failed:', error)
+          alert(`Withdraw failed: ${error.message}`)
+        }
+      }
+    )
+  }
+  
+  // Sickle SDK - Withdraw to Native Token
+  if (has_sickle_account && window.Sickle?.withdraw) {
+    // Get native token symbol dynamically (Linea chain ID is 59144)
+    const nativeSymbol = window.Sickle?.SickleUtils?.getNativeTokenSymbol?.(59144) || 'ETH'
+    
+    _print_link(
+      `Exit NFT #${userNftId} to ${nativeSymbol}`,
+      async () => {
+        try {
+          const poolData = {
+            stakingAddress: chefAddr,
+            poolAddress: positionInfo.poolAddress,
+            pid: positionInfo.pid
+          }
+          
+          await window.Sickle.withdraw.withdrawToToken(poolData, userNftId)
+        } catch (error) {
+          console.error('Withdraw to token failed:', error)
+          alert(`Withdraw failed: ${error.message}`)
+        }
+      }
+    )
   }
   if(has_sickle_account){
     _print_link(`Claim ${pendingCakes.toFixed(fixedDecimals)} ${rewardTokenTicker} ($${formatMoney(pendingCakes*rewardTokenPrice)})`, sickle_claim)
   }else{
     _print_link(`Claim ${pendingCakes.toFixed(fixedDecimals)} ${rewardTokenTicker} ($${formatMoney(pendingCakes*rewardTokenPrice)})`, claim)
   }
+  
+  // Sickle SDK - Rebalance functionality
+  if (has_sickle_account && window.Sickle?.rebalance && positionInfo.positionData) {
+    const positionData = positionInfo.positionData;
+    const tickLower = positionData.tickLower;
+    const tickUpper = positionData.tickUpper;
+    const currentTick = positionInfo.poolSlot0.tick;
+    const isInRange = currentTick >= tickLower && currentTick < tickUpper;
+    const rangeStatus = isInRange ? '✅ In Range' : '⚠️ Out of Range';
+    
+    _print_link(
+      `Rebalance NFT ID: ${userNftId} (${rangeStatus})`,
+      async () => {
+        try {
+          const tickSpacing = Number(positionInfo.poolTickSpacing) || 1;
+          
+          if (!tickSpacing || isNaN(tickSpacing)) {
+            alert('Unable to determine pool tick spacing. Cannot rebalance.');
+            return;
+          }
+        
+          const poolData = {
+            stakingAddress: chefAddr,
+            poolAddress: positionInfo.poolAddress,
+            tickSpacing: tickSpacing,
+            pid: positionInfo.pid  // Pool ID from MasterChef
+          };
+          
+          console.log('Rebalance poolData:', poolData);
+          console.log('chefAddr:', chefAddr);
+          console.log('positionInfo.poolAddress:', positionInfo.poolAddress);
+          
+          await window.Sickle.rebalance.rebalance(
+            poolData,
+            userNftId,
+            tickLower,
+            tickUpper,
+            currentTick
+          );
+        } catch (error) {
+          console.error('Rebalance failed:', error);
+          alert(`Rebalance failed: ${error.message}`);
+        }
+      }
+    );
+  }
+  
+  // Sickle SDK - Compound functionality
+  if (has_sickle_account && window.Sickle?.compound && pendingCakes > 0) {
+    const earningsUsd = pendingCakes * rewardTokenPrice;
+    
+    _print_link(
+      `Compound NFT ID: ${userNftId} ${pendingCakes.toFixed(6)} ($${formatMoney(earningsUsd)})`,
+      async () => {
+        try {
+          const poolData = {
+            stakingAddress: chefAddr,
+            poolAddress: positionInfo.poolAddress,
+            pid: positionInfo.pid
+          };
+          
+          // Pass the raw BigNumber amount (not divided by 1e18)
+          await window.Sickle.compound.compound(poolData, userNftId, positionInfo.pendingCakesRaw);
+        } catch (error) {
+          console.error('Compound failed:', error);
+          alert(`Compound failed: ${error.message}`);
+        }
+      }
+    );
+  }
+  
   _print("");
 }
 
