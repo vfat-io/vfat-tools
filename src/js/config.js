@@ -120,6 +120,13 @@ export const customNetworks = [
     blockExplorers: [{ name: 'PolygonScan', url: 'https://polygonscan.com' }]
   },
   {
+    id: 143,
+    name: 'Monad',
+    nativeCurrency: { name: 'Monad', symbol: 'MON', decimals: 18 },
+    rpcUrls: ['https://rpc1.monad.xyz'],
+    blockExplorers: [{ name: 'MonadScan', url: 'https://monadscan.com' }]
+  },
+  {
     id: 146,
     name: 'Sonic',
     nativeCurrency: { name: 'S', symbol: 'S', decimals: 18 },
@@ -1569,6 +1576,21 @@ export const NETWORKS = {
     ],
     "blockExplorerUrls": [
         "https://plasmascan.to"
+    ],
+  },
+  MONAD: {
+    "chainId": "0x8f",
+    "chainName": "Monad",
+    "nativeCurrency": {
+      "name": "Monad",
+      "symbol": "MON",
+      "decimals": 18
+    },
+    "rpcUrls": [
+        "https://rpc1.monad.xyz"
+    ],
+    "blockExplorerUrls": [
+        "https://monadscan.com"
     ],
   },
   WORLDCHAIN: {

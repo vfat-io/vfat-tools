@@ -704,6 +704,10 @@ const PlasmaTokens = [
   { "id": "metronome-synth-usd", "symbol": "MSUSD", "contract": "0x29AD7fE4516909b9e498B5a65339e54791293234"}
 ];
 
+const MonadTokens = [
+  { "id": "monad", "symbol": "MON", "contract": "0x3bd359C1119dA7Da1D913D1C4D2B7c461115433A"},
+];
+
 const WorldChainTokens = [
   { "id": "weth", "symbol": "WETH", "contract": "0x4200000000000000000000000000000000000006"}
 ];
@@ -1538,6 +1542,15 @@ async function getPlasmaPrices() {
   const idPrices = await lookUpPrices(PlasmaTokens.map(x => x.id));
   const prices = {}
   for (const bt of PlasmaTokens)
+      if (idPrices[bt.id])
+          prices[bt.contract] = idPrices[bt.id];
+  return prices;
+}
+
+async function getMonadPrices() {
+  const idPrices = await lookUpPrices(MonadTokens.map(x => x.id));
+  const prices = {}
+  for (const bt of MonadTokens)
       if (idPrices[bt.id])
           prices[bt.contract] = idPrices[bt.id];
   return prices;

@@ -704,6 +704,8 @@ async function loadGeneralChefContract(App, tokens, prices, chef, chefAddress, c
     break;
     case "worldchain" : _print(`<a href='https://worldscan.org/address/${chefAddress}' target='_blank'>Staking Contract</a>`);
     break;
+    case "monad" : _print(`<a href='https://monadscan.com/address/${chefAddress}' target='_blank'>Staking Contract</a>`);
+    break;
   }
   _print(`Found ${poolCount} pools.\n`)
 

@@ -236,6 +236,9 @@ const pageNetwork = function() {
   if (network.toLowerCase() === 'plasma') {
     return window.NETWORKS.PLASMA
   }
+  if (network.toLowerCase() === 'monad') {
+    return window.NETWORKS.MONAD
+  }
   if (network.toLowerCase() === 'worldchain') {
     return window.NETWORKS.WORLDCHAIN
   }
@@ -4388,6 +4391,9 @@ function getErc20Prices(prices, pool, chain="eth") {
     case "plasma":
       poolUrl=`https://plasmascan.to/token/${pool.address}`;
       break;
+    case "monad":
+      poolUrl=`https://monadscan.com/token/${pool.address}`;
+      break;
     case "worldchain":
       poolUrl=`https://worldscan.org/token/${pool.address}`;
       break;
@@ -5199,6 +5205,9 @@ async function printSynthetixPool(App, info, chain="eth", customURLs) {
       case "plasma":
         _print(`<a target="_blank" href="https://plasmascan.to/address/${info.stakingAddress}">Plasma Scan</a>`);
         break;
+      case "monad":
+        _print(`<a target="_blank" href="https://monadscan.com/address/${info.stakingAddress}">Monad Scan</a>`);
+        break;
       case "worldchain":
         _print(`<a target="_blank" href="https://worldscan.org/address/${info.stakingAddress}">WorldChain Scan</a>`);
         break;
@@ -5507,6 +5516,8 @@ function getChainExplorerUrl(chain, address){
       return `https://www.hyperscan.com/token/${address}`;
     case "plasma" :
       return `https://plasmascan.to/token/${address}`;
+    case "monad" :
+      return `https://monadscan.com/token/${address}`;
     case "worldchain" :
       return `https://worldscan.org/token/${address}`;
     case "katana" :
