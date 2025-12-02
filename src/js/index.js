@@ -21,6 +21,8 @@ import * as Sickle from './sickle/index.js'
 import SickleRebalance from './sickle/rebalance.js'
 import SickleWithdraw from './sickle/withdraw.js'
 import SickleCompound from './sickle/compound.js'
+import SickleLpWithdraw from './sickle/lp-withdraw.js'
+import SickleLpCompound from './sickle/lp-compound.js'
 
 // Uniswap V3 Utilities
 import * as UniswapV3 from './uniswap/index.js'
@@ -46,6 +48,8 @@ window.Sickle = {
   rebalance: SickleRebalance,
   withdraw: SickleWithdraw,
   compound: SickleCompound,
+  lpWithdraw: SickleLpWithdraw,
+  lpCompound: SickleLpCompound,
 }
 
 // Uniswap V3 Utilities
