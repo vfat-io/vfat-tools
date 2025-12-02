@@ -3031,6 +3031,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
                   "unichain": `https://app.velodrome.finance/swap`,
                   "ink": `https://app.velodrome.finance/swap`,
                   "soneium": `https://app.velodrome.finance/swap`,
+                  "plasma": `https://lithos.to`,
                   "base": `https://base.velocimeter.xyz`
                 }
               [chain]):
@@ -3052,6 +3053,7 @@ function getUniPrices(tokens, prices, pool, chain="eth")
                   "unichain": `https://app.velodrome.finance/swap`,
                   "ink": `https://app.velodrome.finance/swap`,
                   "soneium": `https://app.velodrome.finance/swap`,
+                  "plasma": `https://lithos.to`,
                   "kava": `https://equilibrefinance.com/`
                 }
               [chain]):
@@ -3370,6 +3372,11 @@ function getUniPrices(tokens, prices, pool, chain="eth")
               `https://www.etherex.finance/liquidity`,
               `https://www.etherex.finance/trade`
             ],
+            "plasma" : [
+              `https://lithos.to/pools`,
+              `https://lithos.to/pools`,
+              `https://lithos.to/swap`
+            ],
             "kava" : [
               `https://equilibrefinance.com/liquidity/${pool.address}`,
               `https://equilibrefinance.com/liquidity/${pool.address}`,
@@ -3461,6 +3468,11 @@ function getUniPrices(tokens, prices, pool, chain="eth")
               `https://thena.fi/liquidity/manage`,
               `https://thena.fi/liquidity/manage`,
               `https://thena.fi/swap`
+            ],
+            "plasma" : [
+              `https://lithos.to/pools`,
+              `https://lithos.to/pools`,
+              `https://lithos.to/swap`
             ],
             "kava" : [
               `https://equilibrefinance.com/liquidity/${pool.address}`,

@@ -696,7 +696,12 @@ const MetalL2Tokens = [
 ];
 
 const PlasmaTokens = [
-  { "id": "plasma", "symbol": "XPL", "contract": "0x6100e367285b01f48d07953803a2d8dca5d19873"}
+  { "id": "plasma", "symbol": "XPL", "contract": "0x6100e367285b01f48d07953803a2d8dca5d19873"},
+  { "id": "lithos", "symbol": "LITH", "contract": "0xAbB48792A3161E81B47cA084c0b7A22a50324A44"},
+  { "id": "usdt0", "symbol": "USDT0", "contract": "0xB8CE59FC3717ada4C02eaDF9682A9e934F625ebb"},
+  { "id": "ebusd-stablecoin", "symbol": "EBUSD", "contract": "0xEf7B1A03E0897C33b63159e38d779e3970C0E2fc"},
+  { "id": "ethena-usde", "symbol": "USDE", "contract": "0x5d3a1Ff2b6BAb83b63cd9AD0787074081a52ef34"},
+  { "id": "metronome-synth-usd", "symbol": "MSUSD", "contract": "0x29AD7fE4516909b9e498B5a65339e54791293234"}
 ];
 
 const WorldChainTokens = [

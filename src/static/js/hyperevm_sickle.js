@@ -12,6 +12,8 @@ const SLIPSTREAM_NFT_MANAGER_ADDRESS_3 = "0xb9201e89f94a01ff13ad4caecf43a2e23251
 const SLIPSTREAM_NFT_MANAGER_ADDRESS_4 = "0x934C4f47B2D3FfcA0156A45DEb3A436202aF1efa";
 const SLIPSTREAM_NFT_MANAGER_ADDRESS_5 = "0xeaD19AE861c29bBb2101E834922B2FEee69B9091";
 const SLIPSTREAM_NFT_MANAGER_ADDRESS_6 = "0x69D57B9D705eaD73a5d2f2476C30c55bD755cc2F";
+const SLIPSTREAM_NFT_MANAGER_ADDRESS_7 = "0xE7ffA0ee20Deb1613489556062Fa8cec690C3c02";
+const SLIPSTREAM_NFT_MANAGER_ADDRESS_8 = "0xcc9E3991360229Fd13694022b9456D371f1a2568";
 
 async function main() {
     const App = await init_ethers();
@@ -36,6 +38,8 @@ async function main() {
       const SLIPSTREAM_NFT_MANAGER_4 = new ethcall.Contract(SLIPSTREAM_NFT_MANAGER_ADDRESS_4, SLIPSTREAM_NFT_MANAGER_ABI);  // HYBRA
       const SLIPSTREAM_NFT_MANAGER_5 = new ethcall.Contract(SLIPSTREAM_NFT_MANAGER_ADDRESS_5, SLIPSTREAM_NFT_MANAGER_ABI);  // PROJECTX
       const SLIPSTREAM_NFT_MANAGER_6 = new ethcall.Contract(SLIPSTREAM_NFT_MANAGER_ADDRESS_6, SLIPSTREAM_NFT_MANAGER_ABI);  // GLIQUID
+      const SLIPSTREAM_NFT_MANAGER_7 = new ethcall.Contract(SLIPSTREAM_NFT_MANAGER_ADDRESS_7, SLIPSTREAM_NFT_MANAGER_ABI);  // ULTRASOLID
+      const SLIPSTREAM_NFT_MANAGER_8 = new ethcall.Contract(SLIPSTREAM_NFT_MANAGER_ADDRESS_8, SLIPSTREAM_NFT_MANAGER_ABI);  // HYBRA NEW
 
       const [nfts_1] = await App.ethcallProvider.all([SLIPSTREAM_NFT_MANAGER_1.balanceOf(sickleAddress)]);
       const [nfts_2] = await App.ethcallProvider.all([SLIPSTREAM_NFT_MANAGER_2.balanceOf(sickleAddress)]);
@@ -43,6 +47,8 @@ async function main() {
       const [nfts_4] = await App.ethcallProvider.all([SLIPSTREAM_NFT_MANAGER_4.balanceOf(sickleAddress)]);
       const [nfts_5] = await App.ethcallProvider.all([SLIPSTREAM_NFT_MANAGER_5.balanceOf(sickleAddress)]);
       const [nfts_6] = await App.ethcallProvider.all([SLIPSTREAM_NFT_MANAGER_6.balanceOf(sickleAddress)]);
+      const [nfts_7] = await App.ethcallProvider.all([SLIPSTREAM_NFT_MANAGER_7.balanceOf(sickleAddress)]);
+      const [nfts_8] = await App.ethcallProvider.all([SLIPSTREAM_NFT_MANAGER_8.balanceOf(sickleAddress)]);
 
       if(nfts_1 / 1 > 0){
         let nft_ids = [];
@@ -251,6 +257,76 @@ async function main() {
         }
 
         _print_link(`Withdraw all GLIQUID erc721 tokens: ${token_ids}`, sweepErc721);
+        _print("");
+      }
+
+      if(nfts_7 / 1 > 0){
+        let nft_ids = [];
+        let tokens = [];
+        let token_ids = "";
+
+        const sweepErc721 = async function() {
+          return sweep_nfts_721(App, nft_ids, tokens)
+        }
+
+        _print_bold("ULTRASOLID nfts");
+
+        for(let i = 0; i < nfts_7; i++){
+          const nft_id = await App.ethcallProvider.all([SLIPSTREAM_NFT_MANAGER_7.tokenOfOwnerByIndex(sickleAddress, i)]) / 1;
+          nft_ids.push(nft_id);
+          tokens.push(SLIPSTREAM_NFT_MANAGER_ADDRESS_7);
+        }
+
+        for(let i = 0; i < nft_ids.length; i++){
+          token_ids += `${nft_ids[i]} - `;
+        }
+
+        for(let i = 0; i < nft_ids.length; i++){
+
+          const singleSweepErc721 = async function() {
+            return single_sweep_nfts_721(App, nft_ids[i], tokens[i])
+          }
+
+          _print_link(`Withdraw ULTRASOLID erc721 token: ${nft_ids[i]}`, singleSweepErc721);
+
+        }
+
+        _print_link(`Withdraw all ULTRASOLID erc721 tokens: ${token_ids}`, sweepErc721);
+        _print("");
+      }
+
+      if(nfts_8 / 1 > 0){
+        let nft_ids = [];
+        let tokens = [];
+        let token_ids = "";
+
+        const sweepErc721 = async function() {
+          return sweep_nfts_721(App, nft_ids, tokens)
+        }
+
+        _print_bold("HYBRA nfts");
+
+        for(let i = 0; i < nfts_8; i++){
+          const nft_id = await App.ethcallProvider.all([SLIPSTREAM_NFT_MANAGER_8.tokenOfOwnerByIndex(sickleAddress, i)]) / 1;
+          nft_ids.push(nft_id);
+          tokens.push(SLIPSTREAM_NFT_MANAGER_ADDRESS_8);
+        }
+
+        for(let i = 0; i < nft_ids.length; i++){
+          token_ids += `${nft_ids[i]} - `;
+        }
+
+        for(let i = 0; i < nft_ids.length; i++){
+
+          const singleSweepErc721 = async function() {
+            return single_sweep_nfts_721(App, nft_ids[i], tokens[i])
+          }
+
+          _print_link(`Withdraw HYBRA erc721 token: ${nft_ids[i]}`, singleSweepErc721);
+
+        }
+
+        _print_link(`Withdraw all HYBRA erc721 tokens: ${token_ids}`, sweepErc721);
         _print("");
       }
     }
