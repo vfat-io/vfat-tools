@@ -11,6 +11,7 @@ const main = async() => {
       ["Arbitrum",    "CL",   `<a href='/arbitrum/clp_breaker'      >/arbitrum/clp_breaker</a>`],
       ["Base",        "CL",   `<a href='/base/clp_breaker'          >/base/clp_breaker</a>`],
       ["Bnb",         "CL",   `<a href='/bnb/clp_breaker'           >/bnb/clp_breaker</a>`],
+      ["Cronos",      "CL",   `<a href='/cronos/clp_breaker'        >/cronos/clp_breaker</a>`],
       ["HyperEVM",    "CL",   `<a href='/hyperevm/clp_breaker'      >/hyperevm/clp_breaker</a>`],
       ["Linea",       "CL",   `<a href='/linea/clp_breaker'         >/linea/clp_breaker</a>`],
       ["Mainnet",     "CL",   `<a href='/clp_breaker'               >/clp_breaker</a>`],
