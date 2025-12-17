@@ -74,18 +74,32 @@ Proceed with rebalance?`
       return
     }
 
-    // SDK adds +1 tick internally to upper bound, so we subtract 1 tick to compensate
-    const adjustedMaxMargin = Math.max(0, marginUpperPercent - tickSpacing * 0.01)
+    // Note: SDK may add internal adjustments, but we pass the raw calculated margins
+    // The min/max represent the lower and upper margins from current tick
+    const adjustedMaxMargin = marginUpperPercent
     
     console.log('Calculated margins: -' + marginLowerPercent.toFixed(2) + '% / +' + marginUpperPercent.toFixed(2) + '%')
-    console.log('Passing to SDK: min:', marginLowerPercent, 'max:', adjustedMaxMargin, '(adjusted -' + (tickSpacing * 0.01).toFixed(2) + '% for SDK)')
+    console.log('Passing to SDK: min:', marginLowerPercent, 'max:', adjustedMaxMargin)
 
     // Use NftPool fluent API - SDK needs to be updated to accept separate farm/pool addresses
+    // Create NftPool instance
+    // For Velodrome/Aerodrome (gauge-based): Don't pass poolIndex at all
+    // For PancakeSwap V3 (MasterChef-based): Pass numeric poolIndex (PID)
     const nftPool = new window.Sickle.NftPool({
       chainId: chainId,
       address: poolData.stakingAddress,     // MasterChef/Gauge address (farm)
       poolAddress: poolData.poolAddress,    // V3 Pool address (for API call)
-      poolId: poolData.pid ? String(poolData.pid) : '0'  // Pool ID (or 0 for Velodrome)
+      nftManagerAddress: poolData.nftManagerAddress,  // NFT Position Manager address
+      // Note: poolIndex intentionally omitted for Velodrome (poolData.pid is undefined)
+      ...(poolData.pid !== undefined && poolData.pid !== null && { poolIndex: Number(poolData.pid) })
+    })
+    
+    console.log('Creating NftPool with poolData:', poolData)
+    console.log('NftPool instance created:', {
+      chainId: nftPool.chainId,
+      address: nftPool.address,
+      poolAddress: nftPool.poolAddress,
+      poolIndex: nftPool.poolIndex
     })
 
     const callData = await nftPool
@@ -97,6 +111,14 @@ Proceed with rebalance?`
         }
       })
       .getCallData(walletAddress)
+      .catch(error => {
+        console.error('API call failed with error:', error)
+        if (error.response) {
+          console.error('API response status:', error.response.status)
+          console.error('API response data:', error.response.data)
+        }
+        throw error
+      })
 
     // Encode transaction data
     const encodedData = encodeTransactionData(callData)

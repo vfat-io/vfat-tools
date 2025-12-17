@@ -61,7 +61,7 @@ window.UniswapV3 = {
 let appKitInstance = null;
 
 try {
-  appKitInstance = createAppKitInstance();
+  appKitInstance = window.__VFAT_APPKIT_INSTANCE__ || createAppKitInstance();
   window.appKit = appKitInstance;
   
   // Only initialize subscribers if AppKit was created successfully

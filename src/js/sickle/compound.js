@@ -34,14 +34,18 @@ Proceed with compound?`
       return
     }
 
-    // Create NftPool instance
-    // For vanilla Uniswap V3: poolId should be '0' (SDK will convert to int 0)
-    // For farms (PancakeSwap V3, etc.): poolId from poolData.pid
+    // Create NftPool config - only include poolIndex if explicitly set (PancakeSwap V3 PID)
     const nftPoolConfig = {
       chainId: chainId,
       address: poolData.stakingAddress,
       poolAddress: poolData.poolAddress,
-      poolId: poolData.pid !== undefined ? String(poolData.pid) : '0'
+      nftManagerAddress: poolData.nftManagerAddress
+    }
+    
+    // Only add poolIndex for PancakeSwap V3 (has MasterChef pool IDs / PIDs)
+    // Velodrome/Aerodrome use gauge contracts and should NOT have poolIndex
+    if (poolData.pid !== undefined && poolData.pid !== null) {
+      nftPoolConfig.poolIndex = Number(poolData.pid)
     }
     
     const nftPool = new window.Sickle.NftPool(nftPoolConfig)

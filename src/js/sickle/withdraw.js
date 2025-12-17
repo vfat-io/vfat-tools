@@ -37,20 +37,23 @@ Proceed with exit?`
       return
     }
 
-    // Create NftPool instance
-    const nftPool = new window.Sickle.NftPool({
+    // Create NftPool config - only include poolIndex if explicitly set (PancakeSwap V3 PID)
+    const nftPoolConfig = {
       chainId: chainId,
       address: poolData.stakingAddress,      // MasterChef/Gauge address
       poolAddress: poolData.poolAddress,     // V3 Pool address
-      poolId: poolData.pid ? String(poolData.pid) : '0'  // Pool ID (or 0 for Velodrome)
-    })
+      nftManagerAddress: poolData.nftManagerAddress  // NFT Position Manager address
+    }
     
-    console.log('Creating NftPool with:', {
-      chainId,
-      address: poolData.stakingAddress,
-      poolAddress: poolData.poolAddress,
-      poolId: poolData.pid ? String(poolData.pid) : '0'
-    })
+    // Only add poolIndex for PancakeSwap V3 (has MasterChef pool IDs / PIDs)
+    // Velodrome/Aerodrome use gauge contracts and should NOT have poolIndex
+    if (poolData.pid !== undefined && poolData.pid !== null) {
+      nftPoolConfig.poolIndex = Number(poolData.pid)
+    }
+    
+    const nftPool = new window.Sickle.NftPool(nftPoolConfig)
+    
+    console.log('Creating NftPool with:', nftPoolConfig)
 
     // Create exit to underlying action
     const exitAction = nftPool.exit({ nftId: Number(nftId) }).toUnderlying()
@@ -109,20 +112,23 @@ Proceed with Exit?`
       return
     }
 
-    // Create NftPool instance
-    const nftPool = new window.Sickle.NftPool({
+    // Create NftPool config - only include poolIndex if explicitly set (PancakeSwap V3 PID)
+    const nftPoolConfig = {
       chainId: chainId,
       address: poolData.stakingAddress,      // MasterChef/Gauge address
       poolAddress: poolData.poolAddress,     // V3 Pool address
-      poolId: poolData.pid ? String(poolData.pid) : '0'  // Pool ID (or 0 for Velodrome)
-    })
+      nftManagerAddress: poolData.nftManagerAddress  // NFT Position Manager address
+    }
     
-    console.log('Creating NftPool with:', {
-      chainId,
-      address: poolData.stakingAddress,
-      poolAddress: poolData.poolAddress,
-      poolId: poolData.pid ? String(poolData.pid) : '0'
-    })
+    // Only add poolIndex for PancakeSwap V3 (has MasterChef pool IDs / PIDs)
+    // Velodrome/Aerodrome use gauge contracts and should NOT have poolIndex
+    if (poolData.pid !== undefined && poolData.pid !== null) {
+      nftPoolConfig.poolIndex = Number(poolData.pid)
+    }
+    
+    const nftPool = new window.Sickle.NftPool(nftPoolConfig)
+    
+    console.log('Creating NftPool with:', nftPoolConfig)
 
     // Create exit to token action (SDK will use default slippage and priceImpact values)
     const exitAction = nftPool.exit({ nftId: Number(nftId) }).toToken({

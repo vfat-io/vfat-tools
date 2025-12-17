@@ -379,13 +379,11 @@ async function printAerodromeClPool(App, info, chain="eth", customURLs) {
     }
   }
     _print(`Pool - ${info.stakeTokenTicker}`)
-    _print(`${info.rewardTokenTicker} Per Week: ${info.weeklyRewards.toFixed(2)} ($${formatMoney(info.usdPerWeek)})`);
+    _print(`| ${info.rewardTokenTicker} Per Week: ${info.weeklyRewards.toFixed(2)} ($${formatMoney(info.usdPerWeek)})`);
     
     // Display staking info
-    _print(`You are staking ${info.userStaked} ${info.stakeTokenTicker}`);
-    for (const position of info.nftPositions || []) {
-      _print(`Nft ID: ${position.nftId} (${position.amount0.toFixed(4)} ${info.token0Symbol} - ${position.amount1.toFixed(4)} ${info.token1Symbol})`);
-    }
+    _print(`| You are staking ${info.userStaked} ${info.stakeTokenTicker}`);
+    _print(`| <a target="_blank" href="https://basescan.org/address/${info.stakingAddress}#code">Base Scan</a>`);
 
     const approveTENDAndStake = async function(nftId) {
       return clContract_stake(info.stakingAddress, nftId, App)
@@ -405,153 +403,83 @@ async function printAerodromeClPool(App, info, chain="eth", customURLs) {
     const sickle_claim = async function(nftId) {
       return sickle_clContract_claim(info.stakingAddress, nftId, App)
     }
-    _print(`<a target="_blank" href="https://basescan.org/address/${info.stakingAddress}#code">Base Scan</a>`);
+
+    const sickle_exitToUnderlying = async function(nftId) {
+      return sickle_sdk_exitToUnderlying_aerodrome(info, nftId)
+    }
+
+    const sickle_exitToToken = async function(nftId) {
+      return sickle_sdk_exitToToken_aerodrome(info, nftId)
+    }
+
+    const sickle_rebalance = async function(nftId) {
+      return sickle_sdk_rebalance_aerodrome(info, nftId)
+    }
+
+    const sickle_compound = async function(nftId) {
+      return sickle_sdk_compound_aerodrome(info, nftId)
+    }
+
     if(info.userOwnedNftIds.length <= 0){
-      _print(`You have no NFTs to deposit`);
+      _print(`| You have no NFTs to deposit`);
     }else{
       for(const userOwnedNftId of info.userOwnedNftIds){
         if(info.has_sickle_account){
+          _print_inline(`| `);
           _print_link(`Deposit NFT ID: ${userOwnedNftId}`, () => sickle_approveTENDAndStake(userOwnedNftId))
         }else{
+          _print_inline(`| `);
           _print_link(`Deposit via Sickle NFT ID: ${userOwnedNftId}`, () => sickle_approveTENDAndStake(userOwnedNftId))
-          _print("")
+          _print("|    ");
+          _print_inline(`| `);
           _print_link(`Deposit directly NFT ID: ${userOwnedNftId}`, () => approveTENDAndStake(userOwnedNftId))
         }
       }
     }
-    if(info.userStakedNfts.length <= 0){
-      _print(`You have no staked NFTs in order to withdraw`);
-    }else{
-      for(const userStakedNft of info.userStakedNfts){
-        if(info.has_sickle_account){
-          _print_link(`Withdraw NFT ID: ${userStakedNft}`, () => sickle_unstake(userStakedNft))
-        }else{
-          _print_link(`Withdraw NFT ID: ${userStakedNft}`, () => unstake(userStakedNft))
-        }
-      }
-    }
 
-    // Sickle SDK functionalities
-    if (info.has_sickle_account && window.Sickle?.withdraw) {
-      for (const nftId of info.userStakedNfts) {
-        const position = info.nftPositions.find(p => p.nftId === nftId);
-        if (!position) continue;
-
+    for (const [index, position] of info.nftPositions.entries() || []) {
+      _print(`|    `)
+      _print(`|- Nft ID: ${position.nftId} (${position.amount0.toFixed(4)} ${info.token0Symbol} - ${position.amount1.toFixed(4)} ${info.token1Symbol})`);
+      let earnings
+      let earningsUsd
+      const earningsIndex = info.userStakedNfts.indexOf(position.nftId)
+      if (earningsIndex !== -1) {
+        earnings = info.earnings[earningsIndex]
+        earningsUsd = earnings * info.rewardTokenPrice
+      if (info.has_sickle_account) {
+        index < info.nftPositions.length -1 ? _print_inline(`|    `) : _print_inline(`     `)
+        _print_link(`Withdraw NFT`, () => sickle_unstake(position.nftId))
+        index < info.nftPositions.length -1 ? _print_inline(`|    `) : _print_inline(`     `)
+        _print_link(`Exit to Underlying (${position.amount0.toFixed(4)} ${info.token0Symbol} + ${position.amount1.toFixed(4)} ${info.token1Symbol})`, () => sickle_exitToUnderlying(position.nftId))
+        index < info.nftPositions.length -1 ? _print_inline(`|    `) : _print_inline(`     `)
+        _print_link(`Exit to 'ETH'`, () => sickle_exitToToken(position.nftId))
+        index < info.nftPositions.length -1 ? _print_inline(`|    `) : _print_inline(`     `)
         _print_link(
-          `Exit NFT #${nftId} to Underlying (${position.amount0.toFixed(4)} ${info.token0Symbol} + ${position.amount1.toFixed(4)} ${info.token1Symbol})`,
-          async () => {
-            try {
-              const poolData = {
-                stakingAddress: info.stakingAddress,
-                poolAddress: info.stakeTokenAddress,
-              };
-              await window.Sickle.withdraw.withdrawToUnderlying(poolData, nftId);
-            } catch (error) {
-              console.error('Withdraw to underlying failed:', error);
-              alert(`Withdraw failed: ${error.message}`);
-            }
-          }
-        );
-      }
-
-      const nativeSymbol = window.Sickle?.SickleUtils?.getNativeTokenSymbol?.(8453) || 'ETH';
-      for (const nftId of info.userStakedNfts) {
-        const position = info.nftPositions.find(p => p.nftId === nftId);
-        if (!position) continue;
-
-        _print_link(
-          `Exit NFT #${nftId} to ${nativeSymbol}`,
-          async () => {
-            try {
-              const poolData = {
-                stakingAddress: info.stakingAddress,
-                poolAddress: info.stakeTokenAddress,
-              };
-              await window.Sickle.withdraw.withdrawToNative(poolData, nftId);
-            } catch (error) {
-              console.error('Withdraw to native failed:', error);
-              alert(`Withdraw failed: ${error.message}`);
-            }
-          }
-        );
-      }
-    }
-
-    for(let i = 0; i < info.userStakedNfts.length; i++){
-      if(info.has_sickle_account){
-        _print_link(`Claim rewards, NFT ID: ${info.userStakedNfts[i]} ${info.earnings[i].toFixed(6)} ($${formatMoney(info.earnings[i]*info.rewardTokenPrice)})`, () => sickle_claim(info.userStakedNfts[i]))
-      }else{
-        _print_link(`Claim rewards, NFT ID: ${info.userStakedNfts[i]} ${info.earnings[i].toFixed(6)} ($${formatMoney(info.earnings[i]*info.rewardTokenPrice)})`, () => claim(info.userStakedNfts[i]))
-      }
-    }
-
-    // Rebalance functionality
-    if (info.has_sickle_account && window.Sickle?.rebalance) {
-      for (const nftId of info.userStakedNfts) {
-        const position = info.nftPositions.find(p => p.nftId === nftId);
-        if (!position) continue;
+          `Claim rewards, ${earnings.toFixed(6)} ($${formatMoney(earningsUsd)})`,
+          () => sickle_claim(info.userStakedNfts[earningsIndex])
+        )
 
         const tickLower = position.tickLower;
         const tickUpper = position.tickUpper;
-        const currentTick = info.poolSlot0.tick;
-        const isInRange = currentTick >= tickLower && currentTick < tickUpper;
-        const rangeStatus = isInRange ? '✅ In Range' : '⚠️ Out of Range';
-
-        _print_link(
-          `Rebalance NFT ID: ${nftId} (${rangeStatus})`,
-          async () => {
-            try {
-              const tickSpacing = Number(info.poolTickSpacing) || 1;
-              
-              if (!tickSpacing || isNaN(tickSpacing)) {
-                alert('Unable to determine pool tick spacing. Cannot rebalance.');
-                return;
-              }
-
-              const poolData = {
-                stakingAddress: info.stakingAddress,
-                poolAddress: info.stakeTokenAddress,
-                tickSpacing: tickSpacing,
-              };
-              
-              await window.Sickle.rebalance.rebalance(
-                poolData,
-                nftId,
-                tickLower,
-                tickUpper,
-                currentTick
-              );
-            } catch (error) {
-              console.error('Rebalance failed:', error);
-              alert(`Rebalance failed: ${error.message}`);
-            }
-          }
-        );
-      }
-    }
-
-    // Compound functionality
-    if (info.has_sickle_account && window.Sickle?.compound) {
-      for (let i = 0; i < info.userStakedNfts.length; i++) {
-        const nftId = info.userStakedNfts[i];
-        const earnings = info.earnings[i];
-        const earningsUsd = earnings * info.rewardTokenPrice;
-
-        _print_link(
-          `Compound NFT ID: ${nftId} ${earnings.toFixed(6)} ($${formatMoney(earningsUsd)})`,
-          async () => {
-            try {
-              const poolData = {
-                stakingAddress: info.stakingAddress,
-                poolAddress: info.stakeTokenAddress,
-              };
-              await window.Sickle.compound.compound(poolData, nftId);
-            } catch (error) {
-              console.error('Compound failed:', error);
-              alert(`Compound failed: ${error.message}`);
-            }
-          }
-        );
+        if (tickLower !== undefined && tickUpper !== undefined && info.poolSlot0) {
+          const currentTick = info.poolSlot0.tick;
+          const isInRange = currentTick >= tickLower && currentTick < tickUpper;
+          const rangeStatus = isInRange ? '✅ In Range' : '⚠️ Out of Range';
+          
+          index < info.nftPositions.length -1 ? _print_inline(`|    `) : _print_inline(`     `)
+          _print_link(`Rebalance (${rangeStatus})`, () => sickle_rebalance(position.nftId))
+        }
+          index < info.nftPositions.length -1 ? _print_inline(`|    `) : _print_inline(`     `)
+          _print_link(`Compound, ${earnings.toFixed(6)} ($${formatMoney(earningsUsd)})`, () => sickle_compound(position.nftId))
+        }
+      } else {
+        index < info.nftPositions.length -1 ? _print_inline(`|    `) : _print_inline(`     `)
+        _print_link(`Withdraw NFT`, () => unstake(position.nftId))
+        index < info.nftPositions.length -1 ? _print_inline(`|    `) : _print_inline(`     `)
+         _print_link(
+          `Claim rewards, ${earnings.toFixed(6)} ($${formatMoney(earningsUsd)})`,
+          () => claim(info.userStakedNfts[earningsIndex])
+        )
       }
     }
 
@@ -560,6 +488,98 @@ async function printAerodromeClPool(App, info, chain="eth", customURLs) {
     return {
         userStaked : info.userStaked
     }
+}
+
+const sickle_sdk_exitToUnderlying_aerodrome = async function(info, nftId) {
+  if (window.Sickle?.withdraw) {
+    const position = info.nftPositions.find(p => p.nftId === nftId);
+    if (!position) return;
+
+    try {
+      const poolData = {
+        stakingAddress: info.stakingAddress,
+        poolAddress: info.stakeTokenAddress,
+        nftManagerAddress: NFT_TOKEN_ADDRESS,
+      };
+      await window.Sickle.withdraw.withdrawToUnderlying(poolData, nftId);
+    } catch (error) {
+      console.error('Withdraw to underlying failed:', error);
+      alert(`Withdraw failed: ${error.message}`);
+    }
+  }
+}
+
+const sickle_sdk_exitToToken_aerodrome = async function(info, nftId) {
+  if (window.Sickle?.withdraw) {
+    const position = info.nftPositions.find(p => p.nftId === nftId);
+    if (!position) return;
+
+    try {
+      const poolData = {
+        stakingAddress: info.stakingAddress,
+        poolAddress: info.stakeTokenAddress,
+        nftManagerAddress: NFT_TOKEN_ADDRESS,
+      };
+      await window.Sickle.withdraw.withdrawToToken(poolData, nftId);
+    } catch (error) {
+      console.error('Withdraw to native failed:', error);
+      alert(`Withdraw failed: ${error.message}`);
+    }
+  }
+}
+
+const sickle_sdk_rebalance_aerodrome = async function(info, nftId) {
+  if (window.Sickle?.rebalance) {
+    const position = info.nftPositions.find(p => p.nftId === nftId);
+    if (!position) return;
+
+    try {
+      const tickLower = position.tickLower;
+      const tickUpper = position.tickUpper;
+      const currentTick = info.poolSlot0.tick;
+      const tickSpacing = Number(info.poolTickSpacing) || 1;
+      
+      if (!tickSpacing || isNaN(tickSpacing)) {
+        alert('Unable to determine pool tick spacing. Cannot rebalance.');
+        return;
+      }
+
+      const poolData = {
+        stakingAddress: info.stakingAddress,
+        poolAddress: info.stakeTokenAddress,
+        nftManagerAddress: NFT_TOKEN_ADDRESS,
+        tickSpacing: tickSpacing,
+        pid: undefined  // Aerodrome uses gauge contract, no separate pool ID
+      };
+      
+      await window.Sickle.rebalance.rebalance(
+        poolData,
+        nftId,
+        tickLower,
+        tickUpper,
+        currentTick
+      );
+    } catch (error) {
+      console.error('Rebalance failed:', error);
+      alert(`Rebalance failed: ${error.message}`);
+    }
+  }
+}
+
+const sickle_sdk_compound_aerodrome = async function(info, nftId) {
+  if (window.Sickle?.compound) {
+    try {
+      const poolData = {
+        stakingAddress: info.stakingAddress,
+        poolAddress: info.stakeTokenAddress,
+        nftManagerAddress: NFT_TOKEN_ADDRESS,
+      };
+      await window.Sickle.compound.compound(poolData, nftId);
+    } catch (error) {
+      console.error('Compound failed:', error);
+      alert(`Compound failed: ${error.message}`);
+    }
+  }
 }
 
 const sickle_clContract_stake = async function(rewardPoolAddr, nftId, App) {

@@ -1,4 +1,3 @@
-
 $(function () {
   consoleInit(main)
 });
@@ -124,180 +123,202 @@ async function loadPancakeV3Contract(App, prices, chefContract, chefAddress, che
     }
     _print(`<a href='https://basescan.org/address/${chefAddress}' target='_blank'>Staking Contract</a>`);
     _print("");
-    printPancakePool(App, chefAbi, chefAddress, userPositionInfos, rewardTokenTicker, rewardTokenPrice, has_sickle_account, owner_sickle_address, prices);
+    printCakeV3ContractPool(App, chefAbi, chefAddress, userPositionInfos, rewardTokenTicker, rewardTokenPrice, has_sickle_account, owner_sickle_address, prices);
   }
 }
 
-function printPancakePool(App, chefAbi, chefAddr, userPositionInfos, rewardTokenTicker, rewardTokenPrice, has_sickle_account, owner_sickle_address, prices) {
-  for(let i = 0; i < userPositionInfos.length; i++){
-    _print(`Pool: ${userPositionInfos[i].token0Symbol} - ${userPositionInfos[i].token1Symbol}`);
-    _print(`Nft ID: ${userPositionInfos[i].userNftId} (${userPositionInfos[i].amount0.toFixed(4)} ${userPositionInfos[i].token0Symbol} - ${userPositionInfos[i].amount1.toFixed(4)} ${userPositionInfos[i].token1Symbol})`);
+function printCakeV3ContractPool(App, chefAbi, chefAddr, userPositionInfos, rewardTokenTicker, rewardTokenPrice, has_sickle_account, owner_sickle_address, prices) {
+    const groupedPositions = userPositionInfos.reduce((acc, info) => {
+      const key = info.poolAddress;
+      if(!acc.has(key)) {
+        acc.set(key, []);
+      }
+      acc.get(key).push(info);
+      return acc;
+    }, new Map());
+
+    const userPositions = Array.from(groupedPositions, ([poolAddress, infos]) => ({ poolAddress, infos }));
+
+  for(const position of userPositions){
+    _print(`Pool: ${position.infos[0].token0Symbol} - ${position.infos[0].token1Symbol}`);
     printCakeV3ContractLinks(
       App, 
       chefAbi, 
       chefAddr, 
-      userPositionInfos[i],
+      position.infos,
       rewardTokenTicker, 
       rewardTokenPrice, 
       has_sickle_account, 
       owner_sickle_address, 
       prices
     );
+    _print("");
   }
 }
 
-function printCakeV3ContractLinks(App, chefAbi, chefAddr, positionInfo, rewardTokenTicker, rewardTokenPrice, has_sickle_account, owner_sickle_address, prices) {
-  const fixedDecimals = 2;
-  const userNftId = positionInfo.userNftId;
-  const pendingCakes = positionInfo.pendingCakes;
-  const token0Address = positionInfo.token0Address;
-  const token1Address = positionInfo.token1Address;
-  const token0Symbol = positionInfo.token0Symbol;
-  const token1Symbol = positionInfo.token1Symbol;
-  const amount0 = positionInfo.amount0;
-  const amount1 = positionInfo.amount1;
+function printCakeV3ContractLinks(App, chefAbi, chefAddr, positionInfos, rewardTokenTicker, rewardTokenPrice, has_sickle_account, owner_sickle_address, prices) {  
+  const unstake = async function(nftId) {
+    return pancakeV3Contract_unstake(chefAbi, chefAddr, nftId, App, owner_sickle_address);
+  }
+  const sickle_unstake = async function(nftId, token0Address, token1Address) {
+    return sickle_pancakeV3Contract_unstake(nftId, App, token0Address, token1Address);
+  }
+  const claim = async function(nftId) {
+    return pancakeV3Contract_claim(chefAbi, chefAddr, nftId, App, owner_sickle_address);
+  }
+  const sickle_claim = async function(nftId, token0Address, token1Address) {
+    return sickle_pancakeV3Contract_claim(nftId, App, token0Address, token1Address);
+  }
+
+  const sickle_exitToUnderlying = async function(positionInfo, nftId) {
+    return sickle_sdk_exitToUnderlying_pancakev3(positionInfo, nftId, chefAddr)
+  }
+
+  const sickle_exitToToken = async function(positionInfo, nftId) {
+    return sickle_sdk_exitToToken_pancakev3(positionInfo, nftId, chefAddr)
+  }
+
+  const sickle_rebalance = async function(positionInfo, nftId) {
+    return sickle_sdk_rebalance_pancakev3(positionInfo, nftId, chefAddr)
+  }
+
+  const sickle_compound = async function(positionInfo, nftId) {
+    return sickle_sdk_compound_pancakev3(positionInfo, nftId, chefAddr)
+  }
+      
+      for (const [index, info] of positionInfos.entries() || []) {
+        const userNftId = info.userNftId;
+        const pendingCakes = info.pendingCakes;
+        const token0Address = info.token0Address;
+        const token1Address = info.token1Address;
+        const token0Symbol = info.token0Symbol;
+        const token1Symbol = info.token1Symbol;
+        const amount0 = info.amount0;
+        const amount1 = info.amount1;
+        const earningsUsd = pendingCakes * rewardTokenPrice;
   
-  const unstake = async function() {
-    return pancakeV3Contract_unstake(chefAbi, chefAddr, userNftId, App, owner_sickle_address);
-  }
-  const sickle_unstake = async function() {
-    return sickle_pancakeV3Contract_unstake(userNftId, App, token0Address, token1Address);
-  }
-  const claim = async function() {
-    return pancakeV3Contract_claim(chefAbi, chefAddr, userNftId, App, owner_sickle_address);
-  }
-  const sickle_claim = async function() {
-    return sickle_pancakeV3Contract_claim(userNftId, App, token0Address, token1Address);
-  }
-  
-  if(has_sickle_account){
-    _print_link(`Withdraw Nft ID: ${userNftId}`, sickle_unstake);
-  }else{
-    _print_link(`Withdraw Nft ID: ${userNftId}`, unstake);
-  }
-  
-  // Sickle SDK - Withdraw to Underlying Tokens
-  if (has_sickle_account && window.Sickle?.withdraw) {
-    _print_link(
-      `Exit NFT #${userNftId} to Underlying (${amount0.toFixed(4)} ${token0Symbol} + ${amount1.toFixed(4)} ${token1Symbol})`,
-      async () => {
-        try {
-          const poolData = {
-            stakingAddress: chefAddr,
-            poolAddress: positionInfo.poolAddress,
-            pid: positionInfo.pid
+        _print("|");
+        _print(`|- Nft ID: ${userNftId} (${amount0.toFixed(4)} ${token0Symbol} - ${amount1.toFixed(4)} ${token1Symbol})`)
+
+        if (has_sickle_account) {
+          index < positionInfos.length -1 ? _print_inline(`|    `) : _print_inline(`     `)
+          _print_link(`Withdraw NFT`, () => sickle_unstake(userNftId, token0Address, token1Address))
+          index < positionInfos.length -1 ? _print_inline(`|    `) : _print_inline(`     `)
+          _print_link(`Exit to Underlying (${amount0.toFixed(4)} ${token0Symbol} + ${amount1.toFixed(4)} ${token1Symbol})`, () => sickle_exitToUnderlying(info, userNftId))
+          index < positionInfos.length -1 ? _print_inline(`|    `) : _print_inline(`     `)
+          _print_link(`Exit to 'ETH'`, () => sickle_exitToToken(info, userNftId))
+          index < positionInfos.length -1 ? _print_inline(`|    `) : _print_inline(`     `)
+          _print_link(
+            `Claim rewards, ${pendingCakes.toFixed(6)} ($${formatMoney(earningsUsd)})`,
+            () => sickle_claim(userNftId, token0Address, token1Address)
+          )
+        
+          const positionData = info.positionData
+          if (positionData && info.poolSlot0) {
+            const tickLower = positionData.tickLower
+            const tickUpper = positionData.tickUpper
+            const currentTick = info.poolSlot0.tick
+            const isInRange = currentTick >= tickLower && currentTick < tickUpper
+            const rangeStatus = isInRange ? '✅ In Range' : '⚠️ Out of Range'
+
+            index < positionInfos.length -1 ? _print_inline(`|    `) : _print_inline(`     `)
+            _print_link(`Rebalance (${rangeStatus})`, () => sickle_rebalance(info, userNftId))
           }
-          
-          await window.Sickle.withdraw.withdrawToUnderlying(poolData, userNftId)
-        } catch (error) {
-          console.error('Withdraw to underlying failed:', error)
-          alert(`Withdraw failed: ${error.message}`)
+          index < positionInfos.length -1 ? _print_inline(`|    `) : _print_inline(`     `)
+          _print_link(`Compound, ${pendingCakes.toFixed(6)} ($${formatMoney(earningsUsd)})`, () => sickle_compound(info, userNftId))
+        } else {
+          index < positionInfos.length -1 ? _print_inline(`|    `) : _print_inline(`     `)
+          _print_link(`Withdraw NFT`, () => unstake(userNftId))
+          index < positionInfos.length -1 ? _print_inline(`|    `) : _print_inline(`     `)
+          _print_link(
+            `Claim rewards, ${pendingCakes.toFixed(6)} ($${formatMoney(earningsUsd)})`,
+            () => claim(userNftId)
+          )
         }
       }
-    )
-  }
-  
-  // Sickle SDK - Withdraw to Native Token
-  if (has_sickle_account && window.Sickle?.withdraw) {
-    // Get native token symbol dynamically (Base chain ID is 8453)
-    const nativeSymbol = window.Sickle?.SickleUtils?.getNativeTokenSymbol?.(8453) || 'ETH'
+}
+
+const sickle_sdk_exitToUnderlying_pancakev3 = async function(positionInfo, nftId, chefAddr) {
+  try {
+    const poolData = {
+      stakingAddress: chefAddr,
+      poolAddress: positionInfo.poolAddress,
+      nftManagerAddress: NFT_TOKEN_ADDRESS,
+      pid: positionInfo.pid
+    }
     
-    _print_link(
-      `Exit NFT #${userNftId} to ${nativeSymbol}`,
-      async () => {
-        try {
-          const poolData = {
-            stakingAddress: chefAddr,
-            poolAddress: positionInfo.poolAddress,
-            pid: positionInfo.pid
-          }
-          
-          await window.Sickle.withdraw.withdrawToToken(poolData, userNftId)
-        } catch (error) {
-          console.error('Withdraw to token failed:', error)
-          alert(`Withdraw failed: ${error.message}`)
-        }
-      }
-    )
+    await window.Sickle.withdraw.withdrawToUnderlying(poolData, nftId)
+  } catch (error) {
+    console.error('Withdraw to underlying failed:', error)
+    alert(`Withdraw failed: ${error.message}`)
   }
-  
-  if(has_sickle_account){
-    _print_link(`Claim ${pendingCakes.toFixed(fixedDecimals)} ${rewardTokenTicker} ($${formatMoney(pendingCakes*rewardTokenPrice)})`, sickle_claim)
-  }else{
-    _print_link(`Claim ${pendingCakes.toFixed(fixedDecimals)} ${rewardTokenTicker} ($${formatMoney(pendingCakes*rewardTokenPrice)})`, claim)
+}
+
+const sickle_sdk_exitToToken_pancakev3 = async function(positionInfo, nftId, chefAddr) {
+  try {
+    const poolData = {
+      stakingAddress: chefAddr,
+      poolAddress: positionInfo.poolAddress,
+      nftManagerAddress: NFT_TOKEN_ADDRESS,
+      pid: positionInfo.pid
+    }
+    
+    await window.Sickle.withdraw.withdrawToToken(poolData, nftId)
+  } catch (error) {
+    console.error('Withdraw to token failed:', error)
+    alert(`Withdraw failed: ${error.message}`)
   }
+}
+
+const sickle_sdk_rebalance_pancakev3 = async function(positionInfo, nftId, chefAddr) {
+  try {
+    const tickSpacing = Number(positionInfo.poolTickSpacing) || 1;
+    
+    if (!tickSpacing || isNaN(tickSpacing)) {
+      alert('Unable to determine pool tick spacing. Cannot rebalance.');
+      return;
+    }
   
-  // Sickle SDK - Rebalance functionality
-  if (has_sickle_account && window.Sickle?.rebalance && positionInfo.positionData) {
+    const poolData = {
+      stakingAddress: chefAddr,
+      poolAddress: positionInfo.poolAddress,
+      nftManagerAddress: NFT_TOKEN_ADDRESS,
+      tickSpacing: tickSpacing,
+      pid: positionInfo.pid
+    };
+    
     const positionData = positionInfo.positionData;
     const tickLower = positionData.tickLower;
     const tickUpper = positionData.tickUpper;
     const currentTick = positionInfo.poolSlot0.tick;
-    const isInRange = currentTick >= tickLower && currentTick < tickUpper;
-    const rangeStatus = isInRange ? '✅ In Range' : '⚠️ Out of Range';
     
-    _print_link(
-      `Rebalance NFT ID: ${userNftId} (${rangeStatus})`,
-      async () => {
-        try {
-          const tickSpacing = Number(positionInfo.poolTickSpacing) || 1;
-          
-          if (!tickSpacing || isNaN(tickSpacing)) {
-            alert('Unable to determine pool tick spacing. Cannot rebalance.');
-            return;
-          }
-        
-          const poolData = {
-            stakingAddress: chefAddr,
-            poolAddress: positionInfo.poolAddress,
-            tickSpacing: tickSpacing,
-            pid: positionInfo.pid  // Pool ID from MasterChef
-          };
-          
-          console.log('Rebalance poolData:', poolData);
-          console.log('chefAddr:', chefAddr);
-          console.log('positionInfo.poolAddress:', positionInfo.poolAddress);
-          
-          await window.Sickle.rebalance.rebalance(
-            poolData,
-            userNftId,
-            tickLower,
-            tickUpper,
-            currentTick
-          );
-        } catch (error) {
-          console.error('Rebalance failed:', error);
-          alert(`Rebalance failed: ${error.message}`);
-        }
-      }
+    await window.Sickle.rebalance.rebalance(
+      poolData,
+      nftId,
+      tickLower,
+      tickUpper,
+      currentTick
     );
+  } catch (error) {
+    console.error('Rebalance failed:', error);
+    alert(`Rebalance failed: ${error.message}`);
   }
-  
-  // Sickle SDK - Compound functionality
-  if (has_sickle_account && window.Sickle?.compound && pendingCakes > 0) {
-    const earningsUsd = pendingCakes * rewardTokenPrice;
+}
+
+const sickle_sdk_compound_pancakev3 = async function(positionInfo, nftId, chefAddr) {
+  try {
+    const poolData = {
+      stakingAddress: chefAddr,
+      poolAddress: positionInfo.poolAddress,
+      nftManagerAddress: NFT_TOKEN_ADDRESS,
+      pid: positionInfo.pid
+    };
     
-    _print_link(
-      `Compound NFT ID: ${userNftId} ${pendingCakes.toFixed(6)} ($${formatMoney(earningsUsd)})`,
-      async () => {
-        try {
-          const poolData = {
-            stakingAddress: chefAddr,
-            poolAddress: positionInfo.poolAddress,
-            pid: positionInfo.pid
-          };
-          
-          // Pass the raw BigNumber amount (not divided by 1e18)
-          await window.Sickle.compound.compound(poolData, userNftId, positionInfo.pendingCakesRaw);
-        } catch (error) {
-          console.error('Compound failed:', error);
-          alert(`Compound failed: ${error.message}`);
-        }
-      }
-    );
+    await window.Sickle.compound.compound(poolData, nftId, positionInfo.pendingCakesRaw);
+  } catch (error) {
+    console.error('Compound failed:', error);
+    alert(`Compound failed: ${error.message}`);
   }
-  
-  _print("");
 }
 
 function sickle_pancakeV3Contract_unstake(nft_id, App, token0Address, token1Address){
