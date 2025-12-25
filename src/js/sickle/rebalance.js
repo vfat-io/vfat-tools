@@ -85,21 +85,29 @@ Proceed with rebalance?`
     // Create NftPool instance
     // For Velodrome/Aerodrome (gauge-based): Don't pass poolIndex at all
     // For PancakeSwap V3 (MasterChef-based): Pass numeric poolIndex (PID)
-    const nftPool = new window.Sickle.NftPool({
+    const nftPoolConfig = {
       chainId: chainId,
       address: poolData.stakingAddress,     // MasterChef/Gauge address (farm)
       poolAddress: poolData.poolAddress,    // V3 Pool address (for API call)
       nftManagerAddress: poolData.nftManagerAddress,  // NFT Position Manager address
       // Note: poolIndex intentionally omitted for Velodrome (poolData.pid is undefined)
       ...(poolData.pid !== undefined && poolData.pid !== null && { poolIndex: Number(poolData.pid) })
-    })
+    }
+
+    // Uniswap v4: pass bytes32 poolId hash (SDK uses this for quotes)
+    if (poolData.poolId) {
+      nftPoolConfig.poolId = String(poolData.poolId)
+    }
+
+    const nftPool = new window.Sickle.NftPool(nftPoolConfig)
     
     console.log('Creating NftPool with poolData:', poolData)
     console.log('NftPool instance created:', {
       chainId: nftPool.chainId,
       address: nftPool.address,
       poolAddress: nftPool.poolAddress,
-      poolIndex: nftPool.poolIndex
+      poolIndex: nftPool.poolIndex,
+      poolId: nftPool.poolId
     })
 
     const callData = await nftPool

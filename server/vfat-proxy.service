@@ -1,0 +1,15 @@
+[Unit]
+Description=VFAT Etherscan Proxy
+After=network.target
+
+[Service]
+Type=simple
+User=www-data
+WorkingDirectory=/opt/vfat-tools-proxy/server
+EnvironmentFile=/opt/vfat-tools-proxy/server/.env
+ExecStart=/usr/bin/node /opt/vfat-tools-proxy/server/proxy.mjs
+Restart=always
+RestartSec=3
+
+[Install]
+WantedBy=multi-user.target

@@ -41,6 +41,11 @@ Proceed with compound?`
       poolAddress: poolData.poolAddress,
       nftManagerAddress: poolData.nftManagerAddress
     }
+
+    // Uniswap v4: pass bytes32 poolId hash (SDK uses this for quotes)
+    if (poolData.poolId) {
+      nftPoolConfig.poolId = String(poolData.poolId)
+    }
     
     // Only add poolIndex for PancakeSwap V3 (has MasterChef pool IDs / PIDs)
     // Velodrome/Aerodrome use gauge contracts and should NOT have poolIndex
@@ -51,7 +56,7 @@ Proceed with compound?`
     const nftPool = new window.Sickle.NftPool(nftPoolConfig)
     
     console.log('Creating NftPool with:', nftPoolConfig)
-    
+
     // If amount not provided (Velodrome case), use 0
     // The SDK/contract will query the actual pending amount
     const compoundAmount = amount ? BigInt(amount.toString()) : BigInt(0)

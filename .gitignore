@@ -108,6 +108,11 @@ fabric.properties
 
 .idea/
 
+# Local env (do not commit secrets)
+.env
+.env.*
+!.env.example
+
 # Reason: https://github.com/joeblau/gitignore.io/issues/186#issuecomment-249601023
 
 *.iml

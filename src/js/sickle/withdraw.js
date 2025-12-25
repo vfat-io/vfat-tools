@@ -44,6 +44,11 @@ Proceed with exit?`
       poolAddress: poolData.poolAddress,     // V3 Pool address
       nftManagerAddress: poolData.nftManagerAddress  // NFT Position Manager address
     }
+
+    // Uniswap v4: pass bytes32 poolId hash (SDK uses this for quotes)
+    if (poolData.poolId) {
+      nftPoolConfig.poolId = String(poolData.poolId)
+    }
     
     // Only add poolIndex for PancakeSwap V3 (has MasterChef pool IDs / PIDs)
     // Velodrome/Aerodrome use gauge contracts and should NOT have poolIndex
@@ -118,6 +123,11 @@ Proceed with Exit?`
       address: poolData.stakingAddress,      // MasterChef/Gauge address
       poolAddress: poolData.poolAddress,     // V3 Pool address
       nftManagerAddress: poolData.nftManagerAddress  // NFT Position Manager address
+    }
+
+    // Uniswap v4: pass bytes32 poolId hash (SDK uses this for quotes)
+    if (poolData.poolId) {
+      nftPoolConfig.poolId = String(poolData.poolId)
     }
     
     // Only add poolIndex for PancakeSwap V3 (has MasterChef pool IDs / PIDs)
