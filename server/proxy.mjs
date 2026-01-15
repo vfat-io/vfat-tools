@@ -1,12 +1,9 @@
 import http from 'node:http'
-import { URL, fileURLToPath } from 'node:url'
-import dotenv from 'dotenv'
+import { URL } from 'node:url'
 
-// Load env reliably even when the process is started from the repo root.
-// 1) Prefer `server/.env` (sits next to this file)
-// 2) Fall back to default `.env` in current working directory
-dotenv.config({ path: fileURLToPath(new URL('.env', import.meta.url)) })
-dotenv.config()
+// NOTE: This server intentionally relies on environment variables provided via
+// `process.env` (e.g. systemd EnvironmentFile=...).
+// No .env parsing/loading happens in this file.
 
 // Minimal Etherscan v2 proxy.
 // - Keeps ETHERSCAN_API_KEY on the server

@@ -4,7 +4,7 @@ After=network.target
 
 [Service]
 Type=simple
-User=www-data
+User=vfatouros
 WorkingDirectory=/opt/vfat-tools-proxy/server
 EnvironmentFile=/opt/vfat-tools-proxy/server/.env
 ExecStart=/usr/bin/node /opt/vfat-tools-proxy/server/proxy.mjs

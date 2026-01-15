@@ -203,3 +203,4 @@ dist/
 # Deployment script
 deploy.sh
 deploy-staging.sh
+deploy-proxy-server.sh
