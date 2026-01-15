@@ -103,286 +103,66 @@ const sweep_address = '0xF8818D5D3c9Ac1F80Bd14664202DBe5bed872a72'
 // The proxy is expected at /api/etherscan-v2 (reverse-proxied in prod). In local dev you can run the proxy on 127.0.0.1:8787.
 const BASE_CHAIN_ID = 8453
 
+function uniswapV4Helpers() {
+  const h = window?.Sickle?.protocols?.uniswapV4
+  if (!h) throw new Error('Uniswap v4 helpers not loaded (window.Sickle.protocols.uniswapV4)')
+  return h
+}
+
 async function fetchEtherscanV2ViaProxy(params) {
-  const search = new URLSearchParams()
-  for (const [k, v] of Object.entries(params)) {
-    if (v === undefined || v === null || v === '') continue
-    search.set(k, String(v))
-  }
-
-  let path = ''
-  const isLocalhost =
-    window?.location?.hostname === 'localhost' ||
-    window?.location?.hostname === '127.0.0.1' ||
-    window?.location?.hostname === '0.0.0.0'
-
-    isLocalhost ? path = `https://vfat.tools/api/etherscan-v2?${search.toString()}` : path = `/api/etherscan-v2?${search.toString()}`
-
-    console.log('Fetching via proxy:', path)
-  
-    try {
-      const resp = await fetch(path, { method: 'GET' })
-      if (!resp.ok) throw new Error(`Proxy request failed (${resp.status})`)
-      return await resp.json()
-    } catch (e) {
-      throw new Error(`Proxy request failed: ${e?.message || e}`)
-    }
+  return uniswapV4Helpers().fetchEtherscanV2ViaProxy(params)
 }
 
 function normalizeAddress(a) {
-  return (a || '').toLowerCase()
+  return uniswapV4Helpers().normalizeAddress(a)
 }
 
 function parseTokenIdFromNftTxRow(row) {
-  // Etherscan/Basescan fields vary slightly across endpoints/versions.
-  const v = row?.tokenID ?? row?.tokenId ?? row?.tokenid ?? row?.tokenIDHex ?? row?.tokenIDhex
-  if (v == null) return null
-  try {
-    return BigInt(String(v))
-  } catch {
-    return null
-  }
+  return uniswapV4Helpers().parseTokenIdFromNftTxRow(row)
 }
 
 function decodeSignedIntN(unsigned, bits) {
-  const u = BigInt(unsigned)
-  const b = BigInt(bits)
-  const signBit = 1n << (b - 1n)
-  const mask = (1n << b) - 1n
-  const v = u & mask
-  return (v & signBit) !== 0n ? -((~v & mask) + 1n) : v
+  return uniswapV4Helpers().decodeSignedIntN(unsigned, bits)
 }
 
 function normalizePoolKey(poolKey) {
-  if (!poolKey) return null
-  // ethcall may return tuple as array-like or object-like.
-  return {
-    currency0: poolKey.currency0 ?? poolKey[0],
-    currency1: poolKey.currency1 ?? poolKey[1],
-    fee: poolKey.fee ?? poolKey[2],
-    tickSpacing: poolKey.tickSpacing ?? poolKey[3],
-    hooks: poolKey.hooks ?? poolKey[4],
-  }
+  return uniswapV4Helpers().normalizePoolKey(poolKey)
 }
 
 function decodePositionInfo(infoU256) {
-  // Verified packing (high -> low bits):
-  // 200 bits poolId | 24 bits tickUpper | 24 bits tickLower | 8 bits hasSubscriber
-  const info = BigInt(infoU256.toString())
-  const tickLowerU = (info >> 8n) & ((1n << 24n) - 1n)
-  const tickUpperU = (info >> (8n + 24n)) & ((1n << 24n) - 1n)
-
-  const tickLower = Number(decodeSignedIntN(tickLowerU, 24))
-  const tickUpper = Number(decodeSignedIntN(tickUpperU, 24))
-
-  return { tickLower, tickUpper }
+  return uniswapV4Helpers().decodePositionInfo(infoU256)
 }
 
 function computeV4PoolIdBytes32(poolKey) {
-  // Uniswap v4 poolId is keccak256(abi.encode(PoolKey))
-  // PoolKey = (address currency0, address currency1, uint24 fee, int24 tickSpacing, address hooks)
-  const coder = ethers.utils.defaultAbiCoder
-  const encoded = coder.encode(
-    ['tuple(address currency0,address currency1,uint24 fee,int24 tickSpacing,address hooks)'],
-    [[poolKey.currency0, poolKey.currency1, poolKey.fee, poolKey.tickSpacing, poolKey.hooks]]
-  )
-  return ethers.utils.keccak256(encoded)
+  return uniswapV4Helpers().computeV4PoolIdBytes32(poolKey)
 }
 
 function truncateDecimalString(valueStr, displayDecimals) {
-  if (typeof valueStr !== 'string') return 'N/A'
-  const s = valueStr.trim()
-  if (!s) return 'N/A'
-
-  if (displayDecimals <= 0) {
-    return s.split('.')[0]
-  }
-
-  const [i, f = ''] = s.split('.')
-  const frac = f.slice(0, displayDecimals)
-  if (!frac) return i
-  // Trim trailing zeros and an optional trailing decimal point
-  return `${i}.${frac}`.replace(/(\.\d*?[1-9])0+$/u, '$1').replace(/\.0+$/u, '')
+  return uniswapV4Helpers().truncateDecimalString(valueStr, displayDecimals)
 }
 
 function toBigIntSafe(v) {
-  if (v == null) return 0n
-  if (typeof v === 'bigint') return v
-  if (typeof v === 'number') return BigInt(Math.trunc(v))
-  // ethers BigNumber
-  if (typeof v === 'object' && typeof v.toString === 'function') {
-    return BigInt(v.toString())
-  }
-  return BigInt(String(v))
+  return uniswapV4Helpers().toBigIntSafe(v)
 }
 
-function computeUnclaimedFeesFromGrowth({
-  liquidity,
-  feeGrowthInside0X128,
-  feeGrowthInside1X128,
-  feeGrowthInside0LastX128,
-  feeGrowthInside1LastX128,
-}) {
-  const liq = toBigIntSafe(liquidity)
-  if (liq <= 0n) return { fees0Raw: 0n, fees1Raw: 0n }
-
-  const cur0 = toBigIntSafe(feeGrowthInside0X128)
-  const cur1 = toBigIntSafe(feeGrowthInside1X128)
-  const last0 = toBigIntSafe(feeGrowthInside0LastX128)
-  const last1 = toBigIntSafe(feeGrowthInside1LastX128)
-
-  // Clamp deltas defensively (should normally always be >= 0)
-  const d0 = cur0 >= last0 ? cur0 - last0 : 0n
-  const d1 = cur1 >= last1 ? cur1 - last1 : 0n
-
-  const Q128 = 1n << 128n
-  return {
-    fees0Raw: (d0 * liq) / Q128,
-    fees1Raw: (d1 * liq) / Q128,
-  }
+function computeUnclaimedFeesFromGrowth(args) {
+  return uniswapV4Helpers().computeUnclaimedFeesFromGrowth(args)
 }
 
 function formatTokenAmountHtmlFromRaw(rawAmount, tokenDecimals) {
-  if (rawAmount == null) return 'N/A'
-  const formatFixedDecimals = (full, decimals) => {
-    const [i, f = ''] = String(full || '0').split('.')
-    if (decimals <= 0) return i
-    const frac = f.padEnd(decimals, '0').slice(0, decimals)
-    return `${i}.${frac}`
-  }
-
-  try {
-    const dec = Number(tokenDecimals ?? 18)
-    const full = ethers.utils.formatUnits(rawAmount.toString(), dec)
-
-    // Compact small-number display with leading-zero subscript.
-    // Example: 0.00004204 -> 0.0<sub>4</sub>204  (shows next 3 significant digits)
-    const [i, f = ''] = String(full || '0').split('.')
-    if (i === '0') {
-      let z = 0
-      while (z < f.length && f[z] === '0') z++
-      const rest = f.slice(z)
-      if (!rest) return '0'
-
-      // Only use the compact style when there are at least 2 leading zeros
-      // (prevents odd-looking output for values like 0.04...)
-      if (z >= 2) {
-        const sig = rest.slice(0, 3)
-        return `0.0<sub>${z}</sub>${sig}`
-      }
-    }
-
-    // Heuristic: for tokens with <= 6 decimals (often stables), show fixed 3 decimals.
-    // (Symbol-based detection is intentionally avoided.)
-    // NOTE: this comes *after* compact-small handling so tiny values don't round to 0.000.
-    if (Number.isFinite(dec) && dec <= 6) {
-      return formatFixedDecimals(full, 3)
-    }
-
-    // Default: truncate to 4 decimals, trimmed
-    return truncateDecimalString(full, 4)
-  } catch {
-    return 'N/A'
-  }
+  return uniswapV4Helpers().formatTokenAmountHtmlFromRaw(rawAmount, tokenDecimals)
 }
 
 async function getErc20MetaCached(App, cache, tokenAddress, chainId) {
-  const a = (tokenAddress || '').toLowerCase()
-  if (!a) return { symbol: '?', decimals: 18 }
-  if (cache.has(a)) return cache.get(a)
-
-  // Uniswap v4 currency may be native. Best-effort handling.
-  if (a === '0x0000000000000000000000000000000000000000') {
-    const meta = { symbol: 'ETH', decimals: 18 }
-    cache.set(a, meta)
-    return meta
-  }
-
-  const abi = (typeof ERC20_ABI !== 'undefined' && ERC20_ABI) || [
-    { inputs: [], name: 'symbol', outputs: [{ internalType: 'string', name: '', type: 'string' }], stateMutability: 'view', type: 'function' },
-    { inputs: [], name: 'decimals', outputs: [{ internalType: 'uint8', name: '', type: 'uint8' }], stateMutability: 'view', type: 'function' },
-  ]
-
-  const c = new ethcall.Contract(tokenAddress, abi)
-  try {
-    const [symbol, decimals] = await App.ethcallProvider.all([c.symbol(), c.decimals()])
-    const meta = { symbol, decimals: Number(decimals) }
-    cache.set(a, meta)
-    return meta
-  } catch {
-    const meta = { symbol: a.slice(0, 6) + '…' + a.slice(-4), decimals: 18 }
-    cache.set(a, meta)
-    return meta
-  }
+  return uniswapV4Helpers().getErc20MetaCached(App, cache, tokenAddress, chainId, { nativeSymbol: 'ETH', nativeDecimals: 18 })
 }
 
 async function getV4PoolSlot0(App, poolIdBytes32) {
-  // Base Uniswap v4 uses a separate StateView contract for reading pool state.
-  try {
-    const stateView = new ethers.Contract(
-      state_view_address_v4,
-      [
-        'function getSlot0(bytes32) view returns (uint160 sqrtPriceX96, int24 tick, uint24 protocolFee, uint24 lpFee)',
-        'function getSlot0(bytes32) view returns (uint160 sqrtPriceX96, int24 tick)',
-      ],
-      App.provider
-    )
-
-    // Prefer the full signature; ethers will pick the matching overload.
-    const res = await stateView.getSlot0(poolIdBytes32)
-    const sqrtPriceX96 = res?.sqrtPriceX96 ?? res?.[0]
-    const tick = res?.tick ?? res?.[1]
-    if (sqrtPriceX96 != null && tick != null) {
-      return { sqrtPriceX96: BigInt(sqrtPriceX96.toString()), tick: Number(tick) }
-    }
-  } catch {
-    return null
-  }
+  return uniswapV4Helpers().getV4PoolSlot0(App, poolIdBytes32, state_view_address_v4)
 }
 
 async function getOwnedErc721TokenIdsViaProxy({ chainId, contractAddress, ownerAddress }) {
-  const owner = normalizeAddress(ownerAddress)
-  const owned = new Set()
-
-  // We "want all positions"; Etherscan-style APIs are paginated.
-  // We fetch all pages internally so the UI/user doesn't deal with pagination.
-  const offset = 10000
-  let page = 1
-
-  while (true) {
-    const data = await fetchEtherscanV2ViaProxy({
-      chainid: chainId,
-      module: 'account',
-      action: 'tokennfttx',
-      address: ownerAddress,
-      contractaddress: contractAddress,
-      page,
-      offset,
-      sort: 'asc',
-    })
-
-    // Typical shape: { status: '1'|'0', message: 'OK'|'No transactions found', result: [...] }
-    const rows = Array.isArray(data?.result) ? data.result : []
-    if (rows.length === 0) break
-
-    for (const row of rows) {
-      const from = normalizeAddress(row?.from)
-      const to = normalizeAddress(row?.to)
-      const tokenId = parseTokenIdFromNftTxRow(row)
-      if (tokenId === null) continue
-
-      if (to === owner) owned.add(tokenId.toString())
-      if (from === owner) owned.delete(tokenId.toString())
-    }
-
-    if (rows.length < offset) break
-    page++
-  }
-
-  // Return sorted for stable output.
-  return Array.from(owned)
-    .map(x => BigInt(x))
-    .sort((a, b) => (a < b ? -1 : a > b ? 1 : 0))
+  return uniswapV4Helpers().getOwnedErc721TokenIdsViaProxy({ chainId, contractAddress, ownerAddress })
 }
 
 async function main() {
@@ -404,8 +184,7 @@ async function main() {
     try {
       await withdraw_nfts(App, nft_manager_v4, nft_manager_address_v4, sickleAddress)
     } catch (err) {
-      //await fallback_withdraw(App, nft_manager_address_v4, sickleAddress)
-      _print('Error fetching NFTs via proxy, please use fallback method')
+      await fallback_withdraw(App, nft_manager_address_v4, sickleAddress)
       console.log(err)
     }
   }
@@ -425,12 +204,8 @@ const withdraw_nfts = async function(App, nft_manager_v4, nft_manager_address_v4
       let active_nfts = []
 
       if (nft_ids.length === 0) {
-        if (retry < 3) {
-          // Retry once in case of transient proxy/fetch issues.
-          return await withdraw_nfts(App, nft_manager_v4, nft_manager_address_v4, sickleAddress, retry + 1)
-        }
         _print('No NFTs found via proxy')
-        return
+        throw new Error('No NFTs found via proxy')
       }
 
       const liquidity_calls = nft_ids.map(nft => nft_manager_v4.getPositionLiquidity(nft))
@@ -511,7 +286,7 @@ const withdraw_nfts = async function(App, nft_manager_v4, nft_manager_address_v4
 
         if (positions.length === 0) {
           _print('No active NFTs')
-          return
+          throw new Error('No active NFTs found via proxy')
         }
 
         // Fetch slot0 per distinct pool and token metadata.
@@ -687,6 +462,7 @@ const withdraw_nfts = async function(App, nft_manager_v4, nft_manager_address_v4
         _print('')
       } else {
         _print('No active NFTs')
+        throw new Error('No active NFTs found via proxy')
       }
 }
 

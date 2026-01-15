@@ -24,6 +24,9 @@ import SickleCompound from './sickle/compound.js'
 import SickleLpWithdraw from './sickle/lp-withdraw.js'
 import SickleLpCompound from './sickle/lp-compound.js'
 
+// Protocol helpers (bundled, exposed via window.Sickle.protocols)
+import * as UniswapV4Protocol from './sickle/protocols/uniswap_v4.js'
+
 // Uniswap V3 Utilities
 import * as UniswapV3 from './uniswap/index.js'
 
@@ -50,6 +53,13 @@ window.Sickle = {
   compound: SickleCompound,
   lpWithdraw: SickleLpWithdraw,
   lpCompound: SickleLpCompound,
+}
+
+// Attach protocol-level helpers for non-module chain scripts.
+if (document.location.href.includes('uniswap-v4')) {
+  console.log('Initializing Uniswap V4 protocol helpers in Sickle...')
+  window.Sickle.protocols = window.Sickle.protocols || {}
+  window.Sickle.protocols.uniswapV4 = UniswapV4Protocol
 }
 
 // Uniswap V3 Utilities

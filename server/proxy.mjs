@@ -1,5 +1,12 @@
 import http from 'node:http'
-import { URL } from 'node:url'
+import { URL, fileURLToPath } from 'node:url'
+import dotenv from 'dotenv'
+
+// Load env reliably even when the process is started from the repo root.
+// 1) Prefer `server/.env` (sits next to this file)
+// 2) Fall back to default `.env` in current working directory
+dotenv.config({ path: fileURLToPath(new URL('.env', import.meta.url)) })
+dotenv.config()
 
 // Minimal Etherscan v2 proxy.
 // - Keeps ETHERSCAN_API_KEY on the server
@@ -10,10 +17,28 @@ const PORT = Number(process.env.PORT || 8787)
 const HOST = process.env.HOST || '127.0.0.1'
 
 const ETHERSCAN_V2_API_URL = 'https://api.etherscan.io/v2/api'
-const API_KEY = process.env.ETHERSCAN_API_KEY || ''
+// Snowtrace uses an Etherscan-like API for Avalanche.
+// Docs link (may be behind JS/WAF): https://snowtrace.io/documentation/api/etherscan-like/accounts
+// Default upstream base for the Etherscan-like endpoint:
+//   https://api.snowtrace.io/api
+const SNOWTRACE_API_URL = process.env.SNOWTRACE_API_URL || 'https://api.snowtrace.io/api'
 
-if (!API_KEY) {
-  console.warn('[proxy] ETHERSCAN_API_KEY is not set. Requests will fail.')
+const ETHERSCAN_API_KEY = process.env.ETHERSCAN_API_KEY || ''
+const SNOWTRACE_API_KEY = process.env.SNOWTRACE_API_KEY || ''
+
+const MORALIS_API_URL = process.env.MORALIS_API_URL || 'https://deep-index.moralis.io/api/v2.2'
+const MORALIS_API_KEY = process.env.MORALIS_API_KEY || ''
+
+if (!ETHERSCAN_API_KEY) {
+  console.warn('[proxy] ETHERSCAN_API_KEY is not set. Non-AVAX requests will fail.')
+}
+
+if (!SNOWTRACE_API_KEY) {
+  console.warn('[proxy] SNOWTRACE_API_KEY is not set. AVAX (43114) requests will fail.')
+}
+
+if (!MORALIS_API_KEY) {
+  console.warn('[proxy] MORALIS_API_KEY is not set. Moralis requests will fail.')
 }
 
 const ALLOWED = new Set([
@@ -34,6 +59,20 @@ function pick(q, key, { required = false } = {}) {
   const v = q.get(key)
   if (required && (v == null || v === '')) throw new Error(`Missing required query param: ${key}`)
   return v
+}
+
+function isAvaxChainId(chainid) {
+  // normalize: allow "43114" or "0xa86a" etc
+  const s = String(chainid).trim().toLowerCase()
+  if (s === '43114') return true
+  if (s.startsWith('0x')) {
+    try {
+      return parseInt(s, 16) === 43114
+    } catch {
+      return false
+    }
+  }
+  return false
 }
 
 const server = http.createServer(async (req, res) => {
@@ -62,6 +101,69 @@ const server = http.createServer(async (req, res) => {
       return
     }
 
+    // Moralis wallet NFT lookup (used for BSC where free-tier Etherscan-v2 does not support chainId 56).
+    // Example:
+    //   /api/moralis/wallet-nfts?address=0x...&chain=bsc&token_addresses=0x...
+    //   /api/moralis/wallet-nfts?address=0x...&chain=bsc&contractaddress=0x...&cursor=...
+    if (url.pathname === '/api/moralis/wallet-nfts') {
+      if (!MORALIS_API_KEY) {
+        sendJson(res, 500, { error: 'MORALIS_API_KEY is not set on the proxy server' })
+        return
+      }
+
+      const q = url.searchParams
+      const address = pick(q, 'address', { required: true })
+      const chain = pick(q, 'chain') || 'bsc'
+
+      const tokenAddresses = []
+      // Preferred param name (matches Moralis): token_addresses[]=...
+      for (const v of q.getAll('token_addresses')) {
+        if (v) tokenAddresses.push(String(v))
+      }
+      // Compatibility param name for callers that mirror Etherscan: contractaddress=...
+      const contractaddress = q.get('contractaddress')
+      if (contractaddress) tokenAddresses.push(String(contractaddress))
+
+      const cursor = q.get('cursor')
+      const limit = q.get('limit')
+      const exclude_spam = q.get('exclude_spam')
+
+      const upstream = new URL(`${MORALIS_API_URL.replace(/\/$/u, '')}/${address}/nft`)
+      upstream.searchParams.set('chain', chain)
+      upstream.searchParams.set('format', 'decimal')
+      // Keep payload small; we only need token_id.
+      upstream.searchParams.set('normalizeMetadata', 'false')
+      upstream.searchParams.set('media_items', 'false')
+      upstream.searchParams.set('include_prices', 'false')
+
+      if (exclude_spam != null && exclude_spam !== '') {
+        upstream.searchParams.set('exclude_spam', String(exclude_spam))
+      }
+
+      for (const a of tokenAddresses) {
+        upstream.searchParams.append('token_addresses', a)
+      }
+
+      if (cursor) upstream.searchParams.set('cursor', cursor)
+      if (limit) upstream.searchParams.set('limit', limit)
+
+      const upstreamResp = await fetch(upstream.toString(), {
+        method: 'GET',
+        headers: {
+          'X-API-Key': MORALIS_API_KEY,
+          accept: 'application/json',
+        },
+      })
+      const text = await upstreamResp.text()
+
+      res.writeHead(upstreamResp.status, {
+        'content-type': upstreamResp.headers.get('content-type') || 'application/json; charset=utf-8',
+        'cache-control': 'no-store',
+      })
+      res.end(text)
+      return
+    }
+
     // Main proxy endpoint
     // Example:
     //   /api/etherscan-v2?chainid=8453&module=account&action=tokennfttx&address=...&contractaddress=...
@@ -82,12 +184,18 @@ const server = http.createServer(async (req, res) => {
       return
     }
 
-    // Rebuild URL to Etherscan and inject server-side key.
-    const upstream = new URL(ETHERSCAN_V2_API_URL)
+    const useSnowtrace = isAvaxChainId(chainid)
+
+    // Rebuild URL to upstream and inject server-side key.
+    // - AVAX (43114): Snowtrace Etherscan-like
+    // - other chains: Etherscan v2
+    const upstream = new URL(useSnowtrace ? SNOWTRACE_API_URL : ETHERSCAN_V2_API_URL)
 
     // Copy through only the params we expect.
     // (This prevents someone using your endpoint as a general-purpose proxy.)
-    upstream.searchParams.set('chainid', chainid)
+    if (!useSnowtrace) {
+      upstream.searchParams.set('chainid', chainid)
+    }
     upstream.searchParams.set('module', module)
     upstream.searchParams.set('action', action)
 
@@ -105,7 +213,7 @@ const server = http.createServer(async (req, res) => {
       if (v != null && v !== '') upstream.searchParams.set(k, v)
     }
 
-    upstream.searchParams.set('apikey', API_KEY)
+    upstream.searchParams.set('apikey', useSnowtrace ? SNOWTRACE_API_KEY : ETHERSCAN_API_KEY)
 
     const upstreamResp = await fetch(upstream.toString(), { method: 'GET' })
     const text = await upstreamResp.text()
