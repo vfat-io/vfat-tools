@@ -56,7 +56,7 @@ export async function fetchEtherscanV2ViaProxy(params, opts = {}, retry = 0) {
     if (v === undefined || v === null || v === '') continue
     search.set(k, String(v))
   }
-  console.log('fetchProxy', params)
+  console.log('fetchProxy', params, bases)
   let lastErr = null
   for (const base of bases) {
     const url = `${String(base).replace(/\?$/u, '')}?${search.toString()}`
@@ -64,13 +64,13 @@ export async function fetchEtherscanV2ViaProxy(params, opts = {}, retry = 0) {
       const resp = await fetch(url, { method: 'GET' })
       if (!resp.ok) throw new Error(`Proxy request failed (${resp.status})`)
         const res = await resp.json()
-    console.log('fetchProxy result', res)
-        if (res?.result.length > 0)
-            return res
-        if( retry < 3 ) {
+        console.log('fetchProxy result', res)
+        if( res.status === 0 && retry < 3 ) {
             console.log("retrying...", retry + 1)
             return await fetchEtherscanV2ViaProxy(params, opts, retry + 1)
         }
+        
+        return res
     } catch (e) {
       lastErr = e
     }
@@ -144,15 +144,17 @@ export function parseTokenIdFromMoralisNftRow(row) {
 export async function getOwnedErc721TokenIdsViaProxy({ chainId, contractAddress, ownerAddress, bases }) {
   // BSC (56): use Moralis-backed proxy because free-tier Etherscan v2 does not cover BSC.
   const chainIdInt = chainIdToInt(chainId)
-  if (chainIdInt === 56) {
+  if (chainIdInt === 56 || chainIdInt === 10) {
     const owned = new Set()
     let cursor = null
+
+    const chain = chainIdInt === 56 ? 'bsc' : 'optimism'
 
     while (true) {
       const data = await fetchMoralisWalletNftsViaProxy(
         {
           address: ownerAddress,
-          chain: 'bsc',
+          chain: chain,
           token_addresses: [contractAddress],
           cursor: cursor || undefined,
           limit: 100,
