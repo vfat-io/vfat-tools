@@ -65,49 +65,48 @@ consoleInit(main)
    let aprs = []
    for (i = 0; i < poolCount; i++) {
      if (poolPrices[i]) {
-       const apr = printChefPool(App, chefAbi, chefAddress, prices, tokens, poolInfos[i], i, poolPrices[i],
+       const apr = printPollyfinancePool(App, chefAbi, chefAddress, prices, tokens, poolInfos[i], i, poolPrices[i],
          totalAllocPoints, poolInfos[i].rewardsPerWeek, rewardTokenTicker, rewardTokenAddress,
          pendingRewardsFunction, null, null, "matic")
        aprs.push(apr);
      }
    }
-   let totalUserStaked=0, totalStaked=0, averageApr=0;
-   for (const a of aprs) {
-     if (!isNaN(a.totalStakedUsd)) {
-       totalStaked += a.totalStakedUsd;
-     }
-     if (a.userStakedUsd > 0) {
-       totalUserStaked += a.userStakedUsd;
-       averageApr += a.userStakedUsd * a.yearlyAPR / 100;
-     }
-   }
-   averageApr = averageApr / totalUserStaked;
-   _print_bold(`Total Staked: $${formatMoney(totalStaked)}`);
-   if (totalUserStaked > 0) {
-     _print_bold(`\nYou are staking a total of $${formatMoney(totalUserStaked)} at an average APR of ${(averageApr * 100).toFixed(2)}%`)
-     _print(`Estimated earnings:`
-         + ` Day $${formatMoney(totalUserStaked*averageApr/365)}`
-         + ` Week $${formatMoney(totalUserStaked*averageApr/52)}`
-         + ` Year $${formatMoney(totalUserStaked*averageApr)}\n`);
-   }
-   return { prices, totalUserStaked, totalStaked, averageApr }
- 
  }
+
+ function printPollyfinancePool(App, chefAbi, chefAddr, prices, tokens, poolInfo, poolIndex, poolPrices,
+                       totalAllocPoints, rewardsPerWeek, rewardTokenTicker, rewardTokenAddress,
+                       pendingRewardsFunction, fixedDecimals, claimFunction, chain="eth", depositFee=0, withdrawFee=0) {
+  fixedDecimals = fixedDecimals ?? 2;
+  const sp = (poolInfo.stakedToken == null) ? null : getPoolPrices(tokens, prices, poolInfo.stakedToken, chain);
+  const userStaked = poolInfo.userLPStaked ?? poolInfo.userStaked;
+  const rewardPrice = getParameterCaseInsensitive(prices, rewardTokenAddress)?.usd;
+  _print_inline(`${poolIndex} - `);
+  poolPrices.print_price(chain);
+  sp?.print_price(chain);
+  if (poolInfo.userLPStaked > 0) sp?.print_contained_price(userStaked);
+  if (poolInfo.userStaked > 0) poolPrices.print_contained_price(userStaked);
+  printPollyContractLinks(App, chefAbi, chefAddr, poolIndex, poolInfo.address, pendingRewardsFunction,
+    rewardTokenTicker, poolPrices.stakeTokenTicker, poolInfo.poolToken.unstaked,
+    poolInfo.userStaked, poolInfo.pendingRewardTokens, fixedDecimals, claimFunction, rewardPrice, chain, depositFee, withdrawFee);
+}
+
+function printPollyContractLinks(App, chefAbi, chefAddr, poolIndex, poolAddress, pendingRewardsFunction,
+    rewardTokenTicker, stakeTokenTicker, unstaked, userStaked, pendingRewardTokens, fixedDecimals,
+    claimFunction, rewardTokenPrice, chain, depositFee, withdrawFee) {
+  fixedDecimals = fixedDecimals ?? 2;
+  const unstake = async function() {
+    return pollyContract_unstake(chefAbi, chefAddr, poolIndex, App, pendingRewardsFunction)
+  }
+  if(withdrawFee > 0){
+    _print_link(`Unstake ${userStaked.toFixed(fixedDecimals)} ${stakeTokenTicker} - Fee ${withdrawFee}%`, unstake)
+  }else{
+    _print_link(`Unstake ${userStaked.toFixed(fixedDecimals)} ${stakeTokenTicker}`, unstake)
+  }
+  _print("");
+}
  
  async function getPollyPoolInfo(App, chefContract, chefAddress, poolIndex, pendingRewardsFunction) {
    const poolInfo = await chefContract.poolInfo(poolIndex);
-   if (poolInfo.allocPoint == 0) {
-     return {
-       address: poolInfo.lpToken,
-       allocPoints: poolInfo.allocPoint ?? 1,
-       poolToken: null,
-       userStaked : 0,
-       pendingRewardTokens : 0,
-       stakedToken : null,
-       userLPStaked : 0,
-       lastRewardBlock : poolInfo.lastRewardBlock
-     };
-   }
    const poolToken = await getMaticToken(App, poolInfo.lpToken, chefAddress);
    const userInfo = await chefContract.userInfo(poolIndex, App.YOUR_ADDRESS);
    const pendingRewardTokens = await chefContract.callStatic[pendingRewardsFunction](poolIndex, App.YOUR_ADDRESS);
@@ -125,3 +124,49 @@ consoleInit(main)
    };
  }
  
+ const pollyContract_unstake = async function(chefAbi, chefAddress, poolIndex, App, pendingRewardsFunction) {
+  const signer = App.provider.getSigner()
+  const CHEF_CONTRACT = new ethers.Contract(chefAddress, chefAbi, signer)
+
+  const currentStakedAmount = (await CHEF_CONTRACT.userInfo(poolIndex, App.YOUR_ADDRESS)).amount
+  const refAddress = "0x0000000000000000000000000000000000000000";
+
+  if (currentStakedAmount / 1e18 > 0) {
+    showLoading()
+    CHEF_CONTRACT.withdraw(poolIndex, currentStakedAmount, refAddress)
+      .then(function(t) {
+        return App.provider.waitForTransaction(t.hash)
+      })
+      .catch(function() {
+        hideLoading()
+      })
+  }
+}
+
+const pollyContract_claim = async function(chefAbi, chefAddress, poolIndex, App,
+    pendingRewardsFunction, claimFunction) {
+  const signer = App.provider.getSigner()
+
+  const CHEF_CONTRACT = new ethers.Contract(chefAddress, chefAbi, signer)
+
+  const earnedTokenAmount = await CHEF_CONTRACT.callStatic[pendingRewardsFunction](poolIndex, App.YOUR_ADDRESS) / 1e18
+
+  if (earnedTokenAmount > 0) {
+    showLoading()
+    if (claimFunction) {
+      claimFunction(poolIndex, {gasLimit: 500000})
+        .then(function(t) {
+          return App.provider.waitForTransaction(t.hash)
+        })
+    }
+    else {
+      CHEF_CONTRACT.deposit(poolIndex, 0, {gasLimit: 500000})
+        .then(function(t) {
+          return App.provider.waitForTransaction(t.hash)
+        })
+        .catch(function() {
+          hideLoading()
+        })
+    }
+  }
+}
