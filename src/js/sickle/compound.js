@@ -4,7 +4,7 @@
  * Compounds rewards back into the NFT position to increase liquidity
  */
 
-import { OperationType, initializeWalletProvider, encodeTransactionData, simulateTransaction, sendTransaction, waitForTransaction, handleTransactionReceipt } from './utils.js'
+import { OperationType, initializeWalletProvider, encodeTransactionData, simulateTransaction, sendTransaction, waitForTransaction, handleTransactionReceipt, normalizeSicklePoolId } from './utils.js'
 
 /**
  * Compound NFT position rewards back into the position
@@ -42,10 +42,9 @@ Proceed with compound?`
       nftManagerAddress: poolData.nftManagerAddress
     }
 
-    // Uniswap v4: pass bytes32 poolId hash (SDK uses this for quotes)
-    if (poolData.poolId) {
-      nftPoolConfig.poolId = String(poolData.poolId)
-    }
+    // Always pass a poolId value for quote API compatibility.
+    // For most CL protocols: "0". For Uniswap v4: bytes32 hash.
+    nftPoolConfig.poolId = normalizeSicklePoolId(poolData.poolId)
     
     // Only add poolIndex for PancakeSwap V3 (has MasterChef pool IDs / PIDs)
     // Velodrome/Aerodrome use gauge contracts and should NOT have poolIndex

@@ -170,6 +170,27 @@ export function handleTransactionReceipt(receipt, txHash, operationType) {
   }
 }
 
+/**
+ * Normalize poolId for Sickle SDK + quote API.
+ *
+ * - For most CL protocols (Aerodrome/Velodrome/Ramses-style), poolId is unused and should be "0".
+ * - For Uniswap v4, poolId is a bytes32 hash (0x...)
+ *
+ * We observed the SDK/quote layer rejecting a bytes32-zero poolId (0x00..00) with HTTP 400.
+ * This helper maps undefined/null/bytes32-zero -> "0".
+ */
+export function normalizeSicklePoolId(poolId) {
+  if (poolId === undefined || poolId === null) return '0'
+  const s = String(poolId)
+  if (!s) return '0'
+
+  const lower = s.toLowerCase()
+  // bytes32 zero
+  if (lower === '0x' + '0'.repeat(64)) return '0'
+
+  return s
+}
+
 export default {
   OperationType,
   getNativeTokenSymbol,
@@ -178,5 +199,6 @@ export default {
   simulateTransaction,
   sendTransaction,
   waitForTransaction,
-  handleTransactionReceipt
+  handleTransactionReceipt,
+  normalizeSicklePoolId
 }

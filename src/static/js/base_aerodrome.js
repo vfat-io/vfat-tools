@@ -255,14 +255,18 @@ async function loadClSynthetixPoolInfo(App, tokens, prices, stakingAbi, stakingA
     }
     
     const clPool = new ethcall.Contract(stakeTokenAddress, CL_TOKEN_ABI);
-    const nftContract = new ethcall.Contract(NFT_TOKEN_ADDRESS, NFT_AERO_ABI);
 
-    const [tokenAddress0, tokenAddress1, poolSlot0, poolTickSpacing] = await App.ethcallProvider.all([
+    // IMPORTANT: Base Aerodrome CL pools can be deployed under different factories with
+    // different position managers. Hardcoding the NFT manager breaks quoting/exit.
+    const [tokenAddress0, tokenAddress1, poolSlot0, poolTickSpacing, nftManagerAddress] = await App.ethcallProvider.all([
       clPool.token0(), 
       clPool.token1(),
       clPool.slot0(),
-      clPool.tickSpacing()
+      clPool.tickSpacing(),
+      clPool.nft(),
     ]);
+
+    const nftContract = new ethcall.Contract(nftManagerAddress, NFT_AERO_ABI);
 
     const token0 = new ethcall.Contract(tokenAddress0, ERC20_ABI);
     const token1 = new ethcall.Contract(tokenAddress1, ERC20_ABI);
@@ -271,7 +275,7 @@ async function loadClSynthetixPoolInfo(App, tokens, prices, stakingAbi, stakingA
 
     const rewardTokenAddress = "0x940181a94a35a4569e4529a3cdfb74e38fd98631";
 
-    const nftToken = new ethcall.Contract(NFT_TOKEN_ADDRESS, NFT_AERO_ABI);
+    const nftToken = new ethcall.Contract(nftManagerAddress, NFT_AERO_ABI);
     const [userOwnedNfts, totalStakedNfts] = await App.ethcallProvider.all([nftToken.balanceOf(owner_sickle_address), nftToken.balanceOf(stakingAddress)]);
 
     let userOwnedNftIds = []
@@ -361,6 +365,7 @@ async function loadClSynthetixPoolInfo(App, tokens, prices, stakingAbi, stakingA
       has_sickle_account,
       poolSlot0,
       poolTickSpacing,
+      nftManagerAddress,
     }
 }
 
@@ -499,7 +504,7 @@ const sickle_sdk_exitToUnderlying_aerodrome = async function(info, nftId) {
       const poolData = {
         stakingAddress: info.stakingAddress,
         poolAddress: info.stakeTokenAddress,
-        nftManagerAddress: NFT_TOKEN_ADDRESS,
+        nftManagerAddress: info.nftManagerAddress ?? NFT_TOKEN_ADDRESS,
       };
       await window.Sickle.withdraw.withdrawToUnderlying(poolData, nftId);
     } catch (error) {
@@ -518,7 +523,7 @@ const sickle_sdk_exitToToken_aerodrome = async function(info, nftId) {
       const poolData = {
         stakingAddress: info.stakingAddress,
         poolAddress: info.stakeTokenAddress,
-        nftManagerAddress: NFT_TOKEN_ADDRESS,
+        nftManagerAddress: info.nftManagerAddress ?? NFT_TOKEN_ADDRESS,
       };
       await window.Sickle.withdraw.withdrawToToken(poolData, nftId);
     } catch (error) {
@@ -547,7 +552,7 @@ const sickle_sdk_rebalance_aerodrome = async function(info, nftId) {
       const poolData = {
         stakingAddress: info.stakingAddress,
         poolAddress: info.stakeTokenAddress,
-        nftManagerAddress: NFT_TOKEN_ADDRESS,
+        nftManagerAddress: info.nftManagerAddress ?? NFT_TOKEN_ADDRESS,
         tickSpacing: tickSpacing,
         pid: undefined  // Aerodrome uses gauge contract, no separate pool ID
       };
@@ -572,7 +577,7 @@ const sickle_sdk_compound_aerodrome = async function(info, nftId) {
       const poolData = {
         stakingAddress: info.stakingAddress,
         poolAddress: info.stakeTokenAddress,
-        nftManagerAddress: NFT_TOKEN_ADDRESS,
+        nftManagerAddress: info.nftManagerAddress ?? NFT_TOKEN_ADDRESS,
       };
       await window.Sickle.compound.compound(poolData, nftId);
     } catch (error) {

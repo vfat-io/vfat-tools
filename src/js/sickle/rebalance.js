@@ -4,7 +4,7 @@
  * Automatically rebalances NFT positions to current price while preserving the original margin settings
  */
 
-import { OperationType, initializeWalletProvider, encodeTransactionData, simulateTransaction, sendTransaction, waitForTransaction, handleTransactionReceipt } from './utils.js'
+import { OperationType, initializeWalletProvider, encodeTransactionData, simulateTransaction, sendTransaction, waitForTransaction, handleTransactionReceipt, normalizeSicklePoolId } from './utils.js'
 
 /**
  * Rebalance an NFT position to center it around the current price
@@ -94,10 +94,9 @@ Proceed with rebalance?`
       ...(poolData.pid !== undefined && poolData.pid !== null && { poolIndex: Number(poolData.pid) })
     }
 
-    // Uniswap v4: pass bytes32 poolId hash (SDK uses this for quotes)
-    if (poolData.poolId) {
-      nftPoolConfig.poolId = String(poolData.poolId)
-    }
+    // Always pass a poolId value for quote API compatibility.
+    // For most CL protocols: "0". For Uniswap v4: bytes32 hash.
+    nftPoolConfig.poolId = normalizeSicklePoolId(poolData.poolId)
 
     const nftPool = new window.Sickle.NftPool(nftPoolConfig)
     
