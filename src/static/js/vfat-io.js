@@ -22,6 +22,7 @@ const main = async() => {
       ["Hybra New             ", "HyperEVM",  "CL ",     `<a href='/hyperevm/sickle'          >/hyperevm/sickle</a>`],
       ["HyperSwap             ", "HyperEVM",  "CL ",     `<a href='/hyperevm/sickle'          >/hyperevm/sickle</a>`],
       ["KittenSwap            ", "HyperEVM",  "CL ",     `<a href='/hyperevm/sickle'          >/hyperevm/sickle</a>`],
+      ["Nest                  ", "HyperEVM",  "CL ",     `<a href='/hyperevm/sickle'          >/hyperevm/sickle</a>`],
       ["Kyo                   ", "Soneium",   "CL ",     `<a href='/soneium/sickle'           >/soneium/sickle</a>`],
       ["Lithos                ", "Plasma",    "V2 ",     `<a href='/plasma/lithos'            >/plasma/lithos</a>`],
       ["NineMM                ", "Base",      "CL ",     `<a href='/base/sickle'              >/base/sickle</a>`],
