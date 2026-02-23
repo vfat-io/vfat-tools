@@ -39,6 +39,7 @@ const main = async () => {
       ["                      ", "Bnb", "CL ", `<a href='/bnb/pancakev3'            >/bnb/pancakev3</a>`],
       ["                      ", "Linea", "CL ", `<a href='/linea/pancakev3'          >/linea/pancakev3</a>`],
       ["                      ", "Mainnet", "CL ", `<a href='/pancakev3'                >/pancakev3</a>`],
+      ["Pangolin              ", "Avax", "CL ", `<a href='/avax/sickle'             >/avax/sickle</a>`],
       ["PDex                  ", "Pulse", "CL ", `<a href='/pulse/sickle'             >/pulse/sickle</a>`],
       ["Pharaoh               ", "Avax", "CL ", `<a href='/avax/sickle'              >/avax/sickle</a>`],
       ["Pharaoh-v3            ", "Avax", "CL ", `<a href='/avax/pharaoh-v3'          >/avax/pharaoh-v3</a>`],
