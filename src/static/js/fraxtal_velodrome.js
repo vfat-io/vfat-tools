@@ -6364,30 +6364,35 @@ async function printVelodromePool(App, info, chain = 'eth', customURLs) {
     if (info.has_sickle_account) {
       index < info.nftPositions.length -1 ? _print_inline(`|    `) : _print_inline(`     `)
       _print_link(`Withdraw NFT`, () => sickle_unstake(position.nftId))
-      index < info.nftPositions.length -1 ? _print_inline(`|    `) : _print_inline(`     `)
-      _print_link(`Exit to Underlying (${position.amount0.toFixed(4)} ${info.token0Symbol} + ${position.amount1.toFixed(4)} ${info.token1Symbol})`, () => sickle_exitToUnderlying(position.nftId))
-      index < info.nftPositions.length -1 ? _print_inline(`|    `) : _print_inline(`     `)
-      _print_link(`Exit to 'frxETH'`, () => sickle_exitToToken(position.nftId))
+
+      if(window.Sickle){
+        index < info.nftPositions.length -1 ? _print_inline(`|    `) : _print_inline(`     `)
+        _print_link(`Exit to Underlying (${position.amount0.toFixed(4)} ${info.token0Symbol} + ${position.amount1.toFixed(4)} ${info.token1Symbol})`, () => sickle_exitToUnderlying(position.nftId))
+        index < info.nftPositions.length -1 ? _print_inline(`|    `) : _print_inline(`     `)
+        _print_link(`Exit to 'frxETH'`, () => sickle_exitToToken(position.nftId))
+      }
       index < info.nftPositions.length -1 ? _print_inline(`|    `) : _print_inline(`     `)
       _print_link(
         `Claim rewards, ${earnings.toFixed(6)} ($${formatMoney(earningsUsd)})`,
         () => sickle_claim(info.userStakedNfts[earningsIndex])
       )
 
-      const positionData = position.positionData
-      if (positionData && info.poolSlot0) {
-        const tickLower = positionData.tickLower
-        const tickUpper = positionData.tickUpper
-        const currentTick = info.poolSlot0.tick
-        const isInRange = currentTick >= tickLower && currentTick < tickUpper
-        const rangeStatus = isInRange ? '✅ In Range' : '⚠️ Out of Range'
-        
-        index < info.nftPositions.length -1 ? _print_inline(`|    `) : _print_inline(`     `)
-        _print_link(`Rebalance (${rangeStatus})`, () => sickle_rebalance(position.nftId))
-      } 
-        index < info.nftPositions.length -1 ? _print_inline(`|    `) : _print_inline(`     `)
-        _print_link(`Compound, ${earnings.toFixed(6)} ($${formatMoney(earningsUsd)})`, () => sickle_compound(position.nftId))
+      if(window.Sickle){
+        const positionData = position.positionData
+        if (positionData && info.poolSlot0) {
+          const tickLower = positionData.tickLower
+          const tickUpper = positionData.tickUpper
+          const currentTick = info.poolSlot0.tick
+          const isInRange = currentTick >= tickLower && currentTick < tickUpper
+          const rangeStatus = isInRange ? '✅ In Range' : '⚠️ Out of Range'
+
+          index < info.nftPositions.length -1 ? _print_inline(`|    `) : _print_inline(`     `)
+          _print_link(`Rebalance (${rangeStatus})`, () => sickle_rebalance(position.nftId))
+        } 
+          index < info.nftPositions.length -1 ? _print_inline(`|    `) : _print_inline(`     `)
+          _print_link(`Compound, ${earnings.toFixed(6)} ($${formatMoney(earningsUsd)})`, () => sickle_compound(position.nftId))
       }
+    }
     } else {
       index < info.nftPositions.length -1 ? _print_inline(`|    `) : _print_inline(`     `)
       _print_link(`Withdraw NFT`, () => unstake(position.nftId))

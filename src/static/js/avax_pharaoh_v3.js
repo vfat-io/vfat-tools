@@ -732,19 +732,20 @@ async function main() {
 
       i < nftIds.length - 1 ? _print_inline(`|    `) : _print_inline(`     `)
       _print_link('Withdraw NFT', async () => single_sweep_nfts_721(App, nftId, nfpManagerAddress))
-
-      i < nftIds.length - 1 ? _print_inline(`|    `) : _print_inline(`     `)
-      _print_link('Exit to Underlying', async () => window.Sickle.withdraw.withdrawToUnderlying(poolData, nftId))
-
-      i < nftIds.length - 1 ? _print_inline(`|    `) : _print_inline(`     `)
-      _print_link('Exit to AVAX', async () => window.Sickle.withdraw.withdrawToToken(poolData, nftId))
-
-      i < nftIds.length - 1 ? _print_inline(`|    `) : _print_inline(`     `)
-      _print_link(`Rebalance ${rangeStatus}`, async () => window.Sickle.rebalance.rebalance(poolData, nftId, tickLower, tickUpper, currentTick))
-
-      i < nftIds.length - 1 ? _print_inline(`|    `) : _print_inline(`     `)
-      _print_link(compoundLabel, async () => window.Sickle.compound.compound(poolData, nftId))
+      if(window.Sickle){
+        i < nftIds.length - 1 ? _print_inline(`|    `) : _print_inline(`     `)
+        _print_link('Exit to Underlying', async () => window.Sickle.withdraw.withdrawToUnderlying(poolData, nftId))
+        
+        i < nftIds.length - 1 ? _print_inline(`|    `) : _print_inline(`     `)
+        _print_link('Exit to AVAX', async () => window.Sickle.withdraw.withdrawToToken(poolData, nftId))
+        
+        i < nftIds.length - 1 ? _print_inline(`|    `) : _print_inline(`     `)
+        _print_link(`Rebalance ${rangeStatus}`, async () => window.Sickle.rebalance.rebalance(poolData, nftId, tickLower, tickUpper, currentTick))
+        
+        i < nftIds.length - 1 ? _print_inline(`|    `) : _print_inline(`     `)
+        _print_link(compoundLabel, async () => window.Sickle.compound.compound(poolData, nftId))
     }
+      }
 
     // Best-effort (bounded) claimed summary: scan recent blocks only so we never block the page.
     try {

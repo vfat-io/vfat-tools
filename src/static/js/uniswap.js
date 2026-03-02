@@ -249,25 +249,28 @@ $(function() {
       if(info.has_sickle_account){
         index < infos.length -1 ? _print_inline(`|    `) : _print_inline(`     `)
         _print_link(`Withdraw NFT`, () => sickle_unstake(info.nftId))
-        index < infos.length -1 ? _print_inline(`|    `) : _print_inline(`     `)
-        _print_link(`Exit to Underlying (${info.amount0.toFixed(4)} ${info.token0Symbol} + ${info.amount1.toFixed(4)} ${info.token1Symbol})`, () => sickle_exitToUnderlying(info))
-        index < infos.length -1 ? _print_inline(`|    `) : _print_inline(`     `)
-        _print_link(`Exit to 'ETH'`, () => sickle_exitToToken(info))
 
-        if (info.positionData && info.slot0) {
-          const tickLower = info.positionData.tickLower
-          const tickUpper = info.positionData.tickUpper
-          const currentTick = info.slot0.tick
-          const isInRange = currentTick >= tickLower && currentTick < tickUpper
-          const rangeStatus = isInRange ? '✅ In Range' : '⚠️ Out of Range'
-          
+        if(window.Sickle){
           index < infos.length -1 ? _print_inline(`|    `) : _print_inline(`     `)
-          _print_link(`Rebalance (${rangeStatus})`, () => sickle_rebalance(info))
-        }
-
-        index < infos.length -1 ? _print_inline(`|    `) : _print_inline(`     `)
-        _print_link(`Compound`, () => sickle_compound(info))
-      }
+          _print_link(`Exit to Underlying (${info.amount0.toFixed(4)} ${info.token0Symbol} + ${info.amount1.toFixed(4)} ${info.token1Symbol})`, () => sickle_exitToUnderlying(info))
+          index < infos.length -1 ? _print_inline(`|    `) : _print_inline(`     `)
+          _print_link(`Exit to 'ETH'`, () => sickle_exitToToken(info))
+          
+          if (info.positionData && info.slot0) {
+            const tickLower = info.positionData.tickLower
+            const tickUpper = info.positionData.tickUpper
+            const currentTick = info.slot0.tick
+            const isInRange = currentTick >= tickLower && currentTick < tickUpper
+            const rangeStatus = isInRange ? '✅ In Range' : '⚠️ Out of Range'
+            
+            index < infos.length -1 ? _print_inline(`|    `) : _print_inline(`     `)
+            _print_link(`Rebalance (${rangeStatus})`, () => sickle_rebalance(info))
+          }
+        
+          index < infos.length -1 ? _print_inline(`|    `) : _print_inline(`     `)
+          _print_link(`Compound`, () => sickle_compound(info))
+          }
+      } 
     }
     _print("");
   }

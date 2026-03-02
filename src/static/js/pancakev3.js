@@ -205,29 +205,36 @@ function printCakeV3ContractLinks(App, chefAbi, chefAddr, positionInfos, rewardT
     if (has_sickle_account) {
       index < positionInfos.length -1 ? _print_inline(`|    `) : _print_inline(`     `)
       _print_link(`Withdraw NFT`, () => sickle_unstake(userNftId, token0Address, token1Address))
-      index < positionInfos.length -1 ? _print_inline(`|    `) : _print_inline(`     `)
-      _print_link(`Exit to Underlying (${amount0.toFixed(4)} ${token0Symbol} + ${amount1.toFixed(4)} ${token1Symbol})`, () => sickle_exitToUnderlying(positionInfo, userNftId))
-      index < positionInfos.length -1 ? _print_inline(`|    `) : _print_inline(`     `)
-      _print_link(`Exit to 'ETH'`, () => sickle_exitToToken(positionInfo, userNftId))
-      index < positionInfos.length -1 ? _print_inline(`|    `) : _print_inline(`     `)
+
+      if(window.Sickle){
+        index < positionInfos.length -1 ? _print_inline(`|    `) : _print_inline(`     `)
+        _print_link(`Exit to Underlying (${amount0.toFixed(4)} ${token0Symbol} + ${amount1.toFixed(4)} ${token1Symbol})`, () => sickle_exitToUnderlying(positionInfo, userNftId))
+        index < positionInfos.length -1 ? _print_inline(`|    `) : _print_inline(`     `)
+        _print_link(`Exit to 'ETH'`, () => sickle_exitToToken(positionInfo, userNftId))
+        index < positionInfos.length -1 ? _print_inline(`|    `) : _print_inline(`     `)
+      }
+      
       _print_link(
         `Claim rewards, ${pendingCakes.toFixed(6)} ($${formatMoney(earningsUsd)})`,
         () => sickle_claim(userNftId, token0Address, token1Address)
       )
 
-      const positionData = positionInfo.positionData
-      if (positionData && positionInfo.poolSlot0) {
-        const tickLower = positionData.tickLower
-        const tickUpper = positionData.tickUpper
-        const currentTick = positionInfo.poolSlot0.tick
-        const isInRange = currentTick >= tickLower && currentTick < tickUpper
-        const rangeStatus = isInRange ? '✅ In Range' : '⚠️ Out of Range'
+      if(window.Sickle){
+        const positionData = positionInfo.positionData
+        if (positionData && positionInfo.poolSlot0) {
+          const tickLower = positionData.tickLower
+          const tickUpper = positionData.tickUpper
+          const currentTick = positionInfo.poolSlot0.tick
+          const isInRange = currentTick >= tickLower && currentTick < tickUpper
+          const rangeStatus = isInRange ? '✅ In Range' : '⚠️ Out of Range'
         
+          index < positionInfos.length -1 ? _print_inline(`|    `) : _print_inline(`     `)
+          _print_link(`Rebalance (${rangeStatus})`, () => sickle_rebalance(positionInfo, userNftId))
+        }
         index < positionInfos.length -1 ? _print_inline(`|    `) : _print_inline(`     `)
-        _print_link(`Rebalance (${rangeStatus})`, () => sickle_rebalance(positionInfo, userNftId))
+        _print_link(`Compound, ${pendingCakes.toFixed(6)} ($${formatMoney(earningsUsd)})`, () => sickle_compound(positionInfo, userNftId))
       }
-      index < positionInfos.length -1 ? _print_inline(`|    `) : _print_inline(`     `)
-      _print_link(`Compound, ${pendingCakes.toFixed(6)} ($${formatMoney(earningsUsd)})`, () => sickle_compound(positionInfo, userNftId))
+    
     } else {
       index < positionInfos.length -1 ? _print_inline(`|    `) : _print_inline(`     `)
       _print_link(`Withdraw NFT`, () => unstake(userNftId))

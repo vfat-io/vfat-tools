@@ -234,28 +234,31 @@ $(function() {
       _print_inline(isLast ? `     ` : `|    `);
       _print_link(`Withdraw NFT`, () => sickle_clContract_withdraw(info.nftId, App));
 
-      _print_inline(isLast ? `     ` : `|    `);
-      _print_link(
-        `Exit to Underlying (${info.amount0.toFixed(4)} ${info.token0Symbol} + ${info.amount1.toFixed(4)} ${info.token1Symbol})`,
-        () => sickle_sdk_exitToUnderlying_uniswap(info)
-      );
-
-      _print_inline(isLast ? `     ` : `|    `);
-      _print_link(`Exit to 'ETH'`, () => sickle_sdk_exitToToken_uniswap(info));
-
-      if (info.positionData && info.slot0) {
-        const tickLower = info.positionData.tickLower;
-        const tickUpper = info.positionData.tickUpper;
-        const currentTick = info.slot0.tick;
-        const isInRange = currentTick >= tickLower && currentTick < tickUpper;
-        const rangeStatus = isInRange ? '✅ In Range' : '⚠️ Out of Range';
+      if(window.Sickle){
+        _print_inline(isLast ? `     ` : `|    `);
+        _print_link(
+          `Exit to Underlying (${info.amount0.toFixed(4)} ${info.token0Symbol} + ${info.amount1.toFixed(4)} ${info.token1Symbol})`,
+          () => sickle_sdk_exitToUnderlying_uniswap(info)
+        );
 
         _print_inline(isLast ? `     ` : `|    `);
-        _print_link(`Rebalance (${rangeStatus})`, () => sickle_sdk_rebalance_uniswap(info));
-      }
+        _print_link(`Exit to 'ETH'`, () => sickle_sdk_exitToToken_uniswap(info));
 
-      _print_inline(isLast ? `     ` : `|    `);
-      _print_link(`Compound`, () => sickle_sdk_compound_uniswap(info));
+        if (info.positionData && info.slot0) {
+          const tickLower = info.positionData.tickLower;
+          const tickUpper = info.positionData.tickUpper;
+          const currentTick = info.slot0.tick;
+          const isInRange = currentTick >= tickLower && currentTick < tickUpper;
+          const rangeStatus = isInRange ? '✅ In Range' : '⚠️ Out of Range';
+
+          _print_inline(isLast ? `     ` : `|    `);
+          _print_link(`Rebalance (${rangeStatus})`, () => sickle_sdk_rebalance_uniswap(info));
+        }
+
+        _print_inline(isLast ? `     ` : `|    `);
+        _print_link(`Compound`, () => sickle_sdk_compound_uniswap(info));
+      }
+      
     }
 
     _print('');
