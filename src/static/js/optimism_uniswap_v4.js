@@ -418,20 +418,22 @@ const withdraw_nfts = async function(App, nft_manager_v4, nft_manager_address_v4
       idx < infos.length - 1 ? _print_inline(`|    `) : _print_inline(`     `)
       _print_link(`Withdraw NFT`, singleSweepErc721)
 
-      idx < infos.length - 1 ? _print_inline(`|    `) : _print_inline(`     `)
-      _print_link(`Exit to Underlying`, exitToUnderlying)
-
-      idx < infos.length - 1 ? _print_inline(`|    `) : _print_inline(`     `)
-      _print_link(`Exit to ETH`, exitToEth)
-
-      idx < infos.length - 1 ? _print_inline(`|    `) : _print_inline(`     `)
-      _print_link(`Rebalance ${rangeStatus}`, rebalance)
-
-      if (earned && (earned.fees0Raw > 0n || earned.fees1Raw > 0n)) {
-        const e0 = formatTokenAmountHtmlFromRaw(earned.fees0Raw, t0?.decimals)
-        const e1 = formatTokenAmountHtmlFromRaw(earned.fees1Raw, t1?.decimals)
+      if(window.Sickle){
         idx < infos.length - 1 ? _print_inline(`|    `) : _print_inline(`     `)
-        _print_link(`Compound (${e0} ${t0?.symbol || '?'} + ${e1} ${t1?.symbol || '?'})`, compound)
+        _print_link(`Exit to Underlying`, exitToUnderlying)
+        
+        idx < infos.length - 1 ? _print_inline(`|    `) : _print_inline(`     `)
+        _print_link(`Exit to ETH`, exitToEth)
+        
+        idx < infos.length - 1 ? _print_inline(`|    `) : _print_inline(`     `)
+        _print_link(`Rebalance ${rangeStatus}`, rebalance)
+        
+        if (earned && (earned.fees0Raw > 0n || earned.fees1Raw > 0n)) {
+          const e0 = formatTokenAmountHtmlFromRaw(earned.fees0Raw, t0?.decimals)
+          const e1 = formatTokenAmountHtmlFromRaw(earned.fees1Raw, t1?.decimals)
+          idx < infos.length - 1 ? _print_inline(`|    `) : _print_inline(`     `)
+          _print_link(`Compound (${e0} ${t0?.symbol || '?'} + ${e1} ${t1?.symbol || '?'})`, compound)
+        }
       }
     }
 

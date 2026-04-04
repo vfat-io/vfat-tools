@@ -44,27 +44,29 @@ window.customNetworks = customNetworks
 window.NETWORKS = NETWORKS
 window.store = store
 
-// Sickle SDK Integration
-window.Sickle = {
-  sdk: Sickle.sickle,
-  ...Sickle,
-  rebalance: SickleRebalance,
-  withdraw: SickleWithdraw,
-  compound: SickleCompound,
-  lpWithdraw: SickleLpWithdraw,
-  lpCompound: SickleLpCompound,
-}
+
 
 // Attach protocol-level helpers for non-module chain scripts.
-if (document.location.href.includes('uniswap-v4')) {
-  console.log('Initializing Uniswap V4 protocol helpers in Sickle...')
-  window.Sickle.protocols = window.Sickle.protocols || {}
-  window.Sickle.protocols.uniswapV4 = UniswapV4Protocol
+if (document.location.search === '?api=true') {
+  // Sickle SDK Integration
+  window.Sickle = {
+    sdk: Sickle.sickle,
+    ...Sickle,
+    rebalance: SickleRebalance,
+    withdraw: SickleWithdraw,
+    compound: SickleCompound,
+    lpWithdraw: SickleLpWithdraw,
+    lpCompound: SickleLpCompound,
+  }  
+  if (document.location.href.includes('uniswap-v4')) {
+    console.log('Initializing Uniswap V4 protocol helpers in Sickle...')
+    window.Sickle.protocols = window.Sickle.protocols || {}
+    window.Sickle.protocols.uniswapV4 = UniswapV4Protocol
+  }
+  // Uniswap V3 Utilities
+  window.UniswapV3 = {
+    ...UniswapV3,
 }
-
-// Uniswap V3 Utilities
-window.UniswapV3 = {
-  ...UniswapV3,
 }
 
 // 3. Create a AppKit instance safely
