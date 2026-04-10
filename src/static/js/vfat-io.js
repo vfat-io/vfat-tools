@@ -9,6 +9,7 @@ const main = async () => {
     "heading": ["Project", "Chain", "Type", "Link", "Vfat.io API"],
     "rows": [
       ["Aerodrome             ", "Base      ", "CL / V2 ", `<a href='/base/aerodrome'           >/base/aerodrome</a>`, `<a href='/base/aerodrome?api=true'           >Api -> /base/aerodrome</a>`],
+      ["Aerodrome New         ", "Base      ", "CL      ", `<a href='/base/aerodrome_new'       >/base/aerodrome_new</a>`, `<a href='/base/aerodrome?api=true'           >Api -> /base/aerodrome_new</a>`],
       ["Atlantis              ", "Sonic     ", "CL      ", `<a href='/sonic/sickle'             >/sonic/sickle</a>`, `<a href='/sonic/sickle?api=true'             >Api -> /sonic/sickle</a>`],
       ["BaseSwap              ", "Base      ", "CL      ", `<a href='/base/sickle'              >/base/sickle</a>`, `<a href='/base/sickle?api=true'              >Api -> /base/sickle</a>`],
       ["Blackhole             ", "Avax      ", "CL      ", `<a href='/avax/sickle'              >/avax/sickle</a>`, `<a href='/avax/sickle?api=true'              >Api -> /avax/sickle</a>`],
