@@ -101,7 +101,7 @@ const sweep_address = '0xa7C8eCC21BcD023EB1dB5Bb35113b7123cb1F33b'
 const POLYGON_CHAIN_ID = 137
 
 function uniswapV4Helpers() {
-  const h = window?.Sickle?.protocols?.uniswapV4
+  const h = window?.protocols?.uniswapV4
   if (!h) throw new Error('Uniswap v4 helpers not loaded (window.Sickle.protocols.uniswapV4)')
   return h
 }

@@ -14,6 +14,7 @@ export const OperationType = {
   WITHDRAW_UNDERLYING: 'withdraw_underlying',
   WITHDRAW_TOKEN: 'withdraw_token',
   COMPOUND: 'compound',
+  HARVEST: 'harvest',
 }
 
 /**
@@ -24,6 +25,7 @@ const SUCCESS_MESSAGES = {
   [OperationType.WITHDRAW_UNDERLYING]: 'Position withdrawn to underlying tokens!',
   [OperationType.WITHDRAW_TOKEN]: 'Position withdrawn and swapped to target token!',
   [OperationType.COMPOUND]: 'Rewards compounded successfully!',
+  [OperationType.HARVEST]: 'Rewards claimed successfully!',
 }
 
 /**

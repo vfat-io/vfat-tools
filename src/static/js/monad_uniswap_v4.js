@@ -101,7 +101,7 @@ const sweep_address = '0x266ebC589d5BFCB815c40e7C30112f8d4B74e012'
 const MONAD_CHAIN_ID = 143
 
 function uniswapV4Helpers() {
-  const h = window?.Sickle?.protocols?.uniswapV4
+  const h = window?.protocols?.uniswapV4
   if (!h) throw new Error('Uniswap v4 helpers not loaded (window.Sickle.protocols.uniswapV4)')
   return h
 }
@@ -406,6 +406,10 @@ const withdraw_nfts = async function(App, nft_manager_v4, nft_manager_address_v4
         return window.Sickle.compound.compound(poolData, info.nftId)
       }
 
+      const claimRewards = async function() {
+        return window.Sickle.harvest.harvest(poolData, info.nftId)
+      }
+
       _print(`|    `)
 
       const a0 = formatTokenAmountHtmlFromRaw(amount0Raw, t0?.decimals)
@@ -432,6 +436,8 @@ const withdraw_nfts = async function(App, nft_manager_v4, nft_manager_address_v4
           const e1 = formatTokenAmountHtmlFromRaw(earned.fees1Raw, t1?.decimals)
           idx < infos.length - 1 ? _print_inline(`|    `) : _print_inline(`     `)
           _print_link(`Compound (${e0} ${t0?.symbol || '?'} + ${e1} ${t1?.symbol || '?'})`, compound)
+          idx < infos.length - 1 ? _print_inline(`|    `) : _print_inline(`     `)
+          _print_link(`Claim Rewards to MON (${e0} ${t0?.symbol || '?'} + ${e1} ${t1?.symbol || '?'})`, claimRewards)
         }
       }
       

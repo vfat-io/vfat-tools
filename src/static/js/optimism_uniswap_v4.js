@@ -101,7 +101,7 @@ const sweep_address = '0x9b60492564D1c428630D4914d8f61bF8d0AB4f5C'
 const OPTIMISM_CHAIN_ID = 10
 
 function uniswapV4Helpers() {
-  const h = window?.Sickle?.protocols?.uniswapV4
+  const h = window?.protocols?.uniswapV4
   if (!h) throw new Error('Uniswap v4 helpers not loaded (window.Sickle.protocols.uniswapV4)')
   return h
 }
