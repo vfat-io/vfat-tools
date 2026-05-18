@@ -84,6 +84,7 @@ const main = async () => {
       ["                      ", "Ink       ", "CL / V2 ", `<a href='/ink/velodrome'            >/ink/velodrome</a>`, `<a href='/ink/velodrome?api=true'            >Api -> /ink/velodrome</a>`],
       ["                      ", "Mode      ", "CL / V2 ", `<a href='/mode/velodrome'           >/mode/velodrome</a>`, `<a href='/mode/velodrome?api=true'           >Api -> /mode/velodrome</a>`],
       ["                      ", "Optimism  ", "CL      ", `<a href='/optimism/velodrome'       >/optimism/velodrome</a>`, `<a href='/optimism/velodrome?api=true'       >Api -> /optimism/velodrome</a>`],
+      ["                      ", "Optimism  ", "CL      ", `<a href='/optimism/velodrome-cl-new'>/optimism/velodrome-cl-new</a>`, `<a href='/optimism/velodrome?api=true'       >Api -> /optimism/velodrome-cl-new</a>`],
       ["                      ", "Optimism  ", "V2      ", `<a href='/optimism/velodrome_v2'    >/optimism/velodrome_v2</a>`, `<a href='/optimism/velodrome_v2?api=true'    >Api -> /optimism/velodrome_v2</a>`],
       ["                      ", "Soneium   ", "CL / V2 ", `<a href='/soneium/velodrome'        >/soneium/velodrome</a>`, `<a href='/soneium/velodrome?api=true'        >Api -> /soneium/velodrome</a>`],
       ["                      ", "Unichain  ", "CL / V2 ", `<a href='/unichain/velodrome'       >/unichain/velodrome</a>`, `<a href='/unichain/velodrome?api=true'       >Api -> /unichain/velodrome</a>`],
