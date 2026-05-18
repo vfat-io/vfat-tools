@@ -102,7 +102,7 @@ const POLYGON_CHAIN_ID = 137
 
 function uniswapV4Helpers() {
   const h = window?.protocols?.uniswapV4
-  if (!h) throw new Error('Uniswap v4 helpers not loaded (window.Sickle.protocols.uniswapV4)')
+  if (!h) throw new Error('Uniswap v4 helpers not loaded (window.protocols.uniswapV4)')
   return h
 }
 
