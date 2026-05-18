@@ -179,7 +179,7 @@ const sweep_address = '0x869e37e67bAa9f1022B71EC5e9423D12ed884850'
 const BSC_CHAIN_ID = 56
 
 function uniswapV4Helpers() {
-  const h = window?.Sickle?.protocols?.uniswapV4
+  const h = window?.protocols?.uniswapV4
   if (!h) throw new Error('Uniswap v4 helpers not loaded (window.Sickle.protocols.uniswapV4)')
   return h
 }

@@ -104,7 +104,7 @@ const sweep_address = '0xF8818D5D3c9Ac1F80Bd14664202DBe5bed872a72'
 const BASE_CHAIN_ID = 8453
 
 function uniswapV4Helpers() {
-  const h = window?.Sickle?.protocols?.uniswapV4
+  const h = window?.protocols?.uniswapV4
   if (!h) throw new Error('Uniswap v4 helpers not loaded (window.Sickle.protocols.uniswapV4)')
   return h
 }

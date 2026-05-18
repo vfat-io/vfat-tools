@@ -104,7 +104,7 @@ const sweep_address = '0x8a09B9784E19De39Bf40106726541C6C09eec40D'
 const AVAX_CHAIN_ID = 43114
 
 function uniswapV4Helpers() {
-  const h = window?.Sickle?.protocols?.uniswapV4
+  const h = window?.protocols?.uniswapV4
   if (!h) throw new Error('Uniswap v4 helpers not loaded (window.Sickle.protocols.uniswapV4)')
   return h
 }

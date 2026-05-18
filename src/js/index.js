@@ -45,7 +45,6 @@ window.NETWORKS = NETWORKS
 window.store = store
 
 
-
 // Attach protocol-level helpers for non-module chain scripts.
 if (document.location.search === '?api=true') {
   // Sickle SDK Integration
@@ -57,16 +56,17 @@ if (document.location.search === '?api=true') {
     compound: SickleCompound,
     lpWithdraw: SickleLpWithdraw,
     lpCompound: SickleLpCompound,
-  }  
-  if (document.location.href.includes('uniswap-v4')) {
+  }
+}
+
+if (document.location.href.includes('uniswap-v4')) {
     console.log('Initializing Uniswap V4 protocol helpers in Sickle...')
-    window.Sickle.protocols = window.Sickle.protocols || {}
-    window.Sickle.protocols.uniswapV4 = UniswapV4Protocol
+    window.protocols = window.protocols || {}
+    window.protocols.uniswapV4 = UniswapV4Protocol
   }
   // Uniswap V3 Utilities
   window.UniswapV3 = {
     ...UniswapV3,
-}
 }
 
 // 3. Create a AppKit instance safely
