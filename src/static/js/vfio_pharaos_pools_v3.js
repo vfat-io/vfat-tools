@@ -1,4 +1,4 @@
-$(function() {
+$(function () {
   consoleInit(main)
 })
 
@@ -41,28 +41,28 @@ const POOL_TOKEN_ABI = [
   {
     inputs: [],
     name: 'token0',
-    outputs: [{internalType: 'address', name: '', type: 'address'}],
+    outputs: [{ internalType: 'address', name: '', type: 'address' }],
     stateMutability: 'view',
     type: 'function',
   },
   {
     inputs: [],
     name: 'token1',
-    outputs: [{internalType: 'address', name: '', type: 'address'}],
+    outputs: [{ internalType: 'address', name: '', type: 'address' }],
     stateMutability: 'view',
     type: 'function',
   },
   {
     inputs: [],
     name: 'symbol',
-    outputs: [{internalType: 'string', name: '', type: 'string'}],
+    outputs: [{ internalType: 'string', name: '', type: 'string' }],
     stateMutability: 'view',
     type: 'function',
   },
   {
     inputs: [],
     name: 'decimals',
-    outputs: [{internalType: 'uint8', name: '', type: 'uint8'}],
+    outputs: [{ internalType: 'uint8', name: '', type: 'uint8' }],
     stateMutability: 'view',
     type: 'function',
   },
@@ -84,7 +84,7 @@ async function main() {
   const pharaos_pools_ = await App.ethcallProvider.all(calls)
   const pharaos_pools = pharaos_pools_.map(a => a.toLowerCase())
 
-  const pools_response = await $.ajax({url: 'https://api.vfat.io/v4/farms?chainId=43114', type: 'GET'})
+  const pools_response = await $.ajax({ url: 'https://api.vfat.io/v4/farms?chainId=43114', type: 'GET' })
   const vfat_pools = pools_response.map(d => d.pool.address.toLowerCase())
 
   let missing_pools = [],
@@ -121,72 +121,93 @@ async function main() {
 }
 
 async function formatingNewTokens(App, missing_pool, vfat_tokens) {
-  const POOL_CONTRACT = new ethcall.Contract(missing_pool, POOL_TOKEN_ABI)
-  const [token0, token1] = await App.ethcallProvider.all([POOL_CONTRACT.token0(), POOL_CONTRACT.token1()])
-
-  const TOKEN_0_CONTRACT = new ethcall.Contract(token0, POOL_TOKEN_ABI)
-  const TOKEN_1_CONTRACT = new ethcall.Contract(token1, POOL_TOKEN_ABI)
-
-  const token_0_exists = vfat_tokens.includes(token0.toLowerCase())
-  const token_1_exists = vfat_tokens.includes(token1.toLowerCase())
-
-  if (!token_0_exists && !token_1_exists) {
-    const [token0Symbol, token0Decimals] = await App.ethcallProvider.all([
-      TOKEN_0_CONTRACT.symbol(),
-      TOKEN_0_CONTRACT.decimals(),
-    ])
-    const [token1Symbol, token1Decimals] = await App.ethcallProvider.all([
-      TOKEN_1_CONTRACT.symbol(),
-      TOKEN_1_CONTRACT.decimals(),
-    ])
+  if (missing_pool == "0x87206a5a6eddd4e22423425ba66c2591551bfc6f" ||
+    missing_pool == "0x16888ee58e706c253b821eaa637ae9b2cfea255c" ||
+    missing_pool == "0x8ac5707f8d4bde1d771d34c7afd81c3922b73379") {
     return [
       {
-        address: token0,
-        symbol: token0Symbol,
-        decimals: Number(token0Decimals),
-        chainId: 43114,
-        logoURI: '',
+        address: missing_pool,
+        symbol: "ERC-20: DLMM Token (DLMM)",
+        decimals: 0,
+        chainId: 0,
+        logoURI: "ERC-20: DLMM Token (DLMM)",
       },
       {
-        address: token1,
-        symbol: token1Symbol,
-        decimals: Number(token1Decimals),
-        chainId: 43114,
-        logoURI: '',
-      },
-    ]
-  }
-  if (!token_0_exists && token_1_exists) {
-    const [token0Symbol, token0Decimals] = await App.ethcallProvider.all([
-      TOKEN_0_CONTRACT.symbol(),
-      TOKEN_0_CONTRACT.decimals(),
-    ])
-    return [
-      {
-        address: token0,
-        symbol: token0Symbol,
-        decimals: Number(token0Decimals),
-        chainId: 43114,
-        logoURI: '',
-      },
-    ]
-  }
-  if (token_0_exists && !token_1_exists) {
-    const [token1Symbol, token1Decimals] = await App.ethcallProvider.all([
-      TOKEN_1_CONTRACT.symbol(),
-      TOKEN_1_CONTRACT.decimals(),
-    ])
-    return [
-      {
-        address: token1,
-        symbol: token1Symbol,
-        decimals: Number(token1Decimals),
-        chainId: 43114,
-        logoURI: '',
+        address: missing_pool,
+        symbol: "ERC-20: DLMM Token (DLMM)",
+        decimals: 0,
+        chainId: 0,
+        logoURI: "ERC-20: DLMM Token (DLMM)",
       },
     ]
   } else {
-    return []
+    const POOL_CONTRACT = new ethcall.Contract(missing_pool, POOL_TOKEN_ABI)
+    const [token0, token1] = await App.ethcallProvider.all([POOL_CONTRACT.token0(), POOL_CONTRACT.token1()])
+
+    const TOKEN_0_CONTRACT = new ethcall.Contract(token0, POOL_TOKEN_ABI)
+    const TOKEN_1_CONTRACT = new ethcall.Contract(token1, POOL_TOKEN_ABI)
+
+    const token_0_exists = vfat_tokens.includes(token0.toLowerCase())
+    const token_1_exists = vfat_tokens.includes(token1.toLowerCase())
+
+    if (!token_0_exists && !token_1_exists) {
+      const [token0Symbol, token0Decimals] = await App.ethcallProvider.all([
+        TOKEN_0_CONTRACT.symbol(),
+        TOKEN_0_CONTRACT.decimals(),
+      ])
+      const [token1Symbol, token1Decimals] = await App.ethcallProvider.all([
+        TOKEN_1_CONTRACT.symbol(),
+        TOKEN_1_CONTRACT.decimals(),
+      ])
+      return [
+        {
+          address: token0,
+          symbol: token0Symbol,
+          decimals: Number(token0Decimals),
+          chainId: 43114,
+          logoURI: '',
+        },
+        {
+          address: token1,
+          symbol: token1Symbol,
+          decimals: Number(token1Decimals),
+          chainId: 43114,
+          logoURI: '',
+        },
+      ]
+    }
+    if (!token_0_exists && token_1_exists) {
+      const [token0Symbol, token0Decimals] = await App.ethcallProvider.all([
+        TOKEN_0_CONTRACT.symbol(),
+        TOKEN_0_CONTRACT.decimals(),
+      ])
+      return [
+        {
+          address: token0,
+          symbol: token0Symbol,
+          decimals: Number(token0Decimals),
+          chainId: 43114,
+          logoURI: '',
+        },
+      ]
+    }
+    if (token_0_exists && !token_1_exists) {
+      const [token1Symbol, token1Decimals] = await App.ethcallProvider.all([
+        TOKEN_1_CONTRACT.symbol(),
+        TOKEN_1_CONTRACT.decimals(),
+      ])
+      return [
+        {
+          address: token1,
+          symbol: token1Symbol,
+          decimals: Number(token1Decimals),
+          chainId: 43114,
+          logoURI: '',
+        },
+      ]
+    } else {
+      return []
+    }
   }
 }
 
