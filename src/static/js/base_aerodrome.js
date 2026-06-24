@@ -32,15 +32,32 @@ const OLD_NFT_TOKEN_ADDRESS = "0xc741beb2156827704A1466575ccA1cBf726a1178";
 
 const NFT_TOKEN_ADDRESS = "0x827922686190790b37229fd06084350E74485b72";
 
-const NFT_FARM_STRATEGY_ADDRESS = "0x9774e26f467f1ac603b63444bcdeb4b519a4f3ea";
+const NFT_FARM_STRATEGY_ADDRESS = "0xD62b33A7Df4D0ca5EdD373576E48F73366E36179";
 
-const FARM_STRATEGY_ADDRESS = "0x9b381108Ef12A138a5b7cF231Fbbef4f20e72306";
+const FARM_STRATEGY_ADDRESS = "0xbF325BC7921256f842B3BC99C8eF4E2f72999556";
 
-const SIMPLE_FARM_STRATEGY_ADDRESS = "0x9960bd7dcdf8e4ecf7dc5ca1dc433921a03b9d96";
+const SICKLE_FACTORY_ADDR = "0x71D234A3e1dfC161cc1d081E6496e76627baAc31";
 
 const CL_FACTORY_ADDRESS = "0x5e7BB104d84c7CB9B682AaC2F3d509f5F406809A";
 
 const V2_FACTORY_ADDRESS = "0x420DD381b31aEf6683db6B902084cB0FFECe40Da";
+
+const ZERO_ADDRESS = "0x0000000000000000000000000000000000000000";
+const ZERO_BYTES32 = "0x0000000000000000000000000000000000000000000000000000000000000000";
+const AERO_TOKEN_ADDRESS = "0x940181a94a35a4569e4529a3cdfb74e38fd98631";
+const MAX_UINT128 = "340282366920938463463374607431768211455";
+
+const CURRENT_NFT_FARM_STRATEGY_ABI = [
+  "function simpleDeposit(tuple(tuple(address stakingContract,uint256 poolIndex) farm,address nft,uint256 tokenId) position, bytes extraData, tuple(address pool,bytes32 poolId,bool autoRebalance,tuple(uint24 tickSpacesBelow,uint24 tickSpacesAbove,int24 bufferTicksBelow,int24 bufferTicksAbove,uint256 dustBP,uint256 priceImpactBP,uint256 slippageBP,int24 cutoffTickLow,int24 cutoffTickHigh,uint8 delayMin,tuple(uint8 rewardBehavior,address harvestTokenOut) rewardConfig) rebalanceConfig,bool automateRewards,tuple(uint8 rewardBehavior,address harvestTokenOut) rewardConfig,bool autoExit,tuple(int24 triggerTickLow,int24 triggerTickHigh,address exitTokenOutLow,address exitTokenOutHigh,uint256 priceImpactBP,uint256 slippageBP) exitConfig,bytes extraData,bool autoDeposit) settings,address approved,bytes32 referralCode)",
+  "function simpleWithdraw(tuple(tuple(address stakingContract,uint256 poolIndex) farm,address nft,uint256 tokenId) position, bytes extraData)",
+  "function simpleHarvest(tuple(tuple(address stakingContract,uint256 poolIndex) farm,address nft,uint256 tokenId) position, tuple(address[] rewardTokens,uint128 amount0Max,uint128 amount1Max,bytes extraData) params)"
+];
+
+const CURRENT_FARM_STRATEGY_ABI = [
+  "function simpleDeposit(tuple(tuple(address stakingContract,uint256 poolIndex) farm,address lpToken,uint256 amountIn,bytes extraData) params, tuple(address pool,address router,bool automateRewards,tuple(uint8 rewardBehavior,address harvestTokenOut) rewardConfig,bool autoExit,tuple(uint256 baseTokenIndex,uint256 quoteTokenIndex,uint256 triggerPriceLow,address exitTokenOutLow,uint256 triggerPriceHigh,address exitTokenOutHigh,uint256[] triggerReservesLow,address[] triggerReservesTokensOut,uint256 priceImpactBP,uint256 slippageBP) exitConfig,bytes extraData) positionSettings,address approved,bytes32 referralCode)",
+  "function simpleWithdraw(tuple(address stakingContract,uint256 poolIndex) farm, tuple(address lpToken,uint256 amountOut,bytes extraData) params)",
+  "function simpleHarvest(tuple(address stakingContract,uint256 poolIndex) farm, tuple(address[] rewardTokens,bytes extraData) params)"
+];
 
 async function main() {
   const App = await init_ethers();
@@ -98,7 +115,6 @@ async function main() {
     lpTokens.push(lpTokenBatch);
   }
 
-  const SICKLE_FACTORY_ADDR = "0x71D234A3e1dfC161cc1d081E6496e76627baAc31";
   const SICKLE_FACTORY = new ethcall.Contract(SICKLE_FACTORY_ADDR, SICKLE_FACTORY_ABI);
 
   console.log('call sickles');
@@ -234,13 +250,14 @@ async function loadClSynthetixPoolInfo(App, tokens, prices, stakingAbi, stakingA
   stakeTokenFunction, has_sickle_account, owner_sickle_address) {
     const STAKING_POOL = new ethcall.Contract(stakingAddress, stakingAbi);
 
-    let stakeTokenAddress, periodFinish, rewardRate, userStakedNfts;
+    let stakeTokenAddress, periodFinish, rewardRate, userStakedNfts, nftTokenAddress;
     try{
-      [stakeTokenAddress, periodFinish, rewardRate, userStakedNfts] = await App.ethcallProvider.all([STAKING_POOL.pool(), STAKING_POOL.periodFinish(), STAKING_POOL.rewardRate(), STAKING_POOL.stakedValues(App.YOUR_ADDRESS)]);
+      [stakeTokenAddress, periodFinish, rewardRate, userStakedNfts, nftTokenAddress] = await App.ethcallProvider.all([STAKING_POOL.pool(), STAKING_POOL.periodFinish(), STAKING_POOL.rewardRate(), STAKING_POOL.stakedValues(App.YOUR_ADDRESS), STAKING_POOL.nft()]);
     }catch{
       return {
         stakingAddress: "",
         stakeTokenAddress: "",
+        nftTokenAddress: "",
         rewardTokenAddress: "",
         stakeTokenTicker: "",
         rewardTokenTicker: "",
@@ -255,7 +272,7 @@ async function loadClSynthetixPoolInfo(App, tokens, prices, stakingAbi, stakingA
     }
     
     const clPool = new ethcall.Contract(stakeTokenAddress, CL_TOKEN_ABI);
-    const nftContract = new ethcall.Contract(NFT_TOKEN_ADDRESS, NFT_AERO_ABI);
+    const nftContract = new ethcall.Contract(nftTokenAddress, NFT_AERO_ABI);
 
     const [tokenAddress0, tokenAddress1] = await App.ethcallProvider.all([clPool.token0(), clPool.token1()]);
 
@@ -264,9 +281,9 @@ async function loadClSynthetixPoolInfo(App, tokens, prices, stakingAbi, stakingA
 
     const stakeToken = await getClToken(App, token0, token1, stakingAddress);
 
-    const rewardTokenAddress = "0x940181a94a35a4569e4529a3cdfb74e38fd98631";
+    const rewardTokenAddress = AERO_TOKEN_ADDRESS;
 
-    const nftToken = new ethcall.Contract(NFT_TOKEN_ADDRESS, NFT_AERO_ABI);
+    const nftToken = new ethcall.Contract(nftTokenAddress, NFT_AERO_ABI);
     const [userOwnedNfts, totalStakedNfts] = await App.ethcallProvider.all([nftToken.balanceOf(owner_sickle_address), nftToken.balanceOf(stakingAddress)]);
 
     let userOwnedNftIds = []
@@ -303,6 +320,7 @@ async function loadClSynthetixPoolInfo(App, tokens, prices, stakingAbi, stakingA
     return  {
       stakingAddress,
       stakeTokenAddress,
+      nftTokenAddress,
       rewardTokenAddress,
       stakeTokenTicker,
       rewardTokenTicker,
@@ -349,13 +367,13 @@ async function printAerodromeClPool(App, info, chain="eth", customURLs) {
       return clContract_claim(info.stakingAddress, nftId, App)
     }
     const sickle_approveTENDAndStake = async function(nftId) {
-      return sickle_clContract_stake(info.stakingAddress, nftId, App)
+      return sickle_clContract_stake(info.stakingAddress, nftId, App, info.nftTokenAddress)
     }
     const sickle_unstake = async function(nftId) {
-      return sickle_clContract_withdraw(info.stakingAddress, nftId, App)
+      return sickle_clContract_withdraw(info.stakingAddress, nftId, App, info.nftTokenAddress)
     }
     const sickle_claim = async function(nftId) {
-      return sickle_clContract_claim(info.stakingAddress, nftId, App)
+      return sickle_clContract_claim(info.stakingAddress, nftId, App, info.nftTokenAddress)
     }
     _print(`<a target="_blank" href="https://basescan.org/address/${info.stakingAddress}#code">Base Scan</a>`);
     if(info.userOwnedNftIds.length <= 0){
@@ -396,180 +414,231 @@ async function printAerodromeClPool(App, info, chain="eth", customURLs) {
     }
 }
 
-const sickle_clContract_stake = async function(rewardPoolAddr, nftId, App) {
-  const signer = App.provider.getSigner()
-
-  const NFT_CONTRACT = new ethers.Contract(NFT_TOKEN_ADDRESS, NFT_AERO_ABI, signer)
-
-  const REWARD_POOL = new ethers.Contract(NFT_FARM_STRATEGY_ADDRESS, NFT_FARM_STRATEGY_ABI, signer)
-
-  const decodedExtraData = {
-    tokenId: +nftId,
-    maxAmount0: 0,
-    maxAmount1: 0,
-    isIncrease: false
+const txErrorData = function(error) {
+  if (typeof error?.data === "string") return error.data
+  if (typeof error?.error?.data === "string") return error.error.data
+  if (typeof error?.error?.error?.data === "string") return error.error.error.data
+  if (typeof error?.body === "string") {
+    try {
+      const body = JSON.parse(error.body)
+      if (typeof body?.error?.data === "string") return body.error.data
+    } catch {}
   }
+  return ""
+}
 
-  const extraData = ethers.utils.defaultAbiCoder.encode(["tuple(uint256 tokenId, uint256 maxAmount0, uint256 maxAmount1, bool isIncrease)"], [decodedExtraData]);
+const decodeAddressError = function(data, name) {
+  if (!data || data.length < 74) return name
+  try {
+    return `${name}(${ethers.utils.getAddress("0x" + data.slice(-40))})`
+  } catch {
+    return name
+  }
+}
 
-  await NFT_CONTRACT.approve(App.YOUR_ADDRESS, nftId);
+const transactionErrorMessage = function(error) {
+  const data = txErrorData(error)
+  if (data.startsWith("0x252c8273")) return decodeAddressError(data, "CallerNotWhitelisted")
+  if (data.startsWith("0x47ccabe7")) return decodeAddressError(data, "TargetNotWhitelisted")
+  if (data.startsWith("0x3098a455")) return "SickleNotDeployed"
+  if (data.startsWith("0xff745327")) return "NotRegisteredSickle"
+  if (data.startsWith("0x245aecd3")) return decodeAddressError(data, "NotOwner")
+  if (data.startsWith("0xc19f17a9")) return "NotApproved"
+  return error?.reason || error?.data?.message || error?.error?.message || error?.message || "Transaction failed"
+}
 
-    showLoading()
-    REWARD_POOL.depositErc721(NFT_TOKEN_ADDRESS, nftId, rewardPoolAddr, extraData, "0x0000000000000000000000000000000000000000", "0x0000000000000000000000000000000000000000000000000000000000000000")
-      .then(function(t) {
-        return App.provider.waitForTransaction(t.hash)
-      })
-      .catch(function() {
-        hideLoading()
-      })
+const printTransactionError = function(action, error) {
+  hideLoading()
+  const message = transactionErrorMessage(error)
+  console.error(`${action} failed`, error)
+  _print(`${action} failed: ${message}`)
+  _print("")
+}
+
+const submitTransaction = async function(App, action, sendTransaction) {
+  showLoading()
+  try {
+    const tx = await sendTransaction()
+    await App.provider.waitForTransaction(tx.hash)
+    hideLoading()
+  } catch (error) {
+    printTransactionError(action, error)
+  }
+}
+
+const makeNftFarmPosition = function(rewardPoolAddr, nftId, nftTokenAddress) {
+  return {
+    farm: {
+      stakingContract: rewardPoolAddr,
+      poolIndex: 0
+    },
+    nft: nftTokenAddress,
+    tokenId: nftId?.toString ? nftId.toString() : nftId
+  }
+}
+
+const makeFarm = function(rewardPoolAddr) {
+  return {
+    stakingContract: rewardPoolAddr,
+    poolIndex: 0
+  }
+}
+
+const defaultRewardConfig = function() {
+  return {
+    rewardBehavior: 0,
+    harvestTokenOut: ZERO_ADDRESS
+  }
+}
+
+const defaultNftSettings = function() {
+  return {
+    pool: ZERO_ADDRESS,
+    poolId: ZERO_BYTES32,
+    autoRebalance: false,
+    rebalanceConfig: {
+      tickSpacesBelow: 0,
+      tickSpacesAbove: 0,
+      bufferTicksBelow: 0,
+      bufferTicksAbove: 0,
+      dustBP: 0,
+      priceImpactBP: 0,
+      slippageBP: 0,
+      cutoffTickLow: 0,
+      cutoffTickHigh: 0,
+      delayMin: 0,
+      rewardConfig: defaultRewardConfig()
+    },
+    automateRewards: false,
+    rewardConfig: defaultRewardConfig(),
+    autoExit: false,
+    exitConfig: {
+      triggerTickLow: 0,
+      triggerTickHigh: 0,
+      exitTokenOutLow: ZERO_ADDRESS,
+      exitTokenOutHigh: ZERO_ADDRESS,
+      priceImpactBP: 0,
+      slippageBP: 0
+    },
+    extraData: "0x",
+    autoDeposit: false
+  }
+}
+
+const defaultPositionSettings = function() {
+  return {
+    pool: ZERO_ADDRESS,
+    router: ZERO_ADDRESS,
+    automateRewards: false,
+    rewardConfig: defaultRewardConfig(),
+    autoExit: false,
+    exitConfig: {
+      baseTokenIndex: 0,
+      quoteTokenIndex: 0,
+      triggerPriceLow: 0,
+      exitTokenOutLow: ZERO_ADDRESS,
+      triggerPriceHigh: 0,
+      exitTokenOutHigh: ZERO_ADDRESS,
+      triggerReservesLow: [],
+      triggerReservesTokensOut: [],
+      priceImpactBP: 0,
+      slippageBP: 0
+    },
+    extraData: "0x"
+  }
+}
+
+const simpleNftHarvestParams = function() {
+  return {
+    rewardTokens: [AERO_TOKEN_ADDRESS],
+    amount0Max: MAX_UINT128,
+    amount1Max: MAX_UINT128,
+    extraData: "0x"
+  }
+}
+
+const getSickleApprovalAddress = async function(App) {
+  const signer = App.provider.getSigner()
+  const owner = await signer.getAddress()
+  const factory = new ethers.Contract(SICKLE_FACTORY_ADDR, SICKLE_FACTORY_ABI, signer)
+  const sickle = await factory.sickles(owner)
+  if (sickle && sickle.toLowerCase() !== ZERO_ADDRESS.toLowerCase()) {
+    return sickle
+  }
+  return factory.predict(owner)
+}
+
+const sickle_clContract_stake = async function(rewardPoolAddr, nftId, App, nftTokenAddress = NFT_TOKEN_ADDRESS) {
+  const signer = App.provider.getSigner()
+  const NFT_CONTRACT = new ethers.Contract(nftTokenAddress, NFT_AERO_ABI, signer)
+  const REWARD_POOL = new ethers.Contract(NFT_FARM_STRATEGY_ADDRESS, CURRENT_NFT_FARM_STRATEGY_ABI, signer)
+  const position = makeNftFarmPosition(rewardPoolAddr, nftId, nftTokenAddress)
+
+  await submitTransaction(App, "Deposit NFT", async function() {
+    const approvalAddress = await getSickleApprovalAddress(App)
+    const approvalTx = await NFT_CONTRACT.approve(approvalAddress, nftId)
+    await App.provider.waitForTransaction(approvalTx.hash)
+    return REWARD_POOL.simpleDeposit(position, "0x", defaultNftSettings(), ZERO_ADDRESS, ZERO_BYTES32)
+  })
 }
 
 const clContract_stake = async function(rewardPoolAddr, nftId, App) {
   const signer = App.provider.getSigner()
-
   const REWARD_POOL = new ethers.Contract(rewardPoolAddr, CL_GAUGE_ABI, signer)
 
-    showLoading()
-    REWARD_POOL.deposit(nftId, {gasLimit: 250000})
-      .then(function(t) {
-        return App.provider.waitForTransaction(t.hash)
-      })
-      .catch(function() {
-        hideLoading()
-      })
+  await submitTransaction(App, "Deposit NFT", function() {
+    return REWARD_POOL.deposit(nftId, {gasLimit: 250000})
+  })
 }
 
-const sickle_clContract_withdraw = async function(rewardPoolAddr, nftId, App) {
+const sickle_clContract_withdraw = async function(rewardPoolAddr, nftId, App, nftTokenAddress = NFT_TOKEN_ADDRESS) {
   const signer = App.provider.getSigner()
+  const REWARD_POOL = new ethers.Contract(NFT_FARM_STRATEGY_ADDRESS, CURRENT_NFT_FARM_STRATEGY_ABI, signer)
+  const position = makeNftFarmPosition(rewardPoolAddr, nftId, nftTokenAddress)
 
-  const REWARD_POOL = new ethers.Contract(NFT_FARM_STRATEGY_ADDRESS, NFT_FARM_STRATEGY_ABI, signer)
-
-  const decodedExtraData = {
-    tokenId: +nftId,
-    maxAmount0: 0,
-    maxAmount1: 0,
-    isIncrease: false
-  }
-
-  const extraData = ethers.utils.defaultAbiCoder.encode(["tuple(uint256 tokenId, uint256 maxAmount0, uint256 maxAmount1, bool isIncrease)"], [decodedExtraData]);
-
-  const sweepTokens = ["0x940181a94a35a4569e4529a3cdfb74e38fd98631"];
-
-    showLoading()
-    REWARD_POOL.withdrawErc721(NFT_TOKEN_ADDRESS, nftId, rewardPoolAddr, extraData, sweepTokens)
-      .then(function(t) {
-        return App.provider.waitForTransaction(t.hash)
-      })
-      .catch(function() {
-        hideLoading()
-      })
-}
-
-const sickle_old_clContract_withdraw = async function(rewardPoolAddr, nftId, App) {
-  const signer = App.provider.getSigner()
-
-  const REWARD_POOL = new ethers.Contract(NFT_FARM_STRATEGY_ADDRESS, NFT_FARM_STRATEGY_ABI, signer)
-
-  const decodedExtraData = {
-    tokenId: +nftId,
-    maxAmount0: 0,
-    maxAmount1: 0,
-    isIncrease: false
-  }
-
-  const extraData = ethers.utils.defaultAbiCoder.encode(["tuple(uint256 tokenId, uint256 maxAmount0, uint256 maxAmount1, bool isIncrease)"], [decodedExtraData]);
-
-  const sweepTokens = ["0x940181a94a35a4569e4529a3cdfb74e38fd98631"];
-
-    showLoading()
-    REWARD_POOL.withdrawErc721(OLD_NFT_TOKEN_ADDRESS, nftId, rewardPoolAddr, extraData, sweepTokens)
-      .then(function(t) {
-        return App.provider.waitForTransaction(t.hash)
-      })
-      .catch(function() {
-        hideLoading()
-      })
+  await submitTransaction(App, "Withdraw NFT", function() {
+    return REWARD_POOL.simpleWithdraw(position, "0x")
+  })
 }
 
 const clContract_withdraw = async function(rewardPoolAddr, nftId, App) {
   const signer = App.provider.getSigner()
-
   const REWARD_POOL = new ethers.Contract(rewardPoolAddr, CL_GAUGE_ABI, signer)
 
-    showLoading()
-    REWARD_POOL.withdraw(nftId, {gasLimit: 250000})
-      .then(function(t) {
-        return App.provider.waitForTransaction(t.hash)
-      })
-      .catch(function() {
-        hideLoading()
-      })
+  await submitTransaction(App, "Withdraw NFT", function() {
+    return REWARD_POOL.withdraw(nftId, {gasLimit: 250000})
+  })
 }
 
-const clContract_decrease = async function(rewardPoolAddr, nftId, App) {
+const clContract_decrease = async function(rewardPoolAddr, nftId, App, nftTokenAddress = NFT_TOKEN_ADDRESS) {
   const signer = App.provider.getSigner()
-
   const REWARD_POOL = new ethers.Contract(rewardPoolAddr, CL_GAUGE_ABI, signer)
-
-  const NFT_MANAGER = new ethers.Contract(OLD_NFT_TOKEN_ADDRESS, NFT_AERO_ABI, App.rpcProvider ?? App.provider);
-
+  const NFT_MANAGER = new ethers.Contract(nftTokenAddress, NFT_AERO_ABI, App.rpcProvider ?? App.provider);
   const position = await NFT_MANAGER.positions(nftId)
-
   const block = await App.provider.getBlockNumber();
 
-    showLoading()
-    REWARD_POOL.decreaseStakedLiquidity(nftId,position[7],0,0,block+100,{gasLimit: 250000})
-      .then(function(t) {
-        return App.provider.waitForTransaction(t.hash)
-      })
-      .catch(function() {
-        hideLoading()
-      })
+  await submitTransaction(App, "Decrease NFT liquidity", function() {
+    return REWARD_POOL.decreaseStakedLiquidity(nftId,position[7],0,0,block+100,{gasLimit: 250000})
+  })
 }
 
-const sickle_clContract_claim = async function(rewardPoolAddr, nftId, App) {
+const sickle_clContract_claim = async function(rewardPoolAddr, nftId, App, nftTokenAddress = NFT_TOKEN_ADDRESS) {
   const signer = App.provider.getSigner()
+  const REWARD_POOL = new ethers.Contract(NFT_FARM_STRATEGY_ADDRESS, CURRENT_NFT_FARM_STRATEGY_ABI, signer)
+  const position = makeNftFarmPosition(rewardPoolAddr, nftId, nftTokenAddress)
 
-  const decodedExtraData = {
-    tokenId: +nftId,
-    maxAmount0: 0,
-    maxAmount1: 0,
-    isIncrease: false
-  }
-
-  const extraData = ethers.utils.defaultAbiCoder.encode(["tuple(uint256 tokenId, uint256 maxAmount0, uint256 maxAmount1, bool isIncrease)"], [decodedExtraData]);
-
-  const params = {
-    tokensOut: ["0x940181a94a35a4569e4529a3cdfb74e38fd98631"],
-    stakingContractAddress: rewardPoolAddr,
-    extraData: extraData
-  }
-
-  const REWARD_POOL = new ethers.Contract(FARM_STRATEGY_ADDRESS, FARM_STRATEGY_ABI, signer)
-
-    showLoading()
-    REWARD_POOL.harvest(params)
-      .then(function(t) {
-        return App.provider.waitForTransaction(t.hash)
-      })
-      .catch(function() {
-        hideLoading()
-      })
+  await submitTransaction(App, "Claim NFT rewards", function() {
+    return REWARD_POOL.simpleHarvest(position, simpleNftHarvestParams())
+  })
 }
 
 const clContract_claim = async function(rewardPoolAddr, nftId, App) {
   const signer = App.provider.getSigner()
-
   const REWARD_POOL = new ethers.Contract(rewardPoolAddr, CL_GAUGE_ABI, signer)
 
-    showLoading()
-    REWARD_POOL.getReward(nftId, {gasLimit: 250000})
-      .then(function(t) {
-        return App.provider.waitForTransaction(t.hash)
-      })
-      .catch(function() {
-        hideLoading()
-      })
+  await submitTransaction(App, "Claim NFT rewards", function() {
+    return REWARD_POOL.getReward(nftId, {gasLimit: 250000})
+  })
 }
 
 async function loadFlowSynthetixPools(App, tokens, prices, pools, has_sickle_account, customURLs) {
@@ -773,66 +842,56 @@ async function printAerodromePool(App, info, chain="eth", customURLs) {
 const sickle_aeroContract_unstake = async function(rewardPoolAddr, lpToken, userStaked, App) {
   const signer = App.provider.getSigner()
 
-  const REWARD_POOL = new ethers.Contract(SIMPLE_FARM_STRATEGY_ADDRESS, SIMPLE_FARM_STRATEGY_ABI, signer)
+  const REWARD_POOL = new ethers.Contract(FARM_STRATEGY_ADDRESS, CURRENT_FARM_STRATEGY_ABI, signer)
+  const farm = makeFarm(rewardPoolAddr)
 
   const params = {
     lpToken: lpToken,
     amountOut: userStaked,
-    stakingContractAddress: rewardPoolAddr,
-    extraData: "0x00"
+    extraData: "0x"
   }
 
-    showLoading()
-    REWARD_POOL.withdraw(params)
-      .then(function(t) {
-        return App.provider.waitForTransaction(t.hash)
-      })
-      .catch(function() {
-        hideLoading()
-      })
+  await submitTransaction(App, "Unstake", function() {
+    return REWARD_POOL.simpleWithdraw(farm, params)
+  })
 }
 
 const sickle_aeroContract_claim = async function(rewardPoolAddr, App) {
   const signer = App.provider.getSigner()
 
+  const farm = makeFarm(rewardPoolAddr)
   const params = {
-    tokensOut: ["0x940181a94a35a4569e4529a3cdfb74e38fd98631"],
-    stakingContractAddress: rewardPoolAddr,
-    extraData: "0x00"
+    rewardTokens: [AERO_TOKEN_ADDRESS],
+    extraData: "0x"
   }
 
-  const REWARD_POOL = new ethers.Contract(SIMPLE_FARM_STRATEGY_ADDRESS, SIMPLE_FARM_STRATEGY_ABI, signer)
+  const REWARD_POOL = new ethers.Contract(FARM_STRATEGY_ADDRESS, CURRENT_FARM_STRATEGY_ABI, signer)
 
-    showLoading()
-    REWARD_POOL.harvest(params)
-      .then(function(t) {
-        return App.provider.waitForTransaction(t.hash)
-      })
-      .catch(function() {
-        hideLoading()
-      })
+  await submitTransaction(App, "Claim rewards", function() {
+    return REWARD_POOL.simpleHarvest(farm, params)
+  })
 }
 
 const sickle_aeroContract_stake = async function(lpToken, rewardPoolAddr, userUnstaked, App) {
   const signer = App.provider.getSigner()
 
-  const REWARD_POOL = new ethers.Contract(SIMPLE_FARM_STRATEGY_ADDRESS, SIMPLE_FARM_STRATEGY_ABI, signer)
+  const LP_TOKEN = new ethers.Contract(lpToken, ERC20_ABI, signer)
+  const REWARD_POOL = new ethers.Contract(FARM_STRATEGY_ADDRESS, CURRENT_FARM_STRATEGY_ABI, signer)
+  const farm = makeFarm(rewardPoolAddr)
 
   const params = {
+    farm: farm,
     lpToken: lpToken,
     amountIn: userUnstaked,
-    stakingContractAddress: rewardPoolAddr,
-    extraData: "0x00"
+    extraData: "0x"
   }
 
-    showLoading()
-    REWARD_POOL.deposit(params, "0x0000000000000000000000000000000000000000", "0x0000000000000000000000000000000000000000")//edw thelei approved address
-      .then(function(t) {
-        return App.provider.waitForTransaction(t.hash)
-      })
-      .catch(function() {
-        hideLoading()
-      })
+  await submitTransaction(App, "Stake", async function() {
+    const approvalAddress = await getSickleApprovalAddress(App)
+    const approvalTx = await LP_TOKEN.approve(approvalAddress, userUnstaked)
+    await App.provider.waitForTransaction(approvalTx.hash)
+    return REWARD_POOL.simpleDeposit(params, defaultPositionSettings(), ZERO_ADDRESS, ZERO_BYTES32)
+  })
 }
 
 const aeroContract_stake = async function(stakeTokenAddr, rewardPoolAddr, App, maxAllowance) {
@@ -846,43 +905,17 @@ const aeroContract_stake = async function(stakeTokenAddr, rewardPoolAddr, App, m
     ? maxAllowance : balanceOf) : balanceOf
   const allowedTEND = await TEND_TOKEN.allowance(App.YOUR_ADDRESS, rewardPoolAddr)
 
-  let allow = Promise.resolve()
-
-  if (allowedTEND / 1e18 < currentTEND / 1e18) {
-    showLoading()
-    allow = TEND_TOKEN.approve(rewardPoolAddr, ethers.constants.MaxUint256)
-      .then(function(t) {
-        return App.provider.waitForTransaction(t.hash)
-      })
-      .catch(function() {
-        hideLoading()
-        alert('Try resetting your approval to 0 first')
-      })
-  }
-
   if (currentTEND / 1e18 > 0) {
-    showLoading()
-    allow
-      .then(async function() {
-        WEEBTEND_V2_TOKEN.deposit(currentTEND, {gasLimit: 500000})
-          .then(function(t) {
-            App.provider.waitForTransaction(t.hash).then(function() {
-              hideLoading()
-            })
-          })
-          .catch(x => {
-            hideLoading()
-            console.log(x);
-            _print('Something went wrong.')
-          })
-      })
-      .catch(x => {
-        hideLoading()
-        console.log(x);
-        _print('Something went wrong.')
-      })
+    await submitTransaction(App, "Stake", async function() {
+      if (allowedTEND / 1e18 < currentTEND / 1e18) {
+        const approvalTx = await TEND_TOKEN.approve(rewardPoolAddr, ethers.constants.MaxUint256)
+        await App.provider.waitForTransaction(approvalTx.hash)
+      }
+      return WEEBTEND_V2_TOKEN.deposit(currentTEND, {gasLimit: 500000})
+    })
   } else {
-    alert('You have no tokens to stake!!')
+    _print('You have no tokens to stake.')
+    _print('')
   }
 }
 
@@ -896,14 +929,9 @@ const aeroContract_claim = async function(rewardPoolAddr, App) {
   const earnedYFFI = (await REWARD_POOL.earned(App.YOUR_ADDRESS)) / 1e18
 
   if (earnedYFFI > 0) {
-    showLoading()
-    REWARD_POOL.getReward(App.YOUR_ADDRESS, {gasLimit: 250000})
-      .then(function(t) {
-        return App.provider.waitForTransaction(t.hash)
-      })
-      .catch(function() {
-        hideLoading()
-      })
+    await submitTransaction(App, "Claim rewards", function() {
+      return REWARD_POOL.getReward(App.YOUR_ADDRESS, {gasLimit: 250000})
+    })
   }
 }
 

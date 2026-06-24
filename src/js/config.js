@@ -556,9 +556,7 @@ export const createAppKitInstance = () => {
       metadata: appKitMetadata,
       networks: customNetworks,
       projectId: REOWN_PROJECT_ID,
-      features: {
-        analytics: true, // Optional - defaults to your Cloud configuration
-      },
+      features: appKitFeatures,
     });
     
     console.log('AppKit instance created successfully');
@@ -581,9 +579,7 @@ export const createAppKitInstance = () => {
           metadata: appKitMetadata,
           networks: customNetworks,
           projectId: REOWN_PROJECT_ID,
-          features: {
-            analytics: true,
-          },
+          features: appKitFeatures,
         });
         
         console.log('AppKit instance created successfully after clearing storage');
@@ -598,8 +594,9 @@ export const createAppKitInstance = () => {
   }
 };
 
-// Export the getter function instead of direct instance
-export const appKit = createAppKitInstance();
+// Do not instantiate AppKit at module load. It can trigger connector probing
+// before the user asks to connect a wallet.
+export const appKit = null;
 
 export const store = {
     accountState: {},
