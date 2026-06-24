@@ -28,34 +28,34 @@ window.customNetworks = customNetworks
 window.NETWORKS = NETWORKS
 window.store = store
 
-// 3. Create a AppKit instance safely
-let appKitInstance = null;
+let appKitInstance = null
 
-try {
-  appKitInstance = createAppKitInstance();
-  window.appKit = appKitInstance;
-  
-  // Only initialize subscribers if AppKit was created successfully
+window.appKit = null
+window.getAppKit = function() {
   if (appKitInstance) {
-    initializeSubscribers(appKitInstance);
+    return appKitInstance
   }
-} catch (error) {
-  console.error('Failed to initialize AppKit in index.js:', error);
-  // Set a fallback or handle gracefully
-  window.appKit = null;
-}
 
-document.addEventListener('DOMContentLoaded', function() {
+  if (!REOWN_PROJECT_ID) {
+    console.warn('AppKit: Missing REOWN_PROJECT_ID. Skipping AppKit init.')
+    return null
+  }
+
   try {
-    if (!REOWN_PROJECT_ID) {
-      console.warn('AppKit: Missing REOWN_PROJECT_ID. Skipping AppKit init.')
-      return
+    appKitInstance = createAppKitInstance()
+    window.appKit = appKitInstance
+
+    if (appKitInstance) {
+      initializeSubscribers(appKitInstance)
     }
 
+    return appKitInstance
   } catch (error) {
-    console.error('Failed to initialize AppKit:', error)
+    console.error('Failed to initialize AppKit in index.js:', error)
+    window.appKit = null
+    return null
   }
-})
+}
 
 // eslint-disable-next-line no-console
 console.log(`NODE_ENV: ${process.env.NODE_ENV}`)

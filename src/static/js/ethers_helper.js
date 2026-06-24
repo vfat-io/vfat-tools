@@ -11,6 +11,16 @@ let isDataLoaded = false // Global flag to track if data has been loaded
 let appKitUnsubscribe = null // Global variable to track AppKit subscription
 let lastAccountState = null // Track last account state to prevent duplicate processing
 
+const getAppKit = function() {
+  if (window.appKit) {
+    return window.appKit
+  }
+  if (typeof window.getAppKit === 'function') {
+    return window.getAppKit()
+  }
+  return null
+}
+
 // Global error handler for AppKit/WalletConnect errors
 window.addEventListener('error', function(event) {
   if (event.error && event.error.message) {
@@ -298,6 +308,14 @@ const init_wallet = async function (callback) {
   let targetNetwork = pageNetwork()
   let connectOptionsShown = false // Flag to prevent multiple showConnectOptions calls
   let dataLoaded = false // Flag to prevent multiple data loading
+  const appKit = getAppKit()
+
+  if (!appKit) {
+    _print('Wallet connector is unavailable. Please reload and try again.')
+    _print('')
+    hideLoading()
+    return
+  }
 
   // Wait for AppKit to restore connection state (especially important for WalletConnect)
   const waitForAppKitRestore = async (maxWaitTime = 3000) => {
@@ -365,9 +383,9 @@ const init_wallet = async function (callback) {
           console.warn("No provider found in store, trying to get from AppKit directly")
           
           // Try to get provider from AppKit's getWalletProvider method if available
-          if (window.appKit?.getWalletProvider) {
+          if (appKit?.getWalletProvider) {
             try {
-              const appKitProvider = await window.appKit.getWalletProvider()
+              const appKitProvider = await appKit.getWalletProvider()
               if (appKitProvider) {
                 window.store.eip155 = appKitProvider
                 console.log('Retrieved provider from AppKit getWalletProvider')
@@ -385,7 +403,7 @@ const init_wallet = async function (callback) {
 
         walletProvider = window.store.eip155;
         if (walletProvider) {
-          let connectedNetwork = window.appKit?.getChainId?.();
+          let connectedNetwork = appKit?.getChainId?.();
           let targetNetworkId = parseInt(targetNetwork.chainId, 16)
 
           if (connectedNetwork === targetNetworkId) {
@@ -472,9 +490,9 @@ const init_wallet = async function (callback) {
   }
 
   // Subscribe to account changes only if not already subscribed
-  if (window.appKit?.subscribeAccount) {
+  if (appKit?.subscribeAccount) {
     if (!appKitUnsubscribe) {
-      appKitUnsubscribe = window.appKit.subscribeAccount(accountStateListener)
+      appKitUnsubscribe = appKit.subscribeAccount(accountStateListener)
     } else {
       console.log('AppKit subscription already exists, skipping')
     }
@@ -634,7 +652,7 @@ async function init_ethers() {
 
 const switchNetwork = async function(network) {
   const getNetwork = window.customNetworks?.find(n => n.id === parseInt(network.chainId, 16))
-   if(getNetwork) window.appKit?.switchNetwork?.(getNetwork);
+   if(getNetwork) getAppKit()?.switchNetwork?.(getNetwork);
   window.location.reload()
 }
 
@@ -661,9 +679,10 @@ const changeWallet = async function() {
     _print('Disconnecting current wallet...')
     
     // Safely disconnect current wallet with error handling
-    if (window.appKit && window.appKit.disconnect) {
+    const appKit = getAppKit()
+    if (appKit && appKit.disconnect) {
       try {
-        await window.appKit.disconnect()
+        await appKit.disconnect()
       } catch (disconnectError) {
         // If disconnect fails due to session errors, force clear storage
         if (disconnectError.message && disconnectError.message.includes('No matching key')) {
@@ -698,16 +717,17 @@ const changeWallet = async function() {
 }
 
 const connectWallet = async function(callback) {
-  console.log("Connecting wallet...", window.appKit)
+  const appKit = getAppKit()
+  console.log("Connecting wallet...", appKit)
   // Check if AppKit is available  
-  if (!window.appKit) {
+  if (!appKit) {
     console.error('AppKit is not initialized')
     throw new Error('AppKit is not available')
   }
 
   try {
     console.log('Opening AppKit modal...')
-    await window.appKit.open();
+    await appKit.open();
     
     // The connection will be handled by the account state listener in init_wallet
     // No need to manually handle the connection here
@@ -1158,6 +1178,58 @@ const hideLoading = function() {
     .hide()
 }
 
+window.vfatTransactionErrorData = function(error) {
+  if (typeof error?.data === 'string') return error.data
+  if (typeof error?.error?.data === 'string') return error.error.data
+  if (typeof error?.error?.error?.data === 'string') return error.error.error.data
+  if (typeof error?.body === 'string') {
+    try {
+      const body = JSON.parse(error.body)
+      if (typeof body?.error?.data === 'string') return body.error.data
+    } catch {}
+  }
+  return ''
+}
+
+window.vfatTransactionErrorMessage = function(error) {
+  const data = window.vfatTransactionErrorData(error)
+  const decodeAddressError = function(name) {
+    if (!data || data.length < 74) return name
+    try {
+      return `${name}(${ethers.utils.getAddress('0x' + data.slice(-40))})`
+    } catch {
+      return name
+    }
+  }
+
+  if (data.startsWith('0x252c8273')) return decodeAddressError('CallerNotWhitelisted')
+  if (data.startsWith('0x47ccabe7')) return decodeAddressError('TargetNotWhitelisted')
+  if (data.startsWith('0x3098a455')) return 'SickleNotDeployed'
+  if (data.startsWith('0xff745327')) return 'NotRegisteredSickle'
+  if (data.startsWith('0x245aecd3')) return decodeAddressError('NotOwner')
+  if (data.startsWith('0xc19f17a9')) return 'NotApproved'
+  return error?.reason || error?.data?.message || error?.error?.message || error?.message || 'Transaction failed'
+}
+
+window.vfatPrintTransactionError = function(action, error) {
+  hideLoading()
+  const message = window.vfatTransactionErrorMessage(error)
+  console.error(`${action} failed`, error)
+  _print(`${action} failed: ${message}`)
+  _print('')
+}
+
+window.vfatSubmitTransaction = async function(App, action, sendTransaction) {
+  showLoading()
+  try {
+    const tx = await sendTransaction()
+    await App.provider.waitForTransaction(tx.hash)
+    hideLoading()
+  } catch (error) {
+    window.vfatPrintTransactionError(action, error)
+  }
+}
+
 const toDollar = formatter.format
 
 const rewardsContract_resetApprove = async function(stakeTokenAddr, rewardPoolAddr, App) {
@@ -1165,15 +1237,9 @@ const rewardsContract_resetApprove = async function(stakeTokenAddr, rewardPoolAd
 
   const STAKING_TOKEN = new ethers.Contract(stakeTokenAddr, ERC20_ABI, signer)
 
-  showLoading()
-
-  STAKING_TOKEN.approve(rewardPoolAddr, 0)
-    .then(function(t) {
-      return App.provider.waitForTransaction(t.hash)
-    })
-    .catch(function() {
-      hideLoading()
-    })
+  await window.vfatSubmitTransaction(App, 'Reset approval', function() {
+    return STAKING_TOKEN.approve(rewardPoolAddr, 0)
+  })
 }
 
 const trimOrFillTo = function(str, n) {
@@ -1223,43 +1289,17 @@ const rewardsContract_stake = async function(stakeTokenAddr, rewardPoolAddr, App
     ? maxAllowance : balanceOf) : balanceOf
   const allowedTEND = await TEND_TOKEN.allowance(App.YOUR_ADDRESS, rewardPoolAddr)
 
-  let allow = Promise.resolve()
-
-  if (allowedTEND / 1e18 < currentTEND / 1e18) {
-    showLoading()
-    allow = TEND_TOKEN.approve(rewardPoolAddr, ethers.constants.MaxUint256)
-      .then(function(t) {
-        return App.provider.waitForTransaction(t.hash)
-      })
-      .catch(function() {
-        hideLoading()
-        alert('Try resetting your approval to 0 first')
-      })
-  }
-
   if (currentTEND / 1e18 > 0) {
-    showLoading()
-    allow
-      .then(async function() {
-        WEEBTEND_V2_TOKEN.stake(currentTEND, {gasLimit: 500000})
-          .then(function(t) {
-            App.provider.waitForTransaction(t.hash).then(function() {
-              hideLoading()
-            })
-          })
-          .catch(x => {
-            hideLoading()
-            console.log(x);
-            _print('Something went wrong.')
-          })
-      })
-      .catch(x => {
-        hideLoading()
-        console.log(x);
-        _print('Something went wrong.')
-      })
+    await window.vfatSubmitTransaction(App, 'Stake', async function() {
+      if (allowedTEND / 1e18 < currentTEND / 1e18) {
+        const approvalTx = await TEND_TOKEN.approve(rewardPoolAddr, ethers.constants.MaxUint256)
+        await App.provider.waitForTransaction(approvalTx.hash)
+      }
+      return WEEBTEND_V2_TOKEN.stake(currentTEND, {gasLimit: 500000})
+    })
   } else {
-    alert('You have no tokens to stake!!')
+    _print('You have no tokens to stake.')
+    _print('')
   }
 }
 
@@ -1270,14 +1310,9 @@ const rewardsContract_unstake = async function(rewardPoolAddr, App) {
   const currentStakedAmount = await REWARD_POOL.balanceOf(App.YOUR_ADDRESS)
 
   if (currentStakedAmount > 0) {
-    showLoading()
-    REWARD_POOL.withdraw(currentStakedAmount, {gasLimit: 250000})
-      .then(function(t) {
-        return App.provider.waitForTransaction(t.hash)
-      })
-      .catch(function() {
-        hideLoading()
-      })
+    await window.vfatSubmitTransaction(App, 'Unstake', function() {
+      return REWARD_POOL.withdraw(currentStakedAmount, {gasLimit: 250000})
+    })
   }
 }
 
@@ -1288,14 +1323,9 @@ const rewardsContract_movetoboardroom = async function(rewardPoolAddr, App) {
   const currentEarnedAmount = await REWARD_POOL.earned(App.YOUR_ADDRESS)
 
   if (currentEarnedAmount > 0) {
-    showLoading()
-    REWARD_POOL.stakeInBoardroom({gasLimit: 500000})
-      .then(function(t) {
-        return App.provider.waitForTransaction(t.hash)
-      })
-      .catch(function() {
-        hideLoading()
-      })
+    await window.vfatSubmitTransaction(App, 'Move to boardroom', function() {
+      return REWARD_POOL.stakeInBoardroom({gasLimit: 500000})
+    })
   }
 }
 
@@ -1306,14 +1336,9 @@ const rewardsContract_exit = async function(rewardPoolAddr, App) {
   const currentStakedAmount = (await REWARD_POOL.balanceOf(App.YOUR_ADDRESS)) / 1e18
 
   if (currentStakedAmount > 0) {
-    showLoading()
-    REWARD_POOL.exit({gasLimit: 250000})
-      .then(function(t) {
-        return App.provider.waitForTransaction(t.hash)
-      })
-      .catch(function() {
-        hideLoading()
-      })
+    await window.vfatSubmitTransaction(App, 'Exit', function() {
+      return REWARD_POOL.exit({gasLimit: 250000})
+    })
   }
 }
 
@@ -1327,14 +1352,9 @@ const rewardsContract_claim = async function(rewardPoolAddr, App) {
   const earnedYFFI = (await REWARD_POOL.earned(App.YOUR_ADDRESS)) / 1e18
 
   if (earnedYFFI > 0) {
-    showLoading()
-    REWARD_POOL.getReward({gasLimit: 250000})
-      .then(function(t) {
-        return App.provider.waitForTransaction(t.hash)
-      })
-      .catch(function() {
-        hideLoading()
-      })
+    await window.vfatSubmitTransaction(App, 'Claim rewards', function() {
+      return REWARD_POOL.getReward({gasLimit: 250000})
+    })
   }
 }
 
@@ -1348,14 +1368,9 @@ const boardroom_claim = async function(rewardPoolAddr, App) {
   const earnedYFFI = (await REWARD_POOL.earned(App.YOUR_ADDRESS)) / 1e18
 
   if (earnedYFFI > 0) {
-    showLoading()
-    REWARD_POOL.claimReward({gasLimit: 250000})
-      .then(function(t) {
-        return App.provider.waitForTransaction(t.hash)
-      })
-      .catch(function() {
-        hideLoading()
-      })
+    await window.vfatSubmitTransaction(App, 'Claim rewards', function() {
+      return REWARD_POOL.claimReward({gasLimit: 250000})
+    })
   }
 }
 
