@@ -48,7 +48,7 @@ const AERO_TOKEN_ADDRESS = "0x940181a94a35a4569e4529a3cdfb74e38fd98631";
 const MAX_UINT128 = "340282366920938463463374607431768211455";
 
 const CURRENT_NFT_FARM_STRATEGY_ABI = [
-  "function simpleDeposit(tuple(tuple(address stakingContract,uint256 poolIndex) farm,address nft,uint256 tokenId) position, bytes extraData, tuple(address pool,bytes32 poolId,bool autoRebalance,tuple(uint24 tickSpacesBelow,uint24 tickSpacesAbove,int24 bufferTicksBelow,int24 bufferTicksAbove,uint256 dustBP,uint256 priceImpactBP,uint256 slippageBP,int24 cutoffTickLow,int24 cutoffTickHigh,uint8 delayMin,tuple(uint8 rewardBehavior,address harvestTokenOut) rewardConfig) rebalanceConfig,bool automateRewards,tuple(uint8 rewardBehavior,address harvestTokenOut) rewardConfig,bool autoExit,tuple(int24 triggerTickLow,int24 triggerTickHigh,address exitTokenOutLow,address exitTokenOutHigh,uint256 priceImpactBP,uint256 slippageBP) exitConfig,bytes extraData,bool autoDeposit) settings,address approved,bytes32 referralCode)",
+  "function simpleDeposit(tuple(tuple(address stakingContract,uint256 poolIndex) farm,address nft,uint256 tokenId) position, bytes extraData, tuple(address pool,bytes32 poolId,bool autoRebalance,tuple(uint24 tickSpacesBelow,uint24 tickSpacesAbove,int24 bufferTicksBelow,int24 bufferTicksAbove,uint256 dustBP,uint256 priceImpactBP,uint256 slippageBP,int24 cutoffTickLow,int24 cutoffTickHigh,uint8 delayMin,tuple(uint8 rewardBehavior,address harvestTokenOut) rewardConfig) rebalanceConfig,bool automateRewards,tuple(uint8 rewardBehavior,address harvestTokenOut) rewardConfig,bool autoExit,tuple(int24 triggerTickLow,int24 triggerTickHigh,address exitTokenOutLow,address exitTokenOutHigh,uint256 priceImpactBP,uint256 slippageBP) exitConfig,bytes extraData) settings,address approved,bytes32 referralCode)",
   "function simpleWithdraw(tuple(tuple(address stakingContract,uint256 poolIndex) farm,address nft,uint256 tokenId) position, bytes extraData)",
   "function simpleHarvest(tuple(tuple(address stakingContract,uint256 poolIndex) farm,address nft,uint256 tokenId) position, tuple(address[] rewardTokens,uint128 amount0Max,uint128 amount1Max,bytes extraData) params)"
 ];
@@ -520,8 +520,7 @@ const defaultNftSettings = function() {
       priceImpactBP: 0,
       slippageBP: 0
     },
-    extraData: "0x",
-    autoDeposit: false
+    extraData: "0x"
   }
 }
 
