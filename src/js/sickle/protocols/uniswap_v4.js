@@ -20,7 +20,9 @@ export function defaultProxyBases() {
   // so devs can still test without running the proxy.
   const hostname = (typeof window !== 'undefined' && window?.location?.hostname) || ''
   if (isLocalhostHostname(hostname)) {
-    return ['http://127.0.0.1:8787/api/etherscan-v2', 'https://vfat.tools/api/etherscan-v2']
+    const protocol = (typeof window !== 'undefined' && window?.location?.protocol) || 'http:'
+    const localOrigin = `${protocol}//${hostname}:8787`
+    return [`${localOrigin}/api/etherscan-v2`, 'https://vfat.tools/api/etherscan-v2']
   }
   return ['/api/etherscan-v2']
 }
@@ -30,7 +32,9 @@ export function defaultMoralisProxyBases() {
   // In local dev, we *prefer* a locally-running proxy, but fall back to vfat.tools.
   const hostname = (typeof window !== 'undefined' && window?.location?.hostname) || ''
   if (isLocalhostHostname(hostname)) {
-    return ['http://127.0.0.1:8787/api/moralis/wallet-nfts', 'https://vfat.tools/api/moralis/wallet-nfts']
+    const protocol = (typeof window !== 'undefined' && window?.location?.protocol) || 'http:'
+    const localOrigin = `${protocol}//${hostname}:8787`
+    return [`${localOrigin}/api/moralis/wallet-nfts`, 'https://vfat.tools/api/moralis/wallet-nfts']
   }
   return ['/api/moralis/wallet-nfts']
 }
