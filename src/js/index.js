@@ -44,10 +44,8 @@ window.customNetworks = customNetworks
 window.NETWORKS = NETWORKS
 window.store = store
 
-
 // Attach protocol-level helpers for non-module chain scripts.
 if (document.location.search === '?api=true') {
-  // Sickle SDK Integration
   window.Sickle = {
     sdk: Sickle.sickle,
     ...Sickle,
@@ -60,43 +58,43 @@ if (document.location.search === '?api=true') {
 }
 
 if (document.location.href.includes('uniswap-v4')) {
-    console.log('Initializing Uniswap V4 protocol helpers in Sickle...')
-    window.protocols = window.protocols || {}
-    window.protocols.uniswapV4 = UniswapV4Protocol
-  }
-  // Uniswap V3 Utilities
-  window.UniswapV3 = {
-    ...UniswapV3,
+  console.log('Initializing Uniswap V4 protocol helpers in Sickle...')
+  window.protocols = window.protocols || {}
+  window.protocols.uniswapV4 = UniswapV4Protocol
 }
 
-// 3. Create a AppKit instance safely
-let appKitInstance = null;
+window.UniswapV3 = {
+  ...UniswapV3,
+}
 
-try {
-  appKitInstance = window.__VFAT_APPKIT_INSTANCE__ || createAppKitInstance();
-  window.appKit = appKitInstance;
-  
-  // Only initialize subscribers if AppKit was created successfully
+let appKitInstance = null
+
+window.appKit = null
+window.getAppKit = function() {
   if (appKitInstance) {
-    initializeSubscribers(appKitInstance);
+    return appKitInstance
   }
-} catch (error) {
-  console.error('Failed to initialize AppKit in index.js:', error);
-  // Set a fallback or handle gracefully
-  window.appKit = null;
-}
 
-document.addEventListener('DOMContentLoaded', function() {
+  if (!REOWN_PROJECT_ID) {
+    console.warn('AppKit: Missing REOWN_PROJECT_ID. Skipping AppKit init.')
+    return null
+  }
+
   try {
-    if (!REOWN_PROJECT_ID) {
-      console.warn('AppKit: Missing REOWN_PROJECT_ID. Skipping AppKit init.')
-      return
+    appKitInstance = createAppKitInstance()
+    window.appKit = appKitInstance
+
+    if (appKitInstance) {
+      initializeSubscribers(appKitInstance)
     }
 
+    return appKitInstance
   } catch (error) {
-    console.error('Failed to initialize AppKit:', error)
+    console.error('Failed to initialize AppKit in index.js:', error)
+    window.appKit = null
+    return null
   }
-})
+}
 
 // eslint-disable-next-line no-console
 console.log(`NODE_ENV: ${process.env.NODE_ENV}`)

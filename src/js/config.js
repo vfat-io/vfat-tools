@@ -568,9 +568,7 @@ export const createAppKitInstance = () => {
       metadata,
       networks: customNetworks,
       projectId: REOWN_PROJECT_ID,
-      features: {
-        analytics: true, // Optional - defaults to your Cloud configuration
-      },
+      features: appKitFeatures,
     });
 
     if (typeof window !== 'undefined') {
@@ -605,9 +603,7 @@ export const createAppKitInstance = () => {
           metadata: retryMetadata,
           networks: customNetworks,
           projectId: REOWN_PROJECT_ID,
-          features: {
-            analytics: true,
-          },
+          features: appKitFeatures,
         });
 
         if (typeof window !== 'undefined') {
@@ -625,6 +621,10 @@ export const createAppKitInstance = () => {
     throw error;
   }
 };
+
+// Do not instantiate AppKit at module load. It can trigger connector probing
+// before the user asks to connect a wallet.
+export const appKit = null;
 
 export const store = {
     accountState: {},
