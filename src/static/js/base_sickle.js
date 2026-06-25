@@ -14,6 +14,7 @@ const SLIPSTREAM_NFT_MANAGER_ADDRESS_5 = "0x46A15B0b27311cedF172AB29E4f4766fbE7F
 const SLIPSTREAM_NFT_MANAGER_ADDRESS_6 = "0x03a520b32C04BF3bEEf7BEb72E919cf822Ed34f1";
 const SLIPSTREAM_NFT_MANAGER_ADDRESS_7 = "0x1409a523F5bE27989Af9321Cc0EC1d441ACa6d9B";
 const SLIPSTREAM_NFT_MANAGER_ADDRESS_8 = "0x9475d90BcAfFDAd562c2146FC88cbE39D3aad094";
+const SLIPSTREAM_NFT_MANAGER_ADDRESS_9 = "0xe1f8cd9AC4e4A65F54f38a5CdAfCA44f6dD68b53";
 
 async function main() {
     const App = await init_ethers();
@@ -40,6 +41,7 @@ async function main() {
       const SLIPSTREAM_NFT_MANAGER_6 = new ethcall.Contract(SLIPSTREAM_NFT_MANAGER_ADDRESS_6, SLIPSTREAM_NFT_MANAGER_ABI);  // UNISWAP
       const SLIPSTREAM_NFT_MANAGER_7 = new ethcall.Contract(SLIPSTREAM_NFT_MANAGER_ADDRESS_7, SLIPSTREAM_NFT_MANAGER_ABI);  // NINEMM
       const SLIPSTREAM_NFT_MANAGER_8 = new ethcall.Contract(SLIPSTREAM_NFT_MANAGER_ADDRESS_8, SLIPSTREAM_NFT_MANAGER_ABI);  // OMNI
+      const SLIPSTREAM_NFT_MANAGER_9 = new ethcall.Contract(SLIPSTREAM_NFT_MANAGER_ADDRESS_9, SLIPSTREAM_NFT_MANAGER_ABI);  // AERO NEW
 
       const [nfts_1] = await App.ethcallProvider.all([SLIPSTREAM_NFT_MANAGER_1.balanceOf(sickleAddress)]);
       const [nfts_2] = await App.ethcallProvider.all([SLIPSTREAM_NFT_MANAGER_2.balanceOf(sickleAddress)]);
@@ -49,6 +51,7 @@ async function main() {
       const [nfts_6] = await App.ethcallProvider.all([SLIPSTREAM_NFT_MANAGER_6.balanceOf(sickleAddress)]);
       const [nfts_7] = await App.ethcallProvider.all([SLIPSTREAM_NFT_MANAGER_7.balanceOf(sickleAddress)]);
       const [nfts_8] = await App.ethcallProvider.all([SLIPSTREAM_NFT_MANAGER_8.balanceOf(sickleAddress)]);
+      const [nfts_9] = await App.ethcallProvider.all([SLIPSTREAM_NFT_MANAGER_9.balanceOf(sickleAddress)]);
 
       let nft_ids = [];
       let tokens = [];
@@ -185,6 +188,24 @@ async function main() {
           const nft_id = await App.ethcallProvider.all([SLIPSTREAM_NFT_MANAGER_8.tokenOfOwnerByIndex(sickleAddress, i)]) / 1;
           nft_ids.push(nft_id);
           tokens.push(SLIPSTREAM_NFT_MANAGER_ADDRESS_8);
+        }
+        
+        const sweepErc721 = async function() {
+          return sweep_nfts_721(App, nft_ids, tokens)
+        }
+        
+        for(let i = 0; i < nft_ids.length; i++){
+          token_ids += `${nft_ids[i]}`;
+        }
+
+        _print_link(`Withdraw OMNI erc721 tokens: ${token_ids}`, sweepErc721);
+      }
+
+      if(nfts_9 / 1 > 0){
+        for(let i = 0; i < nfts_9; i++){
+          const nft_id = await App.ethcallProvider.all([SLIPSTREAM_NFT_MANAGER_9.tokenOfOwnerByIndex(sickleAddress, i)]) / 1;
+          nft_ids.push(nft_id);
+          tokens.push(SLIPSTREAM_NFT_MANAGER_ADDRESS_9);
         }
         
         const sweepErc721 = async function() {

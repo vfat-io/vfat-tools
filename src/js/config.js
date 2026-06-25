@@ -546,18 +546,34 @@ export const appKitFeatures = {
 let appKitInstance = null;
 
 export const createAppKitInstance = () => {
+  if (typeof window !== 'undefined' && window.__VFAT_APPKIT_INSTANCE__) {
+    return window.__VFAT_APPKIT_INSTANCE__;
+  }
+
   if (appKitInstance) {
     return appKitInstance;
   }
   
   try {
+    const metadata = {
+      ...appKitMetadata,
+      url:
+        typeof window !== 'undefined' && window.location?.origin
+          ? window.location.origin
+          : appKitMetadata.url,
+    }
+
     appKitInstance = createAppKit({
       adapters: [new Ethers5Adapter()],
-      metadata: appKitMetadata,
+      metadata,
       networks: customNetworks,
       projectId: REOWN_PROJECT_ID,
       features: appKitFeatures,
     });
+
+    if (typeof window !== 'undefined') {
+      window.__VFAT_APPKIT_INSTANCE__ = appKitInstance;
+    }
     
     console.log('AppKit instance created successfully');
     return appKitInstance;
@@ -574,13 +590,25 @@ export const createAppKitInstance = () => {
         sessionStorage.clear();
         
         // Try creating again after clearing
+        const retryMetadata = {
+          ...appKitMetadata,
+          url:
+            typeof window !== 'undefined' && window.location?.origin
+              ? window.location.origin
+              : appKitMetadata.url,
+        }
+
         appKitInstance = createAppKit({
           adapters: [new Ethers5Adapter()],
-          metadata: appKitMetadata,
+          metadata: retryMetadata,
           networks: customNetworks,
           projectId: REOWN_PROJECT_ID,
           features: appKitFeatures,
         });
+
+        if (typeof window !== 'undefined') {
+          window.__VFAT_APPKIT_INSTANCE__ = appKitInstance;
+        }
         
         console.log('AppKit instance created successfully after clearing storage');
         return appKitInstance;

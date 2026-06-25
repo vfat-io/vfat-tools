@@ -1,8 +1,8 @@
-$(function() {
-consoleInit(main)
-  });
+$(function () {
+  consoleInit(main)
+});
 
-const PIEDAO_POOL_ABI = [{"inputs":[{"internalType":"contract IMintableERC20","name":"_reward","type":"address"},{"internalType":"address","name":"_governance","type":"address"}],"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"governance","type":"address"}],"name":"GovernanceUpdated","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"pendingGovernance","type":"address"}],"name":"PendingGovernanceUpdated","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"uint256","name":"poolId","type":"uint256"},{"indexed":true,"internalType":"contract IERC20","name":"token","type":"address"}],"name":"PoolCreated","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"uint256","name":"poolId","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"rewardWeight","type":"uint256"}],"name":"PoolRewardWeightUpdated","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"rewardRate","type":"uint256"}],"name":"RewardRateUpdated","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":true,"internalType":"uint256","name":"poolId","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"TokensClaimed","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":true,"internalType":"uint256","name":"poolId","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"TokensDeposited","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":true,"internalType":"uint256","name":"poolId","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"TokensWithdrawn","type":"event"},{"inputs":[],"name":"acceptGovernance","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_poolId","type":"uint256"}],"name":"claim","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"contract IERC20","name":"_token","type":"address"}],"name":"createPool","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_poolId","type":"uint256"},{"internalType":"uint256","name":"_depositAmount","type":"uint256"}],"name":"deposit","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_poolId","type":"uint256"}],"name":"exit","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_poolId","type":"uint256"}],"name":"getPoolRewardRate","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"_poolId","type":"uint256"}],"name":"getPoolRewardWeight","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"_poolId","type":"uint256"}],"name":"getPoolToken","outputs":[{"internalType":"contract IERC20","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"_poolId","type":"uint256"}],"name":"getPoolTotalDeposited","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"_account","type":"address"},{"internalType":"uint256","name":"_poolId","type":"uint256"}],"name":"getStakeTotalDeposited","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"_account","type":"address"},{"internalType":"uint256","name":"_poolId","type":"uint256"}],"name":"getStakeTotalUnclaimed","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"governance","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"pendingGovernance","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"poolCount","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"reward","outputs":[{"internalType":"contract IMintableERC20","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"rewardRate","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"_pendingGovernance","type":"address"}],"name":"setPendingGovernance","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_rewardRate","type":"uint256"}],"name":"setRewardRate","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256[]","name":"_rewardWeights","type":"uint256[]"}],"name":"setRewardWeights","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"contract IERC20","name":"","type":"address"}],"name":"tokenPoolIds","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"totalRewardWeight","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"_poolId","type":"uint256"},{"internalType":"uint256","name":"_withdrawAmount","type":"uint256"}],"name":"withdraw","outputs":[],"stateMutability":"nonpayable","type":"function"}]
+const PIEDAO_POOL_ABI = [{ "inputs": [{ "internalType": "contract IMintableERC20", "name": "_reward", "type": "address" }, { "internalType": "address", "name": "_governance", "type": "address" }], "stateMutability": "nonpayable", "type": "constructor" }, { "anonymous": false, "inputs": [{ "indexed": false, "internalType": "address", "name": "governance", "type": "address" }], "name": "GovernanceUpdated", "type": "event" }, { "anonymous": false, "inputs": [{ "indexed": false, "internalType": "address", "name": "pendingGovernance", "type": "address" }], "name": "PendingGovernanceUpdated", "type": "event" }, { "anonymous": false, "inputs": [{ "indexed": true, "internalType": "uint256", "name": "poolId", "type": "uint256" }, { "indexed": true, "internalType": "contract IERC20", "name": "token", "type": "address" }], "name": "PoolCreated", "type": "event" }, { "anonymous": false, "inputs": [{ "indexed": true, "internalType": "uint256", "name": "poolId", "type": "uint256" }, { "indexed": false, "internalType": "uint256", "name": "rewardWeight", "type": "uint256" }], "name": "PoolRewardWeightUpdated", "type": "event" }, { "anonymous": false, "inputs": [{ "indexed": false, "internalType": "uint256", "name": "rewardRate", "type": "uint256" }], "name": "RewardRateUpdated", "type": "event" }, { "anonymous": false, "inputs": [{ "indexed": true, "internalType": "address", "name": "user", "type": "address" }, { "indexed": true, "internalType": "uint256", "name": "poolId", "type": "uint256" }, { "indexed": false, "internalType": "uint256", "name": "amount", "type": "uint256" }], "name": "TokensClaimed", "type": "event" }, { "anonymous": false, "inputs": [{ "indexed": true, "internalType": "address", "name": "user", "type": "address" }, { "indexed": true, "internalType": "uint256", "name": "poolId", "type": "uint256" }, { "indexed": false, "internalType": "uint256", "name": "amount", "type": "uint256" }], "name": "TokensDeposited", "type": "event" }, { "anonymous": false, "inputs": [{ "indexed": true, "internalType": "address", "name": "user", "type": "address" }, { "indexed": true, "internalType": "uint256", "name": "poolId", "type": "uint256" }, { "indexed": false, "internalType": "uint256", "name": "amount", "type": "uint256" }], "name": "TokensWithdrawn", "type": "event" }, { "inputs": [], "name": "acceptGovernance", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [{ "internalType": "uint256", "name": "_poolId", "type": "uint256" }], "name": "claim", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [{ "internalType": "contract IERC20", "name": "_token", "type": "address" }], "name": "createPool", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [{ "internalType": "uint256", "name": "_poolId", "type": "uint256" }, { "internalType": "uint256", "name": "_depositAmount", "type": "uint256" }], "name": "deposit", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [{ "internalType": "uint256", "name": "_poolId", "type": "uint256" }], "name": "exit", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [{ "internalType": "uint256", "name": "_poolId", "type": "uint256" }], "name": "getPoolRewardRate", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "uint256", "name": "_poolId", "type": "uint256" }], "name": "getPoolRewardWeight", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "uint256", "name": "_poolId", "type": "uint256" }], "name": "getPoolToken", "outputs": [{ "internalType": "contract IERC20", "name": "", "type": "address" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "uint256", "name": "_poolId", "type": "uint256" }], "name": "getPoolTotalDeposited", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "_account", "type": "address" }, { "internalType": "uint256", "name": "_poolId", "type": "uint256" }], "name": "getStakeTotalDeposited", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "_account", "type": "address" }, { "internalType": "uint256", "name": "_poolId", "type": "uint256" }], "name": "getStakeTotalUnclaimed", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "governance", "outputs": [{ "internalType": "address", "name": "", "type": "address" }], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "pendingGovernance", "outputs": [{ "internalType": "address", "name": "", "type": "address" }], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "poolCount", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "reward", "outputs": [{ "internalType": "contract IMintableERC20", "name": "", "type": "address" }], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "rewardRate", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "_pendingGovernance", "type": "address" }], "name": "setPendingGovernance", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [{ "internalType": "uint256", "name": "_rewardRate", "type": "uint256" }], "name": "setRewardRate", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [{ "internalType": "uint256[]", "name": "_rewardWeights", "type": "uint256[]" }], "name": "setRewardWeights", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [{ "internalType": "contract IERC20", "name": "", "type": "address" }], "name": "tokenPoolIds", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "totalRewardWeight", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "uint256", "name": "_poolId", "type": "uint256" }, { "internalType": "uint256", "name": "_withdrawAmount", "type": "uint256" }], "name": "withdraw", "outputs": [], "stateMutability": "nonpayable", "type": "function" }]
 
 async function getPiedaoPoolInfo(App, pool, poolIndex) {
   const [token, rewardRate, totalDeposited, userStaked, userUnclaimed] =
@@ -11,17 +11,17 @@ async function getPiedaoPoolInfo(App, pool, poolIndex) {
       pool.getPoolTotalDeposited(poolIndex), pool.getStakeTotalDeposited(App.YOUR_ADDRESS, poolIndex),
       pool.getStakeTotalUnclaimed(App.YOUR_ADDRESS, poolIndex)
     ]);
-    const poolToken = await getToken(App, token, pool.address);
-    return {
-      poolToken,
-      rewardsPerWeek : rewardRate / 1e18 * 604800 / 13.5,
-      totalDeposited : totalDeposited / 1e18,
-      userStaked : userStaked / 1e18,
-      userUnclaimed : userUnclaimed / 1e18
-    }
+  const poolToken = await getToken(App, token, pool.address);
+  return {
+    poolToken,
+    rewardsPerWeek: rewardRate / 1e18 * 604800 / 13.5,
+    totalDeposited: totalDeposited / 1e18,
+    userStaked: userStaked / 1e18,
+    userUnclaimed: userUnclaimed / 1e18
+  }
 }
 
-const piedaoContract_deposit = async function(piedaoAbi, piedaoAddress, poolIndex, stakeTokenAddr, App) {
+const piedaoContract_deposit = async function (piedaoAbi, piedaoAddress, poolIndex, stakeTokenAddr, App) {
   const signer = App.provider.getSigner()
 
   const STAKING_TOKEN = new ethers.Contract(stakeTokenAddr, ERC20_ABI, signer)
@@ -35,10 +35,10 @@ const piedaoContract_deposit = async function(piedaoAbi, piedaoAddress, poolInde
   if (allowedTokens / 1e18 < currentTokens / 1e18) {
     showLoading()
     allow = STAKING_TOKEN.approve(piedaoAddress, ethers.constants.MaxUint256)
-      .then(function(t) {
+      .then(function (t) {
         return App.provider.waitForTransaction(t.hash)
       })
-      .catch(function() {
+      .catch(function () {
         hideLoading()
         alert('Try resetting your approval to 0 first')
       })
@@ -47,19 +47,19 @@ const piedaoContract_deposit = async function(piedaoAbi, piedaoAddress, poolInde
   if (currentTokens / 1e18 > 0) {
     showLoading()
     allow
-      .then(async function() {
-          PIEDAO_CONTRACT.deposit(poolIndex, currentTokens, {gasLimit: 500000})
-          .then(function(t) {
-            App.provider.waitForTransaction(t.hash).then(function() {
+      .then(async function () {
+        PIEDAO_CONTRACT.deposit(poolIndex, currentTokens, { gasLimit: 500000 })
+          .then(function (t) {
+            App.provider.waitForTransaction(t.hash).then(function () {
               hideLoading()
             })
           })
-          .catch(function() {
+          .catch(function () {
             hideLoading()
             _print('Something went wrong.')
           })
       })
-      .catch(function() {
+      .catch(function () {
         hideLoading()
         _print('Something went wrong.')
       })
@@ -68,7 +68,7 @@ const piedaoContract_deposit = async function(piedaoAbi, piedaoAddress, poolInde
   }
 }
 
-const piedaoContract_withdraw = async function(piedaoAbi, piedaoAddress, poolIndex, App) {
+const piedaoContract_withdraw = async function (piedaoAbi, piedaoAddress, poolIndex, App) {
   const signer = App.provider.getSigner()
   const PIEDAO_CONTRACT = new ethers.Contract(piedaoAddress, piedaoAbi, signer)
 
@@ -76,12 +76,12 @@ const piedaoContract_withdraw = async function(piedaoAbi, piedaoAddress, poolInd
 
   if (currentStakedAmount / 1e18 > 0) {
     showLoading()
-    const t = await PIEDAO_CONTRACT.withdraw(poolIndex, currentStakedAmount, {gasLimit: 500000});
+    const t = await PIEDAO_CONTRACT.withdraw(poolIndex, currentStakedAmount, { gasLimit: 500000 });
     return App.provider.waitForTransaction(t.hash);
   }
 }
 
-const piedaoContract_claim = async function(piedaoAbi, piedaoAddress, poolIndex, App) {
+const piedaoContract_claim = async function (piedaoAbi, piedaoAddress, poolIndex, App) {
   const signer = App.provider.getSigner()
 
   const PIEDAO_CONTRACT = new ethers.Contract(piedaoAddress, piedaoAbi, signer)
@@ -90,34 +90,34 @@ const piedaoContract_claim = async function(piedaoAbi, piedaoAddress, poolIndex,
 
   if (earnedTokenAmount > 0) {
     showLoading()
-    const t = await PIEDAO_CONTRACT.claim(poolIndex, {gasLimit: 500000});
+    const t = await PIEDAO_CONTRACT.claim(poolIndex, { gasLimit: 500000 });
     return App.provider.waitForTransaction(t.hash);
   }
 }
 
 function printPiedaoContractLinks(App, piedaoAbi, piedaoAddr, poolIndex, poolAddress,
-    rewardTokenTicker, stakeTokenTicker, unstaked, userStaked, pendingRewardTokens, rewardTokenPrice) {
+  rewardTokenTicker, stakeTokenTicker, unstaked, userStaked, pendingRewardTokens, rewardTokenPrice) {
   let fixedDecimals = 2;
-  const approveAndDeposit = async function() {
+  const approveAndDeposit = async function () {
     return piedaoContract_deposit(piedaoAbi, piedaoAddr, poolIndex, poolAddress, App)
   }
-  const withdraw = async function() {
+  const withdraw = async function () {
     return piedaoContract_withdraw(piedaoAbi, piedaoAddr, poolIndex, App)
   }
-  const claim = async function() {
+  const claim = async function () {
     return piedaoContract_claim(piedaoAbi, piedaoAddr, poolIndex, App)
   }
   const etherscanUrl = `<a href='https://etherscan.io/address/${poolAddress}' target='_blank'>Staking Contract</a>`;
   _print(etherscanUrl);
   _print_link(`Deposit ${unstaked.toFixed(fixedDecimals)} ${stakeTokenTicker}`, approveAndDeposit)
   _print_link(`Withdraw ${userStaked.toFixed(fixedDecimals)} ${stakeTokenTicker}`, withdraw)
-  _print_link(`Claim ${pendingRewardTokens.toFixed(fixedDecimals)} ${rewardTokenTicker} ($${formatMoney(pendingRewardTokens*rewardTokenPrice)})`, claim)
+  _print_link(`Claim ${pendingRewardTokens.toFixed(fixedDecimals)} ${rewardTokenTicker} ($${formatMoney(pendingRewardTokens * rewardTokenPrice)})`, claim)
   _print(`Staking or unstaking also claims rewards.`)
   _print(`\n`);
 }
 
 function printPiedaoPool(App, piedaoAbi, piedaoAddr, prices, poolInfo, poolIndex, poolPrices,
-                       rewardTokenTicker, rewardTokenAddress) {
+  rewardTokenTicker, rewardTokenAddress) {
   const rewardPrice = getParameterCaseInsensitive(prices, rewardTokenAddress)?.usd;
   poolPrices.print_price();
   const apr = printAPR(rewardTokenTicker, rewardPrice, poolInfo.rewardsPerWeek, poolPrices.stakeTokenTicker,
@@ -145,12 +145,12 @@ async function main() {
   const poolInfos = await Promise.all([...Array(poolCount / 1).keys()].map(async (x) =>
     await getPiedaoPoolInfo(App, PIEDAO_POOL, x)));
 
-  var tokenAddresses = [].concat.apply([], poolInfos.filter(x => x.poolToken).map(x => x.poolToken.tokens));
-  var prices = await lookUpTokenPrices(tokenAddresses);
-  //getParameterCaseInsensitive(prices, "0xBC6DA0FE9aD5f3b0d58160288917AA56653660E9").usd = 1
+  var tokenAddresses_ = [].concat.apply([], poolInfos.filter(x => x.poolToken).map(x => x.poolToken.tokens));
+  const tokenAddresses = tokenAddresses_.map(ta => ta.toLowerCase());
+  var prices = await getPiedaoPrices(tokenAddresses);
 
   await Promise.all(tokenAddresses.map(async (address) => {
-      tokens[address] = await getToken(App, address, PIEDAO_POOL_ADDRESS);
+    tokens[address] = await getToken(App, address, PIEDAO_POOL_ADDRESS);
   }));
 
   const poolPrices = poolInfos.map(poolInfo => getPoolPrices(tokens, prices, poolInfo.poolToken));
@@ -163,7 +163,7 @@ async function main() {
       poolInfos[i], i, poolPrices[i], rewardTokenTicker, rewardTokenAddress);
     aprs.push(apr);
   }
-  let totalUserStaked=0, totalStaked=0, averageApr=0;
+  let totalUserStaked = 0, totalStaked = 0, averageApr = 0;
   for (const a of aprs) {
     if (!isNaN(a.totalStakedUsd)) {
       totalStaked += a.totalStakedUsd;
@@ -178,10 +178,35 @@ async function main() {
   if (totalUserStaked > 0) {
     _print_bold(`\nYou are staking a total of $${formatMoney(totalUserStaked)} at an average APR of ${(averageApr * 100).toFixed(2)}%`)
     _print(`Estimated earnings:`
-        + ` Day $${formatMoney(totalUserStaked*averageApr/365)}`
-        + ` Week $${formatMoney(totalUserStaked*averageApr/52)}`
-        + ` Year $${formatMoney(totalUserStaked*averageApr)}\n`);
+      + ` Day $${formatMoney(totalUserStaked * averageApr / 365)}`
+      + ` Week $${formatMoney(totalUserStaked * averageApr / 52)}`
+      + ` Year $${formatMoney(totalUserStaked * averageApr)}\n`);
   }
 
   hideLoading();
+}
+
+async function getPiedaoPrices(tokenAddresses) {
+  const OptTokenContracts = tokenAddresses.map(x => x.toLowerCase())
+  const idPrices = await lookUpPrices2(OptTokenContracts)
+  const prices = {}
+  for (const bt of tokenAddresses) {
+    if (idPrices[bt]) {
+      prices[bt] = { usd: idPrices[bt] }
+    }
+  }
+  return prices
+}
+
+const lookUpPrices2 = async function (id_array) {
+  const prices = {}
+  let ids = id_array.join('%2C')
+  let res = await $.ajax({
+    url: 'https://api.vfat.io/v4/token?chainId=1&address=' + ids,
+    type: 'GET',
+  })
+  for (const [key, v] of Object.entries(res)) {
+    if (v.price) prices[v.address] = v.price
+  }
+  return prices
 }
