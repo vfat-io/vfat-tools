@@ -146,13 +146,13 @@ export function parseTokenIdFromMoralisNftRow(row) {
 }
 
 export async function getOwnedErc721TokenIdsViaProxy({ chainId, contractAddress, ownerAddress, bases }) {
-  // BSC (56): use Moralis-backed proxy because free-tier Etherscan v2 does not cover BSC.
+  // BSC (56), Optimism (10) and Base (8453): use Moralis-backed proxy because free-tier Etherscan v2 does not cover these chains.
   const chainIdInt = chainIdToInt(chainId)
-  if (chainIdInt === 56 || chainIdInt === 10) {
+  if (chainIdInt === 56 || chainIdInt === 10 || chainIdInt === 8453) {
     const owned = new Set()
     let cursor = null
 
-    const chain = chainIdInt === 56 ? 'bsc' : 'optimism'
+    const chain = chainIdInt === 56 ? 'bsc' : chainIdInt === 10 ? 'optimism' : chainIdInt === 8453 ? 'base' : null
 
     while (true) {
       const data = await fetchMoralisWalletNftsViaProxy(
