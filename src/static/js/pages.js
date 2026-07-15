@@ -40,6 +40,7 @@ const main = async () => {
       ["Stabilize                    ", `<a href="stabilize/"         >Various</a>`, "STBZ               ", "https://stabilize.finance"],
       ["StakeDAO                     ", `<a href="stakedao/"          >Various</a>`, "SDT                ", "https://stakedao.org"],
       ["TrueFi                       ", `<a href="truefi/"            >Various</a>`, "TRU                ", "https://app.truefi.io/farm"],
+      ["Tristero AUSD                ", `<a href="tristero/"          >AUSD</a>`, "AUSD               ", "https://app.tristero.com"],
       ["Updown                       ", `<a href="updown"             >Various</a>`, "UPDOWN             ", "https://updown.finance"],
       ["Vtd                          ", `<a href="vtd"                >Various</a>`, "VTD                ", "https://vtd.finance/app"],
       ["Xusd                         ", `<a href="xusd"               >Various</a>`, "XUSD               ", "https://xusd.money"],
