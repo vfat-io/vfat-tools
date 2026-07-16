@@ -49,7 +49,6 @@ async function main() {
   _print(`Configured lender rate: ${ratePerSecond} per second`)
   _print(`APR: ${apr.toFixed(4)}%`)
   _print(`APY: ${apy.toFixed(4)}% (daily compounding)`)
-  _print("\nThis page is read-only. The vault uses custom margin-lending accounting rather than VFAT's standard farming interfaces.")
 
   hideLoading()
 }
