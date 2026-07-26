@@ -1,4 +1,4 @@
-$(function() {
+$(function () {
   consoleInit(main)
 })
 
@@ -12,15 +12,19 @@ const TRISTERO_VAULT_ABI = [
   "function assets(uint256 assetId) view returns (uint256 ratePerSecond, uint256 index, uint256 lastUpdate)"
 ]
 
-const ERC20_ABI = [
+const ERC20_TOKEN_ABI = [
   "function decimals() view returns (uint8)",
   "function symbol() view returns (string)"
 ]
 
 async function main() {
-  const App = await init_ethers()
+  const App = await init_ethers();
+
+  _print(`Initialized ${App.YOUR_ADDRESS}\n`);
+  _print("Reading smart contracts...\n");
+
   const vault = new ethers.Contract(TRISTERO_VAULT, TRISTERO_VAULT_ABI, App.provider)
-  const token = new ethers.Contract(AUSD, ERC20_ABI, App.provider)
+  const token = new ethers.Contract(AUSD, ERC20_TOKEN_ABI, App.provider)
   const assetId = ethers.BigNumber.from(AUSD)
 
   _print("*************** TRISTERO AUSD MARGIN VAULT ***************")

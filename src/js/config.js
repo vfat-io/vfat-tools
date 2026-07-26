@@ -302,6 +302,13 @@ export const customNetworks = [
     blockExplorers: [{ name: 'Fraxscan', url: 'https://fraxscan.com' }]
   },
   {
+    id: 4663,
+    name: 'Robinhood',
+    nativeCurrency: { name: 'ETH', symbol: 'ETH', decimals: 18 },
+    rpcUrls: ['https://rpc.mainnet.chain.robinhood.com'],
+    blockExplorers: [{ name: 'Robinhood Chain explorer', url: 'https://robinhoodchain.blockscout.com' }]
+  },
+  {
     id: 4689,
     name: 'IoTeX',
     nativeCurrency: { name: 'IOTX', symbol: 'IOTX', decimals: 18 },
@@ -553,7 +560,7 @@ export const createAppKitInstance = () => {
   if (appKitInstance) {
     return appKitInstance;
   }
-  
+
   try {
     const metadata = {
       ...appKitMetadata,
@@ -574,12 +581,12 @@ export const createAppKitInstance = () => {
     if (typeof window !== 'undefined') {
       window.__VFAT_APPKIT_INSTANCE__ = appKitInstance;
     }
-    
+
     console.log('AppKit instance created successfully');
     return appKitInstance;
   } catch (error) {
     console.error('Failed to create AppKit instance:', error);
-    
+
     // If it's a "matching key" error, clear storage and try again
     if (error.message && error.message.includes('matching key')) {
       console.log('AppKit storage error detected, clearing and retrying...');
@@ -588,7 +595,7 @@ export const createAppKitInstance = () => {
         localStorage.removeItem('@w3m/wallet_id');
         localStorage.removeItem('@w3m/connected_connector');
         sessionStorage.clear();
-        
+
         // Try creating again after clearing
         const retryMetadata = {
           ...appKitMetadata,
@@ -609,7 +616,7 @@ export const createAppKitInstance = () => {
         if (typeof window !== 'undefined') {
           window.__VFAT_APPKIT_INSTANCE__ = appKitInstance;
         }
-        
+
         console.log('AppKit instance created successfully after clearing storage');
         return appKitInstance;
       } catch (retryError) {
@@ -617,7 +624,7 @@ export const createAppKitInstance = () => {
         throw retryError;
       }
     }
-    
+
     throw error;
   }
 };
@@ -627,18 +634,18 @@ export const createAppKitInstance = () => {
 export const appKit = null;
 
 export const store = {
-    accountState: {},
-    networkState: {},
-    appKitState: {},
-    themeState: { themeMode: 'light', themeVariables: {} },
-    events: [],
-    walletInfo: {},
-    eip155Provider: null
-  }
-  
-  export const updateStore = (key, value) => {
-    store[key] = value
-  }
+  accountState: {},
+  networkState: {},
+  appKitState: {},
+  themeState: { themeMode: 'light', themeVariables: {} },
+  events: [],
+  walletInfo: {},
+  eip155Provider: null
+}
+
+export const updateStore = (key, value) => {
+  store[key] = value
+}
 
 // Legacy NETWORKS configuration for backwards compatibility
 export const NETWORKS = {
@@ -1533,14 +1540,14 @@ export const NETWORKS = {
       "decimals": 18
     },
     "rpcUrls": [
-        "https://mainnet-rpc.thundercore.com",
-        "https://mainnet-rpc.thundertoken.net",
-        "https://mainnet-rpc.thundercore.io",
-        "wss://mainnet-ws.thundercore.com"
+      "https://mainnet-rpc.thundercore.com",
+      "https://mainnet-rpc.thundertoken.net",
+      "https://mainnet-rpc.thundercore.io",
+      "wss://mainnet-ws.thundercore.com"
     ],
     "blockExplorerUrls": [
-        "https://scan.thundercore.com/",
-        "https://viewblock.io/thundercore"
+      "https://scan.thundercore.com/",
+      "https://viewblock.io/thundercore"
     ],
   },
   OKEX: {
@@ -1552,10 +1559,10 @@ export const NETWORKS = {
       "decimals": 18
     },
     "rpcUrls": [
-        "https://exchainrpc.okex.org"
+      "https://exchainrpc.okex.org"
     ],
     "blockExplorerUrls": [
-        "https://www.oklink.com/okexchain"
+      "https://www.oklink.com/okexchain"
     ],
   },
   KCC: {
@@ -1567,10 +1574,10 @@ export const NETWORKS = {
       "decimals": 18
     },
     "rpcUrls": [
-        "https://rpc-mainnet.kcc.network"
+      "https://rpc-mainnet.kcc.network"
     ],
     "blockExplorerUrls": [
-        "https://explorer.kcc.io/en"
+      "https://explorer.kcc.io/en"
     ],
   },
   CELO: {
@@ -1582,10 +1589,10 @@ export const NETWORKS = {
       "decimals": 18
     },
     "rpcUrls": [
-        "https://forno.celo.org"
+      "https://forno.celo.org"
     ],
     "blockExplorerUrls": [
-        "https://explorer.celo.org"
+      "https://explorer.celo.org"
     ],
   },
   PLASMA: {
@@ -1597,10 +1604,10 @@ export const NETWORKS = {
       "decimals": 18
     },
     "rpcUrls": [
-        "https://rpc.plasma.to"
+      "https://rpc.plasma.to"
     ],
     "blockExplorerUrls": [
-        "https://plasmascan.to"
+      "https://plasmascan.to"
     ],
   },
   MONAD: {
@@ -1612,10 +1619,25 @@ export const NETWORKS = {
       "decimals": 18
     },
     "rpcUrls": [
-        "https://rpc1.monad.xyz"
+      "https://rpc1.monad.xyz"
     ],
     "blockExplorerUrls": [
-        "https://monadscan.com"
+      "https://monadscan.com"
+    ],
+  },
+  ROBINHOOD: {
+    "chainId": "0x1237",
+    "chainName": "Robinhood",
+    "nativeCurrency": {
+      "name": "Ethereum",
+      "symbol": "ETH",
+      "decimals": 18
+    },
+    "rpcUrls": [
+      "https://rpc.mainnet.chain.robinhood.com"
+    ],
+    "blockExplorerUrls": [
+      "https://robinhoodchain.blockscout.com"
     ],
   },
   WORLDCHAIN: {
@@ -1627,10 +1649,10 @@ export const NETWORKS = {
       "decimals": 18
     },
     "rpcUrls": [
-        "https://worldchain-mainnet.g.alchemy.com/public"
+      "https://worldchain-mainnet.g.alchemy.com/public"
     ],
     "blockExplorerUrls": [
-        "https://worldscan.org"
+      "https://worldscan.org"
     ],
   },
   HYPEREVM: {
@@ -1642,10 +1664,10 @@ export const NETWORKS = {
       "decimals": 18
     },
     "rpcUrls": [
-        "https://rpc.hyperliquid.xyz/evm"
+      "https://rpc.hyperliquid.xyz/evm"
     ],
     "blockExplorerUrls": [
-        "https://www.hyperscan.com/"
+      "https://www.hyperscan.com/"
     ],
   },
   KATANA: {
@@ -1657,10 +1679,10 @@ export const NETWORKS = {
       "decimals": 18
     },
     "rpcUrls": [
-        "https://rpc.katana.network"
+      "https://rpc.katana.network"
     ],
     "blockExplorerUrls": [
-        "https://katanascan.com"
+      "https://katanascan.com"
     ],
   },
   HEMI: {
@@ -1672,10 +1694,10 @@ export const NETWORKS = {
       "decimals": 18
     },
     "rpcUrls": [
-        "https://rpc.hemi.network/rpc"
+      "https://rpc.hemi.network/rpc"
     ],
     "blockExplorerUrls": [
-        "https://explorer.hemi.xyz"
+      "https://explorer.hemi.xyz"
     ],
   },
   IOTEX: {

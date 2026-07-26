@@ -709,6 +709,10 @@ const MonadTokens = [
   { "id": "monad", "symbol": "MON", "contract": "0x3bd359C1119dA7Da1D913D1C4D2B7c461115433A" },
 ];
 
+const RobinhoodTokens = [
+  { "id": "weth", "symbol": "WETH", "contract": "0x0bd7d308f8e1639fab988df18a8011f41eacad73" },
+];
+
 const WorldChainTokens = [
   { "id": "weth", "symbol": "WETH", "contract": "0x4200000000000000000000000000000000000006" }
 ];
@@ -1552,6 +1556,15 @@ async function getMonadPrices() {
   const idPrices = await lookUpPrices(MonadTokens.map(x => x.id));
   const prices = {}
   for (const bt of MonadTokens)
+    if (idPrices[bt.id])
+      prices[bt.contract] = idPrices[bt.id];
+  return prices;
+}
+
+async function getRobinhoodPrices() {
+  const idPrices = await lookUpPrices(RobinhoodTokens.map(x => x.id));
+  const prices = {}
+  for (const bt of RobinhoodTokens)
     if (idPrices[bt.id])
       prices[bt.contract] = idPrices[bt.id];
   return prices;
