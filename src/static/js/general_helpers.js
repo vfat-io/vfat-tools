@@ -638,8 +638,6 @@ async function loadGeneralChefContract(App, tokens, prices, chef, chefAddress, c
       break;
     case "doge": _print(`<a href='https://explorer.dogechain.dog/address/${chefAddress}' target='_blank'>Staking Contract</a>`);
       break;
-    case "canto": _print(`<a href='https://evm.explorer.canto.io/address/${chefAddress}' target='_blank'>Staking Contract</a>`);
-      break;
     case "ethw": _print(`<a href='https://www.oklink.com/en/ethw/address/${chefAddress}' target='_blank'>Staking Contract</a>`);
       break;
     case "klaytn": _print(`<a href='https://scope.klaytn.com/account/${chefAddress}' target='_blank'>Staking Contract</a>`);

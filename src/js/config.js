@@ -330,13 +330,6 @@ export const customNetworks = [
     blockExplorers: [{ name: 'Tenet Explorer', url: 'https://tenetscan.io' }]
   },
   {
-    id: 7700,
-    name: 'Canto',
-    nativeCurrency: { name: 'CANTO', symbol: 'CANTO', decimals: 18 },
-    rpcUrls: ['https://canto.gravitychain.io'],
-    blockExplorers: [{ name: 'Canto Explorer', url: 'https://evm.explorer.canto.io' }]
-  },
-  {
     id: 8217,
     name: 'Klaytn Mainnet',
     nativeCurrency: { name: 'KLAY', symbol: 'KLAY', decimals: 18 },
@@ -950,21 +943,6 @@ export const NETWORKS = {
     ],
     "blockExplorerUrls": [
       "https://explorer.starscan.io"
-    ]
-  },
-  CANTO: {
-    "chainId": "0x1E14",
-    "chainName": "CANTO",
-    "nativeCurrency": {
-      "name": "CANTO",
-      "symbol": "CANTO",
-      "decimals": 18
-    },
-    "rpcUrls": [
-      "https://mainnode.plexnode.org:8545"
-    ],
-    "blockExplorerUrls": [
-      "https://evm.explorer.canto.io"
     ]
   },
   CORE: {
