@@ -4405,7 +4405,7 @@ function getErc20Prices(prices, pool, chain = "eth") {
       poolUrl = `https://monadscan.com/token/${pool.address}`;
       break;
     case "robinhood":
-      poolUrl = `https://robinhoodchain.blockscout.com/token/${pool.address}`;
+      poolUrl = `https://robinscan.io/token/${pool.address}`;
       break;
     case "worldchain":
       poolUrl = `https://worldscan.org/token/${pool.address}`;
@@ -5222,7 +5222,7 @@ async function printSynthetixPool(App, info, chain = "eth", customURLs) {
       _print(`<a target="_blank" href="https://monadscan.com/address/${info.stakingAddress}">Monad Scan</a>`);
       break;
     case "robinhood":
-      _print(`<a target="_blank" href="https://robinhoodchain.blockscout.com/address/${info.stakingAddress}">Robinhood Explorer</a>`);
+      _print(`<a target="_blank" href="https://robinscan.io/address/${info.stakingAddress}">Robinhood Explorer</a>`);
       break;
     case "worldchain":
       _print(`<a target="_blank" href="https://worldscan.org/address/${info.stakingAddress}">WorldChain Scan</a>`);
@@ -5534,7 +5534,7 @@ function getChainExplorerUrl(chain, address) {
     case "monad":
       return `https://monadscan.com/token/${address}`;
     case "robinhood":
-      return `https://robinhoodchain.blockscout.com/token/${address}`;
+      return `https://robinscan.io/token/${address}`;
     case "worldchain":
       return `https://worldscan.org/token/${address}`;
     case "katana":

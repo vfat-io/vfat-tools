@@ -306,7 +306,7 @@ export const customNetworks = [
     name: 'Robinhood',
     nativeCurrency: { name: 'ETH', symbol: 'ETH', decimals: 18 },
     rpcUrls: ['https://rpc.mainnet.chain.robinhood.com'],
-    blockExplorers: [{ name: 'Robinhood Chain explorer', url: 'https://robinhoodchain.blockscout.com' }]
+    blockExplorers: [{ name: 'Robinhood Chain explorer', url: 'https://robinscan.io' }]
   },
   {
     id: 4689,
@@ -1637,7 +1637,7 @@ export const NETWORKS = {
       "https://rpc.mainnet.chain.robinhood.com"
     ],
     "blockExplorerUrls": [
-      "https://robinhoodchain.blockscout.com"
+      "https://robinscan.io"
     ],
   },
   WORLDCHAIN: {

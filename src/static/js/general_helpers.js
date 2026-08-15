@@ -704,7 +704,7 @@ async function loadGeneralChefContract(App, tokens, prices, chef, chefAddress, c
       break;
     case "monad": _print(`<a href='https://monadscan.com/address/${chefAddress}' target='_blank'>Staking Contract</a>`);
       break;
-    case "robinhood": _print(`<a href='https://robinhoodchain.blockscout.com/address/${chefAddress}' target='_blank'>Staking Contract</a>`);
+    case "robinhood": _print(`<a href='https://robinscan.io/address/${chefAddress}' target='_blank'>Staking Contract</a>`);
       break;
   }
   _print(`Found ${poolCount} pools.\n`)

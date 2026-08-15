@@ -458,7 +458,7 @@ const fallback_withdraw = async function (App, nft_manager_address_v4, sickleAdd
   _print('')
   _print('You could check your nfts on the nft position manager contract below')
   _print(
-    `<a target="_blank" href="https://robinhoodchain.blockscout.com/address/${sickleAddress}?tab=tokens_nfts">Nft Position Manager</a>`
+    `<a target="_blank" href="https://robinscan.io/address/${sickleAddress}?tab=tokens_nfts">Nft Position Manager</a>`
   )
   _print('')
   let log = document.getElementById('log')
