@@ -711,6 +711,7 @@ const MonadTokens = [
 
 const RobinhoodTokens = [
   { "id": "weth", "symbol": "WETH", "contract": "0x0bd7d308f8e1639fab988df18a8011f41eacad73" },
+  { "id": "up-2", "symbol": "UP", "contract": "0x57C0E45cB534413D1C20A4240955d6bB250BB4F1" },
 ];
 
 const WorldChainTokens = [

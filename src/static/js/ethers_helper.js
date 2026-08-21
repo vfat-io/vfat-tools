@@ -3046,6 +3046,7 @@ function getUniPrices(tokens, prices, pool, chain = "eth") {
                                                                                                 "mode": `https://app.velodrome.finance/swap`,
                                                                                                 "unichain": `https://app.velodrome.finance/swap`,
                                                                                                 "ink": `https://app.velodrome.finance/swap`,
+                                                                                                "robinhood": `https://up33.xyz`,
                                                                                                 "soneium": `https://app.velodrome.finance/swap`,
                                                                                                 "plasma": `https://lithos.to`,
                                                                                                 "base": `https://base.velocimeter.xyz`
@@ -3068,6 +3069,7 @@ function getUniPrices(tokens, prices, pool, chain = "eth") {
                                                                                                   "mode": `https://app.velodrome.finance/swap`,
                                                                                                   "unichain": `https://app.velodrome.finance/swap`,
                                                                                                   "ink": `https://app.velodrome.finance/swap`,
+                                                                                                  "robinhood": `https://up33.xyz`,
                                                                                                   "soneium": `https://app.velodrome.finance/swap`,
                                                                                                   "plasma": `https://lithos.to`,
                                                                                                   "kava": `https://equilibrefinance.com/`
@@ -3338,6 +3340,11 @@ function getUniPrices(tokens, prices, pool, chain = "eth") {
                                                                       `https://app.velodrome.finance/liquidity/create/`,
                                                                       `https://app.velodrome.finance/swap`
                                                                     ],
+                                                                    "robinhood": [
+                                                                      `https://up33.xyz`,
+                                                                      `https://up33.xyz`,
+                                                                      `https://up33.xyz`
+                                                                    ],
                                                                     "soneium": [
                                                                       `https://app.velodrome.finance/liquidity/create/`,
                                                                       `https://app.velodrome.finance/liquidity/create/`,
@@ -3434,6 +3441,11 @@ function getUniPrices(tokens, prices, pool, chain = "eth") {
                                                                         `https://app.velodrome.finance/liquidity/create/`,
                                                                         `https://app.velodrome.finance/liquidity/create/`,
                                                                         `https://app.velodrome.finance/swap`
+                                                                      ],
+                                                                      "robinhood": [
+                                                                        `https://up33.xyz`,
+                                                                        `https://up33.xyz`,
+                                                                        `https://up33.xyz`
                                                                       ],
                                                                       "soneium": [
                                                                         `https://app.velodrome.finance/liquidity/create/`,
