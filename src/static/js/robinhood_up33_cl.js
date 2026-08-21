@@ -3484,6 +3484,15 @@ const NFT_FARM_STRATEGY_ADDRESS = '0xb3f294A240A781FfB6731C4D03AF5D23FbD20735'
 async function main() {
   const App = await init_ethers()
 
+  App.ethcallProvider.multicall = {
+    address: '0x2cAC2D899eCC914d704FeaAE33ac1bF36277DaD1',
+    block: 0,
+  }
+  App.ethcallProvider.multicall2 = {
+    address: '0xcA11bde05977b3631167028862bE2a173976CA11',
+    block: 0,
+  }
+
   _print(`Initialized ${App.YOUR_ADDRESS}\n`)
   _print(`Connected to RPC: ${App.rpcProvider.connection.url}\n`)
   _print('Reading smart contracts...\n')
