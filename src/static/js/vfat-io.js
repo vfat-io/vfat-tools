@@ -22,6 +22,7 @@ const main = async () => {
       ["Hybra                 ", "HyperEVM  ", "CL      ", `<a href='/hyperevm/sickle'          >/hyperevm/sickle</a>`, `<a href='/hyperevm/sickle?api=true'          >Api -> /hyperevm/sickle</a>`],
       ["Hybra New             ", "HyperEVM  ", "CL      ", `<a href='/hyperevm/sickle'          >/hyperevm/sickle</a>`, `<a href='/hyperevm/sickle?api=true'          >Api -> /hyperevm/sickle</a>`],
       ["HyperSwap             ", "HyperEVM  ", "CL      ", `<a href='/hyperevm/sickle'          >/hyperevm/sickle</a>`, `<a href='/hyperevm/sickle?api=true'          >Api -> /hyperevm/sickle</a>`],
+      ["HyperTrade            ", "HyperEVM  ", "CL      ", `<a href='/hyperevm/sickle'          >/hyperevm/sickle</a>`, `<a href='/hyperevm/sickle?api=true'          >Api -> /hyperevm/sickle</a>`],
       ["KittenSwap            ", "HyperEVM  ", "CL      ", `<a href='/hyperevm/sickle'          >/hyperevm/sickle</a>`, `<a href='/hyperevm/sickle?api=true'          >Api -> /hyperevm/sickle</a>`],
       ["Nest                  ", "HyperEVM  ", "CL      ", `<a href='/hyperevm/sickle'          >/hyperevm/sickle</a>`, `<a href='/hyperevm/sickle?api=true'          >Api -> /hyperevm/sickle</a>`],
       ["Kyo                   ", "Soneium   ", "CL      ", `<a href='/soneium/sickle'           >/soneium/sickle</a>`, `<a href='/soneium/sickle?api=true'           >Api -> /soneium/sickle</a>`],
