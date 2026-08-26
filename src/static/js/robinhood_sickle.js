@@ -8,6 +8,7 @@ const SICKLE_FACTORY_ABI = [{ "inputs": [{ "internalType": "address", "name": "a
 const SWEEP_ADDR = "0xBfc6216915536bf83e94fB8f24Fc197adB2e3401";
 const SLIPSTREAM_NFT_MANAGER_ADDRESS_1 = "0x73991a25C818Bf1f1128dEAaB1492D45638DE0D3";
 const SLIPSTREAM_NFT_MANAGER_ADDRESS_2 = "0x07F44c47743A2f36414A82b9F558ECFCf0EEdCEf";
+const SLIPSTREAM_NFT_MANAGER_ADDRESS_3 = "0x2eBd7B85a4E08D5B508b04BA147976C94afE6590";
 
 async function main() {
   const App = await init_ethers();
@@ -28,9 +29,11 @@ async function main() {
 
     const SLIPSTREAM_NFT_MANAGER_1 = new ethcall.Contract(SLIPSTREAM_NFT_MANAGER_ADDRESS_1, SLIPSTREAM_NFT_MANAGER_ABI);  // UNISWAP
     const SLIPSTREAM_NFT_MANAGER_2 = new ethcall.Contract(SLIPSTREAM_NFT_MANAGER_ADDRESS_2, SLIPSTREAM_NFT_MANAGER_ABI);  // UP33
+    const SLIPSTREAM_NFT_MANAGER_3 = new ethcall.Contract(SLIPSTREAM_NFT_MANAGER_ADDRESS_3, SLIPSTREAM_NFT_MANAGER_ABI);  // RAMSES
 
     const [nfts_1] = await App.ethcallProvider.all([SLIPSTREAM_NFT_MANAGER_1.balanceOf(sickleAddress)]);
     const [nfts_2] = await App.ethcallProvider.all([SLIPSTREAM_NFT_MANAGER_2.balanceOf(sickleAddress)]);
+    const [nfts_3] = await App.ethcallProvider.all([SLIPSTREAM_NFT_MANAGER_3.balanceOf(sickleAddress)]);
 
     if (nfts_1 / 1 > 0) {
       let nft_ids = [];
@@ -99,6 +102,41 @@ async function main() {
       }
 
       _print_link(`Withdraw all UP33 erc721 tokens: ${token_ids}`, sweepErc721);
+      _print("");
+    }
+
+    if (nfts_3 / 1 > 0) {
+      let nft_ids = [];
+      let tokens = [];
+      let token_ids = "";
+
+      const sweepErc721 = async function () {
+        return sweep_nfts_721(App, nft_ids, tokens)
+      }
+
+      _print_bold("RAMSES nfts");
+
+      for (let i = 0; i < nfts_3; i++) {
+        const nft_id = await App.ethcallProvider.all([SLIPSTREAM_NFT_MANAGER_3.tokenOfOwnerByIndex(sickleAddress, i)]) / 1;
+        nft_ids.push(nft_id);
+        tokens.push(SLIPSTREAM_NFT_MANAGER_ADDRESS_3);
+      }
+
+      for (let i = 0; i < nft_ids.length; i++) {
+        token_ids += `${nft_ids[i]} - `;
+      }
+
+      for (let i = 0; i < nft_ids.length; i++) {
+
+        const singleSweepErc721 = async function () {
+          return single_sweep_nfts_721(App, nft_ids[i], tokens[i])
+        }
+
+        _print_link(`Withdraw RAMSES erc721 token: ${nft_ids[i]}`, singleSweepErc721);
+
+      }
+
+      _print_link(`Withdraw all RAMSES erc721 tokens: ${token_ids}`, sweepErc721);
       _print("");
     }
   }
