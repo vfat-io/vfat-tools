@@ -446,7 +446,8 @@ const main = async () => {
       ['GenomesDAO          ',  `<a href="genomesdao"      >Various</a>`, 'GNOME / GENE ', 'https://genomes.io'],
       ['Ajna                ',  `<a href="ajna"            >Various</a>`, 'AJNA         ', 'https://app.ajna.finance'],
       ['Collar              ',  `<a href="collar"          >Various</a>`, 'COLLAR       ', ''],
-      ["Sickle              ",  `<a href="sickle"          >Various</a>`,"              ", ""]
+      ["Sickle              ",  `<a href="sickle"          >Various</a>`,"              ", ""],
+      ["QCN Yield Farm      ",  `<a href="qcn"             >Various</a>`,"QCN          ", "https://farm.proofofquantum.org"]
     ].reverse()
   }
 
