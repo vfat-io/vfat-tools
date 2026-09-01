@@ -25,6 +25,7 @@ const MorphoPage = (function () {
   const registryLogBlockSpan = 20000000
   const minimumRpcReadInterval = 1000
   const wad = ethers.constants.WeiPerEther
+  const zeroAddress = ethers.constants.AddressZero.toLowerCase()
   const createMarketTopic = '0xac4b2400f169220b0c0afdde7a0b32e775ba727ea1cb30b35f935cdaab8683ac'
   const createVaultV2Topic = '0x341ce009267aa0d78cc12b34155e223904a51ed49d144beb6eb8be87813edb4e'
   const morphoAbi = [
@@ -58,12 +59,14 @@ const MorphoPage = (function () {
   const state = {
     rpc: null, eip1193: null, wallet: null, account: null, walletChain: null, eventsBound: false,
     markets: [], vaults: [], tokens: new Map(), showZeroRates: false, loading: false, status: '', statusType: '',
-    action: null, actionInfo: null, sending: false, latestBlock: null, discovery: { markets: 0, vaults: 0 },
+    action: null, actionInfo: null, sending: false, latestBlock: null,
+    discovery: { marketEvents: 0, actionableMarkets: 0, zeroAddressMarkets: 0, vaults: 0 },
     spinner: null, spinnerFrame: 0, reownUnsubscribe: null, nextRpcReadAt: 0
   }
 
   const byId = function (id) { return document.getElementById(id) }
   const lower = function (value) { return String(value || '').toLowerCase() }
+  const isZeroAddress = function (value) { return lower(value) === zeroAddress }
   const isUsdG = function (value) { return lower(value) === lower(addresses.usdg) }
   const short = function (value) { return value ? value.slice(0, 6) + '...' + value.slice(-4) : '-' }
   const safeText = function (value, maximum) { return String(value || '-').replace(/[\r\n|]/g, ' ').replace(/\s+/g, ' ').trim().slice(0, maximum || 54) || '-' }
@@ -105,6 +108,10 @@ const MorphoPage = (function () {
   }
   const token = function (address) { return state.tokens.get(lower(address)) || { address: address, symbol: short(address), name: short(address), decimals: null } }
   const paramsTuple = function (market) { const p = market.params; return [p.loanToken, p.collateralToken, p.oracle, p.irm, p.lltv] }
+  const hasActionableMarketParams = function (market) {
+    const params = market && market.params
+    return Boolean(params) && [params.loanToken, params.collateralToken, params.oracle, params.irm].every(function (address) { return !isZeroAddress(address) })
+  }
   const injectedWallet = function () { return window.ethereum && typeof window.ethereum.request === 'function' ? window.ethereum : null }
   const isCorrectChain = function () { return state.walletChain === chain.id }
 
@@ -267,8 +274,21 @@ const MorphoPage = (function () {
     // Avoid concurrent historic scans against the public Robinhood RPC. The
     // event filter is small, complete, and does not use any third-party API.
     const vaultLogs = await registryLogs(addresses.vaultV2Factory, createVaultV2Topic, addresses.vaultV2FactoryDeployedAt, 'Vault V2')
-    state.markets = eventMarkets(marketLogs); state.vaults = eventVaults(vaultLogs)
-    state.discovery = { markets: state.markets.length, vaults: state.vaults.length }
+    const allMarkets = eventMarkets(marketLogs)
+    // The canonical registry includes a few deployment/test records whose
+    // market params contain a zero address. The CreateMarket ABI decode above
+    // is intentional (five packed data words after the indexed market id),
+    // but those records cannot safely support the oracle/IRM calls or direct
+    // market actions. Keep their event count visible while never placing them
+    // in the actionable state set.
+    state.markets = allMarkets.filter(hasActionableMarketParams)
+    state.vaults = eventVaults(vaultLogs)
+    state.discovery = {
+      marketEvents: allMarkets.length,
+      actionableMarkets: state.markets.length,
+      zeroAddressMarkets: allMarkets.length - state.markets.length,
+      vaults: state.vaults.length
+    }
     if (!state.markets.length) throw new Error('The canonical Morpho Blue registry returned no CreateMarket events.')
   }
 
@@ -401,12 +421,15 @@ const MorphoPage = (function () {
     const oracleReady = state.markets.filter(function (market) { return market.oraclePrice !== null }).length
     const usdCovered = state.markets.filter(function (market) { return isUsdG(market.params.loanToken) }).length
     const zeroCount = state.markets.filter(function (market) { const metrics = marketMetrics(market); return Number.isFinite(metrics.borrowRate) && metrics.borrowRate === 0 }).length
+    const rateBearingCount = state.markets.filter(function (market) { const metrics = marketMetrics(market); return Number.isFinite(metrics.borrowRate) && metrics.borrowRate !== 0 }).length
+    const unavailableRateCount = state.markets.filter(function (market) { return !Number.isFinite(marketMetrics(market).borrowRate) }).length
     node.textContent = [
-      'DISCOVERY : ' + state.discovery.markets + ' CreateMarket events from Morpho Blue (' + addresses.morpho + ')',
+      'DISCOVERY : ' + state.discovery.marketEvents + ' CreateMarket events from Morpho Blue (' + addresses.morpho + ')',
+      '            ' + state.discovery.actionableMarkets + ' actionable market params / ' + state.discovery.zeroAddressMarkets + ' zero-address records excluded from reads and actions',
       '            ' + state.discovery.vaults + ' CreateVaultV2 events from canonical Vault V2 factory (' + addresses.vaultV2Factory + ')',
       'COVERAGE  : oracle quote ' + oracleReady + '/' + state.markets.length + ' / live IRM rate ' + rateReady + '/' + state.markets.length + ' / USDG loan markets ' + usdCovered + '/' + state.markets.length,
       'PRICE     : USD valuation unavailable by design; no price API or assumed peg is used',
-      'DISPLAY   : ' + (state.showZeroRates ? 'all markets' : 'rate-bearing markets; ' + zeroCount + ' zero-rate rows hidden') + ' / wallet ' + walletLabel(),
+      'DISPLAY   : ' + (state.showZeroRates ? 'all actionable markets' : rateBearingCount + ' rate-bearing + ' + unavailableRateCount + ' unavailable-rate markets; ' + zeroCount + ' zero-rate rows hidden') + ' / wallet ' + walletLabel(),
       'UPDATED   : block ' + (state.latestBlock || '-') + ' / direct official Robinhood RPC'
     ].join('\n')
     const walletNode = byId('morpho-wallet-status'); if (walletNode) walletNode.textContent = walletLabel()
@@ -519,6 +542,7 @@ const MorphoPage = (function () {
   }
 
   async function openAction (kind, entry, mode) {
+    if (kind === 'market' && !hasActionableMarketParams(entry)) throw new Error('This CreateMarket record has a zero address and is excluded from direct actions.')
     state.action = { kind: kind, entry: entry, mode: mode, amount: '' }; state.actionInfo = null; renderAction()
     const dialog = byId('morpho-action-dialog'); if (dialog && !dialog.open) dialog.showModal()
     if (!state.account || !isCorrectChain()) return
@@ -558,6 +582,7 @@ const MorphoPage = (function () {
     const amount = parsedAmount()
     if (!amount) throw new Error('No exact onchain maximum is available for this action.')
     const market = action.entry; const params = paramsTuple(market)
+    if (!hasActionableMarketParams(market)) throw new Error('This CreateMarket record has a zero address and is excluded from direct actions.')
     if (action.mode === 'supply') return { to: addresses.morpho, data: morphoInterface.encodeFunctionData('supply', [params, amount, 0, account, '0x']), amount: amount, asset: actionToken() }
     if (action.mode === 'withdraw') return { to: addresses.morpho, data: morphoInterface.encodeFunctionData('withdraw', [params, amount, 0, account, account]), amount: amount, asset: actionToken() }
     if (action.mode === 'collateral-supply') return { to: addresses.morpho, data: morphoInterface.encodeFunctionData('supplyCollateral', [params, amount, account, '0x']), amount: amount, asset: actionToken() }

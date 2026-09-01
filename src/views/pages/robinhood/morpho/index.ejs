@@ -42,7 +42,7 @@ WALLET: <span id="morpho-wallet-status">Checking injected wallet permissions...<
 
 <section class="morpho-section" aria-labelledby="morpho-markets-title">
   <h1 id="morpho-markets-title">========================= MORPHO MARKETS =========================</h1>
-  <p class="morpho-note">Every row is a market emitted by Morpho Blue. The oracle quote, supply/borrow balances, utilization, and simple APRs come from the market, oracle, and IRM contracts. Assets remain denominated in their loan token: the page deliberately does not invent USD prices or assume a stablecoin peg.</p>
+  <p class="morpho-note">Every row is an actionable market emitted by Morpho Blue. Creation records with a zero market parameter remain counted in discovery coverage but are excluded from contract reads and wallet actions. The oracle quote, supply/borrow balances, utilization, and simple APRs come from the market, oracle, and IRM contracts. Assets remain denominated in their loan token: the page deliberately does not invent USD prices or assume a stablecoin peg.</p>
   <div id="morpho-markets" class="morpho-table-wrap" aria-live="polite"></div>
 </section>
 
