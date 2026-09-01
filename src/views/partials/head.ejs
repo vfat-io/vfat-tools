@@ -21,16 +21,20 @@
 
     <% if(filenameMap) { %>
         <link rel="stylesheet" href="<%= PP %>/css/<%= filenameMap['index.css'] %>">
-        <link rel="preload" href="<%= PP %>/js/<%= filenameMap['vendor.js'] %>" as="script">
-        <link rel="prefetch" href="<%= PP %>/js/<%= filenameMap['vendor.js'] %>">
-        <link rel="preload" href="<%= PP %>/js/<%= filenameMap['app.js'] %>" as="script">
-        <link rel="prefetch" href="<%= PP %>/js/<%= filenameMap['app.js'] %>">
+        <% if (!locals.noGlobalScripts) { %>
+            <link rel="preload" href="<%= PP %>/js/<%= filenameMap['vendor.js'] %>" as="script">
+            <link rel="prefetch" href="<%= PP %>/js/<%= filenameMap['vendor.js'] %>">
+            <link rel="preload" href="<%= PP %>/js/<%= filenameMap['app.js'] %>" as="script">
+            <link rel="prefetch" href="<%= PP %>/js/<%= filenameMap['app.js'] %>">
+        <% } %>
     <% } else { %>
         <link rel="stylesheet" href="<%= PP %>/css/index.css">
-        <link rel="preload" href="<%= PP %>/js/vendor.js" as="script">
-        <link rel="prefetch" href="<%= PP %>/js/vendor.js">
-        <link rel="preload" href="<%= PP %>/js/app.js" as="script">
-        <link rel="prefetch" href="<%= PP %>/js/app.js">
+        <% if (!locals.noGlobalScripts) { %>
+            <link rel="preload" href="<%= PP %>/js/vendor.js" as="script">
+            <link rel="prefetch" href="<%= PP %>/js/vendor.js">
+            <link rel="preload" href="<%= PP %>/js/app.js" as="script">
+            <link rel="prefetch" href="<%= PP %>/js/app.js">
+        <% } %>
     <% } %>
 
     <meta name="theme-color" content="#ffffff">
