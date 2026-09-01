@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include(`${partials}/head`, {
+  noGlobalScripts: true,
+  pageMeta: {
+    title: 'Up33 Farms on Robinhood Chain | vfat.tools',
+    description: 'Live Up33 farm TVL, emission APRs, and direct wallet actions on Robinhood Chain. Every value comes from the official RPC and onchain contracts.',
+    url: 'https://vfat.tools/robinhood/up33/',
+    image: 'https://vfat.tools/img/robinhood-up33-social.png',
+    imageAlt: 'Terminal-style vfat.tools card for Up33 farms on Robinhood Chain.',
+    imageWidth: 1200,
+    imageHeight: 630
+  }
+}); -%>
+
+<body>
+<%- include(`${partials}/header_main`); -%>
+<pre id="up33-banner">
+******************* 👨‍🌾 UNOFFICIAL UP33 FARMING CALCULATOR 👨‍🌾 *******************
+INFO  : https://up33.xyz
+CHAIN : Robinhood Chain (4663)
+MODE  : Wallet-only onchain reads and direct wallet transactions. No price API or router.
+**************************************************************************************
+
+</pre>
+<div id="up33-loading" class="up33-loading" role="status" aria-live="polite">
+  <span id="up33-loading-spinner" class="up33-spinner" aria-hidden="true">[....]</span> <span id="up33-loading-text">Reading Up33 contracts on Robinhood Chain…</span>
+</div>
+<div id="up33-app" aria-live="polite"></div>
+<%- include(`${partials}/disclaimer`); -%>
+<style>
+  .up33-action { margin: 0; padding: 0; border: 0; background: transparent; color: inherit; cursor: pointer; font: inherit; text-decoration: underline; }
+  .up33-action:disabled { cursor: not-allowed; opacity: .45; text-decoration: none; }
+  .up33-loading { padding: 10px 0; }
+  .up33-loading[hidden] { display: none; }
+  .up33-spinner { display: inline-block; width: 6ch; }
+  .up33-form-label { display: block; margin: 7px 0; }
+  .up33-form-label input { margin-left: 8px; font: inherit; }
+  #up33-app, #up33-app section { min-width: 0; }
+  #up33-banner, #up33-app pre { box-sizing: border-box; max-width: 100%; }
+  #up33-banner, #up33-app pre:not(.up33-market-table) { overflow-wrap: anywhere; white-space: pre-wrap; }
+  .up33-market-table { overflow-x: auto; white-space: pre; }
+</style>
+<%- include(`${partials}/scripts_onchain`, {scriptname: 'robinhood_up33'}); -%>
+</body>
+</html>

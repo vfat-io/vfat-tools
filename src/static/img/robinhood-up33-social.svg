@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title description">
+  <title id="title">Up33 Farms on Robinhood Chain | vfat.tools</title>
+  <desc id="description">A terminal-style vfat.tools social card for live Up33 farming data on Robinhood Chain.</desc>
+  <defs>
+    <linearGradient id="background" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#07110d"/>
+      <stop offset="1" stop-color="#10251d"/>
+    </linearGradient>
+    <pattern id="grid" width="30" height="30" patternUnits="userSpaceOnUse">
+      <path d="M30 0H0V30" fill="none" stroke="#8ff0b5" stroke-opacity=".09"/>
+    </pattern>
+  </defs>
+  <rect width="1200" height="630" fill="url(#background)"/>
+  <rect width="1200" height="630" fill="url(#grid)"/>
+  <rect x="49" y="49" width="1102" height="532" rx="4" fill="#06100c" stroke="#8ff0b5" stroke-width="3"/>
+  <path d="M50 122H1150" stroke="#8ff0b5" stroke-width="3"/>
+  <circle cx="85" cy="85" r="11" fill="#8ff0b5"/>
+  <circle cx="119" cy="85" r="11" fill="#e7d875"/>
+  <circle cx="153" cy="85" r="11" fill="#e98e82"/>
+  <text x="196" y="94" fill="#cae8d6" font-family="monospace" font-size="23" letter-spacing="2">VFAT.TOOLS / ROBINHOOD</text>
+  <text x="88" y="193" fill="#8ff0b5" font-family="monospace" font-size="24" letter-spacing="3">[ ONCHAIN FARM TERMINAL ]</text>
+  <text x="88" y="300" fill="#f3fff6" font-family="monospace" font-size="72" font-weight="700" letter-spacing="-2">UP33 FARMS</text>
+  <text x="91" y="350" fill="#cae8d6" font-family="monospace" font-size="25">Live TVL · emissions APR · direct wallet actions</text>
+  <path d="M90 409H861" stroke="#8ff0b5" stroke-width="2" stroke-dasharray="10 10"/>
+  <text x="90" y="463" fill="#8ff0b5" font-family="monospace" font-size="28">CHAIN : ROBINHOOD (4663)</text>
+  <text x="90" y="510" fill="#cae8d6" font-family="monospace" font-size="24">OFFICIAL RPC + CONTRACT READS ONLY</text>
+  <g fill="none" stroke="#8ff0b5" stroke-width="5">
+    <circle cx="1032" cy="337" r="78"/>
+    <circle cx="1032" cy="337" r="40"/>
+    <path d="M1032 227V259M1032 415V447M922 337H954M1110 337H1142"/>
+    <path d="M978 391L1086 283M978 283L1086 391" stroke-opacity=".52"/>
+  </g>
+  <text x="1032" y="347" text-anchor="middle" fill="#f3fff6" font-family="monospace" font-size="29" font-weight="700">UP</text>
+</svg>

@@ -1,0 +1,9 @@
+<% if(filenameMap) { %>
+    <% if(locals.scriptname) { %>
+        <script src="<%= PP %>/js/<%= filenameMap[locals.scriptname + '.js'] %>"></script>
+    <% } %>
+<% } else { %>
+    <% if(locals.scriptname) { %>
+        <script src="<%= PP %>/js/<%= locals.scriptname %>.js"></script>
+    <% } %>
+<% } %>
