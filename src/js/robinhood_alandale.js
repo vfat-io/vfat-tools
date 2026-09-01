@@ -43,8 +43,11 @@ const Alandale = (function () {
   const maxUint = ethers.constants.MaxUint256
   const max128 = ethers.BigNumber.from(2).pow(128).sub(1)
   const Q96 = Math.pow(2, 96)
+  // The existing vfat.io AppKit project is intentionally referenced only by
+  // connectReown(), whose config module is dynamically imported after intent.
+  const reownProjectId = process.env.REOWN_PROJECT_ID || '3e6154a7158ff5f7509f24405fc3b551'
   const state = {
-    rpc: null, eip1193: null, account: null, walletChain: null, farms: [], farmByPool: new Map(), farmByGauge: new Map(), tokens: new Map(), prices: new Map(),
+    rpc: null, eip1193: null, walletSource: null, account: null, walletChain: null, walletListenerCleanup: [], reownUnsubscribe: null, farms: [], farmByPool: new Map(), farmByGauge: new Map(), tokens: new Map(), prices: new Map(),
     voterCounts: null, factoryPairs: [], factoryOnlyPairs: [], weeklyEmission: ethers.constants.Zero, epoch: ethers.constants.Zero, totalWeight: ethers.constants.Zero,
     showZeroApr: false, loading: false, loadingText: '', status: '', statusType: '', walletLoading: false, sending: false, positions: [], walletTokenBalances: new Map(), action: null
   }
@@ -55,6 +58,7 @@ const Alandale = (function () {
   const clean = function (value, length) { return String(value || '—').replace(/[\r\n|]/g, ' ').replace(/\s+/g, ' ').trim().slice(0, length || 44) || '—' }
   const short = function (address) { return address ? address.slice(0, 6) + '…' + address.slice(-4) : '—' }
   const isZero = function (address) { return !address || lower(address) === zero }
+  const injectedWallet = function () { return window.ethereum && typeof window.ethereum.request === 'function' ? window.ethereum : null }
   const deadline = function () { return Math.floor(Date.now() / 1000) + 1200 }
   const errText = function (error) { return String(error && (error.reason || error.data && error.data.message || error.message) || error).replace(/^Error: /, '').slice(0, 500) }
   const asNumber = function (amount, decimals) {
@@ -146,37 +150,88 @@ const Alandale = (function () {
     return left.concat(right)
   }
 
+  function clearProviderListeners () {
+    state.walletListenerCleanup.forEach(function (cleanup) { cleanup() })
+    state.walletListenerCleanup = []
+  }
+  function clearReownSubscription () {
+    if (state.reownUnsubscribe) state.reownUnsubscribe()
+    state.reownUnsubscribe = null
+  }
+  function clearWalletEvents () { clearProviderListeners(); clearReownSubscription() }
+  function bindProviderEvents (provider) {
+    clearProviderListeners()
+    if (!provider || typeof provider.on !== 'function') return
+    const accountsChanged = function (accounts) {
+      if (state.eip1193 !== provider) return
+      state.account = accounts && accounts[0] ? ethers.utils.getAddress(accounts[0]) : null
+      if (!state.account) { state.positions = []; state.walletTokenBalances = new Map(); render(); return }
+      refreshWallet().catch(fatal)
+    }
+    const chainChanged = function (walletChain) {
+      if (state.eip1193 !== provider) return
+      state.walletChain = walletChain
+      refreshWallet().catch(fatal)
+    }
+    provider.on('accountsChanged', accountsChanged); provider.on('chainChanged', chainChanged)
+    const remove = typeof provider.removeListener === 'function' ? provider.removeListener.bind(provider) : typeof provider.off === 'function' ? provider.off.bind(provider) : null
+    if (remove) {
+      state.walletListenerCleanup.push(function () { remove('accountsChanged', accountsChanged) })
+      state.walletListenerCleanup.push(function () { remove('chainChanged', chainChanged) })
+    }
+  }
+  async function adoptWallet (provider, accounts, source, walletChain) {
+    if (!provider || !accounts || !accounts[0]) return false
+    state.eip1193 = provider; state.walletSource = source; state.walletChain = walletChain
+    state.account = ethers.utils.getAddress(accounts[0]); bindProviderEvents(provider); render()
+    return true
+  }
   async function passiveWallet () {
-    const injected = window.ethereum && typeof window.ethereum.request === 'function' ? window.ethereum : null
+    const injected = injectedWallet()
     if (!injected) return false
     try {
-      // Only passive EIP-1193 reads occur on page load. No connector and no
-      // permission prompt is created until the user presses Connect.
+      // Startup is intentionally limited to the injected provider's passive
+      // account and chain reads. Reown is neither imported nor probed here.
       const values = await Promise.all([injected.request({ method: 'eth_accounts' }), injected.request({ method: 'eth_chainId' })])
-      state.eip1193 = injected; state.walletChain = values[1]
-      state.account = values[0] && values[0][0] ? ethers.utils.getAddress(values[0][0]) : null
-      if (injected.on) {
-        injected.on('accountsChanged', function (accounts) { state.account = accounts && accounts[0] ? ethers.utils.getAddress(accounts[0]) : null; refreshWallet().catch(fatal) })
-        injected.on('chainChanged', function (walletChain) { state.walletChain = walletChain; refreshWallet().catch(fatal) })
-      }
-      return !!state.account
+      return adoptWallet(injected, values[0], 'injected', values[1])
     } catch (error) { console.warn('Passive injected-wallet read failed', error); return false }
   }
-
   async function connectWallet () {
-    const injected = window.ethereum && typeof window.ethereum.request === 'function' ? window.ethereum : null
-    if (!injected) throw new Error('No injected EIP-1193 wallet was found in this browser.')
-    state.eip1193 = injected
-    const accounts = await injected.request({ method: 'eth_requestAccounts' })
-    state.walletChain = await injected.request({ method: 'eth_chainId' })
-    if (state.walletChain !== chain.id) {
+    const injected = injectedWallet()
+    if (!injected) throw new Error('No injected EIP-1193 wallet was found in this browser. Use Other wallet for WalletConnect.')
+    const accounts = await injected.request({ method: 'eth_requestAccounts' }); let walletChain = await injected.request({ method: 'eth_chainId' })
+    if (walletChain !== chain.id) {
       await injected.request({ method: 'wallet_switchEthereumChain', params: [{ chainId: chain.id }] })
-      state.walletChain = await injected.request({ method: 'eth_chainId' })
+      walletChain = await injected.request({ method: 'eth_chainId' })
     }
-    if (state.walletChain !== chain.id) throw new Error('Switch the wallet to Robinhood Chain before sending a transaction.')
-    state.account = accounts && accounts[0] ? ethers.utils.getAddress(accounts[0]) : null
-    if (!state.account) throw new Error('The wallet did not return an account.')
-    await refreshWallet()
+    if (walletChain !== chain.id) throw new Error('Switch the wallet to Robinhood Chain before sending a transaction.')
+    if (!await adoptWallet(injected, accounts, 'injected', walletChain)) throw new Error('The wallet did not return an account.')
+    clearReownSubscription(); await refreshWallet()
+  }
+  async function adoptReownWallet (appKit, address) {
+    const provider = await appKit.getWalletProvider()
+    if (!provider || typeof provider.request !== 'function') throw new Error('WalletConnect did not provide an EIP-1193 wallet.')
+    const values = await Promise.all([provider.request({ method: 'eth_accounts' }), provider.request({ method: 'eth_chainId' })])
+    const accounts = values[0] && values[0].length ? values[0] : address ? [address] : []
+    const adopted = await adoptWallet(provider, accounts, 'reown', values[1])
+    if (adopted) { clearReownSubscription(); await refreshWallet() }
+    return adopted
+  }
+  async function connectReown () {
+    // This dynamic import is the only path that loads the established AppKit
+    // and WalletConnect code. It is never present in the first-load waterfall.
+    const reown = await import('./config.js')
+    const appKit = reown.createAppKitInstance(reownProjectId)
+    if (!appKit) throw new Error('WalletConnect is unavailable in this browser.')
+    const address = appKit.getAddress && appKit.getAddress()
+    if (address && await adoptReownWallet(appKit, address)) return true
+    if (!state.reownUnsubscribe && appKit.subscribeAccount) {
+      state.reownUnsubscribe = appKit.subscribeAccount(function (accountState) {
+        if (!accountState || !accountState.isConnected || !accountState.address) return
+        adoptReownWallet(appKit, accountState.address).catch(function (error) { setStatus(errText(error), 'error') })
+      })
+    }
+    await appKit.open(); return false
   }
 
   async function loadRegistry () {
@@ -488,10 +543,13 @@ const Alandale = (function () {
   }
 
   function renderWallet () {
-    const node = byId('alandale-wallet-status'); const connect = byId('alandale-connect'); if (!node || !connect) return
-    connect.disabled = state.sending || state.walletLoading
-    if (!state.account) { node.textContent = 'Wallet not connected'; connect.hidden = false; return }
-    node.textContent = state.walletChain === chain.id ? short(state.account) : 'Switch wallet to Robinhood Chain'; connect.hidden = true
+    const node = byId('alandale-wallet-status'); const connect = byId('alandale-connect'); const other = byId('alandale-other-wallet'); if (!node || !connect || !other) return
+    const injected = injectedWallet(); connect.textContent = '[ Connect injected wallet ]'; other.textContent = '[ Other wallet / WalletConnect ]'
+    connect.disabled = state.sending || state.walletLoading || !injected; other.disabled = state.sending || state.walletLoading
+    connect.hidden = false; other.hidden = false
+    if (!state.account) { node.textContent = injected ? 'Wallet not connected' : 'No injected wallet detected'; return }
+    const source = state.walletSource === 'reown' ? 'WalletConnect' : 'injected'
+    node.textContent = (state.walletChain === chain.id ? short(state.account) : 'Switch wallet to Robinhood Chain') + ' via ' + source
   }
   function renderOverview () {
     const node = byId('alandale-overview'); if (!node || !state.voterCounts) return
@@ -532,12 +590,13 @@ const Alandale = (function () {
     table.appendChild(body); host.appendChild(table)
   }
   function bindEvents () {
-    const connect = byId('alandale-connect'); const toggle = byId('alandale-zero-apr-toggle')
+    const connect = byId('alandale-connect'); const other = byId('alandale-other-wallet'); const toggle = byId('alandale-zero-apr-toggle')
     if (connect) connect.addEventListener('click', function () { connectWallet().catch(function (error) { setStatus(errText(error), 'error') }) })
+    if (other) other.addEventListener('click', function () { connectReown().catch(function (error) { setStatus(errText(error), 'error') }) })
     if (toggle) toggle.addEventListener('click', function () { state.showZeroApr = !state.showZeroApr; renderFarms() })
   }
   function render () { renderWallet(); renderOverview(); renderFarms(); renderPositions() }
-  async function start () { state.rpc = new ethers.providers.JsonRpcProvider(chain.rpc, chain.number); bindEvents(); render(); const wallet = passiveWallet(); await loadRegistry(); await wallet; if (state.account) await refreshWallet() }
+  async function start () { state.rpc = new ethers.providers.JsonRpcProvider(chain.rpc, chain.number); bindEvents(); window.addEventListener('pagehide', clearWalletEvents, { once: true }); render(); const wallet = passiveWallet(); await loadRegistry(); await wallet; if (state.account) await refreshWallet() }
   function fatal (error) { console.error(error); setLoading(); setStatus('ALANDALE COULD NOT LOAD\n' + errText(error) + '\nThis page only uses the official Robinhood RPC. Check the connection and try again.', 'error'); render() }
   return { start: start, fatal: fatal }
 })()

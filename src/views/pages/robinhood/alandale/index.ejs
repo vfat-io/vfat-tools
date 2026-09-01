@@ -23,11 +23,12 @@
 ******************** UNOFFICIAL ALANDALE FARMING TERMINAL ********************
 INFO  : <a href="https://app.alandale.xyz" target="_blank" rel="noopener noreferrer">https://app.alandale.xyz</a>
 CHAIN : Robinhood Chain (4663)
-MODE  : Official Robinhood RPC + Alandale contracts + direct injected wallet only.
+MODE  : Official Robinhood RPC + Alandale contracts + direct EIP-1193 wallets.
+        Injected reads are passive; WalletConnect/Reown loads only after Other wallet.
         No app, vfat, router, explorer, token, or price APIs are used here.
 *******************************************************************************
 
-WALLET: <span id="alandale-wallet-status">Wallet not connected</span> <button id="alandale-connect" class="alandale-link-button" type="button">[ Connect wallet ]</button>
+WALLET: <span id="alandale-wallet-status">Wallet not connected</span> <button id="alandale-connect" class="alandale-link-button" type="button">[ Connect injected wallet ]</button> <button id="alandale-other-wallet" class="alandale-link-button" type="button">[ Other wallet / WalletConnect ]</button>
 </pre>
 
 <p id="alandale-status" class="alandale-status" role="status" hidden></p>
