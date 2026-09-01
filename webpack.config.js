@@ -26,6 +26,9 @@ module.exports = (env = {}) => {
       // Morpho is likewise a self-contained, direct-RPC page. Its wallet
       // connector is lazy-loaded by the entry only after explicit intent.
       robinhood_morpho: './src/js/robinhood_morpho.js',
+      // Alandale likewise has no global application, router, or wallet-vendor
+      // dependency: it is an independent official-RPC/onchain client.
+      robinhood_alandale: './src/js/robinhood_alandale.js',
     },
     output: {
       filename: isProduction ? '[name].[contenthash].js' : '[name].js',
