@@ -4,7 +4,7 @@
   noGlobalScripts: true,
   pageMeta: {
     title: 'Catnip Farms on Robinhood Chain | vfat.tools',
-    description: 'Live Catnip Alley liquidity, MasterProwl NIP emissions, locked rewards, and direct wallet actions from Robinhood Chain contracts.',
+    description: 'Catnip Alley liquidity, MasterProwl NIP emissions, locks, and direct wallet actions on Robinhood Chain.',
     url: 'https://vfat.tools/robinhood/catnip/',
     image: 'https://vfat.tools/img/robinhood-catnip-social.png',
     imageAlt: 'Live Catnip farm table on vfat.tools using Robinhood Chain contract state.',
@@ -16,12 +16,10 @@
 <body>
 <%- include(`${partials}/header_main`); -%>
 <pre id="catnip-banner">
-******************** =^.^= UNOFFICIAL CATNIP FARM TERMINAL =^.^= ********************
-INFO  : https://catnipexchange.com
-CHAIN : Robinhood Chain (4663)
-MODE  : Official-RPC contract reads + direct EIP-1193 wallet transactions only.
-SOURCE: Alley Factory → every pair · MasterProwl → every farm · NIP locks → wallet
-****************************************************************************************
+==================== =^.^= CATNIP · ROBINHOOD CHAIN ====================
+SOURCE: Alley + MasterProwl + NIP locks
+MODE  : Onchain RPC + direct wallet
+=========================================================================
 </pre>
 <div id="catnip-loading" class="catnip-loading" role="status" aria-live="polite">
   <span id="catnip-spinner" aria-hidden="true">[....]</span> <span id="catnip-loading-text">Reading Catnip contracts on Robinhood Chain…</span>

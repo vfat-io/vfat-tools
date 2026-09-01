@@ -422,15 +422,12 @@ const MorphoPage = (function () {
     const usdCovered = state.markets.filter(function (market) { return isUsdG(market.params.loanToken) }).length
     const zeroCount = state.markets.filter(function (market) { const metrics = marketMetrics(market); return Number.isFinite(metrics.borrowRate) && metrics.borrowRate === 0 }).length
     const rateBearingCount = state.markets.filter(function (market) { const metrics = marketMetrics(market); return Number.isFinite(metrics.borrowRate) && metrics.borrowRate !== 0 }).length
-    const unavailableRateCount = state.markets.filter(function (market) { return !Number.isFinite(marketMetrics(market).borrowRate) }).length
     node.textContent = [
-      'DISCOVERY : ' + state.discovery.marketEvents + ' CreateMarket events from Morpho Blue (' + addresses.morpho + ')',
-      '            ' + state.discovery.actionableMarkets + ' actionable market params / ' + state.discovery.zeroAddressMarkets + ' zero-address records excluded from reads and actions',
-      '            ' + state.discovery.vaults + ' CreateVaultV2 events from canonical Vault V2 factory (' + addresses.vaultV2Factory + ')',
-      'COVERAGE  : oracle quote ' + oracleReady + '/' + state.markets.length + ' / live IRM rate ' + rateReady + '/' + state.markets.length + ' / USDG loan markets ' + usdCovered + '/' + state.markets.length,
-      'PRICE     : USD valuation unavailable by design; no price API or assumed peg is used',
-      'DISPLAY   : ' + (state.showZeroRates ? 'all actionable markets' : rateBearingCount + ' rate-bearing + ' + unavailableRateCount + ' unavailable-rate markets; ' + zeroCount + ' zero-rate rows hidden') + ' / wallet ' + walletLabel(),
-      'UPDATED   : block ' + (state.latestBlock || '-') + ' / direct official Robinhood RPC'
+      'MARKETS   : ' + state.discovery.actionableMarkets + '/' + state.discovery.marketEvents + ' actionable · ' + state.discovery.zeroAddressMarkets + ' excluded',
+      'VAULTS    : ' + state.discovery.vaults + ' Vault V2',
+      'COVERAGE  : oracle ' + oracleReady + '/' + state.markets.length + ' · rate ' + rateReady + '/' + state.markets.length + ' · USDG loans ' + usdCovered + '/' + state.markets.length,
+      'DISPLAY   : ' + (state.showZeroRates ? 'all markets' : rateBearingCount + ' live · ' + zeroCount + ' zero hidden') + ' · ' + walletLabel(),
+      'BLOCK     : ' + (state.latestBlock || '-')
     ].join('\n')
     const walletNode = byId('morpho-wallet-status'); if (walletNode) walletNode.textContent = walletLabel()
   }
@@ -467,7 +464,7 @@ const MorphoPage = (function () {
       )
       row.appendChild(actions)
     })
-    if (!visible.length) container.appendChild(e('pre', { text: 'Every discovered market currently reports a zero borrow rate. [ show 0-rate markets ] reveals them.' }))
+    if (!visible.length) container.appendChild(e('pre', { text: 'No live borrow rates. [ show 0-rate markets ]' }))
     else container.appendChild(table)
   }
   function renderVaults () {
@@ -669,12 +666,12 @@ const MorphoPage = (function () {
     byId('morpho-refresh').addEventListener('click', function () { refreshAll().catch(function (error) { setStatus(errText(error), 'error') }) })
   }
   async function refreshAll () {
-    state.latestBlock = await rpcRead('Reading latest Robinhood block', function () { return state.rpc.getBlockNumber() }); setLoading('Refreshing direct Morpho market and Vault V2 state...'); await hydrateMarkets(); await hydrateVaults(); await hydrateWallet(); setLoading(); render(); setStatus('Refreshed ' + state.markets.length + ' markets and ' + state.vaults.length + ' canonical Vault V2 instances from Robinhood RPC.', 'success')
+    state.latestBlock = await rpcRead('Reading latest Robinhood block', function () { return state.rpc.getBlockNumber() }); setLoading('Refreshing Morpho state...'); await hydrateMarkets(); await hydrateVaults(); await hydrateWallet(); setLoading(); render(); setStatus('Refreshed ' + state.markets.length + ' markets · ' + state.vaults.length + ' Vault V2.', 'success')
   }
   async function start () {
     state.rpc = new ethers.providers.JsonRpcProvider(chain.rpc, chain.number); bindPageEvents(); render(); const passiveWallet = restoreInjectedWallet()
     state.loading = true
-    try { await discover(); setLoading('Reading deduplicated ERC-20 metadata through Multicall3...'); await loadTokens(); await hydrateMarkets(); await hydrateVaults(); await passiveWallet; await hydrateWallet(); setStatus('Loaded all canonical Morpho Blue markets and Vault V2 records directly from Robinhood Chain.', 'success') } finally { state.loading = false; setLoading(); render() }
+    try { await discover(); setLoading('Reading Morpho token metadata...'); await loadTokens(); await hydrateMarkets(); await hydrateVaults(); await passiveWallet; await hydrateWallet(); setStatus('Loaded ' + state.markets.length + ' markets · ' + state.vaults.length + ' Vault V2.', 'success') } finally { state.loading = false; setLoading(); render() }
   }
   function fatal (error) {
     console.error('Morpho page load failed', error); setLoading(); const markets = byId('morpho-markets'); if (markets) { markets.textContent = ''; markets.appendChild(e('pre', { text: 'MORPHO COULD NOT LOAD\n' + errText(error) + '\nOnly the official Robinhood RPC is used. Check the connection and retry.' })) }

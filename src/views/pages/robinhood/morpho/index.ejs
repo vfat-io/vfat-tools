@@ -4,7 +4,7 @@
   noGlobalScripts: true,
   pageMeta: {
     title: 'Morpho Markets on Robinhood Chain | vfat.tools',
-    description: 'Live Morpho Blue markets and Vault V2 assets on Robinhood Chain, read directly from canonical onchain registries with direct wallet actions.',
+    description: 'Morpho Blue markets, Vault V2 assets, rates, and direct wallet actions on Robinhood Chain.',
     url: 'https://vfat.tools/robinhood/morpho/',
     image: 'https://vfat.tools/img/robinhood-morpho-social.png',
     imageAlt: 'vfat.tools Morpho market table on Robinhood Chain.',
@@ -20,11 +20,9 @@
   <a href="../">[ Robinhood farms ]</a> <a href="/">[ vfat.tools ]</a>
 </nav>
 <pre class="morpho-banner">
-===================== MORPHO BLUE / ROBINHOOD CHAIN =====================
-CHAIN : Robinhood Chain (4663)
-SOURCE: Canonical Morpho Blue CreateMarket events + canonical Vault V2 factory
-MODE  : Official Robinhood RPC reads and direct EIP-1193 wallet transactions.
-        No Morpho, vfat, router, explorer, token, or price API is used.
+===================== MORPHO BLUE · ROBINHOOD CHAIN =====================
+SOURCE: Morpho Blue + Vault V2
+MODE  : Onchain RPC + direct wallet
 =========================================================================
 
 WALLET: <span id="morpho-wallet-status">Checking injected wallet permissions...</span>
@@ -32,7 +30,7 @@ WALLET: <span id="morpho-wallet-status">Checking injected wallet permissions...<
         <button id="morpho-other-wallet" class="morpho-link-button" type="button">[ other wallet ]</button>
 </pre>
 
-<pre id="morpho-overview" class="morpho-summary" aria-live="polite">Reading canonical Morpho registries...</pre>
+<pre id="morpho-overview" class="morpho-summary" aria-live="polite">Reading Morpho registries...</pre>
 <p id="morpho-status" class="morpho-status" role="status" hidden></p>
 <p class="morpho-filter">DISPLAY : Rate-bearing markets only <button id="morpho-zero-rate-toggle" class="morpho-link-button" type="button">[ show 0-rate markets ]</button> <button id="morpho-refresh" class="morpho-link-button" type="button">[ refresh onchain state ]</button></p>
 
@@ -42,21 +40,15 @@ WALLET: <span id="morpho-wallet-status">Checking injected wallet permissions...<
 
 <section class="morpho-section" aria-labelledby="morpho-markets-title">
   <h1 id="morpho-markets-title">========================= MORPHO MARKETS =========================</h1>
-  <p class="morpho-note">Every row is an actionable market emitted by Morpho Blue. Creation records with a zero market parameter remain counted in discovery coverage but are excluded from contract reads and wallet actions. The oracle quote, supply/borrow balances, utilization, and simple APRs come from the market, oracle, and IRM contracts. Assets remain denominated in their loan token: the page deliberately does not invent USD prices or assume a stablecoin peg.</p>
   <div id="morpho-markets" class="morpho-table-wrap" aria-live="polite"></div>
 </section>
 
 <section class="morpho-section" aria-labelledby="morpho-vaults-title">
-  <h1 id="morpho-vaults-title">======================== CANONICAL VAULT V2 ========================</h1>
-  <p class="morpho-note">These are all Vault V2 instances emitted by Robinhood's canonical Vault V2 factory. A Vault V2 return depends on its live allocations, so this page does not invent a vault APR from a single block read.</p>
+  <h1 id="morpho-vaults-title">============================ VAULT V2 ============================</h1>
   <div id="morpho-vaults" class="morpho-table-wrap" aria-live="polite"></div>
 </section>
 
-<pre class="morpho-footer-note">
-DIRECT MARKET FLOW: choose a market -> enter an exact amount -> approve only if needed ->
-run the exact eth_call preflight -> confirm the direct Morpho transaction. Each confirmed
-receipt refreshes the affected market, vault, token allowance, and wallet position.
-</pre>
+<pre class="morpho-footer-note">FLOW: exact approval → eth_call → wallet → receipt refresh</pre>
 </main>
 
 <dialog id="morpho-action-dialog" class="morpho-action-dialog" aria-labelledby="morpho-action-title">

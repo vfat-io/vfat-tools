@@ -4,7 +4,7 @@
   noGlobalScripts: true,
   pageMeta: {
     title: 'Alandale Farms on Robinhood Chain | vfat.tools',
-    description: 'Live Alandale farm TVL, LUTE emissions, APRs, rewards, and direct wallet actions on Robinhood Chain. Every value is read from official contracts over RPC.',
+    description: 'Alandale farms, LUTE emissions, APRs, rewards, and direct wallet actions on Robinhood Chain.',
     url: 'https://vfat.tools/robinhood/alandale/',
     image: 'https://vfat.tools/img/robinhood-alandale-social.png',
     imageAlt: 'Live vfat.tools Alandale farm table on Robinhood Chain.',
@@ -20,43 +20,33 @@
   <a href="../">[ Robinhood farms ]</a> <a href="/">[ vfat.tools ]</a>
 </nav>
 <pre class="alandale-banner">
-******************** UNOFFICIAL ALANDALE FARMING TERMINAL ********************
-INFO  : <a href="https://app.alandale.xyz" target="_blank" rel="noopener noreferrer">https://app.alandale.xyz</a>
-CHAIN : Robinhood Chain (4663)
-MODE  : Official Robinhood RPC + Alandale contracts + direct EIP-1193 wallets.
-        Injected reads are passive; WalletConnect/Reown loads only after Other wallet.
-        No app, vfat, router, explorer, token, or price APIs are used here.
-*******************************************************************************
+==================== ALANDALE · ROBINHOOD CHAIN ====================
+APP   : <a href="https://app.alandale.xyz" target="_blank" rel="noopener noreferrer">app.alandale.xyz</a>
+MODE  : Onchain RPC + direct wallet
+=====================================================================
 
 WALLET: <span id="alandale-wallet-status">Wallet not connected</span> <button id="alandale-connect" class="alandale-link-button" type="button">[ Connect injected wallet ]</button> <button id="alandale-other-wallet" class="alandale-link-button" type="button">[ Other wallet / WalletConnect ]</button>
 </pre>
 
 <p id="alandale-status" class="alandale-status" role="status" hidden></p>
 <pre id="alandale-overview" class="alandale-summary" aria-live="polite" hidden></pre>
-<p class="alandale-note">USD values are derived from live pool reserves, concentrated-pool balances, and USDG-anchored onchain spot paths. A token without a liquid onchain route remains unpriced; it is never guessed.</p>
 <p class="alandale-filter">DISPLAY : Yield-bearing farms only <button id="alandale-zero-apr-toggle" class="alandale-link-button" type="button">[ show 0 APR farms ]</button></p>
 
 <div id="alandale-loading" class="alandale-loading" role="status" aria-live="polite">
-  <span class="loader--1" aria-hidden="true"></span> <span id="alandale-loading-text">Reading Alandale’s full onchain voter and factory registry…</span>
+  <span class="loader--1" aria-hidden="true"></span> <span id="alandale-loading-text">Reading Alandale farms…</span>
 </div>
 
 <section class="alandale-farms-section" aria-labelledby="alandale-farms-title">
   <h1 id="alandale-farms-title">====================== ALANDALE FARMS ======================</h1>
-  <p class="alandale-note">The table is the voter’s complete indexed pool registry, with every row checked against its gauge state. The one factory-only V2 pair is retained in the coverage line above, but is not mislabelled as a voter farm.</p>
   <div class="alandale-table-scroll"><div id="alandale-farms" aria-live="polite"></div></div>
 </section>
 
 <section id="alandale-positions-section" class="alandale-farms-section" hidden aria-labelledby="alandale-positions-title">
   <h1 id="alandale-positions-title">===================== YOUR POSITIONS ======================</h1>
-  <p class="alandale-note">Direct position-manager and gauge reads. Exit first unstakes a position when needed, then decreases, collects, and burns the empty NFT.</p>
   <div class="alandale-table-scroll"><div id="alandale-positions" aria-live="polite"></div></div>
 </section>
 
-<pre class="alandale-footer-note">
-WRITES: every approval, LP action, stake, claim, unstake, collect, decrease, and
-exit is first simulated with the exact calldata via eth_call. A confirmed receipt
-always refreshes the direct RPC and wallet state before the next action.
-</pre>
+<pre class="alandale-footer-note">FLOW: exact approval → eth_call → wallet → receipt refresh</pre>
 </main>
 
 <dialog id="alandale-action-dialog" class="alandale-action-dialog" aria-labelledby="alandale-action-title">

@@ -554,10 +554,9 @@ const Alandale = (function () {
     const node = byId('alandale-overview'); if (!node || !state.voterCounts) return
     const active = state.farms.filter(function (farm) { return farm.isGauge && farm.alive }).length; const priceLute = price(addresses.lute); const pricedPoolTvl = state.farms.reduce(function (sum, farm) { return sum + (Number.isFinite(farm.poolTvl) ? farm.poolTvl : 0) }, 0); const pricedGaugeTvl = state.farms.reduce(function (sum, farm) { return sum + (Number.isFinite(farm.gaugeTvl) ? farm.gaugeTvl : 0) }, 0)
     node.hidden = false; node.textContent = [
-      'REGISTRY : voter ' + state.farms.length + ' pools (' + state.voterCounts[1].toString() + ' V2 / ' + state.voterCounts[2].toString() + ' CL) · ' + active + ' live gauges',
-      'COVERAGE : V2 factory ' + state.factoryPairs.length + ' pair(s) · ' + state.factoryOnlyPairs.length + ' factory-only non-farm pair(s) · voter coverage ' + state.farms.length + '/' + state.voterCounts[0].toString(),
-      'EMISSION : ' + formatAmount(state.weeklyEmission, token(addresses.lute).decimals, 2) + ' ' + token(addresses.lute).symbol + ' / epoch · LUTE ' + (Number.isFinite(priceLute) ? usd(priceLute) : 'unpriced'),
-      'TVL      : pool ' + usd(pricedPoolTvl) + ' (priced rows) · gauge ' + usd(pricedGaugeTvl) + ' (direct custody valuation)'
+      'FARMS    : ' + state.farms.length + ' (' + state.voterCounts[1].toString() + ' V2 / ' + state.voterCounts[2].toString() + ' CL) · ' + active + ' live',
+      'LUTE     : ' + formatAmount(state.weeklyEmission, token(addresses.lute).decimals, 2) + ' / epoch · ' + (Number.isFinite(priceLute) ? usd(priceLute) : 'unpriced'),
+      'TVL      : pool ' + usd(pricedPoolTvl) + ' · gauge ' + usd(pricedGaugeTvl)
     ].join('\n')
   }
   function visibleFarms () { return state.farms.filter(function (farm) { return state.showZeroApr || !(farm.emission || ethers.constants.Zero).isZero() }) }
@@ -565,7 +564,7 @@ const Alandale = (function () {
     const host = byId('alandale-farms'); const toggle = byId('alandale-zero-apr-toggle'); if (!host) return
     if (toggle) toggle.textContent = state.showZeroApr ? '[ hide 0 APR farms ]' : '[ show 0 APR farms ]'
     host.textContent = ''; const farms = visibleFarms().slice().sort(function (left, right) { return (right.gaugeTvl || 0) - (left.gaugeTvl || 0) || left.registryIndex - right.registryIndex })
-    if (!farms.length) { host.appendChild(e('pre', { text: 'No farms have a current-epoch LUTE allocation. Use the 0 APR toggle to inspect every registered row.' })); return }
+    if (!farms.length) { host.appendChild(e('pre', { text: 'No live LUTE farms. [ show 0 APR farms ]' })); return }
     const table = e('table', { className: 'alandale-farm-table' }); const head = e('thead'); const header = e('tr'); ['Farm', 'Pool TVL', 'Gauge TVL', 'LUTE / 7d', 'APR', 'Pool liquidity', 'Your rewards', 'Actions'].forEach(function (name) { header.appendChild(e('th', { text: name })) }); head.appendChild(header); table.appendChild(head); const body = e('tbody')
     farms.forEach(function (farm) {
       const row = e('tr'); const pair = token(farm.token0).symbol + ' / ' + token(farm.token1).symbol; const balances = poolBalances(farm)
@@ -583,7 +582,7 @@ const Alandale = (function () {
   function renderPositions () {
     const section = byId('alandale-positions-section'); const host = byId('alandale-positions'); if (!section || !host) return
     section.hidden = !state.account; host.textContent = ''; if (!state.account) return
-    if (!state.positions.length) { host.appendChild(e('pre', { text: 'No wallet-owned Alandale concentrated-liquidity NFTs found. Staked NFTs are held by their gauge and can be unstaked by ID from the farm action.' })); return }
+    if (!state.positions.length) { host.appendChild(e('pre', { text: 'No wallet CL NFTs.' })); return }
     const table = e('table', { className: 'alandale-farm-table' }); const head = e('thead'); const header = e('tr'); ['Position', 'Pool', 'Liquidity', 'Range', 'Estimated value', 'Actions'].forEach(function (name) { header.appendChild(e('th', { text: name })) }); head.appendChild(header); table.appendChild(head); const body = e('tbody')
     state.positions.forEach(function (position) { const row = e('tr'); row.appendChild(e('td', { text: '#' + position.id.toString() })); row.appendChild(e('td', { text: token(position.farm.token0).symbol + ' / ' + token(position.farm.token1).symbol })); row.appendChild(e('td', { text: position.data[6].toString() })); row.appendChild(e('td', { text: position.data[4].toString() + ' → ' + position.data[5].toString() })); row.appendChild(e('td', { text: usd(positionValue(position.farm, position.data)) })); const action = e('td', { className: 'alandale-actions' }); action.appendChild(button('[ manage ]', function () { openPositionActions(position) }, state.sending)); row.appendChild(action); body.appendChild(row) })
     table.appendChild(body); host.appendChild(table)

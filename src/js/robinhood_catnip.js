@@ -589,7 +589,7 @@ const Catnip = (function () {
   function renderWallet () {
     const node = section('Wallet')
     if (!state.account) {
-      node.appendChild(e('pre', { text: injectedWallet() ? 'No authorized injected-wallet account. Public onchain farm reads are already running.' : 'No injected wallet found. Public onchain farm reads are already running.' }))
+      node.appendChild(e('pre', { text: injectedWallet() ? 'No authorized injected account.' : 'No injected wallet found.' }))
       append(node, action('Connect wallet', connectInjected), document.createTextNode(' '), action('Other wallet', connectOtherWallet))
       return node
     }
@@ -601,20 +601,15 @@ const Catnip = (function () {
     const node = section('Coverage')
     const readyPairs = state.pairs.filter(function (pair) { return pair.ready }).length; const readyFarms = state.farms.filter(function (farm) { return farm.ready }).length
     const pricedPairs = state.pairs.filter(function (pair) { return finite(pair.tvlUsd) }).length; const pricedFarms = state.farms.filter(function (farm) { return finite(farm.tvlUsd) }).length; const aprFarms = state.farms.filter(function (farm) { return finite(farm.apr) }).length
-    const source = state.pricePoolTotal === null
-      ? 'discovering USDG reference pools'
-      : state.priceReferenceDone
-        ? state.pricePoolTotal + '/' + state.pricePoolTotal + ' registry entries checked; ' + state.pricePools.length + ' liquid direct USDG-reference pools'
-        : state.pricePools.length + '/' + state.pricePoolTotal + ' liquid direct USDG-reference pools hydrated'
     const nipUsd = state.prices.get(lower(addresses.nip)); const nipEdgeLiquidity = state.priceConfidence.get(lower(addresses.nip))
-    node.appendChild(e('pre', { text: 'ALLEYS : ' + readyPairs + '/' + (state.factoryTotal === null ? '—' : state.factoryTotal) + ' factory pairs hydrated\nPROWLS : ' + readyFarms + '/' + (state.farmTotal === null ? '—' : state.farmTotal) + ' MasterProwl entries hydrated\nPRICING: ' + pricedPairs + '/' + readyPairs + ' AMM TVLs · ' + pricedFarms + '/' + readyFarms + ' farm TVLs · ' + aprFarms + '/' + readyFarms + ' APRs\nNIP/USDG: ' + money(nipUsd) + ' · strongest onchain reserve edge ' + money(nipEdgeLiquidity) + '\nANCHOR : USDG = $1; ' + source + (state.priceError ? '\nANCHOR : unavailable — ' + state.priceError : '') + '\nRULE   : unavailable values render as —, never as $0 or 0%.\n' }))
+    node.appendChild(e('pre', { text: 'ALLEYS   : ' + readyPairs + '/' + (state.factoryTotal === null ? '—' : state.factoryTotal) + '\nFARMS    : ' + readyFarms + '/' + (state.farmTotal === null ? '—' : state.farmTotal) + ' · ' + aprFarms + ' APRs\nNIP/USDG : ' + money(nipUsd) + ' · ' + money(nipEdgeLiquidity) + ' liquidity\nTVL      : ' + pricedPairs + '/' + readyPairs + ' pools · ' + pricedFarms + '/' + readyFarms + ' farms\n' }))
     return node
   }
   function renderFarms () {
     const node = section('MasterProwl farms')
     const active = state.farms.filter(function (farm) { return !farm.zeroYield }); const visible = state.showZero ? state.farms : active
     const toggle = action(state.showZero ? 'Hide zero-yield rows' : 'Show zero-yield rows', async function () { state.showZero = !state.showZero; render() })
-    node.appendChild(e('pre', { text: 'DISCOVERY: MasterProwl poolLength() → poolInfo(pid) for every pid.\nVISIBLE  : ' + visible.length + '/' + state.farms.length + (state.showZero ? ' (including zero-yield)' : ' (zero-yield hidden)') + '\n' })); node.appendChild(toggle)
+    node.appendChild(e('pre', { text: 'VISIBLE: ' + visible.length + '/' + state.farms.length + (state.showZero ? ' · all rows' : ' · live rows') + '\n' })); node.appendChild(toggle)
     const table = e('div', { className: 'catnip-table' })
     if (!visible.length) table.appendChild(e('pre', { text: '\nNo MasterProwl farms match this filter.\n' }))
     visible.forEach(function (farm) {
@@ -629,7 +624,6 @@ const Catnip = (function () {
   }
   function renderPairs () {
     const node = section('Alley AMM liquidity')
-    node.appendChild(e('pre', { text: 'DISCOVERY: Alley Factory allPairsLength() → allPairs(index). Reserves are the pair’s current getReserves() state.\n' }))
     const table = e('div', { className: 'catnip-table' })
     state.pairs.forEach(function (pair) {
       const row = e('article', { className: 'catnip-row' }); const walletLp = state.walletPairs.get(lower(pair.address))
@@ -642,9 +636,9 @@ const Catnip = (function () {
     const pair = state.selectedPair; const node = section('Direct wallet actions')
     if (!pair || !pair.ready) { node.appendChild(e('pre', { text: 'Choose an Alley pair after discovery finishes.' })); return node }
     const token0 = token(pair.token0); const token1 = token(pair.token1); const wallet = state.walletState && state.walletState.selected; const farm = state.selectedFarm; const farmWallet = farm && state.walletFarms.get(farm.pid)
-    node.appendChild(e('pre', { text: pairName(pair) + '\nPAIR  : ' + pair.address + '\nROUTER: ' + addresses.router + '\n' + (farm ? 'FARM  : MasterProwl #' + farm.pid + ' · deposit fee ' + (state.feeBps === null ? '—' : format(state.feeBps, 0) + ' bps') + '\n' : 'FARM  : This authoritative Alley pair is not in MasterProwl.\n') + 'APPROVAL: every approval sets only the current typed amount; no unlimited approvals.\nPRE-FLIGHT: every write is first simulated with the exact eth_call transaction, then receipt-confirmed and refreshed.\n' }))
+    node.appendChild(e('pre', { text: pairName(pair) + '\nPAIR  : ' + pair.address + '\n' + (farm ? 'FARM  : MasterProwl #' + farm.pid + ' · fee ' + (state.feeBps === null ? '—' : format(state.feeBps, 0) + ' bps') + '\n' : '') + 'FLOW  : exact approval → eth_call → wallet → receipt refresh\n' }))
     const liquidity = e('div')
-    liquidity.appendChild(e('pre', { text: 'ADD / INCREASE (uses wrapped WETH where the pair contains WETH; no hidden swap or router quote)\n' }))
+    liquidity.appendChild(e('pre', { text: 'ADD / INCREASE\n' }))
     append(liquidity, field(token0.symbol + ' desired', 'add0', token0.symbol), field(token1.symbol + ' desired', 'add1', token1.symbol), field(token0.symbol + ' min', 'min0', token0.symbol), field(token1.symbol + ' min', 'min1', token1.symbol))
     append(liquidity, e('pre', { text: 'Wallet: ' + format(wallet && wallet.balance0, token0.decimals) + ' ' + token0.symbol + ' · ' + format(wallet && wallet.balance1, token1.decimals) + ' ' + token1.symbol + '\n' }), action('Approve typed ' + token0.symbol, function () { return approveAddToken(0) }, !state.account || !onChain()), document.createTextNode(' '), action('Approve typed ' + token1.symbol, function () { return approveAddToken(1) }, !state.account || !onChain()), document.createTextNode(' '), action('Add liquidity', addLiquidity, !state.account || !onChain()))
     liquidity.appendChild(e('pre', { text: '\nREMOVE / EXIT\n' })); append(liquidity, field('LP amount', 'removeLp', 'LP'), field(token0.symbol + ' min', 'removeMin0', token0.symbol), field(token1.symbol + ' min', 'removeMin1', token1.symbol))
@@ -667,8 +661,6 @@ const Catnip = (function () {
     app.appendChild(renderWallet()); app.appendChild(renderCoverage())
     if (state.loadingRegistry && !state.pairs.length) { app.appendChild(e('pre', { text: 'READING: Factory allPairsLength() and MasterProwl poolLength() directly on Robinhood RPC…' })); return }
     app.appendChild(renderFarms()); app.appendChild(renderPairs()); app.appendChild(renderManager())
-    const note = e('p', { className: 'catnip-note', text: 'USD values are derived only when a live direct USDG path can be reconstructed from current onchain pool state. Catnip has no native WETH/USDG Alley pair, so the page reads the complete onchain reference-pool registry to anchor WETH, then Catnip reserves to value NIP and related LPs. No token, price, explorer, app, vfat, router, or indexer API is used.' })
-    app.appendChild(note)
   }
   async function start () {
     state.app = byId('catnip-app'); state.rpc = new ethers.providers.JsonRpcProvider(chain.rpc, chain.number)
