@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include(`${partials}/head`, {
+  noGlobalScripts: true,
+  pageMeta: {
+    title: 'Morpho Markets on Robinhood Chain | vfat.tools',
+    description: 'Live Morpho Blue markets and Vault V2 assets on Robinhood Chain, read directly from canonical onchain registries with direct wallet actions.',
+    url: 'https://vfat.tools/robinhood/morpho/',
+    image: 'https://vfat.tools/img/robinhood-morpho-social.png',
+    imageAlt: 'vfat.tools Morpho market table on Robinhood Chain.',
+    imageWidth: 1200,
+    imageHeight: 630
+  }
+}); -%>
+
+<body>
+<%- include(`${partials}/header_main`); -%>
+<main class="morpho-page">
+<nav class="morpho-mobile-nav" aria-label="Morpho page navigation">
+  <a href="../">[ Robinhood farms ]</a> <a href="/">[ vfat.tools ]</a>
+</nav>
+<pre class="morpho-banner">
+===================== MORPHO BLUE · ROBINHOOD CHAIN =====================
+CHAIN : Robinhood Chain (4663)
+SOURCE: Canonical Morpho Blue CreateMarket events + canonical Vault V2 factory
+MODE  : Official Robinhood RPC reads and direct EIP-1193 wallet transactions.
+        No Morpho, vfat, router, explorer, token, or price API is used.
+=========================================================================
+
+WALLET: <span id="morpho-wallet-status">Checking injected wallet permissions…</span>
+        <button id="morpho-connect" class="morpho-link-button" type="button">[ connect wallet ]</button>
+        <button id="morpho-other-wallet" class="morpho-link-button" type="button">[ other wallet ]</button>
+</pre>
+
+<pre id="morpho-overview" class="morpho-summary" aria-live="polite">Reading canonical Morpho registries…</pre>
+<p id="morpho-status" class="morpho-status" role="status" hidden></p>
+<p class="morpho-filter">DISPLAY : Rate-bearing markets only <button id="morpho-zero-rate-toggle" class="morpho-link-button" type="button">[ show 0-rate markets ]</button> <button id="morpho-refresh" class="morpho-link-button" type="button">[ refresh onchain state ]</button></p>
+
+<div id="morpho-loading" class="morpho-loading" role="status" aria-live="polite">
+  <span id="morpho-loading-spinner" aria-hidden="true">[....]</span> <span id="morpho-loading-text">Reading Morpho deployment events…</span>
+</div>
+
+<section class="morpho-section" aria-labelledby="morpho-markets-title">
+  <h1 id="morpho-markets-title">========================= MORPHO MARKETS =========================</h1>
+  <p class="morpho-note">Every row is a market emitted by Morpho Blue. The oracle quote, supply/borrow balances, utilization, and simple APRs come from the market, oracle, and IRM contracts. USD values only appear where the loan asset is the onchain USDG anchor; all other values stay unpriced.</p>
+  <div id="morpho-markets" class="morpho-table-wrap" aria-live="polite"></div>
+</section>
+
+<section class="morpho-section" aria-labelledby="morpho-vaults-title">
+  <h1 id="morpho-vaults-title">======================== CANONICAL VAULT V2 ========================</h1>
+  <p class="morpho-note">These are all Vault V2 instances emitted by Robinhood's canonical Vault V2 factory. A Vault V2 return depends on its live allocations, so this page does not invent a vault APR from a single block read.</p>
+  <div id="morpho-vaults" class="morpho-table-wrap" aria-live="polite"></div>
+</section>
+
+<pre class="morpho-footer-note">
+DIRECT MARKET FLOW: choose a market → enter an exact amount → approve only if needed →
+run the exact eth_call preflight → confirm the direct Morpho transaction. Each confirmed
+receipt refreshes the affected market, vault, token allowance, and wallet position.
+</pre>
+</main>
+
+<dialog id="morpho-action-dialog" class="morpho-action-dialog" aria-labelledby="morpho-action-title">
+  <form method="dialog" class="morpho-dialog-close-row"><button type="submit">[ close ]</button></form>
+  <div id="morpho-action-content"></div>
+</dialog>
+
+<%- include(`${partials}/disclaimer`); -%>
+<style>
+  .morpho-page { max-width: 1500px; margin: 20px 10px 50px; min-width: 0; }
+  .morpho-page, .morpho-page * { font-family: monospace; box-sizing: border-box; }
+  .morpho-mobile-nav { display: none; }
+  .morpho-banner, .morpho-summary, .morpho-footer-note { max-width: 100%; margin: 0 0 20px; overflow-wrap: anywhere; white-space: pre-wrap; }
+  .morpho-status, .morpho-filter, .morpho-note { max-width: none; margin: 0 0 16px; color: inherit; font: 14px/1.45 monospace; text-align: left; }
+  .morpho-status[data-kind="error"] { color: #d95757; }
+  .morpho-status[data-kind="success"] { color: var(--highlight-color); }
+  .morpho-section { min-width: 0; margin-top: 26px; }
+  .morpho-section h1 { max-width: none; margin: 0 0 8px; padding: 0; border: 0; color: inherit; font: inherit; font-weight: normal; text-align: left; }
+  .morpho-link-button, .morpho-action-button, .morpho-action-dialog button { margin: 0; padding: 0; border: 0; background: transparent; color: inherit; cursor: pointer; font: inherit; text-decoration: underline; }
+  .morpho-link-button:hover, .morpho-action-button:hover, .morpho-action-dialog button:hover { color: var(--highlight-color); }
+  .morpho-link-button:disabled, .morpho-action-button:disabled, .morpho-action-dialog button:disabled { cursor: not-allowed; opacity: .45; text-decoration: none; }
+  .morpho-loading { padding: 8px 0; }
+  .morpho-loading[hidden] { display: none; }
+  .morpho-table-wrap { width: 100%; min-width: 0; overflow-x: auto; }
+  .morpho-table { width: 100%; min-width: 1180px; border-collapse: collapse; font-size: 13px; }
+  .morpho-table th, .morpho-table td { padding: 7px 8px; border: 1px solid currentColor; vertical-align: top; text-align: right; white-space: nowrap; }
+  .morpho-table th:first-child, .morpho-table td:first-child, .morpho-table th:last-child, .morpho-table td:last-child { text-align: left; }
+  .morpho-table th { font-weight: bold; }
+  .morpho-name, .morpho-subline { display: block; max-width: 230px; overflow-wrap: anywhere; white-space: normal; }
+  .morpho-subline { margin-top: 3px; color: var(--highlight-color); font-size: 12px; }
+  .morpho-actions { min-width: 132px; white-space: normal !important; }
+  .morpho-actions > * { display: inline-block; margin: 0 8px 5px 0; }
+  .morpho-unpriced { opacity: .72; }
+  .morpho-action-dialog { width: min(620px, calc(100vw - 28px)); max-width: calc(100vw - 28px); padding: 16px; border: 1px solid currentColor; background: var(--main-background-color); color: var(--main-text-color); }
+  .morpho-action-dialog::backdrop { background: rgba(0, 0, 0, .55); }
+  .morpho-dialog-close-row { margin: 0 0 18px; text-align: right; }
+  .morpho-action-dialog h2 { max-width: none; margin: 0 0 8px; padding: 0; border: 0; color: inherit; font: bold 16px/1.4 monospace; text-align: left; }
+  .morpho-action-dialog p, .morpho-action-note { margin: 0 0 12px; color: inherit; font: 14px/1.45 monospace; text-align: left; overflow-wrap: anywhere; }
+  .morpho-action-balance { display: flex; justify-content: space-between; gap: 16px; margin: 12px 0 6px; font: 14px/1.4 monospace; }
+  .morpho-input-row { display: flex; gap: 10px; align-items: center; }
+  .morpho-input-row input { width: 100%; min-width: 0; padding: 5px 7px; border: 1px solid currentColor; border-radius: 0; background: transparent; color: inherit; font: 16px/1.4 monospace; }
+  .morpho-dialog-actions { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 14px; }
+  @media (max-width: 700px) {
+    body > div:not(.modal) { display: none; }
+    .morpho-page { margin: 14px 8px 40px; overflow-x: hidden; }
+    .morpho-mobile-nav { display: block; margin-bottom: 14px; }
+    .morpho-banner, .morpho-summary, .morpho-footer-note { font-size: 12px; }
+    .morpho-table-wrap { overflow: visible; }
+    .morpho-table { min-width: 0; table-layout: fixed; font-size: 12px; }
+    .morpho-table th, .morpho-table td { padding: 6px; }
+    .morpho-table th { white-space: normal; }
+    .morpho-table th:nth-child(3), .morpho-table td:nth-child(3), .morpho-table th:nth-child(4), .morpho-table td:nth-child(4), .morpho-table th:nth-child(5), .morpho-table td:nth-child(5) { display: none; }
+    .morpho-table th:nth-child(1) { width: 37%; }
+    .morpho-table th:nth-child(2) { width: 29%; }
+    .morpho-table th:last-child { width: 34%; }
+    .morpho-name, .morpho-subline { max-width: none; }
+    .morpho-actions { min-width: 0; }
+    .morpho-actions > * { margin-right: 6px; }
+    .morpho-action-balance { display: block; }
+    .morpho-action-balance span { display: block; margin-bottom: 4px; }
+  }
+</style>
+<%- include(`${partials}/scripts_onchain`, {scriptname: 'robinhood_morpho'}); -%>
+</body>
+</html>

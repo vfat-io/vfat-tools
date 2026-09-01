@@ -23,6 +23,9 @@ module.exports = (env = {}) => {
       // GIGA is a standalone direct-RPC page. Its optional connector remains
       // behind an explicit user action instead of entering the global bundle.
       robinhood_giga: './src/js/robinhood_giga.js',
+      // Morpho is likewise a self-contained, direct-RPC page. Its wallet
+      // connector is lazy-loaded by the entry only after explicit intent.
+      robinhood_morpho: './src/js/robinhood_morpho.js',
     },
     output: {
       filename: isProduction ? '[name].[contenthash].js' : '[name].js',
