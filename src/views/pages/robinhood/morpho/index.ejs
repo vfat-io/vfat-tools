@@ -20,29 +20,29 @@
   <a href="../">[ Robinhood farms ]</a> <a href="/">[ vfat.tools ]</a>
 </nav>
 <pre class="morpho-banner">
-===================== MORPHO BLUE · ROBINHOOD CHAIN =====================
+===================== MORPHO BLUE / ROBINHOOD CHAIN =====================
 CHAIN : Robinhood Chain (4663)
 SOURCE: Canonical Morpho Blue CreateMarket events + canonical Vault V2 factory
 MODE  : Official Robinhood RPC reads and direct EIP-1193 wallet transactions.
         No Morpho, vfat, router, explorer, token, or price API is used.
 =========================================================================
 
-WALLET: <span id="morpho-wallet-status">Checking injected wallet permissions…</span>
+WALLET: <span id="morpho-wallet-status">Checking injected wallet permissions...</span>
         <button id="morpho-connect" class="morpho-link-button" type="button">[ connect wallet ]</button>
         <button id="morpho-other-wallet" class="morpho-link-button" type="button">[ other wallet ]</button>
 </pre>
 
-<pre id="morpho-overview" class="morpho-summary" aria-live="polite">Reading canonical Morpho registries…</pre>
+<pre id="morpho-overview" class="morpho-summary" aria-live="polite">Reading canonical Morpho registries...</pre>
 <p id="morpho-status" class="morpho-status" role="status" hidden></p>
 <p class="morpho-filter">DISPLAY : Rate-bearing markets only <button id="morpho-zero-rate-toggle" class="morpho-link-button" type="button">[ show 0-rate markets ]</button> <button id="morpho-refresh" class="morpho-link-button" type="button">[ refresh onchain state ]</button></p>
 
 <div id="morpho-loading" class="morpho-loading" role="status" aria-live="polite">
-  <span id="morpho-loading-spinner" aria-hidden="true">[....]</span> <span id="morpho-loading-text">Reading Morpho deployment events…</span>
+  <span id="morpho-loading-spinner" aria-hidden="true">[....]</span> <span id="morpho-loading-text">Reading Morpho deployment events...</span>
 </div>
 
 <section class="morpho-section" aria-labelledby="morpho-markets-title">
   <h1 id="morpho-markets-title">========================= MORPHO MARKETS =========================</h1>
-  <p class="morpho-note">Every row is a market emitted by Morpho Blue. The oracle quote, supply/borrow balances, utilization, and simple APRs come from the market, oracle, and IRM contracts. USD values only appear where the loan asset is the onchain USDG anchor; all other values stay unpriced.</p>
+  <p class="morpho-note">Every row is a market emitted by Morpho Blue. The oracle quote, supply/borrow balances, utilization, and simple APRs come from the market, oracle, and IRM contracts. Assets remain denominated in their loan token: the page deliberately does not invent USD prices or assume a stablecoin peg.</p>
   <div id="morpho-markets" class="morpho-table-wrap" aria-live="polite"></div>
 </section>
 
@@ -53,8 +53,8 @@ WALLET: <span id="morpho-wallet-status">Checking injected wallet permissions…<
 </section>
 
 <pre class="morpho-footer-note">
-DIRECT MARKET FLOW: choose a market → enter an exact amount → approve only if needed →
-run the exact eth_call preflight → confirm the direct Morpho transaction. Each confirmed
+DIRECT MARKET FLOW: choose a market -> enter an exact amount -> approve only if needed ->
+run the exact eth_call preflight -> confirm the direct Morpho transaction. Each confirmed
 receipt refreshes the affected market, vault, token allowance, and wallet position.
 </pre>
 </main>

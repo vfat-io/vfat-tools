@@ -16,11 +16,14 @@ const MorphoPage = (function () {
     vaultV2Factory: '0x0FBad98595b0186dA120E41f77C102beb49f803c',
     vaultV2FactoryDeployedAt: 288,
     multicall: '0xcA11bde05977b3631167028862bE2a173976CA11',
-    // USDG is Robinhood Chain's direct onchain dollar settlement asset. It is
-    // only used as a $1 anchor; every other asset remains unpriced here.
+    // USDG is shown as its own loan-asset denomination in the coverage
+    // summary. This page deliberately does not turn any token into a dollar
+    // value without an independent onchain price source.
     usdg: '0x5fc5360D0400a0Fd4f2af552ADD042D716F1d168'
   }
   const secondsPerYear = 365 * 24 * 60 * 60
+  const registryLogBlockSpan = 20000000
+  const minimumRpcReadInterval = 1000
   const wad = ethers.constants.WeiPerEther
   const createMarketTopic = '0xac4b2400f169220b0c0afdde7a0b32e775ba727ea1cb30b35f935cdaab8683ac'
   const createVaultV2Topic = '0x341ce009267aa0d78cc12b34155e223904a51ed49d144beb6eb8be87813edb4e'
@@ -56,27 +59,27 @@ const MorphoPage = (function () {
     rpc: null, eip1193: null, wallet: null, account: null, walletChain: null, eventsBound: false,
     markets: [], vaults: [], tokens: new Map(), showZeroRates: false, loading: false, status: '', statusType: '',
     action: null, actionInfo: null, sending: false, latestBlock: null, discovery: { markets: 0, vaults: 0 },
-    spinner: null, spinnerFrame: 0, reownUnsubscribe: null
+    spinner: null, spinnerFrame: 0, reownUnsubscribe: null, nextRpcReadAt: 0
   }
 
   const byId = function (id) { return document.getElementById(id) }
   const lower = function (value) { return String(value || '').toLowerCase() }
   const isUsdG = function (value) { return lower(value) === lower(addresses.usdg) }
-  const short = function (value) { return value ? value.slice(0, 6) + '…' + value.slice(-4) : '—' }
-  const safeText = function (value, maximum) { return String(value || '—').replace(/[\r\n|]/g, ' ').replace(/\s+/g, ' ').trim().slice(0, maximum || 54) || '—' }
+  const short = function (value) { return value ? value.slice(0, 6) + '...' + value.slice(-4) : '-' }
+  const safeText = function (value, maximum) { return String(value || '-').replace(/[\r\n|]/g, ' ').replace(/\s+/g, ' ').trim().slice(0, maximum || 54) || '-' }
   const errText = function (error) { return String(error && (error.reason || error.data && error.data.message || error.message) || error).replace(/^Error: /, '').slice(0, 450) }
   const toNumber = function (value) { try { const output = Number(value); return Number.isFinite(output) ? output : NaN } catch (error) { return NaN } }
   const format = function (amount, decimals, digits) {
-    if (amount === undefined || amount === null || decimals === undefined || decimals === null) return '—'
+    if (amount === undefined || amount === null || decimals === undefined || decimals === null) return '-'
     try {
       const parts = ethers.utils.formatUnits(amount, decimals).split('.')
       const fraction = (parts[1] || '').slice(0, digits === undefined ? 5 : digits).replace(/0+$/, '')
       return fraction ? parts[0] + '.' + fraction : parts[0]
-    } catch (error) { return '—' }
+    } catch (error) { return '-' }
   }
   const unitsNumber = function (amount, decimals) { const output = Number(format(amount, decimals, 12)); return Number.isFinite(output) ? output : NaN }
   const compact = function (value, digits) {
-    if (!Number.isFinite(value) || value < 0) return '—'
+    if (!Number.isFinite(value) || value < 0) return '-'
     if (value >= 1e9) return (value / 1e9).toFixed(digits === undefined ? 2 : digits) + 'b'
     if (value >= 1e6) return (value / 1e6).toFixed(digits === undefined ? 2 : digits) + 'm'
     if (value >= 1e3) return (value / 1e3).toFixed(digits === undefined ? 2 : digits) + 'k'
@@ -84,8 +87,7 @@ const MorphoPage = (function () {
     if (value > 0) return value.toPrecision(3)
     return '0'
   }
-  const percent = function (value) { return Number.isFinite(value) && value >= 0 ? compact(value, value >= 100 ? 1 : 2) + '%' : '—' }
-  const usd = function (value) { return Number.isFinite(value) && value >= 0 ? '$' + compact(value) : 'unpriced' }
+  const percent = function (value) { return Number.isFinite(value) && value >= 0 ? compact(value, value >= 100 ? 1 : 2) + '%' : '-' }
   const e = function (tag, options) {
     const node = document.createElement(tag); const config = options || {}
     if (config.text !== undefined) node.textContent = config.text
@@ -132,12 +134,41 @@ const MorphoPage = (function () {
     return output
   }
 
+  const wait = function (milliseconds) { return new Promise(function (resolve) { window.setTimeout(resolve, milliseconds) }) }
+  const isRetryableRpcError = function (error) {
+    const details = error && [
+      error.message, error.reason, error.code, error.status,
+      error.serverError && error.serverError.message, error.serverError && error.serverError.code,
+      error.error && error.error.message, error.error && error.error.code
+    ].filter(Boolean).join(' ').toLowerCase()
+    // Browser CORS turns some HTTP 429 replies into ethers' deliberately
+    // vague SERVER_ERROR / missing-response wrapper. It is still transient:
+    // retry serially before declaring an otherwise complete registry absent.
+    return /429|rate limit|too many requests|timeout|timed out|temporar|network error|failed to fetch|missing response|server_error|503|504/.test(details)
+  }
+  async function rpcRead (label, fn) {
+    let failure
+    for (let attempt = 0; attempt < 4; attempt += 1) {
+      const delayUntilSlot = Math.max(0, state.nextRpcReadAt - Date.now())
+      if (delayUntilSlot) await wait(delayUntilSlot)
+      state.nextRpcReadAt = Date.now() + minimumRpcReadInterval
+      try { return await fn() } catch (error) {
+        failure = error
+        if (!isRetryableRpcError(error) || attempt === 3) throw error
+        const milliseconds = 2000 * (attempt + 1)
+        setLoading(label + ' hit a temporary Robinhood RPC limit; retrying ' + (attempt + 1) + '/3...')
+        await wait(milliseconds)
+      }
+    }
+    throw failure
+  }
+
   async function batch (calls) {
     if (!calls.length) return []
     const chunks = []
     for (let start = 0; start < calls.length; start += 80) chunks.push(calls.slice(start, start + 80))
     const multicall = new ethers.Contract(addresses.multicall, multicallAbi, state.rpc)
-    const settled = await limited(chunks, 2, async function (chunk) {
+    const settled = await limited(chunks, 1, async function (chunk) {
       const decode = function (call, data) {
         try {
           const decoded = call.iface.decodeFunctionResult(call.method, data)
@@ -148,15 +179,19 @@ const MorphoPage = (function () {
         return { target: call.target, allowFailure: true, callData: call.iface.encodeFunctionData(call.method, call.args || []) }
       })
       try {
-        const values = await multicall.aggregate3(encoded)
+        const values = await rpcRead('Reading bounded Multicall3 group', function () { return multicall.aggregate3(encoded) })
         return values.map(function (result, index) { return result.success ? decode(chunk[index], result.returnData) : chunk[index].fallback })
       } catch (error) {
         // Keep one unusual RPC/Multicall failure from hiding the complete
         // registry. This remains direct official-RPC reading, is bounded, and
         // preserves an unavailable field instead of inventing a value.
         console.warn('Multicall3 group failed; reading this bounded group directly.', errText(error))
-        return limited(chunk, 4, async function (call, index) {
-          try { return decode(call, await state.rpc.call({ to: call.target, data: encoded[index].callData })) } catch (directError) { return call.fallback }
+        return limited(chunk, 1, async function (call, index) {
+          try {
+            return decode(call, await rpcRead('Reading bounded direct contract call', function () {
+              return state.rpc.call({ to: call.target, data: encoded[index].callData })
+            }))
+          } catch (directError) { return call.fallback }
         })
       }
     })
@@ -189,27 +224,45 @@ const MorphoPage = (function () {
     return Array.from(output.values())
   }
 
-  async function registryLogs (address, topic, deployedAt, label) {
+  async function registryRangeLogs (address, topic, range, label, depth) {
     try {
-      return await state.rpc.getLogs({ address: address, topics: [topic], fromBlock: deployedAt, toBlock: 'latest' })
+      return await rpcRead('Reading ' + label + ' registry blocks ' + range.from + '-' + range.to, function () {
+        return state.rpc.getLogs({ address: address, topics: [topic], fromBlock: range.from, toBlock: range.to })
+      })
     } catch (error) {
-      // Some public RPCs cap a large historic filter. Retry in deliberately
-      // bounded ranges so discovery stays complete without an indexer API.
-      const latest = state.latestBlock || await state.rpc.getBlockNumber(); const span = 5000000; const ranges = []
-      for (let from = deployedAt; from <= latest; from += span) ranges.push({ from: from, to: Math.min(latest, from + span - 1) })
-      const all = []
-      for (let index = 0; index < ranges.length; index += 1) {
-        const range = ranges[index]; setLoading('Discovering ' + label + ' registry range ' + (index + 1) + '/' + ranges.length + '…')
-        const logs = await state.rpc.getLogs({ address: address, topics: [topic], fromBlock: range.from, toBlock: range.to })
-        Array.prototype.push.apply(all, logs)
-      }
-      return all
+      const span = range.to - range.from + 1
+      // Keep the fallback finite and deterministic. It handles an RPC shard
+      // that rejects a historical range without replacing canonical event
+      // discovery with a third-party indexer or an incomplete static list.
+      if (span <= 100000 || depth >= 8) throw error
+      const middle = range.from + Math.floor((span - 1) / 2)
+      setLoading('Reducing ' + label + ' registry range after RPC refusal...')
+      const left = await registryRangeLogs(address, topic, { from: range.from, to: middle }, label, depth + 1)
+      const right = await registryRangeLogs(address, topic, { from: middle + 1, to: range.to }, label, depth + 1)
+      return left.concat(right)
     }
   }
 
+  async function registryLogs (address, topic, deployedAt, label) {
+    // Always read in bounded, chronological ranges. A long event filter can
+    // work on one public RPC replica and fail on another, which would make a
+    // supposedly complete registry depend on the browser's backend shard.
+    const latest = state.latestBlock || await rpcRead('Reading latest Robinhood block', function () { return state.rpc.getBlockNumber() })
+    const ranges = []
+    for (let from = deployedAt; from <= latest; from += registryLogBlockSpan) ranges.push({ from: from, to: Math.min(latest, from + registryLogBlockSpan - 1) })
+    const all = []
+    for (let index = 0; index < ranges.length; index += 1) {
+      const range = ranges[index]
+      setLoading('Discovering ' + label + ' registry range ' + (index + 1) + '/' + ranges.length + '...')
+      const logs = await registryRangeLogs(address, topic, range, label, 0)
+      Array.prototype.push.apply(all, logs)
+    }
+    return all
+  }
+
   async function discover () {
-    setLoading('Reading canonical Morpho Blue and Vault V2 creation events…')
-    state.latestBlock = await state.rpc.getBlockNumber()
+    setLoading('Reading canonical Morpho Blue and Vault V2 creation events...')
+    state.latestBlock = await rpcRead('Reading latest Robinhood block', function () { return state.rpc.getBlockNumber() })
     const marketLogs = await registryLogs(addresses.morpho, createMarketTopic, addresses.morphoDeployedAt, 'Morpho market')
     // Avoid concurrent historic scans against the public Robinhood RPC. The
     // event filter is small, complete, and does not use any third-party API.
@@ -262,14 +315,14 @@ const MorphoPage = (function () {
     const supplyRate = Number.isFinite(borrowRate) && Number.isFinite(utilization) ? borrowRate * utilization / 100 * (1 - (Number.isFinite(fee) ? fee : 0)) : NaN
     let oracle = NaN
     if (market.oraclePrice && loan.decimals !== null && collateral.decimals !== null) oracle = unitsNumber(market.oraclePrice, 36 + loan.decimals - collateral.decimals)
-    return { balances: balances, loan: loan, collateral: collateral, supply: supply, borrow: borrow, utilization: utilization, borrowRate: borrowRate, supplyRate: supplyRate, oracle: oracle, tvlUsd: isUsdG(loan.address) ? supply : NaN }
+    return { balances: balances, loan: loan, collateral: collateral, supply: supply, borrow: borrow, utilization: utilization, borrowRate: borrowRate, supplyRate: supplyRate, oracle: oracle }
   }
 
   async function hydrateMarkets () {
     const groups = []
     for (let index = 0; index < state.markets.length; index += 24) groups.push(state.markets.slice(index, index + 24))
     for (let index = 0; index < groups.length; index += 1) {
-      const group = groups[index]; setLoading('Reading live state for Morpho markets ' + Math.min((index + 1) * 24, state.markets.length) + '/' + state.markets.length + '…')
+      const group = groups[index]; setLoading('Reading live state for Morpho markets ' + Math.min((index + 1) * 24, state.markets.length) + '/' + state.markets.length + '...')
       const stateCalls = []
       group.forEach(function (market) {
         stateCalls.push({ target: addresses.morpho, iface: morphoInterface, method: 'market', args: [market.id], fallback: null, decode: function (value) { return value } })
@@ -291,7 +344,7 @@ const MorphoPage = (function () {
     const groups = []
     for (let index = 0; index < state.vaults.length; index += 24) groups.push(state.vaults.slice(index, index + 24))
     for (let index = 0; index < groups.length; index += 1) {
-      const group = groups[index]; setLoading('Reading live state for Vault V2 ' + Math.min((index + 1) * 24, state.vaults.length) + '/' + state.vaults.length + '…')
+      const group = groups[index]; setLoading('Reading live state for Vault V2 ' + Math.min((index + 1) * 24, state.vaults.length) + '/' + state.vaults.length + '...')
       const calls = []
       group.forEach(function (vault) {
         calls.push(
@@ -339,7 +392,7 @@ const MorphoPage = (function () {
   }
 
   function walletLabel () {
-    if (state.account) return short(state.account) + (isCorrectChain() ? ' · Robinhood Chain' : ' · switch to Robinhood Chain')
+    if (state.account) return short(state.account) + (isCorrectChain() ? ' / Robinhood Chain' : ' / switch to Robinhood Chain')
     return injectedWallet() ? 'No injected account authorized for this page' : 'No injected EIP-1193 wallet found'
   }
   function renderOverview () {
@@ -351,25 +404,25 @@ const MorphoPage = (function () {
     node.textContent = [
       'DISCOVERY : ' + state.discovery.markets + ' CreateMarket events from Morpho Blue (' + addresses.morpho + ')',
       '            ' + state.discovery.vaults + ' CreateVaultV2 events from canonical Vault V2 factory (' + addresses.vaultV2Factory + ')',
-      'COVERAGE  : oracle ' + oracleReady + '/' + state.markets.length + ' · live IRM rate ' + rateReady + '/' + state.markets.length + ' · USDG TVL ' + usdCovered + '/' + state.markets.length,
-      'DISPLAY   : ' + (state.showZeroRates ? 'all markets' : 'rate-bearing markets; ' + zeroCount + ' zero-rate rows hidden') + ' · wallet ' + walletLabel(),
-      'UPDATED   : block ' + (state.latestBlock || '—') + ' · direct official Robinhood RPC'
+      'COVERAGE  : oracle quote ' + oracleReady + '/' + state.markets.length + ' / live IRM rate ' + rateReady + '/' + state.markets.length + ' / USDG loan markets ' + usdCovered + '/' + state.markets.length,
+      'PRICE     : USD valuation unavailable by design; no price API or assumed peg is used',
+      'DISPLAY   : ' + (state.showZeroRates ? 'all markets' : 'rate-bearing markets; ' + zeroCount + ' zero-rate rows hidden') + ' / wallet ' + walletLabel(),
+      'UPDATED   : block ' + (state.latestBlock || '-') + ' / direct official Robinhood RPC'
     ].join('\n')
     const walletNode = byId('morpho-wallet-status'); if (walletNode) walletNode.textContent = walletLabel()
   }
 
   function addHeader (table, labels) { const row = table.insertRow(); labels.forEach(function (label) { row.appendChild(e('th', { text: label })) }) }
   function addCell (row, text, className) { row.appendChild(e('td', { text: text, className: className })) }
-  function labelForMarket (market) { const metrics = marketMetrics(market); return metrics.loan.symbol + ' / ' + metrics.collateral.symbol + ' · ' + percent(unitsNumber(market.params.lltv, 18)) }
+  function labelForMarket (market) { const metrics = marketMetrics(market); return metrics.loan.symbol + ' / ' + metrics.collateral.symbol + ' / ' + percent(unitsNumber(market.params.lltv, 18)) }
   function marketPriceLabel (market, metrics) {
-    if (!Number.isFinite(metrics.oracle)) return '—'
+    if (!Number.isFinite(metrics.oracle)) return '-'
     const quote = '1 ' + metrics.collateral.symbol + ' = ' + compact(metrics.oracle, 6) + ' ' + metrics.loan.symbol
-    return isUsdG(metrics.loan.address) ? quote + ' (' + usd(metrics.oracle) + ')' : quote
+    return quote
   }
   function marketTvlLabel (metrics) {
-    if (!metrics.balances) return '—'
-    const raw = compact(metrics.supply, 5) + ' ' + metrics.loan.symbol
-    return Number.isFinite(metrics.tvlUsd) ? raw + ' · ' + usd(metrics.tvlUsd) : raw + ' · unpriced'
+    if (!metrics.balances) return '-'
+    return compact(metrics.supply, 5) + ' ' + metrics.loan.symbol
   }
   function renderMarkets () {
     const container = byId('morpho-markets'); if (!container) return
@@ -377,12 +430,12 @@ const MorphoPage = (function () {
     if (!state.markets.length) { container.appendChild(e('pre', { text: 'No Morpho markets discovered yet.' })); return }
     const visible = state.markets.filter(function (market) {
       const metrics = marketMetrics(market); return state.showZeroRates || !Number.isFinite(metrics.borrowRate) || metrics.borrowRate !== 0
-    }).sort(function (left, right) { return (marketMetrics(right).tvlUsd || marketMetrics(right).supply || 0) - (marketMetrics(left).tvlUsd || marketMetrics(left).supply || 0) })
-    const table = e('table', { className: 'morpho-table' }); addHeader(table, ['MARKET', 'ORACLE PRICE', 'ONCHAIN TVL', 'UTIL.', 'SIMPLE APR', 'DIRECT WALLET'])
+    }).sort(function (left, right) { return left.createdAtBlock - right.createdAtBlock })
+    const table = e('table', { className: 'morpho-table' }); addHeader(table, ['MARKET', 'ORACLE QUOTE', 'ONCHAIN ASSETS', 'UTIL.', 'SIMPLE APR', 'DIRECT WALLET'])
     visible.forEach(function (market) {
       const metrics = marketMetrics(market); const row = table.insertRow(); const marketCell = e('td')
-      append(marketCell, e('span', { className: 'morpho-name', text: labelForMarket(market) }), e('span', { className: 'morpho-subline', text: short(market.id) + ' · block ' + market.createdAtBlock }))
-      row.appendChild(marketCell); addCell(row, marketPriceLabel(market, metrics), Number.isFinite(metrics.oracle) ? '' : 'morpho-unpriced'); addCell(row, marketTvlLabel(metrics), Number.isFinite(metrics.tvlUsd) ? '' : 'morpho-unpriced'); addCell(row, percent(metrics.utilization)); addCell(row, 'supply ' + percent(metrics.supplyRate) + '\nborrow ' + percent(metrics.borrowRate));
+      append(marketCell, e('span', { className: 'morpho-name', text: labelForMarket(market) }), e('span', { className: 'morpho-subline', text: short(market.id) + ' / block ' + market.createdAtBlock }))
+      row.appendChild(marketCell); addCell(row, marketPriceLabel(market, metrics), Number.isFinite(metrics.oracle) ? '' : 'morpho-unpriced'); addCell(row, marketTvlLabel(metrics)); addCell(row, percent(metrics.utilization)); addCell(row, 'supply ' + percent(metrics.supplyRate) + '\nborrow ' + percent(metrics.borrowRate));
       const actions = e('td', { className: 'morpho-actions' })
       append(actions,
         button('supply', function () { return openAction('market', market, 'supply') }), button('withdraw', function () { return openAction('market', market, 'withdraw') }),
@@ -398,11 +451,11 @@ const MorphoPage = (function () {
     const container = byId('morpho-vaults'); if (!container) return
     container.textContent = ''
     if (!state.vaults.length) { container.appendChild(e('pre', { text: 'No Vault V2 instances discovered yet.' })); return }
-    const table = e('table', { className: 'morpho-table' }); addHeader(table, ['VAULT V2', 'ASSET', 'ONCHAIN TVL', 'SHARES', 'APR COVERAGE', 'DIRECT WALLET'])
-    state.vaults.slice().sort(function (left, right) { return (unitsNumber(right.totalAssets, token(right.asset).decimals) || 0) - (unitsNumber(left.totalAssets, token(left.asset).decimals) || 0) }).forEach(function (vault) {
+    const table = e('table', { className: 'morpho-table' }); addHeader(table, ['VAULT V2', 'ASSET', 'ONCHAIN ASSETS', 'SHARES', 'APR COVERAGE', 'DIRECT WALLET'])
+    state.vaults.slice().sort(function (left, right) { return left.createdAtBlock - right.createdAtBlock }).forEach(function (vault) {
       const asset = token(vault.asset); const totalAssets = unitsNumber(vault.totalAssets, asset.decimals); const totalSupply = unitsNumber(vault.totalSupply, asset.decimals); const row = table.insertRow(); const name = safeText(vault.name || vault.symbol || short(vault.address), 42)
-      const vaultCell = e('td'); append(vaultCell, e('span', { className: 'morpho-name', text: name }), e('span', { className: 'morpho-subline', text: safeText(vault.symbol || short(vault.address), 20) + ' · ' + short(vault.address) }))
-      row.appendChild(vaultCell); addCell(row, asset.symbol); addCell(row, compact(totalAssets, 5) + ' ' + asset.symbol + (isUsdG(asset.address) ? ' · ' + usd(totalAssets) : ' · unpriced'), isUsdG(asset.address) ? '' : 'morpho-unpriced'); addCell(row, compact(totalSupply, 5)); addCell(row, '—\nlive allocation return is not inferred');
+      const vaultCell = e('td'); append(vaultCell, e('span', { className: 'morpho-name', text: name }), e('span', { className: 'morpho-subline', text: safeText(vault.symbol || short(vault.address), 20) + ' / ' + short(vault.address) }))
+      row.appendChild(vaultCell); addCell(row, asset.symbol); addCell(row, compact(totalAssets, 5) + ' ' + asset.symbol); addCell(row, compact(totalSupply, 5)); addCell(row, '-\nlive allocation return is not inferred');
       const actions = e('td', { className: 'morpho-actions' }); append(actions, button('deposit', function () { return openAction('vault', vault, 'deposit') }), button('withdraw', function () { return openAction('vault', vault, 'withdraw') })); row.appendChild(actions)
     })
     container.appendChild(table)
@@ -412,9 +465,9 @@ const MorphoPage = (function () {
   function actionTitle () {
     if (!state.action) return ''
     const action = state.action
-    if (action.kind === 'vault') return action.mode.toUpperCase() + ' · ' + safeText(action.entry.name || action.entry.symbol || short(action.entry.address), 42)
+    if (action.kind === 'vault') return action.mode.toUpperCase() + ' / ' + safeText(action.entry.name || action.entry.symbol || short(action.entry.address), 42)
     const labels = { supply: 'SUPPLY LOAN ASSET', withdraw: 'WITHDRAW LOAN ASSET', 'collateral-supply': 'SUPPLY COLLATERAL', 'collateral-withdraw': 'WITHDRAW COLLATERAL', borrow: 'BORROW LOAN ASSET', repay: 'REPAY LOAN ASSET' }
-    return (labels[action.mode] || action.mode.toUpperCase()) + ' · ' + labelForMarket(action.entry)
+    return (labels[action.mode] || action.mode.toUpperCase()) + ' / ' + labelForMarket(action.entry)
   }
   function actionToken () {
     if (!state.action) return null; const action = state.action
@@ -439,7 +492,7 @@ const MorphoPage = (function () {
     if (!state.action) return ''
     if (!state.account) return 'Connect an EIP-1193 wallet first. The public market view never requests wallet permissions.'
     if (!isCorrectChain()) return 'Switch the connected wallet to Robinhood Chain (4663) before preparing a transaction.'
-    if (!state.actionInfo) return 'Reading the direct token balance, exact allowance, and onchain position…'
+    if (!state.actionInfo) return 'Reading the direct token balance, exact allowance, and onchain position...'
     const info = state.actionInfo; const asset = actionToken(); const balance = format(info.balance, asset.decimals)
     if (actionNeedsApproval()) return 'Wallet balance: ' + balance + ' ' + asset.symbol + '. Approval is checked against the exact typed amount; no unlimited approval is prepared.'
     return 'Every submit performs an eth_call of the exact direct transaction from this wallet before it can be sent.'
@@ -451,7 +504,7 @@ const MorphoPage = (function () {
     container.appendChild(e('p', { className: 'morpho-action-note', text: actionNote() }))
     if (!state.account || !isCorrectChain()) return
     const details = e('p', { className: 'morpho-action-balance' }); const info = state.actionInfo
-    append(details, e('span', { text: 'ASSET : ' + asset.symbol }), e('span', { text: info ? 'BALANCE : ' + format(info.balance, asset.decimals) : 'BALANCE : reading…' }))
+    append(details, e('span', { text: 'ASSET : ' + asset.symbol }), e('span', { text: info ? 'BALANCE : ' + format(info.balance, asset.decimals) : 'BALANCE : reading...' }))
     container.appendChild(details)
     const inputRow = e('label', { className: 'morpho-input-row' }); inputRow.appendChild(document.createTextNode(actionAmountLabel() + ' : '))
     const input = e('input', { id: 'morpho-action-amount' }); input.type = 'text'; input.inputMode = 'decimal'; input.autocomplete = 'off'; input.value = actionInputValue(); input.placeholder = '0.0'; input.addEventListener('input', function () { state.action.amount = input.value; renderAction() })
@@ -521,9 +574,9 @@ const MorphoPage = (function () {
     try { await state.eip1193.request({ method: 'eth_call', params: [{ from: state.account, to: tx.to, data: tx.data }, 'latest'] }) } catch (error) { throw new Error('Exact eth_call preflight failed: ' + errText(error)) }
   }
   async function send (tx, label) {
-    await preflight(tx); setStatus('Preflight passed. Confirm ' + label + ' in the wallet…')
+    await preflight(tx); setStatus('Preflight passed. Confirm ' + label + ' in the wallet...')
     const hash = await state.eip1193.request({ method: 'eth_sendTransaction', params: [{ from: state.account, to: tx.to, data: tx.data }] })
-    setStatus('Submitted ' + label + ': ' + hash + '. Waiting for the direct receipt…')
+    setStatus('Submitted ' + label + ': ' + hash + '. Waiting for the direct receipt...')
     const receipt = await state.rpc.waitForTransaction(hash, 1, 180000)
     if (!receipt || receipt.status !== 1) throw new Error(label + ' did not confirm successfully.')
     return hash
@@ -591,12 +644,12 @@ const MorphoPage = (function () {
     byId('morpho-refresh').addEventListener('click', function () { refreshAll().catch(function (error) { setStatus(errText(error), 'error') }) })
   }
   async function refreshAll () {
-    state.latestBlock = await state.rpc.getBlockNumber(); setLoading('Refreshing direct Morpho market and Vault V2 state…'); await hydrateMarkets(); await hydrateVaults(); await hydrateWallet(); setLoading(); render(); setStatus('Refreshed ' + state.markets.length + ' markets and ' + state.vaults.length + ' canonical Vault V2 instances from Robinhood RPC.', 'success')
+    state.latestBlock = await rpcRead('Reading latest Robinhood block', function () { return state.rpc.getBlockNumber() }); setLoading('Refreshing direct Morpho market and Vault V2 state...'); await hydrateMarkets(); await hydrateVaults(); await hydrateWallet(); setLoading(); render(); setStatus('Refreshed ' + state.markets.length + ' markets and ' + state.vaults.length + ' canonical Vault V2 instances from Robinhood RPC.', 'success')
   }
   async function start () {
     state.rpc = new ethers.providers.JsonRpcProvider(chain.rpc, chain.number); bindPageEvents(); render(); const passiveWallet = restoreInjectedWallet()
     state.loading = true
-    try { await discover(); setLoading('Reading deduplicated ERC-20 metadata through Multicall3…'); await loadTokens(); await hydrateMarkets(); await hydrateVaults(); await passiveWallet; await hydrateWallet(); setStatus('Loaded all canonical Morpho Blue markets and Vault V2 records directly from Robinhood Chain.', 'success') } finally { state.loading = false; setLoading(); render() }
+    try { await discover(); setLoading('Reading deduplicated ERC-20 metadata through Multicall3...'); await loadTokens(); await hydrateMarkets(); await hydrateVaults(); await passiveWallet; await hydrateWallet(); setStatus('Loaded all canonical Morpho Blue markets and Vault V2 records directly from Robinhood Chain.', 'success') } finally { state.loading = false; setLoading(); render() }
   }
   function fatal (error) {
     console.error('Morpho page load failed', error); setLoading(); const markets = byId('morpho-markets'); if (markets) { markets.textContent = ''; markets.appendChild(e('pre', { text: 'MORPHO COULD NOT LOAD\n' + errText(error) + '\nOnly the official Robinhood RPC is used. Check the connection and retry.' })) }
