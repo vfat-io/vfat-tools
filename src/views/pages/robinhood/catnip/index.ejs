@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include(`${partials}/head`, {
+  noGlobalScripts: true,
+  pageMeta: {
+    title: 'Catnip Farms on Robinhood Chain | vfat.tools',
+    description: 'Live Catnip Alley liquidity, MasterProwl NIP emissions, locked rewards, and direct wallet actions from Robinhood Chain contracts.',
+    url: 'https://vfat.tools/robinhood/catnip/',
+    image: 'https://vfat.tools/img/robinhood-catnip-social.png',
+    imageAlt: 'Live Catnip farm table on vfat.tools using Robinhood Chain contract state.',
+    imageWidth: 1200,
+    imageHeight: 630
+  }
+}); -%>
+
+<body>
+<%- include(`${partials}/header_main`); -%>
+<pre id="catnip-banner">
+******************** =^.^= UNOFFICIAL CATNIP FARM TERMINAL =^.^= ********************
+INFO  : https://catnipexchange.com
+CHAIN : Robinhood Chain (4663)
+MODE  : Official-RPC contract reads + direct EIP-1193 wallet transactions only.
+SOURCE: Alley Factory → every pair · MasterProwl → every farm · NIP locks → wallet
+****************************************************************************************
+</pre>
+<div id="catnip-loading" class="catnip-loading" role="status" aria-live="polite">
+  <span id="catnip-spinner" aria-hidden="true">[....]</span> <span id="catnip-loading-text">Reading Catnip contracts on Robinhood Chain…</span>
+</div>
+<div id="catnip-app" aria-live="polite"></div>
+<%- include(`${partials}/disclaimer`); -%>
+<style>
+  #catnip-banner, #catnip-app, #catnip-app section { box-sizing: border-box; max-width: 100%; min-width: 0; }
+  #catnip-banner, #catnip-app pre { overflow-wrap: anywhere; white-space: pre-wrap; }
+  .catnip-loading { padding: 10px 0; }
+  .catnip-loading[hidden] { display: none; }
+  .catnip-action { border: 0; background: transparent; color: inherit; cursor: pointer; font: inherit; padding: 0; text-decoration: underline; }
+  .catnip-action:disabled { cursor: not-allowed; opacity: .45; text-decoration: none; }
+  .catnip-field { display: inline-flex; align-items: center; gap: 6px; margin: 4px 12px 4px 0; max-width: 100%; }
+  .catnip-field input { box-sizing: border-box; font: inherit; min-width: 0; width: min(18ch, 42vw); }
+  .catnip-table { max-width: 100%; overflow-x: auto; }
+  .catnip-row { border-top: 1px solid currentColor; display: flex; gap: 12px; align-items: flex-start; justify-content: space-between; min-width: 620px; padding: 8px 0; }
+  .catnip-row pre { margin: 0; flex: 1 1 auto; }
+  .catnip-note { max-width: 92ch; }
+  @media (max-width: 700px) {
+    .catnip-row { min-width: 0; display: block; }
+    .catnip-row .catnip-action { margin-top: 5px; }
+    .catnip-field { display: flex; margin-right: 0; }
+    .catnip-field input { flex: 1 1 auto; width: auto; }
+  }
+</style>
+<%- include(`${partials}/scripts_onchain`, {scriptname: 'robinhood_catnip'}); -%>
+</body>
+</html>

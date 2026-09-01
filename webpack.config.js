@@ -29,6 +29,9 @@ module.exports = (env = {}) => {
       // Alandale likewise has no global application, router, or wallet-vendor
       // dependency: it is an independent official-RPC/onchain client.
       robinhood_alandale: './src/js/robinhood_alandale.js',
+      // Catnip stays outside the global application entry. It starts with
+      // direct contract reads and dynamically loads other-wallet support.
+      robinhood_catnip: './src/js/robinhood_catnip.js',
     },
     output: {
       filename: isProduction ? '[name].[contenthash].js' : '[name].js',
