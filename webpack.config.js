@@ -20,6 +20,9 @@ module.exports = (env = {}) => {
       // It carries only its own onchain client dependencies and lazy-loads
       // Reown only after the user explicitly chooses another wallet.
       robinhood_up33: './src/js/robinhood_up33.js',
+      // GIGA is a standalone direct-RPC page. Its optional connector remains
+      // behind an explicit user action instead of entering the global bundle.
+      robinhood_giga: './src/js/robinhood_giga.js',
     },
     output: {
       filename: isProduction ? '[name].[contenthash].js' : '[name].js',
