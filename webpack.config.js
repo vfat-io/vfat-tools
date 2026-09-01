@@ -7,11 +7,19 @@ let isProduction
 
 module.exports = (env = {}) => {
 
-  isProduction = env.production === true
+  // npm run build selects production through NODE_ENV and --mode, not
+  // --env production. Keep webpack's chunk runtime in the same mode as the
+  // subsequent filename-map step or dynamic imports will request stale,
+  // unhashed chunk names in the published site.
+  isProduction = env.production === true || process.env.NODE_ENV === 'production'
 
   return {
     entry: {
       app: ["core-js/stable", "regenerator-runtime/runtime", 'lodash.throttle', 'lodash.debounce', 'dompurify', 'picturefill', './src/js/index.js'],
+      // Up33 is intentionally independent of the global application bundle.
+      // It carries only its own onchain client dependencies and lazy-loads
+      // Reown only after the user explicitly chooses another wallet.
+      robinhood_up33: './src/js/robinhood_up33.js',
     },
     output: {
       filename: isProduction ? '[name].[contenthash].js' : '[name].js',
@@ -106,7 +114,10 @@ module.exports = (env = {}) => {
           vendor: {
             test: /[\\/]node_modules[\\/]/,
             name: 'vendor',
-            chunks: 'all'
+            // Keep node_modules used by the standalone Up33 entry inside its
+            // own bundle. Otherwise this cache group makes the page fetch the
+            // full site-wide vendor payload before its small client starts.
+            chunks: (chunk) => chunk.name === 'app'
           }
         }
       }

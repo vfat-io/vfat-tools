@@ -8,7 +8,8 @@ const main = async () => {
     "title": "Robinhood",
     "heading": ["Pool Provider", "LP", "Reward Tokens", "INFO"],
     "rows": [
-      ["Sickle                ", `<a href="sickle"         >Various</a>`, "              ", ""]
+      ["Sickle                ", `<a href="sickle"         >Various</a>`, "              ", ""],
+      ["Up33                  ", `<a href="up33"           >Concentrated liquidity</a>`, "UP            ", "Wallet-only"]
     ].reverse()
   }
 

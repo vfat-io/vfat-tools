@@ -15,6 +15,8 @@ const patternsToSkip = [
   /\.lazy\./
 ]
 
+const hashedFilename = /^(.*)\.([a-f0-9]{20,32})(\.[^.]+)$/
+
 const mapData = {}
 
 function transformer({
@@ -23,6 +25,15 @@ function transformer({
   destinationPath
 }) {
   if (patternsToSkip.some(pattern => pattern.test(filename))) {
+    return
+  }
+
+  // Webpack's production runtime already knows these content-hashed chunk
+  // names. Renaming them again breaks dynamic import URLs. Still record the
+  // base name so EJS can resolve entry scripts through filename-map.json.
+  const webpackHashed = filename.match(hashedFilename)
+  if (webpackHashed) {
+    mapData[webpackHashed[1] + webpackHashed[3]] = filename
     return
   }
 
