@@ -40,7 +40,6 @@ const Alandale = (function () {
   ]
   const multicallAbi = ['function aggregate3((address target,bool allowFailure,bytes callData)[] calls) view returns((bool success,bytes returnData)[] returnData)']
   const zero = ethers.constants.AddressZero.toLowerCase()
-  const maxUint = ethers.constants.MaxUint256
   const max128 = ethers.BigNumber.from(2).pow(128).sub(1)
   const Q96 = Math.pow(2, 96)
   // The existing vfat.io AppKit project is intentionally referenced only by
@@ -473,7 +472,7 @@ const Alandale = (function () {
   }
   async function ensureApproval (asset, spender, amount) {
     const erc20Interface = iface(erc20Abi); const allowance = await batch([{ target: asset, iface: erc20Interface, method: 'allowance', args: [state.account, spender], fallback: [ethers.constants.Zero] }])
-    if (allowance[0][0].lt(amount)) await sendExact('approval for ' + token(asset).symbol, asset, erc20Abi, 'approve', [spender, maxUint])
+    if (allowance[0][0].lt(amount)) await sendExact('approval for ' + token(asset).symbol, asset, erc20Abi, 'approve', [spender, amount])
   }
   async function claimFarm (farm) { await sendExact('LUTE reward claim', addresses.voter, voterAbi, 'claimRewards', [[farm.gauge]]) }
 
