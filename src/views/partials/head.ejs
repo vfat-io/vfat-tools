@@ -1,23 +1,38 @@
+<%
+    const meta = locals.pageMeta || {}
+    const title = meta.title || 'Yield Farming Info'
+    const description = meta.description || '🧑‍🌾 It ain\'t much, but it\'s honest work'
+    const url = meta.url || 'https://vfat.tools/'
+    const image = meta.image || 'https://yieldfarming.info/img/thumbnail.png'
+    const imageAlt = meta.imageAlt || 'Yield Farming Info'
+%>
 <head>
     <meta charset="UTF-8">
     <!-- Primary Meta Tags -->
-    <title>Yield Farming Info</title>
-    <meta name="title" content="Yield Farming Info">
-    <meta name="description" content="&#x1F9D1;&#x200D;&#x1F33E; It ain't much, but it's honest work">
+    <title><%= title %></title>
+    <meta name="title" content="<%= title %>">
+    <meta name="description" content="<%= description %>">
+    <link rel="canonical" href="<%= url %>">
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://vfat.tools/">
-    <meta property="og:title" content="Yield Farming Info">
-    <meta property="og:description" content="&#x1F9D1;&#x200D;&#x1F33E; It ain't much, but it's honest work">
-    <meta property="og:image" content="https://yieldfarming.info/img/thumbnail.png">
+    <meta property="og:url" content="<%= url %>">
+    <meta property="og:title" content="<%= title %>">
+    <meta property="og:description" content="<%= description %>">
+    <meta property="og:image" content="<%= image %>">
+    <meta property="og:image:alt" content="<%= imageAlt %>">
+    <% if (meta.imageWidth && meta.imageHeight) { %>
+        <meta property="og:image:width" content="<%= meta.imageWidth %>">
+        <meta property="og:image:height" content="<%= meta.imageHeight %>">
+    <% } %>
 
     <!-- Twitter -->
-    <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:url" content="https://vfat.tools/">
-    <meta property="twitter:title" content="Yield Farming Info">
-    <meta property="twitter:description" content="&#x1F9D1;&#x200D;&#x1F33E; It ain't much, but it's honest work">
-    <meta property="twitter:image" content="https://yieldfarming.info/img/thumbnail.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="<%= url %>">
+    <meta name="twitter:title" content="<%= title %>">
+    <meta name="twitter:description" content="<%= description %>">
+    <meta name="twitter:image" content="<%= image %>">
+    <meta name="twitter:image:alt" content="<%= imageAlt %>">
 
     <% if(filenameMap) { %>
         <link rel="stylesheet" href="<%= PP %>/css/<%= filenameMap['index.css'] %>">

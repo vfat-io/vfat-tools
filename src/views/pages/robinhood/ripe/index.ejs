@@ -1,6 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
-<%- include(`${partials}/head`, {noGlobalScripts: true}); -%>
+<%- include(`${partials}/head`, {
+  noGlobalScripts: true,
+  pageMeta: {
+    title: 'Ripe Protocol Farms on Robinhood Chain | vfat.tools',
+    description: 'Live Ripe farm APYs, TVL, and direct wallet actions on Robinhood Chain. Priced from onchain DEX liquidity.',
+    url: 'https://vfat.tools/robinhood/ripe/',
+    image: 'https://vfat.tools/img/robinhood-ripe-social.png',
+    imageAlt: 'Green yield chart and abstract token coins on a terminal-style background.',
+    imageWidth: 1731,
+    imageHeight: 909
+  }
+}); -%>
 
 <body>
 <%- include(`${partials}/header_main`); -%>
