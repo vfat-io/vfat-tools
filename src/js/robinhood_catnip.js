@@ -53,12 +53,11 @@ const Catnip = (function () {
   const v3PoolAbi = ['function token0() view returns(address)', 'function token1() view returns(address)', 'function slot0() view returns(uint160 sqrtPriceX96,int24 tick,uint16 observationIndex,uint16 observationCardinality,uint16 observationCardinalityNext,bool unlocked)', 'function liquidity() view returns(uint128)']
   const multicallAbi = ['function aggregate3((address target,bool allowFailure,bytes callData)[] calls) view returns((bool success,bytes returnData)[])']
   const zero = ethers.constants.AddressZero
-  const maxUint = ethers.constants.MaxUint256
   const reownProjectId = process.env.REOWN_PROJECT_ID || '3e6154a7158ff5f7509f24405fc3b551'
   const state = {
     app: null, rpc: null, wallet: null, eip1193: null, walletSource: null, account: null, walletChain: null,
     pairs: [], farms: [], pricePools: [], tokens: new Map(), prices: new Map(), priceConfidence: new Map(),
-    factoryTotal: null, farmTotal: null, pricePoolTotal: null, feeBps: null, schedule: null,
+    factoryTotal: null, farmTotal: null, pricePoolTotal: null, priceReferenceDone: false, feeBps: null, schedule: null,
     selectedPair: null, selectedFarm: null, showZero: false, draft: {},
     loadingRegistry: false, loadingMarket: false, loadingWallet: false, sending: false, message: '', messageType: '',
     spinnerTimer: null, spinnerIndex: 0, eventsBound: false, reownUnsubscribe: null,
@@ -266,6 +265,7 @@ const Catnip = (function () {
     // indexer, token list, or quote router is used.
     try {
       const voterInterface = iface(voterAbi); const poolInterface = iface(v3PoolAbi)
+      state.priceReferenceDone = false
       const length = (await batch([{ target: addresses.priceVoter, iface: voterInterface, method: 'length', fallback: null }]))[0]
       if (length === null) throw new Error('USDG price-reference registry unavailable')
       state.pricePoolTotal = numeric(length)
@@ -300,6 +300,7 @@ const Catnip = (function () {
         state.pricePools = state.pricePools.concat(group.filter(function (pool) { return pool.ready }))
         computeMarket(); render()
       })
+      state.priceReferenceDone = true
     } catch (error) {
       state.priceError = errorText(error)
       // The farm table remains useful even when the optional dollar anchor is
@@ -493,27 +494,91 @@ const Catnip = (function () {
     if (!allowZero && parsed.lte(0)) throw new Error(label + ' must be greater than zero.')
     return parsed
   }
-  async function approve (asset, spender, label) { return send(asset, iface(erc20Abi), 'approve', [spender, maxUint], label) }
+  function enough (available, required) {
+    try { return available !== undefined && available !== null && ethers.BigNumber.from(available).gte(required) } catch (_) { return false }
+  }
+  function needBalance (available, required, info, purpose) {
+    if (!enough(available, required)) throw new Error('Insufficient ' + info.symbol + ' balance for ' + purpose + '.')
+  }
+  function needAllowance (available, required, info, purpose) {
+    if (!enough(available, required)) throw new Error('Approve the exact typed ' + info.symbol + ' amount for ' + purpose + ' first.')
+  }
+  function needApproval (available, required, info, purpose) {
+    if (enough(available, required)) throw new Error('Current ' + info.symbol + ' allowance already covers the typed ' + purpose + ' amount.')
+  }
+  function selectedWallet () {
+    const wallet = state.walletState && state.walletState.selected
+    if (!wallet) throw new Error('Wallet balances and allowances are still loading. Refresh the wallet and retry.')
+    return wallet
+  }
+  async function approveExact (asset, spender, amount, info, purpose) {
+    return send(asset, iface(erc20Abi), 'approve', [spender, amount], 'approve exactly ' + format(amount, info.decimals) + ' ' + info.symbol + ' for ' + purpose)
+  }
+  async function approveAddToken (side) {
+    const pair = state.selectedPair; if (!pair || !pair.ready) throw new Error('Choose a loaded Alley pair first.')
+    const wallet = selectedWallet(); const info = token(side === 0 ? pair.token0 : pair.token1); const key = side === 0 ? 'add0' : 'add1'
+    const amount = parseDraft(key, info, info.symbol + ' desired')
+    needBalance(side === 0 ? wallet.balance0 : wallet.balance1, amount, info, 'add liquidity')
+    needApproval(side === 0 ? wallet.allowance0 : wallet.allowance1, amount, info, 'add-liquidity')
+    return approveExact(side === 0 ? pair.token0 : pair.token1, addresses.router, amount, info, 'Alley Router add liquidity')
+  }
+  async function approveRemoveLp () {
+    const pair = state.selectedPair; if (!pair || !pair.ready) throw new Error('Choose a loaded Alley pair first.')
+    const wallet = selectedWallet(); const info = { symbol: 'LP', decimals: 18 }; const amount = parseDraft('removeLp', info, 'LP amount')
+    needBalance(state.walletPairs.get(lower(pair.address)), amount, info, 'remove liquidity'); needApproval(wallet.allowanceRouterLp, amount, info, 'remove-liquidity')
+    return approveExact(pair.address, addresses.router, amount, info, 'Alley Router remove liquidity')
+  }
+  async function approveStakeLp () {
+    const pair = state.selectedPair; const farm = state.selectedFarm
+    if (!pair || !pair.ready || !farm || lower(farm.lpToken) !== lower(pair.address)) throw new Error('Choose a MasterProwl Alley pair first.')
+    const wallet = selectedWallet(); const info = { symbol: 'LP', decimals: 18 }; const amount = parseDraft('stakeLp', info, 'LP deposit')
+    needBalance(state.walletPairs.get(lower(pair.address)), amount, info, 'stake LP'); needApproval(wallet.allowanceProwlLp, amount, info, 'LP-stake')
+    return approveExact(pair.address, addresses.prowl, amount, info, 'MasterProwl stake')
+  }
+  async function approveCacheNip () {
+    const info = token(addresses.nip); const wallet = state.walletState || {}; const amount = parseDraft('cacheNip', info, 'NIP to stake')
+    needBalance(wallet.nip, amount, info, 'Cache stake'); needApproval(wallet.cacheAllowance, amount, info, 'Cache-stake')
+    return approveExact(addresses.nip, addresses.cache, amount, info, 'Cache stake')
+  }
   async function addLiquidity () {
     const pair = state.selectedPair; if (!pair || !pair.ready) throw new Error('Choose a loaded Alley pair first.')
-    const token0 = token(pair.token0); const token1 = token(pair.token1)
+    const wallet = selectedWallet(); const token0 = token(pair.token0); const token1 = token(pair.token1)
     const amount0 = parseDraft('add0', token0, token0.symbol + ' desired'); const amount1 = parseDraft('add1', token1, token1.symbol + ' desired')
     const minimum0 = String(state.draft.min0 || '').trim() ? parseDraft('min0', token0, token0.symbol + ' minimum', true) : ethers.constants.Zero
     const minimum1 = String(state.draft.min1 || '').trim() ? parseDraft('min1', token1, token1.symbol + ' minimum', true) : ethers.constants.Zero
+    needBalance(wallet.balance0, amount0, token0, 'add liquidity'); needBalance(wallet.balance1, amount1, token1, 'add liquidity')
+    needAllowance(wallet.allowance0, amount0, token0, 'add liquidity'); needAllowance(wallet.allowance1, amount1, token1, 'add liquidity')
     await send(addresses.router, iface(routerAbi), 'addLiquidity', [pair.token0, pair.token1, amount0, amount1, minimum0, minimum1, state.account, deadline()], 'add liquidity')
   }
   async function removeLiquidity () {
     const pair = state.selectedPair; if (!pair || !pair.ready) throw new Error('Choose a loaded Alley pair first.')
-    const token0 = token(pair.token0); const token1 = token(pair.token1); const liquidity = parseDraft('removeLp', { symbol: 'LP', decimals: 18 }, 'LP amount')
+    const wallet = selectedWallet(); const token0 = token(pair.token0); const token1 = token(pair.token1); const lp = { symbol: 'LP', decimals: 18 }; const liquidity = parseDraft('removeLp', lp, 'LP amount')
     const minimum0 = String(state.draft.removeMin0 || '').trim() ? parseDraft('removeMin0', token0, token0.symbol + ' minimum', true) : ethers.constants.Zero
     const minimum1 = String(state.draft.removeMin1 || '').trim() ? parseDraft('removeMin1', token1, token1.symbol + ' minimum', true) : ethers.constants.Zero
+    needBalance(state.walletPairs.get(lower(pair.address)), liquidity, lp, 'remove liquidity'); needAllowance(wallet.allowanceRouterLp, liquidity, lp, 'remove liquidity')
     await send(addresses.router, iface(routerAbi), 'removeLiquidity', [pair.token0, pair.token1, liquidity, minimum0, minimum1, state.account, deadline()], 'remove liquidity')
   }
-  async function stake () { const farm = state.selectedFarm; if (!farm) throw new Error('The selected pair is not a MasterProwl farm.'); await send(addresses.prowl, iface(prowlAbi), 'deposit', [farm.pid, parseDraft('stakeLp', { symbol: 'LP', decimals: 18 }, 'LP deposit'), zero], 'stake LP') }
-  async function withdraw () { const farm = state.selectedFarm; if (!farm) throw new Error('The selected pair is not a MasterProwl farm.'); await send(addresses.prowl, iface(prowlAbi), 'withdraw', [farm.pid, parseDraft('withdrawLp', { symbol: 'LP', decimals: 18 }, 'LP withdrawal'), zero], 'withdraw LP') }
+  async function stake () {
+    const pair = state.selectedPair; const farm = state.selectedFarm; if (!pair || !farm || lower(farm.lpToken) !== lower(pair.address)) throw new Error('The selected pair is not a MasterProwl farm.')
+    const wallet = selectedWallet(); const lp = { symbol: 'LP', decimals: 18 }; const amount = parseDraft('stakeLp', lp, 'LP deposit')
+    needBalance(state.walletPairs.get(lower(pair.address)), amount, lp, 'stake LP'); needAllowance(wallet.allowanceProwlLp, amount, lp, 'stake LP')
+    await send(addresses.prowl, iface(prowlAbi), 'deposit', [farm.pid, amount, zero], 'stake LP')
+  }
+  async function withdraw () {
+    const farm = state.selectedFarm; if (!farm) throw new Error('The selected pair is not a MasterProwl farm.')
+    const lp = { symbol: 'LP', decimals: 18 }; const amount = parseDraft('withdrawLp', lp, 'LP withdrawal'); const wallet = state.walletFarms.get(farm.pid)
+    needBalance(wallet && wallet.staked, amount, lp, 'withdraw LP'); await send(addresses.prowl, iface(prowlAbi), 'withdraw', [farm.pid, amount, zero], 'withdraw LP')
+  }
   async function claim () { const farm = state.selectedFarm; if (!farm) throw new Error('Choose a farm to claim.'); await send(addresses.prowl, iface(prowlAbi), 'claimReward', [farm.pid], 'claim NIP rewards') }
-  async function cacheEnter () { await send(addresses.cache, iface(cacheAbi), 'enter', [parseDraft('cacheNip', token(addresses.nip), 'NIP to stake')], 'stake NIP in Cache') }
-  async function cacheLeave () { await send(addresses.cache, iface(cacheAbi), 'leave', [parseDraft('cacheShares', { symbol: 'xNIP', decimals: 18 }, 'xNIP to unstake')], 'unstake Cache shares') }
+  async function cacheEnter () {
+    const info = token(addresses.nip); const wallet = state.walletState || {}; const amount = parseDraft('cacheNip', info, 'NIP to stake')
+    needBalance(wallet.nip, amount, info, 'Cache stake'); needAllowance(wallet.cacheAllowance, amount, info, 'Cache stake')
+    await send(addresses.cache, iface(cacheAbi), 'enter', [amount], 'stake NIP in Cache')
+  }
+  async function cacheLeave () {
+    const info = { symbol: 'xNIP', decimals: 18 }; const amount = parseDraft('cacheShares', info, 'xNIP to unstake'); const wallet = state.walletState || {}
+    needBalance(wallet.cacheShares, amount, info, 'unstake Cache'); await send(addresses.cache, iface(cacheAbi), 'leave', [amount], 'unstake Cache shares')
+  }
   async function unlock () { await send(addresses.nip, iface(nipAbi), 'unlock', [], 'unlock NIP rewards') }
 
   function selectPair (pair) {
@@ -536,8 +601,13 @@ const Catnip = (function () {
     const node = section('Coverage')
     const readyPairs = state.pairs.filter(function (pair) { return pair.ready }).length; const readyFarms = state.farms.filter(function (farm) { return farm.ready }).length
     const pricedPairs = state.pairs.filter(function (pair) { return finite(pair.tvlUsd) }).length; const pricedFarms = state.farms.filter(function (farm) { return finite(farm.tvlUsd) }).length; const aprFarms = state.farms.filter(function (farm) { return finite(farm.apr) }).length
-    const source = state.pricePoolTotal === null ? 'discovering USDG reference pools' : state.pricePools.length + '/' + state.pricePoolTotal + ' direct USDG-reference pools read'
-    node.appendChild(e('pre', { text: 'ALLEYS : ' + readyPairs + '/' + (state.factoryTotal === null ? '—' : state.factoryTotal) + ' factory pairs hydrated\nPROWLS : ' + readyFarms + '/' + (state.farmTotal === null ? '—' : state.farmTotal) + ' MasterProwl entries hydrated\nPRICING: ' + pricedPairs + '/' + readyPairs + ' AMM TVLs · ' + pricedFarms + '/' + readyFarms + ' farm TVLs · ' + aprFarms + '/' + readyFarms + ' APRs\nANCHOR : USDG = $1; ' + source + (state.priceError ? '\nANCHOR : unavailable — ' + state.priceError : '') + '\nRULE   : unavailable values render as —, never as $0 or 0%.\n' }))
+    const source = state.pricePoolTotal === null
+      ? 'discovering USDG reference pools'
+      : state.priceReferenceDone
+        ? state.pricePoolTotal + '/' + state.pricePoolTotal + ' registry entries checked; ' + state.pricePools.length + ' liquid direct USDG-reference pools'
+        : state.pricePools.length + '/' + state.pricePoolTotal + ' liquid direct USDG-reference pools hydrated'
+    const nipUsd = state.prices.get(lower(addresses.nip)); const nipEdgeLiquidity = state.priceConfidence.get(lower(addresses.nip))
+    node.appendChild(e('pre', { text: 'ALLEYS : ' + readyPairs + '/' + (state.factoryTotal === null ? '—' : state.factoryTotal) + ' factory pairs hydrated\nPROWLS : ' + readyFarms + '/' + (state.farmTotal === null ? '—' : state.farmTotal) + ' MasterProwl entries hydrated\nPRICING: ' + pricedPairs + '/' + readyPairs + ' AMM TVLs · ' + pricedFarms + '/' + readyFarms + ' farm TVLs · ' + aprFarms + '/' + readyFarms + ' APRs\nNIP/USDG: ' + money(nipUsd) + ' · strongest onchain reserve edge ' + money(nipEdgeLiquidity) + '\nANCHOR : USDG = $1; ' + source + (state.priceError ? '\nANCHOR : unavailable — ' + state.priceError : '') + '\nRULE   : unavailable values render as —, never as $0 or 0%.\n' }))
     return node
   }
   function renderFarms () {
@@ -572,22 +642,22 @@ const Catnip = (function () {
     const pair = state.selectedPair; const node = section('Direct wallet actions')
     if (!pair || !pair.ready) { node.appendChild(e('pre', { text: 'Choose an Alley pair after discovery finishes.' })); return node }
     const token0 = token(pair.token0); const token1 = token(pair.token1); const wallet = state.walletState && state.walletState.selected; const farm = state.selectedFarm; const farmWallet = farm && state.walletFarms.get(farm.pid)
-    node.appendChild(e('pre', { text: pairName(pair) + '\nPAIR  : ' + pair.address + '\nROUTER: ' + addresses.router + '\n' + (farm ? 'FARM  : MasterProwl #' + farm.pid + ' · deposit fee ' + (state.feeBps === null ? '—' : format(state.feeBps, 0) + ' bps') + '\n' : 'FARM  : This authoritative Alley pair is not in MasterProwl.\n') + 'PRE-FLIGHT: every write is first simulated with the exact eth_call transaction, then receipt-confirmed and refreshed.\n' }))
+    node.appendChild(e('pre', { text: pairName(pair) + '\nPAIR  : ' + pair.address + '\nROUTER: ' + addresses.router + '\n' + (farm ? 'FARM  : MasterProwl #' + farm.pid + ' · deposit fee ' + (state.feeBps === null ? '—' : format(state.feeBps, 0) + ' bps') + '\n' : 'FARM  : This authoritative Alley pair is not in MasterProwl.\n') + 'APPROVAL: every approval sets only the current typed amount; no unlimited approvals.\nPRE-FLIGHT: every write is first simulated with the exact eth_call transaction, then receipt-confirmed and refreshed.\n' }))
     const liquidity = e('div')
     liquidity.appendChild(e('pre', { text: 'ADD / INCREASE (uses wrapped WETH where the pair contains WETH; no hidden swap or router quote)\n' }))
     append(liquidity, field(token0.symbol + ' desired', 'add0', token0.symbol), field(token1.symbol + ' desired', 'add1', token1.symbol), field(token0.symbol + ' min', 'min0', token0.symbol), field(token1.symbol + ' min', 'min1', token1.symbol))
-    append(liquidity, e('pre', { text: 'Wallet: ' + format(wallet && wallet.balance0, token0.decimals) + ' ' + token0.symbol + ' · ' + format(wallet && wallet.balance1, token1.decimals) + ' ' + token1.symbol + '\n' }), action('Approve ' + token0.symbol, function () { return approve(pair.token0, addresses.router, 'approve ' + token0.symbol + ' for Alley Router') }, !state.account || !onChain()), document.createTextNode(' '), action('Approve ' + token1.symbol, function () { return approve(pair.token1, addresses.router, 'approve ' + token1.symbol + ' for Alley Router') }, !state.account || !onChain()), document.createTextNode(' '), action('Add liquidity', addLiquidity, !state.account || !onChain()))
+    append(liquidity, e('pre', { text: 'Wallet: ' + format(wallet && wallet.balance0, token0.decimals) + ' ' + token0.symbol + ' · ' + format(wallet && wallet.balance1, token1.decimals) + ' ' + token1.symbol + '\n' }), action('Approve typed ' + token0.symbol, function () { return approveAddToken(0) }, !state.account || !onChain()), document.createTextNode(' '), action('Approve typed ' + token1.symbol, function () { return approveAddToken(1) }, !state.account || !onChain()), document.createTextNode(' '), action('Add liquidity', addLiquidity, !state.account || !onChain()))
     liquidity.appendChild(e('pre', { text: '\nREMOVE / EXIT\n' })); append(liquidity, field('LP amount', 'removeLp', 'LP'), field(token0.symbol + ' min', 'removeMin0', token0.symbol), field(token1.symbol + ' min', 'removeMin1', token1.symbol))
-    append(liquidity, e('pre', { text: 'Wallet LP: ' + format(state.walletPairs.get(lower(pair.address)), 18) + ' · Router allowance: ' + format(wallet && wallet.allowanceRouterLp, 18) + '\n' }), action('Approve LP for router', function () { return approve(pair.address, addresses.router, 'approve LP for Alley Router') }, !state.account || !onChain()), document.createTextNode(' '), action('Remove liquidity', removeLiquidity, !state.account || !onChain()))
+    append(liquidity, e('pre', { text: 'Wallet LP: ' + format(state.walletPairs.get(lower(pair.address)), 18) + ' · Router allowance: ' + format(wallet && wallet.allowanceRouterLp, 18) + '\n' }), action('Approve typed LP for router', approveRemoveLp, !state.account || !onChain()), document.createTextNode(' '), action('Remove liquidity', removeLiquidity, !state.account || !onChain()))
     node.appendChild(liquidity)
     if (farm) {
       const prowl = e('div'); prowl.appendChild(e('pre', { text: '\nMASTERPROWL / FARM\n' })); append(prowl, field('Deposit LP', 'stakeLp', 'LP'), field('Withdraw LP', 'withdrawLp', 'LP'))
-      append(prowl, e('pre', { text: 'Your stake: ' + format(farmWallet && farmWallet.staked, 18) + ' LP · Earned: ' + format(farmWallet && farmWallet.pending, token(addresses.nip).decimals) + ' NIP · Prowl allowance: ' + format(wallet && wallet.allowanceProwlLp, 18) + '\n' }), action('Approve LP for Prowl', function () { return approve(pair.address, addresses.prowl, 'approve LP for MasterProwl') }, !state.account || !onChain()), document.createTextNode(' '), action('Stake LP', stake, !state.account || !onChain()), document.createTextNode(' '), action('Withdraw LP', withdraw, !state.account || !onChain()), document.createTextNode(' '), action('Claim NIP', claim, !state.account || !onChain()))
+      append(prowl, e('pre', { text: 'Your stake: ' + format(farmWallet && farmWallet.staked, 18) + ' LP · Earned: ' + format(farmWallet && farmWallet.pending, token(addresses.nip).decimals) + ' NIP · Prowl allowance: ' + format(wallet && wallet.allowanceProwlLp, 18) + '\n' }), action('Approve typed LP for Prowl', approveStakeLp, !state.account || !onChain()), document.createTextNode(' '), action('Stake LP', stake, !state.account || !onChain()), document.createTextNode(' '), action('Withdraw LP', withdraw, !state.account || !onChain()), document.createTextNode(' '), action('Claim NIP', claim, !state.account || !onChain()))
       node.appendChild(prowl)
     }
     const cache = e('div'); const walletState = state.walletState || {}
     cache.appendChild(e('pre', { text: '\nNIP LOCKS + CACHE\nWallet NIP: ' + format(walletState.nip, 18) + ' · Locked rewards: ' + format(walletState.locked, 18) + ' · Unlockable now: ' + format(walletState.unlockable, 18) + '\nCache: ' + format(walletState.cacheShares, 18) + ' xNIP shares backed by ' + format(walletState.cacheNip, 18) + ' NIP\n' }))
-    append(cache, field('Stake NIP', 'cacheNip', 'NIP'), field('Unstake xNIP', 'cacheShares', 'xNIP'), action('Approve NIP for Cache', function () { return approve(addresses.nip, addresses.cache, 'approve NIP for Cache') }, !state.account || !onChain()), document.createTextNode(' '), action('Stake in Cache', cacheEnter, !state.account || !onChain()), document.createTextNode(' '), action('Unstake Cache', cacheLeave, !state.account || !onChain()), document.createTextNode(' '), action('Unlock NIP', unlock, !state.account || !onChain()))
+    append(cache, field('Stake NIP', 'cacheNip', 'NIP'), field('Unstake xNIP', 'cacheShares', 'xNIP'), action('Approve typed NIP for Cache', approveCacheNip, !state.account || !onChain()), document.createTextNode(' '), action('Stake in Cache', cacheEnter, !state.account || !onChain()), document.createTextNode(' '), action('Unstake Cache', cacheLeave, !state.account || !onChain()), document.createTextNode(' '), action('Unlock NIP', unlock, !state.account || !onChain()))
     node.appendChild(cache); return node
   }
   function render () {
