@@ -156,10 +156,14 @@ const DEX = {
 }
 
 const SELECTORS = {
+  getAddys: '0xa5c7434a',
   numAssets: '0xa46fe83b',
   assets: '0xcf35bdd0',
   assetConfig: '0xd6dbaf58',
   getRewardsConfig: '0x5c3af1ba',
+  getClaimableLoot: '0xf485b671',
+  getClaimLootConfig: '0x4749881a',
+  claimLoot: '0x815a4392',
   getAddr: '0xd81f84b7',
   getAddrDescription: '0x3c361b43',
   slot0: '0x3850c7bd',
@@ -191,13 +195,16 @@ const state = {
   protocolAssets: [],
   communityFarms: [],
   ripePrice: 0,
+  ripeSpotLiquidity: NaN,
   pricedFarmCount: 0,
   pricedFarmTvl: 0,
   pricedProtocolTvl: 0,
   pricedCommunityTvl: 0,
   showZeroAprAssets: false,
   account: null,
-  action: null
+  action: null,
+  rewardContracts: null,
+  rewards: {claimable: null, canClaim: false, autoStakeRatio: 0n, rewardsLockDuration: 0n, claiming: false}
 }
 
 async function rpcRequest (method, params) {
@@ -343,6 +350,25 @@ function decodeRewardsConfig (result) {
   }
 }
 
+function decodeCoreAddys (result) {
+  const words = getWords(result)
+  if (words.length < 17) throw new Error('Ripe core registry returned incomplete addresses')
+  return {
+    switchboard: `0x${words[6].slice(-40)}`,
+    lootbox: `0x${words[16].slice(-40)}`
+  }
+}
+
+function decodeClaimLootConfig (result) {
+  const words = getWords(result)
+  return {
+    canClaim: wordUint(words, 0) !== 0n,
+    canClaimForUser: wordUint(words, 1) !== 0n,
+    autoStakeRatio: wordUint(words, 2),
+    rewardsLockDuration: wordUint(words, 3)
+  }
+}
+
 function decodeReserves (result) {
   const words = getWords(result)
   return [wordUint(words, 0), wordUint(words, 1)]
@@ -468,13 +494,43 @@ function renderOverview () {
   if (!overview) return
   overview.textContent = [
     '========== LIVE ONCHAIN SNAPSHOT ==========',
-    `RIPE PRICE : ${formatPrice(state.ripePrice)}  [UP33 DEX spot]`,
+    `RIPE PRICE : ${formatPrice(state.ripePrice)}  · ${formatUsd(state.ripeSpotLiquidity)} liquidity  [UP33 DEX spot]`,
     `PROTOCOL TVL : ${formatUsd(state.pricedProtocolTvl)}`,
     `COMMUNITY TVL: ${formatUsd(state.pricedCommunityTvl)}`,
     `PRICED TVL : ${formatUsd(state.pricedFarmTvl)}  [${state.pricedFarmCount}/${state.farms.length} enabled assets]`,
     'APR        : annual RIPE emissions × live RIPE price ÷ farm TVL'
   ].join('\n')
   overview.hidden = false
+}
+
+function formatClaimLock (seconds) {
+  const days = Number(seconds) / 86400
+  if (!Number.isFinite(days) || days <= 0) return 'unlocked'
+  if (days < 1) return `${Math.round(days * 24)}h lock`
+  return `${days.toLocaleString(undefined, {maximumFractionDigits: 1})}d lock`
+}
+
+function renderRipeEarnings () {
+  const row = document.getElementById('ripe-earned')
+  if (!row) return
+  if (!state.account) {
+    row.hidden = true
+    return
+  }
+  const rewards = state.rewards
+  if (rewards.claimable === null) {
+    row.textContent = 'RIPE EARNED : unavailable'
+    row.hidden = false
+    return
+  }
+  const liquidPercent = 100 - Number(rewards.autoStakeRatio) / 100
+  const lockedPercent = Number(rewards.autoStakeRatio) / 100
+  const locked = rewards.claimable * rewards.autoStakeRatio / 10000n
+  const liquid = rewards.claimable - locked
+  const claimAction = ` <button id="ripe-claim" class="ripe-link-button" type="button"${rewards.claiming || !rewards.canClaim || rewards.claimable === 0n ? ' disabled' : ''}>[ ${rewards.claiming ? 'claiming…' : 'claim RIPE'} ]</button>`
+  row.innerHTML = `RIPE EARNED : ${formatTokenAmount(rewards.claimable, 18, 6)} RIPE  ·  ${formatTokenAmount(liquid, 18, 6)} liquid (${liquidPercent}%) / ${formatTokenAmount(locked, 18, 6)} locked (${lockedPercent}%, ${formatClaimLock(rewards.rewardsLockDuration)})${claimAction}`
+  row.hidden = false
+  document.getElementById('ripe-claim')?.addEventListener('click', claimRipe)
 }
 
 function hasYield (farm) {
@@ -585,6 +641,24 @@ async function restoreWallet () {
   }
 }
 
+async function refreshRipeEarnings () {
+  if (!state.account || !state.rewardContracts) {
+    state.rewards = {claimable: null, canClaim: false, autoStakeRatio: 0n, rewardsLockDuration: 0n, claiming: false}
+    return
+  }
+  const reads = await multicallResults([
+    {to: state.rewardContracts.lootbox, data: encodeCall(SELECTORS.getClaimableLoot, [encodeAddress(state.account)]), allowFailure: true},
+    {to: RIPE.missionControl, data: encodeCall(SELECTORS.getClaimLootConfig, [encodeAddress(state.account), encodeAddress(state.account), encodeAddress(RIPE.ripeToken)]), allowFailure: true}
+  ])
+  if (!reads[0]?.success || !reads[1]?.success) throw new Error('Ripe rewards read failed')
+  const config = decodeClaimLootConfig(reads[1].data)
+  state.rewards = {
+    claimable: decodeUint(reads[0].data),
+    ...config,
+    claiming: state.rewards.claiming
+  }
+}
+
 async function refreshUserBalances () {
   if (!state.account) return
   setStatus(`Reading ${shortAddress(state.account)}’s deposits from Robinhood Chain…`)
@@ -599,8 +673,48 @@ async function refreshUserBalances () {
   } catch (_) {
     state.farms.forEach(farm => { farm.user = {wallet: '0', deposited: '0'} })
   }
+  try {
+    await refreshRipeEarnings()
+  } catch (_) {
+    state.rewards = {claimable: null, canClaim: false, autoStakeRatio: 0n, rewardsLockDuration: 0n, claiming: false}
+  }
   renderFarms()
+  renderRipeEarnings()
   setStatus(`Onchain configuration · wallet ${shortAddress(state.account)} · updated just now`)
+}
+
+async function claimRipe () {
+  if (!state.account && !(await connectWallet())) return
+  if (!state.rewardContracts) {
+    setStatus('Ripe reward contracts could not be read from the onchain registry.', true)
+    return
+  }
+  try {
+    await ensureRobinhoodChain()
+    await refreshRipeEarnings()
+    if (!state.rewards.canClaim) throw new Error('Ripe claims are not enabled')
+    if (state.rewards.claimable === 0n) throw new Error('No RIPE is claimable yet')
+    // This is Ripe's own app path: Teller.claimLoot(user, false). The false
+    // preserves the protocol-configured liquid/locked split; the zero-arg
+    // Teller overload stakes the entire reward amount instead.
+    const data = encodeCall(SELECTORS.claimLoot, [encodeAddress(state.account), encodeUint(0)])
+    setStatus('Simulating RIPE claim on Robinhood Chain…')
+    await rpcRequest('eth_call', [{from: state.account, to: RIPE.teller, data}, 'latest'])
+    state.rewards.claiming = true
+    renderRipeEarnings()
+    setStatus('RIPE claim simulated. Confirm it in your wallet.')
+    const txHash = await window.ethereum.request({method: 'eth_sendTransaction', params: [{from: state.account, to: RIPE.teller, data}]})
+    setStatus(`RIPE claim submitted: ${shortAddress(txHash)}. Waiting for confirmation.`)
+    const receipt = await waitForReceipt(txHash)
+    if (receipt?.status !== '0x1') throw new Error('Claim was not confirmed')
+    state.rewards.claiming = false
+    await refreshUserBalances()
+    setStatus(`RIPE claim confirmed: ${shortAddress(txHash)}.`)
+  } catch (error) {
+    state.rewards.claiming = false
+    renderRipeEarnings()
+    setStatus(`RIPE claim failed: ${error.message || 'request rejected'}`, true)
+  }
 }
 
 async function openAction (tokenAddress, type) {
@@ -724,11 +838,14 @@ async function approveAction () {
     await ensureRobinhoodChain()
     button.disabled = true
     button.textContent = 'Waiting for wallet…'
-    const txHash = await window.ethereum.request({method: 'eth_sendTransaction', params: [{
+    const tx = {
       from: state.account,
       to: farm.tokenAddress,
       data: encodeCall(SELECTORS.approve, [encodeAddress(RIPE.teller), encodeUint(amount)])
-    }]})
+    }
+    setStatus(`Simulating ${farm.symbol} approval on Robinhood Chain…`)
+    await rpcRequest('eth_call', [tx, 'latest'])
+    const txHash = await window.ethereum.request({method: 'eth_sendTransaction', params: [tx]})
     state.action.pendingApproval = true
     state.action.txHash = txHash
     renderActionDialog()
@@ -763,7 +880,10 @@ async function submitAction () {
     const data = encodeCall(isDeposit ? SELECTORS.deposit : SELECTORS.withdraw, [
       encodeAddress(farm.tokenAddress), encodeUint(amount), encodeAddress(state.account), encodeAddress(farm.vaultAddress), encodeUint(farm.vaultId)
     ])
-    const txHash = await window.ethereum.request({method: 'eth_sendTransaction', params: [{from: state.account, to: RIPE.teller, data}]})
+    const tx = {from: state.account, to: RIPE.teller, data}
+    setStatus(`Simulating ${isDeposit ? 'deposit' : 'withdrawal'} of ${farm.symbol} on Robinhood Chain…`)
+    await rpcRequest('eth_call', [tx, 'latest'])
+    const txHash = await window.ethereum.request({method: 'eth_sendTransaction', params: [tx]})
     state.action.txHash = txHash
     renderActionDialog()
     setStatus(`${isDeposit ? 'Deposit' : 'Withdrawal'} submitted for ${farm.symbol}.`)
@@ -789,13 +909,17 @@ function bindUi () {
     state.account = accounts?.[0] || null
     renderWallet()
     if (state.account && await currentChainId() === ROBINHOOD_CHAIN_ID) await refreshUserBalances()
-    else renderFarms()
+    else {
+      renderFarms()
+      renderRipeEarnings()
+    }
   })
   window.ethereum.on('chainChanged', async chainId => {
     if (chainId !== ROBINHOOD_CHAIN_ID) {
       state.account = null
       renderWallet()
       renderFarms()
+      renderRipeEarnings()
       setStatus('Switch to Robinhood Chain to use farm actions.', true)
     } else {
       await restoreWallet()
@@ -832,6 +956,16 @@ function dexLiquidityCall (route) {
   return {to: route.pool, data: SELECTORS.liquidity, allowFailure: true}
 }
 
+function v4SpotLiquidity (route) {
+  const sqrtPriceX96 = Number(decodeUint(route.slot0))
+  const liquidity = Number(decodeUint(route.liquidity))
+  const sqrtPrice = sqrtPriceX96 / 2 ** 96
+  const amount0 = liquidity / sqrtPrice / 10 ** route.token0Decimals
+  const amount1 = liquidity * sqrtPrice / 10 ** route.token1Decimals
+  const value = amount0 * route.price + amount1
+  return Number.isFinite(value) && value > 0 ? value : NaN
+}
+
 async function readDexPrices () {
   setLoading('Reading live UP33 DEX prices and liquidity…')
   const routeCalls = DEX.routes.flatMap(route => [
@@ -864,8 +998,13 @@ async function readDexPrices () {
     const price = route.kind === 'curve'
       ? unitsToNumber(decodeUint(slot0.data), route.token1Decimals)
       : pricePerToken0(slot0.data, route.token0Decimals, route.token1Decimals)
-    return Number.isFinite(price) ? {...route, price} : null
+    return Number.isFinite(price) ? {...route, price, slot0: slot0.data, liquidity: liquidity.data} : null
   }).filter(Boolean)
+
+  const ripeRoute = routes.find(route => route.kind === 'v4'
+    && route.token0.toLowerCase() === RIPE.ripeToken.toLowerCase()
+    && route.token1.toLowerCase() === DEX.usdg.toLowerCase())
+  state.ripeSpotLiquidity = ripeRoute ? v4SpotLiquidity(ripeRoute) : NaN
 
   // Resolve the small price graph from the USDG anchor. This supports direct
   // USDG pools and paths such as AI → PONS → USDG without any price service.
@@ -986,15 +1125,22 @@ async function readRipeAssets (assetCount) {
   return farmData
 }
 
+async function readRewardContracts (coreAddysResult) {
+  const coreAddys = decodeCoreAddys(coreAddysResult)
+  return {lootbox: coreAddys.lootbox}
+}
+
 async function main () {
   bindUi()
   renderWallet()
   setStatus('Reading Ripe’s onchain protocol and community-vault configuration…')
   setLoading('Reading Ripe emissions and farm configuration…')
-  const [assetCountResult, rewardsResult] = await multicall([
+  const [assetCountResult, rewardsResult, coreAddysResult] = await multicall([
     {to: RIPE.missionControl, data: SELECTORS.numAssets},
-    {to: RIPE.missionControl, data: SELECTORS.getRewardsConfig}
+    {to: RIPE.missionControl, data: SELECTORS.getRewardsConfig},
+    {to: RIPE.missionControl, data: SELECTORS.getAddys}
   ])
+  state.rewardContracts = await readRewardContracts(coreAddysResult).catch(() => null)
   const [farms, prices] = await Promise.all([
     readRipeAssets(Number(decodeUint(assetCountResult))),
     readDexPrices().catch(() => new Map())
