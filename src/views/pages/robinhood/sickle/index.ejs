@@ -3,11 +3,11 @@
 <%- include(`${partials}/head`, {
   noGlobalScripts: true,
   pageMeta: {
-    title: 'Sickle NFT Recovery on Robinhood Chain | vfat.tools',
-    description: 'Find and withdraw Uniswap, Up33, and Ramses NFTs held by your Sickle on Robinhood Chain.',
+    title: 'Sickle Position Recovery on Robinhood Chain | vfat.tools',
+    description: 'Recover supported position NFTs and Fables range shares held by your Sickle on Robinhood Chain.',
     url: 'https://vfat.tools/robinhood/sickle/',
     image: 'https://vfat.tools/img/robinhood-sickle-social.png',
-    imageAlt: 'Sickle NFT recovery page on Robinhood Chain.',
+    imageAlt: 'Sickle position recovery page on Robinhood Chain.',
     imageWidth: 1200,
     imageHeight: 630
   }
@@ -23,7 +23,7 @@ INFO  : <span id="sickle-wallet-status">Not connected</span> <button id="sickle-
 <span id="sickle-date"></span><span id="sickle-status" aria-live="polite" hidden></span><span id="sickle-app" aria-live="polite"></span></pre>
 <div id="sickle-loading" class="loader--1" role="status" aria-live="polite" hidden></div>
 <style>
-.sickle-action{margin:0;padding:0;border:0;background:transparent;color:inherit;cursor:pointer;font:inherit;text-decoration:underline}.sickle-action:disabled{cursor:not-allowed;opacity:.45;text-decoration:none}#sickle-status[data-kind="error"]{color:#d95757}#sickle-status[data-kind="success"]{color:var(--highlight-color)}#sickle-loading[hidden],#sickle-status[hidden]{display:none}
+#log{white-space:pre-wrap;overflow-wrap:anywhere}.sickle-action{margin:0;padding:0;border:0;background:transparent;color:inherit;cursor:pointer;font:inherit;text-decoration:underline;overflow-wrap:anywhere}.sickle-action:disabled{cursor:not-allowed;opacity:.45;text-decoration:none}#sickle-status[data-kind="error"]{color:#d95757}#sickle-status[data-kind="success"]{color:var(--highlight-color)}#sickle-loading[hidden],#sickle-status[hidden]{display:none}
 </style>
 <%- include(`${partials}/scripts_onchain`, {scriptname: 'robinhood_sickle_wallet'}); -%>
 </body>
