@@ -20,6 +20,7 @@ module.exports = (env = {}) => {
       // It carries only its own onchain client dependencies and lazy-loads
       // Reown only after the user explicitly chooses another wallet.
       robinhood_up33: './src/js/robinhood_up33.js',
+      robinhood_semi: './src/js/robinhood_semi.js',
       // Ripe's direct-RPC client is bundled separately so its optional
       // other-wallet connector stays behind an explicit user action.
       robinhood_ripe: './src/js/robinhood_ripe.js',
