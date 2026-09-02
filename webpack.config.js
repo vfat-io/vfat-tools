@@ -35,6 +35,9 @@ module.exports = (env = {}) => {
       // Ramses is a standalone fee-liquidity page. Optional wallet support is
       // loaded only after explicit user intent.
       robinhood_ramses: './src/js/robinhood_ramses.js',
+      // Sickle recovery reads the wallet's Sickle and manager NFTs directly.
+      // Reown remains a lazy import behind the explicit other-wallet action.
+      robinhood_sickle_wallet: './src/js/robinhood_sickle_wallet.js',
     },
     output: {
       filename: isProduction ? '[name].[contenthash].js' : '[name].js',
