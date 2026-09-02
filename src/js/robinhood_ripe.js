@@ -1,7 +1,10 @@
+/* Ripe on Robinhood Chain: direct RPC reads and direct EIP-1193 writes only. */
 (function () {
 const ROBINHOOD_RPC_URL = 'https://rpc.mainnet.chain.robinhood.com'
 const ROBINHOOD_CHAIN_ID = '0x1237'
-const BLOCKS_PER_YEAR = Math.round(365 * 24 * 60 * 60 * 1000 / 12032)
+const BLOCKS_PER_WEEK = Math.round(7 * 24 * 60 * 60 * 1000 / 12032)
+const WEEKS_PER_YEAR = 365 / 7
+const REOWN_PROJECT_ID = process.env.REOWN_PROJECT_ID || '3e6154a7158ff5f7509f24405fc3b551'
 
 // Ripe's public Robinhood Chain deployment. Farm discovery, balances, and
 // rewards below are read directly from these contracts over RPC.
@@ -202,6 +205,10 @@ const state = {
   pricedCommunityTvl: 0,
   showZeroAprAssets: false,
   account: null,
+  eip1193: null,
+  walletChain: null,
+  walletListeners: [],
+  reownUnsubscribe: null,
   action: null,
   rewardContracts: null,
   rewards: {claimable: null, canClaim: false, autoStakeRatio: 0n, rewardsLockDuration: 0n, claiming: false}
@@ -374,21 +381,21 @@ function decodeReserves (result) {
   return [wordUint(words, 0), wordUint(words, 1)]
 }
 
-function annualRipeRewards (farm, rewardsConfig) {
+function weeklyRipeRewards (farm, rewardsConfig) {
   const totalAllocation = rewardsConfig.borrowersAlloc
     + rewardsConfig.stakersAlloc
     + rewardsConfig.votersAlloc
     + rewardsConfig.genDepositorsAlloc
   if (totalAllocation === 0n) return 0n
 
-  const annualEmissions = rewardsConfig.ripePerBlock * BigInt(BLOCKS_PER_YEAR)
+  const weeklyEmissions = rewardsConfig.ripePerBlock * BigInt(BLOCKS_PER_WEEK)
   let rewards = 0n
   if (rewardsConfig.stakersPointsAllocTotal !== 0n) {
-    rewards += annualEmissions * rewardsConfig.stakersAlloc * farm.stakersPointsAlloc
+    rewards += weeklyEmissions * rewardsConfig.stakersAlloc * farm.stakersPointsAlloc
       / totalAllocation / rewardsConfig.stakersPointsAllocTotal
   }
   if (rewardsConfig.voterPointsAllocTotal !== 0n) {
-    rewards += annualEmissions * rewardsConfig.votersAlloc * farm.voterPointsAlloc
+    rewards += weeklyEmissions * rewardsConfig.votersAlloc * farm.voterPointsAlloc
       / totalAllocation / rewardsConfig.voterPointsAllocTotal
   }
   return rewards
@@ -398,9 +405,13 @@ function unitsToNumber (amount, decimals) {
   return Number(BigInt(amount)) / 10 ** Number(decimals)
 }
 
+function pow10 (decimals) {
+  return BigInt(`1${'0'.repeat(Number(decimals))}`)
+}
+
 function formatTokenAmount (amount, decimals, maximumFractionDigits = 4) {
   const raw = BigInt(amount)
-  const base = 10n ** BigInt(decimals)
+  const base = pow10(decimals)
   const whole = raw / base
   const fraction = (raw % base).toString().padStart(Number(decimals), '0').slice(0, maximumFractionDigits).replace(/0+$/, '')
   return fraction ? `${whole.toLocaleString()}.${fraction}` : whole.toLocaleString()
@@ -451,7 +462,7 @@ function parseAmount (value, decimals) {
   if (!/^\d+(\.\d+)?$/.test(normalized)) throw new Error('Enter a valid amount')
   const [whole, fraction = ''] = normalized.split('.')
   if (fraction.length > decimals) throw new Error(`This token supports up to ${decimals} decimal places`)
-  return BigInt(whole) * 10n ** BigInt(decimals)
+  return BigInt(whole) * pow10(decimals)
     + BigInt(`${fraction}${'0'.repeat(decimals - fraction.length)}` || '0')
 }
 
@@ -471,17 +482,17 @@ function setLoading (message = '') {
 
 function renderWallet () {
   const button = document.getElementById('ripe-connect')
+  const other = document.getElementById('ripe-other-wallet')
   const status = document.getElementById('ripe-wallet-status')
   if (state.account) {
-    status.textContent = `Connected: ${shortAddress(state.account)}`
-    button.textContent = '[ Refresh wallet ]'
-  } else if (!window.ethereum) {
-    status.textContent = 'No browser wallet detected'
-    button.textContent = '[ Open in wallet browser ]'
+    status.textContent = state.walletChain === ROBINHOOD_CHAIN_ID ? shortAddress(state.account) : `${shortAddress(state.account)} · wrong chain`
+    button.textContent = '[ refresh ]'
   } else {
-    status.textContent = 'Wallet not connected'
-    button.textContent = '[ Connect Robinhood wallet ]'
+    status.textContent = ''
+    button.textContent = '[ connect ]'
   }
+  button.disabled = !state.account && !injectedWallet()
+  if (other) other.textContent = '[ other wallet ]'
 }
 
 function userAmount (farm, field) {
@@ -492,14 +503,7 @@ function userAmount (farm, field) {
 function renderOverview () {
   const overview = document.getElementById('ripe-overview')
   if (!overview) return
-  overview.textContent = [
-    '========== LIVE ONCHAIN SNAPSHOT ==========',
-    `RIPE PRICE : ${formatPrice(state.ripePrice)}  · ${formatUsd(state.ripeSpotLiquidity)} liquidity  [UP33 DEX spot]`,
-    `PROTOCOL TVL : ${formatUsd(state.pricedProtocolTvl)}`,
-    `COMMUNITY TVL: ${formatUsd(state.pricedCommunityTvl)}`,
-    `PRICED TVL : ${formatUsd(state.pricedFarmTvl)}  [${state.pricedFarmCount}/${state.farms.length} enabled assets]`,
-    'APR        : annual RIPE emissions × live RIPE price ÷ farm TVL'
-  ].join('\n')
+  overview.textContent = `RIPE ${formatPrice(state.ripePrice)} · ${formatUsd(state.ripeSpotLiquidity)} liquidity · ${formatUsd(state.pricedFarmTvl)} TVL · ${state.pricedFarmCount}/${state.farms.length} priced`
   overview.hidden = false
 }
 
@@ -519,7 +523,7 @@ function renderRipeEarnings () {
   }
   const rewards = state.rewards
   if (rewards.claimable === null) {
-    row.textContent = 'RIPE EARNED : unavailable'
+    row.textContent = 'RIPE earned : unavailable'
     row.hidden = false
     return
   }
@@ -528,13 +532,13 @@ function renderRipeEarnings () {
   const locked = rewards.claimable * rewards.autoStakeRatio / 10000n
   const liquid = rewards.claimable - locked
   const claimAction = ` <button id="ripe-claim" class="ripe-link-button" type="button"${rewards.claiming || !rewards.canClaim || rewards.claimable === 0n ? ' disabled' : ''}>[ ${rewards.claiming ? 'claiming…' : 'claim RIPE'} ]</button>`
-  row.innerHTML = `RIPE EARNED : ${formatTokenAmount(rewards.claimable, 18, 6)} RIPE  ·  ${formatTokenAmount(liquid, 18, 6)} liquid (${liquidPercent}%) / ${formatTokenAmount(locked, 18, 6)} locked (${lockedPercent}%, ${formatClaimLock(rewards.rewardsLockDuration)})${claimAction}`
+  row.innerHTML = `RIPE earned : ${formatTokenAmount(rewards.claimable, 18, 6)} RIPE  ·  ${formatTokenAmount(liquid, 18, 6)} liquid (${liquidPercent}%) / ${formatTokenAmount(locked, 18, 6)} locked (${lockedPercent}%, ${formatClaimLock(rewards.rewardsLockDuration)})${claimAction}`
   row.hidden = false
   document.getElementById('ripe-claim')?.addEventListener('click', claimRipe)
 }
 
 function hasYield (farm) {
-  return BigInt(farm.annualRipeRewards || 0) > 0n
+  return BigInt(farm.weeklyRipeRewards || 0) > 0n
 }
 
 function shouldShowFarm (farm) {
@@ -554,16 +558,16 @@ function renderFarmTable (containerId, farms) {
   if (!container) return
   const visibleFarms = farms.filter(shouldShowFarm)
   container.innerHTML = `<table class="ripe-farm-table"><thead><tr>
-    <th>Farm</th><th>Price / TVL</th><th>Est. RIPE APR</th><th>Total staked</th><th>RIPE / year</th><th>In wallet</th><th>My deposit</th><th>Actions</th>
+    <th>Farm</th><th>Price / TVL</th><th>RIPE APR</th><th>Total staked</th><th>Rewards / week</th><th>In wallet</th><th>My deposit</th><th>Actions</th>
   </tr></thead><tbody>${visibleFarms.map(farm => {
     const userHasDeposit = farm.user?.deposited && BigInt(farm.user.deposited) > 0n
     const canWithdraw = farm.canWithdraw && userHasDeposit
     return `<tr${userHasDeposit ? ' class="ripe-farm-mine"' : ''}>
       <td><span class="ripe-farm-name">${escapeHtml(farm.symbol)}</span><span class="ripe-farm-symbol">${escapeHtml(farm.vaultDescription)} · ${escapeHtml(shortAddress(farm.tokenAddress))}</span></td>
-      <td class="ripe-price-tvl" title="Live UP33 onchain DEX spot valuation"><span>${formatPrice(farm.price)}</span><span>${formatUsd(farm.tvl)} TVL</span></td>
+      <td class="ripe-price-tvl"><span>${formatPrice(farm.price)}</span><span>${formatUsd(farm.tvl)} TVL</span></td>
       <td title="Annual RIPE emissions at the live onchain RIPE and farm-token spot prices">${formatApy(farm.apy)}</td>
       <td class="ripe-total-staked"><span>${formatTokenAmount(farm.totalBalance, farm.decimals)}</span><span>${escapeHtml(farm.symbol)}</span></td>
-      <td>${formatTokenAmount(farm.annualRipeRewards, 18, 2)}</td>
+      <td class="ripe-rewards"><span>${formatTokenAmount(farm.weeklyRipeRewards, 18, 2)} RIPE</span><span>${formatUsd(unitsToNumber(farm.weeklyRipeRewards, 18) * state.ripePrice)}</span></td>
       <td>${escapeHtml(userAmount(farm, 'wallet'))}</td>
       <td>${escapeHtml(userAmount(farm, 'deposited'))}</td>
       <td class="ripe-actions">
@@ -584,19 +588,69 @@ function renderFarms () {
   renderFarmTable('ripe-farms', state.communityFarms)
 }
 
+function injectedWallet () {
+  return window.ethereum && typeof window.ethereum.request === 'function' ? window.ethereum : null
+}
+
+function clearWalletListeners () {
+  state.walletListeners.forEach(remove => remove())
+  state.walletListeners = []
+  if (state.reownUnsubscribe) state.reownUnsubscribe()
+  state.reownUnsubscribe = null
+}
+
+function bindWalletListeners (provider) {
+  state.walletListeners.forEach(remove => remove())
+  state.walletListeners = []
+  if (!provider || typeof provider.on !== 'function') return
+  const accountsChanged = async accounts => {
+    if (state.eip1193 !== provider) return
+    state.account = accounts?.[0] || null
+    renderWallet()
+    if (state.account && await currentChainId() === ROBINHOOD_CHAIN_ID) await refreshUserBalances()
+    else { renderFarms(); renderRipeEarnings() }
+  }
+  const chainChanged = async chainId => {
+    if (state.eip1193 !== provider) return
+    state.walletChain = chainId
+    renderWallet()
+    if (chainId === ROBINHOOD_CHAIN_ID && state.account) await refreshUserBalances()
+    else setStatus('Switch to Robinhood Chain to use farm actions.', true)
+  }
+  provider.on('accountsChanged', accountsChanged)
+  provider.on('chainChanged', chainChanged)
+  const remove = typeof provider.removeListener === 'function' ? provider.removeListener.bind(provider) : typeof provider.off === 'function' ? provider.off.bind(provider) : null
+  if (remove) {
+    state.walletListeners.push(() => remove('accountsChanged', accountsChanged))
+    state.walletListeners.push(() => remove('chainChanged', chainChanged))
+  }
+}
+
+async function adoptWallet (provider, accounts, chainId) {
+  if (!provider || !accounts?.[0]) return false
+  state.eip1193 = provider
+  state.account = accounts[0]
+  state.walletChain = chainId
+  bindWalletListeners(provider)
+  renderWallet()
+  return true
+}
+
 async function currentChainId () {
-  if (!window.ethereum) return null
-  return window.ethereum.request({method: 'eth_chainId'})
+  if (!state.eip1193) return null
+  state.walletChain = await state.eip1193.request({method: 'eth_chainId'})
+  return state.walletChain
 }
 
 async function ensureRobinhoodChain () {
+  if (!state.eip1193) throw new Error('Connect a wallet first')
   const chainId = await currentChainId()
   if (chainId === ROBINHOOD_CHAIN_ID) return
   try {
-    await window.ethereum.request({method: 'wallet_switchEthereumChain', params: [{chainId: ROBINHOOD_CHAIN_ID}]})
+    await state.eip1193.request({method: 'wallet_switchEthereumChain', params: [{chainId: ROBINHOOD_CHAIN_ID}]})
   } catch (error) {
     if (error.code !== 4902) throw error
-    await window.ethereum.request({
+    await state.eip1193.request({
       method: 'wallet_addEthereumChain',
       params: [{
         chainId: ROBINHOOD_CHAIN_ID,
@@ -607,19 +661,21 @@ async function ensureRobinhoodChain () {
       }]
     })
   }
+  state.walletChain = await state.eip1193.request({method: 'eth_chainId'})
+  renderWallet()
 }
 
 async function connectWallet () {
-  if (!window.ethereum) {
-    setStatus('No browser wallet was detected. Open this page in your wallet browser.', true)
+  const provider = injectedWallet()
+  if (!provider) {
+    setStatus('No browser wallet was detected. Use other wallet.', true)
     return false
   }
   try {
-    const accounts = await window.ethereum.request({method: 'eth_requestAccounts'})
+    const accounts = await provider.request({method: 'eth_requestAccounts'})
     if (!accounts?.[0]) throw new Error('No account was selected')
+    await adoptWallet(provider, accounts, await provider.request({method: 'eth_chainId'}))
     await ensureRobinhoodChain()
-    state.account = accounts[0]
-    renderWallet()
     await refreshUserBalances()
     return true
   } catch (error) {
@@ -629,16 +685,42 @@ async function connectWallet () {
 }
 
 async function restoreWallet () {
-  if (!window.ethereum) return
+  const provider = injectedWallet()
+  if (!provider) return
   try {
-    const accounts = await window.ethereum.request({method: 'eth_accounts'})
-    if (!accounts?.[0] || await currentChainId() !== ROBINHOOD_CHAIN_ID) return
-    state.account = accounts[0]
-    renderWallet()
-    await refreshUserBalances()
+    const values = await Promise.all([provider.request({method: 'eth_accounts'}), provider.request({method: 'eth_chainId'})])
+    if (!values[0]?.[0]) return
+    await adoptWallet(provider, values[0], values[1])
+    if (values[1] === ROBINHOOD_CHAIN_ID) await refreshUserBalances()
   } catch (_) {
     // Wallet state is optional for the public farm view.
   }
+}
+
+async function adoptReownWallet (appKit, address) {
+  const provider = await appKit.getWalletProvider()
+  if (!provider || typeof provider.request !== 'function') throw new Error('Other wallet did not provide a usable account.')
+  const values = await Promise.all([provider.request({method: 'eth_accounts'}), provider.request({method: 'eth_chainId'})])
+  const accounts = values[0]?.length ? values[0] : address ? [address] : []
+  if (!await adoptWallet(provider, accounts, values[1])) return false
+  if (state.reownUnsubscribe) state.reownUnsubscribe()
+  state.reownUnsubscribe = null
+  if (values[1] === ROBINHOOD_CHAIN_ID) await refreshUserBalances()
+  return true
+}
+
+async function connectOtherWallet () {
+  const reown = await import('./config.js')
+  const appKit = reown.createAppKitInstance(REOWN_PROJECT_ID)
+  if (!appKit) throw new Error('Other wallet is unavailable.')
+  const address = appKit.getAddress && appKit.getAddress()
+  if (address && await adoptReownWallet(appKit, address)) return
+  if (!state.reownUnsubscribe && appKit.subscribeAccount) {
+    state.reownUnsubscribe = appKit.subscribeAccount(account => {
+      if (account?.isConnected && account.address) adoptReownWallet(appKit, account.address).catch(error => setStatus(error.message, true))
+    })
+  }
+  await appKit.open()
 }
 
 async function refreshRipeEarnings () {
@@ -703,7 +785,7 @@ async function claimRipe () {
     state.rewards.claiming = true
     renderRipeEarnings()
     setStatus('RIPE claim simulated. Confirm it in your wallet.')
-    const txHash = await window.ethereum.request({method: 'eth_sendTransaction', params: [{from: state.account, to: RIPE.teller, data}]})
+    const txHash = await state.eip1193.request({method: 'eth_sendTransaction', params: [{from: state.account, to: RIPE.teller, data}]})
     setStatus(`RIPE claim submitted: ${shortAddress(txHash)}. Waiting for confirmation.`)
     const receipt = await waitForReceipt(txHash)
     if (receipt?.status !== '0x1') throw new Error('Claim was not confirmed')
@@ -756,16 +838,13 @@ function renderActionDialog () {
   const vaultLabel = farm.community ? 'community farm' : `${farm.vaultDescription} protocol vault`
   const content = document.getElementById('ripe-action-content')
   content.innerHTML = `
-    <div class="ripe-eyebrow">${isDeposit ? 'PLANT' : 'HARVEST'} ${escapeHtml(farm.symbol)}</div>
     <h2>${actionLabel} ${escapeHtml(farm.symbol)}</h2>
-    <p>${isDeposit
-      ? `Deposit directly into Ripe’s ${escapeHtml(vaultLabel)}. Minimum deposit: ${formatTokenAmount(minimumDeposit, farm.decimals, 6)} ${escapeHtml(farm.symbol)}.`
-      : `Withdraw your ${escapeHtml(farm.symbol)} ${escapeHtml(vaultLabel)} deposit back to your wallet.`}</p>
+    <p>${escapeHtml(vaultLabel)}${isDeposit ? ` · minimum ${formatTokenAmount(minimumDeposit, farm.decimals, 6)} ${escapeHtml(farm.symbol)}` : ''}</p>
     <div class="ripe-action-balance"><span>${availableLabel}</span><strong>${formatTokenAmount(available, farm.decimals)} ${escapeHtml(farm.symbol)}</strong></div>
-    <div class="ripe-input-row"><input id="ripe-action-amount" inputmode="decimal" autocomplete="off" placeholder="0.0" value="${escapeHtml(amount)}" aria-label="${actionLabel} amount" /><button id="ripe-action-max" type="button">MAX</button></div>
-    <div id="ripe-action-note" class="ripe-action-note">${isDeposit ? 'Enter an amount to check your approval.' : 'Enter the amount you would like to withdraw.'}</div>
-    <div class="ripe-dialog-actions">${isDeposit ? '<button id="ripe-action-approve" type="button">Approve Teller</button>' : ''}<button id="ripe-action-submit" class="ripe-button--primary" type="button">${actionLabel} ${escapeHtml(farm.symbol)}</button></div>
-    ${txHash ? `<a class="ripe-action-tx" href="https://robinhoodchain.blockscout.com/tx/${txHash}" target="_blank" rel="noopener noreferrer">View submitted transaction ↗</a>` : ''}`
+    <div class="ripe-input-row"><input id="ripe-action-amount" inputmode="decimal" autocomplete="off" placeholder="0.0" value="${escapeHtml(amount)}" aria-label="${actionLabel} amount" /><button id="ripe-action-max" type="button">[ max ]</button></div>
+    <div id="ripe-action-note" class="ripe-action-note">Enter amount.</div>
+    <div class="ripe-dialog-actions">${isDeposit ? '<button id="ripe-action-approve" type="button">[ approve ]</button>' : ''}<button id="ripe-action-submit" class="ripe-button--primary" type="button">[ ${type} ]</button></div>
+    ${txHash ? `<a class="ripe-action-tx" href="https://robinhoodchain.blockscout.com/tx/${txHash}" target="_blank" rel="noopener noreferrer">[ transaction ]</a>` : ''}`
   const input = document.getElementById('ripe-action-amount')
   const maxButton = document.getElementById('ripe-action-max')
   const submitButton = document.getElementById('ripe-action-submit')
@@ -837,7 +916,7 @@ async function approveAction () {
     const amount = actionAmount()
     await ensureRobinhoodChain()
     button.disabled = true
-    button.textContent = 'Waiting for wallet…'
+    button.textContent = '[ waiting… ]'
     const tx = {
       from: state.account,
       to: farm.tokenAddress,
@@ -845,7 +924,7 @@ async function approveAction () {
     }
     setStatus(`Simulating ${farm.symbol} approval on Robinhood Chain…`)
     await rpcRequest('eth_call', [tx, 'latest'])
-    const txHash = await window.ethereum.request({method: 'eth_sendTransaction', params: [tx]})
+    const txHash = await state.eip1193.request({method: 'eth_sendTransaction', params: [tx]})
     state.action.pendingApproval = true
     state.action.txHash = txHash
     renderActionDialog()
@@ -863,7 +942,7 @@ async function approveAction () {
   } catch (error) {
     state.action.pendingApproval = false
     button.disabled = false
-    button.textContent = 'Approve Teller'
+    button.textContent = '[ approve ]'
     setStatus(`Approval failed: ${error.message || 'request rejected'}`, true)
   }
 }
@@ -883,11 +962,14 @@ async function submitAction () {
     const tx = {from: state.account, to: RIPE.teller, data}
     setStatus(`Simulating ${isDeposit ? 'deposit' : 'withdrawal'} of ${farm.symbol} on Robinhood Chain…`)
     await rpcRequest('eth_call', [tx, 'latest'])
-    const txHash = await window.ethereum.request({method: 'eth_sendTransaction', params: [tx]})
+    const txHash = await state.eip1193.request({method: 'eth_sendTransaction', params: [tx]})
     state.action.txHash = txHash
     renderActionDialog()
-    setStatus(`${isDeposit ? 'Deposit' : 'Withdrawal'} submitted for ${farm.symbol}.`)
-    window.setTimeout(refreshUserBalances, 8000)
+    setStatus(`${isDeposit ? 'Deposit' : 'Withdrawal'} submitted for ${farm.symbol}. Waiting for confirmation.`)
+    const receipt = await waitForReceipt(txHash)
+    if (receipt?.status !== '0x1') throw new Error(`${isDeposit ? 'Deposit' : 'Withdrawal'} was not confirmed`)
+    await refreshUserBalances()
+    setStatus(`${isDeposit ? 'Deposit' : 'Withdrawal'} confirmed for ${farm.symbol}.`)
   } catch (error) {
     button.disabled = false
     button.textContent = `${isDeposit ? 'Deposit' : 'Withdraw'} ${farm.symbol}`
@@ -900,31 +982,14 @@ function bindUi () {
     if (state.account) await refreshUserBalances()
     else await connectWallet()
   })
+  document.getElementById('ripe-other-wallet').addEventListener('click', () => {
+    connectOtherWallet().catch(error => setStatus(`Wallet connection failed: ${error.message || 'request rejected'}`, true))
+  })
   document.getElementById('ripe-zero-apr-toggle').addEventListener('click', () => {
     state.showZeroAprAssets = !state.showZeroAprAssets
     renderFarms()
   })
-  if (!window.ethereum?.on) return
-  window.ethereum.on('accountsChanged', async accounts => {
-    state.account = accounts?.[0] || null
-    renderWallet()
-    if (state.account && await currentChainId() === ROBINHOOD_CHAIN_ID) await refreshUserBalances()
-    else {
-      renderFarms()
-      renderRipeEarnings()
-    }
-  })
-  window.ethereum.on('chainChanged', async chainId => {
-    if (chainId !== ROBINHOOD_CHAIN_ID) {
-      state.account = null
-      renderWallet()
-      renderFarms()
-      renderRipeEarnings()
-      setStatus('Switch to Robinhood Chain to use farm actions.', true)
-    } else {
-      await restoreWallet()
-    }
-  })
+  window.addEventListener('pagehide', clearWalletListeners, {once: true})
 }
 
 function pricePerToken0 (slot0Result, token0Decimals, token1Decimals) {
@@ -939,7 +1004,7 @@ function dexPriceCall (route) {
     return {
       to: route.pool,
       data: encodeCall(SELECTORS.getCurveDy, [
-        encodeUint(route.inputIndex), encodeUint(route.outputIndex), encodeUint(10n ** BigInt(route.token0Decimals))
+        encodeUint(route.inputIndex), encodeUint(route.outputIndex), encodeUint(pow10(route.token0Decimals))
       ]),
       allowFailure: true
     }
@@ -987,7 +1052,7 @@ async function readDexPrices () {
     ]),
     ...DEX.conversions.map(conversion => ({
       to: conversion.converter,
-      data: encodeCall(SELECTORS.convertToAssets, [encodeUint(10n ** BigInt(conversion.tokenDecimals))]),
+      data: encodeCall(SELECTORS.convertToAssets, [encodeUint(pow10(conversion.tokenDecimals))]),
       allowFailure: true
     }))
   ])
@@ -1152,9 +1217,9 @@ async function main () {
     const tokenAddress = farm.tokenAddress.toLowerCase()
     const price = prices.get(DEX.priceAliases[tokenAddress] || tokenAddress) || NaN
     const tvl = price > 0 ? unitsToNumber(farm.totalBalance, farm.decimals) * price : NaN
-    const annualRewards = annualRipeRewards(farm, rewardsConfig)
-    const apy = tvl > 0 && state.ripePrice > 0 ? unitsToNumber(annualRewards, 18) * state.ripePrice / tvl * 100 : NaN
-    return {...farm, price, tvl, annualRipeRewards: annualRewards, apy}
+    const weeklyRewards = weeklyRipeRewards(farm, rewardsConfig)
+    const apy = tvl > 0 && state.ripePrice > 0 ? unitsToNumber(weeklyRewards, 18) * state.ripePrice * WEEKS_PER_YEAR / tvl * 100 : NaN
+    return {...farm, price, tvl, weeklyRipeRewards: weeklyRewards, apy}
   }).sort((left, right) => (Number.isFinite(right.apy) ? right.apy : -Infinity) - (Number.isFinite(left.apy) ? left.apy : -Infinity))
   state.protocolAssets = state.farms.filter(farm => !farm.community)
   state.communityFarms = state.farms.filter(farm => farm.community)
@@ -1173,6 +1238,7 @@ async function main () {
 }
 
 main().catch(error => {
+  console.error('Ripe page load failed', error)
   setLoading()
   setStatus(`Unable to load onchain Ripe farms: ${error.message}`, true)
   document.getElementById('ripe-protocol-assets').innerHTML = '<div class="ripe-loading">Unable to load onchain Ripe asset data. <button class="ripe-action-button" type="button" onclick="location.reload()">[ retry ]</button></div>'

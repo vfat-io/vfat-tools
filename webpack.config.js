@@ -20,6 +20,9 @@ module.exports = (env = {}) => {
       // It carries only its own onchain client dependencies and lazy-loads
       // Reown only after the user explicitly chooses another wallet.
       robinhood_up33: './src/js/robinhood_up33.js',
+      // Ripe's direct-RPC client is bundled separately so its optional
+      // other-wallet connector stays behind an explicit user action.
+      robinhood_ripe: './src/js/robinhood_ripe.js',
       // GIGA is a standalone direct-RPC page. Its optional connector remains
       // behind an explicit user action instead of entering the global bundle.
       robinhood_giga: './src/js/robinhood_giga.js',
@@ -29,9 +32,9 @@ module.exports = (env = {}) => {
       // Alandale likewise has no global application, router, or wallet-vendor
       // dependency: it is an independent official-RPC/onchain client.
       robinhood_alandale: './src/js/robinhood_alandale.js',
-      // Catnip stays outside the global application entry. It starts with
-      // direct contract reads and dynamically loads other-wallet support.
-      robinhood_catnip: './src/js/robinhood_catnip.js',
+      // Ramses is a standalone fee-liquidity page. Optional wallet support is
+      // loaded only after explicit user intent.
+      robinhood_ramses: './src/js/robinhood_ramses.js',
     },
     output: {
       filename: isProduction ? '[name].[contenthash].js' : '[name].js',

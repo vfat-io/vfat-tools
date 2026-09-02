@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include(`${partials}/head`, {
+  noGlobalScripts: true,
+  pageMeta: {
+    title: 'Ramses Pools on Robinhood Chain | vfat.tools',
+    description: 'Ramses liquidity, onchain fee APRs, and direct wallet actions on Robinhood Chain.',
+    url: 'https://vfat.tools/robinhood/ramses/',
+    image: 'https://vfat.tools/img/robinhood-ramses-social.png',
+    imageAlt: 'vfat.tools Ramses pool table on Robinhood Chain.',
+    imageWidth: 1200,
+    imageHeight: 630
+  }
+}); -%>
+<body>
+<%- include(`${partials}/header_main`); -%>
+<main class="ramses-page">
+<nav class="ramses-mobile-nav" aria-label="Ramses page navigation"><a href="../">[ Robinhood farms ]</a> <a href="/">[ vfat.tools ]</a></nav>
+<div class="ramses-toolbar"><span id="ramses-wallet-status"></span> <button id="ramses-connect" class="ramses-link" type="button">[ connect ]</button> <button id="ramses-other-wallet" class="ramses-link" type="button">[ other wallet ]</button> <button id="ramses-zero-toggle" class="ramses-link" type="button">[ show inactive ]</button> <button id="ramses-refresh" class="ramses-link" type="button">[ refresh ]</button></div>
+<p id="ramses-status" class="ramses-status" role="status" hidden></p>
+<div id="ramses-loading" class="ramses-loading" role="status" aria-live="polite"><span id="ramses-loading-spin">[....]</span></div>
+<p id="ramses-summary" class="ramses-summary">Ramses —</p>
+<div id="ramses-pools" class="ramses-table-wrap" aria-live="polite"></div>
+<div id="ramses-positions" class="ramses-table-wrap ramses-positions" aria-live="polite" hidden></div>
+</main>
+<dialog id="ramses-action-dialog" class="ramses-dialog" aria-labelledby="ramses-action-title"><form method="dialog" class="ramses-close"><button type="submit">[ close ]</button></form><div id="ramses-action-content"></div></dialog>
+<style>
+.ramses-page{max-width:1500px;margin:20px 10px 50px;min-width:0}.ramses-page,.ramses-page *{box-sizing:border-box;font-family:monospace}.ramses-mobile-nav{display:none}.ramses-toolbar,.ramses-summary,.ramses-status{margin:0 0 14px;font:14px/1.45 monospace;text-align:left}.ramses-status[data-kind="error"]{color:#d95757}.ramses-status[data-kind="success"]{color:var(--highlight-color)}.ramses-link,.ramses-action,.ramses-dialog button{margin:0;padding:0;border:0;background:transparent;color:inherit;cursor:pointer;font:inherit;text-decoration:underline}.ramses-link:hover,.ramses-action:hover,.ramses-dialog button:hover{color:var(--highlight-color)}.ramses-link:disabled,.ramses-action:disabled,.ramses-dialog button:disabled{cursor:not-allowed;opacity:.45;text-decoration:none}.ramses-loading{padding:0 0 14px}.ramses-loading[hidden]{display:none}.ramses-table-wrap{width:100%;min-width:0;overflow-x:auto}.ramses-positions{margin-top:26px}.ramses-table{width:100%;min-width:1040px;table-layout:fixed;border-collapse:collapse;font-size:13px}.ramses-table td,.ramses-table th{padding:7px 8px;border:1px solid currentColor;vertical-align:top;text-align:right;white-space:pre-line;overflow-wrap:anywhere}.ramses-table th{white-space:normal}.ramses-table td:first-child,.ramses-table th:first-child,.ramses-table td:last-child,.ramses-table th:last-child{text-align:left}.ramses-name,.ramses-sub{display:block;max-width:280px;white-space:normal;overflow-wrap:anywhere}.ramses-sub{margin-top:3px;color:var(--highlight-color);font-size:12px}.ramses-actions{min-width:135px;white-space:normal!important}.ramses-actions>*{display:inline-block;margin:0 8px 5px 0;white-space:nowrap}.ramses-unpriced{opacity:.7}.ramses-dialog{width:min(700px,calc(100vw - 28px));max-width:calc(100vw - 28px);padding:16px;border:1px solid currentColor;background:var(--main-background-color);color:var(--main-text-color)}.ramses-dialog::backdrop{background:rgba(0,0,0,.55)}.ramses-close{margin:0 0 18px;text-align:right}.ramses-dialog h2{margin:0 0 8px;padding:0;border:0;color:inherit;font:bold 16px/1.4 monospace;text-align:left}.ramses-dialog p{margin:0 0 12px;font:14px/1.45 monospace;text-align:left;overflow-wrap:anywhere}.ramses-input{display:flex;gap:10px;align-items:center;margin:8px 0}.ramses-input label{min-width:12ch}.ramses-input input{width:100%;min-width:0;padding:5px 7px;border:1px solid currentColor;border-radius:0;background:transparent;color:inherit;font:16px/1.4 monospace}.ramses-dialog-actions{display:flex;flex-wrap:wrap;gap:14px;margin-top:14px}@media(max-width:700px){body>div:not(.modal){display:none}.ramses-page{margin:14px 8px 40px;overflow-x:hidden}.ramses-mobile-nav{display:block;margin-bottom:14px}.ramses-toolbar,.ramses-summary{font-size:12px}.ramses-table-wrap{overflow:visible}.ramses-table{min-width:0;font-size:12px}.ramses-table td,.ramses-table th{padding:6px}.ramses-table th:nth-child(4),.ramses-table td:nth-child(4),.ramses-table th:nth-child(5),.ramses-table td:nth-child(5){display:none}.ramses-table th:first-child{width:38%}.ramses-table th:nth-child(2){width:20%}.ramses-table th:nth-child(3){width:18%}.ramses-table th:last-child{width:24%}.ramses-name,.ramses-sub{max-width:none}.ramses-actions{min-width:0}.ramses-actions>*{margin-right:6px}}
+</style>
+<% if (filenameMap && filenameMap['robinhood_ramses.js']) { -%>
+<script src="<%= PP %>/js/<%= filenameMap['robinhood_ramses.js'] %>"></script>
+<% } else { -%>
+<script src="<%= PP %>/js/robinhood_ramses.js"></script>
+<% } -%>
+</body>
+</html>

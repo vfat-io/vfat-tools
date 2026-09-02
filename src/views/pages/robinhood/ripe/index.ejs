@@ -4,7 +4,7 @@
   noGlobalScripts: true,
   pageMeta: {
     title: 'Ripe Protocol Farms on Robinhood Chain | vfat.tools',
-    description: 'Live Ripe farm APYs, TVL, and direct wallet actions on Robinhood Chain. Priced from onchain DEX liquidity.',
+    description: 'Ripe farm TVL, APRs, weekly rewards, and direct wallet actions on Robinhood Chain.',
     url: 'https://vfat.tools/robinhood/ripe/',
     image: 'https://vfat.tools/img/robinhood-ripe-social-v2.png',
     imageAlt: 'vfat.tools Ripe farm table with live onchain price, TVL, and APR data.',
@@ -19,51 +19,34 @@
 <nav class="ripe-mobile-nav" aria-label="Ripe page navigation">
   <a href="../">[ Robinhood farms ]</a> <a href="/">[ vfat.tools ]</a>
 </nav>
-<pre class="ripe-banner">
-************ UNOFFICIAL RIPE PROTOCOL + COMMUNITY ASSETS ************
-INFO  : <a href="https://app.ripe.finance/robinhood/earn" target="_blank" rel="noopener noreferrer">https://app.ripe.finance/robinhood/earn</a>
-CHAIN : Robinhood Chain (4663)
-NOTE  : Protocol vaults and community farms are shown separately. Rewards are
-        only shown where Ripe's onchain configuration allocates RIPE emissions.
-***********************************************************
+<div class="ripe-toolbar"><span id="ripe-wallet-status"></span> <button id="ripe-connect" class="ripe-link-button" type="button">[ connect ]</button> <button id="ripe-other-wallet" class="ripe-link-button" type="button">[ other wallet ]</button> <button id="ripe-zero-apr-toggle" class="ripe-link-button" type="button">[ show 0 APR ]</button> <a href="https://app.ripe.finance/robinhood/earn" target="_blank" rel="noopener noreferrer">[ app ]</a></div>
 
-WALLET: <span id="ripe-wallet-status">Wallet not connected</span> <button id="ripe-connect" class="ripe-link-button" type="button">[ Connect wallet ]</button>
-</pre>
-
-<p class="ripe-note">RIPE accrues block-by-block. Claimable RIPE is shown from Ripe’s Lootbox; Claim sends 25% to your wallet and automatically locks the other 75% for about 7.5 days.</p>
+<p class="ripe-note">RIPE accrues block by block. Claims pay 25% immediately and lock 75% for about 7.5 days.</p>
 
 <p id="ripe-refresh-status" class="ripe-status" role="status" hidden></p>
 
-<pre id="ripe-overview" class="ripe-summary" aria-live="polite" hidden></pre>
+<p id="ripe-overview" class="ripe-summary" aria-live="polite" hidden></p>
 
 <p id="ripe-earned" class="ripe-filter" aria-live="polite" hidden></p>
-
-<p class="ripe-filter">DISPLAY : Yield-bearing assets only <button id="ripe-zero-apr-toggle" class="ripe-link-button" type="button">[ show 0 APR assets ]</button></p>
 
 <div id="ripe-loading" class="ripe-loading" role="status" aria-live="polite">
   <span class="loader--1" aria-hidden="true"></span> <span id="ripe-loading-text">Reading Ripe’s onchain asset configuration…</span>
 </div>
 
 <section class="ripe-farms-section" aria-labelledby="ripe-protocol-assets-title">
-  <h1 id="ripe-protocol-assets-title">========== RIPE PROTOCOL ASSETS ==========</h1>
-  <p class="ripe-note">Ripe’s live protocol vault registry: WETH, RIPE, stability/governance assets, and tokenized stocks. Deposit and withdrawal actions go straight to the Ripe Teller. Deposit-closed legacy rows remain visible so existing positions can be withdrawn.</p>
+  <h1 id="ripe-protocol-assets-title">Ripe protocol assets</h1>
   <div class="ripe-table-scroll">
     <div id="ripe-protocol-assets" aria-live="polite"></div>
   </div>
 </section>
 
 <section class="ripe-farms-section" aria-labelledby="ripe-farms-title">
-  <h1 id="ripe-farms-title">========== COMMUNITY FARMS ==========</h1>
-  <p class="ripe-note">Farm configuration, balances, and emissions come from Ripe contracts. USD values use live UP33 DEX pool state on Robinhood Chain—no price API. A farm without a liquid onchain USDG route remains unpriced instead of being guessed.</p>
+  <h1 id="ripe-farms-title">Community farms</h1>
   <div class="ripe-table-scroll">
     <div id="ripe-farms" aria-live="polite"></div>
   </div>
 </section>
 
-<pre class="ripe-footer-note">
-HOW TO FARM: connect a wallet → choose a farm → approve the exact amount → deposit.
-Withdrawals return the selected token directly to the connected wallet.
-</pre>
 </main>
 
 <dialog id="ripe-action-dialog" class="ripe-action-dialog" aria-labelledby="ripe-action-title">
@@ -82,15 +65,10 @@ Withdrawals return the selected token directly to the connected wallet.
 
   .ripe-mobile-nav { display: none; }
 
-  .ripe-banner, .ripe-summary, .ripe-footer-note {
-    margin: 0 0 22px;
-    overflow-x: auto;
-    white-space: pre-wrap;
-  }
+  .ripe-toolbar, .ripe-summary, .ripe-status { margin: 0 0 14px; overflow-wrap: anywhere; font: 14px/1.45 monospace; text-align: left; }
+  .ripe-summary { color: var(--highlight-color); }
 
-  .ripe-status { margin: -10px 0 18px; color: #d95757; font: 14px/1.4 monospace; }
-  .ripe-filter { margin: -10px 0 18px; font: 14px/1.4 monospace; }
-  .ripe-footer-note { margin-top: 24px; }
+  .ripe-status { color: #d95757; }
   .ripe-farms-section h1 {
     max-width: none;
     margin: 0 0 8px;
@@ -161,6 +139,8 @@ Withdrawals return the selected token directly to the connected wallet.
   .ripe-farm-table .ripe-price-tvl span + span { margin-top: 3px; }
   .ripe-farm-table .ripe-total-staked span { display: block; }
   .ripe-farm-table .ripe-total-staked span + span { margin-top: 3px; }
+  .ripe-farm-table .ripe-rewards span { display: block; }
+  .ripe-farm-table .ripe-rewards span + span { margin-top: 3px; }
   .ripe-farm-table .ripe-actions { min-width: 112px; white-space: normal; }
   .ripe-farm-table .ripe-actions > * { display: block; }
   .ripe-farm-table .ripe-actions > * + * { margin-top: 4px; }
@@ -211,7 +191,7 @@ Withdrawals return the selected token directly to the connected wallet.
     body > div:not(.modal) { display: none; }
     .ripe-farms-page { margin: 14px 8px 40px; }
     .ripe-mobile-nav { display: block; margin-bottom: 14px; }
-    .ripe-banner, .ripe-summary, .ripe-footer-note { font-size: 12px; }
+    .ripe-toolbar, .ripe-summary { font-size: 12px; }
     .ripe-table-scroll { overflow: visible; }
     .ripe-farm-table { min-width: 0; font-size: 13px; table-layout: fixed; }
     .ripe-farm-table th, .ripe-farm-table td { padding: 7px; }

@@ -19,34 +19,21 @@
 <nav class="alandale-mobile-nav" aria-label="Alandale page navigation">
   <a href="../">[ Robinhood farms ]</a> <a href="/">[ vfat.tools ]</a>
 </nav>
-<pre class="alandale-banner">
-==================== ALANDALE · ROBINHOOD CHAIN ====================
-APP   : <a href="https://app.alandale.xyz" target="_blank" rel="noopener noreferrer">app.alandale.xyz</a>
-MODE  : Onchain RPC + direct wallet
-=====================================================================
-
-WALLET: <span id="alandale-wallet-status">Wallet not connected</span> <button id="alandale-connect" class="alandale-link-button" type="button">[ Connect injected wallet ]</button> <button id="alandale-other-wallet" class="alandale-link-button" type="button">[ Other wallet / WalletConnect ]</button>
-</pre>
-
+<div class="alandale-toolbar"><span id="alandale-wallet-status"></span> <button id="alandale-connect" class="alandale-link-button" type="button">[ connect ]</button> <button id="alandale-other-wallet" class="alandale-link-button" type="button">[ other wallet ]</button> <button id="alandale-zero-apr-toggle" class="alandale-link-button" type="button">[ show inactive ]</button> <a href="https://app.alandale.xyz" target="_blank" rel="noopener noreferrer">[ app ]</a></div>
 <p id="alandale-status" class="alandale-status" role="status" hidden></p>
-<pre id="alandale-overview" class="alandale-summary" aria-live="polite" hidden></pre>
-<p class="alandale-filter">DISPLAY : Yield-bearing farms only <button id="alandale-zero-apr-toggle" class="alandale-link-button" type="button">[ show 0 APR farms ]</button></p>
+<p id="alandale-overview" class="alandale-summary" aria-live="polite" hidden></p>
 
 <div id="alandale-loading" class="alandale-loading" role="status" aria-live="polite">
   <span class="loader--1" aria-hidden="true"></span> <span id="alandale-loading-text">Reading Alandale farms…</span>
 </div>
 
-<section class="alandale-farms-section" aria-labelledby="alandale-farms-title">
-  <h1 id="alandale-farms-title">====================== ALANDALE FARMS ======================</h1>
+<section class="alandale-farms-section">
   <div class="alandale-table-scroll"><div id="alandale-farms" aria-live="polite"></div></div>
 </section>
 
-<section id="alandale-positions-section" class="alandale-farms-section" hidden aria-labelledby="alandale-positions-title">
-  <h1 id="alandale-positions-title">===================== YOUR POSITIONS ======================</h1>
+<section id="alandale-positions-section" class="alandale-farms-section" hidden>
   <div class="alandale-table-scroll"><div id="alandale-positions" aria-live="polite"></div></div>
 </section>
-
-<pre class="alandale-footer-note">FLOW: exact approval → eth_call → wallet → receipt refresh</pre>
 </main>
 
 <dialog id="alandale-action-dialog" class="alandale-action-dialog" aria-labelledby="alandale-action-title">
@@ -58,18 +45,17 @@ WALLET: <span id="alandale-wallet-status">Wallet not connected</span> <button id
   .alandale-page { margin: 20px 10px 50px; max-width: 1440px; }
   .alandale-page, .alandale-page * { font-family: monospace; }
   .alandale-mobile-nav { display: none; }
-  .alandale-banner, .alandale-summary, .alandale-footer-note { margin: 0 0 22px; overflow-wrap: anywhere; white-space: pre-wrap; }
-  .alandale-status { margin: -10px 0 18px; color: #d95757; font: 14px/1.4 monospace; }
+  .alandale-toolbar, .alandale-summary, .alandale-status { margin: 0 0 14px; overflow-wrap: anywhere; font: 14px/1.45 monospace; text-align: left; }
+  .alandale-status { color: #d95757; }
   .alandale-status[data-kind="success"] { color: var(--highlight-color); }
-  .alandale-note, .alandale-filter { max-width: none; margin: 0 0 18px; color: inherit; font: 14px/1.45 monospace; text-align: left; }
-  .alandale-farms-section h1 { max-width: none; margin: 0 0 8px; padding: 0; border: 0; color: inherit; font: inherit; font-weight: normal; text-align: left; }
+  .alandale-note { max-width: none; margin: 0 0 18px; color: inherit; font: 14px/1.45 monospace; text-align: left; }
   .alandale-link-button, .alandale-action-button, .alandale-action-dialog button { margin: 0; padding: 0; border: 0; background: transparent; color: inherit; cursor: pointer; font: inherit; text-decoration: underline; }
   .alandale-link-button:hover, .alandale-action-button:hover, .alandale-action-dialog button:hover { color: var(--highlight-color); }
   .alandale-link-button:disabled, .alandale-action-button:disabled, .alandale-action-dialog button:disabled { cursor: not-allowed; opacity: .45; text-decoration: none; }
   .alandale-loading { padding: 10px 0; }
   .alandale-loading[hidden] { display: none; }
   .alandale-table-scroll { overflow-x: auto; }
-  .alandale-farm-table { width: 100%; min-width: 1090px; border-collapse: collapse; font-size: 14px; }
+  .alandale-farm-table { width: 100%; min-width: 940px; table-layout: fixed; border-collapse: collapse; font-size: 13px; }
   .alandale-farm-table th, .alandale-farm-table td { padding: 7px 9px; border: 1px solid currentColor; vertical-align: top; text-align: right; white-space: nowrap; }
   .alandale-farm-table th:first-child, .alandale-farm-table td:first-child, .alandale-farm-table th:last-child, .alandale-farm-table td:last-child { text-align: left; }
   .alandale-farm-table .alandale-pair { display: block; overflow-wrap: anywhere; white-space: normal; }
@@ -79,7 +65,6 @@ WALLET: <span id="alandale-wallet-status">Wallet not connected</span> <button id
   .alandale-farm-table .alandale-actions { min-width: 102px; white-space: normal; }
   .alandale-farm-table .alandale-actions > * { display: block; }
   .alandale-farm-table .alandale-actions > * + * { margin-top: 4px; }
-  .alandale-footer-note { margin-top: 24px; }
   .alandale-action-dialog { width: min(590px, calc(100vw - 32px)); padding: 16px; border: 1px solid currentColor; background: var(--main-background-color); color: var(--main-text-color); }
   .alandale-action-dialog::backdrop { background: rgba(0, 0, 0, .55); }
   .alandale-dialog-close-row { margin: 0 0 18px; text-align: right; }
@@ -97,15 +82,16 @@ WALLET: <span id="alandale-wallet-status">Wallet not connected</span> <button id
     body > div:not(.modal) { display: none; }
     .alandale-page { box-sizing: border-box; width: calc(100% - 16px); max-width: none; margin: 14px 8px 40px; overflow-x: hidden; }
     .alandale-mobile-nav { display: block; margin-bottom: 14px; }
-    .alandale-banner, .alandale-summary, .alandale-footer-note { font-size: 12px; }
+    .alandale-toolbar, .alandale-summary { font-size: 12px; }
     .alandale-table-scroll { overflow: visible; }
     .alandale-farm-table { min-width: 0; table-layout: fixed; font-size: 13px; }
     .alandale-farm-table th, .alandale-farm-table td { padding: 7px; }
     .alandale-farm-table th { white-space: normal; }
-    .alandale-farm-table th:nth-child(3), .alandale-farm-table td:nth-child(3), .alandale-farm-table th:nth-child(4), .alandale-farm-table td:nth-child(4), .alandale-farm-table th:nth-child(5), .alandale-farm-table td:nth-child(5), .alandale-farm-table th:nth-child(6), .alandale-farm-table td:nth-child(6), .alandale-farm-table th:nth-child(7), .alandale-farm-table td:nth-child(7) { display: none; }
-    .alandale-farm-table th:nth-child(1) { width: 36%; }
-    .alandale-farm-table th:nth-child(2) { width: 35%; }
-    .alandale-farm-table th:nth-child(8) { width: 29%; }
+    .alandale-farm-table th:nth-child(3), .alandale-farm-table td:nth-child(3), .alandale-farm-table th:nth-child(5), .alandale-farm-table td:nth-child(5) { display: none; }
+    .alandale-farm-table th:nth-child(1) { width: 35%; }
+    .alandale-farm-table th:nth-child(2) { width: 20%; }
+    .alandale-farm-table th:nth-child(4) { width: 18%; }
+    .alandale-farm-table th:nth-child(6) { width: 27%; }
     .alandale-farm-table td:first-child { white-space: normal; overflow-wrap: anywhere; }
     .alandale-farm-table .alandale-actions { min-width: 0; }
   }
