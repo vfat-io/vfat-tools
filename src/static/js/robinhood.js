@@ -10,7 +10,8 @@ const main = async () => {
     "rows": [
       ["Ripe                  ", `<a href="ripe"           >Community farms</a>`, "RIPE          ", ""],
       ["Sickle                ", `<a href="sickle"         >Various</a>`, "              ", ""],
-      ["Up33                  ", `<a href="up33"           >Concentrated liquidity</a>`, "UP            ", "Wallet-only"]
+      ["Up33                  ", `<a href="up33"           >Concentrated liquidity</a>`, "UP            ", "Wallet-only"],
+      ["SemiVault             ", `<a href="semi"           >Staking</a>`, "SEMI          ", "Wallet-only"]
     ].reverse()
   }
 

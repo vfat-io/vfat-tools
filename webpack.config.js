@@ -20,6 +20,7 @@ module.exports = (env = {}) => {
       // It carries only its own onchain client dependencies and lazy-loads
       // Reown only after the user explicitly chooses another wallet.
       robinhood_up33: './src/js/robinhood_up33.js',
+      robinhood_semi: './src/js/robinhood_semi.js',
     },
     output: {
       filename: isProduction ? '[name].[contenthash].js' : '[name].js',
