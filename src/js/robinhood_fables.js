@@ -23,7 +23,7 @@ const FablesPage = (function () {
   const maxPrice = 1e12
   const maxUint128 = ethers.BigNumber.from(2).pow(128).sub(1)
   const zeroAddress = ethers.constants.AddressZero
-  const sessionNames = ['open', 'closed', 'weekend']
+  const sessionNames = ['open', 'overnight', 'closed']
   const depositedTopic = ethers.utils.id('Deposited(address,uint256,uint128)')
   const withdrawnTopic = ethers.utils.id('Withdrawn(address,uint256,uint128)')
   const feesTopic = ethers.utils.id('FeesCollected(uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint128,uint128,uint64,uint64)')
@@ -55,7 +55,7 @@ const FablesPage = (function () {
   const state = {
     rpc: null, pools: [], tokens: new Map(), prices: new Map(), confidence: new Map(),
     poolManager: null, head: null, headTime: null, feeFrom: null, feeSeconds: feeWindowSeconds,
-    session: null, openSec: null, closeSec: null, positions: [], showZero: false,
+    positions: [], showZero: false,
     eip1193: null, account: null, walletChain: null, boundProvider: null, reownUnsubscribe: null,
     action: null, sending: false, status: '', spinner: null
   }
@@ -133,7 +133,8 @@ const FablesPage = (function () {
         tickSpacing: Number(entry.key.tickSpacing),
         ranges: [], liquidity: null, sqrtPrice: NaN, tick: null,
         amounts: [NaN, NaN], tvl: NaN, fee0: 0, fee1: 0, feeUsd: NaN, apr: NaN,
-        maxFee: null, floorFee: null, paused: false, rangeCount: 0, ready: false
+        maxFee: null, floorFee: null, paused: false, rangeCount: 0, ready: false,
+        session: null, openSec: null, closeSec: null
       }
     })
     if (!state.pools.length) throw new Error('Fables registry returned no active pools.')
@@ -141,15 +142,8 @@ const FablesPage = (function () {
   }
 
   async function loadChainConfig () {
-    const first = state.pools[0].hook
-    const heads = await batch([
-      { target: first, iface: hook, method: 'poolManager', fallback: null },
-      { target: first, iface: hook, method: 'openSec', fallback: null },
-      { target: first, iface: hook, method: 'closeSec', fallback: null },
-      { target: first, iface: hook, method: 'sessionAt', args: [state.headTime], fallback: null }
-    ])
-    state.poolManager = heads[0]; state.openSec = heads[1] === null ? null : Number(heads[1])
-    state.closeSec = heads[2] === null ? null : Number(heads[2]); state.session = heads[3] === null ? null : Number(heads[3])
+    const managers = await batch(state.pools.map(pool => ({ target: pool.hook, iface: hook, method: 'poolManager', fallback: null })))
+    state.poolManager = managers.find(Boolean) || null
     if (!state.poolManager) throw new Error('Fables pool manager unavailable.')
   }
 
@@ -178,11 +172,17 @@ const FablesPage = (function () {
       calls.push({ target: pool.hook, iface: hook, method: 'maxFee', args: [pool.id], fallback: null })
       calls.push({ target: pool.hook, iface: hook, method: 'pokeFloor', args: [pool.id], fallback: null })
       calls.push({ target: pool.hook, iface: hook, method: 'paused', fallback: false })
+      calls.push({ target: pool.hook, iface: hook, method: 'sessionAt', args: [state.headTime], fallback: null })
+      calls.push({ target: pool.hook, iface: hook, method: 'openSec', fallback: null })
+      calls.push({ target: pool.hook, iface: hook, method: 'closeSec', fallback: null })
     })
     const values = await batch(calls); let cursor = 0
     state.pools.forEach(function (pool) {
       const slots = values[cursor++]; const maxFee = values[cursor++]; const floorFee = values[cursor++]; const paused = values[cursor++]
+      const session = values[cursor++]; const openSec = values[cursor++]; const closeSec = values[cursor++]
       pool.maxFee = maxFee === null ? null : Number(maxFee); pool.floorFee = floorFee === null ? null : Number(floorFee); pool.paused = Boolean(paused)
+      pool.openSec = openSec === null ? null : Number(openSec); pool.closeSec = closeSec === null ? null : Number(closeSec)
+      pool.session = pool.openSec === null || session === null ? null : Number(session)
       if (!slots || slots.length < 4) return
       const packed = ethers.BigNumber.from(slots[0])
       let tick = packed.shr(160).mask(24).toNumber(); if (tick >= 2 ** 23) tick -= 2 ** 24
@@ -307,9 +307,17 @@ const FablesPage = (function () {
     const tvl = state.pools.reduce((sum, pool) => sum + (finite(pool.tvl) ? pool.tvl : 0), 0)
     const fees = state.pools.reduce((sum, pool) => sum + (finite(pool.feeUsd) ? pool.feeUsd : 0), 0)
     const ready = state.pools.filter(pool => pool.ready).length
-    const session = state.session === null ? 'unknown' : sessionNames[state.session] || 'unknown'
-    const window = state.openSec === null ? '' : ' · session ' + clock(state.openSec) + '–' + clock(state.closeSec) + ' ET'
-    node.textContent = 'Fables TVL ' + usd(tvl) + ' · ' + ready + '/' + state.pools.length + ' pools priced · fees ' + usd(fees) + ' / ' + Math.round(state.feeSeconds / 86400) + 'd · market ' + session + window
+    const scheduled = state.pools.filter(pool => pool.session !== null)
+    const alwaysOn = state.pools.filter(pool => pool.ready && pool.openSec === null).length
+    let calendar = ''
+    if (scheduled.length) {
+      const first = scheduled[0]
+      const mixed = scheduled.some(pool => pool.session !== first.session)
+      calendar = ' · session pools ' + (mixed ? 'mixed' : sessionNames[first.session] || 'unknown') +
+        ' (' + clock(first.openSec) + '–' + clock(first.closeSec) + ' ET)'
+    }
+    if (alwaysOn) calendar += ' · ' + alwaysOn + ' always-on'
+    node.textContent = 'Fables TVL ' + usd(tvl) + ' · ' + ready + '/' + state.pools.length + ' pools priced · fees ' + usd(fees) + ' / ' + Math.round(state.feeSeconds / 86400) + 'd' + calendar
   }
 
   function renderPools () {
@@ -322,7 +330,8 @@ const FablesPage = (function () {
     const body = e('tbody')
     visible.forEach(function (pool) {
       const row = e('tr'); const name = e('td')
-      append(name, e('span', { className: 'fables-name', text: poolName(pool) }), e('span', { className: 'fables-sub', text: short(pool.hook) + (pool.paused ? ' · paused' : '') }))
+      const label = pool.session === null ? 'always-on' : sessionNames[pool.session] || 'session unknown'
+      append(name, e('span', { className: 'fables-name', text: poolName(pool) }), e('span', { className: 'fables-sub', text: short(pool.hook) + ' · ' + label + (pool.paused ? ' · paused' : '') }))
       row.appendChild(name)
       addCell(row, poolPrice(pool))
       addCell(row, usd(pool.tvl), finite(pool.tvl) ? '' : 'fables-unpriced')
@@ -432,8 +441,12 @@ const FablesPage = (function () {
 
   async function claimFees (position) {
     requireWallet()
+    if (state.sending) throw new Error('Another transaction is already in progress.')
     const pool = position.pool
-    await send({ to: pool.hook, data: hook.encodeFunctionData('claimFees', [poolKeyArgs(pool), position.tickLower, position.tickUpper, state.account, 0]) })
+    state.sending = true; render()
+    try {
+      await send({ to: pool.hook, data: hook.encodeFunctionData('claimFees', [poolKeyArgs(pool), position.tickLower, position.tickUpper, state.account, 0]) })
+    } finally { state.sending = false; render() }
   }
 
   function openWithdraw (position) {
@@ -481,10 +494,11 @@ const FablesPage = (function () {
     const min1 = parseMinimum(action.min1, info1, info1.symbol + ' minimum')
     if ((min0.isZero() || min1.isZero()) && !window.confirm('A zero minimum accepts any amount out. Continue?')) throw new Error('Cancelled.')
     if (min0.gt(maxUint128) || min1.gt(maxUint128)) throw new Error('Minimum is too large.')
-    state.sending = true; renderAction()
+    if (state.sending) throw new Error('Another transaction is already in progress.')
+    state.sending = true; render(); renderAction()
     try {
       await send({ to: pool.hook, data: hook.encodeFunctionData('withdraw', [poolKeyArgs(pool), position.tickLower, position.tickUpper, shares, state.account, min0, min1, deadline()]) })
-    } finally { state.sending = false; renderAction() }
+    } finally { state.sending = false; render(); renderAction() }
   }
 
   async function refreshAfterAction () {

@@ -22,8 +22,10 @@ CHAIN : Robinhood Chain (4663)
 MODE  : Wallet-only onchain reads and direct wallet transactions. No price API or router.
 NOTE  : Fables is a Uniswap v4 hook AMM for tokenized equities. Liquidity is held
         as ERC-6909 range shares on each pool's ledger, not as position NFTs.
-FEES  : Swap fees are dynamic and directional. Pools follow the US market session
-        read from the ledger; APRs below are realized fees, not a forward rate.
+FEES  : Swap fees are dynamic and directional. Each pool row shows its own
+        session read from its ledger: equity pools run open / overnight / closed
+        on a US calendar, and pools with no calendar show always-on. APRs below
+        are realized fees over the stated window, not a forward rate.
 SCOPE : This page reads pools and ranges, claims fees, and withdraws. Opening a
         new range is not offered here.
 **************************************************************************************
