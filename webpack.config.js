@@ -39,6 +39,9 @@ module.exports = (env = {}) => {
       // Sickle recovery reads the wallet's Sickle and manager NFTs directly.
       // Reown remains a lazy import behind the explicit other-wallet action.
       robinhood_sickle_wallet: './src/js/robinhood_sickle_wallet.js',
+      // Fables reads its pool registry, Uniswap v4 pool state, and ERC-6909
+      // range ledgers directly. Reown stays behind the other-wallet action.
+      robinhood_fables: './src/js/robinhood_fables.js',
     },
     output: {
       filename: isProduction ? '[name].[contenthash].js' : '[name].js',
