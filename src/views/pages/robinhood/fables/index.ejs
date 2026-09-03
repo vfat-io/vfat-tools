@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include(`${partials}/head`, {
+  noGlobalScripts: true,
+  pageMeta: {
+    title: 'Fables Ranges on Robinhood Chain | vfat.tools',
+    description: 'Fables range liquidity, onchain TVL, realized fee APRs, and direct wallet actions on Robinhood Chain. Every value comes from the official RPC and onchain contracts.',
+    url: 'https://vfat.tools/robinhood/fables/',
+    image: 'https://vfat.tools/img/robinhood-fables-social.png',
+    imageAlt: 'vfat.tools Fables range pool table on Robinhood Chain.',
+    imageWidth: 1200,
+    imageHeight: 630
+  }
+}); -%>
+<body>
+<%- include(`${partials}/header_main`); -%>
+<main class="fables-page">
+<nav class="fables-mobile-nav" aria-label="Fables page navigation"><a href="../">[ Robinhood farms ]</a> <a href="/">[ vfat.tools ]</a></nav>
+<pre id="fables-banner">
+***************** 👨‍🌾 UNOFFICIAL FABLES RANGE CALCULATOR 👨‍🌾 *****************
+CHAIN : Robinhood Chain (4663)
+MODE  : Wallet-only onchain reads and direct wallet transactions. No price API or router.
+NOTE  : Fables is a Uniswap v4 hook AMM for tokenized equities. Liquidity is held
+        as ERC-6909 range shares on each pool's ledger, not as position NFTs.
+FEES  : Swap fees are dynamic and directional. Pools follow the US market session
+        read from the ledger; APRs below are realized fees, not a forward rate.
+SCOPE : This page reads pools and ranges, claims fees, and withdraws. Opening a
+        new range is not offered here.
+**************************************************************************************
+</pre>
+<div class="fables-toolbar"><span id="fables-wallet-status"></span> <button id="fables-connect" class="fables-link" type="button">[ connect ]</button> <button id="fables-other-wallet" class="fables-link" type="button">[ other wallet ]</button> <button id="fables-zero-toggle" class="fables-link" type="button">[ show zero APR ]</button> <button id="fables-refresh" class="fables-link" type="button">[ refresh ]</button></div>
+<p id="fables-status" class="fables-status" role="status" hidden></p>
+<div id="fables-loading" class="fables-loading" role="status" aria-live="polite"><span id="fables-loading-spin">[....]</span></div>
+<p id="fables-summary" class="fables-summary">Fables —</p>
+<div id="fables-pools" class="fables-table-wrap" aria-live="polite"></div>
+<div id="fables-positions" class="fables-table-wrap fables-positions" aria-live="polite" hidden></div>
+<pre class="fables-footer"><%- include(`${partials}/disclaimer`); -%></pre>
+</main>
+<dialog id="fables-action-dialog" class="fables-dialog" aria-labelledby="fables-action-title"><form method="dialog" class="fables-close"><button type="submit">[ close ]</button></form><div id="fables-action-content"></div></dialog>
+<style>
+.fables-page{max-width:1500px;margin:20px 10px 50px;min-width:0}.fables-page,.fables-page *{box-sizing:border-box;font-family:monospace}.fables-mobile-nav{display:none}#fables-banner{max-width:100%;margin:0 0 16px;overflow-wrap:anywhere;white-space:pre-wrap}.fables-toolbar,.fables-summary,.fables-status{margin:0 0 14px;font:14px/1.45 monospace;text-align:left;overflow-wrap:anywhere}.fables-status[data-kind="error"]{color:#d95757}.fables-status[data-kind="success"]{color:var(--highlight-color)}.fables-link,.fables-action,.fables-dialog button{margin:0;padding:0;border:0;background:transparent;color:inherit;cursor:pointer;font:inherit;text-decoration:underline}.fables-link:hover,.fables-action:hover,.fables-dialog button:hover{color:var(--highlight-color)}.fables-link:disabled,.fables-action:disabled,.fables-dialog button:disabled{cursor:not-allowed;opacity:.45;text-decoration:none}.fables-loading{padding:0 0 14px}.fables-loading[hidden]{display:none}.fables-table-wrap{width:100%;min-width:0;overflow-x:auto}.fables-positions{margin-top:26px}.fables-table{width:100%;min-width:1100px;table-layout:fixed;border-collapse:collapse;font-size:13px}.fables-table td,.fables-table th{padding:7px 8px;border:1px solid currentColor;vertical-align:top;text-align:right;white-space:pre-line;overflow-wrap:anywhere}.fables-table th{white-space:normal}.fables-table td:first-child,.fables-table th:first-child,.fables-table td:last-child,.fables-table th:last-child{text-align:left}.fables-name,.fables-sub{display:block;max-width:280px;white-space:normal;overflow-wrap:anywhere}.fables-sub{margin-top:3px;color:var(--highlight-color);font-size:12px}.fables-actions{min-width:140px;white-space:normal!important}.fables-actions>*{display:inline-block;margin:0 8px 5px 0;white-space:nowrap}.fables-unpriced{opacity:.7}.fables-footer{margin-top:26px;max-width:100%;overflow-wrap:anywhere;white-space:pre-wrap}.fables-dialog{width:min(700px,calc(100vw - 28px));max-width:calc(100vw - 28px);padding:16px;border:1px solid currentColor;background:var(--main-background-color);color:var(--main-text-color)}.fables-dialog::backdrop{background:rgba(0,0,0,.55)}.fables-close{margin:0 0 18px;text-align:right}.fables-dialog h2{margin:0 0 8px;padding:0;border:0;color:inherit;font:bold 16px/1.4 monospace;text-align:left}.fables-dialog p{margin:0 0 12px;font:14px/1.45 monospace;text-align:left;overflow-wrap:anywhere}.fables-input{display:flex;gap:10px;align-items:center;margin:8px 0}.fables-input label{min-width:12ch}.fables-input input{width:100%;min-width:0;padding:5px 7px;border:1px solid currentColor;border-radius:0;background:transparent;color:inherit;font:16px/1.4 monospace}.fables-dialog-actions{display:flex;flex-wrap:wrap;gap:14px;margin-top:14px}@media(max-width:700px){body>div:not(.modal){display:none}.fables-page{margin:14px 8px 40px;overflow-x:hidden}.fables-mobile-nav{display:block;margin-bottom:14px}#fables-banner{font-size:11px}.fables-toolbar,.fables-summary{font-size:12px}.fables-table-wrap{overflow:visible}.fables-table{min-width:0;font-size:12px}.fables-table td,.fables-table th{padding:6px}.fables-name,.fables-sub{max-width:none}.fables-actions{min-width:0}.fables-actions>*{margin-right:6px}#fables-pools .fables-table th:nth-child(n+5),#fables-pools .fables-table td:nth-child(n+5){display:none}#fables-pools .fables-table th:nth-child(1){width:34%}#fables-pools .fables-table th:nth-child(2){width:22%}#fables-pools .fables-table th:nth-child(3){width:20%}#fables-pools .fables-table th:nth-child(4){width:24%}.fables-positions .fables-table th:nth-child(2),.fables-positions .fables-table td:nth-child(2),.fables-positions .fables-table th:nth-child(4),.fables-positions .fables-table td:nth-child(4),.fables-positions .fables-table th:nth-child(5),.fables-positions .fables-table td:nth-child(5){display:none}.fables-positions .fables-table th:nth-child(1){width:26%}.fables-positions .fables-table th:nth-child(3){width:14%}.fables-positions .fables-table th:nth-child(6){width:15%}.fables-positions .fables-table th:nth-child(7){width:15%}.fables-positions .fables-table th:nth-child(8){width:30%}}
+</style>
+<% if (filenameMap && filenameMap['robinhood_fables.js']) { -%>
+<script src="<%= PP %>/js/<%= filenameMap['robinhood_fables.js'] %>"></script>
+<% } else { -%>
+<script src="<%= PP %>/js/robinhood_fables.js"></script>
+<% } -%>
+</body>
+</html>
