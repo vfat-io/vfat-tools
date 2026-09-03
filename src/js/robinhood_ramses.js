@@ -410,7 +410,9 @@ const RamsesPage = (function () {
   async function send (tx, approvalOnly) { await preflight(tx); setStatus('Confirm in wallet…'); const hash = await state.eip1193.request({ method: 'eth_sendTransaction', params: [{ from: state.account, to: tx.to, data: tx.data, value: tx.value || '0x0' }] }); setStatus(hash + ' · pending'); const receipt = await state.rpc.waitForTransaction(hash, 1, 180000); if (!receipt || receipt.status !== 1) throw new Error('Transaction failed.'); setStatus(''); if (approvalOnly) await loadActionInfo(); else await refreshAfterAction() }
 
   async function approveFor (side) {
-    requireWallet(); const approval = approvalAmount(side); await send({ to: approval.token, data: erc20.encodeFunctionData('approve', [approval.spender, approval.amount]) }, true)
+    requireWallet(); const approval = approvalAmount(side)
+    state.sending = true; renderAction()
+    try { await send({ to: approval.token, data: erc20.encodeFunctionData('approve', [approval.spender, approval.amount]) }, true) } finally { state.sending = false; renderAction() }
   }
 
   function requireZeroMinimumConfirmation (min0, min1) { if ((min0.isZero() || min1.isZero()) && !window.confirm('A zero minimum allows any execution price. Continue?')) throw new Error('Cancelled.') }
@@ -431,15 +433,18 @@ const RamsesPage = (function () {
   }
 
   async function submitAction () { state.sending = true; renderAction(); try { await send(buildAction()) } finally { state.sending = false; renderAction() } }
-  async function collectPosition (position) { requireWallet(); const max = ethers.BigNumber.from(2).pow(128).sub(1); await send({ to: address.v3Manager, data: v3Manager.encodeFunctionData('collect', [[position.id, state.account, max, max]]) }) }
+  async function collectPosition (position) { requireWallet(); const max = ethers.BigNumber.from(2).pow(128).sub(1)
+    state.sending = true; render()
+    try { await send({ to: address.v3Manager, data: v3Manager.encodeFunctionData('collect', [[position.id, state.account, max, max]]) }) } finally { state.sending = false; render() } }
 
   async function loadV3Positions () {
     state.v3Positions = []; if (!state.account || !correctChain()) { renderPositions(); return }
     const count = (await batch([{ target: address.v3Manager, iface: v3Manager, method: 'balanceOf', args: [state.account], fallback: ethers.constants.Zero }]))[0]; const total = Number(count); if (!total) { renderPositions(); return }
     const ids = await batch(Array.from({ length: total }, (_, index) => ({ target: address.v3Manager, iface: v3Manager, method: 'tokenOfOwnerByIndex', args: [state.account, index], fallback: null })))
-    const values = await batch(ids.filter(value => value !== null).map(id => ({ target: address.v3Manager, iface: v3Manager, method: 'positions', args: [id], fallback: null, decode: value => value })))
+    const ownedIds = ids.filter(value => value !== null)
+    const values = await batch(ownedIds.map(id => ({ target: address.v3Manager, iface: v3Manager, method: 'positions', args: [id], fallback: null, decode: value => value })))
     const poolMap = new Map(state.pools.filter(pool => pool.type === 'v3').map(pool => [lower(pool.token0) + ':' + lower(pool.token1) + ':' + pool.tickSpacing, pool]))
-    state.v3Positions = values.map(function (value, index) { if (!value) return null; const pool = poolMap.get(lower(value[0]) + ':' + lower(value[1]) + ':' + Number(value[2])); return pool && { id: ids[index], pool, token0: value[0], token1: value[1], tickSpacing: Number(value[2]), tickLower: Number(value[3]), tickUpper: Number(value[4]), liquidity: value[5], owed0: value[8], owed1: value[9] } }).filter(Boolean); renderPositions()
+    state.v3Positions = values.map(function (value, index) { if (!value) return null; const pool = poolMap.get(lower(value[0]) + ':' + lower(value[1]) + ':' + Number(value[2])); return pool && { id: ownedIds[index], pool, token0: value[0], token1: value[1], tickSpacing: Number(value[2]), tickLower: Number(value[3]), tickUpper: Number(value[4]), liquidity: value[5], owed0: value[8], owed1: value[9] } }).filter(Boolean); renderPositions()
   }
 
   async function refreshAfterAction () { const dialog = byId('ramses-action-dialog'); if (dialog && dialog.open) dialog.close(); state.action = null; state.actionInfo = null; await Promise.all([hydratePools(true, true), loadV3Positions()]); await loadFeeLogs() }

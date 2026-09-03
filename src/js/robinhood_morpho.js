@@ -519,6 +519,7 @@ const MorphoPage = (function () {
   }
   function renderAction () {
     const dialog = byId('morpho-action-dialog'); const container = byId('morpho-action-content'); if (!dialog || !container || !state.action) return
+    const action = state.action
     const asset = actionToken(); container.textContent = ''
     container.appendChild(e('h2', { id: 'morpho-action-title', text: actionTitle() }))
     container.appendChild(e('p', { className: 'morpho-action-note', text: actionNote() }))
@@ -527,7 +528,7 @@ const MorphoPage = (function () {
     append(details, e('span', { text: 'ASSET : ' + asset.symbol }), e('span', { text: info ? 'BALANCE : ' + format(info.balance, asset.decimals) : 'BALANCE : reading...' }))
     container.appendChild(details)
     const inputRow = e('label', { className: 'morpho-input-row' }); inputRow.appendChild(document.createTextNode(actionAmountLabel() + ' : '))
-    const input = e('input', { id: 'morpho-action-amount' }); input.type = 'text'; input.inputMode = 'decimal'; input.autocomplete = 'off'; input.value = actionInputValue(); input.placeholder = '0.0'; input.addEventListener('input', function () { state.action.amount = input.value; renderAction() })
+    const input = e('input', { id: 'morpho-action-amount' }); input.type = 'text'; input.inputMode = 'decimal'; input.autocomplete = 'off'; input.value = actionInputValue(); input.placeholder = '0.0'; input.addEventListener('input', function () { state.action.amount = input.value; const start = input.selectionStart; const end = input.selectionEnd; renderAction(); const next = byId('morpho-action-amount'); if (next) { next.focus(); try { next.setSelectionRange(start, end) } catch (_) {} } })
     inputRow.appendChild(input)
     const max = actionMaxValue()
     if (max && (!max.isZero || !max.isZero())) inputRow.appendChild(button('max', function () { useMax().catch(function (error) { setStatus(errText(error), 'error') }) }, !info))

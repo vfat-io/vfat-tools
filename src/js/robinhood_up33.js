@@ -522,7 +522,9 @@ const Up33 = (function () {
       request.from = state.account; await state.wallet.call(request)
       message('Wallet confirmation requested for ' + label + '…')
       const tx = await signer.sendTransaction(request); message(label + ' sent: ' + tx.hash + '. Waiting for confirmation…')
-      await state.wallet.waitForTransaction(tx.hash); message(label + ' confirmed: ' + tx.hash, 'success'); await refreshWallet(false); return tx
+      const receipt = await state.wallet.waitForTransaction(tx.hash, 1, 180000)
+      if (!receipt || receipt.status !== 1) throw new Error(label + ' reverted on chain: ' + tx.hash)
+      message(label + ' confirmed: ' + tx.hash, 'success'); await refreshWallet(false); return tx
     } finally { state.sending = false; render() }
   }
 

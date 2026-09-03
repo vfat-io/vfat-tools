@@ -384,7 +384,8 @@ const Semi = (function () {
       setStatus('Wallet confirmation requested for ' + label + '…')
       const tx = await signer.sendTransaction(request)
       setStatus(label + ' sent: ' + tx.hash + '. Waiting for confirmation…')
-      await state.wallet.waitForTransaction(tx.hash)
+      const receipt = await state.wallet.waitForTransaction(tx.hash, 1, 180000)
+      if (!receipt || receipt.status !== 1) throw new Error(label + ' reverted on chain: ' + tx.hash)
       await refreshData()
       setStatus(label + ' confirmed: ' + tx.hash, 'ok')
       return tx

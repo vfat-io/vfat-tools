@@ -871,6 +871,12 @@ function updateActionControls () {
   const note = document.getElementById('ripe-action-note')
   const submitButton = document.getElementById('ripe-action-submit')
   const approveButton = document.getElementById('ripe-action-approve')
+  if (state.action.pending) {
+    note.textContent = 'Transaction submitted. Waiting for Robinhood Chain confirmation…'
+    submitButton.disabled = true
+    if (approveButton) approveButton.disabled = true
+    return
+  }
   if (state.action.pendingApproval) {
     note.textContent = 'Approval submitted. Waiting for Robinhood Chain confirmation…'
     submitButton.disabled = true
@@ -964,13 +970,16 @@ async function submitAction () {
     await rpcRequest('eth_call', [tx, 'latest'])
     const txHash = await state.eip1193.request({method: 'eth_sendTransaction', params: [tx]})
     state.action.txHash = txHash
+    state.action.pending = true
     renderActionDialog()
     setStatus(`${isDeposit ? 'Deposit' : 'Withdrawal'} submitted for ${farm.symbol}. Waiting for confirmation.`)
     const receipt = await waitForReceipt(txHash)
     if (receipt?.status !== '0x1') throw new Error(`${isDeposit ? 'Deposit' : 'Withdrawal'} was not confirmed`)
+    if (state.action) state.action.pending = false
     await refreshUserBalances()
     setStatus(`${isDeposit ? 'Deposit' : 'Withdrawal'} confirmed for ${farm.symbol}.`)
   } catch (error) {
+    if (state.action) state.action.pending = false
     button.disabled = false
     button.textContent = `${isDeposit ? 'Deposit' : 'Withdraw'} ${farm.symbol}`
     setStatus(`${isDeposit ? 'Deposit' : 'Withdrawal'} failed: ${error.message || 'request rejected'}`, true)

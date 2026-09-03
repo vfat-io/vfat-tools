@@ -439,7 +439,7 @@ const Alandale = (function () {
         const ids = await batch(idCalls); const detailCalls = []
         ids.forEach(function (entry) { detailCalls.push({ target: addresses.positionManager, iface: managerInterface, method: 'positions', args: [entry[0]], fallback: null }); detailCalls.push({ target: addresses.positionManager, iface: managerInterface, method: 'getApproved', args: [entry[0]], fallback: [ethers.constants.AddressZero] }) })
         const details = await batch(detailCalls); let detailCursor = 0
-        ids.forEach(function (entry) { const data = details[detailCursor++]; const approved = details[detailCursor++][0]; if (data) { const farm = state.farmByPool.get(lower(data[2])); if (farm && same(data[3], farm.token1)) state.positions.push({ id: entry[0], data: data, approved: approved, farm: farm }) } })
+        ids.forEach(function (entry) { const data = details[detailCursor++]; const approved = details[detailCursor++][0]; if (data) { const farm = state.farms.find(function (item) { return same(data[2], item.token0) && same(data[3], item.token1) }); if (farm) state.positions.push({ id: entry[0], data: data, approved: approved, farm: farm }) } })
         render()
       }
       revalueFarms()
