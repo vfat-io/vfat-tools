@@ -204,3 +204,9 @@ dist/
 deploy.sh
 deploy-staging.sh
 deploy-proxy-server.sh
+
+# Local agent tooling and scratch files
+.claude/
+.codex/
+AGENTS.override.md
+CLAUDE.local.md
