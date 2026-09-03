@@ -291,7 +291,7 @@ const { ethers } = require('ethers')
     }
     const filter = {
       address: options.contracts,
-      topics: [options.topic, null, topicAddress(state.sickle)]
+      topics: options.topics || [options.topic, null, topicAddress(state.sickle)]
     }
     let next = 0
     let complete = 0
@@ -399,9 +399,12 @@ const { ethers } = require('ethers')
     if (!pools.length) return
     const poolsByHook = new Map(pools.map(function (pool) { return [pool.hook.toLowerCase(), pool] }))
     const candidates = await scanTransfers({
-      cacheKey: 'robinhood-sickle-fables-v1:' + state.sickle.toLowerCase(),
+      // v2: v1 cached a sender-only scan that missed incoming and minted
+      // shares, so that partial history must not be reused.
+      cacheKey: 'robinhood-sickle-fables-v2:' + state.sickle.toLowerCase(),
       contracts: pools.map(function (pool) { return pool.hook }),
       topic: transfer6909Topic,
+      topics: [transfer6909Topic],
       startBlock: fablesLogStart,
       loading: 'Reading Fables transfer history',
       normalizeCached: function (item) {
@@ -410,6 +413,10 @@ const { ethers } = require('ethers')
       },
       fromLog: function (log) {
         if (!log.topics || !log.topics[3] || !poolsByHook.has(log.address.toLowerCase())) return null
+        const owner = state.sickle.toLowerCase()
+        const sender = log.topics[2] ? ('0x' + log.topics[2].slice(26)).toLowerCase() : null
+        const receiver = log.data && log.data.length >= 66 ? ('0x' + log.data.slice(26, 66)).toLowerCase() : null
+        if (sender !== owner && receiver !== owner) return null
         return { hook: ethers.utils.getAddress(log.address), id: ethers.BigNumber.from(log.topics[3]).toString() }
       },
       itemKey: function (item) { return item.hook.toLowerCase() + ':' + item.id }

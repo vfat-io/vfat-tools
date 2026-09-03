@@ -468,7 +468,7 @@ function parseAmount (value, decimals) {
 function setStatus (message, isError = false) {
   const status = document.getElementById('ripe-refresh-status')
   status.textContent = message
-  status.hidden = !isError
+  status.hidden = !message
   status.style.color = isError ? '#d95757' : ''
 }
 
@@ -977,11 +977,12 @@ async function submitAction () {
     if (receipt?.status !== '0x1') throw new Error(`${isDeposit ? 'Deposit' : 'Withdrawal'} was not confirmed`)
     if (state.action) state.action.pending = false
     await refreshUserBalances()
+    if (state.action) renderActionDialog()
     setStatus(`${isDeposit ? 'Deposit' : 'Withdrawal'} confirmed for ${farm.symbol}.`)
   } catch (error) {
-    if (state.action) state.action.pending = false
-    button.disabled = false
-    button.textContent = `${isDeposit ? 'Deposit' : 'Withdraw'} ${farm.symbol}`
+    // The dialog is rebuilt once the transaction is sent, so the captured
+    // button can be detached by now; re-render instead of mutating it.
+    if (state.action) { state.action.pending = false; renderActionDialog() }
     setStatus(`${isDeposit ? 'Deposit' : 'Withdrawal'} failed: ${error.message || 'request rejected'}`, true)
   }
 }

@@ -389,12 +389,22 @@ const FablesPage = (function () {
     const account = ethers.utils.hexZeroPad(state.account, 32).toLowerCase()
     const [deposits, transfers] = await Promise.all([
       getLogs({ address: hooks, fromBlock: 0, toBlock: state.head, topics: [depositedTopic, account] }),
-      getLogs({ address: hooks, fromBlock: 0, toBlock: state.head, topics: [transferTopic, null, account] })
+      getLogs({ address: hooks, fromBlock: 0, toBlock: state.head, topics: [transferTopic] })
     ])
     const byHook = new Map(state.pools.map(pool => [lower(pool.hook), pool]))
     const candidates = new Map()
+    // ERC-6909 Transfer indexes caller, sender and id; the receiver is the first
+    // data word, so incoming and minted shares cannot be selected by topic and
+    // have to be matched here instead.
+    const touchesAccount = function (log) {
+      const owner = lower(state.account)
+      const sender = log.topics[2] ? lower('0x' + log.topics[2].slice(26)) : null
+      const receiver = log.data && log.data.length >= 66 ? lower('0x' + log.data.slice(26, 66)) : null
+      return sender === owner || receiver === owner
+    }
     deposits.concat(transfers).forEach(function (log) {
       const pool = byHook.get(lower(log.address)); if (!pool) return
+      if (log.topics[0] === transferTopic && !touchesAccount(log)) return
       const id = log.topics[0] === depositedTopic ? log.topics[2] : log.topics[3]
       if (id) candidates.set(lower(log.address) + ':' + id, { pool, id })
     })
