@@ -464,7 +464,7 @@ const RamsesPage = (function () {
   }
 
   async function connectOther () {
-    const reown = await import('./config.js'); const kit = reown.createAppKitInstance(process.env.REOWN_PROJECT_ID || '3e6154a7158ff5f7509f24405fc3b551'); if (!kit) throw new Error('Other wallet unavailable.')
+    const reown = await import('./config.js'); if (!reown.REOWN_PROJECT_ID) throw new Error('Other wallet unavailable.'); const kit = reown.createAppKitInstance(); if (!kit) throw new Error('Other wallet unavailable.')
     const onAccount = async function (accountState) { if (!accountState || !accountState.isConnected) return; const provider = await kit.getWalletProvider(); await adopt(provider, await provider.request({ method: 'eth_accounts' }), await provider.request({ method: 'eth_chainId' }), 'other wallet'); if (state.reownUnsubscribe) { state.reownUnsubscribe(); state.reownUnsubscribe = null } }
     if (kit.getAddress && kit.getAddress()) return onAccount({ isConnected: true }); if (!state.reownUnsubscribe && kit.subscribeAccount) state.reownUnsubscribe = kit.subscribeAccount(value => onAccount(value).catch(error => setStatus(errText(error), 'error'))); await kit.open()
   }

@@ -552,7 +552,7 @@ export const appKitFeatures = {
 // Create AppKit with error handling
 let appKitInstance = null;
 
-export const createAppKitInstance = (projectId = REOWN_PROJECT_ID) => {
+export const createAppKitInstance = () => {
   if (typeof window !== 'undefined' && window.__VFAT_APPKIT_INSTANCE__) {
     return window.__VFAT_APPKIT_INSTANCE__;
   }
@@ -574,7 +574,7 @@ export const createAppKitInstance = (projectId = REOWN_PROJECT_ID) => {
       adapters: [new Ethers5Adapter()],
       metadata,
       networks: customNetworks,
-      projectId,
+      projectId: REOWN_PROJECT_ID,
       features: appKitFeatures,
     });
 
@@ -609,7 +609,7 @@ export const createAppKitInstance = (projectId = REOWN_PROJECT_ID) => {
           adapters: [new Ethers5Adapter()],
           metadata: retryMetadata,
           networks: customNetworks,
-          projectId,
+          projectId: REOWN_PROJECT_ID,
           features: appKitFeatures,
         });
 

@@ -37,7 +37,6 @@ const { ethers } = require('ethers')
   const multicallBatchSize = 100
   const transfer721Topic = ethers.utils.id('Transfer(address,address,uint256)')
   const transfer6909Topic = ethers.utils.id('Transfer(address,address,address,uint256,uint256)')
-  const reownProjectId = process.env.REOWN_PROJECT_ID || '3e6154a7158ff5f7509f24405fc3b551'
   const zeroAddress = ethers.constants.AddressZero
   const maxUint128 = ethers.BigNumber.from(2).pow(128).sub(1)
   const factoryInterface = new ethers.utils.Interface(['function sickles(address) view returns(address)'])
@@ -554,7 +553,8 @@ const { ethers } = require('ethers')
   }
   async function connectOther () {
     const reown = await import('./config.js')
-    const appKit = reown.createAppKitInstance(reownProjectId)
+    if (!reown.REOWN_PROJECT_ID) throw new Error('Other wallet is unavailable.')
+    const appKit = reown.createAppKitInstance()
     if (!appKit) throw new Error('Other wallet is unavailable.')
     const adopt = async function (address) {
       const wallet = await appKit.getWalletProvider()

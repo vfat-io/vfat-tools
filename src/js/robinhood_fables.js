@@ -539,7 +539,8 @@ const FablesPage = (function () {
 
   async function connectOther () {
     const reown = await import('./config.js')
-    const kit = reown.createAppKitInstance(process.env.REOWN_PROJECT_ID || '3e6154a7158ff5f7509f24405fc3b551')
+    if (!reown.REOWN_PROJECT_ID) throw new Error('Other wallet unavailable.')
+    const kit = reown.createAppKitInstance()
     if (!kit) throw new Error('Other wallet unavailable.')
     const onAccount = async function (accountState) {
       if (!accountState || !accountState.isConnected) return

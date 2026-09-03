@@ -44,9 +44,6 @@ const Up33 = (function () {
   ]
   const multicallAbi = ['function aggregate3((address target,bool allowFailure,bytes callData)[] calls) view returns((bool success,bytes returnData)[] returnData)']
   const zero = ethers.constants.AddressZero.toLowerCase()
-  // This public identifier is the existing vfat.io AppKit project. An
-  // environment value takes precedence for controlled deployment overrides.
-  const reownProjectId = process.env.REOWN_PROJECT_ID || '3e6154a7158ff5f7509f24405fc3b551'
   const max128 = ethers.BigNumber.from(2).pow(128).sub(1)
   const state = { app: null, rpc: null, wallet: null, eip1193: null, walletSource: null, account: null, walletChain: null, pools: [], tokens: new Map(), prices: new Map(), selected: null, editing: null, positions: [], registryLoading: false, marketLoading: false, marketUpdatedAt: null, walletLoading: false, walletRestorePending: false, sending: false, events: false, reownUnsubscribe: null, spinnerTimer: null, spinnerIndex: 0, message: '', messageType: '', draft: {} }
 
@@ -212,7 +209,8 @@ const Up33 = (function () {
     // This module is a dynamic import: neither Reown nor its connector code is
     // part of the initial Up33 page payload or startup work.
     const reown = await import('./config.js')
-    const appKit = reown.createAppKitInstance(reownProjectId)
+    if (!reown.REOWN_PROJECT_ID) throw new Error('No injected wallet is connected and WalletConnect is unavailable in this browser.')
+    const appKit = reown.createAppKitInstance()
     if (!appKit) throw new Error('No injected wallet is connected and WalletConnect is unavailable in this browser.')
     const address = appKit.getAddress && appKit.getAddress()
     if (address && await adoptReownWallet(appKit, address)) return true

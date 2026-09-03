@@ -647,7 +647,7 @@ const MorphoPage = (function () {
   async function connectOtherWallet () {
     // This import contains the optional AppKit/Reown bundle. It never runs on
     // page load or when an injected wallet already has an authorized account.
-    const reown = await import('./config.js'); const appKit = reown.createAppKitInstance(process.env.REOWN_PROJECT_ID || '3e6154a7158ff5f7509f24405fc3b551')
+    const reown = await import('./config.js'); if (!reown.REOWN_PROJECT_ID) throw new Error('Optional wallet support is unavailable.'); const appKit = reown.createAppKitInstance()
     if (!appKit) throw new Error('Optional wallet support is unavailable in this browser.')
     const connect = async function (accountState) {
       if (!accountState || !accountState.isConnected) return

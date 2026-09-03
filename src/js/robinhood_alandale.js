@@ -47,7 +47,6 @@ const Alandale = (function () {
   const secondsPerWeek = 7 * 24 * 60 * 60
   // The existing vfat.io AppKit project is intentionally referenced only by
   // connectReown(), whose config module is dynamically imported after intent.
-  const reownProjectId = process.env.REOWN_PROJECT_ID || '3e6154a7158ff5f7509f24405fc3b551'
   const state = {
     rpc: null, eip1193: null, walletSource: null, account: null, walletChain: null, walletListenerCleanup: [], reownUnsubscribe: null, farms: [], farmByPool: new Map(), farmByGauge: new Map(), tokens: new Map(), prices: new Map(),
     voterCounts: null, factoryPairs: [], factoryOnlyPairs: [],
@@ -227,7 +226,8 @@ const Alandale = (function () {
     // This dynamic import is the only path that loads the established AppKit
     // and WalletConnect code. It is never present in the first-load waterfall.
     const reown = await import('./config.js')
-    const appKit = reown.createAppKitInstance(reownProjectId)
+    if (!reown.REOWN_PROJECT_ID) throw new Error('Optional wallet support is unavailable.')
+    const appKit = reown.createAppKitInstance()
     if (!appKit) throw new Error('WalletConnect is unavailable in this browser.')
     const address = appKit.getAddress && appKit.getAddress()
     if (address && await adoptReownWallet(appKit, address)) return true

@@ -4,7 +4,6 @@ const ROBINHOOD_RPC_URL = 'https://rpc.mainnet.chain.robinhood.com'
 const ROBINHOOD_CHAIN_ID = '0x1237'
 const BLOCKS_PER_WEEK = Math.round(7 * 24 * 60 * 60 * 1000 / 12032)
 const WEEKS_PER_YEAR = 365 / 7
-const REOWN_PROJECT_ID = process.env.REOWN_PROJECT_ID || '3e6154a7158ff5f7509f24405fc3b551'
 
 // Ripe's public Robinhood Chain deployment. Farm discovery, balances, and
 // rewards below are read directly from these contracts over RPC.
@@ -711,7 +710,8 @@ async function adoptReownWallet (appKit, address) {
 
 async function connectOtherWallet () {
   const reown = await import('./config.js')
-  const appKit = reown.createAppKitInstance(REOWN_PROJECT_ID)
+  if (!reown.REOWN_PROJECT_ID) throw new Error('Other wallet is unavailable.')
+  const appKit = reown.createAppKitInstance()
   if (!appKit) throw new Error('Other wallet is unavailable.')
   const address = appKit.getAddress && appKit.getAddress()
   if (address && await adoptReownWallet(appKit, address)) return

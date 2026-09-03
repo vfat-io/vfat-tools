@@ -29,7 +29,6 @@ const Semi = (function () {
   /* slot0 for the USDG/MU v4 pool inside PoolManager. USDG is currency0. */
   const USDG_MU_SLOT0 = '0x18d150baa861e96f4da38bd89d0a356ce079d03d02d170a91b3e6dd86434c9c1'
   const Q96 = ethers.BigNumber.from(2).pow(96)
-  const reownProjectId = process.env.REOWN_PROJECT_ID || '3e6154a7158ff5f7509f24405fc3b551'
 
   const ABI = {
     erc20: [
@@ -295,7 +294,8 @@ const Semi = (function () {
   }
   async function connectReown () {
     const reown = await import('./config.js')
-    const appKit = reown.createAppKitInstance(reownProjectId)
+    if (!reown.REOWN_PROJECT_ID) throw new Error('Other wallet is unavailable.')
+    const appKit = reown.createAppKitInstance()
     if (!appKit) throw new Error('WalletConnect is unavailable in this browser.')
     const address = appKit.getAddress && appKit.getAddress()
     if (address && await adoptReownWallet(appKit, address)) return true
