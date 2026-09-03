@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include(`${partials}/head`, {
+  noGlobalScripts: true,
+  pageMeta: {
+    title: 'SemiVault Farms on Robinhood Chain | vfat.tools',
+    description: 'Live SemiVault staking TVL, conditional emission history, and direct wallet actions on Robinhood Chain. Every value comes from the official RPC and onchain contracts.',
+    url: 'https://vfat.tools/robinhood/semi/',
+    image: 'https://vfat.tools/img/robinhood-semi-social-v2.png',
+    imageAlt: 'vfat.tools SemiVault staking information for Robinhood Chain.',
+    imageWidth: 1200,
+    imageHeight: 630
+  }
+}); -%>
+
+<body>
+<%- include(`${partials}/header_main`); -%>
+<pre id="semi-banner">
+***************** 👨‍🌾 UNOFFICIAL SEMIVAULT STAKING CALCULATOR 👨‍🌾 *****************
+INFO  : https://semivault.xyz
+CHAIN : Robinhood Chain (4663)
+MODE  : Wallet-only onchain reads and direct wallet transactions. No price API or router.
+NOTE  : Emissions are conditional. The ratchet mints only when the backing
+        ratio sets a new high. Some epochs pay nothing. No forward APR is shown.
+**************************************************************************************
+
+</pre>
+<div id="semi-loading" class="semi-loading" role="status" aria-live="polite">
+  <span id="semi-loading-spinner" class="semi-spinner" aria-hidden="true">[....]</span> <span id="semi-loading-text">Reading SemiVault contracts on Robinhood Chain…</span>
+</div>
+<div id="semi-app" aria-live="polite"></div>
+<pre class="semi-footer"><%- include(`${partials}/disclaimer`); -%></pre>
+<style>
+  .semi-action { margin: 0; padding: 0; border: 0; background: transparent; color: inherit; cursor: pointer; font: inherit; text-decoration: underline; }
+  .semi-action:disabled { cursor: not-allowed; opacity: .45; text-decoration: none; }
+  .semi-loading { padding: 10px 0; }
+  .semi-loading[hidden] { display: none; }
+  .semi-spinner { display: inline-block; width: 6ch; }
+  .semi-form-label { display: block; margin: 7px 0; }
+  .semi-form-label input { margin-left: 8px; font: inherit; }
+  #semi-app, #semi-app section { min-width: 0; }
+  #semi-banner, #semi-app pre { box-sizing: border-box; max-width: 100%; }
+  #semi-banner, #semi-app pre:not(.semi-market-table) { overflow-wrap: anywhere; white-space: pre-wrap; }
+  .semi-market-table { overflow-x: auto; white-space: pre; }
+  .semi-footer { box-sizing: border-box; max-width: 100%; overflow-wrap: anywhere; white-space: pre-wrap; }
+</style>
+<%- include(`${partials}/scripts_onchain`, {scriptname: 'robinhood_semi'}); -%>
+</body>
+</html>

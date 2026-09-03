@@ -197,6 +197,9 @@ dist/
 # vs code
 .vscode/
 
+# Local agent workspace
+.claude/
+
 # GitHub workflows and actions
 .github/
 

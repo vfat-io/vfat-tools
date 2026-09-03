@@ -1,14 +1,42 @@
 <!DOCTYPE html>
 <html lang="en">
-<%- include(`${partials}/head`); -%>
+<%- include(`${partials}/head`, {
+  noGlobalScripts: true,
+  pageMeta: {
+    title: 'Robinhood Chain Farms | vfat.tools',
+    description: 'Onchain farm TVL, APRs, rewards, positions, and direct wallet actions on Robinhood Chain.',
+    url: 'https://vfat.tools/robinhood/',
+    image: 'https://vfat.tools/img/robinhood-social.png',
+    imageAlt: 'vfat.tools Robinhood Chain protocol list.',
+    imageWidth: 1200,
+    imageHeight: 630
+  }
+}); -%>
 
 <body>
 <%- include(`${partials}/header_main`); -%>
-<pre class="container">
-    <div class="loader--1"></div>
-    <div id="log"></div>
-<%- include(`${partials}/disclaimer`); -%>
-</pre>
-<%- include(`${partials}/scripts`, {scriptname: 'robinhood'}); -%>
+<main class="robinhood-page">
+<nav class="robinhood-mobile-nav"><a href="/">[ vfat.tools ]</a></nav>
+<table class="robinhood-table">
+  <thead><tr><th>Protocol</th><th>Farms</th><th>vfat.io</th><th>Rewards</th><th>Mode</th></tr></thead>
+  <tbody>
+    <tr><td>Ripe</td><td><a href="./ripe/">Community farms</a></td><td>—</td><td>RIPE</td><td>Wallet-only</td></tr>
+    <tr><td>SemiVault</td><td><a href="./semi/">Staking</a></td><td>—</td><td>SEMI</td><td>Wallet-only</td></tr>
+    <tr><td>Up33</td><td><a href="./up33/">Concentrated liquidity</a></td><td><a href="https://vfat.io/yield?chains=4663&amp;protocols=up&amp;minTVL=0&amp;minRewards=0" target="_blank" rel="noopener noreferrer">vfat.io</a></td><td>UP</td><td>Wallet-only</td></tr>
+    <tr><td>GIGA</td><td><a href="./giga/">V2 + CL farms</a></td><td>—</td><td>GIGA</td><td>Wallet-only</td></tr>
+    <tr><td>Alandale</td><td><a href="./alandale/">Voter farms</a></td><td>—</td><td>LUTE</td><td>Wallet-only</td></tr>
+    <tr><td>Ramses</td><td><a href="./ramses/">Fee APR pools</a></td><td><a href="https://vfat.io/pools?chains=4663&amp;protocols=ramses&amp;minTVL=0" target="_blank" rel="noopener noreferrer">vfat.io</a></td><td>Fees</td><td>Wallet-only</td></tr>
+    <tr><td>Fables</td><td><a href="./fables/">Range pools</a></td><td><a href="https://vfat.io/pools?chains=4663&amp;protocols=fables&amp;minTVL=0" target="_blank" rel="noopener noreferrer">vfat.io</a></td><td>Fees</td><td>Wallet-only</td></tr>
+    <tr><td>Uniswap v4</td><td><a href="./uniswap-v4/">Sickle positions</a></td><td><a href="https://vfat.io/deposits?chains=4663" target="_blank" rel="noopener noreferrer">vfat.io</a></td><td>Fees</td><td>Sickle</td></tr>
+    <tr><td>Up33 CL</td><td><a href="./up33-cl/">Sickle positions</a></td><td><a href="https://vfat.io/yield?chains=4663&amp;protocols=up&amp;minTVL=0&amp;minRewards=0" target="_blank" rel="noopener noreferrer">vfat.io</a></td><td>UP</td><td>Sickle</td></tr>
+    <tr><td>Up33 V2</td><td><a href="./up33-v2/">Sickle farms</a></td><td><a href="https://vfat.io/yield?chains=4663&amp;protocols=up&amp;minTVL=0&amp;minRewards=0" target="_blank" rel="noopener noreferrer">vfat.io</a></td><td>UP</td><td>Sickle</td></tr>
+    <tr><td>Sickle</td><td><a href="./sickle/">Position recovery</a></td><td><a href="https://vfat.io/deposits?chains=4663" target="_blank" rel="noopener noreferrer">vfat.io</a></td><td>—</td><td>Wallet-only</td></tr>
+  </tbody>
+</table>
+<pre class="robinhood-disclaimer"><%- include(`${partials}/disclaimer`); -%></pre>
+</main>
+<style>
+.robinhood-page{max-width:920px;margin:20px 10px 50px;font-family:monospace}.robinhood-mobile-nav{display:none;margin-bottom:14px}.robinhood-table{width:100%;border-collapse:collapse;font:14px/1.45 monospace}.robinhood-table th,.robinhood-table td{padding:8px 10px;border:1px solid currentColor;text-align:left}.robinhood-table th{font-weight:bold}.robinhood-disclaimer{margin-top:24px;white-space:pre-wrap}@media(max-width:600px){body>div:not(.modal){display:none}.robinhood-page{margin:14px 8px 40px}.robinhood-mobile-nav{display:block}.robinhood-table{table-layout:fixed;font-size:12px}.robinhood-table th,.robinhood-table td{padding:6px;overflow-wrap:anywhere}.robinhood-table th:nth-child(4),.robinhood-table td:nth-child(4),.robinhood-table th:nth-child(5),.robinhood-table td:nth-child(5){display:none}.robinhood-table th:first-child{width:27%}.robinhood-table th:nth-child(3){width:20%}}
+</style>
 </body>
 </html>

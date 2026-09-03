@@ -7,11 +7,41 @@ let isProduction
 
 module.exports = (env = {}) => {
 
-  isProduction = env.production === true
+  // npm run build selects production through NODE_ENV and --mode, not
+  // --env production. Keep webpack's chunk runtime in the same mode as the
+  // subsequent filename-map step or dynamic imports will request stale,
+  // unhashed chunk names in the published site.
+  isProduction = env.production === true || process.env.NODE_ENV === 'production'
 
   return {
     entry: {
       app: ["core-js/stable", "regenerator-runtime/runtime", 'lodash.throttle', 'lodash.debounce', 'dompurify', 'picturefill', './src/js/index.js'],
+      // Up33 is intentionally independent of the global application bundle.
+      // It carries only its own onchain client dependencies and lazy-loads
+      // Reown only after the user explicitly chooses another wallet.
+      robinhood_up33: './src/js/robinhood_up33.js',
+      robinhood_semi: './src/js/robinhood_semi.js',
+      // Ripe's direct-RPC client is bundled separately so its optional
+      // other-wallet connector stays behind an explicit user action.
+      robinhood_ripe: './src/js/robinhood_ripe.js',
+      // GIGA is a standalone direct-RPC page. Its optional connector remains
+      // behind an explicit user action instead of entering the global bundle.
+      robinhood_giga: './src/js/robinhood_giga.js',
+      // Morpho is likewise a self-contained, direct-RPC page. Its wallet
+      // connector is lazy-loaded by the entry only after explicit intent.
+      robinhood_morpho: './src/js/robinhood_morpho.js',
+      // Alandale likewise has no global application, router, or wallet-vendor
+      // dependency: it is an independent official-RPC/onchain client.
+      robinhood_alandale: './src/js/robinhood_alandale.js',
+      // Ramses is a standalone fee-liquidity page. Optional wallet support is
+      // loaded only after explicit user intent.
+      robinhood_ramses: './src/js/robinhood_ramses.js',
+      // Sickle recovery reads the wallet's Sickle and manager NFTs directly.
+      // Reown remains a lazy import behind the explicit other-wallet action.
+      robinhood_sickle_wallet: './src/js/robinhood_sickle_wallet.js',
+      // Fables reads its pool registry, Uniswap v4 pool state, and ERC-6909
+      // range ledgers directly. Reown stays behind the other-wallet action.
+      robinhood_fables: './src/js/robinhood_fables.js',
     },
     output: {
       filename: isProduction ? '[name].[contenthash].js' : '[name].js',
@@ -106,7 +136,10 @@ module.exports = (env = {}) => {
           vendor: {
             test: /[\\/]node_modules[\\/]/,
             name: 'vendor',
-            chunks: 'all'
+            // Keep node_modules used by the standalone Up33 entry inside its
+            // own bundle. Otherwise this cache group makes the page fetch the
+            // full site-wide vendor payload before its small client starts.
+            chunks: (chunk) => chunk.name === 'app'
           }
         }
       }
