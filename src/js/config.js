@@ -13,7 +13,7 @@ const getInfuraId = () => {
 
 const INFURA_API_KEY = getInfuraId()
 
-export const customNetworks = [
+const rawNetworks = [
   {
     id: 1,
     name: 'Ethereum',
@@ -533,6 +533,21 @@ export const customNetworks = [
     blockExplorers: [{ name: 'Hemi Explorer', url: 'https://explorer.hemi.xyz' }]
   }
 ]
+
+// AppKit reads networks in the viem chain shape: rpcUrls.default.http and
+// blockExplorers.default. Given plain arrays it silently resolves no RPC URL,
+// and wallet_addEthereumChain throws on blockExplorers.default.url before the
+// request is ever sent, so a wallet that does not already know a chain can
+// never be asked to add it. Keep the list above readable and adapt it here.
+export const customNetworks = rawNetworks.map(network => ({
+  ...network,
+  rpcUrls: Array.isArray(network.rpcUrls)
+    ? { default: { http: network.rpcUrls } }
+    : network.rpcUrls,
+  blockExplorers: Array.isArray(network.blockExplorers)
+    ? { default: network.blockExplorers[0] }
+    : network.blockExplorers,
+}))
 
 // AppKit metadata configuration
 export const appKitMetadata = {
