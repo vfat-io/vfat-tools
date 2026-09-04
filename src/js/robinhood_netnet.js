@@ -132,7 +132,17 @@ const NetNet = (function () {
   const formatAmount = function (amount, decimals, digits) {
     if (amount === undefined || amount === null) return '—'
     const parts = ethers.utils.formatUnits(amount, decimals).split('.')
-    const fraction = (parts[1] || '').slice(0, digits === undefined ? 4 : digits).replace(/0+$/, '')
+    const width = digits === undefined ? 4 : digits
+    const raw = parts[1] || ''
+    let fraction = raw.slice(0, width).replace(/0+$/, '')
+    // The NET/USDG LP token is minted as sqrt(x*y) over 6- and 9-decimal legs,
+    // so the entire pool is worth ~2.7e-7 when read at the pair's nominal 18
+    // decimals. A real holder's balance is all leading zeros at four places.
+    // Widen to the first significant digits rather than reporting nothing held.
+    if (!fraction && parts[0] === '0') {
+      const lead = raw.search(/[1-9]/)
+      if (lead >= 0) fraction = raw.slice(0, lead + width).replace(/0+$/, '')
+    }
     return fraction ? parts[0] + '.' + fraction : parts[0]
   }
   const compact = function (value, digits) {
@@ -624,8 +634,9 @@ const NetNet = (function () {
   }
 
   // The estimate mirrors the depository's own pricing: payout = quote value in
-  // USDG divided by the quoted bond price. LP quotes are valued from the live
-  // pair reserves. The contract's maxPriceWad guard remains the binding check.
+  // USDG divided by the quoted bond price, where an LP quote is valued exactly
+  // as the depository values it rather than at market. The contract's
+  // maxPriceWad guard remains the binding check.
   function estimatePayout (market, amount) {
     const fund = state.fund; if (!fund || !Number.isFinite(market.priceUsdg) || market.priceUsdg <= 0) return NaN
     const quoteToken = token(market.quote)
@@ -634,8 +645,13 @@ const NetNet = (function () {
     const share = asNumber(amount, quoteToken.decimals) / asNumber(fund.lpSupply, quoteToken.decimals)
     const usdgSide = asNumber(fund.reserveUsdg, token(addresses.usdg).decimals)
     const netSide = asNumber(fund.reserveNet, token(addresses.net).decimals)
-    const lpValue = share * (usdgSide + netSide * fund.twapUsdg)
-    return Number.isFinite(lpValue) ? lpValue / market.priceUsdg : NaN
+    // The depository values LP the way its own _lpValueWad does: the geometric
+    // mean of the two legs, 2*sqrt(usdg * net), with the NET leg held at its
+    // 1 USDG floor rather than at market. Valuing that leg at TWAP would
+    // overstate an LP bond by more than an order of magnitude, and the floor is
+    // also what makes an LP bond accretive to backing in the first place.
+    const poolValue = 2 * Math.sqrt(usdgSide * netSide)
+    return Number.isFinite(poolValue) ? share * poolValue / market.priceUsdg : NaN
   }
 
   function openBond (market) {
