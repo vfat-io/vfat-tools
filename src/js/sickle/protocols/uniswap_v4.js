@@ -27,31 +27,6 @@ export function defaultProxyBases() {
   return ['/api/etherscan-v2']
 }
 
-export function defaultMoralisProxyBases() {
-  // In prod, the proxy is reverse-proxied at /api/moralis/wallet-nfts.
-  // In local dev, we *prefer* a locally-running proxy, but fall back to vfat.tools.
-  const hostname = (typeof window !== 'undefined' && window?.location?.hostname) || ''
-  if (isLocalhostHostname(hostname)) {
-    const protocol = (typeof window !== 'undefined' && window?.location?.protocol) || 'http:'
-    const localOrigin = `${protocol}//${hostname}:8787`
-    return [`${localOrigin}/api/moralis/wallet-nfts`, 'https://vfat.tools/api/moralis/wallet-nfts']
-  }
-  return ['/api/moralis/wallet-nfts']
-}
-
-function chainIdToInt(chainId) {
-  if (chainId == null) return NaN
-  if (typeof chainId === 'number') return chainId
-  const s = String(chainId).trim().toLowerCase()
-  if (!s) return NaN
-  if (s.startsWith('0x')) {
-    const n = parseInt(s, 16)
-    return Number.isFinite(n) ? n : NaN
-  }
-  const n = Number(s)
-  return Number.isFinite(n) ? n : NaN
-}
-
 export async function fetchEtherscanV2ViaProxy(params, opts = {}, retry = 0) {
   const bases = Array.isArray(opts.bases) && opts.bases.length > 0 ? opts.bases : defaultProxyBases()
 
@@ -83,43 +58,6 @@ export async function fetchEtherscanV2ViaProxy(params, opts = {}, retry = 0) {
   throw new Error(`Proxy request failed: ${lastErr?.message || lastErr}`)
 }
 
-export async function fetchMoralisWalletNftsViaProxy(params, opts = {}, retry = 0) {
-  const bases = Array.isArray(opts.bases) && opts.bases.length > 0 ? opts.bases : defaultMoralisProxyBases()
-
-  const search = new URLSearchParams()
-  for (const [k, v] of Object.entries(params || {})) {
-    if (v === undefined || v === null || v === '') continue
-    if (Array.isArray(v)) {
-      for (const item of v) {
-        if (item === undefined || item === null || item === '') continue
-        search.append(k, String(item))
-      }
-      continue
-    }
-    search.set(k, String(v))
-  }
-
-  let lastErr = null
-  for (const base of bases) {
-    const url = `${String(base).replace(/\?$/u, '')}?${search.toString()}`
-    try {
-      const resp = await fetch(url, { method: 'GET' })
-      if (!resp.ok) throw new Error(`Proxy request failed (${resp.status})`)
-
-      const res = await resp.json()
-      return res
-    } catch (e) {
-      lastErr = e
-    }
-  }
-
-  if (retry < 2) {
-    return await fetchMoralisWalletNftsViaProxy(params, opts, retry + 1)
-  }
-
-  throw new Error(`Proxy request failed: ${lastErr?.message || lastErr}`)
-}
-
 export function normalizeAddress(a) {
   return (a || '').toLowerCase()
 }
@@ -135,57 +73,7 @@ export function parseTokenIdFromNftTxRow(row) {
   }
 }
 
-export function parseTokenIdFromMoralisNftRow(row) {
-  const v = row?.token_id ?? row?.tokenId ?? row?.tokenID
-  if (v == null) return null
-  try {
-    return BigInt(String(v))
-  } catch {
-    return null
-  }
-}
-
 export async function getOwnedErc721TokenIdsViaProxy({ chainId, contractAddress, ownerAddress, bases }) {
-  // BSC (56), Optimism (10) and Base (8453): use Moralis-backed proxy because free-tier Etherscan v2 does not cover these chains.
-  const chainIdInt = chainIdToInt(chainId)
-  if (chainIdInt === 56 || chainIdInt === 10 || chainIdInt === 8453) {
-    const owned = new Set()
-    let cursor = null
-
-    const chain = chainIdInt === 56 ? 'bsc' : chainIdInt === 10 ? 'optimism' : chainIdInt === 8453 ? 'base' : null
-
-    while (true) {
-      const data = await fetchMoralisWalletNftsViaProxy(
-        {
-          address: ownerAddress,
-          chain: chain,
-          token_addresses: [contractAddress],
-          cursor: cursor || undefined,
-          limit: 100,
-          exclude_spam: true,
-        },
-        { bases }
-      )
-
-      const rows = Array.isArray(data?.result) ? data.result : []
-      for (const row of rows) {
-        // Defensive: Moralis should already filter by token_addresses.
-        if (normalizeAddress(row?.token_address) !== normalizeAddress(contractAddress)) continue
-        const tokenId = parseTokenIdFromMoralisNftRow(row)
-        if (tokenId === null) continue
-        owned.add(tokenId.toString())
-      }
-
-      const nextCursor = data?.cursor
-      if (!nextCursor || rows.length === 0) break
-      cursor = nextCursor
-    }
-
-    return Array.from(owned)
-      .map(x => BigInt(x))
-      .sort((a, b) => (a < b ? -1 : a > b ? 1 : 0))
-  }
-
   const owner = normalizeAddress(ownerAddress)
   const owned = new Set()
 
