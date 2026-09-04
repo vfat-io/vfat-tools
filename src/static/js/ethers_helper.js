@@ -652,8 +652,42 @@ async function init_ethers() {
 }
 
 const switchNetwork = async function (network) {
-  const getNetwork = window.customNetworks?.find(n => n.id === parseInt(network.chainId, 16))
-  if (getNetwork) getAppKit()?.switchNetwork?.(getNetwork);
+  const targetChainId = parseInt(network.chainId, 16)
+  const getNetwork = window.customNetworks?.find(n => n.id === targetChainId)
+
+  if (getNetwork) {
+    try {
+      // Over WalletConnect the switch is a relay round-trip to the wallet, and
+      // adding an unknown chain takes a second prompt. Reloading before this
+      // settles discards the request and drops the user back on the same
+      // "please switch network" prompt, with no way to ever get past it.
+      await getAppKit()?.switchNetwork?.(getNetwork)
+
+      // switchNetwork resolves as soon as the wallet answers. Over WalletConnect
+      // the provider keeps reporting the old chain for a moment after that,
+      // until the session update lands, and it is the provider the next page
+      // load reads. Reloading in between puts the user back on this same
+      // prompt, so wait for the connection itself to report the new chain.
+      const walletChainIsTarget = async () => {
+        const provider = window.store?.eip155
+        if (!provider) {
+          return getAppKit()?.getChainId?.() === targetChainId
+        }
+        try {
+          return parseInt(await provider.request({ method: 'eth_chainId' }), 16) === targetChainId
+        } catch (e) {
+          return false
+        }
+      }
+
+      for (let i = 0; i < 20 && !(await walletChainIsTarget()); i++) {
+        await new Promise(resolve => setTimeout(resolve, 250))
+      }
+    } catch (e) {
+      console.error('Failed to switch network', e)
+    }
+  }
+
   window.location.reload()
 }
 
