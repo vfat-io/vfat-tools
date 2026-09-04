@@ -169,6 +169,173 @@ export async function getOwnedErc721TokenIdsOnchain({ provider, contractAddress,
     .sort((a, b) => (a < b ? -1 : a > b ? 1 : 0))
 }
 
+export function defaultPositionsProxyBases() {
+  // Same shape as the Etherscan proxy: the page only ever talks to vfat.tools,
+  // and the proxy decides what is upstream of it.
+  const hostname = (typeof window !== 'undefined' && window?.location?.hostname) || ''
+  if (isLocalhostHostname(hostname)) {
+    const protocol = (typeof window !== 'undefined' && window?.location?.protocol) || 'http:'
+    return [`${protocol}//${hostname}:8787/api/positions`, 'https://vfat.tools/api/positions']
+  }
+  return ['/api/positions']
+}
+
+export async function fetchPositionsViaProxy({ address }, opts = {}) {
+  const bases =
+    Array.isArray(opts.bases) && opts.bases.length > 0 ? opts.bases : defaultPositionsProxyBases()
+
+  const search = new URLSearchParams({ address: String(address) })
+
+  let lastErr = null
+  for (const base of bases) {
+    try {
+      const resp = await fetch(`${String(base).replace(/\?$/u, '')}?${search.toString()}`)
+      if (!resp.ok) throw new Error(`Positions request failed (${resp.status})`)
+      return await resp.json()
+    } catch (e) {
+      lastErr = e
+    }
+  }
+
+  throw new Error(`Positions request failed: ${lastErr?.message || lastErr}`)
+}
+
+// Positions are keyed by the connected wallet, not by the Sickle: the service
+// resolves the Sickle itself and reports it back on each row.
+export async function getOwnedErc721TokenIdsFromPositions({
+  chainId,
+  contractAddress,
+  ownerAddress,
+  walletAddress,
+  bases,
+}) {
+  const address = walletAddress || ownerAddress
+  if (!address) throw new Error('Positions lookup needs an address')
+
+  const payload = await fetchPositionsViaProxy({ address }, { bases })
+  const rows = Array.isArray(payload) ? payload : payload?.positions || payload?.balances || []
+
+  const manager = normalizeAddress(contractAddress)
+  const sickle = normalizeAddress(ownerAddress)
+  const chain = Number(chainId)
+  const owned = new Set()
+
+  for (const row of rows) {
+    if (Number(row?.chainId) !== chain) continue
+
+    const nft = row?.nft
+    if (!nft || nft.id == null) continue
+    if (normalizeAddress(nft.managerAddress) !== manager) continue
+
+    // Only count what this Sickle holds, not everything the wallet owns.
+    const holder = normalizeAddress(nft.ownerAddress || row?.sickleAddress)
+    if (sickle && holder && holder !== sickle) continue
+
+    try {
+      owned.add(BigInt(String(nft.id)).toString())
+    } catch {
+      // ignore ids the service reports in a shape we cannot parse
+    }
+  }
+
+  return Array.from(owned)
+    .map(x => BigInt(x))
+    .sort((a, b) => (a < b ? -1 : a > b ? 1 : 0))
+}
+
+export function rpcUrlForChain(chainId) {
+  const networks = (typeof window !== 'undefined' && window.customNetworks) || []
+  const network = networks.find(n => Number(n?.id) === Number(chainId))
+  const url = network?.rpcUrls?.default?.http?.[0]
+  return typeof url === 'string' && url ? url : null
+}
+
+// Read logs through the chain's own RPC rather than the wallet's: a wallet
+// provider need not serve log history for a chain it is merely connected to.
+export function chainReadProvider(App, chainId) {
+  const rpcUrl = rpcUrlForChain(chainId)
+  if (rpcUrl) {
+    try {
+      return new ethers.providers.JsonRpcProvider(rpcUrl)
+    } catch (e) {
+      console.log('Falling back to the wallet provider for reads:', e)
+    }
+  }
+  return App?.provider || null
+}
+
+// One ladder for every v4 page, best source first.
+//
+// Onchain logs are exact and need no vendor coverage, but most public RPCs cap
+// eth_getLogs well below a full-history query, so the attempt is best-effort.
+// The indexer covers chains the RPC will not, and the positions service covers
+// chains the indexer's plan will not. Callers treat an empty result as "ask the
+// user for the id" rather than as an answer.
+export async function resolveOwnedErc721TokenIds({
+  App,
+  chainId,
+  contractAddress,
+  ownerAddress,
+  walletAddress,
+  fromBlock = 0,
+  bases,
+}) {
+  const tried = []
+
+  const provider = chainReadProvider(App, chainId)
+  if (provider) {
+    try {
+      const ids = await getOwnedErc721TokenIdsOnchain({
+        provider,
+        contractAddress,
+        ownerAddress,
+        fromBlock,
+      })
+      if (ids.length > 0) {
+        console.log(`Found ${ids.length} NFT(s) onchain for ${ownerAddress}`)
+        return ids
+      }
+      // An RPC that quietly clamps the block range instead of refusing it
+      // returns a short answer, not an error, and an empty one is
+      // indistinguishable from holding nothing. On a page whose job is getting
+      // funds out, prefer asking another source over reporting "none".
+      tried.push('onchain: nothing returned')
+    } catch (e) {
+      tried.push(`onchain: ${e?.message || e}`)
+    }
+  }
+
+  try {
+    const ids = await getOwnedErc721TokenIdsViaProxy({ chainId, contractAddress, ownerAddress, bases })
+    if (ids.length > 0) {
+      console.log(`Found ${ids.length} NFT(s) via the indexer for ${ownerAddress}`)
+      return ids
+    }
+    // An unsupported chain and a genuinely empty wallet look identical here, so
+    // keep going rather than reporting "none" on the indexer's say-so.
+    tried.push('indexer: nothing returned')
+  } catch (e) {
+    tried.push(`indexer: ${e?.message || e}`)
+  }
+
+  try {
+    const ids = await getOwnedErc721TokenIdsFromPositions({
+      chainId,
+      contractAddress,
+      ownerAddress,
+      walletAddress,
+      bases,
+    })
+    console.log(`Found ${ids.length} NFT(s) via positions for ${ownerAddress}`)
+    return ids
+  } catch (e) {
+    tried.push(`positions: ${e?.message || e}`)
+  }
+
+  console.log('No NFT source could answer:', tried.join(' | '))
+  return []
+}
+
 export function decodeSignedIntN(unsigned, bits) {
   const u = BigInt(unsigned)
   const b = BigInt(bits)

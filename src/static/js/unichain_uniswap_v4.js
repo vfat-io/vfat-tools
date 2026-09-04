@@ -158,8 +158,16 @@ async function getV4PoolSlot0(App, poolIdBytes32) {
   return uniswapV4Helpers().getV4PoolSlot0(App, poolIdBytes32, state_view_address_v4)
 }
 
-async function getOwnedErc721TokenIdsViaProxy({ chainId, contractAddress, ownerAddress }) {
-  return uniswapV4Helpers().getOwnedErc721TokenIdsViaProxy({ chainId, contractAddress, ownerAddress })
+// Onchain logs first, then the indexer, then the positions service. Each tier
+// covers chains the one before it cannot; see resolveOwnedErc721TokenIds.
+async function getOwnedNftIds({ App, chainId, contractAddress, ownerAddress }) {
+  return uniswapV4Helpers().resolveOwnedErc721TokenIds({
+    App,
+    chainId,
+    contractAddress,
+    ownerAddress,
+    walletAddress: App.YOUR_ADDRESS,
+  })
 }
 
 async function main() {
@@ -190,7 +198,8 @@ async function main() {
 }
 
 const withdraw_nfts = async function(App, nft_manager_v4, nft_manager_address_v4, sickleAddress) {
-  const nft_ids = await getOwnedErc721TokenIdsViaProxy({
+  const nft_ids = await getOwnedNftIds({
+    App,
     chainId: UNICHAIN_CHAIN_ID,
     contractAddress: nft_manager_address_v4,
     ownerAddress: sickleAddress,
@@ -199,8 +208,8 @@ const withdraw_nfts = async function(App, nft_manager_v4, nft_manager_address_v4
   let active_nfts = []
 
   if (nft_ids.length === 0) {
-    _print('No NFTs found via proxy')
-    throw new Error('No NFTs found via proxy')
+    _print('No NFTs found')
+    throw new Error('No NFTs found')
   }
 
   const liquidity_calls = nft_ids.map(nft => nft_manager_v4.getPositionLiquidity(nft))
@@ -214,7 +223,7 @@ const withdraw_nfts = async function(App, nft_manager_v4, nft_manager_address_v4
 
   if (active_nfts.length === 0) {
     _print('No active NFTs')
-    throw new Error('No active NFTs found via proxy')
+    throw new Error('No active NFTs found')
   }
 
   let token_ids = ''
@@ -277,7 +286,7 @@ const withdraw_nfts = async function(App, nft_manager_v4, nft_manager_address_v4
 
   if (positions.length === 0) {
     _print('No active NFTs')
-    throw new Error('No active NFTs found via proxy')
+    throw new Error('No active NFTs found')
   }
 
   for (const p of positions) {

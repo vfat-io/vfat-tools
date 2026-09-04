@@ -157,45 +157,16 @@ async function getV4PoolSlot0(App, poolIdBytes32) {
   return uniswapV4Helpers().getV4PoolSlot0(App, poolIdBytes32, state_view_address_v4)
 }
 
-async function getOwnedErc721TokenIdsViaProxy({ chainId, contractAddress, ownerAddress }) {
-  return uniswapV4Helpers().getOwnedErc721TokenIdsViaProxy({ chainId, contractAddress, ownerAddress })
-}
-
-// Read through the chain's own RPC rather than the wallet's. Over WalletConnect
-// the wallet provider serves reads from whatever endpoint it happens to use for
-// this chain, which need not carry log history.
-function robinhoodReadProvider(App) {
-  const rpcUrl = window.NETWORKS?.ROBINHOOD?.rpcUrls?.[0]
-  if (rpcUrl) {
-    try {
-      return new ethers.providers.JsonRpcProvider(rpcUrl)
-    } catch (e) {
-      console.log('Falling back to the wallet provider for reads:', e)
-    }
-  }
-  return App.provider
-}
-
-// Onchain enumeration first: it needs no API key and no vendor chain coverage.
-// Etherscan v2 does not index Robinhood Chain at all, so the proxy is only a
-// fallback here, ahead of asking the user to type the NFT id in by hand.
-async function getOwnedNftIds(App, contractAddress, ownerAddress) {
-  try {
-    const ids = await uniswapV4Helpers().getOwnedErc721TokenIdsOnchain({
-      provider: robinhoodReadProvider(App),
-      contractAddress,
-      ownerAddress,
-    })
-    console.log(`Found ${ids.length} NFT(s) onchain for ${ownerAddress}`)
-    return ids
-  } catch (e) {
-    console.log('Onchain NFT lookup failed, trying the proxy:', e)
-    return getOwnedErc721TokenIdsViaProxy({
-      chainId: ROBINHOOD_CHAIN_ID,
-      contractAddress,
-      ownerAddress,
-    })
-  }
+// Onchain logs first, then the indexer, then the positions service. Each tier
+// covers chains the one before it cannot; see resolveOwnedErc721TokenIds.
+async function getOwnedNftIds({ App, chainId, contractAddress, ownerAddress }) {
+  return uniswapV4Helpers().resolveOwnedErc721TokenIds({
+    App,
+    chainId,
+    contractAddress,
+    ownerAddress,
+    walletAddress: App.YOUR_ADDRESS,
+  })
 }
 
 async function main() {
@@ -226,7 +197,12 @@ async function main() {
 }
 
 const withdraw_nfts = async function (App, nft_manager_v4, nft_manager_address_v4, sickleAddress) {
-  const nft_ids = await getOwnedNftIds(App, nft_manager_address_v4, sickleAddress)
+  const nft_ids = await getOwnedNftIds({
+    App,
+    chainId: ROBINHOOD_CHAIN_ID,
+    contractAddress: nft_manager_address_v4,
+    ownerAddress: sickleAddress,
+  })
 
   let active_nfts = []
 

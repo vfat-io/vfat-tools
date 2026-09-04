@@ -23,12 +23,21 @@ const SNOWTRACE_API_URL = process.env.SNOWTRACE_API_URL || 'https://api.snowtrac
 const ETHERSCAN_API_KEY = process.env.ETHERSCAN_API_KEY || ''
 const SNOWTRACE_API_KEY = process.env.SNOWTRACE_API_KEY || ''
 
+// Position lookup upstream. Configured here rather than in the page so the
+// browser only ever talks to vfat.tools and the upstream stays server-side.
+const POSITIONS_API_URL = process.env.POSITIONS_API_URL || ''
+const POSITIONS_API_KEY = process.env.POSITIONS_API_KEY || ''
+
 if (!ETHERSCAN_API_KEY) {
   console.warn('[proxy] ETHERSCAN_API_KEY is not set. Non-AVAX requests will fail.')
 }
 
 if (!SNOWTRACE_API_KEY) {
   console.warn('[proxy] SNOWTRACE_API_KEY is not set. AVAX (43114) requests will fail.')
+}
+
+if (!POSITIONS_API_URL) {
+  console.warn('[proxy] POSITIONS_API_URL is not set. /api/positions will report 501.')
 }
 
 const ALLOWED = new Set([
@@ -88,6 +97,41 @@ const server = http.createServer(async (req, res) => {
     // Health check
     if (url.pathname === '/healthz') {
       sendJson(res, 200, { ok: true })
+      return
+    }
+
+    // Position lookup, used as the last automatic tier of the v4 NFT lookup on
+    // chains the Etherscan plan does not cover.
+    // Example:
+    //   /api/positions?address=0x...
+    if (url.pathname === '/api/positions') {
+      if (!POSITIONS_API_URL) {
+        sendJson(res, 501, { error: 'Position lookup is not configured on this proxy' })
+        return
+      }
+
+      // Missing and malformed are both the caller's fault, so answer 400 rather
+      // than letting a thrown required-param error surface as a 500.
+      const address = url.searchParams.get('address') || ''
+      if (!/^0x[0-9a-fA-F]{40}$/u.test(address)) {
+        sendJson(res, 400, { error: 'address must be a 0x-prefixed 20-byte address' })
+        return
+      }
+
+      const upstream = new URL(POSITIONS_API_URL)
+      upstream.searchParams.set('addresses', address)
+
+      const headers = { accept: 'application/json' }
+      if (POSITIONS_API_KEY) headers.authorization = `Bearer ${POSITIONS_API_KEY}`
+
+      const upstreamResp = await fetch(upstream.toString(), { method: 'GET', headers })
+      const text = await upstreamResp.text()
+
+      res.writeHead(upstreamResp.status, {
+        'content-type': upstreamResp.headers.get('content-type') || 'application/json; charset=utf-8',
+        'cache-control': 'no-store',
+      })
+      res.end(text)
       return
     }
 
