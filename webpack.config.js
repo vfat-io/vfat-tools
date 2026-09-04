@@ -45,6 +45,10 @@ module.exports = (env = {}) => {
       // Raphael reads its Voter, pool factory, gauges, and voting escrow
       // directly over the official RPC. Reown stays behind the other-wallet action.
       robinhood_raphael: './src/js/robinhood_raphael.js',
+      // NetNet reads its treasury, staking, distributor, pair oracle, bond
+      // depository, and inverse bond directly. Reown stays behind the
+      // other-wallet action.
+      robinhood_netnet: './src/js/robinhood_netnet.js',
     },
     output: {
       filename: isProduction ? '[name].[contenthash].js' : '[name].js',
