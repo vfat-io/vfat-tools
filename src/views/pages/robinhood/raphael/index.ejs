@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include(`${partials}/head`, {
+  noGlobalScripts: true,
+  pageMeta: {
+    title: 'Raphael Exchange Farms on Robinhood Chain | vfat.tools',
+    description: 'Raphael Exchange pools, gauge APRs, RAPH emissions, veRAPH locks, and direct wallet actions on Robinhood Chain.',
+    url: 'https://vfat.tools/robinhood/raphael/',
+    image: 'https://vfat.tools/img/robinhood-raphael-social.png',
+    imageAlt: 'Live vfat.tools Raphael Exchange farm table on Robinhood Chain.',
+    imageWidth: 1200,
+    imageHeight: 630
+  }
+}); -%>
+
+<body>
+<%- include(`${partials}/header_main`); -%>
+<main class="raphael-page">
+<nav class="raphael-mobile-nav" aria-label="Raphael page navigation">
+  <a href="../">[ Robinhood farms ]</a> <a href="/">[ vfat.tools ]</a>
+</nav>
+<div class="raphael-toolbar"><span id="raphael-wallet-status"></span> <button id="raphael-connect" class="raphael-link-button" type="button">[ connect ]</button> <button id="raphael-other-wallet" class="raphael-link-button" type="button">[ other wallet ]</button> <button id="raphael-inactive-toggle" class="raphael-link-button" type="button">[ show inactive ]</button> <button id="raphael-claim-all" class="raphael-link-button" type="button" hidden>[ claim all RAPH ]</button> <a href="https://www.raphael.exchange" target="_blank" rel="noopener noreferrer">[ app ]</a> <a href="https://docs.raphael.exchange" target="_blank" rel="noopener noreferrer">[ docs ]</a></div>
+<p id="raphael-status" class="raphael-status" role="status" hidden></p>
+<p id="raphael-overview" class="raphael-summary" aria-live="polite" hidden></p>
+
+<div id="raphael-loading" class="raphael-loading" role="status" aria-live="polite">
+  <span class="loader--1" aria-hidden="true"></span> <span id="raphael-loading-text">Reading Raphael pools…</span>
+</div>
+
+<section class="raphael-section">
+  <div class="raphael-table-scroll"><div id="raphael-farms" aria-live="polite"></div></div>
+</section>
+
+<section id="raphael-positions-section" class="raphael-section" hidden>
+  <div class="raphael-table-scroll"><div id="raphael-positions" aria-live="polite"></div></div>
+</section>
+
+<section id="raphael-locks-section" class="raphael-section" hidden>
+  <div class="raphael-toolbar"><span>veRAPH</span> <button id="raphael-create-lock" class="raphael-link-button" type="button">[ create lock ]</button></div>
+  <div class="raphael-table-scroll"><div id="raphael-locks" aria-live="polite"></div></div>
+</section>
+</main>
+
+<dialog id="raphael-action-dialog" class="raphael-action-dialog" aria-labelledby="raphael-action-title">
+  <form method="dialog" class="raphael-dialog-close-row"><button type="submit">[ close ]</button></form>
+  <div id="raphael-action-content"></div>
+</dialog>
+
+<style>
+  .raphael-page { margin: 20px 10px 50px; max-width: 1440px; }
+  .raphael-page, .raphael-page * { font-family: monospace; }
+  .raphael-mobile-nav { display: none; }
+  .raphael-toolbar, .raphael-summary, .raphael-status { margin: 0 0 14px; overflow-wrap: anywhere; font: 14px/1.45 monospace; text-align: left; }
+  .raphael-status { color: #d95757; }
+  .raphael-status[data-kind="success"] { color: var(--highlight-color); }
+  .raphael-link-button, .raphael-action-button, .raphael-action-dialog button { margin: 0; padding: 0; border: 0; background: transparent; color: inherit; cursor: pointer; font: inherit; text-decoration: underline; }
+  .raphael-link-button:hover, .raphael-action-button:hover, .raphael-action-dialog button:hover { color: var(--highlight-color); }
+  .raphael-link-button:disabled, .raphael-action-button:disabled, .raphael-action-dialog button:disabled { cursor: not-allowed; opacity: .45; text-decoration: none; }
+  .raphael-link-button[hidden] { display: none; }
+  .raphael-loading { padding: 10px 0; }
+  .raphael-loading[hidden] { display: none; }
+  .raphael-section { margin-bottom: 26px; }
+  .raphael-section[hidden] { display: none; }
+  .raphael-table-scroll { overflow-x: auto; }
+  .raphael-table { width: 100%; min-width: 980px; table-layout: fixed; border-collapse: collapse; font-size: 13px; }
+  .raphael-table th, .raphael-table td { padding: 7px 9px; border: 1px solid currentColor; vertical-align: top; text-align: right; white-space: nowrap; }
+  .raphael-table th:first-child, .raphael-table td:first-child, .raphael-table th:last-child, .raphael-table td:last-child { text-align: left; }
+  .raphael-table .raphael-pair { display: block; overflow-wrap: anywhere; white-space: normal; }
+  .raphael-table .raphael-kind { display: block; margin-top: 3px; color: var(--highlight-color); }
+  .raphael-table .raphael-kind:empty { display: none; }
+  .raphael-table .raphael-values span { display: block; }
+  .raphael-table .raphael-values span + span { margin-top: 3px; }
+  .raphael-table .raphael-actions { min-width: 102px; white-space: normal; }
+  .raphael-table .raphael-actions > * { display: block; }
+  .raphael-table .raphael-actions > * + * { margin-top: 4px; }
+  .raphael-action-dialog { width: min(620px, calc(100vw - 32px)); padding: 16px; border: 1px solid currentColor; background: var(--main-background-color); color: var(--main-text-color); }
+  .raphael-action-dialog::backdrop { background: rgba(0, 0, 0, .55); }
+  .raphael-dialog-close-row { margin: 0 0 18px; text-align: right; }
+  .raphael-action-dialog h2 { max-width: none; margin: 0 0 8px; padding: 0; border: 0; color: inherit; font: bold 16px/1.4 monospace; text-align: left; }
+  .raphael-action-dialog p { margin: 0 0 14px; color: inherit; font: 14px/1.5 monospace; text-align: left; overflow-wrap: anywhere; }
+  .raphael-action-dialog .raphael-dialog-heading { margin: 18px 0 4px; padding-top: 12px; border-top: 1px solid currentColor; font-weight: bold; }
+  .raphael-action-dialog .raphael-quote { min-height: 20px; margin: 8px 0 4px; color: var(--highlight-color); font-size: 13px; }
+  .raphael-form-label { display: block; margin: 10px 0 5px; font: 13px/1.4 monospace; }
+  .raphael-input-row { display: flex; }
+  .raphael-input-row input { width: 100%; min-width: 0; padding: 5px 7px; border: 1px solid currentColor; border-radius: 0; background: transparent; color: inherit; font: 16px/1.4 monospace; }
+  .raphael-input-row button { margin-left: 10px; white-space: nowrap; }
+  .raphael-action-note { min-height: 40px; margin: 12px 0; font: 13px/1.45 monospace; white-space: pre-wrap; }
+  .raphael-dialog-actions { display: flex; flex-wrap: wrap; gap: 16px; margin: 10px 0; }
+  .raphael-vote-list { max-height: 50vh; margin: 8px 0; overflow-y: auto; }
+  .raphael-vote-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 4px 0; font: 13px/1.4 monospace; }
+  .raphael-vote-row input { width: 7ch; padding: 3px 6px; border: 1px solid currentColor; border-radius: 0; background: transparent; color: inherit; font: 14px/1.4 monospace; text-align: right; }
+  @media (max-width: 600px) {
+    html, body { min-width: 0; max-width: 100%; overflow-x: hidden; }
+    body > div:not(.modal) { display: none; }
+    .raphael-page { box-sizing: border-box; width: calc(100% - 16px); max-width: none; margin: 14px 8px 40px; overflow-x: hidden; }
+    .raphael-mobile-nav { display: block; margin-bottom: 14px; }
+    .raphael-toolbar, .raphael-summary { font-size: 12px; }
+    .raphael-table-scroll { overflow: visible; }
+    .raphael-table { min-width: 0; table-layout: fixed; font-size: 13px; }
+    .raphael-table th, .raphael-table td { padding: 7px; }
+    .raphael-table th { white-space: normal; }
+    .raphael-farm-table th:nth-child(3), .raphael-farm-table td:nth-child(3), .raphael-farm-table th:nth-child(5), .raphael-farm-table td:nth-child(5), .raphael-farm-table th:nth-child(6), .raphael-farm-table td:nth-child(6) { display: none; }
+    .raphael-farm-table th:nth-child(1) { width: 38%; }
+    .raphael-farm-table th:nth-child(2) { width: 20%; }
+    .raphael-farm-table th:nth-child(4) { width: 17%; }
+    .raphael-farm-table th:nth-child(7) { width: 25%; }
+    .raphael-wallet-table th:nth-child(3), .raphael-wallet-table td:nth-child(3), .raphael-wallet-table th:nth-child(5), .raphael-wallet-table td:nth-child(5) { display: none; }
+    .raphael-wallet-table th:nth-child(1) { width: 34%; }
+    .raphael-wallet-table th:nth-child(2) { width: 22%; }
+    .raphael-wallet-table th:nth-child(4) { width: 22%; }
+    .raphael-wallet-table th:nth-child(6) { width: 22%; }
+    .raphael-table td:first-child { white-space: normal; overflow-wrap: anywhere; }
+    .raphael-table .raphael-actions { min-width: 0; }
+  }
+</style>
+<%- include(`${partials}/scripts_onchain`, {scriptname: 'robinhood_raphael'}); -%>
+</body>
+</html>

@@ -42,6 +42,9 @@ module.exports = (env = {}) => {
       // Fables reads its pool registry, Uniswap v4 pool state, and ERC-6909
       // range ledgers directly. Reown stays behind the other-wallet action.
       robinhood_fables: './src/js/robinhood_fables.js',
+      // Raphael reads its Voter, pool factory, gauges, and voting escrow
+      // directly over the official RPC. Reown stays behind the other-wallet action.
+      robinhood_raphael: './src/js/robinhood_raphael.js',
     },
     output: {
       filename: isProduction ? '[name].[contenthash].js' : '[name].js',
