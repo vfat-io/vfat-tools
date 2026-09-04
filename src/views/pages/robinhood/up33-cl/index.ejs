@@ -1,6 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
-<%- include(`${partials}/head`); -%>
+<%- include(`${partials}/head`, {
+  pageMeta: {
+    title: 'Up33 CL Pools on Robinhood Chain | vfat.tools',
+    description: 'Inspect Up33 concentrated-liquidity positions held by your Sickle on Robinhood Chain.',
+    url: 'https://vfat.tools/robinhood/up33-cl/',
+    image: 'https://vfat.tools/img/robinhood-up33-cl-social.png',
+    imageAlt: 'vfat.tools Up33 concentrated-liquidity Sickle helper on Robinhood Chain.',
+    imageWidth: 1200,
+    imageHeight: 630
+  }
+}); -%>
 
 <body>
 <%- include(`${partials}/header_main`); -%>
