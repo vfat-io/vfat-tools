@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include(`${partials}/head`, {
+  noGlobalScripts: true,
+  pageMeta: {
+    title: 'NetNet Capital on Robinhood Chain | vfat.tools',
+    description: 'NetNet treasury backing, sNET staking APY, bond discounts, buyback bids, and direct wallet actions on Robinhood Chain.',
+    url: 'https://vfat.tools/robinhood/netnet/',
+    image: 'https://vfat.tools/img/robinhood-social-v2.png',
+    imageAlt: 'Live vfat.tools NetNet Capital treasury and staking view on Robinhood Chain.',
+    imageWidth: 1200,
+    imageHeight: 630
+  }
+}); -%>
+
+<body>
+<%- include(`${partials}/header_main`); -%>
+<main class="netnet-page">
+<nav class="netnet-mobile-nav" aria-label="NetNet page navigation">
+  <a href="../">[ Robinhood farms ]</a> <a href="/">[ vfat.tools ]</a>
+</nav>
+<div class="netnet-toolbar"><span id="netnet-wallet-status"></span> <button id="netnet-connect" class="netnet-link-button" type="button">[ connect ]</button> <button id="netnet-other-wallet" class="netnet-link-button" type="button">[ other wallet ]</button> <button id="netnet-rebase" class="netnet-link-button" type="button" hidden>[ rebase not due ]</button> <a href="https://app.netnet.capital" target="_blank" rel="noopener noreferrer">[ app ]</a> <a href="https://docs.netnet.capital" target="_blank" rel="noopener noreferrer">[ docs ]</a></div>
+<p id="netnet-status" class="netnet-status" role="status" hidden></p>
+<p id="netnet-overview" class="netnet-summary" aria-live="polite" hidden></p>
+
+<div id="netnet-loading" class="netnet-loading" role="status" aria-live="polite">
+  <span class="loader--1" aria-hidden="true"></span> <span id="netnet-loading-text">Reading the NetNet treasury, staking, and oracle…</span>
+</div>
+
+<section class="netnet-section">
+  <h2 class="netnet-heading">Fund</h2>
+  <p class="netnet-note">NET is backed by a USDG treasury. Staked NET becomes sNET, which rebases every epoch at a rate set by the market premium over backing: nothing is paid at or below NAV, and the rate reaches its maximum at the premium shown below.</p>
+  <div class="netnet-table-scroll"><div id="netnet-fund" aria-live="polite"></div></div>
+</section>
+
+<section class="netnet-section">
+  <h2 class="netnet-heading">Your position</h2>
+  <div class="netnet-table-scroll"><div id="netnet-staking" aria-live="polite"></div></div>
+</section>
+
+<section class="netnet-section">
+  <h2 class="netnet-heading">Bonds</h2>
+  <p class="netnet-note">Bonds sell NET for USDG or NET/USDG liquidity at a discount to the oracle price, floored at NAV so every sale adds to backing. Payout vests before it can be redeemed.</p>
+  <div class="netnet-table-scroll"><div id="netnet-bonds" aria-live="polite"></div></div>
+</section>
+
+<section id="netnet-notes-section" class="netnet-section" hidden>
+  <h2 class="netnet-heading">Your bonds</h2>
+  <div class="netnet-table-scroll"><div id="netnet-notes" aria-live="polite"></div></div>
+</section>
+
+<section class="netnet-section">
+  <h2 class="netnet-heading">Buyback</h2>
+  <div class="netnet-table-scroll"><div id="netnet-buyback" aria-live="polite"></div></div>
+</section>
+</main>
+
+<dialog id="netnet-action-dialog" class="netnet-action-dialog" aria-labelledby="netnet-action-title">
+  <form method="dialog" class="netnet-dialog-close-row"><button type="submit">[ close ]</button></form>
+  <div id="netnet-action-content"></div>
+</dialog>
+
+<style>
+  .netnet-page { margin: 20px 10px 50px; max-width: 1440px; }
+  .netnet-page, .netnet-page * { font-family: monospace; }
+  .netnet-mobile-nav { display: none; }
+  .netnet-toolbar, .netnet-summary, .netnet-status, .netnet-note { margin: 0 0 14px; overflow-wrap: anywhere; font: 14px/1.45 monospace; text-align: left; }
+  .netnet-note { color: var(--highlight-color); font-size: 13px; }
+  .netnet-status { color: #d95757; }
+  .netnet-status[data-kind="success"] { color: var(--highlight-color); }
+  .netnet-heading { max-width: none; margin: 0 0 8px; padding: 0; border: 0; color: inherit; font: bold 15px/1.4 monospace; text-align: left; }
+  .netnet-link-button, .netnet-action-button, .netnet-action-dialog button { margin: 0; padding: 0; border: 0; background: transparent; color: inherit; cursor: pointer; font: inherit; text-decoration: underline; }
+  .netnet-link-button:hover, .netnet-action-button:hover, .netnet-action-dialog button:hover { color: var(--highlight-color); }
+  .netnet-link-button:disabled, .netnet-action-button:disabled, .netnet-action-dialog button:disabled { cursor: not-allowed; opacity: .45; text-decoration: none; }
+  .netnet-link-button[hidden] { display: none; }
+  .netnet-loading { padding: 10px 0; }
+  .netnet-loading[hidden] { display: none; }
+  .netnet-section { margin-bottom: 26px; }
+  .netnet-section[hidden] { display: none; }
+  .netnet-table-scroll { overflow-x: auto; }
+  .netnet-table-scroll pre { margin: 0; white-space: pre-wrap; overflow-wrap: anywhere; }
+  .netnet-table { width: 100%; min-width: 720px; table-layout: fixed; border-collapse: collapse; font-size: 13px; }
+  .netnet-table th, .netnet-table td { padding: 7px 9px; border: 1px solid currentColor; vertical-align: top; text-align: right; white-space: nowrap; }
+  .netnet-table th:first-child, .netnet-table td:first-child, .netnet-table th:last-child, .netnet-table td:last-child { text-align: left; }
+  .netnet-metric-table th:nth-child(1) { width: 26%; }
+  .netnet-metric-table th:nth-child(2) { width: 22%; }
+  .netnet-metric-table td:last-child, .netnet-table .netnet-detail { color: var(--highlight-color); white-space: normal; overflow-wrap: anywhere; }
+  .netnet-table .netnet-name { display: block; overflow-wrap: anywhere; white-space: normal; }
+  .netnet-table .netnet-kind { display: block; margin-top: 3px; color: var(--highlight-color); }
+  .netnet-table .netnet-kind:empty { display: none; }
+  .netnet-table .netnet-actions { min-width: 102px; white-space: normal; }
+  .netnet-table .netnet-actions > * { display: block; }
+  .netnet-table .netnet-actions > * + * { margin-top: 4px; }
+  .netnet-action-dialog { width: min(620px, calc(100vw - 32px)); padding: 16px; border: 1px solid currentColor; background: var(--main-background-color); color: var(--main-text-color); }
+  .netnet-action-dialog::backdrop { background: rgba(0, 0, 0, .55); }
+  .netnet-dialog-close-row { margin: 0 0 18px; text-align: right; }
+  .netnet-action-dialog h2 { max-width: none; margin: 0 0 8px; padding: 0; border: 0; color: inherit; font: bold 16px/1.4 monospace; text-align: left; }
+  .netnet-action-dialog p { margin: 0 0 14px; color: inherit; font: 14px/1.5 monospace; text-align: left; overflow-wrap: anywhere; }
+  .netnet-action-dialog .netnet-dialog-heading { margin: 18px 0 4px; padding-top: 12px; border-top: 1px solid currentColor; font-weight: bold; }
+  .netnet-action-dialog .netnet-quote { min-height: 20px; margin: 8px 0 4px; color: var(--highlight-color); font-size: 13px; }
+  .netnet-form-label { display: block; margin: 10px 0 5px; font: 13px/1.4 monospace; }
+  .netnet-input-row { display: flex; }
+  .netnet-input-row input { width: 100%; min-width: 0; padding: 5px 7px; border: 1px solid currentColor; border-radius: 0; background: transparent; color: inherit; font: 16px/1.4 monospace; }
+  .netnet-input-row button { margin-left: 10px; white-space: nowrap; }
+  .netnet-action-note { min-height: 40px; margin: 12px 0; font: 13px/1.45 monospace; white-space: pre-wrap; }
+  .netnet-dialog-actions { display: flex; flex-wrap: wrap; gap: 16px; margin: 10px 0; }
+  @media (max-width: 600px) {
+    html, body { min-width: 0; max-width: 100%; overflow-x: hidden; }
+    body > div:not(.modal) { display: none; }
+    .netnet-page { box-sizing: border-box; width: calc(100% - 16px); max-width: none; margin: 14px 8px 40px; overflow-x: hidden; }
+    .netnet-mobile-nav { display: block; margin-bottom: 14px; }
+    .netnet-toolbar, .netnet-summary, .netnet-note { font-size: 12px; }
+    .netnet-table-scroll { overflow: visible; }
+    .netnet-table { min-width: 0; table-layout: fixed; font-size: 13px; }
+    .netnet-table th, .netnet-table td { padding: 7px; }
+    .netnet-table th { white-space: normal; }
+    .netnet-metric-table th:nth-child(3), .netnet-metric-table td:nth-child(3) { display: none; }
+    .netnet-metric-table th:nth-child(1) { width: 58%; }
+    .netnet-metric-table th:nth-child(2) { width: 42%; }
+    .netnet-bond-table th:nth-child(2), .netnet-bond-table td:nth-child(2) { display: none; }
+    .netnet-bond-table th:nth-child(1) { width: 28%; }
+    .netnet-bond-table th:nth-child(3) { width: 28%; }
+    .netnet-bond-table th:nth-child(4) { width: 18%; }
+    .netnet-bond-table th:nth-child(5) { width: 26%; }
+    .netnet-bond-table td:nth-child(3) { white-space: normal; overflow-wrap: anywhere; }
+    .netnet-wallet-table th:nth-child(3), .netnet-wallet-table td:nth-child(3) { display: none; }
+    .netnet-wallet-table th:nth-child(1) { width: 34%; }
+    .netnet-wallet-table th:nth-child(2) { width: 32%; }
+    .netnet-wallet-table th:nth-child(4) { width: 34%; }
+    .netnet-note-table th:nth-child(3), .netnet-note-table td:nth-child(3) { display: none; }
+    .netnet-note-table th:nth-child(1) { width: 16%; }
+    .netnet-note-table th:nth-child(2) { width: 30%; }
+    .netnet-note-table th:nth-child(4) { width: 32%; }
+    .netnet-note-table th:nth-child(5) { width: 22%; }
+    .netnet-table td:first-child { white-space: normal; overflow-wrap: anywhere; }
+    .netnet-table .netnet-actions { min-width: 0; }
+  }
+</style>
+<%- include(`${partials}/scripts_onchain`, {scriptname: 'robinhood_netnet'}); -%>
+</body>
+</html>
