@@ -229,6 +229,58 @@ export async function getOwnedErc721TokenIdsViaProxy({ chainId, contractAddress,
     .sort((a, b) => (a < b ? -1 : a > b ? 1 : 0))
 }
 
+const ERC721_TRANSFER_TOPIC = ethers.utils.id('Transfer(address,address,uint256)')
+
+// Enumerate an owner's ERC-721 token ids straight from Transfer logs.
+//
+// Uniswap v4's PositionManager is not ERC721Enumerable (no tokenOfOwnerByIndex),
+// and the collections are far too large to walk with ownerOf — Robinhood Chain
+// alone had ~1.8M minted position NFTs. Two topic-filtered log queries are the
+// only cheap onchain route, and they are exact: replaying every Transfer in and
+// out of the address yields current holdings, with burns covered because a burn
+// is a Transfer to the zero address.
+//
+// Deliberately two full-range requests and no more. Public RPCs rate-limit
+// bursts, and chunking a multi-million block chain from a browser is not
+// viable. If the node refuses a full range, throw so the caller can fall back
+// to an indexer rather than hammering it.
+export async function getOwnedErc721TokenIdsOnchain({ provider, contractAddress, ownerAddress, fromBlock = 0 }) {
+  if (!provider) throw new Error('Onchain NFT lookup needs a provider')
+  if (!contractAddress || !ownerAddress) throw new Error('Onchain NFT lookup needs a contract and an owner')
+
+  const ownerTopic = ethers.utils.hexZeroPad(ethers.utils.getAddress(ownerAddress), 32)
+  const base = { address: contractAddress, fromBlock, toBlock: 'latest' }
+
+  const [incoming, outgoing] = await Promise.all([
+    provider.getLogs({ ...base, topics: [ERC721_TRANSFER_TOPIC, null, ownerTopic] }),
+    provider.getLogs({ ...base, topics: [ERC721_TRANSFER_TOPIC, ownerTopic] }),
+  ])
+
+  // Order matters: the same token can arrive, leave, and arrive again. Replay
+  // both directions in chain order rather than diffing two sets.
+  const events = [...incoming, ...outgoing].sort(
+    (a, b) => a.blockNumber - b.blockNumber || a.logIndex - b.logIndex
+  )
+
+  const owner = normalizeAddress(ownerAddress)
+  const owned = new Set()
+
+  for (const log of events) {
+    const topics = log?.topics || []
+    if (topics.length < 4) continue
+
+    const to = normalizeAddress(ethers.utils.hexDataSlice(topics[2], 12))
+    const tokenId = BigInt(topics[3]).toString()
+
+    if (to === owner) owned.add(tokenId)
+    else owned.delete(tokenId)
+  }
+
+  return Array.from(owned)
+    .map(x => BigInt(x))
+    .sort((a, b) => (a < b ? -1 : a > b ? 1 : 0))
+}
+
 export function decodeSignedIntN(unsigned, bits) {
   const u = BigInt(unsigned)
   const b = BigInt(bits)
