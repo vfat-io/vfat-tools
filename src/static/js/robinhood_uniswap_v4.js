@@ -161,6 +161,43 @@ async function getOwnedErc721TokenIdsViaProxy({ chainId, contractAddress, ownerA
   return uniswapV4Helpers().getOwnedErc721TokenIdsViaProxy({ chainId, contractAddress, ownerAddress })
 }
 
+// Read through the chain's own RPC rather than the wallet's. Over WalletConnect
+// the wallet provider serves reads from whatever endpoint it happens to use for
+// this chain, which need not carry log history.
+function robinhoodReadProvider(App) {
+  const rpcUrl = window.NETWORKS?.ROBINHOOD?.rpcUrls?.[0]
+  if (rpcUrl) {
+    try {
+      return new ethers.providers.JsonRpcProvider(rpcUrl)
+    } catch (e) {
+      console.log('Falling back to the wallet provider for reads:', e)
+    }
+  }
+  return App.provider
+}
+
+// Onchain enumeration first: it needs no API key and no vendor chain coverage.
+// Etherscan v2 does not index Robinhood Chain at all, so the proxy is only a
+// fallback here, ahead of asking the user to type the NFT id in by hand.
+async function getOwnedNftIds(App, contractAddress, ownerAddress) {
+  try {
+    const ids = await uniswapV4Helpers().getOwnedErc721TokenIdsOnchain({
+      provider: robinhoodReadProvider(App),
+      contractAddress,
+      ownerAddress,
+    })
+    console.log(`Found ${ids.length} NFT(s) onchain for ${ownerAddress}`)
+    return ids
+  } catch (e) {
+    console.log('Onchain NFT lookup failed, trying the proxy:', e)
+    return getOwnedErc721TokenIdsViaProxy({
+      chainId: ROBINHOOD_CHAIN_ID,
+      contractAddress,
+      ownerAddress,
+    })
+  }
+}
+
 async function main() {
   const App = await init_ethers()
 
@@ -189,17 +226,13 @@ async function main() {
 }
 
 const withdraw_nfts = async function (App, nft_manager_v4, nft_manager_address_v4, sickleAddress) {
-  const nft_ids = await getOwnedErc721TokenIdsViaProxy({
-    chainId: ROBINHOOD_CHAIN_ID,
-    contractAddress: nft_manager_address_v4,
-    ownerAddress: sickleAddress,
-  })
+  const nft_ids = await getOwnedNftIds(App, nft_manager_address_v4, sickleAddress)
 
   let active_nfts = []
 
   if (nft_ids.length === 0) {
-    _print('No NFTs found via proxy')
-    throw new Error('No NFTs found via proxy')
+    _print('No NFTs found')
+    throw new Error('No NFTs found')
   }
 
   const liquidity_calls = nft_ids.map(nft => nft_manager_v4.getPositionLiquidity(nft))
@@ -213,7 +246,7 @@ const withdraw_nfts = async function (App, nft_manager_v4, nft_manager_address_v
 
   if (active_nfts.length === 0) {
     _print('No active NFTs')
-    throw new Error('No active NFTs found via proxy')
+    throw new Error('No active NFTs found')
   }
 
   let token_ids = ''
@@ -276,7 +309,7 @@ const withdraw_nfts = async function (App, nft_manager_v4, nft_manager_address_v
 
   if (positions.length === 0) {
     _print('No active NFTs')
-    throw new Error('No active NFTs found via proxy')
+    throw new Error('No active NFTs found')
   }
 
   for (const p of positions) {
