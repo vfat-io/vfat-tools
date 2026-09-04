@@ -23,19 +23,12 @@ const SNOWTRACE_API_URL = process.env.SNOWTRACE_API_URL || 'https://api.snowtrac
 const ETHERSCAN_API_KEY = process.env.ETHERSCAN_API_KEY || ''
 const SNOWTRACE_API_KEY = process.env.SNOWTRACE_API_KEY || ''
 
-const MORALIS_API_URL = process.env.MORALIS_API_URL || 'https://deep-index.moralis.io/api/v2.2'
-const MORALIS_API_KEY = process.env.MORALIS_API_KEY || ''
-
 if (!ETHERSCAN_API_KEY) {
   console.warn('[proxy] ETHERSCAN_API_KEY is not set. Non-AVAX requests will fail.')
 }
 
 if (!SNOWTRACE_API_KEY) {
   console.warn('[proxy] SNOWTRACE_API_KEY is not set. AVAX (43114) requests will fail.')
-}
-
-if (!MORALIS_API_KEY) {
-  console.warn('[proxy] MORALIS_API_KEY is not set. Moralis requests will fail.')
 }
 
 const ALLOWED = new Set([
@@ -95,69 +88,6 @@ const server = http.createServer(async (req, res) => {
     // Health check
     if (url.pathname === '/healthz') {
       sendJson(res, 200, { ok: true })
-      return
-    }
-
-    // Moralis wallet NFT lookup (used for BSC where free-tier Etherscan-v2 does not support chainId 56).
-    // Example:
-    //   /api/moralis/wallet-nfts?address=0x...&chain=bsc&token_addresses=0x...
-    //   /api/moralis/wallet-nfts?address=0x...&chain=bsc&contractaddress=0x...&cursor=...
-    if (url.pathname === '/api/moralis/wallet-nfts') {
-      if (!MORALIS_API_KEY) {
-        sendJson(res, 500, { error: 'MORALIS_API_KEY is not set on the proxy server' })
-        return
-      }
-
-      const q = url.searchParams
-      const address = pick(q, 'address', { required: true })
-      const chain = pick(q, 'chain') || 'bsc'
-
-      const tokenAddresses = []
-      // Preferred param name (matches Moralis): token_addresses[]=...
-      for (const v of q.getAll('token_addresses')) {
-        if (v) tokenAddresses.push(String(v))
-      }
-      // Compatibility param name for callers that mirror Etherscan: contractaddress=...
-      const contractaddress = q.get('contractaddress')
-      if (contractaddress) tokenAddresses.push(String(contractaddress))
-
-      const cursor = q.get('cursor')
-      const limit = q.get('limit')
-      const exclude_spam = q.get('exclude_spam')
-
-      const upstream = new URL(`${MORALIS_API_URL.replace(/\/$/u, '')}/${address}/nft`)
-      upstream.searchParams.set('chain', chain)
-      upstream.searchParams.set('format', 'decimal')
-      // Keep payload small; we only need token_id.
-      upstream.searchParams.set('normalizeMetadata', 'false')
-      upstream.searchParams.set('media_items', 'false')
-      upstream.searchParams.set('include_prices', 'false')
-
-      if (exclude_spam != null && exclude_spam !== '') {
-        upstream.searchParams.set('exclude_spam', String(exclude_spam))
-      }
-
-      for (const a of tokenAddresses) {
-        upstream.searchParams.append('token_addresses', a)
-      }
-
-      if (cursor) upstream.searchParams.set('cursor', cursor)
-      if (limit) upstream.searchParams.set('limit', limit)
-
-      const upstreamResp = await fetch(upstream.toString(), {
-        method: 'GET',
-        headers: {
-          'X-API-Key': MORALIS_API_KEY,
-          accept: 'application/json',
-        },
-      })
-      const text = await upstreamResp.text()
-
-      res.writeHead(upstreamResp.status, {
-        'content-type': upstreamResp.headers.get('content-type') || 'application/json; charset=utf-8',
-        'cache-control': 'no-store',
-      })
-      res.end(text)
       return
     }
 
