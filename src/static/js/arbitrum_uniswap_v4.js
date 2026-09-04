@@ -167,6 +167,14 @@ async function main() {
         ownerAddress: sickleAddress,
       })
 
+      // The lookup reports "nothing found" by returning empty rather than
+      // throwing, so turn that into the manual-entry path the catch below
+      // provides. Without this a failed lookup dead-ends on "No active NFTs"
+      // and leaves the user no way to withdraw by id.
+      if (nft_ids.length === 0) {
+        throw new Error('No NFTs found')
+      }
+
       let active_nfts = []
 
       const liquidity_calls = nft_ids.map(nft => nft_manager_v4.getPositionLiquidity(nft))

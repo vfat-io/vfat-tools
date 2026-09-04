@@ -291,8 +291,15 @@ export async function resolveOwnedErc721TokenIds({
         ownerAddress,
         fromBlock,
       })
-      console.log(`Found ${ids.length} NFT(s) onchain for ${ownerAddress}`)
-      return ids
+      if (ids.length > 0) {
+        console.log(`Found ${ids.length} NFT(s) onchain for ${ownerAddress}`)
+        return ids
+      }
+      // An RPC that quietly clamps the block range instead of refusing it
+      // returns a short answer, not an error, and an empty one is
+      // indistinguishable from holding nothing. On a page whose job is getting
+      // funds out, prefer asking another source over reporting "none".
+      tried.push('onchain: nothing returned')
     } catch (e) {
       tried.push(`onchain: ${e?.message || e}`)
     }
