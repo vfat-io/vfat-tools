@@ -1,6 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
-<%- include(`${partials}/head`); -%>
+<%- include(`${partials}/head`, {
+  pageMeta: {
+    title: 'Up33 Missing Token Helper on Robinhood Chain | vfat.tools',
+    description: 'Recover missing Up33 pool tokens on Robinhood Chain.',
+    url: 'https://vfat.tools/robinhood/up_script/',
+    image: 'https://vfat.tools/img/robinhood-up-script-social.png',
+    imageAlt: 'vfat.tools Up33 missing token helper on Robinhood Chain.',
+    imageWidth: 1200,
+    imageHeight: 630
+  }
+}); -%>
 
 <body>
 <%- include(`${partials}/header_main`); -%>

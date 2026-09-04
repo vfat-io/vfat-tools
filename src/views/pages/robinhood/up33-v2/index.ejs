@@ -1,6 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
-<%- include(`${partials}/head`); -%>
+<%- include(`${partials}/head`, {
+  pageMeta: {
+    title: 'Up33 V2 Pools on Robinhood Chain | vfat.tools',
+    description: 'Inspect Up33 V2 farm positions held by your Sickle on Robinhood Chain.',
+    url: 'https://vfat.tools/robinhood/up33-v2/',
+    image: 'https://vfat.tools/img/robinhood-up33-v2-social.png',
+    imageAlt: 'vfat.tools Up33 V2 Sickle helper on Robinhood Chain.',
+    imageWidth: 1200,
+    imageHeight: 630
+  }
+}); -%>
 
 <body>
 <%- include(`${partials}/header_main`); -%>

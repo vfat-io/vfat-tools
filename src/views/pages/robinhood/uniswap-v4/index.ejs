@@ -1,6 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
-<%- include(`${partials}/head`); -%>
+<%- include(`${partials}/head`, {
+  pageMeta: {
+    title: 'Uniswap v4 Sickle Helper on Robinhood Chain | vfat.tools',
+    description: 'Inspect and withdraw Uniswap v4 position NFTs held by your Sickle on Robinhood Chain.',
+    url: 'https://vfat.tools/robinhood/uniswap-v4/',
+    image: 'https://vfat.tools/img/robinhood-uniswap-v4-social.png',
+    imageAlt: 'vfat.tools Uniswap v4 Sickle helper on Robinhood Chain.',
+    imageWidth: 1200,
+    imageHeight: 630
+  }
+}); -%>
 
 <body>
 <%- include(`${partials}/header_main`); -%>
