@@ -88,7 +88,7 @@ const NetNet = (function () {
 
   const state = {
     rpc: null, eip1193: null, walletSource: null, account: null, walletChain: null, walletListenerCleanup: [], reownUnsubscribe: null,
-    fund: null, tokens: new Map(), markets: [], notes: [], buyback: null, wallet: null,
+    fund: null, growth: null, tokens: new Map(), markets: [], notes: [], buyback: null, wallet: null,
     loading: false, status: '', statusType: '', walletLoading: false, sending: false
   }
 
@@ -404,6 +404,15 @@ const NetNet = (function () {
       ? asNumber(fund.reserveUsdg, usdgToken.decimals) / asNumber(fund.reserveNet, netToken.decimals) : NaN
     fund.poolUsdg = Number.isFinite(asNumber(fund.reserveUsdg, usdgToken.decimals)) && Number.isFinite(fund.spotUsdg)
       ? asNumber(fund.reserveUsdg, usdgToken.decimals) * 2 : NaN
+    // Backing only moves on an epoch boundary, and the chain's public RPC keeps
+    // under ten minutes of state, so a growth rate cannot be read onchain here.
+    // It comes from the recorded series instead. Failure is not fatal: the page
+    // has always worked without it and simply omits the line.
+    state.growth = await loadGrowth().catch(function (error) {
+      console.warn('NetNet growth unavailable', errText(error))
+      return null
+    })
+
     state.fund = fund
     await loadMarkets()
     await loadBuyback()
@@ -771,6 +780,54 @@ const NetNet = (function () {
     node.hidden = false; node.textContent = parts.join(' · ')
   }
 
+  // Reference point for the growth rate. Amounts arrive as exact decimal
+  // strings; percentages as numbers. A horizon without enough history yet is
+  // null rather than zero, and the array is empty until the series is populated.
+  async function loadGrowth () {
+    // Plain AbortController rather than AbortSignal.timeout: babel transpiles
+    // syntax, not runtime APIs, and this page should not need a modern browser
+    // to render a number.
+    const controller = new AbortController()
+    const timer = window.setTimeout(function () { controller.abort() }, 12000)
+    let rows
+    try {
+      const response = await fetch('https://api.vfat.io/v4/netnet-treasury?chainId=' + chain.number, { signal: controller.signal })
+      if (!response.ok) throw new Error('History unavailable (' + response.status + ')')
+      rows = await response.json()
+    } finally {
+      window.clearTimeout(timer)
+    }
+    const row = Array.isArray(rows)
+      ? rows.find(function (entry) { return lower(entry.stakingAddress) === lower(addresses.staking) }) || rows[0]
+      : null
+    const horizon = row && row.changes ? row.changes['24h'] : null
+    if (!horizon || !horizon.backingPerToken) return null
+    const reference = Number(horizon.backingPerToken.reference)
+    const since = Date.parse(horizon.referenceTimestamp)
+    if (!Number.isFinite(reference) || reference <= 0 || !Number.isFinite(since)) return null
+    return { reference: reference, since: since, epoch: horizon.referenceEpoch }
+  }
+
+  // Measured against the page's own live reading rather than the stored pair, so
+  // the number is as current as everything else on the page. The window is
+  // reported as measured: the fund moves on 8h epochs, so the newest point at or
+  // before 24h ago can be several hours older than 24h, and claiming "24h" for a
+  // 26h window would be a small lie in a figure people size positions on.
+  function backingGrowth (fund) {
+    const growth = state.growth
+    if (!growth || !Number.isFinite(fund.navUsdg) || fund.navUsdg <= 0) return ''
+    const elapsed = (Date.now() - growth.since) / 1000
+    // The fund only moves on an 8h boundary, so the newest point at or before
+    // 24h ago is legitimately up to ~32h old. Much beyond that means the series
+    // has stalled, and a multi-day change presented next to a daily figure
+    // misleads more than showing nothing does.
+    if (!(elapsed > 0) || elapsed > 48 * 3600) return ''
+    const change = (fund.navUsdg / growth.reference - 1) * 100
+    const sign = change > 0 ? '+' : ''
+    return sign + percent(change, 2) + ' over ' + duration(elapsed) +
+      (growth.epoch === undefined || growth.epoch === null ? '' : ', since epoch ' + growth.epoch)
+  }
+
   function metricRow (body, name, value, detail) {
     const row = e('tr')
     row.appendChild(e('td', { text: name }))
@@ -790,7 +847,9 @@ const NetNet = (function () {
     const body = e('tbody')
     metricRow(body, 'NET price (TWAP)', price(fund.twapUsdg), 'oracle over the NET/USDG pair, ' + duration(asNumber(fund.twapMinWindow, 0)) + '–' + duration(asNumber(fund.twapMaxWindow, 0)) + ' window')
     metricRow(body, 'NET price (spot)', price(fund.spotUsdg), 'live reserves of the canonical pair')
-    metricRow(body, 'Backing per NET (NAV)', price(fund.navUsdg), 'treasury RFV divided by NET supply')
+    const navGrowth = backingGrowth(fund)
+    metricRow(body, 'Backing per NET (NAV)', price(fund.navUsdg),
+      navGrowth ? 'treasury RFV divided by NET supply · ' + navGrowth : 'treasury RFV divided by NET supply')
     metricRow(body, 'Premium to NAV', multiple(fund.premium), Number.isFinite(fund.k) ? 'dividend reaches its maximum at ' + multiple(fund.k) : '')
     metricRow(body, 'Dividend rate', percent(fund.rate * 100, 3) + ' per epoch', Number.isFinite(fund.rMax) ? 'maximum ' + percent(fund.rMax * 100, 3) + ' per epoch' : '')
     metricRow(body, 'Annualized (APY)', percent(fund.apy, 2), Number.isFinite(fund.epochsPerYear) ? 'compounding ' + Math.round(fund.epochsPerYear) + ' rebases a year' : '')
