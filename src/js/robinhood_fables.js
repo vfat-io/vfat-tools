@@ -581,7 +581,7 @@ const FablesPage = (function () {
   }
 
   async function start () {
-    state.rpc = new ethers.providers.JsonRpcProvider({ url: chain.rpc, timeout: 20000 }, { chainId: chain.number, name: 'robinhood' })
+    state.rpc = new ethers.providers.StaticJsonRpcProvider({ url: chain.rpc, timeout: 20000 }, { chainId: chain.number, name: 'robinhood' })
     bindUi()
     const passive = restoreInjected().catch(error => setStatus(errText(error), 'error'))
     loading(true)

@@ -486,7 +486,7 @@ const RamsesPage = (function () {
   }
 
   async function start () {
-    state.rpc = new ethers.providers.JsonRpcProvider({ url: chain.rpc, timeout: 12000 }, { chainId: chain.number, name: 'robinhood' }); bindUi(); const passive = restoreInjected().catch(error => setStatus(errText(error), 'error')); setStatus('Pools'); await discover(); setStatus('V3'); await discoverV3().catch(function () { setStatus('V3 registry unavailable.', 'error') }); setStatus('Fees'); await loadFeeLogs(); await passive; await loadV3Positions(); loading(false); if (!state.status || ['Pools', 'V3'].includes(state.status) || state.status.indexOf('Fees') === 0) setStatus(''); render()
+    state.rpc = new ethers.providers.StaticJsonRpcProvider({ url: chain.rpc, timeout: 12000 }, { chainId: chain.number, name: 'robinhood' }); bindUi(); const passive = restoreInjected().catch(error => setStatus(errText(error), 'error')); setStatus('Pools'); await discover(); setStatus('V3'); await discoverV3().catch(function () { setStatus('V3 registry unavailable.', 'error') }); setStatus('Fees'); await loadFeeLogs(); await passive; await loadV3Positions(); loading(false); if (!state.status || ['Pools', 'V3'].includes(state.status) || state.status.indexOf('Fees') === 0) setStatus(''); render()
   }
 
   function fatal (error) { console.error(error); loading(false); setStatus(errText(error), 'error'); render() }

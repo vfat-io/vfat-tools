@@ -670,7 +670,7 @@ const MorphoPage = (function () {
     state.latestBlock = await rpcRead('Reading latest Robinhood block', function () { return state.rpc.getBlockNumber() }); setLoading('Refreshing Morpho state...'); await hydrateMarkets(); await hydrateVaults(); await hydrateWallet(); setLoading(); render(); setStatus('Refreshed ' + state.markets.length + ' markets · ' + state.vaults.length + ' Vault V2.', 'success')
   }
   async function start () {
-    state.rpc = new ethers.providers.JsonRpcProvider(chain.rpc, chain.number); bindPageEvents(); render(); const passiveWallet = restoreInjectedWallet()
+    state.rpc = new ethers.providers.StaticJsonRpcProvider(chain.rpc, { chainId: chain.number, name: 'robinhood' }); bindPageEvents(); render(); const passiveWallet = restoreInjectedWallet()
     state.loading = true
     try { await discover(); setLoading('Reading Morpho token metadata...'); await loadTokens(); await hydrateMarkets(); await hydrateVaults(); await passiveWallet; await hydrateWallet(); setStatus('Loaded ' + state.markets.length + ' markets · ' + state.vaults.length + ' Vault V2.', 'success') } finally { state.loading = false; setLoading(); render() }
   }

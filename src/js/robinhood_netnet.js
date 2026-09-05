@@ -958,7 +958,7 @@ const NetNet = (function () {
   }
   function render () { renderWallet(); renderOverview(); renderFund(); renderStaking(); renderBonds(); renderNotes(); renderBuyback() }
   async function start () {
-    state.rpc = new ethers.providers.JsonRpcProvider(chain.rpc, chain.number)
+    state.rpc = new ethers.providers.StaticJsonRpcProvider(chain.rpc, { chainId: chain.number, name: 'robinhood' })
     bindEvents(); window.addEventListener('pagehide', clearWalletEvents, { once: true }); render()
     const wallet = passiveWallet()
     await loadFund()
