@@ -519,7 +519,7 @@ const rawNetworks = [
     blockExplorers: [{ name: 'HyperScan', url: 'https://www.hyperscan.com/' }]
   },
   {
-    id: 747490,
+    id: 747474,
     name: 'Katana',
     nativeCurrency: { name: 'ETH', symbol: 'ETH', decimals: 18 },
     rpcUrls: ['https://rpc.katana.network'],
