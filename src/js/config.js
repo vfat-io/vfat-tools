@@ -116,7 +116,7 @@ const rawNetworks = [
     id: 137,
     name: 'Polygon',
     nativeCurrency: { name: 'MATIC', symbol: 'MATIC', decimals: 18 },
-    rpcUrls: ['https://rpc-mainnet.matic.network'],
+    rpcUrls: ['https://polygon-bor-rpc.publicnode.com'],
     blockExplorers: [{ name: 'PolygonScan', url: 'https://polygonscan.com' }]
   },
   {
@@ -242,7 +242,7 @@ const rawNetworks = [
     id: 130,
     name: 'Unichain',
     nativeCurrency: { name: 'ETH', symbol: 'ETH', decimals: 18 },
-    rpcUrls: ['https://rpc.unichain.org'],
+    rpcUrls: ['https://mainnet.unichain.org'],
     blockExplorers: [{ name: 'Unichain Explorer', url: 'https://explorer.unichain.org' }]
   },
   {
