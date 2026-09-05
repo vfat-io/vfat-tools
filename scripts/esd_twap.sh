@@ -1,3 +1,0 @@
-pushd /opt/vfat-tools
-node "$HOME/scripts/twap.js" 0x88ff79eB2Bc5850F27315415da8685282C7610F9
-popd
