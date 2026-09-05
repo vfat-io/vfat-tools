@@ -80,10 +80,41 @@ const FablesPage = (function () {
   const pause = delay => new Promise(resolve => window.setTimeout(resolve, delay))
   const tickSqrt = tick => Math.pow(1.0001, tick / 2)
 
+  // The chain's RPC answers a rate limit with a 429 the browser cannot read:
+  // the response carries a duplicated Access-Control-Allow-Origin header, so
+  // fetch rejects it and we are handed an opaque transport failure with no
+  // status. Treat that as "slow down" rather than as a bad response, and make
+  // every caller wait out a shared cooldown so one throttled read does not let
+  // the rest keep hammering.
+  // streak drives the cooldown and counts retry attempts, so a single group's
+  // own retries move it. refusals counts groups that exhausted their retries,
+  // so one closed payload contributes exactly one and can never on its own
+  // reach the give-up threshold. Both reset on any success.
+  const throttle = { until: 0, streak: 0, refusals: 0 }
+
+  function isTransportFailure (error) {
+    if (!error) return false
+    if (['SERVER_ERROR', 'NETWORK_ERROR', 'TIMEOUT'].includes(error.code)) return true
+    const message = String(error.message || '')
+    return message.includes('Failed to fetch') || message.includes('missing response') || message.includes('NetworkError')
+  }
+
+  function noteThrottled () {
+    throttle.streak = Math.min(throttle.streak + 1, 5)
+    throttle.until = Math.max(throttle.until, Date.now() + 400 * (2 ** throttle.streak))
+  }
+
   async function retryRpc (fn, attempts) {
     let lastError
-    for (let attempt = 0; attempt < (attempts || 4); attempt += 1) {
-      try { return await fn() } catch (error) { lastError = error; if (attempt + 1 < (attempts || 4)) await pause(250 * (2 ** attempt)) }
+    const total = attempts || 4
+    for (let attempt = 0; attempt < total; attempt += 1) {
+      const wait = throttle.until - Date.now()
+      if (wait > 0) await pause(wait)
+      try { const value = await fn(); throttle.streak = 0; throttle.refusals = 0; return value } catch (error) {
+        lastError = error
+        if (isTransportFailure(error)) noteThrottled()
+        if (attempt + 1 < total) await pause(250 * (2 ** attempt))
+      }
     }
     throw lastError
   }
@@ -94,18 +125,41 @@ const FablesPage = (function () {
 
   async function batch (calls) {
     if (!calls.length) return []
+    // Set when a group was given up on wholesale. Callers that care can tell
+    // "read nothing" apart from "read zero", which otherwise look identical.
+    let abandoned = false
     const groups = []; for (let i = 0; i < calls.length; i += 180) groups.push(calls.slice(i, i + 180))
     const multicall = new ethers.Contract(address.multicall, multiAbi, state.rpc)
     async function execute (group) {
       const encoded = group.map(call => ({ target: call.target, allowFailure: true, callData: call.iface.encodeFunctionData(call.method, call.args || []) }))
       const decode = function (call, raw) { try { const result = call.iface.decodeFunctionResult(call.method, raw); return call.decode ? call.decode(result) : result.length === 1 ? result[0] : result } catch (_) { return call.fallback } }
-      try { const result = await retryRpc(() => multicall.aggregate3(encoded), 3); return result.map((item, index) => item.success ? decode(group[index], item.returnData) : group[index].fallback) } catch (_) {
-        if (group.length > 8) { const middle = Math.ceil(group.length / 2); const halves = await Promise.all([execute(group.slice(0, middle)), execute(group.slice(middle))]); return halves[0].concat(halves[1]) }
+      try { const result = await retryRpc(() => multicall.aggregate3(encoded), 3); return result.map((item, index) => item.success ? decode(group[index], item.returnData) : group[index].fallback) } catch (error) {
+        // Two different failures wear the same opaque shape on this chain: a
+        // rate-limited 429 the browser cannot read, and a large response the
+        // node closed mid-flight. Halving is the documented recovery for the
+        // second, as robinhood_netnet and robinhood_raphael both note, so keep
+        // it. What must not happen is unrolling into per-contract reads: that
+        // is the amplifier that turns one refusal into a request per call.
+        const transport = isTransportFailure(error)
+        if (group.length > 8) {
+          // Repeated refusals across separate groups mean throttling; a single
+          // group that exhausted its retries means the node closed one payload,
+          // and that one still deserves the split. retryRpc drives streak, so
+          // gate on refusals, which only this line increments.
+          if (transport) throttle.refusals += 1
+          if (transport && throttle.refusals >= 3) { abandoned = true; return group.map(call => call.fallback) }
+          const middle = Math.ceil(group.length / 2)
+          if (transport) { const first = await execute(group.slice(0, middle)); const second = await execute(group.slice(middle)); return first.concat(second) }
+          const halves = await Promise.all([execute(group.slice(0, middle)), execute(group.slice(middle))]); return halves[0].concat(halves[1])
+        }
+        if (transport) { abandoned = true; return group.map(call => call.fallback) }
         return limited(group, 4, async function (call, index) { try { return decode(call, await retryRpc(() => state.rpc.call({ to: call.target, data: encoded[index].callData }), 3)) } catch (_) { return call.fallback } })
       }
     }
     const values = await limited(groups, 3, execute)
-    return [].concat(...values)
+    const flat = [].concat(...values)
+    flat.incomplete = abandoned
+    return flat
   }
 
   async function getLogs (filter) {
@@ -211,6 +265,9 @@ const FablesPage = (function () {
     const calls = []
     ids.forEach(id => calls.push({ target: pool.hook, iface: hook, method: 'rangeState', args: [id], fallback: null }, { target: pool.hook, iface: hook, method: 'rangeKey', args: [id], fallback: null, decode: value => value }))
     const values = await batch(calls)
+    // Without this the pool falls through to ready with no ranges, and renders
+    // as 0 ranges / $0 TVL rather than as a pool we could not read.
+    if (values.incomplete) throw new Error('Range read incomplete for ' + pool.id)
     pool.ranges = ids.map(function (id, index) {
       const liquidity = values[index * 2]; const key = values[index * 2 + 1]
       if (!liquidity || !key || !key.exists) return null
