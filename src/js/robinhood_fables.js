@@ -121,24 +121,39 @@ const FablesPage = (function () {
 
   async function batch (calls) {
     if (!calls.length) return []
+    // Set when a group was given up on wholesale. Callers that care can tell
+    // "read nothing" apart from "read zero", which otherwise look identical.
+    let abandoned = false
     const groups = []; for (let i = 0; i < calls.length; i += 180) groups.push(calls.slice(i, i + 180))
     const multicall = new ethers.Contract(address.multicall, multiAbi, state.rpc)
     async function execute (group) {
       const encoded = group.map(call => ({ target: call.target, allowFailure: true, callData: call.iface.encodeFunctionData(call.method, call.args || []) }))
       const decode = function (call, raw) { try { const result = call.iface.decodeFunctionResult(call.method, raw); return call.decode ? call.decode(result) : result.length === 1 ? result[0] : result } catch (_) { return call.fallback } }
       try { const result = await retryRpc(() => multicall.aggregate3(encoded), 3); return result.map((item, index) => item.success ? decode(group[index], item.returnData) : group[index].fallback) } catch (error) {
-        // Halving is the cure for an oversized response, not for throttling:
-        // splitting a group that was refused on rate grounds doubles the
-        // requests, and unrolling it into single calls multiplies them by the
-        // group size. retryRpc has already waited out the cooldown, so give up
-        // on this group rather than amplifying into the limiter.
-        if (isTransportFailure(error)) return group.map(call => call.fallback)
-        if (group.length > 8) { const middle = Math.ceil(group.length / 2); const halves = await Promise.all([execute(group.slice(0, middle)), execute(group.slice(middle))]); return halves[0].concat(halves[1]) }
+        // Two different failures wear the same opaque shape on this chain: a
+        // rate-limited 429 the browser cannot read, and a large response the
+        // node closed mid-flight. Halving is the documented recovery for the
+        // second, as robinhood_netnet and robinhood_raphael both note, so keep
+        // it. What must not happen is unrolling into per-contract reads: that
+        // is the amplifier that turns one refusal into a request per call.
+        const transport = isTransportFailure(error)
+        if (group.length > 8) {
+          // A streak means repeated refusals under concurrency, which is
+          // throttling rather than one oversized payload. Splitting then only
+          // feeds the limiter, so stop and report the gap instead.
+          if (transport && throttle.streak >= 3) { abandoned = true; return group.map(call => call.fallback) }
+          const middle = Math.ceil(group.length / 2)
+          if (transport) { const first = await execute(group.slice(0, middle)); const second = await execute(group.slice(middle)); return first.concat(second) }
+          const halves = await Promise.all([execute(group.slice(0, middle)), execute(group.slice(middle))]); return halves[0].concat(halves[1])
+        }
+        if (transport) { abandoned = true; return group.map(call => call.fallback) }
         return limited(group, 4, async function (call, index) { try { return decode(call, await retryRpc(() => state.rpc.call({ to: call.target, data: encoded[index].callData }), 3)) } catch (_) { return call.fallback } })
       }
     }
     const values = await limited(groups, 3, execute)
-    return [].concat(...values)
+    const flat = [].concat(...values)
+    flat.incomplete = abandoned
+    return flat
   }
 
   async function getLogs (filter) {
@@ -244,6 +259,9 @@ const FablesPage = (function () {
     const calls = []
     ids.forEach(id => calls.push({ target: pool.hook, iface: hook, method: 'rangeState', args: [id], fallback: null }, { target: pool.hook, iface: hook, method: 'rangeKey', args: [id], fallback: null, decode: value => value }))
     const values = await batch(calls)
+    // Without this the pool falls through to ready with no ranges, and renders
+    // as 0 ranges / $0 TVL rather than as a pool we could not read.
+    if (values.incomplete) throw new Error('Range read incomplete for ' + pool.id)
     pool.ranges = ids.map(function (id, index) {
       const liquidity = values[index * 2]; const key = values[index * 2 + 1]
       if (!liquidity || !key || !key.exists) return null
