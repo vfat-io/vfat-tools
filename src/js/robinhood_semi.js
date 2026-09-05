@@ -131,7 +131,7 @@ const Semi = (function () {
     }
   }
   function reader () {
-    if (!state.rpc) state.rpc = new ethers.providers.JsonRpcProvider(chain.rpc, chain.number)
+    if (!state.rpc) state.rpc = new ethers.providers.StaticJsonRpcProvider(chain.rpc, { chainId: chain.number, name: 'robinhood' })
     return state.rpc
   }
   function contract (address, abi, provider) {
@@ -566,7 +566,7 @@ const Semi = (function () {
   async function start () {
     state.app = byId('semi-app')
     state.loading = byId('semi-loading')
-    state.rpc = new ethers.providers.JsonRpcProvider(chain.rpc, chain.number)
+    state.rpc = new ethers.providers.StaticJsonRpcProvider(chain.rpc, { chainId: chain.number, name: 'robinhood' })
     setLoading('Reading SemiVault contracts on Robinhood Chain…')
     render()
     const passiveWallet = restoreInjectedWallet()

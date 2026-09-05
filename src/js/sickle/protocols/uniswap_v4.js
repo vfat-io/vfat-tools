@@ -256,7 +256,13 @@ export function chainReadProvider(App, chainId) {
   const rpcUrl = rpcUrlForChain(chainId)
   if (rpcUrl) {
     try {
-      return new ethers.providers.JsonRpcProvider(rpcUrl)
+      // Static: a plain JsonRpcProvider re-checks eth_chainId around every
+      // call, and these RPCs bill that against the same rate budget as the
+      // reads we actually want.
+      return new ethers.providers.StaticJsonRpcProvider(rpcUrl, {
+        chainId: Number(chainId),
+        name: `eip155-${chainId}`,
+      })
     } catch (e) {
       console.log('Falling back to the wallet provider for reads:', e)
     }

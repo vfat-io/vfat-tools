@@ -151,7 +151,7 @@ const Up33 = (function () {
   const poolName = function (pool) { return pool.token0Info && pool.token1Info ? pool.token0Info.symbol + ' / ' + pool.token1Info.symbol : short(pool.address) }
 
   async function start() {
-    state.app = byId('up33-app'); state.rpc = new ethers.providers.JsonRpcProvider(chain.rpc, chain.number)
+    state.app = byId('up33-app'); state.rpc = new ethers.providers.StaticJsonRpcProvider(chain.rpc, { chainId: chain.number, name: 'robinhood' })
     setLoading('Reading current Up33 farm contracts from Robinhood Chain…')
     render()
     // Passive wallet restoration deliberately comes from the injected browser

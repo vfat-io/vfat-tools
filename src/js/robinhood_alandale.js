@@ -593,7 +593,7 @@ const Alandale = (function () {
     if (toggle) toggle.addEventListener('click', function () { state.showZeroApr = !state.showZeroApr; renderFarms() })
   }
   function render () { renderWallet(); renderOverview(); renderFarms(); renderPositions() }
-  async function start () { state.rpc = new ethers.providers.JsonRpcProvider(chain.rpc, chain.number); bindEvents(); window.addEventListener('pagehide', clearWalletEvents, { once: true }); render(); const wallet = passiveWallet(); await loadRegistry(); await wallet; if (state.account) await refreshWallet() }
+  async function start () { state.rpc = new ethers.providers.StaticJsonRpcProvider(chain.rpc, { chainId: chain.number, name: 'robinhood' }); bindEvents(); window.addEventListener('pagehide', clearWalletEvents, { once: true }); render(); const wallet = passiveWallet(); await loadRegistry(); await wallet; if (state.account) await refreshWallet() }
   function fatal (error) { console.error(error); setLoading(); setStatus(errText(error), 'error'); render() }
   return { start: start, fatal: fatal }
 })()
