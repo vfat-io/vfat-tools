@@ -86,7 +86,11 @@ const FablesPage = (function () {
   // status. Treat that as "slow down" rather than as a bad response, and make
   // every caller wait out a shared cooldown so one throttled read does not let
   // the rest keep hammering.
-  const throttle = { until: 0, streak: 0 }
+  // streak drives the cooldown and counts retry attempts, so a single group's
+  // own retries move it. refusals counts groups that exhausted their retries,
+  // so one closed payload contributes exactly one and can never on its own
+  // reach the give-up threshold. Both reset on any success.
+  const throttle = { until: 0, streak: 0, refusals: 0 }
 
   function isTransportFailure (error) {
     if (!error) return false
@@ -106,7 +110,7 @@ const FablesPage = (function () {
     for (let attempt = 0; attempt < total; attempt += 1) {
       const wait = throttle.until - Date.now()
       if (wait > 0) await pause(wait)
-      try { const value = await fn(); throttle.streak = 0; return value } catch (error) {
+      try { const value = await fn(); throttle.streak = 0; throttle.refusals = 0; return value } catch (error) {
         lastError = error
         if (isTransportFailure(error)) noteThrottled()
         if (attempt + 1 < total) await pause(250 * (2 ** attempt))
@@ -138,10 +142,12 @@ const FablesPage = (function () {
         // is the amplifier that turns one refusal into a request per call.
         const transport = isTransportFailure(error)
         if (group.length > 8) {
-          // A streak means repeated refusals under concurrency, which is
-          // throttling rather than one oversized payload. Splitting then only
-          // feeds the limiter, so stop and report the gap instead.
-          if (transport && throttle.streak >= 3) { abandoned = true; return group.map(call => call.fallback) }
+          // Repeated refusals across separate groups mean throttling; a single
+          // group that exhausted its retries means the node closed one payload,
+          // and that one still deserves the split. retryRpc drives streak, so
+          // gate on refusals, which only this line increments.
+          if (transport) throttle.refusals += 1
+          if (transport && throttle.refusals >= 3) { abandoned = true; return group.map(call => call.fallback) }
           const middle = Math.ceil(group.length / 2)
           if (transport) { const first = await execute(group.slice(0, middle)); const second = await execute(group.slice(middle)); return first.concat(second) }
           const halves = await Promise.all([execute(group.slice(0, middle)), execute(group.slice(middle))]); return halves[0].concat(halves[1])
