@@ -49,6 +49,9 @@ module.exports = (env = {}) => {
       // depository, and inverse bond directly. Reown stays behind the
       // other-wallet action.
       robinhood_netnet: './src/js/robinhood_netnet.js',
+      // 3Jane is a self-contained Ethereum page. Core, Pendle, Curve, Morpho,
+      // LCC, and reward state load without the site-wide app or wallet SDK.
+      threejane: './src/js/threejane.js',
     },
     output: {
       filename: isProduction ? '[name].[contenthash].js' : '[name].js',

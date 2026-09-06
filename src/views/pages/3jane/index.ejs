@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include(`${partials}/head`, {
+  noGlobalScripts: true,
+  pageMeta: {
+    title: '3Jane Farms on Ethereum | vfat.tools',
+    description: 'USD3, sUSD3, Morpho, Pendle, Curve, LCC positions, JANE rewards, and direct wallet actions on Ethereum.',
+    url: 'https://vfat.tools/3jane/',
+    image: 'https://vfat.tools/img/3jane-social.png',
+    imageAlt: 'vfat.tools 3Jane farms and positions on Ethereum.',
+    imageWidth: 1200,
+    imageHeight: 630
+  }
+}); -%>
+
+<body>
+<%- include(`${partials}/header_main`); -%>
+<main class="jane-page">
+<nav class="jane-mobile-nav" aria-label="3Jane page navigation"><a href="/">[ vfat.tools ]</a> <a href="https://app.3jane.xyz/supply" target="_blank" rel="noopener noreferrer">[ 3Jane app ]</a> <a href="https://docs.3jane.xyz" target="_blank" rel="noopener noreferrer">[ docs ]</a></nav>
+
+<pre class="jane-banner">
+============================ 3JANE · ETHEREUM ============================
+CORE  : USD3 + sUSD3
+FARMS : Morpho · Pendle · Curve · Levered Callable Capital
+MODE  : Direct Ethereum RPC + official 3Jane reward allocations
+============================================================================
+
+WALLET: <span id="jane-wallet-status">Checking injected wallet permissions...</span>
+        <button id="jane-connect" class="jane-link-button" type="button">[ connect wallet ]</button>
+        <button id="jane-other-wallet" class="jane-link-button" type="button">[ other wallet ]</button>
+        <button id="jane-switch" class="jane-link-button" type="button" hidden>[ switch to Ethereum ]</button>
+</pre>
+
+<pre id="jane-overview" class="jane-summary" aria-live="polite">Reading 3Jane contracts...</pre>
+<p id="jane-status" class="jane-status" role="status" hidden></p>
+<p class="jane-controls">DISPLAY : live + incentivized opportunities <button id="jane-zero-toggle" class="jane-link-button" type="button">[ show 0-JANE opportunities ]</button> <button id="jane-refresh" class="jane-link-button" type="button">[ refresh onchain state ]</button></p>
+
+<div id="jane-loading" class="jane-loading" role="status" aria-live="polite"><span id="jane-loading-spin" aria-hidden="true">[....]</span> <span id="jane-loading-text">Reading Ethereum...</span></div>
+
+<section class="jane-section" aria-labelledby="jane-core-title">
+  <h1 id="jane-core-title">============================= CORE VAULTS =============================</h1>
+  <p class="jane-note">Share prices, caps, cooldowns, wallet balances, and actions come from the vault contracts. USD values use USDC as the onchain unit of account.</p>
+  <div id="jane-core" class="jane-table-wrap" aria-live="polite"></div>
+</section>
+
+<section class="jane-section" aria-labelledby="jane-farms-title">
+  <h1 id="jane-farms-title">=========================== ECOSYSTEM FARMS ===========================</h1>
+  <p class="jane-note">Market contracts and component tokens are resolved onchain. “JANE APR” is the current official allocation range; it is scenario-dependent, not guaranteed yield.</p>
+  <div id="jane-farms" class="jane-table-wrap" aria-live="polite"></div>
+</section>
+
+<section class="jane-section" aria-labelledby="jane-lcc-title">
+  <h1 id="jane-lcc-title">==================== LEVERED CALLABLE CAPITAL (LCC) ====================</h1>
+  <p class="jane-warning">RISK: LCC margin backs a leveraged callable commitment. If a capital call opens and is not funded before its deadline, margin can be slashed. LCC is not an ERC-4626 vault.</p>
+  <div id="jane-lcc" class="jane-table-wrap" aria-live="polite"></div>
+</section>
+
+<section class="jane-section" aria-labelledby="jane-rewards-title">
+  <h1 id="jane-rewards-title">============================= JANE REWARDS ============================</h1>
+  <div id="jane-rewards" aria-live="polite"></div>
+</section>
+
+<pre class="jane-footer-note">TX FLOW : exact approval → exact eth_call preflight → wallet confirmation → receipt refresh
+SOURCES : Ethereum contracts + 3Jane's public Merkle/emissions service. No vfat API.</pre>
+</main>
+
+<dialog id="jane-action-dialog" class="jane-action-dialog" aria-labelledby="jane-action-title">
+  <form method="dialog" class="jane-dialog-close-row"><button type="submit">[ close ]</button></form>
+  <div id="jane-action-content"></div>
+</dialog>
+
+<%- include(`${partials}/disclaimer`); -%>
+<style>
+  .jane-page { max-width: 1520px; min-width: 0; margin: 20px 10px 50px; }
+  .jane-page, .jane-page * { box-sizing: border-box; font-family: monospace; }
+  .jane-mobile-nav { display: none; }
+  .jane-banner, .jane-summary, .jane-footer-note { max-width: 100%; margin: 0 0 20px; overflow-wrap: anywhere; white-space: pre-wrap; }
+  .jane-status, .jane-controls, .jane-note, .jane-warning { max-width: none; margin: 0 0 14px; color: inherit; font: 14px/1.45 monospace; text-align: left; }
+  .jane-status[data-kind="error"], .jane-warning { color: #d95757; }
+  .jane-status[data-kind="success"] { color: var(--highlight-color); }
+  .jane-section { min-width: 0; margin-top: 27px; }
+  .jane-section h1 { max-width: none; margin: 0 0 8px; padding: 0; border: 0; color: inherit; font: inherit; font-weight: normal; text-align: left; }
+  .jane-link-button, .jane-action-button, .jane-action-dialog button { margin: 0; padding: 0; border: 0; background: transparent; color: inherit; cursor: pointer; font: inherit; text-decoration: underline; }
+  .jane-link-button:hover, .jane-action-button:hover, .jane-action-dialog button:hover, .jane-page a:hover { color: var(--highlight-color); }
+  .jane-link-button:disabled, .jane-action-button:disabled, .jane-action-dialog button:disabled { cursor: not-allowed; opacity: .45; text-decoration: none; }
+  .jane-loading { padding: 8px 0; }
+  .jane-loading[hidden] { display: none; }
+  .jane-table-wrap { width: 100%; min-width: 0; overflow-x: auto; }
+  .jane-table { width: 100%; min-width: 1120px; border-collapse: collapse; font-size: 13px; }
+  .jane-table th, .jane-table td { padding: 7px 8px; border: 1px solid currentColor; vertical-align: top; text-align: right; white-space: pre-line; }
+  .jane-table th:first-child, .jane-table td:first-child, .jane-table th:last-child, .jane-table td:last-child { text-align: left; }
+  .jane-table th { font-weight: bold; }
+  .jane-name, .jane-subline { display: block; max-width: 255px; overflow-wrap: anywhere; white-space: normal; }
+  .jane-subline { margin-top: 3px; color: var(--highlight-color); font-size: 12px; }
+  .jane-actions { min-width: 170px; white-space: normal !important; }
+  .jane-actions > * { display: inline-block; margin: 0 8px 5px 0; }
+  .jane-muted { opacity: .68; }
+  .jane-reward-box { display: grid; grid-template-columns: repeat(5, minmax(120px, 1fr)); max-width: 1120px; border: 1px solid currentColor; }
+  .jane-reward-stat { min-width: 0; padding: 10px; border-right: 1px solid currentColor; }
+  .jane-reward-stat:last-child { border-right: 0; }
+  .jane-reward-label, .jane-reward-value { display: block; overflow-wrap: anywhere; }
+  .jane-reward-label { margin-bottom: 5px; opacity: .72; }
+  .jane-action-dialog { width: min(650px, calc(100vw - 28px)); max-width: calc(100vw - 28px); padding: 16px; border: 1px solid currentColor; background: var(--main-background-color); color: var(--main-text-color); }
+  .jane-action-dialog::backdrop { background: rgba(0, 0, 0, .55); }
+  .jane-dialog-close-row { margin: 0 0 18px; text-align: right; }
+  .jane-action-dialog h2 { max-width: none; margin: 0 0 9px; padding: 0; border: 0; color: inherit; font: bold 16px/1.4 monospace; text-align: left; }
+  .jane-action-dialog p, .jane-action-note { max-width: none; margin: 0 0 12px; color: inherit; font: 14px/1.45 monospace; text-align: left; overflow-wrap: anywhere; }
+  .jane-input-row { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 9px; align-items: center; margin: 9px 0; }
+  .jane-input-row input, .jane-input-row select { width: 100%; min-width: 0; padding: 5px 7px; border: 1px solid currentColor; border-radius: 0; background: transparent; color: inherit; font: 16px/1.4 monospace; }
+  .jane-check-row { display: flex; gap: 8px; align-items: flex-start; margin: 11px 0; font: 13px/1.4 monospace; }
+  .jane-dialog-actions { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 15px; }
+  @media (max-width: 700px) {
+    body > div:not(.modal) { display: none; }
+    .jane-page { margin: 14px 8px 40px; overflow-x: hidden; }
+    .jane-mobile-nav { display: block; margin-bottom: 14px; }
+    .jane-banner, .jane-summary, .jane-footer-note { font-size: 12px; }
+    .jane-table-wrap { overflow: visible; }
+    .jane-table { min-width: 0; table-layout: fixed; font-size: 12px; }
+    .jane-table th, .jane-table td { padding: 6px; }
+    .jane-table th { white-space: normal; }
+    .jane-table th:nth-child(3), .jane-table td:nth-child(3), .jane-table th:nth-child(4), .jane-table td:nth-child(4), .jane-table th:nth-child(5), .jane-table td:nth-child(5) { display: none; }
+    .jane-table th:first-child { width: 37%; }
+    .jane-table th:nth-child(2) { width: 27%; }
+    .jane-table th:last-child { width: 36%; }
+    .jane-name, .jane-subline { max-width: none; }
+    .jane-actions { min-width: 0; }
+    .jane-reward-box { grid-template-columns: 1fr 1fr; }
+    .jane-reward-stat { border-bottom: 1px solid currentColor; }
+    .jane-reward-stat:nth-child(even) { border-right: 0; }
+    .jane-reward-stat:last-child { grid-column: 1 / -1; border-bottom: 0; }
+  }
+</style>
+<%- include(`${partials}/scripts_onchain`, {scriptname: 'threejane'}); -%>
+</body>
+</html>
