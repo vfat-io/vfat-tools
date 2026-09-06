@@ -55,8 +55,7 @@ const ThreeJanePage = (function () {
   ])
   const syAbi = erc20Abi.concat(['function exchangeRate() view returns(uint256)'])
   const curveAbi = erc20Abi.concat([
-    'function coins(uint256) view returns(address)', 'function balances(uint256) view returns(uint256)',
-    'function stored_rates() view returns(uint256[])', 'function get_virtual_price() view returns(uint256)', 'function fee() view returns(uint256)',
+    'function coins(uint256) view returns(address)', 'function get_virtual_price() view returns(uint256)',
     'function calc_token_amount(uint256[],bool) view returns(uint256)',
     'function calc_withdraw_one_coin(uint256,int128) view returns(uint256)',
     'function add_liquidity(uint256[],uint256,address) returns(uint256)',
@@ -141,7 +140,6 @@ const ThreeJanePage = (function () {
   function addCell (row, text, className) { const cell = e('td', { text: text, className: className }); row.appendChild(cell); return cell }
   function nameCell (row, title, subtitle, href) { const cell = e('td'); const name = href ? link(title, href) : e('span', { text: title }); name.className = 'jane-name'; append(cell, name, e('span', { className: 'jane-subline', text: subtitle })); row.appendChild(cell); return cell }
   function rewardRange (key) { const data = state.rewardData[key]; if (!data) return '—'; const min = Number(data.combinedMinApr) * 100; const max = Number(data.combinedMaxApr) * 100; return Math.abs(max - min) < 0.005 ? percent(min) : percent(min) + '–' + percent(max) }
-  function hasRewards (key) { const data = state.rewardData[key]; return data && Number(data.combinedMaxApr) > 0 }
   function farmTvl (key) { const data = state.rewardData[key]; return data ? Number(data.tvl) : NaN }
   function dateTime (timestamp) { if (!timestamp || Number(timestamp) <= 0) return '—'; return new Date(Number(timestamp) * 1000).toLocaleString([], { month: 'short', day: '2-digit', hour: '2-digit', minute: '2-digit' }) }
   function duration (seconds) { const days = Math.round(Number(seconds) / 86400); return days >= 1 ? days + 'd' : Math.round(Number(seconds) / 3600) + 'h' }
@@ -225,12 +223,10 @@ const ThreeJanePage = (function () {
     entries.forEach(function (entry, index) { state.rewardData[entry[0]] = values[index] })
     const apys = await Promise.all([
       convex('action', 'onchain:getUsd3Apy', {}).catch(() => null),
-      convex('action', 'onchain:getSusd3Apy', {}).catch(() => null),
-      convex('query', 'farm:getLatestMerkleRootMetadata', {}).catch(() => null)
+      convex('action', 'onchain:getSusd3Apy', {}).catch(() => null)
     ])
     if (state.core[0]) state.core[0].baseApy = apys[0] === null ? NaN : Number(apys[0]) * 100
     if (state.core[1]) state.core[1].baseApy = apys[1] === null ? NaN : Number(apys[1]) * 100
-    state.jane.merkleMetadata = apys[2]
   }
   async function discover () {
     loading('Discovering 3Jane deployment roots…')
@@ -269,15 +265,12 @@ const ThreeJanePage = (function () {
     Object.assign(state.curve, await keyed([
       { key: 'coin0', target: address.curve, iface: curve, method: 'coins', args: [0], fallback: null },
       { key: 'coin1', target: address.curve, iface: curve, method: 'coins', args: [1], fallback: null },
-      { key: 'balance0', target: address.curve, iface: curve, method: 'balances', args: [0], fallback: zero },
-      { key: 'balance1', target: address.curve, iface: curve, method: 'balances', args: [1], fallback: zero },
       { key: 'totalSupply', target: address.curve, iface: curve, method: 'totalSupply', fallback: zero },
-      { key: 'virtualPrice', target: address.curve, iface: curve, method: 'get_virtual_price', fallback: zero },
-      { key: 'fee', target: address.curve, iface: curve, method: 'fee', fallback: zero }
+      { key: 'virtualPrice', target: address.curve, iface: curve, method: 'get_virtual_price', fallback: zero }
     ]))
     state.lcc = await limited(roots.lccVaults || [], 3, readLcc)
     const tokens = [address.usd3, address.susd3, address.morphoVault, address.curve, address.jane, state.core[0].asset, state.core[1].asset, state.farms[0].asset, state.curve.coin0, state.curve.coin1, roots.usdc, roots.usdt, roots.waUsdc, roots.waUsdt]
-    state.pendle.forEach(function (market) { tokens.push(market.sy, market.pt, market.yt); (market.rewardTokens || []).forEach(value => tokens.push(value)) })
+    state.pendle.forEach(function (market) { tokens.push(market.address, market.sy, market.pt, market.yt); (market.rewardTokens || []).forEach(value => tokens.push(value)) })
     state.lcc.forEach(function (entry) { tokens.push(entry.assets.marginAsset, entry.assets.fundingAsset, entry.assets.notificationVault) })
     loading('Reading token metadata and reward allocations…')
     await loadTokens(tokens)
@@ -345,7 +338,7 @@ const ThreeJanePage = (function () {
       ]
       instruments.forEach(function (instrument) {
         if (!state.showZero && !instrument.key) return
-        const t = instrument.type === 'LP' ? { symbol: 'LP-' + market.label, decimals: token(market.sy).decimals } : token(instrument.address)
+        const t = instrument.type === 'LP' ? { symbol: 'LP-' + market.label, decimals: token(market.address).decimals } : token(instrument.address)
         row = table.insertRow(); nameCell(row, instrument.type + ' · ' + market.label, short(instrument.address), explorer(instrument.address)); addCell(row, safe(t.symbol, 24)); addCell(row, instrument.key ? usd(farmTvl(instrument.key)) : 'market liquidity'); addCell(row, 'expires ' + new Date(num(market.expiry) * 1000).toISOString().slice(0, 10)); addCell(row, instrument.key ? rewardRange(instrument.key) : '0%')
         actions = [link(instrument.type === 'LP' ? 'liquidity' : 'trade', instrument.url)]
         if (instrument.type === 'LP') actions.push(button('claim PENDLE', () => openAction(market, 'pendle-claim')))
@@ -371,8 +364,8 @@ const ThreeJanePage = (function () {
       const margin = token(entry.assets.marginAsset); const funding = token(entry.assets.fundingAsset); const row = table.insertRow(); const paused = entry.paused && entry.paused[0]; const terminal = num(entry.epochConfig.maxEpochs) > 0 && num(entry.epoch) >= num(entry.epochConfig.maxEpochs); const shut = entry.shutdown && entry.shutdown.active
       nameCell(row, margin.symbol + ' margin', short(entry.address) + (shut ? ' / SHUTDOWN' : terminal ? ' / TERMINAL' : paused ? ' / PAUSED' : ''), explorer(entry.address))
       addCell(row, phaseNames[num(entry.phase)] + ' / epoch ' + num(entry.epoch) + '\nends ' + dateTime(entry.phaseEnd))
-      addCell(row, compact(units(entry.totals.activeMargin, margin.decimals)) + ' ' + margin.symbol)
-      addCell(row, compact(units(entry.totals.activeCommitment, funding.decimals)) + ' ' + funding.symbol)
+      addCell(row, entry.totals ? compact(units(entry.totals.activeMargin, margin.decimals)) + ' ' + margin.symbol : 'unavailable')
+      addCell(row, entry.totals ? compact(units(entry.totals.activeCommitment, funding.decimals)) + ' ' + funding.symbol : 'unavailable')
       addCell(row, (10000 / num(entry.epochConfig.marginRatioBps)).toFixed(2) + 'x leverage\n' + percent(num(entry.risk.exitCapBps) / 100) + ' exit cap')
       const depositToken = lower(entry.assets.marginAsset) === lower(state.helper.waUsdc) ? token(state.helper.usdc) : token(state.helper.usdt)
       const actions = [button('deposit ' + depositToken.symbol, () => openAction(entry, 'lcc-deposit')), button('fund call', () => openAction(entry, 'lcc-fund')), button('request exit', () => openAction(entry, 'lcc-exit')), button('claim margin', () => openAction(entry, shut || terminal ? 'lcc-claim-remaining' : 'lcc-claim'))]
@@ -421,7 +414,7 @@ const ThreeJanePage = (function () {
     if (action.mode === 'jane-claim') return 'The cumulative allocation and proof come from 3Jane; the exact claim is verified by the onchain Merkle root before minting.'
     return 'The exact transaction is simulated with eth_call from this wallet before it can be submitted.'
   }
-  function inputRow (label, id, value, suffix, onInput) { const row = e('label', { className: 'jane-input-row' }); row.appendChild(document.createTextNode(label + ' :')); const input = e('input', { id: id }); input.type = 'text'; input.inputMode = 'decimal'; input.autocomplete = 'off'; input.value = value || ''; input.addEventListener('input', function () { onInput(input.value) }); append(row, input, e('span', { text: suffix || '' })); return row }
+  function inputRow (label, id, value, suffix, onInput) { const row = e('label', { className: 'jane-input-row' }); row.appendChild(document.createTextNode(label + ' :')); const input = e('input', { id: id }); input.type = 'text'; input.inputMode = 'decimal'; input.autocomplete = 'off'; input.value = value || ''; input.addEventListener('input', function () { onInput(input.value); const start = input.selectionStart; const end = input.selectionEnd; renderAction(); const next = byId(id); if (next) { next.focus(); try { next.setSelectionRange(start, end) } catch (_) {} } }); append(row, input, e('span', { text: suffix || '' })); return row }
   function renderAction () {
     const action = state.action; const container = byId('jane-action-content'); if (!container || !action) return
     container.textContent = ''; container.appendChild(e('h2', { id: 'jane-action-title', text: actionTitle(action) })); container.appendChild(e('p', { className: 'jane-action-note', text: actionNote(action) }))
@@ -460,7 +453,7 @@ const ThreeJanePage = (function () {
     if (!action || !account) throw new Error('Connect a wallet first.')
     if (mode === 'deposit' || mode === 'withdraw') { const amount = parsedAmount(token(entry.asset)); return { to: entry.address, data: vault.encodeFunctionData(mode, mode === 'deposit' ? [amount, account] : [amount, account, account]), token: mode === 'deposit' ? token(entry.asset) : null, amount: amount, spender: entry.address } }
     if (mode === 'cooldown') { const amount = parsedAmount(token(entry.address)); return { to: entry.address, data: susd3.encodeFunctionData('startCooldown', [amount]) } }
-    if (mode === 'cooldown-claim') return { to: entry.address, data: susd3.encodeFunctionData('withdraw', []) }
+    if (mode === 'cooldown-claim') return { to: entry.address, data: susd3.encodeFunctionData('withdraw()', []) }
     if (mode === 'pendle-claim') return { to: entry.address, data: pendle.encodeFunctionData('redeemRewards', [account]) }
     if (mode.indexOf('curve-deposit-') === 0) {
       const index = Number(mode.slice(-1)); const coin = token(index === 0 ? entry.coin0 : entry.coin1); const amount = parsedAmount(coin); const amounts = [zero, zero]; amounts[index] = amount
@@ -502,7 +495,7 @@ const ThreeJanePage = (function () {
     try {
       const tx = await buildAction()
       if (tx.token && tx.spender && tx.amount) { const allowance = await new ethers.Contract(tx.token.address, erc20Abi, state.rpc).allowance(state.account, tx.spender); if (allowance.lt(tx.amount)) throw new Error('Approve the exact amount first. The page does not substitute an unlimited allowance.'); if (walletBalance(tx.token.address).lt(tx.amount)) throw new Error('The requested amount exceeds this wallet balance.') }
-      await send(tx, actionTitle(state.action)); await refreshAll(false); setStatus('Receipt confirmed and 3Jane state refreshed.', 'success')
+      await send(tx, actionTitle(state.action)); await refreshAll(); setStatus('Receipt confirmed and 3Jane state refreshed.', 'success')
     } finally { state.sending = false; renderAction() }
   }
 
@@ -525,8 +518,7 @@ const ThreeJanePage = (function () {
         { key: 'funded', target: entry.address, iface: lcc, method: 'fundedEpoch', args: [entry.epoch, state.account], fallback: false }
       ]); state.wallet.lcc.set(lower(entry.address), values)
     })
-    const root = state.jane.merkleMetadata && state.jane.merkleMetadata.merkleRoot || state.jane.root
-    state.wallet.merkleClaim = await convex('action', 'farm:getMerkleClaim', { address: state.account, merkleRoot: root }).catch(function (error) { console.warn('JANE proof unavailable', errText(error)); return null })
+    state.wallet.merkleClaim = await convex('action', 'farm:getMerkleClaim', { address: state.account, merkleRoot: state.jane.root }).catch(function (error) { console.warn('JANE proof unavailable', errText(error)); return null })
     loading()
   }
   async function adopt (provider, accounts, walletChain, hydrate) { if (!provider || !accounts || !accounts[0]) return false; state.eip1193 = provider; state.account = ethers.utils.getAddress(accounts[0]); state.walletChain = lower(walletChain); if (!state.bound && provider.on) { state.bound = true; provider.on('accountsChanged', function () { restore(true).catch(fatal) }); provider.on('chainChanged', function () { restore(true).catch(fatal) }) } render(); if (hydrate !== false) { await hydrateWallet(); render() } return true }
@@ -534,12 +526,12 @@ const ThreeJanePage = (function () {
   async function connectInjected () { const provider = injected(); if (!provider) return connectOther(); const accounts = await provider.request({ method: 'eth_requestAccounts' }); await adopt(provider, accounts, await provider.request({ method: 'eth_chainId' }), true) }
   async function connectOther () { const reown = await import('./config.js'); if (!reown.REOWN_PROJECT_ID) throw new Error('Optional wallet support is unavailable.'); const kit = reown.createAppKitInstance(); if (!kit) throw new Error('Optional wallet support is unavailable.'); const onAccount = async function (account) { if (!account || !account.isConnected) return; const provider = await kit.getWalletProvider(); await adopt(provider, await provider.request({ method: 'eth_accounts' }), await provider.request({ method: 'eth_chainId' }), true); if (state.reownUnsubscribe) { state.reownUnsubscribe(); state.reownUnsubscribe = null } }; if (kit.getAddress && kit.getAddress()) return onAccount({ isConnected: true }); if (!state.reownUnsubscribe && kit.subscribeAccount) state.reownUnsubscribe = kit.subscribeAccount(value => onAccount(value).catch(error => setStatus(errText(error), 'error'))); await kit.open() }
   async function switchChain () { if (!state.eip1193) throw new Error('Connect a wallet first.'); await state.eip1193.request({ method: 'wallet_switchEthereumChain', params: [{ chainId: chain.id }] }); await restore(true) }
-  async function refreshAll (rediscover) { if (rediscover) await discover(); else { state.block = await state.rpc.getBlockNumber(); await discover() } await hydrateWallet(); render() }
+  async function refreshAll () { await discover(); await hydrateWallet(); render() }
   function bind () {
     byId('jane-connect').addEventListener('click', () => connectInjected().catch(error => setStatus(errText(error), 'error')))
     byId('jane-other-wallet').addEventListener('click', () => connectOther().catch(error => setStatus(errText(error), 'error')))
     byId('jane-switch').addEventListener('click', () => switchChain().catch(error => setStatus(errText(error), 'error')))
-    byId('jane-refresh').addEventListener('click', () => refreshAll(true).then(() => setStatus('3Jane state refreshed.', 'success')).catch(error => setStatus(errText(error), 'error')))
+    byId('jane-refresh').addEventListener('click', () => refreshAll().then(() => setStatus('3Jane state refreshed.', 'success')).catch(error => setStatus(errText(error), 'error')))
     byId('jane-zero-toggle').addEventListener('click', function () { state.showZero = !state.showZero; byId('jane-zero-toggle').textContent = state.showZero ? '[ hide 0-JANE opportunities ]' : '[ show 0-JANE opportunities ]'; renderFarms() })
   }
   async function start () { state.rpc = new ethers.providers.StaticJsonRpcProvider(chain.rpc, { chainId: chain.number, name: 'ethereum' }); bind(); await discover(); render(); await restore(false); if (state.account) hydrateWallet().then(render).catch(error => console.warn('3Jane wallet hydration failed', errText(error))) }

@@ -210,7 +210,7 @@ const main = async () => {
       ["PsyDAO                       ", `<a href="psydao/"            >Various</a>`, "BIO                ", "https://www.psydao.io"],
       ["Uniswap                      ", `<a href="uniswap/"           >Various</a>`, "                   ", "https://app.uniswap.org"],
       ["Sickle                       ", `<a href="sickle/"            >Various</a>`, "                   ", ""],
-      ["3Jane                       ", `<a href="3jane/"             >USD3 ecosystem</a>`, "JANE               ", "https://app.3jane.xyz/supply"]
+      ["3Jane                        ", `<a href="3jane/"             >USD3 ecosystem</a>`, "JANE               ", "https://app.3jane.xyz/supply"]
     ].reverse()
   }
 
