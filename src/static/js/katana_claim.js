@@ -17,14 +17,29 @@ const AVKAT           = "0x7231dbaCdFc968E07656D12389AB20De82FbfCeB";
 const KAT             = "0x7F1f4b4b29f5058fA32CC7a97141b8D7e5ABDC2d";
 const CLAIMABLES_API  = "https://api.katana.network/v1/portfolio";
 
-const FACTORY_ABI = ["function sickles(address admin) view returns (address)"];
-const VOTER_ABI = [
-  "function votingActive() view returns (bool)",
-  "function epochVoteStart() view returns (uint256)"
+// ethcall builds its multicall payload from JSON fragments; it cannot parse
+// ethers human-readable signatures, and silently yields a contract with no
+// methods if given them.
+const view = (name, inputs, outputs) => ({
+  name, type: "function", stateMutability: "view", inputs, outputs
+});
+const FACTORY_ABI = [
+  view("sickles", [{ name: "admin", type: "address" }], [{ name: "", type: "address" }])
 ];
-const ESCROW_ABI = ["function ownedTokens(address owner) view returns (uint256[])"];
-const LOCKED_ABI = ["function locked(uint256 tokenId) view returns (uint256 amount, uint256 start)"];
-const VAULT_ABI  = ["function convertToShares(uint256 assets) view returns (uint256)"];
+const VOTER_ABI = [
+  view("votingActive", [], [{ name: "", type: "bool" }]),
+  view("epochVoteStart", [], [{ name: "", type: "uint256" }])
+];
+const ESCROW_ABI = [
+  view("ownedTokens", [{ name: "owner", type: "address" }], [{ name: "", type: "uint256[]" }])
+];
+const LOCKED_ABI = [
+  view("locked", [{ name: "tokenId", type: "uint256" }],
+       [{ name: "amount", type: "uint256" }, { name: "start", type: "uint256" }])
+];
+const VAULT_ABI = [
+  view("convertToShares", [{ name: "assets", type: "uint256" }], [{ name: "", type: "uint256" }])
+];
 const FARM_ABI = [
   "function simpleHarvest((address stakingContract, uint256 poolIndex) farm, (address[] rewardTokens, bytes extraData) params)"
 ];
@@ -37,20 +52,67 @@ const FARM_ABI = [
 const REWARD_TOKENS = [KAT];
 const EMPTY_ADDITIONAL = ethers.utils.hexZeroPad("0x00", 32);
 
+// Katana's claimables API is origin-locked: it answers app.katana.network and
+// returns 500 to every other origin, so a browser on vfat.tools cannot read it.
+// The merkle proofs are fixed for a campaign, so the eligible set is embedded
+// here instead. Campaign 9 is the only live campaign; 4, 5, 6 and 7 all expired
+// 2026-07-05 while the API still advertises them as claimable.
+//
+// Refresh this table when Katana opens a new campaign -- an eligible Sickle
+// missing from it simply sees nothing to claim, and the on-chain claimed()
+// check plus the pre-flight simulation keep a stale entry from doing harm.
+const EMBEDDED_CLAIMABLES = {
+  "0x072cdf98c02e845919e814e4f7eb6aa31f8eeab0": [
+    { campaignId: "9", title: "Topup pre-stakers for 35% yield", amountToBeClaimed: "4565091573254142545101",
+      proof: ["0x20ec7a44b600afaceb03927e4ee48bd106fec8bdbd1f09181680245f2436f570", "0xd9289638f4799c728f0064a8c27d949ff91c89ad2a89045bdf22a79b3eee9a3f", "0xf713bca85ee25791bb0a61f7a3c2e71ffad0f7f6518734963ceb61047beb9404", "0x334d2725c54ba01a019c60acb6f049bfea0e548218c53d1038271201d343e5ad", "0x63fe35b3d8f02d7a8e47756c8d41f9f01e2ed5806a4419d36ffabed534ee5582", "0x357bfd9fc52fb947db71b67f9cc53b53380682a290f39eefa0419b9f0c7f9600", "0xf279b823b6015ca4dc233e5497d11060bd3d1bdff96d23de3c76443d995e226c", "0xf0dada072d46f27d547d463ac91181cdd0694cb8a8e534630e386918f05de7a7", "0x4708924ac6a2ea1284aaca53f8876489ed488736efcb36a765dca144491c1a80", "0x732e9d09889d285de112daf4517d98cc4e6103bf93ffc7bea755419c25ba2a78"] }
+  ],
+  "0xbed260dbfaadd2e24794ec4d848afdd3b0307ac9": [
+    { campaignId: "9", title: "Topup pre-stakers for 35% yield", amountToBeClaimed: "1155583655928123609626",
+      proof: ["0xed6ecefd76f973bfa275ff3e08045048c6bbe755ae73411bad5ba71073e36452", "0xe628e69b199f2edc6191b25768434cbf60f36792c284be8d5e3ef15440bb4748", "0x588eb061a89880c5612eefc7d82c21784e295dcf370cf19318a000153eeb2a73", "0xc7f6cd433f4f4517388989fcf7a2580573d28990b20740bb942f3746e9c5aef2", "0x15dd2b061e4e69b330fa0f325ceba62f7e25266d4610cd2f3a2d526fbf60419b", "0x1ff3e76bbef6d774bd91bbc1a47405edcddbcfbeab3d5f02235967ff801bda46", "0x851e5aae94aa689388ade2b40350c97766dfaa9344817773cf1f1b0a9454c590", "0x1685cec5e29bf21fe1db5e4248410806ca7d10c4a5c00b0522064efcadd39183", "0xc2bda16568c6ba9523330ecf6116802fb0b35797a9396de45d16f06fd54484ab", "0x17edbd60e8be7cd852db46ffe6fd4178ab4c60c7ece4b2c4de374b2505baf5c6"] }
+  ],
+  "0x0134705497aaac3d5aa56ebc125be15eee506aef": [
+    { campaignId: "9", title: "Topup pre-stakers for 35% yield", amountToBeClaimed: "79853623959698294264",
+      proof: ["0x12c043b127e21ce5cc9c17a63f003b2ffcfbbea64a4a3af52afacd79fe1663f1", "0xab17f8bbdbe86ba7139020e5b5f750d9f7344be0540efadad07b7df618311ce1", "0xda6b6cc2630ac3aa550df4241cde7c6b7a6b3e76ea75155aee8fd28f9a9baf9f", "0xa6e49b59f4a25c1eccd37fce6d1e9c47ffcdb44f908205fc9e922fe4afe9d0a0", "0x95761b291460afde4c20318a0e93e7f06fb59fad9e387b0e291ee99800f4b632", "0x357bfd9fc52fb947db71b67f9cc53b53380682a290f39eefa0419b9f0c7f9600", "0xf279b823b6015ca4dc233e5497d11060bd3d1bdff96d23de3c76443d995e226c", "0xf0dada072d46f27d547d463ac91181cdd0694cb8a8e534630e386918f05de7a7", "0x4708924ac6a2ea1284aaca53f8876489ed488736efcb36a765dca144491c1a80", "0x732e9d09889d285de112daf4517d98cc4e6103bf93ffc7bea755419c25ba2a78"] }
+  ],
+  "0x3388a64dc6e1c0dfe7ec965aaa928dc3d49971aa": [
+    { campaignId: "9", title: "Topup pre-stakers for 35% yield", amountToBeClaimed: "74685293810000847588",
+      proof: ["0x1465fe59cba121fbcdbdfef39c6dfa56bef802e802393a10db9314db0b07a3bc", "0x6eda3d1dede89001d22ac03b985459e48907b3a04c4375cf6061ea0b36c2f1bb", "0xa592a45e3750009a719f977a8ec2d776bf537b3638e604b19ef3f9642aeaca50", "0x16ce22ee3c97829a0c6ab199eb6799e9e2630c7244d46b598fd4df7ba226621d", "0xb80b641a0c2e6eb40f71aec219dc7cd8f60d1e3d7d45d798387bc5f89d0cb17a", "0xa48c5b22ad1544552826ae928d15d3f38f92b5eb1deacdc805b61571a9eb54e2", "0xbf67f06434b48a25967456fc4bb4dc75b6cabcf0edb4b36a44de0909d75668a0", "0xe678d7169b3fca5c826b989024a54203430ad779c8a16afa46ca17f09fdf1fbd", "0x4708924ac6a2ea1284aaca53f8876489ed488736efcb36a765dca144491c1a80", "0x732e9d09889d285de112daf4517d98cc4e6103bf93ffc7bea755419c25ba2a78"] }
+  ],
+  "0x5e20d7301669252dd1718fffb129bf5d41ff6a2d": [
+    { campaignId: "9", title: "Topup pre-stakers for 35% yield", amountToBeClaimed: "36206760171713044062",
+      proof: ["0xc607916464487d9d29f9c1a9d7548c6657859125e4e03f6d019b09fbf9a246a2", "0xcfc9a934842daba30fde1417a99e69d994d3fc338575de192c9499e04bc02626", "0xcd2e71a9b782edc105189571d915061f89932069fa750ab9d814c561e0341e0f", "0x859d4169b80a80a654becdbd9977efb49ae1e099df27e026ce3d1baf7fc09e33", "0x735beba6274c9c23ab9a077de776bbe2002e8d16608aaaa88a7bb0917b355ddc", "0x6f48c14a5af3c5c50391d51731f85577603ab2988d8a7ad6b8a7211a13f169ea", "0xc29007998c9ae0c46f93a0f13e1d3c5663b6b8eabf3581ac470c9db3fd5830c0", "0x47527a268d50a16a74344016cac05416e09db52d854dc711d1900f7aab8c63dc", "0x76d05d0829ad787401770e1d995393a2cf464ea1b6413a3be9158bf6fc3989ca", "0x732e9d09889d285de112daf4517d98cc4e6103bf93ffc7bea755419c25ba2a78"] }
+  ],
+  "0x40ad7be1a21fe02499f8e2893c85187c71a40c75": [
+    { campaignId: "9", title: "Topup pre-stakers for 35% yield", amountToBeClaimed: "26653126566851830971",
+      proof: ["0x3ba7329012ede075c7466afb626d3ea29945d1e52e7468fafbf5c1e8d1a54f34", "0x61bc5900c21568e8e8b03d269c4c8882d9a424fa8a50da30ded292e1cacde7f9", "0xdd1a366df3b6d51a8514fc743d57dd82392539dacbc5bb8ff7595ec86ebce48b", "0x87c299e34f6daa557cb26d61dd5ce62921b0b73a402a761d2eeb11b4a48348bd", "0x29ad2f9132e13c8c5bdd5d30c5c235c685be3196422405c123d3f48f70624e34", "0xdd3f41516ff117d5732711bc91901c32ea7a43e82046f2479bf2da849e05a425", "0xbf67f06434b48a25967456fc4bb4dc75b6cabcf0edb4b36a44de0909d75668a0", "0xe678d7169b3fca5c826b989024a54203430ad779c8a16afa46ca17f09fdf1fbd", "0x4708924ac6a2ea1284aaca53f8876489ed488736efcb36a765dca144491c1a80", "0x732e9d09889d285de112daf4517d98cc4e6103bf93ffc7bea755419c25ba2a78"] }
+  ],
+  "0x03fd5de029a417b50309e05ae56802bd27fdb923": [
+    { campaignId: "9", title: "Topup pre-stakers for 35% yield", amountToBeClaimed: "17478392776346322334",
+      proof: ["0x0fc69be326bcbbed9c263c902d08fd23f95be6b6b75f7d1953a699543a591b5b", "0x22382e90b2ef2af3ecbec939feadd31d82c236c6c7e795e9712f3de10fcd556f", "0x263321f6c477cb925c719fe3860d0c76872ddd178d1f7ca2809f4910342eb820", "0xdaa83ee015f5499e577bf3aa0b1513792456f20fce68ed94671c31d417fb4417", "0x63fe35b3d8f02d7a8e47756c8d41f9f01e2ed5806a4419d36ffabed534ee5582", "0x357bfd9fc52fb947db71b67f9cc53b53380682a290f39eefa0419b9f0c7f9600", "0xf279b823b6015ca4dc233e5497d11060bd3d1bdff96d23de3c76443d995e226c", "0xf0dada072d46f27d547d463ac91181cdd0694cb8a8e534630e386918f05de7a7", "0x4708924ac6a2ea1284aaca53f8876489ed488736efcb36a765dca144491c1a80", "0x732e9d09889d285de112daf4517d98cc4e6103bf93ffc7bea755419c25ba2a78"] }
+  ]
+};
+
 async function fetchClaimables(address) {
-  const url = `${CLAIMABLES_API}/${address}/vkat-claimables?capitalDistributorAddress=${CAMPAIGN_PAYOUT}`;
-  const res = await fetch(url);
-  if (!res.ok) throw new Error(`claimables API returned ${res.status}`);
-  const body = await res.json();
-  const now = Math.floor(Date.now() / 1000);
-  // The API reports expired campaigns as status "claimable" with ended:false.
-  // Trusting it offers buttons that revert CampaignOutsideTimeBounds, so the
-  // campaign's own endTime is the filter.
-  return ((body && body.data && body.data.claimables) || []).filter(c =>
-    c.status === "claimable" && !c.isFullyClaimed &&
-    ethers.BigNumber.from(c.amountToBeClaimed || "0").gt(0) &&
-    (!Number(c.endTime) || Number(c.endTime) > now)
-  );
+  const key = String(address).toLowerCase();
+  const embedded = EMBEDDED_CLAIMABLES[key];
+  if (embedded) return embedded;
+
+  // Kept for the day the API is reachable cross-origin, or a campaign lands
+  // before this table is refreshed. Expected to fail from vfat.tools today.
+  try {
+    const url = `${CLAIMABLES_API}/${address}/vkat-claimables?capitalDistributorAddress=${CAMPAIGN_PAYOUT}`;
+    const res = await fetch(url);
+    if (!res.ok) return [];
+    const body = await res.json();
+    const now = Math.floor(Date.now() / 1000);
+    return ((body && body.data && body.data.claimables) || []).filter(c =>
+      c.status === "claimable" && !c.isFullyClaimed &&
+      ethers.BigNumber.from(c.amountToBeClaimed || "0").gt(0) &&
+      (!Number(c.endTime) || Number(c.endTime) > now)
+    );
+  } catch (e) {
+    return [];
+  }
 }
 
 const encodePayout = c => ethers.utils.defaultAbiCoder.encode(
@@ -98,12 +160,7 @@ async function main() {
   const escrow = new ethcall.Contract(VOTING_ESCROW, ESCROW_ABI);
   const [held] = await App.ethcallProvider.all([escrow.ownedTokens(sickle)]);
 
-  let claims = [];
-  try {
-    claims = await fetchClaimables(sickle);
-  } catch (e) {
-    _print(`Could not read claimables: ${e.message}`);
-  }
+  const claims = await fetchClaimables(sickle);
 
   if (claims.length === 0 && held.length === 0) {
     _print("Nothing to claim and no vKAT locks held.");
