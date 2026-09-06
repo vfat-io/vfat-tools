@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include(`${partials}/head`); -%>
+
+<body>
+<%- include(`${partials}/header_main`); -%>
+<pre id="log">
+*************** ⚔️ KATANA vKAT CLAIM ⚔️ ***************
+INFO  : Claim your Katana campaign vKAT allocation.
+        Claims are paid as a vKAT lock NFT: the KAT is
+        locked in the VotingEscrow and you receive the lock.
+******************************************************
+
+</pre>
+<div class="loader--1"></div>
+<%- include(`${partials}/scripts`, {scriptname: 'katana_claim'}); -%>
+</body>
+</html>
