@@ -43,6 +43,10 @@ const VAULT_ABI = [
   view("balanceOf", [{ name: "account", type: "address" }], [{ name: "", type: "uint256" }])
 ];
 const SWEEP_ABI = ["function sweepTokens(address[] tokens)"];
+const PAYOUT_ABI = [
+  view("claimed", [{ name: "campaignId", type: "uint256" }, { name: "user", type: "address" }],
+       [{ name: "", type: "bool" }])
+];
 const FARM_ABI = [
   "function simpleHarvest((address stakingContract, uint256 poolIndex) farm, (address[] rewardTokens, bytes extraData) params)"
 ];
@@ -95,10 +99,23 @@ const EMBEDDED_CLAIMABLES = {
   ]
 };
 
-async function fetchClaimables(address) {
+// The embedded table is a snapshot and cannot know what has been claimed since,
+// so entries are checked against the payout contract before being offered.
+// Without this a claimed allocation is presented as claimable forever, and the
+// user only discovers otherwise when the pre-flight simulation reverts.
+async function rejectAlreadyClaimed(App, address, claims) {
+  if (claims.length === 0) return [];
+  const payout = new ethcall.Contract(CAMPAIGN_PAYOUT, PAYOUT_ABI);
+  const flags = await App.ethcallProvider.all(
+    claims.map(c => payout.claimed(c.campaignId, address))
+  );
+  return claims.filter((c, i) => !flags[i]);
+}
+
+async function fetchClaimables(App, address) {
   const key = String(address).toLowerCase();
   const embedded = EMBEDDED_CLAIMABLES[key];
-  if (embedded) return embedded;
+  if (embedded) return rejectAlreadyClaimed(App, address, embedded);
 
   // Kept for the day the API is reachable cross-origin, or a campaign lands
   // before this table is refreshed. Expected to fail from vfat.tools today.
@@ -161,12 +178,19 @@ async function main() {
   _print("");
 
   const escrow = new ethcall.Contract(VOTING_ESCROW, ESCROW_ABI);
-  const [held] = await App.ethcallProvider.all([escrow.ownedTokens(sickle)]);
+  const vaultBal = new ethcall.Contract(AVKAT, VAULT_ABI);
+  // avKAT is read up front: once a claim is converted it is the Sickle's only
+  // remaining state, and gating the balance behind the claim/lock test hid the
+  // transfer action in exactly that case.
+  const [held, avkat] = await App.ethcallProvider.all([
+    escrow.ownedTokens(sickle), vaultBal.balanceOf(sickle)
+  ]);
 
-  const claims = await fetchClaimables(sickle);
+  const claims = await fetchClaimables(App, sickle);
+  const hasAvKat = ethers.BigNumber.from(avkat).gt(0);
 
-  if (claims.length === 0 && held.length === 0) {
-    _print("Nothing to claim and no vKAT locks held.");
+  if (claims.length === 0 && held.length === 0 && !hasAvKat) {
+    _print("Nothing to claim, no vKAT locks held, and no avKAT in your Sickle.");
     hideLoading();
     return;
   }
@@ -183,7 +207,7 @@ async function main() {
     } else {
       _print(`  Claim and stake becomes available when voting reopens.`);
       _print_link(`Claim ${fmt(total)} vKAT now and stake later`,
-        () => send(App, sickle, claimOnlyExtraData(claims), CAMPAIGN_PAYOUT));
+        () => send(App, sickle, claimOnlyExtraData(claims), CAMPAIGN_PAYOUT, "claim-only"));
     }
     _print("");
   }
@@ -213,9 +237,7 @@ async function main() {
   // avKAT stays in the Sickle after a claim or a stake. Offer the transfer
   // here rather than sending the user elsewhere: the Katana Sickle page only
   // sweeps ERC-721s and never exposes sweepTokens.
-  const vaultBal = new ethcall.Contract(AVKAT, VAULT_ABI);
-  const [avkat] = await App.ethcallProvider.all([vaultBal.balanceOf(sickle)]);
-  if (ethers.BigNumber.from(avkat).gt(0)) {
+  if (hasAvKat) {
     _print_bold("avKAT held by your Sickle");
     _print(`  ${fmt(avkat)} avKAT`);
     // SweepStrategy moves the full balance with no fee, unlike naming avKAT
@@ -257,7 +279,7 @@ function claimOnlyExtraData(claims) {
   );
 }
 
-async function send(App, sickle, extraData, stakingContract) {
+async function send(App, sickle, extraData, stakingContract, kind) {
   const signer = App.provider.getSigner();
   const farm = new ethers.Contract(FARM_STRATEGY, FARM_ABI, signer);
   const data = farm.interface.encodeFunctionData("simpleHarvest", [
@@ -280,7 +302,13 @@ async function send(App, sickle, extraData, stakingContract) {
     const tx = await signer.sendTransaction({ to: FARM_STRATEGY, data });
     await App.provider.waitForTransaction(tx.hash);
     _print(`Done. Tx: ${tx.hash}`);
-    _print(`Your avKAT is held by your Sickle (${sickle}). Reload to send it to your wallet.`);
+    if (kind === "claim-only") {
+      // This path mints a vKAT lock only. Saying avKAT here would name an
+      // asset the transaction did not create.
+      _print(`Your Sickle (${sickle}) now holds the vKAT lock. Staking it as avKAT needs an open voting window; reload once voting reopens.`);
+    } else {
+      _print(`Your avKAT is held by your Sickle (${sickle}). Reload to send it to your wallet.`);
+    }
   } catch (e) {
     _print(`Not sent: ${(e && (e.reason || e.message)) || "rejected"}`);
   }
