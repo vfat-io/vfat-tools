@@ -44,8 +44,11 @@ const VAULT_ABI = [
 ];
 const SWEEP_ABI = ["function sweepTokens(address[] tokens)"];
 const PAYOUT_ABI = [
+  // Cumulative amount already claimed, not a flag. The distributor allows a
+  // further claim whenever that total is below the allocation in the proof,
+  // so an increased allocation leaves a claimable remainder.
   view("claimed", [{ name: "campaignId", type: "uint256" }, { name: "user", type: "address" }],
-       [{ name: "", type: "bool" }])
+       [{ name: "", type: "uint256" }])
 ];
 const FARM_ABI = [
   "function simpleHarvest((address stakingContract, uint256 poolIndex) farm, (address[] rewardTokens, bytes extraData) params)"
@@ -100,16 +103,31 @@ const EMBEDDED_CLAIMABLES = {
 };
 
 // The embedded table is a snapshot and cannot know what has been claimed since,
-// so entries are checked against the payout contract before being offered.
-// Without this a claimed allocation is presented as claimable forever, and the
+// so entries are reconciled against the payout contract before being offered.
+// Without this a claimed allocation is presented as claimable forever and the
 // user only discovers otherwise when the pre-flight simulation reverts.
+//
+// claimed() is a running total, so the test is a comparison and not a flag: an
+// allocation raised by updateCampaignMerkleRoot leaves a prior claimant with a
+// nonzero total and a real remainder, and treating any nonzero value as "done"
+// would suppress that top-up. The proof carries the cumulative allocation, so
+// the remainder is that figure minus what has already been taken.
 async function rejectAlreadyClaimed(App, address, claims) {
   if (claims.length === 0) return [];
   const payout = new ethcall.Contract(CAMPAIGN_PAYOUT, PAYOUT_ABI);
-  const flags = await App.ethcallProvider.all(
+  const claimed = await App.ethcallProvider.all(
     claims.map(c => payout.claimed(c.campaignId, address))
   );
-  return claims.filter((c, i) => !flags[i]);
+  const out = [];
+  claims.forEach((c, i) => {
+    const total = ethers.BigNumber.from(c.amountToBeClaimed);
+    const taken = ethers.BigNumber.from(claimed[i]);
+    if (taken.gte(total)) return;
+    // Show and total the remainder, while the proof keeps the cumulative
+    // allocation the contract verifies against.
+    out.push(Object.assign({}, c, { remaining: total.sub(taken).toString() }));
+  });
+  return out;
 }
 
 async function fetchClaimables(App, address) {
@@ -197,9 +215,9 @@ async function main() {
 
   if (claims.length > 0) {
     let total = ethers.BigNumber.from(0);
-    claims.forEach(c => { total = total.add(c.amountToBeClaimed); });
+    claims.forEach(c => { total = total.add(c.remaining || c.amountToBeClaimed); });
     _print_bold("Claimable");
-    claims.forEach(c => _print(`  campaign ${c.campaignId} - ${c.title}: ${fmt(c.amountToBeClaimed)} vKAT`));
+    claims.forEach(c => _print(`  campaign ${c.campaignId} - ${c.title}: ${fmt(c.remaining || c.amountToBeClaimed)} vKAT`));
 
     if (votingActive) {
       _print_link(`Claim and stake ${fmt(total)} vKAT as avKAT (one transaction)`,
