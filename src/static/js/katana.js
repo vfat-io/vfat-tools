@@ -8,7 +8,8 @@ const main = async() => {
     "title":"Katana Network",
     "heading":["Pool Provider","LP", "Reward Tokens", "INFO"],
     "rows": [
-      ["Sickle                ", `<a href="sickle"         >Various</a>`,"              ",""]
+      ["Sickle                ", `<a href="sickle"         >Various</a>`,"              ",""],
+      ["vKAT Claim            ", `<a href="claim"          >vKAT</a>`,   "avKAT         ",""]
 
     ].reverse()
   }

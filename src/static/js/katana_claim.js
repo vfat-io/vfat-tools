@@ -16,6 +16,7 @@ const VKAT_LOCK_NFT   = "0x106F7D67Ea25Cb9eFf5064CF604ebf6259Ff296d";
 const AVKAT           = "0x7231dbaCdFc968E07656D12389AB20De82FbfCeB";
 const KAT             = "0x7F1f4b4b29f5058fA32CC7a97141b8D7e5ABDC2d";
 const CLAIMABLES_API  = "https://api.katana.network/v1/portfolio";
+const SWEEP_STRATEGY  = "0x266ebC589d5BFCB815c40e7C30112f8d4B74e012";
 
 // ethcall builds its multicall payload from JSON fragments; it cannot parse
 // ethers human-readable signatures, and silently yields a contract with no
@@ -38,8 +39,10 @@ const LOCKED_ABI = [
        [{ name: "amount", type: "uint256" }, { name: "start", type: "uint256" }])
 ];
 const VAULT_ABI = [
-  view("convertToShares", [{ name: "assets", type: "uint256" }], [{ name: "", type: "uint256" }])
+  view("convertToShares", [{ name: "assets", type: "uint256" }], [{ name: "", type: "uint256" }]),
+  view("balanceOf", [{ name: "account", type: "address" }], [{ name: "", type: "uint256" }])
 ];
+const SWEEP_ABI = ["function sweepTokens(address[] tokens)"];
 const FARM_ABI = [
   "function simpleHarvest((address stakingContract, uint256 poolIndex) farm, (address[] rewardTokens, bytes extraData) params)"
 ];
@@ -204,8 +207,44 @@ async function main() {
     } else {
       _print(`  Staking as avKAT needs an open voting window.`);
     }
+    _print("");
   }
 
+  // avKAT stays in the Sickle after a claim or a stake. Offer the transfer
+  // here rather than sending the user elsewhere: the Katana Sickle page only
+  // sweeps ERC-721s and never exposes sweepTokens.
+  const vaultBal = new ethcall.Contract(AVKAT, VAULT_ABI);
+  const [avkat] = await App.ethcallProvider.all([vaultBal.balanceOf(sickle)]);
+  if (ethers.BigNumber.from(avkat).gt(0)) {
+    _print_bold("avKAT held by your Sickle");
+    _print(`  ${fmt(avkat)} avKAT`);
+    // SweepStrategy moves the full balance with no fee, unlike naming avKAT
+    // as a harvest reward token.
+    _print_link(`Send ${fmt(avkat)} avKAT to your wallet`, () => sweepAvKat(App));
+  }
+
+  hideLoading();
+}
+
+async function sweepAvKat(App) {
+  const signer = App.provider.getSigner();
+  const sweep = new ethers.Contract(SWEEP_STRATEGY, SWEEP_ABI, signer);
+  const data = sweep.interface.encodeFunctionData("sweepTokens", [[AVKAT]]);
+  showLoading();
+  try {
+    await App.provider.call({ from: App.YOUR_ADDRESS, to: SWEEP_STRATEGY, data });
+  } catch (e) {
+    hideLoading();
+    _print(`Would fail: ${(e && (e.reason || (e.error && e.error.message) || e.message)) || "unknown"}`);
+    return;
+  }
+  try {
+    const tx = await signer.sendTransaction({ to: SWEEP_STRATEGY, data });
+    await App.provider.waitForTransaction(tx.hash);
+    _print(`Sent to your wallet. Tx: ${tx.hash}`);
+  } catch (e) {
+    _print(`Not sent: ${(e && (e.reason || e.message)) || "rejected"}`);
+  }
   hideLoading();
 }
 
@@ -241,7 +280,7 @@ async function send(App, sickle, extraData, stakingContract) {
     const tx = await signer.sendTransaction({ to: FARM_STRATEGY, data });
     await App.provider.waitForTransaction(tx.hash);
     _print(`Done. Tx: ${tx.hash}`);
-    _print(`Your avKAT is held by your Sickle (${sickle}); send it to your wallet from the Sickle page.`);
+    _print(`Your avKAT is held by your Sickle (${sickle}). Reload to send it to your wallet.`);
   } catch (e) {
     _print(`Not sent: ${(e && (e.reason || e.message)) || "rejected"}`);
   }
