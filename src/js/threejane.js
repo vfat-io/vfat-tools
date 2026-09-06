@@ -23,8 +23,6 @@ const ThreeJanePage = (function () {
   }
   const zero = ethers.constants.Zero
   const zeroAddress = ethers.constants.AddressZero
-  const maxUint = ethers.constants.MaxUint256
-  const bps = ethers.BigNumber.from(10000)
   const oracleScale = ethers.BigNumber.from(10).pow(36)
   const convexUrl = 'https://opulent-crocodile-74.convex.cloud/api/'
   const opportunityKeys = {
@@ -47,13 +45,12 @@ const ThreeJanePage = (function () {
   const susd3Abi = vaultAbi.concat([
     'function lockDuration() view returns(uint256)', 'function cooldownDuration() view returns(uint256)',
     'function withdrawalWindow() view returns(uint256)', 'function getCooldownStatus(address) view returns(uint256 cooldownEnd,uint256 windowEnd,uint256 shares)',
-    'function startCooldown(uint256)', 'function cancelCooldown()', 'function withdraw() returns(uint256)'
+    'function startCooldown(uint256)'
   ])
   const pendleAbi = erc20Abi.concat([
     'function readTokens() view returns(address sy,address pt,address yt)', 'function expiry() view returns(uint256)',
     'function getRewardTokens() view returns(address[])', 'function redeemRewards(address) returns(uint256[])'
   ])
-  const syAbi = erc20Abi.concat(['function exchangeRate() view returns(uint256)'])
   const curveAbi = erc20Abi.concat([
     'function coins(uint256) view returns(address)', 'function get_virtual_price() view returns(uint256)',
     'function calc_token_amount(uint256[],bool) view returns(uint256)',
@@ -63,8 +60,8 @@ const ThreeJanePage = (function () {
   ])
   const factoryAbi = ['function allVaults() view returns(address[])']
   const helperAbi = [
-    'function usdc() view returns(address)', 'function aEthUSDC() view returns(address)', 'function waEthUSDC() view returns(address)',
-    'function usdt() view returns(address)', 'function aEthUSDT() view returns(address)', 'function waEthUSDT() view returns(address)',
+    'function usdc() view returns(address)', 'function waEthUSDC() view returns(address)',
+    'function usdt() view returns(address)', 'function waEthUSDT() view returns(address)',
     'function depositUSDC((address vault,uint256 amountIn,uint256 minMarginShares,uint256 minCommitment,uint256 maxCommitment,bool allowPendingActivation,uint256 deadline)) returns(uint256)',
     'function depositUSDT((address vault,uint256 amountIn,uint256 minMarginShares,uint256 minCommitment,uint256 maxCommitment,bool allowPendingActivation,uint256 deadline)) returns(uint256)'
   ]
@@ -78,16 +75,15 @@ const ThreeJanePage = (function () {
     'function totals() view returns(tuple(uint128 activeMargin,uint128 activeCommitment,uint128 pendingMargin,uint128 pendingCommitment))',
     'function shutdownState() view returns(tuple(bool active,uint64 timestamp,uint64 epoch))',
     'function getAccount(address) view returns(tuple(uint256 activeMargin,uint256 activeCommitment,uint256 pendingMargin,uint256 pendingCommitment,uint256 pendingActivationEpoch,uint256 calledEpochCursor,uint256 claimableExitMargin,uint256 exitBucketMargin,uint256 exitBucketCommitment,bool exitRequested,uint256 exitMaturityEpoch,bool exitClaimed,bool exitMatured,uint256 commitmentStartEpoch))',
-    'function obligationOf(uint256,address) view returns(uint256)', 'function fundedEpoch(uint256,address) view returns(bool)',
+    'function obligationOf(uint256,address) view returns(uint256)',
     'function deposit(uint256,address,uint256,uint256,bool,uint256) returns(uint256)',
     'function requestExit(uint256,uint256) returns(uint256)', 'function fundCall(bool) returns(uint256)',
     'function claimExitedMargin(address) returns(uint256)', 'function claimRemainingMargin(address) returns(uint256)'
   ]
-  const stataAbi = vaultAbi.concat(['function aToken() view returns(address)'])
   const oracleAbi = ['function price() view returns(uint256)']
   const rewardsAbi = [
     'function epoch() view returns(uint256)', 'function merkleRoot() view returns(bytes32)', 'function claimed(address) view returns(uint256)',
-    'function totalClaimed() view returns(uint256)', 'function maxClaimable() view returns(uint256)',
+    'function totalClaimed() view returns(uint256)',
     'function claim(address,uint256,bytes32[])'
   ]
   const janeAbi = erc20Abi.concat(['function transferable() view returns(bool)'])
@@ -96,11 +92,9 @@ const ThreeJanePage = (function () {
   const vault = new ethers.utils.Interface(vaultAbi)
   const susd3 = new ethers.utils.Interface(susd3Abi)
   const pendle = new ethers.utils.Interface(pendleAbi)
-  const sy = new ethers.utils.Interface(syAbi)
   const curve = new ethers.utils.Interface(curveAbi)
   const helper = new ethers.utils.Interface(helperAbi)
   const lcc = new ethers.utils.Interface(lccAbi)
-  const stata = new ethers.utils.Interface(stataAbi)
   const oracle = new ethers.utils.Interface(oracleAbi)
   const rewards = new ethers.utils.Interface(rewardsAbi)
   const jane = new ethers.utils.Interface(janeAbi)
@@ -183,16 +177,10 @@ const ThreeJanePage = (function () {
     Object.assign(entry, await keyed([
       { key: 'tokens', target: entry.address, iface: pendle, method: 'readTokens', fallback: null, decode: value => value },
       { key: 'expiry', target: entry.address, iface: pendle, method: 'expiry', fallback: zero },
-      { key: 'lpSupply', target: entry.address, iface: pendle, method: 'totalSupply', fallback: zero },
       { key: 'rewardTokens', target: entry.address, iface: pendle, method: 'getRewardTokens', fallback: [] }
     ]))
     if (!entry.tokens) throw new Error('Pendle market ' + short(entry.address) + ' did not return SY/PT/YT.')
     entry.sy = entry.tokens[0]; entry.pt = entry.tokens[1]; entry.yt = entry.tokens[2]
-    Object.assign(entry, await keyed([
-      { key: 'syRate', target: entry.sy, iface: sy, method: 'exchangeRate', fallback: zero },
-      { key: 'syBalance', target: entry.sy, iface: erc20, method: 'balanceOf', args: [entry.address], fallback: zero },
-      { key: 'ptBalance', target: entry.pt, iface: erc20, method: 'balanceOf', args: [entry.address], fallback: zero }
-    ]))
   }
   async function readLcc (vaultAddress, index) {
     const entry = { address: ethers.utils.getAddress(vaultAddress), index: index }
@@ -241,11 +229,10 @@ const ThreeJanePage = (function () {
       { key: 'janeTransferable', target: address.jane, iface: jane, method: 'transferable', fallback: false },
       { key: 'rewardEpoch', target: address.rewards, iface: rewards, method: 'epoch', fallback: zero },
       { key: 'merkleRoot', target: address.rewards, iface: rewards, method: 'merkleRoot', fallback: ethers.constants.HashZero },
-      { key: 'totalClaimed', target: address.rewards, iface: rewards, method: 'totalClaimed', fallback: zero },
-      { key: 'maxClaimable', target: address.rewards, iface: rewards, method: 'maxClaimable', fallback: zero }
+      { key: 'totalClaimed', target: address.rewards, iface: rewards, method: 'totalClaimed', fallback: zero }
     ])
     state.helper = { address: address.lccHelper, usdc: roots.usdc, usdt: roots.usdt, waUsdc: roots.waUsdc, waUsdt: roots.waUsdt }
-    state.jane = { address: address.jane, supply: roots.janeSupply, transferable: roots.janeTransferable, epoch: roots.rewardEpoch, root: roots.merkleRoot, totalClaimed: roots.totalClaimed, maxClaimable: roots.maxClaimable }
+    state.jane = { address: address.jane, supply: roots.janeSupply, transferable: roots.janeTransferable, epoch: roots.rewardEpoch, root: roots.merkleRoot, totalClaimed: roots.totalClaimed }
     state.core = [
       { id: 'usd3', label: 'USD3', address: address.usd3, shareDecimals: 6, rewardKey: 'usd3', kind: 'vault' },
       { id: 'susd3', label: 'sUSD3', address: address.susd3, shareDecimals: 6, rewardKey: 'susd3', kind: 'susd3' }
@@ -383,7 +370,8 @@ const ThreeJanePage = (function () {
       stat('YOUR UNCLAIMED', state.account ? format(unclaimed, 18) : 'connect')
     )
     container.appendChild(box)
-    const actions = e('p', { className: 'jane-controls' }); append(actions, document.createTextNode('JANE is non-transferable. '), button('claim JANE', () => openAction(state.jane, 'jane-claim'), !state.account || unclaimed.isZero()), document.createTextNode(' '), link('reward contract', explorer(address.rewards))); container.appendChild(actions)
+    const transferState = state.jane.transferable ? 'JANE transfers are enabled. ' : 'JANE is non-transferable. '
+    const actions = e('p', { className: 'jane-controls' }); append(actions, document.createTextNode(transferState), button('claim JANE', () => openAction(state.jane, 'jane-claim'), !state.account || unclaimed.isZero()), document.createTextNode(' '), link('reward contract', explorer(address.rewards))); container.appendChild(actions)
   }
   function render () { renderOverview(); renderCore(); renderFarms(); renderLcc(); renderRewards() }
 
@@ -410,6 +398,7 @@ const ThreeJanePage = (function () {
     if (action.mode === 'lcc-fund') { const p = state.wallet.lcc.get(lower(action.entry.address)); return 'Current all-or-nothing obligation: ' + (p ? format(p.obligation, token(action.entry.assets.fundingAsset).decimals) : '—') + ' ' + token(action.entry.assets.fundingAsset).symbol + '. Rolling keeps remaining exposure callable.' }
     if (action.mode === 'lcc-exit') return 'Exit requests are full-account and remain callable until their assigned maturity epoch. Max deferral limits how far the contract may place this exit.'
     if (action.mode === 'cooldown') return 'Cooldown applies to sUSD3 shares. The shares remain exposed until the cooldown ends and withdrawal is claimed inside the window.'
+    if (action.mode === 'cooldown-claim') return 'Claims the contract\'s current maxWithdraw inside the active cooldown window. Protocol backing limits can make this a partial withdrawal.'
     if (action.mode.indexOf('curve-') === 0) return 'Minimum output is quoted onchain and reduced only by the editable slippage below.'
     if (action.mode === 'jane-claim') return 'The cumulative allocation and proof come from 3Jane; the exact claim is verified by the onchain Merkle root before minting.'
     return 'The exact transaction is simulated with eth_call from this wallet before it can be submitted.'
@@ -421,11 +410,14 @@ const ThreeJanePage = (function () {
     if (!state.account || !correctChain()) return
     const amountToken = actionAmountToken(action)
     if (actionNeedsAmount(action.mode)) {
-      const balance = amountToken ? walletBalance(amountToken.address) : zero; const maximum = action.maxAmount || balance
-      const showMaximum = action.maxAmount && (action.mode === 'withdraw' || maximum.lt(balance))
-      container.appendChild(e('p', { className: 'jane-action-note', text: 'BALANCE : ' + format(balance, amountToken.decimals) + ' ' + amountToken.symbol + (showMaximum ? ' / ACTION MAX : ' + format(maximum, amountToken.decimals) : '') }))
+      const readsVaultLimit = action.mode === 'deposit' || action.mode === 'withdraw'; const maximumReady = !readsVaultLimit || action.maxAmount !== null
+      const balance = amountToken ? walletBalance(amountToken.address) : zero; const maximum = maximumReady ? (action.maxAmount === undefined ? balance : action.maxAmount) : zero
+      const amountLine = action.mode === 'withdraw'
+        ? 'ACTION MAX : ' + (maximumReady ? format(maximum, amountToken.decimals) + ' ' + amountToken.symbol : 'reading…')
+        : 'BALANCE : ' + format(balance, amountToken.decimals) + ' ' + amountToken.symbol + (maximumReady && action.maxAmount !== undefined && maximum.lt(balance) ? ' / ACTION MAX : ' + format(maximum, amountToken.decimals) : '')
+      container.appendChild(e('p', { className: 'jane-action-note', text: amountLine }))
       container.appendChild(inputRow('AMOUNT', 'jane-action-amount', action.amount, amountToken.symbol, value => { action.amount = value }))
-      container.appendChild(button('max', function () { action.amount = format(maximum, amountToken.decimals, amountToken.decimals); renderAction() }, maximum.isZero()))
+      container.appendChild(button('max', function () { action.amount = format(maximum, amountToken.decimals, amountToken.decimals); renderAction() }, !maximumReady || maximum.isZero()))
     }
     if (action.mode.indexOf('curve-') === 0 || action.mode === 'lcc-deposit') container.appendChild(inputRow('SLIPPAGE', 'jane-action-slippage', action.slippage, '%', value => { action.slippage = value }))
     if (action.mode === 'lcc-exit') container.appendChild(inputRow('MAX DEFERRAL', 'jane-action-deferral', action.maxDeferral, 'epochs', value => { action.maxDeferral = value }))
@@ -437,7 +429,7 @@ const ThreeJanePage = (function () {
     container.appendChild(controls)
   }
   async function openAction (entry, mode) {
-    state.action = { entry: entry, mode: mode, amount: '', slippage: '0.5', maxDeferral: '2', roll: false, allowPending: false }
+    state.action = { entry: entry, mode: mode, amount: '', slippage: '0.5', maxDeferral: '2', roll: false, allowPending: false, maxAmount: mode === 'deposit' || mode === 'withdraw' ? null : undefined }
     renderAction(); const dialog = byId('jane-action-dialog'); if (dialog && !dialog.open) dialog.showModal()
     if (state.account && correctChain() && (mode === 'deposit' || mode === 'withdraw')) {
       const contract = new ethers.Contract(entry.address, vaultAbi, state.rpc); const amountToken = actionAmountToken(state.action); const balance = walletBalance(amountToken.address)
@@ -453,7 +445,16 @@ const ThreeJanePage = (function () {
     if (!action || !account) throw new Error('Connect a wallet first.')
     if (mode === 'deposit' || mode === 'withdraw') { const amount = parsedAmount(token(entry.asset)); return { to: entry.address, data: vault.encodeFunctionData(mode, mode === 'deposit' ? [amount, account] : [amount, account, account]), token: mode === 'deposit' ? token(entry.asset) : null, amount: amount, spender: entry.address } }
     if (mode === 'cooldown') { const amount = parsedAmount(token(entry.address)); return { to: entry.address, data: susd3.encodeFunctionData('startCooldown', [amount]) } }
-    if (mode === 'cooldown-claim') return { to: entry.address, data: susd3.encodeFunctionData('withdraw()', []) }
+    if (mode === 'cooldown-claim') {
+      const cooldown = state.wallet.cooldown
+      if (!cooldown || !cooldown.shares || cooldown.shares.isZero()) throw new Error('This wallet has no active sUSD3 cooldown position.')
+      const latest = await state.rpc.getBlock('latest'); const now = latest.timestamp
+      if (now < num(cooldown.cooldownEnd)) throw new Error('The sUSD3 cooldown has not ended yet.')
+      if (now > num(cooldown.windowEnd)) throw new Error('The sUSD3 withdrawal window has expired. Start a new cooldown before redeeming.')
+      const maxAssets = await new ethers.Contract(entry.address, vaultAbi, state.rpc).maxWithdraw(account)
+      if (maxAssets.isZero()) throw new Error('No sUSD3 is currently withdrawable. Protocol backing limits may be active.')
+      return { to: entry.address, data: vault.encodeFunctionData('withdraw(uint256,address,address)', [maxAssets, account, account]) }
+    }
     if (mode === 'pendle-claim') return { to: entry.address, data: pendle.encodeFunctionData('redeemRewards', [account]) }
     if (mode.indexOf('curve-deposit-') === 0) {
       const index = Number(mode.slice(-1)); const coin = token(index === 0 ? entry.coin0 : entry.coin1); const amount = parsedAmount(coin); const amounts = [zero, zero]; amounts[index] = amount
@@ -466,7 +467,7 @@ const ThreeJanePage = (function () {
     }
     if (mode === 'lcc-deposit') {
       const input = actionAmountToken(action); const amount = parsedAmount(input); const isUsdc = lower(entry.assets.marginAsset) === lower(state.helper.waUsdc); const stataAddress = isUsdc ? state.helper.waUsdc : state.helper.waUsdt
-      const stataContract = new ethers.Contract(stataAddress, stataAbi, state.rpc); const marginShares = await stataContract.previewDeposit(amount); const price = await new ethers.Contract(entry.assets.marginOracle, oracleAbi, state.rpc).price(); const commitment = marginShares.mul(price).div(oracleScale).mul(10000).div(entry.epochConfig.marginRatioBps)
+      const stataContract = new ethers.Contract(stataAddress, vaultAbi, state.rpc); const marginShares = await stataContract.previewDeposit(amount); const price = await new ethers.Contract(entry.assets.marginOracle, oracleAbi, state.rpc).price(); const commitment = marginShares.mul(price).div(oracleScale).mul(10000).div(entry.epochConfig.marginRatioBps)
       const slip = slippageBps(); const minCommitment = commitment.mul(10000 - slip).div(10000); const params = [entry.address, amount, marginShares.mul(10000 - slip).div(10000), minCommitment.isZero() ? ethers.constants.One : minCommitment, commitment.mul(10000 + slip).div(10000).add(1), action.allowPending, deadline()]
       return { to: state.helper.address, data: helper.encodeFunctionData(isUsdc ? 'depositUSDC' : 'depositUSDT', [params]), token: input, amount: amount, spender: state.helper.address }
     }
@@ -474,7 +475,7 @@ const ThreeJanePage = (function () {
     if (mode === 'lcc-exit') { const deferral = String(action.maxDeferral || '').trim(); if (!/^\d+$/.test(deferral)) throw new Error('Max deferral must be a whole number of epochs.'); return { to: entry.address, data: lcc.encodeFunctionData('requestExit', [deferral, deadline()]) } }
     if (mode === 'lcc-claim') return { to: entry.address, data: lcc.encodeFunctionData('claimExitedMargin', [account]) }
     if (mode === 'lcc-claim-remaining') return { to: entry.address, data: lcc.encodeFunctionData('claimRemainingMargin', [account]) }
-    if (mode === 'jane-claim') { const claim = state.wallet.merkleClaim; if (!claim || !claim.amount || !claim.proof) throw new Error('No current JANE Merkle allocation is available for this wallet.'); return { to: address.rewards, data: rewards.encodeFunctionData('claim', [account, claim.amount, claim.proof]) } }
+    if (mode === 'jane-claim') { const allocation = state.wallet.merkleClaim; if (!allocation || !allocation.amount || !allocation.claim) throw new Error('No current JANE Merkle allocation is available for this wallet.'); return { to: address.rewards, data: rewards.encodeFunctionData('claim', [account, allocation.amount, allocation.claim]) } }
     throw new Error('Unsupported action.')
   }
   async function buildApproval () { const tx = await buildAction(); if (!tx.token || !tx.spender || !tx.amount) throw new Error('This action does not require an ERC-20 approval.'); return { to: tx.token.address, data: erc20.encodeFunctionData('approve', [tx.spender, tx.amount]) } }
@@ -514,8 +515,7 @@ const ThreeJanePage = (function () {
     await limited(state.lcc, 3, async function (entry) {
       const values = await keyed([
         { key: 'account', target: entry.address, iface: lcc, method: 'getAccount', args: [state.account], fallback: null },
-        { key: 'obligation', target: entry.address, iface: lcc, method: 'obligationOf', args: [entry.epoch, state.account], fallback: zero },
-        { key: 'funded', target: entry.address, iface: lcc, method: 'fundedEpoch', args: [entry.epoch, state.account], fallback: false }
+        { key: 'obligation', target: entry.address, iface: lcc, method: 'obligationOf', args: [entry.epoch, state.account], fallback: zero }
       ]); state.wallet.lcc.set(lower(entry.address), values)
     })
     state.wallet.merkleClaim = await convex('action', 'farm:getMerkleClaim', { address: state.account, merkleRoot: state.jane.root }).catch(function (error) { console.warn('JANE proof unavailable', errText(error)); return null })
