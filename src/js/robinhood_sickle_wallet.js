@@ -520,6 +520,7 @@ const { ethers } = require('ethers')
   }
   async function adoptWallet (wallet, accounts, walletChain, kind) {
     state.wallet = wallet
+    window.sickleWalletProvider = wallet
     state.walletKind = kind || state.walletKind || 'wallet'
     state.account = accounts && accounts[0] ? ethers.utils.getAddress(accounts[0]) : ''
     state.walletChain = walletChain || await wallet.request({ method: 'eth_chainId' })

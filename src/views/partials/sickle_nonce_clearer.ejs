@@ -1,0 +1,33 @@
+<%
+  const isRobinhoodSickle = locals.nonceScriptname === 'robinhood_sickle_wallet'
+%>
+<details
+  id="sickle-nonce-clearer"
+  class="sickle-nonce-clearer"
+  data-fallback-chain-id="<%= isRobinhoodSickle ? '0x1237' : '' %>"
+  data-fallback-chain-name="<%= isRobinhoodSickle ? 'Robinhood' : '' %>"
+  data-fallback-native-symbol="<%= isRobinhoodSickle ? 'ETH' : '' %>"
+>
+  <summary>[ clear a stuck transaction ]</summary>
+  <div class="sickle-nonce-console">
+    <div>*************** STUCK TRANSACTION HELPER ***************</div>
+    <div>INFO&nbsp; : Replaces a transaction by sending 0 <span id="sickle-nonce-symbol">native token</span> to your own wallet.</div>
+    <div>CHAIN : <span id="sickle-nonce-chain">checking...</span></div>
+    <div>WALLET: <span id="sickle-nonce-account">not connected</span></div>
+    <div>NONCES: confirmed next <span id="sickle-nonce-latest">-</span> / pending next <span id="sickle-nonce-pending">-</span></div>
+    <div class="sickle-nonce-fields">
+      <label for="sickle-nonce-input">NONCE : <input id="sickle-nonce-input" type="number" min="0" step="1" inputmode="numeric" disabled></label>
+      <label for="sickle-nonce-boost">BOOST : <input id="sickle-nonce-boost" type="number" min="10" max="500" step="5" value="25">%</label>
+    </div>
+    <div class="sickle-nonce-actions">
+      <button id="sickle-nonce-refresh" type="button">[ refresh ]</button>
+      <button id="sickle-nonce-submit" type="button" disabled>[ clear nonce ]</button>
+    </div>
+    <div id="sickle-nonce-status" class="sickle-nonce-status" role="status" aria-live="polite">Connect the wallet above, then refresh.</div>
+    <div class="sickle-nonce-note">Wallet note: Some wallets ignore a nonce supplied by a website. If this transaction queues instead of replacing, use your wallet's built-in Speed Up or Cancel action.</div>
+    <div class="sickle-nonce-note">The wallet will show the actual network fee. VFAT never receives funds.</div>
+  </div>
+</details>
+<style>
+.sickle-nonce-clearer{box-sizing:border-box;max-width:920px;margin:18px 10px 45px;font:16px/1.55 monospace;overflow-wrap:anywhere}.sickle-nonce-clearer *{box-sizing:border-box;font-family:monospace}.sickle-nonce-clearer summary{display:list-item;width:max-content;max-width:100%;cursor:pointer;text-decoration:underline}.sickle-nonce-console{margin-top:12px;white-space:normal}.sickle-nonce-fields{display:flex;flex-wrap:wrap;gap:8px 22px;margin:10px 0}.sickle-nonce-fields label{white-space:nowrap}.sickle-nonce-fields input{width:10ch;padding:2px 5px;border:1px solid currentColor;border-radius:0;background:transparent;color:inherit;font:inherit}.sickle-nonce-actions{display:flex;flex-wrap:wrap;gap:12px;margin:10px 0}.sickle-nonce-actions button{margin:0;padding:0;border:0;background:transparent;color:inherit;cursor:pointer;font:inherit;text-decoration:underline}.sickle-nonce-actions button:disabled{cursor:not-allowed;opacity:.45;text-decoration:none}.sickle-nonce-status{margin-top:8px}.sickle-nonce-status[data-kind="error"]{color:#d95757}.sickle-nonce-status[data-kind="success"]{color:var(--highlight-color)}.sickle-nonce-note{margin-top:8px;opacity:.8}@media(max-width:700px){.sickle-nonce-clearer{margin:14px 8px 36px;font-size:13px}.sickle-nonce-fields{display:block}.sickle-nonce-fields label{display:block;margin:7px 0}}
+</style>

@@ -1,3 +1,9 @@
+<%
+    const includeSickleNonceClearer = locals.scriptname === 'robinhood_sickle_wallet'
+%>
+<% if(includeSickleNonceClearer) { %>
+    <%- include(`${partials}/sickle_nonce_clearer`, {nonceScriptname: locals.scriptname}); -%>
+<% } %>
 <% if(filenameMap) { %>
     <% if(locals.scriptname) { %>
         <script src="<%= PP %>/js/<%= filenameMap[locals.scriptname + '.js'] %>"></script>
@@ -5,5 +11,12 @@
 <% } else { %>
     <% if(locals.scriptname) { %>
         <script src="<%= PP %>/js/<%= locals.scriptname %>.js"></script>
+    <% } %>
+<% } %>
+<% if(includeSickleNonceClearer) { %>
+    <% if(filenameMap) { %>
+        <script src="<%= PP %>/js/<%= filenameMap['sickle_nonce_clearer.js'] %>"></script>
+    <% } else { %>
+        <script src="<%= PP %>/js/sickle_nonce_clearer.js"></script>
     <% } %>
 <% } %>
