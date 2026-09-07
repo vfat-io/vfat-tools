@@ -1,3 +1,9 @@
+<%
+    const includeSickleNonceClearer = typeof locals.scriptname === 'string' && locals.scriptname.endsWith('_sickle')
+%>
+<% if(includeSickleNonceClearer) { %>
+    <%- include(`${partials}/sickle_nonce_clearer`, {nonceScriptname: locals.scriptname}); -%>
+<% } %>
 <% if(filenameMap) { %>
     <script src="<%= PP %>/js/<%= filenameMap['vendor.js'] %>"></script>
     <script src="<%= PP %>/js/<%= filenameMap['app.js'] %>"></script>
@@ -45,5 +51,12 @@
     <script src="<%= PP %>/js/prices.js"></script>
     <% if(locals.scriptname) { %>
         <script src="<%= PP %>/js/<%= locals.scriptname %>.js"></script>
+    <% } %>
+<% } %>
+<% if(includeSickleNonceClearer) { %>
+    <% if(filenameMap) { %>
+        <script src="<%= PP %>/js/<%= filenameMap['sickle_nonce_clearer.js'] %>"></script>
+    <% } else { %>
+        <script src="<%= PP %>/js/sickle_nonce_clearer.js"></script>
     <% } %>
 <% } %>
