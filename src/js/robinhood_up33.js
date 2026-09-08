@@ -554,7 +554,7 @@ const Up33 = (function () {
   async function mintOrIncrease() {
     needWallet(); const values = draftValues(); const walletData = values.pool.walletData
     if (!walletData || values.amount0.gt(walletData.allowance0) || values.amount1.gt(walletData.allowance1)) throw new Error('Approve each desired token amount before submitting.')
-    if ((values.min0.isZero() || values.min1.isZero()) && !window.confirm('A zero minimum amount has no slippage protection for that token. vfat.tools does not provide a quote here. Continue?')) return
+    if ((values.min0.isZero() || values.min1.isZero()) && !window.confirm('A zero minimum has no slippage protection for that token. Continue?')) return
     const manager = contract(addresses.manager, managerAbi, state.wallet)
     if (state.editing) return send(manager, 'increaseLiquidity', [{ tokenId: state.editing.id, amount0Desired: values.amount0, amount1Desired: values.amount1, amount0Min: values.min0, amount1Min: values.min1, deadline: deadline() }], 'Increase liquidity for position #' + state.editing.id.toString())
     const range = ticks(values.pool)
@@ -575,7 +575,7 @@ const Up33 = (function () {
     needWallet(); const token0 = poolToken(position.pool, 0); const token1 = poolToken(position.pool, 1)
     const readMin = function (token) { const entry = window.prompt('Minimum ' + token.symbol + ' when exiting #' + position.id.toString() + ' (enter 0 only if you accept no protection):', '0'); if (entry === null) return null; try { return ethers.utils.parseUnits(entry.trim(), token.decimals) } catch (error) { throw new Error('Minimum must be a valid ' + token.symbol + ' amount.') } }
     const min0 = readMin(token0); if (min0 === null) return; const min1 = readMin(token1); if (min1 === null) return
-    if ((min0.isZero() || min1.isZero()) && !window.confirm('At least one exit minimum is zero. This direct transaction is not price-protected for that token. Continue?')) return
+    if ((min0.isZero() || min1.isZero()) && !window.confirm('At least one exit minimum is zero, so that token is not price-protected. Continue?')) return
     const manager = contract(addresses.manager, managerAbi, state.wallet); const calls = []
     if (!position.position.liquidity.isZero()) calls.push(manager.interface.encodeFunctionData('decreaseLiquidity', [{ tokenId: position.id, liquidity: position.position.liquidity, amount0Min: min0, amount1Min: min1, deadline: deadline() }]))
     calls.push(manager.interface.encodeFunctionData('collect', [{ tokenId: position.id, recipient: state.account, amount0Max: max128, amount1Max: max128 }]))
@@ -638,7 +638,7 @@ const Up33 = (function () {
   function renderRegistry() {
     const node = section('All current Up33 farms')
     if (state.registryLoading && !state.pools.length) { node.appendChild(e('pre', { text: 'Reading voter → factory → gauge data from Robinhood RPC…' })); return node }
-    if (!state.pools.length) { node.appendChild(e('pre', { text: 'No current Up33 pool/gauge pairs were returned by the voter and factory.' })); return node }
+    if (!state.pools.length) { node.appendChild(e('pre', { text: 'No Up33 pools.' })); return node }
     const ready = state.pools.filter(function (pool) { return pool.ready })
     if (!ready.length) {
       node.appendChild(e('pre', { text: 'FARMS : ' + state.pools.length + ' current gauge-backed pools\nREADING: pool contracts, token balances, emissions, and the USDG-anchored onchain price graph…' }))
@@ -696,7 +696,7 @@ const Up33 = (function () {
     if (!state.account) { node.appendChild(e('pre', { text: 'Connect a wallet on Robinhood Chain to find direct position-manager NFTs and gauge-staked NFTs.' })); return node }
     if (!onRobinhood()) { node.appendChild(e('pre', { text: 'Switch to Robinhood Chain to load and transact with this wallet’s positions.' })); return node }
     if (state.walletLoading) { node.appendChild(e('pre', { text: 'Reading direct wallet NFTs and gauge stakes…' })); return node }
-    if (!state.positions.length) { node.appendChild(e('pre', { text: 'No direct wallet-owned or gauge-staked Up33 NFTs were found. NFTs held by another smart wallet are intentionally not inferred here.' })); return node }
+    if (!state.positions.length) { node.appendChild(e('pre', { text: 'No wallet or gauge-staked Up33 NFTs.' })); return node }
     state.positions.forEach(function (position) {
       node.appendChild(e('pre', { text: '\nPOSITION: ' + describe(position) + '\nSTATE   : ' + (position.status === 'staked' ? 'Staked in Up33 gauge' : 'In this wallet') }))
       const controls = e('div'); add(controls, document.createTextNode('ACTIONS : '))

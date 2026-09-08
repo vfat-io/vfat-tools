@@ -4,7 +4,7 @@
   noGlobalScripts: true,
   pageMeta: {
     title: 'SemiVault Farms on Robinhood Chain | vfat.tools',
-    description: 'Live SemiVault staking TVL, conditional emission history, and direct wallet actions on Robinhood Chain. Every value comes from the official RPC and onchain contracts.',
+    description: 'SemiVault staking TVL, conditional emission history, and direct wallet actions on Robinhood Chain.',
     url: 'https://vfat.tools/robinhood/semi/',
     image: 'https://vfat.tools/img/robinhood-semi-social-v3.png',
     imageAlt: 'vfat.tools SemiVault staking information for Robinhood Chain.',
@@ -16,17 +16,16 @@
 <body>
 <%- include(`${partials}/header_main`); -%>
 <pre id="semi-banner">
-***************** 👨‍🌾 UNOFFICIAL SEMIVAULT STAKING CALCULATOR 👨‍🌾 *****************
-INFO  : https://semivault.xyz
-CHAIN : Robinhood Chain (4663)
-MODE  : Wallet-only onchain reads and direct wallet transactions. No price API or router.
+==================== SEMIVAULT · ROBINHOOD CHAIN ====================
+APP   : <a href="https://semivault.xyz" target="_blank" rel="noopener noreferrer">semivault.xyz</a>
+MODE  : Onchain RPC + direct wallet
 NOTE  : Emissions are conditional. The ratchet mints only when the backing
-        ratio sets a new high. Some epochs pay nothing. No forward APR is shown.
-**************************************************************************************
+        ratio sets a new high, so some epochs pay nothing.
+=====================================================================
 
 </pre>
 <div id="semi-loading" class="semi-loading" role="status" aria-live="polite">
-  <span id="semi-loading-spinner" class="semi-spinner" aria-hidden="true">[....]</span> <span id="semi-loading-text">Reading SemiVault contracts on Robinhood Chain…</span>
+  <span id="semi-loading-spinner" class="semi-spinner" aria-hidden="true">[....]</span> <span id="semi-loading-text">Reading SemiVault…</span>
 </div>
 <div id="semi-app" aria-live="polite"></div>
 <pre class="semi-footer"><%- include(`${partials}/disclaimer`); -%></pre>

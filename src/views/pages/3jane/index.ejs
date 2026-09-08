@@ -59,7 +59,6 @@ WALLET: <span id="jane-wallet-status">Checking injected wallet permissions...</s
   <div id="jane-rewards" aria-live="polite"></div>
 </section>
 
-<pre class="jane-footer-note">FLOW: exact approval → eth_call → wallet → receipt refresh</pre>
 </main>
 
 <dialog id="jane-action-dialog" class="jane-action-dialog" aria-labelledby="jane-action-title">
@@ -67,7 +66,7 @@ WALLET: <span id="jane-wallet-status">Checking injected wallet permissions...</s
   <div id="jane-action-content"></div>
 </dialog>
 
-<%- include(`${partials}/disclaimer`); -%>
+<pre class="jane-footer"><%- include(`${partials}/disclaimer`); -%></pre>
 <style>
   .jane-page { max-width: 1520px; min-width: 0; margin: 20px 10px 50px; }
   .jane-page, .jane-page * { box-sizing: border-box; font-family: monospace; }
