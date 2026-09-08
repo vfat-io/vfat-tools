@@ -20,10 +20,9 @@
 
 <pre class="jane-banner">
 ============================ 3JANE · ETHEREUM ============================
-CORE  : USD3 + sUSD3
-FARMS : Morpho · Pendle · Curve · Levered Callable Capital
+SOURCE: USD3 · sUSD3 · Morpho · Pendle · Curve · LCC
 MODE  : Onchain RPC + direct wallet
-============================================================================
+==========================================================================
 
 WALLET: <span id="jane-wallet-status">Checking injected wallet permissions...</span>
         <button id="jane-connect" class="jane-link-button" type="button">[ connect wallet ]</button>
@@ -33,25 +32,25 @@ WALLET: <span id="jane-wallet-status">Checking injected wallet permissions...</s
 
 <pre id="jane-overview" class="jane-summary" aria-live="polite">Reading 3Jane contracts...</pre>
 <p id="jane-status" class="jane-status" role="status" hidden></p>
-<p class="jane-controls">DISPLAY : JANE-earning rows <button id="jane-zero-toggle" class="jane-link-button" type="button">[ show PT rows ]</button> <button id="jane-refresh" class="jane-link-button" type="button">[ refresh onchain state ]</button></p>
+<p class="jane-controls">DISPLAY : JANE-earning rows only <button id="jane-zero-toggle" class="jane-link-button" type="button">[ show PT rows ]</button> <button id="jane-refresh" class="jane-link-button" type="button">[ refresh onchain state ]</button></p>
 
-<div id="jane-loading" class="jane-loading" role="status" aria-live="polite"><span id="jane-loading-spin" aria-hidden="true">[....]</span> <span id="jane-loading-text">Reading Ethereum...</span></div>
+<div id="jane-loading" class="jane-loading" role="status" aria-live="polite"><span id="jane-loading-spin" aria-hidden="true">[....]</span> <span id="jane-loading-text">Reading 3Jane...</span></div>
 
 <section class="jane-section" aria-labelledby="jane-core-title">
   <h1 id="jane-core-title">============================= CORE VAULTS =============================</h1>
-  <p class="jane-note">sUSD3 is staked USD3: a withdrawal needs a cooldown started first, and has to be claimed inside the window that follows. USD values are quoted in each vault's USDC unit of account.</p>
+  <p class="jane-note">sUSD3 is staked USD3. Withdrawing needs a cooldown started first, then claimed inside the window that follows.</p>
   <div id="jane-core" class="jane-table-wrap" aria-live="polite"></div>
 </section>
 
 <section class="jane-section" aria-labelledby="jane-farms-title">
   <h1 id="jane-farms-title">=========================== ECOSYSTEM FARMS ===========================</h1>
-  <p class="jane-note">JANE APR is 3Jane's published allocation range for the current epoch. It is scenario-dependent, not a realised or guaranteed yield.</p>
+  <p class="jane-note">JANE APR and farm TVL come from 3Jane's emissions data, not the contracts. The APR is a scenario range, not a realised yield.</p>
   <div id="jane-farms" class="jane-table-wrap" aria-live="polite"></div>
 </section>
 
 <section class="jane-section" aria-labelledby="jane-lcc-title">
   <h1 id="jane-lcc-title">==================== LEVERED CALLABLE CAPITAL (LCC) ====================</h1>
-  <p class="jane-warning">RISK: LCC margin backs a leveraged callable commitment. If a capital call opens and is not funded before its deadline, margin can be slashed. LCC is not an ERC-4626 vault.</p>
+  <p class="jane-warning">RISK: LCC margin backs a leveraged callable commitment. If a capital call opens and is not funded before its deadline, the margin can be slashed.</p>
   <div id="jane-lcc" class="jane-table-wrap" aria-live="polite"></div>
 </section>
 
@@ -60,8 +59,7 @@ WALLET: <span id="jane-wallet-status">Checking injected wallet permissions...</s
   <div id="jane-rewards" aria-live="polite"></div>
 </section>
 
-<pre class="jane-footer-note">FLOW : exact approval → eth_call → wallet → receipt refresh
-JANE APR, base APY and farm TVL come from 3Jane's emissions service. Every other number is read from the contracts.</pre>
+<pre class="jane-footer-note">FLOW: exact approval → eth_call → wallet → receipt refresh</pre>
 </main>
 
 <dialog id="jane-action-dialog" class="jane-action-dialog" aria-labelledby="jane-action-title">
