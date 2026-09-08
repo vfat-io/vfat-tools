@@ -37,8 +37,8 @@ MODE  : Onchain RPC + direct wallet
   .up33-form-label { display: block; margin: 7px 0; }
   .up33-form-label input { margin-left: 8px; font: inherit; }
   #up33-app, #up33-app section { min-width: 0; }
-  #up33-banner, #up33-app pre { box-sizing: border-box; max-width: 100%; }
-  #up33-banner, #up33-app pre:not(.up33-market-table) { overflow-wrap: anywhere; white-space: pre-wrap; }
+  #up33-banner, #up33-app pre, .up33-footer { box-sizing: border-box; max-width: 100%; }
+  #up33-banner, #up33-app pre:not(.up33-market-table), .up33-footer { overflow-wrap: anywhere; white-space: pre-wrap; }
   .up33-market-table { overflow-x: auto; white-space: pre; }
 </style>
 <%- include(`${partials}/scripts_onchain`, {scriptname: 'robinhood_up33'}); -%>
