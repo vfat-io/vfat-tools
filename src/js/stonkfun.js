@@ -704,7 +704,14 @@ const StonkfunPage = (function () {
       node.disabled = true
       Promise.resolve().then(handler)
         .catch(function (error) { console.error('StonkFun action failed', error); setStatus(errorText(error), 'error') })
-        .then(function () { if (!state.sending) node.disabled = false })
+        .then(function () {
+          // A send that overlapped this one may have replaced the button while
+          // it was in flight. Re-enabling the node this handler captured would
+          // then leave the visible action stuck disabled, so redraw instead.
+          if (state.sending) return
+          if (node.isConnected) node.disabled = false
+          else renderAll()
+        })
     })
     return node
   }
