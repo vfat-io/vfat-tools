@@ -1647,6 +1647,10 @@ const StonkfunPage = (function () {
       setStatus((side === 'buy' ? 'Bought ' : 'Sold ') + mintLabel(pool.baseMint) + ' · ' + shortKey(signature), 'success')
       state.trade.amount = ''
       state.trade.amountIn = 0n
+      // Nothing is in flight once the signature is confirmed, and the refresh
+      // below rebuilds the buttons. Clearing after it would rebuild them
+      // disabled and leave the reader unable to trade again.
+      state.sending = false
       await refreshLaunch()
       await loadWallet()
     } finally {
@@ -1679,6 +1683,7 @@ const StonkfunPage = (function () {
     try {
       const signature = await sendInstructions(instructions)
       setStatus('Claimed ' + mintLabel(pool.baseMint) + ' · ' + shortKey(signature), 'success')
+      state.sending = false
       await loadWallet()
     } finally {
       state.sending = false
