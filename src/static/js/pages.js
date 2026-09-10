@@ -211,7 +211,7 @@ const main = async () => {
       ["Uniswap                      ", `<a href="uniswap/"           >Various</a>`, "                   ", "https://app.uniswap.org"],
       ["Sickle                       ", `<a href="sickle/"            >Various</a>`, "                   ", ""],
       ["3Jane                        ", `<a href="3jane/"             >USD3 ecosystem</a>`, "JANE               ", "https://app.3jane.xyz/supply"],
-      ["StonkFun (Solana)            ", `<a href="stonkfun/"          >Bonding curves</a>`, "                   ", "https://www.stonkfun.xyz"]
+      ["StonkFun (Solana)            ", `<a href="sol/stonkfun/"      >Bonding curves</a>`, "                   ", "https://www.stonkfun.xyz"]
     ].reverse()
   }
 
