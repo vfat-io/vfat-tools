@@ -528,38 +528,78 @@ const StonkfunPage = (function () {
   // A Token-2022 mint can withhold a share of every transfer, so the amount
   // that reaches the curve is smaller than the amount sent, and the amount a
   // buyer keeps is smaller than the amount the curve pays out.
-  function transferFee (mint, amount) {
+  function transferFeePoints (mint) {
     const config = mintInfo(mint).transferFee
-    if (!config || amount <= 0n) return 0n
+    if (!config) return null
     const current = state.epoch !== null && BigInt(state.epoch) >= config.newerEpoch
       ? { basisPoints: config.newerBasisPoints, maximum: config.newerMaximum }
       : { basisPoints: config.olderBasisPoints, maximum: config.olderMaximum }
-    if (!current.basisPoints) return 0n
-    const fee = ceilDivide(amount, BigInt(current.basisPoints), 10000n)
-    return fee > current.maximum ? current.maximum : fee
+    return current.basisPoints ? current : null
   }
 
-  function quoteBuy (pool, amountIn) {
-    const sent = amountIn - transferFee(pool.quoteMint, amountIn)
-    const fee = ceilDivide(sent, totalFeeRate(), feeRateDenominator)
+  function transferFee (mint, amount) {
+    const points = transferFeePoints(mint)
+    if (!points || amount <= 0n) return 0n
+    const fee = ceilDivide(amount, BigInt(points.basisPoints), 10000n)
+    return fee > points.maximum ? points.maximum : fee
+  }
+
+  // Gross an amount up so the trade fee still leaves it behind.
+  function addFee (amount, rate) {
+    if (rate === 0n || amount <= 0n) return amount
+    const denominator = feeRateDenominator - rate
+    return (amount * feeRateDenominator + denominator - 1n) / denominator
+  }
+
+  // Gross an amount up so it still arrives after the mint's transfer fee.
+  function addTransferFee (mint, amount) {
+    const points = transferFeePoints(mint)
+    if (!points || amount <= 0n) return amount
+    if (points.basisPoints >= 10000) return amount + points.maximum
+    const rate = BigInt(points.basisPoints)
+    let fee = (amount * rate + (10000n - rate) - 1n) / (10000n - rate)
+    if (fee > points.maximum) fee = points.maximum
+    return amount + fee
+  }
+
+  function quoteBuy (pool, offered) {
+    const rate = totalFeeRate()
+    const sent = offered - transferFee(pool.quoteMint, offered)
+    const fee = ceilDivide(sent, rate, feeRateDenominator)
     const net = sent - fee
-    if (net <= 0n) return { amountOut: 0n, received: 0n, fee: fee, netIn: 0n, capped: false }
+    if (net <= 0n) return { amountIn: offered, amountOut: 0n, received: 0n, fee: fee, netIn: 0n, capped: false }
     const base = pool.virtualBase - pool.realBase
     const quote = pool.virtualQuote + pool.realQuote
-    let amountOut = net * base / (quote + net)
+    const amountOut = net * base / (quote + net)
     const remaining = pool.totalBaseSell - pool.realBase
-    let capped = false
-    if (amountOut > remaining) { amountOut = remaining; capped = true }
+    if (amountOut <= remaining || base <= remaining) {
+      return {
+        amountIn: offered,
+        amountOut: amountOut,
+        received: amountOut - transferFee(pool.baseMint, amountOut),
+        fee: fee,
+        netIn: net,
+        capped: false
+      }
+    }
+    // The curve has less base left than this would buy, so it sells the
+    // remainder and charges only what the remainder costs. Working back from
+    // that gives the amount actually spent, which is what the wrap and the
+    // instruction have to carry.
+    const neededNet = ceilDivide(quote, remaining, base - remaining)
+    const beforeMintFee = addFee(neededNet, rate)
     return {
-      amountOut: amountOut,
-      received: amountOut - transferFee(pool.baseMint, amountOut),
-      fee: fee,
-      netIn: net,
-      capped: capped
+      amountIn: addTransferFee(pool.quoteMint, beforeMintFee),
+      amountOut: remaining,
+      received: remaining - transferFee(pool.baseMint, remaining),
+      fee: beforeMintFee - neededNet,
+      netIn: neededNet,
+      capped: true
     }
   }
 
-  function quoteSell (pool, amountIn) {
+  function quoteSell (pool, offered) {
+    const amountIn = offered
     const sent = amountIn - transferFee(pool.baseMint, amountIn)
     const base = pool.virtualBase - pool.realBase
     const quote = pool.virtualQuote + pool.realQuote
@@ -567,6 +607,7 @@ const StonkfunPage = (function () {
     const fee = ceilDivide(gross, totalFeeRate(), feeRateDenominator)
     const amountOut = gross - fee
     return {
+      amountIn: amountIn,
       amountOut: amountOut,
       received: amountOut - transferFee(pool.quoteMint, amountOut),
       fee: fee,
@@ -1191,12 +1232,13 @@ const StonkfunPage = (function () {
         return
       }
       const quoted = side === 'buy' ? quoteBuy(pool, amount) : quoteSell(pool, amount)
+      const spend = quoted.amountIn
       // The program compares its minimum against what it delivers, which a
       // Token-2022 transfer fee has already been taken out of. Holding the
       // minimum against the gross curve payout would spend the whole slippage
       // allowance on that fee.
       const minimum = quoted.received * BigInt(Math.round((100 - state.trade.slippage) * 100)) / 10000n
-      state.trade.amountIn = amount
+      state.trade.amountIn = spend
       state.trade.minimumOut = minimum
       state.trade.quoted = quoted
 
@@ -1206,14 +1248,16 @@ const StonkfunPage = (function () {
         baseDecimals: pool.baseDecimals,
         quoteDecimals: pool.quoteDecimals,
         realBase: side === 'buy' ? pool.realBase + quoted.amountOut : pool.realBase - quoted.netIn,
+        totalBaseSell: pool.totalBaseSell,
         realQuote: side === 'buy' ? pool.realQuote + quoted.netIn : pool.realQuote - quoted.amountOut - quoted.fee
       }
       const before = curvePrice(pool)
       const next = curvePrice(after)
-      const inUnits = unitsNumber(amount, inputDecimals)
+      const inUnits = unitsNumber(spend, inputDecimals)
       const outUnits = unitsNumber(quoted.received, outputDecimals)
       const average = side === 'buy' ? inUnits / outUnits : outUnits / inUnits
       const lines = []
+      if (spend !== amount) lines.push('SPEND    : ' + amountText(spend, inputDecimals, 6) + ' ' + inputSymbol)
       lines.push('RECEIVE  : ' + amountText(quoted.received, outputDecimals, 4) + ' ' + outputSymbol)
       lines.push('MINIMUM  : ' + amountText(minimum, outputDecimals, 4) + ' ' + outputSymbol)
       lines.push('AVERAGE  : ' + priceText(average) + ' ' + quoteSymbol + ' per ' + baseSymbol)
@@ -1611,21 +1655,26 @@ const StonkfunPage = (function () {
     return signature
   }
 
+  // A signed transaction can land at any point until its blockhash expires, so
+  // giving up on a wall clock would free the action while the first one is
+  // still live and let the reader sign the same trade twice.
   async function confirmSignature (signature, blockhash) {
-    for (let attempt = 0; attempt < 40; attempt += 1) {
+    const lastValidHeight = blockhash && blockhash.lastValidBlockHeight
+    for (let poll = 0; ; poll += 1) {
       const statuses = await rpc('getSignatureStatuses', [[signature], { searchTransactionHistory: false }])
       const entry = statuses.value[0]
       if (entry) {
         if (entry.err) throw new Error('The transaction failed onchain: ' + JSON.stringify(entry.err))
         if (entry.confirmationStatus === 'confirmed' || entry.confirmationStatus === 'finalized') return
       }
-      if (blockhash && attempt > 0 && attempt % 6 === 0) {
+      if (!lastValidHeight) {
+        if (poll >= 90) throw new Error('This transaction may still land. Check ' + shortKey(signature) + ' before sending it again.')
+      } else if (poll % 3 === 2) {
         const height = await rpc('getBlockHeight', [{ commitment: 'confirmed' }])
-        if (height > blockhash.lastValidBlockHeight) throw new Error('The transaction expired before it was confirmed.')
+        if (height > lastValidHeight) throw new Error('The transaction expired before it was confirmed.')
       }
       await sleep(1100)
     }
-    throw new Error('The transaction was not confirmed in time.')
   }
 
   // -------------------------------------------------------------- actions
