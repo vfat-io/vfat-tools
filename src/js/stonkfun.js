@@ -1656,22 +1656,35 @@ const StonkfunPage = (function () {
   }
 
   // A signed transaction can land at any point until its blockhash expires, so
-  // giving up on a wall clock would free the action while the first one is
-  // still live and let the reader sign the same trade twice.
+  // this only stops for an answer: confirmed, failed onchain, or a block height
+  // that was actually read and proves expiry. A wall clock or an unreachable
+  // RPC says nothing about where the transaction got to, and unlocking on
+  // either would let the reader sign the same trade a second time.
   async function confirmSignature (signature, blockhash) {
     const lastValidHeight = blockhash && blockhash.lastValidBlockHeight
+    let unreachable = 0
     for (let poll = 0; ; poll += 1) {
-      const statuses = await rpc('getSignatureStatuses', [[signature], { searchTransactionHistory: false }])
-      const entry = statuses.value[0]
+      let entry = null
+      let reachable = true
+      try {
+        const statuses = await rpc('getSignatureStatuses', [[signature], { searchTransactionHistory: false }])
+        entry = statuses.value[0]
+      } catch (error) { reachable = false }
       if (entry) {
         if (entry.err) throw new Error('The transaction failed onchain: ' + JSON.stringify(entry.err))
         if (entry.confirmationStatus === 'confirmed' || entry.confirmationStatus === 'finalized') return
       }
-      if (!lastValidHeight) {
-        if (poll >= 90) throw new Error('This transaction may still land. Check ' + shortKey(signature) + ' before sending it again.')
-      } else if (poll % 3 === 2) {
-        const height = await rpc('getBlockHeight', [{ commitment: 'confirmed' }])
-        if (height > lastValidHeight) throw new Error('The transaction expired before it was confirmed.')
+      if (reachable && lastValidHeight && poll % 3 === 2) {
+        let height = null
+        try { height = await rpc('getBlockHeight', [{ commitment: 'confirmed' }]) } catch (error) { reachable = false }
+        if (height !== null && height > lastValidHeight) throw new Error('The transaction expired before it was confirmed.')
+      }
+      if (!reachable) {
+        unreachable += 1
+        if (unreachable === 2) setStatus('Cannot reach the RPC to confirm ' + shortKey(signature) + '. It may still land.', 'error')
+      } else if (unreachable) {
+        unreachable = 0
+        setStatus('Confirming ' + shortKey(signature) + '…', '')
       }
       await sleep(1100)
     }
