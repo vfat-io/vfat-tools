@@ -699,7 +699,11 @@ const StonkfunPage = (function () {
   function actionButton (label, handler, disabled) {
     const node = element('button', { type: 'button', text: '[ ' + label + ' ]', className: 'stonk-action', disabled: disabled || state.sending })
     node.addEventListener('click', function () {
-      Promise.resolve().then(handler).catch(function (error) { console.error('StonkFun action failed', error); setStatus(errorText(error), 'error') })
+      if (node.disabled || state.sending) return
+      node.disabled = true
+      Promise.resolve().then(handler)
+        .catch(function (error) { console.error('StonkFun action failed', error); setStatus(errorText(error), 'error') })
+        .then(function () { node.disabled = false })
     })
     return node
   }
@@ -846,32 +850,53 @@ const StonkfunPage = (function () {
     return null
   }
 
+  async function poolFromTransaction (signature) {
+    const transaction = await rpc('getTransaction', [signature, { maxSupportedTransactionVersion: 0, encoding: 'jsonParsed' }])
+    if (!transaction) return null
+    const instructions = transaction.transaction.message.instructions.slice()
+    const inner = transaction.meta && transaction.meta.innerInstructions
+    if (inner) inner.forEach(function (group) { instructions.push.apply(instructions, group.instructions) })
+    for (let position = 0; position < instructions.length; position += 1) {
+      const instruction = instructions[position]
+      if (instruction.programId !== programs.launchpad || !instruction.accounts || instruction.accounts.length < 6) continue
+      const account = await rpc('getAccountInfo', [instruction.accounts[4], { encoding: 'base64', commitment: 'confirmed' }])
+      if (isLaunchpadPool(account.value)) return decodePool(instruction.accounts[4], decodeBase64(account.value.data[0]))
+    }
+    return null
+  }
+
   async function poolFromHistory (mint) {
     const signatures = await rpc('getSignaturesForAddress', [mint, { limit: 10 }])
     for (let index = 0; index < signatures.length && index < 6; index += 1) {
       if (signatures[index].err) continue
-      const transaction = await rpc('getTransaction', [signatures[index].signature, { maxSupportedTransactionVersion: 0, encoding: 'jsonParsed' }])
-      if (!transaction) continue
-      const instructions = transaction.transaction.message.instructions.slice()
-      const inner = transaction.meta && transaction.meta.innerInstructions
-      if (inner) inner.forEach(function (group) { instructions.push.apply(instructions, group.instructions) })
-      for (let position = 0; position < instructions.length; position += 1) {
-        const instruction = instructions[position]
-        if (instruction.programId !== programs.launchpad || !instruction.accounts || instruction.accounts.length < 6) continue
-        const account = await rpc('getAccountInfo', [instruction.accounts[4], { encoding: 'base64', commitment: 'confirmed' }])
-        if (isLaunchpadPool(account.value)) return decodePool(instruction.accounts[4], decodeBase64(account.value.data[0]))
-      }
+      const pool = await poolFromTransaction(signatures[index].signature)
+      if (pool) return pool
     }
     return null
   }
 
   // Every trade touches the platform configuration it was launched under, so
-  // its newest transaction leads back to a curve trading right now.
+  // the newest transaction across both leads back to a curve trading right now.
+  // Both are live, so they have to be ranked against each other rather than
+  // taken in order.
   async function newestTradedPool () {
+    const candidates = []
     for (let index = 0; index < platformConfigs.length; index += 1) {
-      const pool = await poolFromHistory(platformConfigs[index])
-      if (pool) return pool
+      const signatures = await rpc('getSignaturesForAddress', [platformConfigs[index], { limit: 12 }])
+      signatures.forEach(function (entry) { if (!entry.err) candidates.push(entry) })
     }
+    candidates.sort(function (left, right) {
+      if (right.slot !== left.slot) return right.slot - left.slot
+      return (right.blockTime || 0) - (left.blockTime || 0)
+    })
+    let migrated = null
+    for (let index = 0; index < candidates.length && index < 10; index += 1) {
+      const pool = await poolFromTransaction(candidates[index].signature)
+      if (!pool) continue
+      if (pool.status === 0) return pool
+      if (!migrated) migrated = pool
+    }
+    if (migrated) return migrated
     throw new Error('No recent StonkFun trade found.')
   }
 
@@ -1158,7 +1183,11 @@ const StonkfunPage = (function () {
         return
       }
       const quoted = side === 'buy' ? quoteBuy(pool, amount) : quoteSell(pool, amount)
-      const minimum = quoted.amountOut * BigInt(Math.round((100 - state.trade.slippage) * 100)) / 10000n
+      // The program compares its minimum against what it delivers, which a
+      // Token-2022 transfer fee has already been taken out of. Holding the
+      // minimum against the gross curve payout would spend the whole slippage
+      // allowance on that fee.
+      const minimum = quoted.received * BigInt(Math.round((100 - state.trade.slippage) * 100)) / 10000n
       state.trade.amountIn = amount
       state.trade.minimumOut = minimum
       state.trade.quoted = quoted
@@ -1259,13 +1288,23 @@ const StonkfunPage = (function () {
     standardWallets.push(wallet)
   }
 
+  // Wallet Standard hands both sides the same shape: an object carrying a
+  // register method that takes one or more wallets. A wallet announcing itself
+  // after this script runs calls it on whatever the listener passes back.
+  function registrationApi () {
+    return {
+      register: function () {
+        for (let index = 0; index < arguments.length; index += 1) registerStandardWallet(arguments[index])
+        return function () {}
+      }
+    }
+  }
+
   function discoverWallets () {
     window.addEventListener('wallet-standard:register-wallet', function (event) {
-      try { event.detail(function (wallet) { registerStandardWallet(wallet) }) } catch (error) { /* a wallet that fails to register is simply not offered */ }
+      try { event.detail(registrationApi()) } catch (error) { /* a wallet that fails to register is simply not offered */ }
     })
-    window.dispatchEvent(new CustomEvent('wallet-standard:app-ready', {
-      detail: { register: function (wallet) { registerStandardWallet(wallet); return function () {} } }
-    }))
+    window.dispatchEvent(new CustomEvent('wallet-standard:app-ready', { detail: registrationApi() }))
   }
 
   function injectedProvider () {
@@ -1577,6 +1616,7 @@ const StonkfunPage = (function () {
   }
 
   async function submitTrade () {
+    if (state.sending) return
     const pool = state.launch
     if (!pool) throw new Error('Load a launch first.')
     if (!state.trade.amountIn || state.trade.amountIn <= 0n) throw new Error('Enter an amount first.')
@@ -1615,6 +1655,7 @@ const StonkfunPage = (function () {
   }
 
   async function claimVested (pool) {
+    if (state.sending) return
     const baseProgram = (pool.tokenProgramFlag & 1) ? programs.token2022 : programs.token
     const instructions = computeBudgetInstructions(160000, 20000)
     instructions.push({
