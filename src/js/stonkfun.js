@@ -597,7 +597,8 @@ const StonkfunPage = (function () {
     account: null,
     solBalance: 0n,
     trade: { side: 'buy', amount: '', slippage: 1, amountIn: 0n, minimumOut: 0n, quoted: null },
-    sending: false,
+    sending: 0,
+    sendToken: 0,
     spinner: null,
     spinnerFrame: 0
   }
@@ -703,7 +704,7 @@ const StonkfunPage = (function () {
       node.disabled = true
       Promise.resolve().then(handler)
         .catch(function (error) { console.error('StonkFun action failed', error); setStatus(errorText(error), 'error') })
-        .then(function () { node.disabled = false })
+        .then(function () { if (!state.sending) node.disabled = false })
     })
     return node
   }
@@ -1405,6 +1406,20 @@ const StonkfunPage = (function () {
 
   // ------------------------------------------------------------ transactions
 
+  // One send at a time. state.sending holds the token of the send that owns the
+  // lock, so a handler that has already finished cannot release a newer one
+  // that started while it was still refreshing.
+  function beginSend () {
+    if (state.sending) return 0
+    state.sendToken += 1
+    state.sending = state.sendToken
+    return state.sendToken
+  }
+
+  function endSend (token) {
+    if (state.sending === token) state.sending = 0
+  }
+
   const accountMeta = function (address, writable, signer) { return { address: address, writable: writable, signer: signer } }
 
   function encodeLength (value) {
@@ -1640,7 +1655,8 @@ const StonkfunPage = (function () {
     instructions.push(tradeInstruction(pool, side, state.trade.amountIn, state.trade.minimumOut, userBase, userQuote))
     if (nativeQuote && side === 'sell') instructions.push(closeTokenAccount(userQuote, state.account, state.account))
 
-    state.sending = true
+    const token = beginSend()
+    if (!token) return
     setStatus('Confirm the transaction in your wallet…', '')
     try {
       const signature = await sendInstructions(instructions)
@@ -1648,13 +1664,13 @@ const StonkfunPage = (function () {
       state.trade.amount = ''
       state.trade.amountIn = 0n
       // Nothing is in flight once the signature is confirmed, and the refresh
-      // below rebuilds the buttons. Clearing after it would rebuild them
+      // below rebuilds the buttons. Releasing after it would rebuild them
       // disabled and leave the reader unable to trade again.
-      state.sending = false
+      endSend(token)
       await refreshLaunch()
       await loadWallet()
     } finally {
-      state.sending = false
+      endSend(token)
     }
   }
 
@@ -1678,15 +1694,16 @@ const StonkfunPage = (function () {
       ],
       data: Uint8Array.from(claimVestedDiscriminator)
     })
-    state.sending = true
+    const token = beginSend()
+    if (!token) return
     setStatus('Confirm the claim in your wallet…', '')
     try {
       const signature = await sendInstructions(instructions)
       setStatus('Claimed ' + mintLabel(pool.baseMint) + ' · ' + shortKey(signature), 'success')
-      state.sending = false
+      endSend(token)
       await loadWallet()
     } finally {
-      state.sending = false
+      endSend(token)
     }
   }
 
