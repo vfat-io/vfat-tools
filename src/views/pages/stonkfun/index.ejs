@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include(`${partials}/head`, {
+  noGlobalScripts: true,
+  pageMeta: {
+    title: 'StonkFun Curves on Solana | vfat.tools',
+    description: 'StonkFun bonding curve prices, graduation targets, quote assets, and direct wallet actions on Solana.',
+    url: 'https://vfat.tools/stonkfun/',
+    image: 'https://vfat.tools/img/stonkfun-social.png',
+    imageAlt: 'vfat.tools StonkFun bonding curve calculator on Solana.',
+    imageWidth: 1200,
+    imageHeight: 630
+  }
+}); -%>
+
+<body>
+<%- include(`${partials}/header_main`); -%>
+<main class="stonk-page">
+<nav class="stonk-mobile-nav" aria-label="StonkFun page navigation">
+  <a href="/">[ vfat.tools ]</a> <a href="https://www.stonkfun.xyz" target="_blank" rel="noopener noreferrer">[ app ]</a>
+</nav>
+
+<pre class="stonk-banner">
+******************** 👨‍🌾 UNOFFICIAL STONKFUN CALCULATOR 👨‍🌾 ********************
+SOURCE: LaunchLab curves + Raydium graduations
+CHAIN : Solana
+MODE  : Onchain RPC + direct wallet
+**************************************************************************************
+
+WALLET: <span id="stonk-wallet-status">Not connected</span>
+        <button id="stonk-connect" class="stonk-link" type="button">[ connect wallet ]</button>
+        <button id="stonk-other-wallet" class="stonk-link" type="button">[ other wallet ]</button>
+        <a href="https://www.stonkfun.xyz" target="_blank" rel="noopener noreferrer">[ app ]</a>
+</pre>
+
+<pre id="stonk-overview" class="stonk-summary" aria-live="polite" hidden></pre>
+<p id="stonk-status" class="stonk-status" role="status" hidden></p>
+
+<form id="stonk-lookup-form" class="stonk-lookup">
+  <label for="stonk-lookup">LAUNCH :</label>
+  <input id="stonk-lookup" type="text" spellcheck="false" autocomplete="off" placeholder="token mint or pool address">
+  <button type="submit" class="stonk-link">[ load ]</button>
+  <button id="stonk-newest" type="button" class="stonk-link">[ newest trade ]</button>
+</form>
+
+<div id="stonk-loading" class="stonk-loading" role="status" aria-live="polite">
+  <span id="stonk-loading-spin" aria-hidden="true">[....]</span> <span id="stonk-loading-text">Reading StonkFun…</span>
+</div>
+
+<section class="stonk-section" aria-labelledby="stonk-launch-title">
+  <h1 id="stonk-launch-title">============================= LAUNCH =============================</h1>
+  <p class="stonk-note">A curve trades until its quote target is filled. It then migrates to a Raydium pool and stops accepting curve trades.</p>
+  <div id="stonk-launch" aria-live="polite"></div>
+</section>
+
+<section class="stonk-section" aria-labelledby="stonk-quotes-title">
+  <h1 id="stonk-quotes-title">========================== QUOTE ASSETS ==========================</h1>
+  <p class="stonk-note">Each launch is priced in the asset it was paired against — a tokenized stock, a pre-IPO token, or a crypto asset — and buyers pay in that asset rather than in SOL. Fees held is the platform's share of trades in that asset, still in its vault.</p>
+  <div id="stonk-quotes" class="stonk-table-wrap" aria-live="polite"></div>
+</section>
+
+<pre class="stonk-footer"><%- include(`${partials}/disclaimer`); -%></pre>
+</main>
+<style>
+  .stonk-page { max-width: 1360px; min-width: 0; margin: 20px 10px 50px; }
+  .stonk-page, .stonk-page * { box-sizing: border-box; font-family: monospace; }
+  .stonk-mobile-nav { display: none; }
+  .stonk-banner, .stonk-summary, .stonk-footer, .stonk-launch-summary, .stonk-preview { max-width: 100%; margin: 0 0 16px; overflow-wrap: anywhere; white-space: pre-wrap; }
+  .stonk-summary[hidden] { display: none; }
+  .stonk-status, .stonk-filter, .stonk-note, .stonk-empty { max-width: none; margin: 0 0 14px; color: inherit; font: 14px/1.45 monospace; text-align: left; }
+  .stonk-status[data-kind="error"] { color: #d95757; }
+  .stonk-status[data-kind="success"] { color: var(--highlight-color); }
+  .stonk-link, .stonk-action { margin: 0; padding: 0; border: 0; background: transparent; color: inherit; cursor: pointer; font: inherit; text-decoration: underline; }
+  .stonk-link:hover, .stonk-action:hover, .stonk-page a:hover { color: var(--highlight-color); }
+  .stonk-link:disabled, .stonk-action:disabled { cursor: not-allowed; opacity: .45; text-decoration: none; }
+  .stonk-lookup { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin: 0 0 16px; font: 14px/1.45 monospace; }
+  .stonk-lookup input { flex: 1 1 320px; min-width: 0; padding: 5px 7px; border: 1px solid currentColor; border-radius: 0; background: transparent; color: inherit; font: 14px/1.4 monospace; }
+  .stonk-loading { padding: 0 0 16px; }
+  .stonk-loading[hidden] { display: none; }
+  .stonk-section { min-width: 0; margin-top: 26px; }
+  .stonk-section h1 { max-width: none; margin: 0 0 8px; padding: 0; border: 0; color: inherit; font: inherit; font-weight: normal; text-align: left; }
+  .stonk-subheading { max-width: none; margin: 22px 0 8px; padding: 0; border: 0; color: inherit; font: bold 14px/1.4 monospace; text-align: left; }
+  .stonk-table-wrap { width: 100%; min-width: 0; overflow-x: auto; }
+  .stonk-table { width: 100%; min-width: 760px; table-layout: fixed; border-collapse: collapse; font-size: 13px; }
+  .stonk-table th, .stonk-table td { padding: 7px 8px; border: 1px solid currentColor; vertical-align: top; text-align: right; overflow-wrap: anywhere; }
+  .stonk-table th { white-space: normal; font-weight: bold; }
+  .stonk-table th:first-child, .stonk-table td:first-child, .stonk-table th:last-child, .stonk-table td:last-child { text-align: left; }
+  .stonk-name, .stonk-sub { display: block; overflow-wrap: anywhere; }
+  .stonk-sub { margin-top: 3px; color: var(--highlight-color); font-size: 12px; }
+  .stonk-actions { min-width: 70px; white-space: normal; }
+  .stonk-preview { color: var(--highlight-color); }
+  .stonk-trade { margin-top: 22px; }
+  .stonk-input { display: grid; grid-template-columns: 14ch minmax(0, 1fr); gap: 10px; align-items: center; margin: 9px 0; max-width: 520px; }
+  .stonk-input input { width: 100%; min-width: 0; padding: 5px 7px; border: 1px solid currentColor; border-radius: 0; background: transparent; color: inherit; font: 16px/1.4 monospace; }
+  .stonk-dialog-actions { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 15px; font: 14px/1.45 monospace; }
+  .stonk-footer { margin-top: 30px; }
+  @media (max-width: 700px) {
+    body > div:not(.modal) { display: none; }
+    .stonk-page { margin: 14px 8px 40px; overflow-x: hidden; }
+    .stonk-mobile-nav { display: block; margin-bottom: 14px; }
+    .stonk-banner { font-size: 11px; }
+    .stonk-summary, .stonk-status, .stonk-note, .stonk-empty, .stonk-launch-summary, .stonk-preview, .stonk-lookup { font-size: 12px; }
+    .stonk-table-wrap { overflow: visible; }
+    .stonk-table { min-width: 0; font-size: 12px; }
+    .stonk-table th, .stonk-table td { padding: 6px; }
+    .stonk-input { grid-template-columns: 11ch minmax(0, 1fr); }
+    .stonk-quotes-table th:nth-child(3), .stonk-quotes-table td:nth-child(3) { display: none; }
+    .stonk-ladder-table th:nth-child(2), .stonk-ladder-table td:nth-child(2),
+    .stonk-ladder-table th:nth-child(4), .stonk-ladder-table td:nth-child(4),
+    .stonk-ladder-table th:nth-child(5), .stonk-ladder-table td:nth-child(5) { display: none; }
+    .stonk-position-table th:nth-child(3), .stonk-position-table td:nth-child(3),
+    .stonk-position-table th:nth-child(5), .stonk-position-table td:nth-child(5) { display: none; }
+  }
+</style>
+<%- include(`${partials}/scripts_onchain`, {scriptname: 'stonkfun'}); -%>
+</body>
+</html>
