@@ -52,6 +52,11 @@ module.exports = (env = {}) => {
       // 3Jane is a self-contained Ethereum page. Core, Pendle, Curve, Morpho,
       // LCC, and reward state load without the site-wide app or wallet SDK.
       threejane: './src/js/threejane.js',
+      // StonkFun is Solana, so it shares none of the EVM stack. It carries its
+      // own base58, hashing, program-address and transaction encoders rather
+      // than a wallet SDK, and talks to a Solana wallet through the browser's
+      // injected provider or the Wallet Standard registry.
+      stonkfun: './src/js/stonkfun.js',
     },
     output: {
       filename: isProduction ? '[name].[contenthash].js' : '[name].js',
