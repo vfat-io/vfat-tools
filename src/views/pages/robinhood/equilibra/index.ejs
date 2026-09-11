@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include(`${partials}/head`, {
+  noGlobalScripts: true,
+  pageMeta: {
+    title: 'Equilibra Pools on Robinhood Chain | vfat.tools',
+    description: 'Equilibra pool liquidity, adaptive fees, anchor drift, realized LP APRs, and direct wallet actions on Robinhood Chain.',
+    url: 'https://vfat.tools/robinhood/equilibra/',
+    image: 'https://vfat.tools/img/robinhood-equilibra-social.png',
+    imageAlt: 'vfat.tools Equilibra pool table on Robinhood Chain.',
+    imageWidth: 1200,
+    imageHeight: 630
+  }
+}); -%>
+<body>
+<%- include(`${partials}/header_main`); -%>
+<main class="equilibra-page">
+<nav class="equilibra-mobile-nav" aria-label="Equilibra page navigation"><a href="../">[ Robinhood farms ]</a> <a href="/">[ vfat.tools ]</a></nav>
+<pre id="equilibra-banner">
+*************** 👨‍🌾 UNOFFICIAL EQUILIBRA CALCULATOR 👨‍🌾 ***************
+CHAIN : Robinhood Chain (4663)
+MODE  : Onchain RPC + direct wallet
+NOTE  : Swap fees rise with trade size. Auto-repeg spends part of accrued LP
+        growth to move the anchor toward the EMA.
+**********************************************************************
+</pre>
+<div class="equilibra-toolbar"><span id="equilibra-wallet-status"></span> <button id="equilibra-connect" class="equilibra-link" type="button">[ connect ]</button> <button id="equilibra-other-wallet" class="equilibra-link" type="button">[ other wallet ]</button> <button id="equilibra-zero-toggle" class="equilibra-link" type="button">[ show idle pools ]</button> <button id="equilibra-refresh" class="equilibra-link" type="button">[ refresh ]</button></div>
+<p id="equilibra-status" class="equilibra-status" role="status" hidden></p>
+<div id="equilibra-loading" class="equilibra-loading" role="status" aria-live="polite"><span id="equilibra-loading-spin">[....]</span></div>
+<p id="equilibra-summary" class="equilibra-summary">Equilibra —</p>
+<div id="equilibra-pools" class="equilibra-table-wrap" aria-live="polite"></div>
+<div id="equilibra-positions" class="equilibra-table-wrap equilibra-positions" aria-live="polite" hidden></div>
+<pre class="equilibra-footer"><%- include(`${partials}/disclaimer`); -%></pre>
+</main>
+<dialog id="equilibra-action-dialog" class="equilibra-dialog" aria-labelledby="equilibra-action-title"><form method="dialog" class="equilibra-close"><button type="submit">[ close ]</button></form><div id="equilibra-action-content"></div></dialog>
+<style>
+.equilibra-page{max-width:1500px;margin:20px 10px 50px;min-width:0}.equilibra-page,.equilibra-page *{box-sizing:border-box;font-family:monospace}.equilibra-mobile-nav{display:none}#equilibra-banner{max-width:100%;margin:0 0 16px;overflow-wrap:anywhere;white-space:pre-wrap}.equilibra-toolbar,.equilibra-summary,.equilibra-status{margin:0 0 14px;font:14px/1.45 monospace;text-align:left;overflow-wrap:anywhere}.equilibra-status[data-kind="error"]{color:#d95757}.equilibra-status[data-kind="success"]{color:var(--highlight-color)}.equilibra-link,.equilibra-action,.equilibra-dialog button{margin:0;padding:0;border:0;background:transparent;color:inherit;cursor:pointer;font:inherit;text-decoration:underline}.equilibra-link:hover,.equilibra-action:hover,.equilibra-dialog button:hover{color:var(--highlight-color)}.equilibra-link:disabled,.equilibra-action:disabled,.equilibra-dialog button:disabled{cursor:not-allowed;opacity:.45;text-decoration:none}.equilibra-loading{padding:0 0 14px}.equilibra-loading[hidden]{display:none}.equilibra-table-wrap{width:100%;min-width:0;overflow-x:auto}.equilibra-positions{margin-top:26px}.equilibra-table{width:100%;min-width:1040px;table-layout:fixed;border-collapse:collapse;font-size:13px}.equilibra-table td,.equilibra-table th{padding:7px 8px;border:1px solid currentColor;vertical-align:top;text-align:right;white-space:pre-line;overflow-wrap:anywhere}.equilibra-table th{white-space:normal}.equilibra-table td:first-child,.equilibra-table th:first-child,.equilibra-table td:last-child,.equilibra-table th:last-child{text-align:left}.equilibra-name,.equilibra-sub{display:block;max-width:280px;white-space:normal;overflow-wrap:anywhere}.equilibra-sub{margin-top:3px;color:var(--highlight-color);font-size:12px}.equilibra-actions{min-width:150px;white-space:normal!important}.equilibra-actions>*{display:inline-block;margin:0 8px 5px 0;white-space:nowrap}.equilibra-unpriced{opacity:.7}.equilibra-footer{margin-top:26px;max-width:100%;overflow-wrap:anywhere;white-space:pre-wrap}.equilibra-dialog{width:min(700px,calc(100vw - 28px));max-width:calc(100vw - 28px);padding:16px;border:1px solid currentColor;background:var(--main-background-color);color:var(--main-text-color)}.equilibra-dialog::backdrop{background:rgba(0,0,0,.55)}.equilibra-close{margin:0 0 18px;text-align:right}.equilibra-dialog h2{margin:0 0 8px;padding:0;border:0;color:inherit;font:bold 16px/1.4 monospace;text-align:left}.equilibra-dialog p{margin:0 0 12px;font:14px/1.45 monospace;text-align:left;overflow-wrap:anywhere}.equilibra-input{display:flex;gap:10px;align-items:center;margin:8px 0}.equilibra-input label{min-width:12ch}.equilibra-input input{width:100%;min-width:0;padding:5px 7px;border:1px solid currentColor;border-radius:0;background:transparent;color:inherit;font:16px/1.4 monospace}.equilibra-dialog-actions{display:flex;flex-wrap:wrap;gap:14px;margin-top:14px}@media(max-width:700px){body>div:not(.modal){display:none}.equilibra-page{margin:14px 8px 40px;overflow-x:hidden}.equilibra-mobile-nav{display:block;margin-bottom:14px}#equilibra-banner{font-size:11px}.equilibra-toolbar,.equilibra-summary{font-size:12px}.equilibra-table-wrap{overflow:visible}.equilibra-table{min-width:0;font-size:12px}.equilibra-table td,.equilibra-table th{padding:6px}.equilibra-name,.equilibra-sub{max-width:none}.equilibra-actions{min-width:0}.equilibra-actions>*{margin-right:6px}#equilibra-pools .equilibra-table th:nth-child(3),#equilibra-pools .equilibra-table td:nth-child(3),#equilibra-pools .equilibra-table th:nth-child(5),#equilibra-pools .equilibra-table td:nth-child(5){display:none}#equilibra-pools .equilibra-table th:nth-child(1){width:32%}#equilibra-pools .equilibra-table th:nth-child(2){width:18%}#equilibra-pools .equilibra-table th:nth-child(4){width:24%}#equilibra-pools .equilibra-table th:nth-child(6){width:26%}.equilibra-positions .equilibra-table th:nth-child(2),.equilibra-positions .equilibra-table td:nth-child(2),.equilibra-positions .equilibra-table th:nth-child(4),.equilibra-positions .equilibra-table td:nth-child(4){display:none}.equilibra-positions .equilibra-table th:nth-child(1){width:38%}.equilibra-positions .equilibra-table th:nth-child(3){width:22%}.equilibra-positions .equilibra-table th:nth-child(5){width:40%}}
+</style>
+<% if (filenameMap && filenameMap['robinhood_equilibra.js']) { -%>
+<script src="<%= PP %>/js/<%= filenameMap['robinhood_equilibra.js'] %>"></script>
+<% } else { -%>
+<script src="<%= PP %>/js/robinhood_equilibra.js"></script>
+<% } -%>
+</body>
+</html>
