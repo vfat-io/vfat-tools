@@ -24,7 +24,7 @@ const EquilibraPage = (function () {
   const minSqrtRatio = 4295128739
   const maxSqrtRatio = ethers.BigNumber.from('1461446703485210103287273052203988822378723970342')
 
-  const multiAbi = ['function aggregate3((address target,bool allowFailure,bytes callData)[] calls) payable returns((bool success,bytes returnData)[])']
+  const multiAbi = ['function aggregate3((address target,bool allowFailure,bytes callData)[] calls) view returns((bool success,bytes returnData)[] returnData)']
   const factoryAbi = [
     'function allPoolsLength() view returns(uint256)',
     'function allPools(uint256) view returns(address)',
