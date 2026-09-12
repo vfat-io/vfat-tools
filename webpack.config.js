@@ -49,6 +49,9 @@ module.exports = (env = {}) => {
       // depository, and inverse bond directly. Reown stays behind the
       // other-wallet action.
       robinhood_netnet: './src/js/robinhood_netnet.js',
+      // Equilibra reads its factory registry, pool oracle state, and LP unit
+      // value growth directly. Reown stays behind the other-wallet action.
+      robinhood_equilibra: './src/js/robinhood_equilibra.js',
       // 3Jane is a self-contained Ethereum page. Core, Pendle, Curve, Morpho,
       // LCC, and reward state load without the site-wide app or wallet SDK.
       threejane: './src/js/threejane.js',
