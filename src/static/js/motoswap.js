@@ -85,9 +85,10 @@ async function main() {
     }
   }));
 
-  const tokens = {};
+  let tokens = {};
   const tokenAddresses = [].concat.apply([], poolInfos.filter(x => x?.poolToken).map(x => x.poolToken.tokens));
-  const prices = await lookUpTokenPrices(tokenAddresses);
+  let prices = {};
+  await getNewPricesAndTokens(App, tokens, prices, [rewardTokenAddress], MOTOSWAP_CHEF_ADDR);
 
   await Promise.all(tokenAddresses.map(async (address) => {
     tokens[address] = await getToken(App, address, MOTOSWAP_CHEF_ADDR);
