@@ -52,6 +52,12 @@ module.exports = (env = {}) => {
       // 3Jane is a self-contained Ethereum page. Core, Pendle, Curve, Morpho,
       // LCC, and reward state load without the site-wide app or wallet SDK.
       threejane: './src/js/threejane.js',
+      // Arc pages read Circle's Arc RPC directly. Each stays out of the
+      // global bundle and lazy-loads Reown behind the other-wallet action.
+      arc_sickle_wallet: './src/js/arc_sickle_wallet.js',
+      arc_uniswap: './src/js/arc_uniswap.js',
+      arc_uniswap_v4: './src/js/arc_uniswap_v4.js',
+      arc_aerodrome: './src/js/arc_aerodrome.js',
     },
     output: {
       filename: isProduction ? '[name].[contenthash].js' : '[name].js',

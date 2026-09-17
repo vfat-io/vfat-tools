@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include(`${partials}/head`, {
+  noGlobalScripts: true,
+  pageMeta: {
+    title: 'Arc Farms | vfat.tools',
+    description: 'Pool TVL, fee APRs, positions, Sickle recovery, and direct wallet actions on Arc.',
+    url: 'https://vfat.tools/arc/',
+    image: 'https://vfat.tools/img/arc-social.png',
+    imageAlt: 'vfat.tools Arc protocol list.',
+    imageWidth: 1200,
+    imageHeight: 630
+  }
+}); -%>
+
+<body>
+<%- include(`${partials}/header_main`); -%>
+<main class="arc-page">
+<nav class="arc-mobile-nav"><a href="/">[ vfat.tools ]</a></nav>
+<table class="arc-table">
+  <thead><tr><th>Protocol</th><th>Farms</th><th>vfat.io</th><th>Rewards</th><th>Mode</th></tr></thead>
+  <tbody>
+    <tr><td>Aerodrome</td><td><a href="./aerodrome/">CL pools</a></td><td><a href="https://vfat.io/yield?chains=5042&amp;protocols=aerodrome&amp;minTVL=0&amp;minRewards=0" target="_blank" rel="noopener noreferrer">vfat.io</a></td><td>USDC</td><td>Wallet-only</td></tr>
+    <tr><td>Uniswap v3</td><td><a href="./uniswap/">Fee APR pools</a></td><td><a href="https://vfat.io/pools?chains=5042&amp;protocols=uniswap&amp;minTVL=0" target="_blank" rel="noopener noreferrer">vfat.io</a></td><td>Fees</td><td>Wallet-only</td></tr>
+    <tr><td>Uniswap v4</td><td><a href="./uniswap-v4/">Fee APR pools</a></td><td><a href="https://vfat.io/pools?chains=5042&amp;protocols=uniswap_v4&amp;minTVL=0" target="_blank" rel="noopener noreferrer">vfat.io</a></td><td>Fees</td><td>Wallet-only</td></tr>
+    <tr><td>Sickle</td><td><a href="./sickle/">Position recovery</a></td><td><a href="https://vfat.io/deposits?chains=5042" target="_blank" rel="noopener noreferrer">vfat.io</a></td><td>—</td><td>Wallet-only</td></tr>
+  </tbody>
+</table>
+<pre class="arc-disclaimer"><%- include(`${partials}/disclaimer`); -%></pre>
+</main>
+<style>
+.arc-page{max-width:920px;margin:20px 10px 50px;font-family:monospace}.arc-mobile-nav{display:none;margin-bottom:14px}.arc-table{width:100%;border-collapse:collapse;font:14px/1.45 monospace}.arc-table th,.arc-table td{padding:8px 10px;border:1px solid currentColor;text-align:left}.arc-table th{font-weight:bold}.arc-disclaimer{margin-top:24px;white-space:pre-wrap;overflow-wrap:anywhere;max-width:100%}@media(max-width:600px){body>div:not(.modal){display:none}.arc-page{margin:14px 8px 40px}.arc-mobile-nav{display:block}.arc-table{table-layout:fixed;font-size:12px}.arc-table th,.arc-table td{padding:6px;overflow-wrap:anywhere}.arc-table th:nth-child(4),.arc-table td:nth-child(4),.arc-table th:nth-child(5),.arc-table td:nth-child(5){display:none}.arc-table th:first-child{width:27%}.arc-table th:nth-child(3){width:20%}}
+</style>
+</body>
+</html>
