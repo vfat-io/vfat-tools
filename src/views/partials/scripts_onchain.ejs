@@ -1,5 +1,5 @@
 <%
-    const includeSickleNonceClearer = locals.scriptname === 'robinhood_sickle_wallet'
+    const includeSickleNonceClearer = locals.scriptname === 'robinhood_sickle_wallet' || locals.scriptname === 'arc_sickle_wallet'
 %>
 <% if(includeSickleNonceClearer) { %>
     <%- include(`${partials}/sickle_nonce_clearer`, {nonceScriptname: locals.scriptname}); -%>

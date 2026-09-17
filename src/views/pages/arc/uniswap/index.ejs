@@ -1,16 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
-<%- include(`${partials}/head`); -%>
-
+<%- include(`${partials}/head`, {
+  noGlobalScripts: true,
+  pageMeta: {
+    title: 'Uniswap v3 Pools on Arc | vfat.tools',
+    description: 'Uniswap v3 pool TVL, fee APRs, positions, and direct wallet actions on Arc.',
+    url: 'https://vfat.tools/arc/uniswap/',
+    image: 'https://vfat.tools/img/arc-uniswap-social.png',
+    imageAlt: 'vfat.tools Uniswap v3 pool table on Arc.',
+    imageWidth: 1200,
+    imageHeight: 630
+  }
+}); -%>
 <body>
 <%- include(`${partials}/header_main`); -%>
-<pre id="log">
-*************** 👨‍🌾 UNOFFICIAL UNISWAP FINANCE FARMING CALCULATOR 👨‍🌾 ***************
-INFO  : https://app.uniswap.org
-************************************************************************************
-
-</pre>
-<div class="loader--1"></div>
-<%- include(`${partials}/scripts`, {scriptname: 'arc_uniswap'}); -%>
+<main class="arcuni-page">
+<nav class="arcuni-mobile-nav" aria-label="Uniswap v3 page navigation"><a href="../">[ Arc ]</a> <a href="/">[ vfat.tools ]</a></nav>
+<div class="arcuni-toolbar"><span id="arcuni-wallet-status"></span> <button id="arcuni-connect" class="arcuni-link" type="button">[ connect ]</button> <button id="arcuni-other-wallet" class="arcuni-link" type="button">[ other wallet ]</button> <button id="arcuni-switch" class="arcuni-link" type="button" hidden>[ switch to Arc ]</button> <button id="arcuni-zero-toggle" class="arcuni-link" type="button">[ show 0 APR pools ]</button> <button id="arcuni-refresh" class="arcuni-link" type="button">[ refresh ]</button></div>
+<p id="arcuni-status" class="arcuni-status" role="status" hidden></p>
+<div id="arcuni-loading" class="arcuni-loading" role="status" aria-live="polite"><span id="arcuni-loading-spin">[....]</span></div>
+<p id="arcuni-summary" class="arcuni-summary">Uniswap v3 —</p>
+<div class="arcuni-custom"><label for="arcuni-custom-pool">POOL :</label> <input id="arcuni-custom-pool" type="text" inputmode="text" autocomplete="off" spellcheck="false" placeholder="0x…"> <button id="arcuni-custom-add" class="arcuni-link" type="button">[ add pool ]</button></div>
+<div id="arcuni-positions" class="arcuni-table-wrap arcuni-positions" aria-live="polite" hidden></div>
+<div id="arcuni-pools" class="arcuni-table-wrap" aria-live="polite"></div>
+</main>
+<dialog id="arcuni-action-dialog" class="arcuni-dialog" aria-labelledby="arcuni-action-title"><form method="dialog" class="arcuni-close"><button type="submit">[ close ]</button></form><div id="arcuni-action-content"></div></dialog>
+<style>
+.arcuni-page{max-width:1500px;margin:20px 10px 50px;min-width:0}.arcuni-page,.arcuni-page *{box-sizing:border-box;font-family:monospace}.arcuni-mobile-nav{display:none}.arcuni-toolbar,.arcuni-summary,.arcuni-status{margin:0 0 14px;font:14px/1.45 monospace;text-align:left}.arcuni-status[data-kind="error"]{color:#d95757}.arcuni-status[data-kind="success"]{color:var(--highlight-color)}.arcuni-link,.arcuni-action,.arcuni-dialog button{margin:0;padding:0;border:0;background:transparent;color:inherit;cursor:pointer;font:inherit;text-decoration:underline}.arcuni-link:hover,.arcuni-action:hover,.arcuni-dialog button:hover{color:var(--highlight-color)}.arcuni-link:disabled,.arcuni-action:disabled,.arcuni-dialog button:disabled{cursor:not-allowed;opacity:.45;text-decoration:none}.arcuni-loading{padding:0 0 14px}.arcuni-loading[hidden]{display:none}.arcuni-table-wrap{width:100%;min-width:0;overflow-x:auto}.arcuni-positions{margin-bottom:26px}.arcuni-table{width:100%;min-width:1040px;table-layout:fixed;border-collapse:collapse;font-size:13px}.arcuni-table td,.arcuni-table th{padding:7px 8px;border:1px solid currentColor;vertical-align:top;text-align:right;white-space:pre-line;overflow-wrap:anywhere}.arcuni-table th{white-space:normal}.arcuni-table td:first-child,.arcuni-table th:first-child,.arcuni-table td:last-child,.arcuni-table th:last-child{text-align:left}.arcuni-name,.arcuni-sub{display:block;max-width:280px;white-space:normal;overflow-wrap:anywhere}.arcuni-sub{margin-top:3px;color:var(--highlight-color);font-size:12px}.arcuni-actions{min-width:135px;white-space:normal!important}.arcuni-actions>*{display:inline-block;margin:0 8px 5px 0;white-space:nowrap}.arcuni-unpriced{opacity:.7}.arcuni-dialog{width:min(700px,calc(100vw - 28px));max-width:calc(100vw - 28px);padding:16px;border:1px solid currentColor;background:var(--main-background-color);color:var(--main-text-color)}.arcuni-dialog::backdrop{background:rgba(0,0,0,.55)}.arcuni-close{margin:0 0 18px;text-align:right}.arcuni-dialog h2{margin:0 0 8px;padding:0;border:0;color:inherit;font:bold 16px/1.4 monospace;text-align:left}.arcuni-dialog p{margin:0 0 12px;font:14px/1.45 monospace;text-align:left;overflow-wrap:anywhere}.arcuni-input{display:flex;gap:10px;align-items:center;margin:8px 0}.arcuni-input label{min-width:12ch}.arcuni-input input{width:100%;min-width:0;padding:5px 7px;border:1px solid currentColor;border-radius:0;background:transparent;color:inherit;font:16px/1.4 monospace}.arcuni-link[hidden]{display:none}.arcuni-custom{display:flex;gap:10px;align-items:center;margin:0 0 14px;font:14px/1.45 monospace}.arcuni-custom input{width:46ch;max-width:100%;min-width:0;padding:4px 6px;border:1px solid currentColor;border-radius:0;background:transparent;color:inherit;font:14px/1.4 monospace}.arcuni-note{opacity:.8}.arcuni-dialog-actions{display:flex;flex-wrap:wrap;gap:14px;margin-top:14px}@media(max-width:700px){.arcuni-custom{font-size:12px}.arcuni-custom input{flex:1;font-size:16px}body>div:not(.modal){display:none}.arcuni-page{margin:14px 8px 40px;overflow-x:hidden}.arcuni-mobile-nav{display:block;margin-bottom:14px}.arcuni-toolbar,.arcuni-summary{font-size:12px}.arcuni-table-wrap{overflow:visible}.arcuni-table{min-width:0;font-size:12px}.arcuni-table td,.arcuni-table th{padding:6px}.arcuni-table th:nth-child(4),.arcuni-table td:nth-child(4),.arcuni-table th:nth-child(5),.arcuni-table td:nth-child(5){display:none}.arcuni-table th:first-child{width:38%}.arcuni-table th:nth-child(2){width:20%}.arcuni-table th:nth-child(3){width:18%}.arcuni-table th:last-child{width:24%}.arcuni-name,.arcuni-sub{max-width:none}.arcuni-actions{min-width:0}.arcuni-actions>*{margin-right:6px}}
+</style>
+<% if (filenameMap && filenameMap['arc_uniswap.js']) { -%>
+<script src="<%= PP %>/js/<%= filenameMap['arc_uniswap.js'] %>"></script>
+<% } else { -%>
+<script src="<%= PP %>/js/arc_uniswap.js"></script>
+<% } -%>
 </body>
-</html> 
+</html>

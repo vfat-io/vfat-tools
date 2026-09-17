@@ -25,7 +25,6 @@ async function main() {
 
   _print(`Initialized ${App.YOUR_ADDRESS}\n`);
   _print("Reading smart contracts...\n");
-  _print("This may take few minutes, please be patient...\n");
 
   const SICKLE_FACTORY_ADDR = "0x36F89Be8cEF366a97129c7d18cFCAf860BA9Ff7C";
   const SICKLE_FACTORY = new ethcall.Contract(SICKLE_FACTORY_ADDR, SICKLE_FACTORY_ABI);
@@ -266,7 +265,7 @@ async function printClPools(App, infos) {
         index < infos.length - 1 ? _print_inline(`|    `) : _print_inline(`     `)
         _print_link(`Exit to Underlying (${info.amount0.toFixed(4)} ${info.token0Symbol} + ${info.amount1.toFixed(4)} ${info.token1Symbol})`, () => sickle_exitToUnderlying(info))
         index < infos.length - 1 ? _print_inline(`|    `) : _print_inline(`     `)
-        _print_link(`Exit to 'ETH'`, () => sickle_exitToToken(info))
+        _print_link(`Exit to USDC`, () => sickle_exitToToken(info))
 
         if (info.positionData && info.slot0) {
           const tickLower = info.positionData.tickLower

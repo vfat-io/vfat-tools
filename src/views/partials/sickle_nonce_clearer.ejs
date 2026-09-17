@@ -1,12 +1,16 @@
 <%
-  const isRobinhoodSickle = locals.nonceScriptname === 'robinhood_sickle_wallet'
+  const nonceFallbacks = {
+    robinhood_sickle_wallet: { id: '0x1237', name: 'Robinhood', symbol: 'ETH' },
+    arc_sickle_wallet: { id: '0x13b2', name: 'Arc', symbol: 'USDC' }
+  }
+  const nonceFallback = nonceFallbacks[locals.nonceScriptname] || { id: '', name: '', symbol: '' }
 %>
 <details
   id="sickle-nonce-clearer"
   class="sickle-nonce-clearer"
-  data-fallback-chain-id="<%= isRobinhoodSickle ? '0x1237' : '' %>"
-  data-fallback-chain-name="<%= isRobinhoodSickle ? 'Robinhood' : '' %>"
-  data-fallback-native-symbol="<%= isRobinhoodSickle ? 'ETH' : '' %>"
+  data-fallback-chain-id="<%= nonceFallback.id %>"
+  data-fallback-chain-name="<%= nonceFallback.name %>"
+  data-fallback-native-symbol="<%= nonceFallback.symbol %>"
 >
   <summary>[ clear a stuck transaction ]</summary>
   <div class="sickle-nonce-console">

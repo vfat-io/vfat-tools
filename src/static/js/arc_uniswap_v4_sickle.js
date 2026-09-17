@@ -151,7 +151,7 @@ function formatTokenAmountHtmlFromRaw(rawAmount, tokenDecimals) {
 }
 
 async function getErc20MetaCached(App, cache, tokenAddress, chainId) {
-  return uniswapV4Helpers().getErc20MetaCached(App, cache, tokenAddress, chainId, { nativeSymbol: 'ETH', nativeDecimals: 18 })
+  return uniswapV4Helpers().getErc20MetaCached(App, cache, tokenAddress, chainId, { nativeSymbol: 'USDC', nativeDecimals: 18 })
 }
 
 async function getV4PoolSlot0(App, poolIdBytes32) {
@@ -445,7 +445,7 @@ const withdraw_nfts = async function (App, nft_manager_v4, nft_manager_address_v
           _print_link(`Exit to Underlying`, exitToUnderlying)
 
           idx < infos.length - 1 ? _print_inline(`|    `) : _print_inline(`     `)
-          _print_link(`Exit to ETH`, exitToEth)
+          _print_link(`Exit to USDC`, exitToEth)
 
           idx < infos.length - 1 ? _print_inline(`|    `) : _print_inline(`     `)
           _print_link(`Rebalance ${rangeStatus}`, rebalance)

@@ -1,16 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
-<%- include(`${partials}/head`); -%>
-
+<%- include(`${partials}/head`, {
+  noGlobalScripts: true,
+  pageMeta: {
+    title: 'Uniswap v4 Pools on Arc | vfat.tools',
+    description: 'Uniswap v4 pool TVL, fee APRs, positions, and direct wallet actions on Arc.',
+    url: 'https://vfat.tools/arc/uniswap-v4/',
+    image: 'https://vfat.tools/img/arc-uniswap-v4-social.png',
+    imageAlt: 'vfat.tools Uniswap v4 pool table on Arc.',
+    imageWidth: 1200,
+    imageHeight: 630
+  }
+}); -%>
 <body>
 <%- include(`${partials}/header_main`); -%>
-<pre id="log">
-*************** 👨‍🌾 VFAT-IO SICKLE HELPER UNISWAP-V4 👨‍🌾 ***************
-INFO  : 
-***********************************************************************
-
-</pre>
-<div class="loader--1"></div>
-<%- include(`${partials}/scripts`, {scriptname: 'arc_uniswap_v4'}); -%>
+<main class="arcv4-page">
+<nav class="arcv4-mobile-nav" aria-label="Uniswap v4 page navigation"><a href="../">[ Arc ]</a> <a href="/">[ vfat.tools ]</a></nav>
+<div class="arcv4-toolbar"><span id="arcv4-wallet-status"></span> <button id="arcv4-connect" class="arcv4-link" type="button">[ connect ]</button> <button id="arcv4-other-wallet" class="arcv4-link" type="button">[ other wallet ]</button> <button id="arcv4-switch" class="arcv4-link" type="button" hidden>[ switch to Arc ]</button> <button id="arcv4-zero-toggle" class="arcv4-link" type="button">[ show 0 APR pools ]</button> <button id="arcv4-refresh" class="arcv4-link" type="button">[ refresh ]</button></div>
+<p id="arcv4-status" class="arcv4-status" role="status" hidden></p>
+<div id="arcv4-loading" class="arcv4-loading" role="status" aria-live="polite"><span id="arcv4-loading-spin">[....]</span></div>
+<p id="arcv4-summary" class="arcv4-summary">Uniswap v4 —</p>
+<div class="arcv4-custom"><label for="arcv4-custom-pool">POOL :</label> <input id="arcv4-custom-pool" type="text" autocomplete="off" spellcheck="false" placeholder="0x…"> <button id="arcv4-custom-add" class="arcv4-link" type="button">[ add pool ]</button></div>
+<div id="arcv4-positions" class="arcv4-table-wrap arcv4-positions" aria-live="polite" hidden></div>
+<div id="arcv4-pools" class="arcv4-table-wrap" aria-live="polite"></div>
+</main>
+<dialog id="arcv4-action-dialog" class="arcv4-dialog" aria-labelledby="arcv4-action-title"><form method="dialog" class="arcv4-close"><button type="submit">[ close ]</button></form><div id="arcv4-action-content"></div></dialog>
+<style>
+.arcv4-custom{display:flex;gap:10px;align-items:center;margin:0 0 14px;font:14px/1.45 monospace}.arcv4-custom input{width:68ch;max-width:100%;min-width:0;padding:4px 6px;border:1px solid currentColor;border-radius:0;background:transparent;color:inherit;font:14px/1.4 monospace}@media(max-width:700px){.arcv4-custom{font-size:12px}.arcv4-custom input{flex:1;font-size:16px}}.arcv4-page{max-width:1500px;margin:20px 10px 50px;min-width:0}.arcv4-page,.arcv4-page *{box-sizing:border-box;font-family:monospace}.arcv4-mobile-nav{display:none}.arcv4-toolbar,.arcv4-summary,.arcv4-status{margin:0 0 14px;font:14px/1.45 monospace;text-align:left;overflow-wrap:anywhere}.arcv4-status[data-kind="error"]{color:#d95757}.arcv4-status[data-kind="success"]{color:var(--highlight-color)}.arcv4-link,.arcv4-action,.arcv4-dialog button{margin:0;padding:0;border:0;background:transparent;color:inherit;cursor:pointer;font:inherit;text-decoration:underline}.arcv4-link:hover,.arcv4-action:hover,.arcv4-dialog button:hover{color:var(--highlight-color)}.arcv4-link:disabled,.arcv4-action:disabled,.arcv4-dialog button:disabled{cursor:not-allowed;opacity:.45;text-decoration:none}.arcv4-link[hidden]{display:none}.arcv4-loading{padding:0 0 14px}.arcv4-loading[hidden]{display:none}.arcv4-table-wrap{width:100%;min-width:0;overflow-x:auto}.arcv4-positions{margin-bottom:26px}.arcv4-table{width:100%;min-width:1100px;table-layout:fixed;border-collapse:collapse;font-size:13px}.arcv4-table td,.arcv4-table th{padding:7px 8px;border:1px solid currentColor;vertical-align:top;text-align:right;white-space:pre-line;overflow-wrap:anywhere}.arcv4-table th{white-space:normal}.arcv4-table td:first-child,.arcv4-table th:first-child,.arcv4-table td:last-child,.arcv4-table th:last-child{text-align:left}.arcv4-name,.arcv4-sub{display:block;max-width:300px;white-space:normal;overflow-wrap:anywhere}.arcv4-sub{margin-top:3px;color:var(--highlight-color);font-size:12px}.arcv4-hook{color:#d9a03f!important}.arcv4-actions{min-width:135px;white-space:normal!important}.arcv4-actions>*{display:inline-block;margin:0 8px 5px 0;white-space:nowrap}.arcv4-unpriced{opacity:.7}.arcv4-dialog{width:min(700px,calc(100vw - 28px));max-width:calc(100vw - 28px);padding:16px;border:1px solid currentColor;background:var(--main-background-color);color:var(--main-text-color)}.arcv4-dialog::backdrop{background:rgba(0,0,0,.55)}.arcv4-close{margin:0 0 18px;text-align:right}.arcv4-dialog h2{margin:0 0 8px;padding:0;border:0;color:inherit;font:bold 16px/1.4 monospace;text-align:left;overflow-wrap:anywhere}.arcv4-dialog p{margin:0 0 12px;font:14px/1.45 monospace;text-align:left;overflow-wrap:anywhere}.arcv4-input{display:flex;gap:10px;align-items:center;margin:8px 0}.arcv4-input label{min-width:12ch}.arcv4-input input{width:100%;min-width:0;padding:5px 7px;border:1px solid currentColor;border-radius:0;background:transparent;color:inherit;font:16px/1.4 monospace}.arcv4-dialog-actions{display:flex;flex-wrap:wrap;gap:14px;margin-top:14px}@media(max-width:700px){body>div:not(.modal){display:none}.arcv4-page{margin:14px 8px 40px;overflow-x:hidden}.arcv4-mobile-nav{display:block;margin-bottom:14px}.arcv4-toolbar,.arcv4-summary{font-size:12px}.arcv4-table-wrap{overflow:visible}.arcv4-table{min-width:0;font-size:12px}.arcv4-table td,.arcv4-table th{padding:6px}#arcv4-pools .arcv4-table th:nth-child(2),#arcv4-pools .arcv4-table td:nth-child(2),#arcv4-pools .arcv4-table th:nth-child(5),#arcv4-pools .arcv4-table td:nth-child(5),#arcv4-pools .arcv4-table th:nth-child(6),#arcv4-pools .arcv4-table td:nth-child(6){display:none}#arcv4-pools .arcv4-table th:first-child{width:38%}#arcv4-pools .arcv4-table th:nth-child(3){width:20%}#arcv4-pools .arcv4-table th:nth-child(4){width:20%}#arcv4-pools .arcv4-table th:last-child{width:22%}.arcv4-positions .arcv4-table th:nth-child(2),.arcv4-positions .arcv4-table td:nth-child(2),.arcv4-positions .arcv4-table th:nth-child(3),.arcv4-positions .arcv4-table td:nth-child(3){display:none}.arcv4-positions .arcv4-table th:first-child{width:34%}.arcv4-positions .arcv4-table th:nth-child(4){width:18%}.arcv4-positions .arcv4-table th:nth-child(5){width:26%}.arcv4-positions .arcv4-table th:last-child{width:22%}.arcv4-name,.arcv4-sub{max-width:none}.arcv4-actions{min-width:0}.arcv4-actions>*{margin-right:6px}.arcv4-input{flex-wrap:wrap;gap:4px}}
+</style>
+<% if (filenameMap && filenameMap['arc_uniswap_v4.js']) { -%>
+<script src="<%= PP %>/js/<%= filenameMap['arc_uniswap_v4.js'] %>"></script>
+<% } else { -%>
+<script src="<%= PP %>/js/arc_uniswap_v4.js"></script>
+<% } -%>
 </body>
-</html> 
+</html>
