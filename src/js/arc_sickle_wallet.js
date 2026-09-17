@@ -22,13 +22,11 @@ const { ethers } = require('ethers')
   const uniswapV4 = {
     name: 'Uniswap-V4',
     address: '0x6049c9a0e26405C0985f9E3685C87d0aE917f82B',
-    logStart: 21119535
+    deployBlock: 16031167
   }
   const logBlockSpan = 9999
   const logSpacing = 450
   const minLogBlockSpan = 2000
-  const logConcurrency = 1
-  const logReorgLookback = 64
   const maxPositions = 512
   const multicallBatchSize = 100
   const transfer721Topic = ethers.utils.id('Transfer(address,address,uint256)')
@@ -176,18 +174,6 @@ const { ethers } = require('ethers')
     return results
   }
 
-  function cacheRead (key) {
-    try {
-      const value = JSON.parse(window.localStorage.getItem(key))
-      if (!value || !Number.isSafeInteger(value.toBlock) || !Array.isArray(value.items)) return null
-      return value
-    } catch (error) {
-      return null
-    }
-  }
-  function cacheWrite (key, value) {
-    try { window.localStorage.setItem(key, JSON.stringify(value)) } catch (error) {}
-  }
   function retryableRateLimit (error) {
     const message = [
       errText(error),
@@ -237,55 +223,6 @@ const { ethers } = require('ethers')
       return first.concat(second)
     }
   }
-  async function scanTransfers (options) {
-    const latest = await rpcBlockNumber()
-    const cached = cacheRead(options.cacheKey)
-    const items = new Map()
-    if (cached) {
-      cached.items.forEach(function (item) {
-        const normalized = options.normalizeCached(item)
-        if (normalized) items.set(options.itemKey(normalized), normalized)
-      })
-    }
-    if (items.size > maxPositions) throw new Error('More than ' + maxPositions + ' Uniswap-V4 NFTs.')
-
-    let fromBlock = options.startBlock
-    if (cached && cached.toBlock >= options.startBlock && cached.toBlock <= latest) {
-      fromBlock = Math.max(options.startBlock, cached.toBlock - logReorgLookback)
-    }
-    const ranges = []
-    for (let start = fromBlock; start <= latest; start += logBlockSpan) {
-      ranges.push([start, Math.min(latest, start + logBlockSpan - 1)])
-    }
-    const filter = {
-      address: options.contracts,
-      topics: options.topics || [options.topic, null, topicAddress(state.sickle)]
-    }
-    let next = 0
-    let complete = 0
-    async function worker () {
-      while (next < ranges.length) {
-        const range = ranges[next]
-        next += 1
-        const logs = await getLogRange(filter, range[0], range[1], 0)
-        logs.forEach(function (log) {
-          const item = options.fromLog(log)
-          if (item) items.set(options.itemKey(item), item)
-        })
-        if (items.size > maxPositions) throw new Error('More than ' + maxPositions + ' Uniswap-V4 NFTs.')
-        cacheWrite(options.cacheKey, { toBlock: range[1], items: Array.from(items.values()) })
-        complete += 1
-        setLoading(options.loading + ' ' + complete + '/' + ranges.length + '…')
-      }
-    }
-    const workers = []
-    for (let index = 0; index < Math.min(logConcurrency, ranges.length); index += 1) workers.push(worker())
-    await Promise.all(workers)
-    const result = Array.from(items.values())
-    cacheWrite(options.cacheKey, { toBlock: latest, items: result })
-    return result
-  }
-
   async function readEnumerablePositions () {
     setLoading('Reading supported NFT managers…')
     const balanceResults = await aggregate(managers.map(function (manager) {
@@ -325,27 +262,38 @@ const { ethers } = require('ethers')
     })
   }
 
+  /* The v4 PositionManager is not enumerable: walk incoming Transfer logs back from the head until every NFT the Sickle holds is found. */
   async function readUniswapV4Positions () {
-    setLoading('Reading Uniswap-V4 transfer history…')
-    const candidates = await scanTransfers({
-      cacheKey: 'arc-sickle-v4-v1:' + state.sickle.toLowerCase(),
-      contracts: uniswapV4.address,
-      topic: transfer721Topic,
-      startBlock: uniswapV4.logStart,
-      loading: 'Reading Uniswap-V4 transfer history',
-      normalizeCached: function (item) { return /^\d+$/.test(String(item)) ? String(item) : null },
-      fromLog: function (log) { return log.topics && log.topics[3] ? ethers.BigNumber.from(log.topics[3]).toString() : null },
-      itemKey: function (item) { return item }
-    })
-    setLoading('Validating ' + candidates.length + ' Uniswap-V4 candidate' + (candidates.length === 1 ? '…' : 's…'))
-    const results = await aggregate(candidates.map(function (id) {
-      return { target: uniswapV4.address, data: managerInterface.encodeFunctionData('ownerOf', [id]) }
-    }))
-    results.forEach(function (result, index) {
-      if (!result.success) return
-      const owner = managerInterface.decodeFunctionResult('ownerOf', result.returnData)[0]
-      if (sameAddress(owner, state.sickle)) state.positions.push({ manager: uniswapV4, id: candidates[index] })
-    })
+    const balanceData = managerInterface.encodeFunctionData('balanceOf', [state.sickle])
+    const balance = managerInterface.decodeFunctionResult('balanceOf', await rpcCall({ to: uniswapV4.address, data: balanceData }))[0]
+    if (balance.isZero()) return
+    if (balance.gt(maxPositions)) { warn('Uniswap-V4: more than ' + maxPositions + ' NFTs.'); return }
+    const wanted = balance.toNumber()
+    const filter = { address: uniswapV4.address, topics: [transfer721Topic, null, topicAddress(state.sickle)] }
+    const checked = new Set()
+    const owned = []
+    let toBlock = await rpcBlockNumber()
+    while (owned.length < wanted && toBlock >= uniswapV4.deployBlock) {
+      const fromBlock = Math.max(uniswapV4.deployBlock, toBlock - logBlockSpan + 1)
+      setLoading('Reading Uniswap-V4 NFTs ' + owned.length + '/' + wanted + '…')
+      const logs = await getLogRange(filter, fromBlock, toBlock, 0)
+      const ids = logs.map(function (log) { return log.topics && log.topics[3] ? ethers.BigNumber.from(log.topics[3]).toString() : null })
+        .filter(function (id) { return id !== null && !checked.has(id) })
+      const unique = Array.from(new Set(ids))
+      unique.forEach(function (id) { checked.add(id) })
+      if (unique.length) {
+        const results = await aggregate(unique.map(function (id) {
+          return { target: uniswapV4.address, data: managerInterface.encodeFunctionData('ownerOf', [id]) }
+        }))
+        results.forEach(function (result, index) {
+          if (!result.success) return
+          const owner = managerInterface.decodeFunctionResult('ownerOf', result.returnData)[0]
+          if (sameAddress(owner, state.sickle)) owned.push(unique[index])
+        })
+      }
+      toBlock = fromBlock - 1
+    }
+    owned.forEach(function (id) { state.positions.push({ manager: uniswapV4, id }) })
   }
 
   async function refreshWallet () {

@@ -73,6 +73,7 @@ const AeroPage = (function () {
   function loading (active) { const box = byId('aero-loading'); const spin = byId('aero-loading-spin'); if (!box) return; box.hidden = !active; if (active && !state.spinner) { let index = 0; state.spinner = window.setInterval(function () { spin.textContent = ['[....]', '[=...]', '[.=..]', '[..=.]', '[...=]'][index++ % 5] }, 260) } if (!active && state.spinner) { window.clearInterval(state.spinner); state.spinner = null } }
 
   const logSpacing = 450
+  const maxLogAddresses = 20
   /* eth_getLogs has a tighter rate limit than eth_call, so log queries start at least logSpacing ms apart. */
   let nextLogsAt = 0
   async function logsTurn () { const now = Date.now(); const at = Math.max(now, nextLogsAt); nextLogsAt = at + logSpacing; if (at > now) await pause(at - now) }
@@ -192,15 +193,17 @@ const AeroPage = (function () {
     state.feeFrom = from; state.feeSeconds = Math.max(1, Number(blocks[0].result.timestamp) - Number(blocks[1].result.timestamp))
   }
 
-  // Arc RPCs cap eth_getLogs below 10,000 blocks, so split the window and request one range at a time.
+  // Arc RPCs cap eth_getLogs below 10,000 blocks and at 20 addresses per filter, so split the window and the pool list.
   async function loadSwapLogs (addresses) {
     const ranges = []; for (let to = state.head; to > state.feeFrom; to -= logRange) ranges.push([Math.max(state.feeFrom + 1, to - logRange + 1), to])
+    const groups = []; for (let start = 0; start < addresses.length; start += maxLogAddresses) groups.push(addresses.slice(start, start + maxLogAddresses))
     const logs = []
-    for (let start = 0; start < ranges.length; start += 1) {
-      const group = ranges.slice(start, start + 1)
-      await logsTurn()
-      const results = await rpcBatch(group.map(range => ({ method: 'eth_getLogs', params: [{ address: addresses, topics: [swapTopic], fromBlock: ethers.utils.hexValue(range[0]), toBlock: ethers.utils.hexValue(range[1]) }] })), { timeout: 30000, attempts: 8 })
-      results.forEach(function (result) { if (!Array.isArray(result.result)) throw new Error(result.error && result.error.message || 'Swap logs unavailable.'); logs.push(...result.result) })
+    for (const group of groups) {
+      for (const range of ranges) {
+        await logsTurn()
+        const results = await rpcBatch([{ method: 'eth_getLogs', params: [{ address: group, topics: [swapTopic], fromBlock: ethers.utils.hexValue(range[0]), toBlock: ethers.utils.hexValue(range[1]) }] }], { timeout: 30000, attempts: 8 })
+        results.forEach(function (result) { if (!Array.isArray(result.result)) throw new Error(result.error && result.error.message || 'Swap logs unavailable.'); logs.push(...result.result) })
+      }
     }
     return logs
   }
