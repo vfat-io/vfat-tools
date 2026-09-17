@@ -714,6 +714,10 @@ const RobinhoodTokens = [
   { "id": "up-2", "symbol": "UP", "contract": "0x57C0E45cB534413D1C20A4240955d6bB250BB4F1" },
 ];
 
+const ArcTokens = [
+  { "id": "usd-coin", "symbol": "USDC", "contract": "0x3600000000000000000000000000000000000000" },
+];
+
 const WorldChainTokens = [
   { "id": "weth", "symbol": "WETH", "contract": "0x4200000000000000000000000000000000000006" }
 ];
@@ -1566,6 +1570,15 @@ async function getRobinhoodPrices() {
   const idPrices = await lookUpPrices(RobinhoodTokens.map(x => x.id));
   const prices = {}
   for (const bt of RobinhoodTokens)
+    if (idPrices[bt.id])
+      prices[bt.contract] = idPrices[bt.id];
+  return prices;
+}
+
+async function getArcPrices() {
+  const idPrices = await lookUpPrices(ArcTokens.map(x => x.id));
+  const prices = {}
+  for (const bt of ArcTokens)
     if (idPrices[bt.id])
       prices[bt.contract] = idPrices[bt.id];
   return prices;

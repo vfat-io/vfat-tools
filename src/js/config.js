@@ -323,6 +323,13 @@ const rawNetworks = [
     blockExplorers: [{ name: 'Mantle Explorer', url: 'https://explorer.mantle.xyz' }]
   },
   {
+    id: 5042,
+    name: 'Arc',
+    nativeCurrency: { name: 'USDC', symbol: 'USDC', decimals: 18 },
+    rpcUrls: ['https://rpc.mainnet.arc.io'],
+    blockExplorers: [{ name: 'Arc Chain explorer', url: 'https://explorer.arc.io' }]
+  },
+  {
     id: 5553,
     name: 'Tenet',
     nativeCurrency: { name: 'TENET', symbol: 'TENET', decimals: 18 },
@@ -1653,6 +1660,21 @@ export const NETWORKS = {
     ],
     "blockExplorerUrls": [
       "https://robinhoodchain.blockscout.com"
+    ],
+  },
+  ARC: {
+    "chainId": "0x13b2",
+    "chainName": "Arc",
+    "nativeCurrency": {
+      "name": "USDC",
+      "symbol": "USDC",
+      "decimals": 18
+    },
+    "rpcUrls": [
+      "https://rpc.mainnet.arc.io"
+    ],
+    "blockExplorerUrls": [
+      "https://explorer.arc.io"
     ],
   },
   WORLDCHAIN: {
