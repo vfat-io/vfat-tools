@@ -706,6 +706,8 @@ async function loadGeneralChefContract(App, tokens, prices, chef, chefAddress, c
       break;
     case "robinhood": _print(`<a href='https://robinhoodchain.blockscout.com/address/${chefAddress}' target='_blank'>Staking Contract</a>`);
       break;
+    case "arc": _print(`<a href='https://explorer.arc.io/address/${chefAddress}' target='_blank'>Staking Contract</a>`);
+      break;
   }
   _print(`Found ${poolCount} pools.\n`)
 

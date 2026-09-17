@@ -252,6 +252,9 @@ const pageNetwork = function () {
   if (network.toLowerCase() === 'robinhood') {
     return window.NETWORKS.ROBINHOOD
   }
+  if (network.toLowerCase() === 'arc') {
+    return window.NETWORKS.ARC
+  }
   if (network.toLowerCase() === 'worldchain') {
     return window.NETWORKS.WORLDCHAIN
   }
@@ -4453,6 +4456,9 @@ function getErc20Prices(prices, pool, chain = "eth") {
     case "robinhood":
       poolUrl = `https://robinhoodchain.blockscout.com/token/${pool.address}`;
       break;
+    case "arc":
+      poolUrl = `https://explorer.arc.io/token/${pool.address}`;
+      break;
     case "worldchain":
       poolUrl = `https://worldscan.org/token/${pool.address}`;
       break;
@@ -5270,6 +5276,9 @@ async function printSynthetixPool(App, info, chain = "eth", customURLs) {
     case "robinhood":
       _print(`<a target="_blank" href="https://robinhoodchain.blockscout.com/address/${info.stakingAddress}">Robinhood Explorer</a>`);
       break;
+    case "arc":
+      _print(`<a target="_blank" href="https://explorer.arc.io/address/${info.stakingAddress}">Arc Explorer</a>`);
+      break;
     case "worldchain":
       _print(`<a target="_blank" href="https://worldscan.org/address/${info.stakingAddress}">WorldChain Scan</a>`);
       break;
@@ -5581,6 +5590,8 @@ function getChainExplorerUrl(chain, address) {
       return `https://monadscan.com/token/${address}`;
     case "robinhood":
       return `https://robinhoodchain.blockscout.com/token/${address}`;
+    case "arc":
+      return `https://explorer.arc.io/token/${address}`;
     case "worldchain":
       return `https://worldscan.org/token/${address}`;
     case "katana":

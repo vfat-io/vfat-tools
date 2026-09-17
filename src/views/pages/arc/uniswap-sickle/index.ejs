@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include(`${partials}/head`, {
+  pageMeta: {
+    title: 'Uniswap v3 Sickle Helper on Arc | vfat.tools',
+    description: 'Inspect, exit, rebalance, and compound Uniswap v3 positions held by your Sickle on Arc.',
+    url: 'https://vfat.tools/arc/uniswap-sickle/',
+    image: 'https://vfat.tools/img/arc-uniswap-sickle-social.png',
+    imageAlt: 'vfat.tools Uniswap v3 Sickle helper on Arc.',
+    imageWidth: 1200,
+    imageHeight: 630
+  }
+}); -%>
+
+<body>
+<%- include(`${partials}/header_main`); -%>
+<pre id="log">
+*************** 👨‍🌾 UNOFFICIAL UNISWAP FINANCE FARMING CALCULATOR 👨‍🌾 ***************
+INFO  : https://app.uniswap.org
+************************************************************************************
+
+</pre>
+<div class="loader--1"></div>
+<%- include(`${partials}/scripts`, {scriptname: 'arc_uniswap_sickle'}); -%>
+</body>
+</html> 

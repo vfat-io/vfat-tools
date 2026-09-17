@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include(`${partials}/head`, {
+  pageMeta: {
+    title: 'Uniswap v4 Sickle Helper on Arc | vfat.tools',
+    description: 'Inspect, exit, rebalance, and compound Uniswap v4 positions held by your Sickle on Arc.',
+    url: 'https://vfat.tools/arc/uniswap-v4-sickle/',
+    image: 'https://vfat.tools/img/arc-uniswap-v4-sickle-social.png',
+    imageAlt: 'vfat.tools Uniswap v4 Sickle helper on Arc.',
+    imageWidth: 1200,
+    imageHeight: 630
+  }
+}); -%>
+
+<body>
+<%- include(`${partials}/header_main`); -%>
+<pre id="log">
+*************** 👨‍🌾 VFAT-IO SICKLE HELPER UNISWAP-V4 👨‍🌾 ***************
+INFO  : 
+***********************************************************************
+
+</pre>
+<div class="loader--1"></div>
+<%- include(`${partials}/scripts`, {scriptname: 'arc_uniswap_v4_sickle'}); -%>
+</body>
+</html> 

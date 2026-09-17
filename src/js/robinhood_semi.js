@@ -506,8 +506,8 @@ const Semi = (function () {
       'TVL and supply share include both earning and pending stake.\n' +
       'Minimum lock after staking: ' + lockHours.toFixed(0) + ' hours.\n' +
       (isFinite(v.muUsd)
-        ? 'Dollar figures are anchored to USDG through the onchain USDG/MU pool.\nNo price API is used.'
-        : 'The USDG/MU pool could not be read, so no dollar figure is shown.\nEverything above is still live in SEMI and MU.')))
+        ? 'Dollar figures are anchored to USDG through the USDG/MU pool.'
+        : 'The USDG/MU pool could not be read, so no dollar figure is shown.')))
     node.appendChild(action('poke the ratchet', doPoke, !state.account || !onRobinhood()))
     return node
   }
@@ -519,7 +519,7 @@ const Semi = (function () {
         node.appendChild(document.createTextNode(' '))
         node.appendChild(action('other wallet', connectReown, false))
       }
-      node.appendChild(pre('Everything above is read without a wallet. Connect only to stake, unstake or claim.'))
+      node.appendChild(pre('Connect to stake, unstake or claim.'))
       return node
     }
 

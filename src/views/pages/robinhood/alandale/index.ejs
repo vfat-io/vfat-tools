@@ -19,6 +19,13 @@
 <nav class="alandale-mobile-nav" aria-label="Alandale page navigation">
   <a href="../">[ Robinhood farms ]</a> <a href="/">[ vfat.tools ]</a>
 </nav>
+<pre class="alandale-banner">
+****************** 👨‍🌾 UNOFFICIAL ALANDALE CALCULATOR 👨‍🌾 ******************
+APP   : <a href="https://app.alandale.xyz" target="_blank" rel="noopener noreferrer">app.alandale.xyz</a>
+CHAIN : Robinhood Chain (4663)
+MODE  : Onchain RPC + direct wallet
+**************************************************************************************
+</pre>
 <div class="alandale-toolbar"><span id="alandale-wallet-status"></span> <button id="alandale-connect" class="alandale-link-button" type="button">[ connect ]</button> <button id="alandale-other-wallet" class="alandale-link-button" type="button">[ other wallet ]</button> <button id="alandale-zero-apr-toggle" class="alandale-link-button" type="button">[ show inactive ]</button> <a href="https://app.alandale.xyz" target="_blank" rel="noopener noreferrer">[ app ]</a></div>
 <p id="alandale-status" class="alandale-status" role="status" hidden></p>
 <p id="alandale-overview" class="alandale-summary" aria-live="polite" hidden></p>
@@ -45,6 +52,7 @@
   .alandale-page { margin: 20px 10px 50px; max-width: 1440px; }
   .alandale-page, .alandale-page * { font-family: monospace; }
   .alandale-mobile-nav { display: none; }
+  .alandale-banner { max-width: 100%; margin: 0 0 16px; overflow-wrap: anywhere; white-space: pre-wrap; }
   .alandale-toolbar, .alandale-summary, .alandale-status { margin: 0 0 14px; overflow-wrap: anywhere; font: 14px/1.45 monospace; text-align: left; }
   .alandale-status { color: #d95757; }
   .alandale-status[data-kind="success"] { color: var(--highlight-color); }
@@ -82,7 +90,7 @@
     body > div:not(.modal) { display: none; }
     .alandale-page { box-sizing: border-box; width: calc(100% - 16px); max-width: none; margin: 14px 8px 40px; overflow-x: hidden; }
     .alandale-mobile-nav { display: block; margin-bottom: 14px; }
-    .alandale-toolbar, .alandale-summary { font-size: 12px; }
+    .alandale-banner, .alandale-toolbar, .alandale-summary { font-size: 12px; }
     .alandale-table-scroll { overflow: visible; }
     .alandale-farm-table { min-width: 0; table-layout: fixed; font-size: 13px; }
     .alandale-farm-table th, .alandale-farm-table td { padding: 7px; }

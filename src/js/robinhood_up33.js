@@ -253,7 +253,7 @@ const Up33 = (function () {
         await refreshMarket(false, true)
         state.selected = state.pools.slice().sort(function (left, right) { return (right.tvl || 0) - (left.tvl || 0) })[0] || state.selected
       }
-      message('Loaded all ' + state.pools.length + ' current Up33 farms with live onchain TVL and emission APR.', 'success')
+      message('Loaded ' + state.pools.length + ' farms.', 'success')
     } finally { state.registryLoading = false; if (!state.marketLoading && !state.walletLoading) setLoading(); render() }
   }
 
@@ -554,7 +554,7 @@ const Up33 = (function () {
   async function mintOrIncrease() {
     needWallet(); const values = draftValues(); const walletData = values.pool.walletData
     if (!walletData || values.amount0.gt(walletData.allowance0) || values.amount1.gt(walletData.allowance1)) throw new Error('Approve each desired token amount before submitting.')
-    if ((values.min0.isZero() || values.min1.isZero()) && !window.confirm('A zero minimum amount has no slippage protection for that token. vfat.tools does not provide a quote here. Continue?')) return
+    if ((values.min0.isZero() || values.min1.isZero()) && !window.confirm('A zero minimum has no slippage protection for that token. Continue?')) return
     const manager = contract(addresses.manager, managerAbi, state.wallet)
     if (state.editing) return send(manager, 'increaseLiquidity', [{ tokenId: state.editing.id, amount0Desired: values.amount0, amount1Desired: values.amount1, amount0Min: values.min0, amount1Min: values.min1, deadline: deadline() }], 'Increase liquidity for position #' + state.editing.id.toString())
     const range = ticks(values.pool)
@@ -575,7 +575,7 @@ const Up33 = (function () {
     needWallet(); const token0 = poolToken(position.pool, 0); const token1 = poolToken(position.pool, 1)
     const readMin = function (token) { const entry = window.prompt('Minimum ' + token.symbol + ' when exiting #' + position.id.toString() + ' (enter 0 only if you accept no protection):', '0'); if (entry === null) return null; try { return ethers.utils.parseUnits(entry.trim(), token.decimals) } catch (error) { throw new Error('Minimum must be a valid ' + token.symbol + ' amount.') } }
     const min0 = readMin(token0); if (min0 === null) return; const min1 = readMin(token1); if (min1 === null) return
-    if ((min0.isZero() || min1.isZero()) && !window.confirm('At least one exit minimum is zero. This direct transaction is not price-protected for that token. Continue?')) return
+    if ((min0.isZero() || min1.isZero()) && !window.confirm('At least one exit minimum is zero, so that token is not price-protected. Continue?')) return
     const manager = contract(addresses.manager, managerAbi, state.wallet); const calls = []
     if (!position.position.liquidity.isZero()) calls.push(manager.interface.encodeFunctionData('decreaseLiquidity', [{ tokenId: position.id, liquidity: position.position.liquidity, amount0Min: min0, amount1Min: min1, deadline: deadline() }]))
     calls.push(manager.interface.encodeFunctionData('collect', [{ tokenId: position.id, recipient: state.account, amount0Max: max128, amount1Max: max128 }]))
@@ -636,20 +636,20 @@ const Up33 = (function () {
   }
 
   function renderRegistry() {
-    const node = section('All current Up33 farms')
-    if (state.registryLoading && !state.pools.length) { node.appendChild(e('pre', { text: 'Reading voter → factory → gauge data from Robinhood RPC…' })); return node }
-    if (!state.pools.length) { node.appendChild(e('pre', { text: 'No current Up33 pool/gauge pairs were returned by the voter and factory.' })); return node }
+    const node = section('Up33 farms')
+    if (state.registryLoading && !state.pools.length) { node.appendChild(e('pre', { text: 'Reading Up33 farms…' })); return node }
+    if (!state.pools.length) { node.appendChild(e('pre', { text: 'No Up33 pools.' })); return node }
     const ready = state.pools.filter(function (pool) { return pool.ready })
     if (!ready.length) {
-      node.appendChild(e('pre', { text: 'FARMS : ' + state.pools.length + ' current gauge-backed pools\nREADING: pool contracts, token balances, emissions, and the USDG-anchored onchain price graph…' }))
+      node.appendChild(e('pre', { text: 'FARMS : ' + state.pools.length + '\nReading Up33 farms…' }))
       return node
     }
     const priced = ready.filter(function (pool) { return Number.isFinite(pool.tvl) }).length
     const active = ready.filter(function (pool) { return pool.periodFinish && num(pool.periodFinish) > Math.floor(Date.now() / 1000) && pool.rewardRate && !pool.rewardRate.isZero() })
     const pricedApr = active.filter(function (pool) { return Number.isFinite(pool.apr) }).length
     const totalTvl = ready.reduce(function (sum, pool) { return sum + (Number.isFinite(pool.tvl) ? pool.tvl : 0) }, 0)
-    const progress = ready.length === state.pools.length ? 'all current farms loaded' : ready.length + '/' + state.pools.length + ' farms loaded; rows will update as RPC batches settle'
-    node.appendChild(e('pre', { text: 'FARMS : ' + progress + ' · ' + priced + '/' + ready.length + ' TVLs priced onchain · ' + pricedApr + '/' + active.length + ' live emission APRs priced onchain\nTVL   : ' + usd(totalTvl) + ' across visible farms with a live USDG path\nSOURCE: voter + factory + gauge + pool balances + pool slot0, all on Robinhood RPC\n' }))
+    const loaded = ready.length === state.pools.length ? String(state.pools.length) : ready.length + '/' + state.pools.length
+    node.appendChild(e('pre', { text: 'FARMS : ' + loaded + ' · ' + active.length + ' live\nTVL   : ' + usd(totalTvl) + ' · ' + priced + '/' + ready.length + ' priced\nAPR   : ' + pricedApr + '/' + active.length + ' priced\n' }))
     node.appendChild(e('pre', { className: 'up33-market-table', text: farmTable(ready) }))
     const controls = e('div')
     add(controls, action('Refresh all farms', function () { return refreshMarket(true) }), document.createTextNode('  '))
@@ -685,18 +685,18 @@ const Up33 = (function () {
     const fields = e('div', { className: 'up33-fields' }); add(fields, input(token0.symbol + ' desired', 'up33-amount0', state.draft.amount0, 'Direct ERC-20 amount'), input(token1.symbol + ' desired', 'up33-amount1', state.draft.amount1, 'Direct ERC-20 amount'), input(token0.symbol + ' minimum', 'up33-min0', state.draft.min0 || '0', 'Your slippage floor'), input(token1.symbol + ' minimum', 'up33-min1', state.draft.min1 || '0', 'Your slippage floor'))
     if (!state.editing) { const center = Math.floor(num(pool.slot0.tick) / pool.tickSpacing) * pool.tickSpacing; add(fields, input('Lower tick', 'up33-tick-lower', state.draft.lower || String(center - 10 * pool.tickSpacing), 'Multiple of ' + pool.tickSpacing), input('Upper tick', 'up33-tick-upper', state.draft.upper || String(center + 10 * pool.tickSpacing), 'Multiple of ' + pool.tickSpacing)) }
     node.appendChild(fields); const controls = e('div'); const disabled = !state.account || !onRobinhood(); add(controls, action('Approve ' + token0.symbol, function () { return approveToken(0) }, disabled), document.createTextNode(' '), action('Approve ' + token1.symbol, function () { return approveToken(1) }, disabled), document.createTextNode(' '), action(state.editing ? 'Increase liquidity' : 'Mint position', mintOrIncrease, disabled)); node.appendChild(controls)
-    node.appendChild(e('pre', { text: '\nThe form does not quote or swap. Minimum amounts are supplied exactly as entered; zero minimums require confirmation before signing.' })); if (state.editing) node.appendChild(action('Create a new position instead', function () { return choose(pool, null) })); return node
+    node.appendChild(e('pre', { text: '\nNo quote or swap. Minimums are used exactly as entered.' })); if (state.editing) node.appendChild(action('Create a new position instead', function () { return choose(pool, null) })); return node
   }
   function describe(position) {
     const token0 = poolToken(position.pool, 0); const token1 = poolToken(position.pool, 1); const values = ['#' + position.id.toString(), token0.symbol + ' / ' + token1.symbol, 'range ' + position.position.tickLower + ' to ' + position.position.tickUpper, 'liquidity ' + position.position.liquidity.toString()]
     if (position.status === 'staked' && position.pool.rewardInfo) values.push('earned ' + format(position.earned, position.pool.rewardInfo.decimals) + ' ' + position.pool.rewardInfo.symbol); return values.join(' · ')
   }
   function renderPositions() {
-    const node = section('Your direct Up33 positions')
-    if (!state.account) { node.appendChild(e('pre', { text: 'Connect a wallet on Robinhood Chain to find direct position-manager NFTs and gauge-staked NFTs.' })); return node }
-    if (!onRobinhood()) { node.appendChild(e('pre', { text: 'Switch to Robinhood Chain to load and transact with this wallet’s positions.' })); return node }
+    const node = section('Your positions')
+    if (!state.account) { node.appendChild(e('pre', { text: 'Connect a wallet on Robinhood Chain to see your positions.' })); return node }
+    if (!onRobinhood()) { node.appendChild(e('pre', { text: 'Switch to Robinhood Chain to see your positions.' })); return node }
     if (state.walletLoading) { node.appendChild(e('pre', { text: 'Reading direct wallet NFTs and gauge stakes…' })); return node }
-    if (!state.positions.length) { node.appendChild(e('pre', { text: 'No direct wallet-owned or gauge-staked Up33 NFTs were found. NFTs held by another smart wallet are intentionally not inferred here.' })); return node }
+    if (!state.positions.length) { node.appendChild(e('pre', { text: 'No wallet or gauge-staked Up33 NFTs.' })); return node }
     state.positions.forEach(function (position) {
       node.appendChild(e('pre', { text: '\nPOSITION: ' + describe(position) + '\nSTATE   : ' + (position.status === 'staked' ? 'Staked in Up33 gauge' : 'In this wallet') }))
       const controls = e('div'); add(controls, document.createTextNode('ACTIONS : '))
@@ -704,7 +704,7 @@ const Up33 = (function () {
       else add(controls, action('Stake', function () { return stake(position) }), document.createTextNode(' '), action('Collect fees', function () { return collect(position) }), document.createTextNode(' '), action('Increase', function () { return choose(position.pool, position) }), document.createTextNode(' '), action('Exit all', function () { return exit(position) }))
       node.appendChild(controls)
     })
-    node.appendChild(e('pre', { text: '\nExit all removes all NFT liquidity, collects, and burns the NFT in one position-manager multicall. It asks for explicit token minimums before the wallet request.' })); return node
+    node.appendChild(e('pre', { text: '\nExit all removes the liquidity, collects fees, and burns the NFT.' })); return node
   }
   function fatal(error) { setLoading(); const app = byId('up33-app'); if (!app) return; app.textContent = ''; app.appendChild(e('pre', { text: 'UP33 COULD NOT LOAD\n' + errText(error) + '\nThis page only uses the official Robinhood RPC. Check the connection and try again.' })) }
   return { start: start, fatal: fatal }

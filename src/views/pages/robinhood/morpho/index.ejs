@@ -20,10 +20,11 @@
   <a href="../">[ Robinhood farms ]</a> <a href="/">[ vfat.tools ]</a>
 </nav>
 <pre class="morpho-banner">
-===================== MORPHO BLUE · ROBINHOOD CHAIN =====================
+***************** 👨‍🌾 UNOFFICIAL MORPHO BLUE CALCULATOR 👨‍🌾 *****************
 SOURCE: Morpho Blue + Vault V2
+CHAIN : Robinhood Chain (4663)
 MODE  : Onchain RPC + direct wallet
-=========================================================================
+**************************************************************************************
 
 WALLET: <span id="morpho-wallet-status">Checking injected wallet permissions...</span>
         <button id="morpho-connect" class="morpho-link-button" type="button">[ connect wallet ]</button>
@@ -48,7 +49,6 @@ WALLET: <span id="morpho-wallet-status">Checking injected wallet permissions...<
   <div id="morpho-vaults" class="morpho-table-wrap" aria-live="polite"></div>
 </section>
 
-<pre class="morpho-footer-note">FLOW: exact approval → eth_call → wallet → receipt refresh</pre>
 </main>
 
 <dialog id="morpho-action-dialog" class="morpho-action-dialog" aria-labelledby="morpho-action-title">
@@ -56,7 +56,7 @@ WALLET: <span id="morpho-wallet-status">Checking injected wallet permissions...<
   <div id="morpho-action-content"></div>
 </dialog>
 
-<%- include(`${partials}/disclaimer`); -%>
+<pre class="morpho-footer-note"><%- include(`${partials}/disclaimer`); -%></pre>
 <style>
   .morpho-page { max-width: 1500px; margin: 20px 10px 50px; min-width: 0; }
   .morpho-page, .morpho-page * { font-family: monospace; box-sizing: border-box; }

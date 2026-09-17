@@ -4,7 +4,7 @@
   noGlobalScripts: true,
   pageMeta: {
     title: 'Fables Ranges on Robinhood Chain | vfat.tools',
-    description: 'Fables range liquidity, onchain TVL, realized fee APRs, and direct wallet actions on Robinhood Chain. Every value comes from the official RPC and onchain contracts.',
+    description: 'Fables range liquidity, onchain TVL, realized fee APRs, and direct wallet actions on Robinhood Chain.',
     url: 'https://vfat.tools/robinhood/fables/',
     image: 'https://vfat.tools/img/robinhood-fables-social.png',
     imageAlt: 'vfat.tools Fables range pool table on Robinhood Chain.',
@@ -19,15 +19,13 @@
 <pre id="fables-banner">
 ***************** 👨‍🌾 UNOFFICIAL FABLES RANGE CALCULATOR 👨‍🌾 *****************
 CHAIN : Robinhood Chain (4663)
-MODE  : Wallet-only onchain reads and direct wallet transactions. No price API or router.
+MODE  : Onchain RPC + direct wallet
 NOTE  : Fables is a Uniswap v4 hook AMM for tokenized equities. Liquidity is held
         as ERC-6909 range shares on each pool's ledger, not as position NFTs.
-FEES  : Swap fees are dynamic and directional. Each pool row shows its own
-        session read from its ledger: equity pools run open / overnight / closed
-        on a US calendar, and pools with no calendar show always-on. APRs below
-        are realized fees over the stated window, not a forward rate.
-SCOPE : This page reads pools and ranges, claims fees, and withdraws. Opening a
-        new range is not offered here.
+FEES  : Swap fees are dynamic and directional. Equity pools run open / overnight /
+        closed on a US calendar; pools without one are always on. APRs are realized
+        fees over the stated window, not a forward rate.
+SCOPE : Opening a new range is not offered here.
 **************************************************************************************
 </pre>
 <div class="fables-toolbar"><span id="fables-wallet-status"></span> <button id="fables-connect" class="fables-link" type="button">[ connect ]</button> <button id="fables-other-wallet" class="fables-link" type="button">[ other wallet ]</button> <button id="fables-zero-toggle" class="fables-link" type="button">[ show zero APR ]</button> <button id="fables-refresh" class="fables-link" type="button">[ refresh ]</button></div>

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include(`${partials}/head`, {
+  noGlobalScripts: true,
+  pageMeta: {
+    title: 'Solana Farms | vfat.tools',
+    description: 'Onchain launch curves, prices, positions, and direct wallet actions on Solana.',
+    url: 'https://vfat.tools/sol/',
+    image: 'https://vfat.tools/img/sol-social.png',
+    imageAlt: 'vfat.tools Solana protocol list.',
+    imageWidth: 1200,
+    imageHeight: 630
+  }
+}); -%>
+
+<body>
+<%- include(`${partials}/header_main`); -%>
+<main class="sol-page">
+<nav class="sol-mobile-nav"><a href="/">[ vfat.tools ]</a></nav>
+<table class="sol-table">
+  <thead><tr><th>Protocol</th><th>Page</th><th>Quote assets</th><th>Mode</th></tr></thead>
+  <tbody>
+    <tr><td>StonkFun</td><td><a href="./stonkfun/">Launch curves</a></td><td>Tokenized stocks, pre-IPO tokens, crypto</td><td>Wallet-only</td></tr>
+  </tbody>
+</table>
+<pre class="sol-disclaimer"><%- include(`${partials}/disclaimer`); -%></pre>
+</main>
+<style>
+.sol-page{max-width:920px;margin:20px 10px 50px;font-family:monospace}.sol-mobile-nav{display:none;margin-bottom:14px}.sol-table{width:100%;border-collapse:collapse;font:14px/1.45 monospace}.sol-table th,.sol-table td{padding:8px 10px;border:1px solid currentColor;text-align:left}.sol-table th{font-weight:bold}.sol-disclaimer{margin-top:24px;white-space:pre-wrap}@media(max-width:600px){body>div:not(.modal){display:none}.sol-page{margin:14px 8px 40px}.sol-mobile-nav{display:block}.sol-table{table-layout:fixed;font-size:12px}.sol-table th,.sol-table td{padding:6px;overflow-wrap:anywhere}.sol-table th:nth-child(4),.sol-table td:nth-child(4){display:none}.sol-table th:first-child{width:26%}.sol-table th:nth-child(2){width:28%}}
+</style>
+</body>
+</html>

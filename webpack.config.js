@@ -49,9 +49,17 @@ module.exports = (env = {}) => {
       // depository, and inverse bond directly. Reown stays behind the
       // other-wallet action.
       robinhood_netnet: './src/js/robinhood_netnet.js',
+      // Equilibra reads its factory registry, pool oracle state, and LP unit
+      // value growth directly. Reown stays behind the other-wallet action.
+      robinhood_equilibra: './src/js/robinhood_equilibra.js',
       // 3Jane is a self-contained Ethereum page. Core, Pendle, Curve, Morpho,
       // LCC, and reward state load without the site-wide app or wallet SDK.
       threejane: './src/js/threejane.js',
+      // StonkFun is Solana, so it shares none of the EVM stack. It carries its
+      // own base58, hashing, program-address and transaction encoders rather
+      // than a wallet SDK, and talks to a Solana wallet through the browser's
+      // injected provider or the Wallet Standard registry.
+      stonkfun: './src/js/stonkfun.js',
       // Arc pages read Circle's Arc RPC directly. Each stays out of the
       // global bundle and lazy-loads Reown behind the other-wallet action.
       arc_sickle_wallet: './src/js/arc_sickle_wallet.js',
