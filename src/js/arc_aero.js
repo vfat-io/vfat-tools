@@ -1,4 +1,4 @@
-/* Aerodrome Slipstream on Arc: factory registry, Swap-log fee APRs, Merkl incentives, and EIP-1193. */
+/* Aero Slipstream on Arc: factory registry, Swap-log fee APRs, Merkl incentives, and EIP-1193. */
 const { ethers } = require('ethers')
 
 document.addEventListener('DOMContentLoaded', function () { AeroPage.start().catch(AeroPage.fatal) })
@@ -294,7 +294,7 @@ const AeroPage = (function () {
     const visible = state.pools.filter(isVisible)
     visible.sort((a, b) => (b.totalApr || 0) - (a.totalApr || 0) || (b.tvl || 0) - (a.tvl || 0))
     if (!state.pools.some(pool => pool.ready)) return
-    if (!visible.length) { const empty = e('p', { className: 'aero-summary', text: 'No live Aerodrome pools. ' }); empty.appendChild(button('show 0 APR pools', toggleZero)); host.appendChild(empty); return }
+    if (!visible.length) { const empty = e('p', { className: 'aero-summary', text: 'No live Aero pools. ' }); empty.appendChild(button('show 0 APR pools', toggleZero)); host.appendChild(empty); return }
     const table = e('table', { className: 'aero-table aero-pool-table' })
     addHeader(table, ['Pool', 'TVL', 'Fee APR (12h)', incentiveLabel(), 'Fees / 12h', 'Type', 'Actions'])
     const body = e('tbody')
@@ -314,8 +314,8 @@ const AeroPage = (function () {
     const node = byId('aero-summary'); if (!node) return
     const ready = state.pools.filter(pool => pool.ready); const priced = ready.filter(pool => finite(pool.tvl))
     const tvl = priced.reduce((sum, pool) => sum + pool.tvl, 0)
-    if (!ready.length) { node.textContent = 'Aerodrome —'; return }
-    node.textContent = 'Aerodrome TVL ' + usd(tvl) + ' · ' + priced.length + '/' + ready.length + ' priced'
+    if (!ready.length) { node.textContent = 'Aero —'; return }
+    node.textContent = 'Aero TVL ' + usd(tvl) + ' · ' + priced.length + '/' + ready.length + ' priced'
   }
 
   function renderWallet () {

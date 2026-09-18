@@ -65,7 +65,7 @@ module.exports = (env = {}) => {
       arc_sickle_wallet: './src/js/arc_sickle_wallet.js',
       arc_uniswap: './src/js/arc_uniswap.js',
       arc_uniswap_v4: './src/js/arc_uniswap_v4.js',
-      arc_aerodrome: './src/js/arc_aerodrome.js',
+      arc_aero: './src/js/arc_aero.js',
     },
     output: {
       filename: isProduction ? '[name].[contenthash].js' : '[name].js',
