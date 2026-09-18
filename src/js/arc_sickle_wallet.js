@@ -7,8 +7,27 @@ const { ethers } = require('ethers')
     id: '0x13b2',
     number: 5042,
     name: 'Arc',
-    rpc: 'https://rpc.mainnet.arc.io',
     nativeCurrency: { name: 'USDC', symbol: 'USDC', decimals: 18 }
+  }
+  /* Arc's own RPC first; the rest are public fallbacks for when it is unreachable. ?rpc=<url> overrides them. */
+  const rpcEndpoints = (function () {
+    const list = ['https://rpc.mainnet.arc.io', 'https://rpc.blockdaemon.mainnet.arc.io', 'https://rpc.arc-scan.org', 'https://arc-mainnet.drpc.org']
+    try {
+      const custom = new URLSearchParams(window.location.search).get('rpc')
+      if (custom && /^https:\/\//i.test(custom)) return [custom].concat(list)
+    } catch (_) {}
+    return list
+  })()
+  let rpcIndex = 0
+  function currentRpc () { return rpcEndpoints[rpcIndex % rpcEndpoints.length] }
+  function useNextRpc () { rpcIndex += 1; state.rpc = makeProvider(); return state.rpc }
+  function makeProvider () { return new ethers.providers.StaticJsonRpcProvider(currentRpc(), { chainId: chain.number, name: 'arc' }) }
+  // ethers wraps a dead endpoint as SERVER_ERROR, and hides it inside error.error for eth_call.
+  function unreachable (error) {
+    const codes = [error && error.code, error && error.error && error.error.code]
+    if (codes.some(code => code === 'NETWORK_ERROR' || code === 'SERVER_ERROR' || code === 'TIMEOUT')) return true
+    const message = [error && error.message, error && error.error && error.error.message].filter(Boolean).join(' ')
+    return /missing response|failed to fetch|networkerror|could not detect network|connection refused/i.test(message)
   }
   const addresses = {
     factory: '0x36F89Be8cEF366a97129c7d18cFCAf860BA9Ff7C',
@@ -189,6 +208,7 @@ const { ethers } = require('ethers')
       return await request()
     } catch (error) {
       const retry = attempt || 0
+      if (retry < rpcEndpoints.length && unreachable(error)) { useNextRpc(); return retryRpc(request, retry + 1) }
       if (!retryableRateLimit(error) || retry >= 6) throw error
       await wait(Math.min(6000, 750 * Math.pow(2, retry)))
       return retryRpc(request, retry + 1)
@@ -211,6 +231,7 @@ const { ethers } = require('ethers')
       })])
     } catch (error) {
       const retry = attempt || 0
+      if (retry < rpcEndpoints.length && unreachable(error)) { useNextRpc(); return getLogRange(filter, fromBlock, toBlock, retry + 1) }
       if (retryableRateLimit(error)) {
         if (retry >= 6) throw error
         await wait(Math.min(6000, 750 * Math.pow(2, retry)))
@@ -429,7 +450,7 @@ const { ethers } = require('ethers')
           chainId: chain.id,
           chainName: chain.name,
           nativeCurrency: chain.nativeCurrency,
-          rpcUrls: [chain.rpc]
+          rpcUrls: [currentRpc()]
         }]
       })
       await state.wallet.request({ method: 'wallet_switchEthereumChain', params: [{ chainId: chain.id }] })
@@ -475,7 +496,7 @@ const { ethers } = require('ethers')
     byId('sickle-refresh').addEventListener('click', function () { refreshWallet().catch(function (error) { setStatus(errText(error), 'error') }) })
   }
   async function start () {
-    state.rpc = new ethers.providers.StaticJsonRpcProvider(chain.rpc, { chainId: chain.number, name: 'arc' })
+    state.rpc = makeProvider()
     byId('sickle-date').textContent = new Date().toString() + '\n\n'
     bindUi()
     render()

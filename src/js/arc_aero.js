@@ -67,6 +67,19 @@ const AeroPage = (function () {
   const e = (tag, options) => { const node = document.createElement(tag); const o = options || {}; if (o.text !== undefined) node.textContent = o.text; if (o.className) node.className = o.className; if (o.id) node.id = o.id; if (o.type) node.type = o.type; if (o.disabled) node.disabled = true; return node }
   const append = (parent, ...children) => { children.forEach(child => parent.appendChild(child)); return parent }
   const button = (label, fn, disabled) => { const node = e('button', { type: 'button', text: '[ ' + label + ' ]', className: 'aero-action', disabled: disabled || state.sending }); node.addEventListener('click', function () { Promise.resolve(fn()).catch(error => setStatus(errText(error), 'error')) }); return node }
+  /* Arc's own RPC first; the rest are public fallbacks for when it is unreachable. ?rpc=<url> overrides them. */
+  const rpcEndpoints = (function () {
+    const list = ['https://rpc.mainnet.arc.io', 'https://rpc.blockdaemon.mainnet.arc.io', 'https://rpc.arc-scan.org', 'https://arc-mainnet.drpc.org']
+    try {
+      const custom = new URLSearchParams(window.location.search).get('rpc')
+      if (custom && /^https:\/\//i.test(custom)) return [custom].concat(list)
+    } catch (_) {}
+    return list
+  })()
+  let rpcIndex = 0
+  const currentRpc = () => rpcEndpoints[rpcIndex % rpcEndpoints.length]
+  const nextRpc = () => { rpcIndex += 1 }
+  const isTransport = error => Boolean(error && error.transport)
   const pause = delay => new Promise(resolve => window.setTimeout(resolve, delay))
 
   function setStatus (text, kind) { state.status = text || ''; const node = byId('aero-status'); if (!node) return; node.hidden = !state.status; node.textContent = state.status; node.dataset.kind = kind || '' }
@@ -85,14 +98,15 @@ const AeroPage = (function () {
       const controller = new window.AbortController(); const timer = window.setTimeout(function () { controller.abort() }, o.timeout || 20000)
       try {
         const body = calls.map((call, index) => ({ jsonrpc: '2.0', id: index + 1, method: call.method, params: call.params }))
-        const response = await window.fetch(chain.rpc, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(body.length === 1 ? body[0] : body), signal: controller.signal })
+        let response
+        try { response = await window.fetch(currentRpc(), { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(body.length === 1 ? body[0] : body), signal: controller.signal }) } catch (error) { error.transport = true; throw error }
         let values = await response.json(); if (!Array.isArray(values)) values = [values]
         if (!response.ok && !values.length) throw new Error('RPC unavailable.')
         const map = new Map(values.map(value => [value.id, value]))
         const results = body.map(value => map.get(value.id) || { error: { message: 'Missing RPC response.' } })
         if (results.some(value => value.error && (value.error.code === -32005 || /rate limit/i.test(value.error.message || '')))) throw new Error('RPC rate limit.')
         return results
-      } catch (error) { lastError = error; if (attempt + 1 < attempts) await pause(Math.min(8000, 400 * (2 ** attempt))) } finally { window.clearTimeout(timer) }
+      } catch (error) { lastError = error; if (isTransport(error)) nextRpc(); if (attempt + 1 < attempts) await pause(Math.min(8000, 400 * (2 ** attempt))) } finally { window.clearTimeout(timer) }
     }
     throw lastError
   }
@@ -634,7 +648,7 @@ const AeroPage = (function () {
     if (!state.eip1193) throw new Error('Connect wallet.')
     try { await state.eip1193.request({ method: 'wallet_switchEthereumChain', params: [{ chainId: chain.id }] }) } catch (error) {
       if (error.code !== 4902 && !(error.data && error.data.originalError && error.data.originalError.code === 4902)) throw error
-      await state.eip1193.request({ method: 'wallet_addEthereumChain', params: [{ chainId: chain.id, chainName: chain.name, nativeCurrency: chain.nativeCurrency, rpcUrls: [chain.rpc], blockExplorerUrls: [chain.explorer] }] })
+      await state.eip1193.request({ method: 'wallet_addEthereumChain', params: [{ chainId: chain.id, chainName: chain.name, nativeCurrency: chain.nativeCurrency, rpcUrls: [currentRpc()], blockExplorerUrls: [chain.explorer] }] })
     }
     await adopt(state.eip1193, state.account ? [state.account] : [], await state.eip1193.request({ method: 'eth_chainId' }))
     setStatus('')

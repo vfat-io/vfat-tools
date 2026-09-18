@@ -102,6 +102,19 @@ const UniswapPage = (function () {
   const e = (tag, options) => { const node = document.createElement(tag); const o = options || {}; if (o.text !== undefined) node.textContent = o.text; if (o.className) node.className = o.className; if (o.id) node.id = o.id; if (o.type) node.type = o.type; if (o.disabled) node.disabled = true; return node }
   const append = (parent, ...children) => { children.forEach(child => parent.appendChild(child)); return parent }
   const button = (label, fn, disabled) => { const node = e('button', { type: 'button', text: '[ ' + label + ' ]', className: 'arcuni-action', disabled: disabled || state.sending }); node.addEventListener('click', function () { Promise.resolve(fn()).catch(error => setStatus(errText(error), 'error')) }); return node }
+  /* Arc's own RPC first; the rest are public fallbacks for when it is unreachable. ?rpc=<url> overrides them. */
+  const rpcEndpoints = (function () {
+    const list = ['https://rpc.mainnet.arc.io', 'https://rpc.blockdaemon.mainnet.arc.io', 'https://rpc.arc-scan.org', 'https://arc-mainnet.drpc.org']
+    try {
+      const custom = new URLSearchParams(window.location.search).get('rpc')
+      if (custom && /^https:\/\//i.test(custom)) return [custom].concat(list)
+    } catch (_) {}
+    return list
+  })()
+  let rpcIndex = 0
+  const currentRpc = () => rpcEndpoints[rpcIndex % rpcEndpoints.length]
+  const nextRpc = () => { rpcIndex += 1 }
+  const isTransport = error => Boolean(error && error.transport)
   const pause = delay => new Promise(resolve => window.setTimeout(resolve, delay))
 
   function setStatus (text, kind) { state.status = text || ''; const node = byId('arcuni-status'); if (!node) return; node.hidden = !state.status; node.textContent = state.status; node.dataset.kind = kind || '' }
@@ -124,7 +137,8 @@ const UniswapPage = (function () {
       try {
         const controller = new window.AbortController(); const timer = window.setTimeout(function () { controller.abort() }, timeout || 25000)
         try {
-          const response = await window.fetch(chain.rpc, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ jsonrpc: '2.0', id: 1, method, params }), signal: controller.signal })
+          let response
+          try { response = await window.fetch(currentRpc(), { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ jsonrpc: '2.0', id: 1, method, params }), signal: controller.signal }) } catch (error) { error.transport = true; throw error }
           const text = await response.text(); let body = null; try { body = JSON.parse(text) } catch (_) {}
           if (response.status === 429 || body && body.error && (body.error.code === -32005 || /rate limit/i.test(body.error.message || ''))) { limitedRate = true; throw new Error('RPC busy.') }
           if (!body) throw new Error('RPC unavailable.')
@@ -133,6 +147,7 @@ const UniswapPage = (function () {
         } finally { window.clearTimeout(timer) }
       } catch (error) {
         lastError = error; if (error.rpc) throw error
+        if (isTransport(error)) nextRpc()
       } finally { release() }
       await pause((limitedRate ? 600 : 300) * (2 ** attempt))
     }
@@ -607,7 +622,7 @@ const UniswapPage = (function () {
       await provider.request({ method: 'wallet_switchEthereumChain', params: [{ chainId: chain.id }] })
     } catch (error) {
       if (!error || (error.code !== 4902 && !(error.data && error.data.originalError && error.data.originalError.code === 4902))) throw error
-      await provider.request({ method: 'wallet_addEthereumChain', params: [{ chainId: chain.id, chainName: chain.name, nativeCurrency: chain.nativeCurrency, rpcUrls: [chain.rpc] }] })
+      await provider.request({ method: 'wallet_addEthereumChain', params: [{ chainId: chain.id, chainName: chain.name, nativeCurrency: chain.nativeCurrency, rpcUrls: [currentRpc()] }] })
       await provider.request({ method: 'wallet_switchEthereumChain', params: [{ chainId: chain.id }] })
     }
     await adopt(provider, state.account ? [state.account] : [], await provider.request({ method: 'eth_chainId' }))
