@@ -10,8 +10,9 @@ const { ethers } = require('ethers')
     nativeCurrency: { name: 'USDC', symbol: 'USDC', decimals: 18 }
   }
   /* Arc's own RPC first; the rest are public fallbacks for when it is unreachable. ?rpc=<url> overrides them. */
+  const officialRpc = 'https://rpc.mainnet.arc.io'
   const rpcEndpoints = (function () {
-    const list = ['https://rpc.mainnet.arc.io', 'https://rpc.blockdaemon.mainnet.arc.io', 'https://rpc.arc-scan.org', 'https://arc-mainnet.drpc.org']
+    const list = [officialRpc, 'https://rpc.blockdaemon.mainnet.arc.io', 'https://rpc.arc-scan.org', 'https://arc-mainnet.drpc.org']
     try {
       const custom = new URLSearchParams(window.location.search).get('rpc')
       if (custom && /^https:\/\//i.test(custom)) return [custom].concat(list)
@@ -25,7 +26,7 @@ const { ethers } = require('ethers')
   // ethers wraps a dead endpoint as SERVER_ERROR, and hides it inside error.error for eth_call.
   function unreachable (error) {
     const codes = [error && error.code, error && error.error && error.error.code]
-    if (codes.some(code => code === 'NETWORK_ERROR' || code === 'SERVER_ERROR' || code === 'TIMEOUT')) return true
+    if (codes.some(code => code === 'NETWORK_ERROR' || code === 'SERVER_ERROR')) return true
     const message = [error && error.message, error && error.error && error.error.message].filter(Boolean).join(' ')
     return /missing response|failed to fetch|networkerror|could not detect network|connection refused/i.test(message)
   }
@@ -450,7 +451,7 @@ const { ethers } = require('ethers')
           chainId: chain.id,
           chainName: chain.name,
           nativeCurrency: chain.nativeCurrency,
-          rpcUrls: [currentRpc()]
+          rpcUrls: [officialRpc]
         }]
       })
       await state.wallet.request({ method: 'wallet_switchEthereumChain', params: [{ chainId: chain.id }] })
