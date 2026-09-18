@@ -29,9 +29,11 @@ const { ethers } = require('ethers')
     logStart: 9000
   }
   const fablesLogStart = 44000000
+  // Backward log scans start with a small chunk near the head, where recent
+  // positions are, and double up to logBlockSpan while chunks succeed.
+  const firstLogBlockSpan = 1000000
   const logBlockSpan = 10000000
   const minLogBlockSpan = 25000
-  const logConcurrency = 1
   const logReorgLookback = 64
   const maxPositions = 512
   const multicallBatchSize = 100
@@ -71,6 +73,8 @@ const { ethers } = require('ethers')
     sickle: '',
     positions: [],
     fablesPositions: [],
+    scans: [],
+    generation: 0,
     warnings: [],
     loading: false,
     sending: false,
@@ -91,7 +95,11 @@ const { ethers } = require('ethers')
   function sameAddress (left, right) { return String(left || '').toLowerCase() === String(right || '').toLowerCase() }
   function topicAddress (address) { return ethers.utils.hexZeroPad(address, 32) }
   function wait (milliseconds) { return new Promise(function (resolve) { window.setTimeout(resolve, milliseconds) }) }
-  function warn (message) { if (state.warnings.indexOf(message) === -1) state.warnings.push(message) }
+  function warn (message) {
+    if (state.warnings.indexOf(message) !== -1) return
+    state.warnings.push(message)
+    renderScans()
+  }
   function setStatus (message, kind) { state.status = message || ''; state.statusKind = kind || ''; renderStatus() }
   function setLoading (message) {
     state.loading = Boolean(message)
@@ -196,7 +204,28 @@ const { ethers } = require('ethers')
       app.appendChild(document.createTextNode('\n'))
     }
   }
-  function render () { renderToolbar(); renderStatus(); renderApp() }
+  function scanLine (scan) {
+    const start = scan.startBlock.toLocaleString('en-US')
+    if (scan.done) {
+      return scan.label + ': done' + (scan.gaps ? ', ' + scan.gaps + ' block range' + (scan.gaps === 1 ? '' : 's') + ' unreadable; refresh to retry' : '')
+    }
+    if (scan.stopped) return scan.label + ': stopped at block ' + (scan.cursor === null ? 'head' : scan.cursor.toLocaleString('en-US')) + '; refresh to retry'
+    if (scan.cursor === null) return scan.label + ': reading from the latest block…'
+    return scan.label + ': scanned back to block ' + scan.cursor.toLocaleString('en-US') + ' of ' + start + '…'
+  }
+  function renderScans () {
+    const element = byId('sickle-scan')
+    element.replaceChildren()
+    if (!state.sickle || !correctChain()) return
+    state.scans.forEach(function (scan) { appendLine(element, scanLine(scan)) })
+    state.warnings.forEach(function (message) {
+      const line = document.createElement('span')
+      line.className = 'sickle-warning'
+      line.textContent = 'WARN  : ' + message + '\n'
+      element.appendChild(line)
+    })
+  }
+  function render () { renderToolbar(); renderStatus(); renderApp(); renderScans() }
 
   async function aggregate (calls) {
     if (!calls.length) return []
@@ -215,8 +244,9 @@ const { ethers } = require('ethers')
   function cacheRead (key) {
     try {
       const value = JSON.parse(window.localStorage.getItem(key))
-      if (!value || !Number.isSafeInteger(value.toBlock) || !Array.isArray(value.items)) return null
-      return value
+      if (!value || !Array.isArray(value.items)) return null
+      const covered = Number.isSafeInteger(value.low) && Number.isSafeInteger(value.high) && value.low <= value.high
+      return { items: value.items, low: covered ? value.low : null, high: covered ? value.high : null }
     } catch (error) {
       return null
     }
@@ -224,22 +254,27 @@ const { ethers } = require('ethers')
   function cacheWrite (key, value) {
     try { window.localStorage.setItem(key, JSON.stringify(value)) } catch (error) {}
   }
-  function retryableRateLimit (error) {
+  function retryableRpcError (error) {
+    if (!error) return false
+    const status = error.status || (error.response && error.response.status)
+    if (error.code === 429 || status === 429) return true
+    if (status >= 400 && status < 500) return false
+    // ethers reports a dropped or CORS-blocked 429 as SERVER_ERROR "missing response".
+    if (error.code === 'SERVER_ERROR' || error.code === 'TIMEOUT' || error.code === 'NETWORK_ERROR') return true
     const message = [
       errText(error),
-      error && error.body,
-      error && error.responseText,
-      error && error.error && error.error.message
+      error.body,
+      error.responseText,
+      error.error && error.error.message
     ].filter(Boolean).join(' ')
-    const responseStatus = error && error.response && error.response.status
-    return error && (error.code === 429 || responseStatus === 429 || /429|too many requests|rate limit|processing response error/i.test(message))
+    return /429|too many requests|rate limit|missing response|bad response|timeout|processing response error|failed to fetch/i.test(message)
   }
   async function retryRpc (request, attempt) {
     try {
       return await request()
     } catch (error) {
       const retry = attempt || 0
-      if (!retryableRateLimit(error) || retry >= 6) throw error
+      if (!retryableRpcError(error) || retry >= 6) throw error
       await wait(Math.min(6000, 750 * Math.pow(2, retry)))
       return retryRpc(request, retry + 1)
     }
@@ -257,7 +292,7 @@ const { ethers } = require('ethers')
       })])
     } catch (error) {
       const retry = attempt || 0
-      if (retryableRateLimit(error)) {
+      if (retryableRpcError(error)) {
         if (retry >= 6) throw error
         await wait(Math.min(6000, 750 * Math.pow(2, retry)))
         return getLogRange(filter, fromBlock, toBlock, retry + 1)
@@ -269,60 +304,133 @@ const { ethers } = require('ethers')
       return first.concat(second)
     }
   }
+  function discoveryCurrent (generation) { return generation === state.generation }
+  // Reads transfer logs from the chain head back to startBlock. Each chunk's
+  // new candidates are handed to onCandidates before the next chunk is read,
+  // so positions confirmed by live state render while older history is still
+  // being scanned. The cache records the contiguous block interval [low, high]
+  // that has been read, so a revisit only reads head -> high and low -> start.
   async function scanTransfers (options) {
-    const latest = await rpcBlockNumber()
-    const cached = cacheRead(options.cacheKey)
+    const scan = { label: options.label, startBlock: options.startBlock, cursor: null, done: false, stopped: false, gaps: 0 }
+    state.scans.push(scan)
+    renderScans()
+    try {
+      await scanTransferRanges(options, scan)
+    } catch (error) {
+      scan.stopped = true
+      throw error
+    } finally {
+      if (discoveryCurrent(options.generation)) renderScans()
+    }
+  }
+  async function scanTransferRanges (options, scan) {
+    const current = function () { return discoveryCurrent(options.generation) }
     const items = new Map()
-    if (cached) {
-      cached.items.forEach(function (item) {
-        const normalized = options.normalizeCached(item)
-        if (normalized) items.set(options.itemKey(normalized), normalized)
+    function collect (list) {
+      const fresh = []
+      list.forEach(function (item) {
+        if (!item) return
+        const key = options.itemKey(item)
+        if (items.has(key)) return
+        items.set(key, item)
+        fresh.push(item)
       })
+      if (items.size > maxPositions) throw new Error('Position history exceeds the safe read limit of ' + maxPositions + '.')
+      return fresh
     }
-    if (items.size > maxPositions) throw new Error('Stored position history exceeds the safe read limit.')
-
-    let fromBlock = options.startBlock
-    if (cached && cached.toBlock >= options.startBlock && cached.toBlock <= latest) {
-      fromBlock = Math.max(options.startBlock, cached.toBlock - logReorgLookback)
-    }
-    const ranges = []
-    for (let start = fromBlock; start <= latest; start += logBlockSpan) {
-      ranges.push([start, Math.min(latest, start + logBlockSpan - 1)])
-    }
-    const filter = {
-      address: options.contracts,
-      topics: options.topics || [options.topic, null, topicAddress(state.sickle)]
-    }
-    let next = 0
-    let complete = 0
-    async function worker () {
-      while (next < ranges.length) {
-        const range = ranges[next]
-        next += 1
-        const logs = await getLogRange(filter, range[0], range[1], 0)
-        logs.forEach(function (log) {
-          const item = options.fromLog(log)
-          if (item) items.set(options.itemKey(item), item)
-        })
-        if (items.size > maxPositions) throw new Error('Position history exceeds the safe read limit of ' + maxPositions + '.')
-        cacheWrite(options.cacheKey, { toBlock: range[1], items: Array.from(items.values()) })
-        complete += 1
-        setLoading(options.loading + ' ' + complete + '/' + ranges.length + '…')
+    async function validate (candidates) {
+      if (!candidates.length) return
+      try {
+        await options.onCandidates(candidates)
+      } catch (error) {
+        if (current()) warn(options.label + ': ' + candidates.length + ' candidate(s) could not be checked: ' + errText(error))
       }
     }
-    const workers = []
-    for (let index = 0; index < Math.min(logConcurrency, ranges.length); index += 1) workers.push(worker())
-    await Promise.all(workers)
-    const result = Array.from(items.values())
-    cacheWrite(options.cacheKey, { toBlock: latest, items: result })
-    return result
+
+    const cached = cacheRead(options.cacheKey)
+    const latest = await rpcBlockNumber()
+    if (!current()) return
+    await validate(collect(cached ? cached.items.map(options.normalizeCached) : []))
+    if (!current()) return
+
+    let covered = null
+    const segments = []
+    if (cached && cached.low !== null && cached.low >= options.startBlock && cached.high <= latest) {
+      covered = [cached.low, cached.high]
+      segments.push([Math.max(cached.low, cached.high - logReorgLookback), latest])
+      if (cached.low > options.startBlock) segments.push([options.startBlock, cached.low - 1])
+    } else {
+      segments.push([options.startBlock, latest])
+    }
+    function save () {
+      const value = { items: Array.from(items.values()) }
+      if (covered) { value.low = covered[0]; value.high = covered[1] }
+      cacheWrite(options.cacheKey, value)
+    }
+    const filter = { address: options.contracts, topics: [options.topic, null, topicAddress(state.sickle)] }
+    let span = firstLogBlockSpan
+    let gapsInRow = 0
+    let retrying = false
+    for (const segment of segments) {
+      let upper = segment[1]
+      let contiguous = true
+      while (upper >= segment[0]) {
+        const lower = Math.max(segment[0], upper - span + 1)
+        let logs
+        try {
+          logs = await getLogRange(filter, lower, upper, 0)
+        } catch (error) {
+          if (!current()) return
+          // After a good chunk, retry the failure once as a smaller chunk.
+          if (!retrying && !gapsInRow && span > firstLogBlockSpan) {
+            retrying = true
+            span = Math.max(firstLogBlockSpan, Math.floor(span / 4))
+            continue
+          }
+          // Otherwise skip the range and keep going. The cached interval stops
+          // growing at the gap so a later visit reads it again, and the chunk
+          // keeps growing so an unreachable RPC does not stall on tiny ranges.
+          retrying = false
+          scan.gaps += 1
+          gapsInRow += 1
+          contiguous = false
+          span = Math.min(logBlockSpan, span * 2)
+          warn(options.label + ': blocks ' + lower + '-' + upper + ' could not be read: ' + errText(error))
+          scan.cursor = lower
+          upper = lower - 1
+          renderScans()
+          continue
+        }
+        if (!current()) return
+        gapsInRow = 0
+        retrying = false
+        span = Math.min(logBlockSpan, span * 2)
+        const fresh = collect(logs.map(options.fromLog))
+        if (contiguous) {
+          if (!covered) {
+            if (segment[1] === latest) covered = [lower, latest]
+          } else if (lower <= covered[1] + 1 && segment[1] >= covered[0] - 1) {
+            covered = [Math.min(lower, covered[0]), Math.max(segment[1], covered[1])]
+          }
+        }
+        save()
+        scan.cursor = lower
+        renderScans()
+        await validate(fresh)
+        if (!current()) return
+        upper = lower - 1
+      }
+    }
+    save()
+    scan.done = true
   }
 
-  async function readEnumerablePositions () {
+  async function readEnumerablePositions (generation) {
     setLoading('Reading supported NFT managers…')
     const balanceResults = await aggregate(managers.map(function (manager) {
       return { target: manager.address, data: managerInterface.encodeFunctionData('balanceOf', [state.sickle]) }
     }))
+    if (!discoveryCurrent(generation)) return
     const positionCalls = []
     managers.forEach(function (manager, managerIndex) {
       const result = balanceResults[managerIndex]
@@ -343,8 +451,9 @@ const { ethers } = require('ethers')
         })
       }
     })
-    setLoading(positionCalls.length ? 'Reading ' + positionCalls.length + ' enumerable NFT' + (positionCalls.length === 1 ? '…' : 's…') : 'Reading Uniswap-V4 history…')
+    if (positionCalls.length) setLoading('Reading ' + positionCalls.length + ' enumerable NFT' + (positionCalls.length === 1 ? '…' : 's…'))
     const positionResults = await aggregate(positionCalls)
+    if (!discoveryCurrent(generation)) return
     positionResults.forEach(function (result, index) {
       if (!result.success) {
         warn(positionCalls[index].manager.name + ' NFT read failed.')
@@ -357,26 +466,32 @@ const { ethers } = require('ethers')
     })
   }
 
-  async function readUniswapV4Positions () {
-    setLoading('Reading Uniswap-V4 transfer history…')
-    const candidates = await scanTransfers({
-      cacheKey: 'robinhood-sickle-v4-v1:' + state.sickle.toLowerCase(),
+  async function readUniswapV4Positions (generation) {
+    await scanTransfers({
+      generation,
+      label: 'Uniswap-V4 history',
+      // v2: v1 stored a forward-scan toBlock rather than a [low, high] interval.
+      cacheKey: 'robinhood-sickle-v4-v2:' + state.sickle.toLowerCase(),
       contracts: uniswapV4.address,
       topic: transfer721Topic,
       startBlock: uniswapV4.logStart,
-      loading: 'Reading Uniswap-V4 transfer history',
       normalizeCached: function (item) { return /^\d+$/.test(String(item)) ? String(item) : null },
       fromLog: function (log) { return log.topics && log.topics[3] ? ethers.BigNumber.from(log.topics[3]).toString() : null },
-      itemKey: function (item) { return item }
-    })
-    setLoading('Validating ' + candidates.length + ' Uniswap-V4 candidate' + (candidates.length === 1 ? '…' : 's…'))
-    const results = await aggregate(candidates.map(function (id) {
-      return { target: uniswapV4.address, data: managerInterface.encodeFunctionData('ownerOf', [id]) }
-    }))
-    results.forEach(function (result, index) {
-      if (!result.success) return
-      const owner = managerInterface.decodeFunctionResult('ownerOf', result.returnData)[0]
-      if (sameAddress(owner, state.sickle)) state.positions.push({ manager: uniswapV4, id: candidates[index] })
+      itemKey: function (item) { return item },
+      onCandidates: async function (ids) {
+        const results = await aggregate(ids.map(function (id) {
+          return { target: uniswapV4.address, data: managerInterface.encodeFunctionData('ownerOf', [id]) }
+        }))
+        if (!discoveryCurrent(generation)) return
+        results.forEach(function (result, index) {
+          if (!result.success) return
+          const owner = managerInterface.decodeFunctionResult('ownerOf', result.returnData)[0]
+          if (!sameAddress(owner, state.sickle)) return
+          if (state.positions.some(function (position) { return position.manager === uniswapV4 && position.id === ids[index] })) return
+          state.positions.push({ manager: uniswapV4, id: ids[index] })
+        })
+        renderApp()
+      }
     })
   }
 
@@ -393,41 +508,14 @@ const { ethers } = require('ethers')
       }
     }).filter(function (pool) { return pool.active })
   }
-  async function readFablesPositions () {
-    setLoading('Reading Fables pools…')
-    const pools = await fablesPools()
-    if (!pools.length) return
-    const poolsByHook = new Map(pools.map(function (pool) { return [pool.hook.toLowerCase(), pool] }))
-    const candidates = await scanTransfers({
-      // v2: v1 cached a sender-only scan that missed incoming and minted
-      // shares, so that partial history must not be reused.
-      cacheKey: 'robinhood-sickle-fables-v2:' + state.sickle.toLowerCase(),
-      contracts: pools.map(function (pool) { return pool.hook }),
-      topic: transfer6909Topic,
-      topics: [transfer6909Topic],
-      startBlock: fablesLogStart,
-      loading: 'Reading Fables transfer history',
-      normalizeCached: function (item) {
-        if (!item || !ethers.utils.isAddress(item.hook) || !/^\d+$/.test(String(item.id))) return null
-        return { hook: ethers.utils.getAddress(item.hook), id: String(item.id) }
-      },
-      fromLog: function (log) {
-        if (!log.topics || !log.topics[3] || !poolsByHook.has(log.address.toLowerCase())) return null
-        const owner = state.sickle.toLowerCase()
-        const sender = log.topics[2] ? ('0x' + log.topics[2].slice(26)).toLowerCase() : null
-        const receiver = log.data && log.data.length >= 66 ? ('0x' + log.data.slice(26, 66)).toLowerCase() : null
-        if (sender !== owner && receiver !== owner) return null
-        return { hook: ethers.utils.getAddress(log.address), id: ethers.BigNumber.from(log.topics[3]).toString() }
-      },
-      itemKey: function (item) { return item.hook.toLowerCase() + ':' + item.id }
-    })
-    setLoading('Validating ' + candidates.length + ' Fables range' + (candidates.length === 1 ? '…' : 's…'))
+  async function validateFables (generation, candidates, poolsByHook) {
     const calls = []
     candidates.forEach(function (candidate) {
       calls.push({ target: candidate.hook, data: fablesLedgerInterface.encodeFunctionData('balanceOf', [state.sickle, candidate.id]) })
       calls.push({ target: candidate.hook, data: fablesLedgerInterface.encodeFunctionData('userPosition', [candidate.id, state.sickle]) })
     })
     const results = await aggregate(calls)
+    if (!discoveryCurrent(generation)) return
     candidates.forEach(function (candidate, index) {
       const balanceResult = results[index * 2]
       const userResult = results[index * 2 + 1]
@@ -438,6 +526,7 @@ const { ethers } = require('ethers')
         warn('A Fables staking read failed; its exit was hidden.')
         return
       }
+      if (state.fablesPositions.some(function (position) { return sameAddress(position.hook, candidate.hook) && position.id === candidate.id })) return
       const user = fablesLedgerInterface.decodeFunctionResult('userPosition', userResult.returnData)[0]
       const pool = poolsByHook.get(candidate.hook.toLowerCase())
       state.fablesPositions.push({
@@ -449,49 +538,98 @@ const { ethers } = require('ethers')
         token1: pool.token1
       })
     })
+    renderApp()
+  }
+  async function readFablesPositions (generation) {
+    const pools = await fablesPools()
+    if (!discoveryCurrent(generation) || !pools.length) return
+    const poolsByHook = new Map(pools.map(function (pool) { return [pool.hook.toLowerCase(), pool] }))
+    await scanTransfers({
+      generation,
+      label: 'Fables history',
+      // ERC-6909 Transfer(caller, sender indexed, receiver indexed, id indexed,
+      // amount): every share the Sickle holds arrived with the Sickle as the
+      // receiver topic, so the node filters on it. v3: earlier versions stored
+      // a forward-scan toBlock, and v1 filtered on the sender topic.
+      cacheKey: 'robinhood-sickle-fables-v3:' + state.sickle.toLowerCase(),
+      contracts: pools.map(function (pool) { return pool.hook }),
+      topic: transfer6909Topic,
+      startBlock: fablesLogStart,
+      normalizeCached: function (item) {
+        if (!item || !ethers.utils.isAddress(item.hook) || !/^\d+$/.test(String(item.id))) return null
+        if (!poolsByHook.has(item.hook.toLowerCase())) return null
+        return { hook: ethers.utils.getAddress(item.hook), id: String(item.id) }
+      },
+      fromLog: function (log) {
+        if (!log.topics || !log.topics[3] || !poolsByHook.has(log.address.toLowerCase())) return null
+        return { hook: ethers.utils.getAddress(log.address), id: ethers.BigNumber.from(log.topics[3]).toString() }
+      },
+      itemKey: function (item) { return item.hook.toLowerCase() + ':' + item.id },
+      onCandidates: function (candidates) { return validateFables(generation, candidates, poolsByHook) }
+    })
   }
 
+  // Runs the log-based discoveries side by side in the background. A failure
+  // in one only adds a warning; the other keeps scanning.
+  function discoverHistory (generation) {
+    return Promise.all([
+      ['Uniswap-V4', readUniswapV4Positions],
+      ['Fables', readFablesPositions]
+    ].map(function (task) {
+      return task[1](generation).catch(function (error) {
+        if (!discoveryCurrent(generation)) return
+        warn(task[0] + ' discovery failed: ' + errText(error))
+        renderScans()
+      })
+    }))
+  }
+  function resetDiscovery () {
+    state.generation += 1
+    state.sickle = ''
+    state.positions = []
+    state.fablesPositions = []
+    state.scans = []
+    state.warnings = []
+    return state.generation
+  }
   async function refreshWallet () {
+    const generation = resetDiscovery()
     if (!state.account || !correctChain()) {
-      state.sickle = ''
-      state.positions = []
-      state.fablesPositions = []
       render()
       return
     }
     setLoading('Reading Sickle account…')
     setStatus('')
-    state.sickle = ''
-    state.positions = []
-    state.fablesPositions = []
-    state.warnings = []
     renderApp()
+    renderScans()
+    let found = false
     try {
       const factoryData = factoryInterface.encodeFunctionData('sickles', [state.account])
       const response = await rpcCall({ to: addresses.factory, data: factoryData })
-      state.sickle = factoryInterface.decodeFunctionResult('sickles', response)[0]
-      if (isZero(state.sickle)) { state.sickle = ''; return }
-
-      await readEnumerablePositions()
+      if (!discoveryCurrent(generation)) return
+      const sickle = factoryInterface.decodeFunctionResult('sickles', response)[0]
+      if (isZero(sickle)) return
+      state.sickle = sickle
+      found = true
+      renderApp()
       try {
-        await readUniswapV4Positions()
+        await readEnumerablePositions(generation)
       } catch (error) {
-        warn('Uniswap-V4 discovery failed: ' + errText(error))
+        if (discoveryCurrent(generation)) warn('NFT manager read failed: ' + errText(error))
       }
-      try {
-        await readFablesPositions()
-      } catch (error) {
-        warn('Fables discovery failed: ' + errText(error))
-      }
-      if (state.warnings.length) setStatus(state.warnings.join(' '), 'error')
     } catch (error) {
+      if (!discoveryCurrent(generation)) return
+      state.sickle = ''
       state.positions = []
       state.fablesPositions = []
       setStatus('Read failed: ' + errText(error), 'error')
     } finally {
-      setLoading()
-      render()
+      if (discoveryCurrent(generation)) {
+        setLoading()
+        render()
+      }
     }
+    if (found && discoveryCurrent(generation)) discoverHistory(generation)
   }
 
   function unbindWallet () {
@@ -508,9 +646,7 @@ const { ethers } = require('ethers')
     }
     state.chainListener = function (chainId) {
       state.walletChain = chainId
-      state.sickle = ''
-      state.positions = []
-      state.fablesPositions = []
+      resetDiscovery()
       render()
       if (correctChain()) refreshWallet().catch(function (error) { setStatus(errText(error), 'error') })
     }
@@ -524,9 +660,7 @@ const { ethers } = require('ethers')
     state.walletKind = kind || state.walletKind || 'wallet'
     state.account = accounts && accounts[0] ? ethers.utils.getAddress(accounts[0]) : ''
     state.walletChain = walletChain || await wallet.request({ method: 'eth_chainId' })
-    state.sickle = ''
-    state.positions = []
-    state.fablesPositions = []
+    resetDiscovery()
     bindWallet(wallet)
     render()
     if (state.account && correctChain()) await refreshWallet()
@@ -672,7 +806,9 @@ const { ethers } = require('ethers')
     byId('sickle-refresh').addEventListener('click', function () { refreshWallet().catch(function (error) { setStatus(errText(error), 'error') }) })
   }
   async function start () {
-    state.rpc = new ethers.providers.StaticJsonRpcProvider(chain.rpc, { chainId: 4663, name: 'robinhood' })
+    // retryRpc/getLogRange own 429 backoff; ethers' own throttle would retry
+    // up to 12 times with growing delays before they ever see the error.
+    state.rpc = new ethers.providers.StaticJsonRpcProvider({ url: chain.rpc, throttleLimit: 1 }, { chainId: 4663, name: 'robinhood' })
     byId('sickle-date').textContent = new Date().toString() + '\n\n'
     bindUi()
     render()
