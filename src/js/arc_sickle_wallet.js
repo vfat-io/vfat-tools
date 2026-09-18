@@ -17,7 +17,7 @@ const { ethers } = require('ethers')
   }
   const managers = [
     { name: 'Uniswap', address: '0x39654A85A4C05127f5Fd6ED22CAeC077A0fB1377' },
-    { name: 'Aerodrome', address: '0xc84bB45D43CD25D02b83B4C085eaA4e08da8f473' }
+    { name: 'Aero', address: '0xc84bB45D43CD25D02b83B4C085eaA4e08da8f473' }
   ]
   const uniswapV4 = {
     name: 'Uniswap-V4',
