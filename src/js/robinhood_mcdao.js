@@ -38,7 +38,7 @@ const McDaoPage = (function () {
   const pair = new ethers.utils.Interface(pairAbi)
 
   const state = {
-    rpc: null, eip1193: null, account: null, walletChain: null, bound: false, reownUnsubscribe: null,
+    rpc: null, eip1193: null, account: null, walletChain: null, walletSource: null, boundProvider: null, reownUnsubscribe: null,
     headTime: null, meta: null, farms: [], tokens: new Map(), prices: new Map(), showZero: false,
     action: null, actionInfo: null, sending: false, status: '', spinner: null
   }
@@ -47,7 +47,9 @@ const McDaoPage = (function () {
   const lower = value => String(value || '').toLowerCase()
   const short = value => value ? value.slice(0, 6) + '…' + value.slice(-4) : '—'
   const isUsdG = value => lower(value) === lower(address.usdg)
+  const isZero = value => !value || lower(value) === lower(ethers.constants.AddressZero)
   const correctChain = () => state.walletChain === chain.id
+  const requireWallet = () => { if (!state.account || !state.eip1193) throw new Error('Connect wallet.'); if (!correctChain()) throw new Error('Switch to Robinhood Chain.') }
   const injected = () => window.ethereum && typeof window.ethereum.request === 'function' ? window.ethereum : null
   const token = value => state.tokens.get(lower(value)) || { address: value, symbol: short(value), decimals: null }
   const errText = error => String(error && (error.reason || error.data && error.data.message || error.message) || error).replace(/^Error: /, '').replace(/\s+/g, ' ').slice(0, 360)
@@ -84,7 +86,7 @@ const McDaoPage = (function () {
     if (!meta || !now) return '—'
     if (now < meta.poolStartTime) return 'starts ' + new Date(meta.poolStartTime * 1000).toUTCString().replace(' GMT', ' UTC')
     if (now < meta.poolEndTime) return 'live'
-    if (meta.convertible && now < meta.convertEnd) return 'convert window'
+    if (!isZero(meta.convertible) && meta.convertEnd && now < meta.convertEnd) return 'convert window'
     return 'ended'
   }
 
@@ -132,8 +134,29 @@ const McDaoPage = (function () {
     state.farms.forEach((farm, i) => { farm.tvl = balances[i] })
   }
 
+  async function seedWethUsd () {
+    const wethPair = await batch([
+      { target: address.gigaFactory, iface: pairFactory, method: 'getPair', args: [address.weth, address.usdg, false], fallback: ethers.constants.AddressZero },
+      { target: address.gigaFactory, iface: pairFactory, method: 'getPair', args: [address.weth, address.usdg, true], fallback: ethers.constants.AddressZero }
+    ])
+    for (const pairAddress of wethPair) {
+      if (isZero(pairAddress)) continue
+      const values = await batch([
+        { target: pairAddress, iface: pair, method: 'token0', fallback: null },
+        { target: pairAddress, iface: pair, method: 'token1', fallback: null },
+        { target: pairAddress, iface: pair, method: 'getReserves', fallback: null, decode: value => value }
+      ])
+      const dec0 = token(values[0]).decimals; const dec1 = token(values[1]).decimals; const reserves = values[2]
+      if (!reserves || dec0 === null || dec1 === null) continue
+      const r0 = num(reserves[0], dec0); const r1 = num(reserves[1], dec1)
+      if (isUsdG(values[1]) && finite(r0) && r0 > 0) state.prices.set(lower(address.weth), r1 / r0)
+      if (isUsdG(values[0]) && finite(r1) && r1 > 0) state.prices.set(lower(address.weth), r0 / r1)
+    }
+  }
+
   async function loadPrices () {
     state.prices = new Map([[lower(address.usdg), 1]])
+    await seedWethUsd()
     const anchors = []
     state.farms.forEach(f => { if (!isUsdG(f.token)) anchors.push(f.token) })
     const unique = [...new Set(anchors.map(lower))]
@@ -171,27 +194,10 @@ const McDaoPage = (function () {
         if (finite(wethUsd)) { price = (r0 / r1) * wethUsd; depth = r0 * wethUsd }
       }
       const key = lower(meta.token)
-      if (finite(price) && price >= minUsdPrice && price <= maxUsdPrice && finite(depth) && depth >= minUsdAnchor) state.prices.set(key, price)
+      if (!finite(price) || price < minUsdPrice || price > maxUsdPrice || !finite(depth) || depth < minUsdAnchor) return
+      if (meta.weth && state.prices.has(key)) return
+      state.prices.set(key, price)
     })
-    if (!state.prices.has(lower(address.weth))) {
-      const wethPair = await batch([
-        { target: address.gigaFactory, iface: pairFactory, method: 'getPair', args: [address.weth, address.usdg, false], fallback: ethers.constants.AddressZero },
-        { target: address.gigaFactory, iface: pairFactory, method: 'getPair', args: [address.weth, address.usdg, true], fallback: ethers.constants.AddressZero }
-      ])
-      for (const pairAddress of wethPair) {
-        if (!pairAddress || lower(pairAddress) === lower(ethers.constants.AddressZero)) continue
-        const values = await batch([
-          { target: pairAddress, iface: pair, method: 'token0', fallback: null },
-          { target: pairAddress, iface: pair, method: 'token1', fallback: null },
-          { target: pairAddress, iface: pair, method: 'getReserves', fallback: null, decode: value => value }
-        ])
-        const dec0 = token(values[0]).decimals; const dec1 = token(values[1]).decimals; const reserves = values[2]
-        if (!reserves || dec0 === null || dec1 === null) continue
-        const r0 = num(reserves[0], dec0); const r1 = num(reserves[1], dec1)
-        if (isUsdG(values[1]) && finite(r0) && r0 > 0) state.prices.set(lower(address.weth), r1 / r0)
-        if (isUsdG(values[0]) && finite(r1) && r1 > 0) state.prices.set(lower(address.weth), r0 / r1)
-      }
-    }
   }
 
   function applyRates () {
@@ -241,13 +247,11 @@ const McDaoPage = (function () {
       const tvlNum = num(farm.tvl, asset.decimals)
       const aprGmcd = farm.aprGmcd
       const weekly = finite(farm.rate) ? farm.rate * secondsPerWeek : NaN
-      const aprFallback = finite(weekly) && finite(tvlNum) && tvlNum > 0 ? weekly / tvlNum * 52 * 100 : NaN
       let aprText = '0.00%'
       if (finite(apr)) aprText = percent(apr)
       else if (finite(aprGmcd)) aprText = percent(aprGmcd) + '\ngMCD'
-      else if (finite(aprFallback)) aprText = percent(aprFallback) + '\ngMCD'
       else if (finite(farm.rate) && farm.rate > 0) aprText = '—'
-      addCell(row, aprText, finite(apr) || finite(aprGmcd) || finite(aprFallback) ? '' : (finite(farm.rate) && farm.rate > 0 ? 'mcdao-unpriced' : ''))
+      addCell(row, aprText, finite(apr) || finite(aprGmcd) ? '' : (finite(farm.rate) && farm.rate > 0 ? 'mcdao-unpriced' : ''))
       addCell(row, finite(weekly) ? compact(weekly, 4) + ' gMCD' + (finite(farm.rateUsd) ? '\n' + usd(weekly * (farm.rateUsd / farm.rate)) : '') : '—', finite(farm.rateUsd) ? '' : 'mcdao-unpriced')
       const actions = e('td', { className: 'mcdao-actions' })
       append(actions, button('deposit', () => openAction('deposit', farm)), button('withdraw', () => openAction('withdraw', farm)), button('claim', () => openAction('claim', farm)))
@@ -313,9 +317,18 @@ const McDaoPage = (function () {
   }
 
   async function preflight (tx) { try { await state.eip1193.request({ method: 'eth_call', params: [{ from: state.account, to: tx.to, data: tx.data }, 'latest'] }) } catch (error) { throw new Error(errText(error)) } }
-  async function send (tx) { await preflight(tx); setStatus('Confirm in wallet…'); const hash = await state.eip1193.request({ method: 'eth_sendTransaction', params: [{ from: state.account, to: tx.to, data: tx.data }] }); setStatus(hash + ' · pending'); const receipt = await state.rpc.waitForTransaction(hash, 1, 180000); if (!receipt || receipt.status !== 1) throw new Error('Transaction failed.') }
+  async function send (tx) {
+    requireWallet()
+    await preflight(tx)
+    setStatus('Confirm in wallet…')
+    const hash = await state.eip1193.request({ method: 'eth_sendTransaction', params: [{ from: state.account, to: tx.to, data: tx.data }] })
+    setStatus(hash + ' · pending')
+    const receipt = await state.rpc.waitForTransaction(hash, 1, 180000)
+    if (!receipt || receipt.status !== 1) throw new Error('Transaction failed.')
+  }
 
   async function approve () {
+    requireWallet()
     const tx = buildAction(); if (!tx.amount) throw new Error('Nothing to approve.')
     state.sending = true; renderAction()
     try {
@@ -325,6 +338,7 @@ const McDaoPage = (function () {
   }
 
   async function submit () {
+    requireWallet()
     state.sending = true; renderAction()
     try {
       const tx = buildAction()
@@ -373,29 +387,40 @@ const McDaoPage = (function () {
     state.farms.forEach((f, i) => { f.user = values[i * 2]; f.pending = values[i * 2 + 1] })
   }
 
-  async function adopt (provider, accounts, walletChain, withWallet) {
-    if (!provider || !accounts || !accounts[0]) return false
-    state.eip1193 = provider; state.account = ethers.utils.getAddress(accounts[0]); state.walletChain = walletChain
-    if (!state.bound && provider.on) { state.bound = true; provider.on('accountsChanged', () => restore().catch(fatal)); provider.on('chainChanged', () => restore().catch(fatal)) }
-    render()
-    if (withWallet !== false) { await hydrateWallet(); render() }
-    return true
+  function bindProvider (provider) {
+    if (!provider || state.boundProvider === provider || !provider.on) return
+    state.boundProvider = provider
+    provider.on('accountsChanged', function (accounts) { adopt(provider, accounts || [], state.walletChain, state.walletSource).catch(error => setStatus(errText(error), 'error')) })
+    provider.on('chainChanged', function (chainId) { adopt(provider, state.account ? [state.account] : [], chainId, state.walletSource).catch(error => setStatus(errText(error), 'error')) })
   }
 
-  async function restore (withWallet) {
-    const provider = injected(); if (!provider) { state.account = null; render(); return false }
+  async function adopt (provider, accounts, chainId, source, withWallet) {
+    state.eip1193 = provider
+    state.account = accounts && accounts[0] ? ethers.utils.getAddress(accounts[0]) : null
+    state.walletChain = chainId
+    state.walletSource = source || 'wallet'
+    bindProvider(provider)
+    render()
+    if (withWallet !== false && state.account && correctChain()) await hydrateWallet()
+    render()
+    return !!state.account
+  }
+
+  async function restoreInjected (withWallet) {
+    const provider = injected(); if (!provider) return
     try {
-      const result = await Promise.all([provider.request({ method: 'eth_accounts' }), provider.request({ method: 'eth_chainId' })])
-      if (!result[0] || !result[0][0]) { state.account = null; state.walletChain = result[1]; render(); return false }
-      return adopt(provider, result[0], result[1], withWallet)
-    } catch (_) { state.account = null; render(); return false }
+      const accounts = await provider.request({ method: 'eth_accounts' })
+      const chainId = await provider.request({ method: 'eth_chainId' })
+      if (accounts && accounts[0]) await adopt(provider, accounts, chainId, 'injected', withWallet)
+      else { state.account = null; state.walletChain = chainId; render() }
+    } catch (_) { state.account = null; render() }
   }
 
   async function connectInjected () {
     const provider = injected(); if (!provider) { setStatus('No injected wallet.', 'error'); return }
     const accounts = await provider.request({ method: 'eth_requestAccounts' })
-    const walletChain = await provider.request({ method: 'eth_chainId' })
-    await adopt(provider, accounts, walletChain)
+    const chainId = await provider.request({ method: 'eth_chainId' })
+    await adopt(provider, accounts, chainId, 'injected')
     setStatus(correctChain() ? '' : 'Switch to Robinhood Chain.', correctChain() ? '' : 'error')
   }
 
@@ -406,7 +431,7 @@ const McDaoPage = (function () {
     const onAccount = async account => {
       if (!account || !account.isConnected) return
       const provider = await kit.getWalletProvider()
-      await adopt(provider, await provider.request({ method: 'eth_accounts' }), await provider.request({ method: 'eth_chainId' }))
+      await adopt(provider, await provider.request({ method: 'eth_accounts' }), await provider.request({ method: 'eth_chainId' }), 'other wallet')
       if (state.reownUnsubscribe) { state.reownUnsubscribe(); state.reownUnsubscribe = null }
     }
     if (kit.getAddress && kit.getAddress()) return onAccount({ isConnected: true })
@@ -431,7 +456,7 @@ const McDaoPage = (function () {
     state.rpc = new ethers.providers.StaticJsonRpcProvider(chain.rpc, { chainId: chain.number, name: 'robinhood' })
     bind(); render()
     await refreshAll(); setStatus('')
-    await restore(false)
+    await restoreInjected(false)
     if (state.account) hydrateWallet().then(render).catch(() => {})
   }
 
