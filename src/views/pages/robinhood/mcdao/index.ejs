@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include(`${partials}/head`, {
+  noGlobalScripts: true,
+  pageMeta: {
+    title: 'McDAO Genesis on Robinhood Chain | vfat.tools',
+    description: 'Meridian Capital Genesis farm TVL, gMCD emissions, deposit fees, and direct wallet actions on Robinhood Chain.',
+    url: 'https://vfat.tools/robinhood/mcdao/',
+    image: 'https://vfat.tools/img/robinhood-mcdao-social.png',
+    imageAlt: 'vfat.tools McDAO Genesis farm table on Robinhood Chain.',
+    imageWidth: 1200,
+    imageHeight: 630
+  }
+}); -%>
+<script>if (/\bsocial=1\b/.test(location.search)) document.documentElement.dataset.socialCard = '1'</script>
+<body>
+<%- include(`${partials}/header_main`); -%>
+<main class="mcdao-page">
+<nav class="mcdao-mobile-nav" aria-label="McDAO page navigation"><a href="../">[ Robinhood farms ]</a> <a href="/">[ vfat.tools ]</a> <a href="https://www.mcdao.io/" target="_blank" rel="noopener noreferrer">[ mcdao.io ]</a></nav>
+<pre id="mcdao-banner">
+*************** 👨‍🌾 UNOFFICIAL MCDAO GENESIS CALCULATOR 👨‍🌾 ***************
+CHAIN : Robinhood Chain (4663)
+MODE  : Onchain RPC + direct wallet
+NOTE  : Genesis stakes single assets for gMCD emissions. Each pool charges a
+        deposit fee in the staked token.
+**********************************************************************
+</pre>
+<div class="mcdao-toolbar"><span id="mcdao-wallet-status"></span> <button id="mcdao-connect" class="mcdao-link" type="button">[ connect ]</button> <button id="mcdao-other-wallet" class="mcdao-link" type="button">[ other wallet ]</button> <button id="mcdao-zero-toggle" class="mcdao-link" type="button">[ show zero apr ]</button> <button id="mcdao-refresh" class="mcdao-link" type="button">[ refresh ]</button></div>
+<p id="mcdao-status" class="mcdao-status" role="status" hidden></p>
+<div id="mcdao-loading" class="mcdao-loading" role="status" aria-live="polite"><span id="mcdao-loading-spin">[....]</span></div>
+<p id="mcdao-summary" class="mcdao-summary">Genesis —</p>
+<div id="mcdao-farms" class="mcdao-table-wrap" aria-live="polite"></div>
+<div id="mcdao-positions" class="mcdao-table-wrap mcdao-positions" aria-live="polite" hidden></div>
+<pre class="mcdao-footer"><%- include(`${partials}/disclaimer`); -%></pre>
+</main>
+<dialog id="mcdao-action-dialog" class="mcdao-dialog" aria-labelledby="mcdao-action-title"><form method="dialog" class="mcdao-close"><button type="submit">[ close ]</button></form><div id="mcdao-action-content"></div></dialog>
+<style>
+html[data-social-card] body>*:not(main){display:none!important}html[data-social-card] .mcdao-footer,html[data-social-card] .mcdao-mobile-nav,html[data-social-card] .mcdao-toolbar{display:none!important}html[data-social-card] #mcdao-loading{display:none!important}html[data-social-card] .mcdao-page{margin:14px 16px 0;max-width:none}html[data-social-card] #mcdao-banner{font-size:10.5px;line-height:1.22;margin-bottom:8px}html[data-social-card] .mcdao-summary{margin-bottom:8px;font-size:13px}html[data-social-card] .mcdao-table{font-size:11.5px;min-width:0}html[data-social-card] .mcdao-table .mcdao-actions,html[data-social-card] .mcdao-table th:last-child,html[data-social-card] .mcdao-table td:last-child{display:none}html[data-social-card] .mcdao-table th:nth-child(5),html[data-social-card] .mcdao-table td:nth-child(5){display:none}
+.mcdao-page{max-width:1500px;margin:20px 10px 50px;min-width:0}.mcdao-page,.mcdao-page *{box-sizing:border-box;font-family:monospace}#mcdao-banner{margin:0 0 14px;font-size:13px;line-height:1.35;white-space:pre-wrap;overflow-wrap:anywhere}.mcdao-mobile-nav{display:none;margin-bottom:14px}.mcdao-toolbar,.mcdao-summary,.mcdao-status{margin:0 0 14px;font:14px/1.45 monospace;text-align:left}.mcdao-status[data-kind="error"]{color:#d95757}.mcdao-status[data-kind="success"]{color:var(--highlight-color)}.mcdao-link,.mcdao-action,.mcdao-dialog button{margin:0;padding:0;border:0;background:transparent;color:inherit;cursor:pointer;font:inherit;text-decoration:underline}.mcdao-link:hover,.mcdao-action:hover,.mcdao-dialog button:hover{color:var(--highlight-color)}.mcdao-link:disabled,.mcdao-action:disabled,.mcdao-dialog button:disabled{cursor:not-allowed;opacity:.45;text-decoration:none}.mcdao-loading{padding:0 0 14px}.mcdao-loading[hidden]{display:none}.mcdao-table-wrap{width:100%;min-width:0;overflow-x:auto}.mcdao-positions{margin-top:26px}.mcdao-table{width:100%;min-width:1080px;table-layout:fixed;border-collapse:collapse;font-size:13px}.mcdao-table td,.mcdao-table th{padding:7px 8px;border:1px solid currentColor;vertical-align:top;text-align:right;white-space:pre-line;overflow-wrap:anywhere}.mcdao-table th{white-space:normal}.mcdao-table td:first-child,.mcdao-table th:first-child,.mcdao-table td:last-child,.mcdao-table th:last-child{text-align:left}.mcdao-name,.mcdao-sub{display:block;max-width:220px;white-space:normal;overflow-wrap:anywhere}.mcdao-sub{margin-top:3px;color:var(--highlight-color);font-size:12px}.mcdao-actions{min-width:150px;white-space:normal!important}.mcdao-actions>*{display:inline-block;margin:0 8px 5px 0;white-space:nowrap}.mcdao-unpriced{opacity:.7}.mcdao-dialog{width:min(660px,calc(100vw - 28px));max-width:calc(100vw - 28px);padding:16px;border:1px solid currentColor;background:var(--main-background-color);color:var(--main-text-color)}.mcdao-dialog::backdrop{background:rgba(0,0,0,.55)}.mcdao-close{margin:0 0 18px;text-align:right}.mcdao-dialog h2{margin:0 0 8px;padding:0;border:0;color:inherit;font:bold 16px/1.4 monospace;text-align:left}.mcdao-dialog p{margin:0 0 12px;font:14px/1.45 monospace;text-align:left;overflow-wrap:anywhere}.mcdao-input{display:flex;gap:10px;align-items:center;margin:8px 0}.mcdao-input input{width:100%;min-width:0;padding:5px 7px;border:1px solid currentColor;border-radius:0;background:transparent;color:inherit;font:16px/1.4 monospace}.mcdao-dialog-actions{display:flex;flex-wrap:wrap;gap:14px;margin-top:14px}.mcdao-footer{margin-top:24px;white-space:pre-wrap}@media(max-width:700px){body>div:not(.modal){display:none}.mcdao-page{margin:14px 8px 40px;overflow-x:hidden}.mcdao-mobile-nav{display:block}.mcdao-toolbar,.mcdao-summary,#mcdao-banner{font-size:12px}.mcdao-table-wrap{overflow:visible}.mcdao-table{min-width:0;font-size:12px}.mcdao-table td,.mcdao-table th{padding:6px}.mcdao-table th:nth-child(3),.mcdao-table td:nth-child(3),.mcdao-table th:nth-child(5),.mcdao-table td:nth-child(5){display:none}.mcdao-table th:first-child{width:34%}.mcdao-table th:nth-child(2){width:22%}.mcdao-table th:nth-child(4){width:18%}.mcdao-table th:last-child{width:26%}.mcdao-name,.mcdao-sub{max-width:none}.mcdao-actions{min-width:0}.mcdao-actions>*{margin-right:6px}}
+</style>
+<% if (filenameMap && filenameMap['robinhood_mcdao.js']) { -%>
+<script src="<%= PP %>/js/<%= filenameMap['robinhood_mcdao.js'] %>"></script>
+<% } else { -%>
+<script src="<%= PP %>/js/robinhood_mcdao.js"></script>
+<% } -%>
+</body>
+</html>
