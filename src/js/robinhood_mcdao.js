@@ -149,8 +149,11 @@ const McDaoPage = (function () {
       const dec0 = token(values[0]).decimals; const dec1 = token(values[1]).decimals; const reserves = values[2]
       if (!reserves || dec0 === null || dec1 === null) continue
       const r0 = num(reserves[0], dec0); const r1 = num(reserves[1], dec1)
-      if (isUsdG(values[1]) && finite(r0) && r0 > 0) state.prices.set(lower(address.weth), r1 / r0)
-      if (isUsdG(values[0]) && finite(r1) && r1 > 0) state.prices.set(lower(address.weth), r0 / r1)
+      let price = NaN; let depth = NaN
+      if (isUsdG(values[1]) && finite(r0) && finite(r1) && r0 > 0) { price = r1 / r0; depth = r1 }
+      if (isUsdG(values[0]) && finite(r0) && finite(r1) && r1 > 0) { price = r0 / r1; depth = r0 }
+      if (!finite(price) || price < minUsdPrice || price > maxUsdPrice || !finite(depth) || depth < minUsdAnchor) continue
+      state.prices.set(lower(address.weth), price)
     }
   }
 
@@ -170,7 +173,7 @@ const McDaoPage = (function () {
     const reserveCalls = []
     const pairMeta = []
     pairs.forEach((pairAddress, index) => {
-      if (!pairAddress || lower(pairAddress) === lower(ethers.constants.AddressZero)) return
+      if (isZero(pairAddress)) return
       pairMeta.push({ token: pairCalls[index].token, pair: pairAddress, weth: pairCalls[index].weth })
       reserveCalls.push({ target: pairAddress, iface: pair, method: 'token0', fallback: null }, { target: pairAddress, iface: pair, method: 'token1', fallback: null }, { target: pairAddress, iface: pair, method: 'getReserves', fallback: null, decode: value => value })
     })
@@ -244,7 +247,6 @@ const McDaoPage = (function () {
       addCell(row, finite(farm.tvlUsd) ? usd(farm.tvlUsd) : format(farm.tvl, asset.decimals) + ' ' + asset.symbol, finite(farm.tvlUsd) ? '' : 'mcdao-unpriced')
       addCell(row, (farm.depositFeeBps / 100).toFixed(2) + '%')
       const apr = farm.apr
-      const tvlNum = num(farm.tvl, asset.decimals)
       const aprGmcd = farm.aprGmcd
       const weekly = finite(farm.rate) ? farm.rate * secondsPerWeek : NaN
       let aprText = '0.00%'
