@@ -52,6 +52,9 @@ module.exports = (env = {}) => {
       // Equilibra reads its factory registry, pool oracle state, and LP unit
       // value growth directly. Reown stays behind the other-wallet action.
       robinhood_equilibra: './src/js/robinhood_equilibra.js',
+      // McDAO Genesis reads its farm registry, emissions, and wallet stakes
+      // directly. Reown stays behind the other-wallet action.
+      robinhood_mcdao: './src/js/robinhood_mcdao.js',
       // 3Jane is a self-contained Ethereum page. Core, Pendle, Curve, Morpho,
       // LCC, and reward state load without the site-wide app or wallet SDK.
       threejane: './src/js/threejane.js',
