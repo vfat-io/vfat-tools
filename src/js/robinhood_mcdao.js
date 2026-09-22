@@ -119,7 +119,7 @@ const McDaoPage = (function () {
   }
 
   async function loadTokens () {
-    const list = [...new Set([address.usdg, address.weth, address.gmcd].concat(state.farms.map(f => lower(f.token))))]
+    const list = [...new Set([lower(address.usdg), lower(address.weth), lower(address.gmcd)].concat(state.farms.map(f => lower(f.token))))]
     const calls = []; list.forEach(value => calls.push({ target: value, iface: erc20, method: 'symbol', fallback: null }, { target: value, iface: erc20, method: 'decimals', fallback: null }))
     const values = await batch(calls)
     list.forEach((value, i) => {
@@ -139,6 +139,7 @@ const McDaoPage = (function () {
       { target: address.gigaFactory, iface: pairFactory, method: 'getPair', args: [address.weth, address.usdg, false], fallback: ethers.constants.AddressZero },
       { target: address.gigaFactory, iface: pairFactory, method: 'getPair', args: [address.weth, address.usdg, true], fallback: ethers.constants.AddressZero }
     ])
+    let bestWeth = { price: NaN, depth: 0 }
     for (const pairAddress of wethPair) {
       if (isZero(pairAddress)) continue
       const values = await batch([
@@ -153,14 +154,15 @@ const McDaoPage = (function () {
       if (isUsdG(values[1]) && finite(r0) && finite(r1) && r0 > 0) { price = r1 / r0; depth = r1 }
       if (isUsdG(values[0]) && finite(r0) && finite(r1) && r1 > 0) { price = r0 / r1; depth = r0 }
       if (!finite(price) || price < minUsdPrice || price > maxUsdPrice || !finite(depth) || depth < minUsdAnchor) continue
-      state.prices.set(lower(address.weth), price)
+      if (depth > bestWeth.depth) bestWeth = { price, depth }
     }
+    if (finite(bestWeth.price)) state.prices.set(lower(address.weth), bestWeth.price)
   }
 
   async function loadPrices () {
     state.prices = new Map([[lower(address.usdg), 1]])
     await seedWethUsd()
-    const anchors = []
+    const anchors = [address.gmcd]
     state.farms.forEach(f => { if (!isUsdG(f.token)) anchors.push(f.token) })
     const unique = [...new Set(anchors.map(lower))]
     const pairCalls = []
@@ -179,6 +181,7 @@ const McDaoPage = (function () {
     })
     const reserveValues = await batch(reserveCalls)
     let cursor = 0
+    const bestDepth = new Map()
     pairMeta.forEach(meta => {
       const token0 = reserveValues[cursor++]; const token1 = reserveValues[cursor++]; const reserves = reserveValues[cursor++]
       if (!reserves) return
@@ -199,7 +202,8 @@ const McDaoPage = (function () {
       const key = lower(meta.token)
       if (!finite(price) || price < minUsdPrice || price > maxUsdPrice || !finite(depth) || depth < minUsdAnchor) return
       if (meta.weth && state.prices.has(key)) return
-      state.prices.set(key, price)
+      const prev = bestDepth.get(key) || 0
+      if (depth >= prev) { bestDepth.set(key, depth); state.prices.set(key, price) }
     })
   }
 
@@ -215,7 +219,7 @@ const McDaoPage = (function () {
       const tvlNum = num(farm.tvl, asset.decimals)
       farm.tvlUsd = finite(tvlNum) && finite(price) ? tvlNum * price : NaN
       farm.apr = finite(farm.rateUsd) && finite(farm.tvlUsd) && farm.tvlUsd > 0 ? farm.rateUsd * secondsPerYear / farm.tvlUsd * 100 : NaN
-      farm.aprGmcd = finite(farm.rate) && finite(tvlNum) && tvlNum > 0 ? farm.rate * secondsPerYear / tvlNum * 100 : NaN
+      farm.gmcdPerStakeYear = finite(farm.rate) && finite(tvlNum) && tvlNum > 0 ? farm.rate * secondsPerYear / tvlNum : NaN
     })
   }
 
@@ -237,7 +241,7 @@ const McDaoPage = (function () {
 
   function renderFarms () {
     const target = byId('mcdao-farms'); if (!target) return; target.textContent = ''
-    const list = state.farms.filter(f => state.showZero || finite(f.apr) || finite(f.aprGmcd) || (finite(f.rate) && f.rate > 0))
+    const list = state.farms.filter(f => state.showZero || finite(f.apr) || finite(f.gmcdPerStakeYear) || (finite(f.rate) && f.rate > 0))
     const table = e('table', { className: 'mcdao-table' })
     addHeader(table, ['Pool', 'TVL', 'Fee', 'APR', 'gMCD / week', 'Actions'])
     list.forEach(farm => {
@@ -247,13 +251,13 @@ const McDaoPage = (function () {
       addCell(row, finite(farm.tvlUsd) ? usd(farm.tvlUsd) : format(farm.tvl, asset.decimals) + ' ' + asset.symbol, finite(farm.tvlUsd) ? '' : 'mcdao-unpriced')
       addCell(row, (farm.depositFeeBps / 100).toFixed(2) + '%')
       const apr = farm.apr
-      const aprGmcd = farm.aprGmcd
+      const gmcdYield = farm.gmcdPerStakeYear
       const weekly = finite(farm.rate) ? farm.rate * secondsPerWeek : NaN
       let aprText = '0.00%'
       if (finite(apr)) aprText = percent(apr)
-      else if (finite(aprGmcd)) aprText = percent(aprGmcd) + '\ngMCD'
+      else if (finite(gmcdYield)) aprText = compact(gmcdYield, 4) + ' gMCD/' + asset.symbol + '/yr'
       else if (finite(farm.rate) && farm.rate > 0) aprText = '—'
-      addCell(row, aprText, finite(apr) || finite(aprGmcd) ? '' : (finite(farm.rate) && farm.rate > 0 ? 'mcdao-unpriced' : ''))
+      addCell(row, aprText, finite(apr) ? '' : (finite(gmcdYield) ? 'mcdao-unpriced' : (finite(farm.rate) && farm.rate > 0 ? 'mcdao-unpriced' : '')))
       addCell(row, finite(weekly) ? compact(weekly, 4) + ' gMCD' + (finite(farm.rateUsd) ? '\n' + usd(weekly * (farm.rateUsd / farm.rate)) : '') : '—', finite(farm.rateUsd) ? '' : 'mcdao-unpriced')
       const actions = e('td', { className: 'mcdao-actions' })
       append(actions, button('deposit', () => openAction('deposit', farm)), button('withdraw', () => openAction('withdraw', farm)), button('claim', () => openAction('claim', farm)))
@@ -349,7 +353,9 @@ const McDaoPage = (function () {
         if (state.actionInfo.balance.lt(tx.amount)) throw new Error('Insufficient balance.')
       }
       await send(tx)
-      await hydrateWallet(); await loadTvls(); applyRates(); setStatus('Confirmed.', 'success')
+      await hydrateWallet(); await loadTvls(); applyRates()
+      if (state.action) await refreshActionInfo()
+      setStatus('Confirmed.', 'success')
     } finally { state.sending = false; render() }
   }
 
@@ -451,7 +457,7 @@ const McDaoPage = (function () {
     byId('mcdao-connect').addEventListener('click', () => connectInjected().catch(error => setStatus(errText(error), 'error')))
     byId('mcdao-other-wallet').addEventListener('click', () => connectOther().catch(error => setStatus(errText(error), 'error')))
     byId('mcdao-zero-toggle').addEventListener('click', () => { state.showZero = !state.showZero; byId('mcdao-zero-toggle').textContent = state.showZero ? '[ hide zero apr ]' : '[ show zero apr ]'; renderFarms() })
-    byId('mcdao-refresh').addEventListener('click', () => refreshAll().then(() => setStatus('')).catch(error => setStatus(errText(error), 'error')))
+    byId('mcdao-refresh').addEventListener('click', () => refreshAll().then(() => setStatus('')).catch(error => { loading(); setStatus(errText(error), 'error') }))
   }
 
   async function start () {
