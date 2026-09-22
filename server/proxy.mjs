@@ -28,6 +28,14 @@ const SNOWTRACE_API_KEY = process.env.SNOWTRACE_API_KEY || ''
 const POSITIONS_API_URL = process.env.POSITIONS_API_URL || ''
 const POSITIONS_API_KEY = process.env.POSITIONS_API_KEY || ''
 
+// Shared secret clients must present to use this proxy. Without it, anyone
+// with network access to the proxy can consume upstream API quota.
+const PROXY_API_KEY = process.env.PROXY_API_KEY || ''
+
+if (!PROXY_API_KEY) {
+  console.warn('[proxy] PROXY_API_KEY is not set. The proxy is running WITHOUT client authentication.')
+}
+
 if (!ETHERSCAN_API_KEY) {
   console.warn('[proxy] ETHERSCAN_API_KEY is not set. Non-AVAX requests will fail.')
 }
@@ -97,6 +105,13 @@ const server = http.createServer(async (req, res) => {
     // Health check
     if (url.pathname === '/healthz') {
       sendJson(res, 200, { ok: true })
+      return
+    }
+
+    // Require a shared-secret API key for all other endpoints so this proxy
+    // cannot be used by arbitrary clients to burn upstream API quota.
+    if (PROXY_API_KEY && req.headers['x-api-key'] !== PROXY_API_KEY) {
+      sendJson(res, 401, { error: 'Unauthorized' })
       return
     }
 
