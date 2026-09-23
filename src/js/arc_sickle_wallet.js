@@ -1,5 +1,5 @@
 const { ethers } = require('ethers')
-const createErc20Sweep = require('./sickle_erc20_sweep')
+import createErc20Sweep from './sickle_erc20_sweep'
 
 ;(function () {
   'use strict'
