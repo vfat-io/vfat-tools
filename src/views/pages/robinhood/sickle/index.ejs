@@ -20,10 +20,10 @@
 INFO  : <span id="sickle-wallet-status">Not connected</span> <button id="sickle-connect" class="sickle-action" type="button">[ connect ]</button> <button id="sickle-other-wallet" class="sickle-action" type="button">[ other wallet ]</button> <button id="sickle-switch" class="sickle-action" type="button" hidden>[ switch network ]</button> <button id="sickle-refresh" class="sickle-action" type="button" hidden>[ refresh ]</button>
 ************************************************************
 
-<span id="sickle-date"></span><span id="sickle-status" aria-live="polite" hidden></span><span id="sickle-app" aria-live="polite"></span></pre>
+<span id="sickle-date"></span><span id="sickle-status" aria-live="polite" hidden></span><span id="sickle-app" aria-live="polite"></span><span id="sickle-scan"></span></pre>
 <div id="sickle-loading" class="loader--1" role="status" aria-live="polite" hidden></div>
 <style>
-#log{white-space:pre-wrap;overflow-wrap:anywhere}.sickle-action{margin:0;padding:0;border:0;background:transparent;color:inherit;cursor:pointer;font:inherit;text-decoration:underline;overflow-wrap:anywhere}.sickle-action:disabled{cursor:not-allowed;opacity:.45;text-decoration:none}#sickle-status[data-kind="error"]{color:#d95757}#sickle-status[data-kind="success"]{color:var(--highlight-color)}#sickle-loading[hidden],#sickle-status[hidden]{display:none}.sickle-erc20-token input{margin:0 .5ch 0 0;vertical-align:middle}.sickle-erc20-form{margin:0}.sickle-erc20-form input[type="text"]{width:44ch;max-width:100%;padding:1px 4px;border:1px solid currentColor;border-radius:0;background:transparent;color:inherit;font:inherit}
+#log{white-space:pre-wrap;overflow-wrap:anywhere}.sickle-action{margin:0;padding:0;border:0;background:transparent;color:inherit;cursor:pointer;font:inherit;text-decoration:underline;overflow-wrap:anywhere}.sickle-action:disabled{cursor:not-allowed;opacity:.45;text-decoration:none}#sickle-status[data-kind="error"],.sickle-warning{color:#d95757}#sickle-status[data-kind="success"]{color:var(--highlight-color)}#sickle-loading[hidden],#sickle-status[hidden]{display:none}.sickle-erc20-token input{margin:0 .5ch 0 0;vertical-align:middle}.sickle-erc20-form{margin:0}.sickle-erc20-form input[type="text"]{width:44ch;max-width:100%;padding:1px 4px;border:1px solid currentColor;border-radius:0;background:transparent;color:inherit;font:inherit}
 </style>
 <%- include(`${partials}/scripts_onchain`, {scriptname: 'robinhood_sickle_wallet'}); -%>
 </body>
