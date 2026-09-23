@@ -45,6 +45,24 @@ const ALLOWED = new Set([
   'account:tokennfttx',
 ])
 
+// Simple per-IP fixed-window rate limiter to protect upstream API quotas
+// from abuse (this proxy accepts requests from any origin and forwards
+// them with server-side API keys).
+const RATE_LIMIT_WINDOW_MS = 60_000
+const RATE_LIMIT_MAX_REQUESTS = 60
+const rateLimitBuckets = new Map()
+
+function isRateLimited(ip) {
+  const now = Date.now()
+  const bucket = rateLimitBuckets.get(ip)
+  if (!bucket || now - bucket.start >= RATE_LIMIT_WINDOW_MS) {
+    rateLimitBuckets.set(ip, { start: now, count: 1 })
+    return false
+  }
+  bucket.count += 1
+  return bucket.count > RATE_LIMIT_MAX_REQUESTS
+}
+
 function sendJson(res, statusCode, obj) {
   const body = JSON.stringify(obj)
   res.writeHead(statusCode, {
@@ -89,6 +107,12 @@ const server = http.createServer(async (req, res) => {
 
     if (req.method !== 'GET') {
       sendJson(res, 405, { error: 'Method not allowed' })
+      return
+    }
+
+    const clientIp = req.socket?.remoteAddress || 'unknown'
+    if (isRateLimited(clientIp)) {
+      sendJson(res, 429, { error: 'Too many requests' })
       return
     }
 
