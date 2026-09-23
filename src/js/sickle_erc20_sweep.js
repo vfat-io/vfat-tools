@@ -59,7 +59,7 @@ async function fetchApiTokens (chainId, sickle) {
  *   render(): re-render the host page
  * }
  */
-module.exports = function createErc20Sweep (options) {
+export default function createErc20Sweep (options) {
   const state = {
     sickle: '',
     tokens: [],
