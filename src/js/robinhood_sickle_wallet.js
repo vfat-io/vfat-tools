@@ -792,6 +792,7 @@ const createErc20Sweep = require('./sickle_erc20_sweep')
   async function sweepErc20 (transaction) {
     if (!state.wallet || !state.account) throw new Error('Connect a wallet first.')
     if (!correctChain()) throw new Error('Switch to Robinhood Chain first.')
+    if (!sameAddress(transaction.from, state.account)) throw new Error('Wallet changed; check the balances again.')
     await sendAction(transaction, 'Checking token sweep…', 'Token sweep confirmed')
   }
   function fablesExtraData () {

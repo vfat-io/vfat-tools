@@ -70,6 +70,7 @@ module.exports = function createErc20Sweep (options) {
     input: '',
     note: '',
     busy: false,
+    inputFocused: false,
     generation: 0
   }
 
@@ -177,7 +178,15 @@ module.exports = function createErc20Sweep (options) {
 
   async function sweepTokens (tokens) {
     if (!tokens.length) throw new Error('Select at least one token.')
+    // Pin the Sickle and account shown to the user; the Sweep contract resolves
+    // the Sickle from msg.sender, so a wallet switch must abort, not redirect.
     const sickle = state.sickle
+    const account = options.account()
+    const generation = state.generation
+    function unchanged () {
+      return generation === state.generation && current() && state.sickle === sickle &&
+        String(options.account() || '').toLowerCase() === String(account || '').toLowerCase()
+    }
     state.busy = true
     state.note = ''
     options.render()
@@ -185,12 +194,14 @@ module.exports = function createErc20Sweep (options) {
       // Re-read right before signing so the prompt shows what will move now.
       const fresh = (await readTokens(sickle, tokens.map(function (token) { return token.address })))
         .filter(function (token) { return token.valid && !token.balance.isZero() })
+      if (!unchanged()) throw new Error('Wallet or Sickle changed; check the balances again.')
       if (!fresh.length) throw new Error('Nothing to sweep: these balances are now 0 onchain.')
       const lines = fresh.map(function (token) { return amount(token) + ' (' + token.address + ')' })
-      if (!window.confirm('Sweep from Sickle ' + sickle + ' to ' + options.account() + ':\n\n' + lines.join('\n'))) return
+      if (!window.confirm('Sweep from Sickle ' + sickle + ' to ' + account + ':\n\n' + lines.join('\n'))) return
+      if (!unchanged()) throw new Error('Wallet or Sickle changed; check the balances again.')
       const data = sweepInterface.encodeFunctionData('sweepTokens', [fresh.map(function (token) { return token.address })])
       try {
-        await options.send({ from: options.account(), to: options.sweep, data })
+        await options.send({ from: account, to: options.sweep, data })
       } catch (error) {
         if (fresh.length > 1 && !(error && error.code === 4001)) state.note = 'If one token blocks transfers, sweep the tokens one at a time.'
         throw error
@@ -264,6 +275,12 @@ module.exports = function createErc20Sweep (options) {
     input.value = state.input
     input.disabled = state.busy || state.loading
     input.addEventListener('input', function () { state.input = input.value })
+    // The host re-renders while history scans run. Keep the caret in the field
+    // across those re-renders; a real blur leaves the old input attached.
+    input.addEventListener('focus', function () { state.inputFocused = true })
+    input.addEventListener('blur', function () {
+      window.setTimeout(function () { if (input.isConnected) state.inputFocused = false }, 0)
+    })
     const submit = document.createElement('button')
     submit.type = 'submit'
     submit.className = 'sickle-action'
@@ -278,6 +295,10 @@ module.exports = function createErc20Sweep (options) {
       addManual().catch(function (error) { state.busy = false; options.fail(error); options.render() })
     })
     parent.appendChild(form)
+    if (state.inputFocused && !input.disabled) {
+      input.focus()
+      input.setSelectionRange(input.value.length, input.value.length)
+    }
     if (state.note) line(parent, state.note)
     parent.appendChild(document.createTextNode('\n'))
   }
