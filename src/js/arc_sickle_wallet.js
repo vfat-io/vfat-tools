@@ -1,4 +1,5 @@
 const { ethers } = require('ethers')
+const createErc20Sweep = require('./sickle_erc20_sweep')
 
 ;(function () {
   'use strict'
@@ -78,6 +79,17 @@ const { ethers } = require('ethers')
     status: '',
     statusKind: ''
   }
+  const erc20 = createErc20Sweep({
+    chainId: chain.number,
+    sweep: addresses.sweep,
+    aggregate,
+    sickle: function () { return state.sickle },
+    account: function () { return state.account },
+    disabled: function () { return state.sending || !correctChain() },
+    send: sweepErc20,
+    fail: function (error) { setStatus(errText(error), 'error'); setLoading() },
+    render: renderApp
+  })
 
   function byId (id) { return document.getElementById(id) }
   function errText (error) {
@@ -177,6 +189,7 @@ const { ethers } = require('ethers')
       app.appendChild(actionButton('Withdraw all ' + name + ' erc721 tokens: ' + ids, positions))
       app.appendChild(document.createTextNode('\n\n'))
     })
+    erc20.render(app)
   }
   function render () { renderToolbar(); renderStatus(); renderApp() }
 
@@ -331,23 +344,27 @@ const { ethers } = require('ethers')
     state.positions = []
     state.warnings = []
     renderApp()
+    let erc20Read = null
     try {
       const factoryData = factoryInterface.encodeFunctionData('sickles', [state.account])
       const response = await rpcCall({ to: addresses.factory, data: factoryData })
       state.sickle = factoryInterface.decodeFunctionResult('sickles', response)[0]
       if (isZero(state.sickle)) { state.sickle = ''; return }
 
+      erc20Read = erc20.load(state.sickle).catch(function (error) { warn('ERC-20 balance read failed: ' + errText(error)) })
       await readEnumerablePositions()
       try {
         await readUniswapV4Positions()
       } catch (error) {
         warn('Uniswap-V4 discovery failed: ' + errText(error))
       }
+      await erc20Read
       if (state.warnings.length) setStatus(state.warnings.join(' '), 'error')
     } catch (error) {
       state.positions = []
       setStatus('Read failed: ' + errText(error), 'error')
     } finally {
+      await erc20Read
       setLoading()
       render()
     }
@@ -471,6 +488,18 @@ const { ethers } = require('ethers')
     setStatus(pendingMessage + ': ' + hash.slice(0, 10) + '…', 'success')
     await refreshWallet()
   }
+  async function sendAction (transaction, checkingMessage, confirmedMessage) {
+    state.sending = true
+    setLoading(checkingMessage)
+    setStatus('')
+    try {
+      await sendPreflighted(transaction, confirmedMessage)
+    } finally {
+      state.sending = false
+      setLoading()
+      render()
+    }
+  }
   async function sweepPositions (positions) {
     if (!state.wallet || !state.account) throw new Error('Connect a wallet first.')
     if (!correctChain()) throw new Error('Switch to Arc first.')
@@ -478,17 +507,12 @@ const { ethers } = require('ethers')
     const tokens = positions.map(function (position) { return position.manager.address })
     const tokenIds = positions.map(function (position) { return position.id })
     const data = sweepInterface.encodeFunctionData('sweepErc721', [tokens, tokenIds])
-    const transaction = { from: state.account, to: addresses.sweep, data }
-    state.sending = true
-    setLoading('Checking withdrawal…')
-    setStatus('')
-    try {
-      await sendPreflighted(transaction, 'Withdrawal confirmed')
-    } finally {
-      state.sending = false
-      setLoading()
-      render()
-    }
+    await sendAction({ from: state.account, to: addresses.sweep, data }, 'Checking withdrawal…', 'Withdrawal confirmed')
+  }
+  async function sweepErc20 (transaction) {
+    if (!state.wallet || !state.account) throw new Error('Connect a wallet first.')
+    if (!correctChain()) throw new Error('Switch to Arc first.')
+    await sendAction(transaction, 'Checking token sweep…', 'Token sweep confirmed')
   }
   function bindUi () {
     byId('sickle-connect').addEventListener('click', function () { connectInjected().catch(function (error) { setStatus(errText(error), 'error') }) })
