@@ -55,6 +55,9 @@ module.exports = (env = {}) => {
       // McDAO Genesis reads its farm registry, emissions, and wallet stakes
       // directly. Reown stays behind the other-wallet action.
       robinhood_mcdao: './src/js/robinhood_mcdao.js',
+      // StonkPress reads its Genesis and oPLATE farms, its SPY pairs, and wallet
+      // stakes directly. Reown stays behind the other-wallet action.
+      robinhood_stonkpress: './src/js/robinhood_stonkpress.js',
       // 3Jane is a self-contained Ethereum page. Core, Pendle, Curve, Morpho,
       // LCC, and reward state load without the site-wide app or wallet SDK.
       threejane: './src/js/threejane.js',
