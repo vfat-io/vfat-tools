@@ -58,6 +58,9 @@ module.exports = (env = {}) => {
       // StonkPress reads its Genesis and oPLATE farms, its SPY pairs, and wallet
       // stakes directly. Reown stays behind the other-wallet action.
       robinhood_stonkpress: './src/js/robinhood_stonkpress.js',
+      // Orvex rebuilds market TVL from its pool manager's liquidity logs and
+      // prices LP fees from recent swap logs. It is read-only: no wallet code.
+      robinhood_orvex: './src/js/robinhood_orvex.js',
       // 3Jane is a self-contained Ethereum page. Core, Pendle, Curve, Morpho,
       // LCC, and reward state load without the site-wide app or wallet SDK.
       threejane: './src/js/threejane.js',
