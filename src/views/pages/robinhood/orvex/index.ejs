@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include(`${partials}/head`, {
+  noGlobalScripts: true,
+  pageMeta: {
+    title: 'Orvex Markets on Robinhood Chain | vfat.tools',
+    description: 'Orvex market TVL, swap volume, LP fees, and fee APRs on Robinhood Chain, read directly onchain.',
+    url: 'https://vfat.tools/robinhood/orvex/',
+    image: 'https://vfat.tools/img/robinhood-social-v2.png',
+    imageAlt: 'vfat.tools Robinhood Chain protocol list.',
+    imageWidth: 1200,
+    imageHeight: 630
+  }
+}); -%>
+<body>
+<%- include(`${partials}/header_main`); -%>
+<main class="orvex-page">
+<nav class="orvex-mobile-nav" aria-label="Orvex page navigation"><a href="../">[ Robinhood farms ]</a> <a href="/">[ vfat.tools ]</a></nav>
+<pre id="orvex-banner">
+***************** 👨‍🌾 UNOFFICIAL ORVEX CALCULATOR 👨‍🌾 *****************
+CHAIN : Robinhood Chain (4663)
+MODE  : Onchain RPC, read-only
+NOTE  : TVL is rebuilt from every liquidity change in the pool manager.
+        Fee APR annualizes LP swap fees over the window; past fees are
+        not a forecast. Add or remove liquidity at orvex.fi.
+**********************************************************************
+</pre>
+<div class="orvex-toolbar"><button id="orvex-idle-toggle" class="orvex-link" type="button">[ show idle markets ]</button> <button id="orvex-refresh" class="orvex-link" type="button">[ refresh ]</button></div>
+<p id="orvex-status" class="orvex-status" role="status" hidden></p>
+<div id="orvex-loading" class="orvex-loading" role="status" aria-live="polite">[ loading markets… ]</div>
+<p id="orvex-summary" class="orvex-summary">Orvex —</p>
+<div id="orvex-pools" class="orvex-table-wrap" aria-live="polite"></div>
+<pre class="orvex-footer"><%- include(`${partials}/disclaimer`); -%></pre>
+</main>
+<style>
+.orvex-page{max-width:1500px;margin:20px 10px 50px;min-width:0}.orvex-page,.orvex-page *{box-sizing:border-box;font-family:monospace}.orvex-mobile-nav{display:none}#orvex-banner{max-width:100%;margin:0 0 16px;overflow-wrap:anywhere;white-space:pre-wrap}.orvex-toolbar,.orvex-summary,.orvex-status,.orvex-loading{margin:0 0 14px;font:14px/1.45 monospace;text-align:left;overflow-wrap:anywhere}.orvex-status{color:#d95757}.orvex-loading[hidden]{display:none}.orvex-link{margin:0;padding:0;border:0;background:transparent;color:inherit;cursor:pointer;font:inherit;text-decoration:underline}.orvex-link:hover{color:var(--highlight-color)}.orvex-link:disabled{cursor:not-allowed;opacity:.45;text-decoration:none}.orvex-table-wrap{width:100%;min-width:0;overflow-x:auto}.orvex-table{width:100%;min-width:1040px;table-layout:fixed;border-collapse:collapse;font-size:13px}.orvex-table td,.orvex-table th{padding:7px 8px;border:1px solid currentColor;vertical-align:top;text-align:right;overflow-wrap:anywhere}.orvex-table td:first-child,.orvex-table th:first-child,.orvex-table td:last-child,.orvex-table th:last-child{text-align:left}.orvex-name,.orvex-sub{display:block}.orvex-sub{margin-top:3px;color:var(--highlight-color);font-size:12px}.orvex-footer{margin-top:26px;max-width:100%;overflow-wrap:anywhere;white-space:pre-wrap}@media(max-width:700px){body>div:not(.modal){display:none}.orvex-page{margin:14px 8px 40px;overflow-x:hidden}.orvex-mobile-nav{display:block;margin-bottom:14px}#orvex-banner{font-size:11px}.orvex-toolbar,.orvex-summary{font-size:12px}.orvex-table-wrap{overflow:visible}.orvex-table{min-width:0;font-size:12px}.orvex-table td,.orvex-table th{padding:6px}.orvex-table th:nth-child(4),.orvex-table td:nth-child(4),.orvex-table th:nth-child(5),.orvex-table td:nth-child(5),.orvex-table th:nth-child(7),.orvex-table td:nth-child(7),.orvex-table th:nth-child(8),.orvex-table td:nth-child(8){display:none}}
+</style>
+<% if (filenameMap && filenameMap['robinhood_orvex.js']) { -%>
+<script src="<%= PP %>/js/<%= filenameMap['robinhood_orvex.js'] %>"></script>
+<% } else { -%>
+<script src="<%= PP %>/js/robinhood_orvex.js"></script>
+<% } -%>
+</body>
+</html>
