@@ -42,10 +42,11 @@ const ToonPage = (function () {
   const factory = new ethers.utils.Interface(factoryAbi)
   const router = new ethers.utils.Interface(routerAbi)
   const state = {
-    rpc: null, eip1193: null, account: null, walletChain: null, bound: false,
+    rpc: null, eip1193: null, account: null, walletChain: null,
     tokens: new Map(), pairs: [], farms: [], prices: new Map(), block: null, now: 0,
     totalAlloc: ethers.constants.Zero, cakePerSecond: ethers.constants.Zero, bonus: ethers.constants.One,
-    supply: ethers.constants.Zero, startTime: 0, showZero: false, action: null, sending: false, status: '', spinner: null, reownUnsubscribe: null
+    supply: ethers.constants.Zero, startTime: 0, showZero: false, action: null, sending: false, status: '', spinner: null, reownUnsubscribe: null,
+    boundProvider: null, accountListener: null, chainListener: null
   }
   const byId = id => document.getElementById(id)
   const lower = value => String(value || '').toLowerCase()
@@ -322,14 +323,23 @@ const ToonPage = (function () {
   async function refreshActionInfo () {
     const action = state.action; if (!action || !state.account) return
     const assets = actionAssets(action.kind, action.farm)
+    const approve = needsApproval(action.kind)
+    const wantsUser = action.kind === 'unstake' || action.kind === 'claim' || action.kind === 'exit'
     const calls = []
-    assets.forEach(asset => calls.push(
+    if (approve) assets.forEach(asset => calls.push(
       { target: asset.address, iface: erc20, method: 'balanceOf', args: [state.account], fallback: ethers.constants.Zero },
       { target: asset.address, iface: erc20, method: 'allowance', args: [state.account, spender(action.kind)], fallback: ethers.constants.Zero }
     ))
-    if (action.kind === 'unstake' || action.kind === 'claim' || action.kind === 'exit') calls.push({ target: address.chef, iface: chef, method: 'userInfo', args: [action.farm.pid, state.account], fallback: null, decode: value => ({ amount: value[0], rewardDebt: value[1] }) })
+    if (wantsUser) calls.push({ target: address.chef, iface: chef, method: 'userInfo', args: [action.farm.pid, state.account], fallback: null, decode: value => ({ amount: value[0], rewardDebt: value[1] }) })
     const values = await batch(calls)
-    action.info = { assets: assets.map((asset, i) => ({ asset, balance: values[i * 2], allowance: values[i * 2 + 1] })), user: ['unstake', 'claim', 'exit'].includes(action.kind) ? values[assets.length * 2] : null }
+    let cursor = 0
+    const infoAssets = assets.map(asset => {
+      if (!approve) return { asset, balance: ethers.constants.Zero, allowance: null }
+      return { asset, balance: values[cursor++], allowance: values[cursor++] }
+    })
+    const user = wantsUser ? values[cursor] : null
+    if (action.kind === 'unstake' && user) infoAssets.forEach(item => { item.balance = user.amount })
+    action.info = { assets: infoAssets, user }
   }
   function buildAction () {
     const action = state.action; const account = state.account
@@ -387,7 +397,7 @@ const ToonPage = (function () {
       row.appendChild(input)
       if (action.info && action.info.assets[i]) row.appendChild(button('max', () => { action.amounts[i] = format(action.info.assets[i].balance, asset.decimals, asset.decimals); renderAction() }))
       box.appendChild(row)
-      if (action.info && action.info.assets[i]) box.appendChild(e('p', { text: asset.symbol + ' ' + format(action.info.assets[i].balance, asset.decimals) }))
+      if (action.kind !== 'unstake' && action.info && action.info.assets[i]) box.appendChild(e('p', { text: asset.symbol + ' ' + format(action.info.assets[i].balance, asset.decimals) }))
     })
     if (action.minimums.length && action.farm.pool) {
       ;[token(action.farm.pool.token0), token(action.farm.pool.token1)].forEach((asset, i) => {
@@ -407,19 +417,50 @@ const ToonPage = (function () {
     box.appendChild(actions)
   }
 
-  async function hydrateWallet () {
+  async function hydrateWallet (blockTag) {
     if (!state.account || !state.farms.length) { state.farms.forEach(farm => { farm.user = null }); return }
-    const values = await batch(state.farms.map(farm => ({ target: address.chef, iface: chef, method: 'userInfo', args: [farm.pid, state.account], fallback: null, decode: value => ({ amount: value[0], rewardDebt: value[1] }) })))
+    const values = await batch(state.farms.map(farm => ({ target: address.chef, iface: chef, method: 'userInfo', args: [farm.pid, state.account], fallback: null, decode: value => ({ amount: value[0], rewardDebt: value[1] }) })), blockTag)
     state.farms.forEach((farm, i) => { farm.user = values[i] })
   }
+  function unbindProvider () {
+    const provider = state.boundProvider
+    if (provider && provider.removeListener) {
+      if (state.accountListener) provider.removeListener('accountsChanged', state.accountListener)
+      if (state.chainListener) provider.removeListener('chainChanged', state.chainListener)
+    }
+    state.boundProvider = null
+    state.accountListener = null
+    state.chainListener = null
+  }
+  function bindProvider (provider) {
+    if (!provider || !provider.on || state.boundProvider === provider) return
+    unbindProvider()
+    state.accountListener = function (accounts) {
+      if (state.eip1193 !== provider) return
+      adopt(provider, accounts || [], state.walletChain).catch(error => setStatus(errText(error), 'error'))
+    }
+    state.chainListener = function (chainId) {
+      if (state.eip1193 !== provider) return
+      adopt(provider, state.account ? [state.account] : [], chainId).catch(error => setStatus(errText(error), 'error'))
+    }
+    provider.on('accountsChanged', state.accountListener)
+    provider.on('chainChanged', state.chainListener)
+    state.boundProvider = provider
+  }
   async function adopt (provider, accounts, walletChain) {
-    if (!provider || !accounts || !accounts[0]) return false
-    state.eip1193 = provider; state.account = ethers.utils.getAddress(accounts[0]); state.walletChain = hexChain(walletChain)
-    if (!state.bound && provider.on) { state.bound = true; provider.on('accountsChanged', () => restore().catch(fatal)); provider.on('chainChanged', () => restore().catch(fatal)) }
-    render(); await hydrateWallet(); render(); return true
+    if (!provider) return false
+    state.eip1193 = provider
+    state.account = accounts && accounts[0] ? ethers.utils.getAddress(accounts[0]) : null
+    state.walletChain = walletChain === undefined || walletChain === null ? null : hexChain(walletChain)
+    bindProvider(provider)
+    render()
+    if (state.account) await hydrateWallet()
+    else state.farms.forEach(farm => { farm.user = null })
+    render()
+    return !!state.account
   }
   async function restore () {
-    const provider = injected(); if (!provider) { state.account = null; state.walletChain = null; render(); return false }
+    const provider = injected(); if (!provider) { render(); return false }
     try {
       const result = await Promise.all([provider.request({ method: 'eth_accounts' }), provider.request({ method: 'eth_chainId' })])
       if (!result[0] || !result[0][0]) { state.account = null; state.walletChain = result[1] ? hexChain(result[1]) : null; render(); return false }
@@ -457,12 +498,38 @@ const ToonPage = (function () {
     if (withDiscovery) { await discover(); await loadTokens() }
     else {
       const block = await state.rpc.getBlock('latest'); state.block = block.number; state.now = block.timestamp
-      const balances = await batch(state.farms.map(farm => ({ target: farm.pool ? farm.pool.address : farm.lp, iface: erc20, method: 'balanceOf', args: [address.chef], fallback: ethers.constants.Zero })).concat(state.pairs.map(pool => ({ target: pool.address, iface: pair, method: 'getReserves', fallback: null, decode: value => value }, { target: pool.address, iface: pair, method: 'totalSupply', fallback: null }, { target: pool.address, iface: erc20, method: 'balanceOf', args: [address.chef], fallback: ethers.constants.Zero }))))
-      state.farms.forEach((farm, i) => { farm.staked = balances[i] || ethers.constants.Zero; if (farm.pool) farm.pool.chefBalance = farm.staked })
-      let cursor = state.farms.length
-      state.pairs.forEach(pool => { pool.reserves = balances[cursor++]; pool.totalSupply = balances[cursor++]; pool.chefBalance = balances[cursor++] || ethers.constants.Zero; const farm = state.farms.find(item => item.pool && lower(item.pool.address) === lower(pool.address)); if (farm) farm.staked = pool.chefBalance })
+      const calls = []
+      state.farms.forEach(farm => {
+        calls.push({ target: farm.pool ? farm.pool.address : farm.lp, iface: erc20, method: 'balanceOf', args: [address.chef], fallback: ethers.constants.Zero })
+        calls.push({ target: address.chef, iface: chef, method: 'poolInfo', args: [farm.pid], fallback: null, decode: value => value })
+      })
+      state.pairs.forEach(pool => {
+        calls.push({ target: pool.address, iface: pair, method: 'getReserves', fallback: null, decode: value => value })
+        calls.push({ target: pool.address, iface: pair, method: 'totalSupply', fallback: null })
+        calls.push({ target: pool.address, iface: erc20, method: 'balanceOf', args: [address.chef], fallback: ethers.constants.Zero })
+      })
+      const values = await batch(calls, block.number)
+      let cursor = 0
+      state.farms.forEach(farm => {
+        farm.staked = values[cursor++] || ethers.constants.Zero
+        if (farm.pool) farm.pool.chefBalance = farm.staked
+        const info = values[cursor++]
+        if (info) { farm.alloc = info[1]; farm.lastRewardTime = info[2]; farm.acc = info[3] }
+      })
+      state.pairs.forEach(pool => {
+        const reserves = values[cursor++]
+        const supply = values[cursor++]
+        const chefBalance = values[cursor++] || ethers.constants.Zero
+        if (reserves) pool.reserves = reserves
+        if (supply) pool.totalSupply = supply
+        pool.chefBalance = chefBalance
+        const farm = state.farms.find(item => item.pool && lower(item.pool.address) === lower(pool.address))
+        if (farm) { farm.staked = chefBalance; if (farm.pool) farm.pool.chefBalance = chefBalance }
+      })
+      await hydrateWallet(block.number)
     }
-    pricePools(); await hydrateWallet(); loading(); render()
+    if (withDiscovery) await hydrateWallet()
+    pricePools(); loading(); render()
   }
   function bind () {
     byId('toon-connect').addEventListener('click', () => connectInjected().catch(error => setStatus(errText(error), 'error')))
