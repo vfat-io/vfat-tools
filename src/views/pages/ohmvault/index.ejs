@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include(`${partials}/head`, {
+  noGlobalScripts: true,
+  pageMeta: {
+    title: 'OHMVAULT Staking on Ethereum | vfat.tools',
+    description: 'Live OHMVAULT (OHMV) staking TVL, realised emission APR, backing per token and direct wallet actions on Ethereum. Every value comes from onchain contracts and Chainlink.',
+    url: 'https://vfat.tools/ohmvault/',
+    image: 'https://vfat.tools/img/ethereum-ohmvault-social.png',
+    imageAlt: 'Live vfat.tools OHMVAULT staking table on Ethereum.',
+    imageWidth: 1200,
+    imageHeight: 630
+  }
+}); -%>
+
+<body>
+<%- include(`${partials}/header_main`); -%>
+<pre id="ohmv-banner">
+***************** 👨‍🌾 UNOFFICIAL OHMVAULT STAKING CALCULATOR 👨‍🌾 *****************
+INFO  : https://ohmvault.xyz
+CHAIN : Ethereum mainnet (1)
+MODE  : Wallet-only onchain reads and direct wallet transactions. No price API or router.
+PRICE : OHM via Chainlink OHM/ETH x ETH/USD; OHMV via its OHM pool reserves.
+NOTE  : Emissions are conditional. The ratchet mints to stakers only when
+        backing per OHMV sets a new high, so the APR shown is a REALISED trailing
+        average, not a promised rate. Some epochs pay nothing.
+**************************************************************************************
+
+</pre>
+<div id="ohmv-loading" class="ohmv-loading" role="status" aria-live="polite">
+  <span id="ohmv-loading-spinner" class="ohmv-spinner" aria-hidden="true">[....]</span> <span id="ohmv-loading-text">Reading SemiVault contracts on Robinhood Chain…</span>
+</div>
+<div id="ohmv-app" aria-live="polite"></div>
+<%- include(`${partials}/disclaimer`); -%>
+<style>
+  .ohmv-action { margin: 0; padding: 0; border: 0; background: transparent; color: inherit; cursor: pointer; font: inherit; text-decoration: underline; }
+  .ohmv-action:disabled { cursor: not-allowed; opacity: .45; text-decoration: none; }
+  .ohmv-loading { padding: 10px 0; }
+  .ohmv-loading[hidden] { display: none; }
+  .ohmv-spinner { display: inline-block; width: 6ch; }
+  .ohmv-form-label { display: block; margin: 7px 0; }
+  .ohmv-form-label input { margin-left: 8px; font: inherit; }
+  #ohmv-app, #ohmv-app section { min-width: 0; }
+  #ohmv-banner, #ohmv-app pre { box-sizing: border-box; max-width: 100%; }
+  #ohmv-banner, #ohmv-app pre:not(.ohmv-market-table) { overflow-wrap: anywhere; white-space: pre-wrap; }
+  .ohmv-market-table { overflow-x: auto; white-space: pre; }
+</style>
+<%- include(`${partials}/scripts_onchain`, {scriptname: 'ethereum_ohmvault'}); -%>
+</body>
+</html>
