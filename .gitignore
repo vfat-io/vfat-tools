@@ -213,3 +213,5 @@ deploy-proxy-server.sh
 .codex/
 AGENTS.override.md
 CLAUDE.local.md
+CLAUDE.md
+graphify-out/
