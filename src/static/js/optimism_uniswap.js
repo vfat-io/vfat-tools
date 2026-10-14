@@ -1,4 +1,3 @@
-import { pid } from "process";
 
 $(function() {
   consoleInit(main)

@@ -3820,7 +3820,7 @@ const sickle_sdk_exitToUnderlying = async function(info, nftId) {
             const poolData = {
               stakingAddress: info.stakingAddress,
               poolAddress: info.stakeTokenAddress,
-              nftManagerAddress: NFT_TOKEN_ADDRESS
+              nftManagerAddress: NFT_POSITION_MANAGER_ADDRESS
             }
             
             await window.Sickle.withdraw.withdrawToUnderlying(poolData, nftId)
@@ -3842,7 +3842,7 @@ const sickle_sdk_exitToToken = async function(info, nftId) {
       const poolData = {
         stakingAddress: info.stakingAddress,
         poolAddress: info.stakeTokenAddress,
-        nftManagerAddress: NFT_TOKEN_ADDRESS
+        nftManagerAddress: NFT_POSITION_MANAGER_ADDRESS
       }
       
       await window.Sickle.withdraw.withdrawToToken(poolData, nftId)
@@ -3882,7 +3882,7 @@ const sickle_sdk_rebalance = async function(info, nftId) {
       const poolData = {
         stakingAddress: info.stakingAddress,
         poolAddress: info.stakeTokenAddress,
-        nftManagerAddress: NFT_TOKEN_ADDRESS,
+        nftManagerAddress: NFT_POSITION_MANAGER_ADDRESS,
         tickSpacing: tickSpacing,
         pid: undefined  // Velodrome uses gauge contract, no separate pool ID
       }
@@ -3907,7 +3907,7 @@ const sickle_sdk_compound = async function(info, nftId) {
       const poolData = {
         stakingAddress: info.stakingAddress,
         poolAddress: info.stakeTokenAddress,
-        nftManagerAddress: NFT_TOKEN_ADDRESS
+        nftManagerAddress: NFT_POSITION_MANAGER_ADDRESS
       }
       
       await window.Sickle.compound.compound(poolData, nftId)

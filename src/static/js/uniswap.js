@@ -147,7 +147,7 @@ $(function() {
     const infos = await Promise.all(pools.map(p =>
       loadClSynthetixPoolInfo(App, p.pool, p.token0Address, p.token1Address, p.liquidity, p.nftId, p.slot0, p.tickSpacing, p.positionData, p.tokensOwed0, p.tokensOwed1, has_sickle_account, owner_sickle_address, prices)));
       
-      const groupedPositions = userPositionInfos.reduce((acc, info) => {
+      const groupedPositions = infos.reduce((acc, info) => {
         const key = info.poolAddress;
         if(!acc.has(key)) {
           acc.set(key, []);
@@ -160,7 +160,7 @@ $(function() {
 
     for(const position of userPositions){
       _print(`Pool: ${position.infos[0].stakeTokenTicker}`)
-      await printClPools(App, infos);
+      await printClPools(App, position.infos);
       _print('');
     }
   }

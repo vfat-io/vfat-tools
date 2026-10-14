@@ -434,7 +434,7 @@ const withdraw_nfts = async function (App, nft_manager_v4, nft_manager_address_v
         _print_link(`Exit to Underlying`, exitToUnderlying)
 
         idx < infos.length - 1 ? _print_inline(`|    `) : _print_inline(`     `)
-        _print_link(`Exit to MON`, exitToMon)
+        _print_link(`Exit to ETH`, exitToMon)
 
         idx < infos.length - 1 ? _print_inline(`|    `) : _print_inline(`     `)
         _print_link(`Rebalance ${rangeStatus}`, rebalance)
@@ -445,7 +445,7 @@ const withdraw_nfts = async function (App, nft_manager_v4, nft_manager_address_v
           idx < infos.length - 1 ? _print_inline(`|    `) : _print_inline(`     `)
           _print_link(`Compound (${e0} ${t0?.symbol || '?'} + ${e1} ${t1?.symbol || '?'})`, compound)
           idx < infos.length - 1 ? _print_inline(`|    `) : _print_inline(`     `)
-          _print_link(`Claim Rewards to MON (${e0} ${t0?.symbol || '?'} + ${e1} ${t1?.symbol || '?'})`, claimRewards)
+          _print_link(`Claim Rewards to ETH (${e0} ${t0?.symbol || '?'} + ${e1} ${t1?.symbol || '?'})`, claimRewards)
         }
       }
 
