@@ -154,6 +154,14 @@ async function getErc20MetaCached(App, cache, tokenAddress, chainId) {
   return uniswapV4Helpers().getErc20MetaCached(App, cache, tokenAddress, chainId, { nativeSymbol: 'ETH', nativeDecimals: 18 })
 }
 
+async function getTokenUsdPrices(chainId, tokenAddresses, opts) {
+  return uniswapV4Helpers().getTokenUsdPrices(chainId, tokenAddresses, opts)
+}
+
+function formatUsdSuffix(amount0Raw, dec0, price0, amount1Raw, dec1, price1) {
+  return uniswapV4Helpers().formatUsdSuffix(amount0Raw, dec0, price0, amount1Raw, dec1, price1)
+}
+
 async function getV4PoolSlot0(App, poolIdBytes32) {
   return uniswapV4Helpers().getV4PoolSlot0(App, poolIdBytes32, state_view_address_v4)
 }
@@ -312,6 +320,10 @@ const withdraw_nfts = async function(App, nft_manager_v4, nft_manager_address_v4
     })
   }
 
+  // USD prices (DefiLlama) for the claim/compound labels.
+  const usdPriceAddrs = [...new Set([...poolCache.values()].flatMap(v => [v.poolKey.currency0, v.poolKey.currency1]).map(a => (a || '').toLowerCase()))]
+  const usdPrices = await getTokenUsdPrices(MAINNET_CHAIN_ID, usdPriceAddrs)
+
   // Compute per-position earned fees (unclaimed) to show next to Compound.
   // Uniswap v4 positions are owned in PoolManager by the PositionManager contract itself, with salt = tokenId.
   // We can reconstruct fees owed off-chain from fee growth values.
@@ -426,6 +438,10 @@ const withdraw_nfts = async function(App, nft_manager_v4, nft_manager_address_v4
         return window.Sickle.compound.compound(poolData, info.nftId)
       }
 
+      const claimRewards = async function() {
+        return window.Sickle.harvest.harvest(poolData, info.nftId)
+      }
+
       _print(`|    `)
 
       const a0 = formatTokenAmountHtmlFromRaw(amount0Raw, t0?.decimals)
@@ -444,14 +460,23 @@ const withdraw_nfts = async function(App, nft_manager_v4, nft_manager_address_v4
         idx < infos.length - 1 ? _print_inline(`|    `) : _print_inline(`     `)
         _print_link(`Exit to ETH`, exitToEth)
         
+        if (earned && (earned.fees0Raw > 0n || earned.fees1Raw > 0n)) {
+          const e0 = formatTokenAmountHtmlFromRaw(earned.fees0Raw, t0?.decimals)
+          const e1 = formatTokenAmountHtmlFromRaw(earned.fees1Raw, t1?.decimals)
+          const usd = formatUsdSuffix(earned.fees0Raw, t0?.decimals, usdPrices.get((poolInfo?.poolKey?.currency0 || '').toLowerCase()), earned.fees1Raw, t1?.decimals, usdPrices.get((poolInfo?.poolKey?.currency1 || '').toLowerCase()))
+          idx < infos.length -1 ? _print_inline(`|    `) : _print_inline(`     `)
+          _print_link(`Claim Rewards to ETH (${e0} ${t0?.symbol || '?'} + ${e1} ${t1?.symbol || '?'}${usd})`, claimRewards)
+        }
+
         idx < infos.length - 1 ? _print_inline(`|    `) : _print_inline(`     `)
         _print_link(`Rebalance ${rangeStatus}`, rebalance)
         
         if (earned && (earned.fees0Raw > 0n || earned.fees1Raw > 0n)) {
           const e0 = formatTokenAmountHtmlFromRaw(earned.fees0Raw, t0?.decimals)
           const e1 = formatTokenAmountHtmlFromRaw(earned.fees1Raw, t1?.decimals)
+          const usd = formatUsdSuffix(earned.fees0Raw, t0?.decimals, usdPrices.get((poolInfo?.poolKey?.currency0 || '').toLowerCase()), earned.fees1Raw, t1?.decimals, usdPrices.get((poolInfo?.poolKey?.currency1 || '').toLowerCase()))
           idx < infos.length - 1 ? _print_inline(`|    `) : _print_inline(`     `)
-          _print_link(`Compound (${e0} ${t0?.symbol || '?'} + ${e1} ${t1?.symbol || '?'})`, compound)
+          _print_link(`Compound (${e0} ${t0?.symbol || '?'} + ${e1} ${t1?.symbol || '?'}${usd})`, compound)
         }
       }
     }

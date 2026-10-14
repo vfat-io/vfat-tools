@@ -724,10 +724,12 @@ async function main() {
       }
 
       let compoundLabel = 'Compound'
+      let harvestLabel = 'Claim Rewards to AVAX'
       if (rewardKnown && rewardTokenAddress && rewardRaw > 0n) {
         const meta = await avaxPharaohV3_getRewardTokenMetaCached(rewardTokenAddress)
         const earned = avaxPharaohV3_formatUnitsBigInt(rewardRaw, meta.decimals, 6)
         compoundLabel = `Compound (${earned} ${meta.symbol})`
+        harvestLabel = `Claim Rewards to AVAX (${earned} ${meta.symbol})`
       }
 
       i < nftIds.length - 1 ? _print_inline(`|    `) : _print_inline(`     `)
@@ -744,6 +746,11 @@ async function main() {
         
         i < nftIds.length - 1 ? _print_inline(`|    `) : _print_inline(`     `)
         _print_link(compoundLabel, async () => window.Sickle.compound.compound(poolData, nftId))
+
+        if (rewardKnown && rewardRaw > 0n) {
+          i < nftIds.length - 1 ? _print_inline(`|    `) : _print_inline(`     `)
+          _print_link(harvestLabel, async () => window.Sickle.harvest.harvest(poolData, nftId))
+        }
     }
       }
 

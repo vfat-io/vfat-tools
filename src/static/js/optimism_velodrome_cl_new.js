@@ -3761,6 +3761,10 @@ async function printVelodromePool(App, info, chain = 'eth', customURLs) {
     return sickle_sdk_compound(info, nftId)
   }
 
+  const sickle_harvest = async function (nftId) {
+    return sickle_sdk_harvest(info, nftId)
+  }
+
   for (const [index, position] of info.nftPositions.entries() || []) {
     _print(`|    `)
     _print(`|- Nft ID: ${position.nftId} (${position.amount0.toFixed(4)} ${info.token0Symbol} - ${position.amount1.toFixed(4)} ${info.token1Symbol})`)
@@ -3784,6 +3788,10 @@ async function printVelodromePool(App, info, chain = 'eth', customURLs) {
           `Claim rewards, ${earnings.toFixed(6)} ($${formatMoney(earningsUsd)})`,
           () => sickle_claim(info.userStakedNfts[earningsIndex])
         )
+        if (window.Sickle && earnings > 0) {
+          index < info.nftPositions.length - 1 ? _print_inline(`|    `) : _print_inline(`     `)
+          _print_link(`Claim Rewards to ETH, ${earnings.toFixed(6)} ($${formatMoney(earningsUsd)})`, () => sickle_harvest(position.nftId))
+        }
 
         if (window.Sickle) {
           const positionData = position.positionData
@@ -3919,6 +3927,23 @@ const sickle_sdk_compound = async function (info, nftId) {
     } catch (error) {
       console.error('Compound failed:', error)
       alert(`Compound failed: ${error.message}`)
+    }
+  }
+}
+
+const sickle_sdk_harvest = async function (info, nftId) {
+  if (window.Sickle?.harvest) {
+    try {
+      const poolData = {
+        stakingAddress: info.stakingAddress,
+        poolAddress: info.stakeTokenAddress,
+        nftManagerAddress: NFT_TOKEN_ADDRESS
+      }
+
+      await window.Sickle.harvest.harvest(poolData, nftId)
+    } catch (error) {
+      console.error('Harvest failed:', error)
+      alert(`Harvest failed: ${error.message}`)
     }
   }
 }

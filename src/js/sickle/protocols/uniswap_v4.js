@@ -557,6 +557,79 @@ export async function getErc20MetaCached(
   }
 }
 
+const LLAMA_CHAIN_BY_ID = {
+  1: 'ethereum',
+  10: 'optimism',
+  56: 'bsc',
+  130: 'unichain',
+  137: 'polygon',
+  8453: 'base',
+  42161: 'arbitrum',
+  43114: 'avax',
+  143: 'monad',
+}
+
+const NATIVE_COINGECKO_BY_ID = {
+  1: 'ethereum',
+  10: 'ethereum',
+  130: 'ethereum',
+  8453: 'ethereum',
+  42161: 'ethereum',
+  56: 'binancecoin',
+  43114: 'avalanche-2',
+  137: 'polygon-ecosystem-token',
+  143: 'monad',
+}
+
+const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000'
+
+// Returns Map<lowercaseAddress, usdPrice> via DefiLlama. Missing prices are simply absent.
+export async function getTokenUsdPrices(chainId, tokenAddresses, opts = {}) {
+  const out = new Map()
+  try {
+    const cid = Number(chainId)
+    const llamaChain = LLAMA_CHAIN_BY_ID[cid]
+    const nativeId = opts.nativeCoingeckoId || NATIVE_COINGECKO_BY_ID[cid]
+    const keyToAddr = new Map()
+    for (const raw of tokenAddresses || []) {
+      const a = (raw || '').toLowerCase()
+      if (!a) continue
+      if (a === ZERO_ADDRESS) {
+        if (nativeId) keyToAddr.set(`coingecko:${nativeId}`, a)
+      } else if (llamaChain) {
+        keyToAddr.set(`${llamaChain}:${a}`, a)
+      }
+    }
+    if (keyToAddr.size === 0) return out
+    const url = `https://coins.llama.fi/prices/current/${[...keyToAddr.keys()].join(',')}`
+    const res = await fetch(url)
+    if (!res.ok) throw new Error(`DefiLlama HTTP ${res.status}`)
+    const json = await res.json()
+    for (const [key, addr] of keyToAddr) {
+      const price = json?.coins?.[key]?.price
+      if (typeof price === 'number' && Number.isFinite(price)) out.set(addr, price)
+    }
+  } catch (e) {
+    console.log('getTokenUsdPrices failed', e)
+  }
+  return out
+}
+
+// ` ≈ $<total>` for the two raw amounts, or '' if either price is missing.
+export function formatUsdSuffix(amount0Raw, dec0, price0, amount1Raw, dec1, price1) {
+  try {
+    if (price0 == null || price1 == null) return ''
+    const a0 = Number(ethers.utils.formatUnits(amount0Raw.toString(), Number(dec0 ?? 18)))
+    const a1 = Number(ethers.utils.formatUnits(amount1Raw.toString(), Number(dec1 ?? 18)))
+    const total = a0 * price0 + a1 * price1
+    if (!Number.isFinite(total)) return ''
+    const fm = typeof formatMoney === 'function' ? formatMoney : (typeof window !== 'undefined' ? window.formatMoney : null)
+    return ` ≈ $${fm ? fm(total) : total.toFixed(2)}`
+  } catch {
+    return ''
+  }
+}
+
 export async function getV4PoolSlot0(App, poolIdBytes32, stateViewAddress) {
   try {
     const stateView = new ethers.Contract(

@@ -96,6 +96,42 @@ async function loadPancakeV3Contract(App, prices, chefContract, chefAddress, che
       amount1 = Number(liquidity1 / decimals1BigInt) + Number(liquidity1 % decimals1BigInt) / Number(decimals1BigInt);
     }
 
+    // Real unclaimed fees (tokensOwed + pending fee growth)
+    let fees0Raw = 0n, fees1Raw = 0n, fees0 = 0, fees1 = 0;
+    try {
+      const feePool = new ethers.Contract(poolAddress, [
+        'function feeGrowthGlobal0X128() view returns (uint256)',
+        'function feeGrowthGlobal1X128() view returns (uint256)',
+        'function ticks(int24) view returns (uint128 liquidityGross, int128 liquidityNet, uint256 feeGrowthOutside0X128, uint256 feeGrowthOutside1X128, int56 tickCumulativeOutside, uint160 secondsPerLiquidityOutsideX128, uint32 secondsOutside, bool initialized)'
+      ], App.provider);
+      const [fg0, fg1, tickLo, tickUp] = await Promise.all([
+        feePool.feeGrowthGlobal0X128(),
+        feePool.feeGrowthGlobal1X128(),
+        feePool.ticks(positionData.tickLower),
+        feePool.ticks(positionData.tickUpper)
+      ]);
+      ({ fees0Raw, fees1Raw } = window.UniswapV3.computeUnclaimedFees({
+        currentTick: poolSlot0.tick,
+        tickLower: positionData.tickLower,
+        tickUpper: positionData.tickUpper,
+        liquidity: positionData.liquidity,
+        feeGrowthGlobal0X128: fg0,
+        feeGrowthGlobal1X128: fg1,
+        lower: { feeGrowthOutside0X128: tickLo.feeGrowthOutside0X128, feeGrowthOutside1X128: tickLo.feeGrowthOutside1X128 },
+        upper: { feeGrowthOutside0X128: tickUp.feeGrowthOutside0X128, feeGrowthOutside1X128: tickUp.feeGrowthOutside1X128 },
+        feeGrowthInside0LastX128: positionData.feeGrowthInside0LastX128,
+        feeGrowthInside1LastX128: positionData.feeGrowthInside1LastX128,
+        tokensOwed0: positionData.tokensOwed0,
+        tokensOwed1: positionData.tokensOwed1
+      }));
+      const d0 = BigInt(Math.pow(10, Number(token0Decimals)));
+      const d1 = BigInt(Math.pow(10, Number(token1Decimals)));
+      fees0 = Number(fees0Raw / d0) + Number(fees0Raw % d0) / Number(d0);
+      fees1 = Number(fees1Raw / d1) + Number(fees1Raw % d1) / Number(d1);
+    } catch (error) {
+      console.error('Failed to compute unclaimed fees for NFT', userNftId.toString(), error);
+    }
+
     userPositionInfos.push({
       userPositionInfo: userPositionInfo,
       userNftId: userNftId,
@@ -114,7 +150,18 @@ async function loadPancakeV3Contract(App, prices, chefContract, chefAddress, che
       poolTickSpacing: poolTickSpacing,
       amount0: amount0,
       amount1: amount1,
+      fees0Raw: fees0Raw,
+      fees1Raw: fees1Raw,
+      fees0: fees0,
+      fees1: fees1
     });
+  }
+  if (userPositionInfos.length > 0) {
+    for (const info of userPositionInfos) {
+      const p0 = getParameterCaseInsensitive(prices, info.token0Address)?.usd || 0;
+      const p1 = getParameterCaseInsensitive(prices, info.token1Address)?.usd || 0;
+      info.feesUsd = info.fees0 * p0 + info.fees1 * p1;
+    }
   }
   if(userPositionInfos.length <= 0){
     _print("You have no positions");
@@ -188,6 +235,10 @@ function printCakeV3ContractLinks(App, chefAbi, chefAddr, positionInfos, rewardT
     return sickle_sdk_compound_pancakev3(positionInfo, nftId, chefAddr)
   }
 
+  const sickle_harvest = async function(positionInfo, nftId) {
+    return sickle_sdk_harvest_pancakev3(positionInfo, nftId, chefAddr)
+  }
+
   for (const [index, info] of positionInfos.entries() || []) {
     const userNftId = info.userNftId;
     const pendingCakes = info.pendingCakes;
@@ -220,6 +271,11 @@ function printCakeV3ContractLinks(App, chefAbi, chefAddr, positionInfos, rewardT
         () => sickle_claim(userNftId, token0Address, token1Address)
       )
 
+      if (window.Sickle && (info.pendingCakes > 0 || info.fees0Raw > 0n || info.fees1Raw > 0n)) {
+        index < positionInfos.length -1 ? _print_inline(`|    `) : _print_inline(`     `)
+        _print_link(`Claim Rewards to BNB (${window.UniswapV3.formatTokenAmount(pendingCakes)} CAKE + ${window.UniswapV3.formatTokenAmount(info.fees0)} ${token0Symbol} + ${window.UniswapV3.formatTokenAmount(info.fees1)} ${token1Symbol} ≈ $${formatMoney(earningsUsd + info.feesUsd)})`, () => sickle_harvest(info, userNftId))
+      }
+
       if(window.Sickle){
         const positionData = info.positionData
         if (positionData && info.poolSlot0) {
@@ -235,7 +291,7 @@ function printCakeV3ContractLinks(App, chefAbi, chefAddr, positionInfos, rewardT
 
         index < positionInfos.length -1 ? _print_inline(`|    `) : _print_inline(`     `)
         _print_link(
-          `Compound, ${pendingCakes.toFixed(6)} ($${formatMoney(earningsUsd)})`,
+          `Compound (${window.UniswapV3.formatTokenAmount(pendingCakes)} CAKE + ${window.UniswapV3.formatTokenAmount(info.fees0)} ${token0Symbol} + ${window.UniswapV3.formatTokenAmount(info.fees1)} ${token1Symbol} ≈ $${formatMoney(earningsUsd + info.feesUsd)})`,
           () => sickle_compound(info, userNftId)
         )
       }
@@ -333,6 +389,22 @@ const sickle_sdk_compound_pancakev3 = async function(positionInfo, nftId, chefAd
   } catch (error) {
     console.error('Compound failed:', error);
     alert(`Compound failed: ${error.message}`);
+  }
+}
+
+const sickle_sdk_harvest_pancakev3 = async function(positionInfo, nftId, chefAddr) {
+  try {
+    const poolData = {
+      stakingAddress: chefAddr,
+      poolAddress: positionInfo.poolAddress,
+      nftManagerAddress: NFT_TOKEN_ADDRESS,
+      pid: positionInfo.pid
+    };
+    
+    await window.Sickle.harvest.harvest(poolData, nftId);
+  } catch (error) {
+    console.error('Harvest failed:', error);
+    alert(`Harvest failed: ${error.message}`);
   }
 }
 

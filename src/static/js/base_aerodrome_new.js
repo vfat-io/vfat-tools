@@ -383,6 +383,10 @@ async function printAerodromeClPool(App, info, chain = "eth", customURLs) {
     return sickle_sdk_compound_aerodrome(info, nftId)
   }
 
+  const sickle_harvest = async function (nftId) {
+    return sickle_sdk_harvest_aerodrome(info, nftId)
+  }
+
   if (info.userOwnedNftIds.length <= 0) {
     _print(`| You have no NFTs to deposit`);
   } else {
@@ -425,6 +429,10 @@ async function printAerodromeClPool(App, info, chain = "eth", customURLs) {
           `Claim rewards, ${earnings.toFixed(6)} ($${formatMoney(earningsUsd)})`,
           () => sickle_claim(info.userStakedNfts[earningsIndex])
         )
+        if (window.Sickle && earnings > 0) {
+          index < info.nftPositions.length - 1 ? _print_inline(`|    `) : _print_inline(`     `)
+          _print_link(`Claim Rewards to ETH, ${earnings.toFixed(6)} ($${formatMoney(earningsUsd)})`, () => sickle_harvest(position.nftId))
+        }
 
         if (window.Sickle) {
           const tickLower = position.tickLower;
@@ -547,6 +555,22 @@ const sickle_sdk_compound_aerodrome = async function (info, nftId) {
     } catch (error) {
       console.error('Compound failed:', error);
       alert(`Compound failed: ${error.message}`);
+    }
+  }
+}
+
+const sickle_sdk_harvest_aerodrome = async function (info, nftId) {
+  if (window.Sickle?.harvest) {
+    try {
+      const poolData = {
+        stakingAddress: info.stakingAddress,
+        poolAddress: info.stakeTokenAddress,
+        nftManagerAddress: info.nftManagerAddress ?? NFT_TOKEN_ADDRESS,
+      };
+      await window.Sickle.harvest.harvest(poolData, nftId);
+    } catch (error) {
+      console.error('Harvest failed:', error);
+      alert(`Harvest failed: ${error.message}`);
     }
   }
 }

@@ -41,7 +41,62 @@ export function getSqrtRatioAtTick(tick) {
   return BigInt(Math.floor(sqrtPriceX96))
 }
 
+/**
+ * Compute real unclaimed fees of a Uniswap V3 position (tokensOwed + pending fee growth)
+ * All inputs may be ethers BigNumber / string / number / bigint.
+ * @returns {Object} { fees0Raw: bigint, fees1Raw: bigint }
+ */
+const Q128 = 1n << 128n
+const MOD256 = 1n << 256n
+
+export function computeUnclaimedFees({
+  currentTick, tickLower, tickUpper, liquidity,
+  feeGrowthGlobal0X128, feeGrowthGlobal1X128,
+  lower, upper,
+  feeGrowthInside0LastX128, feeGrowthInside1LastX128,
+  tokensOwed0, tokensOwed1
+}) {
+  const big = (x) => BigInt(x.toString())
+  const sub = (a, b) => (((a - b) % MOD256) + MOD256) % MOD256
+  const ct = Number(currentTick), tl = Number(tickLower), tu = Number(tickUpper)
+  const liq = big(liquidity)
+
+  const fees = (global, lowerOutside, upperOutside, insideLast, owed) => {
+    const g = big(global)
+    const below = ct >= tl ? big(lowerOutside) : sub(g, big(lowerOutside))
+    const above = ct < tu ? big(upperOutside) : sub(g, big(upperOutside))
+    const inside = sub(sub(g, below), above)
+    return big(owed) + (liq * sub(inside, big(insideLast))) / Q128
+  }
+
+  return {
+    fees0Raw: fees(feeGrowthGlobal0X128, lower.feeGrowthOutside0X128, upper.feeGrowthOutside0X128, feeGrowthInside0LastX128, tokensOwed0),
+    fees1Raw: fees(feeGrowthGlobal1X128, lower.feeGrowthOutside1X128, upper.feeGrowthOutside1X128, feeGrowthInside1LastX128, tokensOwed1)
+  }
+}
+
+/**
+ * Format a token amount for labels. Amounts below 0.01 use the same compact
+ * leading-zero subscript as the Uniswap v4 pages (0.000214 -> 0.0<sub>3</sub>214),
+ * so small fees on high-value tokens (e.g. BTC) don't round to 0.0000.
+ * @returns {string} HTML
+ */
+export function formatTokenAmount(value) {
+  const n = Number(value)
+  if (!Number.isFinite(n)) return 'N/A'
+  if (n === 0) return '0'
+  if (n >= 0.01) return n.toFixed(4)
+
+  // toExponential rounds to 3 significant digits: 0.0072 -> "7.20e-3"
+  const [mantissa, exp] = n.toExponential(2).split('e')
+  if (Number(exp) >= -2) return n.toFixed(4) // rounded up to 0.01
+  const zeros = -Number(exp) - 1
+  return `0.0<sub>${zeros}</sub>${mantissa.replace('.', '')}`
+}
+
 export default {
   calculateUserLiquidity,
-  getSqrtRatioAtTick
+  getSqrtRatioAtTick,
+  computeUnclaimedFees,
+  formatTokenAmount
 }
