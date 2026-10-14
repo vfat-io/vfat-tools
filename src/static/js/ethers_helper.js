@@ -953,34 +953,53 @@ const sleep = function (milliseconds) {
 
 const chunk = (arr, n) => arr.length ? [arr.slice(0, n), ...chunk(arr.slice(n), n)] : []
 
+// Prices by CoinGecko id ({ [id]: { usd } }). DefiLlama resolves `coingecko:<id>` without
+// CoinGecko's free-tier rate limits; ids it doesn't know fall back to CoinGecko.
 const lookUpPrices = async function (id_array) {
   const prices = {}
-  for (const id_chunk of chunk(id_array, 50)) {
-    let ids = id_chunk.join('%2C')
-    let res = await $.ajax({
-      url: 'https://api.coingecko.com/api/v3/simple/price?ids=' + ids + '&vs_currencies=usd',
-      type: 'GET',
-    })
-    for (const [key, v] of Object.entries(res)) {
-      if (v.usd) prices[key] = v;
+  const ids = [...new Set(id_array)]
+  for (const id_chunk of chunk(ids, 50)) {
+    try {
+      const res = await $.ajax({
+        url: 'https://coins.llama.fi/prices/current/' + id_chunk.map(id => 'coingecko:' + id).join(','),
+        type: 'GET',
+      })
+      for (const [key, v] of Object.entries(res.coins || {})) {
+        if (v.price) prices[key.slice('coingecko:'.length)] = { usd: v.price };
+      }
+    } catch (e) {
+      console.error('DefiLlama price lookup failed', e)
     }
   }
-  return prices
-}
-
-const lookUpTokenPrices = async function (id_array) {
-  const prices = {}
-  for (const _id_chunk of chunk(id_array, 50)) {
-    while (_id_chunk.length > 0) {
-      let id_chunk = _id_chunk.splice(0, 10);
-      let ids = id_chunk.join('%2C')
-      let res = await $.ajax({
-        url: 'https://api.coingecko.com/api/v3/simple/token_price/ethereum?contract_addresses=' + ids + '&vs_currencies=usd',
+  const missing = ids.filter(id => !prices[id])
+  for (const id_chunk of chunk(missing, 50)) {
+    try {
+      const res = await $.ajax({
+        url: 'https://api.coingecko.com/api/v3/simple/price?ids=' + id_chunk.join('%2C') + '&vs_currencies=usd',
         type: 'GET',
       })
       for (const [key, v] of Object.entries(res)) {
         if (v.usd) prices[key] = v;
       }
+    } catch (e) {
+      console.error('CoinGecko price lookup failed', e)
+    }
+  }
+  return prices
+}
+
+// Ethereum token prices keyed by lowercase address ({ [address]: { usd } }).
+// Uses DefiLlama: CoinGecko's free token_price endpoint now allows one address per request.
+const lookUpTokenPrices = async function (id_array) {
+  const prices = {}
+  for (const id_chunk of chunk(id_array, 50)) {
+    const ids = id_chunk.map(a => 'ethereum:' + a).join(',')
+    const res = await $.ajax({
+      url: 'https://coins.llama.fi/prices/current/' + ids,
+      type: 'GET',
+    })
+    for (const [key, v] of Object.entries(res.coins || {})) {
+      if (v.price) prices[key.split(':')[1].toLowerCase()] = { usd: v.price };
     }
   }
   return prices

@@ -10,7 +10,6 @@ const ArbitrumTokens = [
   { "id": "dai", "symbol": "DAI", "contract": "0xd85E038593d7A098614721EaE955EC2022B9B91B" },    //this gDAI and its temporary
   { "id": "overnight-dai", "symbol": "DAI+", "contract": "0xeb8e93a0c7504bffd8a8ffa56cd754c63aaebfe8" },
   { "id": "arbinyan", "symbol": "NYAN", "contract": "0xed3fb761414da74b74f33e5c5a1f78104b188dfc" },
-  { "id": "wrapped-ether", "symbol": "WETH", "contract": "0x82aF49447D8a07e3bd95BD0d56f35241523fBab1" },
   { "id": "sushi", "symbol": "SUSHI", "contract": "0xd4d42F0b6DEF4CE0383636770eF773390d85c61A" },
   { "id": "badger-dao", "symbol": "BADGER", "contract": "0xBfa641051Ba0a0Ad1b0AcF549a89536A0D76472E" },
   { "id": "mcdex", "symbol": "MCB", "contract": "0x4e352cF164E64ADCBad318C3a1e222E9EBa4Ce42" },
@@ -214,7 +213,9 @@ const BaseTokens = [
   { "id": "oath", "symbol": "OATH", "contract": "0x00e1724885473b63bce08a9f0a52f35b0979e35a" },
   { "id": "sumer-money-suusd", "symbol": "suUSD", "contract": "0x8bf591eae535f93a242d5a954d3cde648b48a5a8" },
   { "id": "meter", "symbol": "MTRG", "contract": "0xa023e6f6b4862ea38cbe45e377abd908abab2f82" },
-  { "id": "zunami-usd", "symbol": "ZUNUSD", "contract": "0x6ef3864876424ade834a7c1be8c0cf3d71208b84" }
+  { "id": "zunami-usd", "symbol": "ZUNUSD", "contract": "0x6ef3864876424ade834a7c1be8c0cf3d71208b84" },
+  { "id": "pancakeswap-token", "symbol": "CAKE", "contract": "0x3055913c90Fcc1A6CE9a358911721eEb942013A1" },
+  { "id": "coinbase-wrapped-btc", "symbol": "cbBTC", "contract": "0xcbB7C0000aB88B473b1f5aFd9ef808440eed33Bf" }
 ];
 
 const BlastTokens = [
