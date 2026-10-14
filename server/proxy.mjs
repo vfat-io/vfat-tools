@@ -36,9 +36,33 @@ if (!SNOWTRACE_API_KEY) {
   console.warn('[proxy] SNOWTRACE_API_KEY is not set. AVAX (43114) requests will fail.')
 }
 
+// Alchemy NFT API, for chains the Etherscan free plan does not cover (e.g. Base).
+const ALCHEMY_API_KEY = process.env.ALCHEMY_API_KEY || ''
+
+// chainId -> Alchemy network subdomain. Only these chains are proxied.
+const ALCHEMY_NETWORKS = new Map([
+  ['1', 'eth-mainnet'],
+  ['10', 'opt-mainnet'],
+  ['56', 'bnb-mainnet'],
+  ['130', 'unichain-mainnet'],
+  ['137', 'polygon-mainnet'],
+  ['8453', 'base-mainnet'],
+  ['42161', 'arb-mainnet'],
+  ['43114', 'avax-mainnet'],
+])
+
+// Upper bound on Alchemy pages per request (100 NFTs each), so one call can't fan out.
+const ALCHEMY_MAX_PAGES = 10
+
 if (!POSITIONS_API_URL) {
   console.warn('[proxy] POSITIONS_API_URL is not set. /api/positions will report 501.')
 }
+
+if (!ALCHEMY_API_KEY) {
+  console.warn('[proxy] ALCHEMY_API_KEY is not set. /api/nfts will report 501.')
+}
+
+const ADDRESS_RE = /^0x[0-9a-fA-F]{40}$/u
 
 const ALLOWED = new Set([
   // What we currently need for base_uniswap_v4.js
@@ -132,6 +156,61 @@ const server = http.createServer(async (req, res) => {
         'cache-control': 'no-store',
       })
       res.end(text)
+      return
+    }
+
+    // NFT ids an owner holds in one collection, via Alchemy's NFT API.
+    // Used as the first tier of the v4 NFT lookup.
+    // Example:
+    //   /api/nfts?chainid=8453&owner=0x...&contract=0x...
+    // Response: { ids: ["123", ...] }
+    if (url.pathname === '/api/nfts') {
+      if (!ALCHEMY_API_KEY) {
+        sendJson(res, 501, { error: 'NFT lookup is not configured on this proxy' })
+        return
+      }
+
+      const chainid = String(url.searchParams.get('chainid') || '').trim()
+      const network = ALCHEMY_NETWORKS.get(chainid)
+      if (!network) {
+        sendJson(res, 400, { error: `Unsupported chainid: ${chainid}` })
+        return
+      }
+
+      const owner = url.searchParams.get('owner') || ''
+      const contract = url.searchParams.get('contract') || ''
+      if (!ADDRESS_RE.test(owner) || !ADDRESS_RE.test(contract)) {
+        sendJson(res, 400, { error: 'owner and contract must be 0x-prefixed 20-byte addresses' })
+        return
+      }
+
+      const ids = []
+      let pageKey = null
+      for (let page = 0; page < ALCHEMY_MAX_PAGES; page++) {
+        const upstream = new URL(`https://${network}.g.alchemy.com/nft/v3/${ALCHEMY_API_KEY}/getNFTsForOwner`)
+        upstream.searchParams.set('owner', owner)
+        upstream.searchParams.append('contractAddresses[]', contract)
+        upstream.searchParams.set('withMetadata', 'false')
+        upstream.searchParams.set('pageSize', '100')
+        if (pageKey) upstream.searchParams.set('pageKey', pageKey)
+
+        const upstreamResp = await fetch(upstream.toString(), { headers: { accept: 'application/json' } })
+        if (!upstreamResp.ok) {
+          // Never echo the upstream URL: it carries the key.
+          sendJson(res, 502, { error: `NFT upstream failed (${upstreamResp.status})` })
+          return
+        }
+
+        const data = await upstreamResp.json()
+        for (const nft of data?.ownedNfts || []) {
+          if (nft?.tokenId != null) ids.push(String(nft.tokenId))
+        }
+
+        pageKey = data?.pageKey
+        if (!pageKey) break
+      }
+
+      sendJson(res, 200, { ids })
       return
     }
 

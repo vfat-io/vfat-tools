@@ -161,7 +161,7 @@ async function getV4PoolSlot0(App, poolIdBytes32) {
   return uniswapV4Helpers().getV4PoolSlot0(App, poolIdBytes32, state_view_address_v4)
 }
 
-// Onchain logs first, then the indexer, then the positions service. Each tier
+// Alchemy (via our proxy) first, then the Etherscan indexer, then onchain logs. Each tier
 // covers chains the one before it cannot; see resolveOwnedErc721TokenIds.
 async function getOwnedNftIds({ App, chainId, contractAddress, ownerAddress }) {
   return uniswapV4Helpers().resolveOwnedErc721TokenIds({

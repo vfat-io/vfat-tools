@@ -169,6 +169,49 @@ export async function getOwnedErc721TokenIdsOnchain({ provider, contractAddress,
     .sort((a, b) => (a < b ? -1 : a > b ? 1 : 0))
 }
 
+export function defaultNftProxyBases() {
+  // Same shape as the Etherscan proxy: Alchemy's key stays server-side.
+  const hostname = (typeof window !== 'undefined' && window?.location?.hostname) || ''
+  if (isLocalhostHostname(hostname)) {
+    const protocol = (typeof window !== 'undefined' && window?.location?.protocol) || 'http:'
+    return [`${protocol}//${hostname}:8787/api/nfts`, 'https://vfat.tools/api/nfts']
+  }
+  return ['/api/nfts']
+}
+
+// One request per proxy base: the proxy pages through Alchemy itself and
+// returns the ids the owner currently holds in the collection.
+export async function getOwnedErc721TokenIdsViaAlchemy({ chainId, contractAddress, ownerAddress, bases }) {
+  const list = Array.isArray(bases) && bases.length > 0 ? bases : defaultNftProxyBases()
+  const search = new URLSearchParams({
+    chainid: String(Number(chainId)),
+    owner: String(ownerAddress),
+    contract: String(contractAddress),
+  })
+
+  let lastErr = null
+  for (const base of list) {
+    try {
+      const resp = await fetch(`${String(base).replace(/\?$/u, '')}?${search.toString()}`)
+      if (!resp.ok) throw new Error(`NFT request failed (${resp.status})`)
+      const data = await resp.json()
+      return (Array.isArray(data?.ids) ? data.ids : [])
+        .map(x => BigInt(String(x)))
+        .sort((a, b) => (a < b ? -1 : a > b ? 1 : 0))
+    } catch (e) {
+      lastErr = e
+    }
+  }
+
+  throw new Error(`NFT request failed: ${lastErr?.message || lastErr}`)
+}
+
+// PositionManager deployment blocks, so the onchain fallback doesn't scan from
+// genesis. Chains not listed start at 0.
+const POSITION_MANAGER_DEPLOY_BLOCKS = {
+  8453: 25350993,
+}
+
 export function defaultPositionsProxyBases() {
   // Same shape as the Etherscan proxy: the page only ever talks to vfat.tools,
   // and the proxy decides what is upstream of it.
@@ -270,45 +313,34 @@ export function chainReadProvider(App, chainId) {
   return App?.provider || null
 }
 
-// One ladder for every v4 page, best source first.
+// One ladder for every v4 page, fastest source first.
 //
-// Onchain logs are exact and need no vendor coverage, but most public RPCs cap
-// eth_getLogs well below a full-history query, so the attempt is best-effort.
-// The indexer covers chains the RPC will not, and the positions service covers
-// chains the indexer's plan will not. Callers treat an empty result as "ask the
-// user for the id" rather than as an answer.
+// Alchemy answers in one request on every chain it covers, including Base,
+// where neither Etherscan's nor Moralis's free plan works. Etherscan covers what
+// its plan allows. Onchain logs are exact but slow and most public RPCs cap
+// eth_getLogs, so they are the last resort. Callers treat an empty result as
+// "ask the user for the id" rather than as an answer.
 export async function resolveOwnedErc721TokenIds({
   App,
   chainId,
   contractAddress,
   ownerAddress,
-  walletAddress,
-  fromBlock = 0,
+  fromBlock,
   bases,
 }) {
   const tried = []
 
-  const provider = chainReadProvider(App, chainId)
-  if (provider) {
-    try {
-      const ids = await getOwnedErc721TokenIdsOnchain({
-        provider,
-        contractAddress,
-        ownerAddress,
-        fromBlock,
-      })
-      if (ids.length > 0) {
-        console.log(`Found ${ids.length} NFT(s) onchain for ${ownerAddress}`)
-        return ids
-      }
-      // An RPC that quietly clamps the block range instead of refusing it
-      // returns a short answer, not an error, and an empty one is
-      // indistinguishable from holding nothing. On a page whose job is getting
-      // funds out, prefer asking another source over reporting "none".
-      tried.push('onchain: nothing returned')
-    } catch (e) {
-      tried.push(`onchain: ${e?.message || e}`)
+  try {
+    const ids = await getOwnedErc721TokenIdsViaAlchemy({ chainId, contractAddress, ownerAddress })
+    if (ids.length > 0) {
+      console.log(`Found ${ids.length} NFT(s) via Alchemy for ${ownerAddress}`)
+      return ids
     }
+    // An unsupported chain and a genuinely empty wallet look identical here, so
+    // keep going rather than reporting "none" on one source's say-so.
+    tried.push('alchemy: nothing returned')
+  } catch (e) {
+    tried.push(`alchemy: ${e?.message || e}`)
   }
 
   try {
@@ -317,25 +349,25 @@ export async function resolveOwnedErc721TokenIds({
       console.log(`Found ${ids.length} NFT(s) via the indexer for ${ownerAddress}`)
       return ids
     }
-    // An unsupported chain and a genuinely empty wallet look identical here, so
-    // keep going rather than reporting "none" on the indexer's say-so.
     tried.push('indexer: nothing returned')
   } catch (e) {
     tried.push(`indexer: ${e?.message || e}`)
   }
 
-  try {
-    const ids = await getOwnedErc721TokenIdsFromPositions({
-      chainId,
-      contractAddress,
-      ownerAddress,
-      walletAddress,
-      bases,
-    })
-    console.log(`Found ${ids.length} NFT(s) via positions for ${ownerAddress}`)
-    return ids
-  } catch (e) {
-    tried.push(`positions: ${e?.message || e}`)
+  const provider = chainReadProvider(App, chainId)
+  if (provider) {
+    try {
+      const ids = await getOwnedErc721TokenIdsOnchain({
+        provider,
+        contractAddress,
+        ownerAddress,
+        fromBlock: fromBlock ?? POSITION_MANAGER_DEPLOY_BLOCKS[Number(chainId)] ?? 0,
+      })
+      console.log(`Found ${ids.length} NFT(s) onchain for ${ownerAddress}`)
+      return ids
+    } catch (e) {
+      tried.push(`onchain: ${e?.message || e}`)
+    }
   }
 
   console.log('No NFT source could answer:', tried.join(' | '))

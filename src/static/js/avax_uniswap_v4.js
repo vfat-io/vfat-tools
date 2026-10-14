@@ -121,7 +121,7 @@ function parseTokenIdFromNftTxRow(row) {
   return uniswapV4Helpers().parseTokenIdFromNftTxRow(row)
 }
 
-// Onchain logs first, then the indexer, then the positions service. Each tier
+// Alchemy (via our proxy) first, then the Etherscan indexer, then onchain logs. Each tier
 // covers chains the one before it cannot; see resolveOwnedErc721TokenIds.
 async function getOwnedNftIds({ App, chainId, contractAddress, ownerAddress }) {
   return uniswapV4Helpers().resolveOwnedErc721TokenIds({
