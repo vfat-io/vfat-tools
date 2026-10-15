@@ -22,7 +22,8 @@ import createErc20Sweep from './sickle_erc20_sweep'
     { name: 'Up33', address: '0x07F44c47743A2f36414A82b9F558ECFCf0EEdCEf' },
     { name: 'Ramses', address: '0x2eBd7B85a4E08D5B508b04BA147976C94afE6590' },
     { name: 'GIGA', address: '0xA79F5775b0B49E51202c48DDF03F380FaA96f641' },
-    { name: 'SwapHood', address: '0xf04DF3392066E74713ABc548da3cb7Cf5bE5ae0A' }
+    { name: 'SwapHood', address: '0xf04DF3392066E74713ABc548da3cb7Cf5bE5ae0A' },
+    { name: 'Ouro', address: '0xE19F447fA27b6c3C4fF04122652F076FfE4b8499' }
   ]
   const uniswapV4 = {
     name: 'Uniswap-V4',
