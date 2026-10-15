@@ -108,6 +108,8 @@ async function main() {
             token0: positions[0],
             token1: positions[1],
             tickSpacing: positions[2],
+            tickLower: positions[3],
+            tickUpper: positions[4],
             nftId: nftId / 1,
             liquidity: positions[5]
           })
@@ -130,6 +132,8 @@ async function main() {
         token1Address: userClPositions[i].token1,
         nftId: userClPositions[i].nftId,
         liquidity: userClPositions[i].liquidity,
+        tickLower: userClPositions[i].tickLower,
+        tickUpper: userClPositions[i].tickUpper,
         pool: userClPools[i]
       }
       userClData.push(data);
@@ -151,7 +155,9 @@ async function main() {
         token0Address: d.token0Address,
         token1Address: d.token1Address,
         nftId: d.nftId,
-        liquidity: d.liquidity
+        liquidity: d.liquidity,
+        tickLower: d.tickLower,
+        tickUpper: d.tickUpper
       }
     })
 
@@ -198,14 +204,14 @@ async function main() {
 
   async function loadClSynthetixPools(App, tokens, prices, pools, has_sickle_account, owner_sickle_address) {
     const infos = await Promise.all(pools.map(p =>
-      loadClSynthetixPoolInfo(App, tokens, prices, p.abi, p.address, p.pool, p.token0Address, p.token1Address, p.liquidity, p.nftId, has_sickle_account, owner_sickle_address)));
+      loadClSynthetixPoolInfo(App, tokens, prices, p.abi, p.address, p.pool, p.token0Address, p.token1Address, p.liquidity, p.nftId, has_sickle_account, owner_sickle_address, p.tickLower, p.tickUpper)));
     for (const i of infos) {
       await printShadowClPool(App, i, "sonic");
     }
   }
   
   async function loadClSynthetixPoolInfo(App, tokens, prices, stakingAbi, stakingAddress, poolAddress, tokenAddress0, tokenAddress1, liquidity,
-    nftId, has_sickle_account, owner_sickle_address) {
+    nftId, has_sickle_account, owner_sickle_address, tickLower, tickUpper) {
       if(stakingAddress == "0x0000000000000000000000000000000000000000"){
         const token0 = new ethcall.Contract(tokenAddress0, ERC20_ABI);
         const token1 = new ethcall.Contract(tokenAddress1, ERC20_ABI);
@@ -230,7 +236,40 @@ async function main() {
       const stakeToken = await getClToken(App, token0, token1, stakingAddress);
   
       const nftToken = new ethcall.Contract(NFT_TOKEN_ADDRESS, NFT_MANAGER_SHADOW_ABI);
-      const [totalStakedNfts] = await App.ethcallProvider.all([nftToken.balanceOf(stakingAddress)]);
+      const clPool = new ethcall.Contract(poolAddress, CL_TOKEN_ABI);
+      const [totalStakedNfts, poolSlot0, poolTickSpacing, decimals0, decimals1] = await App.ethcallProvider.all([
+        nftToken.balanceOf(stakingAddress), clPool.slot0(), clPool.tickSpacing(), token0.decimals(), token1.decimals()
+      ]);
+
+      // Gauges pay several tokens (SHADOW, xSHADOW, wS, ...) and the SDK harvest claims all of
+      // them, routing xSHADOW through x33 (no exit penalty), so value xSHADOW at the SHADOW price.
+      const [gaugeRewardTokens] = await App.ethcallProvider.all([STAKING_POOL.getRewardTokens()]);
+      const rewardCalls = gaugeRewardTokens.flatMap(t => {
+        const erc20 = new ethcall.Contract(t, ERC20_ABI);
+        return [STAKING_POOL.earned(t, nftId), erc20.symbol(), erc20.decimals()];
+      });
+      const rewardResults = await App.ethcallProvider.all(rewardCalls);
+      const pendingRewards = [];
+      let pendingRewardsUsd = 0;
+      for (let r = 0; r < gaugeRewardTokens.length; r++) {
+        const [raw, symbol, decimals] = rewardResults.slice(r * 3, r * 3 + 3);
+        if (raw <= 0) continue;
+        const amount = raw / 10 ** decimals;
+        const priceToken = gaugeRewardTokens[r].toLowerCase() === REWARD_TOKEN_2.toLowerCase() ? REWARD_TOKEN : gaugeRewardTokens[r];
+        pendingRewardsUsd += amount * (getParameterCaseInsensitive(prices, priceToken)?.usd || 0);
+        pendingRewards.push({ symbol, amount });
+      }
+
+      let amount0 = 0, amount1 = 0;
+      if (window.UniswapV3?.calculateUserLiquidity) {
+        const { liquidity0, liquidity1 } = window.UniswapV3.calculateUserLiquidity(poolSlot0.sqrtPriceX96, {
+          tickLow: tickLower,
+          tickUp: tickUpper,
+          liquidity
+        });
+        amount0 = Number(liquidity0) / 10 ** Number(decimals0);
+        amount1 = Number(liquidity1) / 10 ** Number(decimals1);
+      }
   
       const stakeTokenTicker = stakeToken.symbol0 + '-' + stakeToken.symbol1;
       const rewardTokenTicker = rewardToken.symbol;
@@ -251,7 +290,18 @@ async function main() {
         earned,
         totalStakedNfts,
         has_sickle_account,
-        nftId
+        nftId,
+        poolAddress,
+        token0Symbol: stakeToken.symbol0,
+        token1Symbol: stakeToken.symbol1,
+        amount0,
+        amount1,
+        tickLower,
+        tickUpper,
+        currentTick: poolSlot0.tick,
+        poolTickSpacing,
+        pendingRewards,
+        pendingRewardsUsd
       }
   }
   
@@ -282,11 +332,36 @@ async function main() {
         return sickle_clContract_claim(info.stakingAddress, info.nftId, App)
       }
       _print(`<a target="_blank" href="https://sonicscan.org/address/${info.stakingAddress}#code">Sonic Scan</a>`);
+      const fmt = window.UniswapV3?.formatTokenAmount ?? (n => n.toFixed(4));
+      const sdk = info.has_sickle_account && window.Sickle;
+      // Shadow gauges route trading fees to voters, so the claimable value is the gauge rewards only.
+      const poolData = {
+        stakingAddress: info.stakingAddress,
+        poolAddress: info.poolAddress,
+        nftManagerAddress: NFT_TOKEN_ADDRESS,
+        tickSpacing: Number(info.poolTickSpacing)
+      };
+      const rewardLabel = `${info.pendingRewards.map(r => `${fmt(r.amount)} ${r.symbol}`).join(' + ')} ≈ $${formatMoney(info.pendingRewardsUsd)}`;
       if(info.has_sickle_account){
+        _print(`Nft ID: ${info.nftId} (${fmt(info.amount0)} ${info.token0Symbol} + ${fmt(info.amount1)} ${info.token1Symbol})`)
         _print_link(`Withdraw NFT ID: ${info.nftId}`, sickle_unstake)
+      }
+      if(sdk){
+        _print_link(`Exit to Underlying`, async () => window.Sickle.withdraw.withdrawToUnderlying(poolData, info.nftId))
+        _print_link(`Exit to S`, async () => window.Sickle.withdraw.withdrawToToken(poolData, info.nftId))
       }
       if(info.has_sickle_account){
         _print_link(`Claim rewards, NFT ID: ${info.nftId} ${info.earned.toFixed(6)} (xSHADOW)`, sickle_claim)
+        if(sdk){
+          if(info.pendingRewards.length > 0){
+            _print_link(`Claim Rewards to S (${rewardLabel})`, async () => window.Sickle.harvest.harvest(poolData, info.nftId))
+          }
+          const isInRange = info.currentTick >= info.tickLower && info.currentTick < info.tickUpper;
+          _print_link(`Rebalance ${isInRange ? '✅ In Range' : '⚠️ Out of Range'}`, async () => window.Sickle.rebalance.rebalance(poolData, info.nftId, info.tickLower, info.tickUpper, info.currentTick))
+          if(info.pendingRewards.length > 0){
+            _print_link(`Compound (${rewardLabel})`, async () => window.Sickle.compound.compound(poolData, info.nftId))
+          }
+        }
       }else{
         _print_link(`Claim rewards, NFT ID: ${info.nftId} ${info.earned.toFixed(6)} (xSHADOW)`, claim)
       }

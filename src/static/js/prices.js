@@ -688,7 +688,8 @@ const LiskTokens = [
   { "id": "weth", "symbol": "WETH", "contract": "0x4200000000000000000000000000000000000006" },
   { "id": "lisk", "symbol": "LSK", "contract": "0xac485391eb2d7d88253a7f1ef18c37f4242d1a24" },
   { "id": "usd-coin", "symbol": "USDC", "contract": "0xf242275d3a6527d877f2c927a82d9b057609cc71" },
-  { "id": "tether", "symbol": "USDT", "contract": "0x05d032ac25d322df992303dca074ee7392c117b9" }
+  { "id": "tether", "symbol": "USDT", "contract": "0x05d032ac25d322df992303dca074ee7392c117b9" },
+  { "id": "velodrome-finance", "symbol": "XVELO", "contract": "0x7f9adfbd38b669f03d1d11000bc76b9aaea28a81" }
 ];
 
 const MetalL2Tokens = [
