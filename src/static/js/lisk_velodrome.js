@@ -7054,6 +7054,11 @@ async function main() {
 
     _print_bold(`CL POOLS`)
     _print_bold(`------------------------------------`)
+    if (window.Sickle) {
+      _print(`Note: XVELO has little liquidity on Lisk, so Exit to ETH, Claim Rewards to ETH and Compound`)
+      _print(`can fail with a price impact error while XVELO rewards are pending. Exit to Underlying and`)
+      _print(`Rebalance are not affected.`)
+    }
     _print(``)
 
     let cl = await loadClSynthetixPools(App, tokens, prices, clGauges, has_sickle_account, owner_sickle_address)
@@ -7270,7 +7275,8 @@ async function printVelodromeClPool(App, info, chain = "eth", customURLs) {
       _print(`Nft ID: ${nftId} (${fmt(position.amount0)} ${info.token0Symbol} + ${fmt(position.amount1)} ${info.token1Symbol})`);
       _print_link(`Withdraw NFT ID: ${nftId}`, () => sickle_unstake(nftId))
       if (window.Sickle) {
-        _print_link(`Exit to Underlying`, () => sickle_sdk_exitToUnderlying(info, nftId))
+        // Exiting also claims the pending XVELO, which is sent as-is.
+        _print_link(`Exit to Underlying (${fmt(position.amount0)} ${info.token0Symbol} + ${fmt(position.amount1)} ${info.token1Symbol}${earnings > 0 ? ` + ${fmt(earnings)} ${info.rewardTokenTicker}` : ''})`, () => sickle_sdk_exitToUnderlying(info, nftId))
         _print_link(`Exit to ETH`, () => sickle_sdk_exitToToken(info, nftId))
       }
       _print_link(`Claim rewards, NFT ID: ${nftId} ${earnings.toFixed(6)} ($${formatMoney(earnings * info.rewardTokenPrice)})`, () => sickle_claim(nftId))

@@ -74,6 +74,30 @@ export async function initializeWalletProvider() {
 }
 
 /**
+ * Turn a failed action into a message the user can act on.
+ *
+ * The SDK reports every quote API failure as "Api call error" and drops the response
+ * body, but keeps the request URI, so fetch it again to get the API's reason (e.g. a
+ * swap rejected for price impact, or no router for the pair). Sonic quotes can take
+ * over a minute, so give up after a short wait and fall back to the SDK message.
+ * @param {Error} error - Error thrown by an action
+ * @returns {Promise<string>} Message for the alert
+ */
+export async function describeError(error) {
+  if (error?.name !== 'SDKError' || !error.uri) return error?.message || String(error)
+  try {
+    const res = await fetch(error.uri, { signal: AbortSignal.timeout(15000) })
+    const body = await res.json()
+    if (body?.error) return `Quote API: ${body.error}`
+    if (body?.gasEstimateStatus === 'router_unavailable') return 'Quote API: no swap route is available for this position right now'
+    if (body?.gasEstimateStatus) return `Quote API: ${body.gasEstimateStatus}`
+  } catch (e) {
+    console.warn('Could not fetch quote API error details:', e)
+  }
+  return error.message
+}
+
+/**
  * Simulate a transaction before sending
  * @param {Object} provider - Wallet provider
  * @param {string} walletAddress - User's wallet address

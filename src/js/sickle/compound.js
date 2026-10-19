@@ -4,7 +4,7 @@
  * Compounds rewards back into the NFT position to increase liquidity
  */
 
-import { OperationType, initializeWalletProvider, encodeTransactionData, simulateTransaction, sendTransaction, waitForTransaction, handleTransactionReceipt, normalizeSicklePoolId } from './utils.js'
+import { OperationType, describeError, initializeWalletProvider, encodeTransactionData, simulateTransaction, sendTransaction, waitForTransaction, handleTransactionReceipt, normalizeSicklePoolId } from './utils.js'
 
 /**
  * Compound NFT position rewards back into the position
@@ -98,7 +98,7 @@ Proceed with compound?`
 
   } catch (error) {
     console.error('Compound failed:', error)
-    alert(`Error: ${error.message}`)
+    alert(`Error: ${await describeError(error)}`)
   } finally {
     hideLoading()
   }

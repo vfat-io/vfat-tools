@@ -4,7 +4,7 @@
  * Claims accrued fees from an NFT position and swaps to a target token
  */
 
-import { OperationType, initializeWalletProvider, encodeTransactionData, simulateTransaction, sendTransaction, waitForTransaction, handleTransactionReceipt, normalizeSicklePoolId } from './utils.js'
+import { OperationType, describeError, initializeWalletProvider, encodeTransactionData, simulateTransaction, sendTransaction, waitForTransaction, handleTransactionReceipt, normalizeSicklePoolId } from './utils.js'
 
 export const NATIVE_TOKEN = '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE'
 
@@ -76,7 +76,7 @@ Proceed?`
 
   } catch (error) {
     console.error('Harvest failed:', error)
-    alert(`Error: ${error.message}`)
+    alert(`Error: ${await describeError(error)}`)
   } finally {
     hideLoading()
   }

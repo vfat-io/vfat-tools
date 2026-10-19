@@ -458,8 +458,15 @@ const withdraw_nfts = async function(App, nft_manager_v4, nft_manager_address_v4
             _print_link(`Withdraw NFT`, singleSweepErc721)
 
             if(window.Sickle){
+              // Exiting also collects the unclaimed fees, so the label shows position + fees.
+              let exitLabel = `Exit to Underlying`
+              if (amount0Raw != null && amount1Raw != null) {
+                const out0 = BigInt(amount0Raw) + (earned?.fees0Raw ?? 0n)
+                const out1 = BigInt(amount1Raw) + (earned?.fees1Raw ?? 0n)
+                exitLabel += ` (${formatTokenAmountHtmlFromRaw(out0, t0?.decimals)} ${t0?.symbol || '?'} + ${formatTokenAmountHtmlFromRaw(out1, t1?.decimals)} ${t1?.symbol || '?'})`
+              }
               idx < infos.length -1 ? _print_inline(`|    `) : _print_inline(`     `)
-              _print_link(`Exit to Underlying`, exitToUnderlying)
+              _print_link(exitLabel, exitToUnderlying)
               
               idx < infos.length -1 ? _print_inline(`|    `) : _print_inline(`     `)
               _print_link(`Exit to ETH`, exitToEth)

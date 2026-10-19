@@ -4,7 +4,7 @@
  * Handles withdrawals from regular LP pools (not NFT-based)
  */
 
-import { OperationType, initializeWalletProvider, encodeTransactionData, simulateTransaction, sendTransaction, waitForTransaction, handleTransactionReceipt } from './utils.js'
+import { OperationType, describeError, initializeWalletProvider, encodeTransactionData, simulateTransaction, sendTransaction, waitForTransaction, handleTransactionReceipt } from './utils.js'
 
 /**
  * Exit LP position to a specific token
@@ -86,7 +86,7 @@ Proceed?`
 
   } catch (error) {
     console.error('Withdrawal failed:', error)
-    alert(`Error: ${error.message}`)
+    alert(`Error: ${await describeError(error)}`)
   } finally {
     hideLoading()
   }
@@ -166,7 +166,7 @@ Proceed?`
 
   } catch (error) {
     console.error('Withdrawal failed:', error)
-    alert(`Error: ${error.message}`)
+    alert(`Error: ${await describeError(error)}`)
   } finally {
     hideLoading()
   }

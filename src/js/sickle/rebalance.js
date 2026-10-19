@@ -4,7 +4,7 @@
  * Automatically rebalances NFT positions to current price while preserving the original margin settings
  */
 
-import { OperationType, initializeWalletProvider, encodeTransactionData, simulateTransaction, sendTransaction, waitForTransaction, handleTransactionReceipt, normalizeSicklePoolId } from './utils.js'
+import { OperationType, describeError, initializeWalletProvider, encodeTransactionData, simulateTransaction, sendTransaction, waitForTransaction, handleTransactionReceipt, normalizeSicklePoolId } from './utils.js'
 
 /**
  * Rebalance an NFT position to center it around the current price
@@ -144,7 +144,7 @@ Proceed with rebalance?`
 
   } catch (error) {
     console.error('Rebalance failed:', error)
-    alert(`Error: ${error.message}`)
+    alert(`Error: ${await describeError(error)}`)
   } finally {
     hideLoading()
   }

@@ -5,7 +5,7 @@
  * - Withdraw to Token: Exit position and swap to a single token (e.g., native token)
  */
 
-import { OperationType, getNativeTokenSymbol, initializeWalletProvider, encodeTransactionData, simulateTransaction, sendTransaction, waitForTransaction, handleTransactionReceipt, normalizeSicklePoolId } from './utils.js'
+import { OperationType, describeError, getNativeTokenSymbol, initializeWalletProvider, encodeTransactionData, simulateTransaction, sendTransaction, waitForTransaction, handleTransactionReceipt, normalizeSicklePoolId } from './utils.js'
 
 /**
  * Native token address (ETH) - common across all EVM chains
@@ -82,7 +82,7 @@ Proceed with exit?`
 
   } catch (error) {
     console.error('Withdrawal failed:', error)
-    alert(`Error: ${error.message}`)
+    alert(`Error: ${await describeError(error)}`)
   } finally {
     hideLoading()
   }
@@ -163,7 +163,7 @@ Proceed with Exit?`
 
   } catch (error) {
     console.error('Withdrawal failed:', error)
-    alert(`Error: ${error.message}`)
+    alert(`Error: ${await describeError(error)}`)
   } finally {
     hideLoading()
   }

@@ -4,7 +4,7 @@
  * Compounds rewards back into LP position (for regular LP pools, not NFT-based)
  */
 
-import { OperationType, initializeWalletProvider, encodeTransactionData, simulateTransaction, sendTransaction, waitForTransaction, handleTransactionReceipt } from './utils.js'
+import { OperationType, describeError, initializeWalletProvider, encodeTransactionData, simulateTransaction, sendTransaction, waitForTransaction, handleTransactionReceipt } from './utils.js'
 
 /**
  * Compound LP pool rewards back into the position
@@ -82,7 +82,7 @@ Proceed with compound?`
 
   } catch (error) {
     console.error('Compound failed:', error)
-    alert(`Error: ${error.message}`)
+    alert(`Error: ${await describeError(error)}`)
   } finally {
     hideLoading()
   }

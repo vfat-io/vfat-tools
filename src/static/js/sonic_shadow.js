@@ -347,7 +347,17 @@ async function main() {
         _print_link(`Withdraw NFT ID: ${info.nftId}`, sickle_unstake)
       }
       if(sdk){
-        _print_link(`Exit to Underlying`, async () => window.Sickle.withdraw.withdrawToUnderlying(poolData, info.nftId))
+        // Exiting also claims the gauge rewards. Matching tokens arrive merged, and xSHADOW is
+        // exited to SHADOW at its 50% penalty (seen in Rabby simulations), so count it as half.
+        const exitAmounts = new Map([[info.token0Symbol, info.amount0], [info.token1Symbol, info.amount1]]);
+        let xShadowPenalty = false;
+        for (const r of info.pendingRewards) {
+          const symbol = r.symbol === 'xSHADOW' ? 'SHADOW' : r.symbol;
+          if (r.symbol === 'xSHADOW') xShadowPenalty = true;
+          exitAmounts.set(symbol, (exitAmounts.get(symbol) || 0) + (r.symbol === 'xSHADOW' ? r.amount / 2 : r.amount));
+        }
+        const exitLabel = [...exitAmounts].map(([symbol, amount]) => `${fmt(amount)} ${symbol}`).join(' + ');
+        _print_link(`Exit to Underlying (${exitLabel}${xShadowPenalty ? ', xSHADOW exits at a 50% penalty' : ''})`, async () => window.Sickle.withdraw.withdrawToUnderlying(poolData, info.nftId))
         _print_link(`Exit to S`, async () => window.Sickle.withdraw.withdrawToToken(poolData, info.nftId))
       }
       if(info.has_sickle_account){
