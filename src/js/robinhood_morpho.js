@@ -22,7 +22,7 @@ const MorphoPage = (function () {
     usdg: '0x5fc5360D0400a0Fd4f2af552ADD042D716F1d168'
   }
   const secondsPerYear = 365 * 24 * 60 * 60
-  const registryLogBlockSpan = 20000000
+  const registryLogBlockSpan = 10000000
   const minimumRpcReadInterval = 1000
   const wad = ethers.constants.WeiPerEther
   const zeroAddress = ethers.constants.AddressZero.toLowerCase()
