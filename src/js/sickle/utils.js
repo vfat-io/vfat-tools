@@ -55,15 +55,16 @@ export function encodeTransactionData(callData) {
 
 /**
  * Initialize wallet provider and get connection details
+ * @param {boolean} requireSdk - Whether the action needs the Sickle SDK (false for locally built actions)
  * @returns {Promise<Object>} Object containing { walletAddress, provider, chainId }
  * @throws {Error} If wallet not connected or SDK not loaded
  */
-export async function initializeWalletProvider() {
+export async function initializeWalletProvider(requireSdk = true) {
   if (!window.appKit?.getAddress()) {
     throw new Error('Please connect your wallet first')
   }
 
-  if (!window.Sickle?.NftPool) {
+  if (requireSdk && !window.Sickle?.NftPool) {
     throw new Error('Sickle SDK not loaded. Please refresh the page.')
   }
 

@@ -35,7 +35,7 @@ export async function harvest(poolData, nftId, tokenAddress) {
   try {
     showLoading()
     
-    const { walletAddress, provider, chainId } = await initializeWalletProvider()
+    const { walletAddress, provider, chainId } = await initializeWalletProvider(false)
 
     console.log('💰 Harvesting NFT #' + nftId)
 
@@ -81,6 +81,10 @@ Proceed?`
 }
 
 async function sdkHarvestCallData(poolData, chainId, nftId, tokenAddress, walletAddress) {
+  if (!window.Sickle?.NftPool) {
+    throw new Error('This action needs the Sickle SDK. Open the page with ?api=true.')
+  }
+
   const nftPoolConfig = {
     chainId: chainId,
     address: poolData.stakingAddress,

@@ -23,6 +23,10 @@ export const NATIVE_TOKEN = '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE'
  * @param {number} chainId - Chain ID
  */
 function createNftPool(poolData, chainId) {
+  if (!window.Sickle?.NftPool) {
+    throw new Error('This action needs the Sickle SDK. Open the page with ?api=true.')
+  }
+
   // Create NftPool config - only include poolIndex if explicitly set (PancakeSwap V3 PID)
   const nftPoolConfig = {
     chainId: chainId,
@@ -55,7 +59,7 @@ export async function withdrawNft(poolData, nftId) {
   try {
     showLoading()
 
-    const { walletAddress, provider, chainId } = await initializeWalletProvider()
+    const { walletAddress, provider, chainId } = await initializeWalletProvider(false)
 
     console.log('💰 Withdrawing NFT #' + nftId + ' to wallet')
 
@@ -98,7 +102,7 @@ export async function withdrawToUnderlying(poolData, nftId) {
     showLoading()
     
     // Initialize wallet and provider
-    const { walletAddress, provider, chainId } = await initializeWalletProvider()
+    const { walletAddress, provider, chainId } = await initializeWalletProvider(false)
 
     console.log('💰 Withdrawing NFT #' + nftId + ' to underlying tokens')
 

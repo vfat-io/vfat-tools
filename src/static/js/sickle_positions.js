@@ -279,7 +279,7 @@ function printSicklePositions(infos, options) {
       indent()
       _print_link(`Withdraw NFT`, () => onWithdraw(info))
 
-      if (!window.Sickle || !info.sickleActions || info.poolAddress === ethers.constants.AddressZero) continue
+      if (!info.sickleActions || info.poolAddress === ethers.constants.AddressZero) continue
 
       const poolData = {
         stakingAddress: info.poolAddress,
@@ -287,6 +287,22 @@ function printSicklePositions(infos, options) {
         nftManagerAddress: info.nftManagerAddress,
         poolId: '0',
         tickSpacing: info.tickSpacing
+      }
+
+      // Without ?api=true, offer only the actions built locally (no quote API).
+      if (!window.Sickle) {
+        if (!window.SickleLocal?.canBuildLocally(parseInt(pageNetwork().chainId, 16), poolData)) continue
+        if (hasLiquidity) {
+          indent()
+          _print_link(`Exit to Underlying (${sicklePositionsAmountLabel(info, info.amount0Raw + info.fees0Raw, info.amount1Raw + info.fees1Raw, info.positionUsd === null || info.feesUsd === null ? null : info.positionUsd + info.feesUsd)})`,
+            () => window.SickleLocal.withdraw.withdrawToUnderlying(poolData, info.nftId))
+        }
+        if (hasFees) {
+          indent()
+          _print_link(`Claim Rewards to Underlying (${sicklePositionsAmountLabel(info, info.fees0Raw, info.fees1Raw, info.feesUsd)})`,
+            () => window.SickleLocal.harvest.harvestToUnderlying(poolData, info.nftId))
+        }
+        continue
       }
 
       if (hasLiquidity) {

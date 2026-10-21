@@ -287,6 +287,25 @@ $(function() {
       _print_inline(prefix);
       _print_link(`Withdraw NFT`, () => sickle_clContract_withdraw(info.nftId, App));
 
+      // Without ?api=true, offer only the actions built locally (no quote API).
+      const localPoolData = { stakingAddress: info.poolAddress, poolAddress: info.poolAddress, nftManagerAddress: NFT_TOKEN_ADDRESS };
+      if (!window.Sickle && window.SickleLocal?.canBuildLocally(42161, localPoolData)) {
+        if (info.positionData && BigInt(info.positionData.liquidity.toString()) > 0n) {
+          _print_inline(prefix);
+          _print_link(
+            `Exit to Underlying (${info.amount0.toFixed(4)} ${info.token0Symbol} + ${info.amount1.toFixed(4)} ${info.token1Symbol})`,
+            () => window.SickleLocal.withdraw.withdrawToUnderlying(localPoolData, info.nftId)
+          );
+        }
+        if (info.fees0Raw > 0n || info.fees1Raw > 0n) {
+          _print_inline(prefix);
+          _print_link(
+            `Claim Rewards to Underlying (${window.UniswapV3.formatTokenAmount(info.fees0)} ${info.token0Symbol} + ${window.UniswapV3.formatTokenAmount(info.fees1)} ${info.token1Symbol} ≈ $${formatMoney(info.feesUsd)})`,
+            () => window.SickleLocal.harvest.harvestToUnderlying(localPoolData, info.nftId)
+          );
+        }
+      }
+
       if (window.Sickle?.withdraw) {
         _print_inline(prefix);
         _print_link(
