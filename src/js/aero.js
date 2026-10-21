@@ -10,6 +10,7 @@ const AeroPage = (function () {
   const logRange = 9000
   const logSpacing = 450
   const maxLogAddresses = 15
+  const rpcConcurrency = 6
   const minStakeWindow = 3600
   const q96 = 2 ** 96
   const minPrice = 1e-12
@@ -271,17 +272,26 @@ const AeroPage = (function () {
       return call.whole ? result : result.length === 1 ? result[0] : result
     } catch (_) { return call.fallback }
   }
+  // Multicall chunks are independent, so send up to rpcConcurrency at once and keep rows in call order.
+  async function multicallRows (calls, size, block, options) {
+    const groups = []
+    for (let start = 0; start < calls.length; start += size) groups.push(calls.slice(start, start + size))
+    const results = new Array(groups.length); let next = 0
+    async function worker () {
+      while (next < groups.length) {
+        const index = next++
+        const data = multicall.encodeFunctionData('aggregate3', [groups[index].map(call => ({ target: call.target, allowFailure: true, callData: call.iface.encodeFunctionData(call.method, call.args || []) }))])
+        const raw = await rpc('eth_call', [{ to: multicallAddress, data }, block], options)
+        results[index] = multicall.decodeFunctionResult('aggregate3', raw)[0].map(callOk)
+      }
+    }
+    await Promise.all(Array.from({ length: Math.min(rpcConcurrency, groups.length) }, worker))
+    return [].concat(...results)
+  }
   async function batch (calls) {
     if (!calls.length) return []
-    const output = []
-    for (let start = 0; start < calls.length; start += 120) {
-      const group = calls.slice(start, start + 120)
-      const data = multicall.encodeFunctionData('aggregate3', [group.map(call => ({ target: call.target, allowFailure: true, callData: call.iface.encodeFunctionData(call.method, call.args || []) }))])
-      const raw = await rpc('eth_call', [{ to: multicallAddress, data }, 'latest'])
-      const rows = multicall.decodeFunctionResult('aggregate3', raw)[0]
-      rows.forEach((item, index) => { const row = callOk(item); output.push(row.ok ? decodeCall(group[index], row.data) : group[index].fallback) })
-    }
-    return output
+    const rows = await multicallRows(calls, 120, 'latest')
+    return rows.map((row, index) => row.ok ? decodeCall(calls[index], row.data) : calls[index].fallback)
   }
 
   function readSymbol (raw) {
@@ -297,13 +307,7 @@ const AeroPage = (function () {
     const list = [...new Set(values.map(lower))].filter(value => isAddress(value) && value !== zeroAddress && !state.tokens.has(value))
     if (!list.length) return
     const calls = []; list.forEach(value => calls.push({ target: value, iface: erc20, method: 'symbol', fallback: null }, { target: value, iface: erc20, method: 'decimals', fallback: null }))
-    const encoded = []
-    for (let start = 0; start < calls.length; start += 120) {
-      const group = calls.slice(start, start + 120)
-      const data = multicall.encodeFunctionData('aggregate3', [group.map(call => ({ target: call.target, allowFailure: true, callData: call.iface.encodeFunctionData(call.method, call.args || []) }))])
-      const raw = await rpc('eth_call', [{ to: multicallAddress, data }, 'latest'])
-      multicall.decodeFunctionResult('aggregate3', raw)[0].forEach(item => encoded.push(callOk(item)))
-    }
+    const encoded = await multicallRows(calls, 120, 'latest')
     const retry = []
     list.forEach(function (value, index) {
       const symbolRow = encoded[index * 2]; const decimalRow = encoded[index * 2 + 1]
@@ -635,14 +639,8 @@ const AeroPage = (function () {
   async function feeGrowthAt (pools, block) {
     const calls = []
     pools.forEach(pool => calls.push({ target: pool.address, iface: clPool, method: 'feeGrowthGlobal0X128' }, { target: pool.address, iface: clPool, method: 'feeGrowthGlobal1X128' }))
-    const output = []
-    for (let start = 0; start < calls.length; start += 80) {
-      const group = calls.slice(start, start + 80)
-      const data = multicall.encodeFunctionData('aggregate3', [group.map(call => ({ target: call.target, allowFailure: true, callData: call.iface.encodeFunctionData(call.method) }))])
-      const raw = await rpc('eth_call', [{ to: multicallAddress, data }, ethers.utils.hexValue(block)], { attempts: 4, timeout: 20000 })
-      const rows = multicall.decodeFunctionResult('aggregate3', raw)[0]
-      rows.forEach(function (item) { const row = callOk(item); try { output.push(row.ok ? clPool.decodeFunctionResult('feeGrowthGlobal0X128', row.data)[0] : null) } catch (_) { output.push(null) } })
-    }
+    const rows = await multicallRows(calls, 80, ethers.utils.hexValue(block), { attempts: 4, timeout: 20000 })
+    const output = rows.map(function (row) { try { return row.ok ? clPool.decodeFunctionResult('feeGrowthGlobal0X128', row.data)[0] : null } catch (_) { return null } })
     return pools.map((_, index) => [output[index * 2], output[index * 2 + 1]])
   }
 
