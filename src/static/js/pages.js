@@ -213,7 +213,8 @@ const main = async () => {
       ["3Jane                        ", `<a href="3jane/"             >USD3 ecosystem</a>`, "JANE               ", "https://app.3jane.xyz/supply"],
       ["StonkFun (Solana)            ", `<a href="sol/stonkfun/"      >Bonding curves</a>`, "                   ", "https://www.stonkfun.xyz"],
       ["Motoswap                     ", `<a href="motoswap/"          >Various</a>`, "MOTO               ", "https://motoswap.org/farm"],
-      ["OHMVAULT                     ", `<a href="ohmvault/"          >Staking</a>`, "OHMV               ", "https://ohmvault.xyz"]
+      ["OHMVAULT                     ", `<a href="ohmvault/"          >Staking</a>`, "OHMV               ", "https://ohmvault.xyz"],
+      ["Aero                         ", `<a href="aero/"             >V2 + CL</a>`, "Fees               ", ""]
     ].reverse()
   }
 
