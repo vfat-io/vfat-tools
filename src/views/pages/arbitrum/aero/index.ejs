@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include(`${partials}/head`, {
+  noGlobalScripts: true,
+  pageMeta: {
+    title: 'Aero Pools on Arbitrum | vfat.tools',
+    description: 'Aero pool TVL, APRs, and direct wallet actions on Arbitrum.',
+    url: 'https://vfat.tools/arbitrum/aero/',
+    image: 'https://vfat.tools/img/aero-social.png',
+    imageAlt: 'vfat.tools Aero pool table on Arbitrum.',
+    imageWidth: 1200,
+    imageHeight: 630
+  }
+}); -%>
+<body>
+<%- include(`${partials}/header_main`); -%>
+<main class="aero-page">
+<nav class="aero-mobile-nav" aria-label="Aero page navigation"><a href="../">[ Arbitrum ]</a> <a href="/">[ vfat.tools ]</a></nav>
+<pre id="aero-banner">
+*************** 👨‍🌾 UNOFFICIAL AERO CALCULATOR 👨‍🌾 ***************
+CHAIN : Arbitrum (42161)
+MODE  : Onchain RPC + direct wallet
+NOTE  : V2 pools do not enforce a minimum on mint or burn.
+****************************************************************
+</pre>
+<div class="aero-toolbar"><span id="aero-wallet-status"></span> <button id="aero-connect" class="aero-link" type="button">[ connect ]</button> <button id="aero-other-wallet" class="aero-link" type="button">[ other wallet ]</button> <button id="aero-switch" class="aero-link" type="button" hidden>[ switch to Arbitrum ]</button> <button id="aero-zero-toggle" class="aero-link" type="button">[ show 0 APR pools ]</button> <button id="aero-refresh" class="aero-link" type="button">[ refresh ]</button></div>
+<p id="aero-status" class="aero-status" role="status" hidden></p>
+<div id="aero-loading" class="aero-loading" role="status" aria-live="polite"><span id="aero-loading-spin">[....]</span> <span id="aero-loading-text">Reading Aero pools…</span></div>
+<p id="aero-summary" class="aero-summary">Aero —</p>
+<div id="aero-pools" class="aero-table-wrap" aria-live="polite"></div>
+<div id="aero-positions" class="aero-table-wrap aero-positions" aria-live="polite" hidden></div>
+<pre class="aero-footer"><%- include(`${partials}/disclaimer`); -%></pre>
+</main>
+<dialog id="aero-action-dialog" class="aero-dialog" aria-labelledby="aero-action-title"><form method="dialog" class="aero-close"><button type="submit">[ close ]</button></form><div id="aero-action-content"></div></dialog>
+<style>
+.aero-page{max-width:1500px;margin:20px 10px 50px;min-width:0}.aero-page,.aero-page *,.aero-dialog,.aero-dialog *{box-sizing:border-box;font-family:monospace}.aero-mobile-nav{display:none}#aero-banner{max-width:100%;margin:0 0 16px;overflow-wrap:anywhere;white-space:pre-wrap}.aero-toolbar,.aero-summary,.aero-status{margin:0 0 14px;font:14px/1.45 monospace;text-align:left;overflow-wrap:anywhere}.aero-link[hidden]{display:none}.aero-status[data-kind="error"]{color:#d95757}.aero-status[data-kind="success"]{color:var(--highlight-color)}.aero-link,.aero-action,.aero-dialog button{margin:0;padding:0;border:0;background:transparent;color:inherit;cursor:pointer;font:inherit;text-decoration:underline}.aero-link:hover,.aero-action:hover,.aero-dialog button:hover{color:var(--highlight-color)}.aero-link:disabled,.aero-action:disabled,.aero-dialog button:disabled{cursor:not-allowed;opacity:.45;text-decoration:none}.aero-loading{padding:0 0 14px}.aero-loading[hidden]{display:none}.aero-table-wrap{width:100%;min-width:0;overflow-x:auto}.aero-positions{margin-top:26px}.aero-positions[hidden]{display:none}.aero-table{width:100%;min-width:1040px;table-layout:fixed;border-collapse:collapse;font-size:13px}.aero-table td,.aero-table th{padding:7px 8px;border:1px solid currentColor;vertical-align:top;text-align:right;white-space:pre-line;overflow-wrap:anywhere}.aero-table th{white-space:normal}.aero-table td:first-child,.aero-table th:first-child,.aero-table td:last-child,.aero-table th:last-child{text-align:left}.aero-name,.aero-sub{display:block;max-width:280px;white-space:normal;overflow-wrap:anywhere}.aero-sub{margin-top:3px;color:var(--highlight-color);font-size:12px}.aero-actions{min-width:135px;white-space:normal!important}.aero-actions>*{display:inline-block;margin:0 8px 5px 0;white-space:nowrap}.aero-unpriced{opacity:.7}.aero-footer{margin-top:26px;max-width:100%;overflow-wrap:anywhere;white-space:pre-wrap}.aero-dialog{width:min(700px,calc(100vw - 28px));max-width:calc(100vw - 28px);padding:16px;border:1px solid currentColor;background:var(--main-background-color);color:var(--main-text-color)}.aero-dialog::backdrop{background:rgba(0,0,0,.55)}.aero-close{margin:0 0 18px;text-align:right}.aero-dialog h2{margin:0 0 8px;padding:0;border:0;color:inherit;font:bold 16px/1.4 monospace;text-align:left;overflow-wrap:anywhere}.aero-dialog p{margin:0 0 12px;font:14px/1.45 monospace;text-align:left;overflow-wrap:anywhere;white-space:pre-wrap}.aero-input{display:flex;gap:10px;align-items:center;margin:8px 0}.aero-input label{min-width:12ch}.aero-input input{width:100%;min-width:0;padding:5px 7px;border:1px solid currentColor;border-radius:0;background:transparent;color:inherit;font:16px/1.4 monospace}.aero-dialog-actions{display:flex;flex-wrap:wrap;gap:14px;margin-top:14px}@media(max-width:700px){body>div:not(.modal){display:none}.aero-page{margin:14px 8px 40px;overflow-x:hidden}.aero-mobile-nav{display:block;margin-bottom:14px}#aero-banner{font-size:11px}.aero-toolbar,.aero-summary{font-size:12px}.aero-table-wrap{overflow:visible}.aero-table{min-width:0;font-size:12px}.aero-table td,.aero-table th{padding:6px}.aero-pool-table th:nth-child(5),.aero-pool-table td:nth-child(5){display:none}.aero-position-table th:nth-child(3),.aero-position-table td:nth-child(3){display:none}.aero-name,.aero-sub{max-width:none}.aero-actions{min-width:0}.aero-actions>*{margin-right:6px}.aero-input label{min-width:9ch}}
+</style>
+<% if (filenameMap && filenameMap['aero.js']) { -%>
+<script src="<%= PP %>/js/<%= filenameMap['aero.js'] %>"></script>
+<% } else { -%>
+<script src="<%= PP %>/js/aero.js"></script>
+<% } -%>
+</body>
+</html>

@@ -77,7 +77,7 @@ module.exports = (env = {}) => {
       arc_sickle_wallet: './src/js/arc_sickle_wallet.js',
       arc_uniswap: './src/js/arc_uniswap.js',
       arc_uniswap_v4: './src/js/arc_uniswap_v4.js',
-      arc_aero: './src/js/arc_aero.js',
+      aero: './src/js/aero.js',
       ethereum_ohmvault: './src/js/ethereum_ohmvault.js',
     },
     output: {
