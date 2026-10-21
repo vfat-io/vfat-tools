@@ -44,4 +44,5 @@ async function assertClClaimUnlocked (provider, iface, chef, tx) {
   }
 }
 
-module.exports = { clChefAbi, clPoolIds, encodeClAction, assertClClaimUnlocked }
+// ES export: Babel's runtime helpers add imports to this file, so webpack treats it as an ES module.
+export { clChefAbi, clPoolIds, encodeClAction, assertClClaimUnlocked }

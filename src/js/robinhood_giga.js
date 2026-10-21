@@ -1,6 +1,6 @@
 /* GIGA on Robinhood Chain: direct registries, direct RPC, direct EIP-1193. */
 const { ethers } = require('ethers')
-const { clChefAbi, clPoolIds, encodeClAction, assertClClaimUnlocked } = require('./giga_cl')
+import { clChefAbi, clPoolIds, encodeClAction, assertClClaimUnlocked } from './giga_cl'
 
 document.addEventListener('DOMContentLoaded', function () { GigaPage.start().catch(GigaPage.fatal) })
 
