@@ -5,6 +5,7 @@
  * - NFT position management (concentrated liquidity) - NftPool
  * - LP position management (regular liquidity pools) - Pool
  * - Automated rebalancing (see rebalance.js)
+ * - Local calldata for no-swap NFT actions (see builder.js)
  */
 
 import { sickle, NftPool, Pool, QuoteAPI } from '@vfat-io/sickle-sdk'
@@ -12,8 +13,9 @@ import * as SickleUtils from './utils.js'
 import * as lpWithdraw from './lp-withdraw.js'
 import * as lpCompound from './lp-compound.js'
 import * as harvest from './harvest.js'
+import * as builder from './builder.js'
 
 /**
  * Export SDK components and utilities
  */
-export { sickle, NftPool, Pool, QuoteAPI, SickleUtils, lpWithdraw, lpCompound, harvest }
+export { sickle, NftPool, Pool, QuoteAPI, SickleUtils, lpWithdraw, lpCompound, harvest, builder }

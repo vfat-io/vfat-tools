@@ -300,6 +300,9 @@ function printSicklePositions(infos, options) {
 
       if (hasFees) {
         indent()
+        _print_link(`Claim Rewards to Underlying (${sicklePositionsAmountLabel(info, info.fees0Raw, info.fees1Raw, info.feesUsd)})`,
+          () => window.Sickle.harvest.harvestToUnderlying(poolData, info.nftId))
+        indent()
         _print_link(`Claim Rewards to ${nativeSymbol} (${sicklePositionsAmountLabel(info, info.fees0Raw, info.fees1Raw, info.feesUsd)})`,
           () => window.Sickle.harvest.harvest(poolData, info.nftId))
       }

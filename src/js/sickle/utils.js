@@ -11,6 +11,7 @@ import { customNetworks } from '../config.js'
  */
 export const OperationType = {
   REBALANCE: 'rebalance',
+  WITHDRAW_NFT: 'withdraw_nft',
   WITHDRAW_UNDERLYING: 'withdraw_underlying',
   WITHDRAW_TOKEN: 'withdraw_token',
   COMPOUND: 'compound',
@@ -22,6 +23,7 @@ export const OperationType = {
  */
 const SUCCESS_MESSAGES = {
   [OperationType.REBALANCE]: 'Position rebalanced successfully!',
+  [OperationType.WITHDRAW_NFT]: 'NFT withdrawn to your wallet!',
   [OperationType.WITHDRAW_UNDERLYING]: 'Position withdrawn to underlying tokens!',
   [OperationType.WITHDRAW_TOKEN]: 'Position withdrawn and swapped to target token!',
   [OperationType.COMPOUND]: 'Rewards compounded successfully!',

@@ -305,6 +305,11 @@ $(function() {
       if (window.Sickle?.harvest && (info.fees0Raw > 0n || info.fees1Raw > 0n)) {
         _print_inline(prefix);
         _print_link(
+          `Claim Rewards to Underlying (${window.UniswapV3.formatTokenAmount(info.fees0)} ${info.token0Symbol} + ${window.UniswapV3.formatTokenAmount(info.fees1)} ${info.token1Symbol} ≈ $${formatMoney(info.feesUsd)})`,
+          () => sickle_sdk_harvestToUnderlying_uniswap(info)
+        );
+        _print_inline(prefix);
+        _print_link(
           `Claim Rewards to ETH (${window.UniswapV3.formatTokenAmount(info.fees0)} ${info.token0Symbol} + ${window.UniswapV3.formatTokenAmount(info.fees1)} ${info.token1Symbol} ≈ $${formatMoney(info.feesUsd)})`,
           () => sickle_sdk_harvest_uniswap(info)
         );
@@ -410,6 +415,20 @@ $(function() {
     } catch (error) {
       console.error('Compound failed:', error);
       alert(`Compound failed: ${error.message}`);
+    }
+  }
+  const sickle_sdk_harvestToUnderlying_uniswap = async function(info) {
+    try {
+      const poolData = {
+        stakingAddress: info.poolAddress,
+        poolAddress: info.poolAddress,
+        nftManagerAddress: NFT_TOKEN_ADDRESS,
+      };
+
+      await window.Sickle.harvest.harvestToUnderlying(poolData, info.nftId);
+    } catch (error) {
+      console.error('Harvest failed:', error);
+      alert(`Harvest failed: ${error.message}`);
     }
   }
   const sickle_sdk_harvest_uniswap = async function(info) {
