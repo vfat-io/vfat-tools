@@ -1,43 +1,68 @@
 // Shared helpers for the generic <chain>/sickle pages: list the CL position NFTs
 // held by a Sickle, resolve each one's pool and print the per-NFT Sickle actions.
 //
-// Families (both use the UniV3 positions() layout; word 4 is fee or tickSpacing):
-//   univ3      - Uniswap V3 and forks (Pancake, Sushi, BaseSwap, ...): factory.getPool(t0, t1, fee)
-//   slipstream - Aerodrome/Velodrome Slipstream: factory.getPool(t0, t1, tickSpacing)
+// Each family describes its NFT manager positions() and pool ticks() layouts as word
+// indexes (both are decoded as raw 32-byte words), how to find the pool, and which
+// pool getters hold the price and fee growth.
+//   univ3           - Uniswap V3 and forks (Pancake, Sushi, ...): getPool(t0, t1, fee)
+//   ramsesV2        - Ramses V2 / "CL NFP" forks (Pharaoh, Nile, Cleopatra): as univ3, ticks() adds boosted liquidity words
+//   slipstream      - Aerodrome/Velodrome Slipstream and forks: getPool(t0, t1, tickSpacing)
+//   ramsesV3        - Ramses V3 / Shadow / Pharaoh V3 / Etherex: factory from deployer(), getPool(t0, t1, tickSpacing)
+//   algebraV1       - Algebra 1.x (Camelot, QuickSwap, ...): poolByPair(t0, t1)
+//   algebraIntegral - Algebra Integral (Thena, Blackhole, Kittenswap, ...): poolByPair / customPoolByPair(deployer, t0, t1)
+//   algebraIntegralNoDeployer - Integral pools behind an older manager without the deployer field (SwapX, Nest)
 
 const SICKLE_POSITIONS_JSON_ABI = (fragments) =>
   JSON.parse(new ethers.utils.Interface(fragments).format(ethers.utils.FormatTypes.json))
+
+const SICKLE_POSITIONS_WORDS_ABI = (name, inputs, count) => SICKLE_POSITIONS_JSON_ABI([
+  `function ${name}(${inputs}) view returns (${Array.from({ length: count }, (_, i) => `uint256 w${i}`).join(', ')})`
+])
+
+const SICKLE_POSITIONS_UNISWAP_POOL = { state: 'slot0', feeGrowth0: 'feeGrowthGlobal0X128', feeGrowth1: 'feeGrowthGlobal1X128' }
+const SICKLE_POSITIONS_ALGEBRA_POOL = { state: 'globalState', feeGrowth0: 'totalFeeGrowth0Token', feeGrowth1: 'totalFeeGrowth1Token' }
+const SICKLE_POSITIONS_V3_LAYOUT = { words: 12, token0: 2, token1: 3, key: 4, tickLower: 5, tickUpper: 6, liquidity: 7, feeInside0: 8, feeInside1: 9, owed0: 10, owed1: 11 }
+
+const SICKLE_POSITIONS_FAMILIES = {
+  univ3: { position: SICKLE_POSITIONS_V3_LAYOUT, pool: SICKLE_POSITIONS_UNISWAP_POOL, tickFeeOutside0: 2, getPool: 'function getPool(address, address, uint24) view returns (address)' },
+  ramsesV2: { position: SICKLE_POSITIONS_V3_LAYOUT, pool: SICKLE_POSITIONS_UNISWAP_POOL, tickFeeOutside0: 4, getPool: 'function getPool(address, address, uint24) view returns (address)' },
+  slipstream: { position: SICKLE_POSITIONS_V3_LAYOUT, pool: SICKLE_POSITIONS_UNISWAP_POOL, tickFeeOutside0: 3, getPool: 'function getPool(address, address, int24) view returns (address)' },
+  ramsesV3: {
+    position: { words: 10, token0: 0, token1: 1, key: 2, tickLower: 3, tickUpper: 4, liquidity: 5, feeInside0: 6, feeInside1: 7, owed0: 8, owed1: 9 },
+    pool: SICKLE_POSITIONS_UNISWAP_POOL, tickFeeOutside0: 2, factoryFromDeployer: true, getPool: 'function getPool(address, address, int24) view returns (address)'
+  },
+  algebraV1: {
+    position: { words: 11, token0: 2, token1: 3, tickLower: 4, tickUpper: 5, liquidity: 6, feeInside0: 7, feeInside1: 8, owed0: 9, owed1: 10 },
+    pool: SICKLE_POSITIONS_ALGEBRA_POOL, tickFeeOutside0: 2, getPool: 'function poolByPair(address, address) view returns (address)'
+  },
+  algebraIntegralNoDeployer: {
+    position: { words: 11, token0: 2, token1: 3, tickLower: 4, tickUpper: 5, liquidity: 6, feeInside0: 7, feeInside1: 8, owed0: 9, owed1: 10 },
+    pool: SICKLE_POSITIONS_ALGEBRA_POOL, tickFeeOutside0: 4, getPool: 'function poolByPair(address, address) view returns (address)'
+  },
+  algebraIntegral: {
+    position: { ...SICKLE_POSITIONS_V3_LAYOUT, key: undefined, deployer: 4 },
+    pool: SICKLE_POSITIONS_ALGEBRA_POOL, tickFeeOutside0: 4, getPool: 'function poolByPair(address, address) view returns (address)',
+    getCustomPool: 'function customPoolByPair(address, address, address) view returns (address)'
+  }
+}
 
 const SICKLE_POSITIONS_NFT_MANAGER_ABI = SICKLE_POSITIONS_JSON_ABI([
   'function balanceOf(address owner) view returns (uint256)',
   'function tokenOfOwnerByIndex(address owner, uint256 index) view returns (uint256)',
   'function factory() view returns (address)',
-  'function positions(uint256 tokenId) view returns (uint96 nonce, address operator, address token0, address token1, int24 feeOrTickSpacing, int24 tickLower, int24 tickUpper, uint128 liquidity, uint256 feeGrowthInside0LastX128, uint256 feeGrowthInside1LastX128, uint128 tokensOwed0, uint128 tokensOwed1)'
+  'function deployer() view returns (address)'
 ])
 
-const SICKLE_POSITIONS_FACTORY_ABI = {
-  univ3: SICKLE_POSITIONS_JSON_ABI(['function getPool(address, address, uint24) view returns (address)']),
-  slipstream: SICKLE_POSITIONS_JSON_ABI(['function getPool(address, address, int24) view returns (address)'])
-}
-
-// slot0 is truncated to the fields every family shares; ticks() differs (Slipstream adds stakedLiquidityNet).
-const SICKLE_POSITIONS_POOL_COMMON = [
-  'function slot0() view returns (uint160 sqrtPriceX96, int24 tick)',
-  'function tickSpacing() view returns (int24)',
-  'function feeGrowthGlobal0X128() view returns (uint256)',
-  'function feeGrowthGlobal1X128() view returns (uint256)'
-]
-const SICKLE_POSITIONS_POOL_ABI = {
-  univ3: SICKLE_POSITIONS_JSON_ABI([...SICKLE_POSITIONS_POOL_COMMON,
-    'function ticks(int24) view returns (uint128 liquidityGross, int128 liquidityNet, uint256 feeGrowthOutside0X128, uint256 feeGrowthOutside1X128)']),
-  slipstream: SICKLE_POSITIONS_JSON_ABI([...SICKLE_POSITIONS_POOL_COMMON,
-    'function ticks(int24) view returns (uint128 liquidityGross, int128 liquidityNet, int128 stakedLiquidityNet, uint256 feeGrowthOutside0X128, uint256 feeGrowthOutside1X128)'])
-}
+const SICKLE_POSITIONS_DEPLOYER_ABI = SICKLE_POSITIONS_JSON_ABI(['function RamsesV3Factory() view returns (address)'])
 
 const SICKLE_POSITIONS_ERC20_ABI = SICKLE_POSITIONS_JSON_ABI([
   'function symbol() view returns (string)',
   'function decimals() view returns (uint8)'
 ])
+
+const sicklePositionsAddress = (word) => ethers.utils.getAddress('0x' + ethers.BigNumber.from(word).toHexString().slice(2).padStart(40, '0').slice(-40))
+const sicklePositionsInt = (word) => ethers.BigNumber.from(word).fromTwos(256).toNumber()
+const sicklePositionsBig = (word) => BigInt(word.toString())
 
 // Prices for tokens missing from the chain's price list, from DefiLlama ("<llamaChain>:<address>").
 async function sicklePositionsMissingPrices(llamaChain, addresses, prices) {
@@ -57,7 +82,7 @@ async function sicklePositionsMissingPrices(llamaChain, addresses, prices) {
   }
 }
 
-// managers: [{ name, address, family }]; llamaChain: DefiLlama chain key (e.g. "base") for unlisted tokens.
+// managers: [{ name, address, family, actions? }] (actions: false = quote API has no strategy, Withdraw only); llamaChain: DefiLlama chain key (e.g. "base") for unlisted tokens.
 // Returns one info object per NFT held by the Sickle.
 async function loadSicklePositions(App, sickleAddress, managers, prices, llamaChain) {
   const nftManagers = managers.map(m => new ethcall.Contract(m.address, SICKLE_POSITIONS_NFT_MANAGER_ABI))
@@ -65,20 +90,60 @@ async function loadSicklePositions(App, sickleAddress, managers, prices, llamaCh
 
   const held = []
   managers.forEach((manager, i) => {
-    for (let j = 0; j < Number(balances[i]); j++) held.push({ manager, contract: nftManagers[i], index: j })
+    for (let j = 0; j < Number(balances[i]); j++) held.push({ manager, index: j, contract: nftManagers[i] })
   })
   if (held.length === 0) return []
 
   const nftIds = await App.ethcallProvider.all(held.map(h => h.contract.tokenOfOwnerByIndex(sickleAddress, h.index)))
-  const positions = await App.ethcallProvider.all(held.map((h, i) => h.contract.positions(nftIds[i])))
+  return loadSicklePositionsByIds(App, held.map((h, i) => ({ manager: h.manager, nftId: nftIds[i] })), prices, llamaChain)
+}
 
-  const usedManagers = [...new Set(held.map(h => h.manager))]
-  const factories = await App.ethcallProvider.all(usedManagers.map(m => nftManagers[managers.indexOf(m)].factory()))
-  const factoryOf = new Map(usedManagers.map((m, i) => [m, factories[i]]))
+// entries: [{ manager, nftId }]
+async function loadSicklePositionsByIds(App, entries, prices, llamaChain) {
+  const familyOf = (manager) => SICKLE_POSITIONS_FAMILIES[manager.family]
 
-  const pools = await App.ethcallProvider.all(held.map((h, i) =>
-    new ethcall.Contract(factoryOf.get(h.manager), SICKLE_POSITIONS_FACTORY_ABI[h.manager.family])
-      .getPool(positions[i].token0, positions[i].token1, positions[i].feeOrTickSpacing)))
+  const positions = (await App.ethcallProvider.all(entries.map(e => {
+    const layout = familyOf(e.manager).position
+    return new ethcall.Contract(e.manager.address, SICKLE_POSITIONS_WORDS_ABI('positions', 'uint256', layout.words)).positions(e.nftId)
+  }))).map((words, i) => {
+    const layout = familyOf(entries[i].manager).position
+    return {
+      token0: sicklePositionsAddress(words[layout.token0]),
+      token1: sicklePositionsAddress(words[layout.token1]),
+      key: layout.key !== undefined ? sicklePositionsInt(words[layout.key]) : undefined,
+      deployer: layout.deployer !== undefined ? sicklePositionsAddress(words[layout.deployer]) : undefined,
+      tickLower: sicklePositionsInt(words[layout.tickLower]),
+      tickUpper: sicklePositionsInt(words[layout.tickUpper]),
+      liquidity: sicklePositionsBig(words[layout.liquidity]),
+      feeInside0: words[layout.feeInside0],
+      feeInside1: words[layout.feeInside1],
+      owed0: words[layout.owed0],
+      owed1: words[layout.owed1]
+    }
+  })
+
+  // Pool factory per manager: factory(), or deployer().RamsesV3Factory() for Ramses V3.
+  const usedManagers = [...new Set(entries.map(e => e.manager))]
+  const factoryOf = new Map()
+  const managerFactories = await App.ethcallProvider.all(usedManagers.map(m => {
+    const c = new ethcall.Contract(m.address, SICKLE_POSITIONS_NFT_MANAGER_ABI)
+    return familyOf(m).factoryFromDeployer ? c.deployer() : c.factory()
+  }))
+  const deployerManagers = usedManagers.filter(m => familyOf(m).factoryFromDeployer)
+  const deployerFactories = await App.ethcallProvider.all(deployerManagers.map(m =>
+    new ethcall.Contract(managerFactories[usedManagers.indexOf(m)], SICKLE_POSITIONS_DEPLOYER_ABI).RamsesV3Factory()))
+  usedManagers.forEach((m, i) => factoryOf.set(m, managerFactories[i]))
+  deployerManagers.forEach((m, i) => factoryOf.set(m, deployerFactories[i]))
+
+  const pools = await App.ethcallProvider.all(entries.map((e, i) => {
+    const family = familyOf(e.manager)
+    const pos = positions[i]
+    if (pos.deployer && pos.deployer !== ethers.constants.AddressZero) {
+      return new ethcall.Contract(factoryOf.get(e.manager), SICKLE_POSITIONS_JSON_ABI([family.getCustomPool])).customPoolByPair(pos.deployer, pos.token0, pos.token1)
+    }
+    const factory = new ethcall.Contract(factoryOf.get(e.manager), SICKLE_POSITIONS_JSON_ABI([family.getPool]))
+    return pos.key !== undefined ? factory.getPool(pos.token0, pos.token1, pos.key) : factory.poolByPair(pos.token0, pos.token1)
+  }))
 
   const tokenAddresses = [...new Set(positions.flatMap(p => [p.token0, p.token1]))]
   const tokenCalls = tokenAddresses.flatMap(t => {
@@ -88,16 +153,18 @@ async function loadSicklePositions(App, sickleAddress, managers, prices, llamaCh
   const tokenData = await App.ethcallProvider.all(tokenCalls)
   const tokenInfo = new Map(tokenAddresses.map((t, i) => [t, { symbol: tokenData[2 * i], decimals: Number(tokenData[2 * i + 1]) }]))
 
-  const infos = await Promise.all(held.map(async (h, i) => {
+  const infos = await Promise.all(entries.map(async (e, i) => {
+    const family = familyOf(e.manager)
     const pos = positions[i]
     const poolAddress = pools[i]
     const t0 = tokenInfo.get(pos.token0)
     const t1 = tokenInfo.get(pos.token1)
     const info = {
-      managerName: h.manager.name,
-      nftManagerAddress: h.manager.address,
-      family: h.manager.family,
-      nftId: nftIds[i].toString(),
+      managerName: e.manager.name,
+      nftManagerAddress: e.manager.address,
+      family: e.manager.family,
+      sickleActions: e.manager.actions !== false,
+      nftId: e.nftId.toString(),
       poolAddress,
       token0Address: pos.token0,
       token1Address: pos.token1,
@@ -105,8 +172,8 @@ async function loadSicklePositions(App, sickleAddress, managers, prices, llamaCh
       token1Symbol: t1.symbol,
       token0Decimals: t0.decimals,
       token1Decimals: t1.decimals,
-      tickLower: Number(pos.tickLower),
-      tickUpper: Number(pos.tickUpper),
+      tickLower: pos.tickLower,
+      tickUpper: pos.tickUpper,
       liquidity: pos.liquidity,
       amount0Raw: 0n,
       amount1Raw: 0n,
@@ -116,35 +183,49 @@ async function loadSicklePositions(App, sickleAddress, managers, prices, llamaCh
     if (poolAddress === ethers.constants.AddressZero) return info
 
     try {
-      const pool = new ethcall.Contract(poolAddress, SICKLE_POSITIONS_POOL_ABI[h.manager.family])
-      const [slot0, tickSpacing, g0, g1, lower, upper] = await App.ethcallProvider.all([
-        pool.slot0(), pool.tickSpacing(), pool.feeGrowthGlobal0X128(), pool.feeGrowthGlobal1X128(),
+      const tickWords = family.tickFeeOutside0 + 2
+      const pool = new ethcall.Contract(poolAddress, [
+        ...SICKLE_POSITIONS_WORDS_ABI(family.pool.state, '', 2),
+        ...SICKLE_POSITIONS_JSON_ABI([
+          'function tickSpacing() view returns (int24)',
+          `function ${family.pool.feeGrowth0}() view returns (uint256)`,
+          `function ${family.pool.feeGrowth1}() view returns (uint256)`
+        ]),
+        ...SICKLE_POSITIONS_WORDS_ABI('ticks', 'int24', tickWords)
+      ])
+      const [state, tickSpacing, g0, g1, lower, upper] = await App.ethcallProvider.all([
+        pool[family.pool.state](), pool.tickSpacing(), pool[family.pool.feeGrowth0](), pool[family.pool.feeGrowth1](),
         pool.ticks(pos.tickLower), pool.ticks(pos.tickUpper)
       ])
-      info.currentTick = Number(slot0.tick)
+      const sqrtPriceX96 = state[0]
+      info.currentTick = sicklePositionsInt(state[1])
       info.tickSpacing = Number(tickSpacing)
 
-      if (BigInt(pos.liquidity.toString()) > 0n) {
-        const { liquidity0, liquidity1 } = window.UniswapV3.calculateUserLiquidity(slot0.sqrtPriceX96, {
+      if (pos.liquidity > 0n) {
+        const { liquidity0, liquidity1 } = window.UniswapV3.calculateUserLiquidity(sqrtPriceX96, {
           tickLower: pos.tickLower, tickUpper: pos.tickUpper, liquidity: pos.liquidity
         })
         info.amount0Raw = liquidity0
         info.amount1Raw = liquidity1
       }
 
+      const outside = (tick) => ({
+        feeGrowthOutside0X128: tick[family.tickFeeOutside0],
+        feeGrowthOutside1X128: tick[family.tickFeeOutside0 + 1]
+      })
       const { fees0Raw, fees1Raw } = window.UniswapV3.computeUnclaimedFees({
-        currentTick: slot0.tick,
+        currentTick: info.currentTick,
         tickLower: pos.tickLower,
         tickUpper: pos.tickUpper,
         liquidity: pos.liquidity,
         feeGrowthGlobal0X128: g0,
         feeGrowthGlobal1X128: g1,
-        lower: { feeGrowthOutside0X128: lower.feeGrowthOutside0X128, feeGrowthOutside1X128: lower.feeGrowthOutside1X128 },
-        upper: { feeGrowthOutside0X128: upper.feeGrowthOutside0X128, feeGrowthOutside1X128: upper.feeGrowthOutside1X128 },
-        feeGrowthInside0LastX128: pos.feeGrowthInside0LastX128,
-        feeGrowthInside1LastX128: pos.feeGrowthInside1LastX128,
-        tokensOwed0: pos.tokensOwed0,
-        tokensOwed1: pos.tokensOwed1
+        lower: outside(lower),
+        upper: outside(upper),
+        feeGrowthInside0LastX128: pos.feeInside0,
+        feeGrowthInside1LastX128: pos.feeInside1,
+        tokensOwed0: pos.owed0,
+        tokensOwed1: pos.owed1
       })
       info.fees0Raw = fees0Raw
       info.fees1Raw = fees1Raw
@@ -197,7 +278,7 @@ function printSicklePositions(infos, options) {
       indent()
       _print_link(`Withdraw NFT`, () => onWithdraw(info))
 
-      if (!window.Sickle || info.poolAddress === ethers.constants.AddressZero) continue
+      if (!window.Sickle || !info.sickleActions || info.poolAddress === ethers.constants.AddressZero) continue
 
       const poolData = {
         stakingAddress: info.poolAddress,

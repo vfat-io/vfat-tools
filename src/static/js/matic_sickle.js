@@ -9,6 +9,11 @@ const SWEEP_ADDR = "0x64F4354023BfF20d73B5774E01Ed80D59c7403CE";
 const SLIPSTREAM_NFT_MANAGER_ADDRESS_1 = "0x8eF88E4c7CfbbaC1C163f7eddd4B578792201de6";
 const SLIPSTREAM_NFT_MANAGER_ADDRESS_2 = "0xC36442b4a4522E871399CD717aBDD847Ab11FE88";
 
+const POLYGON_SICKLE_NFT_MANAGERS = [
+  { name: "QUICKSWAP", address: SLIPSTREAM_NFT_MANAGER_ADDRESS_1, family: "algebraV1" },
+  { name: "UNISWAP", address: SLIPSTREAM_NFT_MANAGER_ADDRESS_2, family: "univ3" },
+];
+
 async function main() {
     const App = await init_ethers();
 
@@ -26,81 +31,24 @@ async function main() {
       _print_bold(`Your Sickle Address: ${sickleAddress}`);
       _print("");
 
-      const SLIPSTREAM_NFT_MANAGER_1 = new ethcall.Contract(SLIPSTREAM_NFT_MANAGER_ADDRESS_1, SLIPSTREAM_NFT_MANAGER_ABI);  // QUICKSWAP
-      const SLIPSTREAM_NFT_MANAGER_2 = new ethcall.Contract(SLIPSTREAM_NFT_MANAGER_ADDRESS_2, SLIPSTREAM_NFT_MANAGER_ABI);  // UNISWAP
+      const prices = await getMaticPrices();
+      const infos = await loadSicklePositions(App, sickleAddress, POLYGON_SICKLE_NFT_MANAGERS, prices, "polygon");
 
-      const [nfts_1] = await App.ethcallProvider.all([SLIPSTREAM_NFT_MANAGER_1.balanceOf(sickleAddress)]);
-      const [nfts_2] = await App.ethcallProvider.all([SLIPSTREAM_NFT_MANAGER_2.balanceOf(sickleAddress)]);
+      printSicklePositions(infos, {
+        nativeSymbol: "POL",
+        onWithdraw: info => single_sweep_nfts_721(App, info.nftId, info.nftManagerAddress)
+      });
 
-      if(nfts_1 / 1 > 0){
-        let nft_ids = [];
-        let tokens = [];
-        let token_ids = "";
+      // One bulk sweep link per NFT manager
+      for (const manager of POLYGON_SICKLE_NFT_MANAGERS) {
+        const managerInfos = infos.filter(info => info.nftManagerAddress === manager.address);
+        if (managerInfos.length === 0) continue;
 
-        const sweepErc721 = async function() {
-          return sweep_nfts_721(App, nft_ids, tokens)
-        }
-
-        _print_bold("QUICKSWAP nfts");
-
-        for(let i = 0; i < nfts_1; i++){
-          const nft_id = await App.ethcallProvider.all([SLIPSTREAM_NFT_MANAGER_1.tokenOfOwnerByIndex(sickleAddress, i)]) / 1;
-          nft_ids.push(nft_id);
-          tokens.push(SLIPSTREAM_NFT_MANAGER_ADDRESS_1);
-        }
-
-        for(let i = 0; i < nft_ids.length; i++){
-          token_ids += `${nft_ids[i]} - `;
-        }
-
-        for(let i = 0; i < nft_ids.length; i++){
-
-          const singleSweepErc721 = async function() {
-            return single_sweep_nfts_721(App, nft_ids[i], tokens[i])
-          }
-
-          _print_link(`Withdraw QUICKSWAP erc721 token: ${nft_ids[i]}`, singleSweepErc721);
-
-        }
-
-        _print_link(`Withdraw all QUICKSWAP erc721 tokens: ${token_ids}`, sweepErc721);
-        _print("");
+        const nft_ids = managerInfos.map(info => info.nftId);
+        const tokens = managerInfos.map(() => manager.address);
+        _print_link(`Withdraw all ${manager.name} erc721 tokens: ${nft_ids.join(" - ")}`, () => sweep_nfts_721(App, nft_ids, tokens));
       }
-
-      if(nfts_2 / 1 > 0){
-        let nft_ids = [];
-        let tokens = [];
-        let token_ids = "";
-
-        const sweepErc721 = async function() {
-          return sweep_nfts_721(App, nft_ids, tokens)
-        }
-
-        _print_bold("UNISWAP nfts");
-
-        for(let i = 0; i < nfts_2; i++){
-          const nft_id = await App.ethcallProvider.all([SLIPSTREAM_NFT_MANAGER_2.tokenOfOwnerByIndex(sickleAddress, i)]) / 1;
-          nft_ids.push(nft_id);
-          tokens.push(SLIPSTREAM_NFT_MANAGER_ADDRESS_2);
-        }
-
-        for(let i = 0; i < nft_ids.length; i++){
-          token_ids += `${nft_ids[i]} - `;
-        }
-
-        for(let i = 0; i < nft_ids.length; i++){
-
-          const singleSweepErc721 = async function() {
-            return single_sweep_nfts_721(App, nft_ids[i], tokens[i])
-          }
-
-          _print_link(`Withdraw UNISWAP erc721 token: ${nft_ids[i]}`, singleSweepErc721);
-
-        }
-
-        _print_link(`Withdraw all UNISWAP erc721 tokens: ${token_ids}`, sweepErc721);
-        _print("");
-      }
+      _print("");
     }
 
     hideLoading();

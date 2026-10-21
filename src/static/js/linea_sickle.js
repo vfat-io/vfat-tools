@@ -11,174 +11,50 @@ $(function() {
   const SLIPSTREAM_NFT_MANAGER_ADDRESS_3 = "0xA04A9F0a961f8fcc4a94bCF53e676B236cBb2F58";
   const SLIPSTREAM_NFT_MANAGER_ADDRESS_4 = "0x4615C383F85D0a2BbED973d83ccecf5CB7121463";
   
+  const LINEA_SICKLE_NFT_MANAGERS = [
+    { name: "PANCAKESWAP", address: SLIPSTREAM_NFT_MANAGER_ADDRESS_1, family: "univ3" },
+    { name: "NILE", address: SLIPSTREAM_NFT_MANAGER_ADDRESS_2, family: "ramsesV2" },
+    { name: "ETHEREX", address: SLIPSTREAM_NFT_MANAGER_ADDRESS_3, family: "ramsesV3" },
+    { name: "UNISWAP", address: SLIPSTREAM_NFT_MANAGER_ADDRESS_4, family: "univ3" },
+  ];
+
   async function main() {
       const App = await init_ethers();
-  
+
       _print(`Initialized ${App.YOUR_ADDRESS}\n`);
       _print("Reading smart contracts...\n");
-  
+
       const SICKLE_FACTORY_ADDR = "0x0F6aBc6B808B377d6AeD8dA1FAD5E135C99C81a3";
       const SICKLE_FACTORY = new ethcall.Contract(SICKLE_FACTORY_ADDR, SICKLE_FACTORY_ABI);
-  
+
       const [sickleAddress] = await App.ethcallProvider.all([SICKLE_FACTORY.sickles(App.YOUR_ADDRESS)]);
-  
+
       if(sickleAddress === "0x0000000000000000000000000000000000000000"){
         _print_bold("You dont have a sickle account");
       }else{
         _print_bold(`Your Sickle Address: ${sickleAddress}`);
         _print("");
-  
-        const SLIPSTREAM_NFT_MANAGER_1 = new ethcall.Contract(SLIPSTREAM_NFT_MANAGER_ADDRESS_1, SLIPSTREAM_NFT_MANAGER_ABI);  // PANCAKESWAP
-        const SLIPSTREAM_NFT_MANAGER_2 = new ethcall.Contract(SLIPSTREAM_NFT_MANAGER_ADDRESS_2, SLIPSTREAM_NFT_MANAGER_ABI);  // NILE
-        const SLIPSTREAM_NFT_MANAGER_3 = new ethcall.Contract(SLIPSTREAM_NFT_MANAGER_ADDRESS_3, SLIPSTREAM_NFT_MANAGER_ABI);  // ETHEREX
-        const SLIPSTREAM_NFT_MANAGER_4 = new ethcall.Contract(SLIPSTREAM_NFT_MANAGER_ADDRESS_4, SLIPSTREAM_NFT_MANAGER_ABI);  // UNISWAP
-  
-        const [nfts_1] = await App.ethcallProvider.all([SLIPSTREAM_NFT_MANAGER_1.balanceOf(sickleAddress)]);
-        const [nfts_2] = await App.ethcallProvider.all([SLIPSTREAM_NFT_MANAGER_2.balanceOf(sickleAddress)]);
-        const [nfts_3] = await App.ethcallProvider.all([SLIPSTREAM_NFT_MANAGER_3.balanceOf(sickleAddress)]);
-        const [nfts_4] = await App.ethcallProvider.all([SLIPSTREAM_NFT_MANAGER_4.balanceOf(sickleAddress)]);
-  
-        if(nfts_1 / 1 > 0){
-          let nft_ids = [];
-          let tokens = [];
-          let token_ids = "";
-  
-          const sweepErc721 = async function() {
-            return sweep_nfts_721(App, nft_ids, tokens)
-          }
-  
-          _print_bold("PANCAKESWAP nfts");
-  
-          for(let i = 0; i < nfts_1; i++){
-            const nft_id = await App.ethcallProvider.all([SLIPSTREAM_NFT_MANAGER_1.tokenOfOwnerByIndex(sickleAddress, i)]) / 1;
-            nft_ids.push(nft_id);
-            tokens.push(SLIPSTREAM_NFT_MANAGER_ADDRESS_1);
-          }
-  
-          for(let i = 0; i < nft_ids.length; i++){
-            token_ids += `${nft_ids[i]} - `;
-          }
-  
-          for(let i = 0; i < nft_ids.length; i++){
-  
-            const singleSweepErc721 = async function() {
-              return single_sweep_nfts_721(App, nft_ids[i], tokens[i])
-            }
-  
-            _print_link(`Withdraw PANCAKESWAP erc721 token: ${nft_ids[i]}`, singleSweepErc721);
-  
-          }
-  
-          _print_link(`Withdraw all PANCAKESWAP erc721 tokens: ${token_ids}`, sweepErc721);
-          _print("");
-        }
-  
-        if(nfts_2 / 1 > 0){
-          let nft_ids = [];
-          let tokens = [];
-          let token_ids = "";
-  
-          const sweepErc721 = async function() {
-            return sweep_nfts_721(App, nft_ids, tokens)
-          }
-  
-          _print_bold("NILE nfts");
-  
-          for(let i = 0; i < nfts_2; i++){
-            const nft_id = await App.ethcallProvider.all([SLIPSTREAM_NFT_MANAGER_2.tokenOfOwnerByIndex(sickleAddress, i)]) / 1;
-            nft_ids.push(nft_id);
-            tokens.push(SLIPSTREAM_NFT_MANAGER_ADDRESS_2);
-          }
-  
-          for(let i = 0; i < nft_ids.length; i++){
-            token_ids += `${nft_ids[i]} - `;
-          }
-  
-          for(let i = 0; i < nft_ids.length; i++){
-  
-            const singleSweepErc721 = async function() {
-              return single_sweep_nfts_721(App, nft_ids[i], tokens[i])
-            }
-  
-            _print_link(`Withdraw NILE erc721 token: ${nft_ids[i]}`, singleSweepErc721);
-  
-          }
-  
-          _print_link(`Withdraw all NILE erc721 tokens: ${token_ids}`, sweepErc721);
-          _print("");
-        }
 
-        if(nfts_3 / 1 > 0){
-          let nft_ids = [];
-          let tokens = [];
-          let token_ids = "";
-  
-          const sweepErc721 = async function() {
-            return sweep_nfts_721(App, nft_ids, tokens)
-          }
-  
-          _print_bold("ETHEREX nfts");
-  
-          for(let i = 0; i < nfts_3; i++){
-            const nft_id = await App.ethcallProvider.all([SLIPSTREAM_NFT_MANAGER_3.tokenOfOwnerByIndex(sickleAddress, i)]) / 1;
-            nft_ids.push(nft_id);
-            tokens.push(SLIPSTREAM_NFT_MANAGER_ADDRESS_3);
-          }
-  
-          for(let i = 0; i < nft_ids.length; i++){
-            token_ids += `${nft_ids[i]} - `;
-          }
-  
-          for(let i = 0; i < nft_ids.length; i++){
-  
-            const singleSweepErc721 = async function() {
-              return single_sweep_nfts_721(App, nft_ids[i], tokens[i])
-            }
-  
-            _print_link(`Withdraw ETHEREX erc721 token: ${nft_ids[i]}`, singleSweepErc721);
-  
-          }
-  
-          _print_link(`Withdraw all ETHEREX erc721 tokens: ${token_ids}`, sweepErc721);
-          _print("");
-        }
+        const prices = await getLineaPrices();
+        const infos = await loadSicklePositions(App, sickleAddress, LINEA_SICKLE_NFT_MANAGERS, prices, "linea");
 
-        if(nfts_4 / 1 > 0){
-          let nft_ids = [];
-          let tokens = [];
-          let token_ids = "";
-  
-          const sweepErc721 = async function() {
-            return sweep_nfts_721(App, nft_ids, tokens)
-          }
-  
-          _print_bold("UNISWAP nfts");
-  
-          for(let i = 0; i < nfts_4; i++){
-            const nft_id = await App.ethcallProvider.all([SLIPSTREAM_NFT_MANAGER_4.tokenOfOwnerByIndex(sickleAddress, i)]) / 1;
-            nft_ids.push(nft_id);
-            tokens.push(SLIPSTREAM_NFT_MANAGER_ADDRESS_4);
-          }
-  
-          for(let i = 0; i < nft_ids.length; i++){
-            token_ids += `${nft_ids[i]} - `;
-          }
-  
-          for(let i = 0; i < nft_ids.length; i++){
-  
-            const singleSweepErc721 = async function() {
-              return single_sweep_nfts_721(App, nft_ids[i], tokens[i])
-            }
-  
-            _print_link(`Withdraw UNISWAP erc721 token: ${nft_ids[i]}`, singleSweepErc721);
-  
-          }
-  
-          _print_link(`Withdraw all UNISWAP erc721 tokens: ${token_ids}`, sweepErc721);
-          _print("");
+        printSicklePositions(infos, {
+          nativeSymbol: "ETH",
+          onWithdraw: info => single_sweep_nfts_721(App, info.nftId, info.nftManagerAddress)
+        });
+
+        // One bulk sweep link per NFT manager
+        for (const manager of LINEA_SICKLE_NFT_MANAGERS) {
+          const managerInfos = infos.filter(info => info.nftManagerAddress === manager.address);
+          if (managerInfos.length === 0) continue;
+
+          const nft_ids = managerInfos.map(info => info.nftId);
+          const tokens = managerInfos.map(() => manager.address);
+          _print_link(`Withdraw all ${manager.name} erc721 tokens: ${nft_ids.join(" - ")}`, () => sweep_nfts_721(App, nft_ids, tokens));
         }
+        _print("");
       }
-  
+
       hideLoading();
     }
   
