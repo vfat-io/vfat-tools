@@ -252,7 +252,8 @@ async function loadSicklePositionsByIds(App, entries, prices, llamaChain) {
 
 function sicklePositionsAmountLabel(info, raw0, raw1, usd) {
   const fmt = (raw, decimals) => window.UniswapV3.formatTokenAmount(Number(raw) / 10 ** decimals)
-  const usdSuffix = usd ? ` ≈ $${formatMoney(usd)}` : ''
+  // Labels are HTML, so "<" is escaped
+  const usdSuffix = !usd ? '' : usd < 0.01 ? ' &lt; $0.01' : ` ≈ $${formatMoney(usd)}`
   return `${fmt(raw0, info.token0Decimals)} ${info.token0Symbol} + ${fmt(raw1, info.token1Decimals)} ${info.token1Symbol}${usdSuffix}`
 }
 
