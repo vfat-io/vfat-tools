@@ -14,7 +14,6 @@ const AeroPage = (function () {
   const q96 = 2 ** 96
   const minPrice = 1e-12
   const maxPrice = 1e12
-  const minimumLiquidity = ethers.BigNumber.from(1000)
   const maxUint128 = ethers.BigNumber.from(2).pow(128).sub(1)
   const zeroAddress = '0x0000000000000000000000000000000000000000'
 
@@ -100,8 +99,7 @@ const AeroPage = (function () {
     'function decimals() view returns (uint8)',
     'function balanceOf(address) view returns (uint256)',
     'function allowance(address,address) view returns (uint256)',
-    'function approve(address,uint256) returns (bool)',
-    'function transferFrom(address,address,uint256) returns (bool)'
+    'function approve(address,uint256) returns (bool)'
   ])
   const erc20Bytes = new ethers.utils.Interface(['function symbol() view returns (bytes32)'])
   const v2Pool = new ethers.utils.Interface([
@@ -165,8 +163,7 @@ const AeroPage = (function () {
     'function multicall(bytes[]) payable returns (bytes[])'
   ])
   const multicall = new ethers.utils.Interface([
-    'function aggregate3((address target,bool allowFailure,bytes callData)[] calls) payable returns ((bool success,bytes returnData)[])',
-    'function aggregate((address target,bytes callData)[] calls) payable returns (uint256 blockNumber,bytes[] returnData)'
+    'function aggregate3((address target,bool allowFailure,bytes callData)[] calls) payable returns ((bool success,bytes returnData)[])'
   ])
   const v2SwapTopic = ethers.utils.id('Swap(address,address,uint256,uint256,uint256,uint256)')
   const clSwapTopic = ethers.utils.id('Swap(address,address,int256,int256,uint160,uint128,int24)')
@@ -580,18 +577,20 @@ const AeroPage = (function () {
       } else if (pool.empty) pool.feeUsd = 0
       else pool.feeUsd = NaN
       if (pool.gauge && !pool.empty) {
-        const projected = pool.projectedShare || ethers.constants.Zero
-        const last = pool.lastShare || ethers.constants.Zero
-        const delta = projected.gte(last) ? projected.sub(last) : null
+        const projected = pool.projectedShare
+        const last = pool.lastShare
+        const known = projected != null && last != null
+        const delta = known && projected.gte(last) ? projected.sub(last) : null
         const window = state.headTime && pool.lastSettlement ? state.headTime - pool.lastSettlement : 0
         const receipt = state.receipt ? token(state.receipt) : null
         const price = state.receipt ? state.prices.get(lower(state.receipt)) : NaN
         let stakedTvl = NaN
         if (finite(pool.tvl) && pool.tvl > 0) {
           if (pool.kind === 'v2' && pool.gaugeSupply && pool.totalSupply && !pool.totalSupply.isZero()) stakedTvl = pool.tvl * Number(pool.gaugeSupply.toString()) / Number(pool.totalSupply.toString())
-          if (pool.kind === 'cl' && pool.liquidity && !pool.liquidity.isZero()) stakedTvl = pool.tvl * Number(pool.stakedLiquidity.toString()) / Number(pool.liquidity.toString())
+          if (pool.kind === 'cl' && pool.liquidity && !pool.liquidity.isZero() && pool.stakedLiquidity) stakedTvl = pool.tvl * Number(pool.stakedLiquidity.toString()) / Number(pool.liquidity.toString())
         }
-        if (!delta || delta.isZero()) pool.emApr = 0
+        if (!known || delta == null) pool.emApr = NaN
+        else if (delta.isZero()) pool.emApr = 0
         else if (window >= minStakeWindow && receipt && receipt.decimals != null && finite(price) && finite(stakedTvl) && stakedTvl > 0) {
           const tokens = amountNum(delta, receipt.decimals)
           pool.emApr = tokens * price * secondsPerYear / window / stakedTvl * 100
@@ -736,7 +735,7 @@ const AeroPage = (function () {
       addCell(row, percent(pool.emApr), finite(pool.emApr) ? '' : 'aero-unpriced')
       addCell(row, poolType(pool))
       const actions = e('td', { className: 'aero-actions' })
-      actions.appendChild(button('add', function () { return openAdd(pool) }))
+      if (pool.kind === 'cl') actions.appendChild(button('add', function () { return openAdd(pool) }, !pool.manager))
       row.appendChild(actions); body.appendChild(row)
     })
     table.appendChild(body); host.appendChild(table)
@@ -782,11 +781,11 @@ const AeroPage = (function () {
       const price0 = state.prices.get(lower(pool.token0)); const price1 = state.prices.get(lower(pool.token1))
       const row = e('tr'); const name = e('td')
       const label = position.deferred ? 'emissions' : position.kind === 'cl' ? '#' + position.id.toString() : 'LP'
-      const where = position.deferred ? 'claimable' : position.kind === 'cl' ? (position.staked ? 'staked' : 'wallet') : ((position.staked && !position.staked.isZero() ? 'staked ' + formatAmount(position.staked, 18) : 'wallet'))
+      const where = position.deferred || position.claimOnly ? 'claimable' : position.kind === 'cl' ? (position.staked ? 'staked' : 'wallet') : ((position.staked && !position.staked.isZero() ? 'staked ' + formatAmount(position.staked, 18) : 'wallet'))
       append(name, e('span', { className: 'aero-name', text: poolName(pool) }), e('span', { className: 'aero-sub', text: label + ' · ' + where }))
       row.appendChild(name)
       let amountText = '—'
-      if (position.deferred) amountText = '—'
+      if (position.deferred || position.claimOnly) amountText = '—'
       else if (position.kind === 'cl') {
         const amounts = position.liquidity.isZero() ? [0, 0] : positionAmounts(position)
         const value = finite(price0) && finite(price1) ? amounts[0] * price0 + amounts[1] * price1 : NaN
@@ -808,8 +807,10 @@ const AeroPage = (function () {
       if (position.earned && !position.earned.isZero() && receipt) rewardLines.push(formatAmount(position.earned, receipt.decimals) + ' ' + receipt.symbol)
       addCell(row, rewardLines.length ? rewardLines.join('\n') : '—')
       const actions = e('td', { className: 'aero-actions' })
-      if (position.deferred) {
+      if (position.deferred || position.claimOnly) {
+        if (position.kind === 'v2') actions.appendChild(button('claim fees', function () { return sendTx(pool.address, v2Pool.encodeFunctionData('claimFees', [state.account]), 'Claim fees') }, (!position.fees0 || position.fees0.isZero()) && (!position.fees1 || position.fees1.isZero())))
         if (pool.gauge) actions.appendChild(button('claim', function () { return sendGauge(pool.gauge, gaugeAbi.encodeFunctionData('claimEmissions', [state.account, state.account]), 'Claim') }, !position.earned || position.earned.isZero()))
+        if (position.claimOnly) actions.appendChild(button('exit', function () { return exitPosition(position) }))
         row.appendChild(actions); body.appendChild(row); return
       }
       if (position.kind === 'cl') {
@@ -821,7 +822,6 @@ const AeroPage = (function () {
       } else {
         actions.appendChild(button('stake', function () { return openV2Stake(position) }, !pool.gauge || !position.wallet || position.wallet.isZero()))
         actions.appendChild(button('unstake', function () { return sendGauge(pool.gauge, gaugeAbi.encodeFunctionData('withdraw', [position.staked]), 'Unstake') }, !position.staked || position.staked.isZero()))
-        actions.appendChild(button('remove', function () { return openV2Remove(position) }, !position.wallet || position.wallet.isZero()))
         actions.appendChild(button('claim fees', function () { return sendTx(pool.address, v2Pool.encodeFunctionData('claimFees', [state.account]), 'Claim fees') }, (!position.fees0 || position.fees0.isZero()) && (!position.fees1 || position.fees1.isZero())))
       }
       if (pool.gauge) actions.appendChild(button('claim', function () { return sendGauge(pool.gauge, gaugeAbi.encodeFunctionData('claimEmissions', [state.account, state.account]), 'Claim') }, !position.earned || position.earned.isZero()))
@@ -844,14 +844,7 @@ const AeroPage = (function () {
   function trimDecimal (value, decimals) { if (!Number.isFinite(value) || value <= 0) return ''; return value.toFixed(Math.min(decimals, 8)).replace(/\.?0+$/, '') }
   function slippageBps (action) { const value = Number(action.slippage); if (!Number.isFinite(value) || value < 0 || value > 50) throw new Error('Enter slippage between 0 and 50.'); return Math.round(value * 100) }
   function applySlippage (amount, bps) { return amount.mul(10000 - bps).div(10000) }
-  function sqrtBn (value) {
-    if (value.lt(0)) throw new Error('Bad amount.')
-    if (value.lt(2)) return value
-    let x0 = value; let x1 = value.div(2).add(1)
-    while (x1.lt(x0)) { x0 = x1; x1 = value.div(x0).add(x0).div(2) }
-    return x0
-  }
-  function dialogField (host, label, key, value, onInput) { const row = e('div', { className: 'aero-input' }); const input = e('input'); input.type = 'text'; input.inputMode = 'decimal'; input.autocomplete = 'off'; input.value = value || ''; input.dataset.key = key; input.addEventListener('input', function () { if (!state.action) return; state.action[key] = input.value; if (onInput) onInput(input.value) }); append(row, e('label', { text: label }), input); host.appendChild(row); return input }
+  function dialogField (host, label, key, value, onInput) { const row = e('div', { className: 'aero-input' }); const input = e('input'); input.type = 'text'; input.inputMode = 'decimal'; input.autocomplete = 'off'; input.value = value || ''; input.dataset.key = key; input.addEventListener('input', function () { if (!state.action) return; state.action[key] = input.value; if (onInput) onInput(input.value); refreshApprovals() }); append(row, e('label', { text: label }), input); host.appendChild(row); return input }
   function dialogButtonRow (host, buttons) { const row = e('div', { className: 'aero-dialog-actions' }); buttons.forEach(item => row.appendChild(button(item[0], item[1], item[2]))); host.appendChild(row) }
   function showDialog () { const dialog = byId('aero-action-dialog'); if (dialog && !dialog.open) dialog.showModal() }
   function closeDialog () { const dialog = byId('aero-action-dialog'); if (dialog && dialog.open) dialog.close(); state.action = null; state.actionInfo = null }
@@ -890,25 +883,23 @@ const AeroPage = (function () {
     else { const liquidity = value * (10 ** t1.decimals) / (sp - sa); action.amount0 = trimDecimal(liquidity * (sb - sp) / (sp * sb) / (10 ** t0.decimals), t0.decimals); setInput('amount0', action.amount0) }
     renderPreview()
   }
-  function pairV2 (side) {
-    const action = state.action; if (!action) return
-    const pool = action.pool
-    if (!pool.reserve0 || pool.reserve0.isZero() || !pool.reserve1 || pool.reserve1.isZero()) return
-    const t0 = token(pool.token0); const t1 = token(pool.token1)
-    try {
-      if (side === 0) { const amount0 = parseAmount(action.amount0, t0, t0.symbol, true); const amount1 = amount0.mul(pool.reserve1).div(pool.reserve0); action.amount1 = ethers.utils.formatUnits(amount1, t1.decimals); setInput('amount1', action.amount1) }
-      else { const amount1 = parseAmount(action.amount1, t1, t1.symbol, true); const amount0 = amount1.mul(pool.reserve0).div(pool.reserve1); action.amount0 = ethers.utils.formatUnits(amount0, t0.decimals); setInput('amount0', action.amount0) }
-    } catch (_) { return }
-    renderPreview()
+  function positionManager (position) {
+    const manager = (position && position.manager) || (position && position.pool && position.pool.manager)
+    if (!manager) throw new Error('Position manager unavailable.')
+    return manager
+  }
+  function writeManager (action) {
+    const manager = (action.position && action.position.manager) || (action.pool && action.pool.manager)
+    if (!manager) throw new Error('Position manager unavailable.')
+    return manager
   }
 
   async function openAdd (pool) {
     requireWallet()
-    if (pool.kind === 'cl') {
-      if (!pool.manager) throw new Error('Position manager unavailable.')
-      const range = defaultRange(pool)
-      state.action = { kind: 'mint', pool, amount0: '', amount1: '', slippage: '0.5', tickLower: String(range[0]), tickUpper: String(range[1]) }
-    } else state.action = { kind: 'v2-add', pool, amount0: '', amount1: '', slippage: '0.5' }
+    if (pool.kind !== 'cl') throw new Error('This pool has no router for mint or burn.')
+    if (!pool.manager) throw new Error('Position manager unavailable.')
+    const range = defaultRange(pool)
+    state.action = { kind: 'mint', pool, amount0: '', amount1: '', slippage: '0.5', tickLower: String(range[0]), tickUpper: String(range[1]) }
     state.actionInfo = null; renderAction(); showDialog(); await loadActionInfo()
   }
   async function openPosition (position, mode) {
@@ -921,16 +912,10 @@ const AeroPage = (function () {
     state.action = { kind: 'v2-stake', pool: position.pool, position, amount: formatAmount(position.wallet, 18), slippage: '0.5' }
     state.actionInfo = null; renderAction(); showDialog(); await loadActionInfo()
   }
-  async function openV2Remove (position) {
-    requireWallet()
-    state.action = { kind: 'v2-remove', pool: position.pool, position, percent: '100', slippage: '0.5' }
-    state.actionInfo = null; renderAction(); showDialog()
-  }
-
   async function loadActionInfo () {
     if (!state.action || !state.account || !correctChain()) { state.actionInfo = null; renderAction(); return }
     const pool = state.action.pool
-    const spender = pool.kind === 'cl' ? pool.manager : multicallAddress
+    const spender = pool.kind === 'cl' ? pool.manager : null
     if (!spender) { state.actionInfo = {}; renderAction(); return }
     const values = await batch([
       { target: pool.token0, iface: erc20, method: 'balanceOf', args: [state.account], fallback: null },
@@ -960,30 +945,13 @@ const AeroPage = (function () {
       const expected1 = ethers.BigNumber.from(BigInt(Math.floor(expected[1] * 0.999999)).toString())
       const min0 = applySlippage(expected0, bps); const min1 = applySlippage(expected1, bps)
       const calls = [managerAbi.encodeFunctionData('decreaseLiquidity', [[action.position.id, liquidity, min0, min1, deadline()]]), managerAbi.encodeFunctionData('collect', [[action.position.id, state.account, maxUint128, maxUint128]])]
-      return { tx: { to: pool.manager, data: managerAbi.encodeFunctionData('multicall', [calls]) }, min0, min1, preview: 'MIN : ' + formatAmount(min0, t0.decimals) + ' ' + t0.symbol + ' · ' + formatAmount(min1, t1.decimals) + ' ' + t1.symbol }
-    }
-    if (action.kind === 'v2-remove') {
-      const pct = Number(action.percent); if (!(pct > 0 && pct <= 100)) throw new Error('Enter remove % between 0 and 100.')
-      const wallet = action.position.wallet || ethers.constants.Zero
-      const liquidity = pct === 100 ? wallet : wallet.mul(Math.round(pct * 100)).div(10000)
-      if (liquidity.isZero() || !pool.totalSupply || pool.totalSupply.isZero()) throw new Error('Nothing to remove.')
-      const out0 = liquidity.mul(pool.reserve0).div(pool.totalSupply); const out1 = liquidity.mul(pool.reserve1).div(pool.totalSupply)
-      return { liquidity, min0: applySlippage(out0, bps), min1: applySlippage(out1, bps), preview: 'OUT : ' + formatAmount(out0, t0.decimals) + ' ' + t0.symbol + ' · ' + formatAmount(out1, t1.decimals) + ' ' + t1.symbol + '\nMIN : ' + formatAmount(applySlippage(out0, bps), t0.decimals) + ' ' + t0.symbol + ' · ' + formatAmount(applySlippage(out1, bps), t1.decimals) + ' ' + t1.symbol }
+      return { tx: { to: writeManager(action), data: managerAbi.encodeFunctionData('multicall', [calls]) }, min0, min1, preview: 'MIN : ' + formatAmount(min0, t0.decimals) + ' ' + t0.symbol + ' · ' + formatAmount(min1, t1.decimals) + ' ' + t1.symbol }
     }
     if (action.kind === 'v2-stake') {
       const amount = parseAmount(action.amount, { decimals: 18 }, 'LP amount', false)
       return { amount, preview: 'STAKE : ' + formatAmount(amount, 18) + ' LP' }
     }
-    if (action.kind === 'v2-add') {
-      const amount0 = parseAmount(action.amount0, t0, t0.symbol, true); const amount1 = parseAmount(action.amount1, t1, t1.symbol, true)
-      if (amount0.isZero() && amount1.isZero()) throw new Error('Enter an amount.')
-      if ((!pool.totalSupply || pool.totalSupply.isZero()) && (amount0.isZero() || amount1.isZero())) throw new Error('Enter both tokens.')
-      let quoted
-      if (!pool.totalSupply || pool.totalSupply.isZero()) { const root = sqrtBn(amount0.mul(amount1)); quoted = root.gt(minimumLiquidity) ? root.sub(minimumLiquidity) : ethers.constants.Zero }
-      else { const l0 = pool.reserve0.isZero() ? ethers.constants.MaxUint256 : amount0.mul(pool.totalSupply).div(pool.reserve0); const l1 = pool.reserve1.isZero() ? ethers.constants.MaxUint256 : amount1.mul(pool.totalSupply).div(pool.reserve1); quoted = l0.lt(l1) ? l0 : l1 }
-      const minLp = applySlippage(quoted, bps)
-      return { amount0, amount1, minLp, preview: 'LP  : ' + formatAmount(quoted, 18) + '\nMIN : ' + formatAmount(minLp, 18) + ' LP' }
-    }
+    if (action.kind !== 'mint' && action.kind !== 'increase') throw new Error('Action unavailable.')
     if (!validRange(action)) throw new Error('Ticks must be multiples of ' + pool.tickSpacing + '.')
     const amount0 = parseAmount(action.amount0, t0, t0.symbol, true); const amount1 = parseAmount(action.amount1, t1, t1.symbol, true)
     if (amount0.isZero() && amount1.isZero()) throw new Error('Enter an amount.')
@@ -993,8 +961,9 @@ const AeroPage = (function () {
     const min0 = applySlippage(ethers.BigNumber.from(BigInt(Math.floor(Math.min(expected[0], Number(amount0.toString())))).toString()), bps)
     const min1 = applySlippage(ethers.BigNumber.from(BigInt(Math.floor(Math.min(expected[1], Number(amount1.toString())))).toString()), bps)
     const preview = 'MIN : ' + formatAmount(min0, t0.decimals) + ' ' + t0.symbol + ' · ' + formatAmount(min1, t1.decimals) + ' ' + t1.symbol
-    if (action.kind === 'increase') return { tx: { to: pool.manager, data: managerAbi.encodeFunctionData('increaseLiquidity', [[action.position.id, amount0, amount1, min0, min1, deadline()]]) }, amount0, amount1, min0, min1, preview }
-    return { tx: { to: pool.manager, data: managerAbi.encodeFunctionData('mint', [[pool.token0, pool.token1, pool.tickSpacing, Number(action.tickLower), Number(action.tickUpper), amount0, amount1, min0, min1, state.account, deadline(), 0]]) }, amount0, amount1, min0, min1, preview }
+    const manager = writeManager(action)
+    if (action.kind === 'increase') return { tx: { to: manager, data: managerAbi.encodeFunctionData('increaseLiquidity', [[action.position.id, amount0, amount1, min0, min1, deadline()]]) }, amount0, amount1, min0, min1, preview }
+    return { tx: { to: manager, data: managerAbi.encodeFunctionData('mint', [[pool.token0, pool.token1, pool.tickSpacing, Number(action.tickLower), Number(action.tickUpper), amount0, amount1, min0, min1, state.account, deadline(), 0]]) }, amount0, amount1, min0, min1, preview }
   }
 
   function renderAction () {
@@ -1003,11 +972,11 @@ const AeroPage = (function () {
     const active = document.activeElement && host.contains(document.activeElement) && document.activeElement.dataset ? document.activeElement.dataset.key : null
     host.textContent = ''
     const pool = action.pool; const t0 = token(pool.token0); const t1 = token(pool.token1)
-    const title = action.kind === 'mint' || action.kind === 'v2-add' ? 'Add · ' : action.kind === 'increase' ? 'Add #' + action.position.id + ' · ' : action.kind === 'decrease' ? 'Remove #' + action.position.id + ' · ' : action.kind === 'v2-stake' ? 'Stake · ' : 'Remove · '
+    const title = action.kind === 'mint' ? 'Add · ' : action.kind === 'increase' ? 'Add #' + action.position.id + ' · ' : action.kind === 'decrease' ? 'Remove #' + action.position.id + ' · ' : action.kind === 'v2-stake' ? 'Stake · ' : 'Remove · '
     host.appendChild(e('h2', { id: 'aero-action-title', text: title + poolName(pool) + ' · ' + poolType(pool) }))
     if (pool.kind === 'cl') host.appendChild(e('p', { text: 'PRICE : ' + formatNum(poolSpot(pool)) + ' ' + t1.symbol + '/' + t0.symbol }))
     if (state.actionInfo && state.actionInfo.balance0) host.appendChild(e('p', { text: 'WALLET : ' + formatAmount(state.actionInfo.balance0, t0.decimals) + ' ' + t0.symbol + ' · ' + formatAmount(state.actionInfo.balance1 || 0, t1.decimals) + ' ' + t1.symbol }))
-    if (action.kind === 'decrease' || action.kind === 'v2-remove') {
+    if (action.kind === 'decrease') {
       dialogField(host, 'Remove %', 'percent', action.percent, renderPreview); dialogField(host, 'Slippage %', 'slippage', action.slippage, renderPreview)
       host.appendChild(e('p', { id: 'aero-preview' })); renderPreview(); dialogButtonRow(host, [['remove', submitAction]])
     } else if (action.kind === 'v2-stake') {
@@ -1015,15 +984,9 @@ const AeroPage = (function () {
     } else {
       if (action.kind === 'mint') { dialogField(host, 'Tick lower', 'tickLower', action.tickLower, function () { renderRangeText(); pairCl(0) }); dialogField(host, 'Tick upper', 'tickUpper', action.tickUpper, function () { renderRangeText(); pairCl(0) }); host.appendChild(e('p', { id: 'aero-range' })); renderRangeText() }
       else if (action.kind === 'increase') host.appendChild(e('p', { text: 'RANGE : ' + formatNum(tickPrice(pool, action.position.tickLower)) + ' — ' + formatNum(tickPrice(pool, action.position.tickUpper)) + ' ' + t1.symbol + '/' + t0.symbol }))
-      const pair = pool.kind === 'cl' ? pairCl : pairV2
-      dialogField(host, t0.symbol, 'amount0', action.amount0, function () { pair(0) }); dialogField(host, t1.symbol, 'amount1', action.amount1, function () { pair(1) }); dialogField(host, 'Slippage %', 'slippage', action.slippage, renderPreview)
+      dialogField(host, t0.symbol, 'amount0', action.amount0, function () { pairCl(0) }); dialogField(host, t1.symbol, 'amount1', action.amount1, function () { pairCl(1) }); dialogField(host, 'Slippage %', 'slippage', action.slippage, renderPreview)
       host.appendChild(e('p', { id: 'aero-preview' })); renderPreview()
-      const buttons = []
-      let needs0 = false; let needs1 = false
-      try { const amount0 = parseAmount(action.amount0, t0, t0.symbol, true); needs0 = amount0.gt(0) && (!state.actionInfo || !state.actionInfo.allowance0 || state.actionInfo.allowance0.lt(amount0)) } catch (_) {}
-      try { const amount1 = parseAmount(action.amount1, t1, t1.symbol, true); needs1 = amount1.gt(0) && (!state.actionInfo || !state.actionInfo.allowance1 || state.actionInfo.allowance1.lt(amount1)) } catch (_) {}
-      buttons.push(['approve ' + t0.symbol, function () { return approveToken(0) }, !needs0], ['approve ' + t1.symbol, function () { return approveToken(1) }, !needs1], ['add', submitAction])
-      dialogButtonRow(host, buttons)
+      dialogButtonRow(host, [['approve ' + t0.symbol, function () { return approveToken(0) }, !approvalNeed(0)], ['approve ' + t1.symbol, function () { return approveToken(1) }, !approvalNeed(1)], ['add', submitAction]])
     }
     if (active) { const node = host.querySelector('input[data-key="' + active + '"]'); if (node) { node.focus(); try { node.setSelectionRange(node.value.length, node.value.length) } catch (_) {} } }
   }
@@ -1052,65 +1015,61 @@ const AeroPage = (function () {
   async function sendTx (to, data, label) { requireWallet(); state.sending = true; render(); try { await send({ to, data }, label); setStatus(label + '.', 'success'); await refreshAfterAction() } finally { state.sending = false; render() } }
   async function sendGauge (gauge, data, label) { if (!gauge) throw new Error('No gauge.'); return sendTx(gauge, data, label) }
 
-  async function simulateAggregate (calls) {
-    const data = multicall.encodeFunctionData('aggregate', [calls.map(call => ({ target: call[0], callData: call[1] }))])
-    const raw = await rpc('eth_call', [{ from: state.account, to: multicallAddress, data, value: '0x0' }, 'latest'], { attempts: 3 })
-    return multicall.decodeFunctionResult('aggregate', raw)
+  function approvalNeed (side) {
+    const action = state.action
+    if (!action || action.pool.kind !== 'cl' || (action.kind !== 'mint' && action.kind !== 'increase')) return false
+    const pool = action.pool
+    const info = token(side === 0 ? pool.token0 : pool.token1)
+    const allowance = state.actionInfo && (side === 0 ? state.actionInfo.allowance0 : state.actionInfo.allowance1)
+    try {
+      const amount = parseAmount(side === 0 ? action.amount0 : action.amount1, info, info.symbol, true)
+      return amount.gt(0) && (!allowance || allowance.lt(amount))
+    } catch (_) { return false }
   }
-  function v2MintCalls (pool, amount0, amount1) {
-    const calls = []
-    if (amount0.gt(0)) calls.push([pool.token0, erc20.encodeFunctionData('transferFrom', [state.account, pool.address, amount0])])
-    if (amount1.gt(0)) calls.push([pool.token1, erc20.encodeFunctionData('transferFrom', [state.account, pool.address, amount1])])
-    calls.push([pool.address, v2Pool.encodeFunctionData('mint', [state.account])])
-    return calls
+  function refreshApprovals () {
+    const row = document.querySelector('#aero-action-content .aero-dialog-actions')
+    if (!row || !state.action || state.action.pool.kind !== 'cl') return
+    const pool = state.action.pool
+    const labels = ['[ approve ' + token(pool.token0).symbol + ' ]', '[ approve ' + token(pool.token1).symbol + ' ]']
+    row.querySelectorAll('button').forEach(function (node) {
+      const index = labels.indexOf(node.textContent || '')
+      if (index >= 0) node.disabled = Boolean(state.sending) || !approvalNeed(index)
+    })
   }
 
   async function approveToken (side) {
     requireWallet(); const plan = planAction(); const pool = state.action.pool
+    if (pool.kind !== 'cl' || !pool.manager) throw new Error('Approval unavailable.')
     const tokenAddress = side === 0 ? pool.token0 : pool.token1
     const amount = side === 0 ? plan.amount0 : plan.amount1
-    const spender = pool.kind === 'cl' ? pool.manager : multicallAddress
     state.sending = true; renderAction()
-    try { await send({ to: tokenAddress, data: erc20.encodeFunctionData('approve', [spender, amount]) }, 'Approve ' + token(tokenAddress).symbol); setStatus('Approved ' + token(tokenAddress).symbol + '.', 'success'); await loadActionInfo() } finally { state.sending = false; renderAction() }
+    try { await send({ to: tokenAddress, data: erc20.encodeFunctionData('approve', [pool.manager, amount]) }, 'Approve ' + token(tokenAddress).symbol); setStatus('Approved ' + token(tokenAddress).symbol + '.', 'success'); await loadActionInfo() } finally { state.sending = false; renderAction() }
   }
 
   async function submitAction () {
     requireWallet(); const plan = planAction(); const action = state.action
     if (plan.min0 && plan.min1 && plan.min0.isZero() && plan.min1.isZero() && !window.confirm('Minimum is zero. Continue?')) return
-    if (plan.minLp && plan.minLp.isZero() && !window.confirm('Minimum is zero. Continue?')) return
     state.sending = true; renderAction()
     try {
-      if (action.kind === 'v2-add') {
-        const simulated = await simulateAggregate(v2MintCalls(action.pool, plan.amount0, plan.amount1))
-        const minted = v2Pool.decodeFunctionResult('mint', simulated.returnData[simulated.returnData.length - 1])[0]
-        if (minted.lt(plan.minLp)) throw new Error('Below slippage minimum.')
-        await send({ to: multicallAddress, data: multicall.encodeFunctionData('aggregate', [v2MintCalls(action.pool, plan.amount0, plan.amount1)]) }, 'Add')
-      } else if (action.kind === 'v2-remove') {
-        const calls = [[action.pool.address, erc20.encodeFunctionData('transferFrom', [state.account, action.pool.address, plan.liquidity])], [action.pool.address, v2Pool.encodeFunctionData('burn', [state.account])]]
-        const allowance = (await batch([{ target: action.pool.address, iface: erc20, method: 'allowance', args: [state.account, multicallAddress], fallback: ethers.constants.Zero }]))[0] || ethers.constants.Zero
-        if (allowance.lt(plan.liquidity)) await send({ to: action.pool.address, data: erc20.encodeFunctionData('approve', [multicallAddress, plan.liquidity]) }, 'Approve LP')
-        const simulated = await simulateAggregate(calls)
-        const burned = v2Pool.decodeFunctionResult('burn', simulated.returnData[simulated.returnData.length - 1])
-        if (burned[0].lt(plan.min0) || burned[1].lt(plan.min1)) throw new Error('Below slippage minimum.')
-        await send({ to: multicallAddress, data: multicall.encodeFunctionData('aggregate', [calls]) }, 'Remove')
-      } else if (action.kind === 'v2-stake') {
+      if (action.kind === 'v2-stake') {
         const allowance = (await batch([{ target: action.pool.address, iface: erc20, method: 'allowance', args: [state.account, action.pool.gauge], fallback: ethers.constants.Zero }]))[0] || ethers.constants.Zero
         if (allowance.lt(plan.amount)) await send({ to: action.pool.address, data: erc20.encodeFunctionData('approve', [action.pool.gauge, plan.amount]) }, 'Approve LP')
         await send({ to: action.pool.gauge, data: gaugeAbi.encodeFunctionData('deposit', [plan.amount]) }, 'Stake')
       } else await send(plan.tx, action.kind === 'decrease' ? 'Remove' : 'Add')
-      closeDialog(); setStatus(action.kind === 'decrease' || action.kind === 'v2-remove' ? 'Removed.' : action.kind === 'v2-stake' ? 'Staked.' : 'Added.', 'success'); await refreshAfterAction()
+      closeDialog(); setStatus(action.kind === 'decrease' ? 'Removed.' : action.kind === 'v2-stake' ? 'Staked.' : 'Added.', 'success'); await refreshAfterAction()
     } finally { state.sending = false; render() }
   }
 
   async function collectCl (position) {
-    return sendTx(position.pool.manager, managerAbi.encodeFunctionData('collect', [[position.id, state.account, maxUint128, maxUint128]]), 'Collect')
+    return sendTx(positionManager(position), managerAbi.encodeFunctionData('collect', [[position.id, state.account, maxUint128, maxUint128]]), 'Collect')
   }
   async function stakeCl (position) {
     requireWallet(); if (!position.pool.gauge) throw new Error('No gauge.')
-    const approved = asAddress((await batch([{ target: position.pool.manager, iface: managerAbi, method: 'getApproved', args: [position.id], fallback: null }]))[0])
+    const manager = positionManager(position)
+    const approved = asAddress((await batch([{ target: manager, iface: managerAbi, method: 'getApproved', args: [position.id], fallback: null }]))[0])
     state.sending = true; render()
     try {
-      if (!approved || lower(approved) !== lower(position.pool.gauge)) await send({ to: position.pool.manager, data: managerAbi.encodeFunctionData('approve', [position.pool.gauge, position.id]) }, 'Approve NFT')
+      if (!approved || lower(approved) !== lower(position.pool.gauge)) await send({ to: manager, data: managerAbi.encodeFunctionData('approve', [position.pool.gauge, position.id]) }, 'Approve NFT')
       await send({ to: position.pool.gauge, data: gaugeAbi.encodeFunctionData('deposit', [position.id]) }, 'Stake')
       setStatus('Staked.', 'success'); await refreshAfterAction()
     } finally { state.sending = false; render() }
@@ -1128,32 +1087,24 @@ const AeroPage = (function () {
       }
       if (position.deferred) { setStatus('Claimed.', 'success'); await refreshAfterAction(); return }
       if (position.kind === 'cl') {
-        const current = position.staked ? (await batch([{ target: pool.manager, iface: managerAbi, method: 'positions', args: [position.id], fallback: null, whole: true }]))[0] : position
+        const manager = positionManager(position)
+        const current = position.staked ? (await batch([{ target: manager, iface: managerAbi, method: 'positions', args: [position.id], fallback: null, whole: true }]))[0] : position
         const liquidity = current && current.liquidity ? current.liquidity : position.liquidity
         if (liquidity && !liquidity.isZero()) {
-          state.action = { kind: 'decrease', pool, position: { id: position.id, liquidity, tickLower: position.tickLower, tickUpper: position.tickUpper }, percent: '100', slippage: '0.5', tickLower: String(position.tickLower), tickUpper: String(position.tickUpper) }
+          state.action = { kind: 'decrease', pool, position: { id: position.id, manager, liquidity, tickLower: position.tickLower, tickUpper: position.tickUpper }, percent: '100', slippage: '0.5', tickLower: String(position.tickLower), tickUpper: String(position.tickUpper) }
           const plan = planAction()
           if (plan.min0.isZero() && plan.min1.isZero() && !window.confirm('Minimum is zero. Continue?')) return
           await send(plan.tx, 'Remove')
-        } else await send({ to: pool.manager, data: managerAbi.encodeFunctionData('collect', [[position.id, state.account, maxUint128, maxUint128]]) }, 'Collect')
-        await send({ to: pool.manager, data: managerAbi.encodeFunctionData('burn', [position.id]) }, 'Burn')
+        } else await send({ to: manager, data: managerAbi.encodeFunctionData('collect', [[position.id, state.account, maxUint128, maxUint128]]) }, 'Collect')
+        await send({ to: manager, data: managerAbi.encodeFunctionData('burn', [position.id]) }, 'Burn')
+        setStatus('Exited.', 'success')
       } else {
-        const wallet = (await batch([{ target: pool.address, iface: erc20, method: 'balanceOf', args: [state.account], fallback: ethers.constants.Zero }]))[0] || ethers.constants.Zero
-        if (!wallet.isZero() && pool.totalSupply && !pool.totalSupply.isZero()) {
-          const out0 = wallet.mul(pool.reserve0).div(pool.totalSupply); const out1 = wallet.mul(pool.reserve1).div(pool.totalSupply)
-          const calls = [[pool.address, erc20.encodeFunctionData('transferFrom', [state.account, pool.address, wallet])], [pool.address, v2Pool.encodeFunctionData('burn', [state.account])]]
-          const allowance = (await batch([{ target: pool.address, iface: erc20, method: 'allowance', args: [state.account, multicallAddress], fallback: ethers.constants.Zero }]))[0] || ethers.constants.Zero
-          if (allowance.lt(wallet)) await send({ to: pool.address, data: erc20.encodeFunctionData('approve', [multicallAddress, wallet]) }, 'Approve LP')
-          const simulated = await simulateAggregate(calls)
-          const burned = v2Pool.decodeFunctionResult('burn', simulated.returnData[simulated.returnData.length - 1])
-          const bps = 50
-          if (burned[0].lt(applySlippage(out0, bps)) || burned[1].lt(applySlippage(out1, bps))) throw new Error('Below slippage minimum.')
-          await send({ to: multicallAddress, data: multicall.encodeFunctionData('aggregate', [calls]) }, 'Remove')
-        }
         const fees = (await batch([{ target: pool.address, iface: v2Pool, method: 'pendingFees', args: [state.account], fallback: null, whole: true }]))[0]
         if (fees && (fees[0].gt(0) || fees[1].gt(0))) await send({ to: pool.address, data: v2Pool.encodeFunctionData('claimFees', [state.account]) }, 'Claim fees')
+        const wallet = (await batch([{ target: pool.address, iface: erc20, method: 'balanceOf', args: [state.account], fallback: ethers.constants.Zero }]))[0] || ethers.constants.Zero
+        setStatus(wallet.isZero() ? (position.claimOnly ? 'Claimed.' : 'Exited.') : 'LP remains in the wallet.', 'success')
       }
-      setStatus('Exited.', 'success'); await refreshAfterAction()
+      await refreshAfterAction()
     } finally { state.action = null; state.sending = false; render() }
   }
 
@@ -1168,17 +1119,36 @@ const AeroPage = (function () {
         v2.forEach(pool => calls.push({ target: pool.address, iface: erc20, method: 'balanceOf', args: [account], fallback: ethers.constants.Zero }, { target: pool.gauge || pool.address, iface: pool.gauge ? gaugeAbi : erc20, method: 'balanceOf', args: [account], fallback: ethers.constants.Zero }))
         const rows = await batch(calls)
         const held = []
+        const idle = []
         v2.forEach(function (pool, index) {
           const walletLp = rows[index * 2] || ethers.constants.Zero
           const staked = pool.gauge ? (rows[index * 2 + 1] || ethers.constants.Zero) : ethers.constants.Zero
-          if (walletLp.isZero() && staked.isZero()) return
-          held.push({ pool, wallet: walletLp, staked })
+          if (walletLp.isZero() && staked.isZero()) idle.push(pool)
+          else held.push({ pool, wallet: walletLp, staked })
         })
         if (held.length) {
           const extra = await batch([].concat(...held.map(item => [{ target: item.pool.address, iface: v2Pool, method: 'pendingFees', args: [account], fallback: null, whole: true }, { target: item.pool.gauge || item.pool.address, iface: gaugeAbi, method: 'earned', args: [account], fallback: ethers.constants.Zero }])))
           held.forEach(function (item, index) {
             const fees = extra[index * 2]; const earned = item.pool.gauge ? extra[index * 2 + 1] : ethers.constants.Zero
             positions.push({ kind: 'v2', pool: item.pool, wallet: item.wallet, staked: item.staked, fees0: fees ? fees[0] : ethers.constants.Zero, fees1: fees ? fees[1] : ethers.constants.Zero, earned: earned || ethers.constants.Zero })
+          })
+        }
+        if (idle.length) {
+          const calls = []
+          idle.forEach(function (pool) {
+            calls.push({ target: pool.address, iface: v2Pool, method: 'pendingFees', args: [account], fallback: null, whole: true })
+            if (pool.gauge) calls.push({ target: pool.gauge, iface: gaugeAbi, method: 'earned', args: [account], fallback: null })
+          })
+          const extra = await batch(calls)
+          let cursor = 0
+          idle.forEach(function (pool) {
+            const fees = extra[cursor++]
+            const earned = pool.gauge ? extra[cursor++] : null
+            const fees0 = fees && fees[0] ? fees[0] : ethers.constants.Zero
+            const fees1 = fees && fees[1] ? fees[1] : ethers.constants.Zero
+            const earnedValue = earned && earned.gt ? earned : ethers.constants.Zero
+            if ((!fees || (fees0.isZero() && fees1.isZero())) && earnedValue.isZero()) return
+            positions.push({ kind: 'v2', claimOnly: true, pool, wallet: ethers.constants.Zero, staked: ethers.constants.Zero, fees0: fees ? fees0 : ethers.constants.Zero, fees1: fees ? fees1 : ethers.constants.Zero, earned: earnedValue })
           })
         }
       }
@@ -1195,9 +1165,9 @@ const AeroPage = (function () {
         const values = await batch(ids.map(id => ({ target: manager, iface: managerAbi, method: 'positions', args: [id], fallback: null, whole: true })))
         values.forEach(function (value, index) {
           if (!value) return
-          const pool = state.pools.find(item => item.ready && item.kind === 'cl' && lower(item.token0) === lower(value.token0) && lower(item.token1) === lower(value.token1) && item.tickSpacing === Number(value.tickSpacing))
+          const pool = state.pools.find(item => item.ready && item.kind === 'cl' && item.manager && lower(item.manager) === manager && lower(item.token0) === lower(value.token0) && lower(item.token1) === lower(value.token1) && item.tickSpacing === Number(value.tickSpacing))
           if (!pool) return
-          positions.push({ kind: 'cl', id: ids[index], pool, staked: false, tickLower: Number(value.tickLower), tickUpper: Number(value.tickUpper), liquidity: value.liquidity, fees0: value.tokensOwed0, fees1: value.tokensOwed1, earned: ethers.constants.Zero })
+          positions.push({ kind: 'cl', id: ids[index], pool, manager: pool.manager, staked: false, tickLower: Number(value.tickLower), tickUpper: Number(value.tickUpper), liquidity: value.liquidity, fees0: value.tokensOwed0, fees1: value.tokensOwed1, earned: ethers.constants.Zero })
         })
       }
       const clGauges = state.pools.filter(pool => pool.kind === 'cl' && pool.gauge)
@@ -1217,7 +1187,7 @@ const AeroPage = (function () {
             const value = values[index]; if (!value || !item.pool.manager) return
             const key = lower(item.pool.gauge)
             const first = !seenGauge.has(key); seenGauge.add(key)
-            positions.push({ kind: 'cl', id: item.id, pool: item.pool, staked: true, tickLower: Number(value.tickLower), tickUpper: Number(value.tickUpper), liquidity: value.liquidity, fees0: value.tokensOwed0, fees1: value.tokensOwed1, earned: first ? (earned[index] || ethers.constants.Zero) : ethers.constants.Zero })
+            positions.push({ kind: 'cl', id: item.id, pool: item.pool, manager: item.pool.manager, staked: true, tickLower: Number(value.tickLower), tickUpper: Number(value.tickUpper), liquidity: value.liquidity, fees0: value.tokensOwed0, fees1: value.tokensOwed1, earned: first ? (earned[index] || ethers.constants.Zero) : ethers.constants.Zero })
           })
         }
       }
@@ -1236,7 +1206,7 @@ const AeroPage = (function () {
       if (owned.length) {
         for (let start = 0; start < owned.length; start += 20) {
           const group = owned.slice(start, start + 20)
-          const results = await rpcBatch(group.map(position => ({ method: 'eth_call', params: [{ from: account, to: position.pool.manager, data: managerAbi.encodeFunctionData('collect', [[position.id, account, maxUint128, maxUint128]]) }, 'latest'] }))).catch(() => [])
+          const results = await rpcBatch(group.map(position => ({ method: 'eth_call', params: [{ from: account, to: position.manager, data: managerAbi.encodeFunctionData('collect', [[position.id, account, maxUint128, maxUint128]]) }, 'latest'] }))).catch(() => [])
           results.forEach(function (result, offset) { if (!result || !result.result) return; try { const decoded = managerAbi.decodeFunctionResult('collect', result.result); group[offset].fees0 = decoded[0]; group[offset].fees1 = decoded[1] } catch (_) {} })
         }
       }
