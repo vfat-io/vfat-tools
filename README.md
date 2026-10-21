@@ -17,6 +17,12 @@ Run `npm install` (once) and `npm run dev`
 
 This should bring up the interface at localhost:3000 after a minute or two.
 
+The standalone Giga page uses one-based CL pool IDs and recipient-bearing CL
+harvest/withdraw calls. Before either claim action it reads the chef's reward
+protection window and the NFT's last liquidity change at one block. Calls inside
+that window wait to avoid reward forfeiture; an unreadable check is retried.
+Run its focused checks with `npm run test:giga`.
+
 ## How to submit a new project, or any changes
 
 - Fork the project
