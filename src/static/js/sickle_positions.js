@@ -287,11 +287,7 @@ function printSicklePositions(infos, options) {
       _print(`|`)
       _print(`|-Nft ID: ${info.nftId} ${info.token0Symbol}-${info.token1Symbol} (${sicklePositionsAmountLabel(info, info.amount0Raw, info.amount1Raw, info.positionUsd)})`)
 
-      indent()
-      _print_link(`Withdraw NFT`, () => onWithdraw(info))
-
-      if (!info.sickleActions || info.poolAddress === ethers.constants.AddressZero) continue
-
+      const hasActions = info.sickleActions && info.poolAddress !== ethers.constants.AddressZero
       const poolData = {
         stakingAddress: info.poolAddress,
         poolAddress: info.poolAddress,
@@ -299,6 +295,12 @@ function printSicklePositions(infos, options) {
         poolId: '0',
         tickSpacing: info.tickSpacing
       }
+      const buildsLocally = hasActions && !window.Sickle && window.SickleLocal?.canBuildLocally(parseInt(pageNetwork().chainId, 16), poolData)
+
+      indent()
+      _print_link(`Withdraw NFT`, () => buildsLocally ? window.SickleLocal.withdraw.withdrawNft(poolData, info.nftId) : onWithdraw(info))
+
+      if (!hasActions) continue
 
       // Without ?api=true, offer only the actions built locally (no quote API).
       if (!window.Sickle) {
