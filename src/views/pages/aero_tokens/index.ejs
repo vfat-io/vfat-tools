@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include(`${partials}/head`); -%>
+
+<body>
+<%- include(`${partials}/header_main`); -%>
+<pre id="log">
+*************** 👨‍🌾 UNOFFICIAL AERO FARMING CALCULATOR 👨‍🌾 ***************
+INFO  : dev script to receive the missing aero gauges and tokens
+CHAINS: ethereum, optimism, ink, robinhood, base, arbitrum, arc
+USAGE : add ?chain=arbitrum (or ?chain=ink,arc) to scan only some chains
+**************************************************************************************
+
+</pre>
+<div class="loader--1"></div>
+<%- include(`${partials}/scripts`, {scriptname: 'vfio_aero_tokens'}); -%>
+</body>
+</html>
