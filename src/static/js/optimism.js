@@ -32,7 +32,8 @@ const main = async() => {
       ["Velodrome Bridge      ", `<a href="bridge"            >Various</a>`,"VELO -> XVELO",""],
       ["Wallet Connect        ", `<a href="walletconnect"     >Various</a>`,"WCT          ","https://walletconnect.network"],
       ["Uniswap               ", `<a href="uniswap"           >Various</a>`,"             ","https://app.uniswap.org"],
-      ["Sickle                ", `<a href="sickle"            >Various</a>`,"             ",""]
+      ["Sickle                ", `<a href="sickle"            >Various</a>`,"             ",""],
+      ["Aero                  ", `<a href="aero"              >V2 + CL</a>`,"Fees         ",""]
     ].reverse()
   }
 

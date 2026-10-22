@@ -4,6 +4,7 @@
   "description": "Boilerplate for a Static website using EJS and SASS",
   "main": "index.js",
   "scripts": {
+    "test:giga": "node --test test/giga-cl.test.js",
     "start": "browser-sync start -s 'dist' -f 'dist' --no-open --no-notify --reload-debounce 50",
     "setup-for-dev": "NODE_ENV=development npm-run-all --sequential rmprod copy-to-dist build:html",
     "dev": "npm run setup-for-dev && npm-run-all --parallel start watch:*",
