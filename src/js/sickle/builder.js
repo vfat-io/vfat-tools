@@ -297,7 +297,7 @@ export async function buildExitToToken({ chainId, poolData, nftId, provider, tok
     const candidate = await build(scale)
     if (await succeeds(ctx, account, candidate.data)) return candidate.data
   }
-  return primary.data
+  throw new Error('Exit simulation failed at every swap size; not sending.')
 }
 
 /**
@@ -326,10 +326,10 @@ export async function buildCompound({ chainId, poolData, nftId, provider, slippa
  *
  * The range is the pool tick (rounded down to the tick spacing) minus/plus the min/max percent margins, as the
  * quote API computes it (newNftPositionInfo): the upper tick sits one spacing above the current one.
- * @param {Object} params - { chainId, poolData, nftId, provider (EIP-1193), minPricePercentage, maxPricePercentage, slippageBps, addSlippagePct }
+ * @param {Object} params - { chainId, poolData, nftId, provider (EIP-1193), minPricePercentage, maxPricePercentage, slippageBps, addSlippagePct, account (wallet address, to simulate and shrink the swaps) }
  * @returns {Promise<Object>} ContractCallData
  */
-export async function buildRebalance({ chainId, poolData, nftId, provider, minPricePercentage, maxPricePercentage, slippageBps = DEFAULT_SLIPPAGE_BPS, addSlippagePct = DEFAULT_ADD_SLIPPAGE_PCT }) {
+export async function buildRebalance({ chainId, poolData, nftId, provider, minPricePercentage, maxPricePercentage, slippageBps = DEFAULT_SLIPPAGE_BPS, addSlippagePct = DEFAULT_ADD_SLIPPAGE_PCT, account }) {
   const ctx = await loadPosition(chainId, poolData, nftId, provider)
   if (ctx.liquidity === 0n) throw new Error(`NFT #${nftId} has no liquidity to rebalance.`)
 
@@ -364,14 +364,29 @@ export async function buildRebalance({ chainId, poolData, nftId, provider, minPr
     extraData: '0x',
   }
 
-  const zap = await planZapIn(ctx, state, withdrawOut, target.tickLower, target.tickUpper, slippageBps, addSlippagePct)
-  const increase = { tokensIn: [], amountsIn: [], zap: zapInParams(ctx, zap, 0n, target.tickLower, target.tickUpper), extraData: '0x' }
-  const sweepTokens = transferable(ctx, ctx.tokens)
-
   const settings = await resolveRebalanceSettings(ctx, state, target)
+  const sweepTokens = transferable(ctx, ctx.tokens)
   const common = { pool: ctx.pool, position: nftPosition(ctx), harvest: harvestParams, withdraw }
-  if (!settings.useMove) return callData(ctx, 'rebalance', [{ ...common, increase }, sweepTokens])
-  return callData(ctx, 'move', [{ ...common, deposit: { farm: nftPosition(ctx).farm, nft: ctx.nftManager, increase } }, settings.nftSettings, sweepTokens])
+
+  const build = async swapInputScaleBps => {
+    const zap = await planZapIn(ctx, state, withdrawOut, target.tickLower, target.tickUpper, slippageBps, addSlippagePct, swapInputScaleBps)
+    const increase = { tokensIn: [], amountsIn: [], zap: zapInParams(ctx, zap, 0n, target.tickLower, target.tickUpper), extraData: '0x' }
+    const data = !settings.useMove
+      ? callData(ctx, 'rebalance', [{ ...common, increase }, sweepTokens])
+      : callData(ctx, 'move', [{ ...common, deposit: { farm: nftPosition(ctx).farm, nft: ctx.nftManager, increase } }, settings.nftSettings, sweepTokens])
+    return { zap, data }
+  }
+
+  // The zap-in swaps are quoted against the pool before this NFT's liquidity is removed: simulate, and shrink them if it reverts.
+  const primary = await build()
+  if (!account || primary.zap.routes.length === 0 || await succeeds(ctx, account, primary.data)) return primary.data
+
+  for (const scale of SWAP_INPUT_RETRY_SCALES_BPS) {
+    console.log(`Rebalance simulation failed; retrying with swap inputs at ${scale / 100}%`)
+    const candidate = await build(scale)
+    if (await succeeds(ctx, account, candidate.data)) return candidate.data
+  }
+  throw new Error('Rebalance simulation failed at every swap size; not sending.')
 }
 
 // NftHarvest for a claim to `out`: claims in `out`, non-transferrable or worth < $0.10 are kept
@@ -602,7 +617,7 @@ function zapInParams(ctx, zap, tokenId, tickLower, tickUpper) {
 // price, and size the add's minimums. The quote API gets this from vfat's own router (/v4/zap-in), which we
 // can't use, so the ratio is solved here (pool-liquidity-math: univ3UnitAmountsRatio / splitAmountByRatio) and the
 // swap is re-sized from the aggregator's real rate. The minimums follow RouterZapInRouteFinalizer.
-async function planZapIn(ctx, state, inputs, tickLower, tickUpper, slippageBps, addSlippagePct) {
+async function planZapIn(ctx, state, inputs, tickLower, tickUpper, slippageBps, addSlippagePct, swapInputScaleBps) {
   const sender = await holder(ctx)
   const sa = getSqrtRatioAtTick(tickLower)
   const sb = getSqrtRatioAtTick(tickUpper)
@@ -659,6 +674,8 @@ async function planZapIn(ctx, state, inputs, tickLower, tickUpper, slippageBps, 
         amount = next
       }
     }
+    // A retry sells a smaller share of the planned amount, as planWithdraw does.
+    if (swapInputScaleBps !== undefined) route = await quote(route.amountIn * BigInt(swapInputScaleBps) / 10000n)
     routes.push(route)
   }
 

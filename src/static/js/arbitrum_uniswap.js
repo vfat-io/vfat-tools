@@ -318,11 +318,16 @@ $(function() {
       if (!info.has_sickle_account) continue;
 
       _print_inline(prefix);
-      _print_link(`Withdraw NFT`, () => sickle_clContract_withdraw(info.nftId, App));
-
       // Without ?api=true, offer only the actions built locally (no quote API).
       const localPoolData = { stakingAddress: info.poolAddress, poolAddress: info.poolAddress, nftManagerAddress: NFT_TOKEN_ADDRESS };
-      if (!window.Sickle && window.SickleLocal?.canBuildLocally(42161, localPoolData)) {
+      const buildsLocally = !window.Sickle && window.SickleLocal?.canBuildLocally(42161, localPoolData);
+      _print_link(
+        `Withdraw NFT`,
+        () => buildsLocally
+          ? window.SickleLocal.withdraw.withdrawNft(localPoolData, info.nftId)
+          : sickle_clContract_withdraw(info.nftId, App)
+      );
+      if (buildsLocally) {
         if (info.positionData && BigInt(info.positionData.liquidity.toString()) > 0n) {
           _print_inline(prefix);
           _print_link(
