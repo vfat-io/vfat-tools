@@ -263,6 +263,11 @@ function sicklePositionsExitLabel(info, target) {
   return `Exit to ${target} (${sicklePositionsAmountLabel(info, info.amount0Raw + info.fees0Raw, info.amount1Raw + info.fees1Raw, usd)})`
 }
 
+// Rebalance claims the fees to the wallet and re-mints only the position's own amounts.
+function sicklePositionsRebalanceLabel(info, inRange) {
+  return `Rebalance ${inRange ? '✅ In Range' : '⚠️ Out of Range'} (${sicklePositionsAmountLabel(info, info.amount0Raw, info.amount1Raw, info.positionUsd)})`
+}
+
 // options: { nativeSymbol, onWithdraw(info) }  — onWithdraw sweeps the NFT back to the wallet.
 function printSicklePositions(infos, options) {
   const { nativeSymbol, onWithdraw } = options
@@ -319,6 +324,17 @@ function printSicklePositions(infos, options) {
               () => window.SickleLocal.harvest.harvestToNative(poolData, info.nftId))
           }
         }
+        if (canSwap && hasLiquidity && info.currentTick !== undefined) {
+          const inRange = info.currentTick >= info.tickLower && info.currentTick < info.tickUpper
+          indent()
+          _print_link(sicklePositionsRebalanceLabel(info, inRange),
+            () => window.SickleLocal.rebalance.rebalance(poolData, info.nftId, info.tickLower, info.tickUpper, info.currentTick))
+        }
+        if (canSwap && hasLiquidity && hasFees) {
+          indent()
+          _print_link(`Compound (${sicklePositionsAmountLabel(info, info.fees0Raw, info.fees1Raw, info.feesUsd)})`,
+            () => window.SickleLocal.compound.compound(poolData, info.nftId))
+        }
         continue
       }
 
@@ -343,7 +359,7 @@ function printSicklePositions(infos, options) {
       if (hasLiquidity && info.currentTick !== undefined) {
         const inRange = info.currentTick >= info.tickLower && info.currentTick < info.tickUpper
         indent()
-        _print_link(`Rebalance (${inRange ? '✅ In Range' : '⚠️ Out of Range'})`,
+        _print_link(sicklePositionsRebalanceLabel(info, inRange),
           () => window.Sickle.rebalance.rebalance(poolData, info.nftId, info.tickLower, info.tickUpper, info.currentTick))
       }
 

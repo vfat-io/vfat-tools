@@ -65,6 +65,8 @@ window.SickleLocal = {
   canSwapLocallyFor,
   withdraw: { withdrawNft: SickleWithdraw.withdrawNft, withdrawToUnderlying: SickleWithdraw.withdrawToUnderlying, withdrawToToken: SickleWithdraw.withdrawToToken },
   harvest: { harvestToUnderlying, harvestToNative },
+  compound: { compound: SickleCompound.compound },
+  rebalance: { rebalance: SickleRebalance.rebalance },
 }
 
 if (document.location.href.includes('uniswap-v4')) {

@@ -5,6 +5,7 @@
  */
 
 import { OperationType, describeError, initializeWalletProvider, encodeTransactionData, simulateTransaction, sendTransaction, waitForTransaction, handleTransactionReceipt, normalizeSicklePoolId } from './utils.js'
+import { canSwapLocallyFor, buildCompound } from './builder.js'
 
 /**
  * Compound NFT position rewards back into the position
@@ -18,7 +19,7 @@ export async function compound(poolData, nftId, amount) {
     showLoading()
     
     // Initialize wallet and provider
-    const { walletAddress, provider, chainId } = await initializeWalletProvider()
+    const { walletAddress, provider, chainId } = await initializeWalletProvider(false)
 
     console.log('🔄 Compounding NFT #' + nftId)
 
@@ -34,47 +35,17 @@ Proceed with compound?`
       return
     }
 
-    // Create NftPool config - only include poolIndex if explicitly set (PancakeSwap V3 PID)
-    const nftPoolConfig = {
-      chainId: chainId,
-      address: poolData.stakingAddress,
-      poolAddress: poolData.poolAddress,
-      nftManagerAddress: poolData.nftManagerAddress
+    let callData
+    if (canSwapLocallyFor(chainId, poolData)) {
+      try {
+        callData = await buildCompound({ chainId, poolData, nftId, provider })
+      } catch (error) {
+        if (!window.Sickle?.NftPool) throw error
+        console.warn('Local compound build failed, falling back to the Sickle SDK:', error)
+      }
     }
+    if (!callData) callData = await sdkCompoundCallData(poolData, chainId, nftId, amount, walletAddress)
 
-    // Always pass a poolId value for quote API compatibility.
-    // For most CL protocols: "0". For Uniswap v4: bytes32 hash.
-    nftPoolConfig.poolId = normalizeSicklePoolId(poolData.poolId)
-    
-    // Only add poolIndex for PancakeSwap V3 (has MasterChef pool IDs / PIDs)
-    // Velodrome/Aerodrome use gauge contracts and should NOT have poolIndex
-    if (poolData.pid !== undefined && poolData.pid !== null) {
-      nftPoolConfig.poolIndex = Number(poolData.pid)
-    }
-    
-    const nftPool = new window.Sickle.NftPool(nftPoolConfig)
-    
-    console.log('Creating NftPool with:', nftPoolConfig)
-
-    // If amount not provided (Velodrome case), use 0
-    // The SDK/contract will query the actual pending amount
-    const compoundAmount = amount ? BigInt(amount.toString()) : BigInt(0)
-    
-    console.log('Amount received:', amount)
-    console.log('Amount type:', typeof amount)
-    console.log('Compound amount (bigint):', compoundAmount.toString())
-
-    // Create compound action with the pending rewards amount
-    const compoundAction = nftPool.compound({ 
-      nftId: Number(nftId),
-      amount: compoundAmount
-    })
-    
-    console.log('Compound action created, getting call data...')
-    
-    // Get transaction call data from SDK
-    const callData = await compoundAction.getCallData(walletAddress)
-    
     console.log('CallData received:', {
       address: callData.address,
       functionName: callData.functionName,
@@ -102,6 +73,52 @@ Proceed with compound?`
   } finally {
     hideLoading()
   }
+}
+
+async function sdkCompoundCallData(poolData, chainId, nftId, amount, walletAddress) {
+  if (!window.Sickle?.NftPool) {
+    throw new Error('This action needs the Sickle SDK. Open the page with ?api=true.')
+  }
+
+  // Create NftPool config - only include poolIndex if explicitly set (PancakeSwap V3 PID)
+  const nftPoolConfig = {
+    chainId: chainId,
+    address: poolData.stakingAddress,
+    poolAddress: poolData.poolAddress,
+    nftManagerAddress: poolData.nftManagerAddress
+  }
+
+  // Always pass a poolId value for quote API compatibility.
+  // For most CL protocols: "0". For Uniswap v4: bytes32 hash.
+  nftPoolConfig.poolId = normalizeSicklePoolId(poolData.poolId)
+  
+  // Only add poolIndex for PancakeSwap V3 (has MasterChef pool IDs / PIDs)
+  // Velodrome/Aerodrome use gauge contracts and should NOT have poolIndex
+  if (poolData.pid !== undefined && poolData.pid !== null) {
+    nftPoolConfig.poolIndex = Number(poolData.pid)
+  }
+  
+  const nftPool = new window.Sickle.NftPool(nftPoolConfig)
+  
+  console.log('Creating NftPool with:', nftPoolConfig)
+
+  // If amount not provided (Velodrome case), use 0
+  // The SDK/contract will query the actual pending amount
+  const compoundAmount = amount ? BigInt(amount.toString()) : BigInt(0)
+  
+  console.log('Amount received:', amount)
+  console.log('Amount type:', typeof amount)
+  console.log('Compound amount (bigint):', compoundAmount.toString())
+
+  // Create compound action with the pending rewards amount
+  const compoundAction = nftPool.compound({ 
+    nftId: Number(nftId),
+    amount: compoundAmount
+  })
+  
+  console.log('Compound action created, getting call data...')
+  
+  return await compoundAction.getCallData(walletAddress)
 }
 
 export default {

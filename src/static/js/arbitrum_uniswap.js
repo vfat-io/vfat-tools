@@ -299,6 +299,12 @@ $(function() {
     return `${action} (${fmt(info.fees0)} ${info.token0Symbol} + ${fmt(info.fees1)} ${info.token1Symbol}${usdSuffix(info.feesUsd)})`;
   }
 
+  // Rebalance claims the fees to the wallet and re-mints only the position's own amounts.
+  function rebalanceLabel(info, rangeStatus) {
+    const fmt = window.UniswapV3.formatTokenAmount;
+    return `Rebalance ${rangeStatus} (${fmt(info.amount0)} ${info.token0Symbol} + ${fmt(info.amount1)} ${info.token1Symbol}${usdSuffix(info.positionUsd)})`;
+  }
+
   async function printClPools(App, positionInfos) {
     if (!positionInfos?.length) return;
     
@@ -342,6 +348,23 @@ $(function() {
             );
           }
         }
+        if (info.positionData && info.slot0 && window.SickleLocal.canSwapLocallyFor(42161, localPoolData)) {
+          const inRange = info.slot0.tick >= info.positionData.tickLower && info.slot0.tick < info.positionData.tickUpper;
+          if (BigInt(info.positionData.liquidity.toString()) > 0n) {
+            _print_inline(prefix);
+            _print_link(
+              rebalanceLabel(info, inRange ? '✅ In Range' : '⚠️ Out of Range'),
+              () => sickle_sdk_rebalance_uniswap(info, window.SickleLocal)
+            );
+          }
+          if (info.fees0Raw > 0n || info.fees1Raw > 0n) {
+            _print_inline(prefix);
+            _print_link(
+              feesLabel(info, 'Compound'),
+              () => sickle_sdk_compound_uniswap(info, window.SickleLocal)
+            );
+          }
+        }
       }
 
       if (window.Sickle?.withdraw) {
@@ -381,7 +404,7 @@ $(function() {
 
         _print_inline(prefix);
         _print_link(
-          `Rebalance (${rangeStatus})`,
+          rebalanceLabel(info, rangeStatus),
           () => sickle_sdk_rebalance_uniswap(info)
         );
       }
@@ -427,7 +450,7 @@ $(function() {
     }
   }
 
-  const sickle_sdk_rebalance_uniswap = async function(info) {
+  const sickle_sdk_rebalance_uniswap = async function(info, sickle = window.Sickle) {
     try {
       const tickLower = info.positionData.tickLower;
       const tickUpper = info.positionData.tickUpper;
@@ -447,7 +470,7 @@ $(function() {
         pid: undefined
       };
 
-      await window.Sickle.rebalance.rebalance(
+      await sickle.rebalance.rebalance(
         poolData,
         info.nftId,
         tickLower,
@@ -460,7 +483,7 @@ $(function() {
     }
   }
 
-  const sickle_sdk_compound_uniswap = async function(info) {
+  const sickle_sdk_compound_uniswap = async function(info, sickle = window.Sickle) {
     try {
       const poolData = {
         stakingAddress: info.poolAddress,
@@ -468,7 +491,7 @@ $(function() {
         nftManagerAddress: NFT_TOKEN_ADDRESS,
       };
 
-      await window.Sickle.compound.compound(poolData, info.nftId);
+      await sickle.compound.compound(poolData, info.nftId);
     } catch (error) {
       console.error('Compound failed:', error);
       alert(`Compound failed: ${error.message}`);
