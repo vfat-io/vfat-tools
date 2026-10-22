@@ -1,4 +1,4 @@
-$(function() {
+$(function () {
   main().catch(err => {
     console.error(err);
     _print(`Error: ${err && err.message ? err.message : err}`);
@@ -49,36 +49,36 @@ const AERO_CHAINS = {
 const MULTICALL3_ADDRESS = '0xcA11bde05977b3631167028862bE2a173976CA11';
 const BATCH_SIZE = 200;
 
-const REGISTRY_ABI = [
-  {"inputs":[],"name":"gaugeFactories","outputs":[{"internalType":"address[]","name":"","type":"address[]"}],"stateMutability":"view","type":"function"},
-  {"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"factoryToGauges","outputs":[{"internalType":"address[]","name":"","type":"address[]"}],"stateMutability":"view","type":"function"},
-  {"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"factoryToGaugesLength","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},
-  {"inputs":[{"internalType":"address","name":"","type":"address"},{"internalType":"uint256","name":"","type":"uint256"}],"name":"factoryToGaugesAt","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},
-  {"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"gaugeToTarget","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},
-  {"inputs":[],"name":"leafVoter","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"}
+const REGISTRY_AERO_SCRIPT_ABI = [
+  { "inputs": [], "name": "gaugeFactories", "outputs": [{ "internalType": "address[]", "name": "", "type": "address[]" }], "stateMutability": "view", "type": "function" },
+  { "inputs": [{ "internalType": "address", "name": "", "type": "address" }], "name": "factoryToGauges", "outputs": [{ "internalType": "address[]", "name": "", "type": "address[]" }], "stateMutability": "view", "type": "function" },
+  { "inputs": [{ "internalType": "address", "name": "", "type": "address" }], "name": "factoryToGaugesLength", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "view", "type": "function" },
+  { "inputs": [{ "internalType": "address", "name": "", "type": "address" }, { "internalType": "uint256", "name": "", "type": "uint256" }], "name": "factoryToGaugesAt", "outputs": [{ "internalType": "address", "name": "", "type": "address" }], "stateMutability": "view", "type": "function" },
+  { "inputs": [{ "internalType": "address", "name": "", "type": "address" }], "name": "gaugeToTarget", "outputs": [{ "internalType": "address", "name": "", "type": "address" }], "stateMutability": "view", "type": "function" },
+  { "inputs": [], "name": "leafVoter", "outputs": [{ "internalType": "address", "name": "", "type": "address" }], "stateMutability": "view", "type": "function" }
 ];
 
-const VOTER_ABI = [
-  {"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"gaugeStates","outputs":[{"internalType":"uint128","name":"ceiling","type":"uint128"},{"internalType":"uint128","name":"claimed","type":"uint128"},{"internalType":"uint48","name":"lastSettlement","type":"uint48"},{"internalType":"bool","name":"isRegistered","type":"bool"},{"internalType":"bool","name":"isActivated","type":"bool"},{"internalType":"uint128","name":"surplus","type":"uint128"},{"internalType":"uint256","name":"lastIndex","type":"uint256"},{"internalType":"uint256","name":"lastTimeIndex","type":"uint256"},{"components":[{"internalType":"int128","name":"bias","type":"int128"},{"internalType":"int128","name":"slope","type":"int128"},{"internalType":"uint48","name":"ts","type":"uint48"},{"internalType":"uint128","name":"permanentStakeBalance","type":"uint128"}],"internalType":"struct Point","name":"point","type":"tuple"}],"stateMutability":"view","type":"function"}
+const VOTER_AERO_SCRIPT_ABI = [
+  { "inputs": [{ "internalType": "address", "name": "", "type": "address" }], "name": "gaugeStates", "outputs": [{ "internalType": "uint128", "name": "ceiling", "type": "uint128" }, { "internalType": "uint128", "name": "claimed", "type": "uint128" }, { "internalType": "uint48", "name": "lastSettlement", "type": "uint48" }, { "internalType": "bool", "name": "isRegistered", "type": "bool" }, { "internalType": "bool", "name": "isActivated", "type": "bool" }, { "internalType": "uint128", "name": "surplus", "type": "uint128" }, { "internalType": "uint256", "name": "lastIndex", "type": "uint256" }, { "internalType": "uint256", "name": "lastTimeIndex", "type": "uint256" }, { "components": [{ "internalType": "int128", "name": "bias", "type": "int128" }, { "internalType": "int128", "name": "slope", "type": "int128" }, { "internalType": "uint48", "name": "ts", "type": "uint48" }, { "internalType": "uint128", "name": "permanentStakeBalance", "type": "uint128" }], "internalType": "struct Point", "name": "point", "type": "tuple" }], "stateMutability": "view", "type": "function" }
 ];
 
-const POOL_ABI = [
-  {"inputs":[],"name":"token0","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},
-  {"inputs":[],"name":"token1","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},
-  {"inputs":[],"name":"POOL_TYPE","outputs":[{"internalType":"bytes32","name":"","type":"bytes32"}],"stateMutability":"view","type":"function"},
-  {"inputs":[],"name":"symbol","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"}
+const POOL_AERO_SCRIPT_ABI = [
+  { "inputs": [], "name": "token0", "outputs": [{ "internalType": "address", "name": "", "type": "address" }], "stateMutability": "view", "type": "function" },
+  { "inputs": [], "name": "token1", "outputs": [{ "internalType": "address", "name": "", "type": "address" }], "stateMutability": "view", "type": "function" },
+  { "inputs": [], "name": "POOL_TYPE", "outputs": [{ "internalType": "bytes32", "name": "", "type": "bytes32" }], "stateMutability": "view", "type": "function" },
+  { "inputs": [], "name": "symbol", "outputs": [{ "internalType": "string", "name": "", "type": "string" }], "stateMutability": "view", "type": "function" }
 ];
 
-const TOKEN_ABI = [
-  {"inputs":[],"name":"symbol","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},
-  {"inputs":[],"name":"decimals","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"view","type":"function"}
+const TOKEN_AERO_SCRIPT_ABI = [
+  { "inputs": [], "name": "symbol", "outputs": [{ "internalType": "string", "name": "", "type": "string" }], "stateMutability": "view", "type": "function" },
+  { "inputs": [], "name": "decimals", "outputs": [{ "internalType": "uint8", "name": "", "type": "uint8" }], "stateMutability": "view", "type": "function" }
 ];
 
-const TOKEN_BYTES32_ABI = [
-  {"inputs":[],"name":"symbol","outputs":[{"internalType":"bytes32","name":"","type":"bytes32"}],"stateMutability":"view","type":"function"}
+const TOKEN_BYTES32_AERO_SCRIPT_ABI = [
+  { "inputs": [], "name": "symbol", "outputs": [{ "internalType": "bytes32", "name": "", "type": "bytes32" }], "stateMutability": "view", "type": "function" }
 ];
 
-const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000';
+const ZERO_ADDRESS_AERO_SCRIPT = '0x0000000000000000000000000000000000000000';
 
 async function main() {
   const chainParam = new URLSearchParams(window.location.search).get('chain');
@@ -128,7 +128,7 @@ async function getEthcallProvider(chain) {
       ethcallProvider.multicall2 = multicall;
       ethcallProvider.multicall3 = multicall;
       // make sure the rpc answers before using it
-      await ethcallProvider.tryAll([new ethcall.Contract(chain.registry, REGISTRY_ABI).leafVoter()]);
+      await ethcallProvider.tryAll([new ethcall.Contract(chain.registry, REGISTRY_AERO_SCRIPT_ABI).leafVoter()]);
       return ethcallProvider;
     } catch (err) {
       lastError = err;
@@ -147,11 +147,11 @@ async function batchCalls(ethcallProvider, calls) {
   return results;
 }
 
-const isRealAddress = a => a && a.toLowerCase() != ZERO_ADDRESS;
+const isRealAddress = a => a && a.toLowerCase() != ZERO_ADDRESS_AERO_SCRIPT;
 
 async function scanChain(chain, farms) {
   const ethcallProvider = await getEthcallProvider(chain);
-  const REGISTRY_CONTRACT = new ethcall.Contract(chain.registry, REGISTRY_ABI);
+  const REGISTRY_CONTRACT = new ethcall.Contract(chain.registry, REGISTRY_AERO_SCRIPT_ABI);
 
   const [gaugeFactories, voter] = await ethcallProvider.tryAll([REGISTRY_CONTRACT.gaugeFactories(), REGISTRY_CONTRACT.leafVoter()]);
 
@@ -169,7 +169,7 @@ async function scanChain(chain, farms) {
 
   // only keep the gauges that the voter has activated
   if (isRealAddress(voter)) {
-    const VOTER_CONTRACT = new ethcall.Contract(voter, VOTER_ABI);
+    const VOTER_CONTRACT = new ethcall.Contract(voter, VOTER_AERO_SCRIPT_ABI);
     const states = await batchCalls(ethcallProvider, gauges.map(g => VOTER_CONTRACT.gaugeStates(g)));
     gauges = gauges.filter((_, i) => !states[i] || (states[i].isRegistered && states[i].isActivated));
   }
@@ -196,7 +196,7 @@ async function scanChain(chain, farms) {
 
   const poolCalls = [];
   for (const m of missing) {
-    const poolContract = new ethcall.Contract(m.pool, POOL_ABI);
+    const poolContract = new ethcall.Contract(m.pool, POOL_AERO_SCRIPT_ABI);
     poolCalls.push(poolContract.token0(), poolContract.token1(), poolContract.POOL_TYPE());
   }
   const poolData = await batchCalls(ethcallProvider, poolCalls);
@@ -233,7 +233,7 @@ async function scanChain(chain, farms) {
 async function getTokenInfo(ethcallProvider, addresses) {
   const calls = [];
   for (const address of addresses) {
-    const tokenContract = new ethcall.Contract(address, TOKEN_ABI);
+    const tokenContract = new ethcall.Contract(address, TOKEN_AERO_SCRIPT_ABI);
     calls.push(tokenContract.symbol(), tokenContract.decimals());
   }
   const results = await batchCalls(ethcallProvider, calls);
@@ -245,7 +245,7 @@ async function getTokenInfo(ethcallProvider, addresses) {
   });
   // some old tokens return the symbol as bytes32
   if (retry.length > 0) {
-    const symbols = await batchCalls(ethcallProvider, retry.map(a => new ethcall.Contract(a, TOKEN_BYTES32_ABI).symbol()));
+    const symbols = await batchCalls(ethcallProvider, retry.map(a => new ethcall.Contract(a, TOKEN_BYTES32_AERO_SCRIPT_ABI).symbol()));
     retry.forEach((address, i) => {
       info[address.toLowerCase()].symbol = symbols[i] ? bytes32ToText(symbols[i]) : '';
     });
