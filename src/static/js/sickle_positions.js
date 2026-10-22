@@ -257,6 +257,12 @@ function sicklePositionsAmountLabel(info, raw0, raw1, usd) {
   return `${fmt(raw0, info.token0Decimals)} ${info.token0Symbol} + ${fmt(raw1, info.token1Decimals)} ${info.token1Symbol}${usdSuffix}`
 }
 
+// Exit removes the position plus its uncollected fees.
+function sicklePositionsExitLabel(info, target) {
+  const usd = info.positionUsd === null || info.feesUsd === null ? null : info.positionUsd + info.feesUsd
+  return `Exit to ${target} (${sicklePositionsAmountLabel(info, info.amount0Raw + info.fees0Raw, info.amount1Raw + info.fees1Raw, usd)})`
+}
+
 // options: { nativeSymbol, onWithdraw(info) }  — onWithdraw sweeps the NFT back to the wallet.
 function printSicklePositions(infos, options) {
   const { nativeSymbol, onWithdraw } = options
@@ -296,11 +302,11 @@ function printSicklePositions(infos, options) {
         const canSwap = window.SickleLocal.canSwapLocallyFor(localChainId, poolData)
         if (hasLiquidity) {
           indent()
-          _print_link(`Exit to Underlying (${sicklePositionsAmountLabel(info, info.amount0Raw + info.fees0Raw, info.amount1Raw + info.fees1Raw, info.positionUsd === null || info.feesUsd === null ? null : info.positionUsd + info.feesUsd)})`,
+          _print_link(sicklePositionsExitLabel(info, 'Underlying'),
             () => window.SickleLocal.withdraw.withdrawToUnderlying(poolData, info.nftId))
           if (canSwap) {
             indent()
-            _print_link(`Exit to ${nativeSymbol}`, () => window.SickleLocal.withdraw.withdrawToToken(poolData, info.nftId))
+            _print_link(sicklePositionsExitLabel(info, nativeSymbol), () => window.SickleLocal.withdraw.withdrawToToken(poolData, info.nftId))
           }
         }
         if (hasFees) {
@@ -319,10 +325,10 @@ function printSicklePositions(infos, options) {
       if (hasLiquidity) {
         // Exiting also collects the unclaimed fees, so the label shows position + fees.
         indent()
-        _print_link(`Exit to Underlying (${sicklePositionsAmountLabel(info, info.amount0Raw + info.fees0Raw, info.amount1Raw + info.fees1Raw, info.positionUsd === null || info.feesUsd === null ? null : info.positionUsd + info.feesUsd)})`,
+        _print_link(sicklePositionsExitLabel(info, 'Underlying'),
           () => window.Sickle.withdraw.withdrawToUnderlying(poolData, info.nftId))
         indent()
-        _print_link(`Exit to ${nativeSymbol}`, () => window.Sickle.withdraw.withdrawToToken(poolData, info.nftId))
+        _print_link(sicklePositionsExitLabel(info, nativeSymbol), () => window.Sickle.withdraw.withdrawToToken(poolData, info.nftId))
       }
 
       if (hasFees) {
