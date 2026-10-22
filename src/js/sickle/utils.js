@@ -11,6 +11,7 @@ import { customNetworks } from '../config.js'
  */
 export const OperationType = {
   REBALANCE: 'rebalance',
+  WITHDRAW_NFT: 'withdraw_nft',
   WITHDRAW_UNDERLYING: 'withdraw_underlying',
   WITHDRAW_TOKEN: 'withdraw_token',
   COMPOUND: 'compound',
@@ -22,6 +23,7 @@ export const OperationType = {
  */
 const SUCCESS_MESSAGES = {
   [OperationType.REBALANCE]: 'Position rebalanced successfully!',
+  [OperationType.WITHDRAW_NFT]: 'NFT withdrawn to your wallet!',
   [OperationType.WITHDRAW_UNDERLYING]: 'Position withdrawn to underlying tokens!',
   [OperationType.WITHDRAW_TOKEN]: 'Position withdrawn and swapped to target token!',
   [OperationType.COMPOUND]: 'Rewards compounded successfully!',
@@ -53,15 +55,16 @@ export function encodeTransactionData(callData) {
 
 /**
  * Initialize wallet provider and get connection details
+ * @param {boolean} requireSdk - Whether the action needs the Sickle SDK (false for locally built actions)
  * @returns {Promise<Object>} Object containing { walletAddress, provider, chainId }
  * @throws {Error} If wallet not connected or SDK not loaded
  */
-export async function initializeWalletProvider() {
+export async function initializeWalletProvider(requireSdk = true) {
   if (!window.appKit?.getAddress()) {
     throw new Error('Please connect your wallet first')
   }
 
-  if (!window.Sickle?.NftPool) {
+  if (requireSdk && !window.Sickle?.NftPool) {
     throw new Error('Sickle SDK not loaded. Please refresh the page.')
   }
 

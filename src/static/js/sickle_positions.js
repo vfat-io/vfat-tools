@@ -257,6 +257,17 @@ function sicklePositionsAmountLabel(info, raw0, raw1, usd) {
   return `${fmt(raw0, info.token0Decimals)} ${info.token0Symbol} + ${fmt(raw1, info.token1Decimals)} ${info.token1Symbol}${usdSuffix}`
 }
 
+// Exit removes the position plus its uncollected fees.
+function sicklePositionsExitLabel(info, target) {
+  const usd = info.positionUsd === null || info.feesUsd === null ? null : info.positionUsd + info.feesUsd
+  return `Exit to ${target} (${sicklePositionsAmountLabel(info, info.amount0Raw + info.fees0Raw, info.amount1Raw + info.fees1Raw, usd)})`
+}
+
+// Rebalance claims the fees to the wallet and re-mints only the position's own amounts.
+function sicklePositionsRebalanceLabel(info, inRange) {
+  return `Rebalance ${inRange ? '✅ In Range' : '⚠️ Out of Range'} (${sicklePositionsAmountLabel(info, info.amount0Raw, info.amount1Raw, info.positionUsd)})`
+}
+
 // options: { nativeSymbol, onWithdraw(info) }  — onWithdraw sweeps the NFT back to the wallet.
 function printSicklePositions(infos, options) {
   const { nativeSymbol, onWithdraw } = options
@@ -279,7 +290,7 @@ function printSicklePositions(infos, options) {
       indent()
       _print_link(`Withdraw NFT`, () => onWithdraw(info))
 
-      if (!window.Sickle || !info.sickleActions || info.poolAddress === ethers.constants.AddressZero) continue
+      if (!info.sickleActions || info.poolAddress === ethers.constants.AddressZero) continue
 
       const poolData = {
         stakingAddress: info.poolAddress,
@@ -289,16 +300,57 @@ function printSicklePositions(infos, options) {
         tickSpacing: info.tickSpacing
       }
 
+      // Without ?api=true, offer only the actions built locally (no quote API).
+      if (!window.Sickle) {
+        const localChainId = parseInt(pageNetwork().chainId, 16)
+        if (!window.SickleLocal?.canBuildLocally(localChainId, poolData)) continue
+        const canSwap = window.SickleLocal.canSwapLocallyFor(localChainId, poolData)
+        if (hasLiquidity) {
+          indent()
+          _print_link(sicklePositionsExitLabel(info, 'Underlying'),
+            () => window.SickleLocal.withdraw.withdrawToUnderlying(poolData, info.nftId))
+          if (canSwap) {
+            indent()
+            _print_link(sicklePositionsExitLabel(info, nativeSymbol), () => window.SickleLocal.withdraw.withdrawToToken(poolData, info.nftId))
+          }
+        }
+        if (hasFees) {
+          indent()
+          _print_link(`Claim Rewards to Underlying (${sicklePositionsAmountLabel(info, info.fees0Raw, info.fees1Raw, info.feesUsd)})`,
+            () => window.SickleLocal.harvest.harvestToUnderlying(poolData, info.nftId))
+          if (canSwap) {
+            indent()
+            _print_link(`Claim Rewards to ${nativeSymbol} (${sicklePositionsAmountLabel(info, info.fees0Raw, info.fees1Raw, info.feesUsd)})`,
+              () => window.SickleLocal.harvest.harvestToNative(poolData, info.nftId))
+          }
+        }
+        if (canSwap && hasLiquidity && info.currentTick !== undefined) {
+          const inRange = info.currentTick >= info.tickLower && info.currentTick < info.tickUpper
+          indent()
+          _print_link(sicklePositionsRebalanceLabel(info, inRange),
+            () => window.SickleLocal.rebalance.rebalance(poolData, info.nftId, info.tickLower, info.tickUpper, info.currentTick))
+        }
+        if (canSwap && hasLiquidity && hasFees) {
+          indent()
+          _print_link(`Compound (${sicklePositionsAmountLabel(info, info.fees0Raw, info.fees1Raw, info.feesUsd)})`,
+            () => window.SickleLocal.compound.compound(poolData, info.nftId))
+        }
+        continue
+      }
+
       if (hasLiquidity) {
         // Exiting also collects the unclaimed fees, so the label shows position + fees.
         indent()
-        _print_link(`Exit to Underlying (${sicklePositionsAmountLabel(info, info.amount0Raw + info.fees0Raw, info.amount1Raw + info.fees1Raw, info.positionUsd === null || info.feesUsd === null ? null : info.positionUsd + info.feesUsd)})`,
+        _print_link(sicklePositionsExitLabel(info, 'Underlying'),
           () => window.Sickle.withdraw.withdrawToUnderlying(poolData, info.nftId))
         indent()
-        _print_link(`Exit to ${nativeSymbol}`, () => window.Sickle.withdraw.withdrawToToken(poolData, info.nftId))
+        _print_link(sicklePositionsExitLabel(info, nativeSymbol), () => window.Sickle.withdraw.withdrawToToken(poolData, info.nftId))
       }
 
       if (hasFees) {
+        indent()
+        _print_link(`Claim Rewards to Underlying (${sicklePositionsAmountLabel(info, info.fees0Raw, info.fees1Raw, info.feesUsd)})`,
+          () => window.Sickle.harvest.harvestToUnderlying(poolData, info.nftId))
         indent()
         _print_link(`Claim Rewards to ${nativeSymbol} (${sicklePositionsAmountLabel(info, info.fees0Raw, info.fees1Raw, info.feesUsd)})`,
           () => window.Sickle.harvest.harvest(poolData, info.nftId))
@@ -307,7 +359,7 @@ function printSicklePositions(infos, options) {
       if (hasLiquidity && info.currentTick !== undefined) {
         const inRange = info.currentTick >= info.tickLower && info.currentTick < info.tickUpper
         indent()
-        _print_link(`Rebalance (${inRange ? '✅ In Range' : '⚠️ Out of Range'})`,
+        _print_link(sicklePositionsRebalanceLabel(info, inRange),
           () => window.Sickle.rebalance.rebalance(poolData, info.nftId, info.tickLower, info.tickUpper, info.currentTick))
       }
 

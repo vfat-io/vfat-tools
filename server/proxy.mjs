@@ -64,6 +64,32 @@ if (!ALCHEMY_API_KEY) {
 
 const ADDRESS_RE = /^0x[0-9a-fA-F]{40}$/u
 
+// KyberSwap aggregator, for Sickle swaps built in the browser (src/js/sickle/swap.js).
+// chainId -> KyberSwap chain slug. Only chains whose Sickle ConnectorRegistry whitelists
+// the KyberSwap router, and that KyberSwap serves, are proxied.
+const KYBER_API_URL = 'https://aggregator-api.kyberswap.com'
+const KYBER_CLIENT_ID = process.env.KYBER_CLIENT_ID || 'vfat-tools'
+const KYBER_CHAINS = new Map([
+  ['1', 'ethereum'],
+  ['10', 'optimism'],
+  ['56', 'bsc'],
+  ['130', 'unichain'],
+  ['137', 'polygon'],
+  ['143', 'monad'],
+  ['146', 'sonic'],
+  ['999', 'hyperevm'],
+  ['4663', 'robinhood'],
+  ['8453', 'base'],
+  ['9745', 'plasma'],
+  ['42161', 'arbitrum'],
+  ['42793', 'etherlink'],
+  ['43114', 'avalanche'],
+  ['59144', 'linea'],
+])
+const UINT_RE = /^[1-9][0-9]{0,76}$/u
+// Slippage tolerance in basis points; the quote API uses 50 (0.5%).
+const MAX_SLIPPAGE_BPS = 500
+
 const ALLOWED = new Set([
   // What we currently need for base_uniswap_v4.js
   'account:tokennfttx',
@@ -211,6 +237,90 @@ const server = http.createServer(async (req, res) => {
       }
 
       sendJson(res, 200, { ids })
+      return
+    }
+
+    // Swap route + calldata for one Sickle swap, via KyberSwap (routes, then route/build).
+    // The swap runs from the Sickle, so it is both sender and recipient.
+    // Example:
+    //   /api/swap-quote?chainid=42161&tokenIn=0x...&tokenOut=0x...&amountIn=1000&sender=0x...&slippageBps=50
+    // Response: { aggregator, router, tokenIn, tokenOut, amountIn, amountOut, minAmountOut,
+    //             amountInUsd, amountOutUsd, data, hops: [{ pool, tokenIn, tokenOut, swapAmount }] }
+    if (url.pathname === '/api/swap-quote') {
+      const q = url.searchParams
+      const chainid = String(q.get('chainid') || '').trim()
+      const slug = KYBER_CHAINS.get(chainid)
+      if (!slug) {
+        sendJson(res, 400, { error: `Unsupported chainid: ${chainid}` })
+        return
+      }
+
+      const tokenIn = q.get('tokenIn') || ''
+      const tokenOut = q.get('tokenOut') || ''
+      const sender = q.get('sender') || ''
+      if (![tokenIn, tokenOut, sender].every(a => ADDRESS_RE.test(a)) || tokenIn.toLowerCase() === tokenOut.toLowerCase()) {
+        sendJson(res, 400, { error: 'tokenIn, tokenOut and sender must be distinct 0x-prefixed 20-byte addresses' })
+        return
+      }
+
+      const amountIn = q.get('amountIn') || ''
+      if (!UINT_RE.test(amountIn)) {
+        sendJson(res, 400, { error: 'amountIn must be a positive integer (raw token units)' })
+        return
+      }
+
+      const slippageBps = Number(q.get('slippageBps') || 50)
+      if (!Number.isInteger(slippageBps) || slippageBps < 1 || slippageBps > MAX_SLIPPAGE_BPS) {
+        sendJson(res, 400, { error: `slippageBps must be an integer from 1 to ${MAX_SLIPPAGE_BPS}` })
+        return
+      }
+
+      const headers = { accept: 'application/json', 'x-client-id': KYBER_CLIENT_ID }
+      // A route can go stale between routes and route/build ("quoted amount is smaller than estimated"),
+      // so a failed build re-fetches the routes and builds again, up to 2 extra attempts.
+      const routes = new URL(`${KYBER_API_URL}/${slug}/api/v1/routes`)
+      routes.searchParams.set('tokenIn', tokenIn)
+      routes.searchParams.set('tokenOut', tokenOut)
+      routes.searchParams.set('amountIn', amountIn)
+      let routeSummary
+      let built
+      for (let attempt = 0; attempt < 3; attempt++) {
+        const routesResp = await fetch(routes.toString(), { headers })
+        const routesJson = await routesResp.json().catch(() => null)
+        routeSummary = routesJson?.data?.routeSummary
+        if (!routesResp.ok || !routeSummary) {
+          sendJson(res, 502, { error: `No swap route (${routesJson?.message || routesResp.status})` })
+          return
+        }
+
+        const buildResp = await fetch(`${KYBER_API_URL}/${slug}/api/v1/route/build`, {
+          method: 'POST',
+          headers: { ...headers, 'content-type': 'application/json' },
+          body: JSON.stringify({ routeSummary, sender, recipient: sender, slippageTolerance: slippageBps }),
+        })
+        const buildJson = await buildResp.json().catch(() => null)
+        built = buildJson?.data
+        if (buildResp.ok && built?.data && built?.routerAddress) break
+        if (attempt === 2) {
+          sendJson(res, 502, { error: `Swap build failed (${buildJson?.message || buildResp.status})` })
+          return
+        }
+      }
+
+      const amountOut = BigInt(routeSummary.amountOut)
+      sendJson(res, 200, {
+        aggregator: 'kyber',
+        router: built.routerAddress,
+        tokenIn: routeSummary.tokenIn,
+        tokenOut: routeSummary.tokenOut,
+        amountIn: routeSummary.amountIn,
+        amountOut: amountOut.toString(),
+        minAmountOut: ((amountOut * BigInt(10000 - slippageBps)) / 10000n).toString(),
+        amountInUsd: Number(routeSummary.amountInUsd) || null,
+        amountOutUsd: Number(routeSummary.amountOutUsd) || null,
+        data: built.data,
+        hops: (routeSummary.route || []).flat().map(h => ({ pool: h.pool, tokenIn: h.tokenIn, tokenOut: h.tokenOut, swapAmount: h.swapAmount })),
+      })
       return
     }
 
