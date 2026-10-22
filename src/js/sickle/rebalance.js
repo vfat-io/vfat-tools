@@ -88,7 +88,8 @@ Proceed with rebalance?`
         callData = await buildRebalance({
           chainId, poolData, nftId, provider,
           minPricePercentage: marginLowerPercent,
-          maxPricePercentage: adjustedMaxMargin
+          maxPricePercentage: adjustedMaxMargin,
+          account: walletAddress
         })
       } catch (error) {
         if (!window.Sickle?.NftPool) throw error

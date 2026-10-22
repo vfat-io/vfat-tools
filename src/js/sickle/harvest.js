@@ -61,11 +61,21 @@ Proceed?`
       return
     }
 
-    const callData = toUnderlying && canBuildLocally(chainId, poolData)
-      ? await buildClaimToUnderlying({ chainId, poolData, nftId, provider })
+    let callData
+    const localBuild = toUnderlying && canBuildLocally(chainId, poolData)
+      ? () => buildClaimToUnderlying({ chainId, poolData, nftId, provider })
       : !toUnderlying && canSwapLocallyFor(chainId, poolData)
-      ? await buildHarvestToToken({ chainId, poolData, nftId, provider, tokenOut: tokenAddress || NATIVE_TOKEN })
-      : await sdkHarvestCallData(poolData, chainId, nftId, tokenAddress, walletAddress)
+      ? () => buildHarvestToToken({ chainId, poolData, nftId, provider, tokenOut: tokenAddress || NATIVE_TOKEN })
+      : null
+    if (localBuild) {
+      try {
+        callData = await localBuild()
+      } catch (error) {
+        if (!window.Sickle?.NftPool) throw error
+        console.warn('Local harvest build failed, falling back to the Sickle SDK:', error)
+      }
+    }
+    if (!callData) callData = await sdkHarvestCallData(poolData, chainId, nftId, tokenAddress, walletAddress)
     
     console.log('CallData received:', {
       address: callData.address,

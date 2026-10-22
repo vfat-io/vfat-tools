@@ -68,9 +68,16 @@ export async function withdrawNft(poolData, nftId) {
       return
     }
 
-    const callData = canBuildLocally(chainId, poolData)
-      ? await buildWithdrawNft({ chainId, poolData, nftId, provider })
-      : await createNftPool(poolData, chainId).exit({ nftId: Number(nftId) }).toNft().getCallData(walletAddress)
+    let callData
+    if (canBuildLocally(chainId, poolData)) {
+      try {
+        callData = await buildWithdrawNft({ chainId, poolData, nftId, provider })
+      } catch (error) {
+        if (!window.Sickle?.NftPool) throw error
+        console.warn('Local withdraw build failed, falling back to the Sickle SDK:', error)
+      }
+    }
+    if (!callData) callData = await createNftPool(poolData, chainId).exit({ nftId: Number(nftId) }).toNft().getCallData(walletAddress)
 
     const encodedData = encodeTransactionData(callData)
 
@@ -117,9 +124,16 @@ Proceed with exit?`
     }
 
     // Get transaction call data, built locally when supported, else from the SDK (quote API)
-    const callData = canBuildLocally(chainId, poolData)
-      ? await buildExitToUnderlying({ chainId, poolData, nftId, provider })
-      : await createNftPool(poolData, chainId).exit({ nftId: Number(nftId) }).toUnderlying().getCallData(walletAddress)
+    let callData
+    if (canBuildLocally(chainId, poolData)) {
+      try {
+        callData = await buildExitToUnderlying({ chainId, poolData, nftId, provider })
+      } catch (error) {
+        if (!window.Sickle?.NftPool) throw error
+        console.warn('Local exit build failed, falling back to the Sickle SDK:', error)
+      }
+    }
+    if (!callData) callData = await createNftPool(poolData, chainId).exit({ nftId: Number(nftId) }).toUnderlying().getCallData(walletAddress)
 
     // Encode transaction data
     const encodedData = encodeTransactionData(callData)
@@ -173,9 +187,16 @@ Proceed with Exit?`
     }
 
     // Get transaction call data, built locally when supported, else from the SDK (quote API)
-    const callData = canSwapLocallyFor(chainId, poolData)
-      ? await buildExitToToken({ chainId, poolData, nftId, provider, tokenOut: tokenAddress, account: walletAddress })
-      : await createNftPool(poolData, chainId).exit({ nftId: Number(nftId) }).toToken({ tokenAddress: tokenAddress }).getCallData(walletAddress)
+    let callData
+    if (canSwapLocallyFor(chainId, poolData)) {
+      try {
+        callData = await buildExitToToken({ chainId, poolData, nftId, provider, tokenOut: tokenAddress, account: walletAddress })
+      } catch (error) {
+        if (!window.Sickle?.NftPool) throw error
+        console.warn('Local exit build failed, falling back to the Sickle SDK:', error)
+      }
+    }
+    if (!callData) callData = await createNftPool(poolData, chainId).exit({ nftId: Number(nftId) }).toToken({ tokenAddress: tokenAddress }).getCallData(walletAddress)
 
     // Encode transaction data
     const encodedData = encodeTransactionData(callData)
