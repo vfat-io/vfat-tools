@@ -39,7 +39,7 @@ export function canSwapLocally(chainId) {
 /**
  * Quote one swap executed by the Sickle (sender and recipient)
  * @param {Object} params - { chainId, tokenIn, tokenOut, amountIn (bigint), sender, slippageBps }
- * @returns {Promise<Object>} { router, tokenIn, tokenOut, amountIn, amountOut, minAmountOut (bigints), amountInUsd, amountOutUsd, data }
+ * @returns {Promise<Object>} { router, tokenIn, tokenOut, amountIn, amountOut, minAmountOut (bigints), amountInUsd, amountOutUsd, data, hops }
  */
 export async function quoteSwap({ chainId, tokenIn, tokenOut, amountIn, sender, slippageBps = DEFAULT_SLIPPAGE_BPS }) {
   if (!canSwapLocally(chainId)) throw new Error(`No whitelisted swap aggregator for chain ${chainId}`)
@@ -64,6 +64,8 @@ export async function quoteSwap({ chainId, tokenIn, tokenOut, amountIn, sender, 
     amountInUsd: quote.amountInUsd,
     amountOutUsd: quote.amountOutUsd,
     data: quote.data,
+    // The pools the route swaps through and how much each takes (to model the price impact on a position's own pool).
+    hops: (quote.hops || []).map(h => ({ pool: String(h.pool).toLowerCase(), tokenIn: String(h.tokenIn).toLowerCase(), swapAmount: BigInt(h.swapAmount) })),
   }
 
   if (route.router !== KYBER_ROUTER) throw new Error(`Swap route uses a router Sickle does not whitelist: ${route.router}`)

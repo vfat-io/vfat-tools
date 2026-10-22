@@ -245,7 +245,7 @@ const server = http.createServer(async (req, res) => {
     // Example:
     //   /api/swap-quote?chainid=42161&tokenIn=0x...&tokenOut=0x...&amountIn=1000&sender=0x...&slippageBps=50
     // Response: { aggregator, router, tokenIn, tokenOut, amountIn, amountOut, minAmountOut,
-    //             amountInUsd, amountOutUsd, data }
+    //             amountInUsd, amountOutUsd, data, hops: [{ pool, tokenIn, tokenOut, swapAmount }] }
     if (url.pathname === '/api/swap-quote') {
       const q = url.searchParams
       const chainid = String(q.get('chainid') || '').trim()
@@ -319,6 +319,7 @@ const server = http.createServer(async (req, res) => {
         amountInUsd: Number(routeSummary.amountInUsd) || null,
         amountOutUsd: Number(routeSummary.amountOutUsd) || null,
         data: built.data,
+        hops: (routeSummary.route || []).flat().map(h => ({ pool: h.pool, tokenIn: h.tokenIn, tokenOut: h.tokenOut, swapAmount: h.swapAmount })),
       })
       return
     }
