@@ -291,16 +291,27 @@ function printSicklePositions(infos, options) {
 
       // Without ?api=true, offer only the actions built locally (no quote API).
       if (!window.Sickle) {
-        if (!window.SickleLocal?.canBuildLocally(parseInt(pageNetwork().chainId, 16), poolData)) continue
+        const localChainId = parseInt(pageNetwork().chainId, 16)
+        if (!window.SickleLocal?.canBuildLocally(localChainId, poolData)) continue
+        const canSwap = window.SickleLocal.canSwapLocallyFor(localChainId, poolData)
         if (hasLiquidity) {
           indent()
           _print_link(`Exit to Underlying (${sicklePositionsAmountLabel(info, info.amount0Raw + info.fees0Raw, info.amount1Raw + info.fees1Raw, info.positionUsd === null || info.feesUsd === null ? null : info.positionUsd + info.feesUsd)})`,
             () => window.SickleLocal.withdraw.withdrawToUnderlying(poolData, info.nftId))
+          if (canSwap) {
+            indent()
+            _print_link(`Exit to ${nativeSymbol}`, () => window.SickleLocal.withdraw.withdrawToToken(poolData, info.nftId))
+          }
         }
         if (hasFees) {
           indent()
           _print_link(`Claim Rewards to Underlying (${sicklePositionsAmountLabel(info, info.fees0Raw, info.fees1Raw, info.feesUsd)})`,
             () => window.SickleLocal.harvest.harvestToUnderlying(poolData, info.nftId))
+          if (canSwap) {
+            indent()
+            _print_link(`Claim Rewards to ${nativeSymbol} (${sicklePositionsAmountLabel(info, info.fees0Raw, info.fees1Raw, info.feesUsd)})`,
+              () => window.SickleLocal.harvest.harvestToNative(poolData, info.nftId))
+          }
         }
         continue
       }

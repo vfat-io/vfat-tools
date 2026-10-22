@@ -23,8 +23,8 @@ import SickleWithdraw from './sickle/withdraw.js'
 import SickleCompound from './sickle/compound.js'
 import SickleLpWithdraw from './sickle/lp-withdraw.js'
 import SickleLpCompound from './sickle/lp-compound.js'
-import { canBuildLocally } from './sickle/builder.js'
-import { harvestToUnderlying } from './sickle/harvest.js'
+import { canBuildLocally, canSwapLocallyFor } from './sickle/builder.js'
+import { harvestToUnderlying, harvestToNative } from './sickle/harvest.js'
 
 // Protocol helpers (bundled, exposed via window.Sickle.protocols)
 import * as UniswapV4Protocol from './sickle/protocols/uniswap_v4.js'
@@ -62,8 +62,9 @@ if (document.location.search === '?api=true') {
 // Actions built locally without the quote API, offered on every page (with or without ?api=true).
 window.SickleLocal = {
   canBuildLocally,
-  withdraw: { withdrawNft: SickleWithdraw.withdrawNft, withdrawToUnderlying: SickleWithdraw.withdrawToUnderlying },
-  harvest: { harvestToUnderlying },
+  canSwapLocallyFor,
+  withdraw: { withdrawNft: SickleWithdraw.withdrawNft, withdrawToUnderlying: SickleWithdraw.withdrawToUnderlying, withdrawToToken: SickleWithdraw.withdrawToToken },
+  harvest: { harvestToUnderlying, harvestToNative },
 }
 
 if (document.location.href.includes('uniswap-v4')) {

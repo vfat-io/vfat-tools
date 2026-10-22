@@ -296,6 +296,10 @@ $(function() {
             `Exit to Underlying (${info.amount0.toFixed(4)} ${info.token0Symbol} + ${info.amount1.toFixed(4)} ${info.token1Symbol})`,
             () => window.SickleLocal.withdraw.withdrawToUnderlying(localPoolData, info.nftId)
           );
+          if (window.SickleLocal.canSwapLocallyFor(42161, localPoolData)) {
+            _print_inline(prefix);
+            _print_link(`Exit to 'ETH'`, () => window.SickleLocal.withdraw.withdrawToToken(localPoolData, info.nftId));
+          }
         }
         if (info.fees0Raw > 0n || info.fees1Raw > 0n) {
           _print_inline(prefix);
@@ -303,6 +307,13 @@ $(function() {
             `Claim Rewards to Underlying (${window.UniswapV3.formatTokenAmount(info.fees0)} ${info.token0Symbol} + ${window.UniswapV3.formatTokenAmount(info.fees1)} ${info.token1Symbol} ≈ $${formatMoney(info.feesUsd)})`,
             () => window.SickleLocal.harvest.harvestToUnderlying(localPoolData, info.nftId)
           );
+          if (window.SickleLocal.canSwapLocallyFor(42161, localPoolData)) {
+            _print_inline(prefix);
+            _print_link(
+              `Claim Rewards to ETH (${window.UniswapV3.formatTokenAmount(info.fees0)} ${info.token0Symbol} + ${window.UniswapV3.formatTokenAmount(info.fees1)} ${info.token1Symbol} ≈ $${formatMoney(info.feesUsd)})`,
+              () => window.SickleLocal.harvest.harvestToNative(localPoolData, info.nftId)
+            );
+          }
         }
       }
 

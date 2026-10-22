@@ -5,7 +5,7 @@
  */
 
 import { OperationType, describeError, initializeWalletProvider, encodeTransactionData, simulateTransaction, sendTransaction, waitForTransaction, handleTransactionReceipt, normalizeSicklePoolId } from './utils.js'
-import { canBuildLocally, buildClaimToUnderlying } from './builder.js'
+import { canBuildLocally, canSwapLocallyFor, buildClaimToUnderlying, buildHarvestToToken } from './builder.js'
 
 export const NATIVE_TOKEN = '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE'
 
@@ -22,6 +22,16 @@ export const UNDERLYING = '0x0000000000000000000000000000000000000000'
  */
 export function harvestToUnderlying(poolData, nftId) {
   return harvest(poolData, nftId, UNDERLYING)
+}
+
+/**
+ * Claim NFT position fees swapped to the native token
+ *
+ * @param {Object} poolData - Pool information including stakingAddress, poolAddress
+ * @param {string|number} nftId - NFT position ID
+ */
+export function harvestToNative(poolData, nftId) {
+  return harvest(poolData, nftId, NATIVE_TOKEN)
 }
 
 /**
@@ -53,6 +63,8 @@ Proceed?`
 
     const callData = toUnderlying && canBuildLocally(chainId, poolData)
       ? await buildClaimToUnderlying({ chainId, poolData, nftId, provider })
+      : !toUnderlying && canSwapLocallyFor(chainId, poolData)
+      ? await buildHarvestToToken({ chainId, poolData, nftId, provider, tokenOut: tokenAddress || NATIVE_TOKEN })
       : await sdkHarvestCallData(poolData, chainId, nftId, tokenAddress, walletAddress)
     
     console.log('CallData received:', {
@@ -112,6 +124,7 @@ async function sdkHarvestCallData(poolData, chainId, nftId, tokenAddress, wallet
 export default {
   harvest,
   harvestToUnderlying,
+  harvestToNative,
   NATIVE_TOKEN,
   UNDERLYING
 }

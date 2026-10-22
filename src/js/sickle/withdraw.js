@@ -5,11 +5,11 @@
  * - Withdraw to Underlying: Exit position and receive both underlying tokens
  * - Withdraw to Token: Exit position and swap to a single token (e.g., native token)
  *
- * The no-swap actions are built locally (builder.js) where supported, without the quote API.
+ * The actions are built locally (builder.js) where supported, without the quote API.
  */
 
 import { OperationType, describeError, getNativeTokenSymbol, initializeWalletProvider, encodeTransactionData, simulateTransaction, sendTransaction, waitForTransaction, handleTransactionReceipt, normalizeSicklePoolId } from './utils.js'
-import { canBuildLocally, buildWithdrawNft, buildExitToUnderlying } from './builder.js'
+import { canBuildLocally, canSwapLocallyFor, buildWithdrawNft, buildExitToUnderlying, buildExitToToken } from './builder.js'
 
 /**
  * Native token address (ETH) - common across all EVM chains
@@ -156,7 +156,7 @@ export async function withdrawToToken(poolData, nftId, tokenAddress = NATIVE_TOK
     showLoading()
     
     // Initialize wallet and provider
-    const { walletAddress, provider, chainId } = await initializeWalletProvider()
+    const { walletAddress, provider, chainId } = await initializeWalletProvider(false)
 
     console.log('💰 Withdrawing NFT #' + nftId + ' to token:', tokenAddress)
 
@@ -172,13 +172,10 @@ Proceed with Exit?`
       return
     }
 
-    // Create exit to token action (SDK will use default slippage and priceImpact values)
-    const exitAction = createNftPool(poolData, chainId).exit({ nftId: Number(nftId) }).toToken({
-      tokenAddress: tokenAddress
-    })
-    
-    // Get transaction call data from SDK
-    const callData = await exitAction.getCallData(walletAddress)
+    // Get transaction call data, built locally when supported, else from the SDK (quote API)
+    const callData = canSwapLocallyFor(chainId, poolData)
+      ? await buildExitToToken({ chainId, poolData, nftId, provider, tokenOut: tokenAddress, account: walletAddress })
+      : await createNftPool(poolData, chainId).exit({ nftId: Number(nftId) }).toToken({ tokenAddress: tokenAddress }).getCallData(walletAddress)
 
     // Encode transaction data
     const encodedData = encodeTransactionData(callData)
