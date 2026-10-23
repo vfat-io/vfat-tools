@@ -127,8 +127,27 @@ const Tetra = (function () {
   }
 
   /* Read-only provider. The page must be fully useful with no wallet at all. */
+  /* The public RPC drops some calls under a burst ("missing response"), so every read retries with a
+     short backoff and falls over to a second public endpoint before the page reports an error. */
+  const READ_RPCS = [chain.rpc, 'https://robinhood-rpc.publicnode.com']
+  const net = { chainId: chain.number, name: 'robinhood' }
+  const readers = READ_RPCS.map(function (url) { return new ethers.providers.StaticJsonRpcProvider(url, net) })
+  class RetryProvider extends ethers.providers.StaticJsonRpcProvider {
+    async send (method, params) {
+      let last
+      for (let attempt = 0; attempt < 4; attempt++) {
+        const p = readers[attempt % readers.length]
+        try { return await p.send(method, params) } catch (err) {
+          last = err
+          if (/revert/i.test(String((err && (err.body || err.message)) || ''))) throw err // a real revert, not a dropped call
+          await new Promise(function (r) { setTimeout(r, 250 * (attempt + 1)) })
+        }
+      }
+      throw last
+    }
+  }
   function reader () {
-    if (!state.provider) state.provider = new ethers.providers.StaticJsonRpcProvider(chain.rpc, { chainId: chain.number, name: 'robinhood' })
+    if (!state.provider) state.provider = new RetryProvider(chain.rpc, net)
     return state.provider
   }
   function contract (address, abi, withSigner) {
