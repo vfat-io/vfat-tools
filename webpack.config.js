@@ -79,6 +79,7 @@ module.exports = (env = {}) => {
       arc_uniswap_v4: './src/js/arc_uniswap_v4.js',
       aero: './src/js/aero.js',
       ethereum_ohmvault: './src/js/ethereum_ohmvault.js',
+      robinhood_tetravault: './src/js/robinhood_tetravault.js',
     },
     output: {
       filename: isProduction ? '[name].[contenthash].js' : '[name].js',

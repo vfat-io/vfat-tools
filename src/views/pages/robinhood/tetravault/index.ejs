@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include(`${partials}/head`, {
+  noGlobalScripts: true,
+  pageMeta: {
+    title: 'TETRAVAULT Staking on Robinhood Chain | vfat.tools',
+    description: 'Live TETRAVAULT (TETRA) staking TVL, realised emission APR, reserve backing per token, bond price and direct wallet actions on Robinhood Chain. Every value comes from onchain contracts.',
+    url: 'https://vfat.tools/robinhood/tetravault/',
+    image: 'https://vfat.tools/img/robinhood-tetravault-social.png',
+    imageAlt: 'Live vfat.tools TETRAVAULT staking table on Robinhood Chain.',
+    imageWidth: 1200,
+    imageHeight: 630
+  }
+}); -%>
+
+<body>
+<%- include(`${partials}/header_main`); -%>
+<pre id="tetra-banner">
+***************** 👨‍🌾 UNOFFICIAL TETRAVAULT STAKING CALCULATOR 👨‍🌾 *****************
+INFO  : https://tetravault.xyz
+CHAIN : Robinhood Chain (4663)
+MODE  : Wallet-only onchain reads and direct wallet transactions. No price API or router.
+PRICE : TETRA from its own USDG pool (hook spot); the reserve from the protocol's onchain Mark.
+NOTE  : Emissions are conditional. The controller mints to stakers at a 6h close only
+        when backing per TETRA grew (33% of the growth, max 1% of circulating), so the
+        APR shown is a REALISED trailing average, not a promised rate. Some epochs pay nothing.
+        Trades carry a 5% tax (4% to the reserve, 1% ops). Stake rewards scale with holding
+        time: 50% under 1 day, 75% under 2 days, 100% after.
+***************************************************************************************
+
+</pre>
+<div id="tetra-loading" class="tetra-loading" role="status" aria-live="polite">
+  <span id="tetra-loading-spinner" class="tetra-spinner" aria-hidden="true">[....]</span> <span id="tetra-loading-text">Reading TETRAVAULT contracts on Robinhood Chain…</span>
+</div>
+<div id="tetra-app" aria-live="polite"></div>
+<%- include(`${partials}/disclaimer`); -%>
+<style>
+  .tetra-action { margin: 0; padding: 0; border: 0; background: transparent; color: inherit; cursor: pointer; font: inherit; text-decoration: underline; }
+  .tetra-action:disabled { cursor: not-allowed; opacity: .45; text-decoration: none; }
+  .tetra-loading { padding: 10px 0; }
+  .tetra-loading[hidden] { display: none; }
+  .tetra-spinner { display: inline-block; width: 6ch; }
+  .tetra-form-label { display: block; margin: 7px 0; }
+  .tetra-form-label input { margin-left: 8px; font: inherit; }
+  #tetra-app, #tetra-app section { min-width: 0; }
+  #tetra-banner, #tetra-app pre { box-sizing: border-box; max-width: 100%; }
+  #tetra-banner, #tetra-app pre { overflow-wrap: anywhere; white-space: pre-wrap; }
+</style>
+<%- include(`${partials}/scripts_onchain`, {scriptname: 'robinhood_tetravault'}); -%>
+</body>
+</html>
