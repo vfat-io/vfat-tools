@@ -52,6 +52,8 @@ const Tetra = (function () {
       'function stakeStart(address) view returns (uint256)',
       'function loyaltyBps(address) view returns (uint256)',
       'function autoCompound(address) view returns (bool)',
+      'function positionsOf(address) view returns (uint256[])',
+      'function positions(uint256) view returns (address owner, uint64 start, uint64 end, uint128 amount, uint128 released, bool closed)',
       'function stake(uint256)',
       'function requestUnstake(uint256)',
       'function withdraw()',
@@ -229,18 +231,26 @@ const Tetra = (function () {
     if (!state.account) return null
     const staking = contract(addresses.staking, ABI.staking)
     const tetra = contract(addresses.tetra, ABI.erc20)
-    const [balance, allowance, units, earning, earned, free, cooling, coolingEnds, stakeStart, loyalty, auto] = await Promise.all([
+    const [balance, allowance, units, earning, earned, free, cooling, coolingEnds, stakeStart, loyalty, auto, positionIds] = await Promise.all([
       tetra.balanceOf(state.account),
       tetra.allowance(state.account, addresses.staking),
       staking.unitsOf(state.account), staking.earningOf(state.account), staking.earned(state.account),
       staking.free(state.account), staking.cooling(state.account), staking.coolingEnds(state.account),
       staking.stakeStart(state.account), staking.loyaltyBps(state.account), staking.autoCompound(state.account),
+      staking.positionsOf(state.account),
     ])
+    /* Bond payouts vest in positions that hold no stake units, so unitsOf() never includes them:
+       sum what is still held (amount - released) across the wallet's open positions. */
+    const positions = await Promise.all(positionIds.map(function (id) { return staking.positions(id) }))
+    const vesting = positions.reduce(function (sum, p) {
+      return p.closed ? sum : sum.add(p.amount.sub(p.released))
+    }, ethers.constants.Zero)
     return {
       balance: toNum(balance), allowanceRaw: allowance,
       units: toNum(units), earning: toNum(earning), earned: toNum(earned), free: toNum(free),
       cooling: toNum(cooling), coolingEnds: Number(coolingEnds.toString()),
       stakeStart: Number(stakeStart.toString()), loyaltyBps: Number(loyalty.toString()), auto: auto,
+      vesting: toNum(vesting),
     }
   }
 
@@ -441,7 +451,7 @@ const Tetra = (function () {
       ['staked (all)', fmt(w.units)],
       ['staked (earning)', fmt(w.earning)],
       ['free to unstake', fmt(w.free)],
-      ['vesting from bonds', fmt(w.units - w.free > 0 ? w.units - w.free : 0)],
+      ['vesting from bonds', fmt(w.vesting)],
       ['cooling down', fmt(w.cooling) + (w.cooling > 0 ? (coolingLeft ? ' (until ' + when(w.coolingEnds) + ')' : ' (ready to withdraw)') : '')],
       ['claimable now', fmt(w.earned)],
       ['loyalty', (w.loyaltyBps / 100).toFixed(0) + '%' + (w.stakeStart > 0 ? ' (held ' + (held / 86400).toFixed(1) + ' days)' : '')],
