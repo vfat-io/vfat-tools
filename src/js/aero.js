@@ -22,6 +22,7 @@ const AeroPage = (function () {
     ethereum: {
       id: '0x1', number: 1, name: 'Ethereum', explorer: 'https://etherscan.io',
       registry: '0xdd1705e23762F4D6e44D8C31BD8Ea80c54612239',
+      sickleFactory: '0x9D70B9E5ac2862C405D64A0193b4A4757Aab7F95',
       addRpc: 'https://cloudflare-eth.com',
       rpcs: ['https://ethereum.publicnode.com', 'https://cloudflare-eth.com'],
       nativeCurrency: { name: 'Ether', symbol: 'ETH', decimals: 18 },
@@ -30,6 +31,7 @@ const AeroPage = (function () {
     optimism: {
       id: '0xa', number: 10, name: 'Optimism', explorer: 'https://optimistic.etherscan.io',
       registry: '0xb6F9705A631CC1C0E8570FFde48882C95E2Df408',
+      sickleFactory: '0xB4C31b0f0B76b351395D4aCC94A54dD4e6fbA1E8',
       addRpc: 'https://mainnet.optimism.io',
       rpcs: ['https://mainnet.optimism.io', 'https://optimism.drpc.org'],
       nativeCurrency: { name: 'Ether', symbol: 'ETH', decimals: 18 },
@@ -38,6 +40,7 @@ const AeroPage = (function () {
     ink: {
       id: '0xdef1', number: 57073, name: 'Ink', explorer: 'https://explorer.inkonchain.com',
       registry: '0xdd1705e23762F4D6e44D8C31BD8Ea80c54612239',
+      sickleFactory: '0xc6013E57a0811C7111A8fB07ACd2E248D9489C99',
       addRpc: 'https://rpc-qnd.inkonchain.com',
       rpcs: ['https://rpc-qnd.inkonchain.com'],
       nativeCurrency: { name: 'Ether', symbol: 'ETH', decimals: 18 },
@@ -46,6 +49,7 @@ const AeroPage = (function () {
     robinhood: {
       id: '0x1237', number: 4663, name: 'Robinhood Chain', explorer: 'https://robinhoodchain.blockscout.com',
       registry: '0xdd1705e23762F4D6e44D8C31BD8Ea80c54612239',
+      sickleFactory: '0x3575Aa02Ae85D8Cd2AaE6DCaA5D8750cFc9622e6',
       addRpc: 'https://rpc.mainnet.chain.robinhood.com',
       rpcs: ['https://rpc.mainnet.chain.robinhood.com'],
       nativeCurrency: { name: 'Ether', symbol: 'ETH', decimals: 18 },
@@ -54,6 +58,7 @@ const AeroPage = (function () {
     base: {
       id: '0x2105', number: 8453, name: 'Base', explorer: 'https://basescan.org',
       registry: '0x7b2A2c12dC5Ea2a31455952a05031C3E4BB28F3E',
+      sickleFactory: '0x71D234A3e1dfC161cc1d081E6496e76627baAc31',
       addRpc: 'https://mainnet.base.org',
       rpcs: ['https://mainnet.base.org'],
       nativeCurrency: { name: 'Ether', symbol: 'ETH', decimals: 18 },
@@ -62,6 +67,7 @@ const AeroPage = (function () {
     arbitrum: {
       id: '0xa4b1', number: 42161, name: 'Arbitrum', explorer: 'https://arbiscan.io',
       registry: '0x9E635b2c689fC52201DF7eF1C9FA607c2F58f666',
+      sickleFactory: '0x53d9780DbD3831E3A797Fd215be4131636cD5FDf',
       addRpc: 'https://arb1.arbitrum.io/rpc',
       rpcs: ['https://arb1.arbitrum.io/rpc'],
       nativeCurrency: { name: 'Ether', symbol: 'ETH', decimals: 18 },
@@ -70,6 +76,7 @@ const AeroPage = (function () {
     arc: {
       id: '0x13b2', number: 5042, name: 'Arc', explorer: 'https://explorer.arc.io',
       registry: '0xCe44907DC45D3BFa3f5f6035B0e6E8B22D780A42',
+      sickleFactory: '0x36F89Be8cEF366a97129c7d18cFCAf860BA9Ff7C',
       addRpc: 'https://rpc.mainnet.arc.io',
       rpcs: ['https://rpc.mainnet.arc.io', 'https://rpc.blockdaemon.mainnet.arc.io', 'https://rpc.arc-scan.org', 'https://arc-mainnet.drpc.org'],
       nativeCurrency: { name: 'USDC', symbol: 'USDC', decimals: 18 },
@@ -163,6 +170,7 @@ const AeroPage = (function () {
     'function burn(uint256) payable',
     'function multicall(bytes[]) payable returns (bytes[])'
   ])
+  const sickleFactoryAbi = new ethers.utils.Interface(['function sickles(address) view returns (address)'])
   const multicall = new ethers.utils.Interface([
     'function aggregate3((address target,bool allowFailure,bytes callData)[] calls) payable returns ((bool success,bytes returnData)[])'
   ])
@@ -780,7 +788,7 @@ const AeroPage = (function () {
       const row = e('tr'); const name = e('td')
       const label = position.deferred ? 'emissions' : position.kind === 'cl' ? '#' + position.id.toString() : 'LP'
       const where = position.deferred || position.claimOnly ? 'claimable' : position.kind === 'cl' ? (position.staked ? 'staked' : 'wallet') : ((position.staked && !position.staked.isZero() ? 'staked ' + formatAmount(position.staked, 18) : 'wallet'))
-      append(name, e('span', { className: 'aero-name', text: poolName(pool) }), e('span', { className: 'aero-sub', text: label + ' · ' + where }))
+      append(name, e('span', { className: 'aero-name', text: poolName(pool) }), e('span', { className: 'aero-sub', text: label + ' · ' + (position.sickle ? 'sickle ' + short(position.sickle) + ' · ' : '') + where }))
       row.appendChild(name)
       let amountText = '—'
       if (position.deferred || position.claimOnly) amountText = '—'
@@ -805,6 +813,10 @@ const AeroPage = (function () {
       if (position.earned && !position.earned.isZero() && receipt) rewardLines.push(formatAmount(position.earned, receipt.decimals) + ' ' + receipt.symbol)
       addCell(row, rewardLines.length ? rewardLines.join('\n') : '—')
       const actions = e('td', { className: 'aero-actions' })
+      if (position.sickle) {
+        const link = e('a', { text: '[ vfat.io ]' }); link.href = 'https://vfat.io/'; link.target = '_blank'; link.rel = 'noopener noreferrer'
+        actions.appendChild(link); row.appendChild(actions); body.appendChild(row); return
+      }
       if (position.deferred || position.claimOnly) {
         if (position.kind === 'v2') actions.appendChild(button('claim fees', function () { return sendTx(pool.address, v2Pool.encodeFunctionData('claimFees', [state.account]), 'Claim fees') }, (!position.fees0 || position.fees0.isZero()) && (!position.fees1 || position.fees1.isZero())))
         if (pool.gauge) actions.appendChild(button('claim', function () { return sendGauge(pool.gauge, gaugeAbi.encodeFunctionData('claimEmissions', [state.account, state.account]), 'Claim') }, !position.earned || position.earned.isZero()))
@@ -1110,106 +1122,114 @@ const AeroPage = (function () {
     if (!state.account || !correctChain() || !state.ready) { state.positions = []; renderPositions(); return }
     const account = state.account; state.positionsLoading = true; state.positionsFailed = false; renderPositions()
     try {
-      const positions = []
-      const v2 = state.pools.filter(pool => pool.ready && pool.kind === 'v2')
-      if (v2.length) {
-        const calls = []
-        v2.forEach(pool => calls.push({ target: pool.address, iface: erc20, method: 'balanceOf', args: [account], fallback: ethers.constants.Zero }, { target: pool.gauge || pool.address, iface: pool.gauge ? gaugeAbi : erc20, method: 'balanceOf', args: [account], fallback: ethers.constants.Zero }))
-        const rows = await batch(calls)
-        const held = []
-        const idle = []
-        v2.forEach(function (pool, index) {
-          const walletLp = rows[index * 2] || ethers.constants.Zero
-          const staked = pool.gauge ? (rows[index * 2 + 1] || ethers.constants.Zero) : ethers.constants.Zero
-          if (walletLp.isZero() && staked.isZero()) idle.push(pool)
-          else held.push({ pool, wallet: walletLp, staked })
-        })
-        if (held.length) {
-          const extra = await batch([].concat(...held.map(item => [{ target: item.pool.address, iface: v2Pool, method: 'pendingFees', args: [account], fallback: null, whole: true }, { target: item.pool.gauge || item.pool.address, iface: gaugeAbi, method: 'earned', args: [account], fallback: ethers.constants.Zero }])))
-          held.forEach(function (item, index) {
-            const fees = extra[index * 2]; const earned = item.pool.gauge ? extra[index * 2 + 1] : ethers.constants.Zero
-            positions.push({ kind: 'v2', pool: item.pool, wallet: item.wallet, staked: item.staked, fees0: fees ? fees[0] : ethers.constants.Zero, fees1: fees ? fees[1] : ethers.constants.Zero, earned: earned || ethers.constants.Zero })
-          })
-        }
-        if (idle.length) {
-          const calls = []
-          idle.forEach(function (pool) {
-            calls.push({ target: pool.address, iface: v2Pool, method: 'pendingFees', args: [account], fallback: null, whole: true })
-            if (pool.gauge) calls.push({ target: pool.gauge, iface: gaugeAbi, method: 'earned', args: [account], fallback: null })
-          })
-          const extra = await batch(calls)
-          let cursor = 0
-          idle.forEach(function (pool) {
-            const fees = extra[cursor++]
-            const earned = pool.gauge ? extra[cursor++] : null
-            const fees0 = fees && fees[0] ? fees[0] : ethers.constants.Zero
-            const fees1 = fees && fees[1] ? fees[1] : ethers.constants.Zero
-            const earnedValue = earned && earned.gt ? earned : ethers.constants.Zero
-            if ((!fees || (fees0.isZero() && fees1.isZero())) && earnedValue.isZero()) return
-            positions.push({ kind: 'v2', claimOnly: true, pool, wallet: ethers.constants.Zero, staked: ethers.constants.Zero, fees0: fees ? fees0 : ethers.constants.Zero, fees1: fees ? fees1 : ethers.constants.Zero, earned: earnedValue })
-          })
-        }
-      }
-      const managers = [...new Set(state.pools.filter(pool => pool.kind === 'cl' && pool.manager).map(pool => lower(pool.manager)))]
-      let nftShown = 0
-      let nftTotal = 0
-      for (const manager of managers) {
-        const total = Number((await batch([{ target: manager, iface: managerAbi, method: 'balanceOf', args: [account], fallback: ethers.constants.Zero }]))[0] || 0)
-        const count = Math.min(total, 120)
-        nftTotal += total
-        nftShown += count
-        if (!count) continue
-        const ids = (await batch(Array.from({ length: count }, (_, index) => ({ target: manager, iface: managerAbi, method: 'tokenOfOwnerByIndex', args: [account, index], fallback: null })))).filter(id => id != null)
-        const values = await batch(ids.map(id => ({ target: manager, iface: managerAbi, method: 'positions', args: [id], fallback: null, whole: true })))
-        values.forEach(function (value, index) {
-          if (!value) return
-          const pool = state.pools.find(item => item.ready && item.kind === 'cl' && item.manager && lower(item.manager) === manager && lower(item.token0) === lower(value.token0) && lower(item.token1) === lower(value.token1) && item.tickSpacing === Number(value.tickSpacing))
-          if (!pool) return
-          positions.push({ kind: 'cl', id: ids[index], pool, manager: pool.manager, staked: false, tickLower: Number(value.tickLower), tickUpper: Number(value.tickUpper), liquidity: value.liquidity, fees0: value.tokensOwed0, fees1: value.tokensOwed1, earned: ethers.constants.Zero })
-        })
-      }
-      const clGauges = state.pools.filter(pool => pool.kind === 'cl' && pool.gauge)
-      if (clGauges.length) {
-        const staked = await batch(clGauges.map(pool => ({ target: pool.gauge, iface: gaugeAbi, method: 'stakedValues', args: [account], fallback: [] })))
-        const flat = []
-        clGauges.forEach(function (pool, index) {
-          const ids = staked[index]
-          const count = ids && ids.length ? ids.length : 0
-          for (let i = 0; i < count; i += 1) { try { flat.push({ pool, id: ethers.BigNumber.from(ids[i]) }) } catch (_) {} }
-        })
-        if (flat.length) {
-          const values = await batch(flat.map(item => ({ target: item.pool.manager, iface: managerAbi, method: 'positions', args: [item.id], fallback: null, whole: true })))
-          const earned = await batch(flat.map(item => ({ target: item.pool.gauge, iface: gaugeAbi, method: 'earned', args: [account], fallback: ethers.constants.Zero })))
-          const seenGauge = new Set()
-          flat.forEach(function (item, index) {
-            const value = values[index]; if (!value || !item.pool.manager) return
-            const key = lower(item.pool.gauge)
-            const first = !seenGauge.has(key); seenGauge.add(key)
-            positions.push({ kind: 'cl', id: item.id, pool: item.pool, manager: item.pool.manager, staked: true, tickLower: Number(value.tickLower), tickUpper: Number(value.tickUpper), liquidity: value.liquidity, fees0: value.tokensOwed0, fees1: value.tokensOwed1, earned: first ? (earned[index] || ethers.constants.Zero) : ethers.constants.Zero })
-          })
-        }
-      }
-      const earnedGauges = new Set(positions.filter(position => position.kind === 'cl' && position.staked).map(position => lower(position.pool.gauge)))
-      const idleGauges = clGauges.filter(pool => !earnedGauges.has(lower(pool.gauge)))
-      if (idleGauges.length) {
-        const earned = await batch(idleGauges.map(pool => ({ target: pool.gauge, iface: gaugeAbi, method: 'earned', args: [account], fallback: ethers.constants.Zero })))
-        idleGauges.forEach(function (pool, index) {
-          const value = earned[index] || ethers.constants.Zero
-          if (!value || value.isZero()) return
-          positions.push({ kind: 'cl', id: null, pool, staked: false, deferred: true, tickLower: 0, tickUpper: 0, liquidity: ethers.constants.Zero, fees0: ethers.constants.Zero, fees1: ethers.constants.Zero, earned: value })
-        })
-      }
-      state.nftNote = nftTotal > nftShown ? 'CL NFTs : ' + nftShown + ' of ' + nftTotal : ''
-      const owned = positions.filter(position => position.kind === 'cl' && !position.staked && !position.deferred)
-      if (owned.length) {
-        for (let start = 0; start < owned.length; start += 20) {
-          const group = owned.slice(start, start + 20)
-          const results = await rpcBatch(group.map(position => ({ method: 'eth_call', params: [{ from: account, to: position.manager, data: managerAbi.encodeFunctionData('collect', [[position.id, account, maxUint128, maxUint128]]) }, 'latest'] }))).catch(() => [])
-          results.forEach(function (result, offset) { if (!result || !result.result) return; try { const decoded = managerAbi.decodeFunctionResult('collect', result.result); group[offset].fees0 = decoded[0]; group[offset].fees1 = decoded[1] } catch (_) {} })
-        }
-      }
-      if (state.account === account) state.positions = positions
+      const own = await readPositions(account)
+      const sickle = chain.sickleFactory ? asAddress((await batch([{ target: chain.sickleFactory, iface: sickleFactoryAbi, method: 'sickles', args: [account], fallback: null }]))[0]) : null
+      const held = sickle ? await readPositions(sickle) : { positions: [], nftShown: 0, nftTotal: 0 }
+      held.positions.forEach(position => { position.sickle = sickle })
+      const nftTotal = own.nftTotal + held.nftTotal; const nftShown = own.nftShown + held.nftShown
+      if (state.account === account) { state.positions = own.positions.concat(held.positions); state.nftNote = nftTotal > nftShown ? 'CL NFTs : ' + nftShown + ' of ' + nftTotal : '' }
     } catch (error) { console.error(error); if (state.account === account) { state.positions = []; state.nftNote = ''; state.positionsFailed = true } } finally { state.positionsLoading = false; renderPositions() }
+  }
+
+  async function readPositions (owner) {
+    const positions = []
+    const v2 = state.pools.filter(pool => pool.ready && pool.kind === 'v2')
+    if (v2.length) {
+      const calls = []
+      v2.forEach(pool => calls.push({ target: pool.address, iface: erc20, method: 'balanceOf', args: [owner], fallback: ethers.constants.Zero }, { target: pool.gauge || pool.address, iface: pool.gauge ? gaugeAbi : erc20, method: 'balanceOf', args: [owner], fallback: ethers.constants.Zero }))
+      const rows = await batch(calls)
+      const held = []
+      const idle = []
+      v2.forEach(function (pool, index) {
+        const walletLp = rows[index * 2] || ethers.constants.Zero
+        const staked = pool.gauge ? (rows[index * 2 + 1] || ethers.constants.Zero) : ethers.constants.Zero
+        if (walletLp.isZero() && staked.isZero()) idle.push(pool)
+        else held.push({ pool, wallet: walletLp, staked })
+      })
+      if (held.length) {
+        const extra = await batch([].concat(...held.map(item => [{ target: item.pool.address, iface: v2Pool, method: 'pendingFees', args: [owner], fallback: null, whole: true }, { target: item.pool.gauge || item.pool.address, iface: gaugeAbi, method: 'earned', args: [owner], fallback: ethers.constants.Zero }])))
+        held.forEach(function (item, index) {
+          const fees = extra[index * 2]; const earned = item.pool.gauge ? extra[index * 2 + 1] : ethers.constants.Zero
+          positions.push({ kind: 'v2', pool: item.pool, wallet: item.wallet, staked: item.staked, fees0: fees ? fees[0] : ethers.constants.Zero, fees1: fees ? fees[1] : ethers.constants.Zero, earned: earned || ethers.constants.Zero })
+        })
+      }
+      if (idle.length) {
+        const calls = []
+        idle.forEach(function (pool) {
+          calls.push({ target: pool.address, iface: v2Pool, method: 'pendingFees', args: [owner], fallback: null, whole: true })
+          if (pool.gauge) calls.push({ target: pool.gauge, iface: gaugeAbi, method: 'earned', args: [owner], fallback: null })
+        })
+        const extra = await batch(calls)
+        let cursor = 0
+        idle.forEach(function (pool) {
+          const fees = extra[cursor++]
+          const earned = pool.gauge ? extra[cursor++] : null
+          const fees0 = fees && fees[0] ? fees[0] : ethers.constants.Zero
+          const fees1 = fees && fees[1] ? fees[1] : ethers.constants.Zero
+          const earnedValue = earned && earned.gt ? earned : ethers.constants.Zero
+          if ((!fees || (fees0.isZero() && fees1.isZero())) && earnedValue.isZero()) return
+          positions.push({ kind: 'v2', claimOnly: true, pool, wallet: ethers.constants.Zero, staked: ethers.constants.Zero, fees0: fees ? fees0 : ethers.constants.Zero, fees1: fees ? fees1 : ethers.constants.Zero, earned: earnedValue })
+        })
+      }
+    }
+    const managers = [...new Set(state.pools.filter(pool => pool.kind === 'cl' && pool.manager).map(pool => lower(pool.manager)))]
+    let nftShown = 0
+    let nftTotal = 0
+    for (const manager of managers) {
+      const total = Number((await batch([{ target: manager, iface: managerAbi, method: 'balanceOf', args: [owner], fallback: ethers.constants.Zero }]))[0] || 0)
+      const count = Math.min(total, 120)
+      nftTotal += total
+      nftShown += count
+      if (!count) continue
+      const ids = (await batch(Array.from({ length: count }, (_, index) => ({ target: manager, iface: managerAbi, method: 'tokenOfOwnerByIndex', args: [owner, index], fallback: null })))).filter(id => id != null)
+      const values = await batch(ids.map(id => ({ target: manager, iface: managerAbi, method: 'positions', args: [id], fallback: null, whole: true })))
+      values.forEach(function (value, index) {
+        if (!value) return
+        const pool = state.pools.find(item => item.ready && item.kind === 'cl' && item.manager && lower(item.manager) === manager && lower(item.token0) === lower(value.token0) && lower(item.token1) === lower(value.token1) && item.tickSpacing === Number(value.tickSpacing))
+        if (!pool) return
+        positions.push({ kind: 'cl', id: ids[index], pool, manager: pool.manager, staked: false, tickLower: Number(value.tickLower), tickUpper: Number(value.tickUpper), liquidity: value.liquidity, fees0: value.tokensOwed0, fees1: value.tokensOwed1, earned: ethers.constants.Zero })
+      })
+    }
+    const clGauges = state.pools.filter(pool => pool.kind === 'cl' && pool.gauge)
+    if (clGauges.length) {
+      const staked = await batch(clGauges.map(pool => ({ target: pool.gauge, iface: gaugeAbi, method: 'stakedValues', args: [owner], fallback: [] })))
+      const flat = []
+      clGauges.forEach(function (pool, index) {
+        const ids = staked[index]
+        const count = ids && ids.length ? ids.length : 0
+        for (let i = 0; i < count; i += 1) { try { flat.push({ pool, id: ethers.BigNumber.from(ids[i]) }) } catch (_) {} }
+      })
+      if (flat.length) {
+        const values = await batch(flat.map(item => ({ target: item.pool.manager, iface: managerAbi, method: 'positions', args: [item.id], fallback: null, whole: true })))
+        const earned = await batch(flat.map(item => ({ target: item.pool.gauge, iface: gaugeAbi, method: 'earned', args: [owner], fallback: ethers.constants.Zero })))
+        const seenGauge = new Set()
+        flat.forEach(function (item, index) {
+          const value = values[index]; if (!value || !item.pool.manager) return
+          const key = lower(item.pool.gauge)
+          const first = !seenGauge.has(key); seenGauge.add(key)
+          positions.push({ kind: 'cl', id: item.id, pool: item.pool, manager: item.pool.manager, staked: true, tickLower: Number(value.tickLower), tickUpper: Number(value.tickUpper), liquidity: value.liquidity, fees0: value.tokensOwed0, fees1: value.tokensOwed1, earned: first ? (earned[index] || ethers.constants.Zero) : ethers.constants.Zero })
+        })
+      }
+    }
+    const earnedGauges = new Set(positions.filter(position => position.kind === 'cl' && position.staked).map(position => lower(position.pool.gauge)))
+    const idleGauges = clGauges.filter(pool => !earnedGauges.has(lower(pool.gauge)))
+    if (idleGauges.length) {
+      const earned = await batch(idleGauges.map(pool => ({ target: pool.gauge, iface: gaugeAbi, method: 'earned', args: [owner], fallback: ethers.constants.Zero })))
+      idleGauges.forEach(function (pool, index) {
+        const value = earned[index] || ethers.constants.Zero
+        if (!value || value.isZero()) return
+        positions.push({ kind: 'cl', id: null, pool, staked: false, deferred: true, tickLower: 0, tickUpper: 0, liquidity: ethers.constants.Zero, fees0: ethers.constants.Zero, fees1: ethers.constants.Zero, earned: value })
+      })
+    }
+    const owned = positions.filter(position => position.kind === 'cl' && !position.staked && !position.deferred)
+    if (owned.length) {
+      for (let start = 0; start < owned.length; start += 20) {
+        const group = owned.slice(start, start + 20)
+        const results = await rpcBatch(group.map(position => ({ method: 'eth_call', params: [{ from: owner, to: position.manager, data: managerAbi.encodeFunctionData('collect', [[position.id, owner, maxUint128, maxUint128]]) }, 'latest'] }))).catch(() => [])
+        results.forEach(function (result, offset) { if (!result || !result.result) return; try { const decoded = managerAbi.decodeFunctionResult('collect', result.result); group[offset].fees0 = decoded[0]; group[offset].fees1 = decoded[1] } catch (_) {} })
+      }
+    }
+    return { positions, nftShown, nftTotal }
   }
 
   async function refreshAfterAction () { await hydratePools(); compute(); if (state.account && correctChain()) await loadPositions(); render() }
