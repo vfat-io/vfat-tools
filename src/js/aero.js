@@ -1,5 +1,6 @@
 /* Aero pools across FactoryRegistry deployments: V2 and CL discovery, onchain prices, EIP-1193. */
 const { ethers } = require('ethers')
+import { getSickleChain } from './sickle/chains.js'
 
 document.addEventListener('DOMContentLoaded', function () { AeroPage.start().catch(AeroPage.fatal) })
 
@@ -22,7 +23,6 @@ const AeroPage = (function () {
     ethereum: {
       id: '0x1', number: 1, name: 'Ethereum', explorer: 'https://etherscan.io',
       registry: '0xdd1705e23762F4D6e44D8C31BD8Ea80c54612239',
-      sickleFactory: '0x9D70B9E5ac2862C405D64A0193b4A4757Aab7F95',
       addRpc: 'https://cloudflare-eth.com',
       rpcs: ['https://ethereum.publicnode.com', 'https://cloudflare-eth.com'],
       nativeCurrency: { name: 'Ether', symbol: 'ETH', decimals: 18 },
@@ -31,7 +31,6 @@ const AeroPage = (function () {
     optimism: {
       id: '0xa', number: 10, name: 'Optimism', explorer: 'https://optimistic.etherscan.io',
       registry: '0xb6F9705A631CC1C0E8570FFde48882C95E2Df408',
-      sickleFactory: '0xB4C31b0f0B76b351395D4aCC94A54dD4e6fbA1E8',
       addRpc: 'https://mainnet.optimism.io',
       rpcs: ['https://mainnet.optimism.io', 'https://optimism.drpc.org'],
       nativeCurrency: { name: 'Ether', symbol: 'ETH', decimals: 18 },
@@ -40,7 +39,6 @@ const AeroPage = (function () {
     ink: {
       id: '0xdef1', number: 57073, name: 'Ink', explorer: 'https://explorer.inkonchain.com',
       registry: '0xdd1705e23762F4D6e44D8C31BD8Ea80c54612239',
-      sickleFactory: '0xc6013E57a0811C7111A8fB07ACd2E248D9489C99',
       addRpc: 'https://rpc-qnd.inkonchain.com',
       rpcs: ['https://rpc-qnd.inkonchain.com'],
       nativeCurrency: { name: 'Ether', symbol: 'ETH', decimals: 18 },
@@ -49,7 +47,6 @@ const AeroPage = (function () {
     robinhood: {
       id: '0x1237', number: 4663, name: 'Robinhood Chain', explorer: 'https://robinhoodchain.blockscout.com',
       registry: '0xdd1705e23762F4D6e44D8C31BD8Ea80c54612239',
-      sickleFactory: '0x3575Aa02Ae85D8Cd2AaE6DCaA5D8750cFc9622e6',
       addRpc: 'https://rpc.mainnet.chain.robinhood.com',
       rpcs: ['https://rpc.mainnet.chain.robinhood.com'],
       nativeCurrency: { name: 'Ether', symbol: 'ETH', decimals: 18 },
@@ -58,7 +55,6 @@ const AeroPage = (function () {
     base: {
       id: '0x2105', number: 8453, name: 'Base', explorer: 'https://basescan.org',
       registry: '0x7b2A2c12dC5Ea2a31455952a05031C3E4BB28F3E',
-      sickleFactory: '0x71D234A3e1dfC161cc1d081E6496e76627baAc31',
       addRpc: 'https://mainnet.base.org',
       rpcs: ['https://mainnet.base.org'],
       nativeCurrency: { name: 'Ether', symbol: 'ETH', decimals: 18 },
@@ -67,7 +63,6 @@ const AeroPage = (function () {
     arbitrum: {
       id: '0xa4b1', number: 42161, name: 'Arbitrum', explorer: 'https://arbiscan.io',
       registry: '0x9E635b2c689fC52201DF7eF1C9FA607c2F58f666',
-      sickleFactory: '0x53d9780DbD3831E3A797Fd215be4131636cD5FDf',
       addRpc: 'https://arb1.arbitrum.io/rpc',
       rpcs: ['https://arb1.arbitrum.io/rpc'],
       nativeCurrency: { name: 'Ether', symbol: 'ETH', decimals: 18 },
@@ -76,7 +71,6 @@ const AeroPage = (function () {
     arc: {
       id: '0x13b2', number: 5042, name: 'Arc', explorer: 'https://explorer.arc.io',
       registry: '0xCe44907DC45D3BFa3f5f6035B0e6E8B22D780A42',
-      sickleFactory: '0x36F89Be8cEF366a97129c7d18cFCAf860BA9Ff7C',
       addRpc: 'https://rpc.mainnet.arc.io',
       rpcs: ['https://rpc.mainnet.arc.io', 'https://rpc.blockdaemon.mainnet.arc.io', 'https://rpc.arc-scan.org', 'https://arc-mainnet.drpc.org'],
       nativeCurrency: { name: 'USDC', symbol: 'USDC', decimals: 18 },
@@ -171,6 +165,18 @@ const AeroPage = (function () {
     'function multicall(bytes[]) payable returns (bytes[])'
   ])
   const sickleFactoryAbi = new ethers.utils.Interface(['function sickles(address) view returns (address)'])
+  const nftPositionTuple = '((address stakingContract,uint256 poolIndex) farm,address nft,uint256 tokenId)'
+  const nftHarvestTuple = '(address[] rewardTokens,uint128 amount0Max,uint128 amount1Max,bytes extraData)'
+  const swapTuple = '(address tokenApproval,address router,uint256 amountIn,uint256 desiredAmountOut,uint256 minAmountOut,address tokenIn,address tokenOut,bytes extraData)'
+  const nftStrategyAbi = new ethers.utils.Interface([
+    'function simpleHarvest(' + nftPositionTuple + ' position,' + nftHarvestTuple + ' params)',
+    'function simpleExit(' + nftPositionTuple + ' position,' + nftHarvestTuple + ' harvestParams,bytes withdrawExtraData)',
+    'function exit(' + nftPositionTuple + ' position,(' + nftHarvestTuple + ' harvest,' + swapTuple + '[] swaps,address[] outputTokens,address[] sweepTokens) harvestParams,(((address nft,uint256 tokenId,uint128 liquidity,uint256 amount0Min,uint256 amount1Min,uint128 amount0Max,uint128 amount1Max,bytes extraData) removeLiquidityParams,' + swapTuple + '[] swaps) zap,address[] tokensOut,bytes extraData) withdrawParams,address[] sweepTokens)'
+  ])
+  const farmStrategyAbi = new ethers.utils.Interface([
+    'function simpleHarvest((address stakingContract,uint256 poolIndex) farm,(address[] rewardTokens,bytes extraData) params)',
+    'function simpleExit((address stakingContract,uint256 poolIndex) farm,(address[] rewardTokens,bytes extraData) harvestParams,(address lpToken,uint256 amountOut,bytes extraData) withdrawParams)'
+  ])
   const multicall = new ethers.utils.Interface([
     'function aggregate3((address target,bool allowFailure,bytes callData)[] calls) payable returns ((bool success,bytes returnData)[])'
   ])
@@ -184,6 +190,7 @@ const AeroPage = (function () {
     const key = last === 'aero' ? (parts.length >= 2 ? parts[parts.length - 2] : 'ethereum') : ''
     return chains[key] || null
   })()
+  const sickleChain = chain ? getSickleChain(chain.number) : null
 
   const state = {
     pools: [], tokens: new Map(), prices: new Map(), confidence: new Map(), factories: [],
@@ -814,6 +821,15 @@ const AeroPage = (function () {
       addCell(row, rewardLines.length ? rewardLines.join('\n') : '—')
       const actions = e('td', { className: 'aero-actions' })
       if (position.sickle) {
+        const noRewards = !position.earned || position.earned.isZero() || !state.receipt
+        if (sickleChain && pool.gauge && position.kind === 'cl' && position.staked) {
+          actions.appendChild(button('claim', function () { return sickleClaim(position) }, noRewards))
+          actions.appendChild(button('withdraw NFT', function () { return sickleWithdrawNft(position) }))
+          actions.appendChild(button('exit', function () { return sickleExit(position) }, position.liquidity.isZero()))
+        } else if (sickleChain && pool.gauge && position.kind === 'v2' && position.staked && !position.staked.isZero()) {
+          actions.appendChild(button('claim', function () { return sickleClaim(position) }, noRewards))
+          actions.appendChild(button('unstake', function () { return sickleUnstakeV2(position) }))
+        }
         const link = e('a', { text: '[ vfat.io ]' }); link.href = 'https://vfat.io/'; link.target = '_blank'; link.rel = 'noopener noreferrer'
         actions.appendChild(link); row.appendChild(actions); body.appendChild(row); return
       }
@@ -1085,6 +1101,40 @@ const AeroPage = (function () {
     } finally { state.sending = false; render() }
   }
 
+  /* Sickle-held positions: the wallet calls the Sickle strategies, which act through the user's Sickle. */
+  function sickleNft (position) { return { farm: { stakingContract: position.pool.gauge, poolIndex: 0 }, nft: position.manager, tokenId: position.id } }
+  function sickleNftHarvest () { return { rewardTokens: state.receipt ? [state.receipt] : [], amount0Max: maxUint128, amount1Max: maxUint128, extraData: '0x' } }
+  async function sickleClaim (position) {
+    if (!state.receipt) throw new Error('Reward token unknown.')
+    if (position.kind === 'cl') return sendTx(sickleChain.nftStrategy, nftStrategyAbi.encodeFunctionData('simpleHarvest', [sickleNft(position), sickleNftHarvest()]), 'Claim')
+    return sendTx(sickleChain.strategy, farmStrategyAbi.encodeFunctionData('simpleHarvest', [{ stakingContract: position.pool.gauge, poolIndex: 0 }, { rewardTokens: [state.receipt], extraData: '0x' }]), 'Claim')
+  }
+  async function sickleWithdrawNft (position) {
+    if (!window.confirm('Claim rewards and move NFT #' + position.id + ' from the Sickle to your wallet?')) return
+    return sendTx(sickleChain.nftStrategy, nftStrategyAbi.encodeFunctionData('simpleExit', [sickleNft(position), sickleNftHarvest(), '0x']), 'Withdraw NFT')
+  }
+  async function sickleUnstakeV2 (position) {
+    const farm = { stakingContract: position.pool.gauge, poolIndex: 0 }
+    const rewards = state.receipt ? [state.receipt] : []
+    return sendTx(sickleChain.strategy, farmStrategyAbi.encodeFunctionData('simpleExit', [farm, { rewardTokens: rewards, extraData: '0x' }, { lpToken: position.pool.address, amountOut: position.staked, extraData: '0x' }]), 'Unstake')
+  }
+  async function sickleExit (position) {
+    const pool = position.pool; const t0 = token(pool.token0); const t1 = token(pool.token1)
+    const [current, slot0] = await batch([{ target: position.manager, iface: managerAbi, method: 'positions', args: [position.id], fallback: null, whole: true }, { target: pool.address, iface: clPool, method: 'slot0', fallback: null, whole: true }])
+    const liquidity = current && current.liquidity ? current.liquidity : position.liquidity
+    if (!liquidity || liquidity.isZero()) throw new Error('Nothing to remove.')
+    if (slot0) pool.slot0 = slot0
+    const expected = amountsFor(pool, position, Number(liquidity.toString()))
+    const bps = 50
+    const min0 = applySlippage(ethers.BigNumber.from(BigInt(Math.floor(expected[0] * 0.999999)).toString()), bps)
+    const min1 = applySlippage(ethers.BigNumber.from(BigInt(Math.floor(expected[1] * 0.999999)).toString()), bps)
+    if (!window.confirm('Exit NFT #' + position.id + ' to ' + t0.symbol + ' + ' + t1.symbol + ' in your wallet?\nMIN : ' + formatAmount(min0, t0.decimals) + ' ' + t0.symbol + ' · ' + formatAmount(min1, t1.decimals) + ' ' + t1.symbol + ' (0.5% slippage)')) return
+    const rewards = state.receipt ? [state.receipt] : []
+    const harvest = { harvest: sickleNftHarvest(), swaps: [], outputTokens: rewards, sweepTokens: rewards }
+    const withdraw = { zap: { removeLiquidityParams: { nft: position.manager, tokenId: position.id, liquidity, amount0Min: min0, amount1Min: min1, amount0Max: maxUint128, amount1Max: maxUint128, extraData: '0x' }, swaps: [] }, tokensOut: [], extraData: '0x' }
+    return sendTx(sickleChain.nftStrategy, nftStrategyAbi.encodeFunctionData('exit', [sickleNft(position), harvest, withdraw, [pool.token0, pool.token1]]), 'Exit')
+  }
+
   async function exitPosition (position) {
     requireWallet(); const pool = position.pool
     state.sending = true; render()
@@ -1123,7 +1173,7 @@ const AeroPage = (function () {
     const account = state.account; state.positionsLoading = true; state.positionsFailed = false; renderPositions()
     try {
       const own = await readPositions(account)
-      const sickle = chain.sickleFactory ? asAddress((await batch([{ target: chain.sickleFactory, iface: sickleFactoryAbi, method: 'sickles', args: [account], fallback: null }]))[0]) : null
+      const sickle = sickleChain ? asAddress((await batch([{ target: sickleChain.factory, iface: sickleFactoryAbi, method: 'sickles', args: [account], fallback: null }]))[0]) : null
       const held = sickle ? await readPositions(sickle) : { positions: [], nftShown: 0, nftTotal: 0 }
       held.positions.forEach(position => { position.sickle = sickle })
       const nftTotal = own.nftTotal + held.nftTotal; const nftShown = own.nftShown + held.nftShown
