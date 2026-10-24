@@ -17,6 +17,8 @@ const EquilibraPage = (function () {
   // Reference venues used only to carry a USDG price onto the pool tokens.
   const refSpacings = [1, 5, 10, 50, 100, 200, 2000]
   const secondsPerYear = 365 * 24 * 60 * 60
+  // The Robinhood RPC rejects an eth_getLogs filter spanning more than 10,000,000 blocks.
+  const logBlockSpan = 10000000
   const minPrice = 1e-12
   const maxPrice = 1e12
   const wad = 1e18
@@ -178,13 +180,16 @@ const EquilibraPage = (function () {
   }
 
   // PoolCreated carries every pool's genesis block, which dates the LP unit-value
-  // growth each pool reports. The factory emits few events, so one range covers it.
+  // growth each pool reports. The factory emits few events, so its history is read
+  // in one batch of logBlockSpan ranges.
   async function loadGenesis () {
     const topic = factory.getEventTopic('PoolCreated')
+    const calls = []
+    for (let from = 0; from <= state.head; from += logBlockSpan) calls.push({ method: 'eth_getLogs', params: [{ address: address.factory, topics: [topic], fromBlock: ethers.utils.hexValue(from), toBlock: ethers.utils.hexValue(Math.min(state.head, from + logBlockSpan - 1)) }] })
     let logs = []
     try {
-      const response = (await rpcJsonBatch([{ method: 'eth_getLogs', params: [{ address: address.factory, topics: [topic], fromBlock: '0x0', toBlock: ethers.utils.hexValue(state.head) }] }], 20000, 2))[0]
-      if (response && Array.isArray(response.result)) logs = response.result
+      const responses = await rpcJsonBatch(calls, 20000, 2)
+      responses.forEach(function (response) { if (response && Array.isArray(response.result)) logs = logs.concat(response.result) })
     } catch (_) { logs = [] }
     const blocks = new Map()
     logs.forEach(function (log) {
