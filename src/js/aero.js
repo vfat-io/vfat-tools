@@ -1,5 +1,6 @@
 /* Aero pools across FactoryRegistry deployments: V2 and CL discovery, onchain prices, EIP-1193. */
 const { ethers } = require('ethers')
+import { resolveAeroRewardToken, clRewards } from './aero_rewards.mjs'
 import { getSickleChain } from './sickle/chains.js'
 
 document.addEventListener('DOMContentLoaded', function () { AeroPage.start().catch(AeroPage.fatal) })
@@ -195,7 +196,7 @@ const AeroPage = (function () {
   const state = {
     pools: [], tokens: new Map(), prices: new Map(), confidence: new Map(), factories: [],
     head: null, headTime: null, feeFrom: null, feeSeconds: null, feesReady: false, feeFailed: false,
-    showZero: false, ready: false, voter: null, receipt: null, nftNote: '',
+    showZero: false, ready: false, voter: null, receipt: null, rewardToken: null, nftNote: '',
     eip1193: null, account: null, walletChain: null, boundProvider: null, reownUnsubscribe: null,
     action: null, actionInfo: null, positions: [], positionsLoading: false, positionsFailed: false,
     sending: false, status: '', spinner: null
@@ -353,9 +354,11 @@ const AeroPage = (function () {
     const targets = asList(found[0])
     const gaugeFactories = asList(found[1])
     state.voter = asAddress(found[2])
+    state.receipt = null; state.rewardToken = null
     if (state.voter) {
       const receipt = await batch([{ target: state.voter, iface: voterAbi, method: 'RECEIPT_TOKEN', fallback: null }])
       state.receipt = asAddress(receipt[0])
+      state.rewardToken = await resolveAeroRewardToken(batch, chain.number, state.voter, state.receipt)
     }
     const meta = []
     targets.forEach(address => meta.push(
@@ -490,7 +493,7 @@ const AeroPage = (function () {
     })
     const tokenList = []
     state.pools.forEach(function (pool) { if (pool.token0) tokenList.push(pool.token0); if (pool.token1) tokenList.push(pool.token1) })
-    if (state.receipt) tokenList.push(state.receipt)
+    if (state.rewardToken) tokenList.push(state.rewardToken)
     await loadTokens(tokenList)
     const balances = []
     state.pools.forEach(function (pool) {
@@ -601,8 +604,8 @@ const AeroPage = (function () {
         const known = projected != null && last != null
         const delta = known && projected.gte(last) ? projected.sub(last) : null
         const window = state.headTime && pool.lastSettlement ? state.headTime - pool.lastSettlement : 0
-        const receipt = state.receipt ? token(state.receipt) : null
-        const price = state.receipt ? state.prices.get(lower(state.receipt)) : NaN
+        const reward = state.rewardToken ? token(state.rewardToken) : null
+        const price = state.rewardToken ? state.prices.get(lower(state.rewardToken)) : NaN
         let stakedTvl = NaN
         if (finite(pool.tvl) && pool.tvl > 0) {
           if (pool.kind === 'v2' && pool.gaugeSupply && pool.totalSupply && !pool.totalSupply.isZero()) stakedTvl = pool.tvl * Number(pool.gaugeSupply.toString()) / Number(pool.totalSupply.toString())
@@ -610,8 +613,8 @@ const AeroPage = (function () {
         }
         if (!known || delta == null) pool.emApr = NaN
         else if (delta.isZero()) pool.emApr = 0
-        else if (window >= minStakeWindow && receipt && receipt.decimals != null && finite(price) && finite(stakedTvl) && stakedTvl > 0) {
-          const tokens = amountNum(delta, receipt.decimals)
+        else if (window >= minStakeWindow && reward && reward.decimals != null && finite(price) && finite(stakedTvl) && stakedTvl > 0) {
+          const tokens = amountNum(delta, reward.decimals)
           pool.emApr = tokens * price * secondsPerYear / window / stakedTvl * 100
         } else pool.emApr = NaN
       }
@@ -816,14 +819,14 @@ const AeroPage = (function () {
       const rewardLines = []
       if (position.kind === 'cl' && !position.deferred) rewardLines.push(formatAmount(position.fees0 || 0, t0.decimals) + ' ' + t0.symbol, formatAmount(position.fees1 || 0, t1.decimals) + ' ' + t1.symbol)
       else if (position.fees0 || position.fees1) rewardLines.push(formatAmount(position.fees0 || 0, t0.decimals) + ' ' + t0.symbol, formatAmount(position.fees1 || 0, t1.decimals) + ' ' + t1.symbol)
-      const receipt = state.receipt ? token(state.receipt) : null
-      if (position.earned && !position.earned.isZero() && receipt) rewardLines.push(formatAmount(position.earned, receipt.decimals) + ' ' + receipt.symbol)
+      const reward = state.rewardToken ? token(state.rewardToken) : null
+      if (position.earned && !position.earned.isZero() && reward) rewardLines.push(formatAmount(position.earned, reward.decimals) + ' ' + reward.symbol)
       addCell(row, rewardLines.length ? rewardLines.join('\n') : '—')
       const actions = e('td', { className: 'aero-actions' })
       if (position.sickle) {
-        const noRewards = !position.earned || position.earned.isZero() || !state.receipt
-        if (sickleChain && pool.gauge && position.kind === 'cl' && position.staked) {
-          actions.appendChild(button('claim', function () { return sickleClaim(position) }, noRewards))
+        const noRewards = !position.earned || position.earned.isZero() || !state.rewardToken
+        if (sickleChain && pool.gauge && position.kind === 'cl' && !position.deferred) {
+          if (position.staked) actions.appendChild(button('claim', function () { return sickleClaim(position) }, noRewards))
           actions.appendChild(button('withdraw NFT', function () { return sickleWithdrawNft(position) }))
           actions.appendChild(button('exit', function () { return sickleExit(position) }, position.liquidity.isZero()))
         } else if (sickleChain && pool.gauge && position.kind === 'v2' && position.staked && !position.staked.isZero()) {
@@ -1103,11 +1106,12 @@ const AeroPage = (function () {
 
   /* Sickle-held positions: the wallet calls the Sickle strategies, which act through the user's Sickle. */
   function sickleNft (position) { return { farm: { stakingContract: position.pool.gauge, poolIndex: 0 }, nft: position.manager, tokenId: position.id } }
-  function sickleNftHarvest () { return { rewardTokens: state.receipt ? [state.receipt] : [], amount0Max: maxUint128, amount1Max: maxUint128, extraData: '0x' } }
+  function sickleRewards () { if (!state.rewardToken) throw new Error('Reward token unknown.'); return [state.rewardToken] }
+  function sickleNftHarvest () { return { rewardTokens: sickleRewards(), amount0Max: maxUint128, amount1Max: maxUint128, extraData: '0x' } }
   async function sickleClaim (position) {
-    if (!state.receipt) throw new Error('Reward token unknown.')
+    const rewards = sickleRewards()
     if (position.kind === 'cl') return sendTx(sickleChain.nftStrategy, nftStrategyAbi.encodeFunctionData('simpleHarvest', [sickleNft(position), sickleNftHarvest()]), 'Claim')
-    return sendTx(sickleChain.strategy, farmStrategyAbi.encodeFunctionData('simpleHarvest', [{ stakingContract: position.pool.gauge, poolIndex: 0 }, { rewardTokens: [state.receipt], extraData: '0x' }]), 'Claim')
+    return sendTx(sickleChain.strategy, farmStrategyAbi.encodeFunctionData('simpleHarvest', [{ stakingContract: position.pool.gauge, poolIndex: 0 }, { rewardTokens: rewards, extraData: '0x' }]), 'Claim')
   }
   async function sickleWithdrawNft (position) {
     if (!window.confirm('Claim rewards and move NFT #' + position.id + ' from the Sickle to your wallet?')) return
@@ -1115,7 +1119,7 @@ const AeroPage = (function () {
   }
   async function sickleUnstakeV2 (position) {
     const farm = { stakingContract: position.pool.gauge, poolIndex: 0 }
-    const rewards = state.receipt ? [state.receipt] : []
+    const rewards = sickleRewards()
     return sendTx(sickleChain.strategy, farmStrategyAbi.encodeFunctionData('simpleExit', [farm, { rewardTokens: rewards, extraData: '0x' }, { lpToken: position.pool.address, amountOut: position.staked, extraData: '0x' }]), 'Unstake')
   }
   async function sickleExit (position) {
@@ -1129,7 +1133,7 @@ const AeroPage = (function () {
     const min0 = applySlippage(ethers.BigNumber.from(BigInt(Math.floor(expected[0] * 0.999999)).toString()), bps)
     const min1 = applySlippage(ethers.BigNumber.from(BigInt(Math.floor(expected[1] * 0.999999)).toString()), bps)
     if (!window.confirm('Exit NFT #' + position.id + ' to ' + t0.symbol + ' + ' + t1.symbol + ' in your wallet?\nMIN : ' + formatAmount(min0, t0.decimals) + ' ' + t0.symbol + ' · ' + formatAmount(min1, t1.decimals) + ' ' + t1.symbol + ' (0.5% slippage)')) return
-    const rewards = state.receipt ? [state.receipt] : []
+    const rewards = sickleRewards()
     const harvest = { harvest: sickleNftHarvest(), swaps: [], outputTokens: rewards, sweepTokens: rewards }
     const withdraw = { zap: { removeLiquidityParams: { nft: position.manager, tokenId: position.id, liquidity, amount0Min: min0, amount1Min: min1, amount0Max: maxUint128, amount1Max: maxUint128, extraData: '0x' }, swaps: [] }, tokensOut: [], extraData: '0x' }
     return sendTx(sickleChain.nftStrategy, nftStrategyAbi.encodeFunctionData('exit', [sickleNft(position), harvest, withdraw, [pool.token0, pool.token1]]), 'Exit')
@@ -1251,13 +1255,10 @@ const AeroPage = (function () {
       })
       if (flat.length) {
         const values = await batch(flat.map(item => ({ target: item.pool.manager, iface: managerAbi, method: 'positions', args: [item.id], fallback: null, whole: true })))
-        const earned = await batch(flat.map(item => ({ target: item.pool.gauge, iface: gaugeAbi, method: 'earned', args: [owner], fallback: ethers.constants.Zero })))
-        const seenGauge = new Set()
+        const earned = await batch(flat.map(item => ({ target: item.pool.gauge, iface: clRewards, method: 'earned', args: [owner, [item.id]], fallback: ethers.constants.Zero })))
         flat.forEach(function (item, index) {
           const value = values[index]; if (!value || !item.pool.manager) return
-          const key = lower(item.pool.gauge)
-          const first = !seenGauge.has(key); seenGauge.add(key)
-          positions.push({ kind: 'cl', id: item.id, pool: item.pool, manager: item.pool.manager, staked: true, tickLower: Number(value.tickLower), tickUpper: Number(value.tickUpper), liquidity: value.liquidity, fees0: value.tokensOwed0, fees1: value.tokensOwed1, earned: first ? (earned[index] || ethers.constants.Zero) : ethers.constants.Zero })
+          positions.push({ kind: 'cl', id: item.id, pool: item.pool, manager: item.pool.manager, staked: true, tickLower: Number(value.tickLower), tickUpper: Number(value.tickUpper), liquidity: value.liquidity, fees0: value.tokensOwed0, fees1: value.tokensOwed1, earned: earned[index] || ethers.constants.Zero })
         })
       }
     }
