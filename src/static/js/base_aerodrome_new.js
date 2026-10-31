@@ -42,6 +42,30 @@ const CL_FACTORY_ADDRESS = "0xf8f2eB4940CFE7d13603DDDD87f123820Fc061Ef";
 
 const V2_FACTORY_ADDRESS = "0x420DD381b31aEf6683db6B902084cB0FFECe40Da";
 
+const CURRENT_CL_FACTORY_ADDRESS = "0x9CB220581b91b0C83223012FE69688b92aD07a76";
+const CURRENT_AERO_ADDRESS = "0x3f5bF3EdAc59d650D8fDf9657a71F2f904A3a4Ee";
+const CURRENT_CL_GAUGE_ABI = CL_GAUGE_ABI.filter(item => item.name !== "earned").concat([
+  { type: "function", name: "earned", stateMutability: "view", inputs: [{ name: "account", type: "address" }, { name: "tokenIds", type: "uint256[]" }], outputs: [{ type: "uint256" }] },
+  { type: "function", name: "claimEmissions", stateMutability: "nonpayable", inputs: [{ name: "account", type: "address" }, { name: "recipient", type: "address" }, { name: "tokenIds", type: "uint256[]" }], outputs: [] }
+]);
+
+async function loadCurrentClPools(App) {
+  const factory = new ethcall.Contract(CURRENT_CL_FACTORY_ADDRESS, CL_FACTORY_ABI);
+  const [length] = await App.ethcallProvider.all([factory.allPoolsLength()]);
+  const pools = [];
+  for (let start = 0; start < Number(length); start += 200) {
+    const count = Math.min(200, Number(length) - start);
+    const addresses = await App.ethcallProvider.all(Array.from({ length: count }, (_, i) => factory.allPools(start + i)));
+    const gauges = await App.ethcallProvider.all(addresses.map(address => new ethcall.Contract(address, CL_TOKEN_ABI).gauge()));
+    addresses.forEach((lpToken, i) => {
+      if (gauges[i] !== ethers.constants.AddressZero) {
+        pools.push({ lpToken, gauge: gauges[i], isCurrent: true });
+      }
+    });
+  }
+  return pools;
+}
+
 async function main() {
   const App = await init_ethers();
 
@@ -125,6 +149,8 @@ async function main() {
     }
   }
 
+  // The current deployment has a LeafVoter without the legacy pools()/gauges() registry.
+  cl_pools.push(...await loadCurrentClPools(App));
   const cl_gauge_contracts = cl_pools.map(a => new ethcall.Contract(a.gauge, CL_GAUGE_ABI));
   const cl_balanceOf_calls = cl_gauge_contracts.map(c => c.stakedValues(App.YOUR_ADDRESS));
   console.log('call stakedValues');
@@ -132,15 +158,16 @@ async function main() {
 
   for (let i = 0; i < cl_pools.length; i++) {
     if (cl_balanceOfs[i].length > 0) {
-      userClGauges.push(cl_pools[i].gauge)
+      userClGauges.push(cl_pools[i])
     }
   }
 
   const clGauges = userClGauges.map(a => {
     return {
-      address: a,
-      abi: CL_GAUGE_ABI,
-      stakeTokenFunction: "pool"
+      address: a.gauge,
+      abi: a.isCurrent ? CURRENT_CL_GAUGE_ABI : CL_GAUGE_ABI,
+      stakeTokenFunction: "pool",
+      isCurrent: Boolean(a.isCurrent)
     }
   })
 
@@ -180,7 +207,7 @@ async function main() {
 async function loadClSynthetixPools(App, tokens, prices, pools, has_sickle_account, owner_sickle_address) {
   let totalUserStaked = 0;
   const infos = await Promise.all(pools.map(p =>
-    loadClSynthetixPoolInfo(App, tokens, prices, p.abi, p.address, p.stakeTokenFunction, has_sickle_account, owner_sickle_address)));
+    loadClSynthetixPoolInfo(App, tokens, prices, p.abi, p.address, p.stakeTokenFunction, has_sickle_account, owner_sickle_address, p.isCurrent)));
   for (const i of infos) {
     let p = await printAerodromeClPool(App, i, "base");
     totalUserStaked += p.userStaked || 0;
@@ -189,12 +216,16 @@ async function loadClSynthetixPools(App, tokens, prices, pools, has_sickle_accou
 }
 
 async function loadClSynthetixPoolInfo(App, tokens, prices, stakingAbi, stakingAddress,
-  stakeTokenFunction, has_sickle_account, owner_sickle_address) {
+  stakeTokenFunction, has_sickle_account, owner_sickle_address, isCurrent = false) {
   const STAKING_POOL = new ethcall.Contract(stakingAddress, stakingAbi);
 
   let stakeTokenAddress, periodFinish, rewardRate, userStakedNfts;
   try {
-    [stakeTokenAddress, periodFinish, rewardRate, userStakedNfts] = await App.ethcallProvider.all([STAKING_POOL.pool(), STAKING_POOL.periodFinish(), STAKING_POOL.rewardRate(), STAKING_POOL.stakedValues(App.YOUR_ADDRESS)]);
+    if (isCurrent) {
+      [stakeTokenAddress, userStakedNfts] = await App.ethcallProvider.all([STAKING_POOL.pool(), STAKING_POOL.stakedValues(App.YOUR_ADDRESS)]);
+    } else {
+      [stakeTokenAddress, periodFinish, rewardRate, userStakedNfts] = await App.ethcallProvider.all([STAKING_POOL.pool(), STAKING_POOL.periodFinish(), STAKING_POOL.rewardRate(), STAKING_POOL.stakedValues(App.YOUR_ADDRESS)]);
+    }
   } catch {
     return {
       stakingAddress: "",
@@ -231,7 +262,7 @@ async function loadClSynthetixPoolInfo(App, tokens, prices, stakingAbi, stakingA
 
   const stakeToken = await getClToken(App, token0, token1, stakingAddress);
 
-  const rewardTokenAddress = "0x940181a94a35a4569e4529a3cdfb74e38fd98631";
+  const rewardTokenAddress = isCurrent ? CURRENT_AERO_ADDRESS : "0x940181a94a35a4569e4529a3cdfb74e38fd98631";
 
   const nftToken = new ethcall.Contract(nftManagerAddress, NFT_AERO_ABI);
   const [userOwnedNfts, totalStakedNfts] = await App.ethcallProvider.all([nftToken.balanceOf(owner_sickle_address), nftToken.balanceOf(stakingAddress)]);
@@ -240,8 +271,8 @@ async function loadClSynthetixPoolInfo(App, tokens, prices, stakingAbi, stakingA
 
   for (let i = 0; i < userOwnedNfts; i++) {
     const [userOwnedNftId] = await App.ethcallProvider.all([nftToken.tokenOfOwnerByIndex(owner_sickle_address, i)]);
-    const [liquidity] = await App.ethcallProvider.all([nftContract.positions(userOwnedNftId)])
-    if (liquidity > 0) {
+    const [position] = await App.ethcallProvider.all([nftContract.positions(userOwnedNftId)])
+    if (position.liquidity.gt(0) && position.token0.toLowerCase() === tokenAddress0.toLowerCase() && position.token1.toLowerCase() === tokenAddress1.toLowerCase() && Number(position.tickSpacing) === Number(poolTickSpacing)) {
       userOwnedNftIds.push(userOwnedNftId);
     }
   }
@@ -253,7 +284,7 @@ async function loadClSynthetixPoolInfo(App, tokens, prices, stakingAbi, stakingA
 
   const rewardTokenPrice = prices[rewardTokenAddress]?.usd;
 
-  const weeklyRewards = (Date.now() / 1000 > periodFinish) ? 0 : rewardRate / 1e18 * 604800;
+  const weeklyRewards = isCurrent ? null : (Date.now() / 1000 > periodFinish) ? 0 : rewardRate / 1e18 * 604800;
 
   const usdPerWeek = weeklyRewards * rewardTokenPrice;
 
@@ -263,7 +294,7 @@ async function loadClSynthetixPoolInfo(App, tokens, prices, stakingAbi, stakingA
   let nftPositions = [];
 
   for (const userNft of userStakedNfts) {
-    const [_earned] = await App.ethcallProvider.all([STAKING_POOL.earned(App.YOUR_ADDRESS, userNft)]);
+    const [_earned] = await App.ethcallProvider.all([STAKING_POOL.earned(App.YOUR_ADDRESS, isCurrent ? [userNft] : userNft)]);
     const earned = _earned / 10 ** rewardToken.decimals;
     earnings.push(earned);
 
@@ -324,6 +355,7 @@ async function loadClSynthetixPoolInfo(App, tokens, prices, stakingAbi, stakingA
     poolSlot0,
     poolTickSpacing,
     nftManagerAddress,
+    isCurrent,
   }
 }
 
@@ -342,7 +374,9 @@ async function printAerodromeClPool(App, info, chain = "eth", customURLs) {
     }
   }
   _print(`Pool - ${info.stakeTokenTicker}`)
-  _print(`| ${info.rewardTokenTicker} Per Week: ${info.weeklyRewards.toFixed(2)} ($${formatMoney(info.usdPerWeek)})`);
+  if (info.weeklyRewards !== null) {
+    _print(`| ${info.rewardTokenTicker} Per Week: ${info.weeklyRewards.toFixed(2)} ($${formatMoney(info.usdPerWeek)})`);
+  }
 
   // Display staking info
   _print(`| You are staking ${info.userStaked} ${info.stakeTokenTicker}`);
@@ -355,16 +389,16 @@ async function printAerodromeClPool(App, info, chain = "eth", customURLs) {
     return clContract_withdraw(info.stakingAddress, nftId, App)
   }
   const claim = async function (nftId) {
-    return clContract_claim(info.stakingAddress, nftId, App)
+    return clContract_claim(info.stakingAddress, nftId, App, info.isCurrent)
   }
   const sickle_approveTENDAndStake = async function (nftId) {
-    return sickle_clContract_stake(info.stakingAddress, nftId, App)
+    return sickle_clContract_stake(info.stakingAddress, nftId, App, info.nftManagerAddress)
   }
   const sickle_unstake = async function (nftId) {
-    return sickle_clContract_withdraw(info.stakingAddress, nftId, App)
+    return sickle_clContract_withdraw(info.stakingAddress, nftId, App, info.nftManagerAddress)
   }
   const sickle_claim = async function (nftId) {
-    return sickle_clContract_claim(info.stakingAddress, nftId, App)
+    return sickle_clContract_claim(info.stakingAddress, nftId, App, info.nftManagerAddress, info.rewardTokenAddress)
   }
 
   const sickle_exitToUnderlying = async function (nftId) {
@@ -413,6 +447,7 @@ async function printAerodromeClPool(App, info, chain = "eth", customURLs) {
     if (earningsIndex !== -1) {
       earnings = info.earnings[earningsIndex]
       earningsUsd = earnings * info.rewardTokenPrice
+      const rewardLabel = `${earnings.toFixed(6)} ${info.rewardTokenTicker}${Number.isFinite(earningsUsd) ? ` ($${formatMoney(earningsUsd)})` : ""}`;
       if (info.has_sickle_account) {
         index < info.nftPositions.length - 1 ? _print_inline(`|    `) : _print_inline(`     `)
         _print_link(`Withdraw NFT`, () => sickle_unstake(position.nftId))
@@ -426,12 +461,12 @@ async function printAerodromeClPool(App, info, chain = "eth", customURLs) {
 
         index < info.nftPositions.length - 1 ? _print_inline(`|    `) : _print_inline(`     `)
         _print_link(
-          `Claim rewards, ${earnings.toFixed(6)} ($${formatMoney(earningsUsd)})`,
+          `Claim rewards, ${rewardLabel}`,
           () => sickle_claim(info.userStakedNfts[earningsIndex])
         )
         if (window.Sickle && earnings > 0) {
           index < info.nftPositions.length - 1 ? _print_inline(`|    `) : _print_inline(`     `)
-          _print_link(`Claim Rewards to ETH, ${earnings.toFixed(6)} ($${formatMoney(earningsUsd)})`, () => sickle_harvest(position.nftId))
+          _print_link(`Claim Rewards to ETH, ${rewardLabel}`, () => sickle_harvest(position.nftId))
         }
 
         if (window.Sickle) {
@@ -446,17 +481,14 @@ async function printAerodromeClPool(App, info, chain = "eth", customURLs) {
             _print_link(`Rebalance (${rangeStatus})`, () => sickle_rebalance(position.nftId))
           }
           index < info.nftPositions.length - 1 ? _print_inline(`|    `) : _print_inline(`     `)
-          _print_link(`Compound, ${earnings.toFixed(6)} ($${formatMoney(earningsUsd)})`, () => sickle_compound(position.nftId))
+          _print_link(`Compound, ${rewardLabel}`, () => sickle_compound(position.nftId))
         }
+      } else {
+        index < info.nftPositions.length - 1 ? _print_inline(`|    `) : _print_inline(`     `)
+        _print_link(`Withdraw NFT`, () => unstake(position.nftId))
+        index < info.nftPositions.length - 1 ? _print_inline(`|    `) : _print_inline(`     `)
+        _print_link(`Claim rewards, ${rewardLabel}`, () => claim(info.userStakedNfts[earningsIndex]))
       }
-    } else {
-      index < info.nftPositions.length - 1 ? _print_inline(`|    `) : _print_inline(`     `)
-      _print_link(`Withdraw NFT`, () => unstake(position.nftId))
-      index < info.nftPositions.length - 1 ? _print_inline(`|    `) : _print_inline(`     `)
-      _print_link(
-        `Claim rewards, ${earnings.toFixed(6)} ($${formatMoney(earningsUsd)})`,
-        () => claim(info.userStakedNfts[earningsIndex])
-      )
     }
   }
 
@@ -575,32 +607,48 @@ const sickle_sdk_harvest_aerodrome = async function (info, nftId) {
   }
 }
 
-const sickle_clContract_stake = async function (rewardPoolAddr, nftId, App) {
+const sickle_clContract_stake = async function (rewardPoolAddr, nftId, App, nftManagerAddress = NFT_TOKEN_ADDRESS) {
   const signer = App.provider.getSigner()
 
-  const NFT_CONTRACT = new ethers.Contract(NFT_TOKEN_ADDRESS, NFT_AERO_ABI, signer)
+  const NFT_CONTRACT = new ethers.Contract(nftManagerAddress, NFT_AERO_ABI, signer)
 
   const REWARD_POOL = new ethers.Contract(NFT_FARM_STRATEGY_ADDRESS, NFT_FARM_STRATEGY_ABI, signer)
 
-  const decodedExtraData = {
-    tokenId: +nftId,
-    maxAmount0: 0,
-    maxAmount1: 0,
-    isIncrease: false
+  const zero = ethers.constants.AddressZero;
+  const rewardConfig = { rewardBehavior: 0, harvestTokenOut: zero };
+  const settings = {
+    pool: zero, poolId: ethers.constants.HashZero, autoRebalance: false,
+    rebalanceConfig: {
+      tickSpacesBelow: 0, tickSpacesAbove: 0, bufferTicksBelow: 0, bufferTicksAbove: 0,
+      dustBP: 0, priceImpactBP: 0, slippageBP: 0, cutoffTickLow: 0, cutoffTickHigh: 0,
+      delayMin: 0, rewardConfig
+    },
+    automateRewards: false, rewardConfig, autoExit: false,
+    exitConfig: {
+      triggerTickLow: 0, triggerTickHigh: 0, exitTokenOutLow: zero, exitTokenOutHigh: zero,
+      priceImpactBP: 0, slippageBP: 0
+    },
+    extraData: "0x"
+  };
+  const position = { farm: { stakingContract: rewardPoolAddr, poolIndex: 0 }, nft: nftManagerAddress, tokenId: nftId };
+  showLoading();
+  try {
+    const factory = new ethers.Contract("0x71D234A3e1dfC161cc1d081E6496e76627baAc31", SICKLE_FACTORY_ABI, signer);
+    const owner = await signer.getAddress();
+    const sickle = await factory.sickles(owner);
+    const approvalAddress = sickle === zero ? await factory.predict(owner) : sickle;
+    await NFT_CONTRACT.callStatic.approve(approvalAddress, nftId);
+    const approval = await NFT_CONTRACT.approve(approvalAddress, nftId);
+    await App.provider.waitForTransaction(approval.hash);
+    await REWARD_POOL.callStatic.simpleDeposit(position, "0x", settings, zero, ethers.constants.HashZero);
+    const tx = await REWARD_POOL.simpleDeposit(position, "0x", settings, zero, ethers.constants.HashZero);
+    await App.provider.waitForTransaction(tx.hash);
+    window.location.reload();
+  } catch (error) {
+    _print(`Deposit failed: ${error.reason || error.message}`);
+  } finally {
+    hideLoading();
   }
-
-  const extraData = ethers.utils.defaultAbiCoder.encode(["tuple(uint256 tokenId, uint256 maxAmount0, uint256 maxAmount1, bool isIncrease)"], [decodedExtraData]);
-
-  await NFT_CONTRACT.approve(App.YOUR_ADDRESS, nftId);
-
-  showLoading()
-  REWARD_POOL.depositErc721(NFT_TOKEN_ADDRESS, nftId, rewardPoolAddr, extraData, "0x0000000000000000000000000000000000000000", "0x0000000000000000000000000000000000000000000000000000000000000000")
-    .then(function (t) {
-      return App.provider.waitForTransaction(t.hash)
-    })
-    .catch(function () {
-      hideLoading()
-    })
 }
 
 const clContract_stake = async function (rewardPoolAddr, nftId, App) {
@@ -618,7 +666,7 @@ const clContract_stake = async function (rewardPoolAddr, nftId, App) {
     })
 }
 
-const sickle_clContract_withdraw = async function (rewardPoolAddr, nftId, App) {
+const sickle_clContract_withdraw = async function (rewardPoolAddr, nftId, App, nftManagerAddress = NFT_TOKEN_ADDRESS) {
   const signer = App.provider.getSigner()
 
   const REWARD_POOL = new ethers.Contract(NFT_FARM_STRATEGY_ADDRESS, NFT_FARM_STRATEGY_ABI, signer)
@@ -630,18 +678,21 @@ const sickle_clContract_withdraw = async function (rewardPoolAddr, nftId, App) {
 
   const position = {
     farm: farm,
-    nft: NFT_TOKEN_ADDRESS,
+    nft: nftManagerAddress,
     tokenId: nftId
   }
 
-  const extraData = "0x00";
+  const extraData = "0x";
 
   showLoading()
-  REWARD_POOL.simpleWithdraw(position, extraData)
+  return REWARD_POOL.callStatic.simpleWithdraw(position, extraData)
+    .then(() => REWARD_POOL.simpleWithdraw(position, extraData))
     .then(function (t) {
       return App.provider.waitForTransaction(t.hash)
     })
-    .catch(function () {
+    .then(() => window.location.reload())
+    .catch(function (error) {
+      _print(`Withdraw failed: ${error.reason || error.message}`);
       hideLoading()
     })
 }
@@ -682,7 +733,7 @@ const clContract_decrease = async function (rewardPoolAddr, nftId, App) {
     })
 }
 
-const sickle_clContract_claim = async function (rewardPoolAddr, nftId, App) {
+const sickle_clContract_claim = async function (rewardPoolAddr, nftId, App, nftManagerAddress = NFT_TOKEN_ADDRESS, rewardTokenAddress = "0x940181a94a35a4569e4529a3cdfb74e38fd98631") {
   const signer = App.provider.getSigner()
 
   const farm = {
@@ -690,16 +741,16 @@ const sickle_clContract_claim = async function (rewardPoolAddr, nftId, App) {
     poolIndex: 0
   }
 
-  const extraData = "0x00"
+  const extraData = "0x"
 
   const position = {
     farm: farm,
-    nft: NFT_TOKEN_ADDRESS,
+    nft: nftManagerAddress,
     tokenId: nftId
   }
 
   const params = {
-    rewardTokens: ["0x940181a94a35a4569e4529a3cdfb74e38fd98631"],
+    rewardTokens: [rewardTokenAddress],
     amount0Max: 0,
     amount1Max: 0,
     extraData: extraData
@@ -708,26 +759,34 @@ const sickle_clContract_claim = async function (rewardPoolAddr, nftId, App) {
   const REWARD_POOL = new ethers.Contract(NFT_FARM_STRATEGY_ADDRESS, NFT_FARM_STRATEGY_ABI, signer)
 
   showLoading()
-  REWARD_POOL.simpleHarvest(position, params)
+  return REWARD_POOL.callStatic.simpleHarvest(position, params)
+    .then(() => REWARD_POOL.simpleHarvest(position, params))
     .then(function (t) {
       return App.provider.waitForTransaction(t.hash)
     })
-    .catch(function () {
+    .then(() => window.location.reload())
+    .catch(function (error) {
+      _print(`Claim failed: ${error.reason || error.message}`);
       hideLoading()
     })
 }
 
-const clContract_claim = async function (rewardPoolAddr, nftId, App) {
+const clContract_claim = async function (rewardPoolAddr, nftId, App, isCurrent = false) {
   const signer = App.provider.getSigner()
 
-  const REWARD_POOL = new ethers.Contract(rewardPoolAddr, CL_GAUGE_ABI, signer)
+  const REWARD_POOL = new ethers.Contract(rewardPoolAddr, isCurrent ? CURRENT_CL_GAUGE_ABI : CL_GAUGE_ABI, signer)
+  const method = isCurrent ? "claimEmissions" : "getReward(uint256)";
+  const args = isCurrent ? [App.YOUR_ADDRESS, App.YOUR_ADDRESS, [nftId]] : [nftId];
 
   showLoading()
-  REWARD_POOL.getReward(nftId, { gasLimit: 250000 })
+  return REWARD_POOL.callStatic[method](...args)
+    .then(() => REWARD_POOL[method](...args))
     .then(function (t) {
       return App.provider.waitForTransaction(t.hash)
     })
-    .catch(function () {
+    .then(() => window.location.reload())
+    .catch(function (error) {
+      _print(`Claim failed: ${error.reason || error.message}`);
       hideLoading()
     })
 }
