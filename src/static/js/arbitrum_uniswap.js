@@ -22,7 +22,21 @@ $(function() {
 
   const CL_FACTORY_ADDRESS = "0x1F98431c8aD98523631AE4a59f267346ea31F984";
   
+  // Never hang or fail silently: warn if loading is still running after a minute, and show any error.
   async function main() {
+    const slowWarning = setTimeout(() => _print("⚠️ Still loading; the RPC may be slow or unresponsive. If nothing appears soon, try reloading the page."), 60000);
+    try {
+      await mainLoad();
+    } catch (e) {
+      console.log("Failed to load positions:", e);
+      _print(`⚠️ Failed to load positions: ${(e && (e.reason || e.message)) || e}. Try reloading the page.`);
+    } finally {
+      clearTimeout(slowWarning);
+      hideLoading();
+    }
+  }
+
+  async function mainLoad() {
     const App = await init_ethers();
   
     _print(`Initialized ${App.YOUR_ADDRESS}\n`);
@@ -124,9 +138,12 @@ $(function() {
   
     let prices = {};
     try {
-      prices = await getArbitrumPrices();
+      let priceTimer;
+      const priceTimeout = new Promise((_, reject) => { priceTimer = setTimeout(() => reject(new Error('price lookup timed out after 30s')), 30000) });
+      prices = await Promise.race([getArbitrumPrices(), priceTimeout]).finally(() => clearTimeout(priceTimer));
     } catch (e) {
       console.error('Failed to look up prices', e);
+      _print(`⚠️ Could not load token prices (${(e && e.message) || e}). USD values are missing; try reloading the page.`);
     }
 
     if(has_sickle_account) {

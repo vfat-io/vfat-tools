@@ -20,23 +20,24 @@ async function main() {
   const SICKLE_FACTORY_ADDR = "0xB4C31b0f0B76b351395D4aCC94A54dD4e6fbA1E8";
   const SICKLE_FACTORY = new ethcall.Contract(SICKLE_FACTORY_ADDR, SICKLE_FACTORY_ABI);
 
-  const [sickleAddress] = await App.ethcallProvider.all([SICKLE_FACTORY.sickles(App.YOUR_ADDRESS)]);
+  const [sickleAddress] = await sicklePositionsAll(App, [SICKLE_FACTORY.sickles(App.YOUR_ADDRESS)], "Sickle lookup");
 
   if (sickleAddress === "0x0000000000000000000000000000000000000000") {
     _print_bold("You dont have a sickle account");
   } else {
     _print_bold(`Your Sickle Address: ${sickleAddress}`);
     _print("");
+    try {
 
     const SLIPSTREAM_NFT_MANAGER_1 = new ethcall.Contract(SLIPSTREAM_NFT_MANAGER_ADDRESS_1, SLIPSTREAM_NFT_MANAGER_ABI);  // VELO
     const SLIPSTREAM_NFT_MANAGER_2 = new ethcall.Contract(SLIPSTREAM_NFT_MANAGER_ADDRESS_2, SLIPSTREAM_NFT_MANAGER_ABI);  // VELO
     const SLIPSTREAM_NFT_MANAGER_3 = new ethcall.Contract(SLIPSTREAM_NFT_MANAGER_ADDRESS_3, SLIPSTREAM_NFT_MANAGER_ABI);  // UNISWAP
     const SLIPSTREAM_NFT_MANAGER_4 = new ethcall.Contract(SLIPSTREAM_NFT_MANAGER_ADDRESS_4, SLIPSTREAM_NFT_MANAGER_ABI);  // VELO
 
-    const [nfts_1] = await App.ethcallProvider.all([SLIPSTREAM_NFT_MANAGER_1.balanceOf(sickleAddress)]);
-    const [nfts_2] = await App.ethcallProvider.all([SLIPSTREAM_NFT_MANAGER_2.balanceOf(sickleAddress)]);
-    const [nfts_3] = await App.ethcallProvider.all([SLIPSTREAM_NFT_MANAGER_3.balanceOf(sickleAddress)]);
-    const [nfts_4] = await App.ethcallProvider.all([SLIPSTREAM_NFT_MANAGER_4.balanceOf(sickleAddress)]);
+    const [nfts_1] = await sicklePositionsAll(App, [SLIPSTREAM_NFT_MANAGER_1.balanceOf(sickleAddress)], "NFT reads");
+    const [nfts_2] = await sicklePositionsAll(App, [SLIPSTREAM_NFT_MANAGER_2.balanceOf(sickleAddress)], "NFT reads");
+    const [nfts_3] = await sicklePositionsAll(App, [SLIPSTREAM_NFT_MANAGER_3.balanceOf(sickleAddress)], "NFT reads");
+    const [nfts_4] = await sicklePositionsAll(App, [SLIPSTREAM_NFT_MANAGER_4.balanceOf(sickleAddress)], "NFT reads");
 
     if (nfts_1 / 1 > 0) {
       let nft_ids = [];
@@ -50,7 +51,7 @@ async function main() {
       _print_bold("VELO nfts");
 
       for (let i = 0; i < nfts_1; i++) {
-        const nft_id = await App.ethcallProvider.all([SLIPSTREAM_NFT_MANAGER_1.tokenOfOwnerByIndex(sickleAddress, i)]) / 1;
+        const nft_id = await sicklePositionsAll(App, [SLIPSTREAM_NFT_MANAGER_1.tokenOfOwnerByIndex(sickleAddress, i)], "NFT reads") / 1;
         nft_ids.push(nft_id);
         tokens.push(SLIPSTREAM_NFT_MANAGER_ADDRESS_1);
       }
@@ -85,7 +86,7 @@ async function main() {
       _print_bold("VELO nfts");
 
       for (let i = 0; i < nfts_2; i++) {
-        const nft_id = await App.ethcallProvider.all([SLIPSTREAM_NFT_MANAGER_2.tokenOfOwnerByIndex(sickleAddress, i)]) / 1;
+        const nft_id = await sicklePositionsAll(App, [SLIPSTREAM_NFT_MANAGER_2.tokenOfOwnerByIndex(sickleAddress, i)], "NFT reads") / 1;
         nft_ids.push(nft_id);
         tokens.push(SLIPSTREAM_NFT_MANAGER_ADDRESS_2);
       }
@@ -120,7 +121,7 @@ async function main() {
       _print_bold("UNISWAP nfts");
 
       for (let i = 0; i < nfts_3; i++) {
-        const nft_id = await App.ethcallProvider.all([SLIPSTREAM_NFT_MANAGER_3.tokenOfOwnerByIndex(sickleAddress, i)]) / 1;
+        const nft_id = await sicklePositionsAll(App, [SLIPSTREAM_NFT_MANAGER_3.tokenOfOwnerByIndex(sickleAddress, i)], "NFT reads") / 1;
         nft_ids.push(nft_id);
         tokens.push(SLIPSTREAM_NFT_MANAGER_ADDRESS_3);
       }
@@ -155,7 +156,7 @@ async function main() {
       _print_bold("VELO nfts");
 
       for (let i = 0; i < nfts_4; i++) {
-        const nft_id = await App.ethcallProvider.all([SLIPSTREAM_NFT_MANAGER_4.tokenOfOwnerByIndex(sickleAddress, i)]) / 1;
+        const nft_id = await sicklePositionsAll(App, [SLIPSTREAM_NFT_MANAGER_4.tokenOfOwnerByIndex(sickleAddress, i)], "NFT reads") / 1;
         nft_ids.push(nft_id);
         tokens.push(SLIPSTREAM_NFT_MANAGER_ADDRESS_4);
       }
@@ -176,6 +177,12 @@ async function main() {
 
       _print_link(`Withdraw all VELO erc721 tokens: ${token_ids}`, sweepErc721);
       _print("");
+    }
+    } catch (e) {
+      console.log("Failed to load Sickle positions:", e);
+      _print(`⚠️ Failed to load Sickle positions: ${sicklePositionsReason(e)}. Try reloading the page.`);
+    } finally {
+      hideLoading();
     }
   }
 

@@ -27,15 +27,16 @@ async function main() {
     const SICKLE_FACTORY_ADDR = "0x53d9780DbD3831E3A797Fd215be4131636cD5FDf";
     const SICKLE_FACTORY = new ethcall.Contract(SICKLE_FACTORY_ADDR, SICKLE_FACTORY_ABI);
 
-    const [sickleAddress] = await App.ethcallProvider.all([SICKLE_FACTORY.sickles(App.YOUR_ADDRESS)]);
+    const [sickleAddress] = await sicklePositionsAll(App, [SICKLE_FACTORY.sickles(App.YOUR_ADDRESS)], "Sickle lookup");
 
     if(sickleAddress === "0x0000000000000000000000000000000000000000"){
       _print_bold("You dont have a sickle account");
     }else{
       _print_bold(`Your Sickle Address: ${sickleAddress}`);
       _print("");
+      try {
 
-      const prices = await getBscPrices();
+      const prices = await sicklePositionsPrices(getBscPrices());
       const infos = await loadSicklePositions(App, sickleAddress, BSC_SICKLE_NFT_MANAGERS, prices, "bsc");
 
       printSicklePositions(infos, {
@@ -53,6 +54,12 @@ async function main() {
         _print_link(`Withdraw all ${manager.name} erc721 tokens: ${nft_ids.join(" - ")}`, () => sweep_nfts_721(App, nft_ids, tokens));
       }
       _print("");
+      } catch (e) {
+        console.log("Failed to load Sickle positions:", e);
+        _print(`⚠️ Failed to load Sickle positions: ${sicklePositionsReason(e)}. Try reloading the page.`);
+      } finally {
+        hideLoading();
+      }
     }
 
     hideLoading();
