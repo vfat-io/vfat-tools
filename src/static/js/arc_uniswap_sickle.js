@@ -22,7 +22,21 @@ const NFT_FARM_STRATEGY_ADDRESS = "0x2eB9c84464943a166789584d80a400D1a722E221";
 
 const CL_FACTORY_ADDRESS = "0xf0db7b58379503491d857dB50AC9ece64c653918";
 
+// Never hang or fail silently: warn if loading is still running after a minute, and show any error.
 async function main() {
+  const slowWarning = setTimeout(() => _print("⚠️ Still loading; the RPC may be slow or unresponsive. If nothing appears soon, try reloading the page."), 60000);
+  try {
+    await mainLoad();
+  } catch (e) {
+    console.log("Failed to load Sickle positions:", e);
+    _print(`⚠️ Failed to load Sickle positions: ${sicklePositionsReason(e)}. Try reloading the page.`);
+  } finally {
+    clearTimeout(slowWarning);
+    hideLoading();
+  }
+}
+
+async function mainLoad() {
   const App = await init_ethers();
 
   _print(`Initialized ${App.YOUR_ADDRESS}\n`);
@@ -90,7 +104,7 @@ async function main() {
   }
 
   // Fetch additional pool data for SDK operations
-  const prices = await getArcPrices();
+  const prices = await sicklePositionsPrices(getArcPrices());
 
   const clGauges = await Promise.all(userClData.map(async d => {
     const poolContract = new ethcall.Contract(d.pool, CL_TOKEN_ABI);
