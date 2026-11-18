@@ -147,9 +147,6 @@ const pageNetwork = function () {
   if (network.toLowerCase() === 'dfk') {
     return window.NETWORKS.DFK
   }
-  if (network.toLowerCase() === 'okex') {
-    return window.NETWORKS.OKEX
-  }
   if (network.toLowerCase() === 'emerald') {
     return window.NETWORKS.EMERALD
   }
@@ -4415,9 +4412,6 @@ function getErc20Prices(prices, pool, chain = "eth") {
     case "klaytn":
       poolUrl = `hhttps://scope.klaytn.com/account/${pool.address}`;
       break;
-    case "okex":
-      poolUrl = `https://www.oklink.com/okexchain/address/${pool.address}`;
-      break;
     case "kcc":
       poolUrl = `https://explorer.kcc.io/en/address/${pool.address}`;
       break;
@@ -5237,9 +5231,6 @@ async function printSynthetixPool(App, info, chain = "eth", customURLs) {
       break;
     case "dfk":
       _print(`<a target="_blank" href="https://subnets.avax.network/defi-kingdoms/dfk-chain/explorer/address/${info.stakingAddress}#code">DFK Explorer</a>`);
-      break;
-    case "okex":
-      _print(`<a target="_blank" href="https://www.oklink.com/okexchain/address/${info.stakingAddress}#code">Okex Explorer</a>`);
       break;
     case "kcc":
       _print(`<a target="_blank" href="https://explorer.kcc.io/en/address/${info.stakingAddress}#code">KUCOIN Explorer</a>`);

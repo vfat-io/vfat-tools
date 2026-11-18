@@ -927,13 +927,6 @@ const MoonriverTokens = [
   { "id": "sushi", "symbol": "SUSHI", "contract": "0xf390830DF829cf22c53c8840554B98eafC5dCBc2" }
 ];
 
-const OkexTokens = [
-  { "id": "tether", "symbol": "USDT", "contract": "0x382bb369d343125bfb2117af9c149795c6c65c50" },
-  { "id": "okexchain", "symbol": "OKT", "contract": "0x8F8526dbfd6E38E3D8307702cA8469Bae6C56C15" },
-  { "id": "wrapped-bitcoin", "symbol": "WBTC", "contract": "0x54e4622DC504176b3BB432dCCAf504569699a7fF" },
-  { "id": "elk-finance", "symbol": "ELK", "contract": "0xE1C110E1B1b4A1deD0cAf3E42BfBdbB7b5d7cE1C" }
-];
-
 const optimisticTokens = [
   { "id": "weth", "symbol": "WETH", "contract": "0x4200000000000000000000000000000000000006" },
   { "id": "synapse-2", "symbol": "SYN", "contract": "0x5a5fff6f753d7c11a56a52fe47a177a87e431655" },
@@ -1527,15 +1520,6 @@ async function getMoonriverPrices() {
   const idPrices = await lookUpPrices(MoonriverTokens.map(x => x.id));
   const prices = {}
   for (const bt of MoonriverTokens)
-    if (idPrices[bt.id])
-      prices[bt.contract] = idPrices[bt.id];
-  return prices;
-}
-
-async function getOkexPrices() {
-  const idPrices = await lookUpPrices(OkexTokens.map(x => x.id));
-  const prices = {}
-  for (const bt of OkexTokens)
     if (idPrices[bt.id])
       prices[bt.contract] = idPrices[bt.id];
   return prices;

@@ -606,8 +606,6 @@ async function loadGeneralChefContract(App, tokens, prices, chef, chefAddress, c
   const totalAllocPoints = await chefContract.totalAllocPoint();
 
   switch (chain) {
-    case "okex": _print(`<a href='https://www.oklink.com/en/okc/address/${chefAddress}' target='_blank'>Staking Contract</a>`);
-      break;
     case "hoo": _print(`<a href='https://hooscan.com/address/${chefAddress}' target='_blank'>Staking Contract</a>`);
       break;
     case "astar": _print(`<a href='https://blockscout.com/astar/address/${chefAddress}' target='_blank'>Staking Contract</a>`);

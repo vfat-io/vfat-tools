@@ -57,13 +57,6 @@ const rawNetworks = [
     blockExplorers: [{ name: 'BscScan', url: 'https://bscscan.com' }]
   },
   {
-    id: 66,
-    name: 'OKExChain',
-    nativeCurrency: { name: 'OKT', symbol: 'OKT', decimals: 18 },
-    rpcUrls: ['https://exchainrpc.okex.org'],
-    blockExplorers: [{ name: 'OKLink', url: 'https://www.oklink.com/okexchain' }]
-  },
-  {
     id: 70,
     name: 'Hoo Smart Chain',
     nativeCurrency: { name: 'HOO', symbol: 'HOO', decimals: 18 },
@@ -1570,21 +1563,6 @@ export const NETWORKS = {
     "blockExplorerUrls": [
       "https://scan.thundercore.com/",
       "https://viewblock.io/thundercore"
-    ],
-  },
-  OKEX: {
-    "chainId": "0x42",
-    "chainName": "OKExChain Mainnet",
-    "nativeCurrency": {
-      "name": "okexchain",
-      "symbol": "OKT",
-      "decimals": 18
-    },
-    "rpcUrls": [
-      "https://exchainrpc.okex.org"
-    ],
-    "blockExplorerUrls": [
-      "https://www.oklink.com/okexchain"
     ],
   },
   KCC: {

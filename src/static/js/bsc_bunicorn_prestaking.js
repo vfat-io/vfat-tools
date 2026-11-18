@@ -113,9 +113,6 @@ async function printSynthetixPool(App, info, chain="eth", customURLs) {
         case "matic":
             _print(`<a target="_blank" href="https://explorer-mainnet.maticvigil.com/address/${info.stakingAddress}#code">Polygon Explorer</a>`);
             break;
-        case "okex":
-            _print(`<a target="_blank" href="https://www.oklink.com/okexchain/address/${info.stakingAddress}#code">Okex Explorer</a>`);
-            break;
         case "kcc":
             _print(`<a target="_blank" href="https://explorer.kcc.io/en/address/${info.stakingAddress}#code">KUCOIN Explorer</a>`);
             break;
