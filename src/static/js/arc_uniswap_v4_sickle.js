@@ -195,10 +195,12 @@ async function main() {
     _print('')
 
     try {
-      await withdraw_nfts(App, nft_manager_v4, nft_manager_address_v4, sickleAddress)
+      // 90s: enough for the sequential reads, short enough that a hung RPC ends in the manual NFT-ID form
+      await sicklePositionsWithTimeout(withdraw_nfts(App, nft_manager_v4, nft_manager_address_v4, sickleAddress), 90000, 'Loading positions')
     } catch (err) {
-      await fallback_withdraw(App, nft_manager_address_v4, sickleAddress)
       console.log(err)
+      if (err?.message !== 'No NFTs found') _print(`⚠️ Could not load your positions (${sicklePositionsReason(err)}). Try reloading the page, or enter an NFT ID below.`)
+      await fallback_withdraw(App, nft_manager_address_v4, sickleAddress)
     }
   }
 
@@ -322,7 +324,8 @@ const withdraw_nfts = async function (App, nft_manager_v4, nft_manager_address_v
 
     // USD prices (DefiLlama) for the claim/compound labels.
     const usdPriceAddrs = [...new Set([...poolCache.values()].flatMap(v => [v.poolKey.currency0, v.poolKey.currency1]).map(a => (a || '').toLowerCase()))]
-    const usdPrices = await getTokenUsdPrices(ARC_CHAIN_ID, usdPriceAddrs, { nativeCoingeckoId: 'usd-coin' })
+    const usdPrices = await sicklePositionsWithTimeout(getTokenUsdPrices(ARC_CHAIN_ID, usdPriceAddrs, { nativeCoingeckoId: 'usd-coin' }), 10000, 'Price lookup')
+      .catch(e => { console.log(e); return new Map() })
 
     // Compute per-position earned fees (unclaimed) to show next to Compound.
     // Uniswap v4 positions are owned in PoolManager by the PositionManager contract itself, with salt = tokenId.

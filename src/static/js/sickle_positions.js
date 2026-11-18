@@ -64,99 +64,220 @@ const sicklePositionsAddress = (word) => ethers.utils.getAddress('0x' + ethers.B
 const sicklePositionsInt = (word) => ethers.BigNumber.from(word).fromTwos(256).toNumber()
 const sicklePositionsBig = (word) => BigInt(word.toString())
 
+// Network reads on these pages must never hang or fail silently: every RPC batch has a timeout and a retry,
+// and a failure is narrowed to the manager / NFT / token it belongs to and shown with _print.
+const SICKLE_POSITIONS_RPC_TIMEOUT_MS = 15000
+const SICKLE_POSITIONS_PRICES_TIMEOUT_MS = 30000
+const SICKLE_POSITIONS_LLAMA_TIMEOUT_MS = 10000
+
+function sicklePositionsWithTimeout(promise, ms, label) {
+  let timer
+  const timeout = new Promise((_, reject) => {
+    timer = setTimeout(() => {
+      const error = new Error(`${label} timed out after ${ms / 1000}s`)
+      error.sicklePositionsTimeout = true
+      reject(error)
+    }, ms)
+  })
+  return Promise.race([promise, timeout]).finally(() => clearTimeout(timer))
+}
+
+// Short, single-line reason for the messages shown to the user.
+function sicklePositionsReason(e) {
+  const text = String((e && (e.reason || e.message)) || e).split('\n')[0]
+  return text.length > 100 ? text.slice(0, 100) + '...' : text
+}
+
+const sicklePositionsIsRevert = (e) => e?.code === 'CALL_EXCEPTION' || /revert/i.test(e?.message || '')
+
+const sicklePositionsSleep = (ms) => new Promise(resolve => setTimeout(resolve, ms))
+
+// App.ethcallProvider.all(calls) with a timeout, retrying once (after a short pause) on transient errors; reverts are not retried.
+async function sicklePositionsAll(App, calls, label, retries = 1) {
+  if (calls.length === 0) return []
+  for (let attempt = 0; ; attempt++) {
+    try {
+      return await sicklePositionsWithTimeout(App.ethcallProvider.all(calls), SICKLE_POSITIONS_RPC_TIMEOUT_MS, label)
+    } catch (e) {
+      if (attempt >= retries || sicklePositionsIsRevert(e)) throw e
+      console.log(`${label} failed, retrying:`, e)
+      await sicklePositionsSleep(700 * (attempt + 1))
+    }
+  }
+}
+
+// One batched multicall for all items; if it fails (and it is not a timeout), the items are read one by one so a
+// single bad item only loses itself. Returns [{ value }] or [{ error }] aligned with items.
+async function sicklePositionsAllSettled(App, items, makeCall, label) {
+  if (items.length === 0) return []
+  try {
+    const values = await sicklePositionsAll(App, items.map(makeCall), label)
+    return values.map(value => ({ value }))
+  } catch (e) {
+    if (items.length === 1 || e.sicklePositionsTimeout) return items.map(() => ({ error: e }))
+    return Promise.all(items.map(async item => {
+      try {
+        return { value: (await sicklePositionsAll(App, [makeCall(item)], label))[0] }
+      } catch (error) {
+        return { error }
+      }
+    }))
+  }
+}
+
+// Wraps a page's get<Chain>Prices() promise: on a failure or timeout it warns and returns {} so positions still render (without USD).
+async function sicklePositionsPrices(pricesPromise) {
+  try {
+    const prices = await sicklePositionsWithTimeout(Promise.resolve(pricesPromise), SICKLE_POSITIONS_PRICES_TIMEOUT_MS, 'Price lookup')
+    return prices || {}
+  } catch (e) {
+    console.log('Token price lookup failed:', e)
+    Promise.resolve(pricesPromise).catch(() => {}) // a late rejection must not surface as an unhandled one
+    _print(`⚠️ Could not load token prices (${sicklePositionsReason(e)}). USD values are missing; try reloading the page.`)
+    return {}
+  }
+}
+
 // Prices for tokens missing from the chain's price list, from DefiLlama ("<llamaChain>:<address>").
 async function sicklePositionsMissingPrices(llamaChain, addresses, prices) {
   const missing = addresses.filter(a => !getParameterCaseInsensitive(prices || {}, a)?.usd)
   if (!llamaChain || missing.length === 0) return {}
+  const controller = new AbortController()
   try {
-    const res = await fetch('https://coins.llama.fi/prices/current/' + missing.map(a => `${llamaChain}:${a}`).join(','))
-    const { coins } = await res.json()
+    const request = fetch('https://coins.llama.fi/prices/current/' + missing.map(a => `${llamaChain}:${a}`).join(','), { signal: controller.signal })
+      .then(res => res.json())
+    const { coins } = await sicklePositionsWithTimeout(request, SICKLE_POSITIONS_LLAMA_TIMEOUT_MS, 'DefiLlama price lookup')
     const found = {}
     for (const [key, v] of Object.entries(coins || {})) {
       if (v.price) found[key.split(':')[1]] = { usd: v.price }
     }
     return found
   } catch (e) {
+    controller.abort()
     console.log('DefiLlama price lookup failed:', e)
     return {}
   }
 }
 
 // managers: [{ name, address, family, actions? }] (actions: false = quote API has no strategy, Withdraw only); llamaChain: DefiLlama chain key (e.g. "base") for unlisted tokens.
-// Returns one info object per NFT held by the Sickle.
+// Returns one info object per NFT held by the Sickle. A manager or NFT that cannot be read is reported with _print and skipped.
 async function loadSicklePositions(App, sickleAddress, managers, prices, llamaChain) {
   const nftManagers = managers.map(m => new ethcall.Contract(m.address, SICKLE_POSITIONS_NFT_MANAGER_ABI))
-  const balances = await App.ethcallProvider.all(nftManagers.map(c => c.balanceOf(sickleAddress)))
+  const balances = await sicklePositionsAllSettled(App, managers.map((m, i) => i), i => nftManagers[i].balanceOf(sickleAddress), 'NFT balances')
 
   const held = []
   managers.forEach((manager, i) => {
-    for (let j = 0; j < Number(balances[i]); j++) held.push({ manager, index: j, contract: nftManagers[i] })
+    if (balances[i].error) {
+      _print(`⚠️ Could not read ${manager.name} positions (${sicklePositionsReason(balances[i].error)}). Try reloading the page.`)
+      return
+    }
+    for (let j = 0; j < Number(balances[i].value); j++) held.push({ manager, index: j, contract: nftManagers[i] })
   })
   if (held.length === 0) return []
 
-  const nftIds = await App.ethcallProvider.all(held.map(h => h.contract.tokenOfOwnerByIndex(sickleAddress, h.index)))
-  return loadSicklePositionsByIds(App, held.map((h, i) => ({ manager: h.manager, nftId: nftIds[i] })), prices, llamaChain)
+  const nftIds = await sicklePositionsAllSettled(App, held, h => h.contract.tokenOfOwnerByIndex(sickleAddress, h.index), 'NFT ids')
+  const entries = []
+  held.forEach((h, i) => {
+    if (nftIds[i].error) _print(`⚠️ Could not read NFT #${h.index} of ${h.manager.name} (${sicklePositionsReason(nftIds[i].error)}). Try reloading the page.`)
+    else entries.push({ manager: h.manager, nftId: nftIds[i].value })
+  })
+  return loadSicklePositionsByIds(App, entries, prices, llamaChain)
 }
 
 // entries: [{ manager, nftId }]
 async function loadSicklePositionsByIds(App, entries, prices, llamaChain) {
   const familyOf = (manager) => SICKLE_POSITIONS_FAMILIES[manager.family]
+  const warnNft = (e, what, error) => _print(`⚠️ Could not read ${what} of NFT ${e.nftId.toString()} (${e.manager.name}) (${sicklePositionsReason(error)}). Try reloading the page.`)
 
-  const positions = (await App.ethcallProvider.all(entries.map(e => {
+  const positionResults = await sicklePositionsAllSettled(App, entries, e => {
     const layout = familyOf(e.manager).position
     return new ethcall.Contract(e.manager.address, SICKLE_POSITIONS_WORDS_ABI('positions', 'uint256', layout.words)).positions(e.nftId)
-  }))).map((words, i) => {
-    const layout = familyOf(entries[i].manager).position
-    return {
-      token0: sicklePositionsAddress(words[layout.token0]),
-      token1: sicklePositionsAddress(words[layout.token1]),
-      key: layout.key !== undefined ? sicklePositionsInt(words[layout.key]) : undefined,
-      deployer: layout.deployer !== undefined ? sicklePositionsAddress(words[layout.deployer]) : undefined,
-      tickLower: sicklePositionsInt(words[layout.tickLower]),
-      tickUpper: sicklePositionsInt(words[layout.tickUpper]),
-      liquidity: sicklePositionsBig(words[layout.liquidity]),
-      feeInside0: words[layout.feeInside0],
-      feeInside1: words[layout.feeInside1],
-      owed0: words[layout.owed0],
-      owed1: words[layout.owed1]
+  }, 'NFT positions')
+
+  // Entries whose position could not be read (or decoded) are dropped; rows keeps entry and position together.
+  const rows = []
+  entries.forEach((e, i) => {
+    try {
+      if (positionResults[i].error) throw positionResults[i].error
+      const words = positionResults[i].value
+      const layout = familyOf(e.manager).position
+      rows.push({
+        e,
+        pos: {
+          token0: sicklePositionsAddress(words[layout.token0]),
+          token1: sicklePositionsAddress(words[layout.token1]),
+          key: layout.key !== undefined ? sicklePositionsInt(words[layout.key]) : undefined,
+          deployer: layout.deployer !== undefined ? sicklePositionsAddress(words[layout.deployer]) : undefined,
+          tickLower: sicklePositionsInt(words[layout.tickLower]),
+          tickUpper: sicklePositionsInt(words[layout.tickUpper]),
+          liquidity: sicklePositionsBig(words[layout.liquidity]),
+          feeInside0: words[layout.feeInside0],
+          feeInside1: words[layout.feeInside1],
+          owed0: words[layout.owed0],
+          owed1: words[layout.owed1]
+        }
+      })
+    } catch (error) {
+      warnNft(e, 'the position', error)
     }
   })
 
-  // Pool factory per manager: factory(), or deployer().RamsesV3Factory() for Ramses V3.
-  const usedManagers = [...new Set(entries.map(e => e.manager))]
+  // Pool factory per manager: factory(), or deployer().RamsesV3Factory() for Ramses V3. A manager without one keeps its NFTs but gets no pool.
+  const usedManagers = [...new Set(rows.map(r => r.e.manager))]
   const factoryOf = new Map()
-  const managerFactories = await App.ethcallProvider.all(usedManagers.map(m => {
+  const managerFactories = await sicklePositionsAllSettled(App, usedManagers, m => {
     const c = new ethcall.Contract(m.address, SICKLE_POSITIONS_NFT_MANAGER_ABI)
     return familyOf(m).factoryFromDeployer ? c.deployer() : c.factory()
-  }))
-  const deployerManagers = usedManagers.filter(m => familyOf(m).factoryFromDeployer)
-  const deployerFactories = await App.ethcallProvider.all(deployerManagers.map(m =>
-    new ethcall.Contract(managerFactories[usedManagers.indexOf(m)], SICKLE_POSITIONS_DEPLOYER_ABI).RamsesV3Factory()))
-  usedManagers.forEach((m, i) => factoryOf.set(m, managerFactories[i]))
-  deployerManagers.forEach((m, i) => factoryOf.set(m, deployerFactories[i]))
+  }, 'pool factories')
+  const failedFactories = new Map()
+  usedManagers.forEach((m, i) => {
+    if (managerFactories[i].error) failedFactories.set(m, managerFactories[i].error)
+    else factoryOf.set(m, managerFactories[i].value)
+  })
+  const deployerManagers = usedManagers.filter(m => familyOf(m).factoryFromDeployer && factoryOf.has(m))
+  const deployerFactories = await sicklePositionsAllSettled(App, deployerManagers, m =>
+    new ethcall.Contract(factoryOf.get(m), SICKLE_POSITIONS_DEPLOYER_ABI).RamsesV3Factory(), 'pool factories')
+  deployerManagers.forEach((m, i) => {
+    if (deployerFactories[i].error) {
+      factoryOf.delete(m)
+      failedFactories.set(m, deployerFactories[i].error)
+    } else factoryOf.set(m, deployerFactories[i].value)
+  })
+  for (const [m, error] of failedFactories) {
+    _print(`⚠️ Could not find the pools of ${m.name} (${sicklePositionsReason(error)}). Its NFTs are listed with Withdraw NFT only; try reloading the page.`)
+  }
 
-  const pools = await App.ethcallProvider.all(entries.map((e, i) => {
+  const poolRows = rows.filter(r => factoryOf.has(r.e.manager))
+  const poolResults = await sicklePositionsAllSettled(App, poolRows, ({ e, pos }) => {
     const family = familyOf(e.manager)
-    const pos = positions[i]
     if (pos.deployer && pos.deployer !== ethers.constants.AddressZero) {
       return new ethcall.Contract(factoryOf.get(e.manager), SICKLE_POSITIONS_JSON_ABI([family.getCustomPool])).customPoolByPair(pos.deployer, pos.token0, pos.token1)
     }
     const factory = new ethcall.Contract(factoryOf.get(e.manager), SICKLE_POSITIONS_JSON_ABI([family.getPool]))
     return pos.key !== undefined ? factory.getPool(pos.token0, pos.token1, pos.key) : factory.poolByPair(pos.token0, pos.token1)
+  }, 'NFT pools')
+  const poolOf = new Map()
+  poolRows.forEach((r, i) => {
+    if (poolResults[i].error) _print(`⚠️ Could not find the pool of NFT ${r.e.nftId.toString()} (${r.e.manager.name}) (${sicklePositionsReason(poolResults[i].error)}). Only Withdraw NFT is offered; try reloading the page.`)
+    else poolOf.set(r, poolResults[i].value)
+  })
+
+  // A token whose symbol()/decimals() fail (non-standard ERC20) falls back to "?" / 18 instead of breaking the batch.
+  const tokenAddresses = [...new Set(rows.flatMap(r => [r.pos.token0, r.pos.token1]))]
+  const tokenCalls = tokenAddresses.flatMap(t => [{ t, fn: 'symbol' }, { t, fn: 'decimals' }])
+  const tokenData = await sicklePositionsAllSettled(App, tokenCalls, ({ t, fn }) => new ethcall.Contract(t, SICKLE_POSITIONS_ERC20_ABI)[fn](), 'token symbols')
+  const tokenInfo = new Map(tokenAddresses.map((t, i) => {
+    if (tokenData[2 * i].error || tokenData[2 * i + 1].error) console.log(`Could not read symbol/decimals of token ${t}:`, tokenData[2 * i].error || tokenData[2 * i + 1].error)
+    return [t, {
+      symbol: tokenData[2 * i].error ? '?' : tokenData[2 * i].value,
+      decimals: tokenData[2 * i + 1].error ? 18 : Number(tokenData[2 * i + 1].value)
+    }]
   }))
 
-  const tokenAddresses = [...new Set(positions.flatMap(p => [p.token0, p.token1]))]
-  const tokenCalls = tokenAddresses.flatMap(t => {
-    const c = new ethcall.Contract(t, SICKLE_POSITIONS_ERC20_ABI)
-    return [c.symbol(), c.decimals()]
-  })
-  const tokenData = await App.ethcallProvider.all(tokenCalls)
-  const tokenInfo = new Map(tokenAddresses.map((t, i) => [t, { symbol: tokenData[2 * i], decimals: Number(tokenData[2 * i + 1]) }]))
-
-  const infos = await Promise.all(entries.map(async (e, i) => {
+  const infos = await Promise.all(rows.map(async (row) => {
+    const { e, pos } = row
     const family = familyOf(e.manager)
-    const pos = positions[i]
-    const poolAddress = pools[i]
+    const poolAddress = poolOf.get(row) || ethers.constants.AddressZero
     const t0 = tokenInfo.get(pos.token0)
     const t1 = tokenInfo.get(pos.token1)
     const info = {
@@ -193,10 +314,10 @@ async function loadSicklePositionsByIds(App, entries, prices, llamaChain) {
         ]),
         ...SICKLE_POSITIONS_WORDS_ABI('ticks', 'int24', tickWords)
       ])
-      const [state, tickSpacing, g0, g1, lower, upper] = await App.ethcallProvider.all([
+      const [state, tickSpacing, g0, g1, lower, upper] = await sicklePositionsAll(App, [
         pool[family.pool.state](), pool.tickSpacing(), pool[family.pool.feeGrowth0](), pool[family.pool.feeGrowth1](),
         pool.ticks(pos.tickLower), pool.ticks(pos.tickUpper)
-      ])
+      ], 'pool state')
       const sqrtPriceX96 = state[0]
       info.currentTick = sicklePositionsInt(state[1])
       info.tickSpacing = Number(tickSpacing)
@@ -229,8 +350,9 @@ async function loadSicklePositionsByIds(App, entries, prices, llamaChain) {
       })
       info.fees0Raw = fees0Raw
       info.fees1Raw = fees1Raw
-    } catch (e) {
-      console.log(`Error reading pool ${poolAddress} for NFT ${info.nftId}:`, e)
+    } catch (error) {
+      console.log(`Error reading pool ${poolAddress} for NFT ${info.nftId}:`, error)
+      _print(`⚠️ Could not read the pool state of NFT ${info.nftId} (${info.managerName}) (${sicklePositionsReason(error)}). Amounts and fees are missing; try reloading the page.`)
     }
     return info
   }))

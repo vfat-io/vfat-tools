@@ -17,17 +17,18 @@ async function main() {
     const SICKLE_FACTORY_ADDR = "0xc6013E57a0811C7111A8fB07ACd2E248D9489C99";
     const SICKLE_FACTORY = new ethcall.Contract(SICKLE_FACTORY_ADDR, SICKLE_FACTORY_ABI);
 
-    const [sickleAddress] = await App.ethcallProvider.all([SICKLE_FACTORY.sickles(App.YOUR_ADDRESS)]);
+    const [sickleAddress] = await sicklePositionsAll(App, [SICKLE_FACTORY.sickles(App.YOUR_ADDRESS)], "Sickle lookup");
 
     if(sickleAddress === "0x0000000000000000000000000000000000000000"){
       _print_bold("You dont have a sickle account");
     }else{
       _print_bold(`Your Sickle Address: ${sickleAddress}`);
       _print("");
+      try {
 
       const SLIPSTREAM_NFT_MANAGER_1 = new ethcall.Contract(SLIPSTREAM_NFT_MANAGER_ADDRESS_1, SLIPSTREAM_NFT_MANAGER_ABI);  // VELO
 
-      const [nfts_1] = await App.ethcallProvider.all([SLIPSTREAM_NFT_MANAGER_1.balanceOf(sickleAddress)]);
+      const [nfts_1] = await sicklePositionsAll(App, [SLIPSTREAM_NFT_MANAGER_1.balanceOf(sickleAddress)], "NFT reads");
 
       if(nfts_1 / 1 > 0){
         let nft_ids = [];
@@ -41,7 +42,7 @@ async function main() {
         _print_bold("VELO nfts");
 
         for(let i = 0; i < nfts_1; i++){
-          const nft_id = await App.ethcallProvider.all([SLIPSTREAM_NFT_MANAGER_1.tokenOfOwnerByIndex(sickleAddress, i)]) / 1;
+          const nft_id = await sicklePositionsAll(App, [SLIPSTREAM_NFT_MANAGER_1.tokenOfOwnerByIndex(sickleAddress, i)], "NFT reads") / 1;
           nft_ids.push(nft_id);
           tokens.push(SLIPSTREAM_NFT_MANAGER_ADDRESS_1);
         }
@@ -62,6 +63,12 @@ async function main() {
 
         _print_link(`Withdraw all VELO erc721 tokens: ${token_ids}`, sweepErc721);
         _print("");
+      }
+      } catch (e) {
+        console.log("Failed to load Sickle positions:", e);
+        _print(`⚠️ Failed to load Sickle positions: ${sicklePositionsReason(e)}. Try reloading the page.`);
+      } finally {
+        hideLoading();
       }
     }
 
