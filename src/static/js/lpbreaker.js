@@ -30,7 +30,6 @@ const main = async() => {
       ["Mode",                    "V2",   `<a href='/mode/lp_breaker'          >/mode/lp_breaker</a>`],
       ["Moonbeam",                "V2",   `<a href='/moonbeam/lp_breaker'      >/moonbeam/lp_breaker</a>`],
       ["Moonriver",               "V2",   `<a href='/moonriver/lp_breaker'     >/moonriver/lp_breaker</a>`],
-      ["Okex",                    "V2",   `<a href='/okex/lp_breaker'          >/okex/lp_breaker</a>`],
       ["opBNB",                   "V2",   `<a href='/opbnb/lp_breaker'         >/opbnb/lp_breaker</a>`],
       ["Optimism",                "V2",   `<a href='/optimism/lp_breaker'      >/optimism/lp_breaker</a>`],
       ["Polygon",                 "V2",   `<a href='/polygon/lp_breaker'       >/polygon/lp_breaker</a>`],
